@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Engineering — Git Workflow EchoChamber</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #1e1e1e;
+    --sidebar:  #252526;
+    --surface:  #2d2d2d;
+    --border:   #3e3e42;
+    --text:     #d4d4d4;
+    --dim:      #858585;
+    --subtext:  #b0b0b0;
+    --blue:     #569cd6;
+    --green:    #6a9955;
+    --yellow:   #dcdcaa;
+    --orange:   #ce9178;
+    --red:      #f44747;
+    --teal:     #4ec9b0;
+    --accent:   #569cd6;
+    --mauve:    #c586c0;
+  }
+
+
+  :root.light {
+    --bg:       #ffffff;
+    --sidebar:  #f3f3f3;
+    --surface:  #ebebeb;
+    --border:   #d4d4d4;
+    --text:     #1e1e1e;
+    --dim:      #6e6e6e;
+    --subtext:  #444444;
+    --blue:     #0000ff;
+    --green:    #008000;
+    --yellow:   #795e26;
+    --orange:   #a31515;
+    --red:      #cd3131;
+    --teal:     #267f99;
+    --accent:   #0078d4;
+    --mauve:    #af00db;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 0 2rem;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .sidebar-logo {
+    padding: 0 1.2rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .sidebar-logo img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo-text .title {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text);
+    letter-spacing: 0.03em;
+  }
+
+  .sidebar-logo-text .course {
+    font-size: 10px;
+    color: var(--accent);
+    margin-top: 1px;
+    letter-spacing: 0.04em;
+  }
+
+  .sidebar-logo-text .sub {
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 1px;
+  }
+
+  .nav-section {
+    padding: 0.6rem 1.2rem 0.15rem;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 0.3rem;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.22rem 1.2rem 0.22rem 1.4rem;
+    color: var(--dim);
+    text-decoration: none;
+    font-size: 12.5px;
+    transition: color 0.1s, background 0.1s;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.03);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(203,166,247,0.07);
+  }
+
+  /* MAIN */
+  .main {
+    padding: 2.5rem 3rem 4rem;
+    max-width: 840px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-header img {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .page-header-text .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .page-header-text .subtitle {
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .page-header-text .badge {
+    display: inline-block;
+    background: rgba(203,166,247,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(203,166,247,0.25);
+    padding: 0.1em 0.55em;
+    border-radius: 3px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 5px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 2.8rem;
+    scroll-margin-top: 1.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-size: 11px;
+    color: var(--dim);
+    min-width: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 14.5px;
+    font-weight: bold;
+    color: var(--text);
+  }
+
+  .section-desc {
+    color: var(--subtext);
+    font-size: 12.5px;
+    margin-bottom: 0.85rem;
+    line-height: 1.8;
+  }
+
+  /* CMD BLOCK */
+  .cmd-block {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 0.6rem 0;
+    overflow: hidden;
+  }
+
+  .cmd-label {
+    background: #15151e;
+    border-bottom: 1px solid var(--border);
+    padding: 0.28rem 0.9rem;
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cmd-label::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  .cmd-body { padding: 0.75rem 1rem; }
+
+  .cmd {
+    display: block;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 12.5px;
+    line-height: 1.95;
+    color: var(--text);
+  }
+
+  .cmd .comment     { color: var(--dim); font-style: italic; }
+  .cmd .arg         { color: var(--yellow); }
+  .cmd .flag        { color: var(--blue); }
+  .cmd .placeholder { color: var(--orange); }
+  .cmd .kw          { color: var(--mauve); }
+
+  /* STEPS */
+  .steps { counter-reset: step; list-style: none; margin: 0.6rem 0; }
+
+  .steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 0.6rem;
+    margin-bottom: 0.65rem;
+    align-items: start;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    background: var(--accent);
+    color: var(--bg);
+    width: 1.35rem; height: 1.35rem;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: bold;
+    flex-shrink: 0; margin-top: 3px;
+  }
+
+  .steps li .step-text {
+    font-size: 12.5px; color: var(--text); line-height: 1.7;
+  }
+
+  .steps li .step-text strong { color: var(--yellow); font-weight: normal; }
+
+  /* TWO COL */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 0.6rem 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+  }
+
+  .card.highlight { border-color: var(--accent); }
+
+  .card-title {
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.45rem;
+  }
+
+  .card-cmd {
+    display: block; font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 12px; color: var(--text); line-height: 1.9;
+  }
+
+  .card-cmd .comment { color: var(--dim); }
+  .card-note { font-size: 11px; color: var(--dim); margin-top: 0.4rem; line-height: 1.6; }
+
+  /* INLINE CODE */
+  code {
+    background: var(--surface);
+    color: var(--orange);
+    padding: 0.08em 0.35em;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    border: 1px solid var(--border);
+  }
+
+  /* ALERTS */
+  .alert {
+    border-left: 3px solid var(--yellow);
+    background: rgba(249,226,175,0.05);
+    padding: 0.65rem 0.9rem;
+    border-radius: 0 4px 4px 0;
+    margin: 0.6rem 0;
+    font-size: 12.5px; color: var(--text); line-height: 1.8;
+  }
+
+  .alert.danger { border-color: var(--red);   background: rgba(243,139,168,0.05); }
+  .alert.good   { border-color: var(--green);  background: rgba(166,227,161,0.05); }
+  .alert.info   { border-color: var(--blue);   background: rgba(137,180,250,0.05); }
+
+  .alert strong        { color: var(--yellow); font-weight: normal; }
+  .alert.danger strong { color: var(--red); }
+  .alert.good strong   { color: var(--green); }
+  .alert.info strong   { color: var(--blue); }
+
+  /* TABLE */
+  .tbl { width: 100%; border-collapse: collapse; margin: 0.6rem 0; font-size: 12px; }
+
+  .tbl th {
+    text-align: left; padding: 0.4rem 0.7rem;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--dim); border-bottom: 1px solid var(--border); font-weight: normal;
+  }
+
+  .tbl td {
+    padding: 0.4rem 0.7rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top; line-height: 1.6; color: var(--subtext);
+  }
+
+  .tbl td:first-child { color: var(--yellow); white-space: nowrap; font-family: 'JetBrains Mono', 'Consolas', monospace; }
+  .tbl tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .tag {
+    display: inline-block;
+    background: rgba(137,180,250,0.12);
+    color: var(--blue);
+    border: 1px solid rgba(137,180,250,0.25);
+    padding: 0.05em 0.4em;
+    border-radius: 2px; font-size: 11px; font-family: 'JetBrains Mono', 'Consolas', monospace;
+  }
+
+  .tag.green {
+    background: rgba(166,227,161,0.12);
+    color: var(--green);
+    border-color: rgba(166,227,161,0.25);
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+
+  @media print {
+    .sidebar { display: none; }
+    .layout  { grid-template-columns: 1fr; }
+    .main    { padding: 1rem; }
+  }
+
+  /* ── Toggle ── */
+  .theme-toggle {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 0;
+    right: 0;
+    padding: 0 1.2rem;
+  }
+
+  .theme-btn {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--dim);
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 11px;
+    padding: 0.4rem 0.7rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.1s, background 0.1s;
+    letter-spacing: 0.04em;
+  }
+
+  .theme-btn:hover {
+    color: var(--text);
+    background: var(--border);
+  }
+
+
+  /* Light mode overrides for command blocks */
+  :root.light .cmd-block {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+  }
+
+  :root.light .cmd-label {
+    background: #ebebeb;
+    border-bottom-color: #d0d0d0;
+    color: #555;
+  }
+
+  :root.light .cmd {
+    color: #1e1e1e;
+  }
+
+  :root.light .cmd .comment {
+    color: #5a7a5a;
+    font-style: italic;
+  }
+
+  :root.light .cmd .arg {
+    color: #795e26;
+  }
+
+  :root.light .cmd .flag {
+    color: #0000ff;
+  }
+
+  :root.light .cmd .placeholder {
+    color: #a31515;
+  }
+
+  :root.light .cmd .kw {
+    color: #af00db;
+  }
+
+  :root.light .card-cmd {
+    color: #1e1e1e;
+  }
+
+  :root.light .card-cmd .comment {
+    color: #5a7a5a;
+  }
+
+  :root.light .page-header {
+    border-bottom-color: #d0d0d0;
+  }
+
+  :root.light .alert {
+    background: rgba(120,100,20,0.07);
+  }
+
+  :root.light .alert.danger {
+    background: rgba(180,30,30,0.07);
+  }
+
+  :root.light .alert.good {
+    background: rgba(30,120,60,0.07);
+  }
+
+  :root.light .alert.info {
+    background: rgba(0,100,200,0.07);
+  }
+
+  :root.light .tbl td {
+    color: #333;
+  }
+
+  :root.light .tbl td:first-child {
+    color: #795e26;
+  }
+
+  :root.light code {
+    background: #ebebeb;
+    color: #a31515;
+    border-color: #d0d0d0;
+  }
+
+  :root.light .tag {
+    background: rgba(0,100,200,0.1);
+    color: #0060cc;
+    border-color: rgba(0,100,200,0.25);
+  }
+
+  :root.light .tag.green {
+    background: rgba(30,120,60,0.1);
+    color: #1a7a3a;
+    border-color: rgba(30,120,60,0.25);
+  }
+
+  :root.light .issue-tag {
+    background: rgba(0,100,200,0.1);
+    color: #0060cc;
+  }
+
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="data:image/png;base64,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" alt="logo">
+    <div class="sidebar-logo-text">
+      <div class="title">AI Engineering</div>
+      <div class="course">ADC 2026</div>
+      <div class="sub">Git Workflow EchoChamber</div>
+    </div>
+  </div>
+
+  <div class="nav-section">Pornire</div>
+  <a class="nav-link" href="#classroom">1. GitHub Classroom</a>
+  <a class="nav-link" href="#team">2. Alegerea echipei</a>
+  <a class="nav-link" href="#clone">3. Clonarea repo-ului</a>
+  <a class="nav-link" href="#structure">4. Structura proiectului</a>
+
+  <div class="nav-section">Setup tehnic</div>
+  <a class="nav-link" href="#venv">5. Python și venv</a>
+  <a class="nav-link" href="#env">6. Chei API și .env</a>
+  <a class="nav-link" href="#firstrun">7. Prima rulare</a>
+
+  <div class="nav-section">Lucru săptămânal</div>
+  <a class="nav-link" href="#individual">8. Individual vs echipă</a>
+  <a class="nav-link" href="#notebooks">9. Notebook-uri</a>
+  <a class="nav-link" href="#daily">10. Workflow Git zilnic</a>
+  <a class="nav-link" href="#issues">11. Issues și GitHub</a>
+
+  <div class="nav-section">Referință</div>
+  <a class="nav-link" href="#cheatsheet">12. Comenzi Git</a>
+  <a class="nav-link" href="#conflicts">13. Conflicte</a>
+  <a class="nav-link" href="#rules">14. Reguli obligatorii</a>
+
+  <div class="theme-toggle">
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">
+      ☀ light mode
+    </button>
+  </div>
+
+</nav>
+
+<main class="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <img src="data:image/png;base64,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" alt="EchoChamber logo">
+    <div class="page-header-text">
+      <div class="title">Git Workflow — EchoChamber App</div>
+      <div class="subtitle">AI Engineering &nbsp;·&nbsp; Analiza Datelor Complexe &nbsp;·&nbsp; ADC 2026</div>
+      <span class="badge">Ghid de lucru pentru studenți</span>
+    </div>
+  </div>
+
+  <!-- 1 CLASSROOM -->
+  <section class="section" id="classroom">
+    <div class="section-header">
+      <span class="section-number">1.</span>
+      <span class="section-title">Intrarea în GitHub Classroom</span>
+    </div>
+    <p class="section-desc">Se face o singură dată. Conectezi contul GitHub la numele tău din lista de studenți.</p>
+    <ol class="steps">
+      <li><div class="step-text">Deschide <strong>link-ul GitHub Classroom</strong> primit pe Teams.</div></li>
+      <li><div class="step-text">Autentifică-te cu contul <strong>GitHub</strong>.</div></li>
+      <li><div class="step-text">Selectează <strong>numele tău real</strong> din roster.</div></li>
+      <li><div class="step-text">Dacă nu găsești numele, <strong>oprește-te și anunță profesorul</strong>. Nu selecta altă persoană.</div></li>
+      <li><div class="step-text">Ești direcționat automat spre alegerea echipei.</div></li>
+    </ol>
+    <div class="alert">
+      <strong>Atenție:</strong> Numele real e doar în roster. În repository lucrăm cu ID-uri interne: <code>student_01</code>, <code>student_02</code> etc.
+    </div>
+  </section>
+
+  <!-- 2 ECHIPA -->
+  <section class="section" id="team">
+    <div class="section-header">
+      <span class="section-number">2.</span>
+      <span class="section-title">Alegerea echipei</span>
+    </div>
+    <p class="section-desc">Repository-ul apare automat după ce primul membru acceptă assignment-ul.</p>
+    <ol class="steps">
+      <li><div class="step-text">Dacă ești <strong>team starter</strong>, creezi echipa cu numele exact: <code>team-1</code>, <code>team-2</code> etc.</div></li>
+      <li><div class="step-text">Dacă echipa există deja, alegi <strong>Join existing team</strong>.</div></li>
+      <li><div class="step-text">Nu crea o echipă nouă dacă echipa ta există.</div></li>
+      <li><div class="step-text">Nu schimba numele echipei.</div></li>
+    </ol>
+    <div class="cmd-block">
+      <div class="cmd-label">exemplu — echipa 1</div>
+      <div class="cmd-body">
+        <span class="cmd"><span class="comment">// Popescu Maria  → team-1 → student_01</span></span>
+        <span class="cmd"><span class="comment">// Ionescu Andrei → team-1 → student_02</span></span>
+        <span class="cmd"><span class="comment">// Radu Elena     → team-1 → student_03</span></span>
+      </div>
+    </div>
+    <div class="alert">
+      <strong>Important:</strong> Ceilalți membri nu intră automat. Fiecare trebuie să acceseze link-ul și să intre în echipa corectă.
+    </div>
+  </section>
+
+  <!-- 3 CLONE -->
+  <section class="section" id="clone">
+    <div class="section-header">
+      <span class="section-number">3.</span>
+      <span class="section-title">Clonarea repository-ului</span>
+    </div>
+    <p class="section-desc">Toți membrii echipei lucrează în același repository. Fiecare îl clonează pe calculatorul propriu.</p>
+    <ol class="steps">
+      <li><div class="step-text">Intră în repository-ul echipei din GitHub Classroom.</div></li>
+      <li><div class="step-text">Apasă butonul verde <strong>Code</strong> și copiază link-ul <strong>HTTPS</strong>.</div></li>
+      <li><div class="step-text">Deschide terminalul în directorul unde ții proiectele.</div></li>
+    </ol>
+    <div class="cmd-block">
+      <div class="cmd-label">terminal</div>
+      <div class="cmd-body">
+        <span class="cmd">git clone <span class="placeholder">LINK_REPOSITORY</span></span>
+        <span class="cmd">cd <span class="placeholder">NUME_REPOSITORY</span></span>
+      </div>
+    </div>
+    <div class="alert good">
+      <strong>LINK_REPOSITORY</strong> = link-ul din butonul Code<br>
+      <strong>NUME_REPOSITORY</strong> = directorul creat automat după clone
+    </div>
+  </section>
+
+  <!-- 4 STRUCTURA -->
+  <section class="section" id="structure">
+    <div class="section-header">
+      <span class="section-number">4.</span>
+      <span class="section-title">Structura proiectului</span>
+    </div>
+    <p class="section-desc">Nu toate directoarele sunt folosite din prima zi — proiectul se completează treptat.</p>
+    <div class="cmd-block">
+      <div class="cmd-label">structura repository</div>
+      <div class="cmd-body">
+        <span class="cmd">README.md              <span class="comment">// descrierea proiectului echipei</span></span>
+        <span class="cmd">requirements.txt       <span class="comment">// biblioteci Python</span></span>
+        <span class="cmd">.env.example           <span class="comment">// model pentru .env local</span></span>
+        <span class="cmd">.gitignore             <span class="comment">// fișiere care nu se urcă pe GitHub</span></span>
+        <span class="cmd">notebooks/             <span class="comment">// notebook-uri individuale</span></span>
+        <span class="cmd">data/                  <span class="comment">// date colectate și curățate</span></span>
+        <span class="cmd">assets/roles/          <span class="comment">// roles.yaml — rolurile agenților</span></span>
+        <span class="cmd">core/                  <span class="comment">// cod profesor — nu se modifică</span></span>
+        <span class="cmd">app/app.py             <span class="comment">// aplicația Gradio</span></span>
+        <span class="cmd">reports/               <span class="comment">// rapoarte, etică</span></span>
+      </div>
+    </div>
+    <table class="tbl">
+      <tr><th>Director</th><th>Cine</th><th>Ce se pune</th></tr>
+      <tr><td>notebooks/student_XX/</td><td>individual</td><td>notebook-urile de seminar completate</td></tr>
+      <tr><td>data/</td><td>echipă</td><td>corpus, date curățate, JSONL</td></tr>
+      <tr><td>assets/roles/</td><td>echipă</td><td>role cards pentru agenți</td></tr>
+      <tr><td>core/</td><td>profesor</td><td>cod de bază — nu se modifică</td></tr>
+      <tr><td>app/</td><td>echipă</td><td>aplicația finală</td></tr>
+      <tr><td>reports/</td><td>echipă</td><td>raport, limitări, etică</td></tr>
+    </table>
+  </section>
+
+  <!-- 5 VENV -->
+  <section class="section" id="venv">
+    <div class="section-header">
+      <span class="section-number">5.</span>
+      <span class="section-title">Python și venv</span>
+    </div>
+    <p class="section-desc">Se face o singură dată pe calculatorul tău. Mediul virtual <code>.venv</code> izolează bibliotecile proiectului.</p>
+    <div class="cmd-block">
+      <div class="cmd-label">Windows — PowerShell</div>
+      <div class="cmd-body">
+        <span class="cmd">python -m venv .venv</span>
+        <span class="cmd">Set-ExecutionPolicy <span class="flag">-ExecutionPolicy</span> RemoteSigned <span class="flag">-Scope</span> CurrentUser</span>
+        <span class="cmd">.venv\Scripts\activate</span>
+        <span class="cmd">pip install -r requirements.txt</span>
+      </div>
+    </div>
+    <div class="cmd-block">
+      <div class="cmd-label">Mac / Linux</div>
+      <div class="cmd-body">
+        <span class="cmd">python3 -m venv .venv</span>
+        <span class="cmd">source .venv/bin/activate</span>
+        <span class="cmd">pip install -r requirements.txt</span>
+      </div>
+    </div>
+    <div class="cmd-block">
+      <div class="cmd-label">activare la fiecare sesiune nouă</div>
+      <div class="cmd-body">
+        <span class="cmd">.venv\Scripts\activate       <span class="comment">// Windows</span></span>
+        <span class="cmd">source .venv/bin/activate   <span class="comment">// Mac / Linux</span></span>
+        <span class="cmd"><span class="comment">// verificare: trebuie să apară (.venv) în prompt</span></span>
+      </div>
+    </div>
+    <div class="alert danger">
+      <strong>Nu urca .venv pe GitHub.</strong> Este local și ignorat automat de .gitignore.
+    </div>
+  </section>
+
+  <!-- 6 ENV -->
+  <section class="section" id="env">
+    <div class="section-header">
+      <span class="section-number">6.</span>
+      <span class="section-title">Chei API și fișierul .env</span>
+    </div>
+    <p class="section-desc">Cheia API se păstrează local în <code>.env</code>. Nu se scrie în notebook și nu se urcă pe GitHub.</p>
+    <div class="cmd-block">
+      <div class="cmd-label">Windows</div>
+      <div class="cmd-body">
+        <span class="cmd">copy .env.example .env</span>
+        <span class="cmd">code .env</span>
+      </div>
+    </div>
+    <div class="cmd-block">
+      <div class="cmd-label">Mac / Linux</div>
+      <div class="cmd-body">
+        <span class="cmd">cp .env.example .env</span>
+        <span class="cmd">code .env</span>
+      </div>
+    </div>
+    <div class="cmd-block">
+      <div class="cmd-label">conținut .env — completează cu cheia ta</div>
+      <div class="cmd-body">
+        <span class="cmd"><span class="comment">// Gemini — aistudio.google.com (gratuit)</span></span>
+        <span class="cmd">GEMINI_API_KEY=<span class="placeholder">cheia_ta_gemini</span></span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// DeepSeek — platform.deepseek.com (ieftin)</span></span>
+        <span class="cmd">DEEPSEEK_API_KEY=<span class="placeholder">cheia_ta_deepseek</span></span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// OpenRouter — openrouter.ai (sute de modele, free tier)</span></span>
+        <span class="cmd">OPENROUTER_API_KEY=<span class="placeholder">cheia_ta_openrouter</span></span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// Groq — console.groq.com (rapid, gratuit)</span></span>
+        <span class="cmd">GROQ_API_KEY=<span class="placeholder">cheia_ta_groq</span></span>
+      </div>
+    </div>
+    <table class="tbl">
+      <tr><th>Provider</th><th>Unde creezi cheia</th><th>Free tier</th></tr>
+      <tr><td>Gemini</td><td>aistudio.google.com</td><td>da — generous</td></tr>
+      <tr><td>DeepSeek</td><td>platform.deepseek.com</td><td>da — foarte ieftin</td></tr>
+      <tr><td>OpenRouter</td><td>openrouter.ai</td><td>da — modele gratuite</td></tr>
+      <tr><td>Groq</td><td>console.groq.com</td><td>da — rapid</td></tr>
+      <tr><td>Mistral</td><td>console.mistral.ai</td><td>da — trial</td></tr>
+    </table>
+    <div class="alert danger">
+      <strong>Nu comite niciodată .env.</strong> Dacă ai urcat cheia din greșeală, șterge cheia din contul provider-ului și generează una nouă.
+    </div>
+  </section>
+
+  <!-- 7 PRIMA RULARE -->
+  <section class="section" id="firstrun">
+    <div class="section-header">
+      <span class="section-number">7.</span>
+      <span class="section-title">Prima rulare</span>
+    </div>
+    <p class="section-desc">Verifică că proiectul pornește. Erorile despre roluri sau vector store lipsă sunt normale la început.</p>
+    <div class="cmd-block">
+      <div class="cmd-label">terminal — cu .venv activ</div>
+      <div class="cmd-body">
+        <span class="cmd">python app/app.py</span>
+      </div>
+    </div>
+    <div class="cmd-block">
+      <div class="cmd-label">erori frecvente și soluții</div>
+      <div class="cmd-body">
+        <span class="cmd"><span class="comment">// ModuleNotFoundError</span></span>
+        <span class="cmd"><span class="comment">// → verifică că (.venv) apare în prompt</span></span>
+        <span class="cmd">pip install -r requirements.txt</span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// AuthenticationError</span></span>
+        <span class="cmd"><span class="comment">// → verifică fișierul .env și cheia</span></span>
+        <span class="cmd">code .env</span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// FileNotFoundError: roles.yaml / vectorstore</span></span>
+        <span class="cmd"><span class="comment">// → normal la început, se rezolvă în cursurile 3-6</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 INDIVIDUAL VS ECHIPA -->
+  <section class="section" id="individual">
+    <div class="section-header">
+      <span class="section-number">8.</span>
+      <span class="section-title">Individual vs echipă</span>
+    </div>
+    <p class="section-desc">Există două tipuri de muncă cu directoare diferite în repository.</p>
+    <div class="two-col">
+      <div class="card highlight">
+        <div class="card-title">Muncă individuală</div>
+        <span class="card-cmd">notebooks/student_XX/</span>
+        <p class="card-note">Notebook-urile de seminar și exercițiile. Fiecare student lucrează în directorul său.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Muncă de echipă</div>
+        <span class="card-cmd">data/</span>
+        <span class="card-cmd">assets/roles/</span>
+        <span class="card-cmd">app/</span>
+        <span class="card-cmd">reports/</span>
+        <p class="card-note">Role cards, corpus, aplicație, raport final.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 NOTEBOOKS -->
+  <section class="section" id="notebooks">
+    <div class="section-header">
+      <span class="section-number">9.</span>
+      <span class="section-title">Notebook-uri individuale</span>
+    </div>
+    <p class="section-desc">Notebook-urile vin de pe <strong>Teams</strong>. Le descarci, le completezi și le pui în directorul tău.</p>
+    <ol class="steps">
+      <li><div class="step-text">Descarcă notebook-ul de pe <strong>Teams</strong>.</div></li>
+      <li><div class="step-text">Copiază-l în <code>notebooks/student_XX/</code></div></li>
+      <li><div class="step-text">Completează celulele <code>TODO</code> și rulează (Run All).</div></li>
+      <li><div class="step-text">Salvează, fă commit și push.</div></li>
+    </ol>
+    <div class="cmd-block">
+      <div class="cmd-label">terminal — exemplu student_03, cursul 1</div>
+      <div class="cmd-body">
+        <span class="cmd"><span class="comment">// notebook copiat în notebooks/student_03/c1_llm_intro.ipynb</span></span>
+        <span class="cmd">git pull origin main</span>
+        <span class="cmd">git add <span class="arg">notebooks/student_03/</span></span>
+        <span class="cmd">git commit -m <span class="arg">"add C1 notebook student_03"</span></span>
+        <span class="cmd">git push</span>
+      </div>
+    </div>
+    <div class="alert">
+      <strong>Nu pune numele real</strong> în directoare sau fișiere. Folosește doar <code>student_01</code>, <code>student_02</code> etc.
+    </div>
+  </section>
+
+  <!-- 10 DAILY -->
+  <section class="section" id="daily">
+    <div class="section-header">
+      <span class="section-number">10.</span>
+      <span class="section-title">Workflow Git zilnic</span>
+    </div>
+    <p class="section-desc">La început de sesiune: pull. La final: commit + push. Fără excepții.</p>
+    <div class="two-col">
+      <div class="card highlight">
+        <div class="card-title">▶ La început</div>
+        <span class="card-cmd">.venv\Scripts\activate</span>
+        <span class="card-cmd"><span class="comment">// sau: source .venv/bin/activate</span></span>
+        <span class="card-cmd">&nbsp;</span>
+        <span class="card-cmd">git pull origin main</span>
+        <p class="card-note">Pull descarcă schimbările colegilor. Notebook-urile noi vin de pe Teams.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">◼ La final</div>
+        <span class="card-cmd">git status</span>
+        <span class="card-cmd">git add .</span>
+        <span class="card-cmd">git commit -m <span class="comment">"mesaj"</span></span>
+        <span class="card-cmd">git push</span>
+        <p class="card-note">Commit des. Push la finalul sesiunii. Munca ta nu e vizibilă colegilor până nu dai push.</p>
+      </div>
+    </div>
+    <div class="alert">
+      <strong>Mesaje bune:</strong><br>
+      <code>"add role card agent anti_sistem"</code><br>
+      <code>"collect 500 comments video XYZ"</code><br>
+      <code>"complete C2 notebook student_02"</code>
+    </div>
+  </section>
+
+  <!-- 11 ISSUES -->
+  <section class="section" id="issues">
+    <div class="section-header">
+      <span class="section-number">11.</span>
+      <span class="section-title">Issues și GitHub</span>
+    </div>
+    <p class="section-desc">Issues sunt lista de taskuri a echipei. Se folosesc și pentru a cere ajutor profesorului.</p>
+
+    <p class="section-desc" style="color:var(--text);margin-bottom:0.4rem">Lucrul cu issues:</p>
+    <ol class="steps">
+      <li><div class="step-text">Deschide tab-ul <strong>Issues</strong> din repository-ul echipei.</div></li>
+      <li><div class="step-text">Alege un task și notează în comentariu că lucrezi la el.</div></li>
+      <li><div class="step-text">Fă commit cu mesaj clar când termini.</div></li>
+      <li><div class="step-text">Închide issue-ul manual după ce echipa verifică.</div></li>
+    </ol>
+
+    <div class="alert info">
+      <strong>Avansat:</strong> poți folosi <code>closes #N</code> în commit message pentru închidere automată — dar doar dacă ești sigur că taskul e complet.
+    </div>
+
+    <hr>
+
+    <p class="section-desc" style="color:var(--text);margin-bottom:0.4rem">Cum întrebi profesorul pe GitHub:</p>
+    <p class="section-desc">Deschide un Issue nou cu titlul clar și tag-ul <code>question</code>. Profesorul primește notificare și răspunde acolo — conversația rămâne vizibilă pentru toată echipa.</p>
+
+    <div class="cmd-block">
+      <div class="cmd-label">cum creezi un issue de întrebare</div>
+      <div class="cmd-body">
+        <span class="cmd"><span class="comment">// 1. Issues → New Issue</span></span>
+        <span class="cmd"><span class="comment">// 2. Titlu clar:</span></span>
+        <span class="cmd"><span class="arg">[Întrebare] build_vectorstore.py — eroare FAISS la rulare</span></span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// 3. Descriere — include:</span></span>
+        <span class="cmd"><span class="comment">//    • ce ai încercat să faci</span></span>
+        <span class="cmd"><span class="comment">//    • mesajul de eroare exact (copy-paste)</span></span>
+        <span class="cmd"><span class="comment">//    • ce ai încercat să rezolvi</span></span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// 4. Labels → question</span></span>
+        <span class="cmd"><span class="comment">// 5. Assignees → @profesor</span></span>
+        <span class="cmd"><span class="comment">// 6. Submit new issue</span></span>
+      </div>
+    </div>
+
+    <table class="tbl">
+      <tr><th>Issue</th><th>Ce înseamnă</th><th>Livrabil</th></tr>
+      <tr><td><span class="tag">#1</span> Setup</td><td>repo, venv, .env</td><td>aplicația pornește</td></tr>
+      <tr><td><span class="tag">#2</span> Notebook C1</td><td>primul apel LLM</td><td>notebooks/student_XX/c1...</td></tr>
+      <tr><td><span class="tag">#3</span> Role cards</td><td>roluri agenți</td><td>assets/roles/roles.yaml</td></tr>
+      <tr><td><span class="tag">#4</span> Corpus</td><td>colectare și curățare</td><td>data/raw/, data/cleaned/</td></tr>
+      <tr><td><span class="tag">#5</span> RAG</td><td>căutare cu surse</td><td>rezultate documentate</td></tr>
+      <tr><td><span class="tag">#6</span> App</td><td>integrare aplicație</td><td>app/app.py funcțional</td></tr>
+      <tr><td><span class="tag">#7</span> Report</td><td>limitări și etică</td><td>reports/ completat</td></tr>
+      <tr><td><span class="tag green">question</span> Întrebare</td><td>ceri ajutor profesorului</td><td>răspuns în comentarii</td></tr>
+    </table>
+  </section>
+
+  <!-- 12 CHEATSHEET -->
+  <section class="section" id="cheatsheet">
+    <div class="section-header">
+      <span class="section-number">12.</span>
+      <span class="section-title">Comenzi Git utile</span>
+    </div>
+
+    <p class="section-desc" style="color:var(--text);margin-bottom:0.4rem">Comenzi de bază — folosite în fiecare sesiune:</p>
+    <table class="tbl">
+      <tr><th>Comandă</th><th>Ce face</th></tr>
+      <tr><td>git status</td><td>arată ce fișiere s-au schimbat</td></tr>
+      <tr><td>git pull origin main</td><td>descarcă schimbările colegilor</td></tr>
+      <tr><td>git add .</td><td>pregătește toate fișierele modificate</td></tr>
+      <tr><td>git add FISIER</td><td>pregătește un singur fișier</td></tr>
+      <tr><td>git commit -m "mesaj"</td><td>salvează o versiune locală</td></tr>
+      <tr><td>git push</td><td>trimite commiturile pe GitHub</td></tr>
+    </table>
+
+    <p class="section-desc" style="color:var(--text);margin:0.9rem 0 0.4rem">Comenzi de inspecție — să înțelegi ce s-a întâmplat:</p>
+    <table class="tbl">
+      <tr><th>Comandă</th><th>Ce face</th></tr>
+      <tr><td>git log --oneline</td><td>istoricul scurt al commiturilor</td></tr>
+      <tr><td>git log --oneline -10</td><td>ultimele 10 commituri</td></tr>
+      <tr><td>git diff</td><td>ce linii s-au schimbat față de ultimul commit</td></tr>
+      <tr><td>git diff FISIER</td><td>schimbările dintr-un singur fișier</td></tr>
+      <tr><td>git show</td><td>detaliile ultimului commit</td></tr>
+      <tr><td>git blame FISIER</td><td>cine a modificat fiecare linie</td></tr>
+    </table>
+
+    <p class="section-desc" style="color:var(--text);margin:0.9rem 0 0.4rem">Comenzi de corecție — când ai greșit ceva:</p>
+    <table class="tbl">
+      <tr><th>Comandă</th><th>Ce face</th></tr>
+      <tr><td>git restore FISIER</td><td>anulează modificările locale la un fișier</td></tr>
+      <tr><td>git restore .</td><td>anulează toate modificările locale</td></tr>
+      <tr><td>git commit --amend -m "mesaj"</td><td>corectează mesajul ultimului commit (înainte de push)</td></tr>
+      <tr><td>git reset HEAD~1</td><td>anulează ultimul commit, păstrează modificările</td></tr>
+    </table>
+
+    <p class="section-desc" style="color:var(--text);margin:0.9rem 0 0.4rem">Comenzi utile diverse:</p>
+    <table class="tbl">
+      <tr><th>Comandă</th><th>Ce face</th></tr>
+      <tr><td>git clone LINK</td><td>copiază un repository pe calculatorul tău</td></tr>
+      <tr><td>git remote -v</td><td>arată unde e conectat repository-ul</td></tr>
+      <tr><td>git branch</td><td>listează branch-urile locale</td></tr>
+      <tr><td>git stash</td><td>ascunde temporar modificările nesalvate</td></tr>
+      <tr><td>git stash pop</td><td>aduce înapoi modificările ascunse</td></tr>
+      <tr><td>git fetch</td><td>verifică ce e nou pe GitHub fără să descarce</td></tr>
+    </table>
+
+    <div class="cmd-block">
+      <div class="cmd-label">să vezi istoria vizual în terminal</div>
+      <div class="cmd-body">
+        <span class="cmd">git log <span class="flag">--oneline</span> <span class="flag">--graph</span> <span class="flag">--all</span></span>
+        <span class="cmd"><span class="comment">// afișează un arbore ASCII cu toate commiturile și branch-urile</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 CONFLICTE -->
+  <section class="section" id="conflicts">
+    <div class="section-header">
+      <span class="section-number">13.</span>
+      <span class="section-title">Conflicte</span>
+    </div>
+    <p class="section-desc">Un conflict apare când două persoane modifică aceeași parte din același fișier. Se evită lucrând fiecare în directorul său.</p>
+    <div class="alert good">
+      <strong>Prevenire:</strong> lucrează în <code>notebooks/student_XX/</code>, fă pull înainte să începi, push la final. Pentru fișiere comune (<code>roles.yaml</code>, <code>app.py</code>) discutați în echipă cine modifică ce.
+    </div>
+    <div class="cmd-block">
+      <div class="cmd-label">rezolvare conflict</div>
+      <div class="cmd-body">
+        <span class="cmd">git status   <span class="comment">// îți arată ce fișier are conflict</span></span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// deschizi fișierul și cauți markerii:</span></span>
+        <span class="cmd"><span class="placeholder">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>        <span class="comment">// varianta ta</span></span>
+        <span class="cmd"><span class="placeholder">=======</span></span>
+        <span class="cmd"><span class="placeholder">&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</span>        <span class="comment">// varianta colegului</span></span>
+        <span class="cmd">&nbsp;</span>
+        <span class="cmd"><span class="comment">// păstrezi varianta corectă, ștergi markerii, salvezi</span></span>
+        <span class="cmd">git add .</span>
+        <span class="cmd">git commit -m <span class="arg">"resolve merge conflict"</span></span>
+        <span class="cmd">git push</span>
+      </div>
+    </div>
+    <div class="alert danger">
+      <strong>Nu șterge repository-ul și nu folosi force push.</strong> Deschide un Issue cu label <code>question</code> și anunță profesorul.
+    </div>
+  </section>
+
+  <!-- 14 REGULI -->
+  <section class="section" id="rules">
+    <div class="section-header">
+      <span class="section-number">14.</span>
+      <span class="section-title">Reguli obligatorii</span>
+    </div>
+    <ol class="steps">
+      <li><div class="step-text">Nu urca niciodată <code>.env</code> pe GitHub.</div></li>
+      <li><div class="step-text">Nu scrie chei API direct în notebook-uri. Folosește <code>.env</code>.</div></li>
+      <li><div class="step-text">Nu pune nume reale în directoare sau fișiere. Folosește <code>student_01</code>, <code>student_02</code> etc.</div></li>
+      <li><div class="step-text">Lucrează în directorul tău: <code>notebooks/student_XX/</code></div></li>
+      <li><div class="step-text">Nu modifica directorul altui student.</div></li>
+      <li><div class="step-text">Nu modifica <code>core/</code> decât dacă profesorul cere explicit.</div></li>
+      <li><div class="step-text">Fă <code>git pull</code> înainte să începi orice sesiune.</div></li>
+      <li><div class="step-text">Fă <code>git push</code> la finalul fiecărei sesiuni.</div></li>
+      <li><div class="step-text">Scrie mesaje de commit clare și descriptive.</div></li>
+      <li><div class="step-text">Nu folosi <code>git push --force</code>.</div></li>
+      <li><div class="step-text">Dacă nu știi ce face o comandă, deschide un Issue cu label <code>question</code> și întreabă.</div></li>
+    </ol>
+  </section>
+
+</main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  const links    = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+<script>
+  function toggleTheme() {
+    const root = document.documentElement;
+    const btn  = document.getElementById('themeBtn');
+    if (root.classList.contains('light')) {
+      root.classList.remove('light');
+      btn.textContent = '☀ light mode';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.add('light');
+      btn.textContent = '☾ dark mode';
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  // Restore saved preference
+  if (localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light');
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = '☾ dark mode';
+    });
+  }
+</script>
+
+</body>
+</html>
