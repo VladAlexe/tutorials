@@ -218,6 +218,8 @@ main {
   grid-template-columns: 72px 1fr;
   border-bottom: 1px solid var(--border);
   transition: background 0.1s;
+  text-decoration: none;
+  color: inherit;
 }
 .week-row:last-child { border-bottom: none; }
 .week-row:hover { background: var(--surface); }
@@ -294,13 +296,13 @@ footer a:hover { color: var(--text); }
   <p class="label">Program</p>
   <div class="week-table">
 
-    <div class="week-row">
+    <a class="week-row" href="c1-introducere-llm-primul-api/">
       <div class="wk">C1</div>
       <div class="wb">
-        <div class="wb-title">LLM-uri, API-uri</div>
+        <div class="wb-title">Introducere, LLM-uri, configurare</div>
         <div class="wb-topics">Ce construim și cum pornim · primul apel · system prompt</div>
       </div>
-    </div>
+    </a>
 
     <div class="week-row">
       <div class="wk">C2</div>
