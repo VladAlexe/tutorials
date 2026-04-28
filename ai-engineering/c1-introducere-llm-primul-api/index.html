@@ -5,73 +5,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>C1 — Introducere, LLM-uri și primul API · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:opsz,wght@9..144,300;9..144,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:         #1a1a1a;
-  --surface:    #1e1e1e;
-  --surface2:   #252525;
-  --border:     #333333;
-  --border-hi:  #444444;
-  --text:       #e2e2e2;
-  --dim:        #666666;
-  --sub:        #999999;
-  --accent:     #c8956c;
-  --nav-w:      54px;
-  --topbar-h:   44px;
-  --subbar-h:   40px;
-  --controls-h: 42px;
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+  --blue:     #7ab0d4;
+  --green:    #89b99a;
+  --red:      #c47f7f;
 }
 
-html, body {
-  height: 100vh;
-  overflow: hidden;
+:root.light {
+  --bg:       #ffffff;
+  --surface:  #f5f5f5;
+  --border:   #e5e5e5;
+  --border-hi:#cccccc;
+  --text:     #111111;
+  --dim:      #888888;
+  --sub:      #444444;
+  --accent:   #b5784a;
+  --blue:     #2f6fa8;
+  --green:    #3d7a52;
+  --red:      #a04040;
 }
+
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  line-height: 1;
+  font-family: Aptos, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background 0.2s, color 0.2s;
 }
 
 a { color: inherit; text-decoration: none; }
 
-/* ── Topbar ── */
-.topbar {
-  height: var(--topbar-h);
-  flex-shrink: 0;
+/* ── Nav ── */
+nav {
+  height: 46px;
   border-bottom: 1px solid var(--border);
-  padding: 0 1rem;
+  padding: 0 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky; top: 0;
   background: var(--bg);
   z-index: 100;
 }
 
-.topbar-left { display: flex; align-items: center; gap: 1rem; }
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
 
 .back-link {
-  font-size: 11px;
-  color: var(--sub);
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
+  font-size: 11px; color: var(--sub);
+  display: flex; align-items: center; gap: 0.3rem;
   transition: color 0.12s;
-  white-space: nowrap;
 }
 .back-link:hover { color: var(--text); }
 
-.tb-sep { width: 1px; height: 13px; background: var(--border); flex-shrink: 0; }
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
 
 .breadcrumb {
-  display: flex; align-items: center; gap: 0.28rem;
+  display: flex; align-items: center; gap: 0.3rem;
   font-size: 11px; color: var(--dim);
 }
 .breadcrumb a { color: var(--sub); }
@@ -79,600 +86,459 @@ a { color: inherit; text-decoration: none; }
 .breadcrumb .cur { color: var(--text); }
 .breadcrumb .sl { color: var(--border-hi); }
 
-.topbar-right { display: flex; align-items: center; gap: 0.4rem; }
+.nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
 
-.tb-btn {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--sub);
+.btn {
+  display: inline-flex; align-items: center; gap: 0.3rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  padding: 0.2rem 0.6rem;
+  padding: 0.22rem 0.7rem;
   border-radius: 3px;
-  cursor: pointer;
-  transition: color 0.12s, border-color 0.12s;
-  display: flex; align-items: center; gap: 0.3rem;
-  white-space: nowrap;
-}
-.tb-btn:hover { color: var(--text); border-color: var(--border-hi); }
-
-/* ── Subbar ── */
-.subbar {
-  height: var(--subbar-h);
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
-  padding: 0 1rem 0 calc(var(--nav-w) + 1px);
-  display: flex; align-items: center; gap: 1rem;
-  background: var(--surface);
-  overflow: hidden;
-}
-
-.subbar-tag {
-  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--accent); flex-shrink: 0;
-}
-
-.subbar-title {
-  font-family: 'Fraunces', serif;
-  font-size: 0.95rem; font-weight: 700;
-  color: var(--text); letter-spacing: -0.01em;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-.subbar-sep { color: var(--border-hi); flex-shrink: 0; }
-
-.subbar-meta {
-  font-size: 10px; color: var(--dim);
-  white-space: nowrap; flex-shrink: 0;
-}
-
-/* ── Workspace ── */
-.workspace {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-  min-height: 0;
-}
-
-/* ── Page nav sidebar ── */
-.page-nav {
-  width: var(--nav-w);
-  flex-shrink: 0;
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--surface);
-  display: flex;
-  flex-direction: column;
-  padding: 4px 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.page-btn {
-  background: none;
-  border: none;
-  border-left: 2px solid transparent;
-  color: var(--dim);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  line-height: 1;
-  padding: 7px 0;
-  cursor: pointer;
-  text-align: center;
-  flex-shrink: 0;
-  width: 100%;
-  transition: color 0.1s, background 0.1s;
-}
-.page-btn:hover { color: var(--text); background: var(--surface2); }
-.page-btn.active {
-  color: var(--accent);
-  border-left-color: var(--accent);
-  background: var(--surface2);
-}
-
-/* ── Slide area ── */
-.slide-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-width: 0;
-  background: #111;
-}
-
-.slide-frame {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Container sized to the rendered canvas — layers stack on top */
-.pdf-wrap {
-  position: relative;
-  display: inline-block;
-  line-height: 0;
   border: 1px solid var(--border);
-  border-radius: 2px;
-  box-shadow: 0 4px 28px rgba(0,0,0,0.7);
-  max-width: 100%;
-  max-height: 100%;
-}
-
-#pdfCanvas {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-}
-
-/* Text layer — invisible but selectable text over canvas */
-.textLayer {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  line-height: 1;
-  z-index: 2;
-  user-select: text;
-  -webkit-user-select: text;
-  /* No pointer-events:none here — that breaks cross-span drag selection */
-}
-.textLayer span, .textLayer br {
-  color: transparent;
-  position: absolute;
-  white-space: pre;
-  cursor: text;
-  transform-origin: 0% 0%;
-}
-.textLayer ::selection {
-  background: rgba(60, 130, 255, 0.28);
-  color: transparent;
-}
-
-/* Annotation layer — link overlays, always on top of text layer */
-.annotLayer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-}
-.annotLayer a {
-  position: absolute;
-  display: block;
-  pointer-events: all;
-  cursor: pointer;
-}
-
-/* Loading overlay */
-.loading-msg {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  color: var(--dim);
-  letter-spacing: 0.05em;
-  z-index: 5;
-}
-
-/* ── Controls ── */
-.controls {
-  height: var(--controls-h);
-  flex-shrink: 0;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 0 0.8rem;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-
-.ctrl-btn {
   background: none;
-  border: 1px solid var(--border);
   color: var(--sub);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  width: 30px; height: 28px;
-  border-radius: 3px;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
   transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn.primary:hover { background: rgba(200,149,108,0.08); }
+
+/* ── Hero ── */
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.025em; line-height: 1.15;
+  margin-bottom: 0.6rem;
+}
+
+.hero-sub {
+  font-size: 12.5px; color: var(--sub);
+  max-width: 580px; line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 1.2rem;
+  font-size: 11px; color: var(--dim);
+}
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+/* ── Main ── */
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Materials cards ── */
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+
+/* ── Intro text ── */
+.intro-body {
+  font-size: 12.5px; color: var(--sub);
+  line-height: 1.85; max-width: 680px;
+}
+
+.intro-body p + p { margin-top: 0.8rem; }
+
+.topic-list {
+  margin-top: 0.9rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.topic-list li {
+  font-size: 12px; color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+}
+.topic-list li::before {
+  content: '·';
+  position: absolute; left: 0;
+  color: var(--accent);
+}
+
+/* ── Objectives ── */
+.obj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.obj-item {
+  padding: 0.75rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  line-height: 1.6;
+}
+.obj-item:last-child { border-bottom: none; }
+.obj-item::before {
+  content: '✓';
+  color: var(--green);
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+/* ── Deliverables ── */
+.deliverable-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.del-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  line-height: 1.6;
+}
+.del-item:last-child { border-bottom: none; }
+
+.del-num {
+  font-size: 10px; color: var(--accent);
+  flex-shrink: 0; min-width: 18px;
+  margin-top: 0.1rem;
+}
+
+/* ── Resources ── */
+.resource-group { margin-bottom: 1.4rem; }
+
+.resource-group-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.5rem;
+}
+
+.resource-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.resource-item {
+  border-bottom: 1px solid var(--border);
+}
+.resource-item:last-child { border-bottom: none; }
+
+.resource-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.65rem 1rem;
+  font-size: 12px; color: var(--sub);
+  transition: background 0.1s, color 0.1s;
+  gap: 1rem;
+}
+.resource-link:hover { background: var(--surface); color: var(--text); }
+.resource-link .rname { flex: 1; }
+.resource-link .rarrow { color: var(--border-hi); font-size: 10px; flex-shrink: 0; }
+.resource-link:hover .rarrow { color: var(--accent); }
+
+/* ── Checklist ── */
+.checklist {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 560px;
+}
+
+.check-item {
+  padding: 0.65rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item::before {
+  content: '□';
+  color: var(--dim);
   flex-shrink: 0;
 }
-.ctrl-btn:hover { color: var(--text); border-color: var(--border-hi); background: var(--surface2); }
-.ctrl-btn:disabled { opacity: 0.28; cursor: default; }
-.ctrl-btn:disabled:hover { color: var(--sub); border-color: var(--border); background: none; }
 
-.slide-counter {
-  font-size: 11px; color: var(--sub);
-  min-width: 52px; text-align: center; flex-shrink: 0;
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  font-size: 11px; color: var(--dim);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 0.5rem;
 }
+footer a { color: var(--dim); }
+footer a:hover { color: var(--text); }
 
-.progress-wrap {
-  flex: 1; height: 3px;
-  background: var(--border);
-  border-radius: 2px; overflow: hidden; cursor: pointer;
-}
-.progress-bar {
-  height: 100%; background: var(--accent);
-  border-radius: 2px; transition: width 0.15s;
-}
-
-/* ── Fullscreen ── */
-.slide-area:fullscreen,
-.slide-area:-webkit-full-screen {
-  background: #000;
-  display: flex; flex-direction: column;
-}
-.slide-area:fullscreen .slide-frame,
-.slide-area:-webkit-full-screen .slide-frame {
-  flex: 1; min-height: 0; padding: 8px;
-}
-.slide-area:fullscreen .controls,
-.slide-area:-webkit-full-screen .controls {
-  background: rgba(0,0,0,0.85);
-  border-top-color: #2a2a2a;
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.6rem; }
+  main { padding: 0 1rem 4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1rem; }
+  .nav-actions .btn-label { display: none; }
 }
 
-/* ── Mobile ── */
-@media (max-width: 700px) {
-  .workspace { flex-direction: column; }
-  .subbar { padding-left: 1rem; }
-  .subbar-meta { display: none; }
-
-  .page-nav {
-    width: 100%; height: 36px;
-    flex-direction: row; flex-wrap: nowrap;
-    overflow-x: auto; overflow-y: hidden;
-    order: 2;
-    border-right: none; border-top: 1px solid var(--border);
-    padding: 0;
-  }
-  .page-btn {
-    border-left: none;
-    border-bottom: 2px solid transparent;
-    min-width: 36px;
-    padding: 0 6px;
-    height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .page-btn.active { border-bottom-color: var(--accent); }
-
-  .slide-area { order: 1; flex: 1; min-height: 0; }
-}
-
-@media (max-width: 520px) {
-  .tb-btn .btn-label { display: none; }
-  .topbar { padding: 0 0.6rem; }
-  .topbar-left { gap: 0.6rem; }
-  .breadcrumb .bc-mid { display: none; }
-  .subbar-title { font-size: 0.82rem; }
-}
+/* ── Theme button ── */
+.theme-btn { font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
 <body>
 
-<!-- ── Topbar ── -->
-<header class="topbar">
-  <div class="topbar-left">
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-left">
     <a class="back-link" href="../">← AI Engineering</a>
-    <div class="tb-sep"></div>
+    <div class="nav-sep"></div>
     <div class="breadcrumb">
       <a href="../../">tutorials</a>
       <span class="sl">/</span>
-      <span class="bc-mid"><a href="../">ai-engineering</a><span class="sl">/</span></span>
+      <a href="../">ai-engineering</a>
+      <span class="sl">/</span>
       <span class="cur">C1</span>
     </div>
   </div>
-  <div class="topbar-right">
-    <button class="tb-btn" onclick="openPdf()" title="Deschide PDF">
-      <span>↓</span><span class="btn-label"> PDF</span>
-    </button>
-    <button class="tb-btn" onclick="enterFullscreen()" title="Fullscreen (F)">
-      <span>⛶</span><span class="btn-label"> Fullscreen</span>
-    </button>
+  <div class="nav-actions">
+    <a class="btn primary" href="slides/">▶ <span class="btn-label">Slides</span></a>
+    <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
+    <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
+    <a class="btn" href="notebook/c1_llm_intro.ipynb" download>↓ <span class="btn-label">.ipynb</span></a>
+    <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">light</span></button>
   </div>
-</header>
+</nav>
 
-<!-- ── Subbar ── -->
-<div class="subbar">
-  <span class="subbar-tag">C1</span>
-  <span class="subbar-sep">·</span>
-  <span class="subbar-title">Introducere, LLM-uri și primul API</span>
-  <span class="subbar-sep">·</span>
-  <span class="subbar-meta">AI Engineering · ADC 2026 · Română</span>
-</div>
-
-<!-- ── Workspace ── -->
-<div class="workspace">
-
-  <!-- Page number nav rail -->
-  <div class="page-nav" id="pageNav" role="list" aria-label="Navigare pagini"></div>
-
-  <!-- Slide area -->
-  <div class="slide-area" id="slideArea">
-
-    <div class="slide-frame" id="slideFrame">
-      <div class="loading-msg" id="loadingMsg">Se încarcă PDF…</div>
-      <div class="pdf-wrap" id="pdfWrap" style="display:none">
-        <canvas id="pdfCanvas"></canvas>
-        <div class="textLayer" id="textLayer"></div>
-        <div class="annotLayer" id="annotLayer"></div>
-      </div>
-    </div>
-
-    <div class="controls">
-      <button class="ctrl-btn" id="btnFirst" title="Prima pagină (Home)" aria-label="Prima pagină">⇤</button>
-      <button class="ctrl-btn" id="btnPrev"  title="Anterior (←)"       aria-label="Pagina anterioară">←</button>
-      <span   class="slide-counter" id="counter">— / —</span>
-      <button class="ctrl-btn" id="btnNext"  title="Următor (→)"        aria-label="Pagina următoare">→</button>
-      <button class="ctrl-btn" id="btnLast"  title="Ultima pagină (End)" aria-label="Ultima pagină">⇥</button>
-      <div    class="progress-wrap" id="progressWrap" title="Click pentru a naviga">
-        <div class="progress-bar" id="progressBar" style="width:0%"></div>
-      </div>
-      <button class="ctrl-btn" onclick="enterFullscreen()" title="Fullscreen (F)" aria-label="Fullscreen">⛶</button>
-    </div>
-
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-tag">AI Engineering · ADC 2026 · C1</div>
+  <h1>Introducere, LLM-uri<br>și primul API</h1>
+  <p class="hero-sub">Prezentare introductivă pentru AI Engineering: modele LLM, API-uri, provider-e, chei API, parametri de generare și primul apel la model.</p>
+  <div class="hero-meta">
+    <span>Curs <strong>AI Engineering</strong></span>
+    <span>Program <strong>ADC 2026</strong></span>
+    <span>Limbă <strong>Română</strong></span>
+    <span>Sesiune <strong>C1</strong></span>
   </div>
 </div>
 
-<!-- PDF.js 3.11 (local copy — same origin, works on file:// and Cloudflare Pages) -->
-<script src="lib/pdf.min.js"></script>
+<main>
+
+  <!-- ── Despre curs ── -->
+  <section>
+    <p class="section-label">Despre acest curs</p>
+    <div class="intro-body">
+      <p>C1 introduce cursul AI Engineering și proiectul practic pe care îl vom construi: un sistem bazat pe LLM-uri și agenți care lucrează cu comentarii politice românești.</p>
+      <p>În această sesiune clarificăm ce este un LLM, cum accesăm modele prin API și cum arată un apel complet la model: prompt, model, parametri, răspuns, tokeni și cost.</p>
+    </div>
+    <ul class="topic-list">
+      <li>Ce construim în curs și cum lucrăm</li>
+      <li>Ce este un LLM</li>
+      <li>API vs local: avantaje și limite</li>
+      <li>Anatomia unui apel la model</li>
+      <li>Tokeni, context și cost</li>
+      <li>Parametri de generare: temperature, top-p, max tokens, seed</li>
+      <li>Primul apel API în notebook: Gemini sau OpenRouter</li>
+    </ul>
+  </section>
+
+  <!-- ── Obiective ── -->
+  <section>
+    <p class="section-label">Obiective de învățare</p>
+    <ul class="obj-list">
+      <li class="obj-item">Înțelegi ce este un LLM și cum este folosit prin API</li>
+      <li class="obj-item">Distingi între model, provider, endpoint, API key, prompt și response</li>
+      <li class="obj-item">Configurezi cheia API în <code>.env</code> și o accesezi din Python</li>
+      <li class="obj-item">Rulezi primul apel la model din notebook și interpretezi răspunsul</li>
+      <li class="obj-item">Testezi efectul parametrilor — mai ales <code>temperature</code> și <code>max_tokens</code></li>
+      <li class="obj-item">Estimezi costul unui apel pe baza numărului de tokeni</li>
+    </ul>
+  </section>
+
+  <!-- ── Materiale ── -->
+  <section>
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Prezentare</div>
+        <div class="mat-desc">Slide-uri PDF cu introducere, concepte și exemple — viewer interactiv cu selecție text și linkuri.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="slides/">▶ Deschide viewer</a>
+          <a class="btn" href="slides.pdf" download>↓ PDF</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Notebook</div>
+        <div class="mat-desc">Jupyter notebook cu primul apel API, experimente cu parametri și exerciții practice.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
+          <a class="btn" href="notebook/c1_llm_intro.ipynb" download>↓ .ipynb</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">📋</div>
+        <div class="mat-title">Git Workflow Guide</div>
+        <div class="mat-desc">GitHub Classroom, setup venv, chei API, workflow zilnic, Issues.</div>
+        <div class="mat-actions">
+          <a class="btn" href="../git-guide/">Deschide ghidul →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Deliverables ── -->
+  <section>
+    <p class="section-label">Ce predai după C1</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">01</span>Notebook funcțional cu primul apel la model — rulat complet, fără erori</li>
+      <li class="del-item"><span class="del-num">02</span>Experiment documentat pe <code>temperature</code> — cel puțin 3 valori, cu observații</li>
+      <li class="del-item"><span class="del-num">03</span>Rezumat neutru al unei știri scurte — generat și evaluat cu modelul</li>
+      <li class="del-item"><span class="del-num">04</span>Repo de echipă inițializat cu <code>README.md</code>, <code>.env.example</code> și notebook introductiv</li>
+      <li class="del-item"><span class="del-num">05</span>Confirmare că <code>.env</code> nu este comis în GitHub (verificat cu <code>git log --all</code>)</li>
+    </ul>
+  </section>
+
+  <!-- ── Resurse ── -->
+  <section>
+    <p class="section-label">Resurse</p>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Platforme model / API</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer"><span class="rname">Google AI Studio</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener noreferrer"><span class="rname">Gemini API docs</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://openrouter.ai/" target="_blank" rel="noopener noreferrer"><span class="rname">OpenRouter</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://huggingface.co/playground" target="_blank" rel="noopener noreferrer"><span class="rname">Hugging Face Playground</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://platform.openai.com/playground" target="_blank" rel="noopener noreferrer"><span class="rname">OpenAI Playground</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://console.anthropic.com/workbench" target="_blank" rel="noopener noreferrer"><span class="rname">Anthropic Workbench</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://console.mistral.ai/" target="_blank" rel="noopener noreferrer"><span class="rname">Mistral Console</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://dashboard.cohere.com/playground" target="_blank" rel="noopener noreferrer"><span class="rname">Cohere Playground</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://github.com/marketplace/models" target="_blank" rel="noopener noreferrer"><span class="rname">GitHub Models</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Tokeni și cost</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://platform.openai.com/tokenizer" target="_blank" rel="noopener noreferrer"><span class="rname">OpenAI Tokenizer</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://tokencalculator.ai/" target="_blank" rel="noopener noreferrer"><span class="rname">Token Calculator</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Context și lectură</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://aiindex.stanford.edu/" target="_blank" rel="noopener noreferrer"><span class="rname">Stanford HAI AI Index</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://oecd.ai/" target="_blank" rel="noopener noreferrer"><span class="rname">OECD AI</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://sequoiacap.com/article/generative-ai-act-two/" target="_blank" rel="noopener noreferrer"><span class="rname">Sequoia — Generative AI Act Two</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://arxiv.org/abs/2506.01839" target="_blank" rel="noopener noreferrer"><span class="rname">Haase & Pokutta 2025 — Beyond Static Responses: Multi-Agent LLM Systems</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://huggingface.co/docs/hugs/guides/function-calling" target="_blank" rel="noopener noreferrer"><span class="rname">Hugging Face — Function Calling Guide</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Checklist practic ── -->
+  <section>
+    <p class="section-label">Checklist practic</p>
+    <ul class="checklist">
+      <li class="check-item">Acceptă GitHub Classroom assignment și clonează repo-ul de echipă</li>
+      <li class="check-item">Creează <code>.venv</code> și instalează dependențele</li>
+      <li class="check-item">Copiază <code>.env.example</code> în <code>.env</code></li>
+      <li class="check-item">Adaugă cheia Gemini sau OpenRouter local în <code>.env</code></li>
+      <li class="check-item">Rulează primul apel API în notebook — verifică răspunsul</li>
+      <li class="check-item">Testează valori diferite pentru <code>temperature</code> (0.0, 0.5, 1.0, 1.5)</li>
+      <li class="check-item">Fă commit cu mesaj clar — verifică că <code>.env</code> nu apare în <code>git status</code></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <a href="../">← AI Engineering</a>
+  <span>
+    <a href="../../LICENSE">CC BY-NC-SA 4.0</a>&nbsp;·&nbsp;
+    <a href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </span>
+</footer>
+
 <script>
-'use strict';
+const btn = document.getElementById('themeBtn');
+const label = btn.querySelector('.btn-label');
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdf.worker.min.js';
-
-/* ── State ── */
-let pdfDoc     = null;
-let totalPages = 0;
-let curPage    = 1;
-let activeRender = null; // current render task
-
-/* ── DOM refs ── */
-const canvas      = document.getElementById('pdfCanvas');
-const ctx         = canvas.getContext('2d');
-const textLayer   = document.getElementById('textLayer');
-const annotLayer  = document.getElementById('annotLayer');
-const slideFrame  = document.getElementById('slideFrame');
-const pdfWrap     = document.getElementById('pdfWrap');
-const loadingMsg  = document.getElementById('loadingMsg');
-const pageNav     = document.getElementById('pageNav');
-const counter     = document.getElementById('counter');
-const progressBar = document.getElementById('progressBar');
-const btnFirst    = document.getElementById('btnFirst');
-const btnPrev     = document.getElementById('btnPrev');
-const btnNext     = document.getElementById('btnNext');
-const btnLast     = document.getElementById('btnLast');
-const slideArea   = document.getElementById('slideArea');
-
-/* ── Load PDF ── */
-async function init() {
-  const loadTask = pdfjsLib.getDocument('slides.pdf');
-  pdfDoc = await loadTask.promise;
-  totalPages = pdfDoc.numPages;
-
-  buildPageNav();
-  loadingMsg.style.display = 'none';
-  pdfWrap.style.display = 'inline-block';
-
-  await goTo(1);
+function applyTheme(light) {
+  document.documentElement.classList.toggle('light', light);
+  label.textContent = light ? 'dark' : 'light';
 }
 
-/* ── Build page-number rail ── */
-function buildPageNav() {
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement('button');
-    btn.className = 'page-btn';
-    btn.textContent = String(i).padStart(2, '0');
-    btn.title = `Slide ${i}`;
-    btn.dataset.page = i;
-    btn.setAttribute('role', 'listitem');
-    btn.addEventListener('click', () => goTo(i));
-    pageNav.appendChild(btn);
-  }
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains('light');
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+  applyTheme(!isLight);
 }
 
-/* ── Render one page ── */
-async function renderPage(num) {
-  // Cancel any in-flight render
-  if (activeRender) {
-    try { activeRender.cancel(); } catch (_) {}
-    activeRender = null;
-  }
-
-  const page = await pdfDoc.getPage(num);
-
-  // Compute scale to fill the available frame
-  const frame  = slideFrame.getBoundingClientRect();
-  const availW = frame.width  - 22; // 10px padding each side + border
-  const availH = frame.height - 22;
-  const base   = page.getViewport({ scale: 1 });
-  const scale  = Math.min(availW / base.width, availH / base.height, 3); // cap at 3×
-
-  const dpr      = window.devicePixelRatio || 1;
-  const viewport = page.getViewport({ scale });          // logical size
-  const physW    = Math.floor(viewport.width  * dpr);
-  const physH    = Math.floor(viewport.height * dpr);
-  const cssW     = viewport.width;
-  const cssH     = viewport.height;
-
-  // Size canvas to physical pixels, display at logical pixels
-  canvas.width        = physW;
-  canvas.height       = physH;
-  canvas.style.width  = cssW + 'px';
-  canvas.style.height = cssH + 'px';
-
-  // Render PDF page (with DPR transform for crispness)
-  activeRender = page.render({
-    canvasContext: ctx,
-    viewport,
-    transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
-  });
-
-  try {
-    await activeRender.promise;
-  } catch (e) {
-    if (e.name === 'RenderingCancelledException') return;
-    console.error('PDF render error:', e);
-    return;
-  }
-  activeRender = null;
-
-  // ── Text layer (selectable text) ──
-  // CSS inset:0 sizes the layer; no need to set width/height in JS.
-  textLayer.innerHTML = '';
-  try {
-    const textContent = await page.getTextContent();
-    const task = pdfjsLib.renderTextLayer({
-      textContent,
-      container: textLayer,
-      viewport,
-      textDivs: [],
-    });
-    if (task && task.promise) await task.promise;
-  } catch (e) {
-    console.warn('Text layer:', e);
-  }
-
-  // ── Annotation layer (clickable links) ──
-  annotLayer.innerHTML = '';
-  try {
-    const annotations = await page.getAnnotations();
-    for (const ann of annotations) {
-      if (ann.subtype !== 'Link') continue;
-
-      // External URL: ann.url or ann.action.url (different PDF exporters use different fields)
-      const href = ann.url
-        || (ann.action && (ann.action.url || ann.action.URI))
-        || null;
-
-      const [x1, y1, x2, y2] = toViewportRect(ann.rect, viewport);
-      const a = document.createElement('a');
-      a.style.cssText = absRect(x1, y1, x2, y2);
-
-      if (href) {
-        a.href   = href;
-        a.target = '_blank';
-        a.rel    = 'noopener noreferrer';
-      } else if (ann.dest) {
-        // Internal page link
-        a.href = '#';
-        const dest = typeof ann.dest === 'string'
-          ? await pdfDoc.getDestination(ann.dest)
-          : ann.dest;
-        if (dest) {
-          const idx = await pdfDoc.getPageIndex(dest[0]);
-          const target = idx + 1;
-          a.addEventListener('click', e => { e.preventDefault(); goTo(target); });
-        } else { continue; }
-      } else { continue; }
-
-      annotLayer.appendChild(a);
-    }
-  } catch (e) {
-    console.warn('Annotation layer:', e);
-  }
-}
-
-function toViewportRect(pdfRect, viewport) {
-  return viewport.convertToViewportRectangle(pdfRect);
-}
-
-function absRect(x1, y1, x2, y2) {
-  const l = Math.min(x1, x2), t = Math.min(y1, y2);
-  const w = Math.abs(x2 - x1),   h = Math.abs(y2 - y1);
-  return `position:absolute;left:${l}px;top:${t}px;width:${w}px;height:${h}px;`;
-}
-
-/* ── Navigation ── */
-async function goTo(n) {
-  if (!pdfDoc || n < 1 || n > totalPages) return;
-  curPage = n;
-  updateUI();
-  await renderPage(n);
-}
-
-function prev() { goTo(curPage - 1); }
-function next() { goTo(curPage + 1); }
-
-function updateUI() {
-  counter.textContent = `${curPage} / ${totalPages}`;
-  progressBar.style.width = `${(curPage / totalPages) * 100}%`;
-
-  btnFirst.disabled = curPage === 1;
-  btnPrev.disabled  = curPage === 1;
-  btnNext.disabled  = curPage === totalPages;
-  btnLast.disabled  = curPage === totalPages;
-
-  pageNav.querySelectorAll('.page-btn').forEach((btn, i) => {
-    const active = i + 1 === curPage;
-    btn.classList.toggle('active', active);
-    if (active) btn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  });
-}
-
-/* ── Keyboard ── */
-document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  switch (e.key) {
-    case 'ArrowRight': case ' ': e.preventDefault(); next(); break;
-    case 'ArrowLeft':             e.preventDefault(); prev(); break;
-    case 'Home':                  e.preventDefault(); goTo(1); break;
-    case 'End':                   e.preventDefault(); goTo(totalPages); break;
-    case 'f': case 'F':           enterFullscreen(); break;
-  }
-});
-
-/* ── Progress bar click ── */
-document.getElementById('progressWrap').addEventListener('click', e => {
-  if (!totalPages) return;
-  const r = e.currentTarget.getBoundingClientRect();
-  goTo(Math.max(1, Math.round((e.clientX - r.left) / r.width * totalPages)));
-});
-
-/* ── Controls ── */
-btnFirst.addEventListener('click', () => goTo(1));
-btnPrev.addEventListener('click',  prev);
-btnNext.addEventListener('click',  next);
-btnLast.addEventListener('click',  () => goTo(totalPages));
-
-function enterFullscreen() {
-  const el = slideArea;
-  (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
-}
-
-function openPdf() {
-  window.open('slides.pdf', '_blank');
-}
-
-/* ── Re-render on resize (debounced) ── */
-let resizeTimer;
-const onResize = () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    if (pdfDoc) renderPage(curPage);
-  }, 180);
-};
-window.addEventListener('resize', onResize);
-
-/* fullscreen changes viewport — re-render */
-document.addEventListener('fullscreenchange', onResize);
-document.addEventListener('webkitfullscreenchange', onResize);
-
-/* ── Start ── */
-init().catch(err => {
-  const isFileProtocol = location.protocol === 'file:';
-  loadingMsg.innerHTML = isFileProtocol
-    ? 'Deschide fișierul printr-un server local (ex: VS Code Live Server), nu direct cu <code>file://</code>.'
-    : `Eroare PDF: ${err?.message || err}`;
-  console.error('PDF load error:', err);
-});
+// Restore saved preference
+applyTheme(localStorage.getItem('theme') === 'light');
 </script>
 </body>
 </html>
