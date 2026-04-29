@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 — Ecosistemul de modele · AI Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+  --blue:     #7ab0d4;
+  --green:    #89b99a;
+  --red:      #c47f7f;
+}
+
+:root.light {
+  --bg:       #ffffff;
+  --surface:  #f5f5f5;
+  --border:   #e5e5e5;
+  --border-hi:#cccccc;
+  --text:     #111111;
+  --dim:      #888888;
+  --sub:      #444444;
+  --accent:   #b5784a;
+  --blue:     #2f6fa8;
+  --green:    #3d7a52;
+  --red:      #a04040;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Nav ── */
+nav {
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.back-link {
+  font-size: 11px; color: var(--sub);
+  display: flex; align-items: center; gap: 0.3rem;
+  transition: color 0.12s;
+}
+.back-link:hover { color: var(--text); }
+
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 11px; color: var(--dim);
+}
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn.primary:hover { background: rgba(200,149,108,0.08); }
+
+/* ── Hero ── */
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.025em; line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+
+.hero-subtitle {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem; font-weight: 300;
+  color: var(--sub); letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 12.5px; color: var(--sub);
+  max-width: 580px; line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 1.2rem;
+  font-size: 11px; color: var(--dim);
+}
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+/* ── Main ── */
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Materials cards ── */
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+
+/* ── Intro text ── */
+.intro-body {
+  font-size: 12.5px; color: var(--sub);
+  line-height: 1.85; max-width: 680px;
+}
+
+.intro-body p + p { margin-top: 0.8rem; }
+
+.topic-list {
+  margin-top: 0.9rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.topic-list li {
+  font-size: 12px; color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+}
+.topic-list li::before {
+  content: '·';
+  position: absolute; left: 0;
+  color: var(--accent);
+}
+
+/* ── Objectives ── */
+.obj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.obj-item {
+  padding: 0.75rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  line-height: 1.6;
+}
+.obj-item:last-child { border-bottom: none; }
+.obj-item::before {
+  content: '✓';
+  color: var(--green);
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+/* ── Deliverables ── */
+.deliverable-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.del-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  line-height: 1.6;
+}
+.del-item:last-child { border-bottom: none; }
+
+.del-num {
+  font-size: 10px; color: var(--accent);
+  flex-shrink: 0; min-width: 18px;
+  margin-top: 0.1rem;
+}
+
+/* ── Issues section ── */
+.issues-body {
+  font-size: 12.5px; color: var(--sub);
+  line-height: 1.85; max-width: 680px;
+  margin-bottom: 0.9rem;
+}
+
+.issues-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+  margin-bottom: 0.9rem;
+}
+
+.issue-item {
+  padding: 0.7rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  line-height: 1.6;
+}
+.issue-item:last-child { border-bottom: none; }
+
+.issue-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  flex-shrink: 0; min-width: 32px;
+  margin-top: 0.1rem;
+}
+
+.milestone-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+/* ── Resources ── */
+.resource-group { margin-bottom: 1.4rem; }
+
+.resource-group-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.5rem;
+}
+
+.resource-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.resource-item {
+  border-bottom: 1px solid var(--border);
+}
+.resource-item:last-child { border-bottom: none; }
+
+.resource-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.65rem 1rem;
+  font-size: 12px; color: var(--sub);
+  transition: background 0.1s, color 0.1s;
+  gap: 1rem;
+}
+.resource-link:hover { background: var(--surface); color: var(--text); }
+.resource-link .rname { flex: 1; }
+.resource-link .rarrow { color: var(--border-hi); font-size: 10px; flex-shrink: 0; }
+.resource-link:hover .rarrow { color: var(--accent); }
+
+.resource-plain {
+  display: flex; align-items: center;
+  padding: 0.65rem 1rem;
+  font-size: 12px; color: var(--dim);
+  font-style: italic;
+}
+
+/* ── Checklist ── */
+.checklist {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 560px;
+}
+
+.check-item {
+  padding: 0.65rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item::before {
+  content: '□';
+  color: var(--dim);
+  flex-shrink: 0;
+}
+
+/* ── Local note ── */
+.local-note {
+  margin-top: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  max-width: 560px;
+}
+
+.local-note-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.6rem;
+}
+
+.local-note p {
+  font-size: 11.5px; color: var(--sub);
+  line-height: 1.75;
+}
+.local-note p + p { margin-top: 0.5rem; }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  font-size: 11px; color: var(--dim);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 0.5rem;
+}
+footer a { color: var(--dim); }
+footer a:hover { color: var(--text); }
+
+/* ── Inline code ── */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.05rem 0.3rem;
+  color: var(--text);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.6rem; }
+  main { padding: 0 1rem 4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1rem; }
+  .nav-actions .btn-label { display: none; }
+}
+
+/* ── Theme button ── */
+.theme-btn { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-left">
+    <a class="back-link" href="../">← AI Engineering</a>
+    <div class="nav-sep"></div>
+    <div class="breadcrumb">
+      <a href="../../">tutorials</a>
+      <span class="sl">/</span>
+      <a href="../">ai-engineering</a>
+      <span class="sl">/</span>
+      <span class="cur">C2</span>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <a class="btn primary" href="slides/">▶ <span class="btn-label">Slides</span></a>
+    <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
+    <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
+    <a class="btn" href="notebooks/c2_ecosistem_modele.ipynb" download>↓ <span class="btn-label">.ipynb</span></a>
+    <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">light</span></button>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-tag">AI Engineering · ADC 2026 · C2</div>
+  <h1>Ecosistemul de modele</h1>
+  <p class="hero-subtitle">Alegerea modelului pentru proiectul EchoChamber</p>
+  <p class="hero-sub">În C2 alegem modelul de bază pentru proiectul EchoChamber. Testăm modele accesibile prin API, comparăm răspunsurile pe aceleași prompturi și transformăm alegerea modelului într-o decizie metodologică justificată.</p>
+  <div class="hero-meta">
+    <span>Curs <strong>AI Engineering</strong></span>
+    <span>Program <strong>ADC 2026</strong></span>
+    <span>Limbă <strong>Română</strong></span>
+    <span>Sesiune <strong>C2</strong></span>
+  </div>
+</div>
+
+<main>
+
+  <!-- ── Despre curs ── -->
+  <section>
+    <p class="section-label">Despre acest curs</p>
+    <div class="intro-body">
+      <p>C2 introduce ecosistemul actual de modele LLM: model labs, provideri API, routere, modele open-weight și variante locale. Scopul nu este să alegem „cel mai bun model" în general, ci modelul potrivit pentru proiectul EchoChamber.</p>
+      <p>În această sesiune testăm Gemini și OpenRouter pe aceleași sarcini: rezumare în română, adnotare de comentarii politice, structured output / JSON și stabilitate la temperaturi diferite. La final, fiecare student propune un model, iar echipa decide configurația comună pentru proiect.</p>
+    </div>
+    <ul class="topic-list">
+      <li>Unde găsim și cum accesăm modele LLM</li>
+      <li>Diferența dintre model, provider, endpoint și router</li>
+      <li>Proprietary vs. open-weight vs. local</li>
+      <li>SLM vs. LLM</li>
+      <li>Cum citim leaderboard-uri și benchmark-uri</li>
+      <li>De ce alegerea finală se face prin teste locale</li>
+      <li>Teste pe română, adnotare, JSON și stabilitate</li>
+      <li>Alegerea modelului principal, fallback-ului și temperaturii</li>
+    </ul>
+  </section>
+
+  <!-- ── Obiective ── -->
+  <section>
+    <p class="section-label">Obiective de învățare</p>
+    <ul class="obj-list">
+      <li class="obj-item">Înțelegi diferența dintre model, provider, endpoint, API key și base URL</li>
+      <li class="obj-item">Poți testa același prompt pe mai multe modele</li>
+      <li class="obj-item">Compari răspunsurile după criterii clare: română, instrucțiuni, adnotare, JSON, stabilitate și cost/quota</li>
+      <li class="obj-item">Înțelegi ce înseamnă structured output și de ce este important pentru pipeline</li>
+      <li class="obj-item">Poți justifica alegerea unui model pentru un proiect aplicat</li>
+      <li class="obj-item">Poți configura modelul principal și fallback-ul într-un fișier <code>core/config.py</code></li>
+      <li class="obj-item">Pornești un <code>app.py</code> minim care trimite un prompt la model</li>
+    </ul>
+  </section>
+
+  <!-- ── Materiale ── -->
+  <section>
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Prezentare</div>
+        <div class="mat-desc">Slide-uri PDF despre ecosistemul de modele, provideri, leaderboard-uri, criterii de testare și livrabilele C2.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="slides/">▶ Deschide viewer</a>
+          <a class="btn" href="slides.pdf" download>↓ PDF</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Notebook C2</div>
+        <div class="mat-desc">Notebook pentru testarea modelelor Gemini și OpenRouter pe aceleași prompturi: română, adnotare, structured output și stabilitate.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
+          <a class="btn" href="notebooks/c2_ecosistem_modele.ipynb" download>↓ .ipynb</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">◈</div>
+        <div class="mat-title">GitHub Issues C2</div>
+        <div class="mat-desc">Livrabilele C2 sunt urmărite prin milestone-ul <code>C2 - Model ecosystem</code>: notebook individual, config de echipă și app inițial. Issues sunt în repository-ul de echipă.</div>
+        <div class="mat-actions">
+          <span class="btn" style="cursor:default;opacity:0.5;">repo de echipă</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Deliverables ── -->
+  <section>
+    <p class="section-label">Ce predai după C2</p>
+    <ul class="deliverable-list">
+      <li class="del-item">
+        <span class="del-num">01</span>
+        <span>Notebook individual C2 în: <code>notebooks/student_XX/C2_model_ecosystem.ipynb</code></span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">02</span>
+        <span>Prompturi proprii și comparație Gemini / OpenRouter pe aceleași sarcini</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">03</span>
+        <span>Decizie individuală: model recomandat, fallback și temperatură</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">04</span>
+        <span>Config final de echipă în: <code>core/config.py</code></span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">05</span>
+        <span>App inițial în: <code>app.py</code></span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">06</span>
+        <span>Comentariu <code>DONE</code> în GitHub Issues pentru taskurile relevante</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── GitHub Issues / Workflow ── -->
+  <section>
+    <p class="section-label">GitHub Issues / Workflow</p>
+    <div class="milestone-tag">C2 - Model ecosystem</div>
+    <ul class="issues-list">
+      <li class="issue-item">
+        <span class="issue-id">C2.1</span>
+        <span>Notebook individual de testare a modelelor</span>
+      </li>
+      <li class="issue-item">
+        <span class="issue-id">C2.2</span>
+        <span>Configurație de echipă în <code>core/config.py</code></span>
+      </li>
+      <li class="issue-item">
+        <span class="issue-id">C2.3</span>
+        <span>Creare <code>app.py</code> inițial</span>
+      </li>
+    </ul>
+    <div class="intro-body">
+      <p><strong style="color:var(--text);font-weight:500;">C2.1</strong> este individual: fiecare student lucrează în propriul folder <code>notebooks/student_XX/</code>.</p>
+      <p><strong style="color:var(--text);font-weight:500;">C2.2</strong> și <strong style="color:var(--text);font-weight:500;">C2.3</strong> sunt de echipă: un singur student modifică <code>core/config.py</code>, iar un singur student creează <code>app.py</code>, după ce echipa discută rezultatele.</p>
+    </div>
+  </section>
+
+  <!-- ── Resurse ── -->
+  <section>
+    <p class="section-label">Resurse</p>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Model labs / hosted APIs</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://platform.openai.com" target="_blank" rel="noopener noreferrer"><span class="rname">OpenAI</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://console.anthropic.com" target="_blank" rel="noopener noreferrer"><span class="rname">Anthropic Console</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer"><span class="rname">Google AI Studio</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://cohere.com" target="_blank" rel="noopener noreferrer"><span class="rname">Cohere</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://mistral.ai" target="_blank" rel="noopener noreferrer"><span class="rname">Mistral AI</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://deepseek.com" target="_blank" rel="noopener noreferrer"><span class="rname">DeepSeek</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://x.ai/api" target="_blank" rel="noopener noreferrer"><span class="rname">xAI API</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Platforme, routere, cloud</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://azure.microsoft.com" target="_blank" rel="noopener noreferrer"><span class="rname">Azure OpenAI</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://aws.amazon.com/bedrock" target="_blank" rel="noopener noreferrer"><span class="rname">AWS Bedrock</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://huggingface.co" target="_blank" rel="noopener noreferrer"><span class="rname">Hugging Face</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://openrouter.ai" target="_blank" rel="noopener noreferrer"><span class="rname">OpenRouter</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://together.ai" target="_blank" rel="noopener noreferrer"><span class="rname">Together AI</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://groq.com" target="_blank" rel="noopener noreferrer"><span class="rname">Groq</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://ai.cloudflare.com" target="_blank" rel="noopener noreferrer"><span class="rname">Cloudflare AI</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Open-weight / local</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://llama.com" target="_blank" rel="noopener noreferrer"><span class="rname">Meta Llama</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://ai.google.dev/gemma" target="_blank" rel="noopener noreferrer"><span class="rname">Google Gemma</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://docs.mistral.ai" target="_blank" rel="noopener noreferrer"><span class="rname">Mistral Docs</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://github.com/deepseek-ai" target="_blank" rel="noopener noreferrer"><span class="rname">DeepSeek GitHub</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://huggingface.co/Qwen" target="_blank" rel="noopener noreferrer"><span class="rname">Qwen on Hugging Face</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://ollama.com" target="_blank" rel="noopener noreferrer"><span class="rname">Ollama</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://docs.vllm.ai" target="_blank" rel="noopener noreferrer"><span class="rname">vLLM</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://github.com/ro-ko/Awesome-SLM" target="_blank" rel="noopener noreferrer"><span class="rname">Awesome SLM</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Free tiers, cost, comparații operaționale</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://github.com/cheahjs/free-llm-api-resources" target="_blank" rel="noopener noreferrer"><span class="rname">Free LLM API Resources</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://artificialanalysis.ai" target="_blank" rel="noopener noreferrer"><span class="rname">Artificial Analysis</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://vellum.ai/llm-leaderboard" target="_blank" rel="noopener noreferrer"><span class="rname">Vellum LLM Leaderboard</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Leaderboards / evaluare</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://lmarena.ai" target="_blank" rel="noopener noreferrer"><span class="rname">LM Arena</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://web.lmarena.ai" target="_blank" rel="noopener noreferrer"><span class="rname">LM Arena Web</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://search.lmarena.ai" target="_blank" rel="noopener noreferrer"><span class="rname">LM Arena Search</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://huggingface.co/open-llm-leaderboard" target="_blank" rel="noopener noreferrer"><span class="rname">Hugging Face Open LLM Leaderboard</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://livebench.ai" target="_blank" rel="noopener noreferrer"><span class="rname">LiveBench</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://huggingface.co/spaces/mteb/leaderboard" target="_blank" rel="noopener noreferrer"><span class="rname">MTEB</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><span class="resource-plain">Coding Index — URL indisponibil</span></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ── Checklist practic ── -->
+  <section>
+    <p class="section-label">Checklist practic</p>
+    <ul class="checklist">
+      <li class="check-item">Am cheia Gemini în <code>.env</code></li>
+      <li class="check-item">Am cheia OpenRouter în <code>.env</code></li>
+      <li class="check-item">Rulez notebookul C2 din folderul meu <code>notebooks/student_XX/</code></li>
+      <li class="check-item">Testez Gemini 2.5 Flash Lite și OpenRouter Free</li>
+      <li class="check-item">Modific prompturile primite la curs</li>
+      <li class="check-item">Rulez testele: română, adnotare, structured output / JSON, stabilitate</li>
+      <li class="check-item">Completez decizia individuală: model recomandat, fallback, temperatură</li>
+      <li class="check-item">Discut rezultatul cu echipa</li>
+      <li class="check-item">Echipa actualizează <code>core/config.py</code></li>
+      <li class="check-item">Echipa creează <code>app.py</code></li>
+      <li class="check-item">Fac <code>git pull</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code></li>
+      <li class="check-item">Comentez <code>DONE</code> în GitHub Issue</li>
+    </ul>
+
+    <div class="local-note">
+      <p class="local-note-label">Testare locală</p>
+      <p>Viewer-ul PDF.js poate să nu funcționeze corect deschis direct cu <code>file://</code>. Pentru testare locală folosește VS Code Live Server sau rulează <code>py -m http.server 8000</code> din rădăcina repository-ului.</p>
+      <p>Apoi deschide: <code>http://localhost:8000/ai-engineering/c2-ecosistem-modele/</code></p>
+      <p>Pe Cloudflare Pages, după commit și push, totul funcționează normal.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <a href="../">← AI Engineering</a>
+  <span>
+    <a href="../../LICENSE">CC BY-NC-SA 4.0</a>&nbsp;·&nbsp;
+    <a href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </span>
+</footer>
+
+<script>
+const btn = document.getElementById('themeBtn');
+const label = btn.querySelector('.btn-label');
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle('light', light);
+  label.textContent = light ? 'dark' : 'light';
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains('light');
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+  applyTheme(!isLight);
+}
+
+applyTheme(localStorage.getItem('theme') === 'light');
+</script>
+</body>
+</html>
