@@ -454,9 +454,11 @@ footer a:hover { color: var(--text); }
       <div class="cb-label">Windows — PowerShell</div>
       <div class="cb-body">
         <span class="ln">python -m venv .venv</span>
-        <span class="ln">Set-ExecutionPolicy <span class="f">-ExecutionPolicy</span> RemoteSigned <span class="f">-Scope</span> CurrentUser</span>
-        <span class="ln">.venv\Scriptsctivate</span>
+        <span class="ln">.venv\Scripts\Activate</span>
         <span class="ln">pip install -r requirements.txt</span>
+          <p class="note">
+          If activation does not work, try <code>.\.venv\Scripts\Activate.ps1</code>. If PowerShell blocks the script, run <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, then reopen the terminal.
+        </p>
       </div>
     </div>
     <div class="cb">
@@ -470,7 +472,7 @@ footer a:hover { color: var(--text); }
     <div class="cb">
       <div class="cb-label">activare la fiecare sesiune</div>
       <div class="cb-body">
-        <span class="ln">.venv\Scriptsctivate    <span class="c">// Windows</span></span>
+        <span class="ln">.venv\Scripts\Activate    <span class="c">// Windows</span></span>
         <span class="ln">source .venv/bin/activate <span class="c">// Mac / Linux</span></span>
       </div>
     </div>
@@ -601,7 +603,7 @@ footer a:hover { color: var(--text); }
     <div class="two">
       <div class="card hi">
         <div class="card-t">▶ La început</div>
-        <span class="card-c">.venv\Scriptsctivate</span>
+        <span class="card-c">.venv\Scripts\Activate</span>
         <span class="card-c"><span class="c">// sau: source .venv/bin/activate</span></span>
         <span class="card-c">&nbsp;</span>
         <span class="card-c">git pull origin main</span>
@@ -725,8 +727,8 @@ footer a:hover { color: var(--text); }
       <li><div class="st2">Lucrează în directorul tău: <code>notebooks/student_XX/</code></div></li>
       <li><div class="st2">Nu modifica directorul altui student.</div></li>
       <li><div class="st2">Nu modifica <code>core/</code> decât dacă profesorul cere explicit.</div></li>
-      <li><div class="st2">Fă <code>git pull</code> înainte să începi orice sesiune.</div></li>
-      <li><div class="st2">Fă <code>git push</code> la finalul fiecărei sesiuni.</div></li>
+      <li><div class="st2">Folosește <code>git pull</code> înainte să începi orice sesiune.</div></li>
+      <li><div class="st2">Folosește <code>git push</code> la finalul fiecărei sesiuni.</div></li>
       <li><div class="st2">Scrie mesaje de commit clare și descriptive.</div></li>
       <li><div class="st2">Nu folosi <code>git push --force</code>.</div></li>
       <li><div class="st2">Dacă nu știi ce face o comandă, întreabă — deschide un Issue cu label <code>question</code>.</div></li>
