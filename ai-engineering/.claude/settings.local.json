@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:/PROJECTS/courses/tutorials/ai-engineering/c2-ecosistem-modele/lib\")",
+      "Bash(mkdir -p \"c:/PROJECTS/courses/tutorials/ai-engineering/c2-ecosistem-modele/slides\")",
+      "Bash(mkdir -p \"c:/PROJECTS/courses/tutorials/ai-engineering/c2-ecosistem-modele/notebook\")",
+      "Bash(cp \"c:/PROJECTS/courses/tutorials/ai-engineering/c1-introducere-llm-primul-api/lib/pdf.min.js\" \"c:/PROJECTS/courses/tutorials/ai-engineering/c2-ecosistem-modele/lib/pdf.min.js\")",
+      "Bash(cp \"c:/PROJECTS/courses/tutorials/ai-engineering/c1-introducere-llm-primul-api/lib/pdf.worker.min.js\" \"c:/PROJECTS/courses/tutorials/ai-engineering/c2-ecosistem-modele/lib/pdf.worker.min.js\")",
+      "Bash(jupyter --version)",
+      "Bash(jupyter nbconvert *)"
+    ]
+  }
+}
