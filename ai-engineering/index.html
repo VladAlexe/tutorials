@@ -41,7 +41,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Header ── */
 header {
-  height: 50px;
+  height: 44px;
   border-bottom: 1px solid var(--border);
   padding: 0 2.5rem;
   display: flex;
@@ -60,8 +60,8 @@ header {
 }
 
 .hd-logo {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   display: block;
   flex-shrink: 0;
@@ -76,20 +76,9 @@ header {
   letter-spacing: 0.02em;
 }
 
-.hd-right {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  color: var(--dim);
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.hd-right .sl { color: var(--border-hi); }
-
 /* ── Hero ── */
 .hero {
-  padding: 4rem 2.5rem 3.2rem;
+  padding: 2rem 2.5rem 2rem;
   border-bottom: 1px solid var(--border);
   max-width: 860px;
 }
@@ -101,7 +90,7 @@ header {
   text-transform: uppercase;
   color: var(--dim);
   line-height: 2;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.2rem;
 }
 
 .hero-inst .inst-main {
@@ -125,7 +114,7 @@ header {
   font-weight: 300;
   font-style: italic;
   color: var(--sub);
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.9rem;
 }
 
 .hero-desc {
@@ -133,38 +122,37 @@ header {
   color: var(--sub);
   max-width: 520px;
   line-height: 1.8;
-  margin-bottom: 1.4rem;
+  margin-bottom: 0.7rem;
 }
 
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 1.4rem;
+  gap: 0.5rem 1rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   color: var(--dim);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .meta-dot { color: var(--border-hi); }
 
-.hero-instructor {
+.hero-name {
   font-size: 12px;
   color: var(--sub);
+  font-weight: 400;
 }
-
-.hero-instructor strong { font-weight: 500; color: var(--text); }
 
 /* ── Main ── */
 main {
   flex: 1;
-  padding: 0 2.5rem 5rem;
+  padding: 0 2.5rem 3rem;
   max-width: 860px;
   width: 100%;
 }
 
-section { padding-top: 3rem; }
+section { padding-top: 2rem; }
 
 .sec-label {
   font-family: 'JetBrains Mono', monospace;
@@ -172,8 +160,8 @@ section { padding-top: 3rem; }
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--dim);
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -200,8 +188,6 @@ section { padding-top: 3rem; }
 .res-card.linked { cursor: pointer; }
 .res-card.linked:hover { background: var(--surface2); }
 .res-card.linked .card-link { position: absolute; inset: 0; }
-
-.res-card + .res-card { border-left: 1px solid var(--border); }
 
 .res-title {
   font-size: 12.5px;
@@ -232,32 +218,21 @@ section { padding-top: 3rem; }
   opacity: 0.8;
 }
 
-.res-tag.soon {
-  color: var(--dim);
-  border-color: var(--border);
-  opacity: 0.7;
-}
-
 /* ── Progress card ── */
 .progress-card {
   border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 220px;
-}
-
-.prog-body {
   background: var(--surface);
-  padding: 1.4rem 1.6rem;
+  padding: 1.2rem 1.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.5rem;
 }
 
 .prog-title {
   font-family: 'Fraunces', serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.01em;
@@ -267,69 +242,18 @@ section { padding-top: 3rem; }
   font-size: 12px;
   color: var(--sub);
   line-height: 1.65;
-  max-width: 380px;
+  max-width: 520px;
 }
 
-.prog-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  border: 1px solid var(--accent-lo);
-  border-radius: 3px;
-  padding: 0.28rem 0.8rem;
-  width: fit-content;
-  cursor: default;
-  opacity: 0.75;
-  transition: opacity 0.12s;
-}
-
-.prog-microcopy {
+.prog-status {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: var(--dim);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  margin-top: 0.2rem;
 }
 
-.prog-bars {
-  background: var(--surface2);
-  border-left: 1px solid var(--border);
-  padding: 1.4rem 1.4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  justify-content: center;
-}
-
-.pbar-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.pbar-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--sub);
-  letter-spacing: 0.04em;
-}
-
-.pbar-track {
-  height: 5px;
-  background: var(--border);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.pbar-fill {
-  height: 100%;
-  background: var(--accent-lo);
-  border-radius: 3px;
-}
-
-/* ── Program / Accordion ── */
+/* ── Program / List ── */
 .program-list {
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -338,11 +262,11 @@ section { padding-top: 3rem; }
 
 .prog-row {
   display: grid;
-  grid-template-columns: 52px 1fr 20px;
+  grid-template-columns: 48px 1fr 20px;
   align-items: center;
   border-bottom: 1px solid var(--border);
   transition: background 0.1s;
-  min-height: 52px;
+  min-height: 42px;
   text-decoration: none;
   color: inherit;
 }
@@ -365,7 +289,7 @@ section { padding-top: 3rem; }
 .prog-row.inactive .prog-id { color: var(--dim); }
 
 .prog-info {
-  padding: 0.85rem 0.8rem;
+  padding: 0.6rem 0.8rem;
 }
 
 .prog-name {
@@ -388,7 +312,7 @@ section { padding-top: 3rem; }
 /* ── Footer ── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 1.4rem 2.5rem;
+  padding: 1.2rem 2.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -396,43 +320,23 @@ footer {
   gap: 1rem;
 }
 
-.ft-block {
+.ft-col {
   font-size: 11px;
   color: var(--dim);
-  line-height: 1.9;
+  line-height: 2;
 }
 
-.ft-block strong {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--sub);
-  margin-bottom: 0.2rem;
-}
-
-.ft-right {
-  font-size: 11px;
+.ft-col a {
   color: var(--dim);
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
 }
-.ft-right a { color: var(--dim); }
-.ft-right a:hover { color: var(--text); }
-.ft-sep { color: var(--border); }
+.ft-col a:hover { color: var(--text); }
 
 /* ── Responsive ── */
 @media (max-width: 680px) {
   header { padding: 0 1.2rem; }
-  .hd-right { display: none; }
-  .hero { padding: 2.5rem 1.2rem 2rem; }
-  main { padding: 0 1.2rem 4rem; }
+  .hero { padding: 1.5rem 1.2rem 1.5rem; }
+  main { padding: 0 1.2rem 3rem; }
   .hero h1 { font-size: 2rem; }
-  .res-card + .res-card { border-left: none; border-top: 1px solid var(--border); }
-  .progress-card { grid-template-columns: 1fr; }
-  .prog-bars { border-left: none; border-top: 1px solid var(--border); }
   footer { padding: 1.2rem; }
   .prog-row { grid-template-columns: 44px 1fr 16px; }
 }
@@ -445,12 +349,7 @@ footer {
   <div class="hd-left">
     <img class="hd-logo" src="../logo.png" alt="">
     <div class="hd-sep"></div>
-    <span class="hd-label">AI Engineering</span>
-  </div>
-  <div class="hd-right">
-    <span>Analiza Datelor Complexe</span>
-    <span class="sl">/</span>
-    <span>Ingineria AI</span>
+    <span class="hd-label">Vlad Alexe</span>
   </div>
 </header>
 
@@ -465,15 +364,11 @@ footer {
   <p class="hero-subtitle">Aplicații cu agenți inteligenți</p>
   <p class="hero-desc">LLM-uri, RAG, automatizare și agenți inteligenți pentru analiza datelor sociale.</p>
   <div class="hero-meta">
-    <span>Anul II</span>
-    <span class="meta-dot">·</span>
     <span>Semestrul IV</span>
-    <span class="meta-dot">·</span>
-    <span>8 credite</span>
     <span class="meta-dot">·</span>
     <span>Laborator</span>
   </div>
-  <p class="hero-instructor">Instructor: <strong>Vlad Alexe</strong></p>
+  <p class="hero-name">Vlad Alexe</p>
 </div>
 
 <main>
@@ -490,24 +385,6 @@ footer {
         <span class="res-tag">ghid</span>
       </div>
 
-      <div class="res-card">
-        <div class="res-title">Syllabus</div>
-        <div class="res-desc">Teme, obiective și ritmul cursului.</div>
-        <span class="res-tag soon">în pregătire</span>
-      </div>
-
-      <div class="res-card">
-        <div class="res-title">LLM Glossary</div>
-        <div class="res-desc">Termeni esențiali: tokeni, embeddings, RAG, agenți.</div>
-        <span class="res-tag soon">în pregătire</span>
-      </div>
-
-      <div class="res-card">
-        <div class="res-title">Troubleshooting</div>
-        <div class="res-desc">Erori frecvente și soluții rapide.</div>
-        <span class="res-tag soon">în pregătire</span>
-      </div>
-
     </div>
   </section>
 
@@ -515,31 +392,9 @@ footer {
   <section>
     <p class="sec-label">Progresul echipelor</p>
     <div class="progress-card">
-
-      <div class="prog-body">
-        <div class="prog-title">Progresul echipelor</div>
-        <p class="prog-desc">Spațiu dedicat urmăririi livrabilelor de echipă, etapelor de lucru și progresului pe parcursul cursului.</p>
-        <div class="prog-btn">
-          Vezi dashboard-ul →
-        </div>
-        <p class="prog-microcopy">în pregătire · actualizat pe parcursul semestrului</p>
-      </div>
-
-      <div class="prog-bars">
-        <div class="pbar-row">
-          <span class="pbar-label">Team A</span>
-          <div class="pbar-track"><div class="pbar-fill" style="width:72%"></div></div>
-        </div>
-        <div class="pbar-row">
-          <span class="pbar-label">Team B</span>
-          <div class="pbar-track"><div class="pbar-fill" style="width:50%"></div></div>
-        </div>
-        <div class="pbar-row">
-          <span class="pbar-label">Team C</span>
-          <div class="pbar-track"><div class="pbar-fill" style="width:33%"></div></div>
-        </div>
-      </div>
-
+      <div class="prog-title">Progresul echipelor</div>
+      <p class="prog-desc">Spațiu dedicat urmăririi etapelor de lucru și livrabilelor pe parcursul cursului.</p>
+      <span class="prog-status">În pregătire</span>
     </div>
   </section>
 
@@ -609,22 +464,18 @@ footer {
 
 <!-- ── Footer ── -->
 <footer>
-  <div class="ft-block">
-    <strong>Instituție</strong>
+  <div class="ft-col">
     Universitatea Babeș-Bolyai · Cluj-Napoca<br>
     Facultatea de Sociologie și Asistență Socială<br>
     Masteratul Analiza Datelor Complexe
   </div>
-  <div class="ft-block">
-    <strong>Curs</strong>
+  <div class="ft-col">
     Ingineria AI · Aplicații cu agenți inteligenți<br>
-    Anul II · Semestrul IV · 8 credite<br>
-    Instructor: Vlad Alexe
-  </div>
-  <div class="ft-right">
-    <a href="../LICENSE">CC BY-NC-SA 4.0</a>
-    <span class="ft-sep">·</span>
-    <a href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    Semestrul IV · Laborator<br>
+    Vlad Alexe<br>
+    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    &nbsp;·&nbsp;
+    <span>Licență</span>
   </div>
 </footer>
 
