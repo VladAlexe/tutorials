@@ -3,45 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Engineering — ADC 2026</title>
+<title>Ingineria AI — ADC 2026 · UBB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&display=swap');
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #1a1a1a;
-  --surface:  #222222;
-  --border:   #333333;
-  --border-hi:#444444;
-  --text:     #e2e2e2;
-  --dim:      #666666;
-  --sub:      #999999;
-  --accent:   #c8956c;
-  --blue:     #7ab0d4;
-  --green:    #89b99a;
-}
-
-:root.light {
-  --bg:       #ffffff;
-  --surface:  #f5f5f5;
-  --border:   #e5e5e5;
-  --border-hi:#cccccc;
-  --text:     #111111;
-  --dim:      #888888;
-  --sub:      #444444;
-  --accent:   #b5784a;
-  --blue:     #2f6fa8;
-  --green:    #3d7a52;
-}
-
-.nav-name {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 300;
-  font-size: 10px;
-  color: var(--dim);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  --bg:        #faf9f6;
+  --surface:   #f3f1eb;
+  --surface2:  #ede9e0;
+  --border:    #e2ddd3;
+  --border-hi: #c9c3b5;
+  --text:      #1c1b18;
+  --sub:       #6b655b;
+  --dim:       #9e9789;
+  --accent:    #b5784a;
+  --accent-lo: #d4a882;
+  --green:     #5a7a5a;
+  --link:      #8b6239;
 }
 
 html { scroll-behavior: smooth; }
@@ -49,360 +29,604 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
+  font-family: Aptos, 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
   line-height: 1.7;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background 0.2s, color 0.2s;
 }
 
-/* ── Nav ── */
-nav {
+a { color: inherit; text-decoration: none; }
+
+/* ── Header ── */
+header {
   height: 50px;
   border-bottom: 1px solid var(--border);
-  padding: 0 3rem;
+  padding: 0 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   background: var(--bg);
-  z-index: 10;
-  transition: background 0.2s;
+  z-index: 100;
 }
 
-.nav-left { display: flex; align-items: center; gap: 1.8rem; }
-
-.nav-logo {
-  display: flex; align-items: center; gap: 0.55rem;
-  font-size: 12.5px; font-weight: 500; color: var(--text);
+.hd-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.nav-logo img { width: 22px; height: 22px; border-radius: 50%; }
-
-.nav-sep { width: 1px; height: 14px; background: var(--border); }
-
-.breadcrumb {
-  display: flex; align-items: center; gap: 0.35rem;
-  font-size: 12px; color: var(--dim);
+.hd-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: block;
+  flex-shrink: 0;
 }
-.breadcrumb a { color: var(--sub); }
-.breadcrumb a:hover { color: var(--text); }
-.breadcrumb .cur { color: var(--text); }
-.breadcrumb .sl { color: var(--border-hi); }
 
-.theme-btn {
-  background: none; border: 1px solid var(--border);
-  color: var(--dim); font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; padding: 0.22rem 0.65rem;
-  border-radius: 3px; cursor: pointer;
-  transition: color 0.12s, border-color 0.12s;
+.hd-sep { width: 1px; height: 14px; background: var(--border); }
+
+.hd-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--sub);
+  letter-spacing: 0.02em;
 }
-.theme-btn:hover { color: var(--text); border-color: var(--border-hi); }
+
+.hd-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.hd-right .sl { color: var(--border-hi); }
 
 /* ── Hero ── */
 .hero {
-  padding: 3.5rem 3rem 2.5rem;
+  padding: 4rem 2.5rem 3.2rem;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-start;
-  gap: 2rem;
+  max-width: 860px;
 }
 
-.hero-logo {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 4px;
-  /* invert logo in dark mode so black logo shows on dark bg */
-  filter: invert(1);
+.hero-inst {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 2;
+  margin-bottom: 1.8rem;
 }
-:root.light .hero-logo { filter: none; }
 
-.hero-body {}
-
-.hero-tag {
-  font-size: 10px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--accent);
-  margin-bottom: 0.6rem;
+.hero-inst .inst-main {
+  color: var(--sub);
+  font-size: 10.5px;
 }
 
 .hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 2.2rem; font-weight: 700; color: var(--text);
-  letter-spacing: -0.025em; line-height: 1.1;
-  margin-bottom: 0.65rem;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 0.3rem;
 }
 
-.hero p {
-  font-size: 12.5px; color: var(--sub);
-  max-width: 500px; line-height: 1.8;
+.hero-subtitle {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--sub);
+  margin-bottom: 1.2rem;
+}
+
+.hero-desc {
+  font-size: 13.5px;
+  color: var(--sub);
+  max-width: 520px;
+  line-height: 1.8;
+  margin-bottom: 1.4rem;
 }
 
 .hero-meta {
-  margin-top: 1rem; display: flex; gap: 1.4rem;
-  font-size: 11px; color: var(--dim);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--dim);
+  margin-bottom: 0.8rem;
 }
-.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+.meta-dot { color: var(--border-hi); }
+
+.hero-instructor {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+.hero-instructor strong { font-weight: 500; color: var(--text); }
 
 /* ── Main ── */
 main {
   flex: 1;
-  padding: 2.8rem 3rem 5rem;
-  max-width: 880px;
+  padding: 0 2.5rem 5rem;
+  max-width: 860px;
   width: 100%;
 }
 
-.label {
-  font-size: 10px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--dim);
-  margin-bottom: 1rem;
-}
+section { padding-top: 3rem; }
 
-/* ── Card grid ── */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  overflow: hidden;
-  margin-bottom: 2.8rem;
-}
-
-.card {
-  background: var(--surface);
-  padding: 1.3rem 1.4rem;
-  border-right: 1px solid var(--border);
+.sec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--border);
-  position: relative;
-  transition: background 0.12s;
 }
 
-.card:hover { background: var(--bg); }
-
-/* Remove extra borders on grid edges */
-.card:nth-child(3n) { border-right: none; }
-.grid > .card:last-child { border-bottom: none; }
-
-.card a.card-link { position: absolute; inset: 0; }
-
-.card-icon { font-size: 1rem; margin-bottom: 0.55rem; }
-
-.card-title {
-  font-size: 12.5px; font-weight: 500; color: var(--text);
-  margin-bottom: 0.3rem; line-height: 1.3;
-}
-
-.card-desc { font-size: 11px; color: var(--dim); line-height: 1.65; }
-
-.card-badge {
-  display: inline-block; margin-top: 0.65rem;
-  font-size: 10px; letter-spacing: 0.05em;
-  color: var(--accent); border: 1px solid var(--accent);
-  padding: 0.06em 0.45em; border-radius: 2px; opacity: 0.75;
-}
-
-/* ── Week table ── */
-.week-table {
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  overflow: hidden;
-  margin-bottom: 2.8rem;
-  width: 100%;
-}
-
-.week-row {
+/* ── Resource cards ── */
+.resource-grid {
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.res-card {
+  background: var(--surface);
+  padding: 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: background 0.12s;
+  position: relative;
+}
+
+.res-card.linked { cursor: pointer; }
+.res-card.linked:hover { background: var(--surface2); }
+.res-card.linked .card-link { position: absolute; inset: 0; }
+
+.res-card + .res-card { border-left: 1px solid var(--border); }
+
+.res-title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.res-desc {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.55;
+  flex: 1;
+}
+
+.res-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-lo);
+  border-radius: 2px;
+  padding: 0.08em 0.4em;
+  margin-top: 0.3rem;
+  width: fit-content;
+  opacity: 0.8;
+}
+
+.res-tag.soon {
+  color: var(--dim);
+  border-color: var(--border);
+  opacity: 0.7;
+}
+
+/* ── Progress card ── */
+.progress-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+}
+
+.prog-body {
+  background: var(--surface);
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.prog-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.prog-desc {
+  font-size: 12px;
+  color: var(--sub);
+  line-height: 1.65;
+  max-width: 380px;
+}
+
+.prog-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid var(--accent-lo);
+  border-radius: 3px;
+  padding: 0.28rem 0.8rem;
+  width: fit-content;
+  cursor: default;
+  opacity: 0.75;
+  transition: opacity 0.12s;
+}
+
+.prog-microcopy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+}
+
+.prog-bars {
+  background: var(--surface2);
+  border-left: 1px solid var(--border);
+  padding: 1.4rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  justify-content: center;
+}
+
+.pbar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pbar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  letter-spacing: 0.04em;
+}
+
+.pbar-track {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pbar-fill {
+  height: 100%;
+  background: var(--accent-lo);
+  border-radius: 3px;
+}
+
+/* ── Program / Accordion ── */
+.program-list {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.prog-row {
+  display: grid;
+  grid-template-columns: 52px 1fr 20px;
+  align-items: center;
   border-bottom: 1px solid var(--border);
   transition: background 0.1s;
+  min-height: 52px;
   text-decoration: none;
   color: inherit;
 }
-.week-row:last-child { border-bottom: none; }
-.week-row:hover { background: var(--surface); }
 
-.wk {
-  padding: 0.9rem 0.8rem 0.9rem 1.1rem;
-  font-size: 11px; color: var(--dim);
-  border-right: 1px solid var(--border);
-  display: flex; align-items: flex-start;
-  padding-top: 1rem;
+.prog-row:last-child { border-bottom: none; }
+.prog-row:hover { background: var(--surface); }
+
+.prog-row.inactive { cursor: default; }
+.prog-row.inactive:hover { background: transparent; }
+
+.prog-id {
+  padding: 0 0 0 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  align-self: center;
 }
 
-.wb { padding: 0.9rem 1.2rem; }
+.prog-row.inactive .prog-id { color: var(--dim); }
 
-.wb-title { font-size: 12.5px; color: var(--text); margin-bottom: 0.18rem; }
-.wb-topics { font-size: 11px; color: var(--dim); line-height: 1.6; }
-.wb-topics a { color: var(--blue); border-bottom: 1px solid transparent; }
-.wb-topics a:hover { border-bottom-color: var(--blue); }
+.prog-info {
+  padding: 0.85rem 0.8rem;
+}
+
+.prog-name {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.prog-row.inactive .prog-name { color: var(--sub); }
+
+.prog-arrow {
+  font-size: 11px;
+  color: var(--border-hi);
+  padding-right: 1.2rem;
+  transition: color 0.1s;
+}
+.prog-row:not(.inactive):hover .prog-arrow { color: var(--accent); }
 
 /* ── Footer ── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 1.1rem 3rem;
-  font-size: 11px; color: var(--dim);
-  display: flex; justify-content: space-between;
-  align-items: center;
+  padding: 1.4rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
-footer a { color: var(--dim); }
-footer a:hover { color: var(--text); }
+
+.ft-block {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.9;
+}
+
+.ft-block strong {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sub);
+  margin-bottom: 0.2rem;
+}
+
+.ft-right {
+  font-size: 11px;
+  color: var(--dim);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.ft-right a { color: var(--dim); }
+.ft-right a:hover { color: var(--text); }
+.ft-sep { color: var(--border); }
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  header { padding: 0 1.2rem; }
+  .hd-right { display: none; }
+  .hero { padding: 2.5rem 1.2rem 2rem; }
+  main { padding: 0 1.2rem 4rem; }
+  .hero h1 { font-size: 2rem; }
+  .res-card + .res-card { border-left: none; border-top: 1px solid var(--border); }
+  .progress-card { grid-template-columns: 1fr; }
+  .prog-bars { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1.2rem; }
+  .prog-row { grid-template-columns: 44px 1fr 16px; }
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-left">
-    <a href="../" class="nav-name">Vlad Alexe</a>
-    <div class="nav-sep"></div>
-    <div class="breadcrumb">
-      <a href="../">tutorials</a>
-      <span class="sl">/</span>
-      <span class="cur">ai-engineering</span>
-    </div>
+<!-- ── Header ── -->
+<header>
+  <div class="hd-left">
+    <img class="hd-logo" src="../logo.png" alt="">
+    <div class="hd-sep"></div>
+    <span class="hd-label">AI Engineering</span>
   </div>
-  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">◑ light</button>
-</nav>
+  <div class="hd-right">
+    <span>Analiza Datelor Complexe</span>
+    <span class="sl">/</span>
+    <span>Ingineria AI</span>
+  </div>
+</header>
 
+<!-- ── Hero ── -->
 <div class="hero">
-  <img class="hero-logo" src="../logo.png" alt="">
-  <div class="hero-body">
-    <div class="hero-tag">ADC 2026</div>
-    <h1>AI Engineering</h1>
-    <p>Agenți discursivi, colectare date, RAG și simulare cu LLM-uri pe comentarii politice românești.</p>
-    <div class="hero-meta">
-      <span>Limbă <strong>Română</strong></span>
-      <span>Nivel <strong>Intermediar</strong></span>
-      <span>Cursuri <strong>9</strong></span>
-    </div>
+  <div class="hero-inst">
+    <span class="inst-main">Universitatea Babeș-Bolyai</span><br>
+    Facultatea de Sociologie și Asistență Socială<br>
+    Masteratul Analiza Datelor Complexe
   </div>
+  <h1>Ingineria AI</h1>
+  <p class="hero-subtitle">Aplicații cu agenți inteligenți</p>
+  <p class="hero-desc">LLM-uri, RAG, automatizare și agenți inteligenți pentru analiza datelor sociale.</p>
+  <div class="hero-meta">
+    <span>Anul II</span>
+    <span class="meta-dot">·</span>
+    <span>Semestrul IV</span>
+    <span class="meta-dot">·</span>
+    <span>8 credite</span>
+    <span class="meta-dot">·</span>
+    <span>Laborator</span>
+  </div>
+  <p class="hero-instructor">Instructor: <strong>Vlad Alexe</strong></p>
 </div>
 
 <main>
 
-  <p class="label">Materiale</p>
-  <div class="grid">
-    <div class="card">
-      <a href="git-guide/" class="card-link"></a>
-      <div class="card-icon">📋</div>
-      <div class="card-title">Git Workflow Guide</div>
-      <div class="card-desc">GitHub Classroom, setup venv, chei API, workflow zilnic, Issues.</div>
-      <span class="card-badge">ghid</span>
+  <!-- ── Resurse de lucru ── -->
+  <section>
+    <p class="sec-label">Resurse de lucru</p>
+    <div class="resource-grid">
+
+      <div class="res-card linked">
+        <a class="card-link" href="git-guide/"></a>
+        <div class="res-title">Git Workflow Guide</div>
+        <div class="res-desc">Setup, venv, chei API și workflow de lucru.</div>
+        <span class="res-tag">ghid</span>
+      </div>
+
+      <div class="res-card">
+        <div class="res-title">Syllabus</div>
+        <div class="res-desc">Teme, obiective și ritmul cursului.</div>
+        <span class="res-tag soon">în pregătire</span>
+      </div>
+
+      <div class="res-card">
+        <div class="res-title">LLM Glossary</div>
+        <div class="res-desc">Termeni esențiali: tokeni, embeddings, RAG, agenți.</div>
+        <span class="res-tag soon">în pregătire</span>
+      </div>
+
+      <div class="res-card">
+        <div class="res-title">Troubleshooting</div>
+        <div class="res-desc">Erori frecvente și soluții rapide.</div>
+        <span class="res-tag soon">în pregătire</span>
+      </div>
+
     </div>
-  </div>
+  </section>
 
-  <p class="label">Program</p>
-  <div class="week-table">
+  <!-- ── Progresul echipelor ── -->
+  <section>
+    <p class="sec-label">Progresul echipelor</p>
+    <div class="progress-card">
 
-    <a class="week-row" href="c1-introducere-llm-primul-api/">
-      <div class="wk">C1</div>
-      <div class="wb">
-        <div class="wb-title">Introducere, LLM-uri, configurare</div>
-        <div class="wb-topics">Ce construim și cum pornim · primul apel · system prompt</div>
+      <div class="prog-body">
+        <div class="prog-title">Progresul echipelor</div>
+        <p class="prog-desc">Spațiu dedicat urmăririi livrabilelor de echipă, etapelor de lucru și progresului pe parcursul cursului.</p>
+        <div class="prog-btn">
+          Vezi dashboard-ul →
+        </div>
+        <p class="prog-microcopy">în pregătire · actualizat pe parcursul semestrului</p>
       </div>
-    </a>
 
-    <a class="week-row" href="c2-ecosistem-modele/">
-      <div class="wk">C2</div>
-      <div class="wb">
-        <div class="wb-title">Ecosistemul de modele</div>
-        <div class="wb-topics">Gemini · DeepSeek · OpenRouter · alegem modelul de bază</div>
+      <div class="prog-bars">
+        <div class="pbar-row">
+          <span class="pbar-label">Team A</span>
+          <div class="pbar-track"><div class="pbar-fill" style="width:72%"></div></div>
+        </div>
+        <div class="pbar-row">
+          <span class="pbar-label">Team B</span>
+          <div class="pbar-track"><div class="pbar-fill" style="width:50%"></div></div>
+        </div>
+        <div class="pbar-row">
+          <span class="pbar-label">Team C</span>
+          <div class="pbar-track"><div class="pbar-fill" style="width:33%"></div></div>
+        </div>
       </div>
-    </a>
 
-    <a class="week-row" href="c3-date-corpus/">
-      <div class="wk">C3</div>
-      <div class="wb">
-        <div class="wb-title">Date și corpus</div>
-        <div class="wb-topics">Colectare · curățare · metadate · structura datelor</div>
-      </div>
-    </a>
+    </div>
+  </section>
 
-    <a class="week-row" href="c4-prompting-adnotare-context/">
-      <div class="wk">C4</div>
-      <div class="wb">
-        <div class="wb-title">Prompting, adnotare, context engineering</div>
-        <div class="wb-topics">Schema de adnotare · few-shot · chain-of-thought</div>
-      </div>
-    </a>
+  <!-- ── Programul cursului ── -->
+  <section>
+    <p class="sec-label">Programul cursului</p>
+    <div class="program-list">
 
-    <a class="week-row" href="c5-embeddings-retrieval-rag/">
-      <div class="wk">C5</div>
-      <div class="wb">
-        <div class="wb-title">Embeddings, retrieval, RAG</div>
-        <div class="wb-topics">FAISS · sentence-transformers · semantic search · build_vectorstore</div>
-      </div>
-    </a>
+      <a class="prog-row" href="c1-introducere-llm-primul-api/">
+        <span class="prog-id">C1</span>
+        <div class="prog-info"><div class="prog-name">LLM-uri și primul API</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
 
-    <a class="week-row" href="c6-rag-agenti-langchain-langgraph/">
-      <div class="wk">C6</div>
-      <div class="wb">
-        <div class="wb-title">RAG, agenți, LangChain, LangGraph</div>
-        <div class="wb-topics">Agenți discursivi · role cards · orchestrare</div>
-      </div>
-    </a>
+      <a class="prog-row" href="c2-ecosistem-modele/">
+        <span class="prog-id">C2</span>
+        <div class="prog-info"><div class="prog-name">Alegerea modelului</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
 
-    <a class="week-row" href="c7-agenti-orchestrati-metrici-etica/">
-      <div class="wk">C7</div>
-      <div class="wb">
-        <div class="wb-title">Agenți orchestrați</div>
-        <div class="wb-topics">LangGraph · metrici · etică · bule discursive</div>
-      </div>
-    </a>
+      <a class="prog-row" href="c3-date-corpus/">
+        <span class="prog-id">C3</span>
+        <div class="prog-info"><div class="prog-name">Prompt engineering</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
 
-    <a class="week-row" href="c8-integrare-aplicatie-gradio/">
-      <div class="wk">C8</div>
-      <div class="wb">
-        <div class="wb-title">Integrare aplicație</div>
-        <div class="wb-topics">Gradio · UI · tab Agenți · tab Dezbatere · metrici vizuale</div>
-      </div>
-    </a>
+      <a class="prog-row" href="c4-prompting-adnotare-context/">
+        <span class="prog-id">C4</span>
+        <div class="prog-info"><div class="prog-name">Colectare date</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
 
-    <a class="week-row" href="c9-demo-final-feedback/">
-      <div class="wk">C9</div>
-      <div class="wb">
-        <div class="wb-title">Demo final</div>
-        <div class="wb-topics">Prezentări echipe · feedback · evaluare</div>
-      </div>
-    </a>
+      <a class="prog-row" href="c5-embeddings-retrieval-rag/">
+        <span class="prog-id">C5</span>
+        <div class="prog-info"><div class="prog-name">AI pipelines</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
 
-  </div>
+      <a class="prog-row" href="c6-rag-agenti-langchain-langgraph/">
+        <span class="prog-id">C6</span>
+        <div class="prog-info"><div class="prog-name">RAG</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
+
+      <a class="prog-row" href="c7-agenti-orchestrati-metrici-etica/">
+        <span class="prog-id">C7</span>
+        <div class="prog-info"><div class="prog-name">Analiza discursului</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
+
+      <a class="prog-row" href="c8-integrare-aplicatie-gradio/">
+        <span class="prog-id">C8</span>
+        <div class="prog-info"><div class="prog-name">LangChain / LangGraph</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
+
+      <a class="prog-row" href="c9-demo-final-feedback/">
+        <span class="prog-id">C9</span>
+        <div class="prog-info"><div class="prog-name">Integrare aplicație</div></div>
+        <span class="prog-arrow">→</span>
+      </a>
+
+    </div>
+  </section>
 
 </main>
 
+<!-- ── Footer ── -->
 <footer>
-  <a href="../">← toate cursurile</a>
-  <span>
-    <a href="../LICENSE">CC BY-NC-SA 4.0</a>&nbsp;·&nbsp;
-    <a href="https://github.com/VladAlexe/tutorials" target="_blank">GitHub ↗</a>
-  </span>
+  <div class="ft-block">
+    <strong>Instituție</strong>
+    Universitatea Babeș-Bolyai · Cluj-Napoca<br>
+    Facultatea de Sociologie și Asistență Socială<br>
+    Masteratul Analiza Datelor Complexe
+  </div>
+  <div class="ft-block">
+    <strong>Curs</strong>
+    Ingineria AI · Aplicații cu agenți inteligenți<br>
+    Anul II · Semestrul IV · 8 credite<br>
+    Instructor: Vlad Alexe
+  </div>
+  <div class="ft-right">
+    <a href="../LICENSE">CC BY-NC-SA 4.0</a>
+    <span class="ft-sep">·</span>
+    <a href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </div>
 </footer>
 
-<script>
-  function toggleTheme() {
-    const r = document.documentElement;
-    const b = document.getElementById('themeBtn');
-    if (r.classList.contains('light')) {
-      r.classList.remove('light');
-      b.textContent = '◑ light';
-      localStorage.setItem('va-theme','dark');
-    } else {
-      r.classList.add('light');
-      b.textContent = '◑ dark';
-      localStorage.setItem('va-theme','light');
-    }
-  }
-  (function() {
-    if (localStorage.getItem('va-theme') === 'light') {
-      document.documentElement.classList.add('light');
-      document.addEventListener('DOMContentLoaded', () => {
-        const b = document.getElementById('themeBtn');
-        if (b) b.textContent = '◑ dark';
-      });
-    }
-  })();
-</script>
 </body>
 </html>
