@@ -221,7 +221,7 @@ section { padding-top: 2rem; }
   border-radius: 4px;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr 214px;
+  grid-template-columns: minmax(0, 1fr) 324px;
 }
 
 .dash-left {
@@ -266,10 +266,11 @@ section { padding-top: 2rem; }
 
 .dash-right {
   border-left: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
   gap: 1px;
   background: var(--border);
+  min-width: 0;
 }
 
 .dash-stats-row {
@@ -280,15 +281,16 @@ section { padding-top: 2rem; }
 
 .dash-mini {
   background: var(--surface);
-  padding: 0.75rem 0.9rem;
+  padding: 0.75rem 0.9rem 0.7rem;
   display: flex;
   flex-direction: column;
-  gap: 0.18rem;
+  gap: 0.2rem;
+  min-height: 74px;
 }
 
 .dash-mini-val {
   font-family: 'Fraunces', serif;
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.03em;
@@ -303,36 +305,102 @@ section { padding-top: 2rem; }
   text-transform: uppercase;
 }
 
-.dash-team-row {
-  background: var(--surface);
-  padding: 0.52rem 0.9rem;
-  display: grid;
-  grid-template-columns: 50px 1fr 30px;
-  align-items: center;
-  gap: 0.55rem;
+.dash-mini-note {
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 1.45;
 }
 
-.dash-team-name {
+#dash-teams {
+  background: var(--surface);
+  padding: 0.95rem 1rem 1rem;
+  min-width: 0;
+}
+
+.dash-visual {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 124px;
+  align-items: center;
+  gap: 0.95rem;
+  min-height: 238px;
+}
+
+.dash-radial-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.dash-radial {
+  width: min(100%, 210px);
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.dash-radial-track {
+  fill: none;
+  stroke: var(--border);
+  opacity: 0.95;
+}
+
+.dash-radial-progress {
+  fill: none;
+  stroke-linecap: round;
+  transform-origin: 110px 110px;
+  transform: rotate(-90deg);
+}
+
+.dash-radial-start {
+  fill: var(--border-hi);
+  opacity: 0.8;
+}
+
+.dash-radial-center-value {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  fill: var(--text);
+  letter-spacing: -0.03em;
+}
+
+.dash-radial-center-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
+  fill: var(--dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dash-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  min-width: 0;
+}
+
+.dash-legend-item {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dash-legend-swatch {
+  width: 12px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.dash-legend-name {
+  font-size: 10.5px;
   color: var(--sub);
-  letter-spacing: 0.02em;
+  line-height: 1.35;
 }
 
-.dash-team-bar {
-  height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.dash-team-fill {
-  height: 100%;
-  background: var(--accent-lo);
-  border-radius: 2px;
-}
-
-.dash-team-pct {
+.dash-legend-pct {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: var(--dim);
@@ -407,6 +475,17 @@ footer {
 .ft-col a:hover { color: var(--text); }
 
 /* ── Responsive ── */
+@media (max-width: 900px) {
+  .dash-tile { grid-template-columns: minmax(0, 1fr) 292px; }
+  .dash-visual { grid-template-columns: 1fr; gap: 0.8rem; min-height: 0; }
+  .dash-radial { width: min(100%, 192px); }
+  .dash-legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.45rem 0.8rem;
+  }
+}
+
 @media (max-width: 680px) {
   header { padding: 0 1.2rem; }
   .hero { padding: 1.5rem 1.2rem 1.5rem; }
@@ -416,6 +495,13 @@ footer {
   .prog-row { grid-template-columns: 44px 1fr 16px; }
   .dash-tile { grid-template-columns: 1fr; }
   .dash-right { border-left: none; border-top: 1px solid var(--border); }
+  .dash-visual { grid-template-columns: 1fr; gap: 0.8rem; min-height: 0; }
+  .dash-radial { width: min(100%, 196px); }
+  .dash-legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.45rem 0.8rem;
+  }
 }
 </style>
 </head>
@@ -504,14 +590,14 @@ function checkPw(){
             <span class="dash-mini-label">Etapa curentă</span>
           </div>
         </div>
-        <div id="dash-teams"></div>
+        <div id="dash-teams" aria-live="polite"></div>
       </div>
     </div>
   </section>
 
   <!-- ── Programul cursului ── -->
   <section>
-    <p class="sec-label">Programul cursului</p>
+    <p class="sec-label">CURSURI</p>
     <div class="program-list">
 
       <a class="prog-row" href="c1-introducere-llm-primul-api/">
