@@ -10,15 +10,17 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #faf9f6;
-  --surface:   #f3f1eb;
-  --border:    #e2ddd3;
+  --bg: #faf9f6;
+  --surface: #f3f1eb;
+  --surface-hi: #f6f3ee;
+  --border: #e2ddd3;
   --border-hi: #c9c3b5;
-  --text:      #1c1b18;
-  --sub:       #6b655b;
-  --dim:       #9e9789;
-  --accent:    #b5784a;
+  --text: #1c1b18;
+  --sub: #6b655b;
+  --dim: #9e9789;
+  --accent: #b5784a;
   --accent-lo: #d4a882;
+  --accent-soft: rgba(181, 120, 74, 0.12);
 }
 
 html { scroll-behavior: smooth; }
@@ -45,7 +47,7 @@ nav {
   justify-content: space-between;
   position: sticky;
   top: 0;
-  background: var(--bg);
+  background: rgba(250, 249, 246, 0.94);
   z-index: 100;
 }
 
@@ -104,11 +106,11 @@ nav {
 
 .hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
   margin-bottom: 0.6rem;
 }
 
@@ -128,7 +130,7 @@ main {
   flex: 1;
   padding: 0 2rem 3rem;
   width: 100%;
-  max-width: 1040px;
+  max-width: 1080px;
 }
 
 section { padding-top: 2rem; }
@@ -146,7 +148,7 @@ section { padding-top: 2rem; }
 
 .stats-band {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -155,7 +157,7 @@ section { padding-top: 2rem; }
 }
 
 .stat-tile {
-  background: var(--surface);
+  background: linear-gradient(180deg, var(--surface-hi), var(--surface));
   padding: 1.1rem 1.3rem;
   display: flex;
   flex-direction: column;
@@ -179,434 +181,707 @@ section { padding-top: 2rem; }
   text-transform: uppercase;
 }
 
-.metro-map {
+.panel {
   border: 1px solid var(--border);
-  background: var(--surface);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(243, 241, 235, 0.92));
+}
+
+.journey-shell {
+  display: grid;
+  grid-template-columns: 0.95fr 1.35fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.journey-summary,
+.mountain-card,
+.project-card,
+.team-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(243, 241, 235, 0.95));
+}
+
+.journey-summary {
+  padding: 1.15rem 1.2rem;
+}
+
+.journey-copy {
+  font-size: 12.5px;
+  color: var(--sub);
+  margin-bottom: 1rem;
+  max-width: 32rem;
+}
+
+.journey-milestones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.journey-milestone {
+  padding: 0.72rem 0.8rem;
+  border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 1.1rem 1.15rem 1rem;
-  overflow-x: auto;
+  background: rgba(250, 249, 246, 0.72);
 }
 
-.metro-header {
-  margin-bottom: 0.9rem;
-}
-
-.metro-header p {
-  max-width: 44rem;
-  font-size: 12px;
-  color: var(--sub);
-}
-
-.metro-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  min-width: 620px;
-}
-
-.metro-axis,
-.metro-row-wrap {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.metro-team-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--sub);
-  text-align: right;
-  white-space: nowrap;
-}
-
-.metro-team-label-axis { visibility: hidden; }
-
-.metro-line {
-  display: grid;
-  position: relative;
-  grid-template-columns: repeat(var(--metro-cols), minmax(68px, 1fr));
-}
-
-.metro-row {
-  min-height: 50px;
-}
-
-.metro-row::before {
-  content: '';
-  position: absolute;
-  top: 14px;
-  left: calc(50% / var(--metro-cols));
-  right: calc(50% / var(--metro-cols));
-  height: 1px;
-  background: var(--border-hi);
-  z-index: 0;
-}
-
-.metro-line-axis::before { display: none; }
-
-.metro-station {
-  position: relative;
-  z-index: 1;
-  min-height: 50px;
-  padding: 0.25rem 0.2rem 0.2rem;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  justify-content: flex-start;
-}
-
-.metro-column-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  text-transform: uppercase;
-  line-height: 1.2;
-}
-
-.metro-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border-hi);
-  background: var(--bg);
-  display: block;
-  overflow: hidden;
-}
-
-.metro-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--dim);
-  line-height: 1.1;
-  white-space: nowrap;
-}
-
-.metro-status-upcoming .metro-dot {
-  border-color: var(--border-hi);
-  background: var(--bg);
-}
-
-.metro-status-created .metro-dot {
-  border-color: var(--accent-lo);
-  background: var(--surface);
-}
-
-.metro-status-created .metro-label {
-  color: var(--sub);
-}
-
-.metro-status-active .metro-dot {
-  border-color: var(--accent);
-  background: conic-gradient(var(--accent) calc(var(--progress, 0) * 1%), var(--bg) 0);
-}
-
-.metro-status-active .metro-label {
-  color: var(--accent);
-}
-
-.metro-status-done .metro-dot {
-  border-color: var(--accent);
-  background: var(--accent);
-}
-
-.metro-status-done .metro-label {
-  color: var(--text);
-}
-
-.metro-current-column {
+.journey-milestone.is-current {
+  border-color: rgba(181, 120, 74, 0.38);
   background: rgba(181, 120, 74, 0.08);
 }
 
-.metro-current-column .metro-column-label {
-  color: var(--accent);
-}
-
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  background: var(--border);
-}
-
-.team-card {
-  background: var(--surface);
+.journey-milestone-head {
   display: flex;
-  flex-direction: column;
-}
-
-.tc-head {
-  padding: 1rem 1.1rem 0.8rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  background: rgba(250, 249, 246, 0.75);
+  gap: 0.75rem;
+  margin-bottom: 0.15rem;
 }
 
-.tc-name-block {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+.journey-milestone-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
 }
 
-.tc-name {
+.journey-milestone-title {
   font-family: 'Fraunces', serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.01em;
-  transition: color 0.12s;
-}
-.tc-name:hover { color: var(--accent); }
-
-.tc-stage {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--sub);
-  line-height: 1.5;
-}
-
-.tc-overall {
-  flex-shrink: 0;
+  margin-left: auto;
   text-align: right;
 }
 
-.tc-overall-label {
+.journey-milestone-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  white-space: nowrap;
+}
+
+.journey-milestone-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 1.6;
+}
+
+.mountain-card {
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.mountain-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.65rem;
+}
+
+.mountain-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.mountain-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  text-align: right;
+}
+
+.mountain-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 11 / 7;
+  min-height: 360px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(212, 168, 130, 0.14), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(250, 249, 246, 0.96));
+  overflow: hidden;
+}
+
+.mountain-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mountain-ridge-back {
+  fill: rgba(226, 221, 211, 0.75);
+}
+
+.mountain-ridge-front {
+  fill: rgba(201, 195, 181, 0.48);
+}
+
+.mountain-path {
+  fill: none;
+  stroke: rgba(181, 120, 74, 0.9);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mountain-path-shadow {
+  fill: none;
+  stroke: rgba(201, 195, 181, 0.65);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.checkpoint-guide {
+  fill: none;
+  stroke: rgba(201, 195, 181, 0.6);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+}
+
+.checkpoint-node {
+  fill: var(--bg);
+  stroke: var(--border-hi);
+  stroke-width: 2;
+}
+
+.checkpoint-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--sub);
+  letter-spacing: 0.05em;
+}
+
+.checkpoint-current .checkpoint-node {
+  fill: rgba(181, 120, 74, 0.14);
+  stroke: var(--accent);
+}
+
+.checkpoint-current .checkpoint-label {
+  fill: var(--accent);
+}
+
+.mountain-team-marker {
+  position: absolute;
+  z-index: 1;
+  transform: translate(calc(-50% + var(--marker-offset-x, 0px)), calc(-50% + var(--marker-offset-y, 0px)));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 24px;
+  padding: 0 0.45rem;
+  border: 1px solid rgba(181, 120, 74, 0.5);
+  border-radius: 999px;
+  background: rgba(250, 249, 246, 0.95);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.mountain-team-marker::before {
+  content: '';
+  position: absolute;
+  inset: auto auto -8px 50%;
+  width: 1px;
+  height: 8px;
+  background: rgba(181, 120, 74, 0.28);
+  transform: translateX(-50%);
+}
+
+.mountain-team-marker.base-cluster::before {
+  display: none;
+}
+
+.mountain-footnote {
+  margin-top: 0.7rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.project-card {
+  padding: 1rem 1.05rem 1.05rem;
+}
+
+.project-card.project-card-wide {
+  grid-column: span 2;
+}
+
+.project-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.75rem;
+}
+
+.project-list,
+.project-issues,
+.project-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-row,
+.project-distribution-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.75);
+}
+
+.project-row:last-child,
+.project-distribution-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.project-key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+}
+
+.project-value {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  color: var(--text);
+  text-align: right;
+}
+
+.project-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.project-metric {
+  padding: 0.8rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(250, 249, 246, 0.78);
+}
+
+.project-metric-value {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.project-metric-label {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.project-status-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.project-status-line {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(250, 249, 246, 0.72);
+}
+
+.project-status-line strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.project-status-note {
+  margin-top: 0.15rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.project-issue-item {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: start;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.75);
+}
+
+.project-issue-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.project-issue-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+}
+
+.project-issue-link {
+  font-size: 12px;
+  color: var(--sub);
+  transition: color 0.1s;
+}
+
+.project-issue-link:hover { color: var(--accent); }
+
+.project-distribution-row {
+  gap: 0.9rem;
+}
+
+.project-distribution-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  min-width: 36px;
+}
+
+.project-distribution-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+}
+
+.team-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.team-card {
+  overflow: hidden;
+}
+
+.team-card-header {
+  padding: 1.15rem 1.2rem 0.95rem;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem 1rem;
+  align-items: start;
+}
+
+.team-card-name {
+  font-family: 'Fraunces', serif;
+  font-size: 1.38rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  transition: color 0.12s;
+}
+.team-card-name:hover { color: var(--accent); }
+
+.team-card-stage {
+  margin-top: 0.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+}
+
+.team-card-overall {
+  text-align: right;
+  min-width: 78px;
+}
+
+.team-card-overall-label {
   display: block;
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
-  color: var(--dim);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--dim);
 }
 
-.tc-pct {
+.team-card-overall-value {
+  display: block;
   font-family: 'Fraunces', serif;
-  font-size: 1.25rem;
+  font-size: 1.9rem;
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
 }
 
-.tc-links {
-  padding: 0.55rem 1.1rem 0.15rem;
+.team-progress-row {
+  padding: 0.95rem 1.2rem 0.95rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.team-progress-head {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.45rem;
+}
+
+.team-progress-label,
+.team-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.team-progress-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+}
+
+.team-progress-bar {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(201, 195, 181, 0.55);
+  overflow: hidden;
+}
+
+.team-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-lo));
+}
+
+.team-links {
+  padding: 0.8rem 1.2rem 0.2rem;
+  display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.35rem;
 }
 
-.tc-link {
+.team-link,
+.team-link-sep {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--sub);
-  transition: color 0.1s;
-}
-.tc-link:hover { color: var(--accent); }
-
-.tc-links-sep {
-  color: var(--border-hi);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 10.5px;
 }
 
-.tc-milestones {
-  padding: 0.8rem 1.1rem 0.55rem;
+.team-link { color: var(--sub); transition: color 0.1s; }
+.team-link:hover { color: var(--accent); }
+.team-link-sep { color: var(--border-hi); }
+
+.team-milestone-row {
+  padding: 0.85rem 1.2rem 1rem;
   border-bottom: 1px solid var(--border);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.45rem;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.6rem;
 }
 
-.tc-chip {
+.team-milestone-pill {
+  position: relative;
+  padding: 0.65rem 0.7rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--bg);
-  padding: 0.35rem 0.55rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.45rem;
+  border-radius: 10px;
+  background: rgba(250, 249, 246, 0.82);
+  overflow: hidden;
   min-width: 0;
 }
 
-.tc-chip-code,
-.tc-chip-value {
+.team-milestone-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--pill-progress, 0) * 1%);
+  background: rgba(181, 120, 74, 0.16);
+  pointer-events: none;
+}
+
+.team-milestone-pill > * {
+  position: relative;
+  z-index: 1;
+}
+
+.team-milestone-pill.is-current {
+  box-shadow: inset 0 0 0 1px rgba(181, 120, 74, 0.12);
+}
+
+.team-milestone-pill.is-upcoming {
+  background: transparent;
+}
+
+.team-milestone-pill.is-created {
+  border-color: rgba(181, 120, 74, 0.36);
+}
+
+.team-milestone-pill.is-active {
+  border-color: rgba(181, 120, 74, 0.48);
+}
+
+.team-milestone-pill.is-done {
+  border-color: rgba(181, 120, 74, 0.6);
+  background: rgba(181, 120, 74, 0.12);
+}
+
+.team-milestone-pill.is-done::after {
+  width: 100%;
+  background: rgba(181, 120, 74, 0.12);
+}
+
+.team-milestone-code,
+.team-milestone-value {
+  display: block;
   font-family: 'JetBrains Mono', monospace;
+  line-height: 1.25;
+}
+
+.team-milestone-code {
   font-size: 10px;
-  line-height: 1;
-}
-
-.tc-chip-code {
-  color: var(--sub);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--sub);
 }
 
-.tc-chip-value {
+.team-milestone-value {
+  margin-top: 0.22rem;
+  font-size: 10.5px;
   color: var(--dim);
   white-space: nowrap;
 }
 
-.tc-chip.metro-status-upcoming {
-  background: transparent;
-}
-
-.tc-chip.metro-status-created {
-  border-color: rgba(181, 120, 74, 0.35);
-}
-
-.tc-chip.metro-status-created .tc-chip-code,
-.tc-chip.metro-status-active .tc-chip-code {
+.team-milestone-pill.is-created .team-milestone-code,
+.team-milestone-pill.is-active .team-milestone-code {
   color: var(--accent);
 }
 
-.tc-chip.metro-status-created .tc-chip-value {
+.team-milestone-pill.is-created .team-milestone-value,
+.team-milestone-pill.is-active .team-milestone-value {
   color: var(--sub);
 }
 
-.tc-chip.metro-status-active {
-  border-color: var(--accent-lo);
-  background: rgba(181, 120, 74, 0.08);
-}
-
-.tc-chip.metro-status-active .tc-chip-value {
-  color: var(--accent);
-}
-
-.tc-chip.metro-status-done {
-  border-color: var(--accent);
-  background: rgba(181, 120, 74, 0.14);
-}
-
-.tc-chip.metro-status-done .tc-chip-code,
-.tc-chip.metro-status-done .tc-chip-value {
+.team-milestone-pill.is-done .team-milestone-code,
+.team-milestone-pill.is-done .team-milestone-value {
   color: var(--text);
 }
 
-.tc-chip-current {
-  box-shadow: inset 0 0 0 1px rgba(181, 120, 74, 0.12);
-  background: rgba(181, 120, 74, 0.06);
-}
-
-.tc-progress {
-  padding: 0.55rem 1.1rem 0.8rem;
+.team-section {
+  padding: 0.95rem 1.2rem 1rem;
   border-bottom: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 0.6rem;
 }
 
-.tc-bar {
-  height: 7px;
-  background: var(--border);
-  border-radius: 999px;
-  overflow: hidden;
+.team-section:last-child {
+  border-bottom: none;
 }
 
-.tc-fill {
-  height: 100%;
-  background: var(--accent-lo);
-  border-radius: 999px;
-}
-
-.tc-progress-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--dim);
-  min-width: 30px;
-  text-align: right;
-}
-
-.tc-issues {
-  padding: 0.75rem 1.1rem 0.95rem;
+.member-list {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  flex: 1;
+  gap: 0.65rem;
 }
 
-.tc-issue-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--dim);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 0.1rem;
+.member-row {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) 44px 118px;
+  gap: 0.8rem;
+  align-items: center;
 }
 
-.tc-issue {
-  font-size: 11.5px;
-  color: var(--sub);
-  line-height: 1.45;
-  display: block;
-  transition: color 0.1s;
-}
-.tc-issue:hover { color: var(--accent); }
-
-.tc-issue-more {
+.member-name,
+.member-pct,
+.member-meta {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: var(--dim);
-  margin-top: 0.15rem;
-  display: block;
-  transition: color 0.1s;
-}
-.tc-issue-more:hover { color: var(--accent); }
-
-.tc-empty {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--dim);
 }
 
-.issues-table {
-  border: 1px solid var(--border);
-  border-radius: 4px;
+.member-name,
+.member-pct { color: var(--sub); }
+.member-meta { color: var(--dim); text-align: right; }
+
+.member-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(201, 195, 181, 0.55);
   overflow: hidden;
 }
 
-.issue-row {
-  display: grid;
-  grid-template-columns: 70px 1fr 52px;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-  padding: 0.55rem 1rem;
-  gap: 1rem;
+.member-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-lo));
 }
-.issue-row:last-child { border-bottom: none; }
-.issue-row:nth-child(even) { background: var(--surface); }
 
-.issue-team {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 0.04em;
-  transition: color 0.1s;
+.team-issue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
-.issue-team:hover { color: var(--text); }
 
-.issue-title {
-  font-size: 12.5px;
+.team-issue-link,
+.team-issue-more {
+  display: block;
+  padding-left: 0.9rem;
+  position: relative;
+}
+
+.team-issue-link {
+  font-size: 12px;
   color: var(--sub);
   transition: color 0.1s;
 }
-.issue-title:hover { color: var(--accent); }
 
-.issue-ms {
+.team-issue-link:hover,
+.team-issue-more:hover {
+  color: var(--accent);
+}
+
+.team-issue-link::before,
+.team-issue-more::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+}
+
+.team-issue-link::before {
+  top: 0.62rem;
+  background: var(--accent-lo);
+}
+
+.team-issue-more {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: var(--dim);
-  text-align: right;
+}
+
+.team-issue-more::before {
+  top: 0.5rem;
+  background: var(--border-hi);
+}
+
+.team-empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
 }
 
 .loading {
@@ -641,20 +916,69 @@ footer {
 .ft-col a { color: var(--dim); }
 .ft-col a:hover { color: var(--text); }
 
+@media (max-width: 920px) {
+  .journey-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card.project-card-wide {
+    grid-column: span 1;
+  }
+
+  .team-milestone-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 720px) {
   nav { padding: 0 1rem; }
   .hero { padding: 1.5rem 1rem 1.4rem; }
   main { padding: 0 1rem 2.5rem; }
-  .stats-band { grid-template-columns: repeat(2, 1fr); }
-  .metro-map { padding: 1rem; }
-  .metro-header { margin-bottom: 0.8rem; }
-  .metro-header p { font-size: 11.5px; }
-  .metro-grid { min-width: 520px; }
-  .team-grid { grid-template-columns: 1fr; }
-  .tc-milestones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .issue-row { grid-template-columns: 60px 1fr; }
-  .issue-ms { display: none; }
+  .stats-band { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-metrics { grid-template-columns: 1fr; }
+  .member-row {
+    grid-template-columns: 84px minmax(0, 1fr) 42px;
+  }
+  .member-meta {
+    grid-column: 1 / -1;
+    text-align: left;
+    padding-left: 84px;
+    margin-top: -0.2rem;
+  }
   footer { padding: 1rem; }
+}
+
+@media (max-width: 560px) {
+  .mountain-caption,
+  .team-card-header,
+  .team-progress-head,
+  .project-row,
+  .project-distribution-row {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .mountain-meta,
+  .team-card-overall,
+  .project-value {
+    text-align: left;
+  }
+
+  .mountain-visual {
+    min-height: 320px;
+  }
+
+  .team-milestone-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .stats-band { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -675,8 +999,8 @@ footer {
 <div class="hero">
   <div class="hero-tag">ADC 2026 &middot; Ingineria AI</div>
   <h1>Team Dashboard</h1>
-  <div class="hero-row" id="hero-row">
-    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">github.com/AIE-2026 &#8599;</a>
+  <div class="hero-row">
+    <a id="hero-org" href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">github.com/AIE-2026 &#8599;</a>
     <span>&middot;</span>
     <span id="hero-meta">&mdash;</span>
   </div>
@@ -692,17 +1016,17 @@ footer {
 
   <section>
     <p class="sec-label">Hart&#259; parcurs</p>
-    <div id="metro-wrap"><span class="loading">Se &icirc;ncarc&#259;&hellip;</span></div>
+    <div id="journey-wrap"><span class="loading">Se &icirc;ncarc&#259;&hellip;</span></div>
+  </section>
+
+  <section>
+    <p class="sec-label">Statistici proiect</p>
+    <div id="project-stats"><span class="loading">Se &icirc;ncarc&#259;&hellip;</span></div>
   </section>
 
   <section>
     <p class="sec-label">Echipe</p>
     <div class="team-grid" id="team-grid"></div>
-  </section>
-
-  <section>
-    <p class="sec-label">Issues deschise</p>
-    <div class="issues-table" id="issues-table"></div>
   </section>
 </main>
 
@@ -724,6 +1048,28 @@ footer {
 
 <script>
 const EMPTY_STATE_MESSAGE = 'Dashboard data is not available yet.';
+
+const DEFAULT_MILESTONES = [
+  { code: 'C1', shortTitle: 'Setup', fallbackName: 'C1 - Setup GitHub, env, notebooks' },
+  { code: 'C2', shortTitle: 'Models', fallbackName: 'C2 - Model ecosystem' },
+  { code: 'C3', shortTitle: 'Data', fallbackName: 'C3 - Data and corpus' },
+  { code: 'C4', shortTitle: 'Prompting', fallbackName: 'C4 - Prompting and annotation' },
+  { code: 'C5', shortTitle: 'RAG', fallbackName: 'C5 - RAG' },
+  { code: 'Final', shortTitle: 'Project', fallbackName: 'Final project' }
+];
+
+const MOUNTAIN_POINTS = [
+  { label: 'Base', x: 72, y: 330 },
+  { label: 'C1', x: 160, y: 280 },
+  { label: 'C2', x: 252, y: 242 },
+  { label: 'C3', x: 340, y: 205 },
+  { label: 'C4', x: 426, y: 170 },
+  { label: 'C5', x: 516, y: 126 },
+  { label: 'Final', x: 596, y: 80 }
+];
+
+const MOUNTAIN_THRESHOLDS = [0, 20, 40, 50, 60, 80, 100];
+const MOUNTAIN_VIEWBOX = { width: 660, height: 420 };
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -755,25 +1101,68 @@ function shortTeamName(name, index) {
   return match ? `T${match[1]}` : `T${index + 1}`;
 }
 
-function getMilestoneState(team, milestoneName) {
-  const progress = team.progress && team.progress[milestoneName];
-  if (!progress || toNumber(progress.total) === 0) {
-    return { status: 'upcoming', label: '\u2014', percent: 0 };
+function buildMilestoneRefs(data) {
+  const namesByCode = {};
+  (Array.isArray(data.milestones) ? data.milestones : []).forEach((name) => {
+    namesByCode[msCode(name)] = name;
+  });
+
+  if (data.current_milestone) {
+    const currentCode = msCode(data.current_milestone);
+    if (!namesByCode[currentCode]) {
+      namesByCode[currentCode] = data.current_milestone;
+    }
   }
 
-  const total = toNumber(progress.total);
+  return DEFAULT_MILESTONES.map((milestone) => ({
+    code: milestone.code,
+    shortTitle: milestone.shortTitle,
+    name: namesByCode[milestone.code] || milestone.fallbackName
+  }));
+}
+
+function normalizeProgress(progress) {
+  if (!progress) {
+    return { closed: 0, open: 0, total: 0, percent: 0 };
+  }
+
   const closed = toNumber(progress.closed);
-  const percent = clampPercent(progress.percent);
+  const open = toNumber(progress.open);
+  const total = toNumber(progress.total);
+  const percent = total > 0
+    ? clampPercent(progress.percent !== undefined ? progress.percent : Math.round((closed / total) * 100))
+    : 0;
 
-  if (closed === 0) {
-    return { status: 'created', label: `0/${total}`, percent: 0 };
+  return { closed, open, total, percent };
+}
+
+function getProgressForMilestone(team, milestoneRef) {
+  const progressMap = team && team.progress ? team.progress : {};
+
+  if (progressMap[milestoneRef.name]) {
+    return normalizeProgress(progressMap[milestoneRef.name]);
   }
 
-  if (percent >= 100) {
-    return { status: 'done', label: `${closed}/${total}`, percent: 100 };
+  const matchingKey = Object.keys(progressMap).find((key) => msCode(key) === milestoneRef.code);
+  return normalizeProgress(matchingKey ? progressMap[matchingKey] : null);
+}
+
+function getMilestoneState(team, milestoneRef) {
+  const progress = getProgressForMilestone(team, milestoneRef);
+
+  if (progress.total === 0) {
+    return { status: 'upcoming', label: '\u2014', percent: 0, progress };
   }
 
-  return { status: 'active', label: `${closed}/${total}`, percent };
+  if (progress.percent >= 100) {
+    return { status: 'done', label: `${progress.closed}/${progress.total}`, percent: 100, progress };
+  }
+
+  if (progress.closed === 0) {
+    return { status: 'created', label: `0/${progress.total}`, percent: 0, progress };
+  }
+
+  return { status: 'active', label: `${progress.closed}/${progress.total}`, percent: progress.percent, progress };
 }
 
 function sanitizeIssueTitle(title) {
@@ -800,168 +1189,430 @@ function sanitizeIssueTitle(title) {
   return cleaned;
 }
 
-function renderStats(data) {
-  const teams = Array.isArray(data.teams) ? data.teams : [];
-  let openIssues = 0;
-  let closedIssues = 0;
-  let totalPercent = 0;
-
-  teams.forEach((team) => {
-    Object.values(team.progress || {}).forEach((milestone) => {
-      openIssues += toNumber(milestone.open);
-      closedIssues += toNumber(milestone.closed);
-    });
-    totalPercent += clampPercent(team.overall_percent);
-  });
-
-  const averageProgress = teams.length ? Math.round(totalPercent / teams.length) : 0;
-
-  document.getElementById('stats-band').innerHTML =
-    `<div class="stat-tile"><span class="stat-val">${teams.length}</span><span class="stat-label">Echipe</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${openIssues}</span><span class="stat-label">Open Issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${closedIssues}</span><span class="stat-label">Closed Issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${averageProgress}%</span><span class="stat-label">Progres mediu</span></div>`;
-
-  document.getElementById('hero-meta').textContent =
-    `${teams.length} echipe \u00b7 Actualizat: ${data.updated_at || '\u2014'}`;
+function getIssueNumber(issue) {
+  const match = String(issue && issue.url ? issue.url : '').match(/\/issues\/(\d+)/);
+  return match ? toNumber(match[1]) : 0;
 }
 
-function renderMetroMap(data) {
-  const milestones = Array.isArray(data.milestones) ? data.milestones : [];
+function sortMembers(members) {
+  return [...members].sort((a, b) => {
+    const aMatch = String(a && a.name ? a.name : '').match(/(\d+)/);
+    const bMatch = String(b && b.name ? b.name : '').match(/(\d+)/);
+    return toNumber(aMatch && aMatch[1]) - toNumber(bMatch && bMatch[1]);
+  });
+}
+
+function interpolatePoint(percent) {
+  const clamped = clampPercent(percent);
+
+  if (clamped <= MOUNTAIN_THRESHOLDS[0]) {
+    return { ...MOUNTAIN_POINTS[0] };
+  }
+
+  for (let i = 1; i < MOUNTAIN_THRESHOLDS.length; i += 1) {
+    if (clamped <= MOUNTAIN_THRESHOLDS[i]) {
+      const previousThreshold = MOUNTAIN_THRESHOLDS[i - 1];
+      const currentThreshold = MOUNTAIN_THRESHOLDS[i];
+      const ratio = currentThreshold === previousThreshold
+        ? 0
+        : (clamped - previousThreshold) / (currentThreshold - previousThreshold);
+      const previousPoint = MOUNTAIN_POINTS[i - 1];
+      const currentPoint = MOUNTAIN_POINTS[i];
+
+      return {
+        x: previousPoint.x + ((currentPoint.x - previousPoint.x) * ratio),
+        y: previousPoint.y + ((currentPoint.y - previousPoint.y) * ratio)
+      };
+    }
+  }
+
+  return { ...MOUNTAIN_POINTS[MOUNTAIN_POINTS.length - 1] };
+}
+
+function markerOffset(index) {
+  if (index === 0) {
+    return { x: 0, y: 0 };
+  }
+
+  const direction = index % 2 === 0 ? 1 : -1;
+  const spread = 12 + (Math.ceil(index / 2) * 8);
+  const lift = 10 + (Math.floor((index - 1) / 2) * 12);
+  return { x: direction * spread, y: -lift };
+}
+
+function buildMountainMarkers(teams) {
+  const percentGroups = {};
+
+  return teams.map((team, index) => {
+    const percent = clampPercent(team.overall_percent);
+    const point = interpolatePoint(percent);
+    const groupKey = String(percent);
+    const groupIndex = percentGroups[groupKey] || 0;
+    percentGroups[groupKey] = groupIndex + 1;
+
+    return {
+      label: shortTeamName(team.name, index),
+      teamName: team.name || `Team ${index + 1}`,
+      percent,
+      x: point.x,
+      y: point.y,
+      offset: markerOffset(groupIndex),
+      isBaseCluster: percent === 0
+    };
+  });
+}
+
+function buildDashboardModel(data) {
   const teams = Array.isArray(data.teams) ? data.teams : [];
-  const currentMilestone = data.current_milestone;
-  const columns = Math.max(milestones.length, 1);
+  const milestoneRefs = buildMilestoneRefs(data);
+  const currentMilestoneCode = msCode(data.current_milestone || milestoneRefs[0].name);
 
-  const headerCells = milestones.map((milestone) => {
-    const currentClass = milestone === currentMilestone ? ' metro-current-column' : '';
-    return `<div class="metro-station${currentClass}"><span class="metro-column-label">${escapeHtml(msCode(milestone))}</span></div>`;
-  }).join('');
+  const milestoneSummaries = milestoneRefs.map((milestoneRef) => {
+    let total = 0;
+    let open = 0;
+    let closed = 0;
 
-  const teamRows = teams.map((team, index) => {
-    const stations = milestones.map((milestone) => {
-      const state = getMilestoneState(team, milestone);
-      const currentClass = milestone === currentMilestone ? ' metro-current-column' : '';
-      return (
-        `<div class="metro-station metro-status-${state.status}${currentClass}" style="--progress:${state.percent};">` +
-          `<span class="metro-dot" aria-hidden="true"></span>` +
-          `<span class="metro-label">${escapeHtml(state.label)}</span>` +
-        `</div>`
-      );
-    }).join('');
+    teams.forEach((team) => {
+      const progress = getProgressForMilestone(team, milestoneRef);
+      total += progress.total;
+      open += progress.open;
+      closed += progress.closed;
+    });
+
+    const percent = total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
+
+    return {
+      ...milestoneRef,
+      total,
+      open,
+      closed,
+      percent
+    };
+  });
+
+  const openIssues = milestoneSummaries.reduce((sum, milestone) => sum + milestone.open, 0);
+  const closedIssues = milestoneSummaries.reduce((sum, milestone) => sum + milestone.closed, 0);
+  const averageProgress = teams.length
+    ? Math.round(teams.reduce((sum, team) => sum + clampPercent(team.overall_percent), 0) / teams.length)
+    : 0;
+
+  const currentMilestone = milestoneSummaries.find((milestone) => milestone.code === currentMilestoneCode)
+    || milestoneSummaries[0]
+    || { code: currentMilestoneCode, shortTitle: currentMilestoneCode, name: data.current_milestone || currentMilestoneCode, total: 0, open: 0, closed: 0, percent: 0 };
+
+  const startedTeams = teams.filter((team) => {
+    const progress = getProgressForMilestone(team, currentMilestone);
+    return progress.total > 0 && progress.closed > 0;
+  });
+
+  const blockedTeams = teams.filter((team) => {
+    const progress = getProgressForMilestone(team, currentMilestone);
+    return progress.total > 0 && progress.closed === 0;
+  });
+
+  const backlogMilestone = milestoneSummaries.reduce((best, milestone) => {
+    if (!best || milestone.open > best.open) {
+      return milestone;
+    }
+    return best;
+  }, null);
+
+  const distribution = milestoneSummaries.map((milestone) => {
+    const counts = { upcoming: 0, created: 0, active: 0, done: 0 };
+
+    teams.forEach((team) => {
+      const state = getMilestoneState(team, milestone).status;
+      counts[state] += 1;
+    });
+
+    return { ...milestone, counts };
+  });
+
+  const latestOpenIssues = [];
+  teams.forEach((team, index) => {
+    (Array.isArray(team.open_issues) ? team.open_issues : []).forEach((issue) => {
+      latestOpenIssues.push({
+        teamLabel: shortTeamName(team.name, index),
+        url: issue.url,
+        title: sanitizeIssueTitle(issue.title),
+        number: getIssueNumber(issue),
+        teamIndex: index
+      });
+    });
+  });
+
+  latestOpenIssues.sort((a, b) => b.number - a.number || a.teamIndex - b.teamIndex);
+
+  return {
+    teams,
+    milestoneSummaries,
+    currentMilestone,
+    currentMilestoneCode,
+    backlogMilestone,
+    startedTeams,
+    blockedTeams,
+    latestOpenIssues: latestOpenIssues.slice(0, 8),
+    distribution,
+    markers: buildMountainMarkers(teams),
+    totals: {
+      teamCount: teams.length,
+      openIssues,
+      closedIssues,
+      createdTasks: openIssues + closedIssues,
+      averageProgress
+    }
+  };
+}
+
+function renderHeader(data, model) {
+  const heroOrg = document.getElementById('hero-org');
+  const orgUrl = data.github_org && data.github_org.url ? data.github_org.url : heroOrg.href;
+  const orgName = data.github_org && data.github_org.name ? data.github_org.name : 'AIE-2026';
+
+  heroOrg.href = orgUrl;
+  heroOrg.textContent = orgUrl.includes('github.com/')
+    ? `${orgUrl.replace(/^https?:\/\//, '')} \u2197`
+    : `${orgName} \u2197`;
+
+  document.getElementById('hero-meta').textContent =
+    `${model.totals.teamCount} echipe \u00b7 Actualizat: ${data.updated_at || '\u2014'}`;
+}
+
+function renderStats(model) {
+  const stats = model.totals;
+
+  document.getElementById('stats-band').innerHTML =
+    `<div class="stat-tile"><span class="stat-val">${stats.teamCount}</span><span class="stat-label">Teams</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${stats.openIssues}</span><span class="stat-label">Open issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${stats.closedIssues}</span><span class="stat-label">Closed issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${stats.averageProgress}%</span><span class="stat-label">Average progress</span></div>`;
+}
+
+function renderJourney(model) {
+  const milestoneItems = model.milestoneSummaries.map((milestone) => {
+    const currentClass = milestone.code === model.currentMilestoneCode ? ' is-current' : '';
 
     return (
-      `<div class="metro-row-wrap">` +
-        `<div class="metro-team-label">${escapeHtml(shortTeamName(team.name, index))}</div>` +
-        `<div class="metro-line metro-row" style="--metro-cols:${columns};">${stations}</div>` +
+      `<div class="journey-milestone${currentClass}">` +
+        `<div class="journey-milestone-head">` +
+          `<span class="journey-milestone-code">${escapeHtml(milestone.code)}</span>` +
+          `<strong class="journey-milestone-title">${escapeHtml(milestone.shortTitle)}</strong>` +
+          `<span class="journey-milestone-pct">${milestone.percent}%</span>` +
+        `</div>` +
+        `<div class="journey-milestone-meta">${milestone.total} tasks &middot; ${milestone.closed} closed &middot; ${milestone.open} open</div>` +
       `</div>`
     );
   }).join('');
 
-  document.getElementById('metro-wrap').innerHTML =
-    `<div class="metro-map">` +
-      `<div class="metro-header">` +
-        `<p>Fiecare sta&#539;ie reprezint&#259; un milestone. Progresul este calculat din issues &icirc;nchise &icirc;n GitHub.</p>` +
+  const checkpointGuides = MOUNTAIN_POINTS.map((point) => (
+    `<line class="checkpoint-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="356"></line>`
+  )).join('');
+
+  const checkpoints = MOUNTAIN_POINTS.map((point, index) => {
+    const label = point.label;
+    const isCurrent = label === model.currentMilestoneCode ? ' checkpoint-current' : '';
+    const labelY = index === 0 ? point.y + 24 : point.y - 14;
+
+    return (
+      `<g class="checkpoint${isCurrent}">` +
+        `<circle class="checkpoint-node" cx="${point.x}" cy="${point.y}" r="8"></circle>` +
+        `<text class="checkpoint-label" x="${point.x}" y="${labelY}" text-anchor="middle">${escapeHtml(label)}</text>` +
+      `</g>`
+    );
+  }).join('');
+
+  const teamMarkers = model.markers.map((marker) => {
+    const left = (marker.x / MOUNTAIN_VIEWBOX.width) * 100;
+    const top = (marker.y / MOUNTAIN_VIEWBOX.height) * 100;
+    const clusterClass = marker.isBaseCluster ? ' base-cluster' : '';
+
+    return (
+      `<div class="mountain-team-marker${clusterClass}" style="left:${left}%; top:${top}%; --marker-offset-x:${marker.offset.x}px; --marker-offset-y:${marker.offset.y}px;" title="${escapeHtml(marker.teamName)} · ${marker.percent}%">` +
+        `${escapeHtml(marker.label)}` +
+      `</div>`
+    );
+  }).join('');
+
+  document.getElementById('journey-wrap').innerHTML =
+    `<div class="journey-shell">` +
+      `<div class="journey-summary">` +
+        `<p class="journey-copy">Fiecare checkpoint reprezint&#259; un milestone. Progresul este calculat din issues &icirc;nchise &icirc;n GitHub.</p>` +
+        `<div class="journey-milestones">${milestoneItems}</div>` +
       `</div>` +
-      `<div class="metro-grid">` +
-        `<div class="metro-axis">` +
-          `<div class="metro-team-label metro-team-label-axis">T</div>` +
-          `<div class="metro-line metro-line-axis" style="--metro-cols:${columns};">${headerCells}</div>` +
+      `<div class="mountain-card">` +
+        `<div class="mountain-caption">` +
+          `<div class="mountain-title">Mountain Progress</div>` +
+          `<div class="mountain-meta">Milestone curent &middot; ${escapeHtml(model.currentMilestone.code)}<br>${escapeHtml(model.currentMilestone.name)}</div>` +
         `</div>` +
-        `${teamRows}` +
+        `<div class="mountain-visual">` +
+          `<svg class="mountain-svg" viewBox="0 0 660 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">` +
+            `<path class="mountain-ridge-back" d="M 0 356 L 100 296 L 194 316 L 286 240 L 376 262 L 484 154 L 610 86 L 660 356 Z"></path>` +
+            `<path class="mountain-ridge-front" d="M 0 356 L 114 322 L 216 260 L 308 286 L 406 182 L 500 208 L 618 110 L 660 356 Z"></path>` +
+            `${checkpointGuides}` +
+            `<polyline class="mountain-path-shadow" points="72,330 160,280 252,242 340,205 426,170 516,126 596,80"></polyline>` +
+            `<polyline class="mountain-path" points="72,330 160,280 252,242 340,205 426,170 516,126 596,80"></polyline>` +
+            `${checkpoints}` +
+          `</svg>` +
+          `${teamMarkers}` +
+        `</div>` +
+        `<p class="mountain-footnote">Marcajele T1-T6 sunt pozi&#539;ionate din ` +
+          `team.overall_percent: 0% la baz&#259;, 81-100% la summit.</p>` +
       `</div>` +
     `</div>`;
 }
 
-function renderTeams(data) {
-  const milestones = Array.isArray(data.milestones) ? data.milestones : [];
-  const currentMilestone = data.current_milestone;
-  const teams = Array.isArray(data.teams) ? data.teams : [];
+function renderProjectStats(model) {
+  const blockedLabels = model.blockedTeams
+    .map((team) => escapeHtml(shortTeamName(team.name, model.teams.indexOf(team))))
+    .join(', ');
+  const issuesByMilestone = model.milestoneSummaries.map((milestone) => (
+    `<div class="project-row">` +
+      `<span class="project-key">${escapeHtml(milestone.code)} &middot; ${escapeHtml(milestone.shortTitle)}</span>` +
+      `<span class="project-value">${milestone.open}</span>` +
+    `</div>`
+  )).join('');
 
-  document.getElementById('team-grid').innerHTML = teams.map((team) => {
+  const latestIssues = model.latestOpenIssues.length
+    ? model.latestOpenIssues.map((issue) => (
+      `<div class="project-issue-item">` +
+        `<span class="project-issue-tag">${escapeHtml(issue.teamLabel)}</span>` +
+        `<a class="project-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>` +
+      `</div>`
+    )).join('')
+    : '<div class="team-empty">Nu exist&#259; issues deschise.</div>';
+
+  const distributionRows = model.distribution.map((milestone) => (
+    `<div class="project-distribution-row">` +
+      `<span class="project-distribution-label">${escapeHtml(milestone.code)}:</span>` +
+      `<span class="project-distribution-copy">created ${milestone.counts.created} &middot; active ${milestone.counts.active} &middot; done ${milestone.counts.done} &middot; upcoming ${milestone.counts.upcoming}</span>` +
+    `</div>`
+  )).join('');
+
+  document.getElementById('project-stats').innerHTML =
+    `<div class="project-grid">` +
+      `<article class="project-card">` +
+        `<div class="project-title">Issues deschise pe milestone</div>` +
+        `<div class="project-list">${issuesByMilestone}</div>` +
+      `</article>` +
+      `<article class="project-card">` +
+        `<div class="project-title">Task-uri create vs &icirc;nchise</div>` +
+        `<div class="project-metrics">` +
+          `<div class="project-metric"><span class="project-metric-value">${model.totals.createdTasks}</span><span class="project-metric-label">Created</span></div>` +
+          `<div class="project-metric"><span class="project-metric-value">${model.totals.closedIssues}</span><span class="project-metric-label">Closed</span></div>` +
+          `<div class="project-metric"><span class="project-metric-value">${model.totals.openIssues}</span><span class="project-metric-label">Open</span></div>` +
+        `</div>` +
+      `</article>` +
+      `<article class="project-card">` +
+        `<div class="project-title">Milestone curent</div>` +
+        `<div class="project-status-stack">` +
+          `<div class="project-status-line"><strong>Cel mai mare backlog:</strong> ${escapeHtml(model.backlogMilestone.code)} ${escapeHtml(model.backlogMilestone.shortTitle)}<div class="project-status-note">${model.backlogMilestone.open} issues deschise</div></div>` +
+          `<div class="project-status-line"><strong>${model.startedTeams.length}/${model.totals.teamCount}</strong> echipe au &icirc;nceput milestone-ul curent<div class="project-status-note">${escapeHtml(model.currentMilestone.code)} &middot; ${escapeHtml(model.currentMilestone.name)}</div></div>` +
+          `<div class="project-status-line"><strong>${model.blockedTeams.length}/${model.totals.teamCount}</strong> echipe sunt blocate la 0/x<div class="project-status-note">${blockedLabels || '\u2014'}</div></div>` +
+        `</div>` +
+      `</article>` +
+      `<article class="project-card project-card-wide">` +
+        `<div class="project-title">Ultimele issues deschise</div>` +
+        `<div class="project-issues">${latestIssues}</div>` +
+      `</article>` +
+      `<article class="project-card project-card-wide">` +
+        `<div class="project-title">Distribu&#539;ie pe milestone</div>` +
+        `<div class="project-distribution">${distributionRows}</div>` +
+      `</article>` +
+    `</div>`;
+}
+
+function renderTeams(model) {
+  const currentMilestoneCode = model.currentMilestoneCode;
+
+  document.getElementById('team-grid').innerHTML = model.teams.map((team, index) => {
     const overallPercent = clampPercent(team.overall_percent);
     const openIssues = Array.isArray(team.open_issues) ? team.open_issues : [];
     const visibleIssues = openIssues.slice(0, 3);
     const hiddenCount = Math.max(openIssues.length - visibleIssues.length, 0);
 
-    const milestoneChips = milestones.map((milestone) => {
+    const milestonePills = model.milestoneSummaries.map((milestone) => {
       const state = getMilestoneState(team, milestone);
-      const currentClass = milestone === currentMilestone ? ' tc-chip-current' : '';
+      const currentClass = milestone.code === currentMilestoneCode ? ' is-current' : '';
+
       return (
-        `<div class="tc-chip metro-status-${state.status}${currentClass}">` +
-          `<span class="tc-chip-code">${escapeHtml(msCode(milestone))}</span>` +
-          `<span class="tc-chip-value">${escapeHtml(state.label)}</span>` +
+        `<div class="team-milestone-pill is-${state.status}${currentClass}" style="--pill-progress:${state.percent};">` +
+          `<span class="team-milestone-code">${escapeHtml(milestone.code)}</span>` +
+          `<span class="team-milestone-value">${escapeHtml(state.label)}</span>` +
         `</div>`
       );
     }).join('');
 
-    const issuesHtml = visibleIssues.map((issue) =>
-      `<a class="tc-issue" href="${issue.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`
-    ).join('');
+    const memberSection = Array.isArray(team.members) && team.members.length
+      ? (
+        `<div class="team-section">` +
+          `<div class="team-subtitle">Team members</div>` +
+          `<div class="member-list">` +
+            `${sortMembers(team.members).map((member) => {
+              const total = toNumber(member.total);
+              const closed = toNumber(member.closed);
+              const percent = total > 0
+                ? clampPercent(member.percent !== undefined ? member.percent : Math.round((closed / total) * 100))
+                : 0;
 
-    const moreHtml = hiddenCount > 0
-      ? `<a class="tc-issue-more" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
+              return (
+                `<div class="member-row">` +
+                  `<span class="member-name">${escapeHtml(member.name || '\u2014')}</span>` +
+                  `<div class="member-bar"><div class="member-fill" style="width:${percent}%"></div></div>` +
+                  `<span class="member-pct">${percent}%</span>` +
+                  `<span class="member-meta">${closed}/${total} issues closed</span>` +
+                `</div>`
+              );
+            }).join('')}` +
+          `</div>` +
+        `</div>`
+      )
       : '';
 
-    const issueBlock = openIssues.length
-      ? `${issuesHtml}${moreHtml}`
-      : '<div class="tc-empty">Nicio issue deschis&#259;.</div>';
+    const issuesMarkup = visibleIssues.length
+      ? visibleIssues.map((issue) => (
+        `<a class="team-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`
+      )).join('')
+      : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
+
+    const moreMarkup = hiddenCount > 0
+      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url || team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
+      : '';
 
     return (
       `<article class="team-card">` +
-        `<div class="tc-head">` +
-          `<div class="tc-name-block">` +
-            `<a class="tc-name" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
-            `<div class="tc-stage">Current stage: ${escapeHtml(team.current_stage || '\u2014')}</div>` +
+        `<div class="team-card-header">` +
+          `<div>` +
+            `<a class="team-card-name" href="${escapeHtml(team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name || `Team ${index + 1}`)}</a>` +
+            `<div class="team-card-stage">Current stage &middot; ${escapeHtml(team.current_stage || '\u2014')}</div>` +
           `</div>` +
-          `<div class="tc-overall">` +
-            `<span class="tc-overall-label">Overall</span>` +
-            `<span class="tc-pct">${overallPercent}%</span>` +
+          `<div class="team-card-overall">` +
+            `<span class="team-card-overall-label">Overall percent</span>` +
+            `<span class="team-card-overall-value">${overallPercent}%</span>` +
           `</div>` +
         `</div>` +
-        `<div class="tc-links">` +
-          `<a class="tc-link" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">Repo &#8599;</a>` +
-          `<span class="tc-links-sep">&middot;</span>` +
-          `<a class="tc-link" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">Issues &#8599;</a>` +
-          `<span class="tc-links-sep">&middot;</span>` +
-          `<a class="tc-link" href="${team.milestones_url}" target="_blank" rel="noopener noreferrer">Milestones &#8599;</a>` +
+        `<div class="team-progress-row">` +
+          `<div class="team-progress-head">` +
+            `<span class="team-progress-label">Overall progress</span>` +
+            `<span class="team-progress-meta">${overallPercent}% completed</span>` +
+          `</div>` +
+          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${overallPercent}%"></div></div>` +
         `</div>` +
-        `<div class="tc-milestones">${milestoneChips}</div>` +
-        `<div class="tc-progress">` +
-          `<div class="tc-bar"><div class="tc-fill" style="width:${overallPercent}%"></div></div>` +
-          `<span class="tc-progress-value">${overallPercent}%</span>` +
+        `<div class="team-links">` +
+          `<a class="team-link" href="${escapeHtml(team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">Repo &#8599;</a>` +
+          `<span class="team-link-sep">&middot;</span>` +
+          `<a class="team-link" href="${escapeHtml(team.issues_url || team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">Issues &#8599;</a>` +
+          `<span class="team-link-sep">&middot;</span>` +
+          `<a class="team-link" href="${escapeHtml(team.milestones_url || team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">Milestones &#8599;</a>` +
         `</div>` +
-        `<div class="tc-issues">` +
-          `<div class="tc-issue-label">Open issues (${openIssues.length})</div>` +
-          `${issueBlock}` +
+        `<div class="team-milestone-row">${milestonePills}</div>` +
+        `${memberSection}` +
+        `<div class="team-section">` +
+          `<div class="team-subtitle">Open issues (${openIssues.length})</div>` +
+          `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
         `</div>` +
       `</article>`
     );
   }).join('');
-}
-
-function renderIssues(data) {
-  const rows = [];
-  const teams = Array.isArray(data.teams) ? data.teams : [];
-
-  teams.forEach((team) => {
-    (team.open_issues || []).forEach((issue) => {
-      const safeTitle = sanitizeIssueTitle(issue.title);
-      const milestoneMatch = safeTitle.match(/^(C\d+|Final)/i) || String(issue.title || '').match(/(C\d+|Final)/i);
-      const milestoneLabel = milestoneMatch ? milestoneMatch[1] : '\u2014';
-
-      rows.push(
-        `<div class="issue-row">` +
-          `<a class="issue-team" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
-          `<a class="issue-title" href="${issue.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(safeTitle)}</a>` +
-          `<span class="issue-ms">${escapeHtml(milestoneLabel)}</span>` +
-        `</div>`
-      );
-    });
-  });
-
-  document.getElementById('issues-table').innerHTML = rows.length
-    ? rows.join('')
-    : `<div class="issue-row"><span class="issue-team">&mdash;</span><span class="issue-title">Nu exist&#259; issues deschise.</span><span class="issue-ms">&mdash;</span></div>`;
 }
 
 function renderUnavailable() {
@@ -978,10 +1629,12 @@ fetch('./progress.json')
     return response.json();
   })
   .then((data) => {
-    renderStats(data);
-    renderMetroMap(data);
-    renderTeams(data);
-    renderIssues(data);
+    const model = buildDashboardModel(data);
+    renderHeader(data, model);
+    renderStats(model);
+    renderJourney(model);
+    renderProjectStats(model);
+    renderTeams(model);
   })
   .catch(() => {
     renderUnavailable();
