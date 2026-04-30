@@ -5,14 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Team Dashboard · Ingineria AI ADC 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --bg:        #faf9f6;
   --surface:   #f3f1eb;
-  --surface2:  #ede9e0;
   --border:    #e2ddd3;
   --border-hi: #c9c3b5;
   --text:      #1c1b18;
@@ -67,25 +66,20 @@ nav {
 .back-link:hover { color: var(--text); }
 
 .nav-logo {
-  width: 14px;
-  height: 14px;
+  width: 14px; height: 14px;
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
   margin: 0 0.1rem;
-  position: relative;
-  top: -1px;
+  position: relative; top: -1px;
 }
 
 .nav-sep { width: 1px; height: 13px; background: var(--border); }
 
 .breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
+  display: flex; align-items: center; gap: 0.3rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  color: var(--dim);
+  font-size: 10.5px; color: var(--dim);
 }
 .breadcrumb a { color: var(--sub); }
 .breadcrumb a:hover { color: var(--text); }
@@ -93,299 +87,213 @@ nav {
 .breadcrumb .sl { color: var(--border-hi); }
 
 /* ── Hero ── */
-.hero {
-  padding: 1.8rem 2rem 1.6rem;
-  border-bottom: 1px solid var(--border);
-}
+.hero { padding: 1.8rem 2rem 1.6rem; border-bottom: 1px solid var(--border); }
 
 .hero-tag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.4rem;
+  font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.4rem;
 }
 
 .hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  font-size: 2rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.025em; line-height: 1.1;
   margin-bottom: 0.6rem;
 }
 
 .hero-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  display: flex; flex-wrap: wrap; align-items: center;
   gap: 0.4rem 1.4rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  color: var(--dim);
+  font-size: 10.5px; color: var(--dim);
 }
-
 .hero-row a { color: var(--sub); transition: color 0.12s; }
 .hero-row a:hover { color: var(--text); }
 
 /* ── Main ── */
-main {
-  flex: 1;
-  padding: 0 2rem 3rem;
-  width: 100%;
-  max-width: 1040px;
-}
-
+main { flex: 1; padding: 0 2rem 3rem; width: 100%; max-width: 1040px; }
 section { padding-top: 2rem; }
 
 .sec-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--dim);
-  margin-bottom: 0.8rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
 }
 
 /* ── Stats band ── */
 .stats-band {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  background: var(--border);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; border: 1px solid var(--border); border-radius: 4px;
+  overflow: hidden; background: var(--border);
 }
 
 .stat-tile {
-  background: var(--surface);
-  padding: 1.1rem 1.3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  background: var(--surface); padding: 1.1rem 1.3rem;
+  display: flex; flex-direction: column; gap: 0.2rem;
 }
 
 .stat-val {
   font-family: 'Fraunces', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.04em;
-  line-height: 1;
+  font-size: 2rem; font-weight: 700; color: var(--text);
+  letter-spacing: -0.04em; line-height: 1;
 }
 
 .stat-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
-  color: var(--dim);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 9.5px; color: var(--dim);
+  letter-spacing: 0.08em; text-transform: uppercase;
 }
 
-/* ── Course Journey ── */
-.journey-wrap {
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.journey-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 1px;
-  background: var(--border);
+/* ── Metro Map ── */
+.metro-map {
   border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  min-width: 640px;
-}
-
-.jt {
   background: var(--surface);
-  padding: 0.7rem 0.6rem 0.65rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  position: relative;
+  border-radius: 4px;
+  padding: 1.4rem 1.8rem 1.2rem;
+  overflow-x: auto;
 }
 
-.jt.active { background: var(--bg); }
-.jt.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent-lo);
+.metro-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  align-items: center;
+  gap: 20px;
+  margin: 14px 0;
 }
 
-.jt-code {
+.metro-header-row { margin-bottom: 0; }
+
+.metro-team-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  font-weight: 500;
-  color: var(--dim);
-  letter-spacing: 0.04em;
+  color: var(--sub);
+  text-align: right;
+  white-space: nowrap;
+}
+.metro-team-label a { color: var(--accent); transition: color 0.12s; }
+.metro-team-label a:hover { color: var(--text); }
+
+.metro-line {
+  display: grid;
+  position: relative;
+  min-width: 320px;
 }
 
-.jt.done .jt-code { color: var(--green); }
-.jt.active .jt-code { color: var(--accent); }
-
-.jt-status {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--dim);
-  letter-spacing: 0.04em;
-}
-
-.jt.done .jt-status { color: var(--green-lo); }
-.jt.active .jt-status { color: var(--accent-lo); }
-
-.jt-teams {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: 0.2rem;
-}
-
-.jt-team {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--dim);
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.jt-team::before {
+.metro-line::before {
   content: '';
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--border-hi);
-  flex-shrink: 0;
+  position: absolute;
+  top: 13px; left: 0; right: 0;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
 }
 
-.jt-team.done { color: var(--green-lo); }
-.jt-team.done::before { background: var(--green-lo); }
+.metro-header-line::before { display: none; }
+
+.metro-stop { position: relative; z-index: 1; text-align: center; }
+
+.metro-dot {
+  width: 26px; height: 26px;
+  margin: 0 auto 4px;
+  border-radius: 50%;
+  border: 2px solid var(--border-hi);
+  background: var(--bg);
+}
+
+.metro-stop.done .metro-dot {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.metro-stop.active .metro-dot {
+  background: linear-gradient(90deg, var(--accent) 50%, var(--bg) 50%);
+  border-color: var(--accent);
+}
+
+.metro-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 0.08em;
+  color: var(--dim); text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.metro-percent {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent); margin-top: 2px;
+}
 
 /* ── Team Grid ── */
 .team-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  background: var(--border);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden; background: var(--border);
 }
 
-.team-card {
-  background: var(--surface);
-  display: flex;
-  flex-direction: column;
-}
+.team-card { background: var(--surface); display: flex; flex-direction: column; }
 
 .tc-head {
   padding: 1rem 1.1rem 0.7rem;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem;
+  display: flex; align-items: baseline;
+  justify-content: space-between; gap: 0.5rem;
   background: var(--bg);
 }
 
 .tc-name {
   font-family: 'Fraunces', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.01em;
+  font-size: 1rem; font-weight: 700;
+  color: var(--accent); letter-spacing: -0.01em;
+  transition: color 0.12s;
 }
+.tc-name:hover { color: var(--text); }
 
 .tc-stage {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 0.05em;
+  font-size: 10px; color: var(--accent); letter-spacing: 0.05em;
 }
 
 .tc-progress {
-  padding: 0.7rem 1.1rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
+  padding: 0.7rem 1.1rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.7rem;
 }
 
-.tc-bar {
-  flex: 1;
-  height: 5px;
-  background: var(--border);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.tc-fill {
-  height: 100%;
-  background: var(--accent-lo);
-  border-radius: 3px;
-}
+.tc-bar { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.tc-fill { height: 100%; background: var(--accent-lo); border-radius: 3px; }
 
 .tc-pct {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--sub);
-  min-width: 32px;
-  text-align: right;
+  font-size: 11px; color: var(--sub);
+  min-width: 32px; text-align: right;
 }
 
 .tc-links {
-  padding: 0.5rem 1.1rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 1rem;
+  padding: 0.5rem 1.1rem; border-bottom: 1px solid var(--border);
+  display: flex; gap: 1rem;
 }
 
 .tc-link {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--sub);
-  transition: color 0.1s;
+  font-size: 10px; color: var(--sub); transition: color 0.1s;
 }
 .tc-link:hover { color: var(--accent); }
 
 .tc-milestones {
-  padding: 0.6rem 1.1rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  padding: 0.6rem 1.1rem; border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 2px;
 }
 
 .tc-ms {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--dim);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-size: 10px; color: var(--dim);
+  display: flex; align-items: center; gap: 0.5rem;
 }
 
 .tc-ms::before {
   content: '';
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--border-hi);
-  flex-shrink: 0;
+  display: inline-block; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--border-hi); flex-shrink: 0;
 }
 
 .tc-ms.done { color: var(--green-lo); }
@@ -393,92 +301,71 @@ section { padding-top: 2rem; }
 .tc-ms.active { color: var(--accent-lo); }
 .tc-ms.active::before { background: var(--accent-lo); }
 
-.tc-issues {
-  padding: 0.6rem 1.1rem 0.9rem;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
+.tc-issues { padding: 0.6rem 1.1rem 0.9rem; display: flex; flex-direction: column; gap: 3px; }
 
 .tc-issue-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--dim);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 9px; color: var(--dim);
+  letter-spacing: 0.08em; text-transform: uppercase;
   margin-bottom: 0.2rem;
 }
 
 .tc-issue {
-  font-size: 11.5px;
-  color: var(--sub);
-  line-height: 1.4;
-  padding-left: 0.8rem;
-  position: relative;
+  font-size: 11.5px; color: var(--sub); line-height: 1.4;
+  padding-left: 0.8rem; position: relative; display: block;
+  transition: color 0.1s;
 }
+.tc-issue:hover { color: var(--accent); }
+.tc-issue::before { content: '·'; position: absolute; left: 0; color: var(--accent-lo); }
 
-.tc-issue::before {
-  content: '·';
-  position: absolute;
-  left: 0;
-  color: var(--accent-lo);
+.tc-issue-more {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--dim); padding-left: 0.8rem;
+  margin-top: 1px; display: block; transition: color 0.1s;
 }
+.tc-issue-more:hover { color: var(--accent); }
+.tc-issue-more::before { content: '·'; position: absolute; left: 0; color: var(--border-hi); }
 
 /* ── Issues table ── */
-.issues-table {
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-}
+.issues-table { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
 
 .issue-row {
-  display: grid;
-  grid-template-columns: 70px 1fr 60px;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-  padding: 0.6rem 1rem;
-  gap: 1rem;
+  display: grid; grid-template-columns: 70px 1fr 52px;
+  align-items: center; border-bottom: 1px solid var(--border);
+  padding: 0.55rem 1rem; gap: 1rem;
 }
-
 .issue-row:last-child { border-bottom: none; }
 .issue-row:nth-child(even) { background: var(--surface); }
 
 .issue-team {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 0.04em;
+  font-size: 10px; color: var(--accent); letter-spacing: 0.04em;
+  transition: color 0.1s;
 }
+.issue-team:hover { color: var(--text); }
 
-.issue-title {
-  font-size: 12.5px;
-  color: var(--sub);
-}
+.issue-title { font-size: 12.5px; color: var(--sub); transition: color 0.1s; }
+.issue-title:hover { color: var(--accent); }
 
 .issue-ms {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--dim);
-  text-align: right;
+  font-size: 10px; color: var(--dim); text-align: right;
+}
+
+/* ── Loading ── */
+.loading {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--dim); padding: 1.2rem 0;
 }
 
 /* ── Footer ── */
 footer {
-  border-top: 1px solid var(--border);
-  padding: 1.2rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 1rem;
+  border-top: 1px solid var(--border); padding: 1.2rem 2rem;
+  display: flex; justify-content: space-between;
+  align-items: flex-start; flex-wrap: wrap; gap: 1rem;
 }
 
-.ft-col {
-  font-size: 11px;
-  color: var(--dim);
-  line-height: 2;
-}
-
+.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
 .ft-col a { color: var(--dim); }
 .ft-col a:hover { color: var(--text); }
 
@@ -497,14 +384,11 @@ footer {
 </head>
 <body>
 
-<!-- ── Nav ── -->
 <nav>
   <div class="nav-left">
     <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
     <div class="nav-sep"></div>
     <div class="breadcrumb">
-      <a href="../../">tutorials</a>
-      <span class="sl">/</span>
       <a href="../">ai-engineering</a>
       <span class="sl">/</span>
       <span class="cur">dashboard</span>
@@ -512,240 +396,40 @@ footer {
   </div>
 </nav>
 
-<!-- ── Hero ── -->
 <div class="hero">
   <div class="hero-tag">ADC 2026 · Ingineria AI</div>
   <h1>Team Dashboard</h1>
-  <div class="hero-row">
+  <div class="hero-row" id="hero-row">
     <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">github.com/AIE-2026 ↗</a>
     <span>·</span>
-    <span>Actualizat: 30 apr 2026</span>
-    <span>·</span>
-    <span>3 echipe · Semestrul IV</span>
+    <span id="hero-meta">—</span>
   </div>
 </div>
 
 <main>
 
-  <!-- ── Stats ── -->
   <section>
     <p class="sec-label">Statistici</p>
-    <div class="stats-band">
-      <div class="stat-tile">
-        <span class="stat-val">3</span>
-        <span class="stat-label">Echipe</span>
-      </div>
-      <div class="stat-tile">
-        <span class="stat-val">5</span>
-        <span class="stat-label">Open Issues</span>
-      </div>
-      <div class="stat-tile">
-        <span class="stat-val">8</span>
-        <span class="stat-label">Closed Issues</span>
-      </div>
-      <div class="stat-tile">
-        <span class="stat-val">61%</span>
-        <span class="stat-label">Progres mediu</span>
-      </div>
-    </div>
+    <div class="stats-band" id="stats-band"><div class="stat-tile"><span class="loading">Se încarcă…</span></div></div>
   </section>
 
-  <!-- ── Course Journey ── -->
   <section>
-    <p class="sec-label">Parcurs curs</p>
-    <div class="journey-wrap">
-      <div class="journey-grid">
-
-        <div class="jt done">
-          <span class="jt-code">C1</span>
-          <span class="jt-status">Finalizat</span>
-          <div class="jt-teams">
-            <span class="jt-team done">T1</span>
-            <span class="jt-team done">T2</span>
-            <span class="jt-team done">T3</span>
-          </div>
-        </div>
-
-        <div class="jt active">
-          <span class="jt-code">C2</span>
-          <span class="jt-status">Activ</span>
-          <div class="jt-teams">
-            <span class="jt-team">62%</span>
-            <span class="jt-team">80%</span>
-            <span class="jt-team">40%</span>
-          </div>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">C3</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">C4</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">C5</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">C6</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">C7</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">C8</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">C9</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-        <div class="jt">
-          <span class="jt-code">Final</span>
-          <span class="jt-status">Urmează</span>
-        </div>
-
-      </div>
-    </div>
+    <p class="sec-label">Hartă parcurs</p>
+    <div id="metro-wrap"><span class="loading">Se încarcă…</span></div>
   </section>
 
-  <!-- ── Team Grid ── -->
   <section>
     <p class="sec-label">Echipe</p>
-    <div class="team-grid">
-
-      <!-- Team 1 -->
-      <div class="team-card">
-        <div class="tc-head">
-          <span class="tc-name">Team 1</span>
-          <span class="tc-stage">C2 activ</span>
-        </div>
-        <div class="tc-progress">
-          <div class="tc-bar"><div class="tc-fill" style="width:62%"></div></div>
-          <span class="tc-pct">62%</span>
-        </div>
-        <div class="tc-links">
-          <a class="tc-link" href="https://github.com/AIE-2026/team-1" target="_blank" rel="noopener noreferrer">Repo ↗</a>
-          <a class="tc-link" href="https://github.com/AIE-2026/team-1/issues" target="_blank" rel="noopener noreferrer">Issues ↗</a>
-          <a class="tc-link" href="https://github.com/AIE-2026/team-1/milestones" target="_blank" rel="noopener noreferrer">Milestones ↗</a>
-        </div>
-        <div class="tc-milestones">
-          <span class="tc-ms done">C1 — Finalizat</span>
-          <span class="tc-ms active">C2 — 62%</span>
-          <span class="tc-ms">C3 — Urmează</span>
-          <span class="tc-ms">C4–C9 — Urmează</span>
-        </div>
-        <div class="tc-issues">
-          <div class="tc-issue-label">Open issues</div>
-          <div class="tc-issue">Actualizare notebook C2</div>
-          <div class="tc-issue">Config core/config.py</div>
-        </div>
-      </div>
-
-      <!-- Team 2 -->
-      <div class="team-card">
-        <div class="tc-head">
-          <span class="tc-name">Team 2</span>
-          <span class="tc-stage">C2 activ</span>
-        </div>
-        <div class="tc-progress">
-          <div class="tc-bar"><div class="tc-fill" style="width:80%"></div></div>
-          <span class="tc-pct">80%</span>
-        </div>
-        <div class="tc-links">
-          <a class="tc-link" href="https://github.com/AIE-2026/team-2" target="_blank" rel="noopener noreferrer">Repo ↗</a>
-          <a class="tc-link" href="https://github.com/AIE-2026/team-2/issues" target="_blank" rel="noopener noreferrer">Issues ↗</a>
-          <a class="tc-link" href="https://github.com/AIE-2026/team-2/milestones" target="_blank" rel="noopener noreferrer">Milestones ↗</a>
-        </div>
-        <div class="tc-milestones">
-          <span class="tc-ms done">C1 — Finalizat</span>
-          <span class="tc-ms active">C2 — 80%</span>
-          <span class="tc-ms">C3 — Urmează</span>
-          <span class="tc-ms">C4–C9 — Urmează</span>
-        </div>
-        <div class="tc-issues">
-          <div class="tc-issue-label">Open issues</div>
-          <div class="tc-issue">Finalizare app.py</div>
-        </div>
-      </div>
-
-      <!-- Team 3 -->
-      <div class="team-card">
-        <div class="tc-head">
-          <span class="tc-name">Team 3</span>
-          <span class="tc-stage">C2 activ</span>
-        </div>
-        <div class="tc-progress">
-          <div class="tc-bar"><div class="tc-fill" style="width:40%"></div></div>
-          <span class="tc-pct">40%</span>
-        </div>
-        <div class="tc-links">
-          <a class="tc-link" href="https://github.com/AIE-2026/team-3" target="_blank" rel="noopener noreferrer">Repo ↗</a>
-          <a class="tc-link" href="https://github.com/AIE-2026/team-3/issues" target="_blank" rel="noopener noreferrer">Issues ↗</a>
-          <a class="tc-link" href="https://github.com/AIE-2026/team-3/milestones" target="_blank" rel="noopener noreferrer">Milestones ↗</a>
-        </div>
-        <div class="tc-milestones">
-          <span class="tc-ms done">C1 — Finalizat</span>
-          <span class="tc-ms active">C2 — 40%</span>
-          <span class="tc-ms">C3 — Urmează</span>
-          <span class="tc-ms">C4–C9 — Urmează</span>
-        </div>
-        <div class="tc-issues">
-          <div class="tc-issue-label">Open issues</div>
-          <div class="tc-issue">Decizie model individual</div>
-          <div class="tc-issue">Pull request notebook C2</div>
-        </div>
-      </div>
-
-    </div>
+    <div class="team-grid" id="team-grid"></div>
   </section>
 
-  <!-- ── Issues deschise ── -->
   <section>
     <p class="sec-label">Issues deschise</p>
-    <div class="issues-table">
-      <div class="issue-row">
-        <span class="issue-team">Team 1</span>
-        <span class="issue-title">Actualizare notebook C2</span>
-        <span class="issue-ms">C2</span>
-      </div>
-      <div class="issue-row">
-        <span class="issue-team">Team 1</span>
-        <span class="issue-title">Config core/config.py</span>
-        <span class="issue-ms">C2</span>
-      </div>
-      <div class="issue-row">
-        <span class="issue-team">Team 2</span>
-        <span class="issue-title">Finalizare app.py</span>
-        <span class="issue-ms">C2</span>
-      </div>
-      <div class="issue-row">
-        <span class="issue-team">Team 3</span>
-        <span class="issue-title">Decizie model individual</span>
-        <span class="issue-ms">C2</span>
-      </div>
-      <div class="issue-row">
-        <span class="issue-team">Team 3</span>
-        <span class="issue-title">Pull request notebook C2</span>
-        <span class="issue-ms">C2</span>
-      </div>
-    </div>
+    <div class="issues-table" id="issues-table"></div>
   </section>
 
 </main>
 
-<!-- ── Footer ── -->
 <footer>
   <div class="ft-col">
     Universitatea Babeș-Bolyai · Cluj-Napoca<br>
@@ -762,5 +446,160 @@ footer {
   </div>
 </footer>
 
+<script>
+function msCode(name) {
+  const m = name.match(/^(C\d+|Final)/i);
+  return m ? m[1] : name.split(' ')[0];
+}
+
+function msStatus(team, msName, allMs) {
+  const currentIdx = allMs.indexOf(team.current_stage);
+  const msIdx = allMs.indexOf(msName);
+  const prog = team.progress[msName];
+  if (msIdx < currentIdx) return 'done';
+  if (msIdx === currentIdx) {
+    if (prog && prog.percent === 100) return 'done';
+    return 'active';
+  }
+  if (prog && prog.percent === 100) return 'done';
+  if (prog && prog.percent > 0) return 'active';
+  return 'future';
+}
+
+function renderStats(data) {
+  const teams = data.teams;
+  let open = 0, closed = 0, pct = 0;
+  teams.forEach(t => {
+    open += t.open_issues.length;
+    Object.values(t.progress).forEach(ms => { closed += ms.closed; });
+    pct += t.overall_percent;
+  });
+  const avg = teams.length ? Math.round(pct / teams.length) : 0;
+
+  document.getElementById('stats-band').innerHTML =
+    `<div class="stat-tile"><span class="stat-val">${teams.length}</span><span class="stat-label">Echipe</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${open}</span><span class="stat-label">Open Issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${closed}</span><span class="stat-label">Closed Issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${avg}%</span><span class="stat-label">Progres mediu</span></div>`;
+
+  document.getElementById('hero-meta').textContent =
+    `${teams.length} echipe · Actualizat: ${data.updated_at}`;
+}
+
+function renderMetroMap(data) {
+  const ms = data.milestones;
+  const cols = ms.length;
+  const colStyle = `grid-template-columns: repeat(${cols}, 1fr)`;
+
+  const headerCells = ms.map(m =>
+    `<div class="metro-stop"><div class="metro-label">${msCode(m)}</div></div>`
+  ).join('');
+
+  const headerRow =
+    `<div class="metro-row metro-header-row">` +
+    `<div class="metro-team-label"></div>` +
+    `<div class="metro-line metro-header-line" style="${colStyle}">${headerCells}</div>` +
+    `</div>`;
+
+  const teamRows = data.teams.map(team => {
+    const shortName = team.name.replace('Team ', 'T');
+    const stops = ms.map(m => {
+      const status = msStatus(team, m, ms);
+      const prog = team.progress[m];
+      const pct = prog ? prog.percent : 0;
+      const pctHtml = (status === 'active' && pct > 0)
+        ? `<div class="metro-percent">${pct}%</div>`
+        : '';
+      return `<div class="metro-stop ${status}"><div class="metro-dot"></div>${pctHtml}</div>`;
+    }).join('');
+
+    return `<div class="metro-row">` +
+      `<div class="metro-team-label"><a href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${shortName}</a></div>` +
+      `<div class="metro-line" style="${colStyle}">${stops}</div>` +
+      `</div>`;
+  }).join('');
+
+  document.getElementById('metro-wrap').innerHTML =
+    `<div class="metro-map">${headerRow}${teamRows}</div>`;
+}
+
+function renderTeams(data) {
+  const ms = data.milestones;
+  document.getElementById('team-grid').innerHTML = data.teams.map(team => {
+    const pct = team.overall_percent;
+    const stage = msCode(team.current_stage);
+
+    const msHtml = ms.map(m => {
+      const status = msStatus(team, m, ms);
+      const prog = team.progress[m];
+      const pctText = (prog && status !== 'future') ? ` — ${prog.percent}%` : '';
+      return `<span class="tc-ms ${status}">${msCode(m)}${pctText}</span>`;
+    }).join('');
+
+    const shown = team.open_issues.slice(0, 3);
+    const moreCount = team.open_issues.length - shown.length;
+    const issuesHtml = shown.map(i =>
+      `<a class="tc-issue" href="${i.url}" target="_blank" rel="noopener noreferrer">${i.title}</a>`
+    ).join('');
+    const moreHtml = moreCount > 0
+      ? `<a class="tc-issue-more" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">+ ${moreCount} mai multe ↗</a>`
+      : '';
+
+    return `<div class="team-card">` +
+      `<div class="tc-head">` +
+      `<a class="tc-name" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${team.name} ↗</a>` +
+      `<span class="tc-stage">${stage} activ</span>` +
+      `</div>` +
+      `<div class="tc-progress">` +
+      `<div class="tc-bar"><div class="tc-fill" style="width:${pct}%"></div></div>` +
+      `<span class="tc-pct">${pct}%</span>` +
+      `</div>` +
+      `<div class="tc-links">` +
+      `<a class="tc-link" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">Issues ↗</a>` +
+      `<a class="tc-link" href="${team.milestones_url}" target="_blank" rel="noopener noreferrer">Milestones ↗</a>` +
+      `</div>` +
+      `<div class="tc-milestones">${msHtml}</div>` +
+      `<div class="tc-issues">` +
+      `<div class="tc-issue-label">Open issues (${team.open_issues.length})</div>` +
+      `${issuesHtml}${moreHtml}` +
+      `</div>` +
+      `</div>`;
+  }).join('');
+}
+
+function renderIssues(data) {
+  const rows = [];
+  data.teams.forEach(team => {
+    team.open_issues.forEach(issue => {
+      const m = issue.title.match(/^(C\d+|Final)/i);
+      const msLabel = m ? m[1] : '—';
+      rows.push(
+        `<div class="issue-row">` +
+        `<a class="issue-team" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${team.name}</a>` +
+        `<a class="issue-title" href="${issue.url}" target="_blank" rel="noopener noreferrer">${issue.title}</a>` +
+        `<span class="issue-ms">${msLabel}</span>` +
+        `</div>`
+      );
+    });
+  });
+  document.getElementById('issues-table').innerHTML = rows.join('');
+}
+
+fetch('./progress.json')
+  .then(r => r.json())
+  .then(data => {
+    renderStats(data);
+    renderMetroMap(data);
+    renderTeams(data);
+    renderIssues(data);
+  })
+  .catch(() => {
+    document.getElementById('stats-band').innerHTML =
+      '<div class="stat-tile"><span class="loading">Eroare la încărcarea datelor.</span></div>';
+    document.getElementById('metro-wrap').innerHTML = '';
+    document.getElementById('team-grid').innerHTML = '';
+    document.getElementById('issues-table').innerHTML = '';
+  });
+</script>
 </body>
 </html>
