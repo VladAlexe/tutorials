@@ -496,29 +496,15 @@ function checkPw(){
       <div class="dash-right">
         <div class="dash-stats-row">
           <div class="dash-mini">
-            <span class="dash-mini-val">61%</span>
+            <span class="dash-mini-val" id="dash-overall">—</span>
             <span class="dash-mini-label">Overall</span>
           </div>
           <div class="dash-mini">
-            <span class="dash-mini-val">C2</span>
+            <span class="dash-mini-val" id="dash-stage">—</span>
             <span class="dash-mini-label">Etapa curentă</span>
           </div>
         </div>
-        <div class="dash-team-row">
-          <span class="dash-team-name">Team 1</span>
-          <div class="dash-team-bar"><div class="dash-team-fill" style="width:62%"></div></div>
-          <span class="dash-team-pct">62%</span>
-        </div>
-        <div class="dash-team-row">
-          <span class="dash-team-name">Team 2</span>
-          <div class="dash-team-bar"><div class="dash-team-fill" style="width:80%"></div></div>
-          <span class="dash-team-pct">80%</span>
-        </div>
-        <div class="dash-team-row">
-          <span class="dash-team-name">Team 3</span>
-          <div class="dash-team-bar"><div class="dash-team-fill" style="width:40%"></div></div>
-          <span class="dash-team-pct">40%</span>
-        </div>
+        <div id="dash-teams"></div>
       </div>
     </div>
   </section>
@@ -604,5 +590,26 @@ function checkPw(){
   </div>
 </footer>
 
+<script>
+fetch('progress/progress.json')
+  .then(r => r.json())
+  .then(data => {
+    const teams = data.teams;
+    let total = 0;
+    teams.forEach(t => { total += t.overall_percent; });
+    const avg = teams.length ? Math.round(total / teams.length) : 0;
+    const m = (data.current_milestone || '').match(/^(C\d+)/);
+    document.getElementById('dash-overall').textContent = avg + '%';
+    document.getElementById('dash-stage').textContent = m ? m[1] : '—';
+    document.getElementById('dash-teams').innerHTML = teams.map(t =>
+      '<div class="dash-team-row">' +
+      '<span class="dash-team-name">' + t.name + '</span>' +
+      '<div class="dash-team-bar"><div class="dash-team-fill" style="width:' + t.overall_percent + '%"></div></div>' +
+      '<span class="dash-team-pct">' + t.overall_percent + '%</span>' +
+      '</div>'
+    ).join('');
+  })
+  .catch(function() {});
+</script>
 </body>
 </html>
