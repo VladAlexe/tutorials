@@ -305,12 +305,6 @@ section { padding-top: 2rem; }
   text-transform: uppercase;
 }
 
-.dash-mini-note {
-  font-size: 10.5px;
-  color: var(--sub);
-  line-height: 1.45;
-}
-
 #dash-teams {
   background: var(--surface);
   padding: 0.95rem 1rem 1rem;
@@ -680,22 +674,104 @@ function checkPw(){
 fetch('progress/progress.json')
   .then(r => r.json())
   .then(data => {
-    const teams = data.teams;
-    let total = 0;
-    teams.forEach(t => { total += t.overall_percent; });
+    const teams = Array.isArray(data.teams) ? data.teams : [];
+    const total = teams.reduce(function(sum, team) {
+      return sum + (Number(team.overall_percent) || 0);
+    }, 0);
     const avg = teams.length ? Math.round(total / teams.length) : 0;
-    const m = (data.current_milestone || '').match(/^(C\d+)/);
-    document.getElementById('dash-overall').textContent = avg + '%';
-    document.getElementById('dash-stage').textContent = m ? m[1] : '—';
-    document.getElementById('dash-teams').innerHTML = teams.map(t =>
-      '<div class="dash-team-row">' +
-      '<span class="dash-team-name">' + t.name + '</span>' +
-      '<div class="dash-team-bar"><div class="dash-team-fill" style="width:' + t.overall_percent + '%"></div></div>' +
-      '<span class="dash-team-pct">' + t.overall_percent + '%</span>' +
-      '</div>'
-    ).join('');
+    const stage = String(data.current_milestone || '');
+    const stageMatch = stage.match(/^(C\d+)/);
+    const stageCode = stageMatch ? stageMatch[1] : '-';
+    const overallNode = document.getElementById('dash-overall');
+    const stageNode = document.getElementById('dash-stage');
+    const teamsNode = document.getElementById('dash-teams');
+
+    overallNode.textContent = avg + '%';
+    stageNode.textContent = stageCode;
+    stageNode.title = stage || 'Current milestone';
+    teamsNode.innerHTML = buildRadialWidget(teams, avg);
   })
   .catch(function() {});
+
+function buildRadialWidget(teams, averagePercent) {
+  if (!teams.length) {
+    return '<div class="dash-visual"><div class="dash-radial-wrap"><svg class="dash-radial" viewBox="0 0 220 220" aria-hidden="true" focusable="false"><circle class="dash-radial-track" cx="110" cy="110" r="72" stroke-width="6"></circle><text x="110" y="108" text-anchor="middle" class="dash-radial-center-value">0%</text><text x="110" y="128" text-anchor="middle" class="dash-radial-center-label">overall</text></svg></div><div class="dash-legend"><div class="dash-legend-name">No team data</div></div></div>';
+  }
+
+  const outerRadius = 92;
+  const innerRadius = teams.length > 8 ? 36 : 44;
+  const radiusStep = teams.length > 1 ? (outerRadius - innerRadius) / (teams.length - 1) : 0;
+  const strokeWidth = teams.length > 1 ? Math.max(2.4, Math.min(6.8, radiusStep * 0.62)) : 7;
+  const startDot = Math.max(1.5, strokeWidth / 3);
+  const rings = [];
+  const legend = [];
+
+  teams.forEach(function(team, index) {
+    const progress = clampPercent(team.overall_percent);
+    const radius = outerRadius - (radiusStep * index);
+    const circumference = 2 * Math.PI * radius;
+    const dash = progress > 0 ? (circumference * progress / 100) : 0;
+    const color = ringColor(index, teams.length);
+    const label = escapeHtml(team.name || ('Team ' + (index + 1)));
+
+    rings.push(
+      '<circle class="dash-radial-track" cx="110" cy="110" r="' + radius.toFixed(2) + '" stroke-width="' + strokeWidth.toFixed(2) + '"></circle>' +
+      '<circle class="dash-radial-progress" cx="110" cy="110" r="' + radius.toFixed(2) + '" stroke-width="' + strokeWidth.toFixed(2) + '" stroke="' + color + '" stroke-dasharray="' + dash.toFixed(2) + ' ' + circumference.toFixed(2) + '"></circle>' +
+      '<circle class="dash-radial-start" cx="110" cy="' + (110 - radius).toFixed(2) + '" r="' + startDot.toFixed(2) + '"></circle>'
+    );
+
+    legend.push(
+      '<div class="dash-legend-item">' +
+        '<span class="dash-legend-swatch" style="background:' + color + ';"></span>' +
+        '<span class="dash-legend-name">' + label + '</span>' +
+        '<span class="dash-legend-pct">' + progress + '%</span>' +
+      '</div>'
+    );
+  });
+
+  const ariaLabel = escapeHtml(
+    'Overall progress ' + averagePercent + ' percent. ' +
+    teams.map(function(team) {
+      return (team.name || 'Team') + ' ' + clampPercent(team.overall_percent) + ' percent';
+    }).join('. ')
+  );
+
+  return '' +
+    '<div class="dash-visual" role="img" aria-label="' + ariaLabel + '">' +
+      '<div class="dash-radial-wrap">' +
+        '<svg class="dash-radial" viewBox="0 0 220 220" aria-hidden="true" focusable="false">' +
+          rings.join('') +
+          '<text x="110" y="108" text-anchor="middle" class="dash-radial-center-value">' + averagePercent + '%</text>' +
+          '<text x="110" y="128" text-anchor="middle" class="dash-radial-center-label">overall</text>' +
+        '</svg>' +
+      '</div>' +
+      '<div class="dash-legend">' + legend.join('') + '</div>' +
+    '</div>';
+}
+
+function clampPercent(value) {
+  const numeric = Math.round(Number(value) || 0);
+  return Math.max(0, Math.min(100, numeric));
+}
+
+function ringColor(index, total) {
+  const start = 0.96;
+  const end = 0.5;
+  const alpha = total > 1 ? (start - ((start - end) * (index / (total - 1)))) : start;
+  return 'rgba(181, 120, 74, ' + alpha.toFixed(2) + ')';
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, function(character) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[character];
+  });
+}
 </script>
 </body>
 </html>
