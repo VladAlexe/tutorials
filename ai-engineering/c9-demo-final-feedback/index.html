@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C9 — Demo final și feedback · AI Engineering</title>
+<title>C9 — Integrare aplicație · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
@@ -13,8 +13,8 @@
   --text:#e2e2e2; --dim:#666666; --sub:#999999; --accent:#c8956c;
 }
 :root.light {
-  --bg:#ffffff; --surface:#f5f5f5; --border:#e5e5e5; --border-hi:#cccccc;
-  --text:#111111; --dim:#888888; --sub:#444444; --accent:#b5784a;
+  --bg:#faf9f6; --surface:#f3f1eb; --border:#e2ddd3; --border-hi:#c9c3b5;
+  --text:#1c1b18; --dim:#9e9789; --sub:#6b655b; --accent:#b5784a;
 }
 html { scroll-behavior: smooth; }
 body { background:var(--bg); color:var(--text); font-family:Aptos,'Segoe UI',system-ui,sans-serif; font-size:13.5px; line-height:1.7; min-height:100vh; display:flex; flex-direction:column; transition:background .2s,color .2s; }
@@ -23,6 +23,7 @@ nav { height:46px; border-bottom:1px solid var(--border); padding:0 2rem; displa
 .nav-left { display:flex; align-items:center; gap:1.2rem; }
 .back-link { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:.3rem; transition:color .12s; }
 .back-link:hover { color:var(--text); }
+.nav-logo { width:15px; height:15px; border-radius:50%; display:inline-block; vertical-align:middle; margin:0 .15rem; position:relative; top:-1px; }
 .nav-sep { width:1px; height:13px; background:var(--border); }
 .breadcrumb { display:flex; align-items:center; gap:.3rem; font-size:11px; color:var(--dim); }
 .breadcrumb a { color:var(--sub); }
@@ -31,27 +32,28 @@ nav { height:46px; border-bottom:1px solid var(--border); padding:0 2rem; displa
 .breadcrumb .sl { color:var(--border-hi); }
 .btn { display:inline-flex; align-items:center; gap:.3rem; font-family:'JetBrains Mono',monospace; font-size:11px; padding:.22rem .7rem; border-radius:3px; border:1px solid var(--border); background:none; color:var(--sub); cursor:pointer; transition:color .12s,border-color .12s; white-space:nowrap; text-decoration:none; }
 .btn:hover { color:var(--text); border-color:var(--border-hi); }
-.hero { padding:3rem 2rem 2.2rem; border-bottom:1px solid var(--border); }
+.hero { padding:2.2rem 2rem 2rem; border-bottom:1px solid var(--border); }
 .hero-tag { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.55rem; }
-.hero h1 { font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-.025em; line-height:1.15; margin-bottom:.6rem; }
-.hero-sub { font-size:12.5px; color:var(--sub); max-width:580px; line-height:1.8; margin-bottom:1rem; }
+.hero h1 { font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-.025em; line-height:1.15; margin-bottom:.5rem; }
+.hero-sub { font-size:12.5px; color:var(--sub); max-width:580px; line-height:1.8; margin-bottom:.8rem; }
 .hero-meta { display:flex; flex-wrap:wrap; gap:1.2rem; font-size:11px; color:var(--dim); }
 .hero-meta strong { color:var(--sub); font-weight:400; }
-main { flex:1; padding:0 2rem 5rem; max-width:860px; width:100%; }
-section { padding-top:2.4rem; }
-.section-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:1rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
+main { flex:1; padding:0 2rem 3.5rem; max-width:860px; width:100%; }
+section { padding-top:2rem; }
+.section-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:.8rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
 .intro-body { font-size:12.5px; color:var(--sub); line-height:1.85; max-width:680px; }
 .placeholder-note { margin-top:1.2rem; display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); border:1px solid var(--border); border-radius:4px; padding:.5rem .9rem; }
-footer { border-top:1px solid var(--border); padding:1rem 2rem; font-size:11px; color:var(--dim); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; }
-footer a { color:var(--dim); }
-footer a:hover { color:var(--text); }
-@media (max-width:640px) { nav { padding:0 1rem; } .hero { padding:2rem 1rem 1.6rem; } main { padding:0 1rem 4rem; } .hero h1 { font-size:1.5rem; } footer { padding:1rem; } }
+footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
+.ft-col { font-size:11px; color:var(--dim); line-height:2; }
+.ft-col a { color:var(--dim); }
+.ft-col a:hover { color:var(--text); }
+@media (max-width:640px) { nav { padding:0 1rem; } .hero { padding:1.8rem 1rem 1.5rem; } main { padding:0 1rem 3rem; } .hero h1 { font-size:1.5rem; } footer { padding:1rem; } }
 </style>
 </head>
 <body>
 <nav>
   <div class="nav-left">
-    <a class="back-link" href="../">← AI Engineering</a>
+    <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
     <div class="nav-sep"></div>
     <div class="breadcrumb">
       <a href="../../">tutorials</a>
@@ -61,16 +63,15 @@ footer a:hover { color:var(--text); }
       <span class="cur">C9</span>
     </div>
   </div>
-  <button class="btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">light</span></button>
+  <button class="btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">dark</span></button>
 </nav>
 <div class="hero">
   <div class="hero-tag">AI Engineering · ADC 2026 · C9</div>
-  <h1>Demo final și feedback</h1>
+  <h1>Integrare aplicație</h1>
   <p class="hero-sub">În C9 fiecare echipă prezintă aplicația EchoChamber, explică deciziile metodologice și discută rezultatele, limitele și pașii următori.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
-    <span>Limbă <strong>Română</strong></span>
     <span>Sesiune <strong>C9</strong></span>
   </div>
 </div>
@@ -84,18 +85,26 @@ footer a:hover { color:var(--text); }
   </section>
 </main>
 <footer>
-  <a href="../">← AI Engineering</a>
-  <span>
-    <a href="../../LICENSE">CC BY-NC-SA 4.0</a>&nbsp;·&nbsp;
-    <a href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-  </span>
+  <div class="ft-col">
+    Universitatea Babeș-Bolyai · Cluj-Napoca<br>
+    Facultatea de Sociologie și Asistență Socială<br>
+    Masteratul Analiza Datelor Complexe
+  </div>
+  <div class="ft-col">
+    Ingineria AI · Aplicații cu agenți inteligenți<br>
+    Semestrul IV · Laborator<br>
+    Vlad Alexe<br>
+    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    &nbsp;·&nbsp;
+    <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
+  </div>
 </footer>
 <script>
 const btn = document.getElementById('themeBtn');
 const label = btn.querySelector('.btn-label');
 function applyTheme(light) { document.documentElement.classList.toggle('light', light); label.textContent = light ? 'dark' : 'light'; }
 function toggleTheme() { const l = document.documentElement.classList.contains('light'); localStorage.setItem('theme', l ? 'dark' : 'light'); applyTheme(!l); }
-applyTheme(localStorage.getItem('theme') === 'light');
+applyTheme(localStorage.getItem('theme') !== 'dark');
 </script>
 </body>
 </html>

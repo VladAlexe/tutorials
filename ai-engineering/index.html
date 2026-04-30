@@ -46,7 +46,6 @@ header {
   padding: 0 2.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   position: sticky;
   top: 0;
   background: var(--bg);
@@ -56,7 +55,7 @@ header {
 .hd-left {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .hd-logo {
@@ -66,8 +65,6 @@ header {
   display: block;
   flex-shrink: 0;
 }
-
-.hd-sep { width: 1px; height: 14px; background: var(--border); }
 
 .hd-label {
   font-family: 'JetBrains Mono', monospace;
@@ -171,7 +168,7 @@ section { padding-top: 2rem; }
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1px;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -218,45 +215,134 @@ section { padding-top: 2rem; }
   opacity: 0.8;
 }
 
-/* ── Progress card ── */
-.progress-card {
+/* ── Dashboard metro tile ── */
+.dash-tile {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 214px;
+}
+
+.dash-left {
   background: var(--surface);
-  padding: 1.2rem 1.4rem;
+  padding: 1.4rem 1.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
-.prog-title {
+.dash-title {
   font-family: 'Fraunces', serif;
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
-.prog-desc {
+.dash-desc {
   font-size: 12px;
   color: var(--sub);
   line-height: 1.65;
-  max-width: 520px;
+  flex: 1;
 }
 
-.prog-status {
+.dash-btn {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid var(--accent-lo);
+  border-radius: 3px;
+  padding: 0.25rem 0.65rem;
+  width: fit-content;
+  transition: background 0.12s;
+  text-decoration: none;
+  margin-top: 0.1rem;
+}
+.dash-btn:hover { background: rgba(181,120,74,0.06); }
+
+.dash-right {
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+}
+
+.dash-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+}
+
+.dash-mini {
+  background: var(--surface);
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.dash-mini-val {
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.dash-mini-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.dash-team-row {
+  background: var(--surface);
+  padding: 0.52rem 0.9rem;
+  display: grid;
+  grid-template-columns: 50px 1fr 30px;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.dash-team-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  letter-spacing: 0.02em;
+}
+
+.dash-team-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.dash-team-fill {
+  height: 100%;
+  background: var(--accent-lo);
+  border-radius: 2px;
+}
+
+.dash-team-pct {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: var(--dim);
-  letter-spacing: 0.06em;
-  margin-top: 0.2rem;
+  text-align: right;
 }
 
 /* ── Program / List ── */
 .program-list {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -274,9 +360,6 @@ section { padding-top: 2rem; }
 .prog-row:last-child { border-bottom: none; }
 .prog-row:hover { background: var(--surface); }
 
-.prog-row.inactive { cursor: default; }
-.prog-row.inactive:hover { background: transparent; }
-
 .prog-id {
   padding: 0 0 0 1.2rem;
   font-family: 'JetBrains Mono', monospace;
@@ -286,11 +369,7 @@ section { padding-top: 2rem; }
   align-self: center;
 }
 
-.prog-row.inactive .prog-id { color: var(--dim); }
-
-.prog-info {
-  padding: 0.6rem 0.8rem;
-}
+.prog-info { padding: 0.6rem 0.8rem; }
 
 .prog-name {
   font-size: 13px;
@@ -299,15 +378,13 @@ section { padding-top: 2rem; }
   line-height: 1.3;
 }
 
-.prog-row.inactive .prog-name { color: var(--sub); }
-
 .prog-arrow {
   font-size: 11px;
   color: var(--border-hi);
   padding-right: 1.2rem;
   transition: color 0.1s;
 }
-.prog-row:not(.inactive):hover .prog-arrow { color: var(--accent); }
+.prog-row:hover .prog-arrow { color: var(--accent); }
 
 /* ── Footer ── */
 footer {
@@ -326,9 +403,7 @@ footer {
   line-height: 2;
 }
 
-.ft-col a {
-  color: var(--dim);
-}
+.ft-col a { color: var(--dim); }
 .ft-col a:hover { color: var(--text); }
 
 /* ── Responsive ── */
@@ -339,17 +414,40 @@ footer {
   .hero h1 { font-size: 2rem; }
   footer { padding: 1.2rem; }
   .prog-row { grid-template-columns: 44px 1fr 16px; }
+  .dash-tile { grid-template-columns: 1fr; }
+  .dash-right { border-left: none; border-top: 1px solid var(--border); }
 }
 </style>
 </head>
 <body>
 
+<!-- ── Password Gate ── -->
+<div id="gate" style="position:fixed;inset:0;z-index:9999;background:#faf9f6;display:flex;align-items:center;justify-content:center;">
+  <div style="border:1px solid #e2ddd3;border-radius:6px;padding:2rem 2.4rem;background:#f3f1eb;display:flex;flex-direction:column;gap:0.9rem;width:280px;max-width:90vw;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9e9789;">Ingineria AI · ADC 2026</div>
+    <div style="font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:#1c1b18;letter-spacing:-0.01em;">Acces restricționat</div>
+    <input id="pwInput" type="password" placeholder="Parolă" autocomplete="off"
+      style="font-family:'JetBrains Mono',monospace;font-size:12px;padding:0.4rem 0.7rem;border:1px solid #e2ddd3;border-radius:3px;background:#faf9f6;color:#1c1b18;outline:none;width:100%;"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <div id="pwErr" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#c47f7f;display:none;">Parolă incorectă.</div>
+    <button onclick="checkPw()" style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:0.3rem 0.9rem;border:1px solid #d4a882;border-radius:3px;background:none;color:#b5784a;cursor:pointer;width:fit-content;">Intră →</button>
+  </div>
+</div>
+<script>if(sessionStorage.getItem('adc_auth')==='1'){document.getElementById('gate').style.display='none';}else{document.addEventListener('DOMContentLoaded',function(){document.getElementById('pwInput')&&document.getElementById('pwInput').focus();});}</script>
+<script>
+function checkPw(){
+  var v=document.getElementById('pwInput').value;
+  var e=document.getElementById('pwErr');
+  if(v==='ADC2026'){sessionStorage.setItem('adc_auth','1');document.getElementById('gate').remove();}
+  else{e.style.display='block';document.getElementById('pwInput').value='';document.getElementById('pwInput').focus();}
+}
+</script>
+
 <!-- ── Header ── -->
 <header>
   <div class="hd-left">
     <img class="hd-logo" src="../logo.png" alt="">
-    <div class="hd-sep"></div>
-    <span class="hd-label">Vlad Alexe</span>
+    <span class="hd-label">Ingineria AI</span>
   </div>
 </header>
 
@@ -377,24 +475,51 @@ footer {
   <section>
     <p class="sec-label">Resurse de lucru</p>
     <div class="resource-grid">
-
       <div class="res-card linked">
         <a class="card-link" href="git-guide/"></a>
         <div class="res-title">Git Workflow Guide</div>
         <div class="res-desc">Setup, venv, chei API și workflow de lucru.</div>
         <span class="res-tag">ghid</span>
       </div>
-
     </div>
   </section>
 
   <!-- ── Progresul echipelor ── -->
   <section>
     <p class="sec-label">Progresul echipelor</p>
-    <div class="progress-card">
-      <div class="prog-title">Progresul echipelor</div>
-      <p class="prog-desc">Spațiu dedicat urmăririi etapelor de lucru și livrabilelor pe parcursul cursului.</p>
-      <span class="prog-status">În pregătire</span>
+    <div class="dash-tile">
+      <div class="dash-left">
+        <div class="dash-title">Team Dashboard</div>
+        <p class="dash-desc">Urmărește progresul echipelor pe GitHub: milestones, issues, repo-uri și livrabile.</p>
+        <a class="dash-btn" href="progress/">Open dashboard →</a>
+      </div>
+      <div class="dash-right">
+        <div class="dash-stats-row">
+          <div class="dash-mini">
+            <span class="dash-mini-val">61%</span>
+            <span class="dash-mini-label">Overall</span>
+          </div>
+          <div class="dash-mini">
+            <span class="dash-mini-val">C2</span>
+            <span class="dash-mini-label">Etapa curentă</span>
+          </div>
+        </div>
+        <div class="dash-team-row">
+          <span class="dash-team-name">Team 1</span>
+          <div class="dash-team-bar"><div class="dash-team-fill" style="width:62%"></div></div>
+          <span class="dash-team-pct">62%</span>
+        </div>
+        <div class="dash-team-row">
+          <span class="dash-team-name">Team 2</span>
+          <div class="dash-team-bar"><div class="dash-team-fill" style="width:80%"></div></div>
+          <span class="dash-team-pct">80%</span>
+        </div>
+        <div class="dash-team-row">
+          <span class="dash-team-name">Team 3</span>
+          <div class="dash-team-bar"><div class="dash-team-fill" style="width:40%"></div></div>
+          <span class="dash-team-pct">40%</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -475,7 +600,7 @@ footer {
     Vlad Alexe<br>
     <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
     &nbsp;·&nbsp;
-    <span>Licență</span>
+    <a href="../LICENSE">CC BY-NC-SA 4.0</a>
   </div>
 </footer>
 

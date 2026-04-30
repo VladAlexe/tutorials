@@ -24,16 +24,16 @@
 }
 
 :root.light {
-  --bg:       #ffffff;
-  --surface:  #f5f5f5;
-  --border:   #e5e5e5;
-  --border-hi:#cccccc;
-  --text:     #111111;
-  --dim:      #888888;
-  --sub:      #444444;
+  --bg:       #faf9f6;
+  --surface:  #f3f1eb;
+  --border:   #e2ddd3;
+  --border-hi:#c9c3b5;
+  --text:     #1c1b18;
+  --dim:      #9e9789;
+  --sub:      #6b655b;
   --accent:   #b5784a;
   --blue:     #2f6fa8;
-  --green:    #3d7a52;
+  --green:    #5a7a5a;
   --red:      #a04040;
 }
 
@@ -394,13 +394,10 @@ section { padding-top: 2.4rem; }
 /* ── Footer ── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 1rem 2rem;
-  font-size: 11px; color: var(--dim);
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 0.5rem;
+  padding: 1.2rem 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1rem;
 }
-footer a { color: var(--dim); }
-footer a:hover { color: var(--text); }
 
 /* ── Inline code ── */
 code {
@@ -426,6 +423,21 @@ code {
 
 /* ── Theme button ── */
 .theme-btn { font-family: 'JetBrains Mono', monospace; }
+
+/* ── Nav logo ── */
+.nav-logo {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  position: relative; top: -1px;
+}
+
+/* ── Footer two-col ── */
+.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
+.ft-col a { color: var(--dim); }
+.ft-col a:hover { color: var(--text); }
 </style>
 </head>
 <body>
@@ -433,7 +445,7 @@ code {
 <!-- ── Nav ── -->
 <nav>
   <div class="nav-left">
-    <a class="back-link" href="../">← AI Engineering</a>
+    <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
     <div class="nav-sep"></div>
     <div class="breadcrumb">
       <a href="../../">tutorials</a>
@@ -690,11 +702,19 @@ code {
 </main>
 
 <footer>
-  <a href="../">← AI Engineering</a>
-  <span>
-    <a href="../../LICENSE">CC BY-NC-SA 4.0</a>&nbsp;·&nbsp;
-    <a href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-  </span>
+  <div class="ft-col">
+    Universitatea Babeș-Bolyai · Cluj-Napoca<br>
+    Facultatea de Sociologie și Asistență Socială<br>
+    Masteratul Analiza Datelor Complexe
+  </div>
+  <div class="ft-col">
+    Ingineria AI · Aplicații cu agenți inteligenți<br>
+    Semestrul IV · Laborator<br>
+    Vlad Alexe<br>
+    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    &nbsp;·&nbsp;
+    <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
+  </div>
 </footer>
 
 <script>
@@ -712,7 +732,7 @@ function toggleTheme() {
   applyTheme(!isLight);
 }
 
-applyTheme(localStorage.getItem('theme') === 'light');
+applyTheme(localStorage.getItem('theme') !== 'dark');
 </script>
 </body>
 </html>
