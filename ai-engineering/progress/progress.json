@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-04-30 18:59",
+    "updated_at":  "2026-04-30 20:18",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -21,7 +21,7 @@
                       "issues_url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues",
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-1/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                      "overall_percent":  24,
+                      "overall_percent":  29,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "closed":  4,
@@ -30,10 +30,10 @@
                                                                                  "percent":  40
                                                                              },
                                        "C2 - Model ecosystem":  {
-                                                                    "closed":  0,
-                                                                    "open":  7,
+                                                                    "closed":  1,
+                                                                    "open":  6,
                                                                     "total":  7,
-                                                                    "percent":  0
+                                                                    "percent":  14
                                                                 }
                                    },
                       "open_issues":  [
@@ -62,10 +62,6 @@
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/13"
                                           },
                                           {
-                                              "title":  "student_01 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/12"
-                                          },
-                                          {
                                               "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/11"
                                           },
@@ -76,6 +72,10 @@
                                           {
                                               "title":  "student_04 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/9"
+                                          },
+                                          {
+                                              "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/8"
                                           }
                                       ]
                   },
@@ -216,7 +216,7 @@
                       "issues_url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues",
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-4/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                      "overall_percent":  35,
+                      "overall_percent":  41,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "closed":  6,
@@ -225,10 +225,10 @@
                                                                                  "percent":  60
                                                                              },
                                        "C2 - Model ecosystem":  {
-                                                                    "closed":  0,
-                                                                    "open":  7,
+                                                                    "closed":  1,
+                                                                    "open":  6,
                                                                     "total":  7,
-                                                                    "percent":  0
+                                                                    "percent":  14
                                                                 }
                                    },
                       "open_issues":  [
@@ -253,10 +253,6 @@
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/14"
                                           },
                                           {
-                                              "title":  "student_02 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/13"
-                                          },
-                                          {
                                               "title":  "student_01 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/12"
                                           },
@@ -271,6 +267,10 @@
                                           {
                                               "title":  "student_01 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/3"
+                                          },
+                                          {
+                                              "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/2"
                                           }
                                       ]
                   },
@@ -281,13 +281,13 @@
                       "issues_url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues",
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-5/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                      "overall_percent":  0,
+                      "overall_percent":  6,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
-                                                                                 "closed":  0,
-                                                                                 "open":  10,
+                                                                                 "closed":  1,
+                                                                                 "open":  9,
                                                                                  "total":  10,
-                                                                                 "percent":  0
+                                                                                 "percent":  10
                                                                              },
                                        "C2 - Model ecosystem":  {
                                                                     "closed":  0,
@@ -346,13 +346,13 @@
                       "issues_url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues",
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-6/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                      "overall_percent":  24,
+                      "overall_percent":  29,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
-                                                                                 "closed":  4,
-                                                                                 "open":  6,
+                                                                                 "closed":  5,
+                                                                                 "open":  5,
                                                                                  "total":  10,
-                                                                                 "percent":  40
+                                                                                 "percent":  50
                                                                              },
                                        "C2 - Model ecosystem":  {
                                                                     "closed":  0,
