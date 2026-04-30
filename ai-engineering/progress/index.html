@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team Dashboard · Ingineria AI ADC 2026</title>
+<title>Team Dashboard &middot; Ingineria AI ADC 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
@@ -19,8 +19,6 @@
   --dim:       #9e9789;
   --accent:    #b5784a;
   --accent-lo: #d4a882;
-  --green:     #5a7a5a;
-  --green-lo:  #8aab8a;
 }
 
 html { scroll-behavior: smooth; }
@@ -38,7 +36,6 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
-/* ── Nav ── */
 nav {
   height: 44px;
   border-bottom: 1px solid var(--border);
@@ -66,104 +63,154 @@ nav {
 .back-link:hover { color: var(--text); }
 
 .nav-logo {
-  width: 14px; height: 14px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
   margin: 0 0.1rem;
-  position: relative; top: -1px;
+  position: relative;
+  top: -1px;
 }
 
 .nav-sep { width: 1px; height: 13px; background: var(--border); }
 
 .breadcrumb {
-  display: flex; align-items: center; gap: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px; color: var(--dim);
+  font-size: 10.5px;
+  color: var(--dim);
 }
 .breadcrumb a { color: var(--sub); }
 .breadcrumb a:hover { color: var(--text); }
 .breadcrumb .cur { color: var(--text); }
 .breadcrumb .sl { color: var(--border-hi); }
 
-/* ── Hero ── */
-.hero { padding: 1.8rem 2rem 1.6rem; border-bottom: 1px solid var(--border); }
+.hero {
+  padding: 1.8rem 2rem 1.6rem;
+  border-bottom: 1px solid var(--border);
+}
 
 .hero-tag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 0.4rem;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
 }
 
 .hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 2rem; font-weight: 700;
-  color: var(--text); letter-spacing: -0.025em; line-height: 1.1;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
   margin-bottom: 0.6rem;
 }
 
 .hero-row {
-  display: flex; flex-wrap: wrap; align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.4rem 1.4rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px; color: var(--dim);
+  font-size: 10.5px;
+  color: var(--dim);
 }
 .hero-row a { color: var(--sub); transition: color 0.12s; }
 .hero-row a:hover { color: var(--text); }
 
-/* ── Main ── */
-main { flex: 1; padding: 0 2rem 3rem; width: 100%; max-width: 1040px; }
+main {
+  flex: 1;
+  padding: 0 2rem 3rem;
+  width: 100%;
+  max-width: 1040px;
+}
+
 section { padding-top: 2rem; }
 
 .sec-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 0.8rem;
-  padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
 }
 
-/* ── Stats band ── */
 .stats-band {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1px; border: 1px solid var(--border); border-radius: 4px;
-  overflow: hidden; background: var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--border);
 }
 
 .stat-tile {
-  background: var(--surface); padding: 1.1rem 1.3rem;
-  display: flex; flex-direction: column; gap: 0.2rem;
+  background: var(--surface);
+  padding: 1.1rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .stat-val {
   font-family: 'Fraunces', serif;
-  font-size: 2rem; font-weight: 700; color: var(--text);
-  letter-spacing: -0.04em; line-height: 1;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .stat-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px; color: var(--dim);
-  letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 9.5px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-/* ── Metro Map ── */
 .metro-map {
   border: 1px solid var(--border);
   background: var(--surface);
   border-radius: 4px;
-  padding: 1.4rem 1.8rem 1.2rem;
+  padding: 1.1rem 1.15rem 1rem;
   overflow-x: auto;
 }
 
-.metro-row {
-  display: grid;
-  grid-template-columns: 72px 1fr;
-  align-items: center;
-  gap: 20px;
-  margin: 14px 0;
+.metro-header {
+  margin-bottom: 0.9rem;
 }
 
-.metro-header-row { margin-bottom: 0; }
+.metro-header p {
+  max-width: 44rem;
+  font-size: 12px;
+  color: var(--sub);
+}
+
+.metro-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 620px;
+}
+
+.metro-axis,
+.metro-row-wrap {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+}
 
 .metro-team-label {
   font-family: 'JetBrains Mono', monospace;
@@ -172,210 +219,439 @@ section { padding-top: 2rem; }
   text-align: right;
   white-space: nowrap;
 }
-.metro-team-label a { color: var(--accent); transition: color 0.12s; }
-.metro-team-label a:hover { color: var(--text); }
+
+.metro-team-label-axis { visibility: hidden; }
 
 .metro-line {
   display: grid;
   position: relative;
-  min-width: 320px;
+  grid-template-columns: repeat(var(--metro-cols), minmax(68px, 1fr));
 }
 
-.metro-line::before {
+.metro-row {
+  min-height: 50px;
+}
+
+.metro-row::before {
   content: '';
   position: absolute;
-  top: 13px; left: 0; right: 0;
-  height: 2px;
-  background: var(--border);
+  top: 14px;
+  left: calc(50% / var(--metro-cols));
+  right: calc(50% / var(--metro-cols));
+  height: 1px;
+  background: var(--border-hi);
   z-index: 0;
 }
 
-.metro-header-line::before { display: none; }
+.metro-line-axis::before { display: none; }
 
-.metro-stop { position: relative; z-index: 1; text-align: center; }
+.metro-station {
+  position: relative;
+  z-index: 1;
+  min-height: 50px;
+  padding: 0.25rem 0.2rem 0.2rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  justify-content: flex-start;
+}
+
+.metro-column-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
 
 .metro-dot {
-  width: 26px; height: 26px;
-  margin: 0 auto 4px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: 2px solid var(--border-hi);
+  border: 1.5px solid var(--border-hi);
   background: var(--bg);
-}
-
-.metro-stop.done .metro-dot {
-  background: var(--green);
-  border-color: var(--green);
-}
-
-.metro-stop.active .metro-dot {
-  background: linear-gradient(90deg, var(--accent) 50%, var(--bg) 50%);
-  border-color: var(--accent);
+  display: block;
+  overflow: hidden;
 }
 
 .metro-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: 0.08em;
-  color: var(--dim); text-transform: uppercase;
-  line-height: 1.3;
+  font-size: 10px;
+  color: var(--dim);
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
-.metro-percent {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--accent); margin-top: 2px;
+.metro-status-upcoming .metro-dot {
+  border-color: var(--border-hi);
+  background: var(--bg);
 }
 
-/* ── Team Grid ── */
+.metro-status-created .metro-dot {
+  border-color: var(--accent-lo);
+  background: var(--surface);
+}
+
+.metro-status-created .metro-label {
+  color: var(--sub);
+}
+
+.metro-status-active .metro-dot {
+  border-color: var(--accent);
+  background: conic-gradient(var(--accent) calc(var(--progress, 0) * 1%), var(--bg) 0);
+}
+
+.metro-status-active .metro-label {
+  color: var(--accent);
+}
+
+.metro-status-done .metro-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.metro-status-done .metro-label {
+  color: var(--text);
+}
+
+.metro-current-column {
+  background: rgba(181, 120, 74, 0.08);
+}
+
+.metro-current-column .metro-column-label {
+  color: var(--accent);
+}
+
 .team-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; border: 1px solid var(--border);
-  border-radius: 4px; overflow: hidden; background: var(--border);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--border);
 }
 
-.team-card { background: var(--surface); display: flex; flex-direction: column; }
+.team-card {
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
 
 .tc-head {
-  padding: 1rem 1.1rem 0.7rem;
+  padding: 1rem 1.1rem 0.8rem;
   border-bottom: 1px solid var(--border);
-  display: flex; align-items: baseline;
-  justify-content: space-between; gap: 0.5rem;
-  background: var(--bg);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(250, 249, 246, 0.75);
+}
+
+.tc-name-block {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .tc-name {
   font-family: 'Fraunces', serif;
-  font-size: 1rem; font-weight: 700;
-  color: var(--accent); letter-spacing: -0.01em;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
   transition: color 0.12s;
 }
-.tc-name:hover { color: var(--text); }
+.tc-name:hover { color: var(--accent); }
 
 .tc-stage {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--accent); letter-spacing: 0.05em;
+  font-size: 10px;
+  color: var(--sub);
+  line-height: 1.5;
 }
 
-.tc-progress {
-  padding: 0.7rem 1.1rem; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 0.7rem;
+.tc-overall {
+  flex-shrink: 0;
+  text-align: right;
 }
 
-.tc-bar { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.tc-fill { height: 100%; background: var(--accent-lo); border-radius: 3px; }
+.tc-overall-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
 .tc-pct {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; color: var(--sub);
-  min-width: 32px; text-align: right;
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
 }
 
 .tc-links {
-  padding: 0.5rem 1.1rem; border-bottom: 1px solid var(--border);
-  display: flex; gap: 1rem;
+  padding: 0.55rem 1.1rem 0.15rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
 .tc-link {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--sub); transition: color 0.1s;
+  font-size: 10px;
+  color: var(--sub);
+  transition: color 0.1s;
 }
 .tc-link:hover { color: var(--accent); }
 
-.tc-milestones {
-  padding: 0.6rem 1.1rem; border-bottom: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 2px;
-}
-
-.tc-ms {
+.tc-links-sep {
+  color: var(--border-hi);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--dim);
-  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 10px;
 }
 
-.tc-ms::before {
-  content: '';
-  display: inline-block; width: 5px; height: 5px;
-  border-radius: 50%; background: var(--border-hi); flex-shrink: 0;
+.tc-milestones {
+  padding: 0.8rem 1.1rem 0.55rem;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
 }
 
-.tc-ms.done { color: var(--green-lo); }
-.tc-ms.done::before { background: var(--green-lo); }
-.tc-ms.active { color: var(--accent-lo); }
-.tc-ms.active::before { background: var(--accent-lo); }
+.tc-chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  padding: 0.35rem 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+  min-width: 0;
+}
 
-.tc-issues { padding: 0.6rem 1.1rem 0.9rem; display: flex; flex-direction: column; gap: 3px; }
+.tc-chip-code,
+.tc-chip-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.tc-chip-code {
+  color: var(--sub);
+  text-transform: uppercase;
+}
+
+.tc-chip-value {
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.tc-chip.metro-status-upcoming {
+  background: transparent;
+}
+
+.tc-chip.metro-status-created {
+  border-color: rgba(181, 120, 74, 0.35);
+}
+
+.tc-chip.metro-status-created .tc-chip-code,
+.tc-chip.metro-status-active .tc-chip-code {
+  color: var(--accent);
+}
+
+.tc-chip.metro-status-created .tc-chip-value {
+  color: var(--sub);
+}
+
+.tc-chip.metro-status-active {
+  border-color: var(--accent-lo);
+  background: rgba(181, 120, 74, 0.08);
+}
+
+.tc-chip.metro-status-active .tc-chip-value {
+  color: var(--accent);
+}
+
+.tc-chip.metro-status-done {
+  border-color: var(--accent);
+  background: rgba(181, 120, 74, 0.14);
+}
+
+.tc-chip.metro-status-done .tc-chip-code,
+.tc-chip.metro-status-done .tc-chip-value {
+  color: var(--text);
+}
+
+.tc-chip-current {
+  box-shadow: inset 0 0 0 1px rgba(181, 120, 74, 0.12);
+  background: rgba(181, 120, 74, 0.06);
+}
+
+.tc-progress {
+  padding: 0.55rem 1.1rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tc-bar {
+  height: 7px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.tc-fill {
+  height: 100%;
+  background: var(--accent-lo);
+  border-radius: 999px;
+}
+
+.tc-progress-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+  min-width: 30px;
+  text-align: right;
+}
+
+.tc-issues {
+  padding: 0.75rem 1.1rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
 
 .tc-issue-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; color: var(--dim);
-  letter-spacing: 0.08em; text-transform: uppercase;
-  margin-bottom: 0.2rem;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.1rem;
 }
 
 .tc-issue {
-  font-size: 11.5px; color: var(--sub); line-height: 1.4;
-  padding-left: 0.8rem; position: relative; display: block;
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.45;
+  display: block;
   transition: color 0.1s;
 }
 .tc-issue:hover { color: var(--accent); }
-.tc-issue::before { content: '·'; position: absolute; left: 0; color: var(--accent-lo); }
 
 .tc-issue-more {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--dim); padding-left: 0.8rem;
-  margin-top: 1px; display: block; transition: color 0.1s;
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 0.15rem;
+  display: block;
+  transition: color 0.1s;
 }
 .tc-issue-more:hover { color: var(--accent); }
-.tc-issue-more::before { content: '·'; position: absolute; left: 0; color: var(--border-hi); }
 
-/* ── Issues table ── */
-.issues-table { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.tc-empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.issues-table {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
 
 .issue-row {
-  display: grid; grid-template-columns: 70px 1fr 52px;
-  align-items: center; border-bottom: 1px solid var(--border);
-  padding: 0.55rem 1rem; gap: 1rem;
+  display: grid;
+  grid-template-columns: 70px 1fr 52px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding: 0.55rem 1rem;
+  gap: 1rem;
 }
 .issue-row:last-child { border-bottom: none; }
 .issue-row:nth-child(even) { background: var(--surface); }
 
 .issue-team {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--accent); letter-spacing: 0.04em;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.04em;
   transition: color 0.1s;
 }
 .issue-team:hover { color: var(--text); }
 
-.issue-title { font-size: 12.5px; color: var(--sub); transition: color 0.1s; }
+.issue-title {
+  font-size: 12.5px;
+  color: var(--sub);
+  transition: color 0.1s;
+}
 .issue-title:hover { color: var(--accent); }
 
 .issue-ms {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--dim); text-align: right;
+  font-size: 10px;
+  color: var(--dim);
+  text-align: right;
 }
 
-/* ── Loading ── */
 .loading {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; color: var(--dim); padding: 1.2rem 0;
+  font-size: 11px;
+  color: var(--dim);
+  padding: 1.2rem 0;
 }
 
-/* ── Footer ── */
+.dashboard-empty {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  padding: 1rem 1.1rem;
+}
+
 footer {
-  border-top: 1px solid var(--border); padding: 1.2rem 2rem;
-  display: flex; justify-content: space-between;
-  align-items: flex-start; flex-wrap: wrap; gap: 1rem;
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
+.ft-col {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 2;
+}
 .ft-col a { color: var(--dim); }
 .ft-col a:hover { color: var(--text); }
 
-/* ── Responsive ── */
 @media (max-width: 720px) {
   nav { padding: 0 1rem; }
   .hero { padding: 1.5rem 1rem 1.4rem; }
   main { padding: 0 1rem 2.5rem; }
   .stats-band { grid-template-columns: repeat(2, 1fr); }
+  .metro-map { padding: 1rem; }
+  .metro-header { margin-bottom: 0.8rem; }
+  .metro-header p { font-size: 11.5px; }
+  .metro-grid { min-width: 520px; }
   .team-grid { grid-template-columns: 1fr; }
+  .tc-milestones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .issue-row { grid-template-columns: 60px 1fr; }
   .issue-ms { display: none; }
   footer { padding: 1rem; }
@@ -386,7 +662,7 @@ footer {
 
 <nav>
   <div class="nav-left">
-    <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
+    <a class="back-link" href="../">&#8592; <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
     <div class="nav-sep"></div>
     <div class="breadcrumb">
       <a href="../">ai-engineering</a>
@@ -397,25 +673,26 @@ footer {
 </nav>
 
 <div class="hero">
-  <div class="hero-tag">ADC 2026 · Ingineria AI</div>
+  <div class="hero-tag">ADC 2026 &middot; Ingineria AI</div>
   <h1>Team Dashboard</h1>
   <div class="hero-row" id="hero-row">
-    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">github.com/AIE-2026 ↗</a>
-    <span>·</span>
-    <span id="hero-meta">—</span>
+    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">github.com/AIE-2026 &#8599;</a>
+    <span>&middot;</span>
+    <span id="hero-meta">&mdash;</span>
   </div>
 </div>
 
-<main>
-
+<main id="dashboard-main">
   <section>
     <p class="sec-label">Statistici</p>
-    <div class="stats-band" id="stats-band"><div class="stat-tile"><span class="loading">Se încarcă…</span></div></div>
+    <div class="stats-band" id="stats-band">
+      <div class="stat-tile"><span class="loading">Se &icirc;ncarc&#259;&hellip;</span></div>
+    </div>
   </section>
 
   <section>
-    <p class="sec-label">Hartă parcurs</p>
-    <div id="metro-wrap"><span class="loading">Se încarcă…</span></div>
+    <p class="sec-label">Hart&#259; parcurs</p>
+    <div id="metro-wrap"><span class="loading">Se &icirc;ncarc&#259;&hellip;</span></div>
   </section>
 
   <section>
@@ -427,178 +704,287 @@ footer {
     <p class="sec-label">Issues deschise</p>
     <div class="issues-table" id="issues-table"></div>
   </section>
-
 </main>
 
 <footer>
   <div class="ft-col">
-    Universitatea Babeș-Bolyai · Cluj-Napoca<br>
-    Facultatea de Sociologie și Asistență Socială<br>
+    Universitatea Babe&#537;-Bolyai &middot; Cluj-Napoca<br>
+    Facultatea de Sociologie &#537;i Asisten&#539;&#259; Social&#259;<br>
     Masteratul Analiza Datelor Complexe
   </div>
   <div class="ft-col">
-    Ingineria AI · Aplicații cu agenți inteligenți<br>
-    Semestrul IV · Laborator<br>
+    Ingineria AI &middot; Aplica&#539;ii cu agen&#539;i inteligen&#539;i<br>
+    Semestrul IV &middot; Laborator<br>
     Vlad Alexe<br>
-    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-    &nbsp;·&nbsp;
+    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+    &nbsp;&middot;&nbsp;
     <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
   </div>
 </footer>
 
 <script>
-function msCode(name) {
-  const m = name.match(/^(C\d+|Final)/i);
-  return m ? m[1] : name.split(' ')[0];
+const EMPTY_STATE_MESSAGE = 'Dashboard data is not available yet.';
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
 }
 
-function msStatus(team, msName, allMs) {
-  const currentIdx = allMs.indexOf(team.current_stage);
-  const msIdx = allMs.indexOf(msName);
-  const prog = team.progress[msName];
-  if (msIdx < currentIdx) return 'done';
-  if (msIdx === currentIdx) {
-    if (prog && prog.percent === 100) return 'done';
-    return 'active';
+function toNumber(value) {
+  const numericValue = Number(value);
+  return Number.isFinite(numericValue) ? numericValue : 0;
+}
+
+function clampPercent(value) {
+  return Math.max(0, Math.min(100, Math.round(toNumber(value))));
+}
+
+function msCode(name) {
+  const safeName = String(name || '');
+  const match = safeName.match(/^(C\d+|Final)/i);
+  return match ? match[1] : safeName.split(' ')[0] || '\u2014';
+}
+
+function shortTeamName(name, index) {
+  const match = String(name || '').match(/(\d+)/);
+  return match ? `T${match[1]}` : `T${index + 1}`;
+}
+
+function getMilestoneState(team, milestoneName) {
+  const progress = team.progress && team.progress[milestoneName];
+  if (!progress || toNumber(progress.total) === 0) {
+    return { status: 'upcoming', label: '\u2014', percent: 0 };
   }
-  if (prog && prog.percent === 100) return 'done';
-  if (prog && prog.percent > 0) return 'active';
-  return 'future';
+
+  const total = toNumber(progress.total);
+  const closed = toNumber(progress.closed);
+  const percent = clampPercent(progress.percent);
+
+  if (closed === 0) {
+    return { status: 'created', label: `0/${total}`, percent: 0 };
+  }
+
+  if (percent >= 100) {
+    return { status: 'done', label: `${closed}/${total}`, percent: 100 };
+  }
+
+  return { status: 'active', label: `${closed}/${total}`, percent };
+}
+
+function sanitizeIssueTitle(title) {
+  const cleaned = String(title || '').trim().replace(/^@\S+\s*-\s*/, '');
+  const parts = cleaned.split(/\s+-\s+/);
+
+  if (parts.length < 2) {
+    return cleaned;
+  }
+
+  const [first, ...rest] = parts;
+  const next = rest[0] || '';
+  const firstLooksLikeWorkCode = /^(C\d+(\.\d+)?|Final|Issue\s+\d+)/i.test(first);
+  const nextLooksLikeWorkCode = /^(C\d+(\.\d+)?|Final|Issue\s+\d+)/i.test(next);
+  const firstLooksLikeUser =
+    /^student[_ -]*\d+$/i.test(first) ||
+    /^[@a-z0-9_.-]+$/i.test(first) ||
+    /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+$/.test(first);
+
+  if (!firstLooksLikeWorkCode && firstLooksLikeUser && nextLooksLikeWorkCode) {
+    return rest.join(' - ');
+  }
+
+  return cleaned;
 }
 
 function renderStats(data) {
-  const teams = data.teams;
-  let open = 0, closed = 0, pct = 0;
-  teams.forEach(t => {
-    open += t.open_issues.length;
-    Object.values(t.progress).forEach(ms => { closed += ms.closed; });
-    pct += t.overall_percent;
+  const teams = Array.isArray(data.teams) ? data.teams : [];
+  let openIssues = 0;
+  let closedIssues = 0;
+  let totalPercent = 0;
+
+  teams.forEach((team) => {
+    Object.values(team.progress || {}).forEach((milestone) => {
+      openIssues += toNumber(milestone.open);
+      closedIssues += toNumber(milestone.closed);
+    });
+    totalPercent += clampPercent(team.overall_percent);
   });
-  const avg = teams.length ? Math.round(pct / teams.length) : 0;
+
+  const averageProgress = teams.length ? Math.round(totalPercent / teams.length) : 0;
 
   document.getElementById('stats-band').innerHTML =
     `<div class="stat-tile"><span class="stat-val">${teams.length}</span><span class="stat-label">Echipe</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${open}</span><span class="stat-label">Open Issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${closed}</span><span class="stat-label">Closed Issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${avg}%</span><span class="stat-label">Progres mediu</span></div>`;
+    `<div class="stat-tile"><span class="stat-val">${openIssues}</span><span class="stat-label">Open Issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${closedIssues}</span><span class="stat-label">Closed Issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${averageProgress}%</span><span class="stat-label">Progres mediu</span></div>`;
 
   document.getElementById('hero-meta').textContent =
-    `${teams.length} echipe · Actualizat: ${data.updated_at}`;
+    `${teams.length} echipe \u00b7 Actualizat: ${data.updated_at || '\u2014'}`;
 }
 
 function renderMetroMap(data) {
-  const ms = data.milestones;
-  const cols = ms.length;
-  const colStyle = `grid-template-columns: repeat(${cols}, 1fr)`;
+  const milestones = Array.isArray(data.milestones) ? data.milestones : [];
+  const teams = Array.isArray(data.teams) ? data.teams : [];
+  const currentMilestone = data.current_milestone;
+  const columns = Math.max(milestones.length, 1);
 
-  const headerCells = ms.map(m =>
-    `<div class="metro-stop"><div class="metro-label">${msCode(m)}</div></div>`
-  ).join('');
+  const headerCells = milestones.map((milestone) => {
+    const currentClass = milestone === currentMilestone ? ' metro-current-column' : '';
+    return `<div class="metro-station${currentClass}"><span class="metro-column-label">${escapeHtml(msCode(milestone))}</span></div>`;
+  }).join('');
 
-  const headerRow =
-    `<div class="metro-row metro-header-row">` +
-    `<div class="metro-team-label"></div>` +
-    `<div class="metro-line metro-header-line" style="${colStyle}">${headerCells}</div>` +
-    `</div>`;
-
-  const teamRows = data.teams.map(team => {
-    const shortName = team.name.replace('Team ', 'T');
-    const stops = ms.map(m => {
-      const status = msStatus(team, m, ms);
-      const prog = team.progress[m];
-      const pct = prog ? prog.percent : 0;
-      const pctHtml = (status === 'active' && pct > 0)
-        ? `<div class="metro-percent">${pct}%</div>`
-        : '';
-      return `<div class="metro-stop ${status}"><div class="metro-dot"></div>${pctHtml}</div>`;
+  const teamRows = teams.map((team, index) => {
+    const stations = milestones.map((milestone) => {
+      const state = getMilestoneState(team, milestone);
+      const currentClass = milestone === currentMilestone ? ' metro-current-column' : '';
+      return (
+        `<div class="metro-station metro-status-${state.status}${currentClass}" style="--progress:${state.percent};">` +
+          `<span class="metro-dot" aria-hidden="true"></span>` +
+          `<span class="metro-label">${escapeHtml(state.label)}</span>` +
+        `</div>`
+      );
     }).join('');
 
-    return `<div class="metro-row">` +
-      `<div class="metro-team-label"><a href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${shortName}</a></div>` +
-      `<div class="metro-line" style="${colStyle}">${stops}</div>` +
-      `</div>`;
+    return (
+      `<div class="metro-row-wrap">` +
+        `<div class="metro-team-label">${escapeHtml(shortTeamName(team.name, index))}</div>` +
+        `<div class="metro-line metro-row" style="--metro-cols:${columns};">${stations}</div>` +
+      `</div>`
+    );
   }).join('');
 
   document.getElementById('metro-wrap').innerHTML =
-    `<div class="metro-map">${headerRow}${teamRows}</div>`;
+    `<div class="metro-map">` +
+      `<div class="metro-header">` +
+        `<p>Fiecare sta&#539;ie reprezint&#259; un milestone. Progresul este calculat din issues &icirc;nchise &icirc;n GitHub.</p>` +
+      `</div>` +
+      `<div class="metro-grid">` +
+        `<div class="metro-axis">` +
+          `<div class="metro-team-label metro-team-label-axis">T</div>` +
+          `<div class="metro-line metro-line-axis" style="--metro-cols:${columns};">${headerCells}</div>` +
+        `</div>` +
+        `${teamRows}` +
+      `</div>` +
+    `</div>`;
 }
 
 function renderTeams(data) {
-  const ms = data.milestones;
-  document.getElementById('team-grid').innerHTML = data.teams.map(team => {
-    const pct = team.overall_percent;
-    const stage = msCode(team.current_stage);
+  const milestones = Array.isArray(data.milestones) ? data.milestones : [];
+  const currentMilestone = data.current_milestone;
+  const teams = Array.isArray(data.teams) ? data.teams : [];
 
-    const msHtml = ms.map(m => {
-      const status = msStatus(team, m, ms);
-      const prog = team.progress[m];
-      const pctText = (prog && status !== 'future') ? ` — ${prog.percent}%` : '';
-      return `<span class="tc-ms ${status}">${msCode(m)}${pctText}</span>`;
+  document.getElementById('team-grid').innerHTML = teams.map((team) => {
+    const overallPercent = clampPercent(team.overall_percent);
+    const openIssues = Array.isArray(team.open_issues) ? team.open_issues : [];
+    const visibleIssues = openIssues.slice(0, 3);
+    const hiddenCount = Math.max(openIssues.length - visibleIssues.length, 0);
+
+    const milestoneChips = milestones.map((milestone) => {
+      const state = getMilestoneState(team, milestone);
+      const currentClass = milestone === currentMilestone ? ' tc-chip-current' : '';
+      return (
+        `<div class="tc-chip metro-status-${state.status}${currentClass}">` +
+          `<span class="tc-chip-code">${escapeHtml(msCode(milestone))}</span>` +
+          `<span class="tc-chip-value">${escapeHtml(state.label)}</span>` +
+        `</div>`
+      );
     }).join('');
 
-    const shown = team.open_issues.slice(0, 3);
-    const moreCount = team.open_issues.length - shown.length;
-    const issuesHtml = shown.map(i =>
-      `<a class="tc-issue" href="${i.url}" target="_blank" rel="noopener noreferrer">${i.title}</a>`
+    const issuesHtml = visibleIssues.map((issue) =>
+      `<a class="tc-issue" href="${issue.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`
     ).join('');
-    const moreHtml = moreCount > 0
-      ? `<a class="tc-issue-more" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">+ ${moreCount} mai multe ↗</a>`
+
+    const moreHtml = hiddenCount > 0
+      ? `<a class="tc-issue-more" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
       : '';
 
-    return `<div class="team-card">` +
-      `<div class="tc-head">` +
-      `<a class="tc-name" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${team.name} ↗</a>` +
-      `<span class="tc-stage">${stage} activ</span>` +
-      `</div>` +
-      `<div class="tc-progress">` +
-      `<div class="tc-bar"><div class="tc-fill" style="width:${pct}%"></div></div>` +
-      `<span class="tc-pct">${pct}%</span>` +
-      `</div>` +
-      `<div class="tc-links">` +
-      `<a class="tc-link" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">Issues ↗</a>` +
-      `<a class="tc-link" href="${team.milestones_url}" target="_blank" rel="noopener noreferrer">Milestones ↗</a>` +
-      `</div>` +
-      `<div class="tc-milestones">${msHtml}</div>` +
-      `<div class="tc-issues">` +
-      `<div class="tc-issue-label">Open issues (${team.open_issues.length})</div>` +
-      `${issuesHtml}${moreHtml}` +
-      `</div>` +
-      `</div>`;
+    const issueBlock = openIssues.length
+      ? `${issuesHtml}${moreHtml}`
+      : '<div class="tc-empty">Nicio issue deschis&#259;.</div>';
+
+    return (
+      `<article class="team-card">` +
+        `<div class="tc-head">` +
+          `<div class="tc-name-block">` +
+            `<a class="tc-name" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
+            `<div class="tc-stage">Current stage: ${escapeHtml(team.current_stage || '\u2014')}</div>` +
+          `</div>` +
+          `<div class="tc-overall">` +
+            `<span class="tc-overall-label">Overall</span>` +
+            `<span class="tc-pct">${overallPercent}%</span>` +
+          `</div>` +
+        `</div>` +
+        `<div class="tc-links">` +
+          `<a class="tc-link" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">Repo &#8599;</a>` +
+          `<span class="tc-links-sep">&middot;</span>` +
+          `<a class="tc-link" href="${team.issues_url}" target="_blank" rel="noopener noreferrer">Issues &#8599;</a>` +
+          `<span class="tc-links-sep">&middot;</span>` +
+          `<a class="tc-link" href="${team.milestones_url}" target="_blank" rel="noopener noreferrer">Milestones &#8599;</a>` +
+        `</div>` +
+        `<div class="tc-milestones">${milestoneChips}</div>` +
+        `<div class="tc-progress">` +
+          `<div class="tc-bar"><div class="tc-fill" style="width:${overallPercent}%"></div></div>` +
+          `<span class="tc-progress-value">${overallPercent}%</span>` +
+        `</div>` +
+        `<div class="tc-issues">` +
+          `<div class="tc-issue-label">Open issues (${openIssues.length})</div>` +
+          `${issueBlock}` +
+        `</div>` +
+      `</article>`
+    );
   }).join('');
 }
 
 function renderIssues(data) {
   const rows = [];
-  data.teams.forEach(team => {
-    team.open_issues.forEach(issue => {
-      const m = issue.title.match(/^(C\d+|Final)/i);
-      const msLabel = m ? m[1] : '—';
+  const teams = Array.isArray(data.teams) ? data.teams : [];
+
+  teams.forEach((team) => {
+    (team.open_issues || []).forEach((issue) => {
+      const safeTitle = sanitizeIssueTitle(issue.title);
+      const milestoneMatch = safeTitle.match(/^(C\d+|Final)/i) || String(issue.title || '').match(/(C\d+|Final)/i);
+      const milestoneLabel = milestoneMatch ? milestoneMatch[1] : '\u2014';
+
       rows.push(
         `<div class="issue-row">` +
-        `<a class="issue-team" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${team.name}</a>` +
-        `<a class="issue-title" href="${issue.url}" target="_blank" rel="noopener noreferrer">${issue.title}</a>` +
-        `<span class="issue-ms">${msLabel}</span>` +
+          `<a class="issue-team" href="${team.repo_url}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
+          `<a class="issue-title" href="${issue.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(safeTitle)}</a>` +
+          `<span class="issue-ms">${escapeHtml(milestoneLabel)}</span>` +
         `</div>`
       );
     });
   });
-  document.getElementById('issues-table').innerHTML = rows.join('');
+
+  document.getElementById('issues-table').innerHTML = rows.length
+    ? rows.join('')
+    : `<div class="issue-row"><span class="issue-team">&mdash;</span><span class="issue-title">Nu exist&#259; issues deschise.</span><span class="issue-ms">&mdash;</span></div>`;
+}
+
+function renderUnavailable() {
+  document.getElementById('hero-meta').textContent = '\u2014';
+  document.getElementById('dashboard-main').innerHTML =
+    `<p class="loading dashboard-empty">${EMPTY_STATE_MESSAGE}</p>`;
 }
 
 fetch('./progress.json')
-  .then(r => r.json())
-  .then(data => {
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Failed to load progress data');
+    }
+    return response.json();
+  })
+  .then((data) => {
     renderStats(data);
     renderMetroMap(data);
     renderTeams(data);
     renderIssues(data);
   })
   .catch(() => {
-    document.getElementById('stats-band').innerHTML =
-      '<div class="stat-tile"><span class="loading">Eroare la încărcarea datelor.</span></div>';
-    document.getElementById('metro-wrap').innerHTML = '';
-    document.getElementById('team-grid').innerHTML = '';
-    document.getElementById('issues-table').innerHTML = '';
+    renderUnavailable();
   });
 </script>
 </body>
