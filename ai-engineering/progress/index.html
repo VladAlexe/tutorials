@@ -2453,6 +2453,34 @@ function getIssueNumber(issue) {
   return match ? toNumber(match[1]) : 0;
 }
 
+function getMountainBendPoint(previousPoint, currentPoint, segmentIndex) {
+  const direction = segmentIndex % 2 === 1 ? 1 : -1;
+  const deltaX = currentPoint.x - previousPoint.x;
+  const deltaY = currentPoint.y - previousPoint.y;
+  const bendX = previousPoint.x + (deltaX * 0.55) + (direction * (18 + Math.min(16, Math.abs(deltaX) * 0.14)));
+  const candidateY = previousPoint.y + (deltaY * 0.52) + (direction * 6);
+  const minY = Math.min(previousPoint.y, currentPoint.y) + 10;
+  const maxY = Math.max(previousPoint.y, currentPoint.y) - 10;
+
+  return {
+    x: bendX,
+    y: Math.max(minY, Math.min(maxY, candidateY))
+  };
+}
+
+function getMountainRoutePoints() {
+  const route = [COURSE_MOUNTAIN_POINTS[0]];
+
+  for (let index = 1; index < COURSE_MOUNTAIN_POINTS.length; index += 1) {
+    const previousPoint = COURSE_MOUNTAIN_POINTS[index - 1];
+    const currentPoint = COURSE_MOUNTAIN_POINTS[index];
+    route.push(getMountainBendPoint(previousPoint, currentPoint, index));
+    route.push(currentPoint);
+  }
+
+  return route;
+}
+
 function interpolateCoursePoint(percent) {
   const clamped = clampPercent(percent);
 
@@ -2469,10 +2497,20 @@ function interpolateCoursePoint(percent) {
         : (clamped - previousThreshold) / (currentThreshold - previousThreshold);
       const previousPoint = COURSE_MOUNTAIN_POINTS[index - 1];
       const currentPoint = COURSE_MOUNTAIN_POINTS[index];
+      const bendPoint = getMountainBendPoint(previousPoint, currentPoint, index);
 
+      if (ratio <= 0.56) {
+        const firstLegRatio = ratio / 0.56;
+        return {
+          x: previousPoint.x + ((bendPoint.x - previousPoint.x) * firstLegRatio),
+          y: previousPoint.y + ((bendPoint.y - previousPoint.y) * firstLegRatio)
+        };
+      }
+
+      const secondLegRatio = (ratio - 0.56) / 0.44;
       return {
-        x: previousPoint.x + ((currentPoint.x - previousPoint.x) * ratio),
-        y: previousPoint.y + ((currentPoint.y - previousPoint.y) * ratio)
+        x: bendPoint.x + ((currentPoint.x - bendPoint.x) * secondLegRatio),
+        y: bendPoint.y + ((currentPoint.y - bendPoint.y) * secondLegRatio)
       };
     }
   }
@@ -2819,7 +2857,7 @@ function renderJourney(model) {
     return `<span class="${stepClass}">${escapeHtml(stage.short)}</span>${arrow}`;
   }).join('');
 
-  const pathPoints = COURSE_MOUNTAIN_POINTS.map(function(point) {
+  const pathPoints = getMountainRoutePoints().map(function(point) {
     return `${point.x},${point.y}`;
   }).join(' ');
 
