@@ -228,7 +228,7 @@ section { padding-top: 2rem; }
 
 .journey-shell {
   display: grid;
-  grid-template-columns: 0.72fr 1.45fr;
+  grid-template-columns: 0.74fr 1.46fr;
   gap: 1.5rem;
   align-items: start;
 }
@@ -1180,7 +1180,7 @@ section { padding-top: 2rem; }
 
 .project-analytics-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1.05fr 1.1fr 0.95fr;
   gap: 1.25rem;
   align-items: start;
 }
@@ -1299,22 +1299,10 @@ section { padding-top: 2rem; }
 
 .activity-link {
   display: block;
-  padding-left: 0.9rem;
-  position: relative;
   font-size: 12px;
   color: var(--sub);
   line-height: 1.5;
-}
-
-.activity-link::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.58rem;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent-lo);
+  padding: 0.12rem 0;
 }
 
 .activity-link:hover {
@@ -1963,7 +1951,7 @@ function buildDashboardModel(data) {
     backlogMilestone,
     startedTeams,
     blockedTeams,
-    latestOpenIssues: latestOpenIssues.slice(0, 8),
+    latestOpenIssues: latestOpenIssues.slice(0, 6),
     distribution,
     markers: buildMountainMarkers(teams),
     totals: {
@@ -2057,7 +2045,7 @@ function renderJourney(model) {
       `</div>` +
       `<div class="mountain-card">` +
         `<div class="mountain-caption">` +
-          `<div class="mountain-title">Mountain Progress</div>` +
+          `<div class="mountain-title">Progress</div>` +
           `<div class="mountain-badge">` +
             `<span class="mountain-badge-label">Milestone curent</span>` +
             `<span class="mountain-badge-value"><span class="mountain-badge-code">${escapeHtml(model.currentMilestone.code)}</span> &middot; ${escapeHtml(model.currentMilestone.shortTitle)}</span>` +
@@ -2552,12 +2540,14 @@ function buildCourseMarkers(teams) {
 
   return teams.map(function(team) {
     const percent = clampPercent(team.climbProgress);
-    const groupKey = percent <= 8 ? 'near-zero' : String(Math.round(percent / 4));
+    const isBaseCluster = percent === 0;
+    const groupKey = percent === 0
+      ? 'zero'
+      : (percent <= 8 ? `low-${Math.floor(percent)}` : String(Math.round(percent / 4)));
     const groupIndex = percentGroups[groupKey] || 0;
     percentGroups[groupKey] = groupIndex + 1;
     const point = interpolateCoursePoint(percent);
     const status = getSemanticStatus(team);
-    const isBaseCluster = percent <= 8;
 
     return {
       label: team.label,
@@ -2572,7 +2562,7 @@ function buildCourseMarkers(teams) {
       offset: courseMarkerOffset(groupIndex, isBaseCluster),
       status: status,
       isBaseCluster: isBaseCluster,
-      zIndex: team.index === 0 ? 30 : (18 - groupIndex)
+      zIndex: team.index === 0 ? 30 : (isBaseCluster ? Math.max(1, 10 - groupIndex) : (18 - groupIndex))
     };
   });
 }
@@ -2727,7 +2717,7 @@ function buildDashboardModel(data) {
     backlogMilestone: backlogMilestone,
     startedTeams: startedTeams,
     blockedTeams: blockedTeams,
-    latestOpenIssues: latestOpenIssues.slice(0, 8),
+    latestOpenIssues: latestOpenIssues.slice(0, 6),
     distribution: distribution,
     markers: buildCourseMarkers(teams),
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
@@ -2828,15 +2818,13 @@ function renderJourney(model) {
   document.getElementById('journey-wrap').innerHTML =
     `<div class="journey-shell">` +
       `<div class="journey-summary">` +
-        `<p class="journey-copy">Fiecare r&#226;nd rezum&#259; o etap&#259; de curs. Etapele f&#259;r&#259; task-uri sunt afi&#537;ate ca upcoming, iar urcarea pe munte se opre&#537;te la C8.</p>` +
-        `<div class="narrative-path">${narrative}</div>` +
         `<div class="journey-milestones">${milestoneItems}</div>` +
       `</div>` +
       `<div class="mountain-card">` +
         `<div class="mountain-caption">` +
           `<div>` +
-            `<div class="mountain-title">Mountain Progress</div>` +
-            `<div class="mountain-copy">Traseul de aplica&#539;ie merge din Base p&#226;n&#259; la C8. C9 r&#259;m&#226;ne un pas de demo dup&#259; summit.</div>` +
+            `<div class="mountain-title">Progress</div>` +
+            `<div class="mountain-copy">Traseul aplica&#539;iei merge din Base p&#226;n&#259; la C8. C9 r&#259;m&#226;ne etapa de demo.</div>` +
           `</div>` +
           `<div class="mountain-badge">` +
             `<span class="mountain-badge-label">Milestone curent</span>` +
@@ -2903,22 +2891,6 @@ function renderProjectStats(model) {
     }).join('')
     : '<div class="team-empty">Nu exist&#259; issues deschise.</div>';
 
-  const distributionRows = model.distribution.map(function(stage) {
-    const totalTeams = Math.max(model.totals.teamCount, 1);
-    return (
-      `<div class="distribution-row">` +
-        `<span class="distribution-label">${escapeHtml(stage.key)}</span>` +
-        `<div class="distribution-track">` +
-          `<span class="distribution-segment created" style="width:${(stage.counts.created / totalTeams) * 100}%;"></span>` +
-          `<span class="distribution-segment active" style="width:${(stage.counts.active / totalTeams) * 100}%;"></span>` +
-          `<span class="distribution-segment done" style="width:${(stage.counts.done / totalTeams) * 100}%;"></span>` +
-          `<span class="distribution-segment upcoming" style="width:${(stage.counts.upcoming / totalTeams) * 100}%;"></span>` +
-        `</div>` +
-        `<span class="distribution-meta">created ${stage.counts.created} &middot; active ${stage.counts.active} &middot; done ${stage.counts.done} &middot; upcoming ${stage.counts.upcoming}</span>` +
-      `</div>`
-    );
-  }).join('');
-
   document.getElementById('project-stats').innerHTML =
     `<div class="project-analytics-shell">` +
       `<div class="project-analytics-grid">` +
@@ -2929,18 +2901,6 @@ function renderProjectStats(model) {
         `<article class="project-card">` +
           `<div class="project-title">Task-uri</div>` +
           `<div class="metric-grid">${metricTiles}</div>` +
-          `<div class="metric-progress-pair">` +
-            `<div class="metric-progress-card">` +
-              `<span class="metric-label">Issue progress</span>` +
-              `<strong class="metric-value">${model.totals.overallIssueProgress}%</strong>` +
-              `<span class="metric-note">Closed / created issues</span>` +
-            `</div>` +
-            `<div class="metric-progress-card">` +
-              `<span class="metric-label">Course progress</span>` +
-              `<strong class="metric-value">${model.totals.averageCourseProgress}%</strong>` +
-              `<span class="metric-note">Average pe planul complet de curs</span>` +
-            `</div>` +
-          `</div>` +
           `<div class="status-card">` +
             `<div class="status-row"><span class="status-label">Current stage</span><div class="status-copy"><strong>${escapeHtml(model.currentMilestone.key)} &middot; ${escapeHtml(model.currentMilestone.short)}</strong><br>${escapeHtml(model.currentMilestone.title)}</div></div>` +
             `<div class="status-row"><span class="status-label">Backlog</span><div class="status-copy">${escapeHtml(model.backlogMilestone.key)} are <strong>${model.backlogMilestone.open}</strong> issues deschise.</div></div>` +
@@ -2953,11 +2913,6 @@ function renderProjectStats(model) {
           `<div class="activity-list">${recentActivity}</div>` +
         `</article>` +
       `</div>` +
-      `<article class="project-card distribution-strip">` +
-        `<div class="project-title">Status echipe pe etape</div>` +
-        `<p class="project-subtitle">Pentru fiecare etap&#259;, afi&#537;eaz&#259; c&#226;te echipe sunt doar create, active, finalizate sau &#238;nc&#259; upcoming.</p>` +
-        `${distributionRows}` +
-      `</article>` +
     `</div>`;
 }
 
