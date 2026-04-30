@@ -2536,18 +2536,63 @@ function getSemanticStatus(team) {
 }
 
 function buildCourseMarkers(teams) {
-  const percentGroups = {};
+  if (!teams.length) return [];
 
-  return teams.map(function(team) {
-    const percent = clampPercent(team.climbProgress);
-    const isBaseCluster = percent === 0;
-    const groupKey = percent === 0
+  // Find max climb progress — determines the leader from data, not from team index.
+  var maxClimb = 0;
+  teams.forEach(function(t) {
+    var p = clampPercent(t.climbProgress);
+    if (p > maxClimb) maxClimb = p;
+  });
+
+  // Interpolate the path's y-coordinate at a given SVG x value.
+  // Used to keep the visual push on-path when we shift the leader's x.
+  function pathYAtX(targetX) {
+    for (var i = 1; i < COURSE_MOUNTAIN_POINTS.length; i++) {
+      var a = COURSE_MOUNTAIN_POINTS[i - 1], b = COURSE_MOUNTAIN_POINTS[i];
+      if (targetX <= b.x) {
+        var r = (targetX - a.x) / (b.x - a.x);
+        return a.y + r * (b.y - a.y);
+      }
+    }
+    return COURSE_MOUNTAIN_POINTS[COURSE_MOUNTAIN_POINTS.length - 1].y;
+  }
+
+  // Visual minimum x for the leader.
+  // Rationale (SVG viewBox 680, typical rendered width ~600px, so ≈1.13 SVG/CSS):
+  //   base anchor SVG x=70 → CSS ~62px
+  //   max base fan offset = 30px CSS
+  //   half marker width = 18px each side
+  //   desired clear gap = 24px
+  //   total shift needed: 30+18+18+24 = 90px CSS → ~102 SVG units
+  //   MIN_LEADER_SVG_X = 70 + 102 = 172
+  // We round to 170, which lands just before C2 and is clearly readable.
+  var MIN_LEADER_SVG_X = 170;
+
+  var percentGroups = {};
+
+  var markers = teams.map(function(team) {
+    var percent = clampPercent(team.climbProgress);
+    var isBase = percent === 0;
+    // Leader = any team strictly above 0% AND tied for max progress.
+    // No team index is privileged; whoever leads in data leads visually.
+    var isLeader = percent > 0 && percent === maxClimb;
+    var groupKey = isBase
       ? 'zero'
-      : (percent <= 8 ? `low-${Math.floor(percent)}` : String(Math.round(percent / 4)));
-    const groupIndex = percentGroups[groupKey] || 0;
+      : (percent <= 8 ? 'low-' + Math.floor(percent) : String(Math.round(percent / 4)));
+    var groupIndex = percentGroups[groupKey] || 0;
     percentGroups[groupKey] = groupIndex + 1;
-    const point = interpolateCoursePoint(percent);
-    const status = getSemanticStatus(team);
+
+    var raw = interpolateCoursePoint(percent);
+    var vx = raw.x;
+    var vy = raw.y;
+    // Apply visual minimum separation: push the leader ahead of the base cluster
+    // only when its real path position is too close to be readable.
+    // The tooltip still shows the real percentage — no data is changed.
+    if (isLeader && vx < MIN_LEADER_SVG_X) {
+      vx = MIN_LEADER_SVG_X;
+      vy = pathYAtX(vx);
+    }
 
     return {
       label: team.label,
@@ -2557,14 +2602,26 @@ function buildCourseMarkers(teams) {
       color: team.color,
       colorSoft: team.colorSoft,
       colorLine: team.colorLine,
-      x: point.x,
-      y: point.y,
-      offset: courseMarkerOffset(groupIndex, isBaseCluster),
-      status: status,
-      isBaseCluster: isBaseCluster,
-      zIndex: team.index === 0 ? 30 : (isBaseCluster ? Math.max(1, 10 - groupIndex) : (18 - groupIndex))
+      x: vx,
+      y: vy,
+      offset: courseMarkerOffset(groupIndex, isBase),
+      status: getSemanticStatus(team),
+      isBaseCluster: isBase,
+      isLeader: isLeader,
+      teamIndex: team.index
     };
   });
+
+  // Assign z-index by data rank: higher climb progress = higher z.
+  // Leader always gets z=30. Ties broken by original team order.
+  var byRank = markers.slice().sort(function(a, b) {
+    return a.percent !== b.percent ? a.percent - b.percent : a.teamIndex - b.teamIndex;
+  });
+  byRank.forEach(function(m, i) {
+    m.zIndex = m.isLeader ? 30 : (m.isBaseCluster ? Math.max(1, i + 1) : (10 + i));
+  });
+
+  return markers;
 }
 
 function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestoneKey) {
@@ -2799,17 +2856,23 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const teamMarkers = model.markers.map(function(marker) {
-    const left = (marker.x / COURSE_MOUNTAIN_VIEWBOX.width) * 100;
-    const top = (marker.y / COURSE_MOUNTAIN_VIEWBOX.height) * 100;
-    const clusterClass = marker.isBaseCluster ? ' base-cluster' : '';
+  // Sort ascending by climb percent so the leader's DOM element is painted last
+  // (on top). z-index reinforces this; DOM order is a belt-and-suspenders measure.
+  const teamMarkers = model.markers.slice()
+    .sort(function(a, b) {
+      return a.percent !== b.percent ? a.percent - b.percent : a.teamIndex - b.teamIndex;
+    })
+    .map(function(marker) {
+      const left = (marker.x / COURSE_MOUNTAIN_VIEWBOX.width) * 100;
+      const top = (marker.y / COURSE_MOUNTAIN_VIEWBOX.height) * 100;
+      const clusterClass = marker.isBaseCluster ? ' base-cluster' : '';
 
-    return (
-      `<div class="mountain-team-marker status-${marker.status.key}${clusterClass}" style="left:${left}%; top:${top}%; z-index:${marker.zIndex}; --marker-offset-x:${marker.offset.x}px; --marker-offset-y:${marker.offset.y}px; --team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine};" title="${escapeHtml(marker.teamName)} &middot; ${marker.percent}% climb &middot; ${marker.coursePercent}% course &middot; ${escapeHtml(marker.status.label)}">` +
-        `${escapeHtml(marker.label)}` +
-      `</div>`
-    );
-  }).join('');
+      return (
+        `<div class="mountain-team-marker status-${marker.status.key}${clusterClass}" style="left:${left.toFixed(3)}%; top:${top.toFixed(3)}%; z-index:${marker.zIndex}; --marker-offset-x:${marker.offset.x}px; --marker-offset-y:${marker.offset.y}px; --team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine};" title="${escapeHtml(marker.teamName)} &middot; ${marker.percent}% climb &middot; ${marker.coursePercent}% course &middot; ${escapeHtml(marker.status.label)}">` +
+          `${escapeHtml(marker.label)}` +
+        `</div>`
+      );
+    }).join('');
 
   const statusStrip = model.markers.map(function(marker) {
     return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; climb ${marker.percent}% &middot; ${escapeHtml(marker.status.label)}</span>`;
