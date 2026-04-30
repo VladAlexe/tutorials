@@ -1413,7 +1413,12 @@ footer {
   }
 
   .project-row-one,
-  .project-row-two,
+  .project-row-two {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
   .project-analytics-grid {
     grid-template-columns: 1fr;
   }
@@ -2175,6 +2180,718 @@ function renderUnavailable() {
   document.getElementById('hero-meta').textContent = '\u2014';
   document.getElementById('dashboard-main').innerHTML =
     `<p class="loading dashboard-empty">${EMPTY_STATE_MESSAGE}</p>`;
+}
+
+const COURSE_PLAN_FALLBACK = [
+  { key: 'C1', title: 'LLM-uri, API-uri - ce construim \u0219i cum pornim', short: 'Setup/API' },
+  { key: 'C2', title: 'Ecosistemul de modele - alegem modelul de baz\u0103', short: 'Models' },
+  { key: 'C3', title: 'Date \u0219i corpus - colectare, cur\u0103\u021bare, metadate', short: 'Corpus' },
+  { key: 'C4', title: 'Prompting, adnotare, context engineering', short: 'Prompting' },
+  { key: 'C5', title: 'Embeddings, retrieval, RAG', short: 'RAG' },
+  { key: 'C6', title: 'RAG, agen\u021bi, LangChain, LangGraph', short: 'Agents' },
+  { key: 'C7', title: 'Agen\u021bi orchestra\u021bi - LangGraph, metrici, etic\u0103', short: 'Orchestration' },
+  { key: 'C8', title: 'Integrare aplica\u021bie - Gradio', short: 'App' },
+  { key: 'C9', title: 'Demo final - prezent\u0103ri \u0219i feedback', short: 'Demo' },
+  { key: 'Final', title: 'Livrare final\u0103 proiect', short: 'Final' }
+];
+
+const COURSE_MOUNTAIN_POINTS = [
+  { key: 'Base', label: 'Base', x: 70, y: 344 },
+  { key: 'C1', label: 'C1', x: 118, y: 314 },
+  { key: 'C2', label: 'C2', x: 176, y: 286 },
+  { key: 'C3', label: 'C3', x: 238, y: 258 },
+  { key: 'C4', label: 'C4', x: 304, y: 228 },
+  { key: 'C5', label: 'C5', x: 372, y: 196 },
+  { key: 'C6', label: 'C6', x: 440, y: 164 },
+  { key: 'C7', label: 'C7', x: 510, y: 132 },
+  { key: 'C8', label: 'C8', x: 570, y: 104 },
+  { key: 'C9', label: 'C9', x: 620, y: 82 },
+  { key: 'Final', label: 'Final', x: 648, y: 62 }
+];
+
+const COURSE_MOUNTAIN_THRESHOLDS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const COURSE_MOUNTAIN_VIEWBOX = { width: 680, height: 430 };
+
+function getCoursePlan(data) {
+  if (!Array.isArray(data && data.course_plan) || !data.course_plan.length) {
+    return COURSE_PLAN_FALLBACK;
+  }
+
+  return data.course_plan.map(function(stage, index) {
+    const fallback = COURSE_PLAN_FALLBACK[index] || COURSE_PLAN_FALLBACK[COURSE_PLAN_FALLBACK.length - 1];
+    return {
+      key: String(stage.key || fallback.key),
+      title: String(stage.title || fallback.title),
+      short: String(stage.short || fallback.short)
+    };
+  });
+}
+
+function inferStageKey(value) {
+  const safeValue = String(value || '');
+  const codeMatch = safeValue.match(/\b(C\d+)\b/i);
+  if (codeMatch) {
+    return codeMatch[1].toUpperCase();
+  }
+
+  return /final/i.test(safeValue) ? 'Final' : '';
+}
+
+function resolveStageMeta(value, coursePlan, fallbackKey) {
+  const stageKey = inferStageKey(value) || fallbackKey || '';
+  const found = coursePlan.find(function(stage) {
+    return stage.key === stageKey;
+  });
+
+  if (found) {
+    return found;
+  }
+
+  if (stageKey) {
+    return { key: stageKey, title: String(value || stageKey), short: stageKey };
+  }
+
+  return coursePlan[0] || { key: '-', title: 'Course stage', short: 'Course' };
+}
+
+function normalizeCourseStage(progress, stageMeta) {
+  const closed = toNumber(progress && progress.closed);
+  const open = toNumber(progress && progress.open);
+  const total = toNumber(progress && (progress.total || (closed + open)));
+  const percent = total > 0
+    ? clampPercent(progress && progress.percent !== undefined ? progress.percent : Math.round((closed / total) * 100))
+    : 0;
+  const status = total === 0 ? 'upcoming' : (percent >= 100 ? 'done' : (closed === 0 ? 'created' : 'active'));
+
+  return {
+    key: stageMeta.key,
+    title: stageMeta.title,
+    short: stageMeta.short,
+    closed: closed,
+    open: open,
+    total: total,
+    percent: percent,
+    status: status
+  };
+}
+
+function getCourseStageProgress(team, stageMeta) {
+  const progressMap = team && team.progress ? team.progress : {};
+
+  if (progressMap[stageMeta.key]) {
+    return normalizeCourseStage(progressMap[stageMeta.key], stageMeta);
+  }
+
+  const matchingKey = Object.keys(progressMap).find(function(key) {
+    return inferStageKey(key) === stageMeta.key;
+  });
+
+  return normalizeCourseStage(matchingKey ? progressMap[matchingKey] : null, stageMeta);
+}
+
+function computeIssueProgressPercent(team) {
+  if (team && team.issue_progress_percent !== undefined && team.issue_progress_percent !== null) {
+    return clampPercent(team.issue_progress_percent);
+  }
+
+  const progressMap = team && team.progress ? team.progress : {};
+  let closed = 0;
+  let total = 0;
+
+  Object.keys(progressMap).forEach(function(key) {
+    const progress = normalizeCourseStage(progressMap[key], { key: key, title: key, short: key });
+    closed += progress.closed;
+    total += progress.total;
+  });
+
+  return total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
+}
+
+function computeCourseProgressPercent(team, coursePlan) {
+  if (team && team.course_progress_percent !== undefined && team.course_progress_percent !== null) {
+    return clampPercent(team.course_progress_percent);
+  }
+
+  const percentSum = coursePlan.reduce(function(sum, stageMeta) {
+    return sum + getCourseStageProgress(team, stageMeta).percent;
+  }, 0);
+
+  return coursePlan.length ? clampPercent(Math.round(percentSum / coursePlan.length)) : 0;
+}
+
+function deriveTeamCurrentStage(stageProgress) {
+  return stageProgress.find(function(stage) { return stage.status === 'active'; })
+    || stageProgress.find(function(stage) { return stage.status === 'created'; })
+    || stageProgress.find(function(stage) { return stage.status === 'upcoming'; })
+    || stageProgress[stageProgress.length - 1];
+}
+
+function sanitizeIssueTitle(title) {
+  let cleaned = String(title || '').trim();
+  cleaned = cleaned.replace(/^student[_ -]*\d+\s*-\s*/i, '');
+  cleaned = cleaned.replace(/^@\S+\s*-\s*/, '');
+
+  const parts = cleaned.split(/\s+-\s+/);
+  if (parts.length < 2) {
+    return cleaned;
+  }
+
+  const first = parts[0] || '';
+  const next = parts[1] || '';
+  const firstLooksLikeUser =
+    /^student[_ -]*\d+$/i.test(first) ||
+    /^[@a-z0-9_.-]+$/i.test(first) ||
+    /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+$/.test(first);
+  const nextLooksLikeWorkCode = /^(C\d+(\.\d+)?|Final|Issue\s+\d+)/i.test(next);
+
+  if (firstLooksLikeUser && nextLooksLikeWorkCode) {
+    return parts.slice(1).join(' - ');
+  }
+
+  return cleaned;
+}
+
+function getIssueNumber(issue) {
+  const match = String(issue && issue.url ? issue.url : '').match(/\/issues\/(\d+)/);
+  return match ? toNumber(match[1]) : 0;
+}
+
+function interpolateCoursePoint(percent) {
+  const clamped = clampPercent(percent);
+
+  if (clamped <= COURSE_MOUNTAIN_THRESHOLDS[0]) {
+    return { x: COURSE_MOUNTAIN_POINTS[0].x, y: COURSE_MOUNTAIN_POINTS[0].y };
+  }
+
+  for (let index = 1; index < COURSE_MOUNTAIN_THRESHOLDS.length; index += 1) {
+    if (clamped <= COURSE_MOUNTAIN_THRESHOLDS[index]) {
+      const previousThreshold = COURSE_MOUNTAIN_THRESHOLDS[index - 1];
+      const currentThreshold = COURSE_MOUNTAIN_THRESHOLDS[index];
+      const ratio = currentThreshold === previousThreshold
+        ? 0
+        : (clamped - previousThreshold) / (currentThreshold - previousThreshold);
+      const previousPoint = COURSE_MOUNTAIN_POINTS[index - 1];
+      const currentPoint = COURSE_MOUNTAIN_POINTS[index];
+
+      return {
+        x: previousPoint.x + ((currentPoint.x - previousPoint.x) * ratio),
+        y: previousPoint.y + ((currentPoint.y - previousPoint.y) * ratio)
+      };
+    }
+  }
+
+  const lastPoint = COURSE_MOUNTAIN_POINTS[COURSE_MOUNTAIN_POINTS.length - 1];
+  return { x: lastPoint.x, y: lastPoint.y };
+}
+
+function courseMarkerOffset(index) {
+  if (index === 0) {
+    return { x: 0, y: 0 };
+  }
+
+  const direction = index % 2 === 0 ? 1 : -1;
+  return {
+    x: direction * (12 + (Math.ceil(index / 2) * 8)),
+    y: -(10 + (Math.floor((index - 1) / 2) * 12))
+  };
+}
+
+function getSemanticStatus(team) {
+  if (team.courseProgress >= 100) {
+    return { key: 'summit', label: 'Summit' };
+  }
+
+  if (team.courseProgress === 0) {
+    return { key: 'basecamp', label: 'Basecamp' };
+  }
+
+  if (team.currentStage.status === 'created') {
+    return { key: 'waiting', label: 'Waiting' };
+  }
+
+  if (team.currentStage.status === 'done') {
+    return { key: 'checkpoint', label: 'Checkpoint reached' };
+  }
+
+  return { key: 'climbing', label: 'Climbing' };
+}
+
+function buildCourseMarkers(teams) {
+  const percentGroups = {};
+
+  return teams.map(function(team) {
+    const percent = clampPercent(team.courseProgress);
+    const groupKey = percent <= 4 ? 'near-zero' : String(Math.round(percent));
+    const groupIndex = percentGroups[groupKey] || 0;
+    percentGroups[groupKey] = groupIndex + 1;
+    const point = interpolateCoursePoint(percent);
+    const status = getSemanticStatus(team);
+
+    return {
+      label: team.label,
+      teamName: team.name,
+      percent: percent,
+      x: point.x,
+      y: point.y,
+      offset: courseMarkerOffset(groupIndex),
+      status: status,
+      isBaseCluster: percent <= 4
+    };
+  });
+}
+
+function normalizeTeamModel(team, index, coursePlan, currentMilestoneKey) {
+  const stageProgress = coursePlan.map(function(stageMeta) {
+    return getCourseStageProgress(team, stageMeta);
+  });
+  const derivedStage = deriveTeamCurrentStage(stageProgress);
+  const currentStage = resolveStageMeta(team && team.current_stage, coursePlan, derivedStage.key);
+  const currentStageProgress = stageProgress.find(function(stage) {
+    return stage.key === currentStage.key;
+  }) || derivedStage;
+  const openIssues = Array.isArray(team && team.open_issues) ? team.open_issues : [];
+
+  return {
+    name: team && team.name ? String(team.name) : `Team ${index + 1}`,
+    label: shortTeamName(team && team.name, index),
+    index: index,
+    repo_url: team && team.repo_url ? team.repo_url : '#',
+    issues_url: team && team.issues_url ? team.issues_url : (team && team.repo_url ? team.repo_url : '#'),
+    milestones_url: team && team.milestones_url ? team.milestones_url : (team && team.repo_url ? team.repo_url : '#'),
+    members: Array.isArray(team && team.members) ? team.members : [],
+    openIssues: openIssues,
+    stageProgress: stageProgress,
+    currentStage: {
+      key: currentStage.key,
+      title: currentStage.title,
+      short: currentStage.short,
+      status: currentStageProgress.status,
+      total: currentStageProgress.total,
+      closed: currentStageProgress.closed,
+      open: currentStageProgress.open,
+      percent: currentStageProgress.percent
+    },
+    courseProgress: computeCourseProgressPercent(team, coursePlan),
+    issueProgress: computeIssueProgressPercent(team),
+    nextAction: openIssues.find(function(issue) {
+      return inferStageKey(issue && issue.title) === currentMilestoneKey;
+    }) || openIssues[0] || null
+  };
+}
+
+function buildDashboardModel(data) {
+  const coursePlan = getCoursePlan(data);
+  const currentMilestone = resolveStageMeta(data && data.current_milestone, coursePlan);
+  const teams = (Array.isArray(data && data.teams) ? data.teams : []).map(function(team, index) {
+    return normalizeTeamModel(team, index, coursePlan, currentMilestone.key);
+  });
+
+  const milestoneSummaries = coursePlan.map(function(stageMeta) {
+    let total = 0;
+    let open = 0;
+    let closed = 0;
+
+    teams.forEach(function(team) {
+      const stage = team.stageProgress.find(function(item) {
+        return item.key === stageMeta.key;
+      }) || normalizeCourseStage(null, stageMeta);
+      total += stage.total;
+      open += stage.open;
+      closed += stage.closed;
+    });
+
+    return {
+      key: stageMeta.key,
+      title: stageMeta.title,
+      short: stageMeta.short,
+      total: total,
+      open: open,
+      closed: closed,
+      percent: total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0
+    };
+  });
+
+  const openIssues = milestoneSummaries.reduce(function(sum, stage) { return sum + stage.open; }, 0);
+  const closedIssues = milestoneSummaries.reduce(function(sum, stage) { return sum + stage.closed; }, 0);
+  const createdTasks = openIssues + closedIssues;
+  const averageCourseProgress = teams.length
+    ? Math.round(teams.reduce(function(sum, team) { return sum + team.courseProgress; }, 0) / teams.length)
+    : 0;
+  const overallIssueProgress = createdTasks > 0 ? clampPercent(Math.round((closedIssues / createdTasks) * 100)) : 0;
+  const currentSummary = milestoneSummaries.find(function(stage) {
+    return stage.key === currentMilestone.key;
+  }) || milestoneSummaries[0];
+  const startedTeams = teams.filter(function(team) {
+    const currentStage = team.stageProgress.find(function(stage) {
+      return stage.key === currentMilestone.key;
+    }) || normalizeCourseStage(null, currentMilestone);
+    return currentStage.total > 0 && currentStage.closed > 0;
+  });
+  const blockedTeams = teams.filter(function(team) {
+    const currentStage = team.stageProgress.find(function(stage) {
+      return stage.key === currentMilestone.key;
+    }) || normalizeCourseStage(null, currentMilestone);
+    return currentStage.total > 0 && currentStage.closed === 0;
+  });
+  const backlogMilestone = milestoneSummaries.reduce(function(best, stage) {
+    return !best || stage.open > best.open ? stage : best;
+  }, null) || currentSummary;
+  const distribution = milestoneSummaries.map(function(stage) {
+    const counts = { created: 0, active: 0, done: 0, upcoming: 0 };
+    teams.forEach(function(team) {
+      const teamStage = team.stageProgress.find(function(item) {
+        return item.key === stage.key;
+      }) || normalizeCourseStage(null, stage);
+      counts[teamStage.status] += 1;
+    });
+    return { key: stage.key, short: stage.short, counts: counts };
+  });
+
+  const latestOpenIssues = [];
+  teams.forEach(function(team) {
+    team.openIssues.forEach(function(issue) {
+      latestOpenIssues.push({
+        url: issue.url,
+        title: sanitizeIssueTitle(issue.title),
+        number: getIssueNumber(issue),
+        teamIndex: team.index
+      });
+    });
+  });
+
+  latestOpenIssues.sort(function(a, b) {
+    return b.number - a.number || a.teamIndex - b.teamIndex;
+  });
+
+  return {
+    coursePlan: coursePlan,
+    teams: teams,
+    milestoneSummaries: milestoneSummaries,
+    currentMilestone: currentMilestone,
+    backlogMilestone: backlogMilestone,
+    startedTeams: startedTeams,
+    blockedTeams: blockedTeams,
+    latestOpenIssues: latestOpenIssues.slice(0, 8),
+    distribution: distribution,
+    markers: buildCourseMarkers(teams),
+    insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
+    totals: {
+      teamCount: teams.length,
+      openIssues: openIssues,
+      closedIssues: closedIssues,
+      createdTasks: createdTasks,
+      averageCourseProgress: averageCourseProgress,
+      overallIssueProgress: overallIssueProgress
+    }
+  };
+}
+
+function renderStats(model) {
+  const stats = model.totals;
+
+  document.getElementById('stats-band').innerHTML =
+    `<div class="stat-tile"><span class="stat-val">${stats.teamCount}</span><span class="stat-label">Teams</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${stats.openIssues}</span><span class="stat-label">Open issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${stats.closedIssues}</span><span class="stat-label">Closed issues</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${stats.averageCourseProgress}%</span><span class="stat-label">Average course progress</span></div>`;
+
+  document.getElementById('course-insight').innerHTML =
+    `<div class="course-insight-card">` +
+      `<span class="course-insight-label">Course status</span>` +
+      `<p class="course-insight-text">${escapeHtml(model.insightText)}</p>` +
+    `</div>`;
+}
+
+function renderJourney(model) {
+  const milestoneItems = model.milestoneSummaries.map(function(stage) {
+    const currentClass = stage.key === model.currentMilestone.key ? ' is-current' : '';
+    const closedLabel = stage.total > 0 ? `${stage.closed}/${stage.total} closed` : 'upcoming';
+    const openLabel = stage.total > 0 ? `${stage.open} open` : '0 open';
+
+    return (
+      `<div class="journey-milestone${currentClass}">` +
+        `<div class="journey-milestone-top">` +
+          `<span class="journey-milestone-code">${escapeHtml(stage.key)}</span>` +
+          `<strong class="journey-milestone-title">${escapeHtml(stage.short)}</strong>` +
+          `<span class="journey-milestone-pct">${stage.percent}%</span>` +
+        `</div>` +
+        `<div class="journey-milestone-bottom">` +
+          `<span class="journey-milestone-meta">${closedLabel}</span>` +
+          `<span class="journey-milestone-open">${openLabel}</span>` +
+        `</div>` +
+        `<div class="journey-milestone-meaning">${escapeHtml(stage.title)}</div>` +
+      `</div>`
+    );
+  }).join('');
+
+  const narrative = model.coursePlan.map(function(stage, index) {
+    const stepClass = stage.key === model.currentMilestone.key ? 'path-step is-current' : 'path-step';
+    const arrow = index < model.coursePlan.length - 1 ? '<span class="path-arrow">\u2192</span>' : '';
+    return `<span class="${stepClass}">${escapeHtml(stage.short)}</span>${arrow}`;
+  }).join('');
+
+  const pathPoints = COURSE_MOUNTAIN_POINTS.map(function(point) {
+    return `${point.x},${point.y}`;
+  }).join(' ');
+
+  const checkpointGuides = COURSE_MOUNTAIN_POINTS.slice(1).map(function(point) {
+    return `<line class="checkpoint-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="356"></line>`;
+  }).join('');
+
+  const checkpoints = COURSE_MOUNTAIN_POINTS.map(function(point, index) {
+    const isCurrent = point.key === model.currentMilestone.key ? ' checkpoint-current' : '';
+    const labelY = index === 0 ? point.y + 24 : point.y - 14;
+
+    return (
+      `<g class="checkpoint${isCurrent}">` +
+        `<circle class="checkpoint-node" cx="${point.x}" cy="${point.y}" r="8"></circle>` +
+        `<text class="checkpoint-label" x="${point.x}" y="${labelY}" text-anchor="middle">${escapeHtml(point.label)}</text>` +
+      `</g>`
+    );
+  }).join('');
+
+  const teamMarkers = model.markers.map(function(marker) {
+    const left = (marker.x / COURSE_MOUNTAIN_VIEWBOX.width) * 100;
+    const top = (marker.y / COURSE_MOUNTAIN_VIEWBOX.height) * 100;
+    const clusterClass = marker.isBaseCluster ? ' base-cluster' : '';
+
+    return (
+      `<div class="mountain-team-marker status-${marker.status.key}${clusterClass}" style="left:${left}%; top:${top}%; --marker-offset-x:${marker.offset.x}px; --marker-offset-y:${marker.offset.y}px;" title="${escapeHtml(marker.teamName)} &middot; ${marker.percent}% &middot; ${escapeHtml(marker.status.label)}">` +
+        `${escapeHtml(marker.label)}` +
+      `</div>`
+    );
+  }).join('');
+
+  const statusStrip = model.markers.map(function(marker) {
+    return `<span class="mountain-status-chip status-${marker.status.key}">${escapeHtml(marker.label)} &middot; ${escapeHtml(marker.status.label)}</span>`;
+  }).join('');
+
+  document.getElementById('journey-wrap').innerHTML =
+    `<div class="journey-shell">` +
+      `<div class="journey-summary">` +
+        `<p class="journey-copy">Fiecare checkpoint reprezint&#259; o etap&#259; din traseul complet al cursului. Progresul de curs este calculat pe tot planul C1-C9 + Final, iar etapele lips&#259; sunt marcate ca upcoming.</p>` +
+        `<div class="narrative-path">${narrative}</div>` +
+        `<div class="journey-milestones">${milestoneItems}</div>` +
+      `</div>` +
+      `<div class="mountain-card">` +
+        `<div class="mountain-caption">` +
+          `<div>` +
+            `<div class="mountain-title">Mountain Progress</div>` +
+            `<div class="mountain-copy">Course progress across the full teaching path.</div>` +
+          `</div>` +
+          `<div class="mountain-badge">` +
+            `<span class="mountain-badge-label">Milestone curent</span>` +
+            `<span class="mountain-badge-value"><span class="mountain-badge-code">${escapeHtml(model.currentMilestone.key)}</span> &middot; ${escapeHtml(model.currentMilestone.short)}</span>` +
+          `</div>` +
+        `</div>` +
+        `<div class="mountain-visual">` +
+          `<svg class="mountain-svg" viewBox="0 0 680 430" preserveAspectRatio="none" aria-hidden="true">` +
+            `<path class="mountain-ridge-back" d="M 0 362 L 96 312 L 178 334 L 264 246 L 358 270 L 452 170 L 540 150 L 628 72 L 680 362 Z"></path>` +
+            `<path class="mountain-ridge-front" d="M 0 362 L 110 330 L 204 268 L 302 294 L 392 206 L 482 222 L 572 132 L 642 94 L 680 362 Z"></path>` +
+            `${checkpointGuides}` +
+            `<polyline class="mountain-path-shadow" points="${pathPoints}"></polyline>` +
+            `<polyline class="mountain-path" points="${pathPoints}"></polyline>` +
+            `${checkpoints}` +
+          `</svg>` +
+          `${teamMarkers}` +
+        `</div>` +
+        `<div class="mountain-status-strip">${statusStrip}</div>` +
+        `<p class="mountain-footnote">Marcajele T1-T6 folosesc progresul de curs calculat pe traseul complet C1-C9 + Final.</p>` +
+      `</div>` +
+    `</div>`;
+}
+
+function renderProjectStats(model) {
+  const maxOpen = Math.max.apply(null, model.milestoneSummaries.map(function(stage) {
+    return stage.open;
+  }).concat([1]));
+
+  const backlogRows = model.milestoneSummaries.map(function(stage) {
+    const width = maxOpen > 0 ? (stage.open / maxOpen) * 100 : 0;
+    return (
+      `<div class="backlog-row">` +
+        `<span class="backlog-label">${escapeHtml(stage.key)}</span>` +
+        `<div class="backlog-track"><div class="backlog-fill" style="width:${width}%;"></div></div>` +
+        `<span class="backlog-value">${stage.open}</span>` +
+      `</div>`
+    );
+  }).join('');
+
+  const metrics = [
+    { label: 'Created', value: model.totals.createdTasks, note: 'Total GitHub tasks' },
+    { label: 'Closed', value: model.totals.closedIssues, note: 'Completed tasks' },
+    { label: 'Open', value: model.totals.openIssues, note: 'Remaining tasks' },
+    { label: 'Issue progress', value: `${model.totals.overallIssueProgress}%`, note: 'Closed / created' },
+    { label: 'Course progress', value: `${model.totals.averageCourseProgress}%`, note: 'Average across C1-C9 + Final' }
+  ];
+
+  const metricTiles = metrics.map(function(metric) {
+    return (
+      `<div class="metric-tile">` +
+        `<span class="metric-label">${escapeHtml(metric.label)}</span>` +
+        `<strong class="metric-value">${escapeHtml(metric.value)}</strong>` +
+        `<span class="metric-note">${escapeHtml(metric.note)}</span>` +
+      `</div>`
+    );
+  }).join('');
+
+  const blockedLabels = model.blockedTeams.map(function(team) {
+    return team.label;
+  }).join(', ') || '\u2014';
+
+  const recentActivity = model.latestOpenIssues.length
+    ? model.latestOpenIssues.map(function(issue) {
+      return `<a class="activity-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>`;
+    }).join('')
+    : '<div class="team-empty">Nu exist&#259; issues deschise.</div>';
+
+  const distributionRows = model.distribution.map(function(stage) {
+    const totalTeams = Math.max(model.totals.teamCount, 1);
+    return (
+      `<div class="distribution-row">` +
+        `<span class="distribution-label">${escapeHtml(stage.key)}</span>` +
+        `<div class="distribution-track">` +
+          `<span class="distribution-segment created" style="width:${(stage.counts.created / totalTeams) * 100}%;"></span>` +
+          `<span class="distribution-segment active" style="width:${(stage.counts.active / totalTeams) * 100}%;"></span>` +
+          `<span class="distribution-segment done" style="width:${(stage.counts.done / totalTeams) * 100}%;"></span>` +
+          `<span class="distribution-segment upcoming" style="width:${(stage.counts.upcoming / totalTeams) * 100}%;"></span>` +
+        `</div>` +
+        `<span class="distribution-meta">created ${stage.counts.created} &middot; active ${stage.counts.active} &middot; done ${stage.counts.done} &middot; upcoming ${stage.counts.upcoming}</span>` +
+      `</div>`
+    );
+  }).join('');
+
+  document.getElementById('project-stats').innerHTML =
+    `<div class="project-analytics-shell">` +
+      `<div class="project-analytics-grid">` +
+        `<article class="project-card">` +
+          `<div class="project-title">Issues deschise pe etap&#259;</div>` +
+          `<div class="backlog-list">${backlogRows}</div>` +
+        `</article>` +
+        `<article class="project-card">` +
+          `<div class="project-title">Project status</div>` +
+          `<div class="metric-grid">${metricTiles}</div>` +
+          `<div class="status-card">` +
+            `<div class="status-row"><span class="status-label">Current stage</span><div class="status-copy"><strong>${escapeHtml(model.currentMilestone.key)} &middot; ${escapeHtml(model.currentMilestone.short)}</strong><br>${escapeHtml(model.currentMilestone.title)}</div></div>` +
+            `<div class="status-row"><span class="status-label">Backlog</span><div class="status-copy">${escapeHtml(model.backlogMilestone.key)} are <strong>${model.backlogMilestone.open}</strong> issues deschise.</div></div>` +
+            `<div class="status-row"><span class="status-label">Started</span><div class="status-copy"><strong>${model.startedTeams.length}/${model.totals.teamCount}</strong> echipe au pornit etapa curent&#259;.</div></div>` +
+            `<div class="status-row"><span class="status-label">Blocked</span><div class="status-copy"><strong>${model.blockedTeams.length}/${model.totals.teamCount}</strong> echipe sunt la 0/x.<br>${escapeHtml(blockedLabels)}</div></div>` +
+          `</div>` +
+        `</article>` +
+        `<article class="project-card">` +
+          `<div class="project-title">Recent activity</div>` +
+          `<div class="activity-list">${recentActivity}</div>` +
+        `</article>` +
+      `</div>` +
+      `<article class="project-card distribution-strip">` +
+        `<div class="project-title">Distribu&#539;ie pe etap&#259;</div>` +
+        `${distributionRows}` +
+      `</article>` +
+    `</div>`;
+}
+
+function renderTeams(model) {
+  document.getElementById('team-grid').innerHTML = model.teams.map(function(team) {
+    const visibleIssues = team.openIssues.slice(0, 3);
+    const hiddenCount = Math.max(team.openIssues.length - visibleIssues.length, 0);
+
+    const milestonePills = team.stageProgress.map(function(stage) {
+      const currentClass = stage.key === model.currentMilestone.key ? ' is-current' : '';
+      const value = stage.total > 0 ? `${stage.closed}/${stage.total}` : '\u2014';
+
+      return (
+        `<div class="team-milestone-pill is-${stage.status}${currentClass}" style="--pill-progress:${stage.percent};">` +
+          `<span class="team-milestone-code">${escapeHtml(stage.key)}</span>` +
+          `<span class="team-milestone-value">${escapeHtml(value)}</span>` +
+        `</div>`
+      );
+    }).join('');
+
+    const nextActionMarkup = team.nextAction
+      ? `<a href="${escapeHtml(team.nextAction.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(team.nextAction.title))}</a>`
+      : `Waiting for a task in ${escapeHtml(model.currentMilestone.key)}.`;
+
+    const memberSection = team.members.length
+      ? (
+        `<div class="team-section">` +
+          `<div class="team-subtitle">Team members</div>` +
+          `<div class="member-list">` +
+            `${sortMembers(team.members).map(function(member) {
+              const total = toNumber(member.total);
+              const closed = toNumber(member.closed);
+              const percent = total > 0
+                ? clampPercent(member.percent !== undefined ? member.percent : Math.round((closed / total) * 100))
+                : 0;
+
+              return (
+                `<div class="member-row">` +
+                  `<span class="member-name">${escapeHtml(member.name || '\u2014')}</span>` +
+                  `<div class="member-bar"><div class="member-fill" style="width:${percent}%"></div></div>` +
+                  `<span class="member-pct">${percent}%</span>` +
+                  `<span class="member-meta">${closed}/${total} issues closed</span>` +
+                `</div>`
+              );
+            }).join('')}` +
+          `</div>` +
+        `</div>`
+      )
+      : '';
+
+    const issuesMarkup = visibleIssues.length
+      ? visibleIssues.map(function(issue) {
+        return `<a class="team-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`;
+      }).join('')
+      : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
+
+    const moreMarkup = hiddenCount > 0
+      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
+      : '';
+
+    return (
+      `<article class="team-card">` +
+        `<div class="team-card-header">` +
+          `<div>` +
+            `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
+            `<div class="team-card-stage">Current stage &middot; ${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short)}</div>` +
+            `<div class="team-current-note">${escapeHtml(team.currentStage.title)}</div>` +
+          `</div>` +
+          `<div class="team-card-metrics">` +
+            `<div class="team-metric-line"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}%</span></div>` +
+            `<div class="team-metric-line"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}%</span></div>` +
+          `</div>` +
+        `</div>` +
+        `<div class="team-progress-stack">` +
+          `<div class="team-progress-group">` +
+            `<div class="team-progress-head"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}% completed</span></div>` +
+            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${team.courseProgress}%"></div></div>` +
+          `</div>` +
+          `<div class="team-progress-group is-issues">` +
+            `<div class="team-progress-head"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}% completed</span></div>` +
+            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${team.issueProgress}%"></div></div>` +
+          `</div>` +
+        `</div>` +
+        `<div class="team-links">` +
+          `<a class="team-link" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">Repo &#8599;</a>` +
+          `<span class="team-link-sep">&middot;</span>` +
+          `<a class="team-link" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">Issues &#8599;</a>` +
+          `<span class="team-link-sep">&middot;</span>` +
+          `<a class="team-link" href="${escapeHtml(team.milestones_url)}" target="_blank" rel="noopener noreferrer">Milestones &#8599;</a>` +
+        `</div>` +
+        `<div class="team-milestone-row">${milestonePills}</div>` +
+        `<div class="team-section">` +
+          `<div class="team-next-action">` +
+            `<span class="team-next-action-label">Next action</span>` +
+            `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
+          `</div>` +
+        `</div>` +
+        `${memberSection}` +
+        `<div class="team-section">` +
+          `<div class="team-subtitle">Open issues (${team.openIssues.length})</div>` +
+          `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
+        `</div>` +
+      `</article>`
+    );
+  }).join('');
 }
 
 fetch('./progress.json')
