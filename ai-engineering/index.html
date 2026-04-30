@@ -305,6 +305,13 @@ section { padding-top: 2rem; }
   text-transform: uppercase;
 }
 
+.dash-mini-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--sub);
+  line-height: 1.4;
+}
+
 #dash-teams {
   background: var(--surface);
   padding: 0.95rem 1rem 1rem;
@@ -313,7 +320,7 @@ section { padding-top: 2rem; }
 
 .dash-visual {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 124px;
+  grid-template-columns: minmax(0, 1fr) 148px;
   align-items: center;
   gap: 0.95rem;
   min-height: 238px;
@@ -367,6 +374,14 @@ section { padding-top: 2rem; }
   text-transform: uppercase;
 }
 
+.dash-radial-center-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  fill: var(--sub);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .dash-legend {
   display: flex;
   flex-direction: column;
@@ -376,8 +391,8 @@ section { padding-top: 2rem; }
 
 .dash-legend-item {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr) auto;
-  align-items: center;
+  grid-template-columns: 12px minmax(0, 1fr);
+  align-items: start;
   gap: 0.45rem;
 }
 
@@ -394,11 +409,11 @@ section { padding-top: 2rem; }
   line-height: 1.35;
 }
 
-.dash-legend-pct {
+.dash-legend-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9px;
   color: var(--dim);
-  text-align: right;
+  line-height: 1.4;
 }
 
 /* ── Program / List ── */
@@ -582,6 +597,7 @@ function checkPw(){
           <div class="dash-mini">
             <span class="dash-mini-val" id="dash-stage">—</span>
             <span class="dash-mini-label">Etapa curentă</span>
+            <span class="dash-mini-note" id="dash-stage-note">Course stage</span>
           </div>
         </div>
         <div id="dash-teams" aria-live="polite"></div>
@@ -596,55 +612,55 @@ function checkPw(){
 
       <a class="prog-row" href="c1-introducere-llm-primul-api/">
         <span class="prog-id">C1</span>
-        <div class="prog-info"><div class="prog-name">LLM-uri și primul API</div></div>
+        <div class="prog-info"><div class="prog-name">LLM-uri, API-uri - ce construim &#537;i cum pornim</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c2-ecosistem-modele/">
         <span class="prog-id">C2</span>
-        <div class="prog-info"><div class="prog-name">Alegerea modelului</div></div>
+        <div class="prog-info"><div class="prog-name">Ecosistemul de modele - alegem modelul de baz&#259;</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c3-date-corpus/">
         <span class="prog-id">C3</span>
-        <div class="prog-info"><div class="prog-name">Prompt engineering</div></div>
+        <div class="prog-info"><div class="prog-name">Date &#537;i corpus - colectare, cur&#259;&#539;are, metadate</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c4-prompting-adnotare-context/">
         <span class="prog-id">C4</span>
-        <div class="prog-info"><div class="prog-name">Colectare date</div></div>
+        <div class="prog-info"><div class="prog-name">Prompting, adnotare, context engineering</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c5-embeddings-retrieval-rag/">
         <span class="prog-id">C5</span>
-        <div class="prog-info"><div class="prog-name">AI pipelines</div></div>
+        <div class="prog-info"><div class="prog-name">Embeddings, retrieval, RAG</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c6-rag-agenti-langchain-langgraph/">
         <span class="prog-id">C6</span>
-        <div class="prog-info"><div class="prog-name">RAG</div></div>
+        <div class="prog-info"><div class="prog-name">RAG, agen&#539;i, LangChain, LangGraph</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c7-agenti-orchestrati-metrici-etica/">
         <span class="prog-id">C7</span>
-        <div class="prog-info"><div class="prog-name">Analiza discursului</div></div>
+        <div class="prog-info"><div class="prog-name">Agen&#539;i orchestra&#539;i - LangGraph, metrici, etic&#259;</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c8-integrare-aplicatie-gradio/">
         <span class="prog-id">C8</span>
-        <div class="prog-info"><div class="prog-name">LangChain / LangGraph</div></div>
+        <div class="prog-info"><div class="prog-name">Integrare aplica&#539;ie - Gradio</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
       <a class="prog-row" href="c9-demo-final-feedback/">
         <span class="prog-id">C9</span>
-        <div class="prog-info"><div class="prog-name">Integrare aplicație</div></div>
+        <div class="prog-info"><div class="prog-name">Demo final - prezent&#259;ri &#537;i feedback</div></div>
         <span class="prog-arrow">→</span>
       </a>
 
@@ -671,31 +687,166 @@ function checkPw(){
 </footer>
 
 <script>
+const FALLBACK_COURSE_PLAN = [
+  { key: 'C1', title: 'LLM-uri, API-uri - ce construim \u0219i cum pornim', short: 'Setup/API' },
+  { key: 'C2', title: 'Ecosistemul de modele - alegem modelul de baz\u0103', short: 'Models' },
+  { key: 'C3', title: 'Date \u0219i corpus - colectare, cur\u0103\u021bare, metadate', short: 'Corpus' },
+  { key: 'C4', title: 'Prompting, adnotare, context engineering', short: 'Prompting' },
+  { key: 'C5', title: 'Embeddings, retrieval, RAG', short: 'RAG' },
+  { key: 'C6', title: 'RAG, agen\u021bi, LangChain, LangGraph', short: 'Agents' },
+  { key: 'C7', title: 'Agen\u021bi orchestra\u021bi - LangGraph, metrici, etic\u0103', short: 'Orchestration' },
+  { key: 'C8', title: 'Integrare aplica\u021bie - Gradio', short: 'App' },
+  { key: 'C9', title: 'Demo final - prezent\u0103ri \u0219i feedback', short: 'Demo' },
+  { key: 'Final', title: 'Livrare final\u0103 proiect', short: 'Final' }
+];
+
+const TEAM_RING_COLORS = ['#b7794a', '#c18f62', '#a86f5a', '#8f7a5a', '#9a8f72', '#b59b7a'];
+
 fetch('progress/progress.json')
-  .then(r => r.json())
-  .then(data => {
-    const teams = Array.isArray(data.teams) ? data.teams : [];
-    const total = teams.reduce(function(sum, team) {
-      return sum + (Number(team.overall_percent) || 0);
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    const coursePlan = getCoursePlan(data);
+    const teams = normalizeTeams(data, coursePlan);
+    const totalCourse = teams.reduce(function(sum, team) {
+      return sum + team.courseProgress;
     }, 0);
-    const avg = teams.length ? Math.round(total / teams.length) : 0;
-    const stage = String(data.current_milestone || '');
-    const stageMatch = stage.match(/^(C\d+)/);
-    const stageCode = stageMatch ? stageMatch[1] : '-';
+    const averageCourse = teams.length ? Math.round(totalCourse / teams.length) : 0;
+    const currentStage = resolveStageMeta(data.current_milestone, coursePlan);
     const overallNode = document.getElementById('dash-overall');
     const stageNode = document.getElementById('dash-stage');
+    const stageNoteNode = document.getElementById('dash-stage-note');
     const teamsNode = document.getElementById('dash-teams');
 
-    overallNode.textContent = avg + '%';
-    stageNode.textContent = stageCode;
-    stageNode.title = stage || 'Current milestone';
-    teamsNode.innerHTML = buildRadialWidget(teams, avg);
+    overallNode.textContent = averageCourse + '%';
+    overallNode.title = 'Average course progress across C1-C9 + Final';
+    stageNode.textContent = currentStage.key || '-';
+    stageNode.title = currentStage.title || 'Current milestone';
+    stageNoteNode.textContent = currentStage.short || currentStage.title || 'Course stage';
+    teamsNode.innerHTML = buildRadialWidget(teams, averageCourse);
   })
   .catch(function() {});
 
+function getCoursePlan(data) {
+  if (!Array.isArray(data && data.course_plan) || !data.course_plan.length) {
+    return FALLBACK_COURSE_PLAN;
+  }
+
+  return data.course_plan.map(function(stage, index) {
+    const fallback = FALLBACK_COURSE_PLAN[index] || FALLBACK_COURSE_PLAN[FALLBACK_COURSE_PLAN.length - 1];
+    return {
+      key: String(stage.key || fallback.key),
+      title: String(stage.title || fallback.title),
+      short: String(stage.short || fallback.short)
+    };
+  });
+}
+
+function inferStageKey(value) {
+  const safeValue = String(value || '');
+  const codeMatch = safeValue.match(/\b(C\d+)\b/i);
+  if (codeMatch) {
+    return codeMatch[1].toUpperCase();
+  }
+
+  return /final/i.test(safeValue) ? 'Final' : '';
+}
+
+function toNumber(value) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function clampPercent(value) {
+  const numeric = Math.round(toNumber(value));
+  return Math.max(0, Math.min(100, numeric));
+}
+
+function normalizeProgressItem(progress) {
+  if (!progress) {
+    return { closed: 0, open: 0, total: 0, percent: 0 };
+  }
+
+  const closed = toNumber(progress.closed);
+  const open = toNumber(progress.open);
+  const total = toNumber(progress.total || (closed + open));
+  const percent = total > 0
+    ? clampPercent(progress.percent !== undefined ? progress.percent : Math.round((closed / total) * 100))
+    : 0;
+
+  return { closed: closed, open: open, total: total, percent: percent };
+}
+
+function getProgressForStage(team, stageKey) {
+  const progressMap = team && team.progress ? team.progress : {};
+
+  if (progressMap[stageKey]) {
+    return normalizeProgressItem(progressMap[stageKey]);
+  }
+
+  const matchingKey = Object.keys(progressMap).find(function(key) {
+    return inferStageKey(key) === stageKey;
+  });
+
+  return normalizeProgressItem(matchingKey ? progressMap[matchingKey] : null);
+}
+
+function computeIssueProgress(team) {
+  if (team && team.issue_progress_percent !== undefined && team.issue_progress_percent !== null) {
+    return clampPercent(team.issue_progress_percent);
+  }
+
+  const progressMap = team && team.progress ? team.progress : {};
+  let closed = 0;
+  let total = 0;
+
+  Object.keys(progressMap).forEach(function(key) {
+    const progress = normalizeProgressItem(progressMap[key]);
+    closed += progress.closed;
+    total += progress.total;
+  });
+
+  return total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
+}
+
+function computeCourseProgress(team, coursePlan) {
+  if (team && team.course_progress_percent !== undefined && team.course_progress_percent !== null) {
+    return clampPercent(team.course_progress_percent);
+  }
+
+  const percentSum = coursePlan.reduce(function(sum, stage) {
+    return sum + getProgressForStage(team, stage.key).percent;
+  }, 0);
+
+  return coursePlan.length ? clampPercent(Math.round(percentSum / coursePlan.length)) : 0;
+}
+
+function normalizeTeams(data, coursePlan) {
+  const teams = Array.isArray(data && data.teams) ? data.teams : [];
+
+  return teams.map(function(team, index) {
+    return {
+      name: team && team.name ? String(team.name) : 'Team ' + (index + 1),
+      courseProgress: computeCourseProgress(team, coursePlan),
+      issueProgress: computeIssueProgress(team)
+    };
+  });
+}
+
+function resolveStageMeta(currentMilestone, coursePlan) {
+  const stageKey = inferStageKey(currentMilestone);
+  const fallback = coursePlan[0] || { key: '-', title: 'Course stage', short: 'Course' };
+  const found = coursePlan.find(function(stage) {
+    return stage.key === stageKey;
+  });
+
+  return found || (stageKey
+    ? { key: stageKey, title: String(currentMilestone || stageKey), short: stageKey }
+    : fallback);
+}
+
 function buildRadialWidget(teams, averagePercent) {
   if (!teams.length) {
-    return '<div class="dash-visual"><div class="dash-radial-wrap"><svg class="dash-radial" viewBox="0 0 220 220" aria-hidden="true" focusable="false"><circle class="dash-radial-track" cx="110" cy="110" r="72" stroke-width="6"></circle><text x="110" y="108" text-anchor="middle" class="dash-radial-center-value">0%</text><text x="110" y="128" text-anchor="middle" class="dash-radial-center-label">overall</text></svg></div><div class="dash-legend"><div class="dash-legend-name">No team data</div></div></div>';
+    return '<div class="dash-visual"><div class="dash-radial-wrap"><svg class="dash-radial" viewBox="0 0 220 220" aria-hidden="true" focusable="false"><circle class="dash-radial-track" cx="110" cy="110" r="72" stroke-width="6"></circle><text x="110" y="104" text-anchor="middle" class="dash-radial-center-value">0%</text><text x="110" y="126" text-anchor="middle" class="dash-radial-center-label">course</text><text x="110" y="141" text-anchor="middle" class="dash-radial-center-note">progress</text></svg></div><div class="dash-legend"><div><div class="dash-legend-name">No team data</div><div class="dash-legend-meta">Waiting for progress.json</div></div></div></div>';
   }
 
   const outerRadius = 92;
@@ -707,32 +858,35 @@ function buildRadialWidget(teams, averagePercent) {
   const legend = [];
 
   teams.forEach(function(team, index) {
-    const progress = clampPercent(team.overall_percent);
+    const progress = clampPercent(team.courseProgress);
+    const issueProgress = clampPercent(team.issueProgress);
     const radius = outerRadius - (radiusStep * index);
     const circumference = 2 * Math.PI * radius;
     const dash = progress > 0 ? (circumference * progress / 100) : 0;
-    const color = ringColor(index, teams.length);
-    const label = escapeHtml(team.name || ('Team ' + (index + 1)));
+    const color = TEAM_RING_COLORS[index % TEAM_RING_COLORS.length];
+    const label = escapeHtml(team.name);
 
     rings.push(
       '<circle class="dash-radial-track" cx="110" cy="110" r="' + radius.toFixed(2) + '" stroke-width="' + strokeWidth.toFixed(2) + '"></circle>' +
       '<circle class="dash-radial-progress" cx="110" cy="110" r="' + radius.toFixed(2) + '" stroke-width="' + strokeWidth.toFixed(2) + '" stroke="' + color + '" stroke-dasharray="' + dash.toFixed(2) + ' ' + circumference.toFixed(2) + '"></circle>' +
-      '<circle class="dash-radial-start" cx="110" cy="' + (110 - radius).toFixed(2) + '" r="' + startDot.toFixed(2) + '"></circle>'
+      '<circle class="dash-radial-start" cx="110" cy="' + (110 - radius).toFixed(2) + '" r="' + startDot.toFixed(2) + '" style="fill:' + color + '; opacity:0.45;"></circle>'
     );
 
     legend.push(
       '<div class="dash-legend-item">' +
         '<span class="dash-legend-swatch" style="background:' + color + ';"></span>' +
-        '<span class="dash-legend-name">' + label + '</span>' +
-        '<span class="dash-legend-pct">' + progress + '%</span>' +
+        '<div>' +
+          '<div class="dash-legend-name">' + label + '</div>' +
+          '<div class="dash-legend-meta">' + progress + '% course &middot; ' + issueProgress + '% issues</div>' +
+        '</div>' +
       '</div>'
     );
   });
 
   const ariaLabel = escapeHtml(
-    'Overall progress ' + averagePercent + ' percent. ' +
+    'Average course progress ' + averagePercent + ' percent. ' +
     teams.map(function(team) {
-      return (team.name || 'Team') + ' ' + clampPercent(team.overall_percent) + ' percent';
+      return team.name + ' ' + clampPercent(team.courseProgress) + ' percent course and ' + clampPercent(team.issueProgress) + ' percent issues';
     }).join('. ')
   );
 
@@ -741,24 +895,13 @@ function buildRadialWidget(teams, averagePercent) {
       '<div class="dash-radial-wrap">' +
         '<svg class="dash-radial" viewBox="0 0 220 220" aria-hidden="true" focusable="false">' +
           rings.join('') +
-          '<text x="110" y="108" text-anchor="middle" class="dash-radial-center-value">' + averagePercent + '%</text>' +
-          '<text x="110" y="128" text-anchor="middle" class="dash-radial-center-label">overall</text>' +
+          '<text x="110" y="104" text-anchor="middle" class="dash-radial-center-value">' + averagePercent + '%</text>' +
+          '<text x="110" y="126" text-anchor="middle" class="dash-radial-center-label">course</text>' +
+          '<text x="110" y="141" text-anchor="middle" class="dash-radial-center-note">progress</text>' +
         '</svg>' +
       '</div>' +
       '<div class="dash-legend">' + legend.join('') + '</div>' +
     '</div>';
-}
-
-function clampPercent(value) {
-  const numeric = Math.round(Number(value) || 0);
-  return Math.max(0, Math.min(100, numeric));
-}
-
-function ringColor(index, total) {
-  const start = 0.96;
-  const end = 0.5;
-  const alpha = total > 1 ? (start - ((start - end) * (index / (total - 1)))) : start;
-  return 'rgba(181, 120, 74, ' + alpha.toFixed(2) + ')';
 }
 
 function escapeHtml(value) {
