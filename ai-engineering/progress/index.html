@@ -10,6 +10,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  --page-max: 1380px;
+  --page-pad: 32px;
   --bg: #faf9f6;
   --surface: #f3f1eb;
   --surface-hi: #f6f3ee;
@@ -41,14 +43,21 @@ a { color: inherit; text-decoration: none; }
 nav {
   height: 44px;
   border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 0;
   position: sticky;
   top: 0;
   background: rgba(250, 249, 246, 0.94);
   z-index: 100;
+}
+
+.nav-inner {
+  width: min(100%, calc(var(--page-max) + (var(--page-pad) * 2)));
+  margin: 0 auto;
+  padding: 0 var(--page-pad);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .nav-left { display: flex; align-items: center; gap: 1rem; }
@@ -91,8 +100,14 @@ nav {
 .breadcrumb .sl { color: var(--border-hi); }
 
 .hero {
-  padding: 1.8rem 2rem 1.6rem;
+  padding: 1.8rem 0 1.6rem;
   border-bottom: 1px solid var(--border);
+}
+
+.hero-inner {
+  width: min(100%, calc(var(--page-max) + (var(--page-pad) * 2)));
+  margin: 0 auto;
+  padding: 0 var(--page-pad);
 }
 
 .hero-tag {
@@ -128,9 +143,9 @@ nav {
 
 main {
   flex: 1;
-  padding: 0 2rem 3rem;
-  width: 100%;
-  max-width: 1080px;
+  width: min(100%, calc(var(--page-max) + (var(--page-pad) * 2)));
+  margin: 0 auto;
+  padding: 0 var(--page-pad) 3rem;
 }
 
 section { padding-top: 2rem; }
@@ -189,13 +204,12 @@ section { padding-top: 2rem; }
 
 .journey-shell {
   display: grid;
-  grid-template-columns: 0.95fr 1.35fr;
-  gap: 2rem;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 28px;
   align-items: start;
 }
 
 .journey-summary,
-.mountain-card,
 .project-card,
 .team-card {
   border: 1px solid var(--border);
@@ -204,40 +218,43 @@ section { padding-top: 2rem; }
 }
 
 .journey-summary {
-  padding: 1.15rem 1.2rem;
+  padding: 0.95rem 1rem 1rem;
 }
 
 .journey-copy {
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--sub);
-  margin-bottom: 1rem;
-  max-width: 32rem;
+  margin-bottom: 0.75rem;
+  max-width: none;
 }
 
 .journey-milestones {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0;
+  border-top: 1px solid rgba(226, 221, 211, 0.8);
 }
 
 .journey-milestone {
-  padding: 0.72rem 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: rgba(250, 249, 246, 0.72);
+  padding: 0.58rem 0;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.8);
+  background: transparent;
 }
 
 .journey-milestone.is-current {
-  border-color: rgba(181, 120, 74, 0.38);
+  margin: 0.15rem -0.2rem;
+  padding: 0.58rem 0.55rem;
+  border: 1px solid rgba(181, 120, 74, 0.32);
+  border-radius: 4px;
   background: rgba(181, 120, 74, 0.08);
+  box-shadow: inset 2px 0 0 rgba(181, 120, 74, 0.6);
 }
 
-.journey-milestone-head {
-  display: flex;
+.journey-milestone-top {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.15rem;
+  gap: 0.65rem;
 }
 
 .journey-milestone-code {
@@ -250,62 +267,103 @@ section { padding-top: 2rem; }
 
 .journey-milestone-title {
   font-family: 'Fraunces', serif;
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: var(--text);
-  margin-left: auto;
-  text-align: right;
+  margin-left: 0;
+  text-align: left;
 }
 
 .journey-milestone-pct {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9.5px;
   color: var(--sub);
   white-space: nowrap;
 }
 
-.journey-milestone-meta {
+.journey-milestone-bottom {
+  margin-top: 0.1rem;
+  padding-left: 42px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.journey-milestone-meta,
+.journey-milestone-open {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--sub);
-  line-height: 1.6;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .mountain-card {
-  padding: 1rem 1.1rem 1.15rem;
+  min-height: 500px;
+  padding: 1.15rem 1.3rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(243, 241, 235, 0.95));
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
 .mountain-caption {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0;
 }
 
 .mountain-title {
   font-family: 'Fraunces', serif;
-  font-size: 1.15rem;
+  font-size: 1.28rem;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-.mountain-meta {
+.mountain-badge {
+  margin-left: auto;
+  padding: 0.48rem 0.72rem 0.45rem;
+  border: 1px solid rgba(181, 120, 74, 0.3);
+  border-radius: 12px;
+  background: rgba(181, 120, 74, 0.08);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.08rem;
+}
+
+.mountain-badge-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.mountain-badge-value {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: var(--sub);
-  text-align: right;
+}
+
+.mountain-badge-code {
+  color: var(--accent);
 }
 
 .mountain-visual {
   position: relative;
   width: 100%;
-  aspect-ratio: 11 / 7;
-  min-height: 360px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  flex: 1;
+  min-height: 440px;
+  height: clamp(420px, 35vw, 460px);
   background:
-    radial-gradient(circle at 22% 18%, rgba(212, 168, 130, 0.14), transparent 30%),
+    radial-gradient(circle at 24% 17%, rgba(212, 168, 130, 0.16), transparent 28%),
+    radial-gradient(circle at 78% 10%, rgba(255, 255, 255, 0.46), transparent 24%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(250, 249, 246, 0.96));
   overflow: hidden;
 }
@@ -376,9 +434,9 @@ section { padding-top: 2rem; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 34px;
-  height: 24px;
-  padding: 0 0.45rem;
+  min-width: 36px;
+  height: 26px;
+  padding: 0 0.5rem;
   border: 1px solid rgba(181, 120, 74, 0.5);
   border-radius: 999px;
   background: rgba(250, 249, 246, 0.95);
@@ -403,23 +461,27 @@ section { padding-top: 2rem; }
 }
 
 .mountain-footnote {
-  margin-top: 0.7rem;
+  margin-top: 0;
   font-size: 11px;
   color: var(--dim);
 }
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: 1.1fr 0.9fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.project-column {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
 
 .project-card {
-  padding: 1rem 1.05rem 1.05rem;
-}
-
-.project-card.project-card-wide {
-  grid-column: span 2;
+  padding: 0.95rem 1rem 1rem;
 }
 
 .project-title {
@@ -436,7 +498,7 @@ section { padding-top: 2rem; }
 .project-distribution {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .project-row,
@@ -444,8 +506,8 @@ section { padding-top: 2rem; }
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.45rem;
+  gap: 0.75rem;
+  padding-bottom: 0.48rem;
   border-bottom: 1px solid rgba(226, 221, 211, 0.75);
 }
 
@@ -463,36 +525,33 @@ section { padding-top: 2rem; }
 
 .project-value {
   font-family: 'Fraunces', serif;
-  font-size: 1rem;
+  font-size: 0.98rem;
   color: var(--text);
   text-align: right;
 }
 
-.project-metrics {
+.project-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.7rem;
-}
-
-.project-metric {
-  padding: 0.8rem 0.85rem;
   border: 1px solid var(--border);
   border-radius: 4px;
+  overflow: hidden;
   background: rgba(250, 249, 246, 0.78);
 }
 
-.project-metric-value {
-  display: block;
-  font-family: 'Fraunces', serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.03em;
+.project-strip-item {
+  padding: 0.72rem 0.8rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
 }
 
-.project-metric-label {
-  display: block;
-  margin-top: 0.25rem;
+.project-strip-item + .project-strip-item {
+  border-left: 1px solid var(--border);
+}
+
+.project-strip-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 9.5px;
   letter-spacing: 0.08em;
@@ -500,37 +559,63 @@ section { padding-top: 2rem; }
   color: var(--dim);
 }
 
-.project-status-stack {
+.project-strip-value {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.project-status-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
 }
 
-.project-status-line {
-  padding: 0.7rem 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: rgba(250, 249, 246, 0.72);
+.project-status-row {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.75);
 }
 
-.project-status-line strong {
+.project-status-row:first-child {
+  padding-top: 0;
+}
+
+.project-status-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.project-status-kicker {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.15rem;
+}
+
+.project-status-main {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.45;
   color: var(--text);
-  font-weight: 600;
 }
 
 .project-status-note {
-  margin-top: 0.15rem;
+  margin-top: 0.06rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: var(--dim);
+  color: var(--sub);
 }
 
 .project-issue-item {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
-  gap: 0.8rem;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 0.7rem;
   align-items: start;
-  padding-bottom: 0.55rem;
+  padding-bottom: 0.42rem;
   border-bottom: 1px solid rgba(226, 221, 211, 0.75);
 }
 
@@ -566,7 +651,7 @@ section { padding-top: 2rem; }
 
 .project-distribution-copy {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--sub);
 }
 
@@ -581,7 +666,7 @@ section { padding-top: 2rem; }
 }
 
 .team-card-header {
-  padding: 1.15rem 1.2rem 0.95rem;
+  padding: 1rem 1.15rem 0.72rem;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -591,7 +676,7 @@ section { padding-top: 2rem; }
 
 .team-card-name {
   font-family: 'Fraunces', serif;
-  font-size: 1.38rem;
+  font-size: 1.32rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -600,10 +685,11 @@ section { padding-top: 2rem; }
 .team-card-name:hover { color: var(--accent); }
 
 .team-card-stage {
-  margin-top: 0.2rem;
+  margin-top: 0.12rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10.5px;
   color: var(--sub);
+  line-height: 1.5;
 }
 
 .team-card-overall {
@@ -623,14 +709,14 @@ section { padding-top: 2rem; }
 .team-card-overall-value {
   display: block;
   font-family: 'Fraunces', serif;
-  font-size: 1.9rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
 }
 
 .team-progress-row {
-  padding: 0.95rem 1.2rem 0.95rem;
+  padding: 0.8rem 1.15rem 0.82rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -671,7 +757,7 @@ section { padding-top: 2rem; }
 }
 
 .team-links {
-  padding: 0.8rem 1.2rem 0.2rem;
+  padding: 0.72rem 1.15rem 0.12rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -689,11 +775,11 @@ section { padding-top: 2rem; }
 .team-link-sep { color: var(--border-hi); }
 
 .team-milestone-row {
-  padding: 0.85rem 1.2rem 1rem;
+  padding: 0.72rem 1.15rem 0.88rem;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 0.6rem;
+  gap: 0.52rem;
 }
 
 .team-milestone-pill {
@@ -783,7 +869,7 @@ section { padding-top: 2rem; }
 }
 
 .team-section {
-  padding: 0.95rem 1.2rem 1rem;
+  padding: 0.82rem 1.15rem 0.9rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -900,7 +986,13 @@ section { padding-top: 2rem; }
 
 footer {
   border-top: 1px solid var(--border);
-  padding: 1.2rem 2rem;
+  padding: 1.2rem 0;
+}
+
+.footer-inner {
+  width: min(100%, calc(var(--page-max) + (var(--page-pad) * 2)));
+  margin: 0 auto;
+  padding: 0 var(--page-pad);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -916,7 +1008,7 @@ footer {
 .ft-col a { color: var(--dim); }
 .ft-col a:hover { color: var(--text); }
 
-@media (max-width: 920px) {
+@media (max-width: 1120px) {
   .journey-shell {
     grid-template-columns: 1fr;
   }
@@ -925,21 +1017,32 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .project-card.project-card-wide {
-    grid-column: span 1;
+  .project-column {
+    gap: 1rem;
   }
+}
 
+@media (max-width: 920px) {
   .team-milestone-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 720px) {
-  nav { padding: 0 1rem; }
-  .hero { padding: 1.5rem 1rem 1.4rem; }
-  main { padding: 0 1rem 2.5rem; }
+  :root {
+    --page-pad: 20px;
+  }
+
+  .hero { padding: 1.5rem 0 1.4rem; }
+  main { padding-bottom: 2.5rem; }
   .stats-band { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .project-metrics { grid-template-columns: 1fr; }
+  .project-strip {
+    grid-template-columns: 1fr;
+  }
+  .project-strip-item + .project-strip-item {
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
   .member-row {
     grid-template-columns: 84px minmax(0, 1fr) 42px;
   }
@@ -949,7 +1052,14 @@ footer {
     padding-left: 84px;
     margin-top: -0.2rem;
   }
-  footer { padding: 1rem; }
+  .mountain-card {
+    min-height: auto;
+  }
+  .mountain-visual {
+    min-height: 360px;
+    height: 360px;
+  }
+  footer { padding: 1rem 0; }
 }
 
 @media (max-width: 560px) {
@@ -962,14 +1072,24 @@ footer {
     display: grid;
   }
 
-  .mountain-meta,
+  .mountain-badge {
+    margin-left: 0;
+    align-items: flex-start;
+  }
+
   .team-card-overall,
   .project-value {
     text-align: left;
   }
 
+  .journey-milestone-bottom {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+
   .mountain-visual {
     min-height: 320px;
+    height: 320px;
   }
 
   .team-milestone-row {
@@ -978,6 +1098,10 @@ footer {
 }
 
 @media (max-width: 460px) {
+  :root {
+    --page-pad: 16px;
+  }
+
   .stats-band { grid-template-columns: 1fr; }
 }
 </style>
@@ -985,24 +1109,28 @@ footer {
 <body>
 
 <nav>
-  <div class="nav-left">
-    <a class="back-link" href="../">&#8592; <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
-    <div class="nav-sep"></div>
-    <div class="breadcrumb">
-      <a href="../">ai-engineering</a>
-      <span class="sl">/</span>
-      <span class="cur">dashboard</span>
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a class="back-link" href="../">&#8592; <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
+      <div class="nav-sep"></div>
+      <div class="breadcrumb">
+        <a href="../">ai-engineering</a>
+        <span class="sl">/</span>
+        <span class="cur">dashboard</span>
+      </div>
     </div>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hero-tag">ADC 2026 &middot; Ingineria AI</div>
-  <h1>Team Dashboard</h1>
-  <div class="hero-row">
-    <a id="hero-org" href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">github.com/AIE-2026 &#8599;</a>
-    <span>&middot;</span>
-    <span id="hero-meta">&mdash;</span>
+  <div class="hero-inner">
+    <div class="hero-tag">ADC 2026 &middot; Ingineria AI</div>
+    <h1>Team Dashboard</h1>
+    <div class="hero-row">
+      <a id="hero-org" href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">github.com/AIE-2026 &#8599;</a>
+      <span>&middot;</span>
+      <span id="hero-meta">&mdash;</span>
+    </div>
   </div>
 </div>
 
@@ -1031,18 +1159,20 @@ footer {
 </main>
 
 <footer>
-  <div class="ft-col">
-    Universitatea Babe&#537;-Bolyai &middot; Cluj-Napoca<br>
-    Facultatea de Sociologie &#537;i Asisten&#539;&#259; Social&#259;<br>
-    Masteratul Analiza Datelor Complexe
-  </div>
-  <div class="ft-col">
-    Ingineria AI &middot; Aplica&#539;ii cu agen&#539;i inteligen&#539;i<br>
-    Semestrul IV &middot; Laborator<br>
-    Vlad Alexe<br>
-    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
-    &nbsp;&middot;&nbsp;
-    <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
+  <div class="footer-inner">
+    <div class="ft-col">
+      Universitatea Babe&#537;-Bolyai &middot; Cluj-Napoca<br>
+      Facultatea de Sociologie &#537;i Asisten&#539;&#259; Social&#259;<br>
+      Masteratul Analiza Datelor Complexe
+    </div>
+    <div class="ft-col">
+      Ingineria AI &middot; Aplica&#539;ii cu agen&#539;i inteligen&#539;i<br>
+      Semestrul IV &middot; Laborator<br>
+      Vlad Alexe<br>
+      <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+      &nbsp;&middot;&nbsp;
+      <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
+    </div>
   </div>
 </footer>
 
@@ -1391,15 +1521,19 @@ function renderStats(model) {
 function renderJourney(model) {
   const milestoneItems = model.milestoneSummaries.map((milestone) => {
     const currentClass = milestone.code === model.currentMilestoneCode ? ' is-current' : '';
+    const closedLabel = milestone.total > 0 ? `${milestone.closed}/${milestone.total} closed` : '\u2014';
 
     return (
       `<div class="journey-milestone${currentClass}">` +
-        `<div class="journey-milestone-head">` +
+        `<div class="journey-milestone-top">` +
           `<span class="journey-milestone-code">${escapeHtml(milestone.code)}</span>` +
           `<strong class="journey-milestone-title">${escapeHtml(milestone.shortTitle)}</strong>` +
           `<span class="journey-milestone-pct">${milestone.percent}%</span>` +
         `</div>` +
-        `<div class="journey-milestone-meta">${milestone.total} tasks &middot; ${milestone.closed} closed &middot; ${milestone.open} open</div>` +
+        `<div class="journey-milestone-bottom">` +
+          `<span class="journey-milestone-meta">${closedLabel}</span>` +
+          `<span class="journey-milestone-open">${milestone.open} open</span>` +
+        `</div>` +
       `</div>`
     );
   }).join('');
@@ -1442,10 +1576,13 @@ function renderJourney(model) {
       `<div class="mountain-card">` +
         `<div class="mountain-caption">` +
           `<div class="mountain-title">Mountain Progress</div>` +
-          `<div class="mountain-meta">Milestone curent &middot; ${escapeHtml(model.currentMilestone.code)}<br>${escapeHtml(model.currentMilestone.name)}</div>` +
+          `<div class="mountain-badge">` +
+            `<span class="mountain-badge-label">Milestone curent</span>` +
+            `<span class="mountain-badge-value"><span class="mountain-badge-code">${escapeHtml(model.currentMilestone.code)}</span> &middot; ${escapeHtml(model.currentMilestone.shortTitle)}</span>` +
+          `</div>` +
         `</div>` +
         `<div class="mountain-visual">` +
-          `<svg class="mountain-svg" viewBox="0 0 660 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">` +
+          `<svg class="mountain-svg" viewBox="0 0 660 420" preserveAspectRatio="none" aria-hidden="true">` +
             `<path class="mountain-ridge-back" d="M 0 356 L 100 296 L 194 316 L 286 240 L 376 262 L 484 154 L 610 86 L 660 356 Z"></path>` +
             `<path class="mountain-ridge-front" d="M 0 356 L 114 322 L 216 260 L 308 286 L 406 182 L 500 208 L 618 110 L 660 356 Z"></path>` +
             `${checkpointGuides}` +
@@ -1490,34 +1627,40 @@ function renderProjectStats(model) {
 
   document.getElementById('project-stats').innerHTML =
     `<div class="project-grid">` +
-      `<article class="project-card">` +
-        `<div class="project-title">Issues deschise pe milestone</div>` +
-        `<div class="project-list">${issuesByMilestone}</div>` +
-      `</article>` +
-      `<article class="project-card">` +
-        `<div class="project-title">Task-uri create vs &icirc;nchise</div>` +
-        `<div class="project-metrics">` +
-          `<div class="project-metric"><span class="project-metric-value">${model.totals.createdTasks}</span><span class="project-metric-label">Created</span></div>` +
-          `<div class="project-metric"><span class="project-metric-value">${model.totals.closedIssues}</span><span class="project-metric-label">Closed</span></div>` +
-          `<div class="project-metric"><span class="project-metric-value">${model.totals.openIssues}</span><span class="project-metric-label">Open</span></div>` +
-        `</div>` +
-      `</article>` +
-      `<article class="project-card">` +
-        `<div class="project-title">Milestone curent</div>` +
-        `<div class="project-status-stack">` +
-          `<div class="project-status-line"><strong>Cel mai mare backlog:</strong> ${escapeHtml(model.backlogMilestone.code)} ${escapeHtml(model.backlogMilestone.shortTitle)}<div class="project-status-note">${model.backlogMilestone.open} issues deschise</div></div>` +
-          `<div class="project-status-line"><strong>${model.startedTeams.length}/${model.totals.teamCount}</strong> echipe au &icirc;nceput milestone-ul curent<div class="project-status-note">${escapeHtml(model.currentMilestone.code)} &middot; ${escapeHtml(model.currentMilestone.name)}</div></div>` +
-          `<div class="project-status-line"><strong>${model.blockedTeams.length}/${model.totals.teamCount}</strong> echipe sunt blocate la 0/x<div class="project-status-note">${blockedLabels || '\u2014'}</div></div>` +
-        `</div>` +
-      `</article>` +
-      `<article class="project-card project-card-wide">` +
-        `<div class="project-title">Ultimele issues deschise</div>` +
-        `<div class="project-issues">${latestIssues}</div>` +
-      `</article>` +
-      `<article class="project-card project-card-wide">` +
-        `<div class="project-title">Distribu&#539;ie pe milestone</div>` +
-        `<div class="project-distribution">${distributionRows}</div>` +
-      `</article>` +
+      `<div class="project-column">` +
+        `<article class="project-card">` +
+          `<div class="project-title">Issues deschise pe milestone</div>` +
+          `<div class="project-list">${issuesByMilestone}</div>` +
+        `</article>` +
+        `<article class="project-card">` +
+          `<div class="project-title">Distribu&#539;ie pe milestone</div>` +
+          `<div class="project-distribution">${distributionRows}</div>` +
+        `</article>` +
+      `</div>` +
+      `<div class="project-column">` +
+        `<article class="project-card">` +
+          `<div class="project-title">Task-uri create vs &icirc;nchise</div>` +
+          `<div class="project-strip">` +
+            `<div class="project-strip-item"><span class="project-strip-label">Created</span><strong class="project-strip-value">${model.totals.createdTasks}</strong></div>` +
+            `<div class="project-strip-item"><span class="project-strip-label">Closed</span><strong class="project-strip-value">${model.totals.closedIssues}</strong></div>` +
+            `<div class="project-strip-item"><span class="project-strip-label">Open</span><strong class="project-strip-value">${model.totals.openIssues}</strong></div>` +
+          `</div>` +
+        `</article>` +
+        `<article class="project-card">` +
+          `<div class="project-title">Milestone curent</div>` +
+          `<div class="project-status-list">` +
+            `<div class="project-status-row"><span class="project-status-kicker">Biggest backlog</span><span class="project-status-main">${escapeHtml(model.backlogMilestone.code)} &middot; ${escapeHtml(model.backlogMilestone.shortTitle)}</span><div class="project-status-note">${model.backlogMilestone.open} issues deschise</div></div>` +
+            `<div class="project-status-row"><span class="project-status-kicker">Started current milestone</span><span class="project-status-main">${model.startedTeams.length}/${model.totals.teamCount} echipe</span><div class="project-status-note">${escapeHtml(model.currentMilestone.code)} &middot; ${escapeHtml(model.currentMilestone.name)}</div></div>` +
+            `<div class="project-status-row"><span class="project-status-kicker">Blocked at 0/x</span><span class="project-status-main">${model.blockedTeams.length}/${model.totals.teamCount} echipe</span><div class="project-status-note">${blockedLabels || '\u2014'}</div></div>` +
+          `</div>` +
+        `</article>` +
+      `</div>` +
+      `<div class="project-column">` +
+        `<article class="project-card">` +
+          `<div class="project-title">Ultimele issues deschise</div>` +
+          `<div class="project-issues">${latestIssues}</div>` +
+        `</article>` +
+      `</div>` +
     `</div>`;
 }
 
