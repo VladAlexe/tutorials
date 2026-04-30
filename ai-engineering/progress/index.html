@@ -2545,29 +2545,9 @@ function buildCourseMarkers(teams) {
     if (p > maxClimb) maxClimb = p;
   });
 
-  // Interpolate the path's y-coordinate at a given SVG x value.
-  // Used to keep the visual push on-path when we shift the leader's x.
-  function pathYAtX(targetX) {
-    for (var i = 1; i < COURSE_MOUNTAIN_POINTS.length; i++) {
-      var a = COURSE_MOUNTAIN_POINTS[i - 1], b = COURSE_MOUNTAIN_POINTS[i];
-      if (targetX <= b.x) {
-        var r = (targetX - a.x) / (b.x - a.x);
-        return a.y + r * (b.y - a.y);
-      }
-    }
-    return COURSE_MOUNTAIN_POINTS[COURSE_MOUNTAIN_POINTS.length - 1].y;
-  }
-
-  // Visual minimum x for the leader.
-  // Rationale (SVG viewBox 680, typical rendered width ~600px, so ≈1.13 SVG/CSS):
-  //   base anchor SVG x=70 → CSS ~62px
-  //   max base fan offset = 30px CSS
-  //   half marker width = 18px each side
-  //   desired clear gap = 24px
-  //   total shift needed: 30+18+18+24 = 90px CSS → ~102 SVG units
-  //   MIN_LEADER_SVG_X = 70 + 102 = 172
-  // We round to 170, which lands just before C2 and is clearly readable.
-  var MIN_LEADER_SVG_X = 170;
+  var BASE_X = COURSE_MOUNTAIN_POINTS[0].x;  // 70
+  var BASE_FAN_REACH = 10;  // SVG units — rough right edge of the base cluster fan
+  var NUDGE_CAP = 8;        // SVG units (~7px CSS) — max leader nudge
 
   var percentGroups = {};
 
@@ -2586,12 +2566,19 @@ function buildCourseMarkers(teams) {
     var raw = interpolateCoursePoint(percent);
     var vx = raw.x;
     var vy = raw.y;
-    // Apply visual minimum separation: push the leader ahead of the base cluster
-    // only when its real path position is too close to be readable.
-    // The tooltip still shows the real percentage — no data is changed.
-    if (isLeader && vx < MIN_LEADER_SVG_X) {
-      vx = MIN_LEADER_SVG_X;
-      vy = pathYAtX(vx);
+
+    // Optional tiny nudge: when the leader's true position overlaps the base fan,
+    // shift it just past the fan edge — max NUDGE_CAP SVG units (~7px CSS).
+    // Draw order (leader drawn last) + z-index 30 are the primary visibility fix.
+    // Tooltip still shows real percentage; no data is falsified.
+    if (isLeader) {
+      var fanRightX = BASE_X + BASE_FAN_REACH;  // 80
+      var needed = fanRightX - vx + 4;
+      if (needed > 0) {
+        var nudge = Math.min(needed, NUDGE_CAP);
+        vx = vx + nudge;
+        vy = vy - nudge * 0.625;  // approximate Base→C1 slope: Δy/Δx ≈ -30/48
+      }
     }
 
     return {
