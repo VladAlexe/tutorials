@@ -1745,6 +1745,55 @@ footer {
 
   .stats-band { grid-template-columns: 1fr; }
 }
+
+/* --- FIX: visible progress fills --- */
+.team-progress-fill,
+.member-progress-fill,
+.project-bar-fill,
+.backlog-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.team-progress-group.is-course .team-progress-fill,
+.member-progress-track.is-course .member-progress-fill {
+  background: var(--team-color);
+  opacity: 0.92;
+}
+
+.team-progress-group.is-issues .team-progress-fill,
+.member-progress-track.is-issues .member-progress-fill {
+  background: var(--team-color);
+  opacity: 1;
+}
+
+.member-progress-track,
+.team-progress-bar {
+  background: rgba(95, 88, 76, 0.18);
+  border: 1px solid rgba(95, 88, 76, 0.08);
+}
+
+/* --- FIX: mountain marker readability --- */
+.mountain-team-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.mountain-checkpoint-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  fill: rgba(28, 27, 24, 0.88);
+}
+
+.mountain-checkpoint-node {
+  fill: rgba(250, 249, 246, 0.97);
+  stroke: rgba(181, 120, 74, 0.72);
+  stroke-width: 3;
+}
 </style>
 </head>
 <body>
@@ -2411,7 +2460,7 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
-const TEAM_PALETTE = ['#C8893C', '#B5A03A', '#A75A52', '#5E7FAE', '#2D2A26', '#9A7E72'];
+const TEAM_PALETTE = ['#D97706', '#65A30D', '#DC2626', '#2563EB', '#111827', '#7C3AED'];
 
 const MOUNTAIN_POINTS = {
   base: { x: 260, y: 851, label: 'Base' },
@@ -2557,16 +2606,16 @@ function getPointFromStage(stageKey, stagePercent) {
   return getPointOnRouteDistance(getRouteDistanceForStage(stageKey, stagePercent));
 }
 
-var BADGE_R = 18;
-var DOT_R = 5.25;
-var TEAM_COLLISION_DISTANCE = 32;
+var BADGE_R = 15;
+var DOT_R = 4.2;
+var TEAM_COLLISION_DISTANCE = 46;
 var TEAM_COLLISION_PATTERN = [
-  { tan: 0, perp: 0 },
-  { tan: 6, perp: 8 },
-  { tan: -6, perp: 8 },
-  { tan: 10, perp: 13 },
-  { tan: -10, perp: 13 },
-  { tan: 0, perp: 18 }
+  { tan: 0,  perp: 0 },
+  { tan: 24, perp: 7 },
+  { tan: -24, perp: 7 },
+  { tan: 48, perp: 10 },
+  { tan: -48, perp: 10 },
+  { tan: 72, perp: 12 }
 ];
 
 var CLIMB_STAGE_INDEX = { C1: 1, C2: 2, C3: 3, C4: 4, C5: 5, C6: 6, C7: 7, C8: 8 };
@@ -3428,7 +3477,10 @@ function getMinimumVisibleFillWidth(percent, minimumPercent) {
 }
 
 function getMarkerCollisionSign(routePoint) {
-  return routePoint.py >= 0 ? 1 : -1;
+  // Always keep the cluster close to the visible route.
+  // Positive side is too often visually pushed into the sky;
+  // this keeps the markers near the mountain slope.
+  return 1;
 }
 
 function applyMarkerCollisionOffsets(markers) {
@@ -3445,7 +3497,7 @@ function applyMarkerCollisionOffsets(markers) {
     }
 
     var previous = activeGroup[activeGroup.length - 1];
-    if (marker.routeDistance - previous.routeDistance <= TEAM_COLLISION_DISTANCE) {
+    if (Math.abs(marker.routeDistance - previous.routeDistance) <= TEAM_COLLISION_DISTANCE) {
       activeGroup.push(marker);
       return;
     }
@@ -3462,15 +3514,18 @@ function applyMarkerCollisionOffsets(markers) {
     group.forEach(function(marker, index) {
       var pattern = TEAM_COLLISION_PATTERN[index % TEAM_COLLISION_PATTERN.length];
       var ring = Math.floor(index / TEAM_COLLISION_PATTERN.length);
-      var sign = getMarkerCollisionSign(marker.routePoint);
-      var tanOffset = pattern.tan + (ring * 4 * (index % 2 === 0 ? 1 : -1));
-      var perpOffset = (pattern.perp + (ring * 6)) * sign;
+      var tanOffset = pattern.tan + ring * 18;
+      var perpOffset = pattern.perp;
 
       marker.tanOffset = tanOffset;
       marker.perpOffset = perpOffset;
-      marker.clusterSide = sign;
       marker.x = marker.routePoint.x + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * perpOffset);
       marker.y = marker.routePoint.y + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * perpOffset);
+
+      // hard clamp: never allow early teams to float too high above the base-camp area
+      if (marker.routePct <= 10) {
+        marker.y = Math.max(marker.y, 760);
+      }
     });
   });
 
@@ -3549,28 +3604,38 @@ function renderTeamMarkersSVG(markers) {
     return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
   });
 
+  var connectorEls = sorted.map(function(marker) {
+    if (Math.abs(marker.x - marker.routeX) < 1 && Math.abs(marker.y - marker.routeY) < 1) {
+      return '';
+    }
+
+    return '<line x1="' + marker.routeX.toFixed(1) + '" y1="' + marker.routeY.toFixed(1) + '"' +
+      ' x2="' + marker.x.toFixed(1) + '" y2="' + marker.y.toFixed(1) + '"' +
+      ' stroke="' + marker.color + '" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="4 5"/>';
+  }).join('');
+
+  var routePinEls = sorted.map(function(marker) {
+    return '<circle cx="' + marker.routeX.toFixed(1) + '" cy="' + marker.routeY.toFixed(1) + '" r="4.5"' +
+      ' fill="' + marker.color + '" stroke="rgba(255,255,255,0.96)" stroke-width="2"/>';
+  }).join('');
+
   var dotEls = sorted.map(function(marker) {
     var dotCount = marker.memberDots.length;
-    var outwardOffset = BADGE_R + DOT_R + 5;
-    var clusterCenterX = marker.x + (marker.routePoint.px * marker.clusterSide * outwardOffset);
-    var clusterCenterY = marker.y + (marker.routePoint.py * marker.clusterSide * outwardOffset);
+    var startX = marker.x - ((dotCount - 1) * (DOT_R * 2.35)) / 2;
+    var dotY = marker.y + BADGE_R + 10;
 
     return marker.memberDots.map(function(dot, index) {
-      var row = Math.floor(index / 3);
-      var colCount = Math.min(3, dotCount - (row * 3));
-      var col = index % 3;
-      var tanOffset = (col - ((colCount - 1) / 2)) * (DOT_R * 2.25);
-      var perpOffset = (row - (dotCount > 3 ? 0.5 : 0)) * (DOT_R * 2.1);
-      var dotX = (clusterCenterX + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * marker.clusterSide * perpOffset)).toFixed(1);
-      var dotY = (clusterCenterY + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * marker.clusterSide * perpOffset)).toFixed(1);
+      var dotX = startX + index * DOT_R * 2.35;
       var fill = dot.dimmed ? 'rgba(250,248,244,0.72)' : marker.color;
-      var fillOpacity = dot.dimmed ? '0.85' : '1';
+      var stroke = dot.dimmed ? marker.color : 'rgba(255,255,255,0.98)';
+      var opacity = dot.dimmed ? '0.58' : '1';
       var titleEl = dot.title ? '<title>' + escapeHtml(dot.title) + '</title>' : '';
 
-      return '<circle cx="' + dotX + '" cy="' + dotY + '" r="' + DOT_R +
-        '" fill="' + fill + '" fill-opacity="' + fillOpacity + '"' +
-        ' stroke="rgba(255,255,255,0.98)" stroke-width="1.8" pointer-events="all">' +
-        titleEl + '</circle>';
+      return '<circle cx="' + dotX.toFixed(1) + '" cy="' + dotY.toFixed(1) + '" r="' + DOT_R + '"' +
+        ' fill="' + fill + '" fill-opacity="' + opacity + '"' +
+        ' stroke="' + stroke + '" stroke-width="1.7" pointer-events="all">' +
+        titleEl +
+      '</circle>';
     }).join('');
   }).join('');
 
@@ -3581,18 +3646,18 @@ function renderTeamMarkersSVG(markers) {
 
     return '<g data-team="' + marker.label + '" pointer-events="all">' +
       '<title>' + escapeHtml(titleText) + '</title>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (BADGE_R + 2.5) +
-        '" fill="rgba(255,255,255,0.92)" opacity="0.86"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (BADGE_R + 4) +
+        '" fill="rgba(255,255,255,0.96)" opacity="0.92"/>' +
       '<circle cx="' + cx + '" cy="' + cy + '" r="' + BADGE_R +
-        '" fill="rgba(250,248,244,0.94)" stroke="' + marker.color + '" stroke-width="3"/>' +
+        '" fill="rgba(250,248,244,0.97)" stroke="' + marker.color + '" stroke-width="3.2"/>' +
       '<text class="mountain-team-label" x="' + cx + '" y="' + cy +
         '" text-anchor="middle" dominant-baseline="central"' +
-        ' stroke="rgba(255,255,255,0.96)" stroke-width="2.2" paint-order="stroke" fill="' + marker.color + '">' +
+        ' stroke="rgba(255,255,255,0.98)" stroke-width="2.4" paint-order="stroke" fill="' + marker.color + '">' +
         marker.label + '</text>' +
       '</g>';
   }).join('');
 
-  return dotEls + badgeEls;
+  return connectorEls + routePinEls + badgeEls + dotEls;
 }
 
 fetch('./progress.json')
