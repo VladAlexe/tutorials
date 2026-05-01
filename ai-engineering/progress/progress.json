@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-01 11:51",
+    "updated_at":  "2026-05-01 13:32",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -36,6 +36,143 @@
                                                                     "percent":  14
                                                                 }
                                    },
+                      "members":  [
+                                      {
+                                          "student_key":  "T1-S01",
+                                          "display_code":  "S01",
+                                          "local_code":  "student_01",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  3,
+                                          "open":  0,
+                                          "total":  3,
+                                          "issue_progress_percent":  100,
+                                          "course_progress_percent":  100,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  1,
+                                                                                        "open":  0,
+                                                                                        "total":  1,
+                                                                                        "percent":  100
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T1-S02",
+                                          "display_code":  "S02",
+                                          "local_code":  "student_02",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T1-S03",
+                                          "display_code":  "S03",
+                                          "local_code":  "student_03",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  2,
+                                          "open":  1,
+                                          "total":  3,
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T1-S04",
+                                          "display_code":  "S04",
+                                          "local_code":  "student_04",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T1-S05",
+                                          "display_code":  "S05",
+                                          "local_code":  "student_05",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      }
+                                  ],
                       "open_issues":  [
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -101,6 +238,143 @@
                                                                     "percent":  0
                                                                 }
                                    },
+                      "members":  [
+                                      {
+                                          "student_key":  "T2-S01",
+                                          "display_code":  "S01",
+                                          "local_code":  "student_01",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T2-S02",
+                                          "display_code":  "S02",
+                                          "local_code":  "student_02",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T2-S03",
+                                          "display_code":  "S03",
+                                          "local_code":  "student_03",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T2-S04",
+                                          "display_code":  "S04",
+                                          "local_code":  "student_04",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  2,
+                                          "open":  1,
+                                          "total":  3,
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T2-S05",
+                                          "display_code":  "S05",
+                                          "local_code":  "student_05",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      }
+                                  ],
                       "open_issues":  [
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -166,6 +440,9 @@
                                                                     "percent":  0
                                                                 }
                                    },
+                      "members":  [
+
+                                  ],
                       "open_issues":  [
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -231,6 +508,116 @@
                                                                     "percent":  14
                                                                 }
                                    },
+                      "members":  [
+                                      {
+                                          "student_key":  "T4-S01",
+                                          "display_code":  "S01",
+                                          "local_code":  "student_01",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T4-S02",
+                                          "display_code":  "S02",
+                                          "local_code":  "student_02",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  3,
+                                          "open":  0,
+                                          "total":  3,
+                                          "issue_progress_percent":  100,
+                                          "course_progress_percent":  100,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  1,
+                                                                                        "open":  0,
+                                                                                        "total":  1,
+                                                                                        "percent":  100
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T4-S03",
+                                          "display_code":  "S03",
+                                          "local_code":  "student_03",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  2,
+                                          "open":  1,
+                                          "total":  3,
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T4-S04",
+                                          "display_code":  "S04",
+                                          "local_code":  "student_04",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  2,
+                                          "open":  1,
+                                          "total":  3,
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      }
+                                  ],
                       "open_issues":  [
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -281,13 +668,13 @@
                       "issues_url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues",
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-5/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                      "overall_percent":  12,
+                      "overall_percent":  18,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
-                                                                                 "closed":  2,
-                                                                                 "open":  8,
+                                                                                 "closed":  3,
+                                                                                 "open":  7,
                                                                                  "total":  10,
-                                                                                 "percent":  20
+                                                                                 "percent":  30
                                                                              },
                                        "C2 - Model ecosystem":  {
                                                                     "closed":  0,
@@ -296,6 +683,116 @@
                                                                     "percent":  0
                                                                 }
                                    },
+                      "members":  [
+                                      {
+                                          "student_key":  "T5-S01",
+                                          "display_code":  "S01",
+                                          "local_code":  "student_01",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T5-S02",
+                                          "display_code":  "S02",
+                                          "local_code":  "student_02",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  1,
+                                          "open":  2,
+                                          "total":  3,
+                                          "issue_progress_percent":  33,
+                                          "course_progress_percent":  33,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  1,
+                                                                                                     "open":  1,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  50
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T5-S03",
+                                          "display_code":  "S03",
+                                          "local_code":  "student_03",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T5-S04",
+                                          "display_code":  "S04",
+                                          "local_code":  "student_04",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  2,
+                                          "open":  1,
+                                          "total":  3,
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      }
+                                  ],
                       "open_issues":  [
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -334,8 +831,8 @@
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/10"
                                           },
                                           {
-                                              "title":  "student_04 - Issue 2 - Individual notebook workspace",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/9"
+                                              "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/7"
                                           }
                                       ]
                   },
@@ -361,6 +858,143 @@
                                                                     "percent":  0
                                                                 }
                                    },
+                      "members":  [
+                                      {
+                                          "student_key":  "T6-S01",
+                                          "display_code":  "S01",
+                                          "local_code":  "student_01",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  2,
+                                          "open":  1,
+                                          "total":  3,
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T6-S02",
+                                          "display_code":  "S02",
+                                          "local_code":  "student_02",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T6-S03",
+                                          "display_code":  "S03",
+                                          "local_code":  "student_03",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  1,
+                                          "open":  2,
+                                          "total":  3,
+                                          "issue_progress_percent":  33,
+                                          "course_progress_percent":  33,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  1,
+                                                                                                     "open":  1,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  50
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T6-S04",
+                                          "display_code":  "S04",
+                                          "local_code":  "student_04",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T6-S05",
+                                          "display_code":  "S05",
+                                          "local_code":  "student_05",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "closed":  2,
+                                          "open":  1,
+                                          "total":  3,
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  100
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    }
+                                                       }
+                                      }
+                                  ],
                       "open_issues":  [
                                           {
                                               "title":  "C2.3 - Create initial app.py",
