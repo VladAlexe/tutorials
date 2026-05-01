@@ -425,7 +425,7 @@ section { padding-top: 2rem; }
   border-radius: 4px;
 }
 
-.mountain-viz {
+.mountain-image-wrap {
   position: relative;
   width: 100%;
   aspect-ratio: 2048 / 1152;
@@ -433,7 +433,7 @@ section { padding-top: 2rem; }
   border-radius: 4px;
 }
 
-.mountain-bg {
+.mountain-image-wrap img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -441,13 +441,12 @@ section { padding-top: 2rem; }
   object-fit: contain;
 }
 
-.mountain-overlay {
+.mountain-image-wrap svg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  overflow: visible;
 }
 
 .mountain-ridge-back {
@@ -877,34 +876,36 @@ section { padding-top: 2rem; }
 .team-card {
   --team-color: var(--accent);
   --team-soft: rgba(181, 120, 74, 0.12);
+  --team-surface: rgba(250, 249, 246, 0.82);
   overflow: hidden;
 }
 
 .team-card-header {
-  padding: 1rem 1.15rem 0.72rem;
+  padding: 0.95rem 1rem 0.82rem;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.8rem 1rem;
+  gap: 0.9rem 1rem;
   align-items: start;
 }
 
 .team-card-name {
   font-family: 'Fraunces', serif;
-  font-size: 1.32rem;
+  font-size: 1.24rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
   transition: color 0.12s;
+  line-height: 1.12;
 }
 .team-card-name:hover { color: var(--team-color); }
 
 .team-card-stage {
-  margin-top: 0.12rem;
+  margin-top: 0.18rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10.5px;
   color: var(--sub);
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .team-card-overall {
@@ -940,7 +941,7 @@ section { padding-top: 2rem; }
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.24rem;
 }
 
 .team-progress-label,
@@ -959,16 +960,16 @@ section { padding-top: 2rem; }
 }
 
 .team-progress-bar {
-  height: 14px;
+  height: 9px;
   border-radius: 999px;
-  background: rgba(201, 195, 181, 0.55);
+  background: rgba(201, 195, 181, 0.44);
   overflow: hidden;
 }
 
 .team-progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--team-color), rgba(201, 195, 181, 0.92));
+  background: linear-gradient(90deg, var(--team-color), rgba(212, 168, 130, 0.9));
 }
 
 .team-links {
@@ -990,21 +991,22 @@ section { padding-top: 2rem; }
 .team-link-sep { color: var(--border-hi); }
 
 .team-milestone-row {
-  padding: 0.72rem 1.15rem 0.88rem;
+  padding: 0.72rem 1rem 0.82rem;
   border-bottom: 1px solid var(--border);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
-  gap: 0.45rem;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 0.38rem;
 }
 
 .team-milestone-pill {
   position: relative;
-  padding: 0.65rem 0.7rem;
+  padding: 0.5rem 0.55rem 0.54rem;
   border: 1px solid var(--border);
-  border-radius: 10px;
-  background: rgba(250, 249, 246, 0.82);
+  border-radius: 8px;
+  background: rgba(250, 249, 246, 0.86);
   overflow: hidden;
   min-width: 0;
+  min-height: 54px;
 }
 
 .team-milestone-pill::after {
@@ -1022,11 +1024,13 @@ section { padding-top: 2rem; }
 }
 
 .team-milestone-pill.is-current {
-  box-shadow: inset 0 0 0 1px var(--team-soft);
+  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.48));
+  box-shadow: inset 0 0 0 1px var(--team-line, rgba(181, 120, 74, 0.32));
 }
 
 .team-milestone-pill.is-upcoming {
-  background: transparent;
+  background: rgba(250, 249, 246, 0.46);
+  border-color: rgba(226, 221, 211, 0.9);
 }
 
 .team-milestone-pill.is-created {
@@ -1035,6 +1039,7 @@ section { padding-top: 2rem; }
 
 .team-milestone-pill.is-active {
   border-color: var(--team-line-strong, rgba(181, 120, 74, 0.48));
+  background: rgba(250, 249, 246, 0.94);
 }
 
 .team-milestone-pill.is-done {
@@ -1063,7 +1068,7 @@ section { padding-top: 2rem; }
 
 .team-milestone-value {
   margin-top: 0.22rem;
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--dim);
   white-space: nowrap;
 }
@@ -1084,7 +1089,7 @@ section { padding-top: 2rem; }
 }
 
 .team-section {
-  padding: 0.82rem 1.15rem 0.9rem;
+  padding: 0.78rem 1rem 0.82rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -1092,10 +1097,25 @@ section { padding-top: 2rem; }
   border-bottom: none;
 }
 
+.team-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.52rem;
+}
+
+.team-section-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--sub);
+  white-space: nowrap;
+}
+
 .team-next-action {
   display: grid;
-  grid-template-columns: 82px minmax(0, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 0.65rem;
   align-items: start;
 }
 
@@ -1111,126 +1131,186 @@ section { padding-top: 2rem; }
 .team-next-action-copy a {
   font-size: 12px;
   color: var(--sub);
+  line-height: 1.45;
 }
 
 .team-next-action-copy a:hover {
-  color: var(--accent);
+  color: var(--team-color);
 }
 
-.member-list {
+.member-table {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
 }
 
+.member-table-head,
 .member-row {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr) 44px 118px;
-  gap: 0.8rem;
+  grid-template-columns: 90px 90px 70px minmax(0, 1.2fr) minmax(0, 1.2fr) 110px;
+  gap: 0.65rem;
   align-items: center;
 }
 
-.member-name,
-.member-pct,
-.member-meta {
+.member-table-head {
+  padding: 0 0 0.42rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.88);
+}
+
+.member-head-cell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.member-row {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.82);
+}
+
+.member-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.member-row.is-offline {
+  opacity: 0.82;
+}
+
+.member-code,
+.member-stage,
+.member-progress-value,
+.member-summary {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
 }
 
-.member-name,
-.member-pct { color: var(--sub); }
-.member-meta { color: var(--dim); text-align: right; }
+.member-code {
+  color: var(--text);
+  font-weight: 600;
+}
 
-.member-bar {
-  height: 8px;
+.member-status {
+  display: flex;
+  align-items: center;
+}
+
+.member-status-pill,
+.member-stage-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
-  background: rgba(201, 195, 181, 0.55);
+  border: 1px solid rgba(226, 221, 211, 0.92);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.member-status-pill {
+  min-width: 66px;
+  padding: 0.18rem 0.45rem 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(250, 249, 246, 0.72);
+  color: var(--dim);
+}
+
+.member-status-pill.is-online {
+  color: var(--sub);
+}
+
+.member-status-pill.is-offline {
+  border-color: rgba(201, 195, 181, 0.7);
+  background: rgba(201, 195, 181, 0.22);
+  color: var(--sub);
+}
+
+.member-stage-badge {
+  min-width: 40px;
+  padding: 0.18rem 0.42rem 0.2rem;
+  background: rgba(250, 249, 246, 0.9);
+  color: var(--team-color);
+}
+
+.member-stage-badge.is-empty {
+  color: var(--dim);
+  border-color: rgba(226, 221, 211, 0.86);
+}
+
+.member-progress-cell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.member-progress-track {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(201, 195, 181, 0.42);
   overflow: hidden;
 }
 
-.member-fill {
+.member-progress-track.is-course {
+  background: rgba(201, 195, 181, 0.38);
+}
+
+.member-progress-track.is-course .member-progress-fill {
+  background: linear-gradient(90deg, rgba(201, 195, 181, 0.9), var(--team-line-strong, rgba(181, 120, 74, 0.48)));
+}
+
+.member-progress-track.is-issues {
+  background: rgba(181, 120, 74, 0.14);
+}
+
+.member-progress-track.is-issues .member-progress-fill {
+  background: linear-gradient(90deg, var(--team-color), rgba(212, 168, 130, 0.94));
+}
+
+.member-progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-lo));
 }
 
-.team-card .member-fill {
-  background: var(--team-color, var(--accent));
+.member-progress-value {
+  color: var(--sub);
+  min-width: 32px;
+  text-align: right;
 }
 
-.member-entry {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.member-stage-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding-left: 0;
-}
-
-.member-stage-pip {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px;
-  padding: 1px 4px;
-  border-radius: 3px;
-  border: 1px solid transparent;
-  line-height: 1.4;
-}
-
-.pip-done {
-  background: var(--team-color, var(--accent));
-  color: rgba(255, 255, 255, 0.92);
-  border-color: var(--team-color, var(--accent));
-}
-
-.pip-current {
-  background: transparent;
-  color: var(--team-color, var(--accent));
-  border-color: var(--team-color, var(--accent));
-}
-
-.pip-upcoming {
-  background: rgba(201, 195, 181, 0.18);
-  color: var(--dim);
-  border-color: rgba(201, 195, 181, 0.38);
-}
-
-.member-offline-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px;
-  padding: 1px 4px;
-  border-radius: 3px;
-  background: rgba(201, 195, 181, 0.28);
-  color: var(--dim);
-  margin-left: 4px;
-  vertical-align: middle;
+.member-summary {
+  color: var(--text);
+  text-align: right;
+  white-space: nowrap;
 }
 
 .team-issue-list {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.32rem;
 }
 
 .team-issue-link,
 .team-issue-more {
   display: block;
-  padding-left: 0.9rem;
+  padding-left: 0.8rem;
   position: relative;
 }
 
 .team-issue-link {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--sub);
+  line-height: 1.45;
   transition: color 0.1s;
 }
 
 .team-issue-link:hover,
 .team-issue-more:hover {
-  color: var(--accent);
+  color: var(--team-color);
 }
 
 .team-issue-link::before,
@@ -1244,25 +1324,27 @@ section { padding-top: 2rem; }
 }
 
 .team-issue-link::before {
-  top: 0.62rem;
+  top: 0.5rem;
   background: var(--accent-lo);
 }
 
 .team-issue-more {
+  margin-top: 0.08rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9.5px;
   color: var(--dim);
 }
 
 .team-issue-more::before {
-  top: 0.5rem;
+  top: 0.42rem;
   background: var(--border-hi);
 }
 
 .team-empty {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9.8px;
   color: var(--dim);
+  line-height: 1.5;
 }
 
 .project-analytics-shell {
@@ -1454,54 +1536,69 @@ section { padding-top: 2rem; }
 }
 
 .team-card-metrics {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  min-width: 132px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(106px, 1fr));
+  gap: 0.45rem;
+  min-width: 228px;
 }
 
 .team-metric-line {
+  padding: 0.42rem 0.55rem 0.48rem;
+  border: 1px solid rgba(226, 221, 211, 0.88);
+  border-radius: 6px;
+  background: rgba(250, 249, 246, 0.74);
   text-align: right;
 }
 
 .team-metric-line .team-progress-label {
   display: block;
-  margin-bottom: 0.08rem;
+  margin-bottom: 0.12rem;
 }
 
 .team-metric-line .team-progress-meta {
   display: block;
   font-family: 'Fraunces', serif;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text);
+  line-height: 1.05;
 }
 
 .team-progress-stack {
-  padding: 0.82rem 1.15rem 0.9rem;
+  padding: 0.78rem 1rem 0.84rem;
   border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 0.72rem;
+  gap: 0.58rem;
 }
 
 .team-progress-group {
   display: flex;
   flex-direction: column;
-  gap: 0.32rem;
+  gap: 0.24rem;
+}
+
+.team-progress-group.is-course .team-progress-bar {
+  background: rgba(201, 195, 181, 0.38);
+}
+
+.team-progress-group.is-course .team-progress-fill {
+  background: linear-gradient(90deg, rgba(201, 195, 181, 0.92), var(--team-line-strong, rgba(181, 120, 74, 0.48)));
 }
 
 .team-progress-group.is-issues .team-progress-bar {
-  height: 6px;
+  background: rgba(181, 120, 74, 0.14);
 }
 
 .team-progress-group.is-issues .team-progress-fill {
-  background: linear-gradient(90deg, rgba(201, 195, 181, 0.94), var(--team-color));
-  opacity: 0.72;
+  background: linear-gradient(90deg, var(--team-color), rgba(212, 168, 130, 0.94));
+  opacity: 0.98;
 }
 
 .team-current-note {
   font-size: 11px;
   color: var(--dim);
+  line-height: 1.5;
+  margin-top: 0.18rem;
 }
 
 .loading {
@@ -1579,14 +1676,25 @@ footer {
   .metric-progress-pair {
     grid-template-columns: 1fr;
   }
-  .member-row {
-    grid-template-columns: 84px minmax(0, 1fr) 42px;
+  .member-table-head {
+    display: none;
   }
-  .member-meta {
+  .member-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.42rem 0.6rem;
+  }
+  .member-summary {
+    order: 4;
+    grid-column: 2;
+    text-align: right;
+    min-width: 0;
+  }
+  .member-progress-cell {
+    order: 5;
     grid-column: 1 / -1;
-    text-align: left;
-    padding-left: 84px;
-    margin-top: -0.2rem;
+  }
+  .member-progress-cell.is-issues {
+    order: 6;
   }
   .mountain-card {
     min-height: auto;
@@ -1625,6 +1733,14 @@ footer {
     gap: 0.1rem;
   }
 
+  .team-card-metrics {
+    min-width: 0;
+  }
+
+  .team-metric-line {
+    text-align: left;
+  }
+
   .team-next-action {
     grid-template-columns: 1fr;
     gap: 0.2rem;
@@ -1636,9 +1752,10 @@ footer {
     gap: 0.22rem;
   }
 
-  .team-card-metrics,
-  .team-metric-line {
-    text-align: left;
+  .team-section-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.18rem;
   }
 
   .team-milestone-row {
@@ -1652,6 +1769,10 @@ footer {
   }
 
   .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-card-metrics {
     grid-template-columns: 1fr;
   }
 
@@ -1742,18 +1863,7 @@ const DEFAULT_MILESTONES = [
   { code: 'Final', shortTitle: 'Project', fallbackName: 'Final project' }
 ];
 
-const MOUNTAIN_POINTS = [
-  { label: 'Base', x: 72, y: 330 },
-  { label: 'C1', x: 160, y: 280 },
-  { label: 'C2', x: 252, y: 242 },
-  { label: 'C3', x: 340, y: 205 },
-  { label: 'C4', x: 426, y: 170 },
-  { label: 'C5', x: 516, y: 126 },
-  { label: 'Final', x: 596, y: 80 }
-];
-
-const MOUNTAIN_THRESHOLDS = [0, 20, 40, 50, 60, 80, 100];
-const MOUNTAIN_VIEWBOX = { width: 660, height: 420 };
+const MOUNTAIN_VIEWBOX = { width: 2048, height: 1152 };
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -2136,7 +2246,7 @@ function renderJourney(model) {
           `</div>` +
         `</div>` +
         `<div class="mountain-visual">` +
-          `<svg class="mountain-svg" viewBox="0 0 660 420" preserveAspectRatio="none" aria-hidden="true">` +
+          `<svg class="mountain-svg" viewBox="0 0 660 420" aria-hidden="true">` +
             `<path class="mountain-ridge-back" d="M 0 356 L 100 296 L 194 316 L 286 240 L 376 262 L 484 154 L 610 86 L 660 356 Z"></path>` +
             `<path class="mountain-ridge-front" d="M 0 356 L 114 322 L 216 260 L 308 286 L 406 182 L 500 208 L 618 110 L 660 356 Z"></path>` +
             `${checkpointGuides}` +
@@ -2336,87 +2446,182 @@ const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
 const TEAM_PALETTE = ['#C97B3D', '#C9A23D', '#A84A44', '#4E7CA1', '#2F2A25', '#8E6E63'];
 
-const MOUNTAIN_MAP = {
-  milestones: {
-    base:  { x: 260,  y: 851 },
-    C1:    { x: 606,  y: 782 },
-    C2:    { x: 940,  y: 749 },
-    C3:    { x: 1299, y: 634 },
-    C4:    { x: 1570, y: 552 },
-    C5:    { x: 1860, y: 444 },
-    bend1: { x: 1738, y: 336 },
-    C6:    { x: 1428, y: 332 },
-    C7:    { x: 1810, y: 253 },
-    C8:    { x: 1935, y: 97  }
-  },
-  routeOrder: ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'bend1', 'C6', 'C7', 'C8']
+const MOUNTAIN_POINTS = {
+  base: { x: 260, y: 851, label: 'Base' },
+  C1: { x: 606, y: 782, label: 'C1' },
+  C2: { x: 940, y: 749, label: 'C2' },
+  C3: { x: 1299, y: 634, label: 'C3' },
+  C4: { x: 1570, y: 552, label: 'C4' },
+  C5: { x: 1860, y: 444, label: 'C5' },
+  bend1: { x: 1738, y: 336, label: '' },
+  C6: { x: 1428, y: 332, label: 'C6' },
+  C7: { x: 1810, y: 253, label: 'C7' },
+  C8: { x: 1935, y: 97, label: 'C8' }
 };
 
-function buildRoutePoints() {
-  return MOUNTAIN_MAP.routeOrder.map(function(key) {
-    return MOUNTAIN_MAP.milestones[key];
-  });
-}
+const ROUTE_ORDER = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'bend1', 'C6', 'C7', 'C8'];
+const CLIMB_STAGE_ROUTE = {
+  C1: { start: 'base', end: 'C1' },
+  C2: { start: 'C1', end: 'C2' },
+  C3: { start: 'C2', end: 'C3' },
+  C4: { start: 'C3', end: 'C4' },
+  C5: { start: 'C4', end: 'C5' },
+  C6: { start: 'C5', end: 'C6' },
+  C7: { start: 'C6', end: 'C7' },
+  C8: { start: 'C7', end: 'C8' }
+};
 
-function getTotalRouteLength(points) {
-  var total = 0;
+const DEFAULT_LANE_OFFSETS = [-10, -6, -2, 2, 6, 10];
+const ROUTE_POINTS = ROUTE_ORDER.map(function(key) {
+  return {
+    key: key,
+    x: MOUNTAIN_POINTS[key].x,
+    y: MOUNTAIN_POINTS[key].y,
+    label: MOUNTAIN_POINTS[key].label
+  };
+});
+const ROUTE_METRICS = buildRouteMetrics(ROUTE_POINTS);
+
+function buildRouteMetrics(points) {
+  var cumulative = [0];
+  var segments = [];
+
   for (var i = 1; i < points.length; i++) {
-    var dx = points[i].x - points[i - 1].x;
-    var dy = points[i].y - points[i - 1].y;
-    total += Math.sqrt(dx * dx + dy * dy);
+    var start = points[i - 1];
+    var end = points[i];
+    var dx = end.x - start.x;
+    var dy = end.y - start.y;
+    var length = Math.sqrt(dx * dx + dy * dy);
+    var cumulativeStart = cumulative[cumulative.length - 1];
+    var cumulativeEnd = cumulativeStart + length;
+
+    segments.push({
+      start: start,
+      end: end,
+      dx: dx,
+      dy: dy,
+      length: length,
+      cumulativeStart: cumulativeStart,
+      cumulativeEnd: cumulativeEnd
+    });
+    cumulative.push(cumulativeEnd);
   }
-  return total;
+
+  var distanceByKey = {};
+  points.forEach(function(point, index) {
+    distanceByKey[point.key] = cumulative[index];
+  });
+
+  return {
+    points: points,
+    segments: segments,
+    cumulative: cumulative,
+    totalLength: cumulative[cumulative.length - 1],
+    distanceByKey: distanceByKey
+  };
 }
 
-function getPointOnRoute(progressPercent) {
-  var points = buildRoutePoints();
-  var totalLen = getTotalRouteLength(points);
-  var targetDist = (clampPercent(progressPercent) / 100) * totalLen;
+function getPointOnRouteDistance(distance) {
+  var target = Math.max(0, Math.min(ROUTE_METRICS.totalLength, toNumber(distance)));
+  var segments = ROUTE_METRICS.segments;
 
-  if (targetDist <= 0) return { x: points[0].x, y: points[0].y };
+  if (!segments.length) {
+    return { x: 0, y: 0, tx: 1, ty: 0, px: 0, py: -1, routeDistance: 0 };
+  }
 
-  var walked = 0;
-  for (var i = 1; i < points.length; i++) {
-    var dx = points[i].x - points[i - 1].x;
-    var dy = points[i].y - points[i - 1].y;
-    var segLen = Math.sqrt(dx * dx + dy * dy);
-    if (walked + segLen >= targetDist) {
-      var ratio = segLen > 0 ? (targetDist - walked) / segLen : 0;
+  for (var i = 0; i < segments.length; i++) {
+    var segment = segments[i];
+    if (target <= segment.cumulativeEnd || i === segments.length - 1) {
+      var ratio = segment.length > 0 ? (target - segment.cumulativeStart) / segment.length : 0;
+      ratio = Math.max(0, Math.min(1, ratio));
+      var tx = segment.length > 0 ? segment.dx / segment.length : 1;
+      var ty = segment.length > 0 ? segment.dy / segment.length : 0;
+
       return {
-        x: points[i - 1].x + dx * ratio,
-        y: points[i - 1].y + dy * ratio
+        x: segment.start.x + segment.dx * ratio,
+        y: segment.start.y + segment.dy * ratio,
+        tx: tx,
+        ty: ty,
+        px: ty,
+        py: -tx,
+        routeDistance: target
       };
     }
-    walked += segLen;
   }
 
-  var last = points[points.length - 1];
-  return { x: last.x, y: last.y };
+  var lastSegment = segments[segments.length - 1];
+  var lastTx = lastSegment.length > 0 ? lastSegment.dx / lastSegment.length : 1;
+  var lastTy = lastSegment.length > 0 ? lastSegment.dy / lastSegment.length : 0;
+  return {
+    x: lastSegment.end.x,
+    y: lastSegment.end.y,
+    tx: lastTx,
+    ty: lastTy,
+    px: lastTy,
+    py: -lastTx,
+    routeDistance: ROUTE_METRICS.totalLength
+  };
+}
+
+function resolveMountainStageKey(stageKey) {
+  var safeStageKey = String(stageKey || '').toUpperCase();
+  if (CLIMB_STAGE_ROUTE[safeStageKey]) {
+    return safeStageKey;
+  }
+  if (safeStageKey === POST_SUMMIT_STAGE_KEY || safeStageKey === 'FINAL') {
+    return 'C8';
+  }
+  return '';
+}
+
+function getRouteDistanceForStage(stageKey, stagePercent) {
+  var safeStageKey = resolveMountainStageKey(stageKey);
+  if (!safeStageKey) {
+    return 0;
+  }
+
+  var segment = CLIMB_STAGE_ROUTE[safeStageKey];
+  var startDistance = ROUTE_METRICS.distanceByKey[segment.start];
+  var endDistance = ROUTE_METRICS.distanceByKey[segment.end];
+  return startDistance + ((endDistance - startDistance) * (clampPercent(stagePercent) / 100));
+}
+
+function getPointFromStage(stageKey, stagePercent) {
+  return getPointOnRouteDistance(getRouteDistanceForStage(stageKey, stagePercent));
 }
 
 var BADGE_R = 16;
-var DOT_R = 5;
+var DOT_R = 4.5;
 var TEAM_LANE_MAP = { T1: -10, T2: -6, T3: -2, T4: 2, T5: 6, T6: 10 };
 
 var CLIMB_STAGE_INDEX = { C1: 1, C2: 2, C3: 3, C4: 4, C5: 5, C6: 6, C7: 7, C8: 8 };
 
-function getMemberRoutePercent(member) {
-  var codeMatch = String(member && member.current_stage || '').match(/\b(C\d+)\b/i);
-  if (!codeMatch) return 0;
-  var stageCode = codeMatch[1].toUpperCase();
-  var idx = CLIMB_STAGE_INDEX[stageCode];
-  if (!idx) return 0;
-
-  var stagePercent = 0;
-  var prog = member && member.progress;
-  if (prog) {
-    var key = Object.keys(prog).find(function(k) {
-      var m2 = String(k).match(/\b(C\d+)\b/i);
-      return m2 && m2[1].toUpperCase() === stageCode;
-    });
-    if (key) stagePercent = toNumber((prog[key] && prog[key].percent) || 0);
+function getStagePercentFromProgressMap(progressMap, stageKey) {
+  if (!progressMap || !stageKey) {
+    return 0;
   }
-  return clampPercent(((idx - 1) + stagePercent / 100) / 8 * 100);
+
+  var matchingKey = Object.keys(progressMap).find(function(key) {
+    return inferStageKey(key) === stageKey;
+  });
+  return matchingKey ? toNumber((progressMap[matchingKey] && progressMap[matchingKey].percent) || 0) : 0;
+}
+
+function getMemberRoutePosition(member) {
+  var stageKey = resolveMountainStageKey(inferStageKey(member && member.current_stage));
+  var stagePercent = stageKey ? getStagePercentFromProgressMap(member && member.progress, stageKey) : 0;
+  if (stageKey === 'C8' && /^(C9|FINAL)$/i.test(String(inferStageKey(member && member.current_stage) || ''))) {
+    stagePercent = 100;
+  }
+
+  var point = getPointFromStage(stageKey, stagePercent);
+  return {
+    member: member,
+    stageKey: stageKey || 'base',
+    stagePercent: clampPercent(stagePercent),
+    routeDistance: point.routeDistance,
+    point: point
+  };
 }
 
 function renderMemberStageStrip(member) {
@@ -2443,60 +2648,33 @@ function renderMemberStageStrip(member) {
   }).join('');
 }
 
-function getRouteTangentAt(routePercent) {
-  var points = buildRoutePoints();
-  var total = getTotalRouteLength(points);
-  var target = clampPercent(routePercent) / 100 * total;
-  var walked = 0;
-  for (var i = 1; i < points.length; i++) {
-    var dx = points[i].x - points[i - 1].x;
-    var dy = points[i].y - points[i - 1].y;
-    var segLen = Math.sqrt(dx * dx + dy * dy);
-    if (walked + segLen >= target || i === points.length - 1) {
-      var len = segLen || 1;
-      return { tx: dx / len, ty: dy / len };
-    }
-    walked += segLen;
-  }
-  var last = points[points.length - 1];
-  var prev = points[points.length - 2];
-  var ldx = last.x - prev.x;
-  var ldy = last.y - prev.y;
-  var ll = Math.sqrt(ldx * ldx + ldy * ldy) || 1;
-  return { tx: ldx / ll, ty: ldy / ll };
+function getRouteTangentAt(routeDistance) {
+  var point = getPointOnRouteDistance(routeDistance);
+  return { tx: point.tx, ty: point.ty };
 }
 
-function getRoutePerpAt(routePercent) {
-  var t = getRouteTangentAt(routePercent);
-  return { px: t.ty, py: -t.tx };
+function getRoutePerpAt(routeDistance) {
+  var point = getPointOnRouteDistance(routeDistance);
+  return { px: point.px, py: point.py };
 }
 
 function buildMountainMarkerData(teams) {
   return teams.map(function(team, i) {
     var members = Array.isArray(team.members) ? team.members : [];
-    var memberPositions = members.map(function(m) {
-      return { pct: getMemberRoutePercent(m), member: m };
-    });
-
-    var routePct = team.climbProgress;
-    if (memberPositions.length > 0) {
-      var sum = memberPositions.reduce(function(acc, mp) { return acc + mp.pct; }, 0);
-      routePct = sum / memberPositions.length;
-    }
-
-    var laneOffset = TEAM_LANE_MAP[team.label] !== undefined ? TEAM_LANE_MAP[team.label] : (i * 5 - 12);
-    var basePos = getPointOnRoute(routePct);
-    var perp = getRoutePerpAt(routePct);
+    var memberPositions = members.map(getMemberRoutePosition);
+    var laneOffset = TEAM_LANE_MAP[team.label] !== undefined ? TEAM_LANE_MAP[team.label] : DEFAULT_LANE_OFFSETS[i % DEFAULT_LANE_OFFSETS.length];
+    var basePos = getPointFromStage(team.currentStage.key, team.currentStage.percent);
 
     return {
       label: team.label,
       teamName: team.name,
       color: team.color,
-      routePct: routePct,
-      x: basePos.x + perp.px * laneOffset,
-      y: basePos.y + perp.py * laneOffset,
+      routePct: team.climbProgress,
+      x: basePos.x + basePos.px * laneOffset,
+      y: basePos.y + basePos.py * laneOffset,
       routeX: basePos.x,
       routeY: basePos.y,
+      routeDistance: basePos.routeDistance,
       laneOffset: laneOffset,
       status: getSemanticStatus(team),
       percent: team.climbProgress,
@@ -2511,19 +2689,17 @@ function buildMountainMarkerData(teams) {
 
 function renderTeamMarkersSVG(markers) {
   var sorted = markers.slice().sort(function(a, b) {
-    return a.routePct !== b.routePct ? a.routePct - b.routePct : a.teamIndex - b.teamIndex;
+    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
   });
 
   var dotEls = sorted.map(function(marker) {
     var color = marker.color;
-    var tang = getRouteTangentAt(marker.routePct);
 
     return marker.memberPositions.map(function(mp, di) {
-      var mPos = getPointOnRoute(mp.pct);
-      var mPerp = getRoutePerpAt(mp.pct);
-      var laneOffset = marker.laneOffset;
-      var dotX = (mPos.x + mPerp.px * laneOffset + tang.tx * (di - (marker.memberPositions.length - 1) / 2) * (DOT_R * 2.8)).toFixed(1);
-      var dotY = (mPos.y + mPerp.py * laneOffset + tang.ty * (di - (marker.memberPositions.length - 1) / 2) * (DOT_R * 2.8)).toFixed(1);
+      var point = mp.point;
+      var tangentialOffset = (di - (marker.memberPositions.length - 1) / 2) * (DOT_R * 2.1);
+      var dotX = (point.x + point.px * marker.laneOffset + point.tx * tangentialOffset).toFixed(1);
+      var dotY = (point.y + point.py * marker.laneOffset + point.ty * tangentialOffset).toFixed(1);
       var opacity = mp.member.active === false ? '0.35' : (mp.member.connected === false ? '0.45' : '0.95');
       var displayCode = mp.member.display_code || mp.member.local_code || '';
       var stageCode = String(mp.member.current_stage || '').replace(/\s*-.*/, '').trim();
@@ -3007,14 +3183,14 @@ function renderJourney(model) {
           `</div>` +
         `</div>` +
         `<div class="mountain-visual">` +
-          `<div class="mountain-viz">` +
-            `<img class="mountain-bg" src="../assets/img/mountain.png" alt="Mountain progress map">` +
-            `<svg class="mountain-overlay" viewBox="0 0 2048 1152" preserveAspectRatio="none" aria-hidden="true">${svgOverlay}</svg>` +
+          `<div class="mountain-image-wrap">` +
+            `<img src="../assets/img/mountain.png" alt="Mountain progress map">` +
+            `<svg viewBox="0 0 2048 1152" aria-hidden="true">${svgOverlay}</svg>` +
           `</div>` +
         `</div>` +
         `<div class="mountain-status-strip">${statusStrip}</div>` +
         `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
-        `<p class="mountain-footnote">Marcajele T1-T6 folosesc progresul de curs pe traseul C1-C8; C9 r&#259;m&#226;ne separat ca etap&#259; de demo.</p>` +
+        `<p class="mountain-footnote">Marcajele T1-T6 și member dots urmeaz&#259; exclusiv traseul Base-C8; C9 r&#259;m&#226;ne separat ca After summit.</p>` +
       `</div>` +
     `</div>`;
 }
@@ -3086,15 +3262,64 @@ function renderProjectStats(model) {
     `</div>`;
 }
 
+function getMemberCourseProgressPercent(member) {
+  if (member && member.course_progress_percent !== undefined && member.course_progress_percent !== null) {
+    return clampPercent(member.course_progress_percent);
+  }
+
+  const progressMap = member && member.progress ? member.progress : {};
+  const progressKeys = Object.keys(progressMap);
+  if (!progressKeys.length) {
+    return 0;
+  }
+
+  const sum = progressKeys.reduce(function(total, key) {
+    return total + toNumber(progressMap[key] && progressMap[key].percent);
+  }, 0);
+  return clampPercent(Math.round(sum / progressKeys.length));
+}
+
+function getMemberIssueProgressPercent(member) {
+  const total = toNumber(member && member.total);
+  const closed = toNumber(member && member.closed);
+
+  if (member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null) {
+    return clampPercent(member.issue_progress_percent);
+  }
+
+  return total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
+}
+
+function getMemberStageCode(member) {
+  return inferStageKey(member && member.current_stage) || '\u2014';
+}
+
+function getMemberSummaryCopy(members) {
+  const trackedCount = members.length;
+  if (!trackedCount) {
+    return '0 tracked';
+  }
+
+  const offlineCount = members.filter(function(member) {
+    return member && member.connected === false;
+  }).length;
+  const connectedCount = trackedCount - offlineCount;
+
+  return offlineCount > 0
+    ? `${connectedCount} connected / ${offlineCount} offline`
+    : `${trackedCount} tracked`;
+}
+
 function renderTeams(model) {
   document.getElementById('team-grid').innerHTML = model.teams.map(function(team) {
     const visibleIssues = team.openIssues.slice(0, 3);
     const hiddenCount = Math.max(team.openIssues.length - visibleIssues.length, 0);
+    const memberSummary = getMemberSummaryCopy(team.members);
 
     const milestonePills = team.stageProgress.filter(function(stage) {
       return JOURNEY_STAGE_KEYS.indexOf(stage.key) >= 0;
     }).map(function(stage) {
-      const currentClass = stage.key === model.currentMilestone.key ? ' is-current' : '';
+      const currentClass = stage.key === team.currentStage.key ? ' is-current' : '';
       const value = stage.total > 0 ? `${stage.closed}/${stage.total}` : '\u2014';
 
       return (
@@ -3111,39 +3336,47 @@ function renderTeams(model) {
 
     const memberSection = team.members.length
       ? (
-        `<div class="team-section">` +
-          `<div class="team-subtitle">Team members</div>` +
-          `<div class="member-list">` +
-            `${sortMembers(team.members).map(function(member) {
-              const total = toNumber(member.total);
-              const closed = toNumber(member.closed);
-              const issuePct = member.issue_progress_percent != null
-                ? clampPercent(member.issue_progress_percent)
-                : (total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0);
-              const memberCode = escapeHtml(member.display_code || member.local_code || '\u2014');
-              const stageShort = String(member.current_stage || '').replace(/\s*-.*/, '').trim() || '\u2014';
-              const offlineTag = member.connected === false
-                ? `<span class="member-offline-tag">offline</span>`
-                : '';
-              const rowOpacity = member.connected === false ? ' style="opacity:0.65"' : '';
-              const stageStrip = renderMemberStageStrip(member);
-
-              return (
-                `<div class="member-entry"${rowOpacity}>` +
-                  `<div class="member-row">` +
-                    `<span class="member-name">${memberCode}${offlineTag}</span>` +
-                    `<div class="member-bar"><div class="member-fill" style="width:${issuePct}%"></div></div>` +
-                    `<span class="member-pct">${issuePct}%</span>` +
-                    `<span class="member-meta">${closed}/${total} &middot; ${escapeHtml(stageShort)}</span>` +
-                  `</div>` +
-                  `<div class="member-stage-strip">${stageStrip}</div>` +
-                `</div>`
-              );
-            }).join('')}` +
+        `<div class="member-table">` +
+          `<div class="member-table-head">` +
+            `<span class="member-head-cell">Member</span>` +
+            `<span class="member-head-cell">Status</span>` +
+            `<span class="member-head-cell">Stage</span>` +
+            `<span class="member-head-cell">Course progress</span>` +
+            `<span class="member-head-cell">GitHub issues</span>` +
+            `<span class="member-head-cell">Closed/total</span>` +
           `</div>` +
+          `${sortMembers(team.members).map(function(member) {
+            const total = toNumber(member.total);
+            const closed = toNumber(member.closed);
+            const coursePct = getMemberCourseProgressPercent(member);
+            const issuePct = getMemberIssueProgressPercent(member);
+            const memberCode = escapeHtml(member.display_code || member.local_code || '\u2014');
+            const stageCode = getMemberStageCode(member);
+            const stageClass = stageCode === '\u2014' ? ' is-empty' : '';
+            const connectionState = member.connected === false ? 'offline' : 'online';
+            const summaryText = total > 0 ? `${closed}/${total}` : '\u2014';
+            const rowClass = member.connected === false ? ' is-offline' : '';
+
+            return (
+              `<div class="member-row${rowClass}">` +
+                `<span class="member-code">${memberCode}</span>` +
+                `<span class="member-status"><span class="member-status-pill is-${connectionState}">${connectionState}</span></span>` +
+                `<span class="member-stage"><span class="member-stage-badge${stageClass}">${escapeHtml(stageCode)}</span></span>` +
+                `<span class="member-progress-cell is-course">` +
+                  `<span class="member-progress-track is-course"><span class="member-progress-fill" style="width:${coursePct}%"></span></span>` +
+                  `<span class="member-progress-value">${coursePct}%</span>` +
+                `</span>` +
+                `<span class="member-progress-cell is-issues">` +
+                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${issuePct}%"></span></span>` +
+                  `<span class="member-progress-value">${issuePct}%</span>` +
+                `</span>` +
+                `<span class="member-summary">${escapeHtml(summaryText)}</span>` +
+              `</div>`
+            );
+          }).join('')}` +
         `</div>`
       )
-      : '';
+      : '<div class="team-empty">No mapped members yet.</div>';
 
     const issuesMarkup = visibleIssues.length
       ? visibleIssues.map(function(issue) {
@@ -3169,7 +3402,7 @@ function renderTeams(model) {
           `</div>` +
         `</div>` +
         `<div class="team-progress-stack">` +
-          `<div class="team-progress-group">` +
+          `<div class="team-progress-group is-course">` +
             `<div class="team-progress-head"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}% completed</span></div>` +
             `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${team.courseProgress}%"></div></div>` +
           `</div>` +
@@ -3178,13 +3411,6 @@ function renderTeams(model) {
             `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${team.issueProgress}%"></div></div>` +
           `</div>` +
         `</div>` +
-        `<div class="team-links">` +
-          `<a class="team-link" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">Repo &#8599;</a>` +
-          `<span class="team-link-sep">&middot;</span>` +
-          `<a class="team-link" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">Issues &#8599;</a>` +
-          `<span class="team-link-sep">&middot;</span>` +
-          `<a class="team-link" href="${escapeHtml(team.milestones_url)}" target="_blank" rel="noopener noreferrer">Milestones &#8599;</a>` +
-        `</div>` +
         `<div class="team-milestone-row">${milestonePills}</div>` +
         `<div class="team-section">` +
           `<div class="team-next-action">` +
@@ -3192,9 +3418,18 @@ function renderTeams(model) {
             `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
           `</div>` +
         `</div>` +
-        `${memberSection}` +
         `<div class="team-section">` +
-          `<div class="team-subtitle">Open issues (${team.openIssues.length})</div>` +
+          `<div class="team-section-header">` +
+            `<div class="team-subtitle">Team members</div>` +
+            `<div class="team-section-meta">${escapeHtml(memberSummary)}</div>` +
+          `</div>` +
+          `${memberSection}` +
+        `</div>` +
+        `<div class="team-section">` +
+          `<div class="team-section-header">` +
+            `<div class="team-subtitle">Open issues</div>` +
+            `<div class="team-section-meta">${team.openIssues.length} total</div>` +
+          `</div>` +
           `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
         `</div>` +
       `</article>`
