@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\" -Recurse | ForEach-Object { $_.FullName })",
+      "Bash(Select-String -Path \"c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\\\\progress\\\\index.html\" -Pattern \"mountain-viz|mountain-bg|mountain-overlay|MOUNTAIN_MAP|buildRoutePoints|getPointOnRoute|renderTeamMarkersSVG|renderMemberBubbles\")",
+      "Bash(Select-Object LineNumber, Line)",
+      "Bash(Format-Table -AutoSize)"
+    ]
+  }
+}
