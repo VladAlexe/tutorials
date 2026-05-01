@@ -23,6 +23,15 @@
   --accent: #b5784a;
   --accent-lo: #d4a882;
   --accent-soft: rgba(181, 120, 74, 0.12);
+  --progress-start: #d49a63;
+  --progress-mid: #c5b27a;
+  --progress-end: #95b78d;
+  --progress-gradient: linear-gradient(
+    90deg,
+    var(--progress-start) 0%,
+    var(--progress-mid) 52%,
+    var(--progress-end) 100%
+  );
 }
 
 html { scroll-behavior: smooth; }
@@ -431,22 +440,14 @@ section { padding-top: 2rem; }
   aspect-ratio: 2048 / 1152;
   overflow: hidden;
   border-radius: 4px;
+  background: #f6f3ee;
 }
 
-.mountain-image-wrap img {
-  position: absolute;
-  inset: 0;
+.mountain-scene-object {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-}
-
-.mountain-image-wrap svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+  border: 0;
 }
 
 .mountain-checkpoint-label {
@@ -795,7 +796,7 @@ section { padding-top: 2rem; }
 
 .team-card {
   --team-color: var(--accent);
-  --team-soft: rgba(181, 120, 74, 0.12);
+  --team-soft: rgba(181, 120, 74, 0.08);
   --team-surface: rgba(250, 249, 246, 0.82);
   overflow: hidden;
 }
@@ -818,7 +819,7 @@ section { padding-top: 2rem; }
   transition: color 0.12s;
   line-height: 1.12;
 }
-.team-card-name:hover { color: var(--team-color); }
+.team-card-name:hover { color: var(--accent); }
 
 .team-card-stage {
   margin-top: 0.18rem;
@@ -1154,7 +1155,7 @@ section { padding-top: 2rem; }
   min-width: 40px;
   padding: 0.18rem 0.42rem 0.2rem;
   background: rgba(250, 249, 246, 0.9);
-  color: var(--team-color);
+  color: var(--accent);
 }
 
 .member-stage-badge.is-empty {
@@ -1334,14 +1335,14 @@ section { padding-top: 2rem; }
 .activity-list {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.42rem;
 }
 
 .backlog-row,
 .distribution-row {
   display: grid;
-  grid-template-columns: 54px minmax(0, 1fr) auto;
-  gap: 0.7rem;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 0.55rem;
   align-items: center;
 }
 
@@ -1356,7 +1357,7 @@ section { padding-top: 2rem; }
 
 .backlog-track,
 .distribution-track {
-  height: 8px;
+  height: 7px;
   border-radius: 999px;
   background: rgba(201, 195, 181, 0.4);
   overflow: hidden;
@@ -1370,10 +1371,138 @@ section { padding-top: 2rem; }
 
 .backlog-value,
 .status-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  white-space: nowrap;
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.control-mini-card {
+  padding: 0.56rem 0.62rem 0.6rem;
+  border: 1px solid rgba(226, 221, 211, 0.85);
+  border-radius: 6px;
+  background: rgba(250, 249, 246, 0.76);
+  min-width: 0;
+}
+
+.control-mini-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.control-mini-value {
+  display: block;
+  margin-top: 0.12rem;
   font-family: 'Fraunces', serif;
-  font-size: 0.98rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.05;
   color: var(--text);
   white-space: nowrap;
+}
+
+.control-mini-note {
+  display: block;
+  margin-top: 0.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--sub);
+}
+
+.project-control-notes {
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.project-note-line {
+  font-size: 11.2px;
+  line-height: 1.45;
+  color: var(--sub);
+}
+
+.project-note-line strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.project-note-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+  margin-right: 0.3rem;
+}
+
+.blocker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.34rem;
+}
+
+.blocker-row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: start;
+  padding-bottom: 0.34rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.75);
+}
+
+.blocker-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.blocker-team {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  padding: 0.12rem 0.34rem 0.14rem;
+  border: 1px solid rgba(226, 221, 211, 0.9);
+  border-radius: 999px;
+  background: rgba(250, 249, 246, 0.8);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--sub);
+}
+
+.blocker-link {
+  display: block;
+  font-size: 11.4px;
+  color: var(--sub);
+  line-height: 1.42;
+}
+
+.blocker-link:hover {
+  color: var(--accent);
+}
+
+.blocker-age {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--dim);
+  white-space: nowrap;
+  padding-top: 0.12rem;
+}
+
+.project-empty-note {
+  font-size: 11.4px;
+  color: var(--sub);
+  line-height: 1.5;
 }
 
 .metric-grid {
@@ -1754,45 +1883,36 @@ footer {
   display: block;
   height: 100%;
   border-radius: inherit;
+  background: var(--progress-gradient) !important;
 }
 
 .team-progress-group.is-course .team-progress-fill,
-.member-progress-track.is-course .member-progress-fill {
-  background: var(--team-color);
-  opacity: 0.92;
-}
-
 .team-progress-group.is-issues .team-progress-fill,
+.member-progress-track.is-course .member-progress-fill,
 .member-progress-track.is-issues .member-progress-fill {
-  background: var(--team-color);
-  opacity: 1;
+  background: var(--progress-gradient) !important;
 }
 
-.member-progress-track,
-.team-progress-bar {
-  background: rgba(95, 88, 76, 0.18);
-  border: 1px solid rgba(95, 88, 76, 0.08);
+.team-progress-group.is-course .team-progress-bar,
+.team-progress-group.is-issues .team-progress-bar,
+.member-progress-track.is-course,
+.member-progress-track.is-issues {
+  background: rgba(201, 195, 181, 0.36) !important;
 }
 
-/* --- FIX: mountain marker readability --- */
-.mountain-team-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+.team-card {
+  --team-color: var(--accent);
+  --team-soft: rgba(181, 120, 74, 0.08);
+  --team-surface: rgba(250, 249, 246, 0.82);
+  overflow: hidden;
 }
 
-.mountain-checkpoint-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 700;
-  fill: rgba(28, 27, 24, 0.88);
+.team-card-name:hover {
+  color: var(--accent);
 }
 
-.mountain-checkpoint-node {
-  fill: rgba(250, 249, 246, 0.97);
-  stroke: rgba(181, 120, 74, 0.72);
-  stroke-width: 3;
+.member-stage-badge {
+  color: var(--accent);
 }
 </style>
 </head>
@@ -2004,6 +2124,137 @@ function getIssueNumber(issue) {
   return match ? toNumber(match[1]) : 0;
 }
 
+const STAGE_ACTION_HINTS = {
+  C1: 'configurați repo-ul și mediul local',
+  C2: 'alegeți modelul și completați core/config.py',
+  C3: 'adăugați corpusul și verificați încărcarea datelor',
+  C4: 'stabiliți schema de prompting și exemplele',
+  C5: 'legați retrieval-ul și testați răspunsurile',
+  C6: 'conectați orchestrarea și fluxul principal',
+  C7: 'verificați evaluarea și rafinați ieșirea',
+  C8: 'pregătiți demo-ul și scenariul final',
+  C9: 'pregătiți prezentarea finală'
+};
+
+const STAGE_PANEL_TITLES = {
+  C1: 'Pornire',
+  C2: 'Modele',
+  C3: 'Date',
+  C4: 'Promptare',
+  C5: 'RAG',
+  C6: 'Integrare',
+  C7: 'Evaluare',
+  C8: 'Demo',
+  C9: 'După vârf',
+  Final: 'Proiect'
+};
+
+function parseLooseDateTime(value) {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return null;
+  }
+
+  const isoLike = raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{2}):(\d{2})(?::(\d{2}))?)?$/);
+  if (isoLike) {
+    const year = toNumber(isoLike[1]);
+    const month = toNumber(isoLike[2]) - 1;
+    const day = toNumber(isoLike[3]);
+    const hour = toNumber(isoLike[4] || 0);
+    const minute = toNumber(isoLike[5] || 0);
+    const second = toNumber(isoLike[6] || 0);
+    const parsed = new Date(year, month, day, hour, minute, second);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  const fallback = new Date(raw);
+  return Number.isNaN(fallback.getTime()) ? null : fallback;
+}
+
+function getStageActionHint(stageKey) {
+  return STAGE_ACTION_HINTS[stageKey] || 'continuați etapa curentă și închideți task-urile deschise';
+}
+
+function getStagePanelTitle(stageKey, fallbackLabel) {
+  return STAGE_PANEL_TITLES[stageKey] || fallbackLabel || stageKey;
+}
+
+function getIssueTimestamp(issue) {
+  return parseLooseDateTime(
+    issue && (issue.updated_at || issue.updatedAt || issue.created_at || issue.createdAt || issue.closed_at || issue.closedAt)
+  );
+}
+
+function countClosedIssuesLast48h(rawTeams, referenceDate) {
+  let count = 0;
+  let hasData = false;
+
+  (Array.isArray(rawTeams) ? rawTeams : []).forEach(function(team) {
+    const candidateBuckets = [];
+    if (Array.isArray(team && team.closed_issues)) {
+      candidateBuckets.push(team.closed_issues);
+    }
+    if (Array.isArray(team && team.issues)) {
+      candidateBuckets.push(team.issues.filter(function(issue) {
+        return /closed/i.test(String(issue && issue.state || ''));
+      }));
+    }
+
+    candidateBuckets.forEach(function(bucket) {
+      bucket.forEach(function(issue) {
+        const closedAt = parseLooseDateTime(issue && (issue.closed_at || issue.closedAt));
+        if (!closedAt) {
+          return;
+        }
+        hasData = true;
+        if ((referenceDate.getTime() - closedAt.getTime()) <= (48 * 60 * 60 * 1000)) {
+          count += 1;
+        }
+      });
+    });
+  });
+
+  return hasData ? count : null;
+}
+
+function buildProjectBlockers(teams, referenceDate) {
+  const blockers = [];
+  let hasTimestampData = false;
+
+  teams.forEach(function(team) {
+    team.openIssues.forEach(function(issue) {
+      const stamp = getIssueTimestamp(issue);
+      if (!stamp) {
+        return;
+      }
+
+      hasTimestampData = true;
+      const diffMs = referenceDate.getTime() - stamp.getTime();
+      const daysWithoutUpdate = Math.max(0, Math.floor(diffMs / (24 * 60 * 60 * 1000)));
+
+      if (daysWithoutUpdate > 3) {
+        blockers.push({
+          team: team.label,
+          title: sanitizeIssueTitle(issue.title),
+          daysWithoutUpdate: daysWithoutUpdate,
+          url: issue.url,
+          teamIndex: team.index,
+          number: getIssueNumber(issue)
+        });
+      }
+    });
+  });
+
+  blockers.sort(function(a, b) {
+    return b.daysWithoutUpdate - a.daysWithoutUpdate || a.teamIndex - b.teamIndex || b.number - a.number;
+  });
+
+  return {
+    available: hasTimestampData,
+    items: blockers.slice(0, 5)
+  };
+}
+
 function sortMembers(members) {
   return [...members].sort((a, b) => {
     const aKey = String(a && (a.display_code || a.local_code || a.student_key || '')).match(/(\d+)/);
@@ -2050,7 +2301,7 @@ function markerOffset(index) {
   return { x: direction * spread, y: -lift };
 }
 
-function buildMountainMarkers(teams) {
+function buildMountainMarkersLegacy(teams) {
   const percentGroups = {};
 
   return teams.map((team, index) => {
@@ -2072,7 +2323,7 @@ function buildMountainMarkers(teams) {
   });
 }
 
-function buildDashboardModel(data) {
+function buildDashboardModelLegacy(data) {
   const teams = Array.isArray(data.teams) ? data.teams : [];
   const milestoneRefs = buildMilestoneRefs(data);
   const currentMilestoneCode = msCode(data.current_milestone || milestoneRefs[0].name);
@@ -2163,7 +2414,7 @@ function buildDashboardModel(data) {
     blockedTeams,
     latestOpenIssues: latestOpenIssues.slice(0, 6),
     distribution,
-    markers: buildMountainMarkers(teams),
+    markers: buildMountainMarkersLegacy(teams),
     totals: {
       teamCount: teams.length,
       openIssues,
@@ -2188,7 +2439,7 @@ function renderHeader(data, model) {
     `${model.totals.teamCount} echipe \u00b7 Actualizat: ${data.updated_at || '\u2014'}`;
 }
 
-function renderStats(model) {
+function renderStatsLegacy(model) {
   const stats = model.totals;
 
   document.getElementById('stats-band').innerHTML =
@@ -2278,7 +2529,7 @@ function renderJourneyLegacy(model) {
     `</div>`;
 }
 
-function renderProjectStats(model) {
+function renderProjectStatsLegacy(model) {
   const blockedLabels = model.blockedTeams
     .map((team) => escapeHtml(shortTeamName(team.name, model.teams.indexOf(team))))
     .join(', ');
@@ -2460,7 +2711,14 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
-const TEAM_PALETTE = ['#D97706', '#65A30D', '#DC2626', '#2563EB', '#111827', '#7C3AED'];
+const TEAM_PALETTE = [
+  '#D28A3C',
+  '#7EA63C',
+  '#C4574E',
+  '#4D73D0',
+  '#2B2E36',
+  '#7C57E6'
+];
 
 const MOUNTAIN_POINTS = {
   base: { x: 260, y: 851, label: 'Base' },
@@ -2972,7 +3230,7 @@ function getSemanticStatus(team) {
 
 function buildCourseMarkers(teams) {
   if (!teams.length) return [];
-  return buildMountainMarkerData(teams);
+  return buildMountainMarkers(teams);
 }
 
 function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestoneKey) {
@@ -3025,6 +3283,7 @@ function buildDashboardModel(data) {
   const journeyPlan = getJourneyPlan(coursePlan);
   const climbPlan = getClimbPlan(coursePlan);
   const currentMilestone = resolveStageMeta(data && data.current_milestone, coursePlan);
+  const referenceDate = parseLooseDateTime(data && data.updated_at) || new Date();
   const teams = (Array.isArray(data && data.teams) ? data.teams : []).map(function(team, index) {
     return normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone.key);
   });
@@ -3112,6 +3371,27 @@ function buildDashboardModel(data) {
     return b.number - a.number || a.teamIndex - b.teamIndex;
   });
 
+  const stageStats = JOURNEY_STAGE_KEYS.map(function(stageKey) {
+    return milestoneSummaries.find(function(stage) {
+      return stage.key === stageKey;
+    }) || {
+      key: stageKey,
+      title: stageKey,
+      short: stageKey,
+      total: 0,
+      open: 0,
+      closed: 0,
+      percent: 0
+    };
+  });
+  const blockedTeamLabels = blockedTeams.map(function(team) {
+    return team.label;
+  });
+  const blockersMeta = buildProjectBlockers(teams, referenceDate);
+  const issuesClosedLast48h = countClosedIssuesLast48h(Array.isArray(data && data.teams) ? data.teams : [], referenceDate);
+  const totalIssues = createdTasks;
+  const completionRate = totalIssues > 0 ? clampPercent(Math.round((closedIssues / totalIssues) * 100)) : 0;
+
   return {
     coursePlan: coursePlan,
     journeyPlan: journeyPlan,
@@ -3125,9 +3405,23 @@ function buildDashboardModel(data) {
     backlogMilestone: backlogMilestone,
     startedTeams: startedTeams,
     blockedTeams: blockedTeams,
+    blockedTeamLabels: blockedTeamLabels,
     latestOpenIssues: latestOpenIssues.slice(0, 6),
     distribution: distribution,
     markers: buildCourseMarkers(teams),
+    totalIssues: totalIssues,
+    closedIssues: closedIssues,
+    completionRate: completionRate,
+    stageStats: stageStats,
+    currentStage: currentMilestone.key,
+    currentStageTitle: getStagePanelTitle(currentMilestone.key, currentMilestone.short),
+    issuesClosedLast48h: issuesClosedLast48h,
+    activeTeamsCount: startedTeams.length,
+    teamsTotal: teams.length,
+    blockers: blockersMeta.items,
+    blockerDataAvailable: blockersMeta.available,
+    blockersCount: blockersMeta.available ? blockersMeta.items.length : blockedTeams.length,
+    currentActionHint: getStageActionHint(currentMilestone.key),
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
@@ -3177,16 +3471,21 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const svgOverlay = renderMountainMilestonesSVG(model.mountainCurrentKey) + renderTeamMarkersSVG(model.markers);
-
-  const statusStrip = model.markers.map(function(marker) {
-    var memberDots = (marker.memberDots || []).map(function(dot) {
-      var cls = 'chip-dot';
-      if (dot.dimmed) cls += ' offline';
-      return `<span class="${cls}" title="${escapeHtml(dot.title || '')}"></span>`;
+  const statusStrip = model.teams.map(function(team) {
+    const dots = sortMembers(Array.isArray(team.members) ? team.members : []).map(function(member) {
+      const cls = (member.connected === false || member.active === false)
+        ? 'chip-dot inactive'
+        : 'chip-dot';
+      const title = `${member.display_code || member.local_code || ''} - ${getMemberStageCode(member)} - ${getMemberIssueProgressPercent(member)}%`;
+      return `<span class="${cls}" title="${escapeHtml(title)}"></span>`;
     }).join('');
-    var dotsHtml = memberDots ? `<span class="chip-dots">${memberDots}</span>` : '';
-    return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; ${marker.percent}%${dotsHtml}</span>`;
+
+    return (
+      `<span class="mountain-status-chip status-${getSemanticStatus(team).key}" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --chip-dot:${team.color};">` +
+        `${escapeHtml(team.label)} &middot; ${getClimbStageState(team).stagePercent}%` +
+        `<span class="chip-dots">${dots}</span>` +
+      `</span>`
+    );
   }).join('');
 
   document.getElementById('journey-wrap').innerHTML =
@@ -3207,79 +3506,80 @@ function renderJourney(model) {
         `</div>` +
         `<div class="mountain-visual">` +
           `<div class="mountain-image-wrap">` +
-            `<img src="../assets/img/mountain.png" alt="Mountain progress map">` +
-            `<svg viewBox="0 0 2048 1152" aria-hidden="true">${svgOverlay}</svg>` +
+            `<object id="mountain-scene-object" class="mountain-scene-object" data="../assets/img/mountain-scene.svg" type="image/svg+xml" aria-label="Mountain progress map"></object>` +
           `</div>` +
         `</div>` +
         `<div class="mountain-status-strip">${statusStrip}</div>` +
         `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
-        `<p class="mountain-footnote">Team bubbles urmeaz&#259; exclusiv ruta Base-C8 pe baza course progress; C9 r&#259;m&#226;ne separat ca After summit.</p>` +
+        `<p class="mountain-footnote">Bulele echipelor sunt calculate pe segmentele Base-C1-C8 &#537;i sunt ridicate pu&#539;in deasupra traseului pentru lizibilitate.</p>` +
       `</div>` +
     `</div>`;
+
+  renderMountainTeamsIntoSvg(model);
 }
 
 function renderProjectStats(model) {
-  const maxOpen = Math.max.apply(null, model.milestoneSummaries.map(function(stage) {
-    return stage.open;
-  }).concat([1]));
-
-  const backlogRows = model.milestoneSummaries.map(function(stage) {
-    const width = maxOpen > 0 ? (stage.open / maxOpen) * 100 : 0;
+  const rhythmRows = model.stageStats.map(function(stage) {
+    const width = stage.total > 0 ? clampPercent(Math.round((stage.closed / stage.total) * 100)) : 0;
     return (
       `<div class="backlog-row">` +
         `<span class="backlog-label">${escapeHtml(stage.key)}</span>` +
         `<div class="backlog-track"><div class="backlog-fill" style="width:${width}%;"></div></div>` +
-        `<span class="backlog-value">${stage.open}</span>` +
+        `<span class="backlog-value">${stage.closed}/${stage.total}</span>` +
       `</div>`
     );
   }).join('');
 
-  const metrics = [
-    { label: 'Created', value: model.totals.createdTasks, note: 'Task-uri create' },
-    { label: 'Closed', value: model.totals.closedIssues, note: 'Task-uri inchise' },
-    { label: 'Open', value: model.totals.openIssues, note: 'Task-uri ramase' }
+  const controlCards = [
+    { label: 'Progres', value: `${model.closedIssues}/${model.totalIssues}`, note: 'finalizate' },
+    { label: 'Etapa', value: model.currentStage, note: model.currentStageTitle },
+    { label: 'Momentum', value: model.issuesClosedLast48h === null ? '—' : String(model.issuesClosedLast48h), note: 'în 48h' },
+    { label: 'Blocaje', value: String(model.blockersCount), note: 'fără mișcare' }
   ];
 
-  const metricTiles = metrics.map(function(metric) {
+  const controlTiles = controlCards.map(function(card) {
     return (
-      `<div class="metric-tile">` +
-        `<span class="metric-label">${escapeHtml(metric.label)}</span>` +
-        `<strong class="metric-value">${escapeHtml(metric.value)}</strong>` +
-        `<span class="metric-note">${escapeHtml(metric.note)}</span>` +
+      `<div class="control-mini-card">` +
+        `<span class="control-mini-label">${escapeHtml(card.label)}</span>` +
+        `<strong class="control-mini-value">${escapeHtml(card.value)}</strong>` +
+        `<span class="control-mini-note">${escapeHtml(card.note)}</span>` +
       `</div>`
     );
   }).join('');
 
-  const blockedLabels = model.blockedTeams.map(function(team) {
-    return team.label;
-  }).join(', ') || '\u2014';
-
-  const recentActivity = model.latestOpenIssues.length
-    ? model.latestOpenIssues.map(function(issue) {
-      return `<a class="activity-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>`;
-    }).join('')
-    : '<div class="team-empty">Nu exist&#259; issues deschise.</div>';
+  const blockedLabels = model.blockedTeamLabels.length ? model.blockedTeamLabels.join(', ') : 'niciuna';
+  const blockersMarkup = !model.blockerDataAvailable
+    ? '<div class="project-empty-note">Nu există date despre blocaje.</div>'
+    : !model.blockers.length
+      ? '<div class="project-empty-note">Nu sunt blocaje active.</div>'
+      : `<div class="blocker-list">${model.blockers.map(function(blocker) {
+          return (
+            `<div class="blocker-row">` +
+              `<span class="blocker-team">${escapeHtml(blocker.team)}</span>` +
+              `<a class="blocker-link" href="${escapeHtml(blocker.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(blocker.title)}</a>` +
+              `<span class="blocker-age">${blocker.daysWithoutUpdate} zile</span>` +
+            `</div>`
+          );
+        }).join('')}</div>`;
 
   document.getElementById('project-stats').innerHTML =
     `<div class="project-analytics-shell">` +
       `<div class="project-analytics-grid">` +
         `<article class="project-card">` +
-          `<div class="project-title">Backlog pe etape</div>` +
-          `<div class="backlog-list">${backlogRows}</div>` +
+          `<div class="project-title">Ritm pe cursuri</div>` +
+          `<div class="backlog-list">${rhythmRows}</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Task-uri</div>` +
-          `<div class="metric-grid">${metricTiles}</div>` +
-          `<div class="status-card">` +
-            `<div class="status-row"><span class="status-label">Current stage</span><div class="status-copy"><strong>${escapeHtml(model.currentMilestone.key)} &middot; ${escapeHtml(model.currentMilestone.short)}</strong><br>${escapeHtml(model.currentMilestone.title)}</div></div>` +
-            `<div class="status-row"><span class="status-label">Backlog</span><div class="status-copy">${escapeHtml(model.backlogMilestone.key)} are <strong>${model.backlogMilestone.open}</strong> issues deschise.</div></div>` +
-            `<div class="status-row"><span class="status-label">Started</span><div class="status-copy"><strong>${model.startedTeams.length}/${model.totals.teamCount}</strong> echipe au pornit etapa curent&#259;.</div></div>` +
-            `<div class="status-row"><span class="status-label">Blocked</span><div class="status-copy"><strong>${model.blockedTeams.length}/${model.totals.teamCount}</strong> echipe sunt la 0/x.<br>${escapeHtml(blockedLabels)}</div></div>` +
+          `<div class="project-title">Panou de control</div>` +
+          `<div class="control-grid">${controlTiles}</div>` +
+          `<div class="project-control-notes">` +
+            `<div class="project-note-line"><span class="project-note-kicker">Acum:</span><strong>${escapeHtml(model.currentStage)}</strong> &middot; ${escapeHtml(model.currentActionHint)}</div>` +
+            `<div class="project-note-line"><span class="project-note-kicker">Echipe active:</span><strong>${model.activeTeamsCount}/${model.teamsTotal}</strong> &middot; <strong>Blocate:</strong> ${escapeHtml(blockedLabels)}</div>` +
           `</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Ultimele issues deschise</div>` +
-          `<div class="activity-list">${recentActivity}</div>` +
+          `<div class="project-title">Unde ne blocăm</div>` +
+          `${blockersMarkup}` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -3413,7 +3713,7 @@ function renderTeams(model) {
       : '';
 
     return (
-      `<article class="team-card" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --team-line-strong:${team.colorLineStrong};">` +
+      `<article class="team-card">` +
         `<div class="team-card-header">` +
           `<div>` +
             `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
@@ -3461,13 +3761,6 @@ function renderTeams(model) {
   }).join('');
 }
 
-function getMountainProgressPercent(team) {
-  if (team.currentStage.key === POST_SUMMIT_STAGE_KEY || team.currentStage.key === 'Final') {
-    return 100;
-  }
-  return clampPercent(team.courseProgress);
-}
-
 function getMinimumVisibleFillWidth(percent, minimumPercent) {
   var clamped = clampPercent(percent);
   if (clamped <= 0) {
@@ -3476,194 +3769,294 @@ function getMinimumVisibleFillWidth(percent, minimumPercent) {
   return Math.min(100, Math.max(clamped, minimumPercent || 4));
 }
 
-function getMarkerCollisionSign(routePoint) {
-  // Always keep the cluster close to the visible route.
-  // Positive side is too often visually pushed into the sky;
-  // this keeps the markers near the mountain slope.
-  return 1;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+const MOUNTAIN_STAGE_POINTS = {
+  base: { x: 260, y: 851 },
+  C1:   { x: 606, y: 782 },
+  C2:   { x: 940, y: 749 },
+  C3:   { x: 1299, y: 634 },
+  C4:   { x: 1570, y: 552 },
+  C5:   { x: 1860, y: 444 },
+  C6:   { x: 1428, y: 332 },
+  C7:   { x: 1810, y: 253 },
+  C8:   { x: 1935, y: 97 }
+};
+
+const MOUNTAIN_STAGE_SEGMENTS = {
+  C1: ['base', 'C1'],
+  C2: ['C1', 'C2'],
+  C3: ['C2', 'C3'],
+  C4: ['C3', 'C4'],
+  C5: ['C4', 'C5'],
+  C6: ['C5', 'C6'],
+  C7: ['C6', 'C7'],
+  C8: ['C7', 'C8']
+};
+
+const MOUNTAIN_BUBBLE_RADIUS = 24;
+const MOUNTAIN_MEMBER_DOT_RADIUS = 6;
+const MOUNTAIN_BUBBLE_LIFT = 28;
+const MOUNTAIN_CLUSTER_DISTANCE = 90;
+const MOUNTAIN_CLUSTER_SPREAD = 52;
+
+function lerp(a, b, t) {
+  return a + ((b - a) * t);
 }
 
-function applyMarkerCollisionOffsets(markers) {
-  var sorted = markers.slice().sort(function(a, b) {
-    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
+function euclidean(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function createSvgEl(tag, attrs) {
+  var el = document.createElementNS(SVG_NS, tag);
+  Object.entries(attrs || {}).forEach(function(entry) {
+    el.setAttribute(entry[0], entry[1]);
   });
-  var groups = [];
-  var activeGroup = [];
+  return el;
+}
 
-  sorted.forEach(function(marker) {
-    if (!activeGroup.length) {
-      activeGroup.push(marker);
-      return;
-    }
-
-    var previous = activeGroup[activeGroup.length - 1];
-    if (Math.abs(marker.routeDistance - previous.routeDistance) <= TEAM_COLLISION_DISTANCE) {
-      activeGroup.push(marker);
-      return;
-    }
-
-    groups.push(activeGroup);
-    activeGroup = [marker];
+function getClimbStageState(team) {
+  var climbStages = CLIMB_STAGE_KEYS.map(function(key) {
+    return team.stageProgress.find(function(stage) {
+      return stage.key === key;
+    }) || {
+      key: key,
+      total: 0,
+      closed: 0,
+      open: 0,
+      percent: 0,
+      status: 'upcoming'
+    };
   });
 
-  if (activeGroup.length) {
-    groups.push(activeGroup);
+  var activeStage = climbStages.find(function(stage) {
+    return stage.total > 0 && stage.percent < 100;
+  });
+  if (activeStage) {
+    return { stageKey: activeStage.key, percent: clampPercent(activeStage.percent) };
   }
 
-  groups.forEach(function(group) {
-    group.forEach(function(marker, index) {
-      var pattern = TEAM_COLLISION_PATTERN[index % TEAM_COLLISION_PATTERN.length];
-      var ring = Math.floor(index / TEAM_COLLISION_PATTERN.length);
-      var tanOffset = pattern.tan + ring * 18;
-      var perpOffset = pattern.perp;
-      var minRouteDrop = 10;
-      var maxRouteDrop = 20;
+  var doneStages = climbStages.filter(function(stage) {
+    return stage.total > 0 && stage.percent >= 100;
+  });
+  if (doneStages.length) {
+    var lastDone = doneStages[doneStages.length - 1];
+    return { stageKey: lastDone.key, percent: 100 };
+  }
 
-      marker.tanOffset = tanOffset;
-      marker.perpOffset = perpOffset;
-      marker.x = marker.routePoint.x + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * perpOffset);
-      marker.y = marker.routePoint.y + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * perpOffset);
+  return { stageKey: 'C1', percent: 0 };
+}
 
-      // Keep every team bubble visually attached just below the milestone route.
-      marker.y = Math.max(marker.y, marker.routeY + minRouteDrop);
-      marker.y = Math.min(marker.y, marker.routeY + maxRouteDrop);
+function getSegmentGeometry(startKey, endKey, percent) {
+  var start = MOUNTAIN_STAGE_POINTS[startKey];
+  var end = MOUNTAIN_STAGE_POINTS[endKey];
+  var t = Math.max(0, Math.min(1, percent / 100));
 
-      // hard clamp: never allow early teams to float too high above the base-camp area
-      if (marker.routePct <= 10) {
-        marker.y = Math.max(marker.y, 760);
-      }
+  var anchorX = lerp(start.x, end.x, t);
+  var anchorY = lerp(start.y, end.y, t);
+
+  var dx = end.x - start.x;
+  var dy = end.y - start.y;
+  var len = Math.hypot(dx, dy) || 1;
+
+  var tx = dx / len;
+  var ty = dy / len;
+
+  var px = -dy / len;
+  var py = dx / len;
+
+  var candidateA = {
+    x: anchorX + (px * MOUNTAIN_BUBBLE_LIFT),
+    y: anchorY + (py * MOUNTAIN_BUBBLE_LIFT)
+  };
+
+  var candidateB = {
+    x: anchorX - (px * MOUNTAIN_BUBBLE_LIFT),
+    y: anchorY - (py * MOUNTAIN_BUBBLE_LIFT)
+  };
+
+  var chosen = candidateA.y < candidateB.y ? candidateA : candidateB;
+
+  return {
+    anchorX: anchorX,
+    anchorY: anchorY,
+    x: chosen.x,
+    y: chosen.y,
+    tx: tx,
+    ty: ty
+  };
+}
+
+function getMountainMarkerPosition(team) {
+  var climb = getClimbStageState(team);
+  var segment = MOUNTAIN_STAGE_SEGMENTS[climb.stageKey] || ['base', 'C1'];
+  var geom = getSegmentGeometry(segment[0], segment[1], climb.percent);
+
+  return Object.assign({
+    stageKey: climb.stageKey,
+    stagePercent: climb.percent
+  }, geom);
+}
+
+function buildMountainMarkers(teams) {
+  var markers = teams.map(function(team) {
+    var pos = getMountainMarkerPosition(team);
+    return {
+      team: team,
+      label: team.label,
+      teamName: team.name,
+      color: team.color,
+      colorSoft: team.colorSoft,
+      teamIndex: team.index,
+      stageKey: pos.stageKey,
+      stagePercent: pos.stagePercent,
+      x: pos.x,
+      y: pos.y,
+      anchorX: pos.anchorX,
+      anchorY: pos.anchorY,
+      tx: pos.tx,
+      ty: pos.ty,
+      status: getSemanticStatus(team),
+      members: sortMembers(Array.isArray(team.members) ? team.members : [])
+    };
+  });
+
+  var clusters = [];
+
+  markers.forEach(function(marker) {
+    var cluster = clusters.find(function(item) {
+      return euclidean(
+        { x: item.anchorX, y: item.anchorY },
+        { x: marker.anchorX, y: marker.anchorY }
+      ) < MOUNTAIN_CLUSTER_DISTANCE;
+    });
+
+    if (!cluster) {
+      cluster = {
+        anchorX: marker.anchorX,
+        anchorY: marker.anchorY,
+        items: []
+      };
+      clusters.push(cluster);
+    }
+
+    cluster.items.push(marker);
+  });
+
+  clusters.forEach(function(cluster) {
+    cluster.items.sort(function(a, b) {
+      return a.teamIndex - b.teamIndex;
+    });
+
+    cluster.items.forEach(function(marker, index) {
+      var shift = (index - ((cluster.items.length - 1) / 2)) * MOUNTAIN_CLUSTER_SPREAD;
+      marker.x += marker.tx * shift;
+      marker.y += marker.ty * shift;
     });
   });
 
   return markers;
 }
 
-function buildMarkerMemberDots(members) {
-  return members.map(function(member) {
-    var coursePct = getMemberCourseProgressPercent(member);
-    var issuePct = getMemberIssueProgressPercent(member);
-    var displayCode = String(member.display_code || member.local_code || '');
-    var stageCode = getMemberStageCode(member);
-    var dimmed = member.connected === false || member.active === false || (coursePct === 0 && issuePct === 0);
+function renderMountainTeamsIntoSvg(model) {
+  var mountainObject = document.getElementById('mountain-scene-object');
+  if (!mountainObject) return;
 
-    return {
-      dimmed: dimmed,
-      title: [displayCode, stageCode, coursePct + '% course', issuePct + '% issues'].filter(Boolean).join(' / ')
-    };
-  });
-}
+  var paint = function() {
+    var svgDoc = mountainObject.contentDocument;
+    if (!svgDoc) return;
 
-function buildMountainMarkerData(teams) {
-  var markers = teams.map(function(team) {
-    var routePct = getMountainProgressPercent(team);
-    var routeDistance = ROUTE_METRICS.totalLength * (routePct / 100);
-    var routePoint = getPointOnRouteDistance(routeDistance);
+    var layer = svgDoc.getElementById('teams-layer');
+    if (!layer) return;
 
-    return {
-      label: team.label,
-      teamName: team.name,
-      color: team.color,
-      routePct: routePct,
-      x: routePoint.x,
-      y: routePoint.y,
-      routeX: routePoint.x,
-      routeY: routePoint.y,
-      routePoint: routePoint,
-      routeDistance: routeDistance,
-      status: getSemanticStatus(team),
-      percent: routePct,
-      coursePercent: routePct,
-      colorSoft: team.colorSoft,
-      colorLine: team.colorLine,
-      teamIndex: team.index,
-      memberDots: buildMarkerMemberDots(Array.isArray(team.members) ? team.members : [])
-    };
-  });
-
-  return applyMarkerCollisionOffsets(markers);
-}
-
-function renderMountainMilestonesSVG(currentKey) {
-  var keys = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
-
-  return keys.map(function(key) {
-    var point = MOUNTAIN_POINTS[key];
-    var label = point.label;
-    var isBase = key === 'base';
-    var isCurrent = label === currentKey;
-    var labelY = isBase ? point.y + 34 : point.y - 18;
-    var stroke = isCurrent ? 'rgba(181, 120, 74, 0.9)' : 'rgba(45, 42, 38, 0.28)';
-    var fill = isCurrent ? 'rgba(181, 120, 74, 0.16)' : 'rgba(250, 249, 246, 0.96)';
-
-    return '<g>' +
-      '<circle cx="' + point.x + '" cy="' + point.y + '" r="10" fill="rgba(255,255,255,0.92)" opacity="0.82"/>' +
-      '<circle class="mountain-checkpoint-node" cx="' + point.x + '" cy="' + point.y + '" r="7.5" fill="' + fill + '" stroke="' + stroke + '"/>' +
-      '<text class="mountain-checkpoint-label" x="' + point.x + '" y="' + labelY + '"' +
-        ' text-anchor="middle" stroke="rgba(250,249,246,0.96)" stroke-width="3" paint-order="stroke">' +
-        label + '</text>' +
-      '</g>';
-  }).join('');
-}
-
-function renderTeamMarkersSVG(markers) {
-  var sorted = markers.slice().sort(function(a, b) {
-    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
-  });
-
-  var connectorEls = sorted.map(function(marker) {
-    if (Math.abs(marker.x - marker.routeX) < 1 && Math.abs(marker.y - marker.routeY) < 1) {
-      return '';
+    while (layer.firstChild) {
+      layer.removeChild(layer.firstChild);
     }
 
-    return '<line x1="' + marker.routeX.toFixed(1) + '" y1="' + marker.routeY.toFixed(1) + '"' +
-      ' x2="' + marker.x.toFixed(1) + '" y2="' + marker.y.toFixed(1) + '"' +
-      ' stroke="' + marker.color + '" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="4 5"/>';
-  }).join('');
+    var markers = buildMountainMarkers(model.teams);
 
-  var routePinEls = sorted.map(function(marker) {
-    return '<circle cx="' + marker.routeX.toFixed(1) + '" cy="' + marker.routeY.toFixed(1) + '" r="4.5"' +
-      ' fill="' + marker.color + '" stroke="rgba(255,255,255,0.96)" stroke-width="2"/>';
-  }).join('');
+    markers.forEach(function(marker) {
+      var group = createSvgEl('g', {
+        'data-team': marker.label
+      });
 
-  var dotEls = sorted.map(function(marker) {
-    var dotCount = marker.memberDots.length;
-    var startX = marker.x - ((dotCount - 1) * (DOT_R * 2.35)) / 2;
-    var dotY = marker.y + BADGE_R + 10;
+      var title = createSvgEl('title');
+      title.textContent = marker.teamName + ' - ' + marker.stageKey + ' - ' + marker.stagePercent + '%';
+      group.appendChild(title);
 
-    return marker.memberDots.map(function(dot, index) {
-      var dotX = startX + index * DOT_R * 2.35;
-      var fill = dot.dimmed ? 'rgba(250,248,244,0.72)' : marker.color;
-      var stroke = dot.dimmed ? marker.color : 'rgba(255,255,255,0.98)';
-      var opacity = dot.dimmed ? '0.58' : '1';
-      var titleEl = dot.title ? '<title>' + escapeHtml(dot.title) + '</title>' : '';
+      var memberCount = marker.members.length;
+      if (memberCount > 0) {
+        marker.members.forEach(function(member, i) {
+          var maxPerRow = 5;
+          var row = Math.floor(i / maxPerRow);
+          var colIndex = i % maxPerRow;
+          var rowCount = Math.min(maxPerRow, memberCount - (row * maxPerRow));
+          var x = marker.x + ((colIndex - ((rowCount - 1) / 2)) * 16);
+          var y = marker.y - 34 - (row * 14);
 
-      return '<circle cx="' + dotX.toFixed(1) + '" cy="' + dotY.toFixed(1) + '" r="' + DOT_R + '"' +
-        ' fill="' + fill + '" fill-opacity="' + opacity + '"' +
-        ' stroke="' + stroke + '" stroke-width="1.7" pointer-events="all">' +
-        titleEl +
-      '</circle>';
-    }).join('');
-  }).join('');
+          var connected = member.connected !== false;
+          var active = member.active !== false;
+          var fill = (connected && active) ? marker.color : 'rgba(220,220,220,0.95)';
 
-  var badgeEls = sorted.map(function(marker) {
-    var cx = marker.x.toFixed(1);
-    var cy = marker.y.toFixed(1);
-    var titleText = marker.teamName + ' - ' + marker.coursePercent + '% - ' + marker.status.label;
+          var dot = createSvgEl('circle', {
+            cx: x,
+            cy: y,
+            r: MOUNTAIN_MEMBER_DOT_RADIUS,
+            fill: fill,
+            stroke: 'rgba(255,255,255,0.96)',
+            'stroke-width': 2
+          });
 
-    return '<g data-team="' + marker.label + '" pointer-events="all">' +
-      '<title>' + escapeHtml(titleText) + '</title>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (BADGE_R + 4) +
-        '" fill="rgba(255,255,255,0.96)" opacity="0.92"/>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + BADGE_R +
-        '" fill="rgba(250,248,244,0.97)" stroke="' + marker.color + '" stroke-width="3.2"/>' +
-      '<text class="mountain-team-label" x="' + cx + '" y="' + cy +
-        '" text-anchor="middle" dominant-baseline="central"' +
-        ' stroke="rgba(255,255,255,0.98)" stroke-width="2.4" paint-order="stroke" fill="' + marker.color + '">' +
-        marker.label + '</text>' +
-      '</g>';
-  }).join('');
+          var dotTitle = createSvgEl('title');
+          dotTitle.textContent = (member.display_code || member.local_code || '') + ' - ' + getMemberStageCode(member) + ' - ' + getMemberIssueProgressPercent(member) + '% issues';
+          dot.appendChild(dotTitle);
 
-  return connectorEls + routePinEls + badgeEls + dotEls;
+          group.appendChild(dot);
+        });
+      }
+
+      group.appendChild(createSvgEl('circle', {
+        cx: marker.x,
+        cy: marker.y,
+        r: MOUNTAIN_BUBBLE_RADIUS + 3,
+        fill: 'rgba(255,255,255,0.86)'
+      }));
+
+      group.appendChild(createSvgEl('circle', {
+        cx: marker.x,
+        cy: marker.y,
+        r: MOUNTAIN_BUBBLE_RADIUS,
+        fill: 'rgba(250,248,244,0.96)',
+        stroke: marker.color,
+        'stroke-width': 3
+      }));
+
+      var text = createSvgEl('text', {
+        x: marker.x,
+        y: marker.y + 1,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+        'font-family': 'JetBrains Mono, monospace',
+        'font-size': '18',
+        'font-weight': '700',
+        fill: marker.color,
+        stroke: 'rgba(255,255,255,0.96)',
+        'stroke-width': '2.4',
+        'paint-order': 'stroke'
+      });
+      text.textContent = marker.label;
+      group.appendChild(text);
+
+      layer.appendChild(group);
+    });
+  };
+
+  if (mountainObject.contentDocument) {
+    paint();
+  } else {
+    mountainObject.addEventListener('load', paint, { once: true });
+  }
 }
 
 fetch('./progress.json')
