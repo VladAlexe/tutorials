@@ -1149,6 +1149,61 @@ section { padding-top: 2rem; }
   background: linear-gradient(90deg, var(--accent), var(--accent-lo));
 }
 
+.team-card .member-fill {
+  background: var(--team-color, var(--accent));
+}
+
+.member-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.member-stage-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding-left: 0;
+}
+
+.member-stage-pip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  line-height: 1.4;
+}
+
+.pip-done {
+  background: var(--team-color, var(--accent));
+  color: rgba(255, 255, 255, 0.92);
+  border-color: var(--team-color, var(--accent));
+}
+
+.pip-current {
+  background: transparent;
+  color: var(--team-color, var(--accent));
+  border-color: var(--team-color, var(--accent));
+}
+
+.pip-upcoming {
+  background: rgba(201, 195, 181, 0.18);
+  color: var(--dim);
+  border-color: rgba(201, 195, 181, 0.38);
+}
+
+.member-offline-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(201, 195, 181, 0.28);
+  color: var(--dim);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
 .team-issue-list {
   display: flex;
   flex-direction: column;
@@ -1820,9 +1875,9 @@ function getIssueNumber(issue) {
 
 function sortMembers(members) {
   return [...members].sort((a, b) => {
-    const aMatch = String(a && a.name ? a.name : '').match(/(\d+)/);
-    const bMatch = String(b && b.name ? b.name : '').match(/(\d+)/);
-    return toNumber(aMatch && aMatch[1]) - toNumber(bMatch && bMatch[1]);
+    const aKey = String(a && (a.display_code || a.local_code || a.student_key || '')).match(/(\d+)/);
+    const bKey = String(b && (b.display_code || b.local_code || b.student_key || '')).match(/(\d+)/);
+    return toNumber(aKey && aKey[1]) - toNumber(bKey && bKey[1]);
   });
 }
 
@@ -2274,7 +2329,7 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
-const TEAM_PALETTE = ['#A35D2E', '#C97A3D', '#8E5B4A', '#D8A067', '#6E4A3A', '#B9836E'];
+const TEAM_PALETTE = ['#C97B3D', '#C9A23D', '#A84A44', '#4E7CA1', '#2F2A25', '#8E6E63'];
 
 const MOUNTAIN_MAP = {
   milestones: {
@@ -2336,7 +2391,7 @@ function getPointOnRoute(progressPercent) {
 
 var BADGE_R = 18;
 var DOT_R = 6;
-var TEAM_LANE_OFFSETS = [-60, -36, -12, 12, 36, 60];
+var TEAM_LANE_MAP = { T1: -14, T2: -8, T3: -3, T4: 3, T5: 8, T6: 14 };
 
 var CLIMB_STAGE_INDEX = { C1: 1, C2: 2, C3: 3, C4: 4, C5: 5, C6: 6, C7: 7, C8: 8 };
 
@@ -2357,6 +2412,30 @@ function getMemberRoutePercent(member) {
     if (key) stagePercent = toNumber((prog[key] && prog[key].percent) || 0);
   }
   return clampPercent(((idx - 1) + stagePercent / 100) / 8 * 100);
+}
+
+function renderMemberStageStrip(member) {
+  var stages = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
+  var currentCode = '';
+  var codeMatch = String(member && member.current_stage || '').match(/\b(C\d+)\b/i);
+  if (codeMatch) currentCode = codeMatch[1].toUpperCase();
+  var currentIdx = CLIMB_STAGE_INDEX[currentCode] || 0;
+  return stages.map(function(code) {
+    var idx = CLIMB_STAGE_INDEX[code];
+    var pct = 0;
+    var prog = member && member.progress;
+    if (prog) {
+      var progKey = Object.keys(prog).find(function(k) {
+        var m = String(k).match(/\b(C\d+)\b/i);
+        return m && m[1].toUpperCase() === code;
+      });
+      if (progKey) pct = toNumber((prog[progKey] && prog[progKey].percent) || 0);
+    }
+    var state = idx < currentIdx || (idx === currentIdx && pct >= 100) ? 'done'
+      : idx === currentIdx ? 'current'
+      : 'upcoming';
+    return '<span class="member-stage-pip pip-' + state + '" title="' + code + ': ' + pct + '%">' + code + '</span>';
+  }).join('');
 }
 
 function getRouteTangentAt(routePercent) {
@@ -2400,7 +2479,7 @@ function buildMountainMarkerData(teams) {
       routePct = sum / memberPositions.length;
     }
 
-    var laneOffset = TEAM_LANE_OFFSETS[i % TEAM_LANE_OFFSETS.length];
+    var laneOffset = TEAM_LANE_MAP[team.label] !== undefined ? TEAM_LANE_MAP[team.label] : (i * 5 - 12);
     var basePos = getPointOnRoute(routePct);
     var perp = getRoutePerpAt(routePct);
 
@@ -2445,11 +2524,13 @@ function renderTeamMarkersSVG(markers) {
       var laneOffset = marker.laneOffset;
       var dotX = (mPos.x + mPerp.px * laneOffset + tang.tx * (di - (marker.memberPositions.length - 1) / 2) * (DOT_R * 2.8)).toFixed(1);
       var dotY = (mPos.y + mPerp.py * laneOffset + tang.ty * (di - (marker.memberPositions.length - 1) / 2) * (DOT_R * 2.8)).toFixed(1);
-      var opacity = mp.member.active === false ? '0.35' : (mp.member.connected === false ? '0.55' : '1');
-      var title = (marker.label.startsWith('T1') || marker.label.startsWith('T2')) && (mp.member.display_code === 'S01' || mp.member.display_code === 'S02')
-        ? mp.member.display_code
-        : '';
-      var titleEl = title ? '<title>' + title + '</title>' : '';
+      var opacity = mp.member.active === false ? '0.35' : (mp.member.connected === false ? '0.45' : '0.95');
+      var displayCode = mp.member.display_code || mp.member.local_code || '';
+      var stageCode = String(mp.member.current_stage || '').replace(/\s*-.*/, '').trim();
+      var issueNote = mp.member.issue_progress_percent != null ? mp.member.issue_progress_percent + '% issues' : '';
+      var connNote = mp.member.connected === false ? ' · offline' : '';
+      var titleParts = [displayCode, stageCode, issueNote].filter(Boolean).join(' · ');
+      var titleEl = titleParts ? '<title>' + titleParts + connNote + '</title>' : '';
       return '<circle cx="' + dotX + '" cy="' + dotY + '" r="' + DOT_R +
         '" fill="' + color + '" fill-opacity="' + opacity + '"' +
         ' pointer-events="all">' + titleEl + '</circle>';
@@ -3036,16 +3117,26 @@ function renderTeams(model) {
             `${sortMembers(team.members).map(function(member) {
               const total = toNumber(member.total);
               const closed = toNumber(member.closed);
-              const percent = total > 0
-                ? clampPercent(member.percent !== undefined ? member.percent : Math.round((closed / total) * 100))
-                : 0;
+              const issuePct = member.issue_progress_percent != null
+                ? clampPercent(member.issue_progress_percent)
+                : (total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0);
+              const memberCode = escapeHtml(member.display_code || member.local_code || '\u2014');
+              const stageShort = String(member.current_stage || '').replace(/\s*-.*/, '').trim() || '\u2014';
+              const offlineTag = member.connected === false
+                ? `<span class="member-offline-tag">offline</span>`
+                : '';
+              const rowOpacity = member.connected === false ? ' style="opacity:0.65"' : '';
+              const stageStrip = renderMemberStageStrip(member);
 
               return (
-                `<div class="member-row">` +
-                  `<span class="member-name">${escapeHtml(member.name || '\u2014')}</span>` +
-                  `<div class="member-bar"><div class="member-fill" style="width:${percent}%"></div></div>` +
-                  `<span class="member-pct">${percent}%</span>` +
-                  `<span class="member-meta">${closed}/${total} issues closed</span>` +
+                `<div class="member-entry"${rowOpacity}>` +
+                  `<div class="member-row">` +
+                    `<span class="member-name">${memberCode}${offlineTag}</span>` +
+                    `<div class="member-bar"><div class="member-fill" style="width:${issuePct}%"></div></div>` +
+                    `<span class="member-pct">${issuePct}%</span>` +
+                    `<span class="member-meta">${closed}/${total} &middot; ${escapeHtml(stageShort)}</span>` +
+                  `</div>` +
+                  `<div class="member-stage-strip">${stageStrip}</div>` +
                 `</div>`
               );
             }).join('')}` +
