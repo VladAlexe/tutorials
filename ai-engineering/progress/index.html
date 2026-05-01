@@ -800,7 +800,7 @@ section { padding-top: 2rem; }
 .team-grid {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
 .team-card {
@@ -811,17 +811,14 @@ section { padding-top: 2rem; }
 }
 
 .team-card-header {
-  padding: 0.95rem 1rem 0.82rem;
+  padding: 0.78rem 0.84rem 0.62rem;
   border-bottom: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.9rem 1rem;
-  align-items: start;
+  display: block;
 }
 
 .team-card-name {
   font-family: 'Fraunces', serif;
-  font-size: 1.24rem;
+  font-size: 1.14rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -831,38 +828,15 @@ section { padding-top: 2rem; }
 .team-card-name:hover { color: var(--accent); }
 
 .team-card-stage {
-  margin-top: 0.18rem;
+  margin-top: 0.22rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--sub);
-  line-height: 1.45;
-}
-
-.team-card-overall {
-  text-align: right;
-  min-width: 78px;
-}
-
-.team-card-overall-label {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-.team-card-overall-value {
-  display: block;
-  font-family: 'Fraunces', serif;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--team-color);
-  line-height: 1;
+  line-height: 1.35;
 }
 
 .team-progress-row {
-  padding: 0.8rem 1.15rem 0.82rem;
+  padding: 0.58rem 0.84rem 0.64rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -870,14 +844,14 @@ section { padding-top: 2rem; }
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.24rem;
+  gap: 0.7rem;
+  margin-bottom: 0.28rem;
 }
 
 .team-progress-label,
 .team-subtitle {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--dim);
@@ -885,12 +859,12 @@ section { padding-top: 2rem; }
 
 .team-progress-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9.8px;
   color: var(--sub);
 }
 
 .team-progress-bar {
-  height: 9px;
+  height: 6px;
   border-radius: 999px;
   background: rgba(201, 195, 181, 0.44);
   overflow: hidden;
@@ -904,60 +878,26 @@ section { padding-top: 2rem; }
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
-.team-links {
-  padding: 0.72rem 1.15rem 0.12rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.team-link,
-.team-link-sep {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-}
-
-.team-link { color: var(--sub); transition: color 0.1s; }
-.team-link:hover { color: var(--team-color); }
-.team-link-sep { color: var(--border-hi); }
-
 .team-milestone-row {
-  padding: 0.72rem 1rem 0.82rem;
+  padding: 0.58rem 0.82rem 0.66rem;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
-  gap: 0.38rem;
+  gap: 0.3rem;
 }
 
 .team-milestone-pill {
-  position: relative;
-  padding: 0.5rem 0.55rem 0.54rem;
+  padding: 0.4rem 0.42rem 0.42rem;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 7px;
   background: rgba(250, 249, 246, 0.86);
-  overflow: hidden;
   min-width: 0;
-  min-height: 54px;
-}
-
-.team-milestone-pill::after {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: calc(var(--pill-progress, 0) * 1%);
-  background: var(--team-soft);
-  pointer-events: none;
-}
-
-.team-milestone-pill > * {
-  position: relative;
-  z-index: 1;
+  min-height: 0;
 }
 
 .team-milestone-pill.is-current {
-  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.48));
-  box-shadow: inset 0 0 0 1px var(--team-line, rgba(181, 120, 74, 0.32));
+  border-color: rgba(181, 120, 74, 0.56);
+  box-shadow: inset 0 0 0 1px rgba(181, 120, 74, 0.18);
 }
 
 .team-milestone-pill.is-upcoming {
@@ -966,22 +906,17 @@ section { padding-top: 2rem; }
 }
 
 .team-milestone-pill.is-created {
-  border-color: var(--team-line, rgba(181, 120, 74, 0.36));
+  border-color: rgba(181, 120, 74, 0.28);
 }
 
 .team-milestone-pill.is-active {
-  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.48));
+  border-color: rgba(181, 120, 74, 0.5);
   background: rgba(250, 249, 246, 0.94);
 }
 
 .team-milestone-pill.is-done {
-  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.6));
-  background: var(--team-soft);
-}
-
-.team-milestone-pill.is-done::after {
-  width: 100%;
-  background: var(--team-soft);
+  border-color: rgba(149, 183, 141, 0.52);
+  background: rgba(149, 183, 141, 0.1);
 }
 
 .team-milestone-code,
@@ -992,27 +927,47 @@ section { padding-top: 2rem; }
 }
 
 .team-milestone-code {
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--sub);
 }
 
 .team-milestone-value {
-  margin-top: 0.22rem;
-  font-size: 10px;
-  color: var(--dim);
+  margin-top: 0.18rem;
+  font-size: 9px;
+  color: var(--sub);
   white-space: nowrap;
 }
 
-.team-milestone-pill.is-created .team-milestone-code,
-.team-milestone-pill.is-active .team-milestone-code {
-  color: var(--team-color);
+.team-milestone-bar {
+  display: block;
+  margin-top: 0.34rem;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(201, 195, 181, 0.3);
+  overflow: hidden;
 }
 
-.team-milestone-pill.is-created .team-milestone-value,
-.team-milestone-pill.is-active .team-milestone-value {
-  color: var(--sub);
+.team-milestone-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(212, 154, 99, 0.95), rgba(181, 120, 74, 0.92));
+}
+
+.team-milestone-pill.is-done .team-milestone-fill {
+  background: linear-gradient(90deg, rgba(167, 191, 155, 0.96), rgba(122, 164, 118, 0.96));
+}
+
+.team-milestone-pill.is-upcoming .team-milestone-fill {
+  background: rgba(201, 195, 181, 0.36);
+}
+
+.team-milestone-pill.is-active .team-milestone-code,
+.team-milestone-pill.is-created .team-milestone-code {
+  color: var(--accent);
 }
 
 .team-milestone-pill.is-done .team-milestone-code,
@@ -1021,7 +976,7 @@ section { padding-top: 2rem; }
 }
 
 .team-section {
-  padding: 0.78rem 1rem 0.82rem;
+  padding: 0.64rem 0.84rem 0.68rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -1034,40 +989,71 @@ section { padding-top: 2rem; }
   align-items: baseline;
   justify-content: space-between;
   gap: 0.8rem;
-  margin-bottom: 0.52rem;
+  margin-bottom: 0.44rem;
 }
 
 .team-section-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 9px;
   color: var(--sub);
   white-space: nowrap;
 }
 
 .team-next-action {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 0.65rem;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 0.55rem;
   align-items: start;
 }
 
 .team-next-action-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--dim);
 }
 
+.team-next-action-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
 .team-next-action-copy,
 .team-next-action-copy a {
-  font-size: 12px;
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.35;
+}
+
+.team-next-action-copy a:hover {
+  color: var(--accent);
+}
+
+.team-next-action-warning {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.9px;
+  color: rgba(146, 95, 45, 0.96);
+  line-height: 1.35;
+}
+
+.member-health-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  margin-bottom: 0.45rem;
+}
+
+.member-health-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
   color: var(--sub);
   line-height: 1.45;
 }
 
-.team-next-action-copy a:hover {
-  color: var(--team-color);
+.member-health-label {
+  color: var(--dim);
 }
 
 .member-table {
@@ -1078,26 +1064,26 @@ section { padding-top: 2rem; }
 .member-table-head,
 .member-row {
   display: grid;
-  grid-template-columns: 90px 90px 70px minmax(0, 1.2fr) minmax(0, 1.2fr) 110px;
-  gap: 0.65rem;
+  grid-template-columns: 72px 124px 54px minmax(0, 1fr) 56px;
+  gap: 0.5rem;
   align-items: center;
 }
 
 .member-table-head {
-  padding: 0 0 0.42rem;
+  padding: 0 0 0.34rem;
   border-bottom: 1px solid rgba(226, 221, 211, 0.88);
 }
 
 .member-head-cell {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 8.6px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--dim);
 }
 
 .member-row {
-  padding: 0.5rem 0;
+  padding: 0.38rem 0;
   border-bottom: 1px solid rgba(226, 221, 211, 0.82);
 }
 
@@ -1111,11 +1097,9 @@ section { padding-top: 2rem; }
 }
 
 .member-code,
-.member-stage,
-.member-progress-value,
 .member-summary {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9.8px;
 }
 
 .member-code {
@@ -1126,6 +1110,8 @@ section { padding-top: 2rem; }
 .member-status {
   display: flex;
   align-items: center;
+  gap: 0.24rem;
+  flex-wrap: wrap;
 }
 
 .member-status-pill,
@@ -1136,33 +1122,47 @@ section { padding-top: 2rem; }
   border-radius: 999px;
   border: 1px solid rgba(226, 221, 211, 0.92);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 8.5px;
   line-height: 1;
   white-space: nowrap;
 }
 
 .member-status-pill {
-  min-width: 66px;
-  padding: 0.18rem 0.45rem 0.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  padding: 0.18rem 0.4rem 0.2rem;
   background: rgba(250, 249, 246, 0.72);
+  color: var(--sub);
+}
+
+.member-status-pill.is-active {
+  border-color: rgba(149, 183, 141, 0.66);
+  background: rgba(149, 183, 141, 0.12);
+}
+
+.member-status-pill.is-slow {
+  border-color: rgba(212, 154, 99, 0.54);
+  background: rgba(212, 154, 99, 0.1);
+}
+
+.member-status-pill.is-inactive {
+  border-color: rgba(196, 87, 78, 0.44);
+  background: rgba(196, 87, 78, 0.08);
+}
+
+.member-status-pill.is-unknown {
+  border-color: rgba(201, 195, 181, 0.8);
+  background: rgba(201, 195, 181, 0.14);
   color: var(--dim);
 }
 
-.member-status-pill.is-online {
-  color: var(--sub);
-}
-
-.member-status-pill.is-offline {
-  border-color: rgba(201, 195, 181, 0.7);
-  background: rgba(201, 195, 181, 0.22);
-  color: var(--sub);
+.member-connection-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  color: var(--dim);
 }
 
 .member-stage-badge {
-  min-width: 40px;
-  padding: 0.18rem 0.42rem 0.2rem;
+  min-width: 34px;
+  padding: 0.18rem 0.34rem 0.2rem;
   background: rgba(250, 249, 246, 0.9);
   color: var(--accent);
 }
@@ -1172,76 +1172,16 @@ section { padding-top: 2rem; }
   border-color: rgba(226, 221, 211, 0.86);
 }
 
-.member-stage-strip {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-  padding-top: 0.08rem;
-}
-
-.member-stage-pip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 24px;
-  padding: 0.08rem 0.26rem 0.12rem;
-  border-radius: 4px;
-  border: 1px solid rgba(226, 221, 211, 0.92);
-  background: rgba(250, 249, 246, 0.64);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 7.4px;
-  line-height: 1;
-  color: var(--dim);
-}
-
-.pip-done {
-  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.52));
-  background: var(--team-soft);
-  color: var(--team-color);
-}
-
-.pip-current {
-  border-color: var(--team-color);
-  background: rgba(250, 249, 246, 0.96);
-  color: var(--team-color);
-}
-
-.pip-upcoming {
-  border-color: rgba(226, 221, 211, 0.9);
-  background: rgba(250, 249, 246, 0.42);
-  color: var(--dim);
-}
-
 .member-progress-cell {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.45rem;
-  align-items: center;
   min-width: 0;
 }
 
 .member-progress-track {
-  height: 7px;
+  height: 4px;
   border-radius: 999px;
-  background: rgba(201, 195, 181, 0.42);
+  background: rgba(201, 195, 181, 0.34);
   overflow: hidden;
-}
-
-.member-progress-track.is-course {
-  background: rgba(201, 195, 181, 0.38);
-}
-
-.member-progress-track.is-course .member-progress-fill {
-  background: linear-gradient(90deg, rgba(201, 195, 181, 0.9), var(--team-line-strong, rgba(181, 120, 74, 0.48)));
-}
-
-.member-progress-track.is-issues {
-  background: rgba(181, 120, 74, 0.14);
-}
-
-.member-progress-track.is-issues .member-progress-fill {
-  background: linear-gradient(90deg, var(--team-color), rgba(212, 168, 130, 0.94));
+  min-width: 0;
 }
 
 .member-progress-fill {
@@ -1250,10 +1190,10 @@ section { padding-top: 2rem; }
   min-width: 0;
 }
 
-.member-progress-value {
-  color: var(--sub);
-  min-width: 32px;
-  text-align: right;
+.member-progress-empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
 }
 
 .member-summary {
@@ -1262,63 +1202,109 @@ section { padding-top: 2rem; }
   white-space: nowrap;
 }
 
-.team-issue-list {
+.team-issue-groups {
   display: flex;
   flex-direction: column;
-  gap: 0.32rem;
+  gap: 0.54rem;
 }
 
-.team-issue-link,
-.team-issue-more {
-  display: block;
-  padding-left: 0.8rem;
-  position: relative;
+.team-issue-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
 }
 
-.team-issue-link {
-  font-size: 11.5px;
-  color: var(--sub);
-  line-height: 1.45;
-  transition: color 0.1s;
-}
-
-.team-issue-link:hover,
-.team-issue-more:hover {
-  color: var(--team-color);
-}
-
-.team-issue-link::before,
-.team-issue-more::before {
-  content: '';
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  position: absolute;
-  left: 0;
-}
-
-.team-issue-link::before {
-  top: 0.5rem;
-  background: var(--accent-lo);
-}
-
-.team-issue-more {
-  margin-top: 0.08rem;
+.team-issue-group-title {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 8.8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--dim);
 }
 
-.team-issue-more::before {
-  top: 0.42rem;
-  background: var(--border-hi);
+.team-issue-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem 0.6rem;
+  align-items: center;
+  padding-bottom: 0.24rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.72);
+}
+
+.team-issue-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.team-issue-title {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--sub);
+  transition: color 0.1s;
+}
+
+.team-issue-title:hover {
+  color: var(--accent);
+}
+
+.team-issue-meta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.22rem;
+  flex-wrap: wrap;
+}
+
+.team-issue-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.36rem 0.16rem;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 221, 211, 0.92);
+  background: rgba(250, 249, 246, 0.72);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  color: var(--sub);
+}
+
+.team-issue-badge.is-now {
+  border-color: rgba(181, 120, 74, 0.48);
+  background: rgba(181, 120, 74, 0.1);
+}
+
+.team-issue-badge.is-working {
+  border-color: rgba(201, 195, 181, 0.92);
+  background: rgba(201, 195, 181, 0.16);
+}
+
+.team-issue-badge.is-done {
+  border-color: rgba(149, 183, 141, 0.56);
+  background: rgba(149, 183, 141, 0.12);
+}
+
+.team-issue-badge.is-assignee {
+  color: var(--accent);
 }
 
 .team-empty {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.8px;
+  font-size: 9px;
   color: var(--dim);
-  line-height: 1.5;
+  line-height: 1.45;
+}
+
+.team-issue-more {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.52rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.8px;
+  color: var(--dim);
+}
+
+.team-issue-more:hover {
+  color: var(--accent);
 }
 
 .project-analytics-shell {
@@ -1782,24 +1768,17 @@ footer {
     display: none;
   }
   .member-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.42rem 0.6rem;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    gap: 0.34rem 0.48rem;
   }
-  .member-summary {
-    order: 4;
-    grid-column: 2;
-    text-align: right;
-    min-width: 0;
-  }
+  .member-status { grid-column: 2; }
+  .member-stage { grid-column: 3; justify-self: end; }
   .member-progress-cell {
-    order: 5;
     grid-column: 1 / -1;
   }
-  .member-progress-cell.is-issues {
-    order: 6;
-  }
-  .member-stage-strip {
-    order: 7;
+  .member-summary {
+    grid-column: 3;
+    justify-self: end;
   }
   .mountain-card {
     min-height: auto;
@@ -1815,7 +1794,6 @@ footer {
 
 @media (max-width: 560px) {
   .mountain-caption,
-  .team-card-header,
   .team-progress-head,
   .project-row,
   .project-distribution-row {
@@ -1838,14 +1816,6 @@ footer {
     gap: 0.1rem;
   }
 
-  .team-card-metrics {
-    min-width: 0;
-  }
-
-  .team-metric-line {
-    text-align: left;
-  }
-
   .team-next-action {
     grid-template-columns: 1fr;
     gap: 0.2rem;
@@ -1863,6 +1833,14 @@ footer {
     gap: 0.18rem;
   }
 
+  .team-issue-row {
+    grid-template-columns: 1fr;
+  }
+
+  .team-issue-meta {
+    justify-content: flex-start;
+  }
+
   .team-milestone-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1874,10 +1852,6 @@ footer {
   }
 
   .metric-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .team-card-metrics {
     grid-template-columns: 1fr;
   }
 
@@ -3251,8 +3225,23 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
   const currentStageProgress = stageProgress.find(function(stage) {
     return stage.key === currentStage.key;
   }) || derivedStage;
-  const openIssues = Array.isArray(team && team.open_issues) ? team.open_issues : [];
+  const issuePool = Array.isArray(team && team.issues) ? team.issues : [];
+  const openIssues = Array.isArray(team && team.open_issues) && team.open_issues.length
+    ? team.open_issues
+    : issuePool.filter(function(issue) {
+      return !/closed/i.test(String(issue && issue.state || ''));
+    });
+  const closedIssues = Array.isArray(team && team.closed_issues) && team.closed_issues.length
+    ? team.closed_issues
+    : issuePool.filter(function(issue) {
+      return /closed/i.test(String(issue && issue.state || ''));
+    });
   const color = TEAM_PALETTE[index % TEAM_PALETTE.length];
+  const issueTotals = stageProgress.reduce(function(summary, stage) {
+    summary.closed += toNumber(stage.closed);
+    summary.total += toNumber(stage.total);
+    return summary;
+  }, { closed: 0, total: 0 });
 
   return {
     name: team && team.name ? String(team.name) : `Team ${index + 1}`,
@@ -3267,7 +3256,11 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     milestones_url: team && team.milestones_url ? team.milestones_url : (team && team.repo_url ? team.repo_url : '#'),
     members: Array.isArray(team && team.members) ? team.members : [],
     openIssues: openIssues,
+    closedIssues: closedIssues,
+    allIssues: issuePool,
     stageProgress: stageProgress,
+    totalIssues: issueTotals.total,
+    closedIssuesCount: issueTotals.closed,
     currentStage: {
       key: currentStage.key,
       title: currentStage.title,
@@ -3431,6 +3424,7 @@ function buildDashboardModel(data) {
     blockerDataAvailable: blockersMeta.available,
     blockersCount: blockersMeta.available ? blockersMeta.items.length : blockedTeams.length,
     currentActionHint: getStageActionHint(currentMilestone.key),
+    referenceDate: referenceDate,
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
@@ -3627,28 +3621,290 @@ function getMemberStageCode(member) {
   return inferStageKey(member && member.current_stage) || '\u2014';
 }
 
-function getMemberSummaryCopy(members) {
-  const trackedCount = members.length;
-  if (!trackedCount) {
-    return '0 tracked';
+function getTeamIssueTotals(team) {
+  return (Array.isArray(team && team.stageProgress) ? team.stageProgress : []).reduce(function(summary, stage) {
+    summary.closed += toNumber(stage && stage.closed);
+    summary.total += toNumber(stage && stage.total);
+    return summary;
+  }, { closed: 0, total: 0 });
+}
+
+function getIssueUrl(issue) {
+  return String(issue && (issue.html_url || issue.htmlUrl || issue.url) || '#');
+}
+
+function getIssueUpdatedAt(issue) {
+  return parseLooseDateTime(
+    issue && (issue.updated_at || issue.updatedAt || issue.created_at || issue.createdAt)
+  );
+}
+
+function getIssueClosedAt(issue) {
+  return parseLooseDateTime(
+    issue && (issue.closed_at || issue.closedAt)
+  );
+}
+
+function isIssueClosed(issue) {
+  return /closed/i.test(String(issue && issue.state || '')) || !!getIssueClosedAt(issue);
+}
+
+function dedupeIssues(issues) {
+  const seen = {};
+  return (Array.isArray(issues) ? issues : []).filter(function(issue) {
+    const key = getIssueUrl(issue) + '|' + String(issue && issue.title || '');
+    if (seen[key]) {
+      return false;
+    }
+    seen[key] = true;
+    return true;
+  });
+}
+
+function escapeRegExp(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getMemberDisplayCode(member) {
+  return String(member && (member.display_code || member.local_code || member.student_key) || '\u2014');
+}
+
+function getMemberAliases(member) {
+  const aliases = [];
+  const directAliases = [
+    member && member.display_code,
+    member && member.local_code,
+    member && member.student_key
+  ];
+
+  directAliases.forEach(function(alias) {
+    const safeAlias = String(alias || '').trim().toLowerCase();
+    if (safeAlias && aliases.indexOf(safeAlias) === -1) {
+      aliases.push(safeAlias);
+    }
+  });
+
+  const displayCode = String(member && member.display_code || '').trim();
+  const codeMatch = displayCode.match(/(\d+)/);
+  if (codeMatch) {
+    const studentAlias = `student_${codeMatch[1].padStart(2, '0')}`.toLowerCase();
+    if (aliases.indexOf(studentAlias) === -1) {
+      aliases.push(studentAlias);
+    }
   }
 
-  const offlineCount = members.filter(function(member) {
-    return member && member.connected === false;
-  }).length;
-  const connectedCount = trackedCount - offlineCount;
+  return aliases;
+}
 
-  return offlineCount > 0
-    ? `${connectedCount} connected / ${offlineCount} offline`
-    : `${trackedCount} tracked`;
+function findMemberForIssue(issue, members) {
+  const searchText = [
+    issue && issue.title,
+    issue && issue.assignee && (issue.assignee.display_code || issue.assignee.local_code || issue.assignee.login || issue.assignee.name),
+    Array.isArray(issue && issue.assignees) ? issue.assignees.map(function(assignee) {
+      return assignee && (assignee.display_code || assignee.local_code || assignee.login || assignee.name);
+    }).join(' ') : '',
+    issue && issue.user && issue.user.login
+  ].filter(Boolean).join(' ').toLowerCase();
+
+  return sortMembers(Array.isArray(members) ? members : []).find(function(member) {
+    return getMemberAliases(member).some(function(alias) {
+      return new RegExp(`(^|[^a-z0-9])${escapeRegExp(alias)}([^a-z0-9]|$)`, 'i').test(searchText);
+    });
+  }) || null;
+}
+
+function getIssueAssigneeCode(issue, members) {
+  const matchedMember = findMemberForIssue(issue, members);
+  if (matchedMember) {
+    return getMemberDisplayCode(matchedMember);
+  }
+
+  const directAssignee = issue && issue.assignee;
+  if (directAssignee) {
+    return String(directAssignee.display_code || directAssignee.local_code || directAssignee.login || directAssignee.name || '').trim();
+  }
+
+  return '';
+}
+
+function buildIssueRecord(issue, team) {
+  const stageKey = inferStageKey(issue && (issue.stage || issue.title)) || '\u2014';
+  const assigneeCode = getIssueAssigneeCode(issue, team.members);
+  const updatedAt = getIssueUpdatedAt(issue);
+  const closedAt = getIssueClosedAt(issue);
+  const state = isIssueClosed(issue) ? 'closed' : 'open';
+  const title = sanitizeIssueTitle(issue && issue.title);
+  const titleText = String(issue && issue.title || '');
+  const isMemberScoped = !!assigneeCode || /^student[_ -]*\d+/i.test(titleText);
+
+  return {
+    title: title,
+    url: getIssueUrl(issue),
+    state: state,
+    stageKey: stageKey,
+    assigneeCode: assigneeCode,
+    updatedAt: updatedAt,
+    closedAt: closedAt,
+    number: getIssueNumber(issue),
+    isMemberScoped: isMemberScoped,
+    isCurrentStage: stageKey === team.currentStage.key
+  };
+}
+
+function countTeamClosedIssuesLast48h(team, referenceDate) {
+  let count = 0;
+  let hasData = false;
+
+  (Array.isArray(team && team.closedIssues) ? team.closedIssues : []).forEach(function(issue) {
+    const closedAt = getIssueClosedAt(issue);
+    if (!closedAt) {
+      return;
+    }
+    hasData = true;
+    if ((referenceDate.getTime() - closedAt.getTime()) <= (48 * 60 * 60 * 1000)) {
+      count += 1;
+    }
+  });
+
+  return hasData ? count : null;
+}
+
+function getMemberLastActivityAt(member, issues) {
+  const directDates = [
+    parseLooseDateTime(member && (member.last_activity_at || member.lastActivityAt)),
+    parseLooseDateTime(member && (member.updated_at || member.updatedAt))
+  ].filter(Boolean);
+
+  (Array.isArray(issues) ? issues : []).forEach(function(issue) {
+    const matchedMember = findMemberForIssue(issue, [member]);
+    if (!matchedMember) {
+      return;
+    }
+
+    const issueStamp = getIssueClosedAt(issue) || getIssueUpdatedAt(issue);
+    if (issueStamp) {
+      directDates.push(issueStamp);
+    }
+  });
+
+  if (!directDates.length) {
+    return null;
+  }
+
+  return new Date(Math.max.apply(null, directDates.map(function(date) {
+    return date.getTime();
+  })));
+}
+
+function getMemberStatus(member, issues, referenceDate) {
+  const total = toNumber(member && member.total);
+  const closed = toNumber(member && member.closed);
+  const lastActivityAt = getMemberLastActivityAt(member, issues);
+
+  if (lastActivityAt) {
+    const ageHours = (referenceDate.getTime() - lastActivityAt.getTime()) / (60 * 60 * 1000);
+    if (ageHours <= 48) {
+      return { key: 'active', label: 'activ', icon: '\uD83D\uDFE2', lastActivityAt: lastActivityAt };
+    }
+    if (ageHours <= (7 * 24)) {
+      return { key: 'slow', label: 'lent', icon: '\uD83D\uDFE1', lastActivityAt: lastActivityAt };
+    }
+    return { key: 'inactive', label: 'inactiv', icon: '\uD83D\uDD34', lastActivityAt: lastActivityAt };
+  }
+
+  if (member && (member.connected === false || member.active === false)) {
+    return { key: 'inactive', label: 'inactiv', icon: '\uD83D\uDD34', lastActivityAt: null };
+  }
+
+  if (total === 0) {
+    return { key: 'unknown', label: 'necunoscut', icon: '\u26AA', lastActivityAt: null };
+  }
+
+  if (closed === 0) {
+    return { key: 'inactive', label: 'inactiv', icon: '\uD83D\uDD34', lastActivityAt: null };
+  }
+
+  if (closed < total) {
+    return { key: 'slow', label: 'lent', icon: '\uD83D\uDFE1', lastActivityAt: null };
+  }
+
+  return { key: 'active', label: 'activ', icon: '\uD83D\uDFE2', lastActivityAt: null };
+}
+
+function buildTeamHealthSummary(members, issues, referenceDate) {
+  const counts = { active: 0, slow: 0, inactive: 0, unknown: 0 };
+  const rows = sortMembers(Array.isArray(members) ? members : []).map(function(member) {
+    const status = getMemberStatus(member, issues, referenceDate);
+    counts[status.key] += 1;
+    return {
+      member: member,
+      status: status
+    };
+  });
+
+  return {
+    counts: counts,
+    rows: rows
+  };
+}
+
+function buildTeamIssueGroups(team) {
+  const openRecords = dedupeIssues(team.openIssues).map(function(issue) {
+    return buildIssueRecord(issue, team);
+  }).sort(function(a, b) {
+    return (a.isCurrentStage === b.isCurrentStage ? 0 : (a.isCurrentStage ? -1 : 1))
+      || (a.isMemberScoped === b.isMemberScoped ? 0 : (a.isMemberScoped ? 1 : -1))
+      || b.number - a.number;
+  });
+
+  const closedRecords = dedupeIssues(team.closedIssues).map(function(issue) {
+    return buildIssueRecord(issue, team);
+  }).sort(function(a, b) {
+    return ((b.closedAt ? b.closedAt.getTime() : 0) - (a.closedAt ? a.closedAt.getTime() : 0))
+      || ((b.updatedAt ? b.updatedAt.getTime() : 0) - (a.updatedAt ? a.updatedAt.getTime() : 0))
+      || (b.number - a.number);
+  });
+
+  let now = openRecords.filter(function(issue) {
+    return issue.isCurrentStage && !issue.isMemberScoped;
+  });
+  if (!now.length) {
+    now = openRecords.filter(function(issue) {
+      return issue.isCurrentStage;
+    });
+  }
+  if (!now.length) {
+    now = openRecords.slice(0, 2);
+  }
+  now = now.slice(0, 2);
+
+  const nowKeys = {};
+  now.forEach(function(issue) {
+    nowKeys[issue.url + '|' + issue.number + '|' + issue.title] = true;
+  });
+
+  const working = openRecords.filter(function(issue) {
+    const issueKey = issue.url + '|' + issue.number + '|' + issue.title;
+    return !nowKeys[issueKey];
+  }).sort(function(a, b) {
+    return (a.isMemberScoped === b.isMemberScoped ? 0 : (a.isMemberScoped ? -1 : 1))
+      || (a.isCurrentStage === b.isCurrentStage ? 0 : (a.isCurrentStage ? -1 : 1))
+      || (b.number - a.number);
+  }).slice(0, 3);
+
+  return {
+    now: now,
+    working: working,
+    recent: closedRecords.slice(0, 2)
+  };
 }
 
 function renderTeams(model) {
   document.getElementById('team-grid').innerHTML = model.teams.map(function(team) {
-    const visibleIssues = team.openIssues.slice(0, 3);
-    const hiddenCount = Math.max(team.openIssues.length - visibleIssues.length, 0);
-    const memberSummary = getMemberSummaryCopy(team.members);
-
+    const teamTotals = getTeamIssueTotals(team);
+    const teamProgressText = teamTotals.total > 0
+      ? `${teamTotals.closed}/${teamTotals.total} task-uri`
+      : '\u2014';
     const milestonePills = team.stageProgress.filter(function(stage) {
       return JOURNEY_STAGE_KEYS.indexOf(stage.key) >= 0;
     }).map(function(stage) {
@@ -3656,115 +3912,153 @@ function renderTeams(model) {
       const value = stage.total > 0 ? `${stage.closed}/${stage.total}` : '\u2014';
 
       return (
-        `<div class="team-milestone-pill is-${stage.status}${currentClass}" style="--pill-progress:${stage.percent};">` +
+        `<div class="team-milestone-pill is-${stage.status}${currentClass}">` +
           `<span class="team-milestone-code">${escapeHtml(stage.key)}</span>` +
           `<span class="team-milestone-value">${escapeHtml(value)}</span>` +
+          `<span class="team-milestone-bar"><span class="team-milestone-fill" style="width:${getMinimumVisibleFillWidth(stage.percent, 8)}%;"></span></span>` +
         `</div>`
       );
     }).join('');
 
+    const nextActionUrl = team.nextAction ? getIssueUrl(team.nextAction) : '#';
+    const nextActionText = team.nextAction
+      ? sanitizeIssueTitle(team.nextAction.title)
+      : `Așteaptă următorul task din ${model.currentMilestone.key}.`;
+    const nextActionUpdatedAt = team.nextAction ? (getIssueUpdatedAt(team.nextAction) || getIssueTimestamp(team.nextAction)) : null;
+    const nextActionStale = !!(nextActionUpdatedAt && ((model.referenceDate.getTime() - nextActionUpdatedAt.getTime()) > (3 * 24 * 60 * 60 * 1000)));
     const nextActionMarkup = team.nextAction
-      ? `<a href="${escapeHtml(team.nextAction.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(team.nextAction.title))}</a>`
-      : `Waiting for a task in ${escapeHtml(model.currentMilestone.key)}.`;
+      ? `<a href="${escapeHtml(nextActionUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(nextActionText)}</a>`
+      : escapeHtml(nextActionText);
 
+    const issuePool = dedupeIssues([].concat(team.openIssues || [], team.closedIssues || [], team.allIssues || []));
+    const health = buildTeamHealthSummary(team.members, issuePool, model.referenceDate);
+    const momentum48h = countTeamClosedIssuesLast48h(team, model.referenceDate);
     const memberSection = team.members.length
       ? (
         `<div class="member-table">` +
           `<div class="member-table-head">` +
-            `<span class="member-head-cell">Member</span>` +
+            `<span class="member-head-cell">Cod</span>` +
             `<span class="member-head-cell">Status</span>` +
-            `<span class="member-head-cell">Stage</span>` +
-            `<span class="member-head-cell">Course progress</span>` +
-            `<span class="member-head-cell">GitHub issues</span>` +
-            `<span class="member-head-cell">Closed/total</span>` +
+            `<span class="member-head-cell">Etapă</span>` +
+            `<span class="member-head-cell">Progres</span>` +
+            `<span class="member-head-cell">Task-uri</span>` +
           `</div>` +
-          `${sortMembers(team.members).map(function(member) {
+          `${health.rows.map(function(entry) {
+            const member = entry.member;
             const total = toNumber(member.total);
             const closed = toNumber(member.closed);
-            const coursePct = getMemberCourseProgressPercent(member);
-            const issuePct = getMemberIssueProgressPercent(member);
-            const memberCode = escapeHtml(member.display_code || member.local_code || '\u2014');
+            const issuePct = total > 0 ? getMemberIssueProgressPercent(member) : 0;
+            const memberCode = escapeHtml(getMemberDisplayCode(member));
             const stageCode = getMemberStageCode(member);
             const stageClass = stageCode === '\u2014' ? ' is-empty' : '';
-            const connectionState = member.connected === false ? 'offline' : 'online';
             const summaryText = total > 0 ? `${closed}/${total}` : '\u2014';
             const rowClass = member.connected === false ? ' is-offline' : '';
+            const offlineNote = member.connected === false
+              ? `<span class="member-connection-note">offline</span>`
+              : '';
 
             return (
               `<div class="member-row${rowClass}">` +
                 `<span class="member-code">${memberCode}</span>` +
-                `<span class="member-status"><span class="member-status-pill is-${connectionState}">${connectionState}</span></span>` +
-                `<span class="member-stage"><span class="member-stage-badge${stageClass}">${escapeHtml(stageCode)}</span></span>` +
-                `<span class="member-progress-cell is-course">` +
-                  `<span class="member-progress-track is-course"><span class="member-progress-fill" style="width:${getMinimumVisibleFillWidth(coursePct, 5)}%;"></span></span>` +
-                  `<span class="member-progress-value">${coursePct}%</span>` +
+                `<span class="member-status">` +
+                  `<span class="member-status-pill is-${entry.status.key}">${entry.status.icon} ${entry.status.label}</span>` +
+                  `${offlineNote}` +
                 `</span>` +
-                `<span class="member-progress-cell is-issues">` +
-                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${getMinimumVisibleFillWidth(issuePct, 5)}%;"></span></span>` +
-                  `<span class="member-progress-value">${issuePct}%</span>` +
+                `<span class="member-stage"><span class="member-stage-badge${stageClass}">${escapeHtml(stageCode)}</span></span>` +
+                `<span class="member-progress-cell">` +
+                  (
+                    total > 0
+                      ? `<span class="member-progress-track"><span class="member-progress-fill" style="width:${getMinimumVisibleFillWidth(issuePct, 8)}%;"></span></span>`
+                      : `<span class="member-progress-empty">\u2014</span>`
+                  ) +
                 `</span>` +
                 `<span class="member-summary">${escapeHtml(summaryText)}</span>` +
-                `<span class="member-stage-strip">${renderMemberStageStrip(member)}</span>` +
               `</div>`
             );
           }).join('')}` +
         `</div>`
       )
-      : '<div class="team-empty">No mapped members yet.</div>';
+      : '<div class="team-empty">Nu există membri mapați încă.</div>';
 
-    const issuesMarkup = visibleIssues.length
-      ? visibleIssues.map(function(issue) {
-        return `<a class="team-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`;
-      }).join('')
-      : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
+    const issueGroups = buildTeamIssueGroups(team);
+    const renderIssueGroup = function(title, items, type, emptyText) {
+      const stateLabel = type === 'now'
+        ? 'de făcut'
+        : (type === 'working' ? 'în lucru' : 'gata');
 
-    const moreMarkup = hiddenCount > 0
-      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
-      : '';
+      return (
+        `<div class="team-issue-group">` +
+          `<div class="team-issue-group-title">${title}</div>` +
+          (
+            items.length
+              ? items.map(function(issue) {
+                const assigneeBadge = issue.assigneeCode
+                  ? `<span class="team-issue-badge is-assignee">${escapeHtml(issue.assigneeCode)}</span>`
+                  : '';
+
+                return (
+                  `<div class="team-issue-row">` +
+                    `<a class="team-issue-title" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>` +
+                    `<div class="team-issue-meta">` +
+                      `<span class="team-issue-badge is-${type}">${stateLabel}</span>` +
+                      `${assigneeBadge}` +
+                    `</div>` +
+                  `</div>`
+                );
+              }).join('')
+              : `<div class="team-empty">${emptyText}</div>`
+          ) +
+        `</div>`
+      );
+    };
+
+    const healthMarkup =
+      `<div class="member-health-strip">` +
+        `<div class="member-health-line"><span class="member-health-label">Sănătate echipă:</span> 🟢 ${health.counts.active} activ &middot; 🟡 ${health.counts.slow} lent &middot; 🔴 ${health.counts.inactive} inactiv${health.counts.unknown > 0 ? ` &middot; ⚪ ${health.counts.unknown} necunoscut` : ''}</div>` +
+        `${momentum48h === null ? '' : `<div class="member-health-line"><span class="member-health-label">Momentum 48h:</span> +${momentum48h} task-uri</div>`}` +
+      `</div>`;
 
     return (
       `<article class="team-card">` +
         `<div class="team-card-header">` +
           `<div>` +
             `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
-            `<div class="team-card-stage">Course stage &middot; ${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short)}</div>` +
-            `<div class="team-current-note">${escapeHtml(team.currentStage.title)}</div>` +
-          `</div>` +
-          `<div class="team-card-metrics">` +
-            `<div class="team-metric-line"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}%</span></div>` +
-            `<div class="team-metric-line"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}%</span></div>` +
+            `<div class="team-card-stage">${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short || team.currentStage.title)}</div>` +
           `</div>` +
         `</div>` +
-        `<div class="team-progress-stack">` +
-          `<div class="team-progress-group is-course">` +
-            `<div class="team-progress-head"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}% completed</span></div>` +
-            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.courseProgress, 4)}%;"></div></div>` +
-          `</div>` +
-          `<div class="team-progress-group is-issues">` +
-            `<div class="team-progress-head"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}% completed</span></div>` +
-            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.issueProgress, 4)}%;"></div></div>` +
-          `</div>` +
+        `<div class="team-progress-row">` +
+          `<div class="team-progress-head"><span class="team-progress-label">Progres echipă</span><span class="team-progress-meta">${escapeHtml(teamProgressText)}</span></div>` +
+          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.issueProgress, 4)}%;"></div></div>` +
         `</div>` +
         `<div class="team-milestone-row">${milestonePills}</div>` +
         `<div class="team-section">` +
           `<div class="team-next-action">` +
-            `<span class="team-next-action-label">Next action</span>` +
-            `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
+            `<span class="team-next-action-label">Următorul pas</span>` +
+            `<div class="team-next-action-main">` +
+              `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
+              `${nextActionStale ? '<div class="team-next-action-warning">⚠ blochează progresul dacă rămâne deschis</div>' : ''}` +
+            `</div>` +
           `</div>` +
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Team members</div>` +
-            `<div class="team-section-meta">${escapeHtml(memberSummary)}</div>` +
+            `<div class="team-subtitle">Membri echipă</div>` +
+            `<div class="team-section-meta">${team.members.length} membri</div>` +
           `</div>` +
+          `${healthMarkup}` +
           `${memberSection}` +
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Open issues</div>` +
-            `<div class="team-section-meta">${team.openIssues.length} total</div>` +
+            `<div class="team-subtitle">Task-uri</div>` +
+            `<div class="team-section-meta">${team.openIssues.length} deschise</div>` +
           `</div>` +
-          `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
+          `<div class="team-issue-groups">` +
+            `${renderIssueGroup('De făcut acum', issueGroups.now, 'now', 'Nimic urgent acum.')}` +
+            `${renderIssueGroup('În lucru', issueGroups.working, 'working', 'Nu există task-uri active acum.')}` +
+            `${renderIssueGroup('Finalizate recent', issueGroups.recent, 'done', 'Nu există date despre task-uri închise recent.')}` +
+          `</div>` +
+          `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">Vezi toate task-urile ↗</a>` +
         `</div>` +
       `</article>`
     );
@@ -3804,11 +4098,12 @@ const MOUNTAIN_STAGE_SEGMENTS = {
   C8: ['C7', 'C8']
 };
 
-const MOUNTAIN_BUBBLE_RADIUS = 22;
-const MOUNTAIN_MEMBER_DOT_RADIUS = 5;
+const MOUNTAIN_BUBBLE_RADIUS = 26.4;
+const MOUNTAIN_MEMBER_DOT_RADIUS = 6;
 const MOUNTAIN_BUBBLE_LIFT = 22;
 const MOUNTAIN_CLUSTER_DISTANCE = 90;
 const MOUNTAIN_CLUSTER_SPREAD = 42;
+const MOUNTAIN_VERTICAL_SHIFT = 38;
 
 function lerp(a, b, t) {
   return a + ((b - a) * t);
@@ -3953,7 +4248,7 @@ function buildMountainMarkers(teams) {
       var middle = (cluster.length - 1) / 2;
       var clusterOffsetX = (index - middle) * MOUNTAIN_CLUSTER_SPREAD;
       marker.x = marker.routeX + clusterOffsetX;
-      marker.y = marker.routeY - MOUNTAIN_BUBBLE_LIFT;
+      marker.y = marker.routeY - MOUNTAIN_BUBBLE_LIFT + MOUNTAIN_VERTICAL_SHIFT;
     });
   });
 
@@ -4001,7 +4296,7 @@ function renderMountainTeamsIntoSvg(model) {
       'text-anchor': 'middle',
       'dominant-baseline': 'middle',
       'font-family': 'JetBrains Mono, monospace',
-      'font-size': '16',
+      'font-size': '19',
       'font-weight': '700',
       fill: marker.color,
       stroke: 'rgba(255,255,255,0.96)',
