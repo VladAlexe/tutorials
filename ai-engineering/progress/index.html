@@ -428,13 +428,17 @@ section { padding-top: 2rem; }
 .mountain-viz {
   position: relative;
   width: 100%;
+  aspect-ratio: 2048 / 1152;
+  overflow: hidden;
+  border-radius: 4px;
 }
 
 .mountain-bg {
-  display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
-  border-radius: 4px;
+  height: 100%;
+  object-fit: contain;
 }
 
 .mountain-overlay {
@@ -443,6 +447,7 @@ section { padding-top: 2rem; }
   width: 100%;
   height: 100%;
   pointer-events: none;
+  overflow: visible;
 }
 
 .mountain-ridge-back {
@@ -2389,9 +2394,9 @@ function getPointOnRoute(progressPercent) {
   return { x: last.x, y: last.y };
 }
 
-var BADGE_R = 18;
-var DOT_R = 6;
-var TEAM_LANE_MAP = { T1: -14, T2: -8, T3: -3, T4: 3, T5: 8, T6: 14 };
+var BADGE_R = 16;
+var DOT_R = 5;
+var TEAM_LANE_MAP = { T1: -10, T2: -6, T3: -2, T4: 2, T5: 6, T6: 10 };
 
 var CLIMB_STAGE_INDEX = { C1: 1, C2: 2, C3: 3, C4: 4, C5: 5, C6: 6, C7: 7, C8: 8 };
 
@@ -2505,11 +2510,6 @@ function buildMountainMarkerData(teams) {
 }
 
 function renderTeamMarkersSVG(markers) {
-  var routePts = buildRoutePoints().map(function(p) { return p.x + ',' + p.y; }).join(' ');
-  var routeEl = '<polyline points="' + routePts +
-    '" fill="none" stroke="rgba(181,120,74,0.28)" stroke-width="3"' +
-    ' stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 9"/>';
-
   var sorted = markers.slice().sort(function(a, b) {
     return a.routePct !== b.routePct ? a.routePct - b.routePct : a.teamIndex - b.teamIndex;
   });
@@ -2557,7 +2557,7 @@ function renderTeamMarkersSVG(markers) {
       '</g>';
   }).join('');
 
-  return routeEl + dotEls + badgeEls;
+  return dotEls + badgeEls;
 }
 
 function getCoursePlan(data) {

@@ -7,7 +7,8 @@
       "PowerShell(Get-ChildItem -Path \"c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\" -Recurse | ForEach-Object { $_.FullName })",
       "Bash(Select-String -Path \"c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\\\\progress\\\\index.html\" -Pattern \"mountain-viz|mountain-bg|mountain-overlay|MOUNTAIN_MAP|buildRoutePoints|getPointOnRoute|renderTeamMarkersSVG|renderMemberBubbles\")",
       "Bash(Select-Object LineNumber, Line)",
-      "Bash(Format-Table -AutoSize)"
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\('c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\\\\assets\\\\img\\\\mountain.png'\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))"
     ]
   }
 }
