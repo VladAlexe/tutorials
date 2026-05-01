@@ -3516,11 +3516,17 @@ function applyMarkerCollisionOffsets(markers) {
       var ring = Math.floor(index / TEAM_COLLISION_PATTERN.length);
       var tanOffset = pattern.tan + ring * 18;
       var perpOffset = pattern.perp;
+      var minRouteDrop = 10;
+      var maxRouteDrop = 20;
 
       marker.tanOffset = tanOffset;
       marker.perpOffset = perpOffset;
       marker.x = marker.routePoint.x + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * perpOffset);
       marker.y = marker.routePoint.y + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * perpOffset);
+
+      // Keep every team bubble visually attached just below the milestone route.
+      marker.y = Math.max(marker.y, marker.routeY + minRouteDrop);
+      marker.y = Math.min(marker.y, marker.routeY + maxRouteDrop);
 
       // hard clamp: never allow early teams to float too high above the base-camp area
       if (marker.routePct <= 10) {
