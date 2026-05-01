@@ -443,11 +443,20 @@ section { padding-top: 2rem; }
   background: #f6f3ee;
 }
 
-.mountain-scene-object {
-  display: block;
+.mountain-image-wrap img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  border: 0;
+  object-fit: contain;
+}
+
+.mountain-image-wrap svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .mountain-checkpoint-label {
@@ -3482,7 +3491,7 @@ function renderJourney(model) {
 
     return (
       `<span class="mountain-status-chip status-${getSemanticStatus(team).key}" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --chip-dot:${team.color};">` +
-        `${escapeHtml(team.label)} &middot; ${getClimbStageState(team).stagePercent}%` +
+        `${escapeHtml(team.label)} &middot; ${getClimbStageState(team).percent}%` +
         `<span class="chip-dots">${dots}</span>` +
       `</span>`
     );
@@ -3506,12 +3515,13 @@ function renderJourney(model) {
         `</div>` +
         `<div class="mountain-visual">` +
           `<div class="mountain-image-wrap">` +
-            `<object id="mountain-scene-object" class="mountain-scene-object" data="../assets/img/mountain-scene.svg" type="image/svg+xml" aria-label="Mountain progress map"></object>` +
+            `<img src="../assets/img/mountain.png" alt="Mountain progress map">` +
+            `<svg id="mountain-team-overlay" viewBox="0 0 2048 1152" aria-hidden="true"></svg>` +
           `</div>` +
         `</div>` +
         `<div class="mountain-status-strip">${statusStrip}</div>` +
         `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
-        `<p class="mountain-footnote">Bulele echipelor sunt calculate pe segmentele Base-C1-C8 &#537;i sunt ridicate pu&#539;in deasupra traseului pentru lizibilitate.</p>` +
+        `<p class="mountain-footnote">PNG-ul r&#259;m&#226;ne sursa vizual&#259; de adev&#259;r; overlay-ul SVG deseneaz&#259; doar echipele u&#537;or deasupra traseului.</p>` +
       `</div>` +
     `</div>`;
 
@@ -3794,11 +3804,11 @@ const MOUNTAIN_STAGE_SEGMENTS = {
   C8: ['C7', 'C8']
 };
 
-const MOUNTAIN_BUBBLE_RADIUS = 24;
-const MOUNTAIN_MEMBER_DOT_RADIUS = 6;
-const MOUNTAIN_BUBBLE_LIFT = 28;
+const MOUNTAIN_BUBBLE_RADIUS = 22;
+const MOUNTAIN_MEMBER_DOT_RADIUS = 5;
+const MOUNTAIN_BUBBLE_LIFT = 22;
 const MOUNTAIN_CLUSTER_DISTANCE = 90;
-const MOUNTAIN_CLUSTER_SPREAD = 52;
+const MOUNTAIN_CLUSTER_SPREAD = 42;
 
 function lerp(a, b, t) {
   return a + ((b - a) * t);
@@ -3853,38 +3863,16 @@ function getSegmentGeometry(startKey, endKey, percent) {
   var end = MOUNTAIN_STAGE_POINTS[endKey];
   var t = Math.max(0, Math.min(1, percent / 100));
 
-  var anchorX = lerp(start.x, end.x, t);
-  var anchorY = lerp(start.y, end.y, t);
-
+  var routeX = lerp(start.x, end.x, t);
+  var routeY = lerp(start.y, end.y, t);
   var dx = end.x - start.x;
   var dy = end.y - start.y;
-  var len = Math.hypot(dx, dy) || 1;
-
-  var tx = dx / len;
-  var ty = dy / len;
-
-  var px = -dy / len;
-  var py = dx / len;
-
-  var candidateA = {
-    x: anchorX + (px * MOUNTAIN_BUBBLE_LIFT),
-    y: anchorY + (py * MOUNTAIN_BUBBLE_LIFT)
-  };
-
-  var candidateB = {
-    x: anchorX - (px * MOUNTAIN_BUBBLE_LIFT),
-    y: anchorY - (py * MOUNTAIN_BUBBLE_LIFT)
-  };
-
-  var chosen = candidateA.y < candidateB.y ? candidateA : candidateB;
+  var segmentLength = Math.hypot(dx, dy);
 
   return {
-    anchorX: anchorX,
-    anchorY: anchorY,
-    x: chosen.x,
-    y: chosen.y,
-    tx: tx,
-    ty: ty
+    routeX: routeX,
+    routeY: routeY,
+    routeDistance: segmentLength * t
   };
 }
 
@@ -3900,6 +3888,17 @@ function getMountainMarkerPosition(team) {
 }
 
 function buildMountainMarkers(teams) {
+  var segmentBaseDistance = {};
+  var cumulativeDistance = 0;
+
+  Object.keys(MOUNTAIN_STAGE_SEGMENTS).forEach(function(stageKey) {
+    var segment = MOUNTAIN_STAGE_SEGMENTS[stageKey];
+    var start = MOUNTAIN_STAGE_POINTS[segment[0]];
+    var end = MOUNTAIN_STAGE_POINTS[segment[1]];
+    segmentBaseDistance[stageKey] = cumulativeDistance;
+    cumulativeDistance += Math.hypot(end.x - start.x, end.y - start.y);
+  });
+
   var markers = teams.map(function(team) {
     var pos = getMountainMarkerPosition(team);
     return {
@@ -3911,48 +3910,50 @@ function buildMountainMarkers(teams) {
       teamIndex: team.index,
       stageKey: pos.stageKey,
       stagePercent: pos.stagePercent,
-      x: pos.x,
-      y: pos.y,
-      anchorX: pos.anchorX,
-      anchorY: pos.anchorY,
-      tx: pos.tx,
-      ty: pos.ty,
+      routeX: pos.routeX,
+      routeY: pos.routeY,
+      routeDistance: (segmentBaseDistance[pos.stageKey] || 0) + pos.routeDistance,
       status: getSemanticStatus(team),
       members: sortMembers(Array.isArray(team.members) ? team.members : [])
     };
   });
 
+  var sorted = markers.slice().sort(function(a, b) {
+    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
+  });
   var clusters = [];
+  var activeCluster = [];
 
-  markers.forEach(function(marker) {
-    var cluster = clusters.find(function(item) {
-      return euclidean(
-        { x: item.anchorX, y: item.anchorY },
-        { x: marker.anchorX, y: marker.anchorY }
-      ) < MOUNTAIN_CLUSTER_DISTANCE;
-    });
-
-    if (!cluster) {
-      cluster = {
-        anchorX: marker.anchorX,
-        anchorY: marker.anchorY,
-        items: []
-      };
-      clusters.push(cluster);
+  sorted.forEach(function(marker) {
+    if (!activeCluster.length) {
+      activeCluster.push(marker);
+      return;
     }
 
-    cluster.items.push(marker);
+    var previous = activeCluster[activeCluster.length - 1];
+    if (Math.abs(marker.routeDistance - previous.routeDistance) <= MOUNTAIN_CLUSTER_DISTANCE) {
+      activeCluster.push(marker);
+      return;
+    }
+
+    clusters.push(activeCluster);
+    activeCluster = [marker];
   });
 
+  if (activeCluster.length) {
+    clusters.push(activeCluster);
+  }
+
   clusters.forEach(function(cluster) {
-    cluster.items.sort(function(a, b) {
+    cluster.sort(function(a, b) {
       return a.teamIndex - b.teamIndex;
     });
 
-    cluster.items.forEach(function(marker, index) {
-      var shift = (index - ((cluster.items.length - 1) / 2)) * MOUNTAIN_CLUSTER_SPREAD;
-      marker.x += marker.tx * shift;
-      marker.y += marker.ty * shift;
+    cluster.forEach(function(marker, index) {
+      var middle = (cluster.length - 1) / 2;
+      var clusterOffsetX = (index - middle) * MOUNTAIN_CLUSTER_SPREAD;
+      marker.x = marker.routeX + clusterOffsetX;
+      marker.y = marker.routeY - MOUNTAIN_BUBBLE_LIFT;
     });
   });
 
@@ -3960,103 +3961,84 @@ function buildMountainMarkers(teams) {
 }
 
 function renderMountainTeamsIntoSvg(model) {
-  var mountainObject = document.getElementById('mountain-scene-object');
-  if (!mountainObject) return;
+  var overlay = document.getElementById('mountain-team-overlay');
+  if (!overlay) return;
 
-  var paint = function() {
-    var svgDoc = mountainObject.contentDocument;
-    if (!svgDoc) return;
+  while (overlay.firstChild) {
+    overlay.removeChild(overlay.firstChild);
+  }
 
-    var layer = svgDoc.getElementById('teams-layer');
-    if (!layer) return;
+  var markers = buildMountainMarkers(model.teams);
 
-    while (layer.firstChild) {
-      layer.removeChild(layer.firstChild);
+  markers.forEach(function(marker) {
+    var group = createSvgEl('g', {
+      'data-team': marker.label
+    });
+
+    var title = createSvgEl('title');
+    title.textContent = marker.teamName + ' - ' + marker.stageKey + ' - ' + marker.stagePercent + '%';
+    group.appendChild(title);
+
+    group.appendChild(createSvgEl('circle', {
+      cx: marker.x,
+      cy: marker.y,
+      r: MOUNTAIN_BUBBLE_RADIUS + 3,
+      fill: 'rgba(255,255,255,0.88)'
+    }));
+
+    group.appendChild(createSvgEl('circle', {
+      cx: marker.x,
+      cy: marker.y,
+      r: MOUNTAIN_BUBBLE_RADIUS,
+      fill: 'rgba(250,248,244,0.96)',
+      stroke: marker.color,
+      'stroke-width': 3
+    }));
+
+    var text = createSvgEl('text', {
+      x: marker.x,
+      y: marker.y + 1,
+      'text-anchor': 'middle',
+      'dominant-baseline': 'middle',
+      'font-family': 'JetBrains Mono, monospace',
+      'font-size': '16',
+      'font-weight': '700',
+      fill: marker.color,
+      stroke: 'rgba(255,255,255,0.96)',
+      'stroke-width': '2.2',
+      'paint-order': 'stroke'
+    });
+    text.textContent = marker.label;
+    group.appendChild(text);
+
+    var memberCount = marker.members.length;
+    if (memberCount > 0) {
+      marker.members.forEach(function(member, i) {
+        var x = marker.x + ((i - ((memberCount - 1) / 2)) * 14);
+        var y = marker.y + MOUNTAIN_BUBBLE_RADIUS + 12;
+        var connected = member.connected !== false;
+        var active = member.active !== false;
+        var fill = (connected && active) ? marker.color : 'rgba(220,220,220,0.95)';
+
+        var dot = createSvgEl('circle', {
+          cx: x,
+          cy: y,
+          r: MOUNTAIN_MEMBER_DOT_RADIUS,
+          fill: fill,
+          stroke: 'rgba(255,255,255,0.96)',
+          'stroke-width': 1.8
+        });
+
+        var dotTitle = createSvgEl('title');
+        dotTitle.textContent = (member.display_code || member.local_code || '') + ' - ' + getMemberStageCode(member) + ' - ' + getMemberIssueProgressPercent(member) + '% issues';
+        dot.appendChild(dotTitle);
+
+        group.appendChild(dot);
+      });
     }
 
-    var markers = buildMountainMarkers(model.teams);
-
-    markers.forEach(function(marker) {
-      var group = createSvgEl('g', {
-        'data-team': marker.label
-      });
-
-      var title = createSvgEl('title');
-      title.textContent = marker.teamName + ' - ' + marker.stageKey + ' - ' + marker.stagePercent + '%';
-      group.appendChild(title);
-
-      var memberCount = marker.members.length;
-      if (memberCount > 0) {
-        marker.members.forEach(function(member, i) {
-          var maxPerRow = 5;
-          var row = Math.floor(i / maxPerRow);
-          var colIndex = i % maxPerRow;
-          var rowCount = Math.min(maxPerRow, memberCount - (row * maxPerRow));
-          var x = marker.x + ((colIndex - ((rowCount - 1) / 2)) * 16);
-          var y = marker.y - 34 - (row * 14);
-
-          var connected = member.connected !== false;
-          var active = member.active !== false;
-          var fill = (connected && active) ? marker.color : 'rgba(220,220,220,0.95)';
-
-          var dot = createSvgEl('circle', {
-            cx: x,
-            cy: y,
-            r: MOUNTAIN_MEMBER_DOT_RADIUS,
-            fill: fill,
-            stroke: 'rgba(255,255,255,0.96)',
-            'stroke-width': 2
-          });
-
-          var dotTitle = createSvgEl('title');
-          dotTitle.textContent = (member.display_code || member.local_code || '') + ' - ' + getMemberStageCode(member) + ' - ' + getMemberIssueProgressPercent(member) + '% issues';
-          dot.appendChild(dotTitle);
-
-          group.appendChild(dot);
-        });
-      }
-
-      group.appendChild(createSvgEl('circle', {
-        cx: marker.x,
-        cy: marker.y,
-        r: MOUNTAIN_BUBBLE_RADIUS + 3,
-        fill: 'rgba(255,255,255,0.86)'
-      }));
-
-      group.appendChild(createSvgEl('circle', {
-        cx: marker.x,
-        cy: marker.y,
-        r: MOUNTAIN_BUBBLE_RADIUS,
-        fill: 'rgba(250,248,244,0.96)',
-        stroke: marker.color,
-        'stroke-width': 3
-      }));
-
-      var text = createSvgEl('text', {
-        x: marker.x,
-        y: marker.y + 1,
-        'text-anchor': 'middle',
-        'dominant-baseline': 'middle',
-        'font-family': 'JetBrains Mono, monospace',
-        'font-size': '18',
-        'font-weight': '700',
-        fill: marker.color,
-        stroke: 'rgba(255,255,255,0.96)',
-        'stroke-width': '2.4',
-        'paint-order': 'stroke'
-      });
-      text.textContent = marker.label;
-      group.appendChild(text);
-
-      layer.appendChild(group);
-    });
-  };
-
-  if (mountainObject.contentDocument) {
-    paint();
-  } else {
-    mountainObject.addEventListener('load', paint, { once: true });
-  }
+    overlay.appendChild(group);
+  });
 }
 
 fetch('./progress.json')
