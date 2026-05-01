@@ -23,15 +23,6 @@
   --accent: #b5784a;
   --accent-lo: #d4a882;
   --accent-soft: rgba(181, 120, 74, 0.12);
-  --progress-start: #d49a63;
-  --progress-mid: #c5b27a;
-  --progress-end: #95b78d;
-  --progress-gradient: linear-gradient(
-    90deg,
-    var(--progress-start) 0%,
-    var(--progress-mid) 52%,
-    var(--progress-end) 100%
-  );
 }
 
 html { scroll-behavior: smooth; }
@@ -440,7 +431,6 @@ section { padding-top: 2rem; }
   aspect-ratio: 2048 / 1152;
   overflow: hidden;
   border-radius: 4px;
-  background: #f6f3ee;
 }
 
 .mountain-image-wrap img {
@@ -800,56 +790,51 @@ section { padding-top: 2rem; }
 .team-grid {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .team-card {
   --team-color: var(--accent);
-  --team-soft: rgba(181, 120, 74, 0.08);
+  --team-soft: rgba(181, 120, 74, 0.12);
   --team-surface: rgba(250, 249, 246, 0.82);
   overflow: hidden;
 }
 
 .team-card-header {
-  padding: 0.78rem 0.84rem 0.62rem;
+  padding: 0.95rem 1rem 0.82rem;
   border-bottom: 1px solid var(--border);
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.9rem 1rem;
+  align-items: start;
 }
 
 .team-card-name {
   font-family: 'Fraunces', serif;
-  font-size: 1.14rem;
+  font-size: 1.24rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
   transition: color 0.12s;
   line-height: 1.12;
 }
-.team-card-name:hover { color: var(--accent); }
+.team-card-name:hover { color: var(--team-color); }
 
 .team-card-stage {
-  margin-top: 0.22rem;
+  margin-top: 0.18rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 10.5px;
   color: var(--sub);
-  line-height: 1.35;
+  line-height: 1.45;
 }
 
-.team-progress-row {
-  padding: 0.58rem 0.84rem 0.64rem;
-  border-bottom: 1px solid var(--border);
+.team-card-overall {
+  text-align: right;
+  min-width: 78px;
 }
 
-.team-progress-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.7rem;
-  margin-bottom: 0.28rem;
-}
-
-.team-progress-label,
-.team-subtitle {
+.team-card-overall-label {
+  display: block;
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.08em;
@@ -857,14 +842,45 @@ section { padding-top: 2rem; }
   color: var(--dim);
 }
 
+.team-card-overall-value {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--team-color);
+  line-height: 1;
+}
+
+.team-progress-row {
+  padding: 0.8rem 1.15rem 0.82rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.team-progress-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.24rem;
+}
+
+.team-progress-label,
+.team-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
 .team-progress-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.8px;
+  font-size: 10px;
   color: var(--sub);
 }
 
 .team-progress-bar {
-  height: 6px;
+  height: 9px;
   border-radius: 999px;
   background: rgba(201, 195, 181, 0.44);
   overflow: hidden;
@@ -878,26 +894,60 @@ section { padding-top: 2rem; }
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
+.team-links {
+  padding: 0.72rem 1.15rem 0.12rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.team-link,
+.team-link-sep {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+}
+
+.team-link { color: var(--sub); transition: color 0.1s; }
+.team-link:hover { color: var(--team-color); }
+.team-link-sep { color: var(--border-hi); }
+
 .team-milestone-row {
-  padding: 0.58rem 0.82rem 0.66rem;
+  padding: 0.72rem 1rem 0.82rem;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
-  gap: 0.3rem;
+  gap: 0.38rem;
 }
 
 .team-milestone-pill {
-  padding: 0.4rem 0.42rem 0.42rem;
+  position: relative;
+  padding: 0.5rem 0.55rem 0.54rem;
   border: 1px solid var(--border);
-  border-radius: 7px;
+  border-radius: 8px;
   background: rgba(250, 249, 246, 0.86);
+  overflow: hidden;
   min-width: 0;
-  min-height: 0;
+  min-height: 54px;
+}
+
+.team-milestone-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--pill-progress, 0) * 1%);
+  background: var(--team-soft);
+  pointer-events: none;
+}
+
+.team-milestone-pill > * {
+  position: relative;
+  z-index: 1;
 }
 
 .team-milestone-pill.is-current {
-  border-color: rgba(181, 120, 74, 0.56);
-  box-shadow: inset 0 0 0 1px rgba(181, 120, 74, 0.18);
+  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.48));
+  box-shadow: inset 0 0 0 1px var(--team-line, rgba(181, 120, 74, 0.32));
 }
 
 .team-milestone-pill.is-upcoming {
@@ -906,17 +956,22 @@ section { padding-top: 2rem; }
 }
 
 .team-milestone-pill.is-created {
-  border-color: rgba(181, 120, 74, 0.28);
+  border-color: var(--team-line, rgba(181, 120, 74, 0.36));
 }
 
 .team-milestone-pill.is-active {
-  border-color: rgba(181, 120, 74, 0.5);
+  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.48));
   background: rgba(250, 249, 246, 0.94);
 }
 
 .team-milestone-pill.is-done {
-  border-color: rgba(149, 183, 141, 0.52);
-  background: rgba(149, 183, 141, 0.1);
+  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.6));
+  background: var(--team-soft);
+}
+
+.team-milestone-pill.is-done::after {
+  width: 100%;
+  background: var(--team-soft);
 }
 
 .team-milestone-code,
@@ -927,47 +982,27 @@ section { padding-top: 2rem; }
 }
 
 .team-milestone-code {
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--sub);
 }
 
 .team-milestone-value {
-  margin-top: 0.18rem;
-  font-size: 9px;
-  color: var(--sub);
+  margin-top: 0.22rem;
+  font-size: 10px;
+  color: var(--dim);
   white-space: nowrap;
 }
 
-.team-milestone-bar {
-  display: block;
-  margin-top: 0.34rem;
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(201, 195, 181, 0.3);
-  overflow: hidden;
+.team-milestone-pill.is-created .team-milestone-code,
+.team-milestone-pill.is-active .team-milestone-code {
+  color: var(--team-color);
 }
 
-.team-milestone-fill {
-  display: block;
-  height: 100%;
-  width: 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, rgba(212, 154, 99, 0.95), rgba(181, 120, 74, 0.92));
-}
-
-.team-milestone-pill.is-done .team-milestone-fill {
-  background: linear-gradient(90deg, rgba(167, 191, 155, 0.96), rgba(122, 164, 118, 0.96));
-}
-
-.team-milestone-pill.is-upcoming .team-milestone-fill {
-  background: rgba(201, 195, 181, 0.36);
-}
-
-.team-milestone-pill.is-active .team-milestone-code,
-.team-milestone-pill.is-created .team-milestone-code {
-  color: var(--accent);
+.team-milestone-pill.is-created .team-milestone-value,
+.team-milestone-pill.is-active .team-milestone-value {
+  color: var(--sub);
 }
 
 .team-milestone-pill.is-done .team-milestone-code,
@@ -976,7 +1011,7 @@ section { padding-top: 2rem; }
 }
 
 .team-section {
-  padding: 0.64rem 0.84rem 0.68rem;
+  padding: 0.78rem 1rem 0.82rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -989,71 +1024,40 @@ section { padding-top: 2rem; }
   align-items: baseline;
   justify-content: space-between;
   gap: 0.8rem;
-  margin-bottom: 0.44rem;
+  margin-bottom: 0.52rem;
 }
 
 .team-section-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 9.5px;
   color: var(--sub);
   white-space: nowrap;
 }
 
 .team-next-action {
   display: grid;
-  grid-template-columns: 82px minmax(0, 1fr);
-  gap: 0.55rem;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 0.65rem;
   align-items: start;
 }
 
 .team-next-action-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 9.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--dim);
 }
 
-.team-next-action-main {
-  display: flex;
-  flex-direction: column;
-  gap: 0.18rem;
-}
-
 .team-next-action-copy,
 .team-next-action-copy a {
-  font-size: 11.5px;
-  color: var(--sub);
-  line-height: 1.35;
-}
-
-.team-next-action-copy a:hover {
-  color: var(--accent);
-}
-
-.team-next-action-warning {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8.9px;
-  color: rgba(146, 95, 45, 0.96);
-  line-height: 1.35;
-}
-
-.member-health-strip {
-  display: flex;
-  flex-direction: column;
-  gap: 0.18rem;
-  margin-bottom: 0.45rem;
-}
-
-.member-health-line {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--sub);
   line-height: 1.45;
 }
 
-.member-health-label {
-  color: var(--dim);
+.team-next-action-copy a:hover {
+  color: var(--team-color);
 }
 
 .member-table {
@@ -1064,26 +1068,26 @@ section { padding-top: 2rem; }
 .member-table-head,
 .member-row {
   display: grid;
-  grid-template-columns: 72px 132px minmax(0, 1fr) 56px;
-  gap: 0.5rem;
+  grid-template-columns: 64px 112px minmax(0, 1fr) 52px;
+  gap: 0.6rem;
   align-items: center;
 }
 
 .member-table-head {
-  padding: 0 0 0.34rem;
+  padding: 0 0 0.42rem;
   border-bottom: 1px solid rgba(226, 221, 211, 0.88);
 }
 
 .member-head-cell {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8.6px;
+  font-size: 9px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--dim);
 }
 
 .member-row {
-  padding: 0.38rem 0;
+  padding: 0.5rem 0;
   border-bottom: 1px solid rgba(226, 221, 211, 0.82);
 }
 
@@ -1097,9 +1101,11 @@ section { padding-top: 2rem; }
 }
 
 .member-code,
+.member-stage,
+.member-progress-value,
 .member-summary {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.8px;
+  font-size: 10px;
 }
 
 .member-code {
@@ -1110,8 +1116,6 @@ section { padding-top: 2rem; }
 .member-status {
   display: flex;
   align-items: center;
-  gap: 0.24rem;
-  flex-wrap: wrap;
 }
 
 .member-status-pill,
@@ -1122,38 +1126,35 @@ section { padding-top: 2rem; }
   border-radius: 999px;
   border: 1px solid rgba(226, 221, 211, 0.92);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8.5px;
+  font-size: 9px;
   line-height: 1;
   white-space: nowrap;
 }
 
 .member-status-pill {
-  padding: 0.18rem 0.4rem 0.2rem;
+  min-width: 66px;
+  padding: 0.18rem 0.45rem 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   background: rgba(250, 249, 246, 0.72);
-  color: var(--sub);
-}
-
-.member-status-pill.is-active {
-  border-color: rgba(149, 183, 141, 0.66);
-  background: rgba(149, 183, 141, 0.12);
-}
-
-.member-status-pill.is-progress {
-  border-color: rgba(212, 154, 99, 0.54);
-  background: rgba(212, 154, 99, 0.1);
-}
-
-.member-status-pill.is-quiet {
-  border-color: rgba(201, 195, 181, 0.8);
-  background: rgba(201, 195, 181, 0.14);
   color: var(--dim);
 }
 
+.member-status-pill.is-online {
+  color: var(--sub);
+}
+
+.member-status-pill.is-offline {
+  border-color: rgba(201, 195, 181, 0.7);
+  background: rgba(201, 195, 181, 0.22);
+  color: var(--sub);
+}
+
 .member-stage-badge {
-  min-width: 34px;
-  padding: 0.18rem 0.34rem 0.2rem;
+  min-width: 40px;
+  padding: 0.18rem 0.42rem 0.2rem;
   background: rgba(250, 249, 246, 0.9);
-  color: var(--accent);
+  color: var(--team-color);
 }
 
 .member-stage-badge.is-empty {
@@ -1161,28 +1162,89 @@ section { padding-top: 2rem; }
   border-color: rgba(226, 221, 211, 0.86);
 }
 
+.member-stage-strip {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding-top: 0.08rem;
+}
+
+.member-stage-pip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 0.08rem 0.26rem 0.12rem;
+  border-radius: 4px;
+  border: 1px solid rgba(226, 221, 211, 0.92);
+  background: rgba(250, 249, 246, 0.64);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.4px;
+  line-height: 1;
+  color: var(--dim);
+}
+
+.pip-done {
+  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.52));
+  background: var(--team-soft);
+  color: var(--team-color);
+}
+
+.pip-current {
+  border-color: var(--team-color);
+  background: rgba(250, 249, 246, 0.96);
+  color: var(--team-color);
+}
+
+.pip-upcoming {
+  border-color: rgba(226, 221, 211, 0.9);
+  background: rgba(250, 249, 246, 0.42);
+  color: var(--dim);
+}
+
 .member-progress-cell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
   min-width: 0;
 }
 
 .member-progress-track {
-  height: 4px;
+  height: 7px;
   border-radius: 999px;
-  background: rgba(201, 195, 181, 0.34);
+  background: rgba(201, 195, 181, 0.42);
   overflow: hidden;
-  min-width: 0;
+}
+
+.member-progress-track.is-course {
+  background: rgba(201, 195, 181, 0.38);
+}
+
+.member-progress-track.is-course .member-progress-fill {
+  background: linear-gradient(90deg, rgba(201, 195, 181, 0.9), var(--team-line-strong, rgba(181, 120, 74, 0.48)));
+}
+
+.member-progress-track.is-issues {
+  background: rgba(181, 120, 74, 0.14);
+}
+
+.member-progress-track.is-issues .member-progress-fill {
+  background: linear-gradient(90deg, var(--team-color), rgba(212, 168, 130, 0.94));
 }
 
 .member-progress-fill {
+  display: block;
   height: 100%;
   border-radius: 999px;
   min-width: 0;
 }
 
-.member-progress-empty {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--dim);
+.member-progress-value {
+  color: var(--sub);
+  min-width: 32px;
+  text-align: right;
 }
 
 .member-summary {
@@ -1191,109 +1253,63 @@ section { padding-top: 2rem; }
   white-space: nowrap;
 }
 
-.team-issue-groups {
+.team-issue-list {
   display: flex;
   flex-direction: column;
-  gap: 0.54rem;
+  gap: 0.32rem;
 }
 
-.team-issue-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.22rem;
+.team-issue-link,
+.team-issue-more {
+  display: block;
+  padding-left: 0.8rem;
+  position: relative;
 }
 
-.team-issue-group-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8.8px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-.team-issue-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.4rem 0.6rem;
-  align-items: center;
-  padding-bottom: 0.24rem;
-  border-bottom: 1px solid rgba(226, 221, 211, 0.72);
-}
-
-.team-issue-row:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.team-issue-title {
-  font-size: 11px;
-  line-height: 1.35;
+.team-issue-link {
+  font-size: 11.5px;
   color: var(--sub);
+  line-height: 1.45;
   transition: color 0.1s;
 }
 
-.team-issue-title:hover {
-  color: var(--accent);
+.team-issue-link:hover,
+.team-issue-more:hover {
+  color: var(--team-color);
 }
 
-.team-issue-meta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.22rem;
-  flex-wrap: wrap;
+.team-issue-link::before,
+.team-issue-more::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
 }
 
-.team-issue-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.15rem 0.36rem 0.16rem;
-  border-radius: 999px;
-  border: 1px solid rgba(226, 221, 211, 0.92);
-  background: rgba(250, 249, 246, 0.72);
+.team-issue-link::before {
+  top: 0.5rem;
+  background: var(--accent-lo);
+}
+
+.team-issue-more {
+  margin-top: 0.08rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8px;
-  color: var(--sub);
+  font-size: 9.5px;
+  color: var(--dim);
 }
 
-.team-issue-badge.is-now {
-  border-color: rgba(181, 120, 74, 0.48);
-  background: rgba(181, 120, 74, 0.1);
-}
-
-.team-issue-badge.is-working {
-  border-color: rgba(201, 195, 181, 0.92);
-  background: rgba(201, 195, 181, 0.16);
-}
-
-.team-issue-badge.is-done {
-  border-color: rgba(149, 183, 141, 0.56);
-  background: rgba(149, 183, 141, 0.12);
-}
-
-.team-issue-badge.is-assignee {
-  color: var(--accent);
+.team-issue-more::before {
+  top: 0.42rem;
+  background: var(--border-hi);
 }
 
 .team-empty {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 9.8px;
   color: var(--dim);
-  line-height: 1.45;
-}
-
-.team-issue-more {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 0.52rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8.8px;
-  color: var(--dim);
-}
-
-.team-issue-more:hover {
-  color: var(--accent);
+  line-height: 1.5;
 }
 
 .project-analytics-shell {
@@ -1319,14 +1335,14 @@ section { padding-top: 2rem; }
 .activity-list {
   display: flex;
   flex-direction: column;
-  gap: 0.42rem;
+  gap: 0.6rem;
 }
 
 .backlog-row,
 .distribution-row {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
-  gap: 0.55rem;
+  grid-template-columns: 54px minmax(0, 1fr) auto;
+  gap: 0.7rem;
   align-items: center;
 }
 
@@ -1341,7 +1357,7 @@ section { padding-top: 2rem; }
 
 .backlog-track,
 .distribution-track {
-  height: 7px;
+  height: 8px;
   border-radius: 999px;
   background: rgba(201, 195, 181, 0.4);
   overflow: hidden;
@@ -1355,138 +1371,10 @@ section { padding-top: 2rem; }
 
 .backlog-value,
 .status-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--sub);
-  white-space: nowrap;
-}
-
-.control-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.control-mini-card {
-  padding: 0.56rem 0.62rem 0.6rem;
-  border: 1px solid rgba(226, 221, 211, 0.85);
-  border-radius: 6px;
-  background: rgba(250, 249, 246, 0.76);
-  min-width: 0;
-}
-
-.control-mini-label {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-.control-mini-value {
-  display: block;
-  margin-top: 0.12rem;
   font-family: 'Fraunces', serif;
-  font-size: 1.08rem;
-  font-weight: 700;
-  line-height: 1.05;
+  font-size: 0.98rem;
   color: var(--text);
   white-space: nowrap;
-}
-
-.control-mini-note {
-  display: block;
-  margin-top: 0.1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--sub);
-}
-
-.project-control-notes {
-  margin-top: 0.7rem;
-  padding-top: 0.7rem;
-  border-top: 1px solid rgba(226, 221, 211, 0.8);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.project-note-line {
-  font-size: 11.2px;
-  line-height: 1.45;
-  color: var(--sub);
-}
-
-.project-note-line strong {
-  color: var(--text);
-  font-weight: 600;
-}
-
-.project-note-kicker {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--dim);
-  margin-right: 0.3rem;
-}
-
-.blocker-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.34rem;
-}
-
-.blocker-row {
-  display: grid;
-  grid-template-columns: 36px minmax(0, 1fr) auto;
-  gap: 0.55rem;
-  align-items: start;
-  padding-bottom: 0.34rem;
-  border-bottom: 1px solid rgba(226, 221, 211, 0.75);
-}
-
-.blocker-row:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.blocker-team {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  padding: 0.12rem 0.34rem 0.14rem;
-  border: 1px solid rgba(226, 221, 211, 0.9);
-  border-radius: 999px;
-  background: rgba(250, 249, 246, 0.8);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--sub);
-}
-
-.blocker-link {
-  display: block;
-  font-size: 11.4px;
-  color: var(--sub);
-  line-height: 1.42;
-}
-
-.blocker-link:hover {
-  color: var(--accent);
-}
-
-.blocker-age {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
-  color: var(--dim);
-  white-space: nowrap;
-  padding-top: 0.12rem;
-}
-
-.project-empty-note {
-  font-size: 11.4px;
-  color: var(--sub);
-  line-height: 1.5;
 }
 
 .metric-grid {
@@ -1757,16 +1645,24 @@ footer {
     display: none;
   }
   .member-row {
-    grid-template-columns: 72px minmax(0, 1fr) auto;
-    gap: 0.34rem 0.48rem;
-  }
-  .member-status { grid-column: 2; }
-  .member-progress-cell {
-    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.42rem 0.6rem;
   }
   .member-summary {
-    grid-column: 3;
-    justify-self: end;
+    order: 4;
+    grid-column: 2;
+    text-align: right;
+    min-width: 0;
+  }
+  .member-progress-cell {
+    order: 5;
+    grid-column: 1 / -1;
+  }
+  .member-progress-cell.is-issues {
+    order: 6;
+  }
+  .member-stage-strip {
+    order: 7;
   }
   .mountain-card {
     min-height: auto;
@@ -1782,6 +1678,7 @@ footer {
 
 @media (max-width: 560px) {
   .mountain-caption,
+  .team-card-header,
   .team-progress-head,
   .project-row,
   .project-distribution-row {
@@ -1804,6 +1701,14 @@ footer {
     gap: 0.1rem;
   }
 
+  .team-card-metrics {
+    min-width: 0;
+  }
+
+  .team-metric-line {
+    text-align: left;
+  }
+
   .team-next-action {
     grid-template-columns: 1fr;
     gap: 0.2rem;
@@ -1821,14 +1726,6 @@ footer {
     gap: 0.18rem;
   }
 
-  .team-issue-row {
-    grid-template-columns: 1fr;
-  }
-
-  .team-issue-meta {
-    justify-content: flex-start;
-  }
-
   .team-milestone-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1843,6 +1740,10 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  .team-card-metrics {
+    grid-template-columns: 1fr;
+  }
+
   .stats-band { grid-template-columns: 1fr; }
 }
 
@@ -1854,36 +1755,45 @@ footer {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--progress-gradient) !important;
 }
 
 .team-progress-group.is-course .team-progress-fill,
+.member-progress-track.is-course .member-progress-fill {
+  background: var(--team-color);
+  opacity: 0.92;
+}
+
 .team-progress-group.is-issues .team-progress-fill,
-.member-progress-track.is-course .member-progress-fill,
 .member-progress-track.is-issues .member-progress-fill {
-  background: var(--progress-gradient) !important;
+  background: var(--team-color);
+  opacity: 1;
 }
 
-.team-progress-group.is-course .team-progress-bar,
-.team-progress-group.is-issues .team-progress-bar,
-.member-progress-track.is-course,
-.member-progress-track.is-issues {
-  background: rgba(201, 195, 181, 0.36) !important;
+.member-progress-track,
+.team-progress-bar {
+  background: rgba(95, 88, 76, 0.18);
+  border: 1px solid rgba(95, 88, 76, 0.08);
 }
 
-.team-card {
-  --team-color: var(--accent);
-  --team-soft: rgba(181, 120, 74, 0.08);
-  --team-surface: rgba(250, 249, 246, 0.82);
-  overflow: hidden;
+/* --- FIX: mountain marker readability --- */
+.mountain-team-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
-.team-card-name:hover {
-  color: var(--accent);
+.mountain-checkpoint-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  fill: rgba(28, 27, 24, 0.88);
 }
 
-.member-stage-badge {
-  color: var(--accent);
+.mountain-checkpoint-node {
+  fill: rgba(250, 249, 246, 0.97);
+  stroke: rgba(181, 120, 74, 0.72);
+  stroke-width: 3;
 }
 </style>
 </head>
@@ -2095,137 +2005,6 @@ function getIssueNumber(issue) {
   return match ? toNumber(match[1]) : 0;
 }
 
-const STAGE_ACTION_HINTS = {
-  C1: 'configurați repo-ul și mediul local',
-  C2: 'alegeți modelul și completați core/config.py',
-  C3: 'adăugați corpusul și verificați încărcarea datelor',
-  C4: 'stabiliți schema de prompting și exemplele',
-  C5: 'legați retrieval-ul și testați răspunsurile',
-  C6: 'conectați orchestrarea și fluxul principal',
-  C7: 'verificați evaluarea și rafinați ieșirea',
-  C8: 'pregătiți demo-ul și scenariul final',
-  C9: 'pregătiți prezentarea finală'
-};
-
-const STAGE_PANEL_TITLES = {
-  C1: 'Pornire',
-  C2: 'Modele',
-  C3: 'Date',
-  C4: 'Promptare',
-  C5: 'RAG',
-  C6: 'Integrare',
-  C7: 'Evaluare',
-  C8: 'Demo',
-  C9: 'După vârf',
-  Final: 'Proiect'
-};
-
-function parseLooseDateTime(value) {
-  const raw = String(value || '').trim();
-  if (!raw) {
-    return null;
-  }
-
-  const isoLike = raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{2}):(\d{2})(?::(\d{2}))?)?$/);
-  if (isoLike) {
-    const year = toNumber(isoLike[1]);
-    const month = toNumber(isoLike[2]) - 1;
-    const day = toNumber(isoLike[3]);
-    const hour = toNumber(isoLike[4] || 0);
-    const minute = toNumber(isoLike[5] || 0);
-    const second = toNumber(isoLike[6] || 0);
-    const parsed = new Date(year, month, day, hour, minute, second);
-    return Number.isNaN(parsed.getTime()) ? null : parsed;
-  }
-
-  const fallback = new Date(raw);
-  return Number.isNaN(fallback.getTime()) ? null : fallback;
-}
-
-function getStageActionHint(stageKey) {
-  return STAGE_ACTION_HINTS[stageKey] || 'continuați etapa curentă și închideți task-urile deschise';
-}
-
-function getStagePanelTitle(stageKey, fallbackLabel) {
-  return STAGE_PANEL_TITLES[stageKey] || fallbackLabel || stageKey;
-}
-
-function getIssueTimestamp(issue) {
-  return parseLooseDateTime(
-    issue && (issue.updated_at || issue.updatedAt || issue.created_at || issue.createdAt || issue.closed_at || issue.closedAt)
-  );
-}
-
-function countClosedIssuesLast48h(rawTeams, referenceDate) {
-  let count = 0;
-  let hasData = false;
-
-  (Array.isArray(rawTeams) ? rawTeams : []).forEach(function(team) {
-    const candidateBuckets = [];
-    if (Array.isArray(team && team.closed_issues)) {
-      candidateBuckets.push(team.closed_issues);
-    }
-    if (Array.isArray(team && team.issues)) {
-      candidateBuckets.push(team.issues.filter(function(issue) {
-        return /closed/i.test(String(issue && issue.state || ''));
-      }));
-    }
-
-    candidateBuckets.forEach(function(bucket) {
-      bucket.forEach(function(issue) {
-        const closedAt = parseLooseDateTime(issue && (issue.closed_at || issue.closedAt));
-        if (!closedAt) {
-          return;
-        }
-        hasData = true;
-        if ((referenceDate.getTime() - closedAt.getTime()) <= (48 * 60 * 60 * 1000)) {
-          count += 1;
-        }
-      });
-    });
-  });
-
-  return hasData ? count : null;
-}
-
-function buildProjectBlockers(teams, referenceDate) {
-  const blockers = [];
-  let hasTimestampData = false;
-
-  teams.forEach(function(team) {
-    team.openIssues.forEach(function(issue) {
-      const stamp = getIssueTimestamp(issue);
-      if (!stamp) {
-        return;
-      }
-
-      hasTimestampData = true;
-      const diffMs = referenceDate.getTime() - stamp.getTime();
-      const daysWithoutUpdate = Math.max(0, Math.floor(diffMs / (24 * 60 * 60 * 1000)));
-
-      if (daysWithoutUpdate > 3) {
-        blockers.push({
-          team: team.label,
-          title: sanitizeIssueTitle(issue.title),
-          daysWithoutUpdate: daysWithoutUpdate,
-          url: issue.url,
-          teamIndex: team.index,
-          number: getIssueNumber(issue)
-        });
-      }
-    });
-  });
-
-  blockers.sort(function(a, b) {
-    return b.daysWithoutUpdate - a.daysWithoutUpdate || a.teamIndex - b.teamIndex || b.number - a.number;
-  });
-
-  return {
-    available: hasTimestampData,
-    items: blockers.slice(0, 5)
-  };
-}
-
 function sortMembers(members) {
   return [...members].sort((a, b) => {
     const aKey = String(a && (a.display_code || a.local_code || a.student_key || '')).match(/(\d+)/);
@@ -2272,7 +2051,7 @@ function markerOffset(index) {
   return { x: direction * spread, y: -lift };
 }
 
-function buildMountainMarkersLegacy(teams) {
+function buildMountainMarkers(teams) {
   const percentGroups = {};
 
   return teams.map((team, index) => {
@@ -2294,7 +2073,7 @@ function buildMountainMarkersLegacy(teams) {
   });
 }
 
-function buildDashboardModelLegacy(data) {
+function buildDashboardModel(data) {
   const teams = Array.isArray(data.teams) ? data.teams : [];
   const milestoneRefs = buildMilestoneRefs(data);
   const currentMilestoneCode = msCode(data.current_milestone || milestoneRefs[0].name);
@@ -2385,7 +2164,7 @@ function buildDashboardModelLegacy(data) {
     blockedTeams,
     latestOpenIssues: latestOpenIssues.slice(0, 6),
     distribution,
-    markers: buildMountainMarkersLegacy(teams),
+    markers: buildMountainMarkers(teams),
     totals: {
       teamCount: teams.length,
       openIssues,
@@ -2410,7 +2189,7 @@ function renderHeader(data, model) {
     `${model.totals.teamCount} echipe \u00b7 Actualizat: ${data.updated_at || '\u2014'}`;
 }
 
-function renderStatsLegacy(model) {
+function renderStats(model) {
   const stats = model.totals;
 
   document.getElementById('stats-band').innerHTML =
@@ -2500,7 +2279,7 @@ function renderJourneyLegacy(model) {
     `</div>`;
 }
 
-function renderProjectStatsLegacy(model) {
+function renderProjectStats(model) {
   const blockedLabels = model.blockedTeams
     .map((team) => escapeHtml(shortTeamName(team.name, model.teams.indexOf(team))))
     .join(', ');
@@ -2682,14 +2461,7 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
-const TEAM_PALETTE = [
-  '#D28A3C',
-  '#7EA63C',
-  '#C4574E',
-  '#4D73D0',
-  '#2B2E36',
-  '#7C57E6'
-];
+const TEAM_PALETTE = ['#D97706', '#65A30D', '#DC2626', '#2563EB', '#111827', '#7C3AED'];
 
 const MOUNTAIN_POINTS = {
   base: { x: 260, y: 851, label: 'Base' },
@@ -2839,12 +2611,12 @@ var BADGE_R = 15;
 var DOT_R = 4.2;
 var TEAM_COLLISION_DISTANCE = 46;
 var TEAM_COLLISION_PATTERN = [
-  { tan: 0,  perp: 0 },
-  { tan: 24, perp: 7 },
-  { tan: -24, perp: 7 },
-  { tan: 48, perp: 10 },
-  { tan: -48, perp: 10 },
-  { tan: 72, perp: 12 }
+  { tan: 0, perp: 0 },
+  { tan: 0, perp: -22 },
+  { tan: 0, perp: 22 },
+  { tan: 0, perp: -42 },
+  { tan: 0, perp: 42 },
+  { tan: 0, perp: -60 }
 ];
 
 var CLIMB_STAGE_INDEX = { C1: 1, C2: 2, C3: 3, C4: 4, C5: 5, C6: 6, C7: 7, C8: 8 };
@@ -3108,7 +2880,7 @@ function computeIssueProgressPercent(team) {
   let total = 0;
 
   Object.keys(progressMap).forEach(function(key) {
-    const progress = normalizeCourseStage(progressMap[key], { key: key, title: key, short: key });
+    const progress = normalizeCourseStage(proggitressMap[key], { key: key, title: key, short: key });
     closed += progress.closed;
     total += progress.total;
   });
@@ -3201,7 +2973,7 @@ function getSemanticStatus(team) {
 
 function buildCourseMarkers(teams) {
   if (!teams.length) return [];
-  return buildMountainMarkers(teams);
+  return buildMountainMarkerData(teams);
 }
 
 function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestoneKey) {
@@ -3213,23 +2985,8 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
   const currentStageProgress = stageProgress.find(function(stage) {
     return stage.key === currentStage.key;
   }) || derivedStage;
-  const issuePool = Array.isArray(team && team.issues) ? team.issues : [];
-  const openIssues = Array.isArray(team && team.open_issues) && team.open_issues.length
-    ? team.open_issues
-    : issuePool.filter(function(issue) {
-      return !/closed/i.test(String(issue && issue.state || ''));
-    });
-  const closedIssues = Array.isArray(team && team.closed_issues) && team.closed_issues.length
-    ? team.closed_issues
-    : issuePool.filter(function(issue) {
-      return /closed/i.test(String(issue && issue.state || ''));
-    });
+  const openIssues = Array.isArray(team && team.open_issues) ? team.open_issues : [];
   const color = TEAM_PALETTE[index % TEAM_PALETTE.length];
-  const issueTotals = stageProgress.reduce(function(summary, stage) {
-    summary.closed += toNumber(stage.closed);
-    summary.total += toNumber(stage.total);
-    return summary;
-  }, { closed: 0, total: 0 });
 
   return {
     name: team && team.name ? String(team.name) : `Team ${index + 1}`,
@@ -3244,11 +3001,7 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     milestones_url: team && team.milestones_url ? team.milestones_url : (team && team.repo_url ? team.repo_url : '#'),
     members: Array.isArray(team && team.members) ? team.members : [],
     openIssues: openIssues,
-    closedIssues: closedIssues,
-    allIssues: issuePool,
     stageProgress: stageProgress,
-    totalIssues: issueTotals.total,
-    closedIssuesCount: issueTotals.closed,
     currentStage: {
       key: currentStage.key,
       title: currentStage.title,
@@ -3273,7 +3026,6 @@ function buildDashboardModel(data) {
   const journeyPlan = getJourneyPlan(coursePlan);
   const climbPlan = getClimbPlan(coursePlan);
   const currentMilestone = resolveStageMeta(data && data.current_milestone, coursePlan);
-  const referenceDate = parseLooseDateTime(data && data.updated_at) || new Date();
   const teams = (Array.isArray(data && data.teams) ? data.teams : []).map(function(team, index) {
     return normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone.key);
   });
@@ -3361,27 +3113,6 @@ function buildDashboardModel(data) {
     return b.number - a.number || a.teamIndex - b.teamIndex;
   });
 
-  const stageStats = JOURNEY_STAGE_KEYS.map(function(stageKey) {
-    return milestoneSummaries.find(function(stage) {
-      return stage.key === stageKey;
-    }) || {
-      key: stageKey,
-      title: stageKey,
-      short: stageKey,
-      total: 0,
-      open: 0,
-      closed: 0,
-      percent: 0
-    };
-  });
-  const blockedTeamLabels = blockedTeams.map(function(team) {
-    return team.label;
-  });
-  const blockersMeta = buildProjectBlockers(teams, referenceDate);
-  const issuesClosedLast48h = countClosedIssuesLast48h(Array.isArray(data && data.teams) ? data.teams : [], referenceDate);
-  const totalIssues = createdTasks;
-  const completionRate = totalIssues > 0 ? clampPercent(Math.round((closedIssues / totalIssues) * 100)) : 0;
-
   return {
     coursePlan: coursePlan,
     journeyPlan: journeyPlan,
@@ -3395,24 +3126,9 @@ function buildDashboardModel(data) {
     backlogMilestone: backlogMilestone,
     startedTeams: startedTeams,
     blockedTeams: blockedTeams,
-    blockedTeamLabels: blockedTeamLabels,
     latestOpenIssues: latestOpenIssues.slice(0, 6),
     distribution: distribution,
     markers: buildCourseMarkers(teams),
-    totalIssues: totalIssues,
-    closedIssues: closedIssues,
-    completionRate: completionRate,
-    stageStats: stageStats,
-    currentStage: currentMilestone.key,
-    currentStageTitle: getStagePanelTitle(currentMilestone.key, currentMilestone.short),
-    issuesClosedLast48h: issuesClosedLast48h,
-    activeTeamsCount: startedTeams.length,
-    teamsTotal: teams.length,
-    blockers: blockersMeta.items,
-    blockerDataAvailable: blockersMeta.available,
-    blockersCount: blockersMeta.available ? blockersMeta.items.length : blockedTeams.length,
-    currentActionHint: getStageActionHint(currentMilestone.key),
-    referenceDate: referenceDate,
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
@@ -3462,21 +3178,16 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const statusStrip = model.teams.map(function(team) {
-    const dots = sortMembers(Array.isArray(team.members) ? team.members : []).map(function(member) {
-      const cls = (member.connected === false || member.active === false)
-        ? 'chip-dot inactive'
-        : 'chip-dot';
-      const title = `${member.display_code || member.local_code || ''} - ${getMemberStageCode(member)} - ${getMemberIssueProgressPercent(member)}%`;
-      return `<span class="${cls}" title="${escapeHtml(title)}"></span>`;
-    }).join('');
+  const svgOverlay = renderMountainMilestonesSVG(model.mountainCurrentKey) + renderTeamMarkersSVG(model.markers);
 
-    return (
-      `<span class="mountain-status-chip status-${getSemanticStatus(team).key}" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --chip-dot:${team.color};">` +
-        `${escapeHtml(team.label)} &middot; ${getClimbStageState(team).percent}%` +
-        `<span class="chip-dots">${dots}</span>` +
-      `</span>`
-    );
+  const statusStrip = model.markers.map(function(marker) {
+    var memberDots = (marker.memberDots || []).map(function(dot) {
+      var cls = 'chip-dot';
+      if (dot.dimmed) cls += ' offline';
+      return `<span class="${cls}" title="${escapeHtml(dot.title || '')}"></span>`;
+    }).join('');
+    var dotsHtml = memberDots ? `<span class="chip-dots">${memberDots}</span>` : '';
+    return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; ${marker.percent}%${dotsHtml}</span>`;
   }).join('');
 
   document.getElementById('journey-wrap').innerHTML =
@@ -3498,80 +3209,78 @@ function renderJourney(model) {
         `<div class="mountain-visual">` +
           `<div class="mountain-image-wrap">` +
             `<img src="../assets/img/mountain.png" alt="Mountain progress map">` +
-            `<svg id="mountain-team-overlay" viewBox="0 0 2048 1152" aria-hidden="true"></svg>` +
+            `<svg viewBox="0 0 2048 1152" aria-hidden="true">${svgOverlay}</svg>` +
           `</div>` +
         `</div>` +
         `<div class="mountain-status-strip">${statusStrip}</div>` +
         `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
-        `<p class="mountain-footnote">PNG-ul r&#259;m&#226;ne sursa vizual&#259; de adev&#259;r; overlay-ul SVG deseneaz&#259; doar echipele u&#537;or deasupra traseului.</p>` +
+        `<p class="mountain-footnote">Team bubbles urmeaz&#259; exclusiv ruta Base-C8 pe baza course progress; C9 r&#259;m&#226;ne separat ca After summit.</p>` +
       `</div>` +
     `</div>`;
-
-  renderMountainTeamsIntoSvg(model);
 }
 
 function renderProjectStats(model) {
-  const rhythmRows = model.stageStats.map(function(stage) {
-    const width = stage.total > 0 ? clampPercent(Math.round((stage.closed / stage.total) * 100)) : 0;
+  const maxOpen = Math.max.apply(null, model.milestoneSummaries.map(function(stage) {
+    return stage.open;
+  }).concat([1]));
+
+  const backlogRows = model.milestoneSummaries.map(function(stage) {
+    const width = maxOpen > 0 ? (stage.open / maxOpen) * 100 : 0;
     return (
       `<div class="backlog-row">` +
         `<span class="backlog-label">${escapeHtml(stage.key)}</span>` +
         `<div class="backlog-track"><div class="backlog-fill" style="width:${width}%;"></div></div>` +
-        `<span class="backlog-value">${stage.closed}/${stage.total}</span>` +
+        `<span class="backlog-value">${stage.open}</span>` +
       `</div>`
     );
   }).join('');
 
-  const controlCards = [
-    { label: 'Progres', value: `${model.closedIssues}/${model.totalIssues}`, note: 'finalizate' },
-    { label: 'Etapa', value: model.currentStage, note: model.currentStageTitle },
-    { label: 'Momentum', value: model.issuesClosedLast48h === null ? '—' : String(model.issuesClosedLast48h), note: 'în 48h' },
-    { label: 'Blocaje', value: String(model.blockersCount), note: 'fără mișcare' }
+  const metrics = [
+    { label: 'Created', value: model.totals.createdTasks, note: 'Task-uri create' },
+    { label: 'Closed', value: model.totals.closedIssues, note: 'Task-uri inchise' },
+    { label: 'Open', value: model.totals.openIssues, note: 'Task-uri ramase' }
   ];
 
-  const controlTiles = controlCards.map(function(card) {
+  const metricTiles = metrics.map(function(metric) {
     return (
-      `<div class="control-mini-card">` +
-        `<span class="control-mini-label">${escapeHtml(card.label)}</span>` +
-        `<strong class="control-mini-value">${escapeHtml(card.value)}</strong>` +
-        `<span class="control-mini-note">${escapeHtml(card.note)}</span>` +
+      `<div class="metric-tile">` +
+        `<span class="metric-label">${escapeHtml(metric.label)}</span>` +
+        `<strong class="metric-value">${escapeHtml(metric.value)}</strong>` +
+        `<span class="metric-note">${escapeHtml(metric.note)}</span>` +
       `</div>`
     );
   }).join('');
 
-  const blockedLabels = model.blockedTeamLabels.length ? model.blockedTeamLabels.join(', ') : 'niciuna';
-  const blockersMarkup = !model.blockerDataAvailable
-    ? '<div class="project-empty-note">Nu există date despre blocaje.</div>'
-    : !model.blockers.length
-      ? '<div class="project-empty-note">Nu sunt blocaje active.</div>'
-      : `<div class="blocker-list">${model.blockers.map(function(blocker) {
-          return (
-            `<div class="blocker-row">` +
-              `<span class="blocker-team">${escapeHtml(blocker.team)}</span>` +
-              `<a class="blocker-link" href="${escapeHtml(blocker.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(blocker.title)}</a>` +
-              `<span class="blocker-age">${blocker.daysWithoutUpdate} zile</span>` +
-            `</div>`
-          );
-        }).join('')}</div>`;
+  const blockedLabels = model.blockedTeams.map(function(team) {
+    return team.label;
+  }).join(', ') || '\u2014';
+
+  const recentActivity = model.latestOpenIssues.length
+    ? model.latestOpenIssues.map(function(issue) {
+      return `<a class="activity-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>`;
+    }).join('')
+    : '<div class="team-empty">Nu exist&#259; issues deschise.</div>';
 
   document.getElementById('project-stats').innerHTML =
     `<div class="project-analytics-shell">` +
       `<div class="project-analytics-grid">` +
         `<article class="project-card">` +
-          `<div class="project-title">Ritm pe cursuri</div>` +
-          `<div class="backlog-list">${rhythmRows}</div>` +
+          `<div class="project-title">Backlog pe etape</div>` +
+          `<div class="backlog-list">${backlogRows}</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Panou de control</div>` +
-          `<div class="control-grid">${controlTiles}</div>` +
-          `<div class="project-control-notes">` +
-            `<div class="project-note-line"><span class="project-note-kicker">Acum:</span><strong>${escapeHtml(model.currentStage)}</strong> &middot; ${escapeHtml(model.currentActionHint)}</div>` +
-            `<div class="project-note-line"><span class="project-note-kicker">Echipe active:</span><strong>${model.activeTeamsCount}/${model.teamsTotal}</strong> &middot; <strong>Blocate:</strong> ${escapeHtml(blockedLabels)}</div>` +
+          `<div class="project-title">Task-uri</div>` +
+          `<div class="metric-grid">${metricTiles}</div>` +
+          `<div class="status-card">` +
+            `<div class="status-row"><span class="status-label">Current stage</span><div class="status-copy"><strong>${escapeHtml(model.currentMilestone.key)} &middot; ${escapeHtml(model.currentMilestone.short)}</strong><br>${escapeHtml(model.currentMilestone.title)}</div></div>` +
+            `<div class="status-row"><span class="status-label">Backlog</span><div class="status-copy">${escapeHtml(model.backlogMilestone.key)} are <strong>${model.backlogMilestone.open}</strong> issues deschise.</div></div>` +
+            `<div class="status-row"><span class="status-label">Started</span><div class="status-copy"><strong>${model.startedTeams.length}/${model.totals.teamCount}</strong> echipe au pornit etapa curent&#259;.</div></div>` +
+            `<div class="status-row"><span class="status-label">Blocked</span><div class="status-copy"><strong>${model.blockedTeams.length}/${model.totals.teamCount}</strong> echipe sunt la 0/x.<br>${escapeHtml(blockedLabels)}</div></div>` +
           `</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Unde ne blocăm</div>` +
-          `${blockersMarkup}` +
+          `<div class="project-title">Ultimele issues deschise</div>` +
+          `<div class="activity-list">${recentActivity}</div>` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -3609,456 +3318,28 @@ function getMemberStageCode(member) {
   return inferStageKey(member && member.current_stage) || '\u2014';
 }
 
-function getTeamIssueTotals(team) {
-  return (Array.isArray(team && team.stageProgress) ? team.stageProgress : []).reduce(function(summary, stage) {
-    summary.closed += toNumber(stage && stage.closed);
-    summary.total += toNumber(stage && stage.total);
-    return summary;
-  }, { closed: 0, total: 0 });
-}
-
-function getIssueUrl(issue) {
-  return String(issue && (issue.html_url || issue.htmlUrl || issue.url) || '#');
-}
-
-function getIssueUpdatedAt(issue) {
-  return parseLooseDateTime(
-    issue && (issue.updated_at || issue.updatedAt || issue.created_at || issue.createdAt)
-  );
-}
-
-function getIssueClosedAt(issue) {
-  return parseLooseDateTime(
-    issue && (issue.closed_at || issue.closedAt)
-  );
-}
-
-function isIssueClosed(issue) {
-  return /closed/i.test(String(issue && issue.state || '')) || !!getIssueClosedAt(issue);
-}
-
-function dedupeIssues(issues) {
-  const seen = {};
-  return (Array.isArray(issues) ? issues : []).filter(function(issue) {
-    const key = getIssueUrl(issue) + '|' + String(issue && issue.title || '');
-    if (seen[key]) {
-      return false;
-    }
-    seen[key] = true;
-    return true;
-  });
-}
-
-function escapeRegExp(value) {
-  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-function getMemberDisplayCode(member) {
-  return String(member && (member.display_code || member.local_code || member.student_key) || '\u2014');
-}
-
-function getMemberAliases(member) {
-  const aliases = [];
-  const directAliases = [
-    member && member.display_code,
-    member && member.local_code,
-    member && member.student_key
-  ];
-
-  directAliases.forEach(function(alias) {
-    const safeAlias = String(alias || '').trim().toLowerCase();
-    if (safeAlias && aliases.indexOf(safeAlias) === -1) {
-      aliases.push(safeAlias);
-    }
-  });
-
-  const displayCode = String(member && member.display_code || '').trim();
-  const codeMatch = displayCode.match(/(\d+)/);
-  if (codeMatch) {
-    const studentAlias = `student_${codeMatch[1].padStart(2, '0')}`.toLowerCase();
-    if (aliases.indexOf(studentAlias) === -1) {
-      aliases.push(studentAlias);
-    }
+function getMemberSummaryCopy(members) {
+  const trackedCount = members.length;
+  if (!trackedCount) {
+    return '0 tracked';
   }
 
-  return aliases;
-}
+  const offlineCount = members.filter(function(member) {
+    return member && member.connected === false;
+  }).length;
+  const connectedCount = trackedCount - offlineCount;
 
-function findMemberForIssue(issue, members) {
-  const searchText = [
-    issue && issue.title,
-    issue && issue.assignee && (issue.assignee.display_code || issue.assignee.local_code || issue.assignee.login || issue.assignee.name),
-    Array.isArray(issue && issue.assignees) ? issue.assignees.map(function(assignee) {
-      return assignee && (assignee.display_code || assignee.local_code || assignee.login || assignee.name);
-    }).join(' ') : '',
-    issue && issue.user && issue.user.login
-  ].filter(Boolean).join(' ').toLowerCase();
-
-  return sortMembers(Array.isArray(members) ? members : []).find(function(member) {
-    return getMemberAliases(member).some(function(alias) {
-      return new RegExp(`(^|[^a-z0-9])${escapeRegExp(alias)}([^a-z0-9]|$)`, 'i').test(searchText);
-    });
-  }) || null;
-}
-
-function getIssueAssigneeCode(issue, members) {
-  const matchedMember = findMemberForIssue(issue, members);
-  if (matchedMember) {
-    return getMemberDisplayCode(matchedMember);
-  }
-
-  const directAssignee = issue && issue.assignee;
-  if (directAssignee) {
-    return String(directAssignee.display_code || directAssignee.local_code || directAssignee.login || directAssignee.name || '').trim();
-  }
-
-  return '';
-}
-
-function buildIssueRecord(issue, team) {
-  const stageKey = inferStageKey(issue && (issue.stage || issue.title)) || '\u2014';
-  const assigneeCode = getIssueAssigneeCode(issue, team.members);
-  const updatedAt = getIssueUpdatedAt(issue);
-  const closedAt = getIssueClosedAt(issue);
-  const state = isIssueClosed(issue) ? 'closed' : 'open';
-  const title = sanitizeIssueTitle(issue && issue.title);
-  const titleText = String(issue && issue.title || '');
-  const isMemberScoped = !!assigneeCode || /^student[_ -]*\d+/i.test(titleText);
-
-  return {
-    title: title,
-    url: getIssueUrl(issue),
-    state: state,
-    stageKey: stageKey,
-    assigneeCode: assigneeCode,
-    updatedAt: updatedAt,
-    closedAt: closedAt,
-    number: getIssueNumber(issue),
-    isMemberScoped: isMemberScoped,
-    isCurrentStage: stageKey === team.currentStage.key
-  };
-}
-
-function countTeamClosedIssuesLast48h(team, referenceDate) {
-  let count = 0;
-  let hasData = false;
-
-  (Array.isArray(team && team.closedIssues) ? team.closedIssues : []).forEach(function(issue) {
-    const closedAt = getIssueClosedAt(issue);
-    if (!closedAt) {
-      return;
-    }
-    hasData = true;
-    if ((referenceDate.getTime() - closedAt.getTime()) <= (48 * 60 * 60 * 1000)) {
-      count += 1;
-    }
-  });
-
-  return hasData ? count : null;
-}
-
-function getMemberLastActivityAt(member, issues) {
-  const directDates = [
-    parseLooseDateTime(member && (member.last_activity_at || member.lastActivityAt)),
-    parseLooseDateTime(member && (member.updated_at || member.updatedAt))
-  ].filter(Boolean);
-
-  (Array.isArray(issues) ? issues : []).forEach(function(issue) {
-    const matchedMember = findMemberForIssue(issue, [member]);
-    if (!matchedMember) {
-      return;
-    }
-
-    const issueStamp = getIssueClosedAt(issue) || getIssueUpdatedAt(issue);
-    if (issueStamp) {
-      directDates.push(issueStamp);
-    }
-  });
-
-  if (!directDates.length) {
-    return null;
-  }
-
-  return new Date(Math.max.apply(null, directDates.map(function(date) {
-    return date.getTime();
-  })));
-}
-
-function getMemberStatus(member, issues, referenceDate) {
-  const total = toNumber(member && member.total);
-  const closed = toNumber(member && member.closed);
-  const lastActivityAt = getMemberLastActivityAt(member, issues);
-
-  if (lastActivityAt) {
-    const ageHours = (referenceDate.getTime() - lastActivityAt.getTime()) / (60 * 60 * 1000);
-    if (ageHours <= 48) {
-      return { key: 'active', label: 'activ', icon: '\uD83D\uDFE2', lastActivityAt: lastActivityAt };
-    }
-    if (ageHours <= (7 * 24)) {
-      return { key: 'progress', label: '\u00een curs', icon: '\uD83D\uDFE1', lastActivityAt: lastActivityAt };
-    }
-    return { key: 'quiet', label: 'f\u0103r\u0103 activitate', icon: '\u26AA', lastActivityAt: lastActivityAt };
-  }
-
-  if (member && (member.connected === false || member.active === false)) {
-    return { key: 'quiet', label: 'f\u0103r\u0103 activitate', icon: '\u26AA', lastActivityAt: null };
-  }
-
-  if (total === 0) {
-    return { key: 'quiet', label: 'f\u0103r\u0103 activitate', icon: '\u26AA', lastActivityAt: null };
-  }
-
-  if (closed === 0) {
-    return { key: 'quiet', label: 'f\u0103r\u0103 activitate', icon: '\u26AA', lastActivityAt: null };
-  }
-
-  if (closed < total) {
-    return { key: 'progress', label: '\u00een curs', icon: '\uD83D\uDFE1', lastActivityAt: null };
-  }
-
-  return { key: 'active', label: 'activ', icon: '\uD83D\uDFE2', lastActivityAt: null };
-}
-
-function buildTeamHealthSummary(members, issues, referenceDate) {
-  const counts = { active: 0, progress: 0, quiet: 0 };
-  const rows = sortMembers(Array.isArray(members) ? members : []).map(function(member) {
-    const status = getMemberStatus(member, issues, referenceDate);
-    counts[status.key] += 1;
-    return {
-      member: member,
-      status: status
-    };
-  });
-
-  return {
-    counts: counts,
-    rows: rows
-  };
-}
-
-function buildTeamIssueGroups(team) {
-  const openRecords = dedupeIssues(team.openIssues).map(function(issue) {
-    return buildIssueRecord(issue, team);
-  }).sort(function(a, b) {
-    return (a.isCurrentStage === b.isCurrentStage ? 0 : (a.isCurrentStage ? -1 : 1))
-      || (a.isMemberScoped === b.isMemberScoped ? 0 : (a.isMemberScoped ? 1 : -1))
-      || b.number - a.number;
-  });
-
-  const closedRecords = dedupeIssues(team.closedIssues).map(function(issue) {
-    return buildIssueRecord(issue, team);
-  }).sort(function(a, b) {
-    return ((b.closedAt ? b.closedAt.getTime() : 0) - (a.closedAt ? a.closedAt.getTime() : 0))
-      || ((b.updatedAt ? b.updatedAt.getTime() : 0) - (a.updatedAt ? a.updatedAt.getTime() : 0))
-      || (b.number - a.number);
-  });
-
-  let now = openRecords.filter(function(issue) {
-    return issue.isCurrentStage && !issue.isMemberScoped;
-  });
-  if (!now.length) {
-    now = openRecords.filter(function(issue) {
-      return issue.isCurrentStage;
-    });
-  }
-  if (!now.length) {
-    now = openRecords.slice(0, 2);
-  }
-  now = now.slice(0, 2);
-
-  const nowKeys = {};
-  now.forEach(function(issue) {
-    nowKeys[issue.url + '|' + issue.number + '|' + issue.title] = true;
-  });
-
-  const working = openRecords.filter(function(issue) {
-    const issueKey = issue.url + '|' + issue.number + '|' + issue.title;
-    return !nowKeys[issueKey];
-  }).sort(function(a, b) {
-    return (a.isMemberScoped === b.isMemberScoped ? 0 : (a.isMemberScoped ? -1 : 1))
-      || (a.isCurrentStage === b.isCurrentStage ? 0 : (a.isCurrentStage ? -1 : 1))
-      || (b.number - a.number);
-  }).slice(0, 3);
-
-  return {
-    now: now,
-    working: working,
-    recent: closedRecords.slice(0, 2)
-  };
-}
-
-function renderTeamsLegacy(model) {
-  document.getElementById('team-grid').innerHTML = model.teams.map(function(team) {
-    const teamTotals = getTeamIssueTotals(team);
-    const teamProgressText = teamTotals.total > 0
-      ? `${teamTotals.closed}/${teamTotals.total} task-uri`
-      : '\u2014';
-    const milestonePills = team.stageProgress.filter(function(stage) {
-      return JOURNEY_STAGE_KEYS.indexOf(stage.key) >= 0;
-    }).map(function(stage) {
-      const currentClass = stage.key === team.currentStage.key ? ' is-current' : '';
-      const value = stage.total > 0 ? `${stage.closed}/${stage.total}` : '\u2014';
-
-      return (
-        `<div class="team-milestone-pill is-${stage.status}${currentClass}">` +
-          `<span class="team-milestone-code">${escapeHtml(stage.key)}</span>` +
-          `<span class="team-milestone-value">${escapeHtml(value)}</span>` +
-          `<span class="team-milestone-bar"><span class="team-milestone-fill" style="width:${getMinimumVisibleFillWidth(stage.percent, 8)}%;"></span></span>` +
-        `</div>`
-      );
-    }).join('');
-
-    const nextActionUrl = team.nextAction ? getIssueUrl(team.nextAction) : '#';
-    const nextActionText = team.nextAction
-      ? sanitizeIssueTitle(team.nextAction.title)
-      : `Așteaptă următorul task din ${model.currentMilestone.key}.`;
-    const nextActionUpdatedAt = team.nextAction ? (getIssueUpdatedAt(team.nextAction) || getIssueTimestamp(team.nextAction)) : null;
-    const nextActionStale = !!(nextActionUpdatedAt && ((model.referenceDate.getTime() - nextActionUpdatedAt.getTime()) > (3 * 24 * 60 * 60 * 1000)));
-    const nextActionMarkup = team.nextAction
-      ? `<a href="${escapeHtml(nextActionUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(nextActionText)}</a>`
-      : escapeHtml(nextActionText);
-
-    const issuePool = dedupeIssues([].concat(team.openIssues || [], team.closedIssues || [], team.allIssues || []));
-    const health = buildTeamHealthSummary(team.members, issuePool, model.referenceDate);
-    const momentum48h = countTeamClosedIssuesLast48h(team, model.referenceDate);
-    const memberSection = team.members.length
-      ? (
-        `<div class="member-table">` +
-          `<div class="member-table-head">` +
-            `<span class="member-head-cell">Cod</span>` +
-            `<span class="member-head-cell">Status</span>` +
-            `<span class="member-head-cell">Etapă</span>` +
-            `<span class="member-head-cell">Progres</span>` +
-            `<span class="member-head-cell">Task-uri</span>` +
-          `</div>` +
-          `${health.rows.map(function(entry) {
-            const member = entry.member;
-            const total = toNumber(member.total);
-            const closed = toNumber(member.closed);
-            const issuePct = total > 0 ? getMemberIssueProgressPercent(member) : 0;
-            const memberCode = escapeHtml(getMemberDisplayCode(member));
-            const stageCode = getMemberStageCode(member);
-            const stageClass = stageCode === '\u2014' ? ' is-empty' : '';
-            const summaryText = total > 0 ? `${closed}/${total}` : '\u2014';
-            const rowClass = member.connected === false ? ' is-offline' : '';
-            const offlineNote = member.connected === false
-              ? `<span class="member-connection-note">offline</span>`
-              : '';
-
-            return (
-              `<div class="member-row${rowClass}">` +
-                `<span class="member-code">${memberCode}</span>` +
-                `<span class="member-status">` +
-                  `<span class="member-status-pill is-${entry.status.key}">${entry.status.icon} ${entry.status.label}</span>` +
-                  `${offlineNote}` +
-                `</span>` +
-                `<span class="member-stage"><span class="member-stage-badge${stageClass}">${escapeHtml(stageCode)}</span></span>` +
-                `<span class="member-progress-cell">` +
-                  (
-                    total > 0
-                      ? `<span class="member-progress-track"><span class="member-progress-fill" style="width:${getMinimumVisibleFillWidth(issuePct, 8)}%;"></span></span>`
-                      : `<span class="member-progress-empty">\u2014</span>`
-                  ) +
-                `</span>` +
-                `<span class="member-summary">${escapeHtml(summaryText)}</span>` +
-              `</div>`
-            );
-          }).join('')}` +
-        `</div>`
-      )
-      : '<div class="team-empty">Nu există membri mapați încă.</div>';
-
-    const issueGroups = buildTeamIssueGroups(team);
-    const renderIssueGroup = function(title, items, type, emptyText) {
-      const stateLabel = type === 'now'
-        ? 'de făcut'
-        : (type === 'working' ? 'în lucru' : 'gata');
-
-      return (
-        `<div class="team-issue-group">` +
-          `<div class="team-issue-group-title">${title}</div>` +
-          (
-            items.length
-              ? items.map(function(issue) {
-                const assigneeBadge = issue.assigneeCode
-                  ? `<span class="team-issue-badge is-assignee">${escapeHtml(issue.assigneeCode)}</span>`
-                  : '';
-
-                return (
-                  `<div class="team-issue-row">` +
-                    `<a class="team-issue-title" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>` +
-                    `<div class="team-issue-meta">` +
-                      `<span class="team-issue-badge is-${type}">${stateLabel}</span>` +
-                      `${assigneeBadge}` +
-                    `</div>` +
-                  `</div>`
-                );
-              }).join('')
-              : `<div class="team-empty">${emptyText}</div>`
-          ) +
-        `</div>`
-      );
-    };
-
-    const healthMarkup =
-      `<div class="member-health-strip">` +
-        `<div class="member-health-line"><span class="member-health-label">Sănătate echipă:</span> 🟢 ${health.counts.active} activ &middot; 🟡 ${health.counts.slow} lent &middot; 🔴 ${health.counts.inactive} inactiv${health.counts.unknown > 0 ? ` &middot; ⚪ ${health.counts.unknown} necunoscut` : ''}</div>` +
-        `${momentum48h === null ? '' : `<div class="member-health-line"><span class="member-health-label">Momentum 48h:</span> +${momentum48h} task-uri</div>`}` +
-      `</div>`;
-
-    return (
-      `<article class="team-card">` +
-        `<div class="team-card-header">` +
-          `<div>` +
-            `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
-            `<div class="team-card-stage">${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short || team.currentStage.title)}</div>` +
-          `</div>` +
-        `</div>` +
-        `<div class="team-progress-row">` +
-          `<div class="team-progress-head"><span class="team-progress-label">Progres echipă</span><span class="team-progress-meta">${escapeHtml(teamProgressText)}</span></div>` +
-          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.issueProgress, 4)}%;"></div></div>` +
-        `</div>` +
-        `<div class="team-milestone-row">${milestonePills}</div>` +
-        `<div class="team-section">` +
-          `<div class="team-next-action">` +
-            `<span class="team-next-action-label">Următorul pas</span>` +
-            `<div class="team-next-action-main">` +
-              `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
-              `${nextActionStale ? '<div class="team-next-action-warning">⚠ blochează progresul dacă rămâne deschis</div>' : ''}` +
-            `</div>` +
-          `</div>` +
-        `</div>` +
-        `<div class="team-section">` +
-          `<div class="team-section-header">` +
-            `<div class="team-subtitle">Membri echipă</div>` +
-            `<div class="team-section-meta">${team.members.length} membri</div>` +
-          `</div>` +
-          `${healthMarkup}` +
-          `${memberSection}` +
-        `</div>` +
-        `<div class="team-section">` +
-          `<div class="team-section-header">` +
-            `<div class="team-subtitle">Task-uri</div>` +
-            `<div class="team-section-meta">${team.openIssues.length} deschise</div>` +
-          `</div>` +
-          `<div class="team-issue-groups">` +
-            `${renderIssueGroup('De făcut acum', issueGroups.now, 'now', 'Nimic urgent acum.')}` +
-            `${renderIssueGroup('În lucru', issueGroups.working, 'working', 'Nu există task-uri active acum.')}` +
-            `${renderIssueGroup('Finalizate recent', issueGroups.recent, 'done', 'Nu există date despre task-uri închise recent.')}` +
-          `</div>` +
-          `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">Vezi toate task-urile ↗</a>` +
-        `</div>` +
-      `</article>`
-    );
-  }).join('');
+  return offlineCount > 0
+    ? `${connectedCount} connected / ${offlineCount} offline`
+    : `${trackedCount} tracked`;
 }
 
 function renderTeams(model) {
   document.getElementById('team-grid').innerHTML = model.teams.map(function(team) {
-    const teamTotals = getTeamIssueTotals(team);
-    const teamProgressText = teamTotals.total > 0
-      ? `${teamTotals.closed}/${teamTotals.total} task-uri`
-      : '\u2014';
+    const visibleIssues = team.openIssues.slice(0, 3);
+    const hiddenCount = Math.max(team.openIssues.length - visibleIssues.length, 0);
+    const memberSummary = getMemberSummaryCopy(team.members);
+
     const milestonePills = team.stageProgress.filter(function(stage) {
       return JOURNEY_STAGE_KEYS.indexOf(stage.key) >= 0;
     }).map(function(stage) {
@@ -4066,27 +3347,17 @@ function renderTeams(model) {
       const value = stage.total > 0 ? `${stage.closed}/${stage.total}` : '\u2014';
 
       return (
-        `<div class="team-milestone-pill is-${stage.status}${currentClass}">` +
+        `<div class="team-milestone-pill is-${stage.status}${currentClass}" style="--pill-progress:${stage.percent};">` +
           `<span class="team-milestone-code">${escapeHtml(stage.key)}</span>` +
           `<span class="team-milestone-value">${escapeHtml(value)}</span>` +
-          `<span class="team-milestone-bar"><span class="team-milestone-fill" style="width:${getMinimumVisibleFillWidth(stage.percent, 8)}%;"></span></span>` +
         `</div>`
       );
     }).join('');
 
-    const nextActionUrl = team.nextAction ? getIssueUrl(team.nextAction) : '#';
-    const nextActionText = team.nextAction
-      ? sanitizeIssueTitle(team.nextAction.title)
-      : `A&#537;teapt&#259; urm&#259;torul task din ${model.currentMilestone.key}.`;
-    const nextActionUpdatedAt = team.nextAction ? (getIssueUpdatedAt(team.nextAction) || getIssueTimestamp(team.nextAction)) : null;
-    const nextActionStale = !!(nextActionUpdatedAt && ((model.referenceDate.getTime() - nextActionUpdatedAt.getTime()) > (3 * 24 * 60 * 60 * 1000)));
     const nextActionMarkup = team.nextAction
-      ? `<a href="${escapeHtml(nextActionUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(nextActionText)}</a>`
-      : nextActionText;
+      ? `<a href="${escapeHtml(team.nextAction.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(team.nextAction.title))}</a>`
+      : `Waiting for a task in ${escapeHtml(model.currentMilestone.key)}.`;
 
-    const issuePool = dedupeIssues([].concat(team.openIssues || [], team.closedIssues || [], team.allIssues || []));
-    const health = buildTeamHealthSummary(team.members, issuePool, model.referenceDate);
-    const momentum48h = countTeamClosedIssuesLast48h(team, model.referenceDate);
     const memberSection = team.members.length
       ? (
         `<div class="member-table">` +
@@ -4096,117 +3367,95 @@ function renderTeams(model) {
             `<span class="member-head-cell">Progres</span>` +
             `<span class="member-head-cell">Task-uri</span>` +
           `</div>` +
-          `${health.rows.map(function(entry) {
-            const member = entry.member;
+          `${sortMembers(team.members).map(function(member) {
             const total = toNumber(member.total);
             const closed = toNumber(member.closed);
-            const issuePct = total > 0 ? getMemberIssueProgressPercent(member) : 0;
-            const memberCode = escapeHtml(getMemberDisplayCode(member));
-            const summaryText = total > 0 ? `${closed}/${total}` : '\u2014';
+            const issuePct = getMemberIssueProgressPercent(member);
+            const memberCode = escapeHtml(member.display_code || member.local_code || '\u2014');
+            const connectionState = member.connected === false ? 'offline' : 'online';
+            const taskUri = total > 0 ? `${closed}/${total}` : '\u2014';
             const rowClass = member.connected === false ? ' is-offline' : '';
 
             return (
               `<div class="member-row${rowClass}">` +
                 `<span class="member-code">${memberCode}</span>` +
-                `<span class="member-status"><span class="member-status-pill is-${entry.status.key}">${entry.status.icon} ${entry.status.label}</span></span>` +
-                `<span class="member-progress-cell">` +
-                  (
-                    total > 0
-                      ? `<span class="member-progress-track"><span class="member-progress-fill" style="width:${getMinimumVisibleFillWidth(issuePct, 8)}%;"></span></span>`
-                      : `<span class="member-progress-empty">\u2014</span>`
-                  ) +
+                `<span class="member-status"><span class="member-status-pill is-${connectionState}">${connectionState}</span></span>` +
+                `<span class="member-progress-cell is-issues">` +
+                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${issuePct}%;"></span></span>` +
+                  `<span class="member-progress-value">${issuePct}%</span>` +
                 `</span>` +
-                `<span class="member-summary">${escapeHtml(summaryText)}</span>` +
+                `<span class="member-summary">${escapeHtml(taskUri)}</span>` +
               `</div>`
             );
           }).join('')}` +
         `</div>`
       )
-      : '<div class="team-empty">Nu exist&#259; membri mapa&#539;i &icirc;nc&#259;.</div>';
+      : '<div class="team-empty">No mapped members yet.</div>';
 
-    const issueGroups = buildTeamIssueGroups(team);
-    const renderIssueGroup = function(title, items, type, emptyText) {
-      const stateLabel = type === 'now'
-        ? 'de f&#259;cut'
-        : (type === 'working' ? '&icirc;n lucru' : 'gata');
+    const issuesMarkup = visibleIssues.length
+      ? visibleIssues.map(function(issue) {
+        return `<a class="team-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`;
+      }).join('')
+      : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
 
-      return (
-        `<div class="team-issue-group">` +
-          `<div class="team-issue-group-title">${title}</div>` +
-          (
-            items.length
-              ? items.map(function(issue) {
-                const assigneeBadge = issue.assigneeCode
-                  ? `<span class="team-issue-badge is-assignee">${escapeHtml(issue.assigneeCode)}</span>`
-                  : '';
-
-                return (
-                  `<div class="team-issue-row">` +
-                    `<a class="team-issue-title" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>` +
-                    `<div class="team-issue-meta">` +
-                      `<span class="team-issue-badge is-${type}">${stateLabel}</span>` +
-                      `${assigneeBadge}` +
-                    `</div>` +
-                  `</div>`
-                );
-              }).join('')
-              : `<div class="team-empty">${emptyText}</div>`
-          ) +
-        `</div>`
-      );
-    };
-
-    const healthMarkup =
-      `<div class="member-health-strip">` +
-        `<div class="member-health-line"><span class="member-health-label">S&#259;n&#259;tate echip&#259;:</span> 🟢 ${health.counts.active} activ &middot; 🟡 ${health.counts.progress} &icirc;n curs &middot; ⚪ ${health.counts.quiet} f&#259;r&#259; activitate</div>` +
-        `${momentum48h === null ? '' : `<div class="member-health-line"><span class="member-health-label">Momentum 48h:</span> +${momentum48h} task-uri</div>`}` +
-      `</div>`;
+    const moreMarkup = hiddenCount > 0
+      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
+      : '';
 
     return (
-      `<article class="team-card">` +
+      `<article class="team-card" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --team-line-strong:${team.colorLineStrong};">` +
         `<div class="team-card-header">` +
           `<div>` +
             `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
-            `<div class="team-card-stage">${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short || team.currentStage.title)}</div>` +
+            `<div class="team-card-stage">Course stage &middot; ${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short)}</div>` +
+            `<div class="team-current-note">${escapeHtml(team.currentStage.title)}</div>` +
+          `</div>` +
+          `<div class="team-card-metrics">` +
+            `<div class="team-metric-line"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}%</span></div>` +
+            `<div class="team-metric-line"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}%</span></div>` +
           `</div>` +
         `</div>` +
-        `<div class="team-progress-row">` +
-          `<div class="team-progress-head"><span class="team-progress-label">Progres echip&#259;</span><span class="team-progress-meta">${escapeHtml(teamProgressText)}</span></div>` +
-          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.issueProgress, 4)}%;"></div></div>` +
+        `<div class="team-progress-stack">` +
+          `<div class="team-progress-group is-course">` +
+            `<div class="team-progress-head"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}% completed</span></div>` +
+            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.courseProgress, 4)}%;"></div></div>` +
+          `</div>` +
+          `<div class="team-progress-group is-issues">` +
+            `<div class="team-progress-head"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}% completed</span></div>` +
+            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.issueProgress, 4)}%;"></div></div>` +
+          `</div>` +
         `</div>` +
         `<div class="team-milestone-row">${milestonePills}</div>` +
         `<div class="team-section">` +
           `<div class="team-next-action">` +
-            `<span class="team-next-action-label">Urm&#259;torul pas</span>` +
-            `<div class="team-next-action-main">` +
-              `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
-              `${nextActionStale ? '<div class="team-next-action-warning">&#9888; blocheaz&#259; progresul dac&#259; r&#259;m&acirc;ne deschis</div>' : ''}` +
-            `</div>` +
+            `<span class="team-next-action-label">Next action</span>` +
+            `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
           `</div>` +
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Membri echip&#259;</div>` +
-            `<div class="team-section-meta">${team.members.length} membri</div>` +
+            `<div class="team-subtitle">Team members</div>` +
+            `<div class="team-section-meta">${escapeHtml(memberSummary)}</div>` +
           `</div>` +
-          `${healthMarkup}` +
           `${memberSection}` +
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Task-uri</div>` +
-            `<div class="team-section-meta">${team.openIssues.length} deschise</div>` +
+            `<div class="team-subtitle">Open issues</div>` +
+            `<div class="team-section-meta">${team.openIssues.length} total</div>` +
           `</div>` +
-          `<div class="team-issue-groups">` +
-            `${renderIssueGroup('De f&#259;cut acum', issueGroups.now, 'now', 'Nimic urgent acum.')}` +
-            `${renderIssueGroup('&Icirc;n lucru', issueGroups.working, 'working', 'Nu exist&#259; task-uri active acum.')}` +
-            `${renderIssueGroup('Finalizate recent', issueGroups.recent, 'done', 'Nu exist&#259; date despre task-uri &icirc;nchise recent.')}` +
-          `</div>` +
-          `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">Vezi toate task-urile &#8599;</a>` +
+          `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
         `</div>` +
       `</article>`
     );
   }).join('');
+}
+
+function getMountainProgressPercent(team) {
+  if (team.currentStage.key === POST_SUMMIT_STAGE_KEY || team.currentStage.key === 'Final') {
+    return 100;
+  }
+  return clampPercent(team.courseProgress);
 }
 
 function getMinimumVisibleFillWidth(percent, minimumPercent) {
@@ -4217,463 +3466,186 @@ function getMinimumVisibleFillWidth(percent, minimumPercent) {
   return Math.min(100, Math.max(clamped, minimumPercent || 4));
 }
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
-const MOUNTAIN_STAGE_POINTS = {
-  base: { x: 260, y: 851 },
-  C1:   { x: 606, y: 782 },
-  C2:   { x: 940, y: 749 },
-  C3:   { x: 1299, y: 634 },
-  C4:   { x: 1570, y: 552 },
-  C5:   { x: 1860, y: 444 },
-  C6:   { x: 1428, y: 332 },
-  C7:   { x: 1810, y: 253 },
-  C8:   { x: 1935, y: 97 }
-};
-
-const MOUNTAIN_STAGE_SEGMENTS = {
-  C1: ['base', 'C1'],
-  C2: ['C1', 'C2'],
-  C3: ['C2', 'C3'],
-  C4: ['C3', 'C4'],
-  C5: ['C4', 'C5'],
-  C6: ['C5', 'C6'],
-  C7: ['C6', 'C7'],
-  C8: ['C7', 'C8']
-};
-
-const MOUNTAIN_BUBBLE_RADIUS = 26.4;
-const MOUNTAIN_MEMBER_DOT_RADIUS = 6;
-const MOUNTAIN_BUBBLE_LIFT = 22;
-const MOUNTAIN_CLUSTER_DISTANCE = 90;
-const MOUNTAIN_CLUSTER_SPREAD = 42;
-const MOUNTAIN_VERTICAL_SHIFT = 52;
-const MOUNTAIN_MEMBER_VERTICAL_SHIFT = 20;
-const MOUNTAIN_MEMBER_CLUSTER_DISTANCE = 28;
-const MOUNTAIN_MEMBER_CLUSTER_SPREAD = 14;
-
-function lerp(a, b, t) {
-  return a + ((b - a) * t);
+function getMarkerCollisionSign(routePoint) {
+  // Always keep the cluster close to the visible route.
+  // Positive side is too often visually pushed into the sky;
+  // this keeps the markers near the mountain slope.
+  return 1;
 }
 
-function euclidean(a, b) {
-  return Math.hypot(a.x - b.x, a.y - b.y);
-}
-
-function createSvgEl(tag, attrs) {
-  var el = document.createElementNS(SVG_NS, tag);
-  Object.entries(attrs || {}).forEach(function(entry) {
-    el.setAttribute(entry[0], entry[1]);
-  });
-  return el;
-}
-
-function getClimbStageState(team) {
-  var climbStages = CLIMB_STAGE_KEYS.map(function(key) {
-    return team.stageProgress.find(function(stage) {
-      return stage.key === key;
-    }) || {
-      key: key,
-      total: 0,
-      closed: 0,
-      open: 0,
-      percent: 0,
-      status: 'upcoming'
-    };
-  });
-
-  var activeStage = climbStages.find(function(stage) {
-    return stage.total > 0 && stage.percent < 100;
-  });
-  if (activeStage) {
-    return { stageKey: activeStage.key, percent: clampPercent(activeStage.percent) };
-  }
-
-  var doneStages = climbStages.filter(function(stage) {
-    return stage.total > 0 && stage.percent >= 100;
-  });
-  if (doneStages.length) {
-    var lastDone = doneStages[doneStages.length - 1];
-    return { stageKey: lastDone.key, percent: 100 };
-  }
-
-  return { stageKey: 'C1', percent: 0 };
-}
-
-function getSegmentGeometry(startKey, endKey, percent) {
-  var start = MOUNTAIN_STAGE_POINTS[startKey];
-  var end = MOUNTAIN_STAGE_POINTS[endKey];
-  var t = Math.max(0, Math.min(1, percent / 100));
-
-  var routeX = lerp(start.x, end.x, t);
-  var routeY = lerp(start.y, end.y, t);
-  var dx = end.x - start.x;
-  var dy = end.y - start.y;
-  var segmentLength = Math.hypot(dx, dy);
-
-  return {
-    routeX: routeX,
-    routeY: routeY,
-    routeDistance: segmentLength * t
-  };
-}
-
-function getMountainMarkerPosition(team) {
-  var climb = getClimbStageState(team);
-  var segment = MOUNTAIN_STAGE_SEGMENTS[climb.stageKey] || ['base', 'C1'];
-  var geom = getSegmentGeometry(segment[0], segment[1], climb.percent);
-
-  return Object.assign({
-    stageKey: climb.stageKey,
-    stagePercent: climb.percent
-  }, geom);
-}
-
-function buildMountainMarkers(teams) {
-  var segmentBaseDistance = {};
-  var cumulativeDistance = 0;
-
-  Object.keys(MOUNTAIN_STAGE_SEGMENTS).forEach(function(stageKey) {
-    var segment = MOUNTAIN_STAGE_SEGMENTS[stageKey];
-    var start = MOUNTAIN_STAGE_POINTS[segment[0]];
-    var end = MOUNTAIN_STAGE_POINTS[segment[1]];
-    segmentBaseDistance[stageKey] = cumulativeDistance;
-    cumulativeDistance += Math.hypot(end.x - start.x, end.y - start.y);
-  });
-
-  var markers = teams.map(function(team) {
-    var pos = getMountainMarkerPosition(team);
-    return {
-      team: team,
-      label: team.label,
-      teamName: team.name,
-      color: team.color,
-      colorSoft: team.colorSoft,
-      teamIndex: team.index,
-      stageKey: pos.stageKey,
-      stagePercent: pos.stagePercent,
-      routeX: pos.routeX,
-      routeY: pos.routeY,
-      routeDistance: (segmentBaseDistance[pos.stageKey] || 0) + pos.routeDistance,
-      status: getSemanticStatus(team),
-      members: sortMembers(Array.isArray(team.members) ? team.members : [])
-    };
-  });
-
+function applyMarkerCollisionOffsets(markers) {
   var sorted = markers.slice().sort(function(a, b) {
     return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
   });
-  var clusters = [];
-  var activeCluster = [];
+  var groups = [];
+  var activeGroup = [];
 
   sorted.forEach(function(marker) {
-    if (!activeCluster.length) {
-      activeCluster.push(marker);
+    if (!activeGroup.length) {
+      activeGroup.push(marker);
       return;
     }
 
-    var previous = activeCluster[activeCluster.length - 1];
-    if (Math.abs(marker.routeDistance - previous.routeDistance) <= MOUNTAIN_CLUSTER_DISTANCE) {
-      activeCluster.push(marker);
+    var previous = activeGroup[activeGroup.length - 1];
+    if (Math.abs(marker.routeDistance - previous.routeDistance) <= TEAM_COLLISION_DISTANCE) {
+      activeGroup.push(marker);
       return;
     }
 
-    clusters.push(activeCluster);
-    activeCluster = [marker];
+    groups.push(activeGroup);
+    activeGroup = [marker];
   });
 
-  if (activeCluster.length) {
-    clusters.push(activeCluster);
+  if (activeGroup.length) {
+    groups.push(activeGroup);
   }
 
-  clusters.forEach(function(cluster) {
-    cluster.sort(function(a, b) {
-      return a.teamIndex - b.teamIndex;
-    });
+  groups.forEach(function(group) {
+    group.forEach(function(marker, index) {
+      var pattern = TEAM_COLLISION_PATTERN[index % TEAM_COLLISION_PATTERN.length];
+      var ring = Math.floor(index / TEAM_COLLISION_PATTERN.length);
+      var tanOffset = pattern.tan + ring * 18;
+      var perpOffset = pattern.perp;
 
-    cluster.forEach(function(marker, index) {
-      var middle = (cluster.length - 1) / 2;
-      var clusterOffsetX = (index - middle) * MOUNTAIN_CLUSTER_SPREAD;
-      marker.x = marker.routeX + clusterOffsetX;
-      marker.y = marker.routeY - MOUNTAIN_BUBBLE_LIFT + MOUNTAIN_VERTICAL_SHIFT;
+      marker.tanOffset = tanOffset;
+      marker.perpOffset = perpOffset;
+      marker.x = marker.routePoint.x + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * perpOffset);
+      marker.y = marker.routePoint.y + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * perpOffset);
+
+      // hard clamp: never allow early teams to float too high above the base-camp area
+      if (marker.routePct <= 10) {
+        marker.y = Math.max(marker.y, 760);
+      }
     });
   });
 
   return markers;
 }
 
-function renderMountainTeamsIntoSvgLegacy(model) {
-  var overlay = document.getElementById('mountain-team-overlay');
-  if (!overlay) return;
+function buildMarkerMemberDots(members) {
+  return members.map(function(member) {
+    var coursePct = getMemberCourseProgressPercent(member);
+    var issuePct = getMemberIssueProgressPercent(member);
+    var displayCode = String(member.display_code || member.local_code || '');
+    var stageCode = getMemberStageCode(member);
+    var dimmed = member.connected === false || member.active === false || (coursePct === 0 && issuePct === 0);
+    var pos = getMemberRoutePositionLegacy(member);
 
-  while (overlay.firstChild) {
-    overlay.removeChild(overlay.firstChild);
-  }
+    return {
+      dimmed: dimmed,
+      title: [displayCode, stageCode, coursePct + '% course', issuePct + '% issues'].filter(Boolean).join(' / '),
+      routeX: pos.point.x,
+      routeY: pos.point.y
+    };
+  });
+}
 
-  var markers = buildMountainMarkers(model.teams);
+function buildMountainMarkerData(teams) {
+  var markers = teams.map(function(team) {
+    var routePct = getMountainProgressPercent(team);
+    var routeDistance = ROUTE_METRICS.totalLength * (routePct / 100);
+    var routePoint = getPointOnRouteDistance(routeDistance);
 
-  markers.forEach(function(marker) {
-    var group = createSvgEl('g', {
-      'data-team': marker.label
-    });
+    return {
+      label: team.label,
+      teamName: team.name,
+      color: team.color,
+      routePct: routePct,
+      x: routePoint.x,
+      y: routePoint.y,
+      routeX: routePoint.x,
+      routeY: routePoint.y,
+      routePoint: routePoint,
+      routeDistance: routeDistance,
+      status: getSemanticStatus(team),
+      percent: routePct,
+      coursePercent: routePct,
+      colorSoft: team.colorSoft,
+      colorLine: team.colorLine,
+      teamIndex: team.index,
+      memberDots: buildMarkerMemberDots(Array.isArray(team.members) ? team.members : [])
+    };
+  });
 
-    var title = createSvgEl('title');
-    title.textContent = marker.teamName + ' - ' + marker.stageKey + ' - ' + marker.stagePercent + '%';
-    group.appendChild(title);
+  return applyMarkerCollisionOffsets(markers);
+}
 
-    group.appendChild(createSvgEl('circle', {
-      cx: marker.x,
-      cy: marker.y,
-      r: MOUNTAIN_BUBBLE_RADIUS + 3,
-      fill: 'rgba(255,255,255,0.88)'
-    }));
+function renderMountainMilestonesSVG(currentKey) {
+  var keys = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 
-    group.appendChild(createSvgEl('circle', {
-      cx: marker.x,
-      cy: marker.y,
-      r: MOUNTAIN_BUBBLE_RADIUS,
-      fill: 'rgba(250,248,244,0.96)',
-      stroke: marker.color,
-      'stroke-width': 3
-    }));
+  return keys.map(function(key) {
+    var point = MOUNTAIN_POINTS[key];
+    var label = point.label;
+    var isBase = key === 'base';
+    var isCurrent = label === currentKey;
+    var labelY = isBase ? point.y + 34 : point.y - 18;
+    var stroke = isCurrent ? 'rgba(181, 120, 74, 0.9)' : 'rgba(45, 42, 38, 0.28)';
+    var fill = isCurrent ? 'rgba(181, 120, 74, 0.16)' : 'rgba(250, 249, 246, 0.96)';
 
-    var text = createSvgEl('text', {
-      x: marker.x,
-      y: marker.y + 1,
-      'text-anchor': 'middle',
-      'dominant-baseline': 'middle',
-      'font-family': 'JetBrains Mono, monospace',
-      'font-size': '19',
-      'font-weight': '700',
-      fill: marker.color,
-      stroke: 'rgba(255,255,255,0.96)',
-      'stroke-width': '2.2',
-      'paint-order': 'stroke'
-    });
-    text.textContent = marker.label;
-    group.appendChild(text);
+    return '<g>' +
+      '<circle cx="' + point.x + '" cy="' + point.y + '" r="10" fill="rgba(255,255,255,0.92)" opacity="0.82"/>' +
+      '<circle class="mountain-checkpoint-node" cx="' + point.x + '" cy="' + point.y + '" r="7.5" fill="' + fill + '" stroke="' + stroke + '"/>' +
+      '<text class="mountain-checkpoint-label" x="' + point.x + '" y="' + labelY + '"' +
+        ' text-anchor="middle" stroke="rgba(250,249,246,0.96)" stroke-width="3" paint-order="stroke">' +
+        label + '</text>' +
+      '</g>';
+  }).join('');
+}
 
-    var memberCount = marker.members.length;
-    if (memberCount > 0) {
-      marker.members.forEach(function(member, i) {
-        var x = marker.x + ((i - ((memberCount - 1) / 2)) * 14);
-        var y = marker.y + MOUNTAIN_BUBBLE_RADIUS + 12;
-        var connected = member.connected !== false;
-        var active = member.active !== false;
-        var fill = (connected && active) ? marker.color : 'rgba(220,220,220,0.95)';
+function renderTeamMarkersSVG(markers) {
+  var sorted = markers.slice().sort(function(a, b) {
+    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
+  });
 
-        var dot = createSvgEl('circle', {
-          cx: x,
-          cy: y,
-          r: MOUNTAIN_MEMBER_DOT_RADIUS,
-          fill: fill,
-          stroke: 'rgba(255,255,255,0.96)',
-          'stroke-width': 1.8
-        });
-
-        var dotTitle = createSvgEl('title');
-        dotTitle.textContent = (member.display_code || member.local_code || '') + ' - ' + getMemberStageCode(member) + ' - ' + getMemberIssueProgressPercent(member) + '% issues';
-        dot.appendChild(dotTitle);
-
-        group.appendChild(dot);
-      });
+  var connectorEls = sorted.map(function(marker) {
+    if (Math.abs(marker.x - marker.routeX) < 1 && Math.abs(marker.y - marker.routeY) < 1) {
+      return '';
     }
 
-    overlay.appendChild(group);
-  });
-}
+    return '<line x1="' + marker.routeX.toFixed(1) + '" y1="' + marker.routeY.toFixed(1) + '"' +
+      ' x2="' + marker.x.toFixed(1) + '" y2="' + marker.y.toFixed(1) + '"' +
+      ' stroke="' + marker.color + '" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="4 5"/>';
+  }).join('');
 
-function getMountainSegmentBaseDistanceMap() {
-  var segmentBaseDistance = {};
-  var cumulativeDistance = 0;
+  var routePinEls = sorted.map(function(marker) {
+    return '<circle cx="' + marker.routeX.toFixed(1) + '" cy="' + marker.routeY.toFixed(1) + '" r="4.5"' +
+      ' fill="' + marker.color + '" stroke="rgba(255,255,255,0.96)" stroke-width="2"/>';
+  }).join('');
 
-  Object.keys(MOUNTAIN_STAGE_SEGMENTS).forEach(function(stageKey) {
-    var segment = MOUNTAIN_STAGE_SEGMENTS[stageKey];
-    var start = MOUNTAIN_STAGE_POINTS[segment[0]];
-    var end = MOUNTAIN_STAGE_POINTS[segment[1]];
-    segmentBaseDistance[stageKey] = cumulativeDistance;
-    cumulativeDistance += Math.hypot(end.x - start.x, end.y - start.y);
-  });
+  var dotEls = sorted.map(function(marker) {
+    return marker.memberDots.map(function(dot) {
+      var fill = dot.dimmed ? 'rgba(250,248,244,0.72)' : marker.color;
+      var stroke = dot.dimmed ? marker.color : 'rgba(255,255,255,0.98)';
+      var opacity = dot.dimmed ? '0.58' : '1';
+      var titleEl = dot.title ? '<title>' + escapeHtml(dot.title) + '</title>' : '';
 
-  return segmentBaseDistance;
-}
+      return '<circle cx="' + dot.routeX.toFixed(1) + '" cy="' + dot.routeY.toFixed(1) + '" r="' + DOT_R + '"' +
+        ' fill="' + fill + '" fill-opacity="' + opacity + '"' +
+        ' stroke="' + stroke + '" stroke-width="1.7" pointer-events="all">' +
+        titleEl +
+      '</circle>';
+    }).join('');
+  }).join('');
 
-function getMountainMemberStageState(member) {
-  var rawStageKey = inferStageKey(member && member.current_stage);
-  if (/^(C9|FINAL)$/i.test(rawStageKey || '')) {
-    return { stageKey: 'C8', percent: 100 };
-  }
+  var badgeEls = sorted.map(function(marker) {
+    var cx = marker.x.toFixed(1);
+    var cy = marker.y.toFixed(1);
+    var titleText = marker.teamName + ' - ' + marker.coursePercent + '% - ' + marker.status.label;
 
-  var stageKey = CLIMB_STAGE_KEYS.indexOf(rawStageKey) >= 0 ? rawStageKey : 'C1';
-  var progressMap = member && member.progress ? member.progress : {};
-  var matchingKey = Object.keys(progressMap).find(function(key) {
-    return inferStageKey(key) === stageKey;
-  });
-  var percent = matchingKey
-    ? clampPercent(progressMap[matchingKey] && progressMap[matchingKey].percent)
-    : 0;
+    return '<g data-team="' + marker.label + '" pointer-events="all">' +
+      '<title>' + escapeHtml(titleText) + '</title>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (BADGE_R + 4) +
+        '" fill="rgba(255,255,255,0.96)" opacity="0.92"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + BADGE_R +
+        '" fill="rgba(250,248,244,0.97)" stroke="' + marker.color + '" stroke-width="3.2"/>' +
+      '<text class="mountain-team-label" x="' + cx + '" y="' + cy +
+        '" text-anchor="middle" dominant-baseline="central"' +
+        ' stroke="rgba(255,255,255,0.98)" stroke-width="2.4" paint-order="stroke" fill="' + marker.color + '">' +
+        marker.label + '</text>' +
+      '</g>';
+  }).join('');
 
-  if (!matchingKey && stageKey === 'C1' && getMemberIssueProgressPercent(member) > 0) {
-    percent = Math.min(100, getMemberIssueProgressPercent(member));
-  }
-
-  return {
-    stageKey: stageKey,
-    percent: percent
-  };
-}
-
-function buildMountainMemberDots(teams, markers, referenceDate) {
-  var segmentBaseDistance = getMountainSegmentBaseDistanceMap();
-  var markerByTeamIndex = {};
-  var dots = [];
-
-  markers.forEach(function(marker) {
-    markerByTeamIndex[marker.teamIndex] = marker;
-  });
-
-  teams.forEach(function(team) {
-    var teamMarker = markerByTeamIndex[team.index];
-    var teamIssues = dedupeIssues([].concat(team.openIssues || [], team.closedIssues || [], team.allIssues || []));
-
-    sortMembers(Array.isArray(team.members) ? team.members : []).forEach(function(member, memberIndex) {
-      var memberState = getMountainMemberStageState(member);
-      var segment = MOUNTAIN_STAGE_SEGMENTS[memberState.stageKey] || ['base', 'C1'];
-      var geom = getSegmentGeometry(segment[0], segment[1], memberState.percent);
-      var memberStatus = getMemberStatus(member, teamIssues, referenceDate);
-
-      dots.push({
-        teamIndex: team.index,
-        teamColor: team.color,
-        teamLabel: team.label,
-        memberIndex: memberIndex,
-        memberCode: getMemberDisplayCode(member),
-        stageKey: memberState.stageKey,
-        percent: memberState.percent,
-        routeX: geom.routeX,
-        routeY: geom.routeY,
-        routeDistance: (segmentBaseDistance[memberState.stageKey] || 0) + geom.routeDistance,
-        status: memberStatus,
-        teamMarker: teamMarker
-      });
-    });
-  });
-
-  var sorted = dots.slice().sort(function(a, b) {
-    return a.routeDistance !== b.routeDistance
-      ? a.routeDistance - b.routeDistance
-      : (a.teamIndex !== b.teamIndex ? a.teamIndex - b.teamIndex : a.memberIndex - b.memberIndex);
-  });
-  var clusters = [];
-  var activeCluster = [];
-
-  sorted.forEach(function(dot) {
-    if (!activeCluster.length) {
-      activeCluster.push(dot);
-      return;
-    }
-
-    var previous = activeCluster[activeCluster.length - 1];
-    if (Math.abs(dot.routeDistance - previous.routeDistance) <= MOUNTAIN_MEMBER_CLUSTER_DISTANCE) {
-      activeCluster.push(dot);
-      return;
-    }
-
-    clusters.push(activeCluster);
-    activeCluster = [dot];
-  });
-
-  if (activeCluster.length) {
-    clusters.push(activeCluster);
-  }
-
-  clusters.forEach(function(cluster) {
-    cluster.forEach(function(dot, index) {
-      var middle = (cluster.length - 1) / 2;
-      dot.x = dot.routeX + ((index - middle) * MOUNTAIN_MEMBER_CLUSTER_SPREAD);
-      dot.y = dot.routeY + MOUNTAIN_MEMBER_VERTICAL_SHIFT;
-
-      if (dot.teamMarker && euclidean({ x: dot.x, y: dot.y }, { x: dot.teamMarker.x, y: dot.teamMarker.y }) < (MOUNTAIN_BUBBLE_RADIUS + MOUNTAIN_MEMBER_DOT_RADIUS + 10)) {
-        dot.y += 14;
-      }
-    });
-  });
-
-  return dots;
-}
-
-function renderMountainTeamsIntoSvg(model) {
-  var overlay = document.getElementById('mountain-team-overlay');
-  if (!overlay) return;
-
-  while (overlay.firstChild) {
-    overlay.removeChild(overlay.firstChild);
-  }
-
-  var markers = buildMountainMarkers(model.teams);
-  var memberDots = buildMountainMemberDots(model.teams, markers, model.referenceDate);
-
-  memberDots.forEach(function(dot) {
-    var fill = dot.status.key === 'quiet' ? 'rgba(244,242,238,0.96)' : dot.teamColor;
-    var stroke = dot.status.key === 'quiet' ? 'rgba(201,195,181,0.94)' : 'rgba(255,255,255,0.96)';
-    var circle = createSvgEl('circle', {
-      cx: dot.x,
-      cy: dot.y,
-      r: MOUNTAIN_MEMBER_DOT_RADIUS,
-      fill: fill,
-      stroke: stroke,
-      'stroke-width': 1.9
-    });
-
-    var dotTitle = createSvgEl('title');
-    dotTitle.textContent = dot.memberCode + ' - ' + dot.stageKey + ' - ' + dot.percent + '%';
-    circle.appendChild(dotTitle);
-    overlay.appendChild(circle);
-  });
-
-  markers.forEach(function(marker) {
-    var group = createSvgEl('g', {
-      'data-team': marker.label
-    });
-
-    var title = createSvgEl('title');
-    title.textContent = marker.teamName + ' - ' + marker.stageKey + ' - ' + marker.stagePercent + '%';
-    group.appendChild(title);
-
-    group.appendChild(createSvgEl('circle', {
-      cx: marker.x,
-      cy: marker.y,
-      r: MOUNTAIN_BUBBLE_RADIUS + 3,
-      fill: 'rgba(255,255,255,0.88)'
-    }));
-
-    group.appendChild(createSvgEl('circle', {
-      cx: marker.x,
-      cy: marker.y,
-      r: MOUNTAIN_BUBBLE_RADIUS,
-      fill: 'rgba(250,248,244,0.96)',
-      stroke: marker.color,
-      'stroke-width': 3
-    }));
-
-    var text = createSvgEl('text', {
-      x: marker.x,
-      y: marker.y + 1,
-      'text-anchor': 'middle',
-      'dominant-baseline': 'middle',
-      'font-family': 'JetBrains Mono, monospace',
-      'font-size': '19',
-      'font-weight': '700',
-      fill: marker.color,
-      stroke: 'rgba(255,255,255,0.96)',
-      'stroke-width': '2.2',
-      'paint-order': 'stroke'
-    });
-    text.textContent = marker.label;
-    group.appendChild(text);
-
-    overlay.appendChild(group);
-  });
+  return connectorEls + routePinEls + badgeEls + dotEls;
 }
 
 fetch('./progress.json')
