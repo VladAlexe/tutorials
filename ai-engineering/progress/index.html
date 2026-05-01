@@ -442,6 +442,7 @@ section { padding-top: 2rem; }
   inset: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 .mountain-ridge-back {
@@ -606,6 +607,31 @@ section { padding-top: 2rem; }
   border-radius: 50%;
   background: var(--chip-dot);
   flex: 0 0 auto;
+}
+
+.chip-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 2px;
+}
+
+.chip-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--chip-dot, var(--team-color, var(--accent)));
+  opacity: 1;
+  flex: 0 0 auto;
+}
+
+.chip-dot.inactive {
+  opacity: 0.35;
+}
+
+.chip-dot.offline {
+  opacity: 0.55;
 }
 
 .mountain-postscript {
@@ -2248,7 +2274,7 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
-const TEAM_PALETTE = ['#C9793A', '#D08B52', '#B86A3E', '#D9A06B', '#9E6A52', '#C9B29F'];
+const TEAM_PALETTE = ['#A35D2E', '#C97A3D', '#8E5B4A', '#D8A067', '#6E4A3A', '#B9836E'];
 
 const MOUNTAIN_MAP = {
   milestones: {
@@ -2308,59 +2334,149 @@ function getPointOnRoute(progressPercent) {
   return { x: last.x, y: last.y };
 }
 
-var MARKER_R = 56;
-var BUBBLE_R  = 20;
-var BUBBLE_DIST = 120;
+var BADGE_R = 18;
+var DOT_R = 6;
+var TEAM_LANE_OFFSETS = [-60, -36, -12, 12, 36, 60];
 
-function renderMemberBubbles(cx, cy, color) {
-  var angles = [270, 342, 54, 126, 198];
-  return angles.map(function(deg) {
-    var rad = deg * Math.PI / 180;
-    var bx = (cx + Math.cos(rad) * BUBBLE_DIST).toFixed(1);
-    var by = (cy + Math.sin(rad) * BUBBLE_DIST).toFixed(1);
-    return '<circle cx="' + bx + '" cy="' + by + '" r="' + BUBBLE_R +
-      '" fill="' + color + '" fill-opacity="0.42" stroke="' + color +
-      '" stroke-width="1.5" stroke-opacity="0.6"/>';
-  }).join('');
+var CLIMB_STAGE_INDEX = { C1: 1, C2: 2, C3: 3, C4: 4, C5: 5, C6: 6, C7: 7, C8: 8 };
+
+function getMemberRoutePercent(member) {
+  var codeMatch = String(member && member.current_stage || '').match(/\b(C\d+)\b/i);
+  if (!codeMatch) return 0;
+  var stageCode = codeMatch[1].toUpperCase();
+  var idx = CLIMB_STAGE_INDEX[stageCode];
+  if (!idx) return 0;
+
+  var stagePercent = 0;
+  var prog = member && member.progress;
+  if (prog) {
+    var key = Object.keys(prog).find(function(k) {
+      var m2 = String(k).match(/\b(C\d+)\b/i);
+      return m2 && m2[1].toUpperCase() === stageCode;
+    });
+    if (key) stagePercent = toNumber((prog[key] && prog[key].percent) || 0);
+  }
+  return clampPercent(((idx - 1) + stagePercent / 100) / 8 * 100);
+}
+
+function getRouteTangentAt(routePercent) {
+  var points = buildRoutePoints();
+  var total = getTotalRouteLength(points);
+  var target = clampPercent(routePercent) / 100 * total;
+  var walked = 0;
+  for (var i = 1; i < points.length; i++) {
+    var dx = points[i].x - points[i - 1].x;
+    var dy = points[i].y - points[i - 1].y;
+    var segLen = Math.sqrt(dx * dx + dy * dy);
+    if (walked + segLen >= target || i === points.length - 1) {
+      var len = segLen || 1;
+      return { tx: dx / len, ty: dy / len };
+    }
+    walked += segLen;
+  }
+  var last = points[points.length - 1];
+  var prev = points[points.length - 2];
+  var ldx = last.x - prev.x;
+  var ldy = last.y - prev.y;
+  var ll = Math.sqrt(ldx * ldx + ldy * ldy) || 1;
+  return { tx: ldx / ll, ty: ldy / ll };
+}
+
+function getRoutePerpAt(routePercent) {
+  var t = getRouteTangentAt(routePercent);
+  return { px: t.ty, py: -t.tx };
+}
+
+function buildMountainMarkerData(teams) {
+  return teams.map(function(team, i) {
+    var members = Array.isArray(team.members) ? team.members : [];
+    var memberPositions = members.map(function(m) {
+      return { pct: getMemberRoutePercent(m), member: m };
+    });
+
+    var routePct = team.climbProgress;
+    if (memberPositions.length > 0) {
+      var sum = memberPositions.reduce(function(acc, mp) { return acc + mp.pct; }, 0);
+      routePct = sum / memberPositions.length;
+    }
+
+    var laneOffset = TEAM_LANE_OFFSETS[i % TEAM_LANE_OFFSETS.length];
+    var basePos = getPointOnRoute(routePct);
+    var perp = getRoutePerpAt(routePct);
+
+    return {
+      label: team.label,
+      teamName: team.name,
+      color: team.color,
+      routePct: routePct,
+      x: basePos.x + perp.px * laneOffset,
+      y: basePos.y + perp.py * laneOffset,
+      routeX: basePos.x,
+      routeY: basePos.y,
+      laneOffset: laneOffset,
+      status: getSemanticStatus(team),
+      percent: team.climbProgress,
+      coursePercent: team.courseProgress,
+      colorSoft: team.colorSoft,
+      colorLine: team.colorLine,
+      teamIndex: team.index,
+      memberPositions: memberPositions
+    };
+  });
 }
 
 function renderTeamMarkersSVG(markers) {
   var routePts = buildRoutePoints().map(function(p) { return p.x + ',' + p.y; }).join(' ');
   var routeEl = '<polyline points="' + routePts +
-    '" fill="none" stroke="rgba(181,120,74,0.3)" stroke-width="4"' +
-    ' stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16 10"/>';
+    '" fill="none" stroke="rgba(181,120,74,0.28)" stroke-width="3"' +
+    ' stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 9"/>';
 
   var sorted = markers.slice().sort(function(a, b) {
-    return a.percent !== b.percent ? a.percent - b.percent : a.teamIndex - b.teamIndex;
+    return a.routePct !== b.routePct ? a.routePct - b.routePct : a.teamIndex - b.teamIndex;
   });
 
-  var markerEls = sorted.map(function(marker) {
+  var dotEls = sorted.map(function(marker) {
+    var color = marker.color;
+    var tang = getRouteTangentAt(marker.routePct);
+
+    return marker.memberPositions.map(function(mp, di) {
+      var mPos = getPointOnRoute(mp.pct);
+      var mPerp = getRoutePerpAt(mp.pct);
+      var laneOffset = marker.laneOffset;
+      var dotX = (mPos.x + mPerp.px * laneOffset + tang.tx * (di - (marker.memberPositions.length - 1) / 2) * (DOT_R * 2.8)).toFixed(1);
+      var dotY = (mPos.y + mPerp.py * laneOffset + tang.ty * (di - (marker.memberPositions.length - 1) / 2) * (DOT_R * 2.8)).toFixed(1);
+      var opacity = mp.member.active === false ? '0.35' : (mp.member.connected === false ? '0.55' : '1');
+      var title = (marker.label.startsWith('T1') || marker.label.startsWith('T2')) && (mp.member.display_code === 'S01' || mp.member.display_code === 'S02')
+        ? mp.member.display_code
+        : '';
+      var titleEl = title ? '<title>' + title + '</title>' : '';
+      return '<circle cx="' + dotX + '" cy="' + dotY + '" r="' + DOT_R +
+        '" fill="' + color + '" fill-opacity="' + opacity + '"' +
+        ' pointer-events="all">' + titleEl + '</circle>';
+    }).join('');
+  }).join('');
+
+  var badgeEls = sorted.map(function(marker) {
     var cx = marker.x.toFixed(1);
     var cy = marker.y.toFixed(1);
     var color = marker.color;
-    var members = renderMemberBubbles(marker.x, marker.y, color);
 
-    var dx = marker.x - marker.rawX;
-    var dy = marker.y - marker.rawY;
-    var connector = '';
-    if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
-      connector = '<line x1="' + marker.rawX.toFixed(1) + '" y1="' + marker.rawY.toFixed(1) +
-        '" x2="' + cx + '" y2="' + cy +
-        '" stroke="' + color + '" stroke-width="1.5" stroke-opacity="0.38" stroke-dasharray="6 4"/>';
-    }
+    var statusNote = marker.status.label;
+    var pctNote = marker.percent + '%';
+    var titleText = marker.teamName + ' • ' + pctNote + ' • ' + statusNote;
 
-    return '<g data-team="' + marker.label + '" data-pct="' + marker.percent + '">' +
-      members + connector +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + MARKER_R +
-        '" fill="rgba(250,249,246,0.9)" stroke="' + color + '" stroke-width="3"/>' +
+    return '<g data-team="' + marker.label + '" pointer-events="all">' +
+      '<title>' + titleText + '</title>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + BADGE_R +
+        '" fill="rgba(250,248,244,0.92)" stroke="' + color + '" stroke-width="2.5"/>' +
       '<text x="' + cx + '" y="' + cy +
         '" text-anchor="middle" dominant-baseline="central"' +
-        ' font-family="JetBrains Mono, monospace" font-size="40" font-weight="600"' +
+        ' font-family="JetBrains Mono, monospace" font-size="14" font-weight="700"' +
         ' fill="' + color + '">' + marker.label + '</text>' +
       '</g>';
   }).join('');
 
-  return routeEl + markerEls;
+  return routeEl + dotEls + badgeEls;
 }
 
 function getCoursePlan(data) {
@@ -2575,99 +2691,7 @@ function getSemanticStatus(team) {
 
 function buildCourseMarkers(teams) {
   if (!teams.length) return [];
-
-  var CLOSE_THRESHOLD = 140;
-  var Y_STEP = -130;
-  var X_SPREAD = 75;
-
-  var maxClimb = 0;
-  teams.forEach(function(t) {
-    if (t.climbProgress > maxClimb) maxClimb = t.climbProgress;
-  });
-
-  var rawPos = teams.map(function(team) {
-    return getPointOnRoute(team.climbProgress);
-  });
-
-  var sorted = teams.slice().sort(function(a, b) {
-    return a.climbProgress !== b.climbProgress ? a.climbProgress - b.climbProgress : a.index - b.index;
-  });
-
-  var inGroup = sorted.map(function() { return false; });
-  var sortedGroups = [];
-
-  for (var i = 0; i < sorted.length; i++) {
-    if (inGroup[i]) continue;
-    inGroup[i] = true;
-    var grp = [i];
-    var seedPos = rawPos[sorted[i].index];
-
-    for (var j = i + 1; j < sorted.length; j++) {
-      if (inGroup[j]) continue;
-      var jp = rawPos[sorted[j].index];
-      var ddx = jp.x - seedPos.x;
-      var ddy = jp.y - seedPos.y;
-      if (Math.sqrt(ddx * ddx + ddy * ddy) < CLOSE_THRESHOLD) {
-        grp.push(j);
-        inGroup[j] = true;
-      }
-    }
-    sortedGroups.push(grp);
-  }
-
-  var offsets = {};
-  sortedGroups.forEach(function(grp) {
-    var progressCount = {};
-    grp.forEach(function(si) {
-      var p = sorted[si].climbProgress;
-      progressCount[p] = (progressCount[p] || 0) + 1;
-    });
-
-    var uniqueP = Object.keys(progressCount).map(Number).sort(function(a, b) { return a - b; });
-    var progressRank = {};
-    uniqueP.forEach(function(p, rank) { progressRank[p] = rank; });
-
-    var slotAt = {};
-    grp.forEach(function(si) {
-      var team = sorted[si];
-      var rank = progressRank[team.climbProgress];
-      var slot = slotAt[rank] || 0;
-      slotAt[rank] = slot + 1;
-
-      var yOff = rank * Y_STEP;
-      var xOff = 0;
-      if (progressCount[team.climbProgress] > 1) {
-        var sign = slot % 2 === 0 ? -1 : 1;
-        var tier = Math.floor(slot / 2) + 1;
-        xOff = sign * tier * X_SPREAD;
-      }
-      offsets[team.index] = { x: xOff, y: yOff };
-    });
-  });
-
-  return teams.map(function(team) {
-    var rp = rawPos[team.index];
-    var off = offsets[team.index] || { x: 0, y: 0 };
-    var percent = team.climbProgress;
-
-    return {
-      label: team.label,
-      teamName: team.name,
-      percent: percent,
-      coursePercent: team.courseProgress,
-      color: team.color,
-      colorSoft: team.colorSoft,
-      colorLine: team.colorLine,
-      rawX: rp.x,
-      rawY: rp.y,
-      x: rp.x + off.x,
-      y: rp.y + off.y,
-      status: getSemanticStatus(team),
-      isBaseCluster: percent === 0,
-      isLeader: percent > 0 && percent === maxClimb,
-      teamIndex: team.index
-    };
-  });
+  return buildMountainMarkerData(teams);
 }
 
 function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestoneKey) {
@@ -2875,7 +2899,14 @@ function renderJourney(model) {
   const svgOverlay = renderTeamMarkersSVG(model.markers);
 
   const statusStrip = model.markers.map(function(marker) {
-    return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; climb ${marker.percent}% &middot; ${escapeHtml(marker.status.label)}</span>`;
+    var memberDots = (marker.memberPositions || []).map(function(mp) {
+      var cls = 'chip-dot';
+      if (mp.member.active === false) cls += ' inactive';
+      else if (mp.member.connected === false) cls += ' offline';
+      return `<span class="${cls}" title="${escapeHtml(mp.member.display_code || '')}"></span>`;
+    }).join('');
+    var dotsHtml = memberDots ? `<span class="chip-dots">${memberDots}</span>` : '';
+    return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; ${marker.percent}%${dotsHtml}</span>`;
   }).join('');
 
   document.getElementById('journey-wrap').innerHTML =
