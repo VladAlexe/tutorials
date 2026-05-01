@@ -449,133 +449,53 @@ section { padding-top: 2rem; }
   pointer-events: none;
 }
 
-.mountain-ridge-back {
-  fill: rgba(226, 221, 211, 0.75);
-}
-
-.mountain-ridge-front {
-  fill: rgba(201, 195, 181, 0.48);
-}
-
-.mountain-path {
-  fill: none;
-  stroke: rgba(181, 120, 74, 0.9);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.mountain-path-shadow {
-  fill: none;
-  stroke: rgba(201, 195, 181, 0.65);
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.checkpoint-guide {
-  fill: none;
-  stroke: rgba(201, 195, 181, 0.6);
-  stroke-width: 1;
-  stroke-dasharray: 3 5;
-}
-
-.checkpoint-node {
-  fill: var(--bg);
-  stroke: var(--border-hi);
-  stroke-width: 2;
-}
-
-.checkpoint-label {
+.mountain-checkpoint-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--sub);
+  font-size: 9.5px;
+  fill: rgba(28, 27, 24, 0.9);
   letter-spacing: 0.05em;
 }
 
-.checkpoint-note {
+.mountain-checkpoint-node {
+  fill: rgba(250, 249, 246, 0.96);
+  stroke: rgba(45, 42, 38, 0.28);
+  stroke-width: 2;
+}
+
+.mountain-team-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8.8px;
-  fill: var(--dim);
-  letter-spacing: 0.04em;
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--text);
 }
 
-.checkpoint-current .checkpoint-node {
-  fill: rgba(181, 120, 74, 0.14);
-  stroke: var(--accent);
-}
-
-.checkpoint-current .checkpoint-label {
-  fill: var(--accent);
-}
-
-.mountain-team-marker {
-  position: absolute;
-  z-index: 1;
-  transform: translate(calc(-50% + var(--marker-offset-x, 0px)), calc(-50% + var(--marker-offset-y, 0px)));
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  height: 26px;
-  padding: 0 0.5rem;
-  border: 1px solid var(--team-color, rgba(181, 120, 74, 0.5));
-  border-radius: 999px;
-  background: rgba(250, 249, 246, 0.95);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--team-color, var(--accent));
-  white-space: nowrap;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.55);
-}
-
-.mountain-team-marker.status-basecamp,
 .mountain-status-chip.status-basecamp {
   border-color: var(--team-line, rgba(201, 195, 181, 0.9));
   color: var(--team-color, var(--sub));
   background: rgba(250, 249, 246, 0.98);
 }
 
-.mountain-team-marker.status-waiting,
 .mountain-status-chip.status-waiting {
   border-color: var(--team-line, rgba(181, 120, 74, 0.38));
   color: var(--team-color, var(--sub));
 }
 
-.mountain-team-marker.status-climbing,
 .mountain-status-chip.status-climbing {
   border-color: var(--team-color, rgba(181, 120, 74, 0.54));
   color: var(--team-color, var(--accent));
   background: var(--team-soft, rgba(181, 120, 74, 0.08));
 }
 
-.mountain-team-marker.status-checkpoint,
 .mountain-status-chip.status-checkpoint {
   border-color: var(--team-color, rgba(181, 120, 74, 0.62));
   color: var(--text);
   background: var(--team-soft, rgba(181, 120, 74, 0.12));
 }
 
-.mountain-team-marker.status-summit,
 .mountain-status-chip.status-summit {
   border-color: var(--team-color, var(--accent));
   color: var(--text);
   background: var(--team-soft, rgba(181, 120, 74, 0.16));
-}
-
-.mountain-team-marker::before {
-  content: '';
-  position: absolute;
-  inset: auto auto -8px 50%;
-  width: 1px;
-  height: 8px;
-  background: var(--team-soft, rgba(181, 120, 74, 0.28));
-  transform: translateX(-50%);
-}
-
-.mountain-team-marker.base-cluster::before {
-  display: none;
 }
 
 .mountain-footnote {
@@ -970,6 +890,8 @@ section { padding-top: 2rem; }
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--team-color), rgba(212, 168, 130, 0.9));
+  min-width: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
 .team-links {
@@ -1240,6 +1162,47 @@ section { padding-top: 2rem; }
   border-color: rgba(226, 221, 211, 0.86);
 }
 
+.member-stage-strip {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding-top: 0.08rem;
+}
+
+.member-stage-pip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 0.08rem 0.26rem 0.12rem;
+  border-radius: 4px;
+  border: 1px solid rgba(226, 221, 211, 0.92);
+  background: rgba(250, 249, 246, 0.64);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.4px;
+  line-height: 1;
+  color: var(--dim);
+}
+
+.pip-done {
+  border-color: var(--team-line-strong, rgba(181, 120, 74, 0.52));
+  background: var(--team-soft);
+  color: var(--team-color);
+}
+
+.pip-current {
+  border-color: var(--team-color);
+  background: rgba(250, 249, 246, 0.96);
+  color: var(--team-color);
+}
+
+.pip-upcoming {
+  border-color: rgba(226, 221, 211, 0.9);
+  background: rgba(250, 249, 246, 0.42);
+  color: var(--dim);
+}
+
 .member-progress-cell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -1274,6 +1237,7 @@ section { padding-top: 2rem; }
 .member-progress-fill {
   height: 100%;
   border-radius: 999px;
+  min-width: 0;
 }
 
 .member-progress-value {
@@ -1695,6 +1659,9 @@ footer {
   }
   .member-progress-cell.is-issues {
     order: 6;
+  }
+  .member-stage-strip {
+    order: 7;
   }
   .mountain-card {
     min-height: auto;
@@ -2182,7 +2149,7 @@ function renderStats(model) {
     `<div class="stat-tile"><span class="stat-val">${stats.averageProgress}%</span><span class="stat-label">Average progress</span></div>`;
 }
 
-function renderJourney(model) {
+function renderJourneyLegacy(model) {
   const milestoneItems = model.milestoneSummaries.map((milestone) => {
     const currentClass = milestone.code === model.currentMilestoneCode ? ' is-current' : '';
     const closedLabel = milestone.total > 0 ? `${milestone.closed}/${milestone.total} closed` : '\u2014';
@@ -2328,7 +2295,7 @@ function renderProjectStats(model) {
     `</div>`;
 }
 
-function renderTeams(model) {
+function renderTeamsLegacy(model) {
   const currentMilestoneCode = model.currentMilestoneCode;
 
   document.getElementById('team-grid').innerHTML = model.teams.map((team, index) => {
@@ -2444,7 +2411,7 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
-const TEAM_PALETTE = ['#C97B3D', '#C9A23D', '#A84A44', '#4E7CA1', '#2F2A25', '#8E6E63'];
+const TEAM_PALETTE = ['#C8893C', '#B5A03A', '#A75A52', '#5E7FAE', '#2D2A26', '#9A7E72'];
 
 const MOUNTAIN_POINTS = {
   base: { x: 260, y: 851, label: 'Base' },
@@ -2471,7 +2438,7 @@ const CLIMB_STAGE_ROUTE = {
   C8: { start: 'C7', end: 'C8' }
 };
 
-const DEFAULT_LANE_OFFSETS = [-10, -6, -2, 2, 6, 10];
+const LEGACY_DEFAULT_LANE_OFFSETS = [-10, -6, -2, 2, 6, 10];
 const ROUTE_POINTS = ROUTE_ORDER.map(function(key) {
   return {
     key: key,
@@ -2590,13 +2557,21 @@ function getPointFromStage(stageKey, stagePercent) {
   return getPointOnRouteDistance(getRouteDistanceForStage(stageKey, stagePercent));
 }
 
-var BADGE_R = 16;
-var DOT_R = 4.5;
-var TEAM_LANE_MAP = { T1: -10, T2: -6, T3: -2, T4: 2, T5: 6, T6: 10 };
+var BADGE_R = 18;
+var DOT_R = 5.25;
+var TEAM_COLLISION_DISTANCE = 32;
+var TEAM_COLLISION_PATTERN = [
+  { tan: 0, perp: 0 },
+  { tan: 6, perp: 8 },
+  { tan: -6, perp: 8 },
+  { tan: 10, perp: 13 },
+  { tan: -10, perp: 13 },
+  { tan: 0, perp: 18 }
+];
 
 var CLIMB_STAGE_INDEX = { C1: 1, C2: 2, C3: 3, C4: 4, C5: 5, C6: 6, C7: 7, C8: 8 };
 
-function getStagePercentFromProgressMap(progressMap, stageKey) {
+function getStagePercentFromProgressMapLegacy(progressMap, stageKey) {
   if (!progressMap || !stageKey) {
     return 0;
   }
@@ -2607,9 +2582,9 @@ function getStagePercentFromProgressMap(progressMap, stageKey) {
   return matchingKey ? toNumber((progressMap[matchingKey] && progressMap[matchingKey].percent) || 0) : 0;
 }
 
-function getMemberRoutePosition(member) {
+function getMemberRoutePositionLegacy(member) {
   var stageKey = resolveMountainStageKey(inferStageKey(member && member.current_stage));
-  var stagePercent = stageKey ? getStagePercentFromProgressMap(member && member.progress, stageKey) : 0;
+  var stagePercent = stageKey ? getStagePercentFromProgressMapLegacy(member && member.progress, stageKey) : 0;
   if (stageKey === 'C8' && /^(C9|FINAL)$/i.test(String(inferStageKey(member && member.current_stage) || ''))) {
     stagePercent = 100;
   }
@@ -2648,21 +2623,21 @@ function renderMemberStageStrip(member) {
   }).join('');
 }
 
-function getRouteTangentAt(routeDistance) {
+function getRouteTangentAtLegacy(routeDistance) {
   var point = getPointOnRouteDistance(routeDistance);
   return { tx: point.tx, ty: point.ty };
 }
 
-function getRoutePerpAt(routeDistance) {
+function getRoutePerpAtLegacy(routeDistance) {
   var point = getPointOnRouteDistance(routeDistance);
   return { px: point.px, py: point.py };
 }
 
-function buildMountainMarkerData(teams) {
+function buildMountainMarkerDataLegacy(teams) {
   return teams.map(function(team, i) {
     var members = Array.isArray(team.members) ? team.members : [];
-    var memberPositions = members.map(getMemberRoutePosition);
-    var laneOffset = TEAM_LANE_MAP[team.label] !== undefined ? TEAM_LANE_MAP[team.label] : DEFAULT_LANE_OFFSETS[i % DEFAULT_LANE_OFFSETS.length];
+    var memberPositions = members.map(getMemberRoutePositionLegacy);
+    var laneOffset = LEGACY_DEFAULT_LANE_OFFSETS[i % LEGACY_DEFAULT_LANE_OFFSETS.length];
     var basePos = getPointFromStage(team.currentStage.key, team.currentStage.percent);
 
     return {
@@ -2687,7 +2662,7 @@ function buildMountainMarkerData(teams) {
   });
 }
 
-function renderTeamMarkersSVG(markers) {
+function renderTeamMarkersSVGLegacy(markers) {
   var sorted = markers.slice().sort(function(a, b) {
     return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
   });
@@ -3153,14 +3128,13 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const svgOverlay = renderTeamMarkersSVG(model.markers);
+  const svgOverlay = renderMountainMilestonesSVG(model.mountainCurrentKey) + renderTeamMarkersSVG(model.markers);
 
   const statusStrip = model.markers.map(function(marker) {
-    var memberDots = (marker.memberPositions || []).map(function(mp) {
+    var memberDots = (marker.memberDots || []).map(function(dot) {
       var cls = 'chip-dot';
-      if (mp.member.active === false) cls += ' inactive';
-      else if (mp.member.connected === false) cls += ' offline';
-      return `<span class="${cls}" title="${escapeHtml(mp.member.display_code || '')}"></span>`;
+      if (dot.dimmed) cls += ' offline';
+      return `<span class="${cls}" title="${escapeHtml(dot.title || '')}"></span>`;
     }).join('');
     var dotsHtml = memberDots ? `<span class="chip-dots">${memberDots}</span>` : '';
     return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; ${marker.percent}%${dotsHtml}</span>`;
@@ -3190,7 +3164,7 @@ function renderJourney(model) {
         `</div>` +
         `<div class="mountain-status-strip">${statusStrip}</div>` +
         `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
-        `<p class="mountain-footnote">Marcajele T1-T6 și member dots urmeaz&#259; exclusiv traseul Base-C8; C9 r&#259;m&#226;ne separat ca After summit.</p>` +
+        `<p class="mountain-footnote">Team bubbles urmeaz&#259; exclusiv ruta Base-C8 pe baza course progress; C9 r&#259;m&#226;ne separat ca After summit.</p>` +
       `</div>` +
     `</div>`;
 }
@@ -3363,14 +3337,15 @@ function renderTeams(model) {
                 `<span class="member-status"><span class="member-status-pill is-${connectionState}">${connectionState}</span></span>` +
                 `<span class="member-stage"><span class="member-stage-badge${stageClass}">${escapeHtml(stageCode)}</span></span>` +
                 `<span class="member-progress-cell is-course">` +
-                  `<span class="member-progress-track is-course"><span class="member-progress-fill" style="width:${coursePct}%"></span></span>` +
+                  `<span class="member-progress-track is-course"><span class="member-progress-fill" style="width:${getMinimumVisibleFillWidth(coursePct, 5)}%;"></span></span>` +
                   `<span class="member-progress-value">${coursePct}%</span>` +
                 `</span>` +
                 `<span class="member-progress-cell is-issues">` +
-                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${issuePct}%"></span></span>` +
+                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${getMinimumVisibleFillWidth(issuePct, 5)}%;"></span></span>` +
                   `<span class="member-progress-value">${issuePct}%</span>` +
                 `</span>` +
                 `<span class="member-summary">${escapeHtml(summaryText)}</span>` +
+                `<span class="member-stage-strip">${renderMemberStageStrip(member)}</span>` +
               `</div>`
             );
           }).join('')}` +
@@ -3404,11 +3379,11 @@ function renderTeams(model) {
         `<div class="team-progress-stack">` +
           `<div class="team-progress-group is-course">` +
             `<div class="team-progress-head"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}% completed</span></div>` +
-            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${team.courseProgress}%"></div></div>` +
+            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.courseProgress, 4)}%;"></div></div>` +
           `</div>` +
           `<div class="team-progress-group is-issues">` +
             `<div class="team-progress-head"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}% completed</span></div>` +
-            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${team.issueProgress}%"></div></div>` +
+            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.issueProgress, 4)}%;"></div></div>` +
           `</div>` +
         `</div>` +
         `<div class="team-milestone-row">${milestonePills}</div>` +
@@ -3435,6 +3410,189 @@ function renderTeams(model) {
       `</article>`
     );
   }).join('');
+}
+
+function getMountainProgressPercent(team) {
+  if (team.currentStage.key === POST_SUMMIT_STAGE_KEY || team.currentStage.key === 'Final') {
+    return 100;
+  }
+  return clampPercent(team.courseProgress);
+}
+
+function getMinimumVisibleFillWidth(percent, minimumPercent) {
+  var clamped = clampPercent(percent);
+  if (clamped <= 0) {
+    return 0;
+  }
+  return Math.min(100, Math.max(clamped, minimumPercent || 4));
+}
+
+function getMarkerCollisionSign(routePoint) {
+  return routePoint.py >= 0 ? 1 : -1;
+}
+
+function applyMarkerCollisionOffsets(markers) {
+  var sorted = markers.slice().sort(function(a, b) {
+    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
+  });
+  var groups = [];
+  var activeGroup = [];
+
+  sorted.forEach(function(marker) {
+    if (!activeGroup.length) {
+      activeGroup.push(marker);
+      return;
+    }
+
+    var previous = activeGroup[activeGroup.length - 1];
+    if (marker.routeDistance - previous.routeDistance <= TEAM_COLLISION_DISTANCE) {
+      activeGroup.push(marker);
+      return;
+    }
+
+    groups.push(activeGroup);
+    activeGroup = [marker];
+  });
+
+  if (activeGroup.length) {
+    groups.push(activeGroup);
+  }
+
+  groups.forEach(function(group) {
+    group.forEach(function(marker, index) {
+      var pattern = TEAM_COLLISION_PATTERN[index % TEAM_COLLISION_PATTERN.length];
+      var ring = Math.floor(index / TEAM_COLLISION_PATTERN.length);
+      var sign = getMarkerCollisionSign(marker.routePoint);
+      var tanOffset = pattern.tan + (ring * 4 * (index % 2 === 0 ? 1 : -1));
+      var perpOffset = (pattern.perp + (ring * 6)) * sign;
+
+      marker.tanOffset = tanOffset;
+      marker.perpOffset = perpOffset;
+      marker.clusterSide = sign;
+      marker.x = marker.routePoint.x + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * perpOffset);
+      marker.y = marker.routePoint.y + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * perpOffset);
+    });
+  });
+
+  return markers;
+}
+
+function buildMarkerMemberDots(members) {
+  return members.map(function(member) {
+    var coursePct = getMemberCourseProgressPercent(member);
+    var issuePct = getMemberIssueProgressPercent(member);
+    var displayCode = String(member.display_code || member.local_code || '');
+    var stageCode = getMemberStageCode(member);
+    var dimmed = member.connected === false || member.active === false || (coursePct === 0 && issuePct === 0);
+
+    return {
+      dimmed: dimmed,
+      title: [displayCode, stageCode, coursePct + '% course', issuePct + '% issues'].filter(Boolean).join(' / ')
+    };
+  });
+}
+
+function buildMountainMarkerData(teams) {
+  var markers = teams.map(function(team) {
+    var routePct = getMountainProgressPercent(team);
+    var routeDistance = ROUTE_METRICS.totalLength * (routePct / 100);
+    var routePoint = getPointOnRouteDistance(routeDistance);
+
+    return {
+      label: team.label,
+      teamName: team.name,
+      color: team.color,
+      routePct: routePct,
+      x: routePoint.x,
+      y: routePoint.y,
+      routeX: routePoint.x,
+      routeY: routePoint.y,
+      routePoint: routePoint,
+      routeDistance: routeDistance,
+      status: getSemanticStatus(team),
+      percent: routePct,
+      coursePercent: routePct,
+      colorSoft: team.colorSoft,
+      colorLine: team.colorLine,
+      teamIndex: team.index,
+      memberDots: buildMarkerMemberDots(Array.isArray(team.members) ? team.members : [])
+    };
+  });
+
+  return applyMarkerCollisionOffsets(markers);
+}
+
+function renderMountainMilestonesSVG(currentKey) {
+  var keys = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
+
+  return keys.map(function(key) {
+    var point = MOUNTAIN_POINTS[key];
+    var label = point.label;
+    var isBase = key === 'base';
+    var isCurrent = label === currentKey;
+    var labelY = isBase ? point.y + 34 : point.y - 18;
+    var stroke = isCurrent ? 'rgba(181, 120, 74, 0.9)' : 'rgba(45, 42, 38, 0.28)';
+    var fill = isCurrent ? 'rgba(181, 120, 74, 0.16)' : 'rgba(250, 249, 246, 0.96)';
+
+    return '<g>' +
+      '<circle cx="' + point.x + '" cy="' + point.y + '" r="10" fill="rgba(255,255,255,0.92)" opacity="0.82"/>' +
+      '<circle class="mountain-checkpoint-node" cx="' + point.x + '" cy="' + point.y + '" r="7.5" fill="' + fill + '" stroke="' + stroke + '"/>' +
+      '<text class="mountain-checkpoint-label" x="' + point.x + '" y="' + labelY + '"' +
+        ' text-anchor="middle" stroke="rgba(250,249,246,0.96)" stroke-width="3" paint-order="stroke">' +
+        label + '</text>' +
+      '</g>';
+  }).join('');
+}
+
+function renderTeamMarkersSVG(markers) {
+  var sorted = markers.slice().sort(function(a, b) {
+    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
+  });
+
+  var dotEls = sorted.map(function(marker) {
+    var dotCount = marker.memberDots.length;
+    var outwardOffset = BADGE_R + DOT_R + 5;
+    var clusterCenterX = marker.x + (marker.routePoint.px * marker.clusterSide * outwardOffset);
+    var clusterCenterY = marker.y + (marker.routePoint.py * marker.clusterSide * outwardOffset);
+
+    return marker.memberDots.map(function(dot, index) {
+      var row = Math.floor(index / 3);
+      var colCount = Math.min(3, dotCount - (row * 3));
+      var col = index % 3;
+      var tanOffset = (col - ((colCount - 1) / 2)) * (DOT_R * 2.25);
+      var perpOffset = (row - (dotCount > 3 ? 0.5 : 0)) * (DOT_R * 2.1);
+      var dotX = (clusterCenterX + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * marker.clusterSide * perpOffset)).toFixed(1);
+      var dotY = (clusterCenterY + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * marker.clusterSide * perpOffset)).toFixed(1);
+      var fill = dot.dimmed ? 'rgba(250,248,244,0.72)' : marker.color;
+      var fillOpacity = dot.dimmed ? '0.85' : '1';
+      var titleEl = dot.title ? '<title>' + escapeHtml(dot.title) + '</title>' : '';
+
+      return '<circle cx="' + dotX + '" cy="' + dotY + '" r="' + DOT_R +
+        '" fill="' + fill + '" fill-opacity="' + fillOpacity + '"' +
+        ' stroke="rgba(255,255,255,0.98)" stroke-width="1.8" pointer-events="all">' +
+        titleEl + '</circle>';
+    }).join('');
+  }).join('');
+
+  var badgeEls = sorted.map(function(marker) {
+    var cx = marker.x.toFixed(1);
+    var cy = marker.y.toFixed(1);
+    var titleText = marker.teamName + ' - ' + marker.coursePercent + '% - ' + marker.status.label;
+
+    return '<g data-team="' + marker.label + '" pointer-events="all">' +
+      '<title>' + escapeHtml(titleText) + '</title>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (BADGE_R + 2.5) +
+        '" fill="rgba(255,255,255,0.92)" opacity="0.86"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + BADGE_R +
+        '" fill="rgba(250,248,244,0.94)" stroke="' + marker.color + '" stroke-width="3"/>' +
+      '<text class="mountain-team-label" x="' + cx + '" y="' + cy +
+        '" text-anchor="middle" dominant-baseline="central"' +
+        ' stroke="rgba(255,255,255,0.96)" stroke-width="2.2" paint-order="stroke" fill="' + marker.color + '">' +
+        marker.label + '</text>' +
+      '</g>';
+  }).join('');
+
+  return dotEls + badgeEls;
 }
 
 fetch('./progress.json')
