@@ -3529,13 +3529,10 @@ function buildMarkerMemberDots(members) {
     var displayCode = String(member.display_code || member.local_code || '');
     var stageCode = getMemberStageCode(member);
     var dimmed = member.connected === false || member.active === false || (coursePct === 0 && issuePct === 0);
-    var pos = getMemberRoutePositionLegacy(member);
 
     return {
       dimmed: dimmed,
-      title: [displayCode, stageCode, coursePct + '% course', issuePct + '% issues'].filter(Boolean).join(' / '),
-      routeX: pos.point.x,
-      routeY: pos.point.y
+      title: [displayCode, stageCode, coursePct + '% course', issuePct + '% issues'].filter(Boolean).join(' / ')
     };
   });
 }
@@ -3613,13 +3610,18 @@ function renderTeamMarkersSVG(markers) {
   }).join('');
 
   var dotEls = sorted.map(function(marker) {
-    return marker.memberDots.map(function(dot) {
+    var dotCount = marker.memberDots.length;
+    var startX = marker.x - ((dotCount - 1) * (DOT_R * 2.35)) / 2;
+    var dotY = marker.y + BADGE_R + 10;
+
+    return marker.memberDots.map(function(dot, index) {
+      var dotX = startX + index * DOT_R * 2.35;
       var fill = dot.dimmed ? 'rgba(250,248,244,0.72)' : marker.color;
       var stroke = dot.dimmed ? marker.color : 'rgba(255,255,255,0.98)';
       var opacity = dot.dimmed ? '0.58' : '1';
       var titleEl = dot.title ? '<title>' + escapeHtml(dot.title) + '</title>' : '';
 
-      return '<circle cx="' + dot.routeX.toFixed(1) + '" cy="' + dot.routeY.toFixed(1) + '" r="' + DOT_R + '"' +
+      return '<circle cx="' + dotX.toFixed(1) + '" cy="' + dotY.toFixed(1) + '" r="' + DOT_R + '"' +
         ' fill="' + fill + '" fill-opacity="' + opacity + '"' +
         ' stroke="' + stroke + '" stroke-width="1.7" pointer-events="all">' +
         titleEl +
