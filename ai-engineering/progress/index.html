@@ -23,6 +23,9 @@
   --accent: #b5784a;
   --accent-lo: #d4a882;
   --accent-soft: rgba(181, 120, 74, 0.12);
+  --progress-low: #b88952;
+  --progress-mid: #9c9b62;
+  --progress-high: #7fa36b;
 }
 
 html { scroll-behavior: smooth; }
@@ -936,7 +939,8 @@ section { padding-top: 2rem; }
   position: absolute;
   inset: 0 auto 0 0;
   width: calc(var(--pill-progress, 0) * 1%);
-  background: var(--team-soft);
+  background: var(--pill-color, var(--team-soft));
+  opacity: 0.55;
   pointer-events: none;
 }
 
@@ -1134,20 +1138,31 @@ section { padding-top: 2rem; }
 .member-status-pill {
   min-width: 66px;
   padding: 0.18rem 0.45rem 0.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: lowercase;
   background: rgba(250, 249, 246, 0.72);
   color: var(--dim);
 }
 
-.member-status-pill.is-online {
+.member-status-pill.is-active {
   color: var(--sub);
 }
 
-.member-status-pill.is-offline {
+.member-status-pill.is-in-progress {
+  border-color: rgba(156, 155, 98, 0.55);
+  background: rgba(156, 155, 98, 0.1);
+  color: var(--sub);
+}
+
+.member-status-pill.is-inactive {
   border-color: rgba(201, 195, 181, 0.7);
   background: rgba(201, 195, 181, 0.22);
   color: var(--sub);
+}
+
+.member-status-pill.is-missing {
+  border-color: rgba(201, 195, 181, 0.5);
+  background: transparent;
+  color: var(--dim);
 }
 
 .member-stage-badge {
@@ -3225,7 +3240,9 @@ function buildDashboardModel(data) {
     markers: buildCourseMarkers(teams),
     activityStats: activityStats,
     blockers: blockerData.blockers,
+    blockerFallback: blockerData.fallbackIssues,
     hasBlockerData: blockerData.hasTimestampData,
+    hasAnyOpenIssues: blockerData.hasAnyOpenIssues,
     issuesClosedLast48h: issuesClosedLast48h,
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
@@ -3266,27 +3283,30 @@ function computeBlockers(teams) {
   var now = Date.now();
   var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
   var blockers = [];
+  var fallback = [];
   var hasTimestampData = false;
 
   teams.forEach(function(team) {
     team.openIssues.forEach(function(issue) {
+      fallback.push({ teamLabel: team.label, title: sanitizeIssueTitle(issue.title), url: issue.url || '' });
       if (issue.updated_at) {
         hasTimestampData = true;
         var daysStale = Math.floor((now - new Date(issue.updated_at).getTime()) / (24 * 60 * 60 * 1000));
         if (daysStale >= 3) {
-          blockers.push({
-            teamLabel: team.label,
-            title: sanitizeIssueTitle(issue.title),
-            url: issue.url || '',
-            daysStale: daysStale
-          });
+          blockers.push({ teamLabel: team.label, title: sanitizeIssueTitle(issue.title), url: issue.url || '', daysStale: daysStale });
         }
       }
     });
   });
 
   blockers.sort(function(a, b) { return b.daysStale - a.daysStale; });
-  return { blockers: blockers.slice(0, 5), hasTimestampData: hasTimestampData };
+  fallback.sort(function(a, b) { return String(a.title).localeCompare(String(b.title)); });
+  return {
+    blockers: blockers.slice(0, 5),
+    hasTimestampData: hasTimestampData,
+    fallbackIssues: fallback.slice(0, 5),
+    hasAnyOpenIssues: fallback.length > 0
+  };
 }
 
 function renderStats(model) {
@@ -3375,10 +3395,12 @@ function renderProjectStats(model) {
       const ratio = hasTasks ? `${stage.closed}/${stage.total}` : '\u2014';
       const fillClass = hasTasks ? '' : ' is-future';
       const labelClass = hasTasks && stage.closed > 0 ? ' is-active' : '';
+      const stageColor = hasTasks ? getProgressColor(stage.percent) : '';
+      const fillStyle = hasTasks ? `width:${stage.percent}%; background:${stageColor};` : 'width:0%;';
       return (
         `<div class="backlog-row">` +
           `<span class="backlog-label${labelClass}">${escapeHtml(stage.key)}</span>` +
-          `<div class="backlog-track"><div class="backlog-fill${fillClass}" style="width:${hasTasks ? stage.percent : 0}%;"></div></div>` +
+          `<div class="backlog-track"><div class="backlog-fill${fillClass}" style="${fillStyle}"></div></div>` +
           `<span class="backlog-value">${escapeHtml(ratio)}</span>` +
         `</div>`
       );
@@ -3388,7 +3410,7 @@ function renderProjectStats(model) {
   const activeTeamsStr = actStats != null
     ? `${actStats.activeCount}/${model.totals.teamCount}`
     : `\u2014/${model.totals.teamCount}`;
-  const momentumStr = model.issuesClosedLast48h != null ? String(model.issuesClosedLast48h) : '\u2014';
+  const momentumStr = model.issuesClosedLast48h != null ? String(model.issuesClosedLast48h) : '0';
 
   const controlTiles = [
     { label: 'Progres', value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate' },
@@ -3412,7 +3434,21 @@ function renderProjectStats(model) {
 
   let blockersHtml;
   if (!model.hasBlockerData) {
-    blockersHtml = '<div class="team-empty">Nu exist\u0103 date despre blocaje.</div>';
+    if (!model.hasAnyOpenIssues) {
+      blockersHtml = '<div class="team-empty">Nu exist\u0103 date despre blocaje.</div>';
+    } else {
+      blockersHtml = model.blockerFallback.map(function(issue) {
+        const titleEl = issue.url
+          ? `<a class="blocker-title" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>`
+          : `<span class="blocker-title">${escapeHtml(issue.title)}</span>`;
+        return (
+          `<div class="blocker-row">` +
+            `<span class="blocker-team">${escapeHtml(issue.teamLabel)}</span>` +
+            titleEl +
+          `</div>`
+        );
+      }).join('');
+    }
   } else if (!model.blockers.length) {
     blockersHtml = '<div class="team-empty">Nu sunt blocaje active.</div>';
   } else {
@@ -3446,7 +3482,7 @@ function renderProjectStats(model) {
         `<article class="project-card">` +
           `<div class="project-title">Unde ne bloc\u0103m</div>` +
           `<div class="blocker-list">${blockersHtml}</div>` +
-          `<p class="project-footnote">Dashboard-ul se actualizeaz\u0103 din GitHub. Dup\u0103 ce a\u0163i f\u0103cut push, \u00eenchi\u0163i issue-ul corespunz\u0103tor.</p>` +
+          `<p class="project-footnote">Dashboard-ul se actualizeaz\u0103 din GitHub. Dup\u0103 ce a\u021bi f\u0103cut push, \u00eenchide\u021bi issue-ul corespunz\u0103tor.</p>` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -3486,18 +3522,13 @@ function getMemberStageCode(member) {
 
 function getMemberSummaryCopy(members) {
   const trackedCount = members.length;
-  if (!trackedCount) {
-    return '0 tracked';
-  }
-
-  const offlineCount = members.filter(function(member) {
-    return member && member.connected === false;
+  if (!trackedCount) return '0 înregistrați';
+  const inactiveCount = members.filter(function(m) {
+    return m && (m.connected === false || m.active === false);
   }).length;
-  const connectedCount = trackedCount - offlineCount;
-
-  return offlineCount > 0
-    ? `${connectedCount} connected / ${offlineCount} offline`
-    : `${trackedCount} tracked`;
+  return inactiveCount > 0
+    ? `${trackedCount - inactiveCount} activi / ${inactiveCount} inactivi`
+    : `${trackedCount} membri`;
 }
 
 function renderTeams(model) {
@@ -3511,9 +3542,10 @@ function renderTeams(model) {
     }).map(function(stage) {
       const currentClass = stage.key === team.currentStage.key ? ' is-current' : '';
       const value = stage.total > 0 ? `${stage.closed}/${stage.total}` : '\u2014';
+      const pillColor = getProgressColor(stage.percent);
 
       return (
-        `<div class="team-milestone-pill is-${stage.status}${currentClass}" style="--pill-progress:${stage.percent};">` +
+        `<div class="team-milestone-pill is-${stage.status}${currentClass}" style="--pill-progress:${stage.percent}; --pill-color:${pillColor};">` +
           `<span class="team-milestone-code">${escapeHtml(stage.key)}</span>` +
           `<span class="team-milestone-value">${escapeHtml(value)}</span>` +
         `</div>`
@@ -3522,7 +3554,7 @@ function renderTeams(model) {
 
     const nextActionMarkup = team.nextAction
       ? `<a href="${escapeHtml(team.nextAction.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(team.nextAction.title))}</a>`
-      : `Waiting for a task in ${escapeHtml(model.currentMilestone.key)}.`;
+      : `Nicio sarcină activă în ${escapeHtml(model.currentMilestone.key)}.`;
 
     const memberSection = team.members.length
       ? (
@@ -3538,16 +3570,17 @@ function renderTeams(model) {
             const closed = toNumber(member.closed);
             const issuePct = getMemberIssueProgressPercent(member);
             const memberCode = escapeHtml(member.display_code || member.local_code || '\u2014');
-            const connectionState = member.connected === false ? 'offline' : 'online';
+            const statusRo = getMemberStatusRo(member, issuePct, total);
             const taskUri = total > 0 ? `${closed}/${total}` : '\u2014';
-            const rowClass = member.connected === false ? ' is-offline' : '';
+            const rowClass = (member.connected === false || member.active === false) ? ' is-offline' : '';
+            const fillColor = getProgressColor(issuePct);
 
             return (
               `<div class="member-row${rowClass}">` +
                 `<span class="member-code">${memberCode}</span>` +
-                `<span class="member-status"><span class="member-status-pill is-${connectionState}">${connectionState}</span></span>` +
+                `<span class="member-status"><span class="member-status-pill ${statusRo.cssClass}">${statusRo.label}</span></span>` +
                 `<span class="member-progress-cell is-issues">` +
-                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${issuePct}%;"></span></span>` +
+                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${issuePct}%; background:${fillColor};"></span></span>` +
                   `<span class="member-progress-value">${issuePct}%</span>` +
                 `</span>` +
                 `<span class="member-summary">${escapeHtml(taskUri)}</span>` +
@@ -3556,7 +3589,7 @@ function renderTeams(model) {
           }).join('')}` +
         `</div>`
       )
-      : '<div class="team-empty">No mapped members yet.</div>';
+      : '<div class="team-empty">Niciun membru înregistrat.</div>';
 
     const issuesMarkup = visibleIssues.length
       ? visibleIssues.map(function(issue) {
@@ -3565,49 +3598,47 @@ function renderTeams(model) {
       : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
 
     const moreMarkup = hiddenCount > 0
-      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
+      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">+${hiddenCount} alte task-uri deschise</a>`
       : '';
+
+    const totalTasks = team.stageProgress.reduce(function(s, st) { return s + st.total; }, 0);
+    const closedTasks = team.stageProgress.reduce(function(s, st) { return s + st.closed; }, 0);
+    const barColor = getProgressColor(team.issueProgress);
+    const barWidth = getMinimumVisibleFillWidth(team.issueProgress, 4);
 
     return (
       `<article class="team-card" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --team-line-strong:${team.colorLineStrong};">` +
         `<div class="team-card-header">` +
           `<div>` +
             `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
-            `<div class="team-card-stage">Course stage &middot; ${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short)}</div>` +
-            `<div class="team-current-note">${escapeHtml(team.currentStage.title)}</div>` +
-          `</div>` +
-          `<div class="team-card-metrics">` +
-            `<div class="team-metric-line"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}%</span></div>` +
-            `<div class="team-metric-line"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}%</span></div>` +
+            `<div class="team-card-stage">Etapa curentă &middot; ${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short)}</div>` +
+            `<div class="team-current-note">${totalTasks > 0 ? `${closedTasks}/${totalTasks} task-uri finalizate` : escapeHtml(team.currentStage.title)}</div>` +
           `</div>` +
         `</div>` +
-        `<div class="team-progress-stack">` +
-          `<div class="team-progress-group is-course">` +
-            `<div class="team-progress-head"><span class="team-progress-label">Course progress</span><span class="team-progress-meta">${team.courseProgress}% completed</span></div>` +
-            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.courseProgress, 4)}%;"></div></div>` +
+        `<div class="team-progress-row">` +
+          `<div class="team-progress-head">` +
+            `<span class="team-progress-label">Progres echipă</span>` +
+            `<span class="team-progress-meta">${team.issueProgress}% finalizat</span>` +
           `</div>` +
-          `<div class="team-progress-group is-issues">` +
-            `<div class="team-progress-head"><span class="team-progress-label">GitHub issues</span><span class="team-progress-meta">${team.issueProgress}% completed</span></div>` +
-            `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${getMinimumVisibleFillWidth(team.issueProgress, 4)}%;"></div></div>` +
-          `</div>` +
+          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${barWidth}%; background:${barColor};"></div></div>` +
         `</div>` +
         `<div class="team-milestone-row">${milestonePills}</div>` +
         `<div class="team-section">` +
           `<div class="team-next-action">` +
-            `<span class="team-next-action-label">Next action</span>` +
+            `<span class="team-next-action-label">Acțiune curentă</span>` +
             `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
           `</div>` +
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Team members</div>` +
+            `<div class="team-subtitle">Membrii echipei</div>` +
             `<div class="team-section-meta">${escapeHtml(memberSummary)}</div>` +
           `</div>` +
           `${memberSection}` +
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Open issues</div>` +
+            `<div class="team-subtitle">Task-uri deschise</div>` +
             `<div class="team-section-meta">${team.openIssues.length} total</div>` +
           `</div>` +
           `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
@@ -3630,6 +3661,25 @@ function getMinimumVisibleFillWidth(percent, minimumPercent) {
     return 0;
   }
   return Math.min(100, Math.max(clamped, minimumPercent || 4));
+}
+
+function getProgressColor(percent) {
+  if (percent >= 67) return 'var(--progress-high)';
+  if (percent >= 34) return 'var(--progress-mid)';
+  return 'var(--progress-low)';
+}
+
+function getMemberStatusRo(member, issuePct, total) {
+  if (member.connected === false || member.active === false) {
+    return { label: 'fără activitate', cssClass: 'is-inactive' };
+  }
+  if (total === 0) {
+    return { label: 'date lipsă', cssClass: 'is-missing' };
+  }
+  if (issuePct > 0 && issuePct < 100) {
+    return { label: 'în curs', cssClass: 'is-in-progress' };
+  }
+  return { label: 'activ', cssClass: 'is-active' };
 }
 
 function getMarkerCollisionSign(routePoint) {
