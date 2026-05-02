@@ -2637,17 +2637,18 @@ function progressToColor(percent) {
 }
 
 const MOUNTAIN_POINTS = {
-  base: { x: 260, y: 851, label: 'Base' },
-  C1: { x: 606, y: 782, label: 'C1' },
-  C2: { x: 940, y: 749, label: 'C2' },
-  C3: { x: 1299, y: 634, label: 'C3' },
-  C4: { x: 1570, y: 552, label: 'C4' },
-  C5: { x: 1860, y: 444, label: 'C5' },
-  bend1: { x: 1738, y: 336, label: '' },
-  C6: { x: 1428, y: 332, label: 'C6' },
-  C7: { x: 1810, y: 253, label: 'C7' },
-  C8: { x: 1935, y: 97, label: 'C8' }
+  base: { x: 168.8,  y: 919.8, label: 'Base' },
+  C1:   { x: 602.2,  y: 838.5, label: 'C1' },
+  C2:   { x: 980.3,  y: 753.7, label: 'C2' },
+  C3:   { x: 1389.1, y: 697.5, label: 'C3' },
+  C4:   { x: 1540.8, y: 515.9, label: 'C4' },
+  C5:   { x: 1152.8, y: 391.7, label: 'C5' },
+  C6:   { x: 1784.3, y: 323.7, label: 'C6' },
+  C7:   { x: 1552.8, y: 201.6, label: 'C7' },
+  C8:   { x: 1636.2, y: 55.5,  label: 'C8' }
 };
+
+const MOUNTAIN_ROUTE_D = `M168.777,924.146C168.777,924.146 323.636,945.297 422.972,897.329C522.309,849.360 552.200,840.714 602.813,840.714C653.425,840.714 944.983,840.076 870.606,789.724C821.731,756.637 917.063,762.152 971.075,754.975C1025.087,747.799 1215.887,735.388 1318.623,713.481C1421.358,691.574 1594.725,676.466 1526.738,651.160C1458.751,625.853 1294.072,583.173 1426.646,557.867C1559.220,532.560 1604.923,514.430 1425.891,483.836C1246.859,453.242 1000.973,413.438 1181.893,388.823C1362.814,364.208 1345.274,341.593 1511.937,346.314C1678.599,351.035 1985.484,311.376 1748.474,288.714C1511.464,266.052 1485.969,205.619 1588.422,200.426C1690.874,195.232 1694.179,176.347 1595.976,163.599C1497.773,150.852 1563.871,60.949 1633.274,55.481`;
 
 const ROUTE_ORDER = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'bend1', 'C6', 'C7', 'C8'];
 const CLIMB_STAGE_ROUTE = {
@@ -3482,7 +3483,7 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const svgOverlay = renderTeamMarkersSVG(model.markers);
+  const svgOverlay = renderMountainMilestonesSVG(model.mountainCurrentKey) + renderTeamMarkersSVG(model.markers);
 
   const statusStrip = model.markers.map(function(marker) {
     var memberDots = (marker.memberDots || []).map(function(dot) {
@@ -3513,7 +3514,7 @@ function renderJourney(model) {
         `<div class="mountain-visual">` +
           `<div class="mountain-image-wrap">` +
             `<img src="../assets/img/mountain.png" alt="Mountain progress map">` +
-            `<svg viewBox="0 0 2048 1152" aria-hidden="true">${svgOverlay}</svg>` +
+            `<svg viewBox="0 0 1920 1080" aria-hidden="true">${svgOverlay}</svg>` +
           `</div>` +
         `</div>` +
         `<div class="mountain-status-strip">${statusStrip}</div>` +
@@ -3823,6 +3824,41 @@ function getMinimumVisibleFillWidth(percent, minimumPercent) {
   return Math.min(100, Math.max(clamped, minimumPercent || 4));
 }
 
+let _mountainRoutePath = null;
+let _mountainRouteLength = null;
+function getMountainRoutePath() {
+  if (_mountainRoutePath) return _mountainRoutePath;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 1920 1080');
+  svg.setAttribute('width', '0');
+  svg.setAttribute('height', '0');
+  svg.style.position = 'absolute';
+  svg.style.left = '-9999px';
+  svg.style.top = '-9999px';
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', MOUNTAIN_ROUTE_D);
+  path.setAttribute('fill', 'none');
+  svg.appendChild(path);
+  document.body.appendChild(svg);
+  _mountainRoutePath = path;
+  _mountainRouteLength = path.getTotalLength();
+  return path;
+}
+
+function getMountainPointAtPercent(percent) {
+  const path = getMountainRoutePath();
+  const pct = Math.max(0, Math.min(100, Number(percent) || 0));
+  const len = _mountainRouteLength * (pct / 100);
+  const p = path.getPointAtLength(len);
+  const p2 = path.getPointAtLength(Math.min(_mountainRouteLength, len + 2));
+  const dx = p2.x - p.x;
+  const dy = p2.y - p.y;
+  const norm = Math.sqrt(dx * dx + dy * dy) || 1;
+  const tx = dx / norm;
+  const ty = dy / norm;
+  return { x: p.x, y: p.y, tx, ty, px: -ty, py: tx, routeDistance: len };
+}
+
 function getProgressColor(percent) {
   if (percent >= 67) return 'var(--progress-high)';
   if (percent >= 34) return 'var(--progress-mid)';
@@ -3850,23 +3886,31 @@ function getMarkerCollisionSign(routePoint) {
 }
 
 function applyMarkerCollisionOffsets(markers) {
-  var sorted = markers.slice().sort(function(a, b) {
-    return a.routePct !== b.routePct ? a.routePct - b.routePct : a.teamIndex - b.teamIndex;
-  });
-  var groups = [];
-  sorted.forEach(function(marker) {
-    var last = groups[groups.length - 1];
-    if (!last || Math.abs(last.refPct - marker.routePct) > 8) {
-      groups.push({ refPct: marker.routePct, items: [marker] });
+  return placeMountainMarkers(markers);
+}
+
+function placeMountainMarkers(markers) {
+  const sorted = markers.slice().sort((a, b) => a.routeDistance - b.routeDistance || a.teamIndex - b.teamIndex);
+  const groups = [];
+  let group = [];
+  sorted.forEach(marker => {
+    if (!group.length) { group.push(marker); return; }
+    const prev = group[group.length - 1];
+    if (Math.abs(marker.routeDistance - prev.routeDistance) < 85) {
+      group.push(marker);
     } else {
-      last.items.push(marker);
+      groups.push(group);
+      group = [marker];
     }
   });
-  groups.forEach(function(group) {
-    var mid = (group.items.length - 1) / 2;
-    group.items.forEach(function(marker, index) {
-      marker.x = marker.routePoint.x + ((index - mid) * 46);
-      marker.y = marker.routePoint.y - 8;
+  if (group.length) groups.push(group);
+  groups.forEach(group => {
+    const n = group.length;
+    group.forEach((marker, i) => {
+      const offset = (i - (n - 1) / 2) * 56;
+      marker.x = marker.routeX + offset;
+      marker.y = marker.routeY - 38;
+      if (marker.routePct < 12) marker.y = marker.routeY - 42;
     });
   });
   return markers;
@@ -3888,22 +3932,18 @@ function buildMarkerMemberDots(members) {
 }
 
 function buildMountainMarkerData(teams) {
-  var markers = teams.map(function(team) {
-    var routePct = getMountainProgressPercent(team);
-    var routeDistance = ROUTE_METRICS.totalLength * (routePct / 100);
-    var routePoint = getPointOnRouteDistance(routeDistance);
-
+  const markers = teams.map(function(team) {
+    const routePct = getMountainProgressPercent(team);
+    const routePoint = getMountainPointAtPercent(routePct);
     return {
       label: team.label,
       teamName: team.name,
       color: team.color,
       routePct: routePct,
-      x: routePoint.x,
-      y: routePoint.y,
       routeX: routePoint.x,
       routeY: routePoint.y,
       routePoint: routePoint,
-      routeDistance: routeDistance,
+      routeDistance: routePoint.routeDistance,
       status: getSemanticStatus(team),
       percent: routePct,
       coursePercent: routePct,
@@ -3913,91 +3953,77 @@ function buildMountainMarkerData(teams) {
       memberDots: buildMarkerMemberDots(Array.isArray(team.members) ? team.members : [])
     };
   });
-
-  return applyMarkerCollisionOffsets(markers);
+  return placeMountainMarkers(markers);
 }
 
 function renderMountainMilestonesSVG(currentKey) {
-  var keys = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
-
+  const keys = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
   return keys.map(function(key) {
-    var point = MOUNTAIN_POINTS[key];
-    var label = point.label;
-    var isBase = key === 'base';
-    var isCurrent = label === currentKey;
-    var labelY = isBase ? point.y + 34 : point.y - 18;
-    var stroke = isCurrent ? 'rgba(181, 120, 74, 0.9)' : 'rgba(45, 42, 38, 0.28)';
-    var fill = isCurrent ? 'rgba(181, 120, 74, 0.16)' : 'rgba(250, 249, 246, 0.96)';
-
-    return '<g>' +
-      '<circle cx="' + point.x + '" cy="' + point.y + '" r="10" fill="rgba(255,255,255,0.92)" opacity="0.82"/>' +
-      '<circle class="mountain-checkpoint-node" cx="' + point.x + '" cy="' + point.y + '" r="7.5" fill="' + fill + '" stroke="' + stroke + '"/>' +
-      '<text class="mountain-checkpoint-label" x="' + point.x + '" y="' + labelY + '"' +
-        ' text-anchor="middle" stroke="rgba(250,249,246,0.96)" stroke-width="3" paint-order="stroke">' +
-        label + '</text>' +
-      '</g>';
+    const point = MOUNTAIN_POINTS[key];
+    const label = point.label;
+    const isCurrent = label === currentKey;
+    const r = key === 'base' ? 24 : 25;
+    const fontSize = key === 'base' ? 16 : 18;
+    const stroke = isCurrent ? '#B5784A' : '#C98542';
+    return (
+      `<g>` +
+        `<circle cx="${point.x}" cy="${point.y}" r="${r + 4}" fill="rgba(255,255,255,0.82)"/>` +
+        `<circle cx="${point.x}" cy="${point.y}" r="${r}" fill="rgba(255,255,255,0.94)" stroke="${stroke}" stroke-width="3"/>` +
+        `<text x="${point.x}" y="${point.y + 2}"` +
+          ` text-anchor="middle" dominant-baseline="middle"` +
+          ` font-family="JetBrains Mono, monospace"` +
+          ` font-size="${fontSize}" font-weight="800"` +
+          ` fill="#B06F35"` +
+          ` stroke="rgba(255,255,255,0.95)" stroke-width="2" paint-order="stroke">${label}</text>` +
+      `</g>`
+    );
   }).join('');
 }
 
 function renderTeamMarkersSVG(markers) {
-  var sorted = markers.slice().sort(function(a, b) {
-    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
-  });
+  const sorted = markers.slice().sort((a, b) => a.routeDistance - b.routeDistance || a.teamIndex - b.teamIndex);
 
-  var connectorEls = sorted.map(function(marker) {
-    if (Math.abs(marker.x - marker.routeX) < 1 && Math.abs(marker.y - marker.routeY) < 1) {
-      return '';
-    }
+  const connectors = sorted.map(marker =>
+    `<line x1="${marker.routeX.toFixed(1)}" y1="${marker.routeY.toFixed(1)}"` +
+    ` x2="${marker.x.toFixed(1)}" y2="${marker.y.toFixed(1)}"` +
+    ` stroke="${marker.color}" stroke-width="2" stroke-opacity="0.42" stroke-dasharray="5 5"/>`
+  ).join('');
 
-    return '<line x1="' + marker.routeX.toFixed(1) + '" y1="' + marker.routeY.toFixed(1) + '"' +
-      ' x2="' + marker.x.toFixed(1) + '" y2="' + marker.y.toFixed(1) + '"' +
-      ' stroke="' + marker.color + '" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="4 5"/>';
-  }).join('');
+  const pins = sorted.map(marker =>
+    `<circle cx="${marker.routeX.toFixed(1)}" cy="${marker.routeY.toFixed(1)}" r="5"` +
+    ` fill="${marker.color}" stroke="white" stroke-width="2"/>`
+  ).join('');
 
-  var routePinEls = sorted.map(function(marker) {
-    return '<circle cx="' + marker.routeX.toFixed(1) + '" cy="' + marker.routeY.toFixed(1) + '" r="4.5"' +
-      ' fill="' + marker.color + '" stroke="rgba(255,255,255,0.96)" stroke-width="2"/>';
-  }).join('');
-
-  var dotEls = sorted.map(function(marker) {
-    var dotCount = marker.memberDots.length;
-    var startX = marker.x - ((dotCount - 1) * (DOT_R * 2.35)) / 2;
-    var dotY = marker.y + BADGE_R + 10;
-
-    return marker.memberDots.map(function(dot, index) {
-      var dotX = startX + index * DOT_R * 2.35;
-      var fill = dot.dimmed ? 'rgba(250,248,244,0.72)' : marker.color;
-      var stroke = dot.dimmed ? marker.color : 'rgba(255,255,255,0.98)';
-      var opacity = dot.dimmed ? '0.58' : '1';
-      var titleEl = dot.title ? '<title>' + escapeHtml(dot.title) + '</title>' : '';
-
-      return '<circle cx="' + dotX.toFixed(1) + '" cy="' + dotY.toFixed(1) + '" r="' + DOT_R + '"' +
-        ' fill="' + fill + '" fill-opacity="' + opacity + '"' +
-        ' stroke="' + stroke + '" stroke-width="1.7" pointer-events="all">' +
-        titleEl +
-      '</circle>';
+  const badges = sorted.map(marker => {
+    const cx = marker.x.toFixed(1);
+    const cy = marker.y.toFixed(1);
+    const memberDots = (marker.memberDots || []).map((dot, index) => {
+      const n = marker.memberDots.length;
+      const startX = marker.x - ((n - 1) * 10) / 2;
+      const dotX = startX + index * 10;
+      const dotY = marker.y + 28;
+      const fill = dot.dimmed ? 'rgba(255,255,255,0.7)' : marker.color;
+      const stroke = dot.dimmed ? marker.color : 'white';
+      const titleEl = dot.title ? `<title>${escapeHtml(dot.title)}</title>` : '';
+      return `<circle cx="${dotX.toFixed(1)}" cy="${dotY.toFixed(1)}" r="4"` +
+        ` fill="${fill}" stroke="${stroke}" stroke-width="1.5">${titleEl}</circle>`;
     }).join('');
+
+    return (
+      `<g pointer-events="all">` +
+        `<title>${escapeHtml(marker.teamName)} · ${marker.coursePercent}% · ${marker.status.label}</title>` +
+        `<circle cx="${cx}" cy="${cy}" r="22" fill="rgba(255,255,255,0.92)" stroke="white" stroke-width="5"/>` +
+        `<circle cx="${cx}" cy="${cy}" r="18" fill="rgba(250,249,246,0.98)" stroke="${marker.color}" stroke-width="3"/>` +
+        `<text x="${cx}" y="${(Number(cy) + 1).toFixed(1)}"` +
+          ` text-anchor="middle" dominant-baseline="middle"` +
+          ` font-family="JetBrains Mono, monospace" font-size="15" font-weight="900"` +
+          ` fill="${marker.color}" stroke="white" stroke-width="2" paint-order="stroke">${marker.label}</text>` +
+        `${memberDots}` +
+      `</g>`
+    );
   }).join('');
 
-  var badgeEls = sorted.map(function(marker) {
-    var cx = marker.x.toFixed(1);
-    var cy = marker.y.toFixed(1);
-    var titleText = marker.teamName + ' - ' + marker.coursePercent + '% - ' + marker.status.label;
-
-    return '<g data-team="' + marker.label + '" pointer-events="all">' +
-      '<title>' + escapeHtml(titleText) + '</title>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (BADGE_R + 4) +
-        '" fill="rgba(255,255,255,0.96)" opacity="0.92"/>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + BADGE_R +
-        '" fill="rgba(250,248,244,0.97)" stroke="' + marker.color + '" stroke-width="3.2"/>' +
-      '<text class="mountain-team-label" x="' + cx + '" y="' + cy +
-        '" text-anchor="middle" dominant-baseline="central"' +
-        ' stroke="rgba(255,255,255,0.98)" stroke-width="2.4" paint-order="stroke" fill="' + marker.color + '">' +
-        marker.label + '</text>' +
-      '</g>';
-  }).join('');
-
-  return connectorEls + routePinEls + badgeEls + dotEls;
+  return connectors + pins + badges;
 }
 
 fetch('./progress.json')
