@@ -1484,6 +1484,42 @@ section { padding-top: 2rem; }
   margin-bottom: 0.62rem;
 }
 
+.control-panel-mini-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.34rem;
+  margin-top: 0.2rem;
+  padding-top: 0.52rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.75);
+}
+
+.control-panel-mini {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.control-panel-mini-label,
+.task-matrix-team,
+.task-matrix-cell,
+.task-matrix-divider,
+.task-matrix-legend {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+}
+
+.control-panel-mini-label {
+  color: var(--dim);
+}
+
+.control-panel-mini-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  text-align: right;
+}
+
 .control-panel-status {
   padding: 0.42rem 0;
   border-top: 1px solid rgba(226, 221, 211, 0.75);
@@ -1785,6 +1821,99 @@ section { padding-top: 2rem; }
   color: var(--dim);
   line-height: 1.5;
   margin-top: 0.18rem;
+}
+
+.team-compare-line {
+  margin-top: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.45rem;
+  align-items: baseline;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+}
+
+.team-compare-main {
+  color: var(--text);
+}
+
+.team-compare-delta.is-up {
+  color: #68895a;
+}
+
+.team-compare-delta.is-down {
+  color: #b06030;
+}
+
+.team-compare-delta.is-even {
+  color: var(--dim);
+}
+
+.task-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+.task-matrix-head,
+.task-matrix-row {
+  display: grid;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.task-matrix-head {
+  padding-bottom: 0.38rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.8);
+}
+
+.task-matrix-team {
+  color: var(--dim);
+  text-align: center;
+}
+
+.task-matrix-label {
+  min-width: 0;
+  font-size: 11px;
+  color: var(--sub);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-matrix-cell {
+  text-align: center;
+  color: var(--border-hi);
+}
+
+.task-matrix-cell.is-open {
+  color: var(--progress-low);
+}
+
+.task-matrix-cell.is-closed {
+  color: var(--progress-high);
+}
+
+.task-matrix-cell.is-missing {
+  color: var(--border-hi);
+}
+
+.task-matrix-divider {
+  margin-top: 0.14rem;
+  padding-top: 0.44rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.72);
+  color: var(--dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.task-matrix-legend {
+  margin-top: 0.18rem;
+  padding-top: 0.42rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.72);
+  color: var(--sub);
 }
 
 .loading {
@@ -2804,8 +2933,12 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     return stage.key === currentStage.key;
   }) || derivedStage;
   const openIssues = Array.isArray(team && team.open_issues) ? team.open_issues : [];
+  const closedIssues = Array.isArray(team && team.closed_issues) ? team.closed_issues : [];
   const courseProgress = computeCourseProgressPercent(team, coursePlan);
   const climbProgress = computeAverageStagePercent(team, climbPlan);
+  const overallPercent = team && team.overall_percent !== undefined && team.overall_percent !== null
+    ? clampPercent(team.overall_percent)
+    : courseProgress;
   const color = progressToColor(courseProgress);
 
   return {
@@ -2821,6 +2954,7 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     milestones_url: team && team.milestones_url ? team.milestones_url : (team && team.repo_url ? team.repo_url : '#'),
     members: Array.isArray(team && team.members) ? team.members : [],
     openIssues: openIssues,
+    closedIssues: closedIssues,
     stageProgress: stageProgress,
     currentStage: {
       key: currentStage.key,
@@ -2832,12 +2966,118 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
       open: currentStageProgress.open,
       percent: currentStageProgress.percent
     },
+    overallPercent: overallPercent,
     courseProgress: courseProgress,
     climbProgress: climbProgress,
     issueProgress: computeIssueProgressPercent(team),
     nextAction: openIssues.find(function(issue) {
       return inferStageKey(issue && issue.title) === currentMilestoneKey;
     }) || openIssues[0] || null
+  };
+}
+
+function getStageRank(stageKey) {
+  const match = String(stageKey || '').match(/^C(\d+)/i);
+  return match ? toNumber(match[1]) : 999;
+}
+
+function inferIssueStageKey(title) {
+  const normalizedTitle = sanitizeIssueTitle(title);
+  const directStage = inferStageKey(normalizedTitle);
+  if (directStage) {
+    return directStage;
+  }
+  if (/^Issue\s+\d+/i.test(normalizedTitle)) {
+    return 'C1';
+  }
+  return '';
+}
+
+function buildNextTasksMatrix(teams, currentMilestoneKey) {
+  const rowsByTitle = {};
+  const teamStatus = {};
+
+  teams.forEach(function(team) {
+    const openSet = new Set();
+    const closedSet = new Set();
+
+    (Array.isArray(team.openIssues) ? team.openIssues : []).forEach(function(issue) {
+      const normalizedTitle = sanitizeIssueTitle(issue && issue.title);
+      if (!normalizedTitle) {
+        return;
+      }
+      openSet.add(normalizedTitle);
+      if (!rowsByTitle[normalizedTitle]) {
+        rowsByTitle[normalizedTitle] = {
+          title: normalizedTitle,
+          stageKey: inferIssueStageKey(normalizedTitle)
+        };
+      }
+    });
+
+    (Array.isArray(team.closedIssues) ? team.closedIssues : []).forEach(function(issue) {
+      const normalizedTitle = sanitizeIssueTitle(issue && issue.title);
+      if (normalizedTitle) {
+        closedSet.add(normalizedTitle);
+      }
+    });
+
+    teamStatus[team.label] = { open: openSet, closed: closedSet };
+  });
+
+  const rows = Object.keys(rowsByTitle).map(function(title) {
+    return rowsByTitle[title];
+  });
+
+  rows.sort(function(a, b) {
+    const aStage = a.stageKey;
+    const bStage = b.stageKey;
+    const aGroup = aStage === currentMilestoneKey ? 0 : (aStage && getStageRank(aStage) < getStageRank(currentMilestoneKey) ? 1 : (aStage ? 2 : 3));
+    const bGroup = bStage === currentMilestoneKey ? 0 : (bStage && getStageRank(bStage) < getStageRank(currentMilestoneKey) ? 1 : (bStage ? 2 : 3));
+    return aGroup - bGroup || getStageRank(aStage) - getStageRank(bStage) || a.title.localeCompare(b.title);
+  });
+
+  const currentRows = rows.filter(function(row) { return row.stageKey === currentMilestoneKey; });
+  const olderRows = rows.filter(function(row) { return row.stageKey && getStageRank(row.stageKey) < getStageRank(currentMilestoneKey); });
+  const otherRows = rows.filter(function(row) { return currentRows.indexOf(row) === -1 && olderRows.indexOf(row) === -1; });
+
+  const sections = [];
+  const visibleCurrent = currentRows.slice(0, 5);
+  let remaining = 5 - visibleCurrent.length;
+  const visibleOlder = olderRows.slice(0, Math.max(0, remaining));
+  remaining -= visibleOlder.length;
+  const visibleOther = otherRows.slice(0, Math.max(0, remaining));
+
+  if (visibleCurrent.length) {
+    sections.push({ label: '', rows: visibleCurrent });
+  }
+  if (visibleOlder.length) {
+    const olderLabel = visibleOlder[0].stageKey ? `Rămase din ${visibleOlder[0].stageKey}` : 'Rămase din etape anterioare';
+    sections.push({ label: olderLabel, rows: visibleOlder });
+  }
+  if (visibleOther.length) {
+    sections.push({ label: 'Alte task-uri deschise', rows: visibleOther });
+  }
+
+  return {
+    teamLabels: teams.map(function(team) { return team.label; }),
+    sections: sections,
+    hasClosedStatuses: teams.some(function(team) {
+      return Array.isArray(team.closedIssues) && team.closedIssues.length > 0;
+    }),
+    getCellStatus: function(teamLabel, rowTitle) {
+      const teamSets = teamStatus[teamLabel];
+      if (!teamSets) {
+        return 'missing';
+      }
+      if (teamSets.open.has(rowTitle)) {
+        return 'open';
+      }
+      if (teamSets.closed.has(rowTitle)) {
+        return 'closed';
+      }
+      return 'missing';
+    }
   };
 }
 
@@ -2886,6 +3126,9 @@ function buildDashboardModel(data) {
   const createdTasks = openIssues + closedIssues;
   const averageCourseProgress = teams.length
     ? Math.round(teams.reduce(function(sum, team) { return sum + team.courseProgress; }, 0) / teams.length)
+    : 0;
+  const averageOverallPercent = teams.length
+    ? Math.round(teams.reduce(function(sum, team) { return sum + team.overallPercent; }, 0) / teams.length)
     : 0;
   const overallIssueProgress = createdTasks > 0 ? clampPercent(Math.round((closedIssues / createdTasks) * 100)) : 0;
   const currentSummary = allStageSummaries.find(function(stage) {
@@ -2946,6 +3189,21 @@ function buildDashboardModel(data) {
     const stage = team.stageProgress.find(function(s) { return s.key === currentMilestone.key; });
     return stage && stage.closed > 0;
   }).length;
+  const rankedTeams = teams.slice().sort(function(a, b) {
+    return b.overallPercent - a.overallPercent || a.index - b.index;
+  });
+  const topTeam = rankedTeams[0] || null;
+  const recoveryTeam = rankedTeams.length ? rankedTeams[rankedTeams.length - 1] : null;
+  const nextThresholdPercent = createdTasks > 0 && overallIssueProgress < 100
+    ? Math.min(100, (Math.floor(overallIssueProgress / 10) + 1) * 10)
+    : null;
+  const tasksToNextThreshold = nextThresholdPercent !== null
+    ? Math.max(0, Math.ceil(((nextThresholdPercent / 100) * createdTasks) - closedIssues))
+    : null;
+
+  teams.forEach(function(team) {
+    team.overallDelta = team.overallPercent - averageOverallPercent;
+  });
 
   return {
     coursePlan: coursePlan,
@@ -2972,6 +3230,13 @@ function buildDashboardModel(data) {
     avgTimeDays: avgTime.globalAvgDays,
     connectedTeamsCount: connectedTeamsCount,
     currentMilestoneStarted: currentMilestoneStarted,
+    currentMilestoneSummary: currentSummary,
+    averageOverallPercent: averageOverallPercent,
+    topTeam: topTeam,
+    recoveryTeam: recoveryTeam,
+    nextThresholdPercent: nextThresholdPercent,
+    tasksToNextThreshold: tasksToNextThreshold,
+    nextTasksMatrix: buildNextTasksMatrix(teams, currentMilestone.key),
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
@@ -3175,7 +3440,6 @@ function renderJourney(model) {
 }
 
 function renderProjectStats(model) {
-  // LEFT: colored stage bars with "activ" badge on current stage
   const stageRows = model.allStageSummaries
     .filter(function(stage) { return stage.key !== 'Final'; })
     .map(function(stage) {
@@ -3195,138 +3459,136 @@ function renderProjectStats(model) {
         `</div>`
       );
     }).join('');
-
-  // CENTER: tiles adapt to whether timestamp data exists
-  const hasTimestampData = model.activityStats !== null || model.issuesClosedLast48h !== null;
-  const actStats = model.activityStats;
-
-  let tile3, tile4;
-  if (!hasTimestampData) {
-    tile3 = {
-      label: escapeHtml(model.currentMilestone.key) + ' pornit',
-      value: `${model.currentMilestoneStarted}/${model.totals.teamCount}`,
-      note: 'echipe au \u00eenceput',
-      tip: 'au cel pu\u021bin 1 task \u00eenchis',
-      tooltip: ''
-    };
-    tile4 = {
-      label: 'Echipe conectate',
-      value: `${model.connectedTeamsCount}/${model.totals.teamCount}`,
-      note: 'cu membri conecta\u021bi',
-      tip: 'membri cu connected: true',
-      tooltip: ''
-    };
-  } else {
-    const momentumVal = model.issuesClosedLast48h != null ? `+${model.issuesClosedLast48h}` : '+0';
-    const momentumNote = model.issuesClosedLast48h != null ? 'task-uri \u00eenchise' : 'date lips\u0103';
-    const activeTeamsStr = actStats != null
-      ? `${actStats.activeCount}/${model.totals.teamCount}`
-      : `\u2014/${model.totals.teamCount}`;
-    tile3 = {
-      label: 'Ritm 48h',
-      value: momentumVal,
-      note: momentumNote,
-      tip: 'finalizate \u00een ultimele 48h',
-      tooltip: ''
-    };
-    tile4 = {
-      label: 'Echipe active',
-      value: activeTeamsStr,
-      note: 'cu activitate recent\u0103',
-      tip: 'active \u00een ultimele 7 zile',
-      tooltip: 'Activitate recent\u0103 = issue actualizat, issue \u00eenchis sau push \u00een ultimele 7 zile.'
-    };
-  }
-
+  const currentSummary = model.currentMilestoneSummary;
   const controlTiles = [
-    { label: 'Progres total',     value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate', tip: 'task-uri din toate echipele', tooltip: '' },
-    { label: 'Etapa activ\u0103', value: escapeHtml(model.currentMilestone.key), note: escapeHtml(model.currentMilestone.short), tip: 'etapa curent\u0103 din cursuri', tooltip: '' },
-    tile3,
-    tile4
+    {
+      label: 'Progres total',
+      value: `${model.totals.overallIssueProgress}% finalizat`,
+      note: `${model.totals.closedIssues} / ${model.totals.createdTasks} task-uri`
+    },
+    {
+      label: 'Etapa activă',
+      value: `${model.currentMilestone.key} · ${model.currentMilestone.short}`,
+      note: 'milestone curent'
+    },
+    {
+      label: `${model.currentMilestone.key} progres`,
+      value: `${currentSummary.closed} / ${currentSummary.total}`,
+      note: `task-uri ${model.currentMilestone.key} finalizate`
+    },
+    {
+      label: `${model.currentMilestone.key} pornit`,
+      value: `${model.currentMilestoneStarted} / ${model.totals.teamCount} echipe`,
+      note: 'au închis cel puțin un task'
+    },
+    {
+      label: 'Echipe conectate',
+      value: `${model.connectedTeamsCount} / ${model.totals.teamCount} echipe`,
+      note: 'au membri conectați'
+    },
+    {
+      label: 'Task-uri rămase',
+      value: `${model.totals.openIssues}`,
+      note: 'task-uri deschise'
+    }
   ].map(function(tile) {
-    const titleAttr = tile.tooltip ? ` title="${escapeHtml(tile.tooltip)}"` : '';
     return (
-      `<div class="metric-tile"${titleAttr}>` +
-        `<span class="metric-label">${tile.label}</span>` +
-        `<strong class="metric-value">${tile.value}</strong>` +
-        `<span class="metric-note">${tile.note}</span>` +
-        `<span class="control-tip-line">Tip: ${escapeHtml(tile.tip)}</span>` +
+      `<div class="metric-tile">` +
+        `<span class="metric-label">${escapeHtml(tile.label)}</span>` +
+        `<strong class="metric-value">${escapeHtml(tile.value)}</strong>` +
+        `<span class="metric-note">${escapeHtml(tile.note)}</span>` +
       `</div>`
     );
   }).join('');
-
-  const avgLine = model.avgTimeDays != null
-    ? `<div class="control-avg-line">Timp mediu/task: ${model.avgTimeDays.toFixed(1)} zile</div>`
-    : '';
-
-  // RIGHT: grouped blockers with severity badges
-  function getSeverity(days) {
-    if (days >= 14) return { cls: 'sev-blocat', label: 'blocat' };
-    if (days >= 7)  return { cls: 'sev-sta',    label: 'st\u0103' };
-    return              { cls: 'sev-atentie', label: 'aten\u021bie' };
+  const controlMiniItems = [];
+  if (model.topTeam) {
+    controlMiniItems.push(
+      `<div class="control-panel-mini">` +
+        `<span class="control-panel-mini-label">Top team</span>` +
+        `<span class="control-panel-mini-value">${escapeHtml(model.topTeam.name)} · ${model.topTeam.overallPercent}%</span>` +
+      `</div>`
+    );
+  }
+  if (model.recoveryTeam) {
+    controlMiniItems.push(
+      `<div class="control-panel-mini">` +
+        `<span class="control-panel-mini-label">De recuperat</span>` +
+        `<span class="control-panel-mini-value">${escapeHtml(model.recoveryTeam.name)} · ${model.recoveryTeam.overallPercent}%</span>` +
+      `</div>`
+    );
+  }
+  if (model.nextThresholdPercent !== null && model.tasksToNextThreshold !== null) {
+    controlMiniItems.push(
+      `<div class="control-panel-mini">` +
+        `<span class="control-panel-mini-label">Pragul ${model.nextThresholdPercent}%</span>` +
+        `<span class="control-panel-mini-value">+${model.tasksToNextThreshold} task-uri</span>` +
+      `</div>`
+    );
   }
 
-  let blockersHtml;
-  if (!model.hasBlockerData) {
-    if (!model.hasAnyOpenIssues) {
-      blockersHtml = '<div class="team-empty">Nu exist\u0103 date despre blocaje.</div>';
-    } else {
-      blockersHtml = model.blockerFallback.map(function(issue) {
-        const firstTeam = (issue.teamLabels && issue.teamLabels[0]) || '';
-        const titleEl = issue.url
-          ? `<a class="blocker-title" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>`
-          : `<span class="blocker-title">${escapeHtml(issue.title)}</span>`;
-        const tagsRow = (issue.teamLabels && issue.teamLabels.length > 1)
-          ? `<span class="blocker-team-tags">${escapeHtml(issue.teamLabels.join(', '))}</span>`
-          : '';
-        return (
-          `<div class="blocker-row">` +
-            `<span class="blocker-team">${escapeHtml(firstTeam)}</span>` +
-            titleEl +
-            tagsRow +
-          `</div>`
-        );
+  const controlMiniHtml = controlMiniItems.length
+    ? `<div class="control-panel-mini-list">${controlMiniItems.join('')}</div>`
+    : '';
+
+  const taskMatrix = model.nextTasksMatrix;
+  const matrixTemplate = `grid-template-columns:minmax(0, 1fr) repeat(${taskMatrix.teamLabels.length}, 24px);`;
+  const matrixHead = (
+    `<div class="task-matrix-head" style="${matrixTemplate}">` +
+      `<span class="task-matrix-label">Task</span>` +
+      `${taskMatrix.teamLabels.map(function(teamLabel) {
+        return `<span class="task-matrix-team">${escapeHtml(teamLabel)}</span>`;
+      }).join('')}` +
+    `</div>`
+  );
+
+  const matrixSections = taskMatrix.sections.map(function(section) {
+    const divider = section.label
+      ? `<div class="task-matrix-divider">${escapeHtml(section.label)}</div>`
+      : '';
+    const rows = section.rows.map(function(row) {
+      const cells = taskMatrix.teamLabels.map(function(teamLabel) {
+        const status = taskMatrix.getCellStatus(teamLabel, row.title);
+        const symbol = status === 'closed' ? '●' : (status === 'open' ? '○' : '–');
+        return `<span class="task-matrix-cell is-${status}">${symbol}</span>`;
       }).join('');
-    }
-  } else if (!model.blockers.length) {
-    blockersHtml = '<div class="team-empty">Nu sunt blocaje active.</div>';
-  } else {
-    blockersHtml = model.blockers.map(function(blocker) {
-      const sev = getSeverity(blocker.daysStale);
-      const firstTeam = (blocker.teamLabels && blocker.teamLabels[0]) || '';
-      const titleEl = blocker.url
-        ? `<a class="blocker-title" href="${escapeHtml(blocker.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(blocker.title)}</a>`
-        : `<span class="blocker-title">${escapeHtml(blocker.title)}</span>`;
-      const tagsRow = (blocker.teamLabels && blocker.teamLabels.length > 1)
-        ? `<span class="blocker-team-tags">${escapeHtml(blocker.teamLabels.join(', '))}</span>`
-        : '';
+
       return (
-        `<div class="blocker-row">` +
-          `<span class="blocker-team">${escapeHtml(firstTeam)}</span>` +
-          titleEl +
-          `<span class="blocker-days"><span class="blocker-severity ${sev.cls}">${sev.label}</span> ${blocker.daysStale}z</span>` +
-          tagsRow +
+        `<div class="task-matrix-row" style="${matrixTemplate}">` +
+          `<span class="task-matrix-label" title="${escapeHtml(row.title)}">${escapeHtml(row.title)}</span>` +
+          `${cells}` +
         `</div>`
       );
     }).join('');
-  }
+
+    return divider + rows;
+  }).join('');
+
+  const matrixHtml = taskMatrix.sections.length
+    ? (
+      `<div class="task-matrix">` +
+        `${matrixHead}` +
+        `${matrixSections}` +
+        `<div class="task-matrix-legend">○ deschis · ● finalizat · – nu există</div>` +
+      `</div>`
+    )
+    : '<div class="team-empty">Nu mai sunt task-uri deschise.</div>';
 
   document.getElementById('project-stats').innerHTML =
     `<div class="project-analytics-shell">` +
       `<div class="project-analytics-grid">` +
         `<article class="project-card">` +
-          `<div class="project-title">Progres pe cursuri</div>` +
+          `<div class="project-title">Unde suntem</div>` +
           `<div class="backlog-list">${stageRows}</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Control panel</div>` +
+          `<div class="project-title">Ce facem acum</div>` +
           `<div class="control-panel-grid">${controlTiles}</div>` +
-          `${avgLine}` +
+          `${controlMiniHtml}` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Unde ne bloc\u0103m</div>` +
-          `<div class="blocker-list">${blockersHtml}</div>` +
-          `<p class="project-footnote">Dashboard-ul se actualizeaz\u0103 automat \u2014 \u00eenchide issue-ul dup\u0103 ce ai terminat task-ul.</p>` +
+          `<div class="project-title">Următoarele task-uri</div>` +
+          `${matrixHtml}` +
+          `<p class="project-footnote">După push, închide issue-ul ca progresul să apară aici.</p>` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -3380,6 +3642,12 @@ function renderTeams(model) {
     const visibleIssues = team.openIssues.slice(0, 3);
     const hiddenCount = Math.max(team.openIssues.length - visibleIssues.length, 0);
     const memberSummary = getMemberSummaryCopy(team.members);
+    const delta = toNumber(team.overallDelta);
+    const deltaAbs = Math.abs(delta);
+    const deltaClass = delta > 0 ? 'is-up' : (delta < 0 ? 'is-down' : 'is-even');
+    const deltaCopy = delta > 0
+      ? `+${deltaAbs} peste media cursului`
+      : (delta < 0 ? `-${deltaAbs} sub media cursului` : 'la media cursului');
 
     const milestonePills = team.stageProgress.filter(function(stage) {
       return JOURNEY_STAGE_KEYS.indexOf(stage.key) >= 0;
@@ -3456,6 +3724,10 @@ function renderTeams(model) {
           `<div>` +
             `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
             `<div class="team-card-stage">Etapa curentă &middot; ${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short)}</div>` +
+            `<div class="team-compare-line">` +
+              `<span class="team-compare-main">${team.overallPercent}%</span>` +
+              `<span class="team-compare-delta ${deltaClass}">${escapeHtml(deltaCopy)}</span>` +
+            `</div>` +
             `<div class="team-current-note">${totalTasks > 0 ? `${closedTasks}/${totalTasks} task-uri finalizate` : escapeHtml(team.currentStage.title)}</div>` +
           `</div>` +
         `</div>` +
