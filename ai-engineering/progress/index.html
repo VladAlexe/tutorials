@@ -465,6 +465,23 @@ section { padding-top: 2rem; }
   stroke-width: 2;
 }
 
+.mountain-route-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.58);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mountain-route-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 4px rgba(90, 55, 28, 0.22));
+}
+
 .mountain-team-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 14px;
@@ -2047,8 +2064,6 @@ const DEFAULT_MILESTONES = [
   { code: 'Final', shortTitle: 'Project', fallbackName: 'Final project' }
 ];
 
-const MOUNTAIN_VIEWBOX = { width: 2048, height: 1152 };
-
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     '&': '&amp;',
@@ -2180,168 +2195,6 @@ function sortMembers(members) {
   });
 }
 
-function interpolatePoint(percent) {
-  const clamped = clampPercent(percent);
-
-  if (clamped <= MOUNTAIN_THRESHOLDS[0]) {
-    return { ...MOUNTAIN_POINTS[0] };
-  }
-
-  for (let i = 1; i < MOUNTAIN_THRESHOLDS.length; i += 1) {
-    if (clamped <= MOUNTAIN_THRESHOLDS[i]) {
-      const previousThreshold = MOUNTAIN_THRESHOLDS[i - 1];
-      const currentThreshold = MOUNTAIN_THRESHOLDS[i];
-      const ratio = currentThreshold === previousThreshold
-        ? 0
-        : (clamped - previousThreshold) / (currentThreshold - previousThreshold);
-      const previousPoint = MOUNTAIN_POINTS[i - 1];
-      const currentPoint = MOUNTAIN_POINTS[i];
-
-      return {
-        x: previousPoint.x + ((currentPoint.x - previousPoint.x) * ratio),
-        y: previousPoint.y + ((currentPoint.y - previousPoint.y) * ratio)
-      };
-    }
-  }
-
-  return { ...MOUNTAIN_POINTS[MOUNTAIN_POINTS.length - 1] };
-}
-
-function markerOffset(index) {
-  if (index === 0) {
-    return { x: 0, y: 0 };
-  }
-
-  const direction = index % 2 === 0 ? 1 : -1;
-  const spread = 12 + (Math.ceil(index / 2) * 8);
-  const lift = 10 + (Math.floor((index - 1) / 2) * 12);
-  return { x: direction * spread, y: -lift };
-}
-
-function buildMountainMarkers(teams) {
-  const percentGroups = {};
-
-  return teams.map((team, index) => {
-    const percent = clampPercent(team.overall_percent);
-    const point = interpolatePoint(percent);
-    const groupKey = String(percent);
-    const groupIndex = percentGroups[groupKey] || 0;
-    percentGroups[groupKey] = groupIndex + 1;
-
-    return {
-      label: shortTeamName(team.name, index),
-      teamName: team.name || `Team ${index + 1}`,
-      percent,
-      x: point.x,
-      y: point.y,
-      offset: markerOffset(groupIndex),
-      isBaseCluster: percent === 0
-    };
-  });
-}
-
-function buildDashboardModel(data) {
-  const teams = Array.isArray(data.teams) ? data.teams : [];
-  const milestoneRefs = buildMilestoneRefs(data);
-  const currentMilestoneCode = msCode(data.current_milestone || milestoneRefs[0].name);
-
-  const milestoneSummaries = milestoneRefs.map((milestoneRef) => {
-    let total = 0;
-    let open = 0;
-    let closed = 0;
-
-    teams.forEach((team) => {
-      const progress = getProgressForMilestone(team, milestoneRef);
-      total += progress.total;
-      open += progress.open;
-      closed += progress.closed;
-    });
-
-    const percent = total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
-
-    return {
-      ...milestoneRef,
-      total,
-      open,
-      closed,
-      percent
-    };
-  });
-
-  const openIssues = milestoneSummaries.reduce((sum, milestone) => sum + milestone.open, 0);
-  const closedIssues = milestoneSummaries.reduce((sum, milestone) => sum + milestone.closed, 0);
-  const averageProgress = teams.length
-    ? Math.round(teams.reduce((sum, team) => sum + clampPercent(team.overall_percent), 0) / teams.length)
-    : 0;
-
-  const currentMilestone = milestoneSummaries.find((milestone) => milestone.code === currentMilestoneCode)
-    || milestoneSummaries[0]
-    || { code: currentMilestoneCode, shortTitle: currentMilestoneCode, name: data.current_milestone || currentMilestoneCode, total: 0, open: 0, closed: 0, percent: 0 };
-
-  const startedTeams = teams.filter((team) => {
-    const progress = getProgressForMilestone(team, currentMilestone);
-    return progress.total > 0 && progress.closed > 0;
-  });
-
-  const blockedTeams = teams.filter((team) => {
-    const progress = getProgressForMilestone(team, currentMilestone);
-    return progress.total > 0 && progress.closed === 0;
-  });
-
-  const backlogMilestone = milestoneSummaries.reduce((best, milestone) => {
-    if (!best || milestone.open > best.open) {
-      return milestone;
-    }
-    return best;
-  }, null);
-
-  const distribution = milestoneSummaries.map((milestone) => {
-    const counts = { upcoming: 0, created: 0, active: 0, done: 0 };
-
-    teams.forEach((team) => {
-      const state = getMilestoneState(team, milestone).status;
-      counts[state] += 1;
-    });
-
-    return { ...milestone, counts };
-  });
-
-  const latestOpenIssues = [];
-  teams.forEach((team, index) => {
-    (Array.isArray(team.open_issues) ? team.open_issues : []).forEach((issue) => {
-      latestOpenIssues.push({
-        teamLabel: shortTeamName(team.name, index),
-        url: issue.url,
-        title: sanitizeIssueTitle(issue.title),
-        number: getIssueNumber(issue),
-        teamIndex: index
-      });
-    });
-  });
-
-  latestOpenIssues.sort((a, b) => b.number - a.number || a.teamIndex - b.teamIndex);
-
-  return {
-    teams,
-    milestoneSummaries,
-    currentMilestone,
-    currentMilestoneCode,
-    backlogMilestone,
-    startedTeams,
-    blockedTeams,
-    latestOpenIssues: latestOpenIssues.slice(0, 6),
-    distribution,
-    markers: buildMountainMarkers(teams),
-    totals: {
-      teamCount: teams.length,
-      openIssues,
-      closedIssues,
-      createdTasks: openIssues + closedIssues,
-      averageProgress
-    }
-  };
-}
-
 function renderHeader(data, model) {
   const heroOrg = document.getElementById('hero-org');
   const orgUrl = data.github_org && data.github_org.url ? data.github_org.url : heroOrg.href;
@@ -2354,256 +2207,6 @@ function renderHeader(data, model) {
 
   document.getElementById('hero-meta').textContent =
     `${model.totals.teamCount} echipe \u00b7 Actualizat: ${data.updated_at || '\u2014'}`;
-}
-
-function renderStats(model) {
-  const stats = model.totals;
-
-  document.getElementById('stats-band').innerHTML =
-    `<div class="stat-tile"><span class="stat-val">${stats.teamCount}</span><span class="stat-label">Teams</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${stats.openIssues}</span><span class="stat-label">Open issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${stats.closedIssues}</span><span class="stat-label">Closed issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${stats.averageProgress}%</span><span class="stat-label">Average progress</span></div>`;
-}
-
-function renderJourneyLegacy(model) {
-  const milestoneItems = model.milestoneSummaries.map((milestone) => {
-    const currentClass = milestone.code === model.currentMilestoneCode ? ' is-current' : '';
-    const closedLabel = milestone.total > 0 ? `${milestone.closed}/${milestone.total} closed` : '\u2014';
-
-    return (
-      `<div class="journey-milestone${currentClass}">` +
-        `<div class="journey-milestone-top">` +
-          `<span class="journey-milestone-code">${escapeHtml(milestone.code)}</span>` +
-          `<strong class="journey-milestone-title">${escapeHtml(milestone.shortTitle)}</strong>` +
-          `<span class="journey-milestone-pct">${milestone.percent}%</span>` +
-        `</div>` +
-        `<div class="journey-milestone-bottom">` +
-          `<span class="journey-milestone-meta">${closedLabel}</span>` +
-          `<span class="journey-milestone-open">${milestone.open} open</span>` +
-        `</div>` +
-      `</div>`
-    );
-  }).join('');
-
-  const checkpointGuides = MOUNTAIN_POINTS.map((point) => (
-    `<line class="checkpoint-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="356"></line>`
-  )).join('');
-
-  const checkpoints = MOUNTAIN_POINTS.map((point, index) => {
-    const label = point.label;
-    const isCurrent = label === model.currentMilestoneCode ? ' checkpoint-current' : '';
-    const labelY = index === 0 ? point.y + 24 : point.y - 14;
-
-    return (
-      `<g class="checkpoint${isCurrent}">` +
-        `<circle class="checkpoint-node" cx="${point.x}" cy="${point.y}" r="8"></circle>` +
-        `<text class="checkpoint-label" x="${point.x}" y="${labelY}" text-anchor="middle">${escapeHtml(label)}</text>` +
-      `</g>`
-    );
-  }).join('');
-
-  const teamMarkers = model.markers.map((marker) => {
-    const left = (marker.x / MOUNTAIN_VIEWBOX.width) * 100;
-    const top = (marker.y / MOUNTAIN_VIEWBOX.height) * 100;
-    const clusterClass = marker.isBaseCluster ? ' base-cluster' : '';
-
-    return (
-      `<div class="mountain-team-marker${clusterClass}" style="left:${left}%; top:${top}%; --marker-offset-x:${marker.offset.x}px; --marker-offset-y:${marker.offset.y}px;" title="${escapeHtml(marker.teamName)} · ${marker.percent}%">` +
-        `${escapeHtml(marker.label)}` +
-      `</div>`
-    );
-  }).join('');
-
-  document.getElementById('journey-wrap').innerHTML =
-    `<div class="journey-shell">` +
-      `<div class="journey-summary">` +
-        `<p class="journey-copy">Fiecare checkpoint reprezint&#259; un milestone. Progresul este calculat din issues &icirc;nchise &icirc;n GitHub.</p>` +
-        `<div class="journey-milestones">${milestoneItems}</div>` +
-      `</div>` +
-      `<div class="mountain-card">` +
-        `<div class="mountain-caption">` +
-          `<div class="mountain-title">Progress</div>` +
-          `<div class="mountain-badge">` +
-            `<span class="mountain-badge-label">Milestone curent</span>` +
-            `<span class="mountain-badge-value"><span class="mountain-badge-code">${escapeHtml(model.currentMilestone.code)}</span> &middot; ${escapeHtml(model.currentMilestone.shortTitle)}</span>` +
-          `</div>` +
-        `</div>` +
-        `<div class="mountain-visual">` +
-          `<svg class="mountain-svg" viewBox="0 0 660 420" aria-hidden="true">` +
-            `<path class="mountain-ridge-back" d="M 0 356 L 100 296 L 194 316 L 286 240 L 376 262 L 484 154 L 610 86 L 660 356 Z"></path>` +
-            `<path class="mountain-ridge-front" d="M 0 356 L 114 322 L 216 260 L 308 286 L 406 182 L 500 208 L 618 110 L 660 356 Z"></path>` +
-            `${checkpointGuides}` +
-            `<polyline class="mountain-path-shadow" points="72,330 160,280 252,242 340,205 426,170 516,126 596,80"></polyline>` +
-            `<polyline class="mountain-path" points="72,330 160,280 252,242 340,205 426,170 516,126 596,80"></polyline>` +
-            `${checkpoints}` +
-          `</svg>` +
-          `${teamMarkers}` +
-        `</div>` +
-        `<p class="mountain-footnote">Marcajele T1-T6 sunt pozi&#539;ionate din ` +
-          `team.overall_percent: 0% la baz&#259;, 81-100% la summit.</p>` +
-      `</div>` +
-    `</div>`;
-}
-
-function renderProjectStats(model) {
-  const blockedLabels = model.blockedTeams
-    .map((team) => escapeHtml(shortTeamName(team.name, model.teams.indexOf(team))))
-    .join(', ');
-  const issuesByMilestone = model.milestoneSummaries.map((milestone) => (
-    `<div class="project-row">` +
-      `<span class="project-key">${escapeHtml(milestone.code)} &middot; ${escapeHtml(milestone.shortTitle)}</span>` +
-      `<span class="project-value">${milestone.open}</span>` +
-    `</div>`
-  )).join('');
-
-  const latestIssues = model.latestOpenIssues.length
-    ? model.latestOpenIssues.map((issue) => (
-      `<div class="project-issue-item">` +
-        `<span class="project-issue-tag">${escapeHtml(issue.teamLabel)}</span>` +
-        `<a class="project-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>` +
-      `</div>`
-    )).join('')
-    : '<div class="team-empty">Nu exist&#259; issues deschise.</div>';
-
-  const distributionRows = model.distribution.map((milestone) => (
-    `<div class="project-distribution-row">` +
-      `<span class="project-distribution-label">${escapeHtml(milestone.code)}:</span>` +
-      `<span class="project-distribution-copy">created ${milestone.counts.created} &middot; active ${milestone.counts.active} &middot; done ${milestone.counts.done} &middot; upcoming ${milestone.counts.upcoming}</span>` +
-    `</div>`
-  )).join('');
-
-  document.getElementById('project-stats').innerHTML =
-    `<div class="project-grid">` +
-      `<div class="project-column">` +
-        `<article class="project-card">` +
-          `<div class="project-title">Issues deschise pe milestone</div>` +
-          `<div class="project-list">${issuesByMilestone}</div>` +
-        `</article>` +
-        `<article class="project-card">` +
-          `<div class="project-title">Distribu&#539;ie pe milestone</div>` +
-          `<div class="project-distribution">${distributionRows}</div>` +
-        `</article>` +
-      `</div>` +
-      `<div class="project-column">` +
-        `<article class="project-card">` +
-          `<div class="project-title">Task-uri create vs &icirc;nchise</div>` +
-          `<div class="project-strip">` +
-            `<div class="project-strip-item"><span class="project-strip-label">Created</span><strong class="project-strip-value">${model.totals.createdTasks}</strong></div>` +
-            `<div class="project-strip-item"><span class="project-strip-label">Closed</span><strong class="project-strip-value">${model.totals.closedIssues}</strong></div>` +
-            `<div class="project-strip-item"><span class="project-strip-label">Open</span><strong class="project-strip-value">${model.totals.openIssues}</strong></div>` +
-          `</div>` +
-        `</article>` +
-        `<article class="project-card">` +
-          `<div class="project-title">Milestone curent</div>` +
-          `<div class="project-status-list">` +
-            `<div class="project-status-row"><span class="project-status-kicker">Biggest backlog</span><span class="project-status-main">${escapeHtml(model.backlogMilestone.code)} &middot; ${escapeHtml(model.backlogMilestone.shortTitle)}</span><div class="project-status-note">${model.backlogMilestone.open} issues deschise</div></div>` +
-            `<div class="project-status-row"><span class="project-status-kicker">Started current milestone</span><span class="project-status-main">${model.startedTeams.length}/${model.totals.teamCount} echipe</span><div class="project-status-note">${escapeHtml(model.currentMilestone.code)} &middot; ${escapeHtml(model.currentMilestone.name)}</div></div>` +
-            `<div class="project-status-row"><span class="project-status-kicker">Blocked at 0/x</span><span class="project-status-main">${model.blockedTeams.length}/${model.totals.teamCount} echipe</span><div class="project-status-note">${blockedLabels || '\u2014'}</div></div>` +
-          `</div>` +
-        `</article>` +
-      `</div>` +
-      `<div class="project-column">` +
-        `<article class="project-card">` +
-          `<div class="project-title">Ultimele issues deschise</div>` +
-          `<div class="project-issues">${latestIssues}</div>` +
-        `</article>` +
-      `</div>` +
-    `</div>`;
-}
-
-function renderTeamsLegacy(model) {
-  const currentMilestoneCode = model.currentMilestoneCode;
-
-  document.getElementById('team-grid').innerHTML = model.teams.map((team, index) => {
-    const overallPercent = clampPercent(team.overall_percent);
-    const openIssues = Array.isArray(team.open_issues) ? team.open_issues : [];
-    const visibleIssues = openIssues.slice(0, 3);
-    const hiddenCount = Math.max(openIssues.length - visibleIssues.length, 0);
-
-    const milestonePills = model.milestoneSummaries.map((milestone) => {
-      const state = getMilestoneState(team, milestone);
-      const currentClass = milestone.code === currentMilestoneCode ? ' is-current' : '';
-
-      return (
-        `<div class="team-milestone-pill is-${state.status}${currentClass}" style="--pill-progress:${state.percent};">` +
-          `<span class="team-milestone-code">${escapeHtml(milestone.code)}</span>` +
-          `<span class="team-milestone-value">${escapeHtml(state.label)}</span>` +
-        `</div>`
-      );
-    }).join('');
-
-    const memberSection = Array.isArray(team.members) && team.members.length
-      ? (
-        `<div class="team-section">` +
-          `<div class="team-subtitle">Team members</div>` +
-          `<div class="member-list">` +
-            `${sortMembers(team.members).map((member) => {
-              const total = toNumber(member.total);
-              const closed = toNumber(member.closed);
-              const percent = total > 0
-                ? clampPercent(member.percent !== undefined ? member.percent : Math.round((closed / total) * 100))
-                : 0;
-
-              return (
-                `<div class="member-row">` +
-                  `<span class="member-name">${escapeHtml(member.name || '\u2014')}</span>` +
-                  `<div class="member-bar"><div class="member-fill" style="width:${percent}%"></div></div>` +
-                  `<span class="member-pct">${percent}%</span>` +
-                  `<span class="member-meta">${closed}/${total} issues closed</span>` +
-                `</div>`
-              );
-            }).join('')}` +
-          `</div>` +
-        `</div>`
-      )
-      : '';
-
-    const issuesMarkup = visibleIssues.length
-      ? visibleIssues.map((issue) => (
-        `<a class="team-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`
-      )).join('')
-      : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
-
-    const moreMarkup = hiddenCount > 0
-      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url || team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">+${hiddenCount} more open issues</a>`
-      : '';
-
-    return (
-      `<article class="team-card">` +
-        `<div class="team-card-header">` +
-          `<div>` +
-            `<a class="team-card-name" href="${escapeHtml(team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name || `Team ${index + 1}`)}</a>` +
-            `<div class="team-card-stage">Current stage &middot; ${escapeHtml(team.current_stage || '\u2014')}</div>` +
-          `</div>` +
-          `<div class="team-card-overall">` +
-            `<span class="team-card-overall-label">Overall percent</span>` +
-            `<span class="team-card-overall-value">${overallPercent}%</span>` +
-          `</div>` +
-        `</div>` +
-        `<div class="team-progress-row">` +
-          `<div class="team-progress-head">` +
-            `<span class="team-progress-label">Overall progress</span>` +
-            `<span class="team-progress-meta">${overallPercent}% completed</span>` +
-          `</div>` +
-          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${overallPercent}%"></div></div>` +
-        `</div>` +
-        `<div class="team-links">` +
-          `<a class="team-link" href="${escapeHtml(team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">Repo &#8599;</a>` +
-          `<span class="team-link-sep">&middot;</span>` +
-          `<a class="team-link" href="${escapeHtml(team.issues_url || team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">Issues &#8599;</a>` +
-          `<span class="team-link-sep">&middot;</span>` +
-          `<a class="team-link" href="${escapeHtml(team.milestones_url || team.repo_url || '#')}" target="_blank" rel="noopener noreferrer">Milestones &#8599;</a>` +
-        `</div>` +
-        `<div class="team-milestone-row">${milestonePills}</div>` +
-        `${memberSection}` +
-        `<div class="team-section">` +
-          `<div class="team-subtitle">Open issues (${openIssues.length})</div>` +
-          `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
-        `</div>` +
-      `</article>`
-    );
-  }).join('');
 }
 
 function renderUnavailable() {
@@ -2643,6 +2246,7 @@ const MOUNTAIN_POINTS = {
   C3:   { x: 1389.1, y: 697.5, label: 'C3' },
   C4:   { x: 1540.8, y: 515.9, label: 'C4' },
   C5:   { x: 1152.8, y: 391.7, label: 'C5' },
+  bend1:{ x: 1511.9, y: 346.3, label: '' },
   C6:   { x: 1784.3, y: 323.7, label: 'C6' },
   C7:   { x: 1552.8, y: 201.6, label: 'C7' },
   C8:   { x: 1636.2, y: 55.5,  label: 'C8' }
@@ -3295,6 +2899,13 @@ function buildDashboardModel(data) {
     ? toNumber(data.stats.issues_closed_last48h)
     : null;
   const avgTime = computeAverageCompletionTime(Array.isArray(data && data.teams) ? data.teams : []);
+  const connectedTeamsCount = teams.filter(function(team) {
+    return team.members.some(function(m) { return m && m.connected === true; });
+  }).length;
+  const currentMilestoneStarted = teams.filter(function(team) {
+    const stage = team.stageProgress.find(function(s) { return s.key === currentMilestone.key; });
+    return stage && stage.closed > 0;
+  }).length;
 
   return {
     coursePlan: coursePlan,
@@ -3319,6 +2930,8 @@ function buildDashboardModel(data) {
     hasAnyOpenIssues: blockerData.hasAnyOpenIssues,
     issuesClosedLast48h: issuesClosedLast48h,
     avgTimeDays: avgTime.globalAvgDays,
+    connectedTeamsCount: connectedTeamsCount,
+    currentMilestoneStarted: currentMilestoneStarted,
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
@@ -3333,7 +2946,7 @@ function buildDashboardModel(data) {
 
 function computeActivityStats(rawTeams) {
   var cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  var hasData = false;
+  var hasTimestamps = false;
   var activeCount = 0;
 
   (rawTeams || []).forEach(function(team) {
@@ -3341,20 +2954,15 @@ function computeActivityStats(rawTeams) {
 
     function checkDate(d) {
       if (!d) return;
-      hasData = true;
+      hasTimestamps = true;
       if (new Date(d).getTime() >= cutoff) teamActive = true;
     }
 
     var openIssues = Array.isArray(team.open_issues) ? team.open_issues : [];
     openIssues.forEach(function(issue) {
-      if (issue.updated_at || issue.closed_at) {
-        checkDate(issue.updated_at);
-        checkDate(issue.closed_at);
-      } else if (openIssues.length > 0) {
-        hasData = true;
-      }
+      checkDate(issue.updated_at);
+      checkDate(issue.closed_at);
     });
-    if (openIssues.length > 0) hasData = true;
 
     var closedIssues = Array.isArray(team.closed_issues) ? team.closed_issues : [];
     closedIssues.forEach(function(issue) {
@@ -3364,10 +2972,8 @@ function computeActivityStats(rawTeams) {
 
     var commits = Array.isArray(team.commits) ? team.commits : [];
     commits.forEach(function(c) {
-      var authorDate = c.commit && c.commit.author && c.commit.author.date;
-      var committerDate = c.commit && c.commit.committer && c.commit.committer.date;
-      checkDate(authorDate);
-      checkDate(committerDate);
+      checkDate(c.commit && c.commit.author && c.commit.author.date);
+      checkDate(c.commit && c.commit.committer && c.commit.committer.date);
     });
 
     if (team.last_activity_at) checkDate(team.last_activity_at);
@@ -3375,7 +2981,7 @@ function computeActivityStats(rawTeams) {
     if (teamActive) activeCount++;
   });
 
-  if (!hasData) return null;
+  if (!hasTimestamps) return null;
   return { activeCount: activeCount, stalledCount: (rawTeams || []).length - activeCount };
 }
 
@@ -3546,20 +3152,53 @@ function renderProjectStats(model) {
       );
     }).join('');
 
-  // CENTER: 4 metric tiles with tip lines
+  // CENTER: tiles adapt to whether timestamp data exists
+  const hasTimestampData = model.activityStats !== null || model.issuesClosedLast48h !== null;
   const actStats = model.activityStats;
-  const activeTeamsStr = actStats != null
-    ? `${actStats.activeCount}/${model.totals.teamCount}`
-    : `\u2014/${model.totals.teamCount}`;
-  const momentumVal = model.issuesClosedLast48h != null ? `+${model.issuesClosedLast48h}` : '+0';
-  const momentumNote = model.issuesClosedLast48h != null ? 'task-uri \u00eenchise' : 'date lips\u0103';
-  const ACTIVITY_TOOLTIP = 'Activitate recent\u0103 = issue actualizat, issue \u00eenchis sau push \u00een ultimele 7 zile.';
+
+  let tile3, tile4;
+  if (!hasTimestampData) {
+    tile3 = {
+      label: escapeHtml(model.currentMilestone.key) + ' pornit',
+      value: `${model.currentMilestoneStarted}/${model.totals.teamCount}`,
+      note: 'echipe au \u00eenceput',
+      tip: 'au cel pu\u021bin 1 task \u00eenchis',
+      tooltip: ''
+    };
+    tile4 = {
+      label: 'Echipe conectate',
+      value: `${model.connectedTeamsCount}/${model.totals.teamCount}`,
+      note: 'cu membri conecta\u021bi',
+      tip: 'membri cu connected: true',
+      tooltip: ''
+    };
+  } else {
+    const momentumVal = model.issuesClosedLast48h != null ? `+${model.issuesClosedLast48h}` : '+0';
+    const momentumNote = model.issuesClosedLast48h != null ? 'task-uri \u00eenchise' : 'date lips\u0103';
+    const activeTeamsStr = actStats != null
+      ? `${actStats.activeCount}/${model.totals.teamCount}`
+      : `\u2014/${model.totals.teamCount}`;
+    tile3 = {
+      label: 'Ritm 48h',
+      value: momentumVal,
+      note: momentumNote,
+      tip: 'finalizate \u00een ultimele 48h',
+      tooltip: ''
+    };
+    tile4 = {
+      label: 'Echipe active',
+      value: activeTeamsStr,
+      note: 'cu activitate recent\u0103',
+      tip: 'active \u00een ultimele 7 zile',
+      tooltip: 'Activitate recent\u0103 = issue actualizat, issue \u00eenchis sau push \u00een ultimele 7 zile.'
+    };
+  }
 
   const controlTiles = [
-    { label: 'Progres total',   value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate',    tip: 'task-uri din toate echipele',    tooltip: '' },
+    { label: 'Progres total',     value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate', tip: 'task-uri din toate echipele', tooltip: '' },
     { label: 'Etapa activ\u0103', value: escapeHtml(model.currentMilestone.key), note: escapeHtml(model.currentMilestone.short), tip: 'etapa curent\u0103 din cursuri', tooltip: '' },
-    { label: 'Ritm 48h',        value: momentumVal,   note: momentumNote,                          tip: 'finalizate \u00een ultimele 48h', tooltip: '' },
-    { label: 'Echipe active',   value: activeTeamsStr, note: 'cu activitate recent\u0103',          tip: 'active \u00een ultimele 7 zile', tooltip: ACTIVITY_TOOLTIP }
+    tile3,
+    tile4
   ].map(function(tile) {
     const titleAttr = tile.tooltip ? ` title="${escapeHtml(tile.tooltip)}"` : '';
     return (
