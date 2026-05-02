@@ -2461,7 +2461,13 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
-const TEAM_PALETTE = ['#D97706', '#65A30D', '#DC2626', '#2563EB', '#111827', '#7C3AED'];
+function progressToColor(percent) {
+  var t = clampPercent(percent) / 100;
+  var r = Math.round(181 + (104 - 181) * t);
+  var g = Math.round(120 + (137 - 120) * t);
+  var b = Math.round(74  + (90  - 74)  * t);
+  return '#' + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0');
+}
 
 const MOUNTAIN_POINTS = {
   base: { x: 260, y: 851, label: 'Base' },
@@ -2986,7 +2992,9 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     return stage.key === currentStage.key;
   }) || derivedStage;
   const openIssues = Array.isArray(team && team.open_issues) ? team.open_issues : [];
-  const color = TEAM_PALETTE[index % TEAM_PALETTE.length];
+  const courseProgress = computeCourseProgressPercent(team, coursePlan);
+  const climbProgress = computeAverageStagePercent(team, climbPlan);
+  const color = progressToColor(courseProgress);
 
   return {
     name: team && team.name ? String(team.name) : `Team ${index + 1}`,
@@ -3012,8 +3020,8 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
       open: currentStageProgress.open,
       percent: currentStageProgress.percent
     },
-    courseProgress: computeCourseProgressPercent(team, coursePlan),
-    climbProgress: computeAverageStagePercent(team, climbPlan),
+    courseProgress: courseProgress,
+    climbProgress: climbProgress,
     issueProgress: computeIssueProgressPercent(team),
     nextAction: openIssues.find(function(issue) {
       return inferStageKey(issue && issue.title) === currentMilestoneKey;
