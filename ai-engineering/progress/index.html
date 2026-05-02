@@ -3216,7 +3216,7 @@ function buildDashboardModel(data) {
     return b.number - a.number || a.teamIndex - b.teamIndex;
   });
 
-  const activityStats = computeActivityStats(teams);
+  const activityStats = computeActivityStats(Array.isArray(data && data.teams) ? data.teams : []);
   const blockerData = computeBlockers(teams);
   const issuesClosedLast48h = data && data.stats && data.stats.issues_closed_last48h != null
     ? toNumber(data.stats.issues_closed_last48h)
@@ -3256,27 +3256,52 @@ function buildDashboardModel(data) {
   };
 }
 
-function computeActivityStats(teams) {
-  var now = Date.now();
-  var sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+function computeActivityStats(rawTeams) {
+  var cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
   var hasData = false;
   var activeCount = 0;
 
-  teams.forEach(function(team) {
+  (rawTeams || []).forEach(function(team) {
     var teamActive = false;
-    team.openIssues.forEach(function(issue) {
-      if (issue.updated_at) {
+
+    function checkDate(d) {
+      if (!d) return;
+      hasData = true;
+      if (new Date(d).getTime() >= cutoff) teamActive = true;
+    }
+
+    var openIssues = Array.isArray(team.open_issues) ? team.open_issues : [];
+    openIssues.forEach(function(issue) {
+      if (issue.updated_at || issue.closed_at) {
+        checkDate(issue.updated_at);
+        checkDate(issue.closed_at);
+      } else if (openIssues.length > 0) {
         hasData = true;
-        if (now - new Date(issue.updated_at).getTime() <= sevenDaysMs) {
-          teamActive = true;
-        }
       }
     });
+    if (openIssues.length > 0) hasData = true;
+
+    var closedIssues = Array.isArray(team.closed_issues) ? team.closed_issues : [];
+    closedIssues.forEach(function(issue) {
+      checkDate(issue.closed_at);
+      checkDate(issue.updated_at);
+    });
+
+    var commits = Array.isArray(team.commits) ? team.commits : [];
+    commits.forEach(function(c) {
+      var authorDate = c.commit && c.commit.author && c.commit.author.date;
+      var committerDate = c.commit && c.commit.committer && c.commit.committer.date;
+      checkDate(authorDate);
+      checkDate(committerDate);
+    });
+
+    if (team.last_activity_at) checkDate(team.last_activity_at);
+
     if (teamActive) activeCount++;
   });
 
   if (!hasData) return null;
-  return { activeCount: activeCount, stalledCount: teams.length - activeCount };
+  return { activeCount: activeCount, stalledCount: (rawTeams || []).length - activeCount };
 }
 
 function computeBlockers(teams) {
@@ -3411,15 +3436,17 @@ function renderProjectStats(model) {
     ? `${actStats.activeCount}/${model.totals.teamCount}`
     : `\u2014/${model.totals.teamCount}`;
   const momentumStr = model.issuesClosedLast48h != null ? String(model.issuesClosedLast48h) : '0';
+  const ACTIVITY_TOOLTIP = 'Activitate recent\u0103 = issue actualizat, issue \u00eenchis sau push \u00een ultimele 7 zile.';
 
   const controlTiles = [
-    { label: 'Progres', value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate' },
-    { label: 'Etapa activ\u0103', value: escapeHtml(model.currentMilestone.key), note: escapeHtml(model.currentMilestone.short) },
-    { label: 'Momentum', value: momentumStr, note: '\u00eenchise \u00een 48h' },
-    { label: 'Echipe \u00een mi\u015fcare', value: activeTeamsStr, note: 'cu activitate recent\u0103' }
+    { label: 'Progres', value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate', tooltip: '' },
+    { label: 'Etapa activ\u0103', value: escapeHtml(model.currentMilestone.key), note: escapeHtml(model.currentMilestone.short), tooltip: '' },
+    { label: 'Momentum', value: momentumStr, note: '\u00eenchise \u00een 48h', tooltip: '' },
+    { label: 'Echipe \u00een mi\u0219care', value: activeTeamsStr, note: 'cu activitate recent\u0103', tooltip: ACTIVITY_TOOLTIP }
   ].map(function(tile) {
+    const titleAttr = tile.tooltip ? ` title="${escapeHtml(tile.tooltip)}"` : '';
     return (
-      `<div class="metric-tile">` +
+      `<div class="metric-tile"${titleAttr}>` +
         `<span class="metric-label">${tile.label}</span>` +
         `<strong class="metric-value">${tile.value}</strong>` +
         `<span class="metric-note">${tile.note}</span>` +
