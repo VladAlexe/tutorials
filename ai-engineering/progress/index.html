@@ -923,31 +923,61 @@ section { padding-top: 2rem; }
 }
 
 .team-card-header {
-  padding: 0.95rem 1rem 0.82rem;
+  padding: 0.72rem 0.9rem 0.68rem;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.9rem 1rem;
-  align-items: start;
+  gap: 0.5rem 0.9rem;
+  align-items: center;
+}
+
+.team-header-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
 }
 
 .team-card-name {
   font-family: 'Fraunces', serif;
-  font-size: 1.24rem;
+  font-size: 1.08rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
-  transition: color 0.12s;
-  line-height: 1.12;
+  line-height: 1.06;
 }
-.team-card-name:hover { color: var(--team-color); }
 
-.team-card-stage {
-  margin-top: 0.18rem;
+.team-card-summary {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--sub);
-  line-height: 1.45;
+  line-height: 1.35;
+}
+
+.team-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.28rem;
+}
+
+.team-link-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.16rem 0.42rem 0.18rem;
+  border: 1px solid rgba(226, 221, 211, 0.92);
+  border-radius: 999px;
+  background: rgba(250, 249, 246, 0.86);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--sub);
+  transition: color 0.1s, border-color 0.1s;
+}
+
+.team-link-pill:hover {
+  color: var(--team-color);
+  border-color: var(--team-line, rgba(181, 120, 74, 0.36));
 }
 
 .team-card-overall {
@@ -974,7 +1004,7 @@ section { padding-top: 2rem; }
 }
 
 .team-progress-row {
-  padding: 0.8rem 1.15rem 0.82rem;
+  padding: 0.55rem 0.9rem 0.62rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -983,7 +1013,7 @@ section { padding-top: 2rem; }
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 0.24rem;
+  margin-bottom: 0.16rem;
 }
 
 .team-progress-label,
@@ -1002,7 +1032,7 @@ section { padding-top: 2rem; }
 }
 
 .team-progress-bar {
-  height: 9px;
+  height: 5px;
   border-radius: 999px;
   background: rgba(201, 195, 181, 0.44);
   overflow: hidden;
@@ -1035,37 +1065,38 @@ section { padding-top: 2rem; }
 .team-link-sep { color: var(--border-hi); }
 
 .team-milestone-row {
-  padding: 0.72rem 1rem 0.82rem;
+  padding: 0.56rem 0.9rem 0.62rem;
   border-bottom: 1px solid var(--border);
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
-  gap: 0.38rem;
+  gap: 0.28rem;
 }
 
 .team-milestone-pill {
   position: relative;
-  padding: 0.5rem 0.55rem 0.54rem;
+  padding: 0.32rem 0.38rem 0.34rem;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: rgba(250, 249, 246, 0.86);
   overflow: hidden;
   min-width: 0;
-  min-height: 54px;
+  min-height: 0;
 }
 
 .team-milestone-pill::after {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: calc(var(--pill-progress, 0) * 1%);
-  background: var(--pill-color, var(--team-soft));
-  opacity: 0.55;
-  pointer-events: none;
+  display: none;
 }
 
 .team-milestone-pill > * {
   position: relative;
   z-index: 1;
+}
+
+.team-milestone-topline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.3rem;
 }
 
 .team-milestone-pill.is-current {
@@ -1101,21 +1132,36 @@ section { padding-top: 2rem; }
 .team-milestone-value {
   display: block;
   font-family: 'JetBrains Mono', monospace;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .team-milestone-code {
-  font-size: 10px;
+  font-size: 8.8px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--sub);
 }
 
 .team-milestone-value {
-  margin-top: 0.22rem;
-  font-size: 10px;
+  margin-top: 0;
+  font-size: 8.8px;
   color: var(--dim);
   white-space: nowrap;
+}
+
+.team-milestone-bar {
+  display: block;
+  margin-top: 0.18rem;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(201, 195, 181, 0.34);
+  overflow: hidden;
+}
+
+.team-milestone-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
 }
 
 .team-milestone-pill.is-created .team-milestone-code,
@@ -1134,7 +1180,7 @@ section { padding-top: 2rem; }
 }
 
 .team-section {
-  padding: 0.78rem 1rem 0.82rem;
+  padding: 0.58rem 0.9rem 0.62rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -1146,27 +1192,35 @@ section { padding-top: 2rem; }
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.8rem;
-  margin-bottom: 0.52rem;
+  gap: 0.6rem;
+  margin-bottom: 0.32rem;
 }
 
 .team-section-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 9px;
   color: var(--sub);
   white-space: nowrap;
 }
 
+.team-member-highlight {
+  margin-bottom: 0.34rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--sub);
+  line-height: 1.35;
+}
+
 .team-next-action {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 0.65rem;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 0.5rem;
   align-items: start;
 }
 
 .team-next-action-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--dim);
@@ -1174,9 +1228,9 @@ section { padding-top: 2rem; }
 
 .team-next-action-copy,
 .team-next-action-copy a {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--sub);
-  line-height: 1.45;
+  line-height: 1.35;
 }
 
 .team-next-action-copy a:hover {
@@ -1191,26 +1245,26 @@ section { padding-top: 2rem; }
 .member-table-head,
 .member-row {
   display: grid;
-  grid-template-columns: 64px 112px minmax(0, 1fr) 52px;
-  gap: 0.6rem;
+  grid-template-columns: 56px minmax(0, 1fr) 48px;
+  gap: 0.5rem;
   align-items: center;
 }
 
 .member-table-head {
-  padding: 0 0 0.42rem;
+  padding: 0 0 0.28rem;
   border-bottom: 1px solid rgba(226, 221, 211, 0.88);
 }
 
 .member-head-cell {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 8.8px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--dim);
 }
 
 .member-row {
-  padding: 0.5rem 0;
+  padding: 0.34rem 0;
   border-bottom: 1px solid rgba(226, 221, 211, 0.82);
 }
 
@@ -1338,15 +1392,13 @@ section { padding-top: 2rem; }
 }
 
 .member-progress-cell {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.45rem;
+  display: block;
   align-items: center;
   min-width: 0;
 }
 
 .member-progress-track {
-  height: 7px;
+  height: 4px;
   border-radius: 999px;
   background: rgba(201, 195, 181, 0.42);
   overflow: hidden;
@@ -1390,7 +1442,42 @@ section { padding-top: 2rem; }
 .team-issue-list {
   display: flex;
   flex-direction: column;
-  gap: 0.32rem;
+  gap: 0.18rem;
+}
+
+.team-issue-agg-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.55rem;
+  padding: 0.16rem 0;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.72);
+}
+
+.team-issue-agg-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.team-issue-agg-link {
+  min-width: 0;
+  font-size: 11px;
+  color: var(--sub);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-issue-agg-link:hover {
+  color: var(--team-color);
+}
+
+.team-issue-agg-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--dim);
+  white-space: nowrap;
 }
 
 .team-issue-link,
@@ -1888,33 +1975,6 @@ section { padding-top: 2rem; }
   margin-top: 0.18rem;
 }
 
-.team-compare-line {
-  margin-top: 0.2rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 0.45rem;
-  align-items: baseline;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--sub);
-}
-
-.team-compare-main {
-  color: var(--text);
-}
-
-.team-compare-delta.is-up {
-  color: #68895a;
-}
-
-.team-compare-delta.is-down {
-  color: #b06030;
-}
-
-.team-compare-delta.is-even {
-  color: var(--dim);
-}
-
 .task-matrix {
   display: flex;
   flex-direction: column;
@@ -2056,28 +2116,9 @@ footer {
   .metric-progress-pair {
     grid-template-columns: 1fr;
   }
-  .member-table-head {
-    display: none;
-  }
   .member-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.42rem 0.6rem;
-  }
-  .member-summary {
-    order: 4;
-    grid-column: 2;
-    text-align: right;
-    min-width: 0;
-  }
-  .member-progress-cell {
-    order: 5;
-    grid-column: 1 / -1;
-  }
-  .member-progress-cell.is-issues {
-    order: 6;
-  }
-  .member-stage-strip {
-    order: 7;
+    grid-template-columns: 56px minmax(0, 1fr) 48px;
+    gap: 0.45rem;
   }
   .mountain-card {
     min-height: auto;
@@ -2122,6 +2163,10 @@ footer {
 
   .team-metric-line {
     text-align: left;
+  }
+
+  .team-card-links {
+    justify-content: flex-start;
   }
 
   .team-next-action {
@@ -4051,58 +4096,177 @@ function getMemberIssueProgressPercent(member) {
   return total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
 }
 
+function formatTaskRatio(closed, total) {
+  return total > 0 ? `${closed}/${total}` : '\u2014';
+}
+
+function formatCompactIssueTitle(title) {
+  return sanitizeIssueTitle(title).replace(/\s+-\s+/, ' \u2014 ');
+}
+
+function getTeamTaskSummary(team) {
+  return (Array.isArray(team && team.stageProgress) ? team.stageProgress : []).reduce(function(summary, stage) {
+    summary.closed += toNumber(stage && stage.closed);
+    summary.total += toNumber(stage && stage.total);
+    return summary;
+  }, { closed: 0, total: 0 });
+}
+
+function getMemberLabel(member) {
+  return String(member && (member.display_code || member.local_code || member.student_key || '') || '\u2014');
+}
+
+function getTopMemberData(members) {
+  if (!Array.isArray(members) || !members.length) {
+    return null;
+  }
+
+  return sortMembers(members).slice().sort(function(a, b) {
+    return (
+      toNumber(b && b.closed) - toNumber(a && a.closed) ||
+      toNumber(b && b.total) - toNumber(a && a.total) ||
+      getMemberIssueProgressPercent(b) - getMemberIssueProgressPercent(a) ||
+      getMemberLabel(a).localeCompare(getMemberLabel(b))
+    );
+  })[0];
+}
+
+function getIssueOrderingMeta(title) {
+  const normalizedTitle = sanitizeIssueTitle(title);
+  const match = normalizedTitle.match(/^C(\d+)(?:\.(\d+))?/i);
+  return {
+    stageRank: match ? toNumber(match[1]) : 999,
+    stepRank: match && match[2] ? toNumber(match[2]) : 999,
+    normalizedTitle: normalizedTitle
+  };
+}
+
+function compareIssueTitles(aTitle, bTitle) {
+  const aMeta = getIssueOrderingMeta(aTitle);
+  const bMeta = getIssueOrderingMeta(bTitle);
+  return (
+    aMeta.stageRank - bMeta.stageRank ||
+    aMeta.stepRank - bMeta.stepRank ||
+    aMeta.normalizedTitle.localeCompare(bMeta.normalizedTitle)
+  );
+}
+
+function pickTeamCurrentAction(openIssues, currentMilestoneKey) {
+  const normalizedIssues = (Array.isArray(openIssues) ? openIssues : []).map(function(issue) {
+    return {
+      issue: issue,
+      normalizedTitle: sanitizeIssueTitle(issue && issue.title)
+    };
+  }).filter(function(entry) {
+    return entry.normalizedTitle;
+  });
+
+  if (!normalizedIssues.length) {
+    return null;
+  }
+
+  const milestoneIssues = normalizedIssues.filter(function(entry) {
+    return inferStageKey(entry.normalizedTitle) === currentMilestoneKey;
+  });
+  const issuePool = milestoneIssues.length ? milestoneIssues : normalizedIssues;
+  const preferredIssue = issuePool.find(function(entry) {
+    return entry.normalizedTitle.indexOf(`${currentMilestoneKey}.3`) === 0 || entry.normalizedTitle.indexOf(`${currentMilestoneKey}.3`) > -1;
+  });
+
+  if (preferredIssue) {
+    return preferredIssue.issue;
+  }
+
+  issuePool.sort(function(a, b) {
+    return compareIssueTitles(a.normalizedTitle, b.normalizedTitle) || getIssueNumber(a.issue) - getIssueNumber(b.issue);
+  });
+  return issuePool[0].issue;
+}
+
+function groupTeamOpenIssues(openIssues) {
+  const groupsByTitle = {};
+
+  (Array.isArray(openIssues) ? openIssues : []).forEach(function(issue) {
+    const normalizedTitle = sanitizeIssueTitle(issue && issue.title);
+    if (!normalizedTitle) {
+      return;
+    }
+
+    if (!groupsByTitle[normalizedTitle]) {
+      groupsByTitle[normalizedTitle] = {
+        title: normalizedTitle,
+        url: issue && issue.url ? issue.url : '#',
+        count: 0
+      };
+    }
+
+    groupsByTitle[normalizedTitle].count += 1;
+  });
+
+  return Object.keys(groupsByTitle).map(function(title) {
+    const group = groupsByTitle[title];
+    return {
+      title: group.title,
+      displayTitle: formatCompactIssueTitle(group.title),
+      url: group.url,
+      count: group.count
+    };
+  }).sort(function(a, b) {
+    return compareIssueTitles(a.title, b.title) || a.title.localeCompare(b.title);
+  }).slice(0, 5);
+}
+
 function getMemberStageCode(member) {
   return inferStageKey(member && member.current_stage) || '\u2014';
 }
 
-function getMemberSummaryCopy(members) {
-  const trackedCount = members.length;
-  if (!trackedCount) return '0 înregistrați';
-  const inactiveCount = members.filter(function(m) {
-    return m && (m.connected === false || m.active === false);
-  }).length;
-  return inactiveCount > 0
-    ? `${trackedCount - inactiveCount} activi / ${inactiveCount} inactivi`
-    : `${trackedCount} membri`;
-}
-
 function renderTeams(model) {
   document.getElementById('team-grid').innerHTML = model.teams.map(function(team) {
-    const visibleIssues = team.openIssues.slice(0, 3);
-    const hiddenCount = Math.max(team.openIssues.length - visibleIssues.length, 0);
-    const memberSummary = getMemberSummaryCopy(team.members);
-    const delta = toNumber(team.overallDelta);
-    const deltaAbs = Math.abs(delta);
-    const deltaClass = delta > 0 ? 'is-up' : (delta < 0 ? 'is-down' : 'is-even');
-    const deltaCopy = delta > 0
-      ? `+${deltaAbs} peste media cursului`
-      : (delta < 0 ? `-${deltaAbs} sub media cursului` : 'la media cursului');
+    const taskSummary = getTeamTaskSummary(team);
+    const taskRatio = formatTaskRatio(taskSummary.closed, taskSummary.total);
+    const overallPercent = team.overallPercent !== undefined && team.overallPercent !== null
+      ? clampPercent(team.overallPercent)
+      : (taskSummary.total > 0 ? clampPercent(Math.round((taskSummary.closed / taskSummary.total) * 100)) : 0);
+    const teamBarColor = getProgressColor(overallPercent);
+    const teamBarWidth = getMinimumVisibleFillWidth(overallPercent, 4);
+    const currentAction = pickTeamCurrentAction(team.openIssues, model.currentMilestone.key);
+    const topMember = getTopMemberData(team.members);
+    const memberCountCopy = team.members.length ? `${team.members.length} membri` : 'date indisponibile';
+    const groupedIssues = groupTeamOpenIssues(team.openIssues);
 
-    const milestonePills = team.stageProgress.filter(function(stage) {
-      return JOURNEY_STAGE_KEYS.indexOf(stage.key) >= 0;
-    }).map(function(stage) {
+    const milestonePills = JOURNEY_STAGE_KEYS.map(function(stageKey) {
+      const stage = team.stageProgress.find(function(item) {
+        return item.key === stageKey;
+      }) || normalizeCourseStage(null, { key: stageKey, title: stageKey, short: stageKey });
       const currentClass = stage.key === team.currentStage.key ? ' is-current' : '';
-      const value = stage.total > 0 ? `${stage.closed}/${stage.total}` : '\u2014';
-      const pillColor = getProgressColor(stage.percent);
+      const value = stage.total > 0 ? formatTaskRatio(stage.closed, stage.total) : '\u2014';
+      const pillColor = stage.total > 0 ? getProgressColor(stage.percent) : 'transparent';
+      const pillWidth = stage.total > 0 ? getMinimumVisibleFillWidth(stage.percent, stage.percent > 0 ? 4 : 0) : 0;
 
       return (
-        `<div class="team-milestone-pill is-${stage.status}${currentClass}" style="--pill-progress:${stage.percent}; --pill-color:${pillColor};">` +
-          `<span class="team-milestone-code">${escapeHtml(stage.key)}</span>` +
-          `<span class="team-milestone-value">${escapeHtml(value)}</span>` +
+        `<div class="team-milestone-pill is-${stage.status}${currentClass}">` +
+          `<div class="team-milestone-topline">` +
+            `<span class="team-milestone-code">${escapeHtml(stage.key)}</span>` +
+            `<span class="team-milestone-value">${escapeHtml(value)}</span>` +
+          `</div>` +
+          `<span class="team-milestone-bar"><span class="team-milestone-fill" style="width:${pillWidth}%; background:${pillColor};"></span></span>` +
         `</div>`
       );
     }).join('');
 
-    const nextActionMarkup = team.nextAction
-      ? `<a href="${escapeHtml(team.nextAction.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(team.nextAction.title))}</a>`
+    const nextActionMarkup = currentAction
+      ? `<a href="${escapeHtml(currentAction.url || team.issues_url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(formatCompactIssueTitle(currentAction.title))}</a>`
       : `Nicio sarcină activă în ${escapeHtml(model.currentMilestone.key)}.`;
+
+    const memberHighlight = topMember
+      ? `Cel mai avansat: <strong>${escapeHtml(getMemberLabel(topMember))} · ${escapeHtml(formatTaskRatio(toNumber(topMember.closed), toNumber(topMember.total)))}</strong>`
+      : 'Membri: date indisponibile';
 
     const memberSection = team.members.length
       ? (
         `<div class="member-table">` +
           `<div class="member-table-head">` +
             `<span class="member-head-cell">Cod</span>` +
-            `<span class="member-head-cell">Status</span>` +
             `<span class="member-head-cell">Progres</span>` +
             `<span class="member-head-cell">Task-uri</span>` +
           `</div>` +
@@ -4110,19 +4274,16 @@ function renderTeams(model) {
             const total = toNumber(member.total);
             const closed = toNumber(member.closed);
             const issuePct = getMemberIssueProgressPercent(member);
-            const memberCode = escapeHtml(member.display_code || member.local_code || '\u2014');
-            const statusRo = getMemberStatusRo(member, issuePct, total);
-            const taskUri = total > 0 ? `${closed}/${total}` : '\u2014';
-            const rowClass = (member.connected === false || member.active === false) ? ' is-offline' : '';
+            const memberCode = escapeHtml(getMemberLabel(member));
+            const taskUri = formatTaskRatio(closed, total);
             const fillColor = getProgressColor(issuePct);
+            const fillWidth = getMinimumVisibleFillWidth(issuePct, issuePct > 0 ? 4 : 0);
 
             return (
-              `<div class="member-row${rowClass}">` +
+              `<div class="member-row">` +
                 `<span class="member-code">${memberCode}</span>` +
-                `<span class="member-status"><span class="member-status-pill ${statusRo.cssClass}">${statusRo.label}</span></span>` +
-                `<span class="member-progress-cell is-issues">` +
-                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${issuePct}%; background:${fillColor};"></span></span>` +
-                  `<span class="member-progress-value">${issuePct}%</span>` +
+                `<span class="member-progress-cell" title="${issuePct}%">` +
+                  `<span class="member-progress-track is-issues"><span class="member-progress-fill" style="width:${fillWidth}%; background:${fillColor};"></span></span>` +
                 `</span>` +
                 `<span class="member-summary">${escapeHtml(taskUri)}</span>` +
               `</div>`
@@ -4130,55 +4291,53 @@ function renderTeams(model) {
           }).join('')}` +
         `</div>`
       )
-      : '<div class="team-empty">Niciun membru înregistrat.</div>';
+      : '<div class="team-empty">Membri: date indisponibile</div>';
 
-    const issuesMarkup = visibleIssues.length
-      ? visibleIssues.map(function(issue) {
-        return `<a class="team-issue-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitizeIssueTitle(issue.title))}</a>`;
+    const issuesMarkup = groupedIssues.length
+      ? groupedIssues.map(function(group) {
+        const issueCountCopy = `${group.count} ${group.count === 1 ? 'deschis' : 'deschise'}`;
+        return (
+          `<div class="team-issue-agg-row">` +
+            `<a class="team-issue-agg-link" href="${escapeHtml(group.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.displayTitle)}</a>` +
+            `<span class="team-issue-agg-count">${escapeHtml(issueCountCopy)}</span>` +
+          `</div>`
+        );
       }).join('')
       : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
-
-    const moreMarkup = hiddenCount > 0
-      ? `<a class="team-issue-more" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">+${hiddenCount} alte task-uri deschise</a>`
-      : '';
-
-    const totalTasks = team.stageProgress.reduce(function(s, st) { return s + st.total; }, 0);
-    const closedTasks = team.stageProgress.reduce(function(s, st) { return s + st.closed; }, 0);
-    const barColor = getProgressColor(team.issueProgress);
-    const barWidth = getMinimumVisibleFillWidth(team.issueProgress, 4);
 
     return (
       `<article class="team-card" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --team-line-strong:${team.colorLineStrong};">` +
         `<div class="team-card-header">` +
-          `<div>` +
-            `<a class="team-card-name" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(team.name)}</a>` +
-            `<div class="team-card-stage">Etapa curentă &middot; ${escapeHtml(team.currentStage.key)} &middot; ${escapeHtml(team.currentStage.short)}</div>` +
-            `<div class="team-compare-line">` +
-              `<span class="team-compare-main">${team.overallPercent}%</span>` +
-              `<span class="team-compare-delta ${deltaClass}">${escapeHtml(deltaCopy)}</span>` +
-            `</div>` +
-            `<div class="team-current-note">${totalTasks > 0 ? `${closedTasks}/${totalTasks} task-uri finalizate` : escapeHtml(team.currentStage.title)}</div>` +
+          `<div class="team-header-main">` +
+            `<div class="team-card-name">${escapeHtml(team.name)}</div>` +
+            `<div class="team-card-summary">${overallPercent}% &middot; ${escapeHtml(taskRatio)} task-uri</div>` +
+          `</div>` +
+          `<div class="team-card-links">` +
+            `<a class="team-link-pill" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">Repo</a>` +
+            `<a class="team-link-pill" href="${escapeHtml(team.issues_url)}" target="_blank" rel="noopener noreferrer">Issues</a>` +
+            `<a class="team-link-pill" href="${escapeHtml(team.milestones_url)}" target="_blank" rel="noopener noreferrer">Milestones</a>` +
           `</div>` +
         `</div>` +
         `<div class="team-progress-row">` +
           `<div class="team-progress-head">` +
             `<span class="team-progress-label">Progres echipă</span>` +
-            `<span class="team-progress-meta">${team.issueProgress}% finalizat</span>` +
+            `<span class="team-progress-meta">${overallPercent}% &middot; ${escapeHtml(taskRatio)} task-uri</span>` +
           `</div>` +
-          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${barWidth}%; background:${barColor};"></div></div>` +
+          `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${teamBarWidth}%; background:${teamBarColor};"></div></div>` +
         `</div>` +
         `<div class="team-milestone-row">${milestonePills}</div>` +
         `<div class="team-section">` +
           `<div class="team-next-action">` +
-            `<span class="team-next-action-label">Acțiune curentă</span>` +
+            `<span class="team-next-action-label">Acțiune</span>` +
             `<div class="team-next-action-copy">${nextActionMarkup}</div>` +
           `</div>` +
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Membrii echipei</div>` +
-            `<div class="team-section-meta">${escapeHtml(memberSummary)}</div>` +
+            `<div class="team-subtitle">Membri</div>` +
+            `<div class="team-section-meta">${escapeHtml(memberCountCopy)}</div>` +
           `</div>` +
+          `<div class="team-member-highlight">${memberHighlight}</div>` +
           `${memberSection}` +
         `</div>` +
         `<div class="team-section">` +
@@ -4186,7 +4345,7 @@ function renderTeams(model) {
             `<div class="team-subtitle">Task-uri deschise</div>` +
             `<div class="team-section-meta">${team.openIssues.length} total</div>` +
           `</div>` +
-          `<div class="team-issue-list">${issuesMarkup}${moreMarkup}</div>` +
+          `<div class="team-issue-list">${issuesMarkup}</div>` +
         `</div>` +
       `</article>`
     );
@@ -4247,19 +4406,6 @@ function getProgressColor(percent) {
   if (percent >= 67) return 'var(--progress-high)';
   if (percent >= 34) return 'var(--progress-mid)';
   return 'var(--progress-low)';
-}
-
-function getMemberStatusRo(member, issuePct, total) {
-  if (member.connected === false || member.active === false) {
-    return { label: 'fără activitate', cssClass: 'is-inactive' };
-  }
-  if (total === 0) {
-    return { label: 'date lipsă', cssClass: 'is-missing' };
-  }
-  if (issuePct > 0 && issuePct < 100) {
-    return { label: 'în curs', cssClass: 'is-in-progress' };
-  }
-  return { label: 'activ', cssClass: 'is-active' };
 }
 
 function getMarkerCollisionSign(routePoint) {
