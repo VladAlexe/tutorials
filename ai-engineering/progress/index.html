@@ -530,6 +530,43 @@ section { padding-top: 2rem; }
   gap: 0.4rem 0.5rem;
 }
 
+.mountain-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--sub);
+}
+
+.mountain-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+}
+
+.mountain-legend-dot {
+  display: inline-block;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.mountain-legend-dot.is-student {
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.92);
+}
+
+.mountain-legend-dot.is-team {
+  width: 18px;
+  height: 18px;
+  background: rgba(250, 249, 246, 0.98);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.92);
+}
+
 .mountain-status-chip {
   --chip-dot: var(--team-color, var(--accent));
   display: inline-flex;
@@ -2231,6 +2268,7 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
+const MOUNTAIN_TEAM_PALETTE = ['#B4684A', '#6C8F4F', '#4B79B4', '#C48A33', '#3D978A', '#B75D73', '#667D8E', '#A85E39'];
 function progressToColor(percent) {
   var t = clampPercent(percent) / 100;
   var r = Math.round(181 + (104 - 181) * t);
@@ -2388,7 +2426,7 @@ function getPointFromStage(stageKey, stagePercent) {
 }
 
 var BADGE_R = 18;
-var DOT_R = 6.5;
+var DOT_R = 8;
 var TEAM_COLLISION_DISTANCE = 46;
 var TEAM_COLLISION_PATTERN = [
   { tan: 0, perp: 0 },
@@ -3123,9 +3161,13 @@ function renderJourney(model) {
           `<div class="mountain-image-wrap">` +
             `<img src="../assets/img/mountain.png" alt="Mountain progress map">` +
             `<svg viewBox="0 0 1920 1080" aria-hidden="true">${svgOverlay}</svg>` +
-          `</div>` +
+        `</div>` +
         `</div>` +
         `<div class="mountain-status-strip">${statusStrip}</div>` +
+        `<div class="mountain-legend">` +
+          `<span class="mountain-legend-item"><span class="mountain-legend-dot is-student"></span>Student</span>` +
+          `<span class="mountain-legend-item"><span class="mountain-legend-dot is-team"></span>Echipă</span>` +
+        `</div>` +
         `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
         `<p class="mountain-footnote">Team bubbles urmeaz&#259; exclusiv ruta Base-C8 pe baza course progress; C9 r&#259;m&#226;ne separat ca After summit.</p>` +
       `</div>` +
@@ -3586,10 +3628,11 @@ function buildMountainMarkerData(teams) {
   const markers = teams.map(function(team) {
     const routePct = getMountainProgressPercent(team);
     const routePoint = getMountainPointAtPercent(routePct);
+    const mountainColor = MOUNTAIN_TEAM_PALETTE[team.index % MOUNTAIN_TEAM_PALETTE.length];
     return {
       label: team.label,
       teamName: team.name,
-      color: team.color,
+      color: mountainColor,
       routePct: routePct,
       routeX: routePoint.x,
       routeY: routePoint.y,
@@ -3598,8 +3641,8 @@ function buildMountainMarkerData(teams) {
       status: getSemanticStatus(team),
       percent: routePct,
       coursePercent: routePct,
-      colorSoft: team.colorSoft,
-      colorLine: team.colorLine,
+      colorSoft: hexToRgba(mountainColor, 0.14),
+      colorLine: hexToRgba(mountainColor, 0.36),
       teamIndex: team.index,
       memberDots: buildMarkerMemberDots(Array.isArray(team.members) ? team.members : [])
     };
@@ -3619,31 +3662,11 @@ function renderMountainProgressRoute(percent) {
   `;
 }
 
-function renderMountainMilestonesSVG(currentKey) {
-  const keys = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
-  return keys.map(function(key) {
-    const point = MOUNTAIN_POINTS[key];
-    const label = point.label;
-    const isCurrent = label === currentKey;
-    const r = key === 'base' ? 24 : 25;
-    const fontSize = key === 'base' ? 16 : 18;
-    const stroke = isCurrent ? '#B5784A' : '#C98542';
-    return (
-      `<g>` +
-        `<circle cx="${point.x}" cy="${point.y}" r="${r + 4}" fill="rgba(255,255,255,0.82)"/>` +
-        `<circle cx="${point.x}" cy="${point.y}" r="${r}" fill="rgba(255,255,255,0.94)" stroke="${stroke}" stroke-width="3"/>` +
-        `<text x="${point.x}" y="${point.y + 2}"` +
-          ` text-anchor="middle" dominant-baseline="middle"` +
-          ` font-family="JetBrains Mono, monospace"` +
-          ` font-size="${fontSize}" font-weight="800"` +
-          ` fill="#B06F35"` +
-          ` stroke="rgba(255,255,255,0.95)" stroke-width="2" paint-order="stroke">${label}</text>` +
-      `</g>`
-    );
-  }).join('');
+function renderMountainMilestonesSVG() {
+  return '';
 }
 
-function renderTeamMarkersSVG(markers) {
+function renderTeamMarkersSVG_legacy(markers) {
   const sorted = markers.slice().sort((a, b) => a.routeDistance - b.routeDistance || a.teamIndex - b.teamIndex);
 
   const connectors = sorted.map(marker =>
@@ -3684,6 +3707,67 @@ function renderTeamMarkersSVG(markers) {
         `${memberDots}` +
       `</g>`
     );
+  }).join('');
+
+  return connectors + pins + badges;
+}
+
+function renderTeamMarkersSVG(markers) {
+  const sorted = markers.slice().sort((a, b) => a.routeDistance - b.routeDistance || a.teamIndex - b.teamIndex);
+
+  const connectors = sorted.map(marker => `
+    <line x1="${marker.routeX.toFixed(1)}" y1="${marker.routeY.toFixed(1)}"
+          x2="${marker.x.toFixed(1)}" y2="${marker.y.toFixed(1)}"
+          stroke="${marker.color}" stroke-width="2"
+          stroke-opacity="0.35" stroke-dasharray="5 5"/>
+  `).join('');
+
+  const pins = sorted.map(marker => `
+    <circle cx="${marker.routeX.toFixed(1)}" cy="${marker.routeY.toFixed(1)}" r="5.5"
+            fill="${marker.color}" stroke="white" stroke-width="2"/>
+  `).join('');
+
+  const badges = sorted.map(marker => {
+    const memberDots = (marker.memberDots || []).map((dot, index) => {
+      const spacing = 16;
+      const count = marker.memberDots.length || 1;
+      const startX = marker.x - ((count - 1) * spacing) / 2;
+      const x = startX + index * spacing;
+      const y = marker.y + 34;
+      const fill = marker.color;
+      const stroke = 'rgba(255,255,255,0.96)';
+      const opacity = dot.dimmed ? '0.48' : '1';
+
+      return `
+        <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${DOT_R}"
+                fill="${fill}" fill-opacity="${opacity}"
+                stroke="${stroke}" stroke-width="2.2">
+          <title>${escapeHtml(dot.title || '')}</title>
+        </circle>
+      `;
+    }).join('');
+
+    return `
+      <g pointer-events="all">
+        <title>${escapeHtml(marker.teamName)} · ${marker.coursePercent}% · ${marker.status.label}</title>
+
+        <circle cx="${marker.x.toFixed(1)}" cy="${marker.y.toFixed(1)}" r="24"
+                fill="rgba(255,255,255,0.94)" stroke="white" stroke-width="5"/>
+
+        <circle cx="${marker.x.toFixed(1)}" cy="${marker.y.toFixed(1)}" r="18"
+                fill="rgba(250,249,246,0.98)" stroke="${marker.color}" stroke-width="3"/>
+
+        <text x="${marker.x.toFixed(1)}" y="${(marker.y + 1).toFixed(1)}"
+              text-anchor="middle" dominant-baseline="middle"
+              font-family="JetBrains Mono, monospace"
+              font-size="15" font-weight="900"
+              fill="${marker.color}"
+              stroke="white" stroke-width="2"
+              paint-order="stroke">${marker.label}</text>
+
+        ${memberDots}
+      </g>
+    `;
   }).join('');
 
   return connectors + pins + badges;
