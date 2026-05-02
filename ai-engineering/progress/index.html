@@ -488,13 +488,13 @@ section { padding-top: 2rem; }
 
 .mountain-status-chip.status-checkpoint {
   border-color: var(--team-color, rgba(181, 120, 74, 0.62));
-  color: var(--text);
+  color: var(--team-color, var(--accent));
   background: var(--team-soft, rgba(181, 120, 74, 0.12));
 }
 
 .mountain-status-chip.status-summit {
   border-color: var(--team-color, var(--accent));
-  color: var(--text);
+  color: var(--team-color, var(--accent));
   background: var(--team-soft, rgba(181, 120, 74, 0.16));
 }
 
@@ -1406,6 +1406,86 @@ section { padding-top: 2rem; }
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   color: var(--dim);
+}
+
+.control-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.48rem;
+  margin-bottom: 0.62rem;
+}
+
+.control-panel-status {
+  padding: 0.42rem 0;
+  border-top: 1px solid rgba(226, 221, 211, 0.75);
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.5;
+}
+
+.control-panel-rhythm {
+  margin-top: 0.18rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--dim);
+}
+
+.blocker-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.blocker-row {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.32rem 0;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.65);
+}
+
+.blocker-row:last-child {
+  border-bottom: none;
+}
+
+.blocker-team {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--accent);
+}
+
+.blocker-title {
+  font-size: 11px;
+  color: var(--sub);
+  transition: color 0.1s;
+  line-height: 1.4;
+}
+
+.blocker-title:hover { color: var(--accent); }
+
+.blocker-days {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.project-footnote {
+  margin-top: 0.62rem;
+  padding-top: 0.52rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.65);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  line-height: 1.55;
+}
+
+.backlog-fill.is-future {
+  background: rgba(201, 195, 181, 0.42);
+}
+
+.backlog-label.is-active {
+  color: var(--accent);
 }
 
 .status-card {
@@ -3121,6 +3201,12 @@ function buildDashboardModel(data) {
     return b.number - a.number || a.teamIndex - b.teamIndex;
   });
 
+  const activityStats = computeActivityStats(teams);
+  const blockerData = computeBlockers(teams);
+  const issuesClosedLast48h = data && data.stats && data.stats.issues_closed_last48h != null
+    ? toNumber(data.stats.issues_closed_last48h)
+    : null;
+
   return {
     coursePlan: coursePlan,
     journeyPlan: journeyPlan,
@@ -3137,6 +3223,10 @@ function buildDashboardModel(data) {
     latestOpenIssues: latestOpenIssues.slice(0, 6),
     distribution: distribution,
     markers: buildCourseMarkers(teams),
+    activityStats: activityStats,
+    blockers: blockerData.blockers,
+    hasBlockerData: blockerData.hasTimestampData,
+    issuesClosedLast48h: issuesClosedLast48h,
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
@@ -3147,6 +3237,56 @@ function buildDashboardModel(data) {
       overallIssueProgress: overallIssueProgress
     }
   };
+}
+
+function computeActivityStats(teams) {
+  var now = Date.now();
+  var sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+  var hasData = false;
+  var activeCount = 0;
+
+  teams.forEach(function(team) {
+    var teamActive = false;
+    team.openIssues.forEach(function(issue) {
+      if (issue.updated_at) {
+        hasData = true;
+        if (now - new Date(issue.updated_at).getTime() <= sevenDaysMs) {
+          teamActive = true;
+        }
+      }
+    });
+    if (teamActive) activeCount++;
+  });
+
+  if (!hasData) return null;
+  return { activeCount: activeCount, stalledCount: teams.length - activeCount };
+}
+
+function computeBlockers(teams) {
+  var now = Date.now();
+  var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+  var blockers = [];
+  var hasTimestampData = false;
+
+  teams.forEach(function(team) {
+    team.openIssues.forEach(function(issue) {
+      if (issue.updated_at) {
+        hasTimestampData = true;
+        var daysStale = Math.floor((now - new Date(issue.updated_at).getTime()) / (24 * 60 * 60 * 1000));
+        if (daysStale >= 3) {
+          blockers.push({
+            teamLabel: team.label,
+            title: sanitizeIssueTitle(issue.title),
+            url: issue.url || '',
+            daysStale: daysStale
+          });
+        }
+      }
+    });
+  });
+
+  blockers.sort(function(a, b) { return b.daysStale - a.daysStale; });
+  return { blockers: blockers.slice(0, 5), hasTimestampData: hasTimestampData };
 }
 
 function renderStats(model) {
@@ -3228,67 +3368,85 @@ function renderJourney(model) {
 }
 
 function renderProjectStats(model) {
-  const maxOpen = Math.max.apply(null, model.milestoneSummaries.map(function(stage) {
-    return stage.open;
-  }).concat([1]));
+  const stageRows = model.allStageSummaries
+    .filter(function(stage) { return stage.key !== 'Final'; })
+    .map(function(stage) {
+      const hasTasks = stage.total > 0;
+      const ratio = hasTasks ? `${stage.closed}/${stage.total}` : '\u2014';
+      const fillClass = hasTasks ? '' : ' is-future';
+      const labelClass = hasTasks && stage.closed > 0 ? ' is-active' : '';
+      return (
+        `<div class="backlog-row">` +
+          `<span class="backlog-label${labelClass}">${escapeHtml(stage.key)}</span>` +
+          `<div class="backlog-track"><div class="backlog-fill${fillClass}" style="width:${hasTasks ? stage.percent : 0}%;"></div></div>` +
+          `<span class="backlog-value">${escapeHtml(ratio)}</span>` +
+        `</div>`
+      );
+    }).join('');
 
-  const backlogRows = model.milestoneSummaries.map(function(stage) {
-    const width = maxOpen > 0 ? (stage.open / maxOpen) * 100 : 0;
-    return (
-      `<div class="backlog-row">` +
-        `<span class="backlog-label">${escapeHtml(stage.key)}</span>` +
-        `<div class="backlog-track"><div class="backlog-fill" style="width:${width}%;"></div></div>` +
-        `<span class="backlog-value">${stage.open}</span>` +
-      `</div>`
-    );
-  }).join('');
+  const actStats = model.activityStats;
+  const activeTeamsStr = actStats != null
+    ? `${actStats.activeCount}/${model.totals.teamCount}`
+    : `\u2014/${model.totals.teamCount}`;
+  const momentumStr = model.issuesClosedLast48h != null ? String(model.issuesClosedLast48h) : '\u2014';
 
-  const metrics = [
-    { label: 'Created', value: model.totals.createdTasks, note: 'Task-uri create' },
-    { label: 'Closed', value: model.totals.closedIssues, note: 'Task-uri inchise' },
-    { label: 'Open', value: model.totals.openIssues, note: 'Task-uri ramase' }
-  ];
-
-  const metricTiles = metrics.map(function(metric) {
+  const controlTiles = [
+    { label: 'Progres', value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate' },
+    { label: 'Etapa activ\u0103', value: escapeHtml(model.currentMilestone.key), note: escapeHtml(model.currentMilestone.short) },
+    { label: 'Momentum', value: momentumStr, note: '\u00eenchise \u00een 48h' },
+    { label: 'Echipe \u00een mi\u015fcare', value: activeTeamsStr, note: 'cu activitate recent\u0103' }
+  ].map(function(tile) {
     return (
       `<div class="metric-tile">` +
-        `<span class="metric-label">${escapeHtml(metric.label)}</span>` +
-        `<strong class="metric-value">${escapeHtml(metric.value)}</strong>` +
-        `<span class="metric-note">${escapeHtml(metric.note)}</span>` +
+        `<span class="metric-label">${tile.label}</span>` +
+        `<strong class="metric-value">${tile.value}</strong>` +
+        `<span class="metric-note">${tile.note}</span>` +
       `</div>`
     );
   }).join('');
 
-  const blockedLabels = model.blockedTeams.map(function(team) {
-    return team.label;
-  }).join(', ') || '\u2014';
+  const currentNote = `Acum: ${escapeHtml(model.currentMilestone.key)} &middot; ${escapeHtml(model.currentMilestone.title)}`;
+  const rhythmLine = (model.issuesClosedLast48h != null && actStats != null)
+    ? `<div class="control-panel-rhythm">Ritm: +${model.issuesClosedLast48h} task-uri \u00een 48h &middot; ${actStats.stalledCount} echipe f\u0103r\u0103 mi\u015fcare</div>`
+    : '';
 
-  const recentActivity = model.latestOpenIssues.length
-    ? model.latestOpenIssues.map(function(issue) {
-      return `<a class="activity-link" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>`;
-    }).join('')
-    : '<div class="team-empty">Nu exist&#259; issues deschise.</div>';
+  let blockersHtml;
+  if (!model.hasBlockerData) {
+    blockersHtml = '<div class="team-empty">Nu exist\u0103 date despre blocaje.</div>';
+  } else if (!model.blockers.length) {
+    blockersHtml = '<div class="team-empty">Nu sunt blocaje active.</div>';
+  } else {
+    blockersHtml = model.blockers.map(function(blocker) {
+      const titleEl = blocker.url
+        ? `<a class="blocker-title" href="${escapeHtml(blocker.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(blocker.title)}</a>`
+        : `<span class="blocker-title">${escapeHtml(blocker.title)}</span>`;
+      return (
+        `<div class="blocker-row">` +
+          `<span class="blocker-team">${escapeHtml(blocker.teamLabel)}</span>` +
+          titleEl +
+          `<span class="blocker-days">${blocker.daysStale} zile</span>` +
+        `</div>`
+      );
+    }).join('');
+  }
 
   document.getElementById('project-stats').innerHTML =
     `<div class="project-analytics-shell">` +
       `<div class="project-analytics-grid">` +
         `<article class="project-card">` +
-          `<div class="project-title">Backlog pe etape</div>` +
-          `<div class="backlog-list">${backlogRows}</div>` +
+          `<div class="project-title">Progres pe cursuri</div>` +
+          `<div class="backlog-list">${stageRows}</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Task-uri</div>` +
-          `<div class="metric-grid">${metricTiles}</div>` +
-          `<div class="status-card">` +
-            `<div class="status-row"><span class="status-label">Current stage</span><div class="status-copy"><strong>${escapeHtml(model.currentMilestone.key)} &middot; ${escapeHtml(model.currentMilestone.short)}</strong><br>${escapeHtml(model.currentMilestone.title)}</div></div>` +
-            `<div class="status-row"><span class="status-label">Backlog</span><div class="status-copy">${escapeHtml(model.backlogMilestone.key)} are <strong>${model.backlogMilestone.open}</strong> issues deschise.</div></div>` +
-            `<div class="status-row"><span class="status-label">Started</span><div class="status-copy"><strong>${model.startedTeams.length}/${model.totals.teamCount}</strong> echipe au pornit etapa curent&#259;.</div></div>` +
-            `<div class="status-row"><span class="status-label">Blocked</span><div class="status-copy"><strong>${model.blockedTeams.length}/${model.totals.teamCount}</strong> echipe sunt la 0/x.<br>${escapeHtml(blockedLabels)}</div></div>` +
-          `</div>` +
+          `<div class="project-title">Control panel</div>` +
+          `<div class="control-panel-grid">${controlTiles}</div>` +
+          `<div class="control-panel-status">${currentNote}</div>` +
+          `${rhythmLine}` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Ultimele issues deschise</div>` +
-          `<div class="activity-list">${recentActivity}</div>` +
+          `<div class="project-title">Unde ne bloc\u0103m</div>` +
+          `<div class="blocker-list">${blockersHtml}</div>` +
+          `<p class="project-footnote">Dashboard-ul se actualizeaz\u0103 din GitHub. Dup\u0103 ce a\u0163i f\u0103cut push, \u00eenchi\u0163i issue-ul corespunz\u0103tor.</p>` +
         `</article>` +
       `</div>` +
     `</div>`;
