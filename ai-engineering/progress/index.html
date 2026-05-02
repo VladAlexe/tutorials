@@ -2387,8 +2387,8 @@ function getPointFromStage(stageKey, stagePercent) {
   return getPointOnRouteDistance(getRouteDistanceForStage(stageKey, stagePercent));
 }
 
-var BADGE_R = 15;
-var DOT_R = 4.2;
+var BADGE_R = 18;
+var DOT_R = 6.5;
 var TEAM_COLLISION_DISTANCE = 46;
 var TEAM_COLLISION_PATTERN = [
   { tan: 0, perp: 0 },
@@ -3091,10 +3091,7 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const svgOverlay =
-    renderMountainProgressRoute(model.totals.averageCourseProgress) +
-    renderMountainMilestonesSVG(model.mountainCurrentKey) +
-    renderTeamMarkersSVG(model.markers);
+  const svgOverlay = renderTeamMarkersSVG(model.markers);
 
   const statusStrip = model.markers.map(function(marker) {
     var memberDots = (marker.memberDots || []).map(function(dot) {
@@ -3537,8 +3534,13 @@ function placeMountainMarkers(markers) {
   const sorted = markers.slice().sort((a, b) => a.routeDistance - b.routeDistance || a.teamIndex - b.teamIndex);
   const groups = [];
   let group = [];
+
   sorted.forEach(marker => {
-    if (!group.length) { group.push(marker); return; }
+    if (!group.length) {
+      group.push(marker);
+      return;
+    }
+
     const prev = group[group.length - 1];
     if (Math.abs(marker.routeDistance - prev.routeDistance) < 85) {
       group.push(marker);
@@ -3548,15 +3550,20 @@ function placeMountainMarkers(markers) {
     }
   });
   if (group.length) groups.push(group);
+
   groups.forEach(group => {
     const n = group.length;
     group.forEach((marker, i) => {
-      const offset = (i - (n - 1) / 2) * 56;
-      marker.x = marker.routeX + offset;
-      marker.y = marker.routeY - 38;
-      if (marker.routePct < 12) marker.y = marker.routeY - 42;
+      const offsetX = (i - (n - 1) / 2) * 56;
+      marker.x = marker.routeX + offsetX;
+      marker.y = marker.routeY - 48;
+
+      if (marker.routePct < 12) {
+        marker.y = marker.routeY - 54;
+      }
     });
   });
+
   return markers;
 }
 
