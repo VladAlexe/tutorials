@@ -2880,7 +2880,7 @@ function computeIssueProgressPercent(team) {
   let total = 0;
 
   Object.keys(progressMap).forEach(function(key) {
-    const progress = normalizeCourseStage(proggitressMap[key], { key: key, title: key, short: key });
+    const progress = normalizeCourseStage(progressMap[key], { key: key, title: key, short: key });
     closed += progress.closed;
     total += progress.total;
   });
@@ -3178,7 +3178,7 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const svgOverlay = renderMountainMilestonesSVG(model.mountainCurrentKey) + renderTeamMarkersSVG(model.markers);
+  const svgOverlay = renderTeamMarkersSVG(model.markers);
 
   const statusStrip = model.markers.map(function(marker) {
     var memberDots = (marker.memberDots || []).map(function(dot) {
@@ -3475,50 +3475,24 @@ function getMarkerCollisionSign(routePoint) {
 
 function applyMarkerCollisionOffsets(markers) {
   var sorted = markers.slice().sort(function(a, b) {
-    return a.routeDistance !== b.routeDistance ? a.routeDistance - b.routeDistance : a.teamIndex - b.teamIndex;
+    return a.routePct !== b.routePct ? a.routePct - b.routePct : a.teamIndex - b.teamIndex;
   });
   var groups = [];
-  var activeGroup = [];
-
   sorted.forEach(function(marker) {
-    if (!activeGroup.length) {
-      activeGroup.push(marker);
-      return;
+    var last = groups[groups.length - 1];
+    if (!last || Math.abs(last.refPct - marker.routePct) > 8) {
+      groups.push({ refPct: marker.routePct, items: [marker] });
+    } else {
+      last.items.push(marker);
     }
-
-    var previous = activeGroup[activeGroup.length - 1];
-    if (Math.abs(marker.routeDistance - previous.routeDistance) <= TEAM_COLLISION_DISTANCE) {
-      activeGroup.push(marker);
-      return;
-    }
-
-    groups.push(activeGroup);
-    activeGroup = [marker];
   });
-
-  if (activeGroup.length) {
-    groups.push(activeGroup);
-  }
-
   groups.forEach(function(group) {
-    group.forEach(function(marker, index) {
-      var pattern = TEAM_COLLISION_PATTERN[index % TEAM_COLLISION_PATTERN.length];
-      var ring = Math.floor(index / TEAM_COLLISION_PATTERN.length);
-      var tanOffset = pattern.tan + ring * 18;
-      var perpOffset = pattern.perp;
-
-      marker.tanOffset = tanOffset;
-      marker.perpOffset = perpOffset;
-      marker.x = marker.routePoint.x + (marker.routePoint.tx * tanOffset) + (marker.routePoint.px * perpOffset);
-      marker.y = marker.routePoint.y + (marker.routePoint.ty * tanOffset) + (marker.routePoint.py * perpOffset);
-
-      // hard clamp: never allow early teams to float too high above the base-camp area
-      if (marker.routePct <= 10) {
-        marker.y = Math.max(marker.y, 760);
-      }
+    var mid = (group.items.length - 1) / 2;
+    group.items.forEach(function(marker, index) {
+      marker.x = marker.routePoint.x + ((index - mid) * 46);
+      marker.y = marker.routePoint.y - 8;
     });
   });
-
   return markers;
 }
 
