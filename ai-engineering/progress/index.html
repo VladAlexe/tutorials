@@ -1728,6 +1728,7 @@ section { padding-top: 2rem; }
 }
 
 .project-footnote {
+  display: none;
   margin-top: 0.62rem;
   padding-top: 0.52rem;
   border-top: 1px solid rgba(226, 221, 211, 0.65);
@@ -1735,6 +1736,215 @@ section { padding-top: 2rem; }
   font-size: 9px;
   color: var(--dim);
   line-height: 1.55;
+}
+
+.project-center-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.project-progress-hero,
+.project-stage-focus {
+  padding: 0.78rem 0.84rem 0.82rem;
+  border: 1px solid rgba(226, 221, 211, 0.82);
+  border-radius: 6px;
+  background: rgba(250, 249, 246, 0.8);
+}
+
+.project-progress-kicker,
+.project-chart-title,
+.project-task-section-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.project-progress-primary,
+.project-stage-focus-main {
+  display: block;
+  margin-top: 0.18rem;
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.05;
+}
+
+.project-progress-secondary,
+.project-stage-focus-note {
+  display: block;
+  margin-top: 0.12rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  line-height: 1.4;
+}
+
+.project-team-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.project-chart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.project-chart-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 34px;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.project-chart-team,
+.project-chart-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+}
+
+.project-chart-value {
+  text-align: right;
+}
+
+.project-chart-track {
+  position: relative;
+  height: 14px;
+}
+
+.project-chart-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(201, 195, 181, 0.65);
+  transform: translateY(-50%);
+}
+
+.project-chart-line {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 3px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.project-chart-dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 2px rgba(250, 249, 246, 0.98);
+}
+
+.project-extremes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.42rem;
+}
+
+.project-extreme-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.46rem 0.24rem;
+  border: 1px solid rgba(226, 221, 211, 0.9);
+  border-radius: 999px;
+  background: rgba(250, 249, 246, 0.84);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.2px;
+  color: var(--sub);
+}
+
+.project-task-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+.project-task-card {
+  padding: 0.58rem 0.64rem 0.62rem;
+  border: 1px solid rgba(226, 221, 211, 0.82);
+  border-radius: 6px;
+  background: rgba(250, 249, 246, 0.8);
+}
+
+.project-task-card-title {
+  display: block;
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.project-task-card-title:hover {
+  color: var(--accent);
+}
+
+.project-task-card-meta {
+  display: block;
+  margin-top: 0.16rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--sub);
+  line-height: 1.35;
+}
+
+.project-task-card-track {
+  margin-top: 0.24rem;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(201, 195, 181, 0.36);
+  overflow: hidden;
+}
+
+.project-task-card-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.project-task-card-remaining {
+  margin-top: 0.18rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.24rem;
+}
+
+.project-task-rem-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  margin-right: 0.08rem;
+}
+
+.project-team-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.14rem 0.36rem 0.16rem;
+  border-radius: 999px;
+  background: rgba(181, 120, 74, 0.1);
+  border: 1px solid rgba(181, 120, 74, 0.26);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--sub);
+}
+
+.project-task-muted {
+  margin-top: 0.12rem;
+  padding-top: 0.18rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.72);
 }
 
 .backlog-fill.is-future {
@@ -3914,6 +4124,7 @@ function renderJourney(model) {
 }
 
 function renderProjectStats(model) {
+  // Compact project-status section: stage summary, active focus, and grouped upcoming tasks.
   const stageRows = model.allStageSummaries
     .filter(function(stage) { return stage.key !== 'Final'; })
     .map(function(stage) {
@@ -3934,6 +4145,64 @@ function renderProjectStats(model) {
       );
     }).join('');
   const currentSummary = model.currentMilestoneSummary;
+  const sortedTeams = model.teams.slice().sort(function(a, b) {
+    return b.overallPercent - a.overallPercent || compareTeamLabels(a.label, b.label);
+  });
+  const teamChartRows = sortedTeams.map(function(team) {
+    const percent = clampPercent(team.overallPercent);
+    const color = getProgressColor(percent);
+    return (
+      `<div class="project-chart-row">` +
+        `<span class="project-chart-team">${escapeHtml(team.label)}</span>` +
+        `<div class="project-chart-track">` +
+          `<span class="project-chart-rail"></span>` +
+          `<span class="project-chart-line" style="width:${percent}%; background:${color};"></span>` +
+          `<span class="project-chart-dot" style="left:${percent}%; background:${color};"></span>` +
+        `</div>` +
+        `<span class="project-chart-value">${percent}%</span>` +
+      `</div>`
+    );
+  }).join('');
+  const extremesMarkup = (model.topTeam || model.recoveryTeam)
+    ? (
+      `<div class="project-extremes">` +
+        `${model.topTeam ? `<span class="project-extreme-pill">🏆 ${escapeHtml(model.topTeam.label)} · ${model.topTeam.overallPercent}%</span>` : ''}` +
+        `${model.recoveryTeam ? `<span class="project-extreme-pill">⚠ ${escapeHtml(model.recoveryTeam.label)} · ${model.recoveryTeam.overallPercent}%</span>` : ''}` +
+      `</div>`
+    )
+    : '';
+  const upcomingTasks = buildUpcomingTaskCards(model.teams, model.currentMilestone.key);
+  const renderTaskCards = function(taskCards) {
+    if (!taskCards.length) {
+      return '<div class="team-empty">Nu mai sunt task-uri deschise.</div>';
+    }
+
+    return taskCards.map(function(task) {
+      const color = getProgressColor(task.percent);
+      const remainingMarkup = task.remainingTeamLabels.length
+        ? `<span class="project-task-rem-label">Rămase:</span>` + task.remainingTeamLabels.map(function(teamLabel) {
+          return `<span class="project-team-badge">${escapeHtml(teamLabel)}</span>`;
+        }).join('')
+        : `<span class="project-team-badge">Complet</span>`;
+
+      return (
+        `<div class="project-task-card">` +
+          `<a class="project-task-card-title" href="${escapeHtml(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.displayTitle)}</a>` +
+          `<span class="project-task-card-meta">${escapeHtml(formatCompletedTeamsCopy(task.completedTeams, task.applicableTeams))}</span>` +
+          `<div class="project-task-card-track"><span class="project-task-card-fill" style="width:${task.percent}%; background:${color};"></span></div>` +
+          `<div class="project-task-card-remaining">${remainingMarkup}</div>` +
+        `</div>`
+      );
+    }).join('');
+  };
+  const olderTasksMarkup = upcomingTasks.olderTasks.length
+    ? (
+      `<div class="project-task-muted">` +
+        `<span class="project-task-section-label">Rămase din C1</span>` +
+        `<div class="project-task-stack">${renderTaskCards(upcomingTasks.olderTasks)}</div>` +
+      `</div>`
+    )
+    : '';
   const controlTiles = [
     {
       label: 'Progres total',
@@ -4056,12 +4325,28 @@ function renderProjectStats(model) {
         `</article>` +
         `<article class="project-card">` +
           `<div class="project-title">Ce facem acum</div>` +
-          `<div class="control-panel-grid">${controlTiles}</div>` +
-          `${controlMiniHtml}` +
+          `<div class="project-center-card">` +
+            `<div class="project-progress-hero">` +
+              `<span class="project-progress-kicker">Progres total</span>` +
+              `<strong class="project-progress-primary">${model.totals.overallIssueProgress}% finalizat</strong>` +
+              `<span class="project-progress-secondary">${model.totals.closedIssues}/${model.totals.createdTasks} task-uri</span>` +
+            `</div>` +
+            `<div class="project-stage-focus">` +
+              `<span class="project-progress-kicker">Etapa activă</span>` +
+              `<strong class="project-stage-focus-main">${escapeHtml(model.currentMilestone.key)} · ${escapeHtml(model.currentMilestone.short)}</strong>` +
+              `<span class="project-stage-focus-note">${currentSummary.closed}/${currentSummary.total} task-uri ${escapeHtml(model.currentMilestone.key)}</span>` +
+            `</div>` +
+            `<div class="project-team-chart">` +
+              `<span class="project-chart-title">Progres echipe</span>` +
+              `<div class="project-chart-list">${teamChartRows}</div>` +
+            `</div>` +
+            `${extremesMarkup}` +
+          `</div>` +
         `</article>` +
         `<article class="project-card">` +
           `<div class="project-title">Următoarele task-uri</div>` +
-          `${matrixHtml}` +
+          `<div class="project-task-stack">${renderTaskCards(upcomingTasks.currentTasks)}</div>` +
+          `${olderTasksMarkup}` +
           `<p class="project-footnote">După push, închide issue-ul ca progresul să apară aici.</p>` +
         `</article>` +
       `</div>` +
@@ -4149,6 +4434,134 @@ function compareIssueTitles(aTitle, bTitle) {
     aMeta.stepRank - bMeta.stepRank ||
     aMeta.normalizedTitle.localeCompare(bMeta.normalizedTitle)
   );
+}
+
+function getTeamLabelRank(label) {
+  const match = String(label || '').match(/(\d+)/);
+  return match ? toNumber(match[1]) : 999;
+}
+
+function compareTeamLabels(a, b) {
+  return getTeamLabelRank(a) - getTeamLabelRank(b) || String(a || '').localeCompare(String(b || ''));
+}
+
+function formatTaskCardTitle(title) {
+  const normalizedTitle = sanitizeIssueTitle(title);
+  const parts = normalizedTitle.split(/\s+-\s+/);
+  if (parts.length < 2) {
+    return normalizedTitle;
+  }
+  return `${parts[0]} · ${parts.slice(1).join(' - ')}`;
+}
+
+function formatCompletedTeamsCopy(completedTeams, applicableTeams) {
+  if (applicableTeams === 1) {
+    return `${completedTeams}/${applicableTeams} echipă finalizată`;
+  }
+  return `${completedTeams}/${applicableTeams} echipe finalizate`;
+}
+
+function buildUpcomingTaskCards(teams, currentMilestoneKey) {
+  const tasksByTitle = {};
+
+  (Array.isArray(teams) ? teams : []).forEach(function(team) {
+    const teamLabel = team && team.label ? team.label : '';
+    const openByTitle = {};
+    const closedByTitle = {};
+
+    (Array.isArray(team && team.openIssues) ? team.openIssues : []).forEach(function(issue) {
+      const normalizedTitle = sanitizeIssueTitle(issue && issue.title);
+      if (!normalizedTitle) {
+        return;
+      }
+      if (!openByTitle[normalizedTitle]) {
+        openByTitle[normalizedTitle] = [];
+      }
+      openByTitle[normalizedTitle].push(issue);
+    });
+
+    (Array.isArray(team && team.closedIssues) ? team.closedIssues : []).forEach(function(issue) {
+      const normalizedTitle = sanitizeIssueTitle(issue && issue.title);
+      if (!normalizedTitle) {
+        return;
+      }
+      if (!closedByTitle[normalizedTitle]) {
+        closedByTitle[normalizedTitle] = [];
+      }
+      closedByTitle[normalizedTitle].push(issue);
+    });
+
+    const titleSet = new Set(Object.keys(openByTitle).concat(Object.keys(closedByTitle)));
+    titleSet.forEach(function(title) {
+      const openCount = (openByTitle[title] || []).length;
+      const closedCount = (closedByTitle[title] || []).length;
+      if (openCount + closedCount <= 0) {
+        return;
+      }
+
+      if (!tasksByTitle[title]) {
+        tasksByTitle[title] = {
+          title: title,
+          url: ((openByTitle[title] && openByTitle[title][0] && openByTitle[title][0].url) ||
+            (closedByTitle[title] && closedByTitle[title][0] && closedByTitle[title][0].url) ||
+            (team && team.issues_url) ||
+            '#'),
+          teams: []
+        };
+      }
+
+      tasksByTitle[title].teams.push({
+        label: teamLabel,
+        openCount: openCount,
+        closedCount: closedCount,
+        complete: openCount === 0 && closedCount > 0
+      });
+    });
+  });
+
+  const taskCards = Object.keys(tasksByTitle).map(function(title) {
+    const teamStates = tasksByTitle[title].teams.slice().sort(function(a, b) {
+      return compareTeamLabels(a.label, b.label);
+    });
+    const completedTeams = teamStates.filter(function(teamState) {
+      return teamState.complete;
+    }).length;
+    const applicableTeams = teamStates.length;
+    const remainingTeamLabels = teamStates.filter(function(teamState) {
+      return !teamState.complete;
+    }).map(function(teamState) {
+      return teamState.label;
+    });
+
+    return {
+      title: title,
+      displayTitle: formatTaskCardTitle(title),
+      url: tasksByTitle[title].url,
+      stageKey: inferIssueStageKey(title),
+      completedTeams: completedTeams,
+      applicableTeams: applicableTeams,
+      remainingTeamLabels: remainingTeamLabels,
+      percent: applicableTeams > 0 ? clampPercent(Math.round((completedTeams / applicableTeams) * 100)) : 0
+    };
+  }).sort(function(a, b) {
+    return compareIssueTitles(a.title, b.title) || a.title.localeCompare(b.title);
+  });
+
+  const currentTasks = taskCards.filter(function(task) {
+    return task.stageKey === currentMilestoneKey;
+  }).sort(function(a, b) {
+    return compareIssueTitles(b.title, a.title) || a.title.localeCompare(b.title);
+  });
+  const olderTasks = taskCards.filter(function(task) {
+    return task.stageKey && getStageRank(task.stageKey) < getStageRank(currentMilestoneKey);
+  }).sort(function(a, b) {
+    return compareIssueTitles(b.title, a.title) || a.title.localeCompare(b.title);
+  });
+
+  return {
+    currentTasks: currentTasks.slice(0, 5),
+    olderTasks: currentTasks.length <= 3 ? olderTasks.slice(0, 2) : []
+  };
 }
 
 function pickTeamCurrentAction(openIssues, currentMilestoneKey) {
