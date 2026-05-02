@@ -1503,6 +1503,78 @@ section { padding-top: 2rem; }
   color: var(--accent);
 }
 
+.stage-active-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #68895a;
+  background: rgba(104, 137, 90, 0.12);
+  border: 1px solid rgba(104, 137, 90, 0.3);
+  border-radius: 3px;
+  padding: 0 4px;
+  margin-left: 4px;
+  vertical-align: middle;
+  line-height: 1.7;
+}
+
+.blocker-severity {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  padding: 1px 4px;
+  white-space: nowrap;
+}
+
+.sev-atentie {
+  color: #b88952;
+  background: rgba(184, 137, 82, 0.12);
+  border: 1px solid rgba(184, 137, 82, 0.3);
+}
+
+.sev-sta {
+  color: #b06030;
+  background: rgba(176, 96, 48, 0.12);
+  border: 1px solid rgba(176, 96, 48, 0.3);
+}
+
+.sev-blocat {
+  color: #9a3535;
+  background: rgba(154, 53, 53, 0.12);
+  border: 1px solid rgba(154, 53, 53, 0.3);
+}
+
+.control-tip-line {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  line-height: 1.4;
+  margin-top: 0.2rem;
+}
+
+.control-avg-line {
+  margin-top: 0.48rem;
+  padding-top: 0.42rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.65);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+}
+
+.blocker-team-tags {
+  grid-column: 2 / -1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  padding-bottom: 0.18rem;
+}
+
 .status-card {
   margin-top: 0.8rem;
   padding-top: 0.8rem;
@@ -3221,6 +3293,7 @@ function buildDashboardModel(data) {
   const issuesClosedLast48h = data && data.stats && data.stats.issues_closed_last48h != null
     ? toNumber(data.stats.issues_closed_last48h)
     : null;
+  const avgTime = computeAverageCompletionTime(Array.isArray(data && data.teams) ? data.teams : []);
 
   return {
     coursePlan: coursePlan,
@@ -3244,6 +3317,7 @@ function buildDashboardModel(data) {
     hasBlockerData: blockerData.hasTimestampData,
     hasAnyOpenIssues: blockerData.hasAnyOpenIssues,
     issuesClosedLast48h: issuesClosedLast48h,
+    avgTimeDays: avgTime.globalAvgDays,
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
@@ -3304,28 +3378,65 @@ function computeActivityStats(rawTeams) {
   return { activeCount: activeCount, stalledCount: (rawTeams || []).length - activeCount };
 }
 
+function computeAverageCompletionTime(rawTeams) {
+  var allDurations = [];
+
+  (rawTeams || []).forEach(function(rawTeam) {
+    var closedIssues = Array.isArray(rawTeam.closed_issues) ? rawTeam.closed_issues : [];
+    closedIssues.forEach(function(issue) {
+      if (issue.created_at && issue.closed_at) {
+        var days = (new Date(issue.closed_at).getTime() - new Date(issue.created_at).getTime()) / (24 * 60 * 60 * 1000);
+        if (days >= 0) allDurations.push(days);
+      }
+    });
+  });
+
+  if (!allDurations.length) return { globalAvgDays: null };
+  var sum = allDurations.reduce(function(a, b) { return a + b; }, 0);
+  return { globalAvgDays: sum / allDurations.length };
+}
+
 function computeBlockers(teams) {
   var now = Date.now();
-  var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
-  var blockers = [];
-  var fallback = [];
   var hasTimestampData = false;
+  var byTitle = {};
+  var fallbackByTitle = {};
 
   teams.forEach(function(team) {
     team.openIssues.forEach(function(issue) {
-      fallback.push({ teamLabel: team.label, title: sanitizeIssueTitle(issue.title), url: issue.url || '' });
+      var title = sanitizeIssueTitle(issue.title);
+
+      if (!fallbackByTitle[title]) {
+        fallbackByTitle[title] = { title: title, teamLabels: [], url: issue.url || '' };
+      }
+      if (fallbackByTitle[title].teamLabels.indexOf(team.label) === -1) {
+        fallbackByTitle[title].teamLabels.push(team.label);
+      }
+
       if (issue.updated_at) {
         hasTimestampData = true;
         var daysStale = Math.floor((now - new Date(issue.updated_at).getTime()) / (24 * 60 * 60 * 1000));
         if (daysStale >= 3) {
-          blockers.push({ teamLabel: team.label, title: sanitizeIssueTitle(issue.title), url: issue.url || '', daysStale: daysStale });
+          if (!byTitle[title]) {
+            byTitle[title] = { title: title, teamLabels: [], daysStale: 0, url: issue.url || '' };
+          }
+          byTitle[title].daysStale = Math.max(byTitle[title].daysStale, daysStale);
+          if (byTitle[title].teamLabels.indexOf(team.label) === -1) {
+            byTitle[title].teamLabels.push(team.label);
+          }
         }
       }
     });
   });
 
+  var blockers = [];
+  Object.keys(byTitle).forEach(function(k) { blockers.push(byTitle[k]); });
   blockers.sort(function(a, b) { return b.daysStale - a.daysStale; });
+
+  var fallback = [];
+  Object.keys(fallbackByTitle).forEach(function(k) { fallback.push(fallbackByTitle[k]); });
   fallback.sort(function(a, b) { return String(a.title).localeCompare(String(b.title)); });
+
   return {
     blockers: blockers.slice(0, 5),
     hasTimestampData: hasTimestampData,
@@ -3413,36 +3524,41 @@ function renderJourney(model) {
 }
 
 function renderProjectStats(model) {
+  // LEFT: colored stage bars with "activ" badge on current stage
   const stageRows = model.allStageSummaries
     .filter(function(stage) { return stage.key !== 'Final'; })
     .map(function(stage) {
       const hasTasks = stage.total > 0;
+      const isActive = stage.key === model.currentMilestone.key;
       const ratio = hasTasks ? `${stage.closed}/${stage.total}` : '\u2014';
       const fillClass = hasTasks ? '' : ' is-future';
-      const labelClass = hasTasks && stage.closed > 0 ? ' is-active' : '';
+      const labelClass = (hasTasks && stage.closed > 0) || isActive ? ' is-active' : '';
       const stageColor = hasTasks ? getProgressColor(stage.percent) : '';
       const fillStyle = hasTasks ? `width:${stage.percent}%; background:${stageColor};` : 'width:0%;';
+      const activeBadge = isActive ? `<span class="stage-active-badge">activ</span>` : '';
       return (
         `<div class="backlog-row">` +
-          `<span class="backlog-label${labelClass}">${escapeHtml(stage.key)}</span>` +
+          `<span class="backlog-label${labelClass}">${escapeHtml(stage.key)}${activeBadge}</span>` +
           `<div class="backlog-track"><div class="backlog-fill${fillClass}" style="${fillStyle}"></div></div>` +
           `<span class="backlog-value">${escapeHtml(ratio)}</span>` +
         `</div>`
       );
     }).join('');
 
+  // CENTER: 4 metric tiles with tip lines
   const actStats = model.activityStats;
   const activeTeamsStr = actStats != null
     ? `${actStats.activeCount}/${model.totals.teamCount}`
     : `\u2014/${model.totals.teamCount}`;
-  const momentumStr = model.issuesClosedLast48h != null ? String(model.issuesClosedLast48h) : '0';
+  const momentumVal = model.issuesClosedLast48h != null ? `+${model.issuesClosedLast48h}` : '+0';
+  const momentumNote = model.issuesClosedLast48h != null ? 'task-uri \u00eenchise' : 'date lips\u0103';
   const ACTIVITY_TOOLTIP = 'Activitate recent\u0103 = issue actualizat, issue \u00eenchis sau push \u00een ultimele 7 zile.';
 
   const controlTiles = [
-    { label: 'Progres', value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate', tooltip: '' },
-    { label: 'Etapa activ\u0103', value: escapeHtml(model.currentMilestone.key), note: escapeHtml(model.currentMilestone.short), tooltip: '' },
-    { label: 'Momentum', value: momentumStr, note: '\u00eenchise \u00een 48h', tooltip: '' },
-    { label: 'Echipe \u00een mi\u0219care', value: activeTeamsStr, note: 'cu activitate recent\u0103', tooltip: ACTIVITY_TOOLTIP }
+    { label: 'Progres total',   value: `${model.totals.closedIssues}/${model.totals.createdTasks}`, note: 'task-uri finalizate',    tip: 'task-uri din toate echipele',    tooltip: '' },
+    { label: 'Etapa activ\u0103', value: escapeHtml(model.currentMilestone.key), note: escapeHtml(model.currentMilestone.short), tip: 'etapa curent\u0103 din cursuri', tooltip: '' },
+    { label: 'Ritm 48h',        value: momentumVal,   note: momentumNote,                          tip: 'finalizate \u00een ultimele 48h', tooltip: '' },
+    { label: 'Echipe active',   value: activeTeamsStr, note: 'cu activitate recent\u0103',          tip: 'active \u00een ultimele 7 zile', tooltip: ACTIVITY_TOOLTIP }
   ].map(function(tile) {
     const titleAttr = tile.tooltip ? ` title="${escapeHtml(tile.tooltip)}"` : '';
     return (
@@ -3450,14 +3566,21 @@ function renderProjectStats(model) {
         `<span class="metric-label">${tile.label}</span>` +
         `<strong class="metric-value">${tile.value}</strong>` +
         `<span class="metric-note">${tile.note}</span>` +
+        `<span class="control-tip-line">Tip: ${escapeHtml(tile.tip)}</span>` +
       `</div>`
     );
   }).join('');
 
-  const currentNote = `Acum: ${escapeHtml(model.currentMilestone.key)} &middot; ${escapeHtml(model.currentMilestone.title)}`;
-  const rhythmLine = (model.issuesClosedLast48h != null && actStats != null)
-    ? `<div class="control-panel-rhythm">Ritm: +${model.issuesClosedLast48h} task-uri \u00een 48h &middot; ${actStats.stalledCount} echipe f\u0103r\u0103 mi\u015fcare</div>`
+  const avgLine = model.avgTimeDays != null
+    ? `<div class="control-avg-line">Timp mediu/task: ${model.avgTimeDays.toFixed(1)} zile</div>`
     : '';
+
+  // RIGHT: grouped blockers with severity badges
+  function getSeverity(days) {
+    if (days >= 14) return { cls: 'sev-blocat', label: 'blocat' };
+    if (days >= 7)  return { cls: 'sev-sta',    label: 'st\u0103' };
+    return              { cls: 'sev-atentie', label: 'aten\u021bie' };
+  }
 
   let blockersHtml;
   if (!model.hasBlockerData) {
@@ -3465,13 +3588,18 @@ function renderProjectStats(model) {
       blockersHtml = '<div class="team-empty">Nu exist\u0103 date despre blocaje.</div>';
     } else {
       blockersHtml = model.blockerFallback.map(function(issue) {
+        const firstTeam = (issue.teamLabels && issue.teamLabels[0]) || '';
         const titleEl = issue.url
           ? `<a class="blocker-title" href="${escapeHtml(issue.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(issue.title)}</a>`
           : `<span class="blocker-title">${escapeHtml(issue.title)}</span>`;
+        const tagsRow = (issue.teamLabels && issue.teamLabels.length > 1)
+          ? `<span class="blocker-team-tags">${escapeHtml(issue.teamLabels.join(', '))}</span>`
+          : '';
         return (
           `<div class="blocker-row">` +
-            `<span class="blocker-team">${escapeHtml(issue.teamLabel)}</span>` +
+            `<span class="blocker-team">${escapeHtml(firstTeam)}</span>` +
             titleEl +
+            tagsRow +
           `</div>`
         );
       }).join('');
@@ -3480,14 +3608,20 @@ function renderProjectStats(model) {
     blockersHtml = '<div class="team-empty">Nu sunt blocaje active.</div>';
   } else {
     blockersHtml = model.blockers.map(function(blocker) {
+      const sev = getSeverity(blocker.daysStale);
+      const firstTeam = (blocker.teamLabels && blocker.teamLabels[0]) || '';
       const titleEl = blocker.url
         ? `<a class="blocker-title" href="${escapeHtml(blocker.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(blocker.title)}</a>`
         : `<span class="blocker-title">${escapeHtml(blocker.title)}</span>`;
+      const tagsRow = (blocker.teamLabels && blocker.teamLabels.length > 1)
+        ? `<span class="blocker-team-tags">${escapeHtml(blocker.teamLabels.join(', '))}</span>`
+        : '';
       return (
         `<div class="blocker-row">` +
-          `<span class="blocker-team">${escapeHtml(blocker.teamLabel)}</span>` +
+          `<span class="blocker-team">${escapeHtml(firstTeam)}</span>` +
           titleEl +
-          `<span class="blocker-days">${blocker.daysStale} zile</span>` +
+          `<span class="blocker-days"><span class="blocker-severity ${sev.cls}">${sev.label}</span> ${blocker.daysStale}z</span>` +
+          tagsRow +
         `</div>`
       );
     }).join('');
@@ -3503,13 +3637,12 @@ function renderProjectStats(model) {
         `<article class="project-card">` +
           `<div class="project-title">Control panel</div>` +
           `<div class="control-panel-grid">${controlTiles}</div>` +
-          `<div class="control-panel-status">${currentNote}</div>` +
-          `${rhythmLine}` +
+          `${avgLine}` +
         `</article>` +
         `<article class="project-card">` +
           `<div class="project-title">Unde ne bloc\u0103m</div>` +
           `<div class="blocker-list">${blockersHtml}</div>` +
-          `<p class="project-footnote">Dashboard-ul se actualizeaz\u0103 din GitHub. Dup\u0103 ce a\u021bi f\u0103cut push, \u00eenchide\u021bi issue-ul corespunz\u0103tor.</p>` +
+          `<p class="project-footnote">Dashboard-ul se actualizeaz\u0103 automat \u2014 \u00eenchide issue-ul dup\u0103 ce ai terminat task-ul.</p>` +
         `</article>` +
       `</div>` +
     `</div>`;
