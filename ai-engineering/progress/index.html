@@ -2254,6 +2254,8 @@ const MOUNTAIN_POINTS = {
 
 const MOUNTAIN_ROUTE_D = `M168.777,924.146C168.777,924.146 323.636,945.297 422.972,897.329C522.309,849.360 552.200,840.714 602.813,840.714C653.425,840.714 944.983,840.076 870.606,789.724C821.731,756.637 917.063,762.152 971.075,754.975C1025.087,747.799 1215.887,735.388 1318.623,713.481C1421.358,691.574 1594.725,676.466 1526.738,651.160C1458.751,625.853 1294.072,583.173 1426.646,557.867C1559.220,532.560 1604.923,514.430 1425.891,483.836C1246.859,453.242 1000.973,413.438 1181.893,388.823C1362.814,364.208 1345.274,341.593 1511.937,346.314C1678.599,351.035 1985.484,311.376 1748.474,288.714C1511.464,266.052 1485.969,205.619 1588.422,200.426C1690.874,195.232 1694.179,176.347 1595.976,163.599C1497.773,150.852 1563.871,60.949 1633.274,55.481`;
 
+// Legacy route helpers are kept isolated below.
+// Active team positioning uses getMountainPointAtPercent() with MOUNTAIN_ROUTE_D.
 const ROUTE_ORDER = ['base', 'C1', 'C2', 'C3', 'C4', 'C5', 'bend1', 'C6', 'C7', 'C8'];
 const CLIMB_STAGE_ROUTE = {
   C1: { start: 'base', end: 'C1' },
@@ -3089,7 +3091,10 @@ function renderJourney(model) {
     );
   }).join('');
 
-  const svgOverlay = renderMountainMilestonesSVG(model.mountainCurrentKey) + renderTeamMarkersSVG(model.markers);
+  const svgOverlay =
+    renderMountainProgressRoute(model.totals.averageCourseProgress) +
+    renderMountainMilestonesSVG(model.mountainCurrentKey) +
+    renderTeamMarkersSVG(model.markers);
 
   const statusStrip = model.markers.map(function(marker) {
     var memberDots = (marker.memberDots || []).map(function(dot) {
@@ -3593,6 +3598,18 @@ function buildMountainMarkerData(teams) {
     };
   });
   return placeMountainMarkers(markers);
+}
+
+function renderMountainProgressRoute(percent) {
+  const p = clampPercent(percent);
+  const rest = 100 - p;
+  return `
+    <path class="mountain-route-bg" d="${MOUNTAIN_ROUTE_D}"></path>
+    <path class="mountain-route-progress"
+          pathLength="100"
+          stroke-dasharray="${p} ${rest}"
+          d="${MOUNTAIN_ROUTE_D}"></path>
+  `;
 }
 
 function renderMountainMilestonesSVG(currentKey) {
