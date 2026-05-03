@@ -1,9 +1,9 @@
-﻿{
+{
     "github_org":  {
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-03 12:31",
+    "updated_at":  "2026-05-03 12:59",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -83,9 +83,9 @@
                       ],
     "summary":  {
                     "total_issues":  102,
-                    "closed_issues":  37,
-                    "open_issues":  65,
-                    "completion_percent":  36,
+                    "closed_issues":  38,
+                    "open_issues":  64,
+                    "completion_percent":  37,
                     "current_stage_id":  "C2",
                     "current_stage_title":  "Models",
                     "current_stage_action":  "AlegeÈ›i modelul de bazÄƒ È™i completaÈ›i core/config.py",
@@ -94,17 +94,17 @@
                     "teams_slow":  0,
                     "teams_blocked":  2,
                     "issues_closed_last_48h":  17,
-                    "avg_completion_time_days":  2
+                    "avg_completion_time_days":  2.1
                 },
     "stage_stats":  [
                         {
                             "id":  "C1",
                             "title":  "Setup/API",
                             "milestone":  "C1 - Setup GitHub, env, notebooks",
-                            "closed":  29,
-                            "open":  31,
+                            "closed":  30,
+                            "open":  30,
                             "total":  60,
-                            "percent":  48
+                            "percent":  50
                         },
                         {
                             "id":  "C2",
@@ -185,6 +185,7 @@
                          "repo":  "echochamber-project-team-4",
                          "title":  "C2.3 - Create initial app.py",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/18",
+                         "number":  18,
                          "days_without_update":  3
                      },
                      {
@@ -192,6 +193,7 @@
                          "repo":  "echochamber-project-team3",
                          "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/2",
+                         "number":  2,
                          "days_without_update":  3
                      },
                      {
@@ -199,6 +201,7 @@
                          "repo":  "echochamber-project-team3",
                          "title":  "student_01 - Issue 2 - Individual notebook workspace",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/3",
+                         "number":  3,
                          "days_without_update":  3
                      },
                      {
@@ -206,6 +209,7 @@
                          "repo":  "echochamber-project-team-4",
                          "title":  "student_05 - C2.1 - Individual model testing notebook",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/16",
+                         "number":  16,
                          "days_without_update":  3
                      },
                      {
@@ -213,6 +217,7 @@
                          "repo":  "echochamber-project-team-4",
                          "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/10",
+                         "number":  10,
                          "days_without_update":  3
                      },
                      {
@@ -220,6 +225,7 @@
                          "repo":  "echochamber-project-team-4",
                          "title":  "student_05 - Issue 2 - Individual notebook workspace",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/11",
+                         "number":  11,
                          "days_without_update":  3
                      },
                      {
@@ -227,6 +233,7 @@
                          "repo":  "echochamber-project-team-4",
                          "title":  "student_01 - C2.1 - Individual model testing notebook",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/12",
+                         "number":  12,
                          "days_without_update":  3
                      },
                      {
@@ -234,6 +241,7 @@
                          "repo":  "echochamber-project-team3",
                          "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/4",
+                         "number":  4,
                          "days_without_update":  3
                      },
                      {
@@ -241,6 +249,7 @@
                          "repo":  "echochamber-project-team3",
                          "title":  "student_04 - Issue 2 - Individual notebook workspace",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/9",
+                         "number":  9,
                          "days_without_update":  3
                      },
                      {
@@ -248,6 +257,7 @@
                          "repo":  "echochamber-project-team3",
                          "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/10",
+                         "number":  10,
                          "days_without_update":  3
                      }
                  ],
@@ -350,6 +360,7 @@
                                            "repo":  "echochamber-project-team-1",
                                            "title":  "student_04 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/9",
+                                           "number":  9,
                                            "days_without_update":  3
                                        },
                                        {
@@ -357,6 +368,7 @@
                                            "repo":  "echochamber-project-team-1",
                                            "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/10",
+                                           "number":  10,
                                            "days_without_update":  3
                                        },
                                        {
@@ -364,6 +376,7 @@
                                            "repo":  "echochamber-project-team-1",
                                            "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/11",
+                                           "number":  11,
                                            "days_without_update":  3
                                        },
                                        {
@@ -371,6 +384,7 @@
                                            "repo":  "echochamber-project-team-1",
                                            "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/4",
+                                           "number":  4,
                                            "days_without_update":  3
                                        },
                                        {
@@ -378,6 +392,7 @@
                                            "repo":  "echochamber-project-team-1",
                                            "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/5",
+                                           "number":  5,
                                            "days_without_update":  3
                                        }
                                    ],
@@ -848,6 +863,7 @@
                                               "title":  "student_04 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/9",
                                               "number":  9,
+                                              "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "days_without_update":  3
                                           },
@@ -855,6 +871,7 @@
                                               "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/10",
                                               "number":  10,
+                                              "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "days_without_update":  3
                                           },
@@ -862,6 +879,7 @@
                                               "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/11",
                                               "number":  11,
+                                              "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "days_without_update":  3
                                           },
@@ -869,6 +887,7 @@
                                               "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/4",
                                               "number":  4,
+                                              "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "days_without_update":  3
                                           },
@@ -876,6 +895,7 @@
                                               "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/5",
                                               "number":  5,
+                                              "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "days_without_update":  3
                                           },
@@ -883,6 +903,7 @@
                                               "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/8",
                                               "number":  8,
+                                              "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "days_without_update":  3
                                           },
@@ -890,6 +911,7 @@
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/16",
                                               "number":  16,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           },
@@ -897,6 +919,7 @@
                                               "title":  "C2.2 - Team model configuration in core/config.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/17",
                                               "number":  17,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           },
@@ -904,6 +927,7 @@
                                               "title":  "C2.3 - Create initial app.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/18",
                                               "number":  18,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           },
@@ -911,10 +935,58 @@
                                               "title":  "student_02 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/13",
                                               "number":  13,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           }
-                                      ]
+                                      ],
+                      "closed_issues":  [
+                                            {
+                                                "title":  "student_01 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/3",
+                                                "number":  3,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 13:41",
+                                                "closed_at":  "2026-04-30 13:41",
+                                                "completion_time_days":  1
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/2",
+                                                "number":  2,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 13:41",
+                                                "closed_at":  "2026-04-30 13:41",
+                                                "completion_time_days":  1
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/6",
+                                                "number":  6,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 18:21",
+                                                "closed_at":  "2026-04-30 18:21",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_01 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/12",
+                                                "number":  12,
+                                                "created_at":  "2026-04-29 14:20",
+                                                "updated_at":  "2026-04-30 20:02",
+                                                "closed_at":  "2026-04-30 20:02",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/7",
+                                                "number":  7,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 18:20",
+                                                "closed_at":  "2026-04-30 18:20",
+                                                "completion_time_days":  1.2
+                                            }
+                                        ]
                   },
                   {
                       "name":  "Team 2",
@@ -1014,6 +1086,7 @@
                                            "repo":  "echochamber-project-team-2",
                                            "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/5",
+                                           "number":  5,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1021,6 +1094,7 @@
                                            "repo":  "echochamber-project-team-2",
                                            "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/10",
+                                           "number":  10,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1028,6 +1102,7 @@
                                            "repo":  "echochamber-project-team-2",
                                            "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/11",
+                                           "number":  11,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1035,6 +1110,7 @@
                                            "repo":  "echochamber-project-team-2",
                                            "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/2",
+                                           "number":  2,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1042,6 +1118,7 @@
                                            "repo":  "echochamber-project-team-2",
                                            "title":  "student_01 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/3",
+                                           "number":  3,
                                            "days_without_update":  3
                                        }
                                    ],
@@ -1512,6 +1589,7 @@
                                               "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/5",
                                               "number":  5,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:08",
                                               "days_without_update":  3
                                           },
@@ -1519,6 +1597,7 @@
                                               "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/10",
                                               "number":  10,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:08",
                                               "days_without_update":  3
                                           },
@@ -1526,6 +1605,7 @@
                                               "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/11",
                                               "number":  11,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:08",
                                               "days_without_update":  3
                                           },
@@ -1533,6 +1613,7 @@
                                               "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/2",
                                               "number":  2,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:08",
                                               "days_without_update":  3
                                           },
@@ -1540,6 +1621,7 @@
                                               "title":  "student_01 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/3",
                                               "number":  3,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:08",
                                               "days_without_update":  3
                                           },
@@ -1547,6 +1629,7 @@
                                               "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/4",
                                               "number":  4,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:08",
                                               "days_without_update":  3
                                           },
@@ -1554,6 +1637,7 @@
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/16",
                                               "number":  16,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           },
@@ -1561,6 +1645,7 @@
                                               "title":  "C2.2 - Team model configuration in core/config.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/17",
                                               "number":  17,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           },
@@ -1568,6 +1653,7 @@
                                               "title":  "C2.3 - Create initial app.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/18",
                                               "number":  18,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           },
@@ -1575,10 +1661,58 @@
                                               "title":  "student_01 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/12",
                                               "number":  12,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           }
-                                      ]
+                                      ],
+                      "closed_issues":  [
+                                            {
+                                                "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/7",
+                                                "number":  7,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 12:25",
+                                                "closed_at":  "2026-05-02 12:25",
+                                                "completion_time_days":  3
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/6",
+                                                "number":  6,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 12:13",
+                                                "closed_at":  "2026-05-02 12:13",
+                                                "completion_time_days":  3
+                                            },
+                                            {
+                                                "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/8",
+                                                "number":  8,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-01 11:38",
+                                                "closed_at":  "2026-05-01 11:38",
+                                                "completion_time_days":  1.9
+                                            },
+                                            {
+                                                "title":  "student_03 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/14",
+                                                "number":  14,
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-03 11:13",
+                                                "closed_at":  "2026-05-03 11:13",
+                                                "completion_time_days":  3.9
+                                            },
+                                            {
+                                                "title":  "student_04 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/9",
+                                                "number":  9,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-01 09:59",
+                                                "closed_at":  "2026-05-01 09:59",
+                                                "completion_time_days":  1.9
+                                            }
+                                        ]
                   },
                   {
                       "name":  "Team 3",
@@ -1678,6 +1812,7 @@
                                            "repo":  "echochamber-project-team3",
                                            "title":  "student_03 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/7",
+                                           "number":  7,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1685,6 +1820,7 @@
                                            "repo":  "echochamber-project-team3",
                                            "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/6",
+                                           "number":  6,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1692,6 +1828,7 @@
                                            "repo":  "echochamber-project-team3",
                                            "title":  "student_04 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/9",
+                                           "number":  9,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1699,6 +1836,7 @@
                                            "repo":  "echochamber-project-team3",
                                            "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/8",
+                                           "number":  8,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1706,6 +1844,7 @@
                                            "repo":  "echochamber-project-team3",
                                            "title":  "student_01 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/3",
+                                           "number":  3,
                                            "days_without_update":  3
                                        }
                                    ],
@@ -1717,6 +1856,7 @@
                                               "title":  "student_03 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/7",
                                               "number":  7,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1724,6 +1864,7 @@
                                               "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/6",
                                               "number":  6,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1731,6 +1872,7 @@
                                               "title":  "student_04 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/9",
                                               "number":  9,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1738,6 +1880,7 @@
                                               "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/8",
                                               "number":  8,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1745,6 +1888,7 @@
                                               "title":  "student_01 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/3",
                                               "number":  3,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1752,6 +1896,7 @@
                                               "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/2",
                                               "number":  2,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1759,6 +1904,7 @@
                                               "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/5",
                                               "number":  5,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1766,6 +1912,7 @@
                                               "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/4",
                                               "number":  4,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1773,6 +1920,7 @@
                                               "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/10",
                                               "number":  10,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -1780,10 +1928,14 @@
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/16",
                                               "number":  16,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           }
-                                      ]
+                                      ],
+                      "closed_issues":  [
+
+                                        ]
                   },
                   {
                       "name":  "Team 4",
@@ -1793,15 +1945,15 @@
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-4/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
                       "current_stage_id":  "C1",
-                      "overall_percent":  47,
+                      "overall_percent":  53,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "id":  "C1",
                                                                                  "title":  "Setup/API",
-                                                                                 "closed":  7,
-                                                                                 "open":  3,
+                                                                                 "closed":  8,
+                                                                                 "open":  2,
                                                                                  "total":  10,
-                                                                                 "percent":  70
+                                                                                 "percent":  80
                                                                              },
                                        "C2 - Model ecosystem":  {
                                                                     "id":  "C2",
@@ -1869,9 +2021,9 @@
                                                            }
                                    },
                       "activity":  {
-                                       "last_activity_at":  "2026-05-03 12:21",
-                                       "issues_closed_last_48h":  1,
-                                       "avg_completion_time_days":  1.6,
+                                       "last_activity_at":  "2026-05-03 12:46",
+                                       "issues_closed_last_48h":  2,
+                                       "avg_completion_time_days":  1.8,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
                                        "blocked":  false,
@@ -1883,6 +2035,7 @@
                                            "repo":  "echochamber-project-team-4",
                                            "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/11",
+                                           "number":  11,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1890,13 +2043,15 @@
                                            "repo":  "echochamber-project-team-4",
                                            "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/10",
+                                           "number":  10,
                                            "days_without_update":  3
                                        },
                                        {
                                            "team":  "Team 4",
                                            "repo":  "echochamber-project-team-4",
-                                           "title":  "student_01 - Issue 2 - Individual notebook workspace",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/3",
+                                           "title":  "student_01 - C2.1 - Individual model testing notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/12",
+                                           "number":  12,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1904,6 +2059,7 @@
                                            "repo":  "echochamber-project-team-4",
                                            "title":  "C2.3 - Create initial app.py",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/18",
+                                           "number":  18,
                                            "days_without_update":  3
                                        },
                                        {
@@ -1911,6 +2067,7 @@
                                            "repo":  "echochamber-project-team-4",
                                            "title":  "student_05 - C2.1 - Individual model testing notebook",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/16",
+                                           "number":  16,
                                            "days_without_update":  3
                                        }
                                    ],
@@ -1921,21 +2078,21 @@
                                           "local_code":  "student_01",
                                           "active":  true,
                                           "connected":  true,
-                                          "closed":  1,
-                                          "open":  2,
+                                          "closed":  2,
+                                          "open":  1,
                                           "total":  3,
-                                          "issue_progress_percent":  33,
-                                          "course_progress_percent":  33,
-                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                                          "current_stage_id":  "C1",
+                                          "issue_progress_percent":  67,
+                                          "course_progress_percent":  67,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "current_stage_id":  "C2",
                                           "progress":  {
                                                            "C1 - Setup GitHub, env, notebooks":  {
                                                                                                      "id":  "C1",
                                                                                                      "title":  "Setup/API",
-                                                                                                     "closed":  1,
-                                                                                                     "open":  1,
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
                                                                                                      "total":  2,
-                                                                                                     "percent":  50
+                                                                                                     "percent":  100
                                                                                                  },
                                                            "C2 - Model ecosystem":  {
                                                                                         "id":  "C2",
@@ -2003,8 +2160,8 @@
                                                                                }
                                                        },
                                           "activity":  {
-                                                           "last_activity_at":  "2026-05-03 12:21",
-                                                           "issues_closed_last_48h":  1
+                                                           "last_activity_at":  "2026-05-03 12:46",
+                                                           "issues_closed_last_48h":  2
                                                        }
                                       },
                                       {
@@ -2286,44 +2443,42 @@
                                   ],
                       "open_issues":  [
                                           {
-                                              "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/11",
-                                              "number":  11,
-                                              "updated_at":  "2026-04-29 14:10",
-                                              "days_without_update":  3
-                                          },
-                                          {
                                               "title":  "student_01 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/12",
                                               "number":  12,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
-                                              "days_without_update":  3
-                                          },
-                                          {
-                                              "title":  "student_01 - Issue 2 - Individual notebook workspace",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/3",
-                                              "number":  3,
-                                              "updated_at":  "2026-04-29 14:10",
-                                              "days_without_update":  3
-                                          },
-                                          {
-                                              "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/10",
-                                              "number":  10,
-                                              "updated_at":  "2026-04-29 14:10",
                                               "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_03 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/14",
                                               "number":  14,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-30 19:57",
                                               "days_without_update":  2
+                                          },
+                                          {
+                                              "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/10",
+                                              "number":  10,
+                                              "created_at":  "2026-04-29 12:57",
+                                              "updated_at":  "2026-04-29 14:10",
+                                              "days_without_update":  3
+                                          },
+                                          {
+                                              "title":  "student_05 - Issue 2 - Individual notebook workspace",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/11",
+                                              "number":  11,
+                                              "created_at":  "2026-04-29 12:57",
+                                              "updated_at":  "2026-04-29 14:10",
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "C2.2 - Team model configuration in core/config.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/17",
                                               "number":  17,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-30 20:05",
                                               "days_without_update":  2
                                           },
@@ -2331,6 +2486,7 @@
                                               "title":  "C2.3 - Create initial app.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/18",
                                               "number":  18,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           },
@@ -2338,6 +2494,7 @@
                                               "title":  "student_04 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/15",
                                               "number":  15,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-30 18:51",
                                               "days_without_update":  2
                                           },
@@ -2345,10 +2502,94 @@
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/16",
                                               "number":  16,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           }
-                                      ]
+                                      ],
+                      "closed_issues":  [
+                                            {
+                                                "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/4",
+                                                "number":  4,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 18:22",
+                                                "closed_at":  "2026-04-30 18:22",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_02 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/5",
+                                                "number":  5,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 18:21",
+                                                "closed_at":  "2026-04-30 18:21",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/2",
+                                                "number":  2,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-05-03 12:21",
+                                                "closed_at":  "2026-05-03 12:21",
+                                                "completion_time_days":  4
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/3",
+                                                "number":  3,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-05-03 12:46",
+                                                "closed_at":  "2026-05-03 12:46",
+                                                "completion_time_days":  4
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/6",
+                                                "number":  6,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 16:27",
+                                                "closed_at":  "2026-04-30 16:27",
+                                                "completion_time_days":  1.1
+                                            },
+                                            {
+                                                "title":  "student_04 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/9",
+                                                "number":  9,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 18:48",
+                                                "closed_at":  "2026-04-30 18:48",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_02 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/13",
+                                                "number":  13,
+                                                "created_at":  "2026-04-29 14:20",
+                                                "updated_at":  "2026-04-30 20:09",
+                                                "closed_at":  "2026-04-30 20:09",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/7",
+                                                "number":  7,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 16:32",
+                                                "closed_at":  "2026-04-30 16:32",
+                                                "completion_time_days":  1.1
+                                            },
+                                            {
+                                                "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/8",
+                                                "number":  8,
+                                                "created_at":  "2026-04-29 12:57",
+                                                "updated_at":  "2026-04-30 18:29",
+                                                "closed_at":  "2026-04-30 18:29",
+                                                "completion_time_days":  1.2
+                                            }
+                                        ]
                   },
                   {
                       "name":  "Team 5",
@@ -2435,7 +2676,7 @@
                                    },
                       "activity":  {
                                        "last_activity_at":  "2026-05-02 22:53",
-                                       "issues_closed_last_48h":  9,
+                                       "issues_closed_last_48h":  8,
                                        "avg_completion_time_days":  3,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
@@ -2448,6 +2689,7 @@
                                            "repo":  "echochamber-project-team-5",
                                            "title":  "student_01 - C2.1 - Individual model testing notebook",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/12",
+                                           "number":  12,
                                            "days_without_update":  3
                                        },
                                        {
@@ -2455,6 +2697,7 @@
                                            "repo":  "echochamber-project-team-5",
                                            "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/11",
+                                           "number":  11,
                                            "days_without_update":  3
                                        },
                                        {
@@ -2462,6 +2705,7 @@
                                            "repo":  "echochamber-project-team-5",
                                            "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/10",
+                                           "number":  10,
                                            "days_without_update":  3
                                        },
                                        {
@@ -2469,6 +2713,7 @@
                                            "repo":  "echochamber-project-team-5",
                                            "title":  "student_02 - C2.1 - Individual model testing notebook",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/13",
+                                           "number":  13,
                                            "days_without_update":  3
                                        },
                                        {
@@ -2476,6 +2721,7 @@
                                            "repo":  "echochamber-project-team-5",
                                            "title":  "C2.3 - Create initial app.py",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/18",
+                                           "number":  18,
                                            "days_without_update":  3
                                        }
                                    ],
@@ -2845,7 +3091,7 @@
                                                        },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-02 19:22",
-                                                           "issues_closed_last_48h":  2
+                                                           "issues_closed_last_48h":  1
                                                        }
                                       }
                                   ],
@@ -2854,6 +3100,7 @@
                                               "title":  "student_01 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/12",
                                               "number":  12,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           },
@@ -2861,6 +3108,7 @@
                                               "title":  "student_05 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/11",
                                               "number":  11,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -2868,6 +3116,7 @@
                                               "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/10",
                                               "number":  10,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -2875,6 +3124,7 @@
                                               "title":  "student_02 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/13",
                                               "number":  13,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           },
@@ -2882,6 +3132,7 @@
                                               "title":  "C2.3 - Create initial app.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/18",
                                               "number":  18,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           },
@@ -2889,6 +3140,7 @@
                                               "title":  "C2.2 - Team model configuration in core/config.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/17",
                                               "number":  17,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           },
@@ -2896,10 +3148,103 @@
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/16",
                                               "number":  16,
+                                              "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "days_without_update":  3
                                           }
-                                      ]
+                                      ],
+                      "closed_issues":  [
+                                            {
+                                                "title":  "student_02 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/5",
+                                                "number":  5,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 22:52",
+                                                "closed_at":  "2026-05-02 22:52",
+                                                "completion_time_days":  3.4
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/6",
+                                                "number":  6,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 18:37",
+                                                "closed_at":  "2026-05-02 18:37",
+                                                "completion_time_days":  3.2
+                                            },
+                                            {
+                                                "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/4",
+                                                "number":  4,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 22:47",
+                                                "closed_at":  "2026-05-02 22:47",
+                                                "completion_time_days":  3.4
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/2",
+                                                "number":  2,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 22:49",
+                                                "closed_at":  "2026-05-02 22:49",
+                                                "completion_time_days":  3.4
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/3",
+                                                "number":  3,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 22:53",
+                                                "closed_at":  "2026-05-02 22:53",
+                                                "completion_time_days":  3.4
+                                            },
+                                            {
+                                                "title":  "student_03 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/14",
+                                                "number":  14,
+                                                "created_at":  "2026-04-29 14:20",
+                                                "updated_at":  "2026-05-02 19:21",
+                                                "closed_at":  "2026-05-02 19:21",
+                                                "completion_time_days":  3.2
+                                            },
+                                            {
+                                                "title":  "student_04 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/15",
+                                                "number":  15,
+                                                "created_at":  "2026-04-29 14:20",
+                                                "updated_at":  "2026-05-02 19:22",
+                                                "closed_at":  "2026-05-02 19:22",
+                                                "completion_time_days":  3.2
+                                            },
+                                            {
+                                                "title":  "student_04 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/9",
+                                                "number":  9,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-01 12:38",
+                                                "closed_at":  "2026-05-01 12:38",
+                                                "completion_time_days":  2
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/7",
+                                                "number":  7,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 19:18",
+                                                "closed_at":  "2026-05-02 19:18",
+                                                "completion_time_days":  3.3
+                                            },
+                                            {
+                                                "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/8",
+                                                "number":  8,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-01 10:08",
+                                                "closed_at":  "2026-05-01 10:08",
+                                                "completion_time_days":  1.9
+                                            }
+                                        ]
                   },
                   {
                       "name":  "Team 6",
@@ -2999,6 +3344,7 @@
                                            "repo":  "echochamber-project-team-6",
                                            "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/8",
+                                           "number":  8,
                                            "days_without_update":  3
                                        },
                                        {
@@ -3006,6 +3352,7 @@
                                            "repo":  "echochamber-project-team-6",
                                            "title":  "student_04 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/9",
+                                           "number":  9,
                                            "days_without_update":  3
                                        },
                                        {
@@ -3013,6 +3360,7 @@
                                            "repo":  "echochamber-project-team-6",
                                            "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/4",
+                                           "number":  4,
                                            "days_without_update":  3
                                        },
                                        {
@@ -3020,6 +3368,7 @@
                                            "repo":  "echochamber-project-team-6",
                                            "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/5",
+                                           "number":  5,
                                            "days_without_update":  3
                                        },
                                        {
@@ -3027,6 +3376,7 @@
                                            "repo":  "echochamber-project-team-6",
                                            "title":  "student_04 - C2.1 - Individual model testing notebook",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/15",
+                                           "number":  15,
                                            "days_without_update":  3
                                        }
                                    ],
@@ -3497,6 +3847,7 @@
                                               "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/8",
                                               "number":  8,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -3504,6 +3855,7 @@
                                               "title":  "student_04 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/9",
                                               "number":  9,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -3511,6 +3863,7 @@
                                               "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/4",
                                               "number":  4,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -3518,6 +3871,7 @@
                                               "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/5",
                                               "number":  5,
+                                              "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "days_without_update":  3
                                           },
@@ -3525,6 +3879,7 @@
                                               "title":  "student_04 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/15",
                                               "number":  15,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           },
@@ -3532,6 +3887,7 @@
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/16",
                                               "number":  16,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           },
@@ -3539,6 +3895,7 @@
                                               "title":  "student_01 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/12",
                                               "number":  12,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           },
@@ -3546,10 +3903,94 @@
                                               "title":  "student_02 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/13",
                                               "number":  13,
+                                              "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "days_without_update":  3
                                           }
-                                      ]
+                                      ],
+                      "closed_issues":  [
+                                            {
+                                                "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/6",
+                                                "number":  6,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-04-30 19:47",
+                                                "closed_at":  "2026-04-30 19:47",
+                                                "completion_time_days":  1.3
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/7",
+                                                "number":  7,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-01 19:33",
+                                                "closed_at":  "2026-05-01 19:33",
+                                                "completion_time_days":  2.3
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/2",
+                                                "number":  2,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-04-30 18:22",
+                                                "closed_at":  "2026-04-30 18:22",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/3",
+                                                "number":  3,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-04-30 18:22",
+                                                "closed_at":  "2026-04-30 18:22",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/10",
+                                                "number":  10,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-04-30 18:38",
+                                                "closed_at":  "2026-04-30 18:38",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "C2.2 - Team model configuration in core/config.py",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/17",
+                                                "number":  17,
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-01 22:20",
+                                                "closed_at":  "2026-05-01 22:20",
+                                                "completion_time_days":  2.3
+                                            },
+                                            {
+                                                "title":  "C2.3 - Create initial app.py",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/18",
+                                                "number":  18,
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-01 22:15",
+                                                "closed_at":  "2026-05-01 22:15",
+                                                "completion_time_days":  2.3
+                                            },
+                                            {
+                                                "title":  "student_05 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/11",
+                                                "number":  11,
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-04-30 18:56",
+                                                "closed_at":  "2026-04-30 18:56",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_03 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/14",
+                                                "number":  14,
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-01 20:26",
+                                                "closed_at":  "2026-05-01 20:26",
+                                                "completion_time_days":  2.3
+                                            }
+                                        ]
                   }
               ]
 }
