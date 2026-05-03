@@ -1895,6 +1895,14 @@ section { padding-top: 2rem; }
   flex-direction: column;
   gap: 0.42rem;
 }
+.project-task-group-header {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted, #888);
+  margin-bottom: 6px;
+}
 
 .project-task-card {
   padding: 0.58rem 0.64rem 0.62rem;
@@ -2272,6 +2280,84 @@ section { padding-top: 2rem; }
   padding-top: 0.42rem;
   border-top: 1px solid rgba(226, 221, 211, 0.72);
   color: var(--sub);
+}
+
+.team-members-split {
+  display: grid;
+  grid-template-columns: 1fr 0.82fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.team-collective-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.team-collective-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.26rem 0;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.68);
+}
+
+.team-collective-row:last-child {
+  border-bottom: none;
+}
+
+.team-collective-title {
+  min-width: 0;
+  font-size: 10.5px;
+  color: var(--sub);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-collective-title:hover { color: var(--team-color); }
+
+.team-collective-state {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  white-space: nowrap;
+  padding: 0.1rem 0.34rem;
+  border-radius: 3px;
+}
+
+.team-collective-state.is-open {
+  color: var(--sub);
+  background: rgba(201, 195, 181, 0.3);
+}
+
+.team-collective-state.is-done {
+  color: var(--progress-high);
+  background: rgba(104, 137, 90, 0.1);
+}
+
+.team-collective-footer {
+  margin-top: 0.3rem;
+  padding-top: 0.28rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.72);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--sub);
+}
+
+.team-individual-note {
+  margin-top: 0.24rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  line-height: 1.4;
+}
+
+@media (max-width: 560px) {
+  .team-members-split {
+    grid-template-columns: 1fr;
+  }
 }
 
 .loading {
@@ -3576,6 +3662,7 @@ function buildMountainScene(teams) {
     return {
       label: team.label,
       teamName: team.name,
+      overallPercent: team.overallPercent,
       color: mountainColor,
       routeStageKey: stageState.displayStageKey,
       topStageKey: stageState.topStageKey,
@@ -3677,6 +3764,32 @@ function buildCourseMarkers(teams) {
   return buildMountainMarkerData(teams);
 }
 
+function isStudentIssueTitle(title) {
+  return /^student[_ -]?\d+\s*-/i.test(String(title || '').trim());
+}
+
+function isCollectiveIssueTitle(title) {
+  return /^C\d+(\.\d+)?\s*-/i.test(String(title || '').trim());
+}
+
+function issueKindFromTitle(title) {
+  if (isStudentIssueTitle(title)) return 'student';
+  if (isCollectiveIssueTitle(title)) return 'collective';
+  return 'other';
+}
+
+function summarizeIssueList(openIssues, closedIssues, kind) {
+  const open = (openIssues || []).filter(function(i) { return issueKindFromTitle(i.title) === kind; }).length;
+  const closed = (closedIssues || []).filter(function(i) { return issueKindFromTitle(i.title) === kind; }).length;
+  const total = open + closed;
+  return {
+    open: open,
+    closed: closed,
+    total: total,
+    percent: total ? Math.round((closed / total) * 100) : 0
+  };
+}
+
 function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestoneKey) {
   const stageProgress = coursePlan.map(function(stageMeta) {
     return getCourseStageProgress(team, stageMeta);
@@ -3688,6 +3801,20 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
   }) || derivedStage;
   const openIssues = Array.isArray(team && team.open_issues) ? team.open_issues : [];
   const closedIssues = Array.isArray(team && team.closed_issues) ? team.closed_issues : [];
+  const individualOpenIssues = openIssues.filter(function(i) { return isStudentIssueTitle(i.title); });
+  const individualClosedIssues = closedIssues.filter(function(i) { return isStudentIssueTitle(i.title); });
+  const collectiveOpenIssues = openIssues.filter(function(i) { return isCollectiveIssueTitle(i.title); });
+  const collectiveClosedIssues = closedIssues.filter(function(i) { return isCollectiveIssueTitle(i.title); });
+  const individualSummary = summarizeIssueList(openIssues, closedIssues, 'student');
+  const collectiveSummary = summarizeIssueList(openIssues, closedIssues, 'collective');
+  const allSummary = {
+    open: openIssues.length,
+    closed: closedIssues.length,
+    total: openIssues.length + closedIssues.length,
+    percent: (openIssues.length + closedIssues.length)
+      ? Math.round((closedIssues.length / (openIssues.length + closedIssues.length)) * 100)
+      : 0
+  };
   const courseProgress = computeCourseProgressPercent(team, coursePlan);
   const climbProgress = computeAverageStagePercent(team, climbPlan);
   const overallPercent = team && team.overall_percent !== undefined && team.overall_percent !== null
@@ -3727,6 +3854,11 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     nextAction: openIssues.find(function(issue) {
       return inferStageKey(issue && issue.title) === currentMilestoneKey;
     }) || openIssues[0] || null,
+    issueSummary: { all: allSummary, individual: individualSummary, collective: collectiveSummary },
+    collectiveOpenIssues: collectiveOpenIssues,
+    collectiveClosedIssues: collectiveClosedIssues,
+    individualOpenIssues: individualOpenIssues,
+    individualClosedIssues: individualClosedIssues,
     activity: team && team.activity ? {
       status: String(team.activity.status || ''),
       statusLabel: String(team.activity.status_label || ''),
@@ -4165,7 +4297,7 @@ function renderJourney(model) {
   const svgOverlay = renderTeamMarkersSVG(model.markers, model.mountainStudentMarkers);
 
   const statusStrip = model.markers.map(function(marker) {
-    return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; ${escapeHtml(marker.routeStageKey)} &middot; ${marker.stagePercent}%</span>`;
+    return `<span class="mountain-status-chip status-${marker.status.key}" style="--team-color:${marker.color}; --team-soft:${marker.colorSoft}; --team-line:${marker.colorLine}; --chip-dot:${marker.color};">${escapeHtml(marker.label)} &middot; ${escapeHtml(marker.routeStageKey)} &middot; ${marker.overallPercent}%</span>`;
   }).join('');
   const topStudentsMarkup = model.topStudents.length
     ? model.topStudents.map(function(student) {
@@ -4190,7 +4322,6 @@ function renderJourney(model) {
         `<div class="mountain-caption">` +
           `<div>` +
             `<div class="mountain-title">Progress</div>` +
-            `<div class="mountain-copy">Pozi&#539;iile urmeaz&#259; traseul Base-C8 dup&#259; frontier stage-ul real; C9 / Final r&#259;m&#226;ne separat ca After summit.</div>` +
           `</div>` +
           `<div class="mountain-badge">` +
             `<span class="mountain-badge-label">Milestone curent</span>` +
@@ -4210,10 +4341,10 @@ function renderJourney(model) {
         `</div>` +
         `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
         `<div class="mountain-top-students">` +
-          `<div class="mountain-top-title">Top studen&#539;i</div>` +
+          `<div class="mountain-top-title">Top task-uri individuale</div>` +
+          `<div class="mountain-top-title" style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--dim);margin:0.1rem 0 0.28rem;font-weight:400;">100% &icirc;nseamn&#259; c&#259; studentul &#537;i-a finalizat task-urile individuale atribuite.</div>` +
           `<div class="mountain-top-list">${topStudentsMarkup}</div>` +
         `</div>` +
-        `<p class="mountain-footnote">Marker-ele echipelor urmeaz&#259; milestone-ul cel mai avansat dintre C1-C8; C9 / Final r&#259;m&#226;ne doar dup&#259; summit.</p>` +
       `</div>` +
     `</div>`;
 }
@@ -4266,38 +4397,121 @@ function renderProjectStats(model) {
       `</div>`
     )
     : '';
-  const upcomingTasks = buildUpcomingTaskCards(model.teams, model.currentMilestone.key);
-  const renderTaskCards = function(taskCards) {
-    if (!taskCards.length) {
-      return '<div class="team-empty">Nu mai sunt task-uri deschise.</div>';
+  const totalTeamCount = model.totals.teamCount;
+  const currentStageKey = model.currentMilestone.key;
+
+  // Collective tasks: unique C-coded titles across all teams
+  const collectiveTitleMap = {};
+  model.teams.forEach(function(team) {
+    team.collectiveOpenIssues.forEach(function(issue) {
+      const t = sanitizeIssueTitle(issue.title);
+      if (!collectiveTitleMap[t]) {
+        collectiveTitleMap[t] = { title: t, url: issue.url, openTeams: [], closedTeams: [] };
+      }
+      if (collectiveTitleMap[t].openTeams.indexOf(team.label) === -1) {
+        collectiveTitleMap[t].openTeams.push(team.label);
+      }
+    });
+    team.collectiveClosedIssues.forEach(function(issue) {
+      const t = sanitizeIssueTitle(issue.title);
+      if (!collectiveTitleMap[t]) {
+        collectiveTitleMap[t] = { title: t, url: issue.url, openTeams: [], closedTeams: [] };
+      }
+      if (collectiveTitleMap[t].closedTeams.indexOf(team.label) === -1) {
+        collectiveTitleMap[t].closedTeams.push(team.label);
+      }
+    });
+  });
+  const collectiveTasks = Object.keys(collectiveTitleMap)
+    .map(function(t) { return collectiveTitleMap[t]; })
+    .filter(function(t) { return inferStageKey(t.title) === currentStageKey; })
+    .sort(function(a, b) { return compareIssueTitles(a.title, b.title); });
+  const hasClosed = model.teams.some(function(t) { return t.closedIssues && t.closedIssues.length > 0; });
+
+  // Individual tasks: aggregate student issue open counts for current stage
+  const individualTitleMap = {};
+  model.teams.forEach(function(team) {
+    team.individualOpenIssues.forEach(function(issue) {
+      const t = sanitizeIssueTitle(issue.title);
+      if (inferStageKey(t) !== currentStageKey) return;
+      if (!individualTitleMap[t]) {
+        individualTitleMap[t] = { title: t, url: issue.url, openCount: 0, closedCount: 0 };
+      }
+      individualTitleMap[t].openCount++;
+    });
+    team.individualClosedIssues.forEach(function(issue) {
+      const t = sanitizeIssueTitle(issue.title);
+      if (inferStageKey(t) !== currentStageKey) return;
+      if (!individualTitleMap[t]) {
+        individualTitleMap[t] = { title: t, url: issue.url, openCount: 0, closedCount: 0 };
+      }
+      individualTitleMap[t].closedCount++;
+    });
+  });
+  const individualTasks = Object.keys(individualTitleMap)
+    .map(function(t) { return individualTitleMap[t]; })
+    .sort(function(a, b) { return compareIssueTitles(a.title, b.title); });
+
+  // Member-level individual completion
+  let totalMembers = 0;
+  let completedMembers = 0;
+  model.teams.forEach(function(team) {
+    (team.members || []).forEach(function(member) {
+      totalMembers++;
+      if (toNumber(member.issue_progress_percent) === 100) completedMembers++;
+    });
+  });
+
+  const renderCollectiveTasks = function() {
+    if (!collectiveTasks.length) {
+      return '<div class="team-empty">Niciun task de echip&#259; deschis.</div>';
     }
-
-    return taskCards.map(function(task) {
-      const color = getProgressColor(task.percent);
-      const remainingMarkup = task.remainingTeamLabels.length
-        ? `<span class="project-task-rem-label">Rămase:</span>` + task.remainingTeamLabels.map(function(teamLabel) {
-          return `<span class="project-team-badge">${escapeHtml(teamLabel)}</span>`;
-        }).join('')
-        : `<span class="project-team-badge">Complet</span>`;
-
+    return collectiveTasks.map(function(task) {
+      const closedCount = task.closedTeams.length;
+      const openCount = task.openTeams.length;
+      const remaining = task.openTeams.slice(0, 4).map(function(l) {
+        return `<span class="project-team-badge">${escapeHtml(l)}</span>`;
+      }).join('');
+      const metaCopy = hasClosed
+        ? `${closedCount}/${totalTeamCount} echipe finalizate`
+        : `deschis în ${openCount} echip${openCount === 1 ? 'ă' : 'e'}`;
+      const color = getProgressColor(hasClosed ? Math.round((closedCount / totalTeamCount) * 100) : 0);
+      const pct = hasClosed ? Math.round((closedCount / totalTeamCount) * 100) : 0;
       return (
         `<div class="project-task-card">` +
-          `<a class="project-task-card-title" href="${escapeHtml(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.displayTitle)}</a>` +
-          `<span class="project-task-card-meta">${escapeHtml(task.hasClosed ? formatCompletedTeamsCopy(task.completedTeams, task.applicableTeams) : `deschis în ${task.applicableTeams} ${task.applicableTeams === 1 ? 'echipă' : 'echipe'}`)}</span>` +
-          `<div class="project-task-card-track"><span class="project-task-card-fill" style="width:${task.percent}%; background:${color};"></span></div>` +
-          `<div class="project-task-card-remaining">${remainingMarkup}</div>` +
+          `<a class="project-task-card-title" href="${escapeHtml(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.title)}</a>` +
+          `<span class="project-task-card-meta">${escapeHtml(metaCopy)}</span>` +
+          `<div class="project-task-card-track"><span class="project-task-card-fill" style="width:${pct}%; background:${color};"></span></div>` +
+          (task.openTeams.length ? `<div class="project-task-card-remaining"><span class="project-task-rem-label">Deschis:</span>${remaining}</div>` : '') +
         `</div>`
       );
     }).join('');
   };
-  const olderTasksMarkup = upcomingTasks.olderTasks.length
-    ? (
-      `<div class="project-task-muted">` +
-        `<span class="project-task-section-label">Rămase din C1</span>` +
-        `<div class="project-task-stack">${renderTaskCards(upcomingTasks.olderTasks)}</div>` +
-      `</div>`
-    )
-    : '';
+
+  const renderIndividualTasks = function() {
+    if (!individualTasks.length) {
+      const memberNote = totalMembers
+        ? `${completedMembers}/${totalMembers} studen&#539;i &#537;i-au finalizat task-urile individuale.`
+        : 'Niciun task individual detectat pentru etapa curent&#259;.';
+      return `<div class="team-empty">${memberNote}</div>`;
+    }
+    return individualTasks.slice(0, 5).map(function(task) {
+      const total = task.openCount + task.closedCount;
+      const metaCopy = hasClosed
+        ? `${task.closedCount}/${total} studen&#539;i finaliza&#539;i`
+        : `deschis la ${task.openCount} studen&#539;i`;
+      const pct = (hasClosed && total) ? Math.round((task.closedCount / total) * 100) : 0;
+      const color = getProgressColor(pct);
+      return (
+        `<div class="project-task-card">` +
+          `<a class="project-task-card-title" href="${escapeHtml(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.title)}</a>` +
+          `<span class="project-task-card-meta">${metaCopy}</span>` +
+          `<div class="project-task-card-track"><span class="project-task-card-fill" style="width:${pct}%; background:${color};"></span></div>` +
+        `</div>`
+      );
+    }).join('') +
+    (totalMembers ? `<div class="team-individual-note">${completedMembers}/${totalMembers} studen&#539;i au 100% task-uri individuale.</div>` : '');
+  };
   const controlTiles = [
     {
       label: 'Progres total',
@@ -4439,10 +4653,12 @@ function renderProjectStats(model) {
           `</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Următoarele task-uri</div>` +
-          `<div class="project-task-stack">${renderTaskCards(upcomingTasks.currentTasks)}</div>` +
-          `${olderTasksMarkup}` +
-          `<p class="project-footnote">După push, închide issue-ul ca progresul să apară aici.</p>` +
+          `<div class="project-title">Task-uri ${escapeHtml(currentStageKey)}</div>` +
+          `<div class="project-task-group-header">Task-uri de echip&#259;</div>` +
+          `<div class="project-task-stack">${renderCollectiveTasks()}</div>` +
+          `<div class="project-task-group-header" style="margin-top:14px;">Task-uri individuale</div>` +
+          `<div class="project-task-stack">${renderIndividualTasks()}</div>` +
+          `<p class="project-footnote">Dup&#259; push, &#238;nchide issue-ul ca progresul s&#259; apar&#259; aici.</p>` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -4764,11 +4980,8 @@ function renderTeams(model) {
     const teamBarColor = team.color;
     const teamBarWidth = getMinimumVisibleFillWidth(overallPercent, 4);
     const currentAction = pickTeamCurrentAction(team.openIssues, model.currentMilestone.key);
-    const topMember = getTopMemberData(team.members);
     const memberCount = Array.isArray(team.members) ? team.members.length : 0;
     const memberCountCopy = memberCount ? `${memberCount} ${memberCount === 1 ? 'membru' : 'membri'}` : 'date indisponibile';
-    const groupedIssues = groupTeamOpenIssues(team.openIssues);
-
     const milestonePills = JOURNEY_STAGE_KEYS.map(function(stageKey) {
       const stage = team.stageProgress.find(function(item) {
         return item.key === stageKey;
@@ -4792,10 +5005,6 @@ function renderTeams(model) {
     const nextActionMarkup = currentAction
       ? `<a href="${escapeHtml(currentAction.url || team.issues_url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(formatCompactIssueTitle(currentAction.title))}</a>`
       : 'Nicio ac&#539;iune deschis&#259;.';
-
-    const memberHighlight = topMember
-      ? `${topMember.members.length > 1 ? 'Cei mai avansa&#539;i' : 'Cel mai avansat'}: <strong>${escapeHtml(topMember.members.map(function(member) { return getMemberLabel(member); }).join(', '))} &middot; ${escapeHtml(formatTaskRatio(topMember.closed, topMember.total))}</strong>`
-      : 'Membri: date indisponibile';
 
     const memberSection = memberCount
       ? (
@@ -4830,17 +5039,40 @@ function renderTeams(model) {
       )
       : '<div class="team-empty">Membri: date indisponibile</div>';
 
-    const issuesMarkup = groupedIssues.length
-      ? groupedIssues.map(function(group) {
-        const issueCountCopy = `${group.count} ${group.count === 1 ? 'deschis' : 'deschise'}`;
-        return (
-          `<div class="team-issue-agg-row">` +
-            `<a class="team-issue-agg-link" href="${escapeHtml(group.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.displayTitle)}</a>` +
-            `<span class="team-issue-agg-count">${escapeHtml(issueCountCopy)}</span>` +
-          `</div>`
-        );
-      }).join('')
-      : '<div class="team-empty">Nicio issue deschis&#259;.</div>';
+    const indSummary = team.issueSummary ? team.issueSummary.individual : null;
+    const colSummary = team.issueSummary ? team.issueSummary.collective : null;
+    const indOpenCount = indSummary ? indSummary.open : team.individualOpenIssues.length;
+    const colOpenCount = colSummary ? colSummary.open : team.collectiveOpenIssues.length;
+
+    const collectiveByTitle = {};
+    (team.collectiveOpenIssues || []).forEach(function(issue) {
+      const t = sanitizeIssueTitle(issue.title);
+      if (!collectiveByTitle[t]) collectiveByTitle[t] = { title: t, url: issue.url, open: 0, closed: 0 };
+      collectiveByTitle[t].open++;
+    });
+    (team.collectiveClosedIssues || []).forEach(function(issue) {
+      const t = sanitizeIssueTitle(issue.title);
+      if (!collectiveByTitle[t]) collectiveByTitle[t] = { title: t, url: issue.url, open: 0, closed: 0 };
+      collectiveByTitle[t].closed++;
+    });
+    const collectiveRows = Object.keys(collectiveByTitle)
+      .map(function(t) { return collectiveByTitle[t]; })
+      .sort(function(a, b) { return compareIssueTitles(a.title, b.title); });
+
+    const collectiveBlockMarkup = collectiveRows.length
+      ? collectiveRows.map(function(row) {
+          const isDone = row.open === 0 && row.closed > 0;
+          const stateClass = isDone ? 'is-done' : 'is-open';
+          const stateLabel = isDone ? '&#10003;' : '&#9675;';
+          return (
+            `<div class="team-collective-row">` +
+              `<span class="team-collective-state ${stateClass}">${stateLabel}</span>` +
+              `<a class="team-collective-title" href="${escapeHtml(row.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.title)}</a>` +
+            `</div>`
+          );
+        }).join('') +
+        `<div class="team-collective-footer">${colOpenCount} deschis${colOpenCount !== 1 ? 'e' : ''}</div>`
+      : `<div class="team-empty">Niciun task de echip&#259;.</div>`;
 
     return (
       `<article class="team-card" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --team-line-strong:${team.colorLineStrong};">` +
@@ -4848,6 +5080,9 @@ function renderTeams(model) {
           `<div class="team-header-main">` +
             `<div class="team-card-name">${escapeHtml(team.name)}</div>` +
             `<div class="team-card-summary">${overallPercent}% &middot; ${escapeHtml(taskRatio)} task-uri</div>` +
+            `<div class="team-card-summary" style="font-size:10px;color:var(--text-muted,#888);">` +
+              `Individuale: ${indOpenCount} deschise &nbsp;&middot;&nbsp; Echip&#259;: ${colOpenCount} deschise` +
+            `</div>` +
           `</div>` +
           `<div class="team-card-links">` +
             `<a class="team-link-pill" href="${escapeHtml(team.repo_url)}" target="_blank" rel="noopener noreferrer">Repo</a>` +
@@ -4871,18 +5106,17 @@ function renderTeams(model) {
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Membri</div>` +
+            `<div class="team-subtitle">Task-uri individuale</div>` +
             `<div class="team-section-meta">${escapeHtml(memberCountCopy)}</div>` +
           `</div>` +
-          `<div class="team-member-highlight">${memberHighlight}</div>` +
-          `${memberSection}` +
-        `</div>` +
-        `<div class="team-section">` +
-          `<div class="team-section-header">` +
-            `<div class="team-subtitle">Task-uri deschise</div>` +
-            `<div class="team-section-meta">${team.openIssues.length} total</div>` +
+          `<div class="team-individual-note">Progresul per student (task-uri individuale atribuite).</div>` +
+          `<div class="team-members-split">` +
+            `<div>${memberSection}</div>` +
+            `<div class="team-collective-block">` +
+              `<div class="project-task-group-header" style="margin-bottom:6px;">Task-uri echip&#259;</div>` +
+              `${collectiveBlockMarkup}` +
+            `</div>` +
           `</div>` +
-          `<div class="team-issue-list">${issuesMarkup}</div>` +
         `</div>` +
       `</article>`
     );
