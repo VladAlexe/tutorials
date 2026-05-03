@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-03 16:36",
+    "updated_at":  "2026-05-03 23:34",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -93,7 +93,7 @@
                     "teams_moving":  4,
                     "teams_slow":  0,
                     "teams_blocked":  2,
-                    "issues_closed_last_48h":  18,
+                    "issues_closed_last_48h":  14,
                     "avg_completion_time_days":  2.1
                 },
     "stage_stats":  [
@@ -181,34 +181,14 @@
                     ],
     "blockers":  [
                      {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/2",
-                         "number":  2,
-                         "issue_kind":  "student",
+                         "team":  "Team 4",
+                         "repo":  "echochamber-project-team-4",
+                         "title":  "C2.2 - Team model configuration in core/config.py",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/17",
+                         "number":  17,
+                         "issue_kind":  "collective",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  4
-                     },
-                     {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_01 - Issue 2 - Individual notebook workspace",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/3",
-                         "number":  3,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  4
-                     },
-                     {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/4",
-                         "number":  4,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  4
+                         "days_without_update":  3
                      },
                      {
                          "team":  "Team 4",
@@ -221,11 +201,21 @@
                          "days_without_update":  4
                      },
                      {
+                         "team":  "Team 3",
+                         "repo":  "echochamber-project-team3",
+                         "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/2",
+                         "number":  2,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  4
+                     },
+                     {
                          "team":  "Team 4",
                          "repo":  "echochamber-project-team-4",
-                         "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/11",
-                         "number":  11,
+                         "title":  "student_05 - C2.1 - Individual model testing notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/16",
+                         "number":  16,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
                          "days_without_update":  4
@@ -243,9 +233,29 @@
                      {
                          "team":  "Team 4",
                          "repo":  "echochamber-project-team-4",
-                         "title":  "student_05 - C2.1 - Individual model testing notebook",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/16",
-                         "number":  16,
+                         "title":  "student_03 - C2.1 - Individual model testing notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/14",
+                         "number":  14,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
+                     },
+                     {
+                         "team":  "Team 4",
+                         "repo":  "echochamber-project-team-4",
+                         "title":  "student_04 - C2.1 - Individual model testing notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/15",
+                         "number":  15,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
+                     },
+                     {
+                         "team":  "Team 3",
+                         "repo":  "echochamber-project-team3",
+                         "title":  "student_01 - Issue 2 - Individual notebook workspace",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/3",
+                         "number":  3,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
                          "days_without_update":  4
@@ -253,9 +263,9 @@
                      {
                          "team":  "Team 3",
                          "repo":  "echochamber-project-team3",
-                         "title":  "student_02 - Issue 2 - Individual notebook workspace",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/5",
-                         "number":  5,
+                         "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/8",
+                         "number":  8,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
                          "days_without_update":  4
@@ -263,19 +273,9 @@
                      {
                          "team":  "Team 3",
                          "repo":  "echochamber-project-team3",
-                         "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/10",
-                         "number":  10,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  4
-                     },
-                     {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/11",
-                         "number":  11,
+                         "title":  "student_04 - Issue 2 - Individual notebook workspace",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/9",
+                         "number":  9,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
                          "days_without_update":  4
@@ -372,7 +372,7 @@
                                        "status":  "blocked",
                                        "status_label":  "Blocat",
                                        "blocked":  true,
-                                       "days_without_update":  2
+                                       "days_without_update":  3
                                    },
                       "blockers":  [
                                        {
@@ -434,6 +434,7 @@
                                           "github_handle":  "mihaiiacob01",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  1,
                                           "closed":  3,
                                           "open":  0,
                                           "total":  3,
@@ -538,6 +539,7 @@
                                           "github_handle":  "osacicozmin",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  0,
                                           "closed":  0,
                                           "open":  3,
                                           "total":  3,
@@ -642,6 +644,7 @@
                                           "github_handle":  "stelamunteanu",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  3,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -746,6 +749,7 @@
                                           "github_handle":  "vlaicuariana",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  0,
                                           "closed":  0,
                                           "open":  3,
                                           "total":  3,
@@ -850,6 +854,7 @@
                                           "github_handle":  "ioanazah09",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  0,
                                           "closed":  0,
                                           "open":  3,
                                           "total":  3,
@@ -1309,6 +1314,7 @@
                                           "github_handle":  "",
                                           "active":  true,
                                           "connected":  false,
+                                          "commits_count":  0,
                                           "closed":  0,
                                           "open":  3,
                                           "total":  3,
@@ -1413,6 +1419,7 @@
                                           "github_handle":  "vvale-hub",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  1,
                                           "closed":  0,
                                           "open":  3,
                                           "total":  3,
@@ -1517,6 +1524,7 @@
                                           "github_handle":  "andreeaspinu2810",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  3,
                                           "closed":  3,
                                           "open":  0,
                                           "total":  3,
@@ -1621,6 +1629,7 @@
                                           "github_handle":  "robertagrosu",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  3,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -1725,6 +1734,7 @@
                                           "github_handle":  "",
                                           "active":  true,
                                           "connected":  false,
+                                          "commits_count":  0,
                                           "closed":  0,
                                           "open":  3,
                                           "total":  3,
@@ -2177,7 +2187,531 @@
                                        }
                                    ],
                       "members":  [
+                                      {
+                                          "student_key":  "T3-S01",
+                                          "display_code":  "S01",
+                                          "local_code":  "student_01",
+                                          "github_handle":  "",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "current_stage_id":  "C1",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  0,
+                                                                            "total":  0,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  2,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
 
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-04-29 14:19",
+                                                           "issues_closed_last_48h":  0
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T3-S02",
+                                          "display_code":  "S02",
+                                          "local_code":  "student_02",
+                                          "github_handle":  "",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "current_stage_id":  "C1",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  0,
+                                                                            "total":  0,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  2,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
+
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-04-29 14:19",
+                                                           "issues_closed_last_48h":  0
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T3-S03",
+                                          "display_code":  "S03",
+                                          "local_code":  "student_03",
+                                          "github_handle":  "",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "current_stage_id":  "C1",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  0,
+                                                                            "total":  0,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  2,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
+
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-04-29 14:19",
+                                                           "issues_closed_last_48h":  0
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T3-S04",
+                                          "display_code":  "S04",
+                                          "local_code":  "student_04",
+                                          "github_handle":  "",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "current_stage_id":  "C1",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  0,
+                                                                            "total":  0,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  2,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
+
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-04-29 14:19",
+                                                           "issues_closed_last_48h":  0
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T3-S05",
+                                          "display_code":  "S05",
+                                          "local_code":  "student_05",
+                                          "github_handle":  "",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "current_stage_id":  "C1",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  0,
+                                                                            "total":  0,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  2,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
+
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-04-29 14:19",
+                                                           "issues_closed_last_48h":  0
+                                                       }
+                                      }
                                   ],
                       "open_issues":  [
                                           {
@@ -2485,12 +3019,22 @@
                                        {
                                            "team":  "Team 4",
                                            "repo":  "echochamber-project-team-4",
-                                           "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/11",
-                                           "number":  11,
+                                           "title":  "student_01 - C2.1 - Individual model testing notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/12",
+                                           "number":  12,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
                                            "days_without_update":  4
+                                       },
+                                       {
+                                           "team":  "Team 4",
+                                           "repo":  "echochamber-project-team-4",
+                                           "title":  "student_03 - C2.1 - Individual model testing notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/14",
+                                           "number":  14,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  3
                                        },
                                        {
                                            "team":  "Team 4",
@@ -2505,9 +3049,9 @@
                                        {
                                            "team":  "Team 4",
                                            "repo":  "echochamber-project-team-4",
-                                           "title":  "student_01 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/12",
-                                           "number":  12,
+                                           "title":  "student_05 - Issue 2 - Individual notebook workspace",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/11",
+                                           "number":  11,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
                                            "days_without_update":  4
@@ -2515,22 +3059,12 @@
                                        {
                                            "team":  "Team 4",
                                            "repo":  "echochamber-project-team-4",
-                                           "title":  "C2.3 - Create initial app.py",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/18",
-                                           "number":  18,
+                                           "title":  "C2.2 - Team model configuration in core/config.py",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/17",
+                                           "number":  17,
                                            "issue_kind":  "collective",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  4
-                                       },
-                                       {
-                                           "team":  "Team 4",
-                                           "repo":  "echochamber-project-team-4",
-                                           "title":  "student_05 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/16",
-                                           "number":  16,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  4
+                                           "days_without_update":  3
                                        }
                                    ],
                       "members":  [
@@ -2541,6 +3075,7 @@
                                           "github_handle":  "teodora-magnus",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  9,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -2645,6 +3180,7 @@
                                           "github_handle":  "toni-iacob",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  3,
                                           "closed":  3,
                                           "open":  0,
                                           "total":  3,
@@ -2746,9 +3282,10 @@
                                           "student_key":  "T4-S03",
                                           "display_code":  "S03",
                                           "local_code":  "student_03",
-                                          "github_handle":  "PatrickVitok",
+                                          "github_handle":  "patrickvitok",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  6,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -2853,6 +3390,7 @@
                                           "github_handle":  "carmenciutu",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  2,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -2949,6 +3487,111 @@
                                                            "last_activity_at":  "2026-04-30 18:51",
                                                            "issues_closed_last_48h":  0
                                                        }
+                                      },
+                                      {
+                                          "student_key":  "T4-S05",
+                                          "display_code":  "S05",
+                                          "local_code":  "student_05",
+                                          "github_handle":  "",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "current_stage_id":  "C1",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  0,
+                                                                            "total":  0,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  2,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
+
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-04-29 14:20",
+                                                           "issues_closed_last_48h":  0
+                                                       }
                                       }
                                   ],
                       "open_issues":  [
@@ -2974,7 +3617,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-30 19:57",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
@@ -3010,7 +3653,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-30 20:05",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -3034,7 +3677,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-30 18:51",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
@@ -3250,7 +3893,7 @@
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
                                        "blocked":  false,
-                                       "days_without_update":  0
+                                       "days_without_update":  1
                                    },
                       "blockers":  [
                                        {
@@ -3312,6 +3955,7 @@
                                           "github_handle":  "rotarudominic2-boop",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  10,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -3416,6 +4060,7 @@
                                           "github_handle":  "ionelat1938-ui",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  4,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -3520,6 +4165,7 @@
                                           "github_handle":  "merviank",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  5,
                                           "closed":  3,
                                           "open":  0,
                                           "total":  3,
@@ -3624,6 +4270,7 @@
                                           "github_handle":  "blenchealindaniel-ops",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  4,
                                           "closed":  3,
                                           "open":  0,
                                           "total":  3,
@@ -3719,6 +4366,111 @@
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-02 19:22",
                                                            "issues_closed_last_48h":  1
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T5-S05",
+                                          "display_code":  "S05",
+                                          "local_code":  "student_05",
+                                          "github_handle":  "",
+                                          "active":  true,
+                                          "connected":  false,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  3,
+                                          "total":  3,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
+                                          "current_stage_id":  "C1",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  2,
+                                                                                                     "total":  2,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  1,
+                                                                                        "total":  1,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  0,
+                                                                            "total":  0,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  2,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
+
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-04-29 14:20",
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       }
                                   ],
@@ -4016,7 +4768,7 @@
                                    },
                       "activity":  {
                                        "last_activity_at":  "2026-05-03 16:27",
-                                       "issues_closed_last_48h":  5,
+                                       "issues_closed_last_48h":  1,
                                        "avg_completion_time_days":  2,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
@@ -4083,6 +4835,7 @@
                                           "github_handle":  "iarinacc",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  4,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
@@ -4184,9 +4937,10 @@
                                           "student_key":  "T6-S02",
                                           "display_code":  "S02",
                                           "local_code":  "student_02",
-                                          "github_handle":  "Rzzwn",
+                                          "github_handle":  "rzzwn",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  0,
                                           "closed":  0,
                                           "open":  3,
                                           "total":  3,
@@ -4291,6 +5045,7 @@
                                           "github_handle":  "doinis-bit",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  6,
                                           "closed":  3,
                                           "open":  0,
                                           "total":  3,
@@ -4386,7 +5141,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-01 20:26",
-                                                           "issues_closed_last_48h":  2
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -4396,6 +5151,7 @@
                                           "github_handle":  "mihailadeliamadalina-glitch",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  3,
                                           "closed":  1,
                                           "open":  2,
                                           "total":  3,
@@ -4497,9 +5253,10 @@
                                           "student_key":  "T6-S05",
                                           "display_code":  "S05",
                                           "local_code":  "student_05",
-                                          "github_handle":  "Andreiv11",
+                                          "github_handle":  "andreiv11",
                                           "active":  true,
                                           "connected":  true,
+                                          "commits_count":  5,
                                           "closed":  2,
                                           "open":  1,
                                           "total":  3,
