@@ -3099,16 +3099,23 @@ function renderTeamMarkersSVGLegacy(markers) {
 }
 
 function getCoursePlan(data) {
+  if (Array.isArray(data && data.course_stages) && data.course_stages.length) {
+    return data.course_stages.map(function(s) {
+      return {
+        key: String(s.id || ''),
+        title: String(s.title || s.id || ''),
+        short: String(s.short || s.title || s.id || '')
+      };
+    });
+  }
   const providedPlan = Array.isArray(data && data.course_plan) ? data.course_plan : [];
   if (!providedPlan.length) {
     return COURSE_PLAN_FALLBACK;
   }
-
   return COURSE_PLAN_FALLBACK.map(function(fallback, index) {
     const matchedStage = providedPlan.find(function(stage) {
       return String(stage && stage.key || '').toUpperCase() === fallback.key;
     }) || providedPlan[index] || {};
-
     return {
       key: String(matchedStage.key || fallback.key),
       title: String(matchedStage.title || fallback.title),
@@ -3719,7 +3726,18 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     issueProgress: computeIssueProgressPercent(team),
     nextAction: openIssues.find(function(issue) {
       return inferStageKey(issue && issue.title) === currentMilestoneKey;
-    }) || openIssues[0] || null
+    }) || openIssues[0] || null,
+    activity: team && team.activity ? {
+      status: String(team.activity.status || ''),
+      statusLabel: String(team.activity.status_label || ''),
+      blocked: !!team.activity.blocked,
+      issuesClosedLast48h: toNumber(team.activity.issues_closed_last_48h),
+      avgCompletionTimeDays: team.activity.avg_completion_time_days != null
+        ? toNumber(team.activity.avg_completion_time_days)
+        : null,
+      lastActivityAt: team.activity.last_activity_at || null
+    } : null,
+    teamBlockers: Array.isArray(team && team.blockers) ? team.blockers : []
   };
 }
 
@@ -3925,8 +3943,8 @@ function buildDashboardModel(data) {
 
   const activityStats = computeActivityStats(Array.isArray(data && data.teams) ? data.teams : []);
   const blockerData = computeBlockers(teams);
-  const issuesClosedLast48h = data && data.stats && data.stats.issues_closed_last48h != null
-    ? toNumber(data.stats.issues_closed_last48h)
+  const issuesClosedLast48h = data && data.summary && data.summary.issues_closed_last_48h != null
+    ? toNumber(data.summary.issues_closed_last_48h)
     : null;
   const avgTime = computeAverageCompletionTime(Array.isArray(data && data.teams) ? data.teams : []);
   const connectedTeamsCount = teams.filter(function(team) {
@@ -4265,7 +4283,7 @@ function renderProjectStats(model) {
       return (
         `<div class="project-task-card">` +
           `<a class="project-task-card-title" href="${escapeHtml(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.displayTitle)}</a>` +
-          `<span class="project-task-card-meta">${escapeHtml(formatCompletedTeamsCopy(task.completedTeams, task.applicableTeams))}</span>` +
+          `<span class="project-task-card-meta">${escapeHtml(task.hasClosed ? formatCompletedTeamsCopy(task.completedTeams, task.applicableTeams) : `deschis în ${task.applicableTeams} ${task.applicableTeams === 1 ? 'echipă' : 'echipe'}`)}</span>` +
           `<div class="project-task-card-track"><span class="project-task-card-fill" style="width:${task.percent}%; background:${color};"></span></div>` +
           `<div class="project-task-card-remaining">${remainingMarkup}</div>` +
         `</div>`
@@ -4388,7 +4406,7 @@ function renderProjectStats(model) {
       `<div class="task-matrix">` +
         `${matrixHead}` +
         `${matrixSections}` +
-        `<div class="task-matrix-legend">○ deschis · ● finalizat · – nu există</div>` +
+        `<div class="task-matrix-legend">${taskMatrix.hasClosedStatuses ? '○ deschis · ● finalizat · – necreiat' : '○ deschis · – necreiat'}</div>` +
       `</div>`
     )
     : '<div class="team-empty">Nu mai sunt task-uri deschise.</div>';
@@ -4562,6 +4580,9 @@ function formatCompletedTeamsCopy(completedTeams, applicableTeams) {
 
 function buildUpcomingTaskCards(teams, currentMilestoneKey) {
   const tasksByTitle = {};
+  const hasClosed = (Array.isArray(teams) ? teams : []).some(function(team) {
+    return Array.isArray(team && team.closedIssues) && team.closedIssues.length > 0;
+  });
 
   (Array.isArray(teams) ? teams : []).forEach(function(team) {
     const teamLabel = team && team.label ? team.label : '';
@@ -4640,6 +4661,7 @@ function buildUpcomingTaskCards(teams, currentMilestoneKey) {
       completedTeams: completedTeams,
       applicableTeams: applicableTeams,
       remainingTeamLabels: remainingTeamLabels,
+      hasClosed: hasClosed,
       percent: applicableTeams > 0 ? clampPercent(Math.round((completedTeams / applicableTeams) * 100)) : 0
     };
   }).sort(function(a, b) {
