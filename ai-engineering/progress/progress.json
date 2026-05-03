@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-02 23:02",
+    "updated_at":  "2026-05-03 11:57",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -223,7 +223,7 @@
                       "issues_url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues",
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-2/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                      "overall_percent":  24,
+                      "overall_percent":  29,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "closed":  4,
@@ -232,10 +232,10 @@
                                                                                  "percent":  40
                                                                              },
                                        "C2 - Model ecosystem":  {
-                                                                    "closed":  0,
-                                                                    "open":  7,
+                                                                    "closed":  1,
+                                                                    "open":  6,
                                                                     "total":  7,
-                                                                    "percent":  0
+                                                                    "percent":  14
                                                                 }
                                    },
                       "members":  [
@@ -299,11 +299,11 @@
                                           "local_code":  "student_03",
                                           "active":  true,
                                           "connected":  true,
-                                          "closed":  2,
-                                          "open":  1,
+                                          "closed":  3,
+                                          "open":  0,
                                           "total":  3,
-                                          "issue_progress_percent":  67,
-                                          "course_progress_percent":  67,
+                                          "issue_progress_percent":  100,
+                                          "course_progress_percent":  100,
                                           "current_stage":  "C2 - Model ecosystem",
                                           "progress":  {
                                                            "C1 - Setup GitHub, env, notebooks":  {
@@ -313,10 +313,10 @@
                                                                                                      "percent":  100
                                                                                                  },
                                                            "C2 - Model ecosystem":  {
-                                                                                        "closed":  0,
-                                                                                        "open":  1,
+                                                                                        "closed":  1,
+                                                                                        "open":  0,
                                                                                         "total":  1,
-                                                                                        "percent":  0
+                                                                                        "percent":  100
                                                                                     }
                                                        }
                                       },
@@ -393,10 +393,6 @@
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/15"
                                           },
                                           {
-                                              "title":  "student_03 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/14"
-                                          },
-                                          {
                                               "title":  "student_02 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/13"
                                           },
@@ -415,6 +411,10 @@
                                           {
                                               "title":  "student_02 - Issue 2 - Individual notebook workspace",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/5"
+                                          },
+                                          {
+                                              "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/4"
                                           }
                                       ]
                   },
