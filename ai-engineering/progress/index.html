@@ -577,6 +577,7 @@ section { padding-top: 2rem; }
 }
 
 .mountain-student-marker:hover .mountain-student-bubble,
+.mountain-student-marker.is-hover .mountain-student-bubble,
 .mountain-student-marker.is-active .mountain-student-bubble,
 .mountain-student-marker:focus-visible .mountain-student-bubble {
   stroke-width: 4.2;
@@ -590,6 +591,7 @@ section { padding-top: 2rem; }
 }
 
 .mountain-student-marker:hover .mountain-student-label,
+.mountain-student-marker.is-hover .mountain-student-label,
 .mountain-student-marker.is-active .mountain-student-label,
 .mountain-student-marker:focus-visible .mountain-student-label {
   opacity: 1;
@@ -6358,12 +6360,13 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
       <g class="mountain-student-marker"
          data-student="${escapeHtml(marker.studentCode || marker.studentName || 'Student')}"
          data-team="${escapeHtml(teamDisplay)}"
+         pointer-events="all"
          tabindex="0"
          role="button"
          aria-label="${escapeHtml((marker.studentCode || marker.studentName || 'Student') + ' ' + teamDisplay)}">
         <circle class="mountain-student-hitbox"
                 cx="${marker.x.toFixed(1)}" cy="${marker.y.toFixed(1)}" r="${STUDENT_MARKER_R + 7}"
-                fill="rgba(255,255,255,0.001)" stroke="none"></circle>
+                fill="rgba(255,255,255,0.001)" stroke="none" pointer-events="all"></circle>
         <circle class="mountain-student-bubble"
                 cx="${marker.x.toFixed(1)}" cy="${marker.y.toFixed(1)}" r="${STUDENT_MARKER_R}"
                 fill="${marker.color}" fill-opacity="${marker.opacity}"
@@ -6400,7 +6403,7 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
     `;
   }).join('');
 
-  return connectors + pins + studentDots + badges;
+  return connectors + pins + badges + studentDots;
 }
 
 function initMountainStudentInteractions() {
@@ -6422,7 +6425,30 @@ function initMountainStudentInteractions() {
     });
   }
 
+  function setHover(marker, active) {
+    if (!marker) {
+      return;
+    }
+    marker.classList.toggle('is-hover', !!active);
+  }
+
   studentMarkers.forEach(function(marker) {
+    marker.addEventListener('mouseenter', function() {
+      setHover(marker, true);
+    });
+
+    marker.addEventListener('mouseleave', function() {
+      setHover(marker, false);
+    });
+
+    marker.addEventListener('focus', function() {
+      setHover(marker, true);
+    });
+
+    marker.addEventListener('blur', function() {
+      setHover(marker, false);
+    });
+
     marker.addEventListener('click', function(event) {
       event.stopPropagation();
       const isActive = marker.classList.contains('is-active');
