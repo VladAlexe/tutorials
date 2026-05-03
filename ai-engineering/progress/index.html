@@ -4125,8 +4125,9 @@ function placeMountainStudentMarkers(markers) {
 function buildMountainScene(teams) {
   const teamMarkers = teams.map(function(team) {
     const stageState = getTeamMountainStageState(team);
-    const mountainProgress = getMountainProgressPercent(team);
-    const routePoint = getMountainPointAtPercent(mountainProgress);
+    const mountainProgress = getMountainProgressPercent(team); // kept for display only
+    // Use milestone-based positioning (same coordinate system as student bubbles)
+    const routePoint = getMountainPointForState(stageState);
     const mountainColor = MOUNTAIN_TEAM_PALETTE[team.index % MOUNTAIN_TEAM_PALETTE.length];
 
     return {
@@ -4136,7 +4137,7 @@ function buildMountainScene(teams) {
       color: mountainColor,
       routeStageKey: stageState.displayStageKey,
       topStageKey: stageState.topStageKey,
-      stagePercent: mountainProgress,
+      stagePercent: stageState.stagePercent,
       mountainProgress: mountainProgress,
       routePoint: routePoint,
       routeX: routePoint.x,
