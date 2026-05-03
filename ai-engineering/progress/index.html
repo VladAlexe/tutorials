@@ -3887,6 +3887,27 @@ function getMountainPointForState(stageState) {
   return getMountainSegmentPoint(fromKey, toKey, percent);
 }
 
+function computeStudentRoutePoint(member) {
+  const stageState = getMemberMountainStageState(member);
+  if (!stageState) return null;
+
+  // Pull student back within their current stage segment when instructor team tasks are unfinished.
+  // Max penalty: 8 percentage points inside the segment — keeps them near their actual milestone
+  // but just behind the checkpoint if they haven't closed their team issue yet.
+  let adjustedPercent = stageState.stagePercent;
+  if (!stageState.afterSummit) {
+    const tic = member && member.team_issue_contribution ? member.team_issue_contribution : {};
+    const instrTotal = Math.max(0, toNumber(tic.collective_total));
+    if (instrTotal > 0) {
+      const instrClosed = Math.max(0, toNumber(tic.closed_by_member));
+      const teamFactor = instrClosed / instrTotal;
+      adjustedPercent = Math.max(0, stageState.stagePercent - (1 - teamFactor) * 8);
+    }
+  }
+
+  return getMountainPointForState(Object.assign({}, stageState, { stagePercent: adjustedPercent }));
+}
+
 function getTeamMountainStageState(team) {
   const stageProgress = Array.isArray(team && team.stageProgress) ? team.stageProgress : [];
   const currentStageKey = inferStageKey(team && team.currentStage ? (team.currentStage.key || team.currentStage.title) : '');
@@ -4142,7 +4163,7 @@ function buildMountainScene(teams) {
     const teamMembers = Array.isArray(team.connectedMembers) ? team.connectedMembers.slice() : [];
     const memberEntries = teamMembers.map(function(member) {
       const stageState = getMemberMountainStageState(member);
-      const routePoint = stageState ? getMountainPointForState(stageState) : null;
+      const routePoint = computeStudentRoutePoint(member);
       const studentScore = computeStudentScore(member);
       const tic = member && member.team_issue_contribution ? member.team_issue_contribution : {};
       const indPct = clampPercent(member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null
