@@ -2068,11 +2068,27 @@ section { padding-top: 2rem; }
   display: inline-flex;
   align-items: center;
   min-width: 34px;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .student-team-task-value.is-active {
-  font-weight: 700;
   color: var(--text);
+}
+
+.student-team-task-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.08rem;
+  line-height: 1.15;
+}
+
+.student-team-task-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  white-space: nowrap;
 }
 
 .student-task-empty,
@@ -4006,6 +4022,59 @@ function buildMountainTopStudents(teams) {
   });
 }
 
+function placeMountainStudentMarkers(markers) {
+  const sorted = markers.slice().sort(function(a, b) {
+    return a.routeDistance - b.routeDistance ||
+      compareTeamLabels(a.teamLabel, b.teamLabel) ||
+      String(a.title || '').localeCompare(String(b.title || ''));
+  });
+  const groups = [];
+  let group = [];
+
+  sorted.forEach(function(marker) {
+    if (!group.length) {
+      group.push(marker);
+      return;
+    }
+
+    const prev = group[group.length - 1];
+    const dx = (marker.routeX || marker.x || 0) - (prev.routeX || prev.x || 0);
+    const dy = (marker.routeY || marker.y || 0) - (prev.routeY || prev.y || 0);
+    if (Math.sqrt((dx * dx) + (dy * dy)) < (STUDENT_MARKER_R * 0.9)) {
+      group.push(marker);
+    } else {
+      groups.push(group);
+      group = [marker];
+    }
+  });
+  if (group.length) groups.push(group);
+
+  groups.forEach(function(group) {
+    let lastProjectedDistance = null;
+    group.forEach(function(marker) {
+      const routePoint = {
+        x: marker.routeX || marker.x || 0,
+        y: marker.routeY || marker.y || 0,
+        tx: marker.routeTx || 1,
+        ty: marker.routeTy || 0
+      };
+      const markerDistance = toNumber(marker.routeDistance);
+      let projectedDistance = markerDistance;
+
+      if (lastProjectedDistance !== null && (projectedDistance - lastProjectedDistance) < (STUDENT_MARKER_R * 0.9)) {
+        projectedDistance = lastProjectedDistance + (STUDENT_MARKER_R * 0.9);
+      }
+
+      const tangentOffset = projectedDistance - markerDistance;
+      marker.x = Math.max(18, Math.min(1902, routePoint.x + (routePoint.tx * tangentOffset)));
+      marker.y = Math.max(18, Math.min(1062, routePoint.y + (routePoint.ty * tangentOffset)));
+      lastProjectedDistance = projectedDistance;
+    });
+  });
+
+  return markers;
+}
+
 function buildMountainScene(teams) {
   const teamMarkers = teams.map(function(team) {
     const stageState = getTeamMountainStageState(team);
@@ -4059,41 +4128,29 @@ function buildMountainScene(teams) {
       return aDistance - bDistance || a.name.localeCompare(b.name);
     });
 
-    const memberCount = memberEntries.length;
-    memberEntries.forEach(function(entry, memberIndex) {
+    memberEntries.forEach(function(entry) {
       if (!teamMarker) {
         return;
       }
-
-      const fallbackAngle = ((memberIndex / Math.max(memberCount, 1)) * Math.PI * 2) - (Math.PI / 2);
-      let dirX = Math.cos(fallbackAngle);
-      let dirY = Math.sin(fallbackAngle);
-
-      if (entry.routePoint) {
-        const semanticDx = entry.routePoint.x - teamMarker.routeX;
-        const semanticDy = entry.routePoint.y - teamMarker.routeY;
-        const semanticLength = Math.sqrt((semanticDx * semanticDx) + (semanticDy * semanticDy));
-
-        if (semanticLength > 6) {
-          dirX = semanticDx / semanticLength;
-          dirY = semanticDy / semanticLength;
-        }
-      }
-
-      const perpX = -dirY;
-      const perpY = dirX;
-      const spread = (memberIndex - ((memberCount - 1) / 2)) * 10;
-      const orbitRadius = TEAM_BADGE_OUTER_R + STUDENT_MARKER_R + 6;
-      const x = teamMarker.x + (dirX * orbitRadius) + (perpX * spread);
-      const y = teamMarker.y + (dirY * orbitRadius) + (perpY * spread);
+      const routePoint = entry.routePoint || teamMarker.routePoint || {
+        x: teamMarker.routeX,
+        y: teamMarker.routeY,
+        tx: 1,
+        ty: 0,
+        px: 0,
+        py: 1,
+        routeDistance: teamMarker.routeDistance
+      };
       const opacity = 1;
 
       studentMarkers.push({
-        x: Math.max(18, Math.min(1902, x)),
-        y: Math.max(18, Math.min(1062, y)),
-        routeX: entry.routePoint ? entry.routePoint.x : teamMarker.routeX,
-        routeY: entry.routePoint ? entry.routePoint.y : teamMarker.routeY,
-        routeDistance: entry.routePoint ? entry.routePoint.routeDistance : teamMarker.routeDistance,
+        x: Math.max(18, Math.min(1902, routePoint.x)),
+        y: Math.max(18, Math.min(1062, routePoint.y)),
+        routeX: routePoint.x,
+        routeY: routePoint.y,
+        routeTx: routePoint.tx,
+        routeTy: routePoint.ty,
+        routeDistance: routePoint.routeDistance,
         teamX: teamMarker.x,
         teamY: teamMarker.y,
         teamLabel: team.label,
@@ -4108,7 +4165,7 @@ function buildMountainScene(teams) {
 
   return {
     teamMarkers: teamMarkers,
-    studentMarkers: studentMarkers,
+    studentMarkers: placeMountainStudentMarkers(studentMarkers),
     topStudents: buildMountainTopStudents(teams)
   };
 }
@@ -4141,89 +4198,12 @@ function getMemberIssuePattern(member) {
   return localCode ? new RegExp('^' + escapeRegExp(localCode) + '\\s*-', 'i') : null;
 }
 
-function collectHandleCandidates(targetSet, value) {
-  if (value === undefined || value === null) {
-    return;
+function getIssueKind(issue) {
+  const explicitKind = String(issue && issue.issue_kind || '').trim().toLowerCase();
+  if (explicitKind === 'student' || explicitKind === 'collective') {
+    return explicitKind;
   }
-
-  if (Array.isArray(value)) {
-    value.forEach(function(entry) {
-      collectHandleCandidates(targetSet, entry);
-    });
-    return;
-  }
-
-  if (typeof value === 'object') {
-    [
-      'login',
-      'username',
-      'handle',
-      'name',
-      'display_name',
-      'user',
-      'author',
-      'assignee',
-      'assignees',
-      'closed_by',
-      'created_by',
-      'creator',
-      'github_username',
-      'github_login'
-    ].forEach(function(key) {
-      if (value[key] !== undefined && value[key] !== null) {
-        collectHandleCandidates(targetSet, value[key]);
-      }
-    });
-    return;
-  }
-
-  const normalized = String(value).trim().toLowerCase();
-  if (normalized) {
-    targetSet.add(normalized);
-  }
-}
-
-function getMemberHandleCandidates(member) {
-  const handles = new Set();
-  [
-    member && member.github_handle,
-    member && member.github_username,
-    member && member.github_login,
-    member && member.username,
-    member && member.handle,
-    member && member.login,
-    member && member.local_code,
-    member && member.display_code,
-    member && member.student_key,
-    member && member.name
-  ].forEach(function(value) {
-    collectHandleCandidates(handles, value);
-  });
-  return handles;
-}
-
-function getIssueAssigneeHandles(issue) {
-  const handles = new Set();
-  [
-    issue && issue.assignees,
-    issue && issue.assignee
-  ].forEach(function(value) {
-    collectHandleCandidates(handles, value);
-  });
-  return handles;
-}
-
-function hasHandleIntersection(memberHandles, issueHandles) {
-  if (!(memberHandles instanceof Set) || !(issueHandles instanceof Set) || !memberHandles.size || !issueHandles.size) {
-    return false;
-  }
-
-  for (const handle of issueHandles) {
-    if (memberHandles.has(handle)) {
-      return true;
-    }
-  }
-  return false;
+  return issueKindFromTitle(issue && issue.title);
 }
 
 function buildCollectiveTaskEntries(openIssues, closedIssues) {
@@ -4240,8 +4220,7 @@ function buildCollectiveTaskEntries(openIssues, closedIssues) {
         title: title,
         url: issue && issue.url ? issue.url : '#',
         open: 0,
-        closed: 0,
-        assigneeHandles: new Set()
+        closed: 0
       };
     }
 
@@ -4251,10 +4230,6 @@ function buildCollectiveTaskEntries(openIssues, closedIssues) {
     } else {
       entry.open += 1;
     }
-
-    getIssueAssigneeHandles(issue).forEach(function(handle) {
-      entry.assigneeHandles.add(handle);
-    });
   }
 
   (openIssues || []).forEach(function(issue) {
@@ -4267,8 +4242,7 @@ function buildCollectiveTaskEntries(openIssues, closedIssues) {
   return Object.keys(entriesByTitle).map(function(title) {
     const entry = entriesByTitle[title];
     return Object.assign(entry, {
-      statusLabel: entry.open === 0 && entry.closed > 0 ? 'finalizat' : 'in progres',
-      hasAssigneeData: entry.assigneeHandles.size > 0
+      statusLabel: entry.open === 0 && entry.closed > 0 ? 'finalizat' : 'in progres'
     });
   }).sort(function(a, b) {
     return compareIssueTitles(a.title, b.title) || a.title.localeCompare(b.title);
@@ -4291,8 +4265,8 @@ function formatCollectiveTaskShortTitle(title) {
 }
 
 function summarizeIssueList(openIssues, closedIssues, kind) {
-  const open = (openIssues || []).filter(function(i) { return issueKindFromTitle(i.title) === kind; }).length;
-  const closed = (closedIssues || []).filter(function(i) { return issueKindFromTitle(i.title) === kind; }).length;
+  const open = (openIssues || []).filter(function(i) { return getIssueKind(i) === kind; }).length;
+  const closed = (closedIssues || []).filter(function(i) { return getIssueKind(i) === kind; }).length;
   const total = open + closed;
   return {
     open: open,
@@ -4313,10 +4287,10 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
   }) || derivedStage;
   const openIssues = Array.isArray(team && team.open_issues) ? team.open_issues : [];
   const closedIssues = Array.isArray(team && team.closed_issues) ? team.closed_issues : [];
-  const individualOpenIssues = openIssues.filter(function(i) { return isStudentIssueTitle(i.title); });
-  const individualClosedIssues = closedIssues.filter(function(i) { return isStudentIssueTitle(i.title); });
-  const collectiveOpenIssues = openIssues.filter(function(i) { return isCollectiveIssueTitle(i.title); });
-  const collectiveClosedIssues = closedIssues.filter(function(i) { return isCollectiveIssueTitle(i.title); });
+  const individualOpenIssues = openIssues.filter(function(i) { return getIssueKind(i) === 'student'; });
+  const individualClosedIssues = closedIssues.filter(function(i) { return getIssueKind(i) === 'student'; });
+  const collectiveOpenIssues = openIssues.filter(function(i) { return getIssueKind(i) === 'collective'; });
+  const collectiveClosedIssues = closedIssues.filter(function(i) { return getIssueKind(i) === 'collective'; });
   const individualSummary = summarizeIssueList(openIssues, closedIssues, 'student');
   const collectiveSummary = summarizeIssueList(openIssues, closedIssues, 'collective');
   const allSummary = {
@@ -4332,11 +4306,6 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
   const connectedMembers = activeMembers.filter(function(m) { return m.connected !== false; });
   const missingMembers = activeMembers.filter(function(m) { return m.connected === false; });
   const collectiveTaskEntries = buildCollectiveTaskEntries(collectiveOpenIssues, collectiveClosedIssues);
-  const collectiveContributionDataTaskTotal = collectiveTaskEntries.filter(function(entry) {
-    return entry.hasAssigneeData;
-  }).length;
-  const collectiveContributionDataAvailable = collectiveContributionDataTaskTotal > 0;
-  const collectiveContributionNoteRequired = collectiveTaskEntries.length > 0 && !collectiveContributionDataAvailable;
   const membersWithIssues = connectedMembers.map(function(member) {
     const pattern = getMemberIssuePattern(member);
     const memberOpenIssues = pattern ? openIssues.filter(function(i) { return pattern.test(String(i.title || '')); }) : [];
@@ -4350,25 +4319,28 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     const individualPercent = individualTotal > 0
       ? clampPercent(Math.round((individualClosed / individualTotal) * 100))
       : 0;
-    const memberHandles = getMemberHandleCandidates(member);
-    const collectiveContributionCount = collectiveContributionDataAvailable
-      ? collectiveTaskEntries.reduce(function(sum, task) {
-          if (!task.hasAssigneeData) {
-            return sum;
-          }
-          return sum + (hasHandleIntersection(memberHandles, task.assigneeHandles) ? 1 : 0);
-        }, 0)
+    const teamIssueContribution = member && member.team_issue_contribution ? member.team_issue_contribution : {};
+    const collectiveContributionTotal = Math.max(0, toNumber(teamIssueContribution.collective_total));
+    const collectiveContributionCount = collectiveContributionTotal > 0
+      ? Math.max(0, toNumber(teamIssueContribution.closed_by_member))
       : null;
+    const collectiveCreatedCount = collectiveContributionTotal > 0
+      ? Math.max(0, toNumber(teamIssueContribution.created_by_member))
+      : 0;
 
     return Object.assign({}, member, {
       individualClosed: individualClosed,
       individualOpen: individualOpen,
       individualTotal: individualTotal,
       individualPercent: individualPercent,
-      memberHandles: memberHandles,
       collectiveContributionCount: collectiveContributionCount,
-      collectiveContributionTotal: collectiveContributionDataAvailable ? collectiveContributionDataTaskTotal : null
+      collectiveContributionTotal: collectiveContributionTotal,
+      collectiveCreatedCount: collectiveCreatedCount,
+      githubHandle: String(member && member.github_handle || '').trim()
     });
+  });
+  const collectiveContributionNoteRequired = accountabilityMembers.length > 0 && accountabilityMembers.every(function(member) {
+    return toNumber(member.collectiveContributionTotal) <= 0;
   });
   const indConnectedClosed = accountabilityMembers.reduce(function(sum, member) {
     return sum + toNumber(member.individualClosed);
@@ -4464,7 +4436,6 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     collectiveTeamSummary: collectiveTeamSummary,
     connectedOverallSummary: connectedOverallSummary,
     collectiveTaskEntries: collectiveTaskEntries,
-    collectiveContributionDataAvailable: collectiveContributionDataAvailable,
     collectiveContributionNoteRequired: collectiveContributionNoteRequired
   };
 }
@@ -4676,7 +4647,7 @@ function buildDashboardModel(data) {
     : null;
   const avgTime = computeAverageCompletionTime(Array.isArray(data && data.teams) ? data.teams : []);
   const connectedTeamsCount = teams.filter(function(team) {
-    return team.members.some(function(m) { return m && m.connected === true; });
+    return Array.isArray(team.connectedMembers) && team.connectedMembers.length > 0;
   }).length;
   const currentMilestoneStarted = teams.filter(function(team) {
     const stage = team.stageProgress.find(function(s) { return s.key === currentMilestone.key; });
@@ -4742,7 +4713,7 @@ function buildDashboardModel(data) {
     totalCollectiveClosed: totalCollectiveClosed,
     totalCollectiveTotal: totalCollectiveTotal,
     nextTasksMatrix: buildNextTasksMatrix(teams, currentMilestone.key),
-    insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
+    insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} task-uri deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
       teamCount: teams.length,
       openIssues: openIssues,
@@ -4884,8 +4855,8 @@ function renderStats(model) {
 function renderJourney(model) {
   const milestoneItems = model.milestoneSummaries.map(function(stage) {
     const currentClass = stage.key === model.currentMilestone.key ? ' is-current' : '';
-    const closedLabel = stage.total > 0 ? `${stage.closed}/${stage.total} closed` : 'upcoming';
-    const openLabel = stage.total > 0 ? `${stage.open} open` : '0 open';
+    const closedLabel = stage.total > 0 ? `${stage.closed}/${stage.total} finalizate` : '0/0 finalizate';
+    const openLabel = stage.total > 0 ? `${stage.open} deschise` : 'ne&icirc;nceput';
 
     return (
       `<div class="journey-milestone${currentClass}">` +
@@ -5129,7 +5100,7 @@ function renderProjectStats(model) {
               '<div class="cb-summary-stats">' +
                 '<span class="cb-summary-stat is-done">Finalizat: ' + escapeHtml(formatTeamLabelList(task.doneLabels)) + '</span>' +
                 '<span class="cb-summary-stat is-open">&Icirc;n lucru: ' + escapeHtml(formatTeamLabelList(task.openLabels)) + '</span>' +
-                '<span class="cb-summary-stat is-absent">Lips&#259;/neconectat: ' + escapeHtml(formatTeamLabelList(task.absentLabels)) + '</span>' +
+                '<span class="cb-summary-stat is-absent">Ne&icirc;nceput/lips&#259;: ' + escapeHtml(formatTeamLabelList(task.absentLabels)) + '</span>' +
               '</div>' +
             '</div>';
           }).join('') +
@@ -5629,9 +5600,7 @@ function getConnectedStageCompletionSummary(team, stageKey) {
     const stageProgress = getStageProgressFromMap(member && member.progress ? member.progress : {}, stageKey);
     return stageProgress.total > 0 && stageProgress.closed >= stageProgress.total;
   }).length;
-  const baseCopy = missingCount > 0
-    ? `finalizat de ${completedCount}/${connectedCount} conecta&#539;i`
-    : `finalizat de ${completedCount}/${connectedCount} studen&#539;i`;
+  const baseCopy = `finalizat de ${completedCount}/${connectedCount} studen&#539;i conecta&#539;i`;
 
   return {
     connectedCount: connectedCount,
@@ -5680,7 +5649,6 @@ function renderTeams(model) {
     const colSum = team.collectiveTeamSummary || { closed: 0, total: 0, open: 0, percent: 0 };
     const accountabilityMembers = sortMembers(team.accountabilityMembers || []);
     const collectiveEntries = team.collectiveTaskEntries || [];
-    const contributionDataAvailable = !!team.collectiveContributionDataAvailable;
 
     const studentTableMarkup = accountabilityMembers.length
       ? (
@@ -5700,9 +5668,17 @@ function renderTeams(model) {
                 const individualTotal = toNumber(member.individualTotal);
                 const individualPercent = clampPercent(member.individualPercent);
                 const progressWidth = getMinimumVisibleFillWidth(individualPercent, individualPercent > 0 ? 4 : 0);
-                const teamTaskMarkup = contributionDataAvailable && toNumber(member.collectiveContributionTotal) > 0
-                  ? '<span class="student-team-task-value' + (toNumber(member.collectiveContributionCount) > 0 ? ' is-active' : '') + '">' +
-                      escapeHtml(formatTaskRatio(member.collectiveContributionCount, member.collectiveContributionTotal)) +
+                const collectiveContributionTotal = toNumber(member.collectiveContributionTotal);
+                const collectiveContributionCount = Math.max(0, toNumber(member.collectiveContributionCount));
+                const collectiveCreatedCount = Math.max(0, toNumber(member.collectiveCreatedCount));
+                const teamTaskMarkup = collectiveContributionTotal > 0
+                  ? '<span class="student-team-task-stack" title="' +
+                      escapeHtml((member.githubHandle ? '@' + member.githubHandle + ' | ' : '') + 'creat: ' + collectiveCreatedCount) +
+                    '">' +
+                      '<span class="student-team-task-value' + (collectiveContributionCount > 0 ? ' is-active' : '') + '">' +
+                        escapeHtml(formatTaskRatio(collectiveContributionCount, collectiveContributionTotal)) +
+                      '</span>' +
+                      '<span class="student-team-task-meta">creat: ' + collectiveCreatedCount + '</span>' +
                     '</span>'
                   : '<span class="student-team-task-empty">&#8212;</span>';
 
@@ -5731,7 +5707,7 @@ function renderTeams(model) {
       : '<div class="team-empty">Niciun student conectat.</div>';
 
     const contributionNote = team.collectiveContributionNoteRequired
-      ? '<div class="student-collective-note">Contribu&#539;ia la task-uri de echip&#259; apare dup&#259; ce task-urile colective sunt asignate pe GitHub.</div>'
+      ? '<div class="student-collective-note">Contribu&#539;ia la task-uri de echip&#259; apare dup&#259; ce exist&#259; task-uri colective pentru echip&#259; pe GitHub.</div>'
       : '';
     const collectiveSummaryMarkup = collectiveEntries.length
       ? (
@@ -5741,8 +5717,8 @@ function renderTeams(model) {
             const isDone = entry.open === 0 && entry.closed > 0;
             return (
               '<div class="team-collective-summary-row">' +
-                '<a class="team-collective-summary-link" href="' + escapeHtml(entry.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(formatCompactIssueTitle(entry.title)) + '</a>' +
-                '<span class="team-collective-summary-status ' + (isDone ? 'is-done' : 'is-open') + '">' + (isDone ? 'finalizat' : 'in progres') + '</span>' +
+                '<a class="team-collective-summary-link" href="' + escapeHtml(entry.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(formatCollectiveTaskShortTitle(entry.title)) + '</a>' +
+                '<span class="team-collective-summary-status ' + (isDone ? 'is-done' : 'is-open') + '">' + (isDone ? 'finalizat' : '&icirc;n progres') + '</span>' +
               '</div>'
             );
           }).join('') +
@@ -5791,8 +5767,8 @@ function renderTeams(model) {
             `<div class="team-card-name">${escapeHtml(team.name)}</div>` +
             `<div class="team-header-breakdown">` +
               `Progres total: <b>${escapeHtml(taskRatio)} &middot; ${overallPercent}%</b><br>` +
-              `Task-uri individuale: <b>${escapeHtml(formatTaskRatio(indSum.closed, indSum.total))} &middot; ${indSum.percent}%</b><br>` +
-              `Task-uri de echip&#259;: <b>${escapeHtml(formatTaskRatio(colSum.closed, colSum.total))} &middot; ${colSum.percent}%</b><br>` +
+              `Individuale: <b>${escapeHtml(formatTaskRatio(indSum.closed, indSum.total))} &middot; ${indSum.percent}%</b><br>` +
+              `Echip&#259;: <b>${escapeHtml(formatTaskRatio(colSum.closed, colSum.total))} &middot; ${colSum.percent}%</b><br>` +
               `Membri: <b>${connectedCount}/${totalMemberCount} conecta&#539;i</b>` +
             `</div>` +
           `</div>` +
@@ -5926,13 +5902,23 @@ function placeMountainMarkers(markers) {
   if (group.length) groups.push(group);
 
   groups.forEach(group => {
+    let lastProjectedDistance = null;
     group.forEach((marker, index) => {
       const routePoint = marker.routePoint || { x: marker.routeX || 0, y: marker.routeY || 0, tx: 1, ty: 0, px: 0, py: 1 };
-      const verticalLift = group.length > 1 ? index * Math.round(TEAM_BADGE_OUTER_R * 2.1) : 0;
+      const markerDistance = toNumber(marker.routeDistance);
+      let projectedDistance = markerDistance;
 
-      marker.laneSign = 1;
-      marker.x = Math.max(40, Math.min(1880, routePoint.x));
-      marker.y = Math.max(40, Math.min(1040, routePoint.y - verticalLift));
+      if (lastProjectedDistance !== null && (projectedDistance - lastProjectedDistance) < TEAM_COLLISION_DISTANCE) {
+        projectedDistance = lastProjectedDistance + TEAM_COLLISION_DISTANCE;
+      }
+
+      const tangentOffset = projectedDistance - markerDistance;
+      const verticalLift = tangentOffset > 0 ? Math.min(10, 4 + (index * 2)) : 0;
+
+      marker.laneSign = tangentOffset >= 0 ? 1 : -1;
+      marker.x = Math.max(40, Math.min(1880, routePoint.x + (routePoint.tx * tangentOffset)));
+      marker.y = Math.max(40, Math.min(1040, routePoint.y + (routePoint.ty * tangentOffset) - verticalLift));
+      lastProjectedDistance = projectedDistance;
     });
   });
 
