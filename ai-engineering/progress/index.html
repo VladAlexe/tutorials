@@ -1966,6 +1966,279 @@ section { padding-top: 2rem; }
 .team-header-breakdown { font-size: 10px; color: var(--text-muted, #888); line-height: 1.5; }
 .team-header-breakdown b { color: var(--text); }
 
+.student-accountability-wrap {
+  overflow-x: auto;
+  margin-top: 0.08rem;
+}
+
+.student-accountability-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.student-accountability-table th {
+  padding: 0 0.32rem 0.34rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.88);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.student-accountability-table td {
+  padding: 0.46rem 0.32rem;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.72);
+  vertical-align: middle;
+}
+
+.student-accountability-table tbody tr:last-child td {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.student-code-cell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.student-progress-cell {
+  display: grid;
+  grid-template-columns: minmax(92px, 1fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.student-progress-track {
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(201, 195, 181, 0.34);
+  overflow: hidden;
+}
+
+.student-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.student-progress-value,
+.student-task-ratio,
+.student-team-task-value,
+.student-team-task-empty,
+.student-task-empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--sub);
+  white-space: nowrap;
+}
+
+.student-progress-value {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.student-task-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.48rem;
+  flex-wrap: wrap;
+}
+
+.student-task-icons {
+  font-size: 11px;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.student-task-ratio {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.student-team-task-value {
+  display: inline-flex;
+  align-items: center;
+  min-width: 34px;
+}
+
+.student-team-task-value.is-active {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.student-task-empty,
+.student-team-task-empty {
+  color: var(--dim);
+}
+
+.student-collective-note {
+  margin-top: 0.42rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  line-height: 1.45;
+}
+
+.team-collective-summary {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.72);
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.team-collective-summary-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.4px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.08rem;
+}
+
+.team-collective-summary-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.18rem 0;
+  border-bottom: 1px solid rgba(226, 221, 211, 0.68);
+}
+
+.team-collective-summary-row:last-child {
+  border-bottom: none;
+}
+
+.team-collective-summary-link {
+  min-width: 0;
+  font-size: 10.5px;
+  color: var(--sub);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-collective-summary-link:hover {
+  color: var(--team-color);
+}
+
+.team-collective-summary-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  white-space: nowrap;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+}
+
+.team-collective-summary-status.is-open {
+  color: #92400e;
+  background: rgba(251, 191, 36, 0.14);
+}
+
+.team-collective-summary-status.is-done {
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.team-collective-summary-footer {
+  margin-top: 0.3rem;
+  padding-top: 0.28rem;
+  border-top: 1px solid rgba(226, 221, 211, 0.72);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--sub);
+}
+
+.cb-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cb-summary-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 0.8rem;
+  align-items: start;
+}
+
+.cb-summary-task {
+  font-size: 11px;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.35;
+}
+
+.cb-summary-task:hover {
+  text-decoration: underline;
+}
+
+.cb-summary-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.cb-summary-stat {
+  font-size: 9.4px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.cb-summary-stat.is-done {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+.cb-summary-stat.is-open {
+  background: rgba(251, 191, 36, 0.14);
+  color: #92400e;
+}
+
+.cb-summary-stat.is-absent {
+  background: rgba(156, 163, 175, 0.14);
+  color: #6b7280;
+}
+
+.cb-team-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.26rem;
+}
+
+.cb-team-summary-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 0.48rem;
+  align-items: baseline;
+}
+
+.cb-team-summary-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cb-team-summary-copy {
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 1.42;
+}
+
 .project-task-card {
   padding: 0.58rem 0.64rem 0.62rem;
   border: 1px solid rgba(226, 221, 211, 0.82);
@@ -2419,6 +2692,20 @@ section { padding-top: 2rem; }
 @media (max-width: 560px) {
   .team-members-split {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .student-accountability-table {
+    min-width: 520px;
+  }
+
+  .cb-summary-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cb-summary-stats {
+    justify-content: flex-start;
   }
 }
 
@@ -3093,7 +3380,7 @@ var DOT_R = 10;
 var TEAM_BADGE_OUTER_R = 30;
 var TEAM_BADGE_INNER_R = 22;
 var TEAM_ANCHOR_R = 7;
-var STUDENT_MARKER_R = 15;
+var STUDENT_MARKER_R = 18;
 var TEAM_COLLISION_DISTANCE = 46;
 var TEAM_COLLISION_PATTERN = [
   { tan: 0, perp: 0 },
@@ -3845,6 +4132,154 @@ function issueKindFromTitle(title) {
   return 'other';
 }
 
+function escapeRegExp(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getMemberIssuePattern(member) {
+  const localCode = String(member && member.local_code || '').trim();
+  return localCode ? new RegExp('^' + escapeRegExp(localCode) + '\\s*-', 'i') : null;
+}
+
+function collectHandleCandidates(targetSet, value) {
+  if (value === undefined || value === null) {
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach(function(entry) {
+      collectHandleCandidates(targetSet, entry);
+    });
+    return;
+  }
+
+  if (typeof value === 'object') {
+    [
+      'login',
+      'username',
+      'handle',
+      'name',
+      'display_name',
+      'user',
+      'author',
+      'assignee',
+      'assignees',
+      'closed_by',
+      'created_by',
+      'creator',
+      'github_username',
+      'github_login'
+    ].forEach(function(key) {
+      if (value[key] !== undefined && value[key] !== null) {
+        collectHandleCandidates(targetSet, value[key]);
+      }
+    });
+    return;
+  }
+
+  const normalized = String(value).trim().toLowerCase();
+  if (normalized) {
+    targetSet.add(normalized);
+  }
+}
+
+function getMemberHandleCandidates(member) {
+  const handles = new Set();
+  [
+    member && member.github_handle,
+    member && member.github_username,
+    member && member.github_login,
+    member && member.username,
+    member && member.handle,
+    member && member.login,
+    member && member.local_code,
+    member && member.display_code,
+    member && member.student_key,
+    member && member.name
+  ].forEach(function(value) {
+    collectHandleCandidates(handles, value);
+  });
+  return handles;
+}
+
+function getIssueContributionHandles(issue) {
+  const handles = new Set();
+  [
+    issue && issue.assignees,
+    issue && issue.assignee,
+    issue && issue.closed_by,
+    issue && issue.author,
+    issue && issue.creator,
+    issue && issue.created_by,
+    issue && issue.user
+  ].forEach(function(value) {
+    collectHandleCandidates(handles, value);
+  });
+  return handles;
+}
+
+function hasHandleIntersection(memberHandles, issueHandles) {
+  if (!(memberHandles instanceof Set) || !(issueHandles instanceof Set) || !memberHandles.size || !issueHandles.size) {
+    return false;
+  }
+
+  for (const handle of issueHandles) {
+    if (memberHandles.has(handle)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function buildCollectiveTaskEntries(openIssues, closedIssues) {
+  const entriesByTitle = {};
+
+  function upsert(issue, isClosed) {
+    const title = sanitizeIssueTitle(issue && issue.title);
+    if (!title) {
+      return;
+    }
+
+    if (!entriesByTitle[title]) {
+      entriesByTitle[title] = {
+        title: title,
+        url: issue && issue.url ? issue.url : '#',
+        open: 0,
+        closed: 0,
+        contributorHandles: new Set()
+      };
+    }
+
+    const entry = entriesByTitle[title];
+    if (isClosed) {
+      entry.closed += 1;
+    } else {
+      entry.open += 1;
+    }
+
+    getIssueContributionHandles(issue).forEach(function(handle) {
+      entry.contributorHandles.add(handle);
+    });
+  }
+
+  (openIssues || []).forEach(function(issue) {
+    upsert(issue, false);
+  });
+  (closedIssues || []).forEach(function(issue) {
+    upsert(issue, true);
+  });
+
+  return Object.keys(entriesByTitle).map(function(title) {
+    const entry = entriesByTitle[title];
+    return Object.assign(entry, {
+      statusLabel: entry.open === 0 && entry.closed > 0 ? 'finalizat' : 'in progres',
+      hasContributionData: entry.contributorHandles.size > 0
+    });
+  }).sort(function(a, b) {
+    return compareIssueTitles(a.title, b.title) || a.title.localeCompare(b.title);
+  });
+}
+
 function summarizeIssueList(openIssues, closedIssues, kind) {
   const open = (openIssues || []).filter(function(i) { return issueKindFromTitle(i.title) === kind; }).length;
   const closed = (closedIssues || []).filter(function(i) { return issueKindFromTitle(i.title) === kind; }).length;
@@ -3883,19 +4318,52 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
       : 0
   };
   const rawMembers = Array.isArray(team && team.members) ? team.members : [];
-  const connectedMembers = rawMembers.filter(function(m) { return m.active !== false && m.connected !== false; });
-  const missingMembers = rawMembers.filter(function(m) { return m.active !== false && m.connected === false; });
+  const activeMembers = rawMembers.filter(function(m) { return m && m.active !== false; });
+  const connectedMembers = activeMembers.filter(function(m) { return m.connected !== false; });
+  const missingMembers = activeMembers.filter(function(m) { return m.connected === false; });
+  const collectiveTaskEntries = buildCollectiveTaskEntries(collectiveOpenIssues, collectiveClosedIssues);
+  const collectiveContributionDataAvailable = collectiveTaskEntries.some(function(entry) {
+    return entry.hasContributionData;
+  });
+  const collectiveContributionNoteRequired = collectiveTaskEntries.length > 0 && collectiveTaskEntries.some(function(entry) {
+    return !entry.hasContributionData;
+  });
   const membersWithIssues = connectedMembers.map(function(member) {
-    const localCode = String(member && member.local_code || '').trim();
-    const pattern = localCode
-      ? new RegExp('^' + localCode.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*-', 'i')
-      : null;
+    const pattern = getMemberIssuePattern(member);
     const memberOpenIssues = pattern ? openIssues.filter(function(i) { return pattern.test(String(i.title || '')); }) : [];
     const memberClosedIssues = pattern ? closedIssues.filter(function(i) { return pattern.test(String(i.title || '')); }) : [];
     return Object.assign({}, member, { memberOpenIssues: memberOpenIssues, memberClosedIssues: memberClosedIssues });
   });
-  const indConnectedClosed = connectedMembers.reduce(function(s, m) { return s + toNumber(m.closed); }, 0);
-  const indConnectedTotal = connectedMembers.reduce(function(s, m) { return s + toNumber(m.total); }, 0);
+  const accountabilityMembers = membersWithIssues.map(function(member) {
+    const individualClosed = Array.isArray(member.memberClosedIssues) ? member.memberClosedIssues.length : 0;
+    const individualOpen = Array.isArray(member.memberOpenIssues) ? member.memberOpenIssues.length : 0;
+    const individualTotal = individualClosed + individualOpen;
+    const individualPercent = individualTotal > 0
+      ? clampPercent(Math.round((individualClosed / individualTotal) * 100))
+      : 0;
+    const memberHandles = getMemberHandleCandidates(member);
+    const collectiveContributionCount = collectiveContributionDataAvailable
+      ? collectiveTaskEntries.reduce(function(sum, task) {
+          return sum + (hasHandleIntersection(memberHandles, task.contributorHandles) ? 1 : 0);
+        }, 0)
+      : null;
+
+    return Object.assign({}, member, {
+      individualClosed: individualClosed,
+      individualOpen: individualOpen,
+      individualTotal: individualTotal,
+      individualPercent: individualPercent,
+      memberHandles: memberHandles,
+      collectiveContributionCount: collectiveContributionCount,
+      collectiveContributionTotal: collectiveTaskEntries.length
+    });
+  });
+  const indConnectedClosed = accountabilityMembers.reduce(function(sum, member) {
+    return sum + toNumber(member.individualClosed);
+  }, 0);
+  const indConnectedTotal = accountabilityMembers.reduce(function(sum, member) {
+    return sum + toNumber(member.individualTotal);
+  }, 0);
   const individualTeamSummary = {
     closed: indConnectedClosed,
     open: Math.max(0, indConnectedTotal - indConnectedClosed),
@@ -3910,6 +4378,14 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     open: colOpen,
     total: colTotal,
     percent: colTotal > 0 ? clampPercent(Math.round((colClosed / colTotal) * 100)) : 0
+  };
+  const connectedOverallClosed = individualTeamSummary.closed + collectiveTeamSummary.closed;
+  const connectedOverallTotal = individualTeamSummary.total + collectiveTeamSummary.total;
+  const connectedOverallSummary = {
+    closed: connectedOverallClosed,
+    open: Math.max(0, connectedOverallTotal - connectedOverallClosed),
+    total: connectedOverallTotal,
+    percent: connectedOverallTotal > 0 ? clampPercent(Math.round((connectedOverallClosed / connectedOverallTotal) * 100)) : 0
   };
   const courseProgress = computeCourseProgressPercent(team, coursePlan);
   const climbProgress = computeAverageStagePercent(team, climbPlan);
@@ -3966,11 +4442,18 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
       lastActivityAt: team.activity.last_activity_at || null
     } : null,
     teamBlockers: Array.isArray(team && team.blockers) ? team.blockers : [],
+    activeMembers: activeMembers,
+    activeMemberCount: activeMembers.length,
     connectedMembers: connectedMembers,
     missingMembers: missingMembers,
     membersWithIssues: membersWithIssues,
+    accountabilityMembers: accountabilityMembers,
     individualTeamSummary: individualTeamSummary,
-    collectiveTeamSummary: collectiveTeamSummary
+    collectiveTeamSummary: collectiveTeamSummary,
+    connectedOverallSummary: connectedOverallSummary,
+    collectiveTaskEntries: collectiveTaskEntries,
+    collectiveContributionDataAvailable: collectiveContributionDataAvailable,
+    collectiveContributionNoteRequired: collectiveContributionNoteRequired
   };
 }
 
@@ -4485,10 +4968,12 @@ function renderProjectStats(model) {
     }).join('');
   const currentSummary = model.currentMilestoneSummary;
   const sortedTeams = model.teams.slice().sort(function(a, b) {
-    return b.overallPercent - a.overallPercent || compareTeamLabels(a.label, b.label);
+    const aPercent = a.connectedOverallSummary ? a.connectedOverallSummary.percent : a.overallPercent;
+    const bPercent = b.connectedOverallSummary ? b.connectedOverallSummary.percent : b.overallPercent;
+    return bPercent - aPercent || compareTeamLabels(a.label, b.label);
   });
   const teamChartRows = sortedTeams.map(function(team) {
-    const percent = clampPercent(team.overallPercent);
+    const percent = clampPercent(team.connectedOverallSummary ? team.connectedOverallSummary.percent : team.overallPercent);
     const color = getProgressColor(percent);
     return (
       `<div class="project-chart-row">` +
@@ -4615,6 +5100,35 @@ function renderProjectStats(model) {
         '</div>' +
       '</div>'
     : '';
+  const cbCollectiveSummarySectionHtml = cbCollMatrix.length
+    ? '<div class="cb-section">' +
+        '<div class="cb-section-title">Task-uri de echip&#259;</div>' +
+        '<div class="cb-summary-list">' +
+          cbCollMatrix.map(function(task) {
+            return '<div class="cb-summary-row">' +
+              '<a class="cb-summary-task" href="' + escapeHtml(task.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(formatCompactIssueTitle(task.title)) + '</a>' +
+              '<div class="cb-summary-stats">' +
+                '<span class="cb-summary-stat is-done">Finalizate ' + task.done + '/' + totalTeamCount + '</span>' +
+                '<span class="cb-summary-stat is-open">In progres ' + task.open + '/' + totalTeamCount + '</span>' +
+                '<span class="cb-summary-stat is-absent">Lips&#259; ' + task.absent + '/' + totalTeamCount + '</span>' +
+              '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>'
+    : '<div class="cb-section"><div class="team-empty">Niciun task de echip&#259; pentru ' + escapeHtml(currentStageKey) + '.</div></div>';
+  const cbTeamSummarySectionHtml = '<div class="cb-section">' +
+      '<div class="cb-section-title">Task-uri individuale &#183; ' + escapeHtml(currentStageKey) + '</div>' +
+      '<div class="cb-team-summary-list">' +
+        model.teams.map(function(team) {
+          const summary = getConnectedStageCompletionSummary(team, currentStageKey);
+          return '<div class="cb-team-summary-row">' +
+            '<span class="cb-team-summary-label">' + escapeHtml(team.label) + '</span>' +
+            '<span class="cb-team-summary-copy">' + summary.copy + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
   const controlTiles = [
     {
       label: 'Progres total',
@@ -4757,8 +5271,8 @@ function renderProjectStats(model) {
         `</article>` +
         `<article class="project-card">` +
           `<div class="project-title">${escapeHtml(currentStageKey)} Control Board</div>` +
-          `${cbCollSectionHtml}` +
-          `${cbGridSectionHtml}` +
+          `${cbCollectiveSummarySectionHtml}` +
+          `${cbTeamSummarySectionHtml}` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -5070,15 +5584,51 @@ function getMemberStageCode(member) {
   return inferStageKey(member && member.current_stage) || '\u2014';
 }
 
+function buildTaskSymbolsMarkup(closed, total) {
+  const safeClosed = Math.max(0, toNumber(closed));
+  const safeTotal = Math.max(0, toNumber(total));
+  const safeOpen = Math.max(0, safeTotal - safeClosed);
+  return Array(safeClosed).fill('<span class="sym-done">&#10003;</span>').join('') +
+    Array(safeOpen).fill('<span class="sym-open">&#9675;</span>').join('');
+}
+
+function getConnectedStageCompletionSummary(team, stageKey) {
+  const connectedMembers = Array.isArray(team && team.connectedMembers) ? team.connectedMembers : [];
+  const missingCount = Array.isArray(team && team.missingMembers) ? team.missingMembers.length : 0;
+  const connectedCount = connectedMembers.length;
+
+  if (!connectedCount) {
+    return {
+      connectedCount: 0,
+      missingCount: missingCount,
+      completedCount: 0,
+      copy: '0 membri conecta&#539;i'
+    };
+  }
+
+  const completedCount = connectedMembers.filter(function(member) {
+    const stageProgress = getStageProgressFromMap(member && member.progress ? member.progress : {}, stageKey);
+    return stageProgress.total > 0 && stageProgress.closed >= stageProgress.total;
+  }).length;
+  const baseCopy = missingCount > 0
+    ? `${completedCount}/${connectedCount} conecta&#539;i finaliza&#539;i`
+    : `${completedCount}/${connectedCount} studen&#539;i finaliza&#539;i`;
+
+  return {
+    connectedCount: connectedCount,
+    missingCount: missingCount,
+    completedCount: completedCount,
+    copy: missingCount > 0 ? `${baseCopy} &middot; ${missingCount} neconecta&#539;i` : baseCopy
+  };
+}
+
 function renderTeams(model) {
   document.getElementById('team-grid').innerHTML = model.teams.map(function(team) {
-    const taskSummary = getTeamTaskSummary(team);
-    const taskRatio = formatTaskRatio(taskSummary.closed, taskSummary.total);
-    const overallPercent = team.overallPercent !== undefined && team.overallPercent !== null
-      ? clampPercent(team.overallPercent)
-      : (taskSummary.total > 0 ? clampPercent(Math.round((taskSummary.closed / taskSummary.total) * 100)) : 0);
+    const connectedOverallSummary = team.connectedOverallSummary || { closed: 0, total: 0, percent: 0 };
+    const taskRatio = formatTaskRatio(connectedOverallSummary.closed, connectedOverallSummary.total);
+    const overallPercent = clampPercent(connectedOverallSummary.percent);
     const teamBarColor = team.color;
-    const teamBarWidth = getMinimumVisibleFillWidth(overallPercent, 4);
+    const teamBarWidth = getMinimumVisibleFillWidth(overallPercent, overallPercent > 0 ? 4 : 0);
     const currentAction = pickTeamCurrentAction(team.openIssues, model.currentMilestone.key);
     const milestonePills = JOURNEY_STAGE_KEYS.map(function(stageKey) {
       const stage = team.stageProgress.find(function(item) {
@@ -5106,28 +5656,81 @@ function renderTeams(model) {
 
     const connectedCount = (team.connectedMembers || []).length;
     const missingCount = (team.missingMembers || []).length;
-    const totalMemberCount = team.members.length;
+    const totalMemberCount = team.activeMemberCount || (team.activeMembers || team.members || []).length;
     const indSum = team.individualTeamSummary || { closed: 0, total: 0, open: 0, percent: 0 };
     const colSum = team.collectiveTeamSummary || { closed: 0, total: 0, open: 0, percent: 0 };
+    const accountabilityMembers = sortMembers(team.accountabilityMembers || []);
+    const collectiveEntries = team.collectiveTaskEntries || [];
+    const contributionDataAvailable = !!team.collectiveContributionDataAvailable;
 
-    const memberMiniGrid = sortMembers(team.connectedMembers || []).map(function(member) {
-      const closed = toNumber(member.closed);
-      const total = toNumber(member.total);
-      const pct = total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
-      const symbolMax = Math.min(total, 5);
-      const closedShown = Math.min(closed, symbolMax);
-      const openShown = symbolMax - closedShown;
-      const symbolsHtml = Array(closedShown).fill('<span class="sym-done">&#10003;</span>').join('') +
-                          Array(openShown).fill('<span class="sym-open">&#9675;</span>').join('');
-      return (
-        '<div class="team-member-mini">' +
-          '<span class="team-member-mini-code">' + escapeHtml(getMemberLabel(member)) + '</span>' +
-          '<span class="team-member-mini-symbols">' + symbolsHtml + '</span>' +
-          '<span class="team-member-mini-ratio">' + escapeHtml(formatTaskRatio(closed, total)) + '</span>' +
-          '<span class="team-member-mini-pct">' + pct + '%</span>' +
+    const studentTableMarkup = accountabilityMembers.length
+      ? (
+        '<div class="student-accountability-wrap">' +
+          '<table class="student-accountability-table">' +
+            '<thead>' +
+              '<tr>' +
+                '<th>Cod</th>' +
+                '<th>Progres individual</th>' +
+                '<th>Task-uri individuale</th>' +
+                '<th>Task-uri echip&#259;</th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody>' +
+              accountabilityMembers.map(function(member) {
+                const individualClosed = toNumber(member.individualClosed);
+                const individualTotal = toNumber(member.individualTotal);
+                const individualPercent = clampPercent(member.individualPercent);
+                const progressWidth = getMinimumVisibleFillWidth(individualPercent, individualPercent > 0 ? 4 : 0);
+                const teamTaskMarkup = contributionDataAvailable && toNumber(member.collectiveContributionTotal) > 0
+                  ? '<span class="student-team-task-value' + (toNumber(member.collectiveContributionCount) > 0 ? ' is-active' : '') + '">' +
+                      escapeHtml(formatTaskRatio(member.collectiveContributionCount, member.collectiveContributionTotal)) +
+                    '</span>'
+                  : '<span class="student-team-task-empty">&#8212;</span>';
+
+                return (
+                  '<tr>' +
+                    '<td class="student-code-cell">' + escapeHtml(getMemberLabel(member)) + '</td>' +
+                    '<td>' +
+                      '<div class="student-progress-cell">' +
+                        '<span class="student-progress-track"><span class="student-progress-fill" style="width:' + progressWidth + '%; background:' + team.color + ';"></span></span>' +
+                        '<span class="student-progress-value">' + individualPercent + '%</span>' +
+                      '</div>' +
+                    '</td>' +
+                    '<td>' +
+                      (individualTotal > 0
+                        ? '<div class="student-task-cell"><span class="student-task-icons">' + buildTaskSymbolsMarkup(individualClosed, individualTotal) + '</span><span class="student-task-ratio">' + escapeHtml(formatTaskRatio(individualClosed, individualTotal)) + '</span></div>'
+                        : '<span class="student-task-empty">&#8212;</span>') +
+                    '</td>' +
+                    '<td>' + teamTaskMarkup + '</td>' +
+                  '</tr>'
+                );
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
         '</div>'
-      );
-    }).join('') || '<div class="team-empty">Niciun student conectat.</div>';
+      )
+      : '<div class="team-empty">Niciun student conectat.</div>';
+
+    const contributionNote = team.collectiveContributionNoteRequired
+      ? '<div class="student-collective-note">Contribu&#539;ia la task-uri de echip&#259; apare doar dac&#259; task-urile colective sunt asignate pe GitHub.</div>'
+      : '';
+    const collectiveSummaryMarkup = collectiveEntries.length
+      ? (
+        '<div class="team-collective-summary">' +
+          '<div class="team-collective-summary-title">Task-uri de echip&#259;</div>' +
+          collectiveEntries.map(function(entry) {
+            const isDone = entry.open === 0 && entry.closed > 0;
+            return (
+              '<div class="team-collective-summary-row">' +
+                '<a class="team-collective-summary-link" href="' + escapeHtml(entry.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(formatCompactIssueTitle(entry.title)) + '</a>' +
+                '<span class="team-collective-summary-status ' + (isDone ? 'is-done' : 'is-open') + '">' + (isDone ? 'finalizat' : 'in progres') + '</span>' +
+              '</div>'
+            );
+          }).join('') +
+          '<div class="team-collective-summary-footer">Finalizate: ' + escapeHtml(formatTaskRatio(colSum.closed, colSum.total)) + '</div>' +
+        '</div>'
+      )
+      : '<div class="team-collective-summary"><div class="team-empty">Niciun task de echip&#259;.</div></div>';
 
     const missingNote = missingCount > 0
       ? '<div class="team-missing-note">' + missingCount + ' ' +
@@ -5196,17 +5799,12 @@ function renderTeams(model) {
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Task-uri individuale</div>` +
+            `<div class="team-subtitle">Responsabilitate studen&#539;i</div>` +
             `<div class="team-section-meta">${connectedCount}/${totalMemberCount} conecta&#539;i</div>` +
           `</div>` +
-          `${missingNote}` +
-          `<div class="team-members-split">` +
-            `<div>${memberMiniGrid}</div>` +
-            `<div class="team-collective-block">` +
-              `<div class="project-task-group-header" style="margin-bottom:6px;">Task-uri echip&#259;</div>` +
-              `${collectiveBlockMarkup}` +
-            `</div>` +
-          `</div>` +
+          `${studentTableMarkup}` +
+          `${contributionNote}` +
+          `${collectiveSummaryMarkup}` +
         `</div>` +
       `</article>`
     );
