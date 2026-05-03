@@ -4155,37 +4155,66 @@ function buildMountainTopStudents(teams) {
   });
 }
 
+function buildStudentClusterSlots(count) {
+  const tangentSpacing = Math.max(28, Math.round(STUDENT_MARKER_R * 1.55));
+  const liftSpacing = Math.max(24, Math.round(STUDENT_MARKER_R * 1.3));
+  const slots = [];
+
+  for (let row = 0; slots.length < count; row += 1) {
+    for (let column = -row; column <= row && slots.length < count; column += 2) {
+      slots.push({
+        tan: column * tangentSpacing,
+        lift: row * liftSpacing
+      });
+    }
+  }
+
+  return slots.sort(function(a, b) {
+    return a.tan - b.tan || a.lift - b.lift;
+  });
+}
+
 function placeMountainStudentMarkers(markers) {
   const sorted = markers.slice().sort(function(a, b) {
     return a.routeDistance - b.routeDistance ||
       compareTeamLabels(a.teamLabel, b.teamLabel) ||
       String(a.title || '').localeCompare(String(b.title || ''));
   });
-  const groupingDistance = STUDENT_MARKER_R * 2.15;
-  const minGap = STUDENT_MARKER_R * 2.3;
-  let lastProjectedDistance = null;
-  let lastSourceDistance = null;
-  let clusterIndex = 0;
+  const groupingDistance = Math.max(26, Math.round(STUDENT_MARKER_R * 1.45));
+  const groups = [];
+  let group = [];
 
   sorted.forEach(function(marker) {
-    const markerDistance = toNumber(marker.routeDistance);
-    if (lastSourceDistance !== null && (markerDistance - lastSourceDistance) < groupingDistance) {
-      clusterIndex += 1;
+    if (!group.length) {
+      group.push(marker);
+      return;
+    }
+
+    const prev = group[group.length - 1];
+    if (Math.abs(toNumber(marker.routeDistance) - toNumber(prev.routeDistance)) <= groupingDistance) {
+      group.push(marker);
     } else {
-      clusterIndex = 0;
+      groups.push(group);
+      group = [marker];
     }
+  });
+  if (group.length) {
+    groups.push(group);
+  }
 
-    let projectedDistance = markerDistance;
-    if (lastProjectedDistance !== null && (projectedDistance - lastProjectedDistance) < minGap) {
-      projectedDistance = lastProjectedDistance + minGap;
-    }
+  groups.forEach(function(groupMarkers) {
+    const centerDistance = groupMarkers.reduce(function(total, marker) {
+      return total + toNumber(marker.routeDistance);
+    }, 0) / Math.max(1, groupMarkers.length);
+    const slots = buildStudentClusterSlots(groupMarkers.length);
 
-    const placedPoint = getPointOnRouteDistance(projectedDistance);
-    const verticalLift = clusterIndex > 0 ? Math.min(10, clusterIndex * 1.8) : 0;
-    marker.x = Math.max(18, Math.min(1902, placedPoint.x));
-    marker.y = Math.max(18, Math.min(1062, placedPoint.y - verticalLift));
-    lastSourceDistance = markerDistance;
-    lastProjectedDistance = projectedDistance;
+    groupMarkers.forEach(function(marker, index) {
+      const slot = slots[index] || { tan: 0, lift: 0 };
+      const placedDistance = Math.max(0, Math.min(ROUTE_METRICS.totalLength, centerDistance + slot.tan));
+      const placedPoint = getPointOnRouteDistance(placedDistance);
+      marker.x = Math.max(18, Math.min(1902, placedPoint.x));
+      marker.y = Math.max(18, Math.min(1062, placedPoint.y - slot.lift));
+    });
   });
 
   return markers;
@@ -4226,8 +4255,6 @@ function buildMountainScene(teams) {
     };
   });
 
-  placeMountainMarkers(teamMarkers);
-
   const teamMarkerByLabel = {};
   teamMarkers.forEach(function(marker) {
     teamMarkerByLabel[marker.label] = marker;
@@ -4264,6 +4291,25 @@ function buildMountainScene(teams) {
       const bDistance = b.routePoint ? b.routePoint.routeDistance : Number.POSITIVE_INFINITY;
       return aDistance - bDistance || a.name.localeCompare(b.name);
     });
+
+    if (teamMarker && memberEntries.length) {
+      const anchorDistances = memberEntries.map(function(entry) {
+        return toNumber(entry.routePoint && entry.routePoint.routeDistance);
+      }).filter(function(distance) {
+        return Number.isFinite(distance);
+      }).sort(function(a, b) {
+        return a - b;
+      });
+      const midIndex = Math.floor(anchorDistances.length / 2);
+      const anchorDistance = anchorDistances.length % 2 === 1
+        ? anchorDistances[midIndex]
+        : ((anchorDistances[midIndex - 1] + anchorDistances[midIndex]) / 2);
+      const teamAnchorPoint = getPointOnRouteDistance(anchorDistance);
+      teamMarker.routeDistance = teamAnchorPoint.routeDistance;
+      teamMarker.routePoint = teamAnchorPoint;
+      teamMarker.routeX = teamAnchorPoint.x;
+      teamMarker.routeY = teamAnchorPoint.y;
+    }
 
     memberEntries.forEach(function(entry) {
       if (!teamMarker) {
@@ -4303,6 +4349,18 @@ function buildMountainScene(teams) {
         title: hoverTooltipText
       });
     });
+  });
+
+  placeMountainMarkers(teamMarkers);
+  teamMarkers.forEach(function(marker) {
+    marker.y = Math.max(40, Math.min(1040, marker.y - 10));
+  });
+  studentMarkers.forEach(function(marker) {
+    const teamMarker = teamMarkerByLabel[marker.teamLabel];
+    if (teamMarker) {
+      marker.teamX = teamMarker.x;
+      marker.teamY = teamMarker.y;
+    }
   });
 
   return {
@@ -6244,7 +6302,7 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
     `;
   }).join('');
 
-  return connectors + pins + badges + studentDots;
+  return connectors + pins + studentDots + badges;
 }
 
 function initMountainStudentInteractions() {
