@@ -2185,9 +2185,9 @@ section { padding-top: 2rem; }
 
 .cb-summary-stats {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 4px;
-  justify-content: flex-end;
+  align-items: flex-start;
 }
 
 .cb-summary-stat {
@@ -2195,7 +2195,7 @@ section { padding-top: 2rem; }
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 999px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .cb-summary-stat.is-done {
@@ -3181,6 +3181,7 @@ const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
 const MOUNTAIN_TEAM_PALETTE = ['#C65B33', '#5A8F2F', '#2E71BF', '#C98A19', '#158B82', '#B24B66', '#596FBC', '#9E4C28'];
+const MOUNTAIN_STUDENT_PALETTE = ['#E63946', '#0077B6', '#2A9D8F', '#F4A261', '#7B2CBF', '#FF006E', '#3A86FF', '#FB5607', '#1D3557', '#06D6A0'];
 function progressToColor(percent) {
   var t = clampPercent(percent) / 100;
   var r = Math.round(181 + (104 - 181) * t);
@@ -3737,22 +3738,22 @@ function getSemanticStatus(team) {
   const reachedSummit = (c8Stage && c8Stage.percent >= 100) || team.currentStage.key === 'C9' || team.currentStage.key === 'Final';
 
   if (reachedSummit || team.climbProgress >= 100) {
-    return { key: 'summit', label: 'Summit' };
+    return { key: 'summit', label: 'Varf' };
   }
 
   if (team.climbProgress === 0) {
-    return { key: 'basecamp', label: 'Basecamp' };
+    return { key: 'basecamp', label: 'Baza' };
   }
 
   if (team.currentStage.status === 'created' || team.currentStage.status === 'upcoming') {
-    return { key: 'waiting', label: 'Waiting' };
+    return { key: 'waiting', label: 'Asteptare' };
   }
 
   if (team.currentStage.status === 'done') {
-    return { key: 'checkpoint', label: 'Checkpoint reached' };
+    return { key: 'checkpoint', label: 'Checkpoint atins' };
   }
 
-  return { key: 'climbing', label: 'Climbing' };
+  return { key: 'climbing', label: 'In urcare' };
 }
 
 function getMountainStageRank(stageKey) {
@@ -3940,29 +3941,29 @@ function getMemberMountainStageState(member) {
 
 function getMountainStatusFromState(stageState) {
   if (!stageState || stageState.displayStageKey === 'Base') {
-    return { key: 'basecamp', label: 'Basecamp' };
+    return { key: 'basecamp', label: 'Baza' };
   }
 
   if (stageState.afterSummit || (stageState.displayStageKey === 'C8' && stageState.stagePercent >= 100)) {
-    return { key: 'summit', label: 'Summit' };
+    return { key: 'summit', label: 'Varf' };
   }
 
   if (stageState.stagePercent <= 0) {
-    return { key: 'waiting', label: 'Waiting' };
+    return { key: 'waiting', label: 'Asteptare' };
   }
 
   if (stageState.stagePercent >= 100) {
-    return { key: 'checkpoint', label: 'Checkpoint reached' };
+    return { key: 'checkpoint', label: 'Checkpoint atins' };
   }
 
-  return { key: 'climbing', label: 'Climbing' };
+  return { key: 'climbing', label: 'In urcare' };
 }
 
 function buildMountainTopStudents(teams) {
   const rankedStudents = [];
 
   teams.forEach(function(team) {
-    (Array.isArray(team.members) ? team.members : []).forEach(function(member) {
+    (Array.isArray(team.connectedMembers) ? team.connectedMembers : []).forEach(function(member) {
       const stageState = getMemberMountainStageState(member);
       if (!stageState) {
         return;
@@ -4006,6 +4007,60 @@ function buildMountainTopStudents(teams) {
   });
 }
 
+function getMountainStudentColor(member, fallbackIndex) {
+  const displayCode = String(member && (member.display_code || member.local_code || member.student_key || '')).trim();
+  const match = displayCode.match(/(\d+)/);
+  const paletteIndex = match ? Math.max(0, toNumber(match[1]) - 1) : toNumber(fallbackIndex);
+  return MOUNTAIN_STUDENT_PALETTE[paletteIndex % MOUNTAIN_STUDENT_PALETTE.length];
+}
+
+function stackMountainStudentMarkers(markers) {
+  const markerGroups = [];
+  const threshold = STUDENT_MARKER_R * 1.75;
+
+  (markers || []).forEach(function(marker) {
+    let group = null;
+    for (let index = 0; index < markerGroups.length; index += 1) {
+      const candidate = markerGroups[index];
+      const dx = candidate.anchorX - marker.x;
+      const dy = candidate.anchorY - marker.y;
+      if (Math.sqrt((dx * dx) + (dy * dy)) <= threshold) {
+        group = candidate;
+        break;
+      }
+    }
+
+    if (!group) {
+      group = { anchorX: marker.x, anchorY: marker.y, markers: [] };
+      markerGroups.push(group);
+    }
+
+    group.markers.push(marker);
+  });
+
+  markerGroups.forEach(function(group) {
+    if (group.markers.length <= 1) {
+      return;
+    }
+
+    const baseX = Math.round(group.markers.reduce(function(sum, marker) { return sum + marker.x; }, 0) / group.markers.length);
+    const baseY = Math.round(group.markers.reduce(function(sum, marker) { return sum + marker.y; }, 0) / group.markers.length);
+
+    group.markers
+      .slice()
+      .sort(function(a, b) {
+        return compareTeamLabels(a.teamLabel, b.teamLabel) || String(a.title || '').localeCompare(String(b.title || ''));
+      })
+      .forEach(function(marker, index) {
+        const offset = (index - ((group.markers.length - 1) / 2)) * (STUDENT_MARKER_R * 2.15);
+        marker.x = Math.max(22, Math.min(1898, baseX));
+        marker.y = Math.max(22, Math.min(1058, baseY + offset));
+      });
+  });
+
+  return markers;
+}
+
 function buildMountainScene(teams) {
   const teamMarkers = teams.map(function(team) {
     const stageState = getTeamMountainStageState(team);
@@ -4030,7 +4085,7 @@ function buildMountainScene(teams) {
       colorSoft: hexToRgba(mountainColor, 0.16),
       colorLine: hexToRgba(mountainColor, 0.42),
       teamIndex: team.index,
-      members: Array.isArray(team.members) ? team.members : []
+      members: Array.isArray(team.connectedMembers) ? team.connectedMembers : []
     };
   });
 
@@ -4044,7 +4099,7 @@ function buildMountainScene(teams) {
   const studentMarkers = [];
   teams.forEach(function(team) {
     const teamMarker = teamMarkerByLabel[team.label];
-    const teamMembers = Array.isArray(team.members) ? team.members.slice() : [];
+    const teamMembers = Array.isArray(team.connectedMembers) ? team.connectedMembers.slice() : [];
     const memberEntries = teamMembers.map(function(member) {
       const stageState = getMemberMountainStageState(member);
       return {
@@ -4086,7 +4141,7 @@ function buildMountainScene(teams) {
       const orbitRadius = TEAM_BADGE_OUTER_R + STUDENT_MARKER_R + 6;
       const x = teamMarker.x + (dirX * orbitRadius) + (perpX * spread);
       const y = teamMarker.y + (dirY * orbitRadius) + (perpY * spread);
-      const opacity = entry.member.connected === false || entry.member.active === false ? 0.46 : 0.96;
+      const opacity = 1;
 
       studentMarkers.push({
         x: Math.max(18, Math.min(1902, x)),
@@ -4097,7 +4152,7 @@ function buildMountainScene(teams) {
         teamX: teamMarker.x,
         teamY: teamMarker.y,
         teamLabel: team.label,
-        color: teamMarker ? teamMarker.color : MOUNTAIN_TEAM_PALETTE[team.index % MOUNTAIN_TEAM_PALETTE.length],
+        color: getMountainStudentColor(entry.member, memberIndex),
         opacity: opacity,
         title: entry.stageState
           ? `${entry.name} · ${team.label} · ${entry.stageState.topStageKey} · ${entry.stageState.stagePercent}%`
@@ -4108,7 +4163,7 @@ function buildMountainScene(teams) {
 
   return {
     teamMarkers: teamMarkers,
-    studentMarkers: studentMarkers,
+    studentMarkers: stackMountainStudentMarkers(studentMarkers),
     topStudents: buildMountainTopStudents(teams)
   };
 }
@@ -4202,16 +4257,11 @@ function getMemberHandleCandidates(member) {
   return handles;
 }
 
-function getIssueContributionHandles(issue) {
+function getIssueAssigneeHandles(issue) {
   const handles = new Set();
   [
     issue && issue.assignees,
-    issue && issue.assignee,
-    issue && issue.closed_by,
-    issue && issue.author,
-    issue && issue.creator,
-    issue && issue.created_by,
-    issue && issue.user
+    issue && issue.assignee
   ].forEach(function(value) {
     collectHandleCandidates(handles, value);
   });
@@ -4246,7 +4296,7 @@ function buildCollectiveTaskEntries(openIssues, closedIssues) {
         url: issue && issue.url ? issue.url : '#',
         open: 0,
         closed: 0,
-        contributorHandles: new Set()
+        assigneeHandles: new Set()
       };
     }
 
@@ -4257,8 +4307,8 @@ function buildCollectiveTaskEntries(openIssues, closedIssues) {
       entry.open += 1;
     }
 
-    getIssueContributionHandles(issue).forEach(function(handle) {
-      entry.contributorHandles.add(handle);
+    getIssueAssigneeHandles(issue).forEach(function(handle) {
+      entry.assigneeHandles.add(handle);
     });
   }
 
@@ -4273,11 +4323,26 @@ function buildCollectiveTaskEntries(openIssues, closedIssues) {
     const entry = entriesByTitle[title];
     return Object.assign(entry, {
       statusLabel: entry.open === 0 && entry.closed > 0 ? 'finalizat' : 'in progres',
-      hasContributionData: entry.contributorHandles.size > 0
+      hasAssigneeData: entry.assigneeHandles.size > 0
     });
   }).sort(function(a, b) {
     return compareIssueTitles(a.title, b.title) || a.title.localeCompare(b.title);
   });
+}
+
+function formatTeamLabelList(teamLabels) {
+  const labels = Array.isArray(teamLabels) ? teamLabels.slice().sort(compareTeamLabels) : [];
+  return labels.length ? labels.join(', ') : '\u2014';
+}
+
+function formatCollectiveTaskShortTitle(title) {
+  const normalizedTitle = sanitizeIssueTitle(title);
+  const codeMatch = normalizedTitle.match(/^(C\d+(?:\.\d+)?)/i);
+  const fileMatches = normalizedTitle.match(/([A-Za-z0-9_-]+\.[A-Za-z0-9]+)/g);
+  if (codeMatch && fileMatches && fileMatches.length) {
+    return `${codeMatch[1].toUpperCase()} \u2014 ${fileMatches[fileMatches.length - 1]}`;
+  }
+  return formatCompactIssueTitle(normalizedTitle);
 }
 
 function summarizeIssueList(openIssues, closedIssues, kind) {
@@ -4322,12 +4387,11 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
   const connectedMembers = activeMembers.filter(function(m) { return m.connected !== false; });
   const missingMembers = activeMembers.filter(function(m) { return m.connected === false; });
   const collectiveTaskEntries = buildCollectiveTaskEntries(collectiveOpenIssues, collectiveClosedIssues);
-  const collectiveContributionDataAvailable = collectiveTaskEntries.some(function(entry) {
-    return entry.hasContributionData;
-  });
-  const collectiveContributionNoteRequired = collectiveTaskEntries.length > 0 && collectiveTaskEntries.some(function(entry) {
-    return !entry.hasContributionData;
-  });
+  const collectiveContributionDataTaskTotal = collectiveTaskEntries.filter(function(entry) {
+    return entry.hasAssigneeData;
+  }).length;
+  const collectiveContributionDataAvailable = collectiveContributionDataTaskTotal > 0;
+  const collectiveContributionNoteRequired = collectiveTaskEntries.length > 0 && !collectiveContributionDataAvailable;
   const membersWithIssues = connectedMembers.map(function(member) {
     const pattern = getMemberIssuePattern(member);
     const memberOpenIssues = pattern ? openIssues.filter(function(i) { return pattern.test(String(i.title || '')); }) : [];
@@ -4344,7 +4408,10 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     const memberHandles = getMemberHandleCandidates(member);
     const collectiveContributionCount = collectiveContributionDataAvailable
       ? collectiveTaskEntries.reduce(function(sum, task) {
-          return sum + (hasHandleIntersection(memberHandles, task.contributorHandles) ? 1 : 0);
+          if (!task.hasAssigneeData) {
+            return sum;
+          }
+          return sum + (hasHandleIntersection(memberHandles, task.assigneeHandles) ? 1 : 0);
         }, 0)
       : null;
 
@@ -4355,7 +4422,7 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
       individualPercent: individualPercent,
       memberHandles: memberHandles,
       collectiveContributionCount: collectiveContributionCount,
-      collectiveContributionTotal: collectiveTaskEntries.length
+      collectiveContributionTotal: collectiveContributionDataAvailable ? collectiveContributionDataTaskTotal : null
     });
   });
   const indConnectedClosed = accountabilityMembers.reduce(function(sum, member) {
@@ -4860,11 +4927,11 @@ function renderStats(model) {
     `<div class="stat-tile"><span class="stat-val">${stats.teamCount}</span><span class="stat-label">Echipe</span></div>` +
     `<div class="stat-tile"><span class="stat-val">${stats.closedIssues}/${stats.createdTasks}</span><span class="stat-label">Task-uri finalizate</span></div>` +
     `<div class="stat-tile"><span class="stat-val">${model.totalConnectedStudents}/${model.totalStudents}</span><span class="stat-label">Studen&#539;i conecta&#539;i</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${escapeHtml(colStr)}</span><span class="stat-label">Task-uri echip&#259;</span></div>`;
+    `<div class="stat-tile"><span class="stat-val">${escapeHtml(colStr)}</span><span class="stat-label">Task-uri de echip&#259;</span></div>`;
 
   document.getElementById('course-insight').innerHTML =
     `<div class="course-insight-card">` +
-      `<span class="course-insight-label">Course status</span>` +
+      `<span class="course-insight-label">Status curs</span>` +
       `<p class="course-insight-text">${escapeHtml(model.insightText)}</p>` +
     `</div>`;
 }
@@ -4917,7 +4984,7 @@ function renderJourney(model) {
       `<div class="mountain-card">` +
         `<div class="mountain-caption">` +
           `<div>` +
-            `<div class="mountain-title">Progress</div>` +
+            `<div class="mountain-title">Progres</div>` +
           `</div>` +
           `<div class="mountain-badge">` +
             `<span class="mountain-badge-label">Milestone curent</span>` +
@@ -4935,7 +5002,7 @@ function renderJourney(model) {
           `<span class="mountain-legend-item"><span class="mountain-legend-dot is-student"></span>Bulin&#259; plin&#259; = Student</span>` +
           `<span class="mountain-legend-item"><span class="mountain-legend-dot is-team"></span>Badge mare = Echip&#259;</span>` +
         `</div>` +
-        `<div class="mountain-postscript">After summit: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
+        `<div class="mountain-postscript">Dup&#259; v&acirc;rf: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
         `<div class="mountain-top-students">` +
           `<div class="mountain-top-title">Top task-uri individuale</div>` +
           `<div class="mountain-top-title" style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--dim);margin:0.1rem 0 0.28rem;font-weight:400;">100% &icirc;nseamn&#259; c&#259; studentul &#537;i-a finalizat task-urile individuale atribuite.</div>` +
@@ -5006,7 +5073,7 @@ function renderProjectStats(model) {
       const t = sanitizeIssueTitle(issue.title);
       if (inferStageKey(t) === currentStageKey && !cbCollSeen[t]) {
         cbCollSeen[t] = true;
-        cbCollMatrix.push({ title: t, url: issue.url, done: 0, open: 0, absent: 0 });
+        cbCollMatrix.push({ title: t, url: issue.url, done: 0, open: 0, absent: 0, doneLabels: [], openLabels: [], absentLabels: [] });
       }
     });
   });
@@ -5015,9 +5082,16 @@ function renderProjectStats(model) {
     cbCollMatrix.forEach(function(task) {
       const isClosed = (team.collectiveClosedIssues || []).some(function(i) { return sanitizeIssueTitle(i.title) === task.title; });
       const isOpen = (team.collectiveOpenIssues || []).some(function(i) { return sanitizeIssueTitle(i.title) === task.title; });
-      if (isClosed) task.done++;
-      else if (isOpen) task.open++;
-      else task.absent++;
+      if (isClosed) {
+        task.done++;
+        task.doneLabels.push(team.label);
+      } else if (isOpen) {
+        task.open++;
+        task.openLabels.push(team.label);
+      } else {
+        task.absent++;
+        task.absentLabels.push(team.label);
+      }
     });
   });
 
@@ -5106,11 +5180,11 @@ function renderProjectStats(model) {
         '<div class="cb-summary-list">' +
           cbCollMatrix.map(function(task) {
             return '<div class="cb-summary-row">' +
-              '<a class="cb-summary-task" href="' + escapeHtml(task.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(formatCompactIssueTitle(task.title)) + '</a>' +
+              '<a class="cb-summary-task" href="' + escapeHtml(task.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(formatCollectiveTaskShortTitle(task.title)) + '</a>' +
               '<div class="cb-summary-stats">' +
-                '<span class="cb-summary-stat is-done">Finalizate ' + task.done + '/' + totalTeamCount + '</span>' +
-                '<span class="cb-summary-stat is-open">In progres ' + task.open + '/' + totalTeamCount + '</span>' +
-                '<span class="cb-summary-stat is-absent">Lips&#259; ' + task.absent + '/' + totalTeamCount + '</span>' +
+                '<span class="cb-summary-stat is-done">Finalizat: ' + escapeHtml(formatTeamLabelList(task.doneLabels)) + '</span>' +
+                '<span class="cb-summary-stat is-open">&Icirc;n lucru: ' + escapeHtml(formatTeamLabelList(task.openLabels)) + '</span>' +
+                '<span class="cb-summary-stat is-absent">Lips&#259;/neconectat: ' + escapeHtml(formatTeamLabelList(task.absentLabels)) + '</span>' +
               '</div>' +
             '</div>';
           }).join('') +
@@ -5173,7 +5247,7 @@ function renderProjectStats(model) {
   if (model.topTeam) {
     controlMiniItems.push(
       `<div class="control-panel-mini">` +
-        `<span class="control-panel-mini-label">Top team</span>` +
+        `<span class="control-panel-mini-label">Echip&#259; lider</span>` +
         `<span class="control-panel-mini-value">${escapeHtml(model.topTeam.name)} · ${model.topTeam.overallPercent}%</span>` +
       `</div>`
     );
@@ -5611,8 +5685,8 @@ function getConnectedStageCompletionSummary(team, stageKey) {
     return stageProgress.total > 0 && stageProgress.closed >= stageProgress.total;
   }).length;
   const baseCopy = missingCount > 0
-    ? `${completedCount}/${connectedCount} conecta&#539;i finaliza&#539;i`
-    : `${completedCount}/${connectedCount} studen&#539;i finaliza&#539;i`;
+    ? `finalizat de ${completedCount}/${connectedCount} conecta&#539;i`
+    : `finalizat de ${completedCount}/${connectedCount} studen&#539;i`;
 
   return {
     connectedCount: connectedCount,
@@ -5672,7 +5746,7 @@ function renderTeams(model) {
                 '<th>Cod</th>' +
                 '<th>Progres individual</th>' +
                 '<th>Task-uri individuale</th>' +
-                '<th>Task-uri echip&#259;</th>' +
+                '<th>Task-uri de echip&#259;</th>' +
               '</tr>' +
             '</thead>' +
             '<tbody>' +
@@ -5712,7 +5786,7 @@ function renderTeams(model) {
       : '<div class="team-empty">Niciun student conectat.</div>';
 
     const contributionNote = team.collectiveContributionNoteRequired
-      ? '<div class="student-collective-note">Contribu&#539;ia la task-uri de echip&#259; apare doar dac&#259; task-urile colective sunt asignate pe GitHub.</div>'
+      ? '<div class="student-collective-note">Contribu&#539;ia la task-uri de echip&#259; apare dup&#259; ce task-urile colective sunt asignate pe GitHub.</div>'
       : '';
     const collectiveSummaryMarkup = collectiveEntries.length
       ? (
@@ -5771,9 +5845,9 @@ function renderTeams(model) {
           `<div class="team-header-main">` +
             `<div class="team-card-name">${escapeHtml(team.name)}</div>` +
             `<div class="team-header-breakdown">` +
-              `Overall: <b>${escapeHtml(taskRatio)} &middot; ${overallPercent}%</b><br>` +
-              `Individuale: <b>${escapeHtml(formatTaskRatio(indSum.closed, indSum.total))} &middot; ${indSum.percent}%</b><br>` +
-              `Echip&#259;: <b>${escapeHtml(formatTaskRatio(colSum.closed, colSum.total))} &middot; ${colSum.percent}%</b><br>` +
+              `Progres total: <b>${escapeHtml(taskRatio)} &middot; ${overallPercent}%</b><br>` +
+              `Task-uri individuale: <b>${escapeHtml(formatTaskRatio(indSum.closed, indSum.total))} &middot; ${indSum.percent}%</b><br>` +
+              `Task-uri de echip&#259;: <b>${escapeHtml(formatTaskRatio(colSum.closed, colSum.total))} &middot; ${colSum.percent}%</b><br>` +
               `Membri: <b>${connectedCount}/${totalMemberCount} conecta&#539;i</b>` +
             `</div>` +
           `</div>` +
@@ -5785,7 +5859,7 @@ function renderTeams(model) {
         `</div>` +
         `<div class="team-progress-row">` +
           `<div class="team-progress-head">` +
-            `<span class="team-progress-label">Progres overall</span>` +
+            `<span class="team-progress-label">Progres total</span>` +
             `<span class="team-progress-meta">${overallPercent}% &middot; ${escapeHtml(taskRatio)}</span>` +
           `</div>` +
           `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${teamBarWidth}%; background:${teamBarColor};"></div></div>` +
@@ -5799,7 +5873,7 @@ function renderTeams(model) {
         `</div>` +
         `<div class="team-section">` +
           `<div class="team-section-header">` +
-            `<div class="team-subtitle">Responsabilitate studen&#539;i</div>` +
+            `<div class="team-subtitle">Responsabilitate pe studen&#539;i</div>` +
             `<div class="team-section-meta">${connectedCount}/${totalMemberCount} conecta&#539;i</div>` +
           `</div>` +
           `${studentTableMarkup}` +
