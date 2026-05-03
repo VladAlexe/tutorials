@@ -567,6 +567,48 @@ section { padding-top: 2rem; }
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.92);
 }
 
+.mountain-student-marker {
+  cursor: pointer;
+  outline: none;
+}
+
+.mountain-student-bubble {
+  transition: stroke-width 0.14s ease, filter 0.14s ease;
+}
+
+.mountain-student-marker:hover .mountain-student-bubble,
+.mountain-student-marker.is-active .mountain-student-bubble,
+.mountain-student-marker:focus-visible .mountain-student-bubble {
+  stroke-width: 4.2;
+  filter: drop-shadow(0 4px 10px rgba(48, 37, 22, 0.24));
+}
+
+.mountain-student-label {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.14s ease;
+}
+
+.mountain-student-marker:hover .mountain-student-label,
+.mountain-student-marker.is-active .mountain-student-label,
+.mountain-student-marker:focus-visible .mountain-student-label {
+  opacity: 1;
+}
+
+.mountain-student-label-bg {
+  fill: rgba(255,255,255,0.96);
+  stroke: rgba(181, 120, 74, 0.34);
+  stroke-width: 1.2;
+}
+
+.mountain-student-label-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.2px;
+  font-weight: 700;
+  fill: #3a342a;
+  letter-spacing: 0.04em;
+}
+
 .mountain-status-chip {
   --chip-dot: var(--team-color, var(--accent));
   display: inline-flex;
@@ -4098,7 +4140,7 @@ function placeMountainStudentMarkers(markers) {
 
   groups.forEach(function(group) {
     let lastProjectedDistance = null;
-    group.forEach(function(marker) {
+    group.forEach(function(marker, index) {
       const routePoint = {
         x: marker.routeX || marker.x || 0,
         y: marker.routeY || marker.y || 0,
@@ -4107,14 +4149,16 @@ function placeMountainStudentMarkers(markers) {
       };
       const markerDistance = toNumber(marker.routeDistance);
       let projectedDistance = markerDistance;
+      const minGap = STUDENT_MARKER_R * 1.02;
 
-      if (lastProjectedDistance !== null && (projectedDistance - lastProjectedDistance) < (STUDENT_MARKER_R * 0.9)) {
-        projectedDistance = lastProjectedDistance + (STUDENT_MARKER_R * 0.9);
+      if (lastProjectedDistance !== null && (projectedDistance - lastProjectedDistance) < minGap) {
+        projectedDistance = lastProjectedDistance + minGap;
       }
 
       const tangentOffset = projectedDistance - markerDistance;
+      const verticalLift = group.length > 1 ? Math.min(7, 2 + (index * 1.6)) : 0;
       marker.x = Math.max(18, Math.min(1902, routePoint.x + (routePoint.tx * tangentOffset)));
-      marker.y = Math.max(18, Math.min(1062, routePoint.y + (routePoint.ty * tangentOffset)));
+      marker.y = Math.max(18, Math.min(1062, routePoint.y + (routePoint.ty * tangentOffset) - verticalLift));
       lastProjectedDistance = projectedDistance;
     });
   });
@@ -4219,6 +4263,10 @@ function buildMountainScene(teams) {
         teamX: teamMarker.x,
         teamY: teamMarker.y,
         teamLabel: team.label,
+        teamName: team.name,
+        studentCode: getMemberLabel(entry.member),
+        studentName: entry.name,
+        studentScore: entry.studentScore,
         color: teamMarker.color,
         opacity: 1,
         title: tooltip
@@ -5000,6 +5048,8 @@ function renderJourney(model) {
         `</div>` +
       `</div>` +
     `</div>`;
+
+  initMountainStudentInteractions();
 }
 
 function renderProjectStats(model) {
@@ -6121,13 +6171,30 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
           x2="${marker.x.toFixed(1)}" y2="${marker.y.toFixed(1)}"
           stroke="${marker.color}" stroke-opacity="0.3" stroke-width="2.2"/>
   `).join('');
-  const studentDots = (studentMarkers || []).map(marker => `
-    <circle cx="${marker.x.toFixed(1)}" cy="${marker.y.toFixed(1)}" r="${STUDENT_MARKER_R}"
-            fill="${marker.color}" fill-opacity="${marker.opacity}"
-            stroke="rgba(255,255,255,0.98)" stroke-width="3.2">
-      <title>${escapeHtml(marker.title || '')}</title>
-    </circle>
-  `).join('');
+  const studentDots = (studentMarkers || []).map(marker => {
+    const labelText = `${marker.studentCode || marker.studentName || 'Student'} · ${marker.teamLabel || ''}`.trim();
+    const labelWidth = Math.max(72, Math.round(labelText.length * 6.6));
+    const labelY = marker.y - STUDENT_MARKER_R - 14;
+    return `
+      <g class="mountain-student-marker"
+         data-student="${escapeHtml(marker.studentCode || marker.studentName || 'Student')}"
+         data-team="${escapeHtml(marker.teamLabel || '')}"
+         tabindex="0"
+         role="button"
+         aria-label="${escapeHtml((marker.studentCode || marker.studentName || 'Student') + ' din ' + (marker.teamName || marker.teamLabel || 'echipa'))}">
+        <circle class="mountain-student-bubble"
+                cx="${marker.x.toFixed(1)}" cy="${marker.y.toFixed(1)}" r="${STUDENT_MARKER_R}"
+                fill="${marker.color}" fill-opacity="${marker.opacity}"
+                stroke="rgba(255,255,255,0.98)" stroke-width="3.2">
+          <title>${escapeHtml(marker.title || '')}</title>
+        </circle>
+        <g class="mountain-student-label" transform="translate(${marker.x.toFixed(1)} ${labelY.toFixed(1)})">
+          <rect class="mountain-student-label-bg" x="${(-labelWidth / 2).toFixed(1)}" y="-11.5" width="${labelWidth}" height="21" rx="10.5"></rect>
+          <text class="mountain-student-label-text" x="0" y="-0.5" text-anchor="middle" dominant-baseline="middle">${escapeHtml(labelText)}</text>
+        </g>
+      </g>
+    `;
+  }).join('');
 
   const badges = sorted.map(marker => {
     return `
@@ -6152,6 +6219,50 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
   }).join('');
 
   return connectors + pins + studentConnectors + studentDots + badges;
+}
+
+function initMountainStudentInteractions() {
+  const wrap = document.querySelector('#journey-wrap .mountain-image-wrap svg');
+  if (!wrap) {
+    return;
+  }
+
+  const studentMarkers = Array.from(wrap.querySelectorAll('.mountain-student-marker'));
+  if (!studentMarkers.length) {
+    return;
+  }
+
+  function clearActive(exceptMarker) {
+    studentMarkers.forEach(function(marker) {
+      if (marker !== exceptMarker) {
+        marker.classList.remove('is-active');
+      }
+    });
+  }
+
+  studentMarkers.forEach(function(marker) {
+    marker.addEventListener('click', function(event) {
+      event.stopPropagation();
+      const isActive = marker.classList.contains('is-active');
+      clearActive();
+      if (!isActive) {
+        marker.classList.add('is-active');
+      }
+    });
+
+    marker.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        marker.click();
+      }
+    });
+  });
+
+  wrap.addEventListener('click', function(event) {
+    if (!event.target.closest('.mountain-student-marker')) {
+      clearActive();
+    }
+  });
 }
 
 fetch('./progress.json')
