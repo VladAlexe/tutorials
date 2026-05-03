@@ -2041,6 +2041,13 @@ section { padding-top: 2rem; }
   white-space: nowrap;
 }
 
+.student-create-resolve {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted, #888);
+  white-space: nowrap;
+}
+
 .student-progress-value {
   font-weight: 700;
   color: var(--text);
@@ -3924,6 +3931,31 @@ function getStudentTieValue(member) {
   return total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
 }
 
+function computeStudentScore(member) {
+  const issueProgressPct = member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null
+    ? toNumber(member.issue_progress_percent)
+    : (function() {
+        const total = toNumber(member && member.total);
+        const closed = toNumber(member && member.closed);
+        return total > 0 ? Math.round((closed / total) * 100) : 0;
+      })();
+  const individualPct = clampPercent(issueProgressPct);
+
+  const tic = member && member.team_issue_contribution ? member.team_issue_contribution : {};
+  const instructorTotal = Math.max(0, toNumber(tic.collective_total));
+  const instructorClosed = Math.max(0, toNumber(tic.closed_by_member));
+  const instructorPct = instructorTotal > 0 ? clampPercent(Math.round((instructorClosed / instructorTotal) * 100)) : 0;
+  const hasInstructorTasks = instructorTotal > 0;
+
+  const createdByMember = Math.max(0, toNumber(tic.created_by_member));
+  const memberCreatedScore = Math.min(100, (createdByMember + instructorClosed) * 25);
+
+  if (hasInstructorTasks) {
+    return clampPercent(Math.round(0.60 * individualPct + 0.30 * instructorPct + 0.10 * memberCreatedScore));
+  }
+  return clampPercent(Math.round(0.85 * individualPct + 0.15 * memberCreatedScore));
+}
+
 function getMemberMountainStageState(member) {
   const progressMap = member && member.progress ? member.progress : {};
   const currentStageKey = inferStageKey(member && member.current_stage);
@@ -3979,25 +4011,18 @@ function buildMountainTopStudents(teams) {
 
   teams.forEach(function(team) {
     (Array.isArray(team.connectedMembers) ? team.connectedMembers : []).forEach(function(member) {
-      const stageState = getMemberMountainStageState(member);
-      if (!stageState) {
-        return;
-      }
+      const studentScore = computeStudentScore(member);
       rankedStudents.push({
         name: getStudentDisplayName(member),
         teamLabel: team.label,
-        stageKey: stageState.topStageKey,
-        progress: stageState.stagePercent,
-        tieValue: getStudentTieValue(member)
+        studentScore: studentScore
       });
     });
   });
 
   rankedStudents.sort(function(a, b) {
     return (
-      getMountainStageRank(b.stageKey) - getMountainStageRank(a.stageKey) ||
-      b.progress - a.progress ||
-      b.tieValue - a.tieValue ||
+      b.studentScore - a.studentScore ||
       a.teamLabel.localeCompare(b.teamLabel) ||
       a.name.localeCompare(b.name)
     );
@@ -4006,7 +4031,7 @@ function buildMountainTopStudents(teams) {
   let lastRank = 0;
   let lastKey = '';
   return rankedStudents.slice(0, 6).map(function(student, index) {
-    const currentKey = [getMountainStageRank(student.stageKey), student.progress, student.tieValue].join('|');
+    const currentKey = String(student.studentScore);
     if (currentKey !== lastKey) {
       lastRank = index + 1;
       lastKey = currentKey;
@@ -4016,8 +4041,9 @@ function buildMountainTopStudents(teams) {
       rank: lastRank,
       name: student.name,
       teamLabel: student.teamLabel,
-      stageKey: student.stageKey,
-      progress: student.progress
+      studentScore: student.studentScore,
+      stageKey: '',
+      progress: student.studentScore
     };
   });
 }
@@ -4115,33 +4141,33 @@ function buildMountainScene(teams) {
     const teamMarker = teamMarkerByLabel[team.label];
     const teamMembers = Array.isArray(team.connectedMembers) ? team.connectedMembers.slice() : [];
     const memberEntries = teamMembers.map(function(member) {
-      const stageState = getMemberMountainStageState(member);
+      const studentScore = computeStudentScore(member);
+      const routePoint = getMountainPointAtPercent(studentScore);
+      const tic = member && member.team_issue_contribution ? member.team_issue_contribution : {};
       return {
         member: member,
         name: getStudentDisplayName(member),
-        stageState: stageState,
-        routePoint: stageState ? getMountainPointForState(stageState) : null
+        studentScore: studentScore,
+        routePoint: routePoint,
+        indPct: clampPercent(member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null
+          ? toNumber(member.issue_progress_percent)
+          : (toNumber(member && member.total) > 0 ? Math.round((toNumber(member && member.closed) / toNumber(member && member.total)) * 100) : 0)),
+        instrTotal: Math.max(0, toNumber(tic.collective_total)),
+        instrClosed: Math.max(0, toNumber(tic.closed_by_member)),
+        memberCreated: Math.max(0, toNumber(tic.created_by_member))
       };
     }).sort(function(a, b) {
-      const aDistance = a.routePoint ? a.routePoint.routeDistance : Number.POSITIVE_INFINITY;
-      const bDistance = b.routePoint ? b.routePoint.routeDistance : Number.POSITIVE_INFINITY;
-      return aDistance - bDistance || a.name.localeCompare(b.name);
+      return (a.routePoint ? a.routePoint.routeDistance : 0) - (b.routePoint ? b.routePoint.routeDistance : 0) ||
+        a.name.localeCompare(b.name);
     });
 
     memberEntries.forEach(function(entry) {
       if (!teamMarker) {
         return;
       }
-      const routePoint = entry.routePoint || teamMarker.routePoint || {
-        x: teamMarker.routeX,
-        y: teamMarker.routeY,
-        tx: 1,
-        ty: 0,
-        px: 0,
-        py: 1,
-        routeDistance: teamMarker.routeDistance
-      };
-      const opacity = 1;
+      const routePoint = entry.routePoint || { x: teamMarker.routeX, y: teamMarker.routeY, tx: 1, ty: 0, px: 0, py: 1, routeDistance: teamMarker.routeDistance };
+      const teamTaskStr = entry.instrTotal > 0 ? `${entry.instrClosed}/${entry.instrTotal}` : '—';
+      const tooltip = `${entry.name} · scor ${entry.studentScore} · individual ${entry.indPct}% · echipă ${teamTaskStr} · create ${entry.memberCreated} · rezolvate ${entry.instrClosed}`;
 
       studentMarkers.push({
         x: Math.max(18, Math.min(1902, routePoint.x)),
@@ -4155,10 +4181,8 @@ function buildMountainScene(teams) {
         teamY: teamMarker.y,
         teamLabel: team.label,
         color: teamMarker.color,
-        opacity: opacity,
-        title: entry.stageState
-          ? `${entry.name} · ${team.label} · ${entry.stageState.topStageKey} · ${entry.stageState.stagePercent}%`
-          : `${entry.name} · ${team.label}`
+        opacity: 1,
+        title: tooltip
       });
     });
   });
@@ -4336,7 +4360,8 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
       collectiveContributionCount: collectiveContributionCount,
       collectiveContributionTotal: collectiveContributionTotal,
       collectiveCreatedCount: collectiveCreatedCount,
-      githubHandle: String(member && member.github_handle || '').trim()
+      githubHandle: String(member && member.github_handle || '').trim(),
+      studentScore: computeStudentScore(member)
     });
   });
   const collectiveContributionNoteRequired = accountabilityMembers.length > 0 && accountabilityMembers.every(function(member) {
@@ -4674,6 +4699,12 @@ function buildDashboardModel(data) {
   const totalConnectedStudents = teams.reduce(function(s, t) { return s + t.connectedMembers.length; }, 0);
   const totalCollectiveClosed = teams.reduce(function(s, t) { return s + t.collectiveTeamSummary.closed; }, 0);
   const totalCollectiveTotal = teams.reduce(function(s, t) { return s + t.collectiveTeamSummary.total; }, 0);
+  const totalMemberCreated = teams.reduce(function(s, t) {
+    return s + (t.accountabilityMembers || []).reduce(function(ms, m) { return ms + Math.max(0, toNumber(m.collectiveCreatedCount)); }, 0);
+  }, 0);
+  const totalMemberClosed = teams.reduce(function(s, t) {
+    return s + (t.accountabilityMembers || []).reduce(function(ms, m) { return ms + Math.max(0, toNumber(m.collectiveContributionCount)); }, 0);
+  }, 0);
 
   return {
     coursePlan: coursePlan,
@@ -4712,6 +4743,8 @@ function buildDashboardModel(data) {
     totalConnectedStudents: totalConnectedStudents,
     totalCollectiveClosed: totalCollectiveClosed,
     totalCollectiveTotal: totalCollectiveTotal,
+    totalMemberCreated: totalMemberCreated,
+    totalMemberClosed: totalMemberClosed,
     nextTasksMatrix: buildNextTasksMatrix(teams, currentMilestone.key),
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} task-uri deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
@@ -4885,8 +4918,8 @@ function renderJourney(model) {
           `<span class="mountain-top-rank">${student.rank}.</span>` +
           `<span class="mountain-top-name">${escapeHtml(student.name)}</span>` +
           `<span class="mountain-top-team">${escapeHtml(student.teamLabel)}</span>` +
-          `<span class="mountain-top-stage">${escapeHtml(student.stageKey)}</span>` +
-          `<span class="mountain-top-progress">${student.progress}%</span>` +
+          `<span class="mountain-top-stage">scor</span>` +
+          `<span class="mountain-top-progress">${student.studentScore !== undefined ? student.studentScore : student.progress}%</span>` +
         `</div>`
       );
     }).join('')
@@ -4920,8 +4953,8 @@ function renderJourney(model) {
         `</div>` +
         `<div class="mountain-postscript">Dup&#259; v&acirc;rf: ${escapeHtml(model.postSummitStage.key)} &middot; ${escapeHtml(model.postSummitStage.title)}</div>` +
         `<div class="mountain-top-students">` +
-          `<div class="mountain-top-title">Top task-uri individuale</div>` +
-          `<div class="mountain-top-title" style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--dim);margin:0.1rem 0 0.28rem;font-weight:400;">100% &icirc;nseamn&#259; c&#259; studentul &#537;i-a finalizat task-urile individuale atribuite.</div>` +
+          `<div class="mountain-top-title">Top contribu&#539;ie studen&#539;i</div>` +
+          `<div class="mountain-top-title" style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--dim);margin:0.1rem 0 0.28rem;font-weight:400;">Scorul combin&#259; task-uri individuale, task-uri de echip&#259; date de profesor &#537;i issue-uri create/rezolvate de membri.</div>` +
           `<div class="mountain-top-list">${topStudentsMarkup}</div>` +
         `</div>` +
       `</div>` +
@@ -5119,6 +5152,20 @@ function renderProjectStats(model) {
         }).join('') +
       '</div>' +
     '</div>';
+  const cbMemberIssueSectionHtml = '<div class="cb-section">' +
+      '<div class="cb-section-title">Issue-uri create de membri</div>' +
+      '<div class="cb-team-summary-list">' +
+        model.teams.map(function(team) {
+          const acctMembers = team.accountabilityMembers || [];
+          const created = acctMembers.reduce(function(s, m) { return s + Math.max(0, toNumber(m.collectiveCreatedCount)); }, 0);
+          const resolved = acctMembers.reduce(function(s, m) { return s + Math.max(0, toNumber(m.collectiveContributionCount)); }, 0);
+          return '<div class="cb-team-summary-row">' +
+            '<span class="cb-team-summary-label">' + escapeHtml(team.label) + '</span>' +
+            '<span class="cb-team-summary-copy">' + created + ' create &middot; ' + resolved + ' rezolvate</span>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
   const controlTiles = [
     {
       label: 'Progres total',
@@ -5263,6 +5310,7 @@ function renderProjectStats(model) {
           `<div class="project-title">${escapeHtml(currentStageKey)} Control Board</div>` +
           `${cbCollectiveSummarySectionHtml}` +
           `${cbTeamSummarySectionHtml}` +
+          `${cbMemberIssueSectionHtml}` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -5648,6 +5696,8 @@ function renderTeams(model) {
     const indSum = team.individualTeamSummary || { closed: 0, total: 0, open: 0, percent: 0 };
     const colSum = team.collectiveTeamSummary || { closed: 0, total: 0, open: 0, percent: 0 };
     const accountabilityMembers = sortMembers(team.accountabilityMembers || []);
+    const teamMemberCreated = accountabilityMembers.reduce(function(s, m) { return s + Math.max(0, toNumber(m.collectiveCreatedCount)); }, 0);
+    const teamMemberClosed = accountabilityMembers.reduce(function(s, m) { return s + Math.max(0, toNumber(m.collectiveContributionCount)); }, 0);
     const collectiveEntries = team.collectiveTaskEntries || [];
 
     const studentTableMarkup = accountabilityMembers.length
@@ -5659,7 +5709,8 @@ function renderTeams(model) {
                 '<th>Cod</th>' +
                 '<th>Progres individual</th>' +
                 '<th>Task-uri individuale</th>' +
-                '<th>Task-uri de echip&#259;</th>' +
+                '<th>Task-uri echip&#259; date</th>' +
+                '<th>Create / rezolvate</th>' +
               '</tr>' +
             '</thead>' +
             '<tbody>' +
@@ -5682,6 +5733,12 @@ function renderTeams(model) {
                     '</span>'
                   : '<span class="student-team-task-empty">&#8212;</span>';
 
+                const memberIssuesCreated = Math.max(0, toNumber(member.collectiveCreatedCount));
+                const memberIssuesClosed = Math.max(0, toNumber(member.collectiveContributionCount));
+                const createResolveMarkup = (memberIssuesCreated > 0 || memberIssuesClosed > 0)
+                  ? '<span class="student-create-resolve">create: ' + memberIssuesCreated + ' &middot; rez.: ' + memberIssuesClosed + '</span>'
+                  : '<span class="student-task-empty">&#8212;</span>';
+
                 return (
                   '<tr>' +
                     '<td class="student-code-cell">' + escapeHtml(getMemberLabel(member)) + '</td>' +
@@ -5697,6 +5754,7 @@ function renderTeams(model) {
                         : '<span class="student-task-empty">&#8212;</span>') +
                     '</td>' +
                     '<td>' + teamTaskMarkup + '</td>' +
+                    '<td>' + createResolveMarkup + '</td>' +
                   '</tr>'
                 );
               }).join('') +
@@ -5769,7 +5827,8 @@ function renderTeams(model) {
               `Progres total: <b>${escapeHtml(taskRatio)} &middot; ${overallPercent}%</b><br>` +
               `Individuale: <b>${escapeHtml(formatTaskRatio(indSum.closed, indSum.total))} &middot; ${indSum.percent}%</b><br>` +
               `Echip&#259;: <b>${escapeHtml(formatTaskRatio(colSum.closed, colSum.total))} &middot; ${colSum.percent}%</b><br>` +
-              `Membri: <b>${connectedCount}/${totalMemberCount} conecta&#539;i</b>` +
+              `Membri: <b>${connectedCount}/${totalMemberCount} conecta&#539;i</b><br>` +
+              `Issue-uri membri: <b>${teamMemberCreated} create &middot; ${teamMemberClosed} rezolvate</b>` +
             `</div>` +
           `</div>` +
           `<div class="team-card-links">` +
