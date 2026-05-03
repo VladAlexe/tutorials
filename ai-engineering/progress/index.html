@@ -4141,31 +4141,46 @@ function buildMountainScene(teams) {
     const teamMarker = teamMarkerByLabel[team.label];
     const teamMembers = Array.isArray(team.connectedMembers) ? team.connectedMembers.slice() : [];
     const memberEntries = teamMembers.map(function(member) {
+      const stageState = getMemberMountainStageState(member);
+      const routePoint = stageState ? getMountainPointForState(stageState) : null;
       const studentScore = computeStudentScore(member);
-      const routePoint = getMountainPointAtPercent(studentScore);
       const tic = member && member.team_issue_contribution ? member.team_issue_contribution : {};
+      const indPct = clampPercent(member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null
+        ? toNumber(member.issue_progress_percent)
+        : (toNumber(member && member.total) > 0 ? Math.round((toNumber(member && member.closed) / toNumber(member && member.total)) * 100) : 0));
+      const instrTotal = Math.max(0, toNumber(tic.collective_total));
+      const instrClosed = Math.max(0, toNumber(tic.closed_by_member));
+      const memberCreated = Math.max(0, toNumber(tic.created_by_member));
       return {
         member: member,
         name: getStudentDisplayName(member),
-        studentScore: studentScore,
+        stageState: stageState,
         routePoint: routePoint,
-        indPct: clampPercent(member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null
-          ? toNumber(member.issue_progress_percent)
-          : (toNumber(member && member.total) > 0 ? Math.round((toNumber(member && member.closed) / toNumber(member && member.total)) * 100) : 0)),
-        instrTotal: Math.max(0, toNumber(tic.collective_total)),
-        instrClosed: Math.max(0, toNumber(tic.closed_by_member)),
-        memberCreated: Math.max(0, toNumber(tic.created_by_member))
+        studentScore: studentScore,
+        indPct: indPct,
+        instrTotal: instrTotal,
+        instrClosed: instrClosed,
+        memberCreated: memberCreated
       };
     }).sort(function(a, b) {
-      return (a.routePoint ? a.routePoint.routeDistance : 0) - (b.routePoint ? b.routePoint.routeDistance : 0) ||
-        a.name.localeCompare(b.name);
+      const aDistance = a.routePoint ? a.routePoint.routeDistance : Number.POSITIVE_INFINITY;
+      const bDistance = b.routePoint ? b.routePoint.routeDistance : Number.POSITIVE_INFINITY;
+      return aDistance - bDistance || a.name.localeCompare(b.name);
     });
 
     memberEntries.forEach(function(entry) {
       if (!teamMarker) {
         return;
       }
-      const routePoint = entry.routePoint || { x: teamMarker.routeX, y: teamMarker.routeY, tx: 1, ty: 0, px: 0, py: 1, routeDistance: teamMarker.routeDistance };
+      const routePoint = entry.routePoint || teamMarker.routePoint || {
+        x: teamMarker.routeX,
+        y: teamMarker.routeY,
+        tx: 1,
+        ty: 0,
+        px: 0,
+        py: 1,
+        routeDistance: teamMarker.routeDistance
+      };
       const teamTaskStr = entry.instrTotal > 0 ? `${entry.instrClosed}/${entry.instrTotal}` : '—';
       const tooltip = `${entry.name} · scor ${entry.studentScore} · individual ${entry.indPct}% · echipă ${teamTaskStr} · create ${entry.memberCreated} · rezolvate ${entry.instrClosed}`;
 
