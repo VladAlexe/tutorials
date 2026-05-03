@@ -3181,7 +3181,6 @@ const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
 const MOUNTAIN_TEAM_PALETTE = ['#C65B33', '#5A8F2F', '#2E71BF', '#C98A19', '#158B82', '#B24B66', '#596FBC', '#9E4C28'];
-const MOUNTAIN_STUDENT_PALETTE = ['#E63946', '#0077B6', '#2A9D8F', '#F4A261', '#7B2CBF', '#FF006E', '#3A86FF', '#FB5607', '#1D3557', '#06D6A0'];
 function progressToColor(percent) {
   var t = clampPercent(percent) / 100;
   var r = Math.round(181 + (104 - 181) * t);
@@ -4007,60 +4006,6 @@ function buildMountainTopStudents(teams) {
   });
 }
 
-function getMountainStudentColor(member, fallbackIndex) {
-  const displayCode = String(member && (member.display_code || member.local_code || member.student_key || '')).trim();
-  const match = displayCode.match(/(\d+)/);
-  const paletteIndex = match ? Math.max(0, toNumber(match[1]) - 1) : toNumber(fallbackIndex);
-  return MOUNTAIN_STUDENT_PALETTE[paletteIndex % MOUNTAIN_STUDENT_PALETTE.length];
-}
-
-function stackMountainStudentMarkers(markers) {
-  const markerGroups = [];
-  const threshold = STUDENT_MARKER_R * 1.75;
-
-  (markers || []).forEach(function(marker) {
-    let group = null;
-    for (let index = 0; index < markerGroups.length; index += 1) {
-      const candidate = markerGroups[index];
-      const dx = candidate.anchorX - marker.x;
-      const dy = candidate.anchorY - marker.y;
-      if (Math.sqrt((dx * dx) + (dy * dy)) <= threshold) {
-        group = candidate;
-        break;
-      }
-    }
-
-    if (!group) {
-      group = { anchorX: marker.x, anchorY: marker.y, markers: [] };
-      markerGroups.push(group);
-    }
-
-    group.markers.push(marker);
-  });
-
-  markerGroups.forEach(function(group) {
-    if (group.markers.length <= 1) {
-      return;
-    }
-
-    const baseX = Math.round(group.markers.reduce(function(sum, marker) { return sum + marker.x; }, 0) / group.markers.length);
-    const baseY = Math.round(group.markers.reduce(function(sum, marker) { return sum + marker.y; }, 0) / group.markers.length);
-
-    group.markers
-      .slice()
-      .sort(function(a, b) {
-        return compareTeamLabels(a.teamLabel, b.teamLabel) || String(a.title || '').localeCompare(String(b.title || ''));
-      })
-      .forEach(function(marker, index) {
-        const offset = (index - ((group.markers.length - 1) / 2)) * (STUDENT_MARKER_R * 2.15);
-        marker.x = Math.max(22, Math.min(1898, baseX));
-        marker.y = Math.max(22, Math.min(1058, baseY + offset));
-      });
-  });
-
-  return markers;
-}
-
 function buildMountainScene(teams) {
   const teamMarkers = teams.map(function(team) {
     const stageState = getTeamMountainStageState(team);
@@ -4152,7 +4097,7 @@ function buildMountainScene(teams) {
         teamX: teamMarker.x,
         teamY: teamMarker.y,
         teamLabel: team.label,
-        color: getMountainStudentColor(entry.member, memberIndex),
+        color: teamMarker.color,
         opacity: opacity,
         title: entry.stageState
           ? `${entry.name} · ${team.label} · ${entry.stageState.topStageKey} · ${entry.stageState.stagePercent}%`
@@ -4163,7 +4108,7 @@ function buildMountainScene(teams) {
 
   return {
     teamMarkers: teamMarkers,
-    studentMarkers: stackMountainStudentMarkers(studentMarkers),
+    studentMarkers: studentMarkers,
     topStudents: buildMountainTopStudents(teams)
   };
 }
@@ -5969,7 +5914,9 @@ function placeMountainMarkers(markers) {
     }
 
     const prev = group[group.length - 1];
-    if (Math.abs(marker.routeDistance - prev.routeDistance) < 20) {
+    const dx = (marker.routeX || 0) - (prev.routeX || 0);
+    const dy = (marker.routeY || 0) - (prev.routeY || 0);
+    if (Math.sqrt((dx * dx) + (dy * dy)) < TEAM_COLLISION_DISTANCE) {
       group.push(marker);
     } else {
       groups.push(group);
@@ -5979,16 +5926,13 @@ function placeMountainMarkers(markers) {
   if (group.length) groups.push(group);
 
   groups.forEach(group => {
-    const mid = (group.length - 1) / 2;
     group.forEach((marker, index) => {
       const routePoint = marker.routePoint || { x: marker.routeX || 0, y: marker.routeY || 0, tx: 1, ty: 0, px: 0, py: 1 };
-      const localOffset = (index - mid) * 14;
-      const x = routePoint.x + (routePoint.px * localOffset);
-      const y = routePoint.y + (routePoint.py * localOffset);
+      const verticalLift = group.length > 1 ? index * Math.round(TEAM_BADGE_OUTER_R * 2.1) : 0;
 
-      marker.laneSign = localOffset >= 0 ? 1 : -1;
-      marker.x = Math.max(40, Math.min(1880, x));
-      marker.y = Math.max(40, Math.min(1040, y));
+      marker.laneSign = 1;
+      marker.x = Math.max(40, Math.min(1880, routePoint.x));
+      marker.y = Math.max(40, Math.min(1040, routePoint.y - verticalLift));
     });
   });
 
