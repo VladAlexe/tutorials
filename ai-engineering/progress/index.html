@@ -4380,10 +4380,7 @@ function buildMountainScene(teams) {
         py: 1,
         routeDistance: teamMarker.routeDistance
       };
-      const hoverStageCode = entry.routeState && entry.routeState.routeStageKey ? entry.routeState.routeStageKey : 'Base';
-      const hoverStagePct = Math.round((entry.routeState && entry.routeState.stagePercent) || 0);
-      const hoverTeamTaskText = entry.instrTotal > 0 ? `${entry.instrClosed}/${entry.instrTotal}` : '-';
-      const hoverTooltipText = `${getMemberLabel(entry.member)} din ${team.label} - ${hoverStageCode} ${hoverStagePct}% - individual ${entry.indPct}% - echipa ${hoverTeamTaskText} - creat ${entry.memberCreated}`;
+      const hoverTooltipText = `${getMemberLabel(entry.member)} din ${team.label}`;
 
       studentMarkers.push({
         x: Math.max(18, Math.min(1902, routePoint.x)),
@@ -6352,8 +6349,8 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
             fill="${marker.color}" stroke="white" stroke-width="2.6"/>
   `).join('');
   const studentDots = (studentMarkers || []).map(marker => {
-    const teamDisplay = marker.teamName || marker.teamLabel || 'echipa';
-    const labelText = `${marker.studentCode || marker.studentName || 'Student'} ${teamDisplay}`.trim();
+    const teamDisplay = marker.teamLabel || marker.teamName || 'echipa';
+    const labelText = `${marker.studentCode || marker.studentName || 'Student'} din ${teamDisplay}`.trim();
     const labelWidth = Math.max(72, Math.round(labelText.length * 6.6));
     const labelY = marker.y - STUDENT_MARKER_R - 14;
     return `
@@ -6363,7 +6360,7 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
          pointer-events="all"
          tabindex="0"
          role="button"
-         aria-label="${escapeHtml((marker.studentCode || marker.studentName || 'Student') + ' ' + teamDisplay)}">
+         aria-label="${escapeHtml((marker.studentCode || marker.studentName || 'Student') + ' din ' + teamDisplay)}">
         <circle class="mountain-student-hitbox"
                 cx="${marker.x.toFixed(1)}" cy="${marker.y.toFixed(1)}" r="${STUDENT_MARKER_R + 7}"
                 fill="rgba(255,255,255,0.001)" stroke="none" pointer-events="all"></circle>
