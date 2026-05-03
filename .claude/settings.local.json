@@ -9,7 +9,9 @@
       "Bash(Select-Object LineNumber, Line)",
       "Bash(Format-Table -AutoSize)",
       "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\('c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\\\\assets\\\\img\\\\mountain.png'\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(Select-String -Path \"c:\\\\PROJECTS\\\\courses\\\\tutorials\\\\ai-engineering\\\\progress\\\\index.html\" -Pattern \"</html>\")",
+      "Bash(Select-Object -Last 1)"
     ]
   }
 }

@@ -1904,6 +1904,68 @@ section { padding-top: 2rem; }
   margin-bottom: 6px;
 }
 
+/* Control Board */
+.cb-section { padding: 10px 0; border-bottom: 1px solid rgba(226,221,211,0.55); }
+.cb-section:last-child { border-bottom: none; }
+.cb-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-muted, #888); margin-bottom: 7px;
+}
+.cb-coll-table { display: flex; flex-direction: column; gap: 5px; }
+.cb-coll-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.cb-coll-task {
+  flex: 1 1 0; min-width: 0; font-size: 11px; color: var(--text);
+  text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cb-coll-task:hover { text-decoration: underline; }
+.cb-coll-stat {
+  font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.cb-coll-stat.is-done { background: rgba(34,197,94,0.12); color: #15803d; }
+.cb-coll-stat.is-open { background: rgba(251,191,36,0.14); color: #92400e; }
+.cb-coll-stat.is-absent { background: rgba(156,163,175,0.14); color: #6b7280; }
+.cb-grid-wrap { overflow-x: auto; }
+.cb-grid { display: grid; gap: 3px 4px; width: max-content; min-width: 100%; }
+.cb-grid-head {
+  font-size: 9px; font-weight: 700; text-align: center; color: var(--text-muted, #888);
+  padding: 0 2px;
+}
+.cb-grid-team {
+  font-size: 10px; font-weight: 700; color: var(--text); padding-right: 4px;
+  white-space: nowrap;
+}
+.cb-grid-cell {
+  font-size: 12px; text-align: center; line-height: 1; padding: 2px 0;
+}
+.cb-grid-cell.is-closed { color: #15803d; }
+.cb-grid-cell.is-open { color: #d97706; }
+.cb-grid-cell.is-absent { color: #9ca3af; }
+.cb-grid-cell.is-disconnected { color: #d1d5db; }
+.cb-grid-legend { font-size: 9px; color: var(--text-muted, #888); margin-top: 6px; }
+
+/* Team card member mini-grid */
+.team-member-mini {
+  display: grid; grid-template-columns: 32px 1fr auto auto;
+  align-items: center; gap: 0 6px;
+  padding: 3px 0; border-bottom: 1px solid rgba(226,221,211,0.36);
+  font-size: 11px;
+}
+.team-member-mini:last-child { border-bottom: none; }
+.team-member-mini.is-offline { opacity: 0.45; }
+.team-member-mini-code { font-weight: 700; color: var(--text); font-size: 10px; }
+.team-member-mini-symbols { font-size: 11px; letter-spacing: 1px; }
+.team-member-mini-ratio { font-size: 10px; color: var(--text-muted, #888); white-space: nowrap; }
+.team-member-mini-pct { font-size: 10px; font-weight: 700; color: var(--text); white-space: nowrap; min-width: 30px; text-align: right; }
+.sym-done { color: #15803d; }
+.sym-open { color: #d97706; }
+.team-missing-note {
+  font-size: 10px; color: #92400e; background: rgba(251,191,36,0.1);
+  border-radius: 4px; padding: 3px 7px; margin-top: 5px;
+}
+.team-header-breakdown { font-size: 10px; color: var(--text-muted, #888); line-height: 1.5; }
+.team-header-breakdown b { color: var(--text); }
+
 .project-task-card {
   padding: 0.58rem 0.64rem 0.62rem;
   border: 1px solid rgba(226, 221, 211, 0.82);
@@ -3031,7 +3093,7 @@ var DOT_R = 10;
 var TEAM_BADGE_OUTER_R = 30;
 var TEAM_BADGE_INNER_R = 22;
 var TEAM_ANCHOR_R = 7;
-var STUDENT_MARKER_R = 12;
+var STUDENT_MARKER_R = 15;
 var TEAM_COLLISION_DISTANCE = 46;
 var TEAM_COLLISION_PATTERN = [
   { tan: 0, perp: 0 },
@@ -3246,6 +3308,11 @@ function inferStageKey(value) {
   }
 
   return /final/i.test(safeValue) ? 'Final' : '';
+}
+
+function inferSubStepKey(title) {
+  const m = String(title || '').match(/\b(C\d+\.\d+)\b/i);
+  return m ? m[1].toUpperCase() : '';
 }
 
 function resolveStageMeta(value, coursePlan, fallbackKey) {
@@ -3815,6 +3882,35 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
       ? Math.round((closedIssues.length / (openIssues.length + closedIssues.length)) * 100)
       : 0
   };
+  const rawMembers = Array.isArray(team && team.members) ? team.members : [];
+  const connectedMembers = rawMembers.filter(function(m) { return m.active !== false && m.connected !== false; });
+  const missingMembers = rawMembers.filter(function(m) { return m.active !== false && m.connected === false; });
+  const membersWithIssues = connectedMembers.map(function(member) {
+    const localCode = String(member && member.local_code || '').trim();
+    const pattern = localCode
+      ? new RegExp('^' + localCode.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*-', 'i')
+      : null;
+    const memberOpenIssues = pattern ? openIssues.filter(function(i) { return pattern.test(String(i.title || '')); }) : [];
+    const memberClosedIssues = pattern ? closedIssues.filter(function(i) { return pattern.test(String(i.title || '')); }) : [];
+    return Object.assign({}, member, { memberOpenIssues: memberOpenIssues, memberClosedIssues: memberClosedIssues });
+  });
+  const indConnectedClosed = connectedMembers.reduce(function(s, m) { return s + toNumber(m.closed); }, 0);
+  const indConnectedTotal = connectedMembers.reduce(function(s, m) { return s + toNumber(m.total); }, 0);
+  const individualTeamSummary = {
+    closed: indConnectedClosed,
+    open: Math.max(0, indConnectedTotal - indConnectedClosed),
+    total: indConnectedTotal,
+    percent: indConnectedTotal > 0 ? clampPercent(Math.round((indConnectedClosed / indConnectedTotal) * 100)) : 0
+  };
+  const colClosed = collectiveClosedIssues.length;
+  const colOpen = collectiveOpenIssues.length;
+  const colTotal = colClosed + colOpen;
+  const collectiveTeamSummary = {
+    closed: colClosed,
+    open: colOpen,
+    total: colTotal,
+    percent: colTotal > 0 ? clampPercent(Math.round((colClosed / colTotal) * 100)) : 0
+  };
   const courseProgress = computeCourseProgressPercent(team, coursePlan);
   const climbProgress = computeAverageStagePercent(team, climbPlan);
   const overallPercent = team && team.overall_percent !== undefined && team.overall_percent !== null
@@ -3833,7 +3929,7 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
     repo_url: team && team.repo_url ? team.repo_url : '#',
     issues_url: team && team.issues_url ? team.issues_url : (team && team.repo_url ? team.repo_url : '#'),
     milestones_url: team && team.milestones_url ? team.milestones_url : (team && team.repo_url ? team.repo_url : '#'),
-    members: Array.isArray(team && team.members) ? team.members : [],
+    members: rawMembers,
     openIssues: openIssues,
     closedIssues: closedIssues,
     stageProgress: stageProgress,
@@ -3869,7 +3965,12 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
         : null,
       lastActivityAt: team.activity.last_activity_at || null
     } : null,
-    teamBlockers: Array.isArray(team && team.blockers) ? team.blockers : []
+    teamBlockers: Array.isArray(team && team.blockers) ? team.blockers : [],
+    connectedMembers: connectedMembers,
+    missingMembers: missingMembers,
+    membersWithIssues: membersWithIssues,
+    individualTeamSummary: individualTeamSummary,
+    collectiveTeamSummary: collectiveTeamSummary
   };
 }
 
@@ -4103,6 +4204,11 @@ function buildDashboardModel(data) {
     team.overallDelta = team.overallPercent - averageOverallPercent;
   });
 
+  const totalStudents = teams.reduce(function(s, t) { return s + t.members.length; }, 0);
+  const totalConnectedStudents = teams.reduce(function(s, t) { return s + t.connectedMembers.length; }, 0);
+  const totalCollectiveClosed = teams.reduce(function(s, t) { return s + t.collectiveTeamSummary.closed; }, 0);
+  const totalCollectiveTotal = teams.reduce(function(s, t) { return s + t.collectiveTeamSummary.total; }, 0);
+
   return {
     coursePlan: coursePlan,
     journeyPlan: journeyPlan,
@@ -4136,6 +4242,10 @@ function buildDashboardModel(data) {
     recoveryTeam: recoveryTeam,
     nextThresholdPercent: nextThresholdPercent,
     tasksToNextThreshold: tasksToNextThreshold,
+    totalStudents: totalStudents,
+    totalConnectedStudents: totalConnectedStudents,
+    totalCollectiveClosed: totalCollectiveClosed,
+    totalCollectiveTotal: totalCollectiveTotal,
     nextTasksMatrix: buildNextTasksMatrix(teams, currentMilestone.key),
     insightText: `${currentMilestone.key} ${currentMilestone.short} este etapa curent\u0103; backlog-ul cel mai mare este \u00een ${backlogMilestone.key} cu ${backlogMilestone.open} issues deschise, ${startedTeams.length}/${teams.length} echipe au pornit etapa, iar ${blockedTeams.length}/${teams.length} sunt la 0/x.`,
     totals: {
@@ -4259,12 +4369,15 @@ function computeBlockers(teams) {
 
 function renderStats(model) {
   const stats = model.totals;
+  const colStr = model.totalCollectiveTotal > 0
+    ? `${model.totalCollectiveClosed}/${model.totalCollectiveTotal}`
+    : '—';
 
   document.getElementById('stats-band').innerHTML =
-    `<div class="stat-tile"><span class="stat-val">${stats.teamCount}</span><span class="stat-label">Teams</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${stats.openIssues}</span><span class="stat-label">Open issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${stats.closedIssues}</span><span class="stat-label">Closed issues</span></div>` +
-    `<div class="stat-tile"><span class="stat-val">${stats.averageCourseProgress}%</span><span class="stat-label">Average course progress</span></div>`;
+    `<div class="stat-tile"><span class="stat-val">${stats.teamCount}</span><span class="stat-label">Echipe</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${stats.closedIssues}/${stats.createdTasks}</span><span class="stat-label">Task-uri finalizate</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${model.totalConnectedStudents}/${model.totalStudents}</span><span class="stat-label">Studen&#539;i conecta&#539;i</span></div>` +
+    `<div class="stat-tile"><span class="stat-val">${escapeHtml(colStr)}</span><span class="stat-label">Task-uri echip&#259;</span></div>`;
 
   document.getElementById('course-insight').innerHTML =
     `<div class="course-insight-card">` +
@@ -4400,118 +4513,108 @@ function renderProjectStats(model) {
   const totalTeamCount = model.totals.teamCount;
   const currentStageKey = model.currentMilestone.key;
 
-  // Collective tasks: unique C-coded titles across all teams
-  const collectiveTitleMap = {};
+  // Control Board — Section A: collective task matrix for current stage
+  const cbCollMatrix = [];
+  const cbCollSeen = {};
   model.teams.forEach(function(team) {
-    team.collectiveOpenIssues.forEach(function(issue) {
+    (team.collectiveOpenIssues || []).concat(team.collectiveClosedIssues || []).forEach(function(issue) {
       const t = sanitizeIssueTitle(issue.title);
-      if (!collectiveTitleMap[t]) {
-        collectiveTitleMap[t] = { title: t, url: issue.url, openTeams: [], closedTeams: [] };
-      }
-      if (collectiveTitleMap[t].openTeams.indexOf(team.label) === -1) {
-        collectiveTitleMap[t].openTeams.push(team.label);
-      }
-    });
-    team.collectiveClosedIssues.forEach(function(issue) {
-      const t = sanitizeIssueTitle(issue.title);
-      if (!collectiveTitleMap[t]) {
-        collectiveTitleMap[t] = { title: t, url: issue.url, openTeams: [], closedTeams: [] };
-      }
-      if (collectiveTitleMap[t].closedTeams.indexOf(team.label) === -1) {
-        collectiveTitleMap[t].closedTeams.push(team.label);
+      if (inferStageKey(t) === currentStageKey && !cbCollSeen[t]) {
+        cbCollSeen[t] = true;
+        cbCollMatrix.push({ title: t, url: issue.url, done: 0, open: 0, absent: 0 });
       }
     });
   });
-  const collectiveTasks = Object.keys(collectiveTitleMap)
-    .map(function(t) { return collectiveTitleMap[t]; })
-    .filter(function(t) { return inferStageKey(t.title) === currentStageKey; })
-    .sort(function(a, b) { return compareIssueTitles(a.title, b.title); });
-  const hasClosed = model.teams.some(function(t) { return t.closedIssues && t.closedIssues.length > 0; });
-
-  // Individual tasks: aggregate student issue open counts for current stage
-  const individualTitleMap = {};
+  cbCollMatrix.sort(function(a, b) { return compareIssueTitles(a.title, b.title); });
   model.teams.forEach(function(team) {
-    team.individualOpenIssues.forEach(function(issue) {
-      const t = sanitizeIssueTitle(issue.title);
-      if (inferStageKey(t) !== currentStageKey) return;
-      if (!individualTitleMap[t]) {
-        individualTitleMap[t] = { title: t, url: issue.url, openCount: 0, closedCount: 0 };
-      }
-      individualTitleMap[t].openCount++;
-    });
-    team.individualClosedIssues.forEach(function(issue) {
-      const t = sanitizeIssueTitle(issue.title);
-      if (inferStageKey(t) !== currentStageKey) return;
-      if (!individualTitleMap[t]) {
-        individualTitleMap[t] = { title: t, url: issue.url, openCount: 0, closedCount: 0 };
-      }
-      individualTitleMap[t].closedCount++;
-    });
-  });
-  const individualTasks = Object.keys(individualTitleMap)
-    .map(function(t) { return individualTitleMap[t]; })
-    .sort(function(a, b) { return compareIssueTitles(a.title, b.title); });
-
-  // Member-level individual completion
-  let totalMembers = 0;
-  let completedMembers = 0;
-  model.teams.forEach(function(team) {
-    (team.members || []).forEach(function(member) {
-      totalMembers++;
-      if (toNumber(member.issue_progress_percent) === 100) completedMembers++;
+    cbCollMatrix.forEach(function(task) {
+      const isClosed = (team.collectiveClosedIssues || []).some(function(i) { return sanitizeIssueTitle(i.title) === task.title; });
+      const isOpen = (team.collectiveOpenIssues || []).some(function(i) { return sanitizeIssueTitle(i.title) === task.title; });
+      if (isClosed) task.done++;
+      else if (isOpen) task.open++;
+      else task.absent++;
     });
   });
 
-  const renderCollectiveTasks = function() {
-    if (!collectiveTasks.length) {
-      return '<div class="team-empty">Niciun task de echip&#259; deschis.</div>';
-    }
-    return collectiveTasks.map(function(task) {
-      const closedCount = task.closedTeams.length;
-      const openCount = task.openTeams.length;
-      const remaining = task.openTeams.slice(0, 4).map(function(l) {
-        return `<span class="project-team-badge">${escapeHtml(l)}</span>`;
-      }).join('');
-      const metaCopy = hasClosed
-        ? `${closedCount}/${totalTeamCount} echipe finalizate`
-        : `deschis în ${openCount} echip${openCount === 1 ? 'ă' : 'e'}`;
-      const color = getProgressColor(hasClosed ? Math.round((closedCount / totalTeamCount) * 100) : 0);
-      const pct = hasClosed ? Math.round((closedCount / totalTeamCount) * 100) : 0;
-      return (
-        `<div class="project-task-card">` +
-          `<a class="project-task-card-title" href="${escapeHtml(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.title)}</a>` +
-          `<span class="project-task-card-meta">${escapeHtml(metaCopy)}</span>` +
-          `<div class="project-task-card-track"><span class="project-task-card-fill" style="width:${pct}%; background:${color};"></span></div>` +
-          (task.openTeams.length ? `<div class="project-task-card-remaining"><span class="project-task-rem-label">Deschis:</span>${remaining}</div>` : '') +
-        `</div>`
-      );
-    }).join('');
+  // Control Board — Section B: individual student × team grid for current stage
+  const cbSlotSet = {};
+  const cbSlots = [];
+  model.teams.forEach(function(team) {
+    sortMembers(team.members || []).forEach(function(m) {
+      const label = getMemberLabel(m);
+      if (!cbSlotSet[label]) {
+        cbSlotSet[label] = true;
+        cbSlots.push({ label: label, num: toNumber((label.match(/(\d+)/) || [0, 0])[1]) });
+      }
+    });
+  });
+  cbSlots.sort(function(a, b) { return a.num - b.num; });
+  const cbSlotLabels = cbSlots.map(function(s) { return s.label; });
+
+  const cbGridRows = model.teams.map(function(team) {
+    const cells = cbSlotLabels.map(function(slot) {
+      const member = (team.members || []).find(function(m) { return getMemberLabel(m) === slot; });
+      if (!member) return 'absent';
+      if (member.active === false || member.connected === false) return 'disconnected';
+      const localCode = String(member.local_code || '').trim();
+      const pattern = localCode
+        ? new RegExp('^' + localCode.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*-', 'i')
+        : null;
+      if (!pattern) return 'absent';
+      const hasClosed = (team.closedIssues || []).some(function(issue) {
+        return pattern.test(String(issue.title || '')) &&
+          inferStageKey(sanitizeIssueTitle(issue.title)) === currentStageKey;
+      });
+      if (hasClosed) return 'closed';
+      const hasOpen = (team.openIssues || []).some(function(issue) {
+        return pattern.test(String(issue.title || '')) &&
+          inferStageKey(sanitizeIssueTitle(issue.title)) === currentStageKey;
+      });
+      return hasOpen ? 'open' : 'absent';
+    });
+    return { label: team.label, cells: cells };
+  });
+
+  const cbCellHtml = function(status) {
+    if (status === 'closed') return '<span class="cb-grid-cell is-closed">&#10003;</span>';
+    if (status === 'open') return '<span class="cb-grid-cell is-open">&#9675;</span>';
+    if (status === 'disconnected') return '<span class="cb-grid-cell is-disconnected" title="neconectat">&#8211;</span>';
+    return '<span class="cb-grid-cell is-absent">&#8211;</span>';
   };
 
-  const renderIndividualTasks = function() {
-    if (!individualTasks.length) {
-      const memberNote = totalMembers
-        ? `${completedMembers}/${totalMembers} studen&#539;i &#537;i-au finalizat task-urile individuale.`
-        : 'Niciun task individual detectat pentru etapa curent&#259;.';
-      return `<div class="team-empty">${memberNote}</div>`;
-    }
-    return individualTasks.slice(0, 5).map(function(task) {
-      const total = task.openCount + task.closedCount;
-      const metaCopy = hasClosed
-        ? `${task.closedCount}/${total} studen&#539;i finaliza&#539;i`
-        : `deschis la ${task.openCount} studen&#539;i`;
-      const pct = (hasClosed && total) ? Math.round((task.closedCount / total) * 100) : 0;
-      const color = getProgressColor(pct);
-      return (
-        `<div class="project-task-card">` +
-          `<a class="project-task-card-title" href="${escapeHtml(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.title)}</a>` +
-          `<span class="project-task-card-meta">${metaCopy}</span>` +
-          `<div class="project-task-card-track"><span class="project-task-card-fill" style="width:${pct}%; background:${color};"></span></div>` +
-        `</div>`
-      );
-    }).join('') +
-    (totalMembers ? `<div class="team-individual-note">${completedMembers}/${totalMembers} studen&#539;i au 100% task-uri individuale.</div>` : '');
-  };
+  const cbCollSectionHtml = cbCollMatrix.length
+    ? '<div class="cb-section">' +
+        '<div class="cb-section-title">Task-uri de echipă</div>' +
+        '<div class="cb-coll-table">' +
+          cbCollMatrix.map(function(task) {
+            return '<div class="cb-coll-row">' +
+              '<a class="cb-coll-task" href="' + escapeHtml(task.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(task.title) + '</a>' +
+              (task.done ? '<span class="cb-coll-stat is-done">✓ ' + task.done + '</span>' : '') +
+              (task.open ? '<span class="cb-coll-stat is-open">⏳ ' + task.open + '</span>' : '') +
+              (task.absent ? '<span class="cb-coll-stat is-absent">– ' + task.absent + '</span>' : '') +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>'
+    : '<div class="cb-section"><div class="team-empty">Niciun task de echipă pentru ' + escapeHtml(currentStageKey) + '.</div></div>';
+
+  const cbGridCols = cbSlotLabels.length;
+  const cbGridSectionHtml = cbGridCols > 0 && cbGridRows.length
+    ? '<div class="cb-section">' +
+        '<div class="cb-section-title">Task-uri individuale · ' + escapeHtml(currentStageKey) + '</div>' +
+        '<div class="cb-grid-wrap">' +
+          '<div class="cb-grid" style="grid-template-columns: 28px repeat(' + cbGridCols + ', minmax(22px,1fr));">' +
+            '<span class="cb-grid-head"></span>' +
+            cbSlotLabels.map(function(s) { return '<span class="cb-grid-head">' + escapeHtml(s) + '</span>'; }).join('') +
+            cbGridRows.map(function(row) {
+              return '<span class="cb-grid-team">' + escapeHtml(row.label) + '</span>' +
+                row.cells.map(cbCellHtml).join('');
+            }).join('') +
+          '</div>' +
+          '<div class="cb-grid-legend">✓ finaliz.  &#9675; deschis  – lipsă / neconectat</div>' +
+        '</div>' +
+      '</div>'
+    : '';
   const controlTiles = [
     {
       label: 'Progres total',
@@ -4653,12 +4756,9 @@ function renderProjectStats(model) {
           `</div>` +
         `</article>` +
         `<article class="project-card">` +
-          `<div class="project-title">Task-uri ${escapeHtml(currentStageKey)}</div>` +
-          `<div class="project-task-group-header">Task-uri de echip&#259;</div>` +
-          `<div class="project-task-stack">${renderCollectiveTasks()}</div>` +
-          `<div class="project-task-group-header" style="margin-top:14px;">Task-uri individuale</div>` +
-          `<div class="project-task-stack">${renderIndividualTasks()}</div>` +
-          `<p class="project-footnote">Dup&#259; push, &#238;nchide issue-ul ca progresul s&#259; apar&#259; aici.</p>` +
+          `<div class="project-title">${escapeHtml(currentStageKey)} Control Board</div>` +
+          `${cbCollSectionHtml}` +
+          `${cbGridSectionHtml}` +
         `</article>` +
       `</div>` +
     `</div>`;
@@ -4980,8 +5080,6 @@ function renderTeams(model) {
     const teamBarColor = team.color;
     const teamBarWidth = getMinimumVisibleFillWidth(overallPercent, 4);
     const currentAction = pickTeamCurrentAction(team.openIssues, model.currentMilestone.key);
-    const memberCount = Array.isArray(team.members) ? team.members.length : 0;
-    const memberCountCopy = memberCount ? `${memberCount} ${memberCount === 1 ? 'membru' : 'membri'}` : 'date indisponibile';
     const milestonePills = JOURNEY_STAGE_KEYS.map(function(stageKey) {
       const stage = team.stageProgress.find(function(item) {
         return item.key === stageKey;
@@ -5006,82 +5104,74 @@ function renderTeams(model) {
       ? `<a href="${escapeHtml(currentAction.url || team.issues_url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(formatCompactIssueTitle(currentAction.title))}</a>`
       : 'Nicio ac&#539;iune deschis&#259;.';
 
-    const memberSection = memberCount
-      ? (
-        `<div class="member-table">` +
-          `<div class="member-table-head">` +
-            `<div class="member-head-cell">Cod</div>` +
-            `<div class="member-head-cell">Progres</div>` +
-            `<div class="member-head-cell">Task-uri</div>` +
-          `</div>` +
-          `${sortMembers(team.members).map(function(member) {
-            const total = toNumber(member.total);
-            const closed = toNumber(member.closed);
-            const issuePct = getMemberIssueProgressPercent(member);
-            const memberCode = escapeHtml(getMemberLabel(member));
-            const taskUri = formatTaskRatio(closed, total);
-            const fillColor = team.color;
-            const fillWidth = getMinimumVisibleFillWidth(issuePct, issuePct > 0 ? 4 : 0);
-            const rowClass = member.connected === false || member.active === false ? ' is-offline' : '';
+    const connectedCount = (team.connectedMembers || []).length;
+    const missingCount = (team.missingMembers || []).length;
+    const totalMemberCount = team.members.length;
+    const indSum = team.individualTeamSummary || { closed: 0, total: 0, open: 0, percent: 0 };
+    const colSum = team.collectiveTeamSummary || { closed: 0, total: 0, open: 0, percent: 0 };
 
-            return (
-              `<div class="member-row${rowClass}">` +
-                `<div class="member-code">${memberCode}</div>` +
-                `<div class="member-progress-cell" title="${issuePct}%">` +
-                  `<div class="member-progress-track is-issues"><div class="member-progress-fill" style="width:${fillWidth}%; background:${fillColor};"></div></div>` +
-                  `<div class="member-progress-value">${issuePct}%</div>` +
-                `</div>` +
-                `<div class="member-summary">${escapeHtml(taskUri)}</div>` +
-              `</div>`
-            );
-          }).join('')}` +
-        `</div>`
-      )
-      : '<div class="team-empty">Membri: date indisponibile</div>';
+    const memberMiniGrid = sortMembers(team.connectedMembers || []).map(function(member) {
+      const closed = toNumber(member.closed);
+      const total = toNumber(member.total);
+      const pct = total > 0 ? clampPercent(Math.round((closed / total) * 100)) : 0;
+      const symbolMax = Math.min(total, 5);
+      const closedShown = Math.min(closed, symbolMax);
+      const openShown = symbolMax - closedShown;
+      const symbolsHtml = Array(closedShown).fill('<span class="sym-done">&#10003;</span>').join('') +
+                          Array(openShown).fill('<span class="sym-open">&#9675;</span>').join('');
+      return (
+        '<div class="team-member-mini">' +
+          '<span class="team-member-mini-code">' + escapeHtml(getMemberLabel(member)) + '</span>' +
+          '<span class="team-member-mini-symbols">' + symbolsHtml + '</span>' +
+          '<span class="team-member-mini-ratio">' + escapeHtml(formatTaskRatio(closed, total)) + '</span>' +
+          '<span class="team-member-mini-pct">' + pct + '%</span>' +
+        '</div>'
+      );
+    }).join('') || '<div class="team-empty">Niciun student conectat.</div>';
 
-    const indSummary = team.issueSummary ? team.issueSummary.individual : null;
-    const colSummary = team.issueSummary ? team.issueSummary.collective : null;
-    const indOpenCount = indSummary ? indSummary.open : team.individualOpenIssues.length;
-    const colOpenCount = colSummary ? colSummary.open : team.collectiveOpenIssues.length;
+    const missingNote = missingCount > 0
+      ? '<div class="team-missing-note">' + missingCount + ' ' +
+          (missingCount === 1 ? 'membru nu este' : 'membri nu sunt') +
+          ' încă conectat' + (missingCount === 1 ? '' : 'i') + ' la GitHub</div>'
+      : '';
 
-    const collectiveByTitle = {};
+    const collectiveByTitle2 = {};
     (team.collectiveOpenIssues || []).forEach(function(issue) {
       const t = sanitizeIssueTitle(issue.title);
-      if (!collectiveByTitle[t]) collectiveByTitle[t] = { title: t, url: issue.url, open: 0, closed: 0 };
-      collectiveByTitle[t].open++;
+      if (!collectiveByTitle2[t]) collectiveByTitle2[t] = { title: t, url: issue.url, open: 0, closed: 0 };
+      collectiveByTitle2[t].open++;
     });
     (team.collectiveClosedIssues || []).forEach(function(issue) {
       const t = sanitizeIssueTitle(issue.title);
-      if (!collectiveByTitle[t]) collectiveByTitle[t] = { title: t, url: issue.url, open: 0, closed: 0 };
-      collectiveByTitle[t].closed++;
+      if (!collectiveByTitle2[t]) collectiveByTitle2[t] = { title: t, url: issue.url, open: 0, closed: 0 };
+      collectiveByTitle2[t].closed++;
     });
-    const collectiveRows = Object.keys(collectiveByTitle)
-      .map(function(t) { return collectiveByTitle[t]; })
+    const collectiveRows2 = Object.keys(collectiveByTitle2)
+      .map(function(t) { return collectiveByTitle2[t]; })
       .sort(function(a, b) { return compareIssueTitles(a.title, b.title); });
-
-    const collectiveBlockMarkup = collectiveRows.length
-      ? collectiveRows.map(function(row) {
+    const collectiveBlockMarkup = collectiveRows2.length
+      ? collectiveRows2.map(function(row) {
           const isDone = row.open === 0 && row.closed > 0;
-          const stateClass = isDone ? 'is-done' : 'is-open';
-          const stateLabel = isDone ? '&#10003;' : '&#9675;';
           return (
-            `<div class="team-collective-row">` +
-              `<span class="team-collective-state ${stateClass}">${stateLabel}</span>` +
-              `<a class="team-collective-title" href="${escapeHtml(row.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.title)}</a>` +
-            `</div>`
+            '<div class="team-collective-row">' +
+              '<span class="team-collective-state ' + (isDone ? 'is-done' : 'is-open') + '">' + (isDone ? '&#10003;' : '&#9203;') + '</span>' +
+              '<a class="team-collective-title" href="' + escapeHtml(row.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(row.title) + '</a>' +
+            '</div>'
           );
         }).join('') +
-        `<div class="team-collective-footer">${colOpenCount} deschis${colOpenCount !== 1 ? 'e' : ''}</div>`
-      : `<div class="team-empty">Niciun task de echip&#259;.</div>`;
+        '<div class="team-collective-footer">Finalizate: ' + escapeHtml(formatTaskRatio(colSum.closed, colSum.total)) + '</div>'
+      : '<div class="team-empty">Niciun task de echip&#259;.</div>';
 
     return (
       `<article class="team-card" style="--team-color:${team.color}; --team-soft:${team.colorSoft}; --team-line:${team.colorLine}; --team-line-strong:${team.colorLineStrong};">` +
         `<div class="team-card-header">` +
           `<div class="team-header-main">` +
             `<div class="team-card-name">${escapeHtml(team.name)}</div>` +
-            `<div class="team-card-summary">${overallPercent}% &middot; ${escapeHtml(taskRatio)} task-uri</div>` +
-            `<div class="team-card-summary" style="font-size:10px;color:var(--text-muted,#888);">` +
-              `Individuale: ${indOpenCount} deschise &nbsp;&middot;&nbsp; Echip&#259;: ${colOpenCount} deschise` +
+            `<div class="team-header-breakdown">` +
+              `Overall: <b>${escapeHtml(taskRatio)} &middot; ${overallPercent}%</b><br>` +
+              `Individuale: <b>${escapeHtml(formatTaskRatio(indSum.closed, indSum.total))} &middot; ${indSum.percent}%</b><br>` +
+              `Echip&#259;: <b>${escapeHtml(formatTaskRatio(colSum.closed, colSum.total))} &middot; ${colSum.percent}%</b><br>` +
+              `Membri: <b>${connectedCount}/${totalMemberCount} conecta&#539;i</b>` +
             `</div>` +
           `</div>` +
           `<div class="team-card-links">` +
@@ -5092,8 +5182,8 @@ function renderTeams(model) {
         `</div>` +
         `<div class="team-progress-row">` +
           `<div class="team-progress-head">` +
-            `<span class="team-progress-label">Progres echip&#259;</span>` +
-            `<span class="team-progress-meta">${overallPercent}% &middot; ${escapeHtml(taskRatio)} task-uri</span>` +
+            `<span class="team-progress-label">Progres overall</span>` +
+            `<span class="team-progress-meta">${overallPercent}% &middot; ${escapeHtml(taskRatio)}</span>` +
           `</div>` +
           `<div class="team-progress-bar"><div class="team-progress-fill" style="width:${teamBarWidth}%; background:${teamBarColor};"></div></div>` +
         `</div>` +
@@ -5107,11 +5197,11 @@ function renderTeams(model) {
         `<div class="team-section">` +
           `<div class="team-section-header">` +
             `<div class="team-subtitle">Task-uri individuale</div>` +
-            `<div class="team-section-meta">${escapeHtml(memberCountCopy)}</div>` +
+            `<div class="team-section-meta">${connectedCount}/${totalMemberCount} conecta&#539;i</div>` +
           `</div>` +
-          `<div class="team-individual-note">Progresul per student (task-uri individuale atribuite).</div>` +
+          `${missingNote}` +
           `<div class="team-members-split">` +
-            `<div>${memberSection}</div>` +
+            `<div>${memberMiniGrid}</div>` +
             `<div class="team-collective-block">` +
               `<div class="project-task-group-header" style="margin-bottom:6px;">Task-uri echip&#259;</div>` +
               `${collectiveBlockMarkup}` +
