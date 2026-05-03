@@ -3929,7 +3929,51 @@ function getMountainPointForState(stageState) {
   return getMountainSegmentPoint(fromKey, toKey, percent);
 }
 
-function computeStudentRoutePoint(member) {
+function getStudentStagePercent(member, stageKey) {
+  const stage = getStageProgressFromMap(member && member.progress ? member.progress : {}, stageKey);
+  return clampPercent(toNumber(stage && stage.percent));
+}
+
+function getStudentStageSequence(member) {
+  return CLIMB_STAGE_KEYS.map(function(stageKey) {
+    return {
+      key: stageKey,
+      percent: getStudentStagePercent(member, stageKey)
+    };
+  });
+}
+
+function computeStudentRouteState(member) {
+  const stageSequence = getStudentStageSequence(member);
+  if (!stageSequence.length) {
+    return createMountainStageState('Base', 0, 'Base', false);
+  }
+
+  const currentIndex = stageSequence.findIndex(function(stage) {
+    return stage.percent < 100;
+  });
+
+  if (currentIndex < 0) {
+    return createMountainStageState('C8', 100, 'C8', true);
+  }
+
+  const currentStage = stageSequence[currentIndex];
+  const nextStage = stageSequence[currentIndex + 1] || null;
+  const spilloverBonus = nextStage ? nextStage.percent * 0.2 : 0;
+  let adjustedPercent = Math.min(99, currentStage.percent + spilloverBonus);
+
+  const tic = member && member.team_issue_contribution ? member.team_issue_contribution : {};
+  const instrTotal = Math.max(0, toNumber(tic.collective_total));
+  if (instrTotal > 0) {
+    const instrClosed = Math.max(0, toNumber(tic.closed_by_member));
+    const teamFactor = instrClosed / instrTotal;
+    adjustedPercent = Math.max(0, adjustedPercent - ((1 - teamFactor) * 8));
+  }
+
+  return createMountainStageState(currentStage.key, adjustedPercent, currentStage.key, false);
+}
+
+function computeStudentRoutePointLegacy(member) {
   const stageState = getMemberMountainStageState(member);
   if (!stageState) return null;
 
@@ -4117,53 +4161,38 @@ function placeMountainStudentMarkers(markers) {
       compareTeamLabels(a.teamLabel, b.teamLabel) ||
       String(a.title || '').localeCompare(String(b.title || ''));
   });
-  const groups = [];
-  let group = [];
+  const groupingDistance = STUDENT_MARKER_R * 2.15;
+  const minGap = STUDENT_MARKER_R * 2.3;
+  let lastProjectedDistance = null;
+  let lastSourceDistance = null;
+  let clusterIndex = 0;
 
   sorted.forEach(function(marker) {
-    if (!group.length) {
-      group.push(marker);
-      return;
-    }
-
-    const prev = group[group.length - 1];
-    const dx = (marker.routeX || marker.x || 0) - (prev.routeX || prev.x || 0);
-    const dy = (marker.routeY || marker.y || 0) - (prev.routeY || prev.y || 0);
-    if (Math.sqrt((dx * dx) + (dy * dy)) < (STUDENT_MARKER_R * 0.9)) {
-      group.push(marker);
+    const markerDistance = toNumber(marker.routeDistance);
+    if (lastSourceDistance !== null && (markerDistance - lastSourceDistance) < groupingDistance) {
+      clusterIndex += 1;
     } else {
-      groups.push(group);
-      group = [marker];
+      clusterIndex = 0;
     }
-  });
-  if (group.length) groups.push(group);
 
-  groups.forEach(function(group) {
-    let lastProjectedDistance = null;
-    group.forEach(function(marker, index) {
-      const routePoint = {
-        x: marker.routeX || marker.x || 0,
-        y: marker.routeY || marker.y || 0,
-        tx: marker.routeTx || 1,
-        ty: marker.routeTy || 0
-      };
-      const markerDistance = toNumber(marker.routeDistance);
-      let projectedDistance = markerDistance;
-      const minGap = STUDENT_MARKER_R * 1.02;
+    let projectedDistance = markerDistance;
+    if (lastProjectedDistance !== null && (projectedDistance - lastProjectedDistance) < minGap) {
+      projectedDistance = lastProjectedDistance + minGap;
+    }
 
-      if (lastProjectedDistance !== null && (projectedDistance - lastProjectedDistance) < minGap) {
-        projectedDistance = lastProjectedDistance + minGap;
-      }
-
-      const tangentOffset = projectedDistance - markerDistance;
-      const verticalLift = group.length > 1 ? Math.min(7, 2 + (index * 1.6)) : 0;
-      marker.x = Math.max(18, Math.min(1902, routePoint.x + (routePoint.tx * tangentOffset)));
-      marker.y = Math.max(18, Math.min(1062, routePoint.y + (routePoint.ty * tangentOffset) - verticalLift));
-      lastProjectedDistance = projectedDistance;
-    });
+    const placedPoint = getPointOnRouteDistance(projectedDistance);
+    const verticalLift = clusterIndex > 0 ? Math.min(10, clusterIndex * 1.8) : 0;
+    marker.x = Math.max(18, Math.min(1902, placedPoint.x));
+    marker.y = Math.max(18, Math.min(1062, placedPoint.y - verticalLift));
+    lastSourceDistance = markerDistance;
+    lastProjectedDistance = projectedDistance;
   });
 
   return markers;
+}
+
+function computeStudentRoutePoint(member) {
+  return getMountainPointForState(computeStudentRouteState(member));
 }
 
 function buildMountainScene(teams) {
@@ -4209,8 +4238,8 @@ function buildMountainScene(teams) {
     const teamMarker = teamMarkerByLabel[team.label];
     const teamMembers = Array.isArray(team.connectedMembers) ? team.connectedMembers.slice() : [];
     const memberEntries = teamMembers.map(function(member) {
-      const stageState = getMemberMountainStageState(member);
-      const routePoint = computeStudentRoutePoint(member);
+      const routeState = computeStudentRouteState(member);
+      const routePoint = getMountainPointForState(routeState);
       const studentScore = computeStudentScore(member);
       const tic = member && member.team_issue_contribution ? member.team_issue_contribution : {};
       const indPct = clampPercent(member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null
@@ -4222,7 +4251,7 @@ function buildMountainScene(teams) {
       return {
         member: member,
         name: getStudentDisplayName(member),
-        stageState: stageState,
+        routeState: routeState,
         routePoint: routePoint,
         studentScore: studentScore,
         indPct: indPct,
@@ -4249,8 +4278,10 @@ function buildMountainScene(teams) {
         py: 1,
         routeDistance: teamMarker.routeDistance
       };
-      const teamTaskStr = entry.instrTotal > 0 ? `${entry.instrClosed}/${entry.instrTotal}` : '—';
-      const tooltip = `${entry.name} · scor ${entry.studentScore} · individual ${entry.indPct}% · echipă ${teamTaskStr} · create ${entry.memberCreated} · rezolvate ${entry.instrClosed}`;
+      const hoverStageCode = entry.routeState && entry.routeState.routeStageKey ? entry.routeState.routeStageKey : 'Base';
+      const hoverStagePct = Math.round((entry.routeState && entry.routeState.stagePercent) || 0);
+      const hoverTeamTaskText = entry.instrTotal > 0 ? `${entry.instrClosed}/${entry.instrTotal}` : '-';
+      const hoverTooltipText = `${getMemberLabel(entry.member)} din ${team.label} - ${hoverStageCode} ${hoverStagePct}% - individual ${entry.indPct}% - echipa ${hoverTeamTaskText} - creat ${entry.memberCreated}`;
 
       studentMarkers.push({
         x: Math.max(18, Math.min(1902, routePoint.x)),
@@ -4269,7 +4300,7 @@ function buildMountainScene(teams) {
         studentScore: entry.studentScore,
         color: teamMarker.color,
         opacity: 1,
-        title: tooltip
+        title: hoverTooltipText
       });
     });
   });
@@ -6167,7 +6198,7 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
             fill="${marker.color}" stroke="white" stroke-width="2.6"/>
   `).join('');
   const studentDots = (studentMarkers || []).map(marker => {
-    const labelText = `${marker.studentCode || marker.studentName || 'Student'} · ${marker.teamLabel || ''}`.trim();
+    const labelText = `${marker.studentCode || marker.studentName || 'Student'} din ${marker.teamLabel || 'echipa'}`.trim();
     const labelWidth = Math.max(72, Math.round(labelText.length * 6.6));
     const labelY = marker.y - STUDENT_MARKER_R - 14;
     return `
@@ -6213,7 +6244,7 @@ function renderTeamMarkersSVG(markers, studentMarkers) {
     `;
   }).join('');
 
-  return connectors + pins + studentDots + badges;
+  return connectors + pins + badges + studentDots;
 }
 
 function initMountainStudentInteractions() {
