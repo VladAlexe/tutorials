@@ -103,7 +103,10 @@ nav {
   text-decoration: none;
 }
 .btn:hover { color: var(--text); border-color: var(--border-hi); }
-.btn.primary { border-color: var(--accent); color: var(--accent); }
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 .btn.primary:hover { background: rgba(200,149,108,0.08); }
 
 /* ── Hero ── */
@@ -282,7 +285,15 @@ section { padding-top: 2.4rem; }
   font-size: 10px; color: var(--accent);
   flex-shrink: 0; min-width: 32px;
 }
-.issue-card-title { font-size: 12.5px; color: var(--text); }
+.issue-card-title { font-size: 12.5px; color: var(--text); flex: 1; }
+.issue-card-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.08rem 0.35rem;
+  flex-shrink: 0;
+}
 .issue-card-body { border-top: 1px solid var(--border); }
 
 .issue-detail {
@@ -339,21 +350,6 @@ section { padding-top: 2.4rem; }
 }
 .check-item:last-child { border-bottom: none; }
 .check-item::before { content: '□'; color: var(--dim); flex-shrink: 0; }
-
-/* ── Local note ── */
-.local-note {
-  margin-top: 2.4rem;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 1rem 1.2rem;
-  max-width: 560px;
-}
-.local-note-label {
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 0.6rem;
-}
-.local-note p { font-size: 11.5px; color: var(--sub); line-height: 1.75; }
-.local-note p + p { margin-top: 0.5rem; }
 
 /* ── Footer ── */
 footer {
@@ -500,28 +496,6 @@ code {
   line-height: 1.65; font-style: italic;
 }
 
-/* ── Instructor CLI box ── */
-.instructor-box {
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  overflow: hidden;
-  max-width: 680px;
-  margin-top: 0.9rem;
-}
-.instructor-box-hdr {
-  padding: 0.45rem 1rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--dim);
-}
-.instructor-box pre {
-  padding: 0.9rem 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--dim);
-  line-height: 1.8; overflow-x: auto;
-}
-
 /* ── Responsive ── */
 @media (max-width: 640px) {
   nav { padding: 0 1rem; }
@@ -552,8 +526,8 @@ code {
   <div class="nav-actions">
     <a class="btn primary" href="slides/">▶ <span class="btn-label">Slides</span></a>
     <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
-    <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
-    <a class="btn" href="notebooks/C3_date_corpus.ipynb" download>↓ <span class="btn-label">.ipynb</span></a>
+    <a class="btn" href="notebooks/C3_collect_youtube.ipynb" download>⊞ <span class="btn-label">Notebook</span></a>
+    <a class="btn" href="corpus_youtube.zip" download>↓ <span class="btn-label">Date</span></a>
     <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">light</span></button>
   </div>
 </nav>
@@ -655,22 +629,6 @@ code {
     <p class="note-box">Sursele sunt puncte de pornire pentru zone discursive, nu etichete finale. Un comentariu colectat de la un canal suveranist nu este automat „suveranist"; clasificarea se face ulterior prin adnotare.</p>
   </section>
 
-  <!-- ── Obiective ── -->
-  <section>
-    <p class="section-label">Obiective de învățare</p>
-    <ul class="obj-list">
-      <li class="obj-item">Înțelegi de ce un agent are nevoie de corpus, nu doar de model</li>
-      <li class="obj-item">Poți crea și folosi o cheie YouTube Data API v3 în siguranță</li>
-      <li class="obj-item">Poți colecta comentarii YouTube din surse publice</li>
-      <li class="obj-item">Poți salva date brute în <code>data/raw/</code> fără să le modifici</li>
-      <li class="obj-item">Poți curăța și standardiza datele într-o schemă comună</li>
-      <li class="obj-item">Poți păstra metadate utile: canal, video, dată, link, platformă</li>
-      <li class="obj-item">Poți documenta regulile de selecție și limitele corpusului în <code>README_corpus.md</code></li>
-      <li class="obj-item">Poți separa sentimentul general de poziționarea față de o țintă</li>
-      <li class="obj-item">Poți rula un prim prompt exploratoriu pentru target, stance, ton și bubble_guess</li>
-    </ul>
-  </section>
-
   <!-- ── Materiale ── -->
   <section>
     <p class="section-label">Materiale</p>
@@ -691,21 +649,36 @@ code {
         <div class="mat-title">Notebook C3</div>
         <div class="mat-desc">Notebook pentru colectarea comentariilor YouTube, curățarea corpusului și testarea unui prompt exploratoriu pe comentarii politice.</div>
         <div class="mat-actions">
-          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
-          <a class="btn" href="notebooks/C3_date_corpus.ipynb" download>↓ .ipynb</a>
+          <a class="btn primary" href="notebooks/C3_collect_youtube.ipynb" download>↓ Descarcă .ipynb</a>
         </div>
       </div>
 
       <div class="material-card">
-        <div class="mat-icon">◈</div>
-        <div class="mat-title">GitHub Issues C3</div>
-        <div class="mat-desc">Livrabilele C3 sunt urmărite prin milestone-ul <code>C3 - Data and corpus</code>: colectare date, curățare corpus, documentare și prompt exploratoriu.</div>
+        <div class="mat-icon">⊡</div>
+        <div class="mat-title">Date corpus YouTube</div>
+        <div class="mat-desc">Corpus de comentarii YouTube colectat din surse publice, în format CSV/JSONL, gata de curățat și standardizat conform schemei C3.</div>
         <div class="mat-actions">
-          <span class="btn" style="cursor:default;opacity:0.5;">repo de echipă</span>
+          <a class="btn primary" href="corpus_youtube.zip" download>↓ corpus_youtube.zip</a>
         </div>
       </div>
 
     </div>
+  </section>
+
+  <!-- ── Obiective ── -->
+  <section>
+    <p class="section-label">Obiective de învățare</p>
+    <ul class="obj-list">
+      <li class="obj-item">Înțelegi de ce un agent are nevoie de corpus, nu doar de model</li>
+      <li class="obj-item">Poți crea și folosi o cheie YouTube Data API v3 în siguranță</li>
+      <li class="obj-item">Poți colecta comentarii YouTube din surse publice</li>
+      <li class="obj-item">Poți salva date brute în <code>data/raw/</code> fără să le modifici</li>
+      <li class="obj-item">Poți curăța și standardiza datele într-o schemă comună</li>
+      <li class="obj-item">Poți păstra metadate utile: canal, video, dată, link, platformă</li>
+      <li class="obj-item">Poți documenta regulile de selecție și limitele corpusului în <code>README_corpus.md</code></li>
+      <li class="obj-item">Poți separa sentimentul general de poziționarea față de o țintă</li>
+      <li class="obj-item">Poți rula un prim prompt exploratoriu pentru target, stance, ton și bubble_guess</li>
+    </ul>
   </section>
 
   <!-- ── Schema minimă de corpus ── -->
@@ -789,10 +762,11 @@ code {
       <div class="issue-card-header">
         <span class="issue-card-id">C3.1</span>
         <span class="issue-card-title">Colectare date brute YouTube</span>
+        <span class="issue-card-badge">individual</span>
       </div>
       <div class="issue-card-body">
         <ul class="issue-detail">
-          <li>fiecare student sau echipă rulează notebookul de colectare</li>
+          <li>fiecare student creează propriul issue cu titlul <code>student_XX · C3.1 Colectare date brute YouTube</code></li>
           <li>cheia YouTube se pune doar în <code>.env</code></li>
           <li><code>.env</code> trebuie să fie în <code>.gitignore</code></li>
           <li>se salvează datele brute în <code>data/raw/</code></li>
@@ -804,6 +778,7 @@ code {
       <div class="issue-card-header">
         <span class="issue-card-id">C3.2</span>
         <span class="issue-card-title">Curățare și standardizare corpus</span>
+        <span class="issue-card-badge">echipă</span>
       </div>
       <div class="issue-card-body">
         <ul class="issue-detail">
@@ -820,6 +795,7 @@ code {
       <div class="issue-card-header">
         <span class="issue-card-id">C3.3</span>
         <span class="issue-card-title">Documentare corpus și prompt exploratoriu</span>
+        <span class="issue-card-badge">echipă</span>
       </div>
       <div class="issue-card-body">
         <ul class="issue-detail">
@@ -833,30 +809,8 @@ code {
 
     <p class="subsec-label">Metoda GitHub / API</p>
     <div class="intro-body">
-      <p>Livrabilele se urmăresc prin GitHub Issues. Fiecare issue trebuie să aibă milestone-ul <code>C3 - Data and corpus</code>, label-ul <code>course:C3</code>, și, unde este cazul, label-uri <code>individual</code>, <code>team</code>, <code>data</code>, <code>corpus</code>, <code>prompting</code>.</p>
-    </div>
-    <div class="instructor-box">
-      <div class="instructor-box-hdr">Instructor / workflow — GitHub CLI</div>
-      <pre>gh issue create \
-  --repo AIE-2026/echochamber-project-team-1 \
-  --title "C3.1 Colectare date brute YouTube" \
-  --label "course:C3,data,individual" \
-  --milestone "C3 - Data and corpus" \
-  --body-file issues/c3/c3_1_collect_data.md
-
-gh issue create \
-  --repo AIE-2026/echochamber-project-team-1 \
-  --title "C3.2 Curățare și standardizare corpus" \
-  --label "course:C3,corpus,team" \
-  --milestone "C3 - Data and corpus" \
-  --body-file issues/c3/c3_2_clean_corpus.md
-
-gh issue create \
-  --repo AIE-2026/echochamber-project-team-1 \
-  --title "C3.3 Documentare corpus și prompt exploratoriu" \
-  --label "course:C3,prompting,team" \
-  --milestone "C3 - Data and corpus" \
-  --body-file issues/c3/c3_3_document_prompt.md</pre>
+      <p>Livrabilele se urmăresc prin GitHub Issues cu milestone-ul <code>C3 - Data and corpus</code> și label-ul <code>course:C3</code>.</p>
+      <p>Taskurile individuale (C3.1) — fiecare student deschide propriul issue cu titlul care începe cu <code>student_XX</code> și label <code>individual</code>. Taskurile de echipă (C3.2, C3.3) — un singur issue pe echipă, cu label <code>team</code> și, după caz, <code>data</code>, <code>corpus</code>, <code>prompting</code>.</p>
     </div>
   </section>
 
@@ -1027,13 +981,6 @@ Output așteptat:
       <li class="check-item">Am făcut <code>git pull</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code></li>
       <li class="check-item">Am comentat <code>DONE</code> în GitHub Issue</li>
     </ul>
-
-    <div class="local-note">
-      <p class="local-note-label">Testare locală</p>
-      <p>Viewer-ul PDF.js poate să nu funcționeze corect deschis direct cu <code>file://</code>. Pentru testare locală folosește VS Code Live Server sau rulează <code>py -m http.server 8000</code> din rădăcina repository-ului.</p>
-      <p>Apoi deschide: <code>http://localhost:8000/ai-engineering/c3-date-corpus/</code></p>
-      <p>Pe Cloudflare Pages, după commit și push, totul funcționează normal.</p>
-    </div>
   </section>
 
 </main>
