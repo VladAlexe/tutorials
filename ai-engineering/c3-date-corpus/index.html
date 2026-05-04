@@ -557,7 +557,7 @@ code {
   <div class="hero-tag">AI Engineering · ADC 2026 · C3</div>
   <h1>Date, corpus și curățare</h1>
   <p class="hero-subtitle">Memoria aplicației EchoChamber</p>
-  <p class="hero-sub">În C3 construim memoria aplicației EchoChamber. Fiecare student colectează un eșantion mic de comentarii YouTube pentru a înțelege metoda, iar pentru analiză lucrăm cu un corpus mai mare oferit de profesor. Datele sunt curățate, standardizate și documentate astfel încât să poată fi folosite în C4 pentru adnotare, în C5 pentru embeddings și retrieval, iar în C6 pentru RAG și agenți.</p>
+  <p class="hero-sub">În C3 construim corpusul de lucru pentru EchoChamber. Datele colectate aici vor fi folosite mai târziu pentru adnotare, retrieval, RAG și agenți.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
@@ -573,7 +573,7 @@ code {
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
       <p>C3 introduce etapa de date a proiectului EchoChamber. Construim corpusul pe care îl vom folosi mai târziu pentru adnotare, căutare semantică, RAG și agenți.</p>
-      <p>În această sesiune lucrăm cu YouTube ca sursă principală. Fiecare student colectează un eșantion mic pentru a înțelege metoda, iar analiza se face pe un corpus mai mare oferit de profesor. Discutăm metadate, reproductibilitate, curățare, standardizare, limite etice și primul Prompt v1 pentru explorarea comentariilor politice.</p>
+      <p>În această sesiune lucrăm cu YouTube ca sursă principală. Participanții colectează un eșantion mic pentru a înțelege metoda, iar analiza se face pe un corpus mai mare oferit de instructor. Discutăm metadate, reproductibilitate, curățare, standardizare, limite etice și primul Prompt v1 pentru explorarea comentariilor politice.</p>
     </div>
     <ul class="topic-list">
       <li>Date, corpus și curățare</li>
@@ -605,7 +605,7 @@ code {
       <div class="material-card">
         <div class="mat-icon">⊞</div>
         <div class="mat-title">Notebook-uri C3</div>
-        <div class="mat-desc">Notebook-uri pentru C3: colectare mică și curățare rapidă în folderul <code>student_XX</code>, apoi Tema 1 pentru explorarea corpusului mare curățat și testarea Promptului v1.</div>
+        <div class="mat-desc">Notebook-uri pentru C3: colectare mică și curățare rapidă în folderul individual <code>student_XX</code>, apoi Tema 1 pentru explorarea corpusului mare curățat și testarea Promptului v1.</div>
         <div class="mat-actions">
           <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
           <a class="btn" href="notebooks/C3_collect_youtube.ipynb" download>↓ C3 .ipynb</a>
@@ -779,7 +779,7 @@ code {
       </li>
       <li class="del-item">
         <span class="del-num">08</span>
-        <span><code>data/provided/corpus_youtube_large_raw.jsonl</code> — corpus mare oferit de profesor</span>
+        <span><code>data/provided/corpus_youtube_large_raw.jsonl</code> — corpus mare oferit de instructor</span>
       </li>
       <li class="del-item">
         <span class="del-num">09</span>
@@ -815,7 +815,7 @@ code {
       </div>
       <div class="issue-card-body">
         <ul class="issue-detail">
-          <li>fiecare student lucrează în <code>notebooks/student_XX/</code></li>
+          <li>fiecare participant lucrează în <code>notebooks/student_XX/</code></li>
           <li>rulează notebook-ul <code>c3_collect_clean.ipynb</code></li>
           <li>salvează <code>data/raw/student_XX_youtube_raw.jsonl</code></li>
           <li>salvează <code>data/cleaned/student_XX_youtube_clean.jsonl</code></li>
@@ -831,7 +831,7 @@ code {
       </div>
       <div class="issue-card-body">
         <ul class="issue-detail">
-          <li>fiecare student lucrează în <code>notebooks/student_XX/</code></li>
+          <li>fiecare participant lucrează în <code>notebooks/student_XX/</code></li>
           <li>încarcă <code>data/cleaned/corpus_youtube_large_clean.jsonl</code></li>
           <li>testează Prompt v1 pe cel puțin 10 comentarii</li>
           <li>creează <code>outputs/student_XX_prompt_v1_review.csv</code></li>
