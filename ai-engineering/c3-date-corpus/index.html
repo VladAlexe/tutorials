@@ -572,42 +572,79 @@ code {
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>C3 introduce etapa de date a proiectului EchoChamber. Fără corpus, modelul răspunde doar din datele sale de antrenament și poate produce halucinații despre contextul politic local. Cu un corpus documentat, răspunsurile pot fi ancorate în surse reale, auditate și folosite mai târziu pentru adnotare, căutare semantică și RAG.</p>
-      <p>În această sesiune lucrăm cu YouTube ca sursă principală de comentarii politice. Colectarea individuală este didactică: fiecare student strânge un eșantion mic ca să înțeleagă metoda, iar explorarea de fond se face pe corpusul mai mare oferit de profesor. Discutăm surse publice, metadate, snapshot, reproductibilitate, curățare, standardizare și limite etice, apoi observăm diferența dintre <code>target</code>, <code>stance</code>, <code>sentiment</code>, <code>tone</code> și <code>interpretation_problem</code> ca pregătire pentru C4.</p>
+      <p>C3 introduce etapa de date a proiectului EchoChamber. Construim corpusul pe care îl vom folosi mai târziu pentru adnotare, căutare semantică, RAG și agenți.</p>
+      <p>În această sesiune lucrăm cu YouTube ca sursă principală. Fiecare student colectează un eșantion mic pentru a înțelege metoda, iar analiza se face pe un corpus mai mare oferit de profesor. Discutăm metadate, reproductibilitate, curățare, standardizare, limite etice și primul Prompt v1 pentru explorarea comentariilor politice.</p>
     </div>
     <ul class="topic-list">
       <li>Date, corpus și curățare</li>
       <li>Surse publice: YouTube</li>
-      <li>Metadate, snapshot și reproductibilitate</li>
-      <li>Colectare prin YouTube Data API v3</li>
+      <li>YouTube Data API v3</li>
+      <li>Metadate și reproductibilitate</li>
       <li>Curățare și standardizare în JSONL</li>
-      <li>Bule discursive ca vocabular conceptual pentru C4</li>
-      <li>Diferența dintre sentiment și poziționare față de țintă</li>
+      <li>Sentiment vs. poziționare față de țintă</li>
+      <li>Bule discursive ca vocabular pentru C4</li>
       <li>Tema 1: explorare corpus + Prompt v1</li>
     </ul>
+  </section>
 
-    <p class="subsec-label">Flux de date</p>
+  <!-- ── Materiale ── -->
+  <section>
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Prezentare</div>
+        <div class="mat-desc">Slide-uri PDF despre colectare mică, corpusul oferit, curățare, metadate, etică, bule discursive și Promptul exploratoriu v1.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
+          <a class="btn" href="slides-web.pdf" download>↓ PDF</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Notebook-uri C3</div>
+        <div class="mat-desc">Notebook-uri pentru C3: colectare mică și curățare rapidă în folderul <code>student_XX</code>, apoi Tema 1 pentru explorarea corpusului mare curățat și testarea Promptului v1.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
+          <a class="btn" href="notebooks/C3_collect_youtube.ipynb" download>↓ C3 .ipynb</a>
+          <a class="btn" href="notebooks/C3_Tema1_first_promt.ipynb" download>↓ Tema 1</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊡</div>
+        <div class="mat-title">Corpus YouTube</div>
+        <div class="mat-desc">Corpus de comentarii YouTube în format JSONL, oferit pentru explorare și curățare comună.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="corpus_youtube.zip" download>↓ corpus_youtube.zip</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Flux de date ── -->
+  <section>
+    <p class="section-label">Flux de date</p>
     <div class="flow-wrap">
       <div class="flow">
         <span class="flow-step">Surse YouTube selectate</span>
         <span class="flow-arr">→</span>
-        <span class="flow-step">Colectare mică individuală</span>
+        <span class="flow-step">Colectare Python + YouTube Data API</span>
         <span class="flow-arr">→</span>
-        <span class="flow-step">Date brute în data/raw/</span>
+        <span class="flow-step">Filtrare inițială</span>
         <span class="flow-arr">→</span>
-        <span class="flow-step">Curățare rapidă individuală</span>
+        <span class="flow-step">Standardizare</span>
         <span class="flow-arr">→</span>
-        <span class="flow-step">Corpus mare oferit în data/provided/</span>
+        <span class="flow-step hi">Corpus documentat</span>
         <span class="flow-arr">→</span>
-        <span class="flow-step hi">Curățare comună în data/cleaned/</span>
+        <span class="flow-step">Adnotare asistată C4</span>
         <span class="flow-arr">→</span>
-        <span class="flow-step">Tema 1: explorare + Prompt v1</span>
+        <span class="flow-step">Embeddings / retrieval C5</span>
         <span class="flow-arr">→</span>
-        <span class="flow-step">C4: adnotare asistată</span>
-        <span class="flow-arr">→</span>
-        <span class="flow-step">C5: embeddings / retrieval</span>
-        <span class="flow-arr">→</span>
-        <span class="flow-step">C6: RAG + agenți</span>
+        <span class="flow-step">RAG + agenți C6</span>
       </div>
     </div>
 
@@ -651,44 +688,6 @@ code {
       </table>
     </div>
     <p class="note-box">Sursele sunt puncte de pornire pentru zone discursive, nu etichete finale. Un comentariu colectat de la un canal suveranist nu este automat „suveranist”, iar încadrarea se face ulterior prin adnotare.</p>
-  </section>
-
-  <!-- ── Materiale ── -->
-  <section>
-    <p class="section-label">Materiale</p>
-    <div class="material-grid">
-
-      <div class="material-card">
-        <div class="mat-icon">▤</div>
-        <div class="mat-title">Prezentare</div>
-        <div class="mat-desc">Slide-uri PDF despre colectare mică, corpusul oferit, curățare, metadate, etică, bule discursive și Promptul exploratoriu v1.</div>
-        <div class="mat-actions">
-          <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
-          <a class="btn" href="slides-web.pdf" download>↓ PDF</a>
-        </div>
-      </div>
-
-      <div class="material-card">
-        <div class="mat-icon">⊞</div>
-        <div class="mat-title">Notebook-uri C3</div>
-        <div class="mat-desc">Notebook-uri pentru C3: colectare mică și curățare rapidă în folderul <code>student_XX</code>, apoi Tema 1 pentru explorarea corpusului mare curățat și testarea Promptului v1.</div>
-        <div class="mat-actions">
-          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
-          <a class="btn" href="notebooks/C3_collect_youtube.ipynb" download>↓ C3 .ipynb</a>
-          <a class="btn" href="notebooks/C3_Tema1_first_promt.ipynb" download>↓ Tema 1</a>
-        </div>
-      </div>
-
-      <div class="material-card">
-        <div class="mat-icon">⊡</div>
-        <div class="mat-title">Corpus YouTube</div>
-        <div class="mat-desc">Corpus de comentarii YouTube în format JSONL, oferit pentru explorare și curățare comună.</div>
-        <div class="mat-actions">
-          <a class="btn primary" href="corpus_youtube.zip" download>↓ corpus_youtube.zip</a>
-        </div>
-      </div>
-
-    </div>
   </section>
 
   <!-- ── Obiective ── -->
@@ -744,6 +743,7 @@ code {
   <!-- ── Ce predai după C3 ── -->
   <section>
     <p class="section-label">Ce predai după C3</p>
+    <p class="subsec-label">Individual</p>
     <ul class="deliverable-list">
       <li class="del-item">
         <span class="del-num">01</span>
@@ -759,32 +759,40 @@ code {
       </li>
       <li class="del-item">
         <span class="del-num">04</span>
-        <span><code>scripts/collect_youtube.py</code> — script final de colectare YouTube</span>
-      </li>
-      <li class="del-item">
-        <span class="del-num">05</span>
-        <span><code>scripts/clean_youtube.py</code> — script comun de curățare</span>
-      </li>
-      <li class="del-item">
-        <span class="del-num">06</span>
-        <span><code>data/provided/corpus_youtube_large_raw.jsonl</code> — corpus mare oferit de profesor</span>
-      </li>
-      <li class="del-item">
-        <span class="del-num">07</span>
-        <span><code>data/cleaned/corpus_youtube_large_clean.jsonl</code> — corpus mare curățat</span>
-      </li>
-      <li class="del-item">
-        <span class="del-num">08</span>
         <span><code>notebooks/student_XX/Tema_1_corpus_exploration_prompt.ipynb</code> — Tema 1: explorare + Prompt v1</span>
       </li>
       <li class="del-item">
-        <span class="del-num">09</span>
+        <span class="del-num">05</span>
         <span><code>outputs/student_XX_prompt_v1_review.csv</code> — verificare manuală a promptului</span>
+      </li>
+    </ul>
+
+    <p class="subsec-label">Echipă</p>
+    <ul class="deliverable-list">
+      <li class="del-item">
+        <span class="del-num">06</span>
+        <span><code>scripts/collect_youtube.py</code> — script final de colectare YouTube</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">07</span>
+        <span><code>scripts/clean_youtube.py</code> — script comun de curățare</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">08</span>
+        <span><code>data/provided/corpus_youtube_large_raw.jsonl</code> — corpus mare oferit de profesor</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">09</span>
+        <span><code>data/cleaned/corpus_youtube_large_clean.jsonl</code> — corpus mare curățat</span>
       </li>
       <li class="del-item">
         <span class="del-num">10</span>
         <span><code>README.md</code> — secțiunea <code>Data Gathering</code> completată</span>
       </li>
+    </ul>
+
+    <p class="subsec-label">Finalizare</p>
+    <ul class="deliverable-list">
       <li class="del-item">
         <span class="del-num">11</span>
         <span>comentariu <code>DONE</code> în GitHub Issue pentru taskurile relevante</span>
@@ -1054,36 +1062,6 @@ Output așteptat:
       </ul>
     </div>
 
-  </section>
-
-  <!-- ── Checklist practic ── -->
-  <section>
-    <p class="section-label">Checklist practic</p>
-    <ul class="checklist">
-      <li class="check-item">Am creat cheia YouTube Data API v3</li>
-      <li class="check-item">Am pus <code>YOUTUBE_API_KEY</code> în <code>.env</code></li>
-      <li class="check-item">Am verificat că <code>.env</code> este în <code>.gitignore</code></li>
-      <li class="check-item">Am rulat <code>notebooks/student_XX/c3_collect_clean.ipynb</code></li>
-      <li class="check-item">Am salvat datele brute în <code>data/raw/student_XX_youtube_raw.jsonl</code></li>
-      <li class="check-item">Am salvat eșantionul curățat în <code>data/cleaned/student_XX_youtube_clean.jsonl</code></li>
-      <li class="check-item">Echipa a adăugat <code>scripts/collect_youtube.py</code></li>
-      <li class="check-item">Echipa a descărcat corpusul mare în <code>data/provided/corpus_youtube_large_raw.jsonl</code></li>
-      <li class="check-item">Echipa a curățat corpusul mare în <code>data/cleaned/corpus_youtube_large_clean.jsonl</code></li>
-      <li class="check-item">Am rulat <code>notebooks/student_XX/Tema_1_corpus_exploration_prompt.ipynb</code></li>
-      <li class="check-item">Am testat Prompt v1 pe cel puțin 10 comentarii</li>
-      <li class="check-item">Am creat <code>outputs/student_XX_prompt_v1_review.csv</code></li>
-      <li class="check-item">Am completat coloanele <code>verdict</code> și <code>note</code></li>
-      <li class="check-item">Echipa a completat <code>README.md</code>, secțiunea <code>Data Gathering</code></li>
-      <li class="check-item">Am făcut <code>git pull</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code></li>
-      <li class="check-item">Am comentat <code>DONE</code> în issue-ul relevant</li>
-    </ul>
-
-    <div class="local-note">
-      <p class="local-note-label">Testare locală</p>
-      <p>Viewer-ul PDF.js poate să nu funcționeze corect deschis direct cu <code>file://</code>. În acest caz, butonul <code>Slides</code> deschide automat PDF-ul brut, ca să poți vedea imediat prezentarea.</p>
-      <p>Pentru viewer-ul complet cu navigare pe slide-uri, folosește VS Code Live Server sau rulează <code>py -m http.server 8000</code> din rădăcina repository-ului.</p>
-      <p>Apoi deschide: <code>http://localhost:8000/ai-engineering/c3-date-corpus/</code></p>
-    </div>
   </section>
 
 </main>
