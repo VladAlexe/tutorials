@@ -3,54 +3,542 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C3 — Prompt engineering · AI Engineering</title>
+<title>C3 — Date, corpus și curățare · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg:#1a1a1a; --surface:#222222; --border:#333333; --border-hi:#444444;
-  --text:#e2e2e2; --dim:#666666; --sub:#999999; --accent:#c8956c;
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+  --blue:     #7ab0d4;
+  --green:    #89b99a;
+  --red:      #c47f7f;
 }
+
 :root.light {
-  --bg:#faf9f6; --surface:#f3f1eb; --border:#e2ddd3; --border-hi:#c9c3b5;
-  --text:#1c1b18; --dim:#9e9789; --sub:#6b655b; --accent:#b5784a;
+  --bg:       #faf9f6;
+  --surface:  #f3f1eb;
+  --border:   #e2ddd3;
+  --border-hi:#c9c3b5;
+  --text:     #1c1b18;
+  --dim:      #9e9789;
+  --sub:      #6b655b;
+  --accent:   #b5784a;
+  --blue:     #2f6fa8;
+  --green:    #5a7a5a;
+  --red:      #a04040;
 }
+
 html { scroll-behavior: smooth; }
-body { background:var(--bg); color:var(--text); font-family:Aptos,'Segoe UI',system-ui,sans-serif; font-size:13.5px; line-height:1.7; min-height:100vh; display:flex; flex-direction:column; transition:background .2s,color .2s; }
-a { color:inherit; text-decoration:none; }
-nav { height:46px; border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--bg); z-index:100; }
-.nav-left { display:flex; align-items:center; gap:1.2rem; }
-.back-link { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:0.3rem; transition:color .12s; }
-.back-link:hover { color:var(--text); }
-.nav-logo { width:15px; height:15px; border-radius:50%; display:inline-block; vertical-align:middle; margin:0 0.15rem; position:relative; top:-1px; }
-.nav-sep { width:1px; height:13px; background:var(--border); }
-.breadcrumb { display:flex; align-items:center; gap:.3rem; font-size:11px; color:var(--dim); }
-.breadcrumb a { color:var(--sub); }
-.breadcrumb a:hover { color:var(--text); }
-.breadcrumb .cur { color:var(--text); }
-.breadcrumb .sl { color:var(--border-hi); }
-.btn { display:inline-flex; align-items:center; gap:.3rem; font-family:'JetBrains Mono',monospace; font-size:11px; padding:.22rem .7rem; border-radius:3px; border:1px solid var(--border); background:none; color:var(--sub); cursor:pointer; transition:color .12s,border-color .12s; white-space:nowrap; text-decoration:none; }
-.btn:hover { color:var(--text); border-color:var(--border-hi); }
-.hero { padding:2.2rem 2rem 2rem; border-bottom:1px solid var(--border); }
-.hero-tag { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.55rem; }
-.hero h1 { font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-.025em; line-height:1.15; margin-bottom:.5rem; }
-.hero-sub { font-size:12.5px; color:var(--sub); max-width:580px; line-height:1.8; margin-bottom:0.8rem; }
-.hero-meta { display:flex; flex-wrap:wrap; gap:1.2rem; font-size:11px; color:var(--dim); }
-.hero-meta strong { color:var(--sub); font-weight:400; }
-main { flex:1; padding:0 2rem 3.5rem; max-width:860px; width:100%; }
-section { padding-top:2rem; }
-.section-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:.8rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
-.intro-body { font-size:12.5px; color:var(--sub); line-height:1.85; max-width:680px; }
-.placeholder-note { margin-top:1.2rem; display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); border:1px solid var(--border); border-radius:4px; padding:.5rem .9rem; }
-footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
-.ft-col { font-size:11px; color:var(--dim); line-height:2; }
-.ft-col a { color:var(--dim); }
-.ft-col a:hover { color:var(--text); }
-@media (max-width:640px) { nav { padding:0 1rem; } .hero { padding:1.8rem 1rem 1.5rem; } main { padding:0 1rem 3rem; } .hero h1 { font-size:1.5rem; } footer { padding:1rem; } }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Nav ── */
+nav {
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.back-link {
+  font-size: 11px; color: var(--sub);
+  display: flex; align-items: center; gap: 0.3rem;
+  transition: color 0.12s;
+}
+.back-link:hover { color: var(--text); }
+
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 11px; color: var(--dim);
+}
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+.btn.primary { border-color: var(--accent); color: var(--accent); }
+.btn.primary:hover { background: rgba(200,149,108,0.08); }
+
+/* ── Hero ── */
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.025em; line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+
+.hero-subtitle {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem; font-weight: 300;
+  color: var(--sub); letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 12.5px; color: var(--sub);
+  max-width: 580px; line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 1.2rem;
+  font-size: 11px; color: var(--dim);
+}
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+/* ── Main ── */
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Material cards ── */
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+
+/* ── Intro text ── */
+.intro-body {
+  font-size: 12.5px; color: var(--sub);
+  line-height: 1.85; max-width: 680px;
+}
+.intro-body p + p { margin-top: 0.8rem; }
+
+.topic-list {
+  margin-top: 0.9rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.topic-list li {
+  font-size: 12px; color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+}
+.topic-list li::before { content: '·'; position: absolute; left: 0; color: var(--accent); }
+
+/* ── Objectives ── */
+.obj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.obj-item {
+  padding: 0.75rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  line-height: 1.6;
+}
+.obj-item:last-child { border-bottom: none; }
+.obj-item::before { content: '✓'; color: var(--green); flex-shrink: 0; margin-top: 0.05rem; }
+
+/* ── Deliverables ── */
+.deliverable-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.del-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  line-height: 1.6;
+}
+.del-item:last-child { border-bottom: none; }
+
+.del-num {
+  font-size: 10px; color: var(--accent);
+  flex-shrink: 0; min-width: 18px;
+  margin-top: 0.1rem;
+}
+
+/* ── Milestone tag ── */
+.milestone-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+/* ── Issue cards ── */
+.issue-card {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+  margin-bottom: 0.7rem;
+}
+.issue-card-header {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  background: var(--surface);
+}
+.issue-card-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  flex-shrink: 0; min-width: 32px;
+}
+.issue-card-title { font-size: 12.5px; color: var(--text); }
+.issue-card-body { border-top: 1px solid var(--border); }
+
+.issue-detail {
+  list-style: none;
+  padding: 0.7rem 1rem;
+  display: flex; flex-direction: column; gap: 0.32rem;
+}
+.issue-detail li {
+  font-size: 11.5px; color: var(--sub);
+  padding-left: 1.1rem; position: relative;
+  line-height: 1.55;
+}
+.issue-detail li::before { content: '·'; position: absolute; left: 0; color: var(--border-hi); }
+
+/* ── Resources ── */
+.resource-group { margin-bottom: 1.4rem; }
+.resource-group-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.5rem;
+}
+.resource-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.resource-item { border-bottom: 1px solid var(--border); }
+.resource-item:last-child { border-bottom: none; }
+.resource-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.65rem 1rem;
+  font-size: 12px; color: var(--sub);
+  transition: background 0.1s, color 0.1s;
+  gap: 1rem;
+}
+.resource-link:hover { background: var(--surface); color: var(--text); }
+.resource-link .rname { flex: 1; }
+.resource-link .rarrow { color: var(--border-hi); font-size: 10px; flex-shrink: 0; }
+.resource-link:hover .rarrow { color: var(--accent); }
+
+/* ── Checklist ── */
+.checklist {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 560px;
+}
+.check-item {
+  padding: 0.65rem 1rem;
+  font-size: 12px; color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item::before { content: '□'; color: var(--dim); flex-shrink: 0; }
+
+/* ── Local note ── */
+.local-note {
+  margin-top: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  max-width: 560px;
+}
+.local-note-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.6rem;
+}
+.local-note p { font-size: 11.5px; color: var(--sub); line-height: 1.75; }
+.local-note p + p { margin-top: 0.5rem; }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1rem;
+}
+
+/* ── Inline code ── */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.05rem 0.3rem;
+  color: var(--text);
+}
+
+/* ── Footer cols ── */
+.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
+.ft-col a { color: var(--dim); }
+.ft-col a:hover { color: var(--text); }
+
+/* ── Theme / logo ── */
+.theme-btn { font-family: 'JetBrains Mono', monospace; }
+.nav-logo {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  position: relative; top: -1px;
+}
+
+/* ── Tables ── */
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+  margin-top: 0.9rem;
+}
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); font-weight: 400;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  background: var(--surface);
+}
+.data-table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--sub);
+  font-size: 11.5px;
+  line-height: 1.55;
+  vertical-align: top;
+}
+.data-table tr:last-child td { border-bottom: none; }
+
+/* ── Code wrap ── */
+.code-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+  margin-top: 0.4rem;
+}
+.code-wrap-label {
+  padding: 0.45rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 0.08em;
+  color: var(--dim);
+  background: var(--surface);
+}
+.code-wrap pre {
+  padding: 1rem 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: var(--sub);
+  line-height: 1.65; overflow-x: auto;
+}
+
+/* ── Flow diagram ── */
+.flow-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1.1rem 1.3rem;
+  max-width: 680px;
+  margin-top: 0.9rem;
+}
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+.flow-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--sub);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.28rem 0.55rem;
+  white-space: nowrap;
+}
+.flow-step.hi { border-color: var(--accent); color: var(--accent); }
+.flow-arr { color: var(--dim); font-size: 10px; flex-shrink: 0; }
+
+/* ── Ethics grid ── */
+.eth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+.eth-box { background: var(--surface); padding: 1rem 1.2rem; }
+.eth-box-title {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.65rem;
+}
+.eth-list { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+.eth-list li {
+  font-size: 11.5px; color: var(--sub);
+  padding-left: 1.1rem; position: relative; line-height: 1.55;
+}
+.eth-list li::before { content: '·'; position: absolute; left: 0; color: var(--accent); }
+
+/* ── Subsection label ── */
+.subsec-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin: 1.4rem 0 0.5rem;
+}
+
+/* ── Note box ── */
+.note-box {
+  border-left: 2px solid var(--border);
+  padding: 0.5rem 0.8rem;
+  margin-top: 0.8rem;
+  max-width: 680px;
+  font-size: 11.5px; color: var(--dim);
+  line-height: 1.65; font-style: italic;
+}
+
+/* ── Instructor CLI box ── */
+.instructor-box {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+  margin-top: 0.9rem;
+}
+.instructor-box-hdr {
+  padding: 0.45rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim);
+}
+.instructor-box pre {
+  padding: 0.9rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--dim);
+  line-height: 1.8; overflow-x: auto;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.6rem; }
+  main { padding: 0 1rem 4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1rem; }
+  .nav-actions .btn-label { display: none; }
+  .eth-grid { grid-template-columns: 1fr; }
+  .table-wrap { overflow-x: auto; }
+}
 </style>
 </head>
 <body>
+
+<!-- ── Nav ── -->
 <nav>
   <div class="nav-left">
     <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
@@ -61,27 +549,495 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
       <span class="cur">C3</span>
     </div>
   </div>
-  <button class="btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">dark</span></button>
+  <div class="nav-actions">
+    <a class="btn primary" href="slides/">▶ <span class="btn-label">Slides</span></a>
+    <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
+    <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
+    <a class="btn" href="notebooks/C3_date_corpus.ipynb" download>↓ <span class="btn-label">.ipynb</span></a>
+    <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">light</span></button>
+  </div>
 </nav>
+
+<!-- ── Hero ── -->
 <div class="hero">
   <div class="hero-tag">AI Engineering · ADC 2026 · C3</div>
-  <h1>Prompt engineering</h1>
-  <p class="hero-sub">Tehnici avansate de prompting: zero-shot, few-shot, chain-of-thought, structured output și design de prompt pentru sarcini de analiză socială.</p>
+  <h1>Date, corpus și curățare</h1>
+  <p class="hero-subtitle">Memoria aplicației EchoChamber</p>
+  <p class="hero-sub">În C3 construim memoria aplicației EchoChamber. Colectăm comentarii politice din surse publice, le curățăm, le standardizăm și le documentăm astfel încât să poată fi folosite în C4 pentru adnotare, în C5 pentru embeddings și retrieval, iar în C6 pentru RAG și agenți. Scopul nu este să strângem cât mai multe date, ci să construim un corpus verificabil, etic și reproductibil.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
+    <span>Limbă <strong>Română</strong></span>
     <span>Sesiune <strong>C3</strong></span>
   </div>
 </div>
+
 <main>
+
+  <!-- ── Despre acest curs ── -->
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>C3 acoperă tehnicile esențiale de prompting pentru aplicații AI: de la zero-shot și few-shot la chain-of-thought, structured output și design sistematic de prompt pentru sarcini de analiză a discursului social.</p>
+      <p>C3 introduce etapa de date a proiectului EchoChamber. Fără corpus, modelul răspunde doar din datele sale de antrenament și poate produce halucinații despre contextul politic local. Cu un corpus documentat, răspunsurile pot fi ancorate în surse reale, auditate și folosite mai târziu pentru adnotare, căutare semantică și RAG.</p>
+      <p>În această sesiune lucrăm cu YouTube ca sursă principală de comentarii politice. Discutăm surse publice, metadate, snapshot, reproductibilitate, curățare, standardizare și limite etice. Introducem și ideea de bule discursive: nu clasificăm automat comentariile după canal, ci tratăm canalul ca punct de pornire pentru observarea unor zone discursive.</p>
     </div>
-    <p class="placeholder-note">Materialele pentru acest curs vor fi adăugate ulterior.</p>
+    <ul class="topic-list">
+      <li>Date, corpus și curățare</li>
+      <li>Surse publice: YouTube</li>
+      <li>Metadate, snapshot și reproductibilitate</li>
+      <li>Colectare prin YouTube Data API v3</li>
+      <li>Curățare și standardizare</li>
+      <li>Bule discursive</li>
+      <li>Diferența dintre sentiment și stance</li>
+      <li>Primul prompt exploratoriu pe comentarii politice</li>
+    </ul>
+
+    <p class="subsec-label">Flux de date</p>
+    <div class="flow-wrap">
+      <div class="flow">
+        <span class="flow-step">Surse YouTube selectate</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">Colectare Python + YouTube Data API</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">Filtrare inițială</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">Standardizare</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step hi">Corpus documentat</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">Adnotare asistată C4</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">Embeddings / retrieval C5</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">RAG + agenți C6</span>
+      </div>
+    </div>
+
+    <p class="subsec-label">Surse discursive YouTube</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Zonă discursivă</th>
+            <th>Exemple de canale</th>
+            <th>Rol în corpus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mainstream instituțional</td>
+            <td>StirileProTV, digi24hd56, InfoTVR, hotnews_ro, euronewsro, Antena3CNN, libertatearo, europafmromania, b1tvchannel, rfiromania, euractivromania9532</td>
+            <td>bază de comparație instituțională</td>
+          </tr>
+          <tr>
+            <td>Civic / investigativ / corectiv</td>
+            <td>RecorderRomania, europa-libera-romania, g4media479, VeridicaRO, StareaNatiei</td>
+            <td>discurs critic orientat spre transparență și responsabilitate</td>
+          </tr>
+          <tr>
+            <td>Suveranist oficial / anti-sistem electoral</td>
+            <td>georgesimionoficial, partidulAUR2024, CălinGeorgescu-CanalulOficial, DianaSosoacaOfficial</td>
+            <td>discurs politic mobilizator, anti-elite, suveranitate</td>
+          </tr>
+          <tr>
+            <td>Neîncredere sistemică / media alternativă</td>
+            <td>RomaniaTVOFICIAL, realitatea2025, TuDecizi-s3g, turcescu111</td>
+            <td>suspiciune față de instituții și media mainstream</td>
+          </tr>
+          <tr>
+            <td>Conspiraționist / marginal / mitic-național</td>
+            <td>AdevaruriSecrete, otvdirect, AltcevacuAdrianArtene, roxindaniel, Canal33Romania, Curiozitate-Canal33, Spiritualitate-Canal33</td>
+            <td>narațiuni alternative, explicații ascunse, teme spiritualizate</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note-box">Sursele sunt puncte de pornire pentru zone discursive, nu etichete finale. Un comentariu colectat de la un canal suveranist nu este automat „suveranist"; clasificarea se face ulterior prin adnotare.</p>
   </section>
+
+  <!-- ── Obiective ── -->
+  <section>
+    <p class="section-label">Obiective de învățare</p>
+    <ul class="obj-list">
+      <li class="obj-item">Înțelegi de ce un agent are nevoie de corpus, nu doar de model</li>
+      <li class="obj-item">Poți crea și folosi o cheie YouTube Data API v3 în siguranță</li>
+      <li class="obj-item">Poți colecta comentarii YouTube din surse publice</li>
+      <li class="obj-item">Poți salva date brute în <code>data/raw/</code> fără să le modifici</li>
+      <li class="obj-item">Poți curăța și standardiza datele într-o schemă comună</li>
+      <li class="obj-item">Poți păstra metadate utile: canal, video, dată, link, platformă</li>
+      <li class="obj-item">Poți documenta regulile de selecție și limitele corpusului în <code>README_corpus.md</code></li>
+      <li class="obj-item">Poți separa sentimentul general de poziționarea față de o țintă</li>
+      <li class="obj-item">Poți rula un prim prompt exploratoriu pentru target, stance, ton și bubble_guess</li>
+    </ul>
+  </section>
+
+  <!-- ── Materiale ── -->
+  <section>
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Prezentare</div>
+        <div class="mat-desc">Slide-uri PDF despre colectare de date, YouTube API, curățare, metadate, etică, bule discursive și primul prompt exploratoriu.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="slides/">▶ Deschide viewer</a>
+          <a class="btn" href="slides.pdf" download>↓ PDF</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Notebook C3</div>
+        <div class="mat-desc">Notebook pentru colectarea comentariilor YouTube, curățarea corpusului și testarea unui prompt exploratoriu pe comentarii politice.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
+          <a class="btn" href="notebooks/C3_date_corpus.ipynb" download>↓ .ipynb</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">◈</div>
+        <div class="mat-title">GitHub Issues C3</div>
+        <div class="mat-desc">Livrabilele C3 sunt urmărite prin milestone-ul <code>C3 - Data and corpus</code>: colectare date, curățare corpus, documentare și prompt exploratoriu.</div>
+        <div class="mat-actions">
+          <span class="btn" style="cursor:default;opacity:0.5;">repo de echipă</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Schema minimă de corpus ── -->
+  <section>
+    <p class="section-label">Schema minimă de corpus</p>
+    <div class="code-wrap">
+      <div class="code-wrap-label">corpus_schema.json</div>
+      <pre>{
+  "id": "yt_&lt;video_id&gt;_&lt;comment_id&gt;",
+  "source_platform": "youtube",
+  "source_channel": "&lt;handle&gt;",
+  "text": "...",
+  "text_raw": "...",
+  "bubble_label": null,
+  "bubble_self_identified": false,
+  "topic": null,
+  "rhetoric_type": null,
+  "video_id": "...",
+  "video_title": "...",
+  "video_date": "YYYY-MM-DD",
+  "comment_date": "YYYY-MM-DD",
+  "likes": 0,
+  "lang": "ro",
+  "collected_at": "YYYY-MM-DD"
+}</pre>
+    </div>
+    <ul class="topic-list" style="margin-top:0.9rem;">
+      <li><code>text</code> = text curățat pentru analiză</li>
+      <li><code>text_raw</code> = text original pentru verificare</li>
+      <li><code>source_channel</code>, <code>video_id</code>, <code>video_title</code> = trasabilitate</li>
+      <li><code>comment_date</code>, <code>collected_at</code> = reproducibilitate</li>
+      <li><code>bubble_label</code>, <code>topic</code>, <code>rhetoric_type</code> = câmpuri goale pentru C4</li>
+    </ul>
+  </section>
+
+  <!-- ── Ce predai după C3 ── -->
+  <section>
+    <p class="section-label">Ce predai după C3</p>
+    <ul class="deliverable-list">
+      <li class="del-item">
+        <span class="del-num">01</span>
+        <span><code>data/raw/youtube_comments_raw.csv</code> sau <code>.jsonl</code> — date brute, nemodificate</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">02</span>
+        <span><code>data/cleaned/corpus_clean.csv</code> sau <code>.jsonl</code> — corpus curățat și standardizat</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">03</span>
+        <span><code>docs/README_corpus.md</code> — surse, reguli de selecție, reguli de curățare, limite</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">04</span>
+        <span><code>notebooks/student_XX/C3_1_collect_data.ipynb</code> — colectare / încărcare date</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">05</span>
+        <span><code>notebooks/student_XX/C3_2_clean_corpus.ipynb</code> — curățare și verificare corpus</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">06</span>
+        <span><code>prompts/exploratory_prompt_v0.md</code> — primul prompt exploratoriu</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">07</span>
+        <span>opțional: <code>outputs/exploratory_outputs.jsonl</code> — răspunsuri generate de model</span>
+      </li>
+      <li class="del-item">
+        <span class="del-num">08</span>
+        <span>comentariu <code>DONE</code> în GitHub Issue pentru taskurile relevante</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── GitHub Issues / Workflow ── -->
+  <section>
+    <p class="section-label">GitHub Issues / Workflow</p>
+    <div class="milestone-tag">C3 - Data and corpus</div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C3.1</span>
+        <span class="issue-card-title">Colectare date brute YouTube</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>fiecare student sau echipă rulează notebookul de colectare</li>
+          <li>cheia YouTube se pune doar în <code>.env</code></li>
+          <li><code>.env</code> trebuie să fie în <code>.gitignore</code></li>
+          <li>se salvează datele brute în <code>data/raw/</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C3.2</span>
+        <span class="issue-card-title">Curățare și standardizare corpus</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>se elimină duplicatele</li>
+          <li>se filtrează textele prea scurte sau greu de interpretat</li>
+          <li>se normalizează spațiile și caracterele problematice</li>
+          <li>se păstrează <code>text_raw</code></li>
+          <li>se salvează corpusul în <code>data/cleaned/</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C3.3</span>
+        <span class="issue-card-title">Documentare corpus și prompt exploratoriu</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>se completează <code>docs/README_corpus.md</code></li>
+          <li>se descriu sursele, criteriile de selecție, limitele și biasurile posibile</li>
+          <li>se creează <code>prompts/exploratory_prompt_v0.md</code></li>
+          <li>se rulează 5–10 exemple și se salvează, opțional, în <code>outputs/exploratory_outputs.jsonl</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="subsec-label">Metoda GitHub / API</p>
+    <div class="intro-body">
+      <p>Livrabilele se urmăresc prin GitHub Issues. Fiecare issue trebuie să aibă milestone-ul <code>C3 - Data and corpus</code>, label-ul <code>course:C3</code>, și, unde este cazul, label-uri <code>individual</code>, <code>team</code>, <code>data</code>, <code>corpus</code>, <code>prompting</code>.</p>
+    </div>
+    <div class="instructor-box">
+      <div class="instructor-box-hdr">Instructor / workflow — GitHub CLI</div>
+      <pre>gh issue create \
+  --repo AIE-2026/echochamber-project-team-1 \
+  --title "C3.1 Colectare date brute YouTube" \
+  --label "course:C3,data,individual" \
+  --milestone "C3 - Data and corpus" \
+  --body-file issues/c3/c3_1_collect_data.md
+
+gh issue create \
+  --repo AIE-2026/echochamber-project-team-1 \
+  --title "C3.2 Curățare și standardizare corpus" \
+  --label "course:C3,corpus,team" \
+  --milestone "C3 - Data and corpus" \
+  --body-file issues/c3/c3_2_clean_corpus.md
+
+gh issue create \
+  --repo AIE-2026/echochamber-project-team-1 \
+  --title "C3.3 Documentare corpus și prompt exploratoriu" \
+  --label "course:C3,prompting,team" \
+  --milestone "C3 - Data and corpus" \
+  --body-file issues/c3/c3_3_document_prompt.md</pre>
+    </div>
+  </section>
+
+  <!-- ── Etică ── -->
+  <section>
+    <p class="section-label">Etică</p>
+    <div class="eth-grid">
+      <div class="eth-box">
+        <p class="eth-box-title">Ce nu colectăm</p>
+        <ul class="eth-list">
+          <li>date personale identificabile</li>
+          <li>conținut din surse private sau grupuri închise</li>
+          <li>date colectate prin încălcarea termenilor platformei</li>
+          <li>articole complete protejate de copyright</li>
+          <li>username-uri ca identitate analizabilă</li>
+          <li>texte care pot expune persoane vulnerabile</li>
+        </ul>
+      </div>
+      <div class="eth-box">
+        <p class="eth-box-title">Ce facem obligatoriu</p>
+        <ul class="eth-list">
+          <li>folosim doar surse publice</li>
+          <li>păstrăm sursă, dată, platformă și link</li>
+          <li>documentăm selecția în <code>README_corpus.md</code></li>
+          <li>anonimizăm ID-uri și indicii personale</li>
+          <li>separăm analiza discursului de evaluarea persoanelor</li>
+          <li>notăm limitele și biasurile corpusului</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Bule discursive ── -->
+  <section>
+    <p class="section-label">Bule discursive</p>
+    <div class="intro-body">
+      <p>Bulele nu sunt persoane reale și nu sunt grupuri sociale fixe. Sunt tipare de limbaj care apar repetat într-un corpus politic. Un comentariu se analizează prin target, stance, sentiment, tone și registru discursiv.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th>Personalitate</th>
+            <th>Cum vorbește</th>
+            <th>Ce îl definește</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Personalist-salvator</td>
+            <td>devotat, admirativ, sigur</td>
+            <td>laudativ, emoțional, încrezător</td>
+            <td>vede liderul ca soluție excepțională</td>
+          </tr>
+          <tr>
+            <td>Anti-sistem</td>
+            <td>furios, suspicios, dezamăgit</td>
+            <td>acuzator, moralizator, direct</td>
+            <td>vede instituțiile ca profund compromise</td>
+          </tr>
+          <tr>
+            <td>Anti-suveranist</td>
+            <td>critic, vigilent, defensiv</td>
+            <td>contestatar, argumentativ</td>
+            <td>respinge liderii și discursul suveranist</td>
+          </tr>
+          <tr>
+            <td>Conspiraționist</td>
+            <td>alarmist, hiper-suspicios</td>
+            <td>speculativ, revelator, totalizant</td>
+            <td>explică evenimentele prin forțe ascunse</td>
+          </tr>
+          <tr>
+            <td>Pro-european</td>
+            <td>normativ, moderat, legalist</td>
+            <td>sobru, justificativ, procedural</td>
+            <td>apără regulile, instituțiile și ancorarea europeană</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Prompt exploratoriu ── -->
+  <section>
+    <p class="section-label">Prompt exploratoriu</p>
+    <div class="code-wrap">
+      <div class="code-wrap-label">prompts/exploratory_prompt_v0.md</div>
+      <pre>Ești analist de discurs politic.
+Citește comentariul și identifică:
+1. ținta principală
+2. poziția față de țintă
+3. tonul
+4. posibila bulă discursivă
+Răspunde scurt, în JSON.
+
+Comentariu:
+&lt;&lt;&lt; {comment_text} &gt;&gt;&gt;
+
+Output așteptat:
+{
+  "target": "...",
+  "stance": "pro|anti|neutru|ambiguu",
+  "tone": "...",
+  "bubble_guess": "...",
+  "reason": "..."
+}</pre>
+    </div>
+    <p class="note-box">Promptul exploratoriu nu produce date finale. Produce întrebări pentru C4: ce trebuie definit mai bine?</p>
+  </section>
+
+  <!-- ── Resurse ── -->
+  <section>
+    <p class="section-label">Resurse</p>
+
+    <div class="resource-group">
+      <p class="resource-group-label">YouTube API / colectare</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer"><span class="rname">Google Cloud Console</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://developers.google.com/youtube/v3" target="_blank" rel="noopener noreferrer"><span class="rname">YouTube Data API v3 Overview</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener noreferrer"><span class="rname">YouTube Data API v3 — API Library</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer"><span class="rname">Credentials / API keys</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Etică și date</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://www.oxethica.com/blog/ai-ethics-and-values" target="_blank" rel="noopener noreferrer"><span class="rname">AI Ethics and Values</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Prompting / structură conversațională</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://www.digital.nsw.gov.au/policy/artificial-intelligence/chatbot-prompt-essentials" target="_blank" rel="noopener noreferrer"><span class="rname">Prompt essentials</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://medium.com/techhappily/prompt-engineering-part-1-fbbf42904266" target="_blank" rel="noopener noreferrer"><span class="rname">Prompt engineering roles</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://www.altexsoft.com/blog/prompt-engineering/" target="_blank" rel="noopener noreferrer"><span class="rname">Altexsoft Prompt Engineering</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://bacoach.nl/2025/11/prompt-engineering-craft-framework/" target="_blank" rel="noopener noreferrer"><span class="rname">CRAFT framework</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Referință selecție media</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://doi.org/10.1080/14782804.2026.2627986" target="_blank" rel="noopener noreferrer"><span class="rname">Sultănescu et al. (2026) — Media leaning in Romania: an audience-centric study</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ── Checklist practic ── -->
+  <section>
+    <p class="section-label">Checklist practic</p>
+    <ul class="checklist">
+      <li class="check-item">Am creat cheia YouTube Data API v3</li>
+      <li class="check-item">Am pus <code>YOUTUBE_API_KEY</code> în <code>.env</code></li>
+      <li class="check-item">Am verificat că <code>.env</code> este în <code>.gitignore</code></li>
+      <li class="check-item">Am rulat notebookul C3 din folderul meu <code>notebooks/student_XX/</code></li>
+      <li class="check-item">Am salvat datele brute în <code>data/raw/</code></li>
+      <li class="check-item">Nu am modificat fișierul brut</li>
+      <li class="check-item">Am curățat corpusul și am păstrat <code>text_raw</code></li>
+      <li class="check-item">Am salvat corpusul curat în <code>data/cleaned/</code></li>
+      <li class="check-item">Am completat <code>docs/README_corpus.md</code></li>
+      <li class="check-item">Am rulat promptul exploratoriu pe 5–10 comentarii</li>
+      <li class="check-item">Am discutat cu echipa cazurile ambigue</li>
+      <li class="check-item">Am făcut <code>git pull</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code></li>
+      <li class="check-item">Am comentat <code>DONE</code> în GitHub Issue</li>
+    </ul>
+
+    <div class="local-note">
+      <p class="local-note-label">Testare locală</p>
+      <p>Viewer-ul PDF.js poate să nu funcționeze corect deschis direct cu <code>file://</code>. Pentru testare locală folosește VS Code Live Server sau rulează <code>py -m http.server 8000</code> din rădăcina repository-ului.</p>
+      <p>Apoi deschide: <code>http://localhost:8000/ai-engineering/c3-date-corpus/</code></p>
+      <p>Pe Cloudflare Pages, după commit și push, totul funcționează normal.</p>
+    </div>
+  </section>
+
 </main>
+
 <footer>
   <div class="ft-col">
     Universitatea Babeș-Bolyai · Cluj-Napoca<br>
@@ -97,11 +1053,22 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
     <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
   </div>
 </footer>
+
 <script>
 const btn = document.getElementById('themeBtn');
 const label = btn.querySelector('.btn-label');
-function applyTheme(light) { document.documentElement.classList.toggle('light', light); label.textContent = light ? 'dark' : 'light'; }
-function toggleTheme() { const l = document.documentElement.classList.contains('light'); localStorage.setItem('theme', l ? 'dark' : 'light'); applyTheme(!l); }
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle('light', light);
+  label.textContent = light ? 'dark' : 'light';
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains('light');
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+  applyTheme(!isLight);
+}
+
 applyTheme(localStorage.getItem('theme') !== 'dark');
 </script>
 </body>

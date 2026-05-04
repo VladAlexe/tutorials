@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C3 — Slides · AI Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:opsz,wght@9..144,300;9..144,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #1a1a1a;
+  --surface:    #1e1e1e;
+  --surface2:   #252525;
+  --border:     #333333;
+  --border-hi:  #444444;
+  --text:       #e2e2e2;
+  --dim:        #666666;
+  --sub:        #999999;
+  --accent:     #c8956c;
+  --nav-w:      54px;
+  --topbar-h:   44px;
+  --subbar-h:   40px;
+  --controls-h: 42px;
+}
+
+html, body { height: 100vh; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Topbar ── */
+.topbar {
+  height: var(--topbar-h);
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 1rem; }
+
+.back-link {
+  font-size: 11px;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.12s;
+  white-space: nowrap;
+}
+.back-link:hover { color: var(--text); }
+
+.tb-sep { width: 1px; height: 13px; background: var(--border); flex-shrink: 0; }
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 0.28rem;
+  font-size: 11px; color: var(--dim);
+}
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.topbar-right { display: flex; align-items: center; gap: 0.4rem; }
+
+.tb-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--sub);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+  display: flex; align-items: center; gap: 0.3rem;
+  white-space: nowrap;
+}
+.tb-btn:hover { color: var(--text); border-color: var(--border-hi); }
+
+/* ── Subbar ── */
+.subbar {
+  height: var(--subbar-h);
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0 1rem 0 calc(var(--nav-w) + 1px);
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.subbar-tag {
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); flex-shrink: 0;
+}
+
+.subbar-title {
+  font-family: 'Fraunces', serif;
+  font-size: 0.95rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.01em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.subbar-sep { color: var(--border-hi); flex-shrink: 0; }
+
+.subbar-meta {
+  font-size: 10px; color: var(--dim);
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* ── Workspace ── */
+.workspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Page nav sidebar ── */
+.page-nav {
+  width: var(--nav-w);
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.page-btn {
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  color: var(--dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  line-height: 1;
+  padding: 7px 0;
+  cursor: pointer;
+  text-align: center;
+  flex-shrink: 0;
+  width: 100%;
+  transition: color 0.1s, background 0.1s;
+}
+.page-btn:hover { color: var(--text); background: var(--surface2); }
+.page-btn.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--surface2);
+}
+
+/* ── Slide area ── */
+.slide-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  background: #111;
+}
+
+.slide-frame {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.pdf-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.7);
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#pdfCanvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.textLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  line-height: 1;
+  z-index: 2;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.textLayer span, .textLayer br {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+.textLayer ::selection {
+  background: rgba(60, 130, 255, 0.28);
+  color: transparent;
+}
+
+.annotLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.annotLayer a {
+  position: absolute;
+  display: block;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.loading-msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.05em;
+  z-index: 5;
+}
+
+/* ── Controls ── */
+.controls {
+  height: var(--controls-h);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 0 0.8rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+.ctrl-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--sub);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  width: 30px; height: 28px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  flex-shrink: 0;
+}
+.ctrl-btn:hover { color: var(--text); border-color: var(--border-hi); background: var(--surface2); }
+.ctrl-btn:disabled { opacity: 0.28; cursor: default; }
+.ctrl-btn:disabled:hover { color: var(--sub); border-color: var(--border); background: none; }
+
+.slide-counter {
+  font-size: 11px; color: var(--sub);
+  min-width: 52px; text-align: center; flex-shrink: 0;
+}
+
+.progress-wrap {
+  flex: 1; height: 3px;
+  background: var(--border);
+  border-radius: 2px; overflow: hidden; cursor: pointer;
+}
+.progress-bar {
+  height: 100%; background: var(--accent);
+  border-radius: 2px; transition: width 0.15s;
+}
+
+/* ── Fullscreen ── */
+.slide-area:fullscreen,
+.slide-area:-webkit-full-screen {
+  background: #000;
+  display: flex; flex-direction: column;
+}
+.slide-area:fullscreen .slide-frame,
+.slide-area:-webkit-full-screen .slide-frame { flex: 1; min-height: 0; padding: 8px; }
+.slide-area:fullscreen .controls,
+.slide-area:-webkit-full-screen .controls { background: rgba(0,0,0,0.85); border-top-color: #2a2a2a; }
+
+/* ── Mobile ── */
+@media (max-width: 700px) {
+  .workspace { flex-direction: column; }
+  .subbar { padding-left: 1rem; }
+  .subbar-meta { display: none; }
+
+  .page-nav {
+    width: 100%; height: 36px;
+    flex-direction: row; flex-wrap: nowrap;
+    overflow-x: auto; overflow-y: hidden;
+    order: 2;
+    border-right: none; border-top: 1px solid var(--border);
+    padding: 0;
+  }
+  .page-btn {
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    min-width: 36px; padding: 0 6px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .page-btn.active { border-bottom-color: var(--accent); }
+  .slide-area { order: 1; flex: 1; min-height: 0; }
+}
+
+@media (max-width: 520px) {
+  .tb-btn .btn-label { display: none; }
+  .topbar { padding: 0 0.6rem; }
+  .topbar-left { gap: 0.6rem; }
+  .breadcrumb .bc-mid { display: none; }
+  .subbar-title { font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="back-link" href="../">← C3</a>
+    <div class="tb-sep"></div>
+    <div class="breadcrumb">
+      <a href="../../../">tutorials</a>
+      <span class="sl">/</span>
+      <span class="bc-mid"><a href="../../">ai-engineering</a><span class="sl">/</span></span>
+      <a href="../">C3</a>
+      <span class="sl">/</span>
+      <span class="cur">slides</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="tb-btn" onclick="openPdf()" title="Descarcă PDF">
+      <span>↓</span><span class="btn-label"> PDF</span>
+    </button>
+    <button class="tb-btn" onclick="enterFullscreen()" title="Fullscreen (F)">
+      <span>⛶</span><span class="btn-label"> Fullscreen</span>
+    </button>
+  </div>
+</header>
+
+<div class="subbar">
+  <span class="subbar-tag">C3</span>
+  <span class="subbar-sep">·</span>
+  <span class="subbar-title">Date, corpus și curățare</span>
+  <span class="subbar-sep">·</span>
+  <span class="subbar-meta">AI Engineering · ADC 2026 · Română</span>
+</div>
+
+<div class="workspace">
+  <div class="page-nav" id="pageNav" role="list" aria-label="Navigare pagini"></div>
+
+  <div class="slide-area" id="slideArea">
+    <div class="slide-frame" id="slideFrame">
+      <div class="loading-msg" id="loadingMsg">Se încarcă PDF…</div>
+      <div class="pdf-wrap" id="pdfWrap" style="display:none">
+        <canvas id="pdfCanvas"></canvas>
+        <div class="textLayer" id="textLayer"></div>
+        <div class="annotLayer" id="annotLayer"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl-btn" id="btnFirst" title="Prima pagină (Home)" aria-label="Prima pagină">⇤</button>
+      <button class="ctrl-btn" id="btnPrev"  title="Anterior (←)"       aria-label="Pagina anterioară">←</button>
+      <span   class="slide-counter" id="counter">— / —</span>
+      <button class="ctrl-btn" id="btnNext"  title="Următor (→)"        aria-label="Pagina următoare">→</button>
+      <button class="ctrl-btn" id="btnLast"  title="Ultima pagină (End)" aria-label="Ultima pagină">⇥</button>
+      <div    class="progress-wrap" id="progressWrap" title="Click pentru a naviga">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+      <button class="ctrl-btn" onclick="enterFullscreen()" title="Fullscreen (F)" aria-label="Fullscreen">⛶</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../c2-ecosistem-modele/lib/pdf.min.js"></script>
+<script>
+'use strict';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = '../../c2-ecosistem-modele/lib/pdf.worker.min.js';
+
+let pdfDoc = null, totalPages = 0, curPage = 1, activeRender = null;
+
+const canvas      = document.getElementById('pdfCanvas');
+const ctx         = canvas.getContext('2d');
+const textLayer   = document.getElementById('textLayer');
+const annotLayer  = document.getElementById('annotLayer');
+const slideFrame  = document.getElementById('slideFrame');
+const pdfWrap     = document.getElementById('pdfWrap');
+const loadingMsg  = document.getElementById('loadingMsg');
+const pageNav     = document.getElementById('pageNav');
+const counter     = document.getElementById('counter');
+const progressBar = document.getElementById('progressBar');
+const btnFirst    = document.getElementById('btnFirst');
+const btnPrev     = document.getElementById('btnPrev');
+const btnNext     = document.getElementById('btnNext');
+const btnLast     = document.getElementById('btnLast');
+const slideArea   = document.getElementById('slideArea');
+
+async function init() {
+  const loadTask = pdfjsLib.getDocument('../slides.pdf');
+  pdfDoc = await loadTask.promise;
+  totalPages = pdfDoc.numPages;
+  buildPageNav();
+  loadingMsg.style.display = 'none';
+  pdfWrap.style.display = 'inline-block';
+  await goTo(1);
+}
+
+function buildPageNav() {
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'page-btn';
+    btn.textContent = String(i).padStart(2, '0');
+    btn.title = `Slide ${i}`;
+    btn.dataset.page = i;
+    btn.setAttribute('role', 'listitem');
+    btn.addEventListener('click', () => goTo(i));
+    pageNav.appendChild(btn);
+  }
+}
+
+async function renderPage(num) {
+  if (activeRender) { try { activeRender.cancel(); } catch (_) {} activeRender = null; }
+
+  const page   = await pdfDoc.getPage(num);
+  const frame  = slideFrame.getBoundingClientRect();
+  const availW = frame.width  - 22;
+  const availH = frame.height - 22;
+  const base   = page.getViewport({ scale: 1 });
+  const scale  = Math.min(availW / base.width, availH / base.height, 3);
+  const dpr    = window.devicePixelRatio || 1;
+  const viewport = page.getViewport({ scale });
+
+  canvas.width        = Math.floor(viewport.width  * dpr);
+  canvas.height       = Math.floor(viewport.height * dpr);
+  canvas.style.width  = viewport.width  + 'px';
+  canvas.style.height = viewport.height + 'px';
+
+  activeRender = page.render({
+    canvasContext: ctx, viewport,
+    transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
+  });
+  try {
+    await activeRender.promise;
+  } catch (e) {
+    if (e.name === 'RenderingCancelledException') return;
+    console.error('PDF render error:', e); return;
+  }
+  activeRender = null;
+
+  textLayer.innerHTML = '';
+  try {
+    const task = pdfjsLib.renderTextLayer({
+      textContent: await page.getTextContent(),
+      container: textLayer, viewport, textDivs: [],
+    });
+    if (task?.promise) await task.promise;
+  } catch (e) { console.warn('Text layer:', e); }
+
+  annotLayer.innerHTML = '';
+  try {
+    const annotations = await page.getAnnotations();
+    for (const ann of annotations) {
+      if (ann.subtype !== 'Link') continue;
+      const href = ann.url || ann.action?.url || ann.action?.URI || null;
+      const [x1, y1, x2, y2] = viewport.convertToViewportRectangle(ann.rect);
+      const l = Math.min(x1,x2), t = Math.min(y1,y2);
+      const w = Math.abs(x2-x1),  h = Math.abs(y2-y1);
+      const a = document.createElement('a');
+      a.style.cssText = `position:absolute;left:${l}px;top:${t}px;width:${w}px;height:${h}px;`;
+      if (href) {
+        a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      } else if (ann.dest) {
+        a.href = '#';
+        const dest = typeof ann.dest === 'string' ? await pdfDoc.getDestination(ann.dest) : ann.dest;
+        if (dest) { const idx = await pdfDoc.getPageIndex(dest[0]); const pg = idx+1; a.addEventListener('click', e => { e.preventDefault(); goTo(pg); }); }
+        else continue;
+      } else continue;
+      annotLayer.appendChild(a);
+    }
+  } catch (e) { console.warn('Annotation layer:', e); }
+}
+
+async function goTo(n) {
+  if (!pdfDoc || n < 1 || n > totalPages) return;
+  curPage = n; updateUI(); await renderPage(n);
+}
+function prev() { goTo(curPage - 1); }
+function next() { goTo(curPage + 1); }
+
+function updateUI() {
+  counter.textContent = `${curPage} / ${totalPages}`;
+  progressBar.style.width = `${(curPage / totalPages) * 100}%`;
+  btnFirst.disabled = btnPrev.disabled = curPage === 1;
+  btnNext.disabled  = btnLast.disabled = curPage === totalPages;
+  pageNav.querySelectorAll('.page-btn').forEach((btn, i) => {
+    const active = i + 1 === curPage;
+    btn.classList.toggle('active', active);
+    if (active) btn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  switch (e.key) {
+    case 'ArrowRight': case ' ': e.preventDefault(); next(); break;
+    case 'ArrowLeft':             e.preventDefault(); prev(); break;
+    case 'Home':                  e.preventDefault(); goTo(1); break;
+    case 'End':                   e.preventDefault(); goTo(totalPages); break;
+    case 'f': case 'F':           enterFullscreen(); break;
+  }
+});
+
+document.getElementById('progressWrap').addEventListener('click', e => {
+  if (!totalPages) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  goTo(Math.max(1, Math.round((e.clientX - r.left) / r.width * totalPages)));
+});
+
+btnFirst.addEventListener('click', () => goTo(1));
+btnPrev.addEventListener('click',  prev);
+btnNext.addEventListener('click',  next);
+btnLast.addEventListener('click',  () => goTo(totalPages));
+
+function enterFullscreen() {
+  const el = slideArea;
+  (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
+}
+function openPdf() { window.open('../slides.pdf', '_blank'); }
+
+let resizeTimer;
+const onResize = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (pdfDoc) renderPage(curPage); }, 180); };
+window.addEventListener('resize', onResize);
+document.addEventListener('fullscreenchange', onResize);
+document.addEventListener('webkitfullscreenchange', onResize);
+
+init().catch(err => {
+  const isFile = location.protocol === 'file:';
+  loadingMsg.innerHTML = isFile
+    ? 'Deschide fișierul printr-un server local (ex: VS Code Live Server), nu direct cu <code>file://</code>.'
+    : `Eroare PDF: ${err?.message || err}`;
+  console.error('PDF load error:', err);
+});
+</script>
+</body>
+</html>
