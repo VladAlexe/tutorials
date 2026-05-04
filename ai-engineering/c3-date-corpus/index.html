@@ -545,7 +545,7 @@ code {
   </div>
   <div class="nav-actions">
     <a class="btn primary" href="slides/" data-slide-link data-local-label="PDF">▶ <span class="btn-label slide-link-label">Slides</span></a>
-    <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
+    <a class="btn" href="slides-c3.pdf" download>↓ <span class="btn-label">PDF</span></a>
     <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
     <a class="btn" href="notebooks/C3_collect_youtube.ipynb" download>↓ <span class="btn-label">.ipynb</span></a>
     <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">light</span></button>
@@ -660,7 +660,7 @@ code {
         <div class="mat-desc">Slide-uri PDF despre colectare de date, YouTube API, curățare, metadate, etică, bule discursive și primul prompt exploratoriu.</div>
         <div class="mat-actions">
           <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
-          <a class="btn" href="slides.pdf" download>↓ PDF</a>
+          <a class="btn" href="slides-c3.pdf" download>↓ PDF</a>
         </div>
       </div>
 
@@ -1037,7 +1037,7 @@ function adaptLocalSlidesLinks() {
   if (location.protocol !== 'file:') return;
 
   document.querySelectorAll('[data-slide-link]').forEach(link => {
-    link.href = 'slides.pdf';
+    link.href = 'slides-c3.pdf';
 
     const slideLabel = link.querySelector('.slide-link-label');
     if (slideLabel && link.dataset.localLabel) {

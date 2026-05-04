@@ -446,7 +446,7 @@ const btnLast     = document.getElementById('btnLast');
 const slideArea   = document.getElementById('slideArea');
 
 async function init() {
-  const loadTask = pdfjsLib.getDocument('../slides.pdf');
+  const loadTask = pdfjsLib.getDocument('../slides-c3.pdf');
   pdfDoc = await loadTask.promise;
   totalPages = pdfDoc.numPages;
   buildPageNav();
@@ -575,7 +575,7 @@ function enterFullscreen() {
   const el = slideArea;
   (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
 }
-function openPdf() { window.open('../slides.pdf', '_blank'); }
+function openPdf() { window.open('../slides-c3.pdf', '_blank'); }
 
 let resizeTimer;
 const onResize = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (pdfDoc) renderPage(curPage); }, 180); };
@@ -585,7 +585,7 @@ document.addEventListener('webkitfullscreenchange', onResize);
 
 init().catch(err => {
   const isFile = location.protocol === 'file:';
-  const directPdfLink = '<div class="loading-actions"><a class="loading-link" href="../slides.pdf" target="_blank" rel="noopener noreferrer">Deschide PDF-ul direct</a></div>';
+  const directPdfLink = '<div class="loading-actions"><a class="loading-link" href="../slides-c3.pdf" target="_blank" rel="noopener noreferrer">Deschide PDF-ul direct</a></div>';
   loadingMsg.innerHTML = isFile
     ? `Viewer-ul PDF.js nu poate încărca slide-urile direct din file://.${directPdfLink}<span>Pentru viewer-ul complet, pornește un server local, de exemplu VS Code Live Server sau py -m http.server 8000 din rădăcina repository-ului.</span>`
     : `Eroare PDF: ${err?.message || err}${directPdfLink}`;
