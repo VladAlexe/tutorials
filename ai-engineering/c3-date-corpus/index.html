@@ -351,6 +351,26 @@ section { padding-top: 2.4rem; }
 .check-item:last-child { border-bottom: none; }
 .check-item::before { content: '□'; color: var(--dim); flex-shrink: 0; }
 
+/* ── Local note ── */
+.local-note {
+  margin-top: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  max-width: 560px;
+}
+
+.local-note-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 0.6rem;
+}
+
+.local-note p {
+  font-size: 11.5px; color: var(--sub);
+  line-height: 1.75;
+}
+.local-note p + p { margin-top: 0.5rem; }
+
 /* ── Footer ── */
 footer {
   border-top: 1px solid var(--border);
@@ -524,7 +544,7 @@ code {
     </div>
   </div>
   <div class="nav-actions">
-    <a class="btn primary" href="slides/">▶ <span class="btn-label">Slides</span></a>
+    <a class="btn primary" href="slides/" data-slide-link data-local-label="PDF">▶ <span class="btn-label slide-link-label">Slides</span></a>
     <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
     <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
     <a class="btn" href="notebooks/C3_collect_youtube.ipynb" download>↓ <span class="btn-label">.ipynb</span></a>
@@ -639,7 +659,7 @@ code {
         <div class="mat-title">Prezentare</div>
         <div class="mat-desc">Slide-uri PDF despre colectare de date, YouTube API, curățare, metadate, etică, bule discursive și primul prompt exploratoriu.</div>
         <div class="mat-actions">
-          <a class="btn primary" href="slides/">▶ Deschide viewer</a>
+          <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
           <a class="btn" href="slides.pdf" download>↓ PDF</a>
         </div>
       </div>
@@ -982,6 +1002,13 @@ Output așteptat:
       <li class="check-item">Am făcut <code>git pull</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code></li>
       <li class="check-item">Am comentat <code>DONE</code> în GitHub Issue</li>
     </ul>
+
+    <div class="local-note">
+      <p class="local-note-label">Testare locală</p>
+      <p>Viewer-ul PDF.js poate să nu funcționeze corect deschis direct cu <code>file://</code>. În acest caz, butonul <code>Slides</code> deschide automat PDF-ul brut, ca să poți vedea imediat prezentarea.</p>
+      <p>Pentru viewer-ul complet cu navigare pe slide-uri, folosește VS Code Live Server sau rulează <code>py -m http.server 8000</code> din rădăcina repository-ului.</p>
+      <p>Apoi deschide: <code>http://localhost:8000/ai-engineering/c3-date-corpus/</code></p>
+    </div>
   </section>
 
 </main>
@@ -1006,6 +1033,19 @@ Output așteptat:
 const btn = document.getElementById('themeBtn');
 const label = btn.querySelector('.btn-label');
 
+function adaptLocalSlidesLinks() {
+  if (location.protocol !== 'file:') return;
+
+  document.querySelectorAll('[data-slide-link]').forEach(link => {
+    link.href = 'slides.pdf';
+
+    const slideLabel = link.querySelector('.slide-link-label');
+    if (slideLabel && link.dataset.localLabel) {
+      slideLabel.textContent = link.dataset.localLabel;
+    }
+  });
+}
+
 function applyTheme(light) {
   document.documentElement.classList.toggle('light', light);
   label.textContent = light ? 'dark' : 'light';
@@ -1017,6 +1057,7 @@ function toggleTheme() {
   applyTheme(!isLight);
 }
 
+adaptLocalSlidesLinks();
 applyTheme(localStorage.getItem('theme') !== 'dark');
 </script>
 </body>
