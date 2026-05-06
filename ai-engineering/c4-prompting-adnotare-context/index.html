@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C4 - Prompting, adnotare si context engineering · AI Engineering</title>
+<title>C4 - Prompting, adnotare si tipologii discursive · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
@@ -20,6 +20,7 @@
   --accent:   #c8956c;
   --blue:     #7ab0d4;
   --green:    #89b99a;
+  --red:      #c47f7f;
 }
 
 :root.light {
@@ -33,6 +34,7 @@
   --accent:   #b5784a;
   --blue:     #2f6fa8;
   --green:    #5a7a5a;
+  --red:      #a04040;
 }
 
 html { scroll-behavior: smooth; }
@@ -118,7 +120,7 @@ nav {
   color: var(--accent);
 }
 
-.btn.primary:hover { background: rgba(200,149,108,0.08); }
+.btn.primary:hover { background: rgba(200, 149, 108, 0.08); }
 
 .hero {
   padding: 3rem 2rem 2.2rem;
@@ -155,7 +157,7 @@ nav {
 .hero-sub {
   font-size: 12.5px;
   color: var(--sub);
-  max-width: 640px;
+  max-width: 680px;
   line-height: 1.8;
   margin-bottom: 1rem;
 }
@@ -217,7 +219,7 @@ section { padding-top: 2.4rem; }
   font-size: 12.5px;
   color: var(--sub);
   line-height: 1.85;
-  max-width: 680px;
+  max-width: 700px;
 }
 
 .intro-body p + p { margin-top: 0.8rem; }
@@ -252,7 +254,7 @@ section { padding-top: 2.4rem; }
   border: 1px solid var(--border);
   border-radius: 5px;
   overflow: hidden;
-  max-width: 680px;
+  max-width: 720px;
 }
 
 .obj-item {
@@ -268,6 +270,108 @@ section { padding-top: 2.4rem; }
 
 .obj-item:last-child { border-bottom: none; }
 .obj-item::before { content: "✓"; color: var(--green); flex-shrink: 0; margin-top: 0.05rem; }
+
+.deliverable-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+}
+
+.del-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.del-item:last-child { border-bottom: none; }
+
+.del-num {
+  font-size: 10px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 18px;
+  margin-top: 0.1rem;
+}
+
+.milestone-tag {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.issue-card {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-bottom: 0.7rem;
+}
+
+.issue-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  background: var(--surface);
+}
+
+.issue-card-id {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 40px;
+}
+
+.issue-card-title { font-size: 12.5px; color: var(--text); flex: 1; }
+
+.issue-card-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  color: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.08rem 0.35rem;
+  flex-shrink: 0;
+}
+
+.issue-card-body { border-top: 1px solid var(--border); }
+
+.issue-detail {
+  list-style: none;
+  padding: 0.7rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.issue-detail li {
+  font-size: 11.5px;
+  color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.55;
+}
+
+.issue-detail li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--border-hi);
+}
 
 .resource-group { margin-bottom: 1.4rem; }
 
@@ -305,12 +409,33 @@ section { padding-top: 2.4rem; }
 .resource-link .rarrow { color: var(--border-hi); font-size: 10px; flex-shrink: 0; }
 .resource-link:hover .rarrow { color: var(--accent); }
 
+.checklist {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.check-item {
+  padding: 0.65rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.check-item:last-child { border-bottom: none; }
+.check-item::before { content: "□"; color: var(--dim); flex-shrink: 0; }
+
 .local-note {
   margin-top: 2.4rem;
   border: 1px solid var(--border);
   border-radius: 5px;
   padding: 1rem 1.2rem;
-  max-width: 620px;
+  max-width: 680px;
 }
 
 .local-note-label {
@@ -366,6 +491,110 @@ code {
   top: -1px;
 }
 
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+  margin-top: 0.9rem;
+}
+
+.data-table { width: 100%; border-collapse: collapse; }
+
+.data-table th {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 400;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  background: var(--surface);
+}
+
+.data-table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--sub);
+  font-size: 11.5px;
+  line-height: 1.55;
+  vertical-align: top;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+
+.code-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-top: 0.4rem;
+}
+
+.code-wrap-label {
+  padding: 0.45rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  background: var(--surface);
+}
+
+.code-wrap pre {
+  padding: 1rem 1.2rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 1.65;
+  overflow-x: auto;
+}
+
+.flow-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1.1rem 1.3rem;
+  max-width: 720px;
+  margin-top: 0.9rem;
+}
+
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+
+.flow-step {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--sub);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.28rem 0.55rem;
+  white-space: nowrap;
+}
+
+.flow-step.hi { border-color: var(--accent); color: var(--accent); }
+.flow-arr { color: var(--dim); font-size: 10px; flex-shrink: 0; }
+
+.subsec-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 1.4rem 0 0.5rem;
+}
+
+.note-box {
+  border-left: 2px solid var(--border);
+  padding: 0.5rem 0.8rem;
+  margin-top: 0.8rem;
+  max-width: 720px;
+  font-size: 11.5px;
+  color: var(--dim);
+  line-height: 1.65;
+  font-style: italic;
+}
+
 @media (max-width: 640px) {
   nav { padding: 0 1rem; }
   .hero { padding: 2rem 1rem 1.6rem; }
@@ -374,6 +603,7 @@ code {
   .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
   footer { padding: 1rem; }
   .nav-actions .btn-label { display: none; }
+  .table-wrap { overflow-x: auto; }
 }
 </style>
 </head>
@@ -393,16 +623,17 @@ code {
     <a class="btn primary" href="slides/" data-slide-link data-local-label="PDF">▶ <span class="btn-label slide-link-label">Slides</span></a>
     <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
     <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
-    <a class="btn" href="materiale/annotate_axis.py" download>↓ <span class="btn-label">.py</span></a>
+    <a class="btn" href="prompts/annotation_prompt.md">↗ <span class="btn-label">Prompt</span></a>
+    <a class="btn" href="scripts/annotate_axis.py" download>↓ <span class="btn-label">.py</span></a>
     <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">light</span></button>
   </div>
 </nav>
 
 <div class="hero">
   <div class="hero-tag">AI Engineering · ADC 2026 · C4</div>
-  <h1>Prompting, adnotare și context engineering</h1>
-  <p class="hero-subtitle">Structura cursului este aliniată cu UX-ul din C3</p>
-  <p class="hero-sub">În C4 pregătim zona de prompting și adnotare asistată. Acum pagina este concentrată pe structură, navigare și fișiere locale: viewer pentru slides, rută pentru notebook și download direct pentru materialele de lucru.</p>
+  <h1>Prompting, adnotare și tipologii discursive</h1>
+  <p class="hero-subtitle">De la comentarii la axe empirice</p>
+  <p class="hero-sub">În C4 trecem de la corpusul curățat la adnotare asistată cu LLM. Comentariile YouTube nu sunt tratate doar ca texte „pozitive” sau „negative”, ci ca poziționări politice orientate spre ținte: cine este evaluat, ce poziție are comentariul față de acea țintă și ce logică discursivă activează.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
@@ -416,15 +647,10 @@ code {
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>Pagina C4 folosește aceeași logică de navigare ca C3: acces rapid la slides, PDF, notebook și fișiere descărcabile.</p>
-      <p>Conținutul didactic detaliat îl putem completa mai târziu. Momentan sunt configurate rutele și punctele de intrare pentru materialele care există deja în folderul cursului.</p>
+      <p>Scopul cursului este să construim un prompt de adnotare, să testăm tehnici de prompt engineering, să producem adnotări în JSON și să transformăm rezultatele în tipologii discursive rule-based.</p>
+      <p>Slide-urile C4 acoperă tematica, livrabilele, axele, pipeline-ul, tipologia și pregătirea pentru C5. Pagina aceasta păstrează structura și UX-ul din C3, dar conținutul este actualizat pentru etapa de adnotare și context engineering.</p>
     </div>
-    <ul class="topic-list">
-      <li>viewer dedicat pentru slides în ruta <code>slides/</code></li>
-      <li>rută separată pentru notebook-uri în <code>notebook/</code></li>
-      <li>download direct pentru fișierele din <code>materiale/</code></li>
-      <li>fallback local pentru deschiderea PDF-ului direct din <code>file://</code></li>
-    </ul>
+    <p class="note-box">Mesaj-cheie: LLM-ul nu decide direct bula discursivă. Modelul produce variabile. Scriptul construiește tipologia.</p>
   </section>
 
   <section>
@@ -433,8 +659,8 @@ code {
 
       <div class="material-card">
         <div class="mat-icon">▤</div>
-        <div class="mat-title">Prezentare</div>
-        <div class="mat-desc">Viewer-ul de slides pentru C4 folosește aceeași experiență ca în C3: navigare pe pagini, progres, taste rapide și fullscreen.</div>
+        <div class="mat-title">Slides C4</div>
+        <div class="mat-desc">Slide-urile C4 introduc prompting, schema de adnotare, axele discursive, tipologiile rule-based și pregătirea pentru C5.</div>
         <div class="mat-actions">
           <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
           <a class="btn" href="slides.pdf" download>↓ PDF</a>
@@ -444,20 +670,33 @@ code {
       <div class="material-card">
         <div class="mat-icon">⊞</div>
         <div class="mat-title">Notebook-uri C4</div>
-        <div class="mat-desc">Ruta <code>notebook/</code> este pregătită pe modelul cursului 3 și funcționează ca punct unic pentru notebook-uri și materiale auxiliare.</div>
+        <div class="mat-desc">Notebook demo pentru clasă și notebook de exercițiu individual, plus ruta separată <code>notebook/</code> pentru aceeași experiență ca în C3.</div>
         <div class="mat-actions">
           <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
+          <a class="btn" href="notebooks/C4_adnotare_corpus_demo.ipynb" download>↓ Demo</a>
+          <a class="btn" href="notebooks/C4_adnotare_corpus_exercitiu.ipynb" download>↓ Exercițiu</a>
         </div>
       </div>
 
       <div class="material-card">
         <div class="mat-icon">⤓</div>
-        <div class="mat-title">Materiale de lucru</div>
-        <div class="mat-desc">Fișierele de lucru actuale din C4 pot fi deschise sau descărcate direct, inclusiv scriptul Python pentru adnotare.</div>
+        <div class="mat-title">Date C4</div>
+        <div class="mat-desc">Fișierele de lucru pentru sample-ul curățat, sample-ul adnotat și corpusul de echipă typed care intră apoi în C5.</div>
         <div class="mat-actions">
-          <a class="btn primary" href="materiale/annotation_prompt.md">↗ Prompt .md</a>
-          <a class="btn" href="materiale/annotation_prompt.md" download>↓ .md</a>
-          <a class="btn" href="materiale/annotate_axis.py" download>↓ .py</a>
+          <a class="btn primary" href="data/cleaned/corpus_youtube_sample.jsonl" download>↓ Sample</a>
+          <a class="btn" href="data/cleaned/corpus_youtube_sample_annotated.jsonl" download>↓ Annotated</a>
+          <a class="btn" href="data/annotated/corpus_axis_annotated_team.jsonl" download>↓ Team typed</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⌘</div>
+        <div class="mat-title">Prompt & script</div>
+        <div class="mat-desc">Promptul de referință, promptul de echipă și scriptul de adnotare folosite pentru a produce variabilele și tipologiile C4.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="prompts/annotation_prompt.md">↗ Prompt ref</a>
+          <a class="btn" href="prompts/team_annotation_prompt.md">↗ Team prompt</a>
+          <a class="btn" href="scripts/annotate_axis.py" download>↓ Script</a>
         </div>
       </div>
 
@@ -465,33 +704,269 @@ code {
   </section>
 
   <section>
-    <p class="section-label">Structură C4</p>
+    <p class="section-label">Ce facem în C4</p>
     <ul class="obj-list">
-      <li class="obj-item">Pagina principală păstrează aceeași ierarhie vizuală și același set de acțiuni rapide ca în C3.</li>
-      <li class="obj-item">Viewer-ul din <code>slides/</code> este separat și folosește PDF.js local din <code>lib/</code>.</li>
-      <li class="obj-item">Ruta <code>notebook/</code> este disponibilă pentru centralizarea notebook-urilor și a materialelor de suport.</li>
-      <li class="obj-item">Fișierul <code>materiale/annotate_axis.py</code> are link de download direct.</li>
-      <li class="obj-item">Fișierul <code>materiale/annotation_prompt.md</code> poate fi deschis în browser sau descărcat local.</li>
+      <li class="obj-item">Comparăm zero-shot, role prompting, few-shot, JSON in prompt și structured output.</li>
+      <li class="obj-item">Construim și testăm un prompt de adnotare.</li>
+      <li class="obj-item">Adnotăm comentarii YouTube pe <code>target</code>, <code>stance</code>, <code>tone</code> și 5 axe discursive.</li>
+      <li class="obj-item">Construim tipologii rule-based din valorile pe axe.</li>
+      <li class="obj-item">Comparăm tipologia cu DBSCAN ca verificare exploratorie.</li>
+      <li class="obj-item">Fiecare student face un mini-prompt individual în notebook.</li>
     </ul>
   </section>
 
   <section>
-    <p class="section-label">Resurse locale</p>
+    <p class="section-label">Schema de adnotare</p>
+    <div class="code-wrap">
+      <div class="code-wrap-label">annotation_schema.json</div>
+      <pre>{
+  "target": "",
+  "stance": "",
+  "tone": "",
+  "institutional": 0,
+  "legitimare": 0,
+  "epistemic": 0,
+  "geopolitic": 0,
+  "mobilizare": 0,
+  "justification": "",
+  "confidence": 0.0
+}</pre>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Cele 5 axe discursive</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Axă</th>
+            <th>Capăt 1</th>
+            <th>Capăt 2</th>
+            <th>Notă</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>institutional</code></td>
+            <td>instituții corupte / capturate</td>
+            <td>lege și procedură legitimă</td>
+            <td>măsoară raportarea la instituții</td>
+          </tr>
+          <tr>
+            <td><code>legitimare</code></td>
+            <td>lider-salvator</td>
+            <td>reguli, instituții și pluralism</td>
+            <td>separă personalismul de logica democratică</td>
+          </tr>
+          <tr>
+            <td><code>epistemic</code></td>
+            <td>forțe ascunse / regie</td>
+            <td>dovezi, verificare, probe</td>
+            <td>urmărește logica explicativă</td>
+          </tr>
+          <tr>
+            <td><code>geopolitic</code></td>
+            <td>UE/NATO ca amenințare</td>
+            <td>UE/NATO ca garanție</td>
+            <td>captează orientarea externă</td>
+          </tr>
+          <tr>
+            <td><code>mobilizare</code></td>
+            <td>0 = absent</td>
+            <td>2 = chemare la acțiune</td>
+            <td>axă ordinală, nu neutră</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note-box">Regulă importantă: <code>0 = absent, nu neutru</code>. Un comentariu poate activa mai multe axe simultan.</p>
+  </section>
+
+  <section>
+    <p class="section-label">Pipeline C4</p>
+    <div class="flow-wrap">
+      <div class="flow">
+        <span class="flow-step">corpus YouTube curățat</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">prompt de adnotare</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">LLM annotation</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">target + stance + tone + 5 axe</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step hi">tipologie rule-based</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">DBSCAN exploratoriu</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">corpus typed pentru C5</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Tipologii discursive</p>
+    <div class="intro-body">
+      <p>Tipurile sunt construite prin reguli, nu cerute direct modelului. Modelul produce variabilele de lucru, iar scriptul mapează combinațiile relevante în tipologii discursive.</p>
+    </div>
+    <ul class="deliverable-list" style="margin-top:0.9rem;">
+      <li class="del-item"><span class="del-num">T1</span><span><code>T1_suport_personalist</code></span></li>
+      <li class="del-item"><span class="del-num">T2</span><span><code>T2_grievance_anti_sistem</code></span></li>
+      <li class="del-item"><span class="del-num">T3</span><span><code>T3_opozitie_suveranista</code></span></li>
+      <li class="del-item"><span class="del-num">T4</span><span><code>T4_conspiratie_externalism</code></span></li>
+      <li class="del-item"><span class="del-num">T5</span><span><code>T5_pro_democratic_european</code></span></li>
+      <li class="del-item"><span class="del-num">T6</span><span><code>T6_afectiv_pozitional</code></span></li>
+    </ul>
+    <div class="code-wrap">
+      <div class="code-wrap-label">formula.txt</div>
+      <pre>target + stance + axe → discourse_type</pre>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Livrabile C4</p>
+
+    <p class="subsec-label">Prompturi și script</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">01</span><span><code>prompts/annotation_prompt.md</code></span></li>
+      <li class="del-item"><span class="del-num">02</span><span><code>prompts/team_annotation_prompt.md</code></span></li>
+      <li class="del-item"><span class="del-num">03</span><span><code>scripts/annotate_axis.py</code></span></li>
+    </ul>
+
+    <p class="subsec-label">Date</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">04</span><span><code>data/cleaned/corpus_youtube_sample.jsonl</code></span></li>
+      <li class="del-item"><span class="del-num">05</span><span><code>data/cleaned/corpus_youtube_sample_annotated.jsonl</code></span></li>
+      <li class="del-item"><span class="del-num">06</span><span><code>data/annotated/corpus_axis_annotated_team.jsonl</code></span></li>
+    </ul>
+
+    <p class="subsec-label">Notebook-uri</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">07</span><span><code>notebooks/C4_adnotare_corpus_demo.ipynb</code></span></li>
+      <li class="del-item"><span class="del-num">08</span><span><code>notebooks/student_XX/C4_adnotare_corpus_exercitiu.ipynb</code></span></li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">GitHub Issues / Workflow</p>
+    <div class="milestone-tag">C4 - Prompting and annotation</div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C4.1</span>
+        <span class="issue-card-title">C4.1 - Add C4 data, script, and reference prompt</span>
+        <span class="issue-card-badge">echipă</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>adaugă datele sample, scriptul și promptul de referință în structura C4</li>
+          <li>verifică că linkurile din pagina cursului indică spre căile finale</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C4.2</span>
+        <span class="issue-card-title">student_XX - C4.2 - Complete annotation exercise notebook</span>
+        <span class="issue-card-badge">individual</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>fiecare student lucrează în notebook-ul de exercițiu pentru adnotare</li>
+          <li>testează mini-promptul individual pe comentarii din corpus</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C4.3</span>
+        <span class="issue-card-title">C4.3 - Add class demo annotation and typology notebook</span>
+        <span class="issue-card-badge">echipă</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>adaugă notebook-ul demo pentru clasă</li>
+          <li>documentează trecerea de la variabile la tipologie</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C4.4</span>
+        <span class="issue-card-title">C4.4 - Build and test team annotation prompt</span>
+        <span class="issue-card-badge">echipă</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>stabilește promptul comun de echipă pentru adnotare</li>
+          <li>produce outputul typed care intră în C5</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Pregătire pentru C5</p>
+    <ul class="checklist">
+      <li class="check-item">verificați că aveți fișierele C4 în repo</li>
+      <li class="check-item">rulați <code>C4_adnotare_corpus_exercitiu.ipynb</code></li>
+      <li class="check-item">verificați că există outputul echipei: <code>data/annotated/corpus_axis_annotated_team.jsonl</code></li>
+      <li class="check-item">pregătiți 5 întrebări de test pentru corpus</li>
+      <li class="check-item">actualizați README cu ce ați făcut în C4</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Legătura cu C5</p>
+    <div class="code-wrap">
+      <div class="code-wrap-label">c4_to_c5.txt</div>
+      <pre>C4: comentarii → adnotare → axe → tipologii
+C5: corpus typed → embeddings → retrieval → context automat</pre>
+    </div>
+    <div class="intro-body" style="margin-top:0.9rem;">
+      <p>C5 pornește de la outputul C4. În C5 construim retrieval system, vector store și primul strat de RAG. Modelul nu mai primește context scris manual; sistemul recuperează automat pasaje relevante din corpus.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Resurse</p>
 
     <div class="resource-group">
-      <p class="resource-group-label">Slides</p>
+      <p class="resource-group-label">Prompt / context engineering</p>
       <ul class="resource-list">
-        <li class="resource-item"><a class="resource-link" href="slides/"><span class="rname">Slides viewer C4</span><span class="rarrow">→</span></a></li>
-        <li class="resource-item"><a class="resource-link" href="slides.pdf" download><span class="rname">slides.pdf</span><span class="rarrow">↓</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://simonwillison.net/2025/Jun/27/context-engineering/" target="_blank" rel="noopener noreferrer"><span class="rname">Simon Willison — Context engineering</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://www.langchain.com/blog/context-engineering-for-agents" target="_blank" rel="noopener noreferrer"><span class="rname">LangChain — Context engineering for agents</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://spectrum.ieee.org/prompt-engineering-is-dead" target="_blank" rel="noopener noreferrer"><span class="rname">IEEE Spectrum — Prompt engineering is dead</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://developers.openai.com/api/docs/guides/optimizing-llm-accuracy" target="_blank" rel="noopener noreferrer"><span class="rname">OpenAI — Optimizing LLM accuracy</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://docs.langchain.com/oss/python/langchain/context-engineering" target="_blank" rel="noopener noreferrer"><span class="rname">LangChain docs — Context engineering</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://www.deeplearning.ai/courses/agentic-ai/" target="_blank" rel="noopener noreferrer"><span class="rname">DeepLearning.AI — Agentic AI</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://huggingface.co/papers/2401.08500" target="_blank" rel="noopener noreferrer"><span class="rname">Hugging Face Papers — 2401.08500</span><span class="rarrow">↗</span></a></li>
       </ul>
     </div>
 
     <div class="resource-group">
-      <p class="resource-group-label">Notebook și materiale</p>
+      <p class="resource-group-label">Video context engineering</p>
       <ul class="resource-list">
-        <li class="resource-item"><a class="resource-link" href="notebook/"><span class="rname">Notebook hub C4</span><span class="rarrow">→</span></a></li>
-        <li class="resource-item"><a class="resource-link" href="materiale/annotation_prompt.md"><span class="rname">annotation_prompt.md</span><span class="rarrow">↗</span></a></li>
-        <li class="resource-item"><a class="resource-link" href="materiale/annotate_axis.py" download><span class="rname">annotate_axis.py</span><span class="rarrow">↓</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="http://youtube.com/watch?v=Cs7QiSi8KLY" target="_blank" rel="noopener noreferrer"><span class="rname">YouTube — Context engineering video</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Literatură menționată</p>
+      <ul class="resource-list">
+        <li class="resource-item"><div class="resource-link"><span class="rname">Bestvater & Monroe, 2023 — Sentiment is not stance</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Burnham, 2025 — Stance detection</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Norris & Inglehart, 2019 — Cultural Backlash</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Bertsou, 2019 — political distrust</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Hofstadter, 1964 — The Paranoid Style in American Politics</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Douglas & Sutton, 2023 — conspiracism</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Mudde & Kaltwasser, 2017 — populism</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Weyland, 2017 — personalism / populism</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Kriesi et al., 2008 — cosmopolitan/nativist cleavage</span><span class="rarrow">·</span></div></li>
+        <li class="resource-item"><div class="resource-link"><span class="rname">Theocharis et al., 2023 — digital mobilization</span><span class="rarrow">·</span></div></li>
       </ul>
     </div>
   </section>
