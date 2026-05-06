@@ -214,6 +214,24 @@ section { padding-top: 2.4rem; }
 .mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
 .mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
 .mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+.mat-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.mat-file-row {
+  border-top: 1px solid var(--border);
+  padding-top: 0.7rem;
+}
+
+.mat-file-name {
+  display: block;
+  font-size: 11px;
+  color: var(--sub);
+  margin-bottom: 0.45rem;
+}
 
 .intro-body {
   font-size: 12.5px;
@@ -668,11 +686,21 @@ code {
         <div class="mat-icon">⊞</div>
         <div class="mat-title">Notebook-uri C4</div>
         <div class="mat-desc">Notebook demo pentru clasă și notebook de exercițiu individual, păstrate direct în secțiunea de materiale.</div>
-        <div class="mat-actions">
-          <a class="btn primary" href="notebooks/C4_adnotare_corpus_demo.ipynb" target="_blank" rel="noopener noreferrer">↗ Demo</a>
-          <a class="btn" href="notebooks/C4_adnotare_corpus_demo.ipynb" download>↓ Demo</a>
-          <a class="btn" href="notebooks/C4_adnotare_corpus_exercitiu.ipynb" target="_blank" rel="noopener noreferrer">↗ Exercițiu</a>
-          <a class="btn" href="notebooks/C4_adnotare_corpus_exercitiu.ipynb" download>↓ Exercițiu</a>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">Notebook demo</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="notebooks/C4_adnotare_corpus_demo.ipynb" target="_blank" rel="noopener noreferrer">↗ Deschide</a>
+              <a class="btn" href="notebooks/C4_adnotare_corpus_demo.ipynb" download>↓ Descarcă</a>
+            </div>
+          </div>
+          <div class="mat-file-row">
+            <span class="mat-file-name">Notebook exercițiu</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="notebooks/C4_adnotare_corpus_exercitiu.ipynb" target="_blank" rel="noopener noreferrer">↗ Deschide</a>
+              <a class="btn" href="notebooks/C4_adnotare_corpus_exercitiu.ipynb" download>↓ Descarcă</a>
+            </div>
+          </div>
         </div>
       </div>
 
