@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-06 11:39",
+    "updated_at":  "2026-05-06 11:55",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -83,8 +83,8 @@
                       ],
     "summary":  {
                     "total_issues":  180,
-                    "closed_issues":  73,
-                    "open_issues":  107,
+                    "closed_issues":  74,
+                    "open_issues":  106,
                     "completion_percent":  41,
                     "current_stage_id":  "C2",
                     "current_stage_title":  "Models",
@@ -119,10 +119,10 @@
                             "id":  "C3",
                             "title":  "Data",
                             "milestone":  "C3 - Data and corpus",
-                            "closed":  14,
-                            "open":  64,
+                            "closed":  15,
+                            "open":  63,
                             "total":  78,
-                            "percent":  18
+                            "percent":  19
                         },
                         {
                             "id":  "C4",
@@ -290,7 +290,7 @@
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-1/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
                       "current_stage_id":  "C1",
-                      "overall_percent":  40,
+                      "overall_percent":  43,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "id":  "C1",
@@ -311,10 +311,10 @@
                                        "C3 - Data and corpus":  {
                                                                     "id":  "C3",
                                                                     "title":  "Data",
-                                                                    "closed":  1,
-                                                                    "open":  12,
+                                                                    "closed":  2,
+                                                                    "open":  11,
                                                                     "total":  13,
-                                                                    "percent":  8
+                                                                    "percent":  15
                                                                 },
                                        "C4 - Prompting and annotation":  {
                                                                              "id":  "C4",
@@ -366,9 +366,9 @@
                                                            }
                                    },
                       "activity":  {
-                                       "last_activity_at":  "2026-05-06 10:55",
-                                       "issues_closed_last_48h":  5,
-                                       "avg_completion_time_days":  3.4,
+                                       "last_activity_at":  "2026-05-06 11:42",
+                                       "issues_closed_last_48h":  6,
+                                       "avg_completion_time_days":  3.3,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
                                        "blocked":  false,
@@ -539,12 +539,12 @@
                                           "github_handle":  "osacicozmin",
                                           "active":  true,
                                           "connected":  true,
-                                          "commits_count":  3,
-                                          "closed":  3,
-                                          "open":  2,
+                                          "commits_count":  4,
+                                          "closed":  4,
+                                          "open":  1,
                                           "total":  5,
-                                          "issue_progress_percent":  60,
-                                          "course_progress_percent":  60,
+                                          "issue_progress_percent":  80,
+                                          "course_progress_percent":  80,
                                           "current_stage":  "C3 - Data and corpus",
                                           "current_stage_id":  "C3",
                                           "progress":  {
@@ -567,10 +567,10 @@
                                                            "C3 - Data and corpus":  {
                                                                                         "id":  "C3",
                                                                                         "title":  "Data",
-                                                                                        "closed":  0,
-                                                                                        "open":  2,
+                                                                                        "closed":  1,
+                                                                                        "open":  1,
                                                                                         "total":  2,
-                                                                                        "percent":  0
+                                                                                        "percent":  50
                                                                                     },
                                                            "C4 - Prompting and annotation":  {
                                                                                                  "id":  "C4",
@@ -633,8 +633,8 @@
                                                                                                     ]
                                                                       },
                                           "activity":  {
-                                                           "last_activity_at":  "2026-05-04 15:38",
-                                                           "issues_closed_last_48h":  1
+                                                           "last_activity_at":  "2026-05-06 11:42",
+                                                           "issues_closed_last_48h":  2
                                                        }
                                       },
                                       {
@@ -955,21 +955,21 @@
                                   ],
                       "open_issues":  [
                                           {
-                                              "title":  "student_01 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/19",
-                                              "number":  19,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:38",
-                                              "updated_at":  "2026-05-04 15:38",
-                                              "closed_at":  null,
-                                              "days_without_update":  1
-                                          },
-                                          {
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/16",
                                               "number":  16,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 14:20",
+                                              "updated_at":  "2026-04-29 14:20",
+                                              "closed_at":  null,
+                                              "days_without_update":  6
+                                          },
+                                          {
+                                              "title":  "student_04 - C2.1 - Individual model testing notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/15",
+                                              "number":  15,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
@@ -991,9 +991,9 @@
                                               "days_without_update":  1
                                           },
                                           {
-                                              "title":  "student_02 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/20",
-                                              "number":  20,
+                                              "title":  "student_01 - C3.1 - Individual collect and clean notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/19",
+                                              "number":  19,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
@@ -1001,18 +1001,6 @@
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
                                               "days_without_update":  1
-                                          },
-                                          {
-                                              "title":  "student_04 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/15",
-                                              "number":  15,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 14:20",
-                                              "updated_at":  "2026-04-29 14:20",
-                                              "closed_at":  null,
-                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_04 - Issue 2 - Individual notebook workspace",
@@ -1063,6 +1051,18 @@
                                               "days_without_update":  6
                                           },
                                           {
+                                              "title":  "student_05 - C3.1 - Individual collect and clean notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/23",
+                                              "number":  23,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-05-04 15:38",
+                                              "updated_at":  "2026-05-04 15:38",
+                                              "closed_at":  null,
+                                              "days_without_update":  1
+                                          },
+                                          {
                                               "title":  "student_03 - C3.5 - Tema 1 corpus exploration and first prompt",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/29",
                                               "number":  29,
@@ -1111,16 +1111,16 @@
                                               "days_without_update":  1
                                           },
                                           {
-                                              "title":  "student_01 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/27",
-                                              "number":  27,
-                                              "issue_kind":  "student",
+                                              "title":  "C3.3 - Download provided YouTube corpus",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/25",
+                                              "number":  25,
+                                              "issue_kind":  "collective",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
                                               "created_at":  "2026-05-04 15:38",
-                                              "updated_at":  "2026-05-04 15:38",
+                                              "updated_at":  "2026-05-05 21:48",
                                               "closed_at":  null,
-                                              "days_without_update":  1
+                                              "days_without_update":  0
                                           },
                                           {
                                               "title":  "C3.2 - Add final YouTube collection script",
@@ -1135,9 +1135,9 @@
                                               "days_without_update":  1
                                           },
                                           {
-                                              "title":  "student_05 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/23",
-                                              "number":  23,
+                                              "title":  "student_01 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/27",
+                                              "number":  27,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
@@ -1157,18 +1157,6 @@
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
                                               "days_without_update":  1
-                                          },
-                                          {
-                                              "title":  "C3.3 - Download provided YouTube corpus",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/25",
-                                              "number":  25,
-                                              "issue_kind":  "collective",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:38",
-                                              "updated_at":  "2026-05-05 21:48",
-                                              "closed_at":  null,
-                                              "days_without_update":  0
                                           }
                                       ],
                       "closed_issues":  [
@@ -1245,16 +1233,16 @@
                                                 "completion_time_days":  4.9
                                             },
                                             {
-                                                "title":  "C2.2 - Team model configuration in core/config.py",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/17",
-                                                "number":  17,
-                                                "issue_kind":  "collective",
+                                                "title":  "student_01 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/12",
+                                                "number":  12,
+                                                "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
-                                                "closed_by":  "stelamunteanu",
+                                                "closed_by":  "mihaiiacob01",
                                                 "created_at":  "2026-04-29 14:20",
-                                                "updated_at":  "2026-05-05 20:13",
-                                                "closed_at":  "2026-05-05 20:13",
-                                                "completion_time_days":  6.2
+                                                "updated_at":  "2026-04-30 20:02",
+                                                "closed_at":  "2026-04-30 20:02",
+                                                "completion_time_days":  1.2
                                             },
                                             {
                                                 "title":  "C2.3 - Create initial app.py",
@@ -1269,6 +1257,18 @@
                                                 "completion_time_days":  6.9
                                             },
                                             {
+                                                "title":  "student_02 - C3.1 - Individual collect and clean notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/20",
+                                                "number":  20,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "osacicozmin",
+                                                "created_at":  "2026-05-04 15:38",
+                                                "updated_at":  "2026-05-06 11:42",
+                                                "closed_at":  "2026-05-06 11:42",
+                                                "completion_time_days":  1.8
+                                            },
+                                            {
                                                 "title":  "student_03 - C3.1 - Individual collect and clean notebook",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/21",
                                                 "number":  21,
@@ -1278,18 +1278,6 @@
                                                 "created_at":  "2026-05-04 15:38",
                                                 "updated_at":  "2026-05-05 20:13",
                                                 "closed_at":  "2026-05-05 20:13",
-                                                "completion_time_days":  1.2
-                                            },
-                                            {
-                                                "title":  "student_01 - C2.1 - Individual model testing notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/12",
-                                                "number":  12,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "mihaiiacob01",
-                                                "created_at":  "2026-04-29 14:20",
-                                                "updated_at":  "2026-04-30 20:02",
-                                                "closed_at":  "2026-04-30 20:02",
                                                 "completion_time_days":  1.2
                                             },
                                             {
@@ -1315,6 +1303,18 @@
                                                 "updated_at":  "2026-05-05 20:56",
                                                 "closed_at":  "2026-05-05 20:56",
                                                 "completion_time_days":  6.3
+                                            },
+                                            {
+                                                "title":  "C2.2 - Team model configuration in core/config.py",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/17",
+                                                "number":  17,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "stelamunteanu",
+                                                "created_at":  "2026-04-29 14:20",
+                                                "updated_at":  "2026-05-05 20:13",
+                                                "closed_at":  "2026-05-05 20:13",
+                                                "completion_time_days":  6.2
                                             }
                                         ]
                   },
@@ -3356,7 +3356,7 @@
                                    },
                       "activity":  {
                                        "last_activity_at":  "2026-05-05 20:45",
-                                       "issues_closed_last_48h":  10,
+                                       "issues_closed_last_48h":  9,
                                        "avg_completion_time_days":  2.5,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
