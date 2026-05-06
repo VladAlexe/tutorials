@@ -3,54 +3,382 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C4 — Colectare date · AI Engineering</title>
+<title>C4 - Prompting, adnotare si context engineering · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg:#1a1a1a; --surface:#222222; --border:#333333; --border-hi:#444444;
-  --text:#e2e2e2; --dim:#666666; --sub:#999999; --accent:#c8956c;
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+  --blue:     #7ab0d4;
+  --green:    #89b99a;
 }
+
 :root.light {
-  --bg:#faf9f6; --surface:#f3f1eb; --border:#e2ddd3; --border-hi:#c9c3b5;
-  --text:#1c1b18; --dim:#9e9789; --sub:#6b655b; --accent:#b5784a;
+  --bg:       #faf9f6;
+  --surface:  #f3f1eb;
+  --border:   #e2ddd3;
+  --border-hi:#c9c3b5;
+  --text:     #1c1b18;
+  --dim:      #9e9789;
+  --sub:      #6b655b;
+  --accent:   #b5784a;
+  --blue:     #2f6fa8;
+  --green:    #5a7a5a;
 }
+
 html { scroll-behavior: smooth; }
-body { background:var(--bg); color:var(--text); font-family:Aptos,'Segoe UI',system-ui,sans-serif; font-size:13.5px; line-height:1.7; min-height:100vh; display:flex; flex-direction:column; transition:background .2s,color .2s; }
-a { color:inherit; text-decoration:none; }
-nav { height:46px; border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--bg); z-index:100; }
-.nav-left { display:flex; align-items:center; gap:1.2rem; }
-.back-link { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:.3rem; transition:color .12s; }
-.back-link:hover { color:var(--text); }
-.nav-logo { width:15px; height:15px; border-radius:50%; display:inline-block; vertical-align:middle; margin:0 .15rem; position:relative; top:-1px; }
-.nav-sep { width:1px; height:13px; background:var(--border); }
-.breadcrumb { display:flex; align-items:center; gap:.3rem; font-size:11px; color:var(--dim); }
-.breadcrumb a { color:var(--sub); }
-.breadcrumb a:hover { color:var(--text); }
-.breadcrumb .cur { color:var(--text); }
-.breadcrumb .sl { color:var(--border-hi); }
-.btn { display:inline-flex; align-items:center; gap:.3rem; font-family:'JetBrains Mono',monospace; font-size:11px; padding:.22rem .7rem; border-radius:3px; border:1px solid var(--border); background:none; color:var(--sub); cursor:pointer; transition:color .12s,border-color .12s; white-space:nowrap; text-decoration:none; }
-.btn:hover { color:var(--text); border-color:var(--border-hi); }
-.hero { padding:2.2rem 2rem 2rem; border-bottom:1px solid var(--border); }
-.hero-tag { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.55rem; }
-.hero h1 { font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-.025em; line-height:1.15; margin-bottom:.5rem; }
-.hero-sub { font-size:12.5px; color:var(--sub); max-width:580px; line-height:1.8; margin-bottom:.8rem; }
-.hero-meta { display:flex; flex-wrap:wrap; gap:1.2rem; font-size:11px; color:var(--dim); }
-.hero-meta strong { color:var(--sub); font-weight:400; }
-main { flex:1; padding:0 2rem 3.5rem; max-width:860px; width:100%; }
-section { padding-top:2rem; }
-.section-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:.8rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
-.intro-body { font-size:12.5px; color:var(--sub); line-height:1.85; max-width:680px; }
-.placeholder-note { margin-top:1.2rem; display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); border:1px solid var(--border); border-radius:4px; padding:.5rem .9rem; }
-footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
-.ft-col { font-size:11px; color:var(--dim); line-height:2; }
-.ft-col a { color:var(--dim); }
-.ft-col a:hover { color:var(--text); }
-@media (max-width:640px) { nav { padding:0 1rem; } .hero { padding:1.8rem 1rem 1.5rem; } main { padding:0 1rem 3rem; } .hero h1 { font-size:1.5rem; } footer { padding:1rem; } }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, "Segoe UI", system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+nav {
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.back-link {
+  font-size: 11px;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.12s;
+}
+
+.back-link:hover { color: var(--text); }
+
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn.primary:hover { background: rgba(200,149,108,0.08); }
+
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: "Fraunces", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+
+.hero-subtitle {
+  font-family: "Fraunces", serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--sub);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 12.5px;
+  color: var(--sub);
+  max-width: 640px;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+
+.intro-body {
+  font-size: 12.5px;
+  color: var(--sub);
+  line-height: 1.85;
+  max-width: 680px;
+}
+
+.intro-body p + p { margin-top: 0.8rem; }
+
+.topic-list {
+  margin-top: 0.9rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.topic-list li {
+  font-size: 12px;
+  color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.topic-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.obj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.obj-item {
+  padding: 0.75rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.obj-item:last-child { border-bottom: none; }
+.obj-item::before { content: "✓"; color: var(--green); flex-shrink: 0; margin-top: 0.05rem; }
+
+.resource-group { margin-bottom: 1.4rem; }
+
+.resource-group-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+
+.resource-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.resource-item { border-bottom: 1px solid var(--border); }
+.resource-item:last-child { border-bottom: none; }
+
+.resource-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  transition: background 0.1s, color 0.1s;
+  gap: 1rem;
+}
+
+.resource-link:hover { background: var(--surface); color: var(--text); }
+.resource-link .rname { flex: 1; }
+.resource-link .rarrow { color: var(--border-hi); font-size: 10px; flex-shrink: 0; }
+.resource-link:hover .rarrow { color: var(--accent); }
+
+.local-note {
+  margin-top: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  max-width: 620px;
+}
+
+.local-note-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}
+
+.local-note p {
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.75;
+}
+
+.local-note p + p { margin-top: 0.5rem; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.05rem 0.3rem;
+  color: var(--text);
+}
+
+.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
+.ft-col a { color: var(--dim); }
+.ft-col a:hover { color: var(--text); }
+
+.theme-btn { font-family: "JetBrains Mono", monospace; }
+
+.nav-logo {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  position: relative;
+  top: -1px;
+}
+
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.6rem; }
+  main { padding: 0 1rem 4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1rem; }
+  .nav-actions .btn-label { display: none; }
+}
 </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-left">
     <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
@@ -61,27 +389,120 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
       <span class="cur">C4</span>
     </div>
   </div>
-  <button class="btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">dark</span></button>
+  <div class="nav-actions">
+    <a class="btn primary" href="slides/" data-slide-link data-local-label="PDF">▶ <span class="btn-label slide-link-label">Slides</span></a>
+    <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
+    <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
+    <a class="btn" href="materiale/annotate_axis.py" download>↓ <span class="btn-label">.py</span></a>
+    <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">light</span></button>
+  </div>
 </nav>
+
 <div class="hero">
   <div class="hero-tag">AI Engineering · ADC 2026 · C4</div>
-  <h1>Colectare date</h1>
-  <p class="hero-sub">În C4 folosim modelele pentru adnotare asistată: definim scheme, scriem prompturi robuste și transformăm textul liber în variabile analizabile.</p>
+  <h1>Prompting, adnotare și context engineering</h1>
+  <p class="hero-subtitle">Structura cursului este aliniată cu UX-ul din C3</p>
+  <p class="hero-sub">În C4 pregătim zona de prompting și adnotare asistată. Acum pagina este concentrată pe structură, navigare și fișiere locale: viewer pentru slides, rută pentru notebook și download direct pentru materialele de lucru.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
+    <span>Limbă <strong>Română</strong></span>
     <span>Sesiune <strong>C4</strong></span>
   </div>
 </div>
+
 <main>
+
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>În C4 folosim modelele pentru adnotare asistată: definim scheme, scriem prompturi robuste și transformăm textul liber în variabile analizabile.</p>
+      <p>Pagina C4 folosește aceeași logică de navigare ca C3: acces rapid la slides, PDF, notebook și fișiere descărcabile.</p>
+      <p>Conținutul didactic detaliat îl putem completa mai târziu. Momentan sunt configurate rutele și punctele de intrare pentru materialele care există deja în folderul cursului.</p>
     </div>
-    <p class="placeholder-note">Materialele pentru acest curs vor fi adăugate ulterior.</p>
+    <ul class="topic-list">
+      <li>viewer dedicat pentru slides în ruta <code>slides/</code></li>
+      <li>rută separată pentru notebook-uri în <code>notebook/</code></li>
+      <li>download direct pentru fișierele din <code>materiale/</code></li>
+      <li>fallback local pentru deschiderea PDF-ului direct din <code>file://</code></li>
+    </ul>
   </section>
+
+  <section>
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Prezentare</div>
+        <div class="mat-desc">Viewer-ul de slides pentru C4 folosește aceeași experiență ca în C3: navigare pe pagini, progres, taste rapide și fullscreen.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
+          <a class="btn" href="slides.pdf" download>↓ PDF</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Notebook-uri C4</div>
+        <div class="mat-desc">Ruta <code>notebook/</code> este pregătită pe modelul cursului 3 și funcționează ca punct unic pentru notebook-uri și materiale auxiliare.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⤓</div>
+        <div class="mat-title">Materiale de lucru</div>
+        <div class="mat-desc">Fișierele de lucru actuale din C4 pot fi deschise sau descărcate direct, inclusiv scriptul Python pentru adnotare.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="materiale/annotation_prompt.md">↗ Prompt .md</a>
+          <a class="btn" href="materiale/annotation_prompt.md" download>↓ .md</a>
+          <a class="btn" href="materiale/annotate_axis.py" download>↓ .py</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Structură C4</p>
+    <ul class="obj-list">
+      <li class="obj-item">Pagina principală păstrează aceeași ierarhie vizuală și același set de acțiuni rapide ca în C3.</li>
+      <li class="obj-item">Viewer-ul din <code>slides/</code> este separat și folosește PDF.js local din <code>lib/</code>.</li>
+      <li class="obj-item">Ruta <code>notebook/</code> este disponibilă pentru centralizarea notebook-urilor și a materialelor de suport.</li>
+      <li class="obj-item">Fișierul <code>materiale/annotate_axis.py</code> are link de download direct.</li>
+      <li class="obj-item">Fișierul <code>materiale/annotation_prompt.md</code> poate fi deschis în browser sau descărcat local.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Resurse locale</p>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Slides</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="slides/"><span class="rname">Slides viewer C4</span><span class="rarrow">→</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="slides.pdf" download><span class="rname">slides.pdf</span><span class="rarrow">↓</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Notebook și materiale</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="notebook/"><span class="rname">Notebook hub C4</span><span class="rarrow">→</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="materiale/annotation_prompt.md"><span class="rname">annotation_prompt.md</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="materiale/annotate_axis.py" download><span class="rname">annotate_axis.py</span><span class="rarrow">↓</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="local-note">
+    <p class="local-note-label">Notă locală</p>
+    <p>Dacă pagina este deschisă direct din filesystem, butonul de slides merge către <code>slides.pdf</code>. Pe server local sau în hosting static, ruta <code>slides/</code> deschide viewer-ul complet, exact ca în C3.</p>
+  </div>
+
 </main>
+
 <footer>
   <div class="ft-col">
     Universitatea Babeș-Bolyai · Cluj-Napoca<br>
@@ -97,12 +518,37 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
     <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
   </div>
 </footer>
+
 <script>
-const btn = document.getElementById('themeBtn');
-const label = btn.querySelector('.btn-label');
-function applyTheme(light) { document.documentElement.classList.toggle('light', light); label.textContent = light ? 'dark' : 'light'; }
-function toggleTheme() { const l = document.documentElement.classList.contains('light'); localStorage.setItem('theme', l ? 'dark' : 'light'); applyTheme(!l); }
-applyTheme(localStorage.getItem('theme') !== 'dark');
+const btn = document.getElementById("themeBtn");
+const label = btn.querySelector(".btn-label");
+
+function adaptLocalSlidesLinks() {
+  if (location.protocol !== "file:") return;
+
+  document.querySelectorAll("[data-slide-link]").forEach(link => {
+    link.href = "slides.pdf";
+
+    const slideLabel = link.querySelector(".slide-link-label");
+    if (slideLabel && link.dataset.localLabel) {
+      slideLabel.textContent = link.dataset.localLabel;
+    }
+  });
+}
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle("light", light);
+  label.textContent = light ? "dark" : "light";
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains("light");
+  localStorage.setItem("theme", isLight ? "dark" : "light");
+  applyTheme(!isLight);
+}
+
+adaptLocalSlidesLinks();
+applyTheme(localStorage.getItem("theme") !== "dark");
 </script>
 </body>
 </html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C4 - Notebook · AI Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+}
+
+:root.light {
+  --bg:       #faf9f6;
+  --surface:  #f3f1eb;
+  --border:   #e2ddd3;
+  --border-hi:#c9c3b5;
+  --text:     #1c1b18;
+  --dim:      #9e9789;
+  --sub:      #6b655b;
+  --accent:   #b5784a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, "Segoe UI", system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+nav {
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.back-link {
+  font-size: 11px;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.12s;
+}
+
+.back-link:hover { color: var(--text); }
+
+.nav-logo {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  position: relative;
+  top: -1px;
+}
+
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn.primary:hover { background: rgba(200, 149, 108, 0.08); }
+
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: "Fraunces", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+
+.hero-sub {
+  font-size: 12.5px;
+  color: var(--sub);
+  max-width: 640px;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+
+.intro-body {
+  font-size: 12.5px;
+  color: var(--sub);
+  line-height: 1.85;
+  max-width: 680px;
+}
+
+.intro-body p + p { margin-top: 0.8rem; }
+
+.topic-list {
+  margin-top: 0.9rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.topic-list li {
+  font-size: 12px;
+  color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.topic-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.local-note {
+  margin-top: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  max-width: 680px;
+}
+
+.local-note-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}
+
+.local-note p {
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.75;
+}
+
+.local-note p + p { margin-top: 0.5rem; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.05rem 0.3rem;
+  color: var(--text);
+}
+
+.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
+.ft-col a { color: var(--dim); }
+.ft-col a:hover { color: var(--text); }
+
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.6rem; }
+  main { padding: 0 1rem 4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1rem; }
+  .nav-actions .btn-label { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a class="back-link" href="../">← <img class="nav-logo" src="../../../logo.png" alt=""> C4</a>
+    <div class="nav-sep"></div>
+    <div class="breadcrumb">
+      <a href="../../../">tutorials</a>
+      <span class="sl">/</span>
+      <a href="../../">ai-engineering</a>
+      <span class="sl">/</span>
+      <a href="../">C4</a>
+      <span class="sl">/</span>
+      <span class="cur">notebook</span>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <a class="btn" href="../slides/">▶ <span class="btn-label">Slides</span></a>
+    <a class="btn primary" href="../materiale/annotate_axis.py" download>↓ <span class="btn-label">.py</span></a>
+    <button class="btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">light</span></button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">AI Engineering · ADC 2026 · C4</div>
+  <h1>Notebook & materiale C4</h1>
+  <p class="hero-sub">Ruta <code>notebook/</code> este activă și păstrează aceeași experiență de navigare ca în C3, chiar dacă notebook-urile concrete pot fi completate ulterior.</p>
+  <div class="hero-meta">
+    <span>Curs <strong>AI Engineering</strong></span>
+    <span>Sesiune <strong>C4</strong></span>
+    <span>UX <strong>aliniat cu C3</strong></span>
+  </div>
+</div>
+
+<main>
+  <section>
+    <p class="section-label">Disponibil acum</p>
+    <div class="material-grid">
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Spațiu pentru notebook-uri</div>
+        <div class="mat-desc">Folderul <code>../notebooks/</code> este pregătit pentru fișierele <code>.ipynb</code> sau exporturile HTML pe care le adaugi ulterior.</div>
+        <div class="mat-actions">
+          <a class="btn" href="../">← Înapoi la curs</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⌘</div>
+        <div class="mat-title">Prompt de adnotare</div>
+        <div class="mat-desc">Fișierul Markdown poate fi deschis direct sau descărcat ca material de referință pentru activitatea din C4.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="../materiale/annotation_prompt.md">↗ Deschide</a>
+          <a class="btn" href="../materiale/annotation_prompt.md" download>↓ .md</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⤓</div>
+        <div class="mat-title">Script Python</div>
+        <div class="mat-desc">Scriptul <code>annotate_axis.py</code> este disponibil cu link de download direct, ca să poată fi preluat local fără pași suplimentari.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="../materiale/annotate_axis.py" download>↓ annotate_axis.py</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Ce rămâne pregătit</p>
+    <div class="intro-body">
+      <p>Am păstrat ruta de notebook separată pentru ca UX-ul să rămână identic cu C3: pagina principală duce aici, iar aici putem ancora apoi notebook-urile reale fără să schimbăm navigarea.</p>
+      <p>Când adaugi fișierele de notebook, putem transforma imediat această pagină într-un viewer sau într-un index de notebook-uri, fără să mutăm linkurile existente.</p>
+    </div>
+    <ul class="topic-list">
+      <li>aceeași ierarhie de navigare ca în C3</li>
+      <li>acțiuni rapide pentru materiale locale</li>
+      <li>punct stabil pentru notebook-uri viitoare</li>
+    </ul>
+  </section>
+
+  <div class="local-note">
+    <p class="local-note-label">Notă</p>
+    <p>Dacă vrei, în pasul următor pot să leg și notebook-uri concrete imediat ce apar în <code>notebooks/</code>, fără să mai schimb designul.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="ft-col">
+    Universitatea Babeș-Bolyai · Cluj-Napoca<br>
+    Facultatea de Sociologie și Asistență Socială<br>
+    Masteratul Analiza Datelor Complexe
+  </div>
+  <div class="ft-col">
+    Ingineria AI · Aplicații cu agenți inteligenți<br>
+    Semestrul IV · Laborator<br>
+    Vlad Alexe<br>
+    <a href="https://github.com/AIE-2026" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    &nbsp;·&nbsp;
+    <a href="../../../LICENSE">CC BY-NC-SA 4.0</a>
+  </div>
+</footer>
+
+<script>
+const btn = document.getElementById("themeBtn");
+const label = btn.querySelector(".btn-label");
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle("light", light);
+  label.textContent = light ? "dark" : "light";
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains("light");
+  localStorage.setItem("theme", isLight ? "dark" : "light");
+  applyTheme(!isLight);
+}
+
+applyTheme(localStorage.getItem("theme") !== "dark");
+</script>
+</body>
+</html>
