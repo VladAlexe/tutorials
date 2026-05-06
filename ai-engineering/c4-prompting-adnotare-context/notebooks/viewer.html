@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notebook Viewer · C4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:opsz,wght@9..144,300;9..144,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #faf9f6;
+  --surface: #f3f1eb;
+  --border: #e2ddd3;
+  --border-hi: #c9c3b5;
+  --text: #1c1b18;
+  --sub: #6b655b;
+  --dim: #9e9789;
+  --accent: #b5784a;
+  --code-bg: #f7f5ef;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+header {
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: rgba(250, 249, 246, 0.96);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+}
+
+.hd-left { display: flex; align-items: center; gap: 0.8rem; }
+
+.back-link {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--sub);
+}
+
+.back-link:hover { color: var(--text); }
+
+.crumb {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.actions { display: flex; align-items: center; gap: 0.45rem; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--sub);
+  background: none;
+}
+
+.btn:hover { border-color: var(--border-hi); color: var(--text); }
+
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.hero-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.65rem;
+}
+
+h1 {
+  font-family: "Fraunces", serif;
+  font-size: 2rem;
+  line-height: 1.1;
+  margin-bottom: 0.45rem;
+}
+
+.hero-sub {
+  color: var(--sub);
+  max-width: 700px;
+  margin-bottom: 1.4rem;
+}
+
+.notebook {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cell {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fffdfa;
+}
+
+.cell-label {
+  padding: 0.45rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+.cell-body {
+  padding: 1rem 1.05rem;
+}
+
+.cell-body p + p,
+.cell-body ul + p,
+.cell-body p + ul,
+.cell-body pre + p { margin-top: 0.8rem; }
+
+.cell-body h1,
+.cell-body h2,
+.cell-body h3 {
+  font-family: "Fraunces", serif;
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+}
+
+.cell-body h1 { font-size: 1.6rem; }
+.cell-body h2 { font-size: 1.25rem; }
+.cell-body h3 { font-size: 1.05rem; }
+
+.cell-body ul {
+  padding-left: 1.1rem;
+}
+
+.cell-body li + li { margin-top: 0.2rem; }
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+code, pre {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.muted {
+  color: var(--dim);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+}
+
+.error-box {
+  border: 1px solid #d8b7b7;
+  background: #fff6f6;
+  color: #8f4a4a;
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: 1.55rem; }
+  main { padding: 1.4rem 1rem 2.2rem; }
+  .actions .btn-label { display: none; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd-left">
+    <a class="back-link" href="../">← C4</a>
+    <span class="crumb">notebook viewer</span>
+  </div>
+  <div class="actions">
+    <a class="btn" id="downloadBtn" href="#">↓ <span class="btn-label">Descarcă</span></a>
+  </div>
+</header>
+
+<main>
+  <div class="hero-tag">AI Engineering · C4</div>
+  <h1 id="title">Notebook</h1>
+  <p class="hero-sub" id="subtitle">Viewer static pentru fișiere Jupyter Notebook din cursul C4.</p>
+  <div id="status" class="muted">Se încarcă notebook-ul…</div>
+  <div id="error" class="error-box" style="display:none"></div>
+  <div id="notebook" class="notebook"></div>
+</main>
+
+<script>
+const params = new URLSearchParams(location.search);
+const file = params.get("file");
+const title = params.get("title") || "Notebook";
+const subtitle = params.get("subtitle") || "";
+
+const titleNode = document.getElementById("title");
+const subtitleNode = document.getElementById("subtitle");
+const statusNode = document.getElementById("status");
+const errorNode = document.getElementById("error");
+const notebookNode = document.getElementById("notebook");
+const downloadBtn = document.getElementById("downloadBtn");
+
+titleNode.textContent = title;
+subtitleNode.textContent = subtitle || subtitleNode.textContent;
+
+if (file) {
+  downloadBtn.href = file;
+  downloadBtn.setAttribute("download", "");
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"]/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;"
+  }[char]));
+}
+
+function renderMarkdown(text) {
+  const lines = text.replace(/\r/g, "").split("\n");
+  const chunks = [];
+  let inList = false;
+
+  function closeList() {
+    if (inList) {
+      chunks.push("</ul>");
+      inList = false;
+    }
+  }
+
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd();
+
+    if (!line.trim()) {
+      closeList();
+      continue;
+    }
+
+    if (line.startsWith("### ")) {
+      closeList();
+      chunks.push(`<h3>${escapeHtml(line.slice(4))}</h3>`);
+      continue;
+    }
+    if (line.startsWith("## ")) {
+      closeList();
+      chunks.push(`<h2>${escapeHtml(line.slice(3))}</h2>`);
+      continue;
+    }
+    if (line.startsWith("# ")) {
+      closeList();
+      chunks.push(`<h1>${escapeHtml(line.slice(2))}</h1>`);
+      continue;
+    }
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      if (!inList) {
+        chunks.push("<ul>");
+        inList = true;
+      }
+      chunks.push(`<li>${escapeHtml(line.slice(2))}</li>`);
+      continue;
+    }
+
+    closeList();
+    chunks.push(`<p>${escapeHtml(line)}</p>`);
+  }
+
+  closeList();
+  return chunks.join("");
+}
+
+function addCell(kind, html) {
+  const cell = document.createElement("section");
+  cell.className = "cell";
+  cell.innerHTML = `
+    <div class="cell-label">${kind}</div>
+    <div class="cell-body">${html}</div>
+  `;
+  notebookNode.appendChild(cell);
+}
+
+function renderNotebook(notebook) {
+  notebookNode.innerHTML = "";
+  const cells = Array.isArray(notebook.cells) ? notebook.cells : [];
+
+  if (!cells.length) {
+    addCell("empty", "<p>Notebook-ul nu are celule.</p>");
+    return;
+  }
+
+  cells.forEach(cell => {
+    const source = Array.isArray(cell.source) ? cell.source.join("") : String(cell.source || "");
+    if (cell.cell_type === "markdown") {
+      addCell("markdown", renderMarkdown(source));
+      return;
+    }
+
+    if (cell.cell_type === "code") {
+      let html = `<pre><code>${escapeHtml(source)}</code></pre>`;
+      if (Array.isArray(cell.outputs) && cell.outputs.length) {
+        const outputText = cell.outputs.map(output => {
+          if (Array.isArray(output.text)) return output.text.join("");
+          if (typeof output.text === "string") return output.text;
+          if (output.data && Array.isArray(output.data["text/plain"])) return output.data["text/plain"].join("");
+          if (output.data && typeof output.data["text/plain"] === "string") return output.data["text/plain"];
+          return "";
+        }).filter(Boolean).join("\n");
+
+        if (outputText) {
+          html += `<pre><code>${escapeHtml(outputText)}</code></pre>`;
+        }
+      }
+      addCell("code", html);
+      return;
+    }
+
+    addCell(cell.cell_type || "cell", `<pre><code>${escapeHtml(source)}</code></pre>`);
+  });
+}
+
+async function init() {
+  if (!file) {
+    throw new Error("Lipsește parametrul ?file=");
+  }
+
+  const response = await fetch(file);
+  if (!response.ok) {
+    throw new Error(`Nu am putut încărca ${file}`);
+  }
+
+  const notebook = await response.json();
+  renderNotebook(notebook);
+  statusNode.style.display = "none";
+}
+
+init().catch(error => {
+  statusNode.style.display = "none";
+  errorNode.style.display = "block";
+  errorNode.textContent = error.message || String(error);
+});
+</script>
+</body>
+</html>
