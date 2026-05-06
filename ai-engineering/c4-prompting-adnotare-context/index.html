@@ -622,9 +622,6 @@ code {
   <div class="nav-actions">
     <a class="btn primary" href="slides/" data-slide-link data-local-label="PDF">▶ <span class="btn-label slide-link-label">Slides</span></a>
     <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
-    <a class="btn" href="notebook/">⊞ <span class="btn-label">Notebook</span></a>
-    <a class="btn" href="prompts/annotation_prompt.md">↗ <span class="btn-label">Prompt</span></a>
-    <a class="btn" href="scripts/annotate_axis.py" download>↓ <span class="btn-label">.py</span></a>
     <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">light</span></button>
   </div>
 </nav>
@@ -670,10 +667,9 @@ code {
       <div class="material-card">
         <div class="mat-icon">⊞</div>
         <div class="mat-title">Notebook-uri C4</div>
-        <div class="mat-desc">Notebook demo pentru clasă și notebook de exercițiu individual, plus ruta separată <code>notebook/</code> pentru aceeași experiență ca în C3.</div>
+        <div class="mat-desc">Notebook demo pentru clasă și notebook de exercițiu individual, păstrate direct în secțiunea de materiale.</div>
         <div class="mat-actions">
-          <a class="btn primary" href="notebook/">⊞ Vizualizează</a>
-          <a class="btn" href="notebooks/C4_adnotare_corpus_demo.ipynb" download>↓ Demo</a>
+          <a class="btn primary" href="notebooks/C4_adnotare_corpus_demo.ipynb" download>↓ Demo</a>
           <a class="btn" href="notebooks/C4_adnotare_corpus_exercitiu.ipynb" download>↓ Exercițiu</a>
         </div>
       </div>
@@ -681,22 +677,19 @@ code {
       <div class="material-card">
         <div class="mat-icon">⤓</div>
         <div class="mat-title">Date C4</div>
-        <div class="mat-desc">Fișierele de lucru pentru sample-ul curățat, sample-ul adnotat și corpusul de echipă typed care intră apoi în C5.</div>
+        <div class="mat-desc">Arhiva de date pentru C4, păstrată ca zip unic în structura actuală a cursului.</div>
         <div class="mat-actions">
-          <a class="btn primary" href="data/cleaned/corpus_youtube_sample.jsonl" download>↓ Sample</a>
-          <a class="btn" href="data/cleaned/corpus_youtube_sample_annotated.jsonl" download>↓ Annotated</a>
-          <a class="btn" href="data/annotated/corpus_axis_annotated_team.jsonl" download>↓ Team typed</a>
+          <a class="btn primary" href="data/corpus_youtube_sample.zip" download>↓ corpus_youtube_sample.zip</a>
         </div>
       </div>
 
       <div class="material-card">
         <div class="mat-icon">⌘</div>
         <div class="mat-title">Prompt & script</div>
-        <div class="mat-desc">Promptul de referință, promptul de echipă și scriptul de adnotare folosite pentru a produce variabilele și tipologiile C4.</div>
+        <div class="mat-desc">Promptul de referință și scriptul de adnotare folosite pentru a produce variabilele și tipologiile C4.</div>
         <div class="mat-actions">
-          <a class="btn primary" href="prompts/annotation_prompt.md">↗ Prompt ref</a>
-          <a class="btn" href="prompts/team_annotation_prompt.md">↗ Team prompt</a>
-          <a class="btn" href="scripts/annotate_axis.py" download>↓ Script</a>
+          <a class="btn primary" href="materiale/annotation_prompt.md">↗ Prompt ref</a>
+          <a class="btn" href="materiale/annotate_axis.py" download>↓ Script</a>
         </div>
       </div>
 
@@ -817,33 +810,27 @@ code {
       <li class="del-item"><span class="del-num">T5</span><span><code>T5_pro_democratic_european</code></span></li>
       <li class="del-item"><span class="del-num">T6</span><span><code>T6_afectiv_pozitional</code></span></li>
     </ul>
-    <div class="code-wrap">
-      <div class="code-wrap-label">formula.txt</div>
-      <pre>target + stance + axe → discourse_type</pre>
-    </div>
   </section>
 
   <section>
     <p class="section-label">Livrabile C4</p>
 
-    <p class="subsec-label">Prompturi și script</p>
+    <p class="subsec-label">Prompt și script</p>
     <ul class="deliverable-list">
-      <li class="del-item"><span class="del-num">01</span><span><code>prompts/annotation_prompt.md</code></span></li>
-      <li class="del-item"><span class="del-num">02</span><span><code>prompts/team_annotation_prompt.md</code></span></li>
-      <li class="del-item"><span class="del-num">03</span><span><code>scripts/annotate_axis.py</code></span></li>
+      <li class="del-item"><span class="del-num">01</span><span><code>materiale/annotation_prompt.md</code></span></li>
+      <li class="del-item"><span class="del-num">02</span><span><code>materiale/annotate_axis.py</code></span></li>
     </ul>
 
     <p class="subsec-label">Date</p>
     <ul class="deliverable-list">
-      <li class="del-item"><span class="del-num">04</span><span><code>data/cleaned/corpus_youtube_sample.jsonl</code></span></li>
-      <li class="del-item"><span class="del-num">05</span><span><code>data/cleaned/corpus_youtube_sample_annotated.jsonl</code></span></li>
-      <li class="del-item"><span class="del-num">06</span><span><code>data/annotated/corpus_axis_annotated_team.jsonl</code></span></li>
+      <li class="del-item"><span class="del-num">03</span><span><code>data/corpus_youtube_sample.zip</code></span></li>
     </ul>
 
     <p class="subsec-label">Notebook-uri</p>
     <ul class="deliverable-list">
-      <li class="del-item"><span class="del-num">07</span><span><code>notebooks/C4_adnotare_corpus_demo.ipynb</code></span></li>
-      <li class="del-item"><span class="del-num">08</span><span><code>notebooks/student_XX/C4_adnotare_corpus_exercitiu.ipynb</code></span></li>
+      <li class="del-item"><span class="del-num">04</span><span><code>notebooks/C4_adnotare_corpus_demo.ipynb</code></span></li>
+      <li class="del-item"><span class="del-num">05</span><span><code>notebooks/C4_adnotare_corpus_exercitiu.ipynb</code></span></li>
+      <li class="del-item"><span class="del-num">06</span><span><code>notebooks/student_XX/C4_adnotare_corpus_exercitiu.ipynb</code></span></li>
     </ul>
   </section>
 
@@ -896,13 +883,13 @@ code {
     <div class="issue-card">
       <div class="issue-card-header">
         <span class="issue-card-id">C4.4</span>
-        <span class="issue-card-title">C4.4 - Build and test team annotation prompt</span>
+        <span class="issue-card-title">C4.4 - Build and test annotation prompt</span>
         <span class="issue-card-badge">echipă</span>
       </div>
       <div class="issue-card-body">
         <ul class="issue-detail">
-          <li>stabilește promptul comun de echipă pentru adnotare</li>
-          <li>produce outputul typed care intră în C5</li>
+          <li>stabilește promptul final de lucru pentru adnotare</li>
+          <li>verifică rezultatele pe sample-ul din zip</li>
         </ul>
       </div>
     </div>
@@ -913,7 +900,7 @@ code {
     <ul class="checklist">
       <li class="check-item">verificați că aveți fișierele C4 în repo</li>
       <li class="check-item">rulați <code>C4_adnotare_corpus_exercitiu.ipynb</code></li>
-      <li class="check-item">verificați că există outputul echipei: <code>data/annotated/corpus_axis_annotated_team.jsonl</code></li>
+      <li class="check-item">verificați arhiva <code>data/corpus_youtube_sample.zip</code></li>
       <li class="check-item">pregătiți 5 întrebări de test pentru corpus</li>
       <li class="check-item">actualizați README cu ce ați făcut în C4</li>
     </ul>
@@ -954,27 +941,7 @@ C5: corpus typed → embeddings → retrieval → context automat</pre>
       </ul>
     </div>
 
-    <div class="resource-group">
-      <p class="resource-group-label">Literatură menționată</p>
-      <ul class="resource-list">
-        <li class="resource-item"><div class="resource-link"><span class="rname">Bestvater & Monroe, 2023 — Sentiment is not stance</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Burnham, 2025 — Stance detection</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Norris & Inglehart, 2019 — Cultural Backlash</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Bertsou, 2019 — political distrust</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Hofstadter, 1964 — The Paranoid Style in American Politics</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Douglas & Sutton, 2023 — conspiracism</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Mudde & Kaltwasser, 2017 — populism</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Weyland, 2017 — personalism / populism</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Kriesi et al., 2008 — cosmopolitan/nativist cleavage</span><span class="rarrow">·</span></div></li>
-        <li class="resource-item"><div class="resource-link"><span class="rname">Theocharis et al., 2023 — digital mobilization</span><span class="rarrow">·</span></div></li>
-      </ul>
-    </div>
   </section>
-
-  <div class="local-note">
-    <p class="local-note-label">Notă locală</p>
-    <p>Dacă pagina este deschisă direct din filesystem, butonul de slides merge către <code>slides.pdf</code>. Pe server local sau în hosting static, ruta <code>slides/</code> deschide viewer-ul complet, exact ca în C3.</p>
-  </div>
 
 </main>
 
