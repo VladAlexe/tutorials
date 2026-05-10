@@ -3,54 +3,663 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C5 — AI pipelines · AI Engineering</title>
+<title>C5 - Regăsire semantică și vector stores · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg:#1a1a1a; --surface:#222222; --border:#333333; --border-hi:#444444;
-  --text:#e2e2e2; --dim:#666666; --sub:#999999; --accent:#c8956c;
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+  --blue:     #7ab0d4;
+  --green:    #89b99a;
+  --red:      #c47f7f;
 }
+
 :root.light {
-  --bg:#faf9f6; --surface:#f3f1eb; --border:#e2ddd3; --border-hi:#c9c3b5;
-  --text:#1c1b18; --dim:#9e9789; --sub:#6b655b; --accent:#b5784a;
+  --bg:       #faf9f6;
+  --surface:  #f3f1eb;
+  --border:   #e2ddd3;
+  --border-hi:#c9c3b5;
+  --text:     #1c1b18;
+  --dim:      #9e9789;
+  --sub:      #6b655b;
+  --accent:   #b5784a;
+  --blue:     #2f6fa8;
+  --green:    #5a7a5a;
+  --red:      #a04040;
 }
+
 html { scroll-behavior: smooth; }
-body { background:var(--bg); color:var(--text); font-family:Aptos,'Segoe UI',system-ui,sans-serif; font-size:13.5px; line-height:1.7; min-height:100vh; display:flex; flex-direction:column; transition:background .2s,color .2s; }
-a { color:inherit; text-decoration:none; }
-nav { height:46px; border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--bg); z-index:100; }
-.nav-left { display:flex; align-items:center; gap:1.2rem; }
-.back-link { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:.3rem; transition:color .12s; }
-.back-link:hover { color:var(--text); }
-.nav-logo { width:15px; height:15px; border-radius:50%; display:inline-block; vertical-align:middle; margin:0 .15rem; position:relative; top:-1px; }
-.nav-sep { width:1px; height:13px; background:var(--border); }
-.breadcrumb { display:flex; align-items:center; gap:.3rem; font-size:11px; color:var(--dim); }
-.breadcrumb a { color:var(--sub); }
-.breadcrumb a:hover { color:var(--text); }
-.breadcrumb .cur { color:var(--text); }
-.breadcrumb .sl { color:var(--border-hi); }
-.btn { display:inline-flex; align-items:center; gap:.3rem; font-family:'JetBrains Mono',monospace; font-size:11px; padding:.22rem .7rem; border-radius:3px; border:1px solid var(--border); background:none; color:var(--sub); cursor:pointer; transition:color .12s,border-color .12s; white-space:nowrap; text-decoration:none; }
-.btn:hover { color:var(--text); border-color:var(--border-hi); }
-.hero { padding:2.2rem 2rem 2rem; border-bottom:1px solid var(--border); }
-.hero-tag { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.55rem; }
-.hero h1 { font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-.025em; line-height:1.15; margin-bottom:.5rem; }
-.hero-sub { font-size:12.5px; color:var(--sub); max-width:580px; line-height:1.8; margin-bottom:.8rem; }
-.hero-meta { display:flex; flex-wrap:wrap; gap:1.2rem; font-size:11px; color:var(--dim); }
-.hero-meta strong { color:var(--sub); font-weight:400; }
-main { flex:1; padding:0 2rem 3.5rem; max-width:860px; width:100%; }
-section { padding-top:2rem; }
-.section-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:.8rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
-.intro-body { font-size:12.5px; color:var(--sub); line-height:1.85; max-width:680px; }
-.placeholder-note { margin-top:1.2rem; display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); border:1px solid var(--border); border-radius:4px; padding:.5rem .9rem; }
-footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
-.ft-col { font-size:11px; color:var(--dim); line-height:2; }
-.ft-col a { color:var(--dim); }
-.ft-col a:hover { color:var(--text); }
-@media (max-width:640px) { nav { padding:0 1rem; } .hero { padding:1.8rem 1rem 1.5rem; } main { padding:0 1rem 3rem; } .hero h1 { font-size:1.5rem; } footer { padding:1rem; } }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, "Segoe UI", system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+nav {
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.back-link {
+  font-size: 11px;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.12s;
+}
+
+.back-link:hover { color: var(--text); }
+
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn.primary:hover { background: rgba(200, 149, 108, 0.08); }
+
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: "Fraunces", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+
+.hero-subtitle {
+  font-family: "Fraunces", serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--sub);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 12.5px;
+  color: var(--sub);
+  max-width: 680px;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+.mat-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.mat-file-row {
+  border-top: 1px solid var(--border);
+  padding-top: 0.7rem;
+}
+
+.mat-file-name {
+  display: block;
+  font-size: 11px;
+  color: var(--sub);
+  margin-bottom: 0.45rem;
+}
+
+.intro-body {
+  font-size: 12.5px;
+  color: var(--sub);
+  line-height: 1.85;
+  max-width: 700px;
+}
+
+.intro-body p + p { margin-top: 0.8rem; }
+
+.topic-list {
+  margin-top: 0.9rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.topic-list li {
+  font-size: 12px;
+  color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.topic-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.obj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+}
+
+.obj-item {
+  padding: 0.75rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.obj-item:last-child { border-bottom: none; }
+.obj-item::before { content: "✓"; color: var(--green); flex-shrink: 0; margin-top: 0.05rem; }
+
+.deliverable-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+}
+
+.del-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.del-item:last-child { border-bottom: none; }
+
+.del-num {
+  font-size: 10px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 18px;
+  margin-top: 0.1rem;
+}
+
+.milestone-tag {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.issue-card {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-bottom: 0.7rem;
+}
+
+.issue-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  background: var(--surface);
+}
+
+.issue-card-id {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 40px;
+}
+
+.issue-card-title { font-size: 12.5px; color: var(--text); flex: 1; }
+
+.issue-card-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  color: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.08rem 0.35rem;
+  flex-shrink: 0;
+}
+
+.issue-card-body { border-top: 1px solid var(--border); }
+
+.issue-detail {
+  list-style: none;
+  padding: 0.7rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.issue-detail li {
+  font-size: 11.5px;
+  color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.55;
+}
+
+.issue-detail li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--border-hi);
+}
+
+.resource-group { margin-bottom: 1.4rem; }
+
+.resource-group-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+
+.resource-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.resource-item { border-bottom: 1px solid var(--border); }
+.resource-item:last-child { border-bottom: none; }
+
+.resource-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  transition: background 0.1s, color 0.1s;
+  gap: 1rem;
+}
+
+.resource-link:hover { background: var(--surface); color: var(--text); }
+.resource-link .rname { flex: 1; }
+.resource-link .rarrow { color: var(--border-hi); font-size: 10px; flex-shrink: 0; }
+.resource-link:hover .rarrow { color: var(--accent); }
+
+.checklist {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.check-item {
+  padding: 0.65rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.check-item:last-child { border-bottom: none; }
+.check-item::before { content: "□"; color: var(--dim); flex-shrink: 0; }
+
+.local-note {
+  margin-top: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  max-width: 680px;
+}
+
+.local-note-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}
+
+.local-note p {
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.75;
+}
+
+.local-note p + p { margin-top: 0.5rem; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.05rem 0.3rem;
+  color: var(--text);
+}
+
+.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
+.ft-col a { color: var(--dim); }
+.ft-col a:hover { color: var(--text); }
+
+.theme-btn { font-family: "JetBrains Mono", monospace; }
+
+.nav-logo {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  position: relative;
+  top: -1px;
+}
+
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+  margin-top: 0.9rem;
+}
+
+.data-table { width: 100%; border-collapse: collapse; }
+
+.data-table th {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 400;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  background: var(--surface);
+}
+
+.data-table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--sub);
+  font-size: 11.5px;
+  line-height: 1.55;
+  vertical-align: top;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+
+.code-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-top: 0.4rem;
+}
+
+.code-wrap-label {
+  padding: 0.45rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  background: var(--surface);
+}
+
+.code-wrap pre {
+  padding: 1rem 1.2rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 1.65;
+  overflow-x: auto;
+}
+
+.flow-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1.1rem 1.3rem;
+  max-width: 720px;
+  margin-top: 0.9rem;
+}
+
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+
+.flow-step {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--sub);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.28rem 0.55rem;
+  white-space: nowrap;
+}
+
+.flow-step.hi { border-color: var(--accent); color: var(--accent); }
+.flow-arr { color: var(--dim); font-size: 10px; flex-shrink: 0; }
+
+.subsec-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 1.4rem 0 0.5rem;
+}
+
+.note-box {
+  border-left: 2px solid var(--border);
+  padding: 0.5rem 0.8rem;
+  margin-top: 0.8rem;
+  max-width: 720px;
+  font-size: 11.5px;
+  color: var(--dim);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+.rag-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-top: 0.9rem;
+}
+
+.rag-col {
+  background: var(--surface);
+  padding: 1rem 1.2rem;
+}
+
+.rag-col-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.rag-col-flow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 2;
+}
+
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.6rem; }
+  main { padding: 0 1rem 4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1rem; }
+  .nav-actions .btn-label { display: none; }
+  .table-wrap { overflow-x: auto; }
+  .rag-split { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-left">
     <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
@@ -61,27 +670,290 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
       <span class="cur">C5</span>
     </div>
   </div>
-  <button class="btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">dark</span></button>
+  <div class="nav-actions">
+    <a class="btn primary" href="slides/" data-slide-link data-local-label="PDF">▶ <span class="btn-label slide-link-label">Slides</span></a>
+    <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
+    <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">light</span></button>
+  </div>
 </nav>
+
 <div class="hero">
   <div class="hero-tag">AI Engineering · ADC 2026 · C5</div>
-  <h1>AI pipelines</h1>
-  <p class="hero-sub">În C5 construim mecanismul de căutare semantică: transformăm corpusul în embeddings, recuperăm exemple relevante și pregătim baza pentru RAG.</p>
+  <h1>Context Engineering: regăsire semantică și vector stores</h1>
+  <p class="hero-subtitle">De la tipologii discursive la contexte recuperabile automat</p>
+  <p class="hero-sub">În C5 trecem de la corpusul tipologizat la regăsire semantică. Nu generăm încă răspunsuri cu LLM. Construim prima jumătate a unui sistem RAG: texte curate, embeddings, index FAISS și testare top-k.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
+    <span>Limbă <strong>Română</strong></span>
     <span>Sesiune <strong>C5</strong></span>
   </div>
 </div>
+
 <main>
+
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>În C5 construim mecanismul de căutare semantică: transformăm corpusul în embeddings, recuperăm exemple relevante și pregătim baza pentru RAG.</p>
+      <p>Scopul cursului este să construim prima jumătate a unui sistem RAG: curățăm o bulă discursivă, generăm embeddings cu un model multilingual, construim un index FAISS local și testăm regăsirea semantică prin top-k rezultate.</p>
+      <p>Slide-urile C5 acoperă diferența dintre retrieval și generation, logica RAG, embeddings, FAISS și verificarea umană a rezultatelor recuperate.</p>
     </div>
-    <p class="placeholder-note">Materialele pentru acest curs vor fi adăugate ulterior.</p>
+    <p class="note-box">Mesaj-cheie: În C5 sistemul nu generează răspunsuri. Sistemul caută fragmente relevante. C6 va folosi aceste fragmente ca input pentru generare.</p>
   </section>
+
+  <section>
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Slides C5</div>
+        <div class="mat-desc">Slide-urile C5 introduc RAG, diferența dintre regăsire și generare, embeddings, FAISS, top-k și verificarea umană a rezultatelor recuperate.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
+          <a class="btn" href="slides.pdf" download>↓ PDF</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Notebook-uri C5</div>
+        <div class="mat-desc">Notebook-uri individuale pentru explorarea corpusului tipologizat, curățarea unei bule discursive și construirea unui vector store FAISS.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">C5_01 — Explorare corpus tipologizat</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="notebooks/C5_01_explore_typed_corpus.ipynb" download>↓ Descarcă</a>
+            </div>
+          </div>
+          <div class="mat-file-row">
+            <span class="mat-file-name">C5_02 — Construire vectorstore</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="notebooks/C5_02_build_vectorstore.ipynb" download>↓ Descarcă</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⤓</div>
+        <div class="mat-title">Date C5</div>
+        <div class="mat-desc">Corpusul tipologizat produs după C4 și fișierele exportate pentru bulele discursive.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="data/corpus_typed.zip" download>↓ corpus_typed.zip</a>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⌘</div>
+        <div class="mat-title">Script C5</div>
+        <div class="mat-desc">Scriptul comun pentru construirea vectorstore-urilor după ce fișierele .jsonl din <code>data/bubbles/</code> sunt curate.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="scripts/build_vectorstore.py" download>↓ build_vectorstore.py</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Ce facem în C5</p>
+    <ul class="obj-list">
+      <li class="obj-item">Separăm retrieval-ul de generation în logica RAG.</li>
+      <li class="obj-item">Explorăm <code>data/typed/corpus_typed.json</code>.</li>
+      <li class="obj-item">Alegem o bulă discursivă / un agent.</li>
+      <li class="obj-item">Curățăm textele slabe și exportăm <code>data/bubbles/&lt;agent_slug&gt;.jsonl</code>.</li>
+      <li class="obj-item">Transformăm textele în embeddings cu <code>paraphrase-multilingual-MiniLM-L12-v2</code>.</li>
+      <li class="obj-item">Construim un index FAISS local.</li>
+      <li class="obj-item">Salvăm <code>index.faiss</code> și <code>index.pkl</code>.</li>
+      <li class="obj-item">Testăm manual regăsirea semantică prin top-k rezultate.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Pipeline C5</p>
+    <div class="flow-wrap">
+      <div class="flow">
+        <span class="flow-step">corpus typed</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">agent bubble</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">texts</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">embeddings</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step hi">FAISS + metadata</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">query</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">top-k results</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">context</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">RAG în două etape</p>
+    <div class="rag-split">
+      <div class="rag-col">
+        <p class="rag-col-label">C5 — Retrieval</p>
+        <div class="rag-col-flow">
+          Corpus<br>
+          → Embeddings<br>
+          → FAISS<br>
+          → Top-k<br>
+          → Context
+        </div>
+      </div>
+      <div class="rag-col" style="border-left: 1px solid var(--border);">
+        <p class="rag-col-label">C6 — Generation</p>
+        <div class="rag-col-flow">
+          Context<br>
+          → Prompt<br>
+          → LLM<br>
+          → Răspuns
+        </div>
+      </div>
+    </div>
+
+    <p class="subsec-label">FAISS în EchoChamber</p>
+    <div class="code-wrap">
+      <div class="code-wrap-label">vectorstore_build.py</div>
+      <pre>data/bubbles/&lt;agent_slug&gt;.jsonl
+→ embeddings  normalize_embeddings=True
+→ faiss.IndexFlatIP(dim)
+→ assets/vectorstores/&lt;agent_slug&gt;/index.faiss
+→ assets/vectorstores/&lt;agent_slug&gt;/index.pkl</pre>
+    </div>
+    <p class="note-box"><code>index.faiss</code> păstrează vectorii. <code>index.pkl</code> păstrează textele și metadatele.</p>
+  </section>
+
+  <section>
+    <p class="section-label">Livrabile C5</p>
+
+    <p class="subsec-label">Date</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">01</span><span><code>data/typed/corpus_typed.json</code></span></li>
+      <li class="del-item"><span class="del-num">02</span><span><code>data/bubbles/&lt;agent_slug&gt;.jsonl</code></span></li>
+    </ul>
+
+    <p class="subsec-label">Notebook-uri</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">03</span><span><code>notebooks/student_XX/C5_01_explore_typed_corpus.ipynb</code></span></li>
+      <li class="del-item"><span class="del-num">04</span><span><code>notebooks/student_XX/C5_02_build_vectorstore.ipynb</code></span></li>
+    </ul>
+
+    <p class="subsec-label">Vectorstore</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">05</span><span><code>assets/vectorstores/&lt;agent_slug&gt;/index.faiss</code></span></li>
+      <li class="del-item"><span class="del-num">06</span><span><code>assets/vectorstores/&lt;agent_slug&gt;/index.pkl</code></span></li>
+    </ul>
+
+    <p class="subsec-label">Script</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">07</span><span><code>scripts/build_vectorstore.py</code></span></li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">GitHub Issues / Workflow</p>
+    <div class="milestone-tag">C5 - Retrieval, embeddings and vector stores</div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C5.1</span>
+        <span class="issue-card-title">C5.1 - Add shared C5 corpus and vectorstore script</span>
+        <span class="issue-card-badge">echipă</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>adaugă <code>data/typed/corpus_typed.json</code></li>
+          <li>adaugă <code>scripts/build_vectorstore.py</code></li>
+          <li>verifică structura folderelor pentru C5</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C5.2</span>
+        <span class="issue-card-title">student_XX - C5.2 - Clean one agent bubble</span>
+        <span class="issue-card-badge">individual</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>fiecare student lucrează în <code>notebooks/student_XX/</code></li>
+          <li>alege un agent / o bulă discursivă</li>
+          <li>inspectează textele; elimină exemplele slabe</li>
+          <li>exportă <code>data/bubbles/&lt;agent_slug&gt;.jsonl</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C5.3</span>
+        <span class="issue-card-title">student_XX - C5.3 - Build vectorstore for one agent bubble</span>
+        <span class="issue-card-badge">individual / Tema 2</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>încarcă fișierul <code>.jsonl</code> curățat</li>
+          <li>generează embeddings cu <code>paraphrase-multilingual-MiniLM-L12-v2</code></li>
+          <li>construiește indexul FAISS</li>
+          <li>salvează <code>index.faiss</code> și <code>index.pkl</code></li>
+          <li>face un test de regăsire semantică top-k</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="local-note">
+      <p class="local-note-label">Tema 2</p>
+      <p>Tema 2 este legată de issue-ul individual C5.3. Predarea este completă dacă există: <code>notebooks/student_XX/C5_02_build_vectorstore.ipynb</code>, <code>data/bubbles/&lt;agent_slug&gt;.jsonl</code>, <code>assets/vectorstores/&lt;agent_slug&gt;/</code> cu <code>index.faiss</code> și <code>index.pkl</code>, plus testul top-k și o observație scurtă despre relevanța rezultatelor.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Legătura cu C6</p>
+    <div class="code-wrap">
+      <div class="code-wrap-label">c5_to_c6.txt</div>
+      <pre>C4: comentarii → adnotare → axe → tipologii
+C5: corpus typed → embeddings → retrieval → context automat
+C6: context recuperat → prompt → LLM → răspuns</pre>
+    </div>
+    <div class="intro-body" style="margin-top:0.9rem;">
+      <p>C6 pornește de la vectorstore-ul construit în C5. În C6 adăugăm stratul de generation: contextul recuperat este trimis ca input unui LLM, iar răspunsul este generat pe baza fragmentelor relevante din corpus.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Resurse</p>
+
+    <div class="resource-group">
+      <p class="resource-group-label">RAG și retrieval</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://gradientflow.substack.com/p/best-practices-in-retrieval-augmented" target="_blank" rel="noopener noreferrer"><span class="rname">Gradient Flow — Best practices in Retrieval-Augmented Generation</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://www.linkedin.com/pulse/complete-guide-creating-storing-vector-embeddings-pavan-belagatti-5fyfc/" target="_blank" rel="noopener noreferrer"><span class="rname">Pavan Belagatti — Complete guide to creating and storing vector embeddings</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://faiss.ai/" target="_blank" rel="noopener noreferrer"><span class="rname">FAISS documentation</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+    <div class="resource-group">
+      <p class="resource-group-label">Vector stores</p>
+      <ul class="resource-list">
+        <li class="resource-item"><a class="resource-link" href="https://weaviate.io/blog/hybrid-search-explained" target="_blank" rel="noopener noreferrer"><span class="rname">Weaviate — Hybrid search explained</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://www.trychroma.com/" target="_blank" rel="noopener noreferrer"><span class="rname">Chroma — The AI-native open-source embedding database</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://www.pinecone.io/" target="_blank" rel="noopener noreferrer"><span class="rname">Pinecone — Vector database for machine learning</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://supabase.com/docs/guides/database/extensions/pgvector" target="_blank" rel="noopener noreferrer"><span class="rname">Supabase — pgvector extension</span><span class="rarrow">↗</span></a></li>
+        <li class="resource-item"><a class="resource-link" href="https://qdrant.tech/" target="_blank" rel="noopener noreferrer"><span class="rname">Qdrant — Vector search engine</span><span class="rarrow">↗</span></a></li>
+      </ul>
+    </div>
+
+  </section>
+
 </main>
+
 <footer>
   <div class="ft-col">
     Universitatea Babeș-Bolyai · Cluj-Napoca<br>
@@ -97,12 +969,37 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
     <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
   </div>
 </footer>
+
 <script>
-const btn = document.getElementById('themeBtn');
-const label = btn.querySelector('.btn-label');
-function applyTheme(light) { document.documentElement.classList.toggle('light', light); label.textContent = light ? 'dark' : 'light'; }
-function toggleTheme() { const l = document.documentElement.classList.contains('light'); localStorage.setItem('theme', l ? 'dark' : 'light'); applyTheme(!l); }
-applyTheme(localStorage.getItem('theme') !== 'dark');
+const btn = document.getElementById("themeBtn");
+const label = btn.querySelector(".btn-label");
+
+function adaptLocalSlidesLinks() {
+  if (location.protocol !== "file:") return;
+
+  document.querySelectorAll("[data-slide-link]").forEach(link => {
+    link.href = "slides.pdf";
+
+    const slideLabel = link.querySelector(".slide-link-label");
+    if (slideLabel && link.dataset.localLabel) {
+      slideLabel.textContent = link.dataset.localLabel;
+    }
+  });
+}
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle("light", light);
+  label.textContent = light ? "dark" : "light";
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains("light");
+  localStorage.setItem("theme", isLight ? "dark" : "light");
+  applyTheme(!isLight);
+}
+
+adaptLocalSlidesLinks();
+applyTheme(localStorage.getItem("theme") !== "dark");
 </script>
 </body>
 </html>
