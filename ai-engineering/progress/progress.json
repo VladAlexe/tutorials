@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-09 16:53",
+    "updated_at":  "2026-05-10 16:47",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -83,55 +83,55 @@
                       ],
     "summary":  {
                     "total_issues":  228,
-                    "closed_issues":  124,
-                    "open_issues":  104,
-                    "completion_percent":  54,
+                    "closed_issues":  131,
+                    "open_issues":  97,
+                    "completion_percent":  57,
                     "current_stage_id":  "C2",
                     "current_stage_title":  "Models",
                     "current_stage_action":  "AlegeÈ›i modelul de bazÄƒ È™i completaÈ›i core/config.py",
                     "teams_total":  6,
-                    "teams_moving":  6,
+                    "teams_moving":  3,
                     "teams_slow":  0,
-                    "teams_blocked":  0,
-                    "issues_closed_last_48h":  35,
-                    "avg_completion_time_days":  4.4
+                    "teams_blocked":  3,
+                    "issues_closed_last_48h":  17,
+                    "avg_completion_time_days":  4.5
                 },
     "stage_stats":  [
                         {
                             "id":  "C1",
                             "title":  "Setup/API",
                             "milestone":  "C1 - Setup GitHub, env, notebooks",
-                            "closed":  45,
-                            "open":  15,
+                            "closed":  47,
+                            "open":  13,
                             "total":  60,
-                            "percent":  75
+                            "percent":  78
                         },
                         {
                             "id":  "C2",
                             "title":  "Models",
                             "milestone":  "C2 - Model ecosystem",
-                            "closed":  25,
-                            "open":  17,
+                            "closed":  26,
+                            "open":  16,
                             "total":  42,
-                            "percent":  60
+                            "percent":  62
                         },
                         {
                             "id":  "C3",
                             "title":  "Data",
                             "milestone":  "C3 - Data and corpus",
-                            "closed":  37,
-                            "open":  41,
+                            "closed":  40,
+                            "open":  38,
                             "total":  78,
-                            "percent":  47
+                            "percent":  51
                         },
                         {
                             "id":  "C4",
                             "title":  "Prompting",
                             "milestone":  "C4 - Prompting and annotation",
-                            "closed":  17,
-                            "open":  31,
+                            "closed":  18,
+                            "open":  30,
                             "total":  48,
-                            "percent":  35
+                            "percent":  38
                         },
                         {
                             "id":  "C5",
@@ -181,71 +181,11 @@
                     ],
     "blockers":  [
                      {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_02 - Issue 2 - Individual notebook workspace",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/5",
-                         "number":  5,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  10
-                     },
-                     {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/4",
-                         "number":  4,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  10
-                     },
-                     {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_03 - Issue 2 - Individual notebook workspace",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/7",
-                         "number":  7,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  10
-                     },
-                     {
-                         "team":  "Team 3",
-                         "repo":  "echochamber-project-team3",
-                         "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/6",
-                         "number":  6,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  10
-                     },
-                     {
                          "team":  "Team 4",
                          "repo":  "echochamber-project-team-4",
                          "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/30",
                          "number":  30,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  4
-                     },
-                     {
-                         "team":  "Team 5",
-                         "repo":  "echochamber-project-team-5",
-                         "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/30",
-                         "number":  30,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  5
-                     },
-                     {
-                         "team":  "Team 5",
-                         "repo":  "echochamber-project-team-5",
-                         "title":  "student_03 - C3.5 - Tema 1 corpus exploration and first prompt",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/29",
-                         "number":  29,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
                          "days_without_update":  5
@@ -258,27 +198,87 @@
                          "number":  28,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  5
+                         "days_without_update":  6
                      },
                      {
                          "team":  "Team 5",
                          "repo":  "echochamber-project-team-5",
-                         "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/31",
-                         "number":  31,
-                         "issue_kind":  "student",
+                         "title":  "C4.4 - Build and test team annotation prompt",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/39",
+                         "number":  39,
+                         "issue_kind":  "collective",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  5
+                         "days_without_update":  3
                      },
                      {
                          "team":  "Team 3",
                          "repo":  "echochamber-project-team3",
-                         "title":  "student_04 - C2.1 - Individual model testing notebook",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/15",
-                         "number":  15,
+                         "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/6",
+                         "number":  6,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  10
+                         "days_without_update":  11
+                     },
+                     {
+                         "team":  "Team 4",
+                         "repo":  "echochamber-project-team-4",
+                         "title":  "C4.4 - Build and test team annotation prompt",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/40",
+                         "number":  40,
+                         "issue_kind":  "collective",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
+                     },
+                     {
+                         "team":  "Team 4",
+                         "repo":  "echochamber-project-team-4",
+                         "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/37",
+                         "number":  37,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
+                     },
+                     {
+                         "team":  "Team 5",
+                         "repo":  "echochamber-project-team-5",
+                         "title":  "student_03 - C4.2 - Complete annotation exercise notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/35",
+                         "number":  35,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
+                     },
+                     {
+                         "team":  "Team 5",
+                         "repo":  "echochamber-project-team-5",
+                         "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/34",
+                         "number":  34,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
+                     },
+                     {
+                         "team":  "Team 5",
+                         "repo":  "echochamber-project-team-5",
+                         "title":  "student_01 - C4.2 - Complete annotation exercise notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/33",
+                         "number":  33,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
+                     },
+                     {
+                         "team":  "Team 5",
+                         "repo":  "echochamber-project-team-5",
+                         "title":  "C4.3 - Add class demo annotation and typology notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/38",
+                         "number":  38,
+                         "issue_kind":  "collective",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  3
                      }
                  ],
     "teams":  [
@@ -367,24 +367,14 @@
                                    },
                       "activity":  {
                                        "last_activity_at":  "2026-05-08 12:29",
-                                       "issues_closed_last_48h":  8,
+                                       "issues_closed_last_48h":  0,
                                        "avg_completion_time_days":  3.3,
-                                       "status":  "moving",
-                                       "status_label":  "ÃŽn miÈ™care",
-                                       "blocked":  false,
-                                       "days_without_update":  1
+                                       "status":  "blocked",
+                                       "status_label":  "Blocat",
+                                       "blocked":  true,
+                                       "days_without_update":  2
                                    },
                       "blockers":  [
-                                       {
-                                           "team":  "Team 1",
-                                           "repo":  "echochamber-project-team-1",
-                                           "title":  "student_05 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/16",
-                                           "number":  16,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
                                        {
                                            "team":  "Team 1",
                                            "repo":  "echochamber-project-team-1",
@@ -393,17 +383,37 @@
                                            "number":  22,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  5
+                                           "days_without_update":  6
                                        },
                                        {
                                            "team":  "Team 1",
                                            "repo":  "echochamber-project-team-1",
-                                           "title":  "student_04 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/15",
-                                           "number":  15,
+                                           "title":  "student_05 - C3.1 - Individual collect and clean notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/23",
+                                           "number":  23,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  6
+                                       },
+                                       {
+                                           "team":  "Team 1",
+                                           "repo":  "echochamber-project-team-1",
+                                           "title":  "C3.2 - Add final YouTube collection script",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/24",
+                                           "number":  24,
+                                           "issue_kind":  "collective",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  6
+                                       },
+                                       {
+                                           "team":  "Team 1",
+                                           "repo":  "echochamber-project-team-1",
+                                           "title":  "student_05 - C2.1 - Individual model testing notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/16",
+                                           "number":  16,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  11
                                        },
                                        {
                                            "team":  "Team 1",
@@ -413,17 +423,7 @@
                                            "number":  10,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 1",
-                                           "repo":  "echochamber-project-team-1",
-                                           "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/11",
-                                           "number":  11,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  11
                                        }
                                    ],
                       "members":  [
@@ -529,7 +529,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-08 12:29",
-                                                           "issues_closed_last_48h":  3
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -742,7 +742,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 20:04",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -847,7 +847,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 18:09",
-                                                           "issues_closed_last_48h":  2
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -967,7 +967,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_05 - C3.1 - Individual collect and clean notebook",
@@ -979,7 +979,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "C3.2 - Add final YouTube collection script",
@@ -991,7 +991,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
@@ -1003,7 +1003,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
@@ -1015,7 +1015,7 @@
                                               "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_05 - Issue 2 - Individual notebook workspace",
@@ -1027,7 +1027,7 @@
                                               "created_at":  "2026-04-29 12:57",
                                               "updated_at":  "2026-04-29 14:10",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_04 - C2.1 - Individual model testing notebook",
@@ -1039,7 +1039,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
@@ -1051,7 +1051,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_05 - C4.2 - Complete annotation exercise notebook",
@@ -1063,7 +1063,7 @@
                                               "created_at":  "2026-05-06 21:45",
                                               "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "C4.4 - Build and test team annotation prompt",
@@ -1075,7 +1075,7 @@
                                               "created_at":  "2026-05-06 21:45",
                                               "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
@@ -1087,7 +1087,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_03 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -1099,7 +1099,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -1111,7 +1111,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -1123,7 +1123,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           }
                                       ],
                       "closed_issues":  [
@@ -1425,7 +1425,7 @@
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-2/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
                       "current_stage_id":  "C1",
-                      "overall_percent":  47,
+                      "overall_percent":  61,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "id":  "C1",
@@ -1438,26 +1438,26 @@
                                        "C2 - Model ecosystem":  {
                                                                     "id":  "C2",
                                                                     "title":  "Models",
-                                                                    "closed":  2,
-                                                                    "open":  5,
+                                                                    "closed":  3,
+                                                                    "open":  4,
                                                                     "total":  7,
-                                                                    "percent":  29
+                                                                    "percent":  43
                                                                 },
                                        "C3 - Data and corpus":  {
                                                                     "id":  "C3",
                                                                     "title":  "Data",
-                                                                    "closed":  6,
-                                                                    "open":  7,
+                                                                    "closed":  9,
+                                                                    "open":  4,
                                                                     "total":  13,
-                                                                    "percent":  46
+                                                                    "percent":  69
                                                                 },
                                        "C4 - Prompting and annotation":  {
                                                                              "id":  "C4",
                                                                              "title":  "Prompting",
-                                                                             "closed":  1,
-                                                                             "open":  7,
+                                                                             "closed":  2,
+                                                                             "open":  6,
                                                                              "total":  8,
-                                                                             "percent":  12
+                                                                             "percent":  25
                                                                          },
                                        "C5 - RAG":  {
                                                         "id":  "C5",
@@ -1501,9 +1501,9 @@
                                                            }
                                    },
                       "activity":  {
-                                       "last_activity_at":  "2026-05-09 15:21",
-                                       "issues_closed_last_48h":  6,
-                                       "avg_completion_time_days":  4.2,
+                                       "last_activity_at":  "2026-05-10 14:17",
+                                       "issues_closed_last_48h":  8,
+                                       "avg_completion_time_days":  4.7,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
                                        "blocked":  false,
@@ -1513,12 +1513,32 @@
                                        {
                                            "team":  "Team 2",
                                            "repo":  "echochamber-project-team-2",
-                                           "title":  "student_05 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/16",
-                                           "number":  16,
+                                           "title":  "C2.3 - Create initial app.py",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/18",
+                                           "number":  18,
+                                           "issue_kind":  "collective",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  11
+                                       },
+                                       {
+                                           "team":  "Team 2",
+                                           "repo":  "echochamber-project-team-2",
+                                           "title":  "student_01 - C3.1 - Individual collect and clean notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/19",
+                                           "number":  19,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  6
+                                       },
+                                       {
+                                           "team":  "Team 2",
+                                           "repo":  "echochamber-project-team-2",
+                                           "title":  "C3.2 - Add final YouTube collection script",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/24",
+                                           "number":  24,
+                                           "issue_kind":  "collective",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  6
                                        },
                                        {
                                            "team":  "Team 2",
@@ -1528,17 +1548,7 @@
                                            "number":  17,
                                            "issue_kind":  "collective",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 2",
-                                           "repo":  "echochamber-project-team-2",
-                                           "title":  "C2.3 - Create initial app.py",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/18",
-                                           "number":  18,
-                                           "issue_kind":  "collective",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  11
                                        },
                                        {
                                            "team":  "Team 2",
@@ -1548,17 +1558,7 @@
                                            "number":  2,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 2",
-                                           "repo":  "echochamber-project-team-2",
-                                           "title":  "student_01 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/12",
-                                           "number":  12,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  11
                                        }
                                    ],
                       "members":  [
@@ -1569,7 +1569,7 @@
                                           "github_handle":  "sovancristian",
                                           "active":  true,
                                           "connected":  true,
-                                          "commits_count":  2,
+                                          "commits_count":  4,
                                           "closed":  1,
                                           "open":  5,
                                           "total":  6,
@@ -1769,7 +1769,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 18:10",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -1779,14 +1779,14 @@
                                           "github_handle":  "andreeaspinu2810",
                                           "active":  true,
                                           "connected":  true,
-                                          "commits_count":  4,
-                                          "closed":  4,
-                                          "open":  2,
+                                          "commits_count":  8,
+                                          "closed":  6,
+                                          "open":  0,
                                           "total":  6,
-                                          "issue_progress_percent":  67,
-                                          "course_progress_percent":  67,
-                                          "current_stage":  "C3 - Data and corpus",
-                                          "current_stage_id":  "C3",
+                                          "issue_progress_percent":  100,
+                                          "course_progress_percent":  100,
+                                          "current_stage":  "C4 - Prompting and annotation",
+                                          "current_stage_id":  "C4",
                                           "progress":  {
                                                            "C1 - Setup GitHub, env, notebooks":  {
                                                                                                      "id":  "C1",
@@ -1807,18 +1807,18 @@
                                                            "C3 - Data and corpus":  {
                                                                                         "id":  "C3",
                                                                                         "title":  "Data",
-                                                                                        "closed":  1,
-                                                                                        "open":  1,
+                                                                                        "closed":  2,
+                                                                                        "open":  0,
                                                                                         "total":  2,
-                                                                                        "percent":  50
+                                                                                        "percent":  100
                                                                                     },
                                                            "C4 - Prompting and annotation":  {
                                                                                                  "id":  "C4",
                                                                                                  "title":  "Prompting",
-                                                                                                 "closed":  0,
-                                                                                                 "open":  1,
+                                                                                                 "closed":  1,
+                                                                                                 "open":  0,
                                                                                                  "total":  1,
-                                                                                                 "percent":  0
+                                                                                                 "percent":  100
                                                                                              },
                                                            "C5 - RAG":  {
                                                                             "id":  "C5",
@@ -1873,8 +1873,8 @@
                                                                                                     ]
                                                                       },
                                           "activity":  {
-                                                           "last_activity_at":  "2026-05-09 13:05",
-                                                           "issues_closed_last_48h":  1
+                                                           "last_activity_at":  "2026-05-10 14:17",
+                                                           "issues_closed_last_48h":  3
                                                        }
                                       },
                                       {
@@ -1990,13 +1990,13 @@
                                           "active":  true,
                                           "connected":  false,
                                           "commits_count":  0,
-                                          "closed":  2,
-                                          "open":  4,
+                                          "closed":  5,
+                                          "open":  1,
                                           "total":  6,
-                                          "issue_progress_percent":  33,
-                                          "course_progress_percent":  33,
-                                          "current_stage":  "C2 - Model ecosystem",
-                                          "current_stage_id":  "C2",
+                                          "issue_progress_percent":  83,
+                                          "course_progress_percent":  83,
+                                          "current_stage":  "C4 - Prompting and annotation",
+                                          "current_stage_id":  "C4",
                                           "progress":  {
                                                            "C1 - Setup GitHub, env, notebooks":  {
                                                                                                      "id":  "C1",
@@ -2009,18 +2009,18 @@
                                                            "C2 - Model ecosystem":  {
                                                                                         "id":  "C2",
                                                                                         "title":  "Models",
-                                                                                        "closed":  0,
-                                                                                        "open":  1,
+                                                                                        "closed":  1,
+                                                                                        "open":  0,
                                                                                         "total":  1,
-                                                                                        "percent":  0
+                                                                                        "percent":  100
                                                                                     },
                                                            "C3 - Data and corpus":  {
                                                                                         "id":  "C3",
                                                                                         "title":  "Data",
-                                                                                        "closed":  0,
-                                                                                        "open":  2,
+                                                                                        "closed":  2,
+                                                                                        "open":  0,
                                                                                         "total":  2,
-                                                                                        "percent":  0
+                                                                                        "percent":  100
                                                                                     },
                                                            "C4 - Prompting and annotation":  {
                                                                                                  "id":  "C4",
@@ -2083,24 +2083,12 @@
                                                                                                     ]
                                                                       },
                                           "activity":  {
-                                                           "last_activity_at":  "2026-05-07 23:01",
-                                                           "issues_closed_last_48h":  2
+                                                           "last_activity_at":  "2026-05-10 10:58",
+                                                           "issues_closed_last_48h":  3
                                                        }
                                       }
                                   ],
                       "open_issues":  [
-                                          {
-                                              "title":  "student_01 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/19",
-                                              "number":  19,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:39",
-                                              "updated_at":  "2026-05-04 15:39",
-                                              "closed_at":  null,
-                                              "days_without_update":  5
-                                          },
                                           {
                                               "title":  "C2.3 - Create initial app.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/18",
@@ -2111,31 +2099,19 @@
                                               "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
-                                              "title":  "student_05 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/23",
-                                              "number":  23,
+                                              "title":  "student_01 - C3.1 - Individual collect and clean notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/19",
+                                              "number":  19,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
-                                          },
-                                          {
-                                              "title":  "C3.4 - Clean the provided YouTube corpus",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/26",
-                                              "number":  26,
-                                              "issue_kind":  "collective",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:39",
-                                              "updated_at":  "2026-05-04 15:39",
-                                              "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "C3.2 - Add final YouTube collection script",
@@ -2147,43 +2123,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
-                                          },
-                                          {
-                                              "title":  "student_01 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/12",
-                                              "number":  12,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 14:19",
-                                              "updated_at":  "2026-04-29 14:19",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/2",
-                                              "number":  2,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:08",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_02 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/13",
-                                              "number":  13,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 14:19",
-                                              "updated_at":  "2026-04-29 14:19",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "C2.2 - Team model configuration in core/config.py",
@@ -2195,43 +2135,55 @@
                                               "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
-                                              "title":  "student_05 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/16",
-                                              "number":  16,
+                                              "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/2",
+                                              "number":  2,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 12:56",
+                                              "updated_at":  "2026-04-29 14:08",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_01 - C2.1 - Individual model testing notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/12",
+                                              "number":  12,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
                                               "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
-                                              "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/36",
-                                              "number":  36,
+                                              "title":  "student_02 - C2.1 - Individual model testing notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/13",
+                                              "number":  13,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
-                                              "created_at":  "2026-05-06 21:45",
-                                              "updated_at":  "2026-05-06 21:45",
+                                              "created_at":  "2026-04-29 14:19",
+                                              "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  11
                                           },
                                           {
-                                              "title":  "student_03 - C4.2 - Complete annotation exercise notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/35",
-                                              "number":  35,
-                                              "issue_kind":  "student",
+                                              "title":  "C3.4 - Clean the provided YouTube corpus",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/26",
+                                              "number":  26,
+                                              "issue_kind":  "collective",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
-                                              "created_at":  "2026-05-06 21:45",
-                                              "updated_at":  "2026-05-06 21:45",
+                                              "created_at":  "2026-05-04 15:39",
+                                              "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_05 - C4.2 - Complete annotation exercise notebook",
@@ -2243,19 +2195,7 @@
                                               "created_at":  "2026-05-06 21:45",
                                               "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  2
-                                          },
-                                          {
-                                              "title":  "C4.4 - Build and test team annotation prompt",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/39",
-                                              "number":  39,
-                                              "issue_kind":  "collective",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-06 21:45",
-                                              "updated_at":  "2026-05-06 21:45",
-                                              "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "C4.3 - Add class demo annotation and typology notebook",
@@ -2267,19 +2207,31 @@
                                               "created_at":  "2026-05-06 21:45",
                                               "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
-                                              "title":  "student_03 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/29",
-                                              "number":  29,
+                                              "title":  "C4.4 - Build and test team annotation prompt",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/39",
+                                              "number":  39,
+                                              "issue_kind":  "collective",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-05-06 21:45",
+                                              "updated_at":  "2026-05-06 21:45",
+                                              "closed_at":  null,
+                                              "days_without_update":  3
+                                          },
+                                          {
+                                              "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/36",
+                                              "number":  36,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:40",
-                                              "updated_at":  "2026-05-04 15:40",
+                                              "created_at":  "2026-05-06 21:45",
+                                              "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_01 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -2291,31 +2243,7 @@
                                               "created_at":  "2026-05-04 15:40",
                                               "updated_at":  "2026-05-04 15:40",
                                               "closed_at":  null,
-                                              "days_without_update":  5
-                                          },
-                                          {
-                                              "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/31",
-                                              "number":  31,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:40",
-                                              "updated_at":  "2026-05-04 15:40",
-                                              "closed_at":  null,
-                                              "days_without_update":  5
-                                          },
-                                          {
-                                              "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/34",
-                                              "number":  34,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-06 21:45",
-                                              "updated_at":  "2026-05-06 21:45",
-                                              "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_01 - C4.2 - Complete annotation exercise notebook",
@@ -2327,46 +2255,22 @@
                                               "created_at":  "2026-05-06 21:45",
                                               "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
+                                          },
+                                          {
+                                              "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/34",
+                                              "number":  34,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-05-06 21:45",
+                                              "updated_at":  "2026-05-06 21:45",
+                                              "closed_at":  null,
+                                              "days_without_update":  3
                                           }
                                       ],
                       "closed_issues":  [
-                                            {
-                                                "title":  "student_04 - Issue 2 - Individual notebook workspace",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/9",
-                                                "number":  9,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-01 09:59",
-                                                "closed_at":  "2026-05-01 09:59",
-                                                "completion_time_days":  1.9
-                                            },
-                                            {
-                                                "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/8",
-                                                "number":  8,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-01 11:38",
-                                                "closed_at":  "2026-05-01 11:38",
-                                                "completion_time_days":  1.9
-                                            },
-                                            {
-                                                "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/11",
-                                                "number":  11,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-07 23:01",
-                                                "closed_at":  "2026-05-07 23:01",
-                                                "completion_time_days":  8.4
-                                            },
                                             {
                                                 "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/10",
@@ -2380,124 +2284,28 @@
                                                 "completion_time_days":  8.4
                                             },
                                             {
-                                                "title":  "student_03 - Issue 2 - Individual notebook workspace",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/7",
-                                                "number":  7,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-02 12:25",
-                                                "closed_at":  "2026-05-02 12:25",
-                                                "completion_time_days":  3
-                                            },
-                                            {
-                                                "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/4",
-                                                "number":  4,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-05 20:13",
-                                                "closed_at":  "2026-05-05 20:13",
-                                                "completion_time_days":  6.3
-                                            },
-                                            {
-                                                "title":  "student_01 - Issue 2 - Individual notebook workspace",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/3",
-                                                "number":  3,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-05 00:03",
-                                                "closed_at":  "2026-05-05 00:03",
-                                                "completion_time_days":  5.5
-                                            },
-                                            {
-                                                "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/6",
-                                                "number":  6,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-02 12:13",
-                                                "closed_at":  "2026-05-02 12:13",
-                                                "completion_time_days":  3
-                                            },
-                                            {
-                                                "title":  "student_02 - Issue 2 - Individual notebook workspace",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/5",
-                                                "number":  5,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-05 20:14",
-                                                "closed_at":  "2026-05-05 20:14",
-                                                "completion_time_days":  6.3
-                                            },
-                                            {
-                                                "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/28",
-                                                "number":  28,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-04 15:40",
-                                                "updated_at":  "2026-05-07 18:10",
-                                                "closed_at":  "2026-05-07 18:10",
-                                                "completion_time_days":  3.1
-                                            },
-                                            {
-                                                "title":  "C3.3 - Download provided YouTube corpus",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/25",
-                                                "number":  25,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-05 20:08",
-                                                "closed_at":  "2026-05-05 20:08",
-                                                "completion_time_days":  1.2
-                                            },
-                                            {
-                                                "title":  "C4.1 - Add C4 data, script, and reference prompt",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/32",
-                                                "number":  32,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-06 21:45",
-                                                "updated_at":  "2026-05-09 15:21",
-                                                "closed_at":  "2026-05-09 15:21",
-                                                "completion_time_days":  2.7
-                                            },
-                                            {
-                                                "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/30",
-                                                "number":  30,
+                                                "title":  "student_04 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/9",
+                                                "number":  9,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-04 15:40",
-                                                "updated_at":  "2026-05-09 13:32",
-                                                "closed_at":  "2026-05-09 13:32",
-                                                "completion_time_days":  4.9
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-01 09:59",
+                                                "closed_at":  "2026-05-01 09:59",
+                                                "completion_time_days":  1.9
                                             },
                                             {
-                                                "title":  "student_04 - C3.1 - Individual collect and clean notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/22",
-                                                "number":  22,
+                                                "title":  "student_05 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/11",
+                                                "number":  11,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-07 16:00",
-                                                "closed_at":  "2026-05-07 16:00",
-                                                "completion_time_days":  3
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-07 23:01",
+                                                "closed_at":  "2026-05-07 23:01",
+                                                "completion_time_days":  8.4
                                             },
                                             {
                                                 "title":  "student_04 - C2.1 - Individual model testing notebook",
@@ -2524,6 +2332,162 @@
                                                 "completion_time_days":  3.9
                                             },
                                             {
+                                                "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/8",
+                                                "number":  8,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-01 11:38",
+                                                "closed_at":  "2026-05-01 11:38",
+                                                "completion_time_days":  1.9
+                                            },
+                                            {
+                                                "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/4",
+                                                "number":  4,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-05 20:13",
+                                                "closed_at":  "2026-05-05 20:13",
+                                                "completion_time_days":  6.3
+                                            },
+                                            {
+                                                "title":  "student_01 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/3",
+                                                "number":  3,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-05 00:03",
+                                                "closed_at":  "2026-05-05 00:03",
+                                                "completion_time_days":  5.5
+                                            },
+                                            {
+                                                "title":  "student_02 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/5",
+                                                "number":  5,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-05 20:14",
+                                                "closed_at":  "2026-05-05 20:14",
+                                                "completion_time_days":  6.3
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/7",
+                                                "number":  7,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 12:25",
+                                                "closed_at":  "2026-05-02 12:25",
+                                                "completion_time_days":  3
+                                            },
+                                            {
+                                                "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/6",
+                                                "number":  6,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-02 12:13",
+                                                "closed_at":  "2026-05-02 12:13",
+                                                "completion_time_days":  3
+                                            },
+                                            {
+                                                "title":  "student_05 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/16",
+                                                "number":  16,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-10 10:40",
+                                                "closed_at":  "2026-05-10 10:40",
+                                                "completion_time_days":  10.8
+                                            },
+                                            {
+                                                "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/30",
+                                                "number":  30,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-04 15:40",
+                                                "updated_at":  "2026-05-09 13:32",
+                                                "closed_at":  "2026-05-09 13:32",
+                                                "completion_time_days":  4.9
+                                            },
+                                            {
+                                                "title":  "student_03 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/29",
+                                                "number":  29,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-04 15:40",
+                                                "updated_at":  "2026-05-10 11:30",
+                                                "closed_at":  "2026-05-10 11:30",
+                                                "completion_time_days":  5.8
+                                            },
+                                            {
+                                                "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/31",
+                                                "number":  31,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-04 15:40",
+                                                "updated_at":  "2026-05-10 10:56",
+                                                "closed_at":  "2026-05-10 10:56",
+                                                "completion_time_days":  5.8
+                                            },
+                                            {
+                                                "title":  "student_03 - C4.2 - Complete annotation exercise notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/35",
+                                                "number":  35,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-06 21:45",
+                                                "updated_at":  "2026-05-10 14:17",
+                                                "closed_at":  "2026-05-10 14:17",
+                                                "completion_time_days":  3.7
+                                            },
+                                            {
+                                                "title":  "C4.1 - Add C4 data, script, and reference prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/32",
+                                                "number":  32,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-06 21:45",
+                                                "updated_at":  "2026-05-09 15:21",
+                                                "closed_at":  "2026-05-09 15:21",
+                                                "completion_time_days":  2.7
+                                            },
+                                            {
+                                                "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/28",
+                                                "number":  28,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-04 15:40",
+                                                "updated_at":  "2026-05-07 18:10",
+                                                "closed_at":  "2026-05-07 18:10",
+                                                "completion_time_days":  3.1
+                                            },
+                                            {
                                                 "title":  "student_03 - C3.1 - Individual collect and clean notebook",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/21",
                                                 "number":  21,
@@ -2546,6 +2510,42 @@
                                                 "updated_at":  "2026-05-05 19:27",
                                                 "closed_at":  "2026-05-05 19:27",
                                                 "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_04 - C3.1 - Individual collect and clean notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/22",
+                                                "number":  22,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-07 16:00",
+                                                "closed_at":  "2026-05-07 16:00",
+                                                "completion_time_days":  3
+                                            },
+                                            {
+                                                "title":  "C3.3 - Download provided YouTube corpus",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/25",
+                                                "number":  25,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-05 20:08",
+                                                "closed_at":  "2026-05-05 20:08",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_05 - C3.1 - Individual collect and clean notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/23",
+                                                "number":  23,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-10 10:58",
+                                                "closed_at":  "2026-05-10 10:58",
+                                                "completion_time_days":  5.8
                                             }
                                         ]
                   },
@@ -2557,15 +2557,15 @@
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team3/milestones",
                       "current_stage":  "C1 - Setup GitHub, env, notebooks",
                       "current_stage_id":  "C1",
-                      "overall_percent":  8,
+                      "overall_percent":  13,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "id":  "C1",
                                                                                  "title":  "Setup/API",
-                                                                                 "closed":  2,
-                                                                                 "open":  8,
+                                                                                 "closed":  4,
+                                                                                 "open":  6,
                                                                                  "total":  10,
-                                                                                 "percent":  20
+                                                                                 "percent":  40
                                                                              },
                                        "C2 - Model ecosystem":  {
                                                                     "id":  "C2",
@@ -2633,9 +2633,9 @@
                                                            }
                                    },
                       "activity":  {
-                                       "last_activity_at":  "2026-05-09 16:04",
-                                       "issues_closed_last_48h":  3,
-                                       "avg_completion_time_days":  10.1,
+                                       "last_activity_at":  "2026-05-10 14:39",
+                                       "issues_closed_last_48h":  5,
+                                       "avg_completion_time_days":  10.5,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
                                        "blocked":  false,
@@ -2645,42 +2645,32 @@
                                        {
                                            "team":  "Team 3",
                                            "repo":  "echochamber-project-team3",
-                                           "title":  "student_03 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/14",
-                                           "number":  14,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 3",
-                                           "repo":  "echochamber-project-team3",
-                                           "title":  "student_02 - C2.1 - Individual model testing notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/13",
-                                           "number":  13,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 3",
-                                           "repo":  "echochamber-project-team3",
-                                           "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/11",
-                                           "number":  11,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 3",
-                                           "repo":  "echochamber-project-team3",
                                            "title":  "C2.2 - Team model configuration in core/config.py",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/17",
                                            "number":  17,
                                            "issue_kind":  "collective",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  11
+                                       },
+                                       {
+                                           "team":  "Team 3",
+                                           "repo":  "echochamber-project-team3",
+                                           "title":  "C2.3 - Create initial app.py",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/18",
+                                           "number":  18,
+                                           "issue_kind":  "collective",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  11
+                                       },
+                                       {
+                                           "team":  "Team 3",
+                                           "repo":  "echochamber-project-team3",
+                                           "title":  "student_04 - C2.1 - Individual model testing notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/15",
+                                           "number":  15,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  11
                                        },
                                        {
                                            "team":  "Team 3",
@@ -2690,7 +2680,17 @@
                                            "number":  16,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  11
+                                       },
+                                       {
+                                           "team":  "Team 3",
+                                           "repo":  "echochamber-project-team3",
+                                           "title":  "student_03 - C3.1 - Individual collect and clean notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/21",
+                                           "number":  21,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  6
                                        }
                                    ],
                       "members":  [
@@ -2807,21 +2807,21 @@
                                           "active":  true,
                                           "connected":  true,
                                           "commits_count":  0,
-                                          "closed":  0,
-                                          "open":  6,
+                                          "closed":  2,
+                                          "open":  4,
                                           "total":  6,
-                                          "issue_progress_percent":  0,
-                                          "course_progress_percent":  0,
-                                          "current_stage":  "C1 - Setup GitHub, env, notebooks",
-                                          "current_stage_id":  "C1",
+                                          "issue_progress_percent":  33,
+                                          "course_progress_percent":  33,
+                                          "current_stage":  "C2 - Model ecosystem",
+                                          "current_stage_id":  "C2",
                                           "progress":  {
                                                            "C1 - Setup GitHub, env, notebooks":  {
                                                                                                      "id":  "C1",
                                                                                                      "title":  "Setup/API",
-                                                                                                     "closed":  0,
-                                                                                                     "open":  2,
+                                                                                                     "closed":  2,
+                                                                                                     "open":  0,
                                                                                                      "total":  2,
-                                                                                                     "percent":  0
+                                                                                                     "percent":  100
                                                                                                  },
                                                            "C2 - Model ecosystem":  {
                                                                                         "id":  "C2",
@@ -2900,8 +2900,8 @@
                                                                                                     ]
                                                                       },
                                           "activity":  {
-                                                           "last_activity_at":  "2026-05-06 21:45",
-                                                           "issues_closed_last_48h":  0
+                                                           "last_activity_at":  "2026-05-10 14:39",
+                                                           "issues_closed_last_48h":  2
                                                        }
                                       },
                                       {
@@ -3222,18 +3222,6 @@
                                   ],
                       "open_issues":  [
                                           {
-                                              "title":  "student_05 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/16",
-                                              "number":  16,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 14:19",
-                                              "updated_at":  "2026-04-29 14:19",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
                                               "title":  "C2.2 - Team model configuration in core/config.py",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/17",
                                               "number":  17,
@@ -3243,55 +3231,7 @@
                                               "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_03 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/14",
-                                              "number":  14,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 14:19",
-                                              "updated_at":  "2026-04-29 14:19",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_04 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/15",
-                                              "number":  15,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 14:19",
-                                              "updated_at":  "2026-04-29 14:19",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_02 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/20",
-                                              "number":  20,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:40",
-                                              "updated_at":  "2026-05-04 15:40",
-                                              "closed_at":  null,
-                                              "days_without_update":  5
-                                          },
-                                          {
-                                              "title":  "student_03 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/21",
-                                              "number":  21,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:40",
-                                              "updated_at":  "2026-05-04 15:40",
-                                              "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -3303,127 +3243,43 @@
                                               "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
-                                              "title":  "student_01 - C3.1 - Individual collect and clean notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/19",
-                                              "number":  19,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-04 15:40",
-                                              "updated_at":  "2026-05-04 15:40",
-                                              "closed_at":  null,
-                                              "days_without_update":  5
-                                          },
-                                          {
-                                              "title":  "student_02 - C2.1 - Individual model testing notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/13",
-                                              "number":  13,
+                                              "title":  "student_04 - C2.1 - Individual model testing notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/15",
+                                              "number":  15,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
                                               "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
-                                              "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/6",
-                                              "number":  6,
+                                              "title":  "student_05 - C2.1 - Individual model testing notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/16",
+                                              "number":  16,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:09",
+                                              "created_at":  "2026-04-29 14:19",
+                                              "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
-                                              "title":  "student_03 - Issue 2 - Individual notebook workspace",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/7",
-                                              "number":  7,
+                                              "title":  "student_03 - C3.1 - Individual collect and clean notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/21",
+                                              "number":  21,
                                               "issue_kind":  "student",
                                               "created_by":  "VladAlexe",
                                               "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:09",
+                                              "created_at":  "2026-05-04 15:40",
+                                              "updated_at":  "2026-05-04 15:40",
                                               "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/4",
-                                              "number":  4,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:09",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_02 - Issue 2 - Individual notebook workspace",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/5",
-                                              "number":  5,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:09",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/10",
-                                              "number":  10,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:09",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/11",
-                                              "number":  11,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:08",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/8",
-                                              "number":  8,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:09",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_04 - Issue 2 - Individual notebook workspace",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/9",
-                                              "number":  9,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-04-29 12:56",
-                                              "updated_at":  "2026-04-29 14:09",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_04 - C3.1 - Individual collect and clean notebook",
@@ -3435,7 +3291,139 @@
                                               "created_at":  "2026-05-04 15:40",
                                               "updated_at":  "2026-05-04 15:40",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
+                                          },
+                                          {
+                                              "title":  "student_01 - C3.1 - Individual collect and clean notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/19",
+                                              "number":  19,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-05-04 15:40",
+                                              "updated_at":  "2026-05-04 15:40",
+                                              "closed_at":  null,
+                                              "days_without_update":  6
+                                          },
+                                          {
+                                              "title":  "student_02 - C3.1 - Individual collect and clean notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/20",
+                                              "number":  20,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-05-04 15:40",
+                                              "updated_at":  "2026-05-04 15:40",
+                                              "closed_at":  null,
+                                              "days_without_update":  6
+                                          },
+                                          {
+                                              "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/8",
+                                              "number":  8,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 12:56",
+                                              "updated_at":  "2026-04-29 14:09",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_04 - Issue 2 - Individual notebook workspace",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/9",
+                                              "number":  9,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 12:56",
+                                              "updated_at":  "2026-04-29 14:09",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_03 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/6",
+                                              "number":  6,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 12:56",
+                                              "updated_at":  "2026-04-29 14:09",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_03 - Issue 2 - Individual notebook workspace",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/7",
+                                              "number":  7,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 12:56",
+                                              "updated_at":  "2026-04-29 14:09",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_02 - C2.1 - Individual model testing notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/13",
+                                              "number":  13,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 14:19",
+                                              "updated_at":  "2026-04-29 14:19",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_03 - C2.1 - Individual model testing notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/14",
+                                              "number":  14,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 14:19",
+                                              "updated_at":  "2026-04-29 14:19",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/10",
+                                              "number":  10,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 12:56",
+                                              "updated_at":  "2026-04-29 14:09",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_05 - Issue 2 - Individual notebook workspace",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/11",
+                                              "number":  11,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-04-29 12:56",
+                                              "updated_at":  "2026-04-29 14:08",
+                                              "closed_at":  null,
+                                              "days_without_update":  11
+                                          },
+                                          {
+                                              "title":  "student_05 - C3.1 - Individual collect and clean notebook",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/23",
+                                              "number":  23,
+                                              "issue_kind":  "student",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-05-04 15:40",
+                                              "updated_at":  "2026-05-04 15:40",
+                                              "closed_at":  null,
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
@@ -3447,7 +3435,7 @@
                                               "created_at":  "2026-05-06 21:45",
                                               "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_03 - C4.2 - Complete annotation exercise notebook",
@@ -3459,22 +3447,22 @@
                                               "created_at":  "2026-05-06 21:45",
                                               "updated_at":  "2026-05-06 21:45",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
+                                          },
+                                          {
+                                              "title":  "C4.1 - Add C4 data, script, and reference prompt",
+                                              "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/32",
+                                              "number":  32,
+                                              "issue_kind":  "collective",
+                                              "created_by":  "VladAlexe",
+                                              "closed_by":  null,
+                                              "created_at":  "2026-05-06 21:45",
+                                              "updated_at":  "2026-05-06 21:45",
+                                              "closed_at":  null,
+                                              "days_without_update":  3
                                           }
                                       ],
                       "closed_issues":  [
-                                            {
-                                                "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/2",
-                                                "number":  2,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "valeriaianitchi",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-09 14:25",
-                                                "closed_at":  "2026-05-09 14:25",
-                                                "completion_time_days":  10.1
-                                            },
                                             {
                                                 "title":  "student_01 - Issue 2 - Individual notebook workspace",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/3",
@@ -3488,6 +3476,30 @@
                                                 "completion_time_days":  10.1
                                             },
                                             {
+                                                "title":  "student_01 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/2",
+                                                "number":  2,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "valeriaianitchi",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-09 14:25",
+                                                "closed_at":  "2026-05-09 14:25",
+                                                "completion_time_days":  10.1
+                                            },
+                                            {
+                                                "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/4",
+                                                "number":  4,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "catalinaminciuna",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-10 14:39",
+                                                "closed_at":  "2026-05-10 14:39",
+                                                "completion_time_days":  11.1
+                                            },
+                                            {
                                                 "title":  "student_01 - C2.1 - Individual model testing notebook",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/12",
                                                 "number":  12,
@@ -3498,6 +3510,18 @@
                                                 "updated_at":  "2026-05-09 16:04",
                                                 "closed_at":  "2026-05-09 16:04",
                                                 "completion_time_days":  10.1
+                                            },
+                                            {
+                                                "title":  "student_02 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team3/issues/5",
+                                                "number":  5,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "catalinaminciuna",
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-10 14:36",
+                                                "closed_at":  "2026-05-10 14:36",
+                                                "completion_time_days":  11.1
                                             }
                                         ]
                   },
@@ -3586,24 +3610,14 @@
                                    },
                       "activity":  {
                                        "last_activity_at":  "2026-05-09 15:58",
-                                       "issues_closed_last_48h":  9,
+                                       "issues_closed_last_48h":  4,
                                        "avg_completion_time_days":  2.9,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
                                        "blocked":  false,
-                                       "days_without_update":  0
+                                       "days_without_update":  1
                                    },
                       "blockers":  [
-                                       {
-                                           "team":  "Team 4",
-                                           "repo":  "echochamber-project-team-4",
-                                           "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/28",
-                                           "number":  28,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  5
-                                       },
                                        {
                                            "team":  "Team 4",
                                            "repo":  "echochamber-project-team-4",
@@ -3612,7 +3626,37 @@
                                            "number":  30,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  4
+                                           "days_without_update":  5
+                                       },
+                                       {
+                                           "team":  "Team 4",
+                                           "repo":  "echochamber-project-team-4",
+                                           "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/28",
+                                           "number":  28,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  6
+                                       },
+                                       {
+                                           "team":  "Team 4",
+                                           "repo":  "echochamber-project-team-4",
+                                           "title":  "C4.4 - Build and test team annotation prompt",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/40",
+                                           "number":  40,
+                                           "issue_kind":  "collective",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  3
+                                       },
+                                       {
+                                           "team":  "Team 4",
+                                           "repo":  "echochamber-project-team-4",
+                                           "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/37",
+                                           "number":  37,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  3
                                        }
                                    ],
                       "members":  [
@@ -3824,7 +3868,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 20:04",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -3930,7 +3974,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 20:46",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -4141,7 +4185,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-09 12:31",
-                                                           "issues_closed_last_48h":  2
+                                                           "issues_closed_last_48h":  1
                                                        }
                                       }
                                   ],
@@ -4156,7 +4200,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-05 13:49",
                                               "closed_at":  null,
-                                              "days_without_update":  4
+                                              "days_without_update":  5
                                           },
                                           {
                                               "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -4168,7 +4212,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "C4.4 - Build and test team annotation prompt",
@@ -4180,7 +4224,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
@@ -4192,7 +4236,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           }
                                       ],
                       "closed_issues":  [
@@ -4703,33 +4747,23 @@
                                    },
                       "activity":  {
                                        "last_activity_at":  "2026-05-07 20:44",
-                                       "issues_closed_last_48h":  3,
+                                       "issues_closed_last_48h":  0,
                                        "avg_completion_time_days":  3.5,
-                                       "status":  "moving",
-                                       "status_label":  "ÃŽn miÈ™care",
-                                       "blocked":  false,
-                                       "days_without_update":  1
+                                       "status":  "blocked",
+                                       "status_label":  "Blocat",
+                                       "blocked":  true,
+                                       "days_without_update":  2
                                    },
                       "blockers":  [
                                        {
                                            "team":  "Team 5",
                                            "repo":  "echochamber-project-team-5",
-                                           "title":  "C2.3 - Create initial app.py",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/18",
-                                           "number":  18,
+                                           "title":  "C3.2 - Add final YouTube collection script",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/24",
+                                           "number":  24,
                                            "issue_kind":  "collective",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 5",
-                                           "repo":  "echochamber-project-team-5",
-                                           "title":  "student_03 - C3.1 - Individual collect and clean notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/21",
-                                           "number":  21,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  5
+                                           "days_without_update":  6
                                        },
                                        {
                                            "team":  "Team 5",
@@ -4739,27 +4773,37 @@
                                            "number":  23,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  5
+                                           "days_without_update":  6
                                        },
                                        {
                                            "team":  "Team 5",
                                            "repo":  "echochamber-project-team-5",
-                                           "title":  "C2.2 - Team model configuration in core/config.py",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/17",
-                                           "number":  17,
+                                           "title":  "C3.4 - Clean the provided YouTube corpus",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/26",
+                                           "number":  26,
                                            "issue_kind":  "collective",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  6
                                        },
                                        {
                                            "team":  "Team 5",
                                            "repo":  "echochamber-project-team-5",
-                                           "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/10",
-                                           "number":  10,
+                                           "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/28",
+                                           "number":  28,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  6
+                                       },
+                                       {
+                                           "team":  "Team 5",
+                                           "repo":  "echochamber-project-team-5",
+                                           "title":  "student_01 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-5/issues/27",
+                                           "number":  27,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  6
                                        }
                                    ],
                       "members":  [
@@ -4865,7 +4909,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 20:44",
-                                                           "issues_closed_last_48h":  2
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -4970,7 +5014,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 19:17",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -5300,7 +5344,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_05 - C3.1 - Individual collect and clean notebook",
@@ -5312,7 +5356,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "C3.4 - Clean the provided YouTube corpus",
@@ -5324,7 +5368,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -5336,7 +5380,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_01 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -5348,7 +5392,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_03 - C3.1 - Individual collect and clean notebook",
@@ -5360,7 +5404,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_05 - Issue 2 - Individual notebook workspace",
@@ -5372,7 +5416,7 @@
                                               "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_05 - Issue 1 - Local clone and Gemini API key",
@@ -5384,7 +5428,7 @@
                                               "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
@@ -5396,7 +5440,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "C2.3 - Create initial app.py",
@@ -5408,7 +5452,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "C2.2 - Team model configuration in core/config.py",
@@ -5420,7 +5464,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
@@ -5432,7 +5476,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_03 - C4.2 - Complete annotation exercise notebook",
@@ -5444,7 +5488,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_05 - C4.2 - Complete annotation exercise notebook",
@@ -5456,7 +5500,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "C4.4 - Build and test team annotation prompt",
@@ -5468,7 +5512,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "C4.3 - Add class demo annotation and typology notebook",
@@ -5480,7 +5524,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
@@ -5492,7 +5536,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -5504,7 +5548,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_03 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -5516,7 +5560,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -5528,7 +5572,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           }
                                       ],
                       "closed_issues":  [
@@ -5811,12 +5855,12 @@
                                    },
                       "activity":  {
                                        "last_activity_at":  "2026-05-08 10:58",
-                                       "issues_closed_last_48h":  6,
+                                       "issues_closed_last_48h":  0,
                                        "avg_completion_time_days":  2.2,
-                                       "status":  "moving",
-                                       "status_label":  "ÃŽn miÈ™care",
-                                       "blocked":  false,
-                                       "days_without_update":  1
+                                       "status":  "blocked",
+                                       "status_label":  "Blocat",
+                                       "blocked":  true,
+                                       "days_without_update":  2
                                    },
                       "blockers":  [
                                        {
@@ -5827,27 +5871,7 @@
                                            "number":  13,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 6",
-                                           "repo":  "echochamber-project-team-6",
-                                           "title":  "student_02 - Issue 2 - Individual notebook workspace",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/5",
-                                           "number":  5,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 6",
-                                           "repo":  "echochamber-project-team-6",
-                                           "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/4",
-                                           "number":  4,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  11
                                        },
                                        {
                                            "team":  "Team 6",
@@ -5857,17 +5881,37 @@
                                            "number":  19,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  5
+                                           "days_without_update":  6
                                        },
                                        {
                                            "team":  "Team 6",
                                            "repo":  "echochamber-project-team-6",
-                                           "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/28",
-                                           "number":  28,
+                                           "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/4",
+                                           "number":  4,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  5
+                                           "days_without_update":  11
+                                       },
+                                       {
+                                           "team":  "Team 6",
+                                           "repo":  "echochamber-project-team-6",
+                                           "title":  "student_02 - Issue 2 - Individual notebook workspace",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/5",
+                                           "number":  5,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  11
+                                       },
+                                       {
+                                           "team":  "Team 6",
+                                           "repo":  "echochamber-project-team-6",
+                                           "title":  "student_02 - C3.1 - Individual collect and clean notebook",
+                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-6/issues/20",
+                                           "number":  20,
+                                           "issue_kind":  "student",
+                                           "created_by":  "VladAlexe",
+                                           "days_without_update":  6
                                        }
                                    ],
                       "members":  [
@@ -6188,7 +6232,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 20:32",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -6293,7 +6337,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-08 10:58",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -6398,7 +6442,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-07 19:58",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       }
                                   ],
@@ -6413,7 +6457,7 @@
                                               "created_at":  "2026-04-29 14:19",
                                               "updated_at":  "2026-04-29 14:19",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_01 - C3.1 - Individual collect and clean notebook",
@@ -6425,7 +6469,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_02 - Issue 1 - Local clone and Gemini API key",
@@ -6437,7 +6481,7 @@
                                               "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_02 - Issue 2 - Individual notebook workspace",
@@ -6449,7 +6493,7 @@
                                               "created_at":  "2026-04-29 12:56",
                                               "updated_at":  "2026-04-29 14:09",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_02 - C3.1 - Individual collect and clean notebook",
@@ -6461,7 +6505,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_01 - C4.2 - Complete annotation exercise notebook",
@@ -6473,7 +6517,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
@@ -6485,7 +6529,7 @@
                                               "created_at":  "2026-05-06 21:44",
                                               "updated_at":  "2026-05-06 21:44",
                                               "closed_at":  null,
-                                              "days_without_update":  2
+                                              "days_without_update":  3
                                           },
                                           {
                                               "title":  "student_01 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -6497,7 +6541,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           },
                                           {
                                               "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -6509,7 +6553,7 @@
                                               "created_at":  "2026-05-04 15:39",
                                               "updated_at":  "2026-05-04 15:39",
                                               "closed_at":  null,
-                                              "days_without_update":  5
+                                              "days_without_update":  6
                                           }
                                       ],
                       "closed_issues":  [
