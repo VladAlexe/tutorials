@@ -695,10 +695,9 @@ code {
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>Scopul cursului este să construim prima jumătate a unui sistem RAG: curățăm o bulă discursivă, generăm embeddings cu un model multilingual, construim un index FAISS local și testăm regăsirea semantică prin top-k rezultate.</p>
-      <p>Slide-urile C5 acoperă diferența dintre retrieval și generation, logica RAG, embeddings, FAISS și verificarea umană a rezultatelor recuperate.</p>
+      <p>Scopul cursului este să construim prima jumătate a unui sistem RAG: curățăm o bulă discursivă, generăm embeddings cu un model multilingv, construim un index FAISS local și testăm regăsirea semantică prin top-k rezultate.</p>
     </div>
-    <p class="note-box">Mesaj-cheie: În C5 sistemul nu generează răspunsuri. Sistemul caută fragmente relevante. C6 va folosi aceste fragmente ca input pentru generare.</p>
+    <p class="note-box">În C5 sistemul nu generează răspunsuri. Sistemul caută fragmente relevante. C6 va folosi aceste fragmente ca input pentru generare.</p>
   </section>
 
   <section>
@@ -759,11 +758,11 @@ code {
   <section>
     <p class="section-label">Ce facem în C5</p>
     <ul class="obj-list">
-      <li class="obj-item">Separăm retrieval-ul de generation în logica RAG.</li>
+      <li class="obj-item">Separăm recuperarea de generare în logica RAG.</li>
       <li class="obj-item">Explorăm <code>data/typed/corpus_typed.json</code>.</li>
       <li class="obj-item">Alegem o bulă discursivă / un agent.</li>
       <li class="obj-item">Curățăm textele slabe și exportăm <code>data/bubbles/&lt;agent_slug&gt;.jsonl</code>.</li>
-      <li class="obj-item">Transformăm textele în embeddings cu <code>paraphrase-multilingual-MiniLM-L12-v2</code>.</li>
+      <li class="obj-item">Transformăm textele în reprezentări (embeddings) cu <code>paraphrase-multilingual-MiniLM-L12-v2</code>.</li>
       <li class="obj-item">Construim un index FAISS local.</li>
       <li class="obj-item">Salvăm <code>index.faiss</code> și <code>index.pkl</code>.</li>
       <li class="obj-item">Testăm manual regăsirea semantică prin top-k rezultate.</li>
@@ -906,11 +905,6 @@ code {
           <li>face un test de regăsire semantică top-k</li>
         </ul>
       </div>
-    </div>
-
-    <div class="local-note">
-      <p class="local-note-label">Tema 2</p>
-      <p>Tema 2 este legată de issue-ul individual C5.3. Predarea este completă dacă există: <code>notebooks/student_XX/C5_02_build_vectorstore.ipynb</code>, <code>data/bubbles/&lt;agent_slug&gt;.jsonl</code>, <code>assets/vectorstores/&lt;agent_slug&gt;/</code> cu <code>index.faiss</code> și <code>index.pkl</code>, plus testul top-k și o observație scurtă despre relevanța rezultatelor.</p>
     </div>
   </section>
 
