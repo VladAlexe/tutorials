@@ -967,17 +967,25 @@ C6: context recuperat → prompt → LLM → răspuns</pre>
 <script>
 const btn = document.getElementById("themeBtn");
 const label = btn.querySelector(".btn-label");
+const pdfUrl = new URL("slides.pdf", window.location.href);
+
+// Avoid stale browser cache when slides.pdf is replaced in place.
+pdfUrl.searchParams.set("v", String(Date.now()));
 
 function adaptLocalSlidesLinks() {
-  if (location.protocol !== "file:") return;
+  if (location.protocol === "file:") {
+    document.querySelectorAll("[data-slide-link]").forEach(link => {
+      link.href = pdfUrl.href;
 
-  document.querySelectorAll("[data-slide-link]").forEach(link => {
-    link.href = "slides.pdf";
+      const slideLabel = link.querySelector(".slide-link-label");
+      if (slideLabel && link.dataset.localLabel) {
+        slideLabel.textContent = link.dataset.localLabel;
+      }
+    });
+  }
 
-    const slideLabel = link.querySelector(".slide-link-label");
-    if (slideLabel && link.dataset.localLabel) {
-      slideLabel.textContent = link.dataset.localLabel;
-    }
+  document.querySelectorAll('a[href="slides.pdf"]').forEach(link => {
+    link.href = pdfUrl.href;
   });
 }
 
