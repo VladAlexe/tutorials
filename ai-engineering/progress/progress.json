@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-13 11:17",
+    "updated_at":  "2026-05-13 11:24",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -3523,6 +3523,111 @@
                                                                                                  "closed":  0,
                                                                                                  "open":  1,
                                                                                                  "total":  1,
+                                                                                                 "percent":  0
+                                                                                             },
+                                                           "C5 - RAG":  {
+                                                                            "id":  "C5",
+                                                                            "title":  "RAG",
+                                                                            "closed":  0,
+                                                                            "open":  2,
+                                                                            "total":  2,
+                                                                            "percent":  0
+                                                                        },
+                                                           "C6 - Agents and workflows":  {
+                                                                                             "id":  "C6",
+                                                                                             "title":  "Agents",
+                                                                                             "closed":  0,
+                                                                                             "open":  0,
+                                                                                             "total":  0,
+                                                                                             "percent":  0
+                                                                                         },
+                                                           "C7 - Orchestration and evaluation":  {
+                                                                                                     "id":  "C7",
+                                                                                                     "title":  "Orchestration",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C8 - App integration":  {
+                                                                                        "id":  "C8",
+                                                                                        "title":  "App",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C9 - Final demo":  {
+                                                                                   "id":  "C9",
+                                                                                   "title":  "Demo",
+                                                                                   "closed":  0,
+                                                                                   "open":  0,
+                                                                                   "total":  0,
+                                                                                   "percent":  0
+                                                                               }
+                                                       },
+                                          "team_issue_contribution":  {
+                                                                          "collective_total":  11,
+                                                                          "closed_by_member":  0,
+                                                                          "created_by_member":  0,
+                                                                          "closed_issue_numbers":  [
+
+                                                                                                   ],
+                                                                          "created_issue_numbers":  [
+
+                                                                                                    ]
+                                                                      },
+                                          "activity":  {
+                                                           "last_activity_at":  "2026-05-12 14:04",
+                                                           "issues_closed_last_48h":  0
+                                                       }
+                                      },
+                                      {
+                                          "student_key":  "T3-S06",
+                                          "display_code":  "S06",
+                                          "local_code":  "student_06",
+                                          "github_handle":  "themightyvaran",
+                                          "active":  true,
+                                          "connected":  true,
+                                          "commits_count":  0,
+                                          "closed":  0,
+                                          "open":  2,
+                                          "total":  2,
+                                          "issue_progress_percent":  0,
+                                          "course_progress_percent":  0,
+                                          "current_stage":  "C5 - RAG",
+                                          "current_stage_id":  "C5",
+                                          "progress":  {
+                                                           "C1 - Setup GitHub, env, notebooks":  {
+                                                                                                     "id":  "C1",
+                                                                                                     "title":  "Setup/API",
+                                                                                                     "closed":  0,
+                                                                                                     "open":  0,
+                                                                                                     "total":  0,
+                                                                                                     "percent":  0
+                                                                                                 },
+                                                           "C2 - Model ecosystem":  {
+                                                                                        "id":  "C2",
+                                                                                        "title":  "Models",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C3 - Data and corpus":  {
+                                                                                        "id":  "C3",
+                                                                                        "title":  "Data",
+                                                                                        "closed":  0,
+                                                                                        "open":  0,
+                                                                                        "total":  0,
+                                                                                        "percent":  0
+                                                                                    },
+                                                           "C4 - Prompting and annotation":  {
+                                                                                                 "id":  "C4",
+                                                                                                 "title":  "Prompting",
+                                                                                                 "closed":  0,
+                                                                                                 "open":  0,
+                                                                                                 "total":  0,
                                                                                                  "percent":  0
                                                                                              },
                                                            "C5 - RAG":  {
