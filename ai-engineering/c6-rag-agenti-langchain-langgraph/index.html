@@ -3,54 +3,663 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C6 — RAG · AI Engineering</title>
+<title>Curs 6 — RAG și agenți simpli: de la context la răspuns · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg:#1a1a1a; --surface:#222222; --border:#333333; --border-hi:#444444;
-  --text:#e2e2e2; --dim:#666666; --sub:#999999; --accent:#c8956c;
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+  --blue:     #7ab0d4;
+  --green:    #89b99a;
+  --red:      #c47f7f;
 }
+
 :root.light {
-  --bg:#faf9f6; --surface:#f3f1eb; --border:#e2ddd3; --border-hi:#c9c3b5;
-  --text:#1c1b18; --dim:#9e9789; --sub:#6b655b; --accent:#b5784a;
+  --bg:       #faf9f6;
+  --surface:  #f3f1eb;
+  --border:   #e2ddd3;
+  --border-hi:#c9c3b5;
+  --text:     #1c1b18;
+  --dim:      #9e9789;
+  --sub:      #6b655b;
+  --accent:   #b5784a;
+  --blue:     #2f6fa8;
+  --green:    #5a7a5a;
+  --red:      #a04040;
 }
+
 html { scroll-behavior: smooth; }
-body { background:var(--bg); color:var(--text); font-family:Aptos,'Segoe UI',system-ui,sans-serif; font-size:13.5px; line-height:1.7; min-height:100vh; display:flex; flex-direction:column; transition:background .2s,color .2s; }
-a { color:inherit; text-decoration:none; }
-nav { height:46px; border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--bg); z-index:100; }
-.nav-left { display:flex; align-items:center; gap:1.2rem; }
-.back-link { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:.3rem; transition:color .12s; }
-.back-link:hover { color:var(--text); }
-.nav-logo { width:15px; height:15px; border-radius:50%; display:inline-block; vertical-align:middle; margin:0 .15rem; position:relative; top:-1px; }
-.nav-sep { width:1px; height:13px; background:var(--border); }
-.breadcrumb { display:flex; align-items:center; gap:.3rem; font-size:11px; color:var(--dim); }
-.breadcrumb a { color:var(--sub); }
-.breadcrumb a:hover { color:var(--text); }
-.breadcrumb .cur { color:var(--text); }
-.breadcrumb .sl { color:var(--border-hi); }
-.btn { display:inline-flex; align-items:center; gap:.3rem; font-family:'JetBrains Mono',monospace; font-size:11px; padding:.22rem .7rem; border-radius:3px; border:1px solid var(--border); background:none; color:var(--sub); cursor:pointer; transition:color .12s,border-color .12s; white-space:nowrap; text-decoration:none; }
-.btn:hover { color:var(--text); border-color:var(--border-hi); }
-.hero { padding:2.2rem 2rem 2rem; border-bottom:1px solid var(--border); }
-.hero-tag { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.55rem; }
-.hero h1 { font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-.025em; line-height:1.15; margin-bottom:.5rem; }
-.hero-sub { font-size:12.5px; color:var(--sub); max-width:580px; line-height:1.8; margin-bottom:.8rem; }
-.hero-meta { display:flex; flex-wrap:wrap; gap:1.2rem; font-size:11px; color:var(--dim); }
-.hero-meta strong { color:var(--sub); font-weight:400; }
-main { flex:1; padding:0 2rem 3.5rem; max-width:860px; width:100%; }
-section { padding-top:2rem; }
-.section-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:.8rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
-.intro-body { font-size:12.5px; color:var(--sub); line-height:1.85; max-width:680px; }
-.placeholder-note { margin-top:1.2rem; display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); border:1px solid var(--border); border-radius:4px; padding:.5rem .9rem; }
-footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
-.ft-col { font-size:11px; color:var(--dim); line-height:2; }
-.ft-col a { color:var(--dim); }
-.ft-col a:hover { color:var(--text); }
-@media (max-width:640px) { nav { padding:0 1rem; } .hero { padding:1.8rem 1rem 1.5rem; } main { padding:0 1rem 3rem; } .hero h1 { font-size:1.5rem; } footer { padding:1rem; } }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, "Segoe UI", system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+nav {
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.back-link {
+  font-size: 11px;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.12s;
+}
+
+.back-link:hover { color: var(--text); }
+
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn.primary:hover { background: rgba(200, 149, 108, 0.08); }
+
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: "Fraunces", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+
+.hero-subtitle {
+  font-family: "Fraunces", serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--sub);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 12.5px;
+  color: var(--sub);
+  max-width: 680px;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+.mat-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.mat-file-row {
+  border-top: 1px solid var(--border);
+  padding-top: 0.7rem;
+}
+
+.mat-file-name {
+  display: block;
+  font-size: 11px;
+  color: var(--sub);
+  margin-bottom: 0.45rem;
+}
+
+.intro-body {
+  font-size: 12.5px;
+  color: var(--sub);
+  line-height: 1.85;
+  max-width: 700px;
+}
+
+.intro-body p + p { margin-top: 0.8rem; }
+
+.topic-list {
+  margin-top: 0.9rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.topic-list li {
+  font-size: 12px;
+  color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.topic-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.obj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+}
+
+.obj-item {
+  padding: 0.75rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.obj-item:last-child { border-bottom: none; }
+.obj-item::before { content: "✓"; color: var(--green); flex-shrink: 0; margin-top: 0.05rem; }
+
+.deliverable-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+}
+
+.del-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.del-item:last-child { border-bottom: none; }
+
+.del-num {
+  font-size: 10px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 18px;
+  margin-top: 0.1rem;
+}
+
+.milestone-tag {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.issue-card {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-bottom: 0.7rem;
+}
+
+.issue-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  background: var(--surface);
+}
+
+.issue-card-id {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 40px;
+}
+
+.issue-card-title { font-size: 12.5px; color: var(--text); flex: 1; }
+
+.issue-card-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  color: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.08rem 0.35rem;
+  flex-shrink: 0;
+}
+
+.issue-card-body { border-top: 1px solid var(--border); }
+
+.issue-detail {
+  list-style: none;
+  padding: 0.7rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.issue-detail li {
+  font-size: 11.5px;
+  color: var(--sub);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.55;
+}
+
+.issue-detail li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--border-hi);
+}
+
+.resource-group { margin-bottom: 1.4rem; }
+
+.resource-group-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+
+.resource-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.resource-item { border-bottom: 1px solid var(--border); }
+.resource-item:last-child { border-bottom: none; }
+
+.resource-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  transition: background 0.1s, color 0.1s;
+  gap: 1rem;
+}
+
+.resource-link:hover { background: var(--surface); color: var(--text); }
+.resource-link .rname { flex: 1; }
+.resource-link .rarrow { color: var(--border-hi); font-size: 10px; flex-shrink: 0; }
+.resource-link:hover .rarrow { color: var(--accent); }
+
+.checklist {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.check-item {
+  padding: 0.65rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.check-item:last-child { border-bottom: none; }
+.check-item::before { content: "□"; color: var(--dim); flex-shrink: 0; }
+
+.local-note {
+  margin-top: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  max-width: 680px;
+}
+
+.local-note-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}
+
+.local-note p {
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.75;
+}
+
+.local-note p + p { margin-top: 0.5rem; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.05rem 0.3rem;
+  color: var(--text);
+}
+
+.ft-col { font-size: 11px; color: var(--dim); line-height: 2; }
+.ft-col a { color: var(--dim); }
+.ft-col a:hover { color: var(--text); }
+
+.theme-btn { font-family: "JetBrains Mono", monospace; }
+
+.nav-logo {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  position: relative;
+  top: -1px;
+}
+
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+  margin-top: 0.9rem;
+}
+
+.data-table { width: 100%; border-collapse: collapse; }
+
+.data-table th {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 400;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  background: var(--surface);
+}
+
+.data-table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--sub);
+  font-size: 11.5px;
+  line-height: 1.55;
+  vertical-align: top;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+
+.code-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-top: 0.4rem;
+}
+
+.code-wrap-label {
+  padding: 0.45rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  background: var(--surface);
+}
+
+.code-wrap pre {
+  padding: 1rem 1.2rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 1.65;
+  overflow-x: auto;
+}
+
+.flow-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1.1rem 1.3rem;
+  max-width: 720px;
+  margin-top: 0.9rem;
+}
+
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+
+.flow-step {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--sub);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.28rem 0.55rem;
+  white-space: nowrap;
+}
+
+.flow-step.hi { border-color: var(--accent); color: var(--accent); }
+.flow-arr { color: var(--dim); font-size: 10px; flex-shrink: 0; }
+
+.subsec-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 1.4rem 0 0.5rem;
+}
+
+.note-box {
+  border-left: 2px solid var(--border);
+  padding: 0.5rem 0.8rem;
+  margin-top: 0.8rem;
+  max-width: 720px;
+  font-size: 11.5px;
+  color: var(--dim);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+.rag-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 720px;
+  margin-top: 0.9rem;
+}
+
+.rag-col {
+  background: var(--surface);
+  padding: 1rem 1.2rem;
+}
+
+.rag-col-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.rag-col-flow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 2;
+}
+
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.6rem; }
+  main { padding: 0 1rem 4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .material-card + .material-card { border-left: none; border-top: 1px solid var(--border); }
+  footer { padding: 1rem; }
+  .nav-actions .btn-label { display: none; }
+  .table-wrap { overflow-x: auto; }
+  .rag-split { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-left">
     <a class="back-link" href="../">← <img class="nav-logo" src="../../logo.png" alt=""> Ingineria AI</a>
@@ -61,27 +670,326 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
       <span class="cur">C6</span>
     </div>
   </div>
-  <button class="btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">dark</span></button>
+  <div class="nav-actions">
+    <a class="btn primary" href="notebooks/C6_01_rag_agent_response.ipynb" download>↓ <span class="btn-label">Notebook</span></a>
+    <a class="btn" href="materiale/agent.py" download>↓ <span class="btn-label">agent.py</span></a>
+    <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">light</span></button>
+  </div>
 </nav>
+
 <div class="hero">
   <div class="hero-tag">AI Engineering · ADC 2026 · C6</div>
-  <h1>RAG</h1>
-  <p class="hero-sub">În C6 conectăm retrieval-ul cu agenți simpli: fiecare agent primește context relevant și răspunde dintr-o perspectivă discursivă specifică.</p>
+  <h1>Curs 6 — RAG și agenți simpli: de la context la răspuns</h1>
+  <p class="hero-subtitle">C5 a construit regăsirea semantică. C6 adaugă rolul discursiv, promptul structurat și generarea cu LLM.</p>
+  <p class="hero-sub">În C6 transformăm vectorstore-ul construit în C5 într-un prim agent RAG funcțional. Agentul primește un text politic nou, recuperează fragmente similare din corpus, aplică un rol discursiv definit în YAML și generează un răspuns cu LLM. Introducem LangChain minimal prin <code>PromptTemplate</code> și pregătim trecerea spre LangGraph în C7.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
+    <span>Limbă <strong>Română</strong></span>
     <span>Sesiune <strong>C6</strong></span>
   </div>
 </div>
+
 <main>
+
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>În C6 conectăm retrieval-ul cu agenți simpli: fiecare agent primește context relevant și răspunde dintr-o perspectivă discursivă specifică.</p>
+      <p>C6 face trecerea de la regăsire semantică la generare cu context. În C5 am recuperat fragmente relevante din FAISS. În C6 folosim aceste fragmente împreună cu un rol discursiv pentru a genera un răspuns RAG. Accentul este pe mecanismul complet: context recuperat, rol, prompt, LLM și răspuns testabil în aplicație.</p>
     </div>
-    <p class="placeholder-note">Materialele pentru acest curs vor fi adăugate ulterior.</p>
+    <p class="note-box">C5 selectează contextul. C6 transformă contextul recuperat într-un răspuns generat, cu rol discursiv.</p>
   </section>
+
+  <section>
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">⊞</div>
+        <div class="mat-title">Notebook C6</div>
+        <div class="mat-desc">Notebookul individual pentru primul răspuns RAG cu rol: input politic nou, top-k fragmente similare, prompt structurat și rezultat generat.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">C6_01_rag_agent_response.ipynb</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="notebooks/C6_01_rag_agent_response.ipynb" download>↓ Descarcă</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⌘</div>
+        <div class="mat-title">Starter agent</div>
+        <div class="mat-desc">Starterul pentru logica RAG minimală: încărcare roluri YAML, recuperare din retriever, construire prompt și apel LLM din <code>core/agent.py</code>.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">materiale/agent.py</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="materiale/agent.py" download>↓ Descarcă</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Suport de lucru C6</div>
+        <div class="mat-desc">Fișierul suport disponibil acum în repo. Îl poți folosi ca ghid local până când prezentarea finală și materialele auxiliare pentru C6 sunt publicate în forma lor finală.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">assets/img/Curs 6/Notebook.docx</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="../assets/img/Curs%206/Notebook.docx" download>↓ Descarcă</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⋯</div>
+        <div class="mat-title">În pregătire</div>
+        <div class="mat-desc">Template-ul <code>role_XX.yaml</code>, agregatorul <code>assets/roles/roles.yaml</code> și prezentarea finală C6 pot fi adăugate ulterior fără să schimbăm structura paginii. Pagina este pregătită să le integreze în aceeași secțiune.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Ce învățăm</p>
+    <ul class="obj-list">
+      <li class="obj-item">RAG complet: regăsire + generare.</li>
+      <li class="obj-item">RAG cu rol: context + voce discursivă.</li>
+      <li class="obj-item">Agent simplu = model + rol + context.</li>
+      <li class="obj-item">Roluri definite în YAML: identificator, nume, prompt de sistem.</li>
+      <li class="obj-item">LangChain minimal: <code>PromptTemplate</code> reutilizabil.</li>
+      <li class="obj-item">Diferența dintre RAG simplu, RAG cu rol și Agentic RAG.</li>
+      <li class="obj-item">Cum mutăm logica din notebook în <code>core/agent.py</code> și <code>app/app.py</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Activități practice</p>
+    <ul class="obj-list">
+      <li class="obj-item">Creăm <code>assets/roles/role_XX.yaml</code>.</li>
+      <li class="obj-item">Integrăm rolurile individuale în <code>assets/roles/roles.yaml</code>.</li>
+      <li class="obj-item">Încărcăm FAISS și metadatele construite în C5.</li>
+      <li class="obj-item">Recuperăm top-k fragmente pentru un input politic nou.</li>
+      <li class="obj-item">Construim promptul manual și apoi îl refacem cu <code>PromptTemplate</code>.</li>
+      <li class="obj-item">Generăm răspunsuri RAG pentru agentul ales.</li>
+      <li class="obj-item">Testăm un mini-agent cu tool de regăsire.</li>
+      <li class="obj-item">Conectăm logica la <code>core/agent.py</code>.</li>
+      <li class="obj-item">Verificăm tab-ul Agent RAG din <code>app/app.py</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Pipeline C6</p>
+    <div class="flow-wrap">
+      <div class="flow">
+        <span class="flow-step">input politic nou</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step hi">FAISS</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">top-k comentarii similare</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">rol YAML</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">PromptTemplate</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">LLM</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">răspuns agent</span>
+      </div>
+    </div>
+    <p class="note-box">C5 selectează contextul. C6 transformă contextul recuperat într-un răspuns generat, cu rol discursiv.</p>
+  </section>
+
+  <section>
+    <p class="section-label">Concepte-cheie</p>
+    <div class="material-grid">
+      <div class="material-card">
+        <div class="mat-title">RAG cu rol</div>
+        <div class="mat-desc">Context recuperat + rol discursiv + generare controlată. Nu folosim doar fragmente similare, ci și o voce clară definită în YAML.</div>
+      </div>
+      <div class="material-card">
+        <div class="mat-title">Agent RAG simplu</div>
+        <div class="mat-desc">O funcție fără memorie care primește input + agent și returnează răspuns + contextul folosit pentru acel răspuns.</div>
+      </div>
+      <div class="material-card">
+        <div class="mat-title">LangChain</div>
+        <div class="mat-desc">Nu face modelul mai inteligent; standardizează șablonul de prompt și îl face reutilizabil în notebook și în aplicație.</div>
+      </div>
+      <div class="material-card">
+        <div class="mat-title">Agentic RAG</div>
+        <div class="mat-desc">Intră în C7. Agentul va decide când caută, cum verifică și cum orchestrează pașii, nu doar cum generează un răspuns.</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nivel</th>
+            <th>Intrare</th>
+            <th>Ieșire</th>
+            <th>Observație</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>RAG simplu</td>
+            <td>input + context</td>
+            <td>răspuns</td>
+            <td>Generează cu context recuperat, fără rol discursiv explicit.</td>
+          </tr>
+          <tr>
+            <td>RAG cu rol</td>
+            <td>input + context + rol YAML</td>
+            <td>răspuns cu voce controlată</td>
+            <td>Este forma urmărită în C6.</td>
+          </tr>
+          <tr>
+            <td>Agentic RAG</td>
+            <td>input + decizii intermediare</td>
+            <td>răspuns + traseu orchestrat</td>
+            <td>Intră în C7, odată cu LangGraph.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Livrabile C6</p>
+
+    <p class="subsec-label">Individual</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">01</span><span><code>assets/roles/role_XX.yaml</code></span></li>
+      <li class="del-item"><span class="del-num">02</span><span><code>notebooks/student_XX/C6_01_rag_agent_response.ipynb</code></span></li>
+    </ul>
+
+    <p class="subsec-label">Echipă</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">03</span><span><code>assets/roles/roles.yaml</code></span></li>
+      <li class="del-item"><span class="del-num">04</span><span><code>core/agent.py</code></span></li>
+      <li class="del-item"><span class="del-num">05</span><span><code>app/app.py</code> — tab minim Agent RAG</span></li>
+    </ul>
+
+    <p class="subsec-label">Opțional</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">06</span><span><code>outputs/c6_agent_responses/*.jsonl</code></span></li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">GitHub Issues / Workflow</p>
+    <div class="milestone-tag">C6 — RAG cu rol, prompt structurat și agent minim</div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C6.1</span>
+        <span class="issue-card-title">C6.1 - Define one agent role</span>
+        <span class="issue-card-badge">individual</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>creează <code>assets/roles/role_XX.yaml</code></li>
+          <li>definește identificator, nume și prompt de sistem</li>
+          <li>păstrează rolul suficient de clar pentru testare RAG</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C6.2</span>
+        <span class="issue-card-title">C6.2 - Integrate individual roles into roles.yaml</span>
+        <span class="issue-card-badge">echipă</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>adaugă rolurile individuale în <code>assets/roles/roles.yaml</code></li>
+          <li>verifică identificatorii și compatibilitatea cu retriever-ul existent</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C6.3</span>
+        <span class="issue-card-title">C6.3 - Build one RAG agent response</span>
+        <span class="issue-card-badge">individual</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>rulează <code>C6_01_rag_agent_response.ipynb</code></li>
+          <li>recuperează top-k fragmente similare pentru un input politic nou</li>
+          <li>generează un răspuns cu rol și context</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C6.4</span>
+        <span class="issue-card-title">C6.4 - Review core/agent.py and check retriever compatibility</span>
+        <span class="issue-card-badge">echipă</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>mută logica principală în <code>core/agent.py</code></li>
+          <li>verifică încărcarea rolurilor și compatibilitatea cu retriever-ul din C5</li>
+          <li>testează parametrii <code>provider</code>, <code>k</code> și <code>temperature</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <div class="issue-card-header">
+        <span class="issue-card-id">C6.5</span>
+        <span class="issue-card-title">C6.5 - Add minimal Agent RAG tab to the app</span>
+        <span class="issue-card-badge">echipă</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="issue-detail">
+          <li>leagă backend-ul din <code>core/agent.py</code> de interfață</li>
+          <li>adaugă un tab minim Agent RAG în <code>app/app.py</code></li>
+          <li>afișează răspunsul agentului și contextul folosit</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Legătura cu aplicația</p>
+    <div class="code-wrap">
+      <div class="code-wrap-label">c6_application_path.txt</div>
+      <pre>assets/roles/role_XX.yaml
+→ assets/roles/roles.yaml
+→ core/agent.py
+→ app/app.py
+→ tab Agent RAG</pre>
+    </div>
+    <div class="intro-body" style="margin-top:0.9rem;">
+      <p>C6 conectează notebook-ul la aplicație. Backend-ul este <code>core/agent.py</code>, iar interfața minimă este tab-ul Agent RAG din <code>app/app.py</code>. În C7, această piesă devine nod într-un flux LangGraph.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">La finalul C6</p>
+    <div class="intro-body">
+      <p>La finalul C6, fiecare echipă are un prim agent RAG testabil: roluri YAML, regăsire FAISS, prompt structurat, răspuns generat și un tab minim în aplicație. Sistemul nu este încă Agentic RAG complet; orchestrarea cu LangGraph intră în C7.</p>
+    </div>
+    <div class="local-note">
+      <div class="local-note-label">Notă</div>
+      <p>Pagina este deja pregătită pentru a primi prezentarea finală C6 și template-urile YAML atunci când sunt adăugate în repo.</p>
+      <p>Structura, stilul și ordinea secțiunilor rămân compatibile cu pagina C5, astfel încât actualizarea ulterioară să fie minimă.</p>
+    </div>
+  </section>
+
 </main>
+
 <footer>
   <div class="ft-col">
     Universitatea Babeș-Bolyai · Cluj-Napoca<br>
@@ -97,12 +1005,23 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
     <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
   </div>
 </footer>
+
 <script>
-const btn = document.getElementById('themeBtn');
-const label = btn.querySelector('.btn-label');
-function applyTheme(light) { document.documentElement.classList.toggle('light', light); label.textContent = light ? 'dark' : 'light'; }
-function toggleTheme() { const l = document.documentElement.classList.contains('light'); localStorage.setItem('theme', l ? 'dark' : 'light'); applyTheme(!l); }
-applyTheme(localStorage.getItem('theme') !== 'dark');
+const btn = document.getElementById("themeBtn");
+const label = btn.querySelector(".btn-label");
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle("light", light);
+  label.textContent = light ? "dark" : "light";
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains("light");
+  localStorage.setItem("theme", isLight ? "dark" : "light");
+  applyTheme(!isLight);
+}
+
+applyTheme(localStorage.getItem("theme") !== "dark");
 </script>
 </body>
 </html>
