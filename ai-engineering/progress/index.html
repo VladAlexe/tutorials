@@ -1894,6 +1894,87 @@ section { padding-top: 2rem; }
   background-position: 78% 22%;
 }
 
+.high-camp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.78rem;
+}
+
+.high-camp-card .project-title {
+  margin-bottom: 0;
+}
+
+.high-camp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.72rem;
+}
+
+.high-camp-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1180px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 22px;
+  background: rgba(233, 226, 214, 0.52);
+}
+
+.high-camp-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.high-camp-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.camp-team {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.camp-tent {
+  width: clamp(54px, 7vw, 96px);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 10px rgba(35, 30, 20, 0.22));
+}
+
+.camp-students {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 72px;
+}
+
+.camp-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2f6f4e;
+  border: 1px solid rgba(255,255,255,0.85);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+.high-camp-empty {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.8px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
 .project-progress-hero,
 .project-stage-focus {
   padding: 0.78rem 0.84rem 0.82rem;
@@ -3388,6 +3469,15 @@ const COURSE_PLAN_FALLBACK = [
 const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
+const HIGH_CAMP_ENTRY_STAGE_KEY = 'C6';
+const HIGH_CAMP_POSITIONS = {
+  T1: { left: 18, top: 69 },
+  T2: { left: 32, top: 63 },
+  T3: { left: 47, top: 71 },
+  T4: { left: 61, top: 64 },
+  T5: { left: 74, top: 72 },
+  T6: { left: 86, top: 66 }
+};
 const MOUNTAIN_TEAM_PALETTE = ['#C65B33', '#5A8F2F', '#2E71BF', '#C98A19', '#158B82', '#B24B66', '#596FBC', '#9E4C28'];
 function progressToColor(percent) {
   var t = clampPercent(percent) / 100;
@@ -4084,6 +4174,32 @@ function getStudentStageSequence(member) {
       percent: getStudentStagePercent(member, stageKey)
     };
   });
+}
+
+function isStageAtOrBeyond(stageKey, targetStageKey) {
+  return getMountainStageRank(stageKey) >= getMountainStageRank(targetStageKey);
+}
+
+function hasHighCampProgress(progressSource) {
+  const stage = getStageProgressFromMap(progressSource && progressSource.progress ? progressSource.progress : progressSource, HIGH_CAMP_ENTRY_STAGE_KEY);
+  return toNumber(stage && stage.percent) > 0 || toNumber(stage && stage.closed) > 0;
+}
+
+function isTeamInHighCamp(team) {
+  const currentStageKey = inferStageKey(team && team.currentStage ? (team.currentStage.key || team.currentStage.title) : (team && (team.current_stage_id || team.current_stage)));
+  const teamStage = Array.isArray(team && team.stageProgress)
+    ? team.stageProgress.find(function(stage) { return stage.key === HIGH_CAMP_ENTRY_STAGE_KEY; })
+    : null;
+  const stageProgressStarted = teamStage
+    ? (toNumber(teamStage.percent) > 0 || toNumber(teamStage.closed) > 0)
+    : hasHighCampProgress(team);
+
+  return isStageAtOrBeyond(currentStageKey, HIGH_CAMP_ENTRY_STAGE_KEY) || stageProgressStarted;
+}
+
+function isMemberInHighCamp(member) {
+  const currentStageKey = inferStageKey(member && (member.current_stage_id || member.current_stage));
+  return isStageAtOrBeyond(currentStageKey, HIGH_CAMP_ENTRY_STAGE_KEY) || hasHighCampProgress(member);
 }
 
 function computeStudentRouteState(member) {
@@ -4783,6 +4899,36 @@ function normalizeTeamModel(team, index, coursePlan, climbPlan, currentMilestone
   };
 }
 
+function buildHighCampTeams(teams) {
+  return (Array.isArray(teams) ? teams : [])
+    .filter(function(team) {
+      return !!HIGH_CAMP_POSITIONS[team && team.label] && isTeamInHighCamp(team);
+    })
+    .map(function(team) {
+      const eligibleMembers = sortMembers(
+        (Array.isArray(team && team.activeMembers) ? team.activeMembers : []).filter(isMemberInHighCamp)
+      );
+
+      return {
+        label: team.label,
+        name: team.name,
+        left: HIGH_CAMP_POSITIONS[team.label].left,
+        top: HIGH_CAMP_POSITIONS[team.label].top,
+        tentSrc: `../assets/img/${team.label}.png`,
+        tentAlt: `${team.name} tent`,
+        students: eligibleMembers.map(function(member) {
+          return {
+            key: String(member && (member.student_key || member.display_code || member.local_code || member.github_handle || 'student')),
+            label: getMemberLabel(member) || getStudentDisplayName(member)
+          };
+        })
+      };
+    })
+    .sort(function(a, b) {
+      return compareTeamLabels(a.label, b.label);
+    });
+}
+
 function getStageRank(stageKey) {
   const match = String(stageKey || '').match(/^C(\d+)/i);
   return match ? toNumber(match[1]) : 999;
@@ -5008,6 +5154,7 @@ function buildDashboardModel(data) {
     ? Math.max(0, Math.ceil(((nextThresholdPercent / 100) * createdTasks) - closedIssues))
     : null;
   const mountainScene = buildMountainScene(teams);
+  const highCampTeams = buildHighCampTeams(teams);
 
   teams.forEach(function(team) {
     team.overallDelta = team.overallPercent - averageOverallPercent;
@@ -5042,6 +5189,7 @@ function buildDashboardModel(data) {
     markers: mountainScene.teamMarkers,
     mountainStudentMarkers: mountainScene.studentMarkers,
     topStudents: mountainScene.topStudents,
+    highCampTeams: highCampTeams,
     activityStats: activityStats,
     blockers: blockerData.blockers,
     blockerFallback: blockerData.fallbackIssues,
@@ -5279,6 +5427,36 @@ function renderJourney(model) {
     `</div>`;
 
   initMountainStudentInteractions();
+}
+
+function renderHighCampSection(highCampTeams) {
+  const teams = Array.isArray(highCampTeams) ? highCampTeams : [];
+  const overlayMarkup = teams.map(function(team) {
+    const studentDots = (Array.isArray(team.students) ? team.students : []).map(function(student) {
+      return `<span class="camp-dot" aria-hidden="true" data-student="${escapeHtml(student.label)}"></span>`;
+    }).join('');
+
+    return (
+      `<div class="camp-team" style="left:${team.left}%; top:${team.top}%;">` +
+        `<img class="camp-tent" src="${escapeHtml(team.tentSrc)}" alt="${escapeHtml(team.tentAlt)}">` +
+        `<div class="camp-students">${studentDots}</div>` +
+      `</div>`
+    );
+  }).join('');
+
+  const emptyMarkup = teams.length
+    ? ''
+    : `<div class="high-camp-empty">Nicio echipă nu a ajuns încă la ${escapeHtml(HIGH_CAMP_ENTRY_STAGE_KEY)}.</div>`;
+
+  return (
+    `<section class="high-camp-section">` +
+      `<div class="high-camp-stage">` +
+        `<img class="high-camp-bg" src="../assets/img/high_camp.png" alt="High Camp">` +
+        `<div class="high-camp-overlay" id="highCampOverlay">${overlayMarkup}</div>` +
+      `</div>` +
+      `${emptyMarkup}` +
+    `</section>`
+  );
 }
 
 function renderProjectStats(model) {
@@ -5606,8 +5784,9 @@ function renderProjectStats(model) {
           `<div class="project-title">Unde suntem</div>` +
           `<div class="backlog-list">${stageRows}</div>` +
         `</article>` +
-        `<article class="project-card project-card-cover project-card-cover-high-camp">` +
+        `<article class="project-card high-camp-card">` +
           `<div class="project-title">High Camp</div>` +
+          `${renderHighCampSection(model.highCampTeams)}` +
         `</article>` +
         `<article class="project-card project-card-cover project-card-cover-summit">` +
           `<div class="project-title">Summit</div>` +
