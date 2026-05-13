@@ -671,6 +671,8 @@ code {
     </div>
   </div>
   <div class="nav-actions">
+    <a class="btn primary" href="slides/" data-slide-link data-local-label="PDF">▶ <span class="btn-label slide-link-label">Slides</span></a>
+    <a class="btn" href="slides.pdf" download>↓ <span class="btn-label">PDF</span></a>
     <a class="btn primary" href="notebooks/C6_01_rag_agent_response.ipynb" download>↓ <span class="btn-label">Notebook</span></a>
     <a class="btn" href="materiale/agent.py" download>↓ <span class="btn-label">agent.py</span></a>
     <button class="btn theme-btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">light</span></button>
@@ -705,6 +707,16 @@ code {
     <div class="material-grid">
 
       <div class="material-card">
+        <div class="mat-icon">▤</div>
+        <div class="mat-title">Slides C6</div>
+        <div class="mat-desc">Slide-urile C6 introduc primul agent RAG funcțional: roluri YAML, prompt structurat, integrare minimă LangChain și conectarea logicii la aplicație.</div>
+        <div class="mat-actions">
+          <a class="btn primary" href="slides/" data-slide-link data-local-label="Deschide PDF">▶ <span class="slide-link-label">Deschide viewer</span></a>
+          <a class="btn" href="slides.pdf" download>↓ PDF</a>
+        </div>
+      </div>
+
+      <div class="material-card">
         <div class="mat-icon">⊞</div>
         <div class="mat-title">Notebook C6</div>
         <div class="mat-desc">Notebookul individual pentru primul răspuns RAG cu rol: input politic nou, top-k fragmente similare, prompt structurat și rezultat generat.</div>
@@ -730,26 +742,6 @@ code {
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="material-card">
-        <div class="mat-icon">▤</div>
-        <div class="mat-title">Suport de lucru C6</div>
-        <div class="mat-desc">Fișierul suport disponibil acum în repo. Îl poți folosi ca ghid local până când prezentarea finală și materialele auxiliare pentru C6 sunt publicate în forma lor finală.</div>
-        <div class="mat-file-list">
-          <div class="mat-file-row">
-            <span class="mat-file-name">assets/img/Curs 6/Notebook.docx</span>
-            <div class="mat-actions">
-              <a class="btn primary" href="../assets/img/Curs%206/Notebook.docx" download>↓ Descarcă</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="material-card">
-        <div class="mat-icon">⋯</div>
-        <div class="mat-title">În pregătire</div>
-        <div class="mat-desc">Template-ul <code>role_XX.yaml</code>, agregatorul <code>assets/roles/roles.yaml</code> și prezentarea finală C6 pot fi adăugate ulterior fără să schimbăm structura paginii. Pagina este pregătită să le integreze în aceeași secțiune.</div>
       </div>
 
     </div>
@@ -981,11 +973,6 @@ code {
     <div class="intro-body">
       <p>La finalul C6, fiecare echipă are un prim agent RAG testabil: roluri YAML, regăsire FAISS, prompt structurat, răspuns generat și un tab minim în aplicație. Sistemul nu este încă Agentic RAG complet; orchestrarea cu LangGraph intră în C7.</p>
     </div>
-    <div class="local-note">
-      <div class="local-note-label">Notă</div>
-      <p>Pagina este deja pregătită pentru a primi prezentarea finală C6 și template-urile YAML atunci când sunt adăugate în repo.</p>
-      <p>Structura, stilul și ordinea secțiunilor rămân compatibile cu pagina C5, astfel încât actualizarea ulterioară să fie minimă.</p>
-    </div>
   </section>
 
 </main>
@@ -1009,6 +996,26 @@ code {
 <script>
 const btn = document.getElementById("themeBtn");
 const label = btn.querySelector(".btn-label");
+const pdfUrl = new URL("slides.pdf", window.location.href);
+
+pdfUrl.searchParams.set("v", String(Date.now()));
+
+function adaptLocalSlidesLinks() {
+  if (location.protocol === "file:") {
+    document.querySelectorAll("[data-slide-link]").forEach(link => {
+      link.href = pdfUrl.href;
+
+      const slideLabel = link.querySelector(".slide-link-label");
+      if (slideLabel && link.dataset.localLabel) {
+        slideLabel.textContent = link.dataset.localLabel;
+      }
+    });
+  }
+
+  document.querySelectorAll('a[href="slides.pdf"]').forEach(link => {
+    link.href = pdfUrl.href;
+  });
+}
 
 function applyTheme(light) {
   document.documentElement.classList.toggle("light", light);
@@ -1021,6 +1028,7 @@ function toggleTheme() {
   applyTheme(!isLight);
 }
 
+adaptLocalSlidesLinks();
 applyTheme(localStorage.getItem("theme") !== "dark");
 </script>
 </body>
