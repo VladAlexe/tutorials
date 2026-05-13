@@ -5469,10 +5469,9 @@ function renderProjectStats(model) {
       const labelClass = (hasTasks && stage.closed > 0) || isActive ? ' is-active' : '';
       const stageColor = hasTasks ? getProgressColor(stage.percent) : '';
       const fillStyle = hasTasks ? `width:${stage.percent}%; background:${stageColor};` : 'width:0%;';
-      const activeBadge = isActive ? `<span class="stage-active-badge">activ</span>` : '';
       return (
         `<div class="backlog-row">` +
-          `<span class="backlog-label${labelClass}">${escapeHtml(stage.key)}${activeBadge}</span>` +
+          `<span class="backlog-label${labelClass}">${escapeHtml(stage.key)}</span>` +
           `<div class="backlog-track"><div class="backlog-fill${fillClass}" style="${fillStyle}"></div></div>` +
           `<span class="backlog-value">${escapeHtml(ratio)}</span>` +
         `</div>`
