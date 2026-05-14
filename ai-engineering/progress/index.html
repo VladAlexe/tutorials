@@ -1932,14 +1932,14 @@ section { padding-top: 2rem; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .camp-tent {
-  width: clamp(54px, 7vw, 96px);
+  width: clamp(42px, 5.4vw, 72px);
   height: auto;
   display: block;
-  filter: drop-shadow(0 8px 10px rgba(35, 30, 20, 0.22));
+  filter: drop-shadow(0 6px 8px rgba(35, 30, 20, 0.18));
 }
 
 .camp-students {
@@ -1947,12 +1947,12 @@ section { padding-top: 2rem; }
   justify-content: center;
   flex-wrap: wrap;
   gap: 4px;
-  max-width: 72px;
+  max-width: 60px;
 }
 
 .camp-dot {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #2f6f4e;
   border: 1px solid rgba(255,255,255,0.85);
@@ -3470,12 +3470,12 @@ const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
 const HIGH_CAMP_ENTRY_STAGE_KEY = 'C6';
 const HIGH_CAMP_POSITIONS = {
-  T1: { left: 18, top: 69 },
-  T2: { left: 32, top: 63 },
-  T3: { left: 47, top: 71 },
-  T4: { left: 61, top: 64 },
-  T5: { left: 74, top: 72 },
-  T6: { left: 86, top: 66 }
+  T1: { left: 18, top: 73 },
+  T2: { left: 32, top: 67 },
+  T3: { left: 47, top: 75 },
+  T4: { left: 61, top: 68 },
+  T5: { left: 74, top: 76 },
+  T6: { left: 86, top: 70 }
 };
 const MOUNTAIN_TEAM_PALETTE = ['#C65B33', '#5A8F2F', '#2E71BF', '#C98A19', '#158B82', '#B24B66', '#596FBC', '#9E4C28'];
 function progressToColor(percent) {
@@ -4913,7 +4913,7 @@ function buildHighCampTeams(teams) {
         name: team.name,
         left: HIGH_CAMP_POSITIONS[team.label].left,
         top: HIGH_CAMP_POSITIONS[team.label].top,
-        tentSrc: `../assets/img/${team.label}.png`,
+        tentSrc: `../assets/img/${team.label}-clean.png`,
         tentAlt: `${team.name} tent`,
         students: eligibleMembers.map(function(member) {
           return {
