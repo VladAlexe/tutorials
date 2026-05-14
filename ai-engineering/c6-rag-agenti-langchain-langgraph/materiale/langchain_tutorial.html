@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LangChain — Tutorial tehnic didactic</title>
+<style>
+/* ─── Reset ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ─── Tokens ─────────────────────────────────────────── */
+:root{
+  --bg:#F8F6F2;       /* crem foarte deschis */
+  --surface:#FFFFFF;
+  --cream:#F0EBE1;    /* card secundar */
+  --sand:#E5DDD0;     /* separator */
+  --navy:#1A1D2B;     /* text principal */
+  --blue:#2C5F8A;     /* accent */
+  --blue-l:#E6F0F8;   /* card highlight */
+  --blue-m:#C8DFF0;   /* border highlight */
+  --gray:#64748B;     /* text secundar */
+  --gray-l:#94A3B8;   /* text discret */
+  --line:#D8D0C4;     /* linii */
+  --code:#1C2130;     /* cod bg */
+  --code-tx:#C9C0A8;  /* cod text */
+  --green:#1B5E35;
+  --green-l:#ECF5EE;
+  --amber:#9A6C00;
+  --amber-l:#FBF4E0;
+  --red:#8B1F1F;
+  --mono:'SFMono-Regular','Cascadia Code',Consolas,'Liberation Mono',monospace;
+  --sans:system-ui,-apple-system,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --sidebar:240px;
+}
+
+html{font-family:var(--sans);font-size:15px;line-height:1.70;color:var(--navy);background:var(--bg)}
+a{color:var(--blue)}
+a:hover{text-decoration:underline}
+
+/* ─── Breadcrumb nav ─────────────────────────────────── */
+.breadcrumb{
+  position:sticky;top:0;z-index:50;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:0 32px;height:44px;
+  display:flex;align-items:center;gap:6px;
+  font-size:12.5px;color:var(--gray);
+}
+.breadcrumb a{color:var(--gray);text-decoration:none}
+.breadcrumb a:hover{color:var(--blue)}
+.breadcrumb .sep{color:var(--line);font-size:14px}
+.breadcrumb .cur{color:var(--navy);font-weight:600}
+
+/* ─── Layout ─────────────────────────────────────────── */
+.wrap{display:grid;grid-template-columns:var(--sidebar) 1fr;max-width:1180px;margin:0 auto}
+
+/* ─── Sidebar ─────────────────────────────────────────── */
+.sidebar{
+  padding:28px 0 64px 20px;
+  border-right:1px solid var(--line);
+  position:sticky;top:44px;height:calc(100vh - 44px);overflow-y:auto;
+  font-size:12.5px;
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+.sb-sec{margin-top:20px}
+.sb-sec:first-child{margin-top:8px}
+.sb-lbl{
+  font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  color:var(--gray-l);padding:0 10px 5px;display:block;
+}
+.sidebar ul{list-style:none}
+.sidebar li a{
+  display:block;padding:4px 10px;color:var(--gray);
+  border-left:2px solid transparent;border-radius:0 3px 3px 0;
+  transition:all .12s;text-decoration:none;
+}
+.sidebar li a:hover{color:var(--blue);background:var(--blue-l);border-left-color:var(--blue)}
+.sidebar li a.on{color:var(--blue);background:var(--blue-l);border-left-color:var(--blue);font-weight:600}
+
+/* ─── Content ────────────────────────────────────────── */
+.content{
+  padding:44px 60px 120px;
+  max-width:840px;
+}
+
+/* ─── Hero ───────────────────────────────────────────── */
+.hero{margin-bottom:48px;padding-bottom:36px;border-bottom:2px solid var(--sand)}
+.hero-tag{
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--blue);background:var(--blue-l);padding:3px 9px;border-radius:3px;
+  display:inline-block;margin-bottom:14px;
+}
+.hero h1{
+  font-size:1.85em;font-weight:800;letter-spacing:-.025em;line-height:1.2;
+  color:var(--navy);margin-bottom:12px;
+}
+.hero .lead{font-size:1.02em;color:var(--gray);line-height:1.72;max-width:620px}
+.hero-meta{
+  margin-top:18px;padding-top:16px;border-top:1px solid var(--line);
+  display:flex;gap:20px;font-size:11.5px;color:var(--gray);flex-wrap:wrap;
+}
+
+/* ─── Typography ─────────────────────────────────────── */
+h2{
+  font-size:1.25em;font-weight:700;letter-spacing:-.015em;
+  color:var(--navy);margin:52px 0 6px;padding-top:4px;
+  display:flex;align-items:center;gap:8px;
+}
+h2 .n{
+  font-family:var(--mono);font-size:10px;font-weight:700;
+  background:var(--navy);color:#fff;
+  padding:2px 6px;border-radius:3px;letter-spacing:.04em;
+  flex-shrink:0;
+}
+.rule{width:28px;height:2px;background:var(--blue);border-radius:1px;margin-bottom:18px}
+h3{font-size:1.02em;font-weight:700;color:var(--navy);margin:28px 0 8px}
+p{margin-bottom:13px}
+ul,ol{margin:8px 0 14px 20px;line-height:1.9}
+strong{font-weight:700}
+
+/* ─── Callout ────────────────────────────────────────── */
+.note{
+  margin:18px 0;padding:12px 16px;font-size:13.5px;
+  border-left:3px solid var(--blue);background:var(--blue-l);border-radius:0 5px 5px 0;
+}
+.note.g{border-left-color:var(--green);background:var(--green-l)}
+.note.a{border-left-color:var(--amber);background:var(--amber-l)}
+.note p{margin:0;line-height:1.6}
+
+/* ─── Cards ──────────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:15px}
+.card.hi{border-color:var(--blue-m);background:var(--blue-l)}
+.card-tag{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:5px}
+.card h4{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:5px}
+.card p{font-size:12.5px;color:var(--gray);line-height:1.55;margin:0}
+
+/* ─── Code ───────────────────────────────────────────── */
+.cb{border-radius:7px;overflow:hidden;border:1px solid #283050;margin:16px 0}
+.cb-lbl{background:#131828;padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#546E7A;text-transform:uppercase;border-bottom:1px solid #283050}
+pre{background:var(--code);padding:18px 20px;overflow-x:auto;margin:0;tab-size:2}
+code{font-family:var(--mono);font-size:13px;color:var(--code-tx);line-height:1.6}
+code.i{background:var(--cream);color:var(--navy);padding:1px 5px;border-radius:3px;font-size:12.5px;border:1px solid var(--sand)}
+.kw{color:#C792EA}.fn{color:#82AAFF}.st{color:#C3E88D}
+.cm{color:#546E7A;font-style:italic}.tp{color:#FFCB6B}.nm{color:#89DDFF}.nb{color:#F78C6C}
+
+/* ─── Diagram ────────────────────────────────────────── */
+.diag{
+  background:var(--cream);border:1px solid var(--line);
+  border-radius:8px;padding:24px 20px 12px;margin:18px 0;overflow-x:auto;
+}
+.diag figcaption{font-size:11.5px;color:var(--gray);text-align:center;margin-top:10px;font-style:italic}
+
+/* ─── Table ──────────────────────────────────────────── */
+.tw{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--navy);color:#fff;padding:9px 13px;text-align:left;font-weight:600;font-size:12px}
+td{padding:8px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:var(--cream)}
+.yes{color:var(--green);font-weight:700}
+.no{color:var(--red);font-weight:700}
+.em{color:var(--blue);font-weight:600}
+
+/* ─── Steps ──────────────────────────────────────────── */
+.steps{list-style:none;margin:14px 0;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.steps li::before{
+  content:counter(s);min-width:24px;height:24px;
+  background:var(--blue);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;
+}
+.steps li p{font-size:13px;color:var(--gray);margin:2px 0 0}
+
+/* ─── Sources ────────────────────────────────────────── */
+.src-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0}
+.src{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:11px 13px}
+.src .pub{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:3px}
+.src .ttl{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:3px}
+.src .url{font-size:11px;color:var(--gray);font-family:var(--mono);word-break:break-all}
+.src a{color:var(--blue);text-decoration:none}
+.src a:hover{text-decoration:underline}
+
+hr.div{border:none;border-top:1px solid var(--sand);margin:40px 0}
+</style>
+</head>
+<body>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb">
+  <a href="../../../index.html">tutoriale</a><span class="sep">/</span>
+  <a href="../../index.html">ingineria-ai</a><span class="sep">/</span>
+  <a href="../index.html#materiale">c6</a><span class="sep">/</span>
+  <span class="cur">langchain</span>
+</nav>
+
+<div class="wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-sec">
+    <span class="sb-lbl">Introducere</span>
+    <ul>
+      <li><a href="#why">De ce LangChain?</a></li>
+      <li><a href="#notwhat">Ce NU este LangChain</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Componente</span>
+    <ul>
+      <li><a href="#components">Componentele principale</a></li>
+      <li><a href="#models">Models</a></li>
+      <li><a href="#prompts">Prompts și PromptTemplate</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Composiție</span>
+    <ul>
+      <li><a href="#lcel">LCEL — operatorul pipe</a></li>
+      <li><a href="#retrieval">Retrieval — RAG</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Construcție</span>
+    <ul>
+      <li><a href="#first">Primul chain (fără LLM)</a></li>
+      <li><a href="#llm">Chain cu LLM</a></li>
+      <li><a href="#memory">Memory</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Aplicat</span>
+    <ul>
+      <li><a href="#vs">LangChain vs LangGraph</a></li>
+      <li><a href="#echochamber">EchoChamber — C6</a></li>
+      <li><a href="#exercise">Exercițiu practic</a></li>
+      <li><a href="#next">Concluzie</a></li>
+      <li><a href="#sources">Resurse</a></li>
+    </ul>
+  </div>
+</aside>
+
+<!-- CONTENT -->
+<main class="content">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">tutorial tehnic · C6</div>
+  <h1>LangChain — composiție și standardizare pentru aplicații LLM</h1>
+  <p class="lead">Un apel direct la un model lingvistic este simplu. Greu este tot ce îl înconjoară: cum îi dai contextul potrivit, cum reutilizezi prompturile, cum schimbi providerul fără să rescrii codul. LangChain este stratul care standardizează aceste piese și le face compozabile.</p>
+  <div class="hero-meta">
+    <span>🐍 Python ≥ 3.10</span>
+    <span>📦 langchain ≥ 0.3</span>
+    <span>📄 14 secțiuni</span>
+    <span>⏱ ~40 min</span>
+  </div>
+</div>
+
+<!-- ══ 1. DE CE ══════════════════════════════════════════ -->
+<section id="why">
+<h2><span class="n">01</span>De ce LangChain?</h2>
+<div class="rule"></div>
+
+<p>Un model lingvistic, luat singur, primește text și produce text. Atât. Pentru o aplicație reală mai ai nevoie de structură în jurul lui: prompturi care se pot reutiliza, acces la date proprii, parsare a răspunsului, posibilitatea de a schimba modelul. Fără un strat de organizare, fiecare dintre aceste piese se scrie manual și se rescrie la fiecare modificare.</p>
+
+<p>Sunt trei probleme concrete care apar repede:</p>
+
+<ul>
+  <li><strong>LLM-ul singur nu are structură.</strong> Răspunsul vine ca text liber. Dacă ai nevoie de JSON sau de un câmp anume, îl extragi manual de fiecare dată.</li>
+  <li><strong>Prompturile sunt greu de reutilizat.</strong> Un prompt construit cu f-string trăiește lipit de codul care îl apelează. Nu poate fi testat, versionat sau partajat separat.</li>
+  <li><strong>Fiecare provider are alt API.</strong> Codul scris pentru OpenAI nu rulează pe Anthropic sau pe un model local fără rescriere.</li>
+</ul>
+
+<p>LangChain rezolvă aceste trei probleme printr-un singur principiu: oferă componente standardizate — pentru prompturi, modele, regăsire de date, memorie și parsare — și le conectează între ele cu operatorul <code class="i">|</code>.</p>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto">
+<defs>
+  <marker id="a1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#2C5F8A"/></marker>
+</defs>
+<!-- App -->
+<rect x="12" y="92" width="118" height="46" rx="6" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="71" y="112" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1A1D2B">Aplicația ta</text>
+<text x="71" y="127" text-anchor="middle" font-family="sans-serif" font-size="9.5" fill="#64748B">chatbot · agent · cercetare</text>
+<line x1="130" y1="115" x2="158" y2="115" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#a1)"/>
+<!-- LangChain -->
+<rect x="158" y="84" width="150" height="62" rx="6" fill="#1A1D2B"/>
+<text x="233" y="108" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff">LangChain</text>
+<text x="233" y="124" text-anchor="middle" font-family="sans-serif" font-size="9.5" fill="#94A3B8">strat de composiție</text>
+<text x="233" y="137" text-anchor="middle" font-family="monospace" font-size="9" fill="#82AAFF">prompt | model | date | output</text>
+<line x1="308" y1="115" x2="336" y2="115" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#a1)"/>
+<!-- Componente -->
+<text x="500" y="20" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748B" font-weight="700" letter-spacing="1">CE STANDARDIZEAZĂ</text>
+<g font-family="sans-serif" font-size="11" fill="#1A1D2B">
+  <rect x="340" y="30" width="320" height="30" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1"/>
+  <text x="354" y="49" font-weight="700">Models</text><text x="430" y="49" fill="#64748B" font-size="10">interfață unică pentru orice LLM</text>
+  <rect x="340" y="66" width="320" height="30" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1"/>
+  <text x="354" y="85" font-weight="700">Prompts</text><text x="430" y="85" fill="#64748B" font-size="10">șabloane reutilizabile, separate de cod</text>
+  <rect x="340" y="102" width="320" height="30" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1"/>
+  <text x="354" y="121" font-weight="700">Retrieval</text><text x="430" y="121" fill="#64748B" font-size="10">loader, splitter, vector store, retriever</text>
+  <rect x="340" y="138" width="320" height="30" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1"/>
+  <text x="354" y="157" font-weight="700">Memory</text><text x="430" y="157" fill="#64748B" font-size="10">context conversațional pe termen lung</text>
+  <rect x="340" y="174" width="320" height="30" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1"/>
+  <text x="354" y="193" font-weight="700">Output</text><text x="430" y="193" fill="#64748B" font-size="10">parsare în JSON, Pydantic, text curat</text>
+</g>
+</svg>
+<figcaption>Fig. 1 — LangChain se așază între aplicație și componentele de care are nevoie un sistem LLM: modele, prompturi, regăsire de date, memorie și parsarea răspunsului.</figcaption>
+</figure>
+</div>
+
+<div class="note">
+  <p><strong>Formularea scurtă:</strong> LangChain nu adaugă inteligență, adaugă structură. Transformă un set de apeluri ad-hoc într-un set de componente standardizate care se pot conecta, testa și înlocui independent.</p>
+</div>
+</section>
+
+<!-- ══ 2. CE NU ESTE ═════════════════════════════════════ -->
+<section id="notwhat">
+<h2><span class="n">02</span>Ce NU este LangChain</h2>
+<div class="rule"></div>
+
+<p>La fel de important ca definiția este delimitarea. LangChain este des prezentat ca soluția pentru orice, ceea ce duce la așteptări greșite. Patru clarificări:</p>
+
+<div class="grid2">
+<div class="card">
+  <div class="card-tag">Nu</div>
+  <h4>Nu face modelul mai inteligent</h4>
+  <p>Capacitatea de raționament a răspunsului vine din model și din contextul furnizat. LangChain doar organizează fluxul către model.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Nu</div>
+  <h4>Nu este un agent autonom</h4>
+  <p>Un chain LangChain execută pașii pe care i-ai definit. Nu decide singur ce să facă în continuare — acea logică ține de orchestrare.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Nu</div>
+  <h4>Nu este o bază de date vectorială</h4>
+  <p>LangChain se integrează cu FAISS, Chroma sau Pinecone, dar nu le înlocuiește. Stocarea și căutarea vectorilor rămân în vector store.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Nu</div>
+  <h4>Nu înlocuiește LangGraph</h4>
+  <p>Pentru fluxuri cu stare, bucle și ramificări se folosește LangGraph. LangChain acoperă composiția liniară a componentelor.</p>
+</div>
+</div>
+
+<div class="note g">
+  <p><strong>Ce este, de fapt:</strong> un framework de composiție și standardizare. Îți dă piese compatibile între ele și o sintaxă pentru a le lega. Restul — inteligența, datele, decizia — vine de la model, de la corpus și de la designul tău.</p>
+</div>
+</section>
+
+<!-- ══ 3. COMPONENTE ═════════════════════════════════════ -->
+<section id="components">
+<h2><span class="n">03</span>Componentele principale</h2>
+<div class="rule"></div>
+
+<p>LangChain este organizat în jurul a șase familii de componente. Toate respectă aceeași interfață, ceea ce le face interschimbabile și compozabile.</p>
+
+<div class="grid2">
+<div class="card hi">
+  <div class="card-tag">Componenta 1</div>
+  <h4>Models</h4>
+  <p>Interfață unificată pentru orice LLM. <code class="i">ChatOpenAI</code>, <code class="i">ChatAnthropic</code>, <code class="i">ChatOllama</code> — același cod, provider diferit.</p>
+</div>
+<div class="card hi">
+  <div class="card-tag">Componenta 2</div>
+  <h4>Prompts</h4>
+  <p><code class="i">PromptTemplate</code> separă structura promptului de valorile concrete. Variabilele devin contractul componentei.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Componenta 3</div>
+  <h4>Retrieval</h4>
+  <p><code class="i">DocumentLoader</code>, <code class="i">TextSplitter</code>, <code class="i">VectorStore</code>, <code class="i">Retriever</code> — lanțul de regăsire a datelor proprii pentru RAG.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Componenta 4</div>
+  <h4>Chains (LCEL)</h4>
+  <p>Orice componentă este un <code class="i">Runnable</code>. Operatorul <code class="i">|</code> le leagă: <code class="i">prompt | llm | parser</code>.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Componenta 5</div>
+  <h4>Memory</h4>
+  <p>Păstrarea contextului între apeluri. <code class="i">ConversationBufferMemory</code> sau istoricul atașat la un chain.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Componenta 6</div>
+  <h4>Output parsers</h4>
+  <p><code class="i">StrOutputParser</code>, <code class="i">JsonOutputParser</code>, parsere Pydantic — transformă textul modelului în date verificabile.</p>
+</div>
+</div>
+
+<p>Restul tutorialului parcurge aceste componente în ordinea în care apar într-o aplicație: întâi modelul și promptul, apoi composiția cu LCEL, apoi regăsirea datelor.</p>
+</section>
+
+<!-- ══ 4. MODELS ═════════════════════════════════════════ -->
+<section id="models">
+<h2><span class="n">04</span>Models — interfață unificată</h2>
+<div class="rule"></div>
+
+<p>Fiecare provider de modele are propriul SDK, cu propriile nume de funcții și parametri. LangChain ascunde aceste diferențe în spatele unei interfețe comune. Practic, schimbi providerul înlocuind o singură linie — restul codului rămâne neatins.</p>
+
+<div class="cb">
+<div class="cb-lbl">models.py — același cod, modele diferite</div>
+<pre><code><span class="cm"># Fiecare clasă vine din pachetul ei, dar expune aceeași interfață Runnable</span>
+<span class="kw">from</span> <span class="nm">langchain_openai</span> <span class="kw">import</span> <span class="fn">ChatOpenAI</span>
+<span class="kw">from</span> <span class="nm">langchain_anthropic</span> <span class="kw">import</span> <span class="fn">ChatAnthropic</span>
+<span class="kw">from</span> <span class="nm">langchain_ollama</span> <span class="kw">import</span> <span class="fn">ChatOllama</span>
+
+<span class="cm"># Trei modele, trei provideri — interfață identică</span>
+llm_openai    = <span class="fn">ChatOpenAI</span>(model=<span class="st">"gpt-4o-mini"</span>, temperature=<span class="nb">0.3</span>)
+llm_anthropic = <span class="fn">ChatAnthropic</span>(model=<span class="st">"claude-haiku-4-5"</span>, temperature=<span class="nb">0.3</span>)
+llm_local     = <span class="fn">ChatOllama</span>(model=<span class="st">"llama3.1"</span>, temperature=<span class="nb">0.3</span>)
+
+<span class="cm"># Aceeași metodă .invoke() pentru oricare dintre ele</span>
+llm = llm_openai
+raspuns = llm.invoke(<span class="st">"Rezumă în două propoziții ce este RAG."</span>)
+<span class="fn">print</span>(raspuns.content)
+</code></pre>
+</div>
+
+<div class="note">
+  <p><strong>De ce contează:</strong> la curs poți porni cu un model gratuit sau local și poți trece la un model comercial fără să modifici promptul, chain-ul sau logica aplicației. Singura linie care se schimbă este cea care construiește obiectul <code class="i">llm</code>.</p>
+</div>
+
+<p>Modelul rămâne, totuși, doar o piesă. Un model fără un prompt structurat produce text generic. Următoarea componentă rezolvă exact asta.</p>
+</section>
+
+<!-- ══ 5. PROMPTS ════════════════════════════════════════ -->
+<section id="prompts">
+<h2><span class="n">05</span>Prompts și PromptTemplate</h2>
+<div class="rule"></div>
+
+<p>Un prompt construit cu f-string funcționează, dar are un defect: este lipit de codul care îl apelează. Nu poate fi reutilizat de altă funcție, nu poate fi testat separat și nu declară explicit ce variabile așteaptă. <code class="i">PromptTemplate</code> rezolvă aceste trei lucruri.</p>
+
+<h3>De ce PromptTemplate și nu f-string</h3>
+
+<p>Cu un <code class="i">PromptTemplate</code>, variabilele din șablon devin <strong>contractul API al componentei</strong>: oricine folosește șablonul știe exact ce trebuie să furnizeze. Șablonul este un obiect de sine stătător — îl poți importa, testa și refolosi în mai multe locuri.</p>
+
+<div class="cb">
+<div class="cb-lbl">prompts.py — from_template() vs PromptTemplate()</div>
+<pre><code><span class="kw">from</span> <span class="nm">langchain_core.prompts</span> <span class="kw">import</span> <span class="fn">PromptTemplate</span>
+
+<span class="cm"># Varianta 1 — from_template(): variabilele sunt deduse automat din {...}</span>
+tpl = <span class="fn">PromptTemplate</span>.from_template(
+    <span class="st">"Răspunde la întrebare folosind contextul.\n"</span>
+    <span class="st">"Context: {context}\n"</span>
+    <span class="st">"Întrebare: {intrebare}"</span>
+)
+
+<span class="cm"># Varianta 2 — constructorul: declari explicit variabilele de intrare</span>
+tpl = <span class="fn">PromptTemplate</span>(
+    template=<span class="st">"Context: {context}\nÎntrebare: {intrebare}"</span>,
+    input_variables=[<span class="st">"context"</span>, <span class="st">"intrebare"</span>],
+)
+
+<span class="cm"># Ambele se completează la fel — format() returnează promptul final ca text</span>
+prompt = tpl.format(context=<span class="st">"RAG = regăsire + generare."</span>,
+                    intrebare=<span class="st">"Ce înseamnă RAG?"</span>)
+</code></pre>
+</div>
+
+<p><code class="i">from_template()</code> este forma recomandată: citește variabilele direct din șablon. Constructorul explicit este util când vrei să declari și să verifici lista de variabile — util la șabloane mari.</p>
+
+<h3>Exemplu concret pentru EchoChamber</h3>
+
+<p>În proiectul EchoChamber, promptul agentului RAG are trei blocuri, fiecare cu rolul lui. Acestea sunt exact cele trei variabile ale șablonului:</p>
+
+<div class="cb">
+<div class="cb-lbl">echochamber — structura promptului C6</div>
+<pre><code>template = <span class="fn">PromptTemplate</span>.from_template(<span class="st">"""
+{agent_system}
+
+[STIMULUS]
+{input_text}
+
+[COMENTARII SIMILARE]
+{retrieved_context}
+"""</span>)
+<span class="cm"># {agent_system}      → rolul discursiv din role_XX.yaml (vocea agentului)</span>
+<span class="cm"># {input_text}        → știrea/afirmația nouă, aceeași pentru toți agenții</span>
+<span class="cm"># {retrieved_context} → fragmentele top-k recuperate din FAISS</span>
+</code></pre>
+</div>
+
+<div class="note a">
+  <p>Cele trei variabile nu sunt arbitrare. <code class="i">agent_system</code> controlează vocea, <code class="i">input_text</code> este textul de interpretat, <code class="i">retrieved_context</code> ancorează răspunsul în corpus. Promptul devine auditabil: se vede exact ce a primit modelul.</p>
+</div>
+</section>
+
+<!-- ══ 6. LCEL ═══════════════════════════════════════════ -->
+<section id="lcel">
+<h2><span class="n">06</span>LCEL — operatorul pipe <code class="i">|</code></h2>
+<div class="rule"></div>
+
+<p>LCEL (LangChain Expression Language) este sintaxa prin care se leagă componentele. Ideea centrală e simplă: orice componentă LangChain — prompt, model, parser, retriever — implementează aceeași interfață, numită <strong>Runnable</strong>. Pentru că toate au aceeași interfață, pot fi conectate cu operatorul <code class="i">|</code>, unde ieșirea fiecărei piese devine intrarea următoarei.</p>
+
+<h3>Protocolul Runnable</h3>
+
+<p>Un <code class="i">Runnable</code> expune patru metode standard. Le ai pe toate, gratuit, pentru orice componentă și pentru orice chain compus din componente:</p>
+
+<div class="grid2">
+<div class="card">
+  <div class="card-tag">.invoke()</div>
+  <h4>Un input, un output</h4>
+  <p>Execuția simplă, sincronă. Forma pe care o folosești cel mai des.</p>
+</div>
+<div class="card">
+  <div class="card-tag">.stream()</div>
+  <h4>Răspuns în fragmente</h4>
+  <p>Emite bucăți pe măsură ce sosesc — util pentru afișare progresivă.</p>
+</div>
+<div class="card">
+  <div class="card-tag">.batch()</div>
+  <h4>Mai multe inputuri</h4>
+  <p>Procesează o listă de inputuri, în paralel unde se poate.</p>
+</div>
+<div class="card">
+  <div class="card-tag">.ainvoke()</div>
+  <h4>Execuție asincronă</h4>
+  <p>Varianta async a lui invoke, pentru aplicații cu trafic mare.</p>
+</div>
+</div>
+
+<div class="cb">
+<div class="cb-lbl">chain.py — composiție cu operatorul pipe</div>
+<pre><code><span class="kw">from</span> <span class="nm">langchain_core.prompts</span> <span class="kw">import</span> <span class="fn">PromptTemplate</span>
+<span class="kw">from</span> <span class="nm">langchain_core.output_parsers</span> <span class="kw">import</span> <span class="fn">StrOutputParser</span>
+<span class="kw">from</span> <span class="nm">langchain_openai</span> <span class="kw">import</span> <span class="fn">ChatOpenAI</span>
+
+prompt = <span class="fn">PromptTemplate</span>.from_template(<span class="st">"Explică pe scurt: {tema}"</span>)
+llm    = <span class="fn">ChatOpenAI</span>(model=<span class="st">"gpt-4o-mini"</span>)
+parser = <span class="fn">StrOutputParser</span>()
+
+<span class="cm"># Chain-ul: trei Runnable legate cu | într-un singur Runnable</span>
+chain = prompt | llm | parser
+
+<span class="cm"># Apelarea chain-ului — primește un dict cu variabilele promptului</span>
+rezultat = chain.invoke({<span class="st">"tema"</span>: <span class="st">"ce este un embedding"</span>})
+<span class="fn">print</span>(rezultat)  <span class="cm"># text curat, fără obiectul AIMessage din jur</span>
+</code></pre>
+</div>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;display:block;margin:0 auto">
+<defs>
+  <marker id="l1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#2C5F8A"/></marker>
+</defs>
+<!-- input -->
+<rect x="10" y="46" width="74" height="34" rx="5" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="47" y="67" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">input</text>
+<line x1="84" y1="63" x2="106" y2="63" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#l1)"/>
+<text x="95" y="42" text-anchor="middle" font-family="monospace" font-size="12" fill="#94A3B8">|</text>
+<!-- PromptTemplate -->
+<rect x="106" y="46" width="120" height="34" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+<text x="166" y="67" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1A1D2B">PromptTemplate</text>
+<line x1="226" y1="63" x2="248" y2="63" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#l1)"/>
+<text x="237" y="42" text-anchor="middle" font-family="monospace" font-size="12" fill="#94A3B8">|</text>
+<!-- LLM -->
+<rect x="248" y="46" width="86" height="34" rx="5" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="291" y="67" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">LLM</text>
+<line x1="334" y1="63" x2="356" y2="63" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#l1)"/>
+<text x="345" y="42" text-anchor="middle" font-family="monospace" font-size="12" fill="#94A3B8">|</text>
+<!-- OutputParser -->
+<rect x="356" y="46" width="120" height="34" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+<text x="416" y="67" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1A1D2B">OutputParser</text>
+<line x1="476" y1="63" x2="498" y2="63" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#l1)"/>
+<!-- output -->
+<rect x="498" y="46" width="80" height="34" rx="5" fill="#ECF5EE" stroke="#1B5E35" stroke-width="1.5"/>
+<text x="538" y="67" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">output</text>
+<text x="294" y="108" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64748B" font-style="italic">ieșirea fiecărei componente devine intrarea următoarei</text>
+</svg>
+<figcaption>Fig. 2 — Un chain LCEL: patru Runnable legate cu operatorul pipe. Datele curg de la stânga la dreapta, fără cod de legătură scris manual.</figcaption>
+</figure>
+</div>
+
+<p><strong>Composabilitatea</strong> este avantajul real: dacă vrei alt model, înlocuiești <code class="i">llm</code>; dacă vrei alt format de ieșire, înlocuiești <code class="i">parser</code>. Restul chain-ului rămâne identic. Componenta se schimbă, structura nu.</p>
+</section>
+
+<!-- ══ 7. RETRIEVAL ══════════════════════════════════════ -->
+<section id="retrieval">
+<h2><span class="n">07</span>Retrieval — RAG cu LangChain</h2>
+<div class="rule"></div>
+
+<p>RAG (Retrieval-Augmented Generation) înseamnă: înainte de a genera răspunsul, modelul primește fragmente relevante dintr-un corpus propriu. LangChain organizează partea de regăsire într-un lanț de cinci pași.</p>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto">
+<defs>
+  <marker id="r1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#9A6C00"/></marker>
+</defs>
+<g font-family="monospace" font-size="9.5" fill="#1A1D2B">
+  <rect x="6" y="42" width="116" height="36" rx="5" fill="#FBF4E0" stroke="#9A6C00" stroke-width="1.5"/>
+  <text x="64" y="58" text-anchor="middle" font-weight="700">DocumentLoader</text>
+  <text x="64" y="71" text-anchor="middle" font-size="8.5" fill="#64748B">citește sursele</text>
+  <line x1="122" y1="60" x2="140" y2="60" stroke="#9A6C00" stroke-width="1.5" marker-end="url(#r1)"/>
+  <rect x="140" y="42" width="108" height="36" rx="5" fill="#FBF4E0" stroke="#9A6C00" stroke-width="1.5"/>
+  <text x="194" y="58" text-anchor="middle" font-weight="700">TextSplitter</text>
+  <text x="194" y="71" text-anchor="middle" font-size="8.5" fill="#64748B">taie în chunk-uri</text>
+  <line x1="248" y1="60" x2="266" y2="60" stroke="#9A6C00" stroke-width="1.5" marker-end="url(#r1)"/>
+  <rect x="266" y="42" width="108" height="36" rx="5" fill="#FBF4E0" stroke="#9A6C00" stroke-width="1.5"/>
+  <text x="320" y="58" text-anchor="middle" font-weight="700">Embeddings</text>
+  <text x="320" y="71" text-anchor="middle" font-size="8.5" fill="#64748B">text → vectori</text>
+  <line x1="374" y1="60" x2="392" y2="60" stroke="#9A6C00" stroke-width="1.5" marker-end="url(#r1)"/>
+  <rect x="392" y="42" width="108" height="36" rx="5" fill="#FBF4E0" stroke="#9A6C00" stroke-width="1.5"/>
+  <text x="446" y="58" text-anchor="middle" font-weight="700">VectorStore</text>
+  <text x="446" y="71" text-anchor="middle" font-size="8.5" fill="#64748B">FAISS — index</text>
+  <line x1="500" y1="60" x2="518" y2="60" stroke="#9A6C00" stroke-width="1.5" marker-end="url(#r1)"/>
+  <rect x="518" y="42" width="108" height="36" rx="5" fill="#ECF5EE" stroke="#1B5E35" stroke-width="1.5"/>
+  <text x="572" y="58" text-anchor="middle" font-weight="700">Retriever</text>
+  <text x="572" y="71" text-anchor="middle" font-size="8.5" fill="#64748B">întoarce top-k</text>
+</g>
+</svg>
+<figcaption>Fig. 3 — Lanțul de regăsire: de la sursele brute la un retriever care, pentru o interogare, întoarce cele mai relevante k fragmente.</figcaption>
+</figure>
+</div>
+
+<p>Primii patru pași — încărcare, tăiere, embedding, indexare — se rulează <strong>o singură dată</strong>, la construirea vector store-ului. Doar ultimul, regăsirea, se rulează la fiecare întrebare. În proiectul EchoChamber, primii patru pași au fost deja făcuți în C5; în C6 pornim direct de la indexul FAISS salvat.</p>
+
+<div class="cb">
+<div class="cb-lbl">build_index.py — construirea vector store-ului (o singură dată)</div>
+<pre><code><span class="kw">from</span> <span class="nm">langchain_community.document_loaders</span> <span class="kw">import</span> <span class="fn">TextLoader</span>
+<span class="kw">from</span> <span class="nm">langchain_text_splitters</span> <span class="kw">import</span> <span class="fn">RecursiveCharacterTextSplitter</span>
+<span class="kw">from</span> <span class="nm">langchain_huggingface</span> <span class="kw">import</span> <span class="fn">HuggingFaceEmbeddings</span>
+<span class="kw">from</span> <span class="nm">langchain_community.vectorstores</span> <span class="kw">import</span> <span class="fn">FAISS</span>
+
+docs     = <span class="fn">TextLoader</span>(<span class="st">"data/corpus.txt"</span>, encoding=<span class="st">"utf-8"</span>).load()
+chunks   = <span class="fn">RecursiveCharacterTextSplitter</span>(chunk_size=<span class="nb">500</span>,
+                                          chunk_overlap=<span class="nb">50</span>).split_documents(docs)
+embed    = <span class="fn">HuggingFaceEmbeddings</span>(model_name=<span class="st">"paraphrase-multilingual-MiniLM-L12-v2"</span>)
+store    = <span class="fn">FAISS</span>.from_documents(chunks, embed)
+store.save_local(<span class="st">"assets/vectorstores/agent"</span>)   <span class="cm"># indexul rămâne pe disc</span>
+</code></pre>
+</div>
+
+<div class="cb">
+<div class="cb-lbl">rag_chain.py — chain RAG complet cu LCEL</div>
+<pre><code><span class="kw">from</span> <span class="nm">langchain_core.runnables</span> <span class="kw">import</span> <span class="fn">RunnablePassthrough</span>
+<span class="kw">from</span> <span class="nm">langchain_core.output_parsers</span> <span class="kw">import</span> <span class="fn">StrOutputParser</span>
+<span class="kw">from</span> <span class="nm">langchain_core.prompts</span> <span class="kw">import</span> <span class="fn">PromptTemplate</span>
+
+store     = <span class="fn">FAISS</span>.load_local(<span class="st">"assets/vectorstores/agent"</span>, embed,
+                              allow_dangerous_deserialization=<span class="kw">True</span>)
+retriever = store.as_retriever(search_kwargs={<span class="st">"k"</span>: <span class="nb">5</span>})
+
+prompt = <span class="fn">PromptTemplate</span>.from_template(
+    <span class="st">"Răspunde folosind doar contextul.\n"</span>
+    <span class="st">"Context: {context}\nÎntrebare: {question}"</span>
+)
+
+<span class="cm"># Retrieverul alimentează variabila {context}; întrebarea trece neschimbată</span>
+chain = (
+    {<span class="st">"context"</span>: retriever, <span class="st">"question"</span>: <span class="fn">RunnablePassthrough</span>()}
+    | prompt | llm | <span class="fn">StrOutputParser</span>()
+)
+raspuns = chain.invoke(<span class="st">"Ce spune corpusul despre alegeri?"</span>)
+</code></pre>
+</div>
+
+<div class="note">
+  <p><strong>De reținut:</strong> calitatea răspunsului depinde de calitatea fragmentelor recuperate. Dacă retrieverul întoarce context slab, și răspunsul va fi slab — RAG nu corectează o regăsire proastă.</p>
+</div>
+</section>
+
+<!-- ══ 8. PRIMUL CHAIN ═══════════════════════════════════ -->
+<section id="first">
+<h2><span class="n">08</span>Primul chain — fără LLM</h2>
+<div class="rule"></div>
+
+<p>Înainte de a integra un model, înțelegem mecanica LCEL cu un exemplu pur Python care rulează fără niciun API key. O funcție obișnuită devine <code class="i">Runnable</code> prin <code class="i">RunnableLambda</code> — și poate fi legată cu <code class="i">|</code> ca orice altă componentă.</p>
+
+<div class="cb">
+<div class="cb-lbl">first_chain.py — exemplu complet, fără API key</div>
+<pre><code><span class="kw">from</span> <span class="nm">langchain_core.runnables</span> <span class="kw">import</span> <span class="fn">RunnableLambda</span>
+
+<span class="cm"># Trei funcții simple — fiecare ia un input și întoarce un output</span>
+<span class="kw">def</span> <span class="fn">curata</span>(text: <span class="tp">str</span>) -> <span class="tp">str</span>:
+    <span class="kw">return</span> text.strip().lower()
+
+<span class="kw">def</span> <span class="fn">numara_cuvinte</span>(text: <span class="tp">str</span>) -> <span class="tp">dict</span>:
+    <span class="kw">return</span> {<span class="st">"text"</span>: text, <span class="st">"cuvinte"</span>: <span class="fn">len</span>(text.split())}
+
+<span class="kw">def</span> <span class="fn">formateaza</span>(d: <span class="tp">dict</span>) -> <span class="tp">str</span>:
+    <span class="kw">return</span> f<span class="st">"'{d['text']}' are {d['cuvinte']} cuvinte"</span>
+
+<span class="cm"># Le transformăm în Runnable și le legăm cu | — exact ca un chain cu LLM</span>
+chain = (
+    <span class="fn">RunnableLambda</span>(curata)
+    | <span class="fn">RunnableLambda</span>(numara_cuvinte)
+    | <span class="fn">RunnableLambda</span>(formateaza)
+)
+
+<span class="fn">print</span>(chain.invoke(<span class="st">"  Salut Lume Mare  "</span>))
+<span class="cm"># → 'salut lume mare' are 3 cuvinte</span>
+</code></pre>
+</div>
+
+<div class="note g">
+  <p>Chain-ul leagă trei funcții obișnuite și le execută în ordine, fiecare primind ieșirea precedentei. Niciun model, niciun API key — doar mecanica LCEL. Când înlocuiești o funcție cu un <code class="i">PromptTemplate</code> și un <code class="i">LLM</code>, principiul rămâne identic.</p>
+</div>
+</section>
+
+<!-- ══ 9. CHAIN CU LLM ═══════════════════════════════════ -->
+<section id="llm">
+<h2><span class="n">09</span>Chain cu LLM</h2>
+<div class="rule"></div>
+
+<p>Acum înlocuim funcțiile cu un prompt real, un model real și un parser. Structura chain-ului — legarea cu <code class="i">|</code> — rămâne aceeași. Acesta este un chain RAG minimal funcțional.</p>
+
+<div class="cb">
+<div class="cb-lbl">chain_llm.py — chain RAG minimal</div>
+<pre><code><span class="kw">from</span> <span class="nm">langchain_core.prompts</span> <span class="kw">import</span> <span class="fn">PromptTemplate</span>
+<span class="kw">from</span> <span class="nm">langchain_core.output_parsers</span> <span class="kw">import</span> <span class="fn">StrOutputParser</span>
+<span class="kw">from</span> <span class="nm">langchain_openai</span> <span class="kw">import</span> <span class="fn">ChatOpenAI</span>
+
+<span class="cm"># 1. Componentele</span>
+prompt = <span class="fn">PromptTemplate</span>.from_template(
+    <span class="st">"Ești un asistent care răspunde strict pe baza contextului.\n"</span>
+    <span class="st">"Context:\n{context}\n\nÎntrebare: {intrebare}\nRăspuns:"</span>
+)
+llm    = <span class="fn">ChatOpenAI</span>(model=<span class="st">"gpt-4o-mini"</span>, temperature=<span class="nb">0.3</span>)
+parser = <span class="fn">StrOutputParser</span>()
+
+<span class="cm"># 2. Chain-ul</span>
+chain = prompt | llm | parser
+
+<span class="cm"># 3. Apelarea — context-ul vine din regăsire, întrebarea de la utilizator</span>
+raspuns = chain.invoke({
+    <span class="st">"context"</span>: <span class="st">"FAISS este o bibliotecă pentru căutare de similaritate."</span>,
+    <span class="st">"intrebare"</span>: <span class="st">"La ce folosește FAISS?"</span>,
+})
+<span class="fn">print</span>(raspuns)
+</code></pre>
+</div>
+
+<p>Cele trei componente sunt independente. Schimbă <code class="i">llm</code> și ai alt model. Schimbă <code class="i">parser</code> cu un <code class="i">JsonOutputParser</code> și primești JSON în loc de text. Chain-ul în sine — <code class="i">prompt | llm | parser</code> — nu se modifică.</p>
+</section>
+
+<!-- ══ 10. MEMORY ════════════════════════════════════════ -->
+<section id="memory">
+<h2><span class="n">10</span>Memory — context conversațional</h2>
+<div class="rule"></div>
+
+<p>Un apel LLM este, implicit, fără memorie: modelul nu știe ce s-a discutat la apelul anterior. Pentru un chatbot care trebuie să țină firul conversației, ai nevoie de un mecanism care păstrează istoricul și îl reintroduce în prompt la fiecare tură.</p>
+
+<div class="cb">
+<div class="cb-lbl">memory.py — istoric conversațional minimal</div>
+<pre><code><span class="kw">from</span> <span class="nm">langchain_core.chat_history</span> <span class="kw">import</span> <span class="fn">InMemoryChatMessageHistory</span>
+<span class="kw">from</span> <span class="nm">langchain_core.runnables.history</span> <span class="kw">import</span> <span class="fn">RunnableWithMessageHistory</span>
+
+istoric = <span class="fn">InMemoryChatMessageHistory</span>()
+
+<span class="cm"># Înfășurăm chain-ul existent cu un strat care reține mesajele</span>
+chain_cu_memorie = <span class="fn">RunnableWithMessageHistory</span>(
+    chain,
+    <span class="kw">lambda</span> session_id: istoric,    <span class="cm"># de unde se ia istoricul</span>
+)
+
+<span class="cm"># Fiecare apel adaugă mesajele la istoric și le reintroduce la următorul</span>
+cfg = {<span class="st">"configurable"</span>: {<span class="st">"session_id"</span>: <span class="st">"curs-c6"</span>}}
+chain_cu_memorie.invoke({<span class="st">"intrebare"</span>: <span class="st">"Ce este un retriever?"</span>}, config=cfg)
+chain_cu_memorie.invoke({<span class="st">"intrebare"</span>: <span class="st">"Și cum diferă de un loader?"</span>}, config=cfg)
+<span class="cm"># Al doilea apel are acces la primul — modelul știe despre ce e vorba</span>
+</code></pre>
+</div>
+
+<div class="grid2">
+<div class="card hi">
+  <div class="card-tag">Când se folosește</div>
+  <h4>Conversație cu fir</h4>
+  <p>Chatbot, asistent în mai multe ture, orice flux unde răspunsul depinde de ce s-a spus înainte.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Când NU se folosește</div>
+  <h4>Apeluri independente</h4>
+  <p>Agentul RAG din C6 răspunde la fiecare stimulus separat. Nu are nevoie de memorie — fiecare răspuns este de sine stătător.</p>
+</div>
+</div>
+
+<div class="note a">
+  <p>Memoria are un cost: istoricul intră în prompt și consumă context. Pentru EchoChamber C6, agentul este intenționat <strong>stateless</strong> — fiecare răspuns trebuie să fie comparabil cu al celorlalți agenți, deci nu poate depinde de un istoric propriu.</p>
+</div>
+</section>
+
+<!-- ══ 11. LANGCHAIN VS LANGGRAPH ════════════════════════ -->
+<section id="vs">
+<h2><span class="n">11</span>LangChain vs LangGraph</h2>
+<div class="rule"></div>
+
+<p>LangChain și LangGraph sunt complementare, nu alternative. LangChain organizează componente într-un flux liniar. LangGraph organizează <em>controlul fluxului</em>: stare, bucle, ramificări. LangChain este fundația peste care se construiește LangGraph.</p>
+
+<div class="tw">
+<table>
+<thead>
+<tr><th>Dimensiune</th><th>LangChain</th><th>LangGraph</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Model mental</strong></td><td>Composiție liniară: <code class="i">A | B | C</code></td><td>Graf cu stare: noduri, muchii, condiții</td></tr>
+<tr><td><strong>Flux</strong></td><td class="em">Drum unic, fără întoarcere</td><td class="em">Ramificări, bucle, reluare</td></tr>
+<tr><td><strong>Stare</strong></td><td>Datele curg între componente</td><td>Stare persistentă, citită și scrisă de noduri</td></tr>
+<tr><td><strong>Decizii</strong></td><td><span class="no">Nu</span> — pașii sunt fixați</td><td><span class="yes">Da</span> — un router decide nodul următor</td></tr>
+<tr><td><strong>Potrivit pentru</strong></td><td>RAG cu rol, chain prompt-model-parser</td><td>Agentic RAG, critic, HITL, multi-agent</td></tr>
+<tr><td><strong>În curs</strong></td><td class="em">C6 — agentul RAG simplu</td><td class="em">C7 — orchestrarea agenților</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Regula de alegere este simplă. Dacă fluxul tău este <code class="i">input → regăsire → prompt → model → răspuns</code>, LangChain este suficient. Dacă ai nevoie ca sistemul să decidă singur dacă reia regăsirea, să verifice răspunsul sau să se oprească pentru un input uman — atunci treci la LangGraph. C6 rămâne la primul caz; C7 introduce al doilea.</p>
+</section>
+
+<!-- ══ 12. ECHOCHAMBER ═══════════════════════════════════ -->
+<section id="echochamber">
+<h2><span class="n">12</span>Studiu de caz — EchoChamber (Cursul C6)</h2>
+<div class="rule"></div>
+
+<p>În EchoChamber, fiecare bulă discursivă este reprezentată de un agent RAG. C6 construiește acest agent: model + rol + context. Rolul vine dintr-un fișier YAML, contextul din indexul FAISS construit în C5, iar <code class="i">PromptTemplate</code> leagă cele două.</p>
+
+<h3>Nivelul 2 din taxonomia RAG</h3>
+
+<p>RAG poate fi văzut ca o scară de complexitate. C6 implementează nivelul 2 — <strong>RAG cu rol</strong>: regăsire fixă, urmată de generare controlată de un rol discursiv. Fluxul rămâne stabil și previzibil. Nivelul 3 — agentul decide singur când și ce caută — este subiectul lui C7, cu LangGraph.</p>
+
+<div class="cb">
+<div class="cb-lbl">assets/roles/role_XX.yaml — rolul discursiv al agentului</div>
+<pre><code><span class="nm">anti_sistem</span>:
+  <span class="nm">slug</span>: anti_sistem
+  <span class="nm">name</span>: <span class="st">"Anti-sistem"</span>
+  <span class="nm">color</span>: <span class="st">"#FF8A65"</span>
+  <span class="nm">system</span>: |
+    Ești un comentator politic român.
+    Cum vorbești: ton direct, critic, ironic uneori.
+    Reguli: folosești comentariile ca inspirație;
+            maxim 3 propoziții; fără inventare.
+</code></pre>
+</div>
+
+<p>Rolul nu descrie o persoană — descrie un <em>pattern de interpretare</em> observat în date. <code class="i">slug</code> este identificatorul, <code class="i">name</code> eticheta de afișare, <code class="i">system</code> este constrângerea retorică completă care va popula variabila <code class="i">agent_system</code> din prompt.</p>
+
+<div class="cb">
+<div class="cb-lbl">core/agent.py — agentul RAG C6 ca chain LangChain</div>
+<pre><code><span class="kw">import</span> <span class="nm">yaml</span>
+<span class="kw">from</span> <span class="nm">langchain_core.prompts</span> <span class="kw">import</span> <span class="fn">PromptTemplate</span>
+<span class="kw">from</span> <span class="nm">langchain_core.output_parsers</span> <span class="kw">import</span> <span class="fn">StrOutputParser</span>
+
+<span class="cm"># 1. Rolul discursiv din YAML</span>
+role = yaml.safe_load(<span class="fn">open</span>(<span class="st">"assets/roles/roles.yaml"</span>))[<span class="st">"anti_sistem"</span>]
+
+<span class="cm"># 2. Șablonul C6 — trei blocuri, trei variabile</span>
+template = <span class="fn">PromptTemplate</span>.from_template(<span class="st">"""
+{agent_system}
+
+[STIMULUS]
+{input_text}
+
+[COMENTARII SIMILARE]
+{retrieved_context}
+"""</span>)
+
+<span class="cm"># 3. Chain-ul: prompt | model | parser</span>
+chain = template | llm | <span class="fn">StrOutputParser</span>()
+
+<span class="cm"># 4. Răspunsul agentului — context-ul vine din FAISS (retrieve_context din C5)</span>
+results, retrieved_context = <span class="fn">retrieve_context</span>(input_text, k=<span class="nb">5</span>)
+raspuns = chain.invoke({
+    <span class="st">"agent_system"</span>:      role[<span class="st">"system"</span>],
+    <span class="st">"input_text"</span>:        input_text,
+    <span class="st">"retrieved_context"</span>: retrieved_context,
+})
+</code></pre>
+</div>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;display:block;margin:0 auto">
+<defs>
+  <marker id="e1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#2C5F8A"/></marker>
+</defs>
+<g font-family="monospace" font-size="10" fill="#1A1D2B">
+  <rect x="6" y="48" width="70" height="32" rx="5" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+  <text x="41" y="68" text-anchor="middle">input</text>
+  <line x1="76" y1="64" x2="92" y2="64" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#e1)"/>
+  <rect x="92" y="48" width="64" height="32" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+  <text x="124" y="68" text-anchor="middle">FAISS</text>
+  <line x1="156" y1="64" x2="172" y2="64" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#e1)"/>
+  <rect x="172" y="48" width="64" height="32" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+  <text x="204" y="68" text-anchor="middle">top-k</text>
+  <line x1="236" y1="64" x2="252" y2="64" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#e1)"/>
+  <rect x="252" y="48" width="78" height="32" rx="5" fill="#FBF4E0" stroke="#9A6C00" stroke-width="1.5"/>
+  <text x="291" y="68" text-anchor="middle">rol YAML</text>
+  <line x1="330" y1="64" x2="346" y2="64" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#e1)"/>
+  <rect x="346" y="44" width="120" height="40" rx="5" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.8"/>
+  <text x="406" y="60" text-anchor="middle" font-weight="700">PromptTemplate</text>
+  <text x="406" y="74" text-anchor="middle" font-size="8.5" fill="#64748B">3 variabile</text>
+  <line x1="466" y1="64" x2="482" y2="64" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#e1)"/>
+  <rect x="482" y="48" width="56" height="32" rx="5" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+  <text x="510" y="68" text-anchor="middle">LLM</text>
+  <line x1="538" y1="64" x2="554" y2="64" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#e1)"/>
+  <rect x="554" y="48" width="84" height="32" rx="5" fill="#ECF5EE" stroke="#1B5E35" stroke-width="1.5"/>
+  <text x="596" y="68" text-anchor="middle">răspuns</text>
+</g>
+<text x="322" y="108" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64748B" font-style="italic">PromptTemplate leagă rolul, stimulusul și contextul recuperat într-un singur prompt auditabil</text>
+</svg>
+<figcaption>Fig. 4 — Fluxul agentului RAG C6: regăsire din FAISS, rol din YAML, composiție prin PromptTemplate, generare cu LLM. Toate pieseele sunt vizibile și verificabile.</figcaption>
+</figure>
+</div>
+
+<div class="note g">
+  <p><strong>Ce produce C6:</strong> primul răspuns real ancorat în corpus, cu identitate discursivă definită și context recuperat transparent. Fiecare răspuns este auditabil — se știe rolul, se știu fragmentele, se știe promptul. <code class="i">PromptTemplate</code> este piesa care face acest lucru reutilizabil pentru toți cei cinci agenți ai echipei.</p>
+</div>
+</section>
+
+<!-- ══ 13. EXERCITIU ═════════════════════════════════════ -->
+<section id="exercise">
+<h2><span class="n">13</span>Exercițiu practic</h2>
+<div class="rule"></div>
+
+<p><strong>Sarcina:</strong> construiește un chain RAG cu <code class="i">PromptTemplate</code> pentru un agent, pornind de la indexul FAISS din C5.</p>
+
+<ol class="steps">
+<li>
+  <div>
+    <strong>Încarcă rolul și indexul</strong>
+    <p>Citește <code class="i">role_XX.yaml</code> pentru agentul ales și încarcă vector store-ul FAISS salvat în C5.</p>
+  </div>
+</li>
+<li>
+  <div>
+    <strong>Definește PromptTemplate</strong>
+    <p>Trei variabile: <code class="i">agent_system</code>, <code class="i">input_text</code>, <code class="i">retrieved_context</code>. Folosește <code class="i">from_template()</code>.</p>
+  </div>
+</li>
+<li>
+  <div>
+    <strong>Compune chain-ul</strong>
+    <p>Leagă <code class="i">template | llm | StrOutputParser()</code> și apelează-l cu un stimulus politic.</p>
+  </div>
+</li>
+<li>
+  <div>
+    <strong>Testează două inputuri diferite</strong>
+    <p>Verifică dacă răspunsul rămâne ancorat în context și în voce, indiferent de stimulus.</p>
+  </div>
+</li>
+</ol>
+
+<p>Întrebări de notat după execuție:</p>
+<ul>
+  <li>Ce se întâmplă dacă schimbi modelul (<code class="i">llm</code>)? Vocea agentului se schimbă sau rămâne dată de rol?</li>
+  <li>Ce se întâmplă dacă schimbi parserul cu un <code class="i">JsonOutputParser</code>? Ce trebuie modificat în prompt?</li>
+  <li>Dacă fragmentele recuperate sunt slabe, se vede în răspuns? Unde intervii — la retriever sau la prompt?</li>
+  <li>Același chain funcționează pentru alt agent doar schimbând <code class="i">role</code>? De ce este asta avantajul lui PromptTemplate?</li>
+</ul>
+</section>
+
+<!-- ══ 14. CONCLUZIE ═════════════════════════════════════ -->
+<section id="next">
+<h2><span class="n">14</span>Concluzie</h2>
+<div class="rule"></div>
+
+<div class="note g">
+  <p><strong>LangChain standardizează fluxul, nu face modelul mai inteligent.</strong> Oferă componente compatibile — modele, prompturi, retrievere, parsere — și o sintaxă, LCEL, prin care se conectează. Inteligența rămâne în model și în context; LangChain dă structura.</p>
+</div>
+
+<p>Conceptele acoperite — Models, PromptTemplate, Runnable, LCEL, Retrieval, Memory — sunt fundația pe care se construiește orice aplicație LLM serioasă. În C6, ele se concretizează într-un agent RAG cu rol: model + rol + context, legate prin <code class="i">PromptTemplate</code>, testabile în aplicație.</p>
+
+<p><strong>Cursul C7</strong> duce mai departe: când agentul trebuie să decidă singur dacă reia regăsirea, să-și verifice răspunsul sau să se oprească pentru un input uman, composiția liniară din LangChain nu mai este suficientă — se trece la orchestrarea cu stare din LangGraph.</p>
+
+<p>Capacități LangChain neacoperite în C6, disponibile pentru explorare independentă: <code class="i">RunnableParallel</code> pentru execuție concurentă, <code class="i">RunnableBranch</code> pentru rutare, parsere Pydantic pentru output structurat validat, integrarea cu LangSmith pentru observabilitate.</p>
+</section>
+
+<!-- ══ SURSE ══════════════════════════════════════════════ -->
+<hr class="div">
+<section id="sources">
+<h2>Resurse și surse</h2>
+<div class="rule"></div>
+
+<p>Sursele de mai jos au stat la baza tutorialului. Sunt recomandate pentru aprofundare, în ordinea utilității.</p>
+
+<div class="src-grid">
+<div class="src">
+  <div class="pub">Documentație oficială</div>
+  <div class="ttl">LangChain — PromptTemplate (API reference)</div>
+  <div class="url"><a href="https://python.langchain.com/api_reference/core/prompts/langchain_core.prompts.prompt.PromptTemplate.html" target="_blank">python.langchain.com/api_reference/.../PromptTemplate</a></div>
+</div>
+<div class="src">
+  <div class="pub">Documentație oficială</div>
+  <div class="ttl">LangChain — Build a RAG agent (tutorial)</div>
+  <div class="url"><a href="https://python.langchain.com/docs/tutorials/retrievers/" target="_blank">python.langchain.com/docs/tutorials/retrievers</a></div>
+</div>
+<div class="src">
+  <div class="pub">Pinecone</div>
+  <div class="ttl">LangChain Expression Language Explained</div>
+  <div class="url"><a href="https://www.pinecone.io/learn/series/langchain/langchain-expression-language/" target="_blank">pinecone.io/learn/series/langchain/langchain-expression-language</a></div>
+</div>
+<div class="src">
+  <div class="pub">Pinecone</div>
+  <div class="ttl">Prompt Engineering and LLMs with LangChain</div>
+  <div class="url"><a href="https://www.pinecone.io/learn/series/langchain/langchain-prompt-templates/" target="_blank">pinecone.io/learn/series/langchain/langchain-prompt-templates</a></div>
+</div>
+<div class="src">
+  <div class="pub">GeeksforGeeks</div>
+  <div class="ttl">LangChain Expression Language (LCEL)</div>
+  <div class="url"><a href="https://www.geeksforgeeks.org/artificial-intelligence/langchain/" target="_blank">geeksforgeeks.org/artificial-intelligence/langchain</a></div>
+</div>
+<div class="src">
+  <div class="pub">Codecademy</div>
+  <div class="ttl">Getting Started with LangChain Prompt Templates</div>
+  <div class="url"><a href="https://www.codecademy.com/article/getting-started-with-lang-chain-prompt-templates" target="_blank">codecademy.com/article/getting-started-with-lang-chain-prompt-templates</a></div>
+</div>
+<div class="src">
+  <div class="pub">DEV Community · YoungTee</div>
+  <div class="ttl">LangChain Fundamentals: the Mental Model</div>
+  <div class="url"><a href="https://dev.to/youngtee100/langchain-fundamentals-the-mental-model-that-makes-everything-click-4101" target="_blank">dev.to/youngtee100/langchain-fundamentals-the-mental-model</a></div>
+</div>
+<div class="src">
+  <div class="pub">Medium · Snehitha</div>
+  <div class="ttl">A Beginner Guide: LangChain Chains, LCEL, Runnable</div>
+  <div class="url"><a href="https://medium.com/@snehithat001/a-beginner-guide-lanchain-chains-lcel-runnable-services-ea4343ad6a9e" target="_blank">medium.com/@snehithat001/a-beginner-guide-langchain-chains-lcel-runnable</a></div>
+</div>
+<div class="src">
+  <div class="pub">Medium · Anil Goyal</div>
+  <div class="ttl">Building a Simple RAG System with LangChain & FAISS</div>
+  <div class="url"><a href="https://medium.com/@anil.goyal0057/building-a-simple-rag-system-with-langchain-faiss-and-ollama-mistral-model-822b3245e576" target="_blank">medium.com/@anil.goyal0057/building-a-simple-rag-system-with-langchain-faiss</a></div>
+</div>
+<div class="src">
+  <div class="pub">GeeksforGeeks</div>
+  <div class="ttl">RAG with LangChain — pipeline complet</div>
+  <div class="url"><a href="https://www.geeksforgeeks.org/artificial-intelligence/rag-with-langchain/" target="_blank">geeksforgeeks.org/artificial-intelligence/rag-with-langchain</a></div>
+</div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+const links = document.querySelectorAll('.sidebar li a');
+const secs  = document.querySelectorAll('section[id],div[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(el=>{if(window.scrollY>=el.offsetTop-80)cur=el.id});
+  links.forEach(a=>{a.classList.toggle('on',a.getAttribute('href')==='#'+cur)});
+},{passive:true});
+</script>
+</body>
+</html>
