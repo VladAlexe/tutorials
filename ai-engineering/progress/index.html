@@ -1932,7 +1932,7 @@ section { padding-top: 2rem; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 0;
 }
 
 .camp-tent {
@@ -1944,31 +1944,32 @@ section { padding-top: 2rem; }
 
 .camp-students {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, max-content));
+  grid-template-columns: repeat(3, 14px);
   justify-content: center;
-  gap: 2px;
-  max-width: 52px;
-  margin-top: -1px;
+  gap: 1px;
+  max-width: 44px;
+  margin-top: -5px;
 }
 
 .camp-student-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 15px;
-  height: 15px;
-  padding: 0 2px;
+  min-width: 14px;
+  width: 14px;
+  height: 14px;
+  padding: 0;
   border-radius: 999px;
   background: var(--camp-team-color, var(--accent));
   border: 1px solid rgba(255,255,255,0.72);
   color: var(--camp-team-text, rgba(255, 250, 242, 0.98));
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px;
+  font-size: 7px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0;
   text-align: center;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.18);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.14);
 }
 
 .high-camp-empty {
@@ -4204,23 +4205,18 @@ function hasHighCampProgress(progressSource) {
   return toNumber(stage && stage.percent) > 0 || toNumber(stage && stage.closed) > 0;
 }
 
-function hasMemberHighCampIssue(member) {
-  const memberIssues = []
-    .concat(Array.isArray(member && member.memberOpenIssues) ? member.memberOpenIssues : [])
-    .concat(Array.isArray(member && member.memberClosedIssues) ? member.memberClosedIssues : []);
-
-  return memberIssues.some(function(issue) {
-    return inferStageKey(sanitizeIssueTitle(issue && issue.title)) === HIGH_CAMP_ENTRY_STAGE_KEY;
-  });
+function hasMemberReachedHighCamp(member) {
+  const currentStageKey = inferStageKey(member && (member.current_stage_id || member.current_stage));
+  return isStageAtOrBeyond(currentStageKey, HIGH_CAMP_ENTRY_STAGE_KEY) || hasHighCampProgress(member);
 }
 
 function isTeamInHighCamp(team) {
-  const members = Array.isArray(team && team.membersWithIssues) ? team.membersWithIssues : [];
-  return members.some(hasMemberHighCampIssue);
+  const members = Array.isArray(team && team.connectedMembers) ? team.connectedMembers : [];
+  return members.some(hasMemberReachedHighCamp);
 }
 
 function isMemberInHighCamp(member) {
-  return hasMemberHighCampIssue(member);
+  return hasMemberReachedHighCamp(member);
 }
 
 function computeStudentRouteState(member) {
@@ -4928,7 +4924,7 @@ function buildHighCampTeams(teams) {
     .map(function(team) {
       const teamStyle = HIGH_CAMP_TEAM_STYLES[team.label] || {};
       const eligibleMembers = sortMembers(
-        (Array.isArray(team && team.membersWithIssues) ? team.membersWithIssues : []).filter(isMemberInHighCamp)
+        (Array.isArray(team && team.connectedMembers) ? team.connectedMembers : []).filter(isMemberInHighCamp)
       );
 
       return {
