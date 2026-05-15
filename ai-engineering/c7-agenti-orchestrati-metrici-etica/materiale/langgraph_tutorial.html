@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C7 — LangGraph: workflow-uri cu stare, routere și agenți multipli</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F8F6F2;--surface:#FFFFFF;--cream:#F0EBE1;--sand:#E5DDD0;
+  --navy:#1A1D2B;--blue:#2C5F8A;--blue-l:#E6F0F8;--blue-m:#C8DFF0;
+  --gray:#64748B;--gray-l:#94A3B8;--line:#D8D0C4;
+  --code:#1C2130;--code-tx:#C9C0A8;
+  --green:#1B5E35;--green-l:#ECF5EE;
+  --amber:#9A6C00;--amber-l:#FBF4E0;
+  --red:#8B1F1F;--red-l:#FEF0EF;
+  --ag1:#B45309;--ag1-l:#FEF3C7; /* anti-sistem */
+  --ag2:#7C3AED;--ag2-l:#F5F3FF; /* conspirationist */
+  --ag3:#2C5F8A;--ag3-l:#E6F0F8; /* pro-european */
+  --mono:'SFMono-Regular','Cascadia Code',Consolas,monospace;
+  --sans:system-ui,-apple-system,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --sidebar:240px;
+}
+html{font-family:var(--sans);font-size:15px;line-height:1.70;color:var(--navy);background:var(--bg)}
+a{color:var(--blue)}a:hover{text-decoration:underline}
+
+.breadcrumb{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--line);padding:0 32px;height:44px;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--gray)}
+.breadcrumb a{color:var(--gray);text-decoration:none}.breadcrumb a:hover{color:var(--blue)}
+.breadcrumb .sep{color:var(--line);font-size:14px}.breadcrumb .cur{color:var(--navy);font-weight:600}
+
+.wrap{display:grid;grid-template-columns:var(--sidebar) 1fr;max-width:1180px;margin:0 auto}
+
+.sidebar{padding:28px 0 64px 20px;border-right:1px solid var(--line);position:sticky;top:44px;height:calc(100vh - 44px);overflow-y:auto;font-size:12.5px}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+.sb-sec{margin-top:20px}.sb-sec:first-child{margin-top:8px}
+.sb-lbl{font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--gray-l);padding:0 10px 5px;display:block}
+.sidebar ul{list-style:none}
+.sidebar li a{display:block;padding:4px 10px;color:var(--gray);border-left:2px solid transparent;border-radius:0 3px 3px 0;transition:all .12s;text-decoration:none}
+.sidebar li a:hover,.sidebar li a.on{color:var(--blue);background:var(--blue-l);border-left-color:var(--blue)}
+.sidebar li a.on{font-weight:600}
+
+.content{padding:44px 60px 120px;max-width:840px}
+
+.hero{margin-bottom:48px;padding-bottom:36px;border-bottom:2px solid var(--sand)}
+.hero-tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:var(--blue-l);padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:14px}
+.hero h1{font-size:1.85em;font-weight:800;letter-spacing:-.025em;line-height:1.2;color:var(--navy);margin-bottom:12px}
+.hero .lead{font-size:1.02em;color:var(--gray);line-height:1.72;max-width:620px}
+.hero-meta{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:flex;gap:20px;font-size:11.5px;color:var(--gray);flex-wrap:wrap}
+.hero-formula{margin-top:20px;padding:16px 20px;background:var(--navy);border-radius:8px}
+.hero-formula .f-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.hero-formula .f-row:last-child{margin-bottom:0}
+.hero-formula .f-label{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--gray-l);width:36px;flex-shrink:0;letter-spacing:.08em}
+.hero-formula .f-code{font-family:var(--mono);font-size:12.5px;color:#C9C0A8}
+.hero-formula .f-code.hi{color:#FFC000;font-weight:700}
+
+h2{font-size:1.25em;font-weight:700;letter-spacing:-.015em;color:var(--navy);margin:52px 0 6px;padding-top:4px;display:flex;align-items:center;gap:8px}
+h2 .n{font-family:var(--mono);font-size:10px;font-weight:700;background:var(--navy);color:#fff;padding:2px 6px;border-radius:3px;letter-spacing:.04em;flex-shrink:0}
+.rule{width:28px;height:2px;background:var(--blue);border-radius:1px;margin-bottom:18px}
+h3{font-size:1.02em;font-weight:700;color:var(--navy);margin:28px 0 8px}
+p{margin-bottom:13px}
+ul,ol{margin:8px 0 14px 20px;line-height:1.9}
+strong{font-weight:700}
+
+.note{margin:18px 0;padding:12px 16px;font-size:13.5px;border-left:3px solid var(--blue);background:var(--blue-l);border-radius:0 5px 5px 0}
+.note.g{border-left-color:var(--green);background:var(--green-l)}
+.note.a{border-left-color:var(--amber);background:var(--amber-l)}
+.note.r{border-left-color:var(--red);background:var(--red-l)}
+.note p{margin:0;line-height:1.6}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:15px}
+.card.hi{border-color:var(--blue-m);background:var(--blue-l)}
+.card-tag{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:5px}
+.card h4{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:5px}
+.card p{font-size:12.5px;color:var(--gray);line-height:1.55;margin:0}
+
+.cb{border-radius:7px;overflow:hidden;border:1px solid #283050;margin:16px 0}
+.cb-lbl{background:#131828;padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#546E7A;text-transform:uppercase;border-bottom:1px solid #283050}
+pre{background:var(--code);padding:18px 20px;overflow-x:auto;margin:0;tab-size:2}
+code{font-family:var(--mono);font-size:13px;color:var(--code-tx);line-height:1.6}
+code.i{background:var(--cream);color:var(--navy);padding:1px 5px;border-radius:3px;font-size:12.5px;border:1px solid var(--sand)}
+.kw{color:#C792EA}.fn{color:#82AAFF}.st{color:#C3E88D}.cm{color:#546E7A;font-style:italic}.tp{color:#FFCB6B}.nm{color:#89DDFF}.nb{color:#F78C6C}
+
+.diag{background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:24px 20px 12px;margin:18px 0;overflow-x:auto}
+.diag figcaption{font-size:11.5px;color:var(--gray);text-align:center;margin-top:10px;font-style:italic}
+
+.tw{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--navy);color:#fff;padding:9px 13px;text-align:left;font-weight:600;font-size:12px}
+td{padding:8px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:var(--cream)}
+.yes{color:var(--green);font-weight:700}.no{color:var(--red);font-weight:700}.em{color:var(--blue);font-weight:600}
+
+.steps{list-style:none;margin:14px 0;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:24px;height:24px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.steps li p{font-size:13px;color:var(--gray);margin:2px 0 0}
+
+/* Thread visualization */
+.thread{margin:16px 0}
+.thread-msg{border-radius:7px;margin-bottom:8px;padding:12px 14px;border-left:4px solid}
+.thread-msg.as{background:var(--ag1-l);border-left-color:var(--ag1)}
+.thread-msg.cs{background:var(--ag2-l);border-left-color:var(--ag2)}
+.thread-msg.pe{background:var(--ag3-l);border-left-color:var(--ag3)}
+.thread-msg .turn-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;margin-bottom:5px}
+.thread-msg.as .turn-label{color:var(--ag1)}
+.thread-msg.cs .turn-label{color:var(--ag2)}
+.thread-msg.pe .turn-label{color:var(--ag3)}
+.thread-msg .turn-text{font-size:13px;color:var(--navy);line-height:1.55}
+
+/* Mini-task box */
+.task{margin:20px 0;padding:14px 16px;background:var(--navy);border-radius:7px}
+.task-tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--amber-l);text-transform:uppercase;margin-bottom:6px}
+.task p{font-size:13px;color:#D4CDB5;margin:0;line-height:1.6}
+
+/* Team-work roster */
+.roster{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.role{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:14px}
+.role .role-tag{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.role h4{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.role .role-file{font-family:var(--mono);font-size:11.5px;color:var(--gray);margin-bottom:6px}
+.role p{font-size:12.5px;color:var(--gray);line-height:1.5;margin:0}
+
+hr.div{border:none;border-top:1px solid var(--sand);margin:40px 0}
+</style>
+</head>
+<body>
+
+<nav class="breadcrumb">
+  <a href="#">tutoriale</a><span class="sep">/</span>
+  <a href="#">ingineria-ai</a><span class="sep">/</span>
+  <span class="cur">C7 — LangGraph</span>
+</nav>
+
+<div class="wrap">
+
+<aside class="sidebar">
+  <div class="sb-sec">
+    <span class="sb-lbl">Fundațe</span>
+    <ul>
+      <li><a href="#why">01 · De ce LangGraph</a></li>
+      <li><a href="#what">02 · Ce este LangGraph</a></li>
+      <li><a href="#chain-vs-graph">03 · De la chain la graph</a></li>
+      <li><a href="#concepts">04 · Concepte fundamentale</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Mecanică</span>
+    <ul>
+      <li><a href="#first">05 · Primul graf (fără LLM)</a></li>
+      <li><a href="#decision">06 · Graf cu decizie</a></li>
+      <li><a href="#viz">07 · Vizualizarea grafului</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Conversație</span>
+    <ul>
+      <li><a href="#thread">08 · Thread conversațional</a></li>
+      <li><a href="#threadstate">09 · ThreadState</a></li>
+      <li><a href="#router">10 · Router simplu</a></li>
+      <li><a href="#agentnode">11 · Agent node</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Rulare</span>
+    <ul>
+      <li><a href="#fullgraph">12 · Graf multi-agent</a></li>
+      <li><a href="#running">13 · Rulăm primul thread</a></li>
+      <li><a href="#display">14 · Afișarea thread-ului</a></li>
+      <li><a href="#llm-router">15 · Router LLM (opțional)</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Aplicație</span>
+    <ul>
+      <li><a href="#core-graph">16 · core/graph.py</a></li>
+      <li><a href="#app-integration">17 · Integrare app</a></li>
+      <li><a href="#ethics">18 · Etică și limite</a></li>
+    </ul>
+  </div>
+  <div class="sb-sec">
+    <span class="sb-lbl">Final</span>
+    <ul>
+      <li><a href="#seminar">19 · Seminar EchoChamber</a></li>
+      <li><a href="#deliverables">20 · Livrabile</a></li>
+      <li><a href="#teamwork">21 · Team work session</a></li>
+    </ul>
+  </div>
+</aside>
+
+<main class="content">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">tutorial tehnic · C7</div>
+  <h1>LangGraph: workflow-uri cu stare, routere și agenți multipli</h1>
+  <p class="lead">De la agent RAG individual la thread multi-agent controlat. LangGraph nu este un model AI — este un framework pentru controlul fluxului: stare, noduri, muchii, decizii, bucle, oprire. În C7 îl folosim pentru a construi un thread în care mai mulți agenți văd conversația anterioară și sunt coordonați de un router.</p>
+  <div class="hero-meta">
+    <span>📓 C7_01_langgraph_multi_agent_thread.ipynb</span>
+    <span>📦 pip install langgraph</span>
+    <span>🔗 depinde de C6: core/agent.py</span>
+    <span>⏱ ~60 min</span>
+  </div>
+  <div class="hero-formula">
+    <div class="f-row"><span class="f-label">C6</span><span class="f-code">text politic → agent RAG → răspuns</span></div>
+    <div class="f-row"><span class="f-label">C7</span><span class="f-code hi">state → router → agent_node → state update → router → … → END</span></div>
+  </div>
+</div>
+
+<!-- ══ 01 DE CE ════════════════════════════════════════════════════════ -->
+<section id="why">
+<h2><span class="n">01</span>De ce avem nevoie de LangGraph</h2>
+<div class="rule"></div>
+
+<p>În C6 am construit un agent RAG individual. Un text politic intra în sistem, agentul recupera context din FAISS și producea un răspuns. Totul se întâmpla într-un singur apel — nu existau decizii intermediare, nici reluări, nici alți agenți în joc.</p>
+
+<p>În C7 cerința se schimbă. Vrem mai mulți agenți care intervin într-o conversație: fiecare are rolul lui, fiecare vede ce s-a spus înainte, iar ordinea intervențiilor nu este fixă. Problema nu mai este <em>cum generăm un răspuns</em>, ci <em>cum controlăm pașii</em>: cine vorbește primul, cine urmează, când ne oprim, ce se păstrează între intervenții.</p>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;display:block;margin:0 auto">
+<defs>
+<marker id="a1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#2C5F8A"/></marker>
+<marker id="a2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#FFC000"/></marker>
+</defs>
+<text x="6" y="22" font-family="monospace" font-size="10" fill="#64748B" font-weight="700" letter-spacing="1">C6</text>
+<rect x="6" y="28" width="86" height="26" rx="4" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="49" y="45" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">text politic</text>
+<line x1="92" y1="41" x2="112" y2="41" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#a1)"/>
+<rect x="112" y="28" width="86" height="26" rx="4" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="155" y="45" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">agent RAG</text>
+<line x1="198" y1="41" x2="218" y2="41" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#a1)"/>
+<rect x="218" y="28" width="72" height="26" rx="4" fill="#ECF5EE" stroke="#1B5E35" stroke-width="1.5"/>
+<text x="254" y="45" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B5E35">răspuns</text>
+<text x="306" y="45" font-family="sans-serif" font-size="12" fill="#94A3B8">flux liniar · un agent · fără decizii</text>
+
+<text x="6" y="92" font-family="monospace" font-size="10" fill="#FFC000" font-weight="700" letter-spacing="1">C7</text>
+<rect x="6" y="98" width="62" height="26" rx="4" fill="#1A1D2B"/>
+<text x="37" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">stimulus</text>
+<line x1="68" y1="111" x2="86" y2="111" stroke="#FFC000" stroke-width="1.5" marker-end="url(#a2)"/>
+<rect x="86" y="98" width="58" height="26" rx="4" fill="#FBF4E0" stroke="#9A6C00" stroke-width="1.5"/>
+<text x="115" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#9A6C00" font-weight="700">router</text>
+<line x1="144" y1="111" x2="162" y2="111" stroke="#FFC000" stroke-width="1.5" marker-end="url(#a2)"/>
+<rect x="162" y="98" width="76" height="26" rx="4" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="200" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#2C5F8A">agent_node</text>
+<line x1="238" y1="111" x2="256" y2="111" stroke="#FFC000" stroke-width="1.5" marker-end="url(#a2)"/>
+<rect x="256" y="98" width="86" height="26" rx="4" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+<text x="299" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748B">state update</text>
+<line x1="342" y1="111" x2="360" y2="111" stroke="#FFC000" stroke-width="1.5" marker-end="url(#a2)"/>
+<rect x="360" y="98" width="58" height="26" rx="4" fill="#FBF4E0" stroke="#9A6C00" stroke-width="1.5"/>
+<text x="389" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#9A6C00" font-weight="700">router</text>
+<text x="425" y="115" font-family="monospace" font-size="13" fill="#9A6C00">→ …</text>
+<text x="460" y="115" font-family="monospace" font-size="10" fill="#1B5E35">→ END</text>
+<text x="280" y="143" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#94A3B8" font-style="italic">mai mulți agenți · stare comună · ordine controlată de router</text>
+</svg>
+<figcaption>Fig. 1 — C6: un agent produce un răspuns. C7: un graf orchestrează mai mulți agenți, păstrează starea conversației și decide la fiecare pas.</figcaption>
+</figure>
+</div>
+
+<p>Generarea de text rămâne treaba modelului (din C6). LangGraph adaugă <strong>controlul</strong>: stare partajată, decizii pe baza ei, repetare până la o condiție de oprire. Aceasta este diferența fundamentală față de C6.</p>
+</section>
+
+<!-- ══ 02 CE ESTE ══════════════════════════════════════════════════════ -->
+<section id="what">
+<h2><span class="n">02</span>Ce este LangGraph</h2>
+<div class="rule"></div>
+
+<p>LangGraph este un framework pentru construirea de workflow-uri AI ca <strong>grafuri</strong>. Un graf are noduri, muchii și o <em>stare comună</em>. Fiecare nod este o funcție Python care primește starea curentă și returnează modificările aduse. Muchiile definesc cum trece fluxul de la un nod la altul — fie fix („mereu A → B"), fie pe baza unei decizii („dacă X, atunci A; altfel B").</p>
+
+<div class="note g">
+  <p><strong>Mesajul central.</strong> LangGraph nu face modelul mai inteligent. Face fluxul <em>explicit, controlabil și inspectabil</em>. La fiecare pas se vede ce stare a citit nodul, ce a modificat și ce decizie a luat. Pentru cercetare socială asta înseamnă auditabilitate completă — putem reconstrui pas cu pas cum s-a ajuns la o conversație simulată.</p>
+</div>
+
+<p>Trei consecințe practice ale acestei alegeri arhitecturale, pentru un proiect ca EchoChamber:</p>
+
+<ul>
+  <li><strong>Reproducibilitate.</strong> Cu același state inițial și aceleași noduri, graful produce aceeași execuție. Conversațiile simulate pot fi rerulate și verificate.</li>
+  <li><strong>Modularitate.</strong> Schimbi un nod, restul rămâne neatins. Înlocuiești routerul round-robin cu un router LLM — graful funcționează în continuare.</li>
+  <li><strong>Inspecție.</strong> La fiecare pas poți printa starea. Nu este o cutie neagră — este un grafic Python pe care îl execuți pas cu pas.</li>
+</ul>
+</section>
+
+<!-- ══ 03 CHAIN VS GRAPH ═══════════════════════════════════════════════ -->
+<section id="chain-vs-graph">
+<h2><span class="n">03</span>De la chain la graph</h2>
+<div class="rule"></div>
+
+<p>În cursurile anterioare am întâlnit două forme mai simple de a apela un model. LangGraph este forma a treia. Tabelul de mai jos arată când este suficientă fiecare.</p>
+
+<div class="tw">
+<table>
+<thead><tr><th>Tip de flux</th><th>Formă</th><th>Când este suficient</th></tr></thead>
+<tbody>
+<tr><td><strong>LLM call</strong></td><td><code class="i">input → LLM → output</code></td><td>răspuns unic, fără context structurat</td></tr>
+<tr><td><strong>Chain liniar</strong></td><td><code class="i">input → pas 1 → pas 2 → output</code></td><td>pași ficși, ordine cunoscută dinainte</td></tr>
+<tr><td class="em"><strong>LangGraph</strong></td><td><code class="i">state → node → decision → node / END</code></td><td>decizii, bucle, agenți multipli, stare</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Un chain este bun când ordinea pașilor este fixă și cunoscută dinainte. Un graph este necesar când sistemul trebuie să <strong>decidă la runtime</strong> ce se întâmplă mai departe — cine intervine, când se oprește, dacă reia un pas.</p>
+
+<div class="note">
+  <p>Concret în C7: nu putem ști dinainte ce va spune fiecare agent. Dar putem să spunem grafului <em>cum să decidă</em> cine vorbește la fiecare pas și <em>când să se oprească</em>. Aceste reguli devin parte din graf, nu din codul aplicației.</p>
+</div>
+</section>
+
+<!-- ══ 04 CONCEPTE ════════════════════════════════════════════════════ -->
+<section id="concepts">
+<h2><span class="n">04</span>Concepte fundamentale LangGraph</h2>
+<div class="rule"></div>
+
+<p>Înainte să construim primul graf, avem nevoie de un vocabular minim. Cinci concepte acoperă tot ce vom face în C7.</p>
+
+<div class="tw">
+<table>
+<thead><tr><th>Concept</th><th>Definiție simplă</th><th>Exemplu C7</th></tr></thead>
+<tbody>
+<tr><td><code class="i">State</code></td><td>datele care circulă prin graf</td><td><code class="i">stimulus</code>, <code class="i">messages</code>, <code class="i">current_turn</code></td></tr>
+<tr><td><code class="i">Node</code></td><td>funcție Python care modifică state-ul</td><td><code class="i">router_node</code>, <code class="i">agent_node</code></td></tr>
+<tr><td><code class="i">Edge</code></td><td>trecere fixă între noduri</td><td><code class="i">agent_node → router</code></td></tr>
+<tr><td><code class="i">Conditional edge</code></td><td>alegere pe baza state-ului</td><td><code class="i">router → agent</code> sau <code class="i">router → END</code></td></tr>
+<tr><td><code class="i">START / END</code></td><td>intrarea și ieșirea grafului</td><td><code class="i">START → router</code>; <code class="i">router → END</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>State este memoria temporară a grafului.</strong> Toate nodurile citesc din ea și returnează ce modifică. Două noduri nu comunică direct între ele — comunicarea se face prin state. Această alegere face graful inspectabil: la orice moment, întreaga stare este vizibilă.</p>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 580 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;display:block;margin:0 auto">
+<defs>
+<marker id="c1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#2C5F8A"/></marker>
+<marker id="c2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#1B5E35"/></marker>
+</defs>
+<ellipse cx="34" cy="56" rx="28" ry="16" fill="#1A1D2B"/>
+<text x="34" y="60" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">START</text>
+<line x1="62" y1="56" x2="82" y2="56" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#c1)"/>
+<rect x="82" y="42" width="86" height="28" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+<text x="125" y="60" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">node_A</text>
+<line x1="168" y1="56" x2="188" y2="56" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#c1)"/>
+<rect x="188" y="42" width="100" height="28" rx="5" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="2"/>
+<text x="238" y="60" text-anchor="middle" font-family="monospace" font-size="11" fill="#2C5F8A" font-weight="700">decision</text>
+<line x1="288" y1="56" x2="320" y2="56" stroke="#2C5F8A" stroke-width="1.2"/>
+<line x1="320" y1="56" x2="320" y2="22" stroke="#2C5F8A" stroke-width="1"/>
+<line x1="320" y1="22" x2="346" y2="22" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#c1)"/>
+<rect x="346" y="8" width="76" height="28" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+<text x="384" y="26" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">node_B</text>
+<line x1="320" y1="56" x2="320" y2="88" stroke="#2C5F8A" stroke-width="1"/>
+<line x1="320" y1="88" x2="346" y2="88" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#c1)"/>
+<rect x="346" y="74" width="76" height="28" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+<text x="384" y="92" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">node_C</text>
+<line x1="422" y1="22" x2="450" y2="22" stroke="#2C5F8A" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="450" y1="22" x2="450" y2="56" stroke="#2C5F8A" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="422" y1="88" x2="450" y2="88" stroke="#2C5F8A" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="450" y1="88" x2="450" y2="56" stroke="#2C5F8A" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="450" y1="56" x2="478" y2="56" stroke="#1B5E35" stroke-width="1.5" marker-end="url(#c2)"/>
+<ellipse cx="510" cy="56" rx="28" ry="16" fill="#1B5E35"/>
+<text x="510" y="60" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">END</text>
+</svg>
+<figcaption>Fig. 2 — Cele cinci primitive într-un graf simplu. Săgețile pline = edges fixe. <em>decision</em> este nodul care implementează o muchie condițională, alegând între B și C.</figcaption>
+</figure>
+</div>
+</section>
+
+<!-- ══ 05 PRIMUL GRAF ════════════════════════════════════════════════ -->
+<section id="first">
+<h2><span class="n">05</span>Primul graf — fără LLM</h2>
+<div class="rule"></div>
+
+<p>Începem fără LLM ca să separăm <em>mecanica LangGraph</em> de generarea textului. Exemplul: un graf care numără cuvintele dintr-un text. Niciun apel către un model, niciun API key.</p>
+
+<div class="cb">
+<div class="cb-lbl">first_graph.py — START → count_words → END</div>
+<pre><code><span class="kw">from</span> <span class="nm">typing</span> <span class="kw">import</span> <span class="tp">TypedDict</span>
+<span class="kw">from</span> <span class="nm">langgraph.graph</span> <span class="kw">import</span> <span class="fn">StateGraph</span>, <span class="fn">START</span>, <span class="fn">END</span>
+
+<span class="cm"># 1. State — datele care circulă prin graf</span>
+<span class="kw">class</span> <span class="tp">TextState</span>(<span class="tp">TypedDict</span>):
+    text:  <span class="tp">str</span>
+    count: <span class="tp">int</span>
+
+<span class="cm"># 2. Node — funcție care primește state și returnează modificări</span>
+<span class="kw">def</span> <span class="fn">count_words</span>(state: <span class="tp">TextState</span>) -> <span class="tp">dict</span>:
+    n = <span class="fn">len</span>(state[<span class="st">"text"</span>].split())
+    <span class="kw">return</span> {<span class="st">"count"</span>: n}      <span class="cm"># doar ce s-a schimbat</span>
+
+<span class="cm"># 3. Construim graful</span>
+workflow = <span class="fn">StateGraph</span>(<span class="tp">TextState</span>)
+workflow.add_node(<span class="st">"count_words"</span>, count_words)
+workflow.add_edge(<span class="fn">START</span>, <span class="st">"count_words"</span>)
+workflow.add_edge(<span class="st">"count_words"</span>, <span class="fn">END</span>)
+
+<span class="cm"># 4. Compilăm și rulăm</span>
+graph = workflow.compile()
+result = graph.invoke({<span class="st">"text"</span>: <span class="st">"LangGraph orchestrează workflow-uri AI."</span>, <span class="st">"count"</span>: <span class="nb">0</span>})
+<span class="fn">print</span>(result)
+<span class="cm"># → {'text': 'LangGraph orchestrează workflow-uri AI.', 'count': 4}</span>
+</code></pre>
+</div>
+
+<p>Patru pași, fiecare cu un rol clar: definim ce date circulă (State), ce face un pas (Node), cum se leagă pașii (edges), apoi compilăm și rulăm. Toate grafurile LangGraph respectă această structură, oricât de complexe ar deveni.</p>
+
+<div class="note">
+  <p><strong>Notă despre <code class="i">return</code>.</strong> Nodul returnează doar câmpurile pe care le modifică, nu state-ul întreg. LangGraph aplică automat actualizările peste state-ul existent. <code class="i">text</code> rămâne neschimbat fiindcă nodul nu l-a returnat.</p>
+</div>
+</section>
+
+<!-- ══ 06 DECISION ═══════════════════════════════════════════════════ -->
+<section id="decision">
+<h2><span class="n">06</span>Graf cu decizie</h2>
+<div class="rule"></div>
+
+<p>Acum adăugăm prima decizie. În funcție de lungimea textului, graful merge la <code class="i">short_response</code> sau la <code class="i">long_response</code>. Aceasta este o <strong>muchie condițională</strong>.</p>
+
+<div class="cb">
+<div class="cb-lbl">decision_graph.py — START → choose_path → short / long → END</div>
+<pre><code><span class="kw">from</span> <span class="nm">typing</span> <span class="kw">import</span> <span class="tp">TypedDict</span>
+<span class="kw">from</span> <span class="nm">langgraph.graph</span> <span class="kw">import</span> <span class="fn">StateGraph</span>, <span class="fn">START</span>, <span class="fn">END</span>
+
+<span class="kw">class</span> <span class="tp">LengthState</span>(<span class="tp">TypedDict</span>):
+    text:   <span class="tp">str</span>
+    result: <span class="tp">str</span>
+
+<span class="cm"># Noduri — ramurile</span>
+<span class="kw">def</span> <span class="fn">short_response</span>(state: <span class="tp">LengthState</span>) -> <span class="tp">dict</span>:
+    <span class="kw">return</span> {<span class="st">"result"</span>: <span class="st">"Text scurt."</span>}
+
+<span class="kw">def</span> <span class="fn">long_response</span>(state: <span class="tp">LengthState</span>) -> <span class="tp">dict</span>:
+    <span class="kw">return</span> {<span class="st">"result"</span>: <span class="st">"Text lung."</span>}
+
+<span class="cm"># Routerul — decide ramura, returnează numele etichetei</span>
+<span class="kw">def</span> <span class="fn">choose_path</span>(state: <span class="tp">LengthState</span>) -> <span class="tp">str</span>:
+    <span class="kw">if</span> <span class="fn">len</span>(state[<span class="st">"text"</span>].split()) &lt; <span class="nb">10</span>:
+        <span class="kw">return</span> <span class="st">"short"</span>
+    <span class="kw">return</span> <span class="st">"long"</span>
+
+<span class="cm"># Construim graful</span>
+workflow = <span class="fn">StateGraph</span>(<span class="tp">LengthState</span>)
+workflow.add_node(<span class="st">"short_response"</span>, short_response)
+workflow.add_node(<span class="st">"long_response"</span>,  long_response)
+
+<span class="cm"># Muchie condițională cu mapping explicit etichetă → nod</span>
+workflow.add_conditional_edges(
+    <span class="fn">START</span>,
+    choose_path,
+    {<span class="st">"short"</span>: <span class="st">"short_response"</span>, <span class="st">"long"</span>: <span class="st">"long_response"</span>},
+)
+workflow.add_edge(<span class="st">"short_response"</span>, <span class="fn">END</span>)
+workflow.add_edge(<span class="st">"long_response"</span>,  <span class="fn">END</span>)
+
+graph = workflow.compile()
+graph.invoke({<span class="st">"text"</span>: <span class="st">"Salut lume."</span>, <span class="st">"result"</span>: <span class="st">""</span>})
+<span class="cm"># → {'text': 'Salut lume.', 'result': 'Text scurt.'}</span>
+</code></pre>
+</div>
+
+<div class="note g">
+  <p><strong>Mapping-ul explicit contează.</strong> Dicționarul <code class="i">{"short": "short_response", "long": "long_response"}</code> spune lui LangGraph: „dacă <code class="i">choose_path</code> returnează <code class="i">'short'</code>, mergi la nodul <code class="i">short_response</code>". Fără mapping, vizualizarea grafului nu poate desena muchiile corect.</p>
+</div>
+
+<p>Muchia condițională este mecanismul prin care un graf <em>decide</em>. Tot restul C7 se construiește în jurul ei: routerul nostru este o funcție exact ca <code class="i">choose_path</code>, doar că în loc de „short" / „long" returnează numele agentului care urmează să vorbească.</p>
+</section>
+
+<!-- ══ 07 VIZUALIZARE ════════════════════════════════════════════════ -->
+<section id="viz">
+<h2><span class="n">07</span>Vizualizarea grafului</h2>
+<div class="rule"></div>
+
+<p>După <code class="i">compile()</code>, LangGraph poate desena automat graful ca diagramă Mermaid. Este util pentru a verifica vizual că workflow-ul este construit corect — mai ales când avem multe noduri și muchii condiționate.</p>
+
+<div class="cb">
+<div class="cb-lbl">viz.py — desenare automată în Jupyter</div>
+<pre><code><span class="kw">from</span> <span class="nm">IPython.display</span> <span class="kw">import</span> <span class="fn">Image</span>, <span class="fn">display</span>
+
+<span class="cm"># Imaginea PNG generată din graf (necesită conexiune pentru rendering)</span>
+<span class="fn">display</span>(<span class="fn">Image</span>(graph.get_graph().draw_mermaid_png()))
+
+<span class="cm"># Fallback: textul Mermaid brut, dacă rendering-ul nu merge</span>
+<span class="fn">print</span>(graph.get_graph().draw_mermaid())
+</code></pre>
+</div>
+
+<div class="note a">
+  <p>Vizualizarea ajută să verificăm dacă workflow-ul este construit corect, înainte să-l rulăm. Dacă o muchie condițională nu apare în diagramă, înseamnă că mapping-ul lipsește sau este greșit. Cel mai bun debug este vizual.</p>
+</div>
+
+<p>Mai jos, varianta textuală Mermaid generată din graful cu decizie. Aceasta este reprezentarea pe care o desenează <code class="i">draw_mermaid_png()</code>:</p>
+
+<div class="cb">
+<div class="cb-lbl">graph.draw_mermaid() — output text</div>
+<pre><code><span class="cm">---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+        __start__([&lt;p>__start__&lt;/p>]):::first
+        short_response(short_response)
+        long_response(long_response)
+        __end__([&lt;p>__end__&lt;/p>]):::last
+        __start__ -.-&gt; short_response;
+        __start__ -.-&gt; long_response;
+        short_response --&gt; __end__;
+        long_response --&gt; __end__;</span>
+</code></pre>
+</div>
+</section>
+
+<!-- ══ 08 THREAD ═══════════════════════════════════════════════════════ -->
+<section id="thread">
+<h2><span class="n">08</span>Ce este un thread conversațional</h2>
+<div class="rule"></div>
+
+<p>În C7 nu vrem un singur răspuns — vrem o conversație. O conversație, din punct de vedere al codului, este o <strong>listă de mesaje</strong> păstrată în State. Fiecare intervenție adaugă un mesaj la listă. Routerul citește lista ca să decidă cine urmează.</p>
+
+<p>Un mesaj are o structură minimă:</p>
+
+<div class="tw">
+<table>
+<thead><tr><th>Câmp</th><th>Rol</th></tr></thead>
+<tbody>
+<tr><td><code class="i">agent</code></td><td>numele afișabil al agentului (ex. „Anti-sistem")</td></tr>
+<tr><td><code class="i">slug</code></td><td>identificatorul unic, folosit de router (ex. <code class="i">anti_sistem</code>)</td></tr>
+<tr><td><code class="i">handle</code></td><td>handle-ul stilizat ca pe rețele sociale (ex. <code class="i">@LibertateRO99</code>)</td></tr>
+<tr><td><code class="i">text</code></td><td>conținutul intervenției, generat de agentul RAG</td></tr>
+<tr><td><code class="i">turn</code></td><td>numărul de ordine al intervenției în thread</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="cb">
+<div class="cb-lbl">thread_example.py — exemplu manual de thread</div>
+<pre><code>HANDLES = {
+    <span class="st">"anti_sistem"</span>:     <span class="st">"@LibertateRO99"</span>,
+    <span class="st">"conspirationist"</span>: <span class="st">"@AdevarulViu"</span>,
+    <span class="st">"pro_european"</span>:    <span class="st">"@EuroOptimistRO"</span>,
+}
+
+messages = [
+    {<span class="st">"agent"</span>: <span class="st">"Anti-sistem"</span>,  <span class="st">"slug"</span>: <span class="st">"anti_sistem"</span>,
+     <span class="st">"text"</span>:  <span class="st">"Instituțiile par din nou rupte de oameni."</span>, <span class="st">"turn"</span>: <span class="nb">1</span>},
+    {<span class="st">"agent"</span>: <span class="st">"Pro-european"</span>, <span class="st">"slug"</span>: <span class="st">"pro_european"</span>,
+     <span class="st">"text"</span>:  <span class="st">"Trebuie să discutăm pe baza procedurilor și a dovezilor."</span>, <span class="st">"turn"</span>: <span class="nb">2</span>},
+]
+
+<span class="kw">def</span> <span class="fn">thread_to_text</span>(messages: <span class="tp">list</span>) -> <span class="tp">str</span>:
+    lines = []
+    <span class="kw">for</span> m <span class="kw">in</span> messages:
+        handle = HANDLES.get(m[<span class="st">"slug"</span>], m[<span class="st">"slug"</span>])
+        lines.append(f<span class="st">"Turn {m['turn']} — {handle}: {m['text']}"</span>)
+    <span class="kw">return</span> <span class="st">"\n"</span>.join(lines)
+
+<span class="fn">print</span>(<span class="fn">thread_to_text</span>(messages))
+<span class="cm"># Turn 1 — @LibertateRO99: Instituțiile par din nou rupte de oameni.</span>
+<span class="cm"># Turn 2 — @EuroOptimistRO: Trebuie să discutăm pe baza procedurilor...</span>
+</code></pre>
+</div>
+
+<p>Pentru moment, mesajele sunt construite manual. Mai târziu, fiecare agent își va genera mesajul prin <code class="i">generate_agent_response()</code> din C6. Funcția <code class="i">thread_to_text()</code> este utilă atât pentru afișare, cât și pentru a trimite thread-ul anterior către un agent care urmează să răspundă.</p>
+</section>
+
+<!-- ══ 09 THREADSTATE ════════════════════════════════════════════════ -->
+<section id="threadstate">
+<h2><span class="n">09</span>ThreadState — structura de date a conversației</h2>
+<div class="rule"></div>
+
+<p>ThreadState este State-ul specific lui C7. Toate câmpurile sunt simple: șiruri, liste, întregi. Fiecare nod citește din ThreadState și actualizează câmpurile relevante.</p>
+
+<div class="cb">
+<div class="cb-lbl">thread_state.py</div>
+<pre><code><span class="kw">from</span> <span class="nm">typing</span> <span class="kw">import</span> <span class="tp">TypedDict</span>
+
+<span class="kw">class</span> <span class="tp">ThreadState</span>(<span class="tp">TypedDict</span>):
+    stimulus:     <span class="tp">str</span>        <span class="cm"># inputul politic inițial</span>
+    messages:     <span class="tp">list</span>       <span class="cm"># mesajele produse până acum</span>
+    active_slugs: <span class="tp">list</span>       <span class="cm"># agenții care participă la thread</span>
+    total_turns:  <span class="tp">int</span>        <span class="cm"># câte intervenții vrem în total</span>
+    current_turn: <span class="tp">int</span>        <span class="cm"># câte au fost deja produse</span>
+    next_slug:    <span class="tp">str</span>        <span class="cm"># agentul ales pentru intervenția următoare</span>
+    provider:     <span class="tp">str</span>        <span class="cm"># "gemini" sau "deepseek"</span>
+    k:            <span class="tp">int</span>        <span class="cm"># câte fragmente FAISS recuperăm</span>
+</code></pre>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>Câmp</th><th>Rol</th><th>Cine îl modifică</th></tr></thead>
+<tbody>
+<tr><td><code class="i">stimulus</code></td><td>textul politic — fix pe toată durata thread-ului</td><td>nimeni (inițializat)</td></tr>
+<tr><td><code class="i">messages</code></td><td>lista de mesaje a conversației</td><td><code class="i">agent_node</code></td></tr>
+<tr><td><code class="i">active_slugs</code></td><td>agenții participanți, în ordinea round-robin</td><td>nimeni (inițializat)</td></tr>
+<tr><td><code class="i">total_turns</code></td><td>bugetul de intervenții</td><td>nimeni (inițializat)</td></tr>
+<tr><td><code class="i">current_turn</code></td><td>contorul de intervenții — citit de router</td><td><code class="i">agent_node</code></td></tr>
+<tr><td><code class="i">next_slug</code></td><td>slug-ul agentului ales pentru tura curentă</td><td><code class="i">router_node</code></td></tr>
+<tr><td><code class="i">provider</code></td><td>furnizorul LLM</td><td>nimeni (inițializat)</td></tr>
+<tr><td><code class="i">k</code></td><td>parametrul top-k pentru retriever</td><td>nimeni (inițializat)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note">
+  <p><strong>Diviziunea muncii.</strong> Routerul setează doar <code class="i">next_slug</code>. Agent node-ul adaugă la <code class="i">messages</code> și incrementează <code class="i">current_turn</code>. Restul câmpurilor rămân neschimbate pe tot parcursul thread-ului. Această separare clară face debugging-ul ușor.</p>
+</div>
+</section>
+
+<!-- ══ 10 ROUTER ══════════════════════════════════════════════════════ -->
+<section id="router">
+<h2><span class="n">10</span>Router simplu — round-robin</h2>
+<div class="rule"></div>
+
+<p>Routerul este inima sistemului multi-agent. El decide la fiecare pas cine vorbește și când se oprește thread-ul. Pentru C7 obligatoriu folosim <strong>round-robin</strong> — agenții vorbesc pe rând, în ordinea din <code class="i">active_slugs</code>. Este simplu, stabil și explicabil.</p>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 540 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:540px;display:block;margin:0 auto">
+<defs>
+<marker id="r1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#9A6C00"/></marker>
+<marker id="r2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#1B5E35"/></marker>
+<marker id="r3" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#2C5F8A"/></marker>
+</defs>
+<rect x="200" y="48" width="100" height="36" rx="5" fill="#FBF4E0" stroke="#9A6C00" stroke-width="2"/>
+<text x="250" y="64" text-anchor="middle" font-family="monospace" font-size="11" fill="#9A6C00" font-weight="700">router_node</text>
+<text x="250" y="78" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#9A6C00">pick_next_round_robin()</text>
+<line x1="200" y1="66" x2="180" y2="66" stroke="#9A6C00" stroke-width="1.2"/>
+<line x1="180" y1="66" x2="180" y2="20" stroke="#9A6C00" stroke-width="1"/>
+<text x="44" y="28" font-family="monospace" font-size="10" fill="#64748B">state.current_turn</text>
+<line x1="180" y1="20" x2="148" y2="20" stroke="#9A6C00" stroke-width="1.5" marker-end="url(#r1)" transform="rotate(180 164 20)"/>
+<line x1="300" y1="66" x2="330" y2="66" stroke="#9A6C00" stroke-width="1.2"/>
+<line x1="330" y1="66" x2="330" y2="20" stroke="#9A6C00" stroke-width="1"/>
+<line x1="330" y1="20" x2="360" y2="20" stroke="#1B5E35" stroke-width="1.5" marker-end="url(#r2)"/>
+<ellipse cx="402" cy="20" rx="30" ry="14" fill="#1B5E35"/>
+<text x="402" y="24" text-anchor="middle" font-family="monospace" font-size="9" fill="#fff">END</text>
+<text x="340" y="14" font-family="sans-serif" font-size="9" fill="#1B5E35">current_turn ≥ total_turns</text>
+<line x1="330" y1="66" x2="330" y2="106" stroke="#9A6C00" stroke-width="1"/>
+<line x1="330" y1="106" x2="360" y2="106" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#r3)"/>
+<rect x="360" y="92" width="100" height="26" rx="4" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="410" y="109" text-anchor="middle" font-family="monospace" font-size="10" fill="#2C5F8A">agentul următor</text>
+<text x="340" y="124" font-family="sans-serif" font-size="9" fill="#2C5F8A">altfel</text>
+</svg>
+<figcaption>Fig. 3 — Routerul decide pe baza unei singure verificări: a fost atins bugetul de ture? Dacă da, END. Dacă nu, alege agentul următor din rotație.</figcaption>
+</figure>
+</div>
+
+<div class="cb">
+<div class="cb-lbl">router.py — round-robin minimal</div>
+<pre><code><span class="kw">def</span> <span class="fn">pick_next_round_robin</span>(active_slugs: <span class="tp">list</span>, current_turn: <span class="tp">int</span>) -> <span class="tp">str</span>:
+    <span class="cm">"""Alege agentul următor: tura N → al N-lea agent (modulo nr. agenți)."""</span>
+    <span class="kw">return</span> active_slugs[current_turn % <span class="fn">len</span>(active_slugs)]
+
+<span class="kw">def</span> <span class="fn">router_node</span>(state: <span class="tp">ThreadState</span>) -> <span class="tp">dict</span>:
+    <span class="cm">"""Setează next_slug în state, sau '__end__' dacă thread-ul s-a terminat."""</span>
+    <span class="kw">if</span> state[<span class="st">"current_turn"</span>] &gt;= state[<span class="st">"total_turns"</span>]:
+        <span class="kw">return</span> {<span class="st">"next_slug"</span>: <span class="st">"__end__"</span>}
+
+    next_slug = <span class="fn">pick_next_round_robin</span>(
+        state[<span class="st">"active_slugs"</span>],
+        state[<span class="st">"current_turn"</span>],
+    )
+    <span class="kw">return</span> {<span class="st">"next_slug"</span>: next_slug}
+
+<span class="kw">def</span> <span class="fn">route_decision</span>(state: <span class="tp">ThreadState</span>) -> <span class="tp">str</span>:
+    <span class="cm">"""Muchia condițională: citește next_slug și-l returnează ca etichetă."""</span>
+    <span class="kw">return</span> state[<span class="st">"next_slug"</span>]
+</code></pre>
+</div>
+
+<div class="note">
+  <p><strong>Trei funcții, trei roluri.</strong> <code class="i">pick_next_round_robin</code> este pură — primește două argumente, returnează un slug. Testabilă izolat. <code class="i">router_node</code> aplică logica pe state. <code class="i">route_decision</code> este folosită ca <em>conditional edge</em> și citește doar <code class="i">next_slug</code>. Separarea face routerul ușor de înlocuit (vezi secțiunea 15).</p>
+</div>
+</section>
+
+<!-- ══ 11 AGENT NODE ══════════════════════════════════════════════════ -->
+<section id="agentnode">
+<h2><span class="n">11</span>Agent node — apelul către agentul C6</h2>
+<div class="rule"></div>
+
+<p>Routerul decide <em>cine</em> vorbește. Agent node-ul decide <em>ce</em> spune — printr-un apel către agentul RAG construit în C6. Nu rescriem nimic din C6: doar îl chemăm cu un input extins care include și thread-ul anterior.</p>
+
+<div class="grid2">
+<div class="card">
+  <div class="card-tag">Router</div>
+  <h4>cine vorbește</h4>
+  <p>Citește <code class="i">current_turn</code> și <code class="i">active_slugs</code>. Setează <code class="i">next_slug</code>. Nu apelează LLM-ul.</p>
+</div>
+<div class="card hi">
+  <div class="card-tag">Agent node</div>
+  <h4>ce spune agentul</h4>
+  <p>Citește <code class="i">stimulus</code> și <code class="i">messages</code>. Apelează <code class="i">generate_agent_response()</code>. Returnează mesajul nou și incrementează <code class="i">current_turn</code>.</p>
+</div>
+</div>
+
+<div class="cb">
+<div class="cb-lbl">agent_node.py — factory pentru noduri specializate</div>
+<pre><code><span class="kw">from</span> <span class="nm">core.agent</span> <span class="kw">import</span> <span class="fn">generate_agent_response</span>
+
+<span class="kw">def</span> <span class="fn">make_agent_node</span>(slug: <span class="tp">str</span>):
+    <span class="cm">"""Factory: returnează un nod specializat pentru agentul `slug`."""</span>
+
+    <span class="kw">def</span> <span class="fn">agent_node</span>(state: <span class="tp">ThreadState</span>) -> <span class="tp">dict</span>:
+        thread_ctx = <span class="fn">thread_to_text</span>(state[<span class="st">"messages"</span>])
+
+        <span class="cm"># input extins: stimulusul + thread-ul anterior</span>
+        extended_input = f<span class="st">"""[STIMULUS]
+{state['stimulus']}
+
+[THREAD ANTERIOR]
+{thread_ctx if thread_ctx else "Prima intervenție."}
+
+[SARCINĂ]
+Răspunde ca agentul tău. Dacă există mesaje anterioare, reacționează la ele."""</span>
+
+        <span class="cm"># apel către agentul RAG din C6</span>
+        result = <span class="fn">generate_agent_response</span>(
+            agent_slug=slug,
+            input_text=extended_input,
+            provider=state[<span class="st">"provider"</span>],
+            k=state[<span class="st">"k"</span>],
+        )
+
+        new_turn = state[<span class="st">"current_turn"</span>] + <span class="nb">1</span>
+        new_msg = {
+            <span class="st">"agent"</span>: result[<span class="st">"agent_name"</span>],
+            <span class="st">"slug"</span>:  slug,
+            <span class="st">"text"</span>:  result[<span class="st">"response"</span>],
+            <span class="st">"turn"</span>:  new_turn,
+        }
+
+        <span class="cm"># întoarcem messages cu mesajul nou adăugat la sfârșit</span>
+        <span class="kw">return</span> {
+            <span class="st">"messages"</span>:     state[<span class="st">"messages"</span>] + [new_msg],
+            <span class="st">"current_turn"</span>: new_turn,
+        }
+
+    <span class="kw">return</span> agent_node
+</code></pre>
+</div>
+
+<div class="note g">
+  <p><strong>De ce factory.</strong> Avem 3-5 agenți. Un nod per agent. <code class="i">make_agent_node("anti_sistem")</code> produce un nod care apelează agentul anti-sistem. <code class="i">make_agent_node("pro_european")</code> produce alt nod. Alternativa — un singur nod care primește slug-ul prin state — ar amesteca routarea cu execuția și ar face graful mai greu de citit.</p>
+</div>
+</section>
+
+<!-- ══ 12 FULLGRAPH ═══════════════════════════════════════════════════ -->
+<section id="fullgraph">
+<h2><span class="n">12</span>Graful multi-agent complet</h2>
+<div class="rule"></div>
+
+<p>Conectăm <code class="i">router_node</code>, <code class="i">route_decision</code> și nodurile produse de <code class="i">make_agent_node</code> într-un graf canonic. Fiecare agent se întoarce la router după ce a vorbit — pentru că routerul este singurul care știe dacă thread-ul continuă sau s-a oprit.</p>
+
+<div class="cb">
+<div class="cb-lbl">build_graph.py — graful multi-agent</div>
+<pre><code><span class="kw">from</span> <span class="nm">langgraph.graph</span> <span class="kw">import</span> <span class="fn">StateGraph</span>, <span class="fn">START</span>, <span class="fn">END</span>
+
+<span class="kw">def</span> <span class="fn">build_graph</span>(active_slugs: <span class="tp">list</span>[<span class="tp">str</span>]):
+    workflow = <span class="fn">StateGraph</span>(<span class="tp">ThreadState</span>)
+
+    <span class="cm"># nodul router</span>
+    workflow.add_node(<span class="st">"router"</span>, router_node)
+
+    <span class="cm"># câte un nod pentru fiecare agent activ</span>
+    <span class="kw">for</span> slug <span class="kw">in</span> active_slugs:
+        workflow.add_node(slug, <span class="fn">make_agent_node</span>(slug))
+        workflow.add_edge(slug, <span class="st">"router"</span>)     <span class="cm"># agent → router (întotdeauna)</span>
+
+    <span class="cm"># intrare</span>
+    workflow.add_edge(<span class="fn">START</span>, <span class="st">"router"</span>)
+
+    <span class="cm"># muchia condițională: router → un agent sau END</span>
+    mapping = {slug: slug <span class="kw">for</span> slug <span class="kw">in</span> active_slugs} | {<span class="st">"__end__"</span>: <span class="fn">END</span>}
+    workflow.add_conditional_edges(<span class="st">"router"</span>, route_decision, mapping)
+
+    <span class="kw">return</span> workflow.compile()
+</code></pre>
+</div>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:0 auto">
+<defs>
+<marker id="fg1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#9A6C00"/></marker>
+<marker id="fg2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#64748B"/></marker>
+<marker id="fg3" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#1B5E35"/></marker>
+</defs>
+<ellipse cx="36" cy="90" rx="30" ry="18" fill="#1A1D2B"/>
+<text x="36" y="94" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">START</text>
+<line x1="66" y1="90" x2="86" y2="90" stroke="#9A6C00" stroke-width="1.5" marker-end="url(#fg1)"/>
+<rect x="86" y="72" width="76" height="36" rx="5" fill="#FBF4E0" stroke="#9A6C00" stroke-width="2"/>
+<text x="124" y="88" text-anchor="middle" font-family="monospace" font-size="11" fill="#9A6C00" font-weight="700">router</text>
+<text x="124" y="102" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#9A6C00">pick_next()</text>
+<line x1="162" y1="90" x2="200" y2="90" stroke="#9A6C00" stroke-width="1.2"/>
+<line x1="200" y1="90" x2="200" y2="26" stroke="#9A6C00" stroke-width="1"/>
+<line x1="200" y1="90" x2="200" y2="154" stroke="#9A6C00" stroke-width="1"/>
+<line x1="200" y1="26" x2="232" y2="26" stroke="#B45309" stroke-width="1.5" marker-end="url(#fg1)"/>
+<rect x="232" y="12" width="100" height="28" rx="4" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+<text x="282" y="30" text-anchor="middle" font-family="monospace" font-size="10" fill="#B45309">anti_sistem</text>
+<line x1="332" y1="26" x2="400" y2="26" stroke="#64748B" stroke-width="1.2" stroke-dasharray="3,2"/>
+<line x1="400" y1="26" x2="400" y2="90" stroke="#64748B" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#fg2)"/>
+<line x1="200" y1="90" x2="232" y2="90" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#fg1)"/>
+<rect x="232" y="76" width="100" height="28" rx="4" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5"/>
+<text x="282" y="94" text-anchor="middle" font-family="monospace" font-size="10" fill="#7C3AED">conspirationist</text>
+<line x1="332" y1="90" x2="396" y2="90" stroke="#64748B" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#fg2)"/>
+<line x1="200" y1="154" x2="232" y2="154" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#fg1)"/>
+<rect x="232" y="140" width="100" height="28" rx="4" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="282" y="158" text-anchor="middle" font-family="monospace" font-size="10" fill="#2C5F8A">pro_european</text>
+<line x1="332" y1="154" x2="400" y2="154" stroke="#64748B" stroke-width="1.2" stroke-dasharray="3,2"/>
+<line x1="400" y1="154" x2="400" y2="90" stroke="#64748B" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#fg2)"/>
+<ellipse cx="490" cy="90" rx="34" ry="18" fill="#1B5E35"/>
+<text x="490" y="94" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">END</text>
+<line x1="430" y1="90" x2="454" y2="90" stroke="#1B5E35" stroke-width="1.5" marker-end="url(#fg3)"/>
+<text x="370" y="20" font-family="sans-serif" font-size="9" fill="#64748B" font-style="italic">agent → router</text>
+</svg>
+<figcaption>Fig. 4 — Graful complet C7. Săgețile galbene: router → agent (muchie condițională, decisă la runtime). Săgețile gri întrerupte: agent → router (muchie fixă). Routerul este nodul central.</figcaption>
+</figure>
+</div>
+
+<p>Topologia este aceeași indiferent de câți agenți avem — adăugarea unui al patrulea sau al cincilea agent înseamnă doar adăugarea unui nou nod și a unui mapping nou. Graful crește în lățime, nu în complexitate.</p>
+</section>
+
+<!-- ══ 13 RUNNING ═════════════════════════════════════════════════════ -->
+<section id="running">
+<h2><span class="n">13</span>Rulăm primul thread multi-agent</h2>
+<div class="rule"></div>
+
+<p>Compilăm graful și îl invocăm cu un state inițial. LangGraph se ocupă de restul: rulează routerul, decide următorul agent, îl rulează, se întoarce la router, repetă până când contorul ajunge la <code class="i">total_turns</code>.</p>
+
+<div class="cb">
+<div class="cb-lbl">run_thread.py</div>
+<pre><code>graph = <span class="fn">build_graph</span>([<span class="st">"anti_sistem"</span>, <span class="st">"conspirationist"</span>, <span class="st">"pro_european"</span>])
+
+initial_state = {
+    <span class="st">"stimulus"</span>:     <span class="st">"CCR a decis anularea alegerilor după suspiciuni privind influențe externe."</span>,
+    <span class="st">"messages"</span>:     [],
+    <span class="st">"active_slugs"</span>: [<span class="st">"anti_sistem"</span>, <span class="st">"conspirationist"</span>, <span class="st">"pro_european"</span>],
+    <span class="st">"total_turns"</span>:  <span class="nb">4</span>,
+    <span class="st">"current_turn"</span>: <span class="nb">0</span>,
+    <span class="st">"next_slug"</span>:    <span class="st">""</span>,
+    <span class="st">"provider"</span>:     <span class="st">"gemini"</span>,
+    <span class="st">"k"</span>:            <span class="nb">3</span>,
+}
+
+result = graph.invoke(initial_state)
+<span class="kw">for</span> m <span class="kw">in</span> result[<span class="st">"messages"</span>]:
+    <span class="fn">print</span>(f<span class="st">"Turn {m['turn']} — {m['agent']}: {m['text']}"</span>)
+</code></pre>
+</div>
+
+<div class="note a">
+  <p>Inputul este același pentru toți studenții, ca să putem compara conversațiile produse. Recomandat: <em>„CCR a decis anularea alegerilor după suspiciuni privind influențe externe."</em>. Trei agenți, patru ture, provider Gemini sau DeepSeek.</p>
+</div>
+</section>
+
+<!-- ══ 14 DISPLAY ═════════════════════════════════════════════════════ -->
+<section id="display">
+<h2><span class="n">14</span>Afișarea thread-ului</h2>
+<div class="rule"></div>
+
+<p>După <code class="i">graph.invoke()</code>, <code class="i">result["messages"]</code> conține lista de mesaje produse. O afișăm ca thread cu carduri colorate per agent — același stil pe care îl folosește aplicația finală. Tabelul Pandas nu este vizualizarea principală: thread-ul are sens ca succesiune de intervenții, nu ca rânduri într-o tabelă.</p>
+
+<div class="thread">
+<div class="thread-msg as">
+  <div class="turn-label">TURN 1 · @LIBERTATERO99 · ANTI-SISTEM</div>
+  <div class="turn-text">Instituțiile par din nou rupte de oameni. O decizie de o asemenea gravitate, luată fără explicații clare, întărește sentimentul că sistemul nu mai răspunde nimănui.</div>
+</div>
+<div class="thread-msg cs">
+  <div class="turn-label">TURN 2 · @ADEVARULVIU · CONSPIRAȚIONIST</div>
+  <div class="turn-text">„Influențe externe" — exact așa numesc ei mereu mâinile pe care nu vor să le numească. Cine câștigă din anularea asta? Acolo este răspunsul, nu în comunicatele oficiale.</div>
+</div>
+<div class="thread-msg pe">
+  <div class="turn-label">TURN 3 · @EUROOPTIMISTRO · PRO-EUROPEAN</div>
+  <div class="turn-text">CCR a aplicat o procedură constituțională. Putem critica decizia, dar haideți să nu confundăm controlul de constituționalitate cu o conspirație. Dovezile contează mai mult decât bănuielile.</div>
+</div>
+<div class="thread-msg as">
+  <div class="turn-label">TURN 4 · @LIBERTATERO99 · ANTI-SISTEM</div>
+  <div class="turn-text">Procedurile au existat și atunci când instituțiile au eșuat. Forma nu este o garanție de fond — cetățenii vor răspunsuri, nu lecții constituționale.</div>
+</div>
+</div>
+
+<p>Patru intervenții, ordine A → B → C → A (round-robin), fiecare agent vede thread-ul anterior și reacționează. Textele de mai sus sunt reprezentative — outputul concret depinde de modelul ales și de fragmentele FAISS recuperate pentru fiecare rol.</p>
+
+<div class="task">
+<div class="task-tag">Mini-task · interpretare</div>
+<p>Rulează thread-ul cu același stimulus, dar inversează ordinea din <code style="color:#FFC000">active_slugs</code>. Compară rezultatele: prima intervenție stabilește cadrul interpretativ pentru tot ce urmează?</p>
+</div>
+</section>
+
+<!-- ══ 15 LLM-ROUTER ══════════════════════════════════════════════════ -->
+<section id="llm-router">
+<h2><span class="n">15</span>Router LLM — extensie opțională</h2>
+<div class="rule"></div>
+
+<p>Round-robin este robust, dar mecanic — agenții vorbesc în ordine fixă indiferent de ce s-a spus. Pentru conversații mai dinamice, putem înlocui routerul cu un apel LLM care alege agentul potrivit pe baza thread-ului. <strong>Aceasta este o extensie, nu o cerință obligatorie C7.</strong></p>
+
+<div class="tw">
+<table>
+<thead><tr><th>Router</th><th>Avantaj</th><th>Risc</th></tr></thead>
+<tbody>
+<tr><td><strong>round-robin</strong></td><td>stabil, explicabil, reproducibil</td><td>poate părea mecanic în conversații lungi</td></tr>
+<tr><td><strong>LLM router</strong></td><td>mai flexibil, contextual</td><td>poate alege repetat același agent · cost LLM la fiecare tură</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note r">
+  <p><strong>Regulă obligatorie pentru router LLM.</strong> Nu alege același agent de două ori la rând. Fără această constrângere, modelul tinde să continue cu agentul curent („pentru că tocmai a vorbit despre subiectul potrivit") — și conversația devine monolog.</p>
+</div>
+
+<div class="cb">
+<div class="cb-lbl">router_llm.py — extensie opțională</div>
+<pre><code><span class="kw">from</span> <span class="nm">core.agent</span> <span class="kw">import</span> <span class="fn">make_llm</span>
+
+<span class="kw">def</span> <span class="fn">router_node_llm</span>(state: <span class="tp">ThreadState</span>) -> <span class="tp">dict</span>:
+    <span class="kw">if</span> state[<span class="st">"current_turn"</span>] &gt;= state[<span class="st">"total_turns"</span>]:
+        <span class="kw">return</span> {<span class="st">"next_slug"</span>: <span class="st">"__end__"</span>}
+
+    active = state[<span class="st">"active_slugs"</span>]
+    <span class="kw">if</span> <span class="kw">not</span> state[<span class="st">"messages"</span>]:
+        <span class="kw">return</span> {<span class="st">"next_slug"</span>: active[<span class="nb">0</span>]}
+
+    <span class="cm"># constrângerea hard: nu alege agentul care tocmai a vorbit</span>
+    last_slug  = state[<span class="st">"messages"</span>][-<span class="nb">1</span>][<span class="st">"slug"</span>]
+    candidates = [s <span class="kw">for</span> s <span class="kw">in</span> active <span class="kw">if</span> s != last_slug] <span class="kw">or</span> active
+
+    prompt = f<span class="st">"""[STIMULUS]
+{state["stimulus"]}
+
+[THREAD]
+{thread_to_text(state["messages"])}
+
+[Agenți disponibili]
+{chr(10).join(f"- {s}" for s in candidates)}
+
+Alege agentul care ar trebui să răspundă următorul.
+Răspunde DOAR cu slug-ul exact."""</span>
+
+    llm    = <span class="fn">make_llm</span>(provider=state[<span class="st">"provider"</span>], temperature=<span class="nb">0.1</span>)
+    chosen = llm.invoke(prompt).content.strip().lower()
+    <span class="kw">return</span> {<span class="st">"next_slug"</span>: chosen <span class="kw">if</span> chosen <span class="kw">in</span> candidates <span class="kw">else</span> candidates[<span class="nb">0</span>]}
+</code></pre>
+</div>
+
+<p>Restul grafului rămâne identic. Schimbi un singur nod — <code class="i">router_node</code> → <code class="i">router_node_llm</code> — și toți agenții continuă să funcționeze. Aceasta este modularitatea LangGraph: politica de routing este o componentă interschimbabilă.</p>
+</section>
+
+<!-- ══ 16 CORE GRAPH ══════════════════════════════════════════════════ -->
+<section id="core-graph">
+<h2><span class="n">16</span>De la notebook la <code class="i">core/graph.py</code></h2>
+<div class="rule"></div>
+
+<p>Notebook-ul este pentru învățare și explorare. Aplicația are nevoie de funcții reutilizabile, importabile din alte module. Mutăm logica de mai sus într-un singur fișier <code class="i">core/graph.py</code> cu un API minimal.</p>
+
+<div class="cb">
+<div class="cb-lbl">core/graph.py — API public</div>
+<pre><code><span class="kw">from</span> <span class="nm">typing</span> <span class="kw">import</span> <span class="tp">TypedDict</span>
+<span class="kw">from</span> <span class="nm">langgraph.graph</span> <span class="kw">import</span> <span class="fn">StateGraph</span>, <span class="fn">START</span>, <span class="fn">END</span>
+<span class="kw">from</span> <span class="nm">core.agent</span> <span class="kw">import</span> <span class="fn">generate_agent_response</span>
+
+<span class="cm"># --- State ---------------------------------------------------------</span>
+<span class="kw">class</span> <span class="tp">ThreadState</span>(<span class="tp">TypedDict</span>):
+    stimulus: <span class="tp">str</span>; messages: <span class="tp">list</span>; active_slugs: <span class="tp">list</span>
+    total_turns: <span class="tp">int</span>; current_turn: <span class="tp">int</span>; next_slug: <span class="tp">str</span>
+    provider: <span class="tp">str</span>; k: <span class="tp">int</span>
+
+<span class="cm"># --- Helpers -------------------------------------------------------</span>
+<span class="kw">def</span> <span class="fn">thread_to_text</span>(messages: <span class="tp">list</span>) -> <span class="tp">str</span>: ...
+
+<span class="cm"># --- Router --------------------------------------------------------</span>
+<span class="kw">def</span> <span class="fn">router_node</span>(state):    ...
+<span class="kw">def</span> <span class="fn">route_decision</span>(state): <span class="kw">return</span> state[<span class="st">"next_slug"</span>]
+
+<span class="cm"># --- Agent node factory --------------------------------------------</span>
+<span class="kw">def</span> <span class="fn">make_agent_node</span>(slug: <span class="tp">str</span>): ...
+
+<span class="cm"># --- Builder + runner ---------------------------------------------</span>
+<span class="kw">def</span> <span class="fn">build_graph</span>(active_slugs): ...
+
+<span class="kw">def</span> <span class="fn">run_thread</span>(stimulus: <span class="tp">str</span>, active_slugs: <span class="tp">list</span>,
+               total_turns: <span class="tp">int</span> = <span class="nb">4</span>, provider: <span class="tp">str</span> = <span class="st">"gemini"</span>,
+               k: <span class="tp">int</span> = <span class="nb">3</span>) -> <span class="tp">dict</span>:
+    graph = <span class="fn">build_graph</span>(active_slugs)
+    <span class="kw">return</span> graph.invoke({
+        <span class="st">"stimulus"</span>: stimulus, <span class="st">"messages"</span>: [],
+        <span class="st">"active_slugs"</span>: active_slugs, <span class="st">"total_turns"</span>: total_turns,
+        <span class="st">"current_turn"</span>: <span class="nb">0</span>, <span class="st">"next_slug"</span>: <span class="st">""</span>,
+        <span class="st">"provider"</span>: provider, <span class="st">"k"</span>: k,
+    })
+</code></pre>
+</div>
+
+<p>Test rapid din terminal — fiecare membru al echipei rulează această comandă ca să verifice că <code class="i">core/graph.py</code> funcționează izolat:</p>
+
+<div class="cb">
+<div class="cb-lbl">test terminal — core/graph.py funcționează</div>
+<pre><code>python -m core.graph \
+  --agents anti_sistem conspirationist pro_european \
+  --text <span class="st">"CCR a decis anularea alegerilor după suspiciuni privind influențe externe."</span> \
+  --turns <span class="nb">4</span> \
+  --provider gemini
+</code></pre>
+</div>
+</section>
+
+<!-- ══ 17 APP INTEGRATION ════════════════════════════════════════════ -->
+<section id="app-integration">
+<h2><span class="n">17</span>Integrare minimă în aplicație</h2>
+<div class="rule"></div>
+
+<p><code class="i">app.py</code> nu trebuie să cunoască LangGraph. Singurul lucru pe care îl face este să apeleze <code class="i">run_thread()</code> și să afișeze mesajele. Aceasta este toată integrarea pentru C7.</p>
+
+<div class="diag">
+<figure>
+<svg viewBox="0 0 620 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;display:block;margin:0 auto">
+<defs>
+<marker id="i1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#2C5F8A"/></marker>
+</defs>
+<rect x="10" y="32" width="170" height="32" rx="5" fill="#E6F0F8" stroke="#2C5F8A" stroke-width="1.5"/>
+<text x="95" y="52" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1A1D2B">stimulus + agenți + runde</text>
+<line x1="180" y1="48" x2="208" y2="48" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#i1)"/>
+<rect x="208" y="32" width="130" height="32" rx="5" fill="#1A1D2B"/>
+<text x="273" y="53" text-anchor="middle" font-family="monospace" font-size="11" fill="#FFC000" font-weight="700">run_thread()</text>
+<line x1="338" y1="48" x2="366" y2="48" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#i1)"/>
+<rect x="366" y="32" width="100" height="32" rx="5" fill="#F0EBE1" stroke="#D8D0C4" stroke-width="1.5"/>
+<text x="416" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#1A1D2B">messages</text>
+<line x1="466" y1="48" x2="494" y2="48" stroke="#2C5F8A" stroke-width="1.5" marker-end="url(#i1)"/>
+<rect x="494" y="32" width="118" height="32" rx="5" fill="#ECF5EE" stroke="#1B5E35" stroke-width="1.5"/>
+<text x="553" y="52" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B5E35">afișare thread</text>
+</svg>
+<figcaption>Fig. 5 — Integrarea în app. Tot ce face aplicația este să colecteze 3 inputuri, să cheme o funcție și să afișeze rezultatul.</figcaption>
+</figure>
+</div>
+
+<div class="cb">
+<div class="cb-lbl">app/app.py — tab multi-agent minimal</div>
+<pre><code><span class="kw">from</span> <span class="nm">core.graph</span> <span class="kw">import</span> <span class="fn">run_thread</span>
+
+<span class="cm"># În tab-ul „Multi-agent thread"</span>
+<span class="kw">def</span> <span class="fn">on_run_click</span>(stimulus, active_slugs, total_turns, provider):
+    result = <span class="fn">run_thread</span>(
+        stimulus=stimulus,
+        active_slugs=active_slugs,
+        total_turns=total_turns,
+        provider=provider,
+    )
+    <span class="kw">return</span> result[<span class="st">"messages"</span>]   <span class="cm"># UI le afișează ca thread cu carduri</span>
+</code></pre>
+</div>
+
+<div class="note">
+  <p><strong>Principiu de design.</strong> Aplicația este o interfață peste <code class="i">run_thread()</code>. Toată logica LangGraph rămâne în <code class="i">core/graph.py</code>. Dacă schimbi routerul sau topologia grafului, <code class="i">app.py</code> nu se modifică deloc.</p>
+</div>
+</section>
+
+<!-- ══ 18 ETHICS ═══════════════════════════════════════════════════════ -->
+<section id="ethics">
+<h2><span class="n">18</span>Etică și limite</h2>
+<div class="rule"></div>
+
+<div class="note r">
+  <p><strong>Agenții nu sunt persoane reale.</strong> Răspunsurile generate nu sunt opinii autentice ale vreunei grupări politice. Sistemul simulează poziții discursive construite din corpus — atât tehnic, cât și editorial. Orice prezentare publică a output-ului trebuie să clarifice această distincție.</p>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>Dimensiune</th><th>Risc</th><th>Control minim</th></tr></thead>
+<tbody>
+<tr><td><strong>Transparență</strong></td><td>agenții pot părea persoane reale</td><td>disclaimer explicit: agenți simulați</td></tr>
+<tr><td><strong>Factualitate</strong></td><td>răspunsurile pot părea adevăr verificat</td><td>separăm răspunsul de contextul RAG în UI</td></tr>
+<tr><td><strong>Date</strong></td><td>corpusul poate conține date personale</td><td>minimizare și curățare la C3</td></tr>
+<tr><td><strong>Amplificare</strong></td><td>conversația poate escalada conflictul</td><td>limită de runde + review uman</td></tr>
+<tr><td><strong>Reprezentare</strong></td><td>rolurile pot fi confundate cu grupuri reale</td><td>etichetăm „poziții discursive construite"</td></tr>
+<tr><td><strong>Responsabilitate</strong></td><td>outputul poate fi reutilizat greșit</td><td><code class="i">docs/ethics_and_limits.md</code> + README</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="task">
+<div class="task-tag">Mini-task · disclaimer</div>
+<p>Scrie un disclaimer de 3–4 fraze pentru aplicația EchoChamber. Include: (1) ce este sistemul, (2) ce nu este, (3) pe ce date se bazează, (4) cum trebuie interpretat output-ul. Salvează în <code style="color:#FFC000">docs/ethics_and_limits.md</code>.</p>
+</div>
+</section>
+
+<!-- ══ 19 SEMINAR ═════════════════════════════════════════════════════ -->
+<section id="seminar">
+<h2><span class="n">19</span>Seminar C7 — EchoChamber</h2>
+<div class="rule"></div>
+
+<p>Toată mecanica LangGraph de mai sus se concretizează în seminar într-o singură sesiune practică. La final, echipa are un thread multi-agent funcțional integrat în aplicație.</p>
+
+<h3>Ce construim concret</h3>
+
+<ol class="steps">
+<li><div><strong>Notebook</strong><p><code class="i">notebooks/student_XX/C7_01_langgraph_multi_agent_thread.ipynb</code> — parcurgem mecanica LangGraph, construim graful, rulăm un thread, afișăm rezultatul cu cardurile colorate per agent.</p></div></li>
+<li><div><strong>Backend reutilizabil</strong><p><code class="i">core/graph.py</code> cu API-ul minimal: <code class="i">ThreadState</code>, <code class="i">router_node</code>, <code class="i">make_agent_node</code>, <code class="i">build_graph</code>, <code class="i">run_thread</code>. Importabil din <code class="i">app.py</code>.</p></div></li>
+<li><div><strong>Tab multi-agent în aplicație</strong><p>Tab nou minimal: utilizatorul alege stimulusul, agenții și numărul de ture; apasă „Run"; thread-ul apare ca succesiune de carduri.</p></div></li>
+<li><div><strong>Disclaimer și etică</strong><p><code class="i">docs/ethics_and_limits.md</code> — scriem o pagină scurtă cu disclaimer-ul și limitele sistemului. Aceasta este obligatorie înainte de orice demo public.</p></div></li>
+</ol>
+
+<h3>Cum se leagă de C6</h3>
+
+<p>C7 nu rescrie C6. <strong>LangGraph orchestrează agentul C6.</strong> Funcția <code class="i">generate_agent_response()</code> din <code class="i">core/agent.py</code> rămâne neatinsă; o chemăm dintr-un nod LangGraph. Dacă agentul C6 nu funcționează izolat, graful C7 nu are ce să controleze.</p>
+
+<div class="note">
+  <p><strong>Test de validare înainte de a începe.</strong> <code class="i">python -m core.agent --agent anti_sistem --text "..." --provider gemini</code> trebuie să returneze un răspuns ancorat în corpus. Dacă nu merge, repară C6 înainte de a continua cu C7.</p>
+</div>
+</section>
+
+<!-- ══ 20 DELIVERABLES ════════════════════════════════════════════════ -->
+<section id="deliverables">
+<h2><span class="n">20</span>Livrabile C7</h2>
+<div class="rule"></div>
+
+<div class="grid2">
+<div class="card hi">
+  <div class="card-tag">Individual</div>
+  <h4>Notebook + interpretare</h4>
+  <p><code class="i">notebooks/student_XX/C7_01_langgraph_multi_agent_thread.ipynb</code></p>
+  <p style="margin-top:8px">· 1 thread multi-agent rulat<br>· 3 agenți, 4 ture, același stimulus<br>· mini-interpretare (3–5 fraze) despre dinamica conversației</p>
+</div>
+<div class="card">
+  <div class="card-tag">Echipă</div>
+  <h4>Backend + app + docs</h4>
+  <p>· <code class="i">core/graph.py</code> cu <code class="i">run_thread()</code> funcțional<br>· <code class="i">app/app.py</code> cu tab multi-agent minimal<br>· <code class="i">docs/ethics_and_limits.md</code><br>· <code class="i">README.md</code> actualizat</p>
+</div>
+</div>
+
+<div class="note g">
+  <p><strong>Criteriu de succes.</strong> La final, oricine descarcă repo-ul poate rula aplicația local, alege 3 agenți, pune un stimulus și obține un thread multi-agent în UI. Atât. Nu cerem dashboard, metrici complexe sau evaluare automată.</p>
+</div>
+</section>
+
+<!-- ══ 21 TEAMWORK ═══════════════════════════════════════════════════ -->
+<section id="teamwork">
+<h2><span class="n">21</span>Team work session — 60 de minute</h2>
+<div class="rule"></div>
+
+<p><strong>Scop.</strong> Stabilizăm aplicația și pregătim trecerea de la Agent RAG simplu (C6) la thread multi-agent (C7). La final, echipa trebuie să poată rula aplicația local și să genereze un thread funcțional pentru cel puțin un grup de agenți.</p>
+
+<div class="note r">
+  <p><strong>Regula principală.</strong> Nu lucrează doi membri pe același fișier comun în același timp. Pentru fiecare fișier comun, un singur membru este responsabil.</p>
+</div>
+
+<h3>Împărțirea rolurilor</h3>
+
+<div class="roster">
+<div class="role">
+  <div class="role-tag">Membru A</div>
+  <h4>Roles lead</h4>
+  <div class="role-file">assets/roles/roles.yaml · role_XX.yaml</div>
+  <p>Verifică structura YAML, prezența câmpurilor <code class="i">slug</code>, <code class="i">name</code>, <code class="i">emoji</code>, <code class="i">color</code>, <code class="i">system</code>. Rulează testul de încărcare.</p>
+</div>
+<div class="role">
+  <div class="role-tag">Membru B</div>
+  <h4>Retrieval lead</h4>
+  <div class="role-file">core/retriever.py · vectorstores/</div>
+  <p>Verifică existența <code class="i">index.faiss</code> și <code class="i">index.pkl</code> pentru agentul testat. Rulează <code class="i">python -m core.retriever</code> ca test terminal.</p>
+</div>
+<div class="role">
+  <div class="role-tag">Membru C</div>
+  <h4>Agent backend lead</h4>
+  <div class="role-file">core/agent.py</div>
+  <p>Verifică <code class="i">generate_agent_response()</code>. Rulează <code class="i">python -m core.agent --agent anti_sistem --text "..." --provider gemini</code>.</p>
+</div>
+<div class="role">
+  <div class="role-tag">Membru D</div>
+  <h4>LangGraph / workflow lead</h4>
+  <div class="role-file">core/graph.py · notebook C7</div>
+  <p>Construiește sau verifică <code class="i">core/graph.py</code>. Rulează <code class="i">python -m core.graph</code> cu agenții, textul și provider-ul. Output așteptat: lista de mesaje.</p>
+</div>
+<div class="role">
+  <div class="role-tag">Membru E</div>
+  <h4>App lead</h4>
+  <div class="role-file">app/app.py</div>
+  <p>Pornește <code class="i">python app/app.py</code>. Verifică tab-urile existente. Adaugă tab multi-agent care apelează <code class="i">run_thread()</code>.</p>
+</div>
+<div class="role">
+  <div class="role-tag">Membru F</div>
+  <h4>GitHub / issue lead</h4>
+  <div class="role-file">issues · commits · README</div>
+  <p>Verifică issues C6 deschise. Coordonează commit-urile pe fișierele comune. Nu modifică fișierele dacă alt membru lucrează pe ele.</p>
+</div>
+</div>
+
+<h3>Ordinea de verificare</h3>
+
+<p>Echipa <strong>nu</strong> începe cu aplicația. Ordinea este: roles → retriever → agent → graph → app → GitHub. Dacă un pas nu merge, nu treceți la următorul.</p>
+
+<div class="cb">
+<div class="cb-lbl">test comun pentru toată echipa</div>
+<pre><code><span class="cm"># Toate testele folosesc același input</span>
+INPUT=<span class="st">"CCR a decis anularea alegerilor după suspiciuni privind influențe externe."</span>
+AGENT=<span class="st">"anti_sistem"</span>   <span class="cm"># sau agentul pentru care echipa are sigur vectorstore</span>
+
+python -m core.retriever --agent $AGENT --query <span class="st">"$INPUT"</span> --k <span class="nb">5</span>
+python -m core.agent     --agent $AGENT --text <span class="st">"$INPUT"</span> --provider gemini
+python -m core.graph     --agents anti_sistem conspirationist pro_european \
+                          --text <span class="st">"$INPUT"</span> --turns <span class="nb">4</span> --provider gemini
+</code></pre>
+</div>
+
+<h3>Ce NU facem azi</h3>
+
+<div class="grid3">
+<div class="card">
+  <div class="card-tag">Skip</div>
+  <h4>UI redesign</h4>
+  <p>Tab-ul multi-agent este minimal. Restul interfeței rămâne neatinsă.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Skip</div>
+  <h4>Dashboard, metrici complexe</h4>
+  <p>Fără grafice, fără statistici. Doar thread-ul afișat ca succesiune de carduri.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Skip</div>
+  <h4>RAGAS</h4>
+  <p>Evaluarea automată RAG nu intră în C7. Rămâne demo profesor sau C8+.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Skip</div>
+  <h4>n8n, MCP</h4>
+  <p>Automatizări externe — nu fac parte din scopul C7. Demo separat dacă rămâne timp.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Skip</div>
+  <h4>Scraping web</h4>
+  <p>Stimulusul vine manual. RSS-ul rămâne pentru extensii viitoare.</p>
+</div>
+<div class="card">
+  <div class="card-tag">Skip</div>
+  <h4>Multi-agent debate complet</h4>
+  <p>Round-robin cu 3 agenți, 4 ture, atât. Conversații lungi rămân pentru C8+.</p>
+</div>
+</div>
+
+<h3>Raport scurt la final</h3>
+
+<div class="cb">
+<div class="cb-lbl">comentariu pe issue-ul C7</div>
+<pre><code>DONE C7 team work session
+
+roles.yaml works:           yes / no
+retriever works:            yes / no
+agent.py works:             yes / no
+graph.py / notebook works:  yes / no
+app multi-agent tab works:  yes / no
+ethics_and_limits.md:       yes / no
+
+Observații:
+- [orice problemă rămasă deschisă]
+- [ce trebuie reluat în sesiunea următoare]
+</code></pre>
+</div>
+</section>
+
+<!-- ══ Resurse ════════════════════════════════════════════════════════ -->
+<hr class="div">
+<section id="resources">
+<h2>Resurse</h2>
+<div class="rule"></div>
+
+<ul>
+  <li><a href="langgraph_tutorial.html">LangGraph — Tutorial tehnic didactic</a> (referință teoretică detaliată: State, Node, Edge, Conditional Edge, Checkpointing, HITL)</li>
+  <li>Documentație oficială LangGraph — <a href="https://docs.langchain.com/oss/python/langgraph/graph-api" target="_blank">docs.langchain.com/oss/python/langgraph/graph-api</a></li>
+  <li>LangGraph 101 — exemple oficiale GitHub: <a href="https://github.com/langchain-ai/langgraph-101" target="_blank">github.com/langchain-ai/langgraph-101</a></li>
+  <li>Notebook-ul seminarului C7: <code class="i">notebooks/student_XX/C7_01_langgraph_multi_agent_thread.ipynb</code></li>
+</ul>
+
+<p style="margin-top:14px"><strong>Concluzie.</strong> LangGraph nu face modelul mai inteligent. Face fluxul explicit, controlabil și inspectabil. În C6 am produs răspunsuri individuale. În C7 am construit un thread multi-agent — agenții au roluri, văd conversația, sunt coordonați de un router. Aceasta este fundația pentru aplicația finală din C8.</p>
+</section>
+
+</main>
+</div>
+
+<script>
+const links=document.querySelectorAll('.sidebar li a');
+const secs=document.querySelectorAll('section[id],div[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(el=>{if(window.scrollY>=el.offsetTop-80)cur=el.id});
+  links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+},{passive:true});
+</script>
+</body>
+</html>

@@ -1,3 +1,5 @@
-2026/05/12-14:57:08.429 2eec Reusing MANIFEST c:\PROJECTS\courses\tutorials\.edge-profile-check\Default\Site Characteristics Database/MANIFEST-000001
-2026/05/12-14:57:08.430 2eec Recovering log #3
-2026/05/12-14:57:08.430 2eec Reusing old log c:\PROJECTS\courses\tutorials\.edge-profile-check\Default\Site Characteristics Database/000003.log 
+2026/05/15-14:31:12.581 36c8 Log #3: 1 ops saved to Table #4 OK
+2026/05/15-14:31:12.585 36c8 Archiving c:\PROJECTS\courses\tutorials\.edge-profile-check\Default\Site Characteristics Database/000003.log: OK
+2026/05/15-14:31:12.585 36c8 Table #4: 1 entries OK
+2026/05/15-14:31:12.591 36c8 Archiving c:\PROJECTS\courses\tutorials\.edge-profile-check\Default\Site Characteristics Database/MANIFEST-000001: OK
+2026/05/15-14:31:12.608 36c8 **** Repaired leveldb c:\PROJECTS\courses\tutorials\.edge-profile-check\Default\Site Characteristics Database; recovered 1 files; 130 bytes. Some data may have been lost. ****
