@@ -1943,20 +1943,27 @@ section { padding-top: 2rem; }
 }
 
 .camp-students {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, max-content));
   justify-content: center;
-  flex-wrap: wrap;
   gap: 4px;
-  max-width: 60px;
+  max-width: 86px;
 }
 
-.camp-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f6f4e;
-  border: 1px solid rgba(255,255,255,0.85);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+.camp-student-chip {
+  min-width: 22px;
+  padding: 0.12rem 0.28rem;
+  border-radius: 999px;
+  background: rgba(250, 249, 246, 0.94);
+  border: 1px solid rgba(47, 111, 78, 0.28);
+  color: #2f6f4e;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
 }
 
 .high-camp-empty {
@@ -4918,7 +4925,8 @@ function buildHighCampTeams(teams) {
         students: eligibleMembers.map(function(member) {
           return {
             key: String(member && (member.student_key || member.display_code || member.local_code || member.github_handle || 'student')),
-            label: getMemberLabel(member) || getStudentDisplayName(member)
+            label: getMemberLabel(member) || getStudentDisplayName(member),
+            badge: getHighCampStudentCode(member)
           };
         })
       };
@@ -5431,14 +5439,16 @@ function renderJourney(model) {
 function renderHighCampSection(highCampTeams) {
   const teams = Array.isArray(highCampTeams) ? highCampTeams : [];
   const overlayMarkup = teams.map(function(team) {
-    const studentDots = (Array.isArray(team.students) ? team.students : []).map(function(student) {
-      return `<span class="camp-dot" aria-hidden="true" data-student="${escapeHtml(student.label)}"></span>`;
+    const studentBadges = (Array.isArray(team.students) ? team.students : []).map(function(student) {
+      const badge = escapeHtml(student.badge || student.label || '\u2014');
+      const label = escapeHtml(student.label || student.badge || 'student');
+      return `<span class="camp-student-chip" title="${label}" aria-label="Student ${label}" data-student="${label}">${badge}</span>`;
     }).join('');
 
     return (
       `<div class="camp-team" style="left:${team.left}%; top:${team.top}%;">` +
         `<img class="camp-tent" src="${escapeHtml(team.tentSrc)}" alt="${escapeHtml(team.tentAlt)}">` +
-        `<div class="camp-students">${studentDots}</div>` +
+        `<div class="camp-students">${studentBadges}</div>` +
       `</div>`
     );
   }).join('');
@@ -5838,6 +5848,23 @@ function getTeamTaskSummary(team) {
 
 function getMemberLabel(member) {
   return String(member && (member.display_code || member.local_code || member.student_key || '') || '\u2014');
+}
+
+function getHighCampStudentCode(member) {
+  const preferredCode = String(member && (member.display_code || member.local_code || member.student_key || member.github_handle || '') || '').trim();
+  const lastDigitsMatch = preferredCode.match(/(\d+)(?!.*\d)/);
+  if (lastDigitsMatch) {
+    const digits = lastDigitsMatch[1];
+    return digits.length >= 2 ? digits : digits.padStart(2, '0');
+  }
+
+  const fallbackCode = preferredCode
+    .replace(/^student[_-]?/i, '')
+    .replace(/^s/i, '')
+    .replace(/[^a-z0-9]/gi, '')
+    .toUpperCase();
+
+  return fallbackCode ? fallbackCode.slice(0, 3) : '\u2014';
 }
 
 function getTopMemberData(members) {
