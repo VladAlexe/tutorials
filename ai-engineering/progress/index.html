@@ -1932,7 +1932,7 @@ section { padding-top: 2rem; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 1px;
 }
 
 .camp-tent {
@@ -1946,23 +1946,24 @@ section { padding-top: 2rem; }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, max-content));
   justify-content: center;
-  gap: 3px;
-  max-width: 58px;
+  gap: 2px;
+  max-width: 52px;
+  margin-top: -1px;
 }
 
 .camp-student-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 3px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 2px;
   border-radius: 999px;
   background: var(--camp-team-color, var(--accent));
   border: 1px solid rgba(255,255,255,0.72);
-  color: rgba(255, 250, 242, 0.98);
+  color: var(--camp-team-text, rgba(255, 250, 242, 0.98));
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8px;
+  font-size: 7.5px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0;
@@ -3488,6 +3489,14 @@ const HIGH_CAMP_POSITIONS = {
   T5: { left: 74, top: 93 },
   T6: { left: 86, top: 90 }
 };
+const HIGH_CAMP_TEAM_STYLES = {
+  T1: { color: '#bf6849', text: '#fff8ef' },
+  T2: { color: '#6e7c2f', text: '#fff8ef' },
+  T3: { color: '#3d6ea8', text: '#fff8ef' },
+  T4: { color: '#d4ab2c', text: '#4b3306' },
+  T5: { color: '#1c8a7d', text: '#fff8ef' },
+  T6: { color: '#7b2d47', text: '#fff8ef' }
+};
 const MOUNTAIN_TEAM_PALETTE = ['#C65B33', '#5A8F2F', '#2E71BF', '#C98A19', '#158B82', '#B24B66', '#596FBC', '#9E4C28'];
 function progressToColor(percent) {
   var t = clampPercent(percent) / 100;
@@ -4195,21 +4204,23 @@ function hasHighCampProgress(progressSource) {
   return toNumber(stage && stage.percent) > 0 || toNumber(stage && stage.closed) > 0;
 }
 
-function isTeamInHighCamp(team) {
-  const currentStageKey = inferStageKey(team && team.currentStage ? (team.currentStage.key || team.currentStage.title) : (team && (team.current_stage_id || team.current_stage)));
-  const teamStage = Array.isArray(team && team.stageProgress)
-    ? team.stageProgress.find(function(stage) { return stage.key === HIGH_CAMP_ENTRY_STAGE_KEY; })
-    : null;
-  const stageProgressStarted = teamStage
-    ? (toNumber(teamStage.percent) > 0 || toNumber(teamStage.closed) > 0)
-    : hasHighCampProgress(team);
+function hasMemberHighCampIssue(member) {
+  const memberIssues = []
+    .concat(Array.isArray(member && member.memberOpenIssues) ? member.memberOpenIssues : [])
+    .concat(Array.isArray(member && member.memberClosedIssues) ? member.memberClosedIssues : []);
 
-  return isStageAtOrBeyond(currentStageKey, HIGH_CAMP_ENTRY_STAGE_KEY) || stageProgressStarted;
+  return memberIssues.some(function(issue) {
+    return inferStageKey(sanitizeIssueTitle(issue && issue.title)) === HIGH_CAMP_ENTRY_STAGE_KEY;
+  });
+}
+
+function isTeamInHighCamp(team) {
+  const members = Array.isArray(team && team.membersWithIssues) ? team.membersWithIssues : [];
+  return members.some(hasMemberHighCampIssue);
 }
 
 function isMemberInHighCamp(member) {
-  const currentStageKey = inferStageKey(member && (member.current_stage_id || member.current_stage));
-  return isStageAtOrBeyond(currentStageKey, HIGH_CAMP_ENTRY_STAGE_KEY) || hasHighCampProgress(member);
+  return hasMemberHighCampIssue(member);
 }
 
 function computeStudentRouteState(member) {
@@ -4915,8 +4926,9 @@ function buildHighCampTeams(teams) {
       return !!HIGH_CAMP_POSITIONS[team && team.label] && isTeamInHighCamp(team);
     })
     .map(function(team) {
+      const teamStyle = HIGH_CAMP_TEAM_STYLES[team.label] || {};
       const eligibleMembers = sortMembers(
-        (Array.isArray(team && team.activeMembers) ? team.activeMembers : []).filter(isMemberInHighCamp)
+        (Array.isArray(team && team.membersWithIssues) ? team.membersWithIssues : []).filter(isMemberInHighCamp)
       );
 
       return {
@@ -4924,7 +4936,8 @@ function buildHighCampTeams(teams) {
         name: team.name,
         left: HIGH_CAMP_POSITIONS[team.label].left,
         top: HIGH_CAMP_POSITIONS[team.label].top,
-        color: team.color,
+        color: teamStyle.color || team.color,
+        textColor: teamStyle.text || '#fff8ef',
         tentSrc: `../assets/img/${team.label}-clean.png`,
         tentAlt: `${team.name} tent`,
         students: eligibleMembers.map(function(member) {
@@ -5451,7 +5464,7 @@ function renderHighCampSection(highCampTeams) {
     }).join('');
 
     return (
-      `<div class="camp-team" style="left:${team.left}%; top:${team.top}%; --camp-team-color:${escapeHtml(team.color || 'var(--accent)')};">` +
+      `<div class="camp-team" style="left:${team.left}%; top:${team.top}%; --camp-team-color:${escapeHtml(team.color || 'var(--accent)')}; --camp-team-text:${escapeHtml(team.textColor || '#fff8ef')};">` +
         `<img class="camp-tent" src="${escapeHtml(team.tentSrc)}" alt="${escapeHtml(team.tentAlt)}">` +
         `<div class="camp-students">${studentBadges}</div>` +
       `</div>`
