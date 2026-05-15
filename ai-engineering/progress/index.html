@@ -4206,8 +4206,7 @@ function hasHighCampProgress(progressSource) {
 }
 
 function hasMemberReachedHighCamp(member) {
-  const currentStageKey = inferStageKey(member && (member.current_stage_id || member.current_stage));
-  return isStageAtOrBeyond(currentStageKey, HIGH_CAMP_ENTRY_STAGE_KEY) || hasHighCampProgress(member);
+  return hasHighCampProgress(member);
 }
 
 function isTeamInHighCamp(team) {
