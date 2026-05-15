@@ -1946,24 +1946,28 @@ section { padding-top: 2rem; }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, max-content));
   justify-content: center;
-  gap: 4px;
-  max-width: 86px;
+  gap: 3px;
+  max-width: 58px;
 }
 
 .camp-student-chip {
-  min-width: 22px;
-  padding: 0.12rem 0.28rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
   border-radius: 999px;
-  background: rgba(250, 249, 246, 0.94);
-  border: 1px solid rgba(47, 111, 78, 0.28);
-  color: #2f6f4e;
+  background: var(--camp-team-color, var(--accent));
+  border: 1px solid rgba(255,255,255,0.72);
+  color: rgba(255, 250, 242, 0.98);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
+  line-height: 1;
+  letter-spacing: 0;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.18);
 }
 
 .high-camp-empty {
@@ -4920,6 +4924,7 @@ function buildHighCampTeams(teams) {
         name: team.name,
         left: HIGH_CAMP_POSITIONS[team.label].left,
         top: HIGH_CAMP_POSITIONS[team.label].top,
+        color: team.color,
         tentSrc: `../assets/img/${team.label}-clean.png`,
         tentAlt: `${team.name} tent`,
         students: eligibleMembers.map(function(member) {
@@ -5446,7 +5451,7 @@ function renderHighCampSection(highCampTeams) {
     }).join('');
 
     return (
-      `<div class="camp-team" style="left:${team.left}%; top:${team.top}%;">` +
+      `<div class="camp-team" style="left:${team.left}%; top:${team.top}%; --camp-team-color:${escapeHtml(team.color || 'var(--accent)')};">` +
         `<img class="camp-tent" src="${escapeHtml(team.tentSrc)}" alt="${escapeHtml(team.tentAlt)}">` +
         `<div class="camp-students">${studentBadges}</div>` +
       `</div>`
@@ -5854,8 +5859,7 @@ function getHighCampStudentCode(member) {
   const preferredCode = String(member && (member.display_code || member.local_code || member.student_key || member.github_handle || '') || '').trim();
   const lastDigitsMatch = preferredCode.match(/(\d+)(?!.*\d)/);
   if (lastDigitsMatch) {
-    const digits = lastDigitsMatch[1];
-    return digits.length >= 2 ? digits : digits.padStart(2, '0');
+    return String(toNumber(lastDigitsMatch[1]));
   }
 
   const fallbackCode = preferredCode
@@ -5864,7 +5868,7 @@ function getHighCampStudentCode(member) {
     .replace(/[^a-z0-9]/gi, '')
     .toUpperCase();
 
-  return fallbackCode ? fallbackCode.slice(0, 3) : '\u2014';
+  return fallbackCode ? fallbackCode.slice(0, 2) : '\u2014';
 }
 
 function getTopMemberData(members) {
