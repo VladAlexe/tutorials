@@ -3,51 +3,521 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C8 — LangChain / LangGraph · AI Engineering</title>
+<title>C8: Integrare aplicație Gradio · AI Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg:#1a1a1a; --surface:#222222; --border:#333333; --border-hi:#444444;
-  --text:#e2e2e2; --dim:#666666; --sub:#999999; --accent:#c8956c;
+  --bg:       #1a1a1a;
+  --surface:  #222222;
+  --border:   #333333;
+  --border-hi:#444444;
+  --text:     #e2e2e2;
+  --dim:      #666666;
+  --sub:      #999999;
+  --accent:   #c8956c;
+  --blue:     #7ab0d4;
+  --green:    #89b99a;
+  --red:      #c47f7f;
 }
+
 :root.light {
-  --bg:#faf9f6; --surface:#f3f1eb; --border:#e2ddd3; --border-hi:#c9c3b5;
-  --text:#1c1b18; --dim:#9e9789; --sub:#6b655b; --accent:#b5784a;
+  --bg:       #faf9f6;
+  --surface:  #f3f1eb;
+  --border:   #e2ddd3;
+  --border-hi:#c9c3b5;
+  --text:     #1c1b18;
+  --dim:      #9e9789;
+  --sub:      #6b655b;
+  --accent:   #b5784a;
+  --blue:     #2f6fa8;
+  --green:    #5a7a5a;
+  --red:      #a04040;
 }
+
 html { scroll-behavior: smooth; }
-body { background:var(--bg); color:var(--text); font-family:Aptos,'Segoe UI',system-ui,sans-serif; font-size:13.5px; line-height:1.7; min-height:100vh; display:flex; flex-direction:column; transition:background .2s,color .2s; }
-a { color:inherit; text-decoration:none; }
-nav { height:46px; border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--bg); z-index:100; }
-.nav-left { display:flex; align-items:center; gap:1.2rem; }
-.back-link { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:.3rem; transition:color .12s; }
-.back-link:hover { color:var(--text); }
-.nav-logo { width:15px; height:15px; border-radius:50%; display:inline-block; vertical-align:middle; margin:0 .15rem; position:relative; top:-1px; }
-.nav-sep { width:1px; height:13px; background:var(--border); }
-.breadcrumb { display:flex; align-items:center; gap:.3rem; font-size:11px; color:var(--dim); }
-.breadcrumb a { color:var(--sub); }
-.breadcrumb a:hover { color:var(--text); }
-.breadcrumb .cur { color:var(--text); }
-.breadcrumb .sl { color:var(--border-hi); }
-.btn { display:inline-flex; align-items:center; gap:.3rem; font-family:'JetBrains Mono',monospace; font-size:11px; padding:.22rem .7rem; border-radius:3px; border:1px solid var(--border); background:none; color:var(--sub); cursor:pointer; transition:color .12s,border-color .12s; white-space:nowrap; text-decoration:none; }
-.btn:hover { color:var(--text); border-color:var(--border-hi); }
-.hero { padding:2.2rem 2rem 2rem; border-bottom:1px solid var(--border); }
-.hero-tag { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.55rem; }
-.hero h1 { font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-.025em; line-height:1.15; margin-bottom:.5rem; }
-.hero-sub { font-size:12.5px; color:var(--sub); max-width:580px; line-height:1.8; margin-bottom:.8rem; }
-.hero-meta { display:flex; flex-wrap:wrap; gap:1.2rem; font-size:11px; color:var(--dim); }
-.hero-meta strong { color:var(--sub); font-weight:400; }
-main { flex:1; padding:0 2rem 3.5rem; max-width:860px; width:100%; }
-section { padding-top:2rem; }
-.section-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:.8rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
-.intro-body { font-size:12.5px; color:var(--sub); line-height:1.85; max-width:680px; }
-.placeholder-note { margin-top:1.2rem; display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); border:1px solid var(--border); border-radius:4px; padding:.5rem .9rem; }
-footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
-.ft-col { font-size:11px; color:var(--dim); line-height:2; }
-.ft-col a { color:var(--dim); }
-.ft-col a:hover { color:var(--text); }
-@media (max-width:640px) { nav { padding:0 1rem; } .hero { padding:1.8rem 1rem 1.5rem; } main { padding:0 1rem 3rem; } .hero h1 { font-size:1.5rem; } footer { padding:1rem; } }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Aptos, "Segoe UI", system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+nav {
+  min-height: 46px;
+  border-bottom: 1px solid var(--border);
+  padding: 0.55rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.nav-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.back-link {
+  font-size: 11px;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.12s;
+}
+
+.back-link:hover { color: var(--text); }
+
+.nav-logo {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  position: relative;
+  top: -1px;
+}
+
+.nav-sep { width: 1px; height: 13px; background: var(--border); }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.breadcrumb a { color: var(--sub); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .cur { color: var(--text); }
+.breadcrumb .sl { color: var(--border-hi); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn:hover { color: var(--text); border-color: var(--border-hi); }
+
+.btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn.primary:hover { background: rgba(200, 149, 108, 0.08); }
+
+.hero {
+  padding: 3rem 2rem 2.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+
+.hero h1 {
+  font-family: "Fraunces", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 0.4rem;
+  max-width: 780px;
+}
+
+.hero-subtitle {
+  font-family: "Fraunces", serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--sub);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 12.5px;
+  color: var(--sub);
+  max-width: 780px;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.hero-meta strong { color: var(--sub); font-weight: 400; }
+
+main {
+  flex: 1;
+  padding: 0 2rem 5rem;
+  max-width: 920px;
+  width: 100%;
+}
+
+section { padding-top: 2.4rem; }
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.intro-body {
+  font-size: 12.5px;
+  color: var(--sub);
+  line-height: 1.85;
+  max-width: 780px;
+}
+
+.intro-body p + p { margin-top: 0.8rem; }
+
+.feature-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 1.35rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 860px;
+}
+
+.feature-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.feature-title {
+  font-family: "Fraunces", serif;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.feature-desc {
+  font-size: 12px;
+  color: var(--sub);
+  line-height: 1.8;
+  max-width: 760px;
+}
+
+.feature-path {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--dim);
+}
+
+.feature-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.material-card {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.material-card + .material-card { border-left: 1px solid var(--border); }
+
+.mat-icon { font-size: 1rem; }
+.mat-title { font-size: 12.5px; font-weight: 500; color: var(--text); }
+.mat-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+.mat-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+
+.mat-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.mat-file-row {
+  border-top: 1px solid var(--border);
+  padding-top: 0.7rem;
+}
+
+.mat-file-name {
+  display: block;
+  font-size: 11px;
+  color: var(--sub);
+  margin-bottom: 0.45rem;
+  word-break: break-word;
+}
+
+.obj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+}
+
+.obj-item {
+  padding: 0.75rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.obj-item:last-child { border-bottom: none; }
+.obj-item::before { content: "✓"; color: var(--green); flex-shrink: 0; margin-top: 0.05rem; }
+
+.deliverable-list {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+}
+
+.del-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.del-item:last-child { border-bottom: none; }
+
+.del-num {
+  font-size: 10px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 18px;
+  margin-top: 0.1rem;
+}
+
+.subsec-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 1.4rem 0 0.5rem;
+}
+
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+  margin-top: 0.9rem;
+}
+
+.data-table { width: 100%; border-collapse: collapse; }
+
+.data-table th {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 400;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  background: var(--surface);
+}
+
+.data-table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--sub);
+  font-size: 11.5px;
+  line-height: 1.55;
+  vertical-align: top;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+
+.code-wrap {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+  margin-top: 0.9rem;
+}
+
+.code-wrap-label {
+  padding: 0.45rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  background: var(--surface);
+}
+
+.code-wrap pre {
+  padding: 1rem 1.2rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--sub);
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.flow-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1.1rem 1.3rem;
+  max-width: 860px;
+  margin-top: 0.9rem;
+}
+
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+
+.flow-step {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--sub);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.28rem 0.55rem;
+  white-space: nowrap;
+}
+
+.flow-step.hi { border-color: var(--accent); color: var(--accent); }
+.flow-arr { color: var(--dim); font-size: 10px; flex-shrink: 0; }
+
+.note-box {
+  border-left: 2px solid var(--border);
+  padding: 0.5rem 0.8rem;
+  margin-top: 0.8rem;
+  max-width: 860px;
+  font-size: 11.5px;
+  color: var(--dim);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+.checklist {
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 860px;
+}
+
+.check-item {
+  padding: 0.65rem 1rem;
+  font-size: 12px;
+  color: var(--sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  line-height: 1.6;
+}
+
+.check-item:last-child { border-bottom: none; }
+.check-item::before { content: "□"; color: var(--dim); flex-shrink: 0; }
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.05rem 0.3rem;
+  color: var(--text);
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ft-col {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 2;
+}
+
+.ft-col a { color: var(--dim); }
+.ft-col a:hover { color: var(--text); }
+
+@media (max-width: 640px) {
+  nav { padding: 0.55rem 1rem; }
+  .hero { padding: 1.8rem 1rem 1.5rem; }
+  .hero h1 { font-size: 1.55rem; }
+  main { padding: 0 1rem 3rem; }
+  footer { padding: 1rem; }
+  .table-wrap { overflow-x: auto; }
+}
 </style>
 </head>
 <body>
@@ -61,27 +531,230 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
       <span class="cur">C8</span>
     </div>
   </div>
-  <button class="btn" id="themeBtn" onclick="toggleTheme()">◑ <span class="btn-label">dark</span></button>
+  <button class="btn" id="themeBtn" onclick="toggleTheme()">◐ <span class="btn-label">dark</span></button>
 </nav>
+
 <div class="hero">
   <div class="hero-tag">AI Engineering · ADC 2026 · C8</div>
-  <h1>LangChain / LangGraph</h1>
-  <p class="hero-sub">În C8 integrăm componentele proiectului într-o aplicație funcțională: interfață, model, corpus, retrieval și agenți.</p>
+  <h1>C8: Integrare aplicație Gradio</h1>
+  <p class="hero-subtitle">În C8 legăm componentele construite până acum într-o aplicație funcțională: corpus, vectorstore, roluri YAML, agent RAG, dezbatere multi-agent și interfață Gradio.</p>
+  <p class="hero-sub">În cursurile anterioare am construit separat componentele sistemului EchoChamber: date, adnotări, vectorstore-uri, agent RAG și workflow multi-agent. În C8 le integrăm într-o aplicație Gradio care poate încărca o știre, genera răspunsuri prin agenți și porni o dezbatere între mai multe voci discursive.</p>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
+    <span>Limbă <strong>Română</strong></span>
     <span>Sesiune <strong>C8</strong></span>
   </div>
 </div>
+
 <main>
+
   <section>
     <p class="section-label">Despre acest curs</p>
     <div class="intro-body">
-      <p>În C8 integrăm componentele proiectului într-o aplicație funcțională: interfață, model, corpus, retrieval și agenți.</p>
+      <p>C8 este momentul în care arhitectura EchoChamber devine un prototip funcțional complet. Nu mai lucrăm pe componente izolate, ci pe conexiunile dintre ele: input de știre, selecție de agent, retrieval, generare, orchestration și interfață.</p>
+      <p>Accentul cursului este pe integrare stabilă: verificăm ce intră în runtime, ce rămâne în pipeline-ul offline și cum trecem de la module Python separate la o aplicație care poate fi rulată și demonstrată de echipă.</p>
     </div>
-    <p class="placeholder-note">Materialele pentru acest curs vor fi adăugate ulterior.</p>
   </section>
+
+  <section>
+    <p class="section-label">Material principal</p>
+    <div class="feature-card">
+      <div class="feature-eyebrow">Material principal al cursului</div>
+      <div class="feature-title">Tutorial vizual C8 — arhitectura aplicației EchoChamber</div>
+      <div class="feature-desc">Materialul principal al cursului. Explică vizual cum se leagă pipeline-ul offline, modulele <code>core/</code>, vectorstore-urile, rolurile YAML, agentul RAG, <code>core/graph.py</code> și interfața Gradio.</div>
+      <div class="feature-path">Fișier: <code>materiale/app.html</code></div>
+      <div class="feature-actions">
+        <a class="btn primary" href="materiale/app.html" target="_blank" rel="noopener noreferrer">↗ Deschide tutorialul</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Ce facem în C8</p>
+    <ul class="deliverable-list">
+      <li class="del-item"><span class="del-num">01</span><span>Citim harta arhitecturii aplicației.</span></li>
+      <li class="del-item"><span class="del-num">02</span><span>Rulăm notebook-ul C8.</span></li>
+      <li class="del-item"><span class="del-num">03</span><span>Verificăm cum se leagă <code>core/agent.py</code>, <code>core/graph.py</code> și <code>app/app.py</code>.</span></li>
+      <li class="del-item"><span class="del-num">04</span><span>Modificăm aplicația Gradio în notebook.</span></li>
+      <li class="del-item"><span class="del-num">05</span><span>Pregătim aplicația de echipă pentru demo.</span></li>
+    </ul>
+  </section>
+
+  <section id="materiale">
+    <p class="section-label">Materiale</p>
+    <div class="material-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">◫</div>
+        <div class="mat-title">Tutorial vizual C8 — arhitectura aplicației</div>
+        <div class="mat-desc">Harta completă a aplicației: pipeline offline, runtime Gradio, agent RAG, dezbatere multi-agent și legătura dintre fișiere.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">materiale/app.html</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="materiale/app.html" target="_blank" rel="noopener noreferrer">↗ Deschide</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⊾</div>
+        <div class="mat-title">Notebook C8 — aplicația Gradio</div>
+        <div class="mat-desc">Notebook-ul practic pentru construirea și modificarea aplicației Gradio.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">C8_gradio_tutorial_echochamber.ipynb</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="notebooks/C8_gradio_tutorial_echochamber.ipynb" target="_blank" rel="noopener noreferrer">↗ Deschide notebook</a>
+              <a class="btn" href="notebooks/C8_gradio_tutorial_echochamber.ipynb" download="C8_gradio_tutorial_echochamber.ipynb">↓ Descarcă .ipynb</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⌘</div>
+        <div class="mat-title">Aplicația Gradio finală</div>
+        <div class="mat-desc">Fișierul principal al interfeței Gradio. Conectează modelul, știrea, agenții și dezbaterea.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">materiale/app.py</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="materiale/app.py" target="_blank" rel="noopener noreferrer">↗ Deschide</a>
+              <a class="btn" href="materiale/app.py" download="app.py">↓ Descarcă .py</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">↗</div>
+        <div class="mat-title">Documentație Gradio — Quickstart</div>
+        <div class="mat-desc">Ghidul oficial Gradio pentru construirea rapidă a unei interfețe Python.</div>
+        <div class="mat-file-list">
+          <div class="mat-file-row">
+            <span class="mat-file-name">https://www.gradio.app/guides/quickstart</span>
+            <div class="mat-actions">
+              <a class="btn primary" href="https://www.gradio.app/guides/quickstart" target="_blank" rel="noopener noreferrer">↗ Deschide documentația</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Concepte centrale</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Ce înseamnă în C8</th>
+            <th>Fișier relevant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Interfață Gradio</td>
+            <td>Stratul vizibil al aplicației.</td>
+            <td><code>app/app.py</code></td>
+          </tr>
+          <tr>
+            <td>Agent RAG</td>
+            <td>Rol + știre + context recuperat + LLM.</td>
+            <td><code>core/agent.py</code></td>
+          </tr>
+          <tr>
+            <td>Vectorstore</td>
+            <td>Index FAISS construit din corpus.</td>
+            <td><code>assets/vectorstores/</code></td>
+          </tr>
+          <tr>
+            <td>Roluri</td>
+            <td>Definițiile vocilor discursive.</td>
+            <td><code>assets/roles/roles.yaml</code></td>
+          </tr>
+          <tr>
+            <td>Dezbatere multi-agent</td>
+            <td>Conversație orchestrată între agenți.</td>
+            <td><code>core/graph.py</code></td>
+          </tr>
+          <tr>
+            <td>Știre încărcată</td>
+            <td>Obiectul principal al răspunsului.</td>
+            <td>interfața Gradio / app state</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Livrabile C8</p>
+
+    <p class="subsec-label">Individual</p>
+    <ul class="checklist">
+      <li class="check-item">Notebook-ul C8 completat.</li>
+      <li class="check-item">TODO-ul final din notebook cu minimum 3 modificări vizibile în aplicația Gradio.</li>
+      <li class="check-item">Commit și push în folderul propriu.</li>
+    </ul>
+
+    <p class="subsec-label">Echipă</p>
+    <ul class="checklist">
+      <li class="check-item">Aplicația pornește cu <code>python -m app.app</code>.</li>
+      <li class="check-item">Încărcarea știrii funcționează.</li>
+      <li class="check-item">Chat, Agent, Toți agenții și Dezbatere funcționează.</li>
+      <li class="check-item"><code>core/agent.py</code> și <code>core/graph.py</code> sunt stabile.</li>
+      <li class="check-item">README-ul explică rularea aplicației.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Ordinea corectă de lucru</p>
+    <div class="intro-body">
+      <p>Nu începeți cu designul interfeței. Verificați întâi backend-ul.</p>
+    </div>
+    <div class="flow-wrap">
+      <div class="flow">
+        <span class="flow-step hi">roles.yaml</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">vectorstores</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">core/retriever.py</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">core/agent.py</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">core/graph.py</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">app/app.py</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">README</span>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-wrap-label">ordine_c8.txt</div>
+      <pre>roles.yaml → vectorstores → core/retriever.py → core/agent.py → core/graph.py → app/app.py → README</pre>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Ce nu facem în C8</p>
+    <ul class="obj-list">
+      <li class="obj-item">Nu reconstruim pipeline-ul de colectare.</li>
+      <li class="obj-item">Nu refacem vectorstore-urile dacă ele funcționează.</li>
+      <li class="obj-item">Nu adăugăm tehnologii noi.</li>
+      <li class="obj-item">Nu facem redesign complet fără motiv.</li>
+      <li class="obj-item">Nu punem API keys sau <code>.env</code> în GitHub.</li>
+    </ul>
+    <p class="note-box">C8 este despre integrare și stabilizare: verificăm traseul complet al aplicației și pregătim varianta de echipă pentru rulare și demo.</p>
+  </section>
+
 </main>
+
 <footer>
   <div class="ft-col">
     Universitatea Babeș-Bolyai · Cluj-Napoca<br>
@@ -97,12 +770,23 @@ footer { border-top:1px solid var(--border); padding:1.2rem 2rem; display:flex; 
     <a href="../../LICENSE">CC BY-NC-SA 4.0</a>
   </div>
 </footer>
+
 <script>
-const btn = document.getElementById('themeBtn');
-const label = btn.querySelector('.btn-label');
-function applyTheme(light) { document.documentElement.classList.toggle('light', light); label.textContent = light ? 'dark' : 'light'; }
-function toggleTheme() { const l = document.documentElement.classList.contains('light'); localStorage.setItem('theme', l ? 'dark' : 'light'); applyTheme(!l); }
-applyTheme(localStorage.getItem('theme') !== 'dark');
+const btn = document.getElementById("themeBtn");
+const label = btn.querySelector(".btn-label");
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle("light", light);
+  label.textContent = light ? "dark" : "light";
+}
+
+function toggleTheme() {
+  const light = document.documentElement.classList.contains("light");
+  localStorage.setItem("theme", light ? "dark" : "light");
+  applyTheme(!light);
+}
+
+applyTheme(localStorage.getItem("theme") !== "dark");
 </script>
 </body>
 </html>

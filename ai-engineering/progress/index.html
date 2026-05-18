@@ -1900,6 +1900,16 @@ section { padding-top: 2rem; }
   gap: 0.78rem;
 }
 
+.summit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.78rem;
+}
+
+.summit-card .project-title {
+  margin-bottom: 0;
+}
+
 .high-camp-card .project-title {
   margin-bottom: 0;
 }
@@ -1974,6 +1984,91 @@ section { padding-top: 2rem; }
 }
 
 .high-camp-empty {
+  align-self: center;
+  margin-top: 0.8rem;
+  padding: 0.34rem 0.72rem;
+  border: 1px solid rgba(201, 195, 181, 0.92);
+  border-radius: 999px;
+  background: rgba(250, 249, 246, 0.78);
+  backdrop-filter: blur(6px);
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.8px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.summit-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  min-height: 330px;
+}
+
+.summit-stage {
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 260px;
+}
+
+.summit-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.summit-team {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.summit-flags {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  flex-wrap: wrap;
+  max-width: 62px;
+}
+
+.summit-flag {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  height: 24px;
+  filter: drop-shadow(0 2px 3px rgba(20, 16, 10, 0.18));
+}
+
+.summit-flag::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  border-radius: 999px;
+  background: rgba(255, 248, 239, 0.94);
+}
+
+.summit-flag::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 10px;
+  height: 8px;
+  background: var(--summit-team-color, var(--accent));
+  clip-path: polygon(0 0, 100% 18%, 66% 50%, 100% 82%, 0 100%);
+  border-radius: 1px;
+}
+
+.summit-empty {
   align-self: center;
   margin-top: 0.8rem;
   padding: 0.34rem 0.72rem;
@@ -3483,6 +3578,7 @@ const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
 const HIGH_CAMP_ENTRY_STAGE_KEY = 'C6';
+const SUMMIT_STAGE_KEY = 'C7';
 const HIGH_CAMP_POSITIONS = {
   T1: { left: 18, top: 91 },
   T2: { left: 32, top: 88 },
@@ -3490,6 +3586,14 @@ const HIGH_CAMP_POSITIONS = {
   T4: { left: 61, top: 89 },
   T5: { left: 74, top: 93 },
   T6: { left: 86, top: 90 }
+};
+const SUMMIT_POSITIONS = {
+  T1: { left: 60, top: 88 },
+  T2: { left: 66, top: 73 },
+  T3: { left: 72, top: 60 },
+  T4: { left: 78, top: 47 },
+  T5: { left: 84, top: 33 },
+  T6: { left: 89, top: 20 }
 };
 const HIGH_CAMP_TEAM_STYLES = {
   T1: { color: '#bf6849', text: '#fff8ef' },
@@ -4217,6 +4321,33 @@ function isTeamInHighCamp(team) {
 
 function isMemberInHighCamp(member) {
   return hasMemberReachedHighCamp(member);
+}
+
+function hasMemberReachedSummit(member) {
+  const stage = getStageProgressFromMap(member && member.progress, SUMMIT_STAGE_KEY);
+  return toNumber(stage && stage.percent) >= 100 && toNumber(stage && stage.closed) > 0;
+}
+
+function hasMemberClosedStageIssue(member, stageKey) {
+  return (Array.isArray(member && member.memberClosedIssues) ? member.memberClosedIssues : []).some(function(issue) {
+    return getIssueKind(issue) === 'student' && inferStageKey(sanitizeIssueTitle(issue && issue.title)) === stageKey;
+  });
+}
+
+function getCollectiveStageSummary(team, stageKey) {
+  const open = (Array.isArray(team && team.collectiveOpenIssues) ? team.collectiveOpenIssues : []).filter(function(issue) {
+    return inferStageKey(sanitizeIssueTitle(issue && issue.title)) === stageKey;
+  }).length;
+  const closed = (Array.isArray(team && team.collectiveClosedIssues) ? team.collectiveClosedIssues : []).filter(function(issue) {
+    return inferStageKey(sanitizeIssueTitle(issue && issue.title)) === stageKey;
+  }).length;
+  const total = open + closed;
+  return {
+    open: open,
+    closed: closed,
+    total: total,
+    complete: total > 0 && open === 0 && closed > 0
+  };
 }
 
 function computeStudentRouteState(member) {
@@ -4950,6 +5081,48 @@ function buildHighCampTeams(teams) {
     });
 }
 
+function buildSummitTeams(teams) {
+  return (Array.isArray(teams) ? teams : [])
+    .filter(function(team) {
+      return !!SUMMIT_POSITIONS[team && team.label];
+    })
+    .map(function(team) {
+      const collectiveStage = getCollectiveStageSummary(team, SUMMIT_STAGE_KEY);
+      if (!collectiveStage.complete) {
+        return null;
+      }
+
+      const teamStyle = HIGH_CAMP_TEAM_STYLES[team.label] || {};
+      const eligibleMembers = sortMembers(
+        (Array.isArray(team && team.membersWithIssues) ? team.membersWithIssues : []).filter(function(member) {
+          return hasMemberReachedSummit(member) && hasMemberClosedStageIssue(member, SUMMIT_STAGE_KEY);
+        })
+      );
+
+      if (!eligibleMembers.length) {
+        return null;
+      }
+
+      return {
+        label: team.label,
+        name: team.name,
+        left: SUMMIT_POSITIONS[team.label].left,
+        top: SUMMIT_POSITIONS[team.label].top,
+        color: teamStyle.color || team.color,
+        flags: eligibleMembers.map(function(member) {
+          return {
+            key: String(member && (member.student_key || member.display_code || member.local_code || member.github_handle || 'student')),
+            label: getMemberLabel(member) || getStudentDisplayName(member)
+          };
+        })
+      };
+    })
+    .filter(Boolean)
+    .sort(function(a, b) {
+      return compareTeamLabels(a.label, b.label);
+    });
+}
+
 function getStageRank(stageKey) {
   const match = String(stageKey || '').match(/^C(\d+)/i);
   return match ? toNumber(match[1]) : 999;
@@ -5176,6 +5349,7 @@ function buildDashboardModel(data) {
     : null;
   const mountainScene = buildMountainScene(teams);
   const highCampTeams = buildHighCampTeams(teams);
+  const summitTeams = buildSummitTeams(teams);
 
   teams.forEach(function(team) {
     team.overallDelta = team.overallPercent - averageOverallPercent;
@@ -5211,6 +5385,7 @@ function buildDashboardModel(data) {
     mountainStudentMarkers: mountainScene.studentMarkers,
     topStudents: mountainScene.topStudents,
     highCampTeams: highCampTeams,
+    summitTeams: summitTeams,
     activityStats: activityStats,
     blockers: blockerData.blockers,
     blockerFallback: blockerData.fallbackIssues,
@@ -5475,6 +5650,35 @@ function renderHighCampSection(highCampTeams) {
     `<section class="high-camp-section">` +
       `<div class="high-camp-stage">` +
         `<div class="high-camp-overlay" id="highCampOverlay">${overlayMarkup}</div>` +
+      `</div>` +
+      `${emptyMarkup}` +
+    `</section>`
+  );
+}
+
+function renderSummitSection(summitTeams) {
+  const teams = Array.isArray(summitTeams) ? summitTeams : [];
+  const overlayMarkup = teams.map(function(team) {
+    const flagsMarkup = (Array.isArray(team.flags) ? team.flags : []).map(function(flag) {
+      const label = escapeHtml(flag.label || 'student');
+      return `<span class="summit-flag" title="${label}" aria-label="Steag ${label}" data-student="${label}"></span>`;
+    }).join('');
+
+    return (
+      `<div class="summit-team" style="left:${team.left}%; top:${team.top}%; --summit-team-color:${escapeHtml(team.color || 'var(--accent)')};">` +
+        `<div class="summit-flags">${flagsMarkup}</div>` +
+      `</div>`
+    );
+  }).join('');
+
+  const emptyMarkup = teams.length
+    ? ''
+    : `<div class="summit-empty">Niciun student nu a inchis inca C7 + taskul colectiv al echipei.</div>`;
+
+  return (
+    `<section class="summit-section">` +
+      `<div class="summit-stage">` +
+        `<div class="summit-overlay" id="summitOverlay">${overlayMarkup}</div>` +
       `</div>` +
       `${emptyMarkup}` +
     `</section>`
@@ -5809,8 +6013,9 @@ function renderProjectStats(model) {
           `<div class="project-title">High Camp</div>` +
           `${renderHighCampSection(model.highCampTeams)}` +
         `</article>` +
-        `<article class="project-card project-card-cover project-card-cover-summit">` +
+        `<article class="project-card project-card-cover project-card-cover-summit summit-card">` +
           `<div class="project-title">Summit</div>` +
+          `${renderSummitSection(model.summitTeams)}` +
         `</article>` +
       `</div>` +
     `</div>`;
