@@ -3658,7 +3658,7 @@ const JOURNEY_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'
 const CLIMB_STAGE_KEYS = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'];
 const POST_SUMMIT_STAGE_KEY = 'C9';
 const HIGH_CAMP_ENTRY_STAGE_KEY = 'C6';
-const SUMMIT_STAGE_KEY = 'C7';
+const SUMMIT_STAGE_KEY = 'C8';
 const HIGH_CAMP_POSITIONS = {
   T1: { left: 18, top: 91 },
   T2: { left: 32, top: 88 },
@@ -5744,16 +5744,18 @@ function renderSummitPersonSvg(student) {
   return (
     `<span class="summit-person" title="${label}" aria-label="Student ${label}" data-student="${label}">` +
       `<svg class="summit-person-svg" viewBox="0 0 24 32" aria-hidden="true" focusable="false">` +
-        `<ellipse cx="12" cy="30.4" rx="5.8" ry="1.15" fill="rgba(20, 16, 10, 0.12)"></ellipse>` +
-        `<circle class="summit-person-skin" cx="12" cy="5.3" r="3.05"></circle>` +
-        `<path class="summit-person-suit" d="M8.5 10.2Q9.8 8.5 12 8.5Q14.2 8.5 15.5 10.2L16.8 12V18.7Q16.8 20.1 15.4 20.1H8.6Q7.2 20.1 7.2 18.7V12Z"></path>` +
-        `<path class="summit-person-limb" d="M8.7 12.9L5.9 18.3"></path>` +
-        `<path class="summit-person-limb" d="M15.3 12.9L18.1 18.3"></path>` +
-        `<path class="summit-person-limb" d="M10.5 20.2L8.4 27.1"></path>` +
-        `<path class="summit-person-limb" d="M13.5 20.2L15.6 27.1"></path>` +
-        `<path class="summit-person-limb" d="M8.1 27.1L6.1 29"></path>` +
-        `<path class="summit-person-limb" d="M15.9 27.1L17.9 29"></path>` +
-        `<text class="summit-person-badge" x="12" y="14.2">${badge}</text>` +
+        `<ellipse cx="12" cy="30.2" rx="5.9" ry="1.2" fill="rgba(20, 16, 10, 0.12)"></ellipse>` +
+        `<circle class="summit-person-skin" cx="12" cy="5.1" r="3.15"></circle>` +
+        `<rect class="summit-person-suit" x="7.1" y="9.2" width="9.8" height="10.8" rx="4.5"></rect>` +
+        `<rect class="summit-person-suit" x="4.9" y="12.1" width="3.3" height="8.4" rx="1.65" transform="rotate(8 6.55 16.3)"></rect>` +
+        `<rect class="summit-person-suit" x="15.8" y="12.1" width="3.3" height="8.4" rx="1.65" transform="rotate(-8 17.45 16.3)"></rect>` +
+        `<rect class="summit-person-suit" x="8.6" y="19.4" width="3.7" height="8.2" rx="1.75"></rect>` +
+        `<rect class="summit-person-suit" x="11.7" y="19.4" width="3.7" height="8.2" rx="1.75"></rect>` +
+        `<rect class="summit-person-suit" x="7.5" y="26.7" width="5.1" height="2.2" rx="1.1"></rect>` +
+        `<rect class="summit-person-suit" x="11.4" y="26.7" width="5.1" height="2.2" rx="1.1"></rect>` +
+        `<circle class="summit-person-skin" cx="6.3" cy="20.2" r="0.9"></circle>` +
+        `<circle class="summit-person-skin" cx="17.7" cy="20.2" r="0.9"></circle>` +
+        `<text class="summit-person-badge" x="12" y="14.7">${badge}</text>` +
       `</svg>` +
     `</span>`
   );
@@ -5778,7 +5780,7 @@ function renderSummitSection(summitTeams) {
 
   const emptyMarkup = teams.length
     ? ''
-    : `<div class="summit-empty">Niciun student nu a inchis inca C7 + taskul colectiv al echipei.</div>`;
+    : `<div class="summit-empty">Niciun student nu a inchis inca C8 + taskul colectiv al echipei.</div>`;
 
   return (
     `<section class="summit-section">` +
