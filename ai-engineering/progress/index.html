@@ -2026,31 +2026,32 @@ section { padding-top: 2rem; }
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  width: 64px;
+  height: 58px;
 }
 
-.summit-flags {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 3px;
-  flex-wrap: wrap;
-  max-width: 62px;
+.summit-group {
+  position: relative;
+  width: 64px;
+  height: 58px;
 }
 
 .summit-flag {
   position: relative;
-  display: inline-block;
-  width: 15px;
-  height: 24px;
+  display: block;
+  width: 18px;
+  height: 30px;
+  margin: 0 auto;
   filter: drop-shadow(0 2px 3px rgba(20, 16, 10, 0.18));
+  z-index: 3;
 }
 
 .summit-flag::before {
   content: '';
   position: absolute;
-  left: 3px;
+  left: 4px;
   bottom: 0;
-  width: 2px;
+  width: 3px;
   height: 100%;
   border-radius: 999px;
   background: rgba(255, 248, 239, 0.94);
@@ -2059,13 +2060,58 @@ section { padding-top: 2rem; }
 .summit-flag::after {
   content: '';
   position: absolute;
-  left: 5px;
-  top: 2px;
-  width: 10px;
-  height: 8px;
+  left: 7px;
+  top: 3px;
+  width: 11px;
+  height: 9px;
   background: var(--summit-team-color, var(--accent));
   clip-path: polygon(0 0, 100% 18%, 66% 50%, 100% 82%, 0 100%);
   border-radius: 1px;
+}
+
+.summit-crowd {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 52px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1px 2px;
+  z-index: 2;
+}
+
+.summit-person {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  opacity: 0.96;
+  filter: drop-shadow(0 1px 1px rgba(20, 16, 10, 0.18));
+}
+
+.summit-person::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--summit-team-color, var(--accent));
+}
+
+.summit-person::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  bottom: 0;
+  width: 5px;
+  height: 8px;
+  border-radius: 3px 3px 1px 1px;
+  background: var(--summit-team-color, var(--accent));
 }
 
 .summit-empty {
@@ -3588,12 +3634,12 @@ const HIGH_CAMP_POSITIONS = {
   T6: { left: 86, top: 90 }
 };
 const SUMMIT_POSITIONS = {
-  T1: { left: 60, top: 88 },
-  T2: { left: 66, top: 73 },
-  T3: { left: 72, top: 60 },
-  T4: { left: 78, top: 47 },
-  T5: { left: 84, top: 33 },
-  T6: { left: 89, top: 20 }
+  T1: { left: 43, top: 89 },
+  T2: { left: 49, top: 84 },
+  T3: { left: 55, top: 88 },
+  T4: { left: 61, top: 83 },
+  T5: { left: 67, top: 87 },
+  T6: { left: 73, top: 82 }
 };
 const HIGH_CAMP_TEAM_STYLES = {
   T1: { color: '#bf6849', text: '#fff8ef' },
@@ -5109,7 +5155,7 @@ function buildSummitTeams(teams) {
         left: SUMMIT_POSITIONS[team.label].left,
         top: SUMMIT_POSITIONS[team.label].top,
         color: teamStyle.color || team.color,
-        flags: eligibleMembers.map(function(member) {
+        students: eligibleMembers.map(function(member) {
           return {
             key: String(member && (member.student_key || member.display_code || member.local_code || member.github_handle || 'student')),
             label: getMemberLabel(member) || getStudentDisplayName(member)
@@ -5659,14 +5705,17 @@ function renderHighCampSection(highCampTeams) {
 function renderSummitSection(summitTeams) {
   const teams = Array.isArray(summitTeams) ? summitTeams : [];
   const overlayMarkup = teams.map(function(team) {
-    const flagsMarkup = (Array.isArray(team.flags) ? team.flags : []).map(function(flag) {
-      const label = escapeHtml(flag.label || 'student');
-      return `<span class="summit-flag" title="${label}" aria-label="Steag ${label}" data-student="${label}"></span>`;
+    const crowdMarkup = (Array.isArray(team.students) ? team.students : []).map(function(student) {
+      const label = escapeHtml(student.label || 'student');
+      return `<span class="summit-person" title="${label}" aria-label="Student ${label}" data-student="${label}"></span>`;
     }).join('');
 
     return (
       `<div class="summit-team" style="left:${team.left}%; top:${team.top}%; --summit-team-color:${escapeHtml(team.color || 'var(--accent)')};">` +
-        `<div class="summit-flags">${flagsMarkup}</div>` +
+        `<div class="summit-group">` +
+          `<span class="summit-flag" title="${escapeHtml(team.name || team.label || 'echipa')}" aria-label="Steag ${escapeHtml(team.name || team.label || 'echipa')}"></span>` +
+          `<div class="summit-crowd">${crowdMarkup}</div>` +
+        `</div>` +
       `</div>`
     );
   }).join('');
