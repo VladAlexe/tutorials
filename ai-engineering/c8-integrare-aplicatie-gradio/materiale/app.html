@@ -34,6 +34,11 @@ a{color:var(--blue)}a:hover{text-decoration:underline}
 .breadcrumb a{color:var(--gray);text-decoration:none}.breadcrumb a:hover{color:var(--blue)}
 .breadcrumb .sep{color:var(--line);font-size:14px}.breadcrumb .cur{color:var(--navy);font-weight:600}
 
+.top-links{max-width:1200px;margin:0 auto;padding:12px 32px 0;display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--gray)}
+.top-links a{color:var(--blue);text-decoration:none}
+.top-links a:hover{text-decoration:underline}
+.top-links .sep{color:var(--line)}
+
 .wrap{display:grid;grid-template-columns:var(--sidebar) 1fr;max-width:1200px;margin:0 auto}
 
 .sidebar{padding:24px 0 64px 18px;border-right:1px solid var(--line);position:sticky;top:44px;height:calc(100vh - 44px);overflow-y:auto;font-size:12px}
@@ -137,10 +142,16 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <body>
 
 <nav class="breadcrumb">
-  <a href="#">tutoriale</a><span class="sep">/</span>
-  <a href="#">ingineria-ai</a><span class="sep">/</span>
-  <span class="cur">echochamber-final-c8</span>
+  <a href="../../">ai-engineering</a><span class="sep">/</span>
+  <a href="../">C8</a><span class="sep">/</span>
+  <span class="cur">tutorial vizual C8</span>
 </nav>
+
+<div class="top-links">
+  <a href="../">← Înapoi la C8</a>
+  <span class="sep">·</span>
+  <a href="../../">Pagina cursului AI Engineering</a>
+</div>
 
 <div class="wrap">
 

@@ -173,6 +173,13 @@ nav {
   margin-bottom: 1rem;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
@@ -539,6 +546,9 @@ footer {
   <h1>C8: Integrare aplicație Gradio</h1>
   <p class="hero-subtitle">În C8 legăm componentele construite până acum într-o aplicație funcțională: corpus, vectorstore, roluri YAML, agent RAG, dezbatere multi-agent și interfață Gradio.</p>
   <p class="hero-sub">În cursurile anterioare am construit separat componentele sistemului EchoChamber: date, adnotări, vectorstore-uri, agent RAG și workflow multi-agent. În C8 le integrăm într-o aplicație Gradio care poate încărca o știre, genera răspunsuri prin agenți și porni o dezbatere între mai multe voci discursive.</p>
+  <div class="hero-actions">
+    <a class="btn primary" href="materiale/app.html" target="_blank" rel="noopener noreferrer">↗ Tutorial C8</a>
+  </div>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
     <span>Program <strong>ADC 2026</strong></span>
@@ -554,19 +564,6 @@ footer {
     <div class="intro-body">
       <p>C8 este momentul în care arhitectura EchoChamber devine un prototip funcțional complet. Nu mai lucrăm pe componente izolate, ci pe conexiunile dintre ele: input de știre, selecție de agent, retrieval, generare, orchestration și interfață.</p>
       <p>Accentul cursului este pe integrare stabilă: verificăm ce intră în runtime, ce rămâne în pipeline-ul offline și cum trecem de la module Python separate la o aplicație care poate fi rulată și demonstrată de echipă.</p>
-    </div>
-  </section>
-
-  <section>
-    <p class="section-label">Material principal</p>
-    <div class="feature-card">
-      <div class="feature-eyebrow">Material principal al cursului</div>
-      <div class="feature-title">Tutorial vizual C8 — arhitectura aplicației EchoChamber</div>
-      <div class="feature-desc">Materialul principal al cursului. Explică vizual cum se leagă pipeline-ul offline, modulele <code>core/</code>, vectorstore-urile, rolurile YAML, agentul RAG, <code>core/graph.py</code> și interfața Gradio.</div>
-      <div class="feature-path">Fișier: <code>materiale/app.html</code></div>
-      <div class="feature-actions">
-        <a class="btn primary" href="materiale/app.html" target="_blank" rel="noopener noreferrer">↗ Deschide tutorialul</a>
-      </div>
     </div>
   </section>
 
