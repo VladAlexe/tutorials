@@ -2105,116 +2105,39 @@ section { padding-top: 2rem; }
 .summit-person {
   position: relative;
   display: inline-block;
-  width: 14px;
-  height: 20px;
-  opacity: 0.96;
+  width: 18px;
+  height: 28px;
+  opacity: 0.98;
   filter: drop-shadow(0 1px 1px rgba(20, 16, 10, 0.18));
 }
 
-.summit-person-head,
-.summit-person-arms,
-.summit-person-body,
-.summit-person-legs,
-.summit-person-code {
-  position: absolute;
+.summit-person-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.summit-person-head {
-  left: 50%;
-  top: 0;
-  width: 4px;
-  height: 4px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: rgba(60, 48, 38, 0.92);
+.summit-person-suit {
+  fill: var(--summit-team-color, var(--accent));
+  stroke: rgba(255, 248, 239, 0.34);
+  stroke-width: 0.55;
 }
 
-.summit-person-body {
-  left: 50%;
-  top: 4px;
-  width: 9px;
-  height: 8px;
-  transform: translateX(-50%);
-  border-radius: 4px 4px 3px 3px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.02)),
-    var(--summit-team-color, var(--accent));
-  border: 1px solid rgba(255, 248, 239, 0.44);
+.summit-person-skin {
+  fill: rgba(60, 48, 38, 0.94);
 }
 
-.summit-person-code {
-  left: 50%;
-  top: 5px;
-  width: 8px;
-  height: 7px;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.summit-person-badge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 4.5px;
+  font-size: 5.2px;
   font-weight: 700;
-  color: var(--summit-team-text, rgba(255, 248, 239, 0.96));
-  text-shadow: 0 1px 1px rgba(20, 16, 10, 0.18);
-  z-index: 3;
-}
-
-.summit-person-arms {
-  left: 50%;
-  top: 9px;
-  width: 11px;
-  height: 4px;
-  transform: translateX(-50%);
-}
-
-.summit-person-arms::before,
-.summit-person-arms::after {
-  content: '';
-  position: absolute;
-  top: 1px;
-  width: 5px;
-  height: 2px;
-  border-radius: 999px;
-  background: rgba(60, 48, 38, 0.92);
-}
-
-.summit-person-arms::before {
-  left: 0;
-  transform: rotate(20deg);
-}
-
-.summit-person-arms::after {
-  right: 0;
-  transform: rotate(-20deg);
-}
-
-.summit-person-legs {
-  left: 50%;
-  bottom: 1px;
-  width: 14px;
-  height: 7px;
-  transform: translateX(-50%);
-}
-
-.summit-person-legs::before,
-.summit-person-legs::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  width: 8px;
-  height: 5px;
-  border-radius: 8px 8px 3px 3px;
-  background: rgba(60, 48, 38, 0.92);
-}
-
-.summit-person-legs::before {
-  left: 0;
-  transform: rotate(12deg);
-}
-
-.summit-person-legs::after {
-  right: 0;
-  transform: rotate(-12deg);
+  fill: var(--summit-team-text, rgba(255, 248, 239, 0.96));
+  text-anchor: middle;
+  dominant-baseline: middle;
+  paint-order: stroke fill;
+  stroke: rgba(20, 16, 10, 0.18);
+  stroke-width: 0.35;
 }
 
 .summit-empty {
@@ -5807,21 +5730,30 @@ function renderHighCampSection(highCampTeams) {
   );
 }
 
+function renderSummitPersonSvg(student) {
+  const label = escapeHtml(student.label || 'student');
+  const badge = escapeHtml(student.badge || student.label || '•');
+  return (
+    `<span class="summit-person" title="${label}" aria-label="Student ${label}" data-student="${label}">` +
+      `<svg class="summit-person-svg" viewBox="0 0 24 32" aria-hidden="true" focusable="false">` +
+        `<ellipse cx="12" cy="30" rx="7.1" ry="1.2" fill="rgba(20, 16, 10, 0.12)"></ellipse>` +
+        `<circle class="summit-person-skin" cx="12" cy="4.6" r="2.9"></circle>` +
+        `<rect class="summit-person-suit" x="8.1" y="8.1" width="7.8" height="8.7" rx="3.8"></rect>` +
+        `<path d="M7.8 13.2Q12 15.6 16.2 13.2" fill="none" stroke="rgba(60, 48, 38, 0.94)" stroke-width="1.45" stroke-linecap="round"></path>` +
+        `<ellipse class="summit-person-suit" cx="12" cy="20.1" rx="5.9" ry="3.4"></ellipse>` +
+        `<ellipse class="summit-person-suit" cx="8.5" cy="24.4" rx="5.1" ry="2.5" transform="rotate(-10 8.5 24.4)"></ellipse>` +
+        `<ellipse class="summit-person-suit" cx="15.5" cy="24.4" rx="5.1" ry="2.5" transform="rotate(10 15.5 24.4)"></ellipse>` +
+        `<text class="summit-person-badge" x="12" y="12.6">${badge}</text>` +
+      `</svg>` +
+    `</span>`
+  );
+}
+
 function renderSummitSection(summitTeams) {
   const teams = Array.isArray(summitTeams) ? summitTeams : [];
   const overlayMarkup = teams.map(function(team) {
     const crowdMarkup = (Array.isArray(team.students) ? team.students : []).map(function(student) {
-      const label = escapeHtml(student.label || 'student');
-      const badge = escapeHtml(student.badge || student.label || '·');
-      return (
-        `<span class="summit-person" title="${label}" aria-label="Student ${label}" data-student="${label}">` +
-          `<span class="summit-person-head"></span>` +
-          `<span class="summit-person-body"></span>` +
-          `<span class="summit-person-code">${badge}</span>` +
-          `<span class="summit-person-arms"></span>` +
-          `<span class="summit-person-legs"></span>` +
-        `</span>`
-      );
+      return renderSummitPersonSvg(student);
     }).join('');
 
     return (
