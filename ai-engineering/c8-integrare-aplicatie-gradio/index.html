@@ -547,7 +547,7 @@ footer {
   <p class="hero-subtitle">În C8 legăm componentele construite până acum într-o aplicație funcțională: corpus, vectorstore, roluri YAML, agent RAG, dezbatere multi-agent și interfață Gradio.</p>
   <p class="hero-sub">În cursurile anterioare am construit separat componentele sistemului EchoChamber: date, adnotări, vectorstore-uri, agent RAG și workflow multi-agent. În C8 le integrăm într-o aplicație Gradio care poate încărca o știre, genera răspunsuri prin agenți și porni o dezbatere între mai multe voci discursive.</p>
   <div class="hero-actions">
-    <a class="btn primary" href="materiale/app.html" target="_blank" rel="noopener noreferrer">↗ Tutorial C8</a>
+    <a class="btn primary" href="materiale/app.html" data-tutorial-link target="_blank" rel="noopener noreferrer">↗ Tutorial C8</a>
   </div>
   <div class="hero-meta">
     <span>Curs <strong>AI Engineering</strong></span>
@@ -590,7 +590,7 @@ footer {
           <div class="mat-file-row">
             <span class="mat-file-name">materiale/app.html</span>
             <div class="mat-actions">
-              <a class="btn primary" href="materiale/app.html" target="_blank" rel="noopener noreferrer">↗ Deschide</a>
+              <a class="btn primary" href="materiale/app.html" data-tutorial-link target="_blank" rel="noopener noreferrer">↗ Deschide</a>
             </div>
           </div>
         </div>
@@ -772,6 +772,15 @@ footer {
 const btn = document.getElementById("themeBtn");
 const label = btn.querySelector(".btn-label");
 
+function applyTutorialCacheBust() {
+  const tutorialUrl = new URL("materiale/app.html", window.location.href);
+  tutorialUrl.searchParams.set("v", Date.now().toString());
+
+  document.querySelectorAll("[data-tutorial-link]").forEach((link) => {
+    link.href = tutorialUrl.href;
+  });
+}
+
 function applyTheme(light) {
   document.documentElement.classList.toggle("light", light);
   label.textContent = light ? "dark" : "light";
@@ -783,6 +792,7 @@ function toggleTheme() {
   applyTheme(!light);
 }
 
+applyTutorialCacheBust();
 applyTheme(localStorage.getItem("theme") !== "dark");
 </script>
 </body>

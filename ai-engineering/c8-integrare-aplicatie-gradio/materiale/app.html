@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C8 — EchoChamber: arhitectura și povestea aplicației</title>
+<title>C8 — EchoChamber Studio: hartă vizuală și conceptuală</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -33,11 +33,6 @@ a{color:var(--blue)}a:hover{text-decoration:underline}
 .breadcrumb{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--line);padding:0 32px;height:44px;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--gray)}
 .breadcrumb a{color:var(--gray);text-decoration:none}.breadcrumb a:hover{color:var(--blue)}
 .breadcrumb .sep{color:var(--line);font-size:14px}.breadcrumb .cur{color:var(--navy);font-weight:600}
-
-.top-links{max-width:1200px;margin:0 auto;padding:12px 32px 0;display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--gray)}
-.top-links a{color:var(--blue);text-decoration:none}
-.top-links a:hover{text-decoration:underline}
-.top-links .sep{color:var(--line)}
 
 .wrap{display:grid;grid-template-columns:var(--sidebar) 1fr;max-width:1200px;margin:0 auto}
 
@@ -138,50 +133,92 @@ tr:nth-child(even) td{background:var(--cream)}
 
 hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 </style>
+<style>
+section{margin-bottom:30px}
+h2{margin-top:64px}
+.diag{margin:22px 0 26px}
+.orient{margin:0 0 4px;font-size:13px;color:var(--gray);font-style:italic}
+.orient b{color:var(--navy);font-style:normal;font-weight:700}
+.fig-guide{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:14px 0;
+  padding:13px 16px;background:var(--surface);border:1px solid var(--line);
+  border-radius:7px;font-size:12.5px;line-height:1.55}
+.fig-guide .k{font-family:var(--mono);font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--blue);
+  white-space:nowrap;padding-top:2px}
+.fig-guide .v{color:var(--gray)}
+.fig-guide .v code{font-size:11.5px}
+.intro-block{margin:22px 0;padding:20px 24px;background:var(--surface);
+  border:1px solid var(--line);border-radius:10px}
+.intro-block h3{margin:0 0 10px;font-size:1.06em}
+.intro-block ol,.intro-block ul{margin:0 0 0 20px}
+.intro-block li{margin-bottom:6px;font-size:13.5px;line-height:1.6}
+.intro-block li b{color:var(--navy)}
+.palette{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 0;font-size:12px;
+  color:var(--gray)}
+.palette span{display:flex;align-items:center;gap:6px}
+.palette i{width:13px;height:13px;border-radius:3px;display:inline-block;
+  border:1px solid rgba(0,0,0,.12)}
+.micro{margin:14px 0;padding:11px 15px;background:var(--cream);
+  border:1px solid var(--sand);border-radius:6px;font-size:12.5px;
+  line-height:1.6;color:var(--navy)}
+.micro b{color:var(--blue)}
+.distinct{margin:20px 0;padding:18px 22px;border:1px solid var(--blue-m);
+  background:var(--blue-l);border-radius:9px}
+.distinct h4{font-size:13px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--blue);margin-bottom:11px;
+  font-family:var(--mono)}
+.distinct dl{margin:0}
+.distinct dt{font-family:var(--mono);font-size:12.5px;font-weight:700;
+  color:var(--navy);margin-top:9px}
+.distinct dt:first-child{margin-top:0}
+.distinct dd{margin:2px 0 0;font-size:13px;color:var(--gray);line-height:1.55}
+</style>
+
 </head>
 <body>
 
 <nav class="breadcrumb">
-  <a href="../../">ai-engineering</a><span class="sep">/</span>
-  <a href="../">C8</a><span class="sep">/</span>
-  <span class="cur">tutorial vizual C8</span>
+  <span>materiale</span><span class="sep">/</span>
+  <span>ingineria-ai</span><span class="sep">/</span>
+  <span class="cur">C8 — EchoChamber Studio</span>
 </nav>
-
-<div class="top-links">
-  <a href="../">← Înapoi la C8</a>
-  <span class="sep">·</span>
-  <a href="../../">Pagina cursului AI Engineering</a>
-</div>
 
 <div class="wrap">
 
 <aside class="sidebar">
+  <span class="sb-part">Start aici</span>
+  <ul>
+    <li><a href="#understand">Ce trebuie să înțelegi</a></li>
+    <li><a href="#howto">Cum folosești materialul</a></li>
+  </ul>
   <span class="sb-part">I · Arhitectura</span>
   <ul>
     <li><a href="#repo">01 · Structura repo</a></li>
     <li><a href="#phases">02 · Cele două faze</a></li>
     <li><a href="#pipeline">03 · Pipeline offline</a></li>
-    <li><a href="#blocks">04 · Building blocks</a></li>
+    <li><a href="#blocks">04 · Blocuri de construcție</a></li>
     <li><a href="#tabs">05 · Cele 6 tab-uri</a></li>
     <li><a href="#ragcall">06 · Un apel agent</a></li>
-    <li><a href="#debate">07 · Debate multi-agent</a></li>
+    <li><a href="#debate">07 · Dezbatere multi-agent</a></li>
     <li><a href="#overview">08 · Imaginea de ansamblu</a></li>
     <li><a href="#deps">09 · Dependențe module</a></li>
+    <li><a href="#debugging">10 · Debugging</a></li>
   </ul>
   <span class="sb-part">II · Referință</span>
   <ul>
-    <li><a href="#files">10 · Cum se leagă fișierele</a></li>
-    <li><a href="#conventions">11 · Convenții cheie</a></li>
-    <li><a href="#entry">12 · Entry points</a></li>
+    <li><a href="#files">11 · Cum se leagă fișierele</a></li>
+    <li><a href="#conventions">12 · Convenții cheie</a></li>
+    <li><a href="#entry">13 · Entry points</a></li>
+    <li><a href="#criteria">14 · Criterii de verificare</a></li>
   </ul>
-  <span class="sb-part">III · Povestea</span>
+  <span class="sb-part">III · Trasabilitate</span>
   <ul>
-    <li><a href="#timeline">13 · Timeline C1 → C9</a></li>
-    <li><a href="#per-course">14 · Curs cu curs</a></li>
-    <li><a href="#comment-life">15 · Viața unui comentariu</a></li>
-    <li><a href="#puzzle">16 · Puzzle-ul cursurilor</a></li>
-    <li><a href="#lens">17 · app.py prin lentila cursurilor</a></li>
-    <li><a href="#message">18 · Mesajul final</a></li>
+    <li><a href="#timeline">15 · Timeline C1 → final</a></li>
+    <li><a href="#per-course">16 · Curs cu curs</a></li>
+    <li><a href="#comment-life">17 · Transformarea unui comentariu</a></li>
+    <li><a href="#puzzle">18 · Asamblarea etapelor</a></li>
+    <li><a href="#lens">19 · Citim app.py prin componente</a></li>
+    <li><a href="#message">20 · Concluzie</a></li>
   </ul>
 </aside>
 
@@ -189,19 +226,51 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 
 <div class="hero">
   <div class="hero-tag">curs final · C8</div>
-  <h1>EchoChamber — arhitectura și povestea aplicației</h1>
-  <p class="lead">Două lucruri într-o singură pagină. Întâi, <strong>cum funcționează aplicația</strong> end-to-end: structura repo-ului, pipeline-ul de date, cum se compun modulele ca niște <strong>building blocks</strong>, cele 6 tab-uri Gradio. Apoi <strong>povestea</strong>: cum fiecare săptămână de curs a adăugat fizic o piesă, iar la final toate se conectează într-un sistem coerent.</p>
+  <h1>EchoChamber Studio — hartă vizuală și conceptuală</h1>
+  <p class="lead">Acest material este harta completă a aplicației finale: cum se leagă pipeline-ul offline, vectorstore-urile, <code class="i">core/retriever.py</code>, <code class="i">core/agent.py</code>, <code class="i">core/graph.py</code>, <code class="i">app/app.py</code>, rolurile YAML și interfața Gradio. Nu este un rezumat și nu este un README — este materialul de curs complet, vizual și explicativ, care leagă fiecare componentă de etapa în care a fost construită (C1–C8).</p>
   <div class="hero-meta">
     <span>echochamber-app/</span>
-    <span>7 cursuri → 1 aplicație</span>
-    <span>12 diagrame</span>
-    <span>~40 min</span>
+    <span>C1–C8 → aplicație integrată</span>
+    <span>11 diagrame</span>
+    <span>~45 min</span>
   </div>
 </div>
 
-<div class="note">
-  <p>Aplicația livrabilă (<code class="i">app/app.py</code>) este un <strong>strat subțire Gradio</strong> peste modulele <code class="i">core/</code> construite în cursurile C2–C7. Nu rescrie nimic — le compune. Partea III leagă explicit fiecare bucată de cursul ei.</p>
+<!-- NEW: Ce trebuie să înțelegi -->
+<section id="understand">
+<div class="intro-block">
+  <h3>Ce trebuie să înțelegi la final</h3>
+  <ul>
+    <li>Aplicația are <b>două faze</b>: un pipeline <b>offline</b> care pregătește datele și indexurile, și un <b>runtime</b> Gradio care servește utilizatorul.</li>
+    <li><code class="i">core/</code> conține logica reutilizabilă (retrieval, agent, orchestrare); <code class="i">app/</code> doar o <b>expune</b> într-o interfață — nu rescrie logica.</li>
+    <li>Știrea sau textul introdus este <b>obiectul comentariului</b>; corpusul recuperat din FAISS este <b>context discursiv</b> (ton, vocabular, poziționare), nu subiectul.</li>
+    <li>C8 <b>nu introduce o tehnologie nouă</b>; integrează componentele construite în C2–C7 într-un singur sistem coerent.</li>
+    <li>Orice eroare poate fi localizată cu o singură întrebare: problema este în <b>date</b>, în <b>vectorstore</b>, în <b>agent</b>, în <b>graph</b> sau în <b>UI</b>?</li>
+  </ul>
+  <div class="palette">
+    <span><i style="background:#2C5F8A"></i> albastru = runtime / aplicație</span>
+    <span><i style="background:#1B5E35"></i> verde = date / pipeline offline</span>
+    <span><i style="background:#9A6C00"></i> amber = vectorstore / punte offline↔runtime</span>
+    <span><i style="background:#8B1F1F"></i> roșu = orchestrare / dezbatere</span>
+    <span><i style="background:#6D28D9"></i> mov / C1–C7 = trasabilitatea cursurilor</span>
+  </div>
 </div>
+</section>
+
+<!-- NEW: Cum folosești materialul -->
+<section id="howto">
+<div class="intro-block">
+  <h3>Cum folosești acest material</h3>
+  <ol>
+    <li>Citește mai întâi schema <b>offline / runtime</b> (secțiunea 02) — îți dă cadrul general.</li>
+    <li>Verifică <b>structura repo-ului</b> (01) — unde se află fiecare piesă.</li>
+    <li>Urmărește <b>apelul unui agent</b> (06) — cum se produce un răspuns.</li>
+    <li>Urmărește <b>fluxul de dezbatere</b> (07) — cum devine multi-agent.</li>
+    <li>Rulează <b>notebook-ul C8</b> (<a href="C8_gradio_tutorial_echochamber.ipynb">C8_gradio_tutorial_echochamber.ipynb</a>) — construiește app-ul incremental.</li>
+    <li>Verifică <b>aplicația finală</b> cu lista de criterii (secțiunea 14).</li>
+  </ol>
+</div>
+</section>
 
 <!-- ═══ PART I ═══ -->
 <div class="part-banner" id="part-i">
@@ -214,14 +283,15 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <section id="repo">
 <h2><span class="n">01</span>Structura repo-ului</h2>
 <div class="rule"></div>
-<p>Trei zone: <code class="i">scripts/</code> + <code class="i">data/</code> pentru pipeline-ul offline, <code class="i">core/</code> pentru logica de business, <code class="i">app/</code> pentru interfață. Albastru = folder, gri = fișier.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Unde se află fiecare piesă a aplicației?</b></p>
+<p>Trei zone, fiecare cu o responsabilitate clară: <code class="i">scripts/</code> + <code class="i">data/</code> pentru pipeline-ul offline, <code class="i">core/</code> pentru logica de business reutilizabilă, <code class="i">app/</code> pentru interfață. Albastru = folder, gri = fișier.</p>
 <div class="cb">
 <div class="cb-lbl">echochamber-app/ — structura (fără notebooks)</div>
 <pre><code><span class="dir">app/</span>
 └─ <span class="file">app.py</span>                     <span class="cmt"># UI: 6 tab-uri — Setări·Chat·Rezumat·Agent·Toți agenții·Dezbatere</span>
 
 <span class="dir">core/</span>                         <span class="cmt"># logica de business (importată de app)</span>
-├─ <span class="file">agent.py</span>                   <span class="cmt"># un agent: role + retrieval + apel LLM (C6)</span>
+├─ <span class="file">agent.py</span>                   <span class="cmt"># un agent: rol + retrieval + apel LLM (C6)</span>
 ├─ <span class="file">graph.py</span>                   <span class="cmt"># LangGraph: orchestrare multi-agent (C7)</span>
 ├─ <span class="file">retriever.py</span>               <span class="cmt"># FAISS retrieval pe vectorstore-ul unui agent (C5)</span>
 ├─ <span class="file">config.py</span>                  <span class="cmt"># referință (varianta minimă a app-ului nu îl mai folosește)</span>
@@ -238,8 +308,9 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <span class="dir">data/</span> <span class="dir">raw/ cleaned/ annotated/ bubbles/</span>   <span class="cmt"># pipeline-ul de date</span>
 <span class="file">.env</span>  <span class="cmt"># GEMINI / DEEPSEEK / YOUTUBE keys</span>   <span class="file">requirements.txt</span></code></pre>
 </div>
+<div class="micro"><b>index.faiss vs index.pkl.</b> <code class="i">index.faiss</code> conține <em>vectorii numerici</em> (reprezentarea matematică a textelor, pentru căutare rapidă). <code class="i">index.pkl</code> conține <em>textele originale + metadatele</em> (sursă, agent). FAISS găsește <em>care</em> vectori sunt apropiați; pkl-ul spune <em>ce text</em> era acolo. Ai nevoie de ambele ca să recuperezi un fragment lizibil.</div>
 <div class="note a">
-  <p><strong>Regula slug-ului.</strong> Aceeași valoare (<code class="i">anti_sistem</code>, <code class="i">conspirationist</code>, …) apare în 3 locuri și trebuie identică: cheia din <code class="i">roles.yaml</code>, <code class="i">data/bubbles/&lt;slug&gt;.jsonl</code>, <code class="i">vectorstores/&lt;slug&gt;/</code>. Inconsistent → <code class="i">FileNotFoundError</code>.</p>
+  <p><strong>Regula slug-ului.</strong> Aceeași valoare (<code class="i">anti_sistem</code>, <code class="i">conspirationist</code>, …) apare în 3 locuri și trebuie să fie <strong>identică</strong>: cheia din <code class="i">assets/roles/roles.yaml</code>, fișierul <code class="i">data/bubbles/&lt;slug&gt;.jsonl</code> și folderul <code class="i">assets/vectorstores/&lt;slug&gt;/</code>. <strong>De ce contează:</strong> slug-ul este cheia care leagă cele trei. Dacă într-un loc scrie <code class="i">anti_sistem</code> și în altul <code class="i">antisistem</code>, retrieverul caută un folder care nu există și pică cu <code class="i">FileNotFoundError</code> — agentul nu mai are corpus.</p>
 </div>
 </section>
 
@@ -247,19 +318,23 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <section id="phases">
 <h2><span class="n">02</span>Cele două faze</h2>
 <div class="rule"></div>
-<p>Sistemul are <strong>două faze</strong>. Faza A se rulează o singură dată și produce indexurile FAISS. Faza B servește utilizatorul prin Gradio. Singura punte: vectorstore-urile.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce se întâmplă offline și ce se întâmplă când aplicația rulează?</b></p>
+<p>Sistemul are <strong>două faze</strong> separate. Faza A (offline) se rulează o singură dată și produce indexurile FAISS. Faza B (runtime) servește utilizatorul prin Gradio. Singura legătură dintre ele: vectorstore-urile.</p>
+<div class="micro"><b>Ce înseamnă „runtime".</b> Runtime = momentul în care aplicația <em>rulează</em> și răspunde la acțiunile utilizatorului (apeși un buton → se execută cod → vezi un răspuns). Opusul e <em>offline</em>: pregătirea făcută înainte, o singură dată, fără utilizator în fața ecranului.</p></div>
 <div class="grid2">
-<div class="card hi"><div class="card-tag">Faza A · offline</div><h4>Pipeline de date</h4><p>YouTube → colectare → curățare → adnotare → bule → vectorstore. Rulat manual din CLI.</p></div>
-<div class="card hi"><div class="card-tag">Faza B · runtime</div><h4>Aplicația Gradio</h4><p>6 tab-uri. Tab-ul Setări încarcă o știre; restul tab-urilor o folosesc automat ca context.</p></div>
+<div class="card hi"><div class="card-tag">Faza A · offline</div><h4>Pipeline de date</h4><p>YouTube → colectare → curățare → adnotare → bule → vectorstore. Rulat manual din linia de comandă. Cod în <code class="i">scripts/</code>, rezultate în <code class="i">data/</code> și <code class="i">assets/vectorstores/</code>.</p></div>
+<div class="card hi"><div class="card-tag">Faza B · runtime</div><h4>Aplicația Gradio</h4><p>6 tab-uri. Tab-ul Setări încarcă o știre; restul tab-urilor o folosesc automat ca obiect al comentariului. Cod în <code class="i">app/app.py</code> + <code class="i">core/</code>.</p></div>
 </div>
-<div class="note g"><p><strong>Puntea unică.</strong> Faza A produce <code class="i">assets/vectorstores/&lt;slug&gt;/</code>. Faza B le citește la fiecare cerere prin <code class="i">core/retriever.py</code>. Sunt complet decuplate.</p></div>
+<div class="note g"><p><strong>Puntea unică.</strong> Faza A produce <code class="i">assets/vectorstores/&lt;slug&gt;/</code>. Faza B le citește la fiecare cerere prin <code class="i">core/retriever.py</code>. În rest, cele două faze sunt complet decuplate — poți reface pipeline-ul fără să atingi aplicația, și invers.</p></div>
 </section>
 
 <!-- 03 PIPELINE -->
 <section id="pipeline">
-<h2><span class="n">03</span>Pipeline de date offline — file by file</h2>
+<h2><span class="n">03</span>Pipeline de date offline — fișier cu fișier</h2>
 <div class="rule"></div>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum ajunge un comentariu brut de pe YouTube să fie un vectorstore căutabil?</b></p>
 <p>Fiecare script consumă un fișier și produce altul. Dacă pipeline-ul se rupe, te uiți care fișier lipsește între două etape.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Cum se transformă datele, etapă cu etapă, până la vectorstore?</div><div class="k">De observat</div><div class="v">Lanțul liniar: fiecare cutie albastră (script) produce un fișier verde, care devine inputul scriptului următor. Punctele mov = config injectat.</div><div class="k">În cod</div><div class="v"><code class="i">scripts/collect_youtube.py</code> → <code class="i">clean_youtube.py</code> → <code class="i">annotate_axis.py</code> → <code class="i">build_vectorstore.py</code></div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs>
@@ -319,12 +394,13 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 </figure></div>
 </section>
 
-<!-- 04 BUILDING BLOCKS -->
+<!-- 04 BLOCKS -->
 <section id="blocks">
-<h2><span class="n">04</span>Building blocks — cum se compune <code class="i">app.py</code></h2>
+<h2><span class="n">04</span>Blocuri de construcție (building blocks)</h2>
 <div class="rule"></div>
-<p><code class="i">app.py</code> nu e o cutie neagră — se construiește în straturi, ca niște cărămizi. Fundația sunt modulele <code class="i">core/</code> din C5–C7. Peste ele, fiecare secțiune din fișier adaugă un strat, până la interfața care rulează. Săgețile din stânga arată <strong>ce intră în fiecare strat</strong>.</p>
-
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum se compune <code class='i'>app.py</code> din straturi, și ce intră în fiecare strat?</b></p>
+<p><code class="i">app.py</code> nu este o cutie neagră — se construiește în straturi, ca niște cărămizi. Fundația sunt modulele <code class="i">core/</code> din C5–C7. Peste ele, fiecare secțiune din fișier adaugă un strat, până la interfața care rulează.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Din ce straturi e făcut app.py și pe ce se sprijină fiecare?</div><div class="k">De observat</div><div class="v">Fundația = <code class="i">core/</code> (C5–C7). Săgețile din stânga = ce intră în fiecare strat. Săgețile verticale = fiecare strat se sprijină pe cel de sub el.</div><div class="k">În cod</div><div class="v">Secțiunile numerotate §1–§6 din <code class="i">app/app.py</code></div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs>
@@ -398,12 +474,11 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
   <span><i style="background:#B45309"></i> §4–5 tab-uri</span>
   <span><i style="background:#1A1D2B"></i> §6 UI</span>
 </div>
-<figcaption>Fig. 2 — App-ul ca turn de cărămizi. Săgețile din stânga = ce intră în fiecare strat. Săgețile verticale = fiecare strat se sprijină pe cel de sub el.</figcaption>
+<figcaption>Fig. 2 — Aplicația ca turn de blocuri de construcție. Săgețile din stânga = ce intră în fiecare strat. Săgețile verticale = fiecare strat se sprijină pe cel de sub el.</figcaption>
 </figure></div>
-
 <h3>Ce blocuri intră în fiecare tab</h3>
 <p>Fiecare tab e compus din aceleași tipuri de cărămizi, dar combinate diferit. Citește fiecare coloană de jos în sus: input → procesare → backend.</p>
-
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Ce module intră în fiecare dintre cele 6 tab-uri?</div><div class="k">De observat</div><div class="v">Aceleași 5 tipuri de cărămizi (input · stare · _subject · ask_llm · core.agent/graph) recombinate. Setări scrie starea; restul o citesc.</div><div class="k">În cod</div><div class="v">Funcțiile <code class="i">setup·chat·summary·agent·all_agents·debate</code> din §4–5</div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <!-- 6 columns, each a small stack -->
@@ -464,15 +539,16 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 </div>
 <figcaption>Fig. 3 — Building blocks per tab. Aceleași cărămizi, combinate diferit. Setări scrie starea; restul o citesc și cheamă backend-ul potrivit.</figcaption>
 </figure></div>
-
-<div class="note"><p><strong>De ce contează.</strong> Odată ce vezi cele 5 tipuri de cărămizi (input · stare · _subject · ask_llm · core.agent/graph), oricare tab e doar o combinație de 3–4 dintre ele. Asta face codul ușor de citit și de predat: nu memorezi 6 tab-uri, înveți 5 piese.</p></div>
+<div class="note"><p><strong>De ce contează.</strong> Odată ce vezi cele 5 tipuri de cărămizi, oricare tab e doar o combinație de 3–4 dintre ele. Asta face codul ușor de citit și de predat: nu memorezi 6 tab-uri, înțelegi 5 piese.</p></div>
 </section>
 
 <!-- 05 TABS -->
 <section id="tabs">
-<h2><span class="n">05</span>Cele 6 tab-uri — user journey</h2>
+<h2><span class="n">05</span>Cele 6 tab-uri — parcursul utilizatorului</h2>
 <div class="rule"></div>
-<p>App-ul are <strong>6 tab-uri</strong>. Tab-ul Setări scrie starea partajată (<code class="i">CFG</code>, <code class="i">ART</code>); celelalte o citesc. Fiecare tab e un <code class="i">gr.Interface</code>.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce face fiecare tab și de unde își ia datele?</b></p>
+<p>Aplicația finală are <strong>6 tab-uri</strong>: <strong>Setări</strong>, <strong>Chat</strong>, <strong>Rezumat</strong>, <strong>Agent</strong>, <strong>Toți agenții</strong> și <strong>Dezbatere</strong>. Nu există un sidebar separat — Setări este tab-ul care scrie starea partajată (<code class="i">CFG</code>, <code class="i">ART</code>); celelalte cinci o citesc. Fiecare tab este un <code class="i">gr.Interface</code>.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Cine scrie starea și cine o citește?</div><div class="k">De observat</div><div class="v">Tab-ul <b>Setări</b> este singurul care scrie în <code class="i">CFG/ART</code>. Celelalte 5 doar citesc starea și cheamă backend-ul corespunzător cursului lor.</div><div class="k">În cod</div><div class="v"><code class="i">setup()</code> scrie; <code class="i">chat·summary·agent·all_agents·debate</code> citesc</div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs><marker id="t-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#64748B"/></marker></defs>
@@ -539,21 +615,39 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <thead><tr><th>Tab</th><th>Funcție în app.py</th><th>Ce folosește</th><th>Curs</th></tr></thead>
 <tbody>
 <tr><td>Setări</td><td><code class="i">setup()</code></td><td>scrie <code class="i">CFG</code>+<code class="i">ART</code>; <code class="i">requests</code>+<code class="i">bs4</code></td><td class="em">C2</td></tr>
-<tr><td>Chat</td><td><code class="i">chat()</code></td><td><code class="i">ask_llm</code> (Q&amp;A pe știre, dacă e)</td><td class="em">C2</td></tr>
+<tr><td>Chat</td><td><code class="i">chat()</code></td><td><code class="i">ask_llm</code> (răspuns pe știre, dacă există)</td><td class="em">C2</td></tr>
 <tr><td>Rezumat</td><td><code class="i">summary()</code></td><td><code class="i">ask_llm</code> (t=0.2) pe <code class="i">ART</code></td><td class="em">C2</td></tr>
-<tr><td>Agent</td><td><code class="i">agent()</code></td><td><code class="i">_subject</code> → <code class="i">_agent</code> → core.agent</td><td class="em">C5+C6</td></tr>
-<tr><td>Toți agenții</td><td><code class="i">all_agents()</code></td><td>loop pe <code class="i">ROLES</code> → <code class="i">_agent</code></td><td class="em">C6</td></tr>
+<tr><td>Agent</td><td><code class="i">agent()</code></td><td><code class="i">_subject</code> → <code class="i">_agent</code> → <code class="i">core.agent</code></td><td class="em">C5+C6</td></tr>
+<tr><td>Toți agenții</td><td><code class="i">all_agents()</code></td><td>buclă pe <code class="i">ROLES</code> → <code class="i">_agent</code></td><td class="em">C6</td></tr>
 <tr><td>Dezbatere</td><td><code class="i">debate()</code></td><td><code class="i">core.graph.run_thread</code></td><td class="em">C7</td></tr>
 </tbody>
 </table></div>
-<div class="note a"><p><strong>Regula <code class="i">_subject()</code>.</strong> Dacă există ȘI o știre încărcată ȘI un subiect scris în tab → subiectul intră <em>peste</em> știre („discută X în contextul acestei știri"). Doar știre → se discută știrea. Doar subiect → se discută subiectul.</p></div>
+<div class="note a"><p><strong>Regula <code class="i">_subject()</code>.</strong> Dacă există ȘI o știre încărcată ȘI un subiect scris în tab → subiectul intră <em>peste</em> știre („discută subiectul X în contextul acestei știri"). Doar știre → se discută știrea. Doar subiect → se discută subiectul.</p></div>
 </section>
 
 <!-- 06 RAG CALL -->
 <section id="ragcall">
-<h2><span class="n">06</span>Runtime — un apel din tab-ul Agent</h2>
+<h2><span class="n">06</span>Un apel agent</h2>
 <div class="rule"></div>
-<p>Secvența exactă la un click pe <strong>Submit</strong> în tab-ul Agent. De sus în jos: fiecare săgeată numerotată = un apel între componente.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce se întâmplă când utilizatorul apasă butonul Generează răspuns în tab-ul Agent?</b></p>
+
+<div class="distinct">
+  <h4>Distincție conceptuală</h4>
+  <dl>
+    <dt>știrea / textul introdus</dt>
+    <dd>obiectul despre care agentul trebuie să răspundă (subiectul concret).</dd>
+    <dt>corpusul recuperat prin FAISS</dt>
+    <dd>exemple de ton, vocabular și poziționare discursivă — <em>stilul</em>, nu subiectul.</dd>
+    <dt>roles.yaml</dt>
+    <dd>identitatea discursivă a agentului (cine vorbește și cu ce reguli).</dd>
+    <dt>LLM-ul</dt>
+    <dd>generatorul propriu-zis al răspunsului.</dd>
+    <dt>app.py</dt>
+    <dd>stratul care le conectează pe toate în interfață.</dd>
+  </dl>
+</div>
+<p>Citește traseul de mai jos având în minte distincția: agentul nu trebuie să comenteze generic corpusul; trebuie să <strong>reacționeze la știre</strong>, folosind corpusul recuperat doar ca stil și context discursiv, iar rolul ca poziție.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Ce traseu parcurge o cerere din tab-ul Agent?</div><div class="k">De observat</div><div class="v"><code class="i">app.py</code> nu generează singur răspunsul: apelează <code class="i">core.agent</code>, care citește rolul din <code class="i">roles.yaml</code>, caută context în FAISS și trimite promptul la LLM. Răspunsul + contextul se întorc în UI.</div><div class="k">În cod</div><div class="v"><code class="i">agent()</code> → <code class="i">_agent()</code> → <code class="i">generate_agent_response()</code> din <code class="i">core/agent.py</code></div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs>
@@ -588,16 +682,19 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
   <line x1="210" y1="426" x2="74" y2="426" stroke="#1B5E35" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#s-r)"/><text x="80" y="420" fill="#1B5E35">12. comentariul afișat în tab</text>
 </g>
 </svg>
-<figcaption>Fig. 5 — Diagrama de secvență a unui apel din tab-ul Agent. Săgeți pline = cereri; întrerupte verzi = răspunsuri. Subiectul (pasul 1) vine din <code>_subject()</code> — subiect peste știre.</figcaption>
+<figcaption>Fig. 5 — Secvența unui apel din tab-ul Agent. Săgeți pline = cereri; întrerupte verzi = răspunsuri. Subiectul (pasul 1) vine din <code>_subject()</code> — subiect peste știre.</figcaption>
 </figure></div>
-<div class="note"><p><strong>Multi-agent-ul nu duplică acest flux.</strong> Pașii 2–11 sunt exact ce reutilizează „Toți agenții" în buclă peste roluri și „Dezbatere" prin <code class="i">core.graph</code>.</p></div>
+<div class="note"><p><strong>Reutilizare, nu duplicare.</strong> Pașii 2–11 sunt exact ce reutilizează „Toți agenții" (în buclă peste roluri) și „Dezbatere" (prin <code class="i">core.graph</code>). Logica RAG este scrisă o singură dată, în <code class="i">core/agent.py</code>.</p></div>
 </section>
 
 <!-- 07 DEBATE -->
 <section id="debate">
-<h2><span class="n">07</span>Multi-agent debate — LangGraph în <code class="i">core/graph.py</code></h2>
+<h2><span class="n">07</span>Dezbatere multi-agent</h2>
 <div class="rule"></div>
-<p>Tab-ul Dezbatere: <code class="i">router_node</code> alege round-robin cine vorbește, fiecare <code class="i">agent_node</code> reutilizează <code class="i">generate_agent_response()</code> din Fig. 5, apoi revine la router.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum se transformă un răspuns izolat într-un thread multi-agent?</b></p>
+<p>Tab-ul Dezbatere ridică un nivel deasupra unui singur agent: <code class="i">router_node</code> alege round-robin cine vorbește, fiecare <code class="i">agent_node</code> reutilizează <code class="i">generate_agent_response()</code> din secțiunea precedentă, apoi revine la router.</p>
+<div class="micro"><b>De ce <code class="i">core/graph.py</code> nu trebuie să conțină UI.</b> <code class="i">graph.py</code> are o singură responsabilitate: <em>orchestrarea</em> (cine vorbește, în ce ordine, când se oprește). Dacă ar conține și cod de interfață, n-ai mai putea rula o dezbatere din linia de comandă sau dintr-un test, iar logica de orchestrare ar deveni imposibil de reutilizat. Separarea responsabilităților = fiecare modul face un singur lucru.</p></div>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Cum devine un singur răspuns o conversație între agenți?</div><div class="k">De observat</div><div class="v">Routerul alege round-robin următorul agent; fiecare <code class="i">agent_node</code> reutilizează exact apelul din secțiunea 06; bucla se închide când s-a atins numărul de intervenții.</div><div class="k">În cod</div><div class="v"><code class="i">run_thread()</code> și <code class="i">route_decision()</code> din <code class="i">core/graph.py</code></div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs>
@@ -643,7 +740,7 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <text x="120" y="325" text-anchor="middle" font-size="10" fill="#fff" font-family="monospace">END</text>
 <text x="150" y="270" font-size="8.5" fill="#1B5E35">__end__</text>
 </svg>
-<figcaption>Fig. 6 — Debate-ul multi-agent. Routerul alege round-robin: <code>active_slugs[current_turn % len(active_slugs)]</code>. Bucla continuă până la <code>current_turn == total_turns</code>.</figcaption>
+<figcaption>Fig. 6 — Dezbaterea multi-agent. Routerul alege round-robin: <code>active_slugs[current_turn % len(active_slugs)]</code>. Bucla continuă până la <code>current_turn == total_turns</code>.</figcaption>
 </figure></div>
 </section>
 
@@ -651,7 +748,9 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <section id="overview">
 <h2><span class="n">08</span>Imaginea de ansamblu — offline → runtime</h2>
 <div class="rule"></div>
-<p>Tot lanțul, de la API extern la răspunsul afișat. Cele două faze sunt separate; singura legătură este linia punctată: vectorstore-urile produse offline, citite de retriever la runtime.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum se leagă tot lanțul, de la API extern la răspunsul afișat?</b></p>
+<p>Cele două faze sunt separate; singura legătură este linia punctată amber: vectorstore-urile produse offline, citite de retriever la runtime.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Unde e granița dintre offline și runtime?</div><div class="k">De observat</div><div class="v">Cele două chenare punctate (verde = offline, albastru = runtime) nu se ating decât prin săgeata amber: vectorstore citit de retriever.</div><div class="k">În cod</div><div class="v"><code class="i">scripts/</code> + <code class="i">data/</code> (offline) vs <code class="i">app/</code> + <code class="i">core/</code> (runtime)</div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs>
@@ -716,7 +815,9 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <section id="deps">
 <h2><span class="n">09</span>Dependențe între module — cine importă pe cine</h2>
 <div class="rule"></div>
-<p>Săgeata = „importă / depinde de". <code class="i">app.py</code> importă direct doar <code class="i">core.agent</code> și <code class="i">core.graph</code> (plus gradio/openai/yaml/requests/bs4). Restul e ascuns în spatele lor.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce importă fiecare modul și de ce <code class='i'>app.py</code> nu trebuie să fie gros?</b></p>
+<p>Săgeata = „importă / depinde de". <code class="i">app.py</code> importă direct doar <code class="i">core.agent</code> și <code class="i">core.graph</code> (plus gradio/openai/yaml/requests/bs4). Restul logicii e ascuns în spatele lor.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Cine depinde de cine, și unde stă logica grea?</div><div class="k">De observat</div><div class="v"><code class="i">core/agent.py</code> e nodul către care converg săgețile; <code class="i">app.py</code> e doar vârful subțire.</div><div class="k">În cod</div><div class="v">Liniile <code class="i">import</code> din capul <code class="i">app/app.py</code> și <code class="i">core/graph.py</code></div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs>
@@ -767,18 +868,40 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 </div>
 <figcaption>Fig. 8 — Graful de import. <code>app.py</code> atinge doar <code>core.agent</code> + <code>core.graph</code>. Retrieverul e singurul care deschide vectorstore-urile.</figcaption>
 </figure></div>
+<div class="micro"><b>De ce <code class="i">core/agent.py</code> este nodul central.</b> Și un singur agent (tab Agent), și „Toți agenții" (buclă), și „Dezbatere" (prin <code class="i">graph.py</code>) trec prin <code class="i">generate_agent_response()</code>. Scrii logica RAG o dată, o reutilizezi de trei ori. Dacă o repari acolo, se repară peste tot.</div>
+<div class="micro"><b>De ce <code class="i">app.py</code> trebuie să fie un strat subțire.</b> Dacă rescrii retrieval-ul sau prompting-ul în <code class="i">app.py</code>, ai două copii ale aceleiași logici care se desincronizează. <code class="i">app.py</code> doar <em>cheamă</em> <code class="i">core/</code> și afișează rezultatul. Schimbi backend-ul → UI rămâne neatins; schimbi UI-ul → backend rămâne neatins.</div>
+</section>
+
+<!-- 10 DEBUGGING -->
+<section id="debugging">
+<h2><span class="n">10</span>Debugging: unde cauți problema?</h2>
+<div class="rule"></div>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Aplicația nu merge — în care strat caut?</b></p>
+<p>Localizezi problema după simptom. Fiecare simptom corespunde unui strat anume — nu căuta la întâmplare.</p>
+<div class="tw"><table>
+<thead><tr><th>Simptom</th><th>Probabil problema este în</th><th>Ce verifici</th></tr></thead>
+<tbody>
+<tr><td>Aplicația nu pornește</td><td><code class="i">app/app.py</code> sau importuri</td><td>rulează <code class="i">python -m app.app</code> și citește mesajul de eroare (import lipsă, sintaxă)</td></tr>
+<tr><td>Agentul nu găsește context</td><td>vectorstore / retriever</td><td><code class="i">assets/vectorstores/&lt;slug&gt;/index.faiss</code> există? Slug-ul e identic peste tot?</td></tr>
+<tr><td>Agentul răspunde generic</td><td>prompt / agent</td><td><code class="i">core/agent.py</code> — separarea știre vs corpus; subiectul ajunge ca obiect, nu corpusul</td></tr>
+<tr><td>Dezbaterea nu pornește</td><td><code class="i">core/graph.py</code></td><td><code class="i">run_thread()</code> — minim 2 agenți, numărul de intervenții &gt; 0</td></tr>
+<tr><td>Un agent lipsește din listă</td><td><code class="i">roles.yaml</code> / slug</td><td>numele agentului în <code class="i">roles.yaml</code>, <code class="i">data/bubbles/</code> și <code class="i">vectorstores/</code> — identic?</td></tr>
+<tr><td>Eroare de API</td><td><code class="i">.env</code> / provider</td><td>cheia API există în <code class="i">.env</code> și corespunde providerului ales în Setări</td></tr>
+</tbody>
+</table></div>
 </section>
 
 <!-- ═══ PART II ═══ -->
 <div class="part-banner" id="part-ii">
   <span class="pb-label">Partea II · Referință</span>
-  <h2>Cheat-sheet tehnic</h2>
-  <p>Tabelul de import, convențiile care nu se negociază și comenzile de rulare.</p>
+  <h2>Referință tehnică rapidă</h2>
+  <p>Tabelul de import, convențiile care nu se negociază, comenzile de rulare și criteriile de verificare.</p>
 </div>
 
 <section id="files">
-<h2><span class="n">10</span>Cum se leagă fișierele</h2>
+<h2><span class="n">11</span>Cum se leagă fișierele</h2>
 <div class="rule"></div>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce importă fiecare fișier și cine îl folosește?</b></p>
 <div class="tw"><table>
 <thead><tr><th>Modul</th><th>Importă</th><th>Folosit de</th></tr></thead>
 <tbody>
@@ -790,11 +913,13 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 <tr><td><code class="i">app/app.py</code></td><td><code class="i">core.agent</code>, <code class="i">core.graph</code>, <code class="i">gradio</code>, <code class="i">openai</code>, <code class="i">yaml</code>, <code class="i">requests</code>, <code class="i">bs4</code></td><td><code class="i">python -m app.app</code></td></tr>
 </tbody>
 </table></div>
+<div class="micro"><b>Trasabilitate concept → fișier.</b> RAG → <code class="i">core/agent.py</code> · retrieval → <code class="i">core/retriever.py</code> · vectorstore → <code class="i">assets/vectorstores/&lt;slug&gt;/</code> · roluri → <code class="i">assets/roles/roles.yaml</code> · dezbatere → <code class="i">core/graph.py</code> · interfață → <code class="i">app/app.py</code> · pipeline offline → <code class="i">scripts/</code> + <code class="i">data/</code>.</div>
 </section>
 
 <section id="conventions">
-<h2><span class="n">11</span>Convenții cheie</h2>
+<h2><span class="n">12</span>Convenții cheie</h2>
 <div class="rule"></div>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce reguli nu se negociază în acest proiect?</b></p>
 <div class="grid2">
 <div class="card"><div class="card-tag">Slug</div><h4>Identitatea agentului</h4><p>Aceeași valoare în 3 locuri: cheia din <code class="i">roles.yaml</code>, <code class="i">data/bubbles/&lt;slug&gt;.jsonl</code>, <code class="i">vectorstores/&lt;slug&gt;/</code>. Inconsistent → <code class="i">FileNotFoundError</code>.</p></div>
 <div class="card"><div class="card-tag">Embedding</div><h4>Model unic</h4><p><code class="i">paraphrase-multilingual-MiniLM-L12-v2</code>, 384 dim, la build ȘI la search. Schimbarea impune rebuild la toate vectorstore-urile.</p></div>
@@ -804,8 +929,9 @@ hr.div{border:none;border-top:1px solid var(--sand);margin:44px 0}
 </section>
 
 <section id="entry">
-<h2><span class="n">12</span>Entry points — cum se rulează</h2>
+<h2><span class="n">13</span>Entry points — cum se rulează</h2>
 <div class="rule"></div>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce comandă pornește fiecare parte a sistemului?</b></p>
 <div class="cb">
 <div class="cb-lbl">comenzi terminal</div>
 <pre><code><span class="cm"># Aplicația (Gradio UI · 6 tab-uri)</span>
@@ -814,7 +940,7 @@ python -m app.app          <span class="cm"># sau:  python app/app.py</span>
 <span class="cm"># Un singur agent RAG, din terminal</span>
 python -m core.agent --agent anti_sistem --text <span class="st">"..."</span> --provider gemini --k <span class="nb">5</span>
 
-<span class="cm"># Debate multi-agent</span>
+<span class="cm"># Dezbatere multi-agent</span>
 python -m core.graph --agents anti_sistem conspirationist pro_european \
     --text <span class="st">"..."</span> --turns <span class="nb">4</span> --provider gemini
 
@@ -827,17 +953,40 @@ python scripts/build_vectorstore.py</code></pre>
 </div>
 </section>
 
+<!-- 14 CRITERIA -->
+<section id="criteria">
+<h2><span class="n">14</span>Criterii de verificare pentru C8</h2>
+<div class="rule"></div>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum știu că aplicația C8 este completă și corectă?</b></p>
+<p>Înainte de predare, verifică punct cu punct:</p>
+<div class="intro-block">
+<ul>
+  <li>aplicația pornește cu <code class="i">python -m app.app</code>;</li>
+  <li>se poate încărca o știre din tab-ul Setări;</li>
+  <li>tab-ul Chat răspunde pe baza știrii încărcate;</li>
+  <li>tab-ul Agent răspunde explicit la știre (nu comentează generic corpusul);</li>
+  <li>tab-ul Toți agenții produce răspunsuri diferențiate între roluri;</li>
+  <li>tab-ul Dezbatere rulează cu cel puțin doi agenți și mai multe intervenții;</li>
+  <li>contextul FAISS nu se afișează în UI dacă este ținut în backend;</li>
+  <li>nu există chei API în repo (sunt doar în <code class="i">.env</code>, negitat);</li>
+  <li>README explică cum se rulează aplicația și pipeline-ul.</li>
+</ul>
+</div>
+</section>
+
 <!-- ═══ PART III ═══ -->
 <div class="part-banner" id="part-iii">
-  <span class="pb-label">Partea III · Povestea</span>
-  <h2>De la curs la cod — cum s-au asamblat 7 săptămâni</h2>
-  <p>Fiecare săptămână am învățat o piesă și am adăugat fizic o bucată în aplicație. Singur, niciun curs nu produce o aplicație. Împreună, formează lanțul.</p>
+  <span class="pb-label">Partea III · Trasabilitatea componentelor</span>
+  <h2>De la exerciții separate la sistem integrat</h2>
+  <p>Fiecare săptămână a introdus o componentă și a adăugat fizic o bucată în aplicație. Singură, nicio etapă nu produce o aplicație. Împreună, formează lanțul.</p>
 </div>
 
 <section id="timeline">
-<h2><span class="n">13</span>Timeline — C1 până la aplicația finală</h2>
+<h2><span class="n">15</span>Timeline — C1 până la aplicația finală</h2>
 <div class="rule"></div>
-<p>Șapte cursuri, fiecare cu o piesă. Săgeata = „construiește baza pentru". La C8 toate se conectează.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce a adăugat fiecare săptămână și unde a aterizat în repo?</b></p>
+<p>Opt etape, fiecare cu o componentă. Săgeata = „construiește baza pentru". La C8 toate se conectează în aplicația integrată.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Cum se leagă conceptul predat de fișierul produs?</div><div class="k">De observat</div><div class="v">Sus: ce a învățat fiecare săptămână. Jos: ce a aterizat în repo. Linia punctată leagă explicit conceptul de cod.</div><div class="k">În cod</div><div class="v">Coloana C8 = <code class="i">app/app.py</code> care le compune pe toate</div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs><marker id="tl-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#94A3B8"/></marker></defs>
@@ -893,25 +1042,28 @@ python scripts/build_vectorstore.py</code></pre>
 </section>
 
 <section id="per-course">
-<h2><span class="n">14</span>Ce am construit, curs cu curs</h2>
+<h2><span class="n">16</span>Ce am construit, curs cu curs</h2>
 <div class="rule"></div>
-<p>Fiecare card: ce ai învățat, ce ai construit fizic în aplicație, ce fișiere au apărut. Culoarea = cursul.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Ce am învățat la fiecare curs și ce bucată din aplicație a produs?</b></p>
+<p>Fiecare card: ce s-a învățat, ce s-a construit fizic în aplicație, ce fișiere au apărut. Aici culoarea <strong>transmite informație</strong> — fiecare culoare este un curs.</p>
 <div class="course-grid">
 <div class="course cC1"><div class="cc-top"><span class="cc-badge">C1</span><span class="cc-title">LLM intro</span></div><div class="cc-learn">Ce e un LLM, token-uri, temperatură.</div><div class="cc-built"><b>În app:</b> doar exersare în notebook — fundația conceptuală.</div><span class="cc-files">notebooks/C1_llm_intro.ipynb</span></div>
-<div class="course cC2"><div class="cc-top"><span class="cc-badge">C2</span><span class="cc-title">Ecosistem modele</span></div><div class="cc-learn">Apel API spre mai mulți provideri prin endpoint OpenAI-compatible.</div><div class="cc-built"><b>În app:</b> <b>Tab Setări + Chat + Rezumat</b> + dropdown unic provider|model.</div><span class="cc-files">app.py → ask_llm(), setup(), chat(), summary()</span></div>
+<div class="course cC2"><div class="cc-top"><span class="cc-badge">C2</span><span class="cc-title">Ecosistem modele</span></div><div class="cc-learn">Apel API spre mai mulți provideri prin endpoint OpenAI-compatible.</div><div class="cc-built"><b>În app:</b> tab-urile Setări + Chat + Rezumat + dropdown unic provider|model.</div><span class="cc-files">app.py → ask_llm(), setup(), chat(), summary()</span></div>
 <div class="course cC3"><div class="cc-top"><span class="cc-badge">C3</span><span class="cc-title">Colectare YouTube</span></div><div class="cc-learn">Colectare corpus din YouTube Data API + primul prompt structurat.</div><div class="cc-built"><b>În app:</b> pipeline-ul de colectare (offline) — primele date.</div><span class="cc-files">scripts/collect_youtube.py, clean_youtube.py</span></div>
 <div class="course cC4"><div class="cc-top"><span class="cc-badge">C4</span><span class="cc-title">Adnotare corpus</span></div><div class="cc-learn">De la prompt la context engineering. Schemă: target/stance/tone + 5 axe.</div><div class="cc-built"><b>În app:</b> etapa de adnotare (offline) — comentariile capătă structură.</div><span class="cc-files">scripts/annotate_axis.py · prompts/annotation_prompt.md</span></div>
 <div class="course cC5"><div class="cc-top"><span class="cc-badge">C5</span><span class="cc-title">Regăsire semantică</span></div><div class="cc-learn">Embeddings, FAISS, cosinus, split pe bule.</div><div class="cc-built"><b>În app:</b> indexurile + retrieverul — stratul care alege contextul.</div><span class="cc-files">scripts/build_vectorstore.py · core/retriever.py</span></div>
-<div class="course cC6"><div class="cc-top"><span class="cc-badge">C6</span><span class="cc-title">Agent RAG</span></div><div class="cc-learn">Rol YAML + context recuperat + LLM = voce specifică.</div><div class="cc-built"><b>În app:</b> <b>Tab Agent + Tab Toți agenții</b> — prima voce reală.</div><span class="cc-files">core/agent.py · roles.yaml · app.py → agent(), all_agents()</span></div>
-<div class="course cC7"><div class="cc-top"><span class="cc-badge">C7</span><span class="cc-title">LangGraph multi-agent</span></div><div class="cc-learn">State, noduri, router, conditional edges → orchestrare.</div><div class="cc-built"><b>În app:</b> <b>Tab Dezbatere</b> — agenții discută între ei (round-robin).</div><span class="cc-files">core/graph.py · app.py → debate()</span></div>
-<div class="course" style="border-left-color:#1A1D2B;background:#1A1D2B"><div class="cc-top"><span class="cc-badge" style="background:#FFC000;color:#1A1D2B">C8</span><span class="cc-title" style="color:#fff">Integrare — această pagină</span></div><div class="cc-learn" style="color:#C9C0A8">Toate piesele se conectează. Aplicația = suma celor 7 săptămâni.</div><div class="cc-built" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:#E5DDD0"><b style="color:#FFC000">Rezultat:</b> 6 tab-uri, fiecare trasabil la cursul lui.</div></div>
+<div class="course cC6"><div class="cc-top"><span class="cc-badge">C6</span><span class="cc-title">Agent RAG</span></div><div class="cc-learn">Rol YAML + context recuperat + LLM = voce discursivă simulată.</div><div class="cc-built"><b>În app:</b> tab-urile Agent + Toți agenții — prima voce discursivă.</div><span class="cc-files">core/agent.py · roles.yaml · app.py → agent(), all_agents()</span></div>
+<div class="course cC7"><div class="cc-top"><span class="cc-badge">C7</span><span class="cc-title">LangGraph multi-agent</span></div><div class="cc-learn">State, noduri, router, conditional edges → orchestrare.</div><div class="cc-built"><b>În app:</b> tab-ul Dezbatere — agenții discută între ei (round-robin).</div><span class="cc-files">core/graph.py · app.py → debate()</span></div>
+<div class="course" style="border-left-color:#1A1D2B;background:#1A1D2B"><div class="cc-top"><span class="cc-badge" style="background:#FFC000;color:#1A1D2B">C8</span><span class="cc-title" style="color:#fff">Integrare — această pagină</span></div><div class="cc-learn" style="color:#C9C0A8">Toate componentele se conectează. Aplicația = suma celor opt etape.</div><div class="cc-built" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:#E5DDD0"><b style="color:#FFC000">Rezultat:</b> 6 tab-uri, fiecare trasabil la etapa lui.</div></div>
 </div>
 </section>
 
 <section id="comment-life">
-<h2><span class="n">15</span>Viața unui comentariu — povestea unei date</h2>
+<h2><span class="n">17</span>Transformarea unui comentariu în context discursiv</h2>
 <div class="rule"></div>
-<p>Cel mai clar mod de a vedea cum se leagă cursurile: urmărește <em>un singur comentariu</em> cum se transformă, pas cu pas, până devine o voce discursivă. Fiecare transformare = un curs.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum devine un comentariu brut de pe YouTube context pentru o voce discursivă?</b></p>
+<p>Cel mai clar mod de a vedea cum se leagă etapele: urmărește <em>un singur comentariu</em> cum se transformă, pas cu pas, până devine context discursiv pentru un agent. Fiecare transformare corespunde unui curs.</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Ce i se întâmplă unui comentariu, de la colectare la voce?</div><div class="k">De observat</div><div class="v">Același text trece prin 6 transformări (C3 colectat/curățat, C4 adnotat, C5 bule/vectorizat/indexat, C6 recuperat/transformat în voce).</div><div class="k">În cod</div><div class="v"><code class="i">scripts/</code> (C3–C5) apoi <code class="i">core/agent.py</code> (C6) la runtime</div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 600" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs><marker id="cl-a" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#94A3B8"/></marker></defs>
@@ -954,15 +1106,17 @@ python scripts/build_vectorstore.py</code></pre>
 <text x="124" y="536" font-size="10.5" fill="#1A1D2B" font-style="italic">COMENTARIU: „Decizia CCR confirmă ce știam deja: instituțiile nu mai</text>
 <text x="124" y="554" font-size="10.5" fill="#1A1D2B" font-style="italic">&#160;&#160;răspund nimănui. Sistemul s-a închis în jurul propriei puteri."</text>
 </svg>
-<figcaption>Fig. 10 — Viața unui comentariu. Același text trece prin C3 (colectat, curățat), C4 (adnotat), C5 (bule, vectorizat, indexat), C6 (recuperat, transformat în voce). Fiecare culoare = un curs.</figcaption>
+<figcaption>Fig. 10 — Transformarea unui comentariu. Același text trece prin C3 (colectat, curățat), C4 (adnotat), C5 (bule, vectorizat, indexat), C6 (recuperat, transformat în voce). Fiecare culoare = un curs.</figcaption>
 </figure></div>
-<div class="note g"><p>Aici totul se leagă: un comentariu real, scris de cineva pe YouTube, devine — prin 6 transformări, fiecare predată într-o săptămână — o intervenție discursivă a unui agent. Nimic nu e inventat: răspunsul e ancorat în comentarii reale, recuperate semantic, filtrate prin rol.</p></div>
+<div class="note g"><p>Aici totul se leagă: un comentariu real, scris de cineva pe YouTube, devine — prin șase transformări, fiecare predată într-o săptămână — context pentru o intervenție discursivă simulată. Nimic nu este inventat: răspunsul este ancorat în comentarii reale, recuperate semantic, filtrate prin rol.</p></div>
 </section>
 
 <section id="puzzle">
-<h2><span class="n">16</span>Puzzle-ul cursurilor — cum se asamblează în app</h2>
+<h2><span class="n">18</span>Cum se asamblează etapele cursului</h2>
 <div class="rule"></div>
-<p>Cursurile nu sunt o listă. Sunt piese care se conectează. Săgeți groase = „construiește direct", punctate = „pregătește baza".</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum se combină cele opt etape într-o singură aplicație?</b></p>
+<p>Etapele nu sunt o listă — sunt piese care se conectează. Săgeți groase = „construiește direct", punctate = „pregătește baza".</p>
+<div class="fig-guide"><div class="k">Întrebare</div><div class="v">Care etape construiesc direct app-ul și care doar pregătesc baza?</div><div class="k">De observat</div><div class="v">C3→C4→C5 e lanțul de date offline. C5+C6 fac agentul RAG. C6→C7 ridică la multi-agent. Toate converg în <code class="i">app.py</code>.</div><div class="k">În cod</div><div class="v">Coloana din dreapta = cele 6 tab-uri din <code class="i">app/app.py</code></div></div>
 <div class="diag"><figure>
 <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
 <defs>
@@ -998,7 +1152,7 @@ python scripts/build_vectorstore.py</code></pre>
   <text x="556" y="242">Agent ← C5+C6</text>
   <text x="556" y="262">Toți agenții ← C6</text>
   <text x="556" y="282">Dezbatere ← C7</text>
-  <text x="556" y="306" fill="#FFC000" font-weight="700">= suma celor 7 cursuri</text>
+  <text x="556" y="306" fill="#FFC000" font-weight="700">= suma celor 8 etape</text>
 </g>
 <line x1="210" y1="51" x2="248" y2="51" stroke="#94A3B8" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#pz-d)"/>
 <text x="228" y="44" font-size="8" fill="#94A3B8" font-style="italic">bază</text>
@@ -1014,19 +1168,20 @@ python scripts/build_vectorstore.py</code></pre>
   <span><i style="background:#1A1D2B"></i> construiește direct</span>
   <span><i style="background:#94A3B8"></i> pregătește baza</span>
 </div>
-<figcaption>Fig. 11 — Puzzle-ul. C3→C4→C5 e lanțul de date offline. C5+C6 fac agentul RAG. C6→C7 ridică la multi-agent. Totul converge în <code>app.py</code>.</figcaption>
+<figcaption>Fig. 11 — Asamblarea etapelor. C3→C4→C5 e lanțul de date offline. C5+C6 fac agentul RAG. C6→C7 ridică la multi-agent. Totul converge în <code>app.py</code>.</figcaption>
 </figure></div>
 </section>
 
 <section id="lens">
-<h2><span class="n">17</span><code class="i">app.py</code> prin lentila cursurilor</h2>
+<h2><span class="n">19</span>Cum citim <code class="i">app.py</code> prin componentele cursului</h2>
 <div class="rule"></div>
-<p>Deschizi <code class="i">app/app.py</code> și recunoști imediat ce a venit de unde. Fiecare secțiune e colorată cu cursul ei.</p>
+<p class="orient"><b>Această secțiune răspunde la întrebarea:</b> <b>Cum recunosc, deschizând app.py, ce a venit din ce curs?</b></p>
+<p>Deschizi <code class="i">app/app.py</code> și fiecare secțiune are o origine clară în curs. Codul nu este o cutie neagră scrisă cândva — fiecare bloc este trasabil.</p>
 <div class="cb">
-<div class="cb-lbl">app/app.py — structură adnotată pe cursuri</div>
+<div class="cb-lbl">app/app.py — structură adnotată pe componente</div>
 <pre><code><span class="dir">app/app.py</span>
 │
-├── §1 IMPORTS & SETUP                       <span class="cm"># aduce core/ + gradio</span>
+├── §1 IMPORTS &amp; SETUP                       <span class="cm"># aduce core/ + gradio</span>
 │
 ├── §2 CONFIG (PROVIDERS, MODELS, ROLES,     <span class="t2">← C2  (multi-provider + .env)</span>
 │            CFG, ART)                        <span class="cm"># dropdown unic provider|model</span>
@@ -1042,7 +1197,7 @@ python scripts/build_vectorstore.py</code></pre>
 │      ├── <span class="fn">chat()</span>                          <span class="t2">← C2</span>
 │      ├── <span class="fn">summary()</span>                       <span class="t2">← C2</span>
 │      ├── <span class="fn">agent()</span>                         <span class="t5">← C5</span> <span class="t6">+ C6</span>
-│      ├── <span class="fn">all_agents()</span>                    <span class="t6">← C6  (loop pe roles.yaml)</span>
+│      ├── <span class="fn">all_agents()</span>                    <span class="t6">← C6  (buclă pe roles.yaml)</span>
 │      └── <span class="fn">debate()</span>                        <span class="t7">← C7  (core.graph.run_thread)</span>
 │
 └── §6 UI — 6 gr.Interface în gr.Blocks
@@ -1052,19 +1207,19 @@ python scripts/build_vectorstore.py</code></pre>
        ├── Tab <span class="st">"Toți agenții"</span>             <span class="t6">← C6</span>
        └── Tab <span class="st">"Dezbatere"</span>               <span class="t7">← C7</span></code></pre>
 </div>
-<div class="note"><p><strong>Asta e ideea centrală a cursului final.</strong> Codul nu e o cutie neagră scrisă cândva. Fiecare linie are un curs de origine. Poți deschide <code class="i">app.py</code> și „citi" cele 7 săptămâni în el.</p></div>
+<div class="note"><p><strong>Aceasta este ideea centrală a cursului final.</strong> Codul nu este o cutie neagră. Fiecare linie are o etapă de origine. Poți deschide <code class="i">app.py</code> și citi cele opt săptămâni în structura lui.</p></div>
 </section>
 
 <section id="message">
-<h2><span class="n">18</span>Mesajul cursului final</h2>
+<h2><span class="n">20</span>Concluzie: de la exerciții la sistem integrat</h2>
 <div class="rule"></div>
 <div class="finale">
   <h4>★ Concluzia</h4>
-  <p>Fiecare curs a adăugat <strong style="color:#fff">o piesă</strong> la sistem. Singur, niciun curs nu produce o aplicație — împreună, formează lanțul:</p>
-  <span class="chain">C3 colectează datele → C4 le adnotează → C5 le indexează →<br>C6 le folosește pentru a da voce unui agent → C7 pune agenții să discute →<br>C2 alege modelul → totul devine vizibil în app/app.py</span>
-  <p>Aplicația nu este un proiect separat. Este <strong style="color:#fff">suma exactă</strong> a celor 7 săptămâni — fiecare bucată trasabilă la cursul ei. Și, ca niște building blocks, fiecare strat se sprijină pe cel de sub el. Asta ai construit.</p>
+  <p>C8 închide trecerea de la exerciții separate la sistem integrat. Valoarea aplicației nu stă într-un singur model sau într-un singur prompt, ci în <strong style="color:#fff">separarea clară a responsabilităților</strong>:</p>
+  <span class="chain">datele sunt pregătite offline → contextul este recuperat prin FAISS →<br>rolurile definesc poziții discursive → core/agent.py produce răspunsul →<br>core/graph.py orchestrează conversația → app.py expune totul în interfață</span>
+  <p>Acesta este sistemul integrat construit pe parcursul cursului. Fiecare componentă este trasabilă la etapa în care a fost introdusă, iar straturile se sprijină unul pe altul ca niște blocuri de construcție. Aplicația nu este un proiect separat — este suma exactă a celor opt etape.</p>
 </div>
-<p style="margin-top:22px"><strong>Tutoriale conexe:</strong> <a href="C8_gradio_tutorial_echochamber.ipynb">Notebook — cum am construit app.py pas cu pas</a> · <a href="c7_langgraph_tutorial.html">C7 — LangGraph multi-agent</a>.</p>
+<p style="margin-top:24px"><strong>Material conex:</strong> <a href="C8_gradio_tutorial_echochamber.ipynb">Notebook C8 — cum se construiește app.py pas cu pas</a>.</p>
 </section>
 
 </main>
