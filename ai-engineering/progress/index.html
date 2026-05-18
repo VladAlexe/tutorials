@@ -2026,22 +2026,24 @@ section { padding-top: 2rem; }
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 64px;
-  height: 58px;
+  width: 72px;
+  height: 68px;
 }
 
 .summit-group {
   position: relative;
-  width: 64px;
-  height: 58px;
+  width: 72px;
+  height: 68px;
 }
 
 .summit-flag {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  bottom: 11px;
   display: block;
-  width: 18px;
-  height: 30px;
-  margin: 0 auto;
+  width: 22px;
+  height: 36px;
+  transform: translateX(-50%);
   filter: drop-shadow(0 2px 3px rgba(20, 16, 10, 0.18));
   z-index: 3;
 }
@@ -2049,7 +2051,7 @@ section { padding-top: 2rem; }
 .summit-flag::before {
   content: '';
   position: absolute;
-  left: 4px;
+  left: 5px;
   bottom: 0;
   width: 3px;
   height: 100%;
@@ -2060,13 +2062,30 @@ section { padding-top: 2rem; }
 .summit-flag::after {
   content: '';
   position: absolute;
-  left: 7px;
-  top: 3px;
-  width: 11px;
-  height: 9px;
+  left: 8px;
+  top: 4px;
+  width: 14px;
+  height: 11px;
   background: var(--summit-team-color, var(--accent));
   clip-path: polygon(0 0, 100% 18%, 66% 50%, 100% 82%, 0 100%);
   border-radius: 1px;
+}
+
+.summit-flag-label {
+  position: absolute;
+  left: 8px;
+  top: 4px;
+  width: 13px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 5.5px;
+  font-weight: 700;
+  color: rgba(255, 249, 241, 0.96);
+  text-shadow: 0 1px 1px rgba(20, 16, 10, 0.22);
+  z-index: 4;
 }
 
 .summit-crowd {
@@ -2074,44 +2093,128 @@ section { padding-top: 2rem; }
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
-  width: 52px;
+  width: 62px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-end;
-  gap: 1px 2px;
+  gap: 1px;
   z-index: 2;
 }
 
 .summit-person {
   position: relative;
   display: inline-block;
-  width: 7px;
-  height: 13px;
+  width: 14px;
+  height: 20px;
   opacity: 0.96;
   filter: drop-shadow(0 1px 1px rgba(20, 16, 10, 0.18));
 }
 
-.summit-person::before {
-  content: '';
+.summit-person-head,
+.summit-person-arms,
+.summit-person-body,
+.summit-person-legs,
+.summit-person-code {
   position: absolute;
-  left: 2px;
-  top: 0;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--summit-team-color, var(--accent));
 }
 
-.summit-person::after {
+.summit-person-head {
+  left: 50%;
+  top: 0;
+  width: 4px;
+  height: 4px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(60, 48, 38, 0.92);
+}
+
+.summit-person-body {
+  left: 50%;
+  top: 4px;
+  width: 9px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-radius: 4px 4px 3px 3px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.02)),
+    var(--summit-team-color, var(--accent));
+  border: 1px solid rgba(255, 248, 239, 0.44);
+}
+
+.summit-person-code {
+  left: 50%;
+  top: 5px;
+  width: 8px;
+  height: 7px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 4.5px;
+  font-weight: 700;
+  color: var(--summit-team-text, rgba(255, 248, 239, 0.96));
+  text-shadow: 0 1px 1px rgba(20, 16, 10, 0.18);
+  z-index: 3;
+}
+
+.summit-person-arms {
+  left: 50%;
+  top: 9px;
+  width: 11px;
+  height: 4px;
+  transform: translateX(-50%);
+}
+
+.summit-person-arms::before,
+.summit-person-arms::after {
   content: '';
   position: absolute;
-  left: 1px;
-  bottom: 0;
+  top: 1px;
   width: 5px;
-  height: 8px;
-  border-radius: 3px 3px 1px 1px;
-  background: var(--summit-team-color, var(--accent));
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(60, 48, 38, 0.92);
+}
+
+.summit-person-arms::before {
+  left: 0;
+  transform: rotate(20deg);
+}
+
+.summit-person-arms::after {
+  right: 0;
+  transform: rotate(-20deg);
+}
+
+.summit-person-legs {
+  left: 50%;
+  bottom: 1px;
+  width: 14px;
+  height: 7px;
+  transform: translateX(-50%);
+}
+
+.summit-person-legs::before,
+.summit-person-legs::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 8px;
+  height: 5px;
+  border-radius: 8px 8px 3px 3px;
+  background: rgba(60, 48, 38, 0.92);
+}
+
+.summit-person-legs::before {
+  left: 0;
+  transform: rotate(12deg);
+}
+
+.summit-person-legs::after {
+  right: 0;
+  transform: rotate(-12deg);
 }
 
 .summit-empty {
@@ -5155,10 +5258,12 @@ function buildSummitTeams(teams) {
         left: SUMMIT_POSITIONS[team.label].left,
         top: SUMMIT_POSITIONS[team.label].top,
         color: teamStyle.color || team.color,
+        textColor: teamStyle.text || '#fff8ef',
         students: eligibleMembers.map(function(member) {
           return {
             key: String(member && (member.student_key || member.display_code || member.local_code || member.github_handle || 'student')),
-            label: getMemberLabel(member) || getStudentDisplayName(member)
+            label: getMemberLabel(member) || getStudentDisplayName(member),
+            badge: getHighCampStudentCode(member)
           };
         })
       };
@@ -5707,13 +5812,22 @@ function renderSummitSection(summitTeams) {
   const overlayMarkup = teams.map(function(team) {
     const crowdMarkup = (Array.isArray(team.students) ? team.students : []).map(function(student) {
       const label = escapeHtml(student.label || 'student');
-      return `<span class="summit-person" title="${label}" aria-label="Student ${label}" data-student="${label}"></span>`;
+      const badge = escapeHtml(student.badge || student.label || '·');
+      return (
+        `<span class="summit-person" title="${label}" aria-label="Student ${label}" data-student="${label}">` +
+          `<span class="summit-person-head"></span>` +
+          `<span class="summit-person-body"></span>` +
+          `<span class="summit-person-code">${badge}</span>` +
+          `<span class="summit-person-arms"></span>` +
+          `<span class="summit-person-legs"></span>` +
+        `</span>`
+      );
     }).join('');
 
     return (
-      `<div class="summit-team" style="left:${team.left}%; top:${team.top}%; --summit-team-color:${escapeHtml(team.color || 'var(--accent)')};">` +
+      `<div class="summit-team" style="left:${team.left}%; top:${team.top}%; --summit-team-color:${escapeHtml(team.color || 'var(--accent)')}; --summit-team-text:${escapeHtml(team.textColor || '#fff8ef')};">` +
         `<div class="summit-group">` +
-          `<span class="summit-flag" title="${escapeHtml(team.name || team.label || 'echipa')}" aria-label="Steag ${escapeHtml(team.name || team.label || 'echipa')}"></span>` +
+          `<span class="summit-flag" title="${escapeHtml(team.name || team.label || 'echipa')}" aria-label="Steag ${escapeHtml(team.name || team.label || 'echipa')}"><span class="summit-flag-label">${escapeHtml(team.label || '')}</span></span>` +
           `<div class="summit-crowd">${crowdMarkup}</div>` +
         `</div>` +
       `</div>`
