@@ -2026,23 +2026,23 @@ section { padding-top: 2rem; }
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 72px;
-  height: 68px;
+  width: 84px;
+  height: 76px;
 }
 
 .summit-group {
   position: relative;
-  width: 72px;
-  height: 68px;
+  width: 84px;
+  height: 76px;
 }
 
 .summit-flag {
   position: absolute;
   left: 50%;
-  bottom: 11px;
+  bottom: 10px;
   display: block;
-  width: 22px;
-  height: 36px;
+  width: 30px;
+  height: 46px;
   transform: translateX(-50%);
   filter: drop-shadow(0 2px 3px rgba(20, 16, 10, 0.18));
   z-index: 3;
@@ -2051,7 +2051,7 @@ section { padding-top: 2rem; }
 .summit-flag::before {
   content: '';
   position: absolute;
-  left: 5px;
+  left: 6px;
   bottom: 0;
   width: 3px;
   height: 100%;
@@ -2062,10 +2062,10 @@ section { padding-top: 2rem; }
 .summit-flag::after {
   content: '';
   position: absolute;
-  left: 8px;
-  top: 4px;
-  width: 14px;
-  height: 11px;
+  left: 9px;
+  top: 5px;
+  width: 19px;
+  height: 14px;
   background: var(--summit-team-color, var(--accent));
   clip-path: polygon(0 0, 100% 18%, 66% 50%, 100% 82%, 0 100%);
   border-radius: 1px;
@@ -2073,15 +2073,15 @@ section { padding-top: 2rem; }
 
 .summit-flag-label {
   position: absolute;
-  left: 8px;
-  top: 4px;
-  width: 13px;
-  height: 10px;
+  left: 9px;
+  top: 5px;
+  width: 18px;
+  height: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 5.5px;
+  font-size: 6.6px;
   font-weight: 700;
   color: rgba(255, 249, 241, 0.96);
   text-shadow: 0 1px 1px rgba(20, 16, 10, 0.22);
@@ -4403,32 +4403,74 @@ function isMemberInHighCamp(member) {
   return hasMemberReachedHighCamp(member);
 }
 
-function hasMemberReachedSummit(member) {
-  const stage = getStageProgressFromMap(member && member.progress, SUMMIT_STAGE_KEY);
-  return toNumber(stage && stage.percent) >= 100 && toNumber(stage && stage.closed) > 0;
+function hasMemberCompletedAllIssues(member) {
+  if (member && member.issue_progress_percent !== undefined && member.issue_progress_percent !== null) {
+    return clampPercent(member.issue_progress_percent) >= 100;
+  }
+
+  const openCount = (Array.isArray(member && member.memberOpenIssues) ? member.memberOpenIssues : []).filter(function(issue) {
+    return getIssueKind(issue) === 'student';
+  }).length;
+  const closedCount = (Array.isArray(member && member.memberClosedIssues) ? member.memberClosedIssues : []).filter(function(issue) {
+    return getIssueKind(issue) === 'student';
+  }).length;
+  const total = openCount + closedCount;
+  return total > 0 && openCount === 0;
 }
 
-function hasMemberClosedStageIssue(member, stageKey) {
-  return (Array.isArray(member && member.memberClosedIssues) ? member.memberClosedIssues : []).some(function(issue) {
-    return getIssueKind(issue) === 'student' && inferStageKey(sanitizeIssueTitle(issue && issue.title)) === stageKey;
+function hasOpenCollectiveIssues(team) {
+  return (Array.isArray(team && team.collectiveOpenIssues) ? team.collectiveOpenIssues : []).length > 0;
+}
+
+function parseDashboardDate(value) {
+  if (!value) return null;
+  const normalized = String(value).trim().replace(' ', 'T');
+  const parsed = new Date(normalized);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function getLatestClosedIssueDate(issues) {
+  let latest = null;
+  (Array.isArray(issues) ? issues : []).forEach(function(issue) {
+    const closedAt = parseDashboardDate(issue && issue.closed_at);
+    if (closedAt && (!latest || closedAt.getTime() > latest.getTime())) {
+      latest = closedAt;
+    }
   });
+  return latest;
 }
 
-function getCollectiveStageSummary(team, stageKey) {
-  const open = (Array.isArray(team && team.collectiveOpenIssues) ? team.collectiveOpenIssues : []).filter(function(issue) {
-    return inferStageKey(sanitizeIssueTitle(issue && issue.title)) === stageKey;
-  }).length;
-  const closed = (Array.isArray(team && team.collectiveClosedIssues) ? team.collectiveClosedIssues : []).filter(function(issue) {
-    return inferStageKey(sanitizeIssueTitle(issue && issue.title)) === stageKey;
-  }).length;
-  const total = open + closed;
-  return {
-    open: open,
-    closed: closed,
-    total: total,
-    complete: total > 0 && open === 0 && closed > 0,
-    readyForSummit: open === 0
-  };
+function getMemberCompletionDate(member) {
+  const closedStudentIssues = (Array.isArray(member && member.memberClosedIssues) ? member.memberClosedIssues : []).filter(function(issue) {
+    return getIssueKind(issue) === 'student';
+  });
+  return getLatestClosedIssueDate(closedStudentIssues);
+}
+
+function getTeamCollectiveCompletionDate(team) {
+  return getLatestClosedIssueDate(team && team.collectiveClosedIssues);
+}
+
+function getTeamSummitArrivalDate(team, eligibleMembers) {
+  const collectiveDoneAt = getTeamCollectiveCompletionDate(team);
+  let earliestArrival = null;
+
+  (Array.isArray(eligibleMembers) ? eligibleMembers : []).forEach(function(member) {
+    const memberDoneAt = getMemberCompletionDate(member);
+    if (!memberDoneAt) {
+      return;
+    }
+
+    const arrivalAt = collectiveDoneAt && collectiveDoneAt.getTime() > memberDoneAt.getTime()
+      ? collectiveDoneAt
+      : memberDoneAt;
+
+    if (!earliestArrival || arrivalAt.getTime() < earliestArrival.getTime()) {
+      earliestArrival = arrivalAt;
+    }
+  });
+
+  return earliestArrival;
 }
 
 function computeStudentRouteState(member) {
@@ -5168,23 +5210,22 @@ function buildSummitTeams(teams) {
       return !!SUMMIT_POSITIONS[team && team.label];
     })
     .map(function(team) {
-      const collectiveStage = getCollectiveStageSummary(team, SUMMIT_STAGE_KEY);
-      // Summit placement is blocked only by open collective C8 issues.
-      // If a team has no collective C8 issues at all, eligible students can still reach the summit.
-      if (!collectiveStage.readyForSummit) {
+      if (hasOpenCollectiveIssues(team)) {
         return null;
       }
 
       const teamStyle = HIGH_CAMP_TEAM_STYLES[team.label] || {};
       const eligibleMembers = sortMembers(
         (Array.isArray(team && team.membersWithIssues) ? team.membersWithIssues : []).filter(function(member) {
-          return hasMemberReachedSummit(member) && hasMemberClosedStageIssue(member, SUMMIT_STAGE_KEY);
+          return hasMemberCompletedAllIssues(member);
         })
       );
 
       if (!eligibleMembers.length) {
         return null;
       }
+
+      const arrivalAt = getTeamSummitArrivalDate(team, eligibleMembers);
 
       return {
         label: team.label,
@@ -5193,6 +5234,7 @@ function buildSummitTeams(teams) {
         top: SUMMIT_POSITIONS[team.label].top,
         color: teamStyle.color || team.color,
         textColor: teamStyle.text || '#fff8ef',
+        arrivalTs: arrivalAt ? arrivalAt.getTime() : Number.MAX_SAFE_INTEGER,
         students: eligibleMembers.map(function(member) {
           return {
             key: String(member && (member.student_key || member.display_code || member.local_code || member.github_handle || 'student')),
@@ -5204,7 +5246,12 @@ function buildSummitTeams(teams) {
     })
     .filter(Boolean)
     .sort(function(a, b) {
-      return compareTeamLabels(a.label, b.label);
+      return toNumber(a.arrivalTs) - toNumber(b.arrivalTs) || compareTeamLabels(a.label, b.label);
+    })
+    .map(function(team, index, list) {
+      return Object.assign({}, team, {
+        stackOrder: list.length - index
+      });
     });
 }
 
@@ -5772,7 +5819,7 @@ function renderSummitSection(summitTeams) {
     }).join('');
 
     return (
-      `<div class="summit-team" style="left:${team.left}%; top:${team.top}%; --summit-team-color:${escapeHtml(team.color || 'var(--accent)')}; --summit-team-text:${escapeHtml(team.textColor || '#fff8ef')};">` +
+      `<div class="summit-team" style="left:${team.left}%; top:${team.top}%; z-index:${team.stackOrder || 1}; --summit-team-color:${escapeHtml(team.color || 'var(--accent)')}; --summit-team-text:${escapeHtml(team.textColor || '#fff8ef')};">` +
         `<div class="summit-group">` +
           `<span class="summit-flag" title="${escapeHtml(team.name || team.label || 'echipa')}" aria-label="Steag ${escapeHtml(team.name || team.label || 'echipa')}"><span class="summit-flag-label">${escapeHtml(team.label || '')}</span></span>` +
           `<div class="summit-crowd">${crowdMarkup}</div>` +
@@ -5783,7 +5830,7 @@ function renderSummitSection(summitTeams) {
 
   const emptyMarkup = teams.length
     ? ''
-    : `<div class="summit-empty">Niciun student nu a inchis inca C8 individual sau mai exista task-uri colective C8 deschise.</div>`;
+    : `<div class="summit-empty">Niciun student nu este inca la 100% sau mai exista issue-uri de echipa deschise.</div>`;
 
   return (
     `<section class="summit-section">` +
