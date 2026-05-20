@@ -4426,7 +4426,8 @@ function getCollectiveStageSummary(team, stageKey) {
     open: open,
     closed: closed,
     total: total,
-    complete: total > 0 && open === 0 && closed > 0
+    complete: total > 0 && open === 0 && closed > 0,
+    readyForSummit: open === 0
   };
 }
 
@@ -5168,7 +5169,9 @@ function buildSummitTeams(teams) {
     })
     .map(function(team) {
       const collectiveStage = getCollectiveStageSummary(team, SUMMIT_STAGE_KEY);
-      if (!collectiveStage.complete) {
+      // Summit placement is blocked only by open collective C8 issues.
+      // If a team has no collective C8 issues at all, eligible students can still reach the summit.
+      if (!collectiveStage.readyForSummit) {
         return null;
       }
 
@@ -5780,7 +5783,7 @@ function renderSummitSection(summitTeams) {
 
   const emptyMarkup = teams.length
     ? ''
-    : `<div class="summit-empty">Niciun student nu a inchis inca C8 + taskul colectiv al echipei.</div>`;
+    : `<div class="summit-empty">Niciun student nu a inchis inca C8 individual sau mai exista task-uri colective C8 deschise.</div>`;
 
   return (
     `<section class="summit-section">` +
