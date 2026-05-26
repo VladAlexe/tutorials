@@ -3,7 +3,7 @@
                        "name":  "AIE-2026",
                        "url":  "https://github.com/AIE-2026"
                    },
-    "updated_at":  "2026-05-25 21:58",
+    "updated_at":  "2026-05-26 17:02",
     "current_milestone":  "C2 - Model ecosystem",
     "milestones":  [
                        "C1 - Setup GitHub, env, notebooks",
@@ -83,8 +83,8 @@
                       ],
     "summary":  {
                     "total_issues":  509,
-                    "closed_issues":  476,
-                    "open_issues":  33,
+                    "closed_issues":  480,
+                    "open_issues":  29,
                     "completion_percent":  94,
                     "current_stage_id":  "C2",
                     "current_stage_title":  "Models",
@@ -155,19 +155,19 @@
                             "id":  "C7",
                             "title":  "Orchestration",
                             "milestone":  "C7 - Orchestration and evaluation",
-                            "closed":  47,
-                            "open":  7,
+                            "closed":  49,
+                            "open":  5,
                             "total":  54,
-                            "percent":  87
+                            "percent":  91
                         },
                         {
                             "id":  "C8",
                             "title":  "App",
                             "milestone":  "C8 - App integration",
-                            "closed":  39,
-                            "open":  8,
+                            "closed":  41,
+                            "open":  6,
                             "total":  47,
-                            "percent":  83
+                            "percent":  87
                         },
                         {
                             "id":  "C9",
@@ -181,14 +181,24 @@
                     ],
     "blockers":  [
                      {
-                         "team":  "Team 2",
-                         "repo":  "echochamber-project-team-2",
-                         "title":  "C8.2 - Finalize EchoChamber Studio team app",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/86",
-                         "number":  86,
-                         "issue_kind":  "collective",
+                         "team":  "Team 1",
+                         "repo":  "echochamber-project-team-1",
+                         "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/31",
+                         "number":  31,
+                         "issue_kind":  "student",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  6
+                         "days_without_update":  22
+                     },
+                     {
+                         "team":  "Team 1",
+                         "repo":  "echochamber-project-team-1",
+                         "title":  "student_05 - C3.1 - Individual collect and clean notebook",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/23",
+                         "number":  23,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  22
                      },
                      {
                          "team":  "Team 1",
@@ -198,27 +208,7 @@
                          "number":  16,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  26
-                     },
-                     {
-                         "team":  "Team 2",
-                         "repo":  "echochamber-project-team-2",
-                         "title":  "student_01 - C8.1 - Complete Gradio notebook and Tema 3",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/80",
-                         "number":  80,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  6
-                     },
-                     {
-                         "team":  "Team 2",
-                         "repo":  "echochamber-project-team-2",
-                         "title":  "student_05 - C8.1 - Complete Gradio notebook and Tema 3",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/84",
-                         "number":  84,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  6
+                         "days_without_update":  27
                      },
                      {
                          "team":  "Team 1",
@@ -233,32 +223,32 @@
                      {
                          "team":  "Team 1",
                          "repo":  "echochamber-project-team-1",
+                         "title":  "student_05 - C5.3 - Build vector store for one agent bubble",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/51",
+                         "number":  51,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  14
+                     },
+                     {
+                         "team":  "Team 1",
+                         "repo":  "echochamber-project-team-1",
+                         "title":  "student_05 - Tema 2 - Clean one agent bubble for retrieval",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/50",
+                         "number":  50,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  14
+                     },
+                     {
+                         "team":  "Team 1",
+                         "repo":  "echochamber-project-team-1",
                          "title":  "C5.4 - Review and document vector store script",
                          "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/41",
                          "number":  41,
                          "issue_kind":  "collective",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  13
-                     },
-                     {
-                         "team":  "Team 1",
-                         "repo":  "echochamber-project-team-1",
-                         "title":  "student_05 - C3.1 - Individual collect and clean notebook",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/23",
-                         "number":  23,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  21
-                     },
-                     {
-                         "team":  "Team 1",
-                         "repo":  "echochamber-project-team-1",
-                         "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-1/issues/31",
-                         "number":  31,
-                         "issue_kind":  "student",
-                         "created_by":  "VladAlexe",
-                         "days_without_update":  21
+                         "days_without_update":  14
                      },
                      {
                          "team":  "Team 4",
@@ -268,17 +258,27 @@
                          "number":  61,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  12
+                         "days_without_update":  13
                      },
                      {
                          "team":  "Team 4",
                          "repo":  "echochamber-project-team-4",
-                         "title":  "student_06 - C6.3 - Build one RAG agent response",
-                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/68",
-                         "number":  68,
+                         "title":  "student_06 - C5.3 - Build vector store for one agent bubble",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/54",
+                         "number":  54,
                          "issue_kind":  "student",
                          "created_by":  "VladAlexe",
-                         "days_without_update":  12
+                         "days_without_update":  14
+                     },
+                     {
+                         "team":  "Team 4",
+                         "repo":  "echochamber-project-team-4",
+                         "title":  "student_06 - Tema 2 - Clean one agent bubble for retrieval",
+                         "url":  "https://github.com/AIE-2026/echochamber-project-team-4/issues/53",
+                         "number":  53,
+                         "issue_kind":  "student",
+                         "created_by":  "VladAlexe",
+                         "days_without_update":  14
                      }
                  ],
     "teams":  [
@@ -383,7 +383,7 @@
                                            "number":  52,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  13
+                                           "days_without_update":  14
                                        },
                                        {
                                            "team":  "Team 1",
@@ -393,7 +393,7 @@
                                            "number":  51,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  13
+                                           "days_without_update":  14
                                        },
                                        {
                                            "team":  "Team 1",
@@ -403,7 +403,7 @@
                                            "number":  53,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  13
+                                           "days_without_update":  14
                                        },
                                        {
                                            "team":  "Team 1",
@@ -413,7 +413,7 @@
                                            "number":  60,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  12
+                                           "days_without_update":  13
                                        },
                                        {
                                            "team":  "Team 1",
@@ -423,7 +423,7 @@
                                            "number":  59,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  12
+                                           "days_without_update":  13
                                        }
                                    ],
                       "members":  [
@@ -976,7 +976,7 @@
                                               "created_at":  "2026-05-11 21:05",
                                               "updated_at":  "2026-05-11 22:05",
                                               "closed_at":  null,
-                                              "days_without_update":  13
+                                              "days_without_update":  14
                                           },
                                           {
                                               "title":  "student_05 - C5.3 - Build vector store for one agent bubble",
@@ -988,7 +988,7 @@
                                               "created_at":  "2026-05-11 21:05",
                                               "updated_at":  "2026-05-11 22:05",
                                               "closed_at":  null,
-                                              "days_without_update":  13
+                                              "days_without_update":  14
                                           },
                                           {
                                               "title":  "student_06 - C5.3 - Build vector store for one agent bubble",
@@ -1000,7 +1000,7 @@
                                               "created_at":  "2026-05-11 21:05",
                                               "updated_at":  "2026-05-11 22:05",
                                               "closed_at":  null,
-                                              "days_without_update":  13
+                                              "days_without_update":  14
                                           },
                                           {
                                               "title":  "student_06 - C6.1 - Define one agent role for RAG",
@@ -1012,7 +1012,7 @@
                                               "created_at":  "2026-05-13 13:58",
                                               "updated_at":  "2026-05-13 13:58",
                                               "closed_at":  null,
-                                              "days_without_update":  12
+                                              "days_without_update":  13
                                           },
                                           {
                                               "title":  "student_05 - C6.1 - Define one agent role for RAG",
@@ -1024,7 +1024,7 @@
                                               "created_at":  "2026-05-13 13:58",
                                               "updated_at":  "2026-05-13 13:58",
                                               "closed_at":  null,
-                                              "days_without_update":  12
+                                              "days_without_update":  13
                                           },
                                           {
                                               "title":  "student_05 - Tema 2 - Clean one agent bubble for retrieval",
@@ -1036,7 +1036,7 @@
                                               "created_at":  "2026-05-11 21:05",
                                               "updated_at":  "2026-05-11 22:05",
                                               "closed_at":  null,
-                                              "days_without_update":  13
+                                              "days_without_update":  14
                                           },
                                           {
                                               "title":  "student_05 - C3.1 - Individual collect and clean notebook",
@@ -1048,7 +1048,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  21
+                                              "days_without_update":  22
                                           },
                                           {
                                               "title":  "student_05 - C2.1 - Individual model testing notebook",
@@ -1060,7 +1060,7 @@
                                               "created_at":  "2026-04-29 14:20",
                                               "updated_at":  "2026-04-29 14:20",
                                               "closed_at":  null,
-                                              "days_without_update":  26
+                                              "days_without_update":  27
                                           },
                                           {
                                               "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -1072,7 +1072,7 @@
                                               "created_at":  "2026-05-04 15:38",
                                               "updated_at":  "2026-05-04 15:38",
                                               "closed_at":  null,
-                                              "days_without_update":  21
+                                              "days_without_update":  22
                                           },
                                           {
                                               "title":  "C5.4 - Review and document vector store script",
@@ -1084,7 +1084,7 @@
                                               "created_at":  "2026-05-11 21:04",
                                               "updated_at":  "2026-05-11 22:05",
                                               "closed_at":  null,
-                                              "days_without_update":  13
+                                              "days_without_update":  14
                                           },
                                           {
                                               "title":  "student_05 - C4.2 - Complete annotation exercise notebook",
@@ -1108,7 +1108,7 @@
                                               "created_at":  "2026-05-19 11:27",
                                               "updated_at":  "2026-05-19 11:37",
                                               "closed_at":  null,
-                                              "days_without_update":  6
+                                              "days_without_update":  7
                                           },
                                           {
                                               "title":  "student_06 - C7.1 - Complete LangGraph multi-agent notebook",
@@ -1120,7 +1120,7 @@
                                               "created_at":  "2026-05-15 16:38",
                                               "updated_at":  "2026-05-15 16:38",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_04 - C8.1 - Complete Gradio notebook and Tema 3",
@@ -1132,7 +1132,7 @@
                                               "created_at":  "2026-05-19 11:27",
                                               "updated_at":  "2026-05-19 11:30",
                                               "closed_at":  null,
-                                              "days_without_update":  6
+                                              "days_without_update":  7
                                           },
                                           {
                                               "title":  "student_06 - C8.1 - Complete Gradio notebook and Tema 3",
@@ -1144,7 +1144,7 @@
                                               "created_at":  "2026-05-19 11:27",
                                               "updated_at":  "2026-05-19 11:30",
                                               "closed_at":  null,
-                                              "days_without_update":  6
+                                              "days_without_update":  7
                                           },
                                           {
                                               "title":  "student_05 - C8.1 - Complete Gradio notebook and Tema 3",
@@ -1156,7 +1156,7 @@
                                               "created_at":  "2026-05-19 11:27",
                                               "updated_at":  "2026-05-19 11:30",
                                               "closed_at":  null,
-                                              "days_without_update":  6
+                                              "days_without_update":  7
                                           },
                                           {
                                               "title":  "student_05 - C7.1 - Complete LangGraph multi-agent notebook",
@@ -1168,7 +1168,7 @@
                                               "created_at":  "2026-05-15 16:38",
                                               "updated_at":  "2026-05-15 16:38",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_05 - C6.3 - Build one RAG agent response",
@@ -1180,7 +1180,7 @@
                                               "created_at":  "2026-05-13 13:58",
                                               "updated_at":  "2026-05-13 13:58",
                                               "closed_at":  null,
-                                              "days_without_update":  12
+                                              "days_without_update":  13
                                           },
                                           {
                                               "title":  "student_01 - C6.3 - Build one RAG agent response",
@@ -1192,7 +1192,7 @@
                                               "created_at":  "2026-05-13 13:58",
                                               "updated_at":  "2026-05-13 13:58",
                                               "closed_at":  null,
-                                              "days_without_update":  12
+                                              "days_without_update":  13
                                           },
                                           {
                                               "title":  "student_06 - C6.3 - Build one RAG agent response",
@@ -1204,7 +1204,7 @@
                                               "created_at":  "2026-05-13 13:58",
                                               "updated_at":  "2026-05-13 13:58",
                                               "closed_at":  null,
-                                              "days_without_update":  12
+                                              "days_without_update":  13
                                           }
                                       ],
                       "closed_issues":  [
@@ -1948,9 +1948,9 @@
                       "repo_url":  "https://github.com/AIE-2026/echochamber-project-team-2",
                       "issues_url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues",
                       "milestones_url":  "https://github.com/AIE-2026/echochamber-project-team-2/milestones",
-                      "current_stage":  "C7 - Orchestration and evaluation",
-                      "current_stage_id":  "C7",
-                      "overall_percent":  94,
+                      "current_stage":  "C8 - App integration",
+                      "current_stage_id":  "C8",
+                      "overall_percent":  99,
                       "progress":  {
                                        "C1 - Setup GitHub, env, notebooks":  {
                                                                                  "id":  "C1",
@@ -2003,18 +2003,18 @@
                                        "C7 - Orchestration and evaluation":  {
                                                                                  "id":  "C7",
                                                                                  "title":  "Orchestration",
-                                                                                 "closed":  7,
-                                                                                 "open":  2,
+                                                                                 "closed":  9,
+                                                                                 "open":  0,
                                                                                  "total":  9,
-                                                                                 "percent":  78
+                                                                                 "percent":  100
                                                                              },
                                        "C8 - App integration":  {
                                                                     "id":  "C8",
                                                                     "title":  "App",
-                                                                    "closed":  4,
-                                                                    "open":  3,
+                                                                    "closed":  6,
+                                                                    "open":  1,
                                                                     "total":  7,
-                                                                    "percent":  57
+                                                                    "percent":  86
                                                                 },
                                        "C9 - Final demo":  {
                                                                "id":  "C9",
@@ -2026,9 +2026,9 @@
                                                            }
                                    },
                       "activity":  {
-                                       "last_activity_at":  "2026-05-25 21:03",
+                                       "last_activity_at":  "2026-05-26 16:20",
                                        "issues_closed_last_48h":  7,
-                                       "avg_completion_time_days":  6,
+                                       "avg_completion_time_days":  6.2,
                                        "status":  "moving",
                                        "status_label":  "ÃŽn miÈ™care",
                                        "blocked":  false,
@@ -2038,52 +2038,12 @@
                                        {
                                            "team":  "Team 2",
                                            "repo":  "echochamber-project-team-2",
-                                           "title":  "student_05 - C7.1 - Complete LangGraph multi-agent notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/76",
-                                           "number":  76,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 2",
-                                           "repo":  "echochamber-project-team-2",
-                                           "title":  "student_01 - C7.1 - Complete LangGraph multi-agent notebook",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/72",
-                                           "number":  72,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  10
-                                       },
-                                       {
-                                           "team":  "Team 2",
-                                           "repo":  "echochamber-project-team-2",
-                                           "title":  "student_01 - C8.1 - Complete Gradio notebook and Tema 3",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/80",
-                                           "number":  80,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  6
-                                       },
-                                       {
-                                           "team":  "Team 2",
-                                           "repo":  "echochamber-project-team-2",
                                            "title":  "C8.2 - Finalize EchoChamber Studio team app",
                                            "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/86",
                                            "number":  86,
                                            "issue_kind":  "collective",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  6
-                                       },
-                                       {
-                                           "team":  "Team 2",
-                                           "repo":  "echochamber-project-team-2",
-                                           "title":  "student_05 - C8.1 - Complete Gradio notebook and Tema 3",
-                                           "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/84",
-                                           "number":  84,
-                                           "issue_kind":  "student",
-                                           "created_by":  "VladAlexe",
-                                           "days_without_update":  6
+                                           "days_without_update":  7
                                        }
                                    ],
                       "members":  [
@@ -2094,14 +2054,14 @@
                                           "github_handle":  "fullmoon30",
                                           "active":  true,
                                           "connected":  true,
-                                          "commits_count":  13,
-                                          "closed":  10,
-                                          "open":  2,
+                                          "commits_count":  15,
+                                          "closed":  12,
+                                          "open":  0,
                                           "total":  12,
-                                          "issue_progress_percent":  83,
-                                          "course_progress_percent":  83,
-                                          "current_stage":  "C7 - Orchestration and evaluation",
-                                          "current_stage_id":  "C7",
+                                          "issue_progress_percent":  100,
+                                          "course_progress_percent":  100,
+                                          "current_stage":  "C8 - App integration",
+                                          "current_stage_id":  "C8",
                                           "progress":  {
                                                            "C1 - Setup GitHub, env, notebooks":  {
                                                                                                      "id":  "C1",
@@ -2154,18 +2114,18 @@
                                                            "C7 - Orchestration and evaluation":  {
                                                                                                      "id":  "C7",
                                                                                                      "title":  "Orchestration",
-                                                                                                     "closed":  0,
-                                                                                                     "open":  1,
+                                                                                                     "closed":  1,
+                                                                                                     "open":  0,
                                                                                                      "total":  1,
-                                                                                                     "percent":  0
+                                                                                                     "percent":  100
                                                                                                  },
                                                            "C8 - App integration":  {
                                                                                         "id":  "C8",
                                                                                         "title":  "App",
-                                                                                        "closed":  0,
-                                                                                        "open":  1,
+                                                                                        "closed":  1,
+                                                                                        "open":  0,
                                                                                         "total":  1,
-                                                                                        "percent":  0
+                                                                                        "percent":  100
                                                                                     },
                                                            "C9 - Final demo":  {
                                                                                    "id":  "C9",
@@ -2188,8 +2148,8 @@
                                                                                                     ]
                                                                       },
                                           "activity":  {
-                                                           "last_activity_at":  "2026-05-23 18:04",
-                                                           "issues_closed_last_48h":  0
+                                                           "last_activity_at":  "2026-05-26 16:20",
+                                                           "issues_closed_last_48h":  2
                                                        }
                                       },
                                       {
@@ -2295,7 +2255,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-25 19:42",
-                                                           "issues_closed_last_48h":  4
+                                                           "issues_closed_last_48h":  1
                                                        }
                                       },
                                       {
@@ -2305,7 +2265,7 @@
                                           "github_handle":  "andreeaspinu2810",
                                           "active":  true,
                                           "connected":  true,
-                                          "commits_count":  26,
+                                          "commits_count":  27,
                                           "closed":  12,
                                           "open":  0,
                                           "total":  12,
@@ -2395,8 +2355,8 @@
                                                                                                        38,
                                                                                                        39,
                                                                                                        71,
-                                                                                                       79,
-                                                                                                       78
+                                                                                                       78,
+                                                                                                       79
                                                                                                    ],
                                                                           "created_issue_numbers":  [
 
@@ -2509,7 +2469,7 @@
                                                                       },
                                           "activity":  {
                                                            "last_activity_at":  "2026-05-24 12:25",
-                                                           "issues_closed_last_48h":  1
+                                                           "issues_closed_last_48h":  0
                                                        }
                                       },
                                       {
@@ -2519,14 +2479,14 @@
                                           "github_handle":  "sovancristian",
                                           "active":  true,
                                           "connected":  true,
-                                          "commits_count":  22,
-                                          "closed":  10,
-                                          "open":  2,
+                                          "commits_count":  24,
+                                          "closed":  12,
+                                          "open":  0,
                                           "total":  12,
-                                          "issue_progress_percent":  83,
-                                          "course_progress_percent":  83,
-                                          "current_stage":  "C7 - Orchestration and evaluation",
-                                          "current_stage_id":  "C7",
+                                          "issue_progress_percent":  100,
+                                          "course_progress_percent":  100,
+                                          "current_stage":  "C8 - App integration",
+                                          "current_stage_id":  "C8",
                                           "progress":  {
                                                            "C1 - Setup GitHub, env, notebooks":  {
                                                                                                      "id":  "C1",
@@ -2579,18 +2539,18 @@
                                                            "C7 - Orchestration and evaluation":  {
                                                                                                      "id":  "C7",
                                                                                                      "title":  "Orchestration",
-                                                                                                     "closed":  0,
-                                                                                                     "open":  1,
+                                                                                                     "closed":  1,
+                                                                                                     "open":  0,
                                                                                                      "total":  1,
-                                                                                                     "percent":  0
+                                                                                                     "percent":  100
                                                                                                  },
                                                            "C8 - App integration":  {
                                                                                         "id":  "C8",
                                                                                         "title":  "App",
-                                                                                        "closed":  0,
-                                                                                        "open":  1,
+                                                                                        "closed":  1,
+                                                                                        "open":  0,
                                                                                         "total":  1,
-                                                                                        "percent":  0
+                                                                                        "percent":  100
                                                                                     },
                                                            "C9 - Final demo":  {
                                                                                    "id":  "C9",
@@ -2607,13 +2567,13 @@
                                                                           "created_by_member":  0,
                                                                           "closed_issue_numbers":  [
                                                                                                        26,
-                                                                                                       17,
+                                                                                                       40,
                                                                                                        18,
+                                                                                                       17,
+                                                                                                       41,
                                                                                                        69,
                                                                                                        68,
                                                                                                        61,
-                                                                                                       41,
-                                                                                                       40,
                                                                                                        54
                                                                                                    ],
                                                                           "created_issue_numbers":  [
@@ -2621,48 +2581,12 @@
                                                                                                     ]
                                                                       },
                                           "activity":  {
-                                                           "last_activity_at":  "2026-05-19 11:40",
-                                                           "issues_closed_last_48h":  0
+                                                           "last_activity_at":  "2026-05-26 15:32",
+                                                           "issues_closed_last_48h":  2
                                                        }
                                       }
                                   ],
                       "open_issues":  [
-                                          {
-                                              "title":  "student_05 - C7.1 - Complete LangGraph multi-agent notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/76",
-                                              "number":  76,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-15 16:39",
-                                              "updated_at":  "2026-05-15 16:39",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_01 - C7.1 - Complete LangGraph multi-agent notebook",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/72",
-                                              "number":  72,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-15 16:39",
-                                              "updated_at":  "2026-05-15 16:39",
-                                              "closed_at":  null,
-                                              "days_without_update":  10
-                                          },
-                                          {
-                                              "title":  "student_01 - C8.1 - Complete Gradio notebook and Tema 3",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/80",
-                                              "number":  80,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-19 11:40",
-                                              "updated_at":  "2026-05-19 11:40",
-                                              "closed_at":  null,
-                                              "days_without_update":  6
-                                          },
                                           {
                                               "title":  "C8.2 - Finalize EchoChamber Studio team app",
                                               "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/86",
@@ -2673,22 +2597,22 @@
                                               "created_at":  "2026-05-19 11:40",
                                               "updated_at":  "2026-05-19 11:40",
                                               "closed_at":  null,
-                                              "days_without_update":  6
-                                          },
-                                          {
-                                              "title":  "student_05 - C8.1 - Complete Gradio notebook and Tema 3",
-                                              "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/84",
-                                              "number":  84,
-                                              "issue_kind":  "student",
-                                              "created_by":  "VladAlexe",
-                                              "closed_by":  null,
-                                              "created_at":  "2026-05-19 11:40",
-                                              "updated_at":  "2026-05-19 11:40",
-                                              "closed_at":  null,
-                                              "days_without_update":  6
+                                              "days_without_update":  7
                                           }
                                       ],
                       "closed_issues":  [
+                                            {
+                                                "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/28",
+                                                "number":  28,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-04 15:40",
+                                                "updated_at":  "2026-05-07 18:10",
+                                                "closed_at":  "2026-05-07 18:10",
+                                                "completion_time_days":  3.1
+                                            },
                                             {
                                                 "title":  "student_01 - C3.5 - Tema 1 corpus exploration and first prompt",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/27",
@@ -2702,16 +2626,16 @@
                                                 "completion_time_days":  6.2
                                             },
                                             {
-                                                "title":  "C3.4 - Clean the provided YouTube corpus",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/26",
-                                                "number":  26,
-                                                "issue_kind":  "collective",
+                                                "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/30",
+                                                "number":  30,
+                                                "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-16 00:10",
-                                                "closed_at":  "2026-05-16 00:10",
-                                                "completion_time_days":  11.4
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-04 15:40",
+                                                "updated_at":  "2026-05-09 13:32",
+                                                "closed_at":  "2026-05-09 13:32",
+                                                "completion_time_days":  4.9
                                             },
                                             {
                                                 "title":  "student_03 - C3.5 - Tema 1 corpus exploration and first prompt",
@@ -2726,64 +2650,16 @@
                                                 "completion_time_days":  5.8
                                             },
                                             {
-                                                "title":  "student_02 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/28",
-                                                "number":  28,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-04 15:40",
-                                                "updated_at":  "2026-05-07 18:10",
-                                                "closed_at":  "2026-05-07 18:10",
-                                                "completion_time_days":  3.1
-                                            },
-                                            {
-                                                "title":  "C3.3 - Download provided YouTube corpus",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/25",
-                                                "number":  25,
+                                                "title":  "C3.4 - Clean the provided YouTube corpus",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/26",
+                                                "number":  26,
                                                 "issue_kind":  "collective",
                                                 "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
+                                                "closed_by":  "SovanCristian",
                                                 "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-05 20:08",
-                                                "closed_at":  "2026-05-05 20:08",
-                                                "completion_time_days":  1.2
-                                            },
-                                            {
-                                                "title":  "student_04 - C3.1 - Individual collect and clean notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/22",
-                                                "number":  22,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-07 16:00",
-                                                "closed_at":  "2026-05-07 16:00",
-                                                "completion_time_days":  3
-                                            },
-                                            {
-                                                "title":  "student_03 - C3.1 - Individual collect and clean notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/21",
-                                                "number":  21,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-09 13:05",
-                                                "closed_at":  "2026-05-09 13:05",
-                                                "completion_time_days":  4.9
-                                            },
-                                            {
-                                                "title":  "C3.2 - Add final YouTube collection script",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/24",
-                                                "number":  24,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "FullMoon30",
-                                                "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-11 16:00",
-                                                "closed_at":  "2026-05-11 16:00",
-                                                "completion_time_days":  7
+                                                "updated_at":  "2026-05-16 00:10",
+                                                "closed_at":  "2026-05-16 00:10",
+                                                "completion_time_days":  11.4
                                             },
                                             {
                                                 "title":  "student_05 - C3.1 - Individual collect and clean notebook",
@@ -2798,28 +2674,52 @@
                                                 "completion_time_days":  5.8
                                             },
                                             {
-                                                "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/36",
-                                                "number":  36,
+                                                "title":  "student_04 - C3.1 - Individual collect and clean notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/22",
+                                                "number":  22,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-06 21:45",
-                                                "updated_at":  "2026-05-14 19:38",
-                                                "closed_at":  "2026-05-14 19:38",
-                                                "completion_time_days":  7.9
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-07 16:00",
+                                                "closed_at":  "2026-05-07 16:00",
+                                                "completion_time_days":  3
                                             },
                                             {
-                                                "title":  "student_03 - C4.2 - Complete annotation exercise notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/35",
-                                                "number":  35,
+                                                "title":  "C3.3 - Download provided YouTube corpus",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/25",
+                                                "number":  25,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-05 20:08",
+                                                "closed_at":  "2026-05-05 20:08",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "C3.2 - Add final YouTube collection script",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/24",
+                                                "number":  24,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "FullMoon30",
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-11 16:00",
+                                                "closed_at":  "2026-05-11 16:00",
+                                                "completion_time_days":  7
+                                            },
+                                            {
+                                                "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/31",
+                                                "number":  31,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-06 21:45",
-                                                "updated_at":  "2026-05-10 14:17",
-                                                "closed_at":  "2026-05-10 14:17",
-                                                "completion_time_days":  3.7
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-04 15:40",
+                                                "updated_at":  "2026-05-10 10:56",
+                                                "closed_at":  "2026-05-10 10:56",
+                                                "completion_time_days":  5.8
                                             },
                                             {
                                                 "title":  "C4.3 - Add class demo annotation and typology notebook",
@@ -2846,40 +2746,40 @@
                                                 "completion_time_days":  4.1
                                             },
                                             {
-                                                "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/34",
-                                                "number":  34,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-06 21:45",
-                                                "updated_at":  "2026-05-23 16:02",
-                                                "closed_at":  "2026-05-23 16:02",
-                                                "completion_time_days":  16.8
-                                            },
-                                            {
-                                                "title":  "student_05 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/31",
-                                                "number":  31,
-                                                "issue_kind":  "student",
+                                                "title":  "C5.1 - Add shared C5 files",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/40",
+                                                "number":  40,
+                                                "issue_kind":  "collective",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-04 15:40",
-                                                "updated_at":  "2026-05-10 10:56",
-                                                "closed_at":  "2026-05-10 10:56",
-                                                "completion_time_days":  5.8
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-16 11:18",
+                                                "closed_at":  "2026-05-16 11:17",
+                                                "completion_time_days":  4.6
                                             },
                                             {
-                                                "title":  "student_04 - C3.5 - Tema 1 corpus exploration and first prompt",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/30",
-                                                "number":  30,
+                                                "title":  "C4.4 - Build and test team annotation prompt",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/39",
+                                                "number":  39,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-06 21:45",
+                                                "updated_at":  "2026-05-17 11:05",
+                                                "closed_at":  "2026-05-17 11:05",
+                                                "completion_time_days":  10.6
+                                            },
+                                            {
+                                                "title":  "student_04 - C4.2 - Complete annotation exercise notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/36",
+                                                "number":  36,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-04 15:40",
-                                                "updated_at":  "2026-05-09 13:32",
-                                                "closed_at":  "2026-05-09 13:32",
-                                                "completion_time_days":  4.9
+                                                "created_at":  "2026-05-06 21:45",
+                                                "updated_at":  "2026-05-14 19:38",
+                                                "closed_at":  "2026-05-14 19:38",
+                                                "completion_time_days":  7.9
                                             },
                                             {
                                                 "title":  "student_01 - C4.2 - Complete annotation exercise notebook",
@@ -2906,16 +2806,40 @@
                                                 "completion_time_days":  2.7
                                             },
                                             {
-                                                "title":  "student_02 - C3.1 - Individual collect and clean notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/20",
-                                                "number":  20,
+                                                "title":  "student_03 - C4.2 - Complete annotation exercise notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/35",
+                                                "number":  35,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-06 21:45",
+                                                "updated_at":  "2026-05-10 14:17",
+                                                "closed_at":  "2026-05-10 14:17",
+                                                "completion_time_days":  3.7
+                                            },
+                                            {
+                                                "title":  "student_02 - C4.2 - Complete annotation exercise notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/34",
+                                                "number":  34,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-06 21:45",
+                                                "updated_at":  "2026-05-23 16:02",
+                                                "closed_at":  "2026-05-23 16:02",
+                                                "completion_time_days":  16.8
+                                            },
+                                            {
+                                                "title":  "student_03 - C3.1 - Individual collect and clean notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/21",
+                                                "number":  21,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
                                                 "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-05 19:27",
-                                                "closed_at":  "2026-05-05 19:27",
-                                                "completion_time_days":  1.2
+                                                "updated_at":  "2026-05-09 13:05",
+                                                "closed_at":  "2026-05-09 13:05",
+                                                "completion_time_days":  4.9
                                             },
                                             {
                                                 "title":  "student_04 - Issue 1 - Local clone and Gemini API key",
@@ -3026,40 +2950,16 @@
                                                 "completion_time_days":  6.3
                                             },
                                             {
-                                                "title":  "C2.2 - Team model configuration in core/config.py",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/17",
-                                                "number":  17,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-04-29 14:19",
-                                                "updated_at":  "2026-05-10 23:20",
-                                                "closed_at":  "2026-05-10 23:20",
-                                                "completion_time_days":  11.4
-                                            },
-                                            {
-                                                "title":  "student_05 - C2.1 - Individual model testing notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/16",
-                                                "number":  16,
+                                                "title":  "student_05 - Issue 2 - Individual notebook workspace",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/11",
+                                                "number":  11,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-04-29 14:19",
-                                                "updated_at":  "2026-05-10 10:40",
-                                                "closed_at":  "2026-05-10 10:40",
-                                                "completion_time_days":  10.8
-                                            },
-                                            {
-                                                "title":  "student_01 - C3.1 - Individual collect and clean notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/19",
-                                                "number":  19,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "FullMoon30",
-                                                "created_at":  "2026-05-04 15:39",
-                                                "updated_at":  "2026-05-10 18:17",
-                                                "closed_at":  "2026-05-10 18:17",
-                                                "completion_time_days":  6.1
+                                                "created_at":  "2026-04-29 12:56",
+                                                "updated_at":  "2026-05-07 23:01",
+                                                "closed_at":  "2026-05-07 23:01",
+                                                "completion_time_days":  8.4
                                             },
                                             {
                                                 "title":  "C2.3 - Create initial app.py",
@@ -3074,52 +2974,52 @@
                                                 "completion_time_days":  11.4
                                             },
                                             {
-                                                "title":  "student_04 - C2.1 - Individual model testing notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/15",
-                                                "number":  15,
-                                                "issue_kind":  "student",
+                                                "title":  "C2.2 - Team model configuration in core/config.py",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/17",
+                                                "number":  17,
+                                                "issue_kind":  "collective",
                                                 "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
+                                                "closed_by":  "SovanCristian",
                                                 "created_at":  "2026-04-29 14:19",
-                                                "updated_at":  "2026-05-05 15:47",
-                                                "closed_at":  "2026-05-05 15:47",
-                                                "completion_time_days":  6.1
+                                                "updated_at":  "2026-05-10 23:20",
+                                                "closed_at":  "2026-05-10 23:20",
+                                                "completion_time_days":  11.4
                                             },
                                             {
-                                                "title":  "student_01 - C2.1 - Individual model testing notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/12",
-                                                "number":  12,
+                                                "title":  "student_02 - C3.1 - Individual collect and clean notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/20",
+                                                "number":  20,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-05 19:27",
+                                                "closed_at":  "2026-05-05 19:27",
+                                                "completion_time_days":  1.2
+                                            },
+                                            {
+                                                "title":  "student_01 - C3.1 - Individual collect and clean notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/19",
+                                                "number":  19,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "FullMoon30",
-                                                "created_at":  "2026-04-29 14:19",
-                                                "updated_at":  "2026-05-10 17:54",
-                                                "closed_at":  "2026-05-10 17:54",
-                                                "completion_time_days":  11.1
+                                                "created_at":  "2026-05-04 15:39",
+                                                "updated_at":  "2026-05-10 18:17",
+                                                "closed_at":  "2026-05-10 18:17",
+                                                "completion_time_days":  6.1
                                             },
                                             {
-                                                "title":  "student_05 - Issue 2 - Individual notebook workspace",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/11",
-                                                "number":  11,
+                                                "title":  "student_05 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/16",
+                                                "number":  16,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-04-29 12:56",
-                                                "updated_at":  "2026-05-07 23:01",
-                                                "closed_at":  "2026-05-07 23:01",
-                                                "completion_time_days":  8.4
-                                            },
-                                            {
-                                                "title":  "student_03 - C2.1 - Individual model testing notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/14",
-                                                "number":  14,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
                                                 "created_at":  "2026-04-29 14:19",
-                                                "updated_at":  "2026-05-03 11:13",
-                                                "closed_at":  "2026-05-03 11:13",
-                                                "completion_time_days":  3.9
+                                                "updated_at":  "2026-05-10 10:40",
+                                                "closed_at":  "2026-05-10 10:40",
+                                                "completion_time_days":  10.8
                                             },
                                             {
                                                 "title":  "student_02 - C2.1 - Individual model testing notebook",
@@ -3134,16 +3034,136 @@
                                                 "completion_time_days":  24
                                             },
                                             {
-                                                "title":  "C4.4 - Build and test team annotation prompt",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/39",
-                                                "number":  39,
+                                                "title":  "student_01 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/12",
+                                                "number":  12,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "FullMoon30",
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-10 17:54",
+                                                "closed_at":  "2026-05-10 17:54",
+                                                "completion_time_days":  11.1
+                                            },
+                                            {
+                                                "title":  "student_04 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/15",
+                                                "number":  15,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-05 15:47",
+                                                "closed_at":  "2026-05-05 15:47",
+                                                "completion_time_days":  6.1
+                                            },
+                                            {
+                                                "title":  "student_03 - C2.1 - Individual model testing notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/14",
+                                                "number":  14,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-04-29 14:19",
+                                                "updated_at":  "2026-05-03 11:13",
+                                                "closed_at":  "2026-05-03 11:13",
+                                                "completion_time_days":  3.9
+                                            },
+                                            {
+                                                "title":  "C5.4 - Review and document vector store script",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/41",
+                                                "number":  41,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-16 11:17",
+                                                "closed_at":  "2026-05-16 11:17",
+                                                "completion_time_days":  4.6
+                                            },
+                                            {
+                                                "title":  "student_02 - C7.1 - Complete LangGraph multi-agent notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/73",
+                                                "number":  73,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-24 14:14",
+                                                "closed_at":  "2026-05-24 14:14",
+                                                "completion_time_days":  8.9
+                                            },
+                                            {
+                                                "title":  "student_01 - C7.1 - Complete LangGraph multi-agent notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/72",
+                                                "number":  72,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "FullMoon30",
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-26 16:02",
+                                                "closed_at":  "2026-05-26 16:02",
+                                                "completion_time_days":  11
+                                            },
+                                            {
+                                                "title":  "student_04 - C7.1 - Complete LangGraph multi-agent notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/75",
+                                                "number":  75,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-19 14:33",
+                                                "closed_at":  "2026-05-19 14:33",
+                                                "completion_time_days":  3.9
+                                            },
+                                            {
+                                                "title":  "student_03 - C7.1 - Complete LangGraph multi-agent notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/74",
+                                                "number":  74,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-17 16:31",
+                                                "closed_at":  "2026-05-17 16:31",
+                                                "completion_time_days":  2
+                                            },
+                                            {
+                                                "title":  "C7.2 - Build core graph multi-agent workflow",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/71",
+                                                "number":  71,
                                                 "issue_kind":  "collective",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-06 21:45",
-                                                "updated_at":  "2026-05-17 11:05",
-                                                "closed_at":  "2026-05-17 11:05",
-                                                "completion_time_days":  10.6
+                                                "created_at":  "2026-05-15 16:07",
+                                                "updated_at":  "2026-05-25 21:03",
+                                                "closed_at":  "2026-05-25 21:03",
+                                                "completion_time_days":  10.2
+                                            },
+                                            {
+                                                "title":  "student_05 - C6.3 - Build one RAG agent response",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/66",
+                                                "number":  66,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-13 13:59",
+                                                "updated_at":  "2026-05-16 00:06",
+                                                "closed_at":  "2026-05-16 00:06",
+                                                "completion_time_days":  2.4
+                                            },
+                                            {
+                                                "title":  "student_04 - C6.3 - Build one RAG agent response",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/65",
+                                                "number":  65,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-13 13:59",
+                                                "updated_at":  "2026-05-15 11:49",
+                                                "closed_at":  "2026-05-15 11:49",
+                                                "completion_time_days":  1.9
                                             },
                                             {
                                                 "title":  "C6.5 - Add minimal Agent RAG tab to the app",
@@ -3170,39 +3190,279 @@
                                                 "completion_time_days":  2.9
                                             },
                                             {
-                                                "title":  "student_02 - C7.1 - Complete LangGraph multi-agent notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/73",
-                                                "number":  73,
+                                                "title":  "student_05 - C7.1 - Complete LangGraph multi-agent notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/76",
+                                                "number":  76,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-26 15:25",
+                                                "closed_at":  "2026-05-26 15:25",
+                                                "completion_time_days":  10.9
+                                            },
+                                            {
+                                                "title":  "student_04 - C8.1 - Complete Gradio notebook and Tema 3",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/83",
+                                                "number":  83,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-19 11:40",
+                                                "updated_at":  "2026-05-24 12:25",
+                                                "closed_at":  "2026-05-24 12:25",
+                                                "completion_time_days":  5
+                                            },
+                                            {
+                                                "title":  "student_03 - C8.1 - Complete Gradio notebook and Tema 3",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/82",
+                                                "number":  82,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-19 11:40",
+                                                "updated_at":  "2026-05-23 14:08",
+                                                "closed_at":  "2026-05-23 14:08",
+                                                "completion_time_days":  4.1
+                                            },
+                                            {
+                                                "title":  "C8.3 - Finalize professional project README",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/87",
+                                                "number":  87,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-19 11:40",
+                                                "updated_at":  "2026-05-25 19:48",
+                                                "closed_at":  "2026-05-25 19:48",
+                                                "completion_time_days":  6.3
+                                            },
+                                            {
+                                                "title":  "student_05 - C8.1 - Complete Gradio notebook and Tema 3",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/84",
+                                                "number":  84,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-19 11:40",
+                                                "updated_at":  "2026-05-26 15:32",
+                                                "closed_at":  "2026-05-26 15:32",
+                                                "completion_time_days":  7.2
+                                            },
+                                            {
+                                                "title":  "student_02 - C8.1 - Complete Gradio notebook and Tema 3",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/81",
+                                                "number":  81,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-15 16:39",
-                                                "updated_at":  "2026-05-24 14:14",
-                                                "closed_at":  "2026-05-24 14:14",
-                                                "completion_time_days":  8.9
+                                                "created_at":  "2026-05-19 11:40",
+                                                "updated_at":  "2026-05-25 19:42",
+                                                "closed_at":  "2026-05-25 19:42",
+                                                "completion_time_days":  6.3
                                             },
                                             {
-                                                "title":  "C7.2 - Build core graph multi-agent workflow",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/71",
-                                                "number":  71,
+                                                "title":  "C7.3 - Add minimal Multi-agent Thread tab to the app",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/78",
+                                                "number":  78,
                                                 "issue_kind":  "collective",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-15 16:07",
-                                                "updated_at":  "2026-05-25 21:03",
-                                                "closed_at":  "2026-05-25 21:03",
-                                                "completion_time_days":  10.2
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-17 19:55",
+                                                "closed_at":  "2026-05-17 19:55",
+                                                "completion_time_days":  2.1
                                             },
                                             {
-                                                "title":  "student_05 - C6.3 - Build one RAG agent response",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/66",
-                                                "number":  66,
+                                                "title":  "student_06 - C7.1 - Complete LangGraph multi-agent notebook",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/77",
+                                                "number":  77,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-16 12:13",
+                                                "closed_at":  "2026-05-16 12:13",
+                                                "completion_time_days":  0.8
+                                            },
+                                            {
+                                                "title":  "student_01 - C8.1 - Complete Gradio notebook and Tema 3",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/80",
+                                                "number":  80,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "FullMoon30",
+                                                "created_at":  "2026-05-19 11:40",
+                                                "updated_at":  "2026-05-26 16:20",
+                                                "closed_at":  "2026-05-26 16:20",
+                                                "completion_time_days":  7.2
+                                            },
+                                            {
+                                                "title":  "C7.4 - Add ethics checklist and limitations",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/79",
+                                                "number":  79,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-15 16:39",
+                                                "updated_at":  "2026-05-17 20:13",
+                                                "closed_at":  "2026-05-17 20:13",
+                                                "completion_time_days":  2.1
+                                            },
+                                            {
+                                                "title":  "student_03 - C6.3 - Build one RAG agent response",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/64",
+                                                "number":  64,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-13 13:59",
+                                                "updated_at":  "2026-05-15 22:53",
+                                                "closed_at":  "2026-05-15 22:53",
+                                                "completion_time_days":  2.4
+                                            },
+                                            {
+                                                "title":  "student_04 - Tema 2 - Clean one agent bubble for retrieval",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/48",
+                                                "number":  48,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-14 20:13",
+                                                "closed_at":  "2026-05-14 20:13",
+                                                "completion_time_days":  3
+                                            },
+                                            {
+                                                "title":  "student_03 - C5.3 - Build vector store for one agent bubble",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/47",
+                                                "number":  47,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-15 19:49",
+                                                "closed_at":  "2026-05-15 19:49",
+                                                "completion_time_days":  3.9
+                                            },
+                                            {
+                                                "title":  "student_05 - Tema 2 - Clean one agent bubble for retrieval",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/50",
+                                                "number":  50,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-12 19:09",
+                                                "closed_at":  "2026-05-12 19:09",
+                                                "completion_time_days":  0.9
+                                            },
+                                            {
+                                                "title":  "student_04 - C5.3 - Build vector store for one agent bubble",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/49",
+                                                "number":  49,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "robertagrosu",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-14 22:22",
+                                                "closed_at":  "2026-05-14 22:22",
+                                                "completion_time_days":  3.1
+                                            },
+                                            {
+                                                "title":  "student_03 - Tema 2 - Clean one agent bubble for retrieval",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/46",
+                                                "number":  46,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-15 18:23",
+                                                "closed_at":  "2026-05-15 18:23",
+                                                "completion_time_days":  3.9
+                                            },
+                                            {
+                                                "title":  "student_01 - C5.3 - Build vector store for one agent bubble",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/43",
+                                                "number":  43,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "FullMoon30",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-19 21:40",
+                                                "closed_at":  "2026-05-19 21:40",
+                                                "completion_time_days":  8
+                                            },
+                                            {
+                                                "title":  "student_01 - Tema 2 - Clean one agent bubble for retrieval",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/42",
+                                                "number":  42,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "FullMoon30",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-19 21:00",
+                                                "closed_at":  "2026-05-19 21:00",
+                                                "completion_time_days":  8
+                                            },
+                                            {
+                                                "title":  "student_02 - C5.3 - Build vector store for one agent bubble",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/45",
+                                                "number":  45,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-23 19:42",
+                                                "closed_at":  "2026-05-23 19:42",
+                                                "completion_time_days":  11.9
+                                            },
+                                            {
+                                                "title":  "student_02 - Tema 2 - Clean one agent bubble for retrieval",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/44",
+                                                "number":  44,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-23 19:42",
+                                                "closed_at":  "2026-05-23 19:42",
+                                                "completion_time_days":  11.9
+                                            },
+                                            {
+                                                "title":  "student_05 - C5.3 - Build vector store for one agent bubble",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/51",
+                                                "number":  51,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-11 21:05",
+                                                "updated_at":  "2026-05-15 22:52",
+                                                "closed_at":  "2026-05-15 22:52",
+                                                "completion_time_days":  4.1
+                                            },
+                                            {
+                                                "title":  "C6.2 - Integrate individual agent roles into roles.yaml",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/61",
+                                                "number":  61,
+                                                "issue_kind":  "collective",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "SovanCristian",
+                                                "created_at":  "2026-05-13 13:59",
+                                                "updated_at":  "2026-05-16 11:23",
+                                                "closed_at":  "2026-05-16 11:23",
+                                                "completion_time_days":  2.9
+                                            },
+                                            {
+                                                "title":  "student_05 - C6.1 - Define one agent role for RAG",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/59",
+                                                "number":  59,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
                                                 "closed_by":  "SovanCristian",
                                                 "created_at":  "2026-05-13 13:59",
-                                                "updated_at":  "2026-05-16 00:06",
-                                                "closed_at":  "2026-05-16 00:06",
+                                                "updated_at":  "2026-05-15 23:41",
+                                                "closed_at":  "2026-05-15 23:41",
                                                 "completion_time_days":  2.4
                                             },
                                             {
@@ -3230,294 +3490,6 @@
                                                 "completion_time_days":  10.2
                                             },
                                             {
-                                                "title":  "student_04 - C6.3 - Build one RAG agent response",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/65",
-                                                "number":  65,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-13 13:59",
-                                                "updated_at":  "2026-05-15 11:49",
-                                                "closed_at":  "2026-05-15 11:49",
-                                                "completion_time_days":  1.9
-                                            },
-                                            {
-                                                "title":  "student_03 - C6.3 - Build one RAG agent response",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/64",
-                                                "number":  64,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-13 13:59",
-                                                "updated_at":  "2026-05-15 22:53",
-                                                "closed_at":  "2026-05-15 22:53",
-                                                "completion_time_days":  2.4
-                                            },
-                                            {
-                                                "title":  "student_03 - C8.1 - Complete Gradio notebook and Tema 3",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/82",
-                                                "number":  82,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-19 11:40",
-                                                "updated_at":  "2026-05-23 14:08",
-                                                "closed_at":  "2026-05-23 14:08",
-                                                "completion_time_days":  4.1
-                                            },
-                                            {
-                                                "title":  "student_02 - C8.1 - Complete Gradio notebook and Tema 3",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/81",
-                                                "number":  81,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-19 11:40",
-                                                "updated_at":  "2026-05-25 19:42",
-                                                "closed_at":  "2026-05-25 19:42",
-                                                "completion_time_days":  6.3
-                                            },
-                                            {
-                                                "title":  "C8.3 - Finalize professional project README",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/87",
-                                                "number":  87,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-19 11:40",
-                                                "updated_at":  "2026-05-25 19:48",
-                                                "closed_at":  "2026-05-25 19:48",
-                                                "completion_time_days":  6.3
-                                            },
-                                            {
-                                                "title":  "student_04 - C8.1 - Complete Gradio notebook and Tema 3",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/83",
-                                                "number":  83,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-19 11:40",
-                                                "updated_at":  "2026-05-24 12:25",
-                                                "closed_at":  "2026-05-24 12:25",
-                                                "completion_time_days":  5
-                                            },
-                                            {
-                                                "title":  "C7.4 - Add ethics checklist and limitations",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/79",
-                                                "number":  79,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-15 16:39",
-                                                "updated_at":  "2026-05-17 20:13",
-                                                "closed_at":  "2026-05-17 20:13",
-                                                "completion_time_days":  2.1
-                                            },
-                                            {
-                                                "title":  "student_04 - C7.1 - Complete LangGraph multi-agent notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/75",
-                                                "number":  75,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-15 16:39",
-                                                "updated_at":  "2026-05-19 14:33",
-                                                "closed_at":  "2026-05-19 14:33",
-                                                "completion_time_days":  3.9
-                                            },
-                                            {
-                                                "title":  "student_03 - C7.1 - Complete LangGraph multi-agent notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/74",
-                                                "number":  74,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-15 16:39",
-                                                "updated_at":  "2026-05-17 16:31",
-                                                "closed_at":  "2026-05-17 16:31",
-                                                "completion_time_days":  2
-                                            },
-                                            {
-                                                "title":  "C7.3 - Add minimal Multi-agent Thread tab to the app",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/78",
-                                                "number":  78,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-15 16:39",
-                                                "updated_at":  "2026-05-17 19:55",
-                                                "closed_at":  "2026-05-17 19:55",
-                                                "completion_time_days":  2.1
-                                            },
-                                            {
-                                                "title":  "student_06 - C7.1 - Complete LangGraph multi-agent notebook",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/77",
-                                                "number":  77,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-15 16:39",
-                                                "updated_at":  "2026-05-16 12:13",
-                                                "closed_at":  "2026-05-16 12:13",
-                                                "completion_time_days":  0.8
-                                            },
-                                            {
-                                                "title":  "C6.2 - Integrate individual agent roles into roles.yaml",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/61",
-                                                "number":  61,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-13 13:59",
-                                                "updated_at":  "2026-05-16 11:23",
-                                                "closed_at":  "2026-05-16 11:23",
-                                                "completion_time_days":  2.9
-                                            },
-                                            {
-                                                "title":  "student_03 - Tema 2 - Clean one agent bubble for retrieval",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/46",
-                                                "number":  46,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-15 18:23",
-                                                "closed_at":  "2026-05-15 18:23",
-                                                "completion_time_days":  3.9
-                                            },
-                                            {
-                                                "title":  "student_02 - C5.3 - Build vector store for one agent bubble",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/45",
-                                                "number":  45,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-23 19:42",
-                                                "closed_at":  "2026-05-23 19:42",
-                                                "completion_time_days":  11.9
-                                            },
-                                            {
-                                                "title":  "student_04 - Tema 2 - Clean one agent bubble for retrieval",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/48",
-                                                "number":  48,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-14 20:13",
-                                                "closed_at":  "2026-05-14 20:13",
-                                                "completion_time_days":  3
-                                            },
-                                            {
-                                                "title":  "student_03 - C5.3 - Build vector store for one agent bubble",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/47",
-                                                "number":  47,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-15 19:49",
-                                                "closed_at":  "2026-05-15 19:49",
-                                                "completion_time_days":  3.9
-                                            },
-                                            {
-                                                "title":  "student_02 - Tema 2 - Clean one agent bubble for retrieval",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/44",
-                                                "number":  44,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-23 19:42",
-                                                "closed_at":  "2026-05-23 19:42",
-                                                "completion_time_days":  11.9
-                                            },
-                                            {
-                                                "title":  "C5.4 - Review and document vector store script",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/41",
-                                                "number":  41,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-16 11:17",
-                                                "closed_at":  "2026-05-16 11:17",
-                                                "completion_time_days":  4.6
-                                            },
-                                            {
-                                                "title":  "C5.1 - Add shared C5 files",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/40",
-                                                "number":  40,
-                                                "issue_kind":  "collective",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-16 11:18",
-                                                "closed_at":  "2026-05-16 11:17",
-                                                "completion_time_days":  4.6
-                                            },
-                                            {
-                                                "title":  "student_01 - C5.3 - Build vector store for one agent bubble",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/43",
-                                                "number":  43,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "FullMoon30",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-19 21:40",
-                                                "closed_at":  "2026-05-19 21:40",
-                                                "completion_time_days":  8
-                                            },
-                                            {
-                                                "title":  "student_01 - Tema 2 - Clean one agent bubble for retrieval",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/42",
-                                                "number":  42,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "FullMoon30",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-19 21:00",
-                                                "closed_at":  "2026-05-19 21:00",
-                                                "completion_time_days":  8
-                                            },
-                                            {
-                                                "title":  "student_03 - C6.1 - Define one agent role for RAG",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/57",
-                                                "number":  57,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "andreeaspinu2810",
-                                                "created_at":  "2026-05-13 13:59",
-                                                "updated_at":  "2026-05-15 22:41",
-                                                "closed_at":  "2026-05-15 22:41",
-                                                "completion_time_days":  2.4
-                                            },
-                                            {
-                                                "title":  "student_02 - C6.1 - Define one agent role for RAG",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/56",
-                                                "number":  56,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "vvale-hub",
-                                                "created_at":  "2026-05-13 13:59",
-                                                "updated_at":  "2026-05-24 11:32",
-                                                "closed_at":  "2026-05-24 11:32",
-                                                "completion_time_days":  10.9
-                                            },
-                                            {
-                                                "title":  "student_05 - C6.1 - Define one agent role for RAG",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/59",
-                                                "number":  59,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-13 13:59",
-                                                "updated_at":  "2026-05-15 23:41",
-                                                "closed_at":  "2026-05-15 23:41",
-                                                "completion_time_days":  2.4
-                                            },
-                                            {
                                                 "title":  "student_04 - C6.1 - Define one agent role for RAG",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/58",
                                                 "number":  58,
@@ -3542,30 +3514,6 @@
                                                 "completion_time_days":  10.2
                                             },
                                             {
-                                                "title":  "student_05 - Tema 2 - Clean one agent bubble for retrieval",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/50",
-                                                "number":  50,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-12 19:09",
-                                                "closed_at":  "2026-05-12 19:09",
-                                                "completion_time_days":  0.9
-                                            },
-                                            {
-                                                "title":  "student_04 - C5.3 - Build vector store for one agent bubble",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/49",
-                                                "number":  49,
-                                                "issue_kind":  "student",
-                                                "created_by":  "VladAlexe",
-                                                "closed_by":  "robertagrosu",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-14 22:22",
-                                                "closed_at":  "2026-05-14 22:22",
-                                                "completion_time_days":  3.1
-                                            },
-                                            {
                                                 "title":  "C5.5 - Create reusable FAISS retriever",
                                                 "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/54",
                                                 "number":  54,
@@ -3578,16 +3526,28 @@
                                                 "completion_time_days":  3.9
                                             },
                                             {
-                                                "title":  "student_05 - C5.3 - Build vector store for one agent bubble",
-                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/51",
-                                                "number":  51,
+                                                "title":  "student_03 - C6.1 - Define one agent role for RAG",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/57",
+                                                "number":  57,
                                                 "issue_kind":  "student",
                                                 "created_by":  "VladAlexe",
-                                                "closed_by":  "SovanCristian",
-                                                "created_at":  "2026-05-11 21:05",
-                                                "updated_at":  "2026-05-15 22:52",
-                                                "closed_at":  "2026-05-15 22:52",
-                                                "completion_time_days":  4.1
+                                                "closed_by":  "andreeaspinu2810",
+                                                "created_at":  "2026-05-13 13:59",
+                                                "updated_at":  "2026-05-15 22:41",
+                                                "closed_at":  "2026-05-15 22:41",
+                                                "completion_time_days":  2.4
+                                            },
+                                            {
+                                                "title":  "student_02 - C6.1 - Define one agent role for RAG",
+                                                "url":  "https://github.com/AIE-2026/echochamber-project-team-2/issues/56",
+                                                "number":  56,
+                                                "issue_kind":  "student",
+                                                "created_by":  "VladAlexe",
+                                                "closed_by":  "vvale-hub",
+                                                "created_at":  "2026-05-13 13:59",
+                                                "updated_at":  "2026-05-24 11:32",
+                                                "closed_at":  "2026-05-24 11:32",
+                                                "completion_time_days":  10.9
                                             }
                                         ]
                   },
@@ -3681,7 +3641,7 @@
                                        "status":  "slow",
                                        "status_label":  "Lent",
                                        "blocked":  false,
-                                       "days_without_update":  4
+                                       "days_without_update":  5
                                    },
                       "blockers":  [
 
@@ -5542,7 +5502,7 @@
                                            "number":  61,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  12
+                                           "days_without_update":  13
                                        },
                                        {
                                            "team":  "Team 4",
@@ -5552,7 +5512,7 @@
                                            "number":  54,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  13
+                                           "days_without_update":  14
                                        },
                                        {
                                            "team":  "Team 4",
@@ -5562,7 +5522,7 @@
                                            "number":  53,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  13
+                                           "days_without_update":  14
                                        },
                                        {
                                            "team":  "Team 4",
@@ -5572,7 +5532,7 @@
                                            "number":  85,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  6
+                                           "days_without_update":  7
                                        },
                                        {
                                            "team":  "Team 4",
@@ -5582,7 +5542,7 @@
                                            "number":  76,
                                            "issue_kind":  "student",
                                            "created_by":  "VladAlexe",
-                                           "days_without_update":  10
+                                           "days_without_update":  11
                                        }
                                    ],
                       "members":  [
@@ -6138,7 +6098,7 @@
                                               "created_at":  "2026-05-13 14:00",
                                               "updated_at":  "2026-05-13 14:00",
                                               "closed_at":  null,
-                                              "days_without_update":  12
+                                              "days_without_update":  13
                                           },
                                           {
                                               "title":  "student_06 - C5.3 - Build vector store for one agent bubble",
@@ -6150,7 +6110,7 @@
                                               "created_at":  "2026-05-11 21:06",
                                               "updated_at":  "2026-05-11 22:06",
                                               "closed_at":  null,
-                                              "days_without_update":  13
+                                              "days_without_update":  14
                                           },
                                           {
                                               "title":  "student_06 - Tema 2 - Clean one agent bubble for retrieval",
@@ -6162,7 +6122,7 @@
                                               "created_at":  "2026-05-11 21:06",
                                               "updated_at":  "2026-05-11 22:06",
                                               "closed_at":  null,
-                                              "days_without_update":  13
+                                              "days_without_update":  14
                                           },
                                           {
                                               "title":  "student_06 - C8.1 - Complete Gradio notebook and Tema 3",
@@ -6174,7 +6134,7 @@
                                               "created_at":  "2026-05-19 11:41",
                                               "updated_at":  "2026-05-19 11:41",
                                               "closed_at":  null,
-                                              "days_without_update":  6
+                                              "days_without_update":  7
                                           },
                                           {
                                               "title":  "student_06 - C7.1 - Complete LangGraph multi-agent notebook",
@@ -6186,7 +6146,7 @@
                                               "created_at":  "2026-05-15 16:40",
                                               "updated_at":  "2026-05-15 16:40",
                                               "closed_at":  null,
-                                              "days_without_update":  10
+                                              "days_without_update":  11
                                           },
                                           {
                                               "title":  "student_06 - C6.3 - Build one RAG agent response",
@@ -6198,7 +6158,7 @@
                                               "created_at":  "2026-05-13 14:00",
                                               "updated_at":  "2026-05-13 14:00",
                                               "closed_at":  null,
-                                              "days_without_update":  12
+                                              "days_without_update":  13
                                           }
                                       ],
                       "closed_issues":  [
