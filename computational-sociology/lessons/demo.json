@@ -1,0 +1,65 @@
+{
+  "id": "demo",
+  "sectionNumber": 1,
+  "title": "Ce este sociologia computațională?",
+  "lede": "O întrebare simplă: cum putem înțelege comportamentul unui grup mare de oameni fără să vorbim cu fiecare în parte?",
+  "prev": null,
+  "next": null,
+  "blocks": [
+    {
+      "type": "text",
+      "content": "Sociologia computațională combină <strong>întrebările sociologiei</strong> — despre grupuri, relații, inegalități, opinii — cu <strong>instrumente digitale</strong>: date, cod și vizualizări. În loc să studiem doar câteva zeci de persoane, putem observa tipare în milioane de acțiuni."
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "title": "De ce contează",
+      "content": "Multe dintre urmele pe care le lăsăm zilnic — un like, o căutare, un mesaj — pot fi transformate în date. Sociologii computaționali întreabă: <em>ce ne spun aceste urme despre societate</em>?"
+    },
+    {
+      "type": "image",
+      "src": "assets/placeholder-figure.svg",
+      "alt": "Ilustrație conceptuală: puncte conectate care formează un tipar.",
+      "caption": "Ilustrație demonstrativă. Nu reprezintă date reale."
+    },
+    {
+      "type": "video",
+      "title": "Video introductiv",
+      "note": "Placeholder pentru un scurt video de 60 de secunde. Va fi adăugat într-o etapă viitoare."
+    },
+    {
+      "type": "quiz",
+      "id": "network-node-demo",
+      "question": "Ce reprezintă un nod într-o rețea socială?",
+      "options": [
+        "O relație",
+        "O persoană sau entitate",
+        "O medie statistică",
+        "Un fișier"
+      ],
+      "correctIndex": 1,
+      "explanation": "Într-o rețea, nodurile reprezintă entitățile (de exemplu, persoane), iar muchiile reprezintă relațiile dintre ele."
+    },
+    {
+      "type": "visualization",
+      "id": "demo-network",
+      "kind": "network",
+      "data": "data/demo-network.json",
+      "title": "O rețea socială mică",
+      "description": "Atinge un nod pentru a-i evidenția vecinii. Datele sunt sintetice."
+    },
+    {
+      "type": "code",
+      "id": "avg-age",
+      "language": "python",
+      "title": "Media vârstelor",
+      "description": "Rulează codul de mai jos pentru a calcula media vârstelor dintr-o listă.",
+      "initial": "ages = [16, 17, 18, 17]\nsum(ages) / len(ages)"
+    },
+    {
+      "type": "conclusion",
+      "title": "Ce reținem",
+      "content": "Sociologia computațională nu înlocuiește observația atentă a oamenilor — o completează. Datele sunt utile doar dacă le înțelegem contextul și limitele."
+    }
+  ]
+}

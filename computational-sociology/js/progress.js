@@ -1,0 +1,76 @@
+const STORAGE_KEY = "computationalSociologyProgress";
+
+const EMPTY = {
+  version: 1,
+  lessons: {},
+  quizzes: {},
+  code: {}
+};
+
+function safeGet() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return structuredClone(EMPTY);
+    const parsed = JSON.parse(raw);
+    return { ...structuredClone(EMPTY), ...parsed };
+  } catch {
+    return structuredClone(EMPTY);
+  }
+}
+
+function safeSet(state) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    /* storage may be disabled — silently ignore in prototype */
+  }
+}
+
+export function getProgress() {
+  return safeGet();
+}
+
+export function markLessonStarted(lessonId) {
+  const s = safeGet();
+  s.lessons[lessonId] = s.lessons[lessonId] || { started: false, completed: false };
+  s.lessons[lessonId].started = true;
+  safeSet(s);
+}
+
+export function markLessonCompleted(lessonId) {
+  const s = safeGet();
+  s.lessons[lessonId] = s.lessons[lessonId] || { started: false, completed: false };
+  s.lessons[lessonId].started = true;
+  s.lessons[lessonId].completed = true;
+  safeSet(s);
+}
+
+export function markQuizAnswered(quizId, { correct, selectedIndex }) {
+  const s = safeGet();
+  s.quizzes[quizId] = {
+    correct: !!correct,
+    selectedIndex: selectedIndex,
+    at: Date.now()
+  };
+  safeSet(s);
+}
+
+export function markCodeExecuted(codeId) {
+  const s = safeGet();
+  s.code[codeId] = { executed: true, at: Date.now() };
+  safeSet(s);
+}
+
+export function resetProgress() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch { /* ignore */ }
+}
+
+export function summarize(course) {
+  const s = safeGet();
+  const total = course?.sections?.length ?? 0;
+  const completed = Object.values(s.lessons).filter((l) => l.completed).length;
+  const started = Object.values(s.lessons).filter((l) => l.started && !l.completed).length;
+  return { total, completed, started, ratio: total ? completed / total : 0 };
+}

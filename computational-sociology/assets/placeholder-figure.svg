@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" role="img" aria-label="Puncte conectate formând un tipar">
+  <rect width="600" height="300" fill="#f4efe6"/>
+  <g stroke="#b57140" stroke-width="1" opacity="0.55" fill="none">
+    <line x1="120" y1="80"  x2="260" y2="140"/>
+    <line x1="260" y1="140" x2="180" y2="230"/>
+    <line x1="260" y1="140" x2="400" y2="90"/>
+    <line x1="400" y1="90"  x2="480" y2="200"/>
+    <line x1="180" y1="230" x2="330" y2="240"/>
+    <line x1="330" y1="240" x2="480" y2="200"/>
+    <line x1="120" y1="80"  x2="180" y2="230"/>
+  </g>
+  <g fill="#8b4a1e">
+    <circle cx="120" cy="80"  r="7"/>
+    <circle cx="260" cy="140" r="9"/>
+    <circle cx="400" cy="90"  r="7"/>
+    <circle cx="180" cy="230" r="8"/>
+    <circle cx="330" cy="240" r="7"/>
+    <circle cx="480" cy="200" r="8"/>
+  </g>
+  <text x="300" y="285" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#8a7a68" font-style="italic">
+    Ilustrație demonstrativă
+  </text>
+</svg>

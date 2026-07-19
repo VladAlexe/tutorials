@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Introducere în sociologia computațională</title>
+  <meta name="description" content="Un curs interactiv scurt despre cum studiem societatea folosind date și cod."/>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/base.css"/>
+  <link rel="stylesheet" href="css/layout.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="../index.html" class="site-header__brand">Tutorials</a>
+      <nav class="site-header__nav" aria-label="Navigare principală">
+        <a href="../ai-engineering/">AI Engineering</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="Firimituri">
+      <a href="../index.html">Tutorials</a>
+      <span class="breadcrumb__sep">/</span>
+      <span aria-current="page">Sociologie computațională</span>
+    </nav>
+
+    <section class="hero">
+      <p class="hero__eyebrow">Curs demonstrativ</p>
+      <h1 class="hero__title" id="course-title">Introducere în sociologia computațională</h1>
+      <p class="hero__subtitle" id="course-subtitle">Cum studiem societatea folosind date și cod</p>
+
+      <div class="hero__meta" id="course-meta">
+        <span><strong>Public:</strong> liceeni</span>
+        <span><strong>Durată:</strong> 60 de minute</span>
+      </div>
+
+      <p id="course-description">
+        Un traseu scurt și interactiv despre modul în care sociologii folosesc datele digitale,
+        vizualizările, rețelele și codul pentru a înțelege comportamentul social.
+      </p>
+
+      <div class="btn-row" style="margin-top: var(--sp-5);">
+        <a class="btn btn--primary" href="lesson.html?id=demo" id="start-btn">Începe cursul</a>
+        <a class="btn btn--ghost" href="#curriculum">Vezi lecțiile</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="progress-card" id="progress-card">
+        <div class="progress-card__label">Progresul tău</div>
+        <div id="progress-summary">Nu ai început încă.</div>
+        <div class="progress-bar" aria-hidden="true">
+          <div class="progress-bar__fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-card__meta">
+          <span id="progress-count">0 / 6 secțiuni</span>
+          <button type="button" class="progress-card__reset" id="progress-reset">
+            Resetează progresul
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="what-title">
+      <h2 id="what-title">Ce vei face</h2>
+      <ul id="what-list" class="stack">
+        <li>Se încarcă…</li>
+      </ul>
+    </section>
+
+    <section class="section" id="curriculum" aria-labelledby="curriculum-title">
+      <h2 id="curriculum-title">Lecțiile cursului</h2>
+      <ol class="section-list" id="section-list">
+        <li class="section-list__item"><span class="loading">Se încarcă lecțiile…</span></li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Prototip educațional. Date sintetice. © 2026 Vlad Alexe.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

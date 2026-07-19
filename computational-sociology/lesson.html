@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Lecție — Sociologie computațională</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/base.css"/>
+  <link rel="stylesheet" href="css/layout.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="../index.html" class="site-header__brand">Tutorials</a>
+      <nav class="site-header__nav" aria-label="Navigare principală">
+        <a href="index.html">Cursul</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page" id="lesson-root">
+    <nav class="breadcrumb" aria-label="Firimituri">
+      <a href="../index.html">Tutorials</a>
+      <span class="breadcrumb__sep">/</span>
+      <a href="index.html">Sociologie computațională</a>
+      <span class="breadcrumb__sep">/</span>
+      <span aria-current="page" id="crumb-lesson">Lecție</span>
+    </nav>
+
+    <span class="demo-note">Lecție demonstrativă</span>
+    <h1 class="lesson-title" id="lesson-title">Se încarcă…</h1>
+    <p class="lesson-lede" id="lesson-lede"></p>
+
+    <div id="lesson-blocks" class="stack-lg"></div>
+
+    <nav class="lesson-nav" aria-label="Navigare lecție">
+      <a class="btn btn--ghost" href="index.html" id="prev-link">
+        <span class="lesson-nav__label">Anterior</span>
+        Cursul
+      </a>
+      <a class="btn" href="index.html" id="next-link">
+        <span class="lesson-nav__label">Următor</span>
+        Cursul
+      </a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <p>Prototip educațional. Date sintetice.</p>
+  </footer>
+
+  <script type="module" src="js/lesson.js"></script>
+</body>
+</html>
