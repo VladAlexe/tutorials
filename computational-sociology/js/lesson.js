@@ -127,8 +127,21 @@ async function init() {
     markLessonStarted(id);
 
     document.title = `${lesson.title} — Sociologie computațională`;
-    document.getElementById("lesson-title").textContent = lesson.title;
     document.getElementById("crumb-lesson").textContent = lesson.title;
+
+    if (lesson.format === "slides") {
+      const pageRoot = document.getElementById("lesson-root");
+      const crumb = pageRoot.querySelector(".breadcrumb");
+      pageRoot.innerHTML = "";
+      if (crumb) pageRoot.appendChild(crumb);
+      const slidesContainer = document.createElement("div");
+      pageRoot.appendChild(slidesContainer);
+      const { renderSlides } = await import("./slides.js");
+      renderSlides(slidesContainer, lesson);
+      return;
+    }
+
+    document.getElementById("lesson-title").textContent = lesson.title;
     if (lesson.lede) {
       document.getElementById("lesson-lede").textContent = lesson.lede;
     } else {

@@ -1,0 +1,158 @@
+.slides-root {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem);
+}
+
+.slides-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-3) 0 var(--sp-4);
+}
+
+.slides-progress-bar {
+  flex: 1;
+  height: 3px;
+  background: var(--color-line-soft);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.slides-progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+  width: 0%;
+  transition: width 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slides-progress-fill { transition: none; }
+}
+
+.slides-count {
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 3.5em;
+  text-align: right;
+}
+
+.slides-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5rem;
+}
+
+.slide {
+  outline: none;
+  max-width: 34rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--sp-5) 0;
+}
+
+.slide[hidden] { display: none; }
+
+.slide__title {
+  font-size: var(--fs-2xl);
+  margin: 0 0 var(--sp-4);
+  color: var(--color-ink);
+}
+
+.slide__title--sm {
+  font-size: var(--fs-xl);
+}
+
+.slide__body p {
+  font-size: var(--fs-lg);
+  line-height: var(--lh-loose);
+  color: var(--color-ink);
+  margin: 0 0 var(--sp-4);
+}
+
+.slide .callout p {
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+}
+
+.slide__caption {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  margin: var(--sp-3) 0 0;
+  font-style: italic;
+}
+
+/* Quiz inside slide gets a bit more breathing room */
+.slide .quiz { margin-top: var(--sp-2); }
+
+/* Sticky footer nav */
+.slides-nav {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  background: linear-gradient(to top, var(--color-bg) 65%, rgba(250, 247, 242, 0));
+  margin-top: auto;
+}
+
+.slides-nav .btn {
+  min-height: 48px;
+}
+
+.slides-back[hidden] { visibility: hidden; display: inline-block; }
+
+.slides-next {
+  margin-left: auto;
+}
+
+.slides-next[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Visualization legend */
+.viz__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-3);
+  padding: var(--sp-3) var(--sp-4) 0;
+  font-size: var(--fs-xs);
+  color: var(--color-ink-soft);
+}
+
+.viz__legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.viz__legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--color-line);
+}
+
+/* Slightly taller viz on desktop, standard on phone */
+.slide .viz__stage { height: 340px; }
+
+@media (min-width: 768px) {
+  .slide { padding: var(--sp-6) 0; }
+  .slide__title { font-size: var(--fs-3xl); }
+  .slide__body p { font-size: var(--fs-xl); }
+  .slide .viz__stage { height: 460px; }
+}
+
+@media (min-width: 1024px) {
+  .slide { max-width: 40rem; }
+}
+
+/* Hide the demo-note when slides take over (defensive; slides mode wipes it anyway) */
+.slides-root .demo-note { display: none; }

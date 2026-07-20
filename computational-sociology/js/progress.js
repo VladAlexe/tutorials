@@ -4,7 +4,8 @@ const EMPTY = {
   version: 1,
   lessons: {},
   quizzes: {},
-  code: {}
+  code: {},
+  slides: {}
 };
 
 function safeGet() {
@@ -59,6 +60,16 @@ export function markCodeExecuted(codeId) {
   const s = safeGet();
   s.code[codeId] = { executed: true, at: Date.now() };
   safeSet(s);
+}
+
+export function markSlidePosition(lessonId, index) {
+  const s = safeGet();
+  s.slides[lessonId] = { index: Math.max(0, index | 0), at: Date.now() };
+  safeSet(s);
+}
+
+export function getSlidePosition(lessonId) {
+  return safeGet().slides?.[lessonId]?.index ?? 0;
 }
 
 export function resetProgress() {

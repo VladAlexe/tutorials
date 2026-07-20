@@ -1,0 +1,72 @@
+{
+  "id": "highschool",
+  "sectionNumber": 1,
+  "format": "slides",
+  "title": "Rețeaua invizibilă a unei școli",
+  "lede": "",
+  "prev": null,
+  "next": null,
+  "blocks": [
+    {
+      "type": "text",
+      "title": "Rețeaua invizibilă a unei școli",
+      "content": "Cum înțelegem ce se întâmplă într-un grup mare de oameni fără să vorbim cu fiecare? Sociologia computațională pune întrebările vechi ale sociologiei, despre grupuri, relații și influență, dar le răspunde cu date, cod și vizualizări. În loc de câteva zeci de persoane, observăm tipare în mii de interacțiuni."
+    },
+    {
+      "type": "callout",
+      "content": "Astăzi devenim detectivi. Avem urmele reale ale unei școli, dar nu și povestea. O reconstruim din date."
+    },
+    {
+      "type": "text",
+      "title": "Ce este un nod?",
+      "content": "Avem nevoie de două idei. Prima: nodul. Un nod este o entitate, de obicei o persoană. În rețeaua noastră, fiecare elev este un nod."
+    },
+    {
+      "type": "visualization",
+      "id": "concept-net",
+      "kind": "network",
+      "data": "data/concept-network.json",
+      "description": "Trei noduri. Încă nu știm nimic despre legăturile dintre ei."
+    },
+    {
+      "type": "text",
+      "title": "Ce este o muchie?",
+      "content": "A doua idee: muchia. O muchie este o relație între două noduri. La noi, o muchie înseamnă că doi elevi s-au aflat față în față; cât de groasă este arată cât timp au petrecut împreună. Atinge un nod ca să-i vezi vecinii."
+    },
+    {
+      "type": "quiz",
+      "id": "quiz-nod",
+      "question": "Într-o rețea socială, ce reprezintă un nod?",
+      "options": [
+        "O relație",
+        "O persoană sau o entitate",
+        "O medie statistică",
+        "Un fișier"
+      ],
+      "correctIndex": 1,
+      "explanation": "Nodurile sunt entitățile, de exemplu persoanele. Muchiile sunt relațiile dintre ele."
+    },
+    {
+      "type": "text",
+      "title": "De unde vin datele",
+      "content": "Datele sunt reale. Provin dintr-un liceu francez unde, o săptămână, elevii au purtat senzori care înregistrau la fiecare douăzeci de secunde cine se afla față în față cu cine. Sute de elevi, nouă clase, sute de mii de întâlniri. Sunt anonimizate: fiecare elev e doar un număr. Azi lucrăm cu o felie: trei clase dintr-o singură zi."
+    },
+    {
+      "type": "callout",
+      "content": "Sursă: SocioPatterns, liceul Thiers, Marsilia, decembrie 2013. Citare la folosirea în cercetare sau vizualizări: R. Mastrandrea, J. Fournet, A. Barrat, PLoS ONE 10(9), e0136497 (2015). <a href=\"https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0136497\" target=\"_blank\" rel=\"noopener\">Vezi articolul</a>."
+    },
+    {
+      "type": "visualization",
+      "id": "highschool-net",
+      "kind": "network",
+      "data": "data/highschool-network.json",
+      "title": "Rețeaua reală: o zi, trei clase",
+      "description": "Atinge un nod ca să-i vezi vecinii. Culoarea arată clasa. Se grupează elevii pe clase sau se amestecă?"
+    },
+    {
+      "type": "conclusion",
+      "title": "Ce urmează",
+      "content": "Deja se vede: elevii nu se amestecă la întâmplare, se grupează pe clase, iar câțiva fac legătura între grupuri. Data viitoare pornim un zvon prin rețea și încercăm să aflăm, doar din date, cine l-a lansat."
+    }
+  ]
+}

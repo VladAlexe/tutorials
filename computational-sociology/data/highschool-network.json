@@ -1,0 +1,703 @@
+{
+"nodes": [
+{
+"id": 3,
+"group": "2BIO2"
+},
+{
+"id": 20,
+"group": "MP*1"
+},
+{
+"id": 27,
+"group": "2BIO2"
+},
+{
+"id": 28,
+"group": "2BIO2"
+},
+{
+"id": 46,
+"group": "2BIO2"
+},
+{
+"id": 61,
+"group": "2BIO2"
+},
+{
+"id": 65,
+"group": "2BIO1"
+},
+{
+"id": 72,
+"group": "2BIO1"
+},
+{
+"id": 111,
+"group": "2BIO1"
+},
+{
+"id": 124,
+"group": "2BIO1"
+},
+{
+"id": 145,
+"group": "2BIO1"
+},
+{
+"id": 147,
+"group": "2BIO2"
+},
+{
+"id": 160,
+"group": "2BIO2"
+},
+{
+"id": 165,
+"group": "2BIO2"
+},
+{
+"id": 171,
+"group": "2BIO2"
+},
+{
+"id": 177,
+"group": "2BIO1"
+},
+{
+"id": 184,
+"group": "2BIO2"
+},
+{
+"id": 226,
+"group": "2BIO2"
+},
+{
+"id": 236,
+"group": "MP*1"
+},
+{
+"id": 268,
+"group": "2BIO2"
+},
+{
+"id": 279,
+"group": "MP*1"
+},
+{
+"id": 280,
+"group": "MP*1"
+},
+{
+"id": 290,
+"group": "MP*1"
+},
+{
+"id": 312,
+"group": "2BIO2"
+},
+{
+"id": 327,
+"group": "2BIO2"
+},
+{
+"id": 339,
+"group": "2BIO2"
+},
+{
+"id": 353,
+"group": "2BIO2"
+},
+{
+"id": 366,
+"group": "MP*1"
+},
+{
+"id": 372,
+"group": "2BIO2"
+},
+{
+"id": 376,
+"group": "MP*1"
+},
+{
+"id": 391,
+"group": "MP*1"
+},
+{
+"id": 400,
+"group": "2BIO1"
+},
+{
+"id": 407,
+"group": "2BIO2"
+},
+{
+"id": 428,
+"group": "2BIO1"
+},
+{
+"id": 429,
+"group": "2BIO2"
+},
+{
+"id": 438,
+"group": "MP*1"
+},
+{
+"id": 441,
+"group": "2BIO2"
+},
+{
+"id": 443,
+"group": "2BIO1"
+},
+{
+"id": 464,
+"group": "2BIO2"
+},
+{
+"id": 465,
+"group": "2BIO1"
+},
+{
+"id": 466,
+"group": "MP*1"
+},
+{
+"id": 471,
+"group": "2BIO1"
+},
+{
+"id": 475,
+"group": "2BIO1"
+},
+{
+"id": 477,
+"group": "2BIO2"
+},
+{
+"id": 484,
+"group": "MP*1"
+},
+{
+"id": 487,
+"group": "2BIO1"
+},
+{
+"id": 497,
+"group": "MP*1"
+},
+{
+"id": 498,
+"group": "2BIO1"
+},
+{
+"id": 504,
+"group": "2BIO2"
+},
+{
+"id": 513,
+"group": "MP*1"
+},
+{
+"id": 531,
+"group": "2BIO1"
+},
+{
+"id": 544,
+"group": "2BIO2"
+},
+{
+"id": 612,
+"group": "2BIO2"
+},
+{
+"id": 637,
+"group": "2BIO1"
+},
+{
+"id": 638,
+"group": "MP*1"
+},
+{
+"id": 655,
+"group": "MP*1"
+},
+{
+"id": 674,
+"group": "2BIO1"
+},
+{
+"id": 720,
+"group": "2BIO2"
+},
+{
+"id": 725,
+"group": "2BIO1"
+},
+{
+"id": 777,
+"group": "MP*1"
+},
+{
+"id": 809,
+"group": "2BIO1"
+},
+{
+"id": 841,
+"group": "MP*1"
+},
+{
+"id": 854,
+"group": "2BIO1"
+},
+{
+"id": 884,
+"group": "2BIO2"
+},
+{
+"id": 886,
+"group": "2BIO2"
+},
+{
+"id": 908,
+"group": "MP*1"
+},
+{
+"id": 927,
+"group": "2BIO1"
+},
+{
+"id": 945,
+"group": "2BIO1"
+},
+{
+"id": 954,
+"group": "2BIO1"
+},
+{
+"id": 958,
+"group": "MP*1"
+},
+{
+"id": 970,
+"group": "2BIO1"
+},
+{
+"id": 974,
+"group": "MP*1"
+},
+{
+"id": 984,
+"group": "2BIO1"
+},
+{
+"id": 991,
+"group": "2BIO1"
+}
+],
+"edges": [
+{
+"source": 280,
+"target": 484,
+"weight": 23
+},
+{
+"source": 443,
+"target": 637,
+"weight": 58
+},
+{
+"source": 376,
+"target": 638,
+"weight": 156
+},
+{
+"source": 487,
+"target": 984,
+"weight": 75
+},
+{
+"source": 226,
+"target": 353,
+"weight": 191
+},
+{
+"source": 279,
+"target": 908,
+"weight": 240
+},
+{
+"source": 3,
+"target": 884,
+"weight": 123
+},
+{
+"source": 353,
+"target": 884,
+"weight": 28
+},
+{
+"source": 339,
+"target": 884,
+"weight": 353
+},
+{
+"source": 72,
+"target": 954,
+"weight": 44
+},
+{
+"source": 160,
+"target": 226,
+"weight": 128
+},
+{
+"source": 111,
+"target": 124,
+"weight": 35
+},
+{
+"source": 513,
+"target": 638,
+"weight": 78
+},
+{
+"source": 236,
+"target": 908,
+"weight": 20
+},
+{
+"source": 376,
+"target": 513,
+"weight": 44
+},
+{
+"source": 466,
+"target": 841,
+"weight": 30
+},
+{
+"source": 72,
+"target": 674,
+"weight": 97
+},
+{
+"source": 353,
+"target": 504,
+"weight": 177
+},
+{
+"source": 312,
+"target": 612,
+"weight": 340
+},
+{
+"source": 279,
+"target": 366,
+"weight": 55
+},
+{
+"source": 124,
+"target": 487,
+"weight": 29
+},
+{
+"source": 236,
+"target": 391,
+"weight": 28
+},
+{
+"source": 61,
+"target": 612,
+"weight": 28
+},
+{
+"source": 20,
+"target": 513,
+"weight": 23
+},
+{
+"source": 28,
+"target": 327,
+"weight": 175
+},
+{
+"source": 28,
+"target": 226,
+"weight": 89
+},
+{
+"source": 61,
+"target": 160,
+"weight": 39
+},
+{
+"source": 312,
+"target": 886,
+"weight": 88
+},
+{
+"source": 372,
+"target": 544,
+"weight": 22
+},
+{
+"source": 327,
+"target": 372,
+"weight": 33
+},
+{
+"source": 372,
+"target": 429,
+"weight": 21
+},
+{
+"source": 147,
+"target": 407,
+"weight": 20
+},
+{
+"source": 945,
+"target": 954,
+"weight": 59
+},
+{
+"source": 147,
+"target": 353,
+"weight": 55
+},
+{
+"source": 27,
+"target": 720,
+"weight": 22
+},
+{
+"source": 3,
+"target": 353,
+"weight": 50
+},
+{
+"source": 429,
+"target": 441,
+"weight": 133
+},
+{
+"source": 46,
+"target": 268,
+"weight": 28
+},
+{
+"source": 465,
+"target": 854,
+"weight": 39
+},
+{
+"source": 160,
+"target": 464,
+"weight": 33
+},
+{
+"source": 61,
+"target": 464,
+"weight": 235
+},
+{
+"source": 27,
+"target": 28,
+"weight": 88
+},
+{
+"source": 471,
+"target": 970,
+"weight": 23
+},
+{
+"source": 3,
+"target": 147,
+"weight": 196
+},
+{
+"source": 27,
+"target": 477,
+"weight": 94
+},
+{
+"source": 407,
+"target": 720,
+"weight": 42
+},
+{
+"source": 177,
+"target": 809,
+"weight": 20
+},
+{
+"source": 487,
+"target": 725,
+"weight": 52
+},
+{
+"source": 65,
+"target": 991,
+"weight": 173
+},
+{
+"source": 20,
+"target": 438,
+"weight": 33
+},
+{
+"source": 638,
+"target": 655,
+"weight": 88
+},
+{
+"source": 177,
+"target": 984,
+"weight": 69
+},
+{
+"source": 177,
+"target": 487,
+"weight": 37
+},
+{
+"source": 376,
+"target": 655,
+"weight": 50
+},
+{
+"source": 171,
+"target": 407,
+"weight": 20
+},
+{
+"source": 513,
+"target": 655,
+"weight": 550
+},
+{
+"source": 484,
+"target": 497,
+"weight": 81
+},
+{
+"source": 111,
+"target": 725,
+"weight": 26
+},
+{
+"source": 111,
+"target": 487,
+"weight": 61
+},
+{
+"source": 612,
+"target": 886,
+"weight": 133
+},
+{
+"source": 111,
+"target": 927,
+"weight": 118
+},
+{
+"source": 487,
+"target": 927,
+"weight": 39
+},
+{
+"source": 145,
+"target": 428,
+"weight": 24
+},
+{
+"source": 28,
+"target": 400,
+"weight": 25
+},
+{
+"source": 400,
+"target": 945,
+"weight": 28
+},
+{
+"source": 638,
+"target": 958,
+"weight": 32
+},
+{
+"source": 65,
+"target": 809,
+"weight": 155
+},
+{
+"source": 290,
+"target": 777,
+"weight": 53
+},
+{
+"source": 184,
+"target": 544,
+"weight": 246
+},
+{
+"source": 279,
+"target": 777,
+"weight": 27
+},
+{
+"source": 160,
+"target": 184,
+"weight": 74
+},
+{
+"source": 280,
+"target": 497,
+"weight": 27
+},
+{
+"source": 366,
+"target": 974,
+"weight": 215
+},
+{
+"source": 177,
+"target": 531,
+"weight": 96
+},
+{
+"source": 475,
+"target": 970,
+"weight": 23
+},
+{
+"source": 28,
+"target": 477,
+"weight": 44
+},
+{
+"source": 165,
+"target": 498,
+"weight": 20
+},
+{
+"source": 61,
+"target": 504,
+"weight": 20
+}
+],
+"meta": {
+"classes": [
+"2BIO1",
+"2BIO2",
+"MP*1"
+],
+"day": 1,
+"min_weight": 20,
+"source": "SocioPatterns Thiers13",
+"cite": "R. Mastrandrea, J. Fournet, A. Barrat, PLoS ONE 10(9): e0136497 (2015)"
+}
+}

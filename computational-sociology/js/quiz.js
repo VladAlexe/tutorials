@@ -1,8 +1,9 @@
 import { markQuizAnswered, getProgress } from "./progress.js";
 
-export function renderQuiz(container, block) {
+export function renderQuiz(container, block, options = {}) {
   const state = { selected: null, verified: false };
   const priorAnswer = getProgress().quizzes?.[block.id];
+  const onAnswered = typeof options.onAnswered === "function" ? options.onAnswered : null;
 
   container.classList.add("quiz");
   container.setAttribute("role", "group");
@@ -124,6 +125,7 @@ export function renderQuiz(container, block) {
     verifyBtn.hidden = true;
     retryBtn.hidden = false;
     markQuizAnswered(block.id, { correct, selectedIndex: state.selected });
+    if (onAnswered) onAnswered({ correct, selectedIndex: state.selected });
   }
 
   function reset() {
