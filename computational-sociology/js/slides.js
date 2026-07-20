@@ -49,8 +49,10 @@ function addIntro(el, text) {
   el.appendChild(p);
 }
 
-function fillSlide(slideState, onAnswered) {
+function fillSlide(slideState, callbacks) {
   if (slideState.fillPromise) return slideState.fillPromise;
+  const onAnswered = callbacks.onAnswered;
+  const onAdvance = callbacks.onAdvance;
   slideState.fillPromise = (async () => {
     const b = slideState.block;
     const el = slideState.el;
@@ -124,6 +126,17 @@ function fillSlide(slideState, onAnswered) {
         const vizWrap = document.createElement("div");
         el.appendChild(vizWrap);
         slideState.viz = await renderInteractive(vizWrap, b);
+        break;
+      }
+      case "diffusion": {
+        if (b.title) addTitle(el, b.title, true);
+        if (b.intro) addIntro(el, b.intro);
+        const vizWrap = document.createElement("div");
+        el.appendChild(vizWrap);
+        const { renderDiffusion } = await import(`./diffusion.js?v=${V}`);
+        slideState.viz = await renderDiffusion(vizWrap, b, {
+          onAdvance: onAdvance
+        });
         break;
       }
       case "conclusion": {
@@ -283,7 +296,7 @@ export function renderSlides(root, lesson) {
     window.scrollTo({ top: 0, behavior: "auto" });
     slideState[idx].el.focus({ preventScroll: true });
 
-    await fillSlide(slideState[idx], onQuizAnswered);
+    await fillSlide(slideState[idx], { onAnswered: onQuizAnswered, onAdvance: goNext });
 
     if (current !== idx) return;
     const viz = slideState[idx].viz;

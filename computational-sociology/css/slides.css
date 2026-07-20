@@ -160,6 +160,77 @@
   max-height: 480px;
 }
 
+/* Diffusion controls (part 2) */
+.diffusion-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-top: var(--border-thin-soft);
+  background: var(--color-surface);
+}
+
+.diff-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  align-items: center;
+}
+
+.diff-slider {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  flex: 1;
+  min-width: 200px;
+}
+
+.diff-slider input[type="range"] {
+  flex: 1;
+  min-width: 100px;
+  accent-color: var(--color-accent);
+}
+
+.diff-slider output {
+  min-width: 2ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+
+.diff-count {
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+.diff-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.diff-buttons .btn {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-xs);
+}
+
+.diff-curve {
+  display: block;
+  width: 100%;
+  height: 50px;
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-sm);
+}
+
+.diff-hint {
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+}
+
 /* Legend below the stage */
 .viz__legend {
   display: flex;

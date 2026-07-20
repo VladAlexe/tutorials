@@ -73,9 +73,41 @@
       "description": "Culoarea arată clasa. Atinge un nod ca să-i vezi vecinii. Se grupează elevii pe clase sau se amestecă?"
     },
     {
+      "type": "diffusion",
+      "id": "diff-explore",
+      "mode": "explore",
+      "data": "data/highschool-network.json",
+      "title": "Pornim un zvon",
+      "intro": "Cineva lansează un zvon. Alege elevul de la care pornește, apoi pornește-l și privește cum se răspândește prin întâlniri."
+    },
+    {
+      "type": "diffusion",
+      "id": "diff-final",
+      "mode": "final-only",
+      "data": "data/highschool-network.json",
+      "title": "Cine a pornit zvonul?",
+      "intro": "Aceasta e situația la final: cine știe și cine nu. Uitându-te doar la această imagine, poți spune cine a lansat zvonul?"
+    },
+    {
+      "type": "diffusion",
+      "id": "diff-reveal",
+      "mode": "replay-order",
+      "data": "data/highschool-network.json",
+      "title": "Timpul dezvăluie sursa",
+      "intro": "Reluăm răspândirea în ordine. Primul care se aprinde este sursa. Fotografia finală ascundea sursa; doar ordinea, adică timpul, o dezvăluie."
+    },
+    {
+      "type": "diffusion",
+      "id": "diff-influence",
+      "mode": "investigation",
+      "data": "data/highschool-network.json",
+      "title": "Cine e cel mai influent?",
+      "intro": "Cine e cel mai important din rețea? Depinde ce măsurăm."
+    },
+    {
       "type": "conclusion",
-      "title": "Ce urmează",
-      "content": "Se vede deja: elevii se grupează pe clase, iar câțiva fac legătura între grupuri. Data viitoare pornim un zvon prin rețea și încercăm să aflăm, doar din date, cine l-a lansat."
+      "title": "Ce am învățat",
+      "content": "Am pornit de la două idei simple, nod și muchie, și am ajuns la o rețea reală în care un zvon se răspândește prin întâlniri. Am văzut că sursa nu se vede dintr-o fotografie finală, ci din ordinea în timp, și că nu există un singur cel mai influent: totul depinde de ce alegem să măsurăm. Aceasta este sociologia computațională: punem întrebări vechi despre oameni, dar le răspundem construind, măsurând și rulând."
     }
   ]
 }

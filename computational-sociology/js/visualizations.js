@@ -1,6 +1,6 @@
 const CYTOSCAPE_URL = "https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js";
 
-const GROUP_PALETTE = [
+export const GROUP_PALETTE = [
   "#8b4a1e",
   "#3d7a52",
   "#2f6fa8",
@@ -11,7 +11,7 @@ const GROUP_PALETTE = [
 
 let cyLoader = null;
 
-function loadCytoscape() {
+export function loadCytoscape() {
   if (window.cytoscape) return Promise.resolve(window.cytoscape);
   if (cyLoader) return cyLoader;
   cyLoader = new Promise((resolve, reject) => {
