@@ -1,4 +1,5 @@
-import { getProgress, resetProgress, summarize } from "./progress.js";
+const V = new URL(import.meta.url).searchParams.get("v") || "1";
+const { getProgress, resetProgress, summarize } = await import(`./progress.js?v=${V}`);
 
 async function loadCourse() {
   const res = await fetch("data/course.json");

@@ -55,6 +55,18 @@
 
 .slide[hidden] { display: none; }
 
+.slides-resume {
+  outline: none;
+  max-width: 34rem;
+  width: 100%;
+  margin: var(--sp-4) auto 0;
+  padding: var(--sp-4) 0;
+}
+
+.slides-resume .btn-row {
+  margin-top: var(--sp-4);
+}
+
 /* Mobile-first sizes: compact and readable on 360-430px */
 .slide__title {
   font-size: 1.35rem;           /* ~20-22px */

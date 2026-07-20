@@ -1,12 +1,20 @@
-import { renderQuiz } from "./quiz.js";
-import { renderNetwork, renderInteractive } from "./visualizations.js";
-import {
-  markSlidePosition,
-  getSlidePosition,
-  getProgress,
-  markLessonStarted,
-  markLessonCompleted
-} from "./progress.js";
+const V = new URL(import.meta.url).searchParams.get("v") || "1";
+const [
+  { renderQuiz },
+  { renderNetwork, renderInteractive },
+  {
+    markSlidePosition,
+    getSlidePosition,
+    getProgress,
+    markLessonStarted,
+    markLessonCompleted,
+    resetLessonProgress
+  }
+] = await Promise.all([
+  import(`./quiz.js?v=${V}`),
+  import(`./visualizations.js?v=${V}`),
+  import(`./progress.js?v=${V}`)
+]);
 
 function makeSlideElement() {
   const el = document.createElement("section");
@@ -193,11 +201,62 @@ export function renderSlides(root, lesson) {
 
   let current = 0;
   const saved = getSlidePosition(lesson.id);
-  if (Number.isInteger(saved) && saved >= 0 && saved < total) current = saved;
+  const hasSaved = Number.isInteger(saved) && saved > 0 && saved < total;
 
   function onQuizAnswered(s) {
     s.canAdvance = true;
     updateNav();
+  }
+
+  function collectQuizIds() {
+    return blocks.filter((b) => b.type === "quiz" && b.id).map((b) => b.id);
+  }
+
+  function doRestart() {
+    resetLessonProgress(lesson.id, collectQuizIds());
+    slideState.forEach((s) => {
+      if (s.viz && typeof s.viz.destroy === "function") {
+        try { s.viz.destroy(); } catch { /* ignore */ }
+      }
+      s.fillPromise = null;
+      s.viz = null;
+      s.el.innerHTML = "";
+      if (s.block.type === "quiz") s.canAdvance = false;
+    });
+  }
+
+  function showResumeBanner(atIndex) {
+    const banner = document.createElement("section");
+    banner.className = "slide slides-resume";
+    banner.tabIndex = -1;
+    banner.setAttribute("aria-live", "polite");
+    banner.innerHTML =
+      `<h1 class="slide__title">Reia lecția?</h1>` +
+      `<p class="slide__intro">Ai lăsat lecția la slide-ul ${atIndex + 1} din ${total}. ` +
+      `Vrei să continui de acolo sau să începi din nou?</p>` +
+      `<div class="btn-row">` +
+      `<button type="button" class="btn btn--primary" data-resume="continue">Continuă</button>` +
+      `<button type="button" class="btn btn--ghost" data-resume="restart">Începe din nou</button>` +
+      `</div>`;
+    stage.prepend(banner);
+    slideState.forEach((s) => { s.el.hidden = true; });
+    backBtn.hidden = true;
+    nextBtn.hidden = true;
+    fill.style.width = "0%";
+    count.textContent = "";
+
+    banner.querySelector('[data-resume="continue"]').addEventListener("click", () => {
+      banner.remove();
+      nextBtn.hidden = false;
+      show(atIndex);
+    });
+    banner.querySelector('[data-resume="restart"]').addEventListener("click", () => {
+      banner.remove();
+      nextBtn.hidden = false;
+      doRestart();
+      show(0);
+    });
+    banner.focus({ preventScroll: true });
   }
 
   function updateNav() {
@@ -265,5 +324,9 @@ export function renderSlides(root, lesson) {
     }
   });
 
-  show(current);
+  if (hasSaved) {
+    showResumeBanner(saved);
+  } else {
+    show(0);
+  }
 }

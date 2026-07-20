@@ -1,4 +1,5 @@
-import { markCodeExecuted } from "./progress.js";
+const V = new URL(import.meta.url).searchParams.get("v") || "1";
+const { markCodeExecuted } = await import(`./progress.js?v=${V}`);
 
 let worker = null;
 let workerReady = false;

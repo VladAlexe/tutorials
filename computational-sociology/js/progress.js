@@ -78,6 +78,18 @@ export function resetProgress() {
   } catch { /* ignore */ }
 }
 
+export function resetLessonProgress(lessonId, quizIds = []) {
+  const s = safeGet();
+  delete s.slides[lessonId];
+  if (s.lessons[lessonId]) {
+    s.lessons[lessonId] = { started: false, completed: false };
+  }
+  for (const qid of quizIds) {
+    delete s.quizzes[qid];
+  }
+  safeSet(s);
+}
+
 export function summarize(course) {
   const s = safeGet();
   const total = course?.sections?.length ?? 0;

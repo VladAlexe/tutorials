@@ -1,4 +1,5 @@
-import { markQuizAnswered, getProgress } from "./progress.js";
+const V = new URL(import.meta.url).searchParams.get("v") || "1";
+const { markQuizAnswered, getProgress } = await import(`./progress.js?v=${V}`);
 
 export function renderQuiz(container, block, options = {}) {
   const state = { selected: null, verified: false };

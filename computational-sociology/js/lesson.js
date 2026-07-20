@@ -1,7 +1,15 @@
-import { markLessonStarted, markLessonCompleted } from "./progress.js";
-import { renderQuiz } from "./quiz.js";
-import { renderCodeRunner } from "./code-runner.js";
-import { renderNetwork } from "./visualizations.js";
+const V = new URL(import.meta.url).searchParams.get("v") || "1";
+const [
+  { markLessonStarted, markLessonCompleted },
+  { renderQuiz },
+  { renderCodeRunner },
+  { renderNetwork }
+] = await Promise.all([
+  import(`./progress.js?v=${V}`),
+  import(`./quiz.js?v=${V}`),
+  import(`./code-runner.js?v=${V}`),
+  import(`./visualizations.js?v=${V}`)
+]);
 
 function getLessonId() {
   const params = new URLSearchParams(location.search);
@@ -136,7 +144,7 @@ async function init() {
       if (crumb) pageRoot.appendChild(crumb);
       const slidesContainer = document.createElement("div");
       pageRoot.appendChild(slidesContainer);
-      const { renderSlides } = await import("./slides.js");
+      const { renderSlides } = await import(`./slides.js?v=${V}`);
       renderSlides(slidesContainer, lesson);
       return;
     }
