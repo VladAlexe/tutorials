@@ -38,11 +38,11 @@
   text-align: right;
 }
 
-/* Stage keeps nav pinned to bottom but does NOT vertically center content */
+/* Stage fills remaining space; each slide handles its own centering */
 .slides-stage {
   flex: 1;
   display: block;
-  padding-bottom: var(--sp-5);
+  padding-bottom: var(--sp-4);
 }
 
 .slide {
@@ -51,6 +51,18 @@
   width: 100%;
   margin: 0 auto;
   padding: var(--sp-3) 0 var(--sp-4);
+  min-height: calc(100dvh - 12rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Slides that carry a visualization, quiz, or media fill from the top */
+.slide:has(.viz),
+.slide:has(.quiz),
+.slide:has(.figure),
+.slide:has(.video-placeholder) {
+  justify-content: flex-start;
 }
 
 .slide[hidden] { display: none; }
@@ -59,8 +71,12 @@
   outline: none;
   max-width: 34rem;
   width: 100%;
-  margin: var(--sp-4) auto 0;
+  margin: 0 auto;
   padding: var(--sp-4) 0;
+  min-height: calc(100dvh - 12rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .slides-resume .btn-row {
