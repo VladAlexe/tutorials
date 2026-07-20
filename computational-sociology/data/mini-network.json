@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {"id":1,"group":"exemplu"},{"id":2,"group":"exemplu"},{"id":3,"group":"exemplu"},
+    {"id":4,"group":"exemplu"},{"id":5,"group":"exemplu"},{"id":6,"group":"exemplu"}
+  ],
+  "edges": [
+    {"source":1,"target":2,"weight":3},{"source":2,"target":3,"weight":2},
+    {"source":1,"target":3,"weight":1},{"source":3,"target":4,"weight":1},
+    {"source":4,"target":5,"weight":3},{"source":5,"target":6,"weight":2},
+    {"source":4,"target":6,"weight":1}
+  ],
+  "meta": {"source":"exemplu didactic"}
+}

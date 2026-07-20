@@ -1,5 +1,5 @@
 import { renderQuiz } from "./quiz.js";
-import { renderNetwork } from "./visualizations.js";
+import { renderNetwork, renderInteractive } from "./visualizations.js";
 import {
   markSlidePosition,
   getSlidePosition,
@@ -8,128 +8,129 @@ import {
   markLessonCompleted
 } from "./progress.js";
 
-function buildSlide(block, slideState) {
+function makeSlideElement() {
   const el = document.createElement("section");
   el.className = "slide";
   el.hidden = true;
   el.tabIndex = -1;
   el.setAttribute("aria-hidden", "true");
   el.setAttribute("aria-roledescription", "diapozitiv");
-  slideState.el = el;
   return el;
 }
 
-function fillSlide(slideState, onAnswered) {
-  if (slideState.filled) return;
-  slideState.filled = true;
-  const b = slideState.block;
-  const el = slideState.el;
+function addTitle(el, text, small) {
+  const h = document.createElement(small ? "h2" : "h1");
+  h.className = "slide__title" + (small ? " slide__title--sm" : "");
+  h.textContent = text;
+  el.appendChild(h);
+}
 
-  switch (b.type) {
-    case "text": {
-      if (b.title) {
-        const h = document.createElement("h1");
-        h.className = "slide__title";
-        h.textContent = b.title;
-        el.appendChild(h);
+function addBody(el, html) {
+  const wrap = document.createElement("div");
+  wrap.className = "slide__body";
+  const p = document.createElement("p");
+  p.innerHTML = html;
+  wrap.appendChild(p);
+  el.appendChild(wrap);
+}
+
+function addIntro(el, text) {
+  const p = document.createElement("p");
+  p.className = "slide__intro";
+  p.textContent = text;
+  el.appendChild(p);
+}
+
+function fillSlide(slideState, onAnswered) {
+  if (slideState.fillPromise) return slideState.fillPromise;
+  slideState.fillPromise = (async () => {
+    const b = slideState.block;
+    const el = slideState.el;
+
+    switch (b.type) {
+      case "text": {
+        if (b.title) addTitle(el, b.title);
+        if (b.content) addBody(el, b.content);
+        break;
       }
-      const body = document.createElement("div");
-      body.className = "slide__body";
-      const p = document.createElement("p");
-      p.innerHTML = b.content;
-      body.appendChild(p);
-      el.appendChild(body);
-      break;
-    }
-    case "callout": {
-      const c = document.createElement("aside");
-      c.className = "callout";
-      if (b.title) {
-        const h = document.createElement("h2");
-        h.className = "callout__title";
-        h.textContent = b.title;
-        c.appendChild(h);
+      case "callout": {
+        const c = document.createElement("aside");
+        c.className = "callout";
+        if (b.title) {
+          const h = document.createElement("h2");
+          h.className = "callout__title";
+          h.textContent = b.title;
+          c.appendChild(h);
+        }
+        const p = document.createElement("p");
+        p.innerHTML = b.content;
+        p.style.margin = "0";
+        c.appendChild(p);
+        el.appendChild(c);
+        break;
       }
-      const p = document.createElement("p");
-      p.innerHTML = b.content;
-      p.style.margin = "0";
-      c.appendChild(p);
-      el.appendChild(c);
-      break;
-    }
-    case "image": {
-      const fig = document.createElement("figure");
-      fig.className = "figure";
-      const img = document.createElement("img");
-      img.src = b.src;
-      img.alt = b.alt || "";
-      img.loading = "lazy";
-      fig.appendChild(img);
-      if (b.caption) {
-        const cap = document.createElement("figcaption");
-        cap.className = "figure__caption";
-        cap.textContent = b.caption;
-        fig.appendChild(cap);
+      case "image": {
+        const fig = document.createElement("figure");
+        fig.className = "figure";
+        const img = document.createElement("img");
+        img.src = b.src;
+        img.alt = b.alt || "";
+        img.loading = "lazy";
+        fig.appendChild(img);
+        if (b.caption) {
+          const cap = document.createElement("figcaption");
+          cap.className = "figure__caption";
+          cap.textContent = b.caption;
+          fig.appendChild(cap);
+        }
+        el.appendChild(fig);
+        break;
       }
-      el.appendChild(fig);
-      break;
-    }
-    case "video": {
-      const v = document.createElement("div");
-      v.className = "video-placeholder";
-      v.innerHTML = `<strong>${b.title || "Video"}</strong><br>${b.note || ""}`;
-      el.appendChild(v);
-      break;
-    }
-    case "quiz": {
-      const wrap = document.createElement("div");
-      renderQuiz(wrap, b, {
-        onAnswered: () => onAnswered(slideState)
-      });
-      el.appendChild(wrap);
-      break;
-    }
-    case "visualization": {
-      if (b.title) {
-        const h = document.createElement("h2");
-        h.className = "slide__title slide__title--sm";
-        h.textContent = b.title;
-        el.appendChild(h);
+      case "video": {
+        const v = document.createElement("div");
+        v.className = "video-placeholder";
+        v.innerHTML = `<strong>${b.title || "Video"}</strong><br>${b.note || ""}`;
+        el.appendChild(v);
+        break;
       }
-      const vizWrap = document.createElement("div");
-      el.appendChild(vizWrap);
-      if (b.description) {
-        const cap = document.createElement("p");
-        cap.className = "slide__caption";
-        cap.textContent = b.description;
-        el.appendChild(cap);
+      case "quiz": {
+        if (b.title) addTitle(el, b.title, true);
+        const wrap = document.createElement("div");
+        renderQuiz(wrap, b, { onAnswered: () => onAnswered(slideState) });
+        el.appendChild(wrap);
+        break;
       }
-      if (b.kind === "network") {
-        renderNetwork(vizWrap, b);
+      case "visualization": {
+        if (b.title) addTitle(el, b.title, true);
+        if (b.description) addIntro(el, b.description);
+        const vizWrap = document.createElement("div");
+        el.appendChild(vizWrap);
+        if (b.kind === "network") {
+          slideState.viz = await renderNetwork(vizWrap, b);
+        }
+        break;
       }
-      break;
-    }
-    case "conclusion": {
-      if (b.title) {
-        const h = document.createElement("h1");
-        h.className = "slide__title";
-        h.textContent = b.title;
-        el.appendChild(h);
+      case "interactive": {
+        if (b.title) addTitle(el, b.title, true);
+        if (b.intro) addIntro(el, b.intro);
+        const vizWrap = document.createElement("div");
+        el.appendChild(vizWrap);
+        slideState.viz = await renderInteractive(vizWrap, b);
+        break;
       }
-      const body = document.createElement("div");
-      body.className = "slide__body";
-      const p = document.createElement("p");
-      p.innerHTML = b.content;
-      body.appendChild(p);
-      el.appendChild(body);
-      break;
+      case "conclusion": {
+        if (b.title) addTitle(el, b.title);
+        if (b.content) addBody(el, b.content);
+        break;
+      }
+      default: {
+        const p = document.createElement("p");
+        p.textContent = `Bloc necunoscut: ${b.type}`;
+        el.appendChild(p);
+      }
     }
-    default: {
-      const p = document.createElement("p");
-      p.textContent = `Bloc necunoscut: ${b.type}`;
-      el.appendChild(p);
-    }
-  }
+  })();
+  return slideState.fillPromise;
 }
 
 export function renderSlides(root, lesson) {
@@ -142,7 +143,13 @@ export function renderSlides(root, lesson) {
 
   const progressState = getProgress();
   const slideState = blocks.map((b) => {
-    const s = { block: b, el: null, filled: false, canAdvance: b.type !== "quiz" };
+    const s = {
+      block: b,
+      el: makeSlideElement(),
+      fillPromise: null,
+      viz: null,
+      canAdvance: b.type !== "quiz"
+    };
     if (b.type === "quiz" && progressState.quizzes?.[b.id]) {
       s.canAdvance = true;
     }
@@ -168,8 +175,7 @@ export function renderSlides(root, lesson) {
   stage.className = "slides-stage";
   stage.setAttribute("aria-live", "polite");
   root.appendChild(stage);
-
-  slideState.forEach((s) => stage.appendChild(buildSlide(s.block, s)));
+  slideState.forEach((s) => stage.appendChild(s.el));
 
   const nav = document.createElement("div");
   nav.className = "slides-nav";
@@ -205,7 +211,7 @@ export function renderSlides(root, lesson) {
     nextBtn.disabled = !isLast && !cur.canAdvance;
   }
 
-  function show(idx) {
+  async function show(idx) {
     idx = Math.max(0, Math.min(total - 1, idx));
     slideState.forEach((s, i) => {
       const active = i === idx;
@@ -213,11 +219,20 @@ export function renderSlides(root, lesson) {
       s.el.setAttribute("aria-hidden", active ? "false" : "true");
     });
     current = idx;
-    fillSlide(slideState[idx], onQuizAnswered);
     updateNav();
     markSlidePosition(lesson.id, idx);
     window.scrollTo({ top: 0, behavior: "auto" });
     slideState[idx].el.focus({ preventScroll: true });
+
+    await fillSlide(slideState[idx], onQuizAnswered);
+
+    if (current !== idx) return;
+    const viz = slideState[idx].viz;
+    if (viz && typeof viz.refit === "function") {
+      requestAnimationFrame(() => {
+        if (current === idx) viz.refit();
+      });
+    }
   }
 
   function goNext() {

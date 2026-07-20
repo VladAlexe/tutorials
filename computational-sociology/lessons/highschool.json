@@ -1,6 +1,6 @@
 {
   "id": "highschool",
-  "sectionNumber": 1,
+  "sectionNumber": 4,
   "format": "slides",
   "title": "Rețeaua invizibilă a unei școli",
   "lede": "",
@@ -10,28 +10,41 @@
     {
       "type": "text",
       "title": "Rețeaua invizibilă a unei școli",
-      "content": "Cum înțelegem ce se întâmplă într-un grup mare de oameni fără să vorbim cu fiecare? Sociologia computațională pune întrebările vechi ale sociologiei, despre grupuri, relații și influență, dar le răspunde cu date, cod și vizualizări. În loc de câteva zeci de persoane, observăm tipare în mii de interacțiuni."
+      "content": "Cum înțelegem un grup mare de oameni fără să vorbim cu fiecare? Cu date, cod și vizualizări, căutăm tipare în mii de interacțiuni."
     },
     {
       "type": "callout",
-      "content": "Astăzi devenim detectivi. Avem urmele reale ale unei școli, dar nu și povestea. O reconstruim din date."
+      "content": "Astăzi devenim detectivi: avem urmele reale ale unei școli, dar nu și povestea. O reconstruim din date."
     },
     {
-      "type": "text",
-      "title": "Ce este un nod?",
-      "content": "Avem nevoie de două idei. Prima: nodul. Un nod este o entitate, de obicei o persoană. În rețeaua noastră, fiecare elev este un nod."
+      "type": "interactive",
+      "id": "step-node",
+      "mode": "add-node",
+      "title": "Începe cu un nod",
+      "intro": "Începem cu o școală goală. Un nod este o persoană. Adaugă primul elev.",
+      "buttonLabel": "Adaugă un elev",
+      "hint": "Apasă butonul pentru a adăuga primul elev.",
+      "successText": "Ai creat un nod."
     },
     {
-      "type": "visualization",
-      "id": "concept-net",
-      "kind": "network",
-      "data": "data/concept-network.json",
-      "description": "Trei noduri. Încă nu știm nimic despre legăturile dintre ei."
+      "type": "interactive",
+      "id": "step-edge",
+      "mode": "add-edge",
+      "title": "Adaugă o muchie",
+      "intro": "Doi elevi. Dacă s-au întâlnit față în față, îi legăm printr-o muchie.",
+      "buttonLabel": "Conectează-i",
+      "hint": "Doi elevi, încă neconectați. Apasă butonul.",
+      "successText": "O muchie este o relație. Cât de groasă va fi arată cât timp au petrecut împreună."
     },
     {
-      "type": "text",
-      "title": "Ce este o muchie?",
-      "content": "A doua idee: muchia. O muchie este o relație între două noduri. La noi, o muchie înseamnă că doi elevi s-au aflat față în față; cât de groasă este arată cât timp au petrecut împreună. Atinge un nod ca să-i vezi vecinii."
+      "type": "interactive",
+      "id": "step-mini",
+      "mode": "mini-network",
+      "data": "data/mini-network.json",
+      "title": "O rețea mică",
+      "intro": "Mai mulți elevi, mai multe întâlniri: o rețea. Atinge un nod ca să-i vezi vecinii.",
+      "buttonLabel": "Resetează",
+      "hint": "Atinge un nod pentru a-i vedea vecinii."
     },
     {
       "type": "quiz",
@@ -44,16 +57,16 @@
         "Un fișier"
       ],
       "correctIndex": 1,
-      "explanation": "Nodurile sunt entitățile, de exemplu persoanele. Muchiile sunt relațiile dintre ele."
+      "explanation": "Nodurile sunt entitățile, de exemplu persoanele; muchiile sunt relațiile."
     },
     {
       "type": "text",
       "title": "De unde vin datele",
-      "content": "Datele sunt reale. Provin dintr-un liceu francez unde, o săptămână, elevii au purtat senzori care înregistrau la fiecare douăzeci de secunde cine se afla față în față cu cine. Sute de elevi, nouă clase, sute de mii de întâlniri. Sunt anonimizate: fiecare elev e doar un număr. Azi lucrăm cu o felie: trei clase dintr-o singură zi."
+      "content": "Acum datele reale. Într-un liceu francez, o săptămână, elevii au purtat senzori care înregistrau la fiecare douăzeci de secunde cine se afla față în față cu cine. Sute de elevi, nouă clase, sute de mii de întâlniri, anonimizate: fiecare elev e un număr. Azi luăm o felie: trei clase, o zi."
     },
     {
       "type": "callout",
-      "content": "Sursă: SocioPatterns, liceul Thiers, Marsilia, decembrie 2013. Citare la folosirea în cercetare sau vizualizări: R. Mastrandrea, J. Fournet, A. Barrat, PLoS ONE 10(9), e0136497 (2015). <a href=\"https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0136497\" target=\"_blank\" rel=\"noopener\">Vezi articolul</a>."
+      "content": "Sursă: SocioPatterns, liceul Thiers, Marsilia, 2013. Citare: R. Mastrandrea, J. Fournet, A. Barrat, PLoS ONE 10(9), e0136497 (2015). <a href=\"https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0136497\" target=\"_blank\" rel=\"noopener\">Vezi articolul</a>."
     },
     {
       "type": "visualization",
@@ -61,12 +74,12 @@
       "kind": "network",
       "data": "data/highschool-network.json",
       "title": "Rețeaua reală: o zi, trei clase",
-      "description": "Atinge un nod ca să-i vezi vecinii. Culoarea arată clasa. Se grupează elevii pe clase sau se amestecă?"
+      "description": "Culoarea arată clasa. Atinge un nod ca să-i vezi vecinii. Se grupează elevii pe clase sau se amestecă?"
     },
     {
       "type": "conclusion",
       "title": "Ce urmează",
-      "content": "Deja se vede: elevii nu se amestecă la întâmplare, se grupează pe clase, iar câțiva fac legătura între grupuri. Data viitoare pornim un zvon prin rețea și încercăm să aflăm, doar din date, cine l-a lansat."
+      "content": "Se vede deja: elevii se grupează pe clase, iar câțiva fac legătura între grupuri. Data viitoare pornim un zvon prin rețea și încercăm să aflăm, doar din date, cine l-a lansat."
     }
   ]
 }

@@ -1,14 +1,14 @@
 .slides-root {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 8rem);
+  min-height: calc(100vh - 7rem);
 }
 
 .slides-header {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  margin: var(--sp-3) 0 var(--sp-4);
+  margin: var(--sp-2) 0 var(--sp-4);
 }
 
 .slides-progress-bar {
@@ -38,11 +38,11 @@
   text-align: right;
 }
 
+/* Stage keeps nav pinned to bottom but does NOT vertically center content */
 .slides-stage {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 5rem;
+  display: block;
+  padding-bottom: var(--sp-5);
 }
 
 .slide {
@@ -50,44 +50,47 @@
   max-width: 34rem;
   width: 100%;
   margin: 0 auto;
-  padding: var(--sp-5) 0;
+  padding: var(--sp-3) 0 var(--sp-4);
 }
 
 .slide[hidden] { display: none; }
 
+/* Mobile-first sizes: compact and readable on 360-430px */
 .slide__title {
-  font-size: var(--fs-2xl);
-  margin: 0 0 var(--sp-4);
+  font-size: 1.35rem;           /* ~20-22px */
+  line-height: 1.25;
+  margin: 0 0 var(--sp-3);
   color: var(--color-ink);
 }
 
 .slide__title--sm {
-  font-size: var(--fs-xl);
+  font-size: 1.2rem;
 }
 
 .slide__body p {
-  font-size: var(--fs-lg);
-  line-height: var(--lh-loose);
+  font-size: 1rem;              /* 16px */
+  line-height: 1.5;
   color: var(--color-ink);
-  margin: 0 0 var(--sp-4);
+  margin: 0 0 var(--sp-3);
+}
+
+.slide__intro {
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--sp-3);
+}
+
+.slide .callout {
+  padding: var(--sp-3) var(--sp-4);
 }
 
 .slide .callout p {
-  font-size: var(--fs-base);
-  line-height: var(--lh-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.slide__caption {
-  font-size: var(--fs-sm);
-  color: var(--color-ink-soft);
-  margin: var(--sp-3) 0 0;
-  font-style: italic;
-}
-
-/* Quiz inside slide gets a bit more breathing room */
-.slide .quiz { margin-top: var(--sp-2); }
-
-/* Sticky footer nav */
+/* Sticky footer nav; does not overlap content */
 .slides-nav {
   position: sticky;
   bottom: 0;
@@ -96,27 +99,40 @@
   display: flex;
   justify-content: space-between;
   gap: var(--sp-3);
-  padding: var(--sp-3) 0;
-  background: linear-gradient(to top, var(--color-bg) 65%, rgba(250, 247, 242, 0));
+  padding: var(--sp-3) 0 var(--sp-4);
+  background: linear-gradient(to top, var(--color-bg) 70%, rgba(250, 247, 242, 0));
   margin-top: auto;
 }
 
 .slides-nav .btn {
-  min-height: 48px;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-4);
 }
 
-.slides-back[hidden] { visibility: hidden; display: inline-block; }
-
-.slides-next {
-  margin-left: auto;
+.slides-back[hidden] {
+  visibility: hidden;
+  display: inline-block;
 }
+
+.slides-next { margin-left: auto; }
 
 .slides-next[disabled] {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* Visualization legend */
+/* Visualization inside a slide: clear height so cy.fit has room */
+.slide .viz {
+  margin-top: var(--sp-2);
+}
+
+.slide .viz__stage {
+  height: 60vh;
+  min-height: 320px;
+  max-height: 480px;
+}
+
+/* Legend below the stage */
 .viz__legend {
   display: flex;
   flex-wrap: wrap;
@@ -140,19 +156,20 @@
   border: 1px solid var(--color-line);
 }
 
-/* Slightly taller viz on desktop, standard on phone */
-.slide .viz__stage { height: 340px; }
-
+/* Slightly bigger on wider screens, but keep line length short */
 @media (min-width: 768px) {
-  .slide { padding: var(--sp-6) 0; }
-  .slide__title { font-size: var(--fs-3xl); }
-  .slide__body p { font-size: var(--fs-xl); }
-  .slide .viz__stage { height: 460px; }
+  .slide { padding: var(--sp-5) 0; max-width: 36rem; }
+  .slide__title { font-size: 1.7rem; }
+  .slide__title--sm { font-size: 1.4rem; }
+  .slide__body p { font-size: 1.1rem; }
+  .slide__intro { font-size: 1.05rem; }
+  .slide .viz__stage {
+    height: 55vh;
+    min-height: 360px;
+    max-height: 520px;
+  }
 }
 
 @media (min-width: 1024px) {
   .slide { max-width: 40rem; }
 }
-
-/* Hide the demo-note when slides take over (defensive; slides mode wipes it anyway) */
-.slides-root .demo-note { display: none; }
