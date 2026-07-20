@@ -160,6 +160,65 @@
   max-height: 480px;
 }
 
+/* Caption below viz/chart/diffusion — for text-viz-text single card */
+.slide__caption {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  margin: var(--sp-3) 0 0;
+}
+
+/* Chart (histogram, bars) */
+.chart {
+  background: var(--color-surface);
+  border: var(--border-thin);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-3) var(--sp-3) var(--sp-4);
+  margin-top: var(--sp-2);
+}
+
+.chart__svg-wrap {
+  width: 100%;
+}
+
+.chart__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+  padding: 0 var(--sp-2);
+}
+
+.chart__slider {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  flex: 1;
+  min-width: 200px;
+}
+
+.chart__slider input[type="range"] {
+  flex: 1;
+  min-width: 80px;
+  accent-color: var(--color-accent);
+}
+
+.chart__slider output {
+  min-width: 1.5ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+
+.chart__meta {
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  margin-left: auto;
+}
+
 /* Diffusion controls (part 2) */
 .diffusion-controls {
   display: flex;

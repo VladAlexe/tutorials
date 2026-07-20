@@ -57,57 +57,109 @@
     },
     {
       "type": "text",
-      "title": "De unde vin datele",
-      "content": "Acum datele reale. Într-un liceu francez, o săptămână, elevii au purtat senzori care înregistrau la fiecare douăzeci de secunde cine se afla față în față cu cine. Sute de elevi, nouă clase, sute de mii de întâlniri, anonimizate: fiecare elev e un număr. Azi luăm o felie: trei clase, o zi."
-    },
-    {
-      "type": "callout",
-      "content": "Sursă: SocioPatterns, liceul Thiers, Marsilia, 2013. Citare: R. Mastrandrea, J. Fournet, A. Barrat, PLoS ONE 10(9), e0136497 (2015). <a href=\"https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0136497\" target=\"_blank\" rel=\"noopener\">Vezi articolul</a>."
+      "title": "S-a lansat un zvon",
+      "content": "Într-o zi obișnuită, un zvon a străbătut școala. Avem urmele reale: cine s-a întâlnit cu cine și cât. Dar nu știm cine l-a pornit și cine l-a dus mai departe. Suntem detectivi, iar singura noastră unealtă sunt datele. 93 de elevi, sute de întâlniri: prea multe ca să întrebăm pe fiecare. Hai să lăsăm statistica să lucreze."
     },
     {
       "type": "visualization",
-      "id": "highschool-net",
+      "id": "school-by-class",
       "kind": "network",
       "data": "data/highschool-network.json",
-      "title": "Rețeaua reală: o zi, trei clase",
-      "description": "Culoarea arată clasa. Atinge un nod ca să-i vezi vecinii. Se grupează elevii pe clase sau se amestecă?"
+      "title": "Școala, pe clase",
+      "description": "Prima observație: elevii nu se amestecă la întâmplare. Se grupează pe clase.",
+      "caption": "Două clase de biologie se amestecă mult între ele. Clasa de matematică stă aproape singură. Deja un indiciu: un zvon pornit la matematică ar avea greu drum spre restul."
+    },
+    {
+      "type": "text",
+      "title": "Primul suspect: cel mai popular",
+      "content": "Instinctul spune că zvonul l-a pornit cel mai sociabil elev, cel cu cei mai mulți prieteni. Hai să-l găsim. Pentru fiecare elev numărăm câte contacte are. Acest număr se numește grad."
+    },
+    {
+      "type": "chart",
+      "id": "chart-degrees",
+      "variant": "histogram",
+      "title": "Câte contacte are un elev?",
+      "intro": "Iată câte contacte are fiecare. Cei mai mulți au puține; câțiva au foarte multe.",
+      "source": "data/highschool-stats.json",
+      "field": "degrees",
+      "xLabel": "contacte",
+      "yLabel": "elevi",
+      "defaultBinWidth": 3,
+      "caption": "Forma nu e un clopot simetric, ci înclinată spre dreapta: o coadă lungă de câțiva foarte populari. Mișcă lățimea intervalului — aceeași distribuție arată altfel în funcție de cum o tăiem."
+    },
+    {
+      "type": "text",
+      "title": "Media minte, medianul spune adevărul",
+      "content": "Media este 5,4 contacte. Dar elevul din mijloc, medianul, are 5. Cel mai popular are 15 contacte, de aproape trei ori mai mult decât un elev obișnuit. El trage media în sus fără să fie tipic. Când câțiva au mult mai mult decât restul, media te păcălește; medianul te ține cu picioarele pe pământ."
     },
     {
       "type": "diffusion",
-      "id": "diff-explore",
-      "mode": "explore",
+      "id": "susp-degree",
+      "mode": "highlight",
+      "metric": "degree",
       "data": "data/highschool-network.json",
-      "title": "Pornim un zvon",
-      "intro": "Cineva lansează un zvon. Alege elevul de la care pornește, apoi pornește-l și privește cum se răspândește prin întâlniri."
+      "title": "Suspectul numărul unu",
+      "intro": "Cel mai popular elev din școală, cu 15 contacte, e primul nostru suspect.",
+      "caption": "Are contacte peste tot în cele două clase de biologie. Pare vinovatul perfect. Dar statistica ne va arăta că popularitatea nu înseamnă răspândire."
     },
     {
       "type": "diffusion",
-      "id": "diff-final",
-      "mode": "final-only",
+      "id": "susp-spread",
+      "mode": "highlight",
+      "metric": "spread",
       "data": "data/highschool-network.json",
-      "title": "Cine a pornit zvonul?",
-      "intro": "Aceasta e situația la final: cine știe și cine nu. Uitându-te doar la această imagine, poți spune cine a lansat zvonul?"
+      "title": "Cine duce zvonul cel mai departe?",
+      "intro": "Hai să testăm. Pornim zvonul din fiecare elev pe rând și numărăm câți află. Cine e cel mai bun răspânditor?",
+      "caption": "Surpriză: un elev mai discret poate răspândi la fel de departe ca vedeta clasei. Contează unde ești în rețea, nu doar câți prieteni ai."
+    },
+    {
+      "type": "chart",
+      "id": "chart-friendship",
+      "variant": "bars",
+      "title": "Paradoxul prieteniei",
+      "intro": "O întrebare pentru tine: crezi că ai mai mulți sau mai puțini prieteni decât colegii tăi? Aproape toți răspund mai puțini. Și, ciudat, au dreptate. În școala noastră, un elev are în medie 5,4 contacte, dar prietenii lui au în medie 6,7. Trei sferturi dintre elevi au prietenii mai populari decât ei înșiși.",
+      "bars": [
+        { "label": "media contactelor unui elev", "value": 5.4 },
+        { "label": "media contactelor prietenilor lui", "value": 6.7, "color": "#3d7a52" }
+      ],
+      "caption": "Nu e o coincidență: e o capcană de eșantionare. Oamenii foarte populari apar în listele multor altora, deci îi vezi peste tot; cei izolați aproape nicăieri. De asta rețelele sociale te fac să te simți mai puțin popular decât ești: vezi o lume aleasă părtinitor."
     },
     {
       "type": "diffusion",
-      "id": "diff-reveal",
-      "mode": "replay-order",
+      "id": "susp-between",
+      "mode": "highlight",
+      "metric": "between",
       "data": "data/highschool-network.json",
-      "title": "Timpul dezvăluie sursa",
-      "intro": "Reluăm răspândirea în ordine. Primul care se aprinde este sursa. Fotografia finală ascundea sursa; doar ordinea, adică timpul, o dezvăluie."
+      "title": "Adevăratul vinovat: puntea",
+      "intro": "Zvonul a trecut dintr-o clasă în alta. Cine face legătura? Nu neapărat cel mai popular, ci puntea: elevul fără de care grupurile ar rămâne separate. O găsim cu o măsură numită intermediere.",
+      "caption": "Puntea e persoana prin care trece cel mai des drumul dintre doi elevi din grupuri diferite. Ea ține școala legată. Scoate-o, și zvonul rămâne prins."
     },
     {
       "type": "diffusion",
-      "id": "diff-influence",
+      "id": "susp-investigation",
       "mode": "investigation",
       "data": "data/highschool-network.json",
-      "title": "Cine e cel mai influent?",
-      "intro": "Cine e cel mai important din rețea? Depinde ce măsurăm."
+      "title": "Deci cine a răspândit zvonul?",
+      "intro": "Avem patru suspecți, fiecare vinovat după altă definiție. Apasă fiecare buton — vezi cum se schimbă cel evidențiat.",
+      "caption": "Sunt persoane diferite. Nu există un singur vinovat. Răspunsul depinde de ce numim răspândire: cel mai popular nu e cel mai bun răspânditor; cel care petrece mult timp e într-o clasă izolată, deci timpul lui nu ajută; adevăratul difuzor e cineva bine plasat, nu cineva cu mulți prieteni."
+    },
+    {
+      "type": "quiz",
+      "id": "quiz-medie",
+      "question": "Media contactelor e 5,4, dar cel mai popular are 15. Ce ne spune asta?",
+      "options": [
+        "Toți au cam 5 contacte",
+        "Câțiva foarte populari trag media în sus",
+        "Datele sunt greșite",
+        "Media e mereu cel mai bun rezumat"
+      ],
+      "correctIndex": 1,
+      "explanation": "Când câțiva au mult mai mult decât restul, media crește fără să descrie elevul tipic. De aceea ne uităm și la median, și la forma distribuției."
     },
     {
       "type": "conclusion",
-      "title": "Ce am învățat",
-      "content": "Am pornit de la două idei simple, nod și muchie, și am ajuns la o rețea reală în care un zvon se răspândește prin întâlniri. Am văzut că sursa nu se vede dintr-o fotografie finală, ci din ordinea în timp, și că nu există un singur cel mai influent: totul depinde de ce alegem să măsurăm. Aceasta este sociologia computațională: punem întrebări vechi despre oameni, dar le răspundem construind, măsurând și rulând."
+      "title": "Sociologie computațională",
+      "content": "Am pornit de la două idei, nod și muchie, și am ajuns la o anchetă reală. Am folosit rețele ca să vedem structura, și statistică — distribuții, medie, median — ca să găsim suspecții. Marea lecție: un concept social, precum a răspândi sau a fi influent, nu e scris în date. Devine mai multe numere diferite, în funcție de cum îl definim. Sociologia pune întrebări vechi despre oameni; ce e nou e că le răspundem construind, măsurând și rulând. Asta face un calculator, iar creta nu putea. <br><br><small>Date reale: SocioPatterns, liceul Thiers, Marsilia, 2013 (Mastrandrea et al., PLoS ONE 10(9), e0136497, 2015).</small>"
     }
   ]
 }

@@ -119,7 +119,21 @@ function makeStyle() {
     { selector: "node.knows", style: { "opacity": 1, "width": 22, "height": 22 } },
     {
       selector: "node.source",
-      style: { "border-color": "#2a1f16", "border-width": 3, "width": 28, "height": 28 }
+      style: {
+        "border-color": "#2a1f16",
+        "border-width": 3,
+        "width": 28,
+        "height": 28,
+        "label": "data(label)",
+        "font-family": "Georgia, serif",
+        "font-size": 13,
+        "color": "#2a1f16",
+        "text-background-color": "#faf7f2",
+        "text-background-opacity": 0.9,
+        "text-background-padding": 3,
+        "text-valign": "bottom",
+        "text-margin-y": 6
+      }
     },
     {
       selector: "node.top",
@@ -128,7 +142,16 @@ function makeStyle() {
         "border-color": "#2a1f16",
         "border-width": 3,
         "width": 30,
-        "height": 30
+        "height": 30,
+        "label": "data(label)",
+        "font-family": "Georgia, serif",
+        "font-size": 13,
+        "color": "#2a1f16",
+        "text-background-color": "#faf7f2",
+        "text-background-opacity": 0.9,
+        "text-background-padding": 3,
+        "text-valign": "bottom",
+        "text-margin-y": 6
       }
     }
   ];
@@ -153,11 +176,16 @@ export async function renderDiffusion(container, block, options = {}) {
     return errorHandle(container, err.message);
   }
 
-  const nodes = data.nodes.map((n) => ({
-    id: String(n.id),
-    label: n.label != null ? String(n.label) : String(n.id),
-    group: n.group != null ? String(n.group) : ""
-  }));
+  const nodes = data.nodes.map((n) => {
+    const name = n.name != null ? String(n.name) : null;
+    return {
+      id: String(n.id),
+      name,
+      label: name || (n.label != null ? String(n.label) : String(n.id)),
+      group: n.group != null ? String(n.group) : ""
+    };
+  });
+  const nameById = new Map(nodes.map((n) => [n.id, n.name || `Elev ${n.id}`]));
   const edges = data.edges.map((e, i) => ({
     id: `e${i}`,
     source: String(e.source),
@@ -188,7 +216,7 @@ export async function renderDiffusion(container, block, options = {}) {
 
   const elements = [
     ...nodes.map((n) => ({
-      data: { id: n.id, label: n.label, group: n.group, color: colorMap.get(n.group) || GROUP_PALETTE[0] }
+      data: { id: n.id, label: n.label, name: n.name, group: n.group, color: colorMap.get(n.group) || GROUP_PALETTE[0] }
     })),
     ...edges.map((e) => ({
       data: { id: e.id, source: e.source, target: e.target, weight: e.weight }
@@ -498,10 +526,79 @@ export async function renderDiffusion(container, block, options = {}) {
         if (res && res.id) {
           const n = cy.getElementById(res.id);
           if (n && n.length) n.addClass("top");
-          valueEl.textContent = `Elev ${res.id}: ${res.label}`;
+          const who = nameById.get(res.id) || `Elev ${res.id}`;
+          valueEl.textContent = `${who}: ${res.label}`;
         }
       });
     });
+  }
+
+  else if (mode === "highlight") {
+    cy.nodes().addClass("knows");
+    const metric = block.metric || "degree";
+
+    function topByMetric(m) {
+      if (m === "degree") {
+        let bestId = null, bv = -1, ranked = [];
+        cy.nodes().forEach((n) => {
+          const d = n.connectedEdges().length;
+          ranked.push({ id: n.id(), v: d });
+          if (d > bv) { bv = d; bestId = n.id(); }
+        });
+        ranked.sort((a, b) => b.v - a.v);
+        return { id: bestId, value: bv, label: `${bv} contacte`, runners: ranked.slice(1, 3) };
+      }
+      if (m === "wdegree") {
+        let bestId = null, bv = -1, ranked = [];
+        cy.nodes().forEach((n) => {
+          let s = 0;
+          n.connectedEdges().forEach((e) => { s += e.data("weight") || 0; });
+          ranked.push({ id: n.id(), v: s });
+          if (s > bv) { bv = s; bestId = n.id(); }
+        });
+        ranked.sort((a, b) => b.v - a.v);
+        return { id: bestId, value: bv, label: `${bv} întâlniri (sumă ponderi)`, runners: ranked.slice(1, 3) };
+      }
+      if (m === "between") {
+        const bc = cy.elements().betweennessCentrality({ directed: false });
+        let bestId = null, bv = -1, ranked = [];
+        cy.nodes().forEach((n) => {
+          const v = bc.betweenness(n);
+          ranked.push({ id: n.id(), v });
+          if (v > bv) { bv = v; bestId = n.id(); }
+        });
+        ranked.sort((a, b) => b.v - a.v);
+        return { id: bestId, value: Math.round(bv), label: `intermediere ${Math.round(bv)}`, runners: ranked.slice(1, 3) };
+      }
+      if (m === "spread") {
+        let bestId = null, bv = -1, ranked = [];
+        for (const n of nodes) {
+          const k = simulate(nodes, edges, n.id, shared.threshold);
+          ranked.push({ id: n.id, v: k.size });
+          if (k.size > bv) { bv = k.size; bestId = n.id; }
+        }
+        ranked.sort((a, b) => b.v - a.v);
+        return { id: bestId, value: bv, label: `ajunge la ${bv} elevi`, runners: ranked.slice(1, 3) };
+      }
+      return null;
+    }
+
+    const res = topByMetric(metric);
+    if (res && res.id) {
+      const n = cy.getElementById(res.id);
+      if (n && n.length) n.addClass("top");
+      const who = nameById.get(res.id) || `Elev ${res.id}`;
+      const runnersText = (res.runners || [])
+        .map((r) => nameById.get(r.id) || `Elev ${r.id}`)
+        .join(", ");
+      controls.innerHTML =
+        `<div class="diff-hint"><strong>${who}</strong> — ${res.label}</div>` +
+        (runnersText
+          ? `<div class="diff-hint">Urmează: ${runnersText}.</div>`
+          : "");
+    } else {
+      controls.innerHTML = `<div class="diff-hint">Nu am putut calcula.</div>`;
+    }
   }
 
   return {

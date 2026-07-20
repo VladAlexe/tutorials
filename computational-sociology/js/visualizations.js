@@ -32,7 +32,8 @@ async function loadJSON(path) {
 }
 
 function formatNodeInfo(d) {
-  const parts = [`Elev ${d.id}`];
+  const who = d.name && d.name !== "" ? d.name : `Elev ${d.id}`;
+  const parts = [who];
   if (d.group !== undefined && d.group !== "" && d.group !== "exemplu") {
     parts.push(`clasa ${d.group}`);
   }
@@ -82,7 +83,16 @@ function baseStyle(showLabels, edgeWidth) {
         "border-color": "#2a1f16",
         "border-width": 3,
         "width": 30,
-        "height": 30
+        "height": 30,
+        "label": "data(label)",
+        "font-family": "Georgia, serif",
+        "font-size": 13,
+        "color": "#2a1f16",
+        "text-background-color": "#faf7f2",
+        "text-background-opacity": 0.9,
+        "text-background-padding": 3,
+        "text-valign": "bottom",
+        "text-margin-y": 6
       }
     },
     {
@@ -150,11 +160,16 @@ function renderLegend(legendEl, groups, colorMap) {
 }
 
 function normalizeAndBuild(data) {
-  const nodes = data.nodes.map((n) => ({
-    id: String(n.id),
-    label: n.label != null ? String(n.label) : String(n.id),
-    group: n.group != null ? String(n.group) : (n.clasa != null ? String(n.clasa) : "")
-  }));
+  const nodes = data.nodes.map((n) => {
+    const name = n.name != null ? String(n.name) : null;
+    const rawLabel = n.label != null ? String(n.label) : null;
+    return {
+      id: String(n.id),
+      name,
+      label: name || rawLabel || String(n.id),
+      group: n.group != null ? String(n.group) : (n.clasa != null ? String(n.clasa) : "")
+    };
+  });
   const edges = data.edges.map((e, i) => ({
     id: `e${i}`,
     source: String(e.source),
@@ -173,6 +188,7 @@ function normalizeAndBuild(data) {
       data: {
         id: n.id,
         label: n.label,
+        name: n.name,
         group: n.group,
         color: colorMap.get(n.group) || GROUP_PALETTE[0]
       }

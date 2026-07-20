@@ -118,6 +118,12 @@ function fillSlide(slideState, callbacks) {
         if (b.kind === "network") {
           slideState.viz = await renderNetwork(vizWrap, b);
         }
+        if (b.caption) {
+          const c = document.createElement("p");
+          c.className = "slide__caption";
+          c.textContent = b.caption;
+          el.appendChild(c);
+        }
         break;
       }
       case "interactive": {
@@ -137,6 +143,27 @@ function fillSlide(slideState, callbacks) {
         slideState.viz = await renderDiffusion(vizWrap, b, {
           onAdvance: onAdvance
         });
+        if (b.caption) {
+          const c = document.createElement("p");
+          c.className = "slide__caption";
+          c.textContent = b.caption;
+          el.appendChild(c);
+        }
+        break;
+      }
+      case "chart": {
+        if (b.title) addTitle(el, b.title, true);
+        if (b.intro) addIntro(el, b.intro);
+        const chartWrap = document.createElement("div");
+        el.appendChild(chartWrap);
+        const { renderChart } = await import(`./charts.js?v=${V}`);
+        slideState.viz = await renderChart(chartWrap, b);
+        if (b.caption) {
+          const c = document.createElement("p");
+          c.className = "slide__caption";
+          c.textContent = b.caption;
+          el.appendChild(c);
+        }
         break;
       }
       case "conclusion": {
