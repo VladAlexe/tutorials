@@ -1,6 +1,6 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (tranșa 5, fix chart + gating vot + capitole + captions #12-#19)
+Ultima actualizare: 2026-07-22 (tranșa 6, separator capitol + felie dublă + code UX + fix #28)
 
 Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **completă, 36 de carduri + 2 add-on quiz-uri = 38 blocuri**.
 
@@ -26,17 +26,69 @@ Se aplică la toate cardurile `interactive`, `visualization`, `diffusion` și `c
 6. **Sticky nav nu mai suprapune conținutul.** `.slide` primește `padding-bottom: 5.5rem`, iar `.slides-nav` are fundal opac + `border-top` + `z-index: 1`. Butonul propriu al vizualizării stă în fluxul cardului, deasupra caption-ului, cu spațiu clar față de nav.
 7. **Chart cu înălțime limitată.** `.chart` are `max-height: 45vh` telefon / `55vh` desktop; SVG-ul intern e capped la `40vh` / `48vh`. Nu mai împinge butoanele de sub el în afara ecranului.
 
-## Capitole
+## Capitole (7)
 
-Lecția are 7 capitole definite în `chapters` la nivel de top-level în JSON. Fiecare capitol are `n`, `title` și `startIdx` (index-ul blocului la care începe). Slides.js citește lista și afișează un indicator discret în bara de sus (`.slides-chapter`), care pulsează scurt la trecerea de la un capitol la altul.
+Lecția are 7 capitole definite în `chapters` la nivel de top-level în JSON. Fiecare capitol are `n`, `title` și `startIdx` (index-ul blocului la care începe). Slides.js:
+- **Injectează un card separator** (`chapter-intro`) la începutul fiecărui capitol. Cardul afișează „Capitolul N din 7", titlul mare cu serif, și un îndemn scurt „Apasă Continuă ca să intri". Fade-in la afișare (`prefers-reduced-motion` dezactivează).
+- **Afișează indicatorul discret** în bara de sus (`.slides-chapter`) care pulsează scurt la trecerea între capitole (secondar față de cardul separator).
+
+Capitolele (după inserarea cardului #12b între #12 și #13):
 
 - **Capitolul 1** „Ce este sociologia computațională" — cardurile #01-#03
 - **Capitolul 2** „Un mister și un alfabet" — cardurile #04-#10
-- **Capitolul 3** „Școala în cifre" — cardurile #11-#14
+- **Capitolul 3** „Școala în cifre" — cardurile #11-#14 (incluzând noul #12b)
 - **Capitolul 4** „Primul suspect" — cardurile #15-#19b
 - **Capitolul 5** „Cum a circulat zvonul" — cardurile #20-#28
 - **Capitolul 6** „Dincolo de rețea" — cardurile #29-#32
 - **Capitolul 7** „Bilanț" — cardurile #33-#36
+
+Câmpurile `chapters[i].startIdx` reflectă indexul din `blocks` (JSON, 0-based). După inserarea automată a separatorului la runtime, totalul afișat de progress bar include și separatoarele.
+
+## Felia dublă (tranșa 6)
+
+Pentru statistică descriptivă mai bogată, `build_network.py` calculează acum două felii paralele:
+
+- **Felia interactivă** (3 clase, 93 elevi, 250 muchii): 2BIO1, 2BIO2, MP*1. Folosită de toate cardurile cu rețea vizuală (add-node, add-edge, mini-network, cardul #10, difuzia, jocul, path, photo-film, majority, recolor-sex). Rețelele rămân lizibile pe telefon.
+- **Felia completă** (9 clase, 303 elevi, 1043 legături, ziua 1, prag 3): 2BIO1, 2BIO2, 2BIO3, MP, MP*1, MP*2, PC, PC*, PSI*. Scrisă sub cheia `stats.fullSchool` cu structură paralelă (classFreq, classMeanDegree, classContactSplit, classSexComposition). Folosită de cardurile pur statistice #12, #12b, #13, #14, unde vizualizarea e bară nu rețea, deci rămâne clară la 9 grupuri.
+
+**Cifre cheie pe felia completă (9 clase):**
+
+| clasa | elevi | %F | grad mediu |
+|---|---|---|---|
+| 2BIO1 | 35 | 77,1 | 5,7 |
+| 2BIO2 | 32 | 59,4 | 7,4 |
+| **2BIO3** | 40 | **80,0** | 10,4 |
+| MP | 30 | 37,0 | 8,1 |
+| MP*1 | 26 | 23,1 | 5,1 |
+| **MP*2** | 34 | **17,6** | 7,2 |
+| PC | 40 | 42,5 | 7,0 |
+| PC* | 36 | 35,3 | 6,2 |
+| PSI* | 30 | 26,7 | 3,7 |
+
+- **Compoziția pe sex, extreme:** 2BIO3 = 80% F, MP*2 = 82% M.
+- **Grad mediu, extreme:** PSI* 3,7 (cea mai izolată clasă), 2BIO3 10,4 (cea mai densă).
+- **Global între clase (fullSchool):** **7,6%** (față de 1,9% pe felia de 3 clase — normal, mai multe granițe de trecut).
+
+Cardurile #12, #12b, #13, #14 folosesc `dataset: "fullSchool"` care e citit de `charts.js` prin `statsBucket(block, stats)` = `stats[block.dataset]` (fallback la stats).
+
+## Nou: bloc `chart` variant `sex-composition`
+
+Randare: pentru fiecare clasă, o bară procentuală F/M (100% stacked), plus contorul absolut al clasei la dreapta. Citește `classSexComposition` din bucket-ul curent (`stats[block.dataset]` sau top-level). Folosit la cardul #12b.
+
+## UX cod (#11, #18, #22)
+
+`renderCodeInteractive` acceptă acum:
+- **`task`** (string): text de sarcină afișat deasupra editorului, cu bordură stânga colorată, pentru a fi vizibil ca instrucțiune concretă.
+- **`quickValueKey`** (string): numele variabilei Python de patch-uit (ex. „PRAG", „LATIME_CUTIE", „PRAG_TRANSMITERE").
+- **`quickValues`** (array numere/stringuri): butoanele mici sub cod. Click → înlocuiește valoarea variabilei în editor prin regex `^(\s*KEY\s*=\s*).*$` și rulează.
+- **`result` (`.code-runner__result`)**: linie nouă deasupra editorului, formatată descriptiv per instanță:
+  - `prag`: „La PRAG = 5: 197 legături rămase din întreaga zi."
+  - `bins`: „La lățime 3: histograma se împarte în N intervale."
+  - `diffuz`: „Pornind de la Octav, zvonul a ajuns la 67 din 93 de elevi în 5 pași."
+
+## Fix #28 (investigation)
+
+`renderDiffusion` mod `investigation` primește o funcție `activate(metric, btn)` care marchează butonul curent (`btn--primary`) și dezactivează celelalte. La montarea slide-ului, `requestAnimationFrame` activează automat primul metric (`degree`, adică Octav), astfel utilizatorul vede o evidențiere fără a apăsa nimic. Restul butoanelor răspund la click normal.
 
 ## Bug-uri reparate în tranșa 5
 

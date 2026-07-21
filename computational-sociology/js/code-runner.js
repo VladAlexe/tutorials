@@ -210,6 +210,13 @@ export function renderCodeRunner(container, block) {
 export function renderCodeInteractive(container, block, { getContext, onResult }) {
   container.classList.add("code-runner");
 
+  if (block.task) {
+    const task = document.createElement("div");
+    task.className = "code-runner__task";
+    task.textContent = block.task;
+    container.appendChild(task);
+  }
+
   const header = document.createElement("div");
   header.className = "code-runner__header";
   header.innerHTML =
@@ -265,7 +272,7 @@ export function renderCodeInteractive(container, block, { getContext, onResult }
   // Try to trigger preload silently
   preloadPyodide();
 
-  runBtn.addEventListener("click", async () => {
+  async function doRun() {
     runBtn.disabled = true;
     status.textContent = "Se pregătește Pyodide…";
     const ok = await ensureReady();
@@ -288,19 +295,43 @@ export function renderCodeInteractive(container, block, { getContext, onResult }
       const err = document.createElement("div");
       err.className = "code-runner__output code-runner__output--error";
       err.textContent = (result.stdout ? result.stdout + "\n" : "") + (result.error || "Eroare necunoscută.");
-      // Replace previous err if any
       const old = container.querySelector(".code-runner__output--error");
       if (old) old.remove();
       container.appendChild(err);
     }
     runBtn.disabled = false;
-  });
+  }
+  runBtn.addEventListener("click", doRun);
 
   resetBtn.addEventListener("click", () => {
     editor.value = block.initial || "";
     const err = container.querySelector(".code-runner__output--error");
     if (err) err.remove();
   });
+
+  // Quick-value shortcuts: click a value → patch the assignment in the editor → run.
+  if (Array.isArray(block.quickValues) && block.quickValues.length && block.quickValueKey) {
+    const quick = document.createElement("div");
+    quick.className = "code-runner__quick";
+    const label = document.createElement("span");
+    label.className = "code-runner__quick-label";
+    label.textContent = "Încearcă:";
+    quick.appendChild(label);
+    for (const v of block.quickValues) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn--ghost code-runner__quick-btn";
+      b.textContent = String(v);
+      b.addEventListener("click", () => {
+        const key = block.quickValueKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const re = new RegExp(`^(\\s*${key}\\s*=\\s*).*$`, "m");
+        editor.value = editor.value.replace(re, (m, prefix) => `${prefix}${v}`);
+        doRun();
+      });
+      quick.appendChild(b);
+    }
+    container.appendChild(quick);
+  }
 
   return {
     destroy() { try { unsub(); } catch { /* ignore */ } }

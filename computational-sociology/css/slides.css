@@ -199,6 +199,50 @@
   margin: var(--sp-3) 0 0;
 }
 
+/* Chapter intro (full-card separator between chapters) */
+.chapter-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-4);
+  min-height: calc(100dvh - 12rem);
+  text-align: center;
+  animation: chapter-in 500ms ease-out both;
+}
+.chapter-intro__num {
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+.chapter-intro__title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  font-size: 2rem;
+  line-height: 1.15;
+  color: var(--color-ink);
+  margin: 0;
+  max-width: 22ch;
+}
+@media (min-width: 768px) {
+  .chapter-intro__title { font-size: 2.6rem; max-width: 24ch; }
+}
+.chapter-intro__hint {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin: var(--sp-3) 0 0;
+}
+@keyframes chapter-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-intro { animation: none; }
+}
+
 /* Notification-style panel (intercepted-message flavour) */
 .notification-panel {
   background: var(--color-surface);
@@ -345,10 +389,48 @@
 .code-viz {
   margin-bottom: var(--sp-3);
 }
+.code-runner__task {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--color-ink);
+  padding: var(--sp-3);
+  background: var(--color-surface-alt, #f2ede5);
+  border-left: 3px solid var(--color-accent, #8b4a1e);
+  border-radius: var(--radius-sm);
+  margin: 0 0 var(--sp-2);
+}
+.code-runner__result {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--color-surface);
+  border: var(--border-thin-soft);
+  border-radius: var(--radius-sm);
+  margin: 0 0 var(--sp-2);
+  font-variant-numeric: tabular-nums;
+}
 .code-runner__warn {
   color: var(--color-muted);
   font-size: 0.85rem;
   margin: var(--sp-2) 0 0;
+}
+.code-runner__quick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-3) var(--sp-3);
+}
+.code-runner__quick-label {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.code-runner__quick-btn {
+  padding: var(--sp-1) var(--sp-3);
+  font-size: 0.9rem;
+  min-width: 3rem;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Quizset (multiple sequential quizzes on one card) */

@@ -11,10 +11,10 @@
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 },
     { "n": 3, "title": "Școala în cifre", "startIdx": 10 },
-    { "n": 4, "title": "Primul suspect", "startIdx": 14 },
-    { "n": 5, "title": "Cum a circulat zvonul", "startIdx": 20 },
-    { "n": 6, "title": "Dincolo de rețea", "startIdx": 29 },
-    { "n": 7, "title": "Bilanț", "startIdx": 34 }
+    { "n": 4, "title": "Primul suspect", "startIdx": 15 },
+    { "n": 5, "title": "Cum a circulat zvonul", "startIdx": 21 },
+    { "n": 6, "title": "Dincolo de rețea", "startIdx": 30 },
+    { "n": 7, "title": "Bilanț", "startIdx": 35 }
   ],
   "blocks": [
     {
@@ -129,37 +129,53 @@
       "id": "code-prag",
       "instance": "prag",
       "title": "Din 180.000 de rânduri: pragul",
-      "intro": "Am numărat întâlnirile fiecărei perechi și am păstrat perechile cu cel puțin PRAG întâlniri. Iată chiar regula. Modific-o și rulează.",
+      "intro": "Am numărat întâlnirile fiecărei perechi și am păstrat perechile cu cel puțin PRAG întâlniri.",
+      "task": "Câte întâlniri trebuie să aibă doi elevi ca să spunem că „se cunosc\"? Schimbă pragul și vezi cum se rupe sau se îndeasă rețeaua.",
       "initial": "PRAG = 3\n# O legatura exista daca perechea are cel putin PRAG intalniri de 20 de secunde.\nedges = [p for p in pairs if p[\"weight\"] >= max(PRAG, prag_minim)]\n{\"edges\": edges, \"prag\": PRAG}",
       "headerLabel": "Filtru de prag",
+      "quickValueKey": "PRAG",
+      "quickValues": [1, 5, 10],
       "caption": "Rețeaua nu e un fapt natural: e rezultatul unei decizii de măsurare. Alt prag, altă rețea, alte concluzii. Cine controlează definițiile controlează rezultatele."
     },
     {
       "type": "chart",
       "id": "s12-freq",
       "variant": "freq",
+      "dataset": "fullSchool",
       "title": "Școala în cifre: frecvențele",
       "intro": "Cea mai simplă întrebare statistică: câți sunt în fiecare grup?",
       "statsSource": "data/highschool-stats.json",
-      "caption": "2BIO1 este predominant feminină, MP*1 predominant masculină. Compoziția grupurilor nu e un detaliu: profilurile atrag diferit, iar asta va conta mai jos."
+      "caption": "Nouă clase, profiluri diferite. Compoziția pe sex nu e un detaliu: la 2BIO3 predomină fetele (80% F), la MP*2 băieții (82% M). Aceste diferențe vor conta când urmărim cine cu cine vorbește."
+    },
+    {
+      "type": "chart",
+      "id": "s12b-sex-composition",
+      "variant": "sex-composition",
+      "dataset": "fullSchool",
+      "title": "Fete și băieți, pe clase",
+      "intro": "Aceleași clase, văzute după compoziția pe sex.",
+      "statsSource": "data/highschool-stats.json",
+      "caption": "Unele profiluri sunt puternic dezechilibrate. Reține: dacă prieteniile urmează asemănarea, compoziția grupului decide cu cine ai șansa să te împrietenești. Testăm asta mai târziu."
     },
     {
       "type": "chart",
       "id": "s13-grouped-strip",
       "variant": "grouped-strip",
+      "dataset": "fullSchool",
       "title": "Media pe grupuri",
       "intro": "Gradul mediu al unui elev, pe fiecare clasă. Prima comparație între grupuri: sunt clasele la fel de dense social?",
       "statsSource": "data/highschool-stats.json",
-      "caption": "O medie pe grup ascunde variația din interiorul lui. Punctele de peste bare arată exact cât. Diferența dintre medii e începutul oricărei analize comparative; împrăștierea din jurul lor e avertismentul ei."
+      "caption": "O medie pe grup ascunde variația din interiorul lui. Punctele de peste bare arată exact cât. Împrăștierea aceea din jurul mediei se numește dispersie: o medie fără dispersie spune doar jumătate din poveste. La 2BIO3 media e sus și punctele urcă odată cu ea; la PSI* media e jos și punctele stau strâns lângă ea."
     },
     {
       "type": "chart",
       "id": "s14-stacked",
       "variant": "stacked",
+      "dataset": "fullSchool",
       "title": "Înăuntru și între",
       "intro": "Din tot timpul de contact, cât se petrece în interiorul claselor și cât între ele?",
       "statsSource": "data/highschool-stats.json",
-      "caption": "Global, doar {{classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele de clasă. Când aproape toată interacțiunea e înăuntru, apartenența la grup explică aproape tot din cine cu cine vorbește. Zvonul a circulat totuși între clase: ne interesează exact excepțiile."
+      "caption": "Global, doar {{fullSchool.classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele de clasă. Când aproape toată interacțiunea e înăuntru, apartenența la grup explică aproape tot din cine cu cine vorbește. Zvonul a circulat totuși între clase: ne interesează exact excepțiile."
     },
     {
       "type": "chart",
@@ -203,9 +219,12 @@
       "id": "code-bins",
       "instance": "bins",
       "title": "Coada lungă",
-      "intro": "Mulți cu puțin, puțini cu mult: distribuție asimetrică, cu coadă dreaptă. Aceeași formă la venituri, audiențe, dimensiunea orașelor, citări academice. Cât de netedă pare depinde însă de o alegere.",
+      "intro": "Mulți cu puțin, puțini cu mult: distribuție asimetrică, cu coadă dreaptă. Aceeași formă la venituri, audiențe, dimensiunea orașelor, citări academice.",
+      "task": "Statisticianul alege în câte cutii împarte datele. Schimbă lățimea și vezi cum aceeași distribuție pare netedă sau zimțată.",
       "initial": "LATIME_CUTIE = 3\n# Aceleasi 93 de valori, regrupate pe intervale de LATIME_CUTIE.\n{\"binWidth\": LATIME_CUTIE}",
       "headerLabel": "Lățimea cutiei",
+      "quickValueKey": "LATIME_CUTIE",
+      "quickValues": [1, 2, 5],
       "xLabel": "contacte",
       "yLabel": "elevi",
       "caption": "Zimțat sau neted, din aceleași date. Un grafic corect factual poate induce în eroare prin alegeri de reprezentare nedeclarate. De acum, la orice histogramă, întreabă cine a ales intervalele."
@@ -274,8 +293,11 @@
       "instance": "diffuz",
       "title": "Modelul 1: pragul",
       "intro": "Primul model de răspândire, cu regula minimă: zvonul trece de la un elev la vecinii cu care legătura e suficient de strânsă.",
+      "task": "Alege de la cine pornește zvonul și cât de strânsă trebuie să fie o legătură ca să-l treacă mai departe. Rulează și urmărește câți află.",
       "initial": "SURSA = \"{{name:topDegree}}\"\nPRAG_TRANSMITERE = 3\n# Zvonul pleaca de la SURSA si trece pe orice muchie cu greutate >= PRAG_TRANSMITERE.\n{\"source_name\": SURSA, \"threshold\": PRAG_TRANSMITERE}",
       "headerLabel": "Sursă + prag",
+      "quickValueKey": "PRAG_TRANSMITERE",
+      "quickValues": [1, 3, 5],
       "caption": "Din {{name:topDegree}}, zvonul acoperă biologia. Dar cu prag ridicat nu atinge matematica. Pornit din matematică, moare acolo. Modelul e transparent și util. E și fals într-un punct precis; îl reparăm după ce îl exploatăm."
     },
     {

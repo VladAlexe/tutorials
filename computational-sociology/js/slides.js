@@ -281,8 +281,8 @@ async function wireCodePrag(vizWrap, codeWrap, block, slideState, V) {
   await renderNet(initialEdges);
 
   const meta = document.createElement("div");
-  meta.className = "chart__meta";
-  meta.textContent = `${initialEdges.length} muchii · prag ${initialPrag}`;
+  meta.className = "code-runner__result";
+  meta.textContent = `La PRAG = ${initialPrag}: ${initialEdges.length} legături rămase din întreaga zi.`;
   codeWrap.appendChild(meta);
 
   if (minPrag > 1) {
@@ -296,8 +296,9 @@ async function wireCodePrag(vizWrap, codeWrap, block, slideState, V) {
     getContext: async () => ({ pairs: pairsData.pairs, prag_minim: minPrag }),
     onResult: async (val) => {
       const edges = val && Array.isArray(val.edges) ? val.edges : [];
+      const prag = val?.prag ?? "?";
       await renderNet(edges);
-      meta.textContent = `${edges.length} muchii · prag ${val?.prag ?? "?"}`;
+      meta.textContent = `La PRAG = ${prag}: ${edges.length} legături rămase din întreaga zi.`;
     }
   });
   slideState.viz = { refit: () => currentViz && currentViz.refit && currentViz.refit() };
@@ -332,8 +333,13 @@ async function wireCodeDiffuz(vizWrap, codeWrap, block, slideState, V) {
   }
 
   const meta = document.createElement("div");
-  meta.className = "chart__meta";
-  meta.textContent = `Sursă implicită: ${topName}. Prag: 3.`;
+  meta.className = "code-runner__result";
+  const { simulate: sim0 } = diffMod;
+  const nodesLite = network.nodes.map((n) => ({ id: String(n.id), name: n.name }));
+  const edgesLite = network.edges.map((e) => ({ source: String(e.source), target: String(e.target), weight: e.weight }));
+  const k0 = sim0(nodesLite, edgesLite, String(nameToId.get(topName)), 3);
+  const maxStep0 = Math.max(0, ...k0.values());
+  meta.textContent = `Pornind de la ${topName}, zvonul a ajuns la ${k0.size} din ${network.nodes.length} de elevi în ${maxStep0} pași.`;
   codeWrap.appendChild(meta);
 
   // initial render
@@ -341,8 +347,8 @@ async function wireCodeDiffuz(vizWrap, codeWrap, block, slideState, V) {
 
   codeMod.renderCodeInteractive(codeWrap, block, {
     getContext: async () => ({
-      nodes: network.nodes.map((n) => ({ id: String(n.id), name: n.name })),
-      edges: network.edges.map((e) => ({ source: String(e.source), target: String(e.target), weight: e.weight }))
+      nodes: nodesLite,
+      edges: edgesLite
     }),
     onResult: async (val) => {
       const srcName = val?.source_name || topName;
@@ -350,15 +356,18 @@ async function wireCodeDiffuz(vizWrap, codeWrap, block, slideState, V) {
       const thr     = val?.threshold ?? 3;
       await renderRun(srcId, thr);
       const { simulate } = diffMod;
-      const k = simulate(
-        network.nodes.map((n) => ({ id: String(n.id), name: n.name })),
-        network.edges.map((e) => ({ source: String(e.source), target: String(e.target), weight: e.weight })),
-        String(srcId), thr
-      );
-      meta.textContent = `Sursă: ${srcName} · Prag: ${thr} · Acoperire: ${k.size} din ${network.nodes.length}.`;
+      const k = simulate(nodesLite, edgesLite, String(srcId), thr);
+      const maxStep = Math.max(0, ...k.values());
+      meta.textContent = `Pornind de la ${srcName}, zvonul a ajuns la ${k.size} din ${network.nodes.length} de elevi în ${maxStep} pași.`;
     }
   });
   slideState.viz = { refit: () => currentViz && currentViz.refit && currentViz.refit() };
+}
+
+function countBins(values, bw) {
+  if (!values.length || !bw) return 0;
+  const mn = Math.min(...values), mx = Math.max(...values);
+  return Math.floor((mx - Math.floor(mn / bw) * bw) / bw) + 1;
 }
 
 async function wireCodeBins(vizWrap, codeWrap, block, slideState, V) {
@@ -383,8 +392,8 @@ async function wireCodeBins(vizWrap, codeWrap, block, slideState, V) {
   });
 
   const meta = document.createElement("div");
-  meta.className = "chart__meta";
-  meta.textContent = `lățime interval 3 (implicit)`;
+  meta.className = "code-runner__result";
+  meta.textContent = `La lățime 3: histograma se împarte în ${countBins(degrees, 3)} intervale.`;
   codeWrap.appendChild(meta);
 
   codeMod.renderCodeInteractive(codeWrap, block, {
@@ -400,7 +409,7 @@ async function wireCodeBins(vizWrap, codeWrap, block, slideState, V) {
         defaultBinWidth: bw,
         slider: false
       });
-      meta.textContent = `lățime interval ${bw}`;
+      meta.textContent = `La lățime ${bw}: histograma se împarte în ${countBins(degrees, bw)} intervale.`;
     }
   });
   slideState.viz = { refit: () => {} };
@@ -415,6 +424,24 @@ function fillSlide(slideState, callbacks) {
     const el = slideState.el;
 
     switch (b.type) {
+      case "chapter-intro": {
+        const wrap = document.createElement("div");
+        wrap.className = "chapter-intro";
+        const num = document.createElement("div");
+        num.className = "chapter-intro__num";
+        num.textContent = `Capitolul ${b.chapter.n} din ${b.chapterTotal}`;
+        const title = document.createElement("h1");
+        title.className = "chapter-intro__title";
+        title.textContent = b.chapter.title;
+        const hint = document.createElement("p");
+        hint.className = "chapter-intro__hint";
+        hint.textContent = "Apasă Continuă ca să intri.";
+        wrap.appendChild(num);
+        wrap.appendChild(title);
+        wrap.appendChild(hint);
+        el.appendChild(wrap);
+        break;
+      }
       case "text": {
         if (b.title) addTitle(el, b.title);
         if (b.notification) addNotification(el, b.notification);
@@ -609,8 +636,36 @@ export async function renderSlides(root, lesson) {
   const statsSource = lesson.statsSource || "data/highschool-stats.json";
   const stats = await loadStats(statsSource);
 
-  const blocks = lesson.blocks || [];
+  const rawBlocks = lesson.blocks || [];
+  // Inject chapter-intro cards at every chapter startIdx.
+  const mergedBlocks = [];
+  const nChapters = chapters.length;
+  let curChapter = null;
+  for (let i = 0; i < rawBlocks.length; i++) {
+    const ch = chapters.find((c) => c.startIdx === i);
+    if (ch) {
+      curChapter = ch;
+      const chapterOfN = rawBlocks
+        .slice(i, i + 30) // rough limit
+        .filter((_, j) => {
+          const nextCh = chapters.find((c) => c.startIdx === i + j && c !== ch);
+          return !nextCh || i + j < (nextCh?.startIdx ?? Infinity);
+        }).length;
+      mergedBlocks.push({
+        type: "chapter-intro",
+        id: `chapter-intro-${ch.n}`,
+        chapter: ch,
+        chapterTotal: nChapters,
+        _chapter: ch
+      });
+    }
+    mergedBlocks.push({ ...rawBlocks[i], _chapter: curChapter });
+  }
+
+  const blocks = mergedBlocks.length ? mergedBlocks : rawBlocks;
   const total = blocks.length;
+
+  function chapterForBlock(b) { return b?._chapter || null; }
 
   const progressState = getProgress();
   const slideState = blocks.map((b) => {
@@ -632,13 +687,6 @@ export async function renderSlides(root, lesson) {
   });
 
   const chapters = Array.isArray(lesson.chapters) ? lesson.chapters : [];
-  function chapterForIdx(idx) {
-    let cur = null;
-    for (const c of chapters) {
-      if (idx >= c.startIdx) cur = c;
-    }
-    return cur;
-  }
 
   const header = document.createElement("div");
   header.className = "slides-header";
@@ -758,10 +806,12 @@ export async function renderSlides(root, lesson) {
     nextBtn.textContent = isLast ? "Înapoi la curs" : "Continuă";
     const cur = slideState[current];
     nextBtn.disabled = !isLast && !cur.canAdvance;
-    const ch = chapterForIdx(current);
+    const curBlock = slideState[current]?.block;
+    const ch = chapterForBlock(curBlock);
     if (ch) {
-      const prevIdx = current > 0 ? chapterForIdx(current - 1) : null;
-      const isNew = !prevIdx || prevIdx.n !== ch.n;
+      const prevBlock = current > 0 ? slideState[current - 1]?.block : null;
+      const prevCh = chapterForBlock(prevBlock);
+      const isNew = !prevCh || prevCh.n !== ch.n;
       chapterEl.textContent = `Capitolul ${ch.n} · ${ch.title}`;
       chapterEl.classList.toggle("slides-chapter--pulse", isNew && current > 0);
     } else {

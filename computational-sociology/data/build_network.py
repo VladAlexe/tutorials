@@ -161,6 +161,81 @@ inter_class_pct    = round(100 * inter_class_weight / total_weight, 1) if total_
 # alias for JSON placeholder syntax used in cards
 class_contact_split["globalBetweenPct"] = inter_class_pct
 
+# --- 11b. FULL SCHOOL: 9 classes, day 1, prag 3. Only descriptive stats,
+#          not the interactive network (which stays on 3 classes for readability).
+full_classes = sorted({c for c in klass.values()})
+full_keep = set(klass.keys())
+full_w = Counter()
+for t, i, j in rows:
+    if day_start <= t <= day_end and i in full_keep and j in full_keep:
+        a, b = (i, j) if i < j else (j, i)
+        full_w[(a, b)] += 1
+full_edges_pairs = [(a, b, c) for (a, b), c in full_w.items() if c >= MIN_WEIGHT]
+full_used = set()
+for a, b, _ in full_edges_pairs:
+    full_used.add(a); full_used.add(b)
+full_group_by = {n: klass[n] for n in full_used}
+full_sex_by   = {n: sex.get(n, "Unknown") for n in full_used}
+full_deg = Counter()
+for a, b, _ in full_edges_pairs:
+    full_deg[a] += 1
+    full_deg[b] += 1
+for n in full_used:
+    full_deg.setdefault(n, 0)
+
+full_class_freq = {}
+full_class_mean_degree = {}
+full_class_contact_split = {}
+full_class_sex_composition = {}
+full_total_weight = sum(c for _, _, c in full_edges_pairs)
+
+for c in full_classes:
+    class_nodes = [n for n in full_used if full_group_by[n] == c]
+    n_class = len(class_nodes)
+    nF = sum(1 for n in class_nodes if full_sex_by[n] == "F")
+    nM = sum(1 for n in class_nodes if full_sex_by[n] == "M")
+    nUnk = sum(1 for n in class_nodes if full_sex_by[n] not in ("F", "M"))
+    full_class_freq[c] = {"n": n_class, "nF": nF, "nM": nM, "nUnk": nUnk}
+    cd = [full_deg[n] for n in class_nodes]
+    full_class_mean_degree[c] = {
+        "mean":    round(sum(cd) / len(cd), 1) if cd else 0.0,
+        "degrees": cd,
+    }
+    denom = max(1, nF + nM)
+    full_class_sex_composition[c] = {
+        "pctF": round(100 * nF / denom, 1),
+        "pctM": round(100 * nM / denom, 1),
+        "n":    n_class,
+        "nF":   nF,
+        "nM":   nM,
+    }
+    internal, external = 0, 0
+    for (a, b, weight) in full_edges_pairs:
+        gs, gt = full_group_by[a], full_group_by[b]
+        if gs == c and gt == c:
+            internal += weight
+        elif gs == c or gt == c:
+            external += weight
+    tot = internal + external
+    full_class_contact_split[c] = {
+        "internalPct": round(100 * internal / tot, 1) if tot else 0.0,
+        "externalPct": round(100 * external / tot, 1) if tot else 0.0,
+    }
+full_inter_class_weight = sum(c for (a, b, c) in full_edges_pairs if full_group_by[a] != full_group_by[b])
+full_inter_class_pct    = round(100 * full_inter_class_weight / full_total_weight, 1) if full_total_weight else 0.0
+full_class_contact_split["globalBetweenPct"] = full_inter_class_pct
+
+full_school = {
+    "classes":            full_classes,
+    "totalStudents":      len(full_used),
+    "edges":              len(full_edges_pairs),
+    "classFreq":          full_class_freq,
+    "classMeanDegree":    full_class_mean_degree,
+    "classContactSplit":  full_class_contact_split,
+    "classSexComposition": full_class_sex_composition,
+    "interClassPct":      full_inter_class_pct,
+}
+
 # --- 12. majority illusion (seed = top 4 by degree)
 seed_ids = [n["id"] for n in top_deg[:4]]
 seed_set = set(seed_ids)
@@ -446,6 +521,7 @@ stats = {
     "edgeCountByThreshold": edge_count_by_threshold,
     "hoursCount":           len(hourly),
     "threeNetworks":        three_networks,
+    "fullSchool":           full_school,
 }
 
 with open(os.path.join(HERE, "highschool-stats.json"), "w", encoding="utf-8") as f:
@@ -483,3 +559,10 @@ print(f"snapshoturi orare: {len(hourly)}")
 print(f"trei retele: senzor={three_networks['sensorPairs']}  jurnal={three_networks['diariesPairs']}  prietenie={three_networks['friendshipPairs']}  facebook={three_networks['facebookPairs']}")
 print(f"  reciprocitate jurnal={three_networks['diariesReciprocityPct']}%  prietenie={three_networks['friendshipReciprocityPct']}%")
 print(f"  suprapunere senzor∩jurnal={three_networks['overlaps']['sensorVsDiaries']}%  senzor∩facebook={three_networks['overlaps']['sensorVsFacebook']}%  jurnal∩facebook={three_networks['overlaps']['diariesVsFacebook']}%")
+print()
+print(f"FULL SCHOOL: {full_school['classes']}  ({full_school['totalStudents']} elevi, {full_school['edges']} legaturi, {full_inter_class_pct}% intre clase)")
+for c in full_school['classes']:
+    cf = full_school['classFreq'][c]
+    csx = full_school['classSexComposition'][c]
+    cmd = full_school['classMeanDegree'][c]
+    print(f"  {c:>6}: {cf['n']:>2} elevi ({cf['nF']}F/{cf['nM']}M/{cf['nUnk']}?)  {csx['pctF']}%F  grad med {cmd['mean']}")

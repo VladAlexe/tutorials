@@ -350,8 +350,13 @@ function renderStrip(container, block, values) {
 }
 
 // ---- freq: table + bars for class composition ---------------------------
+function statsBucket(block, stats) {
+  return block.dataset && stats?.[block.dataset] ? stats[block.dataset] : stats;
+}
+
 function renderFreq(container, block, stats) {
-  const cf = stats?.classFreq || {};
+  const src = statsBucket(block, stats);
+  const cf = src?.classFreq || {};
   const rows = Object.entries(cf).filter(([k]) => k !== "globalBetweenPct");
   const total = rows.reduce((s, [, v]) => s + (v.n || 0), 0);
 
@@ -398,7 +403,8 @@ function renderFreq(container, block, stats) {
 
 // ---- grouped-strip: mean bars per class + individual points overlay -----
 function renderGroupedStrip(container, block, stats) {
-  const cmd = stats?.classMeanDegree || {};
+  const src = statsBucket(block, stats);
+  const cmd = src?.classMeanDegree || {};
   const rows = Object.entries(cmd);
   if (!rows.length) { container.textContent = "Fără date."; return; }
 
@@ -454,7 +460,8 @@ function renderGroupedStrip(container, block, stats) {
 
 // ---- stacked: intern/extern % per clasa ---------------------------------
 function renderStacked(container, block, stats) {
-  const ccs = stats?.classContactSplit || {};
+  const src = statsBucket(block, stats);
+  const ccs = src?.classContactSplit || {};
   const rows = Object.entries(ccs).filter(([k]) => k !== "globalBetweenPct");
   if (!rows.length) { container.textContent = "Fără date."; return; }
 
@@ -492,6 +499,53 @@ function renderStacked(container, block, stats) {
     `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
     `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
     `role="img" aria-label="Timp de contact pe clase">` +
+    svgRows + legend +
+    `</svg>`;
+  container.appendChild(svg);
+}
+
+// ---- sex-composition: 100% stacked bars F/M per class -------------------
+function renderSexComposition(container, block, stats) {
+  const src = statsBucket(block, stats);
+  const csx = src?.classSexComposition || {};
+  const rows = Object.entries(csx);
+  if (!rows.length) { container.textContent = "Fără date de compoziție pe sex."; return; }
+
+  const W = 480, H = Math.max(200, 40 + rows.length * 30);
+  const padL = 60, padR = 40, padT = 20, padB = 40;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const rowH = chartH / rows.length;
+
+  const svgRows = rows.map(([label, v], i) => {
+    const y = padT + i * rowH + rowH * 0.15;
+    const h = rowH * 0.6;
+    const wF = (v.pctF / 100) * chartW;
+    const wM = (v.pctM / 100) * chartW;
+    return (
+      `<text x="${padL - 6}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="${COL_INK_S}">${esc(label)}</text>` +
+      `<rect x="${padL}" y="${y.toFixed(1)}" width="${wF.toFixed(1)}" height="${h.toFixed(1)}" fill="${COL_BAR_B}" rx="2"/>` +
+      `<rect x="${(padL + wF).toFixed(1)}" y="${y.toFixed(1)}" width="${wM.toFixed(1)}" height="${h.toFixed(1)}" fill="${COL_BAR}" rx="2"/>` +
+      `<text x="${(padL + wF / 2).toFixed(1)}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="10" fill="${COL_BG}">${Math.round(v.pctF)}%</text>` +
+      `<text x="${(padL + wF + wM / 2).toFixed(1)}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="10" fill="${COL_BG}">${Math.round(v.pctM)}%</text>` +
+      `<text x="${(padL + chartW + 4).toFixed(1)}" y="${(y + h / 2 + 4).toFixed(1)}" font-size="10" fill="${COL_MUTED}">${v.n}</text>`
+    );
+  }).join("");
+
+  const legend =
+    `<g transform="translate(${padL}, ${H - 14})">` +
+    `<rect x="0" y="-10" width="10" height="10" fill="${COL_BAR_B}"/>` +
+    `<text x="14" y="-1" font-size="11" fill="${COL_INK_S}">fete</text>` +
+    `<rect x="80" y="-10" width="10" height="10" fill="${COL_BAR}"/>` +
+    `<text x="94" y="-1" font-size="11" fill="${COL_INK_S}">băieți</text>` +
+    `</g>`;
+
+  const svg = document.createElement("div");
+  svg.className = "chart__svg-wrap";
+  svg.innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
+    `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
+    `role="img" aria-label="Compoziția pe sex a claselor">` +
     svgRows + legend +
     `</svg>`;
   container.appendChild(svg);
@@ -645,6 +699,11 @@ export async function renderChart(container, block) {
     if (block.variant === "meanmedian") {
       const values = await getValues(block);
       renderMeanMedian(container, block, values);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "sex-composition") {
+      const stats = await getStats(block);
+      renderSexComposition(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "outcome-histogram") {

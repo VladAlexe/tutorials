@@ -625,17 +625,26 @@ export async function renderDiffusion(container, block, options = {}) {
       return null;
     }
 
+    function activate(metric, btn) {
+      controls.querySelectorAll("[data-metric]").forEach((b) => b.classList.remove("btn--primary", "diff-btn--active"));
+      controls.querySelectorAll("[data-metric]").forEach((b) => b.classList.add("btn--ghost"));
+      if (btn) { btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary", "diff-btn--active"); }
+      cy.nodes().removeClass("top");
+      const res = computeTop(metric);
+      if (res && res.id) {
+        const n = cy.getElementById(res.id);
+        if (n && n.length) n.addClass("top");
+        const who = nameById.get(res.id) || `Elev ${res.id}`;
+        valueEl.textContent = `${who}: ${res.label}`;
+      }
+    }
     controls.querySelectorAll("[data-metric]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        cy.nodes().removeClass("top");
-        const res = computeTop(btn.dataset.metric);
-        if (res && res.id) {
-          const n = cy.getElementById(res.id);
-          if (n && n.length) n.addClass("top");
-          const who = nameById.get(res.id) || `Elev ${res.id}`;
-          valueEl.textContent = `${who}: ${res.label}`;
-        }
-      });
+      btn.addEventListener("click", () => activate(btn.dataset.metric, btn));
+    });
+    // Activate first metric on load, so the user sees a highlight immediately.
+    requestAnimationFrame(() => {
+      const first = controls.querySelector('[data-metric="degree"]');
+      if (first) activate("degree", first);
     });
   }
 
