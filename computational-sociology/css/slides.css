@@ -50,7 +50,7 @@
   max-width: 34rem;
   width: 100%;
   margin: 0 auto;
-  padding: var(--sp-4) 0 var(--sp-4);
+  padding: var(--sp-4) 0 5.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -121,7 +121,7 @@
   line-height: 1.5;
 }
 
-/* Sticky footer nav; does not overlap content */
+/* Sticky footer nav; solid background so viz content never bleeds through */
 .slides-nav {
   position: sticky;
   bottom: 0;
@@ -131,8 +131,10 @@
   justify-content: space-between;
   gap: var(--sp-3);
   padding: var(--sp-3) 0 var(--sp-4);
-  background: linear-gradient(to top, var(--color-bg) 70%, rgba(250, 247, 242, 0));
+  background: var(--color-bg);
+  border-top: var(--border-thin-soft);
   margin-top: auto;
+  z-index: 1;
 }
 
 .slides-nav .btn {
@@ -158,9 +160,9 @@
 }
 
 .slide .viz__stage {
-  height: 60vh;
-  min-height: 320px;
-  max-height: 480px;
+  height: 45vh;
+  min-height: 260px;
+  max-height: 45vh;
 }
 
 /* Caption below viz/chart/diffusion — for text-viz-text single card */
@@ -549,8 +551,8 @@
   .slide__intro { font-size: 1.05rem; }
   .slide .viz__stage {
     height: 55vh;
-    min-height: 360px;
-    max-height: 520px;
+    min-height: 320px;
+    max-height: 55vh;
   }
 }
 

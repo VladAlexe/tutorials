@@ -1,6 +1,6 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-21 (tranșa 3, tonuri și structură pe #01-#04)
+Ultima actualizare: 2026-07-21 (tranșa 4, layout viz + #06)
 
 Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **completă, 36 de carduri + 2 add-on quiz-uri = 38 blocuri**.
 
@@ -13,6 +13,17 @@ Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **com
 3. **Bold rar.** Cel mult o idee-cheie per card, evidențiată cu `<strong>`. Bold-ul e semnal, nu decor.
 4. **Liste cu buline** numai unde conținutul e realmente enumerativ (definiții, exemple, opțiuni). Nu se transformă paragrafele obișnuite în liste.
 5. **HTML în intro/content:** de-acum `slide__intro` și `slide__body` interpretează HTML (`<p>`, `<ul>`, `<li>`, `<strong>`, `<a>`). Textele plate rămân compatibile: dacă intro-ul nu conține tag-uri, se afișează ca text normal.
+
+## Reguli globale pentru carduri cu vizualizare
+
+Se aplică la toate cardurile `interactive`, `visualization`, `diffusion` și `chart` cu rețea.
+
+1. **Înălțimea scenei:** `.slide .viz__stage` are `height: 45vh, min-height: 260px, max-height: 45vh` pe telefon; `height: 55vh, min-height: 320px, max-height: 55vh` pe desktop (`min-width: 768px`). Așa cardul (titlu + text intro + vizualizare + buton propriu + caption) încape fără derulare sau cu derulare minimă.
+2. **Text intro scurt.** La cardurile cu viz, intro-ul rămâne compact; nu se compensează cu font mai mic.
+3. **Cytoscape fără pan/zoom pe touch.** Toate instanțele Cytoscape primesc `...narrowCyOpts()` (export nou din `visualizations.js`), care dezactivează `userZoomingEnabled` și `userPanningEnabled` sub `700px`. Degetul pe canvas derulează pagina; nodurile rămân tappabile. Pe desktop comportamentul e neschimbat.
+4. **„Vezi toată rețeaua".** `renderNetwork` schimbă eticheta butonului propriu în funcție de dimensiune: rețele cu peste 20 de noduri (ex. cardul #10 — 93 elevi) primesc „Vezi toată rețeaua"; scenele mici păstrează „Resetează". Ambele apelează `cy.resize() + cy.fit(undefined, 30)`.
+5. **Dimensiuni noduri.** `baseStyle` din `visualizations.js` acceptă acum `{ nodeSize, highSize, fontSize, showLabels, edgeWidth }`. Valori curente: 93-node network `nodeSize: 12`; mini-network (6 noduri) `nodeSize: 18`; add-node/add-edge `nodeSize: 16`; scenele mici `fontSize: 10-11`. `makeStyle` din `diffusion.js`: node de bază `12`, `.knows` `14`, `.source` `20`, `.top` `22`.
+6. **Sticky nav nu mai suprapune conținutul.** `.slide` primește `padding-bottom: 5.5rem`, iar `.slides-nav` are fundal opac + `border-top` + `z-index: 1`. Butonul propriu al vizualizării stă în fluxul cardului, deasupra caption-ului, cu spațiu clar față de nav.
 
 - Fișier lecție: `lessons/highschool.json`
 - Fișier curs (index): `data/course.json`
@@ -126,14 +137,17 @@ Numerotarea este stabilă. Sufixul `b` (#19b, #31b) indică un quiz add-on legat
 
 ---
 
-## Card #06 — interactive add-node: „Nodul"
+## Card #06, interactive add-node: „Nodul"
 
 - **type:** `interactive` · **id:** `s06-nodul` · **mode:** `add-node`
 - **title:** Nodul
-- **intro:** Reducem fiecare persoană la un punct. E o pierdere asumată — biografie, intenții, context dispar — în schimbul posibilității de a vedea structura întregului. La finalul lecției revenim la ce anume s-a pierdut. Adaugă primul elev.
+- **intro:**
+  > Reducem fiecare persoană la un punct. E o pierdere asumată: biografie, intenții, context, toate dispar. În schimb câștigăm ceva ce niciun interviu nu poate oferi: vederea structurii întregului. La finalul lecției ne întoarcem la ce anume s-a pierdut pe drum.
 - **buttonLabel:** „Adaugă un elev"
-- **hint:** „Apasă butonul pentru a adăuga primul elev."
-- **successText:** „Un nod: o persoană, redusă la poziția ei în structură."
+- **hint (înainte de acțiune):** „Scena e goală. Adaugă primul elev."
+- **successText (după ce apare primul nod):**
+  > Un nod: o persoană, redusă la poziția ei în structură. Restul lecției se construiește pe această reducere.
+- **Interacțiune:** apeși butonul → apare un nod colorat pe scenă; după 6 apăsări butonul devine „Suficient" și se dezactivează. `baseStyle` folosit: `nodeSize: 16, fontSize: 10, edgeWidth: 2.5`.
 
 ---
 

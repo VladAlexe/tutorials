@@ -46,7 +46,27 @@ function buildGroupColors(groups) {
   return map;
 }
 
-function baseStyle(showLabels, edgeWidth) {
+export function isNarrowViewport() {
+  return typeof window !== "undefined"
+    && window.matchMedia
+    && window.matchMedia("(max-width: 699px)").matches;
+}
+
+export function narrowCyOpts() {
+  const narrow = isNarrowViewport();
+  return {
+    userZoomingEnabled: !narrow,
+    userPanningEnabled: !narrow,
+    boxSelectionEnabled: false
+  };
+}
+
+function baseStyle(opts = {}) {
+  const showLabels = opts.showLabels === true;
+  const edgeWidth  = opts.edgeWidth;
+  const nodeSize   = opts.nodeSize   ?? 16;
+  const highSize   = opts.highSize   ?? nodeSize + 6;
+  const fontSize   = opts.fontSize   ?? 11;
   return [
     {
       selector: "node",
@@ -55,11 +75,11 @@ function baseStyle(showLabels, edgeWidth) {
         "label": showLabels ? "data(label)" : "",
         "color": "#2a1f16",
         "font-family": "Georgia, serif",
-        "font-size": 13,
+        "font-size": fontSize,
         "text-valign": "bottom",
-        "text-margin-y": 6,
-        "width": 24,
-        "height": 24,
+        "text-margin-y": 4,
+        "width": nodeSize,
+        "height": nodeSize,
         "border-width": 1,
         "border-color": "#5a4a3a",
         "transition-property": "width, height, border-width, border-color, background-color",
@@ -81,18 +101,18 @@ function baseStyle(showLabels, edgeWidth) {
       selector: ".highlighted",
       style: {
         "border-color": "#2a1f16",
-        "border-width": 3,
-        "width": 30,
-        "height": 30,
+        "border-width": 2,
+        "width": highSize,
+        "height": highSize,
         "label": "data(label)",
         "font-family": "Georgia, serif",
-        "font-size": 13,
+        "font-size": fontSize + 1,
         "color": "#2a1f16",
         "text-background-color": "#faf7f2",
         "text-background-opacity": 0.9,
         "text-background-padding": 3,
         "text-valign": "bottom",
-        "text-margin-y": 6
+        "text-margin-y": 4
       }
     },
     {
@@ -255,8 +275,6 @@ function errorHandle(container, message) {
 
 export async function renderNetwork(container, block) {
   const defaultInfo = "Atinge un nod pentru detalii.";
-  const shell = createShell(container, block, "Resetează", "ghost");
-  shell.info.textContent = defaultInfo;
 
   let cytoscape, data;
   try {
@@ -268,17 +286,22 @@ export async function renderNetwork(container, block) {
 
   const { elements, nodes, groups, colorMap } = normalizeAndBuild(data);
   const showLabels = nodes.length <= 12;
+  const isSmall = nodes.length <= 20;
+  const nodeSize = isSmall ? 18 : 12;
+  const shell = createShell(container, block, isSmall ? "Resetează" : "Vezi toată rețeaua", "ghost");
+  shell.info.textContent = defaultInfo;
 
   const cy = cytoscape({
+    ...narrowCyOpts(),
     container: shell.stage,
     elements,
-    style: baseStyle(showLabels),
+    style: baseStyle({ showLabels, nodeSize, highSize: nodeSize + 8 }),
     layout: {
       name: "cose",
       animate: false,
-      padding: 24,
-      idealEdgeLength: 60,
-      nodeRepulsion: 5000,
+      padding: 20,
+      idealEdgeLength: 50,
+      nodeRepulsion: 4500,
       componentSpacing: 40
     },
     minZoom: 0.3,
@@ -331,10 +354,11 @@ export async function renderInteractive(container, block) {
 
     const { elements } = normalizeAndBuild(data);
     const cy = cytoscape({
+      ...narrowCyOpts(),
       container: shell.stage,
       elements,
-      style: baseStyle(true),
-      layout: { name: "cose", animate: false, padding: 24, idealEdgeLength: 70 },
+      style: baseStyle({ showLabels: true, nodeSize: 18, fontSize: 11 }),
+      layout: { name: "cose", animate: false, padding: 20, idealEdgeLength: 60 },
       minZoom: 0.4,
       maxZoom: 2.5
     });
@@ -377,9 +401,10 @@ export async function renderInteractive(container, block) {
     shell.info.textContent = block.hint || startHint;
 
     const cy = cytoscape({
+      ...narrowCyOpts(),
       container: shell.stage,
       elements: [],
-      style: baseStyle(true, 2.5),
+      style: baseStyle({ showLabels: true, edgeWidth: 2.5, nodeSize: 16, fontSize: 10 }),
       layout: { name: "preset" },
       minZoom: 0.5,
       maxZoom: 2
@@ -421,12 +446,13 @@ export async function renderInteractive(container, block) {
     shell.info.textContent = block.hint || startHint;
 
     const cy = cytoscape({
+      ...narrowCyOpts(),
       container: shell.stage,
       elements: [
         { data: { id: "1", label: "Ana", group: "exemplu", color: primaryColor }, position: { x: 120, y: 120 } },
         { data: { id: "2", label: "Bogdan", group: "exemplu", color: primaryColor }, position: { x: 260, y: 120 } }
       ],
-      style: baseStyle(true, 3),
+      style: baseStyle({ showLabels: true, edgeWidth: 3, nodeSize: 16, fontSize: 10 }),
       layout: { name: "preset" },
       minZoom: 0.5,
       maxZoom: 2

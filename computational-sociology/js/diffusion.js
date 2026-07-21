@@ -1,5 +1,5 @@
 const V = new URL(import.meta.url).searchParams.get("v") || "1";
-const { loadCytoscape, GROUP_PALETTE } = await import(`./visualizations.js?v=${V}`);
+const { loadCytoscape, GROUP_PALETTE, narrowCyOpts } = await import(`./visualizations.js?v=${V}`);
 
 // Shared state so successive slides can use the same source/threshold.
 const shared = {
@@ -105,8 +105,8 @@ function makeStyle() {
       style: {
         "background-color": "data(color)",
         "opacity": 0.15,
-        "width": 20,
-        "height": 20,
+        "width": 12,
+        "height": 12,
         "border-width": 1,
         "border-color": "#5a4a3a",
         "transition-property": "opacity, width, height, border-width, border-color",
@@ -117,28 +117,28 @@ function makeStyle() {
       selector: "edge",
       style: {
         "line-color": "#d9cfc0",
-        "width": 1.2,
+        "width": 1,
         "opacity": 0.4,
         "curve-style": "bezier"
       }
     },
-    { selector: "node.knows", style: { "opacity": 1, "width": 22, "height": 22 } },
+    { selector: "node.knows", style: { "opacity": 1, "width": 14, "height": 14 } },
     {
       selector: "node.source",
       style: {
         "border-color": "#2a1f16",
-        "border-width": 3,
-        "width": 28,
-        "height": 28,
+        "border-width": 2,
+        "width": 20,
+        "height": 20,
         "label": "data(label)",
         "font-family": "Georgia, serif",
-        "font-size": 13,
+        "font-size": 11,
         "color": "#2a1f16",
         "text-background-color": "#faf7f2",
         "text-background-opacity": 0.9,
         "text-background-padding": 3,
         "text-valign": "bottom",
-        "text-margin-y": 6
+        "text-margin-y": 4
       }
     },
     {
@@ -146,18 +146,18 @@ function makeStyle() {
       style: {
         "opacity": 1,
         "border-color": "#2a1f16",
-        "border-width": 3,
-        "width": 30,
-        "height": 30,
+        "border-width": 2,
+        "width": 22,
+        "height": 22,
         "label": "data(label)",
         "font-family": "Georgia, serif",
-        "font-size": 13,
+        "font-size": 11,
         "color": "#2a1f16",
         "text-background-color": "#faf7f2",
         "text-background-opacity": 0.9,
         "text-background-padding": 3,
         "text-valign": "bottom",
-        "text-margin-y": 6
+        "text-margin-y": 4
       }
     }
   ];
@@ -234,14 +234,15 @@ async function renderCompareThree(container, block) {
       ...edges.map((e) => ({ data: { id: e.id, source: e.source, target: e.target } }))
     ];
     const cy = cytoscape({
+      ...narrowCyOpts(),
       container: stage,
       elements,
       style: [
-        { selector: "node", style: { "background-color": "data(color)", "width": 10, "height": 10, "opacity": 0.4 } },
-        { selector: "node.focus", style: { "width": 16, "height": 16, "border-width": 1, "border-color": "#2a1f16", "opacity": 1, "label": "data(label)", "font-size": 9, "text-valign": "bottom", "text-margin-y": 4, "color": "#2a1f16", "text-background-color": "#faf7f2", "text-background-opacity": 0.9 } },
+        { selector: "node", style: { "background-color": "data(color)", "width": 8, "height": 8, "opacity": 0.4 } },
+        { selector: "node.focus", style: { "width": 13, "height": 13, "border-width": 1, "border-color": "#2a1f16", "opacity": 1, "label": "data(label)", "font-size": 9, "text-valign": "bottom", "text-margin-y": 4, "color": "#2a1f16", "text-background-color": "#faf7f2", "text-background-opacity": 0.9 } },
         { selector: "edge", style: { "line-color": "#b57140", "opacity": 0.35, "width": 1, "curve-style": "bezier" } }
       ],
-      layout: { name: "cose", animate: false, padding: 12, idealEdgeLength: 40, nodeRepulsion: 3000 },
+      layout: { name: "cose", animate: false, padding: 10, idealEdgeLength: 32, nodeRepulsion: 2800 },
       minZoom: 0.3, maxZoom: 2, wheelSensitivity: 0.2
     });
     cy.style().update();
@@ -328,15 +329,16 @@ export async function renderDiffusion(container, block, options = {}) {
   ];
 
   const cy = cytoscape({
+    ...narrowCyOpts(),
     container: stage,
     elements,
     style: makeStyle(),
     layout: {
       name: "cose",
       animate: false,
-      padding: 24,
-      idealEdgeLength: 60,
-      nodeRepulsion: 5000
+      padding: 20,
+      idealEdgeLength: 50,
+      nodeRepulsion: 4500
     },
     minZoom: 0.3,
     maxZoom: 2.5,
