@@ -95,7 +95,7 @@ function substituteText(text, stats) {
 const SUBST_FIELDS = [
   "title", "intro", "content", "description", "caption",
   "successText", "hint", "question", "explanation", "buttonLabel",
-  "xLabel", "yLabel", "note"
+  "xLabel", "yLabel", "note", "citation"
 ];
 
 function substituteBlock(block, stats) {
@@ -124,6 +124,13 @@ function substituteBlock(block, stats) {
     if (typeof p.legend === "string") p.legend = substituteText(p.legend, stats);
     if (typeof p.caption === "string") p.caption = substituteText(p.caption, stats);
     clone.preview = p;
+  }
+  if (clone.notification && typeof clone.notification === "object") {
+    const n = { ...clone.notification };
+    for (const k of ["meta1", "body", "meta2"]) {
+      if (typeof n[k] === "string") n[k] = substituteText(n[k], stats);
+    }
+    clone.notification = n;
   }
   if (Array.isArray(clone.questions)) {
     clone.questions = clone.questions.map((q) => {
@@ -183,9 +190,40 @@ function addBody(el, html) {
 }
 
 function addIntro(el, text) {
+  const wrap = document.createElement("div");
+  wrap.className = "slide__intro";
+  wrap.innerHTML = text;
+  el.appendChild(wrap);
+}
+
+function addNotification(el, n) {
+  const panel = document.createElement("div");
+  panel.className = "notification-panel";
+  if (n.meta1) {
+    const m1 = document.createElement("div");
+    m1.className = "notification-panel__meta";
+    m1.textContent = n.meta1;
+    panel.appendChild(m1);
+  }
+  if (n.body) {
+    const b = document.createElement("div");
+    b.className = "notification-panel__body";
+    b.textContent = n.body;
+    panel.appendChild(b);
+  }
+  if (n.meta2) {
+    const m2 = document.createElement("div");
+    m2.className = "notification-panel__meta notification-panel__meta--end";
+    m2.textContent = n.meta2;
+    panel.appendChild(m2);
+  }
+  el.appendChild(panel);
+}
+
+function addCitation(el, citation) {
   const p = document.createElement("p");
-  p.className = "slide__intro";
-  p.textContent = text;
+  p.className = "slide__citation";
+  p.innerHTML = citation;
   el.appendChild(p);
 }
 
@@ -199,14 +237,14 @@ function addCaption(el, text) {
 function addPreview(el, preview) {
   const pre = document.createElement("pre");
   pre.className = "data-preview";
+  pre.textContent = Array.isArray(preview.lines) ? preview.lines.join("\n") : String(preview);
+  el.appendChild(pre);
   if (preview.legend) {
     const l = document.createElement("div");
     l.className = "data-preview__legend";
     l.textContent = preview.legend;
     el.appendChild(l);
   }
-  pre.textContent = Array.isArray(preview.lines) ? preview.lines.join("\n") : String(preview);
-  el.appendChild(pre);
   if (preview.caption) {
     const cap = document.createElement("p");
     cap.className = "data-preview__caption";
@@ -379,8 +417,10 @@ function fillSlide(slideState, callbacks) {
     switch (b.type) {
       case "text": {
         if (b.title) addTitle(el, b.title);
+        if (b.notification) addNotification(el, b.notification);
         if (b.content) addBody(el, b.content);
         if (b.preview) addPreview(el, b.preview);
+        if (b.citation) addCitation(el, b.citation);
         break;
       }
       case "callout": {

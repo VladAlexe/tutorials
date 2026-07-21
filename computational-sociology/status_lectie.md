@@ -1,8 +1,18 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-21 (tranșa 2 — completă)
+Ultima actualizare: 2026-07-21 (tranșa 3, tonuri și structură pe #01-#04)
 
-Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **completă, 36 de carduri + 2 add-on quiz-uri = 38 blocuri**. Este ediția finală conform specificației.
+Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **completă, 36 de carduri + 2 add-on quiz-uri = 38 blocuri**.
+
+---
+
+## Reguli globale (valabile pentru toată lecția, acum și pe viitor)
+
+1. **Niciun en dash sau em dash** (`—`, `–`) nicăieri în lecție. Ori de câte ori un pasaj cere separare, se folosește virgulă, două puncte, punct-și-virgulă sau propoziții separate, fără să se schimbe sensul.
+2. **Paragrafe scurte.** Când textul depășește 3-4 rânduri, se sparge în două paragrafe. Un card = un ritm de citire clar, nu un bloc unic.
+3. **Bold rar.** Cel mult o idee-cheie per card, evidențiată cu `<strong>`. Bold-ul e semnal, nu decor.
+4. **Liste cu buline** numai unde conținutul e realmente enumerativ (definiții, exemple, opțiuni). Nu se transformă paragrafele obișnuite în liste.
+5. **HTML în intro/content:** de-acum `slide__intro` și `slide__body` interpretează HTML (`<p>`, `<ul>`, `<li>`, `<strong>`, `<a>`). Textele plate rămân compatibile: dacă intro-ul nu conține tag-uri, se afișează ca text normal.
 
 - Fișier lecție: `lessons/highschool.json`
 - Fișier curs (index): `data/course.json`
@@ -25,39 +35,53 @@ Numerotarea este stabilă. Sufixul `b` (#19b, #31b) indică un quiz add-on legat
 
 ---
 
-## Card #01 — text: „Întrebări vechi, urme noi"
+## Card #01, text: „Întrebări vechi, urme noi"
 
 - **type:** `text` · **id:** `s01-intrebari-vechi`
 - **title:** Întrebări vechi, urme noi
-- **content:**
-  > Sociologia pune de peste un secol întrebări precise: cine se leagă de cine, cum circulă o idee, de ce apar și se mențin inegalitățile. Instrumentele ei clasice — sondajul reprezentativ, interviul, observația — rămân standardul pentru multe dintre aceste întrebări. Ce s-a schimbat e altceva: aproape orice acțiune lasă azi o înregistrare — un mesaj, o plată, o validare de card, o căutare. Sociologia computațională folosește aceste urme, împreună cu instrumentele clasice, ca să răspundă la aceleași întrebări la o scară imposibilă înainte.
+- **content (HTML, 3 paragrafe, un bold cheie):**
+  > Sociologia pune de peste un secol întrebări precise: cine se leagă de cine, cum circulă o idee, de ce apar și se mențin inegalitățile. Instrumentele ei clasice, sondajul reprezentativ, interviul, observația, rămân standardul pentru multe dintre aceste întrebări.
+  >
+  > Ce s-a schimbat este materia primă. Aproape orice acțiune lasă azi o înregistrare: un mesaj, o plată, o validare de card, o căutare. Un secol întreg, sociologul vedea puțin și trebuia să deducă mult, dintr-un eșantion de câteva sute de oameni. Astăzi raportul s-a inversat: putem observa milioane de acțiuni, iar întrebarea grea a devenit alta, **ce înseamnă ceea ce vedem**.
+  >
+  > Sociologia computațională lucrează exact în acest punct: folosește urmele digitale împreună cu instrumentele clasice, ca să răspundă la întrebările vechi la o scară imposibilă înainte, fără să uite că o înregistrare nu se interpretează singură.
 
 ---
 
-## Card #02 — quiz: „Scara, măsura, simularea" (gating)
+## Card #02, quiz: „Scara, măsura, simularea" (gating)
 
 - **type:** `quiz` · **id:** `s02-scara-masura-simularea`
 - **title:** Scara, măsura, simularea
-- **intro (paragraf integral deasupra întrebării):**
-  > Calculul aduce trei lucruri. Scara: milioane de interacțiuni analizate, nu sute de chestionare. Măsura: concepte discutate până acum calitativ — influență, popularitate, izolare — pot fi definite operațional și comparate numeric. Simularea: putem construi modele ale unui proces social și le putem rula de o mie de ori, întrebând ce s-ar schimba dacă regulile ar fi altele — un experiment pe care realitatea nu ni-l permite.
+- **intro (HTML, paragraf + listă cu 3 elemente + paragraf de închidere; termenii cheie **Scara**, **Măsura**, **Simularea** în bold):**
+  > Ce aduce calculul în sociologie? Trei lucruri, fiecare cu un câștig și cu un preț.
+  >
+  > - **Scara.** Putem analiza milioane de interacțiuni, nu sute de chestionare. Câștigăm cuprinderea; pierdem adâncimea, pentru că nimeni nu poate întreba un milion de oameni de ce au făcut ce au făcut.
+  > - **Măsura.** Concepte discutate până acum calitativ, influența, popularitatea, izolarea, pot fi definite precis și comparate numeric. Câștigăm comparația; pierdem nuanța, pentru că orice definiție taie ceva din realitate.
+  > - **Simularea.** Putem construi modelul unui proces social și îl putem rula de o mie de ori, întrebând ce s-ar schimba dacă regulile ar fi altele. Un experiment pe care realitatea nu ni-l permite, dar care e doar atât de bun cât sunt regulile pe care le-am scris noi.
+  >
+  > Toate trei apar în lecția de azi. Începem cu o verificare scurtă.
 - **question:** Care dintre următoarele este o urmă digitală în sens strict?
 - **options:**
   1. `[0]` „O opinie exprimată într-un interviu"
   2. `[1]` „Validarea unui abonament de transport" ← **corect (correctIndex: 1)**
   3. `[2]` „O amintire personală"
   4. `[3]` „Intenția de vot declarată la telefon"
-- **explanation:** Urma digitală e înregistrarea automată a unui comportament, nu o declarație despre el. Distincția revine în lecție — și o vom vedea trădându-i chiar pe cei măsurați.
+- **explanation:**
+  > Urma digitală este înregistrarea automată a unui comportament, nu o declarație despre el. Oamenii uită, înfrumusețează, se contrazic; senzorul doar înregistrează. Distincția revine în lecție, și o vom vedea la lucru chiar pe datele noastre: ce declară elevii despre prieteniile lor și ce arată senzorii nu coincid.
 
 ---
 
-## Card #03 — text: „Marsilia, decembrie 2013" + preview
+## Card #03, text: „Marsilia, decembrie 2013" cu preview date + citare cu link
 
 - **type:** `text` · **id:** `s03-marsilia`
 - **title:** Marsilia, decembrie 2013
-- **content:**
-  > Într-un liceu francez, sute de elevi au purtat cinci zile senzori care înregistrau, la fiecare 20 de secunde, cine se află față în față cu cine. Nu conținutul discuțiilor — doar faptul și durata întâlnirii. Rezultatul: peste 180.000 de înregistrări, anonimizate și publicate pentru cercetare de proiectul SocioPatterns. Le-am atribuit prenume fictive, pentru lizibilitate. Lucrăm cu o felie: trei clase, o zi.
-- **preview (monospace):**
-  - legend: primele 5 rânduri din datele reale · coloane: timp (secunde unix), elev A, elev B, clasa A, clasa B
+- **content (HTML, 3 paragrafe, un bold cheie despre orientare):**
+  > Într-un liceu din Marsilia, sute de elevi au purtat cinci zile senzori de proximitate. La fiecare 20 de secunde, senzorii înregistrau cine se află față în față cu cine. Nu conținutul discuțiilor: doar faptul întâlnirii și durata ei.
+  >
+  > Un detaliu de construcție care contează: semnalul senzorilor este blocat de corpul uman, așa că doi elevi erau înregistrați doar dacă stăteau **orientați unul spre celălalt, la distanță de conversație**. Nu vecinătate întâmplătoare, ci interacțiune probabilă. Până și „cine e lângă cine" este, deci, o definiție construită de cercetători, nu un fapt brut. Rețineți gândul: revine.
+  >
+  > Rezultatul: peste 180.000 de înregistrări, anonimizate și publicate pentru cercetare de proiectul SocioPatterns. Fiecare elev este un număr; noi le-am atribuit prenume fictive, pentru lizibilitate. Lucrăm cu o felie: trei clase, o zi.
+- **preview (monospace, LEGENDĂ SUB LINII):**
   - lines:
     ```
     1385982020  454  640  MP     MP
@@ -66,16 +90,30 @@ Numerotarea este stabilă. Sufixul `b` (#19b, #31b) indică un quiz add-on legat
     1385982020   55  170  2BIO3  2BIO3
     1385982020    9  453  PC     PC
     ```
-  - caption: Sursa: Mastrandrea, Fournet, Barrat. „Contact patterns in a high school." PLoS ONE 10(9): e0136497 (2015).
+  - legend (sub blocul mono, o linie): „coloane: timp, elev A, elev B, clasa lui A, clasa lui B"
+- **citation (paragraf mic dedesubt, cu link către DOI):**
+  > Sursa datelor: R. Mastrandrea, J. Fournet, A. Barrat, „Contact patterns in a high school", [PLoS ONE 10(9), e0136497 (2015)](https://doi.org/10.1371/journal.pone.0136497).
 
 ---
 
-## Card #04 — text: „Vineri, 11:42"
+## Card #04, text: „Vineri, 11:42" cu panou notificare
 
 - **type:** `text` · **id:** `s04-vineri-1142`
 - **title:** Vineri, 11:42
-- **content:**
-  > Vineri, în pauza mare, un zvon a traversat școala: luni se anulează prima oră. Până la finalul programului îl cunoșteau zeci de elevi din clase diferite. Luni, ora s-a ținut. Zvonul e construit de noi pentru această analiză; școala, elevii și întâlnirile sunt reale. Miza nu e anecdotică: același mecanism duce o informație falsă prin milioane de conturi în câteva ore. Școala e laboratorul nostru la scară mică.
+- **notification (panou vizual în stil „mesaj interceptat", randat sus, sub titlu; fade-in scurt):**
+  - meta1 (linie mică deasupra corpului): „Vineri, 11:42, pauza mare"
+  - body (corp, tipografic, serif): „Auzi, luni pică prima oră. Sigur. Dă mai departe."
+  - meta2 (linie mică sub corp, italică): „expeditor necunoscut"
+- **content (HTML, 3 paragrafe scurte după panou, un bold cheie):**
+  > Până la finalul programului, zvonul ajunsese la zeci de elevi din clase diferite. Luni dimineață, prima oră s-a ținut.
+  >
+  > Zvonul e construit de noi, pentru această analiză. Școala, elevii și cele 180.000 de întâlniri sunt reale. Întrebarea la care răspundem e serioasă: **cum traversează o informație un grup de oameni**, cine o duce dintr-un grup în altul, și de ce unii o primesc iar alții nu.
+  >
+  > Miza depășește curtea școlii: același mecanism duce o informație falsă prin milioane de conturi în câteva ore. Diferența e doar de scară. Școala noastră e laboratorul în care mecanismul se vede cu ochiul liber.
+- **Note tehnice:**
+  - Panoul e construit doar din HTML + CSS, cu variabilele existente ale temei (fundal `--color-surface`, margine subtilă, umbră discretă, colțuri rotunjite, `max-width: 28rem`, centrat).
+  - Animație: `notif-fade` 380ms ease-out (dezactivat la `prefers-reduced-motion`).
+  - Slide-urile scurte fără viz nu mai forțează `min-height: 100dvh`; conținutul își dictează înălțimea. Gol vizibil deasupra titlului: eliminat prin trecerea `.slide` la `justify-content: flex-start` cu `padding: sp-4 0 sp-4`. Slide-urile cu viz păstrează `min-height` prin selector `:has()`.
 
 ---
 
