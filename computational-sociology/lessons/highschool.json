@@ -2,49 +2,95 @@
   "id": "highschool",
   "sectionNumber": 4,
   "format": "slides",
-  "title": "Rețeaua invizibilă a unei școli",
+  "title": "Zvonul",
   "lede": "",
   "prev": null,
   "next": null,
+  "statsSource": "data/highschool-stats.json",
   "blocks": [
     {
       "type": "text",
-      "title": "Rețeaua invizibilă a unei școli",
-      "content": "Sociologia întreabă de mult cine cu cine se leagă, cine are influență și cum se răspândește o idee într-un grup. Ce e nou e că lăsăm cu toții urme digitale, un mesaj, un like, o întâlnire, iar un calculator poate găsi tipare în milioane de astfel de urme. Și mai mult: putem construi mici lumi în cod și le putem rula, ca să vedem ce s-ar fi întâmplat dacă lucrurile ar fi fost altfel. Astăzi devenim detectivi: avem urmele reale ale unei școli, dar nu și povestea. O reconstruim din date."
-    },
-    {
-      "type": "interactive",
-      "id": "step-node",
-      "mode": "add-node",
-      "title": "Începe cu un nod",
-      "intro": "Începem cu o școală goală. Un nod este o persoană. Adaugă primul elev.",
-      "buttonLabel": "Adaugă un elev",
-      "hint": "Apasă butonul pentru a adăuga primul elev.",
-      "successText": "Ai creat un nod."
-    },
-    {
-      "type": "interactive",
-      "id": "step-edge",
-      "mode": "add-edge",
-      "title": "Adaugă o muchie",
-      "intro": "Doi elevi. Dacă s-au întâlnit față în față, îi legăm printr-o muchie.",
-      "buttonLabel": "Conectează-i",
-      "hint": "Doi elevi, încă neconectați. Apasă butonul.",
-      "successText": "O muchie este o relație. Cât de groasă va fi arată cât timp au petrecut împreună."
-    },
-    {
-      "type": "interactive",
-      "id": "step-mini",
-      "mode": "mini-network",
-      "data": "data/mini-network.json",
-      "title": "O rețea mică",
-      "intro": "Mai mulți elevi, mai multe întâlniri: o rețea. Atinge un nod ca să-i vezi vecinii.",
-      "buttonLabel": "Resetează",
-      "hint": "Atinge un nod pentru a-i vedea vecinii."
+      "id": "s01-intrebari-vechi",
+      "title": "Întrebări vechi, urme noi",
+      "content": "Sociologia pune de peste un secol întrebări precise: cine se leagă de cine, cum circulă o idee, de ce apar și se mențin inegalitățile. Instrumentele ei clasice — sondajul reprezentativ, interviul, observația — rămân standardul pentru multe dintre aceste întrebări. Ce s-a schimbat e altceva: aproape orice acțiune lasă azi o înregistrare — un mesaj, o plată, o validare de card, o căutare. Sociologia computațională folosește aceste urme, împreună cu instrumentele clasice, ca să răspundă la aceleași întrebări la o scară imposibilă înainte."
     },
     {
       "type": "quiz",
-      "id": "quiz-nod",
+      "id": "s02-scara-masura-simularea",
+      "title": "Scara, măsura, simularea",
+      "intro": "Calculul aduce trei lucruri. Scara: milioane de interacțiuni analizate, nu sute de chestionare. Măsura: concepte discutate până acum calitativ — influență, popularitate, izolare — pot fi definite operațional și comparate numeric. Simularea: putem construi modele ale unui proces social și le putem rula de o mie de ori, întrebând ce s-ar schimba dacă regulile ar fi altele — un experiment pe care realitatea nu ni-l permite.",
+      "question": "Care dintre următoarele este o urmă digitală în sens strict?",
+      "options": [
+        "O opinie exprimată într-un interviu",
+        "Validarea unui abonament de transport",
+        "O amintire personală",
+        "Intenția de vot declarată la telefon"
+      ],
+      "correctIndex": 1,
+      "explanation": "Urma digitală e înregistrarea automată a unui comportament, nu o declarație despre el. Distincția revine în lecție — și o vom vedea trădându-i chiar pe cei măsurați."
+    },
+    {
+      "type": "text",
+      "id": "s03-marsilia",
+      "title": "Marsilia, decembrie 2013",
+      "content": "Într-un liceu francez, sute de elevi au purtat cinci zile senzori care înregistrau, la fiecare 20 de secunde, cine se află față în față cu cine. Nu conținutul discuțiilor — doar faptul și durata întâlnirii. Rezultatul: peste 180.000 de înregistrări, anonimizate și publicate pentru cercetare de proiectul SocioPatterns. Le-am atribuit prenume fictive, pentru lizibilitate. Lucrăm cu o felie: trei clase, o zi.",
+      "preview": {
+        "legend": "primele 5 rânduri din datele reale · coloane: timp (secunde unix), elev A, elev B, clasa A, clasa B",
+        "lines": [
+          "1385982020  454  640  MP     MP",
+          "1385982020    1  939  2BIO3  2BIO3",
+          "1385982020  185  258  PC*    PC*",
+          "1385982020   55  170  2BIO3  2BIO3",
+          "1385982020    9  453  PC     PC"
+        ],
+        "caption": "Sursa: Mastrandrea, Fournet, Barrat. „Contact patterns in a high school.\" PLoS ONE 10(9): e0136497 (2015)."
+      }
+    },
+    {
+      "type": "text",
+      "id": "s04-vineri-1142",
+      "title": "Vineri, 11:42",
+      "content": "Vineri, în pauza mare, un zvon a traversat școala: luni se anulează prima oră. Până la finalul programului îl cunoșteau zeci de elevi din clase diferite. Luni, ora s-a ținut. Zvonul e construit de noi pentru această analiză; școala, elevii și întâlnirile sunt reale. Miza nu e anecdotică: același mecanism duce o informație falsă prin milioane de conturi în câteva ore. Școala e laboratorul nostru la scară mică."
+    },
+    {
+      "type": "text",
+      "id": "s05-cele-trei-intrebari",
+      "title": "Cele trei întrebări",
+      "content": "Unu: cine avea poziția din care zvonul putea porni? Doi: pe ce trasee a circulat între clase? Trei: unde ar trebui plasată o informație ca să se răspândească maximal — și, simetric, cum se apără cineva de o asemenea plasare? Instrumentele: statistică descriptivă, analiza structurii, simulare. Orice analiză începe însă cu o decizie: cum transformăm oameni în date."
+    },
+    {
+      "type": "interactive",
+      "id": "s06-nodul",
+      "mode": "add-node",
+      "title": "Nodul",
+      "intro": "Reducem fiecare persoană la un punct. E o pierdere asumată — biografie, intenții, context dispar — în schimbul posibilității de a vedea structura întregului. La finalul lecției revenim la ce anume s-a pierdut. Adaugă primul elev.",
+      "buttonLabel": "Adaugă un elev",
+      "hint": "Apasă butonul pentru a adăuga primul elev.",
+      "successText": "Un nod: o persoană, redusă la poziția ei în structură."
+    },
+    {
+      "type": "interactive",
+      "id": "s07-muchia",
+      "mode": "add-edge",
+      "title": "Muchia: prima decizie",
+      "intro": "O muchie e o relație — dar ce numim relație? Decizia noastră: două persoane sunt legate dacă au petrecut suficient timp față în față. Puteam decide altfel: prietenie declarată, contact online. Fiecare definiție produce altă rețea și alte concluzii.",
+      "buttonLabel": "Conectează-i",
+      "hint": "Doi elevi, încă neconectați. Apasă butonul.",
+      "successText": "În metodologie, asta se numește definiție operațională — locul unde cercetătorul își exercită și își asumă puterea. Revenim la consecințe în final."
+    },
+    {
+      "type": "interactive",
+      "id": "s08-reteaua-de-antrenament",
+      "mode": "mini-network",
+      "data": "data/mini-network.json",
+      "title": "Rețeaua de antrenament",
+      "intro": "Șase persoane, câteva legături. Atinge un nod: i se evidențiază vecinii și i se afișează gradul — numărul de legături directe. Prima operaționalizare: „cât de conectat ești\" devine un număr întreg.",
+      "buttonLabel": "Resetează",
+      "hint": "Atinge un nod pentru a-i vedea vecinii și gradul."
+    },
+    {
+      "type": "quiz",
+      "id": "s09-quiz-nod",
       "question": "Într-o rețea socială, ce reprezintă un nod?",
       "options": [
         "O relație",
@@ -53,113 +99,330 @@
         "Un fișier"
       ],
       "correctIndex": 1,
-      "explanation": "Nodurile sunt entitățile, de exemplu persoanele; muchiile sunt relațiile."
-    },
-    {
-      "type": "text",
-      "title": "S-a lansat un zvon",
-      "content": "Într-o zi obișnuită, un zvon a străbătut școala. Avem urmele reale: cine s-a întâlnit cu cine și cât. Dar nu știm cine l-a pornit și cine l-a dus mai departe. Suntem detectivi, iar singura noastră unealtă sunt datele. 93 de elevi, sute de întâlniri: prea multe ca să întrebăm pe fiecare. Hai să lăsăm statistica să lucreze."
+      "explanation": "Nodurile sunt entitățile; muchiile, relațiile dintre ele. Definițiile ambelor sunt alegeri ale analistului."
     },
     {
       "type": "visualization",
-      "id": "school-by-class",
+      "id": "s10-felia",
       "kind": "network",
       "data": "data/highschool-network.json",
-      "title": "Școala, pe clase",
-      "description": "Prima observație: elevii nu se amestecă la întâmplare. Se grupează pe clase.",
-      "caption": "Două clase de biologie se amestecă mult între ele. Clasa de matematică stă aproape singură. Deja un indiciu: un zvon pornit la matematică ar avea greu drum spre restul."
+      "title": "Felia: 93 de elevi, 250 de legături",
+      "description": "Trei clase, o zi. Culoarea: clasa.",
+      "caption": "Structura se vede imediat: cele două clase de biologie comunică între ele; clasa de matematică-fizică e aproape închisă, legată de rest prin foarte puține legături. Observația are consecințe măsurabile — dar întâi: de unde a apărut desenul ăsta?"
     },
     {
-      "type": "text",
-      "title": "Primul suspect: cel mai popular",
-      "content": "Instinctul spune că zvonul l-a pornit cel mai sociabil elev, cel cu cei mai mulți prieteni. Hai să-l găsim. Pentru fiecare elev numărăm câte contacte are. Acest număr se numește grad."
+      "type": "code",
+      "id": "code-prag",
+      "instance": "prag",
+      "title": "Din 180.000 de rânduri: pragul",
+      "intro": "Am numărat întâlnirile fiecărei perechi și am păstrat perechile cu cel puțin PRAG întâlniri. Iată chiar regula. Modific-o și rulează.",
+      "initial": "PRAG = 3\n# O legatura exista daca perechea are cel putin PRAG intalniri de 20 de secunde.\nedges = [p for p in pairs if p[\"weight\"] >= max(PRAG, prag_minim)]\n{\"edges\": edges, \"prag\": PRAG}",
+      "headerLabel": "Filtru de prag",
+      "caption": "Rețeaua nu e un fapt natural: e rezultatul unei decizii de măsurare. Alt prag, altă rețea, alte concluzii. Cine controlează definițiile controlează rezultatele."
     },
     {
       "type": "chart",
-      "id": "chart-degrees",
+      "id": "s12-freq",
+      "variant": "freq",
+      "title": "Școala în cifre: frecvențele",
+      "intro": "Cea mai simplă întrebare statistică: câți sunt în fiecare grup?",
+      "statsSource": "data/highschool-stats.json",
+      "caption": "Clasa 2BIO1 e predominant feminină (27 fete din 35 de elevi); clasa de matematică-fizică MP*1 e predominant masculină (20 băieți din 26). Compoziția grupurilor nu e detaliu — profilurile atrag diferit, iar asta va conta mai jos."
+    },
+    {
+      "type": "chart",
+      "id": "s13-grouped-strip",
+      "variant": "grouped-strip",
+      "title": "Media pe grupuri",
+      "intro": "Gradul mediu al unui elev, pe fiecare clasă. Prima comparație între grupuri: sunt clasele la fel de dense social?",
+      "statsSource": "data/highschool-stats.json",
+      "caption": "O medie pe grup ascunde variația din interiorul lui — punctele suprapuse pe bare arată exact cât. Diferența dintre medii e începutul oricărei analize comparative; variația din jurul lor e avertismentul ei."
+    },
+    {
+      "type": "chart",
+      "id": "s14-stacked",
+      "variant": "stacked",
+      "title": "Înăuntru și între",
+      "intro": "Din tot timpul de contact, cât se petrece în interiorul claselor și cât între ele?",
+      "statsSource": "data/highschool-stats.json",
+      "caption": "Global, doar {{classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele de clasă. Când aproape toată variația e „înăuntru\", apartenența la grup explică mult din cine cu cine vorbește — la noi, aproape tot. Zvonul a circulat totuși între clase: ne interesează exact excepțiile. Dosarul unu: cine avea poziția?"
+    },
+    {
+      "type": "chart",
+      "id": "s15-dots",
+      "variant": "dots",
+      "title": "93 de numere",
+      "intro": "Pentru fiecare elev, gradul lui. Iată toate cele 93 de valori, fără nicio ordine.",
+      "source": "data/highschool-stats.json",
+      "field": "degrees",
+      "yLabel": "grad",
+      "caption": "Ilizibil — intenționat. Prima operație a statisticii: ordonarea."
+    },
+    {
+      "type": "chart",
+      "id": "s16-strip",
+      "variant": "strip",
+      "title": "Ordinea",
+      "intro": "Aceleași valori, aliniate crescător.",
+      "source": "data/highschool-stats.json",
+      "field": "degrees",
+      "topLabel": "{{name:topDegree}}",
+      "yLabel": "grad",
+      "caption": "Majoritatea între 3 și 8 — și o valoare izolată sus: {{name:topDegree}}, {{stats.maxDegree}} contacte. Primul suspect. Extremele se văd; proporțiile, încă nu."
+    },
+    {
+      "type": "chart",
+      "id": "s17-histogram-static",
       "variant": "histogram",
-      "title": "Câte contacte are un elev?",
-      "intro": "Iată câte contacte are fiecare. Cei mai mulți au puține; câțiva au foarte multe.",
+      "title": "Cutiile",
+      "intro": "Grupăm valorile pe intervale și numărăm câți elevi cad în fiecare.",
       "source": "data/highschool-stats.json",
       "field": "degrees",
       "xLabel": "contacte",
       "yLabel": "elevi",
       "defaultBinWidth": 3,
-      "caption": "Forma nu e un clopot simetric, ci înclinată spre dreapta: o coadă lungă de câțiva foarte populari. Mișcă lățimea intervalului — aceeași distribuție arată altfel în funcție de cum o tăiem."
+      "slider": false,
+      "caption": "Construcția pe care ai urmărit-o pas cu pas are un nume: histogramă. Uită-te la forma ei — nu e simetrică. Exact forma asta domină lumea socială."
     },
     {
-      "type": "text",
-      "title": "Media minte, medianul spune adevărul",
-      "content": "Media este 5,4 contacte. Dar elevul din mijloc, medianul, are 5. Cel mai popular are 15 contacte, de aproape trei ori mai mult decât un elev obișnuit. El trage media în sus fără să fie tipic. Când câțiva au mult mai mult decât restul, media te păcălește; medianul te ține cu picioarele pe pământ."
-    },
-    {
-      "type": "diffusion",
-      "id": "susp-degree",
-      "mode": "highlight",
-      "metric": "degree",
-      "data": "data/highschool-network.json",
-      "title": "Suspectul numărul unu",
-      "intro": "Cel mai popular elev din școală, cu 15 contacte, e primul nostru suspect.",
-      "caption": "Are contacte peste tot în cele două clase de biologie. Pare vinovatul perfect. Dar statistica ne va arăta că popularitatea nu înseamnă răspândire."
-    },
-    {
-      "type": "diffusion",
-      "id": "susp-spread",
-      "mode": "highlight",
-      "metric": "spread",
-      "data": "data/highschool-network.json",
-      "title": "Cine duce zvonul cel mai departe?",
-      "intro": "Hai să testăm. Pornim zvonul din fiecare elev pe rând și numărăm câți află. Cine e cel mai bun răspânditor?",
-      "caption": "Surpriză: un elev mai discret poate răspândi la fel de departe ca vedeta clasei. Contează unde ești în rețea, nu doar câți prieteni ai."
+      "type": "code",
+      "id": "code-bins",
+      "instance": "bins",
+      "title": "Coada lungă",
+      "intro": "Mulți cu puțin, puțini cu mult: distribuție asimetrică, cu coadă dreaptă. Aceeași formă la venituri, audiențe, dimensiunea orașelor, citări academice. Dar cât de netedă pare depinde de o alegere.",
+      "initial": "LATIME_CUTIE = 3\n# Aceleasi 93 de valori, regrupate pe intervale de LATIME_CUTIE.\n{\"binWidth\": LATIME_CUTIE}",
+      "headerLabel": "Lățimea cutiei",
+      "xLabel": "contacte",
+      "yLabel": "elevi",
+      "caption": "Zimțat sau neted — din aceleași date. Un grafic corect factual poate induce în eroare prin alegeri de reprezentare nedeclarate. De-acum, la orice histogramă, întreabă cine a ales cutiile."
     },
     {
       "type": "chart",
-      "id": "chart-friendship",
-      "variant": "bars",
-      "title": "Paradoxul prieteniei",
-      "intro": "O întrebare pentru tine: crezi că ai mai mulți sau mai puțini prieteni decât colegii tăi? Aproape toți răspund mai puțini. Și, ciudat, au dreptate. În școala noastră, un elev are în medie 5,4 contacte, dar prietenii lui au în medie 6,7. Trei sferturi dintre elevi au prietenii mai populari decât ei înșiși.",
-      "bars": [
-        { "label": "media contactelor unui elev", "value": 5.4 },
-        { "label": "media contactelor prietenilor lui", "value": 6.7, "color": "#3d7a52" }
-      ],
-      "caption": "Nu e o coincidență: e o capcană de eșantionare. Oamenii foarte populari apar în listele multor altora, deci îi vezi peste tot; cei izolați aproape nicăieri. De asta rețelele sociale te fac să te simți mai puțin popular decât ești: vezi o lume aleasă părtinitor."
-    },
-    {
-      "type": "diffusion",
-      "id": "susp-between",
-      "mode": "highlight",
-      "metric": "between",
-      "data": "data/highschool-network.json",
-      "title": "Adevăratul vinovat: puntea",
-      "intro": "Zvonul a trecut dintr-o clasă în alta. Cine face legătura? Nu neapărat cel mai popular, ci puntea: elevul fără de care grupurile ar rămâne separate. O găsim cu o măsură numită intermediere.",
-      "caption": "Puntea e persoana prin care trece cel mai des drumul dintre doi elevi din grupuri diferite. Ea ține școala legată. Scoate-o, și zvonul rămâne prins."
-    },
-    {
-      "type": "diffusion",
-      "id": "susp-investigation",
-      "mode": "investigation",
-      "data": "data/highschool-network.json",
-      "title": "Deci cine a răspândit zvonul?",
-      "intro": "Avem patru suspecți, fiecare vinovat după altă definiție. Apasă fiecare buton — vezi cum se schimbă cel evidențiat.",
-      "caption": "Sunt persoane diferite. Nu există un singur vinovat. Răspunsul depinde de ce numim răspândire: cel mai popular nu e cel mai bun răspânditor; cel care petrece mult timp e într-o clasă izolată, deci timpul lui nu ajută; adevăratul difuzor e cineva bine plasat, nu cineva cu mulți prieteni."
+      "id": "s19-meanmedian",
+      "variant": "meanmedian",
+      "title": "Media și medianul",
+      "intro": "Media: {{stats.meanDegree}}. Medianul: {{stats.medianDegree}}. Apropiate — deocamdată. Trage cursorul: adaugă în școală un elev cu gradul pe care îl alegi, până la 200.",
+      "source": "data/highschool-stats.json",
+      "field": "degrees",
+      "defaultBinWidth": 3,
+      "caption": "Media urcă abrupt; medianul abia se mișcă. În distribuții cu coadă, media e sensibilă la extreme; medianul descrie poziția tipică."
     },
     {
       "type": "quiz",
-      "id": "quiz-medie",
-      "question": "Media contactelor e 5,4, dar cel mai popular are 15. Ce ne spune asta?",
+      "id": "s19b-quiz-medie",
+      "title": "Medie versus median",
+      "question": "Venitul mediu dintr-o țară crește cu 10%, venitul median stagnează. Ce s-a întâmplat, cel mai probabil?",
       "options": [
-        "Toți au cam 5 contacte",
-        "Câțiva foarte populari trag media în sus",
-        "Datele sunt greșite",
-        "Media e mereu cel mai bun rezumat"
+        "Toți câștigă cu 10% mai mult",
+        "Creșterea s-a concentrat la vârf",
+        "Medianul e calculat greșit",
+        "Oamenii declară venituri false"
       ],
       "correctIndex": 1,
-      "explanation": "Când câțiva au mult mai mult decât restul, media crește fără să descrie elevul tipic. De aceea ne uităm și la median, și la forma distribuției."
+      "explanation": "Exact ce ai văzut la cursor: coada trage media, medianul rămâne la omul din mijloc."
+    },
+    {
+      "type": "vote",
+      "id": "s20-paradox",
+      "title": "Votează, apoi verifică",
+      "question": "Prietenii tăi au, în medie, mai mulți prieteni decât tine, la fel, sau mai puțini?",
+      "options": [
+        "Mai mulți",
+        "Cam la fel",
+        "Mai puțini"
+      ],
+      "reveal": {
+        "text": "În școala noastră, un elev are în medie {{friendshipParadox.meanDegree}} contacte; prietenii unui elev au în medie {{friendshipParadox.meanFriendDegree}}. {{friendshipParadox.pctBelow}}% dintre elevi stau sub media prietenilor lor. Nu e psihologie, e eșantionare: persoanele cu multe legături apar, prin definiție, în listele multor altora — lista ta de prieteni supra-reprezintă popularii. Fenomenul e documentat de Scott Feld (1991). Orice feed îți arată o selecție deplasată spre cei vizibili; comparația zilnică cu ea e o comparație cu un eșantion deformat. Pentru anchetă: percepția despre „cine e excepțional\" e distorsionată de structură — ne trebuie măsuri, nu impresii.",
+        "bars": [
+          { "label": "media contactelor unui elev", "value": 5.4 },
+          { "label": "media contactelor prietenilor lui", "value": 6.7, "color": "#3d7a52" }
+        ],
+        "messagesByOption": {
+          "0": "Ai votat împotriva intuiției comune — și datele îți dau dreptate, dar nu din motivul la care te gândești.",
+          "1": "Ai votat ca majoritatea — și, ca majoritatea, datele te contrazic.",
+          "2": "Ai votat ca majoritatea — și, ca majoritatea, datele te contrazic."
+        }
+      }
+    },
+    {
+      "type": "diffusion",
+      "id": "s21-temporal",
+      "mode": "temporal",
+      "data": "data/highschool-network.json",
+      "hoursSource": "data/highschool-hours.json",
+      "title": "Rețeaua respiră",
+      "intro": "Desenul nostru adună o zi întreagă într-o singură imagine — o simplificare cu un cost precis. Datele au timpul la 20 de secunde. Trage cursorul peste orele zilei.",
+      "caption": "În ore, contactele se restrâng; în pauze, explodează — inclusiv între clase. Consecința metodologică: un drum care există în graful agregat poate să nu fi existat niciodată în realitate, dacă întâlnirile s-au petrecut în ordinea greșită. Informația nu circulă înapoi în timp. Rețelele cu timp se numesc rețele temporale — un domeniu activ de cercetare."
+    },
+    {
+      "type": "code",
+      "id": "code-diffuz",
+      "instance": "diffuz",
+      "title": "Modelul 1: pragul",
+      "intro": "Primul model de răspândire, cu regula minimă: zvonul trece de la un elev la vecinii cu care legătura e suficient de strânsă.",
+      "initial": "SURSA = \"{{name:topDegree}}\"\nPRAG_TRANSMITERE = 3\n# Zvonul pleaca de la SURSA si trece pe orice muchie cu greutate >= PRAG_TRANSMITERE.\n{\"source_name\": SURSA, \"threshold\": PRAG_TRANSMITERE}",
+      "headerLabel": "Sursă + prag",
+      "caption": "Din {{name:topDegree}}, zvonul acoperă biologia — dar cu prag ridicat nu atinge matematica. Pornit din matematică, moare acolo. Modelul e transparent și util. E și fals într-un punct precis — îl reparăm după ce îl exploatăm."
+    },
+    {
+      "type": "diffusion",
+      "id": "s23-investigation",
+      "mode": "investigation",
+      "data": "data/highschool-network.json",
+      "title": "Patru definiții, patru suspecți",
+      "intro": "„Cine a răspândit zvonul?\" sunt de fapt patru întrebări. Apasă fiecare definiție.",
+      "caption": "Persoane diferite, la fiecare apăsare. Poziția în structură prevalează asupra numărului de legături. Grad ({{name:topDegree}}, {{stats.maxDegree}} contacte). Timp petrecut ({{name:topTime}} — campion la prezență, dar într-o clasă aproape închisă: timpul lui nu scoate zvonul din clasă). Intermediere (puntea: prin cine trec drumurile dintre grupuri). Rază de răspândire (din simulare)."
+    },
+    {
+      "type": "diffusion",
+      "id": "s24-game",
+      "mode": "game",
+      "data": "data/highschool-network.json",
+      "attempts": 3,
+      "title": "Concursul de viralitate",
+      "intro": "Sarcina ta: alege sursa care duce zvonul la cei mai mulți. Trei încercări. Recordul posibil: {{spreadRanking.max}}.",
+      "caption": "Aceeași optimizare o fac echipele de marketing, campaniile politice și operațiunile de dezinformare: nu „la câți ajung direct\", ci „din cine se rostogolește\". A ști cum se face e prima condiție ca s-o recunoști."
+    },
+    {
+      "type": "diffusion",
+      "id": "s25-sir",
+      "mode": "sir",
+      "data": "data/highschool-network.json",
+      "pTransmit": 0.10,
+      "pStop": 0.20,
+      "title": "Modelul 2: oamenii nu sunt relee",
+      "intro": "Pragul presupune transmitere garantată: cine aude, spune mai departe. Fals — oamenii uită, se plictisesc, se îndoiesc. Modelele serioase de zvon vin din epidemiologie: SIR (Kermack & McKendrick, 1927) și, pentru zvonuri, Daley–Kendall (1964), unde purtătorii se sting. La noi: transmiterea devine probabilitate.",
+      "caption": "Un proces social nu are un viitor — are o distribuție de viitoruri. Întrebarea corectă nu e „ce se va întâmpla\", ci „cu ce probabilitate\". Cu p transmitere 0,1 și p stingere 0,2, rulările sunt bimodale: fie zvonul moare sub 5 elevi, fie ajunge la 45-60. Aproape nimic la mijloc."
+    },
+    {
+      "type": "diffusion",
+      "id": "s26-majority",
+      "mode": "majority",
+      "data": "data/highschool-network.json",
+      "title": "Iluzia majorității",
+      "intro": "De ce l-au crezut toți atât de repede? Dacă zvonul e știut de câțiva elevi cu multe legături, un elev obișnuit vede o parte mare din vecinii lui știindu-l — și conchide că „toată lumea vorbește\". Trage cursorul: alege câți elevi „știu\" și vezi câți se simt înconjurați.",
+      "caption": "O minoritate bine plasată produce percepția de majoritate (Lerman, Yan & Wu, 2016). Chiar și când o minoritate mică cunoaște ceva, dacă e formată din oameni bine conectați, o mare parte a rețelei se poate simți înconjurată de „ei toți știu\". Același mecanism face opinii marginale să pară dominante în rețelele sociale."
+    },
+    {
+      "type": "diffusion",
+      "id": "s27-path",
+      "mode": "path",
+      "data": "data/highschool-network.json",
+      "title": "Distanțe scurte",
+      "intro": "Cât de departe sunt doi elevi oarecare? Atinge doi elevi din clase diferite.",
+      "caption": "Drumul mediu pe componenta mare: {{smallWorld.avgPath}} pași; cel mai lung drum minim: {{smallWorld.diameter}}. Experimentul scrisorilor al lui Milgram (1967) a găsit același lucru la scara unei țări: distanțele sociale sunt sistematic mai mici decât intuiția. Pentru un zvon, câteva trepte ajung."
+    },
+    {
+      "type": "diffusion",
+      "id": "s28-photo-film",
+      "mode": "photo-film",
+      "data": "data/highschool-network.json",
+      "title": "Fotografia și filmul",
+      "intro": "Iată rezultatul final al unei răspândiri: cine știe, cine nu. Poți identifica sursa doar din această imagine? Atinge nodul bănuit. Apoi: Derulează filmul.",
+      "caption": "Mai multe surse pot produce aceeași fotografie; doar ordinea în timp separă cauza de consecință. Nouă ne e ușor — deținem filmul complet. În cercetarea reală, despre epidemii sau dezinformare, observațiile sunt fragmente rare, iar identificarea sursei e o problemă deschisă. Datele fără timp descriu; pentru cauze, e nevoie de timp."
+    },
+    {
+      "type": "text",
+      "id": "s29-verdict",
+      "title": "Verdictul: vinovatul depinde de definiție",
+      "content": "Patru măsuri, patru persoane. Campionul prezenței — irelevant prin izolare. Un elev cu 4 contacte — răspânditor de top prin poziție. Sursa — vizibilă doar în timp. Concluzia are un nume: operaționalizare. „Influența\" nu există în date; apare când alegem cum s-o măsurăm, iar alegerea are consecințe — în cercetare, în presă, în deciziile platformelor. Ultima datorie a analistului: îndoiala față de propriile instrumente. Ne întoarcem la promisiunea de la muchie."
+    },
+    {
+      "type": "diffusion",
+      "id": "s30-compare-three",
+      "mode": "compare-three",
+      "data": "data/highschool-three-networks.json",
+      "title": "Ce este un prieten? Trei măsurători",
+      "intro": "Aceiași elevi au fost măsurați în trei moduri: senzori (proximitate fizică), chestionar (prietenie declarată), Facebook (legătură online). Trei rețele. Coincid?",
+      "caption": "Nu. Pe elevii noștri: {{threeNetworks.overlapSensorDeclared}}% suprapunere senzor–declarat, {{threeNetworks.overlapSensorFacebook}}% senzor–Facebook; iar dintre prieteniile declarate, {{threeNetworks.reciprocityPct}}% sunt declarate din ambele părți. Instrumentele computaționale înregistrează comportamentul — că doi oameni stau împreună; sensul relației — ce înseamnă ea pentru ei — rămâne accesibil interviului și chestionarului (Sato, 2024). Sociologia computațională și cea clasică nu sunt rivale: măsoară straturi diferite ale aceleiași realități, iar cercetarea bună le combină."
+    },
+    {
+      "type": "diffusion",
+      "id": "s31-recolor-sex",
+      "mode": "recolor-sex",
+      "data": "data/highschool-network.json",
+      "title": "Homofilia",
+      "intro": "O ipoteză testabilă: elevii petrec mai mult timp cu colegi de același sex decât ar rezulta din amestec pur întâmplător?",
+      "caption": "Rețeaua recolorată pe sex arată răspunsul vizual. Observat: {{homophilySex.observedPct}}% din timpul de contact e între persoane de același sex. Așteptat la amestec întâmplător (dat 52 fete, 41 băieți): {{homophilySex.expectedPct}}%. Diferența are un nume: homofilie — similaritatea structurează legăturile: sex, clasă, pasiuni, mai târziu profesie și venit. Consecința serioasă: dacă legăturile urmează similaritatea, informația, oportunitățile și resursele circulă preferențial în interiorul grupurilor. Inegalitatea are o structură de rețea, nu doar cauze individuale."
+    },
+    {
+      "type": "quiz",
+      "id": "s31b-quiz-homofilie",
+      "title": "Homofilia, consecințe",
+      "question": "Dacă elevii cu rezultate bune se împrietenesc preponderent între ei, ce se întâmplă cu informațiile utile despre admitere și facultăți?",
+      "options": [
+        "Se distribuie uniform în școală",
+        "Circulă preponderent în interiorul grupului lor",
+        "Dispar",
+        "Ajung mai repede la toți"
+      ],
+      "correctIndex": 1,
+      "explanation": "Homofilia canalizează resursele, nu doar simpatiile — unul dintre mecanismele prin care avantajele se reproduc."
+    },
+    {
+      "type": "text",
+      "id": "s32-etica",
+      "title": "Etica măsurării",
+      "content": "Datele sunt anonimizate. Suficient? „Elevul cu {{stats.maxDegree}} contacte, punte între două clase\" poate fi identificabil în școala lui fără niciun nume: când poziția e unică, structura te dă de gol la fel de bine ca identitatea. Re-identificarea prin structură e un risc documentat — de aceea cercetarea serioasă adaugă consimțământ, agregare, acces controlat. Și simetria care trebuie spusă direct: instrumentele din această lecție sunt cu dublă utilizare. Aceleași calcule găsesc nodul optim pentru o campanie de vaccinare sau pentru una de dezinformare. Competența tehnică fără judecată despre folosire e exact ce reproșăm algoritmilor."
+    },
+    {
+      "type": "text",
+      "id": "s33-ce-ai-facut",
+      "title": "Ce ai făcut, de fapt",
+      "content": "Ai transformat 180.000 de înregistrări într-o structură analizabilă. Ai construit o histogramă treaptă cu treaptă și ai văzut cum lățimea intervalului îi schimbă înfățișarea. Ai despărțit media de median și știi când diverg. Ai testat o intuiție personală contra datelor și ai pierdut — din motive de eșantionare, nu de psihologie. Ai comparat grupuri prin frecvențe, medii și variație internă. Ai rulat un proces social de o sută de ori și ai citit distribuția rezultatelor. Ai văzut că trei instrumente de măsură produc trei versiuni ale „prieteniei\". Asta nu a fost o lecție despre rețele. A fost metoda: cum devine viața socială date, ce se câștigă, ce se pierde, cine decide definițiile."
+    },
+    {
+      "type": "text",
+      "id": "s34-domeniul",
+      "title": "Domeniul",
+      "content": "Sociologia computațională stă la intersecția sociologiei cu știința datelor. Se practică în cercetare, politici publice, sănătate publică, planificare urbană, jurnalism de date, etica algoritmilor. Se studiază la Amsterdam, Dublin, Berkeley, Linköping, Koç — și programe în formare în România. Ce ai parcurs azi e, la scară redusă și cu date publice, chiar fluxul de lucru al domeniului."
+    },
+    {
+      "type": "quizset",
+      "id": "s35-proba",
+      "title": "Proba analistului",
+      "intro": "Trei întrebări care condensează întreaga lecție. Răspunde la toate.",
+      "questions": [
+        {
+          "question": "Un articol anunță că venitul mediu a crescut cu 10%. Ce verifici înainte de orice concluzie?",
+          "options": [
+            "Ce a făcut medianul, între timp",
+            "Cine a scris articolul",
+            "Dacă e vară sau iarnă",
+            "Câte pagini are raportul"
+          ],
+          "correctIndex": 0,
+          "explanation": "Media e sensibilă la vârf; medianul spune ce s-a întâmplat cu omul din mijloc. Fără el, „media a crescut\" poate ascunde că majoritatea stagnează."
+        },
+        {
+          "question": "În feedul tău, „toată lumea\" susține o poziție. Ce știi acum despre această impresie?",
+          "options": [
+            "Poziția e cu adevărat majoritară",
+            "Feedul e un eșantion deformat; o minoritate bine plasată poate părea majoritate",
+            "Algoritmul e stricat",
+            "Nu poți spune nimic"
+          ],
+          "correctIndex": 1,
+          "explanation": "Paradoxul prieteniei și iluzia majorității produc împreună exact acest efect. Vezi în special cei populari; și vezi „toți vecinii mei știu\" chiar când doar câțiva știu."
+        },
+        {
+          "question": "Vrei ca o informație corectă să ajungă în toate grupurile unei comunități. După ce criteriu alegi primii oameni cărora le-o dai?",
+          "options": [
+            "Cel mai popular",
+            "Cel care petrece cel mai mult timp cu ceilalți",
+            "Cel care leagă grupuri diferite (intermediere / punte)",
+            "Aleatoriu"
+          ],
+          "correctIndex": 2,
+          "explanation": "Poziția de punte, nu numărul de contacte. Un popular în interiorul unui grup rămâne în grupul lui. O punte trece."
+        }
+      ]
     },
     {
       "type": "conclusion",
-      "title": "Sociologie computațională",
-      "content": "Am pornit de la două idei, nod și muchie, și am ajuns la o anchetă reală. Am folosit rețele ca să vedem structura, și statistică — distribuții, medie, median — ca să găsim suspecții. Marea lecție: un concept social, precum a răspândi sau a fi influent, nu e scris în date. Devine mai multe numere diferite, în funcție de cum îl definim. Sociologia pune întrebări vechi despre oameni; ce e nou e că le răspundem construind, măsurând și rulând. Asta face un calculator, iar creta nu putea. <br><br><small>Date reale: SocioPatterns, liceul Thiers, Marsilia, 2013 (Mastrandrea et al., PLoS ONE 10(9), e0136497, 2015).</small>"
+      "id": "s36-caz-inchis",
+      "title": "Caz închis",
+      "content": "Ancheta s-a bazat pe datele reale ale unui liceu din Marsilia, colectate și publicate de SocioPatterns. Citare: R. Mastrandrea, J. Fournet, A. Barrat, „Contact patterns in a high school\", <em>PLoS ONE</em> 10(9), e0136497 (2015). Zvonul a fost construit de noi; școala, oamenii și întâlnirile sunt reale. Ediția următoare: aceeași anchetă, cu clasa voastră ca noduri vii."
     }
   ]
 }

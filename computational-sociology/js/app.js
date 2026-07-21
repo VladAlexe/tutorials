@@ -74,7 +74,7 @@ function renderProgress(course) {
   const progress = getProgress();
   const s = summarize(course);
   document.getElementById("progress-count").textContent =
-    `${s.completed} / ${s.total} secțiuni`;
+    `${s.completed} / ${s.total} lecții`;
   document.getElementById("progress-fill").style.width = `${Math.round(s.ratio * 100)}%`;
   const summaryEl = document.getElementById("progress-summary");
   if (s.completed === 0 && s.started === 0) {

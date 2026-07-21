@@ -96,12 +96,15 @@
     14,
     15
   ],
-  "meanDegree": 5.38,
+  "meanDegree": 5.4,
   "medianDegree": 5,
   "maxDegree": 15,
   "friendshipParadox": {
-    "meanNodeDegree": 5.38,
-    "meanFriendsDegree": 6.72,
+    "meanDegree": 5.4,
+    "meanFriendDegree": 6.7,
+    "pctBelow": 75,
+    "meanNodeDegree": 5.4,
+    "meanFriendsDegree": 6.7,
     "fractionBelow": 0.75
   },
   "topByDegree": [
@@ -167,5 +170,252 @@
       "group": "2BIO2",
       "value": 504
     }
-  ]
+  ],
+  "classFreq": {
+    "2BIO1": {
+      "n": 35,
+      "nF": 27,
+      "nM": 8,
+      "nUnk": 0
+    },
+    "2BIO2": {
+      "n": 32,
+      "nF": 19,
+      "nM": 13,
+      "nUnk": 0
+    },
+    "MP*1": {
+      "n": 26,
+      "nF": 6,
+      "nM": 20,
+      "nUnk": 0
+    }
+  },
+  "classMeanDegree": {
+    "2BIO1": {
+      "mean": 5.2,
+      "degrees": [
+        6,
+        6,
+        6,
+        8,
+        5,
+        15,
+        9,
+        4,
+        3,
+        4,
+        6,
+        4,
+        2,
+        10,
+        2,
+        2,
+        3,
+        4,
+        2,
+        3,
+        5,
+        7,
+        2,
+        1,
+        6,
+        5,
+        4,
+        1,
+        3,
+        11,
+        8,
+        9,
+        2,
+        6,
+        8
+      ]
+    },
+    "2BIO2": {
+      "mean": 6.6,
+      "degrees": [
+        8,
+        7,
+        12,
+        4,
+        9,
+        9,
+        12,
+        1,
+        3,
+        1,
+        7,
+        8,
+        6,
+        6,
+        3,
+        2,
+        10,
+        6,
+        14,
+        12,
+        13,
+        5,
+        6,
+        4,
+        4,
+        7,
+        8,
+        4,
+        4,
+        1,
+        9,
+        5
+      ]
+    },
+    "MP*1": {
+      "mean": 4.2,
+      "degrees": [
+        6,
+        1,
+        3,
+        1,
+        1,
+        6,
+        3,
+        11,
+        2,
+        8,
+        2,
+        2,
+        4,
+        7,
+        4,
+        3,
+        3,
+        8,
+        5,
+        5,
+        4,
+        3,
+        5,
+        5,
+        4,
+        2
+      ]
+    }
+  },
+  "classContactSplit": {
+    "2BIO1": {
+      "internalPct": 92.6,
+      "externalPct": 7.4
+    },
+    "2BIO2": {
+      "internalPct": 96.2,
+      "externalPct": 3.8
+    },
+    "MP*1": {
+      "internalPct": 100.0,
+      "externalPct": 0.0
+    },
+    "globalBetweenPct": 1.9
+  },
+  "interClassPct": 1.9,
+  "majorityIllusion": {
+    "seedIds": [
+      177,
+      353,
+      407,
+      28
+    ],
+    "seedNames": [
+      "Octav",
+      "Irina",
+      "Sandu",
+      "Bogdan"
+    ],
+    "nSeeds": 4,
+    "seedCount": 4,
+    "nWithNeighbors": 93,
+    "pctExposed": 0.0,
+    "pctSeeMajority": 0.0
+  },
+  "smallWorld": {
+    "n": 67,
+    "meanPathLen": 3.0,
+    "avgPath": 3.0,
+    "diameter": 6
+  },
+  "homophilySex": {
+    "observedPct": 74.7,
+    "expectedPct": 50.2,
+    "nF": 52,
+    "nM": 41
+  },
+  "spreadRanking": {
+    "threshold": 3,
+    "max": 67,
+    "champions": [
+      {
+        "id": 3,
+        "name": "Ana",
+        "group": "2BIO2",
+        "value": 67
+      },
+      {
+        "id": 27,
+        "name": "Bianca",
+        "group": "2BIO2",
+        "value": 67
+      },
+      {
+        "id": 28,
+        "name": "Bogdan",
+        "group": "2BIO2",
+        "value": 67
+      },
+      {
+        "id": 46,
+        "name": "Carla",
+        "group": "2BIO2",
+        "value": 67
+      },
+      {
+        "id": 61,
+        "name": "Cristi",
+        "group": "2BIO2",
+        "value": 67
+      }
+    ]
+  },
+  "edgeCountByThreshold": {
+    "1": 493,
+    "2": 326,
+    "3": 250,
+    "4": 218,
+    "5": 197,
+    "6": 178,
+    "7": 153,
+    "8": 136,
+    "9": 126,
+    "10": 119
+  },
+  "hoursCount": 5,
+  "threeNetworks": {
+    "sensorPairs": 250,
+    "diariesPairs": 86,
+    "friendshipPairs": 52,
+    "facebookPairs": 137,
+    "diariesReciprocityPct": 66.7,
+    "friendshipReciprocityPct": 87.0,
+    "reciprocityPct": 87.0,
+    "overlaps": {
+      "sensorVsDiaries": 43.0,
+      "sensorVsFacebook": 26.3,
+      "diariesVsFacebook": 17.4
+    },
+    "overlapSensorDeclared": 43.0,
+    "overlapSensorFacebook": 26.3,
+    "overlapDeclaredFacebook": 17.4,
+    "nodesInSensor": 93,
+    "nodesInDiaries": 33,
+    "nodesInFriendship": 30,
+    "nodesInFacebook": 42
+  }
 }

@@ -3,39 +3,15 @@
   "title": "Introducere în sociologia computațională",
   "subtitle": "Cum studiem societatea folosind date și cod",
   "audience": "Liceeni",
-  "duration": "60 de minute",
-  "description": "Un traseu scurt și interactiv despre modul în care sociologii folosesc datele digitale, vizualizările, rețelele și codul pentru a înțelege comportamentul social. Vei experimenta cu un scurt exercițiu Python direct în browser și cu o rețea socială interactivă.",
+  "duration": "30 de minute",
+  "description": "Un traseu scurt și interactiv despre modul în care sociologii folosesc datele digitale, rețelele și statistica pentru a înțelege comportamentul social. Deocamdată avem o singură lecție: o anchetă reală despre cum circulă un zvon într-un liceu.",
   "whatYouWillDo": [
-    "Vei explora ce înseamnă „urme digitale”.",
-    "Vei citi o vizualizare simplă cu date sintetice.",
-    "Vei atinge un nod dintr-o rețea socială demonstrativă.",
-    "Vei rula prima ta linie de Python în browser."
+    "Vei construi pas cu pas o rețea socială: noduri și muchii.",
+    "Vei explora rețeaua reală a unui liceu din Marsilia.",
+    "Vei folosi statistica pentru a găsi cine ar fi putut porni un zvon.",
+    "Vei descoperi paradoxul prieteniei pe date reale."
   ],
   "sections": [
-    {
-      "id": "s1",
-      "number": 1,
-      "title": "Ce este sociologia computațională?",
-      "description": "O introducere scurtă în domeniu și în întrebările pe care le pune.",
-      "lesson": "demo",
-      "status": "available"
-    },
-    {
-      "id": "s2",
-      "number": 2,
-      "title": "Urme digitale și date sociale",
-      "description": "De unde vin datele pe care le studiem?",
-      "lesson": null,
-      "status": "planned"
-    },
-    {
-      "id": "s3",
-      "number": 3,
-      "title": "Vizualizarea datelor",
-      "description": "Cum privim tiparele fără să ne pierdem în cifre.",
-      "lesson": null,
-      "status": "planned"
-    },
     {
       "id": "s4",
       "number": 4,
@@ -43,22 +19,6 @@
       "description": "Noduri, muchii și ce ne spun despre relații.",
       "lesson": "highschool",
       "status": "available"
-    },
-    {
-      "id": "s5",
-      "number": 5,
-      "title": "Primul exercițiu Python",
-      "description": "Scriem câteva linii de cod pentru a răspunde la o întrebare simplă.",
-      "lesson": null,
-      "status": "planned"
-    },
-    {
-      "id": "s6",
-      "number": 6,
-      "title": "Interpretare și limite",
-      "description": "Ce nu ne pot spune datele și de ce contează contextul.",
-      "lesson": null,
-      "status": "planned"
     }
   ]
 }

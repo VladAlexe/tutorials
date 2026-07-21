@@ -60,6 +60,10 @@
 /* Slides that carry a visualization, quiz, or media fill from the top */
 .slide:has(.viz),
 .slide:has(.quiz),
+.slide:has(.vote),
+.slide:has(.chart),
+.slide:has(.code-runner),
+.slide:has(.data-preview),
 .slide:has(.figure),
 .slide:has(.video-placeholder) {
   justify-content: flex-start;
@@ -168,6 +172,145 @@
   margin: var(--sp-3) 0 0;
 }
 
+/* Data preview (monospace mini-block for raw data samples) */
+.data-preview {
+  background: var(--color-surface-alt, #f2ede5);
+  border: var(--border-thin-soft);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3);
+  margin: var(--sp-3) 0 0;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+  overflow-x: auto;
+  white-space: pre;
+}
+.data-preview__legend {
+  font-family: system-ui, sans-serif;
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  margin: var(--sp-3) 0 var(--sp-2);
+  padding: 0 var(--sp-1);
+}
+.data-preview__caption {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  margin: var(--sp-2) 0 0;
+}
+
+/* Vote block */
+.vote {
+  margin-top: var(--sp-3);
+}
+.vote__question {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+  margin: 0 0 var(--sp-3);
+}
+.vote__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.vote__option {
+  min-height: 48px;
+  justify-content: flex-start;
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+}
+.vote__option--picked {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-accent);
+}
+.vote__reveal {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: var(--border-thin-soft);
+}
+.vote__reveal-msg {
+  font-weight: 500;
+  color: var(--color-ink);
+  margin: 0 0 var(--sp-3);
+  line-height: 1.4;
+}
+.vote__reveal-text {
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 var(--sp-3);
+}
+
+/* Code runner (interactive) */
+.code-viz {
+  margin-bottom: var(--sp-3);
+}
+.code-runner__warn {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  margin: var(--sp-2) 0 0;
+}
+
+/* Quizset (multiple sequential quizzes on one card) */
+.quizset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-top: var(--sp-3);
+}
+.quizset__q {
+  padding: var(--sp-3);
+  background: var(--color-surface);
+  border: var(--border-thin-soft);
+  border-radius: var(--radius-md);
+}
+.quizset__num {
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  margin-bottom: var(--sp-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Compare-three (three side-by-side / stacked networks) */
+.compare-three {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+.compare-three__cell {
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.compare-three__cap {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  border-bottom: var(--border-thin-soft);
+}
+.compare-three__stage {
+  height: 220px;
+  min-height: 200px;
+  background: var(--color-bg);
+}
+.compare-three__foot {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  border-top: var(--border-thin-soft);
+}
+@media (min-width: 768px) {
+  .compare-three { grid-template-columns: 1fr 1fr 1fr; }
+  .compare-three__stage { height: 260px; }
+}
+
 /* Chart (histogram, bars) */
 .chart {
   background: var(--color-surface);
@@ -176,6 +319,20 @@
   padding: var(--sp-3) var(--sp-3) var(--sp-4);
   margin-top: var(--sp-2);
 }
+.chart__freq {
+  border-collapse: collapse;
+  margin: 0 auto var(--sp-3);
+  font-size: 0.9rem;
+  color: var(--color-ink);
+}
+.chart__freq th, .chart__freq td {
+  padding: 4px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--color-line-soft);
+  font-variant-numeric: tabular-nums;
+}
+.chart__freq th:first-child { text-align: left; }
+.chart__freq__total th, .chart__freq__total td { font-weight: 500; }
 
 .chart__svg-wrap {
   width: 100%;

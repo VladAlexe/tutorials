@@ -13,7 +13,7 @@ const [
 
 function getLessonId() {
   const params = new URLSearchParams(location.search);
-  return params.get("id") || "demo";
+  return params.get("id") || "highschool";
 }
 
 async function loadLesson(id) {

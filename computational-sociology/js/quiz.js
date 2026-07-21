@@ -1,5 +1,5 @@
 const V = new URL(import.meta.url).searchParams.get("v") || "1";
-const { markQuizAnswered, getProgress } = await import(`./progress.js?v=${V}`);
+const { markQuizAnswered, getProgress, markVote, getVote } = await import(`./progress.js?v=${V}`);
 
 export function renderQuiz(container, block, options = {}) {
   const state = { selected: null, verified: false };
@@ -146,5 +146,86 @@ export function renderQuiz(container, block, options = {}) {
     verifyBtn.hidden = false;
     verifyBtn.disabled = true;
     retryBtn.hidden = true;
+  }
+}
+
+/**
+ * Vote block: question, big options, reveal after choice with message + optional bars.
+ * block: { id, question, options[], reveal: { text, bars, messagesByOption } }
+ */
+export function renderVote(container, block, options = {}) {
+  const onAnswered = typeof options.onAnswered === "function" ? options.onAnswered : null;
+  const prior = getVote(block.id);
+
+  container.classList.add("vote");
+
+  const q = document.createElement("p");
+  q.className = "vote__question";
+  q.textContent = block.question;
+  container.appendChild(q);
+
+  const optWrap = document.createElement("div");
+  optWrap.className = "vote__options";
+  container.appendChild(optWrap);
+
+  const revealWrap = document.createElement("div");
+  revealWrap.className = "vote__reveal";
+  revealWrap.hidden = true;
+  container.appendChild(revealWrap);
+
+  const optBtns = [];
+  (block.options || []).forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn btn--ghost vote__option";
+    btn.textContent = opt;
+    btn.addEventListener("click", () => pick(idx));
+    optWrap.appendChild(btn);
+    optBtns.push(btn);
+  });
+
+  async function pick(idx) {
+    for (const b of optBtns) {
+      b.disabled = true;
+      b.classList.toggle("vote__option--picked", optBtns.indexOf(b) === idx);
+    }
+    markVote(block.id, { selectedIndex: idx });
+    await showReveal(idx);
+    if (onAnswered) onAnswered({ selectedIndex: idx });
+  }
+
+  async function showReveal(idx) {
+    revealWrap.hidden = false;
+    revealWrap.innerHTML = "";
+    const reveal = block.reveal || {};
+    const msg = reveal.messagesByOption && reveal.messagesByOption[String(idx)];
+    if (msg) {
+      const p = document.createElement("p");
+      p.className = "vote__reveal-msg";
+      p.innerHTML = msg;
+      revealWrap.appendChild(p);
+    }
+    if (reveal.text) {
+      const p = document.createElement("p");
+      p.className = "vote__reveal-text";
+      p.innerHTML = reveal.text;
+      revealWrap.appendChild(p);
+    }
+    if (Array.isArray(reveal.bars) && reveal.bars.length) {
+      const chartWrap = document.createElement("div");
+      chartWrap.className = "chart";
+      const { renderChart } = await import(`./charts.js?v=${V}`);
+      await renderChart(chartWrap, { variant: "bars", bars: reveal.bars });
+      revealWrap.appendChild(chartWrap);
+    }
+  }
+
+  if (prior && typeof prior.selectedIndex === "number") {
+    for (const b of optBtns) {
+      b.disabled = true;
+      b.classList.toggle("vote__option--picked", optBtns.indexOf(b) === prior.selectedIndex);
+    }
+    showReveal(prior.selectedIndex);
+    if (onAnswered) onAnswered({ selectedIndex: prior.selectedIndex });
   }
 }

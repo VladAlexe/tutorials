@@ -56,6 +56,17 @@ export function markQuizAnswered(quizId, { correct, selectedIndex }) {
   safeSet(s);
 }
 
+export function markVote(voteId, { selectedIndex }) {
+  const s = safeGet();
+  s.votes = s.votes || {};
+  s.votes[voteId] = { selectedIndex, at: Date.now() };
+  safeSet(s);
+}
+
+export function getVote(voteId) {
+  return safeGet().votes?.[voteId] || null;
+}
+
 export function markCodeExecuted(codeId) {
   const s = safeGet();
   s.code[codeId] = { executed: true, at: Date.now() };

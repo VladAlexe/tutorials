@@ -260,7 +260,8 @@ export async function renderNetwork(container, block) {
 
   let cytoscape, data;
   try {
-    [cytoscape, data] = await Promise.all([loadCytoscape(), loadJSON(block.data)]);
+    cytoscape = await loadCytoscape();
+    data = block.inlineData || await loadJSON(block.data);
   } catch (err) {
     return errorHandle(container, err.message);
   }
@@ -332,7 +333,7 @@ export async function renderInteractive(container, block) {
     const cy = cytoscape({
       container: shell.stage,
       elements,
-      style: baseStyle(false),
+      style: baseStyle(true),
       layout: { name: "cose", animate: false, padding: 24, idealEdgeLength: 70 },
       minZoom: 0.4,
       maxZoom: 2.5
@@ -340,9 +341,23 @@ export async function renderInteractive(container, block) {
     cy.style().update();
     shell.legend.remove();
 
-    const hl = attachTapHighlight(cy, shell.info, defaultInfo);
+    function clearHl() {
+      cy.elements().removeClass("highlighted neighbor-edge dimmed");
+      shell.info.textContent = defaultInfo;
+    }
+    cy.on("tap", "node", (e) => {
+      const node = e.target;
+      cy.elements().addClass("dimmed");
+      node.closedNeighborhood().removeClass("dimmed");
+      node.addClass("highlighted");
+      node.connectedEdges().addClass("neighbor-edge");
+      const deg = node.connectedEdges().length;
+      shell.info.textContent = `${formatNodeInfo(node.data())} — grad ${deg}`;
+    });
+    cy.on("tap", (e) => { if (e.target === cy) clearHl(); });
+
     shell.button.addEventListener("click", () => {
-      hl.clear();
+      clearHl();
       cy.resize();
       cy.fit(undefined, 30);
     });

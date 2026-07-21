@@ -29,25 +29,39 @@ async function ensurePyodide() {
   }
 }
 
-async function runCode(code) {
+function toJs(value) {
+  if (value === undefined || value === null) return "";
+  if (typeof value?.toJs === "function") {
+    try { return value.toJs({ create_proxies: false, dict_converter: Object.fromEntries }); }
+    catch { /* fall through */ }
+  }
+  return value;
+}
+
+async function runCode(code, context) {
   const py = await ensurePyodide();
 
-  // Redirect stdout/stderr per run.
   let stdout = "";
   py.setStdout({ batched: (s) => { stdout += s + "\n"; } });
   py.setStderr({ batched: (s) => { stdout += s + "\n"; } });
 
   try {
-    const result = await py.runPythonAsync(code);
-    let value = result;
-    if (value !== undefined && value !== null && typeof value?.toJs === "function") {
-      try { value = value.toJs({ create_proxies: false }); } catch { /* keep original */ }
+    if (context && typeof context === "object") {
+      for (const [k, v] of Object.entries(context)) {
+        py.globals.set(k, py.toPy(v));
+      }
     }
-    self.postMessage({
-      type: "result",
-      value: value === undefined ? "" : (typeof value === "object" ? JSON.stringify(value) : value),
-      stdout
-    });
+    const result = await py.runPythonAsync(code);
+    const jsValue = toJs(result);
+    let payload;
+    if (typeof jsValue === "object" && jsValue !== null) {
+      payload = jsValue;
+    } else if (jsValue === undefined || jsValue === null || jsValue === "") {
+      payload = "";
+    } else {
+      payload = jsValue;
+    }
+    self.postMessage({ type: "result", value: payload, stdout });
   } catch (err) {
     self.postMessage({
       type: "error",
@@ -62,6 +76,6 @@ self.addEventListener("message", (e) => {
   if (msg.type === "init") {
     ensurePyodide().catch(() => { /* error already posted */ });
   } else if (msg.type === "run") {
-    runCode(String(msg.code || ""));
+    runCode(String(msg.code || ""), msg.context || null);
   }
 });
