@@ -636,6 +636,8 @@ export async function renderSlides(root, lesson) {
   const statsSource = lesson.statsSource || "data/highschool-stats.json";
   const stats = await loadStats(statsSource);
 
+  const chapters = Array.isArray(lesson.chapters) ? lesson.chapters : [];
+
   const rawBlocks = lesson.blocks || [];
   // Inject chapter-intro cards at every chapter startIdx.
   const mergedBlocks = [];
@@ -685,8 +687,6 @@ export async function renderSlides(root, lesson) {
     }
     return s;
   });
-
-  const chapters = Array.isArray(lesson.chapters) ? lesson.chapters : [];
 
   const header = document.createElement("div");
   header.className = "slides-header";
