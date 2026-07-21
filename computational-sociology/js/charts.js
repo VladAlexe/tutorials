@@ -48,6 +48,7 @@ const COL_INK_S = "#5a4a3a";
 const COL_LINE  = "#d9cfc0";
 const COL_MEAN  = "#8b4a1e";
 const COL_MEDIAN = "#3d7a52";
+const COL_BG    = "#faf7f2";
 
 function esc(s) {
   return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
@@ -272,7 +273,7 @@ async function renderDots(container, block, values, stats) {
   container.appendChild(meta);
 }
 
-// ---- strip (ordered values) --------------------------------------------
+// ---- strip (ordered values, animated from scattered) -------------------
 function renderStrip(container, block, values) {
   const chartHost = document.createElement("div");
   chartHost.className = "chart__svg-wrap";
@@ -285,31 +286,31 @@ function renderStrip(container, block, values) {
   const sorted = [...values].sort((a, b) => a - b);
   const maxV = Math.max(...sorted, 1);
   const minV = Math.min(...sorted, 0);
+  const yFor = (v) => padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85;
 
-  const points = sorted.map((v, i) => {
-    const x = padL + (i / Math.max(1, sorted.length - 1)) * chartW;
-    const y = padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85;
-    return { x, y, v, i };
-  });
+  // Jitter uses same seed as the dots card, so animation appears to continue from #15.
+  const rnd = seededRandom(42);
+  const jitter = sorted.map((v) => ({ jx: rnd(), jy: rnd() }));
+  const scatterX = jitter.map((j) => padL + j.jx * chartW);
+  const scatterY = jitter.map((j, i) => yFor(sorted[i]) + j.jy * 12);
+  const targetX  = sorted.map((_, i) => padL + (i / Math.max(1, sorted.length - 1)) * chartW);
+  const targetY  = sorted.map((v) => yFor(v));
 
   const axisX =
     `<line x1="${padL}" y1="${padT + chartH}" x2="${W - padR}" y2="${padT + chartH}" ` +
     `stroke="${COL_MUTED}" stroke-width="0.5"/>`;
-  const yGrid = [0, 5, 10, 15].map(gv => {
+  const yGrid = [0, 5, 10, 15].map((gv) => {
     const gy = padT + (1 - (gv - minV) / Math.max(1, maxV - minV)) * chartH * 0.85;
     return `<line x1="${padL}" y1="${gy.toFixed(1)}" x2="${W - padR}" y2="${gy.toFixed(1)}" stroke="${COL_LINE}" stroke-width="0.5"/>` +
            `<text x="${padL - 4}" y="${(gy + 3).toFixed(1)}" text-anchor="end" font-size="10" fill="${COL_MUTED}">${gv}</text>`;
   }).join("");
 
-  const highlight = points[points.length - 1];
-  const dots = points.map((d, idx) => {
-    const isTop = idx === points.length - 1;
-    return `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="${isTop ? 5 : 3.4}" fill="${isTop ? COL_BAR_B : COL_BAR}" fill-opacity="${isTop ? 0.95 : 0.7}"><title>Grad ${d.v}</title></circle>`;
+  const dotsMarkup = sorted.map((v, i) => {
+    const isTop = i === sorted.length - 1;
+    return `<circle cx="${scatterX[i].toFixed(1)}" cy="${scatterY[i].toFixed(1)}" r="${isTop ? 5 : 3.4}" fill="${isTop ? COL_BAR_B : COL_BAR}" fill-opacity="${isTop ? 0.95 : 0.7}" data-i="${i}"><title>Grad ${v}</title></circle>`;
   }).join("");
 
-  const topLabel = highlight
-    ? `<text x="${highlight.x.toFixed(1)}" y="${(highlight.y - 10).toFixed(1)}" text-anchor="middle" font-size="12" fill="${COL_INK}">${block.topLabel || "vârf"}</text>`
-    : "";
+  const topLabelEl = `<text data-role="top-label" x="${targetX[targetX.length-1].toFixed(1)}" y="${(targetY[targetY.length-1] - 10).toFixed(1)}" text-anchor="middle" font-size="12" fill="${COL_INK}" opacity="0">${esc(block.topLabel || "vârf")}</text>`;
 
   const xLabel = block.xLabel
     ? `<text x="${W / 2}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${COL_INK_S}">${esc(block.xLabel)}</text>`
@@ -319,8 +320,28 @@ function renderStrip(container, block, values) {
     `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
     `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
     `role="img" aria-label="${esc(block.title || 'Valori ordonate')}">` +
-    yGrid + axisX + dots + topLabel + xLabel +
+    yGrid + axisX + dotsMarkup + topLabelEl + xLabel +
     `</svg>`;
+
+  const circles = chartHost.querySelectorAll("circle");
+  const topLabel = chartHost.querySelector('[data-role="top-label"]');
+  const reduced = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const DUR = reduced ? 0 : 900;
+  const start = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+  function frame() {
+    const now = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+    const t = DUR ? Math.min(1, (now - start) / DUR) : 1;
+    const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    circles.forEach((c, i) => {
+      const x = scatterX[i] + (targetX[i] - scatterX[i]) * eased;
+      const y = scatterY[i] + (targetY[i] - scatterY[i]) * eased;
+      c.setAttribute("cx", x.toFixed(1));
+      c.setAttribute("cy", y.toFixed(1));
+    });
+    if (topLabel) topLabel.setAttribute("opacity", eased.toFixed(2));
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 
   const meta = document.createElement("div");
   meta.className = "chart__meta";
@@ -629,7 +650,7 @@ export async function renderChart(container, block) {
     if (block.variant === "outcome-histogram") {
       const hint = document.createElement("div");
       hint.className = "chart__meta";
-      hint.textContent = "Va fi populat la „Rulează de 100 de ori" din difuzia SIR.";
+      hint.textContent = 'Va fi populat la „Rulează de 100 de ori" din difuzia SIR.';
       container.appendChild(hint);
       return { refit() {}, destroy() {} };
     }

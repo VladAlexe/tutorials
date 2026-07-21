@@ -7,6 +7,15 @@
   "prev": null,
   "next": null,
   "statsSource": "data/highschool-stats.json",
+  "chapters": [
+    { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
+    { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 },
+    { "n": 3, "title": "Școala în cifre", "startIdx": 10 },
+    { "n": 4, "title": "Primul suspect", "startIdx": 14 },
+    { "n": 5, "title": "Cum a circulat zvonul", "startIdx": 20 },
+    { "n": 6, "title": "Dincolo de rețea", "startIdx": 29 },
+    { "n": 7, "title": "Bilanț", "startIdx": 34 }
+  ],
   "blocks": [
     {
       "type": "text",
@@ -132,7 +141,7 @@
       "title": "Școala în cifre: frecvențele",
       "intro": "Cea mai simplă întrebare statistică: câți sunt în fiecare grup?",
       "statsSource": "data/highschool-stats.json",
-      "caption": "Clasa 2BIO1 e predominant feminină (27 fete din 35 de elevi); clasa de matematică-fizică MP*1 e predominant masculină (20 băieți din 26). Compoziția grupurilor nu e detaliu: profilurile atrag diferit, iar asta va conta mai jos."
+      "caption": "2BIO1 este predominant feminină, MP*1 predominant masculină. Compoziția grupurilor nu e un detaliu: profilurile atrag diferit, iar asta va conta mai jos."
     },
     {
       "type": "chart",
@@ -141,7 +150,7 @@
       "title": "Media pe grupuri",
       "intro": "Gradul mediu al unui elev, pe fiecare clasă. Prima comparație între grupuri: sunt clasele la fel de dense social?",
       "statsSource": "data/highschool-stats.json",
-      "caption": "O medie pe grup ascunde variația din interiorul lui; punctele suprapuse pe bare arată exact cât. Diferența dintre medii e începutul oricărei analize comparative; variația din jurul lor e avertismentul ei."
+      "caption": "O medie pe grup ascunde variația din interiorul lui. Punctele de peste bare arată exact cât. Diferența dintre medii e începutul oricărei analize comparative; împrăștierea din jurul lor e avertismentul ei."
     },
     {
       "type": "chart",
@@ -150,7 +159,7 @@
       "title": "Înăuntru și între",
       "intro": "Din tot timpul de contact, cât se petrece în interiorul claselor și cât între ele?",
       "statsSource": "data/highschool-stats.json",
-      "caption": "Global, doar {{classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele de clasă. Când aproape toată variația e „înăuntru\", apartenența la grup explică mult din cine cu cine vorbește. La noi, aproape tot. Zvonul a circulat totuși între clase: ne interesează exact excepțiile. Dosarul unu: cine avea poziția?"
+      "caption": "Global, doar {{classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele de clasă. Când aproape toată interacțiunea e înăuntru, apartenența la grup explică aproape tot din cine cu cine vorbește. Zvonul a circulat totuși între clase: ne interesează exact excepțiile."
     },
     {
       "type": "chart",
@@ -161,7 +170,7 @@
       "source": "data/highschool-stats.json",
       "field": "degrees",
       "yLabel": "grad",
-      "caption": "Ilizibil, intenționat. Prima operație a statisticii: ordonarea."
+      "caption": "Ilizibil, și intenționat. Prima operație a statisticii: ordonarea."
     },
     {
       "type": "chart",
@@ -173,7 +182,7 @@
       "field": "degrees",
       "topLabel": "{{name:topDegree}}",
       "yLabel": "grad",
-      "caption": "Majoritatea între 3 și 8. Și o valoare izolată sus: {{name:topDegree}}, {{stats.maxDegree}} contacte. Primul suspect. Extremele se văd; proporțiile, încă nu."
+      "caption": "Majoritatea au între 3 și 8 contacte. Iar sus, izolat, unul singur: {{name:topDegree}}, cu {{stats.maxDegree}} contacte. Primul suspect. Extremele se văd; proporțiile, încă nu."
     },
     {
       "type": "chart",
@@ -187,19 +196,19 @@
       "yLabel": "elevi",
       "defaultBinWidth": 3,
       "slider": false,
-      "caption": "Construcția pe care ai urmărit-o pas cu pas are un nume: histogramă. Uită-te la forma ei: nu e simetrică. Exact forma asta domină lumea socială."
+      "caption": "Construcția pe care ai urmărit-o pas cu pas are un nume: histogramă. Uită-te la formă. Nu e simetrică, iar exact forma asta domină lumea socială."
     },
     {
       "type": "code",
       "id": "code-bins",
       "instance": "bins",
       "title": "Coada lungă",
-      "intro": "Mulți cu puțin, puțini cu mult: distribuție asimetrică, cu coadă dreaptă. Aceeași formă la venituri, audiențe, dimensiunea orașelor, citări academice. Dar cât de netedă pare depinde de o alegere.",
+      "intro": "Mulți cu puțin, puțini cu mult: distribuție asimetrică, cu coadă dreaptă. Aceeași formă la venituri, audiențe, dimensiunea orașelor, citări academice. Cât de netedă pare depinde însă de o alegere.",
       "initial": "LATIME_CUTIE = 3\n# Aceleasi 93 de valori, regrupate pe intervale de LATIME_CUTIE.\n{\"binWidth\": LATIME_CUTIE}",
       "headerLabel": "Lățimea cutiei",
       "xLabel": "contacte",
       "yLabel": "elevi",
-      "caption": "Zimțat sau neted, din aceleași date. Un grafic corect factual poate induce în eroare prin alegeri de reprezentare nedeclarate. De-acum, la orice histogramă, întreabă cine a ales cutiile."
+      "caption": "Zimțat sau neted, din aceleași date. Un grafic corect factual poate induce în eroare prin alegeri de reprezentare nedeclarate. De acum, la orice histogramă, întreabă cine a ales intervalele."
     },
     {
       "type": "chart",

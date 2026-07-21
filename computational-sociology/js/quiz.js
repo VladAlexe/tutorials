@@ -190,8 +190,9 @@ export function renderVote(container, block, options = {}) {
       b.classList.toggle("vote__option--picked", optBtns.indexOf(b) === idx);
     }
     markVote(block.id, { selectedIndex: idx });
-    await showReveal(idx);
+    // Fire onAnswered FIRST so gating unblocks even if reveal render fails
     if (onAnswered) onAnswered({ selectedIndex: idx });
+    try { await showReveal(idx); } catch (e) { console.error("vote reveal error", e); }
   }
 
   async function showReveal(idx) {

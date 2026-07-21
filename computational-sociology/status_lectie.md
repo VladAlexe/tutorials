@@ -1,6 +1,6 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-21 (tranșa 4, layout viz + #06)
+Ultima actualizare: 2026-07-22 (tranșa 5, fix chart + gating vot + capitole + captions #12-#19)
 
 Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **completă, 36 de carduri + 2 add-on quiz-uri = 38 blocuri**.
 
@@ -24,6 +24,45 @@ Se aplică la toate cardurile `interactive`, `visualization`, `diffusion` și `c
 4. **„Vezi toată rețeaua".** `renderNetwork` schimbă eticheta butonului propriu în funcție de dimensiune: rețele cu peste 20 de noduri (ex. cardul #10 — 93 elevi) primesc „Vezi toată rețeaua"; scenele mici păstrează „Resetează". Ambele apelează `cy.resize() + cy.fit(undefined, 30)`.
 5. **Dimensiuni noduri.** `baseStyle` din `visualizations.js` acceptă acum `{ nodeSize, highSize, fontSize, showLabels, edgeWidth }`. Valori curente: 93-node network `nodeSize: 12`; mini-network (6 noduri) `nodeSize: 18`; add-node/add-edge `nodeSize: 16`; scenele mici `fontSize: 10-11`. `makeStyle` din `diffusion.js`: node de bază `12`, `.knows` `14`, `.source` `20`, `.top` `22`.
 6. **Sticky nav nu mai suprapune conținutul.** `.slide` primește `padding-bottom: 5.5rem`, iar `.slides-nav` are fundal opac + `border-top` + `z-index: 1`. Butonul propriu al vizualizării stă în fluxul cardului, deasupra caption-ului, cu spațiu clar față de nav.
+7. **Chart cu înălțime limitată.** `.chart` are `max-height: 45vh` telefon / `55vh` desktop; SVG-ul intern e capped la `40vh` / `48vh`. Nu mai împinge butoanele de sub el în afara ecranului.
+
+## Capitole
+
+Lecția are 7 capitole definite în `chapters` la nivel de top-level în JSON. Fiecare capitol are `n`, `title` și `startIdx` (index-ul blocului la care începe). Slides.js citește lista și afișează un indicator discret în bara de sus (`.slides-chapter`), care pulsează scurt la trecerea de la un capitol la altul.
+
+- **Capitolul 1** „Ce este sociologia computațională" — cardurile #01-#03
+- **Capitolul 2** „Un mister și un alfabet" — cardurile #04-#10
+- **Capitolul 3** „Școala în cifre" — cardurile #11-#14
+- **Capitolul 4** „Primul suspect" — cardurile #15-#19b
+- **Capitolul 5** „Cum a circulat zvonul" — cardurile #20-#28
+- **Capitolul 6** „Dincolo de rețea" — cardurile #29-#32
+- **Capitolul 7** „Bilanț" — cardurile #33-#36
+
+## Bug-uri reparate în tranșa 5
+
+1. **charts.js linia 632:** `SyntaxError: Unexpected identifier 'din'` din cauza ghilimelelor mixte `„...` și `"` într-un string cu delimitator `"`. Parser-ul închide string-ul la primul `"` ASCII intern, iar `din` devine token invalid. Consecință: modulul `charts.js` eșua complet la import, iar TOATE cardurile chart apăreau goale (title + intro randate pentru că sunt înainte de `await import`, apoi await throw, iar restul cardului nu se popula). Reparație: string-ul folosește ghilimele simple ca delimitator extern.
+2. **`renderStacked` referea `COL_BG` care nu era declarat.** ReferenceError silențios în try/catch din `renderChart` → container primea `textContent = "Eroare grafic: COL_BG is not defined"`. Reparație: `const COL_BG = "#faf7f2"` adăugat la constantele de culoare.
+3. **Vot gating.** `showReveal(idx)` apela `renderChart` care eșua din motivul (1). Fiindcă `await showReveal` throw-a, callback-ul `onAnswered` nu mai era apelat, iar butonul „Continuă" rămânea blocat. Reparație dublă: (a) bug-ul principal (1) a rezolvat cauza; (b) `pick()` apelează acum `onAnswered` ÎNAINTE de `showReveal` și învelește reveal-ul în try/catch, ca reveal-ul rupt să nu mai blocheze navigarea niciodată.
+
+## Câmpuri din stats.json cerute vs disponibile
+
+Toate câmpurile pe care le cer cardurile #12-#19 sunt prezente și cu numele corect:
+
+| card | placeholder | valoare din stats |
+|---|---|---|
+| #12 | `classFreq` (obiect cu 2BIO1/2BIO2/MP*1) | ✓ |
+| #13 | `classMeanDegree.*.mean` + `.degrees[]` | ✓ |
+| #14 | `classContactSplit.globalBetweenPct` | ✓ (1,9) |
+| #14 | `classContactSplit.<class>.internalPct/externalPct` | ✓ |
+| #16 | `name:topDegree` | ✓ (Octav) |
+| #16 | `stats.maxDegree` | ✓ (15) |
+| #19 | `stats.meanDegree`, `stats.medianDegree` | ✓ (5,4 / 5) |
+
+Nu a lipsit niciun câmp; toate randările sunt corecte de-acum.
+
+## Animația la cardul #16
+
+`renderStrip` folosește ACUM aceeași sămânță `seededRandom(42)` ca `renderDots`, deci cele 93 de puncte pornesc din exact pozițiile împrăștiate ale cardului #15. La intrarea pe slide, un `requestAnimationFrame` interpolează cx/cy peste 900 ms (ease-in-out cubic) până la pozițiile ordonate; eticheta „vârf" apare fade-in tot atunci. Onorează `prefers-reduced-motion` (durata → 0).
 
 - Fișier lecție: `lessons/highschool.json`
 - Fișier curs (index): `data/course.json`

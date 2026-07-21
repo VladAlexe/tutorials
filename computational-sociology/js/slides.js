@@ -631,8 +631,20 @@ export async function renderSlides(root, lesson) {
     return s;
   });
 
+  const chapters = Array.isArray(lesson.chapters) ? lesson.chapters : [];
+  function chapterForIdx(idx) {
+    let cur = null;
+    for (const c of chapters) {
+      if (idx >= c.startIdx) cur = c;
+    }
+    return cur;
+  }
+
   const header = document.createElement("div");
   header.className = "slides-header";
+  const chapterEl = document.createElement("div");
+  chapterEl.className = "slides-chapter";
+  chapterEl.setAttribute("aria-live", "polite");
   const bar = document.createElement("div");
   bar.className = "slides-progress-bar";
   bar.setAttribute("role", "presentation");
@@ -642,8 +654,12 @@ export async function renderSlides(root, lesson) {
   const count = document.createElement("div");
   count.className = "slides-count";
   count.setAttribute("aria-live", "polite");
-  header.appendChild(bar);
-  header.appendChild(count);
+  const row = document.createElement("div");
+  row.className = "slides-header__row";
+  row.appendChild(bar);
+  row.appendChild(count);
+  header.appendChild(chapterEl);
+  header.appendChild(row);
   root.appendChild(header);
 
   const stage = document.createElement("div");
@@ -742,6 +758,15 @@ export async function renderSlides(root, lesson) {
     nextBtn.textContent = isLast ? "Înapoi la curs" : "Continuă";
     const cur = slideState[current];
     nextBtn.disabled = !isLast && !cur.canAdvance;
+    const ch = chapterForIdx(current);
+    if (ch) {
+      const prevIdx = current > 0 ? chapterForIdx(current - 1) : null;
+      const isNew = !prevIdx || prevIdx.n !== ch.n;
+      chapterEl.textContent = `Capitolul ${ch.n} · ${ch.title}`;
+      chapterEl.classList.toggle("slides-chapter--pulse", isNew && current > 0);
+    } else {
+      chapterEl.textContent = "";
+    }
   }
 
   async function show(idx) {

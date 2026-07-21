@@ -6,9 +6,35 @@
 
 .slides-header {
   display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: var(--sp-2) 0 var(--sp-4);
+}
+.slides-header__row {
+  display: flex;
   align-items: center;
   gap: var(--sp-3);
-  margin: var(--sp-2) 0 var(--sp-4);
+}
+.slides-chapter {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  min-height: 1em;
+  transition: opacity 220ms ease;
+}
+.slides-chapter--pulse {
+  animation: chapter-fade 700ms ease-out;
+  color: var(--color-ink-soft);
+}
+@keyframes chapter-fade {
+  0%   { opacity: 0.3; letter-spacing: 0.15em; }
+  100% { opacity: 1;   letter-spacing: 0.03em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slides-chapter--pulse { animation: none; }
 }
 
 .slides-progress-bar {
@@ -382,13 +408,27 @@
   .compare-three__stage { height: 260px; }
 }
 
-/* Chart (histogram, bars) */
+/* Chart (histogram, bars, ...) */
 .chart {
   background: var(--color-surface);
   border: var(--border-thin);
   border-radius: var(--radius-lg);
   padding: var(--sp-3) var(--sp-3) var(--sp-4);
   margin-top: var(--sp-2);
+  max-height: 45vh;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .chart { max-height: 55vh; }
+}
+.chart__svg-wrap {
+  overflow: hidden;
+}
+.chart__svg-wrap svg {
+  max-height: 40vh;
+}
+@media (min-width: 768px) {
+  .chart__svg-wrap svg { max-height: 48vh; }
 }
 .chart__freq {
   border-collapse: collapse;
