@@ -1,13 +1,405 @@
-"""Filtreaza reteaua Thiers13 la o felie lizibila si scrie mai multe JSON-uri:
-   highschool-network.json       — noduri (cu nume) + muchii peste MIN_WEIGHT
-   highschool-stats.json         — statistici agregate
-   highschool-hours.json         — snapshoturi orare ale zilei
-   highschool-pairs.json         — toate perechile (weight >= 1) intre nodurile pastrate
-   highschool-three-networks.json — sub-retele: senzor, jurnal, prietenie, facebook
+"""Filtreaza reteaua Thiers13 si scrie mai multe JSON-uri:
+   highschool-network.json         noduri (cu nume) + muchii peste MIN_WEIGHT
+   highschool-stats.json           statistici agregate (felia 3 clase + fullSchool 9 clase)
+   highschool-hours.json           snapshoturi orare ale zilei
+   highschool-pairs.json           toate perechile (weight >= 1) intre nodurile pastrate
+   highschool-three-networks.json  sub-retele: senzor, jurnal, prietenie, facebook
 
    Ruleaza din data/:  py build_network.py"""
-import json, collections, os, statistics
+import json, collections, os, statistics, random
 from collections import defaultdict, Counter, deque
+
+
+# --- helper: label propagation communities (deterministic, weighted) --------
+def label_propagation(node_ids, adj_map, weight_map, seed=42, max_iter=40):
+    rnd = random.Random(seed)
+    label = {n: n for n in node_ids}
+    order = sorted(node_ids)
+    for _ in range(max_iter):
+        rnd.shuffle(order)
+        changed = False
+        for x in order:
+            neighbors = adj_map.get(x, [])
+            if not neighbors:
+                continue
+            tally = Counter()
+            for y in neighbors:
+                key = (x, y) if x < y else (y, x)
+                w_xy = weight_map.get(key, 1)
+                tally[label[y]] += w_xy
+            best, best_w = None, -1
+            for l, w_l in tally.items():
+                if w_l > best_w or (w_l == best_w and (best is None or l < best)):
+                    best_w = w_l
+                    best = l
+            if best is not None and label[x] != best:
+                label[x] = best
+                changed = True
+        if not changed:
+            break
+    unique = sorted(set(label.values()))
+    remap = {u: i for i, u in enumerate(unique)}
+    return {n: remap[label[n]] for n in node_ids}
+
+
+def bfs_reach(source, adj_map):
+    seen = {source}
+    q = deque([source])
+    while q:
+        x = q.popleft()
+        for y in adj_map.get(x, ()):
+            if y not in seen:
+                seen.add(y)
+                q.append(y)
+    return seen
+
+
+def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, tag, seed=42):
+    """Given a slice (nodes + edges), compute all metrics for TRANSA 0.
+       nodes_list: list of int ids.
+       edges_list: list of tuples (a, b, weight) with a < b."""
+    node_ids = sorted(nodes_list)
+    n = len(node_ids)
+
+    adj = defaultdict(set)
+    weight_map = {}
+    for a, b, ww in edges_list:
+        adj[a].add(b)
+        adj[b].add(a)
+        weight_map[(a, b)] = ww
+
+    degrees = Counter()
+    weighted = Counter()
+    for a, b, ww in edges_list:
+        degrees[a] += 1
+        degrees[b] += 1
+        weighted[a] += ww
+        weighted[b] += ww
+    for x in node_ids:
+        degrees.setdefault(x, 0)
+        weighted.setdefault(x, 0)
+
+    # --- components
+    seen = set()
+    comps = []
+    for start in node_ids:
+        if start in seen:
+            continue
+        comp = []
+        stack = [start]
+        while stack:
+            x = stack.pop()
+            if x in seen:
+                continue
+            seen.add(x)
+            comp.append(x)
+            for y in adj.get(x, ()):
+                if y not in seen:
+                    stack.append(y)
+        comps.append(sorted(comp))
+    comps.sort(key=len, reverse=True)
+
+    def id_name(x):
+        return {"id": x, "name": name_map.get(x, str(x))}
+
+    n_isolated = sum(1 for c in comps if len(c) == 1)
+    components = {
+        "n":                len(comps),
+        "sizes":            [len(c) for c in comps],
+        "largest":          len(comps[0]) if comps else 0,
+        "isolated":         n_isolated,
+        "smallCompNodes":   [[id_name(x) for x in c] for c in comps if len(c) <= 4],
+    }
+
+    # --- communities via label propagation
+    community = label_propagation(node_ids, adj, weight_map, seed=seed)
+    n_communities = len(set(community.values()))
+
+    # contingency: community x class
+    contingency = defaultdict(Counter)
+    for x in node_ids:
+        contingency[community[x]][klass_map[x]] += 1
+
+    comm_majority = {}
+    for c_id, ct in contingency.items():
+        cls, _ = ct.most_common(1)[0]
+        comm_majority[c_id] = cls
+
+    match_count = sum(1 for x in node_ids if klass_map[x] == comm_majority.get(community[x]))
+    pct_match = round(100 * match_count / n, 1) if n else 0.0
+
+    mismatched = []
+    for x in node_ids:
+        cls = klass_map[x]
+        maj = comm_majority.get(community[x])
+        if cls != maj:
+            mismatched.append({
+                "id":                     x,
+                "name":                   name_map.get(x, str(x)),
+                "class":                  cls,
+                "community":              community[x],
+                "communityMajorityClass": maj,
+            })
+
+    # --- openness: # distinct communities among neighbors
+    openness = {}
+    for x in node_ids:
+        openness[x] = len({community[y] for y in adj.get(x, ())})
+
+    # --- reach: BFS from each node -> reachable set
+    reach = {x: bfs_reach(x, adj) for x in node_ids}
+    reach_size = {x: len(reach[x]) for x in node_ids}
+
+    # --- characters
+    star_id = max(node_ids, key=lambda x: (degrees[x], -x))
+    bridge_id = max(node_ids, key=lambda x: (openness[x], -degrees[x], -x))
+    med_deg = statistics.median([degrees[x] for x in node_ids])
+    reach_sorted_vals = sorted(reach_size.values(), reverse=True)
+    top10_cut = reach_sorted_vals[max(0, int(len(reach_sorted_vals) * 0.1) - 1)] if reach_sorted_vals else 0
+    discreet_cands = sorted(
+        [x for x in node_ids if degrees[x] < med_deg and reach_size[x] >= top10_cut],
+        key=lambda x: (-reach_size[x], degrees[x], x),
+    )
+    discreet_id = discreet_cands[0] if discreet_cands else min(node_ids, key=lambda x: degrees[x])
+
+    small_comp_set = {x for c in comps if len(c) < 3 for x in c}
+    isolated_cands = sorted(
+        [x for x in node_ids if degrees[x] == 1 or x in small_comp_set],
+        key=lambda x: (degrees[x], x),
+    )
+    if not isolated_cands:
+        min_deg = min(degrees[x] for x in node_ids)
+        isolated_cands = sorted([x for x in node_ids if degrees[x] == min_deg])
+    isolated_id = isolated_cands[0]
+
+    def char_dict(nid):
+        return {
+            "id":         nid,
+            "name":       name_map.get(nid, str(nid)),
+            "class":      klass_map[nid],
+            "popularity": degrees[nid],
+            "openness":   openness[nid],
+            "reach":      reach_size[nid],
+        }
+
+    characters = {
+        "star":     char_dict(star_id),
+        "bridge":   char_dict(bridge_id),
+        "discreet": char_dict(discreet_id),
+        "isolated": char_dict(isolated_id),
+    }
+
+    # --- strategies + coverage
+    def coverage(seeds):
+        s = set()
+        for x in seeds:
+            s |= reach[x]
+        return len(s), s
+
+    top3_pop = sorted(node_ids, key=lambda x: (-degrees[x], x))[:3]
+    top3_open = sorted(node_ids, key=lambda x: (-openness[x], -degrees[x], x))[:3]
+
+    comm_sizes = Counter(community[x] for x in node_ids)
+    top_comms = [c_id for c_id, _ in comm_sizes.most_common(3)]
+    one_each_comm = []
+    for c_id in top_comms:
+        cands = [x for x in node_ids if community[x] == c_id]
+        best = max(cands, key=lambda x: degrees[x])
+        one_each_comm.append(best)
+
+    greedy = []
+    covered = set()
+    for _ in range(3):
+        best_id, best_add = None, -1
+        for x in node_ids:
+            if x in greedy:
+                continue
+            add = len(reach[x] - covered)
+            if add > best_add or (add == best_add and (best_id is None or x < best_id)):
+                best_add = add
+                best_id = x
+        if best_id is not None:
+            greedy.append(best_id)
+            covered |= reach[best_id]
+
+    rnd2 = random.Random(seed + 1)
+    random_covs = []
+    for _ in range(30):
+        seeds3 = rnd2.sample(node_ids, min(3, len(node_ids)))
+        cov3, _ = coverage(seeds3)
+        random_covs.append(cov3)
+
+    def strat_dict(seeds):
+        cov, _ = coverage(seeds)
+        return {
+            "seeds":    [id_name(s) for s in seeds],
+            "coverage": cov,
+        }
+
+    strategies = {
+        "topPopular":    strat_dict(top3_pop),
+        "topOpen":       strat_dict(top3_open),
+        "oneEachComm":   strat_dict(one_each_comm),
+        "greedy":        strat_dict(greedy),
+        "randomMean":    round(sum(random_covs) / len(random_covs), 1) if random_covs else 0.0,
+        "randomMin":     min(random_covs) if random_covs else 0,
+        "randomMax":     max(random_covs) if random_covs else 0,
+    }
+
+    # --- overlap analysis for topPopular + greedy
+    def overlap_analysis(seeds):
+        ind = [{"id": s, "name": name_map.get(s, str(s)), "coverage": len(reach[s])} for s in seeds]
+        joint = coverage(seeds)[0]
+        sum_ind = sum(x["coverage"] for x in ind)
+        pairs = []
+        for i in range(len(seeds)):
+            for j in range(i + 1, len(seeds)):
+                a, b = seeds[i], seeds[j]
+                shared = adj.get(a, set()) & adj.get(b, set())
+                pairs.append({
+                    "a":              id_name(a),
+                    "b":              id_name(b),
+                    "sharedContacts": len(shared),
+                    "sharedNames":    [name_map.get(x, str(x)) for x in sorted(shared)],
+                })
+        return {
+            "individual":     ind,
+            "joint":          joint,
+            "sumIndividual":  sum_ind,
+            "overlapCount":   sum_ind - joint,
+            "pairs":          pairs,
+        }
+
+    overlap = {
+        "topPopular": overlap_analysis(top3_pop),
+        "greedy":     overlap_analysis(greedy),
+    }
+
+    # --- distributions
+    class_sizes = Counter(klass_map[x] for x in node_ids)
+    distributions = {
+        "degrees":     sorted(degrees[x] for x in node_ids),
+        "weighted":    sorted(weighted[x] for x in node_ids),
+        "classSizes":  sorted(class_sizes.values(), reverse=True),
+    }
+
+    # --- class stats: freq + sex + mean degree + internal vs external
+    classes_here = sorted(set(klass_map[x] for x in node_ids))
+    class_stats = {}
+    total_wt = sum(w for _, _, w in edges_list)
+    for c in classes_here:
+        cn = [x for x in node_ids if klass_map[x] == c]
+        cd = [degrees[x] for x in cn]
+        internal, external = 0, 0
+        for (a, b, ww) in edges_list:
+            if klass_map[a] == c and klass_map[b] == c:
+                internal += ww
+            elif klass_map[a] == c or klass_map[b] == c:
+                external += ww
+        tot = internal + external
+        class_stats[c] = {
+            "n":          len(cn),
+            "nF":         sum(1 for x in cn if sex_map.get(x) == "F"),
+            "nM":         sum(1 for x in cn if sex_map.get(x) == "M"),
+            "nUnk":       sum(1 for x in cn if sex_map.get(x) not in ("F", "M")),
+            "meanDegree": round(sum(cd) / len(cd), 1) if cd else 0.0,
+            "internalPct": round(100 * internal / tot, 1) if tot else 0.0,
+            "externalPct": round(100 * external / tot, 1) if tot else 0.0,
+        }
+    inter_class_weight = sum(w for (a, b, w) in edges_list if klass_map[a] != klass_map[b])
+    inter_class_pct = round(100 * inter_class_weight / total_wt, 1) if total_wt else 0.0
+    class_stats["_globalBetweenPct"] = inter_class_pct
+
+    # --- friendship paradox on this slice + pick a 6-node subnet
+    friends_mean = {}
+    below_flag = {}
+    for x in node_ids:
+        fs = adj[x]
+        if fs:
+            fm = sum(degrees[y] for y in fs) / len(fs)
+            friends_mean[x] = fm
+            below_flag[x] = degrees[x] < fm
+
+    n_with_friends = sum(1 for x in node_ids if x in friends_mean)
+    n_below_fm = sum(1 for x, b in below_flag.items() if b)
+    mean_friend_deg = round(sum(friends_mean.values()) / len(friends_mean), 1) if friends_mean else 0.0
+    pct_below = round(100 * n_below_fm / n_with_friends) if n_with_friends else 0
+
+    # Subnet of 6 for the manual counting card.
+    # Strategy: take the star + its 4 lowest-degree neighbors + 1 mid-degree neighbor.
+    star_neighbors = sorted(adj[star_id], key=lambda x: (degrees[x], x))
+    subnet_ids = [star_id]
+    for cand in star_neighbors:
+        if len(subnet_ids) >= 5:
+            break
+        subnet_ids.append(cand)
+    for cand in reversed(star_neighbors):
+        if len(subnet_ids) >= 6:
+            break
+        if cand not in subnet_ids:
+            subnet_ids.append(cand)
+    subnet_ids = subnet_ids[:6]
+
+    def node_row(x):
+        friend_ids = sorted(adj[x])
+        friend_degs = [degrees[y] for y in friend_ids]
+        fm = round(sum(friend_degs) / len(friend_degs), 1) if friend_degs else 0.0
+        return {
+            "id":            x,
+            "name":          name_map.get(x, str(x)),
+            "class":         klass_map[x],
+            "degree":        degrees[x],
+            "friendDegrees": friend_degs,
+            "friendMean":    fm,
+            "belowMean":     degrees[x] < fm,
+        }
+    subnet_rows = [node_row(x) for x in subnet_ids]
+
+    subnet_edges = []
+    for i, a in enumerate(subnet_ids):
+        for b in subnet_ids[i + 1:]:
+            if b in adj[a]:
+                subnet_edges.append({
+                    "source": a,
+                    "target": b,
+                    "weight": weight_map.get((a, b) if a < b else (b, a), 1),
+                })
+
+    n_subnet_below = sum(1 for r in subnet_rows if r["belowMean"])
+
+    friendship_paradox = {
+        "meanDegree":       round(sum(degrees[x] for x in node_ids) / n, 1) if n else 0.0,
+        "meanFriendDegree": mean_friend_deg,
+        "pctBelow":         pct_below,
+        "subnet": {
+            "nodes":    subnet_rows,
+            "edges":    subnet_edges,
+            "nBelow":   n_subnet_below,
+            "n":        len(subnet_rows),
+        },
+    }
+
+    return {
+        "components":         components,
+        "communities": {
+            "n":                       n_communities,
+            "byId":                    {str(x): community[x] for x in node_ids},
+            "contingency":             {str(c_id): dict(ct) for c_id, ct in contingency.items()},
+            "majorityClass":           {str(c_id): c for c_id, c in comm_majority.items()},
+            "pctMatchClass":           pct_match,
+            "mismatched":              mismatched,
+            "nMismatched":             len(mismatched),
+        },
+        "openness":           {str(x): openness[x] for x in node_ids},
+        "reach":              {str(x): reach_size[x] for x in node_ids},
+        "characters":         characters,
+        "strategies":         strategies,
+        "overlap":            overlap,
+        "distributions":      distributions,
+        "classStats":         class_stats,
+        "friendshipParadox":  friendship_paradox,
+    }
+
 
 CLASSES    = ["2BIO1", "2BIO2", "MP*1"]
 DAY        = 1
@@ -484,7 +876,45 @@ meta = {
 with open(os.path.join(HERE, "highschool-network.json"), "w", encoding="utf-8") as f:
     json.dump({"nodes": nodes, "edges": edges, "meta": meta}, f, ensure_ascii=False, indent=0)
 
-# --- 21. stats
+# --- 21. TRANSA 0: compute slice metrics for both felia and fullSchool
+
+# Sliced 3-class: use the network we already built.
+slice3_name_map = {n["id"]: n["name"] for n in nodes}
+slice3_edges_list = [(e["source"], e["target"], e["weight"]) for e in edges]
+slice3_metrics = compute_slice_metrics(
+    nodes_list=[n["id"] for n in nodes],
+    edges_list=slice3_edges_list,
+    klass_map=group_by,
+    sex_map=sex_by,
+    name_map=slice3_name_map,
+    tag="slice3",
+    seed=42,
+)
+
+# Full school: 9 classes, 303 students. Use names deterministically by sorted id.
+full_sorted_ids = sorted(full_used)
+full_name_map = {}
+for i, nid in enumerate(full_sorted_ids):
+    full_name_map[nid] = NAMES[i % len(NAMES)]
+# Overlay the 3-class names so the same student keeps the same name in both slices.
+for nid, nm in slice3_name_map.items():
+    full_name_map[nid] = nm
+
+full_edges_list = [(a, b, c) for (a, b, c) in full_edges_pairs]
+full_metrics = compute_slice_metrics(
+    nodes_list=full_sorted_ids,
+    edges_list=full_edges_list,
+    klass_map=full_group_by,
+    sex_map=full_sex_by,
+    name_map=full_name_map,
+    tag="full9",
+    seed=42,
+)
+
+# Attach the new metrics under a "transA0" key inside each slice bucket for clarity.
+full_school["metrics"] = full_metrics
+
+# --- 22. stats
 stats = {
     "total":         len(nodes),
     "edges":         len(edges),
@@ -522,6 +952,7 @@ stats = {
     "hoursCount":           len(hourly),
     "threeNetworks":        three_networks,
     "fullSchool":           full_school,
+    "sliceMetrics":         slice3_metrics,
 }
 
 with open(os.path.join(HERE, "highschool-stats.json"), "w", encoding="utf-8") as f:
@@ -566,3 +997,36 @@ for c in full_school['classes']:
     csx = full_school['classSexComposition'][c]
     cmd = full_school['classMeanDegree'][c]
     print(f"  {c:>6}: {cf['n']:>2} elevi ({cf['nF']}F/{cf['nM']}M/{cf['nUnk']}?)  {csx['pctF']}%F  grad med {cmd['mean']}")
+
+def report_slice(tag, m):
+    print()
+    print(f"=== TRANSA 0 metrics · {tag} ===")
+    comps = m["components"]
+    print(f"componente: {comps['n']} (marimile: {comps['sizes'][:6]}{'...' if len(comps['sizes'])>6 else ''}), izolati: {comps['isolated']}")
+    c = m["communities"]
+    print(f"comunitati (label prop, seed 42): {c['n']}  potrivire cu clasele: {c['pctMatchClass']}%  nepotriviti: {c['nMismatched']}")
+    for cid, ct in c["contingency"].items():
+        print(f"  comm {cid} (maj={c['majorityClass'][cid]}): {dict(ct)}")
+    ch = m["characters"]
+    print(f"caractere:")
+    for role in ("star", "bridge", "discreet", "isolated"):
+        v = ch[role]
+        print(f"  {role:>8}: {v['name']} (id {v['id']}, {v['class']})  pop={v['popularity']}  desc={v['openness']}  reach={v['reach']}")
+    s = m["strategies"]
+    print(f"strategii (acoperire din 3 seed-uri):")
+    for st in ("topPopular", "topOpen", "oneEachComm", "greedy"):
+        seeds = [n["name"] for n in s[st]["seeds"]]
+        print(f"  {st:>12}: {seeds} -> {s[st]['coverage']}")
+    print(f"  random 30x: mean={s['randomMean']}, min={s['randomMin']}, max={s['randomMax']}")
+    o = m["overlap"]
+    op = o["topPopular"]
+    print(f"overlap topPopular: individual={[i['coverage'] for i in op['individual']]}  sum={op['sumIndividual']}  joint={op['joint']}  suprapun={op['overlapCount']}")
+    for p in op["pairs"]:
+        print(f"  {p['a']['name']} ∩ {p['b']['name']}: {p['sharedContacts']} contacte comune ({p['sharedNames']})")
+    fp = m["friendshipParadox"]
+    print(f"paradox: elev {fp['meanDegree']} vs prieteni {fp['meanFriendDegree']}  {fp['pctBelow']}% sub")
+    sn = fp["subnet"]
+    print(f"  subnet 6 noduri: {[r['name'] for r in sn['nodes']]}  {sn['nBelow']}/6 sub media prietenilor")
+
+report_slice("felia 3 clase", slice3_metrics)
+report_slice("full school 9 clase", full_metrics)

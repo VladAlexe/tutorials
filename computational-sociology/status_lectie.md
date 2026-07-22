@@ -1,8 +1,66 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (tranșa 6, separator capitol + felie dublă + code UX + fix #28)
+Ultima actualizare: 2026-07-22 (TRANȘA 0 din restructurarea la 29 carduri: metrici, comunități, caractere, strategii)
 
-Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **completă, 36 de carduri + 2 add-on quiz-uri = 38 blocuri**.
+## Restructurare (planificată, în curs)
+
+Lecția `highschool` va fi rescrisă de la 46 blocuri (38 originale + 7 separatoare + 1 sfarsit) la **29 de carduri**. Tranșa 0 (build) e completă; tranșele următoare vor rescrie lecția. Până atunci, lecția rulează varianta veche din tranșa 6.
+
+**Cele trei metrici** pe care se sprijină lecția restructurată (exclusiv, nu se adaugă altele):
+1. **Popularitate**: gradul unui elev (numărul de contacte).
+2. **Deschidere**: câte comunități distincte are contacte. Comunitățile sunt detectate prin label propagation (seed 42), NU clasele administrative.
+3. **Acoperire nouă**: câte persoane în plus atinge o alegere față de un set deja acoperit. Proprietate a echipei, nu a individului.
+
+Intermedierea (betweenness) și coeficientul de grupare **nu se mai folosesc** în lecție.
+
+---
+
+Cursul conține o singură lecție: `highschool` (secțiunea 4). Statusul: **build restructurat, 29 carduri planificați (lecția JSON rămâne pe varianta 38-blocuri până la tranșa 1)**.
+
+## TRANȘA 0 (build) — cifre obținute
+
+`build_network.py` calculează acum, pentru fiecare din cele două felii (3 clase și 9 clase), un bloc de metrici sub `stats.sliceMetrics` (felia 3) și `stats.fullSchool.metrics` (felia 9). Câmpurile expuse:
+`components`, `communities`, `openness`, `reach`, `characters`, `strategies`, `overlap`, `distributions`, `classStats`, `friendshipParadox` (cu sub-rețea de 6 noduri).
+
+### Felia 3 clase (93 elevi, 250 muchii)
+
+- **Componente:** 2 (67 elevi biologia + 26 elevi MP*1). Zero izolați.
+- **Comunități (label propagation, seed 42):** 30 detectate. **98,9% potrivire cu clasele** administrative. Un singur elev nepotrivit (comunitate mixtă 2BIO2 + 2BIO1).
+- **Caractere:**
+  - **Vedeta** (star): Octav (id 177, 2BIO1) — popularitate 15, deschidere 8, acoperire 67.
+  - **Puntea** (bridge): Sandu (id 407, 2BIO2) — popularitate 13, deschidere 10, acoperire 67.
+  - **Discretul**: Maria (id 165, 2BIO2) — popularitate 1, acoperire 67 (e în componenta mare).
+  - **Izolatul**: Elena (id 103, MP*1) — popularitate 1, acoperire 26 (blocată în componenta mică).
+- **Strategii (acoperire cu 3 seed-uri):**
+  - **Top 3 populari** {Octav, Irina, Sandu} → **67** (toți din biologia; nu ating MP*1).
+  - **Top 3 deschidere** {Sandu, Irina, Octav} → **67** (același efect).
+  - **Câte unul din top 3 comunități** {Octav, Andrei, Sabin} → **93** (întreaga felie).
+  - **Greedy** {Ana, Andrei, Bianca} → **93** (întreaga felie).
+  - **30 alegeri aleatoare** (seed 42): media 82,6 · min 67 · max 93.
+- **Overlap topPopular:** individual [67, 67, 67] · sumă 201 · joint 67 · **suprapun 134**. Contactele comune per pereche: Octav ∩ Irina = 1 (Sabin); Octav ∩ Sandu = 2 (Boga, Momo); Irina ∩ Sandu = 3 (Ana, Bogdan, Ioana). Punctul pedagogic: cei trei populari se învârt aproape complet în aceleași cercuri.
+- **Paradox prieteniei:** elev 5,4 vs prieteni 6,7 · 75% sub media prietenilor.
+- **Sub-rețea 6 noduri** pentru numărătoare manuală: [Octav, Kira, Teo, Filip, Mihnea, Jeni] — **4 din 6 sub media prietenilor**. Structură: Octav = hub cu deg 15, ceilalți 5 = vecini ai lui cu grade mici; iar Octav e „mai popular decât media prietenilor lui", ceilalți invers. Exact cifra țintă cerută în spec.
+
+### Felia 9 clase (fullSchool, 303 elevi, 1043 muchii)
+
+- **Componente:** 1 (întreaga școală conectată). Zero izolați.
+- **Comunități (label propagation, seed 42):** 79 detectate. **92,7% potrivire cu clasele** administrative. **22 elevi nepotriviți** — personaje potențiale pentru cardul cu granițe.
+- **Caractere:**
+  - **Vedeta**: Puiu (id 605, MP) — popularitate 21, deschidere 12, acoperire 303.
+  - **Puntea**: Cristi (id 272, 2BIO3) — popularitate 20, deschidere 13, acoperire 303.
+  - **Discretul și Izolatul colaps** la același nod (Flavia, PC, deg 1). Motiv: în felia 9 clase toată școala e o singură componentă, deci `reach` e 303 pentru oricine e conectat. Consecință: pentru lecție, **caracterele „Discretul" și „Izolatul" sunt utile doar pe felia 3-clase**, unde componenta MP*1 e izolată. Notez ca decizie de design.
+- **Strategii pe fullSchool:** toate strategiile de 3 seed-uri ating 303 (toată școala) — aceeași cauză, o singură componentă. Deci strategiile sunt PEDAGOGICE DOAR pe felia 3-clase.
+- **Overlap topPopular** pe fullSchool: [303, 303, 303] · joint 303 · suprapun 606. Contacte comune: Puiu ∩ Sabin = 6 · Puiu ∩ Sandu = 0 · Sabin ∩ Sandu = 0. Punctul: pe scară mai mare, cei mai populari NU au aceleași cunoștințe.
+- **Paradox prieteniei:** elev 6,9 vs prieteni 8,7 · 72% sub.
+- **Sub-rețea 6 noduri**: [Puiu, Boga, Momo, Petru, Otilia, Iulia] — 4/6 sub media prietenilor.
+
+### Distribuții disponibile (pentru cardurile de statistică descriptivă)
+
+Pentru fiecare felie: `distributions.degrees` (sortate), `distributions.weighted` (timp total de contact per elev), `distributions.classSizes`. `classStats` per clasă cu compoziție F/M, grad mediu, procent contact intern/extern.
+
+---
+
+## Componente utilizate în lecția CURENTĂ (până la tranșa 1)
 
 ---
 
@@ -124,6 +182,8 @@ Nu a lipsit niciun câmp; toate randările sunt corecte de-acum.
 Numerotarea este stabilă. Sufixul `b` (#19b, #31b) indică un quiz add-on legat de cardul dinaintea lui.
 
 ---
+
+Această secțiune reflectă starea din tranșa 6 (înainte de restructurarea la 29 carduri). Lecția rulează în producție cu 38 blocuri până la tranșele 1+.
 
 ## Metadate lecție
 
