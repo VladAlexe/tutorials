@@ -1,15 +1,15 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (TRANȘA 2: cardurile C1-C5 din restructurarea la 29)
+Ultima actualizare: 2026-07-22 (TRANȘA 3: cardurile C6-C10, capitolul „Explorarea")
 
 ## Statul actual al lecției
 
-Lecția `highschool` conține acum **6 blocuri** (5 carduri C1-C5 + un marker de tranșă). Restructurarea la ținta finală de 29 carduri e în curs; tranșele următoare adaugă C6-C29.
+Lecția `highschool` conține **11 blocuri** (10 carduri C1-C10 + un marker de tranșă). Restructurarea la ținta finală de 29 carduri e în curs; tranșele următoare adaugă C11-C29.
 
 - Fișier: `lessons/highschool.json`
 - Punct de intrare: `lesson.html?id=highschool`
 - Titlu: **Zvonul**
-- 2 capitole: „Ce este sociologia computațională" (C1-C3) și „Un mister și un alfabet" (C4-C5)
+- 3 capitole: „Ce este sociologia computațională" (C1-C3), „Un mister și un alfabet" (C4-C5), „Explorarea" (C6-C10)
 
 ## TRANȘA 2 (cardurile C1-C5) — livrat
 
@@ -87,12 +87,75 @@ Lecția `highschool` conține acum **6 blocuri** (5 carduri C1-C5 + un marker de
   >
   > Următoarele minute sunt explorare. Ne întoarcem la misiune cu date în mână.
 
-### Marker sfârșit tranșa 2
+## TRANȘA 3 (cardurile C6-C10) — livrat
 
-- **id:** `cX-marker-transa-2`
+### Card C6, chart freq (interactiv, dataset fullSchool, linkNetwork): „Câți sunt, și cine sunt"
+
+- **id:** `c6-cati-sunt`
+- **capitol:** 3
+- **variant:** `freq` cu `dataset: "fullSchool"` (9 clase) și `linkNetwork: true`
+- **intro:**
+  > Prima privire: cine e în școală? Nouă clase, cu profiluri diferite. Tabelul îți dă numărul de elevi, câte fete, câți băieți; barele arată același lucru vizual. Atinge un rând pentru lista de nume.
+- **Interacțiune:** rândurile tabelului sunt tappabile; la tap se afișează dedesubt lista completă a elevilor din clasa aleasă (nume + număr total). Rândul se poate re-tap-ui ca să vezi altă clasă.
+- **caption:**
+  > Profilurile atrag diferit. 2BIO3 e predominant feminină, MP*2 predominant masculină. Reține compoziția: contează mai târziu, când vedem cine cu cine vorbește.
+
+### Card C7, network recolor cu 4 scheme: „Harta școlii"
+
+- **id:** `c7-harta-scolii`
+- **capitol:** 3
+- **type:** `diffusion` · **mode:** `recolor`
+- **data:** `data/highschool-network.json` (felia 3 clase, 93 elevi)
+- **schemes:** `["class", "community", "component", "degree"]` (pornit pe class)
+- **intro:**
+  > Iată felia noastră de trei clase, 93 de elevi. Colorată pe clase, ca să vezi cine e cu cine în orar. Comută schema de colorare de sub grafic; atinge un nod pentru numele lui.
+- **Interacțiune:**
+  - 4 butoane pentru schema de colorare, cu tranziție animată (400ms) între moduri.
+  - Tap pe orice nod → panou „Nume · clasa X · N contacte".
+  - Linia de explicație de sub butoane se actualizează per scheme.
+- **caption:**
+  > Elevii nu se amestecă la întâmplare. Se strâng. Dar după ce se strâng? Următoarele două carduri răspund.
+
+### Card C8, network recolor cu 2 scheme: „E școala o singură bucată?"
+
+- **id:** `c8-o-singura-bucata`
+- **capitol:** 3
+- **type:** `diffusion` · **mode:** `recolor` · **schemes:** `["class", "component"]`
+- **intro:**
+  > Prima întrebare structurală: dacă pornesc de la un elev și merg din contact în contact, ajung la toți? Sau există bucăți rupte, la care nu se poate ajunge deloc? Apasă butonul „Componenta" și vezi.
+- **caption (cu placeholder-e din stats.sliceMetrics.components):**
+  > Pe felia noastră sunt `{{sliceMetrics.components.n}}` (**2**) componente: cea principală are `{{sliceMetrics.components.largest}}` (**67**) elevi, cealaltă are 26. Zero elevi complet izolați. Pentru misiunea noastră: cineva aflat într-o bucată ruptă nu poate fi atins de nicio informație, oricât de bine am alege. Există oameni pe care rețeaua nu îi acoperă.
+
+### Card C9, network recolor cu 3 scheme (Clasa/Comunitatea/Nepotrivirile): „Grupele școlii și grupurile oamenilor"
+
+- **id:** `c9-grupele-grupurile`
+- **capitol:** 3
+- **type:** `diffusion` · **mode:** `recolor` · **schemes:** `["class", "community", "mismatch"]`
+- **intro:**
+  > Școala își împarte elevii în clase, prin orar. Dar dacă ne uităm doar la cine cu cine petrece timp, fără să știm nimic despre orar, ce grupuri apar? Un algoritm poate găsi grupurile singur, căutând zone dens legate între ele. Nu știe nimic despre școală. Doar despre cine stă cu cine.
+- **Interacțiune:**
+  - Butonul „Clasa" arată clasele administrative
+  - Butonul „Comunitatea" recolorează cu comunitățile detectate de label propagation (seed 42); animație de 400ms între cele două scheme
+  - Butonul „Arată nepotrivirile" pictează nepotriviții cu roșu-brun (`#a3341f`) și mărește nodul; ceilalți se estompează (gri, opacity 0.35)
+- **caption (cu placeholder-e reale):**
+  > Algoritmul a găsit `{{sliceMetrics.communities.n}}` (**30**) comunități pe felia noastră; `{{sliceMetrics.communities.pctMatchClass}}` (**98,9**)% dintre elevi sunt în comunitatea care corespunde clasei lor. `{{sliceMetrics.communities.nMismatched}}` (**1**) sunt nepotriviți. Nu sunt erori ale algoritmului, sunt oameni: elevi care petrec mai mult timp cu altă clasă decât cu a lor. Ei ne vor interesa la misiune.
+
+### Card C10, chart stacked (dataset fullSchool, linkNetwork): „Zidurile"
+
+- **id:** `c10-zidurile`
+- **capitol:** 3
+- **variant:** `stacked` cu `dataset: "fullSchool"` (9 clase) și `linkNetwork: true`
+- **intro:**
+  > Pentru fiecare clasă, cât din timpul de contact rămâne înăuntru și cât iese afară. Atinge o bară pentru lista de elevi din clasa aleasă.
+- **Interacțiune:** fiecare rând SVG e tappabil; la tap se afișează dedesubt lista de nume ai clasei.
+- **caption (cu placeholder pentru fullSchool):**
+  > Doar circa `{{fullSchool.classContactSplit.globalBetweenPct}}` (**7,6**)% din timpul de contact traversează granițele. Zidurile nu sunt legale, dar sunt reale. Pentru misiune: dacă alegi trei oameni din același grup, alegerile se irosesc; ajungi la aceeași lume.
+
+### Marker sfârșit tranșa 3
+
+- **id:** `cX-marker-transa-3`
 - **type:** `text`
-- **conținut:** anunț „Ai ajuns la finalul primelor două capitole. Continuarea (C6-C29) vine cu tranșele următoare."
-- Va fi ȘTERS la începutul tranșei 3.
+- Va fi ȘTERS la începutul tranșei 4.
 
 ---
 

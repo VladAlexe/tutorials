@@ -9,7 +9,8 @@
   "statsSource": "data/highschool-stats.json",
   "chapters": [
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
-    { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 }
+    { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 },
+    { "n": 3, "title": "Explorarea", "startIdx": 5 }
   ],
   "blocks": [
     {
@@ -72,10 +73,64 @@
       "content": "<p>Intuiția spune cel mai popular. O vom testa cu scor, nu cu păreri.</p><p>Dar înainte avem nevoie să știm cum arată școala: câți sunt, cum se grupează, cine cu cine vorbește de fapt.</p><p>Următoarele minute sunt explorare. Ne întoarcem la misiune cu date în mână.</p>"
     },
     {
+      "type": "chart",
+      "id": "c6-cati-sunt",
+      "variant": "freq",
+      "dataset": "fullSchool",
+      "linkNetwork": true,
+      "linkNetworkData": "data/highschool-network.json",
+      "title": "Câți sunt, și cine sunt",
+      "intro": "Prima privire: cine e în școală? Nouă clase, cu profiluri diferite. Tabelul îți dă numărul de elevi, câte fete, câți băieți; barele arată același lucru vizual. Atinge un rând pentru lista de nume.",
+      "statsSource": "data/highschool-stats.json",
+      "caption": "Profilurile atrag diferit. 2BIO3 e predominant feminină, MP*2 predominant masculină. Reține compoziția: contează mai târziu, când vedem cine cu cine vorbește."
+    },
+    {
+      "type": "diffusion",
+      "id": "c7-harta-scolii",
+      "mode": "recolor",
+      "data": "data/highschool-network.json",
+      "schemes": ["class", "community", "component", "degree"],
+      "title": "Harta școlii",
+      "intro": "Iată felia noastră de trei clase, 93 de elevi. Colorată pe clase, ca să vezi cine e cu cine în orar. Comută schema de colorare de sub grafic; atinge un nod pentru numele lui.",
+      "caption": "Elevii nu se amestecă la întâmplare. Se strâng. Dar după ce se strâng? Următoarele două carduri răspund."
+    },
+    {
+      "type": "diffusion",
+      "id": "c8-o-singura-bucata",
+      "mode": "recolor",
+      "data": "data/highschool-network.json",
+      "schemes": ["class", "component"],
+      "title": "E școala o singură bucată?",
+      "intro": "Prima întrebare structurală: dacă pornesc de la un elev și merg din contact în contact, ajung la toți? Sau există bucăți rupte, la care nu se poate ajunge deloc? Apasă butonul „Componenta\" și vezi.",
+      "caption": "Pe felia noastră sunt {{sliceMetrics.components.n}} componente: cea principală are {{sliceMetrics.components.largest}} elevi, cealaltă are 26. Zero elevi complet izolați. Pentru misiunea noastră: cineva aflat într-o bucată ruptă nu poate fi atins de nicio informație, oricât de bine am alege. Există oameni pe care rețeaua nu îi acoperă."
+    },
+    {
+      "type": "diffusion",
+      "id": "c9-grupele-grupurile",
+      "mode": "recolor",
+      "data": "data/highschool-network.json",
+      "schemes": ["class", "community", "mismatch"],
+      "title": "Grupele școlii și grupurile oamenilor",
+      "intro": "Școala își împarte elevii în clase, prin orar. Dar dacă ne uităm doar la cine cu cine petrece timp, fără să știm nimic despre orar, ce grupuri apar? Un algoritm poate găsi grupurile singur, căutând zone dens legate între ele. Nu știe nimic despre școală. Doar despre cine stă cu cine.",
+      "caption": "Algoritmul (label propagation, seed 42) a găsit {{sliceMetrics.communities.n}} comunități pe felia noastră; {{sliceMetrics.communities.pctMatchClass}}% dintre elevi sunt în comunitatea care corespunde clasei lor. {{sliceMetrics.communities.nMismatched}} sunt nepotriviți. Nu sunt erori ale algoritmului, sunt oameni: elevi care petrec mai mult timp cu altă clasă decât cu a lor. Ei ne vor interesa la misiune."
+    },
+    {
+      "type": "chart",
+      "id": "c10-zidurile",
+      "variant": "stacked",
+      "dataset": "fullSchool",
+      "linkNetwork": true,
+      "linkNetworkData": "data/highschool-network.json",
+      "title": "Zidurile",
+      "intro": "Pentru fiecare clasă, cât din timpul de contact rămâne înăuntru și cât iese afară. Atinge o bară pentru lista de elevi din clasa aleasă.",
+      "statsSource": "data/highschool-stats.json",
+      "caption": "Doar circa {{fullSchool.classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele. Zidurile nu sunt legale, dar sunt reale. Pentru misiune: dacă alegi trei oameni din același grup, alegerile se irosesc; ajungi la aceeași lume."
+    },
+    {
       "type": "text",
-      "id": "cX-marker-transa-2",
-      "title": "Sfârșitul tranșei 2",
-      "content": "<p>Ai ajuns la finalul primelor două capitole ale versiunii restructurate. Continuarea (cardurile C6 la C29) vine cu tranșele următoare, în care explorăm școala și ne întoarcem la alegerea de mai devreme.</p><p>Închide lecția și așteaptă versiunea completă.</p>"
+      "id": "cX-marker-transa-3",
+      "title": "Sfârșitul tranșei 3",
+      "content": "<p>Ai ajuns la finalul explorării inițiale. Continuarea (cardurile C11 la C29) vine cu tranșele următoare, cu măsurile: popularitate, deschidere, acoperire, apoi misiunea.</p><p>Închide lecția și așteaptă versiunea completă.</p>"
     }
   ]
 }

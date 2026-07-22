@@ -1199,6 +1199,7 @@ export async function renderDiffusion(container, block, options = {}) {
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
     const commById = statsData?.sliceMetrics?.communities?.byId || {};
+    const mismatchedIds = new Set((statsData?.sliceMetrics?.communities?.mismatched || []).map((m) => String(m.id)));
 
     const adjMap = new Map();
     for (const n of nodes) adjMap.set(n.id, new Set());
@@ -1245,6 +1246,9 @@ export async function renderDiffusion(container, block, options = {}) {
         const B = Math.round(192 * (1 - t) + 30  * t);
         return `rgb(${R},${G},${B})`;
       }
+      if (scheme === "mismatch") {
+        return mismatchedIds.has(String(nid)) ? "#a3341f" : "#d9cfc0";
+      }
       return "#8a7a68";
     }
 
@@ -1253,26 +1257,38 @@ export async function renderDiffusion(container, block, options = {}) {
         n.style("transition-property", "background-color");
         n.style("transition-duration", 400);
         n.style("background-color", colorFor(n.id(), scheme));
+        if (scheme === "mismatch" && mismatchedIds.has(n.id())) {
+          n.style("width", 22); n.style("height", 22);
+        } else if (scheme === "mismatch") {
+          n.style("width", 12); n.style("height", 12);
+          n.style("opacity", 0.35);
+        } else {
+          n.style("opacity", 1);
+        }
       });
     }
 
     const labels = {
-      class: "Clasa", community: "Comunitatea", component: "Componenta", degree: "Popularitatea"
+      class: "Clasa", community: "Comunitatea", component: "Componenta", degree: "Popularitatea",
+      mismatch: "Arată nepotrivirile"
     };
     const explains = {
-      class:     "Culoarea = clasa administrativă.",
-      community: "Culoarea = comunitatea detectată de algoritm (label propagation). Aproape identică cu clasele; unde nu, avem personaje.",
+      class:     "Culoarea = clasa administrativă. Așa vede orarul.",
+      community: "Culoarea = comunitatea detectată de algoritm (label propagation, seed 42). Aproape identică cu clasele; unde nu, avem personaje.",
       component: "Culoarea = componenta conexă. Sunt subgrupuri complet separate.",
-      degree:    "Culoarea = gradul. Cu cât mai închis, cu atât mai popular."
+      degree:    "Culoarea = popularitatea (gradul). Cu cât mai închis, cu atât mai popular.",
+      mismatch:  "Roșu = elevii puși de algoritm în altă comunitate decât clasa lor. Sunt puțini, dar prin ei trece rețeaua dincolo de granițe."
     };
 
     controls.innerHTML =
       `<div class="diff-row diff-buttons">` +
       schemes.map((s) => `<button type="button" class="btn btn--ghost recolor-btn" data-scheme="${s}">${labels[s] || s}</button>`).join("") +
       `</div>` +
-      `<div class="diff-hint" data-role="explain"></div>`;
+      `<div class="diff-hint" data-role="explain"></div>` +
+      `<div class="diff-count" data-role="info">Atinge un nod pentru numele lui.</div>`;
 
     const explainEl = controls.querySelector('[data-role="explain"]');
+    const infoEl = controls.querySelector('[data-role="info"]');
     function activate(scheme, btn) {
       controls.querySelectorAll("[data-scheme]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
       if (btn) { btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary"); }
@@ -1280,6 +1296,15 @@ export async function renderDiffusion(container, block, options = {}) {
       explainEl.textContent = explains[scheme] || "";
     }
     controls.querySelectorAll("[data-scheme]").forEach((btn) => btn.addEventListener("click", () => activate(btn.dataset.scheme, btn)));
+    cy.on("tap", "node", (e) => {
+      const nid = e.target.id();
+      const n = nodes.find((nn) => nn.id === nid);
+      const deg = e.target.connectedEdges().length;
+      const parts = [n?.name || `Elev ${nid}`];
+      if (n?.group) parts.push(`clasa ${n.group}`);
+      parts.push(`${deg} contacte`);
+      infoEl.textContent = parts.join(" · ");
+    });
     requestAnimationFrame(() => {
       const first = controls.querySelector("[data-scheme]");
       if (first) activate(first.dataset.scheme, first);

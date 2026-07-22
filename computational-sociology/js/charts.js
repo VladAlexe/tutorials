@@ -509,11 +509,14 @@ function renderStacked(container, block, stats) {
     const wInternal = (v.internalPct / 100) * chartW;
     const wExternal = (v.externalPct / 100) * chartW;
     return (
+      `<g class="stacked-row" data-class="${esc(label)}" style="cursor:pointer">` +
+      `<rect x="${padL - 40}" y="${y.toFixed(1)}" width="${(chartW + 40).toFixed(1)}" height="${h.toFixed(1)}" fill="transparent"/>` +
       `<text x="${padL - 6}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="end" font-size="12" fill="${COL_INK_S}">${esc(label)}</text>` +
       `<rect x="${padL}" y="${y.toFixed(1)}" width="${wInternal.toFixed(1)}" height="${h.toFixed(1)}" fill="${COL_BAR}" rx="2"/>` +
       `<rect x="${(padL + wInternal).toFixed(1)}" y="${y.toFixed(1)}" width="${wExternal.toFixed(1)}" height="${h.toFixed(1)}" fill="${COL_BAR_C}" rx="2"/>` +
       `<text x="${(padL + wInternal / 2).toFixed(1)}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="${COL_BG}">${fmtNum(v.internalPct)}%</text>` +
-      `<text x="${(padL + wInternal + wExternal / 2).toFixed(1)}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="${COL_INK}">${fmtNum(v.externalPct)}%</text>`
+      `<text x="${(padL + wInternal + wExternal / 2).toFixed(1)}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="${COL_INK}">${fmtNum(v.externalPct)}%</text>` +
+      `</g>`
     );
   }).join("");
 
@@ -534,6 +537,24 @@ function renderStacked(container, block, stats) {
     svgRows + legend +
     `</svg>`;
   container.appendChild(svg);
+
+  if (block.linkNetwork) {
+    const rowsHost = document.createElement("div");
+    rowsHost.className = "chart__link-target";
+    rowsHost.textContent = "Atinge o bară pentru numele elevilor din acea clasă.";
+    container.appendChild(rowsHost);
+    let nodesCache = null;
+    async function ensureNodes() { if (!nodesCache) nodesCache = await loadNodesForLink(block); return nodesCache; }
+    svg.querySelectorAll(".stacked-row").forEach((g) => {
+      g.addEventListener("click", async () => {
+        const cls = g.dataset.class;
+        const ns = await ensureNodes();
+        const matching = ns.filter((n) => (n.group || n.clasa) === cls);
+        rowsHost.innerHTML = `<strong>${esc(cls)}</strong> (${matching.length} elevi): ` +
+          matching.map((n) => esc(n.name || n.id)).join(", ");
+      });
+    });
+  }
 }
 
 // ---- states: dots with commanded arrangements (scatter, sorted, grouped)
