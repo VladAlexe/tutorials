@@ -1,6 +1,20 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (TRANȘA 0 din restructurarea la 29 carduri: metrici, comunități, caractere, strategii)
+Ultima actualizare: 2026-07-22 (TRANȘA 1: componente interactive reutilizabile)
+
+## TRANȘA 1 (componente) — livrat
+
+Șapte componente noi, ready pentru cardurile din tranșele următoare. Lecția JSON nu s-a atins.
+
+1. **`diffusion mode: "recolor"`** — Butoane cu schemele de colorare (`class`, `community`, `component`, `degree`). Cytoscape aplică `transition-property: background-color, transition-duration: 400ms` deci schimbarea între moduri se face fluid, nu abrupt. Comunitățile citite din `stats.sliceMetrics.communities.byId`. Fiecare buton are un text explicativ dedesubt.
+2. **`chart freq linkNetwork: true`** — Rândurile din tabel devin tappabile. La atingere, se afișează dedesubt lista completă de nume din clasa respectivă (fetch din `linkNetworkData` sau `data/highschool-network.json` implicit).
+3. **`chart variant: "states"`** — Puncte cu stări comandate: împrăștiat / ordonat / grupat. Interpolarea `cx/cy` face tranziția, nu redesenare. Grupurile se citesc dintr-un `groupField` (path în stats), cu box-uri proporționale cu numărul de membri.
+4. **`diffusion mode: "mission"`** — Simulator de misiune: `teamSize` (implicit 3), tap pe nod pentru a-l adăuga/scoate din echipă, hover preview live „ar atinge N elevi", buton **Trimite** care animează difuzia BFS pas cu pas, scor final, istoric al încercărilor, butoane de preset predefinite (`block.presets: [{ label, names: [...] }]`).
+5. **`diffusion mode: "coverage"`** — Cercuri de acoperire pentru un set `seedNames`. Fiecare nod primește culoarea seed-ului care îl acoperă; nodurile acoperite de mai mulți seed-uri se colorează în închis (`#2a1f16`), semnalând suprapunerea. Sub grafic: „Împreună: X · Suma separată: Y · Suprapunere: Z".
+6. **`diffusion mode: "greedy-anim"`** — Alegere lacomă pas cu pas. Buton „Pas următor" (până la `block.steps`, implicit 3). La fiecare pas: nodul câștigător primește clasa `.source`, zona nouă câștigată se colorează verde temporar, apoi se estompează în noua stare acoperită (`opacity: 0.35`). Contor „Acoperire totală: X din Y".
+7. **`diffusion mode: "mirror"`** — Două rețele alăturate pe desktop (grid 1fr 1fr), toggle pe telefon. Fiecare parte are `title` și `colorBy` (`class` sau `community`). Toggle-ul are butoane care se schimbă activ; pe desktop, ambele părți sunt vizibile simultan.
+
+## TRANȘA 0 (build) — cifre obținute
 
 ## Restructurare (planificată, în curs)
 

@@ -453,6 +453,86 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Mirror (two networks side-by-side or toggled) */
+.mirror {
+  display: grid;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+.mirror__toggle {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-bottom: var(--border-thin-soft);
+}
+.mirror__toggle .btn {
+  flex: 1;
+  min-height: 40px;
+  font-size: var(--fs-sm);
+}
+.mirror__cell {
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.mirror__cap {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  border-bottom: var(--border-thin-soft);
+}
+.mirror__stage {
+  height: 260px;
+  min-height: 220px;
+  background: var(--color-bg);
+}
+/* Phone: toggle between sides, only one visible */
+.mirror--left  .mirror__cell--right { display: none; }
+.mirror--right .mirror__cell--left  { display: none; }
+@media (min-width: 768px) {
+  .mirror { grid-template-columns: 1fr 1fr; grid-template-areas: "toggle toggle" "l r"; }
+  .mirror__toggle { grid-area: toggle; }
+  .mirror__cell--left { grid-area: l; }
+  .mirror__cell--right { grid-area: r; }
+  /* Both visible on desktop */
+  .mirror--left  .mirror__cell--right,
+  .mirror--right .mirror__cell--left  { display: flex; }
+  .mirror__toggle { display: none; }
+  .mirror__stage { height: 320px; }
+}
+
+/* Recolor buttons pulse when active */
+.recolor-btn.btn--primary { box-shadow: 0 0 0 3px rgba(139, 74, 30, 0.15); }
+
+/* Mission mode */
+.mission-presets {
+  padding: var(--sp-2) 0 0;
+  border-top: var(--border-thin-soft);
+  margin-top: var(--sp-2);
+}
+.mission-presets__label {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  align-self: center;
+  margin-right: var(--sp-2);
+}
+
+/* Chart link target (list of names after tapping a row/bar) */
+.chart__link-target {
+  margin: var(--sp-3) 0 0;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--color-surface-alt, #f2ede5);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+.chart__freq__tappable { cursor: pointer; transition: background-color 150ms ease; }
+.chart__freq__tappable:hover { background-color: var(--color-surface-alt, #f2ede5); }
+
 /* Compare-three (three side-by-side / stacked networks) */
 .compare-three {
   display: grid;

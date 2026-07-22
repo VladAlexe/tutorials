@@ -267,11 +267,114 @@ async function renderCompareThree(container, block) {
   };
 }
 
+async function renderMirror(container, block) {
+  container.classList.add("viz");
+  container.innerHTML = "";
+  let cytoscape, data, statsData;
+  try {
+    [cytoscape, data] = await Promise.all([loadCytoscape(), loadJSON(block.data || "data/highschool-network.json")]);
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch { statsData = null; }
+  } catch (err) { return errorHandle(container, err.message); }
+
+  const nodes = data.nodes.map((n) => ({ id: String(n.id), name: n.name != null ? String(n.name) : null, group: n.group || "" }));
+  const edges = data.edges.map((e, i) => ({ id: `e${i}`, source: String(e.source), target: String(e.target) }));
+  const commById = statsData?.sliceMetrics?.communities?.byId || {};
+
+  const groups = [...new Set(nodes.map((n) => n.group).filter(Boolean))];
+  const classPalette = new Map(); groups.forEach((g, i) => classPalette.set(g, GROUP_PALETTE[i % GROUP_PALETTE.length]));
+
+  function colorFor(nid, scheme, groupOf) {
+    if (scheme === "class") return classPalette.get(groupOf) || GROUP_PALETTE[0];
+    if (scheme === "community") {
+      const c = commById[nid];
+      return c == null ? "#8a7a68" : GROUP_PALETTE[c % GROUP_PALETTE.length];
+    }
+    return "#8a7a68";
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "mirror";
+  container.appendChild(grid);
+
+  const toggle = document.createElement("div");
+  toggle.className = "mirror__toggle";
+  toggle.innerHTML =
+    `<button type="button" class="btn btn--primary" data-side="left">${block.left?.title || "Stânga"}</button>` +
+    `<button type="button" class="btn btn--ghost" data-side="right">${block.right?.title || "Dreapta"}</button>`;
+  grid.appendChild(toggle);
+
+  const cyInstances = [];
+  const sides = ["left", "right"];
+  sides.forEach((side, si) => {
+    const spec = block[side] || {};
+    const cell = document.createElement("div");
+    cell.className = `mirror__cell mirror__cell--${side}`;
+    const cap = document.createElement("div");
+    cap.className = "mirror__cap";
+    cap.textContent = spec.title || side;
+    cell.appendChild(cap);
+    const stage = document.createElement("div");
+    stage.className = "mirror__stage";
+    cell.appendChild(stage);
+    grid.appendChild(cell);
+
+    const scheme = spec.colorBy || "class";
+    const elements = [
+      ...nodes.map((n) => ({ data: { id: n.id, name: n.name, group: n.group, color: colorFor(n.id, scheme, n.group), label: n.name } })),
+      ...edges.map((e) => ({ data: { id: `${side}-${e.id}`, source: e.source, target: e.target } })),
+    ];
+    const cy = cytoscape({
+      ...narrowCyOpts(),
+      container: stage,
+      elements,
+      style: [
+        { selector: "node", style: { "background-color": "data(color)", "width": 10, "height": 10, "opacity": 0.85 } },
+        { selector: "edge", style: { "line-color": "#b57140", "opacity": 0.4, "width": 1, "curve-style": "bezier" } },
+      ],
+      layout: { name: "cose", animate: false, padding: 12, idealEdgeLength: 40, nodeRepulsion: 3000 },
+      minZoom: 0.3, maxZoom: 2, wheelSensitivity: 0.2,
+    });
+    cy.style().update();
+    cyInstances.push(cy);
+  });
+
+  function showSide(which) {
+    grid.classList.remove("mirror--left", "mirror--right");
+    grid.classList.add(`mirror--${which}`);
+    toggle.querySelectorAll("[data-side]").forEach((b) => {
+      b.classList.remove("btn--primary"); b.classList.add("btn--ghost");
+      if (b.dataset.side === which) { b.classList.remove("btn--ghost"); b.classList.add("btn--primary"); }
+    });
+    setTimeout(() => cyInstances.forEach((cy) => { try { cy.resize(); cy.fit(undefined, 12); } catch {} }), 50);
+  }
+  toggle.querySelectorAll("[data-side]").forEach((b) => b.addEventListener("click", () => showSide(b.dataset.side)));
+  showSide("left");
+
+  function refit() { cyInstances.forEach((cy) => { try { cy.resize(); cy.fit(undefined, 12); } catch {} }); }
+  const onWin = () => refit();
+  window.addEventListener("resize", onWin);
+  const ro = new ResizeObserver(refit);
+  ro.observe(grid);
+  requestAnimationFrame(refit);
+
+  return {
+    refit,
+    destroy() {
+      window.removeEventListener("resize", onWin);
+      ro.disconnect();
+      cyInstances.forEach((cy) => { try { cy.destroy(); } catch {} });
+    },
+  };
+}
+
 export async function renderDiffusion(container, block, options = {}) {
   const mode = block.mode;
 
   if (mode === "compare-three") {
     return await renderCompareThree(container, block);
+  }
+  if (mode === "mirror") {
+    return await renderMirror(container, block);
   }
 
   let cytoscape, data;
@@ -1087,7 +1190,342 @@ export async function renderDiffusion(container, block, options = {}) {
       `<span class="viz__legend-chip"><span class="viz__legend-dot" style="background:${palette.Unknown}"></span>necunoscut</span>`;
 
     controls.innerHTML =
-      `<div class="diff-hint">Aceleași noduri, alt criteriu de colorare. Priveşte contactele și vezi cum se aleg vecinii — sau nu.</div>`;
+      `<div class="diff-hint">Aceleași noduri, alt criteriu de colorare. Priveşte contactele și vezi cum se aleg vecinii, sau nu.</div>`;
+  }
+
+  else if (mode === "recolor") {
+    cy.nodes().addClass("knows");
+    const schemes = block.schemes || ["class", "community", "component", "degree"];
+    let statsData = null;
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
+    const commById = statsData?.sliceMetrics?.communities?.byId || {};
+
+    const adjMap = new Map();
+    for (const n of nodes) adjMap.set(n.id, new Set());
+    for (const e of edges) { adjMap.get(e.source).add(e.target); adjMap.get(e.target).add(e.source); }
+    const compById = {};
+    let cid = 0;
+    const seen = new Set();
+    for (const n of nodes) {
+      if (seen.has(n.id)) continue;
+      const stk = [n.id];
+      while (stk.length) {
+        const x = stk.pop();
+        if (seen.has(x)) continue;
+        seen.add(x);
+        compById[x] = cid;
+        for (const y of adjMap.get(x) || []) if (!seen.has(y)) stk.push(y);
+      }
+      cid++;
+    }
+
+    const degById = {};
+    cy.nodes().forEach((n) => { degById[n.id()] = n.connectedEdges().length; });
+    const maxDeg = Math.max(...Object.values(degById), 1);
+
+    const PALETTE = GROUP_PALETTE.slice();
+    const groupBy = new Map(nodes.map((n) => [n.id, n.group]));
+
+    function colorFor(nid, scheme) {
+      if (scheme === "class") {
+        const g = groupBy.get(nid);
+        const i = groups.indexOf(g);
+        return PALETTE[i % PALETTE.length];
+      }
+      if (scheme === "community") {
+        const c = commById[nid];
+        if (c == null) return "#8a7a68";
+        return PALETTE[c % PALETTE.length];
+      }
+      if (scheme === "component") return PALETTE[compById[nid] % PALETTE.length];
+      if (scheme === "degree") {
+        const t = degById[nid] / maxDeg;
+        const R = Math.round(217 * (1 - t) + 139 * t);
+        const G = Math.round(207 * (1 - t) + 74  * t);
+        const B = Math.round(192 * (1 - t) + 30  * t);
+        return `rgb(${R},${G},${B})`;
+      }
+      return "#8a7a68";
+    }
+
+    function applyScheme(scheme) {
+      cy.nodes().forEach((n) => {
+        n.style("transition-property", "background-color");
+        n.style("transition-duration", 400);
+        n.style("background-color", colorFor(n.id(), scheme));
+      });
+    }
+
+    const labels = {
+      class: "Clasa", community: "Comunitatea", component: "Componenta", degree: "Popularitatea"
+    };
+    const explains = {
+      class:     "Culoarea = clasa administrativă.",
+      community: "Culoarea = comunitatea detectată de algoritm (label propagation). Aproape identică cu clasele; unde nu, avem personaje.",
+      component: "Culoarea = componenta conexă. Sunt subgrupuri complet separate.",
+      degree:    "Culoarea = gradul. Cu cât mai închis, cu atât mai popular."
+    };
+
+    controls.innerHTML =
+      `<div class="diff-row diff-buttons">` +
+      schemes.map((s) => `<button type="button" class="btn btn--ghost recolor-btn" data-scheme="${s}">${labels[s] || s}</button>`).join("") +
+      `</div>` +
+      `<div class="diff-hint" data-role="explain"></div>`;
+
+    const explainEl = controls.querySelector('[data-role="explain"]');
+    function activate(scheme, btn) {
+      controls.querySelectorAll("[data-scheme]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
+      if (btn) { btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary"); }
+      applyScheme(scheme);
+      explainEl.textContent = explains[scheme] || "";
+    }
+    controls.querySelectorAll("[data-scheme]").forEach((btn) => btn.addEventListener("click", () => activate(btn.dataset.scheme, btn)));
+    requestAnimationFrame(() => {
+      const first = controls.querySelector("[data-scheme]");
+      if (first) activate(first.dataset.scheme, first);
+    });
+  }
+
+  else if (mode === "coverage") {
+    cy.nodes().addClass("knows");
+    const seedNames = block.seedNames || [];
+    const nameToId = new Map(nodes.map((n) => [n.name, n.id]));
+    const seedIds = seedNames.map((nm) => nameToId.get(nm)).filter(Boolean);
+    const SEED_COLORS = ["#8b4a1e", "#3d7a52", "#2f6fa8", "#a3341f"];
+
+    const adjMap = new Map();
+    for (const n of nodes) adjMap.set(n.id, new Set());
+    for (const e of edges) { adjMap.get(e.source).add(e.target); adjMap.get(e.target).add(e.source); }
+    const egos = seedIds.map((sid) => new Set([sid, ...(adjMap.get(sid) || [])]));
+
+    const joint = new Set();
+    for (const s of egos) for (const x of s) joint.add(x);
+    const sumInd = egos.reduce((s, e) => s + e.size, 0);
+    const overlap = sumInd - joint.size;
+
+    cy.nodes().forEach((n) => {
+      const nid = n.id();
+      const owners = egos.map((e, i) => e.has(nid) ? i : -1).filter((x) => x >= 0);
+      if (!owners.length) { n.style("opacity", 0.15); return; }
+      if (owners.length === 1) {
+        n.style("background-color", SEED_COLORS[owners[0] % SEED_COLORS.length]);
+        n.style("opacity", 0.7);
+      } else {
+        n.style("background-color", "#2a1f16");
+        n.style("opacity", 1);
+      }
+      if (seedIds.includes(nid)) { n.addClass("source"); }
+    });
+
+    const seedNamesFmt = seedIds.map((sid, i) => `<span style="color:${SEED_COLORS[i % SEED_COLORS.length]}">${nameById.get(sid) || sid}</span>`).join(", ");
+    controls.innerHTML =
+      `<div class="diff-hint">Cercuri de acoperire pentru: ${seedNamesFmt}. Nodurile <strong>închise</strong> sunt acoperite de mai mulți.</div>` +
+      `<div class="diff-count">Împreună: <strong>${joint.size}</strong>. Suma separată: ${sumInd}. Suprapunere: ${overlap}.</div>`;
+  }
+
+  else if (mode === "greedy-anim") {
+    cy.nodes().addClass("knows");
+    const steps = block.steps || 3;
+
+    const adjMap = new Map();
+    for (const n of nodes) adjMap.set(n.id, new Set());
+    for (const e of edges) { adjMap.get(e.source).add(e.target); adjMap.get(e.target).add(e.source); }
+    function bfsSet(source) {
+      const s = new Set([source]);
+      const q = [source];
+      while (q.length) {
+        const x = q.shift();
+        for (const y of adjMap.get(x) || []) if (!s.has(y)) { s.add(y); q.push(y); }
+      }
+      return s;
+    }
+    const reachSet = new Map(nodes.map((n) => [n.id, bfsSet(n.id)]));
+
+    let picks = [];
+    let covered = new Set();
+
+    controls.innerHTML =
+      `<div class="diff-count" data-role="status">Alegere lacomă: pas 0 din ${steps}.</div>` +
+      `<div class="diff-row diff-buttons">` +
+        `<button type="button" class="btn btn--primary" data-act="step">Pas următor</button>` +
+        `<button type="button" class="btn btn--ghost" data-act="reset">Resetează</button>` +
+      `</div>` +
+      `<div class="diff-hint" data-role="pick"></div>`;
+
+    const statusEl = controls.querySelector('[data-role="status"]');
+    const pickEl = controls.querySelector('[data-role="pick"]');
+
+    function paint() {
+      cy.nodes().forEach((n) => {
+        const nid = n.id();
+        n.removeClass("source");
+        if (picks.includes(nid)) { n.addClass("source"); n.style("opacity", 1); }
+        else if (covered.has(nid)) n.style("opacity", 0.35);
+        else n.style("opacity", 1);
+      });
+    }
+
+    function doStep() {
+      if (picks.length >= steps) return;
+      let bestId = null, bestAdd = -1;
+      for (const n of nodes) {
+        if (picks.includes(n.id)) continue;
+        const r = reachSet.get(n.id);
+        let add = 0;
+        for (const x of r) if (!covered.has(x)) add++;
+        if (add > bestAdd || (add === bestAdd && (bestId === null || n.id < bestId))) {
+          bestAdd = add;
+          bestId = n.id;
+        }
+      }
+      if (bestId === null) return;
+      const gained = new Set();
+      for (const x of reachSet.get(bestId)) if (!covered.has(x)) gained.add(x);
+      picks.push(bestId);
+      covered = new Set([...covered, ...reachSet.get(bestId)]);
+      cy.nodes().forEach((n) => {
+        if (gained.has(n.id())) { n.style("opacity", 1); n.style("background-color", "#3d7a52"); }
+      });
+      setTimeout(() => paint(), 800);
+      const nm = nameById.get(bestId);
+      pickEl.textContent = `Pas ${picks.length}: ${nm} adaugă ${bestAdd} persoane noi. Acoperire totală: ${covered.size} din ${nodes.length}.`;
+      statusEl.textContent = `Alegere lacomă: pas ${picks.length} din ${steps}.`;
+    }
+    function doReset() {
+      picks = []; covered = new Set();
+      cy.nodes().forEach((n) => { n.removeClass("source"); n.style("opacity", 1); });
+      cy.nodes().forEach((n) => {
+        const gc = colorMap.get(n.data("group")) || GROUP_PALETTE[0];
+        n.style("background-color", gc);
+      });
+      statusEl.textContent = `Alegere lacomă: pas 0 din ${steps}.`;
+      pickEl.textContent = "";
+    }
+    controls.querySelector('[data-act="step"]').addEventListener("click", doStep);
+    controls.querySelector('[data-act="reset"]').addEventListener("click", doReset);
+  }
+
+  else if (mode === "mission") {
+    cy.nodes().addClass("knows");
+    const teamSize = block.teamSize || 3;
+    const presets = block.presets || [];
+    const nameToId = new Map(nodes.map((n) => [n.name, n.id]));
+
+    const adjMap = new Map();
+    for (const n of nodes) adjMap.set(n.id, new Set());
+    for (const e of edges) { adjMap.get(e.source).add(e.target); adjMap.get(e.target).add(e.source); }
+    function reach(source) {
+      const s = new Set([source]);
+      const q = [source];
+      while (q.length) {
+        const x = q.shift();
+        for (const y of adjMap.get(x) || []) if (!s.has(y)) { s.add(y); q.push(y); }
+      }
+      return s;
+    }
+    const reachMap = new Map(nodes.map((n) => [n.id, reach(n.id)]));
+    function coverage(ids) {
+      const s = new Set();
+      for (const x of ids) for (const y of reachMap.get(x) || []) s.add(y);
+      return s;
+    }
+
+    const team = [];
+    const history = [];
+
+    controls.innerHTML =
+      `<div class="diff-count" data-role="status">Alege ${teamSize} elevi. Zvonul pornește de la ei simultan.</div>` +
+      `<div class="diff-hint" data-role="preview">Atinge un nod pentru a-l adăuga în echipă.</div>` +
+      `<div class="diff-row diff-buttons">` +
+        `<button type="button" class="btn btn--primary" data-act="send" disabled>Trimite</button>` +
+        `<button type="button" class="btn btn--ghost" data-act="reset">Resetează echipa</button>` +
+      `</div>` +
+      (presets.length ? `<div class="diff-row diff-buttons mission-presets">` +
+        `<span class="mission-presets__label">Strategii predefinite:</span>` +
+        presets.map((p, i) => `<button type="button" class="btn btn--ghost" data-preset="${i}">${p.label}</button>`).join("") +
+        `</div>` : "") +
+      `<div class="diff-hint" data-role="history"></div>`;
+
+    const statusEl = controls.querySelector('[data-role="status"]');
+    const previewEl = controls.querySelector('[data-role="preview"]');
+    const historyEl = controls.querySelector('[data-role="history"]');
+    const sendBtn = controls.querySelector('[data-act="send"]');
+
+    function paint() {
+      cy.nodes().removeClass("source");
+      cy.nodes().forEach((n) => {
+        if (team.includes(n.id())) n.addClass("source");
+      });
+      const cov = team.length ? coverage(team).size : 0;
+      statusEl.textContent = team.length
+        ? `Echipa: ${team.length}/${teamSize}. Acoperire actuală: ${cov} din ${nodes.length}.`
+        : `Alege ${teamSize} elevi. Zvonul pornește de la ei simultan.`;
+      sendBtn.disabled = team.length !== teamSize;
+    }
+
+    cy.on("tap", "node", (e) => {
+      const nid = e.target.id();
+      const pos = team.indexOf(nid);
+      if (pos >= 0) team.splice(pos, 1);
+      else if (team.length < teamSize) team.push(nid);
+      paint();
+    });
+    cy.on("mouseover", "node", (e) => {
+      const nid = e.target.id();
+      if (team.includes(nid) || team.length >= teamSize) return;
+      const hyp = coverage([...team, nid]).size;
+      previewEl.textContent = `Cu ${nameById.get(nid) || nid} în plus, echipa ar atinge ${hyp} elevi.`;
+    });
+    cy.on("mouseout", "node", () => { if (team.length < teamSize) previewEl.textContent = "Atinge un nod pentru a-l adăuga în echipă."; });
+
+    function animateSpread(ids, cb) {
+      cy.nodes().removeClass("knows");
+      for (const x of ids) cy.getElementById(x).addClass("knows");
+      const covered = new Set(ids);
+      let frontier = [...ids];
+      let step = 0;
+      const iv = setInterval(() => {
+        const next = [];
+        for (const x of frontier) for (const y of adjMap.get(x) || []) if (!covered.has(y)) { covered.add(y); next.push(y); }
+        for (const y of next) cy.getElementById(y).addClass("knows");
+        frontier = next;
+        step++;
+        if (!next.length || step > 25) { clearInterval(iv); cb(covered); }
+      }, 300);
+    }
+
+    function renderHistory() {
+      if (!history.length) { historyEl.innerHTML = ""; return; }
+      historyEl.innerHTML = "<strong>Istoric:</strong><br>" + history.map((h, i) =>
+        `${i + 1}. ${h.team.join(", ")} → <strong>${h.coverage}</strong>`
+      ).join("<br>");
+    }
+
+    sendBtn.addEventListener("click", () => {
+      const seeds = [...team];
+      sendBtn.disabled = true;
+      statusEl.textContent = "Se transmite…";
+      previewEl.textContent = "";
+      animateSpread(seeds, (covered) => {
+        const names = seeds.map((s) => nameById.get(s) || s);
+        history.push({ team: names, coverage: covered.size });
+        renderHistory();
+        statusEl.textContent = `Rezultat: ${names.join(", ")} → ${covered.size} din ${nodes.length}.`;
+        team.length = 0;
+        setTimeout(() => { cy.nodes().addClass("knows"); paint(); }, 1400);
+      });
+    });
+    controls.querySelector('[data-act="reset"]').addEventListener("click", () => { team.length = 0; paint(); });
+    controls.querySelectorAll("[data-preset]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const p = presets[parseInt(btn.dataset.preset, 10)];
+        if (!p || !Array.isArray(p.names)) return;
+        team.length = 0;
+        for (const nm of p.names) { const nid = nameToId.get(nm); if (nid && team.length < teamSize) team.push(nid); }
+        paint();
+      });
+    });
+    paint();
   }
 
   else if (mode === "highlight") {

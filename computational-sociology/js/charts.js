@@ -354,6 +354,14 @@ function statsBucket(block, stats) {
   return block.dataset && stats?.[block.dataset] ? stats[block.dataset] : stats;
 }
 
+async function loadNodesForLink(block) {
+  const path = block.linkNetworkData || "data/highschool-network.json";
+  try {
+    const d = await loadJSON(path);
+    return d.nodes || [];
+  } catch { return []; }
+}
+
 function renderFreq(container, block, stats) {
   const src = statsBucket(block, stats);
   const cf = src?.classFreq || {};
@@ -392,6 +400,7 @@ function renderFreq(container, block, stats) {
 
   const svg = document.createElement("div");
   svg.className = "chart__svg-wrap";
+  const barRects = rows.map(([k], i) => `data-class="${esc(k)}"`).join("|"); // marker for tap
   svg.innerHTML =
     `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
     `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
@@ -399,6 +408,29 @@ function renderFreq(container, block, stats) {
     svgRows +
     `</svg>`;
   container.appendChild(svg);
+
+  if (block.linkNetwork) {
+    const rowsHost = document.createElement("div");
+    rowsHost.className = "chart__link-target";
+    rowsHost.textContent = "Atinge un rând din tabel pentru lista de nume.";
+    container.appendChild(rowsHost);
+    const tableRows = container.querySelectorAll(".chart__freq tr");
+    // Bind class name from the row header if present
+    let nodesCache = null;
+    async function ensureNodes() { if (!nodesCache) nodesCache = await loadNodesForLink(block); return nodesCache; }
+    tableRows.forEach((tr, idx) => {
+      const th = tr.querySelector("th");
+      if (!th || idx === 0 || tr.classList.contains("chart__freq__total")) return;
+      tr.classList.add("chart__freq__tappable");
+      tr.addEventListener("click", async () => {
+        const cls = th.textContent.trim();
+        const ns = await ensureNodes();
+        const matching = ns.filter((n) => (n.group || n.clasa) === cls);
+        rowsHost.innerHTML = `<strong>${esc(cls)}</strong> (${matching.length}): ` +
+          matching.map((n) => esc(n.name || n.id)).join(", ");
+      });
+    });
+  }
 }
 
 // ---- grouped-strip: mean bars per class + individual points overlay -----
@@ -502,6 +534,133 @@ function renderStacked(container, block, stats) {
     svgRows + legend +
     `</svg>`;
   container.appendChild(svg);
+}
+
+// ---- states: dots with commanded arrangements (scatter, sorted, grouped)
+async function renderStates(container, block, values, stats) {
+  const chartHost = document.createElement("div");
+  chartHost.className = "chart__svg-wrap";
+  container.appendChild(chartHost);
+
+  const W = 480, H = 220;
+  const padL = 34, padR = 12, padT = 16, padB = 34;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const maxV = Math.max(...values, 1);
+  const minV = Math.min(...values, 0);
+  const rnd = seededRandom(42);
+  const jitter = values.map(() => ({ jx: rnd(), jy: rnd() }));
+
+  // Precompute positions for each state
+  function scatterPos(i, v) {
+    return {
+      x: padL + jitter[i].jx * chartW,
+      y: padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85 + jitter[i].jy * 12,
+    };
+  }
+  function sortedPos(i, v, sortedIdx) {
+    return {
+      x: padL + (sortedIdx / Math.max(1, values.length - 1)) * chartW,
+      y: padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85,
+    };
+  }
+  // Groups: derive from block.groupField pointing into stats, e.g. sliceMetrics.communities.byId
+  const groups = block.groupField
+    ? (function () {
+        const g = block.groupField.split(".").reduce((o, k) => (o ? o[k] : null), stats) || {};
+        return values.map((_, i) => g[String(block.nodeIds ? block.nodeIds[i] : i)] ?? 0);
+      })()
+    : values.map(() => 0);
+
+  const groupCounts = {};
+  groups.forEach((g) => { groupCounts[g] = (groupCounts[g] || 0) + 1; });
+  const groupOrder = Object.keys(groupCounts).sort();
+  const groupCumPos = {};
+  let acc = 0;
+  const gap = 8;
+  const groupBoxes = {};
+  const totalGaps = (groupOrder.length - 1) * gap;
+  const availW = chartW - totalGaps;
+  for (const g of groupOrder) {
+    const w = availW * (groupCounts[g] / values.length);
+    groupBoxes[g] = { start: acc, width: w };
+    acc += w + gap;
+  }
+  const groupIndexIn = {};
+  groups.forEach((g, i) => {
+    groupIndexIn[i] = (groupIndexIn[g + "_c"] = (groupIndexIn[g + "_c"] || 0));
+    groupIndexIn[g + "_c"]++;
+  });
+  function groupedPos(i, v) {
+    const g = groups[i];
+    const box = groupBoxes[g] || { start: 0, width: chartW };
+    const idxInGroup = groupIndexIn[i] || 0;
+    const denom = Math.max(1, groupCounts[g] - 1);
+    return {
+      x: padL + box.start + (denom ? (idxInGroup / denom) * box.width : box.width / 2),
+      y: padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85,
+    };
+  }
+
+  const sortedIdx = [...values.map((v, i) => i)].sort((a, b) => values[a] - values[b]);
+  const rankOf = new Array(values.length);
+  sortedIdx.forEach((origIdx, rank) => { rankOf[origIdx] = rank; });
+
+  const states = block.states || [
+    { label: "Împrăștiat", key: "scatter" },
+    { label: "Ordonat", key: "sorted" },
+    { label: "Grupat", key: "grouped" },
+  ];
+
+  const axisX = `<line x1="${padL}" y1="${padT + chartH}" x2="${W - padR}" y2="${padT + chartH}" stroke="${COL_MUTED}" stroke-width="0.5"/>`;
+
+  const initialPos = values.map((v, i) => scatterPos(i, v));
+  const dots = initialPos.map((p, i) =>
+    `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="${COL_BAR}" fill-opacity="0.7"><title>${values[i]}</title></circle>`
+  ).join("");
+
+  chartHost.innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto">` +
+    axisX + dots + `</svg>`;
+
+  const circles = chartHost.querySelectorAll("circle");
+  let currentPos = initialPos;
+
+  function positionsFor(key) {
+    if (key === "sorted") return values.map((v, i) => sortedPos(i, v, rankOf[i]));
+    if (key === "grouped") return values.map((v, i) => groupedPos(i, v));
+    return values.map((v, i) => scatterPos(i, v));
+  }
+
+  function transitionTo(target, dur = 800) {
+    const start = performance.now();
+    const startPos = currentPos.map((p) => ({ x: p.x, y: p.y }));
+    function frame() {
+      const t = Math.min(1, (performance.now() - start) / dur);
+      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      circles.forEach((c, i) => {
+        const x = startPos[i].x + (target[i].x - startPos[i].x) * eased;
+        const y = startPos[i].y + (target[i].y - startPos[i].y) * eased;
+        c.setAttribute("cx", x.toFixed(1));
+        c.setAttribute("cy", y.toFixed(1));
+      });
+      if (t < 1) requestAnimationFrame(frame);
+      else currentPos = target;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  const controls = document.createElement("div");
+  controls.className = "chart__controls chart__states-controls";
+  controls.innerHTML = states.map((s, i) => `<button type="button" class="btn ${i === 0 ? "btn--primary" : "btn--ghost"}" data-state="${s.key}">${s.label}</button>`).join("");
+  container.appendChild(controls);
+  controls.querySelectorAll("[data-state]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      controls.querySelectorAll("[data-state]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
+      btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary");
+      transitionTo(positionsFor(btn.dataset.state));
+    });
+  });
 }
 
 // ---- sex-composition: 100% stacked bars F/M per class -------------------
@@ -699,6 +858,12 @@ export async function renderChart(container, block) {
     if (block.variant === "meanmedian") {
       const values = await getValues(block);
       renderMeanMedian(container, block, values);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "states") {
+      const values = await getValues(block);
+      const stats = await getStats(block);
+      await renderStates(container, block, values, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "sex-composition") {
