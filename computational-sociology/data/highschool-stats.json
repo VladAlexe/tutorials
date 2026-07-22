@@ -308,6 +308,17 @@
   "exempluGrad": 5,
   "pasi": 4,
   "maxTransmiteri": 4,
+  "classNames": {
+    "2BIO1": "Bio A",
+    "2BIO2": "Bio B",
+    "2BIO3": "Bio C",
+    "MP": "Mate A",
+    "MP*1": "Mate B",
+    "MP*2": "Mate C",
+    "PC": "Chimie A",
+    "PC*": "Chimie B",
+    "PSI*": "Inginerie"
+  },
   "friendshipParadox": {
     "meanDegree": 6.0,
     "meanFriendDegree": 7.6,
@@ -4006,6 +4017,2433 @@
         "pasi": 4,
         "maxTransmiteri": 4,
         "description": "Deterministic BFS bounded to `pasi` rounds; each carrier transmits only to top `maxTransmiteri` contacts by edge weight."
+      },
+      "cutVertices": [
+        {
+          "id": 276,
+          "name": "Elena",
+          "class": "PC*",
+          "componentsAfter": 2,
+          "largestAfter": 295,
+          "detachedCount": 3,
+          "detached": [
+            {
+              "id": 621,
+              "name": "Ramona"
+            },
+            {
+              "id": 786,
+              "name": "George"
+            },
+            {
+              "id": 923,
+              "name": "Codrin"
+            }
+          ]
+        },
+        {
+          "id": 441,
+          "name": "Iulia",
+          "class": "2BIO2",
+          "componentsAfter": 2,
+          "largestAfter": 296,
+          "detachedCount": 2,
+          "detached": [
+            {
+              "id": 295,
+              "name": "Maria"
+            },
+            {
+              "id": 763,
+              "name": "Zina"
+            }
+          ]
+        },
+        {
+          "id": 621,
+          "name": "Ramona",
+          "class": "PC*",
+          "componentsAfter": 2,
+          "largestAfter": 296,
+          "detachedCount": 2,
+          "detached": [
+            {
+              "id": 786,
+              "name": "George"
+            },
+            {
+              "id": 923,
+              "name": "Codrin"
+            }
+          ]
+        },
+        {
+          "id": 674,
+          "name": "Gabi",
+          "class": "2BIO1",
+          "componentsAfter": 2,
+          "largestAfter": 296,
+          "detachedCount": 2,
+          "detached": [
+            {
+              "id": 165,
+              "name": "Rux"
+            },
+            {
+              "id": 498,
+              "name": "Rica"
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "name": "Elena",
+          "class": "2BIO2",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 173,
+              "name": "Beni"
+            }
+          ]
+        },
+        {
+          "id": 47,
+          "name": "Nadia",
+          "class": "PSI*",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 960,
+              "name": "Mihnea"
+            }
+          ]
+        },
+        {
+          "id": 145,
+          "name": "Liviu",
+          "class": "2BIO1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 489,
+              "name": "Kira"
+            }
+          ]
+        },
+        {
+          "id": 227,
+          "name": "Fana",
+          "class": "PSI*",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 920,
+              "name": "Ada"
+            }
+          ]
+        },
+        {
+          "id": 280,
+          "name": "Horia",
+          "class": "MP*1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 274,
+              "name": "Dana"
+            }
+          ]
+        },
+        {
+          "id": 295,
+          "name": "Maria",
+          "class": "2BIO2",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 763,
+              "name": "Zina"
+            }
+          ]
+        },
+        {
+          "id": 325,
+          "name": "Rares",
+          "class": "PSI*",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 959,
+              "name": "Lia"
+            }
+          ]
+        },
+        {
+          "id": 428,
+          "name": "David",
+          "class": "2BIO1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 627,
+              "name": "Viorel"
+            }
+          ]
+        },
+        {
+          "id": 440,
+          "name": "Geta",
+          "class": "PSI*",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 248,
+              "name": "Olga"
+            }
+          ]
+        },
+        {
+          "id": 450,
+          "name": "Otilia",
+          "class": "PC",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 87,
+              "name": "Flavia"
+            }
+          ]
+        },
+        {
+          "id": 453,
+          "name": "Pavel",
+          "class": "PC",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 134,
+              "name": "Iulia"
+            }
+          ]
+        },
+        {
+          "id": 471,
+          "name": "Beni",
+          "class": "2BIO1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 681,
+              "name": "Ioana"
+            }
+          ]
+        },
+        {
+          "id": 492,
+          "name": "Mihnea",
+          "class": "PC",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 388,
+              "name": "Miruna"
+            }
+          ]
+        },
+        {
+          "id": 498,
+          "name": "Rica",
+          "class": "2BIO1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 165,
+              "name": "Rux"
+            }
+          ]
+        },
+        {
+          "id": 520,
+          "name": "Alin",
+          "class": "MP",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 576,
+              "name": "Hodo"
+            }
+          ]
+        },
+        {
+          "id": 531,
+          "name": "Ciprian",
+          "class": "2BIO1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 527,
+              "name": "Boga"
+            }
+          ]
+        },
+        {
+          "id": 564,
+          "name": "Gina",
+          "class": "MP",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 977,
+              "name": "Patrick"
+            }
+          ]
+        },
+        {
+          "id": 640,
+          "name": "Bogdan",
+          "class": "MP",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 874,
+              "name": "Liviu"
+            }
+          ]
+        },
+        {
+          "id": 786,
+          "name": "George",
+          "class": "PC*",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 923,
+              "name": "Codrin"
+            }
+          ]
+        },
+        {
+          "id": 836,
+          "name": "Petru",
+          "class": "PC*",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 941,
+              "name": "Greta"
+            }
+          ]
+        },
+        {
+          "id": 908,
+          "name": "Stef",
+          "class": "MP*1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 277,
+              "name": "Florin"
+            }
+          ]
+        },
+        {
+          "id": 945,
+          "name": "Ilinca",
+          "class": "2BIO1",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 857,
+              "name": "Vera"
+            }
+          ]
+        },
+        {
+          "id": 1342,
+          "name": "Puiu",
+          "class": "MP*2",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 1519,
+              "name": "Carla"
+            }
+          ]
+        },
+        {
+          "id": 1518,
+          "name": "Bogdan",
+          "class": "MP*2",
+          "componentsAfter": 2,
+          "largestAfter": 297,
+          "detachedCount": 1,
+          "detached": [
+            {
+              "id": 1485,
+              "name": "Andrei"
+            }
+          ]
+        }
+      ],
+      "nCutVertices": 28,
+      "bridgeEdges": [
+        {
+          "a": {
+            "id": 87,
+            "name": "Flavia"
+          },
+          "b": {
+            "id": 450,
+            "name": "Otilia"
+          },
+          "aClass": "PC",
+          "bClass": "PC",
+          "weight": 9,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 134,
+            "name": "Iulia"
+          },
+          "b": {
+            "id": 453,
+            "name": "Pavel"
+          },
+          "aClass": "PC",
+          "bClass": "PC",
+          "weight": 11,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 165,
+            "name": "Rux"
+          },
+          "b": {
+            "id": 498,
+            "name": "Rica"
+          },
+          "aClass": "2BIO2",
+          "bClass": "2BIO1",
+          "weight": 20,
+          "sameClass": false,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 248,
+            "name": "Olga"
+          },
+          "b": {
+            "id": 440,
+            "name": "Geta"
+          },
+          "aClass": "PSI*",
+          "bClass": "PSI*",
+          "weight": 12,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 274,
+            "name": "Dana"
+          },
+          "b": {
+            "id": 280,
+            "name": "Horia"
+          },
+          "aClass": "MP*1",
+          "bClass": "MP*1",
+          "weight": 14,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 277,
+            "name": "Florin"
+          },
+          "b": {
+            "id": 908,
+            "name": "Stef"
+          },
+          "aClass": "MP*1",
+          "bClass": "MP*1",
+          "weight": 6,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 388,
+            "name": "Miruna"
+          },
+          "b": {
+            "id": 492,
+            "name": "Mihnea"
+          },
+          "aClass": "PC",
+          "bClass": "PC",
+          "weight": 13,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 527,
+            "name": "Boga"
+          },
+          "b": {
+            "id": 531,
+            "name": "Ciprian"
+          },
+          "aClass": "2BIO1",
+          "bClass": "2BIO1",
+          "weight": 8,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 857,
+            "name": "Vera"
+          },
+          "b": {
+            "id": 945,
+            "name": "Ilinca"
+          },
+          "aClass": "2BIO1",
+          "bClass": "2BIO1",
+          "weight": 13,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 1485,
+            "name": "Andrei"
+          },
+          "b": {
+            "id": 1518,
+            "name": "Bogdan"
+          },
+          "aClass": "MP*2",
+          "bClass": "MP*2",
+          "weight": 41,
+          "sameClass": true,
+          "detachedCount": 298
+        },
+        {
+          "a": {
+            "id": 295,
+            "name": "Maria"
+          },
+          "b": {
+            "id": 441,
+            "name": "Iulia"
+          },
+          "aClass": "2BIO2",
+          "bClass": "2BIO2",
+          "weight": 15,
+          "sameClass": true,
+          "detachedCount": 297
+        },
+        {
+          "a": {
+            "id": 498,
+            "name": "Rica"
+          },
+          "b": {
+            "id": 674,
+            "name": "Gabi"
+          },
+          "aClass": "2BIO1",
+          "bClass": "2BIO1",
+          "weight": 6,
+          "sameClass": true,
+          "detachedCount": 297
+        },
+        {
+          "a": {
+            "id": 276,
+            "name": "Elena"
+          },
+          "b": {
+            "id": 621,
+            "name": "Ramona"
+          },
+          "aClass": "PC*",
+          "bClass": "PC*",
+          "weight": 25,
+          "sameClass": true,
+          "detachedCount": 3
+        },
+        {
+          "a": {
+            "id": 621,
+            "name": "Ramona"
+          },
+          "b": {
+            "id": 786,
+            "name": "George"
+          },
+          "aClass": "PC*",
+          "bClass": "PC*",
+          "weight": 11,
+          "sameClass": true,
+          "detachedCount": 2
+        },
+        {
+          "a": {
+            "id": 27,
+            "name": "Elena"
+          },
+          "b": {
+            "id": 173,
+            "name": "Beni"
+          },
+          "aClass": "2BIO2",
+          "bClass": "2BIO2",
+          "weight": 9,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 47,
+            "name": "Nadia"
+          },
+          "b": {
+            "id": 960,
+            "name": "Mihnea"
+          },
+          "aClass": "PSI*",
+          "bClass": "PSI*",
+          "weight": 7,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 145,
+            "name": "Liviu"
+          },
+          "b": {
+            "id": 489,
+            "name": "Kira"
+          },
+          "aClass": "2BIO1",
+          "bClass": "2BIO1",
+          "weight": 10,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 227,
+            "name": "Fana"
+          },
+          "b": {
+            "id": 920,
+            "name": "Ada"
+          },
+          "aClass": "PSI*",
+          "bClass": "PSI*",
+          "weight": 8,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 295,
+            "name": "Maria"
+          },
+          "b": {
+            "id": 763,
+            "name": "Zina"
+          },
+          "aClass": "2BIO2",
+          "bClass": "2BIO2",
+          "weight": 7,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 325,
+            "name": "Rares"
+          },
+          "b": {
+            "id": 959,
+            "name": "Lia"
+          },
+          "aClass": "PSI*",
+          "bClass": "PSI*",
+          "weight": 8,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 428,
+            "name": "David"
+          },
+          "b": {
+            "id": 627,
+            "name": "Viorel"
+          },
+          "aClass": "2BIO1",
+          "bClass": "2BIO1",
+          "weight": 4,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 471,
+            "name": "Beni"
+          },
+          "b": {
+            "id": 681,
+            "name": "Ioana"
+          },
+          "aClass": "2BIO1",
+          "bClass": "2BIO1",
+          "weight": 13,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 520,
+            "name": "Alin"
+          },
+          "b": {
+            "id": 576,
+            "name": "Hodo"
+          },
+          "aClass": "MP",
+          "bClass": "MP",
+          "weight": 14,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 564,
+            "name": "Gina"
+          },
+          "b": {
+            "id": 977,
+            "name": "Patrick"
+          },
+          "aClass": "MP",
+          "bClass": "PSI*",
+          "weight": 6,
+          "sameClass": false,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 640,
+            "name": "Bogdan"
+          },
+          "b": {
+            "id": 874,
+            "name": "Liviu"
+          },
+          "aClass": "MP",
+          "bClass": "MP",
+          "weight": 18,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 786,
+            "name": "George"
+          },
+          "b": {
+            "id": 923,
+            "name": "Codrin"
+          },
+          "aClass": "PC*",
+          "bClass": "PC*",
+          "weight": 13,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 836,
+            "name": "Petru"
+          },
+          "b": {
+            "id": 941,
+            "name": "Greta"
+          },
+          "aClass": "PC*",
+          "bClass": "PC*",
+          "weight": 5,
+          "sameClass": true,
+          "detachedCount": 1
+        },
+        {
+          "a": {
+            "id": 1342,
+            "name": "Puiu"
+          },
+          "b": {
+            "id": 1519,
+            "name": "Carla"
+          },
+          "aClass": "MP*2",
+          "bClass": "MP*2",
+          "weight": 5,
+          "sameClass": true,
+          "detachedCount": 1
+        }
+      ],
+      "nBridgeEdges": 28,
+      "classPairMatrix": [
+        {
+          "classA": "MP*1",
+          "classB": "PSI*",
+          "edgeCount": 1,
+          "edges": [
+            {
+              "a": {
+                "id": 797,
+                "name": "Luca"
+              },
+              "b": {
+                "id": 958,
+                "name": "Kira"
+              },
+              "weight": 53
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 797,
+              "name": "Luca",
+              "class": "PSI*",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 958,
+              "name": "Kira",
+              "class": "MP*1",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "MP*2",
+          "classB": "PC",
+          "edgeCount": 1,
+          "edges": [
+            {
+              "a": {
+                "id": 285,
+                "name": "Ioana"
+              },
+              "b": {
+                "id": 1423,
+                "name": "Ana"
+              },
+              "weight": 10
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 285,
+              "name": "Ioana",
+              "class": "PC",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 1423,
+              "name": "Ana",
+              "class": "MP*2",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "2BIO3",
+          "classB": "PSI*",
+          "edgeCount": 1,
+          "edges": [
+            {
+              "a": {
+                "id": 202,
+                "name": "Patrick"
+              },
+              "b": {
+                "id": 440,
+                "name": "Geta"
+              },
+              "weight": 8
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 202,
+              "name": "Patrick",
+              "class": "2BIO3",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 440,
+              "name": "Geta",
+              "class": "PSI*",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "2BIO3",
+          "classB": "PC*",
+          "edgeCount": 2,
+          "edges": [
+            {
+              "a": {
+                "id": 213,
+                "name": "Vio"
+              },
+              "b": {
+                "id": 275,
+                "name": "Doru"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 176,
+                "name": "Codrin"
+              },
+              "b": {
+                "id": 275,
+                "name": "Doru"
+              },
+              "weight": 4
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 275,
+              "name": "Doru",
+              "class": "2BIO3",
+              "contactsOnBridge": 2
+            },
+            {
+              "id": 213,
+              "name": "Vio",
+              "class": "PC*",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 176,
+              "name": "Codrin",
+              "class": "PC*",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "PC",
+          "classB": "PC*",
+          "edgeCount": 2,
+          "edges": [
+            {
+              "a": {
+                "id": 58,
+                "name": "Rares"
+              },
+              "b": {
+                "id": 450,
+                "name": "Otilia"
+              },
+              "weight": 10
+            },
+            {
+              "a": {
+                "id": 131,
+                "name": "Fabi"
+              },
+              "b": {
+                "id": 450,
+                "name": "Otilia"
+              },
+              "weight": 6
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 450,
+              "name": "Otilia",
+              "class": "PC",
+              "contactsOnBridge": 2
+            },
+            {
+              "id": 58,
+              "name": "Rares",
+              "class": "PC*",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 131,
+              "name": "Fabi",
+              "class": "PC*",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "2BIO3",
+          "classB": "MP*2",
+          "edgeCount": 3,
+          "edges": [
+            {
+              "a": {
+                "id": 106,
+                "name": "Nicu"
+              },
+              "b": {
+                "id": 1512,
+                "name": "Bianca"
+              },
+              "weight": 15
+            },
+            {
+              "a": {
+                "id": 106,
+                "name": "Nicu"
+              },
+              "b": {
+                "id": 1295,
+                "name": "Jeni"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 106,
+                "name": "Nicu"
+              },
+              "b": {
+                "id": 1214,
+                "name": "Boga"
+              },
+              "weight": 5
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 106,
+              "name": "Nicu",
+              "class": "2BIO3",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 1512,
+              "name": "Bianca",
+              "class": "MP*2",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 1295,
+              "name": "Jeni",
+              "class": "MP*2",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "2BIO1",
+          "classB": "PC",
+          "edgeCount": 3,
+          "edges": [
+            {
+              "a": {
+                "id": 45,
+                "name": "Maria"
+              },
+              "b": {
+                "id": 674,
+                "name": "Gabi"
+              },
+              "weight": 53
+            },
+            {
+              "a": {
+                "id": 311,
+                "name": "Nadia"
+              },
+              "b": {
+                "id": 674,
+                "name": "Gabi"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 79,
+                "name": "Cezar"
+              },
+              "b": {
+                "id": 674,
+                "name": "Gabi"
+              },
+              "weight": 18
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 674,
+              "name": "Gabi",
+              "class": "2BIO1",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 45,
+              "name": "Maria",
+              "class": "PC",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 311,
+              "name": "Nadia",
+              "class": "PC",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "MP",
+          "classB": "PSI*",
+          "edgeCount": 3,
+          "edges": [
+            {
+              "a": {
+                "id": 605,
+                "name": "Nuti"
+              },
+              "b": {
+                "id": 798,
+                "name": "Miruna"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 41,
+                "name": "Radu"
+              },
+              "b": {
+                "id": 624,
+                "name": "Timea"
+              },
+              "weight": 9
+            },
+            {
+              "a": {
+                "id": 564,
+                "name": "Gina"
+              },
+              "b": {
+                "id": 977,
+                "name": "Patrick"
+              },
+              "weight": 6
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 605,
+              "name": "Nuti",
+              "class": "MP",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 798,
+              "name": "Miruna",
+              "class": "PSI*",
+              "contactsOnBridge": 1
+            },
+            {
+              "id": 41,
+              "name": "Radu",
+              "class": "MP",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "MP*2",
+          "classB": "PSI*",
+          "edgeCount": 4,
+          "edges": [
+            {
+              "a": {
+                "id": 797,
+                "name": "Luca"
+              },
+              "b": {
+                "id": 1423,
+                "name": "Ana"
+              },
+              "weight": 20
+            },
+            {
+              "a": {
+                "id": 797,
+                "name": "Luca"
+              },
+              "b": {
+                "id": 1412,
+                "name": "Viorel"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 325,
+                "name": "Rares"
+              },
+              "b": {
+                "id": 1423,
+                "name": "Ana"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 797,
+                "name": "Luca"
+              },
+              "b": {
+                "id": 1218,
+                "name": "Doina"
+              },
+              "weight": 6
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 797,
+              "name": "Luca",
+              "class": "PSI*",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 1423,
+              "name": "Ana",
+              "class": "MP*2",
+              "contactsOnBridge": 2
+            },
+            {
+              "id": 1412,
+              "name": "Viorel",
+              "class": "MP*2",
+              "contactsOnBridge": 1
+            }
+          ]
+        },
+        {
+          "classA": "2BIO3",
+          "classB": "PC",
+          "edgeCount": 6,
+          "edges": [
+            {
+              "a": {
+                "id": 45,
+                "name": "Maria"
+              },
+              "b": {
+                "id": 202,
+                "name": "Patrick"
+              },
+              "weight": 16
+            },
+            {
+              "a": {
+                "id": 202,
+                "name": "Patrick"
+              },
+              "b": {
+                "id": 453,
+                "name": "Pavel"
+              },
+              "weight": 31
+            },
+            {
+              "a": {
+                "id": 202,
+                "name": "Patrick"
+              },
+              "b": {
+                "id": 311,
+                "name": "Nadia"
+              },
+              "weight": 30
+            },
+            {
+              "a": {
+                "id": 311,
+                "name": "Nadia"
+              },
+              "b": {
+                "id": 545,
+                "name": "Fana"
+              },
+              "weight": 54
+            },
+            {
+              "a": {
+                "id": 45,
+                "name": "Maria"
+              },
+              "b": {
+                "id": 545,
+                "name": "Fana"
+              },
+              "weight": 16
+            },
+            {
+              "a": {
+                "id": 453,
+                "name": "Pavel"
+              },
+              "b": {
+                "id": 545,
+                "name": "Fana"
+              },
+              "weight": 10
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 202,
+              "name": "Patrick",
+              "class": "2BIO3",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 545,
+              "name": "Fana",
+              "class": "2BIO3",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 45,
+              "name": "Maria",
+              "class": "PC",
+              "contactsOnBridge": 2
+            }
+          ]
+        },
+        {
+          "classA": "2BIO1",
+          "classB": "2BIO3",
+          "edgeCount": 7,
+          "edges": [
+            {
+              "a": {
+                "id": 487,
+                "name": "Ilinca"
+              },
+              "b": {
+                "id": 587,
+                "name": "Laur"
+              },
+              "weight": 32
+            },
+            {
+              "a": {
+                "id": 487,
+                "name": "Ilinca"
+              },
+              "b": {
+                "id": 871,
+                "name": "Iulia"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 272,
+                "name": "Cristi"
+              },
+              "b": {
+                "id": 487,
+                "name": "Ilinca"
+              },
+              "weight": 9
+            },
+            {
+              "a": {
+                "id": 124,
+                "name": "David"
+              },
+              "b": {
+                "id": 272,
+                "name": "Cristi"
+              },
+              "weight": 7
+            },
+            {
+              "a": {
+                "id": 177,
+                "name": "Denis"
+              },
+              "b": {
+                "id": 202,
+                "name": "Patrick"
+              },
+              "weight": 18
+            },
+            {
+              "a": {
+                "id": 202,
+                "name": "Patrick"
+              },
+              "b": {
+                "id": 984,
+                "name": "Rica"
+              },
+              "weight": 7
+            },
+            {
+              "a": {
+                "id": 177,
+                "name": "Denis"
+              },
+              "b": {
+                "id": 545,
+                "name": "Fana"
+              },
+              "weight": 17
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 487,
+              "name": "Ilinca",
+              "class": "2BIO1",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 272,
+              "name": "Cristi",
+              "class": "2BIO3",
+              "contactsOnBridge": 2
+            },
+            {
+              "id": 177,
+              "name": "Denis",
+              "class": "2BIO1",
+              "contactsOnBridge": 2
+            }
+          ]
+        },
+        {
+          "classA": "MP*1",
+          "classB": "MP*2",
+          "edgeCount": 10,
+          "edges": [
+            {
+              "a": {
+                "id": 387,
+                "name": "Luca"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 958,
+                "name": "Kira"
+              },
+              "b": {
+                "id": 1423,
+                "name": "Ana"
+              },
+              "weight": 12
+            },
+            {
+              "a": {
+                "id": 279,
+                "name": "Gabi"
+              },
+              "b": {
+                "id": 1260,
+                "name": "Inga"
+              },
+              "weight": 7
+            },
+            {
+              "a": {
+                "id": 103,
+                "name": "Miruna"
+              },
+              "b": {
+                "id": 1295,
+                "name": "Jeni"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 103,
+                "name": "Miruna"
+              },
+              "b": {
+                "id": 1401,
+                "name": "Ulise"
+              },
+              "weight": 13
+            },
+            {
+              "a": {
+                "id": 103,
+                "name": "Miruna"
+              },
+              "b": {
+                "id": 1518,
+                "name": "Bogdan"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 279,
+                "name": "Gabi"
+              },
+              "b": {
+                "id": 1518,
+                "name": "Bogdan"
+              },
+              "weight": 102
+            },
+            {
+              "a": {
+                "id": 376,
+                "name": "Hana"
+              },
+              "b": {
+                "id": 1342,
+                "name": "Puiu"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 438,
+                "name": "Fabi"
+              },
+              "b": {
+                "id": 1359,
+                "name": "Sabin"
+              },
+              "weight": 20
+            },
+            {
+              "a": {
+                "id": 20,
+                "name": "Dana"
+              },
+              "b": {
+                "id": 1359,
+                "name": "Sabin"
+              },
+              "weight": 21
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 103,
+              "name": "Miruna",
+              "class": "MP*1",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 279,
+              "name": "Gabi",
+              "class": "MP*1",
+              "contactsOnBridge": 2
+            },
+            {
+              "id": 1518,
+              "name": "Bogdan",
+              "class": "MP*2",
+              "contactsOnBridge": 2
+            }
+          ]
+        },
+        {
+          "classA": "MP",
+          "classB": "MP*1",
+          "edgeCount": 11,
+          "edges": [
+            {
+              "a": {
+                "id": 638,
+                "name": "Bianca"
+              },
+              "b": {
+                "id": 694,
+                "name": "Matei"
+              },
+              "weight": 88
+            },
+            {
+              "a": {
+                "id": 387,
+                "name": "Luca"
+              },
+              "b": {
+                "id": 658,
+                "name": "Florin"
+              },
+              "weight": 12
+            },
+            {
+              "a": {
+                "id": 279,
+                "name": "Gabi"
+              },
+              "b": {
+                "id": 753,
+                "name": "Vlad"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 605,
+                "name": "Nuti"
+              },
+              "b": {
+                "id": 974,
+                "name": "Ovidiu"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 103,
+                "name": "Miruna"
+              },
+              "b": {
+                "id": 605,
+                "name": "Nuti"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 391,
+                "name": "Oana"
+              },
+              "b": {
+                "id": 520,
+                "name": "Alin"
+              },
+              "weight": 13
+            },
+            {
+              "a": {
+                "id": 655,
+                "name": "Elena"
+              },
+              "b": {
+                "id": 694,
+                "name": "Matei"
+              },
+              "weight": 20
+            },
+            {
+              "a": {
+                "id": 290,
+                "name": "Radu"
+              },
+              "b": {
+                "id": 605,
+                "name": "Nuti"
+              },
+              "weight": 20
+            },
+            {
+              "a": {
+                "id": 513,
+                "name": "Vio"
+              },
+              "b": {
+                "id": 694,
+                "name": "Matei"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 497,
+                "name": "Patrick"
+              },
+              "b": {
+                "id": 642,
+                "name": "Carla"
+              },
+              "weight": 8
+            },
+            {
+              "a": {
+                "id": 484,
+                "name": "Filip"
+              },
+              "b": {
+                "id": 642,
+                "name": "Carla"
+              },
+              "weight": 12
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 694,
+              "name": "Matei",
+              "class": "MP",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 605,
+              "name": "Nuti",
+              "class": "MP",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 642,
+              "name": "Carla",
+              "class": "MP",
+              "contactsOnBridge": 2
+            }
+          ]
+        },
+        {
+          "classA": "MP",
+          "classB": "MP*2",
+          "edgeCount": 16,
+          "edges": [
+            {
+              "a": {
+                "id": 605,
+                "name": "Nuti"
+              },
+              "b": {
+                "id": 1238,
+                "name": "Hodo"
+              },
+              "weight": 113
+            },
+            {
+              "a": {
+                "id": 151,
+                "name": "Nelu"
+              },
+              "b": {
+                "id": 1383,
+                "name": "Timea"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 866,
+                "name": "Ema"
+              },
+              "b": {
+                "id": 1232,
+                "name": "Fana"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 54,
+                "name": "Octav"
+              },
+              "b": {
+                "id": 1784,
+                "name": "Doru"
+              },
+              "weight": 11
+            },
+            {
+              "a": {
+                "id": 54,
+                "name": "Octav"
+              },
+              "b": {
+                "id": 1543,
+                "name": "Cristi"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 691,
+                "name": "Maria"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 43
+            },
+            {
+              "a": {
+                "id": 869,
+                "name": "Geta"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 59
+            },
+            {
+              "a": {
+                "id": 605,
+                "name": "Nuti"
+              },
+              "b": {
+                "id": 1218,
+                "name": "Doina"
+              },
+              "weight": 21
+            },
+            {
+              "a": {
+                "id": 605,
+                "name": "Nuti"
+              },
+              "b": {
+                "id": 1067,
+                "name": "Tania"
+              },
+              "weight": 41
+            },
+            {
+              "a": {
+                "id": 866,
+                "name": "Ema"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 642,
+                "name": "Carla"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 8
+            },
+            {
+              "a": {
+                "id": 151,
+                "name": "Nelu"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 687,
+                "name": "Radu"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 38,
+                "name": "Horia"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 18
+            },
+            {
+              "a": {
+                "id": 634,
+                "name": "Ana"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 8
+            },
+            {
+              "a": {
+                "id": 220,
+                "name": "Ciprian"
+              },
+              "b": {
+                "id": 1332,
+                "name": "Nuti"
+              },
+              "weight": 4
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 1332,
+              "name": "Nuti",
+              "class": "MP*2",
+              "contactsOnBridge": 9
+            },
+            {
+              "id": 605,
+              "name": "Nuti",
+              "class": "MP",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 151,
+              "name": "Nelu",
+              "class": "MP",
+              "contactsOnBridge": 2
+            }
+          ]
+        },
+        {
+          "classA": "2BIO1",
+          "classB": "2BIO2",
+          "edgeCount": 16,
+          "edges": [
+            {
+              "a": {
+                "id": 854,
+                "name": "Ursu"
+              },
+              "b": {
+                "id": 886,
+                "name": "Otilia"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 886,
+                "name": "Otilia"
+              },
+              "b": {
+                "id": 927,
+                "name": "Denis"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 407,
+                "name": "Roxana"
+              },
+              "b": {
+                "id": 954,
+                "name": "Jan"
+              },
+              "weight": 7
+            },
+            {
+              "a": {
+                "id": 124,
+                "name": "David"
+              },
+              "b": {
+                "id": 327,
+                "name": "Sorina"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 124,
+                "name": "David"
+              },
+              "b": {
+                "id": 372,
+                "name": "Flavia"
+              },
+              "weight": 11
+            },
+            {
+              "a": {
+                "id": 28,
+                "name": "Florin"
+              },
+              "b": {
+                "id": 400,
+                "name": "Petru"
+              },
+              "weight": 25
+            },
+            {
+              "a": {
+                "id": 28,
+                "name": "Florin"
+              },
+              "b": {
+                "id": 945,
+                "name": "Ilinca"
+              },
+              "weight": 7
+            },
+            {
+              "a": {
+                "id": 28,
+                "name": "Florin"
+              },
+              "b": {
+                "id": 954,
+                "name": "Jan"
+              },
+              "weight": 15
+            },
+            {
+              "a": {
+                "id": 407,
+                "name": "Roxana"
+              },
+              "b": {
+                "id": 809,
+                "name": "Nicu"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 165,
+                "name": "Rux"
+              },
+              "b": {
+                "id": 498,
+                "name": "Rica"
+              },
+              "weight": 20
+            },
+            {
+              "a": {
+                "id": 353,
+                "name": "Bea"
+              },
+              "b": {
+                "id": 991,
+                "name": "Silviu"
+              },
+              "weight": 5
+            },
+            {
+              "a": {
+                "id": 441,
+                "name": "Iulia"
+              },
+              "b": {
+                "id": 471,
+                "name": "Beni"
+              },
+              "weight": 8
+            },
+            {
+              "a": {
+                "id": 3,
+                "name": "Andrei"
+              },
+              "b": {
+                "id": 991,
+                "name": "Silviu"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 147,
+                "name": "Mara"
+              },
+              "b": {
+                "id": 991,
+                "name": "Silviu"
+              },
+              "weight": 8
+            },
+            {
+              "a": {
+                "id": 184,
+                "name": "Greta"
+              },
+              "b": {
+                "id": 471,
+                "name": "Beni"
+              },
+              "weight": 7
+            },
+            {
+              "a": {
+                "id": 61,
+                "name": "Sorina"
+              },
+              "b": {
+                "id": 177,
+                "name": "Denis"
+              },
+              "weight": 4
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 28,
+              "name": "Florin",
+              "class": "2BIO2",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 991,
+              "name": "Silviu",
+              "class": "2BIO1",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 886,
+              "name": "Otilia",
+              "class": "2BIO2",
+              "contactsOnBridge": 2
+            }
+          ]
+        },
+        {
+          "classA": "2BIO2",
+          "classB": "2BIO3",
+          "edgeCount": 18,
+          "edges": [
+            {
+              "a": {
+                "id": 132,
+                "name": "Geta"
+              },
+              "b": {
+                "id": 171,
+                "name": "Toma"
+              },
+              "weight": 36
+            },
+            {
+              "a": {
+                "id": 720,
+                "name": "Paula"
+              },
+              "b": {
+                "id": 871,
+                "name": "Iulia"
+              },
+              "weight": 66
+            },
+            {
+              "a": {
+                "id": 257,
+                "name": "Viorel"
+              },
+              "b": {
+                "id": 275,
+                "name": "Doru"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 272,
+                "name": "Cristi"
+              },
+              "b": {
+                "id": 372,
+                "name": "Flavia"
+              },
+              "weight": 48
+            },
+            {
+              "a": {
+                "id": 272,
+                "name": "Cristi"
+              },
+              "b": {
+                "id": 327,
+                "name": "Sorina"
+              },
+              "weight": 34
+            },
+            {
+              "a": {
+                "id": 275,
+                "name": "Doru"
+              },
+              "b": {
+                "id": 612,
+                "name": "Olga"
+              },
+              "weight": 78
+            },
+            {
+              "a": {
+                "id": 275,
+                "name": "Doru"
+              },
+              "b": {
+                "id": 312,
+                "name": "Octav"
+              },
+              "weight": 89
+            },
+            {
+              "a": {
+                "id": 272,
+                "name": "Cristi"
+              },
+              "b": {
+                "id": 544,
+                "name": "Edi"
+              },
+              "weight": 22
+            },
+            {
+              "a": {
+                "id": 275,
+                "name": "Doru"
+              },
+              "b": {
+                "id": 886,
+                "name": "Otilia"
+              },
+              "weight": 97
+            },
+            {
+              "a": {
+                "id": 117,
+                "name": "Sandu"
+              },
+              "b": {
+                "id": 268,
+                "name": "Bogdan"
+              },
+              "weight": 6
+            },
+            {
+              "a": {
+                "id": 106,
+                "name": "Nicu"
+              },
+              "b": {
+                "id": 372,
+                "name": "Flavia"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 106,
+                "name": "Nicu"
+              },
+              "b": {
+                "id": 327,
+                "name": "Sorina"
+              },
+              "weight": 4
+            },
+            {
+              "a": {
+                "id": 46,
+                "name": "Matei"
+              },
+              "b": {
+                "id": 196,
+                "name": "Lia"
+              },
+              "weight": 25
+            },
+            {
+              "a": {
+                "id": 3,
+                "name": "Andrei"
+              },
+              "b": {
+                "id": 653,
+                "name": "Doru"
+              },
+              "weight": 23
+            },
+            {
+              "a": {
+                "id": 147,
+                "name": "Mara"
+              },
+              "b": {
+                "id": 653,
+                "name": "Doru"
+              },
+              "weight": 23
+            },
+            {
+              "a": {
+                "id": 353,
+                "name": "Bea"
+              },
+              "b": {
+                "id": 653,
+                "name": "Doru"
+              },
+              "weight": 16
+            },
+            {
+              "a": {
+                "id": 196,
+                "name": "Lia"
+              },
+              "b": {
+                "id": 268,
+                "name": "Bogdan"
+              },
+              "weight": 7
+            },
+            {
+              "a": {
+                "id": 196,
+                "name": "Lia"
+              },
+              "b": {
+                "id": 257,
+                "name": "Viorel"
+              },
+              "weight": 11
+            }
+          ],
+          "topMediators": [
+            {
+              "id": 275,
+              "name": "Doru",
+              "class": "2BIO3",
+              "contactsOnBridge": 4
+            },
+            {
+              "id": 272,
+              "name": "Cristi",
+              "class": "2BIO3",
+              "contactsOnBridge": 3
+            },
+            {
+              "id": 196,
+              "name": "Lia",
+              "class": "2BIO3",
+              "contactsOnBridge": 3
+            }
+          ]
+        }
+      ],
+      "top5Removal": {
+        "top5": [
+          {
+            "id": 117,
+            "name": "Sandu"
+          },
+          {
+            "id": 1332,
+            "name": "Nuti"
+          },
+          {
+            "id": 177,
+            "name": "Denis"
+          },
+          {
+            "id": 272,
+            "name": "Cristi"
+          },
+          {
+            "id": 252,
+            "name": "Puiu"
+          }
+        ],
+        "componentsAfter": 1,
+        "largestAfter": 294,
+        "sizes": [
+          294
+        ]
       }
     }
   },
@@ -6571,6 +9009,2433 @@
       "pasi": 4,
       "maxTransmiteri": 4,
       "description": "Deterministic BFS bounded to `pasi` rounds; each carrier transmits only to top `maxTransmiteri` contacts by edge weight."
+    },
+    "cutVertices": [
+      {
+        "id": 276,
+        "name": "Elena",
+        "class": "PC*",
+        "componentsAfter": 2,
+        "largestAfter": 295,
+        "detachedCount": 3,
+        "detached": [
+          {
+            "id": 621,
+            "name": "Ramona"
+          },
+          {
+            "id": 786,
+            "name": "George"
+          },
+          {
+            "id": 923,
+            "name": "Codrin"
+          }
+        ]
+      },
+      {
+        "id": 441,
+        "name": "Iulia",
+        "class": "2BIO2",
+        "componentsAfter": 2,
+        "largestAfter": 296,
+        "detachedCount": 2,
+        "detached": [
+          {
+            "id": 295,
+            "name": "Maria"
+          },
+          {
+            "id": 763,
+            "name": "Zina"
+          }
+        ]
+      },
+      {
+        "id": 621,
+        "name": "Ramona",
+        "class": "PC*",
+        "componentsAfter": 2,
+        "largestAfter": 296,
+        "detachedCount": 2,
+        "detached": [
+          {
+            "id": 786,
+            "name": "George"
+          },
+          {
+            "id": 923,
+            "name": "Codrin"
+          }
+        ]
+      },
+      {
+        "id": 674,
+        "name": "Gabi",
+        "class": "2BIO1",
+        "componentsAfter": 2,
+        "largestAfter": 296,
+        "detachedCount": 2,
+        "detached": [
+          {
+            "id": 165,
+            "name": "Rux"
+          },
+          {
+            "id": 498,
+            "name": "Rica"
+          }
+        ]
+      },
+      {
+        "id": 27,
+        "name": "Elena",
+        "class": "2BIO2",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 173,
+            "name": "Beni"
+          }
+        ]
+      },
+      {
+        "id": 47,
+        "name": "Nadia",
+        "class": "PSI*",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 960,
+            "name": "Mihnea"
+          }
+        ]
+      },
+      {
+        "id": 145,
+        "name": "Liviu",
+        "class": "2BIO1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 489,
+            "name": "Kira"
+          }
+        ]
+      },
+      {
+        "id": 227,
+        "name": "Fana",
+        "class": "PSI*",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 920,
+            "name": "Ada"
+          }
+        ]
+      },
+      {
+        "id": 280,
+        "name": "Horia",
+        "class": "MP*1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 274,
+            "name": "Dana"
+          }
+        ]
+      },
+      {
+        "id": 295,
+        "name": "Maria",
+        "class": "2BIO2",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 763,
+            "name": "Zina"
+          }
+        ]
+      },
+      {
+        "id": 325,
+        "name": "Rares",
+        "class": "PSI*",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 959,
+            "name": "Lia"
+          }
+        ]
+      },
+      {
+        "id": 428,
+        "name": "David",
+        "class": "2BIO1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 627,
+            "name": "Viorel"
+          }
+        ]
+      },
+      {
+        "id": 440,
+        "name": "Geta",
+        "class": "PSI*",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 248,
+            "name": "Olga"
+          }
+        ]
+      },
+      {
+        "id": 450,
+        "name": "Otilia",
+        "class": "PC",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 87,
+            "name": "Flavia"
+          }
+        ]
+      },
+      {
+        "id": 453,
+        "name": "Pavel",
+        "class": "PC",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 134,
+            "name": "Iulia"
+          }
+        ]
+      },
+      {
+        "id": 471,
+        "name": "Beni",
+        "class": "2BIO1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 681,
+            "name": "Ioana"
+          }
+        ]
+      },
+      {
+        "id": 492,
+        "name": "Mihnea",
+        "class": "PC",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 388,
+            "name": "Miruna"
+          }
+        ]
+      },
+      {
+        "id": 498,
+        "name": "Rica",
+        "class": "2BIO1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 165,
+            "name": "Rux"
+          }
+        ]
+      },
+      {
+        "id": 520,
+        "name": "Alin",
+        "class": "MP",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 576,
+            "name": "Hodo"
+          }
+        ]
+      },
+      {
+        "id": 531,
+        "name": "Ciprian",
+        "class": "2BIO1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 527,
+            "name": "Boga"
+          }
+        ]
+      },
+      {
+        "id": 564,
+        "name": "Gina",
+        "class": "MP",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 977,
+            "name": "Patrick"
+          }
+        ]
+      },
+      {
+        "id": 640,
+        "name": "Bogdan",
+        "class": "MP",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 874,
+            "name": "Liviu"
+          }
+        ]
+      },
+      {
+        "id": 786,
+        "name": "George",
+        "class": "PC*",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 923,
+            "name": "Codrin"
+          }
+        ]
+      },
+      {
+        "id": 836,
+        "name": "Petru",
+        "class": "PC*",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 941,
+            "name": "Greta"
+          }
+        ]
+      },
+      {
+        "id": 908,
+        "name": "Stef",
+        "class": "MP*1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 277,
+            "name": "Florin"
+          }
+        ]
+      },
+      {
+        "id": 945,
+        "name": "Ilinca",
+        "class": "2BIO1",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 857,
+            "name": "Vera"
+          }
+        ]
+      },
+      {
+        "id": 1342,
+        "name": "Puiu",
+        "class": "MP*2",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 1519,
+            "name": "Carla"
+          }
+        ]
+      },
+      {
+        "id": 1518,
+        "name": "Bogdan",
+        "class": "MP*2",
+        "componentsAfter": 2,
+        "largestAfter": 297,
+        "detachedCount": 1,
+        "detached": [
+          {
+            "id": 1485,
+            "name": "Andrei"
+          }
+        ]
+      }
+    ],
+    "nCutVertices": 28,
+    "bridgeEdges": [
+      {
+        "a": {
+          "id": 87,
+          "name": "Flavia"
+        },
+        "b": {
+          "id": 450,
+          "name": "Otilia"
+        },
+        "aClass": "PC",
+        "bClass": "PC",
+        "weight": 9,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 134,
+          "name": "Iulia"
+        },
+        "b": {
+          "id": 453,
+          "name": "Pavel"
+        },
+        "aClass": "PC",
+        "bClass": "PC",
+        "weight": 11,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 165,
+          "name": "Rux"
+        },
+        "b": {
+          "id": 498,
+          "name": "Rica"
+        },
+        "aClass": "2BIO2",
+        "bClass": "2BIO1",
+        "weight": 20,
+        "sameClass": false,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 248,
+          "name": "Olga"
+        },
+        "b": {
+          "id": 440,
+          "name": "Geta"
+        },
+        "aClass": "PSI*",
+        "bClass": "PSI*",
+        "weight": 12,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 274,
+          "name": "Dana"
+        },
+        "b": {
+          "id": 280,
+          "name": "Horia"
+        },
+        "aClass": "MP*1",
+        "bClass": "MP*1",
+        "weight": 14,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 277,
+          "name": "Florin"
+        },
+        "b": {
+          "id": 908,
+          "name": "Stef"
+        },
+        "aClass": "MP*1",
+        "bClass": "MP*1",
+        "weight": 6,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 388,
+          "name": "Miruna"
+        },
+        "b": {
+          "id": 492,
+          "name": "Mihnea"
+        },
+        "aClass": "PC",
+        "bClass": "PC",
+        "weight": 13,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 527,
+          "name": "Boga"
+        },
+        "b": {
+          "id": 531,
+          "name": "Ciprian"
+        },
+        "aClass": "2BIO1",
+        "bClass": "2BIO1",
+        "weight": 8,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 857,
+          "name": "Vera"
+        },
+        "b": {
+          "id": 945,
+          "name": "Ilinca"
+        },
+        "aClass": "2BIO1",
+        "bClass": "2BIO1",
+        "weight": 13,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 1485,
+          "name": "Andrei"
+        },
+        "b": {
+          "id": 1518,
+          "name": "Bogdan"
+        },
+        "aClass": "MP*2",
+        "bClass": "MP*2",
+        "weight": 41,
+        "sameClass": true,
+        "detachedCount": 298
+      },
+      {
+        "a": {
+          "id": 295,
+          "name": "Maria"
+        },
+        "b": {
+          "id": 441,
+          "name": "Iulia"
+        },
+        "aClass": "2BIO2",
+        "bClass": "2BIO2",
+        "weight": 15,
+        "sameClass": true,
+        "detachedCount": 297
+      },
+      {
+        "a": {
+          "id": 498,
+          "name": "Rica"
+        },
+        "b": {
+          "id": 674,
+          "name": "Gabi"
+        },
+        "aClass": "2BIO1",
+        "bClass": "2BIO1",
+        "weight": 6,
+        "sameClass": true,
+        "detachedCount": 297
+      },
+      {
+        "a": {
+          "id": 276,
+          "name": "Elena"
+        },
+        "b": {
+          "id": 621,
+          "name": "Ramona"
+        },
+        "aClass": "PC*",
+        "bClass": "PC*",
+        "weight": 25,
+        "sameClass": true,
+        "detachedCount": 3
+      },
+      {
+        "a": {
+          "id": 621,
+          "name": "Ramona"
+        },
+        "b": {
+          "id": 786,
+          "name": "George"
+        },
+        "aClass": "PC*",
+        "bClass": "PC*",
+        "weight": 11,
+        "sameClass": true,
+        "detachedCount": 2
+      },
+      {
+        "a": {
+          "id": 27,
+          "name": "Elena"
+        },
+        "b": {
+          "id": 173,
+          "name": "Beni"
+        },
+        "aClass": "2BIO2",
+        "bClass": "2BIO2",
+        "weight": 9,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 47,
+          "name": "Nadia"
+        },
+        "b": {
+          "id": 960,
+          "name": "Mihnea"
+        },
+        "aClass": "PSI*",
+        "bClass": "PSI*",
+        "weight": 7,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 145,
+          "name": "Liviu"
+        },
+        "b": {
+          "id": 489,
+          "name": "Kira"
+        },
+        "aClass": "2BIO1",
+        "bClass": "2BIO1",
+        "weight": 10,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 227,
+          "name": "Fana"
+        },
+        "b": {
+          "id": 920,
+          "name": "Ada"
+        },
+        "aClass": "PSI*",
+        "bClass": "PSI*",
+        "weight": 8,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 295,
+          "name": "Maria"
+        },
+        "b": {
+          "id": 763,
+          "name": "Zina"
+        },
+        "aClass": "2BIO2",
+        "bClass": "2BIO2",
+        "weight": 7,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 325,
+          "name": "Rares"
+        },
+        "b": {
+          "id": 959,
+          "name": "Lia"
+        },
+        "aClass": "PSI*",
+        "bClass": "PSI*",
+        "weight": 8,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 428,
+          "name": "David"
+        },
+        "b": {
+          "id": 627,
+          "name": "Viorel"
+        },
+        "aClass": "2BIO1",
+        "bClass": "2BIO1",
+        "weight": 4,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 471,
+          "name": "Beni"
+        },
+        "b": {
+          "id": 681,
+          "name": "Ioana"
+        },
+        "aClass": "2BIO1",
+        "bClass": "2BIO1",
+        "weight": 13,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 520,
+          "name": "Alin"
+        },
+        "b": {
+          "id": 576,
+          "name": "Hodo"
+        },
+        "aClass": "MP",
+        "bClass": "MP",
+        "weight": 14,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 564,
+          "name": "Gina"
+        },
+        "b": {
+          "id": 977,
+          "name": "Patrick"
+        },
+        "aClass": "MP",
+        "bClass": "PSI*",
+        "weight": 6,
+        "sameClass": false,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 640,
+          "name": "Bogdan"
+        },
+        "b": {
+          "id": 874,
+          "name": "Liviu"
+        },
+        "aClass": "MP",
+        "bClass": "MP",
+        "weight": 18,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 786,
+          "name": "George"
+        },
+        "b": {
+          "id": 923,
+          "name": "Codrin"
+        },
+        "aClass": "PC*",
+        "bClass": "PC*",
+        "weight": 13,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 836,
+          "name": "Petru"
+        },
+        "b": {
+          "id": 941,
+          "name": "Greta"
+        },
+        "aClass": "PC*",
+        "bClass": "PC*",
+        "weight": 5,
+        "sameClass": true,
+        "detachedCount": 1
+      },
+      {
+        "a": {
+          "id": 1342,
+          "name": "Puiu"
+        },
+        "b": {
+          "id": 1519,
+          "name": "Carla"
+        },
+        "aClass": "MP*2",
+        "bClass": "MP*2",
+        "weight": 5,
+        "sameClass": true,
+        "detachedCount": 1
+      }
+    ],
+    "nBridgeEdges": 28,
+    "classPairMatrix": [
+      {
+        "classA": "MP*1",
+        "classB": "PSI*",
+        "edgeCount": 1,
+        "edges": [
+          {
+            "a": {
+              "id": 797,
+              "name": "Luca"
+            },
+            "b": {
+              "id": 958,
+              "name": "Kira"
+            },
+            "weight": 53
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 797,
+            "name": "Luca",
+            "class": "PSI*",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 958,
+            "name": "Kira",
+            "class": "MP*1",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "MP*2",
+        "classB": "PC",
+        "edgeCount": 1,
+        "edges": [
+          {
+            "a": {
+              "id": 285,
+              "name": "Ioana"
+            },
+            "b": {
+              "id": 1423,
+              "name": "Ana"
+            },
+            "weight": 10
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 285,
+            "name": "Ioana",
+            "class": "PC",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 1423,
+            "name": "Ana",
+            "class": "MP*2",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "2BIO3",
+        "classB": "PSI*",
+        "edgeCount": 1,
+        "edges": [
+          {
+            "a": {
+              "id": 202,
+              "name": "Patrick"
+            },
+            "b": {
+              "id": 440,
+              "name": "Geta"
+            },
+            "weight": 8
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 202,
+            "name": "Patrick",
+            "class": "2BIO3",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 440,
+            "name": "Geta",
+            "class": "PSI*",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "2BIO3",
+        "classB": "PC*",
+        "edgeCount": 2,
+        "edges": [
+          {
+            "a": {
+              "id": 213,
+              "name": "Vio"
+            },
+            "b": {
+              "id": 275,
+              "name": "Doru"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 176,
+              "name": "Codrin"
+            },
+            "b": {
+              "id": 275,
+              "name": "Doru"
+            },
+            "weight": 4
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 275,
+            "name": "Doru",
+            "class": "2BIO3",
+            "contactsOnBridge": 2
+          },
+          {
+            "id": 213,
+            "name": "Vio",
+            "class": "PC*",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 176,
+            "name": "Codrin",
+            "class": "PC*",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "PC",
+        "classB": "PC*",
+        "edgeCount": 2,
+        "edges": [
+          {
+            "a": {
+              "id": 58,
+              "name": "Rares"
+            },
+            "b": {
+              "id": 450,
+              "name": "Otilia"
+            },
+            "weight": 10
+          },
+          {
+            "a": {
+              "id": 131,
+              "name": "Fabi"
+            },
+            "b": {
+              "id": 450,
+              "name": "Otilia"
+            },
+            "weight": 6
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 450,
+            "name": "Otilia",
+            "class": "PC",
+            "contactsOnBridge": 2
+          },
+          {
+            "id": 58,
+            "name": "Rares",
+            "class": "PC*",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 131,
+            "name": "Fabi",
+            "class": "PC*",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "2BIO3",
+        "classB": "MP*2",
+        "edgeCount": 3,
+        "edges": [
+          {
+            "a": {
+              "id": 106,
+              "name": "Nicu"
+            },
+            "b": {
+              "id": 1512,
+              "name": "Bianca"
+            },
+            "weight": 15
+          },
+          {
+            "a": {
+              "id": 106,
+              "name": "Nicu"
+            },
+            "b": {
+              "id": 1295,
+              "name": "Jeni"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 106,
+              "name": "Nicu"
+            },
+            "b": {
+              "id": 1214,
+              "name": "Boga"
+            },
+            "weight": 5
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 106,
+            "name": "Nicu",
+            "class": "2BIO3",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 1512,
+            "name": "Bianca",
+            "class": "MP*2",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 1295,
+            "name": "Jeni",
+            "class": "MP*2",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "2BIO1",
+        "classB": "PC",
+        "edgeCount": 3,
+        "edges": [
+          {
+            "a": {
+              "id": 45,
+              "name": "Maria"
+            },
+            "b": {
+              "id": 674,
+              "name": "Gabi"
+            },
+            "weight": 53
+          },
+          {
+            "a": {
+              "id": 311,
+              "name": "Nadia"
+            },
+            "b": {
+              "id": 674,
+              "name": "Gabi"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 79,
+              "name": "Cezar"
+            },
+            "b": {
+              "id": 674,
+              "name": "Gabi"
+            },
+            "weight": 18
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 674,
+            "name": "Gabi",
+            "class": "2BIO1",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 45,
+            "name": "Maria",
+            "class": "PC",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 311,
+            "name": "Nadia",
+            "class": "PC",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "MP",
+        "classB": "PSI*",
+        "edgeCount": 3,
+        "edges": [
+          {
+            "a": {
+              "id": 605,
+              "name": "Nuti"
+            },
+            "b": {
+              "id": 798,
+              "name": "Miruna"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 41,
+              "name": "Radu"
+            },
+            "b": {
+              "id": 624,
+              "name": "Timea"
+            },
+            "weight": 9
+          },
+          {
+            "a": {
+              "id": 564,
+              "name": "Gina"
+            },
+            "b": {
+              "id": 977,
+              "name": "Patrick"
+            },
+            "weight": 6
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 605,
+            "name": "Nuti",
+            "class": "MP",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 798,
+            "name": "Miruna",
+            "class": "PSI*",
+            "contactsOnBridge": 1
+          },
+          {
+            "id": 41,
+            "name": "Radu",
+            "class": "MP",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "MP*2",
+        "classB": "PSI*",
+        "edgeCount": 4,
+        "edges": [
+          {
+            "a": {
+              "id": 797,
+              "name": "Luca"
+            },
+            "b": {
+              "id": 1423,
+              "name": "Ana"
+            },
+            "weight": 20
+          },
+          {
+            "a": {
+              "id": 797,
+              "name": "Luca"
+            },
+            "b": {
+              "id": 1412,
+              "name": "Viorel"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 325,
+              "name": "Rares"
+            },
+            "b": {
+              "id": 1423,
+              "name": "Ana"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 797,
+              "name": "Luca"
+            },
+            "b": {
+              "id": 1218,
+              "name": "Doina"
+            },
+            "weight": 6
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 797,
+            "name": "Luca",
+            "class": "PSI*",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 1423,
+            "name": "Ana",
+            "class": "MP*2",
+            "contactsOnBridge": 2
+          },
+          {
+            "id": 1412,
+            "name": "Viorel",
+            "class": "MP*2",
+            "contactsOnBridge": 1
+          }
+        ]
+      },
+      {
+        "classA": "2BIO3",
+        "classB": "PC",
+        "edgeCount": 6,
+        "edges": [
+          {
+            "a": {
+              "id": 45,
+              "name": "Maria"
+            },
+            "b": {
+              "id": 202,
+              "name": "Patrick"
+            },
+            "weight": 16
+          },
+          {
+            "a": {
+              "id": 202,
+              "name": "Patrick"
+            },
+            "b": {
+              "id": 453,
+              "name": "Pavel"
+            },
+            "weight": 31
+          },
+          {
+            "a": {
+              "id": 202,
+              "name": "Patrick"
+            },
+            "b": {
+              "id": 311,
+              "name": "Nadia"
+            },
+            "weight": 30
+          },
+          {
+            "a": {
+              "id": 311,
+              "name": "Nadia"
+            },
+            "b": {
+              "id": 545,
+              "name": "Fana"
+            },
+            "weight": 54
+          },
+          {
+            "a": {
+              "id": 45,
+              "name": "Maria"
+            },
+            "b": {
+              "id": 545,
+              "name": "Fana"
+            },
+            "weight": 16
+          },
+          {
+            "a": {
+              "id": 453,
+              "name": "Pavel"
+            },
+            "b": {
+              "id": 545,
+              "name": "Fana"
+            },
+            "weight": 10
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 202,
+            "name": "Patrick",
+            "class": "2BIO3",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 545,
+            "name": "Fana",
+            "class": "2BIO3",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 45,
+            "name": "Maria",
+            "class": "PC",
+            "contactsOnBridge": 2
+          }
+        ]
+      },
+      {
+        "classA": "2BIO1",
+        "classB": "2BIO3",
+        "edgeCount": 7,
+        "edges": [
+          {
+            "a": {
+              "id": 487,
+              "name": "Ilinca"
+            },
+            "b": {
+              "id": 587,
+              "name": "Laur"
+            },
+            "weight": 32
+          },
+          {
+            "a": {
+              "id": 487,
+              "name": "Ilinca"
+            },
+            "b": {
+              "id": 871,
+              "name": "Iulia"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 272,
+              "name": "Cristi"
+            },
+            "b": {
+              "id": 487,
+              "name": "Ilinca"
+            },
+            "weight": 9
+          },
+          {
+            "a": {
+              "id": 124,
+              "name": "David"
+            },
+            "b": {
+              "id": 272,
+              "name": "Cristi"
+            },
+            "weight": 7
+          },
+          {
+            "a": {
+              "id": 177,
+              "name": "Denis"
+            },
+            "b": {
+              "id": 202,
+              "name": "Patrick"
+            },
+            "weight": 18
+          },
+          {
+            "a": {
+              "id": 202,
+              "name": "Patrick"
+            },
+            "b": {
+              "id": 984,
+              "name": "Rica"
+            },
+            "weight": 7
+          },
+          {
+            "a": {
+              "id": 177,
+              "name": "Denis"
+            },
+            "b": {
+              "id": 545,
+              "name": "Fana"
+            },
+            "weight": 17
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 487,
+            "name": "Ilinca",
+            "class": "2BIO1",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 272,
+            "name": "Cristi",
+            "class": "2BIO3",
+            "contactsOnBridge": 2
+          },
+          {
+            "id": 177,
+            "name": "Denis",
+            "class": "2BIO1",
+            "contactsOnBridge": 2
+          }
+        ]
+      },
+      {
+        "classA": "MP*1",
+        "classB": "MP*2",
+        "edgeCount": 10,
+        "edges": [
+          {
+            "a": {
+              "id": 387,
+              "name": "Luca"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 958,
+              "name": "Kira"
+            },
+            "b": {
+              "id": 1423,
+              "name": "Ana"
+            },
+            "weight": 12
+          },
+          {
+            "a": {
+              "id": 279,
+              "name": "Gabi"
+            },
+            "b": {
+              "id": 1260,
+              "name": "Inga"
+            },
+            "weight": 7
+          },
+          {
+            "a": {
+              "id": 103,
+              "name": "Miruna"
+            },
+            "b": {
+              "id": 1295,
+              "name": "Jeni"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 103,
+              "name": "Miruna"
+            },
+            "b": {
+              "id": 1401,
+              "name": "Ulise"
+            },
+            "weight": 13
+          },
+          {
+            "a": {
+              "id": 103,
+              "name": "Miruna"
+            },
+            "b": {
+              "id": 1518,
+              "name": "Bogdan"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 279,
+              "name": "Gabi"
+            },
+            "b": {
+              "id": 1518,
+              "name": "Bogdan"
+            },
+            "weight": 102
+          },
+          {
+            "a": {
+              "id": 376,
+              "name": "Hana"
+            },
+            "b": {
+              "id": 1342,
+              "name": "Puiu"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 438,
+              "name": "Fabi"
+            },
+            "b": {
+              "id": 1359,
+              "name": "Sabin"
+            },
+            "weight": 20
+          },
+          {
+            "a": {
+              "id": 20,
+              "name": "Dana"
+            },
+            "b": {
+              "id": 1359,
+              "name": "Sabin"
+            },
+            "weight": 21
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 103,
+            "name": "Miruna",
+            "class": "MP*1",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 279,
+            "name": "Gabi",
+            "class": "MP*1",
+            "contactsOnBridge": 2
+          },
+          {
+            "id": 1518,
+            "name": "Bogdan",
+            "class": "MP*2",
+            "contactsOnBridge": 2
+          }
+        ]
+      },
+      {
+        "classA": "MP",
+        "classB": "MP*1",
+        "edgeCount": 11,
+        "edges": [
+          {
+            "a": {
+              "id": 638,
+              "name": "Bianca"
+            },
+            "b": {
+              "id": 694,
+              "name": "Matei"
+            },
+            "weight": 88
+          },
+          {
+            "a": {
+              "id": 387,
+              "name": "Luca"
+            },
+            "b": {
+              "id": 658,
+              "name": "Florin"
+            },
+            "weight": 12
+          },
+          {
+            "a": {
+              "id": 279,
+              "name": "Gabi"
+            },
+            "b": {
+              "id": 753,
+              "name": "Vlad"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 605,
+              "name": "Nuti"
+            },
+            "b": {
+              "id": 974,
+              "name": "Ovidiu"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 103,
+              "name": "Miruna"
+            },
+            "b": {
+              "id": 605,
+              "name": "Nuti"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 391,
+              "name": "Oana"
+            },
+            "b": {
+              "id": 520,
+              "name": "Alin"
+            },
+            "weight": 13
+          },
+          {
+            "a": {
+              "id": 655,
+              "name": "Elena"
+            },
+            "b": {
+              "id": 694,
+              "name": "Matei"
+            },
+            "weight": 20
+          },
+          {
+            "a": {
+              "id": 290,
+              "name": "Radu"
+            },
+            "b": {
+              "id": 605,
+              "name": "Nuti"
+            },
+            "weight": 20
+          },
+          {
+            "a": {
+              "id": 513,
+              "name": "Vio"
+            },
+            "b": {
+              "id": 694,
+              "name": "Matei"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 497,
+              "name": "Patrick"
+            },
+            "b": {
+              "id": 642,
+              "name": "Carla"
+            },
+            "weight": 8
+          },
+          {
+            "a": {
+              "id": 484,
+              "name": "Filip"
+            },
+            "b": {
+              "id": 642,
+              "name": "Carla"
+            },
+            "weight": 12
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 694,
+            "name": "Matei",
+            "class": "MP",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 605,
+            "name": "Nuti",
+            "class": "MP",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 642,
+            "name": "Carla",
+            "class": "MP",
+            "contactsOnBridge": 2
+          }
+        ]
+      },
+      {
+        "classA": "MP",
+        "classB": "MP*2",
+        "edgeCount": 16,
+        "edges": [
+          {
+            "a": {
+              "id": 605,
+              "name": "Nuti"
+            },
+            "b": {
+              "id": 1238,
+              "name": "Hodo"
+            },
+            "weight": 113
+          },
+          {
+            "a": {
+              "id": 151,
+              "name": "Nelu"
+            },
+            "b": {
+              "id": 1383,
+              "name": "Timea"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 866,
+              "name": "Ema"
+            },
+            "b": {
+              "id": 1232,
+              "name": "Fana"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 54,
+              "name": "Octav"
+            },
+            "b": {
+              "id": 1784,
+              "name": "Doru"
+            },
+            "weight": 11
+          },
+          {
+            "a": {
+              "id": 54,
+              "name": "Octav"
+            },
+            "b": {
+              "id": 1543,
+              "name": "Cristi"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 691,
+              "name": "Maria"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 43
+          },
+          {
+            "a": {
+              "id": 869,
+              "name": "Geta"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 59
+          },
+          {
+            "a": {
+              "id": 605,
+              "name": "Nuti"
+            },
+            "b": {
+              "id": 1218,
+              "name": "Doina"
+            },
+            "weight": 21
+          },
+          {
+            "a": {
+              "id": 605,
+              "name": "Nuti"
+            },
+            "b": {
+              "id": 1067,
+              "name": "Tania"
+            },
+            "weight": 41
+          },
+          {
+            "a": {
+              "id": 866,
+              "name": "Ema"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 642,
+              "name": "Carla"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 8
+          },
+          {
+            "a": {
+              "id": 151,
+              "name": "Nelu"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 687,
+              "name": "Radu"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 38,
+              "name": "Horia"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 18
+          },
+          {
+            "a": {
+              "id": 634,
+              "name": "Ana"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 8
+          },
+          {
+            "a": {
+              "id": 220,
+              "name": "Ciprian"
+            },
+            "b": {
+              "id": 1332,
+              "name": "Nuti"
+            },
+            "weight": 4
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 1332,
+            "name": "Nuti",
+            "class": "MP*2",
+            "contactsOnBridge": 9
+          },
+          {
+            "id": 605,
+            "name": "Nuti",
+            "class": "MP",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 151,
+            "name": "Nelu",
+            "class": "MP",
+            "contactsOnBridge": 2
+          }
+        ]
+      },
+      {
+        "classA": "2BIO1",
+        "classB": "2BIO2",
+        "edgeCount": 16,
+        "edges": [
+          {
+            "a": {
+              "id": 854,
+              "name": "Ursu"
+            },
+            "b": {
+              "id": 886,
+              "name": "Otilia"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 886,
+              "name": "Otilia"
+            },
+            "b": {
+              "id": 927,
+              "name": "Denis"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 407,
+              "name": "Roxana"
+            },
+            "b": {
+              "id": 954,
+              "name": "Jan"
+            },
+            "weight": 7
+          },
+          {
+            "a": {
+              "id": 124,
+              "name": "David"
+            },
+            "b": {
+              "id": 327,
+              "name": "Sorina"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 124,
+              "name": "David"
+            },
+            "b": {
+              "id": 372,
+              "name": "Flavia"
+            },
+            "weight": 11
+          },
+          {
+            "a": {
+              "id": 28,
+              "name": "Florin"
+            },
+            "b": {
+              "id": 400,
+              "name": "Petru"
+            },
+            "weight": 25
+          },
+          {
+            "a": {
+              "id": 28,
+              "name": "Florin"
+            },
+            "b": {
+              "id": 945,
+              "name": "Ilinca"
+            },
+            "weight": 7
+          },
+          {
+            "a": {
+              "id": 28,
+              "name": "Florin"
+            },
+            "b": {
+              "id": 954,
+              "name": "Jan"
+            },
+            "weight": 15
+          },
+          {
+            "a": {
+              "id": 407,
+              "name": "Roxana"
+            },
+            "b": {
+              "id": 809,
+              "name": "Nicu"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 165,
+              "name": "Rux"
+            },
+            "b": {
+              "id": 498,
+              "name": "Rica"
+            },
+            "weight": 20
+          },
+          {
+            "a": {
+              "id": 353,
+              "name": "Bea"
+            },
+            "b": {
+              "id": 991,
+              "name": "Silviu"
+            },
+            "weight": 5
+          },
+          {
+            "a": {
+              "id": 441,
+              "name": "Iulia"
+            },
+            "b": {
+              "id": 471,
+              "name": "Beni"
+            },
+            "weight": 8
+          },
+          {
+            "a": {
+              "id": 3,
+              "name": "Andrei"
+            },
+            "b": {
+              "id": 991,
+              "name": "Silviu"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 147,
+              "name": "Mara"
+            },
+            "b": {
+              "id": 991,
+              "name": "Silviu"
+            },
+            "weight": 8
+          },
+          {
+            "a": {
+              "id": 184,
+              "name": "Greta"
+            },
+            "b": {
+              "id": 471,
+              "name": "Beni"
+            },
+            "weight": 7
+          },
+          {
+            "a": {
+              "id": 61,
+              "name": "Sorina"
+            },
+            "b": {
+              "id": 177,
+              "name": "Denis"
+            },
+            "weight": 4
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 28,
+            "name": "Florin",
+            "class": "2BIO2",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 991,
+            "name": "Silviu",
+            "class": "2BIO1",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 886,
+            "name": "Otilia",
+            "class": "2BIO2",
+            "contactsOnBridge": 2
+          }
+        ]
+      },
+      {
+        "classA": "2BIO2",
+        "classB": "2BIO3",
+        "edgeCount": 18,
+        "edges": [
+          {
+            "a": {
+              "id": 132,
+              "name": "Geta"
+            },
+            "b": {
+              "id": 171,
+              "name": "Toma"
+            },
+            "weight": 36
+          },
+          {
+            "a": {
+              "id": 720,
+              "name": "Paula"
+            },
+            "b": {
+              "id": 871,
+              "name": "Iulia"
+            },
+            "weight": 66
+          },
+          {
+            "a": {
+              "id": 257,
+              "name": "Viorel"
+            },
+            "b": {
+              "id": 275,
+              "name": "Doru"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 272,
+              "name": "Cristi"
+            },
+            "b": {
+              "id": 372,
+              "name": "Flavia"
+            },
+            "weight": 48
+          },
+          {
+            "a": {
+              "id": 272,
+              "name": "Cristi"
+            },
+            "b": {
+              "id": 327,
+              "name": "Sorina"
+            },
+            "weight": 34
+          },
+          {
+            "a": {
+              "id": 275,
+              "name": "Doru"
+            },
+            "b": {
+              "id": 612,
+              "name": "Olga"
+            },
+            "weight": 78
+          },
+          {
+            "a": {
+              "id": 275,
+              "name": "Doru"
+            },
+            "b": {
+              "id": 312,
+              "name": "Octav"
+            },
+            "weight": 89
+          },
+          {
+            "a": {
+              "id": 272,
+              "name": "Cristi"
+            },
+            "b": {
+              "id": 544,
+              "name": "Edi"
+            },
+            "weight": 22
+          },
+          {
+            "a": {
+              "id": 275,
+              "name": "Doru"
+            },
+            "b": {
+              "id": 886,
+              "name": "Otilia"
+            },
+            "weight": 97
+          },
+          {
+            "a": {
+              "id": 117,
+              "name": "Sandu"
+            },
+            "b": {
+              "id": 268,
+              "name": "Bogdan"
+            },
+            "weight": 6
+          },
+          {
+            "a": {
+              "id": 106,
+              "name": "Nicu"
+            },
+            "b": {
+              "id": 372,
+              "name": "Flavia"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 106,
+              "name": "Nicu"
+            },
+            "b": {
+              "id": 327,
+              "name": "Sorina"
+            },
+            "weight": 4
+          },
+          {
+            "a": {
+              "id": 46,
+              "name": "Matei"
+            },
+            "b": {
+              "id": 196,
+              "name": "Lia"
+            },
+            "weight": 25
+          },
+          {
+            "a": {
+              "id": 3,
+              "name": "Andrei"
+            },
+            "b": {
+              "id": 653,
+              "name": "Doru"
+            },
+            "weight": 23
+          },
+          {
+            "a": {
+              "id": 147,
+              "name": "Mara"
+            },
+            "b": {
+              "id": 653,
+              "name": "Doru"
+            },
+            "weight": 23
+          },
+          {
+            "a": {
+              "id": 353,
+              "name": "Bea"
+            },
+            "b": {
+              "id": 653,
+              "name": "Doru"
+            },
+            "weight": 16
+          },
+          {
+            "a": {
+              "id": 196,
+              "name": "Lia"
+            },
+            "b": {
+              "id": 268,
+              "name": "Bogdan"
+            },
+            "weight": 7
+          },
+          {
+            "a": {
+              "id": 196,
+              "name": "Lia"
+            },
+            "b": {
+              "id": 257,
+              "name": "Viorel"
+            },
+            "weight": 11
+          }
+        ],
+        "topMediators": [
+          {
+            "id": 275,
+            "name": "Doru",
+            "class": "2BIO3",
+            "contactsOnBridge": 4
+          },
+          {
+            "id": 272,
+            "name": "Cristi",
+            "class": "2BIO3",
+            "contactsOnBridge": 3
+          },
+          {
+            "id": 196,
+            "name": "Lia",
+            "class": "2BIO3",
+            "contactsOnBridge": 3
+          }
+        ]
+      }
+    ],
+    "top5Removal": {
+      "top5": [
+        {
+          "id": 117,
+          "name": "Sandu"
+        },
+        {
+          "id": 1332,
+          "name": "Nuti"
+        },
+        {
+          "id": 177,
+          "name": "Denis"
+        },
+        {
+          "id": 272,
+          "name": "Cristi"
+        },
+        {
+          "id": 252,
+          "name": "Puiu"
+        }
+      ],
+      "componentsAfter": 1,
+      "largestAfter": 294,
+      "sizes": [
+        294
+      ]
     }
   }
 }

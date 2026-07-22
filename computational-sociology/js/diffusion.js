@@ -1250,9 +1250,10 @@ export async function renderDiffusion(container, block, options = {}) {
         const opById = statsData?.sliceMetrics?.openness || {};
         const maxOp = Math.max(...Object.values(opById).map((v) => Number(v) || 0), 1);
         const t = (Number(opById[String(nid)]) || 0) / maxOp;
-        const R = Math.round(217 * (1 - t) + 47  * t);
-        const G = Math.round(207 * (1 - t) + 122 * t);
-        const B = Math.round(192 * (1 - t) + 139 * t);
+        // Sequential warm palette: light beige → deep brown
+        const R = Math.round(242 * (1 - t) + 74  * t);
+        const G = Math.round(237 * (1 - t) + 46  * t);
+        const B = Math.round(229 * (1 - t) + 24  * t);
         return `rgb(${R},${G},${B})`;
       }
       if (scheme === "mismatch") {
@@ -1262,19 +1263,73 @@ export async function renderDiffusion(container, block, options = {}) {
     }
 
     function applyScheme(scheme) {
+      const opById = statsData?.sliceMetrics?.openness || {};
+      const opVals = Object.values(opById).map((v) => Number(v) || 0);
+      const maxOp = Math.max(...opVals, 1);
+      // Top 10% openness threshold (for border-emphasis on openness scheme)
+      const opSorted = opVals.slice().sort((a, b) => b - a);
+      const top10Op = opSorted[Math.max(0, Math.floor(opVals.length * 0.1) - 1)] || 0;
+      // For degree: same idea
+      const degVals = Object.values(degById);
+      const degSorted = degVals.slice().sort((a, b) => b - a);
+      const top10Deg = degSorted[Math.max(0, Math.floor(degVals.length * 0.1) - 1)] || 0;
+
       cy.nodes().forEach((n) => {
-        n.style("transition-property", "background-color");
+        const nid = n.id();
+        n.style("transition-property", "background-color, width, height, border-width");
         n.style("transition-duration", 400);
-        n.style("background-color", colorFor(n.id(), scheme));
-        if (scheme === "mismatch" && mismatchedIds.has(n.id())) {
-          n.style("width", 22); n.style("height", 22);
+        n.style("background-color", colorFor(nid, scheme));
+        if (scheme === "mismatch" && mismatchedIds.has(nid)) {
+          n.style("width", 20); n.style("height", 20); n.style("border-width", 2); n.style("opacity", 1);
         } else if (scheme === "mismatch") {
-          n.style("width", 12); n.style("height", 12);
-          n.style("opacity", 0.35);
-        } else {
+          n.style("width", 10); n.style("height", 10); n.style("border-width", 1); n.style("opacity", 0.35);
+        } else if (scheme === "openness") {
+          const v = Number(opById[nid]) || 0;
+          const size = 8 + (v / maxOp) * 10; // 8..18
+          n.style("width", size); n.style("height", size);
+          n.style("border-width", v >= top10Op ? 2 : 1);
+          n.style("border-color", v >= top10Op ? "#2a1f16" : "#5a4a3a");
           n.style("opacity", 1);
+        } else if (scheme === "degree") {
+          const v = degById[nid] || 0;
+          const size = 8 + (v / maxDeg) * 10;
+          n.style("width", size); n.style("height", size);
+          n.style("border-width", v >= top10Deg ? 2 : 1);
+          n.style("border-color", v >= top10Deg ? "#2a1f16" : "#5a4a3a");
+          n.style("opacity", 1);
+        } else {
+          n.style("width", 9); n.style("height", 9); n.style("border-width", 1);
+          n.style("border-color", "#5a4a3a"); n.style("opacity", 1);
         }
       });
+
+      // Update legend to gradient bar when using sequential scheme
+      if (scheme === "openness" || scheme === "degree") {
+        legend.innerHTML =
+          `<div class="viz__gradient" style="background: linear-gradient(to right, ` +
+          (scheme === "openness"
+            ? "rgb(242,237,229), rgb(74,46,24)"
+            : "rgb(217,207,192), rgb(139,74,30)") + `);">` +
+          `<span class="viz__gradient-label viz__gradient-label--left">${scheme === "openness" ? "un grup" : "puțin"}</span>` +
+          `<span class="viz__gradient-label viz__gradient-label--right">${scheme === "openness" ? maxOp + " grupuri" : maxDeg + " contacte"}</span>` +
+          `</div>`;
+      } else {
+        // Restore group legend
+        legend.innerHTML = "";
+        for (const g of groups) {
+          const chip = document.createElement("span");
+          chip.className = "viz__legend-chip";
+          const dot = document.createElement("span");
+          dot.className = "viz__legend-dot";
+          dot.style.background = colorMap.get(g);
+          chip.appendChild(dot);
+          const label = document.createElement("span");
+          const friendly = statsData?.classNames?.[g] || g;
+          label.textContent = friendly;
+          chip.appendChild(label);
+          legend.appendChild(chip);
+        }
+      }
     }
 
     const labels = {

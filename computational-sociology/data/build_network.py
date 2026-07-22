@@ -449,6 +449,175 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         },
     }
 
+    # --- cutVertices: nodurile a caror indepartare mareste numarul de componente
+    baseline_n = len(comps)
+    def components_excluding(exclude):
+        seen = {exclude}
+        n_comp = 0
+        sizes = []
+        for start in node_ids:
+            if start in seen: continue
+            comp = 0
+            stack = [start]
+            while stack:
+                x = stack.pop()
+                if x in seen: continue
+                seen.add(x); comp += 1
+                for y in adj.get(x, ()):
+                    if y != exclude and y not in seen:
+                        stack.append(y)
+            n_comp += 1
+            sizes.append(comp)
+        return n_comp, sorted(sizes, reverse=True)
+
+    cut_vertices = []
+    for x in node_ids:
+        n_comp, sizes = components_excluding(x)
+        if n_comp > baseline_n:
+            # Care noduri sunt in componentele mici (nu in cea principala)
+            seen = {x}
+            small_nodes = []
+            largest_start = None
+            for start in node_ids:
+                if start in seen: continue
+                comp = []
+                stack = [start]
+                while stack:
+                    y = stack.pop()
+                    if y in seen: continue
+                    seen.add(y); comp.append(y)
+                    for z in adj.get(y, ()):
+                        if z != x and z not in seen:
+                            stack.append(z)
+                if len(comp) < sizes[0]:
+                    small_nodes.extend(comp)
+            cut_vertices.append({
+                "id":            x,
+                "name":          name_map.get(x, str(x)),
+                "class":         klass_map.get(x, "?"),
+                "componentsAfter": n_comp,
+                "largestAfter":  sizes[0],
+                "detachedCount": len(small_nodes),
+                "detached":      [id_name(y) for y in sorted(small_nodes)],
+            })
+    cut_vertices.sort(key=lambda cv: (-cv["detachedCount"], cv["id"]))
+
+    # --- bridgeEdges: muchii a caror indepartare mareste numarul de componente (Tarjan)
+    def find_bridges(adj_map):
+        # iterative Tarjan (adapted for undirected)
+        disc = {}
+        low = {}
+        parent = {}
+        bridges = []
+        timer = [0]
+        def dfs_iter(start):
+            stack_ = [(start, iter(adj_map.get(start, ())))]
+            disc[start] = low[start] = timer[0]; timer[0] += 1
+            parent[start] = None
+            while stack_:
+                u, it = stack_[-1]
+                found_next = False
+                for v in it:
+                    if v not in disc:
+                        parent[v] = u
+                        disc[v] = low[v] = timer[0]; timer[0] += 1
+                        stack_.append((v, iter(adj_map.get(v, ()))))
+                        found_next = True
+                        break
+                    elif v != parent[u]:
+                        low[u] = min(low[u], disc[v])
+                if not found_next:
+                    stack_.pop()
+                    if stack_:
+                        p = stack_[-1][0]
+                        low[p] = min(low[p], low[u])
+                        if low[u] > disc[p]:
+                            bridges.append((min(p, u), max(p, u)))
+        for x in node_ids:
+            if x not in disc:
+                dfs_iter(x)
+        return bridges
+
+    bridge_edges_raw = find_bridges(adj)
+    bridge_edges = []
+    for (a, b) in bridge_edges_raw:
+        w_edge = weight_map.get((min(a, b), max(a, b)), 1)
+        # Care este componenta mica dupa taiere?
+        seen_a = {a}
+        stack_ = [a]
+        while stack_:
+            y = stack_.pop()
+            for z in adj.get(y, ()):
+                if y == a and z == b: continue
+                if y == b and z == a: continue
+                if z in seen_a: continue
+                # Verificam ca nu folosim muchia (a,b)
+                edge_key = (min(y, z), max(y, z))
+                if edge_key == (min(a, b), max(a, b)): continue
+                seen_a.add(z)
+                stack_.append(z)
+        detached_from_a = len(node_ids) - len(seen_a)
+        cls_a = klass_map.get(a, "?")
+        cls_b = klass_map.get(b, "?")
+        bridge_edges.append({
+            "a":              id_name(a),
+            "b":              id_name(b),
+            "aClass":         cls_a,
+            "bClass":         cls_b,
+            "weight":         w_edge,
+            "sameClass":      cls_a == cls_b,
+            "detachedCount":  detached_from_a,
+        })
+    bridge_edges.sort(key=lambda b: (-b["detachedCount"], b["a"]["id"]))
+
+    # --- classPairMatrix: pentru fiecare pereche de clase, numarul de muchii + mediatori
+    class_pair_edges = defaultdict(list)  # (cls_a, cls_b) -> list of (nid_a, nid_b, w)
+    for a, b, w in edges_list:
+        ca = klass_map.get(a, "?")
+        cb = klass_map.get(b, "?")
+        if ca == cb: continue
+        pair = tuple(sorted([ca, cb]))
+        class_pair_edges[pair].append((a, b, w))
+    class_pair_matrix = []
+    for pair, es in sorted(class_pair_edges.items(), key=lambda x: len(x[1])):
+        mediators = Counter()
+        for a, b, w in es:
+            mediators[a] += 1
+            mediators[b] += 1
+        class_pair_matrix.append({
+            "classA":     pair[0],
+            "classB":     pair[1],
+            "edgeCount":  len(es),
+            "edges":      [{"a": id_name(a), "b": id_name(b), "weight": w} for a, b, w in es],
+            "topMediators": [{"id": mid, "name": name_map.get(mid, str(mid)), "class": klass_map.get(mid, "?"), "contactsOnBridge": ct} for mid, ct in mediators.most_common(3)],
+        })
+
+    # --- top5 popular removal effect
+    top5_ids = sorted(node_ids, key=lambda x: (-degrees[x], x))[:5]
+    seen = set(top5_ids)
+    n_comp_top5 = 0
+    sizes_top5 = []
+    for start in node_ids:
+        if start in seen: continue
+        comp = 0
+        stack_ = [start]
+        while stack_:
+            x_ = stack_.pop()
+            if x_ in seen: continue
+            seen.add(x_); comp += 1
+            for y in adj.get(x_, ()):
+                if y not in seen and y not in top5_ids:
+                    stack_.append(y)
+        n_comp_top5 += 1
+        sizes_top5.append(comp)
+    sizes_top5.sort(reverse=True)
+    top5_removal = {
+        "top5":            [id_name(x) for x in top5_ids],
+        "componentsAfter": n_comp_top5,
+        "largestAfter":    sizes_top5[0] if sizes_top5 else 0,
+        "sizes":           sizes_top5,
+    }
+
     return {
         "components":         components,
         "communities": {
@@ -474,13 +643,31 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             "pasi":            pasi,
             "maxTransmiteri":  max_t,
             "description":     "Deterministic BFS bounded to `pasi` rounds; each carrier transmits only to top `maxTransmiteri` contacts by edge weight."
-        }
+        },
+        "cutVertices":         cut_vertices,
+        "nCutVertices":        len(cut_vertices),
+        "bridgeEdges":         bridge_edges,
+        "nBridgeEdges":        len(bridge_edges),
+        "classPairMatrix":     class_pair_matrix,
+        "top5Removal":         top5_removal,
     }
 
 
 CLASSES    = ["2BIO1", "2BIO2", "2BIO3", "MP", "MP*1", "MP*2", "PC", "PC*", "PSI*"]
 DAY        = 1
 MIN_WEIGHT = 4
+
+CLASS_NAMES = {
+    "2BIO1": "Bio A",
+    "2BIO2": "Bio B",
+    "2BIO3": "Bio C",
+    "MP":    "Mate A",
+    "MP*1":  "Mate B",
+    "MP*2":  "Mate C",
+    "PC":    "Chimie A",
+    "PC*":   "Chimie B",
+    "PSI*":  "Inginerie",
+}
 
 NAMES = [
     "Ana", "Andrei", "Bianca", "Bogdan", "Carla", "Cristi", "Dana", "Doru", "Elena", "Florin",
@@ -1011,6 +1198,7 @@ stats = {
     "exempluGrad":   median_deg,
     "pasi":          4,
     "maxTransmiteri": 4,
+    "classNames":    CLASS_NAMES,
     "friendshipParadox": {
         # keys per spec (rounded 1 decimal, %)
         "meanDegree":       mean_deg,
