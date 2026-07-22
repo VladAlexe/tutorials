@@ -11,8 +11,11 @@
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 },
     { "n": 3, "title": "Lumea lui Sandu, apoi școala", "startIdx": 5 },
-    { "n": 4, "title": "Câți sunt, cum arată", "startIdx": 15 },
-    { "n": 5, "title": "Trei măsuri", "startIdx": 22 }
+    { "n": 4, "title": "Câți sunt, cum arată", "startIdx": 14 },
+    { "n": 5, "title": "Două măsuri și un paradox", "startIdx": 21 },
+    { "n": 6, "title": "Misiunea", "startIdx": 23 },
+    { "n": 7, "title": "Ce rămâne în afara modelului", "startIdx": 29 },
+    { "n": 8, "title": "Bilanț", "startIdx": 31 }
   ],
   "blocks": [
     {
@@ -101,11 +104,11 @@
         {
           "buttonLabel": "Arată-i contactele",
           "add": "neighbors",
-          "text": "Aceasta e lumea lui Sandu. Nu școala, doar bucata din ea pe care o atinge el: 19 oameni cu care schimbă cuvinte în pauze. Ceilalți 280 de elevi sunt încă acolo, dar în afara câmpului lui vizual."
+          "text": "Aceasta e lumea lui Sandu. Nu școala, doar bucata din ea pe care o atinge el: {{sliceMetrics.trioMission.sandu.popularity}} oameni cu care schimbă cuvinte în pauze. Ceilalți din școală sunt încă acolo, dar în afara câmpului lui vizual."
         }
       ],
       "title": "Lumea lui Sandu",
-      "caption": "Sandu are 19 contacte. E un număr, dar deocamdată nu spune nimic. Îl vom compara cu tot restul școlii."
+      "caption": "Sandu are {{sliceMetrics.trioMission.sandu.popularity}} contacte. E un număr, dar deocamdată nu spune nimic. Îl vom compara cu tot restul școlii."
     },
     {
       "type": "diffusion",
@@ -117,12 +120,12 @@
       "story": [
         {
           "visible": ["focus", "neighbors"],
-          "text": "Aceleași 19 contacte. Uită-te la ele cu ochii altfel: nu cu cine, ci de unde. Apasă butonul."
+          "text": "Aceleași contacte. Uită-te la ele cu ochii altfel: nu cu cine, ci de unde. Apasă butonul."
         },
         {
           "buttonLabel": "Arată clasa lui Sandu",
           "add": "class",
-          "text": "Aceasta e clasa lui Sandu întreagă: <strong>Bio C</strong>. Aproape toți cei 19 sunt de aici. Majoritatea timpului lui de contact rămâne între aceste ziduri. Sandu iese din clasă rareori și cu câțiva anume."
+          "text": "Aceasta e clasa lui Sandu întreagă: <strong>Bio C</strong>. Aproape toți colegii lui apropiați sunt de aici. Majoritatea timpului lui de contact rămâne între aceste ziduri. Sandu iese din clasă rareori și cu câțiva anume."
         }
       ],
       "title": "Clasa lui Sandu",
@@ -144,11 +147,11 @@
         {
           "buttonLabel": "Arată prin cine iese Cristi din clasă",
           "add": "focus2:neighbors",
-          "text": "Cristi are prieteni și în alte două clase de biologie: câțiva în <strong>Bio B</strong>, câțiva în <strong>Bio A</strong>. Prin oameni ca el trec legăturile dintre clase. Nu prin cei mai populari, ci prin cei care au prieteni în mai multe locuri."
+          "text": "Cristi are prieteni și în alte două clase de biologie: câțiva în <strong>Bio B</strong>, câțiva în <strong>Bio A</strong>. Prin oameni ca el trec legăturile dintre clase. Nu neapărat prin cei mai populari, ci prin cei care au prieteni în mai multe locuri."
         }
       ],
       "title": "Cristi și podurile",
-      "caption": "Popularitatea numără contactele. Deschiderea numără lumile pe care le atingi. Sunt două măsuri diferite ale aceleiași rețele, iar clasamentele lor nu coincid. Ne întoarcem la ele la Câți sunt, cum arată."
+      "caption": "Popularitatea numără contactele. Deschiderea numără lumile pe care le atingi. Sunt două măsuri diferite ale aceleiași rețele, iar clasamentele lor nu coincid. Ne întoarcem la ele imediat."
     },
     {
       "type": "diffusion",
@@ -158,7 +161,7 @@
       "statsSource": "data/highschool-stats.json",
       "title": "Încearcă să rupi școala",
       "intro": "<p>Dacă cei mai populari sunt așa importanți, ce se întâmplă când dispar? Ai două moduri de lucru: scoate oameni sau taie legături. Pornim cu oamenii.</p>",
-      "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă, și fragilă acolo unde nu te uitai. Cei mai populari sunt înlocuibili: între oricare doi elevi există mai multe drumuri, iar când unul dispare informația o ia pe altul. În schimb, la marginea rețelei, {{sliceMetrics.nCutVertices}} de elevi obișnuiți sunt singura legătură a cuiva cu restul școlii. Elena nu e populară. Dar pentru Ramona, George și Codrin, ea e tot. Oamenii sunt înlocuibili, relațiile anume nu. O singură prietenie, cea dintre {{sliceMetrics.brokenPair.personA.name}} și {{sliceMetrics.brokenPair.personB.name}}, e tot ce leagă direct două lumi. Ține minte pentru misiune."
+      "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă. Cei mai populari sunt înlocuibili: între oricare doi elevi există mai multe drumuri, iar când unul dispare informația o ia pe altul. Nici tăind singurul fir dintre două clase nu o rupi: distanța doar crește puțin, prin ocol."
     },
     {
       "type": "diffusion",
@@ -167,7 +170,7 @@
       "data": "data/highschool-network.json",
       "schemes": ["class", "community", "component"],
       "title": "Harta școlii",
-      "intro": "Am văzut o clasă, două clase, un test de fragilitate. Acum lasă-mă să-ți arăt harta întreagă: 299 de elevi din 9 clase, cu 892 de legături. Colorată pe clase, apoi pe grupuri descoperite de un algoritm care nu știe nimic despre orar.",
+      "intro": "Am văzut o clasă, două clase, un test de fragilitate. Acum lasă-mă să-ți arăt harta întreagă: {{total}} de elevi din 9 clase, cu {{edges}} de legături. Colorată pe clase, apoi pe grupuri descoperite de un algoritm care nu știe nimic despre orar.",
       "caption": "Algoritmul (label propagation, seed 42) a găsit {{sliceMetrics.communities.n}} comunități. {{sliceMetrics.communities.pctMatchClass}}% dintre elevi sunt în comunitatea care corespunde clasei lor. Restul, {{sliceMetrics.communities.nMismatched}} de oameni, petrec mai mult timp cu altă clasă decât cu a lor. Nu sunt erori ale algoritmului. Sunt oameni."
     },
     {
@@ -180,7 +183,7 @@
       "title": "Zidurile",
       "intro": "Pentru fiecare clasă, cât din timpul de contact rămâne înăuntru și cât iese afară. Atinge o bară pentru lista de elevi din clasa aleasă.",
       "statsSource": "data/highschool-stats.json",
-      "caption": "Doar circa {{fullSchool.classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele. Zidurile nu sunt legale, dar sunt reale. Pentru misiune: dacă alegi trei oameni din același grup, alegerile se irosesc; ajungi la aceeași lume."
+      "caption": "Doar circa {{fullSchool.classContactSplit.globalBetweenPct}}% din timpul de contact traversează granițele. Zidurile nu sunt legale, dar sunt reale."
     },
     {
       "type": "diffusion",
@@ -191,12 +194,12 @@
       "schemes": ["component", "class"],
       "title": "Unde e, totuși, fragilă",
       "intro": "<p><strong>La margine.</strong> Nu în centru, nu la punți.</p><p>Am văzut că școala e o singură bucată: din orice elev pornești, se ajunge la toți ceilalți în principiu. Dar „în principiu\" nu înseamnă „în realitate\". <strong>Lia</strong>, din Inginerie, are un singur contact în toată școala: Rares. Dacă Rares nu află de vestea ta, Lia nu află niciodată.</p>",
-      "caption": "A fi în componentă nu înseamnă a fi ajuns de informație. Într-o rețea reală, marginile decid cine rămâne pe dinafară. Lia nu e un caz izolat: sunt {{sliceMetrics.unreachableCount}} de elevi în școală la care difuzia bounded (patru pași, patru contacte) nu ajunge niciodată."
+      "caption": "A fi în componentă nu înseamnă a fi ajuns de informație. Sunt {{sliceMetrics.unreachableCount}} elevi la care difuzia nu ajunge deloc, în modelul cu care lucrăm. Fragilitatea e la margine."
     },
     {
       "type": "text",
       "id": "c14-tranzitie",
-      "title": "De la o măsură la trei",
+      "title": "De la intuiții la numere",
       "content": "<p>Până aici am folosit intuiții: cine e popular, cine e punte, cine e la margine. E timpul să numărăm.</p><p>Începem cu popularitatea: cel mai simplu contor. Câți oameni cu câte contacte are fiecare? Cum arată distribuția?</p>"
     },
     {
@@ -218,7 +221,7 @@
         { "key": "histogram", "label": "Grupează și numără" }
       ],
       "title": "Toate valorile",
-      "intro": "Iată gradele tuturor celor 299 de elevi ai școlii, ca puncte împrăștiate. Apasă butoanele ca să comanzi ce se întâmplă cu ele.",
+      "intro": "Iată gradele tuturor celor {{total}} de elevi ai școlii, ca puncte împrăștiate. Apasă butoanele ca să comanzi ce se întâmplă cu ele.",
       "caption": "Ordonarea îți arată extremele. Gruparea îți spune câți sunt în fiecare interval. Ca să răspunzi la întrebarea câți sunt ca mine, cu 3 sau 5 contacte, trebuie să numeri."
     },
     {
@@ -235,7 +238,7 @@
       "title": "Trei forme",
       "intro": "Trei distribuții din aceeași școală, comparate: numărul de contacte al fiecărui elev, timpul total petrecut în contacte, mărimea celor 9 clase. Fiecare cu media (linia continuă) și medianul (linia întreruptă).",
       "series": [
-        { "title": "Contacte pe elev (299)", "path": "sliceMetrics.distributions.degrees", "binWidth": 2 },
+        { "title": "Contacte pe elev ({{total}})", "path": "sliceMetrics.distributions.degrees", "binWidth": 2 },
         { "title": "Timp total de contact pe elev", "path": "sliceMetrics.distributions.weighted", "binWidth": 60 },
         { "title": "Mărimea celor 9 clase", "path": "fullSchool.metrics.distributions.classSizes", "binWidth": 4 }
       ],
@@ -290,7 +293,7 @@
       "schemes": ["degree", "openness"],
       "title": "Deschiderea",
       "intro": "<p>A doua măsură a lecției. Popularitatea numără contactele; deschiderea numără <strong>lumile</strong> la care ai acces: câți dintre oamenii tăi sunt din afara clasei tale.</p><p>Popularitatea și deschiderea dau clasamente diferite. Comută schema de culoare de sub grafic. {{name:vedeta}} domină la popularitate cu {{maxDegree}} contacte; la deschidere, urcă în vârf oameni diferiți.</p>",
-      "caption": "În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Deschiderea se justifică singură ca măsură: câte lumi atingi contează, nu doar câți oameni cunoști. Cât de mult contează pentru răspândirea unui zvon, vom vedea la misiune."
+      "caption": "În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Cât de mult contează pentru răspândirea unui zvon, vom vedea imediat."
     },
     {
       "type": "paradox",
@@ -302,10 +305,150 @@
       "caption": "Nu e psihologie, e eșantionare. Persoanele cu multe legături apar în listele multora, deci lista ta supra-reprezintă popularii. Orice feed face la fel. Pentru misiune: intuiția ta despre cine e bine plasat e sistematic deformată."
     },
     {
+      "type": "diffusion",
+      "id": "m1-o-alegere",
+      "mode": "mission",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "teamSize": 1,
+      "presets": [
+        { "label": "Cel mai popular", "names": ["Sandu"] },
+        { "label": "Cel mai deschis", "names": ["Cristi"] },
+        { "label": "La întâmplare", "random": true }
+      ],
+      "title": "O alegere",
+      "intro": "<p>Ai o veste care trebuie să ajungă la toată școala până diseară. Poți să o spui unei singure persoane. Ea le spune celor patru oameni cu care petrece cel mai mult timp, aceia mai departe, și tot așa. Dar ziua se termină: sunt doar {{pasi}} pauze. Alege.</p>",
+      "caption": "Reține scorul. Îl vom bate. Și, mai important, vom afla de ce nu ai nimerit din prima."
+    },
+    {
+      "type": "diffusion",
+      "id": "m2-trei-valuri",
+      "mode": "duel",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "slots": ["sandu", "emil", "doina"],
+      "title": "Trei valuri",
+      "intro": "<p>Trei oameni foarte diferiți. Uită-te la cifrele lor înainte de a porni valurile, apoi ghicește cine câștigă.</p>",
+      "caption": "Sandu are cele mai multe contacte din toată școala și ajunge cel mai puțin departe. Emil, cu jumătate din contactele lui, ajunge cel mai departe. Iar Doina, cu <strong>{{sliceMetrics.trioMission.doina.popularity}}</strong> contacte, aproape îl egalează pe Emil. Cei doi câștigători folosesc strategii opuse. Emil nu iese aproape deloc din clasa lui: cei patru oameni cărora le spune sunt fiecare central în clasa Bio C, deci mesajul acoperă clasa aproape întreagă. Doina face exact invers: fiecare dintre cele trei contacte ale ei duce în altă clasă densă, iar acolo mesajul se aprinde singur. Sandu, cu {{sliceMetrics.trioMission.sandu.popularity}} contacte, transmite tot doar la patru dintre ei. Popularitatea măsoară câți oameni cunoști. Pentru răspândire contează <strong>cine anume</strong> sunt cei patru."
+    },
+    {
+      "type": "chart",
+      "id": "m3-scatter-nu-prezice",
+      "variant": "scatter",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Nicio măsură nu prezice",
+      "intro": "Poate am ales greșit măsura. Hai să verificăm serios: dacă popularitatea ar prezice raza, punctele ar sta pe o linie care urcă. Stau?",
+      "caption": "Nu stau. Norul e lat. Sunt elevi cu multe contacte și rază mică, și elevi cu trei contacte și rază mare. Corelația popularitate-rază e {{sliceMetrics.correlations.popularityReach}}, adică o legătură slabă. Comută pe deschidere: {{sliceMetrics.correlations.groupsReach}}, ceva mai bine, dar tot slab. Aici e o lecție care depășește școala noastră. Ne plac numerele care rezumă un om într-o singură cifră, la fel cum ne plac media sau nota generală. Uneori ele funcționează. Aici, nu. Ce contează pentru răspândire nu e o însușire a persoanei, ci <strong>poziția ei în toată structura din jur</strong>, iar asta nu încape într-un număr. Consecința practică: dacă nicio formulă nu îți spune răspunsul, trebuie să rulezi procesul și să te uiți ce iese. De asta există simularea, și de asta sociologia are azi nevoie de calculatoare. Nu ca să calculeze mai repede formule, ci pentru întrebările la care nu există formulă."
+    },
+    {
+      "type": "diffusion",
+      "id": "m4-acum-ai-trei",
+      "mode": "mission",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "teamSize": 3,
+      "presets": [
+        { "label": "Cei mai populari trei", "names": ["Sandu", "Nuti", "Denis"] }
+      ],
+      "title": "Acum ai trei",
+      "intro": "<p>Bugetul crește: poți spune la trei persoane. Alege, sau lasă butonul să încerce cu cei mai populari trei elevi din școală.</p>",
+      "caption": "Sandu, Nuti și Denis, împreună: <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong> din {{sliceMetrics.plafon}} posibili. Fiecare dintre ei atinge în jur de cincizeci de oameni, și abia se suprapun între ei. Nu e o problemă de bulă comună. E o problemă de adâncime: fiecare intră puțin în mai multe cartiere, fără să cucerească niciunul."
+    },
+    {
+      "type": "chart",
+      "id": "m5-strategii",
+      "variant": "strategies",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Compară strategiile",
+      "intro": "Cinci strategii, plus o bară cu mustăți pentru cele 30 de alegeri aleatoare, arătând media și intervalul. Linia întreruptă e plafonul, cei mai mulți elevi pe care i-ar putea acoperi orice strategie.",
+      "caption": "Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie. Uită-te la bara aleatoare. Media ei e sub cei mai populari trei, dar cea mai norocoasă dintre cele treizeci de încercări i-a depășit. Norocul e o strategie cu dispersie mare: pierde în medie, dar bate uneori o regulă proastă. Când o metodă abia se descurcă mai bine decât hazardul, întrebarea nu e cum o ajustăm, ci dacă punem întrebarea corect."
+    },
+    {
+      "type": "diffusion",
+      "id": "m6-algoritmul-lacom",
+      "mode": "greedy-anim",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Lasă algoritmul",
+      "intro": "<p>Apasă butonul și lasă algoritmul să aleagă pas cu pas. Nu caută oameni importanți. La fiecare pas nu întreabă cine e cel mai bun, ci <strong>cine adaugă cel mai mult peste ce am deja</strong>.</p>",
+      "caption": "A ales pe Emil, care cucerește o clasă densă. Apoi pe Doina, care sare în trei lumi pe care Emil nu le atinge. Apoi pe Otilia, pentru ce a rămas. Trei oameni cu profiluri complet diferite, aleși nu pentru calitățile lor, ci pentru cum se completează. Procedeul se numește alegere lacomă și e descris într-o lucrare de referință a domeniului, Kempe, Kleinberg și Tardos, 2003. Același calcul duce un anunț util în toată școala sau o minciună. Unealta nu alege scopul."
+    },
+    {
+      "type": "diffusion",
+      "id": "c-temporal",
+      "mode": "temporal",
+      "data": "data/highschool-network.json",
+      "hoursSource": "data/highschool-hours.json",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Rețeaua respiră",
+      "intro": "<p>Tot ce am făcut s-a bazat pe un desen care adună o zi întreagă într-o singură imagine. Datele au însă timpul, la fiecare douăzeci de secunde. Trage cursorul peste orele zilei.</p>",
+      "caption": "În ore, contactele se restrâng la vecinii de bancă. În pauze, explodează, inclusiv între clase. Consecința pentru tot ce am calculat: un drum care există în desenul agregat poate să nu fi existat niciodată, dacă întâlnirile s-au petrecut în ordinea greșită. Informația nu circulă înapoi în timp. Pentru misiunea ta: contează și când spui, nu doar cui."
+    },
+    {
+      "type": "diffusion",
+      "id": "c-sir",
+      "mode": "sir",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "pTransmit": 0.10,
+      "pStop": 0.42,
+      "title": "Oamenii nu sunt relee",
+      "intro": "<p>Modelul cu care ai lucrat e determinist: aceleași persoane dau mereu același rezultat. Oamenii adevărați uită, se plictisesc, se îndoiesc. Fă transmiterea o chestiune de probabilitate și rulează de mai multe ori.</p>",
+      "caption": "Un proces social nu are un viitor, are o distribuție de viitoruri. Întrebarea corectă nu e ce se va întâmpla, ci cu ce probabilitate. Uită-te la formă: majoritatea informațiilor mor devreme, puține cuprind mult. De asta întrebarea „de ce a devenit viral tocmai ăsta\" are adesea un răspuns dezamăgitor."
+    },
+    {
       "type": "text",
-      "id": "cX-marker-transa-8",
-      "title": "Sfârșitul tranșei 8",
-      "content": "<p>Ai văzut lumea lui Sandu extinzându-se până la a școlii întregi, ai încercat să o rupi, ai descoperit că fragilitatea nu e la centru ci la periferie, apoi ai numărat popularitatea, deschiderea, distribuția lor. Continuarea (misiunea propriu-zisă, acoperirea lacomă, difuzia bounded) vine cu tranșa 9.</p><p>Închide lecția și așteaptă versiunea completă.</p>"
+      "id": "b1-ce-ai-facut",
+      "title": "Ce ai făcut",
+      "content": "<p>Ai pornit de la un singur om și ai lăsat școala să crească în jurul lui, până la {{total}} de elevi și {{edges}} de legături.</p><p>Ai încercat să rupi rețeaua scoțând cei mai populari cinci elevi deodată și nu ai reușit. Ai aflat astfel că rețelele de oameni sunt robuste în centru și fragile la margine, unde câțiva sunt singura legătură a cuiva cu restul.</p><p>Ai construit o histogramă ca să răspunzi la o întrebare concretă, nu ca exercițiu, și ai văzut cum alegerea intervalului îi schimbă înfățișarea. Ai despărțit media de median și știi acum când diverg.</p><p>Ai lăsat un algoritm să găsească grupurile școlii fără să știe orarul și ai comparat ce a găsit cu clasele reale.</p><p>Ai căutat un număr care să prezică cine răspândește cel mai bine. Ai încercat două și niciunul nu a funcționat. Ai văzut norul de puncte care refuză să se așeze pe o linie.</p><p>Ai avut de rezolvat o problemă practică, ai pierdut în fața unui algoritm, și ai înțeles de ce: el nu căuta oameni buni, ci oameni care se completează.</p><p>Ai rulat un proces social de o sută de ori și ai citit distribuția rezultatelor, nu un singur deznodământ.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, și cine decide definițiile. Iar acolo unde nicio formulă nu a funcționat, ai făcut singurul lucru care rămâne: ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
+    },
+    {
+      "type": "quiz",
+      "id": "b2a-quiz-media",
+      "title": "Proba, unu din trei",
+      "question": "Un articol anunță că venitul mediu a crescut cu 10%, iar venitul median a rămas neschimbat. Ce s-a întâmplat, cel mai probabil?",
+      "options": [
+        "Toți câștigă cu 10% mai mult",
+        "Creșterea s-a concentrat la vârf",
+        "Medianul e calculat greșit",
+        "Oamenii declară venituri false"
+      ],
+      "correctIndex": 1,
+      "explanation": "Exact ce ai văzut la cursor. Coada trage media; medianul rămâne la omul din mijloc."
+    },
+    {
+      "type": "quiz",
+      "id": "b2b-quiz-alegeri",
+      "title": "Proba, doi din trei",
+      "question": "Vrei ca un anunț să ajungă în toate grupurile unei comunități, dar poți vorbi cu puțini oameni. Cum îi alegi?",
+      "options": [
+        "Cei mai cunoscuți oameni din comunitate",
+        "Oameni care acoperă zone diferite, chiar dacă individual nu sunt cei mai cunoscuți",
+        "Oamenii cei mai apropiați de mine",
+        "La întâmplare, ca să fie corect"
+      ],
+      "correctIndex": 1,
+      "explanation": "Cei mai cunoscuți trei acoperă fiecare puțin din mai multe locuri. Algoritmul a ales oameni care se completează, nu oameni buni individual."
+    },
+    {
+      "type": "quiz",
+      "id": "b2c-quiz-feed",
+      "title": "Proba, trei din trei",
+      "question": "În feedul tău, aproape toată lumea pare să susțină o anumită poziție. Ce știi acum despre această impresie?",
+      "options": [
+        "Poziția e majoritară",
+        "Feedul e un eșantion deformat spre cei vizibili",
+        "Oamenii mint",
+        "Toate opiniile sunt egal reprezentate"
+      ],
+      "correctIndex": 1,
+      "explanation": "Aceeași deformare ca la paradoxul prieteniei. Vezi disproporționat oamenii cu multe legături."
+    },
+    {
+      "type": "text",
+      "id": "b3-sursele",
+      "title": "Sursele",
+      "content": "<p>Datele provin din studiul: R. Mastrandrea, J. Fournet, A. Barrat, „Contact patterns in a high school\", <a href=\"https://doi.org/10.1371/journal.pone.0136497\" target=\"_blank\" rel=\"noopener\">PLoS ONE 10(9), e0136497 (2015)</a>. Publicate anonimizat de proiectul SocioPatterns.</p><p>Misiunea a fost construită de noi. Școala, elevii și întâlnirile sunt reale. Numele elevilor sunt fictive, atribuite deterministic pe cod. Numele claselor sunt traducerea noastră a profilurilor franceze (2BIO1 → Bio A, MP → Mate A, PSI* → Inginerie, și așa mai departe).</p><p>Aici se închide lecția. Poți relua orice card din cursul principal.</p>"
     }
   ]
 }

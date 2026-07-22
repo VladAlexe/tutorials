@@ -629,6 +629,113 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "sizes":           sizes_top5,
     }
 
+    # === MISSION DATA: trioMission (Sandu, Emil, Doina), correlations, plafon, scatterData
+
+    def person_by_name(target_name):
+        # Names can repeat across classes; pick the one with the largest reach so the
+        # mission narrative uses the version the story is actually about.
+        candidates = [nid for nid in node_ids if name_map.get(nid) == target_name]
+        if not candidates:
+            return None
+        return max(candidates, key=lambda x: (reach_size[x], degrees[x], -x))
+
+    def profile_person(nid):
+        if nid is None: return None
+        r_set = reach[nid]
+        own_class = klass_map.get(nid, "?")
+        in_class = sum(1 for x in r_set if klass_map.get(x) == own_class)
+        out_class = len(r_set) - in_class
+        cls_dist = Counter(klass_map.get(x, "?") for x in r_set)
+        # neighbor-class span for the mission (class-based grupuri, small integer)
+        neighbor_classes = {klass_map.get(y, "?") for y in adj.get(nid, ())}
+        neighbor_classes.discard(own_class)
+        groups_out = len(neighbor_classes)  # classes OTHER than own where the person has ties
+        groups_total = groups_out + 1  # including own class
+        return {
+            "id":            nid,
+            "name":          name_map.get(nid, str(nid)),
+            "class":         own_class,
+            "classFriendly": CLASS_NAMES.get(own_class, own_class),
+            "popularity":    degrees[nid],
+            "openness":      openness[nid],
+            "groups":        groups_total,
+            "groupsOut":     groups_out,
+            "reach":         reach_size[nid],
+            "reachInClass":  in_class,
+            "reachOutClass": out_class,
+            "classDist":     [{"class": k, "classFriendly": CLASS_NAMES.get(k, k), "count": v}
+                              for k, v in sorted(cls_dist.items(), key=lambda kv: -kv[1])],
+        }
+
+    trio_mission = {
+        "sandu": profile_person(person_by_name("Sandu")),
+        "emil":  profile_person(person_by_name("Emil")),
+        "doina": profile_person(person_by_name("Doina")),
+    }
+
+    # Pearson correlations
+    def pearson(xs, ys):
+        n = len(xs)
+        if n == 0: return 0.0
+        mx = sum(xs) / n; my = sum(ys) / n
+        num = sum((xs[i] - mx) * (ys[i] - my) for i in range(n))
+        import math
+        dx = math.sqrt(sum((xs[i] - mx) ** 2 for i in range(n)))
+        dy = math.sqrt(sum((ys[i] - my) ** 2 for i in range(n)))
+        return round(num / (dx * dy), 3) if dx and dy else 0.0
+
+    pop_arr   = [degrees[x] for x in node_ids]
+    open_arr  = [openness[x] for x in node_ids]
+    reach_arr = [reach_size[x] for x in node_ids]
+
+    correlations = {
+        "popularityReach": pearson(pop_arr, reach_arr),
+        "opennessReach":   pearson(open_arr, reach_arr),
+    }
+
+    plafon = len(node_ids) - len(unreachable_ids)
+
+    def groups_of(x):
+        nc = {klass_map.get(y, "?") for y in adj.get(x, ())}
+        nc.discard(klass_map.get(x, "?"))
+        return len(nc) + 1
+
+    scatter_data = [
+        {
+            "id":         x,
+            "name":       name_map.get(x, str(x)),
+            "class":      klass_map.get(x, "?"),
+            "popularity": degrees[x],
+            "openness":   openness[x],
+            "groups":     groups_of(x),
+            "reach":      reach_size[x],
+        }
+        for x in node_ids
+    ]
+
+    # Correlation groups-vs-reach for the class-based openness axis on M3
+    groups_arr = [groups_of(x) for x in node_ids]
+    correlations["groupsReach"] = pearson(groups_arr, reach_arr)
+
+    top3_pop_names   = [name_map.get(x, str(x)) for x in top3_pop]
+    top3_open_names  = [name_map.get(x, str(x)) for x in top3_open]
+    greedy_names     = [name_map.get(x, str(x)) for x in greedy]
+
+    mission_summary = {
+        "plafon":        plafon,
+        "trioMission":   trio_mission,
+        "correlations":  correlations,
+        "top3PopularNames":  top3_pop_names,
+        "top3PopularCoverage": strategies["topPopular"]["coverage"],
+        "top3OpenNames":     top3_open_names,
+        "top3OpenCoverage":  strategies["topOpen"]["coverage"],
+        "greedyNames":       greedy_names,
+        "greedyCoverage":    strategies["greedy"]["coverage"],
+        "randomMean":        strategies["randomMean"],
+        "randomMax":         strategies["randomMax"],
+        "randomMin":         strategies["randomMin"],
+    }
+
     return {
         "components":         components,
         "communities": {
@@ -661,6 +768,11 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "nBridgeEdges":        len(bridge_edges),
         "classPairMatrix":     class_pair_matrix,
         "top5Removal":         top5_removal,
+        "trioMission":         trio_mission,
+        "correlations":        correlations,
+        "plafon":              plafon,
+        "scatterData":         scatter_data,
+        "mission":             mission_summary,
         "brokenPair": {
             "classA":            "MP*1",
             "classB":            "PSI*",

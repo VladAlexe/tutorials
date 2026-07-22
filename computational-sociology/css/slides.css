@@ -883,6 +883,67 @@
 .viz__gradient-label--left  { left: 0; }
 .viz__gradient-label--right { right: 0; }
 
+/* Duel mode UI */
+.duel {
+  display: grid;
+  gap: var(--sp-2);
+  grid-template-columns: 1fr;
+  margin-bottom: var(--sp-2);
+}
+@media (min-width: 720px) {
+  .duel { grid-template-columns: repeat(3, 1fr); }
+}
+.duel__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+  padding: var(--sp-2);
+}
+.duel__cap {
+  font-size: 0.95rem;
+}
+.duel__cap-sub {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  margin-left: var(--sp-1);
+}
+.duel__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-2);
+  font-size: 0.78rem;
+  color: var(--color-ink-soft);
+}
+.duel__stats strong { font-variant-numeric: tabular-nums; }
+.duel__reach { margin-left: auto; }
+.duel__stage {
+  height: 220px;
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  background: var(--color-page);
+}
+
+/* Scatter + Strategies chart */
+.chart__wrap--scatter,
+.chart__wrap--strategies { display: flex; flex-direction: column; gap: var(--sp-2); }
+.chart__svg--scatter,
+.chart__svg--strategies {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  background: var(--color-page);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+}
+.chart__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
 /* Try-break mode UI */
 .try-break__modes { margin-bottom: var(--sp-2); }
 .try-break__quick { flex-wrap: wrap; gap: var(--sp-1); }

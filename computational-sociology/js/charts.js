@@ -953,6 +953,295 @@ async function renderTripleHistogram(container, block, stats) {
 }
 
 // ---- public entry --------------------------------------------------------
+function renderScatter(container, block, stats) {
+  const sm = stats?.sliceMetrics || {};
+  const scatter = sm.scatterData || [];
+  const trio = sm.trioMission || {};
+  const corr = sm.correlations || {};
+  if (!scatter.length) { container.textContent = "Fără date pentru scatter."; return; }
+
+  let axisMode = "popularity"; // or "groups"
+
+  const wrap = document.createElement("div");
+  wrap.className = "chart__wrap chart__wrap--scatter";
+  container.appendChild(wrap);
+
+  const controls = document.createElement("div");
+  controls.className = "chart__controls";
+  controls.innerHTML =
+    `<div class="diff-row diff-buttons">` +
+      `<button type="button" class="btn btn--primary" data-axis="popularity">Popularitate</button>` +
+      `<button type="button" class="btn btn--ghost" data-axis="groups">Deschidere</button>` +
+    `</div>` +
+    `<div class="chart__meta" data-role="corr"></div>`;
+  wrap.appendChild(controls);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "chart__svg chart__svg--scatter");
+  svg.setAttribute("viewBox", "0 0 640 380");
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  wrap.appendChild(svg);
+
+  const trioIds = new Set([trio.sandu?.id, trio.emil?.id, trio.doina?.id].filter(Boolean).map(Number));
+  const trioLabel = new Map();
+  if (trio.sandu) trioLabel.set(Number(trio.sandu.id), trio.sandu.name);
+  if (trio.emil) trioLabel.set(Number(trio.emil.id), trio.emil.name);
+  if (trio.doina) trioLabel.set(Number(trio.doina.id), trio.doina.name);
+
+  function draw() {
+    svg.innerHTML = "";
+    const W = 640, H = 380;
+    const M = { top: 20, right: 20, bottom: 50, left: 55 };
+    const iw = W - M.left - M.right;
+    const ih = H - M.top - M.bottom;
+
+    const xField = axisMode;
+    const xLabel = axisMode === "popularity" ? "Popularitate (contacte)" : "Deschidere (grupuri)";
+    const yLabel = "Rază";
+    const corrKey = axisMode === "popularity" ? "popularityReach" : "groupsReach";
+    const rVal = corr[corrKey];
+
+    const corrEl = controls.querySelector('[data-role="corr"]');
+    if (corrEl) corrEl.textContent = `Corelație ${xLabel.split(" ")[0].toLowerCase()} — rază: r = ${(rVal ?? 0).toFixed(2)}`;
+
+    const xMax = Math.max(...scatter.map((p) => p[xField]), 1);
+    const yMax = Math.max(...scatter.map((p) => p.reach), 1);
+    const xScale = (v) => M.left + (v / xMax) * iw;
+    const yScale = (v) => M.top + ih - (v / yMax) * ih;
+
+    // Axes
+    const axG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    axG.setAttribute("stroke", "#8a7a68"); axG.setAttribute("stroke-width", "1");
+    const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    xAxis.setAttribute("x1", M.left); xAxis.setAttribute("y1", M.top + ih);
+    xAxis.setAttribute("x2", M.left + iw); xAxis.setAttribute("y2", M.top + ih);
+    axG.appendChild(xAxis);
+    const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    yAxis.setAttribute("x1", M.left); yAxis.setAttribute("y1", M.top);
+    yAxis.setAttribute("x2", M.left); yAxis.setAttribute("y2", M.top + ih);
+    axG.appendChild(yAxis);
+    svg.appendChild(axG);
+
+    // Grid + ticks
+    const gridG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    for (let i = 0; i <= 5; i++) {
+      const y = M.top + ih - (i / 5) * ih;
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", M.left); line.setAttribute("y1", y);
+      line.setAttribute("x2", M.left + iw); line.setAttribute("y2", y);
+      line.setAttribute("stroke", "#e5dccc"); line.setAttribute("stroke-width", "0.5");
+      gridG.appendChild(line);
+      const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      lbl.setAttribute("x", M.left - 8); lbl.setAttribute("y", y + 3);
+      lbl.setAttribute("text-anchor", "end"); lbl.setAttribute("font-size", "10");
+      lbl.setAttribute("fill", "#5a4a3a");
+      lbl.textContent = String(Math.round((i / 5) * yMax));
+      gridG.appendChild(lbl);
+    }
+    for (let i = 0; i <= 5; i++) {
+      const x = M.left + (i / 5) * iw;
+      const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      lbl.setAttribute("x", x); lbl.setAttribute("y", M.top + ih + 15);
+      lbl.setAttribute("text-anchor", "middle"); lbl.setAttribute("font-size", "10");
+      lbl.setAttribute("fill", "#5a4a3a");
+      lbl.textContent = String(Math.round((i / 5) * xMax));
+      gridG.appendChild(lbl);
+    }
+    svg.appendChild(gridG);
+
+    // Axis labels
+    const xTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    xTitle.setAttribute("x", M.left + iw / 2); xTitle.setAttribute("y", M.top + ih + 38);
+    xTitle.setAttribute("text-anchor", "middle"); xTitle.setAttribute("font-size", "11");
+    xTitle.setAttribute("fill", "#2a1f16"); xTitle.textContent = xLabel;
+    svg.appendChild(xTitle);
+    const yTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    yTitle.setAttribute("x", -M.top - ih / 2); yTitle.setAttribute("y", 15);
+    yTitle.setAttribute("text-anchor", "middle"); yTitle.setAttribute("font-size", "11");
+    yTitle.setAttribute("fill", "#2a1f16"); yTitle.setAttribute("transform", "rotate(-90)");
+    yTitle.textContent = yLabel;
+    svg.appendChild(yTitle);
+
+    // Points
+    const dotsG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    for (const p of scatter) {
+      if (trioIds.has(Number(p.id))) continue;
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      const jx = xScale(p[xField]) + (Math.random() - 0.5) * 6;
+      c.setAttribute("cx", jx.toFixed(1));
+      c.setAttribute("cy", yScale(p.reach).toFixed(1));
+      c.setAttribute("r", "2.5");
+      c.setAttribute("fill", "#8b4a1e");
+      c.setAttribute("opacity", "0.42");
+      dotsG.appendChild(c);
+    }
+    svg.appendChild(dotsG);
+
+    // Trio markers on top
+    const trioG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const trioColors = { "Sandu": "#2a1f16", "Emil": "#a3341f", "Doina": "#1e5a4a" };
+    for (const p of scatter) {
+      const id = Number(p.id);
+      if (!trioIds.has(id)) continue;
+      const label = trioLabel.get(id);
+      const color = trioColors[label] || "#2a1f16";
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      const cx = xScale(p[xField]); const cy = yScale(p.reach);
+      c.setAttribute("cx", cx); c.setAttribute("cy", cy);
+      c.setAttribute("r", "6");
+      c.setAttribute("fill", color); c.setAttribute("stroke", "#faf7f2");
+      c.setAttribute("stroke-width", "2");
+      trioG.appendChild(c);
+      const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      t.setAttribute("x", cx + 9); t.setAttribute("y", cy + 4);
+      t.setAttribute("font-size", "12"); t.setAttribute("font-weight", "600");
+      t.setAttribute("fill", color); t.textContent = label;
+      trioG.appendChild(t);
+    }
+    svg.appendChild(trioG);
+  }
+
+  controls.querySelectorAll("[data-axis]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      axisMode = btn.dataset.axis;
+      controls.querySelectorAll("[data-axis]").forEach((b) => {
+        if (b.dataset.axis === axisMode) { b.classList.add("btn--primary"); b.classList.remove("btn--ghost"); }
+        else { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); }
+      });
+      draw();
+    });
+  });
+
+  draw();
+}
+
+function renderStrategies(container, block, stats) {
+  const sm = stats?.sliceMetrics || {};
+  const mission = sm.mission || {};
+  const total = stats?.total || 299;
+  const plafon = mission.plafon || sm.plafon || 290;
+  const strats = sm.strategies || {};
+
+  // Recover userSeed coverage if present via progress; for now, allow block.userScore
+  const rows = [
+    { key: "top3pop",  label: "Cei mai populari trei", value: mission.top3PopularCoverage ?? 0, seeds: mission.top3PopularNames || [] },
+    { key: "top3open", label: "Cei mai deschiși trei", value: mission.top3OpenCoverage ?? 0, seeds: mission.top3OpenNames || [] },
+    { key: "oneEach",  label: "Câte unul din trei comunități", value: strats.oneEachComm?.coverage ?? 0, seeds: (strats.oneEachComm?.seeds || []).map((s) => s.name || s) },
+    { key: "greedy",   label: "Alegerea lacomă", value: mission.greedyCoverage ?? 0, seeds: mission.greedyNames || [] },
+    { key: "random",   label: "La întâmplare (30 rulări)", value: mission.randomMean ?? 0, minV: mission.randomMin, maxV: mission.randomMax, isRandom: true },
+  ];
+  if (typeof block.userScore === "number") {
+    rows.push({ key: "user", label: "Alegerea ta", value: block.userScore, seeds: block.userSeeds || [], isUser: true });
+  }
+
+  const wrap = document.createElement("div");
+  wrap.className = "chart__wrap chart__wrap--strategies";
+  container.appendChild(wrap);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "chart__svg chart__svg--strategies");
+  svg.setAttribute("viewBox", "0 0 720 320");
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  wrap.appendChild(svg);
+
+  const W = 720, H = 320;
+  const M = { top: 20, right: 30, bottom: 40, left: 200 };
+  const iw = W - M.left - M.right;
+  const ih = H - M.top - M.bottom;
+  const xMax = Math.max(plafon, total, ...rows.map((r) => r.maxV || r.value));
+
+  const xScale = (v) => M.left + (v / xMax) * iw;
+
+  // Plafon line
+  const plafG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const plafX = xScale(plafon);
+  const plafLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  plafLine.setAttribute("x1", plafX); plafLine.setAttribute("y1", M.top - 4);
+  plafLine.setAttribute("x2", plafX); plafLine.setAttribute("y2", M.top + ih + 4);
+  plafLine.setAttribute("stroke", "#2a1f16"); plafLine.setAttribute("stroke-width", "1");
+  plafLine.setAttribute("stroke-dasharray", "4 3");
+  plafG.appendChild(plafLine);
+  const plafLbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  plafLbl.setAttribute("x", plafX + 4); plafLbl.setAttribute("y", M.top + 8);
+  plafLbl.setAttribute("font-size", "10"); plafLbl.setAttribute("fill", "#2a1f16");
+  plafLbl.textContent = `plafon ${plafon}`;
+  plafG.appendChild(plafLbl);
+  svg.appendChild(plafG);
+
+  // Bars
+  const barH = Math.min(28, (ih - 8) / rows.length - 6);
+  rows.forEach((r, i) => {
+    const y = M.top + i * (barH + 8) + 2;
+    // Label
+    const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    lbl.setAttribute("x", M.left - 8); lbl.setAttribute("y", y + barH / 2 + 4);
+    lbl.setAttribute("text-anchor", "end"); lbl.setAttribute("font-size", "11");
+    lbl.setAttribute("fill", "#2a1f16"); lbl.textContent = r.label;
+    svg.appendChild(lbl);
+
+    if (r.isRandom) {
+      // Whisker: from min to max, box for range
+      const xMin = xScale(r.minV || 0); const xMean = xScale(r.value); const xMx = xScale(r.maxV || 0);
+      const midY = y + barH / 2;
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", xMin); line.setAttribute("y1", midY);
+      line.setAttribute("x2", xMx);  line.setAttribute("y2", midY);
+      line.setAttribute("stroke", "#8a7a68"); line.setAttribute("stroke-width", "2");
+      svg.appendChild(line);
+      // caps
+      for (const xx of [xMin, xMx]) {
+        const cap = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        cap.setAttribute("x1", xx); cap.setAttribute("y1", midY - 6);
+        cap.setAttribute("x2", xx); cap.setAttribute("y2", midY + 6);
+        cap.setAttribute("stroke", "#8a7a68"); cap.setAttribute("stroke-width", "2");
+        svg.appendChild(cap);
+      }
+      const meanDot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      meanDot.setAttribute("cx", xMean); meanDot.setAttribute("cy", midY);
+      meanDot.setAttribute("r", "5"); meanDot.setAttribute("fill", "#5a4a3a");
+      svg.appendChild(meanDot);
+      const valLbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      valLbl.setAttribute("x", xMx + 6); valLbl.setAttribute("y", midY + 4);
+      valLbl.setAttribute("font-size", "11"); valLbl.setAttribute("fill", "#2a1f16");
+      valLbl.textContent = `medie ${Math.round(r.value)}, min ${r.minV}, max ${r.maxV}`;
+      svg.appendChild(valLbl);
+    } else {
+      const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      rect.setAttribute("x", M.left); rect.setAttribute("y", y);
+      rect.setAttribute("width", Math.max(0, xScale(r.value) - M.left));
+      rect.setAttribute("height", barH);
+      const isGreedy = r.key === "greedy";
+      const isUser = r.isUser;
+      rect.setAttribute("fill", isGreedy ? "#5a4a3a" : (isUser ? "#a3341f" : "#8b4a1e"));
+      rect.setAttribute("opacity", "0.85");
+      svg.appendChild(rect);
+      const valLbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      valLbl.setAttribute("x", xScale(r.value) + 6); valLbl.setAttribute("y", y + barH / 2 + 4);
+      valLbl.setAttribute("font-size", "11"); valLbl.setAttribute("fill", "#2a1f16");
+      valLbl.textContent = String(r.value);
+      svg.appendChild(valLbl);
+    }
+  });
+
+  // x-axis ticks at bottom
+  const axG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const axLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  axLine.setAttribute("x1", M.left); axLine.setAttribute("y1", M.top + ih);
+  axLine.setAttribute("x2", M.left + iw); axLine.setAttribute("y2", M.top + ih);
+  axLine.setAttribute("stroke", "#8a7a68"); axLine.setAttribute("stroke-width", "0.7");
+  axG.appendChild(axLine);
+  for (let i = 0; i <= 5; i++) {
+    const v = Math.round((i / 5) * xMax);
+    const x = xScale(v);
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", x); t.setAttribute("y", M.top + ih + 15);
+    t.setAttribute("text-anchor", "middle"); t.setAttribute("font-size", "10");
+    t.setAttribute("fill", "#5a4a3a"); t.textContent = String(v);
+    axG.appendChild(t);
+  }
+  svg.appendChild(axG);
+}
+
 export async function renderChart(container, block) {
   container.classList.add("chart");
   container.innerHTML = "";
@@ -1013,6 +1302,16 @@ export async function renderChart(container, block) {
     if (block.variant === "sex-composition") {
       const stats = await getStats(block);
       renderSexComposition(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "scatter") {
+      const stats = await getStats(block);
+      renderScatter(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "strategies") {
+      const stats = await getStats(block);
+      renderStrategies(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "outcome-histogram") {

@@ -6445,6 +6445,2948 @@
           294
         ]
       },
+      "trioMission": {
+        "sandu": {
+          "id": 117,
+          "name": "Sandu",
+          "class": "2BIO3",
+          "classFriendly": "Bio C",
+          "popularity": 19,
+          "openness": 11,
+          "groups": 2,
+          "groupsOut": 1,
+          "reach": 50,
+          "reachInClass": 31,
+          "reachOutClass": 19,
+          "classDist": [
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 31
+            },
+            {
+              "class": "2BIO2",
+              "classFriendly": "Bio B",
+              "count": 17
+            },
+            {
+              "class": "PC",
+              "classFriendly": "Chimie A",
+              "count": 2
+            }
+          ]
+        },
+        "emil": {
+          "id": 778,
+          "name": "Emil",
+          "class": "2BIO3",
+          "classFriendly": "Bio C",
+          "popularity": 10,
+          "openness": 8,
+          "groups": 1,
+          "groupsOut": 0,
+          "reach": 73,
+          "reachInClass": 37,
+          "reachOutClass": 36,
+          "classDist": [
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 37
+            },
+            {
+              "class": "2BIO2",
+              "classFriendly": "Bio B",
+              "count": 21
+            },
+            {
+              "class": "2BIO1",
+              "classFriendly": "Bio A",
+              "count": 11
+            },
+            {
+              "class": "PC",
+              "classFriendly": "Chimie A",
+              "count": 4
+            }
+          ]
+        },
+        "doina": {
+          "id": 1218,
+          "name": "Doina",
+          "class": "MP*2",
+          "classFriendly": "Mate C",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 3,
+          "groupsOut": 2,
+          "reach": 68,
+          "reachInClass": 24,
+          "reachOutClass": 44,
+          "classDist": [
+            {
+              "class": "MP*2",
+              "classFriendly": "Mate C",
+              "count": 24
+            },
+            {
+              "class": "PSI*",
+              "classFriendly": "Inginerie",
+              "count": 18
+            },
+            {
+              "class": "MP",
+              "classFriendly": "Mate A",
+              "count": 14
+            },
+            {
+              "class": "MP*1",
+              "classFriendly": "Mate B",
+              "count": 11
+            },
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "correlations": {
+        "popularityReach": 0.372,
+        "opennessReach": 0.571,
+        "groupsReach": 0.397
+      },
+      "plafon": 290,
+      "scatterData": [
+        {
+          "id": 1,
+          "name": "Ana",
+          "class": "2BIO3",
+          "popularity": 10,
+          "openness": 6,
+          "groups": 1,
+          "reach": 57
+        },
+        {
+          "id": 3,
+          "name": "Andrei",
+          "class": "2BIO2",
+          "popularity": 8,
+          "openness": 6,
+          "groups": 3,
+          "reach": 49
+        },
+        {
+          "id": 4,
+          "name": "Bianca",
+          "class": "PSI*",
+          "popularity": 6,
+          "openness": 2,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 9,
+          "name": "Bogdan",
+          "class": "PC",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 1,
+          "reach": 39
+        },
+        {
+          "id": 14,
+          "name": "Carla",
+          "class": "PC*",
+          "popularity": 7,
+          "openness": 3,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 15,
+          "name": "Cristi",
+          "class": "PC",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 20,
+          "name": "Dana",
+          "class": "MP*1",
+          "popularity": 5,
+          "openness": 5,
+          "groups": 2,
+          "reach": 49
+        },
+        {
+          "id": 21,
+          "name": "Doru",
+          "class": "PC",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 27,
+          "name": "Elena",
+          "class": "2BIO2",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 42
+        },
+        {
+          "id": 28,
+          "name": "Florin",
+          "class": "2BIO2",
+          "popularity": 10,
+          "openness": 6,
+          "groups": 2,
+          "reach": 38
+        },
+        {
+          "id": 32,
+          "name": "Gabi",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 47
+        },
+        {
+          "id": 38,
+          "name": "Horia",
+          "class": "MP",
+          "popularity": 10,
+          "openness": 5,
+          "groups": 2,
+          "reach": 49
+        },
+        {
+          "id": 39,
+          "name": "Ioana",
+          "class": "2BIO3",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 1,
+          "reach": 60
+        },
+        {
+          "id": 41,
+          "name": "Radu",
+          "class": "MP",
+          "popularity": 8,
+          "openness": 5,
+          "groups": 2,
+          "reach": 38
+        },
+        {
+          "id": 45,
+          "name": "Maria",
+          "class": "PC",
+          "popularity": 12,
+          "openness": 5,
+          "groups": 3,
+          "reach": 50
+        },
+        {
+          "id": 46,
+          "name": "Matei",
+          "class": "2BIO2",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 2,
+          "reach": 47
+        },
+        {
+          "id": 47,
+          "name": "Nadia",
+          "class": "PSI*",
+          "popularity": 5,
+          "openness": 1,
+          "groups": 1,
+          "reach": 24
+        },
+        {
+          "id": 54,
+          "name": "Octav",
+          "class": "MP",
+          "popularity": 7,
+          "openness": 4,
+          "groups": 2,
+          "reach": 31
+        },
+        {
+          "id": 55,
+          "name": "Paula",
+          "class": "2BIO3",
+          "popularity": 14,
+          "openness": 7,
+          "groups": 1,
+          "reach": 55
+        },
+        {
+          "id": 58,
+          "name": "Rares",
+          "class": "PC*",
+          "popularity": 6,
+          "openness": 2,
+          "groups": 2,
+          "reach": 42
+        },
+        {
+          "id": 61,
+          "name": "Sorina",
+          "class": "2BIO2",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 2,
+          "reach": 40
+        },
+        {
+          "id": 63,
+          "name": "Tudor",
+          "class": "2BIO3",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 65,
+          "name": "Vlad",
+          "class": "2BIO1",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 1,
+          "reach": 55
+        },
+        {
+          "id": 70,
+          "name": "Zina",
+          "class": "2BIO3",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 46
+        },
+        {
+          "id": 71,
+          "name": "Alex",
+          "class": "PC",
+          "popularity": 4,
+          "openness": 2,
+          "groups": 1,
+          "reach": 37
+        },
+        {
+          "id": 72,
+          "name": "Bea",
+          "class": "2BIO1",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 58
+        },
+        {
+          "id": 79,
+          "name": "Cezar",
+          "class": "PC",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 2,
+          "reach": 43
+        },
+        {
+          "id": 80,
+          "name": "Delia",
+          "class": "PC",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 1,
+          "reach": 11
+        },
+        {
+          "id": 85,
+          "name": "Emil",
+          "class": "PC*",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 38
+        },
+        {
+          "id": 87,
+          "name": "Flavia",
+          "class": "PC",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 27
+        },
+        {
+          "id": 89,
+          "name": "George",
+          "class": "PC",
+          "popularity": 11,
+          "openness": 5,
+          "groups": 1,
+          "reach": 15
+        },
+        {
+          "id": 90,
+          "name": "Hana",
+          "class": "PSI*",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 1,
+          "reach": 60
+        },
+        {
+          "id": 92,
+          "name": "Irina",
+          "class": "PC",
+          "popularity": 9,
+          "openness": 5,
+          "groups": 1,
+          "reach": 39
+        },
+        {
+          "id": 101,
+          "name": "Luca",
+          "class": "2BIO3",
+          "popularity": 9,
+          "openness": 5,
+          "groups": 1,
+          "reach": 45
+        },
+        {
+          "id": 103,
+          "name": "Miruna",
+          "class": "MP*1",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 3,
+          "reach": 56
+        },
+        {
+          "id": 106,
+          "name": "Nicu",
+          "class": "2BIO3",
+          "popularity": 12,
+          "openness": 8,
+          "groups": 3,
+          "reach": 51
+        },
+        {
+          "id": 111,
+          "name": "Oana",
+          "class": "2BIO1",
+          "popularity": 5,
+          "openness": 1,
+          "groups": 1,
+          "reach": 38
+        },
+        {
+          "id": 115,
+          "name": "Petru",
+          "class": "PC*",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 33
+        },
+        {
+          "id": 116,
+          "name": "Roxana",
+          "class": "PC*",
+          "popularity": 7,
+          "openness": 4,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 117,
+          "name": "Sandu",
+          "class": "2BIO3",
+          "popularity": 19,
+          "openness": 11,
+          "groups": 2,
+          "reach": 50
+        },
+        {
+          "id": 119,
+          "name": "Teo",
+          "class": "2BIO3",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 1,
+          "reach": 51
+        },
+        {
+          "id": 120,
+          "name": "Ursu",
+          "class": "PC",
+          "popularity": 6,
+          "openness": 1,
+          "groups": 1,
+          "reach": 15
+        },
+        {
+          "id": 122,
+          "name": "Vera",
+          "class": "2BIO3",
+          "popularity": 8,
+          "openness": 5,
+          "groups": 1,
+          "reach": 55
+        },
+        {
+          "id": 124,
+          "name": "David",
+          "class": "2BIO1",
+          "popularity": 9,
+          "openness": 5,
+          "groups": 3,
+          "reach": 47
+        },
+        {
+          "id": 125,
+          "name": "Ema",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 50
+        },
+        {
+          "id": 131,
+          "name": "Fabi",
+          "class": "PC*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 2,
+          "reach": 34
+        },
+        {
+          "id": 132,
+          "name": "Geta",
+          "class": "2BIO3",
+          "popularity": 11,
+          "openness": 7,
+          "groups": 2,
+          "reach": 45
+        },
+        {
+          "id": 134,
+          "name": "Iulia",
+          "class": "PC",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 18
+        },
+        {
+          "id": 145,
+          "name": "Liviu",
+          "class": "2BIO1",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 38
+        },
+        {
+          "id": 147,
+          "name": "Mara",
+          "class": "2BIO2",
+          "popularity": 8,
+          "openness": 6,
+          "groups": 3,
+          "reach": 52
+        },
+        {
+          "id": 151,
+          "name": "Nelu",
+          "class": "MP",
+          "popularity": 13,
+          "openness": 7,
+          "groups": 2,
+          "reach": 29
+        },
+        {
+          "id": 156,
+          "name": "Otilia",
+          "class": "MP",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 160,
+          "name": "Pavel",
+          "class": "2BIO2",
+          "popularity": 12,
+          "openness": 7,
+          "groups": 1,
+          "reach": 43
+        },
+        {
+          "id": 165,
+          "name": "Rux",
+          "class": "2BIO2",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 2,
+          "reach": 16
+        },
+        {
+          "id": 170,
+          "name": "Stef",
+          "class": "2BIO3",
+          "popularity": 12,
+          "openness": 8,
+          "groups": 1,
+          "reach": 54
+        },
+        {
+          "id": 171,
+          "name": "Toma",
+          "class": "2BIO2",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 2,
+          "reach": 39
+        },
+        {
+          "id": 172,
+          "name": "Ada",
+          "class": "PC",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 1,
+          "reach": 14
+        },
+        {
+          "id": 173,
+          "name": "Beni",
+          "class": "2BIO2",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 25
+        },
+        {
+          "id": 176,
+          "name": "Codrin",
+          "class": "PC*",
+          "popularity": 12,
+          "openness": 6,
+          "groups": 2,
+          "reach": 35
+        },
+        {
+          "id": 177,
+          "name": "Denis",
+          "class": "2BIO1",
+          "popularity": 16,
+          "openness": 7,
+          "groups": 3,
+          "reach": 47
+        },
+        {
+          "id": 179,
+          "name": "Eva",
+          "class": "2BIO3",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 1,
+          "reach": 39
+        },
+        {
+          "id": 181,
+          "name": "Filip",
+          "class": "PC*",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 184,
+          "name": "Greta",
+          "class": "2BIO2",
+          "popularity": 7,
+          "openness": 6,
+          "groups": 2,
+          "reach": 56
+        },
+        {
+          "id": 185,
+          "name": "Ilinca",
+          "class": "PC*",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 25
+        },
+        {
+          "id": 190,
+          "name": "Jan",
+          "class": "PC*",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 194,
+          "name": "Kira",
+          "class": "PC",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 196,
+          "name": "Lia",
+          "class": "2BIO3",
+          "popularity": 12,
+          "openness": 6,
+          "groups": 2,
+          "reach": 48
+        },
+        {
+          "id": 199,
+          "name": "Mihnea",
+          "class": "2BIO3",
+          "popularity": 7,
+          "openness": 6,
+          "groups": 1,
+          "reach": 53
+        },
+        {
+          "id": 200,
+          "name": "Nora",
+          "class": "PC",
+          "popularity": 8,
+          "openness": 6,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 201,
+          "name": "Ovidiu",
+          "class": "MP",
+          "popularity": 9,
+          "openness": 5,
+          "groups": 1,
+          "reach": 38
+        },
+        {
+          "id": 202,
+          "name": "Patrick",
+          "class": "2BIO3",
+          "popularity": 11,
+          "openness": 6,
+          "groups": 4,
+          "reach": 49
+        },
+        {
+          "id": 205,
+          "name": "Rica",
+          "class": "2BIO3",
+          "popularity": 7,
+          "openness": 4,
+          "groups": 1,
+          "reach": 45
+        },
+        {
+          "id": 209,
+          "name": "Silviu",
+          "class": "PC*",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 210,
+          "name": "Tania",
+          "class": "PC",
+          "popularity": 14,
+          "openness": 4,
+          "groups": 1,
+          "reach": 20
+        },
+        {
+          "id": 211,
+          "name": "Uta",
+          "class": "PC",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 213,
+          "name": "Vio",
+          "class": "PC*",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 2,
+          "reach": 51
+        },
+        {
+          "id": 214,
+          "name": "Alin",
+          "class": "PC*",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 39
+        },
+        {
+          "id": 219,
+          "name": "Boga",
+          "class": "MP",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 220,
+          "name": "Ciprian",
+          "class": "MP",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 2,
+          "reach": 35
+        },
+        {
+          "id": 222,
+          "name": "Doina",
+          "class": "PC*",
+          "popularity": 5,
+          "openness": 2,
+          "groups": 1,
+          "reach": 32
+        },
+        {
+          "id": 226,
+          "name": "Edi",
+          "class": "2BIO2",
+          "popularity": 7,
+          "openness": 5,
+          "groups": 1,
+          "reach": 42
+        },
+        {
+          "id": 227,
+          "name": "Fana",
+          "class": "PSI*",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 1,
+          "reach": 33
+        },
+        {
+          "id": 232,
+          "name": "Gina",
+          "class": "PC",
+          "popularity": 10,
+          "openness": 5,
+          "groups": 1,
+          "reach": 15
+        },
+        {
+          "id": 236,
+          "name": "Hodo",
+          "class": "MP*1",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 1,
+          "reach": 44
+        },
+        {
+          "id": 240,
+          "name": "Inga",
+          "class": "2BIO3",
+          "popularity": 7,
+          "openness": 3,
+          "groups": 1,
+          "reach": 41
+        },
+        {
+          "id": 241,
+          "name": "Jeni",
+          "class": "PSI*",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 1,
+          "reach": 16
+        },
+        {
+          "id": 242,
+          "name": "Laur",
+          "class": "PC",
+          "popularity": 7,
+          "openness": 4,
+          "groups": 1,
+          "reach": 41
+        },
+        {
+          "id": 243,
+          "name": "Momo",
+          "class": "MP",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 1,
+          "reach": 51
+        },
+        {
+          "id": 245,
+          "name": "Nuti",
+          "class": "MP",
+          "popularity": 5,
+          "openness": 2,
+          "groups": 1,
+          "reach": 41
+        },
+        {
+          "id": 248,
+          "name": "Olga",
+          "class": "PSI*",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 25
+        },
+        {
+          "id": 252,
+          "name": "Puiu",
+          "class": "2BIO3",
+          "popularity": 15,
+          "openness": 10,
+          "groups": 1,
+          "reach": 50
+        },
+        {
+          "id": 253,
+          "name": "Ramona",
+          "class": "PC",
+          "popularity": 4,
+          "openness": 2,
+          "groups": 1,
+          "reach": 32
+        },
+        {
+          "id": 254,
+          "name": "Sabin",
+          "class": "PC*",
+          "popularity": 9,
+          "openness": 4,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 255,
+          "name": "Timea",
+          "class": "2BIO3",
+          "popularity": 7,
+          "openness": 6,
+          "groups": 1,
+          "reach": 62
+        },
+        {
+          "id": 256,
+          "name": "Ulise",
+          "class": "PC*",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 28
+        },
+        {
+          "id": 257,
+          "name": "Viorel",
+          "class": "2BIO2",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 2,
+          "reach": 53
+        },
+        {
+          "id": 258,
+          "name": "Ana",
+          "class": "PC*",
+          "popularity": 12,
+          "openness": 4,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 265,
+          "name": "Andrei",
+          "class": "2BIO3",
+          "popularity": 7,
+          "openness": 5,
+          "groups": 1,
+          "reach": 50
+        },
+        {
+          "id": 267,
+          "name": "Bianca",
+          "class": "PC*",
+          "popularity": 11,
+          "openness": 5,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 268,
+          "name": "Bogdan",
+          "class": "2BIO2",
+          "popularity": 8,
+          "openness": 5,
+          "groups": 2,
+          "reach": 45
+        },
+        {
+          "id": 269,
+          "name": "Carla",
+          "class": "PC*",
+          "popularity": 4,
+          "openness": 2,
+          "groups": 1,
+          "reach": 26
+        },
+        {
+          "id": 272,
+          "name": "Cristi",
+          "class": "2BIO3",
+          "popularity": 16,
+          "openness": 11,
+          "groups": 3,
+          "reach": 49
+        },
+        {
+          "id": 274,
+          "name": "Dana",
+          "class": "MP*1",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 14
+        },
+        {
+          "id": 275,
+          "name": "Doru",
+          "class": "2BIO3",
+          "popularity": 13,
+          "openness": 10,
+          "groups": 3,
+          "reach": 47
+        },
+        {
+          "id": 276,
+          "name": "Elena",
+          "class": "PC*",
+          "popularity": 8,
+          "openness": 3,
+          "groups": 1,
+          "reach": 28
+        },
+        {
+          "id": 277,
+          "name": "Florin",
+          "class": "MP*1",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 17
+        },
+        {
+          "id": 279,
+          "name": "Gabi",
+          "class": "MP*1",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 3,
+          "reach": 39
+        },
+        {
+          "id": 280,
+          "name": "Horia",
+          "class": "MP*1",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 1,
+          "reach": 29
+        },
+        {
+          "id": 285,
+          "name": "Ioana",
+          "class": "PC",
+          "popularity": 13,
+          "openness": 7,
+          "groups": 2,
+          "reach": 15
+        },
+        {
+          "id": 290,
+          "name": "Radu",
+          "class": "MP*1",
+          "popularity": 10,
+          "openness": 7,
+          "groups": 2,
+          "reach": 55
+        },
+        {
+          "id": 295,
+          "name": "Maria",
+          "class": "2BIO2",
+          "popularity": 2,
+          "openness": 1,
+          "groups": 1,
+          "reach": 20
+        },
+        {
+          "id": 306,
+          "name": "Matei",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 26
+        },
+        {
+          "id": 311,
+          "name": "Nadia",
+          "class": "PC",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 3,
+          "reach": 44
+        },
+        {
+          "id": 312,
+          "name": "Octav",
+          "class": "2BIO2",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 2,
+          "reach": 32
+        },
+        {
+          "id": 322,
+          "name": "Paula",
+          "class": "PC",
+          "popularity": 8,
+          "openness": 4,
+          "groups": 1,
+          "reach": 15
+        },
+        {
+          "id": 325,
+          "name": "Rares",
+          "class": "PSI*",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 2,
+          "reach": 43
+        },
+        {
+          "id": 327,
+          "name": "Sorina",
+          "class": "2BIO2",
+          "popularity": 12,
+          "openness": 8,
+          "groups": 3,
+          "reach": 44
+        },
+        {
+          "id": 333,
+          "name": "Tudor",
+          "class": "PSI*",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 39
+        },
+        {
+          "id": 335,
+          "name": "Vlad",
+          "class": "PC*",
+          "popularity": 11,
+          "openness": 5,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 339,
+          "name": "Zina",
+          "class": "2BIO2",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 44
+        },
+        {
+          "id": 346,
+          "name": "Alex",
+          "class": "2BIO3",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 1,
+          "reach": 45
+        },
+        {
+          "id": 353,
+          "name": "Bea",
+          "class": "2BIO2",
+          "popularity": 11,
+          "openness": 7,
+          "groups": 3,
+          "reach": 42
+        },
+        {
+          "id": 356,
+          "name": "Cezar",
+          "class": "PC*",
+          "popularity": 9,
+          "openness": 4,
+          "groups": 1,
+          "reach": 38
+        },
+        {
+          "id": 364,
+          "name": "Delia",
+          "class": "2BIO3",
+          "popularity": 10,
+          "openness": 5,
+          "groups": 1,
+          "reach": 45
+        },
+        {
+          "id": 366,
+          "name": "Emil",
+          "class": "MP*1",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 372,
+          "name": "Flavia",
+          "class": "2BIO2",
+          "popularity": 10,
+          "openness": 7,
+          "groups": 3,
+          "reach": 47
+        },
+        {
+          "id": 374,
+          "name": "George",
+          "class": "2BIO3",
+          "popularity": 9,
+          "openness": 5,
+          "groups": 1,
+          "reach": 42
+        },
+        {
+          "id": 376,
+          "name": "Hana",
+          "class": "MP*1",
+          "popularity": 8,
+          "openness": 5,
+          "groups": 2,
+          "reach": 38
+        },
+        {
+          "id": 382,
+          "name": "Irina",
+          "class": "PC*",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 387,
+          "name": "Luca",
+          "class": "MP*1",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 3,
+          "reach": 57
+        },
+        {
+          "id": 388,
+          "name": "Miruna",
+          "class": "PC",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 21
+        },
+        {
+          "id": 390,
+          "name": "Nicu",
+          "class": "PC*",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 391,
+          "name": "Oana",
+          "class": "MP*1",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 2,
+          "reach": 36
+        },
+        {
+          "id": 400,
+          "name": "Petru",
+          "class": "2BIO1",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 2,
+          "reach": 56
+        },
+        {
+          "id": 407,
+          "name": "Roxana",
+          "class": "2BIO2",
+          "popularity": 10,
+          "openness": 8,
+          "groups": 2,
+          "reach": 48
+        },
+        {
+          "id": 413,
+          "name": "Sandu",
+          "class": "PC",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 420,
+          "name": "Teo",
+          "class": "MP",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 424,
+          "name": "Ursu",
+          "class": "PSI*",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 1,
+          "reach": 16
+        },
+        {
+          "id": 425,
+          "name": "Vera",
+          "class": "2BIO3",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 1,
+          "reach": 50
+        },
+        {
+          "id": 428,
+          "name": "David",
+          "class": "2BIO1",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 37
+        },
+        {
+          "id": 429,
+          "name": "Ema",
+          "class": "2BIO2",
+          "popularity": 5,
+          "openness": 5,
+          "groups": 1,
+          "reach": 39
+        },
+        {
+          "id": 438,
+          "name": "Fabi",
+          "class": "MP*1",
+          "popularity": 5,
+          "openness": 5,
+          "groups": 2,
+          "reach": 53
+        },
+        {
+          "id": 440,
+          "name": "Geta",
+          "class": "PSI*",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 2,
+          "reach": 48
+        },
+        {
+          "id": 441,
+          "name": "Iulia",
+          "class": "2BIO2",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 2,
+          "reach": 35
+        },
+        {
+          "id": 443,
+          "name": "Liviu",
+          "class": "2BIO1",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 447,
+          "name": "Mara",
+          "class": "2BIO3",
+          "popularity": 8,
+          "openness": 5,
+          "groups": 1,
+          "reach": 46
+        },
+        {
+          "id": 448,
+          "name": "Nelu",
+          "class": "PC",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 450,
+          "name": "Otilia",
+          "class": "PC",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 2,
+          "reach": 46
+        },
+        {
+          "id": 453,
+          "name": "Pavel",
+          "class": "PC",
+          "popularity": 7,
+          "openness": 4,
+          "groups": 2,
+          "reach": 36
+        },
+        {
+          "id": 454,
+          "name": "Rux",
+          "class": "MP",
+          "popularity": 2,
+          "openness": 1,
+          "groups": 1,
+          "reach": 24
+        },
+        {
+          "id": 464,
+          "name": "Stef",
+          "class": "2BIO2",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 465,
+          "name": "Toma",
+          "class": "2BIO1",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 24
+        },
+        {
+          "id": 466,
+          "name": "Ada",
+          "class": "MP*1",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 1,
+          "reach": 56
+        },
+        {
+          "id": 471,
+          "name": "Beni",
+          "class": "2BIO1",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 2,
+          "reach": 45
+        },
+        {
+          "id": 475,
+          "name": "Codrin",
+          "class": "2BIO1",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 477,
+          "name": "Denis",
+          "class": "2BIO2",
+          "popularity": 4,
+          "openness": 4,
+          "groups": 1,
+          "reach": 42
+        },
+        {
+          "id": 480,
+          "name": "Eva",
+          "class": "PC",
+          "popularity": 10,
+          "openness": 5,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 484,
+          "name": "Filip",
+          "class": "MP*1",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 2,
+          "reach": 49
+        },
+        {
+          "id": 486,
+          "name": "Greta",
+          "class": "2BIO1",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 22
+        },
+        {
+          "id": 487,
+          "name": "Ilinca",
+          "class": "2BIO1",
+          "popularity": 13,
+          "openness": 4,
+          "groups": 2,
+          "reach": 43
+        },
+        {
+          "id": 488,
+          "name": "Jan",
+          "class": "PC",
+          "popularity": 9,
+          "openness": 3,
+          "groups": 1,
+          "reach": 21
+        },
+        {
+          "id": 489,
+          "name": "Kira",
+          "class": "2BIO1",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 21
+        },
+        {
+          "id": 491,
+          "name": "Lia",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 1,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 492,
+          "name": "Mihnea",
+          "class": "PC",
+          "popularity": 11,
+          "openness": 5,
+          "groups": 1,
+          "reach": 27
+        },
+        {
+          "id": 494,
+          "name": "Nora",
+          "class": "2BIO3",
+          "popularity": 5,
+          "openness": 5,
+          "groups": 1,
+          "reach": 39
+        },
+        {
+          "id": 496,
+          "name": "Ovidiu",
+          "class": "PC",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 497,
+          "name": "Patrick",
+          "class": "MP*1",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 2,
+          "reach": 49
+        },
+        {
+          "id": 498,
+          "name": "Rica",
+          "class": "2BIO1",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 2,
+          "reach": 35
+        },
+        {
+          "id": 502,
+          "name": "Silviu",
+          "class": "MP",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 38
+        },
+        {
+          "id": 504,
+          "name": "Tania",
+          "class": "2BIO2",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 1,
+          "reach": 46
+        },
+        {
+          "id": 510,
+          "name": "Uta",
+          "class": "MP*1",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 1,
+          "reach": 43
+        },
+        {
+          "id": 513,
+          "name": "Vio",
+          "class": "MP*1",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 2,
+          "reach": 33
+        },
+        {
+          "id": 520,
+          "name": "Alin",
+          "class": "MP",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 2,
+          "reach": 43
+        },
+        {
+          "id": 527,
+          "name": "Boga",
+          "class": "2BIO1",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 18
+        },
+        {
+          "id": 531,
+          "name": "Ciprian",
+          "class": "2BIO1",
+          "popularity": 4,
+          "openness": 1,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 533,
+          "name": "Doina",
+          "class": "PC*",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 544,
+          "name": "Edi",
+          "class": "2BIO2",
+          "popularity": 8,
+          "openness": 7,
+          "groups": 2,
+          "reach": 51
+        },
+        {
+          "id": 545,
+          "name": "Fana",
+          "class": "2BIO3",
+          "popularity": 9,
+          "openness": 5,
+          "groups": 3,
+          "reach": 57
+        },
+        {
+          "id": 564,
+          "name": "Gina",
+          "class": "MP",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 2,
+          "reach": 29
+        },
+        {
+          "id": 576,
+          "name": "Hodo",
+          "class": "MP",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 22
+        },
+        {
+          "id": 577,
+          "name": "Inga",
+          "class": "MP",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 582,
+          "name": "Jeni",
+          "class": "MP",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 29
+        },
+        {
+          "id": 587,
+          "name": "Laur",
+          "class": "2BIO3",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 2,
+          "reach": 65
+        },
+        {
+          "id": 601,
+          "name": "Momo",
+          "class": "PC",
+          "popularity": 4,
+          "openness": 2,
+          "groups": 1,
+          "reach": 21
+        },
+        {
+          "id": 605,
+          "name": "Nuti",
+          "class": "MP",
+          "popularity": 15,
+          "openness": 9,
+          "groups": 4,
+          "reach": 46
+        },
+        {
+          "id": 612,
+          "name": "Olga",
+          "class": "2BIO2",
+          "popularity": 4,
+          "openness": 2,
+          "groups": 2,
+          "reach": 40
+        },
+        {
+          "id": 615,
+          "name": "Puiu",
+          "class": "PSI*",
+          "popularity": 5,
+          "openness": 2,
+          "groups": 1,
+          "reach": 46
+        },
+        {
+          "id": 621,
+          "name": "Ramona",
+          "class": "PC*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 19
+        },
+        {
+          "id": 622,
+          "name": "Sabin",
+          "class": "PSI*",
+          "popularity": 4,
+          "openness": 4,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 624,
+          "name": "Timea",
+          "class": "PSI*",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 2,
+          "reach": 45
+        },
+        {
+          "id": 626,
+          "name": "Ulise",
+          "class": "2BIO3",
+          "popularity": 4,
+          "openness": 4,
+          "groups": 1,
+          "reach": 60
+        },
+        {
+          "id": 627,
+          "name": "Viorel",
+          "class": "2BIO1",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 22
+        },
+        {
+          "id": 634,
+          "name": "Ana",
+          "class": "MP",
+          "popularity": 15,
+          "openness": 6,
+          "groups": 2,
+          "reach": 42
+        },
+        {
+          "id": 637,
+          "name": "Andrei",
+          "class": "2BIO1",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 1,
+          "reach": 47
+        },
+        {
+          "id": 638,
+          "name": "Bianca",
+          "class": "MP*1",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 2,
+          "reach": 36
+        },
+        {
+          "id": 640,
+          "name": "Bogdan",
+          "class": "MP",
+          "popularity": 7,
+          "openness": 3,
+          "groups": 1,
+          "reach": 29
+        },
+        {
+          "id": 642,
+          "name": "Carla",
+          "class": "MP",
+          "popularity": 14,
+          "openness": 8,
+          "groups": 3,
+          "reach": 31
+        },
+        {
+          "id": 649,
+          "name": "Cristi",
+          "class": "2BIO3",
+          "popularity": 11,
+          "openness": 7,
+          "groups": 1,
+          "reach": 60
+        },
+        {
+          "id": 650,
+          "name": "Dana",
+          "class": "2BIO1",
+          "popularity": 5,
+          "openness": 2,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 653,
+          "name": "Doru",
+          "class": "2BIO3",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 2,
+          "reach": 63
+        },
+        {
+          "id": 655,
+          "name": "Elena",
+          "class": "MP*1",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 2,
+          "reach": 36
+        },
+        {
+          "id": 658,
+          "name": "Florin",
+          "class": "MP",
+          "popularity": 5,
+          "openness": 2,
+          "groups": 2,
+          "reach": 49
+        },
+        {
+          "id": 674,
+          "name": "Gabi",
+          "class": "2BIO1",
+          "popularity": 9,
+          "openness": 7,
+          "groups": 2,
+          "reach": 55
+        },
+        {
+          "id": 677,
+          "name": "Horia",
+          "class": "2BIO1",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 681,
+          "name": "Ioana",
+          "class": "2BIO1",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 26
+        },
+        {
+          "id": 687,
+          "name": "Radu",
+          "class": "MP",
+          "popularity": 5,
+          "openness": 5,
+          "groups": 2,
+          "reach": 59
+        },
+        {
+          "id": 691,
+          "name": "Maria",
+          "class": "MP",
+          "popularity": 5,
+          "openness": 2,
+          "groups": 2,
+          "reach": 44
+        },
+        {
+          "id": 694,
+          "name": "Matei",
+          "class": "MP",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 2,
+          "reach": 41
+        },
+        {
+          "id": 702,
+          "name": "Nadia",
+          "class": "MP*1",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 706,
+          "name": "Octav",
+          "class": "PC",
+          "popularity": 12,
+          "openness": 7,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 720,
+          "name": "Paula",
+          "class": "2BIO2",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 2,
+          "reach": 51
+        },
+        {
+          "id": 725,
+          "name": "Rares",
+          "class": "2BIO1",
+          "popularity": 6,
+          "openness": 1,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 743,
+          "name": "Sorina",
+          "class": "PC",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 744,
+          "name": "Tudor",
+          "class": "PC*",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 753,
+          "name": "Vlad",
+          "class": "MP",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 2,
+          "reach": 38
+        },
+        {
+          "id": 763,
+          "name": "Zina",
+          "class": "2BIO2",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 10
+        },
+        {
+          "id": 765,
+          "name": "Alex",
+          "class": "PC*",
+          "popularity": 9,
+          "openness": 4,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 769,
+          "name": "Bea",
+          "class": "PSI*",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 771,
+          "name": "Cezar",
+          "class": "PC",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 777,
+          "name": "Delia",
+          "class": "MP*1",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 43
+        },
+        {
+          "id": 778,
+          "name": "Emil",
+          "class": "2BIO3",
+          "popularity": 10,
+          "openness": 8,
+          "groups": 1,
+          "reach": 73
+        },
+        {
+          "id": 779,
+          "name": "Flavia",
+          "class": "2BIO3",
+          "popularity": 8,
+          "openness": 7,
+          "groups": 1,
+          "reach": 64
+        },
+        {
+          "id": 786,
+          "name": "George",
+          "class": "PC*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 11
+        },
+        {
+          "id": 790,
+          "name": "Hana",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 32
+        },
+        {
+          "id": 791,
+          "name": "Irina",
+          "class": "PC",
+          "popularity": 4,
+          "openness": 2,
+          "groups": 1,
+          "reach": 32
+        },
+        {
+          "id": 797,
+          "name": "Luca",
+          "class": "PSI*",
+          "popularity": 9,
+          "openness": 8,
+          "groups": 3,
+          "reach": 68
+        },
+        {
+          "id": 798,
+          "name": "Miruna",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 1,
+          "groups": 2,
+          "reach": 31
+        },
+        {
+          "id": 809,
+          "name": "Nicu",
+          "class": "2BIO1",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 2,
+          "reach": 56
+        },
+        {
+          "id": 826,
+          "name": "Oana",
+          "class": "PC",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 29
+        },
+        {
+          "id": 836,
+          "name": "Petru",
+          "class": "PC*",
+          "popularity": 4,
+          "openness": 2,
+          "groups": 1,
+          "reach": 26
+        },
+        {
+          "id": 841,
+          "name": "Roxana",
+          "class": "MP*1",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 1,
+          "reach": 45
+        },
+        {
+          "id": 843,
+          "name": "Sandu",
+          "class": "PC*",
+          "popularity": 7,
+          "openness": 4,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 845,
+          "name": "Teo",
+          "class": "PC",
+          "popularity": 8,
+          "openness": 4,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 854,
+          "name": "Ursu",
+          "class": "2BIO1",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 2,
+          "reach": 30
+        },
+        {
+          "id": 857,
+          "name": "Vera",
+          "class": "2BIO1",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 22
+        },
+        {
+          "id": 859,
+          "name": "David",
+          "class": "2BIO1",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 866,
+          "name": "Ema",
+          "class": "MP",
+          "popularity": 15,
+          "openness": 8,
+          "groups": 2,
+          "reach": 31
+        },
+        {
+          "id": 867,
+          "name": "Fabi",
+          "class": "PC*",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 1,
+          "reach": 33
+        },
+        {
+          "id": 869,
+          "name": "Geta",
+          "class": "MP",
+          "popularity": 7,
+          "openness": 3,
+          "groups": 2,
+          "reach": 51
+        },
+        {
+          "id": 871,
+          "name": "Iulia",
+          "class": "2BIO3",
+          "popularity": 14,
+          "openness": 7,
+          "groups": 3,
+          "reach": 51
+        },
+        {
+          "id": 874,
+          "name": "Liviu",
+          "class": "MP",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 18
+        },
+        {
+          "id": 883,
+          "name": "Mara",
+          "class": "2BIO3",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 63
+        },
+        {
+          "id": 884,
+          "name": "Nelu",
+          "class": "2BIO2",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 37
+        },
+        {
+          "id": 886,
+          "name": "Otilia",
+          "class": "2BIO2",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 3,
+          "reach": 36
+        },
+        {
+          "id": 893,
+          "name": "Pavel",
+          "class": "PSI*",
+          "popularity": 6,
+          "openness": 4,
+          "groups": 1,
+          "reach": 35
+        },
+        {
+          "id": 894,
+          "name": "Rux",
+          "class": "2BIO3",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 1,
+          "reach": 45
+        },
+        {
+          "id": 908,
+          "name": "Stef",
+          "class": "MP*1",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 32
+        },
+        {
+          "id": 909,
+          "name": "Toma",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 1,
+          "groups": 1,
+          "reach": 26
+        },
+        {
+          "id": 920,
+          "name": "Ada",
+          "class": "PSI*",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 17
+        },
+        {
+          "id": 921,
+          "name": "Beni",
+          "class": "PSI*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 26
+        },
+        {
+          "id": 923,
+          "name": "Codrin",
+          "class": "PC*",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 7
+        },
+        {
+          "id": 927,
+          "name": "Denis",
+          "class": "2BIO1",
+          "popularity": 9,
+          "openness": 3,
+          "groups": 2,
+          "reach": 31
+        },
+        {
+          "id": 938,
+          "name": "Eva",
+          "class": "PC*",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 24
+        },
+        {
+          "id": 939,
+          "name": "Filip",
+          "class": "2BIO3",
+          "popularity": 9,
+          "openness": 8,
+          "groups": 1,
+          "reach": 71
+        },
+        {
+          "id": 941,
+          "name": "Greta",
+          "class": "PC*",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 18
+        },
+        {
+          "id": 945,
+          "name": "Ilinca",
+          "class": "2BIO1",
+          "popularity": 8,
+          "openness": 5,
+          "groups": 2,
+          "reach": 41
+        },
+        {
+          "id": 954,
+          "name": "Jan",
+          "class": "2BIO1",
+          "popularity": 9,
+          "openness": 6,
+          "groups": 2,
+          "reach": 63
+        },
+        {
+          "id": 958,
+          "name": "Kira",
+          "class": "MP*1",
+          "popularity": 6,
+          "openness": 5,
+          "groups": 3,
+          "reach": 67
+        },
+        {
+          "id": 959,
+          "name": "Lia",
+          "class": "PSI*",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 22
+        },
+        {
+          "id": 960,
+          "name": "Mihnea",
+          "class": "PSI*",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 14
+        },
+        {
+          "id": 970,
+          "name": "Nora",
+          "class": "2BIO1",
+          "popularity": 2,
+          "openness": 1,
+          "groups": 1,
+          "reach": 30
+        },
+        {
+          "id": 974,
+          "name": "Ovidiu",
+          "class": "MP*1",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 2,
+          "reach": 43
+        },
+        {
+          "id": 977,
+          "name": "Patrick",
+          "class": "PSI*",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 2,
+          "reach": 16
+        },
+        {
+          "id": 984,
+          "name": "Rica",
+          "class": "2BIO1",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 2,
+          "reach": 55
+        },
+        {
+          "id": 991,
+          "name": "Silviu",
+          "class": "2BIO1",
+          "popularity": 8,
+          "openness": 5,
+          "groups": 2,
+          "reach": 60
+        },
+        {
+          "id": 1067,
+          "name": "Tania",
+          "class": "MP*2",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 2,
+          "reach": 54
+        },
+        {
+          "id": 1201,
+          "name": "Uta",
+          "class": "MP*2",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 40
+        },
+        {
+          "id": 1204,
+          "name": "Vio",
+          "class": "MP*2",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 42
+        },
+        {
+          "id": 1212,
+          "name": "Alin",
+          "class": "MP*2",
+          "popularity": 13,
+          "openness": 6,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 1214,
+          "name": "Boga",
+          "class": "MP*2",
+          "popularity": 8,
+          "openness": 4,
+          "groups": 2,
+          "reach": 36
+        },
+        {
+          "id": 1216,
+          "name": "Ciprian",
+          "class": "MP*2",
+          "popularity": 6,
+          "openness": 2,
+          "groups": 1,
+          "reach": 27
+        },
+        {
+          "id": 1218,
+          "name": "Doina",
+          "class": "MP*2",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 3,
+          "reach": 68
+        },
+        {
+          "id": 1228,
+          "name": "Edi",
+          "class": "MP*2",
+          "popularity": 5,
+          "openness": 3,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 1232,
+          "name": "Fana",
+          "class": "MP*2",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 2,
+          "reach": 34
+        },
+        {
+          "id": 1237,
+          "name": "Gina",
+          "class": "MP*2",
+          "popularity": 5,
+          "openness": 2,
+          "groups": 1,
+          "reach": 44
+        },
+        {
+          "id": 1238,
+          "name": "Hodo",
+          "class": "MP*2",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 2,
+          "reach": 38
+        },
+        {
+          "id": 1260,
+          "name": "Inga",
+          "class": "MP*2",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 2,
+          "reach": 47
+        },
+        {
+          "id": 1295,
+          "name": "Jeni",
+          "class": "MP*2",
+          "popularity": 13,
+          "openness": 3,
+          "groups": 3,
+          "reach": 36
+        },
+        {
+          "id": 1320,
+          "name": "Laur",
+          "class": "MP*2",
+          "popularity": 2,
+          "openness": 1,
+          "groups": 1,
+          "reach": 24
+        },
+        {
+          "id": 1324,
+          "name": "Momo",
+          "class": "MP*2",
+          "popularity": 4,
+          "openness": 4,
+          "groups": 1,
+          "reach": 45
+        },
+        {
+          "id": 1332,
+          "name": "Nuti",
+          "class": "MP*2",
+          "popularity": 17,
+          "openness": 8,
+          "groups": 3,
+          "reach": 48
+        },
+        {
+          "id": 1336,
+          "name": "Olga",
+          "class": "MP*2",
+          "popularity": 3,
+          "openness": 1,
+          "groups": 1,
+          "reach": 34
+        },
+        {
+          "id": 1342,
+          "name": "Puiu",
+          "class": "MP*2",
+          "popularity": 7,
+          "openness": 4,
+          "groups": 2,
+          "reach": 46
+        },
+        {
+          "id": 1345,
+          "name": "Ramona",
+          "class": "MP*2",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 31
+        },
+        {
+          "id": 1359,
+          "name": "Sabin",
+          "class": "MP*2",
+          "popularity": 9,
+          "openness": 4,
+          "groups": 2,
+          "reach": 34
+        },
+        {
+          "id": 1383,
+          "name": "Timea",
+          "class": "MP*2",
+          "popularity": 3,
+          "openness": 2,
+          "groups": 2,
+          "reach": 33
+        },
+        {
+          "id": 1401,
+          "name": "Ulise",
+          "class": "MP*2",
+          "popularity": 10,
+          "openness": 3,
+          "groups": 2,
+          "reach": 41
+        },
+        {
+          "id": 1412,
+          "name": "Viorel",
+          "class": "MP*2",
+          "popularity": 7,
+          "openness": 6,
+          "groups": 2,
+          "reach": 51
+        },
+        {
+          "id": 1423,
+          "name": "Ana",
+          "class": "MP*2",
+          "popularity": 13,
+          "openness": 8,
+          "groups": 4,
+          "reach": 63
+        },
+        {
+          "id": 1485,
+          "name": "Andrei",
+          "class": "MP*2",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 28
+        },
+        {
+          "id": 1512,
+          "name": "Bianca",
+          "class": "MP*2",
+          "popularity": 11,
+          "openness": 6,
+          "groups": 2,
+          "reach": 36
+        },
+        {
+          "id": 1518,
+          "name": "Bogdan",
+          "class": "MP*2",
+          "popularity": 15,
+          "openness": 6,
+          "groups": 2,
+          "reach": 44
+        },
+        {
+          "id": 1519,
+          "name": "Carla",
+          "class": "MP*2",
+          "popularity": 1,
+          "openness": 1,
+          "groups": 1,
+          "reach": 27
+        },
+        {
+          "id": 1543,
+          "name": "Cristi",
+          "class": "MP*2",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 2,
+          "reach": 41
+        },
+        {
+          "id": 1594,
+          "name": "Dana",
+          "class": "MP*2",
+          "popularity": 6,
+          "openness": 3,
+          "groups": 1,
+          "reach": 36
+        },
+        {
+          "id": 1784,
+          "name": "Doru",
+          "class": "MP*2",
+          "popularity": 5,
+          "openness": 4,
+          "groups": 2,
+          "reach": 63
+        },
+        {
+          "id": 1805,
+          "name": "Elena",
+          "class": "MP*2",
+          "popularity": 8,
+          "openness": 3,
+          "groups": 1,
+          "reach": 27
+        },
+        {
+          "id": 1828,
+          "name": "Florin",
+          "class": "MP*2",
+          "popularity": 4,
+          "openness": 3,
+          "groups": 1,
+          "reach": 49
+        },
+        {
+          "id": 1894,
+          "name": "Gabi",
+          "class": "MP*2",
+          "popularity": 2,
+          "openness": 2,
+          "groups": 1,
+          "reach": 34
+        }
+      ],
+      "mission": {
+        "plafon": 290,
+        "trioMission": {
+          "sandu": {
+            "id": 117,
+            "name": "Sandu",
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "popularity": 19,
+            "openness": 11,
+            "groups": 2,
+            "groupsOut": 1,
+            "reach": 50,
+            "reachInClass": 31,
+            "reachOutClass": 19,
+            "classDist": [
+              {
+                "class": "2BIO3",
+                "classFriendly": "Bio C",
+                "count": 31
+              },
+              {
+                "class": "2BIO2",
+                "classFriendly": "Bio B",
+                "count": 17
+              },
+              {
+                "class": "PC",
+                "classFriendly": "Chimie A",
+                "count": 2
+              }
+            ]
+          },
+          "emil": {
+            "id": 778,
+            "name": "Emil",
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "popularity": 10,
+            "openness": 8,
+            "groups": 1,
+            "groupsOut": 0,
+            "reach": 73,
+            "reachInClass": 37,
+            "reachOutClass": 36,
+            "classDist": [
+              {
+                "class": "2BIO3",
+                "classFriendly": "Bio C",
+                "count": 37
+              },
+              {
+                "class": "2BIO2",
+                "classFriendly": "Bio B",
+                "count": 21
+              },
+              {
+                "class": "2BIO1",
+                "classFriendly": "Bio A",
+                "count": 11
+              },
+              {
+                "class": "PC",
+                "classFriendly": "Chimie A",
+                "count": 4
+              }
+            ]
+          },
+          "doina": {
+            "id": 1218,
+            "name": "Doina",
+            "class": "MP*2",
+            "classFriendly": "Mate C",
+            "popularity": 3,
+            "openness": 3,
+            "groups": 3,
+            "groupsOut": 2,
+            "reach": 68,
+            "reachInClass": 24,
+            "reachOutClass": 44,
+            "classDist": [
+              {
+                "class": "MP*2",
+                "classFriendly": "Mate C",
+                "count": 24
+              },
+              {
+                "class": "PSI*",
+                "classFriendly": "Inginerie",
+                "count": 18
+              },
+              {
+                "class": "MP",
+                "classFriendly": "Mate A",
+                "count": 14
+              },
+              {
+                "class": "MP*1",
+                "classFriendly": "Mate B",
+                "count": 11
+              },
+              {
+                "class": "2BIO3",
+                "classFriendly": "Bio C",
+                "count": 1
+              }
+            ]
+          }
+        },
+        "correlations": {
+          "popularityReach": 0.372,
+          "opennessReach": 0.571,
+          "groupsReach": 0.397
+        },
+        "top3PopularNames": [
+          "Sandu",
+          "Nuti",
+          "Denis"
+        ],
+        "top3PopularCoverage": 135,
+        "top3OpenNames": [
+          "Sandu",
+          "Cristi",
+          "Puiu"
+        ],
+        "top3OpenCoverage": 62,
+        "greedyNames": [
+          "Emil",
+          "Doina",
+          "Otilia"
+        ],
+        "greedyCoverage": 183,
+        "randomMean": 101.1,
+        "randomMax": 150,
+        "randomMin": 57
+      },
       "brokenPair": {
         "classA": "MP*1",
         "classB": "PSI*",
@@ -11455,6 +14397,2948 @@
       "sizes": [
         294
       ]
+    },
+    "trioMission": {
+      "sandu": {
+        "id": 117,
+        "name": "Sandu",
+        "class": "2BIO3",
+        "classFriendly": "Bio C",
+        "popularity": 19,
+        "openness": 11,
+        "groups": 2,
+        "groupsOut": 1,
+        "reach": 50,
+        "reachInClass": 31,
+        "reachOutClass": 19,
+        "classDist": [
+          {
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "count": 31
+          },
+          {
+            "class": "2BIO2",
+            "classFriendly": "Bio B",
+            "count": 17
+          },
+          {
+            "class": "PC",
+            "classFriendly": "Chimie A",
+            "count": 2
+          }
+        ]
+      },
+      "emil": {
+        "id": 778,
+        "name": "Emil",
+        "class": "2BIO3",
+        "classFriendly": "Bio C",
+        "popularity": 10,
+        "openness": 8,
+        "groups": 1,
+        "groupsOut": 0,
+        "reach": 73,
+        "reachInClass": 37,
+        "reachOutClass": 36,
+        "classDist": [
+          {
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "count": 37
+          },
+          {
+            "class": "2BIO2",
+            "classFriendly": "Bio B",
+            "count": 21
+          },
+          {
+            "class": "2BIO1",
+            "classFriendly": "Bio A",
+            "count": 11
+          },
+          {
+            "class": "PC",
+            "classFriendly": "Chimie A",
+            "count": 4
+          }
+        ]
+      },
+      "doina": {
+        "id": 1218,
+        "name": "Doina",
+        "class": "MP*2",
+        "classFriendly": "Mate C",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 3,
+        "groupsOut": 2,
+        "reach": 68,
+        "reachInClass": 24,
+        "reachOutClass": 44,
+        "classDist": [
+          {
+            "class": "MP*2",
+            "classFriendly": "Mate C",
+            "count": 24
+          },
+          {
+            "class": "PSI*",
+            "classFriendly": "Inginerie",
+            "count": 18
+          },
+          {
+            "class": "MP",
+            "classFriendly": "Mate A",
+            "count": 14
+          },
+          {
+            "class": "MP*1",
+            "classFriendly": "Mate B",
+            "count": 11
+          },
+          {
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "count": 1
+          }
+        ]
+      }
+    },
+    "correlations": {
+      "popularityReach": 0.372,
+      "opennessReach": 0.571,
+      "groupsReach": 0.397
+    },
+    "plafon": 290,
+    "scatterData": [
+      {
+        "id": 1,
+        "name": "Ana",
+        "class": "2BIO3",
+        "popularity": 10,
+        "openness": 6,
+        "groups": 1,
+        "reach": 57
+      },
+      {
+        "id": 3,
+        "name": "Andrei",
+        "class": "2BIO2",
+        "popularity": 8,
+        "openness": 6,
+        "groups": 3,
+        "reach": 49
+      },
+      {
+        "id": 4,
+        "name": "Bianca",
+        "class": "PSI*",
+        "popularity": 6,
+        "openness": 2,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 9,
+        "name": "Bogdan",
+        "class": "PC",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 1,
+        "reach": 39
+      },
+      {
+        "id": 14,
+        "name": "Carla",
+        "class": "PC*",
+        "popularity": 7,
+        "openness": 3,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 15,
+        "name": "Cristi",
+        "class": "PC",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 20,
+        "name": "Dana",
+        "class": "MP*1",
+        "popularity": 5,
+        "openness": 5,
+        "groups": 2,
+        "reach": 49
+      },
+      {
+        "id": 21,
+        "name": "Doru",
+        "class": "PC",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 27,
+        "name": "Elena",
+        "class": "2BIO2",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 42
+      },
+      {
+        "id": 28,
+        "name": "Florin",
+        "class": "2BIO2",
+        "popularity": 10,
+        "openness": 6,
+        "groups": 2,
+        "reach": 38
+      },
+      {
+        "id": 32,
+        "name": "Gabi",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 47
+      },
+      {
+        "id": 38,
+        "name": "Horia",
+        "class": "MP",
+        "popularity": 10,
+        "openness": 5,
+        "groups": 2,
+        "reach": 49
+      },
+      {
+        "id": 39,
+        "name": "Ioana",
+        "class": "2BIO3",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 1,
+        "reach": 60
+      },
+      {
+        "id": 41,
+        "name": "Radu",
+        "class": "MP",
+        "popularity": 8,
+        "openness": 5,
+        "groups": 2,
+        "reach": 38
+      },
+      {
+        "id": 45,
+        "name": "Maria",
+        "class": "PC",
+        "popularity": 12,
+        "openness": 5,
+        "groups": 3,
+        "reach": 50
+      },
+      {
+        "id": 46,
+        "name": "Matei",
+        "class": "2BIO2",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 2,
+        "reach": 47
+      },
+      {
+        "id": 47,
+        "name": "Nadia",
+        "class": "PSI*",
+        "popularity": 5,
+        "openness": 1,
+        "groups": 1,
+        "reach": 24
+      },
+      {
+        "id": 54,
+        "name": "Octav",
+        "class": "MP",
+        "popularity": 7,
+        "openness": 4,
+        "groups": 2,
+        "reach": 31
+      },
+      {
+        "id": 55,
+        "name": "Paula",
+        "class": "2BIO3",
+        "popularity": 14,
+        "openness": 7,
+        "groups": 1,
+        "reach": 55
+      },
+      {
+        "id": 58,
+        "name": "Rares",
+        "class": "PC*",
+        "popularity": 6,
+        "openness": 2,
+        "groups": 2,
+        "reach": 42
+      },
+      {
+        "id": 61,
+        "name": "Sorina",
+        "class": "2BIO2",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 2,
+        "reach": 40
+      },
+      {
+        "id": 63,
+        "name": "Tudor",
+        "class": "2BIO3",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 65,
+        "name": "Vlad",
+        "class": "2BIO1",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 1,
+        "reach": 55
+      },
+      {
+        "id": 70,
+        "name": "Zina",
+        "class": "2BIO3",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 46
+      },
+      {
+        "id": 71,
+        "name": "Alex",
+        "class": "PC",
+        "popularity": 4,
+        "openness": 2,
+        "groups": 1,
+        "reach": 37
+      },
+      {
+        "id": 72,
+        "name": "Bea",
+        "class": "2BIO1",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 58
+      },
+      {
+        "id": 79,
+        "name": "Cezar",
+        "class": "PC",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 2,
+        "reach": 43
+      },
+      {
+        "id": 80,
+        "name": "Delia",
+        "class": "PC",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 1,
+        "reach": 11
+      },
+      {
+        "id": 85,
+        "name": "Emil",
+        "class": "PC*",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 38
+      },
+      {
+        "id": 87,
+        "name": "Flavia",
+        "class": "PC",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 27
+      },
+      {
+        "id": 89,
+        "name": "George",
+        "class": "PC",
+        "popularity": 11,
+        "openness": 5,
+        "groups": 1,
+        "reach": 15
+      },
+      {
+        "id": 90,
+        "name": "Hana",
+        "class": "PSI*",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 1,
+        "reach": 60
+      },
+      {
+        "id": 92,
+        "name": "Irina",
+        "class": "PC",
+        "popularity": 9,
+        "openness": 5,
+        "groups": 1,
+        "reach": 39
+      },
+      {
+        "id": 101,
+        "name": "Luca",
+        "class": "2BIO3",
+        "popularity": 9,
+        "openness": 5,
+        "groups": 1,
+        "reach": 45
+      },
+      {
+        "id": 103,
+        "name": "Miruna",
+        "class": "MP*1",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 3,
+        "reach": 56
+      },
+      {
+        "id": 106,
+        "name": "Nicu",
+        "class": "2BIO3",
+        "popularity": 12,
+        "openness": 8,
+        "groups": 3,
+        "reach": 51
+      },
+      {
+        "id": 111,
+        "name": "Oana",
+        "class": "2BIO1",
+        "popularity": 5,
+        "openness": 1,
+        "groups": 1,
+        "reach": 38
+      },
+      {
+        "id": 115,
+        "name": "Petru",
+        "class": "PC*",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 33
+      },
+      {
+        "id": 116,
+        "name": "Roxana",
+        "class": "PC*",
+        "popularity": 7,
+        "openness": 4,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 117,
+        "name": "Sandu",
+        "class": "2BIO3",
+        "popularity": 19,
+        "openness": 11,
+        "groups": 2,
+        "reach": 50
+      },
+      {
+        "id": 119,
+        "name": "Teo",
+        "class": "2BIO3",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 1,
+        "reach": 51
+      },
+      {
+        "id": 120,
+        "name": "Ursu",
+        "class": "PC",
+        "popularity": 6,
+        "openness": 1,
+        "groups": 1,
+        "reach": 15
+      },
+      {
+        "id": 122,
+        "name": "Vera",
+        "class": "2BIO3",
+        "popularity": 8,
+        "openness": 5,
+        "groups": 1,
+        "reach": 55
+      },
+      {
+        "id": 124,
+        "name": "David",
+        "class": "2BIO1",
+        "popularity": 9,
+        "openness": 5,
+        "groups": 3,
+        "reach": 47
+      },
+      {
+        "id": 125,
+        "name": "Ema",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 50
+      },
+      {
+        "id": 131,
+        "name": "Fabi",
+        "class": "PC*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 2,
+        "reach": 34
+      },
+      {
+        "id": 132,
+        "name": "Geta",
+        "class": "2BIO3",
+        "popularity": 11,
+        "openness": 7,
+        "groups": 2,
+        "reach": 45
+      },
+      {
+        "id": 134,
+        "name": "Iulia",
+        "class": "PC",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 18
+      },
+      {
+        "id": 145,
+        "name": "Liviu",
+        "class": "2BIO1",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 38
+      },
+      {
+        "id": 147,
+        "name": "Mara",
+        "class": "2BIO2",
+        "popularity": 8,
+        "openness": 6,
+        "groups": 3,
+        "reach": 52
+      },
+      {
+        "id": 151,
+        "name": "Nelu",
+        "class": "MP",
+        "popularity": 13,
+        "openness": 7,
+        "groups": 2,
+        "reach": 29
+      },
+      {
+        "id": 156,
+        "name": "Otilia",
+        "class": "MP",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 160,
+        "name": "Pavel",
+        "class": "2BIO2",
+        "popularity": 12,
+        "openness": 7,
+        "groups": 1,
+        "reach": 43
+      },
+      {
+        "id": 165,
+        "name": "Rux",
+        "class": "2BIO2",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 2,
+        "reach": 16
+      },
+      {
+        "id": 170,
+        "name": "Stef",
+        "class": "2BIO3",
+        "popularity": 12,
+        "openness": 8,
+        "groups": 1,
+        "reach": 54
+      },
+      {
+        "id": 171,
+        "name": "Toma",
+        "class": "2BIO2",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 2,
+        "reach": 39
+      },
+      {
+        "id": 172,
+        "name": "Ada",
+        "class": "PC",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 1,
+        "reach": 14
+      },
+      {
+        "id": 173,
+        "name": "Beni",
+        "class": "2BIO2",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 25
+      },
+      {
+        "id": 176,
+        "name": "Codrin",
+        "class": "PC*",
+        "popularity": 12,
+        "openness": 6,
+        "groups": 2,
+        "reach": 35
+      },
+      {
+        "id": 177,
+        "name": "Denis",
+        "class": "2BIO1",
+        "popularity": 16,
+        "openness": 7,
+        "groups": 3,
+        "reach": 47
+      },
+      {
+        "id": 179,
+        "name": "Eva",
+        "class": "2BIO3",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 1,
+        "reach": 39
+      },
+      {
+        "id": 181,
+        "name": "Filip",
+        "class": "PC*",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 184,
+        "name": "Greta",
+        "class": "2BIO2",
+        "popularity": 7,
+        "openness": 6,
+        "groups": 2,
+        "reach": 56
+      },
+      {
+        "id": 185,
+        "name": "Ilinca",
+        "class": "PC*",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 25
+      },
+      {
+        "id": 190,
+        "name": "Jan",
+        "class": "PC*",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 194,
+        "name": "Kira",
+        "class": "PC",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 196,
+        "name": "Lia",
+        "class": "2BIO3",
+        "popularity": 12,
+        "openness": 6,
+        "groups": 2,
+        "reach": 48
+      },
+      {
+        "id": 199,
+        "name": "Mihnea",
+        "class": "2BIO3",
+        "popularity": 7,
+        "openness": 6,
+        "groups": 1,
+        "reach": 53
+      },
+      {
+        "id": 200,
+        "name": "Nora",
+        "class": "PC",
+        "popularity": 8,
+        "openness": 6,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 201,
+        "name": "Ovidiu",
+        "class": "MP",
+        "popularity": 9,
+        "openness": 5,
+        "groups": 1,
+        "reach": 38
+      },
+      {
+        "id": 202,
+        "name": "Patrick",
+        "class": "2BIO3",
+        "popularity": 11,
+        "openness": 6,
+        "groups": 4,
+        "reach": 49
+      },
+      {
+        "id": 205,
+        "name": "Rica",
+        "class": "2BIO3",
+        "popularity": 7,
+        "openness": 4,
+        "groups": 1,
+        "reach": 45
+      },
+      {
+        "id": 209,
+        "name": "Silviu",
+        "class": "PC*",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 210,
+        "name": "Tania",
+        "class": "PC",
+        "popularity": 14,
+        "openness": 4,
+        "groups": 1,
+        "reach": 20
+      },
+      {
+        "id": 211,
+        "name": "Uta",
+        "class": "PC",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 213,
+        "name": "Vio",
+        "class": "PC*",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 2,
+        "reach": 51
+      },
+      {
+        "id": 214,
+        "name": "Alin",
+        "class": "PC*",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 39
+      },
+      {
+        "id": 219,
+        "name": "Boga",
+        "class": "MP",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 220,
+        "name": "Ciprian",
+        "class": "MP",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 2,
+        "reach": 35
+      },
+      {
+        "id": 222,
+        "name": "Doina",
+        "class": "PC*",
+        "popularity": 5,
+        "openness": 2,
+        "groups": 1,
+        "reach": 32
+      },
+      {
+        "id": 226,
+        "name": "Edi",
+        "class": "2BIO2",
+        "popularity": 7,
+        "openness": 5,
+        "groups": 1,
+        "reach": 42
+      },
+      {
+        "id": 227,
+        "name": "Fana",
+        "class": "PSI*",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 1,
+        "reach": 33
+      },
+      {
+        "id": 232,
+        "name": "Gina",
+        "class": "PC",
+        "popularity": 10,
+        "openness": 5,
+        "groups": 1,
+        "reach": 15
+      },
+      {
+        "id": 236,
+        "name": "Hodo",
+        "class": "MP*1",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 1,
+        "reach": 44
+      },
+      {
+        "id": 240,
+        "name": "Inga",
+        "class": "2BIO3",
+        "popularity": 7,
+        "openness": 3,
+        "groups": 1,
+        "reach": 41
+      },
+      {
+        "id": 241,
+        "name": "Jeni",
+        "class": "PSI*",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 1,
+        "reach": 16
+      },
+      {
+        "id": 242,
+        "name": "Laur",
+        "class": "PC",
+        "popularity": 7,
+        "openness": 4,
+        "groups": 1,
+        "reach": 41
+      },
+      {
+        "id": 243,
+        "name": "Momo",
+        "class": "MP",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 1,
+        "reach": 51
+      },
+      {
+        "id": 245,
+        "name": "Nuti",
+        "class": "MP",
+        "popularity": 5,
+        "openness": 2,
+        "groups": 1,
+        "reach": 41
+      },
+      {
+        "id": 248,
+        "name": "Olga",
+        "class": "PSI*",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 25
+      },
+      {
+        "id": 252,
+        "name": "Puiu",
+        "class": "2BIO3",
+        "popularity": 15,
+        "openness": 10,
+        "groups": 1,
+        "reach": 50
+      },
+      {
+        "id": 253,
+        "name": "Ramona",
+        "class": "PC",
+        "popularity": 4,
+        "openness": 2,
+        "groups": 1,
+        "reach": 32
+      },
+      {
+        "id": 254,
+        "name": "Sabin",
+        "class": "PC*",
+        "popularity": 9,
+        "openness": 4,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 255,
+        "name": "Timea",
+        "class": "2BIO3",
+        "popularity": 7,
+        "openness": 6,
+        "groups": 1,
+        "reach": 62
+      },
+      {
+        "id": 256,
+        "name": "Ulise",
+        "class": "PC*",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 28
+      },
+      {
+        "id": 257,
+        "name": "Viorel",
+        "class": "2BIO2",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 2,
+        "reach": 53
+      },
+      {
+        "id": 258,
+        "name": "Ana",
+        "class": "PC*",
+        "popularity": 12,
+        "openness": 4,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 265,
+        "name": "Andrei",
+        "class": "2BIO3",
+        "popularity": 7,
+        "openness": 5,
+        "groups": 1,
+        "reach": 50
+      },
+      {
+        "id": 267,
+        "name": "Bianca",
+        "class": "PC*",
+        "popularity": 11,
+        "openness": 5,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 268,
+        "name": "Bogdan",
+        "class": "2BIO2",
+        "popularity": 8,
+        "openness": 5,
+        "groups": 2,
+        "reach": 45
+      },
+      {
+        "id": 269,
+        "name": "Carla",
+        "class": "PC*",
+        "popularity": 4,
+        "openness": 2,
+        "groups": 1,
+        "reach": 26
+      },
+      {
+        "id": 272,
+        "name": "Cristi",
+        "class": "2BIO3",
+        "popularity": 16,
+        "openness": 11,
+        "groups": 3,
+        "reach": 49
+      },
+      {
+        "id": 274,
+        "name": "Dana",
+        "class": "MP*1",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 14
+      },
+      {
+        "id": 275,
+        "name": "Doru",
+        "class": "2BIO3",
+        "popularity": 13,
+        "openness": 10,
+        "groups": 3,
+        "reach": 47
+      },
+      {
+        "id": 276,
+        "name": "Elena",
+        "class": "PC*",
+        "popularity": 8,
+        "openness": 3,
+        "groups": 1,
+        "reach": 28
+      },
+      {
+        "id": 277,
+        "name": "Florin",
+        "class": "MP*1",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 17
+      },
+      {
+        "id": 279,
+        "name": "Gabi",
+        "class": "MP*1",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 3,
+        "reach": 39
+      },
+      {
+        "id": 280,
+        "name": "Horia",
+        "class": "MP*1",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 1,
+        "reach": 29
+      },
+      {
+        "id": 285,
+        "name": "Ioana",
+        "class": "PC",
+        "popularity": 13,
+        "openness": 7,
+        "groups": 2,
+        "reach": 15
+      },
+      {
+        "id": 290,
+        "name": "Radu",
+        "class": "MP*1",
+        "popularity": 10,
+        "openness": 7,
+        "groups": 2,
+        "reach": 55
+      },
+      {
+        "id": 295,
+        "name": "Maria",
+        "class": "2BIO2",
+        "popularity": 2,
+        "openness": 1,
+        "groups": 1,
+        "reach": 20
+      },
+      {
+        "id": 306,
+        "name": "Matei",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 26
+      },
+      {
+        "id": 311,
+        "name": "Nadia",
+        "class": "PC",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 3,
+        "reach": 44
+      },
+      {
+        "id": 312,
+        "name": "Octav",
+        "class": "2BIO2",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 2,
+        "reach": 32
+      },
+      {
+        "id": 322,
+        "name": "Paula",
+        "class": "PC",
+        "popularity": 8,
+        "openness": 4,
+        "groups": 1,
+        "reach": 15
+      },
+      {
+        "id": 325,
+        "name": "Rares",
+        "class": "PSI*",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 2,
+        "reach": 43
+      },
+      {
+        "id": 327,
+        "name": "Sorina",
+        "class": "2BIO2",
+        "popularity": 12,
+        "openness": 8,
+        "groups": 3,
+        "reach": 44
+      },
+      {
+        "id": 333,
+        "name": "Tudor",
+        "class": "PSI*",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 39
+      },
+      {
+        "id": 335,
+        "name": "Vlad",
+        "class": "PC*",
+        "popularity": 11,
+        "openness": 5,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 339,
+        "name": "Zina",
+        "class": "2BIO2",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 44
+      },
+      {
+        "id": 346,
+        "name": "Alex",
+        "class": "2BIO3",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 1,
+        "reach": 45
+      },
+      {
+        "id": 353,
+        "name": "Bea",
+        "class": "2BIO2",
+        "popularity": 11,
+        "openness": 7,
+        "groups": 3,
+        "reach": 42
+      },
+      {
+        "id": 356,
+        "name": "Cezar",
+        "class": "PC*",
+        "popularity": 9,
+        "openness": 4,
+        "groups": 1,
+        "reach": 38
+      },
+      {
+        "id": 364,
+        "name": "Delia",
+        "class": "2BIO3",
+        "popularity": 10,
+        "openness": 5,
+        "groups": 1,
+        "reach": 45
+      },
+      {
+        "id": 366,
+        "name": "Emil",
+        "class": "MP*1",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 372,
+        "name": "Flavia",
+        "class": "2BIO2",
+        "popularity": 10,
+        "openness": 7,
+        "groups": 3,
+        "reach": 47
+      },
+      {
+        "id": 374,
+        "name": "George",
+        "class": "2BIO3",
+        "popularity": 9,
+        "openness": 5,
+        "groups": 1,
+        "reach": 42
+      },
+      {
+        "id": 376,
+        "name": "Hana",
+        "class": "MP*1",
+        "popularity": 8,
+        "openness": 5,
+        "groups": 2,
+        "reach": 38
+      },
+      {
+        "id": 382,
+        "name": "Irina",
+        "class": "PC*",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 387,
+        "name": "Luca",
+        "class": "MP*1",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 3,
+        "reach": 57
+      },
+      {
+        "id": 388,
+        "name": "Miruna",
+        "class": "PC",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 21
+      },
+      {
+        "id": 390,
+        "name": "Nicu",
+        "class": "PC*",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 391,
+        "name": "Oana",
+        "class": "MP*1",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 2,
+        "reach": 36
+      },
+      {
+        "id": 400,
+        "name": "Petru",
+        "class": "2BIO1",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 2,
+        "reach": 56
+      },
+      {
+        "id": 407,
+        "name": "Roxana",
+        "class": "2BIO2",
+        "popularity": 10,
+        "openness": 8,
+        "groups": 2,
+        "reach": 48
+      },
+      {
+        "id": 413,
+        "name": "Sandu",
+        "class": "PC",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 420,
+        "name": "Teo",
+        "class": "MP",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 424,
+        "name": "Ursu",
+        "class": "PSI*",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 1,
+        "reach": 16
+      },
+      {
+        "id": 425,
+        "name": "Vera",
+        "class": "2BIO3",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 1,
+        "reach": 50
+      },
+      {
+        "id": 428,
+        "name": "David",
+        "class": "2BIO1",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 37
+      },
+      {
+        "id": 429,
+        "name": "Ema",
+        "class": "2BIO2",
+        "popularity": 5,
+        "openness": 5,
+        "groups": 1,
+        "reach": 39
+      },
+      {
+        "id": 438,
+        "name": "Fabi",
+        "class": "MP*1",
+        "popularity": 5,
+        "openness": 5,
+        "groups": 2,
+        "reach": 53
+      },
+      {
+        "id": 440,
+        "name": "Geta",
+        "class": "PSI*",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 2,
+        "reach": 48
+      },
+      {
+        "id": 441,
+        "name": "Iulia",
+        "class": "2BIO2",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 2,
+        "reach": 35
+      },
+      {
+        "id": 443,
+        "name": "Liviu",
+        "class": "2BIO1",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 447,
+        "name": "Mara",
+        "class": "2BIO3",
+        "popularity": 8,
+        "openness": 5,
+        "groups": 1,
+        "reach": 46
+      },
+      {
+        "id": 448,
+        "name": "Nelu",
+        "class": "PC",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 450,
+        "name": "Otilia",
+        "class": "PC",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 2,
+        "reach": 46
+      },
+      {
+        "id": 453,
+        "name": "Pavel",
+        "class": "PC",
+        "popularity": 7,
+        "openness": 4,
+        "groups": 2,
+        "reach": 36
+      },
+      {
+        "id": 454,
+        "name": "Rux",
+        "class": "MP",
+        "popularity": 2,
+        "openness": 1,
+        "groups": 1,
+        "reach": 24
+      },
+      {
+        "id": 464,
+        "name": "Stef",
+        "class": "2BIO2",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 465,
+        "name": "Toma",
+        "class": "2BIO1",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 24
+      },
+      {
+        "id": 466,
+        "name": "Ada",
+        "class": "MP*1",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 1,
+        "reach": 56
+      },
+      {
+        "id": 471,
+        "name": "Beni",
+        "class": "2BIO1",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 2,
+        "reach": 45
+      },
+      {
+        "id": 475,
+        "name": "Codrin",
+        "class": "2BIO1",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 477,
+        "name": "Denis",
+        "class": "2BIO2",
+        "popularity": 4,
+        "openness": 4,
+        "groups": 1,
+        "reach": 42
+      },
+      {
+        "id": 480,
+        "name": "Eva",
+        "class": "PC",
+        "popularity": 10,
+        "openness": 5,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 484,
+        "name": "Filip",
+        "class": "MP*1",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 2,
+        "reach": 49
+      },
+      {
+        "id": 486,
+        "name": "Greta",
+        "class": "2BIO1",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 22
+      },
+      {
+        "id": 487,
+        "name": "Ilinca",
+        "class": "2BIO1",
+        "popularity": 13,
+        "openness": 4,
+        "groups": 2,
+        "reach": 43
+      },
+      {
+        "id": 488,
+        "name": "Jan",
+        "class": "PC",
+        "popularity": 9,
+        "openness": 3,
+        "groups": 1,
+        "reach": 21
+      },
+      {
+        "id": 489,
+        "name": "Kira",
+        "class": "2BIO1",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 21
+      },
+      {
+        "id": 491,
+        "name": "Lia",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 1,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 492,
+        "name": "Mihnea",
+        "class": "PC",
+        "popularity": 11,
+        "openness": 5,
+        "groups": 1,
+        "reach": 27
+      },
+      {
+        "id": 494,
+        "name": "Nora",
+        "class": "2BIO3",
+        "popularity": 5,
+        "openness": 5,
+        "groups": 1,
+        "reach": 39
+      },
+      {
+        "id": 496,
+        "name": "Ovidiu",
+        "class": "PC",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 497,
+        "name": "Patrick",
+        "class": "MP*1",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 2,
+        "reach": 49
+      },
+      {
+        "id": 498,
+        "name": "Rica",
+        "class": "2BIO1",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 2,
+        "reach": 35
+      },
+      {
+        "id": 502,
+        "name": "Silviu",
+        "class": "MP",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 38
+      },
+      {
+        "id": 504,
+        "name": "Tania",
+        "class": "2BIO2",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 1,
+        "reach": 46
+      },
+      {
+        "id": 510,
+        "name": "Uta",
+        "class": "MP*1",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 1,
+        "reach": 43
+      },
+      {
+        "id": 513,
+        "name": "Vio",
+        "class": "MP*1",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 2,
+        "reach": 33
+      },
+      {
+        "id": 520,
+        "name": "Alin",
+        "class": "MP",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 2,
+        "reach": 43
+      },
+      {
+        "id": 527,
+        "name": "Boga",
+        "class": "2BIO1",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 18
+      },
+      {
+        "id": 531,
+        "name": "Ciprian",
+        "class": "2BIO1",
+        "popularity": 4,
+        "openness": 1,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 533,
+        "name": "Doina",
+        "class": "PC*",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 544,
+        "name": "Edi",
+        "class": "2BIO2",
+        "popularity": 8,
+        "openness": 7,
+        "groups": 2,
+        "reach": 51
+      },
+      {
+        "id": 545,
+        "name": "Fana",
+        "class": "2BIO3",
+        "popularity": 9,
+        "openness": 5,
+        "groups": 3,
+        "reach": 57
+      },
+      {
+        "id": 564,
+        "name": "Gina",
+        "class": "MP",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 2,
+        "reach": 29
+      },
+      {
+        "id": 576,
+        "name": "Hodo",
+        "class": "MP",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 22
+      },
+      {
+        "id": 577,
+        "name": "Inga",
+        "class": "MP",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 582,
+        "name": "Jeni",
+        "class": "MP",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 29
+      },
+      {
+        "id": 587,
+        "name": "Laur",
+        "class": "2BIO3",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 2,
+        "reach": 65
+      },
+      {
+        "id": 601,
+        "name": "Momo",
+        "class": "PC",
+        "popularity": 4,
+        "openness": 2,
+        "groups": 1,
+        "reach": 21
+      },
+      {
+        "id": 605,
+        "name": "Nuti",
+        "class": "MP",
+        "popularity": 15,
+        "openness": 9,
+        "groups": 4,
+        "reach": 46
+      },
+      {
+        "id": 612,
+        "name": "Olga",
+        "class": "2BIO2",
+        "popularity": 4,
+        "openness": 2,
+        "groups": 2,
+        "reach": 40
+      },
+      {
+        "id": 615,
+        "name": "Puiu",
+        "class": "PSI*",
+        "popularity": 5,
+        "openness": 2,
+        "groups": 1,
+        "reach": 46
+      },
+      {
+        "id": 621,
+        "name": "Ramona",
+        "class": "PC*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 19
+      },
+      {
+        "id": 622,
+        "name": "Sabin",
+        "class": "PSI*",
+        "popularity": 4,
+        "openness": 4,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 624,
+        "name": "Timea",
+        "class": "PSI*",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 2,
+        "reach": 45
+      },
+      {
+        "id": 626,
+        "name": "Ulise",
+        "class": "2BIO3",
+        "popularity": 4,
+        "openness": 4,
+        "groups": 1,
+        "reach": 60
+      },
+      {
+        "id": 627,
+        "name": "Viorel",
+        "class": "2BIO1",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 22
+      },
+      {
+        "id": 634,
+        "name": "Ana",
+        "class": "MP",
+        "popularity": 15,
+        "openness": 6,
+        "groups": 2,
+        "reach": 42
+      },
+      {
+        "id": 637,
+        "name": "Andrei",
+        "class": "2BIO1",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 1,
+        "reach": 47
+      },
+      {
+        "id": 638,
+        "name": "Bianca",
+        "class": "MP*1",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 2,
+        "reach": 36
+      },
+      {
+        "id": 640,
+        "name": "Bogdan",
+        "class": "MP",
+        "popularity": 7,
+        "openness": 3,
+        "groups": 1,
+        "reach": 29
+      },
+      {
+        "id": 642,
+        "name": "Carla",
+        "class": "MP",
+        "popularity": 14,
+        "openness": 8,
+        "groups": 3,
+        "reach": 31
+      },
+      {
+        "id": 649,
+        "name": "Cristi",
+        "class": "2BIO3",
+        "popularity": 11,
+        "openness": 7,
+        "groups": 1,
+        "reach": 60
+      },
+      {
+        "id": 650,
+        "name": "Dana",
+        "class": "2BIO1",
+        "popularity": 5,
+        "openness": 2,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 653,
+        "name": "Doru",
+        "class": "2BIO3",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 2,
+        "reach": 63
+      },
+      {
+        "id": 655,
+        "name": "Elena",
+        "class": "MP*1",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 2,
+        "reach": 36
+      },
+      {
+        "id": 658,
+        "name": "Florin",
+        "class": "MP",
+        "popularity": 5,
+        "openness": 2,
+        "groups": 2,
+        "reach": 49
+      },
+      {
+        "id": 674,
+        "name": "Gabi",
+        "class": "2BIO1",
+        "popularity": 9,
+        "openness": 7,
+        "groups": 2,
+        "reach": 55
+      },
+      {
+        "id": 677,
+        "name": "Horia",
+        "class": "2BIO1",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 681,
+        "name": "Ioana",
+        "class": "2BIO1",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 26
+      },
+      {
+        "id": 687,
+        "name": "Radu",
+        "class": "MP",
+        "popularity": 5,
+        "openness": 5,
+        "groups": 2,
+        "reach": 59
+      },
+      {
+        "id": 691,
+        "name": "Maria",
+        "class": "MP",
+        "popularity": 5,
+        "openness": 2,
+        "groups": 2,
+        "reach": 44
+      },
+      {
+        "id": 694,
+        "name": "Matei",
+        "class": "MP",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 2,
+        "reach": 41
+      },
+      {
+        "id": 702,
+        "name": "Nadia",
+        "class": "MP*1",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 706,
+        "name": "Octav",
+        "class": "PC",
+        "popularity": 12,
+        "openness": 7,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 720,
+        "name": "Paula",
+        "class": "2BIO2",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 2,
+        "reach": 51
+      },
+      {
+        "id": 725,
+        "name": "Rares",
+        "class": "2BIO1",
+        "popularity": 6,
+        "openness": 1,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 743,
+        "name": "Sorina",
+        "class": "PC",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 744,
+        "name": "Tudor",
+        "class": "PC*",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 753,
+        "name": "Vlad",
+        "class": "MP",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 2,
+        "reach": 38
+      },
+      {
+        "id": 763,
+        "name": "Zina",
+        "class": "2BIO2",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 10
+      },
+      {
+        "id": 765,
+        "name": "Alex",
+        "class": "PC*",
+        "popularity": 9,
+        "openness": 4,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 769,
+        "name": "Bea",
+        "class": "PSI*",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 771,
+        "name": "Cezar",
+        "class": "PC",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 777,
+        "name": "Delia",
+        "class": "MP*1",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 43
+      },
+      {
+        "id": 778,
+        "name": "Emil",
+        "class": "2BIO3",
+        "popularity": 10,
+        "openness": 8,
+        "groups": 1,
+        "reach": 73
+      },
+      {
+        "id": 779,
+        "name": "Flavia",
+        "class": "2BIO3",
+        "popularity": 8,
+        "openness": 7,
+        "groups": 1,
+        "reach": 64
+      },
+      {
+        "id": 786,
+        "name": "George",
+        "class": "PC*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 11
+      },
+      {
+        "id": 790,
+        "name": "Hana",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 32
+      },
+      {
+        "id": 791,
+        "name": "Irina",
+        "class": "PC",
+        "popularity": 4,
+        "openness": 2,
+        "groups": 1,
+        "reach": 32
+      },
+      {
+        "id": 797,
+        "name": "Luca",
+        "class": "PSI*",
+        "popularity": 9,
+        "openness": 8,
+        "groups": 3,
+        "reach": 68
+      },
+      {
+        "id": 798,
+        "name": "Miruna",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 1,
+        "groups": 2,
+        "reach": 31
+      },
+      {
+        "id": 809,
+        "name": "Nicu",
+        "class": "2BIO1",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 2,
+        "reach": 56
+      },
+      {
+        "id": 826,
+        "name": "Oana",
+        "class": "PC",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 29
+      },
+      {
+        "id": 836,
+        "name": "Petru",
+        "class": "PC*",
+        "popularity": 4,
+        "openness": 2,
+        "groups": 1,
+        "reach": 26
+      },
+      {
+        "id": 841,
+        "name": "Roxana",
+        "class": "MP*1",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 1,
+        "reach": 45
+      },
+      {
+        "id": 843,
+        "name": "Sandu",
+        "class": "PC*",
+        "popularity": 7,
+        "openness": 4,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 845,
+        "name": "Teo",
+        "class": "PC",
+        "popularity": 8,
+        "openness": 4,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 854,
+        "name": "Ursu",
+        "class": "2BIO1",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 2,
+        "reach": 30
+      },
+      {
+        "id": 857,
+        "name": "Vera",
+        "class": "2BIO1",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 22
+      },
+      {
+        "id": 859,
+        "name": "David",
+        "class": "2BIO1",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 866,
+        "name": "Ema",
+        "class": "MP",
+        "popularity": 15,
+        "openness": 8,
+        "groups": 2,
+        "reach": 31
+      },
+      {
+        "id": 867,
+        "name": "Fabi",
+        "class": "PC*",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 1,
+        "reach": 33
+      },
+      {
+        "id": 869,
+        "name": "Geta",
+        "class": "MP",
+        "popularity": 7,
+        "openness": 3,
+        "groups": 2,
+        "reach": 51
+      },
+      {
+        "id": 871,
+        "name": "Iulia",
+        "class": "2BIO3",
+        "popularity": 14,
+        "openness": 7,
+        "groups": 3,
+        "reach": 51
+      },
+      {
+        "id": 874,
+        "name": "Liviu",
+        "class": "MP",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 18
+      },
+      {
+        "id": 883,
+        "name": "Mara",
+        "class": "2BIO3",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 63
+      },
+      {
+        "id": 884,
+        "name": "Nelu",
+        "class": "2BIO2",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 37
+      },
+      {
+        "id": 886,
+        "name": "Otilia",
+        "class": "2BIO2",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 3,
+        "reach": 36
+      },
+      {
+        "id": 893,
+        "name": "Pavel",
+        "class": "PSI*",
+        "popularity": 6,
+        "openness": 4,
+        "groups": 1,
+        "reach": 35
+      },
+      {
+        "id": 894,
+        "name": "Rux",
+        "class": "2BIO3",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 1,
+        "reach": 45
+      },
+      {
+        "id": 908,
+        "name": "Stef",
+        "class": "MP*1",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 32
+      },
+      {
+        "id": 909,
+        "name": "Toma",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 1,
+        "groups": 1,
+        "reach": 26
+      },
+      {
+        "id": 920,
+        "name": "Ada",
+        "class": "PSI*",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 17
+      },
+      {
+        "id": 921,
+        "name": "Beni",
+        "class": "PSI*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 26
+      },
+      {
+        "id": 923,
+        "name": "Codrin",
+        "class": "PC*",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 7
+      },
+      {
+        "id": 927,
+        "name": "Denis",
+        "class": "2BIO1",
+        "popularity": 9,
+        "openness": 3,
+        "groups": 2,
+        "reach": 31
+      },
+      {
+        "id": 938,
+        "name": "Eva",
+        "class": "PC*",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 24
+      },
+      {
+        "id": 939,
+        "name": "Filip",
+        "class": "2BIO3",
+        "popularity": 9,
+        "openness": 8,
+        "groups": 1,
+        "reach": 71
+      },
+      {
+        "id": 941,
+        "name": "Greta",
+        "class": "PC*",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 18
+      },
+      {
+        "id": 945,
+        "name": "Ilinca",
+        "class": "2BIO1",
+        "popularity": 8,
+        "openness": 5,
+        "groups": 2,
+        "reach": 41
+      },
+      {
+        "id": 954,
+        "name": "Jan",
+        "class": "2BIO1",
+        "popularity": 9,
+        "openness": 6,
+        "groups": 2,
+        "reach": 63
+      },
+      {
+        "id": 958,
+        "name": "Kira",
+        "class": "MP*1",
+        "popularity": 6,
+        "openness": 5,
+        "groups": 3,
+        "reach": 67
+      },
+      {
+        "id": 959,
+        "name": "Lia",
+        "class": "PSI*",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 22
+      },
+      {
+        "id": 960,
+        "name": "Mihnea",
+        "class": "PSI*",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 14
+      },
+      {
+        "id": 970,
+        "name": "Nora",
+        "class": "2BIO1",
+        "popularity": 2,
+        "openness": 1,
+        "groups": 1,
+        "reach": 30
+      },
+      {
+        "id": 974,
+        "name": "Ovidiu",
+        "class": "MP*1",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 2,
+        "reach": 43
+      },
+      {
+        "id": 977,
+        "name": "Patrick",
+        "class": "PSI*",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 2,
+        "reach": 16
+      },
+      {
+        "id": 984,
+        "name": "Rica",
+        "class": "2BIO1",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 2,
+        "reach": 55
+      },
+      {
+        "id": 991,
+        "name": "Silviu",
+        "class": "2BIO1",
+        "popularity": 8,
+        "openness": 5,
+        "groups": 2,
+        "reach": 60
+      },
+      {
+        "id": 1067,
+        "name": "Tania",
+        "class": "MP*2",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 2,
+        "reach": 54
+      },
+      {
+        "id": 1201,
+        "name": "Uta",
+        "class": "MP*2",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 40
+      },
+      {
+        "id": 1204,
+        "name": "Vio",
+        "class": "MP*2",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 42
+      },
+      {
+        "id": 1212,
+        "name": "Alin",
+        "class": "MP*2",
+        "popularity": 13,
+        "openness": 6,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 1214,
+        "name": "Boga",
+        "class": "MP*2",
+        "popularity": 8,
+        "openness": 4,
+        "groups": 2,
+        "reach": 36
+      },
+      {
+        "id": 1216,
+        "name": "Ciprian",
+        "class": "MP*2",
+        "popularity": 6,
+        "openness": 2,
+        "groups": 1,
+        "reach": 27
+      },
+      {
+        "id": 1218,
+        "name": "Doina",
+        "class": "MP*2",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 3,
+        "reach": 68
+      },
+      {
+        "id": 1228,
+        "name": "Edi",
+        "class": "MP*2",
+        "popularity": 5,
+        "openness": 3,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 1232,
+        "name": "Fana",
+        "class": "MP*2",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 2,
+        "reach": 34
+      },
+      {
+        "id": 1237,
+        "name": "Gina",
+        "class": "MP*2",
+        "popularity": 5,
+        "openness": 2,
+        "groups": 1,
+        "reach": 44
+      },
+      {
+        "id": 1238,
+        "name": "Hodo",
+        "class": "MP*2",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 2,
+        "reach": 38
+      },
+      {
+        "id": 1260,
+        "name": "Inga",
+        "class": "MP*2",
+        "popularity": 3,
+        "openness": 3,
+        "groups": 2,
+        "reach": 47
+      },
+      {
+        "id": 1295,
+        "name": "Jeni",
+        "class": "MP*2",
+        "popularity": 13,
+        "openness": 3,
+        "groups": 3,
+        "reach": 36
+      },
+      {
+        "id": 1320,
+        "name": "Laur",
+        "class": "MP*2",
+        "popularity": 2,
+        "openness": 1,
+        "groups": 1,
+        "reach": 24
+      },
+      {
+        "id": 1324,
+        "name": "Momo",
+        "class": "MP*2",
+        "popularity": 4,
+        "openness": 4,
+        "groups": 1,
+        "reach": 45
+      },
+      {
+        "id": 1332,
+        "name": "Nuti",
+        "class": "MP*2",
+        "popularity": 17,
+        "openness": 8,
+        "groups": 3,
+        "reach": 48
+      },
+      {
+        "id": 1336,
+        "name": "Olga",
+        "class": "MP*2",
+        "popularity": 3,
+        "openness": 1,
+        "groups": 1,
+        "reach": 34
+      },
+      {
+        "id": 1342,
+        "name": "Puiu",
+        "class": "MP*2",
+        "popularity": 7,
+        "openness": 4,
+        "groups": 2,
+        "reach": 46
+      },
+      {
+        "id": 1345,
+        "name": "Ramona",
+        "class": "MP*2",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 31
+      },
+      {
+        "id": 1359,
+        "name": "Sabin",
+        "class": "MP*2",
+        "popularity": 9,
+        "openness": 4,
+        "groups": 2,
+        "reach": 34
+      },
+      {
+        "id": 1383,
+        "name": "Timea",
+        "class": "MP*2",
+        "popularity": 3,
+        "openness": 2,
+        "groups": 2,
+        "reach": 33
+      },
+      {
+        "id": 1401,
+        "name": "Ulise",
+        "class": "MP*2",
+        "popularity": 10,
+        "openness": 3,
+        "groups": 2,
+        "reach": 41
+      },
+      {
+        "id": 1412,
+        "name": "Viorel",
+        "class": "MP*2",
+        "popularity": 7,
+        "openness": 6,
+        "groups": 2,
+        "reach": 51
+      },
+      {
+        "id": 1423,
+        "name": "Ana",
+        "class": "MP*2",
+        "popularity": 13,
+        "openness": 8,
+        "groups": 4,
+        "reach": 63
+      },
+      {
+        "id": 1485,
+        "name": "Andrei",
+        "class": "MP*2",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 28
+      },
+      {
+        "id": 1512,
+        "name": "Bianca",
+        "class": "MP*2",
+        "popularity": 11,
+        "openness": 6,
+        "groups": 2,
+        "reach": 36
+      },
+      {
+        "id": 1518,
+        "name": "Bogdan",
+        "class": "MP*2",
+        "popularity": 15,
+        "openness": 6,
+        "groups": 2,
+        "reach": 44
+      },
+      {
+        "id": 1519,
+        "name": "Carla",
+        "class": "MP*2",
+        "popularity": 1,
+        "openness": 1,
+        "groups": 1,
+        "reach": 27
+      },
+      {
+        "id": 1543,
+        "name": "Cristi",
+        "class": "MP*2",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 2,
+        "reach": 41
+      },
+      {
+        "id": 1594,
+        "name": "Dana",
+        "class": "MP*2",
+        "popularity": 6,
+        "openness": 3,
+        "groups": 1,
+        "reach": 36
+      },
+      {
+        "id": 1784,
+        "name": "Doru",
+        "class": "MP*2",
+        "popularity": 5,
+        "openness": 4,
+        "groups": 2,
+        "reach": 63
+      },
+      {
+        "id": 1805,
+        "name": "Elena",
+        "class": "MP*2",
+        "popularity": 8,
+        "openness": 3,
+        "groups": 1,
+        "reach": 27
+      },
+      {
+        "id": 1828,
+        "name": "Florin",
+        "class": "MP*2",
+        "popularity": 4,
+        "openness": 3,
+        "groups": 1,
+        "reach": 49
+      },
+      {
+        "id": 1894,
+        "name": "Gabi",
+        "class": "MP*2",
+        "popularity": 2,
+        "openness": 2,
+        "groups": 1,
+        "reach": 34
+      }
+    ],
+    "mission": {
+      "plafon": 290,
+      "trioMission": {
+        "sandu": {
+          "id": 117,
+          "name": "Sandu",
+          "class": "2BIO3",
+          "classFriendly": "Bio C",
+          "popularity": 19,
+          "openness": 11,
+          "groups": 2,
+          "groupsOut": 1,
+          "reach": 50,
+          "reachInClass": 31,
+          "reachOutClass": 19,
+          "classDist": [
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 31
+            },
+            {
+              "class": "2BIO2",
+              "classFriendly": "Bio B",
+              "count": 17
+            },
+            {
+              "class": "PC",
+              "classFriendly": "Chimie A",
+              "count": 2
+            }
+          ]
+        },
+        "emil": {
+          "id": 778,
+          "name": "Emil",
+          "class": "2BIO3",
+          "classFriendly": "Bio C",
+          "popularity": 10,
+          "openness": 8,
+          "groups": 1,
+          "groupsOut": 0,
+          "reach": 73,
+          "reachInClass": 37,
+          "reachOutClass": 36,
+          "classDist": [
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 37
+            },
+            {
+              "class": "2BIO2",
+              "classFriendly": "Bio B",
+              "count": 21
+            },
+            {
+              "class": "2BIO1",
+              "classFriendly": "Bio A",
+              "count": 11
+            },
+            {
+              "class": "PC",
+              "classFriendly": "Chimie A",
+              "count": 4
+            }
+          ]
+        },
+        "doina": {
+          "id": 1218,
+          "name": "Doina",
+          "class": "MP*2",
+          "classFriendly": "Mate C",
+          "popularity": 3,
+          "openness": 3,
+          "groups": 3,
+          "groupsOut": 2,
+          "reach": 68,
+          "reachInClass": 24,
+          "reachOutClass": 44,
+          "classDist": [
+            {
+              "class": "MP*2",
+              "classFriendly": "Mate C",
+              "count": 24
+            },
+            {
+              "class": "PSI*",
+              "classFriendly": "Inginerie",
+              "count": 18
+            },
+            {
+              "class": "MP",
+              "classFriendly": "Mate A",
+              "count": 14
+            },
+            {
+              "class": "MP*1",
+              "classFriendly": "Mate B",
+              "count": 11
+            },
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "correlations": {
+        "popularityReach": 0.372,
+        "opennessReach": 0.571,
+        "groupsReach": 0.397
+      },
+      "top3PopularNames": [
+        "Sandu",
+        "Nuti",
+        "Denis"
+      ],
+      "top3PopularCoverage": 135,
+      "top3OpenNames": [
+        "Sandu",
+        "Cristi",
+        "Puiu"
+      ],
+      "top3OpenCoverage": 62,
+      "greedyNames": [
+        "Emil",
+        "Doina",
+        "Otilia"
+      ],
+      "greedyCoverage": 183,
+      "randomMean": 101.1,
+      "randomMax": 150,
+      "randomMin": 57
     },
     "brokenPair": {
       "classA": "MP*1",

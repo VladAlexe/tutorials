@@ -172,6 +172,211 @@ function errorHandle(container, message) {
   return { refit() {}, destroy() {} };
 }
 
+async function renderDuel(container, block) {
+  container.classList.add("viz");
+  container.innerHTML = "";
+  let cytoscape, data, statsData;
+  try {
+    [cytoscape, data] = await Promise.all([loadCytoscape(), loadJSON(block.data || "data/highschool-network.json")]);
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch { statsData = null; }
+  } catch (err) { return errorHandle(container, err.message); }
+
+  const trio = statsData?.sliceMetrics?.trioMission || {};
+  const classNames = statsData?.classNames || {};
+  const pasi = block.pasi || statsData?.sliceMetrics?.diffusionModel?.pasi || 4;
+  const maxT = block.maxTransmiteri || statsData?.sliceMetrics?.diffusionModel?.maxTransmiteri || 4;
+
+  const nodes = data.nodes.map((n) => ({ id: String(n.id), name: n.name != null ? String(n.name) : null, group: n.group || "" }));
+  const edges = data.edges.map((e, i) => ({ id: `e${i}`, source: String(e.source), target: String(e.target), weight: e.weight || 1 }));
+
+  const groups = [...new Set(nodes.map((n) => n.group).filter(Boolean))];
+  const classPalette = new Map();
+  groups.forEach((g, i) => classPalette.set(g, GROUP_PALETTE[i % GROUP_PALETTE.length]));
+
+  // Build weighted-top adjacency for bounded diffusion (MIN_WEIGHT = 4).
+  const MIN_W = 4;
+  const adjWeighted = new Map();
+  for (const n of nodes) adjWeighted.set(n.id, []);
+  for (const e of edges) {
+    if ((e.weight || 0) < MIN_W) continue;
+    adjWeighted.get(e.source).push({ to: e.target, w: e.weight });
+    adjWeighted.get(e.target).push({ to: e.source, w: e.weight });
+  }
+  const adjTop = new Map();
+  for (const [nid, arr] of adjWeighted) {
+    arr.sort((a, b) => b.w - a.w || (a.to < b.to ? -1 : 1));
+    adjTop.set(nid, arr.slice(0, maxT).map((x) => x.to));
+  }
+
+  // Which trio slots to render
+  const slots = (block.slots || ["sandu", "emil", "doina"]).map((k) => trio[k]).filter(Boolean);
+  if (!slots.length) { container.innerHTML = "<div class=\"diff-hint\">Nu am date pentru trio.</div>"; return { refit() {}, destroy() {} }; }
+
+  const grid = document.createElement("div");
+  grid.className = "duel";
+  container.appendChild(grid);
+
+  const controls = document.createElement("div");
+  controls.className = "diffusion-controls";
+  controls.innerHTML =
+    `<div class="diff-row diff-buttons">` +
+      `<button type="button" class="btn btn--primary" data-act="run">Rulează toate trei</button>` +
+      `<button type="button" class="btn btn--ghost" data-act="step">Pas cu pas</button>` +
+      `<button type="button" class="btn btn--ghost" data-act="reset">Resetează</button>` +
+    `</div>` +
+    `<div class="diff-hint" data-role="hint">Uită-te la cifrele lor înainte de a porni valurile, apoi ghicește cine câștigă.</div>`;
+  container.appendChild(controls);
+
+  const cyInstances = [];
+  const knowsPer = [];
+  const stepPer = [];
+  const countersPer = [];
+
+  for (const p of slots) {
+    const cell = document.createElement("div");
+    cell.className = "duel__cell";
+
+    const cap = document.createElement("div");
+    cap.className = "duel__cap";
+    cap.innerHTML = `<strong>${p.name}</strong> <span class="duel__cap-sub">${p.classFriendly}</span>`;
+    cell.appendChild(cap);
+
+    const stats = document.createElement("div");
+    stats.className = "duel__stats";
+    stats.innerHTML =
+      `<span><strong>${p.popularity}</strong> contacte</span>` +
+      `<span><strong>${p.groups}</strong> ${p.groups === 1 ? "grup" : "grupuri"}</span>` +
+      `<span class="duel__reach">rază: <strong data-role="reach">?</strong></span>`;
+    cell.appendChild(stats);
+
+    const stage = document.createElement("div");
+    stage.className = "duel__stage";
+    cell.appendChild(stage);
+    grid.appendChild(cell);
+
+    const elements = [
+      ...nodes.map((n) => ({ data: { id: n.id, label: n.name, name: n.name, group: n.group, color: classPalette.get(n.group) || GROUP_PALETTE[0] } })),
+      ...edges.map((e) => ({ data: { id: `${p.id}-${e.id}`, source: e.source, target: e.target } }))
+    ];
+    const cy = cytoscape({
+      ...narrowCyOpts(),
+      container: stage,
+      elements,
+      style: [
+        { selector: "node", style: { "background-color": "#d9cfc0", "width": 6, "height": 6, "opacity": 0.35 } },
+        { selector: "node.knows", style: { "background-color": "data(color)", "opacity": 1, "width": 10, "height": 10 } },
+        { selector: "node.source", style: { "background-color": "#2a1f16", "border-color": "#2a1f16", "border-width": 2, "width": 15, "height": 15, "opacity": 1, "label": "data(label)", "font-size": 9, "text-valign": "bottom", "text-margin-y": 3, "color": "#2a1f16", "text-background-color": "#faf7f2", "text-background-opacity": 0.9 } },
+        { selector: "edge", style: { "line-color": "#d9cfc0", "opacity": 0.25, "width": 0.6, "curve-style": "bezier" } }
+      ],
+      layout: { name: "cose", animate: false, padding: 10, idealEdgeLength: 32, nodeRepulsion: 2600 },
+      minZoom: 0.3, maxZoom: 2, wheelSensitivity: 0.2
+    });
+    cy.style().update();
+    cyInstances.push(cy);
+    knowsPer.push(null);
+    stepPer.push(0);
+    countersPer.push(cell.querySelector('[data-role="reach"]'));
+
+    // Highlight the source now
+    const src = cy.getElementById(String(p.id));
+    if (src && src.length) src.addClass("source");
+  }
+
+  function computeKnows(sourceId) {
+    const known = new Map();
+    known.set(String(sourceId), 0);
+    let frontier = [String(sourceId)];
+    for (let s = 0; s < pasi && frontier.length; s++) {
+      const next = [];
+      for (const x of frontier) {
+        for (const y of adjTop.get(x) || []) {
+          if (!known.has(y)) { known.set(y, s + 1); next.push(y); }
+        }
+      }
+      frontier = next;
+    }
+    return known;
+  }
+
+  function drawUpToStep(idx, upTo) {
+    const cy = cyInstances[idx];
+    const knows = knowsPer[idx];
+    if (!cy || !knows) return;
+    cy.nodes().forEach((n) => {
+      const at = knows.get(n.id());
+      if (at !== undefined && at <= upTo) n.addClass("knows");
+      else n.removeClass("knows");
+    });
+    // Update counter
+    let c = 0;
+    for (const s of knows.values()) if (s <= upTo) c++;
+    if (countersPer[idx]) countersPer[idx].textContent = String(c);
+  }
+
+  let currentStep = 0;
+  const maxSteps = pasi;
+
+  function ensureSimulated() {
+    slots.forEach((p, i) => {
+      if (!knowsPer[i]) knowsPer[i] = computeKnows(p.id);
+    });
+  }
+
+  function resetAll() {
+    currentStep = 0;
+    cyInstances.forEach((cy) => cy.nodes().removeClass("knows"));
+    slots.forEach((p, i) => {
+      const cy = cyInstances[i];
+      const src = cy.getElementById(String(p.id));
+      if (src && src.length) src.addClass("source");
+      if (countersPer[i]) countersPer[i].textContent = "?";
+    });
+  }
+
+  let animTimer = null;
+  function stopAnim() { if (animTimer) { clearInterval(animTimer); animTimer = null; } }
+
+  controls.querySelector('[data-act="run"]').addEventListener("click", () => {
+    stopAnim();
+    ensureSimulated();
+    currentStep = 0;
+    slots.forEach((_, i) => drawUpToStep(i, 0));
+    animTimer = setInterval(() => {
+      currentStep++;
+      slots.forEach((_, i) => drawUpToStep(i, currentStep));
+      if (currentStep >= maxSteps) stopAnim();
+    }, 700);
+  });
+  controls.querySelector('[data-act="step"]').addEventListener("click", () => {
+    stopAnim();
+    ensureSimulated();
+    if (currentStep >= maxSteps) return;
+    currentStep++;
+    slots.forEach((_, i) => drawUpToStep(i, currentStep));
+  });
+  controls.querySelector('[data-act="reset"]').addEventListener("click", () => {
+    stopAnim();
+    resetAll();
+  });
+
+  function refit() { cyInstances.forEach((cy) => { try { cy.resize(); cy.fit(undefined, 12); } catch {} }); }
+  const onWin = () => refit();
+  window.addEventListener("resize", onWin);
+  const ro = new ResizeObserver(refit);
+  ro.observe(grid);
+  requestAnimationFrame(refit);
+
+  return {
+    refit,
+    destroy() {
+      stopAnim();
+      window.removeEventListener("resize", onWin);
+      ro.disconnect();
+      cyInstances.forEach((cy) => { try { cy.destroy(); } catch {} });
+    }
+  };
+}
+
 async function renderCompareThree(container, block) {
   container.classList.add("viz");
   container.innerHTML = "";
@@ -375,6 +580,9 @@ export async function renderDiffusion(container, block, options = {}) {
   }
   if (mode === "mirror") {
     return await renderMirror(container, block);
+  }
+  if (mode === "duel") {
+    return await renderDuel(container, block);
   }
 
   let cytoscape, data;
@@ -792,9 +1000,12 @@ export async function renderDiffusion(container, block, options = {}) {
   }
 
   else if (mode === "sir") {
-    // probabilistic SIR: pT=0.10, pS=0.20 calibrated for bimodal outcomes.
+    // Probabilistic SIR calibrated on this network (Sandu source, 200 runs):
+    //   pT = 0.10, pS = 0.42 -> mean 50, min 1, max 155.
+    //   ~20% of runs die out under 10, tail out to ~150. Shape is right-skewed
+    //   with a heavy small-outcome mode, which is the pedagogical point.
     const P_T = block.pTransmit ?? 0.10;
-    const P_S = block.pStop ?? 0.20;
+    const P_S = block.pStop ?? 0.42;
     const sourceId = shared.sourceId && nodes.some((n) => n.id === shared.sourceId)
       ? shared.sourceId
       : (nodes.find((n) => n.name === "Octav")?.id || nodes[0].id);
@@ -1418,19 +1629,42 @@ export async function renderDiffusion(container, block, options = {}) {
     cy.nodes().addClass("knows");
     const steps = block.steps || 3;
 
-    const adjMap = new Map();
-    for (const n of nodes) adjMap.set(n.id, new Set());
-    for (const e of edges) { adjMap.get(e.source).add(e.target); adjMap.get(e.target).add(e.source); }
-    function bfsSet(source) {
-      const s = new Set([source]);
-      const q = [source];
-      while (q.length) {
-        const x = q.shift();
-        for (const y of adjMap.get(x) || []) if (!s.has(y)) { s.add(y); q.push(y); }
+    let statsDataG = null;
+    try { statsDataG = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
+    const PASI = block.pasi || statsDataG?.sliceMetrics?.diffusionModel?.pasi || 4;
+    const MAX_T = block.maxTransmiteri || statsDataG?.sliceMetrics?.diffusionModel?.maxTransmiteri || 4;
+    const MIN_W = 4;
+
+    // Bounded reach: weight-filtered top-K adjacency, PASI rounds.
+    const adjTopG = new Map();
+    {
+      const tmp = new Map();
+      for (const n of nodes) tmp.set(n.id, []);
+      for (const e of edges) {
+        if ((e.weight || 0) < MIN_W) continue;
+        tmp.get(e.source).push({ to: e.target, w: e.weight });
+        tmp.get(e.target).push({ to: e.source, w: e.weight });
       }
-      return s;
+      for (const [nid, arr] of tmp) {
+        arr.sort((a, b) => b.w - a.w || (a.to < b.to ? -1 : 1));
+        adjTopG.set(nid, arr.slice(0, MAX_T).map((x) => x.to));
+      }
     }
-    const reachSet = new Map(nodes.map((n) => [n.id, bfsSet(n.id)]));
+    function reachBounded(seeds) {
+      const known = new Set(seeds.map(String));
+      let frontier = seeds.map(String);
+      for (let s = 0; s < PASI && frontier.length; s++) {
+        const next = [];
+        for (const x of frontier) {
+          for (const y of adjTopG.get(x) || []) {
+            if (!known.has(y)) { known.add(y); next.push(y); }
+          }
+        }
+        frontier = next;
+      }
+      return known;
+    }
+    const reachSet = new Map(nodes.map((n) => [String(n.id), reachBounded([n.id])]));
 
     let picks = [];
     let covered = new Set();
@@ -1460,20 +1694,21 @@ export async function renderDiffusion(container, block, options = {}) {
       if (picks.length >= steps) return;
       let bestId = null, bestAdd = -1;
       for (const n of nodes) {
-        if (picks.includes(n.id)) continue;
-        const r = reachSet.get(n.id);
-        let add = 0;
-        for (const x of r) if (!covered.has(x)) add++;
-        if (add > bestAdd || (add === bestAdd && (bestId === null || n.id < bestId))) {
+        const nid = String(n.id);
+        if (picks.includes(nid)) continue;
+        // Recompute with cumulative team so overlap counts properly.
+        const cumulative = reachBounded([...picks, n.id].map(Number));
+        const add = cumulative.size - covered.size;
+        if (add > bestAdd || (add === bestAdd && (bestId === null || nid < bestId))) {
           bestAdd = add;
-          bestId = n.id;
+          bestId = nid;
         }
       }
       if (bestId === null) return;
-      const gained = new Set();
-      for (const x of reachSet.get(bestId)) if (!covered.has(x)) gained.add(x);
+      const teamReach = reachBounded([...picks, bestId].map(Number));
+      const gained = new Set([...teamReach].filter((x) => !covered.has(x)));
       picks.push(bestId);
-      covered = new Set([...covered, ...reachSet.get(bestId)]);
+      covered = teamReach;
       cy.nodes().forEach((n) => {
         if (gained.has(n.id())) { n.style("opacity", 1); n.style("background-color", "#3d7a52"); }
       });
@@ -1551,23 +1786,48 @@ export async function renderDiffusion(container, block, options = {}) {
     const presets = block.presets || [];
     const nameToId = new Map(nodes.map((n) => [n.name, n.id]));
 
+    // Bounded diffusion matching build_network.py:
+    //  - only edges with weight >= MIN_W count
+    //  - each carrier transmits to at most MAX_T strongest contacts
+    //  - BFS bounded to PASI rounds
+    let statsDataM = null;
+    try { statsDataM = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
+    const PASI = block.pasi || statsDataM?.sliceMetrics?.diffusionModel?.pasi || 4;
+    const MAX_T = block.maxTransmiteri || statsDataM?.sliceMetrics?.diffusionModel?.maxTransmiteri || 4;
+    const MIN_W = 4;
+
+    const adjTop = new Map();
+    {
+      const tmp = new Map();
+      for (const n of nodes) tmp.set(n.id, []);
+      for (const e of edges) {
+        if ((e.weight || 0) < MIN_W) continue;
+        tmp.get(e.source).push({ to: e.target, w: e.weight });
+        tmp.get(e.target).push({ to: e.source, w: e.weight });
+      }
+      for (const [nid, arr] of tmp) {
+        arr.sort((a, b) => b.w - a.w || (a.to < b.to ? -1 : 1));
+        adjTop.set(nid, arr.slice(0, MAX_T).map((x) => x.to));
+      }
+    }
+    // Full unbounded adjacency for the animation only (so the wave still spreads visually)
     const adjMap = new Map();
     for (const n of nodes) adjMap.set(n.id, new Set());
     for (const e of edges) { adjMap.get(e.source).add(e.target); adjMap.get(e.target).add(e.source); }
-    function reach(source) {
-      const s = new Set([source]);
-      const q = [source];
-      while (q.length) {
-        const x = q.shift();
-        for (const y of adjMap.get(x) || []) if (!s.has(y)) { s.add(y); q.push(y); }
+
+    function coverage(seedIds) {
+      const known = new Set(seedIds.map(String));
+      let frontier = seedIds.map(String);
+      for (let s = 0; s < PASI && frontier.length; s++) {
+        const next = [];
+        for (const x of frontier) {
+          for (const y of adjTop.get(x) || []) {
+            if (!known.has(y)) { known.add(y); next.push(y); }
+          }
+        }
+        frontier = next;
       }
-      return s;
-    }
-    const reachMap = new Map(nodes.map((n) => [n.id, reach(n.id)]));
-    function coverage(ids) {
-      const s = new Set();
-      for (const x of ids) for (const y of reachMap.get(x) || []) s.add(y);
-      return s;
+      return known;
     }
 
     const team = [];
@@ -1620,18 +1880,18 @@ export async function renderDiffusion(container, block, options = {}) {
 
     function animateSpread(ids, cb) {
       cy.nodes().removeClass("knows");
-      for (const x of ids) cy.getElementById(x).addClass("knows");
-      const covered = new Set(ids);
-      let frontier = [...ids];
+      for (const x of ids) cy.getElementById(String(x)).addClass("knows");
+      const covered = new Set(ids.map(String));
+      let frontier = ids.map(String);
       let step = 0;
       const iv = setInterval(() => {
         const next = [];
-        for (const x of frontier) for (const y of adjMap.get(x) || []) if (!covered.has(y)) { covered.add(y); next.push(y); }
-        for (const y of next) cy.getElementById(y).addClass("knows");
+        for (const x of frontier) for (const y of adjTop.get(x) || []) if (!covered.has(y)) { covered.add(y); next.push(y); }
+        for (const y of next) cy.getElementById(String(y)).addClass("knows");
         frontier = next;
         step++;
-        if (!next.length || step > 25) { clearInterval(iv); cb(covered); }
-      }, 300);
+        if (!next.length || step >= PASI) { clearInterval(iv); cb(covered); }
+      }, 350);
     }
 
     function renderHistory() {
@@ -1659,9 +1919,19 @@ export async function renderDiffusion(container, block, options = {}) {
     controls.querySelectorAll("[data-preset]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const p = presets[parseInt(btn.dataset.preset, 10)];
-        if (!p || !Array.isArray(p.names)) return;
+        if (!p) return;
         team.length = 0;
-        for (const nm of p.names) { const nid = nameToId.get(nm); if (nid && team.length < teamSize) team.push(nid); }
+        if (p.random === true) {
+          // Pick teamSize distinct random elevs
+          const pool = nodes.map((n) => n.id);
+          for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+          }
+          for (const nid of pool.slice(0, teamSize)) team.push(nid);
+        } else if (Array.isArray(p.names)) {
+          for (const nm of p.names) { const nid = nameToId.get(nm); if (nid && team.length < teamSize) team.push(nid); }
+        }
         paint();
       });
     });
