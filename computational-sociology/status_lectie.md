@@ -1,15 +1,15 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (TRANȘA 3: cardurile C6-C10, capitolul „Explorarea")
+Ultima actualizare: 2026-07-22 (TRANȘA 4: drumul către histogramă, cardurile C11-C16b)
 
 ## Statul actual al lecției
 
-Lecția `highschool` conține **11 blocuri** (10 carduri C1-C10 + un marker de tranșă). Restructurarea la ținta finală de 29 carduri e în curs; tranșele următoare adaugă C11-C29.
+Lecția `highschool` conține **18 blocuri** (17 carduri C1-C16b + un marker de tranșă). Restructurarea la ținta finală de 29 carduri e în curs; tranșele următoare adaugă C17-C29.
 
 - Fișier: `lessons/highschool.json`
 - Punct de intrare: `lesson.html?id=highschool`
 - Titlu: **Zvonul**
-- 3 capitole: „Ce este sociologia computațională" (C1-C3), „Un mister și un alfabet" (C4-C5), „Explorarea" (C6-C10)
+- 4 capitole: „Ce este sociologia computațională" (C1-C3), „Un mister și un alfabet" (C4-C5), „Explorarea" (C6-C10), „Câți sunt, cum arată" (C11-C16b)
 
 ## TRANȘA 2 (cardurile C1-C5) — livrat
 
@@ -151,11 +151,103 @@ Lecția `highschool` conține **11 blocuri** (10 carduri C1-C10 + un marker de t
 - **caption (cu placeholder pentru fullSchool):**
   > Doar circa `{{fullSchool.classContactSplit.globalBetweenPct}}` (**7,6**)% din timpul de contact traversează granițele. Zidurile nu sunt legale, dar sunt reale. Pentru misiune: dacă alegi trei oameni din același grup, alegerile se irosesc; ajungi la aceeași lume.
 
-### Marker sfârșit tranșa 3
+## TRANȘA 4 (cardurile C11-C16b) — livrat
 
-- **id:** `cX-marker-transa-3`
+### Card C11, text: „{{name:vedeta}} are {{maxDegree}} contacte. E mult?"
+
+- **id:** `c11-vedeta-e-mult`
+- **capitol:** 4
+- **title (cu placeholder-e):** `{{name:vedeta}}` = **Octav**, `{{maxDegree}}` = **15**
+- **content (HTML, 3 paragrafe cu placeholder-e):**
+  > Am numărat contactele fiecărui elev. Octav are 15. E mult?
+  >
+  > Întrebarea nu are răspuns până nu spunem: mult față de ce? Îl comparăm cu un coleg oarecare, care are `{{medianDegree}}` = **5**. Deci de câteva ori mai mult.
+  >
+  > Dar poate acel coleg e neobișnuit de retras. Ca să știm dacă Octav e excepțional, avem nevoie de toți.
+
+### Card C12, chart cu stări comandate: „Toate valorile"
+
+- **id:** `c12-toate-valorile`
+- **variant:** `states` (nou state „histogram" adăugat)
+- **capitol:** 4
+- **date:** `sliceMetrics.distributions.degrees` (93 valori)
+- **states:** [scatter (Împrăștiate), sorted (Ordonează), histogram (Grupează și numără)]
+- **intro:** „Iată gradele tuturor celor 93 de elevi din felie, ca puncte împrăștiate. Apasă butoanele ca să comanzi ce se întâmplă cu ele."
+- **Interacțiune:** butoane care declanșează tranziții animate (900ms ease-in-out) între poziții. La „Grupează și numără", punctele stack-uiesc în bins de lățime 3, poziția fiecăruia calculată din rank-ul lui în bin.
+- **caption:** „Ordonarea îți arată extremele. Gruparea îți spune câți sunt în fiecare interval. Ca să răspunzi la întrebarea câți sunt ca mine, cu 3 sau 5 contacte, trebuie să numeri."
+
+### Card C13, text: „Histograma"
+
+- **id:** `c13-histograma`
+- **capitol:** 4
+- **content (HTML, 3 paragrafe, un bold cheie):**
+  > Construcția pe care ai comandat-o are un nume: **histogramă**. Fiecare bară spune câți elevi au un număr de contacte dintr-un anumit interval.
+  >
+  > Uită-te acum la ultima cutie: în ea e o singură persoană. Octav nu e doar sus, e singur acolo.
+  >
+  > Da, 15 e mult.
+
+### Card C14, chart triple-histogram: „Trei forme"
+
+- **id:** `c14-trei-forme`
+- **variant:** `triple-histogram` (nou)
+- **capitol:** 4
+- **series:**
+  1. Contacte pe elev (felia 3 clase) — `sliceMetrics.distributions.degrees` (93 valori, binWidth 2)
+  2. Timp total de contact pe elev — `sliceMetrics.distributions.weighted` (93 valori, binWidth 60)
+  3. Mărimea celor 9 clase — `fullSchool.metrics.distributions.classSizes` (9 valori, binWidth 4)
+- **Randare:** trei mini-histograme; pe telefon în coloană, pe desktop (min-width 768px) în grid 1fr 1fr 1fr. Fiecare cu media (linia continuă brună) și medianul (linia punctată verde) suprapuse.
+- **intro:** „Trei distribuții din aceeași școală, comparate: numărul de contacte al fiecărui elev, timpul total petrecut în contacte, mărimea celor 9 clase. Fiecare cu media (linia continuă) și medianul (linia întreruptă)."
+- **caption:** „Prima e asimetrică, a doua și mai mult, a treia aproape uniformă. Forma nu e decor. Distribuțiile cu coadă lungă apar oriunde avantajul se acumulează: la venituri, la audiențe, la mărimea orașelor. Cele uniforme apar unde ceva a fost împărțit deliberat, ca elevii pe clase."
+
+### Card C15, code (Pyodide, instance = `bins`): „Cine alege cutiile"
+
+- **id:** `c15-cine-alege-cutiile`
+- **instance:** `bins` · **capitol:** 4
+- **task (deasupra editorului, callout cu bordură stângă):**
+  > Statisticianul alege în câte cutii împarte datele. Schimbă lățimea și vezi cum aceeași distribuție pare netedă sau zimțată.
+- **initial (Python):**
+  ```python
+  LATIME_CUTIE = 3
+  # Aceleasi 93 de valori, regrupate pe intervale de LATIME_CUTIE.
+  {"binWidth": LATIME_CUTIE}
+  ```
+- **quickValueKey:** `LATIME_CUTIE` · **quickValues:** [1, 2, 5]
+- **Rezultat după Run:** „La lățime `<v>`: histograma se împarte în `<N>` intervale." (formatat via wireCodeBins)
+- **caption:** „Un grafic corect factual poate induce în eroare prin alegeri de reprezentare nedeclarate. De acum, la orice histogramă, întreabă cine a ales intervalele și de ce."
+
+### Card C16, chart meanmedian: „Media și medianul"
+
+- **id:** `c16-medie-si-median`
+- **variant:** `meanmedian` · **capitol:** 4
+- **intro (cu placeholder-e):** „Media: `{{stats.meanDegree}}` (**5,4**). Medianul: `{{stats.medianDegree}}` (**5**). Apropiate, deocamdată. Trage cursorul: adaugă în școală un elev cu gradul pe care îl alegi, până la 200."
+- **Interacțiune:** slider 0-200; histograma se re-bin-uiește cu noua valoare adăugată; liniile medie (brună) și median (verde punctată) se mută live; contor sub grafic afișează valorile actualizate.
+- **caption:** „Media urcă abrupt; medianul abia se mișcă. În distribuții cu coadă, media e sensibilă la extreme; medianul descrie poziția tipică."
+
+### Card C16b, quiz add-on: „Medie versus median" (gating)
+
+- **id:** `c16b-quiz-medie` · **capitol:** 4
+- **question:** Venitul mediu dintr-o țară crește cu 10%, venitul median stagnează. Ce s-a întâmplat, cel mai probabil?
+- **options:** [0] „Toți câștigă cu 10% mai mult" · [1] „Creșterea s-a concentrat la vârf" ← **corect** · [2] „Medianul e calculat greșit" · [3] „Oamenii declară venituri false"
+- **explanation:** „Exact ce ai văzut la cursor: coada trage media, medianul rămâne la omul din mijloc. Când media crește iar medianul stagnează, câștigul s-a concentrat la extreme, nu s-a împrăștiat."
+
+### Marker sfârșit tranșa 4
+
+- **id:** `cX-marker-transa-4`
 - **type:** `text`
-- Va fi ȘTERS la începutul tranșei 4.
+- Va fi ȘTERS la începutul tranșei 5.
+
+---
+
+## Extensii de componente în tranșa 4
+
+- **Placeholder resolver (slides.js):** `NAME_SHORTCUTS` gets `vedeta`/`puntea`/`discretul`/`izolatul` mapate la `sliceMetrics.characters.*`. `resolveExpr` acceptă acum și object shortcuts (nu doar array-uri), deci `{{name:vedeta}}` → `sliceMetrics.characters.star.name` = **Octav**.
+- **`chart states` — state „histogram":** dots stack în bins cu poziția calculată din rank-ul în bin (fiecare punct urcă cu 7px per pas). Al treilea buton din C12 declanșează tranziția scatter/sorted → histogram cu aceeași interpolare 900ms ease-in-out.
+- **`chart variant: "triple-histogram"`:** nou. Fetch stats, ia trei serii de valori din path-uri configurate, randă câte o mini-histogramă cu axe minimaliste + linii verticale medie/median. CSS grid: coloană pe mobil, 1fr 1fr 1fr pe desktop.
+
+---
+
+## TRANȘA 3 (cardurile C6-C10) — livrat
 
 ---
 

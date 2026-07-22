@@ -243,6 +243,39 @@
   .chapter-intro { animation: none; }
 }
 
+/* Triple histogram (three mini-charts compared) */
+.triple-histogram {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+.triple__cell {
+  padding: var(--sp-2);
+  background: var(--color-surface);
+  border: var(--border-thin-soft);
+  border-radius: var(--radius-md);
+}
+.triple__title {
+  font-size: 0.85rem;
+  color: var(--color-ink);
+  margin-bottom: var(--sp-2);
+  font-weight: 500;
+}
+.triple__meta {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  margin-top: var(--sp-1);
+}
+.triple__empty {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  padding: var(--sp-3);
+}
+@media (min-width: 768px) {
+  .triple-histogram { grid-template-columns: 1fr 1fr 1fr; }
+}
+
 /* Notification-style panel (intercepted-message flavour) */
 .notification-panel {
   background: var(--color-surface);

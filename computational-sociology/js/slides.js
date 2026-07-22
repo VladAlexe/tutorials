@@ -39,7 +39,11 @@ const NAME_SHORTCUTS = {
   topDegree:   "topByDegree",
   topTime:     "topByWeighted",
   topSpread:   "spreadRanking.champions",
-  seedFirst:   "majorityIllusion.seedNames"
+  seedFirst:   "majorityIllusion.seedNames",
+  vedeta:      "sliceMetrics.characters.star",
+  puntea:      "sliceMetrics.characters.bridge",
+  discretul:   "sliceMetrics.characters.discreet",
+  izolatul:    "sliceMetrics.characters.isolated"
 };
 
 function formatValue(v) {
@@ -71,10 +75,13 @@ function resolveExpr(stats, expr) {
     const [field, key] = trimmed.split(":").map((s) => s.trim());
     const path = NAME_SHORTCUTS[key];
     if (!path) return null;
-    const arr = walkPath(stats, path.split("."));
-    if (Array.isArray(arr) && arr[0] != null) {
-      const first = arr[0];
+    const target = walkPath(stats, path.split("."));
+    if (Array.isArray(target) && target[0] != null) {
+      const first = target[0];
       return typeof first === "object" ? first[field] : first;
+    }
+    if (target && typeof target === "object") {
+      return target[field];
     }
     return null;
   }

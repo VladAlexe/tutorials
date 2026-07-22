@@ -10,7 +10,8 @@
   "chapters": [
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 },
-    { "n": 3, "title": "Explorarea", "startIdx": 5 }
+    { "n": 3, "title": "Explorarea", "startIdx": 5 },
+    { "n": 4, "title": "Câți sunt, cum arată", "startIdx": 10 }
   ],
   "blocks": [
     {
@@ -128,9 +129,91 @@
     },
     {
       "type": "text",
-      "id": "cX-marker-transa-3",
-      "title": "Sfârșitul tranșei 3",
-      "content": "<p>Ai ajuns la finalul explorării inițiale. Continuarea (cardurile C11 la C29) vine cu tranșele următoare, cu măsurile: popularitate, deschidere, acoperire, apoi misiunea.</p><p>Închide lecția și așteaptă versiunea completă.</p>"
+      "id": "c11-vedeta-e-mult",
+      "title": "{{name:vedeta}} are {{maxDegree}} contacte. E mult?",
+      "content": "<p>Am numărat contactele fiecărui elev. {{name:vedeta}} are {{maxDegree}}. E mult?</p><p>Întrebarea nu are răspuns până nu spunem: mult față de ce? Îl comparăm cu un coleg oarecare, care are {{medianDegree}}. Deci de câteva ori mai mult.</p><p>Dar poate acel coleg e neobișnuit de retras. Ca să știm dacă {{name:vedeta}} e excepțional, avem nevoie de toți.</p>"
+    },
+    {
+      "type": "chart",
+      "id": "c12-toate-valorile",
+      "variant": "states",
+      "source": "data/highschool-stats.json",
+      "field": "degrees",
+      "binWidth": 3,
+      "states": [
+        { "key": "scatter", "label": "Împrăștiate" },
+        { "key": "sorted", "label": "Ordonează" },
+        { "key": "histogram", "label": "Grupează și numără" }
+      ],
+      "title": "Toate valorile",
+      "intro": "Iată gradele tuturor celor 93 de elevi din felie, ca puncte împrăștiate. Apasă butoanele ca să comanzi ce se întâmplă cu ele.",
+      "caption": "Ordonarea îți arată extremele. Gruparea îți spune câți sunt în fiecare interval. Ca să răspunzi la întrebarea câți sunt ca mine, cu 3 sau 5 contacte, trebuie să numeri."
+    },
+    {
+      "type": "text",
+      "id": "c13-histograma",
+      "title": "Histograma",
+      "content": "<p>Construcția pe care ai comandat-o are un nume: <strong>histogramă</strong>. Fiecare bară spune câți elevi au un număr de contacte dintr-un anumit interval.</p><p>Uită-te acum la ultima cutie: în ea e o singură persoană. {{name:vedeta}} nu e doar sus, e singur acolo.</p><p>Da, {{maxDegree}} e mult.</p>"
+    },
+    {
+      "type": "chart",
+      "id": "c14-trei-forme",
+      "variant": "triple-histogram",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Trei forme",
+      "intro": "Trei distribuții din aceeași școală, comparate: numărul de contacte al fiecărui elev, timpul total petrecut în contacte, mărimea celor 9 clase. Fiecare cu media (linia continuă) și medianul (linia întreruptă).",
+      "series": [
+        { "title": "Contacte pe elev (felia 3 clase)", "path": "sliceMetrics.distributions.degrees", "binWidth": 2 },
+        { "title": "Timp total de contact pe elev", "path": "sliceMetrics.distributions.weighted", "binWidth": 60 },
+        { "title": "Mărimea celor 9 clase", "path": "fullSchool.metrics.distributions.classSizes", "binWidth": 4 }
+      ],
+      "caption": "Prima e asimetrică, a doua și mai mult, a treia aproape uniformă. Forma nu e decor. Distribuțiile cu coadă lungă apar oriunde avantajul se acumulează: la venituri, la audiențe, la mărimea orașelor. Cele uniforme apar unde ceva a fost împărțit deliberat, ca elevii pe clase."
+    },
+    {
+      "type": "code",
+      "id": "c15-cine-alege-cutiile",
+      "instance": "bins",
+      "title": "Cine alege cutiile",
+      "intro": "Aceeași distribuție, altă formă. Fiindcă cineva alege cât de late sunt cutiile.",
+      "task": "Statisticianul alege în câte cutii împarte datele. Schimbă lățimea și vezi cum aceeași distribuție pare netedă sau zimțată.",
+      "initial": "LATIME_CUTIE = 3\n# Aceleasi 93 de valori, regrupate pe intervale de LATIME_CUTIE.\n{\"binWidth\": LATIME_CUTIE}",
+      "headerLabel": "Lățimea cutiei",
+      "quickValueKey": "LATIME_CUTIE",
+      "quickValues": [1, 2, 5],
+      "xLabel": "contacte",
+      "yLabel": "elevi",
+      "caption": "Un grafic corect factual poate induce în eroare prin alegeri de reprezentare nedeclarate. De acum, la orice histogramă, întreabă cine a ales intervalele și de ce."
+    },
+    {
+      "type": "chart",
+      "id": "c16-medie-si-median",
+      "variant": "meanmedian",
+      "title": "Media și medianul",
+      "intro": "Media: {{stats.meanDegree}}. Medianul: {{stats.medianDegree}}. Apropiate, deocamdată. Trage cursorul: adaugă în școală un elev cu gradul pe care îl alegi, până la 200.",
+      "source": "data/highschool-stats.json",
+      "field": "degrees",
+      "defaultBinWidth": 3,
+      "caption": "Media urcă abrupt; medianul abia se mișcă. În distribuții cu coadă, media e sensibilă la extreme; medianul descrie poziția tipică."
+    },
+    {
+      "type": "quiz",
+      "id": "c16b-quiz-medie",
+      "title": "Medie versus median",
+      "question": "Venitul mediu dintr-o țară crește cu 10%, venitul median stagnează. Ce s-a întâmplat, cel mai probabil?",
+      "options": [
+        "Toți câștigă cu 10% mai mult",
+        "Creșterea s-a concentrat la vârf",
+        "Medianul e calculat greșit",
+        "Oamenii declară venituri false"
+      ],
+      "correctIndex": 1,
+      "explanation": "Exact ce ai văzut la cursor: coada trage media, medianul rămâne la omul din mijloc. Când media crește iar medianul stagnează, câștigul s-a concentrat la extreme, nu s-a împrăștiat."
+    },
+    {
+      "type": "text",
+      "id": "cX-marker-transa-4",
+      "title": "Sfârșitul tranșei 4",
+      "content": "<p>Ai văzut cum arată școala în cifre și ai încheiat drumul către histogramă. Continuarea (cardurile C17 la C29) vine cu tranșele următoare: cele trei măsuri (popularitate, deschidere, acoperire) și misiunea propriu-zisă.</p><p>Închide lecția și așteaptă versiunea completă.</p>"
     }
   ]
 }

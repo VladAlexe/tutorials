@@ -647,9 +647,26 @@ async function renderStates(container, block, values, stats) {
   const circles = chartHost.querySelectorAll("circle");
   let currentPos = initialPos;
 
+  function histogramPos(i, v) {
+    const bw = block.binWidth || 3;
+    const startBin = Math.floor(minV / bw) * bw;
+    const maxHi = Math.max(...values);
+    const nBins = Math.floor((maxHi - startBin) / bw) + 1;
+    const binPx = chartW / nBins;
+    const binIdx = Math.floor((v - startBin) / bw);
+    const x = padL + binIdx * binPx + binPx / 2;
+    let rank = 0;
+    for (let j = 0; j < i; j++) {
+      if (Math.floor((values[j] - startBin) / bw) === binIdx) rank++;
+    }
+    const dotSize = 7;
+    return { x, y: padT + chartH - (rank + 1) * dotSize };
+  }
+
   function positionsFor(key) {
     if (key === "sorted") return values.map((v, i) => sortedPos(i, v, rankOf[i]));
     if (key === "grouped") return values.map((v, i) => groupedPos(i, v));
+    if (key === "histogram") return values.map((v, i) => histogramPos(i, v));
     return values.map((v, i) => scatterPos(i, v));
   }
 
@@ -834,6 +851,67 @@ export function renderOutcomeHistogram(container, outcomes, block) {
   container.innerHTML = histogramSVG(bins, block.binWidth || 10, block);
 }
 
+// ---- triple-histogram: three mini-histograms compared -------------------
+function walkStatsPath(stats, path) {
+  const parts = path.split(".");
+  let cur = stats;
+  for (const p of parts) {
+    if (cur == null) return null;
+    if (Array.isArray(cur)) { const i = Number(p); cur = Number.isFinite(i) ? cur[i] : cur[p]; }
+    else cur = cur[p];
+  }
+  return cur;
+}
+
+function miniHistogramSVG(values, binWidth, title) {
+  if (!values || !values.length) return `<div class="triple__cell"><div class="triple__title">${esc(title)}</div><div class="triple__empty">Fără date</div></div>`;
+  const bins = binValues(values, binWidth);
+  const W = 260, H = 160;
+  const padL = 22, padR = 8, padT = 20, padB = 26;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const maxC = Math.max(...bins.map((b) => b.count), 1);
+  const barW = chartW / bins.length;
+  const mn = values.reduce((a, b) => a + b, 0) / values.length;
+  const sorted = [...values].sort((a, b) => a - b);
+  const md = sorted.length % 2 ? sorted[(sorted.length - 1) / 2] : (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2;
+  const minLo = bins[0].lo;
+  const maxHi = bins[bins.length - 1].hi;
+  const xFor = (v) => padL + ((v - minLo) / Math.max(1, maxHi + 1 - minLo)) * chartW;
+
+  const bars = bins.map((b, i) => {
+    const x = padL + i * barW + 0.5;
+    const h = (b.count / maxC) * chartH;
+    const y = padT + chartH - h;
+    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(barW - 1).toFixed(1)}" height="${h.toFixed(1)}" fill="${COL_BAR}" fill-opacity="0.9"/>`;
+  }).join("");
+  const meanLine =
+    `<line x1="${xFor(mn).toFixed(1)}" y1="${padT - 2}" x2="${xFor(mn).toFixed(1)}" y2="${padT + chartH}" stroke="${COL_MEAN}" stroke-width="2"/>` +
+    `<text x="${xFor(mn).toFixed(1)}" y="${(padT - 6).toFixed(1)}" text-anchor="middle" font-size="10" fill="${COL_MEAN}">medie ${fmtNum(Math.round(mn * 10) / 10)}</text>`;
+  const medianLine =
+    `<line x1="${xFor(md).toFixed(1)}" y1="${padT - 2}" x2="${xFor(md).toFixed(1)}" y2="${padT + chartH}" stroke="${COL_MEDIAN}" stroke-width="2" stroke-dasharray="4 3"/>` +
+    `<text x="${xFor(md).toFixed(1)}" y="${(padT + chartH + 16).toFixed(1)}" text-anchor="middle" font-size="10" fill="${COL_MEDIAN}">median ${fmtNum(Math.round(md * 10) / 10)}</text>`;
+
+  return `<div class="triple__cell">` +
+    `<div class="triple__title">${esc(title)}</div>` +
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">` +
+    bars + meanLine + medianLine +
+    `</svg>` +
+    `<div class="triple__meta">${values.length} valori</div>` +
+    `</div>`;
+}
+
+async function renderTripleHistogram(container, block, stats) {
+  const series = block.series || [];
+  const grid = document.createElement("div");
+  grid.className = "triple-histogram";
+  grid.innerHTML = series.map((s) => {
+    const values = Array.isArray(s.values) ? s.values : (s.path ? walkStatsPath(stats, s.path) : []) || [];
+    return miniHistogramSVG(values, s.binWidth || 3, s.title || "");
+  }).join("");
+  container.appendChild(grid);
+}
+
 // ---- public entry --------------------------------------------------------
 export async function renderChart(container, block) {
   container.classList.add("chart");
@@ -885,6 +963,11 @@ export async function renderChart(container, block) {
       const values = await getValues(block);
       const stats = await getStats(block);
       await renderStates(container, block, values, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "triple-histogram") {
+      const stats = await getStats(block);
+      await renderTripleHistogram(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "sex-composition") {
