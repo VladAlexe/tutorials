@@ -1246,6 +1246,15 @@ export async function renderDiffusion(container, block, options = {}) {
         const B = Math.round(192 * (1 - t) + 30  * t);
         return `rgb(${R},${G},${B})`;
       }
+      if (scheme === "openness") {
+        const opById = statsData?.sliceMetrics?.openness || {};
+        const maxOp = Math.max(...Object.values(opById).map((v) => Number(v) || 0), 1);
+        const t = (Number(opById[String(nid)]) || 0) / maxOp;
+        const R = Math.round(217 * (1 - t) + 47  * t);
+        const G = Math.round(207 * (1 - t) + 122 * t);
+        const B = Math.round(192 * (1 - t) + 139 * t);
+        return `rgb(${R},${G},${B})`;
+      }
       if (scheme === "mismatch") {
         return mismatchedIds.has(String(nid)) ? "#a3341f" : "#d9cfc0";
       }
@@ -1269,7 +1278,8 @@ export async function renderDiffusion(container, block, options = {}) {
     }
 
     const labels = {
-      class: "Clasa", community: "Comunitatea", component: "Componenta", degree: "Popularitatea",
+      class: "Clasa", community: "Comunitatea", component: "Componenta",
+      degree: "Popularitatea", openness: "Deschiderea",
       mismatch: "Arată nepotrivirile"
     };
     const explains = {
@@ -1277,6 +1287,7 @@ export async function renderDiffusion(container, block, options = {}) {
       community: "Culoarea = comunitatea detectată de algoritm (label propagation, seed 42). Aproape identică cu clasele; unde nu, avem personaje.",
       component: "Culoarea = componenta conexă. Sunt subgrupuri complet separate.",
       degree:    "Culoarea = popularitatea (gradul). Cu cât mai închis, cu atât mai popular.",
+      openness:  "Culoarea = deschiderea. Cu cât mai închis (albastru), cu atât mai multe grupuri diferite atinge cu vecinii lui.",
       mismatch:  "Roșu = elevii puși de algoritm în altă comunitate decât clasa lor. Sunt puțini, dar prin ei trece rețeaua dincolo de granițe."
     };
 
@@ -1428,6 +1439,55 @@ export async function renderDiffusion(container, block, options = {}) {
     }
     controls.querySelector('[data-act="step"]').addEventListener("click", doStep);
     controls.querySelector('[data-act="reset"]').addEventListener("click", doReset);
+  }
+
+  else if (mode === "characters") {
+    cy.nodes().addClass("knows");
+    let statsData = null;
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
+    const chars = statsData?.sliceMetrics?.characters || {};
+    const roles = [
+      { key: "star", label: "Vedeta", numLabel: "contacte", numField: "popularity" },
+      { key: "bridge", label: "Puntea", numLabel: "grupuri diferite", numField: "openness" },
+      { key: "discreet", label: "Discretul", numLabel: "grupuri (doar câteva contacte)", numField: "openness" },
+      { key: "isolated", label: "Izolatul", numLabel: "contact", numField: "popularity" }
+    ];
+    const chipsHtml = roles.map((r) => {
+      const c = chars[r.key];
+      if (!c) return "";
+      return `<button type="button" class="char-chip" data-role="${r.key}" data-id="${c.id}">` +
+        `<div class="char-chip__role">${r.label}</div>` +
+        `<div class="char-chip__name">${c.name}</div>` +
+        `<div class="char-chip__stat"><strong>${c[r.numField]}</strong> ${r.numLabel}</div>` +
+        `</button>`;
+    }).join("");
+    controls.innerHTML =
+      `<div class="char-chips">${chipsHtml}</div>` +
+      `<div class="diff-hint" data-role="info">Atinge un personaj pentru a-l vedea pe hartă cu vecinii lui.</div>`;
+    const infoEl = controls.querySelector('[data-role="info"]');
+    function highlight(nid) {
+      cy.nodes().removeClass("top source knows");
+      const focal = cy.getElementById(String(nid));
+      if (focal && focal.length) {
+        focal.closedNeighborhood().addClass("knows");
+        focal.addClass("top");
+      }
+    }
+    controls.querySelectorAll(".char-chip").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const roleKey = btn.dataset.role;
+        const c = chars[roleKey];
+        if (!c) return;
+        controls.querySelectorAll(".char-chip").forEach((b) => b.classList.remove("char-chip--active"));
+        btn.classList.add("char-chip--active");
+        highlight(c.id);
+        infoEl.textContent = `${c.name} din ${c.class}: ${c.popularity} contacte, în ${c.openness} grupuri diferite. Uită-te unde e situat în rețea.`;
+      });
+    });
+    requestAnimationFrame(() => {
+      const first = controls.querySelector(".char-chip");
+      if (first) first.click();
+    });
   }
 
   else if (mode === "mission") {

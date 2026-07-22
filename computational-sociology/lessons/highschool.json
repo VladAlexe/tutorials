@@ -11,7 +11,8 @@
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 },
     { "n": 3, "title": "Explorarea", "startIdx": 5 },
-    { "n": 4, "title": "Câți sunt, cum arată", "startIdx": 10 }
+    { "n": 4, "title": "Câți sunt, cum arată", "startIdx": 10 },
+    { "n": 5, "title": "Trei măsuri, patru oameni", "startIdx": 17 }
   ],
   "blocks": [
     {
@@ -210,10 +211,39 @@
       "explanation": "Exact ce ai văzut la cursor: coada trage media, medianul rămâne la omul din mijloc. Când media crește iar medianul stagnează, câștigul s-a concentrat la extreme, nu s-a împrăștiat."
     },
     {
+      "type": "diffusion",
+      "id": "c17-patru-oameni",
+      "mode": "characters",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Patru oameni",
+      "intro": "<p><strong>{{name:vedeta}}</strong>, {{maxDegree}} contacte. Cel mai popular din școală.</p><p><strong>{{name:puntea}}</strong>, contacte în {{openness:puntea}} grupuri diferite. Nu are cele mai multe legături, are legăturile cele mai împrăștiate.</p><p><strong>{{name:discretul}}</strong>, {{degree:discretul}} contacte, dar informația pornită de la el ajunge la {{reach:discretul}} persoane.</p><p><strong>{{name:izolatul}}</strong>, un singur contact. La el informația ajunge ultima sau deloc.</p>",
+      "caption": "Atinge un personaj pe chip-ul de sub grafic. Îl vezi pe hartă, cu vecinii lui. Cei patru vor reveni în vizualizările următoare."
+    },
+    {
+      "type": "diffusion",
+      "id": "c18-deschiderea",
+      "mode": "recolor",
+      "data": "data/highschool-network.json",
+      "schemes": ["degree", "openness"],
+      "title": "Deschiderea",
+      "intro": "<p>A doua măsură a lecției. Popularitatea numără contactele. Deschiderea numără <strong>lumile</strong> la care ai acces: în câte grupuri diferite ai măcar un contact.</p><p>{{name:vedeta}} are multe contacte, dar aproape toate într-un singur grup. {{name:puntea}} are mai puține, dar în {{openness:puntea}} grupuri.</p>",
+      "caption": "În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Noi o vom folosi imediat, la misiune."
+    },
+    {
+      "type": "paradox",
+      "id": "c19-paradox",
+      "title": "Paradoxul prieteniei",
+      "intro": "Înainte de a te uita la date, o întrebare pentru tine.",
+      "question": "Prietenii tăi au, în medie, mai mulți, la fel, sau mai puțini prieteni decât tine?",
+      "options": ["Mai mulți", "Cam la fel", "Mai puțini"],
+      "caption": "Nu e psihologie, e eșantionare. Persoanele cu multe legături apar în listele multora, deci lista ta supra-reprezintă popularii. Orice feed face la fel. Pentru misiune: intuiția ta despre cine e bine plasat e sistematic deformată."
+    },
+    {
       "type": "text",
-      "id": "cX-marker-transa-4",
-      "title": "Sfârșitul tranșei 4",
-      "content": "<p>Ai văzut cum arată școala în cifre și ai încheiat drumul către histogramă. Continuarea (cardurile C17 la C29) vine cu tranșele următoare: cele trei măsuri (popularitate, deschidere, acoperire) și misiunea propriu-zisă.</p><p>Închide lecția și așteaptă versiunea completă.</p>"
+      "id": "cX-marker-transa-5",
+      "title": "Sfârșitul tranșei 5",
+      "content": "<p>Ai văzut trei măsuri (popularitate, deschidere, acoperire), i-ai cunoscut pe cei patru, și ai văzut de ce intuiția te trage pe piste greșite. Continuarea (cardurile C20 la C29) vine cu tranșele următoare: misiunea propriu-zisă și paradoxul acoperirii lacome.</p><p>Închide lecția și așteaptă versiunea completă.</p>"
     }
   ]
 }

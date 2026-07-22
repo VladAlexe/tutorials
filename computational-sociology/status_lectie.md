@@ -1,8 +1,82 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (TRANȘA 5: rețea completă 9 clase + fix cardul C6)
+Ultima actualizare: 2026-07-22 (TRANȘA 6: cardurile C17-C19, capitolul „Trei măsuri, patru oameni")
 
-## TRANȘA 5 (rețea 9 clase + fix freq) — livrat
+## Statul actual al lecției
+
+Lecția `highschool` conține **21 blocuri** (20 carduri C1-C19 + un marker de tranșă), în 5 capitole.
+
+- 4 capitole: „Ce este sociologia computațională" (C1-C3), „Un mister și un alfabet" (C4-C5), „Explorarea" (C6-C10), „Câți sunt, cum arată" (C11-C16b), **„Trei măsuri, patru oameni" (C17-C19)**
+
+## TRANȘA 6 (cardurile C17-C19) — livrat
+
+### Card C17, diffusion mode „characters": „Patru oameni"
+
+- **id:** `c17-patru-oameni` · **mode:** `characters` (nou)
+- **capitol:** 5
+- **intro (HTML, 4 paragrafe cu placeholder-e):**
+  > **{{name:vedeta}}** (**Sandu**), {{maxDegree}} (**19**) contacte. Cel mai popular din școală.
+  > 
+  > **{{name:puntea}}** (**Cristi**), contacte în {{openness:puntea}} (**11**) grupuri diferite. Nu are cele mai multe legături, are legăturile cele mai împrăștiate.
+  > 
+  > **{{name:discretul}}** (**Denis**), {{degree:discretul}} (**4**) contacte, dar informația pornită de la el ajunge la {{reach:discretul}} (**299**) persoane.
+  > 
+  > **{{name:izolatul}}** (**Flavia**), un singur contact. La el informația ajunge ultima sau deloc.
+- **Interacțiune:** rețeaua școlii afișată; sub ea, 4 chip-uri clickabile (Vedeta / Puntea / Discretul / Izolatul), fiecare cu numele + cifra care îl definește. Tap → nodul e evidențiat cu vecinii lui pe hartă, panoul de info arată detaliile (clasa, popularitate, deschidere, acoperire). Primul chip activ implicit la load.
+- **caption:** „Atinge un personaj pe chip-ul de sub grafic. Îl vezi pe hartă, cu vecinii lui. Cei patru vor reveni în vizualizările următoare."
+
+### Card C18, network recolor cu popularity vs openness: „Deschiderea"
+
+- **id:** `c18-deschiderea` · **mode:** `recolor`
+- **capitol:** 5
+- **schemes:** `["degree", "openness"]` (schemă nouă `openness` adăugată)
+- **intro (cu placeholder-e):**
+  > A doua măsură a lecției. Popularitatea numără contactele. Deschiderea numără **lumile** la care ai acces: în câte grupuri diferite ai măcar un contact.
+  > 
+  > **Sandu** are multe contacte, dar aproape toate într-un singur grup. **Cristi** are mai puține, dar în **11** grupuri.
+- **Interacțiune:** 2 butoane (Popularitatea / Deschiderea) cu tranziție animată de culoare între cele două gradient-uri.
+  - **Popularitatea:** gradient brun (cald) — mai închis = mai popular
+  - **Deschiderea:** gradient albăstrui/teal — mai închis = în mai multe grupuri
+- **caption:** „În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Noi o vom folosi imediat, la misiune."
+
+### Card C19, bloc paradox (nou): „Paradoxul prieteniei" (gating)
+
+- **id:** `c19-paradox` · **type:** `paradox` (nou)
+- **capitol:** 5
+- **intro:** Înainte de a te uita la date, o întrebare pentru tine.
+- **question:** Prietenii tăi au, în medie, mai mulți, la fel, sau mai puțini prieteni decât tine?
+- **options:** [Mai mulți, Cam la fel, Mai puțini]
+- **Persistență:** votul salvat în `progress.votes["c19-paradox"]`. Gating: „Continuă" blocat până la vot.
+- **Reveal după vot:**
+  1. **Sub-rețea de 6 noduri** din `sliceMetrics.friendshipParadox.subnet`. Nodurile așezate în cerc. Nodurile sub media prietenilor colorate roșu-brun (`#a3341f`); cele peste, verde (`#3d7a52`). Muchii între ele desenate cu linii subțiri.
+  2. **Numărătoare interactivă:** utilizatorul atinge fiecare din cei 6. La fiecare tap se afișează:
+     - `<Nume> are <N> prieteni; prietenii au <lista degree-uri>, deci în medie <friendMean>. <Nume> e <sub/peste> această medie.`
+     - Contor: „Numărate: X/6. Sub media prietenilor: Y/X."
+  3. **Cifrele pe toată școala** (din `sliceMetrics.friendshipParadox`):
+     - Un elev are în medie **6,0** prieteni.
+     - Prietenii lui au în medie **7,6**.
+     - **70%** dintre elevi sunt sub media prietenilor lor.
+- **caption:** „Nu e psihologie, e eșantionare. Persoanele cu multe legături apar în listele multora, deci lista ta supra-reprezintă popularii. Orice feed face la fel. Pentru misiune: intuiția ta despre cine e bine plasat e sistematic deformată."
+
+### Marker sfârșit tranșa 6
+
+- **id:** `cX-marker-transa-5`
+- **type:** `text`
+- Va fi ȘTERS la începutul tranșei 7.
+
+## Extensii de componente în tranșa 6
+
+- **`slides.js` placeholder resolver:** `FIELD_ALIASES = { degree: "popularity" }` — `{{degree:discretul}}` mapează la `sliceMetrics.characters.discreet.popularity`.
+- **`diffusion.js` recolor:** schemă nouă `openness` — gradient teal peste noduri, valoarea citită din `sliceMetrics.openness[nid]`. Label: „Deschiderea".
+- **`diffusion.js` mode nou `characters`:** citește `sliceMetrics.characters` (4 roluri), randează chip-uri clickabile deasupra rețelei, fiecare cu label + nume + cifra definitorie. Tap → dim toate nodurile în afara ego-network-ului personajului + `.top` pe focal.
+- **`slides.js` block nou `paradox`:** tip de gating (ca vote). Randare: vot cu 3 opțiuni; la vot → reveal cu sub-rețea SVG 6 noduri (dispuse în cerc, roșu-brun pentru sub-mean, verde pentru peste) + numărătoare interactivă cu contor + cifrele școlii întregi. Persistat prin `markVote/getVote` cu `block.id`.
+- **CSS:** `.char-chips` (grid 2 col mobil, 4 col desktop), `.char-chip` (border, active state), `.paradox__vote`, `.paradox__subnet`, `.paradox__hint`, `.paradox__tracker`, `.paradox__numbers`.
+
+---
+
+## Restructurare (planificată, în curs)
+
+## TRANȘA 4b (rețea 9 clase + fix freq) — livrat
 
 ### A. Toate rețelele trec la 9 clase
 

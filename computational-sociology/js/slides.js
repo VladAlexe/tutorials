@@ -68,20 +68,23 @@ function walkPath(obj, parts) {
   return val;
 }
 
+const FIELD_ALIASES = { degree: "popularity" };
+
 function resolveExpr(stats, expr) {
   if (!stats) return null;
   const trimmed = expr.trim();
   if (trimmed.includes(":")) {
     const [field, key] = trimmed.split(":").map((s) => s.trim());
+    const actualField = FIELD_ALIASES[field] || field;
     const path = NAME_SHORTCUTS[key];
     if (!path) return null;
     const target = walkPath(stats, path.split("."));
     if (Array.isArray(target) && target[0] != null) {
       const first = target[0];
-      return typeof first === "object" ? first[field] : first;
+      return typeof first === "object" ? first[actualField] : first;
     }
     if (target && typeof target === "object") {
-      return target[field];
+      return target[actualField];
     }
     return null;
   }
@@ -178,6 +181,143 @@ async function loadStats(source) {
   } catch {
     return null;
   }
+}
+
+// Paradox block: vote + interactive 6-node subnet + whole-school numbers
+async function renderParadox(container, block, stats, opts) {
+  const progressMod = await import(`./progress.js?v=${V}`);
+  const { getVote, markVote } = progressMod;
+  const prior = getVote(block.id);
+
+  const voteWrap = document.createElement("div");
+  voteWrap.className = "paradox__vote vote";
+  const q = document.createElement("p");
+  q.className = "vote__question";
+  q.textContent = block.question || "";
+  voteWrap.appendChild(q);
+  const optWrap = document.createElement("div");
+  optWrap.className = "vote__options";
+  voteWrap.appendChild(optWrap);
+
+  const optBtns = [];
+  (block.options || []).forEach((label, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn btn--ghost vote__option";
+    btn.textContent = label;
+    btn.addEventListener("click", () => pick(idx));
+    optWrap.appendChild(btn);
+    optBtns.push(btn);
+  });
+  container.appendChild(voteWrap);
+
+  const revealEl = document.createElement("div");
+  revealEl.className = "paradox__reveal";
+  revealEl.hidden = true;
+  container.appendChild(revealEl);
+
+  async function pick(idx) {
+    optBtns.forEach((b, i) => {
+      b.disabled = true;
+      b.classList.toggle("vote__option--picked", i === idx);
+    });
+    markVote(block.id, { selectedIndex: idx });
+    if (opts.onAnswered) opts.onAnswered({ selectedIndex: idx });
+    await showReveal();
+  }
+
+  async function showReveal() {
+    revealEl.hidden = false;
+    revealEl.innerHTML = "";
+    const subnet = stats?.sliceMetrics?.friendshipParadox?.subnet;
+    if (subnet && Array.isArray(subnet.nodes)) {
+      const subnetHost = document.createElement("div");
+      subnetHost.className = "paradox__subnet";
+      revealEl.appendChild(subnetHost);
+      renderParadoxSubnet(subnetHost, subnet);
+    }
+    const p = stats?.sliceMetrics?.friendshipParadox || stats?.friendshipParadox;
+    if (p) {
+      const nums = document.createElement("div");
+      nums.className = "paradox__numbers";
+      nums.innerHTML =
+        `<p>Pe toată școala: un elev are în medie <strong>${p.meanDegree}</strong> prieteni.</p>` +
+        `<p>Prietenii lui au în medie <strong>${p.meanFriendDegree}</strong>.</p>` +
+        `<p><strong>${p.pctBelow}%</strong> dintre elevi sunt sub media prietenilor lor.</p>`;
+      revealEl.appendChild(nums);
+    }
+  }
+
+  if (prior && typeof prior.selectedIndex === "number") {
+    optBtns.forEach((b, i) => {
+      b.disabled = true;
+      b.classList.toggle("vote__option--picked", i === prior.selectedIndex);
+    });
+    await showReveal();
+    if (opts.onAnswered) opts.onAnswered({ selectedIndex: prior.selectedIndex });
+  }
+}
+
+function renderParadoxSubnet(container, subnet) {
+  const nodes = subnet.nodes || [];
+  const edges = subnet.edges || [];
+  const N = nodes.length;
+  const W = 480, H = 260;
+  const cx = W / 2, cyC = H / 2 - 10;
+  const r = 90;
+
+  const positions = {};
+  nodes.forEach((n, i) => {
+    const angle = (i / Math.max(1, N)) * 2 * Math.PI - Math.PI / 2;
+    positions[n.id] = { x: cx + r * Math.cos(angle), y: cyC + r * Math.sin(angle) };
+  });
+
+  const edgeSvg = edges.map((e) => {
+    const p1 = positions[e.source];
+    const p2 = positions[e.target];
+    if (!p1 || !p2) return "";
+    return `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="#b57140" stroke-width="1.5" opacity="0.5"/>`;
+  }).join("");
+
+  const nodeSvg = nodes.map((n) => {
+    const p = positions[n.id];
+    const color = n.belowMean ? "#a3341f" : "#3d7a52";
+    return `<g class="paradox-node" data-id="${n.id}" style="cursor:pointer">` +
+      `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="20" fill="${color}" fill-opacity="0.8"/>` +
+      `<text x="${p.x.toFixed(1)}" y="${(p.y + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="white" font-family="Georgia, serif">${n.name}</text>` +
+      `</g>`;
+  }).join("");
+
+  container.innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto">` +
+    edgeSvg + nodeSvg +
+    `</svg>`;
+
+  const hint = document.createElement("p");
+  hint.className = "paradox__hint";
+  hint.textContent = "Atinge pe rând fiecare din cei 6. Numărăm împreună.";
+  container.appendChild(hint);
+
+  const tracker = document.createElement("p");
+  tracker.className = "paradox__tracker";
+  tracker.textContent = `Numărate: 0/${N}. Sub media prietenilor: 0/${N}.`;
+  container.appendChild(tracker);
+
+  const counted = new Set();
+  container.querySelectorAll(".paradox-node").forEach((g) => {
+    g.addEventListener("click", () => {
+      const id = parseInt(g.dataset.id, 10);
+      const n = nodes.find((x) => x.id === id);
+      if (!n) return;
+      counted.add(id);
+      const belowSoFar = [...counted].filter((cId) => nodes.find((x) => x.id === cId)?.belowMean).length;
+      const friendList = (n.friendDegrees || []).join(", ");
+      hint.textContent = `${n.name} are ${n.degree} prieteni; prietenii au ${friendList}, deci în medie ${n.friendMean}. ${n.name} e ${n.belowMean ? "sub" : "peste"} această medie.`;
+      tracker.textContent = `Numărate: ${counted.size}/${N}. Sub media prietenilor: ${belowSoFar}/${counted.size}.`;
+      const c = g.querySelector("circle");
+      if (c) { c.setAttribute("stroke", "#2a1f16"); c.setAttribute("stroke-width", "2"); }
+    });
+  });
 }
 
 function addTitle(el, text, small) {
@@ -515,6 +655,18 @@ function fillSlide(slideState, callbacks) {
         if (b.caption) addCaption(el, b.caption);
         break;
       }
+      case "paradox": {
+        if (b.title) addTitle(el, b.title, true);
+        if (b.intro) addIntro(el, b.intro);
+        const wrap = document.createElement("div");
+        wrap.className = "paradox";
+        el.appendChild(wrap);
+        await renderParadox(wrap, b, stats, {
+          onAnswered: () => onAnswered(slideState)
+        });
+        if (b.caption) addCaption(el, b.caption);
+        break;
+      }
       case "quizset": {
         if (b.title) addTitle(el, b.title, true);
         if (b.intro) addIntro(el, b.intro);
@@ -678,7 +830,7 @@ export async function renderSlides(root, lesson) {
 
   const progressState = getProgress();
   const slideState = blocks.map((b) => {
-    const gatingType = b.type === "quiz" || b.type === "vote" || b.type === "quizset";
+    const gatingType = b.type === "quiz" || b.type === "vote" || b.type === "quizset" || b.type === "paradox";
     const s = {
       block: substituteBlock(b, stats),
       el: makeSlideElement(),
@@ -688,6 +840,7 @@ export async function renderSlides(root, lesson) {
     };
     if (b.type === "quiz" && progressState.quizzes?.[b.id]) s.canAdvance = true;
     if (b.type === "vote" && progressState.votes?.[b.id]) s.canAdvance = true;
+    if (b.type === "paradox" && progressState.votes?.[b.id]) s.canAdvance = true;
     if (b.type === "quizset" && Array.isArray(b.questions)) {
       const allAnswered = b.questions.every((_, i) => progressState.quizzes?.[`${b.id}-${i}`]);
       if (allAnswered && b.questions.length) s.canAdvance = true;
@@ -766,7 +919,7 @@ export async function renderSlides(root, lesson) {
       s.fillPromise = null;
       s.viz = null;
       s.el.innerHTML = "";
-      if (s.block.type === "quiz" || s.block.type === "vote" || s.block.type === "quizset") s.canAdvance = false;
+      if (s.block.type === "quiz" || s.block.type === "vote" || s.block.type === "quizset" || s.block.type === "paradox") s.canAdvance = false;
     });
   }
 
