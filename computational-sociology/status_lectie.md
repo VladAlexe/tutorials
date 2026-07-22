@@ -1,6 +1,100 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (TRANȘA 1: componente interactive reutilizabile)
+Ultima actualizare: 2026-07-22 (TRANȘA 2: cardurile C1-C5 din restructurarea la 29)
+
+## Statul actual al lecției
+
+Lecția `highschool` conține acum **6 blocuri** (5 carduri C1-C5 + un marker de tranșă). Restructurarea la ținta finală de 29 carduri e în curs; tranșele următoare adaugă C6-C29.
+
+- Fișier: `lessons/highschool.json`
+- Punct de intrare: `lesson.html?id=highschool`
+- Titlu: **Zvonul**
+- 2 capitole: „Ce este sociologia computațională" (C1-C3) și „Un mister și un alfabet" (C4-C5)
+
+## TRANȘA 2 (cardurile C1-C5) — livrat
+
+### Card C1, text: „Întrebări vechi, urme noi"
+
+- **id:** `c1-intrebari-vechi`
+- **capitol:** 1
+- **content (HTML, 3 paragrafe, un bold cheie):**
+  > Sociologia pune de peste un secol întrebări precise: cine se leagă de cine, cum circulă o idee, de ce apar și se mențin inegalitățile. Instrumentele ei clasice, sondajul reprezentativ, interviul, observația, rămân standardul pentru multe dintre aceste întrebări.
+  >
+  > Ce s-a schimbat este materia primă. Aproape orice acțiune lasă azi o înregistrare: un mesaj, o plată, o validare de card, o căutare. Un secol întreg, sociologul vedea puțin și trebuia să deducă mult, dintr-un eșantion de câteva sute de oameni. Astăzi raportul s-a inversat: putem observa milioane de acțiuni, iar întrebarea grea a devenit alta, **ce înseamnă ceea ce vedem**.
+  >
+  > Sociologia computațională lucrează exact în acest punct: folosește urmele digitale împreună cu instrumentele clasice, ca să răspundă la întrebările vechi la o scară imposibilă înainte, fără să uite că o înregistrare nu se interpretează singură.
+
+### Card C2, quiz cu gating: „Scara, măsura, simularea"
+
+- **id:** `c2-scara-masura-simularea`
+- **capitol:** 1
+- **intro (HTML, listă cu 3 elemente, bold pe termenii cheie):**
+  > Ce aduce calculul în sociologie? Trei lucruri, fiecare cu un câștig și cu un preț.
+  >
+  > - **Scara.** Putem analiza milioane de interacțiuni, nu sute de chestionare. Câștigăm cuprinderea; pierdem adâncimea, pentru că nimeni nu poate întreba un milion de oameni de ce au făcut ce au făcut.
+  > - **Măsura.** Concepte discutate până acum calitativ, influența, popularitatea, izolarea, pot fi definite precis și comparate numeric. Câștigăm comparația; pierdem nuanța, pentru că orice definiție taie ceva din realitate.
+  > - **Simularea.** Putem construi modelul unui proces social și îl putem rula de o mie de ori, întrebând ce s-ar schimba dacă regulile ar fi altele. Un experiment pe care realitatea nu ni-l permite, dar care e doar atât de bun cât sunt regulile pe care le-am scris noi.
+  >
+  > Toate trei apar în lecția de azi. Începem cu o verificare scurtă.
+- **question:** Care dintre următoarele este o urmă digitală în sens strict?
+- **options:**
+  1. `[0]` „O opinie exprimată într-un interviu"
+  2. `[1]` „Validarea unui abonament de transport" ← **corect (correctIndex: 1)**
+  3. `[2]` „O amintire personală"
+  4. `[3]` „Intenția de vot declarată la telefon"
+- **explanation:**
+  > Urma digitală este înregistrarea automată a unui comportament, nu o declarație despre el. Oamenii uită, înfrumusețează, se contrazic; senzorul doar înregistrează. Distincția revine în lecție, și o vom vedea la lucru chiar pe datele noastre: ce declară elevii despre prieteniile lor și ce arată senzorii nu coincid.
+
+### Card C3, text: „Marsilia, decembrie 2013" cu preview + citare cu link
+
+- **id:** `c3-marsilia`
+- **capitol:** 1
+- **content (HTML, 3 paragrafe, un bold cheie despre orientarea senzorilor):**
+  > Într-un liceu din Marsilia, 329 de elevi din 9 clase au purtat cinci zile senzori de proximitate. La fiecare 20 de secunde, senzorii înregistrau cine se află față în față cu cine. Nu conținutul discuțiilor: doar faptul întâlnirii și durata ei.
+  >
+  > Un detaliu de construcție care contează: semnalul senzorilor este blocat de corpul uman, așa că doi elevi erau înregistrați doar dacă stăteau **orientați unul spre celălalt, la distanță de conversație**. Nu vecinătate întâmplătoare, ci interacțiune probabilă. Până și „cine e lângă cine" este, deci, o definiție construită de cercetători, nu un fapt brut. Rețineți gândul: revine.
+  >
+  > Rezultatul: peste 180.000 de înregistrări, anonimizate și publicate pentru cercetare de proiectul SocioPatterns. Fiecare elev este un număr; noi le-am atribuit prenume fictive, pentru lizibilitate. Vom explora întâi întreaga școală, apoi ne vom concentra pe o felie de trei clase pentru misiune.
+- **preview (monospace, legendă sub linii):**
+  - 5 rânduri brute din `data/High-School_data_2013.csv`
+  - Legend: „coloane: timp, elev A, elev B, clasa lui A, clasa lui B"
+- **citation:** Sursa datelor: R. Mastrandrea, J. Fournet, A. Barrat, „Contact patterns in a high school", [PLoS ONE 10(9), e0136497 (2015)](https://doi.org/10.1371/journal.pone.0136497).
+
+### Card C4, vote cu gating (fără reveal analitic): „O singură persoană"
+
+- **id:** `c4-o-singura-persoana`
+- **capitol:** 2
+- **question:**
+  > Ai o informație care trebuie să ajungă la toată școala până diseară. Poți să o spui unei singure persoane. Ea o va spune mai departe, iar aceia mai departe. Pe cine alegi?
+- **options:**
+  1. `[0]` „Cel mai popular elev"
+  2. `[1]` „Cineva dintr-o clasă de la mijloc"
+  3. `[2]` „Cineva care are prieteni în mai multe clase"
+  4. `[3]` „La întâmplare, oricum se răspândește"
+- **reveal (minimal, fără analiză imediată):**
+  > Alegerea ta e salvată. Nu-ți spunem încă dacă e bună; măsurăm întâi cum arată școala, apoi ne întoarcem la ea. Apasă Continuă.
+- **Persistență:** vot salvat în `progress.votes["c4-o-singura-persoana"].selectedIndex`. Va fi citit la **C20** (când echipele știu deja măsurile) și la **C28** (verdictul final).
+- **Gating:** butonul „Continuă" e blocat până la vot.
+
+### Card C5, text: „Ca să alegi, trebuie să cunoști școala"
+
+- **id:** `c5-cunosti-scoala`
+- **capitol:** 2
+- **content (HTML, 3 paragrafe scurte):**
+  > Intuiția spune cel mai popular. O vom testa cu scor, nu cu păreri.
+  >
+  > Dar înainte avem nevoie să știm cum arată școala: câți sunt, cum se grupează, cine cu cine vorbește de fapt.
+  >
+  > Următoarele minute sunt explorare. Ne întoarcem la misiune cu date în mână.
+
+### Marker sfârșit tranșa 2
+
+- **id:** `cX-marker-transa-2`
+- **type:** `text`
+- **conținut:** anunț „Ai ajuns la finalul primelor două capitole. Continuarea (C6-C29) vine cu tranșele următoare."
+- Va fi ȘTERS la începutul tranșei 3.
+
+---
 
 ## TRANȘA 1 (componente) — livrat
 
@@ -199,7 +293,13 @@ Numerotarea este stabilă. Sufixul `b` (#19b, #31b) indică un quiz add-on legat
 
 Această secțiune reflectă starea din tranșa 6 (înainte de restructurarea la 29 carduri). Lecția rulează în producție cu 38 blocuri până la tranșele 1+.
 
-## Metadate lecție
+---
+
+## LEGACY (versiunea 38-blocuri, INVALIDATĂ de tranșa 2)
+
+Sub această linie, descrierile „Card #01" … „Card #36" corespund vechii versiuni a lecției (înainte de restructurarea la 29). Le păstrez ca referință istorică. Vor fi șterse când restructurarea e completă.
+
+## Metadate lecție (legacy)
 
 - **id:** `highschool`
 - **sectionNumber:** 4
