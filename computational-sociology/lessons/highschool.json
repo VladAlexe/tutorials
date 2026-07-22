@@ -132,7 +132,7 @@
       "type": "text",
       "id": "c11-vedeta-e-mult",
       "title": "{{name:vedeta}} are {{maxDegree}} contacte. E mult?",
-      "content": "<p>Am numărat contactele fiecărui elev. {{name:vedeta}} are {{maxDegree}}. E mult?</p><p>Întrebarea nu are răspuns până nu spunem: mult față de ce? Îl comparăm cu un coleg oarecare, care are {{medianDegree}}. Deci de câteva ori mai mult.</p><p>Dar poate acel coleg e neobișnuit de retras. Ca să știm dacă {{name:vedeta}} e excepțional, avem nevoie de toți.</p>"
+      "content": "<p>Am numărat contactele fiecărui elev. {{name:vedeta}} are {{maxDegree}}. E mult?</p><p>Întrebarea nu are răspuns până nu spunem: mult față de ce? Îl comparăm cu un coleg oarecare, care are {{exempluGrad}}. Deci de câteva ori mai mult.</p><p>Dar poate acel coleg e neobișnuit de retras. Ca să știm dacă {{name:vedeta}} e excepțional, avem nevoie de toți.</p>"
     },
     {
       "type": "chart",
@@ -217,7 +217,7 @@
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
       "title": "Patru oameni",
-      "intro": "<p><strong>{{name:vedeta}}</strong>, {{maxDegree}} contacte. Cel mai popular din școală.</p><p><strong>{{name:puntea}}</strong>, contacte în {{openness:puntea}} grupuri diferite. Nu are cele mai multe legături, are legăturile cele mai împrăștiate.</p><p><strong>{{name:discretul}}</strong>, {{degree:discretul}} contacte, dar informația pornită de la el ajunge la {{reach:discretul}} persoane.</p><p><strong>{{name:izolatul}}</strong>, un singur contact. La el informația ajunge ultima sau deloc.</p>",
+      "intro": "<p><strong>{{name:vedeta}}</strong>, {{maxDegree}} contacte. Cel mai popular din școală.</p><p><strong>{{name:puntea}}</strong>, contacte în {{openness:puntea}} grupuri diferite. Nu are cele mai multe legături; are legăturile cele mai împrăștiate.</p><p><strong>{{name:discretul}}</strong>, {{degree:discretul}} contacte. Informația care pornește de aici ajunge la {{reach:discretul}} persoane în cele {{pasi}} pauze ale zilei; poziția în rețea contează mai mult decât numărul de contacte.</p><p><strong>{{name:izolatul}}</strong>, un singur contact. Aici informația ajunge ultima, sau deloc.</p>",
       "caption": "Atinge un personaj pe chip-ul de sub grafic. Îl vezi pe hartă, cu vecinii lui. Cei patru vor reveni în vizualizările următoare."
     },
     {
@@ -227,7 +227,7 @@
       "data": "data/highschool-network.json",
       "schemes": ["degree", "openness"],
       "title": "Deschiderea",
-      "intro": "<p>A doua măsură a lecției. Popularitatea numără contactele. Deschiderea numără <strong>lumile</strong> la care ai acces: în câte grupuri diferite ai măcar un contact.</p><p>{{name:vedeta}} are multe contacte, dar aproape toate într-un singur grup. {{name:puntea}} are mai puține, dar în {{openness:puntea}} grupuri.</p>",
+      "intro": "<p>A doua măsură a lecției. Popularitatea numără contactele; deschiderea numără <strong>lumile</strong> la care ai acces: în câte grupuri diferite ai măcar un contact.</p><p>Popularitatea și deschiderea dau clasamente diferite. Comută schema de culoare de sub grafic. {{name:vedeta}} domină la popularitate cu {{maxDegree}} contacte; la deschidere, mai mulți urcă în vârf. Vedem clasamentul misiunii pe a treia măsură.</p>",
       "caption": "În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Noi o vom folosi imediat, la misiune."
     },
     {

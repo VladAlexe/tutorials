@@ -54,7 +54,38 @@ def bfs_reach(source, adj_map):
     return seen
 
 
-def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, tag, seed=42):
+# --- new diffusion model: time-limited + strong-ties only --------------------
+def build_top_adj(edges_list, k):
+    """For each node, keep only its K strongest ties by weight.
+       Ties broken by lower neighbor id (deterministic)."""
+    ns = defaultdict(list)
+    for a, b, w in edges_list:
+        ns[a].append((w, b))
+        ns[b].append((w, a))
+    top = {}
+    for n, items in ns.items():
+        items.sort(key=lambda x: (-x[0], x[1]))
+        top[n] = [x[1] for x in items[:k]]
+    return top
+
+
+def diffuse_limited(seeds, adj_top, pasi):
+    """Multi-source deterministic BFS bounded to `pasi` rounds.
+       Each carrier transmits ONLY to its top-K contacts (via adj_top)."""
+    reached = set(seeds)
+    frontier = list(seeds)
+    for _ in range(pasi):
+        nxt = []
+        for x in frontier:
+            for y in adj_top.get(x, []):
+                if y not in reached:
+                    reached.add(y)
+                    nxt.append(y)
+        frontier = nxt
+    return reached
+
+
+def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, tag, seed=42, pasi=4, max_t=4):
     """Given a slice (nodes + edges), compute all metrics for TRANSA 0.
        nodes_list: list of int ids.
        edges_list: list of tuples (a, b, weight) with a < b."""
@@ -146,38 +177,55 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     for x in node_ids:
         openness[x] = len({community[y] for y in adj.get(x, ())})
 
-    # --- reach: BFS from each node -> reachable set
-    reach = {x: bfs_reach(x, adj) for x in node_ids}
+    # --- reach: NEW MODEL. Diffusion bounded to `pasi` rounds, each carrier
+    # transmits only to its `max_t` strongest contacts (by edge weight).
+    adj_top = build_top_adj(edges_list, max_t)
+    reach = {x: diffuse_limited([x], adj_top, pasi) for x in node_ids}
     reach_size = {x: len(reach[x]) for x in node_ids}
+
+    # For izolat: which nodes are never reached FROM SOMEONE ELSE
+    in_reach = Counter()
+    for source in node_ids:
+        for y in reach[source]:
+            in_reach[y] += 1
+    unreachable_ids = [x for x in node_ids if in_reach[x] == 1]  # only self reaches self
 
     # --- characters
     star_id = max(node_ids, key=lambda x: (degrees[x], -x))
     bridge_id = max(node_ids, key=lambda x: (openness[x], -degrees[x], -x))
     med_deg = statistics.median([degrees[x] for x in node_ids])
-    # Discretul: popularitate sub mediana, DESCHIDERE cat mai mare. Reach nu discrimineaza pe graf conectat.
-    med_openness = statistics.median([openness[x] for x in node_ids])
+    # Discretul: popularitate SUB mediana, dar ACOPERIRE (noul model) in top 10% din scoala.
+    reach_sorted = sorted(reach_size.values(), reverse=True)
+    top10_reach = reach_sorted[max(0, int(len(reach_sorted) * 0.10) - 1)] if reach_sorted else 0
     discreet_cands = sorted(
-        [x for x in node_ids if degrees[x] < med_deg and openness[x] > med_openness],
-        key=lambda x: (-openness[x], degrees[x], x),
+        [x for x in node_ids if degrees[x] < med_deg and reach_size[x] >= top10_reach and x != star_id and x != bridge_id],
+        key=lambda x: (-reach_size[x], degrees[x], x),
     )
-    # Fallback: cineva cu deg mic si openness cat de cat
     if not discreet_cands:
+        # Fallback: relax to top 20% reach
+        top20_reach = reach_sorted[max(0, int(len(reach_sorted) * 0.20) - 1)] if reach_sorted else 0
         discreet_cands = sorted(
-            [x for x in node_ids if degrees[x] < med_deg],
-            key=lambda x: (-openness[x], degrees[x], x),
+            [x for x in node_ids if degrees[x] < med_deg and reach_size[x] >= top20_reach and x != star_id and x != bridge_id],
+            key=lambda x: (-reach_size[x], degrees[x], x),
         )
-    discreet_id = discreet_cands[0] if discreet_cands else min(node_ids, key=lambda x: (degrees[x], -openness[x]))
+    discreet_id = discreet_cands[0] if discreet_cands else min(
+        (x for x in node_ids if x != star_id and x != bridge_id),
+        key=lambda x: (degrees[x], -reach_size[x], x),
+    )
 
-    # Izolatul: popularitate minima. In graf conectat, alegem primul cu deg minim si openness mica.
+    # Izolatul: prefera un nod ne-atins de nimeni (in noul model). Altfel: componenta mica, sau grad minim.
     small_comp_set = {x for c in comps if len(c) < 3 for x in c}
-    min_deg = min(degrees[x] for x in node_ids)
-    isolated_cands = [x for x in node_ids if x in small_comp_set]
+    used_char_ids = {star_id, bridge_id, discreet_id}
+    isolated_cands = [x for x in unreachable_ids if x not in used_char_ids]
     if not isolated_cands:
+        isolated_cands = [x for x in small_comp_set if x not in used_char_ids]
+    if not isolated_cands:
+        min_deg_ = min(degrees[x] for x in node_ids if x not in used_char_ids)
         isolated_cands = sorted(
-            [x for x in node_ids if degrees[x] == min_deg],
-            key=lambda x: (openness[x], x),
+            [x for x in node_ids if degrees[x] == min_deg_ and x not in used_char_ids],
+            key=lambda x: (reach_size[x], openness[x], x),
         )
-    isolated_id = isolated_cands[0]
+    isolated_id = isolated_cands[0] if isolated_cands else min(node_ids, key=lambda x: (degrees[x], x))
 
     def char_dict(nid):
         return {
@@ -196,11 +244,10 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "isolated": char_dict(isolated_id),
     }
 
-    # --- strategies + coverage
+    # --- strategies + coverage (using NEW LIMITED DIFFUSION MODEL)
+    # Coverage of a set of seeds = |diffuse_limited(seeds, adj_top, pasi)|
     def coverage(seeds):
-        s = set()
-        for x in seeds:
-            s |= reach[x]
+        s = diffuse_limited(list(seeds), adj_top, pasi)
         return len(s), s
 
     top3_pop = sorted(node_ids, key=lambda x: (-degrees[x], x))[:3]
@@ -214,6 +261,7 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         best = max(cands, key=lambda x: degrees[x])
         one_each_comm.append(best)
 
+    # Greedy: pick seed that maximally EXTENDS current joint coverage under the limited model.
     greedy = []
     covered = set()
     for _ in range(3):
@@ -221,13 +269,14 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         for x in node_ids:
             if x in greedy:
                 continue
-            add = len(reach[x] - covered)
+            new_covered = diffuse_limited(greedy + [x], adj_top, pasi)
+            add = len(new_covered) - len(covered)
             if add > best_add or (add == best_add and (best_id is None or x < best_id)):
                 best_add = add
                 best_id = x
         if best_id is not None:
             greedy.append(best_id)
-            covered |= reach[best_id]
+            covered = diffuse_limited(greedy, adj_top, pasi)
 
     rnd2 = random.Random(seed + 1)
     random_covs = []
@@ -251,7 +300,21 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "randomMean":    round(sum(random_covs) / len(random_covs), 1) if random_covs else 0.0,
         "randomMin":     min(random_covs) if random_covs else 0,
         "randomMax":     max(random_covs) if random_covs else 0,
+        "pasi":          pasi,
+        "maxTransmiteri": max_t,
     }
+    # topSingle: cine ia cel mai bun scor cu 1 seminta singura
+    best_solo = max(node_ids, key=lambda x: (reach_size[x], -x))
+    top_by_reach = sorted(node_ids, key=lambda x: (-reach_size[x], x))[:5]
+    strategies["topSingle"] = {
+        "seeds":    [id_name(best_solo)],
+        "coverage": reach_size[best_solo],
+    }
+    strategies["singleReachChampions"] = [
+        {"id": x, "name": name_map.get(x, str(x)), "class": klass_map.get(x, "?"),
+         "popularity": degrees[x], "openness": openness[x], "reach": reach_size[x]}
+        for x in top_by_reach
+    ]
 
     # --- overlap analysis for topPopular + greedy
     def overlap_analysis(seeds):
@@ -399,12 +462,19 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         },
         "openness":           {str(x): openness[x] for x in node_ids},
         "reach":              {str(x): reach_size[x] for x in node_ids},
+        "unreachableCount":   len(unreachable_ids),
+        "unreachableIds":     unreachable_ids,
         "characters":         characters,
         "strategies":         strategies,
         "overlap":            overlap,
         "distributions":      distributions,
         "classStats":         class_stats,
         "friendshipParadox":  friendship_paradox,
+        "diffusionModel": {
+            "pasi":            pasi,
+            "maxTransmiteri":  max_t,
+            "description":     "Deterministic BFS bounded to `pasi` rounds; each carrier transmits only to top `maxTransmiteri` contacts by edge weight."
+        }
     }
 
 
@@ -938,6 +1008,9 @@ stats = {
     "meanDegree":    mean_deg,
     "medianDegree":  median_deg,
     "maxDegree":     max_deg,
+    "exempluGrad":   median_deg,
+    "pasi":          4,
+    "maxTransmiteri": 4,
     "friendshipParadox": {
         # keys per spec (rounded 1 decimal, %)
         "meanDegree":       mean_deg,
@@ -1014,6 +1087,46 @@ for c in full_school['classes']:
     cmd = full_school['classMeanDegree'][c]
     print(f"  {c:>6}: {cf['n']:>2} elevi ({cf['nF']}F/{cf['nM']}M/{cf['nUnk']}?)  {csx['pctF']}%F  grad med {cmd['mean']}")
 
+def calibrate_new_diffusion(nodes_list, edges_list, klass_map, sex_map, name_map):
+    """Test all combinations of (pasi, max_t) and report the coverage table."""
+    print()
+    print("=== CALIBRARE MODEL NOU DE DIFUZIE ===")
+    print(f"N = {len(nodes_list)} noduri, {len(edges_list)} muchii")
+    print(f"{'PASI':>4} {'MAX_T':>5} | {'top3pop':>8} {'top3op':>7} {'oneComm':>7} {'greedy':>7} {'randMean':>9} {'randMax':>7} {'gap':>6} | {'pop':>4} {'grd':>4} {'max':>4}")
+    print("-" * 100)
+    results = []
+    for pasi_t in [2, 3, 4]:
+        for max_t_t in [2, 3, 4]:
+            m = compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, tag=f"cal-{pasi_t}-{max_t_t}", seed=42, pasi=pasi_t, max_t=max_t_t)
+            s = m["strategies"]
+            pop = s["topPopular"]["coverage"]
+            openn = s["topOpen"]["coverage"]
+            pcomm = s["oneEachComm"]["coverage"]
+            greedy = s["greedy"]["coverage"]
+            randmean = s["randomMean"]
+            randmax = s["randomMax"]
+            n = len(nodes_list)
+            pct = lambda x: 100 * x / n
+            gap = pct(greedy) - pct(pop)
+            print(f"{pasi_t:>4} {max_t_t:>5} | {pct(pop):>7.1f}% {pct(openn):>6.1f}% {pct(pcomm):>6.1f}% {pct(greedy):>6.1f}% {pct(randmean):>8.1f}% {pct(randmax):>6.1f}% {gap:>+5.1f}% | {pop:>4} {greedy:>4} {randmax:>4}")
+            results.append({"pasi": pasi_t, "max_t": max_t_t, "pop": pop, "greedy": greedy, "randmax": randmax, "gap_pct": gap, "top_single": m["strategies"]["topSingle"]["coverage"], "top_single_pct": pct(m["strategies"]["topSingle"]["coverage"])})
+    print("-" * 100)
+    print("CRITERII: greedy - top3pop >= 15pp, iar acoperirea max < 80% din scoala.")
+    ok = [r for r in results if r["gap_pct"] >= 15 and (100 * r["randmax"] / len(nodes_list)) < 80]
+    if ok:
+        best = max(ok, key=lambda r: (r["gap_pct"], -abs(80 - 100 * r["randmax"] / len(nodes_list))))
+        print(f"COMBINATII VALIDE: {len(ok)}. Aleasa: PASI={best['pasi']}, MAX_T={best['max_t']} (gap {best['gap_pct']:+.1f}pp)")
+    else:
+        print("NICIO COMBINATIE nu satisface criteriile. Cel mai bun gap:")
+        best = max(results, key=lambda r: r["gap_pct"])
+        print(f"  PASI={best['pasi']}, MAX_T={best['max_t']}, gap {best['gap_pct']:+.1f}pp, randmax {100 * best['randmax'] / len(nodes_list):.1f}%")
+    print()
+    print("=== SINGLE-SEED RANKING (cine castiga la 1 seminta) ===")
+    for r in results:
+        print(f"  PASI={r['pasi']} MAX_T={r['max_t']}: cel mai bun solo atinge {r['top_single']} elevi ({r['top_single_pct']:.1f}%)")
+    return best
+
+
 def report_slice(tag, m):
     print()
     print(f"=== TRANSA 0 metrics · {tag} ===")
@@ -1046,3 +1159,13 @@ def report_slice(tag, m):
 
 report_slice("felia 3 clase", slice3_metrics)
 report_slice("full school 9 clase", full_metrics)
+
+# Run calibration and print full table
+try:
+    best_combo = calibrate_new_diffusion(
+        [n["id"] for n in nodes],
+        slice3_edges_list,
+        group_by, sex_by, slice3_name_map,
+    )
+except Exception as _e:
+    print(f"Calibrare esuata: {_e}")
