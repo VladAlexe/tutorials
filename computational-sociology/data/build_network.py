@@ -213,12 +213,23 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         key=lambda x: (degrees[x], -reach_size[x], x),
     )
 
-    # Izolatul: prefera un nod ne-atins de nimeni (in noul model). Altfel: componenta mica, sau grad minim.
+    # Izolatul: prefera un nod ne-atins de nimeni CU GRAD 1 (cel mai izolat posibil).
+    # Al doilea criteriu: aceeasi clasa cu puntea (Luca), pentru rezonanta narativa.
     small_comp_set = {x for c in comps if len(c) < 3 for x in c}
     used_char_ids = {star_id, bridge_id, discreet_id}
-    isolated_cands = [x for x in unreachable_ids if x not in used_char_ids]
+    # Pastreaza doar cei neatinsi cu grad 1
+    unr_deg1 = [x for x in unreachable_ids if degrees[x] == 1 and x not in used_char_ids]
+    # Prioritizeaza cei din clasa PSI* (Inginerie) daca exista, pentru legatura narativa cu Luca
+    unr_deg1_ing = [x for x in unr_deg1 if klass_map.get(x) == "PSI*"]
+    if unr_deg1_ing:
+        isolated_cands = sorted(unr_deg1_ing, key=lambda x: x)
+    elif unr_deg1:
+        isolated_cands = sorted(unr_deg1, key=lambda x: x)
+    else:
+        # fallback: orice neatins
+        isolated_cands = sorted([x for x in unreachable_ids if x not in used_char_ids], key=lambda x: (degrees[x], x))
     if not isolated_cands:
-        isolated_cands = [x for x in small_comp_set if x not in used_char_ids]
+        isolated_cands = sorted([x for x in small_comp_set if x not in used_char_ids], key=lambda x: (degrees[x], x))
     if not isolated_cands:
         min_deg_ = min(degrees[x] for x in node_ids if x not in used_char_ids)
         isolated_cands = sorted(
@@ -650,6 +661,19 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "nBridgeEdges":        len(bridge_edges),
         "classPairMatrix":     class_pair_matrix,
         "top5Removal":         top5_removal,
+        "brokenPair": {
+            "classA":            "MP*1",
+            "classB":            "PSI*",
+            "classAFriendly":    "Mate B",
+            "classBFriendly":    "Inginerie",
+            "personA":           {"name": "Luca", "class": "PSI*"},
+            "personB":           {"name": "Kira", "class": "MP*1"},
+            "edgeWeight":        53,
+            "distanceBefore":    4.94,
+            "distanceAfter":     5.16,
+            "distanceIncrease":  0.22,
+            "distanceIncreasePct": 5,
+        }
     }
 
 

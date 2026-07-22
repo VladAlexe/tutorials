@@ -883,6 +883,17 @@
 .viz__gradient-label--left  { left: 0; }
 .viz__gradient-label--right { right: 0; }
 
+/* Try-break mode UI */
+.try-break__modes { margin-bottom: var(--sp-2); }
+.try-break__quick { flex-wrap: wrap; gap: var(--sp-1); }
+.diff-hint--muted {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  border-left: 3px solid var(--color-line);
+  padding-left: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
 /* Slightly bigger on wider screens, but keep line length short */
 @media (min-width: 768px) {
   .slide { padding: var(--sp-5) 0; max-width: 36rem; }

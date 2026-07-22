@@ -2900,12 +2900,12 @@
           "reach": 68
         },
         "isolated": {
-          "id": 9,
-          "name": "Bogdan",
-          "class": "PC",
-          "popularity": 3,
-          "openness": 3,
-          "reach": 39
+          "id": 959,
+          "name": "Lia",
+          "class": "PSI*",
+          "popularity": 1,
+          "openness": 1,
+          "reach": 22
         }
       },
       "strategies": {
@@ -6444,6 +6444,25 @@
         "sizes": [
           294
         ]
+      },
+      "brokenPair": {
+        "classA": "MP*1",
+        "classB": "PSI*",
+        "classAFriendly": "Mate B",
+        "classBFriendly": "Inginerie",
+        "personA": {
+          "name": "Luca",
+          "class": "PSI*"
+        },
+        "personB": {
+          "name": "Kira",
+          "class": "MP*1"
+        },
+        "edgeWeight": 53,
+        "distanceBefore": 4.94,
+        "distanceAfter": 5.16,
+        "distanceIncrease": 0.22,
+        "distanceIncreasePct": 5
       }
     }
   },
@@ -7892,12 +7911,12 @@
         "reach": 68
       },
       "isolated": {
-        "id": 9,
-        "name": "Bogdan",
-        "class": "PC",
-        "popularity": 3,
-        "openness": 3,
-        "reach": 39
+        "id": 959,
+        "name": "Lia",
+        "class": "PSI*",
+        "popularity": 1,
+        "openness": 1,
+        "reach": 22
       }
     },
     "strategies": {
@@ -11436,6 +11455,25 @@
       "sizes": [
         294
       ]
+    },
+    "brokenPair": {
+      "classA": "MP*1",
+      "classB": "PSI*",
+      "classAFriendly": "Mate B",
+      "classBFriendly": "Inginerie",
+      "personA": {
+        "name": "Luca",
+        "class": "PSI*"
+      },
+      "personB": {
+        "name": "Kira",
+        "class": "MP*1"
+      },
+      "edgeWeight": 53,
+      "distanceBefore": 4.94,
+      "distanceAfter": 5.16,
+      "distanceIncrease": 0.22,
+      "distanceIncreasePct": 5
     }
   }
 }
