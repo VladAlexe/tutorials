@@ -2021,10 +2021,12 @@ export async function renderDiffusion(container, block, options = {}) {
       const infoEl = controls.querySelector('[data-role="info"]');
       if (edgeId === starBridgeEdgeId && brokenPair && infoEl) {
         infoEl.innerHTML =
-          `Legătura ${brokenPair.personA.name} - ${brokenPair.personB.name} (weight ${brokenPair.edgeWeight}) e tăiată. ` +
-          `${brokenPair.classAFriendly} și ${brokenPair.classBFriendly} nu se rup. ` +
-          `Informația trebuie să ocolească: distanța medie între cele două clase crește de la <strong>${brokenPair.distanceBefore}</strong> la <strong>${brokenPair.distanceAfter}</strong> pași (+${brokenPair.distanceIncreasePct}%). ` +
-          `Nu se rupe, dar drumul e cu atât mai lung.`;
+          `Nici măcar asta nu rupe școala. Fără prietenia dintre <strong>${brokenPair.personA.name}</strong> și <strong>${brokenPair.personB.name}</strong>, ` +
+          `${brokenPair.classAFriendly} și ${brokenPair.classBFriendly} rămân legate, doar că drumul se lungește, ` +
+          `de la <strong>${brokenPair.distanceBefore}</strong> la <strong>${brokenPair.distanceAfter}</strong> pași, prin ocol. ` +
+          `Rețeaua are aproape peste tot mai multe drumuri între oricare doi oameni. ` +
+          `Nu o rupi nici scoțând cei mai populari cinci elevi, nici tăind singurul fir dintre două clase. ` +
+          `<strong>Atunci unde e fragilă?</strong>`;
         return;
       }
       if (thinBridgeEdgeIds.has(edgeId) && infoEl) {

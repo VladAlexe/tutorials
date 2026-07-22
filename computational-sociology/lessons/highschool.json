@@ -189,8 +189,8 @@
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
       "schemes": ["component", "class"],
-      "title": "Margine sau centru",
-      "intro": "Am văzut că școala e o singură bucată: din orice elev pornești, se ajunge la toți ceilalți în principiu. Dar „în principiu\" nu înseamnă „în realitate\". <strong>Lia</strong>, din Inginerie, are un singur contact în toată școala: Rares. Dacă Rares nu află de vestea ta, Lia nu află niciodată.",
+      "title": "Unde e, totuși, fragilă",
+      "intro": "<p><strong>La margine.</strong> Nu în centru, nu la punți.</p><p>Am văzut că școala e o singură bucată: din orice elev pornești, se ajunge la toți ceilalți în principiu. Dar „în principiu\" nu înseamnă „în realitate\". <strong>Lia</strong>, din Inginerie, are un singur contact în toată școala: Rares. Dacă Rares nu află de vestea ta, Lia nu află niciodată.</p>",
       "caption": "A fi în componentă nu înseamnă a fi ajuns de informație. Într-o rețea reală, marginile decid cine rămâne pe dinafară. Lia nu e un caz izolat: sunt {{sliceMetrics.unreachableCount}} de elevi în școală la care difuzia bounded (patru pași, patru contacte) nu ajunge niciodată."
     },
     {
@@ -289,8 +289,8 @@
       "statsSource": "data/highschool-stats.json",
       "schemes": ["degree", "openness"],
       "title": "Deschiderea",
-      "intro": "<p>A doua măsură a lecției. Popularitatea numără contactele; deschiderea numără <strong>lumile</strong> la care ai acces: în câte grupuri diferite ai măcar un contact.</p><p>Popularitatea și deschiderea dau clasamente diferite. Comută schema de culoare de sub grafic. {{name:vedeta}} domină la popularitate cu {{maxDegree}} contacte; la deschidere, alții urcă în vârf, între care {{name:puntea}}, pe care l-ai văzut deja la Cristi.</p>",
-      "caption": "În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Un elev discret, cu doar {{degree:discretul}} contacte, poate ajunge, prin acele contacte, la {{reach:discretul}} de oameni. Poziția în rețea contează mai mult decât numărul de contacte. O vom folosi imediat, la misiune."
+      "intro": "<p>A doua măsură a lecției. Popularitatea numără contactele; deschiderea numără <strong>lumile</strong> la care ai acces: câți dintre oamenii tăi sunt din afara clasei tale.</p><p>Popularitatea și deschiderea dau clasamente diferite. Comută schema de culoare de sub grafic. {{name:vedeta}} domină la popularitate cu {{maxDegree}} contacte; la deschidere, urcă în vârf oameni diferiți.</p>",
+      "caption": "În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Deschiderea se justifică singură ca măsură: câte lumi atingi contează, nu doar câți oameni cunoști. Cât de mult contează pentru răspândirea unui zvon, vom vedea la misiune."
     },
     {
       "type": "paradox",
