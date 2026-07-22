@@ -961,6 +961,14 @@ export async function renderDiffusion(container, block, options = {}) {
 
   else if (mode === "temporal") {
     // hourly cursor + network redraw from highschool-hours.json
+    // Make nodes fully opaque and normally sized (matches other cards).
+    cy.nodes().addClass("knows");
+    cy.nodes().forEach((n) => {
+      n.style("opacity", 1);
+      n.style("width", 10);
+      n.style("height", 10);
+    });
+
     let hours;
     try {
       const r = await fetch(block.hoursSource || "data/highschool-hours.json");
@@ -974,6 +982,8 @@ export async function renderDiffusion(container, block, options = {}) {
         data: { id: `h${i}`, source: String(e.source), target: String(e.target), weight: e.weight, w: 1.5 + Math.min(4, e.weight * 0.2) }
       }));
       cy.add(toAdd);
+      cy.edges().style("line-color", "#b57140");
+      cy.edges().style("opacity", 0.4);
     }
     drawEdges(first.edges);
 
