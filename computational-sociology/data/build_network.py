@@ -154,22 +154,29 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     star_id = max(node_ids, key=lambda x: (degrees[x], -x))
     bridge_id = max(node_ids, key=lambda x: (openness[x], -degrees[x], -x))
     med_deg = statistics.median([degrees[x] for x in node_ids])
-    reach_sorted_vals = sorted(reach_size.values(), reverse=True)
-    top10_cut = reach_sorted_vals[max(0, int(len(reach_sorted_vals) * 0.1) - 1)] if reach_sorted_vals else 0
+    # Discretul: popularitate sub mediana, DESCHIDERE cat mai mare. Reach nu discrimineaza pe graf conectat.
+    med_openness = statistics.median([openness[x] for x in node_ids])
     discreet_cands = sorted(
-        [x for x in node_ids if degrees[x] < med_deg and reach_size[x] >= top10_cut],
-        key=lambda x: (-reach_size[x], degrees[x], x),
+        [x for x in node_ids if degrees[x] < med_deg and openness[x] > med_openness],
+        key=lambda x: (-openness[x], degrees[x], x),
     )
-    discreet_id = discreet_cands[0] if discreet_cands else min(node_ids, key=lambda x: degrees[x])
+    # Fallback: cineva cu deg mic si openness cat de cat
+    if not discreet_cands:
+        discreet_cands = sorted(
+            [x for x in node_ids if degrees[x] < med_deg],
+            key=lambda x: (-openness[x], degrees[x], x),
+        )
+    discreet_id = discreet_cands[0] if discreet_cands else min(node_ids, key=lambda x: (degrees[x], -openness[x]))
 
+    # Izolatul: popularitate minima. In graf conectat, alegem primul cu deg minim si openness mica.
     small_comp_set = {x for c in comps if len(c) < 3 for x in c}
-    isolated_cands = sorted(
-        [x for x in node_ids if degrees[x] == 1 or x in small_comp_set],
-        key=lambda x: (degrees[x], x),
-    )
+    min_deg = min(degrees[x] for x in node_ids)
+    isolated_cands = [x for x in node_ids if x in small_comp_set]
     if not isolated_cands:
-        min_deg = min(degrees[x] for x in node_ids)
-        isolated_cands = sorted([x for x in node_ids if degrees[x] == min_deg])
+        isolated_cands = sorted(
+            [x for x in node_ids if degrees[x] == min_deg],
+            key=lambda x: (openness[x], x),
+        )
     isolated_id = isolated_cands[0]
 
     def char_dict(nid):
@@ -401,9 +408,9 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     }
 
 
-CLASSES    = ["2BIO1", "2BIO2", "MP*1"]
+CLASSES    = ["2BIO1", "2BIO2", "2BIO3", "MP", "MP*1", "MP*2", "PC", "PC*", "PSI*"]
 DAY        = 1
-MIN_WEIGHT = 3
+MIN_WEIGHT = 4
 
 NAMES = [
     "Ana", "Andrei", "Bianca", "Bogdan", "Carla", "Cristi", "Dana", "Doru", "Elena", "Florin",
@@ -739,12 +746,21 @@ spread_ranking = {
     ],
 }
 
-# --- 16. edgeCountByThreshold (asupra celor 93 elevi)
+# --- 16. edgeCountByThreshold (asupra celor N elevi)
 edge_count_by_threshold = {}
 for t in range(1, 11):
     edge_count_by_threshold[str(t)] = sum(
         1 for (a, b), c in w.items() if c >= t and a in used and b in used
     )
+print()
+print(f"CALIBRARE MIN_WEIGHT (pentru {len(CLASSES)} clase = {sum(1 for x in klass.values() if x in CLASSES)} elevi in metadata):")
+for t in [3, 4, 5, 6]:
+    n_edges = sum(1 for (a, b), c in w.items() if c >= t)
+    used_at = set()
+    for (a, b), c in w.items():
+        if c >= t: used_at.add(a); used_at.add(b)
+    print(f"  prag {t}: {n_edges} muchii, {len(used_at)} noduri")
+print(f"Pragul ales pentru rețeaua principală: MIN_WEIGHT = {MIN_WEIGHT}")
 
 # --- 17. hourly snapshots (ziua 1 impartita in ore) -> highschool-hours.json
 hour_len = 3600

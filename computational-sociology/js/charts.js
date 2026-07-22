@@ -365,70 +365,110 @@ async function loadNodesForLink(block) {
 function renderFreq(container, block, stats) {
   const src = statsBucket(block, stats);
   const cf = src?.classFreq || {};
-  const rows = Object.entries(cf).filter(([k]) => k !== "globalBetweenPct");
-  const total = rows.reduce((s, [, v]) => s + (v.n || 0), 0);
+  const rowsRaw = Object.entries(cf).filter(([k]) => k !== "globalBetweenPct");
+  const total = rowsRaw.reduce((s, [, v]) => s + (v.n || 0), 0);
+  const totalF = rowsRaw.reduce((s, [, v]) => s + (v.nF || 0), 0);
+  const totalM = rowsRaw.reduce((s, [, v]) => s + (v.nM || 0), 0);
+  const totalUnk = rowsRaw.reduce((s, [, v]) => s + (v.nUnk || 0), 0);
 
+  // Table with 4 count columns including necunoscut
   const table = document.createElement("table");
   table.className = "chart__freq";
-  const header = `<tr><th></th><th>elevi</th><th>fete</th><th>băieți</th></tr>`;
-  const body = rows.map(([k, v]) =>
-    `<tr><th>${esc(k)}</th><td>${v.n}</td><td>${v.nF}</td><td>${v.nM}</td></tr>`
+  const header = `<tr><th></th><th>elevi</th><th>fete</th><th>băieți</th><th>?</th></tr>`;
+  const body = rowsRaw.map(([k, v]) =>
+    `<tr><th>${esc(k)}</th><td>${v.n}</td><td>${v.nF}</td><td>${v.nM}</td><td>${v.nUnk || 0}</td></tr>`
   ).join("");
-  table.innerHTML = header + body + `<tr class="chart__freq__total"><th>total</th><td>${total}</td><td>${rows.reduce((s, [, v]) => s + v.nF, 0)}</td><td>${rows.reduce((s, [, v]) => s + v.nM, 0)}</td></tr>`;
+  table.innerHTML = header + body +
+    `<tr class="chart__freq__total"><th>total</th><td>${total}</td><td>${totalF}</td><td>${totalM}</td><td>${totalUnk}</td></tr>`;
   container.appendChild(table);
 
-  const maxV = Math.max(...rows.flatMap(([, v]) => [v.nF, v.nM]), 1);
-  const W = 420, H = 160;
-  const padL = 60, padR = 12, padT = 12, padB = 30;
+  const note = document.createElement("p");
+  note.className = "chart__note";
+  note.textContent = "Sexul nu e cunoscut pentru câțiva elevi; îi trecem în ultima coloană.";
+  container.appendChild(note);
+
+  // 100% stacked horizontal bars, sorted by %F desc
+  const sorted = [...rowsRaw]
+    .map(([k, v]) => {
+      const known = (v.nF || 0) + (v.nM || 0);
+      const pctF = v.n ? 100 * (v.nF || 0) / v.n : 0;
+      const pctM = v.n ? 100 * (v.nM || 0) / v.n : 0;
+      const pctU = v.n ? 100 * (v.nUnk || 0) / v.n : 0;
+      return { label: k, n: v.n, nF: v.nF || 0, nM: v.nM || 0, nUnk: v.nUnk || 0, pctF, pctM, pctU };
+    })
+    .sort((a, b) => b.pctF - a.pctF);
+
+  const nRows = sorted.length;
+  const W = 480, H = 40 + nRows * 34;
+  const padL = 70, padR = 40, padT = 20, padB = 32;
   const chartW = W - padL - padR;
-  const chartH = H - padT - padB;
-  const rowH = chartH / rows.length;
-  const barGap = 4;
-  const svgRows = rows.map(([k, v], i) => {
-    const y0 = padT + i * rowH + 4;
-    const halfH = (rowH - 8 - barGap) / 2;
-    const wF = (v.nF / maxV) * chartW;
-    const wM = (v.nM / maxV) * chartW;
+  const rowH = 24;
+
+  const svgRows = sorted.map((v, i) => {
+    const y = padT + i * (rowH + 6);
+    const wF = (v.pctF / 100) * chartW;
+    const wM = (v.pctM / 100) * chartW;
+    const wU = (v.pctU / 100) * chartW;
+    const showFText = wF > 42;
+    const showMText = wM > 42;
     return (
-      `<text x="${padL - 6}" y="${(y0 + halfH).toFixed(1)}" text-anchor="end" font-size="11" fill="${COL_INK_S}">${esc(k)}</text>` +
-      `<rect x="${padL}" y="${y0.toFixed(1)}" width="${wF.toFixed(1)}" height="${halfH.toFixed(1)}" fill="${COL_BAR_B}" rx="2"/>` +
-      `<text x="${(padL + wF + 4).toFixed(1)}" y="${(y0 + halfH - 1).toFixed(1)}" font-size="11" fill="${COL_INK}">${v.nF}F</text>` +
-      `<rect x="${padL}" y="${(y0 + halfH + barGap).toFixed(1)}" width="${wM.toFixed(1)}" height="${halfH.toFixed(1)}" fill="${COL_BAR}" rx="2"/>` +
-      `<text x="${(padL + wM + 4).toFixed(1)}" y="${(y0 + halfH + barGap + halfH - 1).toFixed(1)}" font-size="11" fill="${COL_INK}">${v.nM}M</text>`
+      `<g class="freq-bar" data-class="${esc(v.label)}" style="cursor:pointer">` +
+      `<rect x="${padL - 60}" y="${y - 2}" width="${(chartW + 70).toFixed(1)}" height="${(rowH + 4).toFixed(1)}" fill="transparent"/>` +
+      `<text x="${padL - 6}" y="${(y + rowH / 2 + 4).toFixed(1)}" text-anchor="end" font-size="12" fill="${COL_INK}" font-family="Georgia, serif">${esc(v.label)}</text>` +
+      `<rect x="${padL}" y="${y.toFixed(1)}" width="${wF.toFixed(1)}" height="${rowH}" fill="${COL_BAR_B}"/>` +
+      `<rect x="${(padL + wF).toFixed(1)}" y="${y.toFixed(1)}" width="${wM.toFixed(1)}" height="${rowH}" fill="${COL_BAR}"/>` +
+      `<rect x="${(padL + wF + wM).toFixed(1)}" y="${y.toFixed(1)}" width="${wU.toFixed(1)}" height="${rowH}" fill="${COL_MUTED}"/>` +
+      (showFText ? `<text x="${(padL + wF / 2).toFixed(1)}" y="${(y + rowH / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="${COL_BG}">${Math.round(v.pctF)}%</text>` : "") +
+      (showMText ? `<text x="${(padL + wF + wM / 2).toFixed(1)}" y="${(y + rowH / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="${COL_BG}">${Math.round(v.pctM)}%</text>` : "") +
+      `<text x="${(padL + chartW + 4).toFixed(1)}" y="${(y + rowH / 2 + 4).toFixed(1)}" font-size="11" fill="${COL_MUTED}">${v.n}</text>` +
+      `</g>`
     );
   }).join("");
 
+  const legend =
+    `<g transform="translate(${padL}, ${H - 10})">` +
+    `<rect x="0" y="-10" width="10" height="10" fill="${COL_BAR_B}"/>` +
+    `<text x="14" y="-1" font-size="11" fill="${COL_INK_S}">fete</text>` +
+    `<rect x="60" y="-10" width="10" height="10" fill="${COL_BAR}"/>` +
+    `<text x="74" y="-1" font-size="11" fill="${COL_INK_S}">băieți</text>` +
+    `<rect x="132" y="-10" width="10" height="10" fill="${COL_MUTED}"/>` +
+    `<text x="146" y="-1" font-size="11" fill="${COL_INK_S}">necunoscut</text>` +
+    `</g>`;
+
   const svg = document.createElement("div");
   svg.className = "chart__svg-wrap";
-  const barRects = rows.map(([k], i) => `data-class="${esc(k)}"`).join("|"); // marker for tap
   svg.innerHTML =
     `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
     `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
-    `role="img" aria-label="Compoziția claselor">` +
-    svgRows +
+    `role="img" aria-label="Compoziția claselor sortate după procent fete">` +
+    svgRows + legend +
     `</svg>`;
   container.appendChild(svg);
 
   if (block.linkNetwork) {
     const rowsHost = document.createElement("div");
     rowsHost.className = "chart__link-target";
-    rowsHost.textContent = "Atinge un rând din tabel pentru lista de nume.";
+    rowsHost.textContent = "Atinge un rând din tabel sau o bară pentru lista de nume și procentele.";
     container.appendChild(rowsHost);
-    const tableRows = container.querySelectorAll(".chart__freq tr");
-    // Bind class name from the row header if present
     let nodesCache = null;
     async function ensureNodes() { if (!nodesCache) nodesCache = await loadNodesForLink(block); return nodesCache; }
+    async function showClass(cls) {
+      const info = sorted.find((r) => r.label === cls);
+      const ns = await ensureNodes();
+      const matching = ns.filter((n) => (n.group || n.clasa) === cls);
+      const pctLine = info ? ` · ${Math.round(info.pctF)}% fete, ${Math.round(info.pctM)}% băieți${info.nUnk ? `, ${Math.round(info.pctU)}% ?` : ""}` : "";
+      rowsHost.innerHTML = `<strong>${esc(cls)}</strong> (${matching.length} elevi${pctLine}): ` +
+        matching.map((n) => esc(n.name || n.id)).join(", ");
+    }
+    const tableRows = container.querySelectorAll(".chart__freq tr");
     tableRows.forEach((tr, idx) => {
       const th = tr.querySelector("th");
       if (!th || idx === 0 || tr.classList.contains("chart__freq__total")) return;
       tr.classList.add("chart__freq__tappable");
-      tr.addEventListener("click", async () => {
-        const cls = th.textContent.trim();
-        const ns = await ensureNodes();
-        const matching = ns.filter((n) => (n.group || n.clasa) === cls);
-        rowsHost.innerHTML = `<strong>${esc(cls)}</strong> (${matching.length}): ` +
-          matching.map((n) => esc(n.name || n.id)).join(", ");
-      });
+      tr.addEventListener("click", () => showClass(th.textContent.trim()));
+    });
+    svg.querySelectorAll(".freq-bar").forEach((g) => {
+      g.addEventListener("click", () => showClass(g.dataset.class));
     });
   }
 }

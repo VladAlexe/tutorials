@@ -6,7 +6,10 @@ export const GROUP_PALETTE = [
   "#2f6fa8",
   "#a3341f",
   "#7a5b8c",
-  "#b57140"
+  "#b57140",
+  "#4c6b3a",
+  "#8e5a86",
+  "#6a9c8b"
 ];
 
 let cyLoader = null;
@@ -287,7 +290,7 @@ export async function renderNetwork(container, block) {
   const { elements, nodes, groups, colorMap } = normalizeAndBuild(data);
   const showLabels = nodes.length <= 12;
   const isSmall = nodes.length <= 20;
-  const nodeSize = isSmall ? 18 : 12;
+  const nodeSize = isSmall ? 18 : (nodes.length > 200 ? 9 : 12);
   const shell = createShell(container, block, isSmall ? "Resetează" : "Vezi toată rețeaua", "ghost");
   shell.info.textContent = defaultInfo;
 

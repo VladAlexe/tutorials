@@ -1,6 +1,83 @@
 # Statusul lecției — Sociologie computațională
 
-Ultima actualizare: 2026-07-22 (TRANȘA 4: drumul către histogramă, cardurile C11-C16b)
+Ultima actualizare: 2026-07-22 (TRANȘA 5: rețea completă 9 clase + fix cardul C6)
+
+## TRANȘA 5 (rețea 9 clase + fix freq) — livrat
+
+### A. Toate rețelele trec la 9 clase
+
+`build_network.py` acum ia `CLASSES = ["2BIO1", "2BIO2", "2BIO3", "MP", "MP*1", "MP*2", "PC", "PC*", "PSI*"]`. Rețeaua principală (`highschool-network.json`) devine școala întreagă.
+
+**Calibrare MIN_WEIGHT (ținta: sub ~900 muchii):**
+
+| prag | muchii | noduri |
+|---|---|---|
+| 3 | 1043 | 303 |
+| **4** | **892** | **299** ← ales |
+| 5 | 783 | 298 |
+| 6 | 698 | 295 |
+
+Prag 4 e primul care intră sub limita de 900, iar diferența față de prag 3 (150 muchii mai puține) e semnificativă. Ales.
+
+**Cifre reale pe rețeaua nouă (299 elevi, 892 muchii):**
+
+- 1 componentă (toată școala e conectată). Zero izolați.
+- 80 comunități detectate (label propagation, seed 42)
+- 93,0% potrivire cu clasele. **21 elevi nepotriviți**
+- Grad: medie 6,0 · median 5 · max 19
+- Paradoxul prieteniei: 6,0 vs 7,6 · 70% sub
+- Contact între clase: 7,4%
+- Homofilie sex: 68,2% observat vs 50,1% așteptat
+- Small world: drum mediu 5,2 · diametru 14
+
+**Personaje recalculate:**
+
+| rol | nume | id | clasa | popularitate | deschidere | reach |
+|---|---|---|---|---|---|---|
+| **star (vedeta)** | **Sandu** | 117 | 2BIO3 | 19 | 11 | 299 |
+| **bridge (puntea)** | **Cristi** | 272 | 2BIO3 | 16 | 11 | 299 |
+| **discreet (discretul)** | **Denis** | 477 | 2BIO2 | 4 | 4 | 299 |
+| **isolated (izolatul)** | **Flavia** | 87 | PC | 1 | 1 | 299 |
+
+Notă: cu graful conectat, `reach` nu discriminează. Logica pentru `discreet` a fost schimbată: acum cere `popularity < median AND openness > median_openness`. Denis (deg 4, desc 4) e „discretul cu prieteni în multe grupuri": pare invizibil dar acoperă 4 comunități.
+
+**Strategii (acoperire cu 3 seed-uri):**
+
+- Top 3 populari {Sandu, Nuti, Denis} → 299 (toți conectați)
+- Top 3 deschidere {Sandu, Cristi, Puiu} → 299
+- Câte unul din top 3 comunități {Denis, Tania, Bogdan} → 299
+- Greedy {Ana, Andrei, Bianca} → 299
+- 30 aleatoare: medie 299, min 299, max 299
+
+**Notă importantă:** pe graf conectat, orice 3 seed-uri ne-izolate ating toate cele 299 nodurile. Pentru misiune (Tranșa 6+), strategiile trebuie să discrimineze prin altă metrică (ex. acoperire în K pași BFS, sau probabilistică SIR). Voi ridica asta când construiesc cardul de misiune.
+
+**Overlap topPopular:** individual [299, 299, 299] · sumă 897 · joint 299 · **suprapun 598**.
+
+Contacte comune per pereche: **Sandu ∩ Nuti = 0, Sandu ∩ Denis = 0, Nuti ∩ Denis = 0.** Cei trei populari NU împart niciun contact direct. Deci suprapunerea din reach se explică prin propagare pe rețea, nu prin ecosistem imediat.
+
+**Sub-rețea 6 noduri pentru paradoxul prieteniei:** [Sandu, Laur, Nora, Ioana, Rux, Cristi] — 4/6 sub media prietenilor. Ținta atinsă.
+
+### B. Cardul C6 „Câți sunt, și cine sunt" reparat
+
+- **Tabelul** are acum 5 coloane (clasa, elevi, fete, băieți, `?`). MP arată corect 30 = 10F + 17M + 3?, iar PC* arată 35 = 11F + 22M + 2?. Sub tabel e o notă: „Sexul nu e cunoscut pentru câțiva elevi; îi trecem în ultima coloană."
+- **Barele** au fost complet rescrise. Nu mai sunt linii subțiri de conturi absolute. Sunt acum bare orizontale **100% stivuite** per clasă (F verde stânga · M brun mijloc · Necunoscut gri dreapta), fiecare cu **lățime de 24px**, spațiu între rânduri.
+- **Sortate descrescător după procent fete.** Așa se vede gradientul de la 2BIO3 (80% F) la MP*2 (17,6% F).
+- **Etichete:**
+  - Nume clasă în stânga (font Georgia)
+  - Procent F/M scris în interiorul barei DOAR când segmentul e > 42px lățime (pe telefon, procentele mici dispar; se pot vedea la tap)
+  - Numărul absolut de elevi la capătul drept al barei
+- **Legendă** sub grafic: chip verde/brun/gri pentru fete/băieți/necunoscut.
+- **Interacțiune:** tap pe bară (sau pe rândul din tabel) afișează dedesubt: `<clasa> (N elevi · X% fete, Y% băieți, Z% ?): lista de nume`.
+
+### C. Extensii pentru rețele mari
+
+- **Paleta `GROUP_PALETTE`** extinsă de la 6 la 9 culori: brun, verde închis, albastru, roșu, purpuriu, portocaliu + măsline, mauve, teal. Culorile 7-9 sunt alese să se distingă pe fundalul cald al temei.
+- **Dimensiunea nodurilor** scade automat: în `renderNetwork`, `nodeSize = nodes.length > 200 ? 9 : (isSmall ? 18 : 12)`. Pe 299 noduri iese 9px + edge width 0,8px. În modurile diffusion (`makeStyle`): node bază 9px, `.knows` 11px, `.source` 20px, `.top` 22px.
+- **Legenda** compactă: font 0,72rem pe mobil (0,78rem desktop), gap 4px×8px, dot 8px. 9 chip-uri intră pe 2 rânduri chiar și pe telefon.
+
+---
+
+## Restructurare (planificată, în curs)
 
 ## Statul actual al lecției
 

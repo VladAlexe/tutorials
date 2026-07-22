@@ -105,8 +105,8 @@ function makeStyle() {
       style: {
         "background-color": "data(color)",
         "opacity": 0.15,
-        "width": 12,
-        "height": 12,
+        "width": 9,
+        "height": 9,
         "border-width": 1,
         "border-color": "#5a4a3a",
         "transition-property": "opacity, width, height, border-width, border-color",
@@ -117,12 +117,12 @@ function makeStyle() {
       selector: "edge",
       style: {
         "line-color": "#d9cfc0",
-        "width": 1,
-        "opacity": 0.4,
+        "width": 0.8,
+        "opacity": 0.35,
         "curve-style": "bezier"
       }
     },
-    { selector: "node.knows", style: { "opacity": 1, "width": 14, "height": 14 } },
+    { selector: "node.knows", style: { "opacity": 1, "width": 11, "height": 11 } },
     {
       selector: "node.source",
       style: {
