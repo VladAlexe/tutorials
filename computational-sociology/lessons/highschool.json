@@ -8,11 +8,12 @@
   "next": null,
   "statsSource": "data/highschool-stats.json",
   "chapters": [
-    { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
-    { "n": 2, "title": "Măsurile școlii", "startIdx": 3 },
-    { "n": 3, "title": "Ipoteze, soluție și margini", "startIdx": 14 },
-    { "n": 4, "title": "Misiunea", "startIdx": 20 },
-    { "n": 5, "title": "Bilanț", "startIdx": 27 }
+    { "n": 1, "title": "Întrebarea", "startIdx": 0 },
+    { "n": 2, "title": "Măsurăm oameni", "startIdx": 4 },
+    { "n": 3, "title": "Enigma și soluția", "startIdx": 14 },
+    { "n": 4, "title": "Aceeași greșeală, un nivel mai sus", "startIdx": 18 },
+    { "n": 5, "title": "A treia oară", "startIdx": 25 },
+    { "n": 6, "title": "Teza", "startIdx": 27 }
   ],
   "blocks": [
     {
@@ -115,7 +116,7 @@
         {"name": "Zayd", "class": "Mate A", "value": 15},
         {"name": "William", "class": "Mate A", "value": 15}
       ],
-      "caption": "În vârf: <strong>{{name:vedeta}}</strong>, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo."
+      "caption": "<p>În vârf: <strong>{{name:vedeta}}</strong>, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo.</p><p><em>Un elev are în medie {{stats.meanDegree}} contacte, dar prietenii unui elev au în medie mai multe. Fenomenul se numește <strong>paradoxul prieteniei</strong>, descris de Scott Feld în 1991, și e motivul pentru care orice feed te face să te simți mai puțin popular decât ești: cei cu multe legături apar în listele multor altora.</em></p>"
     },
     {
       "type": "chart",
@@ -135,7 +136,7 @@
         {"name": "Sébastien", "class": "Mate B", "value": 4},
         {"name": "Florence", "class": "Bio C", "value": 4}
       ],
-      "caption": "<p>În vârf: <strong>{{name:puntea}}</strong>, cu {{outClass:puntea}} contacte în afara clasei ei, mai mult decât oricine din școală. Nu e o necunoscută: e a doua din școală și la număr de contacte, cu {{contacte:puntea}}. Diferența e unde sunt acele contacte.</p><p>Uită-te pe hartă și la <strong>{{name:vedeta}}</strong>, campionul de la grad. Are {{contacte:vedeta}} contacte, cele mai multe din școală, dintre care exact unul singur e din altă clasă. Nu apare în primii opt aici. Nu apare nici în primii cincizeci.</p><p>Măsuri diferite, oameni diferiți. Alegerea măsurii decide cine iese important.</p>"
+      "caption": "<p>În vârf: <strong>{{name:puntea}}</strong>, cu {{outClass:puntea}} contacte în afara clasei ei, mai mult decât oricine din școală. Nu e o necunoscută: e a doua din școală și la număr de contacte, cu {{contacte:puntea}}. Diferența e unde sunt acele contacte.</p><p>Uită-te pe hartă și la <strong>{{name:vedeta}}</strong>, campionul de la grad. Are {{contacte:vedeta}} contacte, cele mai multe din școală, dintre care exact unul singur e din altă clasă. Nu apare în primii opt aici. Nu apare nici în primii cincizeci.</p><p>Măsuri diferite, oameni diferiți. Alegerea măsurii decide cine iese important.</p><p><em>Ideea că cine leagă grupuri care nu se cunosc între ele are un avantaj îi aparține lui Ronald Burt, care în 1992 a numit-o <strong>găuri structurale</strong>. Într-o organizație, cine stă între două echipe care nu comunică află lucruri înaintea tuturor.</em></p>"
     },
     {
       "type": "chart",
@@ -155,7 +156,7 @@
         {"name": "Delphine", "class": "Chimie B", "value": 5629},
         {"name": "Raphaël", "class": "Mate C", "value": 5141}
       ],
-      "caption": "<p>În vârf: <strong>Charlotte</strong>, din Bio C, cu 12 contacte.</p><p>Al patrulea personaj, ieșit tot din calcul. Nu e cea mai populară, e pe locul 22 acolo. Nu e nici cea mai deschisă. Dar prin ea trec cele mai multe drumuri din toată școala.</p><p>{{name:vedeta}}, campionul de la grad, e pe locul 32 aici. Trei măsuri, trei oameni diferiți. Începe să se vadă un tipar: fiecare măsură răspunde la altă întrebare, deci găsește pe altcineva.</p>"
+      "caption": "<p>În vârf: <strong>Charlotte</strong>, din Bio C, cu 12 contacte.</p><p>Al patrulea personaj, ieșit tot din calcul. Nu e cea mai populară, e pe locul 22 acolo. Nu e nici cea mai deschisă. Dar prin ea trec cele mai multe drumuri din toată școala.</p><p>{{name:vedeta}}, campionul de la grad, e pe locul 32 aici.</p><p><strong>Trei măsuri, trei oameni diferiți în vârf.</strong> Deja e ciudat: dacă „important\" ar fi un singur lucru, ar ieși același om de fiecare dată. Dar niciuna dintre cele trei măsuri nu ne spune ce ne trebuie, adică <strong>cine răspândește cel mai bine</strong>. Pentru asta nu e de ajuns să măsori. Trebuie să rulezi.</p><p><em>Măsura se numește <strong>betweenness centrality</strong> și a fost formalizată de Linton Freeman în 1977. E cea mai cunoscută măsură de importanță structurală din analiza rețelelor.</em></p>"
     },
     {
       "type": "chart",
@@ -212,7 +213,7 @@
         {"name": "Danielle", "class": "Bio C", "value": 64},
         {"name": "Damir", "class": "Bio C", "value": 63}
       ],
-      "caption": "<p>În vârf: <strong>{{name:campion}}</strong>, dintr-o clasă de biologie. Vestea pornită din ea ajunge la <strong>{{reach:campion}}</strong> de oameni, mai mult decât din oricare alt elev al școlii.</p><p>Nu e în primii zece la grad, unde e pe locul {{rankPop:campion}} din {{total}}. Nu e în primii zece la deschidere, unde e ultima: are zero contacte în afara clasei ei.</p><p>Iar cel mai popular elev al școlii, {{name:vedeta}}, ajunge la doar <strong>{{reach:vedeta}}</strong>, pe locul {{rankReach:vedeta}} din {{total}}. Aceeași clasă cu Chloé. Regulile aceleași. Rezultat opus.</p><p>Aceasta e enigma. Următoarele carduri răspund la o singură întrebare: <strong>de ce?</strong></p><p><strong>Un lucru important despre ce tocmai am făcut.</strong></p><p>Nu am rulat aceeași simulare de {{total}} de ori. Am rulat <strong>același model o dată din fiecare punct de pornire posibil</strong>. Sunt {{total}} de intrări diferite, nu {{total}} de repetări.</p><p>E ca și cum ai încerca {{total}} de chei diferite într-o broască. Nu încerci aceeași cheie de {{total}} de ori.</p><p>Iar motivul pentru care trebuie să le încercăm pe toate e că nu avem formulă. Am încercat trei măsuri și niciuna nu prezice cine ajunge cel mai departe. Când nu ai formulă, evaluezi fiecare caz. Asta se numește <em>căutare exhaustivă</em> și e unul dintre motivele serioase pentru care sociologia are nevoie de calculatoare.</p>"
+      "caption": "<p>Prima în clasament nu e campioana niciunei măsuri. Este pe locul <strong>{{rankPop:campion}}</strong> la grad și <strong>ultima</strong> la deschidere: are zero contacte în afara clasei ei.</p><p>Iar cel mai popular elev al școlii, <strong>{{name:vedeta}}</strong>, coleg de clasă cu ea, ajunge la doar <strong>{{reach:vedeta}}</strong>, pe locul <strong>{{rankReach:vedeta}}</strong> din {{total}}. Aceeași clasă cu Chloé. Regulile aceleași. Rezultat opus.</p><p><strong>De ce?</strong></p><p><strong>Un lucru important despre ce tocmai am făcut.</strong> Nu am rulat aceeași simulare de {{total}} de ori. Am rulat <strong>același model o dată din fiecare punct de pornire posibil</strong>. Sunt {{total}} de intrări diferite, nu {{total}} de repetări.</p><p>E ca și cum ai încerca {{total}} de chei diferite într-o broască. Nu încerci aceeași cheie de {{total}} de ori.</p><p>Iar motivul pentru care trebuie să le încercăm pe toate e că nu avem formulă. Am încercat trei măsuri și niciuna nu prezice cine ajunge cel mai departe. Când nu ai formulă, evaluezi fiecare caz. Asta se numește <em>căutare exhaustivă</em> și e unul dintre motivele serioase pentru care sociologia are nevoie de calculatoare.</p>"
     },
     {
       "type": "vote",
@@ -279,38 +280,13 @@
       ],
       "title": "Prietenii prietenilor",
       "intro": "<p>Am eliminat clasa, popularitatea și deschiderea. Ce a mai rămas? Uită-te la fiecare dintre cei trei nu la prietenii lor, ci la <strong>prietenii prietenilor</strong>.</p><p>Comută filele. Pentru fiecare elev, punctul negru e el, cercul brun sunt contactele lui, cercul verde sunt contactele contactelor.</p>",
-      "caption": "Chloé are puține contacte, dar cercul verde explodează: prietenii ei sunt răspândiți în alte clase. Antoine are cele mai multe contacte, dar cercul verde adaugă puțin, pentru că prietenii lui se cunosc între ei. Léa are contacte împrăștiate, cu un cerc verde mare. Nu contează câți oameni cunoști. Contează <strong>pe cine cunosc ei</strong>. Aceasta e soluția enigmei. Iar regula nu ține doar pentru ei trei: dacă numărăm, pentru fiecare elev din școală, câți oameni sunt la doi pași de el, obținem o măsură care prezice raza cu corelație 0,78, față de 0,37 la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul."
-    },
-    {
-      "type": "chart",
-      "id": "c14-yann-izolat",
-      "variant": "unreached-multi",
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "focuses": [
-        { "name": "Yann" },
-        { "name": "Iban" },
-        { "name": "Cécile" }
-      ],
-      "title": "Cine nu află niciodată",
-      "intro": "<p>Am rezolvat enigma. Rămâne o urmă a modelului, la marginea lui. „Poți ajunge\" nu e același lucru cu „ajungi\". La <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, mesajul nu ajunge niciodată, oricine ar porni.</p><p>Iată trei dintre ei în aceeași imagine, fiecare cu contactul lui și cu contactele acelui contact.</p>",
-      "caption": "Trei elevi la care vestea nu ajunge niciodată. Uită-te că nu sunt nici măcar legați între ei. Nu formează un grup de excluși, sunt trei margini diferite ale aceleiași școli. Sunt <strong>{{sliceMetrics.unreachableCount}}</strong> în total. Nu apar în niciun clasament, nu sunt suspecți, nu sunt campioni. Sunt oamenii pe care nicio strategie nu îi atinge."
-    },
-    {
-      "type": "diffusion",
-      "id": "c10-try-break",
-      "mode": "try-break",
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "title": "Ce se rupe",
-      "intro": "<p>Am văzut cine nu află: elevi de la margine, pe care rețeaua îi ține abia de un fir. Uite acum invers: dacă cei mai importanți dispar, ce se rupe?</p><p>Rețeaua întreagă, o singură culoare pentru că e o singură componentă. Apasă butoanele, în ordine, și privește.</p>",
-      "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă. {{name:vedeta}}, cel mai popular, dispare fără să se rupă nimic. Primii cinci, la fel. Fragilitatea nu e la centru: e la {{name:dependentul}}, un elev cu popularitate modestă care se dovedește a fi <strong>singurul drum</strong> pentru trei colegi. Iar butonul cu toți cei {{sliceMetrics.nCutVertices}} elevi de care atârnă cineva rupe rețeaua în peste douăzeci de bucăți: 247 rămân împreună, alți 24 se dispersează câte unul. Cei trei ai lui Damien, plus cei 24 de aici, intră toți pe lista lui Yann: nu i-a auzit modelul nu pentru că nu ar fi acolo, ci pentru că firul care îi ținea de școală a fost tăiat."
+      "caption": "<p>Chloé are puține contacte, dar cercul verde explodează: prietenii ei sunt răspândiți în alte clase. Antoine are cele mai multe contacte, dar cercul verde adaugă puțin, pentru că prietenii lui se cunosc între ei. Léa are contacte împrăștiate, cu un cerc verde mare.</p><p>Regula ține pentru toată școala, cu o corelație de <strong>0,78</strong>, față de <strong>0,37</strong> la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul.</p><p><strong>Am aflat răspunsul, și e mai important decât cazul lui Chloé.</strong></p><p>Nu contează câți oameni cunoști. Contează pe cine cunosc ei, adică unde stai tu în structură. Popularitatea e o însușire a ta. Poziția e o relație cu ceilalți.</p><p><strong>Poziția bate însușirea.</strong> Ține minte propoziția asta. O vom întâlni din nou peste câteva minute, la o problemă complet diferită.</p><p><em>Cel mai citat articol din sociologia rețelelor e al lui Mark Granovetter, din 1973, și spune că punțile dintre grupuri sunt de obicei legături slabe: cunoștințe, nu prieteni apropiați. Cazul lui Chloé e o excepție interesantă. Puntea ei e prietenul cu care petrece cel mai mult timp. Se întâmplă, și tocmai de asta cercetătorii se uită la cazuri, nu doar la medii.</em></p>"
     },
     {
       "type": "text",
       "id": "m0-candidati-din-masuri",
-      "title": "Candidații din măsuri",
-      "content": "<p>Până acum am calculat patru feluri de a spune că un elev e important. Fiecare a scos în vârf altcineva:</p><table class=\"lesson-table\"><thead><tr><th>Măsura</th><th>Cine iese primul</th><th>Câți oameni află de la el</th></tr></thead><tbody><tr><td>Gradul</td><td>{{name:vedeta}}, Bio C</td><td>{{reach:vedeta}}</td></tr><tr><td>Deschiderea</td><td>{{name:puntea}}, Mate C</td><td>{{reach:puntea}}</td></tr><tr><td>Intermedierea</td><td>Charlotte, Bio C</td><td>51</td></tr><tr><td>Simularea din toți</td><td>{{name:campionul}}, Bio C</td><td>{{reach:campion}}</td></tr></tbody></table><p>Fiecare măsură îți dă un campion. Patru măsuri, <strong>patru oameni diferiți</strong>, niciunul dintre ei cel mai bun răspânditor.</p><p>Cel mai bun a ieșit abia când am renunțat să măsurăm oameni și am rulat procesul din fiecare elev al școlii. Nu am dedus, am <strong>căutat</strong>.</p><p>Ține minte asta. Urmează aceeași problemă, dar pentru o echipă de trei.</p>"
+      "title": "Înapoi la misiune, cu bugetul mărit",
+      "content": "<p>Înapoi la misiunea de la început, dar cu bugetul mărit: nu unul, ci trei oameni.</p><p>Acum știi ce nu funcționează. Popularitatea nu prezice răspândirea. Deci nu mai alegem cei mai populari trei, alegem <strong>cei mai buni trei răspânditori</strong>, primii trei din clasamentul de la simulare. E alegerea informată, cea care ține cont de tot ce am învățat.</p><p>Hai s-o testăm.</p><p>Ca reamintire, iată campionii pe care ni i-au dat cele patru măsuri:</p><table class=\"lesson-table\"><thead><tr><th>Măsura</th><th>Cine iese primul</th><th>Câți oameni află de la el</th></tr></thead><tbody><tr><td>Gradul</td><td>{{name:vedeta}}, Bio C</td><td>{{reach:vedeta}}</td></tr><tr><td>Deschiderea</td><td>{{name:puntea}}, Mate C</td><td>{{reach:puntea}}</td></tr><tr><td>Intermedierea</td><td>Charlotte, Bio C</td><td>51</td></tr><tr><td>Simularea din toți</td><td>{{name:campionul}}, Bio C</td><td>{{reach:campion}}</td></tr></tbody></table>"
     },
     {
       "type": "diffusion",
@@ -351,12 +327,12 @@
     {
       "type": "chart",
       "id": "m5-strategii",
-      "variant": "strategy-maps",
+      "variant": "strategy-compare",
       "statsSource": "data/highschool-stats.json",
-      "strategies": ["knownTeam", "top3pop", "top3reach", "greedy"],
-      "title": "Aceleași echipe, ca hartă",
-      "intro": "<p>Patru dintre echipele de mai sus, ca hărți alăturate. În fiecare, punctele mari și negre sunt cei trei aleși, punctele calde sunt cei atinși de zvon, punctele pale sunt cei ratați. Punctele sunt așezate pe clase, ca să vezi nu doar <em>câți</em> acoperă fiecare echipă, ci și <em>unde</em>.</p>",
-      "caption": "Cei mai populari trei acoperă bine o zonă și lasă restul pe dinafară. Cei mai buni răspânditori trei acoperă aproape aceeași zonă (Chloé și Gabin sunt colegi de clasă), deci lasă și ei mult pe dinafară. Cei trei pe care îi cunoști rămân în jumătatea lui Bio C și Mate C. Iar alegerea lacomă atinge bucăți din toate colțurile. Nu contează doar cât acoperă o strategie, ci și unde. Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie."
+      "strategies": ["top3reach", "top3pop", "knownTeam", "greedy"],
+      "title": "Comparați strategiile pe aceeași hartă",
+      "intro": "<p>Aceeași rețea, patru butoane. La fiecare apăsare se schimbă doar colorarea, nu și pozițiile, ca ochiul să compare aceleași zone. Punctele mari și negre sunt cei trei aleși, punctele calde sunt cei atinși de zvon, punctele pale sunt cei ratați.</p>",
+      "caption": "Comută între strategii și uită-te ce zone rămân palide. Nu contează doar cât acoperă o echipă, ci și unde. Cei mai buni răspânditori trei lasă jumătate de școală necolorată pentru că doi dintre ei sunt colegi. Alegerea lacomă atinge bucăți din toate colțurile. Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie."
     },
     {
       "type": "diffusion",
@@ -366,19 +342,43 @@
       "statsSource": "data/highschool-stats.json",
       "title": "Cum caută algoritmul",
       "intro": "<p>Vezi de ce cei mai buni trei răspânditori, luați împreună, sunt mediocri. Ce alegere ai face în locul algoritmului? Uită-te la modul lui de a lucra, pas cu pas.</p><p><strong>Pasul 1.</strong> Din toți cei {{total}} de elevi, cine acoperă cel mai mult singur? Chloé cu <strong>73</strong>, apoi Gabin cu 71, apoi Estée cu 68, apoi Rémi cu 68. Alegem primul: <strong>Chloé</strong>.</p><p><strong>Pasul 2.</strong> Acum întrebarea se schimbă. Nu mai căutăm cine acoperă cel mai mult, ci <strong>cine adaugă cel mai mult peste ce avem deja</strong>. Recalculăm pentru toți cei {{total}}.</p><p>Al doilea din clasamentul de dinainte, Gabin, adaugă doar <strong>7</strong> oameni noi, pentru că e coleg de clasă cu Chloé și 64 dintre ai lui erau deja acoperiți. Rémi, care era pe locul patru, adaugă <strong>67</strong>. Alegem <strong>Rémi</strong>.</p><p><strong>Pasul 3.</strong> Recalculăm din nou. Onorine adaugă <strong>43</strong>, cel mai mult dintre toți rămași. Alegem <strong>Honorine</strong>.</p><p>Acum apasă butonul și urmărește vizual cum se completează cei trei pași.</p>",
-      "caption": "Algoritmul nu caută oameni buni. Caută <strong>acoperire nouă</strong>. De aceea la al doilea pas alege pe cineva care, singur, e mediocru: îi pasă doar ce adaugă peste ce are deja. Sunt <strong>4.410.309</strong> feluri de a alege trei oameni din {{total}}. Prea multe ca să le încerci pe toate. Algoritmul face {{total}} evaluări la fiecare pas, deci trei runde de câte {{total}}, și obține un rezultat foarte bun fără să caute exhaustiv. Se numește alegere lacomă, descrisă de Kempe, Kleinberg și Tardos în 2003."
+      "caption": "<p>Algoritmul nu caută oameni buni. Caută <strong>acoperire nouă</strong>. De aceea la al doilea pas alege pe cineva care, singur, e mediocru: îi pasă doar ce adaugă peste ce are deja.</p><p>Sunt <strong>4.410.309</strong> feluri de a alege trei oameni din {{total}}. Prea multe ca să le încerci pe toate. Algoritmul face {{total}} evaluări la fiecare pas, deci trei runde de câte {{total}}, și obține un rezultat foarte bun fără să caute exhaustiv.</p><p><em>Problema se numește <strong>influence maximization</strong> și e formalizată de Kempe, Kleinberg și Tardos în 2003, într-unul dintre cele mai citate articole din domeniu. Metoda pe care o vezi la lucru se numește <strong>greedy algorithm</strong>.</em></p>"
     },
     {
       "type": "text",
       "id": "m7-cine-sunt-ei",
       "title": "Cine sunt ei",
-      "content": "<p>Dacă ai ales cei trei oameni pe care îi cunoști din lecție, <strong>{{name:vedeta}}</strong>, <strong>{{name:campionul}}</strong> și <strong>{{name:puntea}}</strong>, ai obținut <strong>{{sliceMetrics.mission.knownTeamCoverage}}</strong>. Mai puțin decât dacă ai fi luat pur și simplu cei mai populari trei elevi din școală, care dau <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong>.</p><p>Motivul e simplu și îl știi deja: doi dintre ei sunt colegi de clasă. Acoperă aceeași zonă. A-i cunoaște bine pe oameni nu te ajută să construiești o echipă, dacă nu te uiți la unde stau unii față de alții.</p><p>Algoritmul a ales alt trio. Pe unul îl cunoști: <strong>{{name:campion}}</strong>. Pe ceilalți doi nu i-ai văzut niciodată în această lecție.</p><p><strong>Rémi, Mate C.</strong> 3 contacte. Locul 242 din {{total}} la grad. Locul 43 la deschidere. Locul 4 la rază.</p><p><strong>Honorine, Chimie A.</strong> 6 contacte. Locul 127 la grad. Locul 36 la deschidere. Locul 79 la rază.</p><p>Nicio măsură nu i-a găsit. Nu sunt populari, nu sunt punți, nu sunt campioni la răspândire. Dacă ai fi ales după clasamente, nu i-ai fi luat niciodată.</p><p>Și totuși, împreună cu <strong>{{name:campion}}</strong>, acoperă <strong>{{sliceMetrics.mission.greedyCoverage}}</strong> de oameni, mai mult decât orice echipă formată din campioni.</p><p>De ce? Pentru că fiecare stă în altă parte a școlii. Nu contează cât de bun e fiecare singur. Contează ce acoperă împreună, iar asta nu se poate citi din niciun clasament individual. Trebuie calculat pe echipe.</p><p>Sunt <strong>4.410.309</strong> feluri de a alege trei oameni din {{total}}. Prea multe ca să le încerci pe toate. Algoritmul nu le încearcă: la fiecare pas ia pe cine adaugă cel mai mult peste ce are deja. Procedeul se numește alegere lacomă, descris de Kempe, Kleinberg și Tardos în 2003.</p><p>Modelul nostru presupune că cine află spune mai departe, garantat, și că întâlnirile s-au petrecut în ordinea potrivită. Niciuna dintre presupuneri nu e adevărată. Un model e util și când e fals, dacă știi unde e fals. Iar același calcul duce un anunț util în toată școala sau o minciună. Unealta nu alege scopul.</p>"
+      "content": "<p>Dacă ai ales cei trei oameni pe care îi cunoști din lecție, <strong>{{name:vedeta}}</strong>, <strong>{{name:campionul}}</strong> și <strong>{{name:puntea}}</strong>, ai obținut <strong>{{sliceMetrics.mission.knownTeamCoverage}}</strong>. Mai puțin decât dacă ai fi luat pur și simplu cei mai populari trei elevi din școală, care dau <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong>.</p><p>Motivul e simplu și îl știi deja: doi dintre ei sunt colegi de clasă. Acoperă aceeași zonă. A-i cunoaște bine pe oameni nu te ajută să construiești o echipă, dacă nu te uiți la unde stau unii față de alții.</p><p>Algoritmul a ales alt trio. Pe unul îl cunoști: <strong>{{name:campion}}</strong>. Pe ceilalți doi nu i-ai văzut niciodată în această lecție.</p><p><strong>Rémi, Mate C.</strong> 3 contacte. Locul 242 din {{total}} la grad. Locul 43 la deschidere. Locul 4 la rază.</p><p><strong>Honorine, Chimie A.</strong> 6 contacte. Locul 127 la grad. Locul 36 la deschidere. Locul 79 la rază.</p><p>Nicio măsură nu i-a găsit. Nu sunt populari, nu sunt punți, nu sunt campioni la răspândire. Dacă ai fi ales după clasamente, nu i-ai fi luat niciodată.</p><p>Și totuși, împreună cu <strong>{{name:campion}}</strong>, acoperă <strong>{{sliceMetrics.mission.greedyCoverage}}</strong> de oameni, mai mult decât orice echipă formată din campioni.</p><p>De ce? Pentru că fiecare stă în altă parte a școlii. Nu contează cât de bun e fiecare singur. Contează ce acoperă împreună, iar asta nu se poate citi din niciun clasament individual. Trebuie calculat pe echipe.</p><p>Sunt <strong>4.410.309</strong> feluri de a alege trei oameni din {{total}}. Prea multe ca să le încerci pe toate. Algoritmul nu le încearcă: la fiecare pas ia pe cine adaugă cel mai mult peste ce are deja. Procedeul se numește alegere lacomă, descris de Kempe, Kleinberg și Tardos în 2003.</p><p><strong>Aceeași greșeală, un nivel mai sus.</strong></p><p>Prima dată am crezut că cine cunoaște mai mulți oameni răspândește mai bine. Acum am crezut că cei mai buni trei răspânditori fac cea mai bună echipă. Amândouă sunt false, din același motiv.</p><p>La indivizi conta poziția în structură. La echipe contează <strong>relația dintre membri</strong>. Aceeași idee, altă scară.</p>"
+    },
+    {
+      "type": "chart",
+      "id": "c14-yann-izolat",
+      "variant": "unreached-multi",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "focuses": [
+        { "name": "Yann" },
+        { "name": "Iban" },
+        { "name": "Cécile" }
+      ],
+      "title": "A treia verificare: cine nu află niciodată",
+      "intro": "<p>Am văzut de două ori că „important\" nu înseamnă ce credeam. Ultima verificare, pe altă întrebare: dacă cei importanți dispar, ce se rupe? Iar înainte de asta: cine nu află oricum ai alege?</p><p>Trei elevi neatinși de simulare, fiecare cu contactul lui și cu contactele acelui contact.</p>",
+      "caption": "Trei elevi la care vestea nu ajunge niciodată. Uită-te că nu sunt nici măcar legați între ei. Nu formează un grup de excluși, sunt <strong>trei margini diferite ale aceleiași școli</strong>. Sunt <strong>{{sliceMetrics.unreachableCount}}</strong> în total. Nu apar în niciun clasament, nu sunt suspecți, nu sunt campioni. Sunt oamenii pe care nicio strategie nu îi atinge."
+    },
+    {
+      "type": "chart",
+      "id": "c-ce-se-rupe",
+      "variant": "robustness",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Ce se rupe",
+      "intro": "<p>Ce se întâmplă dacă școala pierde oameni? Depinde cum îi pierde.</p><p><strong>Curba verde:</strong> elevi care dispar la întâmplare. Rețeaua abia simte, mult timp.</p><p><strong>Curba roșie:</strong> de fiecare dată dispare cel mai conectat elev rămas. Se prăbușește mult mai repede.</p><p>Sub grafic, trei butoane cu cazurile concrete pe care le-am discutat. Fiecare marchează pe curbe exact locul unde stă acel scenariu.</p>",
+      "caption": "<p>La 75 de elevi scoși țintit, cea mai mare bucată rămasă are 94 de elevi. La 75 de elevi la întâmplare, 204. La 100 de scoși țintit, 9. La 100 la întâmplare, 150. Un raport de peste 15 la 1.</p><p>Asta se numește <strong>robustețe la pierderi întâmplătoare</strong> și <strong>fragilitate la atacuri țintite</strong>. Albert, Jeong și Barabási au arătat în 2000, într-un articol din <em>Nature</em>, că e o proprietate generală a rețelelor reale. Internetul e robust dacă pică servere la întâmplare, dar vulnerabil dacă cineva alege ce să atace. Aceeași structură pe care o vezi într-o școală de liceu.</p><p>A treia oară aceeași morală. Nu cei mai populari țin rețeaua împreună, pentru că între oricare doi elevi există mai multe drumuri. Dar la margine sunt oameni de care atârnă cineva. <strong>Nici fragilitatea nu e unde te-ai uita.</strong></p>"
     },
     {
       "type": "text",
       "id": "b1-ce-ai-facut",
       "title": "Ce ai făcut",
-      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat trei măsuri, gradul, deschiderea și intermedierea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere, Charlotte la intermediere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai rulat o simulare pas cu pas, apoi ai văzut ce iese când calculatorul rulează același model pornind din fiecare dintre cei {{total}} de elevi: <strong>{{name:campion}}</strong> a ajuns prima, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Al patrulea campion, dintr-a patra măsură. Enigma a apărut din calcul, nu din poveste.</p><p>Ai făcut un pariu la cardul „De ce ea?\", între trei explicații. Primele două au căzut: ipoteza clasei (sunt colegi), ipoteza deschiderii (ea are zero, el are unul). Dacă ai ales „altceva\", pariul tău a fost corect. Soluția: nu contează câți oameni cunoști, ci pe cine cunosc ei. Regula ține pentru toată școala, cu o corelație de 0,78. Ai văzut apoi că modelul are o margine: <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, dintre care {{name:izolat}}, la care vestea nu ajunge oricum ai alege.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: a ales doi oameni pe care nu îi văzuseși niciodată în lecție, invizibili la orice clasament, dar care împreună cu {{name:campion}} acoperă mai mult decât orice echipă de campioni. O măsură bună pentru un om nu e o strategie bună pentru o echipă.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
+      "content": "<p>Dacă duci acasă o singură propoziție din ora asta, aia e: <strong>în viața socială, poziția bate însușirea.</strong></p><p>Ai văzut-o de trei ori.</p><p><strong>Prima dată</strong>: cel mai popular elev al școlii nu răspândește cel mai bine. {{name:vedeta}} are {{contacte:vedeta}} contacte, dar ajunge la doar {{reach:vedeta}} de oameni. {{name:campion}} are {{contacte:campion}}, dar ajunge la {{reach:campion}}. Contează unde stai, nu câți cunoști.</p><p><strong>A doua oară</strong>: cei mai buni trei răspânditori nu fac cea mai bună echipă. Împreună dau {{sliceMetrics.mission.top3ReachCoverage}}, mai puțin decât o echipă de oameni pe care nu îi văzuseși niciodată, care dă {{sliceMetrics.mission.greedyCoverage}}. Doi dintre campioni sunt colegi de clasă. Contează relația dintre membri, nu calitatea fiecăruia.</p><p><strong>A treia oară</strong>: cei mai importanți oameni nu țin rețeaua împreună. La eliminare țintită școala se prăbușește; la eliminare aleatoare, abia simte. Dar la margine sunt oameni de care atârnă cineva. Nici fragilitatea nu e unde te-ai uita.</p><p>De fiecare dată, răspunsul a fost același: contează unde stă cineva față de ceilalți, nu cât de bun e el luat separat.</p><p>Iar asta e greu de văzut din interior. Din clasa ta, cel cu mulți prieteni pare cel mai important. Ca să vezi altfel, îți trebuie toată rețeaua, măsuri și un calculator. <strong>De asta există sociologia computațională.</strong></p>"
     },
     {
       "type": "quizset",

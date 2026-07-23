@@ -1819,6 +1819,211 @@ async function renderMeasureTabs(container, block, stats) {
   });
 }
 
+// Two-curve robustness chart: X = number removed, Y = size of largest remaining
+// component. Random curve (averaged over trials) sits above; targeted curve
+// (highest-degree first) plunges. Reads sliceMetrics.mission.coverageMaps._robustness
+// which the build precomputes. Below the curves, buttons for the specific
+// scenarios (Antoine, top 5, all cut vertices) place a marker at the correct
+// x-value on both curves and show the observed component sizes for that case.
+function renderRobustness(container, block, stats) {
+  const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
+  const rob = cm._robustness || null;
+  if (!rob) { container.textContent = "Fără date pentru robustețe."; return; }
+  const rand = rob.randomCurve || [];
+  const targ = rob.targetedCurve || [];
+  const total = rob.total || stats?.total || Math.max(...rand, ...targ);
+  const maxRemoved = rob.maxRemoved || (rand.length - 1);
+
+  const W = 620, H = 320;
+  const M = { top: 24, right: 24, bottom: 42, left: 46 };
+  const iw = W - M.left - M.right;
+  const ih = H - M.top - M.bottom;
+
+  const xScale = (k) => M.left + (k / maxRemoved) * iw;
+  const yScale = (v) => M.top + (1 - v / total) * ih;
+
+  function polyPoints(curve) {
+    return curve.map((v, i) => `${xScale(i).toFixed(1)},${yScale(v).toFixed(1)}`).join(" ");
+  }
+
+  const xTicks = [0, 25, 50, 75, 100];
+  const yTicks = [0, 75, 150, 225, 299];
+  const grid = [];
+  yTicks.forEach((v) => {
+    const y = yScale(v).toFixed(1);
+    grid.push(`<line x1="${M.left}" y1="${y}" x2="${W - M.right}" y2="${y}" stroke="${COL_LINE}" stroke-width="0.6"/>`);
+    grid.push(`<text x="${M.left - 6}" y="${(parseFloat(y) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="${COL_MUTED}">${v}</text>`);
+  });
+  xTicks.forEach((k) => {
+    const x = xScale(k).toFixed(1);
+    grid.push(`<line x1="${x}" y1="${M.top}" x2="${x}" y2="${H - M.bottom}" stroke="${COL_LINE}" stroke-width="0.4" opacity="0.6"/>`);
+    grid.push(`<text x="${x}" y="${(H - M.bottom + 16).toFixed(1)}" text-anchor="middle" font-size="11" fill="${COL_MUTED}">${k}</text>`);
+  });
+
+  const wrap = document.createElement("div");
+  wrap.className = "chart__svg-wrap";
+  container.appendChild(wrap);
+
+  const legend = document.createElement("div");
+  legend.className = "chart__legend";
+  legend.innerHTML =
+    `<span class="chart__legend-chip"><span class="chart__legend-dot" style="background:#3d7a52"></span>la întâmplare (medie peste ${rob.trials || 30} rulări)</span>` +
+    `<span class="chart__legend-chip"><span class="chart__legend-dot" style="background:#a3341f"></span>țintit (cel mai popular rămas)</span>`;
+  container.appendChild(legend);
+
+  // Scenario buttons below: use the precomputed tryBreak scenarios so a click
+  // places a marker at exactly the k that scenario removes.
+  const scenarios = (stats?.sliceMetrics?.tryBreak?.scenarios || []).map((s) => {
+    const k = (s.removedIds || []).length;
+    return {
+      key: s.key,
+      k,
+      label: s.label,
+      biggestExact: s.biggestSize,
+    };
+  }).filter((s) => s.k > 0 && s.k <= maxRemoved);
+
+  let markerK = null;
+  let markerBiggest = null;
+
+  function markerSvg() {
+    if (markerK === null) return "";
+    const x = xScale(markerK);
+    const parts = [];
+    // Vertical guide
+    parts.push(`<line x1="${x.toFixed(1)}" y1="${M.top}" x2="${x.toFixed(1)}" y2="${H - M.bottom}" stroke="#2a1f16" stroke-width="1" stroke-dasharray="4 3"/>`);
+    // Point on random curve
+    if (rand[markerK] !== undefined) {
+      const yr = yScale(rand[markerK]);
+      parts.push(`<circle cx="${x.toFixed(1)}" cy="${yr.toFixed(1)}" r="5" fill="#3d7a52" stroke="#2a1f16" stroke-width="1"/>`);
+    }
+    // Point on targeted curve
+    if (targ[markerK] !== undefined) {
+      const yt = yScale(targ[markerK]);
+      parts.push(`<circle cx="${x.toFixed(1)}" cy="${yt.toFixed(1)}" r="5" fill="#a3341f" stroke="#2a1f16" stroke-width="1"/>`);
+    }
+    // Point at scenario exact (if provided, differs from targeted curve when
+    // the removed set is NOT the top-k-degree set)
+    if (markerBiggest !== null) {
+      const yb = yScale(markerBiggest);
+      parts.push(`<circle cx="${x.toFixed(1)}" cy="${yb.toFixed(1)}" r="6" fill="none" stroke="#2a1f16" stroke-width="2"/>`);
+    }
+    return parts.join("");
+  }
+
+  function drawChart() {
+    wrap.innerHTML =
+      `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:680px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Curbe de robustețe">` +
+      grid.join("") +
+      `<polyline points="${polyPoints(rand)}" fill="none" stroke="#3d7a52" stroke-width="2.5"/>` +
+      `<polyline points="${polyPoints(targ)}" fill="none" stroke="#a3341f" stroke-width="2.5"/>` +
+      markerSvg() +
+      `<text x="${(M.left + iw / 2).toFixed(1)}" y="${(H - 6).toFixed(1)}" text-anchor="middle" font-size="12" fill="${COL_INK_S}">elevi scoși</text>` +
+      `<text x="${(M.left - 34).toFixed(1)}" y="${(M.top + ih / 2).toFixed(1)}" text-anchor="middle" font-size="12" fill="${COL_INK_S}" transform="rotate(-90 ${(M.left - 34).toFixed(1)} ${(M.top + ih / 2).toFixed(1)})">cea mai mare bucată rămasă</text>` +
+      `</svg>`;
+  }
+
+  const scenarioBar = document.createElement("div");
+  scenarioBar.className = "measure-tabs__map-controls";
+  scenarioBar.innerHTML = scenarios.map((s) =>
+    `<button type="button" class="btn btn--ghost" data-scen-k="${s.k}" data-scen-b="${s.biggestExact}" data-scen-key="${s.key}">${esc(s.label)}</button>`
+  ).join("") + (scenarios.length ? `<button type="button" class="btn btn--ghost" data-scen-k="clear">Curăță</button>` : "");
+  container.appendChild(scenarioBar);
+
+  const scenarioNote = document.createElement("div");
+  scenarioNote.className = "measure-tabs__map-caption";
+  container.appendChild(scenarioNote);
+
+  scenarioBar.querySelectorAll("[data-scen-k]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const raw = btn.dataset.scenK;
+      if (raw === "clear") { markerK = null; markerBiggest = null; drawChart(); scenarioNote.innerHTML = ""; return; }
+      const k = parseInt(raw, 10);
+      markerK = k;
+      markerBiggest = parseInt(btn.dataset.scenB, 10);
+      drawChart();
+      scenarioNote.innerHTML =
+        `Cu <strong>${k}</strong> ${k === 1 ? "elev scos" : "elevi scoși"} așa cum arată butonul, ` +
+        `cea mai mare bucată rămâne cu <strong>${markerBiggest}</strong> elevi. ` +
+        `Pe curba țintită la același k: <strong>${targ[k] ?? "?"}</strong>. ` +
+        `Pe curba la întâmplare la același k: <strong>${rand[k] ?? "?"}</strong>.`;
+    });
+  });
+
+  drawChart();
+}
+
+// Single-map strategy compare: one class-clustered map with buttons to swap
+// the highlighted strategy. Replaces the four-map grid so the eye stays on
+// the same layout while colouring shifts.
+function renderStrategyCompare(container, block, stats) {
+  const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
+  const total = cm._total || stats?.total || 299;
+  const positions = cm._positions || {};
+  const strategies = block.strategies || ["knownTeam", "top3reach", "top3pop", "greedy"];
+  const labels = {
+    knownTeam: "Cei trei pe care îi știi",
+    top3pop:   "Cei mai populari trei",
+    top3open:  "Cei mai deschiși trei",
+    top3reach: "Cei mai buni răspânditori",
+    top3betw:  "Cei mai centrali trei",
+    greedy:    "Alegerea lacomă",
+  };
+  const nodesArr = Object.entries(positions);
+
+  const btnBar = document.createElement("div");
+  btnBar.className = "measure-tabs__map-controls";
+  container.appendChild(btnBar);
+
+  const stage = document.createElement("div");
+  stage.className = "chart__svg-wrap";
+  container.appendChild(stage);
+
+  const captionBox = document.createElement("div");
+  captionBox.className = "measure-tabs__map-caption";
+  container.appendChild(captionBox);
+
+  const S = 340;
+  function draw(key) {
+    const data = cm[key];
+    if (!data) { stage.textContent = "Fără date."; return; }
+    const covered = new Set((data.coveredIds || []).map(String));
+    const seedSet = new Set((data.seedIds || []).map(String));
+    const dots = nodesArr.map(([nid, p]) => {
+      const x = ((p.x + 1) / 2) * (S - 20) + 10;
+      const y = ((p.y + 1) / 2) * (S - 20) + 10;
+      const isSeed = seedSet.has(nid);
+      const isCovered = covered.has(nid);
+      let r, fill, stroke, sw;
+      if (isSeed) { r = 5.5; fill = "#2a1f16"; stroke = "#2a1f16"; sw = 1; }
+      else if (isCovered) { r = 3.2; fill = "#8b4a1e"; stroke = "none"; sw = 0; }
+      else { r = 2.4; fill = "#e5dccb"; stroke = "none"; sw = 0; }
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${fill}"${stroke !== "none" ? ` stroke="${stroke}" stroke-width="${sw}"` : ""}/>`;
+    }).join("");
+    stage.innerHTML =
+      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:400px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Hartă de acoperire, ${esc(labels[key] || key)}">` +
+      dots + `</svg>`;
+    captionBox.innerHTML =
+      `<strong>${esc(labels[key] || key)}</strong>: ${esc((data.seedNames || []).join(", "))} — <strong>${covered.size}</strong> din ${total}`;
+  }
+
+  btnBar.innerHTML = strategies.map((key, i) =>
+    `<button type="button" class="btn ${i === 0 ? "btn--primary" : "btn--ghost"}" data-strategy="${esc(key)}">${esc(labels[key] || key)}</button>`
+  ).join("");
+  btnBar.querySelectorAll("[data-strategy]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btnBar.querySelectorAll("[data-strategy]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
+      btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary");
+      draw(btn.dataset.strategy);
+    });
+  });
+  draw(strategies[0]);
+}
+
 function renderStrategyMaps(container, block, stats) {
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
   const total = cm._total || stats?.total || 299;
@@ -2261,6 +2466,16 @@ export async function renderChart(container, block) {
     if (block.variant === "measure-tabs") {
       const stats = await getStats(block);
       await renderMeasureTabs(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "robustness") {
+      const stats = await getStats(block);
+      renderRobustness(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "strategy-compare") {
+      const stats = await getStats(block);
+      renderStrategyCompare(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {
