@@ -806,6 +806,44 @@
   line-height: 1.5;
 }
 
+/* Thesis card — closing slide, presentation-style. */
+.thesis {
+  max-width: 40rem;
+  margin: var(--sp-6) auto;
+  text-align: center;
+  line-height: 1.45;
+}
+.thesis__num {
+  font-size: 1.2rem;
+  color: var(--color-ink);
+  margin: 0 0 var(--sp-6);
+  font-variant-numeric: tabular-nums;
+}
+.thesis__punch {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  line-height: 1.25;
+  margin: var(--sp-8) auto var(--sp-6);
+}
+.thesis__note {
+  font-size: 0.95rem;
+  color: var(--color-ink-secondary, #5c5346);
+  margin: 0 auto var(--sp-6);
+  max-width: 34rem;
+}
+.thesis__end {
+  font-size: 0.8rem;
+  color: var(--color-ink-secondary, #5c5346);
+  margin: var(--sp-6) 0 0;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 640px) {
+  .thesis__punch { font-size: 1.5rem; }
+  .thesis__num { font-size: 1.05rem; }
+}
+
 /* Compact stage for mission cards so the whole card fits in one viewport. */
 .slide .viz--mission-compact .viz__stage {
   height: 30vh;

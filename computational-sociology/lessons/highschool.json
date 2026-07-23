@@ -10,10 +10,9 @@
   "chapters": [
     { "n": 1, "title": "Întrebarea", "startIdx": 0 },
     { "n": 2, "title": "Măsurăm oameni", "startIdx": 4 },
-    { "n": 3, "title": "Enigma și soluția", "startIdx": 14 },
-    { "n": 4, "title": "Aceeași greșeală, un nivel mai sus", "startIdx": 18 },
-    { "n": 5, "title": "A treia oară", "startIdx": 25 },
-    { "n": 6, "title": "Teza", "startIdx": 27 }
+    { "n": 3, "title": "Enigma, soluția și cine rămâne pe dinafară", "startIdx": 14 },
+    { "n": 4, "title": "Aceeași greșeală, un nivel mai sus", "startIdx": 19 },
+    { "n": 5, "title": "Teza", "startIdx": 26 }
   ],
   "blocks": [
     {
@@ -283,6 +282,21 @@
       "caption": "<p>Chloé are puține contacte, dar cercul verde explodează: prietenii ei sunt răspândiți în alte clase. Antoine are cele mai multe contacte, dar cercul verde adaugă puțin, pentru că prietenii lui se cunosc între ei. Léa are contacte împrăștiate, cu un cerc verde mare.</p><p>Regula ține pentru toată școala, cu o corelație de <strong>0,78</strong>, față de <strong>0,37</strong> la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul.</p><p><strong>Am aflat răspunsul, și e mai important decât cazul lui Chloé.</strong></p><p>Nu contează câți oameni cunoști. Contează pe cine cunosc ei, adică unde stai tu în structură. Popularitatea e o însușire a ta. Poziția e o relație cu ceilalți.</p><p><strong>Poziția bate însușirea.</strong> Ține minte propoziția asta. O vom întâlni din nou peste câteva minute, la o problemă complet diferită.</p><p><em>Cel mai citat articol din sociologia rețelelor e al lui Mark Granovetter, din 1973, și spune că punțile dintre grupuri sunt de obicei legături slabe: cunoștințe, nu prieteni apropiați. Cazul lui Chloé e o excepție interesantă. Puntea ei e prietenul cu care petrece cel mai mult timp. Se întâmplă, și tocmai de asta cercetătorii se uită la cazuri, nu doar la medii.</em></p>"
     },
     {
+      "type": "chart",
+      "id": "c14-yann-izolat",
+      "variant": "unreached-multi",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "focuses": [
+        { "name": "Yann" },
+        { "name": "Iban" },
+        { "name": "Cécile" }
+      ],
+      "title": "Cine rămâne pe dinafară",
+      "intro": "<p>Închidere. Am aflat cine răspândește cel mai bine, și de ce. Rămâne o urmă a modelului, la marginea lui. La <strong>{{sliceMetrics.unreachableCount}}</strong> de elevi mesajul nu ajunge niciodată, oricine ar porni.</p><p>Iată trei dintre ei în aceeași imagine, fiecare cu contactul lui și cu contactele acelui contact.</p>",
+      "caption": "Trei elevi la care vestea nu ajunge niciodată. Uită-te că nu sunt nici măcar legați între ei. Nu formează un grup de excluși, sunt <strong>trei margini diferite ale aceleiași școli</strong>. Sunt <strong>{{sliceMetrics.unreachableCount}}</strong> în total. Nu apar în niciun clasament, nu sunt suspecți, nu sunt campioni. Sunt oamenii pe care nicio strategie nu îi atinge."
+    },
+    {
       "type": "text",
       "id": "m0-candidati-din-masuri",
       "title": "Înapoi la misiune, cu bugetul mărit",
@@ -352,33 +366,19 @@
     },
     {
       "type": "chart",
-      "id": "c14-yann-izolat",
-      "variant": "unreached-multi",
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "focuses": [
-        { "name": "Yann" },
-        { "name": "Iban" },
-        { "name": "Cécile" }
-      ],
-      "title": "A treia verificare: cine nu află niciodată",
-      "intro": "<p>Am văzut de două ori că „important\" nu înseamnă ce credeam. Ultima verificare, pe altă întrebare: dacă cei importanți dispar, ce se rupe? Iar înainte de asta: cine nu află oricum ai alege?</p><p>Trei elevi neatinși de simulare, fiecare cu contactul lui și cu contactele acelui contact.</p>",
-      "caption": "Trei elevi la care vestea nu ajunge niciodată. Uită-te că nu sunt nici măcar legați între ei. Nu formează un grup de excluși, sunt <strong>trei margini diferite ale aceleiași școli</strong>. Sunt <strong>{{sliceMetrics.unreachableCount}}</strong> în total. Nu apar în niciun clasament, nu sunt suspecți, nu sunt campioni. Sunt oamenii pe care nicio strategie nu îi atinge."
-    },
-    {
-      "type": "chart",
       "id": "c-ce-se-rupe",
       "variant": "robustness",
+      "enabled": false,
       "statsSource": "data/highschool-stats.json",
-      "title": "Ce se rupe",
-      "intro": "<p>Ce se întâmplă dacă școala pierde oameni? Depinde cum îi pierde.</p><p><strong>Curba verde:</strong> elevi care dispar la întâmplare. Rețeaua abia simte, mult timp.</p><p><strong>Curba roșie:</strong> de fiecare dată dispare cel mai conectat elev rămas. Se prăbușește mult mai repede.</p><p>Sub grafic, trei butoane cu cazurile concrete pe care le-am discutat. Fiecare marchează pe curbe exact locul unde stă acel scenariu.</p>",
-      "caption": "<p>La 75 de elevi scoși țintit, cea mai mare bucată rămasă are 94 de elevi. La 75 de elevi la întâmplare, 204. La 100 de scoși țintit, 9. La 100 la întâmplare, 150. Un raport de peste 15 la 1.</p><p>Asta se numește <strong>robustețe la pierderi întâmplătoare</strong> și <strong>fragilitate la atacuri țintite</strong>. Albert, Jeong și Barabási au arătat în 2000, într-un articol din <em>Nature</em>, că e o proprietate generală a rețelelor reale. Internetul e robust dacă pică servere la întâmplare, dar vulnerabil dacă cineva alege ce să atace. Aceeași structură pe care o vezi într-o școală de liceu.</p><p>A treia oară aceeași morală. Nu cei mai populari țin rețeaua împreună, pentru că între oricare doi elevi există mai multe drumuri. Dar la margine sunt oameni de care atârnă cineva. <strong>Nici fragilitatea nu e unde te-ai uita.</strong></p>"
+      "title": "Ce se rupe (arhivat)",
+      "intro": "<p>Arhivat: rezultatul despre fragilitatea la atac țintit e valabil pentru rețele cu huburi mari, iar rețeaua noastră are gradul maxim 19 și nicio concentrare de legături. Curbele se despart prea târziu (după ~50 de eliminări) ca să demonstreze ceva pentru elevi. Reactivabil pe alte date.</p>",
+      "caption": "Arhivat."
     },
     {
       "type": "text",
       "id": "b1-ce-ai-facut",
-      "title": "Ce ai făcut",
-      "content": "<p>Dacă duci acasă o singură propoziție din ora asta, aia e: <strong>în viața socială, poziția bate însușirea.</strong></p><p>Ai văzut-o de trei ori.</p><p><strong>Prima dată</strong>: cel mai popular elev al școlii nu răspândește cel mai bine. {{name:vedeta}} are {{contacte:vedeta}} contacte, dar ajunge la doar {{reach:vedeta}} de oameni. {{name:campion}} are {{contacte:campion}}, dar ajunge la {{reach:campion}}. Contează unde stai, nu câți cunoști.</p><p><strong>A doua oară</strong>: cei mai buni trei răspânditori nu fac cea mai bună echipă. Împreună dau {{sliceMetrics.mission.top3ReachCoverage}}, mai puțin decât o echipă de oameni pe care nu îi văzuseși niciodată, care dă {{sliceMetrics.mission.greedyCoverage}}. Doi dintre campioni sunt colegi de clasă. Contează relația dintre membri, nu calitatea fiecăruia.</p><p><strong>A treia oară</strong>: cei mai importanți oameni nu țin rețeaua împreună. La eliminare țintită școala se prăbușește; la eliminare aleatoare, abia simte. Dar la margine sunt oameni de care atârnă cineva. Nici fragilitatea nu e unde te-ai uita.</p><p>De fiecare dată, răspunsul a fost același: contează unde stă cineva față de ceilalți, nu cât de bun e el luat separat.</p><p>Iar asta e greu de văzut din interior. Din clasa ta, cel cu mulți prieteni pare cel mai important. Ca să vezi altfel, îți trebuie toată rețeaua, măsuri și un calculator. <strong>De asta există sociologia computațională.</strong></p>"
+      "title": "Ce rămâne",
+      "content": "<div class=\"thesis\"><p class=\"thesis__num\">Antoine, 19 contacte, ajunge la 50.<br/>Chloé, 10 contacte, ajunge la 73.</p><p class=\"thesis__num\">Cei mai buni trei împreună: 143.<br/>Trei oameni pe care nu i-ai văzut niciodată: 183.</p><p class=\"thesis__punch\">Nu contează cât de bun e cineva.<br/>Contează unde stă.</p><p class=\"thesis__note\">Din clasa ta, cel cu mulți prieteni pare cel mai important. Ca să vezi altfel, îți trebuie toată școala, măsuri, și un calculator.</p><p class=\"thesis__end\">Asta e sociologia computațională.</p></div>"
     },
     {
       "type": "quizset",

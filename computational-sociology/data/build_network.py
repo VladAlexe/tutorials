@@ -1231,13 +1231,14 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         }
     coverage_maps["_positionsOrganic"] = coverage_positions_organic
 
-    # === Robustness curves for the "Ce se rupe" card. Two curves, both
-    # measuring "how big is the largest remaining connected component after
-    # k students are removed", for k = 0..100.
-    #  - randomCurve: k random removals, averaged over 30 trials
-    #  - targetedCurve: remove the highest-degree remaining node each step
-    # These reproduce the classic Albert-Jeong-Barabási 2000 finding on our
-    # own slice: robust to random loss, fragile to targeted attack.
+    # === Robustness curves for the "Ce se rupe" card — ARCHIVED.
+    # Result about targeted-attack fragility is only clean for networks with
+    # large hubs. Our slice caps degree at 19 with no scale-free concentration,
+    # so the two curves separate only after ~50 removals — not sharp enough
+    # to demonstrate the phenomenon in class. The card is disabled in the
+    # lesson (enabled: false). Set ENABLE_ROBUSTNESS = True to re-enable on
+    # other data.
+    ENABLE_ROBUSTNESS = False
     def _largest_component(remaining, adj_map):
         seen = set()
         largest = 0
@@ -1253,37 +1254,38 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             if sz > largest: largest = sz
         return largest
 
-    _rob_max = 100
-    _rob_trials = 30
-    _sum_random = [0] * (_rob_max + 1)
-    for _seed in range(_rob_trials):
-        rnd = random.Random(1000 + _seed)
-        order = list(node_ids)
-        rnd.shuffle(order)
-        remaining_r = set(node_ids)
+    if ENABLE_ROBUSTNESS:
+        _rob_max = 100
+        _rob_trials = 30
+        _sum_random = [0] * (_rob_max + 1)
+        for _seed in range(_rob_trials):
+            rnd = random.Random(1000 + _seed)
+            order = list(node_ids)
+            rnd.shuffle(order)
+            remaining_r = set(node_ids)
+            for k in range(_rob_max + 1):
+                if k > 0: remaining_r.discard(order[k - 1])
+                _sum_random[k] += _largest_component(remaining_r, adj)
+        random_curve = [round(v / _rob_trials, 1) for v in _sum_random]
+
+        targeted_curve = []
+        remaining_t = set(node_ids)
         for k in range(_rob_max + 1):
-            if k > 0: remaining_r.discard(order[k - 1])
-            _sum_random[k] += _largest_component(remaining_r, adj)
-    random_curve = [round(v / _rob_trials, 1) for v in _sum_random]
+            targeted_curve.append(_largest_component(remaining_t, adj))
+            if k >= _rob_max: break
+            best = None; best_deg = -1
+            for x in remaining_t:
+                d = sum(1 for y in adj.get(x, ()) if y in remaining_t)
+                if d > best_deg: best_deg = d; best = x
+            if best is not None: remaining_t.discard(best)
 
-    targeted_curve = []
-    remaining_t = set(node_ids)
-    for k in range(_rob_max + 1):
-        targeted_curve.append(_largest_component(remaining_t, adj))
-        if k >= _rob_max: break
-        best = None; best_deg = -1
-        for x in remaining_t:
-            d = sum(1 for y in adj.get(x, ()) if y in remaining_t)
-            if d > best_deg: best_deg = d; best = x
-        if best is not None: remaining_t.discard(best)
-
-    coverage_maps["_robustness"] = {
-        "randomCurve":   random_curve,
-        "targetedCurve": targeted_curve,
-        "maxRemoved":    _rob_max,
-        "trials":        _rob_trials,
-        "total":         len(node_ids),
-    }
+        coverage_maps["_robustness"] = {
+            "randomCurve":   random_curve,
+            "targetedCurve": targeted_curve,
+            "maxRemoved":    _rob_max,
+            "trials":        _rob_trials,
+            "total":         len(node_ids),
+        }
 
     # === Precomputes for the measure-tabs cards.
     # For each measure champion, we save:
