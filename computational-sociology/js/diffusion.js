@@ -1023,19 +1023,13 @@ export async function renderDiffusion(container, block, options = {}) {
     // A single simulation, driven manually one round at a time. Purpose:
     // make the "we ran the model 299 times" claim honest by first letting
     // the student run one instance and see it as a mechanical process.
-    // Rules panel stays visible throughout. Source is fixed via block.source
-    // (a role key like "campion") so the visible example matches the story.
+    // Rules panel stays visible throughout. Source is user-changeable: pick
+    // a character chip or tap any node in the network.
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
     const sm = statsData?.sliceMetrics || {};
     const pasi = block.pasi || statsData?.pasi || 4;
     const maxT = block.maxTransmiteri || statsData?.maxTransmiteri || 4;
-
-    // Resolve source id.
-    const roleKey = block.source || "campion";
-    const roleObj = sm.characters?.[roleKey];
-    const sourceId = String(roleObj?.id ?? nodes[0]?.id);
-    const sourceName = roleObj?.name || (nameById.get(sourceId) || "");
 
     // Build top-K weighted adjacency (matches build_network.py bounded model).
     const MIN_W = 4;
@@ -1052,10 +1046,23 @@ export async function renderDiffusion(container, block, options = {}) {
       adjTop.set(id, nbrs.slice(0, maxT).map((x) => x.id));
     }
 
-    // Round assignment: BFS bounded to `pasi` rounds.
-    const knowsAt = new Map();
-    knowsAt.set(sourceId, 0);
-    {
+    // Candidate character chips (default: the three known characters).
+    const candidateKeys = block.candidates || ["vedeta", "campion", "puntea"];
+    const candidates = candidateKeys
+      .map((k) => sm.characters?.[k])
+      .filter(Boolean);
+
+    // Mutable source + round-assignment table.
+    let sourceId = null;
+    let sourceName = "";
+    let knowsAt = new Map();
+    let currentStep = 0;
+
+    function recompute(newSourceId) {
+      sourceId = String(newSourceId);
+      sourceName = nameById.get(sourceId) || `Elev ${sourceId}`;
+      knowsAt = new Map();
+      knowsAt.set(sourceId, 0);
       let frontier = [sourceId];
       for (let s = 0; s < pasi && frontier.length; s++) {
         const nxt = [];
@@ -1066,9 +1073,10 @@ export async function renderDiffusion(container, block, options = {}) {
         }
         frontier = nxt;
       }
+      currentStep = 0;
     }
 
-    // Rules panel + button + counter.
+    // Rules panel + character chips + step buttons + counter.
     const rules = block.rules || [
       `Cine află spune mai departe celor <strong>${maxT}</strong> oameni cu care petrece cel mai mult timp`,
       `Ziua are <strong>${pasi}</strong> pauze`,
@@ -1076,16 +1084,27 @@ export async function renderDiffusion(container, block, options = {}) {
       "Cine nu a aflat până seara, nu a aflat"
     ];
 
+    const chipsHtml = candidates.length
+      ? `<div class="sim-step__chips">` +
+          `<span class="sim-step__chips-label">Pornește din:</span>` +
+          candidates.map((c) =>
+            `<button type="button" class="btn btn--ghost sim-step__chip" data-source-id="${c.id}">${c.name}</button>`
+          ).join("") +
+          `<span class="sim-step__chips-hint">sau atinge orice nod</span>` +
+        `</div>`
+      : "";
+
     controls.innerHTML =
       `<div class="sim-step__rules"><div class="sim-step__rules-title">Reguli</div><ul>` +
         rules.map((r) => `<li>${r}</li>`).join("") +
       `</ul></div>` +
+      chipsHtml +
       `<div class="diff-row diff-buttons sim-step__buttons">` +
         `<button type="button" class="btn btn--primary" data-act="next">Următoarea pauză</button>` +
         `<button type="button" class="btn btn--ghost" data-act="run">Rulează tot</button>` +
         `<button type="button" class="btn btn--ghost" data-act="reset">De la început</button>` +
       `</div>` +
-      `<div class="sim-step__count" data-role="count">Pauza <strong>0</strong>. Știe <strong>1</strong> elev, ${sourceName}.</div>`;
+      `<div class="sim-step__count" data-role="count"></div>`;
 
     // Visual style: all nodes dim except source. Big node for source so it
     // reads from the back of the room.
@@ -1130,11 +1149,11 @@ export async function renderDiffusion(container, block, options = {}) {
       });
     }
 
-    let currentStep = 0;
     const countEl = controls.querySelector('[data-role="count"]');
     const btnNext = controls.querySelector('[data-act="next"]');
     const btnRun = controls.querySelector('[data-act="run"]');
     const btnReset = controls.querySelector('[data-act="reset"]');
+    const chipEls = controls.querySelectorAll("[data-source-id]");
 
     function knowsCountAt(step) {
       let c = 0;
@@ -1146,13 +1165,33 @@ export async function renderDiffusion(container, block, options = {}) {
       if (currentStep === 0) {
         countEl.innerHTML = `Pauza <strong>0</strong>. Știe <strong>1</strong> elev, ${sourceName}.`;
       } else if (currentStep >= pasi) {
-        countEl.innerHTML = `Ziua s-a terminat, după <strong>${pasi}</strong> pauze. Știu <strong>${c}</strong> elevi din ${nodes.length}.`;
+        countEl.innerHTML = `Ziua s-a terminat, după <strong>${pasi}</strong> pauze pornind din ${sourceName}. Știu <strong>${c}</strong> elevi din ${nodes.length}.`;
       } else {
-        countEl.innerHTML = `Pauza <strong>${currentStep}</strong>. Știu <strong>${c}</strong> elevi.`;
+        countEl.innerHTML = `Pauza <strong>${currentStep}</strong> pornind din ${sourceName}. Știu <strong>${c}</strong> elevi.`;
       }
       btnNext.disabled = currentStep >= pasi;
       btnRun.disabled = currentStep >= pasi;
     }
+
+    function highlightChip(id) {
+      chipEls.forEach((b) => {
+        const active = b.dataset.sourceId === String(id);
+        b.classList.toggle("btn--primary", active);
+        b.classList.toggle("btn--ghost", !active);
+      });
+    }
+
+    function switchSource(id) {
+      recompute(id);
+      paintForStep(0);
+      updateCount();
+      highlightChip(id);
+      btnNext.disabled = false;
+      btnRun.disabled = false;
+    }
+
+    chipEls.forEach((b) => b.addEventListener("click", () => switchSource(b.dataset.sourceId)));
+    cy.on("tap", "node", (e) => switchSource(e.target.id()));
 
     btnNext.addEventListener("click", () => {
       if (currentStep >= pasi) return;
@@ -1161,7 +1200,7 @@ export async function renderDiffusion(container, block, options = {}) {
       updateCount();
     });
     btnRun.addEventListener("click", () => {
-      // Advance one round every 500ms until we hit `pasi`.
+      // Advance one round every 550ms until we hit `pasi`.
       const tick = () => {
         if (currentStep >= pasi) return;
         currentStep++;
@@ -1177,8 +1216,11 @@ export async function renderDiffusion(container, block, options = {}) {
       updateCount();
     });
 
-    paintForStep(0);
-    updateCount();
+    // Initial source: block.source (role key) or the first candidate.
+    const initialRoleKey = block.source || "campion";
+    const initialRole = sm.characters?.[initialRoleKey];
+    const initialId = initialRole?.id ?? candidates[0]?.id ?? nodes[0]?.id;
+    switchSource(initialId);
   }
 
   else if (mode === "explore") {

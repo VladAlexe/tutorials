@@ -1065,12 +1065,55 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     top3_open_ids = _seed_ids("topOpen")
     greedy_ids = _seed_ids("greedy")
     known_ids = [int(x) for x in known_team_ids]
+    # Top 3 by reach — surprising killer: Chloé + Gabin + Estée. Chloé and
+    # Gabin are both in Bio C, so they overlap heavily on the same crowd.
+    top3_reach_ids = [int(x) for x in sorted(node_ids, key=lambda x: (-reach_size[x], x))[:3]]
+    top3_reach_names = [name_map.get(x, str(x)) for x in top3_reach_ids]
+    top3_reach_coverage = len(diffuse_limited(top3_reach_ids, adj_top, pasi))
+
+    # Top 3 by betweenness — needs Brandes' algorithm on the full network.
+    def _betweenness():
+        Cb = {v: 0.0 for v in node_ids}
+        for s in node_ids:
+            S = []
+            P = {v: [] for v in node_ids}
+            sigma = {v: 0 for v in node_ids}; sigma[s] = 1
+            d = {v: -1 for v in node_ids}; d[s] = 0
+            Q = deque([s])
+            while Q:
+                v = Q.popleft(); S.append(v)
+                for w in adj.get(v, ()):
+                    if d[w] < 0: d[w] = d[v] + 1; Q.append(w)
+                    if d[w] == d[v] + 1: sigma[w] += sigma[v]; P[w].append(v)
+            delta = {v: 0.0 for v in node_ids}
+            while S:
+                w = S.pop()
+                for v in P[w]:
+                    delta[v] += (sigma[v] / sigma[w]) * (1 + delta[w])
+                if w != s: Cb[w] += delta[w]
+        for v in Cb: Cb[v] /= 2.0
+        return Cb
+    betweenness = _betweenness()
+    top3_betw_ids = sorted(node_ids, key=lambda x: (-betweenness[x], x))[:3]
+    top3_betw_names = [name_map.get(x, str(x)) for x in top3_betw_ids]
+    top3_betw_coverage = len(diffuse_limited(top3_betw_ids, adj_top, pasi))
+    # For the terminology mention: top 10 by betweenness (name + class + value)
+    betw_top10 = []
+    for nid in sorted(node_ids, key=lambda x: (-betweenness[x], x))[:10]:
+        betw_top10.append({
+            "id": nid,
+            "name": name_map.get(nid, str(nid)),
+            "classFriendly": CLASS_NAMES.get(klass_map.get(nid, "?"), "?"),
+            "value": round(betweenness[nid], 1),
+        })
 
     coverage_maps = {
-        "top3pop":   {"seedIds": top3_pop_ids,  "seedNames": top3_pop_names,   "coveredIds": _cov_set(top3_pop_ids)},
-        "top3open":  {"seedIds": top3_open_ids, "seedNames": top3_open_names,  "coveredIds": _cov_set(top3_open_ids)},
-        "greedy":    {"seedIds": greedy_ids,    "seedNames": greedy_names,     "coveredIds": _cov_set(greedy_ids)},
-        "knownTeam": {"seedIds": known_ids,     "seedNames": known_team_names, "coveredIds": _cov_set(known_ids)},
+        "top3pop":   {"seedIds": top3_pop_ids,   "seedNames": top3_pop_names,   "coveredIds": _cov_set(top3_pop_ids)},
+        "top3open":  {"seedIds": top3_open_ids,  "seedNames": top3_open_names,  "coveredIds": _cov_set(top3_open_ids)},
+        "top3reach": {"seedIds": top3_reach_ids, "seedNames": top3_reach_names, "coveredIds": _cov_set(top3_reach_ids)},
+        "top3betw":  {"seedIds": top3_betw_ids,  "seedNames": top3_betw_names,  "coveredIds": _cov_set(top3_betw_ids)},
+        "greedy":    {"seedIds": greedy_ids,     "seedNames": greedy_names,     "coveredIds": _cov_set(greedy_ids)},
+        "knownTeam": {"seedIds": known_ids,      "seedNames": known_team_names, "coveredIds": _cov_set(known_ids)},
     }
 
     # Shared layout: place each class as a small radial cluster on a nine-slot
@@ -1101,22 +1144,62 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     coverage_maps["_positions"] = coverage_positions
     coverage_maps["_total"] = len(node_ids)
 
+    # === Greedy step-by-step trace: at each step, top 5 candidates by
+    # marginal gain (coverage added over currently-chosen), plus who was
+    # picked. Used by the new "cine sunt ei" story-telling in the greedy
+    # card so students see the algorithm's actual reasoning.
+    greedy_trace = []
+    chosen = []
+    for _step in range(3):
+        step_scores = []
+        prev_cov = diffuse_limited(chosen, adj_top, pasi) if chosen else set()
+        for cand in node_ids:
+            if cand in chosen: continue
+            new_cov = diffuse_limited(chosen + [cand], adj_top, pasi)
+            step_scores.append({"id": cand, "name": name_map.get(cand, str(cand)), "gain": len(new_cov) - len(prev_cov)})
+        step_scores.sort(key=lambda x: (-x["gain"], x["id"]))
+        picked = step_scores[0]
+        greedy_trace.append({
+            "step": _step + 1,
+            "pickedId": picked["id"],
+            "pickedName": picked["name"],
+            "pickedGain": picked["gain"],
+            "top5": step_scores[:5],
+        })
+        chosen.append(picked["id"])
+    # Also: compare picked-at-step2 with "runner-up-from-step-1 evaluated
+    # AT step 2". That is the key pedagogical number for the greedy card.
+    if greedy_trace and len(greedy_trace) >= 2 and greedy_trace[0]["top5"]:
+        step1_runnerup_id = greedy_trace[0]["top5"][1]["id"]
+        step1_runnerup_name = greedy_trace[0]["top5"][1]["name"]
+        cov_after_step1 = diffuse_limited([greedy_trace[0]["pickedId"]], adj_top, pasi)
+        cov_with_runnerup = diffuse_limited([greedy_trace[0]["pickedId"], step1_runnerup_id], adj_top, pasi)
+        greedy_trace[1]["step1RunnerUpName"] = step1_runnerup_name
+        greedy_trace[1]["step1RunnerUpSoloReach"] = greedy_trace[0]["top5"][1]["gain"]
+        greedy_trace[1]["step1RunnerUpMarginalAtStep2"] = len(cov_with_runnerup) - len(cov_after_step1)
+
     mission_summary = {
         "plafon":        plafon,
         "trioMission":   trio_mission,
         "correlations":  correlations,
-        "top3PopularNames":  top3_pop_names,
-        "top3PopularCoverage": strategies["topPopular"]["coverage"],
-        "top3OpenNames":     top3_open_names,
-        "top3OpenCoverage":  strategies["topOpen"]["coverage"],
-        "greedyNames":       greedy_names,
-        "greedyCoverage":    strategies["greedy"]["coverage"],
-        "knownTeamNames":    known_team_names,
-        "knownTeamCoverage": known_team_coverage,
-        "randomMean":        strategies["randomMean"],
-        "randomMax":         strategies["randomMax"],
-        "randomMin":         strategies["randomMin"],
-        "coverageMaps":      coverage_maps,
+        "top3PopularNames":     top3_pop_names,
+        "top3PopularCoverage":  strategies["topPopular"]["coverage"],
+        "top3OpenNames":        top3_open_names,
+        "top3OpenCoverage":     strategies["topOpen"]["coverage"],
+        "top3ReachNames":       top3_reach_names,
+        "top3ReachCoverage":    top3_reach_coverage,
+        "top3BetweennessNames":    top3_betw_names,
+        "top3BetweennessCoverage": top3_betw_coverage,
+        "greedyNames":          greedy_names,
+        "greedyCoverage":       strategies["greedy"]["coverage"],
+        "knownTeamNames":       known_team_names,
+        "knownTeamCoverage":    known_team_coverage,
+        "randomMean":           strategies["randomMean"],
+        "randomMax":            strategies["randomMax"],
+        "randomMin":            strategies["randomMin"],
+        "coverageMaps":         coverage_maps,
+        "betweennessTop10":     betw_top10,
+        "greedyTrace":          greedy_trace,
     }
 
     return {

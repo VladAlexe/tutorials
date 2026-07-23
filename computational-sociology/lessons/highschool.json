@@ -12,7 +12,7 @@
     { "n": 2, "title": "Măsurile școlii", "startIdx": 3 },
     { "n": 3, "title": "Ipoteze, soluție și margini", "startIdx": 13 },
     { "n": 4, "title": "Misiunea", "startIdx": 19 },
-    { "n": 5, "title": "Bilanț", "startIdx": 24 }
+    { "n": 5, "title": "Bilanț", "startIdx": 26 }
   ],
   "blocks": [
     {
@@ -170,8 +170,8 @@
       "statsSource": "data/highschool-stats.json",
       "source": "campion",
       "title": "Ce înseamnă o simulare",
-      "intro": "<p>Până acum am numărat lucruri care există în date. Acum facem altceva.</p><p>Vrem să știm cât de departe ajunge o veste pornită de la un anumit elev. Asta nu scrie nicăieri. Nu s-a întâmplat niciodată. Ca să aflăm, <strong>construim un model și îl rulăm</strong>.</p><p>Regulile sunt inventate de noi și sunt simple, poate prea simple. Oamenii adevărați uită, se răzgândesc, spun la mai mulți sau la nimeni. Dar odată fixate, calculatorul le poate urma exact.</p><p>Apasă pe buton, pauză cu pauză, și privește.</p>",
-      "caption": "Asta e o simulare: un model cu reguli clare, rulat ca să vedem ce iese. Rezultatul nu e un fapt despre școala reală, ci despre modelul nostru. Diferența contează. Ce ai rulat acum a durat patru apăsări. Calculatorul face același lucru de {{total}} de ori, o dată din fiecare elev, în mai puțin de o secundă. Asta urmează."
+      "intro": "<p>Până acum am numărat lucruri care există în date. Acum facem altceva.</p><p>Vrem să știm cât de departe ajunge o veste pornită de la un anumit elev. Asta nu scrie nicăieri. Nu s-a întâmplat niciodată. Ca să aflăm, <strong>construim un model și îl rulăm</strong>.</p><p>Regulile sunt inventate de noi și sunt simple, poate prea simple. Oamenii adevărați uită, se răzgândesc, spun la mai mulți sau la nimeni. Dar odată fixate, calculatorul le poate urma exact.</p><p>Alege pe cine pornește: apasă o fișă sau atinge orice nod. Apoi apasă butonul, pauză cu pauză, și privește. Rulează de mai multe ori, cu porniri diferite. Din {{name:vedeta}} valul rămâne aproape în clasă. Din {{name:campionul}} iese și ajunge mai departe.</p>",
+      "caption": "<p>Asta e o simulare: un model cu reguli clare, rulat ca să vedem ce iese. Rezultatul nu e un fapt despre școala reală, ci despre modelul nostru. Diferența contează. Ce ai rulat acum a durat patru apăsări. Calculatorul face același lucru de {{total}} de ori, o dată din fiecare elev, în mai puțin de o secundă. Asta urmează.</p><p><strong>Un lucru important despre ce tocmai ai rulat.</strong></p><p>Simularea noastră e <strong>deterministă</strong>: din același elev, cu aceleași reguli, iese de fiecare dată exact același rezultat. Nu intervine nimic la întâmplare.</p><p>Există și un alt fel de simulare, mai apropiată de realitate. În ea, fiecare transmitere are o probabilitate: uneori omul spune mai departe, alteori nu, aruncând cu banul. Rulezi de o sută de ori și obții o sută de rezultate diferite, deci nu un număr, ci o <strong>distribuție</strong> de rezultate posibile. Aceea se numește simulare statistică, sau <em>Monte Carlo</em>.</p><p>Modelul nostru e mai simplu, deci mai ușor de urmărit și de comparat. Prețul e că spune „exact atâția oameni află\", când realitatea ar spune „în medie atâția, dar uneori mult mai puțini\". Fiecare model câștigă ceva și pierde altceva. Un cercetător alege modelul în funcție de ce întrebare pune.</p>"
     },
     {
       "type": "chart",
@@ -285,6 +285,12 @@
       "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă. {{name:vedeta}}, cel mai popular, dispare fără să se rupă nimic. Primii cinci, la fel. Fragilitatea nu e la centru: e la {{name:dependentul}}, un elev cu popularitate modestă care se dovedește a fi <strong>singurul drum</strong> pentru trei colegi. Iar butonul cu toți cei {{sliceMetrics.nCutVertices}} elevi de care atârnă cineva rupe rețeaua în peste douăzeci de bucăți: 247 rămân împreună, alți 24 se dispersează câte unul. Cei trei ai lui Damien, plus cei 24 de aici, intră toți pe lista lui Yann: nu i-a auzit modelul nu pentru că nu ar fi acolo, ci pentru că firul care îi ținea de școală a fost tăiat."
     },
     {
+      "type": "text",
+      "id": "m0-candidati-din-masuri",
+      "title": "Candidații din măsuri",
+      "content": "<p>Până acum am calculat patru feluri de a spune că un elev e important. Fiecare a scos în vârf altcineva:</p><table class=\"lesson-table\"><thead><tr><th>Măsura</th><th>Cine iese primul</th><th>Câți oameni află de la el</th></tr></thead><tbody><tr><td>Gradul</td><td>{{name:vedeta}}, Bio C</td><td>{{reach:vedeta}}</td></tr><tr><td>Deschiderea</td><td>{{name:puntea}}, Mate C</td><td>{{reach:puntea}}</td></tr><tr><td>Intermedierea</td><td>Charlotte, Bio C</td><td>51</td></tr><tr><td>Simularea din toți</td><td>{{name:campionul}}, Bio C</td><td>{{reach:campion}}</td></tr></tbody></table><p>Fiecare măsură îți dă un campion. Patru măsuri, patru oameni diferiți, niciunul dintre ei cel mai bun răspânditor.</p><p>Cel mai bun a ieșit abia când am renunțat să măsurăm oameni și am rulat procesul din fiecare elev al școlii. Nu am dedus, am <strong>căutat</strong>.</p><p>Ține minte asta. Urmează aceeași problemă, dar pentru o echipă de trei.</p>"
+    },
+    {
       "type": "diffusion",
       "id": "m1-o-alegere",
       "mode": "mission",
@@ -315,14 +321,20 @@
       "caption": "Cei trei pe care îi știi din lecție, împreună: <strong>{{sliceMetrics.mission.knownTeamCoverage}}</strong> din {{sliceMetrics.plafon}} posibili. Cei mai populari trei ai școlii, aleși după grad: <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong>. Puțin mai bine, dar tot departe de plafon. Fiecare atinge în jur de cincizeci de oameni și abia se suprapun între ei. Nu e o problemă de bulă comună. E o problemă de adâncime."
     },
     {
+      "type": "text",
+      "id": "m4b-echipe-din-masuri",
+      "title": "Echipele din măsuri eșuează și ele",
+      "content": "<p>Poate echipa se construiește din campioni. Le-am încercat pe toate.</p><table class=\"lesson-table\"><thead><tr><th>Echipa</th><th>Cine</th><th>Acoperire</th></tr></thead><tbody><tr><td>Cei mai populari trei</td><td>Antoine, Léa, Élodie</td><td>{{sliceMetrics.mission.top3PopularCoverage}}</td></tr><tr><td>Cei mai deschiși trei</td><td>Léa, Samuel, Hélène</td><td>{{sliceMetrics.mission.top3OpenCoverage}}</td></tr><tr><td>Cei mai centrali trei</td><td>Charlotte, Karam, Diane</td><td>{{sliceMetrics.mission.top3BetweennessCoverage}}</td></tr><tr><td>Cei trei pe care îi știi</td><td>Antoine, Chloé, Léa</td><td>{{sliceMetrics.mission.knownTeamCoverage}}</td></tr><tr><td><strong>Cei mai buni trei răspânditori</strong></td><td>Chloé, Gabin, Estée</td><td><strong>{{sliceMetrics.mission.top3ReachCoverage}}</strong></td></tr></tbody></table><p>Ultima linie e cea surprinzătoare. Ai lua cei trei care, fiecare singur, aduc cei mai mulți oameni. Pare o alegere de neatacat.</p><p>Nu e. <strong>{{sliceMetrics.mission.top3ReachCoverage}} din {{sliceMetrics.plafon}}</strong>. Motivul e vechi: Chloé și Gabin sunt colegi de clasă și acoperă în mare parte aceiași oameni. Se suprapun pe 64 dintre cei 71 pe care îi atinge Gabin. Adăugându-l, echipa câștigă doar 7 oameni noi.</p><p>Niciun clasament nu produce cea mai bună echipă. Motivul e mereu același: campionii seamănă între ei. O măsură bună pentru un om nu e o măsură bună pentru o echipă. Pentru echipe trebuie altceva.</p>"
+    },
+    {
       "type": "chart",
       "id": "m5-strategii",
       "variant": "strategy-maps",
       "statsSource": "data/highschool-stats.json",
-      "strategies": ["knownTeam", "top3pop", "top3open", "greedy"],
-      "title": "Compară strategiile",
-      "intro": "<p>Patru strategii, aceeași școală. În fiecare hartă, punctele mari și negre sunt cei trei aleși, punctele calde sunt cei atinși de zvon, punctele pale sunt cei ratați. Punctele sunt așezate pe clase, ca să vezi nu doar <em>câți</em> acoperă fiecare strategie, ci și <em>unde</em>.</p>",
-      "caption": "Cei mai populari trei acoperă bine o zonă și lasă restul pe dinafară. Alegerea lacomă atinge bucăți din toate colțurile. Cei mai deschiși trei (după fracția de contacte externe) obțin {{sliceMetrics.mission.top3OpenCoverage}}, sub cei mai populari, pentru că cine are contacte împrăștiate le are și puține. Iar cei trei pe care îi știi din lecție, cu doi din aceeași clasă, ajung la {{sliceMetrics.mission.knownTeamCoverage}}. Nu contează doar cât acoperă o strategie, ci și unde. Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie."
+      "strategies": ["knownTeam", "top3pop", "top3reach", "greedy"],
+      "title": "Aceleași echipe, ca hartă",
+      "intro": "<p>Patru dintre echipele de mai sus, ca hărți alăturate. În fiecare, punctele mari și negre sunt cei trei aleși, punctele calde sunt cei atinși de zvon, punctele pale sunt cei ratați. Punctele sunt așezate pe clase, ca să vezi nu doar <em>câți</em> acoperă fiecare echipă, ci și <em>unde</em>.</p>",
+      "caption": "Cei mai populari trei acoperă bine o zonă și lasă restul pe dinafară. Cei mai buni răspânditori trei acoperă aproape aceeași zonă (Chloé și Gabin sunt colegi de clasă), deci lasă și ei mult pe dinafară. Cei trei pe care îi cunoști rămân în jumătatea lui Bio C și Mate C. Iar alegerea lacomă atinge bucăți din toate colțurile. Nu contează doar cât acoperă o strategie, ci și unde. Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie."
     },
     {
       "type": "diffusion",
@@ -330,9 +342,9 @@
       "mode": "greedy-anim",
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
-      "title": "Lasă algoritmul",
-      "intro": "<p>Sunt <strong>4.410.309</strong> de moduri de a alege trei elevi din {{total}}. Prea multe ca să le încerci pe toate, chiar și pentru un calculator. Algoritmul folosește o scurtătură. Apasă butonul și lasă-l să aleagă pas cu pas.</p>",
-      "caption": "Uită-te pe cine a ales și pe cine nu. Nu l-a ales pe <strong>{{name:vedeta}}</strong>, cel mai popular elev din școală. A ales-o pe <strong>{{name:campion}}</strong>, pe care ai cunoscut-o mai devreme în lecție, și pe încă doi elevi pe care nu i-ai văzut niciodată în această lecție."
+      "title": "Cum caută algoritmul",
+      "intro": "<p>Vezi de ce cei mai buni trei răspânditori, luați împreună, sunt mediocri. Ce alegere ai face în locul algoritmului? Uită-te la modul lui de a lucra, pas cu pas.</p><p><strong>Pasul 1.</strong> Din toți cei {{total}} de elevi, cine acoperă cel mai mult singur? Chloé cu <strong>73</strong>, apoi Gabin cu 71, apoi Estée cu 68, apoi Rémi cu 68. Alegem primul: <strong>Chloé</strong>.</p><p><strong>Pasul 2.</strong> Acum întrebarea se schimbă. Nu mai căutăm cine acoperă cel mai mult, ci <strong>cine adaugă cel mai mult peste ce avem deja</strong>. Recalculăm pentru toți cei {{total}}.</p><p>Al doilea din clasamentul de dinainte, Gabin, adaugă doar <strong>7</strong> oameni noi, pentru că e coleg de clasă cu Chloé și 64 dintre ai lui erau deja acoperiți. Rémi, care era pe locul patru, adaugă <strong>67</strong>. Alegem <strong>Rémi</strong>.</p><p><strong>Pasul 3.</strong> Recalculăm din nou. Onorine adaugă <strong>43</strong>, cel mai mult dintre toți rămași. Alegem <strong>Honorine</strong>.</p><p>Acum apasă butonul și urmărește vizual cum se completează cei trei pași.</p>",
+      "caption": "Algoritmul nu caută oameni buni. Caută <strong>acoperire nouă</strong>. De aceea la al doilea pas alege pe cineva care, singur, e mediocru: îi pasă doar ce adaugă peste ce are deja. Sunt <strong>4.410.309</strong> feluri de a alege trei oameni din {{total}}. Prea multe ca să le încerci pe toate. Algoritmul face {{total}} evaluări la fiecare pas, deci trei runde de câte {{total}}, și obține un rezultat foarte bun fără să caute exhaustiv. Se numește alegere lacomă, descrisă de Kempe, Kleinberg și Tardos în 2003."
     },
     {
       "type": "text",
