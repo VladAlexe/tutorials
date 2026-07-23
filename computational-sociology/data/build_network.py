@@ -700,6 +700,23 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         nc.discard(klass_map.get(x, "?"))
         return len(nc) + 1
 
+    # Bounded reach at 2 and 3 rounds (as opposed to the full-mission reach at `pasi`).
+    def reach_at_k(source, k):
+        known = {source}
+        frontier = [source]
+        for _ in range(k):
+            nxt = []
+            for u in frontier:
+                for v in adj_top.get(u, ()):
+                    if v not in known:
+                        known.add(v); nxt.append(v)
+            frontier = nxt
+            if not frontier: break
+        return len(known)
+
+    reach2 = {x: reach_at_k(x, 2) for x in node_ids}
+    reach3 = {x: reach_at_k(x, 3) for x in node_ids}
+
     scatter_data = [
         {
             "id":         x,
@@ -708,14 +725,19 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             "popularity": degrees[x],
             "openness":   openness[x],
             "groups":     groups_of(x),
+            "reach2":     reach2[x],
+            "reach3":     reach3[x],
             "reach":      reach_size[x],
         }
         for x in node_ids
     ]
 
-    # Correlation groups-vs-reach for the class-based openness axis on M3
     groups_arr = [groups_of(x) for x in node_ids]
+    reach2_arr = [reach2[x] for x in node_ids]
+    reach3_arr = [reach3[x] for x in node_ids]
     correlations["groupsReach"] = pearson(groups_arr, reach_arr)
+    correlations["reach2Reach"] = pearson(reach2_arr, reach_arr)
+    correlations["reach3Reach"] = pearson(reach3_arr, reach_arr)
 
     top3_pop_names   = [name_map.get(x, str(x)) for x in top3_pop]
     top3_open_names  = [name_map.get(x, str(x)) for x in top3_open]

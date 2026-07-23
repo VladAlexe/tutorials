@@ -570,6 +570,7 @@ function fillSlide(slideState, callbacks) {
     const b = slideState.block;
     const el = slideState.el;
 
+    try {
     switch (b.type) {
       case "chapter-intro": {
         const wrap = document.createElement("div");
@@ -782,6 +783,16 @@ function fillSlide(slideState, callbacks) {
         p.textContent = `Bloc necunoscut: ${b.type}`;
         el.appendChild(p);
       }
+    }
+    } catch (err) {
+      // A single broken card must not lock the whole lesson. Show the error
+      // inline and keep advancement enabled so the reader can move past it.
+      const warn = document.createElement("div");
+      warn.className = "slide__error";
+      warn.style.cssText = "background:#f7ede1;border:1px solid #c96d3f;border-radius:6px;padding:12px;margin-top:12px;font-size:0.9rem;color:#5a2a10;";
+      warn.textContent = `Cardul „${b.id || b.type}" nu s-a randat corect (${err && err.message ? err.message : err}). Poți continua.`;
+      el.appendChild(warn);
+      slideState.canAdvance = true;
     }
   })();
   return slideState.fillPromise;

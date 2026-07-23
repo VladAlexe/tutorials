@@ -6555,7 +6555,9 @@
       "correlations": {
         "popularityReach": 0.372,
         "opennessReach": 0.571,
-        "groupsReach": 0.397
+        "groupsReach": 0.397,
+        "reach2Reach": 0.779,
+        "reach3Reach": 0.929
       },
       "plafon": 290,
       "scatterData": [
@@ -6566,6 +6568,8 @@
           "popularity": 10,
           "openness": 6,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 31,
           "reach": 57
         },
         {
@@ -6575,6 +6579,8 @@
           "popularity": 8,
           "openness": 6,
           "groups": 3,
+          "reach2": 12,
+          "reach3": 25,
           "reach": 49
         },
         {
@@ -6584,6 +6590,8 @@
           "popularity": 6,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 16,
           "reach": 30
         },
         {
@@ -6593,6 +6601,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 23,
           "reach": 39
         },
         {
@@ -6602,6 +6612,8 @@
           "popularity": 7,
           "openness": 3,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 25,
           "reach": 40
         },
         {
@@ -6611,6 +6623,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 17,
+          "reach3": 29,
           "reach": 35
         },
         {
@@ -6620,6 +6634,8 @@
           "popularity": 5,
           "openness": 5,
           "groups": 2,
+          "reach2": 16,
+          "reach3": 26,
           "reach": 49
         },
         {
@@ -6629,6 +6645,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 21,
           "reach": 31
         },
         {
@@ -6638,6 +6656,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 24,
           "reach": 42
         },
         {
@@ -6647,6 +6667,8 @@
           "popularity": 10,
           "openness": 6,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 27,
           "reach": 38
         },
         {
@@ -6656,6 +6678,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 21,
           "reach": 47
         },
         {
@@ -6665,6 +6689,8 @@
           "popularity": 10,
           "openness": 5,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 31,
           "reach": 49
         },
         {
@@ -6674,6 +6700,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 1,
+          "reach2": 16,
+          "reach3": 32,
           "reach": 60
         },
         {
@@ -6683,6 +6711,8 @@
           "popularity": 8,
           "openness": 5,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 38
         },
         {
@@ -6692,6 +6722,8 @@
           "popularity": 12,
           "openness": 5,
           "groups": 3,
+          "reach2": 12,
+          "reach3": 29,
           "reach": 50
         },
         {
@@ -6701,6 +6733,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 26,
           "reach": 47
         },
         {
@@ -6710,6 +6744,8 @@
           "popularity": 5,
           "openness": 1,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 13,
           "reach": 24
         },
         {
@@ -6719,6 +6755,8 @@
           "popularity": 7,
           "openness": 4,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 20,
           "reach": 31
         },
         {
@@ -6728,6 +6766,8 @@
           "popularity": 14,
           "openness": 7,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 34,
           "reach": 55
         },
         {
@@ -6737,6 +6777,8 @@
           "popularity": 6,
           "openness": 2,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 25,
           "reach": 42
         },
         {
@@ -6746,6 +6788,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 23,
           "reach": 40
         },
         {
@@ -6755,6 +6799,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 19,
           "reach": 31
         },
         {
@@ -6764,6 +6810,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 31,
           "reach": 55
         },
         {
@@ -6773,6 +6821,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 24,
           "reach": 46
         },
         {
@@ -6782,6 +6832,8 @@
           "popularity": 4,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 22,
           "reach": 37
         },
         {
@@ -6791,6 +6843,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 34,
           "reach": 58
         },
         {
@@ -6800,6 +6854,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 26,
           "reach": 43
         },
         {
@@ -6809,6 +6865,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 9,
           "reach": 11
         },
         {
@@ -6818,6 +6876,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 26,
           "reach": 38
         },
         {
@@ -6827,6 +6887,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 15,
           "reach": 27
         },
         {
@@ -6836,6 +6898,8 @@
           "popularity": 11,
           "openness": 5,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 12,
           "reach": 15
         },
         {
@@ -6845,6 +6909,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 31,
           "reach": 60
         },
         {
@@ -6854,6 +6920,8 @@
           "popularity": 9,
           "openness": 5,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 25,
           "reach": 39
         },
         {
@@ -6863,6 +6931,8 @@
           "popularity": 9,
           "openness": 5,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 26,
           "reach": 45
         },
         {
@@ -6872,6 +6942,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 3,
+          "reach2": 17,
+          "reach3": 35,
           "reach": 56
         },
         {
@@ -6881,6 +6953,8 @@
           "popularity": 12,
           "openness": 8,
           "groups": 3,
+          "reach2": 13,
+          "reach3": 27,
           "reach": 51
         },
         {
@@ -6890,6 +6964,8 @@
           "popularity": 5,
           "openness": 1,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 20,
           "reach": 38
         },
         {
@@ -6899,6 +6975,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 33
         },
         {
@@ -6908,6 +6986,8 @@
           "popularity": 7,
           "openness": 4,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 26,
           "reach": 34
         },
         {
@@ -6917,6 +6997,8 @@
           "popularity": 19,
           "openness": 11,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 28,
           "reach": 50
         },
         {
@@ -6926,6 +7008,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 27,
           "reach": 51
         },
         {
@@ -6935,6 +7019,8 @@
           "popularity": 6,
           "openness": 1,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 11,
           "reach": 15
         },
         {
@@ -6944,6 +7030,8 @@
           "popularity": 8,
           "openness": 5,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 31,
           "reach": 55
         },
         {
@@ -6953,6 +7041,8 @@
           "popularity": 9,
           "openness": 5,
           "groups": 3,
+          "reach2": 14,
+          "reach3": 28,
           "reach": 47
         },
         {
@@ -6962,6 +7052,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 24,
           "reach": 50
         },
         {
@@ -6971,6 +7063,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 2,
+          "reach2": 8,
+          "reach3": 18,
           "reach": 34
         },
         {
@@ -6980,6 +7074,8 @@
           "popularity": 11,
           "openness": 7,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 27,
           "reach": 45
         },
         {
@@ -6989,6 +7085,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 9,
           "reach": 18
         },
         {
@@ -6998,6 +7096,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 21,
           "reach": 38
         },
         {
@@ -7007,6 +7107,8 @@
           "popularity": 8,
           "openness": 6,
           "groups": 3,
+          "reach2": 14,
+          "reach3": 28,
           "reach": 52
         },
         {
@@ -7016,6 +7118,8 @@
           "popularity": 13,
           "openness": 7,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 18,
           "reach": 29
         },
         {
@@ -7025,6 +7129,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 21,
           "reach": 31
         },
         {
@@ -7034,6 +7140,8 @@
           "popularity": 12,
           "openness": 7,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 29,
           "reach": 43
         },
         {
@@ -7043,6 +7151,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 2,
+          "reach2": 3,
+          "reach3": 7,
           "reach": 16
         },
         {
@@ -7052,6 +7162,8 @@
           "popularity": 12,
           "openness": 8,
           "groups": 1,
+          "reach2": 17,
+          "reach3": 33,
           "reach": 54
         },
         {
@@ -7061,6 +7173,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 22,
           "reach": 39
         },
         {
@@ -7070,6 +7184,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 10,
           "reach": 14
         },
         {
@@ -7079,6 +7195,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 12,
           "reach": 25
         },
         {
@@ -7088,6 +7206,8 @@
           "popularity": 12,
           "openness": 6,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 25,
           "reach": 35
         },
         {
@@ -7097,6 +7217,8 @@
           "popularity": 16,
           "openness": 7,
           "groups": 3,
+          "reach2": 14,
+          "reach3": 27,
           "reach": 47
         },
         {
@@ -7106,6 +7228,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 24,
           "reach": 39
         },
         {
@@ -7115,6 +7239,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 26,
           "reach": 34
         },
         {
@@ -7124,6 +7250,8 @@
           "popularity": 7,
           "openness": 6,
           "groups": 2,
+          "reach2": 16,
+          "reach3": 31,
           "reach": 56
         },
         {
@@ -7133,6 +7261,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 19,
           "reach": 25
         },
         {
@@ -7142,6 +7272,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 25,
           "reach": 40
         },
         {
@@ -7151,6 +7283,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 26,
           "reach": 35
         },
         {
@@ -7160,6 +7294,8 @@
           "popularity": 12,
           "openness": 6,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 29,
           "reach": 48
         },
         {
@@ -7169,6 +7305,8 @@
           "popularity": 7,
           "openness": 6,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 29,
           "reach": 53
         },
         {
@@ -7178,6 +7316,8 @@
           "popularity": 8,
           "openness": 6,
           "groups": 1,
+          "reach2": 16,
+          "reach3": 26,
           "reach": 31
         },
         {
@@ -7187,6 +7327,8 @@
           "popularity": 9,
           "openness": 5,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 26,
           "reach": 38
         },
         {
@@ -7196,6 +7338,8 @@
           "popularity": 11,
           "openness": 6,
           "groups": 4,
+          "reach2": 10,
+          "reach3": 22,
           "reach": 49
         },
         {
@@ -7205,6 +7349,8 @@
           "popularity": 7,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 24,
           "reach": 45
         },
         {
@@ -7214,6 +7360,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 24,
           "reach": 34
         },
         {
@@ -7223,6 +7371,8 @@
           "popularity": 14,
           "openness": 4,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 13,
           "reach": 20
         },
         {
@@ -7232,6 +7382,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 22,
           "reach": 40
         },
         {
@@ -7241,6 +7393,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 29,
           "reach": 51
         },
         {
@@ -7250,6 +7404,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 26,
           "reach": 39
         },
         {
@@ -7259,6 +7415,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 20,
           "reach": 36
         },
         {
@@ -7268,6 +7426,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 35
         },
         {
@@ -7277,6 +7437,8 @@
           "popularity": 5,
           "openness": 2,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 32
         },
         {
@@ -7286,6 +7448,8 @@
           "popularity": 7,
           "openness": 5,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 25,
           "reach": 42
         },
         {
@@ -7295,6 +7459,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 17,
           "reach": 33
         },
         {
@@ -7304,6 +7470,8 @@
           "popularity": 10,
           "openness": 5,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 12,
           "reach": 15
         },
         {
@@ -7313,6 +7481,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 22,
           "reach": 44
         },
         {
@@ -7322,6 +7492,8 @@
           "popularity": 7,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 24,
           "reach": 41
         },
         {
@@ -7331,6 +7503,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 9,
           "reach": 16
         },
         {
@@ -7340,6 +7514,8 @@
           "popularity": 7,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 30,
           "reach": 41
         },
         {
@@ -7349,6 +7525,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 1,
+          "reach2": 16,
+          "reach3": 32,
           "reach": 51
         },
         {
@@ -7358,6 +7536,8 @@
           "popularity": 5,
           "openness": 2,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 23,
           "reach": 41
         },
         {
@@ -7367,6 +7547,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 14,
           "reach": 25
         },
         {
@@ -7376,6 +7558,8 @@
           "popularity": 15,
           "openness": 10,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 26,
           "reach": 50
         },
         {
@@ -7385,6 +7569,8 @@
           "popularity": 4,
           "openness": 2,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 24,
           "reach": 32
         },
         {
@@ -7394,6 +7580,8 @@
           "popularity": 9,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 23,
           "reach": 34
         },
         {
@@ -7403,6 +7591,8 @@
           "popularity": 7,
           "openness": 6,
           "groups": 1,
+          "reach2": 16,
+          "reach3": 34,
           "reach": 62
         },
         {
@@ -7412,6 +7602,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 18,
           "reach": 28
         },
         {
@@ -7421,6 +7613,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 27,
           "reach": 53
         },
         {
@@ -7430,6 +7624,8 @@
           "popularity": 12,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 23,
           "reach": 30
         },
         {
@@ -7439,6 +7635,8 @@
           "popularity": 7,
           "openness": 5,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 28,
           "reach": 50
         },
         {
@@ -7448,6 +7646,8 @@
           "popularity": 11,
           "openness": 5,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 19,
           "reach": 31
         },
         {
@@ -7457,6 +7657,8 @@
           "popularity": 8,
           "openness": 5,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 25,
           "reach": 45
         },
         {
@@ -7466,6 +7668,8 @@
           "popularity": 4,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 18,
           "reach": 26
         },
         {
@@ -7475,6 +7679,8 @@
           "popularity": 16,
           "openness": 11,
           "groups": 3,
+          "reach2": 15,
+          "reach3": 30,
           "reach": 49
         },
         {
@@ -7484,6 +7690,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 4,
+          "reach3": 6,
           "reach": 14
         },
         {
@@ -7493,6 +7701,8 @@
           "popularity": 13,
           "openness": 10,
           "groups": 3,
+          "reach2": 10,
+          "reach3": 23,
           "reach": 47
         },
         {
@@ -7502,6 +7712,8 @@
           "popularity": 8,
           "openness": 3,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 19,
           "reach": 28
         },
         {
@@ -7511,6 +7723,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 9,
           "reach": 17
         },
         {
@@ -7520,6 +7734,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 3,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 39
         },
         {
@@ -7529,6 +7745,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 14,
           "reach": 29
         },
         {
@@ -7538,6 +7756,8 @@
           "popularity": 13,
           "openness": 7,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 11,
           "reach": 15
         },
         {
@@ -7547,6 +7767,8 @@
           "popularity": 10,
           "openness": 7,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 33,
           "reach": 55
         },
         {
@@ -7556,6 +7778,8 @@
           "popularity": 2,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 10,
           "reach": 20
         },
         {
@@ -7565,6 +7789,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 12,
           "reach": 26
         },
         {
@@ -7574,6 +7800,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 3,
+          "reach2": 10,
+          "reach3": 22,
           "reach": 44
         },
         {
@@ -7583,6 +7811,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 2,
+          "reach2": 7,
+          "reach3": 15,
           "reach": 32
         },
         {
@@ -7592,6 +7822,8 @@
           "popularity": 8,
           "openness": 4,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 12,
           "reach": 15
         },
         {
@@ -7601,6 +7833,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 21,
           "reach": 43
         },
         {
@@ -7610,6 +7844,8 @@
           "popularity": 12,
           "openness": 8,
           "groups": 3,
+          "reach2": 13,
+          "reach3": 27,
           "reach": 44
         },
         {
@@ -7619,6 +7855,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 19,
           "reach": 39
         },
         {
@@ -7628,6 +7866,8 @@
           "popularity": 11,
           "openness": 5,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 24,
           "reach": 40
         },
         {
@@ -7637,6 +7877,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 44
         },
         {
@@ -7646,6 +7888,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 25,
           "reach": 45
         },
         {
@@ -7655,6 +7899,8 @@
           "popularity": 11,
           "openness": 7,
           "groups": 3,
+          "reach2": 12,
+          "reach3": 27,
           "reach": 42
         },
         {
@@ -7664,6 +7910,8 @@
           "popularity": 9,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 23,
           "reach": 38
         },
         {
@@ -7673,6 +7921,8 @@
           "popularity": 10,
           "openness": 5,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 24,
           "reach": 45
         },
         {
@@ -7682,6 +7932,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 17,
           "reach": 34
         },
         {
@@ -7691,6 +7943,8 @@
           "popularity": 10,
           "openness": 7,
           "groups": 3,
+          "reach2": 12,
+          "reach3": 29,
           "reach": 47
         },
         {
@@ -7700,6 +7954,8 @@
           "popularity": 9,
           "openness": 5,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 22,
           "reach": 42
         },
         {
@@ -7709,6 +7965,8 @@
           "popularity": 8,
           "openness": 5,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 19,
           "reach": 38
         },
         {
@@ -7718,6 +7976,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 31
         },
         {
@@ -7727,6 +7987,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 3,
+          "reach2": 14,
+          "reach3": 35,
           "reach": 57
         },
         {
@@ -7736,6 +7998,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 13,
           "reach": 21
         },
         {
@@ -7745,6 +8009,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 21,
           "reach": 34
         },
         {
@@ -7754,6 +8020,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 2,
+          "reach2": 7,
+          "reach3": 17,
           "reach": 36
         },
         {
@@ -7763,6 +8031,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 2,
+          "reach2": 16,
+          "reach3": 32,
           "reach": 56
         },
         {
@@ -7772,6 +8042,8 @@
           "popularity": 10,
           "openness": 8,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 28,
           "reach": 48
         },
         {
@@ -7781,6 +8053,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 30
         },
         {
@@ -7790,6 +8064,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 27,
           "reach": 40
         },
         {
@@ -7799,6 +8075,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 9,
           "reach": 16
         },
         {
@@ -7808,6 +8086,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 1,
+          "reach2": 16,
+          "reach3": 28,
           "reach": 50
         },
         {
@@ -7817,6 +8097,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 22,
           "reach": 37
         },
         {
@@ -7826,6 +8108,8 @@
           "popularity": 5,
           "openness": 5,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 24,
           "reach": 39
         },
         {
@@ -7835,6 +8119,8 @@
           "popularity": 5,
           "openness": 5,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 30,
           "reach": 53
         },
         {
@@ -7844,6 +8130,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 25,
           "reach": 48
         },
         {
@@ -7853,6 +8141,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 2,
+          "reach2": 10,
+          "reach3": 20,
           "reach": 35
         },
         {
@@ -7862,6 +8152,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 22,
           "reach": 40
         },
         {
@@ -7871,6 +8163,8 @@
           "popularity": 8,
           "openness": 5,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 24,
           "reach": 46
         },
         {
@@ -7880,6 +8174,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 27,
           "reach": 35
         },
         {
@@ -7889,6 +8185,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 27,
           "reach": 46
         },
         {
@@ -7898,6 +8196,8 @@
           "popularity": 7,
           "openness": 4,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 18,
           "reach": 36
         },
         {
@@ -7907,6 +8207,8 @@
           "popularity": 2,
           "openness": 1,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 14,
           "reach": 24
         },
         {
@@ -7916,6 +8218,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 21,
           "reach": 36
         },
         {
@@ -7925,6 +8229,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 17,
           "reach": 24
         },
         {
@@ -7934,6 +8240,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 28,
           "reach": 56
         },
         {
@@ -7943,6 +8251,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 26,
           "reach": 45
         },
         {
@@ -7952,6 +8262,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 18,
           "reach": 30
         },
         {
@@ -7961,6 +8273,8 @@
           "popularity": 4,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 25,
           "reach": 42
         },
         {
@@ -7970,6 +8284,8 @@
           "popularity": 10,
           "openness": 5,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 23,
           "reach": 30
         },
         {
@@ -7979,6 +8295,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 29,
           "reach": 49
         },
         {
@@ -7988,6 +8306,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 14,
           "reach": 22
         },
         {
@@ -7997,6 +8317,8 @@
           "popularity": 13,
           "openness": 4,
           "groups": 2,
+          "reach2": 10,
+          "reach3": 21,
           "reach": 43
         },
         {
@@ -8006,6 +8328,8 @@
           "popularity": 9,
           "openness": 3,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 14,
           "reach": 21
         },
         {
@@ -8015,6 +8339,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 11,
           "reach": 21
         },
         {
@@ -8024,6 +8350,8 @@
           "popularity": 2,
           "openness": 1,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 17,
           "reach": 36
         },
         {
@@ -8033,6 +8361,8 @@
           "popularity": 11,
           "openness": 5,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 20,
           "reach": 27
         },
         {
@@ -8042,6 +8372,8 @@
           "popularity": 5,
           "openness": 5,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 22,
           "reach": 39
         },
         {
@@ -8051,6 +8383,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 24,
           "reach": 36
         },
         {
@@ -8060,6 +8394,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 29,
           "reach": 49
         },
         {
@@ -8069,6 +8405,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 2,
+          "reach2": 7,
+          "reach3": 16,
           "reach": 35
         },
         {
@@ -8078,6 +8416,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 23,
           "reach": 38
         },
         {
@@ -8087,6 +8427,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 25,
           "reach": 46
         },
         {
@@ -8096,6 +8438,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 29,
           "reach": 43
         },
         {
@@ -8105,6 +8449,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 2,
+          "reach2": 10,
+          "reach3": 20,
           "reach": 33
         },
         {
@@ -8114,6 +8460,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 22,
           "reach": 43
         },
         {
@@ -8123,6 +8471,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 11,
           "reach": 18
         },
         {
@@ -8132,6 +8482,8 @@
           "popularity": 4,
           "openness": 1,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 18,
           "reach": 30
         },
         {
@@ -8141,6 +8493,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 24,
           "reach": 31
         },
         {
@@ -8150,6 +8504,8 @@
           "popularity": 8,
           "openness": 7,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 31,
           "reach": 51
         },
         {
@@ -8159,6 +8515,8 @@
           "popularity": 9,
           "openness": 5,
           "groups": 3,
+          "reach2": 13,
+          "reach3": 30,
           "reach": 57
         },
         {
@@ -8168,6 +8526,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 2,
+          "reach2": 8,
+          "reach3": 16,
           "reach": 29
         },
         {
@@ -8177,6 +8537,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 4,
+          "reach3": 9,
           "reach": 22
         },
         {
@@ -8186,6 +8548,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 25,
           "reach": 40
         },
         {
@@ -8195,6 +8559,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 18,
           "reach": 29
         },
         {
@@ -8204,6 +8570,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 34,
           "reach": 65
         },
         {
@@ -8213,6 +8581,8 @@
           "popularity": 4,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 15,
           "reach": 21
         },
         {
@@ -8222,6 +8592,8 @@
           "popularity": 15,
           "openness": 9,
           "groups": 4,
+          "reach2": 13,
+          "reach3": 25,
           "reach": 46
         },
         {
@@ -8231,6 +8603,8 @@
           "popularity": 4,
           "openness": 2,
           "groups": 2,
+          "reach2": 10,
+          "reach3": 19,
           "reach": 40
         },
         {
@@ -8240,6 +8614,8 @@
           "popularity": 5,
           "openness": 2,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 23,
           "reach": 46
         },
         {
@@ -8249,6 +8625,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 11,
           "reach": 19
         },
         {
@@ -8258,6 +8636,8 @@
           "popularity": 4,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 36
         },
         {
@@ -8267,6 +8647,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 28,
           "reach": 45
         },
         {
@@ -8276,6 +8658,8 @@
           "popularity": 4,
           "openness": 4,
           "groups": 1,
+          "reach2": 16,
+          "reach3": 38,
           "reach": 60
         },
         {
@@ -8285,6 +8669,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 4,
+          "reach3": 11,
           "reach": 22
         },
         {
@@ -8294,6 +8680,8 @@
           "popularity": 15,
           "openness": 6,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 25,
           "reach": 42
         },
         {
@@ -8303,6 +8691,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 27,
           "reach": 47
         },
         {
@@ -8312,6 +8702,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 19,
           "reach": 36
         },
         {
@@ -8321,6 +8713,8 @@
           "popularity": 7,
           "openness": 3,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 18,
           "reach": 29
         },
         {
@@ -8330,6 +8724,8 @@
           "popularity": 14,
           "openness": 8,
           "groups": 3,
+          "reach2": 13,
+          "reach3": 21,
           "reach": 31
         },
         {
@@ -8339,6 +8735,8 @@
           "popularity": 11,
           "openness": 7,
           "groups": 1,
+          "reach2": 18,
+          "reach3": 36,
           "reach": 60
         },
         {
@@ -8348,6 +8746,8 @@
           "popularity": 5,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 18,
           "reach": 34
         },
         {
@@ -8357,6 +8757,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 33,
           "reach": 63
         },
         {
@@ -8366,6 +8768,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 19,
           "reach": 36
         },
         {
@@ -8375,6 +8779,8 @@
           "popularity": 5,
           "openness": 2,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 24,
           "reach": 49
         },
         {
@@ -8384,6 +8790,8 @@
           "popularity": 9,
           "openness": 7,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 33,
           "reach": 55
         },
         {
@@ -8393,6 +8801,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 18,
           "reach": 35
         },
         {
@@ -8402,6 +8812,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 13,
           "reach": 26
         },
         {
@@ -8411,6 +8823,8 @@
           "popularity": 5,
           "openness": 5,
           "groups": 2,
+          "reach2": 19,
+          "reach3": 41,
           "reach": 59
         },
         {
@@ -8420,6 +8834,8 @@
           "popularity": 5,
           "openness": 2,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 25,
           "reach": 44
         },
         {
@@ -8429,6 +8845,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 22,
           "reach": 41
         },
         {
@@ -8438,6 +8856,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 17,
           "reach": 34
         },
         {
@@ -8447,6 +8867,8 @@
           "popularity": 12,
           "openness": 7,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 23,
           "reach": 30
         },
         {
@@ -8456,6 +8878,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 2,
+          "reach2": 16,
+          "reach3": 30,
           "reach": 51
         },
         {
@@ -8465,6 +8889,8 @@
           "popularity": 6,
           "openness": 1,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 18,
           "reach": 34
         },
         {
@@ -8474,6 +8900,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 26,
           "reach": 35
         },
         {
@@ -8483,6 +8911,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 25,
           "reach": 35
         },
         {
@@ -8492,6 +8922,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 22,
           "reach": 38
         },
         {
@@ -8501,6 +8933,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 3,
+          "reach3": 6,
           "reach": 10
         },
         {
@@ -8510,6 +8944,8 @@
           "popularity": 9,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 26,
           "reach": 35
         },
         {
@@ -8519,6 +8955,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 21,
           "reach": 35
         },
         {
@@ -8528,6 +8966,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 23,
           "reach": 30
         },
         {
@@ -8537,6 +8977,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 23,
           "reach": 43
         },
         {
@@ -8546,6 +8988,8 @@
           "popularity": 10,
           "openness": 8,
           "groups": 1,
+          "reach2": 18,
+          "reach3": 44,
           "reach": 73
         },
         {
@@ -8555,6 +8999,8 @@
           "popularity": 8,
           "openness": 7,
           "groups": 1,
+          "reach2": 17,
+          "reach3": 35,
           "reach": 64
         },
         {
@@ -8564,6 +9010,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 4,
+          "reach3": 7,
           "reach": 11
         },
         {
@@ -8573,6 +9021,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 21,
           "reach": 32
         },
         {
@@ -8582,6 +9032,8 @@
           "popularity": 4,
           "openness": 2,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 22,
           "reach": 32
         },
         {
@@ -8591,6 +9043,8 @@
           "popularity": 9,
           "openness": 8,
           "groups": 3,
+          "reach2": 16,
+          "reach3": 41,
           "reach": 68
         },
         {
@@ -8600,6 +9054,8 @@
           "popularity": 2,
           "openness": 1,
           "groups": 2,
+          "reach2": 8,
+          "reach3": 17,
           "reach": 31
         },
         {
@@ -8609,6 +9065,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 37,
           "reach": 56
         },
         {
@@ -8618,6 +9076,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 14,
+          "reach3": 24,
           "reach": 29
         },
         {
@@ -8627,6 +9087,8 @@
           "popularity": 4,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 18,
           "reach": 26
         },
         {
@@ -8636,6 +9098,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 27,
           "reach": 45
         },
         {
@@ -8645,6 +9109,8 @@
           "popularity": 7,
           "openness": 4,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 24,
           "reach": 35
         },
         {
@@ -8654,6 +9120,8 @@
           "popularity": 8,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 29,
           "reach": 40
         },
         {
@@ -8663,6 +9131,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 18,
           "reach": 30
         },
         {
@@ -8672,6 +9142,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 11,
           "reach": 22
         },
         {
@@ -8681,6 +9153,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 18,
           "reach": 31
         },
         {
@@ -8690,6 +9164,8 @@
           "popularity": 15,
           "openness": 8,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 20,
           "reach": 31
         },
         {
@@ -8699,6 +9175,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 23,
           "reach": 33
         },
         {
@@ -8708,6 +9186,8 @@
           "popularity": 7,
           "openness": 3,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 32,
           "reach": 51
         },
         {
@@ -8717,6 +9197,8 @@
           "popularity": 14,
           "openness": 7,
           "groups": 3,
+          "reach2": 13,
+          "reach3": 31,
           "reach": 51
         },
         {
@@ -8726,6 +9208,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 10,
           "reach": 18
         },
         {
@@ -8735,6 +9219,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 16,
+          "reach3": 36,
           "reach": 63
         },
         {
@@ -8744,6 +9230,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 21,
           "reach": 37
         },
         {
@@ -8753,6 +9241,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 3,
+          "reach2": 9,
+          "reach3": 20,
           "reach": 36
         },
         {
@@ -8762,6 +9252,8 @@
           "popularity": 6,
           "openness": 4,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 21,
           "reach": 35
         },
         {
@@ -8771,6 +9263,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 27,
           "reach": 45
         },
         {
@@ -8780,6 +9274,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 9,
+          "reach3": 17,
           "reach": 32
         },
         {
@@ -8789,6 +9285,8 @@
           "popularity": 2,
           "openness": 1,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 13,
           "reach": 26
         },
         {
@@ -8798,6 +9296,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 4,
+          "reach3": 8,
           "reach": 17
         },
         {
@@ -8807,6 +9307,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 14,
           "reach": 26
         },
         {
@@ -8816,6 +9318,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 3,
+          "reach3": 4,
           "reach": 7
         },
         {
@@ -8825,6 +9329,8 @@
           "popularity": 9,
           "openness": 3,
           "groups": 2,
+          "reach2": 8,
+          "reach3": 14,
           "reach": 31
         },
         {
@@ -8834,6 +9340,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 17,
           "reach": 24
         },
         {
@@ -8843,6 +9351,8 @@
           "popularity": 9,
           "openness": 8,
           "groups": 1,
+          "reach2": 18,
+          "reach3": 43,
           "reach": 71
         },
         {
@@ -8852,6 +9362,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 10,
           "reach": 18
         },
         {
@@ -8861,6 +9373,8 @@
           "popularity": 8,
           "openness": 5,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 22,
           "reach": 41
         },
         {
@@ -8870,6 +9384,8 @@
           "popularity": 9,
           "openness": 6,
           "groups": 2,
+          "reach2": 19,
+          "reach3": 40,
           "reach": 63
         },
         {
@@ -8879,6 +9395,8 @@
           "popularity": 6,
           "openness": 5,
           "groups": 3,
+          "reach2": 17,
+          "reach3": 36,
           "reach": 67
         },
         {
@@ -8888,6 +9406,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 13,
           "reach": 22
         },
         {
@@ -8897,6 +9417,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 9,
           "reach": 14
         },
         {
@@ -8906,6 +9428,8 @@
           "popularity": 2,
           "openness": 1,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 17,
           "reach": 30
         },
         {
@@ -8915,6 +9439,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 2,
+          "reach2": 11,
+          "reach3": 25,
           "reach": 43
         },
         {
@@ -8924,6 +9450,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 2,
+          "reach2": 4,
+          "reach3": 8,
           "reach": 16
         },
         {
@@ -8933,6 +9461,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 2,
+          "reach2": 17,
+          "reach3": 35,
           "reach": 55
         },
         {
@@ -8942,6 +9472,8 @@
           "popularity": 8,
           "openness": 5,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 37,
           "reach": 60
         },
         {
@@ -8951,6 +9483,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 30,
           "reach": 54
         },
         {
@@ -8960,6 +9494,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 24,
           "reach": 40
         },
         {
@@ -8969,6 +9505,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 23,
           "reach": 42
         },
         {
@@ -8978,6 +9516,8 @@
           "popularity": 13,
           "openness": 6,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 22,
           "reach": 36
         },
         {
@@ -8987,6 +9527,8 @@
           "popularity": 8,
           "openness": 4,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 22,
           "reach": 36
         },
         {
@@ -8996,6 +9538,8 @@
           "popularity": 6,
           "openness": 2,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 17,
           "reach": 27
         },
         {
@@ -9005,6 +9549,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 3,
+          "reach2": 13,
+          "reach3": 33,
           "reach": 68
         },
         {
@@ -9014,6 +9560,8 @@
           "popularity": 5,
           "openness": 3,
           "groups": 1,
+          "reach2": 12,
+          "reach3": 21,
           "reach": 36
         },
         {
@@ -9023,6 +9571,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 2,
+          "reach2": 8,
+          "reach3": 18,
           "reach": 34
         },
         {
@@ -9032,6 +9582,8 @@
           "popularity": 5,
           "openness": 2,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 26,
           "reach": 44
         },
         {
@@ -9041,6 +9593,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 2,
+          "reach2": 8,
+          "reach3": 21,
           "reach": 38
         },
         {
@@ -9050,6 +9604,8 @@
           "popularity": 3,
           "openness": 3,
           "groups": 2,
+          "reach2": 12,
+          "reach3": 26,
           "reach": 47
         },
         {
@@ -9059,6 +9615,8 @@
           "popularity": 13,
           "openness": 3,
           "groups": 3,
+          "reach2": 13,
+          "reach3": 22,
           "reach": 36
         },
         {
@@ -9068,6 +9626,8 @@
           "popularity": 2,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 13,
           "reach": 24
         },
         {
@@ -9077,6 +9637,8 @@
           "popularity": 4,
           "openness": 4,
           "groups": 1,
+          "reach2": 13,
+          "reach3": 27,
           "reach": 45
         },
         {
@@ -9086,6 +9648,8 @@
           "popularity": 17,
           "openness": 8,
           "groups": 3,
+          "reach2": 15,
+          "reach3": 31,
           "reach": 48
         },
         {
@@ -9095,6 +9659,8 @@
           "popularity": 3,
           "openness": 1,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 21,
           "reach": 34
         },
         {
@@ -9104,6 +9670,8 @@
           "popularity": 7,
           "openness": 4,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 26,
           "reach": 46
         },
         {
@@ -9113,6 +9681,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 7,
+          "reach3": 16,
           "reach": 31
         },
         {
@@ -9122,6 +9692,8 @@
           "popularity": 9,
           "openness": 4,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 20,
           "reach": 34
         },
         {
@@ -9131,6 +9703,8 @@
           "popularity": 3,
           "openness": 2,
           "groups": 2,
+          "reach2": 10,
+          "reach3": 17,
           "reach": 33
         },
         {
@@ -9140,6 +9714,8 @@
           "popularity": 10,
           "openness": 3,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 23,
           "reach": 41
         },
         {
@@ -9149,6 +9725,8 @@
           "popularity": 7,
           "openness": 6,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 28,
           "reach": 51
         },
         {
@@ -9158,6 +9736,8 @@
           "popularity": 13,
           "openness": 8,
           "groups": 4,
+          "reach2": 16,
+          "reach3": 37,
           "reach": 63
         },
         {
@@ -9167,6 +9747,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 5,
+          "reach3": 14,
           "reach": 28
         },
         {
@@ -9176,6 +9758,8 @@
           "popularity": 11,
           "openness": 6,
           "groups": 2,
+          "reach2": 13,
+          "reach3": 22,
           "reach": 36
         },
         {
@@ -9185,6 +9769,8 @@
           "popularity": 15,
           "openness": 6,
           "groups": 2,
+          "reach2": 14,
+          "reach3": 28,
           "reach": 44
         },
         {
@@ -9194,6 +9780,8 @@
           "popularity": 1,
           "openness": 1,
           "groups": 1,
+          "reach2": 6,
+          "reach3": 14,
           "reach": 27
         },
         {
@@ -9203,6 +9791,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 2,
+          "reach2": 9,
+          "reach3": 20,
           "reach": 41
         },
         {
@@ -9212,6 +9802,8 @@
           "popularity": 6,
           "openness": 3,
           "groups": 1,
+          "reach2": 11,
+          "reach3": 23,
           "reach": 36
         },
         {
@@ -9221,6 +9813,8 @@
           "popularity": 5,
           "openness": 4,
           "groups": 2,
+          "reach2": 15,
+          "reach3": 33,
           "reach": 63
         },
         {
@@ -9230,6 +9824,8 @@
           "popularity": 8,
           "openness": 3,
           "groups": 1,
+          "reach2": 10,
+          "reach3": 17,
           "reach": 27
         },
         {
@@ -9239,6 +9835,8 @@
           "popularity": 4,
           "openness": 3,
           "groups": 1,
+          "reach2": 15,
+          "reach3": 29,
           "reach": 49
         },
         {
@@ -9248,6 +9846,8 @@
           "popularity": 2,
           "openness": 2,
           "groups": 1,
+          "reach2": 8,
+          "reach3": 19,
           "reach": 34
         }
       ],
@@ -9363,7 +9963,9 @@
         "correlations": {
           "popularityReach": 0.372,
           "opennessReach": 0.571,
-          "groupsReach": 0.397
+          "groupsReach": 0.397,
+          "reach2Reach": 0.779,
+          "reach3Reach": 0.929
         },
         "top3PopularNames": [
           "Sandu",
@@ -14508,7 +15110,9 @@
     "correlations": {
       "popularityReach": 0.372,
       "opennessReach": 0.571,
-      "groupsReach": 0.397
+      "groupsReach": 0.397,
+      "reach2Reach": 0.779,
+      "reach3Reach": 0.929
     },
     "plafon": 290,
     "scatterData": [
@@ -14519,6 +15123,8 @@
         "popularity": 10,
         "openness": 6,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 31,
         "reach": 57
       },
       {
@@ -14528,6 +15134,8 @@
         "popularity": 8,
         "openness": 6,
         "groups": 3,
+        "reach2": 12,
+        "reach3": 25,
         "reach": 49
       },
       {
@@ -14537,6 +15145,8 @@
         "popularity": 6,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 16,
         "reach": 30
       },
       {
@@ -14546,6 +15156,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 23,
         "reach": 39
       },
       {
@@ -14555,6 +15167,8 @@
         "popularity": 7,
         "openness": 3,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 25,
         "reach": 40
       },
       {
@@ -14564,6 +15178,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 17,
+        "reach3": 29,
         "reach": 35
       },
       {
@@ -14573,6 +15189,8 @@
         "popularity": 5,
         "openness": 5,
         "groups": 2,
+        "reach2": 16,
+        "reach3": 26,
         "reach": 49
       },
       {
@@ -14582,6 +15200,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 21,
         "reach": 31
       },
       {
@@ -14591,6 +15211,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 24,
         "reach": 42
       },
       {
@@ -14600,6 +15222,8 @@
         "popularity": 10,
         "openness": 6,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 27,
         "reach": 38
       },
       {
@@ -14609,6 +15233,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 21,
         "reach": 47
       },
       {
@@ -14618,6 +15244,8 @@
         "popularity": 10,
         "openness": 5,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 31,
         "reach": 49
       },
       {
@@ -14627,6 +15255,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 1,
+        "reach2": 16,
+        "reach3": 32,
         "reach": 60
       },
       {
@@ -14636,6 +15266,8 @@
         "popularity": 8,
         "openness": 5,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 38
       },
       {
@@ -14645,6 +15277,8 @@
         "popularity": 12,
         "openness": 5,
         "groups": 3,
+        "reach2": 12,
+        "reach3": 29,
         "reach": 50
       },
       {
@@ -14654,6 +15288,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 26,
         "reach": 47
       },
       {
@@ -14663,6 +15299,8 @@
         "popularity": 5,
         "openness": 1,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 13,
         "reach": 24
       },
       {
@@ -14672,6 +15310,8 @@
         "popularity": 7,
         "openness": 4,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 20,
         "reach": 31
       },
       {
@@ -14681,6 +15321,8 @@
         "popularity": 14,
         "openness": 7,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 34,
         "reach": 55
       },
       {
@@ -14690,6 +15332,8 @@
         "popularity": 6,
         "openness": 2,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 25,
         "reach": 42
       },
       {
@@ -14699,6 +15343,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 23,
         "reach": 40
       },
       {
@@ -14708,6 +15354,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 19,
         "reach": 31
       },
       {
@@ -14717,6 +15365,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 31,
         "reach": 55
       },
       {
@@ -14726,6 +15376,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 24,
         "reach": 46
       },
       {
@@ -14735,6 +15387,8 @@
         "popularity": 4,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 22,
         "reach": 37
       },
       {
@@ -14744,6 +15398,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 34,
         "reach": 58
       },
       {
@@ -14753,6 +15409,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 26,
         "reach": 43
       },
       {
@@ -14762,6 +15420,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 9,
         "reach": 11
       },
       {
@@ -14771,6 +15431,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 26,
         "reach": 38
       },
       {
@@ -14780,6 +15442,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 15,
         "reach": 27
       },
       {
@@ -14789,6 +15453,8 @@
         "popularity": 11,
         "openness": 5,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 12,
         "reach": 15
       },
       {
@@ -14798,6 +15464,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 31,
         "reach": 60
       },
       {
@@ -14807,6 +15475,8 @@
         "popularity": 9,
         "openness": 5,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 25,
         "reach": 39
       },
       {
@@ -14816,6 +15486,8 @@
         "popularity": 9,
         "openness": 5,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 26,
         "reach": 45
       },
       {
@@ -14825,6 +15497,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 3,
+        "reach2": 17,
+        "reach3": 35,
         "reach": 56
       },
       {
@@ -14834,6 +15508,8 @@
         "popularity": 12,
         "openness": 8,
         "groups": 3,
+        "reach2": 13,
+        "reach3": 27,
         "reach": 51
       },
       {
@@ -14843,6 +15519,8 @@
         "popularity": 5,
         "openness": 1,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 20,
         "reach": 38
       },
       {
@@ -14852,6 +15530,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 33
       },
       {
@@ -14861,6 +15541,8 @@
         "popularity": 7,
         "openness": 4,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 26,
         "reach": 34
       },
       {
@@ -14870,6 +15552,8 @@
         "popularity": 19,
         "openness": 11,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 28,
         "reach": 50
       },
       {
@@ -14879,6 +15563,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 27,
         "reach": 51
       },
       {
@@ -14888,6 +15574,8 @@
         "popularity": 6,
         "openness": 1,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 11,
         "reach": 15
       },
       {
@@ -14897,6 +15585,8 @@
         "popularity": 8,
         "openness": 5,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 31,
         "reach": 55
       },
       {
@@ -14906,6 +15596,8 @@
         "popularity": 9,
         "openness": 5,
         "groups": 3,
+        "reach2": 14,
+        "reach3": 28,
         "reach": 47
       },
       {
@@ -14915,6 +15607,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 24,
         "reach": 50
       },
       {
@@ -14924,6 +15618,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 2,
+        "reach2": 8,
+        "reach3": 18,
         "reach": 34
       },
       {
@@ -14933,6 +15629,8 @@
         "popularity": 11,
         "openness": 7,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 27,
         "reach": 45
       },
       {
@@ -14942,6 +15640,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 9,
         "reach": 18
       },
       {
@@ -14951,6 +15651,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 21,
         "reach": 38
       },
       {
@@ -14960,6 +15662,8 @@
         "popularity": 8,
         "openness": 6,
         "groups": 3,
+        "reach2": 14,
+        "reach3": 28,
         "reach": 52
       },
       {
@@ -14969,6 +15673,8 @@
         "popularity": 13,
         "openness": 7,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 18,
         "reach": 29
       },
       {
@@ -14978,6 +15684,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 21,
         "reach": 31
       },
       {
@@ -14987,6 +15695,8 @@
         "popularity": 12,
         "openness": 7,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 29,
         "reach": 43
       },
       {
@@ -14996,6 +15706,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 2,
+        "reach2": 3,
+        "reach3": 7,
         "reach": 16
       },
       {
@@ -15005,6 +15717,8 @@
         "popularity": 12,
         "openness": 8,
         "groups": 1,
+        "reach2": 17,
+        "reach3": 33,
         "reach": 54
       },
       {
@@ -15014,6 +15728,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 22,
         "reach": 39
       },
       {
@@ -15023,6 +15739,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 10,
         "reach": 14
       },
       {
@@ -15032,6 +15750,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 12,
         "reach": 25
       },
       {
@@ -15041,6 +15761,8 @@
         "popularity": 12,
         "openness": 6,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 25,
         "reach": 35
       },
       {
@@ -15050,6 +15772,8 @@
         "popularity": 16,
         "openness": 7,
         "groups": 3,
+        "reach2": 14,
+        "reach3": 27,
         "reach": 47
       },
       {
@@ -15059,6 +15783,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 24,
         "reach": 39
       },
       {
@@ -15068,6 +15794,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 26,
         "reach": 34
       },
       {
@@ -15077,6 +15805,8 @@
         "popularity": 7,
         "openness": 6,
         "groups": 2,
+        "reach2": 16,
+        "reach3": 31,
         "reach": 56
       },
       {
@@ -15086,6 +15816,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 19,
         "reach": 25
       },
       {
@@ -15095,6 +15827,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 25,
         "reach": 40
       },
       {
@@ -15104,6 +15838,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 26,
         "reach": 35
       },
       {
@@ -15113,6 +15849,8 @@
         "popularity": 12,
         "openness": 6,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 29,
         "reach": 48
       },
       {
@@ -15122,6 +15860,8 @@
         "popularity": 7,
         "openness": 6,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 29,
         "reach": 53
       },
       {
@@ -15131,6 +15871,8 @@
         "popularity": 8,
         "openness": 6,
         "groups": 1,
+        "reach2": 16,
+        "reach3": 26,
         "reach": 31
       },
       {
@@ -15140,6 +15882,8 @@
         "popularity": 9,
         "openness": 5,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 26,
         "reach": 38
       },
       {
@@ -15149,6 +15893,8 @@
         "popularity": 11,
         "openness": 6,
         "groups": 4,
+        "reach2": 10,
+        "reach3": 22,
         "reach": 49
       },
       {
@@ -15158,6 +15904,8 @@
         "popularity": 7,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 24,
         "reach": 45
       },
       {
@@ -15167,6 +15915,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 24,
         "reach": 34
       },
       {
@@ -15176,6 +15926,8 @@
         "popularity": 14,
         "openness": 4,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 13,
         "reach": 20
       },
       {
@@ -15185,6 +15937,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 22,
         "reach": 40
       },
       {
@@ -15194,6 +15948,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 29,
         "reach": 51
       },
       {
@@ -15203,6 +15959,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 26,
         "reach": 39
       },
       {
@@ -15212,6 +15970,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 20,
         "reach": 36
       },
       {
@@ -15221,6 +15981,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 35
       },
       {
@@ -15230,6 +15992,8 @@
         "popularity": 5,
         "openness": 2,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 32
       },
       {
@@ -15239,6 +16003,8 @@
         "popularity": 7,
         "openness": 5,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 25,
         "reach": 42
       },
       {
@@ -15248,6 +16014,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 17,
         "reach": 33
       },
       {
@@ -15257,6 +16025,8 @@
         "popularity": 10,
         "openness": 5,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 12,
         "reach": 15
       },
       {
@@ -15266,6 +16036,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 22,
         "reach": 44
       },
       {
@@ -15275,6 +16047,8 @@
         "popularity": 7,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 24,
         "reach": 41
       },
       {
@@ -15284,6 +16058,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 9,
         "reach": 16
       },
       {
@@ -15293,6 +16069,8 @@
         "popularity": 7,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 30,
         "reach": 41
       },
       {
@@ -15302,6 +16080,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 1,
+        "reach2": 16,
+        "reach3": 32,
         "reach": 51
       },
       {
@@ -15311,6 +16091,8 @@
         "popularity": 5,
         "openness": 2,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 23,
         "reach": 41
       },
       {
@@ -15320,6 +16102,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 14,
         "reach": 25
       },
       {
@@ -15329,6 +16113,8 @@
         "popularity": 15,
         "openness": 10,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 26,
         "reach": 50
       },
       {
@@ -15338,6 +16124,8 @@
         "popularity": 4,
         "openness": 2,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 24,
         "reach": 32
       },
       {
@@ -15347,6 +16135,8 @@
         "popularity": 9,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 23,
         "reach": 34
       },
       {
@@ -15356,6 +16146,8 @@
         "popularity": 7,
         "openness": 6,
         "groups": 1,
+        "reach2": 16,
+        "reach3": 34,
         "reach": 62
       },
       {
@@ -15365,6 +16157,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 18,
         "reach": 28
       },
       {
@@ -15374,6 +16168,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 27,
         "reach": 53
       },
       {
@@ -15383,6 +16179,8 @@
         "popularity": 12,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 23,
         "reach": 30
       },
       {
@@ -15392,6 +16190,8 @@
         "popularity": 7,
         "openness": 5,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 28,
         "reach": 50
       },
       {
@@ -15401,6 +16201,8 @@
         "popularity": 11,
         "openness": 5,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 19,
         "reach": 31
       },
       {
@@ -15410,6 +16212,8 @@
         "popularity": 8,
         "openness": 5,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 25,
         "reach": 45
       },
       {
@@ -15419,6 +16223,8 @@
         "popularity": 4,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 18,
         "reach": 26
       },
       {
@@ -15428,6 +16234,8 @@
         "popularity": 16,
         "openness": 11,
         "groups": 3,
+        "reach2": 15,
+        "reach3": 30,
         "reach": 49
       },
       {
@@ -15437,6 +16245,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 4,
+        "reach3": 6,
         "reach": 14
       },
       {
@@ -15446,6 +16256,8 @@
         "popularity": 13,
         "openness": 10,
         "groups": 3,
+        "reach2": 10,
+        "reach3": 23,
         "reach": 47
       },
       {
@@ -15455,6 +16267,8 @@
         "popularity": 8,
         "openness": 3,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 19,
         "reach": 28
       },
       {
@@ -15464,6 +16278,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 9,
         "reach": 17
       },
       {
@@ -15473,6 +16289,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 3,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 39
       },
       {
@@ -15482,6 +16300,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 14,
         "reach": 29
       },
       {
@@ -15491,6 +16311,8 @@
         "popularity": 13,
         "openness": 7,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 11,
         "reach": 15
       },
       {
@@ -15500,6 +16322,8 @@
         "popularity": 10,
         "openness": 7,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 33,
         "reach": 55
       },
       {
@@ -15509,6 +16333,8 @@
         "popularity": 2,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 10,
         "reach": 20
       },
       {
@@ -15518,6 +16344,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 12,
         "reach": 26
       },
       {
@@ -15527,6 +16355,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 3,
+        "reach2": 10,
+        "reach3": 22,
         "reach": 44
       },
       {
@@ -15536,6 +16366,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 2,
+        "reach2": 7,
+        "reach3": 15,
         "reach": 32
       },
       {
@@ -15545,6 +16377,8 @@
         "popularity": 8,
         "openness": 4,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 12,
         "reach": 15
       },
       {
@@ -15554,6 +16388,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 21,
         "reach": 43
       },
       {
@@ -15563,6 +16399,8 @@
         "popularity": 12,
         "openness": 8,
         "groups": 3,
+        "reach2": 13,
+        "reach3": 27,
         "reach": 44
       },
       {
@@ -15572,6 +16410,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 19,
         "reach": 39
       },
       {
@@ -15581,6 +16421,8 @@
         "popularity": 11,
         "openness": 5,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 24,
         "reach": 40
       },
       {
@@ -15590,6 +16432,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 44
       },
       {
@@ -15599,6 +16443,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 25,
         "reach": 45
       },
       {
@@ -15608,6 +16454,8 @@
         "popularity": 11,
         "openness": 7,
         "groups": 3,
+        "reach2": 12,
+        "reach3": 27,
         "reach": 42
       },
       {
@@ -15617,6 +16465,8 @@
         "popularity": 9,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 23,
         "reach": 38
       },
       {
@@ -15626,6 +16476,8 @@
         "popularity": 10,
         "openness": 5,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 24,
         "reach": 45
       },
       {
@@ -15635,6 +16487,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 17,
         "reach": 34
       },
       {
@@ -15644,6 +16498,8 @@
         "popularity": 10,
         "openness": 7,
         "groups": 3,
+        "reach2": 12,
+        "reach3": 29,
         "reach": 47
       },
       {
@@ -15653,6 +16509,8 @@
         "popularity": 9,
         "openness": 5,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 22,
         "reach": 42
       },
       {
@@ -15662,6 +16520,8 @@
         "popularity": 8,
         "openness": 5,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 19,
         "reach": 38
       },
       {
@@ -15671,6 +16531,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 31
       },
       {
@@ -15680,6 +16542,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 3,
+        "reach2": 14,
+        "reach3": 35,
         "reach": 57
       },
       {
@@ -15689,6 +16553,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 13,
         "reach": 21
       },
       {
@@ -15698,6 +16564,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 21,
         "reach": 34
       },
       {
@@ -15707,6 +16575,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 2,
+        "reach2": 7,
+        "reach3": 17,
         "reach": 36
       },
       {
@@ -15716,6 +16586,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 2,
+        "reach2": 16,
+        "reach3": 32,
         "reach": 56
       },
       {
@@ -15725,6 +16597,8 @@
         "popularity": 10,
         "openness": 8,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 28,
         "reach": 48
       },
       {
@@ -15734,6 +16608,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 30
       },
       {
@@ -15743,6 +16619,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 27,
         "reach": 40
       },
       {
@@ -15752,6 +16630,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 9,
         "reach": 16
       },
       {
@@ -15761,6 +16641,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 1,
+        "reach2": 16,
+        "reach3": 28,
         "reach": 50
       },
       {
@@ -15770,6 +16652,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 22,
         "reach": 37
       },
       {
@@ -15779,6 +16663,8 @@
         "popularity": 5,
         "openness": 5,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 24,
         "reach": 39
       },
       {
@@ -15788,6 +16674,8 @@
         "popularity": 5,
         "openness": 5,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 30,
         "reach": 53
       },
       {
@@ -15797,6 +16685,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 25,
         "reach": 48
       },
       {
@@ -15806,6 +16696,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 2,
+        "reach2": 10,
+        "reach3": 20,
         "reach": 35
       },
       {
@@ -15815,6 +16707,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 22,
         "reach": 40
       },
       {
@@ -15824,6 +16718,8 @@
         "popularity": 8,
         "openness": 5,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 24,
         "reach": 46
       },
       {
@@ -15833,6 +16729,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 27,
         "reach": 35
       },
       {
@@ -15842,6 +16740,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 27,
         "reach": 46
       },
       {
@@ -15851,6 +16751,8 @@
         "popularity": 7,
         "openness": 4,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 18,
         "reach": 36
       },
       {
@@ -15860,6 +16762,8 @@
         "popularity": 2,
         "openness": 1,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 14,
         "reach": 24
       },
       {
@@ -15869,6 +16773,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 21,
         "reach": 36
       },
       {
@@ -15878,6 +16784,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 17,
         "reach": 24
       },
       {
@@ -15887,6 +16795,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 28,
         "reach": 56
       },
       {
@@ -15896,6 +16806,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 26,
         "reach": 45
       },
       {
@@ -15905,6 +16817,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 18,
         "reach": 30
       },
       {
@@ -15914,6 +16828,8 @@
         "popularity": 4,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 25,
         "reach": 42
       },
       {
@@ -15923,6 +16839,8 @@
         "popularity": 10,
         "openness": 5,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 23,
         "reach": 30
       },
       {
@@ -15932,6 +16850,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 29,
         "reach": 49
       },
       {
@@ -15941,6 +16861,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 14,
         "reach": 22
       },
       {
@@ -15950,6 +16872,8 @@
         "popularity": 13,
         "openness": 4,
         "groups": 2,
+        "reach2": 10,
+        "reach3": 21,
         "reach": 43
       },
       {
@@ -15959,6 +16883,8 @@
         "popularity": 9,
         "openness": 3,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 14,
         "reach": 21
       },
       {
@@ -15968,6 +16894,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 11,
         "reach": 21
       },
       {
@@ -15977,6 +16905,8 @@
         "popularity": 2,
         "openness": 1,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 17,
         "reach": 36
       },
       {
@@ -15986,6 +16916,8 @@
         "popularity": 11,
         "openness": 5,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 20,
         "reach": 27
       },
       {
@@ -15995,6 +16927,8 @@
         "popularity": 5,
         "openness": 5,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 22,
         "reach": 39
       },
       {
@@ -16004,6 +16938,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 24,
         "reach": 36
       },
       {
@@ -16013,6 +16949,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 29,
         "reach": 49
       },
       {
@@ -16022,6 +16960,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 2,
+        "reach2": 7,
+        "reach3": 16,
         "reach": 35
       },
       {
@@ -16031,6 +16971,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 23,
         "reach": 38
       },
       {
@@ -16040,6 +16982,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 25,
         "reach": 46
       },
       {
@@ -16049,6 +16993,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 29,
         "reach": 43
       },
       {
@@ -16058,6 +17004,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 2,
+        "reach2": 10,
+        "reach3": 20,
         "reach": 33
       },
       {
@@ -16067,6 +17015,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 22,
         "reach": 43
       },
       {
@@ -16076,6 +17026,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 11,
         "reach": 18
       },
       {
@@ -16085,6 +17037,8 @@
         "popularity": 4,
         "openness": 1,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 18,
         "reach": 30
       },
       {
@@ -16094,6 +17048,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 24,
         "reach": 31
       },
       {
@@ -16103,6 +17059,8 @@
         "popularity": 8,
         "openness": 7,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 31,
         "reach": 51
       },
       {
@@ -16112,6 +17070,8 @@
         "popularity": 9,
         "openness": 5,
         "groups": 3,
+        "reach2": 13,
+        "reach3": 30,
         "reach": 57
       },
       {
@@ -16121,6 +17081,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 2,
+        "reach2": 8,
+        "reach3": 16,
         "reach": 29
       },
       {
@@ -16130,6 +17092,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 4,
+        "reach3": 9,
         "reach": 22
       },
       {
@@ -16139,6 +17103,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 25,
         "reach": 40
       },
       {
@@ -16148,6 +17114,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 18,
         "reach": 29
       },
       {
@@ -16157,6 +17125,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 34,
         "reach": 65
       },
       {
@@ -16166,6 +17136,8 @@
         "popularity": 4,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 15,
         "reach": 21
       },
       {
@@ -16175,6 +17147,8 @@
         "popularity": 15,
         "openness": 9,
         "groups": 4,
+        "reach2": 13,
+        "reach3": 25,
         "reach": 46
       },
       {
@@ -16184,6 +17158,8 @@
         "popularity": 4,
         "openness": 2,
         "groups": 2,
+        "reach2": 10,
+        "reach3": 19,
         "reach": 40
       },
       {
@@ -16193,6 +17169,8 @@
         "popularity": 5,
         "openness": 2,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 23,
         "reach": 46
       },
       {
@@ -16202,6 +17180,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 11,
         "reach": 19
       },
       {
@@ -16211,6 +17191,8 @@
         "popularity": 4,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 36
       },
       {
@@ -16220,6 +17202,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 28,
         "reach": 45
       },
       {
@@ -16229,6 +17213,8 @@
         "popularity": 4,
         "openness": 4,
         "groups": 1,
+        "reach2": 16,
+        "reach3": 38,
         "reach": 60
       },
       {
@@ -16238,6 +17224,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 4,
+        "reach3": 11,
         "reach": 22
       },
       {
@@ -16247,6 +17235,8 @@
         "popularity": 15,
         "openness": 6,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 25,
         "reach": 42
       },
       {
@@ -16256,6 +17246,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 27,
         "reach": 47
       },
       {
@@ -16265,6 +17257,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 19,
         "reach": 36
       },
       {
@@ -16274,6 +17268,8 @@
         "popularity": 7,
         "openness": 3,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 18,
         "reach": 29
       },
       {
@@ -16283,6 +17279,8 @@
         "popularity": 14,
         "openness": 8,
         "groups": 3,
+        "reach2": 13,
+        "reach3": 21,
         "reach": 31
       },
       {
@@ -16292,6 +17290,8 @@
         "popularity": 11,
         "openness": 7,
         "groups": 1,
+        "reach2": 18,
+        "reach3": 36,
         "reach": 60
       },
       {
@@ -16301,6 +17301,8 @@
         "popularity": 5,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 18,
         "reach": 34
       },
       {
@@ -16310,6 +17312,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 33,
         "reach": 63
       },
       {
@@ -16319,6 +17323,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 19,
         "reach": 36
       },
       {
@@ -16328,6 +17334,8 @@
         "popularity": 5,
         "openness": 2,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 24,
         "reach": 49
       },
       {
@@ -16337,6 +17345,8 @@
         "popularity": 9,
         "openness": 7,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 33,
         "reach": 55
       },
       {
@@ -16346,6 +17356,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 18,
         "reach": 35
       },
       {
@@ -16355,6 +17367,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 13,
         "reach": 26
       },
       {
@@ -16364,6 +17378,8 @@
         "popularity": 5,
         "openness": 5,
         "groups": 2,
+        "reach2": 19,
+        "reach3": 41,
         "reach": 59
       },
       {
@@ -16373,6 +17389,8 @@
         "popularity": 5,
         "openness": 2,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 25,
         "reach": 44
       },
       {
@@ -16382,6 +17400,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 22,
         "reach": 41
       },
       {
@@ -16391,6 +17411,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 17,
         "reach": 34
       },
       {
@@ -16400,6 +17422,8 @@
         "popularity": 12,
         "openness": 7,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 23,
         "reach": 30
       },
       {
@@ -16409,6 +17433,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 2,
+        "reach2": 16,
+        "reach3": 30,
         "reach": 51
       },
       {
@@ -16418,6 +17444,8 @@
         "popularity": 6,
         "openness": 1,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 18,
         "reach": 34
       },
       {
@@ -16427,6 +17455,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 26,
         "reach": 35
       },
       {
@@ -16436,6 +17466,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 25,
         "reach": 35
       },
       {
@@ -16445,6 +17477,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 22,
         "reach": 38
       },
       {
@@ -16454,6 +17488,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 3,
+        "reach3": 6,
         "reach": 10
       },
       {
@@ -16463,6 +17499,8 @@
         "popularity": 9,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 26,
         "reach": 35
       },
       {
@@ -16472,6 +17510,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 21,
         "reach": 35
       },
       {
@@ -16481,6 +17521,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 23,
         "reach": 30
       },
       {
@@ -16490,6 +17532,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 23,
         "reach": 43
       },
       {
@@ -16499,6 +17543,8 @@
         "popularity": 10,
         "openness": 8,
         "groups": 1,
+        "reach2": 18,
+        "reach3": 44,
         "reach": 73
       },
       {
@@ -16508,6 +17554,8 @@
         "popularity": 8,
         "openness": 7,
         "groups": 1,
+        "reach2": 17,
+        "reach3": 35,
         "reach": 64
       },
       {
@@ -16517,6 +17565,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 4,
+        "reach3": 7,
         "reach": 11
       },
       {
@@ -16526,6 +17576,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 21,
         "reach": 32
       },
       {
@@ -16535,6 +17587,8 @@
         "popularity": 4,
         "openness": 2,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 22,
         "reach": 32
       },
       {
@@ -16544,6 +17598,8 @@
         "popularity": 9,
         "openness": 8,
         "groups": 3,
+        "reach2": 16,
+        "reach3": 41,
         "reach": 68
       },
       {
@@ -16553,6 +17609,8 @@
         "popularity": 2,
         "openness": 1,
         "groups": 2,
+        "reach2": 8,
+        "reach3": 17,
         "reach": 31
       },
       {
@@ -16562,6 +17620,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 37,
         "reach": 56
       },
       {
@@ -16571,6 +17631,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 14,
+        "reach3": 24,
         "reach": 29
       },
       {
@@ -16580,6 +17642,8 @@
         "popularity": 4,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 18,
         "reach": 26
       },
       {
@@ -16589,6 +17653,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 27,
         "reach": 45
       },
       {
@@ -16598,6 +17664,8 @@
         "popularity": 7,
         "openness": 4,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 24,
         "reach": 35
       },
       {
@@ -16607,6 +17675,8 @@
         "popularity": 8,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 29,
         "reach": 40
       },
       {
@@ -16616,6 +17686,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 18,
         "reach": 30
       },
       {
@@ -16625,6 +17697,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 11,
         "reach": 22
       },
       {
@@ -16634,6 +17708,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 18,
         "reach": 31
       },
       {
@@ -16643,6 +17719,8 @@
         "popularity": 15,
         "openness": 8,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 20,
         "reach": 31
       },
       {
@@ -16652,6 +17730,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 23,
         "reach": 33
       },
       {
@@ -16661,6 +17741,8 @@
         "popularity": 7,
         "openness": 3,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 32,
         "reach": 51
       },
       {
@@ -16670,6 +17752,8 @@
         "popularity": 14,
         "openness": 7,
         "groups": 3,
+        "reach2": 13,
+        "reach3": 31,
         "reach": 51
       },
       {
@@ -16679,6 +17763,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 10,
         "reach": 18
       },
       {
@@ -16688,6 +17774,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 16,
+        "reach3": 36,
         "reach": 63
       },
       {
@@ -16697,6 +17785,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 21,
         "reach": 37
       },
       {
@@ -16706,6 +17796,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 3,
+        "reach2": 9,
+        "reach3": 20,
         "reach": 36
       },
       {
@@ -16715,6 +17807,8 @@
         "popularity": 6,
         "openness": 4,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 21,
         "reach": 35
       },
       {
@@ -16724,6 +17818,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 27,
         "reach": 45
       },
       {
@@ -16733,6 +17829,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 9,
+        "reach3": 17,
         "reach": 32
       },
       {
@@ -16742,6 +17840,8 @@
         "popularity": 2,
         "openness": 1,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 13,
         "reach": 26
       },
       {
@@ -16751,6 +17851,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 4,
+        "reach3": 8,
         "reach": 17
       },
       {
@@ -16760,6 +17862,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 14,
         "reach": 26
       },
       {
@@ -16769,6 +17873,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 3,
+        "reach3": 4,
         "reach": 7
       },
       {
@@ -16778,6 +17884,8 @@
         "popularity": 9,
         "openness": 3,
         "groups": 2,
+        "reach2": 8,
+        "reach3": 14,
         "reach": 31
       },
       {
@@ -16787,6 +17895,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 17,
         "reach": 24
       },
       {
@@ -16796,6 +17906,8 @@
         "popularity": 9,
         "openness": 8,
         "groups": 1,
+        "reach2": 18,
+        "reach3": 43,
         "reach": 71
       },
       {
@@ -16805,6 +17917,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 10,
         "reach": 18
       },
       {
@@ -16814,6 +17928,8 @@
         "popularity": 8,
         "openness": 5,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 22,
         "reach": 41
       },
       {
@@ -16823,6 +17939,8 @@
         "popularity": 9,
         "openness": 6,
         "groups": 2,
+        "reach2": 19,
+        "reach3": 40,
         "reach": 63
       },
       {
@@ -16832,6 +17950,8 @@
         "popularity": 6,
         "openness": 5,
         "groups": 3,
+        "reach2": 17,
+        "reach3": 36,
         "reach": 67
       },
       {
@@ -16841,6 +17961,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 13,
         "reach": 22
       },
       {
@@ -16850,6 +17972,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 9,
         "reach": 14
       },
       {
@@ -16859,6 +17983,8 @@
         "popularity": 2,
         "openness": 1,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 17,
         "reach": 30
       },
       {
@@ -16868,6 +17994,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 2,
+        "reach2": 11,
+        "reach3": 25,
         "reach": 43
       },
       {
@@ -16877,6 +18005,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 2,
+        "reach2": 4,
+        "reach3": 8,
         "reach": 16
       },
       {
@@ -16886,6 +18016,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 2,
+        "reach2": 17,
+        "reach3": 35,
         "reach": 55
       },
       {
@@ -16895,6 +18027,8 @@
         "popularity": 8,
         "openness": 5,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 37,
         "reach": 60
       },
       {
@@ -16904,6 +18038,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 30,
         "reach": 54
       },
       {
@@ -16913,6 +18049,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 24,
         "reach": 40
       },
       {
@@ -16922,6 +18060,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 23,
         "reach": 42
       },
       {
@@ -16931,6 +18071,8 @@
         "popularity": 13,
         "openness": 6,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 22,
         "reach": 36
       },
       {
@@ -16940,6 +18082,8 @@
         "popularity": 8,
         "openness": 4,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 22,
         "reach": 36
       },
       {
@@ -16949,6 +18093,8 @@
         "popularity": 6,
         "openness": 2,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 17,
         "reach": 27
       },
       {
@@ -16958,6 +18104,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 3,
+        "reach2": 13,
+        "reach3": 33,
         "reach": 68
       },
       {
@@ -16967,6 +18115,8 @@
         "popularity": 5,
         "openness": 3,
         "groups": 1,
+        "reach2": 12,
+        "reach3": 21,
         "reach": 36
       },
       {
@@ -16976,6 +18126,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 2,
+        "reach2": 8,
+        "reach3": 18,
         "reach": 34
       },
       {
@@ -16985,6 +18137,8 @@
         "popularity": 5,
         "openness": 2,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 26,
         "reach": 44
       },
       {
@@ -16994,6 +18148,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 2,
+        "reach2": 8,
+        "reach3": 21,
         "reach": 38
       },
       {
@@ -17003,6 +18159,8 @@
         "popularity": 3,
         "openness": 3,
         "groups": 2,
+        "reach2": 12,
+        "reach3": 26,
         "reach": 47
       },
       {
@@ -17012,6 +18170,8 @@
         "popularity": 13,
         "openness": 3,
         "groups": 3,
+        "reach2": 13,
+        "reach3": 22,
         "reach": 36
       },
       {
@@ -17021,6 +18181,8 @@
         "popularity": 2,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 13,
         "reach": 24
       },
       {
@@ -17030,6 +18192,8 @@
         "popularity": 4,
         "openness": 4,
         "groups": 1,
+        "reach2": 13,
+        "reach3": 27,
         "reach": 45
       },
       {
@@ -17039,6 +18203,8 @@
         "popularity": 17,
         "openness": 8,
         "groups": 3,
+        "reach2": 15,
+        "reach3": 31,
         "reach": 48
       },
       {
@@ -17048,6 +18214,8 @@
         "popularity": 3,
         "openness": 1,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 21,
         "reach": 34
       },
       {
@@ -17057,6 +18225,8 @@
         "popularity": 7,
         "openness": 4,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 26,
         "reach": 46
       },
       {
@@ -17066,6 +18236,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 7,
+        "reach3": 16,
         "reach": 31
       },
       {
@@ -17075,6 +18247,8 @@
         "popularity": 9,
         "openness": 4,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 20,
         "reach": 34
       },
       {
@@ -17084,6 +18258,8 @@
         "popularity": 3,
         "openness": 2,
         "groups": 2,
+        "reach2": 10,
+        "reach3": 17,
         "reach": 33
       },
       {
@@ -17093,6 +18269,8 @@
         "popularity": 10,
         "openness": 3,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 23,
         "reach": 41
       },
       {
@@ -17102,6 +18280,8 @@
         "popularity": 7,
         "openness": 6,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 28,
         "reach": 51
       },
       {
@@ -17111,6 +18291,8 @@
         "popularity": 13,
         "openness": 8,
         "groups": 4,
+        "reach2": 16,
+        "reach3": 37,
         "reach": 63
       },
       {
@@ -17120,6 +18302,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 5,
+        "reach3": 14,
         "reach": 28
       },
       {
@@ -17129,6 +18313,8 @@
         "popularity": 11,
         "openness": 6,
         "groups": 2,
+        "reach2": 13,
+        "reach3": 22,
         "reach": 36
       },
       {
@@ -17138,6 +18324,8 @@
         "popularity": 15,
         "openness": 6,
         "groups": 2,
+        "reach2": 14,
+        "reach3": 28,
         "reach": 44
       },
       {
@@ -17147,6 +18335,8 @@
         "popularity": 1,
         "openness": 1,
         "groups": 1,
+        "reach2": 6,
+        "reach3": 14,
         "reach": 27
       },
       {
@@ -17156,6 +18346,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 2,
+        "reach2": 9,
+        "reach3": 20,
         "reach": 41
       },
       {
@@ -17165,6 +18357,8 @@
         "popularity": 6,
         "openness": 3,
         "groups": 1,
+        "reach2": 11,
+        "reach3": 23,
         "reach": 36
       },
       {
@@ -17174,6 +18368,8 @@
         "popularity": 5,
         "openness": 4,
         "groups": 2,
+        "reach2": 15,
+        "reach3": 33,
         "reach": 63
       },
       {
@@ -17183,6 +18379,8 @@
         "popularity": 8,
         "openness": 3,
         "groups": 1,
+        "reach2": 10,
+        "reach3": 17,
         "reach": 27
       },
       {
@@ -17192,6 +18390,8 @@
         "popularity": 4,
         "openness": 3,
         "groups": 1,
+        "reach2": 15,
+        "reach3": 29,
         "reach": 49
       },
       {
@@ -17201,6 +18401,8 @@
         "popularity": 2,
         "openness": 2,
         "groups": 1,
+        "reach2": 8,
+        "reach3": 19,
         "reach": 34
       }
     ],
@@ -17316,7 +18518,9 @@
       "correlations": {
         "popularityReach": 0.372,
         "opennessReach": 0.571,
-        "groupsReach": 0.397
+        "groupsReach": 0.397,
+        "reach2Reach": 0.779,
+        "reach3Reach": 0.929
       },
       "top3PopularNames": [
         "Sandu",

@@ -960,7 +960,7 @@ function renderScatter(container, block, stats) {
   const corr = sm.correlations || {};
   if (!scatter.length) { container.textContent = "Fără date pentru scatter."; return; }
 
-  let axisMode = "popularity"; // or "groups"
+  let axisMode = "popularity"; // popularity | groups | reach2
 
   const wrap = document.createElement("div");
   wrap.className = "chart__wrap chart__wrap--scatter";
@@ -972,8 +972,9 @@ function renderScatter(container, block, stats) {
     `<div class="diff-row diff-buttons">` +
       `<button type="button" class="btn btn--primary" data-axis="popularity">Popularitate</button>` +
       `<button type="button" class="btn btn--ghost" data-axis="groups">Deschidere</button>` +
+      `<button type="button" class="btn btn--ghost" data-axis="reach2">Rază la 2 pași</button>` +
     `</div>` +
-    `<div class="chart__meta" data-role="corr"></div>`;
+    `<div class="chart__meta chart__meta--corr" data-role="corr"></div>`;
   wrap.appendChild(controls);
 
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -996,13 +997,19 @@ function renderScatter(container, block, stats) {
     const ih = H - M.top - M.bottom;
 
     const xField = axisMode;
-    const xLabel = axisMode === "popularity" ? "Popularitate (contacte)" : "Deschidere (grupuri)";
-    const yLabel = "Rază";
-    const corrKey = axisMode === "popularity" ? "popularityReach" : "groupsReach";
+    const xLabel =
+      axisMode === "popularity" ? "Popularitate (contacte)" :
+      axisMode === "groups"     ? "Deschidere (grupuri)" :
+                                  "Rază la 2 pași";
+    const yLabel = "Rază la 4 pași";
+    const corrKey =
+      axisMode === "popularity" ? "popularityReach" :
+      axisMode === "groups"     ? "groupsReach" :
+                                  "reach2Reach";
     const rVal = corr[corrKey];
 
     const corrEl = controls.querySelector('[data-role="corr"]');
-    if (corrEl) corrEl.textContent = `Corelație ${xLabel.split(" ")[0].toLowerCase()} — rază: r = ${(rVal ?? 0).toFixed(2)}`;
+    if (corrEl) corrEl.innerHTML = `Corelație cu raza: <strong>${(rVal ?? 0).toFixed(2)}</strong>`;
 
     const xMax = Math.max(...scatter.map((p) => p[xField]), 1);
     const yMax = Math.max(...scatter.map((p) => p.reach), 1);
