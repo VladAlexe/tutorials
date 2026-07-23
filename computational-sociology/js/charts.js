@@ -1559,22 +1559,16 @@ async function renderUnreachedMulti(container, block, stats) {
 async function renderMeasureTabs(container, block, stats) {
   const measure = block.measure || "degree";  // "degree" | "openness" | "betweenness"
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
-  // Use the organic (force-directed) layout for the map view, not the
-  // class-clustered radial layout. The maps for grad / deschidere /
-  // intermediere should look like a normal spring-embedded network.
-  const positions = cm._positionsOrganic || cm._positions || {};
+  // Use the CLASS-CLUSTERED layout (same as the school map card), not the
+  // organic FR embedding. Reason: on a spring layout the champion's contacts
+  // look like a random cloud, which hides exactly what the measure is
+  // supposed to expose. On class clusters, Antoine's contacts stay inside
+  // one clump; Léa's jump between clumps. The measure becomes visible.
+  const positions = cm._positions || {};
   const mm = cm._measureMaps || {};
   const forMeasure = mm[measure] || null;
   const positionsList = Object.entries(positions);
   const total = mm.total || stats?.total || 299;
-
-  // Load the network edges so the map view has a proper backdrop, not just
-  // the champion's own edges.
-  let netEdges = [];
-  try {
-    const net = await loadJSON(block.data || "data/highschool-network.json");
-    netEdges = (net.edges || []).filter((e) => (e.weight || 1) >= 4).map((e) => [String(e.source), String(e.target)]);
-  } catch { netEdges = []; }
 
   const tabsWrap = document.createElement("div");
   tabsWrap.className = "measure-tabs__tabs";
@@ -1625,19 +1619,34 @@ async function renderMeasureTabs(container, block, stats) {
     }).join("");
   }
 
-  function baseEdgesSvg(highlightSet) {
-    // Very faint backdrop of all school edges; hide those whose both endpoints
-    // are in the highlight set so the champion's edges get drawn separately
-    // on top with stronger color.
-    return netEdges.map(([a, b]) => {
-      if (highlightSet && highlightSet.has(a) && highlightSet.has(b)) return "";
-      const pa = positions[a], pb = positions[b];
-      if (!pa || !pb) return "";
-      const x1 = projX(pa.x), y1 = projY(pa.y);
-      const x2 = projX(pb.x), y2 = projY(pb.y);
-      return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#c9beac" stroke-width="0.4" opacity="0.35"/>`;
-    }).join("");
+  // Small class-label overlay so students can name each clump. Draws one
+  // label per class at the mean position of its members.
+  function classLabelsSvg() {
+    const byClass = new Map();
+    for (const [nid, p] of Object.entries(positions)) {
+      if (!p.classFriendly) continue;
+      if (!byClass.has(p.classFriendly)) byClass.set(p.classFriendly, []);
+      byClass.get(p.classFriendly).push(p);
+    }
+    const parts = [];
+    for (const [cls, arr] of byClass) {
+      const cx = arr.reduce((s, q) => s + q.x, 0) / arr.length;
+      const cy = arr.reduce((s, q) => s + q.y, 0) / arr.length;
+      const px = projX(cx), py = projY(cy);
+      // Push the label slightly outward from the center of the drawing so it
+      // sits at the edge of the class ring instead of dead center.
+      const cx2c = (S / 2) - px;
+      const cy2c = (S / 2) - py;
+      const mag = Math.sqrt(cx2c * cx2c + cy2c * cy2c) || 1;
+      const off = 22;
+      const lx = px - (cx2c / mag) * off;
+      const ly = py - (cy2c / mag) * off;
+      parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#5c5346">${esc(cls)}</text>`);
+    }
+    return parts.join("");
   }
+
+  function baseEdgesSvg() { return ""; /* class-cluster layout: no backdrop */ }
 
   const mapControls = document.createElement("div");
   mapControls.className = "measure-tabs__map-controls";
@@ -1683,7 +1692,7 @@ async function renderMeasureTabs(container, block, stats) {
       `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
       `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
       `role="img" aria-label="Harta măsurii pentru ${esc(champ.name)}">` +
-      baseEdgesSvg(hi) + baseDotsSvg(hi) + edges + contactDots + champDot + label +
+      baseDotsSvg(hi) + classLabelsSvg() + edges + contactDots + champDot + label +
       `</svg>`;
     mapCaption.innerHTML = opts.subtitle || "";
   }
@@ -1771,7 +1780,7 @@ async function renderMeasureTabs(container, block, stats) {
         `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
         `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
         `role="img" aria-label="Drumuri prin ${esc(champ.name)}">` +
-        baseEdgesSvg(highlightIds) + baseDotsSvg(highlightIds) + pathSvgs + endDots + champDot + champLabel +
+        baseDotsSvg(highlightIds) + classLabelsSvg() + pathSvgs + endDots + champDot + champLabel +
         `</svg>`;
 
       if (shown === 0) {
@@ -2090,6 +2099,9 @@ function renderStrategyDuel(container, block, stats) {
   }
 
   function updateCompare() {
+    // Both sides must be initialised. First-time renderSide runs for "left"
+    // before the "right" panel exists in the DOM loop, so guard against that.
+    if (!sideState.left || !sideState.right) return;
     const left = cm[sideState.left.strategy];
     const right = cm[sideState.right.strategy];
     if (!left || !right) return;

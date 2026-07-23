@@ -1219,17 +1219,24 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             norm.append((round(nx * 0.95, 4), round(ny * 0.95, 4)))
         return {nlist[i]: {"x": norm[i][0], "y": norm[i][1]} for i in range(n)}
 
-    _fr_positions = _fr_layout(node_ids, [(a, b) for a, b, _w in edges_list], iters=50, seed_int=42)
-    coverage_positions_organic = {}
-    for nid in node_ids:
-        p = _fr_positions.get(nid, {"x": 0.0, "y": 0.0})
-        coverage_positions_organic[str(nid)] = {
-            "x": p["x"],
-            "y": p["y"],
-            "class": klass_map.get(nid, "?"),
-            "classFriendly": CLASS_NAMES.get(klass_map.get(nid, "?"), "?"),
-        }
-    coverage_maps["_positionsOrganic"] = coverage_positions_organic
+    # Organic FR layout is ARCHIVED: it was used only by the measure-tabs
+    # "Pe hartă" view, which now uses the class-clustered radial layout so the
+    # champion's contact pattern reads at a glance. FR was also visibly broken
+    # (nodes pushed against the clamp boundary in straight lines). Flip
+    # ENABLE_ORGANIC = True to precompute it again on other data.
+    ENABLE_ORGANIC = False
+    if ENABLE_ORGANIC:
+        _fr_positions = _fr_layout(node_ids, [(a, b) for a, b, _w in edges_list], iters=50, seed_int=42)
+        coverage_positions_organic = {}
+        for nid in node_ids:
+            p = _fr_positions.get(nid, {"x": 0.0, "y": 0.0})
+            coverage_positions_organic[str(nid)] = {
+                "x": p["x"],
+                "y": p["y"],
+                "class": klass_map.get(nid, "?"),
+                "classFriendly": CLASS_NAMES.get(klass_map.get(nid, "?"), "?"),
+            }
+        coverage_maps["_positionsOrganic"] = coverage_positions_organic
 
     # === Robustness curves for the "Ce se rupe" card — ARCHIVED.
     # Result about targeted-attack fragility is only clean for networks with
