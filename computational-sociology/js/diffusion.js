@@ -2941,10 +2941,13 @@ export async function renderDiffusion(container, block, options = {}) {
 
   else if (mode === "try-break") {
     // Node-removal experiment, driven ENTIRELY by precomputed scenarios in
-    // sm.tryBreak. Nothing is computed live. The network starts colored by
-    // Louvain communities (visible groups from mount, not uniform beige).
-    // On scenario select: removed nodes fade, detached nodes get an accent
-    // color and animate outward, counter shows groups + sizes.
+    // sm.tryBreak. Starting state: single beige color (one component). On
+    // scenario select, if the removal actually splits the graph, the largest
+    // remaining component keeps the beige, every detached component gets an
+    // accent color, and small components animate outward from the main mass.
+    // If nothing detaches, the color stays beige and the text says so
+    // explicitly. Nodes are drawn larger than the other cards for projector
+    // legibility.
     cy.nodes().addClass("knows");
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
@@ -2952,17 +2955,48 @@ export async function renderDiffusion(container, block, options = {}) {
     const scenarios = sm.tryBreak?.scenarios || [];
     const scenarioByKey = new Map(scenarios.map((s) => [s.key, s]));
 
-    // Louvain res10 gives ~15 communities close to classes; use it for the
-    // "visible groups" starting palette.
-    const commByNode = sm.louvain?.res10?.byId || sm.communities?.byId || {};
-    const commPalette = GROUP_PALETTE.slice();
-
-    const REMOVED_COLOR = "#3a2a1a";
-    const DETACHED_COLOR = "#c96d3f";
-    const DETACHED_BORDER = "#5a2a10";
+    const BASE_COLOR = "#c9a878";       // single warm beige for the whole graph
+    const BASE_BORDER = "#5a4a3a";
+    const REMOVED_COLOR = "#2a1f16";
+    // Palette for detached components. If a scenario has more distinct
+    // components than palette entries, extras wrap; that is fine because
+    // singletons wrap around and there is no confusion (each is a single node).
+    const DETACHED_PALETTE = ["#c96d3f", "#3d7a52", "#2f6fa8", "#7a5b8c", "#a3341f", "#b57140"];
+    const NODE_SIZE = 15;         // large for projector visibility
+    const NODE_SIZE_DETACHED = 17;
 
     let removedIds = new Set();
     let detachedIds = new Set();
+
+    // Build detached adjacency once so we can flood-fill components on the fly
+    // (precomputed componentSizesAfter is the source of truth, but we need the
+    // partition on IDs, not just the sizes, to color per-component).
+    const adjMap = new Map();
+    for (const n of nodes) adjMap.set(n.id, new Set());
+    for (const e of edges) {
+      adjMap.get(e.source)?.add(e.target);
+      adjMap.get(e.target)?.add(e.source);
+    }
+
+    function componentsAfterRemoval(removedSet) {
+      const comps = [];
+      const seen = new Set(removedSet);
+      for (const n of nodes) {
+        if (seen.has(n.id)) continue;
+        const stack = [n.id];
+        const members = [];
+        while (stack.length) {
+          const x = stack.pop();
+          if (seen.has(x)) continue;
+          seen.add(x);
+          members.push(x);
+          for (const y of adjMap.get(x) || []) if (!seen.has(y) && !removedSet.has(y)) stack.push(y);
+        }
+        comps.push(members);
+      }
+      comps.sort((a, b) => b.length - a.length);
+      return comps;
+    }
 
     const initialPositions = new Map();
     function snapshotPositions() {
@@ -2974,25 +3008,18 @@ export async function renderDiffusion(container, block, options = {}) {
     }
     setTimeout(snapshotPositions, 220);
 
-    function communityColor(nid) {
-      const c = commByNode[nid];
-      if (c == null) return "#8a7a68";
-      return commPalette[c % commPalette.length];
-    }
-
     function paintBase() {
       cy.nodes().forEach((n) => {
-        const col = communityColor(n.id());
         n.style("opacity", 1);
-        n.style("width", 9); n.style("height", 9);
+        n.style("width", NODE_SIZE); n.style("height", NODE_SIZE);
         n.style("border-width", 1);
-        n.style("border-color", "#5a4a3a");
-        n.style("background-color", col);
-        n.data("color", col);
+        n.style("border-color", BASE_BORDER);
+        n.style("background-color", BASE_COLOR);
+        n.data("color", BASE_COLOR);
       });
       cy.edges().forEach((e) => {
-        e.style("opacity", 0.4);
-        e.style("width", 0.8);
+        e.style("opacity", 0.5);
+        e.style("width", 1);
         e.style("line-color", "#8a7154");
       });
     }
@@ -3010,120 +3037,159 @@ export async function renderDiffusion(container, block, options = {}) {
       setTimeout(() => updateStatus(null), 450);
     }
 
-    function graphCenter() {
+    function centerOf(ids) {
       let sx = 0, sy = 0, c = 0;
-      cy.nodes().forEach((n) => {
-        if (removedIds.has(n.id())) return;
-        sx += n.position().x; sy += n.position().y; c++;
-      });
+      for (const id of ids) {
+        const cn = cy.getElementById(id);
+        if (!cn || !cn.length) continue;
+        const p = cn.position();
+        sx += p.x; sy += p.y; c++;
+      }
       if (c === 0) return { x: 0, y: 0 };
       return { x: sx / c, y: sy / c };
     }
 
     function applyScenario(scen) {
-      // Reset first so scenarios do not stack.
       removedIds = new Set();
       detachedIds = new Set();
       paintBase();
 
-      const removed = (scen.removedIds || []).map(String);
-      const detached = (scen.detachedIds || []).map(String);
-      removedIds = new Set(removed);
-      detachedIds = new Set(detached);
+      const removed = new Set((scen.removedIds || []).map(String));
+      removedIds = removed;
 
-      // Fade removed nodes + their edges.
+      // Fade removed nodes + their incident edges.
       for (const id of removed) {
         const cn = cy.getElementById(id);
         if (cn && cn.length) {
           cn.style("background-color", REMOVED_COLOR);
           cn.data("color", REMOVED_COLOR);
-          cn.style("opacity", 0.2);
-          cn.style("border-width", 2);
+          cn.style("opacity", 0.18);
+          cn.style("border-width", 1);
           cn.style("border-color", REMOVED_COLOR);
         }
       }
       cy.edges().forEach((e) => {
-        if (removedIds.has(e.source().id()) || removedIds.has(e.target().id())) {
-          e.style("opacity", 0.06);
+        if (removed.has(e.source().id()) || removed.has(e.target().id())) {
+          e.style("opacity", 0.05);
         }
       });
 
-      // Animate detached: accent color + push away from remaining graph center.
-      if (detached.length) {
-        let ax = 0, ay = 0, ac = 0;
-        for (const did of detached) {
-          const dn = cy.getElementById(did);
-          if (dn && dn.length) { ax += dn.position().x; ay += dn.position().y; ac++; }
+      // Recompute components on remaining graph so we can paint per-component.
+      const comps = componentsAfterRemoval(removed);
+      if (comps.length <= 1) {
+        // No detachment: single component, nothing changes color-wise beyond removed.
+        updateStatus(scen, comps);
+        return;
+      }
+
+      // First component keeps beige (it is the "still-connected school").
+      // Following components get palette colors and animate outward from the
+      // main-mass center. Each small component is treated as a group so nodes
+      // in the same component travel together in the same direction.
+      const bigCenter = centerOf(comps[0]);
+      for (let i = 1; i < comps.length; i++) {
+        const color = DETACHED_PALETTE[(i - 1) % DETACHED_PALETTE.length];
+        const compIds = comps[i];
+        const compCenter = centerOf(compIds);
+        let dx = compCenter.x - bigCenter.x;
+        let dy = compCenter.y - bigCenter.y;
+        const mag = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (mag < 4) {
+          // fallback: pick a direction based on component index so multiple
+          // singletons do not all fly the same way.
+          const angle = (i / comps.length) * Math.PI * 2;
+          dx = Math.cos(angle); dy = Math.sin(angle);
         }
-        if (ac > 0) {
-          ax /= ac; ay /= ac;
-          const gc = graphCenter();
-          let dx = ax - gc.x, dy = ay - gc.y;
-          const mag = Math.sqrt(dx * dx + dy * dy) || 1;
-          // If the detached cluster sits right on top of the remaining center
-          // (rare but possible), pick an arbitrary direction so the push still
-          // separates them visibly.
-          if (mag < 4) { dx = 1; dy = 0; }
-          const push = 240;
-          const vx = (dx / (mag || 1)) * push;
-          const vy = (dy / (mag || 1)) * push;
-          for (const did of detached) {
-            const dn = cy.getElementById(did);
-            if (!dn || !dn.length) continue;
-            dn.style("background-color", DETACHED_COLOR);
-            dn.data("color", DETACHED_COLOR);
-            dn.style("border-color", DETACHED_BORDER);
-            dn.style("border-width", 2);
-            dn.style("width", 13); dn.style("height", 13);
-            const p = dn.position();
-            dn.animation({
-              position: { x: p.x + vx, y: p.y + vy },
-              duration: 600, easing: "ease-out"
-            }).play();
-          }
+        const norm = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+        // Push distance scales with how many components we have; more =
+        // slightly more push so singletons scatter visibly rather than pile.
+        const push = 180 + Math.min(120, comps.length * 4);
+        const vx = (dx / norm) * push;
+        const vy = (dy / norm) * push;
+        for (const id of compIds) {
+          detachedIds.add(id);
+          const cn = cy.getElementById(id);
+          if (!cn || !cn.length) continue;
+          cn.style("background-color", color);
+          cn.data("color", color);
+          cn.style("border-color", "#3a2a1a");
+          cn.style("border-width", 1);
+          cn.style("width", NODE_SIZE_DETACHED); cn.style("height", NODE_SIZE_DETACHED);
+          const p = cn.position();
+          cn.animation({
+            position: { x: p.x + vx, y: p.y + vy },
+            duration: 700, easing: "ease-out"
+          }).play();
         }
       }
 
-      updateStatus(scen);
+      updateStatus(scen, comps);
     }
 
-    function updateStatus(scen) {
+    function ro_words(n, one, few) {
+      return n === 1 ? one : few;
+    }
+
+    function formatSizes(sizes) {
+      // Aggregate long tails of singletons for readable text.
+      if (!sizes.length) return "0 elevi";
+      if (sizes.length === 1) return `<strong>${sizes[0]}</strong> ${ro_words(sizes[0], "elev", "elevi")} conectați`;
+      const head = sizes[0];
+      const rest = sizes.slice(1);
+      const singletons = rest.filter((s) => s === 1).length;
+      const bigger = rest.filter((s) => s > 1);
+      const parts = [`una cu <strong>${head}</strong> elevi conectați`];
+      if (bigger.length) {
+        parts.push(bigger.map((s) => `una cu <strong>${s}</strong>`).join(", "));
+      }
+      if (singletons) {
+        parts.push(`${singletons} elev${singletons === 1 ? "" : "i"} singur${singletons === 1 ? "" : "i"}`);
+      }
+      return parts.join(", plus ");
+    }
+
+    function updateStatus(scen, comps) {
       const infoEl = controls.querySelector('[data-role="info"]');
       const countEl = controls.querySelector('[data-role="count"]');
+      const nAll = nodes.length;
 
       if (!scen) {
-        if (countEl) countEl.innerHTML = `<strong>1</strong> bucată · <strong>${nodes.length}</strong> elevi conectați`;
+        if (countEl) countEl.innerHTML = `<strong>1</strong> componentă · <strong>${nAll}</strong> elevi`;
         if (infoEl) infoEl.textContent = "Apasă un buton ca să vezi ce se rupe.";
         return;
       }
 
-      const sizes = scen.componentSizesAfter || [];
-      const groups = scen.totalGroups || sizes.length || 1;
-      const sizeText = sizes.length
-        ? sizes.map((s, i) => i === 0 ? `<strong>${s}</strong> conectați` : `<strong>${s}</strong> desprinși`).join(" · ")
-        : `<strong>${scen.biggestSize ?? 0}</strong> conectați`;
+      const sizes = (comps && comps.length ? comps.map((c) => c.length) : (scen.componentSizesAfter || []));
+      const groups = sizes.length || 1;
+
       if (countEl) {
-        countEl.innerHTML = `<strong>${groups}</strong> ${groups === 1 ? "bucată" : "bucăți"} · ${sizeText}`;
+        countEl.innerHTML = `<strong>${groups}</strong> ${ro_words(groups, "componentă", "componente")} · ${formatSizes(sizes)}`;
       }
       if (!infoEl) return;
-      if (scen.detachedCount > 0) {
-        infoEl.innerHTML = `${scen.description || ""} <strong>${scen.detachedCount}</strong> elevi s-au desprins de restul școlii, colorați separat.`;
+      if (groups <= 1) {
+        infoEl.innerHTML = `${scen.description || ""} Tot 1 componentă, nimeni nu s-a desprins.`;
       } else {
-        infoEl.innerHTML = `${scen.description || ""} Nimeni nu s-a desprins: rețeaua rămâne o singură bucată.`;
+        infoEl.innerHTML = `${scen.description || ""} <strong>${scen.detachedCount ?? sizes.slice(1).reduce((a, b) => a + b, 0)}</strong> elevi s-au desprins de restul școlii, colorați separat.`;
       }
     }
 
-    const btnHtml = scenarios.map((s) =>
-      `<button type="button" class="btn btn--ghost" data-scenario="${s.key}">${s.label}</button>`
-    ).join("");
+    // Build buttons in the exact order the spec asks for; the scenarios array
+    // is authored to match, but if a scenario is missing we skip it silently
+    // so the card still functions on older stats snapshots.
+    const wantOrder = ["vedeta", "top5", "dependent", "allCutVertices"];
+    const btnHtml = wantOrder
+      .map((k) => scenarioByKey.get(k))
+      .filter(Boolean)
+      .map((s) =>
+        `<button type="button" class="btn btn--ghost" data-scenario="${s.key}">${s.label}</button>`
+      ).join("");
     controls.innerHTML =
       `<div class="diff-row diff-buttons try-break__quick">` +
         btnHtml +
         `<button type="button" class="btn btn--ghost" data-scenario="__reset">Adu-i înapoi</button>` +
       `</div>` +
-      `<div class="diff-count" data-role="count"><strong>1</strong> bucată · <strong>${nodes.length}</strong> elevi conectați</div>` +
-      `<div class="diff-hint" data-role="info">Apasă un buton ca să vezi ce se rupe.</div>` +
-      `<div class="diff-hint diff-hint--muted">Culorile de start sunt comunitățile detectate de algoritm pe rețea. Când scoți pe cineva important, poate crezi că se rupe tot. Aici se vede când chiar se rupe și când nu.</div>`;
+      `<div class="diff-count" data-role="count"><strong>1</strong> componentă · <strong>${nodes.length}</strong> elevi</div>` +
+      `<div class="diff-hint" data-role="info">Apasă un buton ca să vezi ce se rupe.</div>`;
 
     controls.querySelectorAll("[data-scenario]").forEach((btn) => {
       btn.addEventListener("click", () => {

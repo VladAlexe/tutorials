@@ -896,24 +896,31 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             "totalRemaining":      len(node_ids) - len(removed_ids),
         }
 
+    cut_vertex_ids = [cv["id"] for cv in cut_vertices]
     try_break_scenarios = [
         scenario(
             "vedeta",
             "Scoate-l pe {}".format(name_map.get(ROLE_IDS["vedeta"], "?")),
             [ROLE_IDS["vedeta"]],
-            "Cel mai popular elev al școlii dispare. Ce se rupe?"
+            "Cel mai popular elev al școlii dispare."
         ),
         scenario(
             "top5",
             "Scoate primii cinci după grad",
             top5_ids,
-            "Elimină simultan cei mai populari cinci elevi. Rețeaua rezistă?"
+            "Elimină simultan cei mai populari cinci elevi."
         ),
         scenario(
             "dependent",
             "Scoate-l pe {}".format(name_map.get(ROLE_IDS["dependent"], "?")),
             [ROLE_IDS["dependent"]],
             "Un elev cu popularitate modestă, dar cu un rol structural aparte."
+        ),
+        scenario(
+            "allCutVertices",
+            "Scoate toți cei {} elevi de care atârnă cineva".format(len(cut_vertex_ids)),
+            cut_vertex_ids,
+            "Fiecare dintre acești elevi e singurul drum al cel puțin unei persoane. Ce se rupe când dispar toți simultan?"
         ),
     ]
     try_break = {

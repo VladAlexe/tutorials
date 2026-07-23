@@ -208,6 +208,69 @@ function renderBars(container, block) {
   container.appendChild(wrap);
 }
 
+// Horizontal ranking bars: name + class on the left, colored bar per class,
+// value at the bar's right edge. Sorted with the largest on top. Designed
+// for the c-gradul, c-deschiderea and any other "top N" card.
+const CLASS_PALETTE_ORDER = ["Bio A","Bio B","Bio C","Mate A","Mate B","Mate C","Chimie A","Chimie B","Inginerie"];
+function colorForClass(cls) {
+  const palette = ["#8b4a1e","#3d7a52","#2f6fa8","#a3341f","#7a5b8c","#b57140","#4c6b3a","#8e5a86","#6a9c8b"];
+  const i = CLASS_PALETTE_ORDER.indexOf(cls);
+  return palette[(i < 0 ? 0 : i) % palette.length];
+}
+
+function hbarsSVG(block) {
+  const bars = block.bars || [];
+  if (!bars.length) return "";
+  const rowH = 30;
+  const rowGap = 8;
+  const padT = 8, padB = 8, padL = 148, padR = 46;
+  const W = 480;
+  const chartW = W - padL - padR;
+  const H = padT + padB + bars.length * (rowH + rowGap) - rowGap;
+  const maxV = Math.max(...bars.map((b) => b.value), 1);
+
+  const rows = bars.map((b, i) => {
+    const y = padT + i * (rowH + rowGap);
+    const w = Math.max(2, (b.value / maxV) * chartW);
+    const cls = b.class || "";
+    const name = b.name || b.label || "";
+    const color = b.color || colorForClass(cls);
+    const nameLabel = `${esc(name)}${cls ? `, ${esc(cls)}` : ""}`;
+    return (
+      `<g class="hbar-row">` +
+      `<text x="${padL - 8}" y="${(y + rowH / 2 + 5).toFixed(1)}" text-anchor="end" font-family="Georgia, serif" font-size="13" fill="${COL_INK}">${nameLabel}</text>` +
+      `<rect x="${padL}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${rowH}" fill="${color}" rx="2"/>` +
+      `<text x="${(padL + w + 6).toFixed(1)}" y="${(y + rowH / 2 + 5).toFixed(1)}" font-family="Georgia, serif" font-size="14" font-weight="500" fill="${COL_INK}">${fmtNum(b.value)}</text>` +
+      `</g>`
+    );
+  }).join("");
+
+  return (
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
+    `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
+    `role="img" aria-label="${esc(block.title || "Clasament")}">` +
+    rows +
+    `</svg>`
+  );
+}
+
+function renderHBars(container, block) {
+  const wrap = document.createElement("div");
+  wrap.className = "chart__svg-wrap chart__svg-wrap--hbars";
+  wrap.innerHTML = hbarsSVG(block);
+  container.appendChild(wrap);
+
+  const legendClasses = Array.from(new Set((block.bars || []).map((b) => b.class).filter(Boolean)));
+  if (legendClasses.length) {
+    const legend = document.createElement("div");
+    legend.className = "chart__legend";
+    legend.innerHTML = legendClasses.map((cls) =>
+      `<span class="chart__legend-chip"><span class="chart__legend-dot" style="background:${colorForClass(cls)}"></span>${esc(cls)}</span>`
+    ).join("");
+    container.appendChild(legend);
+  }
+}
+
 // ---- dots (scattered points, seeded random y, tap to reveal name) -------
 function seededRandom(seed) {
   let s = seed | 0;
@@ -730,27 +793,50 @@ async function renderStates(container, block, values, stats) {
     `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="${COL_BAR}" fill-opacity="0.7"><title>${values[i]}</title></circle>`
   ).join("");
 
+  // Count labels — one per bin, hidden except when the histogram state is
+  // active. Position them above the tallest possible column so they clear
+  // the dots regardless of animation.
+  const countLabels = binCounts.map((c, i) => {
+    const x = padL + i * binPx + binPx / 2;
+    const y = padT + chartH - c * DOT_SIZE - 6;
+    return `<text class="states-count" data-bin="${i}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="12" font-weight="500" fill="${COL_INK}" opacity="0">${c}</text>`;
+  }).join("");
+
   chartHost.innerHTML =
     `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto">` +
-    axisX + dots + `</svg>`;
+    axisX + dots + countLabels + `</svg>`;
 
   const circles = chartHost.querySelectorAll("circle");
+  const countTexts = chartHost.querySelectorAll(".states-count");
   let currentPos = initialPos;
 
+  function setCountsVisible(visible) {
+    countTexts.forEach((t) => {
+      t.setAttribute("opacity", visible ? "1" : "0");
+    });
+  }
+
+  // Precompute bin layout so we can add a count label per column.
+  const BW = block.binWidth || 3;
+  const startBin = Math.floor(minV / BW) * BW;
+  const maxHi = Math.max(...values);
+  const nBins = Math.floor((maxHi - startBin) / BW) + 1;
+  const binPx = chartW / nBins;
+  const DOT_SIZE = 7;
+  const binCounts = new Array(nBins).fill(0);
+  for (const v of values) {
+    const idx = Math.floor((v - startBin) / BW);
+    if (idx >= 0 && idx < nBins) binCounts[idx]++;
+  }
+
   function histogramPos(i, v) {
-    const bw = block.binWidth || 3;
-    const startBin = Math.floor(minV / bw) * bw;
-    const maxHi = Math.max(...values);
-    const nBins = Math.floor((maxHi - startBin) / bw) + 1;
-    const binPx = chartW / nBins;
-    const binIdx = Math.floor((v - startBin) / bw);
+    const binIdx = Math.floor((v - startBin) / BW);
     const x = padL + binIdx * binPx + binPx / 2;
     let rank = 0;
     for (let j = 0; j < i; j++) {
-      if (Math.floor((values[j] - startBin) / bw) === binIdx) rank++;
+      if (Math.floor((values[j] - startBin) / BW) === binIdx) rank++;
     }
-    const dotSize = 7;
-    return { x, y: padT + chartH - (rank + 1) * dotSize };
+    return { x, y: padT + chartH - (rank + 1) * DOT_SIZE };
   }
 
   function positionsFor(key) {
@@ -786,7 +872,10 @@ async function renderStates(container, block, values, stats) {
     btn.addEventListener("click", () => {
       controls.querySelectorAll("[data-state]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
       btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary");
-      transitionTo(positionsFor(btn.dataset.state));
+      const key = btn.dataset.state;
+      transitionTo(positionsFor(key));
+      // Counts appear only in the histogram state, matching the verb "numără".
+      setCountsVisible(key === "histogram");
     });
   });
 }
@@ -1489,6 +1578,10 @@ export async function renderChart(container, block) {
     }
     if (block.variant === "bars") {
       renderBars(container, block);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "hbars") {
+      renderHBars(container, block);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "dots") {

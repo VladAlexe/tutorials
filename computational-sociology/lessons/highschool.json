@@ -100,38 +100,38 @@
     {
       "type": "chart",
       "id": "c-gradul",
-      "variant": "bars",
+      "variant": "hbars",
       "statsSource": "data/highschool-stats.json",
       "title": "Gradul",
       "intro": "<p>Ai văzut harta. Acum măsurăm pe ea.</p><p><strong>Gradul</strong> unui elev este numărul lui de contacte. E cea mai simplă măsură pe care putem calcula într-o rețea: pentru fiecare nod, câte muchii pornesc din el. Un număr, per om.</p><p>Iată primii opt din școală după această măsură.</p>",
       "bars": [
-        {"label": "Antoine (Bio C)", "value": 19},
-        {"label": "Léa (Mate C)", "value": 17},
-        {"label": "Élodie (Bio A)", "value": 16},
-        {"label": "Cléa (Bio C)", "value": 16},
-        {"label": "Thérèse (Bio C)", "value": 15},
-        {"label": "Samuel (Mate A)", "value": 15},
-        {"label": "Zayd (Mate A)", "value": 15},
-        {"label": "William (Mate A)", "value": 15}
+        {"name": "Antoine", "class": "Bio C", "value": 19},
+        {"name": "Léa", "class": "Mate C", "value": 17},
+        {"name": "Élodie", "class": "Bio A", "value": 16},
+        {"name": "Cléa", "class": "Bio C", "value": 16},
+        {"name": "Thérèse", "class": "Bio C", "value": 15},
+        {"name": "Samuel", "class": "Mate A", "value": 15},
+        {"name": "Zayd", "class": "Mate A", "value": 15},
+        {"name": "William", "class": "Mate A", "value": 15}
       ],
       "caption": "În vârf: {{name:vedeta}}, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo."
     },
     {
       "type": "chart",
       "id": "c-deschiderea",
-      "variant": "bars",
+      "variant": "hbars",
       "statsSource": "data/highschool-stats.json",
       "title": "Deschiderea",
       "intro": "<p><strong>Deschiderea</strong> unui elev este numărul dintre contactele lui care sunt din <strong>afara clasei</strong>. Zece contacte, toate colegi de clasă, înseamnă deschidere zero. Zece contacte, dintre care șase în afară, înseamnă deschidere șase. Aceeași rețea, altă măsură.</p><p>Primii opt din școală după această măsură.</p>",
       "bars": [
-        {"label": "Léa (Mate C)", "value": 10},
-        {"label": "Samuel (Mate A)", "value": 7},
-        {"label": "Hélène (Bio C)", "value": 6},
-        {"label": "Diane (Bio C)", "value": 6},
-        {"label": "Charlotte (Bio C)", "value": 5},
-        {"label": "Cléa (Bio C)", "value": 5},
-        {"label": "Sébastien (Mate B)", "value": 4},
-        {"label": "Florence (Bio C)", "value": 4}
+        {"name": "Léa", "class": "Mate C", "value": 10},
+        {"name": "Samuel", "class": "Mate A", "value": 7},
+        {"name": "Hélène", "class": "Bio C", "value": 6},
+        {"name": "Diane", "class": "Bio C", "value": 6},
+        {"name": "Charlotte", "class": "Bio C", "value": 5},
+        {"name": "Cléa", "class": "Bio C", "value": 5},
+        {"name": "Sébastien", "class": "Mate B", "value": 4},
+        {"name": "Florence", "class": "Bio C", "value": 4}
       ],
       "caption": "<p>În vârf: <strong>{{name:puntea}}</strong>, cu {{outClass:puntea}} contacte în afara clasei ei, mai mult decât oricine din școală. Nu e o necunoscută: e a doua din școală și la număr de contacte, cu {{contacte:puntea}}. Diferența e unde sunt acele contacte.</p><p>Uită-te acum unde e <strong>{{name:vedeta}}</strong>, campionul de la grad. Are {{contacte:vedeta}} contacte, cele mai multe din școală, dintre care exact unul singur e din altă clasă. Nu apare în primii opt aici. Nu apare nici în primii cincizeci.</p><p>Măsuri diferite, oameni diferiți. Alegerea măsurii decide cine iese important.</p>"
     },
@@ -171,19 +171,19 @@
     {
       "type": "chart",
       "id": "c-299-simulari",
-      "variant": "bars",
+      "variant": "hbars",
       "statsSource": "data/highschool-stats.json",
       "title": "299 de simulări",
-      "intro": "<p>Am rulat modelul de <strong>{{total}} de ori</strong>, o dată pornind din fiecare elev. Pentru fiecare pornire, am numărat câți oameni au aflat vestea. Iată primii zece.</p>",
+      "intro": "<p>Am rulat modelul de <strong>{{total}} de ori</strong>, o dată pornind din fiecare elev. Pentru fiecare pornire, am numărat câți oameni au aflat vestea. Iată primii opt.</p>",
       "bars": [
-        {"label": "Chloé (Bio C)", "value": 73},
-        {"label": "Gabin (Bio C)", "value": 71},
-        {"label": "Estée (Inginerie)", "value": 68},
-        {"label": "Rémi (Mate C)", "value": 68},
-        {"label": "Beatrix (Mate B)", "value": 67},
-        {"label": "Ingrid (Bio C)", "value": 65},
-        {"label": "Danielle (Bio C)", "value": 64},
-        {"label": "Damir (Bio C)", "value": 63}
+        {"name": "Chloé", "class": "Bio C", "value": 73},
+        {"name": "Gabin", "class": "Bio C", "value": 71},
+        {"name": "Estée", "class": "Inginerie", "value": 68},
+        {"name": "Rémi", "class": "Mate C", "value": 68},
+        {"name": "Beatrix", "class": "Mate B", "value": 67},
+        {"name": "Ingrid", "class": "Bio C", "value": 65},
+        {"name": "Danielle", "class": "Bio C", "value": 64},
+        {"name": "Damir", "class": "Bio C", "value": 63}
       ],
       "caption": "<p>În vârf: <strong>{{name:campion}}</strong>, dintr-o clasă de biologie. Vestea pornită din ea ajunge la <strong>{{reach:campion}}</strong> de oameni, mai mult decât din oricare alt elev al școlii.</p><p>Nu e în primii zece la grad, unde e pe locul {{rankPop:campion}} din {{total}}. Nu e în primii zece la deschidere, unde e ultima: are zero contacte în afara clasei ei.</p><p>Iar cel mai popular elev al școlii, {{name:vedeta}}, ajunge la doar <strong>{{reach:vedeta}}</strong>, pe locul {{rankReach:vedeta}} din {{total}}. Aceeași clasă cu Chloé. Regulile aceleași. Rezultat opus.</p><p>Aceasta e enigma. Următoarele carduri răspund la o singură întrebare: <strong>de ce?</strong></p>"
     },
@@ -293,8 +293,8 @@
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
       "title": "Ce se rupe",
-      "intro": "<p>Am văzut cine nu află: elevi de la margine, pe care rețeaua îi ține abia de un fir. Uite acum invers: dacă cei mai importanți dispar, ce se rupe?</p><p>Culorile de start sunt comunitățile detectate de algoritm pe rețea. Apasă butoanele și privește.</p>",
-      "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă. {{name:vedeta}}, cel mai popular, dispare fără să se rupă nimic. Primii cinci, la fel. Fragilitatea nu e la centru: e la {{name:dependentul}}, un elev cu popularitate modestă care se dovedește a fi <strong>singurul drum</strong> pentru trei colegi. Aceștia trei intră pe lista lui Yann: nu i-a auzit modelul nu pentru că nu ar fi acolo, ci pentru că firul care îi ținea de școală a fost tăiat."
+      "intro": "<p>Am văzut cine nu află: elevi de la margine, pe care rețeaua îi ține abia de un fir. Uite acum invers: dacă cei mai importanți dispar, ce se rupe?</p><p>Rețeaua întreagă, o singură culoare pentru că e o singură componentă. Apasă butoanele, în ordine, și privește.</p>",
+      "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă. {{name:vedeta}}, cel mai popular, dispare fără să se rupă nimic. Primii cinci, la fel. Fragilitatea nu e la centru: e la {{name:dependentul}}, un elev cu popularitate modestă care se dovedește a fi <strong>singurul drum</strong> pentru trei colegi. Iar butonul cu toți cei {{sliceMetrics.nCutVertices}} elevi de care atârnă cineva rupe rețeaua în peste douăzeci de bucăți: 247 rămân împreună, alți 24 se dispersează câte unul. Cei trei ai lui Damien, plus cei 24 de aici, intră toți pe lista lui Yann: nu i-a auzit modelul nu pentru că nu ar fi acolo, ci pentru că firul care îi ținea de școală a fost tăiat."
     },
     {
       "type": "diffusion",
