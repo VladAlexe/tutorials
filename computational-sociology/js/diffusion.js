@@ -1018,7 +1018,169 @@ export async function renderDiffusion(container, block, options = {}) {
     return m;
   }
 
-  if (mode === "explore") {
+  if (mode === "sim-step") {
+    // A single simulation, driven manually one round at a time. Purpose:
+    // make the "we ran the model 299 times" claim honest by first letting
+    // the student run one instance and see it as a mechanical process.
+    // Rules panel stays visible throughout. Source is fixed via block.source
+    // (a role key like "campion") so the visible example matches the story.
+    let statsData = null;
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
+    const sm = statsData?.sliceMetrics || {};
+    const pasi = block.pasi || statsData?.pasi || 4;
+    const maxT = block.maxTransmiteri || statsData?.maxTransmiteri || 4;
+
+    // Resolve source id.
+    const roleKey = block.source || "campion";
+    const roleObj = sm.characters?.[roleKey];
+    const sourceId = String(roleObj?.id ?? nodes[0]?.id);
+    const sourceName = roleObj?.name || (nameById.get(sourceId) || "");
+
+    // Build top-K weighted adjacency (matches build_network.py bounded model).
+    const MIN_W = 4;
+    const adjWeighted = new Map();
+    for (const n of nodes) adjWeighted.set(n.id, []);
+    for (const e of edges) {
+      if (e.weight < MIN_W) continue;
+      adjWeighted.get(e.source).push({ id: e.target, w: e.weight });
+      adjWeighted.get(e.target).push({ id: e.source, w: e.weight });
+    }
+    const adjTop = new Map();
+    for (const [id, nbrs] of adjWeighted) {
+      nbrs.sort((a, b) => b.w - a.w || String(a.id).localeCompare(String(b.id)));
+      adjTop.set(id, nbrs.slice(0, maxT).map((x) => x.id));
+    }
+
+    // Round assignment: BFS bounded to `pasi` rounds.
+    const knowsAt = new Map();
+    knowsAt.set(sourceId, 0);
+    {
+      let frontier = [sourceId];
+      for (let s = 0; s < pasi && frontier.length; s++) {
+        const nxt = [];
+        for (const x of frontier) {
+          for (const y of adjTop.get(x) || []) {
+            if (!knowsAt.has(y)) { knowsAt.set(y, s + 1); nxt.push(y); }
+          }
+        }
+        frontier = nxt;
+      }
+    }
+
+    // Rules panel + button + counter.
+    const rules = block.rules || [
+      `Cine află spune mai departe celor <strong>${maxT}</strong> oameni cu care petrece cel mai mult timp`,
+      `Ziua are <strong>${pasi}</strong> pauze`,
+      `Nimeni nu spune de două ori aceleiași persoane`,
+      "Cine nu a aflat până seara, nu a aflat"
+    ];
+
+    controls.innerHTML =
+      `<div class="sim-step__rules"><div class="sim-step__rules-title">Reguli</div><ul>` +
+        rules.map((r) => `<li>${r}</li>`).join("") +
+      `</ul></div>` +
+      `<div class="diff-row diff-buttons sim-step__buttons">` +
+        `<button type="button" class="btn btn--primary" data-act="next">Următoarea pauză</button>` +
+        `<button type="button" class="btn btn--ghost" data-act="run">Rulează tot</button>` +
+        `<button type="button" class="btn btn--ghost" data-act="reset">De la început</button>` +
+      `</div>` +
+      `<div class="sim-step__count" data-role="count">Pauza <strong>0</strong>. Știe <strong>1</strong> elev, ${sourceName}.</div>`;
+
+    // Visual style: all nodes dim except source. Big node for source so it
+    // reads from the back of the room.
+    function paintForStep(step) {
+      cy.nodes().forEach((n) => {
+        const at = knowsAt.get(n.id());
+        n.style("border-color", "#5a4a3a");
+        if (at === undefined || at > step) {
+          n.style("background-color", "#d9cfc0");
+          n.style("opacity", 0.35);
+          n.style("width", 8); n.style("height", 8);
+          n.style("border-width", 0.5);
+        } else if (at === step) {
+          n.style("background-color", "#a3341f");
+          n.style("opacity", 1);
+          n.style("width", 14); n.style("height", 14);
+          n.style("border-width", 2);
+          n.style("border-color", "#2a1f16");
+        } else {
+          n.style("background-color", "#8b4a1e");
+          n.style("opacity", 0.85);
+          n.style("width", 10); n.style("height", 10);
+          n.style("border-width", 1);
+        }
+      });
+      // Source always distinct.
+      const src = cy.getElementById(sourceId);
+      if (src && src.length) {
+        src.style("background-color", "#2a1f16");
+        src.style("border-color", "#2a1f16");
+        src.style("border-width", 2);
+        src.style("opacity", 1);
+        src.style("width", 18); src.style("height", 18);
+      }
+      cy.edges().forEach((e) => {
+        const a = knowsAt.get(e.source().id());
+        const b = knowsAt.get(e.target().id());
+        const active = (a !== undefined && a <= step) && (b !== undefined && b <= step);
+        e.style("line-color", active ? "#8b4a1e" : "#c9beac");
+        e.style("opacity", active ? 0.55 : 0.2);
+        e.style("width", active ? 1.1 : 0.7);
+      });
+    }
+
+    let currentStep = 0;
+    const countEl = controls.querySelector('[data-role="count"]');
+    const btnNext = controls.querySelector('[data-act="next"]');
+    const btnRun = controls.querySelector('[data-act="run"]');
+    const btnReset = controls.querySelector('[data-act="reset"]');
+
+    function knowsCountAt(step) {
+      let c = 0;
+      for (const v of knowsAt.values()) if (v <= step) c++;
+      return c;
+    }
+    function updateCount() {
+      const c = knowsCountAt(currentStep);
+      if (currentStep === 0) {
+        countEl.innerHTML = `Pauza <strong>0</strong>. Știe <strong>1</strong> elev, ${sourceName}.`;
+      } else if (currentStep >= pasi) {
+        countEl.innerHTML = `Ziua s-a terminat, după <strong>${pasi}</strong> pauze. Știu <strong>${c}</strong> elevi din ${nodes.length}.`;
+      } else {
+        countEl.innerHTML = `Pauza <strong>${currentStep}</strong>. Știu <strong>${c}</strong> elevi.`;
+      }
+      btnNext.disabled = currentStep >= pasi;
+      btnRun.disabled = currentStep >= pasi;
+    }
+
+    btnNext.addEventListener("click", () => {
+      if (currentStep >= pasi) return;
+      currentStep++;
+      paintForStep(currentStep);
+      updateCount();
+    });
+    btnRun.addEventListener("click", () => {
+      // Advance one round every 500ms until we hit `pasi`.
+      const tick = () => {
+        if (currentStep >= pasi) return;
+        currentStep++;
+        paintForStep(currentStep);
+        updateCount();
+        if (currentStep < pasi) setTimeout(tick, 550);
+      };
+      tick();
+    });
+    btnReset.addEventListener("click", () => {
+      currentStep = 0;
+      paintForStep(0);
+      updateCount();
+    });
+
+    paintForStep(0);
+    updateCount();
+  }
+
+  else if (mode === "explore") {
     controls.innerHTML =
       `<div class="diff-row">` +
         `<label class="diff-slider">Prag contact <output>${shared.threshold}</output>` +

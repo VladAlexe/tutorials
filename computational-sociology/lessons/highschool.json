@@ -12,7 +12,7 @@
     { "n": 2, "title": "Măsurile școlii", "startIdx": 3 },
     { "n": 3, "title": "Ipoteze, soluție și margini", "startIdx": 13 },
     { "n": 4, "title": "Misiunea", "startIdx": 19 },
-    { "n": 5, "title": "Bilanț", "startIdx": 23 }
+    { "n": 5, "title": "Bilanț", "startIdx": 24 }
   ],
   "blocks": [
     {
@@ -163,10 +163,15 @@
       "caption": "Media urcă abrupt; medianul abia se mișcă. Media e sensibilă la extreme; medianul descrie poziția tipică. Când citești „venitul mediu a crescut\", întreabă întâi ce s-a întâmplat cu medianul."
     },
     {
-      "type": "text",
+      "type": "diffusion",
       "id": "c-ce-simulare",
+      "mode": "sim-step",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "source": "campion",
       "title": "Ce înseamnă o simulare",
-      "content": "<p>O măsură spune ceva despre fiecare elev separat. Grad, deschidere, câte contacte în cutare interval, sunt toate numere pe care le calculezi elev cu elev, apoi le compari.</p><p>Dar întrebarea de la începutul lecției, la cine să spun ca vestea să ajungă cel mai departe, nu poate fi răspunsă cu o măsură. Ce se întâmplă dacă pornim vestea din Antoine depinde de Antoine, de contactele lui, de contactele contactelor, și de cine spune mai departe cui.</p><p>O <strong>simulare</strong> este un mod de a răspunde la întrebări de tipul acesta. Scriem reguli despre cum se propagă vestea, pornim din cineva, urmărim regulile pas cu pas, și numărăm câți oameni au aflat la sfârșit. Rulăm o dată, avem un rezultat. Rulăm de {{total}} de ori, pornind pe rând din fiecare elev al școlii, avem o listă.</p><p>Regulile modelului nostru sunt simple. Dacă un elev știe vestea, o spune mai departe celor <strong>{{maxTransmiteri}}</strong> oameni cu care petrece cel mai mult timp. Se întâmplă în <strong>{{pasi}}</strong> pauze consecutive. Nimeni nu spune de două ori aceleiași persoane. La sfârșit, numărăm câți oameni au aflat.</p><p>Un model e util și când e fals, dacă știi unde e fals. În realitate, nu toată lumea spune mai departe; nu toată lumea vorbește cu exact patru oameni; ordinea întâlnirilor contează. Modelul e o simplificare deliberată, pentru o întrebare precisă: dintr-un singur om, cât de departe merge o veste, presupunând reguli identice pentru toți?</p><p>Cine e primul în această listă?</p>"
+      "intro": "<p>Până acum am numărat lucruri care există în date. Acum facem altceva.</p><p>Vrem să știm cât de departe ajunge o veste pornită de la un anumit elev. Asta nu scrie nicăieri. Nu s-a întâmplat niciodată. Ca să aflăm, <strong>construim un model și îl rulăm</strong>.</p><p>Regulile sunt inventate de noi și sunt simple, poate prea simple. Oamenii adevărați uită, se răzgândesc, spun la mai mulți sau la nimeni. Dar odată fixate, calculatorul le poate urma exact.</p><p>Apasă pe buton, pauză cu pauză, și privește.</p>",
+      "caption": "Asta e o simulare: un model cu reguli clare, rulat ca să vedem ce iese. Rezultatul nu e un fapt despre școala reală, ci despre modelul nostru. Diferența contează. Ce ai rulat acum a durat patru apăsări. Calculatorul face același lucru de {{total}} de ori, o dată din fiecare elev, în mai puțin de o secundă. Asta urmează."
     },
     {
       "type": "chart",
@@ -318,13 +323,13 @@
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
       "teamSize": 3,
-      "candidates": ["vedeta", "campion", "puntea", "surpriza"],
+      "candidates": ["vedeta", "campion", "puntea"],
       "presets": [
-        { "label": "Cei mai populari trei", "names": ["Antoine", "Chloé", "Rémi"] }
+        { "label": "Cei mai populari trei", "names": ["Antoine", "Chloé", "Léa"] }
       ],
       "title": "Acum ai trei",
       "intro": "<p>Bugetul crește. Nu mai spui unei singure persoane, ci la trei deodată, iar toți trei pornesc vestea în același timp. Atenție la ce se schimbă: nu mai cauți trei oameni buni, ci trei oameni care <strong>împreună</strong> acoperă cât mai mult. Doi oameni foarte buni care ajung la aceiași colegi valorează mai puțin decât unul bun și unul mediocru din capătul opus al școlii.</p>",
-      "caption": "Cei mai populari trei, împreună: <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong> din {{sliceMetrics.plafon}} posibili. Fiecare atinge în jur de cincizeci de oameni, și abia se suprapun între ei. Nu e o problemă de bulă comună. E o problemă de adâncime."
+      "caption": "Cei trei pe care îi știi din lecție, împreună: <strong>{{sliceMetrics.mission.knownTeamCoverage}}</strong> din {{sliceMetrics.plafon}} posibili. Cei mai populari trei ai școlii, aleși după grad: <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong>. Puțin mai bine, dar tot departe de plafon. Fiecare atinge în jur de cincizeci de oameni și abia se suprapun între ei. Nu e o problemă de bulă comună. E o problemă de adâncime."
     },
     {
       "type": "chart",
@@ -343,13 +348,19 @@
       "statsSource": "data/highschool-stats.json",
       "title": "Lasă algoritmul",
       "intro": "<p>Sunt <strong>4.410.309</strong> de moduri de a alege trei elevi din {{total}}. Prea multe ca să le încerci pe toate, chiar și pentru un calculator. Algoritmul folosește o scurtătură. Apasă butonul și lasă-l să aleagă pas cu pas.</p>",
-      "caption": "Uită-te pe cine a ales și pe cine nu. Nu l-a ales pe <strong>{{name:vedeta}}</strong>, cel mai popular elev din școală. A ales-o pe <strong>{{name:campion}}</strong>, pe care ai cunoscut-o mai devreme în lecție, și pe <strong>{{name:surpriza}}</strong>, care are {{contacte:surpriza}} contacte în total. Algoritmul nu caută oameni importanți. La fiecare pas nu întreabă cine e cel mai bun, ci <strong>cine adaugă cel mai mult peste ce am deja</strong>. Procedeul se numește alegere lacomă, descris de Kempe, Kleinberg și Tardos în 2003. Modelul nostru presupune că cine află spune mai departe, garantat, și că întâlnirile s-au petrecut în ordinea potrivită. Niciuna dintre presupuneri nu e adevărată. Un model e util și când e fals, dacă știi unde e fals. Iar același calcul duce un anunț util în toată școala sau o minciună. Unealta nu alege scopul."
+      "caption": "Uită-te pe cine a ales și pe cine nu. Nu l-a ales pe <strong>{{name:vedeta}}</strong>, cel mai popular elev din școală. A ales-o pe <strong>{{name:campion}}</strong>, pe care ai cunoscut-o mai devreme în lecție, și pe încă doi elevi pe care nu i-ai văzut niciodată în această lecție."
+    },
+    {
+      "type": "text",
+      "id": "m7-cine-sunt-ei",
+      "title": "Cine sunt ei",
+      "content": "<p>Algoritmul a ales trei oameni. Pe unul îl cunoști: <strong>{{name:campion}}</strong>. Pe ceilalți doi nu i-ai văzut niciodată în această lecție.</p><p><strong>Rémi, Mate C.</strong> 3 contacte. Locul 242 din {{total}} la grad. Locul 43 la deschidere. Locul 4 la rază.</p><p><strong>Honorine, Chimie A.</strong> 6 contacte. Locul 127 la grad. Locul 36 la deschidere. Locul 79 la rază.</p><p>Nicio măsură nu i-a găsit. Nu sunt populari, nu sunt punți, nu sunt campioni la răspândire. Dacă ai fi ales după clasamente, nu i-ai fi luat niciodată.</p><p>Și totuși, împreună cu <strong>{{name:campion}}</strong>, acoperă <strong>{{sliceMetrics.mission.greedyCoverage}}</strong> de oameni, mai mult decât orice echipă formată din campioni.</p><p>De ce? Pentru că fiecare stă în altă parte a școlii. Nu contează cât de bun e fiecare singur. Contează ce acoperă împreună, iar asta nu se poate citi din niciun clasament individual. Trebuie calculat pe echipe.</p><p>Sunt <strong>4.410.309</strong> feluri de a alege trei oameni din {{total}}. Prea multe ca să le încerci pe toate. Algoritmul nu le încearcă: la fiecare pas ia pe cine adaugă cel mai mult peste ce are deja. Procedeul se numește alegere lacomă, descris de Kempe, Kleinberg și Tardos în 2003.</p><p>Modelul nostru presupune că cine află spune mai departe, garantat, și că întâlnirile s-au petrecut în ordinea potrivită. Niciuna dintre presupuneri nu e adevărată. Un model e util și când e fals, dacă știi unde e fals. Iar același calcul duce un anunț util în toată școala sau o minciună. Unealta nu alege scopul.</p>"
     },
     {
       "type": "text",
       "id": "b1-ce-ai-facut",
       "title": "Ce ai făcut",
-      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat două măsuri, gradul și deschiderea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai înțeles ce e o simulare. Ai rulat una de {{total}} de ori și ai văzut cine iese primul: {{name:campion}}, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Enigma a apărut din calcul, nu din poveste.</p><p>Ai făcut un pariu, la cardul „De ce ea?\", între trei explicații. Ai testat pe rând primele două: ipoteza clasei a căzut (sunt colegi), ipoteza deschiderii a căzut (ea are zero, el are unul). Dacă ai ales „altceva\", pariul tău a fost corect. Soluția a venit din altă direcție: nu contează câți oameni cunoști, ci pe cine cunosc ei. Regula ține pentru toată școala, cu o corelație de 0,78, nu doar pentru doi elevi. Ai văzut apoi că modelul are o margine: <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, dintre care {{name:izolat}}, la care vestea nu ajunge oricum ai alege.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: el nu căuta oameni buni, ci oameni care se completează.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
+      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat două măsuri, gradul și deschiderea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai rulat o simulare pas cu pas, apoi ai văzut ce iese când calculatorul o rulează de {{total}} de ori: <strong>{{name:campion}}</strong> a ajuns prima, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Enigma a apărut din calcul, nu din poveste.</p><p>Ai făcut un pariu la cardul „De ce ea?\", între trei explicații. Primele două au căzut: ipoteza clasei (sunt colegi), ipoteza deschiderii (ea are zero, el are unul). Dacă ai ales „altceva\", pariul tău a fost corect. Soluția: nu contează câți oameni cunoști, ci pe cine cunosc ei. Regula ține pentru toată școala, cu o corelație de 0,78. Ai văzut apoi că modelul are o margine: <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, dintre care {{name:izolat}}, la care vestea nu ajunge oricum ai alege.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: a ales doi oameni pe care nu îi văzuseși niciodată în lecție, invizibili la orice clasament, dar care împreună cu {{name:campion}} acoperă mai mult decât orice echipă de campioni. O măsură bună pentru un om nu e o strategie bună pentru o echipă.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
     },
     {
       "type": "quizset",
@@ -394,6 +405,12 @@
           "explanation": "Vezi disproporționat oamenii cu multe legături. Aceeași deformare ca la paradoxul prieteniei."
         }
       ]
+    },
+    {
+      "type": "text",
+      "id": "b-terminologia",
+      "title": "Cum se numesc lucrurile",
+      "content": "<p>Măsurile din această lecție au nume consacrate, în engleză, pe care le găsești în orice manual sau motor de căutare.</p><p><strong>Gradul</strong> se numește <em>degree</em>. Numărul de legături ale unui nod.</p><p><strong>Deschiderea</strong>, adică numărul de contacte din afara propriului grup, ține de o familie de măsuri numite <em>external ties</em> sau <em>E-I index</em>, propusă de Krackhardt și Stern în 1988.</p><p><strong>Raza</strong>, câți oameni află pornind de la cineva, se numește <em>reach</em> sau <em>influence spread</em>.</p><p><strong>Grupurile găsite de algoritm</strong> se numesc <em>communities</em>, iar metoda folosită de noi e <em>Louvain community detection</em>.</p><p><strong>Alegerea celor trei</strong> e o problemă numită <em>influence maximization</em>, iar metoda e <em>greedy algorithm</em>.</p><p>Există și o măsură pe care nu am folosit-o, deși e cea mai cunoscută: <em>betweenness centrality</em>, intermedierea. Ea numără prin câți oameni trece drumul cel mai scurt dintre alți doi. În vârful ei pe rețeaua noastră iese Charlotte, din Bio C, cu Karam, Diane, Cléa și Iris în primii cinci. Léa apare pe locul șase, deci intermedierea o găsește și ea, dar cu ceva efort. Am ales deschiderea în locul ei pentru că se explică în cinci cuvinte și dă informație suprapunătoare pe rețeaua noastră. Aceasta e o alegere a autorului, exact ca toate celelalte din lecție.</p>"
     },
     {
       "type": "text",

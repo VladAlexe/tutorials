@@ -620,6 +620,37 @@
 }
 .chart__svg-wrap--hbars { max-height: none; }
 
+.sim-step__rules {
+  background: var(--color-surface-alt, #f2ede5);
+  border-radius: 8px;
+  padding: var(--sp-3) var(--sp-4);
+  margin: 0 auto var(--sp-3);
+  max-width: 46rem;
+}
+.sim-step__rules-title {
+  font-weight: 500;
+  color: var(--color-ink);
+  margin-bottom: var(--sp-2);
+  letter-spacing: 0.02em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+.sim-step__rules ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  line-height: 1.5;
+}
+.sim-step__rules li + li { margin-top: 0.35rem; }
+.sim-step__count {
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  margin-top: var(--sp-3);
+}
+.sim-step__buttons { justify-content: center; }
+
 /* Character chips (C17) */
 .char-chips {
   display: grid;

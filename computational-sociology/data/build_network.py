@@ -1044,6 +1044,13 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     top3_open_names  = [name_map.get(x, str(x)) for x in top3_open]
     greedy_names     = [name_map.get(x, str(x)) for x in greedy]
 
+    # Coverage of the three characters the story has introduced by name
+    # (vedeta + campion + puntea = Antoine + Chloé + Léa). Distinct from the
+    # top-3-popular strategy, which is the automatic degree-only pick.
+    known_team_ids = [ROLE_IDS["vedeta"], ROLE_IDS["campion"], ROLE_IDS["puntea"]]
+    known_team_coverage = len(diffuse_limited(known_team_ids, adj_top, pasi))
+    known_team_names = [name_map.get(x, str(x)) for x in known_team_ids]
+
     mission_summary = {
         "plafon":        plafon,
         "trioMission":   trio_mission,
@@ -1054,6 +1061,8 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "top3OpenCoverage":  strategies["topOpen"]["coverage"],
         "greedyNames":       greedy_names,
         "greedyCoverage":    strategies["greedy"]["coverage"],
+        "knownTeamNames":    known_team_names,
+        "knownTeamCoverage": known_team_coverage,
         "randomMean":        strategies["randomMean"],
         "randomMax":         strategies["randomMax"],
         "randomMin":         strategies["randomMin"],
