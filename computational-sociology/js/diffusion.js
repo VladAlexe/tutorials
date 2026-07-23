@@ -1911,8 +1911,8 @@ export async function renderDiffusion(container, block, options = {}) {
           (scheme === "openness"
             ? "rgb(242,237,229), rgb(74,46,24)"
             : "rgb(217,207,192), rgb(139,74,30)") + `);">` +
-          `<span class="viz__gradient-label viz__gradient-label--left">${scheme === "openness" ? "un grup" : "puțin"}</span>` +
-          `<span class="viz__gradient-label viz__gradient-label--right">${scheme === "openness" ? maxOp + " grupuri" : maxDeg + " contacte"}</span>` +
+          `<span class="viz__gradient-label viz__gradient-label--left">${scheme === "openness" ? "0 în afara clasei" : "puțin"}</span>` +
+          `<span class="viz__gradient-label viz__gradient-label--right">${scheme === "openness" ? maxOp + " în afara clasei" : maxDeg + " contacte"}</span>` +
           `</div>`;
       } else {
         // Restore group legend
@@ -1972,7 +1972,7 @@ export async function renderDiffusion(container, block, options = {}) {
         ? `Culoarea = componenta conexă. Toți cei ${bigCompSize} de elevi formează o singură bucată: din orice elev, poți ajunge la oricare altul prin lanț de contacte.`
         : `Culoarea = componenta conexă. O bucată mare cu ${bigCompSize} elevi, plus ${smallCompCount} elev(i) în bucăți mici, complet detașate. Cine e disconnectat structural, nu cine e ratat de model.`,
       degree:    "Culoarea = popularitatea (gradul). Cu cât mai închis, cu atât mai popular.",
-      openness:  "Culoarea = deschiderea. Cu cât mai închis (albastru), cu atât mai multe grupuri diferite atinge cu vecinii lui.",
+      openness:  "Culoarea = deschiderea. Cu cât mai închis, cu atât mai multe contacte în afara clasei lui.",
       mismatch:  "Roșu = elevii puși de algoritm în altă comunitate decât clasa lor. Sunt puțini, dar prin ei trece rețeaua dincolo de granițe."
     };
 
@@ -2418,8 +2418,8 @@ export async function renderDiffusion(container, block, options = {}) {
     const chars = statsData?.sliceMetrics?.characters || {};
     const roles = [
       { key: "star", label: "Vedeta", numLabel: "contacte", numField: "popularity" },
-      { key: "bridge", label: "Puntea", numLabel: "grupuri diferite", numField: "openness" },
-      { key: "discreet", label: "Discretul", numLabel: "grupuri (doar câteva contacte)", numField: "openness" },
+      { key: "bridge", label: "Puntea", numLabel: "contacte în afara clasei", numField: "openness" },
+      { key: "discreet", label: "Discretul", numLabel: "contacte în afara clasei (dintr-un total mic)", numField: "openness" },
       { key: "isolated", label: "Izolatul", numLabel: "contact", numField: "popularity" }
     ];
     const chipsHtml = roles.map((r) => {
@@ -2451,7 +2451,7 @@ export async function renderDiffusion(container, block, options = {}) {
         controls.querySelectorAll(".char-chip").forEach((b) => b.classList.remove("char-chip--active"));
         btn.classList.add("char-chip--active");
         highlight(c.id);
-        infoEl.textContent = `${c.name} din ${c.class}: ${c.popularity} contacte, în ${c.openness} grupuri diferite. Uită-te unde e situat în rețea.`;
+        infoEl.textContent = `${c.name} din ${c.classFriendly || c.class}: ${c.popularity} contacte, dintre care ${c.openness} în afara clasei. Uită-te unde e situat în rețea.`;
       });
     });
     requestAnimationFrame(() => {

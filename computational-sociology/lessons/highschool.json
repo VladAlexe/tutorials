@@ -11,8 +11,8 @@
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Măsurile școlii", "startIdx": 3 },
     { "n": 3, "title": "Ipoteze și soluție", "startIdx": 13 },
-    { "n": 4, "title": "Misiunea", "startIdx": 17 },
-    { "n": 5, "title": "Bilanț", "startIdx": 21 }
+    { "n": 4, "title": "Misiunea", "startIdx": 18 },
+    { "n": 5, "title": "Bilanț", "startIdx": 22 }
   ],
   "blocks": [
     {
@@ -76,25 +76,6 @@
     },
     {
       "type": "chart",
-      "id": "c-gradul",
-      "variant": "bars",
-      "statsSource": "data/highschool-stats.json",
-      "title": "Gradul",
-      "intro": "<p><strong>Gradul</strong> unui elev este numărul lui de contacte. E cea mai simplă măsură pe care putem calcula într-o rețea: pentru fiecare nod, câte muchii pornesc din el. Un număr, per om.</p><p>Iată primii opt din școală după această măsură.</p>",
-      "bars": [
-        {"label": "Antoine (Bio C)", "value": 19},
-        {"label": "Léa (Mate C)", "value": 17},
-        {"label": "Élodie (Bio A)", "value": 16},
-        {"label": "Cléa (Bio C)", "value": 16},
-        {"label": "Thérèse (Bio C)", "value": 15},
-        {"label": "Samuel (Mate A)", "value": 15},
-        {"label": "Zayd (Mate A)", "value": 15},
-        {"label": "William (Mate A)", "value": 15}
-      ],
-      "caption": "În vârf: {{name:vedeta}}, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo."
-    },
-    {
-      "type": "chart",
       "id": "c6-cati-sunt",
       "variant": "freq",
       "dataset": "fullSchool",
@@ -115,6 +96,25 @@
       "title": "Harta școlii",
       "intro": "{{total}} de elevi din 9 clase, cu {{edges}} de legături. Trei butoane, trei feluri de a colora aceleași puncte: după clasa lor administrativă, după grupurile pe care le găsește un algoritm care nu știe orarul, după bucata conexă în care se află.",
       "caption": "La butonul cu comunități, algoritmul (Louvain multi-nivel, seed 42) găsește la rezoluția implicită {{sliceMetrics.louvain.res10.n}} de grupuri, cu ARI {{sliceMetrics.louvain.res10.ari}} față de clase. E o potrivire bună, aproape identică. Cinci dintre cele nouă clase apar însă ca două grupuri, iar una ca trei. La butonul cu componente, aproape toată școala e o singură bucată: din orice elev poți ajunge la oricare altul, mergând din contact în contact. E o proprietate a structurii, nu o promisiune că o veste ajunge peste tot."
+    },
+    {
+      "type": "chart",
+      "id": "c-gradul",
+      "variant": "bars",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Gradul",
+      "intro": "<p>Ai văzut harta. Acum măsurăm pe ea.</p><p><strong>Gradul</strong> unui elev este numărul lui de contacte. E cea mai simplă măsură pe care putem calcula într-o rețea: pentru fiecare nod, câte muchii pornesc din el. Un număr, per om.</p><p>Iată primii opt din școală după această măsură.</p>",
+      "bars": [
+        {"label": "Antoine (Bio C)", "value": 19},
+        {"label": "Léa (Mate C)", "value": 17},
+        {"label": "Élodie (Bio A)", "value": 16},
+        {"label": "Cléa (Bio C)", "value": 16},
+        {"label": "Thérèse (Bio C)", "value": 15},
+        {"label": "Samuel (Mate A)", "value": 15},
+        {"label": "Zayd (Mate A)", "value": 15},
+        {"label": "William (Mate A)", "value": 15}
+      ],
+      "caption": "În vârf: {{name:vedeta}}, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo."
     },
     {
       "type": "chart",
@@ -188,6 +188,25 @@
       "caption": "<p>În vârf: <strong>{{name:campion}}</strong>, dintr-o clasă de biologie. Vestea pornită din ea ajunge la <strong>{{reach:campion}}</strong> de oameni, mai mult decât din oricare alt elev al școlii.</p><p>Nu e în primii zece la grad, unde e pe locul {{rankPop:campion}} din {{total}}. Nu e în primii zece la deschidere, unde e ultima: are zero contacte în afara clasei ei.</p><p>Iar cel mai popular elev al școlii, {{name:vedeta}}, ajunge la doar <strong>{{reach:vedeta}}</strong>, pe locul {{rankReach:vedeta}} din {{total}}. Aceeași clasă cu Chloé. Regulile aceleași. Rezultat opus.</p><p>Aceasta e enigma. Următoarele carduri răspund la o singură întrebare: <strong>de ce?</strong></p>"
     },
     {
+      "type": "vote",
+      "id": "c-vot-explicatia",
+      "title": "De ce ea?",
+      "question": "Cum se explică diferența dintre {{name:campion}} și {{name:vedeta}}, dacă nu e popularitatea?",
+      "options": [
+        "Pentru că sunt în clase diferite, iar a ei e mai bine plasată",
+        "Pentru că ea are prieteni în mai multe clase, iar el nu",
+        "Altceva, care nu se vede încă"
+      ],
+      "reveal": {
+        "text": "Alegerea ta e reținută. Următoarele carduri o verifică, pe rând.",
+        "messagesByOption": {
+          "0": "Ai pariat pe clasă. Următorul card verifică exact această ipoteză.",
+          "1": "Ai pariat pe deschidere. Al doilea card verifică exact această ipoteză.",
+          "2": "Ai pariat pe altceva. Dacă e adevărat, primele două ipoteze vor cădea, iar cardul de dinaintea soluției îți va da dreptate."
+        }
+      }
+    },
+    {
       "type": "diffusion",
       "id": "c9-ipoteza-clasa",
       "mode": "story-network",
@@ -222,27 +241,6 @@
     },
     {
       "type": "diffusion",
-      "id": "c14-yann-izolat",
-      "mode": "story-network",
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "focus": "Yann",
-      "story": [
-        {
-          "visible": ["focus"],
-          "text": "„Poți ajunge\" nu e același lucru cu „ajungi\". La <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, mesajul nu ajunge niciodată. Unul dintre ei este <strong>{{name:izolat}}</strong>, cu un singur contact în toată școala."
-        },
-        {
-          "buttonLabel": "Arată singurul lui contact",
-          "add": "neighbors",
-          "text": "Dacă acel contact nu află de vestea ta, {{name:izolat}} nu află niciodată. Fragilitatea e la margine."
-        }
-      ],
-      "title": "Cine nu află niciodată",
-      "caption": "A fi în componentă înseamnă structural conectat. A fi atins de răspândire e altceva, care depinde de reguli: câți poți spune, în cât timp, prin cine anume."
-    },
-    {
-      "type": "diffusion",
       "id": "c-prietenii-prietenilor",
       "mode": "story-network",
       "data": "data/highschool-network.json",
@@ -266,6 +264,27 @@
       ],
       "title": "Prietenii prietenilor",
       "caption": "Nu contează câți oameni cunoști. Contează <strong>pe cine cunosc ei</strong>. Aceasta e soluția enigmei. Iar regula nu ține doar pentru ei doi: dacă numărăm, pentru fiecare elev din școală, câți oameni sunt la doi pași de el, obținem o măsură care prezice raza cu corelație 0,78, față de 0,37 la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul."
+    },
+    {
+      "type": "diffusion",
+      "id": "c14-yann-izolat",
+      "mode": "story-network",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "focus": "Yann",
+      "story": [
+        {
+          "visible": ["focus"],
+          "text": "Am rezolvat enigma. Rămâne o urmă a modelului, la marginea lui. „Poți ajunge\" nu e același lucru cu „ajungi\". La <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, mesajul nu ajunge niciodată. Unul dintre ei este <strong>{{name:izolat}}</strong>, cu un singur contact în toată școala."
+        },
+        {
+          "buttonLabel": "Arată singurul lui contact",
+          "add": "neighbors",
+          "text": "Dacă acel contact nu află de vestea ta, {{name:izolat}} nu află niciodată. Fragilitatea e la margine, iar niciuna dintre măsurile de până acum nu o vede."
+        }
+      ],
+      "title": "Cine nu află niciodată",
+      "caption": "A fi în componentă înseamnă structural conectat. A fi atins de răspândire e altceva, care depinde de reguli: câți poți spune, în cât timp, prin cine anume. Yann e primul dintr-o listă scurtă de elevi la care nici o strategie n-o să ajungă. Rețineți-l pentru bilanț."
     },
     {
       "type": "diffusion",
@@ -320,7 +339,7 @@
       "type": "text",
       "id": "b1-ce-ai-facut",
       "title": "Ce ai făcut",
-      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat două măsuri, gradul și deschiderea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai înțeles ce e o simulare. Ai rulat una de {{total}} de ori și ai văzut cine iese primul: {{name:campion}}, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Enigma a apărut din calcul, nu din poveste.</p><p>Ai testat trei ipoteze evidente și le-ai văzut cum cad. Ai găsit soluția: nu contează câți oameni cunoști, ci pe cine cunosc ei. Ai văzut că regula ține pentru toată școala, cu o corelație de 0,78, nu doar pentru doi elevi.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: el nu căuta oameni buni, ci oameni care se completează.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
+      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat două măsuri, gradul și deschiderea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai înțeles ce e o simulare. Ai rulat una de {{total}} de ori și ai văzut cine iese primul: {{name:campion}}, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Enigma a apărut din calcul, nu din poveste.</p><p>Ai făcut un pariu, la cardul „De ce ea?\", între trei explicații. Ai testat pe rând primele două: ipoteza clasei a căzut (sunt colegi), ipoteza deschiderii a căzut (ea are zero, el are unul). Dacă ai ales „altceva\", pariul tău a fost corect. Soluția a venit din altă direcție: nu contează câți oameni cunoști, ci pe cine cunosc ei. Regula ține pentru toată școala, cu o corelație de 0,78, nu doar pentru doi elevi. Ai văzut apoi că modelul are o margine: <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, dintre care {{name:izolat}}, la care vestea nu ajunge oricum ai alege.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: el nu căuta oameni buni, ci oameni care se completează.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
     },
     {
       "type": "quizset",
