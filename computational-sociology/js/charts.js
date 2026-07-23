@@ -1682,16 +1682,21 @@ async function renderMeasureTabs(container, block, stats) {
   }
 
   function baseDotsSvg(highlightSet) {
+    // On the free (cose) layout the pale backdrop of 280 non-highlighted dots
+    // reads as noise around the champion's small ego-network. Suppress it and
+    // leave the map with just the champion + his contacts + edges.
+    if (layoutMode === "liber") return "";
     return positionsList.map(([nid, p]) => {
       const x = projX(p.x), y = projY(p.y);
       const on = highlightSet && highlightSet.has(String(nid));
-      if (on) return "";  // drawn separately with highlight styling
+      if (on) return "";
       return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="#c9beac"/>`;
     }).join("");
   }
 
   // Small class-label overlay so students can name each clump. Draws one
-  // label per class at the mean position of its members.
+  // label per class at the mean position of its members, then clamped to
+  // the SVG margins so nothing crops.
   function classLabelsSvg() {
     const byClass = new Map();
     for (const [nid, p] of Object.entries(positions)) {
@@ -1700,18 +1705,19 @@ async function renderMeasureTabs(container, block, stats) {
       byClass.get(p.classFriendly).push(p);
     }
     const parts = [];
+    const margin = 14;
     for (const [cls, arr] of byClass) {
       const cx = arr.reduce((s, q) => s + q.x, 0) / arr.length;
       const cy = arr.reduce((s, q) => s + q.y, 0) / arr.length;
       const px = projX(cx), py = projY(cy);
-      // Push the label slightly outward from the center of the drawing so it
-      // sits at the edge of the class ring instead of dead center.
       const cx2c = (S / 2) - px;
       const cy2c = (S / 2) - py;
       const mag = Math.sqrt(cx2c * cx2c + cy2c * cy2c) || 1;
-      const off = 22;
-      const lx = px - (cx2c / mag) * off;
-      const ly = py - (cy2c / mag) * off;
+      const off = 14;  // smaller push so the label stays close to its clump
+      let lx = px - (cx2c / mag) * off;
+      let ly = py - (cy2c / mag) * off;
+      lx = Math.max(margin, Math.min(S - margin, lx));
+      ly = Math.max(margin, Math.min(S - margin, ly));
       parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#5c5346">${esc(cls)}</text>`);
     }
     return parts.join("");
