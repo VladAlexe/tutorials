@@ -335,10 +335,19 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             "communities":    comm_summary,
         }
 
-    # --- openness: # distinct communities among neighbors
+    # --- openness: number of contacts OUTSIDE the person's own class.
+    # This is the pedagogical definition used across the lesson: a student's
+    # "deschidere" is how many of their contacts live in a different class,
+    # counted raw (not a fraction, not a set of distinct classes, not the
+    # count of Louvain communities they touch). It reads at a glance and
+    # produces the character contrasts the story relies on:
+    #   - Antoine (popular) has 19 contacts but only 1 outside Bio C
+    #   - Léa is #1 at 10 out-of-class contacts
+    #   - Chloé has 0 out-of-class contacts
     openness = {}
     for x in node_ids:
-        openness[x] = len({community[y] for y in adj.get(x, ())})
+        own = klass_map.get(x)
+        openness[x] = sum(1 for y in adj.get(x, ()) if klass_map.get(y) != own)
 
     # --- reach: NEW MODEL. Diffusion bounded to `pasi` rounds, each carrier
     # transmits only to its `max_t` strongest contacts (by edge weight).

@@ -9,8 +9,8 @@
   "statsSource": "data/highschool-stats.json",
   "chapters": [
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
-    { "n": 2, "title": "Doi colegi de bancă", "startIdx": 3 },
-    { "n": 3, "title": "Ce nu se vede din interior", "startIdx": 10 },
+    { "n": 2, "title": "Măsurile școlii", "startIdx": 3 },
+    { "n": 3, "title": "Ipoteze și soluție", "startIdx": 13 },
     { "n": 4, "title": "Misiunea", "startIdx": 17 },
     { "n": 5, "title": "Bilanț", "startIdx": 21 }
   ],
@@ -65,20 +65,33 @@
         "La întâmplare, oricum se răspândește"
       ],
       "reveal": {
-        "text": "Alegerea ta e salvată. Înainte să testăm intuițiile, uită-te la o enigmă care schimbă modul în care te uiți la întreaga școală. Apasă Continuă."
+        "text": "Alegerea ta e salvată. Ca să știm dacă a fost cea bună, avem nevoie de un vocabular și de câteva măsuri. Apasă Continuă."
       }
     },
     {
-      "type": "diffusion",
-      "id": "c5-enigma",
-      "mode": "duel",
-      "data": "data/highschool-network.json",
+      "type": "text",
+      "id": "c-nod-muchie",
+      "title": "Nod și muchie",
+      "content": "<p>Când vrem să vorbim precis despre relații între oameni, avem nevoie de un vocabular restrâns.</p><p>Un <strong>nod</strong> este un elev. O <strong>muchie</strong> este o legătură între doi elevi: în cazul nostru, doi elevi care s-au aflat față în față, la distanță de conversație, cel puțin câteva minute pe săptămână.</p><figure style=\"margin:1.25rem auto;text-align:center;max-width:340px\"><svg viewBox=\"0 0 320 130\" xmlns=\"http://www.w3.org/2000/svg\" style=\"width:100%;height:auto\" aria-label=\"Două noduri conectate printr-o muchie\"><line x1=\"80\" y1=\"65\" x2=\"240\" y2=\"65\" stroke=\"#8a7154\" stroke-width=\"2\"/><circle cx=\"80\" cy=\"65\" r=\"18\" fill=\"#8b4a1e\"/><circle cx=\"240\" cy=\"65\" r=\"18\" fill=\"#8b4a1e\"/><text x=\"80\" y=\"110\" text-anchor=\"middle\" font-family=\"Georgia, serif\" font-size=\"13\" fill=\"#2a1f16\">nod</text><text x=\"240\" y=\"110\" text-anchor=\"middle\" font-family=\"Georgia, serif\" font-size=\"13\" fill=\"#2a1f16\">nod</text><text x=\"160\" y=\"55\" text-anchor=\"middle\" font-family=\"Georgia, serif\" font-size=\"13\" fill=\"#5c5346\">muchie</text></svg></figure><p>Când desenăm toate nodurile și toate muchiile, obținem o <strong>rețea</strong>.</p><p>Rețeaua nu e o metaforă. E o listă de cine cu cine. Așa cum un tabel poate fi o listă cu coloane, o rețea e o listă cu perechi. Diferența e că perechile pot fi urmate: de la un elev, la unul dintre contactele lui, la unul dintre contactele contactului. Aici încep măsurile.</p>"
+    },
+    {
+      "type": "chart",
+      "id": "c-gradul",
+      "variant": "bars",
       "statsSource": "data/highschool-stats.json",
-      "slots": ["vedeta", "campion"],
-      "runLabel": "Pornește din amândoi",
-      "title": "Enigma",
-      "intro": "<p>Înainte să alegi, uită-te la doi elevi din aceeași clasă.</p><p><strong>{{name:vedeta}}</strong> are {{contacte:vedeta}} contacte. E cel mai popular din toată școala, nimeni nu cunoaște mai mulți oameni decât el.</p><p><strong>{{name:campion}}</strong> are {{contacte:campion}}. Nimic ieșit din comun.</p><p>Stau în aceeași sală, la aceleași ore, în aceleași pauze. Pornește vestea din fiecare și privește.</p>",
-      "caption": "{{name:vedeta}}, cel mai popular elev din școală, ajunge la <strong>{{reach:vedeta}}</strong> de oameni. {{name:campion}}, cu aproape jumătate din contactele lui, ajunge la <strong>{{reach:campion}}</strong>. Nu am ghicit asta. Am rulat ziua de {{total}} de ori, o dată pornind din fiecare elev al școlii, și am numărat. E genul de întrebare la care nu poți răspunde gândindu-te, doar rulând. Aceeași clasă. Aceleași reguli. Rezultat opus. <strong>De ce?</strong> Următoarele minute răspund la această întrebare. La final vei ști pe cine să alegi."
+      "title": "Gradul",
+      "intro": "<p><strong>Gradul</strong> unui elev este numărul lui de contacte. E cea mai simplă măsură pe care putem calcula într-o rețea: pentru fiecare nod, câte muchii pornesc din el. Un număr, per om.</p><p>Iată primii opt din școală după această măsură.</p>",
+      "bars": [
+        {"label": "Antoine (Bio C)", "value": 19},
+        {"label": "Léa (Mate C)", "value": 17},
+        {"label": "Élodie (Bio A)", "value": 16},
+        {"label": "Cléa (Bio C)", "value": 16},
+        {"label": "Thérèse (Bio C)", "value": 15},
+        {"label": "Samuel (Mate A)", "value": 15},
+        {"label": "Zayd (Mate A)", "value": 15},
+        {"label": "William (Mate A)", "value": 15}
+      ],
+      "caption": "În vârf: {{name:vedeta}}, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo."
     },
     {
       "type": "chart",
@@ -90,7 +103,7 @@
       "title": "Câți sunt, și cine sunt",
       "intro": "Cine e în școală? Nouă clase, cu profiluri diferite. Tabelul îți dă numărul de elevi, câte fete, câți băieți; barele arată același lucru vizual. Atinge un rând pentru lista de nume cu contacte.",
       "statsSource": "data/highschool-stats.json",
-      "caption": "Profilurile atrag diferit. Bio C, clasa celor doi, e predominant feminină."
+      "caption": "Profilurile atrag diferit. Bio C, clasa celor doi elevi care vor deveni personajele principale ale poveștii, e predominant feminină."
     },
     {
       "type": "diffusion",
@@ -104,58 +117,23 @@
       "caption": "La butonul cu comunități, algoritmul (Louvain multi-nivel, seed 42) găsește la rezoluția implicită {{sliceMetrics.louvain.res10.n}} de grupuri, cu ARI {{sliceMetrics.louvain.res10.ari}} față de clase. E o potrivire bună, aproape identică. Cinci dintre cele nouă clase apar însă ca două grupuri, iar una ca trei. La butonul cu componente, aproape toată școala e o singură bucată: din orice elev poți ajunge la oricare altul, mergând din contact în contact. E o proprietate a structurii, nu o promisiune că o veste ajunge peste tot."
     },
     {
-      "type": "diffusion",
-      "id": "c8-ipoteza-popularitate",
-      "mode": "story-network",
-      "data": "data/highschool-network.json",
+      "type": "chart",
+      "id": "c-deschiderea",
+      "variant": "bars",
       "statsSource": "data/highschool-stats.json",
-      "focus": "Antoine",
-      "story": [
-        {
-          "visible": ["focus"],
-          "text": "<strong>Ipoteza întâi: poate {{name:vedeta}} nu e chiar atât de popular pe cât părea.</strong> Apasă butonul pentru cele {{contacte:vedeta}} contacte ale lui."
-        },
-        {
-          "buttonLabel": "Arată-i contactele",
-          "add": "neighbors",
-          "text": "Cu {{contacte:vedeta}} contacte, {{name:vedeta}} e primul din toată școala. Al doilea are 17. Ipoteza cade. Următoarea."
-        }
+      "title": "Deschiderea",
+      "intro": "<p><strong>Deschiderea</strong> unui elev este numărul dintre contactele lui care sunt din <strong>afara clasei</strong>. Zece contacte, toate colegi de clasă, înseamnă deschidere zero. Zece contacte, dintre care șase în afară, înseamnă deschidere șase. Aceeași rețea, altă măsură.</p><p>Primii opt din școală după această măsură.</p>",
+      "bars": [
+        {"label": "Léa (Mate C)", "value": 10},
+        {"label": "Samuel (Mate A)", "value": 7},
+        {"label": "Hélène (Bio C)", "value": 6},
+        {"label": "Diane (Bio C)", "value": 6},
+        {"label": "Charlotte (Bio C)", "value": 5},
+        {"label": "Cléa (Bio C)", "value": 5},
+        {"label": "Sébastien (Mate B)", "value": 4},
+        {"label": "Florence (Bio C)", "value": 4}
       ],
-      "title": "Ipoteza întâi: popularitatea",
-      "caption": "Cel mai popular din școală ajunge la {{reach:vedeta}}. Cel de-al doilea ar trebui să ajungă la ceva similar. Nu asta e cauza rezultatelor opuse."
-    },
-    {
-      "type": "diffusion",
-      "id": "c9-ipoteza-clasa",
-      "mode": "story-network",
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "focus": "Antoine",
-      "story": [
-        {
-          "visible": ["focus", "class"],
-          "text": "<strong>Ipoteza a doua: poate {{name:vedeta}} și {{name:campion}} sunt în clase diferite, iar a ei e mai bine plasată.</strong>"
-        },
-        {
-          "buttonLabel": "Arată clasa lor",
-          "add": "class",
-          "text": "Sunt amândoi în <strong>Bio C</strong>. Aceeași sală, aceleași pauze. {{name:campion}} e una dintre cele {{sliceMetrics.characters.vedeta.reachInClass}} de persoane pe care {{name:vedeta}} le atinge din propria clasă. Ipoteza cade."
-        }
-      ],
-      "title": "Ipoteza a doua: clasa",
-      "caption": "Colegi de sală, cu aceleași oportunități administrative. Diferența nu e nici acolo."
-    },
-    {
-      "type": "diffusion",
-      "id": "c22-ipoteza-deschidere",
-      "mode": "openness-duo",
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "left": "vedeta",
-      "right": "campion",
-      "title": "Ipoteza a treia: deschiderea",
-      "intro": "<p><strong>A treia explicație, cea mai plauzibilă: poate {{name:campion}} are prieteni în mai multe clase, deci vestea ei iese mai repede.</strong></p><p>Deschiderea numără câți dintre oamenii tăi sunt din afara clasei tale. Uită-te la culorile contactelor.</p>",
-      "caption": "{{name:vedeta}} are contacte în {{sliceMetrics.characters.vedeta.groups}} clase diferite. {{name:campion}} are în {{sliceMetrics.characters.campion.groups}}. Ea e <strong>mai închisă</strong> decât el, nu mai deschisă. Ipoteza cade, iar misterul se adâncește: nu e nici popularitatea, nici clasa, nici deschiderea. Ca să mergem mai departe avem nevoie de instrumente mai bune."
+      "caption": "<p>În vârf: <strong>{{name:puntea}}</strong>, cu {{outClass:puntea}} contacte în afara clasei ei, mai mult decât oricine din școală. Nu e o necunoscută: e a doua din școală și la număr de contacte, cu {{contacte:puntea}}. Diferența e unde sunt acele contacte.</p><p>Uită-te acum unde e <strong>{{name:vedeta}}</strong>, campionul de la grad. Are {{contacte:vedeta}} contacte, cele mai multe din școală, dintre care exact unul singur e din altă clasă. Nu apare în primii opt aici. Nu apare nici în primii cincizeci.</p><p>Măsuri diferite, oameni diferiți. Alegerea măsurii decide cine iese important.</p>"
     },
     {
       "type": "chart",
@@ -170,37 +148,8 @@
         { "key": "histogram", "label": "Grupează și numără" }
       ],
       "title": "Cât de mult e mult",
-      "intro": "Ai văzut că {{name:vedeta}} e primul, dar cât înseamnă asta? Iată gradele tuturor celor {{total}} de elevi ai școlii, ca puncte împrăștiate. Apasă butoanele ca să comanzi ce se întâmplă cu ele.",
+      "intro": "Antoine e primul la grad. Léa a doua. Dar cât înseamnă „primul\"? Iată gradele tuturor celor {{total}} de elevi ai școlii, ca puncte împrăștiate. Apasă butoanele ca să comanzi ce se întâmplă cu ele.",
       "caption": "Ordonarea îți arată extremele. Gruparea îți spune câți sunt în fiecare interval. Construcția pe care ai comandat-o are un nume: <strong>histogramă</strong>. Uită-te la ultima cutie: în ea e o singură persoană. {{name:vedeta}} nu e doar sus, e singur acolo."
-    },
-    {
-      "type": "chart",
-      "id": "c18-trei-forme",
-      "variant": "triple-histogram",
-      "statsSource": "data/highschool-stats.json",
-      "title": "Trei forme",
-      "intro": "Trei distribuții din aceeași școală: contactele pe elev, timpul total petrecut în contacte, mărimea celor 9 clase.",
-      "series": [
-        { "title": "Contacte pe elev ({{total}})", "path": "sliceMetrics.distributions.degrees", "binWidth": 2 },
-        { "title": "Timp total de contact pe elev", "path": "sliceMetrics.distributions.weighted", "binWidth": 60 },
-        { "title": "Mărimea celor 9 clase", "path": "fullSchool.metrics.distributions.classSizes", "binWidth": 4 }
-      ],
-      "caption": "Prima asimetrică, a doua și mai mult, a treia aproape uniformă. Distribuțiile cu coadă lungă apar oriunde avantajul se acumulează: la venituri, la audiențe, la mărimea orașelor. Cele uniforme apar unde ceva a fost împărțit deliberat."
-    },
-    {
-      "type": "code",
-      "id": "c19-cine-alege-cutiile",
-      "instance": "bins",
-      "title": "Cine alege cutiile",
-      "intro": "Aceeași distribuție, altă formă. Fiindcă cineva alege cât de late sunt cutiile.",
-      "task": "Schimbă lățimea și vezi cum aceeași distribuție pare netedă sau zimțată.",
-      "initial": "LATIME_CUTIE = 3\n{\"binWidth\": LATIME_CUTIE}",
-      "headerLabel": "Lățimea cutiei",
-      "quickValueKey": "LATIME_CUTIE",
-      "quickValues": [1, 2, 5],
-      "xLabel": "contacte",
-      "yLabel": "elevi",
-      "caption": "Un grafic corect factual poate induce în eroare prin alegeri de reprezentare nedeclarate. La orice histogramă, întreabă cine a ales intervalele."
     },
     {
       "type": "chart",
@@ -211,17 +160,65 @@
       "source": "data/highschool-stats.json",
       "field": "degrees",
       "defaultBinWidth": 3,
-      "caption": "Media urcă abrupt; medianul abia se mișcă. Media e sensibilă la extreme; medianul descrie poziția tipică."
+      "caption": "Media urcă abrupt; medianul abia se mișcă. Media e sensibilă la extreme; medianul descrie poziția tipică. Când citești „venitul mediu a crescut\", întreabă întâi ce s-a întâmplat cu medianul."
+    },
+    {
+      "type": "text",
+      "id": "c-ce-simulare",
+      "title": "Ce înseamnă o simulare",
+      "content": "<p>O măsură spune ceva despre fiecare elev separat. Grad, deschidere, câte contacte în cutare interval, sunt toate numere pe care le calculezi elev cu elev, apoi le compari.</p><p>Dar întrebarea de la începutul lecției, la cine să spun ca vestea să ajungă cel mai departe, nu poate fi răspunsă cu o măsură. Ce se întâmplă dacă pornim vestea din Antoine depinde de Antoine, de contactele lui, de contactele contactelor, și de cine spune mai departe cui.</p><p>O <strong>simulare</strong> este un mod de a răspunde la întrebări de tipul acesta. Scriem reguli despre cum se propagă vestea, pornim din cineva, urmărim regulile pas cu pas, și numărăm câți oameni au aflat la sfârșit. Rulăm o dată, avem un rezultat. Rulăm de {{total}} de ori, pornind pe rând din fiecare elev al școlii, avem o listă.</p><p>Regulile modelului nostru sunt simple. Dacă un elev știe vestea, o spune mai departe celor <strong>{{maxTransmiteri}}</strong> oameni cu care petrece cel mai mult timp. Se întâmplă în <strong>{{pasi}}</strong> pauze consecutive. Nimeni nu spune de două ori aceleiași persoane. La sfârșit, numărăm câți oameni au aflat.</p><p>Un model e util și când e fals, dacă știi unde e fals. În realitate, nu toată lumea spune mai departe; nu toată lumea vorbește cu exact patru oameni; ordinea întâlnirilor contează. Modelul e o simplificare deliberată, pentru o întrebare precisă: dintr-un singur om, cât de departe merge o veste, presupunând reguli identice pentru toți?</p><p>Cine e primul în această listă?</p>"
+    },
+    {
+      "type": "chart",
+      "id": "c-299-simulari",
+      "variant": "bars",
+      "statsSource": "data/highschool-stats.json",
+      "title": "299 de simulări",
+      "intro": "<p>Am rulat modelul de <strong>{{total}} de ori</strong>, o dată pornind din fiecare elev. Pentru fiecare pornire, am numărat câți oameni au aflat vestea. Iată primii zece.</p>",
+      "bars": [
+        {"label": "Chloé (Bio C)", "value": 73},
+        {"label": "Gabin (Bio C)", "value": 71},
+        {"label": "Estée (Inginerie)", "value": 68},
+        {"label": "Rémi (Mate C)", "value": 68},
+        {"label": "Beatrix (Mate B)", "value": 67},
+        {"label": "Ingrid (Bio C)", "value": 65},
+        {"label": "Danielle (Bio C)", "value": 64},
+        {"label": "Damir (Bio C)", "value": 63}
+      ],
+      "caption": "<p>În vârf: <strong>{{name:campion}}</strong>, dintr-o clasă de biologie. Vestea pornită din ea ajunge la <strong>{{reach:campion}}</strong> de oameni, mai mult decât din oricare alt elev al școlii.</p><p>Nu e în primii zece la grad, unde e pe locul {{rankPop:campion}} din {{total}}. Nu e în primii zece la deschidere, unde e ultima: are zero contacte în afara clasei ei.</p><p>Iar cel mai popular elev al școlii, {{name:vedeta}}, ajunge la doar <strong>{{reach:vedeta}}</strong>, pe locul {{rankReach:vedeta}} din {{total}}. Aceeași clasă cu Chloé. Regulile aceleași. Rezultat opus.</p><p>Aceasta e enigma. Următoarele carduri răspund la o singură întrebare: <strong>de ce?</strong></p>"
     },
     {
       "type": "diffusion",
-      "id": "c10-try-break",
-      "mode": "try-break",
+      "id": "c9-ipoteza-clasa",
+      "mode": "story-network",
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
-      "title": "Ce se rupe",
-      "intro": "<p>Dacă cei mai populari sunt așa importanți, ce se întâmplă când dispar? Scoate un elev, apoi cinci, și vezi cum răspunde rețeaua.</p>",
-      "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă. Cei mai populari sunt înlocuibili. Butonul cu <strong>{{name:dependent}}</strong> arată însă altceva, și nu îl căutam: e singurul elev al cărui plecare desprinde trei oameni de restul școlii. A ieșit din analiză."
+      "focus": "Antoine",
+      "story": [
+        {
+          "visible": ["focus", "class"],
+          "text": "<strong>Ipoteza întâi: poate {{name:vedeta}} și {{name:campion}} sunt în clase diferite, iar a ei e mai bine plasată în școală.</strong>"
+        },
+        {
+          "buttonLabel": "Arată clasa lor",
+          "add": "class",
+          "text": "Sunt amândoi în <strong>Bio C</strong>. Aceeași sală, aceleași pauze. {{name:campion}} e una dintre cele {{sliceMetrics.characters.vedeta.reachInClass}} de persoane pe care {{name:vedeta}} le atinge din propria clasă. Ipoteza cade."
+        }
+      ],
+      "title": "Ipoteza întâi: clasa",
+      "caption": "Colegi de sală, cu aceleași oportunități administrative. Diferența nu e nici acolo."
+    },
+    {
+      "type": "diffusion",
+      "id": "c22-ipoteza-deschidere",
+      "mode": "openness-duo",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "left": "vedeta",
+      "right": "campion",
+      "title": "Ipoteza a doua: deschiderea",
+      "intro": "<p><strong>Ipoteza a doua: poate {{name:campion}} are prieteni în mai multe clase, deci vestea ei iese mai repede din Bio C.</strong></p><p>Deschiderea numără câți dintre oamenii tăi sunt din afara clasei tale. Uită-te la culorile contactelor.</p>",
+      "caption": "<p>{{name:vedeta}} are <strong>un contact</strong> în afara clasei. {{name:campion}} are <strong>zero</strong>. Toți cei {{contacte:campion}} oameni ai ei sunt colegi de clasă.</p><p>Ea nu e mai deschisă decât el. E complet închisă. Ipoteza cade, iar misterul se adâncește: nu e nici clasa, nici popularitatea, nici deschiderea.</p>"
     },
     {
       "type": "diffusion",
@@ -254,7 +251,7 @@
       "story": [
         {
           "visible": ["focus"],
-          "text": "Am eliminat popularitatea, clasa și deschiderea. Ce a mai rămas? Uită-te nu la prietenii lui <strong>{{name:campion}}</strong>, ci la prietenii prietenilor ei."
+          "text": "Am eliminat clasa, popularitatea și deschiderea. Ce a mai rămas? Uită-te nu la prietenii lui <strong>{{name:campion}}</strong>, ci la prietenii prietenilor ei."
         },
         {
           "buttonLabel": "Arată-i cele {{contacte:campion}} contacte",
@@ -307,7 +304,7 @@
       "statsSource": "data/highschool-stats.json",
       "title": "Compară strategiile",
       "intro": "Iată cum se descurcă strategiile automate pe aceeași școală, cu plafonul marcat cu linie întreruptă.",
-      "caption": "Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie. Uită-te la bara aleatoare. Media ei e sub cei mai populari trei, dar cea mai norocoasă dintre cele treizeci de încercări i-a depășit. Norocul e o strategie cu dispersie mare: pierde în medie, dar bate uneori o regulă proastă. Iar strategia care alege cei trei oameni cu contacte în cele mai multe clase obține {{sliceMetrics.mission.top3OpenCoverage}}, sub media hazardului. Cine are contacte împrăștiate le are adesea și puține. O măsură bună pentru un om nu e automat o strategie bună pentru o echipă."
+      "caption": "Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie. Uită-te la bara aleatoare. Media ei e sub cei mai populari trei, dar cea mai norocoasă dintre cele treizeci de încercări i-a depășit. Norocul e o strategie cu dispersie mare: pierde în medie, dar bate uneori o regulă proastă. Iar strategia care alege cei trei oameni cu cele mai multe contacte în afara clasei obține {{sliceMetrics.mission.top3OpenCoverage}}, sub media hazardului. Cine are contacte împrăștiate le are adesea și puține. O măsură bună pentru un om nu e automat o strategie bună pentru o echipă."
     },
     {
       "type": "diffusion",
@@ -317,13 +314,13 @@
       "statsSource": "data/highschool-stats.json",
       "title": "Lasă algoritmul",
       "intro": "<p>Sunt <strong>4.410.309</strong> de moduri de a alege trei elevi din {{total}}. Prea multe ca să le încerci pe toate, chiar și pentru un calculator. Algoritmul folosește o scurtătură. Apasă butonul și lasă-l să aleagă pas cu pas.</p>",
-      "caption": "Uită-te pe cine a ales și pe cine nu. Nu l-a ales pe <strong>{{name:vedeta}}</strong>, cel mai popular elev din școală. A ales-o pe <strong>{{name:campion}}</strong>, pe care ai cunoscut-o la începutul lecției, și pe <strong>{{name:surpriza}}</strong>, care are {{contacte:surpriza}} contacte în total. Algoritmul nu caută oameni importanți. La fiecare pas nu întreabă cine e cel mai bun, ci <strong>cine adaugă cel mai mult peste ce am deja</strong>. Procedeul se numește alegere lacomă, descris de Kempe, Kleinberg și Tardos în 2003. Modelul nostru presupune că cine află spune mai departe, garantat, și că întâlnirile s-au petrecut în ordinea potrivită. Niciuna dintre presupuneri nu e adevărată. Un model e util și când e fals, dacă știi unde e fals. Iar același calcul duce un anunț util în toată școala sau o minciună. Unealta nu alege scopul."
+      "caption": "Uită-te pe cine a ales și pe cine nu. Nu l-a ales pe <strong>{{name:vedeta}}</strong>, cel mai popular elev din școală. A ales-o pe <strong>{{name:campion}}</strong>, pe care ai cunoscut-o mai devreme în lecție, și pe <strong>{{name:surpriza}}</strong>, care are {{contacte:surpriza}} contacte în total. Algoritmul nu caută oameni importanți. La fiecare pas nu întreabă cine e cel mai bun, ci <strong>cine adaugă cel mai mult peste ce am deja</strong>. Procedeul se numește alegere lacomă, descris de Kempe, Kleinberg și Tardos în 2003. Modelul nostru presupune că cine află spune mai departe, garantat, și că întâlnirile s-au petrecut în ordinea potrivită. Niciuna dintre presupuneri nu e adevărată. Un model e util și când e fals, dacă știi unde e fals. Iar același calcul duce un anunț util în toată școala sau o minciună. Unealta nu alege scopul."
     },
     {
       "type": "text",
       "id": "b1-ce-ai-facut",
       "title": "Ce ai făcut",
-      "content": "<p>Ai pornit de la o enigmă: doi colegi de clasă, unul cu aproape dublu contacte, celălalt ajunge mai departe. Ai testat trei ipoteze evidente și le-ai văzut cum cad, una câte una.</p><p>Ai construit o histogramă ca să răspunzi la o întrebare concretă. Ai despărțit media de median. Ai lăsat un algoritm să găsească grupurile școlii fără să știe orarul. Ai încercat să rupi rețeaua și ai aflat că fragilitatea nu e la centru.</p><p>Ai găsit soluția enigmei: nu contează câți oameni cunoști, ci pe cine cunosc ei. Ai văzut că regula ține pentru toată școala, nu doar pentru doi elevi. Ai pierdut în fața unui algoritm, și ai înțeles de ce: el nu căuta oameni buni, ci oameni care se completează.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, și cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
+      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat două măsuri, gradul și deschiderea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai înțeles ce e o simulare. Ai rulat una de {{total}} de ori și ai văzut cine iese primul: {{name:campion}}, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Enigma a apărut din calcul, nu din poveste.</p><p>Ai testat trei ipoteze evidente și le-ai văzut cum cad. Ai găsit soluția: nu contează câți oameni cunoști, ci pe cine cunosc ei. Ai văzut că regula ține pentru toată școala, cu o corelație de 0,78, nu doar pentru doi elevi.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: el nu căuta oameni buni, ci oameni care se completează.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
     },
     {
       "type": "quizset",
@@ -374,6 +371,73 @@
       "id": "b3-sursele",
       "title": "Sursele",
       "content": "<p>Datele provin din studiul: R. Mastrandrea, J. Fournet, A. Barrat, „Contact patterns in a high school\", <a href=\"https://doi.org/10.1371/journal.pone.0136497\" target=\"_blank\" rel=\"noopener\">PLoS ONE 10(9), e0136497 (2015)</a>. Publicate anonimizat de proiectul SocioPatterns.</p><p>Misiunea a fost construită de noi. Școala, elevii și întâlnirile sunt reale. Numele elevilor sunt fictive, franțuzești fiindcă liceul e din Marsilia, atribuite deterministic pe cod și potrivite sexului din metadata. Numele claselor sunt traducerea noastră a profilurilor franceze (2BIO1 → Bio A, MP → Mate A, PSI* → Inginerie, și așa mai departe).</p><p>Aici se închide lecția. Poți relua orice card din cursul principal.</p>"
+    },
+    {
+      "type": "diffusion",
+      "id": "c5-enigma-archive",
+      "mode": "duel",
+      "enabled": false,
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "slots": ["vedeta", "campion"],
+      "runLabel": "Pornește din amândoi",
+      "title": "Enigma (arhivat, înlocuit de c-299-simulari)",
+      "intro": "<p>Card înlocuit de c-299-simulari. Rețin varianta duel pentru posibilă reintroducere ca reveal vizual după 299 de simulări.</p>",
+      "caption": "Arhivat."
+    },
+    {
+      "type": "diffusion",
+      "id": "c8-ipoteza-popularitate-archive",
+      "mode": "story-network",
+      "enabled": false,
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "focus": "Antoine",
+      "title": "Ipoteza popularității (arhivat)",
+      "intro": "<p>Ipoteza „poate Antoine nu e chiar atât de popular\" a fost mutată implicit în cardul c-gradul, unde Antoine apare direct la locul 1. Rămâne aici pentru consultare.</p>",
+      "caption": "Arhivat."
+    },
+    {
+      "type": "diffusion",
+      "id": "c10-try-break-archive",
+      "mode": "try-break",
+      "enabled": false,
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Ce se rupe (arhivat, urmează refacere A4)",
+      "intro": "<p>Rămâne pentru refacerea din pasul A4: pornire colorată pe comunități, desprindere animată, contor de grupuri, scenarii precalculate.</p>",
+      "caption": "Arhivat."
+    },
+    {
+      "type": "chart",
+      "id": "c18-trei-forme-archive",
+      "variant": "triple-histogram",
+      "enabled": false,
+      "statsSource": "data/highschool-stats.json",
+      "title": "Trei forme (arhivat)",
+      "intro": "Card scos din traseul principal ca să încapă în lungimea nouă. Rămâne pentru un eventual capitol despre distribuții.",
+      "series": [
+        { "title": "Contacte pe elev ({{total}})", "path": "sliceMetrics.distributions.degrees", "binWidth": 2 },
+        { "title": "Timp total de contact pe elev", "path": "sliceMetrics.distributions.weighted", "binWidth": 60 },
+        { "title": "Mărimea celor 9 clase", "path": "fullSchool.metrics.distributions.classSizes", "binWidth": 4 }
+      ],
+      "caption": "Arhivat."
+    },
+    {
+      "type": "code",
+      "id": "c19-cine-alege-cutiile-archive",
+      "instance": "bins",
+      "enabled": false,
+      "title": "Cine alege cutiile (arhivat)",
+      "intro": "Card scos din traseul principal. Rămâne pentru un eventual capitol despre bins și alegeri de reprezentare.",
+      "task": "Schimbă lățimea și vezi cum aceeași distribuție pare netedă sau zimțată.",
+      "initial": "LATIME_CUTIE = 3\n{\"binWidth\": LATIME_CUTIE}",
+      "headerLabel": "Lățimea cutiei",
+      "quickValueKey": "LATIME_CUTIE",
+      "quickValues": [1, 2, 5],
+      "xLabel": "contacte",
+      "yLabel": "elevi",
+      "caption": "Arhivat."
     },
     {
       "type": "diffusion",
