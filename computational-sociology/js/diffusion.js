@@ -208,8 +208,11 @@ async function renderDuel(container, block) {
     adjTop.set(nid, arr.slice(0, maxT).map((x) => x.to));
   }
 
-  // Which trio slots to render
-  const slots = (block.slots || ["sandu", "emil", "doina"]).map((k) => trio[k]).filter(Boolean);
+  // Which trio slots to render (new keys vedeta/campion/surpriza; sandu/emil/doina kept as legacy aliases)
+  const legacyAlias = { sandu: "vedeta", emil: "campion", doina: "surpriza" };
+  const slots = (block.slots || ["vedeta", "campion", "surpriza"])
+    .map((k) => trio[k] || trio[legacyAlias[k]])
+    .filter(Boolean);
   if (!slots.length) { container.innerHTML = "<div class=\"diff-hint\">Nu am date pentru trio.</div>"; return { refit() {}, destroy() {} }; }
 
   const grid = document.createElement("div");
@@ -2016,6 +2019,79 @@ export async function renderDiffusion(container, block, options = {}) {
     }
   }
 
+  else if (mode === "class-lens") {
+    // Show one class in isolation, three named characters emphasized; button
+    // reveals the rest of the school with the same three staying prominent.
+    let statsData = null;
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
+    const focusClass = block.focusClass;
+    const highlightNames = block.highlight || [];
+    const nameToNode = new Map(nodes.map((n) => [n.name, n]));
+    const highlightIds = new Set(
+      highlightNames.map((nm) => nameToNode.get(nm)?.id).filter(Boolean)
+    );
+    let expanded = false;
+
+    function apply() {
+      cy.nodes().forEach((n) => {
+        const nid = n.id();
+        const grp = n.data("group");
+        const isHighlight = highlightIds.has(nid);
+        const inFocus = grp === focusClass;
+        if (expanded) {
+          n.style("display", "element");
+          if (isHighlight) {
+            n.style("opacity", 1); n.style("width", 18); n.style("height", 18);
+            n.style("border-width", 2); n.style("border-color", "#2a1f16");
+          } else {
+            n.style("opacity", 0.45); n.style("width", 8); n.style("height", 8);
+            n.style("border-width", 1);
+          }
+        } else {
+          if (inFocus) {
+            n.style("display", "element");
+            if (isHighlight) {
+              n.style("opacity", 1); n.style("width", 20); n.style("height", 20);
+              n.style("border-width", 2); n.style("border-color", "#2a1f16");
+            } else {
+              n.style("opacity", 0.9); n.style("width", 12); n.style("height", 12);
+              n.style("border-width", 1);
+            }
+          } else {
+            n.style("display", "none");
+          }
+        }
+      });
+      cy.edges().forEach((e) => {
+        const sId = e.source().id(), tId = e.target().id();
+        const sVis = cy.getElementById(sId).style("display") !== "none";
+        const tVis = cy.getElementById(tId).style("display") !== "none";
+        e.style("display", sVis && tVis ? "element" : "none");
+        e.style("opacity", 0.35);
+      });
+      setTimeout(() => { try { cy.resize(); cy.fit(cy.nodes(":visible"), 30); } catch {} }, 60);
+    }
+
+    const beforeText = block.textBefore || "";
+    const afterText  = block.textAfter  || "";
+    const buttonLabel = block.buttonLabel || "Arată restul școlii";
+
+    controls.innerHTML =
+      `<div class="diff-hint" data-role="text">${beforeText}</div>` +
+      `<div class="diff-row diff-buttons">` +
+        `<button type="button" class="btn btn--primary" data-act="expand">${buttonLabel}</button>` +
+      `</div>`;
+    const textEl = controls.querySelector('[data-role="text"]');
+    controls.querySelector('[data-act="expand"]').addEventListener("click", () => {
+      if (expanded) return;
+      expanded = true;
+      apply();
+      textEl.innerHTML = afterText;
+    });
+
+    apply();
+  }
+
   else if (mode === "story-network") {
     // Progressive ego-network reveal for C10-C12.
     // block.focus (name), block.focus2 (optional), block.story = [ {visible?, buttonLabel?, add?, action?, text?} ]
@@ -2255,19 +2331,24 @@ export async function renderDiffusion(container, block, options = {}) {
       }
       // Special cased narrations
       const removedNames = [...removedNodes].map((id) => nameById.get(id) || `Elev ${id}`);
-      // Sandu solo
-      const sandu = nameToNode.get("Sandu");
-      if (removedNodes.size === 1 && sandu && removedNodes.has(sandu.id)) {
+      // Vedeta solo (max popularity)
+      const vedeta = sm.characters?.vedeta;
+      if (removedNodes.size === 1 && vedeta && removedNodes.has(String(vedeta.id))) {
         const remaining = nodes.length - 1;
         infoEl.innerHTML = `Cel mai popular elev din școală a dispărut. Rămâne o singură bucată, cu <strong>${remaining}</strong> elevi. Nimeni nu s-a desprins.`;
         return;
       }
-      // Elena PC*
-      const elenaCut = cutVertices.find((c) => c.name === "Elena" && c.class === "PC*");
-      if (removedNodes.size === 1 && elenaCut && removedNodes.has(String(elenaCut.id))) {
-        const detNames = (elenaCut.detached || []).map((d) => d.name).join(", ");
-        infoEl.innerHTML = `Aici se întâmplă ceva. Fără Elena, <strong>${elenaCut.detachedCount}</strong> elevi rămân complet rupți de restul școlii: ${detNames}. Ea era singurul lor drum.`;
-        return;
+      // Dependentul (id 276) - detaches the most
+      const dependent = sm.characters?.dependent;
+      if (removedNodes.size === 1 && dependent && removedNodes.has(String(dependent.id))) {
+        const dependentCut = cutVertices.find((c) => c.id === dependent.id);
+        if (dependentCut) {
+          const detNames = (dependentCut.detached || []).map((d) => d.name).join(", ");
+          const pronoun = dependent.sex === "F" ? "Ea" : "El";
+          const article = dependent.sex === "F" ? "-o" : "-l";
+          infoEl.innerHTML = `Aici se întâmplă ceva. Fără <strong>${dependent.name}</strong>, ${dependentCut.detachedCount} elevi rămân complet rupți de restul școlii: ${detNames}. ${pronoun} era singurul lor drum.`;
+          return;
+        }
       }
       // Top 5
       const top5Ids = new Set((top5Removal.top5 || []).map((t) => String(t.id)));
@@ -2359,9 +2440,13 @@ export async function renderDiffusion(container, block, options = {}) {
         `<button type="button" class="btn btn--ghost" data-mode="edges">Legături</button>` +
       `</div>` +
       `<div class="diff-row diff-buttons try-break__quick" data-role="quick">` +
-        `<button type="button" class="btn btn--ghost" data-quick="sandu">Scoate-l pe Sandu</button>` +
+        (sm.characters?.vedeta
+          ? `<button type="button" class="btn btn--ghost" data-quick="vedeta">Scoate${sm.characters.vedeta.sex === "F" ? "-o pe " : "-l pe "}${sm.characters.vedeta.name}</button>`
+          : "") +
         `<button type="button" class="btn btn--ghost" data-quick="top5">Scoate cei mai populari 5</button>` +
-        `<button type="button" class="btn btn--ghost" data-quick="elena">Scoate-o pe Elena</button>` +
+        (sm.characters?.dependent
+          ? `<button type="button" class="btn btn--ghost" data-quick="dependent">Scoate${sm.characters.dependent.sex === "F" ? "-o pe " : "-l pe "}${sm.characters.dependent.name}</button>`
+          : "") +
         `<button type="button" class="btn btn--ghost" data-quick="reset">Adu-i înapoi</button>` +
       `</div>` +
       `<div class="diff-hint" data-role="info">Atinge un elev pentru a-l scoate din rețea.</div>` +
@@ -2376,10 +2461,13 @@ export async function renderDiffusion(container, block, options = {}) {
         const q = btn.dataset.quick;
         if (q === "reset") { resetAllVisuals(); textForRemovals(); return; }
         if (subMode !== "people") return;
-        if (q === "sandu") { const s = nameToNode.get("Sandu"); if (s) removeNodeVisual(s.id); }
-        if (q === "elena") {
-          const e = cutVertices.find((c) => c.name === "Elena" && c.class === "PC*");
-          if (e) removeNodeVisual(String(e.id));
+        if (q === "vedeta") {
+          const v = sm.characters?.vedeta;
+          if (v) removeNodeVisual(String(v.id));
+        }
+        if (q === "dependent") {
+          const d = sm.characters?.dependent;
+          if (d) removeNodeVisual(String(d.id));
         }
         if (q === "top5") {
           for (const t of (top5Removal.top5 || [])) removeNodeVisual(String(t.id));

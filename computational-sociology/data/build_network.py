@@ -248,11 +248,46 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             "reach":      reach_size[nid],
         }
 
+    # --- Role IDs pinned from Phase 1 analysis on the full 299-node network.
+    # These override the older heuristic characters below.
+    ROLE_IDS = {
+        "vedeta":    117,
+        "campion":   778,
+        "surpriza":  1218,
+        "puntea":    1332,
+        "dependent": 276,
+        "izolat":    1519,
+    }
+
+    def role_dict(nid):
+        if nid not in node_ids:
+            return None
+        d = char_dict(nid)
+        own = klass_map.get(nid, "?")
+        neighbor_classes = {klass_map.get(y, "?") for y in adj.get(nid, ())}
+        neighbor_classes.discard(own)
+        d["groups"] = len(neighbor_classes) + 1
+        d["groupsOut"] = len(neighbor_classes)
+        d["outClassContacts"] = sum(1 for y in adj.get(nid, ()) if klass_map.get(y) != own)
+        d["classFriendly"] = CLASS_NAMES.get(own, own)
+        d["sex"] = sex_map.get(nid, "Unknown")
+        return d
+
+    roles = {k: role_dict(v) for k, v in ROLE_IDS.items()}
+
     characters = {
+        # legacy heuristic picks (kept so older cards keep resolving)
         "star":     char_dict(star_id),
         "bridge":   char_dict(bridge_id),
         "discreet": char_dict(discreet_id),
         "isolated": char_dict(isolated_id),
+        # canonical role picks used by the lesson
+        "vedeta":    roles["vedeta"],
+        "campion":   roles["campion"],
+        "surpriza":  roles["surpriza"],
+        "puntea":    roles["puntea"],
+        "dependent": roles["dependent"],
+        "izolat":    roles["izolat"],
     }
 
     # --- strategies + coverage (using NEW LIMITED DIFFUSION MODEL)
@@ -656,6 +691,7 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             "name":          name_map.get(nid, str(nid)),
             "class":         own_class,
             "classFriendly": CLASS_NAMES.get(own_class, own_class),
+            "sex":           sex_map.get(nid, "Unknown"),
             "popularity":    degrees[nid],
             "openness":      openness[nid],
             "groups":        groups_total,
@@ -667,10 +703,12 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
                               for k, v in sorted(cls_dist.items(), key=lambda kv: -kv[1])],
         }
 
+    # Trio for the mission duel: vedeta (max popularity), campion (max reach),
+    # surpriza (small pop, top-10% reach). Pinned by ID from Phase 1.
     trio_mission = {
-        "sandu": profile_person(person_by_name("Sandu")),
-        "emil":  profile_person(person_by_name("Emil")),
-        "doina": profile_person(person_by_name("Doina")),
+        "vedeta":   profile_person(ROLE_IDS["vedeta"])   if ROLE_IDS["vedeta"]   in node_ids else None,
+        "campion":  profile_person(ROLE_IDS["campion"])  if ROLE_IDS["campion"]  in node_ids else None,
+        "surpriza": profile_person(ROLE_IDS["surpriza"]) if ROLE_IDS["surpriza"] in node_ids else None,
     }
 
     # Pearson correlations
@@ -827,18 +865,55 @@ CLASS_NAMES = {
     "PSI*":  "Inginerie",
 }
 
-NAMES = [
-    "Ana", "Andrei", "Bianca", "Bogdan", "Carla", "Cristi", "Dana", "Doru", "Elena", "Florin",
-    "Gabi", "Horia", "Ioana", "Radu", "Maria", "Matei", "Nadia", "Octav", "Paula", "Rares",
-    "Sorina", "Tudor", "Vlad", "Zina", "Alex", "Bea", "Cezar", "Delia", "Emil", "Flavia",
-    "George", "Hana", "Irina", "Luca", "Miruna", "Nicu", "Oana", "Petru", "Roxana", "Sandu",
-    "Teo", "Ursu", "Vera", "David", "Ema", "Fabi", "Geta", "Iulia", "Liviu", "Mara",
-    "Nelu", "Otilia", "Pavel", "Rux", "Stef", "Toma", "Ada", "Beni", "Codrin", "Denis",
-    "Eva", "Filip", "Greta", "Ilinca", "Jan", "Kira", "Lia", "Mihnea", "Nora", "Ovidiu",
-    "Patrick", "Rica", "Silviu", "Tania", "Uta", "Vio", "Alin", "Boga", "Ciprian", "Doina",
-    "Edi", "Fana", "Gina", "Hodo", "Inga", "Jeni", "Laur", "Momo", "Nuti", "Olga",
-    "Puiu", "Ramona", "Sabin", "Timea", "Ulise", "Viorel"
+FRENCH_F = [
+    "Camille", "Léa", "Manon", "Chloé", "Sarah", "Emma", "Inès", "Clara", "Jade", "Louise",
+    "Anaïs", "Zoé", "Alice", "Margaux", "Élise", "Noémie", "Charlotte", "Solène", "Amandine", "Juliette",
+    "Océane", "Marion", "Aurélie", "Justine", "Pauline", "Adèle", "Lucie", "Maëlle", "Romane", "Éloïse",
+    "Aurore", "Cécile", "Delphine", "Élodie", "Fanny", "Gabrielle", "Hélène", "Isabelle", "Jeanne", "Karine",
+    "Laurence", "Mélanie", "Nadège", "Odile", "Pénélope", "Roxane", "Sylvie", "Thérèse", "Valentine", "Yasmine",
+    "Zélie", "Adélaïde", "Béatrice", "Cléa", "Diane", "Estelle", "Flavie", "Iris", "Louane", "Mathilde",
+    "Naïs", "Olympe", "Perrine", "Sabine", "Tiphaine", "Vanessa", "Angèle", "Blandine", "Coralie", "Domitille",
+    "Eugénie", "Fabienne", "Gwendoline", "Honorine", "Josiane", "Malorie", "Nadine", "Rosalie", "Sophie", "Tessa",
+    "Virginie", "Ysée", "Amélie", "Bérénice", "Célestine", "Dorothée", "Émilie", "Florence", "Ghislaine", "Hortense",
+    "Ingrid", "Julie", "Katia", "Lorraine", "Mireille", "Noëlle", "Ondine", "Pascaline", "Quiterie", "Simone",
+    "Ténéré", "Ursule", "Violette", "Zoraïde", "Adeline", "Brigitte", "Christiane", "Danielle", "Estée", "Françoise",
+    "Georgette", "Henriette", "Irène", "Joëlle", "Katarina", "Laëtitia", "Marguerite", "Nicoline", "Ombeline", "Prudence",
+    "Rébecca", "Sandrine", "Tatiana", "Ulysse", "Véronique", "Wilhelmine", "Xénia", "Yveline", "Adrienne", "Beatrix",
+    "Corinne", "Désirée", "Eulalie", "Félicie", "Guenièvre", "Héloïse", "Ismérie", "Jacqueline", "Kim", "Ludivine",
+    "Micheline", "Nathalie", "Odette", "Patricia", "Reine", "Séverine", "Tiphany", "Ulrike", "Valérie", "Wanda"
 ]
+
+FRENCH_M = [
+    "Julien", "Thomas", "Antoine", "Maxime", "Lucas", "Hugo", "Nathan", "Théo", "Enzo", "Baptiste",
+    "Rémi", "Mathis", "Quentin", "Corentin", "Damien", "Adrien", "Gaspard", "Victor", "Florian", "Benoît",
+    "Kévin", "Sébastien", "Clément", "Romain", "Guillaume", "Étienne", "Loïc", "Bastien", "Yann", "Grégoire",
+    "Alexandre", "Bernard", "Christophe", "David", "Édouard", "Fabien", "Gérard", "Henri", "Ismaël", "Jérôme",
+    "Karl", "Laurent", "Marc", "Nicolas", "Olivier", "Pierre", "Régis", "Sylvain", "Tristan", "Vincent",
+    "Xavier", "Yohan", "Zacharie", "Aymeric", "Basile", "Cyril", "Denis", "Emmanuel", "Franck", "Gilles",
+    "Hervé", "Ivan", "Joachim", "Ludovic", "Michel", "Norbert", "Ovide", "Philippe", "Renaud", "Sylvestre",
+    "Timothée", "Ulysse", "Valentin", "Wilfrid", "Yves", "Alain", "Boris", "Cédric", "Didier", "Fabrice",
+    "Gaël", "Hadrien", "Ismaïl", "Joris", "Karim", "Léopold", "Mathéo", "Naël", "Owen", "Paul",
+    "Rayan", "Samuel", "Timéo", "Vadim", "Wassim", "Yassin", "Zayd", "Amaury", "Bruno", "Christian",
+    "Damir", "Ernest", "Frédéric", "Gustave", "Hubert", "Ignace", "Jacques", "Kilian", "Léon", "Martin",
+    "Nolan", "Octave", "Pascal", "Quinton", "Robin", "Stéphane", "Thibault", "Ugo", "Valère", "William",
+    "Yanis", "Ayoub", "Blaise", "Célestin", "Diego", "Ethan", "Gabin", "Iban", "Jules", "Killian",
+    "Léonard", "Malo", "Noé", "Oscar", "Pierrick", "Raphaël", "Simon", "Théophile", "Vasco", "Yaël",
+    "Adam", "Bilal", "Cyrus", "Djibril", "Erwan", "Fadi", "Gustavo", "Hicham", "Isaac", "Jean",
+    "Karam", "Lorenzo", "Milan", "Nour-Eddine", "Omar", "Paolo", "Rachid", "Selim", "Tarek", "Yohann"
+]
+
+FRENCH_N = ["Sacha", "Charlie", "Alix", "Cyprien", "Éden", "Andrea", "Ellie", "Léon-Marie"]
+
+# Explicit name assignments for the six protagonists, chosen by role.
+# Same class as identified in Phase 1 analysis; sex-matched.
+ROLE_NAMES = {
+    117:  "Antoine",  # vedeta       (Bio C, M)
+    778:  "Chloé",    # campionul    (Bio C, F)
+    1218: "Rémi",     # surpriza     (Mate C, M)
+    1332: "Léa",      # puntea       (Mate C, F)
+    276:  "Damien",   # dependentul  (Chimie B, M)
+    1519: "Yann",     # izolatul     (Mate C, M)
+}
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -887,10 +962,39 @@ for e in edges:
     used.add(e["source"])
     used.add(e["target"])
 
-# --- 5. nodes (sorted by id, names assigned deterministically)
+# --- 5. nodes (sorted by id, French names assigned deterministically by sex)
 nodes = [{"id": n, "group": klass[n], "sex": sex.get(n, "Unknown")} for n in sorted(used)]
-for i, n in enumerate(nodes):
-    n["name"] = NAMES[i % len(NAMES)]
+
+def assign_french_names(node_list):
+    """Assign unique French names to nodes. Sex-matched. Six protagonists get fixed names."""
+    used_names = set(ROLE_NAMES.values())
+    f_iter = iter(nm for nm in FRENCH_F if nm not in used_names)
+    m_iter = iter(nm for nm in FRENCH_M if nm not in used_names)
+    n_iter = iter(nm for nm in FRENCH_N if nm not in used_names)
+    assigned = {}
+    for n in node_list:
+        if n["id"] in ROLE_NAMES:
+            n["name"] = ROLE_NAMES[n["id"]]
+            assigned[n["name"]] = n["id"]
+            continue
+        pool_iter = f_iter if n["sex"] == "F" else m_iter if n["sex"] == "M" else n_iter
+        try:
+            nm = next(pool_iter)
+            while nm in assigned:
+                nm = next(pool_iter)
+            n["name"] = nm
+            assigned[nm] = n["id"]
+        except StopIteration:
+            raise RuntimeError(f"Pool epuizat pentru sex={n['sex']} la id {n['id']}. Extinde lista franceza.")
+    # Verify uniqueness across the whole node set
+    seen = {}
+    for n in node_list:
+        if n["name"] in seen:
+            raise RuntimeError(f"Nume duplicat: {n['name']} pentru id {n['id']} si id {seen[n['name']]}.")
+        seen[n["name"]] = n["id"]
+    return node_list
+
+assign_french_names(nodes)
 
 group_by = {n["id"]: n["group"] for n in nodes}
 sex_by   = {n["id"]: n["sex"]   for n in nodes}
@@ -1322,14 +1426,24 @@ slice3_metrics = compute_slice_metrics(
     seed=42,
 )
 
-# Full school: 9 classes, 303 students. Use names deterministically by sorted id.
+# Full school: assign French names to any students not covered by the 299-node core.
 full_sorted_ids = sorted(full_used)
-full_name_map = {}
-for i, nid in enumerate(full_sorted_ids):
-    full_name_map[nid] = NAMES[i % len(NAMES)]
-# Overlay the 3-class names so the same student keeps the same name in both slices.
-for nid, nm in slice3_name_map.items():
-    full_name_map[nid] = nm
+full_name_map = dict(slice3_name_map)  # start from the 299 already named
+used_names = set(full_name_map.values())
+f_iter = iter(nm for nm in FRENCH_F if nm not in used_names)
+m_iter = iter(nm for nm in FRENCH_M if nm not in used_names)
+n_iter = iter(nm for nm in FRENCH_N if nm not in used_names)
+for nid in full_sorted_ids:
+    if nid in full_name_map: continue
+    s = sex.get(nid, "Unknown")
+    pool_iter = f_iter if s == "F" else m_iter if s == "M" else n_iter
+    try:
+        nm = next(pool_iter)
+        while nm in used_names: nm = next(pool_iter)
+        full_name_map[nid] = nm
+        used_names.add(nm)
+    except StopIteration:
+        raise RuntimeError(f"Pool epuizat pentru elev {nid} sex={s}")
 
 full_edges_list = [(a, b, c) for (a, b, c) in full_edges_pairs]
 full_metrics = compute_slice_metrics(

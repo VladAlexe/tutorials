@@ -40,10 +40,16 @@ const NAME_SHORTCUTS = {
   topTime:     "topByWeighted",
   topSpread:   "spreadRanking.champions",
   seedFirst:   "majorityIllusion.seedNames",
-  vedeta:      "sliceMetrics.characters.star",
-  puntea:      "sliceMetrics.characters.bridge",
-  discretul:   "sliceMetrics.characters.discreet",
-  izolatul:    "sliceMetrics.characters.isolated"
+  // Canonical role names, pinned by Phase 1 analysis (build_network.py ROLE_IDS).
+  vedeta:      "sliceMetrics.characters.vedeta",
+  campion:     "sliceMetrics.characters.campion",
+  surpriza:    "sliceMetrics.characters.surpriza",
+  puntea:      "sliceMetrics.characters.puntea",
+  dependent:   "sliceMetrics.characters.dependent",
+  izolat:      "sliceMetrics.characters.izolat",
+  // Legacy heuristic keys kept for backward-compat.
+  discretul:   "sliceMetrics.characters.surpriza",
+  izolatul:    "sliceMetrics.characters.izolat"
 };
 
 function formatValue(v) {
