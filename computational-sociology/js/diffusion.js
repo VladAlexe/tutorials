@@ -124,6 +124,7 @@ function makeStyle() {
       }
     },
     { selector: "node.knows", style: { "opacity": 1, "width": 11, "height": 11 } },
+    { selector: "node.just", style: { "opacity": 1, "width": 15, "height": 15, "background-color": "#a3341f", "border-color": "#2a1f16", "border-width": 2 } },
     {
       selector: "node.source",
       style: {
@@ -2702,6 +2703,11 @@ export async function renderDiffusion(container, block, options = {}) {
         `<button type="button" class="btn btn--primary" data-act="send" disabled>Trimite</button>` +
         `<button type="button" class="btn btn--ghost" data-act="reset">Resetează echipa</button>` +
       `</div>` +
+      `<div class="diff-row diff-buttons mission-step" data-role="stepbar" hidden>` +
+        `<button type="button" class="btn btn--primary" data-act="step">Un pas</button>` +
+        `<button type="button" class="btn btn--ghost" data-act="runall">Rulează tot</button>` +
+        `<span class="mission-step__count" data-role="stepcount"></span>` +
+      `</div>` +
       (presets.length ? `<div class="diff-row diff-buttons mission-presets">` +
         `<span class="mission-presets__label">Strategii predefinite:</span>` +
         presets.map((p, i) => `<button type="button" class="btn btn--ghost" data-preset="${i}">${p.label}</button>`).join("") +
@@ -2740,20 +2746,77 @@ export async function renderDiffusion(container, block, options = {}) {
     });
     cy.on("mouseout", "node", () => { if (team.length < teamSize) previewEl.textContent = "Atinge un nod pentru a-l adăuga în echipă."; });
 
-    function animateSpread(ids, cb) {
-      cy.nodes().removeClass("knows");
-      for (const x of ids) cy.getElementById(String(x)).addClass("knows");
-      const covered = new Set(ids.map(String));
-      let frontier = ids.map(String);
-      let step = 0;
-      const iv = setInterval(() => {
-        const next = [];
-        for (const x of frontier) for (const y of adjTop.get(x) || []) if (!covered.has(y)) { covered.add(y); next.push(y); }
-        for (const y of next) cy.getElementById(String(y)).addClass("knows");
-        frontier = next;
-        step++;
-        if (!next.length || step >= PASI) { clearInterval(iv); cb(covered); }
-      }, 350);
+    // Stepped animation state. Each round: the "just informed" gets the .just
+    // class (bright accent) and the previous round's .just is downgraded to
+    // .knows (base warm). A step counter is shown so the student sees the
+    // model advance discretely.
+    let anim = null;    // { seeds, covered, frontier, step, onDone }
+    let stepCountEl = null;
+
+    function paintAnim() {
+      cy.nodes().removeClass("knows just source");
+      if (!anim) return;
+      for (const s of anim.seeds) cy.getElementById(String(s)).addClass("source");
+      for (const id of anim.covered) {
+        if (anim.frontier.includes(id)) cy.getElementById(String(id)).addClass("just");
+        else cy.getElementById(String(id)).addClass("knows");
+      }
+    }
+
+    function updateStepCount() {
+      if (!stepCountEl || !anim) return;
+      if (anim.step === 0) {
+        stepCountEl.innerHTML = `Pauza <strong>0</strong>. Zvonul e la ${anim.seeds.length} ${anim.seeds.length === 1 ? "elev" : "elevi"}.`;
+      } else if (anim.step >= PASI) {
+        stepCountEl.innerHTML = `Ziua s-a terminat. Știu <strong>${anim.covered.size}</strong> elevi din ${nodes.length}.`;
+      } else {
+        stepCountEl.innerHTML = `Pauza <strong>${anim.step}</strong>. Știu <strong>${anim.covered.size}</strong> elevi.`;
+      }
+    }
+
+    function startAnim(seeds, onDone) {
+      anim = {
+        seeds: seeds.map(String),
+        covered: new Set(seeds.map(String)),
+        frontier: seeds.map(String),
+        step: 0,
+        onDone: onDone || (() => {}),
+      };
+      paintAnim();
+      updateStepCount();
+    }
+
+    function advanceOne() {
+      if (!anim || anim.step >= PASI) return;
+      const next = [];
+      for (const x of anim.frontier) {
+        for (const y of adjTop.get(x) || []) {
+          if (!anim.covered.has(y)) { anim.covered.add(y); next.push(y); }
+        }
+      }
+      anim.frontier = next;
+      anim.step++;
+      paintAnim();
+      updateStepCount();
+      if (anim.step >= PASI || !next.length) {
+        anim.onDone(anim.covered);
+      }
+    }
+
+    function runAllSteps() {
+      if (!anim) return;
+      const tick = () => {
+        if (!anim || anim.step >= PASI) return;
+        advanceOne();
+        if (anim.step < PASI && anim.frontier.length) setTimeout(tick, 700);
+      };
+      tick();
+    }
+
+    function endAnim() {
+      anim = null;
+      cy.nodes().removeClass("knows just source");
+      cy.nodes().addClass("knows");
     }
 
     function renderHistory() {
@@ -2763,21 +2826,49 @@ export async function renderDiffusion(container, block, options = {}) {
       ).join("<br>");
     }
 
+    const stepbar = controls.querySelector('[data-role="stepbar"]');
+    stepCountEl = controls.querySelector('[data-role="stepcount"]');
+    const stepBtn = controls.querySelector('[data-act="step"]');
+    const runAllBtn = controls.querySelector('[data-act="runall"]');
+
+    function afterAnimDone(seeds, covered) {
+      const names = seeds.map((s) => nameById.get(s) || s);
+      history.push({ team: names, coverage: covered.size });
+      renderHistory();
+      statusEl.textContent = `Rezultat: ${names.join(", ")} → ${covered.size} din ${nodes.length}.`;
+    }
+
     sendBtn.addEventListener("click", () => {
       const seeds = [...team];
       sendBtn.disabled = true;
-      statusEl.textContent = "Se transmite…";
+      statusEl.textContent = "Zvonul pornește. Apasă „Un pas\" pentru fiecare pauză.";
       previewEl.textContent = "";
-      animateSpread(seeds, (covered) => {
-        const names = seeds.map((s) => nameById.get(s) || s);
-        history.push({ team: names, coverage: covered.size });
-        renderHistory();
-        statusEl.textContent = `Rezultat: ${names.join(", ")} → ${covered.size} din ${nodes.length}.`;
-        team.length = 0;
-        setTimeout(() => { cy.nodes().addClass("knows"); paint(); }, 1400);
-      });
+      stepbar.hidden = false;
+      startAnim(seeds, (covered) => afterAnimDone(seeds, covered));
     });
-    controls.querySelector('[data-act="reset"]').addEventListener("click", () => { team.length = 0; paint(); });
+
+    stepBtn.addEventListener("click", () => {
+      if (!anim) return;
+      advanceOne();
+      if (anim.step >= PASI || !anim.frontier.length) {
+        stepBtn.disabled = true;
+        runAllBtn.disabled = true;
+      }
+    });
+    runAllBtn.addEventListener("click", () => {
+      if (!anim) return;
+      stepBtn.disabled = true;
+      runAllBtn.disabled = true;
+      runAllSteps();
+    });
+    controls.querySelector('[data-act="reset"]').addEventListener("click", () => {
+      team.length = 0;
+      endAnim();
+      stepbar.hidden = true;
+      stepBtn.disabled = false;
+      runAllBtn.disabled = false;
+      paint();
+    });
     // Candidate fișe click: add to team (or replace if teamSize=1)
     controls.querySelectorAll("[data-fiche-id]").forEach((btn) => {
       btn.addEventListener("click", () => {

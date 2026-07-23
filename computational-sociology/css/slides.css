@@ -651,6 +651,17 @@
 }
 .sim-step__buttons { justify-content: center; }
 
+.mission-step {
+  align-items: center;
+  gap: var(--sp-3);
+  justify-content: center;
+  padding: var(--sp-2) 0;
+}
+.mission-step__count {
+  font-size: 1rem;
+  color: var(--color-ink);
+}
+
 /* Character chips (C17) */
 .char-chips {
   display: grid;
