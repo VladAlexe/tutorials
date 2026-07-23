@@ -761,6 +761,65 @@
   line-height: 1.5;
 }
 
+/* Strategy duel: two panels side by side on desktop, stacked on mobile. */
+.strategy-duel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin: 0 auto;
+  max-width: 780px;
+}
+@media (max-width: 720px) {
+  .strategy-duel { grid-template-columns: 1fr; }
+}
+.strategy-duel__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sp-2);
+}
+.strategy-duel__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+.strategy-duel__buttons .btn {
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  min-width: 0;
+}
+.strategy-duel__caption {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--color-ink);
+  line-height: 1.4;
+}
+.strategy-duel__compare {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  margin-top: var(--sp-3);
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* Compact stage for mission cards so the whole card fits in one viewport. */
+.slide .viz--mission-compact .viz__stage {
+  height: 30vh;
+  min-height: 200px;
+  max-height: 320px;
+}
+@media (min-width: 768px) {
+  .slide .viz--mission-compact .viz__stage {
+    height: 36vh;
+    min-height: 240px;
+    max-height: 360px;
+  }
+}
+
 .mission-step {
   align-items: center;
   gap: var(--sp-3);

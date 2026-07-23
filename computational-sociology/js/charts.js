@@ -221,10 +221,12 @@ function colorForClass(cls) {
 function hbarsSVG(block) {
   const bars = block.bars || [];
   if (!bars.length) return "";
-  const rowH = 30;
-  const rowGap = 8;
-  const padT = 8, padB = 8, padL = 148, padR = 46;
-  const W = 480;
+  // Compact rows so the 8-row card fits within a laptop viewport without
+  // scrolling. Wider left padding accommodates "Nour-Eddine, Mate C" etc.
+  const rowH = 22;
+  const rowGap = 6;
+  const padT = 6, padB = 6, padL = 172, padR = 52;
+  const W = 520;
   const chartW = W - padL - padR;
   const H = padT + padB + bars.length * (rowH + rowGap) - rowGap;
   const maxV = Math.max(...bars.map((b) => b.value), 1);
@@ -238,16 +240,16 @@ function hbarsSVG(block) {
     const nameLabel = `${esc(name)}${cls ? `, ${esc(cls)}` : ""}`;
     return (
       `<g class="hbar-row">` +
-      `<text x="${padL - 8}" y="${(y + rowH / 2 + 5).toFixed(1)}" text-anchor="end" font-family="Georgia, serif" font-size="13" fill="${COL_INK}">${nameLabel}</text>` +
+      `<text x="${padL - 8}" y="${(y + rowH / 2 + 4).toFixed(1)}" text-anchor="end" font-family="Georgia, serif" font-size="12" fill="${COL_INK}">${nameLabel}</text>` +
       `<rect x="${padL}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${rowH}" fill="${color}" rx="2"/>` +
-      `<text x="${(padL + w + 6).toFixed(1)}" y="${(y + rowH / 2 + 5).toFixed(1)}" font-family="Georgia, serif" font-size="14" font-weight="500" fill="${COL_INK}">${fmtNum(b.value)}</text>` +
+      `<text x="${(padL + w + 6).toFixed(1)}" y="${(y + rowH / 2 + 4).toFixed(1)}" font-family="Georgia, serif" font-size="13" font-weight="500" fill="${COL_INK}">${fmtNum(b.value)}</text>` +
       `</g>`
     );
   }).join("");
 
   return (
     `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
-    `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
+    `style="width:100%;height:auto;max-width:560px;display:block;margin:0 auto" ` +
     `role="img" aria-label="${esc(block.title || "Clasament")}">` +
     rows +
     `</svg>`
@@ -1602,7 +1604,10 @@ async function renderMeasureTabs(container, block, stats) {
   }
 
   // -- Pe hartă: measure-specific visualization
-  const S = 480;
+  // Keep the map roughly the same footprint as the Clasament bars so switching
+  // tabs does not send the card jumping in height (users perceived this as
+  // "atlas mode" — a jarring layout shift).
+  const S = 380;
   function projX(px) { return ((px + 1) / 2) * (S - 40) + 20; }
   function projY(py) { return ((py + 1) / 2) * (S - 40) + 20; }
   function posOf(id) {
@@ -1676,7 +1681,7 @@ async function renderMeasureTabs(container, block, stats) {
 
     mapHost.innerHTML =
       `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
-      `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
+      `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
       `role="img" aria-label="Harta măsurii pentru ${esc(champ.name)}">` +
       baseEdgesSvg(hi) + baseDotsSvg(hi) + edges + contactDots + champDot + label +
       `</svg>`;
@@ -1764,7 +1769,7 @@ async function renderMeasureTabs(container, block, stats) {
 
       mapHost.innerHTML =
         `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
-        `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
+        `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
         `role="img" aria-label="Drumuri prin ${esc(champ.name)}">` +
         baseEdgesSvg(highlightIds) + baseDotsSvg(highlightIds) + pathSvgs + endDots + champDot + champLabel +
         `</svg>`;
@@ -1955,9 +1960,193 @@ function renderRobustness(container, block, stats) {
   drawChart();
 }
 
-// Single-map strategy compare: one class-clustered map with buttons to swap
-// the highlighted strategy. Replaces the four-map grid so the eye stays on
-// the same layout while colouring shifts.
+// Two-panel strategy duel: two maps side by side so comparison is visual, not
+// memorized. Each class is a COMPACT clump of dots (not a ring), so the
+// covered-vs-not proportion reads at a glance. Below each map, per-side buttons
+// to swap which strategy is shown. Under the two, a highlight of which classes
+// differ most between the two picks.
+const CLASS_ORDER_LAYOUT = ["Bio A","Bio B","Bio C","Mate A","Mate B","Mate C","Chimie A","Chimie B","Inginerie"];
+function renderStrategyDuel(container, block, stats) {
+  const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
+  const total = cm._total || stats?.total || 299;
+  const classNames = stats?.classNames || {};
+  // We do not use _positions (rings) any more — build compact clumps per class.
+  const strategyList = block.strategies || ["greedy", "top3reach", "top3pop", "knownTeam", "top3betw"];
+  const labels = {
+    knownTeam: "Cei trei pe care îi știi",
+    top3pop:   "Cei mai populari trei",
+    top3open:  "Cei mai deschiși trei",
+    top3reach: "Cei mai buni răspânditori",
+    top3betw:  "Cei mai centrali trei",
+    greedy:    "Alegerea lacomă",
+  };
+
+  // Bucket every node by its class.
+  const byClass = new Map();
+  for (const cls of CLASS_ORDER_LAYOUT) byClass.set(cls, []);
+  const strategyById = {};  // node id -> class
+  const anyStrat = strategyList.find((k) => cm[k]);
+  if (!anyStrat) { container.textContent = "Fără date."; return; }
+  // Pull the class of every node from _positions (which has classFriendly).
+  const positions = cm._positions || {};
+  for (const [nid, p] of Object.entries(positions)) {
+    const cls = p.classFriendly;
+    if (!byClass.has(cls)) byClass.set(cls, []);
+    byClass.get(cls).push(String(nid));
+    strategyById[String(nid)] = cls;
+  }
+
+  const wrap = document.createElement("div");
+  wrap.className = "strategy-duel";
+  container.appendChild(wrap);
+
+  const compareLine = document.createElement("div");
+  compareLine.className = "strategy-duel__compare";
+  container.appendChild(compareLine);
+
+  const sides = [
+    { key: "left",  initial: strategyList[0] || "greedy" },
+    { key: "right", initial: strategyList[1] || "top3reach" },
+  ];
+  const sideState = {};
+
+  function renderSide(sideKey) {
+    const state = sideState[sideKey];
+    const data = cm[state.strategy];
+    if (!data) { state.mapHost.textContent = "Fără date."; return; }
+    const covered = new Set((data.coveredIds || []).map(String));
+    const seeds = new Set((data.seedIds || []).map(String));
+
+    // Layout: 9 classes in a 3x3 grid. Each cell has a compact clump of dots
+    // arranged in a rough disk via a spiral packing — small deterministic.
+    const CELL = 96;         // per-class cell size (px)
+    const COLS = 3;
+    const ROWS = 3;
+    const S_W = COLS * CELL;
+    const S_H = ROWS * CELL + 28;  // room for class labels
+    const CLUMP_R = 32;      // disk radius inside each cell
+    const NODE_R = 5;
+
+    // Deterministic disk-packing: use golden-angle spiral for tight fill.
+    function clumpPositions(n) {
+      const gold = Math.PI * (3 - Math.sqrt(5));
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        // sunflower / Vogel spiral for tight disk packing
+        const r = CLUMP_R * Math.sqrt((i + 0.5) / n);
+        const a = i * gold;
+        pts.push({ x: Math.cos(a) * r, y: Math.sin(a) * r });
+      }
+      return pts;
+    }
+
+    const parts = [];
+    CLASS_ORDER_LAYOUT.forEach((cls, idx) => {
+      const col = idx % COLS;
+      const row = Math.floor(idx / COLS);
+      const cx = col * CELL + CELL / 2;
+      const cy = row * CELL + CELL / 2 - 6;
+      const members = byClass.get(cls) || [];
+      const nCov = members.filter((m) => covered.has(m)).length;
+      const nTot = members.length;
+      const pcts = clumpPositions(nTot);
+      const memPos = members.map((_, i) => ({ x: cx + pcts[i].x, y: cy + pcts[i].y, id: members[i] }));
+      // Order: uncovered first (so covered draw on top), then covered, then seeds
+      const drawOrder = [];
+      memPos.forEach((p) => {
+        if (seeds.has(p.id)) drawOrder.push({ ...p, kind: "seed" });
+        else if (covered.has(p.id)) drawOrder.push({ ...p, kind: "cov" });
+        else drawOrder.push({ ...p, kind: "miss" });
+      });
+      drawOrder.sort((a, b) => {
+        // draw missed first, then covered, then seeds
+        const order = { miss: 0, cov: 1, seed: 2 };
+        return order[a.kind] - order[b.kind];
+      });
+      for (const p of drawOrder) {
+        if (p.kind === "seed") parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${NODE_R + 2}" fill="#2a1f16" stroke="#000" stroke-width="0.8"/>`);
+        else if (p.kind === "cov") parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${NODE_R}" fill="#8b4a1e"/>`);
+        else parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${NODE_R - 1.5}" fill="#e5dccb"/>`);
+      }
+      // Class label below the clump
+      parts.push(`<text x="${cx.toFixed(1)}" y="${(cy + CLUMP_R + 12).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#5c5346"><tspan font-weight="500">${esc(cls)}</tspan>, ${nCov} din ${nTot}</text>`);
+    });
+
+    state.mapHost.innerHTML =
+      `<svg viewBox="0 0 ${S_W} ${S_H}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:340px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Harta pentru ${esc(labels[state.strategy] || state.strategy)}">` +
+      parts.join("") +
+      `</svg>`;
+    state.captionEl.innerHTML =
+      `<strong>${esc(labels[state.strategy] || state.strategy)}</strong><br>` +
+      `${esc((data.seedNames || []).join(", "))} — <strong>${covered.size}</strong> din ${total}`;
+    state.buttonBar.querySelectorAll("[data-strat]").forEach((b) => {
+      const on = b.dataset.strat === state.strategy;
+      b.classList.toggle("btn--primary", on);
+      b.classList.toggle("btn--ghost", !on);
+    });
+    updateCompare();
+  }
+
+  function updateCompare() {
+    const left = cm[sideState.left.strategy];
+    const right = cm[sideState.right.strategy];
+    if (!left || !right) return;
+    const leftCov = new Set((left.coveredIds || []).map(String));
+    const rightCov = new Set((right.coveredIds || []).map(String));
+    const diffs = [];
+    for (const cls of CLASS_ORDER_LAYOUT) {
+      const members = byClass.get(cls) || [];
+      const l = members.filter((m) => leftCov.has(m)).length;
+      const r = members.filter((m) => rightCov.has(m)).length;
+      diffs.push({ cls, l, r, tot: members.length, delta: Math.abs(l - r) });
+    }
+    diffs.sort((a, b) => b.delta - a.delta);
+    const top = diffs.slice(0, 2).filter((d) => d.delta >= 3);
+    const leftName = labels[sideState.left.strategy] || sideState.left.strategy;
+    const rightName = labels[sideState.right.strategy] || sideState.right.strategy;
+    let msg = `<strong>${leftName}</strong> acoperă <strong>${leftCov.size}</strong>. <strong>${rightName}</strong>, <strong>${rightCov.size}</strong>.`;
+    if (top.length) {
+      const parts = top.map((d) => {
+        const side = d.l > d.r ? leftName : rightName;
+        const other = d.l > d.r ? rightName : leftName;
+        return `${d.cls} apare la <strong>${side}</strong> (${Math.max(d.l, d.r)} din ${d.tot}) dar aproape lipsește la ${other} (${Math.min(d.l, d.r)}).`;
+      });
+      msg += " " + parts.join(" ");
+    }
+    compareLine.innerHTML = msg;
+  }
+
+  sides.forEach((side) => {
+    const panel = document.createElement("div");
+    panel.className = "strategy-duel__panel";
+    const buttonBar = document.createElement("div");
+    buttonBar.className = "strategy-duel__buttons";
+    buttonBar.innerHTML = strategyList.map((k) =>
+      `<button type="button" class="btn btn--ghost" data-strat="${esc(k)}">${esc(labels[k] || k)}</button>`
+    ).join("");
+    const mapHost = document.createElement("div");
+    mapHost.className = "chart__svg-wrap";
+    const captionEl = document.createElement("div");
+    captionEl.className = "strategy-duel__caption";
+    panel.appendChild(buttonBar);
+    panel.appendChild(mapHost);
+    panel.appendChild(captionEl);
+    wrap.appendChild(panel);
+
+    sideState[side.key] = { strategy: side.initial, buttonBar, mapHost, captionEl };
+    buttonBar.querySelectorAll("[data-strat]").forEach((b) => {
+      b.addEventListener("click", () => {
+        sideState[side.key].strategy = b.dataset.strat;
+        renderSide(side.key);
+      });
+    });
+    renderSide(side.key);
+  });
+}
+
+// Legacy single-map compare (kept for backward compat but not used by m5 now).
 function renderStrategyCompare(container, block, stats) {
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
   const total = cm._total || stats?.total || 299;
@@ -2476,6 +2665,11 @@ export async function renderChart(container, block) {
     if (block.variant === "strategy-compare") {
       const stats = await getStats(block);
       renderStrategyCompare(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "strategy-duel") {
+      const stats = await getStats(block);
+      renderStrategyDuel(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {

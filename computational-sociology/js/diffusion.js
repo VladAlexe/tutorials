@@ -2502,6 +2502,9 @@ export async function renderDiffusion(container, block, options = {}) {
   }
 
   else if (mode === "greedy-anim") {
+    // Compact stage so the 3-round animation + counter + description all fit
+    // on one desktop viewport.
+    container.classList.add("viz--mission-compact");
     cy.nodes().addClass("knows");
     const steps = block.steps || 3;
 
@@ -2666,6 +2669,9 @@ export async function renderDiffusion(container, block, options = {}) {
   }
 
   else if (mode === "mission") {
+    // Mission cards carry fișe + buttons + counter beneath the network. Shrink
+    // the network so the controls stay visible without scroll.
+    container.classList.add("viz--mission-compact");
     cy.nodes().addClass("knows");
     const teamSize = block.teamSize || 3;
     const presets = block.presets || [];
