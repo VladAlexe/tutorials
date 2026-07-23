@@ -445,6 +445,16 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         d["rankPop"]       = _rank_by_pop.get(nid)
         d["rankOpenness"]  = _rank_by_openness.get(nid)
         d["rankReach2"]    = _rank_by_reach2.get(nid)
+        # Split reach by inside/outside the character's own class, and by
+        # class dominance. reachInClass is what {{sliceMetrics.characters.
+        # vedeta.reachInClass}} resolves to in the story text.
+        r_set = reach[nid]
+        d["reachInClass"]  = sum(1 for x in r_set if klass_map.get(x) == own)
+        d["reachOutClass"] = len(r_set) - d["reachInClass"]
+        d["reachClassDist"] = [
+            {"class": k, "classFriendly": CLASS_NAMES.get(k, k), "count": v}
+            for k, v in sorted(Counter(klass_map.get(x, "?") for x in r_set).items(), key=lambda kv: -kv[1])
+        ]
         return d
 
     roles = {k: role_dict(v) for k, v in ROLE_IDS.items()}

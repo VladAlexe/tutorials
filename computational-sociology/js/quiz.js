@@ -1,5 +1,5 @@
 const V = new URL(import.meta.url).searchParams.get("v") || "1";
-const { markQuizAnswered, getProgress, markVote, getVote } = await import(`./progress.js?v=${V}`);
+const { markQuizAnswered, clearQuiz, getProgress, markVote, getVote } = await import(`./progress.js?v=${V}`);
 
 export function renderQuiz(container, block, options = {}) {
   const state = { selected: null, verified: false };
@@ -65,8 +65,8 @@ export function renderQuiz(container, block, options = {}) {
 
   const retryBtn = document.createElement("button");
   retryBtn.type = "button";
-  retryBtn.className = "btn btn--ghost";
-  retryBtn.textContent = "Încearcă din nou";
+  retryBtn.className = "btn btn--ghost btn--sm";
+  retryBtn.textContent = "Răspunde din nou";
   retryBtn.hidden = true;
   retryBtn.addEventListener("click", reset);
 
@@ -130,6 +130,9 @@ export function renderQuiz(container, block, options = {}) {
   }
 
   function reset() {
+    // Clear the persisted answer as well, so a page refresh does not
+    // auto-restore the previous answer and re-verify it.
+    clearQuiz(block.id);
     state.selected = null;
     state.verified = false;
     for (const o of optionEls) {

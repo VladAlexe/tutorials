@@ -11,8 +11,8 @@
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Doi colegi de bancă", "startIdx": 3 },
     { "n": 3, "title": "Ce nu se vede din interior", "startIdx": 10 },
-    { "n": 4, "title": "Misiunea", "startIdx": 18 },
-    { "n": 5, "title": "Bilanț", "startIdx": 22 }
+    { "n": 4, "title": "Misiunea", "startIdx": 17 },
+    { "n": 5, "title": "Bilanț", "startIdx": 21 }
   ],
   "blocks": [
     {
@@ -268,16 +268,7 @@
         }
       ],
       "title": "Prietenii prietenilor",
-      "caption": "Nu contează câți oameni cunoști. Contează <strong>pe cine cunosc ei</strong>. Aceasta e soluția enigmei."
-    },
-    {
-      "type": "chart",
-      "id": "m3-ce-masuram",
-      "variant": "ranking",
-      "statsSource": "data/highschool-stats.json",
-      "title": "Clasamentele",
-      "intro": "Ce am aflat pentru {{name:vedeta}} și {{name:campion}} ține pentru toată școala? Dacă popularitatea ar prezice, cei de sus în stânga ar fi tot cei de sus în dreapta, iar liniile ar fi paralele.",
-      "caption": "Aici e răspunsul la întrebarea de la început, verificat pe toată școala, nu doar pe doi elevi. Când numărăm prietenii prietenilor, liniile devin aproape paralele. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul. Uită-te totuși unde e {{name:surpriza}}: și pe scala nouă rămâne jos în stânga. Măsura noastră l-ar fi ratat. O corelație bună descrie mulțimea, nu garantează nimic pentru un om anume."
+      "caption": "Nu contează câți oameni cunoști. Contează <strong>pe cine cunosc ei</strong>. Aceasta e soluția enigmei. Iar regula nu ține doar pentru ei doi: dacă numărăm, pentru fiecare elev din școală, câți oameni sunt la doi pași de el, obținem o măsură care prezice raza cu corelație 0,78, față de 0,37 la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul."
     },
     {
       "type": "diffusion",

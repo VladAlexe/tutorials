@@ -56,6 +56,14 @@ export function markQuizAnswered(quizId, { correct, selectedIndex }) {
   safeSet(s);
 }
 
+export function clearQuiz(quizId) {
+  const s = safeGet();
+  if (s.quizzes && s.quizzes[quizId]) {
+    delete s.quizzes[quizId];
+    safeSet(s);
+  }
+}
+
 export function markVote(voteId, { selectedIndex }) {
   const s = safeGet();
   s.votes = s.votes || {};

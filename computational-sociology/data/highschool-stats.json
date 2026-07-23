@@ -2922,7 +2922,26 @@
           "rankReach": 51,
           "rankPop": 1,
           "rankOpenness": 1,
-          "rankReach2": 127
+          "rankReach2": 127,
+          "reachInClass": 31,
+          "reachOutClass": 19,
+          "reachClassDist": [
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 31
+            },
+            {
+              "class": "2BIO2",
+              "classFriendly": "Bio B",
+              "count": 17
+            },
+            {
+              "class": "PC",
+              "classFriendly": "Chimie A",
+              "count": 2
+            }
+          ]
         },
         "campion": {
           "id": 778,
@@ -2939,7 +2958,31 @@
           "rankReach": 1,
           "rankPop": 48,
           "rankOpenness": 11,
-          "rankReach2": 4
+          "rankReach2": 4,
+          "reachInClass": 37,
+          "reachOutClass": 36,
+          "reachClassDist": [
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 37
+            },
+            {
+              "class": "2BIO2",
+              "classFriendly": "Bio B",
+              "count": 21
+            },
+            {
+              "class": "2BIO1",
+              "classFriendly": "Bio A",
+              "count": 11
+            },
+            {
+              "class": "PC",
+              "classFriendly": "Chimie A",
+              "count": 4
+            }
+          ]
         },
         "surpriza": {
           "id": 1218,
@@ -2956,7 +2999,36 @@
           "rankReach": 4,
           "rankPop": 242,
           "rankOpenness": 193,
-          "rankReach2": 114
+          "rankReach2": 114,
+          "reachInClass": 24,
+          "reachOutClass": 44,
+          "reachClassDist": [
+            {
+              "class": "MP*2",
+              "classFriendly": "Mate C",
+              "count": 24
+            },
+            {
+              "class": "PSI*",
+              "classFriendly": "Inginerie",
+              "count": 18
+            },
+            {
+              "class": "MP",
+              "classFriendly": "Mate A",
+              "count": 14
+            },
+            {
+              "class": "MP*1",
+              "classFriendly": "Mate B",
+              "count": 11
+            },
+            {
+              "class": "2BIO3",
+              "classFriendly": "Bio C",
+              "count": 1
+            }
+          ]
         },
         "puntea": {
           "id": 1332,
@@ -2973,7 +3045,31 @@
           "rankReach": 68,
           "rankPop": 2,
           "rankOpenness": 15,
-          "rankReach2": 44
+          "rankReach2": 44,
+          "reachInClass": 19,
+          "reachOutClass": 29,
+          "reachClassDist": [
+            {
+              "class": "MP",
+              "classFriendly": "Mate A",
+              "count": 23
+            },
+            {
+              "class": "MP*2",
+              "classFriendly": "Mate C",
+              "count": 19
+            },
+            {
+              "class": "MP*1",
+              "classFriendly": "Mate B",
+              "count": 5
+            },
+            {
+              "class": "PSI*",
+              "classFriendly": "Inginerie",
+              "count": 1
+            }
+          ]
         },
         "dependent": {
           "id": 276,
@@ -2990,7 +3086,21 @@
           "rankReach": 245,
           "rankPop": 79,
           "rankOpenness": 156,
-          "rankReach2": 197
+          "rankReach2": 197,
+          "reachInClass": 27,
+          "reachOutClass": 1,
+          "reachClassDist": [
+            {
+              "class": "PC*",
+              "classFriendly": "Chimie B",
+              "count": 27
+            },
+            {
+              "class": "PC",
+              "classFriendly": "Chimie A",
+              "count": 1
+            }
+          ]
         },
         "izolat": {
           "id": 1519,
@@ -3007,7 +3117,31 @@
           "rankReach": 250,
           "rankPop": 299,
           "rankOpenness": 299,
-          "rankReach2": 278
+          "rankReach2": 278,
+          "reachInClass": 18,
+          "reachOutClass": 9,
+          "reachClassDist": [
+            {
+              "class": "MP*2",
+              "classFriendly": "Mate C",
+              "count": 18
+            },
+            {
+              "class": "MP*1",
+              "classFriendly": "Mate B",
+              "count": 5
+            },
+            {
+              "class": "PSI*",
+              "classFriendly": "Inginerie",
+              "count": 3
+            },
+            {
+              "class": "MP",
+              "classFriendly": "Mate A",
+              "count": 1
+            }
+          ]
         }
       },
       "strategies": {
@@ -15440,7 +15574,26 @@
         "rankReach": 51,
         "rankPop": 1,
         "rankOpenness": 1,
-        "rankReach2": 127
+        "rankReach2": 127,
+        "reachInClass": 31,
+        "reachOutClass": 19,
+        "reachClassDist": [
+          {
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "count": 31
+          },
+          {
+            "class": "2BIO2",
+            "classFriendly": "Bio B",
+            "count": 17
+          },
+          {
+            "class": "PC",
+            "classFriendly": "Chimie A",
+            "count": 2
+          }
+        ]
       },
       "campion": {
         "id": 778,
@@ -15457,7 +15610,31 @@
         "rankReach": 1,
         "rankPop": 48,
         "rankOpenness": 11,
-        "rankReach2": 4
+        "rankReach2": 4,
+        "reachInClass": 37,
+        "reachOutClass": 36,
+        "reachClassDist": [
+          {
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "count": 37
+          },
+          {
+            "class": "2BIO2",
+            "classFriendly": "Bio B",
+            "count": 21
+          },
+          {
+            "class": "2BIO1",
+            "classFriendly": "Bio A",
+            "count": 11
+          },
+          {
+            "class": "PC",
+            "classFriendly": "Chimie A",
+            "count": 4
+          }
+        ]
       },
       "surpriza": {
         "id": 1218,
@@ -15474,7 +15651,36 @@
         "rankReach": 4,
         "rankPop": 242,
         "rankOpenness": 193,
-        "rankReach2": 114
+        "rankReach2": 114,
+        "reachInClass": 24,
+        "reachOutClass": 44,
+        "reachClassDist": [
+          {
+            "class": "MP*2",
+            "classFriendly": "Mate C",
+            "count": 24
+          },
+          {
+            "class": "PSI*",
+            "classFriendly": "Inginerie",
+            "count": 18
+          },
+          {
+            "class": "MP",
+            "classFriendly": "Mate A",
+            "count": 14
+          },
+          {
+            "class": "MP*1",
+            "classFriendly": "Mate B",
+            "count": 11
+          },
+          {
+            "class": "2BIO3",
+            "classFriendly": "Bio C",
+            "count": 1
+          }
+        ]
       },
       "puntea": {
         "id": 1332,
@@ -15491,7 +15697,31 @@
         "rankReach": 68,
         "rankPop": 2,
         "rankOpenness": 15,
-        "rankReach2": 44
+        "rankReach2": 44,
+        "reachInClass": 19,
+        "reachOutClass": 29,
+        "reachClassDist": [
+          {
+            "class": "MP",
+            "classFriendly": "Mate A",
+            "count": 23
+          },
+          {
+            "class": "MP*2",
+            "classFriendly": "Mate C",
+            "count": 19
+          },
+          {
+            "class": "MP*1",
+            "classFriendly": "Mate B",
+            "count": 5
+          },
+          {
+            "class": "PSI*",
+            "classFriendly": "Inginerie",
+            "count": 1
+          }
+        ]
       },
       "dependent": {
         "id": 276,
@@ -15508,7 +15738,21 @@
         "rankReach": 245,
         "rankPop": 79,
         "rankOpenness": 156,
-        "rankReach2": 197
+        "rankReach2": 197,
+        "reachInClass": 27,
+        "reachOutClass": 1,
+        "reachClassDist": [
+          {
+            "class": "PC*",
+            "classFriendly": "Chimie B",
+            "count": 27
+          },
+          {
+            "class": "PC",
+            "classFriendly": "Chimie A",
+            "count": 1
+          }
+        ]
       },
       "izolat": {
         "id": 1519,
@@ -15525,7 +15769,31 @@
         "rankReach": 250,
         "rankPop": 299,
         "rankOpenness": 299,
-        "rankReach2": 278
+        "rankReach2": 278,
+        "reachInClass": 18,
+        "reachOutClass": 9,
+        "reachClassDist": [
+          {
+            "class": "MP*2",
+            "classFriendly": "Mate C",
+            "count": 18
+          },
+          {
+            "class": "MP*1",
+            "classFriendly": "Mate B",
+            "count": 5
+          },
+          {
+            "class": "PSI*",
+            "classFriendly": "Inginerie",
+            "count": 3
+          },
+          {
+            "class": "MP",
+            "classFriendly": "Mate A",
+            "count": 1
+          }
+        ]
       }
     },
     "strategies": {
