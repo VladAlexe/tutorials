@@ -2229,6 +2229,95 @@ function renderStrategyDuel(container, block, stats) {
   });
 }
 
+// Two panels, same class-clustered layout. Each panel highlights TWO people's
+// individual reach zones plus their overlap. Purpose: show the difference
+// between champions who cover the same area (Chloé + Gabin, both Bio C) and
+// champions who cover disjoint areas (Chloé + Rémi, different classes).
+// Reads individualReach for the seed IDs from build precompute.
+function renderOverlapDuel(container, block, stats) {
+  const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
+  const positions = cm._positions || {};
+  const positionsList = Object.entries(positions);
+  const ir = cm._individualReach || {};
+  const pairs = block.pairs || [
+    { a: 778, b: 939, aName: "Chloé", bName: "Gabin" },
+    { a: 778, b: 1218, aName: "Chloé", bName: "Rémi" },
+  ];
+
+  const grid = document.createElement("div");
+  grid.className = "overlap-duel";
+  container.appendChild(grid);
+
+  const S = 360;
+  const projX = (px) => ((px + 1) / 2) * (S - 30) + 15;
+  const projY = (py) => ((py + 1) / 2) * (S - 30) + 15;
+
+  pairs.forEach((pair) => {
+    const setA = new Set((ir[String(pair.a)]?.coveredIds || []).map(String));
+    const setB = new Set((ir[String(pair.b)]?.coveredIds || []).map(String));
+    const both = new Set([...setA].filter((x) => setB.has(x)));
+    const onlyA = new Set([...setA].filter((x) => !setB.has(x)));
+    const onlyB = new Set([...setB].filter((x) => !setA.has(x)));
+    const aId = String(pair.a);
+    const bId = String(pair.b);
+    const aName = pair.aName || ir[aId]?.name || "?";
+    const bName = pair.bName || ir[bId]?.name || "?";
+
+    const COLOR_A = "#8b4a1e";      // warm brown = A only
+    const COLOR_B = "#2f6fa8";      // cool blue = B only
+    const COLOR_BOTH = "#2a1f16";   // dark ink = overlap (both)
+    const COLOR_MISS = "#e5dccb";   // pale = neither
+
+    // Render base pale dots + colored dots on top. Draw missed first, then
+    // A-only, then B-only, then both (largest r).
+    const misses = [];
+    const aOnly = [];
+    const bOnly = [];
+    const overlaps = [];
+    positionsList.forEach(([nid, p]) => {
+      const x = projX(p.x), y = projY(p.y);
+      if (both.has(nid)) overlaps.push([x, y]);
+      else if (onlyA.has(nid)) aOnly.push([x, y]);
+      else if (onlyB.has(nid)) bOnly.push([x, y]);
+      else misses.push([x, y]);
+    });
+
+    const dot = (pts, r, color, extra = "") =>
+      pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"${extra}/>`).join("");
+
+    // Seed markers (larger, black outline) at the two chosen people
+    const pa = positions[aId]; const pb = positions[bId];
+    const seedSvg = [pa, pb].filter(Boolean).map((p, i) => {
+      const cx = projX(p.x), cy = projY(p.y);
+      const color = i === 0 ? COLOR_A : COLOR_B;
+      return `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="8" fill="${color}" stroke="#000" stroke-width="1.4"/>`;
+    }).join("");
+
+    const svg =
+      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:400px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Zonele atinse de ${esc(aName)} și ${esc(bName)}">` +
+      dot(misses, 2.4, COLOR_MISS) +
+      dot(aOnly, 3.6, COLOR_A) +
+      dot(bOnly, 3.6, COLOR_B) +
+      dot(overlaps, 4.2, COLOR_BOTH) +
+      seedSvg +
+      `</svg>`;
+
+    const cell = document.createElement("div");
+    cell.className = "overlap-duel__cell";
+    cell.innerHTML =
+      `<div class="overlap-duel__title"><strong>${esc(aName)}</strong> și <strong>${esc(bName)}</strong></div>` +
+      svg +
+      `<div class="overlap-duel__legend">` +
+        `<span><span class="overlap-duel__dot" style="background:${COLOR_A}"></span>${esc(aName)}: <strong>${setA.size}</strong></span>` +
+        `<span><span class="overlap-duel__dot" style="background:${COLOR_B}"></span>${esc(bName)}: <strong>${setB.size}</strong></span>` +
+        `<span><span class="overlap-duel__dot" style="background:${COLOR_BOTH}"></span>în comun: <strong>${both.size}</strong></span>` +
+      `</div>`;
+    grid.appendChild(cell);
+  });
+}
+
 // Legacy single-map compare (kept for backward compat but not used by m5 now).
 function renderStrategyCompare(container, block, stats) {
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
@@ -2753,6 +2842,11 @@ export async function renderChart(container, block) {
     if (block.variant === "strategy-duel") {
       const stats = await getStats(block);
       renderStrategyDuel(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "overlap-duel") {
+      const stats = await getStats(block);
+      renderOverlapDuel(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {

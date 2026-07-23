@@ -12,7 +12,7 @@
     { "n": 2, "title": "Măsurăm oameni", "startIdx": 4 },
     { "n": 3, "title": "Enigma, soluția și cine rămâne pe dinafară", "startIdx": 14 },
     { "n": 4, "title": "Aceeași greșeală, un nivel mai sus", "startIdx": 20 },
-    { "n": 5, "title": "Teza", "startIdx": 27 }
+    { "n": 5, "title": "Teza", "startIdx": 24 }
   ],
   "blocks": [
     {
@@ -306,27 +306,6 @@
       "caption": "Trei elevi la care vestea nu ajunge niciodată. Uită-te că nu sunt nici măcar legați între ei. Nu formează un grup de excluși, sunt <strong>trei margini diferite ale aceleiași școli</strong>. Sunt <strong>{{sliceMetrics.unreachableCount}}</strong> în total. Nu apar în niciun clasament, nu sunt suspecți, nu sunt campioni. Sunt oamenii pe care nicio strategie nu îi atinge."
     },
     {
-      "type": "text",
-      "id": "m0-candidati-din-masuri",
-      "title": "Înapoi la misiune, cu bugetul mărit",
-      "content": "<p>Înapoi la misiunea de la început, dar cu bugetul mărit: nu unul, ci trei oameni.</p><p>Acum știi ce nu funcționează. Popularitatea nu prezice răspândirea. Deci nu mai alegem cei mai populari trei, alegem <strong>cei mai buni trei răspânditori</strong>, primii trei din clasamentul de la simulare. E alegerea informată, cea care ține cont de tot ce am învățat.</p><p>Hai s-o testăm.</p><p>Ca reamintire, iată campionii pe care ni i-au dat cele patru măsuri:</p><table class=\"lesson-table\"><thead><tr><th>Măsura</th><th>Cine iese primul</th><th>Câți oameni află de la el</th></tr></thead><tbody><tr><td>Gradul</td><td>{{name:vedeta}}, Bio C</td><td>{{reach:vedeta}}</td></tr><tr><td>Deschiderea</td><td>{{name:puntea}}, Mate C</td><td>{{reach:puntea}}</td></tr><tr><td>Intermedierea</td><td>Charlotte, Bio C</td><td>51</td></tr><tr><td>Simularea din toți</td><td>{{name:campionul}}, Bio C</td><td>{{reach:campion}}</td></tr></tbody></table>"
-    },
-    {
-      "type": "diffusion",
-      "id": "m1-o-alegere",
-      "mode": "mission",
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "teamSize": 1,
-      "candidates": ["vedeta", "campion", "puntea"],
-      "presets": [
-        { "label": "La întâmplare", "random": true }
-      ],
-      "title": "O alegere",
-      "intro": "<p>Momentul a venit. Ai o veste care trebuie să ajungă la toată școala până diseară. O spui unei singure persoane. Ea le spune celor patru oameni cu care petrece cel mai mult timp, aceia mai departe, și tot așa, dar ziua se termină: sunt doar {{pasi}} pauze. Îi cunoști pe candidați. Alege.</p>",
-      "caption": "Reține scorul. Îl vom bate, și vei afla de ce nu ai nimerit din prima."
-    },
-    {
       "type": "diffusion",
       "id": "m4-acum-ai-trei",
       "mode": "mission",
@@ -335,27 +314,24 @@
       "teamSize": 3,
       "candidates": ["vedeta", "campion", "puntea"],
       "presets": [
-        { "label": "Cei mai populari trei", "names": ["Antoine", "Chloé", "Léa"] }
+        { "label": "Cei trei pe care îi știi", "names": ["Antoine", "Chloé", "Léa"] }
       ],
       "title": "Acum ai trei",
-      "intro": "<p>Bugetul crește. Nu mai spui unei singure persoane, ci la trei deodată, iar toți trei pornesc vestea în același timp. Atenție la ce se schimbă: nu mai cauți trei oameni buni, ci trei oameni care <strong>împreună</strong> acoperă cât mai mult. Doi oameni foarte buni care ajung la aceiași colegi valorează mai puțin decât unul bun și unul mediocru din capătul opus al școlii.</p>",
-      "caption": "Cei trei pe care îi știi din lecție, împreună: <strong>{{sliceMetrics.mission.knownTeamCoverage}}</strong> din {{sliceMetrics.plafon}} posibili. Cei mai populari trei ai școlii, aleși după grad: <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong>. Puțin mai bine, dar tot departe de plafon. Fiecare atinge în jur de cincizeci de oameni și abia se suprapun între ei. Nu e o problemă de bulă comună. E o problemă de adâncime."
-    },
-    {
-      "type": "text",
-      "id": "m4b-echipe-din-masuri",
-      "title": "Echipele din măsuri eșuează și ele",
-      "content": "<p>Poate echipa se construiește din campioni. Le-am încercat pe toate.</p><table class=\"lesson-table\"><thead><tr><th>Echipa</th><th>Cine</th><th>Acoperire</th></tr></thead><tbody><tr><td>Cei mai populari trei</td><td>Antoine, Léa, Élodie</td><td>{{sliceMetrics.mission.top3PopularCoverage}}</td></tr><tr><td>Cei mai deschiși trei</td><td>Léa, Samuel, Hélène</td><td>{{sliceMetrics.mission.top3OpenCoverage}}</td></tr><tr><td>Cei mai centrali trei</td><td>Charlotte, Karam, Diane</td><td>{{sliceMetrics.mission.top3BetweennessCoverage}}</td></tr><tr><td>Cei trei pe care îi știi</td><td>Antoine, Chloé, Léa</td><td>{{sliceMetrics.mission.knownTeamCoverage}}</td></tr><tr><td><strong>Cei mai buni trei răspânditori</strong></td><td>Chloé, Gabin, Estée</td><td><strong>{{sliceMetrics.mission.top3ReachCoverage}}</strong></td></tr></tbody></table><p>Ultima linie e cea surprinzătoare. Ai lua cei trei care, fiecare singur, aduc cei mai mulți oameni. Pare o alegere de neatacat.</p><p>Nu e. <strong>{{sliceMetrics.mission.top3ReachCoverage}} din {{sliceMetrics.plafon}}</strong>. Motivul e vechi: Chloé și Gabin sunt colegi de clasă și acoperă în mare parte aceiași oameni. Se suprapun pe 64 dintre cei 71 pe care îi atinge Gabin. Adăugându-l, echipa câștigă doar 7 oameni noi.</p><p>Niciun clasament nu produce cea mai bună echipă. Motivul e mereu același: campionii seamănă între ei. O măsură bună pentru un om nu e o măsură bună pentru o echipă. Pentru echipe trebuie altceva.</p>"
+      "intro": "<p>Ai aflat ce contează: nu câți oameni cunoști, ci pe cine cunosc ei. Zona de la doi pași în jurul tău.</p><p>Acum bugetul crește. Nu unul, ci trei oameni. Deci <strong>trei zone</strong>.</p><p>Alege-i.</p>",
+      "caption": "Reține scorul. Acum hai să vedem ce s-a întâmplat de fapt."
     },
     {
       "type": "chart",
-      "id": "m5-strategii",
-      "variant": "strategy-duel",
+      "id": "m-zonele-se-suprapun",
+      "variant": "overlap-duel",
       "statsSource": "data/highschool-stats.json",
-      "strategies": ["greedy", "top3reach", "top3pop", "knownTeam", "top3betw"],
-      "title": "Două echipe, aceeași școală",
-      "intro": "<p>Două echipe, aceeași școală. În stânga, cea aleasă de algoritm. În dreapta, cea formată din cei mai buni trei răspânditori. Fiecare clasă e o grămadă compactă de puncte. Punctele colorate au aflat vestea, cele palide nu, iar cei trei aleși sunt marcați cu punct negru mai mare.</p>",
-      "caption": "<p>Uită-te la <strong>Chimie B</strong>, grămada din mijlocul rândului de jos. La toate echipele formate din campioni, indiferent de măsură, rămâne <strong>complet palidă</strong>. Zero din 35 de elevi. Nu puțini, niciunul.</p><p>La fel <strong>Chimie A</strong>: campionii ating între 5 și 15% din ea, algoritmul ajunge la <strong>85%</strong>.</p><p>Motivul e că toți campionii, indiferent de măsură, ies din aceleași câteva clase. Am numărat: din cele 12 poziții de top (4 măsuri × 3), <strong>6 sunt din Bio C, 3 din Mate C</strong>, iar Bio B, Chimie A, Chimie B și Mate B nu apar niciodată. Clasamentele scot în față oameni care seamănă între ei, iar colțurile școlii rămân pe dinafară.</p><p>Algoritmul nu caută oameni buni. Caută <strong>acoperire nouă</strong>. De aceea intră unde ceilalți nu ajung: îl alege pe Honorine, din Chimie A, care nu apare în vârful niciunei măsuri.</p><p>Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie.</p>"
+      "pairs": [
+        { "a": 778, "b": 939, "aName": "Chloé", "bName": "Gabin" },
+        { "a": 778, "b": 1218, "aName": "Chloé", "bName": "Rémi" }
+      ],
+      "title": "Zonele se suprapun",
+      "intro": "<p>Chloé și Gabin sunt primii doi din clasamentul răspândirii. Fiecare, singur, e excelent: 73 și 71 de oameni.</p><p>Uită-te în stânga. Zonele lor sunt, în mare parte, aceeași zonă. <strong>64 dintre cei 71</strong> pe care îi atinge Gabin erau deja atinși de Chloé. Adăugându-l în echipă, câștigi doar <strong>7</strong> oameni noi.</p><p>În dreapta, Chloé și Rémi. Rémi singur e mult mai slab decât Gabin, doar 68 solo. Dar zona lui e altundeva. În comun cu Chloé au <strong>un singur om</strong>.</p><p>Nu cauți trei zone bune. Cauți trei zone <strong>diferite</strong>.</p>",
+      "caption": "<p>Aceeași greșeală, un nivel mai sus. La un om conta unde stă el. La o echipă contează unde stau membrii unul față de altul.</p>"
     },
     {
       "type": "diffusion",
@@ -363,15 +339,15 @@
       "mode": "greedy-anim",
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
-      "title": "Cum caută algoritmul",
-      "intro": "<p>Vezi de ce cei mai buni trei răspânditori, luați împreună, sunt mediocri. Ce alegere ai face în locul algoritmului? Uită-te la modul lui de a lucra, pas cu pas.</p><p><strong>Pasul 1.</strong> Din toți cei {{total}} de elevi, cine acoperă cel mai mult singur? Chloé cu <strong>73</strong>, apoi Gabin cu 71, apoi Estée cu 68, apoi Rémi cu 68. Alegem primul: <strong>Chloé</strong>.</p><p><strong>Pasul 2.</strong> Acum întrebarea se schimbă. Nu mai căutăm cine acoperă cel mai mult, ci <strong>cine adaugă cel mai mult peste ce avem deja</strong>. Recalculăm pentru toți cei {{total}}.</p><p>Al doilea din clasamentul de dinainte, Gabin, adaugă doar <strong>7</strong> oameni noi, pentru că e coleg de clasă cu Chloé și 64 dintre ai lui erau deja acoperiți. Rémi, care era pe locul patru, adaugă <strong>67</strong>. Alegem <strong>Rémi</strong>.</p><p><strong>Pasul 3.</strong> Recalculăm din nou. Onorine adaugă <strong>43</strong>, cel mai mult dintre toți rămași. Alegem <strong>Honorine</strong>.</p><p>Acum apasă butonul și urmărește vizual cum se completează cei trei pași.</p>",
-      "caption": "<p>Algoritmul nu caută oameni buni. Caută <strong>acoperire nouă</strong>. De aceea la al doilea pas alege pe cineva care, singur, e mediocru: îi pasă doar ce adaugă peste ce are deja.</p><p>Sunt <strong>4.410.309</strong> feluri de a alege trei oameni din {{total}}. Prea multe ca să le încerci pe toate. Algoritmul face {{total}} evaluări la fiecare pas, deci trei runde de câte {{total}}, și obține un rezultat foarte bun fără să caute exhaustiv.</p><p><em>Problema se numește <strong>influence maximization</strong> și e formalizată de Kempe, Kleinberg și Tardos în 2003, într-unul dintre cele mai citate articole din domeniu. Metoda pe care o vezi la lucru se numește <strong>greedy algorithm</strong>.</em></p>"
+      "title": "Algoritmul",
+      "intro": "<p>Deci cum găsești trei zone care nu se suprapun? Nu poți încerca toate combinațiile: sunt <strong>4.410.309</strong>.</p><p>Algoritmul face altceva. La fiecare pas nu întreabă cine e cel mai bun, ci <strong>cine adaugă cel mai mult peste ce am deja</strong>.</p><p><strong>Pasul 1.</strong> Din toți cei {{total}} de elevi, cine acoperă cel mai mult singur? Chloé cu 73, apoi Gabin cu 71, apoi Estée cu 68, apoi Rémi cu 68. Alegem primul: <strong>Chloé</strong>.</p><p><strong>Pasul 2.</strong> Recalculăm pentru toți. Gabin, al doilea din clasament, adaugă doar <strong>7</strong> oameni noi, pentru că 64 dintre ai lui erau deja acoperiți. Rémi, care era pe locul patru solo, adaugă <strong>67</strong>. Alegem <strong>Rémi</strong>.</p><p><strong>Pasul 3.</strong> Recalculăm iar. Honorine adaugă <strong>43</strong>, cel mai mult dintre toți rămași. Alegem <strong>Honorine</strong>.</p><p>Apasă butonul și urmărește vizual.</p>",
+      "caption": "<p>Nu caută oameni buni. Caută <strong>acoperire nouă</strong>. De asta alege, la pasul doi, pe cineva care singur ar fi mediocru.</p><p>Comparație directă: echipa celor mai buni trei răspânditori, <strong>{{sliceMetrics.mission.top3ReachCoverage}}</strong>. Alegerea algoritmului, <strong>{{sliceMetrics.mission.greedyCoverage}}</strong>.</p><p><em>Procedeul se numește <strong>alegere lacomă</strong>, descris de Kempe, Kleinberg și Tardos în 2003.</em></p>"
     },
     {
       "type": "text",
       "id": "m7-cine-sunt-ei",
       "title": "Cine sunt ei",
-      "content": "<p>Algoritmul a ales trei oameni. Pe unul îl cunoști: <strong>{{name:campion}}</strong>. Pe ceilalți doi nu i-ai văzut niciodată în lecție.</p><p><strong>Rémi, Mate C.</strong> 3 contacte. Locul 242 din {{total}} la grad, 43 la deschidere, 4 la rază.</p><p><strong>Honorine, Chimie A.</strong> 6 contacte. Locul 127 la grad, 36 la deschidere, 79 la rază.</p><p>Nicio măsură nu i-a găsit. Dacă ai fi ales după clasamente, nu i-ai fi luat niciodată. Și totuși, împreună cu {{name:campion}}, acoperă <strong>{{sliceMetrics.mission.greedyCoverage}}</strong>, mai mult decât orice echipă de campioni. Pentru că fiecare stă în altă parte a școlii.</p><p><strong>Aceeași greșeală, un nivel mai sus.</strong> Prima dată am crezut că cine cunoaște mai mulți oameni răspândește mai bine. Acum am crezut că cei mai buni trei răspânditori fac cea mai bună echipă. Amândouă sunt false, din același motiv: la indivizi conta poziția în structură, la echipe contează <strong>relația dintre membri</strong>. Aceeași idee, altă scară.</p><p><strong>Mai e ceva de observat, despre noi, nu despre ei.</strong></p><p>Toată lecția s-a petrecut între Bio C și Mate C. Antoine e de acolo, Chloé e de acolo, Léa e de acolo, enigma a fost între doi colegi de bancă.</p><p>Nu din întâmplare: din cele 12 poziții de top trei ale celor patru măsuri, <strong>6 sunt din Bio C</strong> și <strong>3 din Mate C</strong>. Am urmărit oamenii care ies din măsuri, iar măsurile scot în față zonele dense ale rețelei.</p><p>Patru clase, <strong>Bio B, Chimie A, Chimie B și Mate B</strong>, nu apar niciodată în primii trei la nicio măsură. Deci nu au primit niciun personaj de urmărit.</p><p><strong>Honorine, din Chimie A, e primul personaj al lecției dintr-o clasă pe care clasamentele nu au scos-o niciodată la suprafață.</strong> A apărut abia pentru că am pus altă întrebare.</p>"
+      "content": "<p>Algoritmul a ales trei oameni. Pe unul îl cunoști: <strong>{{name:campion}}</strong>. Pe ceilalți doi nu i-ai văzut niciodată în lecție.</p><p><strong>Rémi, Mate C.</strong> 3 contacte. Locul 242 din {{total}} la grad, 43 la deschidere, 4 la rază.</p><p><strong>Honorine, Chimie A.</strong> 6 contacte. Locul 127 la grad, 36 la deschidere, 79 la rază.</p><p>Nicio măsură nu i-a găsit. Dacă ai fi ales după clasamente, nu i-ai fi luat niciodată.</p><p><strong>Mai e ceva de observat, despre noi, nu despre ei.</strong></p><p>Toată lecția s-a petrecut între Bio C și Mate C. Antoine e de acolo, Chloé e de acolo, Léa e de acolo, enigma a fost între doi colegi de bancă.</p><p>Nu din întâmplare: din cele 12 poziții de top trei ale celor patru măsuri, <strong>6 sunt din Bio C</strong> și <strong>3 din Mate C</strong>. Am urmărit oamenii care ies din măsuri, iar măsurile scot în față zonele dense ale rețelei.</p><p>Patru clase, <strong>Bio B, Chimie A, Chimie B și Mate B</strong>, nu apar niciodată în primii trei la nicio măsură. Deci nu au primit niciun personaj de urmărit.</p><p><strong>Honorine, din Chimie A, e primul personaj al lecției dintr-o clasă pe care clasamentele nu au scos-o niciodată la suprafață.</strong> A apărut abia pentru că am pus altă întrebare.</p>"
     },
     {
       "type": "chart",

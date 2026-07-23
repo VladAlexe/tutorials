@@ -1434,6 +1434,21 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     }
     coverage_maps["_measureMaps"] = measure_maps
 
+    # === Individual reach sets for the zone-overlap card (Ch4 opener).
+    # We pin Chloé (778), Gabin (939) and Rémi (1218) — the pair-wise story
+    # the card visualizes is Chloé+Gabin (huge overlap) vs Chloé+Rémi (almost
+    # disjoint). The client reads these sets to color dots.
+    _zone_ids = [778, 939, 1218]
+    individual_reach = {}
+    for zid in _zone_ids:
+        if zid in node_ids:
+            r = diffuse_limited([zid], adj_top, pasi)
+            individual_reach[str(zid)] = {
+                "name": name_map.get(zid, str(zid)),
+                "coveredIds": sorted(int(x) for x in r),
+            }
+    coverage_maps["_individualReach"] = individual_reach
+
     # === Greedy step-by-step trace: at each step, top 5 candidates by
     # marginal gain (coverage added over currently-chosen), plus who was
     # picked. Used by the new "cine sunt ei" story-telling in the greedy
