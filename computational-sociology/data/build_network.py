@@ -857,6 +857,69 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "sizes":           sizes_top5,
     }
 
+    # --- try-break scenarios (precomputed for the c10-try-break card).
+    # For each candidate removal set, compute connected components on the
+    # remaining nodes; report component sizes (desc), which nodes end up
+    # detached from the biggest surviving piece, and totals. The browser
+    # just reads this and animates; no live BFS on the client.
+    def scenario(key, label, removed_ids, description=""):
+        removed = set(removed_ids)
+        seen_s = set(removed)
+        components = []  # list of member-id lists, one per component
+        for start in node_ids:
+            if start in seen_s: continue
+            members = []
+            stack_ = [start]
+            while stack_:
+                x_ = stack_.pop()
+                if x_ in seen_s: continue
+                seen_s.add(x_); members.append(x_)
+                for y in adj.get(x_, ()):
+                    if y not in seen_s and y not in removed:
+                        stack_.append(y)
+            components.append(members)
+        components.sort(key=lambda c: -len(c))
+        biggest = components[0] if components else []
+        detached_ids = [x for comp in components[1:] for x in comp]
+        sizes = [len(c) for c in components]
+        return {
+            "key":                key,
+            "label":               label,
+            "description":         description,
+            "removedIds":          [x for x in removed_ids],
+            "removedNames":        [name_map.get(x, str(x)) for x in removed_ids],
+            "componentSizesAfter": sizes,
+            "biggestSize":         len(biggest),
+            "detachedIds":         detached_ids,
+            "detachedCount":       len(detached_ids),
+            "totalGroups":         len(components),
+            "totalRemaining":      len(node_ids) - len(removed_ids),
+        }
+
+    try_break_scenarios = [
+        scenario(
+            "vedeta",
+            "Scoate-l pe {}".format(name_map.get(ROLE_IDS["vedeta"], "?")),
+            [ROLE_IDS["vedeta"]],
+            "Cel mai popular elev al școlii dispare. Ce se rupe?"
+        ),
+        scenario(
+            "top5",
+            "Scoate primii cinci după grad",
+            top5_ids,
+            "Elimină simultan cei mai populari cinci elevi. Rețeaua rezistă?"
+        ),
+        scenario(
+            "dependent",
+            "Scoate-l pe {}".format(name_map.get(ROLE_IDS["dependent"], "?")),
+            [ROLE_IDS["dependent"]],
+            "Un elev cu popularitate modestă, dar cu un rol structural aparte."
+        ),
+    ]
+    try_break = {
+        "scenarios": try_break_scenarios,
+    }
+
     # === MISSION DATA: trioMission (Sandu, Emil, Doina), correlations, plafon, scatterData
 
     def person_by_name(target_name):
@@ -1021,6 +1084,7 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "nBridgeEdges":        len(bridge_edges),
         "classPairMatrix":     class_pair_matrix,
         "top5Removal":         top5_removal,
+        "tryBreak":            try_break,
         "trioMission":         trio_mission,
         "correlations":        correlations,
         "plafon":              plafon,

@@ -2940,26 +2940,29 @@ export async function renderDiffusion(container, block, options = {}) {
   }
 
   else if (mode === "try-break") {
-    // Node-removal experiment. Pornire: o singură componentă, o singură
-    // culoare (bej, la fel ca schema Componenta din harta). La scoaterea
-    // dependentului, desprinșii primesc o culoare de accent ȘI se depărtează
-    // vizibil, ca despărțirea să se vadă ca ruptură. Modul Legături dispare.
-    cy.nodes().addClass("knows");  // lift the 0.15 base opacity so nodes are visible from mount
+    // Node-removal experiment, driven ENTIRELY by precomputed scenarios in
+    // sm.tryBreak. Nothing is computed live. The network starts colored by
+    // Louvain communities (visible groups from mount, not uniform beige).
+    // On scenario select: removed nodes fade, detached nodes get an accent
+    // color and animate outward, counter shows groups + sizes.
+    cy.nodes().addClass("knows");
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
     const sm = statsData?.sliceMetrics || {};
-    const cutVertices = sm.cutVertices || [];
-    const nCutVertices = sm.nCutVertices || cutVertices.length;
-    const top5Removal = sm.top5Removal || { top5: [] };
-    const cutMap = new Map();
-    for (const cv of cutVertices) cutMap.set(String(cv.id), cv);
+    const scenarios = sm.tryBreak?.scenarios || [];
+    const scenarioByKey = new Map(scenarios.map((s) => [s.key, s]));
 
-    const removedNodes = new Set();
-    const detachedNodes = new Set();
+    // Louvain res10 gives ~15 communities close to classes; use it for the
+    // "visible groups" starting palette.
+    const commByNode = sm.louvain?.res10?.byId || sm.communities?.byId || {};
+    const commPalette = GROUP_PALETTE.slice();
 
-    const BASE_COLOR = "#efe6d6";       // same beige as Componenta scheme
-    const REMOVED_COLOR = "#a3341f";
-    const DETACHED_COLOR = "#c96d3f";   // warm accent = new component
+    const REMOVED_COLOR = "#3a2a1a";
+    const DETACHED_COLOR = "#c96d3f";
+    const DETACHED_BORDER = "#5a2a10";
+
+    let removedIds = new Set();
+    let detachedIds = new Set();
 
     const initialPositions = new Map();
     function snapshotPositions() {
@@ -2969,188 +2972,170 @@ export async function renderDiffusion(container, block, options = {}) {
         initialPositions.set(n.id(), { x: p.x, y: p.y });
       });
     }
+    setTimeout(snapshotPositions, 220);
 
-    // Snapshot positions after cose settles.
-    setTimeout(snapshotPositions, 200);
+    function communityColor(nid) {
+      const c = commByNode[nid];
+      if (c == null) return "#8a7a68";
+      return commPalette[c % commPalette.length];
+    }
 
     function paintBase() {
       cy.nodes().forEach((n) => {
+        const col = communityColor(n.id());
         n.style("opacity", 1);
         n.style("width", 9); n.style("height", 9);
         n.style("border-width", 1);
-        n.style("border-color", "#c9beac");
-        n.style("background-color", BASE_COLOR);
-        n.data("color", BASE_COLOR);
+        n.style("border-color", "#5a4a3a");
+        n.style("background-color", col);
+        n.data("color", col);
       });
       cy.edges().forEach((e) => {
-        e.style("opacity", 0.35);
+        e.style("opacity", 0.4);
         e.style("width", 0.8);
-        e.style("line-color", "#d9cfc0");
+        e.style("line-color", "#8a7154");
       });
     }
 
     function resetAllVisuals() {
-      removedNodes.clear();
-      detachedNodes.clear();
+      removedIds = new Set();
+      detachedIds = new Set();
       paintBase();
       const anims = [];
       cy.nodes().forEach((n) => {
         const p = initialPositions.get(n.id());
-        if (p) anims.push(n.animation({ position: p, duration: 400 }));
+        if (p) anims.push(n.animation({ position: p, duration: 400, easing: "ease-in-out" }));
       });
       anims.forEach((a) => a.play());
-      setTimeout(updateStatus, 450);
+      setTimeout(() => updateStatus(null), 450);
     }
 
     function graphCenter() {
       let sx = 0, sy = 0, c = 0;
       cy.nodes().forEach((n) => {
-        if (removedNodes.has(n.id())) return;
+        if (removedIds.has(n.id())) return;
         sx += n.position().x; sy += n.position().y; c++;
       });
       if (c === 0) return { x: 0, y: 0 };
       return { x: sx / c, y: sy / c };
     }
 
-    function removeNodeVisual(nid) {
-      const id = String(nid);
-      if (removedNodes.has(id)) return;
-      removedNodes.add(id);
-      const cn = cy.getElementById(id);
-      if (cn && cn.length) {
-        cn.style("opacity", 0.15);
-        cn.style("background-color", REMOVED_COLOR);
-        cn.data("color", REMOVED_COLOR);
+    function applyScenario(scen) {
+      // Reset first so scenarios do not stack.
+      removedIds = new Set();
+      detachedIds = new Set();
+      paintBase();
+
+      const removed = (scen.removedIds || []).map(String);
+      const detached = (scen.detachedIds || []).map(String);
+      removedIds = new Set(removed);
+      detachedIds = new Set(detached);
+
+      // Fade removed nodes + their edges.
+      for (const id of removed) {
+        const cn = cy.getElementById(id);
+        if (cn && cn.length) {
+          cn.style("background-color", REMOVED_COLOR);
+          cn.data("color", REMOVED_COLOR);
+          cn.style("opacity", 0.2);
+          cn.style("border-width", 2);
+          cn.style("border-color", REMOVED_COLOR);
+        }
       }
       cy.edges().forEach((e) => {
-        if (e.source().id() === id || e.target().id() === id) e.style("opacity", 0.04);
+        if (removedIds.has(e.source().id()) || removedIds.has(e.target().id())) {
+          e.style("opacity", 0.06);
+        }
       });
 
-      // Detach: if this node is a cut vertex, paint the detached kids in
-      // accent + push them outward from graph center so the split is visible.
-      const cv = cutMap.get(id);
-      if (cv && Array.isArray(cv.detached) && cv.detached.length) {
-        const detachedIds = cv.detached.map((d) => String(d.id));
-        // Compute avg position of the detached group and push outward from center.
+      // Animate detached: accent color + push away from remaining graph center.
+      if (detached.length) {
         let ax = 0, ay = 0, ac = 0;
-        for (const did of detachedIds) {
+        for (const did of detached) {
           const dn = cy.getElementById(did);
           if (dn && dn.length) { ax += dn.position().x; ay += dn.position().y; ac++; }
         }
         if (ac > 0) {
           ax /= ac; ay /= ac;
           const gc = graphCenter();
-          const dx = ax - gc.x, dy = ay - gc.y;
+          let dx = ax - gc.x, dy = ay - gc.y;
           const mag = Math.sqrt(dx * dx + dy * dy) || 1;
-          const push = 220;
-          const vx = (dx / mag) * push;
-          const vy = (dy / mag) * push;
-          for (const did of detachedIds) {
-            detachedNodes.add(did);
+          // If the detached cluster sits right on top of the remaining center
+          // (rare but possible), pick an arbitrary direction so the push still
+          // separates them visibly.
+          if (mag < 4) { dx = 1; dy = 0; }
+          const push = 240;
+          const vx = (dx / (mag || 1)) * push;
+          const vy = (dy / (mag || 1)) * push;
+          for (const did of detached) {
             const dn = cy.getElementById(did);
-            if (dn && dn.length) {
-              dn.style("background-color", DETACHED_COLOR);
-              dn.data("color", DETACHED_COLOR);
-              dn.style("border-color", "#5a2a10");
-              dn.style("border-width", 2);
-              dn.style("width", 13); dn.style("height", 13);
-              const p = dn.position();
-              dn.animation({
-                position: { x: p.x + vx, y: p.y + vy },
-                duration: 550, easing: "ease-out"
-              }).play();
-            }
+            if (!dn || !dn.length) continue;
+            dn.style("background-color", DETACHED_COLOR);
+            dn.data("color", DETACHED_COLOR);
+            dn.style("border-color", DETACHED_BORDER);
+            dn.style("border-width", 2);
+            dn.style("width", 13); dn.style("height", 13);
+            const p = dn.position();
+            dn.animation({
+              position: { x: p.x + vx, y: p.y + vy },
+              duration: 600, easing: "ease-out"
+            }).play();
           }
         }
       }
-      updateStatus();
+
+      updateStatus(scen);
     }
 
-    function updateStatus() {
+    function updateStatus(scen) {
       const infoEl = controls.querySelector('[data-role="info"]');
       const countEl = controls.querySelector('[data-role="count"]');
-      const totalNodes = cy.nodes().length;
-      const activeCount = totalNodes - removedNodes.size;
-      const detachedCount = detachedNodes.size;
-      const mainCount = activeCount - detachedCount;
 
+      if (!scen) {
+        if (countEl) countEl.innerHTML = `<strong>1</strong> bucată · <strong>${nodes.length}</strong> elevi conectați`;
+        if (infoEl) infoEl.textContent = "Apasă un buton ca să vezi ce se rupe.";
+        return;
+      }
+
+      const sizes = scen.componentSizesAfter || [];
+      const groups = scen.totalGroups || sizes.length || 1;
+      const sizeText = sizes.length
+        ? sizes.map((s, i) => i === 0 ? `<strong>${s}</strong> conectați` : `<strong>${s}</strong> desprinși`).join(" · ")
+        : `<strong>${scen.biggestSize ?? 0}</strong> conectați`;
       if (countEl) {
-        if (detachedCount === 0) {
-          countEl.innerHTML = `<strong>1</strong> bucată · <strong>${activeCount}</strong> elevi activi`;
-        } else {
-          countEl.innerHTML = `<strong>2</strong> bucăți · una cu <strong>${mainCount}</strong> elevi, alta cu <strong>${detachedCount}</strong>`;
-        }
+        countEl.innerHTML = `<strong>${groups}</strong> ${groups === 1 ? "bucată" : "bucăți"} · ${sizeText}`;
       }
-
       if (!infoEl) return;
-      if (removedNodes.size === 0) {
-        infoEl.textContent = "Atinge un elev pentru a-l scoate din rețea.";
-        return;
-      }
-      const vedeta = sm.characters?.vedeta;
-      if (removedNodes.size === 1 && vedeta && removedNodes.has(String(vedeta.id))) {
-        infoEl.innerHTML = `Cel mai popular elev din școală a dispărut. O singură bucată, <strong>${activeCount}</strong> elevi. Nimeni nu s-a desprins.`;
-        return;
-      }
-      const dependent = sm.characters?.dependent;
-      if (removedNodes.size === 1 && dependent && removedNodes.has(String(dependent.id))) {
-        const cv = cutMap.get(String(dependent.id));
-        const nDetached = cv?.detachedCount ?? detachedCount;
-        infoEl.innerHTML = `Aici se rupe. Fără <strong>${dependent.name}</strong>, <strong>${nDetached}</strong> elevi rămân separați de restul școlii. El era singurul lor drum.`;
-        return;
-      }
-      const top5Ids = new Set((top5Removal.top5 || []).map((t) => String(t.id)));
-      if (removedNodes.size === 5 && [...top5Ids].every((id) => removedNodes.has(id))) {
-        infoEl.innerHTML = `Cinci dintre cei mai conectați, scoși deodată. Tot o singură bucată. Rețeaua nici nu a clipit.`;
-        return;
-      }
-      const removedNames = [...removedNodes].map((id) => nameById.get(id) || `Elev ${id}`);
-      if (detachedCount > 0) {
-        infoEl.innerHTML = `Scoși: ${removedNames.join(", ")}. Desprinși: <strong>${detachedCount}</strong>, colorați separat.`;
+      if (scen.detachedCount > 0) {
+        infoEl.innerHTML = `${scen.description || ""} <strong>${scen.detachedCount}</strong> elevi s-au desprins de restul școlii, colorați separat.`;
       } else {
-        infoEl.innerHTML = `Scoși: ${removedNames.join(", ")}. Tot o singură bucată.`;
+        infoEl.innerHTML = `${scen.description || ""} Nimeni nu s-a desprins: rețeaua rămâne o singură bucată.`;
       }
     }
 
+    const btnHtml = scenarios.map((s) =>
+      `<button type="button" class="btn btn--ghost" data-scenario="${s.key}">${s.label}</button>`
+    ).join("");
     controls.innerHTML =
       `<div class="diff-row diff-buttons try-break__quick">` +
-        (sm.characters?.vedeta
-          ? `<button type="button" class="btn btn--ghost" data-quick="vedeta">Scoate${sm.characters.vedeta.sex === "F" ? "-o pe " : "-l pe "}${sm.characters.vedeta.name}</button>`
-          : "") +
-        `<button type="button" class="btn btn--ghost" data-quick="top5">Scoate cei mai populari 5</button>` +
-        (sm.characters?.dependent
-          ? `<button type="button" class="btn btn--ghost" data-quick="dependent">Scoate${sm.characters.dependent.sex === "F" ? "-o pe " : "-l pe "}${sm.characters.dependent.name}</button>`
-          : "") +
-        `<button type="button" class="btn btn--ghost" data-quick="reset">Adu-i înapoi</button>` +
+        btnHtml +
+        `<button type="button" class="btn btn--ghost" data-scenario="__reset">Adu-i înapoi</button>` +
       `</div>` +
-      `<div class="diff-count" data-role="count"><strong>1</strong> bucată · <strong>${nodes.length}</strong> elevi</div>` +
-      `<div class="diff-hint" data-role="info">Atinge un elev pentru a-l scoate din rețea.</div>` +
-      `<div class="diff-hint diff-hint--muted">Rețeaua e robustă acolo unde te așteptai să fie fragilă și fragilă acolo unde nu te uitai. Cei mai populari sunt înlocuibili, pentru că între oricare doi elevi există mai multe drumuri. La margine însă, <strong>${nCutVertices}</strong> de elevi obișnuiți sunt singura legătură a cuiva cu restul școlii. <strong>${sm.characters?.dependent?.name || "Dependentul"}</strong> nu e popular. Dar pentru trei oameni, el e tot.</div>`;
+      `<div class="diff-count" data-role="count"><strong>1</strong> bucată · <strong>${nodes.length}</strong> elevi conectați</div>` +
+      `<div class="diff-hint" data-role="info">Apasă un buton ca să vezi ce se rupe.</div>` +
+      `<div class="diff-hint diff-hint--muted">Culorile de start sunt comunitățile detectate de algoritm pe rețea. Când scoți pe cineva important, poate crezi că se rupe tot. Aici se vede când chiar se rupe și când nu.</div>`;
 
-    controls.querySelectorAll("[data-quick]").forEach((btn) => {
+    controls.querySelectorAll("[data-scenario]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const q = btn.dataset.quick;
-        if (q === "reset") { resetAllVisuals(); return; }
-        if (q === "vedeta") {
-          const v = sm.characters?.vedeta;
-          if (v) removeNodeVisual(String(v.id));
-        }
-        if (q === "dependent") {
-          const d = sm.characters?.dependent;
-          if (d) removeNodeVisual(String(d.id));
-        }
-        if (q === "top5") {
-          for (const t of (top5Removal.top5 || [])) removeNodeVisual(String(t.id));
-        }
+        const key = btn.dataset.scenario;
+        if (key === "__reset") { resetAllVisuals(); return; }
+        const scen = scenarioByKey.get(key);
+        if (scen) applyScenario(scen);
       });
     });
 
-    cy.on("tap", "node", (e) => {
-      removeNodeVisual(e.target.id());
-    });
-
     paintBase();
-    updateStatus();
+    updateStatus(null);
   }
 
   return {

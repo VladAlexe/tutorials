@@ -10,9 +10,9 @@
   "chapters": [
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Măsurile școlii", "startIdx": 3 },
-    { "n": 3, "title": "Ipoteze și soluție", "startIdx": 13 },
-    { "n": 4, "title": "Misiunea", "startIdx": 18 },
-    { "n": 5, "title": "Bilanț", "startIdx": 22 }
+    { "n": 3, "title": "Ipoteze, soluție și margini", "startIdx": 13 },
+    { "n": 4, "title": "Misiunea", "startIdx": 19 },
+    { "n": 5, "title": "Bilanț", "startIdx": 23 }
   ],
   "blocks": [
     {
@@ -288,6 +288,16 @@
     },
     {
       "type": "diffusion",
+      "id": "c10-try-break",
+      "mode": "try-break",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Ce se rupe",
+      "intro": "<p>Am văzut cine nu află: elevi de la margine, pe care rețeaua îi ține abia de un fir. Uite acum invers: dacă cei mai importanți dispar, ce se rupe?</p><p>Culorile de start sunt comunitățile detectate de algoritm pe rețea. Apasă butoanele și privește.</p>",
+      "caption": "Rețeaua e robustă acolo unde te-ai fi așteptat să fie fragilă. {{name:vedeta}}, cel mai popular, dispare fără să se rupă nimic. Primii cinci, la fel. Fragilitatea nu e la centru: e la {{name:dependentul}}, un elev cu popularitate modestă care se dovedește a fi <strong>singurul drum</strong> pentru trei colegi. Aceștia trei intră pe lista lui Yann: nu i-a auzit modelul nu pentru că nu ar fi acolo, ci pentru că firul care îi ținea de școală a fost tăiat."
+    },
+    {
+      "type": "diffusion",
       "id": "m1-o-alegere",
       "mode": "mission",
       "data": "data/highschool-network.json",
@@ -414,17 +424,6 @@
       "focus": "Antoine",
       "title": "Ipoteza popularității (arhivat)",
       "intro": "<p>Ipoteza „poate Antoine nu e chiar atât de popular\" a fost mutată implicit în cardul c-gradul, unde Antoine apare direct la locul 1. Rămâne aici pentru consultare.</p>",
-      "caption": "Arhivat."
-    },
-    {
-      "type": "diffusion",
-      "id": "c10-try-break-archive",
-      "mode": "try-break",
-      "enabled": false,
-      "data": "data/highschool-network.json",
-      "statsSource": "data/highschool-stats.json",
-      "title": "Ce se rupe (arhivat, urmează refacere A4)",
-      "intro": "<p>Rămâne pentru refacerea din pasul A4: pornire colorată pe comunități, desprindere animată, contor de grupuri, scenarii precalculate.</p>",
       "caption": "Arhivat."
     },
     {

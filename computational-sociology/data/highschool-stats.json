@@ -6681,6 +6681,80 @@
           294
         ]
       },
+      "tryBreak": {
+        "scenarios": [
+          {
+            "key": "vedeta",
+            "label": "Scoate-l pe Antoine",
+            "description": "Cel mai popular elev al școlii dispare. Ce se rupe?",
+            "removedIds": [
+              117
+            ],
+            "removedNames": [
+              "Antoine"
+            ],
+            "componentSizesAfter": [
+              298
+            ],
+            "biggestSize": 298,
+            "detachedIds": [],
+            "detachedCount": 0,
+            "totalGroups": 1,
+            "totalRemaining": 298
+          },
+          {
+            "key": "top5",
+            "label": "Scoate primii cinci după grad",
+            "description": "Elimină simultan cei mai populari cinci elevi. Rețeaua rezistă?",
+            "removedIds": [
+              117,
+              1332,
+              177,
+              272,
+              252
+            ],
+            "removedNames": [
+              "Antoine",
+              "Léa",
+              "Élodie",
+              "Cléa",
+              "Thérèse"
+            ],
+            "componentSizesAfter": [
+              294
+            ],
+            "biggestSize": 294,
+            "detachedIds": [],
+            "detachedCount": 0,
+            "totalGroups": 1,
+            "totalRemaining": 294
+          },
+          {
+            "key": "dependent",
+            "label": "Scoate-l pe Damien",
+            "description": "Un elev cu popularitate modestă, dar cu un rol structural aparte.",
+            "removedIds": [
+              276
+            ],
+            "removedNames": [
+              "Damien"
+            ],
+            "componentSizesAfter": [
+              295,
+              3
+            ],
+            "biggestSize": 295,
+            "detachedIds": [
+              621,
+              786,
+              923
+            ],
+            "detachedCount": 3,
+            "totalGroups": 2,
+            "totalRemaining": 298
+          }
+        ]
+      },
       "trioMission": {
         "vedeta": {
           "id": 117,
@@ -19331,6 +19405,80 @@
       "largestAfter": 294,
       "sizes": [
         294
+      ]
+    },
+    "tryBreak": {
+      "scenarios": [
+        {
+          "key": "vedeta",
+          "label": "Scoate-l pe Antoine",
+          "description": "Cel mai popular elev al școlii dispare. Ce se rupe?",
+          "removedIds": [
+            117
+          ],
+          "removedNames": [
+            "Antoine"
+          ],
+          "componentSizesAfter": [
+            298
+          ],
+          "biggestSize": 298,
+          "detachedIds": [],
+          "detachedCount": 0,
+          "totalGroups": 1,
+          "totalRemaining": 298
+        },
+        {
+          "key": "top5",
+          "label": "Scoate primii cinci după grad",
+          "description": "Elimină simultan cei mai populari cinci elevi. Rețeaua rezistă?",
+          "removedIds": [
+            117,
+            1332,
+            177,
+            272,
+            252
+          ],
+          "removedNames": [
+            "Antoine",
+            "Léa",
+            "Élodie",
+            "Cléa",
+            "Thérèse"
+          ],
+          "componentSizesAfter": [
+            294
+          ],
+          "biggestSize": 294,
+          "detachedIds": [],
+          "detachedCount": 0,
+          "totalGroups": 1,
+          "totalRemaining": 294
+        },
+        {
+          "key": "dependent",
+          "label": "Scoate-l pe Damien",
+          "description": "Un elev cu popularitate modestă, dar cu un rol structural aparte.",
+          "removedIds": [
+            276
+          ],
+          "removedNames": [
+            "Damien"
+          ],
+          "componentSizesAfter": [
+            295,
+            3
+          ],
+          "biggestSize": 295,
+          "detachedIds": [
+            621,
+            786,
+            923
+          ],
+          "detachedCount": 3,
+          "totalGroups": 2,
+          "totalRemaining": 298
+        }
       ]
     },
     "trioMission": {
