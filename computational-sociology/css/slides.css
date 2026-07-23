@@ -891,6 +891,23 @@
 .viz__gradient-label--left  { left: 0; }
 .viz__gradient-label--right { right: 0; }
 
+/* Class-network mode: 9 aggregated nodes with log-scaled edges */
+.class-net__stage {
+  width: 100%;
+  height: 460px;
+  background: var(--color-page);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  margin-bottom: var(--sp-2);
+}
+.class-net__info {
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+  padding: var(--sp-1) var(--sp-2);
+  min-height: 1.5em;
+}
+.class-net__legend { margin-top: var(--sp-1); }
+
 /* Openness duo mode: two ego networks side by side, colored by class */
 .openness-duo {
   display: grid;

@@ -10,9 +10,9 @@
   "chapters": [
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "O alegere, apoi lumea lui Antoine", "startIdx": 3 },
-    { "n": 3, "title": "De la intuiție la număr", "startIdx": 10 },
-    { "n": 4, "title": "Misiunea", "startIdx": 18 },
-    { "n": 5, "title": "Bilanț", "startIdx": 24 }
+    { "n": 3, "title": "De la intuiție la număr", "startIdx": 11 },
+    { "n": 4, "title": "Misiunea", "startIdx": 19 },
+    { "n": 5, "title": "Bilanț", "startIdx": 25 }
   ],
   "blocks": [
     {
@@ -79,6 +79,16 @@
       "intro": "Prima privire: cine e în școală? Nouă clase, cu profiluri diferite. Tabelul îți dă numărul de elevi, câte fete, câți băieți; barele arată același lucru vizual. Atinge un rând pentru lista de nume cu contacte.",
       "statsSource": "data/highschool-stats.json",
       "caption": "Profilurile atrag diferit. Bio C e predominant feminină, Mate C predominant masculină. Reține compoziția: contează mai târziu, când vedem cine cu cine vorbește."
+    },
+    {
+      "type": "diffusion",
+      "id": "c-clase-agregat",
+      "mode": "class-network",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Cum se leagă clasele",
+      "intro": "<p>Până acum am privit elevi. Hai să privim clase. Fiecare cerc e o clasă întreagă, cu numele ei și numărul de elevi. Grosimea liniei dintre două cercuri arată cât timp petrec împreună elevii a două clase. Mărimea cercului reflectă cât timp petrec elevii unei clase între ei.</p>",
+      "caption": "Doar 7,4% din timpul de contact traversează granițele de clasă. Cele două clase de chimie fac același profil și aproape nu se ating: Chimie B are doar 26 de unități de timp cu restul școlii, față de 2249 în interior, adică 1,1%. În schimb, Bio B și Bio C petrec împreună 593 de unități, mai mult decât oricare altă pereche din școală. Profilul nu decide cu cine îți petreci timpul. Pentru misiunea ta: o veste pornită în Chimie B are un drum lung de făcut."
     },
     {
       "type": "diffusion",

@@ -173,6 +173,158 @@ function errorHandle(container, message) {
   return { refit() {}, destroy() {} };
 }
 
+async function renderClassNetwork(container, block) {
+  container.classList.add("viz");
+  container.innerHTML = "";
+  let cytoscape, data, statsData;
+  try {
+    [cytoscape, data] = await Promise.all([
+      loadCytoscape(),
+      loadJSON(block.data || "data/highschool-network.json")
+    ]);
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch { statsData = null; }
+  } catch (err) { return errorHandle(container, err.message); }
+
+  const classNames = statsData?.classNames || {};
+  const nodeGroup = new Map();
+  const classSize = new Map();
+  for (const n of data.nodes) {
+    nodeGroup.set(n.id, n.group);
+    classSize.set(n.group, (classSize.get(n.group) || 0) + 1);
+  }
+  const internalTime = new Map();
+  const pairTime = new Map();
+  for (const e of data.edges) {
+    if ((e.weight || 0) < 4) continue;
+    const gs = nodeGroup.get(e.source);
+    const gt = nodeGroup.get(e.target);
+    if (!gs || !gt) continue;
+    if (gs === gt) {
+      internalTime.set(gs, (internalTime.get(gs) || 0) + e.weight);
+    } else {
+      const key = gs < gt ? `${gs}|${gt}` : `${gt}|${gs}`;
+      pairTime.set(key, (pairTime.get(key) || 0) + e.weight);
+    }
+  }
+
+  const classes = [...new Set(data.nodes.map((n) => n.group).filter(Boolean))];
+  const classPalette = new Map();
+  classes.forEach((g, i) => classPalette.set(g, GROUP_PALETTE[i % GROUP_PALETTE.length]));
+
+  const maxInternal = Math.max(...classes.map((c) => internalTime.get(c) || 0), 1);
+  const nodeSize = (cls) => {
+    const t = internalTime.get(cls) || 0;
+    const norm = Math.log(t + 1) / Math.log(maxInternal + 1);
+    return 40 + norm * 50;
+  };
+  const maxPair = Math.max(...pairTime.values(), 1);
+  const edgeWidth = (w) => {
+    const norm = Math.log(w + 1) / Math.log(maxPair + 1);
+    return 0.6 + norm * 9;
+  };
+
+  const stage = document.createElement("div");
+  stage.className = "class-net__stage";
+  container.appendChild(stage);
+
+  const info = document.createElement("div");
+  info.className = "class-net__info";
+  info.textContent = "Atinge un cerc pentru cifra ei.";
+  container.appendChild(info);
+
+  const elements = [
+    ...classes.map((c) => ({
+      data: {
+        id: c,
+        label: `${classNames[c] || c}\n${classSize.get(c) || 0} elevi`,
+        color: classPalette.get(c),
+        _size: nodeSize(c),
+      },
+    })),
+    ...[...pairTime.entries()].map(([key, w], i) => {
+      const [a, b] = key.split("|");
+      return { data: { id: `cp${i}`, source: a, target: b, weight: w, _width: edgeWidth(w) } };
+    })
+  ];
+
+  const cy = cytoscape({
+    ...narrowCyOpts(),
+    container: stage,
+    elements,
+    style: [
+      { selector: "node", style: {
+          "background-color": "data(color)",
+          "width": "data(_size)", "height": "data(_size)",
+          "border-width": 2, "border-color": "#3a2a1a",
+          "label": "data(label)",
+          "font-family": "Georgia, serif", "font-size": 12,
+          "color": "#2a1f16",
+          "text-valign": "center", "text-halign": "center",
+          "text-wrap": "wrap", "text-max-width": 90,
+          "text-outline-color": "#faf7f2", "text-outline-width": 2, "text-outline-opacity": 1
+        }
+      },
+      { selector: "edge", style: {
+          "line-color": "#8b4a1e", "opacity": 0.55,
+          "width": "data(_width)", "curve-style": "bezier"
+        }
+      },
+      { selector: "edge.highlight", style: { "line-color": "#2a1f16", "opacity": 1 } },
+      { selector: "edge.faded", style: { "opacity": 0.15 } }
+    ],
+    layout: {
+      name: "cose", animate: false, padding: 40,
+      idealEdgeLength: 130, nodeRepulsion: 12000
+    },
+    minZoom: 0.4, maxZoom: 2.5, wheelSensitivity: 0.2
+  });
+  cy.style().update();
+
+  cy.on("tap", "node", (e) => {
+    const cls = e.target.id();
+    const internal = internalTime.get(cls) || 0;
+    let external = 0;
+    for (const [key, w] of pairTime) {
+      const [a, b] = key.split("|");
+      if (a === cls || b === cls) external += w;
+    }
+    const total = internal + external;
+    const pctExt = total > 0 ? Math.round(1000 * external / total) / 10 : 0;
+    const friendly = classNames[cls] || cls;
+    info.innerHTML = `<strong>${friendly}</strong>: ${pctExt}% din timpul de contact iese din clasă (${external} în afara, ${internal} înăuntru).`;
+    cy.edges().forEach((edge) => {
+      const s = edge.source().id(), t = edge.target().id();
+      if (s === cls || t === cls) {
+        edge.removeClass("faded"); edge.addClass("highlight");
+      } else {
+        edge.removeClass("highlight"); edge.addClass("faded");
+      }
+    });
+  });
+  cy.on("tap", (e) => {
+    if (e.target === cy) {
+      cy.edges().removeClass("highlight faded");
+      info.textContent = "Atinge un cerc pentru cifra ei.";
+    }
+  });
+
+  function refit() { try { cy.resize(); cy.fit(undefined, 40); } catch {} }
+  const onWin = () => refit();
+  window.addEventListener("resize", onWin);
+  const ro = new ResizeObserver(refit);
+  ro.observe(stage);
+  requestAnimationFrame(refit);
+
+  return {
+    refit,
+    destroy() {
+      window.removeEventListener("resize", onWin);
+      ro.disconnect();
+      try { cy.destroy(); } catch {}
+    }
+  };
+}
+
 async function renderOpennessDuo(container, block) {
   container.classList.add("viz");
   container.innerHTML = "";
@@ -738,6 +890,9 @@ export async function renderDiffusion(container, block, options = {}) {
   }
   if (mode === "openness-duo") {
     return await renderOpennessDuo(container, block);
+  }
+  if (mode === "class-network") {
+    return await renderClassNetwork(container, block);
   }
 
   let cytoscape, data;
