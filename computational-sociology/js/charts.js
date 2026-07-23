@@ -1,4 +1,61 @@
-// Pure-SVG chart variants. No external library.
+// Pure-SVG chart variants. No external library for most; cytoscape is loaded
+// on demand only for the measure-tabs "Pe hartă" layoutMode: "liber" view.
+
+const _V = new URL(import.meta.url).searchParams.get("v") || "1";
+let _cyLoaderPromise = null;
+async function _loadCy() {
+  if (!_cyLoaderPromise) {
+    _cyLoaderPromise = import(`./visualizations.js?v=${_V}`).then((m) => m.loadCytoscape());
+  }
+  return _cyLoaderPromise;
+}
+
+// Cache for computed cose layouts, keyed by network path so we only run
+// cose once per session across all three measure cards.
+const _cosePositionsCache = new Map();
+async function computeCosePositions(netPath) {
+  if (_cosePositionsCache.has(netPath)) return _cosePositionsCache.get(netPath);
+  const cytoscape = await _loadCy();
+  const net = await loadJSON(netPath);
+  const elements = [
+    ...net.nodes.map((n) => ({ data: { id: String(n.id) } })),
+    ...net.edges.filter((e) => (e.weight || 1) >= 4).map((e, i) => ({
+      data: { id: `ce${i}`, source: String(e.source), target: String(e.target) }
+    })),
+  ];
+  const container = document.createElement("div");
+  container.style.cssText = "position:absolute;left:-99999px;top:-99999px;width:800px;height:800px;";
+  document.body.appendChild(container);
+  const cy = cytoscape({
+    container,
+    elements,
+    style: [{ selector: "node", style: { "width": 8, "height": 8 } }],
+    layout: { name: "cose", animate: false, padding: 40, idealEdgeLength: 60, nodeRepulsion: 4500, randomize: true },
+  });
+  // Layout runs synchronously with animate:false; positions are set on the
+  // instance immediately after the layout returns.
+  const positions = {};
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  cy.nodes().forEach((n) => {
+    const p = n.position();
+    positions[n.id()] = { x: p.x, y: p.y };
+    if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x;
+    if (p.y < minY) minY = p.y; if (p.y > maxY) maxY = p.y;
+  });
+  // Normalize to [-1, 1] with a small margin.
+  const spanX = (maxX - minX) || 1, spanY = (maxY - minY) || 1;
+  const out = {};
+  for (const [nid, p] of Object.entries(positions)) {
+    out[nid] = {
+      x: (((p.x - minX) / spanX) * 2 - 1) * 0.95,
+      y: (((p.y - minY) / spanY) * 2 - 1) * 0.95,
+    };
+  }
+  try { cy.destroy(); } catch {}
+  container.remove();
+  _cosePositionsCache.set(netPath, out);
+  return out;
+}
 
 async function loadJSON(path) {
   const res = await fetch(path);
@@ -1559,12 +1616,26 @@ async function renderUnreachedMulti(container, block, stats) {
 async function renderMeasureTabs(container, block, stats) {
   const measure = block.measure || "degree";  // "degree" | "openness" | "betweenness"
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
-  // Use the CLASS-CLUSTERED layout (same as the school map card), not the
-  // organic FR embedding. Reason: on a spring layout the champion's contacts
-  // look like a random cloud, which hides exactly what the measure is
-  // supposed to expose. On class clusters, Antoine's contacts stay inside
-  // one clump; Léa's jump between clumps. The measure becomes visible.
-  const positions = cm._positions || {};
+  // Per-card layout: "liber" runs cose live (same as the school-map "Liber"
+  // mode); "class" uses the precomputed class-clustered ring positions.
+  // Defaults: grad + intermediere on liber, deschidere on class (the point
+  // of deschidere is exactly to see contacts jump between class clumps).
+  const defaultLayout = measure === "openness" ? "class" : "liber";
+  const layoutMode = block.layoutMode || defaultLayout;
+
+  let positions;
+  if (layoutMode === "liber") {
+    const netPath = block.data || "data/highschool-network.json";
+    const cose = await computeCosePositions(netPath);
+    const meta = cm._positions || {};
+    positions = {};
+    for (const [nid, p] of Object.entries(cose)) {
+      const m = meta[nid] || {};
+      positions[nid] = { x: p.x, y: p.y, class: m.class, classFriendly: m.classFriendly };
+    }
+  } else {
+    positions = cm._positions || {};
+  }
   const mm = cm._measureMaps || {};
   const forMeasure = mm[measure] || null;
   const positionsList = Object.entries(positions);
@@ -1692,7 +1763,7 @@ async function renderMeasureTabs(container, block, stats) {
       `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
       `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
       `role="img" aria-label="Harta măsurii pentru ${esc(champ.name)}">` +
-      baseDotsSvg(hi) + classLabelsSvg() + edges + contactDots + champDot + label +
+      baseDotsSvg(hi) + (layoutMode === "class" ? classLabelsSvg() : "") + edges + contactDots + champDot + label +
       `</svg>`;
     mapCaption.innerHTML = opts.subtitle || "";
   }
@@ -1780,7 +1851,7 @@ async function renderMeasureTabs(container, block, stats) {
         `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
         `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
         `role="img" aria-label="Drumuri prin ${esc(champ.name)}">` +
-        baseDotsSvg(highlightIds) + classLabelsSvg() + pathSvgs + endDots + champDot + champLabel +
+        baseDotsSvg(highlightIds) + (layoutMode === "class" ? classLabelsSvg() : "") + pathSvgs + endDots + champDot + champLabel +
         `</svg>`;
 
       if (shown === 0) {
