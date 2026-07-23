@@ -1549,6 +1549,251 @@ async function renderUnreachedMulti(container, block, stats) {
   container.appendChild(legend);
 }
 
+// Measure card with two tabs: Clasament (horizontal bars, primii 8) + Pe
+// hartă (network view highlighting the measure's champion in a way specific
+// to that measure). Used by c-gradul, c-deschiderea, c-intermedierea.
+// Data comes from build precomputes: coverageMaps._positions (shared radial
+// layout by class) and coverageMaps._measureMaps.{degree|openness|betweenness}.
+function renderMeasureTabs(container, block, stats) {
+  const measure = block.measure || "degree";  // "degree" | "openness" | "betweenness"
+  const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
+  const positions = cm._positions || {};
+  const mm = cm._measureMaps || {};
+  const forMeasure = mm[measure] || null;
+  const positionsList = Object.entries(positions);
+  const total = mm.total || stats?.total || 299;
+
+  const tabsWrap = document.createElement("div");
+  tabsWrap.className = "measure-tabs__tabs";
+  container.appendChild(tabsWrap);
+
+  const barsPane = document.createElement("div");
+  barsPane.className = "measure-tabs__pane";
+  const mapPane = document.createElement("div");
+  mapPane.className = "measure-tabs__pane";
+  mapPane.hidden = true;
+  container.appendChild(barsPane);
+  container.appendChild(mapPane);
+
+  // -- Clasament (uses existing hbarsSVG with the block's bars)
+  const barsHost = document.createElement("div");
+  barsHost.className = "chart__svg-wrap chart__svg-wrap--hbars";
+  barsHost.innerHTML = hbarsSVG(block);
+  barsPane.appendChild(barsHost);
+  const legendClasses = Array.from(new Set((block.bars || []).map((b) => b.class).filter(Boolean)));
+  if (legendClasses.length) {
+    const legend = document.createElement("div");
+    legend.className = "chart__legend";
+    legend.innerHTML = legendClasses.map((cls) =>
+      `<span class="chart__legend-chip"><span class="chart__legend-dot" style="background:${colorForClass(cls)}"></span>${esc(cls)}</span>`
+    ).join("");
+    barsPane.appendChild(legend);
+  }
+
+  // -- Pe hartă: measure-specific visualization
+  const S = 480;
+  function projX(px) { return ((px + 1) / 2) * (S - 40) + 20; }
+  function projY(py) { return ((py + 1) / 2) * (S - 40) + 20; }
+  function posOf(id) {
+    const p = positions[String(id)];
+    if (!p) return null;
+    return { x: projX(p.x), y: projY(p.y), classFriendly: p.classFriendly };
+  }
+
+  function baseDotsSvg(highlightSet) {
+    return positionsList.map(([nid, p]) => {
+      const x = projX(p.x), y = projY(p.y);
+      const on = highlightSet && highlightSet.has(String(nid));
+      if (on) return "";  // drawn separately with highlight styling
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="#e5dccb"/>`;
+    }).join("");
+  }
+
+  const mapControls = document.createElement("div");
+  mapControls.className = "measure-tabs__map-controls";
+  const mapHost = document.createElement("div");
+  mapHost.className = "chart__svg-wrap";
+  const mapCaption = document.createElement("div");
+  mapCaption.className = "measure-tabs__map-caption";
+  mapPane.appendChild(mapControls);
+  mapPane.appendChild(mapHost);
+  mapPane.appendChild(mapCaption);
+
+  let mapBuilt = false;
+  function buildMap() {
+    if (mapBuilt) return;
+    mapBuilt = true;
+    if (measure === "degree") buildDegreeMap();
+    else if (measure === "openness") buildOpennessMap();
+    else if (measure === "betweenness") buildBetweennessMap();
+    else { mapHost.textContent = "Măsură necunoscută."; }
+  }
+
+  function drawChampionMap(champ, opts) {
+    // champ: {id, name, classFriendly, contactIds, classDistribution}
+    // opts: {edgeColor, contactFillFn(nid)->color, showLegend: bool, subtitle: string}
+    const champPos = posOf(champ.id);
+    if (!champPos) { mapHost.textContent = "Nu am poziția campionului."; return; }
+    const contactSet = new Set(champ.contactIds.map(String));
+    const hi = new Set([String(champ.id), ...contactSet]);
+
+    const edges = champ.contactIds.map((cid) => {
+      const p = posOf(cid); if (!p) return "";
+      return `<line x1="${champPos.x.toFixed(1)}" y1="${champPos.y.toFixed(1)}" x2="${p.x.toFixed(1)}" y2="${p.y.toFixed(1)}" stroke="${opts.edgeColor}" stroke-width="1.4" opacity="0.7"/>`;
+    }).join("");
+    const contactDots = champ.contactIds.map((cid) => {
+      const p = posOf(cid); if (!p) return "";
+      const fill = opts.contactFillFn ? opts.contactFillFn(cid) : "#8b4a1e";
+      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="5" fill="${fill}" stroke="#3a2a1a" stroke-width="0.6"/>`;
+    }).join("");
+    const champDot = `<circle cx="${champPos.x.toFixed(1)}" cy="${champPos.y.toFixed(1)}" r="10" fill="#2a1f16" stroke="#000" stroke-width="1"/>`;
+    const label = `<text x="${champPos.x.toFixed(1)}" y="${(champPos.y + 22).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#2a1f16"><tspan font-weight="500">${esc(champ.name)}</tspan>, ${esc(champ.classFriendly)}</text>`;
+
+    mapHost.innerHTML =
+      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Harta măsurii pentru ${esc(champ.name)}">` +
+      baseDotsSvg(hi) + edges + contactDots + champDot + label +
+      `</svg>`;
+    mapCaption.innerHTML = opts.subtitle || "";
+  }
+
+  function buildDegreeMap() {
+    const champ = forMeasure?.champion;
+    if (!champ) { mapHost.textContent = "Fără date pentru harta gradului."; return; }
+    drawChampionMap(champ, {
+      edgeColor: "#8b4a1e",
+      contactFillFn: () => "#8b4a1e",
+      subtitle: `<strong>${champ.degree}</strong> muchii pleacă din el. Atât înseamnă gradul.`,
+    });
+  }
+
+  function buildOpennessMap() {
+    const champ = forMeasure?.champion;
+    const contrast = forMeasure?.contrast;
+    if (!champ) { mapHost.textContent = "Fără date."; return; }
+
+    function drawOne(who) {
+      const contactFillFn = (cid) => {
+        const p = positions[String(cid)];
+        if (!p) return "#8b4a1e";
+        return colorForClass(p.classFriendly);
+      };
+      let subtitle;
+      if (who.id === champ.id) {
+        subtitle = `La <strong>${who.name}</strong>, contactele vin din <strong>${who.classDistribution.length}</strong> clase diferite. Culorile arată din care.`;
+      } else {
+        subtitle = `La <strong>${who.name}</strong>, contactele au aproape toate aceeași culoare: sunt din <strong>${who.classDistribution[0].classFriendly}</strong>, clasa lui.`;
+      }
+      drawChampionMap(who, { edgeColor: "#8a7154", contactFillFn, subtitle });
+    }
+    drawOne(champ);
+
+    mapControls.innerHTML =
+      `<button type="button" class="btn btn--primary" data-who="champion">${champ.name} (${champ.classFriendly})</button>` +
+      (contrast ? `<button type="button" class="btn btn--ghost" data-who="contrast">${contrast.name} (${contrast.classFriendly})</button>` : "");
+    mapControls.querySelectorAll("[data-who]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        mapControls.querySelectorAll("[data-who]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
+        btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary");
+        drawOne(btn.dataset.who === "contrast" ? contrast : champ);
+      });
+    });
+  }
+
+  function buildBetweennessMap() {
+    const champ = forMeasure?.champion;
+    const paths = forMeasure?.paths || [];
+    if (!champ || !paths.length) { mapHost.textContent = "Fără date."; return; }
+    const champPos = posOf(champ.id);
+    if (!champPos) { mapHost.textContent = "Nu am poziția campionului."; return; }
+
+    let shown = 0;
+    const PALETTE = ["#a3341f", "#3d7a52", "#2f6fa8", "#7a5b8c", "#b57140"];
+
+    function draw() {
+      const activePaths = paths.slice(0, shown);
+      const highlightIds = new Set([String(champ.id)]);
+      activePaths.forEach((pth) => pth.pathIds.forEach((x) => highlightIds.add(String(x))));
+
+      // Draw paths as colored polylines.
+      const pathSvgs = activePaths.map((pth, i) => {
+        const pts = pth.pathIds.map((id) => posOf(id)).filter(Boolean);
+        const poly = pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+        const color = PALETTE[i % PALETTE.length];
+        return `<polyline points="${poly}" fill="none" stroke="${color}" stroke-width="2.2" opacity="0.85"/>`;
+      }).join("");
+
+      // Endpoint dots for each shown path (colored by path color).
+      const endDots = activePaths.flatMap((pth, i) => {
+        const s = posOf(pth.sourceId), t = posOf(pth.targetId);
+        const color = PALETTE[i % PALETTE.length];
+        const svg = [];
+        if (s) svg.push(`<circle cx="${s.x.toFixed(1)}" cy="${s.y.toFixed(1)}" r="4.5" fill="${color}" stroke="#3a2a1a" stroke-width="0.7"/>`);
+        if (t) svg.push(`<circle cx="${t.x.toFixed(1)}" cy="${t.y.toFixed(1)}" r="4.5" fill="${color}" stroke="#3a2a1a" stroke-width="0.7"/>`);
+        return svg;
+      }).join("");
+
+      const champDot = `<circle cx="${champPos.x.toFixed(1)}" cy="${champPos.y.toFixed(1)}" r="11" fill="#2a1f16" stroke="#000" stroke-width="1.2"/>`;
+      const champLabel = `<text x="${champPos.x.toFixed(1)}" y="${(champPos.y + 24).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#2a1f16"><tspan font-weight="500">${esc(champ.name)}</tspan>, ${esc(champ.classFriendly)}</text>`;
+
+      mapHost.innerHTML =
+        `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+        `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
+        `role="img" aria-label="Drumuri prin ${esc(champ.name)}">` +
+        baseDotsSvg(highlightIds) + pathSvgs + endDots + champDot + champLabel +
+        `</svg>`;
+
+      if (shown === 0) {
+        mapCaption.textContent = "Apasă butonul ca să vezi un drum care trece prin ea.";
+      } else {
+        mapCaption.innerHTML =
+          `<strong>${shown}</strong> ${shown === 1 ? "drum arătat" : "drumuri arătate"}. Toate trec prin <strong>${champ.name}</strong>.<br>` +
+          `<span class="measure-tabs__paths-list">` +
+          activePaths.map((pth, i) => `<span style="color:${PALETTE[i % PALETTE.length]}">${esc(pth.sourceName)} (${esc(pth.sourceClass)}) → ${esc(pth.targetName)} (${esc(pth.targetClass)})</span>`).join(" · ") +
+          `</span>`;
+      }
+      addBtn.disabled = shown >= paths.length;
+    }
+
+    const addBtn = document.createElement("button");
+    addBtn.type = "button";
+    addBtn.className = "btn btn--primary";
+    addBtn.textContent = "Arată încă un drum";
+    const resetBtn = document.createElement("button");
+    resetBtn.type = "button";
+    resetBtn.className = "btn btn--ghost";
+    resetBtn.textContent = "Începe de la zero";
+    mapControls.appendChild(addBtn);
+    mapControls.appendChild(resetBtn);
+
+    addBtn.addEventListener("click", () => { if (shown < paths.length) { shown++; draw(); } });
+    resetBtn.addEventListener("click", () => { shown = 0; draw(); });
+    draw();
+  }
+
+  // -- Wire tabs
+  const btnBars = document.createElement("button");
+  btnBars.type = "button";
+  btnBars.className = "measure-tabs__tab is-active";
+  btnBars.textContent = "Clasament";
+  const btnMap = document.createElement("button");
+  btnMap.type = "button";
+  btnMap.className = "measure-tabs__tab";
+  btnMap.textContent = "Pe hartă";
+  tabsWrap.appendChild(btnBars);
+  tabsWrap.appendChild(btnMap);
+  btnBars.addEventListener("click", () => {
+    btnBars.classList.add("is-active"); btnMap.classList.remove("is-active");
+    barsPane.hidden = false; mapPane.hidden = true;
+  });
+  btnMap.addEventListener("click", () => {
+    btnMap.classList.add("is-active"); btnBars.classList.remove("is-active");
+    barsPane.hidden = true; mapPane.hidden = false;
+    buildMap();
+  });
+}
+
 function renderStrategyMaps(container, block, stats) {
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
   const total = cm._total || stats?.total || 299;
@@ -1986,6 +2231,11 @@ export async function renderChart(container, block) {
     if (block.variant === "unreached-multi") {
       const stats = await getStats(block);
       await renderUnreachedMulti(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "measure-tabs") {
+      const stats = await getStats(block);
+      renderMeasureTabs(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {

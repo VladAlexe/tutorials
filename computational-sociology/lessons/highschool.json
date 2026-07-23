@@ -10,9 +10,9 @@
   "chapters": [
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Măsurile școlii", "startIdx": 3 },
-    { "n": 3, "title": "Ipoteze, soluție și margini", "startIdx": 13 },
-    { "n": 4, "title": "Misiunea", "startIdx": 19 },
-    { "n": 5, "title": "Bilanț", "startIdx": 26 }
+    { "n": 3, "title": "Ipoteze, soluție și margini", "startIdx": 14 },
+    { "n": 4, "title": "Misiunea", "startIdx": 20 },
+    { "n": 5, "title": "Bilanț", "startIdx": 27 }
   ],
   "blocks": [
     {
@@ -100,10 +100,11 @@
     {
       "type": "chart",
       "id": "c-gradul",
-      "variant": "hbars",
+      "variant": "measure-tabs",
+      "measure": "degree",
       "statsSource": "data/highschool-stats.json",
       "title": "Gradul",
-      "intro": "<p>Ai văzut harta. Acum măsurăm pe ea.</p><p><strong>Gradul</strong> unui elev este numărul lui de contacte. E cea mai simplă măsură pe care putem calcula într-o rețea: pentru fiecare nod, câte muchii pornesc din el. Un număr, per om.</p><p>Iată primii opt din școală după această măsură.</p>",
+      "intro": "<p>Ai văzut harta. Acum măsurăm pe ea.</p><p><strong>Gradul</strong> unui elev este numărul lui de contacte. E cea mai simplă măsură pe care putem calcula într-o rețea: pentru fiecare nod, câte muchii pornesc din el. Un număr, per om.</p><p>Comută între cele două file. La clasament vezi primii opt. Pe hartă vezi cum arată gradul aplicat la campionul lui.</p>",
       "bars": [
         {"name": "Antoine", "class": "Bio C", "value": 19},
         {"name": "Léa", "class": "Mate C", "value": 17},
@@ -114,15 +115,16 @@
         {"name": "Zayd", "class": "Mate A", "value": 15},
         {"name": "William", "class": "Mate A", "value": 15}
       ],
-      "caption": "În vârf: {{name:vedeta}}, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo."
+      "caption": "În vârf: <strong>{{name:vedeta}}</strong>, cu {{contacte:vedeta}} contacte în felia netă a rețelei. Al doilea, {{name:puntea}}, cu 17. Prima măsură a ordonat școala, cu Antoine în frunte. Rețineți-l. Îl vom recunoaște și mai încolo."
     },
     {
       "type": "chart",
       "id": "c-deschiderea",
-      "variant": "hbars",
+      "variant": "measure-tabs",
+      "measure": "openness",
       "statsSource": "data/highschool-stats.json",
       "title": "Deschiderea",
-      "intro": "<p><strong>Deschiderea</strong> unui elev este numărul dintre contactele lui care sunt din <strong>afara clasei</strong>. Zece contacte, toate colegi de clasă, înseamnă deschidere zero. Zece contacte, dintre care șase în afară, înseamnă deschidere șase. Aceeași rețea, altă măsură.</p><p>Primii opt din școală după această măsură.</p>",
+      "intro": "<p><strong>Deschiderea</strong> unui elev este numărul dintre contactele lui care sunt din <strong>afara clasei</strong>. Zece contacte, toate colegi de clasă, înseamnă deschidere zero. Zece contacte, dintre care șase în afară, înseamnă deschidere șase. Aceeași rețea, altă măsură.</p><p>Fila hărții colorează contactele campionului după clasă. Comută pe {{name:vedeta}} ca să vezi diferența.</p>",
       "bars": [
         {"name": "Léa", "class": "Mate C", "value": 10},
         {"name": "Samuel", "class": "Mate A", "value": 7},
@@ -133,7 +135,27 @@
         {"name": "Sébastien", "class": "Mate B", "value": 4},
         {"name": "Florence", "class": "Bio C", "value": 4}
       ],
-      "caption": "<p>În vârf: <strong>{{name:puntea}}</strong>, cu {{outClass:puntea}} contacte în afara clasei ei, mai mult decât oricine din școală. Nu e o necunoscută: e a doua din școală și la număr de contacte, cu {{contacte:puntea}}. Diferența e unde sunt acele contacte.</p><p>Uită-te acum unde e <strong>{{name:vedeta}}</strong>, campionul de la grad. Are {{contacte:vedeta}} contacte, cele mai multe din școală, dintre care exact unul singur e din altă clasă. Nu apare în primii opt aici. Nu apare nici în primii cincizeci.</p><p>Măsuri diferite, oameni diferiți. Alegerea măsurii decide cine iese important.</p>"
+      "caption": "<p>În vârf: <strong>{{name:puntea}}</strong>, cu {{outClass:puntea}} contacte în afara clasei ei, mai mult decât oricine din școală. Nu e o necunoscută: e a doua din școală și la număr de contacte, cu {{contacte:puntea}}. Diferența e unde sunt acele contacte.</p><p>Uită-te pe hartă și la <strong>{{name:vedeta}}</strong>, campionul de la grad. Are {{contacte:vedeta}} contacte, cele mai multe din școală, dintre care exact unul singur e din altă clasă. Nu apare în primii opt aici. Nu apare nici în primii cincizeci.</p><p>Măsuri diferite, oameni diferiți. Alegerea măsurii decide cine iese important.</p>"
+    },
+    {
+      "type": "chart",
+      "id": "c-intermedierea",
+      "variant": "measure-tabs",
+      "measure": "betweenness",
+      "statsSource": "data/highschool-stats.json",
+      "title": "Intermedierea",
+      "intro": "<p>A treia măsură, și cea mai cunoscută din analiza rețelelor.</p><p>Dacă doi elevi din colțuri diferite ale școlii vor să-și trimită un mesaj, el trebuie să treacă prin cineva. De obicei există un drum cel mai scurt, cu cei mai puțini intermediari.</p><p><strong>Intermedierea</strong> numără prin cine trec cele mai multe astfel de drumuri. Cine stă la răscruce.</p><p>Nu e același lucru cu popularitatea: poți avea puțini prieteni, dar dacă ei sunt din lumi diferite, ești singurul drum între ele. Și nu e nici același lucru cu deschiderea: poți avea contacte în multe clase fără ca cineva să treacă efectiv prin tine.</p><p>Fila hărții aprinde, pe rând, câteva drumuri din capete diferite ale școlii care trec prin campioană.</p>",
+      "bars": [
+        {"name": "Charlotte", "class": "Bio C", "value": 12429},
+        {"name": "Karam", "class": "Mate C", "value": 8225},
+        {"name": "Diane", "class": "Bio C", "value": 7980},
+        {"name": "Cléa", "class": "Bio C", "value": 6739},
+        {"name": "Iris", "class": "Chimie A", "value": 6669},
+        {"name": "Léa", "class": "Mate C", "value": 6497},
+        {"name": "Delphine", "class": "Chimie B", "value": 5629},
+        {"name": "Raphaël", "class": "Mate C", "value": 5141}
+      ],
+      "caption": "<p>În vârf: <strong>Charlotte</strong>, din Bio C, cu 12 contacte.</p><p>Al patrulea personaj, ieșit tot din calcul. Nu e cea mai populară, e pe locul 22 acolo. Nu e nici cea mai deschisă. Dar prin ea trec cele mai multe drumuri din toată școala.</p><p>{{name:vedeta}}, campionul de la grad, e pe locul 32 aici. Trei măsuri, trei oameni diferiți. Începe să se vadă un tipar: fiecare măsură răspunde la altă întrebare, deci găsește pe altcineva.</p>"
     },
     {
       "type": "chart",
@@ -242,7 +264,7 @@
       "right": "campion",
       "title": "Ipoteza a doua: deschiderea",
       "intro": "<p><strong>Ipoteza a doua: poate {{name:campion}} are prieteni în mai multe clase, deci vestea ei iese mai repede din Bio C.</strong></p><p>Deschiderea numără câți dintre oamenii tăi sunt din afara clasei tale. Uită-te la culorile contactelor.</p>",
-      "caption": "<p>{{name:vedeta}} are <strong>un contact</strong> în afara clasei. {{name:campion}} are <strong>zero</strong>. Toți cei {{contacte:campion}} oameni ai ei sunt colegi de clasă.</p><p>Ea nu e mai deschisă decât el. E complet închisă. Ipoteza cade, iar misterul se adâncește: nu e nici clasa, nici popularitatea, nici deschiderea.</p>"
+      "caption": "<p>{{name:vedeta}} are <strong>un contact</strong> în afara clasei. {{name:campion}} are <strong>zero</strong>. Toți cei {{contacte:campion}} oameni ai ei sunt colegi de clasă.</p><p>Ea nu e mai deschisă decât el. E complet închisă. Ipoteza cade, iar misterul se adâncește: nu e nici clasa, nici popularitatea, nici deschiderea. Nici intermedierea nu o explică, altfel: pe măsura aceea e pe locul 133.</p>"
     },
     {
       "type": "chart",
@@ -288,7 +310,7 @@
       "type": "text",
       "id": "m0-candidati-din-masuri",
       "title": "Candidații din măsuri",
-      "content": "<p>Până acum am calculat patru feluri de a spune că un elev e important. Fiecare a scos în vârf altcineva:</p><table class=\"lesson-table\"><thead><tr><th>Măsura</th><th>Cine iese primul</th><th>Câți oameni află de la el</th></tr></thead><tbody><tr><td>Gradul</td><td>{{name:vedeta}}, Bio C</td><td>{{reach:vedeta}}</td></tr><tr><td>Deschiderea</td><td>{{name:puntea}}, Mate C</td><td>{{reach:puntea}}</td></tr><tr><td>Intermedierea</td><td>Charlotte, Bio C</td><td>51</td></tr><tr><td>Simularea din toți</td><td>{{name:campionul}}, Bio C</td><td>{{reach:campion}}</td></tr></tbody></table><p>Fiecare măsură îți dă un campion. Patru măsuri, patru oameni diferiți, niciunul dintre ei cel mai bun răspânditor.</p><p>Cel mai bun a ieșit abia când am renunțat să măsurăm oameni și am rulat procesul din fiecare elev al școlii. Nu am dedus, am <strong>căutat</strong>.</p><p>Ține minte asta. Urmează aceeași problemă, dar pentru o echipă de trei.</p>"
+      "content": "<p>Până acum am calculat patru feluri de a spune că un elev e important. Fiecare a scos în vârf altcineva:</p><table class=\"lesson-table\"><thead><tr><th>Măsura</th><th>Cine iese primul</th><th>Câți oameni află de la el</th></tr></thead><tbody><tr><td>Gradul</td><td>{{name:vedeta}}, Bio C</td><td>{{reach:vedeta}}</td></tr><tr><td>Deschiderea</td><td>{{name:puntea}}, Mate C</td><td>{{reach:puntea}}</td></tr><tr><td>Intermedierea</td><td>Charlotte, Bio C</td><td>51</td></tr><tr><td>Simularea din toți</td><td>{{name:campionul}}, Bio C</td><td>{{reach:campion}}</td></tr></tbody></table><p>Fiecare măsură îți dă un campion. Patru măsuri, <strong>patru oameni diferiți</strong>, niciunul dintre ei cel mai bun răspânditor.</p><p>Cel mai bun a ieșit abia când am renunțat să măsurăm oameni și am rulat procesul din fiecare elev al școlii. Nu am dedus, am <strong>căutat</strong>.</p><p>Ține minte asta. Urmează aceeași problemă, dar pentru o echipă de trei.</p>"
     },
     {
       "type": "diffusion",
@@ -356,7 +378,7 @@
       "type": "text",
       "id": "b1-ce-ai-facut",
       "title": "Ce ai făcut",
-      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat două măsuri, gradul și deschiderea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai rulat o simulare pas cu pas, apoi ai văzut ce iese când calculatorul o rulează de {{total}} de ori: <strong>{{name:campion}}</strong> a ajuns prima, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Enigma a apărut din calcul, nu din poveste.</p><p>Ai făcut un pariu la cardul „De ce ea?\", între trei explicații. Primele două au căzut: ipoteza clasei (sunt colegi), ipoteza deschiderii (ea are zero, el are unul). Dacă ai ales „altceva\", pariul tău a fost corect. Soluția: nu contează câți oameni cunoști, ci pe cine cunosc ei. Regula ține pentru toată școala, cu o corelație de 0,78. Ai văzut apoi că modelul are o margine: <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, dintre care {{name:izolat}}, la care vestea nu ajunge oricum ai alege.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: a ales doi oameni pe care nu îi văzuseși niciodată în lecție, invizibili la orice clasament, dar care împreună cu {{name:campion}} acoperă mai mult decât orice echipă de campioni. O măsură bună pentru un om nu e o strategie bună pentru o echipă.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
+      "content": "<p>Ai învățat un vocabular restrâns: nod, muchie, rețea. Ai calculat trei măsuri, gradul, deschiderea și intermedierea, și ai văzut că ordonează școala diferit: {{name:vedeta}} e primul la grad, {{name:puntea}} la deschidere, Charlotte la intermediere. Ai construit o histogramă și ai despărțit media de medianul.</p><p>Ai rulat o simulare pas cu pas, apoi ai văzut ce iese când calculatorul o rulează de {{total}} de ori: <strong>{{name:campion}}</strong> a ajuns prima, la locul {{rankPop:campion}} la grad și {{rankOpenness:campion}} la deschidere. Al patrulea campion, dintr-a patra măsură. Enigma a apărut din calcul, nu din poveste.</p><p>Ai făcut un pariu la cardul „De ce ea?\", între trei explicații. Primele două au căzut: ipoteza clasei (sunt colegi), ipoteza deschiderii (ea are zero, el are unul). Dacă ai ales „altceva\", pariul tău a fost corect. Soluția: nu contează câți oameni cunoști, ci pe cine cunosc ei. Regula ține pentru toată școala, cu o corelație de 0,78. Ai văzut apoi că modelul are o margine: <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, dintre care {{name:izolat}}, la care vestea nu ajunge oricum ai alege.</p><p>Ai pierdut în fața unui algoritm, și ai înțeles de ce: a ales doi oameni pe care nu îi văzuseși niciodată în lecție, invizibili la orice clasament, dar care împreună cu {{name:campion}} acoperă mai mult decât orice echipă de campioni. O măsură bună pentru un om nu e o strategie bună pentru o echipă.</p><p>Asta nu a fost o lecție despre rețele. A fost despre cum devine viața socială date: ce se câștigă, ce se pierde, cine decide definițiile. Acolo unde formulele de-a gata nu au funcționat, ai construit modelul și l-ai rulat. De asta sociologia are azi nevoie de calculatoare.</p>"
     },
     {
       "type": "quizset",
@@ -406,7 +428,7 @@
       "type": "text",
       "id": "b-terminologia",
       "title": "Cum se numesc lucrurile",
-      "content": "<p>Măsurile din această lecție au nume consacrate, în engleză, pe care le găsești în orice manual sau motor de căutare.</p><p><strong>Gradul</strong> se numește <em>degree</em>. Numărul de legături ale unui nod.</p><p><strong>Deschiderea</strong>, adică numărul de contacte din afara propriului grup, ține de o familie de măsuri numite <em>external ties</em> sau <em>E-I index</em>, propusă de Krackhardt și Stern în 1988.</p><p><strong>Raza</strong>, câți oameni află pornind de la cineva, se numește <em>reach</em> sau <em>influence spread</em>.</p><p><strong>Grupurile găsite de algoritm</strong> se numesc <em>communities</em>, iar metoda folosită de noi e <em>Louvain community detection</em>.</p><p><strong>Alegerea celor trei</strong> e o problemă numită <em>influence maximization</em>, iar metoda e <em>greedy algorithm</em>.</p><p>Există și o măsură pe care nu am folosit-o, deși e cea mai cunoscută: <em>betweenness centrality</em>, intermedierea. Ea numără prin câți oameni trece drumul cel mai scurt dintre alți doi. În vârful ei pe rețeaua noastră iese Charlotte, din Bio C, cu Karam, Diane, Cléa și Iris în primii cinci. Léa apare pe locul șase, deci intermedierea o găsește și ea, dar cu ceva efort. Am ales deschiderea în locul ei pentru că se explică în cinci cuvinte și dă informație suprapunătoare pe rețeaua noastră. Aceasta e o alegere a autorului, exact ca toate celelalte din lecție.</p>"
+      "content": "<p>Măsurile din această lecție au nume consacrate, în engleză, pe care le găsești în orice manual sau motor de căutare.</p><p><strong>Gradul</strong> se numește <em>degree</em>. Numărul de legături ale unui nod.</p><p><strong>Deschiderea</strong>, adică numărul de contacte din afara propriului grup, ține de o familie de măsuri numite <em>external ties</em> sau <em>E-I index</em>, propusă de Krackhardt și Stern în 1988.</p><p><strong>Intermedierea</strong> se numește <em>betweenness centrality</em>. E cea mai cunoscută măsură de centralitate din analiza rețelelor, formalizată de Freeman în 1977.</p><p><strong>Raza</strong>, câți oameni află pornind de la cineva, se numește <em>reach</em> sau <em>influence spread</em>.</p><p><strong>Grupurile găsite de algoritm</strong> se numesc <em>communities</em>, iar metoda folosită de noi e <em>Louvain community detection</em>.</p><p><strong>Alegerea celor trei</strong> e o problemă numită <em>influence maximization</em>, iar metoda e <em>greedy algorithm</em>.</p><p>Există multe alte măsuri de centralitate care nu au încăput în lecție: <em>closeness</em>, <em>eigenvector</em>, <em>PageRank</em>. Fiecare răspunde la o întrebare puțin diferită. E o alegere a autorului ce măsuri intră în orice lecție, exact ca toate celelalte din aceasta.</p>"
     },
     {
       "type": "text",

@@ -1144,6 +1144,146 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     coverage_maps["_positions"] = coverage_positions
     coverage_maps["_total"] = len(node_ids)
 
+    # === Precomputes for the measure-tabs cards.
+    # For each measure champion, we save:
+    #  - their id + name + friendly class
+    #  - their contact ids
+    #  - class distribution of contacts (list of {class, classFriendly, count})
+    # For deschidere we also save Antoine (the swap-target for the contrast).
+    # For intermediere we sample 5 shortest paths that pass THROUGH the champion,
+    # so the browser can animate them without recomputing BFS on the client.
+    def _map_data_for(nid, extra_class_dist=True):
+        contacts = list(adj.get(nid, ()))
+        cls_dist = Counter(klass_map.get(c, "?") for c in contacts)
+        return {
+            "id":            nid,
+            "name":          name_map.get(nid, str(nid)),
+            "class":         klass_map.get(nid, "?"),
+            "classFriendly": CLASS_NAMES.get(klass_map.get(nid, "?"), "?"),
+            "degree":        degrees[nid],
+            "openness":      openness[nid],
+            "contactIds":    contacts,
+            "classDistribution": [
+                {"class": k, "classFriendly": CLASS_NAMES.get(k, k), "count": v}
+                for k, v in sorted(cls_dist.items(), key=lambda kv: -kv[1])
+            ] if extra_class_dist else None,
+        }
+
+    # Sample paths through Charlotte for the betweenness map. Pick pairs of
+    # unrelated students at reasonable distance from opposite corners.
+    def _paths_through(nid, target_count=5):
+        # Do a BFS from nid to get distance labels.
+        # Then, for candidate pairs (s, t) with s, t on OPPOSITE sides
+        # (t on the far shell, s on another far shell), check if the shortest
+        # s-t path passes through nid.
+        # Simple heuristic: pick pairs from among the neighbors' subtrees.
+        def bfs_all_pairs_shortest(source):
+            dist = {source: 0}; parent = {source: None}
+            q = deque([source])
+            while q:
+                x = q.popleft()
+                for y in adj.get(x, ()):
+                    if y not in dist:
+                        dist[y] = dist[x] + 1
+                        parent[y] = x
+                        q.append(y)
+            return dist, parent
+
+        # Fix nid on the path. For every pair (s, t) with nid on the s-t path,
+        # the shortest s-t distance = dist(s, nid) + dist(nid, t). To confirm
+        # nid is on THE shortest path we need to actually compute BFS from s
+        # and check that dist(s, t) equals dist(s, nid) + dist(nid, t).
+        # Sample: from source nid, pick 20 nodes at distance 2-4 (far shell),
+        # then for each pair of them check the condition.
+        dist_from_c, _ = bfs_all_pairs_shortest(nid)
+        far_shell = [x for x, d in dist_from_c.items() if 2 <= d <= 4]
+        # Group far-shell by class so we can pick pairs from DIFFERENT classes.
+        by_class = defaultdict(list)
+        for x in far_shell:
+            by_class[klass_map.get(x, "?")].append(x)
+        # Sort within each class to keep output deterministic.
+        for cls in by_class:
+            by_class[cls].sort(key=lambda x: name_map.get(x, str(x)))
+        classes_in_order = sorted(by_class.keys())
+
+        collected = []
+        seen_pairs = set()
+        used_sources = set()
+        used_targets = set()
+        # Try all cross-class combinations; prefer a fresh source and target
+        # in each accepted path so the visual sample is diverse.
+        # Iterate class pairs; take at most ONE path per unordered class pair,
+        # so the 5 sampled paths cover different corners of the school.
+        class_pairs_used = set()
+        # Multi-round: keep looping while more paths are needed.
+        for _round in range(3):
+            if len(collected) >= target_count: break
+            for ci in range(len(classes_in_order)):
+                if len(collected) >= target_count: break
+                for cj in range(ci + 1, len(classes_in_order)):
+                    if len(collected) >= target_count: break
+                    ca, cb = classes_in_order[ci], classes_in_order[cj]
+                    pair_key = tuple(sorted([ca, cb]))
+                    if pair_key in class_pairs_used and _round == 0: continue
+                    for s in by_class[ca]:
+                        if s in used_sources or s in used_targets: continue
+                        dist_from_s, parent_from_s = bfs_all_pairs_shortest(s)
+                        found = False
+                        for t in by_class[cb]:
+                            if t in used_sources or t in used_targets: continue
+                            if (s, t) in seen_pairs or (t, s) in seen_pairs: continue
+                            if t not in dist_from_s: continue
+                            if dist_from_s[t] < 3: continue
+                            if dist_from_s.get(nid, 10**9) + dist_from_c.get(t, 10**9) != dist_from_s[t]: continue
+                            path = []
+                            cur = t
+                            while cur is not None:
+                                path.append(cur); cur = parent_from_s.get(cur)
+                            path.reverse()
+                            if nid not in path: continue
+                            collected.append({
+                                "sourceId":    s,
+                                "sourceName":  name_map.get(s, str(s)),
+                                "sourceClass": CLASS_NAMES.get(klass_map.get(s, "?"), "?"),
+                                "targetId":    t,
+                                "targetName":  name_map.get(t, str(t)),
+                                "targetClass": CLASS_NAMES.get(klass_map.get(t, "?"), "?"),
+                                "pathIds":     path,
+                                "length":      dist_from_s[t],
+                            })
+                            seen_pairs.add((s, t))
+                            used_sources.add(s); used_targets.add(t)
+                            class_pairs_used.add(pair_key)
+                            found = True
+                            break
+                        if found: break
+        return collected
+
+    # Betweenness top 3 champion IDs (integer form)
+    top1_betw_id = int(top3_betw_ids[0]) if top3_betw_ids else None
+
+    measure_maps = {
+        "positions": coverage_positions,  # shared layout
+        "total":     len(node_ids),
+        # Degree champion: vedeta (Antoine, id 117)
+        "degree":    {
+            "champion": _map_data_for(ROLE_IDS["vedeta"]),
+        },
+        # Openness champion: puntea (Léa, id 1332). We also store the vedeta
+        # so the map can flip between the two and show the contrast (Léa's
+        # contacts span multiple classes, Antoine's are all Bio C).
+        "openness":  {
+            "champion":  _map_data_for(ROLE_IDS["puntea"]),
+            "contrast":  _map_data_for(ROLE_IDS["vedeta"]),
+        },
+        # Betweenness champion: Charlotte. Sample 5 shortest paths through her.
+        "betweenness": {
+            "champion":  _map_data_for(top1_betw_id) if top1_betw_id is not None else None,
+            "paths":     _paths_through(top1_betw_id, target_count=5) if top1_betw_id is not None else [],
+        },
+    }
+    coverage_maps["_measureMaps"] = measure_maps
+
     # === Greedy step-by-step trace: at each step, top 5 candidates by
     # marginal gain (coverage added over currently-chosen), plus who was
     # picked. Used by the new "cine sunt ei" story-telling in the greedy
