@@ -1634,7 +1634,10 @@ export async function renderDiffusion(container, block, options = {}) {
       const n = nodes.find((nn) => nn.id === nid);
       const deg = e.target.connectedEdges().length;
       const parts = [n?.name || `Elev ${nid}`];
-      if (n?.group) parts.push(`clasa ${n.group}`);
+      if (n?.group) {
+        const friendly = statsData?.classNames?.[n.group] || n.group;
+        parts.push(`clasa ${friendly}`);
+      }
       parts.push(`${deg} contacte`);
       infoEl.textContent = parts.join(" · ");
     });

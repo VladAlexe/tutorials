@@ -41,16 +41,20 @@ const NAME_SHORTCUTS = {
   topSpread:   "spreadRanking.champions",
   seedFirst:   "majorityIllusion.seedNames",
   // Canonical role names, pinned by Phase 1 analysis (build_network.py ROLE_IDS).
+  // Both bare and -ul suffix forms resolve so authors do not have to remember which.
   vedeta:      "sliceMetrics.characters.vedeta",
   campion:     "sliceMetrics.characters.campion",
+  campionul:   "sliceMetrics.characters.campion",
   surpriza:    "sliceMetrics.characters.surpriza",
   puntea:      "sliceMetrics.characters.puntea",
   dependent:   "sliceMetrics.characters.dependent",
+  dependentul: "sliceMetrics.characters.dependent",
   izolat:      "sliceMetrics.characters.izolat",
+  izolatul:    "sliceMetrics.characters.izolat",
   // Legacy heuristic keys kept for backward-compat.
-  discretul:   "sliceMetrics.characters.surpriza",
-  izolatul:    "sliceMetrics.characters.izolat"
+  discretul:   "sliceMetrics.characters.surpriza"
 };
+
 
 function formatValue(v) {
   if (typeof v === "number") {
@@ -74,7 +78,14 @@ function walkPath(obj, parts) {
   return val;
 }
 
-const FIELD_ALIASES = { degree: "popularity" };
+const FIELD_ALIASES = {
+  degree:          "popularity",
+  contacte:        "popularity",
+  outClass:        "outClassContacts",
+  contacteInAfara: "outClassContacts",
+  raza:            "reach",
+  rankReach:       "rankReach"
+};
 
 function resolveExpr(stats, expr) {
   if (!stats) return null;
@@ -111,7 +122,9 @@ function substituteText(text, stats) {
 const SUBST_FIELDS = [
   "title", "intro", "content", "description", "caption",
   "successText", "hint", "question", "explanation", "buttonLabel",
-  "xLabel", "yLabel", "note", "citation"
+  "xLabel", "yLabel", "note", "citation",
+  // mode-specific text fields the modes render themselves
+  "textBefore", "textAfter", "task", "label"
 ];
 
 function substituteBlock(block, stats) {
@@ -174,6 +187,46 @@ function substituteBlock(block, stats) {
       r.messagesByOption = mm;
     }
     clone.reveal = r;
+  }
+  // story-network mode carries per-step text and buttonLabel that only the mode
+  // renderer sees; substitute them at author time so placeholders never leak.
+  if (Array.isArray(clone.story)) {
+    clone.story = clone.story.map((step) => {
+      if (!step || typeof step !== "object") return step;
+      const s = { ...step };
+      if (typeof s.text === "string") s.text = substituteText(s.text, stats);
+      if (typeof s.buttonLabel === "string") s.buttonLabel = substituteText(s.buttonLabel, stats);
+      return s;
+    });
+  }
+  // Every other array of objects with a text/label field: presets, states,
+  // series (chart), highlight arrays that carry copy.
+  if (Array.isArray(clone.presets)) {
+    clone.presets = clone.presets.map((p) => {
+      if (!p || typeof p !== "object") return p;
+      const c = { ...p };
+      if (typeof c.label === "string") c.label = substituteText(c.label, stats);
+      return c;
+    });
+  }
+  if (Array.isArray(clone.states)) {
+    clone.states = clone.states.map((s) => {
+      if (!s || typeof s !== "object") return s;
+      const c = { ...s };
+      if (typeof c.label === "string") c.label = substituteText(c.label, stats);
+      return c;
+    });
+  }
+  if (Array.isArray(clone.series)) {
+    clone.series = clone.series.map((s) => {
+      if (!s || typeof s !== "object") return s;
+      const c = { ...s };
+      if (typeof c.title === "string") c.title = substituteText(c.title, stats);
+      return c;
+    });
+  }
+  if (Array.isArray(clone.slots)) {
+    // slots are role keys, not text; leave alone.
   }
   return clone;
 }
@@ -383,7 +436,9 @@ function addCitation(el, citation) {
 function addCaption(el, text) {
   const c = document.createElement("p");
   c.className = "slide__caption";
-  c.textContent = text;
+  // Author-provided copy may include inline emphasis (<strong>, <em>).
+  // JSON is authored, not user input, so innerHTML is safe here.
+  c.innerHTML = text;
   el.appendChild(c);
 }
 
@@ -1013,6 +1068,21 @@ export async function renderSlides(root, lesson) {
     // If the block finished (or errored inline) canAdvance may have flipped;
     // refresh the Continuă button so the reader is not stuck on a broken card.
     updateNav();
+
+    // Post-render safety net: if any placeholder leaked through, mount an
+    // inline warning so it is impossible to miss during development.
+    requestAnimationFrame(() => {
+      if (current !== idx) return;
+      const domText = slideState[idx].el.innerText || "";
+      const leaked = domText.match(/\{\{[^}]+\}\}/g);
+      if (leaked && leaked.length) {
+        const warn = document.createElement("div");
+        warn.style.cssText = "background:#c96d3f;color:#fff;padding:8px 12px;margin:12px 0;border-radius:6px;font-size:0.85rem;font-family:monospace;";
+        warn.textContent = `Placeholder-e nerezolvate în „${slideState[idx].block.id || "?"}": ${leaked.join(", ")}`;
+        slideState[idx].el.insertBefore(warn, slideState[idx].el.firstChild);
+        console.warn("Unresolved placeholders on", slideState[idx].block.id, leaked);
+      }
+    });
     const viz = slideState[idx].viz;
     if (viz && typeof viz.refit === "function") {
       requestAnimationFrame(() => {

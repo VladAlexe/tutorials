@@ -358,25 +358,40 @@ async function loadNodesForLink(block) {
   const path = block.linkNetworkData || "data/highschool-network.json";
   try {
     const d = await loadJSON(path);
-    return d.nodes || [];
+    const nodes = d.nodes || [];
+    const edges = d.edges || [];
+    const deg = new Map();
+    for (const e of edges) {
+      if ((e.weight || 0) < 4) continue;
+      deg.set(e.source, (deg.get(e.source) || 0) + 1);
+      deg.set(e.target, (deg.get(e.target) || 0) + 1);
+    }
+    for (const n of nodes) {
+      if (n.degree == null) n.degree = deg.get(n.id) || 0;
+    }
+    return nodes;
   } catch { return []; }
 }
 
 function renderFreq(container, block, stats) {
   const src = statsBucket(block, stats);
   const cf = src?.classFreq || {};
+  const classNames = stats?.classNames || {};
+  const friendly = (k) => classNames[k] || k;
   const rowsRaw = Object.entries(cf).filter(([k]) => k !== "globalBetweenPct");
   const total = rowsRaw.reduce((s, [, v]) => s + (v.n || 0), 0);
   const totalF = rowsRaw.reduce((s, [, v]) => s + (v.nF || 0), 0);
   const totalM = rowsRaw.reduce((s, [, v]) => s + (v.nM || 0), 0);
   const totalUnk = rowsRaw.reduce((s, [, v]) => s + (v.nUnk || 0), 0);
 
-  // Table with 4 count columns including necunoscut
+  // Table with 4 count columns including necunoscut. Raw class code goes on a
+  // data attribute so click handlers can look up the underlying nodes without
+  // relying on the visible (friendly) label.
   const table = document.createElement("table");
   table.className = "chart__freq";
   const header = `<tr><th></th><th>elevi</th><th>fete</th><th>băieți</th><th>?</th></tr>`;
   const body = rowsRaw.map(([k, v]) =>
-    `<tr><th>${esc(k)}</th><td>${v.n}</td><td>${v.nF}</td><td>${v.nM}</td><td>${v.nUnk || 0}</td></tr>`
+    `<tr data-raw="${esc(k)}"><th>${esc(friendly(k))}</th><td>${v.n}</td><td>${v.nF}</td><td>${v.nM}</td><td>${v.nUnk || 0}</td></tr>`
   ).join("");
   table.innerHTML = header + body +
     `<tr class="chart__freq__total"><th>total</th><td>${total}</td><td>${totalF}</td><td>${totalM}</td><td>${totalUnk}</td></tr>`;
@@ -414,7 +429,7 @@ function renderFreq(container, block, stats) {
     return (
       `<g class="freq-bar" data-class="${esc(v.label)}" style="cursor:pointer">` +
       `<rect x="${padL - 60}" y="${y - 2}" width="${(chartW + 70).toFixed(1)}" height="${(rowH + 4).toFixed(1)}" fill="transparent"/>` +
-      `<text x="${padL - 6}" y="${(y + rowH / 2 + 4).toFixed(1)}" text-anchor="end" font-size="12" fill="${COL_INK}" font-family="Georgia, serif">${esc(v.label)}</text>` +
+      `<text x="${padL - 6}" y="${(y + rowH / 2 + 4).toFixed(1)}" text-anchor="end" font-size="12" fill="${COL_INK}" font-family="Georgia, serif">${esc(friendly(v.label))}</text>` +
       `<rect x="${padL}" y="${y.toFixed(1)}" width="${wF.toFixed(1)}" height="${rowH}" fill="${COL_BAR_B}"/>` +
       `<rect x="${(padL + wF).toFixed(1)}" y="${y.toFixed(1)}" width="${wM.toFixed(1)}" height="${rowH}" fill="${COL_BAR}"/>` +
       `<rect x="${(padL + wF + wM).toFixed(1)}" y="${y.toFixed(1)}" width="${wU.toFixed(1)}" height="${rowH}" fill="${COL_MUTED}"/>` +
@@ -452,20 +467,27 @@ function renderFreq(container, block, stats) {
     container.appendChild(rowsHost);
     let nodesCache = null;
     async function ensureNodes() { if (!nodesCache) nodesCache = await loadNodesForLink(block); return nodesCache; }
-    async function showClass(cls) {
-      const info = sorted.find((r) => r.label === cls);
+    async function showClass(clsRaw) {
+      const info = sorted.find((r) => r.label === clsRaw);
       const ns = await ensureNodes();
-      const matching = ns.filter((n) => (n.group || n.clasa) === cls);
+      // network nodes may carry the class code under either group or clasa;
+      // compare on raw code so friendly-label rewrites do not break the lookup.
+      const matching = ns.filter((n) => (n.group || n.clasa) === clsRaw);
       const pctLine = info ? ` · ${Math.round(info.pctF)}% fete, ${Math.round(info.pctM)}% băieți${info.nUnk ? `, ${Math.round(info.pctU)}% ?` : ""}` : "";
-      rowsHost.innerHTML = `<strong>${esc(cls)}</strong> (${matching.length} elevi${pctLine}): ` +
-        matching.map((n) => esc(n.name || n.id)).join(", ");
+      const names = matching
+        .map((n) => ({ n, deg: n.degree ?? n.pop ?? 0 }))
+        .sort((a, b) => (b.deg || 0) - (a.deg || 0))
+        .map(({ n, deg }) => deg ? `${esc(n.name || n.id)} (${deg})` : esc(n.name || n.id))
+        .join(", ");
+      rowsHost.innerHTML = `<strong>${esc(friendly(clsRaw))}</strong> (${matching.length} elevi${pctLine}): ` + names;
     }
     const tableRows = container.querySelectorAll(".chart__freq tr");
     tableRows.forEach((tr, idx) => {
-      const th = tr.querySelector("th");
-      if (!th || idx === 0 || tr.classList.contains("chart__freq__total")) return;
+      if (idx === 0 || tr.classList.contains("chart__freq__total")) return;
+      const raw = tr.dataset.raw;
+      if (!raw) return;
       tr.classList.add("chart__freq__tappable");
-      tr.addEventListener("click", () => showClass(th.textContent.trim()));
+      tr.addEventListener("click", () => showClass(raw));
     });
     svg.querySelectorAll(".freq-bar").forEach((g) => {
       g.addEventListener("click", () => showClass(g.dataset.class));
