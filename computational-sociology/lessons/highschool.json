@@ -11,8 +11,8 @@
     { "n": 1, "title": "Întrebarea", "startIdx": 0 },
     { "n": 2, "title": "Măsurăm oameni", "startIdx": 4 },
     { "n": 3, "title": "Enigma, soluția și cine rămâne pe dinafară", "startIdx": 14 },
-    { "n": 4, "title": "Aceeași greșeală, un nivel mai sus", "startIdx": 19 },
-    { "n": 5, "title": "Teza", "startIdx": 26 }
+    { "n": 4, "title": "Aceeași greșeală, un nivel mai sus", "startIdx": 20 },
+    { "n": 5, "title": "Teza", "startIdx": 27 }
   ],
   "blocks": [
     {
@@ -280,6 +280,15 @@
       "title": "Prietenii prietenilor",
       "intro": "<p>Am eliminat clasa, popularitatea și deschiderea. Ce a mai rămas? Uită-te la fiecare dintre cei trei nu la prietenii lor, ci la <strong>prietenii prietenilor</strong>.</p><p>Comută filele. Pentru fiecare elev, punctul negru e el, cercul brun sunt contactele lui, cercul verde sunt contactele contactelor.</p>",
       "caption": "<p>Chloé are puține contacte, dar cercul verde explodează: prietenii ei sunt răspândiți în alte clase. Antoine are cele mai multe contacte, dar cercul verde adaugă puțin, pentru că prietenii lui se cunosc între ei. Léa are contacte împrăștiate, cu un cerc verde mare.</p><p>Regula ține pentru toată școala, cu o corelație de <strong>0,78</strong>, față de <strong>0,37</strong> la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul.</p><p><strong>Am aflat răspunsul, și e mai important decât cazul lui Chloé.</strong></p><p>Nu contează câți oameni cunoști. Contează pe cine cunosc ei, adică unde stai tu în structură. Popularitatea e o însușire a ta. Poziția e o relație cu ceilalți.</p><p><strong>Poziția bate însușirea.</strong> Ține minte propoziția asta. O vom întâlni din nou peste câteva minute, la o problemă complet diferită.</p><p><em>Cel mai citat articol din sociologia rețelelor e al lui Mark Granovetter, din 1973, și spune că punțile dintre grupuri sunt de obicei legături slabe: cunoștințe, nu prieteni apropiați. Cazul lui Chloé e o excepție interesantă. Puntea ei e prietenul cu care petrece cel mai mult timp. Se întâmplă, și tocmai de asta cercetătorii se uită la cazuri, nu doar la medii.</em></p>"
+    },
+    {
+      "type": "paradox",
+      "id": "c-paradoxul-prieteniei",
+      "statsSource": "data/highschool-stats.json",
+      "title": "O întrebare despre tine",
+      "intro": "<p>Același mecanism, altă întrebare. La cardul de dinainte am aflat că ce contează sunt oamenii pe care îi cunosc prietenii tăi. Acum întorc întrebarea către tine.</p>",
+      "question": "O întrebare despre tine, nu despre școala din date. În medie, prietenii tăi au mai mulți prieteni decât tine, cam la fel, sau mai puțini?",
+      "options": ["mai mulți", "cam la fel", "mai puțini"]
     },
     {
       "type": "chart",

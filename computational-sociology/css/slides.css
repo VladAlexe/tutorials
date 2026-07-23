@@ -1030,6 +1030,65 @@
 .paradox__numbers p { margin: 0 0 var(--sp-2); font-size: 0.95rem; line-height: 1.5; }
 .paradox__numbers p:last-child { margin-bottom: 0; }
 
+/* 4-state paradox card */
+.paradox__mechanism,
+.paradox__application {
+  border-top: var(--border-thin-soft);
+  padding-top: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+.paradox__section-title {
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--color-ink);
+  margin: 0 0 var(--sp-3);
+  font-weight: 500;
+}
+.paradox__msg {
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3);
+  background: #ede2cf;
+  border-left: 3px solid #8b4a1e;
+  border-radius: 4px;
+}
+.paradox__bars { margin: var(--sp-3) 0; }
+.paradox__stat {
+  font-size: 1rem;
+  color: var(--color-ink);
+  margin: var(--sp-3) 0;
+  line-height: 1.5;
+}
+.paradox__punch {
+  font-size: 1.5rem;
+  color: var(--color-ink);
+  margin: var(--sp-4) 0;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.paradox__punch strong { color: #a3341f; font-size: 1.9rem; }
+.paradox__note {
+  font-size: 0.9rem;
+  color: var(--color-ink-secondary, #5c5346);
+  margin: var(--sp-3) 0 var(--sp-4);
+  font-style: italic;
+  line-height: 1.5;
+}
+.paradox__star { margin: var(--sp-3) 0 var(--sp-4); }
+.paradox__mechanism p,
+.paradox__application p {
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0 0 var(--sp-3);
+  color: var(--color-ink);
+}
+@media (max-width: 640px) {
+  .paradox__punch { font-size: 1.2rem; }
+  .paradox__punch strong { font-size: 1.5rem; }
+}
+
 /* Compare-three (three side-by-side / stacked networks) */
 .compare-three {
   display: grid;

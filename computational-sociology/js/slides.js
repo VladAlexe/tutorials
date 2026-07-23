@@ -242,12 +242,23 @@ async function loadStats(source) {
   }
 }
 
-// Paradox block: vote + interactive 6-node subnet + whole-school numbers
+// Paradox block: 4-state guided card.
+//  1) vote (required to unlock navigation)
+//  2) reveal — real numbers from the school + tailored feedback
+//  3) mechanism — a 10-spoke star network that makes the sampling bias obvious
+//  4) application — Christakis-Fowler and acquaintance immunization
+// Progression is by button; each next stage stays visible when the next one
+// opens, so the card reads as a stacked narrative when scrolled back.
 async function renderParadox(container, block, stats, opts) {
   const progressMod = await import(`./progress.js?v=${V}`);
-  const { getVote, markVote } = progressMod;
-  const prior = getVote(block.id);
+  const { markVote } = progressMod;
 
+  const p = stats?.sliceMetrics?.friendshipParadox || stats?.friendshipParadox || {};
+  const meanDeg = p.meanDegree ?? 6;
+  const meanFriendDeg = p.meanFriendDegree ?? 7.6;
+  const pctBelow = p.pctBelow ?? 70;
+
+  // Stage 1: vote
   const voteWrap = document.createElement("div");
   voteWrap.className = "paradox__vote vote";
   const q = document.createElement("p");
@@ -270,10 +281,117 @@ async function renderParadox(container, block, stats, opts) {
   });
   container.appendChild(voteWrap);
 
+  // Stage 2 host, hidden initially
   const revealEl = document.createElement("div");
   revealEl.className = "paradox__reveal";
   revealEl.hidden = true;
   container.appendChild(revealEl);
+
+  const mechEl = document.createElement("div");
+  mechEl.className = "paradox__mechanism";
+  mechEl.hidden = true;
+  container.appendChild(mechEl);
+
+  const appEl = document.createElement("div");
+  appEl.className = "paradox__application";
+  appEl.hidden = true;
+  container.appendChild(appEl);
+
+  function tailoredMsg(idx) {
+    // Order: [0]="mai mulți", [1]="cam la fel", [2]="mai puțini"
+    if (idx === 0) return "Ai votat împotriva intuiției comune, și ai avut dreptate. Dar probabil nu din motivul corect.";
+    return "Ai votat ca majoritatea. Și, ca majoritatea, datele te contrazic.";
+  }
+
+  function fmtNumberRo(v) { return String(v).replace(".", ","); }
+
+  function starSvg(centerCount = 10) {
+    const W = 320, H = 220;
+    const cx = W / 2, cyC = H / 2;
+    const r = 82;
+    const parts = [];
+    // spokes
+    for (let i = 0; i < centerCount; i++) {
+      const angle = (i / centerCount) * 2 * Math.PI - Math.PI / 2;
+      const px = cx + Math.cos(angle) * r;
+      const py = cyC + Math.sin(angle) * r;
+      parts.push(`<line x1="${cx}" y1="${cyC}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}" stroke="#8a7154" stroke-width="1.2" opacity="0.55"/>`);
+    }
+    // peripherals
+    for (let i = 0; i < centerCount; i++) {
+      const angle = (i / centerCount) * 2 * Math.PI - Math.PI / 2;
+      const px = cx + Math.cos(angle) * r;
+      const py = cyC + Math.sin(angle) * r;
+      parts.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="9" fill="#3d7a52" stroke="#2a1f16" stroke-width="0.8"/>`);
+      parts.push(`<text x="${px.toFixed(1)}" y="${(py + 3).toFixed(1)}" text-anchor="middle" font-size="9" fill="#faf7f2" font-family="Georgia, serif">1</text>`);
+    }
+    // center
+    parts.push(`<circle cx="${cx}" cy="${cyC}" r="15" fill="#8b4a1e" stroke="#2a1f16" stroke-width="1"/>`);
+    parts.push(`<text x="${cx}" y="${(cyC + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="#faf7f2" font-weight="500" font-family="Georgia, serif">10</text>`);
+    return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:340px;display:block;margin:0 auto" role="img" aria-label="Rețea în stea: un nod central cu grad 10, zece noduri de margine cu grad 1">${parts.join("")}</svg>`;
+  }
+
+  function barsSvg() {
+    const W = 440, H = 100;
+    const padL = 44, padR = 60, padT = 8, padB = 8;
+    const chartW = W - padL - padR;
+    const rowH = 26, rowGap = 12;
+    const maxV = Math.max(meanFriendDeg, meanDeg) * 1.15;
+    function row(label, val, y, color) {
+      const w = (val / maxV) * chartW;
+      return `<text x="${padL - 6}" y="${(y + rowH / 2 + 4).toFixed(1)}" text-anchor="end" font-family="Georgia, serif" font-size="12" fill="#2a1f16">${label}</text>` +
+             `<rect x="${padL}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${rowH}" fill="${color}" rx="2"/>` +
+             `<text x="${(padL + w + 6).toFixed(1)}" y="${(y + rowH / 2 + 4).toFixed(1)}" font-family="Georgia, serif" font-size="13" font-weight="500" fill="#2a1f16">${fmtNumberRo(val)}</text>`;
+    }
+    const svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto">` +
+      row("un elev", meanDeg, padT, "#8b4a1e") +
+      row("prietenii lui", meanFriendDeg, padT + rowH + rowGap, "#3d7a52") +
+      `</svg>`;
+    return svg;
+  }
+
+  function openReveal(idx) {
+    revealEl.hidden = false;
+    revealEl.innerHTML =
+      `<p class="paradox__msg">${tailoredMsg(idx)}</p>` +
+      `<div class="paradox__bars">${barsSvg()}</div>` +
+      `<p class="paradox__stat">În școala noastră, un elev are în medie <strong>${fmtNumberRo(meanDeg)}</strong> contacte. Prietenii unui elev au în medie <strong>${fmtNumberRo(meanFriendDeg)}</strong>.</p>` +
+      `<p class="paradox__punch"><strong>${pctBelow}%</strong> dintre elevi au prietenii mai populari decât ei înșiși.</p>` +
+      `<p class="paradox__note">Nu e o coincidență a acestei școli. Se întâmplă în aproape orice rețea socială, și are un nume: paradoxul prieteniei, descris de Scott Feld în 1991.</p>` +
+      `<button type="button" class="btn btn--primary" data-next="mech">De ce se întâmplă?</button>`;
+    revealEl.querySelector('[data-next="mech"]').addEventListener("click", openMech);
+  }
+
+  function openMech() {
+    mechEl.hidden = false;
+    mechEl.innerHTML =
+      `<h3 class="paradox__section-title">Cazul extrem</h3>` +
+      `<div class="paradox__star">${starSvg(10)}</div>` +
+      `<p>Un elev are zece prieteni. Ceilalți zece au fiecare un singur prieten: pe el.</p>` +
+      `<p>Întreabă pe fiecare câți prieteni are: zece oameni răspund <strong>unu</strong>, iar unul răspunde <strong>zece</strong>. Media e puțin peste unu.</p>` +
+      `<p>Acum întreabă pe fiecare câți prieteni are prietenul lui. Cei zece răspund toți <strong>zece</strong>, pentru că toți au același prieten popular. Doar el răspunde unu.</p>` +
+      `<p>Deci aproape toată lumea are un prieten mai popular decât ea, iar asta nu spune nimic despre ei. Spune ceva despre <strong>cum am numărat</strong>.</p>` +
+      `<p>Motivul: cine are mulți prieteni apare în listele multor oameni. Cine are puțini apare aproape în nicio listă. Când te uiți la prietenii oamenilor, îi vezi disproporționat pe cei populari. Nu e psihologie, e <strong>eșantionare</strong>.</p>` +
+      `<button type="button" class="btn btn--primary" data-next="app">La ce folosește?</button>`;
+    mechEl.querySelector('[data-next="app"]').addEventListener("click", openApp);
+    mechEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function openApp() {
+    appEl.hidden = false;
+    appEl.innerHTML =
+      `<h3 class="paradox__section-title">La ce folosește</h3>` +
+      `<p>Paradoxul nu e doar o ciudățenie. E o unealtă.</p>` +
+      `<p>În 2010, <strong>Christakis și Fowler</strong> au urmărit o epidemie de gripă într-un campus universitar. Au format două grupuri: elevi aleși la întâmplare, și prieteni ai unor elevi aleși la întâmplare. Grupul de prieteni s-a îmbolnăvit cu aproape două săptămâni mai devreme, pentru că, prin paradox, ei erau mai bine plasați în rețea. Un sistem de avertizare timpurie, construit fără să știi rețeaua.</p>` +
+      `<p>Și e chiar răspunsul la problema noastră, într-o formă practică.</p>` +
+      `<p>Toată misiunea a presupus că știm întreaga rețea: cine cu cine, cât timp, totul. În realitate nu ai datele astea aproape niciodată.</p>` +
+      `<p>Dar poți face altceva: alegi oameni la întâmplare și îi rogi să numească un prieten. Prin paradox, prietenii numiți sunt sistematic mai bine plasați decât cei aleși la întâmplare. Fără niciun calcul, fără nicio hartă, obții oameni mai buni decât hazardul.</p>` +
+      `<p>Strategia se numește <strong>imunizare prin cunoștințe</strong> (<em>acquaintance immunization</em>) și e folosită în sănătate publică, unde nimeni nu are harta contactelor unui oraș.</p>` +
+      `<h3 class="paradox__section-title">Și acum uită-te ce s-a întâmplat de fapt</h3>` +
+      `<p>Percepția ta despre cine e popular e deformată de propria ta poziție în rețea. Nu vezi școala, vezi bucata din ea la care ești legat, iar acea bucată e părtinitoare spre cei bine conectați.</p>` +
+      `<p>Orice feed face exact același lucru. Nu ești tu mai puțin interesant decât ceilalți. Vezi o <strong>selecție deformată</strong>.</p>`;
+    appEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   async function pick(idx) {
     optBtns.forEach((b, i) => {
@@ -282,102 +400,12 @@ async function renderParadox(container, block, stats, opts) {
     });
     markVote(block.id, { selectedIndex: idx });
     if (opts.onAnswered) opts.onAnswered({ selectedIndex: idx });
-    await showReveal();
-  }
-
-  async function showReveal() {
-    revealEl.hidden = false;
-    revealEl.innerHTML = "";
-    const subnet = stats?.sliceMetrics?.friendshipParadox?.subnet;
-    if (subnet && Array.isArray(subnet.nodes)) {
-      const subnetHost = document.createElement("div");
-      subnetHost.className = "paradox__subnet";
-      revealEl.appendChild(subnetHost);
-      renderParadoxSubnet(subnetHost, subnet);
-    }
-    const p = stats?.sliceMetrics?.friendshipParadox || stats?.friendshipParadox;
-    if (p) {
-      const nums = document.createElement("div");
-      nums.className = "paradox__numbers";
-      nums.innerHTML =
-        `<p>Pe toată școala: un elev are în medie <strong>${p.meanDegree}</strong> prieteni.</p>` +
-        `<p>Prietenii lui au în medie <strong>${p.meanFriendDegree}</strong>.</p>` +
-        `<p><strong>${p.pctBelow}%</strong> dintre elevi sunt sub media prietenilor lor.</p>`;
-      revealEl.appendChild(nums);
-    }
-  }
-
-  if (prior && typeof prior.selectedIndex === "number") {
-    optBtns.forEach((b, i) => {
-      b.disabled = true;
-      b.classList.toggle("vote__option--picked", i === prior.selectedIndex);
-    });
-    await showReveal();
-    if (opts.onAnswered) opts.onAnswered({ selectedIndex: prior.selectedIndex });
+    openReveal(idx);
   }
 }
 
-function renderParadoxSubnet(container, subnet) {
-  const nodes = subnet.nodes || [];
-  const edges = subnet.edges || [];
-  const N = nodes.length;
-  const W = 480, H = 260;
-  const cx = W / 2, cyC = H / 2 - 10;
-  const r = 90;
-
-  const positions = {};
-  nodes.forEach((n, i) => {
-    const angle = (i / Math.max(1, N)) * 2 * Math.PI - Math.PI / 2;
-    positions[n.id] = { x: cx + r * Math.cos(angle), y: cyC + r * Math.sin(angle) };
-  });
-
-  const edgeSvg = edges.map((e) => {
-    const p1 = positions[e.source];
-    const p2 = positions[e.target];
-    if (!p1 || !p2) return "";
-    return `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="#b57140" stroke-width="1.5" opacity="0.5"/>`;
-  }).join("");
-
-  const nodeSvg = nodes.map((n) => {
-    const p = positions[n.id];
-    const color = n.belowMean ? "#a3341f" : "#3d7a52";
-    return `<g class="paradox-node" data-id="${n.id}" style="cursor:pointer">` +
-      `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="20" fill="${color}" fill-opacity="0.8"/>` +
-      `<text x="${p.x.toFixed(1)}" y="${(p.y + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="white" font-family="Georgia, serif">${n.name}</text>` +
-      `</g>`;
-  }).join("");
-
-  container.innerHTML =
-    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto">` +
-    edgeSvg + nodeSvg +
-    `</svg>`;
-
-  const hint = document.createElement("p");
-  hint.className = "paradox__hint";
-  hint.textContent = "Atinge pe rând fiecare din cei 6. Numărăm împreună.";
-  container.appendChild(hint);
-
-  const tracker = document.createElement("p");
-  tracker.className = "paradox__tracker";
-  tracker.textContent = `Numărate: 0/${N}. Sub media prietenilor: 0/${N}.`;
-  container.appendChild(tracker);
-
-  const counted = new Set();
-  container.querySelectorAll(".paradox-node").forEach((g) => {
-    g.addEventListener("click", () => {
-      const id = parseInt(g.dataset.id, 10);
-      const n = nodes.find((x) => x.id === id);
-      if (!n) return;
-      counted.add(id);
-      const belowSoFar = [...counted].filter((cId) => nodes.find((x) => x.id === cId)?.belowMean).length;
-      const friendList = (n.friendDegrees || []).join(", ");
-      hint.textContent = `${n.name} are ${n.degree} prieteni; prietenii au ${friendList}, deci în medie ${n.friendMean}. ${n.name} e ${n.belowMean ? "sub" : "peste"} această medie.`;
-      tracker.textContent = `Numărate: ${counted.size}/${N}. Sub media prietenilor: ${belowSoFar}/${counted.size}.`;
-      const c = g.querySelector("circle");
-      if (c) { c.setAttribute("stroke", "#2a1f16"); c.setAttribute("stroke-width", "2"); }
-    });
-  });
-}
+// (renderParadoxSubnet removed — the 4-state paradox card uses a scripted
+// star SVG instead of the tap-the-six-nodes subnet from the earlier version.)
 
 function addTitle(el, text, small) {
   const h = document.createElement(small ? "h2" : "h1");
