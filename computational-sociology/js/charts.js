@@ -788,6 +788,21 @@ async function renderStates(container, block, values, stats) {
 
   const axisX = `<line x1="${padL}" y1="${padT + chartH}" x2="${W - padR}" y2="${padT + chartH}" stroke="${COL_MUTED}" stroke-width="0.5"/>`;
 
+  // Precompute bin layout so we can add a count label per column. Declared
+  // BEFORE the dot markup so both the histogram state and the count labels
+  // read from the same source of truth.
+  const BW = block.binWidth || 3;
+  const startBin = Math.floor(minV / BW) * BW;
+  const maxHi = Math.max(...values);
+  const nBins = Math.floor((maxHi - startBin) / BW) + 1;
+  const binPx = chartW / nBins;
+  const DOT_SIZE = 7;
+  const binCounts = new Array(nBins).fill(0);
+  for (const v of values) {
+    const idx = Math.floor((v - startBin) / BW);
+    if (idx >= 0 && idx < nBins) binCounts[idx]++;
+  }
+
   const initialPos = values.map((v, i) => scatterPos(i, v));
   const dots = initialPos.map((p, i) =>
     `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="${COL_BAR}" fill-opacity="0.7"><title>${values[i]}</title></circle>`
@@ -814,19 +829,6 @@ async function renderStates(container, block, values, stats) {
     countTexts.forEach((t) => {
       t.setAttribute("opacity", visible ? "1" : "0");
     });
-  }
-
-  // Precompute bin layout so we can add a count label per column.
-  const BW = block.binWidth || 3;
-  const startBin = Math.floor(minV / BW) * BW;
-  const maxHi = Math.max(...values);
-  const nBins = Math.floor((maxHi - startBin) / BW) + 1;
-  const binPx = chartW / nBins;
-  const DOT_SIZE = 7;
-  const binCounts = new Array(nBins).fill(0);
-  for (const v of values) {
-    const idx = Math.floor((v - startBin) / BW);
-    if (idx >= 0 && idx < nBins) binCounts[idx]++;
   }
 
   function histogramPos(i, v) {
@@ -1413,6 +1415,140 @@ async function renderFriendsTabs(container, block, stats) {
   drawFor(focuses[0]);
 }
 
+// Three-in-one view: multiple isolated ego-nets in the same SVG so the visual
+// makes the point that they are separate islands. Used for the "trei izolați"
+// card in Ch3 (Yann + Iban + Cécile) — three degree-1 students the model
+// never reaches, from three different classes.
+async function renderUnreachedMulti(container, block, stats) {
+  const netPath = block.data || "data/highschool-network.json";
+  let net;
+  try { net = await loadJSON(netPath); } catch { container.textContent = "Nu am putut încărca rețeaua."; return; }
+  const nameToNode = new Map();
+  const idToNode = new Map();
+  for (const n of net.nodes) {
+    idToNode.set(String(n.id), n);
+    if (n.name) nameToNode.set(n.name, n);
+  }
+  const adj = new Map();
+  for (const n of net.nodes) adj.set(String(n.id), new Set());
+  for (const e of net.edges) {
+    adj.get(String(e.source))?.add(String(e.target));
+    adj.get(String(e.target))?.add(String(e.source));
+  }
+  const classNames = stats?.classNames || {};
+
+  const focuses = (block.focuses || []).map((f) => {
+    let node = null;
+    if (f.name) node = nameToNode.get(f.name);
+    else if (f.id) node = idToNode.get(String(f.id));
+    if (!node) return null;
+    return {
+      id: String(node.id),
+      name: node.name,
+      classFriendly: classNames[node.group] || node.group,
+    };
+  }).filter(Boolean);
+  if (!focuses.length) { container.textContent = "Nu am găsit elevii ceruți."; return; }
+
+  const W = 640, H = 360;
+  const cluster = focuses.map((f, i) => {
+    const angle = (i / focuses.length) * 2 * Math.PI - Math.PI / 2;
+    return {
+      focus: f,
+      cx: W / 2 + Math.cos(angle) * W * 0.28,
+      cy: H / 2 + Math.sin(angle) * H * 0.28,
+    };
+  });
+
+  const parts = [];
+  for (const c of cluster) {
+    const f = c.focus;
+    const oneHop = [...(adj.get(f.id) || [])];
+    const twoHop = new Set();
+    for (const y of oneHop) for (const z of adj.get(y) || []) if (z !== f.id && !oneHop.includes(z)) twoHop.add(z);
+
+    const R1 = 32;
+    const R2 = 62;
+
+    const pos = new Map();
+    pos.set(f.id, { x: c.cx, y: c.cy });
+    oneHop.forEach((id, i) => {
+      const a = (i / Math.max(1, oneHop.length)) * 2 * Math.PI - Math.PI / 2;
+      pos.set(id, { x: c.cx + Math.cos(a) * R1, y: c.cy + Math.sin(a) * R1 });
+    });
+    const twoArr = [...twoHop];
+    const parentOf = new Map();
+    for (const t of twoArr) {
+      let p = null;
+      for (const y of adj.get(t) || []) if (oneHop.includes(y)) { p = y; break; }
+      parentOf.set(t, p);
+    }
+    const byParent = new Map();
+    for (const [t, p] of parentOf) {
+      if (p == null) continue;
+      if (!byParent.has(p)) byParent.set(p, []);
+      byParent.get(p).push(t);
+    }
+    for (const [p, kids] of byParent) {
+      const parentIdx = oneHop.indexOf(p);
+      const parentAngle = (parentIdx / Math.max(1, oneHop.length)) * 2 * Math.PI - Math.PI / 2;
+      kids.forEach((t, i) => {
+        const spread = Math.min(1.0, 0.2 + kids.length * 0.06);
+        const localA = parentAngle + (i - (kids.length - 1) / 2) * spread / Math.max(1, kids.length);
+        pos.set(t, { x: c.cx + Math.cos(localA) * R2, y: c.cy + Math.sin(localA) * R2 });
+      });
+    }
+    const orphans = twoArr.filter((t) => !pos.has(t));
+    orphans.forEach((t, i) => {
+      const a = (i / Math.max(1, orphans.length)) * 2 * Math.PI;
+      pos.set(t, { x: c.cx + Math.cos(a) * R2, y: c.cy + Math.sin(a) * R2 });
+    });
+
+    // Edges within this cluster
+    for (const id of oneHop) {
+      const pa = pos.get(f.id), pb = pos.get(id);
+      if (pa && pb) parts.push(`<line x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" stroke="#8a7154" stroke-width="0.8" opacity="0.45"/>`);
+      for (const t of adj.get(id) || []) {
+        if (twoHop.has(t)) {
+          const pc = pos.get(t);
+          if (pb && pc) parts.push(`<line x1="${pb.x.toFixed(1)}" y1="${pb.y.toFixed(1)}" x2="${pc.x.toFixed(1)}" y2="${pc.y.toFixed(1)}" stroke="#8a7154" stroke-width="0.8" opacity="0.45"/>`);
+        }
+      }
+    }
+    // 2-hop dots
+    for (const t of twoArr) {
+      const p = pos.get(t); if (!p) continue;
+      parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="#3d7a52" opacity="0.85"/>`);
+    }
+    // 1-hop dots
+    for (const id of oneHop) {
+      const p = pos.get(id); if (!p) continue;
+      parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="#8b4a1e"/>`);
+    }
+    // Focus dot + label
+    parts.push(`<circle cx="${c.cx.toFixed(1)}" cy="${c.cy.toFixed(1)}" r="8" fill="#2a1f16"/>`);
+    const labelY = c.cy + R2 + 18;
+    parts.push(`<text x="${c.cx.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#2a1f16"><tspan font-weight="500">${esc(f.name)}</tspan>, ${esc(f.classFriendly)}</text>`);
+  }
+
+  const svg = document.createElement("div");
+  svg.className = "chart__svg-wrap";
+  svg.innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
+    `style="width:100%;height:auto;max-width:700px;display:block;margin:0 auto" ` +
+    `role="img" aria-label="Trei elevi izolați cu vecinătatea lor la doi pași">` +
+    parts.join("") + `</svg>`;
+  container.appendChild(svg);
+
+  const legend = document.createElement("div");
+  legend.className = "friends-tabs__legend";
+  legend.innerHTML =
+    `<span><span class="friends-tabs__dot" style="background:#2a1f16"></span>elev neatins</span>` +
+    `<span><span class="friends-tabs__dot" style="background:#8b4a1e"></span>singurul lui contact</span>` +
+    `<span><span class="friends-tabs__dot" style="background:#3d7a52"></span>contactele acelui contact</span>`;
+  container.appendChild(legend);
+}
+
 function renderStrategyMaps(container, block, stats) {
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
   const total = cm._total || stats?.total || 299;
@@ -1845,6 +1981,11 @@ export async function renderChart(container, block) {
     if (block.variant === "friends-tabs") {
       const stats = await getStats(block);
       await renderFriendsTabs(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "unreached-multi") {
+      const stats = await getStats(block);
+      await renderUnreachedMulti(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {

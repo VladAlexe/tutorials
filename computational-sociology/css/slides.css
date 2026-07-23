@@ -190,6 +190,11 @@
   min-height: 260px;
   max-height: 45vh;
 }
+.slide .viz--compact .viz__stage {
+  height: 32vh;
+  min-height: 220px;
+  max-height: 340px;
+}
 
 /* Caption below viz/chart/diffusion — for text-viz-text single card */
 .slide__caption {
@@ -1294,6 +1299,11 @@
     height: 55vh;
     min-height: 320px;
     max-height: 55vh;
+  }
+  .slide .viz--compact .viz__stage {
+    height: 38vh;
+    min-height: 240px;
+    max-height: 380px;
   }
 }
 

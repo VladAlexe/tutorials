@@ -3193,6 +3193,10 @@ export async function renderDiffusion(container, block, options = {}) {
   }
 
   else if (mode === "try-break") {
+    // The try-break card has four buttons + counter + description below the
+    // network. If the stage takes 45-55vh the buttons scroll off screen on
+    // most laptops. Shrink the stage so all controls fit within one viewport.
+    container.classList.add("viz--compact");
     // Node-removal experiment, driven ENTIRELY by precomputed scenarios in
     // sm.tryBreak. Starting state: single beige color (one component). On
     // scenario select, if the removal actually splits the graph, the largest

@@ -145,10 +145,16 @@ export function renderQuiz(container, block, options = {}) {
       );
     }
     feedback.hidden = true;
+    feedback.textContent = "";
+    feedback.className = "quiz__feedback";
     explanation.hidden = true;
     verifyBtn.hidden = false;
     verifyBtn.disabled = true;
     retryBtn.hidden = true;
+    // Force a re-focus on the group so keyboard users land back on the first
+    // option. Without this, screen-reader users can be stranded on the
+    // hidden retry button.
+    if (optionEls[0] && optionEls[0].label) optionEls[0].label.focus();
   }
 }
 
