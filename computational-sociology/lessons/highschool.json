@@ -291,14 +291,13 @@
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
       "teamSize": 1,
+      "candidates": ["vedeta", "puntea"],
       "presets": [
-        { "label": "Cel mai popular", "names": ["Antoine"] },
-        { "label": "Cel mai deschis", "names": ["Léa"] },
         { "label": "La întâmplare", "random": true }
       ],
       "title": "O alegere",
-      "intro": "<p>Ai o veste care trebuie să ajungă la toată școala până diseară. Poți să o spui unei singure persoane. Ea le spune celor patru oameni cu care petrece cel mai mult timp, aceia mai departe, și tot așa. Dar ziua se termină: sunt doar {{pasi}} pauze. Alege.</p>",
-      "caption": "Reține scorul. Îl vom bate. Și, mai important, vom afla de ce nu ai nimerit din prima."
+      "intro": "<p>Momentul a venit. Ai o veste care trebuie să ajungă la toată școala până diseară. O spui unei singure persoane. Ea le spune celor patru oameni cu care petrece cel mai mult timp, aceia mai departe, și tot așa, dar ziua se termină: sunt doar {{pasi}} pauze. Îi cunoști pe candidați. Alege.</p>",
+      "caption": "Reține scorul. Îl vom bate, și vei afla de ce nu ai nimerit din prima."
     },
     {
       "type": "diffusion",
@@ -327,11 +326,12 @@
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
       "teamSize": 3,
+      "candidates": ["vedeta", "puntea", "dependent"],
       "presets": [
         { "label": "Cei mai populari trei", "names": ["Antoine", "Chloé", "Rémi"] }
       ],
       "title": "Acum ai trei",
-      "intro": "<p>Bugetul crește: poți spune la trei persoane. Alege, sau lasă butonul să încerce cu cei mai populari trei elevi din școală.</p>",
+      "intro": "<p>Bugetul crește. Nu mai spui unei singure persoane, ci la trei deodată. Toți trei pornesc vestea în același timp, din locuri diferite. Atenție la ce se schimbă: nu mai cauți trei oameni buni, ci trei oameni care <strong>împreună</strong> acoperă cât mai mult. Doi oameni foarte buni care ajung la aceiași colegi valorează mai puțin decât unul bun și unul mediocru din capătul opus al școlii.</p>",
       "caption": "Cei mai populari trei, împreună: <strong>{{sliceMetrics.mission.top3PopularCoverage}}</strong> din {{sliceMetrics.plafon}} posibili. Fiecare dintre ei atinge în jur de cincizeci de oameni, și abia se suprapun între ei. Nu e o problemă de bulă comună. E o problemă de adâncime: fiecare intră puțin în mai multe cartiere, fără să cucerească niciunul."
     },
     {

@@ -2352,7 +2352,16 @@ export async function renderDiffusion(container, block, options = {}) {
       });
       setTimeout(() => paint(), 800);
       const nm = nameById.get(bestId);
-      pickEl.textContent = `Pas ${picks.length}: ${nm} adaugă ${bestAdd} persoane noi. Acoperire totală: ${covered.size} din ${nodes.length}.`;
+      // Per-step narration adapted to the step number, per the mission spec.
+      let narration;
+      if (picks.length === 1) {
+        narration = `Alege pe <strong>${nm}</strong>: singură, acoperă <strong>${bestAdd}</strong> persoane, cel mai mult dintre toți.`;
+      } else if (picks.length === 2) {
+        narration = `Nu alege al doilea ca mărime. Alege pe <strong>${nm}</strong>, care adaugă <strong>${bestAdd}</strong> persoane noi peste ce avem deja.`;
+      } else {
+        narration = `Iar acum pe <strong>${nm}</strong>, pentru cei rămași: adaugă <strong>${bestAdd}</strong> persoane. Acoperire totală: <strong>${covered.size}</strong>.`;
+      }
+      pickEl.innerHTML = narration;
       statusEl.textContent = `Alegere lacomă: pas ${picks.length} din ${steps}.`;
     }
     function doReset() {
@@ -2471,9 +2480,29 @@ export async function renderDiffusion(container, block, options = {}) {
     const team = [];
     const history = [];
 
+    // Candidate fiches: role keys the block declares, resolved against
+    // sliceMetrics.characters. Tap a fișă to select that person as source.
+    const candidateKeys = Array.isArray(block.candidates) ? block.candidates : [];
+    const candidates = candidateKeys
+      .map((k) => statsDataM?.sliceMetrics?.characters?.[k])
+      .filter(Boolean);
+
     controls.innerHTML =
       `<div class="diff-count" data-role="status">Alege ${teamSize} elevi. Zvonul pornește de la ei simultan.</div>` +
-      `<div class="diff-hint" data-role="preview">Atinge un nod pentru a-l adăuga în echipă.</div>` +
+      `<div class="diff-hint" data-role="preview">Atinge o fișă sau un nod pentru a-l adăuga în echipă.</div>` +
+      (candidates.length
+        ? `<div class="mission-fiches" data-role="fiches">` +
+            candidates.map((c) =>
+              `<button type="button" class="mission-fiche" data-fiche-id="${c.id}">` +
+                `<div class="mission-fiche__name">${c.name}</div>` +
+                `<div class="mission-fiche__meta">${c.classFriendly || c.class}</div>` +
+                `<div class="mission-fiche__row"><span>contacte</span> <strong>${c.popularity}</strong></div>` +
+                `<div class="mission-fiche__row"><span>din alte clase</span> <strong>${c.outClassContacts ?? 0}</strong></div>` +
+              `</button>`
+            ).join("") +
+          `</div>` +
+          `<div class="diff-hint diff-hint--muted">Sau alege pe altcineva: atinge orice nod pe hartă.</div>`
+        : "") +
       `<div class="diff-row diff-buttons">` +
         `<button type="button" class="btn btn--primary" data-act="send" disabled>Trimite</button>` +
         `<button type="button" class="btn btn--ghost" data-act="reset">Resetează echipa</button>` +
@@ -2554,6 +2583,27 @@ export async function renderDiffusion(container, block, options = {}) {
       });
     });
     controls.querySelector('[data-act="reset"]').addEventListener("click", () => { team.length = 0; paint(); });
+    // Candidate fișe click: add to team (or replace if teamSize=1)
+    controls.querySelectorAll("[data-fiche-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const nid = String(btn.dataset.ficheId);
+        const pos = team.indexOf(nid);
+        if (pos >= 0) {
+          team.splice(pos, 1);
+        } else {
+          if (teamSize === 1) team.length = 0;
+          if (team.length < teamSize) team.push(nid);
+        }
+        paint();
+        // Update preview with hypothetical coverage
+        if (team.length > 0) {
+          const cov = coverage(team).size;
+          const previewEl = controls.querySelector('[data-role="preview"]');
+          if (previewEl) previewEl.textContent = `Echipa curentă ar afla ${cov} persoane.`;
+        }
+      });
+    });
+
     controls.querySelectorAll("[data-preset]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const p = presets[parseInt(btn.dataset.preset, 10)];

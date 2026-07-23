@@ -908,6 +908,49 @@
 }
 .class-net__legend { margin-top: var(--sp-1); }
 
+/* Mission candidate fișe: rând de cărți sub simulator */
+.mission-fiches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: var(--sp-2) 0;
+}
+.mission-fiche {
+  flex: 1 1 140px;
+  min-width: 140px;
+  max-width: 220px;
+  background: var(--color-surface, #faf7f2);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  padding: var(--sp-2);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.mission-fiche:hover {
+  background: rgba(0,0,0,0.03);
+  border-color: var(--color-ink-soft);
+}
+.mission-fiche__name {
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: var(--color-ink);
+}
+.mission-fiche__meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin-bottom: var(--sp-1);
+}
+.mission-fiche__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--color-ink-soft);
+  padding: 2px 0;
+}
+.mission-fiche__row strong { font-variant-numeric: tabular-nums; color: var(--color-ink); }
+
 /* Openness duo mode: two ego networks side by side, colored by class */
 .openness-duo {
   display: grid;
