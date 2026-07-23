@@ -1664,10 +1664,14 @@ export async function renderDiffusion(container, block, options = {}) {
     };
 
     // ---- Grouped spatial layout (for class + community schemes) ----
-    // Nodes rearrange, not just recolor. When switching from Clasa to
-    // Comunitatea at rezoluție 1, nodes barely move: proof that ARI is high.
+    // The class partition is the reference. Every other partition (community
+    // at any resolution) inherits slots by MAX-OVERLAP greedy matching: the
+    // community that shares the most members with class Bio A gets Bio A's
+    // slot. Groups without a match fall onto an inner ring. This preserves
+    // the pedagogical effect: when ARI is high, nodes barely move.
     let baseCosePositions = null;
-    const groupedPosCache = new Map(); // key -> Map<nodeId, {x, y}>
+    const groupedPosCache = new Map();       // cacheKey -> Map<nodeId, {x,y}>
+    const slotAssignmentCache = new Map();   // cacheKey -> { buckets, slotFor, nOuter, nInner }
 
     function saveBaseCosePositions() {
       if (baseCosePositions !== null) return;
@@ -1678,46 +1682,110 @@ export async function renderDiffusion(container, block, options = {}) {
       });
     }
 
-    function computeGroupedPositions(cacheKey, groupOf) {
-      if (groupedPosCache.has(cacheKey)) return groupedPosCache.get(cacheKey);
-      const buckets = new Map();
+    // Reference (class) buckets, computed once.
+    const refBuckets = new Map();
+    for (const n of nodes) {
+      const g = groupBy.get(n.id);
+      if (g == null) continue;
+      if (!refBuckets.has(g)) refBuckets.set(g, new Set());
+      refBuckets.get(g).add(n.id);
+    }
+    const refGroupKeys = [...refBuckets.keys()].sort();
+    const refSlotForKey = new Map();
+    refGroupKeys.forEach((k, i) => refSlotForKey.set(k, i));
+    const nOuterSlots = refGroupKeys.length;
+
+    function assignSlots(cacheKey, groupOf) {
+      if (slotAssignmentCache.has(cacheKey)) return slotAssignmentCache.get(cacheKey);
+      const candBuckets = new Map();
       for (const n of nodes) {
         const g = groupOf(n.id);
         if (g == null) continue;
-        if (!buckets.has(g)) buckets.set(g, []);
-        buckets.get(g).push(n.id);
+        if (!candBuckets.has(g)) candBuckets.set(g, new Set());
+        candBuckets.get(g).add(n.id);
       }
-      const groupKeys = [...buckets.keys()].sort((a, b) =>
-        String(a).localeCompare(String(b), "ro"));
-      const nGroups = groupKeys.length;
-      if (nGroups === 0) return new Map();
 
-      // Use cose's own scale as reference, so grouped view stays comparable.
-      const nodes_ = cy.nodes();
+      let slotFor = new Map();
+      if (cacheKey === "class") {
+        // Reference: fixed slot per class.
+        for (const [k, slot] of refSlotForKey) slotFor.set(k, slot);
+      } else {
+        // Greedy overlap matching against the class partition.
+        const pairs = [];
+        for (const [cg, cMembers] of candBuckets) {
+          for (const [rg, rMembers] of refBuckets) {
+            let overlap = 0;
+            for (const x of cMembers) if (rMembers.has(x)) overlap++;
+            if (overlap > 0) pairs.push({ cg, rg, overlap });
+          }
+        }
+        // Tiebreak: larger community first, then string order (deterministic).
+        pairs.sort((a, b) => {
+          if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+          const sa = candBuckets.get(a.cg).size;
+          const sb = candBuckets.get(b.cg).size;
+          if (sb !== sa) return sb - sa;
+          return String(a.cg).localeCompare(String(b.cg));
+        });
+        const usedSlots = new Set();
+        for (const { cg, rg } of pairs) {
+          if (slotFor.has(cg)) continue;
+          const slot = refSlotForKey.get(rg);
+          if (usedSlots.has(slot)) continue;
+          slotFor.set(cg, slot);
+          usedSlots.add(slot);
+        }
+        // Leftover groups: inner ring, ordered by size desc for stability.
+        const leftovers = [...candBuckets.keys()]
+          .filter((cg) => !slotFor.has(cg))
+          .sort((a, b) => candBuckets.get(b).size - candBuckets.get(a).size
+            || String(a).localeCompare(String(b)));
+        leftovers.forEach((cg, i) => slotFor.set(cg, nOuterSlots + i));
+      }
+
+      let nInner = 0;
+      for (const s of slotFor.values()) if (s >= nOuterSlots) nInner++;
+
+      const result = { buckets: candBuckets, slotFor, nOuter: nOuterSlots, nInner };
+      slotAssignmentCache.set(cacheKey, result);
+      return result;
+    }
+
+    function computeGroupedPositions(cacheKey, groupOf) {
+      if (groupedPosCache.has(cacheKey)) return groupedPosCache.get(cacheKey);
+      const { buckets, slotFor, nOuter, nInner } = assignSlots(cacheKey, groupOf);
+
+      // Reference stage extent from current cy positions.
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-      nodes_.forEach((n) => {
+      cy.nodes().forEach((n) => {
         const p = n.position();
         if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x;
         if (p.y < minY) minY = p.y; if (p.y > maxY) maxY = p.y;
       });
       const spread = Math.max(maxX - minX, maxY - minY, 500);
-      const groupRadius = spread * 0.42;
+      const outerR = spread * 0.42;
+      const innerR = spread * 0.18;
 
       const positions = new Map();
-      groupKeys.forEach((g, i) => {
-        const members = buckets.get(g);
-        const angle = (i / nGroups) * 2 * Math.PI - Math.PI / 2;
-        const gcx = Math.cos(angle) * groupRadius;
-        const gcy = Math.sin(angle) * groupRadius;
-        const memberR = Math.max(28, Math.sqrt(members.length) * 12);
-        members.forEach((nid, j) => {
-          const ma = (j / members.length) * 2 * Math.PI;
+      for (const [g, members] of buckets) {
+        const slot = slotFor.get(g);
+        const isInner = slot >= nOuter;
+        const localIndex = isInner ? (slot - nOuter) : slot;
+        const localTotal = isInner ? Math.max(nInner, 1) : nOuter;
+        const angle = (localIndex / localTotal) * 2 * Math.PI - Math.PI / 2;
+        const R = isInner ? innerR : outerR;
+        const gcx = Math.cos(angle) * R;
+        const gcy = Math.sin(angle) * R;
+        const memberR = Math.max(24, Math.sqrt(members.size) * 11);
+        const ordered = [...members].sort();
+        ordered.forEach((nid, j) => {
+          const ma = (j / ordered.length) * 2 * Math.PI;
           positions.set(String(nid), {
             x: gcx + Math.cos(ma) * memberR,
             y: gcy + Math.sin(ma) * memberR,
           });
         });
-      });
+      }
       groupedPosCache.set(cacheKey, positions);
       return positions;
     }
