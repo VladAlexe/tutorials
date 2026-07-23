@@ -509,11 +509,14 @@ async function renderDuel(container, block) {
     adjTop.set(nid, arr.slice(0, maxT).map((x) => x.to));
   }
 
-  // Which trio slots to render (new keys vedeta/campion/surpriza; sandu/emil/doina kept as legacy aliases)
+  // Which trio slots to render. Accepts 2 or 3 keys. legacy aliases kept.
   const legacyAlias = { sandu: "vedeta", emil: "campion", doina: "surpriza" };
+  // Also allow full character lookup if slot key names a character directly.
+  const chars = statsData?.sliceMetrics?.characters || {};
   const slots = (block.slots || ["vedeta", "campion", "surpriza"])
-    .map((k) => trio[k] || trio[legacyAlias[k]])
+    .map((k) => trio[k] || trio[legacyAlias[k]] || chars[k] || chars[legacyAlias[k]])
     .filter(Boolean);
+  const runLabel = block.runLabel || "Rulează toate trei";
   if (!slots.length) { container.innerHTML = "<div class=\"diff-hint\">Nu am date pentru trio.</div>"; return { refit() {}, destroy() {} }; }
 
   const grid = document.createElement("div");
@@ -524,12 +527,14 @@ async function renderDuel(container, block) {
   controls.className = "diffusion-controls";
   controls.innerHTML =
     `<div class="diff-row diff-buttons">` +
-      `<button type="button" class="btn btn--primary" data-act="run">Rulează toate trei</button>` +
+      `<button type="button" class="btn btn--primary" data-act="run">${runLabel}</button>` +
       `<button type="button" class="btn btn--ghost" data-act="step">Pas cu pas</button>` +
       `<button type="button" class="btn btn--ghost" data-act="reset">Resetează</button>` +
     `</div>` +
     `<div class="diff-hint" data-role="hint">Uită-te la cifrele lor înainte de a porni valurile, apoi ghicește cine câștigă.</div>`;
   container.appendChild(controls);
+  // Adapt grid to actual slot count so 2 candidates fill the row cleanly.
+  grid.style.gridTemplateColumns = `repeat(${slots.length}, 1fr)`;
 
   const cyInstances = [];
   const knowsPer = [];
