@@ -1554,14 +1554,25 @@ async function renderUnreachedMulti(container, block, stats) {
 // to that measure). Used by c-gradul, c-deschiderea, c-intermedierea.
 // Data comes from build precomputes: coverageMaps._positions (shared radial
 // layout by class) and coverageMaps._measureMaps.{degree|openness|betweenness}.
-function renderMeasureTabs(container, block, stats) {
+async function renderMeasureTabs(container, block, stats) {
   const measure = block.measure || "degree";  // "degree" | "openness" | "betweenness"
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
-  const positions = cm._positions || {};
+  // Use the organic (force-directed) layout for the map view, not the
+  // class-clustered radial layout. The maps for grad / deschidere /
+  // intermediere should look like a normal spring-embedded network.
+  const positions = cm._positionsOrganic || cm._positions || {};
   const mm = cm._measureMaps || {};
   const forMeasure = mm[measure] || null;
   const positionsList = Object.entries(positions);
   const total = mm.total || stats?.total || 299;
+
+  // Load the network edges so the map view has a proper backdrop, not just
+  // the champion's own edges.
+  let netEdges = [];
+  try {
+    const net = await loadJSON(block.data || "data/highschool-network.json");
+    netEdges = (net.edges || []).filter((e) => (e.weight || 1) >= 4).map((e) => [String(e.source), String(e.target)]);
+  } catch { netEdges = []; }
 
   const tabsWrap = document.createElement("div");
   tabsWrap.className = "measure-tabs__tabs";
@@ -1605,7 +1616,21 @@ function renderMeasureTabs(container, block, stats) {
       const x = projX(p.x), y = projY(p.y);
       const on = highlightSet && highlightSet.has(String(nid));
       if (on) return "";  // drawn separately with highlight styling
-      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="#e5dccb"/>`;
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="#c9beac"/>`;
+    }).join("");
+  }
+
+  function baseEdgesSvg(highlightSet) {
+    // Very faint backdrop of all school edges; hide those whose both endpoints
+    // are in the highlight set so the champion's edges get drawn separately
+    // on top with stronger color.
+    return netEdges.map(([a, b]) => {
+      if (highlightSet && highlightSet.has(a) && highlightSet.has(b)) return "";
+      const pa = positions[a], pb = positions[b];
+      if (!pa || !pb) return "";
+      const x1 = projX(pa.x), y1 = projY(pa.y);
+      const x2 = projX(pb.x), y2 = projY(pb.y);
+      return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#c9beac" stroke-width="0.4" opacity="0.35"/>`;
     }).join("");
   }
 
@@ -1653,7 +1678,7 @@ function renderMeasureTabs(container, block, stats) {
       `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
       `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
       `role="img" aria-label="Harta măsurii pentru ${esc(champ.name)}">` +
-      baseDotsSvg(hi) + edges + contactDots + champDot + label +
+      baseEdgesSvg(hi) + baseDotsSvg(hi) + edges + contactDots + champDot + label +
       `</svg>`;
     mapCaption.innerHTML = opts.subtitle || "";
   }
@@ -1741,7 +1766,7 @@ function renderMeasureTabs(container, block, stats) {
         `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
         `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +
         `role="img" aria-label="Drumuri prin ${esc(champ.name)}">` +
-        baseDotsSvg(highlightIds) + pathSvgs + endDots + champDot + champLabel +
+        baseEdgesSvg(highlightIds) + baseDotsSvg(highlightIds) + pathSvgs + endDots + champDot + champLabel +
         `</svg>`;
 
       if (shown === 0) {
@@ -2235,7 +2260,7 @@ export async function renderChart(container, block) {
     }
     if (block.variant === "measure-tabs") {
       const stats = await getStats(block);
-      renderMeasureTabs(container, block, stats);
+      await renderMeasureTabs(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {

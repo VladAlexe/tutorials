@@ -130,6 +130,17 @@ function renderBlock(block) {
 
 async function init() {
   const id = getLessonId();
+  // Presenter mode: opening the lesson with ?fresh=1 clears every stored
+  // answer/vote before the slides mount, so a demo run does not show the
+  // previous audience's picks. Kept out of the URL by default so students
+  // resuming a session keep their progress.
+  const params = new URLSearchParams(location.search);
+  if (params.get("fresh") === "1" || params.get("present") === "1") {
+    try {
+      const { clearLessonAnswers } = await import(`./progress.js?v=${V}`);
+      clearLessonAnswers();
+    } catch { /* ignore, harmless */ }
+  }
   try {
     const lesson = await loadLesson(id);
     markLessonStarted(id);

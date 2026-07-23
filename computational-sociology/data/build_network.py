@@ -1144,6 +1144,93 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     coverage_maps["_positions"] = coverage_positions
     coverage_maps["_total"] = len(node_ids)
 
+    # Organic layout via a small Fruchterman-Reingold pass. This is what the
+    # measure-tabs "Pe hartă" view uses, so the network looks like a general
+    # spring-embedder result, not a per-class ring. Deterministic thanks to
+    # the fixed seed.
+    def _fr_layout(nodes_iter, edges_iter, iters=140, seed_int=42):
+        import math as _m
+        r = random.Random(seed_int)
+        nlist = list(nodes_iter)
+        n = len(nlist)
+        idx = {nid: i for i, nid in enumerate(nlist)}
+        # Init random positions in [-1, 1]
+        pos = [(r.uniform(-1.0, 1.0), r.uniform(-1.0, 1.0)) for _ in range(n)]
+        # Optimal edge length
+        area = 4.0  # unit square scaled up
+        k = _m.sqrt(area / max(1, n))
+        elist = [(idx[a], idx[b]) for a, b in edges_iter if a in idx and b in idx]
+        for it in range(iters):
+            # Temperature: linear cool
+            t = 0.10 * (1.0 - it / iters)
+            # Displacement per node
+            disp = [(0.0, 0.0)] * n
+            # Repulsive between all pairs (O(n^2), fine at n=299)
+            for i in range(n):
+                dxi, dyi = 0.0, 0.0
+                xi, yi = pos[i]
+                for j in range(n):
+                    if i == j: continue
+                    xj, yj = pos[j]
+                    dx = xi - xj; dy = yi - yj
+                    d2 = dx * dx + dy * dy
+                    if d2 < 1e-6:
+                        # Nudge to avoid singularity
+                        dx = (r.random() - 0.5) * 0.001
+                        dy = (r.random() - 0.5) * 0.001
+                        d2 = dx * dx + dy * dy
+                    d = _m.sqrt(d2)
+                    # Repulsive force ~ k^2 / d
+                    f = (k * k) / d
+                    dxi += (dx / d) * f
+                    dyi += (dy / d) * f
+                disp[i] = (dxi, dyi)
+            # Attractive along edges
+            for ia, ib in elist:
+                xa, ya = pos[ia]; xb, yb = pos[ib]
+                dx = xa - xb; dy = ya - yb
+                d = _m.sqrt(dx * dx + dy * dy) or 1e-6
+                f = (d * d) / k
+                fx = (dx / d) * f; fy = (dy / d) * f
+                dax, day = disp[ia]; dbx, dby = disp[ib]
+                disp[ia] = (dax - fx, day - fy)
+                disp[ib] = (dbx + fx, dby + fy)
+            # Update positions, cap step by t
+            new_pos = []
+            for i in range(n):
+                x, y = pos[i]; dx, dy = disp[i]
+                dmag = _m.sqrt(dx * dx + dy * dy) or 1e-6
+                step = min(dmag, t)
+                x += (dx / dmag) * step
+                y += (dy / dmag) * step
+                # Clamp to a reasonable box
+                x = max(-1.05, min(1.05, x))
+                y = max(-1.05, min(1.05, y))
+                new_pos.append((x, y))
+            pos = new_pos
+        # Normalize to [-1, 1]
+        xs = [p[0] for p in pos]; ys = [p[1] for p in pos]
+        mnx, mxx = min(xs), max(xs); mny, mxy = min(ys), max(ys)
+        rx = (mxx - mnx) or 1.0; ry = (mxy - mny) or 1.0
+        norm = []
+        for x, y in pos:
+            nx = ((x - mnx) / rx) * 2 - 1
+            ny = ((y - mny) / ry) * 2 - 1
+            norm.append((round(nx * 0.95, 4), round(ny * 0.95, 4)))
+        return {nlist[i]: {"x": norm[i][0], "y": norm[i][1]} for i in range(n)}
+
+    _fr_positions = _fr_layout(node_ids, [(a, b) for a, b, _w in edges_list], iters=50, seed_int=42)
+    coverage_positions_organic = {}
+    for nid in node_ids:
+        p = _fr_positions.get(nid, {"x": 0.0, "y": 0.0})
+        coverage_positions_organic[str(nid)] = {
+            "x": p["x"],
+            "y": p["y"],
+            "class": klass_map.get(nid, "?"),
+            "classFriendly": CLASS_NAMES.get(klass_map.get(nid, "?"), "?"),
+        }
+    coverage_maps["_positionsOrganic"] = coverage_positions_organic
+
     # === Precomputes for the measure-tabs cards.
     # For each measure champion, we save:
     #  - their id + name + friendly class

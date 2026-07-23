@@ -64,6 +64,17 @@ export function clearQuiz(quizId) {
   }
 }
 
+// Wipes every answer / vote / slide-position that would auto-restore across
+// sessions. Kept intentionally narrow: does NOT wipe lesson start/complete
+// flags, only the interactive state a presenter would see re-populated.
+export function clearLessonAnswers() {
+  const s = safeGet();
+  s.quizzes = {};
+  s.votes = {};
+  s.slides = {};
+  safeSet(s);
+}
+
 export function markVote(voteId, { selectedIndex }) {
   const s = safeGet();
   s.votes = s.votes || {};
