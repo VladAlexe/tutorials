@@ -1422,7 +1422,19 @@ export async function renderDiffusion(container, block, options = {}) {
     const schemes = block.schemes || ["class", "community", "component", "degree"];
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
-    const commById = statsData?.sliceMetrics?.communities?.byId || {};
+    // Community assignment: Louvain multi-level at three resolutions.
+    // The legacy label-propagation partition stays available as `communities.byId`
+    // but the community scheme now uses Louvain by default.
+    const louvain = statsData?.sliceMetrics?.louvain || {};
+    const louvainKeys = { 0.5: "res05", 1.0: "res10", 2.0: "res20" };
+    let currentRes = block.communityResolution ?? 1.0;
+    function commByIdAtRes(res) {
+      return louvain[louvainKeys[res]]?.byId || statsData?.sliceMetrics?.communities?.byId || {};
+    }
+    function louvainSummary(res) {
+      return louvain[louvainKeys[res]] || null;
+    }
+    let commById = commByIdAtRes(currentRes);
     const mismatchedIds = new Set((statsData?.sliceMetrics?.communities?.mismatched || []).map((m) => String(m.id)));
 
     const adjMap = new Map();
@@ -1604,31 +1616,91 @@ export async function renderDiffusion(container, block, options = {}) {
       return m;
     })();
 
+    function communityExplain(res) {
+      const summary = louvainSummary(res);
+      if (!summary) return "Culoarea = comunitatea detectată de algoritm.";
+      const parts = [];
+      if (res === 0.5) {
+        parts.push(`Rezoluție mică: <strong>${summary.n} grupuri mari</strong>. Clasele înrudite încep să se contopească.`);
+      } else if (res === 1.0) {
+        parts.push(`Rezoluție implicită: <strong>${summary.n} grupuri</strong>, care regăsesc aproape exact clasele.`);
+      } else {
+        parts.push(`Rezoluție mare: <strong>${summary.n} grupuri mici</strong>. Cercuri de prieteni din interiorul claselor.`);
+      }
+      parts.push(`ARI vs clase: <strong>${summary.ari}</strong>. 0 = întâmplător, 1 = identic.`);
+      return parts.join(" ");
+    }
+
     const explains = {
       class:     "Culoarea = clasa administrativă. Așa vede orarul.",
-      community: "Culoarea = comunitatea detectată de algoritm (label propagation, seed 42). Aproape identică cu clasele; unde nu, avem personaje.",
+      community: communityExplain(currentRes),
       component: `O componentă mare cu ${bigCompSize} elevi, plus ${marginCount} la margine (evidențiați cu contur), la care difuzia nu ajunge.`,
       degree:    "Culoarea = popularitatea (gradul). Cu cât mai închis, cu atât mai popular.",
       openness:  "Culoarea = deschiderea. Cu cât mai închis (albastru), cu atât mai multe grupuri diferite atinge cu vecinii lui.",
       mismatch:  "Roșu = elevii puși de algoritm în altă comunitate decât clasa lor. Sunt puțini, dar prin ei trece rețeaua dincolo de granițe."
     };
 
+    // Resolution controls appear only when the community scheme is active.
+    const hasCommunityScheme = schemes.includes("community") && Object.keys(louvain).length > 0;
+
     controls.innerHTML =
       `<div class="diff-row diff-buttons">` +
       schemes.map((s) => `<button type="button" class="btn btn--ghost recolor-btn" data-scheme="${s}">${labels[s] || s}</button>`).join("") +
       `</div>` +
+      (hasCommunityScheme
+        ? `<div class="diff-row diff-buttons recolor-res" data-role="resolution" style="display:none">` +
+          `<span class="recolor-res__label">rezoluție:</span>` +
+          `<button type="button" class="btn btn--ghost" data-res="0.5">0,5</button>` +
+          `<button type="button" class="btn btn--primary" data-res="1">1,0</button>` +
+          `<button type="button" class="btn btn--ghost" data-res="2">2,0</button>` +
+          `</div>`
+        : "") +
       `<div class="diff-hint" data-role="explain"></div>` +
       `<div class="diff-count" data-role="info">Atinge un nod pentru numele lui.</div>`;
 
     const explainEl = controls.querySelector('[data-role="explain"]');
     const infoEl = controls.querySelector('[data-role="info"]');
+    const resControls = controls.querySelector('[data-role="resolution"]');
+    let activeScheme = null;
+
+    function refreshExplain() {
+      // Community explain is dynamic (changes with resolution); rebuild it each time.
+      if (activeScheme === "community") {
+        explainEl.innerHTML = communityExplain(currentRes);
+      } else {
+        explainEl.innerHTML = explains[activeScheme] || "";
+      }
+    }
+
     function activate(scheme, btn) {
       controls.querySelectorAll("[data-scheme]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
       if (btn) { btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary"); }
+      activeScheme = scheme;
       applyScheme(scheme);
-      explainEl.textContent = explains[scheme] || "";
+      refreshExplain();
+      if (resControls) {
+        resControls.style.display = (scheme === "community") ? "" : "none";
+      }
     }
     controls.querySelectorAll("[data-scheme]").forEach((btn) => btn.addEventListener("click", () => activate(btn.dataset.scheme, btn)));
+
+    if (resControls) {
+      resControls.querySelectorAll("[data-res]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const res = parseFloat(btn.dataset.res);
+          currentRes = res;
+          commById = commByIdAtRes(currentRes);
+          resControls.querySelectorAll("[data-res]").forEach((b) => {
+            b.classList.remove("btn--primary"); b.classList.add("btn--ghost");
+          });
+          btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary");
+          if (activeScheme === "community") {
+            applyScheme("community");
+            refreshExplain();
+          }
+        });
+      });
+    }
     cy.on("tap", "node", (e) => {
       const nid = e.target.id();
       const n = nodes.find((nn) => nn.id === nid);

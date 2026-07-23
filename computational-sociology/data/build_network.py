@@ -54,6 +54,127 @@ def bfs_reach(source, adj_map):
     return seen
 
 
+# --- Full multi-level Louvain with resolution parameter --------------------
+def louvain_multilevel(node_ids, edges_with_weights, resolution=1.0, seed=42, max_levels=20, max_local_iter=50):
+    """Louvain community detection. Weighted, undirected.
+    edges_with_weights: iterable of (u, v, w).
+    Returns dict node_id -> community_label (0-indexed by size, largest first).
+    """
+    rnd = random.Random(seed)
+
+    def build_adj_dd(nodes, edges):
+        adj = {n: {} for n in nodes}
+        for u, v, w in edges:
+            adj[u][v] = adj[u].get(v, 0) + w
+            if u != v:
+                adj[v][u] = adj[v].get(u, 0) + w
+        return adj
+
+    def local_move(adj):
+        ki = {n: sum(adj[n].values()) for n in adj}
+        m = sum(ki.values()) / 2.0
+        if m == 0:
+            return {n: n for n in adj}
+        node2comm = {n: n for n in adj}
+        sigma_tot = {n: ki[n] for n in adj}
+        for _ in range(max_local_iter):
+            order = list(adj.keys())
+            rnd.shuffle(order)
+            moved = 0
+            for i in order:
+                ci = node2comm[i]
+                w_to = defaultdict(float)
+                for j, w in adj[i].items():
+                    if j == i:
+                        continue
+                    w_to[node2comm[j]] += w
+                sigma_tot[ci] -= ki[i]
+                best_c = ci
+                best = w_to.get(ci, 0.0) - resolution * sigma_tot[ci] * ki[i] / (2 * m)
+                for c, k_ic in w_to.items():
+                    if c == ci:
+                        continue
+                    score = k_ic - resolution * sigma_tot[c] * ki[i] / (2 * m)
+                    if score > best + 1e-12:
+                        best = score
+                        best_c = c
+                sigma_tot[best_c] += ki[i]
+                if best_c != ci:
+                    node2comm[i] = best_c
+                    moved += 1
+            if moved == 0:
+                break
+        return node2comm
+
+    def aggregate(adj, node2comm):
+        new_adj = defaultdict(lambda: defaultdict(float))
+        for u, nbrs in adj.items():
+            cu = node2comm[u]
+            for v, w in nbrs.items():
+                new_adj[cu][node2comm[v]] += w
+        return {c: dict(nbrs) for c, nbrs in new_adj.items()}
+
+    edges_list = list(edges_with_weights)
+    adj = build_adj_dd(list(node_ids), edges_list)
+    orig_to_super = {n: n for n in node_ids}
+    for _ in range(max_levels):
+        n2c = local_move(adj)
+        orig_to_super = {o: n2c[s] for o, s in orig_to_super.items()}
+        if len(set(n2c.values())) == len(adj):
+            break
+        adj = aggregate(adj, n2c)
+
+    # Re-label communities so that community 0 is the largest, 1 the next, etc.
+    comm_sizes = Counter(orig_to_super.values())
+    ordered = [c for c, _ in comm_sizes.most_common()]
+    remap = {old: new for new, old in enumerate(ordered)}
+    return {n: remap[orig_to_super[n]] for n in node_ids}
+
+
+def _partition_metrics(labels, klass_map, node_ids):
+    """Compute generous match rate, ARI, NMI vs class partition, size distribution."""
+    import math as _math
+    comms = defaultdict(list)
+    for n in node_ids:
+        comms[labels[n]].append(n)
+    sizes = sorted((len(c) for c in comms.values()), reverse=True)
+    # generous match
+    maj = {c: Counter(klass_map[n] for n in ns).most_common(1)[0][0] for c, ns in comms.items()}
+    matched = sum(1 for n in node_ids if klass_map[n] == maj[labels[n]])
+    generous = round(100 * matched / len(node_ids), 1) if node_ids else 0.0
+    # ARI
+    a = [labels[n] for n in node_ids]
+    b = [klass_map[n] for n in node_ids]
+    n = len(node_ids)
+    ca = Counter(a); cb = Counter(b)
+    joint = Counter(zip(a, b))
+    def C(k): return k * (k - 1) // 2
+    sum_j = sum(C(v) for v in joint.values())
+    sum_a = sum(C(v) for v in ca.values())
+    sum_b = sum(C(v) for v in cb.values())
+    total = C(n)
+    if total == 0:
+        ari = 0.0
+    else:
+        expected = sum_a * sum_b / total
+        maxi = (sum_a + sum_b) / 2
+        ari = 0.0 if maxi == expected else round((sum_j - expected) / (maxi - expected), 3)
+    # NMI
+    def H(counter):
+        return -sum((c/n) * _math.log(c/n) for c in counter.values() if c > 0)
+    hj = H(joint); ha = H(ca); hb = H(cb)
+    mi = ha + hb - hj
+    denom = (ha + hb) / 2 if (ha + hb) > 0 else 1
+    nmi = round(mi / denom, 3) if denom else 0.0
+    return {
+        "n": len(comms),
+        "sizes": sizes,
+        "matchGenerous": generous,
+        "ari": ari,
+        "nmi": nmi,
+    }
+
+
 # --- new diffusion model: time-limited + strong-ties only --------------------
 def build_top_adj(edges_list, k):
     """For each node, keep only its K strongest ties by weight.
@@ -142,7 +263,7 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "smallCompNodes":   [[id_name(x) for x in c] for c in comps if len(c) <= 4],
     }
 
-    # --- communities via label propagation
+    # --- communities via label propagation (LEGACY, kept for backward-compat)
     community = label_propagation(node_ids, adj, weight_map, seed=seed)
     n_communities = len(set(community.values()))
 
@@ -171,6 +292,48 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
                 "community":              community[x],
                 "communityMajorityClass": maj,
             })
+
+    # --- LOUVAIN multi-level at three resolutions.  Fragmentation-robust
+    # detection; label propagation left as a legacy artifact.
+    louvain_edges = [(a, b, w) for a, b, w in edges_list]
+    louvain_results = {}
+    for res_key, res_value in (("res05", 0.5), ("res10", 1.0), ("res20", 2.0)):
+        lv_labels = louvain_multilevel(node_ids, louvain_edges, resolution=res_value, seed=seed)
+        metrics = _partition_metrics(lv_labels, klass_map, node_ids)
+        # contingency: community x class
+        lv_contingency = defaultdict(Counter)
+        for x in node_ids:
+            lv_contingency[lv_labels[x]][klass_map[x]] += 1
+        lv_majority = {c_id: ct.most_common(1)[0][0] for c_id, ct in lv_contingency.items()}
+        # per-community summary
+        comm_summary = []
+        for c_id, ct in sorted(lv_contingency.items(), key=lambda kv: -sum(kv[1].values())):
+            members_here = [x for x in node_ids if lv_labels[x] == c_id]
+            dominant = lv_majority[c_id]
+            dom_count = ct.get(dominant, 0)
+            comm_summary.append({
+                "id":            c_id,
+                "size":          len(members_here),
+                "dominant":      dominant,
+                "dominantFriendly": CLASS_NAMES.get(dominant, dominant),
+                "dominantPct":   round(100 * dom_count / len(members_here), 1),
+                "composition":   [
+                    {"class": cls, "classFriendly": CLASS_NAMES.get(cls, cls), "count": cnt}
+                    for cls, cnt in ct.most_common()
+                ],
+                "memberIds":     members_here,
+                "memberNames":   [name_map.get(x, str(x)) for x in members_here],
+            })
+        louvain_results[res_key] = {
+            "resolution":     res_value,
+            "byId":           {str(x): lv_labels[x] for x in node_ids},
+            "n":              metrics["n"],
+            "sizes":          metrics["sizes"],
+            "ari":            metrics["ari"],
+            "nmi":            metrics["nmi"],
+            "matchGenerous":  metrics["matchGenerous"],
+            "communities":    comm_summary,
+        }
 
     # --- openness: # distinct communities among neighbors
     openness = {}
@@ -833,6 +996,7 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "plafon":              plafon,
         "scatterData":         scatter_data,
         "mission":             mission_summary,
+        "louvain":             louvain_results,
         "brokenPair": {
             "classA":            "MP*1",
             "classB":            "PSI*",
