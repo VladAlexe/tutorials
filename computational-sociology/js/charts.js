@@ -451,7 +451,7 @@ function renderFreq(container, block, stats) {
     `</g>`;
 
   const svg = document.createElement("div");
-  svg.className = "chart__svg-wrap";
+  svg.className = "chart__svg-wrap chart__svg-wrap--freq";
   svg.innerHTML =
     `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
     `style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" ` +

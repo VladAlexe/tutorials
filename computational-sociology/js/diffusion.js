@@ -82,10 +82,11 @@ async function getData(block) {
   return d;
 }
 
-function buildLegend(el, groups, colorMap) {
+function buildLegend(el, groups, colorMap, classNames) {
   const visible = groups.filter((g) => g && g !== "exemplu");
   if (visible.length < 2) { el.remove(); return; }
   el.innerHTML = "";
+  const friendly = classNames || {};
   for (const g of visible) {
     const chip = document.createElement("span");
     chip.className = "viz__legend-chip";
@@ -93,7 +94,7 @@ function buildLegend(el, groups, colorMap) {
     dot.className = "viz__legend-dot";
     dot.style.background = colorMap.get(g);
     chip.appendChild(dot);
-    chip.appendChild(document.createTextNode(g));
+    chip.appendChild(document.createTextNode(friendly[g] || g));
     el.appendChild(chip);
   }
 }
@@ -627,7 +628,15 @@ export async function renderDiffusion(container, block, options = {}) {
   const legend = document.createElement("div");
   legend.className = "viz__legend";
   container.appendChild(legend);
-  buildLegend(legend, groups, colorMap);
+  // Try to load classNames early so the legend shows friendly labels even for
+  // modes that do not otherwise fetch stats. Failure is silent; fall back to
+  // raw group codes.
+  let earlyClassNames = null;
+  try {
+    const s = await (await fetch(block.statsSource || "data/highschool-stats.json")).json();
+    earlyClassNames = s?.classNames || null;
+  } catch { earlyClassNames = null; }
+  buildLegend(legend, groups, colorMap, earlyClassNames);
 
   const controls = document.createElement("div");
   controls.className = "diffusion-controls";
@@ -1530,11 +1539,25 @@ export async function renderDiffusion(container, block, options = {}) {
       const degSorted = degVals.slice().sort((a, b) => b - a);
       const top10Deg = degSorted[Math.max(0, Math.floor(degVals.length * 0.1) - 1)] || 0;
 
+      // Sanity check for the component scheme: if the component index for a node
+      // is missing or bigCompId is null, silent fallback would paint everything
+      // as the class palette (via the data(color) rule). Surface it instead so
+      // the mistake is impossible to miss.
+      if (scheme === "component" && (bigCompId === null || bigCompId === undefined)) {
+        console.warn("Component scheme active but bigCompId is null. compById size:", Object.keys(compById).length);
+      }
+
       cy.nodes().forEach((n) => {
         const nid = n.id();
         n.style("transition-property", "background-color, width, height, border-width");
         n.style("transition-duration", 400);
-        n.style("background-color", colorFor(nid, scheme));
+        const nextColor = colorFor(nid, scheme);
+        // Update both the data-driven color (which the stylesheet reads via
+        // data(color)) AND the inline style. Cytoscape's inline bypass should
+        // suffice on its own, but on some tabs a stale stylesheet cached from
+        // an earlier scheme kept the old data(color) value on screen.
+        n.data("color", nextColor);
+        n.style("background-color", nextColor);
         if (scheme === "mismatch" && mismatchedIds.has(nid)) {
           n.style("width", 20); n.style("height", 20); n.style("border-width", 2); n.style("opacity", 1);
         } else if (scheme === "mismatch") {
@@ -1640,6 +1663,89 @@ export async function renderDiffusion(container, block, options = {}) {
       mismatch:  "Roșu = elevii puși de algoritm în altă comunitate decât clasa lor. Sunt puțini, dar prin ei trece rețeaua dincolo de granițe."
     };
 
+    // ---- Grouped spatial layout (for class + community schemes) ----
+    // Nodes rearrange, not just recolor. When switching from Clasa to
+    // Comunitatea at rezoluție 1, nodes barely move: proof that ARI is high.
+    let baseCosePositions = null;
+    const groupedPosCache = new Map(); // key -> Map<nodeId, {x, y}>
+
+    function saveBaseCosePositions() {
+      if (baseCosePositions !== null) return;
+      baseCosePositions = new Map();
+      cy.nodes().forEach((n) => {
+        const p = n.position();
+        baseCosePositions.set(n.id(), { x: p.x, y: p.y });
+      });
+    }
+
+    function computeGroupedPositions(cacheKey, groupOf) {
+      if (groupedPosCache.has(cacheKey)) return groupedPosCache.get(cacheKey);
+      const buckets = new Map();
+      for (const n of nodes) {
+        const g = groupOf(n.id);
+        if (g == null) continue;
+        if (!buckets.has(g)) buckets.set(g, []);
+        buckets.get(g).push(n.id);
+      }
+      const groupKeys = [...buckets.keys()].sort((a, b) =>
+        String(a).localeCompare(String(b), "ro"));
+      const nGroups = groupKeys.length;
+      if (nGroups === 0) return new Map();
+
+      // Use cose's own scale as reference, so grouped view stays comparable.
+      const nodes_ = cy.nodes();
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      nodes_.forEach((n) => {
+        const p = n.position();
+        if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x;
+        if (p.y < minY) minY = p.y; if (p.y > maxY) maxY = p.y;
+      });
+      const spread = Math.max(maxX - minX, maxY - minY, 500);
+      const groupRadius = spread * 0.42;
+
+      const positions = new Map();
+      groupKeys.forEach((g, i) => {
+        const members = buckets.get(g);
+        const angle = (i / nGroups) * 2 * Math.PI - Math.PI / 2;
+        const gcx = Math.cos(angle) * groupRadius;
+        const gcy = Math.sin(angle) * groupRadius;
+        const memberR = Math.max(28, Math.sqrt(members.length) * 12);
+        members.forEach((nid, j) => {
+          const ma = (j / members.length) * 2 * Math.PI;
+          positions.set(String(nid), {
+            x: gcx + Math.cos(ma) * memberR,
+            y: gcy + Math.sin(ma) * memberR,
+          });
+        });
+      });
+      groupedPosCache.set(cacheKey, positions);
+      return positions;
+    }
+
+    function applyLayoutForScheme(scheme) {
+      saveBaseCosePositions();
+      let positions = null;
+      if (scheme === "class") {
+        positions = computeGroupedPositions("class", (nid) => groupBy.get(nid));
+      } else if (scheme === "community") {
+        const resKey = louvainKeys[currentRes] || "res10";
+        const map = louvain[resKey]?.byId || {};
+        positions = computeGroupedPositions("comm-" + resKey, (nid) => map[nid]);
+      } else {
+        positions = baseCosePositions;
+      }
+      if (!positions) return;
+      const anims = [];
+      cy.nodes().forEach((n) => {
+        const target = positions.get(n.id());
+        if (target) {
+          anims.push(n.animation({ position: { x: target.x, y: target.y }, duration: 550, easing: "ease-in-out" }));
+        }
+      });
+      anims.forEach((a) => a.play());
+      setTimeout(() => { try { cy.fit(undefined, 30); } catch {} }, 620);
+    }
+
     // Resolution controls appear only when the community scheme is active.
     const hasCommunityScheme = schemes.includes("community") && Object.keys(louvain).length > 0;
 
@@ -1677,6 +1783,7 @@ export async function renderDiffusion(container, block, options = {}) {
       if (btn) { btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary"); }
       activeScheme = scheme;
       applyScheme(scheme);
+      applyLayoutForScheme(scheme);
       refreshExplain();
       if (resControls) {
         resControls.style.display = (scheme === "community") ? "" : "none";
@@ -1696,6 +1803,7 @@ export async function renderDiffusion(container, block, options = {}) {
           btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary");
           if (activeScheme === "community") {
             applyScheme("community");
+            applyLayoutForScheme("community");
             refreshExplain();
           }
         });

@@ -690,13 +690,21 @@
   .chart { max-height: 55vh; }
 }
 .chart__svg-wrap {
-  overflow: hidden;
+  overflow: visible;
 }
-.chart__svg-wrap svg {
+/* Cap only the tall inline charts (histograms, states) so they do not blow
+   past the viewport; freq bars are compact and paired with a table and a
+   name list, so they get their natural size. */
+.chart__svg-wrap:not(.chart__svg-wrap--freq) svg {
   max-height: 40vh;
 }
 @media (min-width: 768px) {
-  .chart__svg-wrap svg { max-height: 48vh; }
+  .chart__svg-wrap:not(.chart__svg-wrap--freq) svg { max-height: 48vh; }
+}
+.chart__svg-wrap--freq svg {
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 .chart__freq {
   border-collapse: collapse;
