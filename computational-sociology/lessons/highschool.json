@@ -242,13 +242,14 @@
     {
       "type": "diffusion",
       "id": "c22-deschiderea",
-      "mode": "recolor",
+      "mode": "openness-duo",
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
-      "schemes": ["degree", "openness"],
+      "left": "vedeta",
+      "right": "puntea",
       "title": "Deschiderea",
-      "intro": "<p>A doua măsură a lecției. Popularitatea numără contactele; deschiderea numără <strong>lumile</strong> la care ai acces: câți dintre oamenii tăi sunt din afara clasei tale.</p><p>Popularitatea și deschiderea dau clasamente diferite. Comută schema de culoare de sub grafic. {{name:vedeta}} domină la popularitate cu {{maxDegree}} contacte; la deschidere, urcă în vârf oameni diferiți.</p>",
-      "caption": "În literatura de specialitate, poziția aceasta se numește intermediere, iar avantajul ei a fost descris de Ronald Burt ca acces la găuri structurale. Cât de mult contează pentru răspândirea unui zvon, vom vedea imediat."
+      "intro": "<p>Popularitatea numără câți oameni cunoști. Dar nu toate contactele duc în același loc. Uită-te la culori.</p>",
+      "caption": "{{name:vedeta}} are {{contacte:vedeta}} contacte, dintre care doar {{outClass:vedeta}} din alte clase. {{name:puntea}} are {{contacte:puntea}}, dintre care {{outClass:puntea}} din alte clase, mai mult decât oricine altcineva din școală. Numim asta <strong>deschidere</strong>: câți dintre oamenii tăi sunt din afara clasei tale. Popularitatea spune cât de mulți cunoști, deschiderea spune cât de departe de casă ajungi."
     },
     {
       "type": "paradox",

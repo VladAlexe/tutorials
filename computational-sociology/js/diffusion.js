@@ -173,6 +173,154 @@ function errorHandle(container, message) {
   return { refit() {}, destroy() {} };
 }
 
+async function renderOpennessDuo(container, block) {
+  container.classList.add("viz");
+  container.innerHTML = "";
+  let cytoscape, data, statsData;
+  try {
+    [cytoscape, data] = await Promise.all([
+      loadCytoscape(),
+      loadJSON(block.data || "data/highschool-network.json")
+    ]);
+    try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch { statsData = null; }
+  } catch (err) { return errorHandle(container, err.message); }
+
+  const classNames = statsData?.classNames || {};
+  const nodes = data.nodes.map((n) => ({ id: String(n.id), name: String(n.name || n.id), group: n.group || "" }));
+  const edges = data.edges.map((e, i) => ({ id: `e${i}`, source: String(e.source), target: String(e.target), weight: e.weight || 1 }));
+
+  const groups = [...new Set(nodes.map((n) => n.group).filter(Boolean))];
+  const classPalette = new Map();
+  groups.forEach((g, i) => classPalette.set(g, GROUP_PALETTE[i % GROUP_PALETTE.length]));
+
+  const characters = statsData?.sliceMetrics?.characters || {};
+  const leftKey  = block.left  || "vedeta";
+  const rightKey = block.right || "puntea";
+  const leftChar  = characters[leftKey];
+  const rightChar = characters[rightKey];
+  if (!leftChar || !rightChar) {
+    container.innerHTML = "<div class='diff-hint'>Personaje lipsă pentru cardul de deschidere.</div>";
+    return { refit() {}, destroy() {} };
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "openness-duo";
+  container.appendChild(grid);
+
+  const cyInstances = [];
+  const nodeById = new Map(nodes.map((n) => [n.id, n]));
+
+  for (const char of [leftChar, rightChar]) {
+    const cell = document.createElement("div");
+    cell.className = "openness-duo__cell";
+    const cap = document.createElement("div");
+    cap.className = "openness-duo__cap";
+    cap.innerHTML = `<strong>${char.name}</strong> · ${classNames[char.class] || char.classFriendly || char.class}`;
+    cell.appendChild(cap);
+
+    const stage = document.createElement("div");
+    stage.className = "openness-duo__stage";
+    cell.appendChild(stage);
+
+    const nums = document.createElement("div");
+    nums.className = "openness-duo__nums";
+    nums.innerHTML =
+      `<span><strong>${char.popularity}</strong> contacte</span>` +
+      `<span><strong>${char.outClassContacts ?? 0}</strong> din alte clase</span>`;
+    cell.appendChild(nums);
+
+    grid.appendChild(cell);
+
+    // Ego network: focus + direct neighbors
+    const focusId = String(char.id);
+    const adjSet = new Set();
+    for (const e of edges) {
+      if (e.source === focusId) adjSet.add(e.target);
+      if (e.target === focusId) adjSet.add(e.source);
+    }
+    const visible = new Set([focusId, ...adjSet]);
+
+    const cyElements = [
+      ...nodes.filter((n) => visible.has(n.id)).map((n) => ({
+        data: { id: n.id, name: n.name, group: n.group, color: classPalette.get(n.group) || "#8a7a68" },
+        classes: (n.id === focusId) ? "focus" : "peer"
+      })),
+      ...edges.filter((e) => visible.has(e.source) && visible.has(e.target) && (e.source === focusId || e.target === focusId)).map((e) => ({
+        data: { id: e.id, source: e.source, target: e.target }
+      }))
+    ];
+
+    const cy = cytoscape({
+      ...narrowCyOpts(),
+      container: stage,
+      elements: cyElements,
+      style: [
+        { selector: "node", style: {
+            "background-color": "data(color)", "width": 14, "height": 14,
+            "border-width": 1, "border-color": "#5a4a3a", "opacity": 1
+          }
+        },
+        { selector: "node.focus", style: {
+            "background-color": "#2a1f16", "width": 24, "height": 24,
+            "border-width": 2, "border-color": "#2a1f16",
+            "label": "data(name)", "font-family": "Georgia, serif", "font-size": 11,
+            "color": "#2a1f16", "text-valign": "bottom", "text-margin-y": 5,
+            "text-background-color": "#faf7f2", "text-background-opacity": 0.9, "text-background-padding": 3
+          }
+        },
+        { selector: "edge", style: { "line-color": "#b57140", "opacity": 0.4, "width": 1.2, "curve-style": "bezier" } }
+      ],
+      layout: { name: "concentric", animate: false, padding: 20, minNodeSpacing: 22, levelWidth: () => 1 },
+      minZoom: 0.3, maxZoom: 2, wheelSensitivity: 0.2
+    });
+    cy.style().update();
+    cyInstances.push(cy);
+  }
+
+  // Ranking: top 5 by outClassContacts
+  const outClassCount = new Map();
+  const groupOf = new Map(nodes.map((n) => [n.id, n.group]));
+  for (const e of edges) {
+    const gs = groupOf.get(e.source), gt = groupOf.get(e.target);
+    if (!gs || !gt || gs === gt) continue;
+    outClassCount.set(e.source, (outClassCount.get(e.source) || 0) + 1);
+    outClassCount.set(e.target, (outClassCount.get(e.target) || 0) + 1);
+  }
+  const ranked = nodes
+    .map((n) => ({ n, out: outClassCount.get(n.id) || 0 }))
+    .sort((a, b) => b.out - a.out || a.n.name.localeCompare(b.n.name))
+    .slice(0, 5);
+
+  const ranking = document.createElement("div");
+  ranking.className = "openness-duo__ranking";
+  ranking.innerHTML =
+    `<div class="openness-duo__ranking-title">Primii cinci după deschidere</div>` +
+    ranked.map(({ n, out }, i) =>
+      `<div class="openness-duo__ranking-row">` +
+        `<span>${i + 1}. <strong>${n.name}</strong></span>` +
+        `<span>${classNames[n.group] || n.group}</span>` +
+        `<span><strong>${out}</strong> din alte clase</span>` +
+      `</div>`
+    ).join("");
+  container.appendChild(ranking);
+
+  function refit() { cyInstances.forEach((cy) => { try { cy.resize(); cy.fit(undefined, 15); } catch {} }); }
+  requestAnimationFrame(refit);
+  const onWin = () => refit();
+  window.addEventListener("resize", onWin);
+  const ro = new ResizeObserver(refit);
+  ro.observe(grid);
+
+  return {
+    refit,
+    destroy() {
+      window.removeEventListener("resize", onWin);
+      ro.disconnect();
+      cyInstances.forEach((cy) => { try { cy.destroy(); } catch {} });
+    }
+  };
+}
+
 async function renderDuel(container, block) {
   container.classList.add("viz");
   container.innerHTML = "";
@@ -587,6 +735,9 @@ export async function renderDiffusion(container, block, options = {}) {
   }
   if (mode === "duel") {
     return await renderDuel(container, block);
+  }
+  if (mode === "openness-duo") {
+    return await renderOpennessDuo(container, block);
   }
 
   let cytoscape, data;

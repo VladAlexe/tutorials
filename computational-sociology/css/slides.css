@@ -891,6 +891,58 @@
 .viz__gradient-label--left  { left: 0; }
 .viz__gradient-label--right { right: 0; }
 
+/* Openness duo mode: two ego networks side by side, colored by class */
+.openness-duo {
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr;
+  margin-bottom: var(--sp-3);
+}
+@media (min-width: 720px) {
+  .openness-duo { grid-template-columns: 1fr 1fr; }
+}
+.openness-duo__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+  padding: var(--sp-2);
+}
+.openness-duo__cap { font-size: 0.98rem; }
+.openness-duo__stage {
+  height: 260px;
+  background: var(--color-page);
+  border-radius: 4px;
+  border: 1px solid var(--color-line);
+}
+.openness-duo__nums {
+  display: flex;
+  gap: var(--sp-3);
+  font-size: 0.82rem;
+  color: var(--color-ink-soft);
+}
+.openness-duo__nums strong { font-variant-numeric: tabular-nums; }
+.openness-duo__ranking {
+  padding: var(--sp-2);
+  background: rgba(0,0,0,0.03);
+  border-radius: 4px;
+  font-size: 0.88rem;
+}
+.openness-duo__ranking-title {
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--sp-1);
+}
+.openness-duo__ranking-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.4fr;
+  padding: 2px 0;
+  gap: var(--sp-2);
+  color: var(--color-ink-soft);
+}
+.openness-duo__ranking-row strong { font-variant-numeric: tabular-nums; color: var(--color-ink); }
+
 /* Duel mode UI */
 .duel {
   display: grid;
