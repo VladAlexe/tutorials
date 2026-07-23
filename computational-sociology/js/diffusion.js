@@ -1645,6 +1645,7 @@ export async function renderDiffusion(container, block, options = {}) {
         parts.push(`Rezoluție mică: <strong>${summary.n} grupuri mari</strong>. Clasele înrudite încep să se contopească.`);
       } else if (res === 1.0) {
         parts.push(`Rezoluție implicită: <strong>${summary.n} grupuri</strong>, care regăsesc aproape exact clasele.`);
+        parts.push("Câteva clase apar însă ca două grupuri, nu unul. O clasă nu e neapărat o singură lume socială: uneori sunt două găști care împart aceeași sală.");
       } else {
         parts.push(`Rezoluție mare: <strong>${summary.n} grupuri mici</strong>. Cercuri de prieteni din interiorul claselor.`);
       }
@@ -1705,57 +1706,84 @@ export async function renderDiffusion(container, block, options = {}) {
         candBuckets.get(g).add(n.id);
       }
 
-      let slotFor = new Map();
+      // Position for each group is a {angle, ring} pair. Ring "outer" = large
+      // radius; "inner" = smaller. Secondaries of the same class sit next to
+      // the primary as satellites: same angle, inner radius, with a small
+      // fan-out for the third and beyond.
+      const positionFor = new Map();
+      const stepAngle = (2 * Math.PI) / nOuterSlots;
+
       if (cacheKey === "class") {
-        // Reference: fixed slot per class.
-        for (const [k, slot] of refSlotForKey) slotFor.set(k, slot);
+        for (const cls of refGroupKeys) {
+          const slot = refSlotForKey.get(cls);
+          positionFor.set(cls, {
+            angle: (slot / nOuterSlots) * 2 * Math.PI - Math.PI / 2,
+            ring: "outer",
+          });
+        }
       } else {
-        // Greedy overlap matching against the class partition.
-        const pairs = [];
-        for (const [cg, cMembers] of candBuckets) {
-          for (const [rg, rMembers] of refBuckets) {
-            let overlap = 0;
-            for (const x of cMembers) if (rMembers.has(x)) overlap++;
-            if (overlap > 0) pairs.push({ cg, rg, overlap });
+        // For every candidate community: identify dominant class and count.
+        const commDominant = new Map();
+        for (const [cg, members] of candBuckets) {
+          const classCounts = new Map();
+          for (const nid of members) {
+            const cls = groupBy.get(String(nid));
+            if (cls != null) classCounts.set(cls, (classCounts.get(cls) || 0) + 1);
           }
+          let bestCls = null, bestCount = -1;
+          for (const [cls, cnt] of classCounts) {
+            if (cnt > bestCount || (cnt === bestCount && bestCls !== null && String(cls) < String(bestCls))) {
+              bestCount = cnt;
+              bestCls = cls;
+            }
+          }
+          commDominant.set(cg, { cls: bestCls, overlap: bestCount, size: members.size });
         }
-        // Tiebreak: larger community first, then string order (deterministic).
-        pairs.sort((a, b) => {
-          if (b.overlap !== a.overlap) return b.overlap - a.overlap;
-          const sa = candBuckets.get(a.cg).size;
-          const sb = candBuckets.get(b.cg).size;
-          if (sb !== sa) return sb - sa;
-          return String(a.cg).localeCompare(String(b.cg));
-        });
-        const usedSlots = new Set();
-        for (const { cg, rg } of pairs) {
-          if (slotFor.has(cg)) continue;
-          const slot = refSlotForKey.get(rg);
-          if (usedSlots.has(slot)) continue;
-          slotFor.set(cg, slot);
-          usedSlots.add(slot);
+
+        // Group by dominant class.
+        const byClass = new Map();
+        for (const [cg, info] of commDominant) {
+          if (!byClass.has(info.cls)) byClass.set(info.cls, []);
+          byClass.get(info.cls).push(cg);
         }
-        // Leftover groups: inner ring, ordered by size desc for stability.
-        const leftovers = [...candBuckets.keys()]
-          .filter((cg) => !slotFor.has(cg))
-          .sort((a, b) => candBuckets.get(b).size - candBuckets.get(a).size
-            || String(a).localeCompare(String(b)));
-        leftovers.forEach((cg, i) => slotFor.set(cg, nOuterSlots + i));
+        // Order within each class: primary (largest overlap) first, then by
+        // size descending.
+        for (const [, cgs] of byClass) {
+          cgs.sort((a, b) => {
+            const A = commDominant.get(a), B = commDominant.get(b);
+            if (B.overlap !== A.overlap) return B.overlap - A.overlap;
+            if (B.size !== A.size) return B.size - A.size;
+            return String(a).localeCompare(String(b));
+          });
+        }
+
+        for (const cls of refGroupKeys) {
+          const classAngle = (refSlotForKey.get(cls) / nOuterSlots) * 2 * Math.PI - Math.PI / 2;
+          const cgs = byClass.get(cls) || [];
+          cgs.forEach((cg, idx) => {
+            if (idx === 0) {
+              positionFor.set(cg, { angle: classAngle, ring: "outer" });
+            } else {
+              // Fan out slightly around the class angle for the 2nd, 3rd, ...
+              // Sign alternates: idx 1 -> -δ, idx 2 -> +δ, idx 3 -> -2δ, ...
+              const fanIdx = Math.ceil(idx / 2);
+              const sign = (idx % 2 === 1) ? -1 : 1;
+              const offset = sign * fanIdx * stepAngle * 0.18;
+              positionFor.set(cg, { angle: classAngle + offset, ring: "inner" });
+            }
+          });
+        }
       }
 
-      let nInner = 0;
-      for (const s of slotFor.values()) if (s >= nOuterSlots) nInner++;
-
-      const result = { buckets: candBuckets, slotFor, nOuter: nOuterSlots, nInner };
+      const result = { buckets: candBuckets, positionFor };
       slotAssignmentCache.set(cacheKey, result);
       return result;
     }
 
     function computeGroupedPositions(cacheKey, groupOf) {
       if (groupedPosCache.has(cacheKey)) return groupedPosCache.get(cacheKey);
-      const { buckets, slotFor, nOuter, nInner } = assignSlots(cacheKey, groupOf);
+      const { buckets, positionFor } = assignSlots(cacheKey, groupOf);
 
-      // Reference stage extent from current cy positions.
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       cy.nodes().forEach((n) => {
         const p = n.position();
@@ -1764,18 +1792,15 @@ export async function renderDiffusion(container, block, options = {}) {
       });
       const spread = Math.max(maxX - minX, maxY - minY, 500);
       const outerR = spread * 0.42;
-      const innerR = spread * 0.18;
+      const innerR = spread * 0.26;
 
       const positions = new Map();
       for (const [g, members] of buckets) {
-        const slot = slotFor.get(g);
-        const isInner = slot >= nOuter;
-        const localIndex = isInner ? (slot - nOuter) : slot;
-        const localTotal = isInner ? Math.max(nInner, 1) : nOuter;
-        const angle = (localIndex / localTotal) * 2 * Math.PI - Math.PI / 2;
-        const R = isInner ? innerR : outerR;
-        const gcx = Math.cos(angle) * R;
-        const gcy = Math.sin(angle) * R;
+        const posInfo = positionFor.get(g);
+        if (!posInfo) continue;
+        const R = posInfo.ring === "outer" ? outerR : innerR;
+        const gcx = Math.cos(posInfo.angle) * R;
+        const gcy = Math.sin(posInfo.angle) * R;
         const memberR = Math.max(24, Math.sqrt(members.size) * 11);
         const ordered = [...members].sort();
         ordered.forEach((nid, j) => {
