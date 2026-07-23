@@ -2684,85 +2684,75 @@ export async function renderDiffusion(container, block, options = {}) {
   }
 
   else if (mode === "try-break") {
-    // Removal experiment for C13. Two submodes: people, edges.
+    // Node-removal experiment. Pornire: o singură componentă, o singură
+    // culoare (bej, la fel ca schema Componenta din harta). La scoaterea
+    // dependentului, desprinșii primesc o culoare de accent ȘI se depărtează
+    // vizibil, ca despărțirea să se vadă ca ruptură. Modul Legături dispare.
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
-    const classNames = statsData?.classNames || {};
     const sm = statsData?.sliceMetrics || {};
     const cutVertices = sm.cutVertices || [];
     const nCutVertices = sm.nCutVertices || cutVertices.length;
-    const bridgeEdges = sm.bridgeEdges || [];
     const top5Removal = sm.top5Removal || { top5: [] };
-    const brokenPair = sm.brokenPair || null;
-
     const cutMap = new Map();
     for (const cv of cutVertices) cutMap.set(String(cv.id), cv);
 
-    const nameToNode = new Map(nodes.map((n) => [n.name, n]));
-
-    let subMode = "people";
     const removedNodes = new Set();
-    const removedEdges = new Set();
+    const detachedNodes = new Set();
 
-    // Identify Luca-Kira edge id for edges mode highlight
-    let starBridgeEdgeId = null;
-    if (brokenPair && brokenPair.personA && brokenPair.personB) {
-      const pa = nameToNode.get(brokenPair.personA.name);
-      const pb = nameToNode.get(brokenPair.personB.name);
-      if (pa && pb) {
-        cy.edges().forEach((e) => {
-          const s = e.source().id(), t = e.target().id();
-          if ((s === pa.id && t === pb.id) || (s === pb.id && t === pa.id)) starBridgeEdgeId = e.id();
-        });
-      }
-    }
-    // Identify all thin (1-2 edge) class-pair edge ids
-    const thinBridgeEdgeIds = new Set();
-    const classPairMatrix = sm.classPairMatrix || [];
-    for (const cp of classPairMatrix) {
-      if (cp.edgeCount <= 2) {
-        for (const ce of cp.edges || []) {
-          const aId = String(ce.a?.id), bId = String(ce.b?.id);
-          cy.edges().forEach((e) => {
-            const s = e.source().id(), t = e.target().id();
-            if ((s === aId && t === bId) || (s === bId && t === aId)) thinBridgeEdgeIds.add(e.id());
-          });
-        }
-      }
+    const BASE_COLOR = "#efe6d6";       // same beige as Componenta scheme
+    const REMOVED_COLOR = "#a3341f";
+    const DETACHED_COLOR = "#c96d3f";   // warm accent = new component
+
+    const initialPositions = new Map();
+    function snapshotPositions() {
+      if (initialPositions.size) return;
+      cy.nodes().forEach((n) => {
+        const p = n.position();
+        initialPositions.set(n.id(), { x: p.x, y: p.y });
+      });
     }
 
-    function resetAllVisuals() {
-      removedNodes.clear();
-      removedEdges.clear();
+    // Snapshot positions after cose settles.
+    setTimeout(snapshotPositions, 200);
+
+    function paintBase() {
       cy.nodes().forEach((n) => {
         n.style("opacity", 1);
         n.style("width", 9); n.style("height", 9);
         n.style("border-width", 1);
-        n.style("border-color", "#5a4a3a");
-        n.style("background-color", n.data("color") || "#8a7a68");
+        n.style("border-color", "#c9beac");
+        n.style("background-color", BASE_COLOR);
+        n.data("color", BASE_COLOR);
       });
       cy.edges().forEach((e) => {
         e.style("opacity", 0.35);
         e.style("width", 0.8);
         e.style("line-color", "#d9cfc0");
       });
-      applyEdgeHighlightIfEdgesMode();
     }
 
-    function applyEdgeHighlightIfEdgesMode() {
-      if (subMode !== "edges") return;
-      cy.edges().forEach((e) => {
-        if (thinBridgeEdgeIds.has(e.id())) {
-          e.style("line-color", "#c96d3f");
-          e.style("width", 2.4);
-          e.style("opacity", 0.85);
-        }
-        if (e.id() === starBridgeEdgeId) {
-          e.style("line-color", "#8b4a1e");
-          e.style("width", 4);
-          e.style("opacity", 1);
-        }
+    function resetAllVisuals() {
+      removedNodes.clear();
+      detachedNodes.clear();
+      paintBase();
+      const anims = [];
+      cy.nodes().forEach((n) => {
+        const p = initialPositions.get(n.id());
+        if (p) anims.push(n.animation({ position: p, duration: 400 }));
       });
+      anims.forEach((a) => a.play());
+      setTimeout(updateStatus, 450);
+    }
+
+    function graphCenter() {
+      let sx = 0, sy = 0, c = 0;
+      cy.nodes().forEach((n) => {
+        if (removedNodes.has(n.id())) return;
+        sx += n.position().x; sy += n.position().y; c++;
+      });
+      if (c === 0) return { x: 0, y: 0 };
+      return { x: sx / c, y: sy / c };
     }
 
     function removeNodeVisual(nid) {
@@ -2771,145 +2761,102 @@ export async function renderDiffusion(container, block, options = {}) {
       removedNodes.add(id);
       const cn = cy.getElementById(id);
       if (cn && cn.length) {
-        cn.style("opacity", 0.12);
-        cn.style("background-color", "#a3341f");
-        cn.style("border-width", 0);
+        cn.style("opacity", 0.15);
+        cn.style("background-color", REMOVED_COLOR);
+        cn.data("color", REMOVED_COLOR);
       }
       cy.edges().forEach((e) => {
         if (e.source().id() === id || e.target().id() === id) e.style("opacity", 0.04);
       });
-      // Highlight detached
+
+      // Detach: if this node is a cut vertex, paint the detached kids in
+      // accent + push them outward from graph center so the split is visible.
       const cv = cutMap.get(id);
-      if (cv && Array.isArray(cv.detached)) {
-        for (const det of cv.detached) {
-          const dn = cy.getElementById(String(det.id));
-          if (dn && dn.length) {
-            dn.style("border-color", "#a3341f");
-            dn.style("border-width", 3);
-            dn.style("width", 14); dn.style("height", 14);
+      if (cv && Array.isArray(cv.detached) && cv.detached.length) {
+        const detachedIds = cv.detached.map((d) => String(d.id));
+        // Compute avg position of the detached group and push outward from center.
+        let ax = 0, ay = 0, ac = 0;
+        for (const did of detachedIds) {
+          const dn = cy.getElementById(did);
+          if (dn && dn.length) { ax += dn.position().x; ay += dn.position().y; ac++; }
+        }
+        if (ac > 0) {
+          ax /= ac; ay /= ac;
+          const gc = graphCenter();
+          const dx = ax - gc.x, dy = ay - gc.y;
+          const mag = Math.sqrt(dx * dx + dy * dy) || 1;
+          const push = 220;
+          const vx = (dx / mag) * push;
+          const vy = (dy / mag) * push;
+          for (const did of detachedIds) {
+            detachedNodes.add(did);
+            const dn = cy.getElementById(did);
+            if (dn && dn.length) {
+              dn.style("background-color", DETACHED_COLOR);
+              dn.data("color", DETACHED_COLOR);
+              dn.style("border-color", "#5a2a10");
+              dn.style("border-width", 2);
+              dn.style("width", 13); dn.style("height", 13);
+              const p = dn.position();
+              dn.animation({
+                position: { x: p.x + vx, y: p.y + vy },
+                duration: 550, easing: "ease-out"
+              }).play();
+            }
           }
         }
       }
+      updateStatus();
     }
 
-    function textForRemovals() {
+    function updateStatus() {
       const infoEl = controls.querySelector('[data-role="info"]');
+      const countEl = controls.querySelector('[data-role="count"]');
+      const totalNodes = cy.nodes().length;
+      const activeCount = totalNodes - removedNodes.size;
+      const detachedCount = detachedNodes.size;
+      const mainCount = activeCount - detachedCount;
+
+      if (countEl) {
+        if (detachedCount === 0) {
+          countEl.innerHTML = `<strong>1</strong> bucată · <strong>${activeCount}</strong> elevi activi`;
+        } else {
+          countEl.innerHTML = `<strong>2</strong> bucăți · una cu <strong>${mainCount}</strong> elevi, alta cu <strong>${detachedCount}</strong>`;
+        }
+      }
+
       if (!infoEl) return;
       if (removedNodes.size === 0) {
         infoEl.textContent = "Atinge un elev pentru a-l scoate din rețea.";
         return;
       }
-      // Special cased narrations
-      const removedNames = [...removedNodes].map((id) => nameById.get(id) || `Elev ${id}`);
-      // Vedeta solo (max popularity)
       const vedeta = sm.characters?.vedeta;
       if (removedNodes.size === 1 && vedeta && removedNodes.has(String(vedeta.id))) {
-        const remaining = nodes.length - 1;
-        infoEl.innerHTML = `Cel mai popular elev din școală a dispărut. Rămâne o singură bucată, cu <strong>${remaining}</strong> elevi. Nimeni nu s-a desprins.`;
+        infoEl.innerHTML = `Cel mai popular elev din școală a dispărut. O singură bucată, <strong>${activeCount}</strong> elevi. Nimeni nu s-a desprins.`;
         return;
       }
-      // Dependentul (id 276) - detaches the most
       const dependent = sm.characters?.dependent;
       if (removedNodes.size === 1 && dependent && removedNodes.has(String(dependent.id))) {
-        const dependentCut = cutVertices.find((c) => c.id === dependent.id);
-        if (dependentCut) {
-          const detNames = (dependentCut.detached || []).map((d) => d.name).join(", ");
-          const pronoun = dependent.sex === "F" ? "Ea" : "El";
-          const article = dependent.sex === "F" ? "-o" : "-l";
-          infoEl.innerHTML = `Aici se întâmplă ceva. Fără <strong>${dependent.name}</strong>, ${dependentCut.detachedCount} elevi rămân complet rupți de restul școlii: ${detNames}. ${pronoun} era singurul lor drum.`;
-          return;
-        }
+        const cv = cutMap.get(String(dependent.id));
+        const nDetached = cv?.detachedCount ?? detachedCount;
+        infoEl.innerHTML = `Aici se rupe. Fără <strong>${dependent.name}</strong>, <strong>${nDetached}</strong> elevi rămân separați de restul școlii. El era singurul lor drum.`;
+        return;
       }
-      // Top 5
       const top5Ids = new Set((top5Removal.top5 || []).map((t) => String(t.id)));
       if (removedNodes.size === 5 && [...top5Ids].every((id) => removedNodes.has(id))) {
-        const largest = top5Removal.largestAfter || 294;
-        infoEl.innerHTML = `Cinci dintre cei mai conectați oameni, scoși deodată. Rămân <strong>${largest}</strong> de elevi, într-o singură bucată. Zero desprinși. Rețeaua nici nu a clipit.`;
+        infoEl.innerHTML = `Cinci dintre cei mai conectați, scoși deodată. Tot o singură bucată. Rețeaua nici nu a clipit.`;
         return;
       }
-      // Generic: gather detached from cut vertices among removed
-      const detachedSet = new Set();
-      for (const rid of removedNodes) {
-        const cv = cutMap.get(rid);
-        if (cv) for (const d of cv.detached || []) detachedSet.add(d.name);
-      }
-      if (detachedSet.size > 0) {
-        infoEl.innerHTML = `Elevi scoși: ${removedNames.join(", ")}. Desprinși de rețea: <strong>${detachedSet.size}</strong> (${[...detachedSet].join(", ")}).`;
+      const removedNames = [...removedNodes].map((id) => nameById.get(id) || `Elev ${id}`);
+      if (detachedCount > 0) {
+        infoEl.innerHTML = `Scoși: ${removedNames.join(", ")}. Desprinși: <strong>${detachedCount}</strong>, colorați separat.`;
       } else {
-        infoEl.innerHTML = `Elevi scoși: ${removedNames.join(", ")}. Rețeaua rămâne o singură bucată. Nimeni nu s-a desprins.`;
+        infoEl.innerHTML = `Scoși: ${removedNames.join(", ")}. Tot o singură bucată.`;
       }
     }
 
-    function removeEdgeVisual(edgeId) {
-      if (removedEdges.has(edgeId)) return;
-      removedEdges.add(edgeId);
-      const e = cy.getElementById(edgeId);
-      if (e && e.length) {
-        e.style("opacity", 0.05);
-        e.style("width", 0.5);
-      }
-      // If it's the star bridge (Luca-Kira), show a specific reveal
-      const infoEl = controls.querySelector('[data-role="info"]');
-      if (edgeId === starBridgeEdgeId && brokenPair && infoEl) {
-        infoEl.innerHTML =
-          `Nici măcar asta nu rupe școala. Fără prietenia dintre <strong>${brokenPair.personA.name}</strong> și <strong>${brokenPair.personB.name}</strong>, ` +
-          `${brokenPair.classAFriendly} și ${brokenPair.classBFriendly} rămân legate, doar că drumul se lungește, ` +
-          `de la <strong>${brokenPair.distanceBefore}</strong> la <strong>${brokenPair.distanceAfter}</strong> pași, prin ocol. ` +
-          `Rețeaua are aproape peste tot mai multe drumuri între oricare doi oameni. ` +
-          `Nu o rupi nici scoțând cei mai populari cinci elevi, nici tăind singurul fir dintre două clase. ` +
-          `<strong>Atunci unde e fragilă?</strong>`;
-        return;
-      }
-      if (thinBridgeEdgeIds.has(edgeId) && infoEl) {
-        // Find which class pair this edge belonged to
-        const sSrc = e.source().id(), sTgt = e.target().id();
-        for (const cp of classPairMatrix) {
-          if (cp.edgeCount > 2) continue;
-          for (const ce of cp.edges || []) {
-            const aId = String(ce.a?.id), bId = String(ce.b?.id);
-            if ((aId === sSrc && bId === sTgt) || (aId === sTgt && bId === sSrc)) {
-              const fA = classNames[cp.classA] || cp.classA;
-              const fB = classNames[cp.classB] || cp.classB;
-              infoEl.innerHTML = `Legătura ${ce.a.name} - ${ce.b.name} a dispărut. Între ${fA} și ${fB} rămân doar ${cp.edgeCount - 1} legături directe.`;
-              return;
-            }
-          }
-        }
-      }
-      if (infoEl) infoEl.textContent = "Legătura a dispărut. Rețeaua caută alt drum.";
-    }
-
-    function switchSubMode(newMode) {
-      subMode = newMode;
-      resetAllVisuals();
-      applyEdgeHighlightIfEdgesMode();
-      const modeButtons = controls.querySelectorAll("[data-mode]");
-      modeButtons.forEach((b) => {
-        if (b.dataset.mode === newMode) { b.classList.add("btn--primary"); b.classList.remove("btn--ghost"); }
-        else { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); }
-      });
-      const quickRow = controls.querySelector('[data-role="quick"]');
-      if (quickRow) quickRow.style.display = (newMode === "people") ? "" : "none";
-      const infoEl = controls.querySelector('[data-role="info"]');
-      if (infoEl) {
-        if (newMode === "edges" && brokenPair) {
-          infoEl.innerHTML =
-            `Uită-te la relații. Clasa ${brokenPair.classAFriendly} și clasa ${brokenPair.classBFriendly} sunt două lumi care nu se ating aproape deloc. ` +
-            `Între ele există o singură legătură directă: ${brokenPair.personA.name} și ${brokenPair.personB.name}. O prietenie. ` +
-            `Atinge muchia colorată puternic pentru a o tăia.`;
-        } else {
-          infoEl.textContent = "Atinge un elev pentru a-l scoate din rețea.";
-        }
-      }
-    }
-
-    // Build UI
     controls.innerHTML =
-      `<div class="diff-row diff-buttons try-break__modes">` +
-        `<button type="button" class="btn btn--primary" data-mode="people">Oameni</button>` +
-        `<button type="button" class="btn btn--ghost" data-mode="edges">Legături</button>` +
-      `</div>` +
-      `<div class="diff-row diff-buttons try-break__quick" data-role="quick">` +
+      `<div class="diff-row diff-buttons try-break__quick">` +
         (sm.characters?.vedeta
           ? `<button type="button" class="btn btn--ghost" data-quick="vedeta">Scoate${sm.characters.vedeta.sex === "F" ? "-o pe " : "-l pe "}${sm.characters.vedeta.name}</button>`
           : "") +
@@ -2919,18 +2866,14 @@ export async function renderDiffusion(container, block, options = {}) {
           : "") +
         `<button type="button" class="btn btn--ghost" data-quick="reset">Adu-i înapoi</button>` +
       `</div>` +
+      `<div class="diff-count" data-role="count"><strong>1</strong> bucată · <strong>${nodes.length}</strong> elevi</div>` +
       `<div class="diff-hint" data-role="info">Atinge un elev pentru a-l scoate din rețea.</div>` +
-      `<div class="diff-hint diff-hint--muted"><strong>${nCutVertices}</strong> elevi obișnuiți sunt singura legătură a cuiva cu restul școlii. Fragilitatea nu e la centru — e la periferie.</div>`;
-
-    controls.querySelectorAll("[data-mode]").forEach((btn) => {
-      btn.addEventListener("click", () => switchSubMode(btn.dataset.mode));
-    });
+      `<div class="diff-hint diff-hint--muted">Rețeaua e robustă acolo unde te așteptai să fie fragilă și fragilă acolo unde nu te uitai. Cei mai populari sunt înlocuibili, pentru că între oricare doi elevi există mai multe drumuri. La margine însă, <strong>${nCutVertices}</strong> de elevi obișnuiți sunt singura legătură a cuiva cu restul școlii. <strong>${sm.characters?.dependent?.name || "Dependentul"}</strong> nu e popular. Dar pentru trei oameni, el e tot.</div>`;
 
     controls.querySelectorAll("[data-quick]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const q = btn.dataset.quick;
-        if (q === "reset") { resetAllVisuals(); textForRemovals(); return; }
-        if (subMode !== "people") return;
+        if (q === "reset") { resetAllVisuals(); return; }
         if (q === "vedeta") {
           const v = sm.characters?.vedeta;
           if (v) removeNodeVisual(String(v.id));
@@ -2942,21 +2885,15 @@ export async function renderDiffusion(container, block, options = {}) {
         if (q === "top5") {
           for (const t of (top5Removal.top5 || [])) removeNodeVisual(String(t.id));
         }
-        textForRemovals();
       });
     });
 
     cy.on("tap", "node", (e) => {
-      if (subMode !== "people") return;
       removeNodeVisual(e.target.id());
-      textForRemovals();
-    });
-    cy.on("tap", "edge", (e) => {
-      if (subMode !== "edges") return;
-      removeEdgeVisual(e.target.id());
     });
 
-    resetAllVisuals();
+    paintBase();
+    updateStatus();
   }
 
   return {
