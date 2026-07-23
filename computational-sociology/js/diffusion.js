@@ -1488,16 +1488,12 @@ export async function renderDiffusion(container, block, options = {}) {
         return PALETTE[c % PALETTE.length];
       }
       if (scheme === "component") {
-        // Almost the whole school is one component, so painting by component id
-        // just floods everything with one hue. Instead: paint the big component
-        // in a light neutral, and highlight the marginal students (unreached by
-        // the bounded diffusion, or sitting in a tiny detached component) in
-        // an accent color so the exception reads.
-        const compId = compById[nid];
-        const isBig = compId === bigCompId;
-        const isUnreachedFlag = unreachedSet.has(String(nid));
-        if (isBig && !isUnreachedFlag) return "#efe6d6"; // light beige (in the big component, reachable)
-        return "#c96d3f"; // warm accent for the margin (either small comp or unreached)
+        // Pure structural view: the giant connected component in a light
+        // neutral, any small detached component in an accent color. Unreached-
+        // by-diffusion has nothing to do here; that concept lives on the
+        // izolatul card because it is a property of the diffusion model, not
+        // of the network structure.
+        return compById[nid] === bigCompId ? "#efe6d6" : "#c96d3f";
       }
       if (scheme === "degree") {
         const t = degById[nid] / maxDeg;
@@ -1558,13 +1554,12 @@ export async function renderDiffusion(container, block, options = {}) {
           n.style("border-color", v >= top10Deg ? "#2a1f16" : "#5a4a3a");
           n.style("opacity", 1);
         } else if (scheme === "component") {
-          const compId = compById[nid];
-          const isMargin = compId !== bigCompId || unreachedSet.has(String(nid));
-          if (isMargin) {
-            n.style("width", 15); n.style("height", 15);
+          const isSmall = compById[nid] !== bigCompId;
+          if (isSmall) {
+            n.style("width", 14); n.style("height", 14);
             n.style("border-width", 2); n.style("border-color", "#5a2a10");
           } else {
-            n.style("width", 8); n.style("height", 8);
+            n.style("width", 9); n.style("height", 9);
             n.style("border-width", 1); n.style("border-color", "#c9beac");
           }
           n.style("opacity", 1);
@@ -1608,10 +1603,13 @@ export async function renderDiffusion(container, block, options = {}) {
       degree: "Popularitatea", openness: "Deschiderea",
       mismatch: "Arată nepotrivirile"
     };
-    const marginCount = (() => {
+    // Count of nodes NOT in the giant component (small detached clusters).
+    // Do not confuse with unreached-by-diffusion, which is a property of the
+    // diffusion model and lives on the izolatul card.
+    const smallCompCount = (() => {
       let m = 0;
       for (const nid of Object.keys(compById)) {
-        if (compById[nid] !== bigCompId || unreachedSet.has(nid)) m++;
+        if (compById[nid] !== bigCompId) m++;
       }
       return m;
     })();
@@ -1634,7 +1632,9 @@ export async function renderDiffusion(container, block, options = {}) {
     const explains = {
       class:     "Culoarea = clasa administrativă. Așa vede orarul.",
       community: communityExplain(currentRes),
-      component: `O componentă mare cu ${bigCompSize} elevi, plus ${marginCount} la margine (evidențiați cu contur), la care difuzia nu ajunge.`,
+      component: smallCompCount === 0
+        ? `Culoarea = componenta conexă. Toți cei ${bigCompSize} de elevi formează o singură bucată: din orice elev, poți ajunge la oricare altul prin lanț de contacte.`
+        : `Culoarea = componenta conexă. O bucată mare cu ${bigCompSize} elevi, plus ${smallCompCount} elev(i) în bucăți mici, complet detașate. Cine e disconnectat structural, nu cine e ratat de model.`,
       degree:    "Culoarea = popularitatea (gradul). Cu cât mai închis, cu atât mai popular.",
       openness:  "Culoarea = deschiderea. Cu cât mai închis (albastru), cu atât mai multe grupuri diferite atinge cu vecinii lui.",
       mismatch:  "Roșu = elevii puși de algoritm în altă comunitate decât clasa lor. Sunt puțini, dar prin ei trece rețeaua dincolo de granițe."
