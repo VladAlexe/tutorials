@@ -561,15 +561,21 @@
 /* Chart link target (list of names after tapping a row/bar) */
 .chart__link-target {
   margin: var(--sp-3) 0 0;
-  padding: var(--sp-2) var(--sp-3);
-  background: var(--color-surface-alt, #f2ede5);
+  padding: var(--sp-3) var(--sp-4);
+  background: #ede2cf;
+  border-left: 3px solid #8b4a1e;
   border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.55;
   color: var(--color-ink);
+  min-height: 3rem;
 }
-.chart__freq__tappable { cursor: pointer; transition: background-color 150ms ease; }
-.chart__freq__tappable:hover { background-color: var(--color-surface-alt, #f2ede5); }
+.chart__freq__tappable { cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
+.chart__freq__tappable:hover {
+  background-color: #e8c9a0;
+  color: #2a1f16;
+}
+.chart__freq__tappable:hover th { color: #2a1f16; }
 
 .chart__toggle {
   display: flex;

@@ -3,7 +3,10 @@ const { markQuizAnswered, clearQuiz, getProgress, markVote, getVote } = await im
 
 export function renderQuiz(container, block, options = {}) {
   const state = { selected: null, verified: false };
-  const priorAnswer = getProgress().quizzes?.[block.id];
+  // Presenter-friendly default: each new page load starts every quiz blank,
+  // so a fresh audience never sees the previous audience's pick pre-selected.
+  // The persisted answer is still written on submit (for progress bookkeeping)
+  // but is not auto-restored on mount.
   const onAnswered = typeof options.onAnswered === "function" ? options.onAnswered : null;
 
   container.classList.add("quiz");
@@ -86,14 +89,8 @@ export function renderQuiz(container, block, options = {}) {
   if (block.explanation) explanation.textContent = block.explanation;
   container.appendChild(explanation);
 
-  if (priorAnswer && typeof priorAnswer.selectedIndex === "number") {
-    const el = optionEls[priorAnswer.selectedIndex];
-    if (el) {
-      el.input.checked = true;
-      selectOption(priorAnswer.selectedIndex);
-      verify();
-    }
-  }
+  // Auto-restore of previous answer is intentionally disabled. See top of
+  // this file: keeps every session starting blank.
 
   function selectOption(idx) {
     if (state.verified) return;
@@ -164,7 +161,7 @@ export function renderQuiz(container, block, options = {}) {
  */
 export function renderVote(container, block, options = {}) {
   const onAnswered = typeof options.onAnswered === "function" ? options.onAnswered : null;
-  const prior = getVote(block.id);
+  // Same policy as the quiz: do not auto-restore the previous session's pick.
 
   container.classList.add("vote");
 
@@ -230,12 +227,5 @@ export function renderVote(container, block, options = {}) {
     }
   }
 
-  if (prior && typeof prior.selectedIndex === "number") {
-    for (const b of optBtns) {
-      b.disabled = true;
-      b.classList.toggle("vote__option--picked", optBtns.indexOf(b) === prior.selectedIndex);
-    }
-    showReveal(prior.selectedIndex);
-    if (onAnswered) onAnswered({ selectedIndex: prior.selectedIndex });
-  }
+  // Auto-restore of previous vote is intentionally disabled.
 }
