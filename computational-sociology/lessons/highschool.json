@@ -245,51 +245,33 @@
       "caption": "<p>{{name:vedeta}} are <strong>un contact</strong> în afara clasei. {{name:campion}} are <strong>zero</strong>. Toți cei {{contacte:campion}} oameni ai ei sunt colegi de clasă.</p><p>Ea nu e mai deschisă decât el. E complet închisă. Ipoteza cade, iar misterul se adâncește: nu e nici clasa, nici popularitatea, nici deschiderea.</p>"
     },
     {
-      "type": "diffusion",
+      "type": "chart",
       "id": "c-prietenii-prietenilor",
-      "mode": "story-network",
+      "variant": "friends-tabs",
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
-      "focus": "Chloé",
-      "story": [
-        {
-          "visible": ["focus"],
-          "text": "Am eliminat clasa, popularitatea și deschiderea. Ce a mai rămas? Uită-te nu la prietenii lui <strong>{{name:campion}}</strong>, ci la prietenii prietenilor ei."
-        },
-        {
-          "buttonLabel": "Arată-i cele {{contacte:campion}} contacte",
-          "add": "neighbors",
-          "text": "Toți cei {{contacte:campion}} oameni ai ei sunt din clasa ei. Deci nu ea deschide drumul. Dar unul dintre ei, cel cu care petrece de departe cel mai mult timp, face parte dintr-un grup care atinge patru clase."
-        },
-        {
-          "buttonLabel": "Arată prin cel mai apropiat prieten",
-          "add": "class",
-          "text": "Fără el, {{name:campion}} ajunge la 61 de oameni. Cu el, la {{reach:campion}}. Cei doisprezece în plus sunt un subgrup întreg din altă clasă, la care altfel nu ar fi ajuns niciodată. {{name:vedeta}} are mai mulți prieteni. Dar prietenii lui se cunosc între ei, deci al doilea pas nu deschide aproape nimic nou."
-        }
+      "focuses": [
+        { "roleKey": "campion", "label": "Chloé" },
+        { "roleKey": "vedeta", "label": "Antoine" },
+        { "roleKey": "puntea", "label": "Léa" }
       ],
       "title": "Prietenii prietenilor",
-      "caption": "Nu contează câți oameni cunoști. Contează <strong>pe cine cunosc ei</strong>. Aceasta e soluția enigmei. Iar regula nu ține doar pentru ei doi: dacă numărăm, pentru fiecare elev din școală, câți oameni sunt la doi pași de el, obținem o măsură care prezice raza cu corelație 0,78, față de 0,37 la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul."
+      "intro": "<p>Am eliminat clasa, popularitatea și deschiderea. Ce a mai rămas? Uită-te la fiecare dintre cei trei nu la prietenii lor, ci la <strong>prietenii prietenilor</strong>.</p><p>Comută filele. Pentru fiecare elev, punctul negru e el, cercul brun sunt contactele lui, cercul verde sunt contactele contactelor.</p>",
+      "caption": "Chloé are puține contacte, dar cercul verde explodează: prietenii ei sunt răspândiți în alte clase. Antoine are cele mai multe contacte, dar cercul verde adaugă puțin, pentru că prietenii lui se cunosc între ei. Léa are contacte împrăștiate, cu un cerc verde mare. Nu contează câți oameni cunoști. Contează <strong>pe cine cunosc ei</strong>. Aceasta e soluția enigmei. Iar regula nu ține doar pentru ei trei: dacă numărăm, pentru fiecare elev din școală, câți oameni sunt la doi pași de el, obținem o măsură care prezice raza cu corelație 0,78, față de 0,37 la popularitate. Măsura bună nu s-a găsit într-o listă de măsuri. A fost construită gândindu-ne cum circulă de fapt mesajul."
     },
     {
-      "type": "diffusion",
+      "type": "chart",
       "id": "c14-yann-izolat",
-      "mode": "story-network",
+      "variant": "friends-tabs",
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
-      "focus": "Yann",
-      "story": [
-        {
-          "visible": ["focus"],
-          "text": "Am rezolvat enigma. Rămâne o urmă a modelului, la marginea lui. „Poți ajunge\" nu e același lucru cu „ajungi\". La <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, mesajul nu ajunge niciodată. Unul dintre ei este <strong>{{name:izolat}}</strong>, cu un singur contact în toată școala."
-        },
-        {
-          "buttonLabel": "Arată singurul lui contact",
-          "add": "neighbors",
-          "text": "Dacă acel contact nu află de vestea ta, {{name:izolat}} nu află niciodată. Fragilitatea e la margine, iar niciuna dintre măsurile de până acum nu o vede."
-        }
+      "focuses": [
+        { "name": "Yann", "label": "Yann" },
+        { "name": "Iban", "label": "Iban" }
       ],
       "title": "Cine nu află niciodată",
-      "caption": "A fi în componentă înseamnă structural conectat. A fi atins de răspândire e altceva, care depinde de reguli: câți poți spune, în cât timp, prin cine anume. Yann e primul dintr-o listă scurtă de elevi la care nici o strategie n-o să ajungă. Rețineți-l pentru bilanț."
+      "intro": "<p>Am rezolvat enigma. Rămâne o urmă a modelului, la marginea lui. „Poți ajunge\" nu e același lucru cu „ajungi\". La <strong>{{sliceMetrics.unreachableCount}} de elevi</strong>, mesajul nu ajunge niciodată, oricine ar porni.</p><p>Iată doi dintre ei, cu vecinătatea lor. Fiecare are un singur contact. Uită-te cine e acel contact și cu cine vorbește el mai departe.</p>",
+      "caption": "{{name:izolat}} are un singur contact. Dacă acela nu află, el nu află niciodată. Iban, tot cu un singur contact, e în aceeași situație. Nici acolo nu e trafic mare: marginile rețelei sunt legate de alte margini. Sunt {{sliceMetrics.unreachableCount}} de elevi în situația asta. Nu apar în niciun clasament, nu sunt suspecți, nu sunt campioni. Sunt oamenii pe care nicio strategie nu îi atinge."
     },
     {
       "type": "diffusion",

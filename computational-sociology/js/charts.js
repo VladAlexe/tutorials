@@ -1261,6 +1261,158 @@ function renderScatter(container, block, stats) {
   draw();
 }
 
+// Ego-net comparison. Each tab: one focus student. Small SVG shows focus at
+// center, 1-hop contacts in one color, 2-hop friends-of-friends in another.
+// Under each: "la 1 pas: X, la 2 pași: Y". Used by c-prietenii-prietenilor
+// (3 tabs) and c14-yann-izolat (2 tabs).
+async function renderFriendsTabs(container, block, stats) {
+  const netPath = block.data || block.linkNetworkData || "data/highschool-network.json";
+  let net;
+  try { net = await loadJSON(netPath); } catch { container.textContent = "Nu am putut încărca rețeaua."; return; }
+  const sm = stats?.sliceMetrics || {};
+  const chars = sm.characters || {};
+  const nameToNode = new Map();
+  const idToNode = new Map();
+  for (const n of net.nodes) {
+    idToNode.set(String(n.id), n);
+    if (n.name) nameToNode.set(n.name, n);
+  }
+
+  const adj = new Map();
+  for (const n of net.nodes) adj.set(String(n.id), new Set());
+  for (const e of net.edges) {
+    adj.get(String(e.source))?.add(String(e.target));
+    adj.get(String(e.target))?.add(String(e.source));
+  }
+
+  // Resolve focuses: list of {roleKey?, name?, id?, label?}
+  const focuses = (block.focuses || []).map((f) => {
+    let node = null;
+    if (f.roleKey && chars[f.roleKey]) node = idToNode.get(String(chars[f.roleKey].id));
+    else if (f.name) node = nameToNode.get(f.name);
+    else if (f.id) node = idToNode.get(String(f.id));
+    if (!node) return null;
+    return {
+      id: String(node.id),
+      name: node.name || `Elev ${node.id}`,
+      classFriendly: (stats?.classNames || {})[node.group] || node.group,
+      label: f.label || node.name,
+    };
+  }).filter(Boolean);
+  if (!focuses.length) { container.textContent = "Fișe indisponibile."; return; }
+
+  const tabsWrap = document.createElement("div");
+  tabsWrap.className = "friends-tabs__tabs";
+  container.appendChild(tabsWrap);
+  const stage = document.createElement("div");
+  stage.className = "friends-tabs__stage";
+  container.appendChild(stage);
+  const stat = document.createElement("div");
+  stat.className = "friends-tabs__stat";
+  container.appendChild(stat);
+
+  const S = 340;
+
+  function drawFor(f) {
+    const oneHop = adj.get(f.id) || new Set();
+    const twoHop = new Set();
+    for (const y of oneHop) for (const z of adj.get(y) || []) if (z !== f.id && !oneHop.has(z)) twoHop.add(z);
+
+    // Positions: focus at center; 1-hop on a small ring; 2-hop grouped
+    // around their 1-hop parent, on an outer ring.
+    const pos = new Map();
+    pos.set(f.id, { x: S / 2, y: S / 2 });
+    const oneArr = [...oneHop];
+    const R1 = S * 0.20;
+    oneArr.forEach((id, i) => {
+      const a = (i / Math.max(1, oneArr.length)) * 2 * Math.PI - Math.PI / 2;
+      pos.set(id, { x: S / 2 + Math.cos(a) * R1, y: S / 2 + Math.sin(a) * R1 });
+    });
+    // For each 2-hop node, pick its "parent" (a 1-hop neighbor) and place near.
+    const R2 = S * 0.42;
+    const parentOf = new Map();
+    for (const t of twoHop) {
+      // pick any 1-hop neighbor of t
+      let p = null;
+      for (const y of adj.get(t) || []) if (oneHop.has(y)) { p = y; break; }
+      parentOf.set(t, p);
+    }
+    // Group 2-hop by parent and lay them out around parent's angle.
+    const byParent = new Map();
+    for (const [t, p] of parentOf) {
+      if (p == null) continue;
+      if (!byParent.has(p)) byParent.set(p, []);
+      byParent.get(p).push(t);
+    }
+    for (const [p, kids] of byParent) {
+      const parentIdx = oneArr.indexOf(p);
+      const parentAngle = (parentIdx / Math.max(1, oneArr.length)) * 2 * Math.PI - Math.PI / 2;
+      kids.forEach((t, i) => {
+        const spread = Math.min(1.2, 0.15 + kids.length * 0.05);
+        const localA = parentAngle + (i - (kids.length - 1) / 2) * spread / Math.max(1, kids.length);
+        pos.set(t, { x: S / 2 + Math.cos(localA) * R2, y: S / 2 + Math.sin(localA) * R2 });
+      });
+    }
+    // 2-hop with no 1-hop parent (rare) go on the outer ring uniformly.
+    const orphan = [...twoHop].filter((t) => !pos.has(t));
+    orphan.forEach((t, i) => {
+      const a = (i / Math.max(1, orphan.length)) * 2 * Math.PI;
+      pos.set(t, { x: S / 2 + Math.cos(a) * R2, y: S / 2 + Math.sin(a) * R2 });
+    });
+
+    // Edges: focus-to-1hop, 1hop-to-2hop.
+    const edges = [];
+    for (const id of oneHop) {
+      edges.push({ a: f.id, b: id });
+      for (const t of adj.get(id) || []) {
+        if (twoHop.has(t)) edges.push({ a: id, b: t });
+      }
+    }
+    const edgesSvg = edges.map((e) => {
+      const pa = pos.get(e.a), pb = pos.get(e.b);
+      if (!pa || !pb) return "";
+      return `<line x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" stroke="#8a7154" stroke-width="0.8" opacity="0.4"/>`;
+    }).join("");
+
+    const twoDots = [...twoHop].map((id) => {
+      const p = pos.get(id); if (!p) return "";
+      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="#3d7a52" opacity="0.9"/>`;
+    }).join("");
+    const oneDots = [...oneHop].map((id) => {
+      const p = pos.get(id); if (!p) return "";
+      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="5" fill="#8b4a1e"/>`;
+    }).join("");
+    const focusDot = `<circle cx="${(S/2).toFixed(1)}" cy="${(S/2).toFixed(1)}" r="8" fill="#2a1f16"/>`;
+
+    stage.innerHTML =
+      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:${S+20}px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Ego-rețeaua lui ${esc(f.name)}">` +
+      edgesSvg + twoDots + oneDots + focusDot +
+      `</svg>` +
+      `<div class="friends-tabs__legend">` +
+        `<span><span class="friends-tabs__dot" style="background:#2a1f16"></span>${esc(f.name)}, ${esc(f.classFriendly)}</span>` +
+        `<span><span class="friends-tabs__dot" style="background:#8b4a1e"></span>contactele lui (${oneHop.size})</span>` +
+        `<span><span class="friends-tabs__dot" style="background:#3d7a52"></span>contactele contactelor (${twoHop.size})</span>` +
+      `</div>`;
+    stat.innerHTML = `La 1 pas: <strong>${oneHop.size}</strong>. La 2 pași: <strong>${twoHop.size}</strong>.`;
+  }
+
+  focuses.forEach((f, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "friends-tabs__tab" + (i === 0 ? " is-active" : "");
+    btn.textContent = f.label;
+    btn.addEventListener("click", () => {
+      tabsWrap.querySelectorAll(".friends-tabs__tab").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      drawFor(f);
+    });
+    tabsWrap.appendChild(btn);
+  });
+  drawFor(focuses[0]);
+}
+
 function renderStrategyMaps(container, block, stats) {
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
   const total = cm._total || stats?.total || 299;
@@ -1688,6 +1840,11 @@ export async function renderChart(container, block) {
     if (block.variant === "strategy-maps") {
       const stats = await getStats(block);
       renderStrategyMaps(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "friends-tabs") {
+      const stats = await getStats(block);
+      await renderFriendsTabs(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {
