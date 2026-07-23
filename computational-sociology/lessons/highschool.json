@@ -11,11 +11,11 @@
     { "n": 1, "title": "Ce este sociologia computațională", "startIdx": 0 },
     { "n": 2, "title": "Un mister și un alfabet", "startIdx": 3 },
     { "n": 3, "title": "Lumea lui Antoine, apoi școala", "startIdx": 5 },
-    { "n": 4, "title": "Câți sunt, cum arată", "startIdx": 14 },
-    { "n": 5, "title": "Două măsuri și un paradox", "startIdx": 21 },
-    { "n": 6, "title": "Misiunea", "startIdx": 23 },
-    { "n": 7, "title": "Ce rămâne în afara modelului", "startIdx": 30 },
-    { "n": 8, "title": "Bilanț", "startIdx": 32 }
+    { "n": 4, "title": "Câți sunt, cum arată", "startIdx": 15 },
+    { "n": 5, "title": "Două măsuri și un paradox", "startIdx": 22 },
+    { "n": 6, "title": "Misiunea", "startIdx": 24 },
+    { "n": 7, "title": "Ce rămâne în afara modelului", "startIdx": 31 },
+    { "n": 8, "title": "Bilanț", "startIdx": 33 }
   ],
   "blocks": [
     {
@@ -186,14 +186,35 @@
     },
     {
       "type": "diffusion",
-      "id": "c13-izolatul",
+      "id": "c13-componentele",
       "mode": "recolor",
       "data": "data/highschool-network.json",
       "statsSource": "data/highschool-stats.json",
       "schemes": ["component", "class"],
-      "title": "Unde e, totuși, fragilă",
-      "intro": "<p><strong>La margine.</strong> Nu în centru, nu la punți.</p><p>Am întrebat datele care elev nu e atins de nimeni în difuzia bounded. Din analiză iese o listă scurtă. Unul dintre ei e <strong>{{name:izolat}}</strong>, din {{sliceMetrics.characters.izolat.classFriendly}}, cu <strong>un singur contact</strong> în toată școala. Dacă acel contact nu află de vestea ta, {{name:izolat}} nu află niciodată.</p>",
-      "caption": "A fi în componentă nu înseamnă a fi ajuns de informație. Sunt {{sliceMetrics.unreachableCount}} elevi la care difuzia nu ajunge deloc, în modelul cu care lucrăm. Fragilitatea e la margine."
+      "title": "Nouă la margine",
+      "intro": "<p>Următoarea întrebare structurală: dacă pornesc de la un elev și merg din contact în contact, ajung la toți? Sau există bucăți rupte, la care nu se poate ajunge deloc? Apasă butonul <strong>Componenta</strong> și uită-te ce apare.</p>",
+      "caption": "Aproape toată școala e o singură bucată. Excepțiile sunt {{sliceMetrics.unreachableCount}} elevi de la margine, la care informația nu ajunge. Îi vezi cu contur închis și corp mai mare peste beige."
+    },
+    {
+      "type": "diffusion",
+      "id": "c14-yann-izolat",
+      "mode": "story-network",
+      "data": "data/highschool-network.json",
+      "statsSource": "data/highschool-stats.json",
+      "focus": "Yann",
+      "story": [
+        {
+          "visible": ["focus"],
+          "text": "Unul dintre ei este <strong>{{name:izolat}}</strong>, din {{sliceMetrics.characters.izolat.classFriendly}}. Are un singur contact în toată școala. Apasă ca să vezi cine."
+        },
+        {
+          "buttonLabel": "Arată singurul lui contact",
+          "add": "neighbors",
+          "text": "Dacă acel contact nu află de vestea ta, {{name:izolat}} nu află niciodată. A fi în componentă nu înseamnă a fi ajuns de informație. Marginile decid cine rămâne pe dinafară."
+        }
+      ],
+      "title": "Yann, aprofundare",
+      "caption": "Fragilitatea nu e la centru, la cei mai populari. E la margine, la cei cu un singur fir."
     },
     {
       "type": "text",

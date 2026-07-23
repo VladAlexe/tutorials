@@ -1451,6 +1451,19 @@ export async function renderDiffusion(container, block, options = {}) {
     const PALETTE = GROUP_PALETTE.slice();
     const groupBy = new Map(nodes.map((n) => [n.id, n.group]));
 
+    // Component sizes + biggest-component id, for the component scheme.
+    const compSizes = new Map();
+    for (const nid of Object.keys(compById)) {
+      const c = compById[nid];
+      compSizes.set(c, (compSizes.get(c) || 0) + 1);
+    }
+    let bigCompId = null, bigCompSize = -1;
+    for (const [c, sz] of compSizes) {
+      if (sz > bigCompSize) { bigCompSize = sz; bigCompId = c; }
+    }
+    // Unreached ids come from stats, so both marginal cases (small-comp + unreached-inside-big-comp) collapse to one visual class.
+    const unreachedSet = new Set((statsData?.sliceMetrics?.unreachableIds || []).map(String));
+
     function colorFor(nid, scheme) {
       if (scheme === "class") {
         const g = groupBy.get(nid);
@@ -1462,7 +1475,18 @@ export async function renderDiffusion(container, block, options = {}) {
         if (c == null) return "#8a7a68";
         return PALETTE[c % PALETTE.length];
       }
-      if (scheme === "component") return PALETTE[compById[nid] % PALETTE.length];
+      if (scheme === "component") {
+        // Almost the whole school is one component, so painting by component id
+        // just floods everything with one hue. Instead: paint the big component
+        // in a light neutral, and highlight the marginal students (unreached by
+        // the bounded diffusion, or sitting in a tiny detached component) in
+        // an accent color so the exception reads.
+        const compId = compById[nid];
+        const isBig = compId === bigCompId;
+        const isUnreachedFlag = unreachedSet.has(String(nid));
+        if (isBig && !isUnreachedFlag) return "#efe6d6"; // light beige (in the big component, reachable)
+        return "#c96d3f"; // warm accent for the margin (either small comp or unreached)
+      }
       if (scheme === "degree") {
         const t = degById[nid] / maxDeg;
         const R = Math.round(217 * (1 - t) + 139 * t);
@@ -1521,6 +1545,17 @@ export async function renderDiffusion(container, block, options = {}) {
           n.style("border-width", v >= top10Deg ? 2 : 1);
           n.style("border-color", v >= top10Deg ? "#2a1f16" : "#5a4a3a");
           n.style("opacity", 1);
+        } else if (scheme === "component") {
+          const compId = compById[nid];
+          const isMargin = compId !== bigCompId || unreachedSet.has(String(nid));
+          if (isMargin) {
+            n.style("width", 15); n.style("height", 15);
+            n.style("border-width", 2); n.style("border-color", "#5a2a10");
+          } else {
+            n.style("width", 8); n.style("height", 8);
+            n.style("border-width", 1); n.style("border-color", "#c9beac");
+          }
+          n.style("opacity", 1);
         } else {
           n.style("width", 9); n.style("height", 9); n.style("border-width", 1);
           n.style("border-color", "#5a4a3a"); n.style("opacity", 1);
@@ -1561,10 +1596,18 @@ export async function renderDiffusion(container, block, options = {}) {
       degree: "Popularitatea", openness: "Deschiderea",
       mismatch: "Arată nepotrivirile"
     };
+    const marginCount = (() => {
+      let m = 0;
+      for (const nid of Object.keys(compById)) {
+        if (compById[nid] !== bigCompId || unreachedSet.has(nid)) m++;
+      }
+      return m;
+    })();
+
     const explains = {
       class:     "Culoarea = clasa administrativă. Așa vede orarul.",
       community: "Culoarea = comunitatea detectată de algoritm (label propagation, seed 42). Aproape identică cu clasele; unde nu, avem personaje.",
-      component: "Culoarea = componenta conexă. Sunt subgrupuri complet separate.",
+      component: `O componentă mare cu ${bigCompSize} elevi, plus ${marginCount} la margine (evidențiați cu contur), la care difuzia nu ajunge.`,
       degree:    "Culoarea = popularitatea (gradul). Cu cât mai închis, cu atât mai popular.",
       openness:  "Culoarea = deschiderea. Cu cât mai închis (albastru), cu atât mai multe grupuri diferite atinge cu vecinii lui.",
       mismatch:  "Roșu = elevii puși de algoritm în altă comunitate decât clasa lor. Sunt puțini, dar prin ei trece rețeaua dincolo de granițe."
