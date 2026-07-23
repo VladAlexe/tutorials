@@ -1271,6 +1271,153 @@ function renderStrategies(container, block, stats) {
   svg.appendChild(axG);
 }
 
+function renderRanking(container, block, stats) {
+  const sm = stats?.sliceMetrics || {};
+  const scatter = sm.scatterData || [];
+  const trio = sm.trioMission || {};
+  const characters = sm.characters || {};
+  const corr = sm.correlations || {};
+  if (!scatter.length) { container.textContent = "Fără date pentru clasament."; return; }
+
+  // Highlighted characters with names & fixed colors.
+  const HIGHLIGHTS = [
+    { key: "vedeta",   role: characters.vedeta,   color: "#2a1f16", label: "vedeta" },
+    { key: "puntea",   role: characters.puntea,   color: "#3d7a52", label: "puntea" },
+    { key: "campion",  role: characters.campion,  color: "#a3341f", label: "campionul" },
+    { key: "surpriza", role: characters.surpriza, color: "#8b4a1e", label: "surpriza" },
+  ].filter((h) => h.role);
+  const highlightIds = new Map(HIGHLIGHTS.map((h) => [Number(h.role.id), h]));
+
+  const AXES = {
+    popularity: { label: "Popularitate", corr: corr.popularityReach || 0, field: "popularity", intro: "Liniile se încrucișează în toate direcțiile. Elevi din vârful popularității cad la mijloc, iar elevi de jos urcă în vârf." },
+    groups:     { label: "Deschidere",   corr: corr.groupsReach     || 0, field: "groups",     intro: "Puțin mai bine, dar tot haos." },
+    reach2:     { label: "Rază la 2 pași", corr: corr.reach2Reach   || 0, field: "reach2",     intro: "Acum liniile sunt aproape paralele. Măsura prezice." }
+  };
+
+  let axisMode = "popularity";
+
+  const wrap = document.createElement("div");
+  wrap.className = "chart__wrap chart__wrap--ranking";
+  container.appendChild(wrap);
+
+  const controls = document.createElement("div");
+  controls.className = "chart__controls";
+  controls.innerHTML =
+    `<div class="diff-row diff-buttons">` +
+      `<button type="button" class="btn btn--primary" data-axis="popularity">Popularitate</button>` +
+      `<button type="button" class="btn btn--ghost" data-axis="groups">Deschidere</button>` +
+      `<button type="button" class="btn btn--ghost" data-axis="reach2">Rază la 2 pași</button>` +
+    `</div>` +
+    `<div class="chart__meta chart__meta--corr" data-role="corr"></div>` +
+    `<div class="chart__meta" data-role="hint"></div>`;
+  wrap.appendChild(controls);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "chart__svg--ranking");
+  svg.setAttribute("viewBox", "0 0 720 640");
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  wrap.appendChild(svg);
+
+  function draw() {
+    svg.innerHTML = "";
+    const W = 720, H = 640;
+    const M = { top: 30, right: 200, bottom: 20, left: 200 };
+    const colX_left = M.left;
+    const colX_right = W - M.right;
+    const y0 = M.top, y1 = H - M.bottom;
+    const cur = AXES[axisMode];
+
+    // Left order: descending by chosen field
+    const leftOrder = [...scatter].sort((a, b) =>
+      (b[cur.field] || 0) - (a[cur.field] || 0) || a.name.localeCompare(b.name));
+    const leftIdxOf = new Map();
+    leftOrder.forEach((p, i) => leftIdxOf.set(Number(p.id), i));
+
+    // Right order: descending by reach
+    const rightOrder = [...scatter].sort((a, b) =>
+      (b.reach || 0) - (a.reach || 0) || a.name.localeCompare(b.name));
+    const rightIdxOf = new Map();
+    rightOrder.forEach((p, i) => rightIdxOf.set(Number(p.id), i));
+
+    const N = scatter.length;
+    const yFor = (idx) => y0 + (idx / (N - 1)) * (y1 - y0);
+
+    // Column titles
+    const t1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t1.setAttribute("x", colX_left); t1.setAttribute("y", 18);
+    t1.setAttribute("text-anchor", "middle"); t1.setAttribute("font-size", "13");
+    t1.setAttribute("font-weight", "600"); t1.setAttribute("fill", "#2a1f16");
+    t1.textContent = cur.label;
+    svg.appendChild(t1);
+    const t2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t2.setAttribute("x", colX_right); t2.setAttribute("y", 18);
+    t2.setAttribute("text-anchor", "middle"); t2.setAttribute("font-size", "13");
+    t2.setAttribute("font-weight", "600"); t2.setAttribute("fill", "#2a1f16");
+    t2.textContent = "Rază";
+    svg.appendChild(t2);
+
+    // Draw thin gray lines for non-highlighted
+    const lineG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    for (const p of scatter) {
+      const id = Number(p.id);
+      if (highlightIds.has(id)) continue;
+      const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      l.setAttribute("x1", colX_left);  l.setAttribute("y1", yFor(leftIdxOf.get(id)));
+      l.setAttribute("x2", colX_right); l.setAttribute("y2", yFor(rightIdxOf.get(id)));
+      l.setAttribute("stroke", "#5a4a3a"); l.setAttribute("stroke-width", "0.5");
+      l.setAttribute("opacity", "0.08");
+      lineG.appendChild(l);
+    }
+    svg.appendChild(lineG);
+
+    // Highlighted characters on top
+    const highG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    for (const h of HIGHLIGHTS) {
+      const id = Number(h.role.id);
+      const y_l = yFor(leftIdxOf.get(id));
+      const y_r = yFor(rightIdxOf.get(id));
+      const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      l.setAttribute("x1", colX_left);  l.setAttribute("y1", y_l);
+      l.setAttribute("x2", colX_right); l.setAttribute("y2", y_r);
+      l.setAttribute("stroke", h.color); l.setAttribute("stroke-width", "2.5");
+      l.setAttribute("opacity", "0.9");
+      highG.appendChild(l);
+      // labels at both ends
+      const tL = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      tL.setAttribute("x", colX_left - 10); tL.setAttribute("y", y_l + 4);
+      tL.setAttribute("text-anchor", "end"); tL.setAttribute("font-size", "12");
+      tL.setAttribute("font-weight", "600"); tL.setAttribute("fill", h.color);
+      tL.textContent = h.role.name;
+      highG.appendChild(tL);
+      const tR = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      tR.setAttribute("x", colX_right + 10); tR.setAttribute("y", y_r + 4);
+      tR.setAttribute("text-anchor", "start"); tR.setAttribute("font-size", "12");
+      tR.setAttribute("font-weight", "600"); tR.setAttribute("fill", h.color);
+      tR.textContent = h.role.name;
+      highG.appendChild(tR);
+    }
+    svg.appendChild(highG);
+
+    const corrEl = controls.querySelector('[data-role="corr"]');
+    if (corrEl) corrEl.innerHTML = `Corelație <strong>${cur.label.toLowerCase()}</strong> vs rază: <strong>${(cur.corr).toFixed(2)}</strong>`;
+    const hintEl = controls.querySelector('[data-role="hint"]');
+    if (hintEl) hintEl.textContent = cur.intro;
+  }
+
+  controls.querySelectorAll("[data-axis]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      axisMode = btn.dataset.axis;
+      controls.querySelectorAll("[data-axis]").forEach((b) => {
+        if (b.dataset.axis === axisMode) { b.classList.add("btn--primary"); b.classList.remove("btn--ghost"); }
+        else { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); }
+      });
+      draw();
+    });
+  });
+
+  draw();
+}
+
 export async function renderChart(container, block) {
   container.classList.add("chart");
   container.innerHTML = "";
@@ -1341,6 +1488,11 @@ export async function renderChart(container, block) {
     if (block.variant === "strategies") {
       const stats = await getStats(block);
       renderStrategies(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "ranking") {
+      const stats = await getStats(block);
+      renderRanking(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "outcome-histogram") {

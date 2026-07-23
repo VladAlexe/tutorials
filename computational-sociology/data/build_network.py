@@ -422,6 +422,13 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "izolat":    1519,
     }
 
+    # Precompute ranks so characters expose them for text placeholders.
+    _rank_by_reach     = {nid: r + 1 for r, nid in enumerate(sorted(node_ids, key=lambda x: (-reach_size[x], x)))}
+    _rank_by_pop       = {nid: r + 1 for r, nid in enumerate(sorted(node_ids, key=lambda x: (-degrees[x], x)))}
+    _rank_by_openness  = {nid: r + 1 for r, nid in enumerate(sorted(node_ids, key=lambda x: (-openness[x], x)))}
+    _reach2 = {x: len(diffuse_limited([x], adj_top, 2)) for x in node_ids}
+    _rank_by_reach2    = {nid: r + 1 for r, nid in enumerate(sorted(node_ids, key=lambda x: (-_reach2[x], x)))}
+
     def role_dict(nid):
         if nid not in node_ids:
             return None
@@ -434,6 +441,10 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         d["outClassContacts"] = sum(1 for y in adj.get(nid, ()) if klass_map.get(y) != own)
         d["classFriendly"] = CLASS_NAMES.get(own, own)
         d["sex"] = sex_map.get(nid, "Unknown")
+        d["rankReach"]     = _rank_by_reach.get(nid)
+        d["rankPop"]       = _rank_by_pop.get(nid)
+        d["rankOpenness"]  = _rank_by_openness.get(nid)
+        d["rankReach2"]    = _rank_by_reach2.get(nid)
         return d
 
     roles = {k: role_dict(v) for k, v in ROLE_IDS.items()}

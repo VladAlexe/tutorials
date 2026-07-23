@@ -2918,7 +2918,11 @@
           "groupsOut": 1,
           "outClassContacts": 1,
           "classFriendly": "Bio C",
-          "sex": "M"
+          "sex": "M",
+          "rankReach": 51,
+          "rankPop": 1,
+          "rankOpenness": 1,
+          "rankReach2": 127
         },
         "campion": {
           "id": 778,
@@ -2931,7 +2935,11 @@
           "groupsOut": 0,
           "outClassContacts": 0,
           "classFriendly": "Bio C",
-          "sex": "F"
+          "sex": "F",
+          "rankReach": 1,
+          "rankPop": 48,
+          "rankOpenness": 11,
+          "rankReach2": 4
         },
         "surpriza": {
           "id": 1218,
@@ -2944,7 +2952,11 @@
           "groupsOut": 2,
           "outClassContacts": 2,
           "classFriendly": "Mate C",
-          "sex": "M"
+          "sex": "M",
+          "rankReach": 4,
+          "rankPop": 242,
+          "rankOpenness": 193,
+          "rankReach2": 114
         },
         "puntea": {
           "id": 1332,
@@ -2957,7 +2969,11 @@
           "groupsOut": 2,
           "outClassContacts": 10,
           "classFriendly": "Mate C",
-          "sex": "F"
+          "sex": "F",
+          "rankReach": 68,
+          "rankPop": 2,
+          "rankOpenness": 15,
+          "rankReach2": 44
         },
         "dependent": {
           "id": 276,
@@ -2970,7 +2986,11 @@
           "groupsOut": 0,
           "outClassContacts": 0,
           "classFriendly": "Chimie B",
-          "sex": "M"
+          "sex": "M",
+          "rankReach": 245,
+          "rankPop": 79,
+          "rankOpenness": 156,
+          "rankReach2": 197
         },
         "izolat": {
           "id": 1519,
@@ -2983,7 +3003,11 @@
           "groupsOut": 0,
           "outClassContacts": 0,
           "classFriendly": "Mate C",
-          "sex": "M"
+          "sex": "M",
+          "rankReach": 250,
+          "rankPop": 299,
+          "rankOpenness": 299,
+          "rankReach2": 278
         }
       },
       "strategies": {
@@ -15412,7 +15436,11 @@
         "groupsOut": 1,
         "outClassContacts": 1,
         "classFriendly": "Bio C",
-        "sex": "M"
+        "sex": "M",
+        "rankReach": 51,
+        "rankPop": 1,
+        "rankOpenness": 1,
+        "rankReach2": 127
       },
       "campion": {
         "id": 778,
@@ -15425,7 +15453,11 @@
         "groupsOut": 0,
         "outClassContacts": 0,
         "classFriendly": "Bio C",
-        "sex": "F"
+        "sex": "F",
+        "rankReach": 1,
+        "rankPop": 48,
+        "rankOpenness": 11,
+        "rankReach2": 4
       },
       "surpriza": {
         "id": 1218,
@@ -15438,7 +15470,11 @@
         "groupsOut": 2,
         "outClassContacts": 2,
         "classFriendly": "Mate C",
-        "sex": "M"
+        "sex": "M",
+        "rankReach": 4,
+        "rankPop": 242,
+        "rankOpenness": 193,
+        "rankReach2": 114
       },
       "puntea": {
         "id": 1332,
@@ -15451,7 +15487,11 @@
         "groupsOut": 2,
         "outClassContacts": 10,
         "classFriendly": "Mate C",
-        "sex": "F"
+        "sex": "F",
+        "rankReach": 68,
+        "rankPop": 2,
+        "rankOpenness": 15,
+        "rankReach2": 44
       },
       "dependent": {
         "id": 276,
@@ -15464,7 +15504,11 @@
         "groupsOut": 0,
         "outClassContacts": 0,
         "classFriendly": "Chimie B",
-        "sex": "M"
+        "sex": "M",
+        "rankReach": 245,
+        "rankPop": 79,
+        "rankOpenness": 156,
+        "rankReach2": 197
       },
       "izolat": {
         "id": 1519,
@@ -15477,7 +15521,11 @@
         "groupsOut": 0,
         "outClassContacts": 0,
         "classFriendly": "Mate C",
-        "sex": "M"
+        "sex": "M",
+        "rankReach": 250,
+        "rankPop": 299,
+        "rankOpenness": 299,
+        "rankReach2": 278
       }
     },
     "strategies": {

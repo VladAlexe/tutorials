@@ -1002,6 +1002,17 @@
   background: var(--color-page);
 }
 
+/* Ranking (slopegraph) chart */
+.chart__wrap--ranking { display: flex; flex-direction: column; gap: var(--sp-2); }
+.chart__svg--ranking {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  background: var(--color-page);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+}
+
 /* Scatter + Strategies chart */
 .chart__wrap--scatter,
 .chart__wrap--strategies { display: flex; flex-direction: column; gap: var(--sp-2); }
