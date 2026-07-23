@@ -572,6 +572,7 @@ function fillSlide(slideState, callbacks) {
   if (slideState.fillPromise) return slideState.fillPromise;
   const onAnswered = callbacks.onAnswered;
   const onAdvance = callbacks.onAdvance;
+  const stats = callbacks.stats;
   slideState.fillPromise = (async () => {
     const b = slideState.block;
     const el = slideState.el;
@@ -1009,9 +1010,12 @@ export async function renderSlides(root, lesson) {
     window.scrollTo({ top: 0, behavior: "auto" });
     slideState[idx].el.focus({ preventScroll: true });
 
-    await fillSlide(slideState[idx], { onAnswered: onQuizAnswered, onAdvance: goNext });
+    await fillSlide(slideState[idx], { onAnswered: onQuizAnswered, onAdvance: goNext, stats });
 
     if (current !== idx) return;
+    // If the block finished (or errored inline) canAdvance may have flipped;
+    // refresh the Continuă button so the reader is not stuck on a broken card.
+    updateNav();
     const viz = slideState[idx].viz;
     if (viz && typeof viz.refit === "function") {
       requestAnimationFrame(() => {
