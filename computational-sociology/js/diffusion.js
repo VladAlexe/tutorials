@@ -1739,6 +1739,9 @@ export async function renderDiffusion(container, block, options = {}) {
 
   else if (mode === "recolor") {
     cy.nodes().addClass("knows");
+    // Darker, more opaque edges for projector visibility. Muted enough to stay
+    // background, but visibly ink-brown rather than beige-on-beige.
+    cy.edges().style({ "line-color": "#8a7154", "opacity": 0.5, "width": 1 });
     const schemes = block.schemes || ["class", "community", "component", "degree"];
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
@@ -1808,12 +1811,10 @@ export async function renderDiffusion(container, block, options = {}) {
         return PALETTE[c % PALETTE.length];
       }
       if (scheme === "component") {
-        // Pure structural view: the giant connected component in a light
-        // neutral, any small detached component in an accent color. Unreached-
-        // by-diffusion has nothing to do here; that concept lives on the
-        // izolatul card because it is a property of the diffusion model, not
-        // of the network structure.
-        return compById[nid] === bigCompId ? "#efe6d6" : "#c96d3f";
+        // Pure structural view: the giant connected component in a soft
+        // teal-gray (visible on the beige background) and any small detached
+        // component in a warm accent that pops against it.
+        return compById[nid] === bigCompId ? "#7a9088" : "#c96d3f";
       }
       if (scheme === "degree") {
         const t = degById[nid] / maxDeg;
@@ -2126,10 +2127,14 @@ export async function renderDiffusion(container, block, options = {}) {
       return positions;
     }
 
+    let layoutMode = "grouped"; // "grouped" or "liber"
+
     function applyLayoutForScheme(scheme) {
       saveBaseCosePositions();
       let positions = null;
-      if (scheme === "class") {
+      if (layoutMode === "liber") {
+        positions = baseCosePositions;
+      } else if (scheme === "class") {
         positions = computeGroupedPositions("class", (nid) => groupBy.get(nid));
       } else if (scheme === "community") {
         const resKey = louvainKeys[currentRes] || "res10";
@@ -2165,6 +2170,11 @@ export async function renderDiffusion(container, block, options = {}) {
           `<button type="button" class="btn btn--ghost" data-res="2">2,0</button>` +
           `</div>`
         : "") +
+      `<div class="diff-row diff-buttons recolor-layout" data-role="layout">` +
+      `<span class="recolor-res__label">așezare:</span>` +
+      `<button type="button" class="btn btn--primary" data-layout="grouped">Grupat pe clase</button>` +
+      `<button type="button" class="btn btn--ghost" data-layout="liber">Liber</button>` +
+      `</div>` +
       `<div class="diff-hint" data-role="explain"></div>` +
       `<div class="diff-count" data-role="info">Atinge un nod pentru numele lui.</div>`;
 
@@ -2214,6 +2224,20 @@ export async function renderDiffusion(container, block, options = {}) {
             applyLayoutForScheme("community");
             refreshExplain();
           }
+        });
+      });
+    }
+
+    const layoutControls = controls.querySelector('[data-role="layout"]');
+    if (layoutControls) {
+      layoutControls.querySelectorAll("[data-layout]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          layoutMode = btn.dataset.layout;
+          layoutControls.querySelectorAll("[data-layout]").forEach((b) => {
+            b.classList.remove("btn--primary"); b.classList.add("btn--ghost");
+          });
+          btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary");
+          if (activeScheme) applyLayoutForScheme(activeScheme);
         });
       });
     }

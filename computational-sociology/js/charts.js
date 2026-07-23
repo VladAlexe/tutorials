@@ -384,9 +384,23 @@ function renderFreq(container, block, stats) {
   const totalM = rowsRaw.reduce((s, [, v]) => s + (v.nM || 0), 0);
   const totalUnk = rowsRaw.reduce((s, [, v]) => s + (v.nUnk || 0), 0);
 
-  // Table with 4 count columns including necunoscut. Raw class code goes on a
-  // data attribute so click handlers can look up the underlying nodes without
-  // relying on the visible (friendly) label.
+  // Toggle so only one view is visible at a time. Tabel = counts, Grafic = bars.
+  const toggle = document.createElement("div");
+  toggle.className = "chart__toggle";
+  const btnTable = document.createElement("button");
+  btnTable.type = "button";
+  btnTable.className = "chart__toggle__btn is-active";
+  btnTable.textContent = "Tabel";
+  const btnBars = document.createElement("button");
+  btnBars.type = "button";
+  btnBars.className = "chart__toggle__btn";
+  btnBars.textContent = "Grafic";
+  toggle.appendChild(btnTable);
+  toggle.appendChild(btnBars);
+  container.appendChild(toggle);
+
+  const tableWrap = document.createElement("div");
+  tableWrap.className = "chart__freq-view";
   const table = document.createElement("table");
   table.className = "chart__freq";
   const header = `<tr><th></th><th>elevi</th><th>fete</th><th>băieți</th><th>?</th></tr>`;
@@ -395,12 +409,12 @@ function renderFreq(container, block, stats) {
   ).join("");
   table.innerHTML = header + body +
     `<tr class="chart__freq__total"><th>total</th><td>${total}</td><td>${totalF}</td><td>${totalM}</td><td>${totalUnk}</td></tr>`;
-  container.appendChild(table);
-
+  tableWrap.appendChild(table);
   const note = document.createElement("p");
   note.className = "chart__note";
   note.textContent = "Sexul nu e cunoscut pentru câțiva elevi; îi trecem în ultima coloană.";
-  container.appendChild(note);
+  tableWrap.appendChild(note);
+  container.appendChild(tableWrap);
 
   // 100% stacked horizontal bars, sorted by %F desc
   const sorted = [...rowsRaw]
@@ -450,6 +464,9 @@ function renderFreq(container, block, stats) {
     `<text x="146" y="-1" font-size="11" fill="${COL_INK_S}">necunoscut</text>` +
     `</g>`;
 
+  const barsWrap = document.createElement("div");
+  barsWrap.className = "chart__freq-view";
+  barsWrap.hidden = true;
   const svg = document.createElement("div");
   svg.className = "chart__svg-wrap chart__svg-wrap--freq";
   svg.innerHTML =
@@ -458,7 +475,18 @@ function renderFreq(container, block, stats) {
     `role="img" aria-label="Compoziția claselor sortate după procent fete">` +
     svgRows + legend +
     `</svg>`;
-  container.appendChild(svg);
+  barsWrap.appendChild(svg);
+  container.appendChild(barsWrap);
+
+  function showView(which) {
+    const isTable = which === "table";
+    tableWrap.hidden = !isTable;
+    barsWrap.hidden = isTable;
+    btnTable.classList.toggle("is-active", isTable);
+    btnBars.classList.toggle("is-active", !isTable);
+  }
+  btnTable.addEventListener("click", () => showView("table"));
+  btnBars.addEventListener("click", () => showView("bars"));
 
   if (block.linkNetwork) {
     const rowsHost = document.createElement("div");
