@@ -824,12 +824,6 @@ export async function renderSlides(root, lesson) {
     const ch = chapters.find((c) => c.startIdx === i);
     if (ch) {
       curChapter = ch;
-      const chapterOfN = rawBlocks
-        .slice(i, i + 30) // rough limit
-        .filter((_, j) => {
-          const nextCh = chapters.find((c) => c.startIdx === i + j && c !== ch);
-          return !nextCh || i + j < (nextCh?.startIdx ?? Infinity);
-        }).length;
       mergedBlocks.push({
         type: "chapter-intro",
         id: `chapter-intro-${ch.n}`,
@@ -838,6 +832,9 @@ export async function renderSlides(root, lesson) {
         _chapter: ch
       });
     }
+    // Blocks marked enabled: false stay in the file (so authors can flip them
+    // back on without editing structure) but do not enter the reader's flow.
+    if (rawBlocks[i].enabled === false) continue;
     mergedBlocks.push({ ...rawBlocks[i], _chapter: curChapter });
   }
 
