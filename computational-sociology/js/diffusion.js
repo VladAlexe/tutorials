@@ -1951,7 +1951,7 @@ export async function renderDiffusion(container, block, options = {}) {
         parts.push(`Rezoluție mică: <strong>${summary.n} grupuri mari</strong>. Clasele înrudite încep să se contopească.`);
       } else if (res === 1.0) {
         parts.push(`Rezoluție implicită: <strong>${summary.n} grupuri</strong>, care regăsesc aproape exact clasele.`);
-        parts.push("Câteva clase apar însă ca două grupuri, nu unul. O clasă nu e neapărat o singură lume socială: uneori sunt două găști care împart aceeași sală.");
+        parts.push("Cinci dintre cele nouă clase apar însă ca două grupuri, iar una ca trei. O clasă nu e neapărat o singură lume socială: uneori sunt două găști care împart aceeași sală.");
       } else {
         parts.push(`Rezoluție mare: <strong>${summary.n} grupuri mici</strong>. Cercuri de prieteni din interiorul claselor.`);
       }
@@ -2647,6 +2647,8 @@ export async function renderDiffusion(container, block, options = {}) {
   else if (mode === "class-lens") {
     // Show one class in isolation, three named characters emphasized; button
     // reveals the rest of the school with the same three staying prominent.
+    // The trick: remove non-focus elements from cy at start (not just hide),
+    // relay out on the focus subset, then add the rest back when expanding.
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
     const focusClass = block.focusClass;
@@ -2657,44 +2659,55 @@ export async function renderDiffusion(container, block, options = {}) {
     );
     let expanded = false;
 
-    function apply() {
+    // Save the full initial elements so we can re-add them on expand.
+    const savedElements = cy.elements().jsons();
+    // Remove everything not in the focus class or in the highlight list.
+    const removedElements = cy.elements().filter((el) => {
+      if (el.isEdge()) return true; // remove all edges initially; we will add back later
+      const grp = el.data("group");
+      const nid = el.id();
+      return grp !== focusClass && !highlightIds.has(nid);
+    });
+    removedElements.remove();
+
+    function paintFocusOnly() {
       cy.nodes().forEach((n) => {
-        const nid = n.id();
-        const grp = n.data("group");
-        const isHighlight = highlightIds.has(nid);
-        const inFocus = grp === focusClass;
-        if (expanded) {
-          n.style("display", "element");
-          if (isHighlight) {
-            n.style("opacity", 1); n.style("width", 18); n.style("height", 18);
-            n.style("border-width", 2); n.style("border-color", "#2a1f16");
-          } else {
-            n.style("opacity", 0.45); n.style("width", 8); n.style("height", 8);
-            n.style("border-width", 1);
-          }
+        const isHighlight = highlightIds.has(n.id());
+        if (isHighlight) {
+          n.style("opacity", 1); n.style("width", 22); n.style("height", 22);
+          n.style("border-width", 2); n.style("border-color", "#2a1f16");
+          n.style("background-color", "#c96d3f"); // accent so the three stand out even without labels
         } else {
-          if (inFocus) {
-            n.style("display", "element");
-            if (isHighlight) {
-              n.style("opacity", 1); n.style("width", 20); n.style("height", 20);
-              n.style("border-width", 2); n.style("border-color", "#2a1f16");
-            } else {
-              n.style("opacity", 0.9); n.style("width", 12); n.style("height", 12);
-              n.style("border-width", 1);
-            }
-          } else {
-            n.style("display", "none");
-          }
+          n.style("opacity", 1); n.style("width", 12); n.style("height", 12);
+          n.style("border-width", 1); n.style("border-color", "#5a4a3a");
+          n.style("background-color", n.data("color") || "#8a7a68");
         }
       });
-      cy.edges().forEach((e) => {
-        const sId = e.source().id(), tId = e.target().id();
-        const sVis = cy.getElementById(sId).style("display") !== "none";
-        const tVis = cy.getElementById(tId).style("display") !== "none";
-        e.style("display", sVis && tVis ? "element" : "none");
-        e.style("opacity", 0.35);
+      // Re-run layout on just the focus subset so nodes cluster together.
+      try {
+        cy.layout({ name: "cose", animate: false, padding: 25, idealEdgeLength: 40, nodeRepulsion: 3000 }).run();
+      } catch {}
+      setTimeout(() => { try { cy.resize(); cy.fit(undefined, 40); } catch {} }, 80);
+    }
+
+    function paintExpanded() {
+      cy.nodes().forEach((n) => {
+        const isHighlight = highlightIds.has(n.id());
+        if (isHighlight) {
+          n.style("opacity", 1); n.style("width", 20); n.style("height", 20);
+          n.style("border-width", 2); n.style("border-color", "#2a1f16");
+          n.style("background-color", "#c96d3f");
+        } else {
+          n.style("opacity", 0.45); n.style("width", 8); n.style("height", 8);
+          n.style("border-width", 1); n.style("border-color", "#5a4a3a");
+          n.style("background-color", n.data("color") || "#8a7a68");
+        }
       });
-      setTimeout(() => { try { cy.resize(); cy.fit(cy.nodes(":visible"), 30); } catch {} }, 60);
+      cy.edges().forEach((e) => e.style("opacity", 0.25));
+      try {
+        cy.layout({ name: "cose", animate: true, animationDuration: 700, padding: 30, idealEdgeLength: 55, nodeRepulsion: 4500 }).run();
+      } catch {}
+      setTimeout(() => { try { cy.resize(); cy.fit(undefined, 30); } catch {} }, 750);
     }
 
     const beforeText = block.textBefore || "";
@@ -2710,11 +2723,16 @@ export async function renderDiffusion(container, block, options = {}) {
     controls.querySelector('[data-act="expand"]').addEventListener("click", () => {
       if (expanded) return;
       expanded = true;
-      apply();
+      // Add back the rest of the school so the class becomes context.
+      cy.add(savedElements.filter((el) => {
+        if (!cy.getElementById(el.data.id).empty()) return false;
+        return true;
+      }));
+      paintExpanded();
       textEl.innerHTML = afterText;
     });
 
-    apply();
+    paintFocusOnly();
   }
 
   else if (mode === "story-network") {
