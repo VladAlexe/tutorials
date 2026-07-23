@@ -2181,9 +2181,13 @@ export async function renderDiffusion(container, block, options = {}) {
       controls.querySelectorAll("[data-scheme]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
       if (btn) { btn.classList.remove("btn--ghost"); btn.classList.add("btn--primary"); }
       activeScheme = scheme;
-      applyScheme(scheme);
-      applyLayoutForScheme(scheme);
-      refreshExplain();
+      // Never let a scheme error take out the button row silently. The scheme
+      // change still commits (activeScheme is set) so future clicks work; the
+      // painting and layout each get their own try so a slow layout does not
+      // stop the color change and vice versa.
+      try { applyScheme(scheme); } catch (err) { console.error("applyScheme", scheme, err); }
+      try { applyLayoutForScheme(scheme); } catch (err) { console.error("applyLayoutForScheme", scheme, err); }
+      try { refreshExplain(); } catch (err) { console.error("refreshExplain", err); }
       if (resControls) {
         resControls.style.display = (scheme === "community") ? "" : "none";
       }
@@ -2911,6 +2915,7 @@ export async function renderDiffusion(container, block, options = {}) {
     // culoare (bej, la fel ca schema Componenta din harta). La scoaterea
     // dependentului, desprinșii primesc o culoare de accent ȘI se depărtează
     // vizibil, ca despărțirea să se vadă ca ruptură. Modul Legături dispare.
+    cy.nodes().addClass("knows");  // lift the 0.15 base opacity so nodes are visible from mount
     let statsData = null;
     try { statsData = await (await fetch(block.statsSource || "data/highschool-stats.json")).json(); } catch {}
     const sm = statsData?.sliceMetrics || {};
