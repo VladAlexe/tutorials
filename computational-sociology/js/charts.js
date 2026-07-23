@@ -1191,7 +1191,10 @@ function renderStrategies(container, block, stats) {
   plafLine.setAttribute("stroke-dasharray", "4 3");
   plafG.appendChild(plafLine);
   const plafLbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  plafLbl.setAttribute("x", plafX + 4); plafLbl.setAttribute("y", M.top + 8);
+  // Place the label INSIDE the chart area, to the LEFT of the plafon line,
+  // right-aligned so "plafon 290" never clips the right edge of the viewBox.
+  plafLbl.setAttribute("x", plafX - 4); plafLbl.setAttribute("y", M.top + 8);
+  plafLbl.setAttribute("text-anchor", "end");
   plafLbl.setAttribute("font-size", "10"); plafLbl.setAttribute("fill", "#2a1f16");
   plafLbl.textContent = `plafon ${plafon}`;
   plafG.appendChild(plafLbl);
@@ -1274,17 +1277,15 @@ function renderStrategies(container, block, stats) {
 function renderRanking(container, block, stats) {
   const sm = stats?.sliceMetrics || {};
   const scatter = sm.scatterData || [];
-  const trio = sm.trioMission || {};
   const characters = sm.characters || {};
   const corr = sm.correlations || {};
   if (!scatter.length) { container.textContent = "Fără date pentru clasament."; return; }
 
-  // Highlighted characters with names & fixed colors.
   const HIGHLIGHTS = [
-    { key: "vedeta",   role: characters.vedeta,   color: "#2a1f16", label: "vedeta" },
-    { key: "puntea",   role: characters.puntea,   color: "#3d7a52", label: "puntea" },
-    { key: "campion",  role: characters.campion,  color: "#a3341f", label: "campionul" },
-    { key: "surpriza", role: characters.surpriza, color: "#8b4a1e", label: "surpriza" },
+    { key: "vedeta",   role: characters.vedeta,   color: "#2a1f16" },
+    { key: "puntea",   role: characters.puntea,   color: "#3d7a52" },
+    { key: "campion",  role: characters.campion,  color: "#a3341f" },
+    { key: "surpriza", role: characters.surpriza, color: "#8b4a1e" },
   ].filter((h) => h.role);
   const highlightIds = new Map(HIGHLIGHTS.map((h) => [Number(h.role.id), h]));
 
@@ -1300,6 +1301,11 @@ function renderRanking(container, block, stats) {
   wrap.className = "chart__wrap chart__wrap--ranking";
   container.appendChild(wrap);
 
+  const legend = document.createElement("div");
+  legend.className = "chart__meta chart__meta--legend";
+  legend.textContent = "Fiecare linie e un elev. În stânga, poziția lui după măsura aleasă. În dreapta, poziția lui după câți oameni află de la el. Dacă măsura prezice bine, liniile sunt paralele.";
+  wrap.appendChild(legend);
+
   const controls = document.createElement("div");
   controls.className = "chart__controls";
   controls.innerHTML =
@@ -1314,26 +1320,26 @@ function renderRanking(container, block, stats) {
 
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("class", "chart__svg--ranking");
-  svg.setAttribute("viewBox", "0 0 720 640");
+  // Height reduced from 640 to 460 so the chart hugs its content; viewBox width
+  // narrowed to make label margins predictable.
+  svg.setAttribute("viewBox", "0 0 640 460");
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   wrap.appendChild(svg);
 
   function draw() {
     svg.innerHTML = "";
-    const W = 720, H = 640;
-    const M = { top: 30, right: 200, bottom: 20, left: 200 };
+    const W = 640, H = 460;
+    const M = { top: 30, right: 130, bottom: 15, left: 130 };
     const colX_left = M.left;
     const colX_right = W - M.right;
     const y0 = M.top, y1 = H - M.bottom;
     const cur = AXES[axisMode];
 
-    // Left order: descending by chosen field
     const leftOrder = [...scatter].sort((a, b) =>
       (b[cur.field] || 0) - (a[cur.field] || 0) || a.name.localeCompare(b.name));
     const leftIdxOf = new Map();
     leftOrder.forEach((p, i) => leftIdxOf.set(Number(p.id), i));
 
-    // Right order: descending by reach
     const rightOrder = [...scatter].sort((a, b) =>
       (b.reach || 0) - (a.reach || 0) || a.name.localeCompare(b.name));
     const rightIdxOf = new Map();
@@ -1356,7 +1362,7 @@ function renderRanking(container, block, stats) {
     t2.textContent = "Rază";
     svg.appendChild(t2);
 
-    // Draw thin gray lines for non-highlighted
+    // Anonymous lines: thin, slightly darker + slightly wider for visibility.
     const lineG = document.createElementNS("http://www.w3.org/2000/svg", "g");
     for (const p of scatter) {
       const id = Number(p.id);
@@ -1364,33 +1370,57 @@ function renderRanking(container, block, stats) {
       const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
       l.setAttribute("x1", colX_left);  l.setAttribute("y1", yFor(leftIdxOf.get(id)));
       l.setAttribute("x2", colX_right); l.setAttribute("y2", yFor(rightIdxOf.get(id)));
-      l.setAttribute("stroke", "#5a4a3a"); l.setAttribute("stroke-width", "0.5");
-      l.setAttribute("opacity", "0.08");
+      l.setAttribute("stroke", "#5a4a3a"); l.setAttribute("stroke-width", "0.7");
+      l.setAttribute("opacity", "0.15");
       lineG.appendChild(l);
     }
     svg.appendChild(lineG);
 
-    // Highlighted characters on top
+    // Highlighted characters, with label anti-collision: compute label Y
+    // positions per side, force at least 16px vertical spacing.
     const highG = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    for (const h of HIGHLIGHTS) {
+    const withY = HIGHLIGHTS.map((h) => {
       const id = Number(h.role.id);
-      const y_l = yFor(leftIdxOf.get(id));
-      const y_r = yFor(rightIdxOf.get(id));
+      return { h, y_l: yFor(leftIdxOf.get(id)), y_r: yFor(rightIdxOf.get(id)) };
+    });
+    // Draw lines first (using raw Y)
+    for (const { h, y_l, y_r } of withY) {
       const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
       l.setAttribute("x1", colX_left);  l.setAttribute("y1", y_l);
       l.setAttribute("x2", colX_right); l.setAttribute("y2", y_r);
       l.setAttribute("stroke", h.color); l.setAttribute("stroke-width", "2.5");
       l.setAttribute("opacity", "0.9");
       highG.appendChild(l);
-      // labels at both ends
+    }
+    // Compute label positions to avoid overlap on each side.
+    function spread(items, key) {
+      const MIN = 16;
+      const sorted = items.slice().sort((a, b) => a[key] - b[key]);
+      for (let i = 1; i < sorted.length; i++) {
+        const diff = sorted[i][key] - sorted[i - 1][key];
+        if (diff < MIN) sorted[i][key] = sorted[i - 1][key] + MIN;
+      }
+      // Also clip to [y0, y1]
+      for (const it of sorted) {
+        if (it[key] < y0 + 4) it[key] = y0 + 4;
+        if (it[key] > y1 - 4) it[key] = y1 - 4;
+      }
+      return sorted;
+    }
+    const withLabelY = withY.map((it) => ({ ...it, lbl_l: it.y_l, lbl_r: it.y_r }));
+    spread(withLabelY, "lbl_l");
+    spread(withLabelY, "lbl_r");
+
+    for (const it of withLabelY) {
+      const { h, lbl_l, lbl_r } = it;
       const tL = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      tL.setAttribute("x", colX_left - 10); tL.setAttribute("y", y_l + 4);
+      tL.setAttribute("x", colX_left - 10); tL.setAttribute("y", lbl_l + 4);
       tL.setAttribute("text-anchor", "end"); tL.setAttribute("font-size", "12");
       tL.setAttribute("font-weight", "600"); tL.setAttribute("fill", h.color);
       tL.textContent = h.role.name;
       highG.appendChild(tL);
       const tR = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      tR.setAttribute("x", colX_right + 10); tR.setAttribute("y", y_r + 4);
+      tR.setAttribute("x", colX_right + 10); tR.setAttribute("y", lbl_r + 4);
       tR.setAttribute("text-anchor", "start"); tR.setAttribute("font-size", "12");
       tR.setAttribute("font-weight", "600"); tR.setAttribute("fill", h.color);
       tR.textContent = h.role.name;

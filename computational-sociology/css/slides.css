@@ -703,9 +703,11 @@
 }
 .chart__svg-wrap--freq svg {
   height: auto;
+  max-height: none;
   display: block;
   margin: 0 auto;
 }
+.chart__svg-wrap--freq { overflow: visible; max-height: none; }
 .chart__freq {
   border-collapse: collapse;
   margin: 0 auto var(--sp-2);

@@ -787,12 +787,7 @@ function fillSlide(slideState, callbacks) {
         if (b.kind === "network") {
           slideState.viz = await renderNetwork(vizWrap, b);
         }
-        if (b.caption) {
-          const c = document.createElement("p");
-          c.className = "slide__caption";
-          c.textContent = b.caption;
-          el.appendChild(c);
-        }
+        if (b.caption) addCaption(el, b.caption);
         break;
       }
       case "interactive": {
@@ -812,12 +807,7 @@ function fillSlide(slideState, callbacks) {
         slideState.viz = await renderDiffusion(vizWrap, b, {
           onAdvance: onAdvance
         });
-        if (b.caption) {
-          const c = document.createElement("p");
-          c.className = "slide__caption";
-          c.textContent = b.caption;
-          el.appendChild(c);
-        }
+        if (b.caption) addCaption(el, b.caption);
         break;
       }
       case "chart": {
@@ -827,12 +817,7 @@ function fillSlide(slideState, callbacks) {
         el.appendChild(chartWrap);
         const { renderChart } = await import(`./charts.js?v=${V}`);
         slideState.viz = await renderChart(chartWrap, b);
-        if (b.caption) {
-          const c = document.createElement("p");
-          c.className = "slide__caption";
-          c.textContent = b.caption;
-          el.appendChild(c);
-        }
+        if (b.caption) addCaption(el, b.caption);
         break;
       }
       case "conclusion": {
@@ -1069,11 +1054,11 @@ export async function renderSlides(root, lesson) {
     // refresh the Continuă button so the reader is not stuck on a broken card.
     updateNav();
 
-    // Post-render safety net: if any placeholder leaked through, mount an
-    // inline warning so it is impossible to miss during development.
+    // Post-render safety net: check for two dev-blocking mistakes.
     requestAnimationFrame(() => {
       if (current !== idx) return;
       const domText = slideState[idx].el.innerText || "";
+      // 1. Unresolved placeholders {{...}} still in text.
       const leaked = domText.match(/\{\{[^}]+\}\}/g);
       if (leaked && leaked.length) {
         const warn = document.createElement("div");
@@ -1081,6 +1066,17 @@ export async function renderSlides(root, lesson) {
         warn.textContent = `Placeholder-e nerezolvate în „${slideState[idx].block.id || "?"}": ${leaked.join(", ")}`;
         slideState[idx].el.insertBefore(warn, slideState[idx].el.firstChild);
         console.warn("Unresolved placeholders on", slideState[idx].block.id, leaked);
+      }
+      // 2. Author HTML tags rendered as text (indicates textContent was used
+      //    where innerHTML should be). Look for literal <strong>, </strong>,
+      //    <em>, </em> etc. in innerText.
+      const rawTags = domText.match(/<\/?(strong|em|b|i|u|br|p)>/gi);
+      if (rawTags && rawTags.length) {
+        const warn2 = document.createElement("div");
+        warn2.style.cssText = "background:#5a2a10;color:#fff;padding:8px 12px;margin:12px 0;border-radius:6px;font-size:0.85rem;font-family:monospace;";
+        warn2.textContent = `Marcaje HTML afișate ca text în „${slideState[idx].block.id || "?"}": ${[...new Set(rawTags)].join(", ")}`;
+        slideState[idx].el.insertBefore(warn2, slideState[idx].el.firstChild);
+        console.warn("Raw HTML tags on", slideState[idx].block.id, rawTags);
       }
     });
     const viz = slideState[idx].viz;
