@@ -1261,6 +1261,55 @@ function renderScatter(container, block, stats) {
   draw();
 }
 
+function renderStrategyMaps(container, block, stats) {
+  const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
+  const total = cm._total || stats?.total || 299;
+  const positions = cm._positions || {};
+  const strategies = block.strategies || ["knownTeam", "top3pop", "greedy", "top3open"];
+  const labels = {
+    knownTeam: "Cei trei pe care îi știi",
+    top3pop:   "Cei mai populari trei",
+    top3open:  "Cei mai deschiși trei",
+    greedy:    "Alegerea lacomă",
+  };
+
+  const nodesArr = Object.entries(positions);
+
+  const grid = document.createElement("div");
+  grid.className = "coverage-maps";
+  container.appendChild(grid);
+
+  for (const key of strategies) {
+    const data = cm[key];
+    if (!data) continue;
+    const covered = new Set((data.coveredIds || []).map(String));
+    const seedSet = new Set((data.seedIds || []).map(String));
+    const cell = document.createElement("div");
+    cell.className = "coverage-maps__cell";
+    const S = 220;
+    const dots = nodesArr.map(([nid, p]) => {
+      const x = ((p.x + 1) / 2) * (S - 20) + 10;
+      const y = ((p.y + 1) / 2) * (S - 20) + 10;
+      const isSeed = seedSet.has(nid);
+      const isCovered = covered.has(nid);
+      let r, fill, stroke, sw;
+      if (isSeed) { r = 4.5; fill = "#2a1f16"; stroke = "#2a1f16"; sw = 1; }
+      else if (isCovered) { r = 2.8; fill = "#8b4a1e"; stroke = "none"; sw = 0; }
+      else { r = 2.2; fill = "#e5dccb"; stroke = "none"; sw = 0; }
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${fill}"${stroke !== "none" ? ` stroke="${stroke}" stroke-width="${sw}"` : ""}/>`;
+    }).join("");
+    cell.innerHTML =
+      `<div class="coverage-maps__cap">${esc(labels[key] || key)}</div>` +
+      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:240px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Hartă de acoperire pentru ${esc(labels[key] || key)}">` +
+      dots + `</svg>` +
+      `<div class="coverage-maps__stat"><strong>${covered.size}</strong> din ${total}</div>` +
+      (data.seedNames && data.seedNames.length ? `<div class="coverage-maps__seeds">${data.seedNames.map(esc).join(", ")}</div>` : "");
+    grid.appendChild(cell);
+  }
+}
+
 function renderStrategies(container, block, stats) {
   const sm = stats?.sliceMetrics || {};
   const mission = sm.mission || {};
@@ -1634,6 +1683,11 @@ export async function renderChart(container, block) {
     if (block.variant === "scatter") {
       const stats = await getStats(block);
       renderScatter(container, block, stats);
+      return { refit() {}, destroy() {} };
+    }
+    if (block.variant === "strategy-maps") {
+      const stats = await getStats(block);
+      renderStrategyMaps(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "strategies") {

@@ -662,6 +662,38 @@
   color: var(--color-ink);
 }
 
+.coverage-maps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-4);
+  margin: 0 auto;
+  max-width: 60rem;
+}
+.coverage-maps__cell {
+  background: var(--color-surface, #fbf7ef);
+  border-radius: 8px;
+  padding: var(--sp-3);
+  text-align: center;
+}
+.coverage-maps__cap {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  margin-bottom: var(--sp-2);
+}
+.coverage-maps__stat {
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  margin-top: var(--sp-2);
+  font-variant-numeric: tabular-nums;
+}
+.coverage-maps__seeds {
+  font-size: 0.78rem;
+  color: var(--color-ink-secondary, #5c5346);
+  margin-top: 0.35rem;
+  line-height: 1.35;
+}
+
 /* Character chips (C17) */
 .char-chips {
   display: grid;

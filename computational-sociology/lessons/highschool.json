@@ -334,11 +334,12 @@
     {
       "type": "chart",
       "id": "m5-strategii",
-      "variant": "strategies",
+      "variant": "strategy-maps",
       "statsSource": "data/highschool-stats.json",
+      "strategies": ["knownTeam", "top3pop", "top3open", "greedy"],
       "title": "Compară strategiile",
-      "intro": "Iată cum se descurcă strategiile automate pe aceeași școală, cu plafonul marcat cu linie întreruptă.",
-      "caption": "Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie. Uită-te la bara aleatoare. Media ei e sub cei mai populari trei, dar cea mai norocoasă dintre cele treizeci de încercări i-a depășit. Norocul e o strategie cu dispersie mare: pierde în medie, dar bate uneori o regulă proastă. Iar strategia care alege cei trei oameni cu cele mai multe contacte în afara clasei obține {{sliceMetrics.mission.top3OpenCoverage}}, sub media hazardului. Cine are contacte împrăștiate le are adesea și puține. O măsură bună pentru un om nu e automat o strategie bună pentru o echipă."
+      "intro": "<p>Patru strategii, aceeași școală. În fiecare hartă, punctele mari și negre sunt cei trei aleși, punctele calde sunt cei atinși de zvon, punctele pale sunt cei ratați. Punctele sunt așezate pe clase, ca să vezi nu doar <em>câți</em> acoperă fiecare strategie, ci și <em>unde</em>.</p>",
+      "caption": "Cei mai populari trei acoperă bine o zonă și lasă restul pe dinafară. Alegerea lacomă atinge bucăți din toate colțurile. Cei mai deschiși trei (după fracția de contacte externe) obțin {{sliceMetrics.mission.top3OpenCoverage}}, sub cei mai populari, pentru că cine are contacte împrăștiate le are și puține. Iar cei trei pe care îi știi din lecție, cu doi din aceeași clasă, ajung la {{sliceMetrics.mission.knownTeamCoverage}}. Nu contează doar cât acoperă o strategie, ci și unde. Plafonul e {{sliceMetrics.plafon}}, nu {{total}}: cei {{sliceMetrics.unreachableCount}} elevi de la margine nu pot fi atinși de nicio strategie."
     },
     {
       "type": "diffusion",

@@ -1051,6 +1051,56 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
     known_team_coverage = len(diffuse_limited(known_team_ids, adj_top, pasi))
     known_team_names = [name_map.get(x, str(x)) for x in known_team_ids]
 
+    # === Coverage maps: precomputed reach set per strategy + a shared radial
+    # layout, so the client can render four alăturate mini-maps without any
+    # simulation or layout work.
+    def _cov_set(seed_ids):
+        return sorted(int(x) for x in diffuse_limited(list(seed_ids), adj_top, pasi))
+
+    def _seed_ids(strat_key):
+        seeds = strategies[strat_key]["seeds"]
+        return [int(s["id"]) if isinstance(s, dict) else int(s) for s in seeds]
+
+    top3_pop_ids = _seed_ids("topPopular")
+    top3_open_ids = _seed_ids("topOpen")
+    greedy_ids = _seed_ids("greedy")
+    known_ids = [int(x) for x in known_team_ids]
+
+    coverage_maps = {
+        "top3pop":   {"seedIds": top3_pop_ids,  "seedNames": top3_pop_names,   "coveredIds": _cov_set(top3_pop_ids)},
+        "top3open":  {"seedIds": top3_open_ids, "seedNames": top3_open_names,  "coveredIds": _cov_set(top3_open_ids)},
+        "greedy":    {"seedIds": greedy_ids,    "seedNames": greedy_names,     "coveredIds": _cov_set(greedy_ids)},
+        "knownTeam": {"seedIds": known_ids,     "seedNames": known_team_names, "coveredIds": _cov_set(known_ids)},
+    }
+
+    # Shared layout: place each class as a small radial cluster on a nine-slot
+    # ring. Deterministic, so the four minis in the browser all match visually.
+    # Coordinates are normalized to [-1, 1] with the school centered at origin.
+    _class_order = sorted({klass_map[x] for x in node_ids})
+    _by_class = defaultdict(list)
+    for x in node_ids:
+        _by_class[klass_map[x]].append(x)
+    import math as _math
+    _step = 2 * _math.pi / max(1, len(_class_order))
+    _outer_r = 0.72
+    coverage_positions = {}
+    for i, cls in enumerate(_class_order):
+        cx = _math.cos(i * _step - _math.pi / 2) * _outer_r
+        cy = _math.sin(i * _step - _math.pi / 2) * _outer_r
+        members = sorted(_by_class[cls])
+        n = len(members)
+        cluster_r = max(0.12, min(0.20, 0.02 + 0.008 * n))
+        for j, nid in enumerate(members):
+            ang = (j / max(1, n)) * 2 * _math.pi
+            coverage_positions[str(nid)] = {
+                "x": round(cx + _math.cos(ang) * cluster_r, 4),
+                "y": round(cy + _math.sin(ang) * cluster_r, 4),
+                "class": cls,
+                "classFriendly": CLASS_NAMES.get(cls, cls),
+            }
+    coverage_maps["_positions"] = coverage_positions
+    coverage_maps["_total"] = len(node_ids)
+
     mission_summary = {
         "plafon":        plafon,
         "trioMission":   trio_mission,
@@ -1066,6 +1116,7 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
         "randomMean":        strategies["randomMean"],
         "randomMax":         strategies["randomMax"],
         "randomMin":         strategies["randomMin"],
+        "coverageMaps":      coverage_maps,
     }
 
     return {
