@@ -802,15 +802,32 @@
 .mission__pre-controls .mission-step__count {
   font-size: 0.85rem;
 }
-/* Fișele mai mici pentru pre-controls */
+/* Fișele compacte pentru pre-controls — trei pe un rând fără să domine cardul */
 .mission__pre-controls .mission-fiche {
-  padding: 6px 8px;
+  flex: 0 0 auto;
   min-width: 0;
-  font-size: 0.8rem;
+  max-width: none;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  border-radius: 5px;
 }
-.mission__pre-controls .mission-fiche__name { font-size: 0.9rem; }
-.mission__pre-controls .mission-fiche__meta { font-size: 0.7rem; }
-.mission__pre-controls .mission-fiche__row { font-size: 0.72rem; }
+.mission__pre-controls .mission-fiche__name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1px;
+}
+.mission__pre-controls .mission-fiche__meta {
+  font-size: 0.68rem;
+  margin-bottom: 2px;
+}
+.mission__pre-controls .mission-fiche__row {
+  font-size: 0.68rem;
+  padding: 0;
+  gap: 6px;
+}
+.mission__pre-controls .mission-fiche__row span { color: var(--color-muted); }
+.mission__pre-controls .mission-fiche__row strong { margin-left: 2px; }
 
 .lesson-table {
   width: 100%;
