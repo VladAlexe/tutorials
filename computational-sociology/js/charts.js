@@ -1630,6 +1630,7 @@ function renderMeasureTabs(container, block, stats) {
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
   const mm = cm._measureMaps || {};
   const forMeasure = mm[measure] || null;
+  const netPath = block.data || "data/highschool-network.json";
 
   const tabsWrap = document.createElement("div");
   tabsWrap.className = "measure-tabs__tabs";
@@ -1658,162 +1659,170 @@ function renderMeasureTabs(container, block, stats) {
     barsPane.appendChild(legend);
   }
 
-  // -- Pe hartă tab: EGO-ONLY. Draws just the champion + the small handful
-  // of nodes that matter for the measure being taught. Never the full school.
-  const S = 380;
-  const CENTER = S / 2;
-
+  // -- Pe hartă tab: EGO SUBGRAPH rendered with cytoscape cose. Only the
+  // champion + relevant contacts / path nodes, with real edges between them,
+  // draggable, force-directed. Same feel as the school map card but on a
+  // much smaller subgraph.
   const mapControls = document.createElement("div");
   mapControls.className = "measure-tabs__map-controls";
   const mapHost = document.createElement("div");
-  mapHost.className = "chart__svg-wrap";
+  mapHost.className = "measure-tabs__cy";
   const mapCaption = document.createElement("div");
   mapCaption.className = "measure-tabs__map-caption";
   const mapDetail = document.createElement("div");
   mapDetail.className = "measure-tabs__map-detail";
-  mapDetail.textContent = "Atinge un nod pentru nume și clasă.";
+  mapDetail.textContent = "Atinge un nod pentru nume și clasă. Trage nodurile ca să reașezi.";
   mapPane.appendChild(mapControls);
   mapPane.appendChild(mapHost);
   mapPane.appendChild(mapDetail);
   mapPane.appendChild(mapCaption);
 
+  let cyInstance = null;
+  let netData = null;
   let mapBuilt = false;
-  function buildMap() {
+
+  async function buildMap() {
     if (mapBuilt) return;
     mapBuilt = true;
-    if (measure === "degree") buildDegreeMap();
-    else if (measure === "openness") buildOpennessMap();
-    else if (measure === "betweenness") buildBetweennessMap();
-    else { mapHost.textContent = "Măsură necunoscută."; }
+    try {
+      const [cytoscape, net] = await Promise.all([_loadCy(), loadJSON(netPath)]);
+      netData = net;
+      if (measure === "degree") buildEgoMap(cytoscape, forMeasure?.champion, { colorMode: "single" });
+      else if (measure === "openness") buildOpennessMap(cytoscape);
+      else if (measure === "betweenness") buildBetweennessMap(cytoscape);
+      else mapHost.textContent = "Măsură necunoscută.";
+    } catch (err) {
+      mapHost.textContent = "Nu am putut construi harta.";
+    }
   }
 
-  function wireTapHandlers() {
-    mapHost.querySelectorAll("[data-nid]").forEach((el) => {
-      el.style.cursor = "pointer";
-      el.addEventListener("click", (e) => {
-        const name = e.currentTarget.dataset.name;
-        const cls = e.currentTarget.dataset.cls;
-        mapDetail.innerHTML = `<strong>${esc(name)}</strong>, ${esc(cls)}`;
-      });
-    });
+  function destroyCy() {
+    if (cyInstance) { try { cyInstance.destroy(); } catch {} cyInstance = null; }
   }
 
-  function championDot(cx, cy) {
-    return `<circle cx="${cx}" cy="${cy}" r="14" fill="#2a1f16" stroke="#000" stroke-width="1.4"/>`;
-  }
-  function championLabel(cx, cy, name, cls) {
-    return `<text x="${cx}" y="${(cy + 32).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#2a1f16"><tspan font-weight="500">${esc(name)}</tspan>, ${esc(cls)}</text>`;
-  }
-  function contactDot(x, y, fill, r, id, name, cls) {
-    return `<circle data-nid="${id}" data-name="${esc(name)}" data-cls="${esc(cls)}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${fill}" stroke="#3a2a1a" stroke-width="0.7"/>`;
-  }
-  function edgeLine(x1, y1, x2, y2, color, w) {
-    return `<line x1="${x1}" y1="${y1}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" opacity="0.75"/>`;
+  function subgraphEdgesFor(nodeIds) {
+    // Return edges (weight >= 4) with both endpoints in nodeIds.
+    const setIds = new Set(nodeIds.map(String));
+    const es = [];
+    for (const e of (netData?.edges || [])) {
+      if ((e.weight || 1) < 4) continue;
+      const s = String(e.source), t = String(e.target);
+      if (setIds.has(s) && setIds.has(t)) es.push({ id: `e${s}-${t}`, source: s, target: t });
+    }
+    return es;
   }
 
-  function buildDegreeMap() {
-    const champ = forMeasure?.champion;
+  function nodeMetaFor(id) {
+    // Find name + class for a node id via netData.nodes.
+    const n = (netData?.nodes || []).find((x) => String(x.id) === String(id));
+    if (!n) return { name: `Elev ${id}`, classFriendly: "?" };
+    const cls = (stats?.classNames || {})[n.group] || n.group || "?";
+    return { name: n.name || `Elev ${id}`, classFriendly: cls };
+  }
+
+  function baseCyOpts() {
+    return {
+      style: [
+        { selector: "node", style: {
+            "background-color": "data(color)",
+            "border-color": "#3a2a1a",
+            "border-width": 1,
+            "width": 18, "height": 18,
+            "label": "",
+        }},
+        { selector: "node.champion", style: {
+            "background-color": "#2a1f16",
+            "border-color": "#000",
+            "border-width": 2,
+            "width": 28, "height": 28,
+            "label": "data(label)",
+            "font-family": "Georgia, serif",
+            "font-size": 11,
+            "color": "#faf7f2",
+            "text-valign": "center",
+            "text-halign": "center",
+        }},
+        { selector: "node.endpoint", style: {
+            "width": 22, "height": 22,
+            "border-width": 2,
+        }},
+        { selector: "edge", style: {
+            "line-color": "data(color)",
+            "opacity": 0.7,
+            "width": 1.6,
+            "curve-style": "bezier",
+        }},
+      ],
+      minZoom: 0.4, maxZoom: 3, wheelSensitivity: 0.2,
+    };
+  }
+
+  function buildEgoMap(cytoscape, champ, opts) {
     if (!champ) { mapHost.textContent = "Fără date."; return; }
-    const contacts = champ.contactDetails || [];
-    const n = contacts.length;
-    // Ring around champion
-    const R = 140;
-    const NODE_R = 9;
-    const parts = [];
-    // edges first
-    contacts.forEach((c, i) => {
-      const a = (i / n) * 2 * Math.PI - Math.PI / 2;
-      const x = CENTER + Math.cos(a) * R;
-      const y = CENTER + Math.sin(a) * R;
-      parts.push(edgeLine(CENTER, CENTER, x, y, "#8b4a1e", 1.4));
-    });
-    // contact dots
-    contacts.forEach((c, i) => {
-      const a = (i / n) * 2 * Math.PI - Math.PI / 2;
-      const x = CENTER + Math.cos(a) * R;
-      const y = CENTER + Math.sin(a) * R;
-      parts.push(contactDot(x, y, "#8b4a1e", NODE_R, c.id, c.name, c.classFriendly));
-    });
-    parts.push(championDot(CENTER, CENTER));
-    parts.push(`<text data-nid="${champ.id}" data-name="${esc(champ.name)}" data-cls="${esc(champ.classFriendly)}" x="${CENTER}" y="${(CENTER + 5).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="500" fill="#faf7f2" style="pointer-events:none">${esc(champ.name)}</text>`);
-    parts.push(championLabel(CENTER, CENTER + 20, champ.name, champ.classFriendly));
+    const contactIds = (champ.contactDetails || champ.contactIds || []).map((c) => String(c.id ?? c));
+    const nodeIds = [String(champ.id), ...contactIds];
+    const nodeMap = new Map();
+    (champ.contactDetails || []).forEach((c) => nodeMap.set(String(c.id), c));
 
-    mapHost.innerHTML =
-      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
-      `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
-      `role="img" aria-label="Contactele lui ${esc(champ.name)}">` +
-      parts.join("") +
-      `</svg>`;
-    mapCaption.innerHTML = `<strong>${champ.degree}</strong> contacte. Numără-le.`;
-    wireTapHandlers();
+    const nodes = nodeIds.map((id) => {
+      const isChamp = id === String(champ.id);
+      const meta = isChamp
+        ? { name: champ.name, classFriendly: champ.classFriendly }
+        : (nodeMap.get(id) || nodeMetaFor(id));
+      const color = isChamp
+        ? "#2a1f16"
+        : (opts.colorMode === "byClass"
+            ? colorForClass(meta.classFriendly)
+            : "#8b4a1e");
+      return { data: { id, label: meta.name, color, classFriendly: meta.classFriendly, isChamp } };
+    });
+
+    // Include real contact-to-contact edges too, not just spokes, so the ego
+    // network looks like a network (dense cluster for Antoine, split into
+    // class-clumps for Léa).
+    const edgeColor = opts.edgeColor || "#8a7154";
+    const edges = subgraphEdgesFor(nodeIds).map((e) => ({
+      data: { id: e.id, source: e.source, target: e.target, color: edgeColor }
+    }));
+
+    destroyCy();
+    cyInstance = cytoscape({
+      ...baseCyOpts(),
+      container: mapHost,
+      elements: [...nodes, ...edges],
+      layout: {
+        name: "cose",
+        animate: false,
+        padding: 20,
+        idealEdgeLength: 60,
+        nodeRepulsion: 6000,
+        randomize: true,
+      },
+    });
+    cyInstance.getElementById(String(champ.id))?.addClass("champion");
+
+    cyInstance.on("tap", "node", (e) => {
+      const d = e.target.data();
+      mapDetail.innerHTML = `<strong>${esc(d.label)}</strong>, ${esc(d.classFriendly)}`;
+    });
+    setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 20); } catch {} }, 50);
   }
 
-  function buildOpennessMap() {
+  function buildOpennessMap(cytoscape) {
     const champ = forMeasure?.champion;
     const contrast = forMeasure?.contrast;
     if (!champ) { mapHost.textContent = "Fără date."; return; }
 
     function drawOne(who) {
-      const contacts = who.contactDetails || [];
-      const byClass = new Map();
-      for (const c of contacts) {
-        const k = c.classFriendly || "?";
-        if (!byClass.has(k)) byClass.set(k, []);
-        byClass.get(k).push(c);
-      }
-      const classes = [...byClass.keys()];
-      const nCls = classes.length;
-      const parts = [];
-      // Place each class clump on a ring around the champion.
-      const RING = 130;
-      // Contact clump-radius scaled by clump size (min 12, max 32)
-      classes.forEach((cls, ci) => {
-        const angle = (ci / nCls) * 2 * Math.PI - Math.PI / 2;
-        const clumpCx = CENTER + Math.cos(angle) * RING;
-        const clumpCy = CENTER + Math.sin(angle) * RING;
-        const members = byClass.get(cls);
-        const m = members.length;
-        const clumpR = Math.min(32, Math.max(10, 4 + m * 3.5));
-        const color = colorForClass(cls);
-        // Edge from champion to each member
-        members.forEach((c, mi) => {
-          const a = (mi / m) * 2 * Math.PI;
-          const nx = clumpCx + Math.cos(a) * (m > 1 ? clumpR * 0.55 : 0);
-          const ny = clumpCy + Math.sin(a) * (m > 1 ? clumpR * 0.55 : 0);
-          parts.push(edgeLine(CENTER, CENTER, nx, ny, "#8a7154", 1.1));
-        });
-        // Contact dots in clump
-        members.forEach((c, mi) => {
-          const a = (mi / m) * 2 * Math.PI;
-          const nx = clumpCx + Math.cos(a) * (m > 1 ? clumpR * 0.55 : 0);
-          const ny = clumpCy + Math.sin(a) * (m > 1 ? clumpR * 0.55 : 0);
-          parts.push(contactDot(nx, ny, color, 8, c.id, c.name, c.classFriendly));
-        });
-        // Class label just outside the clump
-        const lx = CENTER + Math.cos(angle) * (RING + 32);
-        const ly = CENTER + Math.sin(angle) * (RING + 32);
-        parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5c5346"><tspan font-weight="500">${esc(cls)}</tspan> (${m})</text>`);
-      });
-      // Champion at center
-      parts.push(championDot(CENTER, CENTER));
-      parts.push(`<text data-nid="${who.id}" data-name="${esc(who.name)}" data-cls="${esc(who.classFriendly)}" x="${CENTER}" y="${(CENTER + 5).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="500" fill="#faf7f2" style="pointer-events:none">${esc(who.name)}</text>`);
-      parts.push(championLabel(CENTER, CENTER + 18, who.name, who.classFriendly));
-
-      const total = who.contactDetails.length;
-      const outCls = who.contactDetails.filter((c) => c.classFriendly !== who.classFriendly).length;
-      mapHost.innerHTML =
-        `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
-        `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
-        `role="img" aria-label="Contactele lui ${esc(who.name)}, grupate pe clasă">` +
-        parts.join("") +
-        `</svg>`;
-      mapCaption.innerHTML = `<strong>${who.name}</strong>: <strong>${total}</strong> contacte, <strong>${outCls}</strong> din alte clase.`;
-      wireTapHandlers();
+      const total = (who.contactDetails || []).length;
+      const outCls = (who.contactDetails || []).filter((c) => c.classFriendly !== who.classFriendly).length;
+      buildEgoMap(cytoscape, who, { colorMode: "byClass", edgeColor: "#8a7154" });
+      mapCaption.innerHTML = `<strong>${esc(who.name)}</strong>: <strong>${total}</strong> contacte, <strong>${outCls}</strong> din alte clase. Culoarea nodului = clasa.`;
     }
 
     mapControls.innerHTML =
-      `<button type="button" class="btn btn--primary" data-who="champion">${champ.name} (${champ.classFriendly})</button>` +
-      (contrast ? `<button type="button" class="btn btn--ghost" data-who="contrast">${contrast.name} (${contrast.classFriendly})</button>` : "");
+      `<button type="button" class="btn btn--primary" data-who="champion">${esc(champ.name)} (${esc(champ.classFriendly)})</button>` +
+      (contrast ? `<button type="button" class="btn btn--ghost" data-who="contrast">${esc(contrast.name)} (${esc(contrast.classFriendly)})</button>` : "");
     mapControls.querySelectorAll("[data-who]").forEach((btn) => {
       btn.addEventListener("click", () => {
         mapControls.querySelectorAll("[data-who]").forEach((b) => { b.classList.remove("btn--primary"); b.classList.add("btn--ghost"); });
@@ -1824,85 +1833,78 @@ function renderMeasureTabs(container, block, stats) {
     drawOne(champ);
   }
 
-  function buildBetweennessMap() {
+  function buildBetweennessMap(cytoscape) {
     const champ = forMeasure?.champion;
     const paths = forMeasure?.paths || [];
     if (!champ || !paths.length) { mapHost.textContent = "Fără date."; return; }
-    let shown = 0;
     const PALETTE = ["#a3341f", "#3d7a52", "#2f6fa8", "#7a5b8c", "#b57140"];
-    // Place each path's source-target endpoints at fixed angles around Charlotte,
-    // with intermediate nodes evenly spaced along the straight line between them
-    // (via Charlotte in the middle).
+    let shown = 0;
+
     function draw() {
       const activePaths = paths.slice(0, shown);
-      const parts = [];
-      const N = paths.length;
-      // For each path index, choose two endpoint angles (source on one side of
-      // Charlotte, target on the opposite side, so the line goes through her).
+      // Collect all node IDs across active paths + Charlotte
+      const nodeIdSet = new Set([String(champ.id)]);
+      const nodeMeta = new Map();
+      const endpointColors = new Map();  // nodeId -> path color (for endpoints)
+      const edgeColorMap = new Map();    // edgeKey -> color
+
       activePaths.forEach((pth, i) => {
         const color = PALETTE[i % PALETTE.length];
-        // Angle spread around a full circle
-        const baseAngle = (i / N) * Math.PI * 2 - Math.PI / 2;
-        // Endpoints go on opposite sides
-        const R_END = 150;
-        const sx = CENTER + Math.cos(baseAngle) * R_END;
-        const sy = CENTER + Math.sin(baseAngle) * R_END;
-        const tx = CENTER + Math.cos(baseAngle + Math.PI) * R_END;
-        const ty = CENTER + Math.sin(baseAngle + Math.PI) * R_END;
-        // Path nodes are pth.pathIds — first is source, last is target.
-        // Place source at (sx, sy), target at (tx, ty), interior nodes
-        // interpolated on the s -> center -> t path so Charlotte sits in the middle.
-        const pathIds = pth.pathIds;
-        const positions = [];
-        const idxCharlotte = pathIds.findIndex((id) => String(id) === String(champ.id));
-        for (let k = 0; k < pathIds.length; k++) {
-          const t = k / (pathIds.length - 1);
-          // Linear interp: source at t=0, target at t=1, center at t = idxCharlotte/(n-1)
-          let x, y;
-          const tC = idxCharlotte / (pathIds.length - 1);
-          if (t <= tC) {
-            const u = tC === 0 ? 0 : (t / tC);
-            x = sx + (CENTER - sx) * u;
-            y = sy + (CENTER - sy) * u;
-          } else {
-            const u = tC === 1 ? 0 : ((t - tC) / (1 - tC));
-            x = CENTER + (tx - CENTER) * u;
-            y = CENTER + (ty - CENTER) * u;
-          }
-          positions.push({ x, y });
+        (pth.pathIds || []).forEach((id) => nodeIdSet.add(String(id)));
+        // Endpoints get labelled with their name+class
+        [{ id: pth.sourceId, name: pth.sourceName, cls: pth.sourceClass },
+         { id: pth.targetId, name: pth.targetName, cls: pth.targetClass }].forEach((ep) => {
+          if (!nodeMeta.has(String(ep.id))) nodeMeta.set(String(ep.id), { name: ep.name, classFriendly: ep.cls });
+          endpointColors.set(String(ep.id), color);
+        });
+        // Edges along path
+        for (let k = 0; k < pth.pathIds.length - 1; k++) {
+          const s = String(pth.pathIds[k]), t = String(pth.pathIds[k + 1]);
+          const key = s < t ? `${s}-${t}` : `${t}-${s}`;
+          edgeColorMap.set(key, color);
         }
-        // Draw polyline
-        const polyPts = positions.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
-        parts.push(`<polyline points="${polyPts}" fill="none" stroke="${color}" stroke-width="2.4" opacity="0.85"/>`);
-        // Intermediate node dots (skip source, target, and Charlotte position)
-        for (let k = 0; k < positions.length; k++) {
-          const id = String(pathIds[k]);
-          if (id === String(champ.id)) continue;
-          if (k === 0 || k === positions.length - 1) continue;
-          const p = positions[k];
-          parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="${color}" opacity="0.6"/>`);
-        }
-        // Endpoint dots (bigger, labelled)
-        const src = positions[0];
-        const tgt = positions[positions.length - 1];
-        parts.push(contactDot(src.x, src.y, color, 8, pth.sourceId, pth.sourceName, pth.sourceClass));
-        parts.push(contactDot(tgt.x, tgt.y, color, 8, pth.targetId, pth.targetName, pth.targetClass));
-        // Labels for endpoints
-        const labelOffset = 18;
-        parts.push(`<text x="${src.x.toFixed(1)}" y="${(src.y - labelOffset).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="${color}"><tspan font-weight="500">${esc(pth.sourceName)}</tspan>, ${esc(pth.sourceClass)}</text>`);
-        parts.push(`<text x="${tgt.x.toFixed(1)}" y="${(tgt.y - labelOffset).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="${color}"><tspan font-weight="500">${esc(pth.targetName)}</tspan>, ${esc(pth.targetClass)}</text>`);
       });
-      // Charlotte at center, always drawn on top
-      parts.push(championDot(CENTER, CENTER));
-      parts.push(`<text data-nid="${champ.id}" data-name="${esc(champ.name)}" data-cls="${esc(champ.classFriendly)}" x="${CENTER}" y="${(CENTER + 5).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="500" fill="#faf7f2" style="pointer-events:none">${esc(champ.name)}</text>`);
-      parts.push(championLabel(CENTER, CENTER + 20, champ.name, champ.classFriendly));
 
-      mapHost.innerHTML =
-        `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
-        `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
-        `role="img" aria-label="Drumuri prin ${esc(champ.name)}">` +
-        parts.join("") +
-        `</svg>`;
+      const nodeIds = [...nodeIdSet];
+      const nodes = nodeIds.map((id) => {
+        const isChamp = id === String(champ.id);
+        const meta = isChamp
+          ? { name: champ.name, classFriendly: champ.classFriendly }
+          : (nodeMeta.get(id) || nodeMetaFor(id));
+        const color = isChamp ? "#2a1f16" : (endpointColors.get(id) || "#8a7154");
+        return {
+          data: { id, label: meta.name, color, classFriendly: meta.classFriendly },
+          classes: (endpointColors.has(id) && !isChamp) ? "endpoint" : "",
+        };
+      });
+
+      // Edges: only along active paths, colored per path.
+      const edges = [];
+      for (const [key, color] of edgeColorMap) {
+        const [s, t] = key.split("-");
+        edges.push({ data: { id: `pe-${key}`, source: s, target: t, color } });
+      }
+
+      destroyCy();
+      cyInstance = cytoscape({
+        ...baseCyOpts(),
+        container: mapHost,
+        elements: [...nodes, ...edges],
+        layout: {
+          name: "cose",
+          animate: false,
+          padding: 20,
+          idealEdgeLength: 70,
+          nodeRepulsion: 6000,
+          randomize: true,
+        },
+      });
+      cyInstance.getElementById(String(champ.id))?.addClass("champion");
+      cyInstance.on("tap", "node", (e) => {
+        const d = e.target.data();
+        mapDetail.innerHTML = `<strong>${esc(d.label)}</strong>, ${esc(d.classFriendly)}`;
+      });
+      setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 20); } catch {} }, 50);
 
       if (shown === 0) {
         mapCaption.innerHTML = "Apasă butonul ca să vezi un drum care trece prin Charlotte.";
@@ -1911,7 +1913,6 @@ function renderMeasureTabs(container, block, stats) {
         mapCaption.innerHTML = `Drumul dintre <strong>${esc(last.sourceName)}</strong> din <strong>${esc(last.sourceClass)}</strong> și <strong>${esc(last.targetName)}</strong> din <strong>${esc(last.targetClass)}</strong> trece prin Charlotte.`;
       }
       addBtn.disabled = shown >= paths.length;
-      wireTapHandlers();
     }
 
     const addBtn = document.createElement("button");
