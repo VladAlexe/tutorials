@@ -1112,6 +1112,7 @@ export async function renderDiffusion(container, block, options = {}) {
     // Also let the stage know it should be shorter here — sim-step needs the
     // graph small enough that reguli sit close underneath.
     container.classList.add("viz--sim-compact");
+    requestAnimationFrame(() => { try { cy.resize(); cy.fit(undefined, 30); } catch {} });
 
     controls.innerHTML =
       `<div class="sim-step__rules"><div class="sim-step__rules-title">Reguli</div><ul>` +
@@ -2572,6 +2573,7 @@ export async function renderDiffusion(container, block, options = {}) {
         `<button type="button" class="btn btn--ghost" data-act="reset">Resetează</button>` +
       `</div>`;
     stage.parentNode.insertBefore(preControls, stage);
+    requestAnimationFrame(() => { try { cy.resize(); cy.fit(undefined, 30); } catch {} });
 
     controls.innerHTML = `<div class="diff-hint" data-role="pick"></div>`;
 
@@ -2779,6 +2781,10 @@ export async function renderDiffusion(container, block, options = {}) {
         `<span class="mission-step__count" data-role="stepcount"></span>` +
       `</div>`;
     stage.parentNode.insertBefore(preControls, stage);
+    // cy was created BEFORE preControls existed, so the container height it
+    // measured is stale. Force a resize+fit so it renders in the compact
+    // height that CSS now applies.
+    requestAnimationFrame(() => { try { cy.resize(); cy.fit(undefined, 30); } catch {} });
 
     controls.innerHTML =
       `<div class="diff-hint" data-role="preview">Atinge o fișă (sus) sau un nod pentru a-l adăuga în echipă.</div>` +

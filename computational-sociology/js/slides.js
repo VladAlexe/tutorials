@@ -417,9 +417,10 @@ function addTitle(el, text, small) {
 function addBody(el, html) {
   const wrap = document.createElement("div");
   wrap.className = "slide__body";
-  const p = document.createElement("p");
-  p.innerHTML = html;
-  wrap.appendChild(p);
+  // Insert HTML directly — the content may contain multiple <p> tags, tables,
+  // etc. Wrapping in a single <p> caused browsers to auto-close the wrapper
+  // at nested <p> tags, yielding inconsistent spacing between paragraphs.
+  wrap.innerHTML = html;
   el.appendChild(wrap);
 }
 
