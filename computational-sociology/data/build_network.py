@@ -1313,6 +1313,17 @@ def compute_slice_metrics(nodes_list, edges_list, klass_map, sex_map, name_map, 
             "degree":        degrees[nid],
             "openness":      openness[nid],
             "contactIds":    contacts,
+            # Each contact with name + class, so the ego map on the measure
+            # cards can show a tooltip / label without loading the network.
+            "contactDetails": [
+                {
+                    "id":            c,
+                    "name":          name_map.get(c, str(c)),
+                    "class":         klass_map.get(c, "?"),
+                    "classFriendly": CLASS_NAMES.get(klass_map.get(c, "?"), "?"),
+                }
+                for c in contacts
+            ],
             "classDistribution": [
                 {"class": k, "classFriendly": CLASS_NAMES.get(k, k), "count": v}
                 for k, v in sorted(cls_dist.items(), key=lambda kv: -kv[1])

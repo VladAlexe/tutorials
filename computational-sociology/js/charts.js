@@ -600,36 +600,48 @@ function renderFreq(container, block, stats) {
   barsWrap.appendChild(svg);
   container.appendChild(barsWrap);
 
+  // Third view: LISTA. When the student taps a class row or a bar, we swap
+  // OUT the table and graph entirely and swap IN a full-width list of the
+  // students in that class with a back button. No stacking, no overflow.
+  const listWrap = document.createElement("div");
+  listWrap.className = "chart__freq-view chart__freq-list";
+  listWrap.hidden = true;
+  container.appendChild(listWrap);
+
   function showView(which) {
-    const isTable = which === "table";
-    tableWrap.hidden = !isTable;
-    barsWrap.hidden = isTable;
-    btnTable.classList.toggle("is-active", isTable);
-    btnBars.classList.toggle("is-active", !isTable);
+    tableWrap.hidden = which !== "table";
+    barsWrap.hidden = which !== "bars";
+    listWrap.hidden = which !== "list";
+    btnTable.classList.toggle("is-active", which === "table");
+    btnBars.classList.toggle("is-active", which === "bars");
+    // The toggle bar is hidden while the list is up so students only see the
+    // "Înapoi" affordance inside the list.
+    toggle.hidden = which === "list";
   }
   btnTable.addEventListener("click", () => showView("table"));
   btnBars.addEventListener("click", () => showView("bars"));
 
   if (block.linkNetwork) {
-    const rowsHost = document.createElement("div");
-    rowsHost.className = "chart__link-target";
-    rowsHost.textContent = "Atinge un rând din tabel sau o bară pentru lista de nume și procentele.";
-    container.appendChild(rowsHost);
     let nodesCache = null;
     async function ensureNodes() { if (!nodesCache) nodesCache = await loadNodesForLink(block); return nodesCache; }
     async function showClass(clsRaw) {
       const info = sorted.find((r) => r.label === clsRaw);
       const ns = await ensureNodes();
-      // network nodes may carry the class code under either group or clasa;
-      // compare on raw code so friendly-label rewrites do not break the lookup.
       const matching = ns.filter((n) => (n.group || n.clasa) === clsRaw);
       const pctLine = info ? ` · ${Math.round(info.pctF)}% fete, ${Math.round(info.pctM)}% băieți${info.nUnk ? `, ${Math.round(info.pctU)}% ?` : ""}` : "";
       const names = matching
         .map((n) => ({ n, deg: n.degree ?? n.pop ?? 0 }))
         .sort((a, b) => (b.deg || 0) - (a.deg || 0))
-        .map(({ n, deg }) => deg ? `${esc(n.name || n.id)} (${deg})` : esc(n.name || n.id))
-        .join(", ");
-      rowsHost.innerHTML = `<strong>${esc(friendly(clsRaw))}</strong> (${matching.length} elevi${pctLine}): ` + names;
+        .map(({ n, deg }) => deg ? `<li>${esc(n.name || n.id)} <span class="chart__freq-list__deg">(${deg} contacte)</span></li>` : `<li>${esc(n.name || n.id)}</li>`)
+        .join("");
+      listWrap.innerHTML =
+        `<div class="chart__freq-list__bar">` +
+          `<button type="button" class="btn btn--ghost btn--sm chart__freq-list__back">← Înapoi</button>` +
+          `<div class="chart__freq-list__head"><strong>${esc(friendly(clsRaw))}</strong> · ${matching.length} elevi${pctLine}</div>` +
+        `</div>` +
+        `<ul class="chart__freq-list__ul">${names}</ul>`;
+      listWrap.querySelector(".chart__freq-list__back").addEventListener("click", () => showView("table"));
+      showView("list");
     }
     const tableRows = container.querySelectorAll(".chart__freq tr");
     tableRows.forEach((tr, idx) => {
@@ -1613,33 +1625,11 @@ async function renderUnreachedMulti(container, block, stats) {
 // to that measure). Used by c-gradul, c-deschiderea, c-intermedierea.
 // Data comes from build precomputes: coverageMaps._positions (shared radial
 // layout by class) and coverageMaps._measureMaps.{degree|openness|betweenness}.
-async function renderMeasureTabs(container, block, stats) {
+function renderMeasureTabs(container, block, stats) {
   const measure = block.measure || "degree";  // "degree" | "openness" | "betweenness"
   const cm = stats?.sliceMetrics?.mission?.coverageMaps || {};
-  // Per-card layout: "liber" runs cose live (same as the school-map "Liber"
-  // mode); "class" uses the precomputed class-clustered ring positions.
-  // Defaults: grad + intermediere on liber, deschidere on class (the point
-  // of deschidere is exactly to see contacts jump between class clumps).
-  const defaultLayout = measure === "openness" ? "class" : "liber";
-  const layoutMode = block.layoutMode || defaultLayout;
-
-  let positions;
-  if (layoutMode === "liber") {
-    const netPath = block.data || "data/highschool-network.json";
-    const cose = await computeCosePositions(netPath);
-    const meta = cm._positions || {};
-    positions = {};
-    for (const [nid, p] of Object.entries(cose)) {
-      const m = meta[nid] || {};
-      positions[nid] = { x: p.x, y: p.y, class: m.class, classFriendly: m.classFriendly };
-    }
-  } else {
-    positions = cm._positions || {};
-  }
   const mm = cm._measureMaps || {};
   const forMeasure = mm[measure] || null;
-  const positionsList = Object.entries(positions);
-  const total = mm.total || stats?.total || 299;
 
   const tabsWrap = document.createElement("div");
   tabsWrap.className = "measure-tabs__tabs";
@@ -1653,7 +1643,7 @@ async function renderMeasureTabs(container, block, stats) {
   container.appendChild(barsPane);
   container.appendChild(mapPane);
 
-  // -- Clasament (uses existing hbarsSVG with the block's bars)
+  // -- Clasament tab (hbars)
   const barsHost = document.createElement("div");
   barsHost.className = "chart__svg-wrap chart__svg-wrap--hbars";
   barsHost.innerHTML = hbarsSVG(block);
@@ -1668,62 +1658,10 @@ async function renderMeasureTabs(container, block, stats) {
     barsPane.appendChild(legend);
   }
 
-  // -- Pe hartă: measure-specific visualization
-  // Keep the map roughly the same footprint as the Clasament bars so switching
-  // tabs does not send the card jumping in height (users perceived this as
-  // "atlas mode" — a jarring layout shift).
+  // -- Pe hartă tab: EGO-ONLY. Draws just the champion + the small handful
+  // of nodes that matter for the measure being taught. Never the full school.
   const S = 380;
-  function projX(px) { return ((px + 1) / 2) * (S - 40) + 20; }
-  function projY(py) { return ((py + 1) / 2) * (S - 40) + 20; }
-  function posOf(id) {
-    const p = positions[String(id)];
-    if (!p) return null;
-    return { x: projX(p.x), y: projY(p.y), classFriendly: p.classFriendly };
-  }
-
-  function baseDotsSvg(highlightSet) {
-    // On the free (cose) layout the pale backdrop of 280 non-highlighted dots
-    // reads as noise around the champion's small ego-network. Suppress it and
-    // leave the map with just the champion + his contacts + edges.
-    if (layoutMode === "liber") return "";
-    return positionsList.map(([nid, p]) => {
-      const x = projX(p.x), y = projY(p.y);
-      const on = highlightSet && highlightSet.has(String(nid));
-      if (on) return "";
-      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="#c9beac"/>`;
-    }).join("");
-  }
-
-  // Small class-label overlay so students can name each clump. Draws one
-  // label per class at the mean position of its members, then clamped to
-  // the SVG margins so nothing crops.
-  function classLabelsSvg() {
-    const byClass = new Map();
-    for (const [nid, p] of Object.entries(positions)) {
-      if (!p.classFriendly) continue;
-      if (!byClass.has(p.classFriendly)) byClass.set(p.classFriendly, []);
-      byClass.get(p.classFriendly).push(p);
-    }
-    const parts = [];
-    const margin = 14;
-    for (const [cls, arr] of byClass) {
-      const cx = arr.reduce((s, q) => s + q.x, 0) / arr.length;
-      const cy = arr.reduce((s, q) => s + q.y, 0) / arr.length;
-      const px = projX(cx), py = projY(cy);
-      const cx2c = (S / 2) - px;
-      const cy2c = (S / 2) - py;
-      const mag = Math.sqrt(cx2c * cx2c + cy2c * cy2c) || 1;
-      const off = 14;  // smaller push so the label stays close to its clump
-      let lx = px - (cx2c / mag) * off;
-      let ly = py - (cy2c / mag) * off;
-      lx = Math.max(margin, Math.min(S - margin, lx));
-      ly = Math.max(margin, Math.min(S - margin, ly));
-      parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#5c5346">${esc(cls)}</text>`);
-    }
-    return parts.join("");
-  }
-
-  function baseEdgesSvg() { return ""; /* class-cluster layout: no backdrop */ }
+  const CENTER = S / 2;
 
   const mapControls = document.createElement("div");
   mapControls.className = "measure-tabs__map-controls";
@@ -1731,8 +1669,12 @@ async function renderMeasureTabs(container, block, stats) {
   mapHost.className = "chart__svg-wrap";
   const mapCaption = document.createElement("div");
   mapCaption.className = "measure-tabs__map-caption";
+  const mapDetail = document.createElement("div");
+  mapDetail.className = "measure-tabs__map-detail";
+  mapDetail.textContent = "Atinge un nod pentru nume și clasă.";
   mapPane.appendChild(mapControls);
   mapPane.appendChild(mapHost);
+  mapPane.appendChild(mapDetail);
   mapPane.appendChild(mapCaption);
 
   let mapBuilt = false;
@@ -1745,43 +1687,65 @@ async function renderMeasureTabs(container, block, stats) {
     else { mapHost.textContent = "Măsură necunoscută."; }
   }
 
-  function drawChampionMap(champ, opts) {
-    // champ: {id, name, classFriendly, contactIds, classDistribution}
-    // opts: {edgeColor, contactFillFn(nid)->color, showLegend: bool, subtitle: string}
-    const champPos = posOf(champ.id);
-    if (!champPos) { mapHost.textContent = "Nu am poziția campionului."; return; }
-    const contactSet = new Set(champ.contactIds.map(String));
-    const hi = new Set([String(champ.id), ...contactSet]);
+  function wireTapHandlers() {
+    mapHost.querySelectorAll("[data-nid]").forEach((el) => {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", (e) => {
+        const name = e.currentTarget.dataset.name;
+        const cls = e.currentTarget.dataset.cls;
+        mapDetail.innerHTML = `<strong>${esc(name)}</strong>, ${esc(cls)}`;
+      });
+    });
+  }
 
-    const edges = champ.contactIds.map((cid) => {
-      const p = posOf(cid); if (!p) return "";
-      return `<line x1="${champPos.x.toFixed(1)}" y1="${champPos.y.toFixed(1)}" x2="${p.x.toFixed(1)}" y2="${p.y.toFixed(1)}" stroke="${opts.edgeColor}" stroke-width="1.4" opacity="0.7"/>`;
-    }).join("");
-    const contactDots = champ.contactIds.map((cid) => {
-      const p = posOf(cid); if (!p) return "";
-      const fill = opts.contactFillFn ? opts.contactFillFn(cid) : "#8b4a1e";
-      return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="5" fill="${fill}" stroke="#3a2a1a" stroke-width="0.6"/>`;
-    }).join("");
-    const champDot = `<circle cx="${champPos.x.toFixed(1)}" cy="${champPos.y.toFixed(1)}" r="10" fill="#2a1f16" stroke="#000" stroke-width="1"/>`;
-    const label = `<text x="${champPos.x.toFixed(1)}" y="${(champPos.y + 22).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#2a1f16"><tspan font-weight="500">${esc(champ.name)}</tspan>, ${esc(champ.classFriendly)}</text>`;
-
-    mapHost.innerHTML =
-      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
-      `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
-      `role="img" aria-label="Harta măsurii pentru ${esc(champ.name)}">` +
-      baseDotsSvg(hi) + (layoutMode === "class" ? classLabelsSvg() : "") + edges + contactDots + champDot + label +
-      `</svg>`;
-    mapCaption.innerHTML = opts.subtitle || "";
+  function championDot(cx, cy) {
+    return `<circle cx="${cx}" cy="${cy}" r="14" fill="#2a1f16" stroke="#000" stroke-width="1.4"/>`;
+  }
+  function championLabel(cx, cy, name, cls) {
+    return `<text x="${cx}" y="${(cy + 32).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#2a1f16"><tspan font-weight="500">${esc(name)}</tspan>, ${esc(cls)}</text>`;
+  }
+  function contactDot(x, y, fill, r, id, name, cls) {
+    return `<circle data-nid="${id}" data-name="${esc(name)}" data-cls="${esc(cls)}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${fill}" stroke="#3a2a1a" stroke-width="0.7"/>`;
+  }
+  function edgeLine(x1, y1, x2, y2, color, w) {
+    return `<line x1="${x1}" y1="${y1}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" opacity="0.75"/>`;
   }
 
   function buildDegreeMap() {
     const champ = forMeasure?.champion;
-    if (!champ) { mapHost.textContent = "Fără date pentru harta gradului."; return; }
-    drawChampionMap(champ, {
-      edgeColor: "#8b4a1e",
-      contactFillFn: () => "#8b4a1e",
-      subtitle: `<strong>${champ.degree}</strong> muchii pleacă din el. Atât înseamnă gradul.`,
+    if (!champ) { mapHost.textContent = "Fără date."; return; }
+    const contacts = champ.contactDetails || [];
+    const n = contacts.length;
+    // Ring around champion
+    const R = 140;
+    const NODE_R = 9;
+    const parts = [];
+    // edges first
+    contacts.forEach((c, i) => {
+      const a = (i / n) * 2 * Math.PI - Math.PI / 2;
+      const x = CENTER + Math.cos(a) * R;
+      const y = CENTER + Math.sin(a) * R;
+      parts.push(edgeLine(CENTER, CENTER, x, y, "#8b4a1e", 1.4));
     });
+    // contact dots
+    contacts.forEach((c, i) => {
+      const a = (i / n) * 2 * Math.PI - Math.PI / 2;
+      const x = CENTER + Math.cos(a) * R;
+      const y = CENTER + Math.sin(a) * R;
+      parts.push(contactDot(x, y, "#8b4a1e", NODE_R, c.id, c.name, c.classFriendly));
+    });
+    parts.push(championDot(CENTER, CENTER));
+    parts.push(`<text data-nid="${champ.id}" data-name="${esc(champ.name)}" data-cls="${esc(champ.classFriendly)}" x="${CENTER}" y="${(CENTER + 5).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="500" fill="#faf7f2" style="pointer-events:none">${esc(champ.name)}</text>`);
+    parts.push(championLabel(CENTER, CENTER + 20, champ.name, champ.classFriendly));
+
+    mapHost.innerHTML =
+      `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+      `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
+      `role="img" aria-label="Contactele lui ${esc(champ.name)}">` +
+      parts.join("") +
+      `</svg>`;
+    mapCaption.innerHTML = `<strong>${champ.degree}</strong> contacte. Numără-le.`;
+    wireTapHandlers();
   }
 
   function buildOpennessMap() {
@@ -1790,20 +1754,62 @@ async function renderMeasureTabs(container, block, stats) {
     if (!champ) { mapHost.textContent = "Fără date."; return; }
 
     function drawOne(who) {
-      const contactFillFn = (cid) => {
-        const p = positions[String(cid)];
-        if (!p) return "#8b4a1e";
-        return colorForClass(p.classFriendly);
-      };
-      let subtitle;
-      if (who.id === champ.id) {
-        subtitle = `La <strong>${who.name}</strong>, contactele vin din <strong>${who.classDistribution.length}</strong> clase diferite. Culorile arată din care.`;
-      } else {
-        subtitle = `La <strong>${who.name}</strong>, contactele au aproape toate aceeași culoare: sunt din <strong>${who.classDistribution[0].classFriendly}</strong>, clasa lui.`;
+      const contacts = who.contactDetails || [];
+      const byClass = new Map();
+      for (const c of contacts) {
+        const k = c.classFriendly || "?";
+        if (!byClass.has(k)) byClass.set(k, []);
+        byClass.get(k).push(c);
       }
-      drawChampionMap(who, { edgeColor: "#8a7154", contactFillFn, subtitle });
+      const classes = [...byClass.keys()];
+      const nCls = classes.length;
+      const parts = [];
+      // Place each class clump on a ring around the champion.
+      const RING = 130;
+      // Contact clump-radius scaled by clump size (min 12, max 32)
+      classes.forEach((cls, ci) => {
+        const angle = (ci / nCls) * 2 * Math.PI - Math.PI / 2;
+        const clumpCx = CENTER + Math.cos(angle) * RING;
+        const clumpCy = CENTER + Math.sin(angle) * RING;
+        const members = byClass.get(cls);
+        const m = members.length;
+        const clumpR = Math.min(32, Math.max(10, 4 + m * 3.5));
+        const color = colorForClass(cls);
+        // Edge from champion to each member
+        members.forEach((c, mi) => {
+          const a = (mi / m) * 2 * Math.PI;
+          const nx = clumpCx + Math.cos(a) * (m > 1 ? clumpR * 0.55 : 0);
+          const ny = clumpCy + Math.sin(a) * (m > 1 ? clumpR * 0.55 : 0);
+          parts.push(edgeLine(CENTER, CENTER, nx, ny, "#8a7154", 1.1));
+        });
+        // Contact dots in clump
+        members.forEach((c, mi) => {
+          const a = (mi / m) * 2 * Math.PI;
+          const nx = clumpCx + Math.cos(a) * (m > 1 ? clumpR * 0.55 : 0);
+          const ny = clumpCy + Math.sin(a) * (m > 1 ? clumpR * 0.55 : 0);
+          parts.push(contactDot(nx, ny, color, 8, c.id, c.name, c.classFriendly));
+        });
+        // Class label just outside the clump
+        const lx = CENTER + Math.cos(angle) * (RING + 32);
+        const ly = CENTER + Math.sin(angle) * (RING + 32);
+        parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5c5346"><tspan font-weight="500">${esc(cls)}</tspan> (${m})</text>`);
+      });
+      // Champion at center
+      parts.push(championDot(CENTER, CENTER));
+      parts.push(`<text data-nid="${who.id}" data-name="${esc(who.name)}" data-cls="${esc(who.classFriendly)}" x="${CENTER}" y="${(CENTER + 5).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="500" fill="#faf7f2" style="pointer-events:none">${esc(who.name)}</text>`);
+      parts.push(championLabel(CENTER, CENTER + 18, who.name, who.classFriendly));
+
+      const total = who.contactDetails.length;
+      const outCls = who.contactDetails.filter((c) => c.classFriendly !== who.classFriendly).length;
+      mapHost.innerHTML =
+        `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
+        `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
+        `role="img" aria-label="Contactele lui ${esc(who.name)}, grupate pe clasă">` +
+        parts.join("") +
+        `</svg>`;
+      mapCaption.innerHTML = `<strong>${who.name}</strong>: <strong>${total}</strong> contacte, <strong>${outCls}</strong> din alte clase.`;
+      wireTapHandlers();
     }
-    drawOne(champ);
 
     mapControls.innerHTML =
       `<button type="button" class="btn btn--primary" data-who="champion">${champ.name} (${champ.classFriendly})</button>` +
@@ -1815,61 +1821,97 @@ async function renderMeasureTabs(container, block, stats) {
         drawOne(btn.dataset.who === "contrast" ? contrast : champ);
       });
     });
+    drawOne(champ);
   }
 
   function buildBetweennessMap() {
     const champ = forMeasure?.champion;
     const paths = forMeasure?.paths || [];
     if (!champ || !paths.length) { mapHost.textContent = "Fără date."; return; }
-    const champPos = posOf(champ.id);
-    if (!champPos) { mapHost.textContent = "Nu am poziția campionului."; return; }
-
     let shown = 0;
     const PALETTE = ["#a3341f", "#3d7a52", "#2f6fa8", "#7a5b8c", "#b57140"];
-
+    // Place each path's source-target endpoints at fixed angles around Charlotte,
+    // with intermediate nodes evenly spaced along the straight line between them
+    // (via Charlotte in the middle).
     function draw() {
       const activePaths = paths.slice(0, shown);
-      const highlightIds = new Set([String(champ.id)]);
-      activePaths.forEach((pth) => pth.pathIds.forEach((x) => highlightIds.add(String(x))));
-
-      // Draw paths as colored polylines.
-      const pathSvgs = activePaths.map((pth, i) => {
-        const pts = pth.pathIds.map((id) => posOf(id)).filter(Boolean);
-        const poly = pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+      const parts = [];
+      const N = paths.length;
+      // For each path index, choose two endpoint angles (source on one side of
+      // Charlotte, target on the opposite side, so the line goes through her).
+      activePaths.forEach((pth, i) => {
         const color = PALETTE[i % PALETTE.length];
-        return `<polyline points="${poly}" fill="none" stroke="${color}" stroke-width="2.2" opacity="0.85"/>`;
-      }).join("");
-
-      // Endpoint dots for each shown path (colored by path color).
-      const endDots = activePaths.flatMap((pth, i) => {
-        const s = posOf(pth.sourceId), t = posOf(pth.targetId);
-        const color = PALETTE[i % PALETTE.length];
-        const svg = [];
-        if (s) svg.push(`<circle cx="${s.x.toFixed(1)}" cy="${s.y.toFixed(1)}" r="4.5" fill="${color}" stroke="#3a2a1a" stroke-width="0.7"/>`);
-        if (t) svg.push(`<circle cx="${t.x.toFixed(1)}" cy="${t.y.toFixed(1)}" r="4.5" fill="${color}" stroke="#3a2a1a" stroke-width="0.7"/>`);
-        return svg;
-      }).join("");
-
-      const champDot = `<circle cx="${champPos.x.toFixed(1)}" cy="${champPos.y.toFixed(1)}" r="11" fill="#2a1f16" stroke="#000" stroke-width="1.2"/>`;
-      const champLabel = `<text x="${champPos.x.toFixed(1)}" y="${(champPos.y + 24).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#2a1f16"><tspan font-weight="500">${esc(champ.name)}</tspan>, ${esc(champ.classFriendly)}</text>`;
+        // Angle spread around a full circle
+        const baseAngle = (i / N) * Math.PI * 2 - Math.PI / 2;
+        // Endpoints go on opposite sides
+        const R_END = 150;
+        const sx = CENTER + Math.cos(baseAngle) * R_END;
+        const sy = CENTER + Math.sin(baseAngle) * R_END;
+        const tx = CENTER + Math.cos(baseAngle + Math.PI) * R_END;
+        const ty = CENTER + Math.sin(baseAngle + Math.PI) * R_END;
+        // Path nodes are pth.pathIds — first is source, last is target.
+        // Place source at (sx, sy), target at (tx, ty), interior nodes
+        // interpolated on the s -> center -> t path so Charlotte sits in the middle.
+        const pathIds = pth.pathIds;
+        const positions = [];
+        const idxCharlotte = pathIds.findIndex((id) => String(id) === String(champ.id));
+        for (let k = 0; k < pathIds.length; k++) {
+          const t = k / (pathIds.length - 1);
+          // Linear interp: source at t=0, target at t=1, center at t = idxCharlotte/(n-1)
+          let x, y;
+          const tC = idxCharlotte / (pathIds.length - 1);
+          if (t <= tC) {
+            const u = tC === 0 ? 0 : (t / tC);
+            x = sx + (CENTER - sx) * u;
+            y = sy + (CENTER - sy) * u;
+          } else {
+            const u = tC === 1 ? 0 : ((t - tC) / (1 - tC));
+            x = CENTER + (tx - CENTER) * u;
+            y = CENTER + (ty - CENTER) * u;
+          }
+          positions.push({ x, y });
+        }
+        // Draw polyline
+        const polyPts = positions.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+        parts.push(`<polyline points="${polyPts}" fill="none" stroke="${color}" stroke-width="2.4" opacity="0.85"/>`);
+        // Intermediate node dots (skip source, target, and Charlotte position)
+        for (let k = 0; k < positions.length; k++) {
+          const id = String(pathIds[k]);
+          if (id === String(champ.id)) continue;
+          if (k === 0 || k === positions.length - 1) continue;
+          const p = positions[k];
+          parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="${color}" opacity="0.6"/>`);
+        }
+        // Endpoint dots (bigger, labelled)
+        const src = positions[0];
+        const tgt = positions[positions.length - 1];
+        parts.push(contactDot(src.x, src.y, color, 8, pth.sourceId, pth.sourceName, pth.sourceClass));
+        parts.push(contactDot(tgt.x, tgt.y, color, 8, pth.targetId, pth.targetName, pth.targetClass));
+        // Labels for endpoints
+        const labelOffset = 18;
+        parts.push(`<text x="${src.x.toFixed(1)}" y="${(src.y - labelOffset).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="${color}"><tspan font-weight="500">${esc(pth.sourceName)}</tspan>, ${esc(pth.sourceClass)}</text>`);
+        parts.push(`<text x="${tgt.x.toFixed(1)}" y="${(tgt.y - labelOffset).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="${color}"><tspan font-weight="500">${esc(pth.targetName)}</tspan>, ${esc(pth.targetClass)}</text>`);
+      });
+      // Charlotte at center, always drawn on top
+      parts.push(championDot(CENTER, CENTER));
+      parts.push(`<text data-nid="${champ.id}" data-name="${esc(champ.name)}" data-cls="${esc(champ.classFriendly)}" x="${CENTER}" y="${(CENTER + 5).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="500" fill="#faf7f2" style="pointer-events:none">${esc(champ.name)}</text>`);
+      parts.push(championLabel(CENTER, CENTER + 20, champ.name, champ.classFriendly));
 
       mapHost.innerHTML =
         `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" ` +
         `style="width:100%;height:auto;max-width:420px;display:block;margin:0 auto" ` +
         `role="img" aria-label="Drumuri prin ${esc(champ.name)}">` +
-        baseDotsSvg(highlightIds) + (layoutMode === "class" ? classLabelsSvg() : "") + pathSvgs + endDots + champDot + champLabel +
+        parts.join("") +
         `</svg>`;
 
       if (shown === 0) {
-        mapCaption.textContent = "Apasă butonul ca să vezi un drum care trece prin ea.";
+        mapCaption.innerHTML = "Apasă butonul ca să vezi un drum care trece prin Charlotte.";
       } else {
-        mapCaption.innerHTML =
-          `<strong>${shown}</strong> ${shown === 1 ? "drum arătat" : "drumuri arătate"}. Toate trec prin <strong>${champ.name}</strong>.<br>` +
-          `<span class="measure-tabs__paths-list">` +
-          activePaths.map((pth, i) => `<span style="color:${PALETTE[i % PALETTE.length]}">${esc(pth.sourceName)} (${esc(pth.sourceClass)}) → ${esc(pth.targetName)} (${esc(pth.targetClass)})</span>`).join(" · ") +
-          `</span>`;
+        const last = activePaths[activePaths.length - 1];
+        mapCaption.innerHTML = `Drumul dintre <strong>${esc(last.sourceName)}</strong> din <strong>${esc(last.sourceClass)}</strong> și <strong>${esc(last.targetName)}</strong> din <strong>${esc(last.targetClass)}</strong> trece prin Charlotte.`;
       }
       addBtn.disabled = shown >= paths.length;
+      wireTapHandlers();
     }
 
     const addBtn = document.createElement("button");
@@ -1882,7 +1924,6 @@ async function renderMeasureTabs(container, block, stats) {
     resetBtn.textContent = "Începe de la zero";
     mapControls.appendChild(addBtn);
     mapControls.appendChild(resetBtn);
-
     addBtn.addEventListener("click", () => { if (shown < paths.length) { shown++; draw(); } });
     resetBtn.addEventListener("click", () => { shown = 0; draw(); });
     draw();
@@ -2832,7 +2873,7 @@ export async function renderChart(container, block) {
     }
     if (block.variant === "measure-tabs") {
       const stats = await getStats(block);
-      await renderMeasureTabs(container, block, stats);
+      renderMeasureTabs(container, block, stats);
       return { refit() {}, destroy() {} };
     }
     if (block.variant === "robustness") {

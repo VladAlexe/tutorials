@@ -558,7 +558,8 @@
   margin-right: var(--sp-2);
 }
 
-/* Chart link target (list of names after tapping a row/bar) */
+/* Chart link target (list of names after tapping a row/bar) — LEGACY, unused
+   now that freq has its own list state. Kept in case another chart wants it. */
 .chart__link-target {
   margin: var(--sp-3) 0 0;
   padding: var(--sp-3) var(--sp-4);
@@ -569,6 +570,41 @@
   line-height: 1.55;
   color: var(--color-ink);
   min-height: 3rem;
+}
+
+/* Freq third state: LISTA. Fills the whole card, replaces table + graph. */
+.chart__freq-list {
+  padding: var(--sp-2) 0;
+}
+.chart__freq-list__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+  flex-wrap: wrap;
+}
+.chart__freq-list__head {
+  font-size: 1rem;
+  color: var(--color-ink);
+}
+.chart__freq-list__ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 4px 12px;
+  font-size: 0.92rem;
+  color: var(--color-ink);
+}
+.chart__freq-list__ul li {
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--color-surface-alt, #f2ede5);
+}
+.chart__freq-list__deg {
+  color: var(--color-ink-secondary, #5c5346);
+  font-size: 0.85rem;
 }
 .chart__freq__tappable { cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
 .chart__freq__tappable:hover {
@@ -759,6 +795,13 @@
   font-size: 0.85rem;
   margin-top: 0.35rem;
   line-height: 1.5;
+}
+.measure-tabs__map-detail {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-ink-secondary, #5c5346);
+  min-height: 1.4rem;
+  margin: var(--sp-2) 0 var(--sp-1);
 }
 
 /* Strategy duel: two panels side by side on desktop, stacked on mobile. */
