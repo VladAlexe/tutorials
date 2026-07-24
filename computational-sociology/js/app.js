@@ -117,6 +117,12 @@ async function init() {
       document.getElementById("start-btn").href =
         `lesson.html?id=${encodeURIComponent(first.lesson)}`;
     }
+
+    // QR widget: points at the lesson with fresh=1 so each phone starts clean.
+    try {
+      const { mountQr } = await import(`./qr-widget.js?v=${V}`);
+      mountQr("qr-host");
+    } catch (e) { /* non-fatal — QR is optional */ }
   } catch (err) {
     console.error(err);
     document.getElementById("section-list").innerHTML =

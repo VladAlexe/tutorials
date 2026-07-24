@@ -490,3 +490,108 @@
   font-size: var(--fs-sm);
   font-style: italic;
 }
+
+/* QR widget on the course page */
+.qr__title {
+  margin: 0 0 var(--sp-3);
+  font-size: 1.5rem;
+  color: var(--color-ink);
+}
+.qr__grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-5);
+  align-items: center;
+  padding: var(--sp-4);
+  background: #fff;
+  border: 1px solid var(--color-line-soft, #e5dccb);
+  border-radius: 8px;
+}
+@media (max-width: 560px) {
+  .qr__grid { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+}
+.qr__svg { line-height: 0; }
+.qr__svg svg { display: block; }
+.qr__body { min-width: 0; }
+.qr__hint {
+  margin: 0 0 var(--sp-3);
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.qr__url {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.85rem;
+  color: var(--color-ink);
+  background: var(--color-surface-alt, #f2ede5);
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin-bottom: var(--sp-3);
+  word-break: break-all;
+  letter-spacing: 0.02em;
+}
+.qr__enlarge {
+  padding: 8px 16px;
+  min-height: 36px;
+  font-size: 0.9rem;
+}
+
+/* Fullscreen QR overlay for the projector */
+.qr-overlay {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+  cursor: zoom-out;
+}
+.qr-overlay__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3vh;
+  max-width: 90vw;
+  max-height: 92vh;
+}
+.qr-overlay__svg {
+  line-height: 0;
+  max-width: 78vh;
+  max-height: 78vh;
+  width: min(78vh, 78vw);
+  height: auto;
+}
+.qr-overlay__svg svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.qr-overlay__url {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: clamp(0.9rem, 2.4vh, 1.4rem);
+  color: #000;
+  text-align: center;
+  word-break: break-all;
+  letter-spacing: 0.02em;
+  max-width: 92vw;
+}
+.qr-overlay__hint {
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+}
+.qr-overlay__close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: #000;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+.qr-overlay__close:hover { color: #444; }
