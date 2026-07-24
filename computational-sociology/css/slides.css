@@ -726,17 +726,40 @@
 .sim-step__chip { min-width: 84px; }
 
 /* Sim-step pre-controls: source picker + step buttons + counter, placed
-   ABOVE the graph so the presenter can run without scrolling. */
+   ABOVE the graph so the presenter can run without scrolling. Compact
+   button size so the entire strip fits on one visual line at desktop. */
 .sim-step__pre-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-2);
-  margin: 0 auto var(--sp-2);
+  gap: 6px;
+  margin: 0 auto 8px;
   max-width: 46rem;
 }
 .sim-step__pre-controls .sim-step__chips {
   margin-bottom: 0;
+  gap: 4px;
+}
+.sim-step__pre-controls .btn,
+.mission__pre-controls .btn {
+  padding: 4px 12px;
+  min-height: 30px;
+  min-width: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  border-radius: 6px;
+}
+.sim-step__pre-controls .sim-step__chip {
+  min-width: 0;
+  padding: 4px 10px;
+}
+.sim-step__pre-controls .sim-step__buttons {
+  gap: 6px;
+  justify-content: center;
+}
+.sim-step__pre-controls .sim-step__count {
+  font-size: 0.9rem;
+  margin-top: 2px;
 }
 .slide .viz--sim-compact .viz__stage {
   height: 34vh;
@@ -751,25 +774,43 @@
   }
 }
 
-/* Mission pre-controls: fișe + Trimite + step-bar + status ABOVE the graph */
+/* Mission pre-controls: fișe + Trimite + step-bar + status ABOVE the graph.
+   Compact so everything fits without scrolling on a laptop. */
 .mission__pre-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-2);
-  margin: 0 auto var(--sp-2);
+  gap: 6px;
+  margin: 0 auto 8px;
   max-width: 46rem;
 }
 .mission__pre-controls .diff-count {
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  margin: 0;
 }
 .mission__pre-controls .mission-fiches {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-2);
+  gap: 6px;
   justify-content: center;
 }
+.mission__pre-controls .diff-buttons {
+  gap: 6px;
+  justify-content: center;
+}
+.mission__pre-controls .mission-step__count {
+  font-size: 0.85rem;
+}
+/* Fișele mai mici pentru pre-controls */
+.mission__pre-controls .mission-fiche {
+  padding: 6px 8px;
+  min-width: 0;
+  font-size: 0.8rem;
+}
+.mission__pre-controls .mission-fiche__name { font-size: 0.9rem; }
+.mission__pre-controls .mission-fiche__meta { font-size: 0.7rem; }
+.mission__pre-controls .mission-fiche__row { font-size: 0.72rem; }
 
 .lesson-table {
   width: 100%;

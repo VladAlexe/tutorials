@@ -1765,23 +1765,23 @@ function renderMeasureTabs(container, block, stats) {
             "background-color": "data(color)",
             "border-color": "#3a2a1a",
             "border-width": 1,
-            "width": 12, "height": 12,
+            "width": 9, "height": 9,
             "label": "",
         }},
         { selector: "node.champion", style: {
             "background-color": "#2a1f16",
             "border-color": "#000",
             "border-width": 2,
-            "width": 22, "height": 22,
+            "width": 18, "height": 18,
             "label": "data(label)",
             "font-family": "Georgia, serif",
-            "font-size": 10,
+            "font-size": 9,
             "color": "#faf7f2",
             "text-valign": "center",
             "text-halign": "center",
         }},
         { selector: "node.endpoint", style: {
-            "width": 16, "height": 16,
+            "width": 12, "height": 12,
             "border-width": 2,
         }},
         { selector: "edge", style: {
@@ -1843,7 +1843,7 @@ function renderMeasureTabs(container, block, stats) {
       const d = e.target.data();
       mapDetail.innerHTML = `<strong>${esc(d.label)}</strong>, ${esc(d.classFriendly)}`;
     });
-    setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 40); } catch {} }, 50);
+    setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 50); cyInstance.center(); } catch {} }, 50);
   }
 
   function buildOpennessMap(cytoscape) {
@@ -1942,7 +1942,7 @@ function renderMeasureTabs(container, block, stats) {
         const d = e.target.data();
         mapDetail.innerHTML = `<strong>${esc(d.label)}</strong>, ${esc(d.classFriendly)}`;
       });
-      setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 40); } catch {} }, 50);
+      setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 50); cyInstance.center(); } catch {} }, 50);
 
       if (shown === 0) {
         mapCaption.innerHTML = "Apasă butonul ca să vezi un drum care trece prin Charlotte.";
