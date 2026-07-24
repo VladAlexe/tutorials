@@ -781,14 +781,18 @@ function renderStacked(container, block, stats) {
   }
 }
 
-// ---- states: dots with commanded arrangements (scatter, sorted, grouped)
+// ---- states: dots with commanded arrangements (scatter, sorted, grouped).
+// The SAME 299 circles exist across all three states; only their (cx, cy)
+// animate between arrangements. Never re-rendered, so a student can follow
+// a single dot with their eye through all transitions. Antoine's dot is
+// coloured distinctly and labelled so there is a concrete thing to follow.
 async function renderStates(container, block, values, stats) {
   const chartHost = document.createElement("div");
   chartHost.className = "chart__svg-wrap";
   container.appendChild(chartHost);
 
-  const W = 480, H = 220;
-  const padL = 34, padR = 12, padT = 16, padB = 34;
+  const W = 560, H = 220;
+  const padL = 34, padR = 14, padT = 12, padB = 30;
   const chartW = W - padL - padR;
   const chartH = H - padT - padB;
   const maxV = Math.max(...values, 1);
@@ -796,17 +800,29 @@ async function renderStates(container, block, values, stats) {
   const rnd = seededRandom(42);
   const jitter = values.map(() => ({ jx: rnd(), jy: rnd() }));
 
-  // Precompute positions for each state
+  // Highlight index: block.highlight = { degree: N, name: "Antoine", classFriendly: "Bio C" }
+  // We pick the last (rightmost) student with that degree in the values array.
+  const highlight = block.highlight || null;
+  let highlightIdx = -1;
+  if (highlight && typeof highlight.degree === "number") {
+    for (let i = values.length - 1; i >= 0; i--) {
+      if (values[i] === highlight.degree) { highlightIdx = i; break; }
+    }
+  }
+
   function scatterPos(i, v) {
     return {
       x: padL + jitter[i].jx * chartW,
-      y: padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85 + jitter[i].jy * 12,
+      // Slight vertical jitter to break horizontal segments at equal degrees.
+      y: padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85 + (jitter[i].jy - 0.5) * 10,
     };
   }
   function sortedPos(i, v, sortedIdx) {
     return {
       x: padL + (sortedIdx / Math.max(1, values.length - 1)) * chartW,
-      y: padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85,
+      // Break ties visually with a hair of vertical jitter so we see a curve
+      // of dots rather than a solid segment at each degree level.
+      y: padT + (1 - (v - minV) / Math.max(1, maxV - minV)) * chartH * 0.85 + (jitter[i].jy - 0.5) * 4,
     };
   }
   // Groups: derive from block.groupField pointing into stats, e.g. sliceMetrics.communities.byId
@@ -859,41 +875,56 @@ async function renderStates(container, block, values, stats) {
 
   const axisX = `<line x1="${padL}" y1="${padT + chartH}" x2="${W - padR}" y2="${padT + chartH}" stroke="${COL_MUTED}" stroke-width="0.5"/>`;
 
-  // Precompute bin layout so we can add a count label per column. Declared
-  // BEFORE the dot markup so both the histogram state and the count labels
-  // read from the same source of truth.
+  // Precompute bin layout. Dynamic DOT_SIZE so the tallest column plus its
+  // count label fits inside chartH: previously fixed DOT_SIZE=7 sent the
+  // early-bin counts off the top of the SVG.
   const BW = block.binWidth || 3;
   const startBin = Math.floor(minV / BW) * BW;
   const maxHi = Math.max(...values);
   const nBins = Math.floor((maxHi - startBin) / BW) + 1;
   const binPx = chartW / nBins;
-  const DOT_SIZE = 7;
   const binCounts = new Array(nBins).fill(0);
   for (const v of values) {
     const idx = Math.floor((v - startBin) / BW);
     if (idx >= 0 && idx < nBins) binCounts[idx]++;
   }
+  const maxCol = Math.max(1, ...binCounts);
+  // Leave ~22px at the top for count labels, so column height fits.
+  const DOT_SIZE = Math.max(2.4, Math.min(6, (chartH - 22) / maxCol));
 
   const initialPos = values.map((v, i) => scatterPos(i, v));
-  const dots = initialPos.map((p, i) =>
-    `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="${COL_BAR}" fill-opacity="0.7"><title>${values[i]}</title></circle>`
-  ).join("");
+  const HIGHLIGHT_FILL = "#a3341f";
+  const HIGHLIGHT_R = 5;
+  const REG_R = 2.4;
+  const dots = initialPos.map((p, i) => {
+    const isHi = i === highlightIdx;
+    const r = isHi ? HIGHLIGHT_R : REG_R;
+    const fill = isHi ? HIGHLIGHT_FILL : COL_BAR;
+    const opacity = isHi ? 1 : 0.65;
+    return `<circle data-i="${i}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${fill}" fill-opacity="${opacity}"${isHi ? ' stroke="#2a1f16" stroke-width="1"' : ""}><title>${values[i]}</title></circle>`;
+  }).join("");
 
-  // Count labels — one per bin, hidden except when the histogram state is
-  // active. Position them above the tallest possible column so they clear
-  // the dots regardless of animation.
+  // Highlight label (Antoine, degree N). Follows the highlighted dot across
+  // states. Only rendered if we have a highlight.
+  const hiLabel = highlight
+    ? `<text class="states-hi-label" x="${initialPos[highlightIdx]?.x.toFixed(1) ?? 0}" y="${((initialPos[highlightIdx]?.y ?? 0) - 8).toFixed(1)}" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="500" fill="${HIGHLIGHT_FILL}">${esc(highlight.name || "")}</text>`
+    : "";
+
+  // Count labels — one per bin, hidden except in histogram state. Positioned
+  // above the top of the tallest possible column.
   const countLabels = binCounts.map((c, i) => {
     const x = padL + i * binPx + binPx / 2;
-    const y = padT + chartH - c * DOT_SIZE - 6;
-    return `<text class="states-count" data-bin="${i}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="12" font-weight="500" fill="${COL_INK}" opacity="0">${c}</text>`;
+    const y = padT + chartH - c * DOT_SIZE - 5;
+    return `<text class="states-count" data-bin="${i}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="11" font-weight="500" fill="${COL_INK}" opacity="0">${c}</text>`;
   }).join("");
 
   chartHost.innerHTML =
-    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto">` +
-    axisX + dots + countLabels + `</svg>`;
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto">` +
+    axisX + dots + hiLabel + countLabels + `</svg>`;
 
   const circles = chartHost.querySelectorAll("circle");
   const countTexts = chartHost.querySelectorAll(".states-count");
+  const hiLabelEl = chartHost.querySelector(".states-hi-label");
   let currentPos = initialPos;
 
   function setCountsVisible(visible) {
@@ -919,7 +950,7 @@ async function renderStates(container, block, values, stats) {
     return values.map((v, i) => scatterPos(i, v));
   }
 
-  function transitionTo(target, dur = 800) {
+  function transitionTo(target, dur = 1000) {
     const start = performance.now();
     const startPos = currentPos.map((p) => ({ x: p.x, y: p.y }));
     function frame() {
@@ -931,6 +962,13 @@ async function renderStates(container, block, values, stats) {
         c.setAttribute("cx", x.toFixed(1));
         c.setAttribute("cy", y.toFixed(1));
       });
+      // Move the highlight label along with its dot.
+      if (hiLabelEl && highlightIdx >= 0) {
+        const hp = { x: startPos[highlightIdx].x + (target[highlightIdx].x - startPos[highlightIdx].x) * eased,
+                     y: startPos[highlightIdx].y + (target[highlightIdx].y - startPos[highlightIdx].y) * eased };
+        hiLabelEl.setAttribute("x", hp.x.toFixed(1));
+        hiLabelEl.setAttribute("y", (hp.y - 9).toFixed(1));
+      }
       if (t < 1) requestAnimationFrame(frame);
       else currentPos = target;
     }
@@ -1727,23 +1765,23 @@ function renderMeasureTabs(container, block, stats) {
             "background-color": "data(color)",
             "border-color": "#3a2a1a",
             "border-width": 1,
-            "width": 18, "height": 18,
+            "width": 12, "height": 12,
             "label": "",
         }},
         { selector: "node.champion", style: {
             "background-color": "#2a1f16",
             "border-color": "#000",
             "border-width": 2,
-            "width": 28, "height": 28,
+            "width": 22, "height": 22,
             "label": "data(label)",
             "font-family": "Georgia, serif",
-            "font-size": 11,
+            "font-size": 10,
             "color": "#faf7f2",
             "text-valign": "center",
             "text-halign": "center",
         }},
         { selector: "node.endpoint", style: {
-            "width": 22, "height": 22,
+            "width": 16, "height": 16,
             "border-width": 2,
         }},
         { selector: "edge", style: {
@@ -1805,7 +1843,7 @@ function renderMeasureTabs(container, block, stats) {
       const d = e.target.data();
       mapDetail.innerHTML = `<strong>${esc(d.label)}</strong>, ${esc(d.classFriendly)}`;
     });
-    setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 20); } catch {} }, 50);
+    setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 40); } catch {} }, 50);
   }
 
   function buildOpennessMap(cytoscape) {
@@ -1904,7 +1942,7 @@ function renderMeasureTabs(container, block, stats) {
         const d = e.target.data();
         mapDetail.innerHTML = `<strong>${esc(d.label)}</strong>, ${esc(d.classFriendly)}`;
       });
-      setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 20); } catch {} }, 50);
+      setTimeout(() => { try { cyInstance.resize(); cyInstance.fit(undefined, 40); } catch {} }, 50);
 
       if (shown === 0) {
         mapCaption.innerHTML = "Apasă butonul ca să vezi un drum care trece prin Charlotte.";

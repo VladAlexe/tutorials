@@ -716,6 +716,52 @@
 }
 .sim-step__chip { min-width: 84px; }
 
+/* Sim-step pre-controls: source picker + step buttons + counter, placed
+   ABOVE the graph so the presenter can run without scrolling. */
+.sim-step__pre-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 auto var(--sp-2);
+  max-width: 46rem;
+}
+.sim-step__pre-controls .sim-step__chips {
+  margin-bottom: 0;
+}
+.slide .viz--sim-compact .viz__stage {
+  height: 34vh;
+  min-height: 220px;
+  max-height: 340px;
+}
+@media (min-width: 768px) {
+  .slide .viz--sim-compact .viz__stage {
+    height: 40vh;
+    min-height: 260px;
+    max-height: 380px;
+  }
+}
+
+/* Mission pre-controls: fișe + Trimite + step-bar + status ABOVE the graph */
+.mission__pre-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 auto var(--sp-2);
+  max-width: 46rem;
+}
+.mission__pre-controls .diff-count {
+  text-align: center;
+  font-size: 0.95rem;
+}
+.mission__pre-controls .mission-fiches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  justify-content: center;
+}
+
 .lesson-table {
   width: 100%;
   max-width: 42rem;

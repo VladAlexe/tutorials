@@ -170,8 +170,9 @@
         { "key": "histogram", "label": "Grupează și numără" }
       ],
       "title": "Cât de mult e mult",
-      "intro": "Antoine e primul la grad. Léa a doua. Dar cât înseamnă „primul\"? Iată gradele tuturor celor {{total}} de elevi ai școlii, ca puncte împrăștiate. Apasă butoanele ca să comanzi ce se întâmplă cu ele.",
-      "caption": "Ordonarea îți arată extremele. Gruparea îți spune câți sunt în fiecare interval. Construcția pe care ai comandat-o are un nume: <strong>histogramă</strong>. Uită-te la ultima cutie: în ea e o singură persoană. {{name:vedeta}} nu e doar sus, e singur acolo."
+      "intro": "Antoine e primul la grad. Léa a doua. Dar cât înseamnă „primul\"? Iată gradele tuturor celor {{total}} de elevi, ca puncte împrăștiate. <strong>Urmărește punctul roșu, Antoine. Vezi unde ajunge de fiecare dată.</strong> Apasă butoanele.",
+      "highlight": { "degree": 19, "name": "Antoine", "classFriendly": "Bio C" },
+      "caption": "Ordonarea îți arată extremele. Gruparea îți spune câți sunt în fiecare interval. Construcția are un nume: <strong>histogramă</strong>. Uită-te la ultima cutie: o singură persoană, Antoine."
     },
     {
       "type": "chart",
@@ -192,8 +193,8 @@
       "statsSource": "data/highschool-stats.json",
       "source": "campion",
       "title": "Ce înseamnă o simulare",
-      "intro": "<p>Până acum am numărat lucruri care există în date. Acum facem altceva.</p><p>Vrem să știm cât de departe ajunge o veste pornită de la un anumit elev. Asta nu scrie nicăieri. Nu s-a întâmplat niciodată. Ca să aflăm, <strong>construim un model și îl rulăm</strong>.</p><p>Regulile sunt inventate de noi și sunt simple, poate prea simple. Oamenii adevărați uită, se răzgândesc, spun la mai mulți sau la nimeni. Dar odată fixate, calculatorul le poate urma exact.</p><p>Alege pe cine pornește: apasă o fișă sau atinge orice nod. Apoi apasă butonul, pauză cu pauză, și privește. Rulează de mai multe ori, cu porniri diferite. Din {{name:vedeta}} valul rămâne aproape în clasă. Din {{name:campionul}} iese și ajunge mai departe.</p>",
-      "caption": "<p>Asta e o simulare: un model cu reguli clare, rulat ca să vedem ce iese. Rezultatul nu e un fapt despre școala reală, ci despre modelul nostru. Diferența contează.</p><p>Ce ai rulat acum a durat patru apăsări. Calculatorul face același lucru pornind din fiecare dintre cei {{total}} de elevi ai școlii, în mai puțin de o secundă. Asta urmează.</p><p><strong>Un lucru important despre ce tocmai ai rulat.</strong></p><p>Modelul nostru e <strong>determinist</strong>: aceleași reguli, același punct de pornire, același rezultat de fiecare dată.</p><p>Există și simulări în care intervine hazardul: fiecare transmitere are o probabilitate, uneori omul spune mai departe, alteori nu. Acolo repetarea are sens, pentru că rulezi de o sută de ori din același om și obții o distribuție de rezultate, nu un număr. Se numește simulare statistică, sau <em>Monte Carlo</em>.</p><p>Deci există două motive complet diferite de a rula un model de multe ori. Unul e să explorezi <strong>intrări diferite</strong>, ca la noi. Celălalt e să repeți <strong>aceeași intrare</strong>, ca să vezi cât variază rezultatul. Nu le confunda.</p>"
+      "intro": "<p>Până acum am numărat ce există în date. Acum construim ceva ce nu există: un model cu reguli inventate de noi, pe care îl lăsăm să ruleze.</p><p>Alege de la cine pornește vestea, apoi apasă pauză cu pauză.</p>",
+      "caption": "<p>Regulile sunt ale noastre, și sunt simple, poate prea simple. Oamenii adevărați uită, se răzgândesc, spun la mai mulți sau la nimeni. Dar odată fixate, calculatorul le urmează exact, de oricâte ori vrem.</p><p>Asta e o simulare: un model cu reguli clare, rulat ca să vedem ce iese. Rezultatul nu e un fapt despre școala reală, ci despre modelul nostru.</p><p>Rulează din {{name:vedeta}}, apoi din {{name:campionul}}. Din el valul rămâne aproape în clasă. Din ea iese și ajunge departe.</p><p>Modelul e <strong>determinist</strong>: aceleași reguli, același punct de pornire, același rezultat de fiecare dată. Ce ai rulat acum a durat patru apăsări. Calculatorul face același lucru pornind din fiecare dintre cei {{total}} de elevi, în mai puțin de o secundă. Asta urmează.</p>"
     },
     {
       "type": "chart",

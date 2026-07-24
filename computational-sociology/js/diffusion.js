@@ -1094,10 +1094,13 @@ export async function renderDiffusion(container, block, options = {}) {
         `</div>`
       : "";
 
-    controls.innerHTML =
-      `<div class="sim-step__rules"><div class="sim-step__rules-title">Reguli</div><ul>` +
-        rules.map((r) => `<li>${r}</li>`).join("") +
-      `</ul></div>` +
+    // Reorder: source picker + step buttons + counter go ABOVE the graph so
+    // the presenter can run the simulation without scrolling. Rules stay
+    // below as static reference. Inserted into a new preControls div placed
+    // before the stage element in the DOM.
+    const preControls = document.createElement("div");
+    preControls.className = "sim-step__pre-controls";
+    preControls.innerHTML =
       chipsHtml +
       `<div class="diff-row diff-buttons sim-step__buttons">` +
         `<button type="button" class="btn btn--primary" data-act="next">Următoarea pauză</button>` +
@@ -1105,6 +1108,15 @@ export async function renderDiffusion(container, block, options = {}) {
         `<button type="button" class="btn btn--ghost" data-act="reset">De la început</button>` +
       `</div>` +
       `<div class="sim-step__count" data-role="count"></div>`;
+    stage.parentNode.insertBefore(preControls, stage);
+    // Also let the stage know it should be shorter here — sim-step needs the
+    // graph small enough that reguli sit close underneath.
+    container.classList.add("viz--sim-compact");
+
+    controls.innerHTML =
+      `<div class="sim-step__rules"><div class="sim-step__rules-title">Reguli</div><ul>` +
+        rules.map((r) => `<li>${r}</li>`).join("") +
+      `</ul></div>`;
 
     // Visual style: all nodes dim except source. Big node for source so it
     // reads from the back of the room.
@@ -1149,11 +1161,12 @@ export async function renderDiffusion(container, block, options = {}) {
       });
     }
 
-    const countEl = controls.querySelector('[data-role="count"]');
-    const btnNext = controls.querySelector('[data-act="next"]');
-    const btnRun = controls.querySelector('[data-act="run"]');
-    const btnReset = controls.querySelector('[data-act="reset"]');
-    const chipEls = controls.querySelectorAll("[data-source-id]");
+    // Query on preControls now: buttons + counter + chips live there.
+    const countEl = preControls.querySelector('[data-role="count"]');
+    const btnNext = preControls.querySelector('[data-act="next"]');
+    const btnRun = preControls.querySelector('[data-act="run"]');
+    const btnReset = preControls.querySelector('[data-act="reset"]');
+    const chipEls = preControls.querySelectorAll("[data-source-id]");
 
     function knowsCountAt(step) {
       let c = 0;
@@ -2548,15 +2561,21 @@ export async function renderDiffusion(container, block, options = {}) {
     let picks = [];
     let covered = new Set();
 
-    controls.innerHTML =
+    // Buttons + status ABOVE the graph so the presenter can advance without
+    // scrolling. Pick description lives below.
+    const preControls = document.createElement("div");
+    preControls.className = "mission__pre-controls";
+    preControls.innerHTML =
       `<div class="diff-count" data-role="status">Alegere lacomă: pas 0 din ${steps}.</div>` +
       `<div class="diff-row diff-buttons">` +
         `<button type="button" class="btn btn--primary" data-act="step">Pas următor</button>` +
         `<button type="button" class="btn btn--ghost" data-act="reset">Resetează</button>` +
-      `</div>` +
-      `<div class="diff-hint" data-role="pick"></div>`;
+      `</div>`;
+    stage.parentNode.insertBefore(preControls, stage);
 
-    const statusEl = controls.querySelector('[data-role="status"]');
+    controls.innerHTML = `<div class="diff-hint" data-role="pick"></div>`;
+
+    const statusEl = preControls.querySelector('[data-role="status"]');
     const pickEl = controls.querySelector('[data-role="pick"]');
 
     function paint() {
@@ -2615,8 +2634,8 @@ export async function renderDiffusion(container, block, options = {}) {
       statusEl.textContent = `Alegere lacomă: pas 0 din ${steps}.`;
       pickEl.textContent = "";
     }
-    controls.querySelector('[data-act="step"]').addEventListener("click", doStep);
-    controls.querySelector('[data-act="reset"]').addEventListener("click", doReset);
+    preControls.querySelector('[data-act="step"]').addEventListener("click", doStep);
+    preControls.querySelector('[data-act="reset"]').addEventListener("click", doReset);
   }
 
   else if (mode === "characters") {
@@ -2731,9 +2750,13 @@ export async function renderDiffusion(container, block, options = {}) {
       .map((k) => statsDataM?.sliceMetrics?.characters?.[k])
       .filter(Boolean);
 
-    controls.innerHTML =
+    // Move fișe + Trimite + Reset + step-bar + status ABOVE the graph so the
+    // student can act without scrolling on a laptop. Presets + history stay
+    // below, they are context.
+    const preControls = document.createElement("div");
+    preControls.className = "mission__pre-controls";
+    preControls.innerHTML =
       `<div class="diff-count" data-role="status">Alege ${teamSize} elevi. Zvonul pornește de la ei simultan.</div>` +
-      `<div class="diff-hint" data-role="preview">Atinge o fișă sau un nod pentru a-l adăuga în echipă.</div>` +
       (candidates.length
         ? `<div class="mission-fiches" data-role="fiches">` +
             candidates.map((c) =>
@@ -2744,8 +2767,7 @@ export async function renderDiffusion(container, block, options = {}) {
                 `<div class="mission-fiche__row"><span>din alte clase</span> <strong>${c.outClassContacts ?? 0}</strong></div>` +
               `</button>`
             ).join("") +
-          `</div>` +
-          `<div class="diff-hint diff-hint--muted">Sau alege pe altcineva: atinge orice nod pe hartă.</div>`
+          `</div>`
         : "") +
       `<div class="diff-row diff-buttons">` +
         `<button type="button" class="btn btn--primary" data-act="send" disabled>Trimite</button>` +
@@ -2755,17 +2777,22 @@ export async function renderDiffusion(container, block, options = {}) {
         `<button type="button" class="btn btn--primary" data-act="step">Un pas</button>` +
         `<button type="button" class="btn btn--ghost" data-act="runall">Rulează tot</button>` +
         `<span class="mission-step__count" data-role="stepcount"></span>` +
-      `</div>` +
+      `</div>`;
+    stage.parentNode.insertBefore(preControls, stage);
+
+    controls.innerHTML =
+      `<div class="diff-hint" data-role="preview">Atinge o fișă (sus) sau un nod pentru a-l adăuga în echipă.</div>` +
       (presets.length ? `<div class="diff-row diff-buttons mission-presets">` +
         `<span class="mission-presets__label">Strategii predefinite:</span>` +
         presets.map((p, i) => `<button type="button" class="btn btn--ghost" data-preset="${i}">${p.label}</button>`).join("") +
         `</div>` : "") +
       `<div class="diff-hint" data-role="history"></div>`;
 
-    const statusEl = controls.querySelector('[data-role="status"]');
+    // Elements moved to preControls are queried on it; the rest live below.
+    const statusEl = preControls.querySelector('[data-role="status"]');
     const previewEl = controls.querySelector('[data-role="preview"]');
     const historyEl = controls.querySelector('[data-role="history"]');
-    const sendBtn = controls.querySelector('[data-act="send"]');
+    const sendBtn = preControls.querySelector('[data-act="send"]');
 
     function paint() {
       cy.nodes().removeClass("source");
@@ -2874,10 +2901,11 @@ export async function renderDiffusion(container, block, options = {}) {
       ).join("<br>");
     }
 
-    const stepbar = controls.querySelector('[data-role="stepbar"]');
-    stepCountEl = controls.querySelector('[data-role="stepcount"]');
-    const stepBtn = controls.querySelector('[data-act="step"]');
-    const runAllBtn = controls.querySelector('[data-act="runall"]');
+    // Step controls now live in preControls above the graph.
+    const stepbar = preControls.querySelector('[data-role="stepbar"]');
+    stepCountEl = preControls.querySelector('[data-role="stepcount"]');
+    const stepBtn = preControls.querySelector('[data-act="step"]');
+    const runAllBtn = preControls.querySelector('[data-act="runall"]');
 
     function afterAnimDone(seeds, covered) {
       const names = seeds.map((s) => nameById.get(s) || s);
@@ -2909,7 +2937,7 @@ export async function renderDiffusion(container, block, options = {}) {
       runAllBtn.disabled = true;
       runAllSteps();
     });
-    controls.querySelector('[data-act="reset"]').addEventListener("click", () => {
+    preControls.querySelector('[data-act="reset"]').addEventListener("click", () => {
       team.length = 0;
       endAnim();
       stepbar.hidden = true;
@@ -2918,7 +2946,7 @@ export async function renderDiffusion(container, block, options = {}) {
       paint();
     });
     // Candidate fișe click: add to team (or replace if teamSize=1)
-    controls.querySelectorAll("[data-fiche-id]").forEach((btn) => {
+    preControls.querySelectorAll("[data-fiche-id]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const nid = String(btn.dataset.ficheId);
         const pos = team.indexOf(nid);
@@ -2929,10 +2957,8 @@ export async function renderDiffusion(container, block, options = {}) {
           if (team.length < teamSize) team.push(nid);
         }
         paint();
-        // Update preview with hypothetical coverage
         if (team.length > 0) {
           const cov = coverage(team).size;
-          const previewEl = controls.querySelector('[data-role="preview"]');
           if (previewEl) previewEl.textContent = `Echipa curentă ar afla ${cov} persoane.`;
         }
       });
