@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Suport de curs interactiv: fluxuri de lucru pentru știința datelor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/carte.css?v=20260725">
+<link rel="stylesheet" href="css/interactive.css?v=20260725">
+</head>
+<body>
+
+<aside class="spine" id="spine" aria-label="Cuprins">
+  <div class="spine__head">
+    <a class="mark" href="index.html" aria-label="Pagina cursului">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M2 8h5.5M7.5 8l4 4M7.5 8v0M11.5 12h3M14.5 12l4-4M14.5 12l4 4M11.5 12l-4 6h-5.5"
+              stroke="#EDEDE9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20.5" cy="8" r="2.6" stroke="#EDEDE9" stroke-width="2"/>
+        <circle cx="20.5" cy="16" r="2.6" stroke="#EDEDE9" stroke-width="2"/>
+        <circle cx="12.8" cy="12" r="2.6" stroke="#EDEDE9" stroke-width="2"/>
+      </svg>
+      <div>
+        <div class="mark__t" id="mark-t">DSW</div>
+        <div class="mark__s" id="mark-s">ADC · UBB</div>
+      </div>
+    </a>
+    <h2 class="spine__title" id="spine-title">Fluxuri de lucru pentru știința datelor</h2>
+  </div>
+  <div class="spine__scroll" id="toc"></div>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<div class="wrap">
+  <div class="bar">
+    <div class="bar__in">
+      <button class="burger" id="burger" aria-label="Deschide cuprinsul">
+        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" aria-hidden="true"><path d="M3 6h15M3 10.5h15M3 15h15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <span class="crumb" id="crumb"></span>
+      <div class="bar__prog" aria-hidden="true"><i id="progbar"></i></div>
+      <span class="bar__pct" id="progpct">0%</span>
+    </div>
+  </div>
+  <main id="main"></main>
+</div>
+
+<script type="module" src="js/carte.js?v=20260725"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+/* ==========================================================================
+   curs.css — pagina de prezentare a cursului „Fluxuri de lucru pentru știința
+   datelor”. Aceeași paletă și tipografie ca a cărții, dar o singură pagină care
+   se derulează. Variabilele sunt pe :root, dar fișierul e link-uit numai din
+   paginile acestui curs.
+   ========================================================================== */
+
+:root{
+  --ink:#16181A;
+  --paper:#E8E8E4;
+  --surface:#FFFFFF;
+  --panel:#1E2022;
+  --panel-2:#2A2D30;
+  --olive:#6E7358;
+  --olive-lt:#8D9472;
+  --slate:#3D4451;
+  --muted:#5C6165;
+  --rule:rgba(22,24,26,.13);
+  --rule-strong:rgba(22,24,26,.28);
+  --sans:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --serif:'Literata',Georgia,'Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--olive);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- bara de sus ---------- */
+.top{position:sticky;top:0;z-index:20;background:rgba(232,232,228,.93);
+  backdrop-filter:blur(9px);border-bottom:1px solid var(--rule)}
+.top__in{max-width:960px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;gap:12px}
+.top__brand{font-family:var(--sans);font-weight:700;font-size:13px;text-decoration:none;color:var(--ink)}
+.top__sep{color:var(--rule-strong)}
+.top__here{font-family:var(--sans);font-weight:500;font-size:13px;color:var(--muted)}
+
+.shell{max-width:960px;margin:0 auto;padding:0 32px 80px}
+
+/* ---------- hero (panou închis) ---------- */
+.hero{background:var(--panel);color:#EDEDE9;border-radius:12px;
+  padding:52px 46px 46px;margin:34px 0 44px}
+.hero__eyebrow{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.2em;
+  color:var(--olive-lt);margin:0 0 16px}
+.hero__title{font-family:var(--sans);font-weight:800;font-size:clamp(32px,5vw,50px);
+  line-height:1.05;letter-spacing:-.02em;margin:0 0 20px;max-width:16ch}
+.hero p{font-size:18px;line-height:1.62;color:rgba(237,237,233,.82);margin:0 0 18px;max-width:64ch}
+.hero__meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin:24px 0 30px;
+  font-family:var(--sans);font-size:12.5px;color:rgba(237,237,233,.6)}
+.hero__meta b{font-weight:700;color:rgba(237,237,233,.9)}
+.cta{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:700;
+  font-size:14.5px;text-decoration:none;background:var(--olive-lt);color:#15170F;
+  padding:14px 24px;border-radius:7px;transition:.15s}
+.cta:hover{background:#9ba283}
+.cta__arrow{font-size:17px;line-height:1}
+
+/* ---------- secțiuni ---------- */
+section{margin:0 0 52px}
+.kicker{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.2em;
+  color:var(--olive);margin:0 0 12px}
+h2{font-family:var(--sans);font-weight:700;font-size:25px;line-height:1.2;letter-spacing:-.01em;
+  margin:0 0 18px}
+.lead{font-size:17px;color:var(--muted);max-width:66ch;margin:0 0 22px}
+
+.skills{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px 26px}
+.skills li{position:relative;padding-left:24px;font-size:16px;line-height:1.5;max-width:42ch}
+.skills li::before{content:'';position:absolute;left:3px;top:.6em;width:7px;height:7px;
+  background:var(--olive);border-radius:2px}
+
+/* ---------- capitole ---------- */
+.chs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.ch-card{display:flex;gap:16px;background:var(--surface);border:1px solid var(--rule-strong);
+  border-radius:9px;padding:18px 20px;text-decoration:none;color:inherit;transition:.15s}
+.ch-card:hover{border-color:var(--olive);transform:translateY(-1px);box-shadow:0 4px 14px rgba(22,24,26,.07)}
+.ch-card__n{font-family:var(--sans);font-weight:800;font-size:22px;color:var(--olive);
+  line-height:1;flex:none;width:34px}
+.ch-card__t{font-family:var(--sans);font-weight:700;font-size:15.5px;line-height:1.25;margin:0 0 5px}
+.ch-card__d{font-size:14px;color:var(--muted);line-height:1.5;margin:0 0 8px}
+.ch-card__meta{font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.05em;color:var(--olive)}
+.ch-card__part{font-family:var(--sans);font-weight:700;font-size:9px;letter-spacing:.16em;
+  color:var(--muted);text-transform:uppercase;margin:0 0 4px}
+
+/* ---------- panouri de informație ---------- */
+.panel{background:var(--surface);border:1px solid var(--rule-strong);border-radius:10px;padding:26px 28px}
+.panel p{max-width:64ch}
+.panel p:last-child{margin-bottom:0}
+.panel h3{font-family:var(--sans);font-weight:700;font-size:16px;margin:0 0 10px}
+
+.reqs{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.reqs li{background:var(--surface);border:1px solid var(--rule-strong);border-radius:9px;padding:18px 18px}
+.reqs b{font-family:var(--sans);font-weight:700;font-size:14px;display:block;margin-bottom:5px}
+.reqs span{font-size:14px;color:var(--muted);line-height:1.5}
+
+.todo{border-left:3px dashed var(--olive);background:rgba(110,115,88,.07);
+  padding:14px 18px;margin:16px 0 0;font-size:14.5px;color:var(--muted)}
+.todo b{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.13em;
+  color:var(--olive);display:block;margin-bottom:4px}
+
+.foot{border-top:1px solid var(--rule);padding:26px 0 0;font-size:13px;color:var(--muted);
+  font-family:var(--sans)}
+
+@media(max-width:720px){
+  .top__in,.shell{padding-left:20px;padding-right:20px}
+  .hero{padding:36px 24px 30px;margin:20px 0 32px}
+  .skills,.chs,.reqs{grid-template-columns:1fr}
+}

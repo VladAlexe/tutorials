@@ -1,0 +1,235 @@
+{
+  "numar": 1,
+  "titlu": "Introducere și configurare",
+  "parte": "PARTEA I · FUNDAMENTE",
+  "sectiuni": [
+    {
+      "id": "1.1",
+      "titlu": "Anatomia unui proiect de date",
+      "rezumat": "Înainte de orice linie de cod: care sunt etapele prin care trece o întrebare până devine un rezultat.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Un proiect de analiză a datelor nu începe cu datele. Începe cu o întrebare la care cineva chiar vrea un răspuns. Tot restul — colectarea, curățarea, modelul — sunt mijloace prin care întrebarea aceea ajunge să aibă un răspuns în care poți avea încredere." },
+        { "tip": "text", "continut": "Etapele de mai jos par un lanț ordonat, și în mare parte chiar sunt: nu poți curăța date pe care nu le-ai colectat. Dar în practică te întorci constant. Descoperi la curățare că un indicator lipsește pentru jumătate din unități și te întorci la colectare. Descoperi la analiza exploratorie că întrebarea inițială nu se poate testa cu ce ai și o reformulezi. <strong>Fluxul e ciclic, nu liniar</strong> — iar asta nu e un semn că ai greșit, e felul normal de a lucra." },
+        {
+          "tip": "interactiv",
+          "componenta": "flux",
+          "titlu": "Fluxul de lucru",
+          "sarcina": "Apasă pe o etapă ca să vezi ce se întâmplă acolo și în ce capitol o tratăm.",
+          "parametri": {
+            "etape": [
+              { "nume": "Definirea problemei", "capitol": "1", "descriere": "Alegi tema, unitatea de analiză și formulezi întrebarea. Aici decizi ce înseamnă un rând în tabelul tău final — o țară, o pereche de regiuni, un an. Toate celelalte etape depind de această alegere." },
+              { "nume": "Colectarea", "capitol": "2", "descriere": "Aduci datele din surse externe, prin API sau fișiere. Salvezi întotdeauna varianta brută, neatinsă, ca să poți reveni la ea când descoperi o greșeală de curățare." },
+              { "nume": "Curățarea", "capitol": "4", "descriere": "Tipuri greșite, coduri care nu se potrivesc între surse, valori lipsă, duplicate, unități diferite. Etapa cea mai lungă și cea care decide dacă rezultatul final înseamnă ceva." },
+              { "nume": "Agregarea", "capitol": "5", "descriere": "Îmbini sursele într-un singur tabel, pe o cheie comună. Aici se văd toate incompatibilitățile pe care curățarea le-a ratat." },
+              { "nume": "Analiza exploratorie", "capitol": "6", "descriere": "Te uiți la date înainte de a le modela: distribuții, evoluții, relații. Scopul nu e să demonstrezi ceva, e să înțelegi ce ai și să găsești ce merită testat." },
+              { "nume": "Variabile derivate", "capitol": "7", "descriere": "Construiești indicatorii care chiar răspund la întrebare: rate, ponderi, valori raportate la populație, diferențe între unități." },
+              { "nume": "Modelul statistic", "capitol": "7", "descriere": "Testezi formal relația pe care ai observat-o. Un model simplu, bine interpretat, valorează mai mult decât unul complicat pe care nu îl poți explica." },
+              { "nume": "Raportarea", "capitol": "8", "descriere": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica. Raport, notebook-uri lizibile, prezentare." },
+              { "nume": "Baza de date", "capitol": "5", "depozit": true, "descriere": "Nu e o etapă, e locul unde etapele își lasă rezultatele. Colectarea scrie datele brute, curățarea scrie versiunea curată, agregarea scrie tabelul final. Fiecare membru al echipei citește de acolo, nu de pe laptopul colegului." }
+            ]
+          }
+        },
+        { "tip": "text", "continut": "Observă un lucru în diagramă: baza de date nu e o etapă, e o <strong>zonă de depozitare</strong> la care se întorc mai multe etape. Colectezi și scrii acolo. Cureți și scrii versiunea curată. Agregi și scrii tabelul final. Fiecare pas își lasă rezultatul într-un loc din care următorul îl poate lua, fără să depindă de fișierele de pe laptopul cuiva anume." },
+        { "tip": "nota", "eticheta": "DE CE CONTEAZĂ PENTRU ECHIPĂ", "continut": "Într-un proiect de cinci oameni, etapele se împart. Dacă fiecare își ține rezultatul local, al doilea nu poate începe până nu-i trimite primul un fișier pe chat. Cu o bază de date și un repository comun, fiecare ia de unde a lăsat celălalt. Cursul e construit exact în jurul acestei probleme." },
+        {
+          "tip": "verificare",
+          "intrebare": "O echipă descoperă la analiza exploratorie că indicatorul ales nu are date pentru 40% din țări. Ce face?",
+          "optiuni": [
+            "Continuă analiza doar pe țările care au date, fără să menționeze",
+            "Se întoarce la colectare și caută un indicator alternativ sau o altă acoperire",
+            "Completează valorile lipsă cu media, ca să nu piardă țări",
+            "Schimbă modelul statistic ca să tolereze lipsurile"
+          ],
+          "corect": 1,
+          "explicatie": "Întoarcerea la o etapă anterioară e normală. Primele două variante rămân opțiuni discutabile în anumite cazuri, dar niciuna nu se ia înainte de a verifica dacă problema se poate rezolva la sursă. Iar orice decizie de acest fel se scrie în raport, nu se ascunde."
+        }
+      ]
+    },
+    {
+      "id": "1.2",
+      "titlu": "Proiectul cursului",
+      "rezumat": "Ce construiți în echipă pe parcursul semestrului și cum se leagă fiecare curs de el.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Cursul are un singur produs final: un repository de echipă în care se vede tot drumul, de la întrebarea de cercetare până la rezultatul statistic și interpretarea lui. Nu predați un fișier la final. Construiți săptămână de săptămână, iar fiecare curs adaugă o piesă." },
+        {
+          "tip": "tabel",
+          "antet": ["Curs", "Ce adăugați la proiect"],
+          "randuri": [
+            ["1", "Mediul de lucru și tema echipei"],
+            ["2", "Primele date colectate prin API"],
+            ["3", "Repository-ul de echipă și a doua sursă"],
+            ["4", "Dataseturile curățate și documentate"],
+            ["5", "Tabelul unificat, încărcat în baza de date"],
+            ["6", "Analiza exploratorie și primele tipare"],
+            ["7", "Variabilele derivate și modelul statistic"],
+            ["8", "Raportul final și prezentarea"]
+          ]
+        },
+        { "tip": "text", "continut": "Împărțirea pe roluri nu înseamnă că fiecare lucrează izolat. Fiecare student răspunde de un pas și de fișierul lui, dar deciziile — tema, unitatea de analiză, variabilele finale — se iau împreună. La fiecare pas e prevăzută o scurtă verificare încrucișată în echipă, pentru că majoritatea erorilor de date se văd mai repede de către altcineva decât de cel care le-a produs." },
+        { "tip": "in_lucru", "continut": "Tema și sursele de date ale ediției curente" }
+      ]
+    },
+    {
+      "id": "1.3",
+      "titlu": "Mediul de lucru",
+      "rezumat": "VS Code, terminalul și mediul virtual: de ce izolăm fiecare proiect.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Python instalează pachetele într-un singur loc comun. Dacă lucrezi la două proiecte care au nevoie de versiuni diferite ale aceleiași biblioteci, al doilea proiect îl strică pe primul în tăcere. Un <strong>mediu virtual</strong> e un dosar separat, al proiectului tău, cu propria copie de Python și propriile pachete. Îl creezi o dată, îl activezi de fiecare dată când lucrezi." },
+        { "tip": "lista", "elemente": [
+          "Fiecare proiect are pachetele lui, în versiunile lui",
+          "Nimic din ce instalezi aici nu afectează alt proiect",
+          "Poți lista exact ce ai folosit, ca altcineva să reproducă rezultatul",
+          "Dosarul mediului nu se urcă niciodată pe GitHub"
+        ]},
+        {
+          "tip": "cod",
+          "limbaj": "shell",
+          "continut": "<span class='c'># creezi mediul, o singură dată, în folderul proiectului</span>\npython -m venv venv\n\n<span class='c'># îl activezi de fiecare dată când deschizi proiectul</span>\nvenv\\Scripts\\activate      <span class='c'># Windows</span>\nsource venv/bin/activate    <span class='c'># macOS și Linux</span>\n\n<span class='c'># instalezi ce îți trebuie, în mediul activ</span>\npip install requests pandas\n\n<span class='c'># ieși din mediu</span>\ndeactivate"
+        },
+        {
+          "tip": "interactiv",
+          "componenta": "terminal",
+          "titlu": "Terminal",
+          "sarcina": "Scrie comenzile în ordine. Terminalul răspunde ca cel real. Scrie ajutor dacă te blochezi.",
+          "parametri": {
+            "dosar": "proiect-dsw",
+            "sarcini": [
+              { "eticheta": "creezi mediul" },
+              { "eticheta": "îl activezi" },
+              { "eticheta": "instalezi pachete" },
+              { "eticheta": "verifici" },
+              { "eticheta": "ieși" }
+            ]
+          }
+        },
+        { "tip": "nota", "eticheta": "CUM ȘTII CĂ E ACTIV", "continut": "După activare, promptul din terminal începe cu <code>(venv)</code>. Dacă nu vezi paranteza aceea, instalezi în Python-ul global — cea mai frecventă sursă de „la mine mergea”." },
+        {
+          "tip": "verificare",
+          "intrebare": "Ai activat mediul, ai instalat pandas, ai închis laptopul. A doua zi deschizi proiectul și <code>import pandas</code> dă eroare. De ce, cel mai probabil?",
+          "optiuni": [
+            "Pandas s-a dezinstalat singur",
+            "Ai uitat să activezi mediul virtual",
+            "Mediul virtual expiră după 24 de ore",
+            "Trebuie reinstalat Python"
+          ],
+          "corect": 1,
+          "explicatie": "Mediul nu se activează singur la deschiderea unui terminal nou. Fără activare, rulezi Python-ul global, care nu are pachetele instalate în mediu. VS Code poate face activarea automat dacă îi selectezi interpretorul din folderul venv."
+        }
+      ]
+    },
+    {
+      "id": "1.4",
+      "titlu": "Tipuri de date",
+      "rezumat": "Ce tipuri există în Python, de ce contează diferența, și unde se strică lucrurile.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Tipul unei valori decide ce poți face cu ea. Două numere se adună; două texte se lipesc; un număr și un text dau eroare. Pare banal până în momentul în care citești un fișier și coloana cu anii vine ca text, iar sortarea îți pune 1990 după 189 pentru că le compară literă cu literă." },
+        {
+          "tip": "tabel",
+          "antet": ["Tip", "Ce reprezintă și când apare"],
+          "randuri": [
+            ["int", "Numere întregi. Ani, populație, numărători."],
+            ["float", "Numere cu zecimale. Aproape toți indicatorii calculați."],
+            ["str", "Text. Nume de țări, coduri, orice vine dintr-un fișier necurățat."],
+            ["bool", "Adevărat sau fals. Rezultatul unei condiții, filtre."],
+            ["None", "Absența unei valori. Diferit de zero și de text gol."],
+            ["list", "Secvență ordonată, modificabilă. <code>[1, 2, 3]</code>"],
+            ["tuple", "Secvență ordonată, nemodificabilă. <code>(45.7, 21.2)</code>"],
+            ["dict", "Perechi cheie–valoare. Structura oricărui răspuns JSON."]
+          ]
+        },
+        { "tip": "nota", "eticheta": "CONFUZIA CARE COSTĂ CEL MAI MULT", "continut": "<code>None</code>, <code>0</code> și <code>\"\"</code> arată la fel într-un tabel gol, dar înseamnă lucruri diferite. Zero e o măsurătoare: țara nu a produs energie eoliană. <code>None</code> e absența măsurătorii: nu știm dacă a produs. Dacă le tratezi la fel la calculul unei medii, rezultatul e greșit fără să dea vreo eroare." },
+        {
+          "tip": "interactiv",
+          "componenta": "tipuri",
+          "titlu": "Recunoaște tipul",
+          "sarcina": "Opt valori. Alege tipul fiecăreia. Feedback imediat.",
+          "parametri": {
+            "optiuni": ["str", "int", "float", "bool", "None", "list", "tuple", "dict"],
+            "valori": [
+              { "valoare": "2024", "tip": "str", "explicatie": "Ghilimelele fac diferența. Arată ca un an, dar e text — exact capcana din fișierele CSV." },
+              { "valoare": "2024", "tip": "int", "explicatie": "Fără ghilimele, e număr întreg. Se poate compara și sorta corect." },
+              { "valoare": "3.7", "tip": "float", "explicatie": "Punctul zecimal îl face float. Atenție: în fișiere românești zecimala poate veni cu virgulă și atunci vine ca text." },
+              { "valoare": "None", "tip": "None", "explicatie": "Absența valorii. Nu e zero și nu e text gol — e „nu știm”." },
+              { "valoare": "True", "tip": "bool", "explicatie": "Cu majusculă în Python. Rezultatul oricărei condiții." },
+              { "valoare": "[1, 2, 3]", "tip": "list", "explicatie": "Parantezele drepte: listă, ordonată și modificabilă." },
+              { "valoare": "(45.7, 21.2)", "tip": "tuple", "explicatie": "Parantezele rotunde: tuplu, nu se poate modifica. Tipic pentru coordonate." },
+              { "valoare": "{\"tara\": \"RO\"}", "tip": "dict", "explicatie": "Perechi cheie–valoare. Structura oricărui obiect JSON convertit în Python." }
+            ]
+          }
+        },
+        { "tip": "text", "continut": "Pe lângă tipurile din Python, vei mai întâlni două familii. <strong>Tipurile SQL</strong>, în baza de date, unde alegerea între <code>VARCHAR</code> și <code>TEXT</code> sau între <code>INT</code> și <code>BIGINT</code> ține de spațiu și de viteză. Și <strong>tipurile spațiale</strong>, dacă lucrezi cu hărți: punct, linie, poligon. Le luăm la capitolele 5 și 6, când chiar avem nevoie de ele." }
+      ]
+    },
+    {
+      "id": "1.5",
+      "titlu": "Tipuri de fișiere",
+      "rezumat": "Text, binar, spațial: cum alegi formatul și ce pierzi la fiecare conversie.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Un fișier text îl poți deschide în orice editor și îl poți citi cu ochiul liber. Un fișier binar nu — are nevoie de programul care îl înțelege. Distincția asta decide dacă poți vedea ce e în datele tale fără să rulezi cod, și dacă Git poate să-ți arate ce s-a schimbat de la o versiune la alta." },
+        {
+          "tip": "tabel",
+          "antet": ["Format", "Când îl folosești"],
+          "randuri": [
+            [".csv", "Tabele simple, plate. Universal, dar nu păstrează tipurile."],
+            [".json", "Date cu structură imbricată. Ce întorc aproape toate API-urile."],
+            [".xlsx", "Când primești de la cineva. Rar când produci tu."],
+            [".parquet", "Tabele mari. Compact, rapid, păstrează tipurile."],
+            [".geojson", "Date cu geometrie. Text, deci lizibil și versionabil."],
+            [".env", "Chei și parole. Niciodată pe GitHub."]
+          ]
+        },
+        { "tip": "nota", "eticheta": "CSV PIERDE INFORMAȚIE", "continut": "Când salvezi un DataFrame în CSV, tipurile dispar. La recitire, coloana cu coduri de țară care începeau cu zero e reinterpretată ca numere, iar zerourile din față se pierd. Nu e un bug, e limita formatului. Parquet nu are problema asta." },
+        { "tip": "in_lucru", "continut": "Exercițiu interactiv: același tabel salvat în trei formate" }
+      ]
+    },
+    {
+      "id": "1.6",
+      "titlu": "Formatul JSON",
+      "rezumat": "Structura pe care o vorbesc API-urile — și cum o citești fără să te pierzi.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "JSON e felul în care aproape orice serviciu de pe internet îți trimite date. Are doar două structuri de bază, dar ele se pot cuibări una în alta oricât de adânc, și de aici vine toată dificultatea aparentă." },
+        { "tip": "lista", "elemente": [
+          "<strong>Obiect</strong>, între acolade: perechi cheie–valoare, ca un dicționar Python",
+          "<strong>Tablou</strong>, între paranteze drepte: o listă ordonată de valori"
+        ]},
+        { "tip": "text", "continut": "Valorile pot fi text, număr, <code>true</code> sau <code>false</code>, <code>null</code>, sau la rândul lor un obiect ori un tablou. Elementul de la rădăcină poate fi oricare dintre cele două — și mulți se împiedică prima dată exact aici, presupunând că un răspuns începe întotdeauna cu un obiect." },
+        {
+          "tip": "interactiv",
+          "componenta": "json",
+          "titlu": "Un răspuns real de API",
+          "sarcina": "Răspunsul Băncii Mondiale pentru un indicator. Apasă pe orice rând ca să vezi ce e. Rezolvă sarcina de sub arbore.",
+          "parametri": {
+            "eticheta_radacina": "raspuns",
+            "date": [
+              { "page": 1, "pages": 3, "per_page": 2, "total": 6 },
+              [
+                { "indicator": { "id": "SP.POP.TOTL", "value": "Population, total" }, "country": { "id": "RO", "value": "Romania" }, "countryiso3code": "ROU", "date": "2023", "value": 19051562, "unit": "", "obs_status": "", "decimal": 0 },
+                { "indicator": { "id": "SP.POP.TOTL", "value": "Population, total" }, "country": { "id": "RO", "value": "Romania" }, "countryiso3code": "ROU", "date": "2022", "value": null, "unit": "", "obs_status": "", "decimal": 0 }
+              ]
+            ]
+          }
+        },
+        { "tip": "text", "continut": "Ai văzut structura: rădăcina e un <strong>tablou cu două elemente</strong>. Primul e un obiect cu informații despre paginare — câte rezultate există în total și câte pagini. Al doilea e tabloul cu datele propriu-zise. Dacă ceri direct primul element presupunând că sunt datele, primești paginarea și nu înțelegi de ce lipsesc valorile." },
+        { "tip": "nota", "eticheta": "DE CE CONTEAZĂ PAGINAREA", "continut": "API-ul nu îți dă tot deodată. Îți dă o pagină și îți spune câte mai sunt. Dacă nu citești câmpul <code>pages</code> și nu ceri și restul, lucrezi cu un sfert din date fără să știi. Reluăm la capitolul 2." },
+        {
+          "tip": "verificare",
+          "intrebare": "Într-un răspuns JSON, ce diferență e între <code>\"value\": null</code> și lipsa completă a cheii <code>value</code>?",
+          "optiuni": [
+            "Niciuna, ambele înseamnă că nu există valoare",
+            "null spune explicit că valoarea lipsește; cheia absentă înseamnă că API-ul nu raportează deloc câmpul",
+            "null înseamnă zero",
+            "Cheia absentă e o eroare a serverului"
+          ],
+          "corect": 1,
+          "explicatie": "Distincția se păstrează până în DataFrame. Un null devine o valoare lipsă pe care o poți număra și raporta. O cheie absentă poate deveni o coloană care lipsește cu totul pentru anumite înregistrări — și dacă nu verifici, codul care o folosește cade abia mai târziu, la altă țară."
+        }
+      ]
+    }
+  ]
+}

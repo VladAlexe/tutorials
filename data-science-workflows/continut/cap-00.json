@@ -1,0 +1,61 @@
+{
+  "numar": 0,
+  "titlu": "Despre cartea aceasta",
+  "parte": "ÎNAINTE DE ÎNCEPUT",
+  "sectiuni": [
+    {
+      "id": "0.1",
+      "titlu": "Ce este cartea aceasta",
+      "rezumat": "Un suport de curs care se citește și se folosește, nu un manual pe care doar îl parcurgi.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Aceasta e cartea cursului. O citești de la un capăt la altul, dar nu doar citești: la fiecare pas ai ceva de încercat, de recunoscut sau de verificat. E gândită să stea deschisă lângă editorul tău, nu în locul lui." },
+        { "tip": "text", "continut": "Lucrul real se face în altă parte — în editorul tău, în terminal, în repository-ul echipei. Cartea explică <strong>de ce</strong> faci fiecare pas, îți <strong>arată</strong> cum arată datele când le atingi, și te <strong>verifică</strong> pe scurt, ca să știi dacă ai înțeles înainte să treci mai departe. Restul, adică munca propriu-zisă, o faci tu, cu mâinile tale." },
+        { "tip": "nota", "eticheta": "CE NU ESTE", "continut": "Nu e o colecție de slide-uri și nu e un referat pe care îl memorezi pentru examen. Nimic din ce e aici nu are sens fără să deschizi și tu un proiect în paralel. Dacă doar o citești, ai aflat despre un flux de lucru; ca să-l știi, trebuie să treci datele tale prin el." }
+      ]
+    },
+    {
+      "id": "0.2",
+      "titlu": "Cum e organizată",
+      "rezumat": "Patru părți, opt capitole, subcapitole scurte — în ordinea în care se lucrează de fapt.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Cartea are patru părți și opt capitole. Fiecare capitol e împărțit în subcapitole scurte, câte unul pe ecran, ca să poți lucra o bucată și să te oprești fără să pierzi firul." },
+        { "tip": "lista", "elemente": [
+          "<strong>Partea I — Fundamente:</strong> mediul de lucru, tipurile de date și de fișiere, formatul JSON.",
+          "<strong>Partea a II-a — Colectarea:</strong> cum aduci datele prin API și cum le versionezi cu Git.",
+          "<strong>Partea a III-a — Pregătirea:</strong> curățarea, agregarea și așezarea datelor într-o bază de date.",
+          "<strong>Partea a IV-a — Analiza:</strong> explorarea, variabilele derivate, modelul și raportul final."
+        ]},
+        { "tip": "text", "continut": "Ordinea nu e întâmplătoare: urmează fluxul de lucru real, de la întrebare la rezultat. Nu poți curăța date pe care nu le-ai colectat și nu poți modela ce n-ai înțeles întâi. De aceea, prima dată, <strong>capitolele se citesc în ordine</strong>. Odată ce ai parcurs tot drumul, poți reveni la orice subcapitol ca la o referință." }
+      ]
+    },
+    {
+      "id": "0.3",
+      "titlu": "La curs și singur",
+      "rezumat": "Aceeași carte funcționează în două regimuri, fără versiuni separate.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Cartea e făcută să meargă în două feluri, fără să existe o versiune „de la curs” și una „de acasă”. E aceeași carte; se schimbă doar felul în care o folosești." },
+        { "tip": "text", "continut": "<strong>La curs</strong>, profesorul explică o secțiune, iar tu răspunzi la verificări și încerci componentele interactive pe loc. Discuția din sală pornește de la ce vezi pe ecran, nu de la un text pe care încă nu l-ai citit." },
+        { "tip": "text", "continut": "<strong>Singur</strong>, o iei în ritmul tău: citești, te oprești la o componentă, o încerci de câte ori vrei, te autotestezi și mergi mai departe. Progresul se reține în acest navigator, așa că poți relua de unde ai rămas." },
+        { "tip": "nota", "eticheta": "UN SINGUR DRUM", "continut": "Ce faci la curs și ce faci acasă se completează, nu se dublează. Verificările nu se notează; sunt acolo ca să prinzi singur ce n-ai înțeles, exact în momentul în care contează." }
+      ]
+    },
+    {
+      "id": "0.4",
+      "titlu": "De ce ai nevoie",
+      "rezumat": "Puțin, și îl pregătim împreună la primul capitol.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Ai nevoie de foarte puțin ca să începi, iar ce lipsește instalăm împreună în primul capitol." },
+        { "tip": "lista", "elemente": [
+          "Un calculator pe care poți instala programe — Windows, macOS sau Linux, oricare merge.",
+          "Un editor de cod. Folosim VS Code, dar nu depinzi de el pentru a înțelege ideile.",
+          "Un cont pe platforma de versionare, ca să lucrezi în echipă și să-ți publici proiectul."
+        ]},
+        { "tip": "text", "continut": "Nu-ți trebuie experiență anterioară de programare și nu-ți trebuie un calculator puternic. Conturile pentru sursele de date și detaliile de configurare vin la locul lor, în <strong>capitolul 1</strong>. Deocamdată, e destul să ai unde scrie cod și unde să-l salvezi." }
+      ]
+    }
+  ]
+}
