@@ -1,0 +1,16 @@
+{
+  "tipareInitiale": "# mediu virtual\nvenv/\n\n# secrete\n.env\n\n# cache Python\n__pycache__/\n\n# ieșiri regenerabile\n*.pdf",
+  "fisiere": [
+    { "cale": "colector.py" },
+    { "cale": "curatare.py" },
+    { "cale": "README.md" },
+    { "cale": "venv/bin/python" },
+    { "cale": "venv/lib/site-packages/" },
+    { "cale": "__pycache__/colector.pyc" },
+    { "cale": "date/brut/populatie.json" },
+    { "cale": "raport.pdf" },
+    { "cale": ".env.example" },
+    { "cale": ".env", "tracked": true },
+    { "cale": ".DS_Store" }
+  ]
+}

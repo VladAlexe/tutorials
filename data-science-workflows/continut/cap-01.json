@@ -34,6 +34,7 @@
         { "tip": "nota", "eticheta": "DE CE CONTEAZĂ PENTRU ECHIPĂ", "continut": "Într-un proiect de cinci oameni, etapele se împart. Dacă fiecare își ține rezultatul local, al doilea nu poate începe până nu-i trimite primul un fișier pe chat. Cu o bază de date și un repository comun, fiecare ia de unde a lăsat celălalt. Cursul e construit exact în jurul acestei probleme." },
         {
           "tip": "verificare",
+          "id": "1.1-v1",
           "intrebare": "O echipă descoperă la analiza exploratorie că indicatorul ales nu are date pentru 40% din țări. Ce face?",
           "optiuni": [
             "Continuă analiza doar pe țările care au date, fără să menționeze",
@@ -108,6 +109,7 @@
         { "tip": "nota", "eticheta": "CUM ȘTII CĂ E ACTIV", "continut": "După activare, promptul din terminal începe cu <code>(venv)</code>. Dacă nu vezi paranteza aceea, instalezi în Python-ul global — cea mai frecventă sursă de „la mine mergea”." },
         {
           "tip": "verificare",
+          "id": "1.3-v1",
           "intrebare": "Ai activat mediul, ai instalat pandas, ai închis laptopul. A doua zi deschizi proiectul și <code>import pandas</code> dă eroare. De ce, cel mai probabil?",
           "optiuni": [
             "Pandas s-a dezinstalat singur",
@@ -219,6 +221,7 @@
         { "tip": "nota", "eticheta": "DE CE CONTEAZĂ PAGINAREA", "continut": "API-ul nu îți dă tot deodată. Îți dă o pagină și îți spune câte mai sunt. Dacă nu citești câmpul <code>pages</code> și nu ceri și restul, lucrezi cu un sfert din date fără să știi. Reluăm la capitolul 2." },
         {
           "tip": "verificare",
+          "id": "1.6-v1",
           "intrebare": "Într-un răspuns JSON, ce diferență e între <code>\"value\": null</code> și lipsa completă a cheii <code>value</code>?",
           "optiuni": [
             "Niciuna, ambele înseamnă că nu există valoare",

@@ -1,0 +1,32 @@
+{
+  "adrese": [
+    {
+      "eticheta": "Exemplu generic",
+      "segmente": [
+        { "t": "proto", "text": "https", "nume": "Protocol", "rol": "Cum se vorbește cu serverul. HTTP securizat.", "oblig": true },
+        { "t": "sep", "text": "://" },
+        { "t": "host", "text": "api.exemplu.org", "nume": "Gazdă", "rol": "Care server. Numele de domeniu al serviciului.", "oblig": true },
+        { "t": "sep", "text": ":" },
+        { "t": "port", "text": "443", "nume": "Port", "rol": "Ușa de intrare pe server. 443 la HTTPS — de obicei subînțeles, deci rar scris.", "oblig": false },
+        { "t": "sep", "text": "" },
+        { "t": "path", "text": "/v2/tari/ro", "nume": "Cale", "rol": "Care resursă. Aici: țara „ro”, sub versiunea 2 a API-ului.", "oblig": true },
+        { "t": "sep", "text": "?" },
+        { "t": "query", "text": "format=json&per_page=50", "nume": "Parametri de interogare", "rol": "Cum vrei resursa: filtre și opțiuni, sub formă cheie=valoare, legate cu &.", "oblig": false },
+        { "t": "sep", "text": "#" },
+        { "t": "frag", "text": "sus", "nume": "Fragment", "rol": "O ancoră în interiorul răspunsului. Aproape niciodată folosit la API-uri.", "oblig": false }
+      ]
+    },
+    {
+      "eticheta": "Banca Mondială, real",
+      "segmente": [
+        { "t": "proto", "text": "https", "nume": "Protocol", "rol": "HTTP securizat.", "oblig": true },
+        { "t": "sep", "text": "://" },
+        { "t": "host", "text": "api.worldbank.org", "nume": "Gazdă", "rol": "Serverul API al Băncii Mondiale.", "oblig": true },
+        { "t": "sep", "text": "" },
+        { "t": "path", "text": "/v2/country/ro/indicator/SP.POP.TOTL", "nume": "Cale", "rol": "Resursa cerută: indicatorul SP.POP.TOTL (populație totală) pentru țara ro, sub versiunea v2.", "oblig": true },
+        { "t": "sep", "text": "?" },
+        { "t": "query", "text": "format=json&date=2010:2020", "nume": "Parametri de interogare", "rol": "format=json cere JSON în loc de XML; date=2010:2020 limitează intervalul de ani.", "oblig": false }
+      ]
+    }
+  ]
+}

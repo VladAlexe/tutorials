@@ -1,0 +1,19 @@
+{
+  "elemente": [
+    { "cheie": "client", "nume": "Clientul", "ico": "◕",
+      "tehnic": "Programul tău",
+      "explicatie": "Știi ce vrei, dar nu intri în bucătărie. Scrii o cerere și o trimiți — nu umbli direct în baza de date a nimănui." },
+    { "cheie": "ospatar", "nume": "Ospătarul", "ico": "⇄",
+      "tehnic": "Protocolul HTTP",
+      "explicatie": "Preia cererea, o duce la bucătărie și aduce răspunsul înapoi. E felul convenit în care întrebi și primești, ca toată lumea să se înțeleagă." },
+    { "cheie": "meniu", "nume": "Meniul", "ico": "▤",
+      "tehnic": "Documentația",
+      "explicatie": "Îți spune ce poți comanda și cum. Nu comanzi ce nu e pe meniu, oricâtă nevoie ai avea — și aici e toată diferența." },
+    { "cheie": "bucatarie", "nume": "Bucătăria", "ico": "◧",
+      "tehnic": "Serverul",
+      "explicatie": "Aici se prepară răspunsul: serverul caută în baza de date, calculează, împachetează. Tu nu vezi cum, și nici nu trebuie." },
+    { "cheie": "preparat", "nume": "Preparatul", "ico": "◫",
+      "tehnic": "Răspunsul",
+      "explicatie": "Ce primești înapoi, împachetat într-un format convenit — de obicei JSON. Îl desfaci și îl folosești." }
+  ]
+}

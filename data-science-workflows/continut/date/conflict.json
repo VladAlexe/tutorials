@@ -1,0 +1,22 @@
+{
+  "scenarii": [
+    {
+      "titlu": "Aceleași rânduri — apare conflict",
+      "fisier": "config.py",
+      "conflict": true,
+      "sus": "# configurarea colectorului\nBASE = \"https://api.worldbank.org/v2\"",
+      "ours": "TIMEOUT = 30",
+      "theirs": "TIMEOUT = 60",
+      "jos": "RETRIES = 3",
+      "explicatie": "Amândoi ați schimbat același rând, TIMEOUT. Git nu poate alege în locul vostru — de aceea marchează conflictul și așteaptă. Alegi o versiune sau scrii tu una nouă, apoi git add și git commit.",
+      "combinat": "TIMEOUT = 45"
+    },
+    {
+      "titlu": "Rânduri diferite — fără conflict",
+      "fisier": "config.py",
+      "conflict": false,
+      "explicatie": "Unul a schimbat TIMEOUT, altul RETRIES — rânduri diferite ale aceluiași fișier. Git le îmbină singur, fără să te întrebe. Conflictul apare DOAR când amândoi ating aceleași rânduri.",
+      "rezolvat": "# configurarea colectorului\nBASE = \"https://api.worldbank.org/v2\"\nTIMEOUT = 60\nRETRIES = 5"
+    }
+  ]
+}

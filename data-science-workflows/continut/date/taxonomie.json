@@ -1,0 +1,37 @@
+{
+  "grupuri": [
+    {
+      "nume": "După protocol și stil",
+      "membri": [
+        { "nume": "REST", "social": true, "definitie": "Resurse identificate prin adrese, operații standard peste HTTP, fără stare între cereri.", "exemplu": "Banca Mondială, Eurostat, aproape orice portal de date deschise.", "cand": "Domină API-urile publice. Restul cărții vorbește despre REST." },
+        { "nume": "GraphQL", "social": true, "definitie": "O singură adresă către care trimiți o interogare ce descrie exact câmpurile dorite.", "exemplu": "API-ul GitHub v4.", "cand": "Când vrei să ceri fix ce-ți trebuie și să eviți zece cereri separate." },
+        { "nume": "gRPC", "social": false, "definitie": "Apeluri de tip funcție, binare și rapide, între servicii.", "exemplu": "Comunicarea internă dintre microservicii.", "cand": "Rar în cercetare — e pentru sisteme care vorbesc între ele, nu pentru tine." },
+        { "nume": "SOAP", "social": false, "definitie": "Protocol mai vechi, bazat pe XML, cu contracte stricte.", "exemplu": "Sisteme bancare și administrative moștenite.", "cand": "Îl întâlnești la instituții mari, vechi. Greoi, dar încă viu." }
+      ]
+    },
+    {
+      "nume": "După nivelul de acces",
+      "membri": [
+        { "nume": "Publice", "social": true, "definitie": "Deschise oricui, uneori cu o cheie gratuită și limite de folosire.", "exemplu": "Banca Mondială, Eurostat.", "cand": "Punctul de plecare al oricărei cercetări cu date deschise." },
+        { "nume": "De partener", "social": true, "definitie": "Acces acordat pe bază de aprobare sau contract, cu condiții.", "exemplu": "API-ul de cercetare al unei platforme sociale.", "cand": "Când datele există, dar trebuie să ceri voie și să justifici scopul." },
+        { "nume": "Private", "social": false, "definitie": "Interne unei organizații, inaccesibile din afară.", "exemplu": "API-ul intern al unei companii.", "cand": "Nu ai acces decât dacă lucrezi acolo." }
+      ]
+    },
+    {
+      "nume": "Orientate pe evenimente",
+      "membri": [
+        { "nume": "Webhooks", "social": false, "definitie": "Serverul te sună pe tine când se întâmplă ceva, în loc să întrebi tu.", "exemplu": "Notificare când apare un commit nou.", "cand": "Când vrei să reacționezi la o schimbare, nu s-o cauți periodic." },
+        { "nume": "Flux (streaming)", "social": true, "definitie": "Un canal deschis pe care curg date pe măsură ce apar.", "exemplu": "Fluxul de postări în timp real.", "cand": "Când colectezi un fenomen pe măsură ce se produce, nu retrospectiv." },
+        { "nume": "WebSockets / SSE", "social": false, "definitie": "Legături care rămân deschise pentru actualizări în timp real, în ambele sensuri sau doar dinspre server.", "exemplu": "Panouri live, cotații bursiere.", "cand": "Rar în cercetarea clasică; util la monitorizare în timp real." }
+      ]
+    },
+    {
+      "nume": "Specializate și comerciale",
+      "membri": [
+        { "nume": "Rețele sociale", "social": true, "definitie": "Acces la conținut și metadate publice de pe platforme.", "exemplu": "API-urile Reddit, Mastodon, X.", "cand": "Sursă directă de urme digitale — cu limite și condiții tot mai stricte." },
+        { "nume": "Inteligență artificială", "social": true, "definitie": "Modele oferite ca serviciu: clasificare, extragere, generare de text.", "exemplu": "Servicii de procesare a limbajului.", "cand": "Când adnotezi automat mii de texte pe care nu le-ai citi manual." },
+        { "nume": "Plăți și comerț", "social": false, "definitie": "Tranzacții, cataloage, prețuri.", "exemplu": "Procesatoare de plăți, marketplace-uri.", "cand": "Mai degrabă în economie și marketing decât în sociologie." }
+      ]
+    }
+  ]
+}

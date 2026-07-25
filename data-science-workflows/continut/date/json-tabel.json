@@ -1,0 +1,57 @@
+{
+  "moduri": [
+    {
+      "cheie": "wb",
+      "eticheta": "Banca Mondială (JSON)",
+      "linii": [
+        { "t": "[" },
+        { "t": "  { \"page\": 1, \"pages\": 1, \"total\": 2 }," },
+        { "t": "  [" },
+        { "t": "    {" },
+        { "t": "      \"country\": { \"value\": \"Romania\" },", "id": "w0-tara" },
+        { "t": "      \"date\": \"2023\",", "id": "w0-an" },
+        { "t": "      \"value\": 19051562", "id": "w0-val" },
+        { "t": "    }," },
+        { "t": "    {" },
+        { "t": "      \"country\": { \"value\": \"Romania\" },", "id": "w1-tara" },
+        { "t": "      \"date\": \"2022\",", "id": "w1-an" },
+        { "t": "      \"value\": 19047009", "id": "w1-val" },
+        { "t": "    }" },
+        { "t": "  ]" },
+        { "t": "]" }
+      ],
+      "antet": ["țară", "an", "valoare"],
+      "randuri": [
+        [ { "text": "Romania", "src": ["w0-tara"] }, { "text": "2023", "src": ["w0-an"] }, { "text": "19051562", "src": ["w0-val"] } ],
+        [ { "text": "Romania", "src": ["w1-tara"] }, { "text": "2022", "src": ["w1-an"] }, { "text": "19047009", "src": ["w1-val"] } ]
+      ],
+      "nota": "Fiecare celulă vine direct dintr-un câmp al JSON-ului. Corespondența e unu-la-unu, iar aplatizarea în tabel e aproape mecanică."
+    },
+    {
+      "cheie": "jsonstat",
+      "eticheta": "Eurostat (JSON-stat)",
+      "linii": [
+        { "t": "{" },
+        { "t": "  \"class\": \"dataset\", \"id\": [\"geo\",\"time\"]," },
+        { "t": "  \"size\": [1, 2]," },
+        { "t": "  \"dimension\": {" },
+        { "t": "    \"geo\":  { \"category\": { \"label\": { \"RO\": \"Romania\" } } },", "id": "geo-label" },
+        { "t": "    \"time\": { \"category\": { \"index\": {" },
+        { "t": "        \"2022\": 0,", "id": "time-2022" },
+        { "t": "        \"2023\": 1 } } }" , "id": "time-2023" },
+        { "t": "  }," },
+        { "t": "  \"value\": {" },
+        { "t": "    \"0\": 19047009,", "id": "val-0" },
+        { "t": "    \"1\": 19051562", "id": "val-1" },
+        { "t": "  }" },
+        { "t": "}" }
+      ],
+      "antet": ["geo", "time", "valoare"],
+      "randuri": [
+        [ { "text": "Romania", "src": ["geo-label"] }, { "text": "2023", "src": ["time-2023"] }, { "text": "19051562", "src": ["time-2023", "val-1"] } ],
+        [ { "text": "Romania", "src": ["geo-label"] }, { "text": "2022", "src": ["time-2022"] }, { "text": "19047009", "src": ["time-2022", "val-0"] } ]
+      ],
+      "nota": "Valoarea nu stă lângă țară și an. Vine din obiectul „value”, la o poziție calculată din indicii dimensiunilor (geo × time). De aceea JSON-stat nu devine tabel la fel de direct — trebuie să reconstruiești corespondența. Apasă pe o valoare: se aprind două locuri deodată, indexul de timp și valoarea."
+    }
+  ]
+}

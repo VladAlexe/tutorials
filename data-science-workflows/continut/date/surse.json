@@ -1,0 +1,18 @@
+{
+  "_nota": "Catalog de surse reale accesibile prin API. Legăturile duc la documentația oficială. Verificate — vezi README.",
+  "surse": [
+    { "nume": "Banca Mondială — Indicators API", "tip": "Statistică oficială", "domeniu": "Statistică oficială", "cheie": false, "format": "JSON / XML", "url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation", "intrebare": "Cum variază un indicator de dezvoltare între țări și în timp?" },
+    { "nume": "Eurostat — Statistics API", "tip": "Statistică oficială (UE)", "domeniu": "Statistică oficială", "cheie": false, "format": "JSON-stat", "url": "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started", "intrebare": "Cum diferă un fenomen social între regiunile europene?" },
+    { "nume": "UNdata (ONU)", "tip": "Statistică oficială", "domeniu": "Statistică oficială", "cheie": false, "format": "JSON / CSV", "url": "https://data.un.org/", "intrebare": "Cum arată un indicator la nivel mondial, dincolo de Europa?" },
+    { "nume": "Our World in Data", "tip": "Bază de date agregată", "domeniu": "Statistică oficială", "cheie": false, "format": "CSV / JSON", "url": "https://ourworldindata.org/", "intrebare": "Serii lungi despre dezvoltare, sănătate și mediu, gata de comparat." },
+    { "nume": "data.gov.ro", "tip": "Portal date deschise", "domeniu": "Guvernamental", "cheie": false, "format": "CSV / JSON", "url": "https://data.gov.ro/", "intrebare": "Ce publică administrația din România despre un domeniu?" },
+    { "nume": "OMS — GHO OData API", "tip": "Bază de date sănătate", "domeniu": "Sănătate", "cheie": false, "format": "JSON (OData)", "url": "https://www.who.int/data/gho/info/gho-odata-api", "intrebare": "Cum diferă un indicator de sănătate publică între țări?" },
+    { "nume": "REST Countries", "tip": "Serviciu de referință", "domeniu": "Geografie", "cheie": false, "format": "JSON", "url": "https://restcountries.com/", "intrebare": "Populația, regiunea și codul fiecărei țări, ca să îmbogățești un tabel." },
+    { "nume": "Nominatim (OpenStreetMap)", "tip": "Serviciu de geocodare", "domeniu": "Geografie", "cheie": false, "format": "JSON", "url": "https://nominatim.org/release-docs/latest/", "intrebare": "Transformă adrese sau locuri în coordonate, pentru o hartă." },
+    { "nume": "Open-Meteo", "tip": "Serviciu de vreme", "domeniu": "Vreme", "cheie": false, "format": "JSON", "url": "https://open-meteo.com/en/docs", "intrebare": "Cum se leagă vremea sau clima de un comportament social observat?" },
+    { "nume": "Frankfurter", "tip": "Serviciu de curs valutar", "domeniu": "Financiar", "cheie": false, "format": "JSON", "url": "https://frankfurter.dev/", "intrebare": "Conversie valutară, ca datele economice să fie comparabile." },
+    { "nume": "GitHub — REST API", "tip": "Platformă de colaborare", "domeniu": "Platforme", "cheie": true, "format": "JSON", "url": "https://docs.github.com/en/rest", "intrebare": "Cum colaborează, cine și cât, într-o comunitate open-source?" },
+    { "nume": "Reddit — API", "tip": "Rețea socială", "domeniu": "Social media", "cheie": true, "format": "JSON", "url": "https://www.reddit.com/dev/api/", "intrebare": "Ce se discută, și cum, într-o comunitate online?" },
+    { "nume": "GDELT", "tip": "Monitorizare media globală", "domeniu": "Media", "cheie": false, "format": "JSON / CSV", "url": "https://www.gdeltproject.org/data.html", "intrebare": "Cum acoperă presa din lume un eveniment, în timp și spațiu?" }
+  ]
+}

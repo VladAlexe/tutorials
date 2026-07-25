@@ -2,7 +2,10 @@
   "titlu": "Fluxuri de lucru pentru știința datelor",
   "subtitlu": "Suport de curs interactiv",
   "autor": "Vlad Alexe",
-  "sigla": { "text": "DSW", "subtext": "ADC · UBB" },
+  "sigla": {
+    "text": "DSW",
+    "subtext": "ADC · UBB"
+  },
   "capitole": [
     {
       "numar": 0,
@@ -11,10 +14,26 @@
       "fisier": "cap-00.json",
       "stare": "gata",
       "sectiuni": [
-        { "id": "0.1", "titlu": "Ce este cartea aceasta", "stare": "gata" },
-        { "id": "0.2", "titlu": "Cum e organizată", "stare": "gata" },
-        { "id": "0.3", "titlu": "La curs și singur", "stare": "gata" },
-        { "id": "0.4", "titlu": "De ce ai nevoie", "stare": "gata" }
+        {
+          "id": "0.1",
+          "titlu": "Ce este cartea aceasta",
+          "stare": "gata"
+        },
+        {
+          "id": "0.2",
+          "titlu": "Cum e organizată",
+          "stare": "gata"
+        },
+        {
+          "id": "0.3",
+          "titlu": "La curs și singur",
+          "stare": "gata"
+        },
+        {
+          "id": "0.4",
+          "titlu": "De ce ai nevoie",
+          "stare": "gata"
+        }
       ]
     },
     {
@@ -24,12 +43,36 @@
       "fisier": "cap-01.json",
       "stare": "gata",
       "sectiuni": [
-        { "id": "1.1", "titlu": "Anatomia unui proiect de date", "stare": "gata" },
-        { "id": "1.2", "titlu": "Proiectul cursului", "stare": "gata" },
-        { "id": "1.3", "titlu": "Mediul de lucru", "stare": "gata" },
-        { "id": "1.4", "titlu": "Tipuri de date", "stare": "gata" },
-        { "id": "1.5", "titlu": "Tipuri de fișiere", "stare": "gata" },
-        { "id": "1.6", "titlu": "Formatul JSON", "stare": "gata" }
+        {
+          "id": "1.1",
+          "titlu": "Anatomia unui proiect de date",
+          "stare": "gata"
+        },
+        {
+          "id": "1.2",
+          "titlu": "Proiectul cursului",
+          "stare": "gata"
+        },
+        {
+          "id": "1.3",
+          "titlu": "Mediul de lucru",
+          "stare": "gata"
+        },
+        {
+          "id": "1.4",
+          "titlu": "Tipuri de date",
+          "stare": "gata"
+        },
+        {
+          "id": "1.5",
+          "titlu": "Tipuri de fișiere",
+          "stare": "gata"
+        },
+        {
+          "id": "1.6",
+          "titlu": "Formatul JSON",
+          "stare": "gata"
+        }
       ]
     },
     {
@@ -37,17 +80,63 @@
       "titlu": "Colectarea datelor prin API",
       "parte": "PARTEA II · COLECTAREA",
       "fisier": "cap-02.json",
-      "stare": "schita",
+      "stare": "gata",
       "sectiuni": [
-        { "id": "2.1", "titlu": "Ce este un API", "stare": "schita" },
-        { "id": "2.2", "titlu": "REST: endpoint, metodă, parametri", "stare": "schita" },
-        { "id": "2.3", "titlu": "Coduri de răspuns și erori", "stare": "schita" },
-        { "id": "2.4", "titlu": "Documentația ca hartă", "stare": "schita" },
-        { "id": "2.5", "titlu": "Explorarea unui API în Postman", "stare": "schita" },
-        { "id": "2.6", "titlu": "Autentificare: chei și fișierul .env", "stare": "schita" },
-        { "id": "2.7", "titlu": "Primul apel din Python", "stare": "schita" },
-        { "id": "2.8", "titlu": "Paginare, limite de rată, reîncercări", "stare": "schita" },
-        { "id": "2.9", "titlu": "De la JSON la DataFrame", "stare": "schita" }
+        {
+          "id": "2.1",
+          "titlu": "Ce este un API",
+          "stare": "gata"
+        },
+        {
+          "id": "2.2",
+          "titlu": "Tipuri de API",
+          "stare": "gata"
+        },
+        {
+          "id": "2.3",
+          "titlu": "Ce surse de date se pot atinge prin API",
+          "stare": "gata"
+        },
+        {
+          "id": "2.4",
+          "titlu": "REST și anatomia unui endpoint",
+          "stare": "gata"
+        },
+        {
+          "id": "2.5",
+          "titlu": "Construirea unei cereri",
+          "stare": "gata"
+        },
+        {
+          "id": "2.6",
+          "titlu": "Coduri de stare și erori",
+          "stare": "gata"
+        },
+        {
+          "id": "2.7",
+          "titlu": "Documentația ca hartă",
+          "stare": "gata"
+        },
+        {
+          "id": "2.8",
+          "titlu": "Explorarea înainte de a scrie cod",
+          "stare": "gata"
+        },
+        {
+          "id": "2.9",
+          "titlu": "Chei, secrete și fișierul .env",
+          "stare": "gata"
+        },
+        {
+          "id": "2.10",
+          "titlu": "Primul apel din Python",
+          "stare": "gata"
+        },
+        {
+          "id": "2.11",
+          "titlu": "Paginare, limite, și de la JSON la tabel",
+          "stare": "gata"
+        }
       ]
     },
     {
@@ -55,16 +144,53 @@
       "titlu": "Versionare cu Git",
       "parte": "PARTEA II · COLECTAREA",
       "fisier": "cap-03.json",
-      "stare": "schita",
+      "stare": "gata",
       "sectiuni": [
-        { "id": "3.1", "titlu": "De ce versionăm", "stare": "schita" },
-        { "id": "3.2", "titlu": "Repository local și primul commit", "stare": "schita" },
-        { "id": "3.3", "titlu": "Staging, istoric, anulări", "stare": "schita" },
-        { "id": "3.4", "titlu": "Branch-uri", "stare": "schita" },
-        { "id": "3.5", "titlu": "GitHub și remote", "stare": "schita" },
-        { "id": "3.6", "titlu": "Merge și rezolvarea conflictelor", "stare": "schita" },
-        { "id": "3.7", "titlu": "Structura repository-ului de echipă", "stare": "schita" },
-        { "id": "3.8", "titlu": "Ce nu urci niciodată", "stare": "schita" }
+        {
+          "id": "3.1",
+          "titlu": "De ce versionăm",
+          "stare": "gata"
+        },
+        {
+          "id": "3.2",
+          "titlu": "Depozitul local și configurarea",
+          "stare": "gata"
+        },
+        {
+          "id": "3.3",
+          "titlu": "Cele trei zone",
+          "stare": "gata"
+        },
+        {
+          "id": "3.4",
+          "titlu": "Anularea",
+          "stare": "gata"
+        },
+        {
+          "id": "3.5",
+          "titlu": "Ramuri",
+          "stare": "gata"
+        },
+        {
+          "id": "3.6",
+          "titlu": "Îmbinare și conflicte",
+          "stare": "gata"
+        },
+        {
+          "id": "3.7",
+          "titlu": "GitHub: cont, sincronizare, autentificare",
+          "stare": "gata"
+        },
+        {
+          "id": "3.8",
+          "titlu": "Lucrul în echipă",
+          "stare": "gata"
+        },
+        {
+          "id": "3.9",
+          "titlu": "Ce nu urci niciodată",
+          "stare": "gata"
+        }
       ]
     },
     {
@@ -74,13 +200,41 @@
       "fisier": "cap-04.json",
       "stare": "schita",
       "sectiuni": [
-        { "id": "4.1", "titlu": "Profilarea: ce am de fapt", "stare": "schita" },
-        { "id": "4.2", "titlu": "Standardizare și integrare structurală", "stare": "schita" },
-        { "id": "4.3", "titlu": "Curățare de bază: duplicate, resturi", "stare": "schita" },
-        { "id": "4.4", "titlu": "Lipsuri: analiză și decizie", "stare": "schita" },
-        { "id": "4.5", "titlu": "Anomalii și valori imposibile", "stare": "schita" },
-        { "id": "4.6", "titlu": "Transformări de structură: long și wide", "stare": "schita" },
-        { "id": "4.7", "titlu": "Validare finală și dicționarul de date", "stare": "schita" }
+        {
+          "id": "4.1",
+          "titlu": "Profilarea: ce am de fapt",
+          "stare": "schita"
+        },
+        {
+          "id": "4.2",
+          "titlu": "Standardizare și integrare structurală",
+          "stare": "schita"
+        },
+        {
+          "id": "4.3",
+          "titlu": "Curățare de bază: duplicate, resturi",
+          "stare": "schita"
+        },
+        {
+          "id": "4.4",
+          "titlu": "Lipsuri: analiză și decizie",
+          "stare": "schita"
+        },
+        {
+          "id": "4.5",
+          "titlu": "Anomalii și valori imposibile",
+          "stare": "schita"
+        },
+        {
+          "id": "4.6",
+          "titlu": "Transformări de structură: long și wide",
+          "stare": "schita"
+        },
+        {
+          "id": "4.7",
+          "titlu": "Validare finală și dicționarul de date",
+          "stare": "schita"
+        }
       ]
     },
     {
@@ -90,14 +244,46 @@
       "fisier": "cap-05.json",
       "stare": "schita",
       "sectiuni": [
-        { "id": "5.1", "titlu": "Concatenare și îmbinare în pandas", "stare": "schita" },
-        { "id": "5.2", "titlu": "Tipuri de join și ce pierzi la fiecare", "stare": "schita" },
-        { "id": "5.3", "titlu": "Unitatea de analiză și cheia tabelului", "stare": "schita" },
-        { "id": "5.4", "titlu": "Construirea tabelului unificat", "stare": "schita" },
-        { "id": "5.5", "titlu": "De ce o bază de date și nu fișiere", "stare": "schita" },
-        { "id": "5.6", "titlu": "Neon și PostgreSQL", "stare": "schita" },
-        { "id": "5.7", "titlu": "Încărcare, extragere, validare", "stare": "schita" },
-        { "id": "5.8", "titlu": "SQL cât să te descurci", "stare": "schita" }
+        {
+          "id": "5.1",
+          "titlu": "Concatenare și îmbinare în pandas",
+          "stare": "schita"
+        },
+        {
+          "id": "5.2",
+          "titlu": "Tipuri de join și ce pierzi la fiecare",
+          "stare": "schita"
+        },
+        {
+          "id": "5.3",
+          "titlu": "Unitatea de analiză și cheia tabelului",
+          "stare": "schita"
+        },
+        {
+          "id": "5.4",
+          "titlu": "Construirea tabelului unificat",
+          "stare": "schita"
+        },
+        {
+          "id": "5.5",
+          "titlu": "De ce o bază de date și nu fișiere",
+          "stare": "schita"
+        },
+        {
+          "id": "5.6",
+          "titlu": "Neon și PostgreSQL",
+          "stare": "schita"
+        },
+        {
+          "id": "5.7",
+          "titlu": "Încărcare, extragere, validare",
+          "stare": "schita"
+        },
+        {
+          "id": "5.8",
+          "titlu": "SQL cât să te descurci",
+          "stare": "schita"
+        }
       ]
     },
     {
@@ -107,12 +293,36 @@
       "fisier": "cap-06.json",
       "stare": "schita",
       "sectiuni": [
-        { "id": "6.1", "titlu": "Statistici descriptive", "stare": "schita" },
-        { "id": "6.2", "titlu": "Distribuții: medie, mediană, cozi", "stare": "schita" },
-        { "id": "6.3", "titlu": "Relații între variabile", "stare": "schita" },
-        { "id": "6.4", "titlu": "Grafice care induc în eroare", "stare": "schita" },
-        { "id": "6.5", "titlu": "Corelații și matricea lor", "stare": "schita" },
-        { "id": "6.6", "titlu": "De la explorare la ipoteză", "stare": "schita" }
+        {
+          "id": "6.1",
+          "titlu": "Statistici descriptive",
+          "stare": "schita"
+        },
+        {
+          "id": "6.2",
+          "titlu": "Distribuții: medie, mediană, cozi",
+          "stare": "schita"
+        },
+        {
+          "id": "6.3",
+          "titlu": "Relații între variabile",
+          "stare": "schita"
+        },
+        {
+          "id": "6.4",
+          "titlu": "Grafice care induc în eroare",
+          "stare": "schita"
+        },
+        {
+          "id": "6.5",
+          "titlu": "Corelații și matricea lor",
+          "stare": "schita"
+        },
+        {
+          "id": "6.6",
+          "titlu": "De la explorare la ipoteză",
+          "stare": "schita"
+        }
       ]
     },
     {
@@ -122,13 +332,41 @@
       "fisier": "cap-07.json",
       "stare": "schita",
       "sectiuni": [
-        { "id": "7.1", "titlu": "Ce este o variabilă derivată", "stare": "schita" },
-        { "id": "7.2", "titlu": "Rate, ponderi, valori per capita", "stare": "schita" },
-        { "id": "7.3", "titlu": "Transformări: logaritm, scalare", "stare": "schita" },
-        { "id": "7.4", "titlu": "Variabile categoriale și codificare", "stare": "schita" },
-        { "id": "7.5", "titlu": "Regresia liniară", "stare": "schita" },
-        { "id": "7.6", "titlu": "Interpretarea coeficienților", "stare": "schita" },
-        { "id": "7.7", "titlu": "Validare, limite, corelație și cauzalitate", "stare": "schita" }
+        {
+          "id": "7.1",
+          "titlu": "Ce este o variabilă derivată",
+          "stare": "schita"
+        },
+        {
+          "id": "7.2",
+          "titlu": "Rate, ponderi, valori per capita",
+          "stare": "schita"
+        },
+        {
+          "id": "7.3",
+          "titlu": "Transformări: logaritm, scalare",
+          "stare": "schita"
+        },
+        {
+          "id": "7.4",
+          "titlu": "Variabile categoriale și codificare",
+          "stare": "schita"
+        },
+        {
+          "id": "7.5",
+          "titlu": "Regresia liniară",
+          "stare": "schita"
+        },
+        {
+          "id": "7.6",
+          "titlu": "Interpretarea coeficienților",
+          "stare": "schita"
+        },
+        {
+          "id": "7.7",
+          "titlu": "Validare, limite, corelație și cauzalitate",
+          "stare": "schita"
+        }
       ]
     },
     {
@@ -138,11 +376,31 @@
       "fisier": "cap-08.json",
       "stare": "schita",
       "sectiuni": [
-        { "id": "8.1", "titlu": "Raportul: ce se scrie și ce se arată", "stare": "schita" },
-        { "id": "8.2", "titlu": "Un notebook pe care îl citește altcineva", "stare": "schita" },
-        { "id": "8.3", "titlu": "README-ul ca raport final", "stare": "schita" },
-        { "id": "8.4", "titlu": "Prezentarea de echipă", "stare": "schita" },
-        { "id": "8.5", "titlu": "Grila de evaluare", "stare": "schita" }
+        {
+          "id": "8.1",
+          "titlu": "Raportul: ce se scrie și ce se arată",
+          "stare": "schita"
+        },
+        {
+          "id": "8.2",
+          "titlu": "Un notebook pe care îl citește altcineva",
+          "stare": "schita"
+        },
+        {
+          "id": "8.3",
+          "titlu": "README-ul ca raport final",
+          "stare": "schita"
+        },
+        {
+          "id": "8.4",
+          "titlu": "Prezentarea de echipă",
+          "stare": "schita"
+        },
+        {
+          "id": "8.5",
+          "titlu": "Grila de evaluare",
+          "stare": "schita"
+        }
       ]
     }
   ]

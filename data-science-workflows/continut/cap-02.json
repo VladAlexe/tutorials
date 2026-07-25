@@ -6,109 +6,219 @@
     {
       "id": "2.1",
       "titlu": "Ce este un API",
-      "rezumat": "",
-      "stare": "schita",
+      "rezumat": "Un intermediar între programul tău și datele altcuiva — și, mai adânc, lista de întrebări pe care cineva a decis dinainte că se pot pune.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "nota", "eticheta": "CUM FOLOSEȘTI CAPITOLUL", "continut": "Cartea nu se conectează la niciun API. Tot ce vezi în paginile acestea — adrese, răspunsuri, coduri de eroare — sunt reproduceri fidele, pe date salvate în curs, nu terminalul tău. Aici vezi <strong>cum arată și cum funcționează</strong>. Apoi deschizi editorul tău, în mediul tău virtual, și faci tu aceleași lucruri, cu cereri adevărate." },
+        { "tip": "text", "continut": "API vine de la <em>Application Programming Interface</em>: interfața prin care un program cere ceva de la altul. Cel mai simplu mod de a-l înțelege e analogia restaurantului. Tu, clientul, știi ce vrei, dar nu intri în bucătărie. Spui ospătarului, el duce comanda, bucătăria prepară, iar tu primești preparatul înapoi." },
+        { "tip": "text", "continut": "Fiecare element din analogie are un corespondent tehnic. Apasă pe fiecare piesă ca să-l vezi." },
+        { "tip": "interactiv", "componenta": "restaurant", "titlu": "Restaurantul", "sarcina": "Apasă pe fiecare element ca să vezi ce reprezintă tehnic.", "parametri": { "sursa": "restaurant.json" } },
+        { "tip": "text", "continut": "Analogia merge de obicei până aici. Dar mai are un pas, și e cel care contează cu adevărat: <strong>meniul limitează ce poți cere</strong>. Nu comanzi ce nu e pe meniu, oricâtă nevoie ai avea. Un API nu îți dă acces la date, îți dă acces la <strong>întrebările pe care cineva a decis dinainte că se pot pune</strong>. Cine face meniul decide ce se poate comanda." },
+        { "tip": "text", "continut": "Asta e o observație sociologică, nu una tehnică, și e ce deosebește capitolul de un tutorial oarecare. Când o instituție publică date printr-un API, alege ce indicatori expune, la ce nivel de agregare, pe ce interval. Alegerile acelea îți conturează dinainte spațiul cercetării." },
+        { "tip": "text", "continut": "De aici și diferența dintre a descărca un fișier și a interoga un API. Fișierul e o <strong>fotografie</strong>: o stare a datelor, înghețată în momentul în care a fost salvată. API-ul e o <strong>fereastră</strong>: te uiți prin ea la datele așa cum sunt acum, și poți cere de fiecare dată altă porțiune." },
+        { "tip": "verificare", "id": "2.1-v1", "intrebare": "De ce documentația unui API contează mai mult decât în cazul unui fișier descărcat?", "optiuni": [
+          "Nu contează mai mult; e la fel",
+          "Pentru că fișierul îl vezi întreg, dar de la API primești doar ce știi să ceri corect, iar documentația spune ce și cum poți cere",
+          "Pentru că documentația conține datele propriu-zise",
+          "Pentru că fără documentație fișierul nu se poate deschide"
+        ], "corect": 1, "explicatie": "Un fișier îl deschizi și vezi tot. La un API, primești exact ce ai știut să ceri: dacă nu cunoști parametrul potrivit sau structura răspunsului, lucrezi cu mai puțin decât există, fără să-ți dai seama. Documentația e harta acelor posibilități." }
       ]
     },
     {
       "id": "2.2",
-      "titlu": "REST: endpoint, metodă, parametri",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Tipuri de API",
+      "rezumat": "Patru axe de clasificare deodată: protocol, nivel de acces, orientare pe evenimente, specializare.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Un API nu aparține unei singure categorii; se clasifică pe mai multe axe deodată. Aceeași sursă poate fi, în același timp, REST, publică și specializată. Merită să le vezi pe toate, ca să știi la ce te uiți când întâlnești una nouă." },
+        { "tip": "text", "continut": "<strong>După protocol și stil.</strong> REST, GraphQL, gRPC și SOAP sunt moduri diferite de a structura conversația. REST domină API-urile publice — resurse la adrese, operații standard peste HTTP — și despre el vorbește tot restul cărții. Pe celelalte le vei recunoaște, dar rar le vei folosi în cercetare." },
+        { "tip": "text", "continut": "<strong>După nivelul de acces.</strong> Publice, de partener, private. Pentru un cercetător, distincția e practică: la ce ai acces fără să ceri voie, și unde începe negocierea. Datele publice sunt punctul de plecare; cele de partener cer o cerere justificată; cele private nu-ți sunt accesibile." },
+        { "tip": "text", "continut": "<strong>Orientate pe evenimente.</strong> Webhooks, fluxuri, WebSockets, SSE. Diferența de fond față de tot restul: aici nu întrebi tu periodic, ci <strong>ești anunțat</strong> când se schimbă ceva. Util când colectezi un fenomen pe măsură ce se produce." },
+        { "tip": "text", "continut": "<strong>Specializate și comerciale.</strong> Baze de date, servicii de cloud, inteligență artificială, dispozitive conectate, plăți, comerț, rețele sociale. O familie largă, în care intră tot ce e construit pentru un scop anume." },
+        { "tip": "interactiv", "componenta": "taxonomie", "titlu": "Harta familiilor", "sarcina": "Apasă pe un tip ca să vezi definiția, un exemplu și când îl întâlnești. Filtrul marchează ce apare în cercetarea socială.", "parametri": { "sursa": "taxonomie.json" } },
+        { "tip": "verificare", "id": "2.2-v1", "intrebare": "Vrei să fii anunțat imediat ce apare o postare nouă într-o comunitate, nu să întrebi din oră în oră. Ce familie cauți?", "optiuni": [
+          "Un API REST clasic, interogat des",
+          "Un API orientat pe evenimente — flux sau webhook",
+          "Un API SOAP",
+          "Un API privat"
+        ], "corect": 1, "explicatie": "Când vrei să fii anunțat de o schimbare în loc s-o cauți periodic, familia potrivită e cea orientată pe evenimente: fluxuri, webhooks, WebSockets. Interogarea repetată a unui REST ar merge, dar e risipă și întârzie." }
       ]
     },
     {
       "id": "2.3",
-      "titlu": "Coduri de răspuns și erori",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Ce surse de date se pot atinge prin API",
+      "rezumat": "Un tur panoramic al surselor reale, fiecare cu întrebarea socială pe care ar putea-o susține.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Aproape orice serviciu care ține date importante le oferă și printr-un API. Merită să vezi întinderea, pentru că metoda pe care o înveți aici nu se termină la proiectul de la curs — o vei folosi oriunde există o sursă cu API." },
+        { "tip": "text", "continut": "<strong>Statistica oficială</strong> — Banca Mondială, Eurostat, ONU, institutele naționale precum INS — răspunde la întrebări despre cum variază un fenomen între țări sau în timp. <strong>Portalurile de date deschise</strong>, guvernamentale, arată ce alege administrația să facă public. <strong>Serviciile de referință</strong>, precum lista țărilor sau geocodarea, îmbogățesc un tabel cu context." },
+        { "tip": "text", "continut": "<strong>Platformele sociale</strong> sunt sursă directă de urme digitale — ce și cum se discută — dar cu limite tot mai stricte. <strong>Serviciile externe</strong>, ca vremea sau cursul valutar, leagă un comportament de un context măsurabil. <strong>Monitorizarea media</strong> arată cum acoperă presa un eveniment. Iar <strong>serviciile de inteligență artificială</strong> te ajută să adnotezi automat mii de texte pe care nu le-ai citi manual." },
+        { "tip": "text", "continut": "Nu reține lista pe de rost. Reține tiparul: pentru aproape orice întrebare socială există undeva o sursă cu API, iar munca ta e s-o găsești, s-o înțelegi și s-o combini cu altele." },
+        { "tip": "interactiv", "componenta": "surse", "titlu": "Catalog de surse", "sarcina": "Filtrează după domeniu. Fiecare sursă e reală, cu documentația oficială și o întrebare pe care ar putea-o susține.", "parametri": { "sursa": "surse.json" } },
+        { "tip": "verificare", "id": "2.3-v1", "intrebare": "Vrei să studiezi cum s-a modificat acoperirea mediatică a unui subiect în presa mai multor țări, de-a lungul unui an. Ce tip de sursă cauți întâi?", "optiuni": [
+          "Un serviciu de curs valutar",
+          "O bază de statistică oficială despre populație",
+          "Un serviciu de monitorizare a media globale",
+          "Un API de geocodare"
+        ], "corect": 2, "explicatie": "Întrebarea e despre acoperirea mediatică în timp și spațiu — exact ce oferă un serviciu de monitorizare a presei mondiale. Sursa se alege din întrebare, nu invers." }
       ]
     },
     {
       "id": "2.4",
-      "titlu": "Documentația ca hartă",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "REST și anatomia unui endpoint",
+      "rezumat": "Resurse la adrese, operații standard, fără stare — și cele șase părți ale unei adrese.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "REST înseamnă trei idei simple. <strong>Resurse identificate prin adrese</strong>: fiecare lucru pe care îl poți cere are propriul URL. <strong>Operații standard</strong>: aceleași verbe HTTP pentru orice resursă. Și <strong>fără stare între cereri</strong>: serverul nu ține minte ce ai cerut înainte, deci fiecare cerere trebuie să fie completă în sine." },
+        { "tip": "text", "continut": "Verbele HTTP sunt câteva: GET citește, POST creează, PUT și PATCH modifică, DELETE șterge. Nouă ne trebuie aproape numai <strong>GET</strong>, pentru că noi citim date, nu le modificăm. Restul le vei întâlni când vei construi tu un serviciu, nu când colectezi de la unul." },
+        { "tip": "text", "continut": "Un <strong>endpoint</strong> este adresa unei resurse. O adresă completă are șase părți: <strong>protocol</strong> (cum se vorbește), <strong>gazdă</strong> (care server), <strong>port</strong> (ce ușă, de obicei subînțeles), <strong>cale</strong> (care resursă), <strong>parametri de interogare</strong> (cum o vrei) și <strong>fragment</strong> (o ancoră, rar la API-uri). Port și fragment apar rar, dar le vei vedea în alte adrese și trebuie să știi ce sunt." },
+        { "tip": "interactiv", "componenta": "anatomie", "titlu": "Anatomia unei adrese", "sarcina": "Apasă pe fiecare segment colorat: ce e, ce rol are, dacă e obligatoriu. Un exemplu generic și unul real.", "parametri": { "sursa": "anatomie.json" } },
+        { "tip": "verificare", "id": "2.4-v1", "intrebare": "În adresa <code>https://api.worldbank.org/v2/country/ro/indicator/SP.POP.TOTL?format=json</code>, ce este <code>?format=json</code>?", "optiuni": [
+          "Gazda",
+          "Calea către resursă",
+          "Un parametru de interogare, care spune cum vrei resursa",
+          "Fragmentul"
+        ], "corect": 2, "explicatie": "Tot ce vine după semnul întrebării, sub formă cheie=valoare, este parametru de interogare: modifică felul în care primești resursa, fără să schimbe resursa în sine. Aici, cere JSON în loc de XML." }
       ]
     },
     {
       "id": "2.5",
-      "titlu": "Explorarea unui API în Postman",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Construirea unei cereri",
+      "rezumat": "Cum aduni parametrii într-o adresă corectă — și componenta care construiește adresa Băncii Mondiale în timp real.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "O cerere se construiește lipind calea de parametri. Parametrii vin după semnul întrebării, legați prin <code>&</code>, fiecare sub formă <code>cheie=valoare</code>. Unii sunt obligatorii, alții opționali: dacă lipsești un parametru opțional, serverul folosește o valoare implicită — de obicei scrisă în documentație." },
+        { "tip": "text", "continut": "Valorile care conțin spații sau caractere speciale trebuie <strong>codificate</strong> pentru adresă: un spațiu devine <code>%20</code>, semnul plus și diacriticele au și ele forme proprii. De aceea nu lipești niciodată valori direct în adresă. În Python, biblioteca <code>requests</code> face codificarea singură dacă îi dai parametrii separat — vezi 2.10." },
+        { "tip": "la_proiect", "continut": "<p>La Banca Mondială, o cerere de date arată așa: <code>https://api.worldbank.org/v2/country/ro/indicator/SP.POP.TOTL?format=json</code>. Calea spune <em>ce</em>: indicatorul <code>SP.POP.TOTL</code> pentru țara <code>ro</code>, sub versiunea <code>v2</code>. Parametrii spun <em>cum</em>: <code>format=json</code>, la care putem adăuga <code>date</code> pentru interval, <code>per_page</code> pentru mărimea paginii, <code>mrv</code> pentru cele mai recente valori.</p><p>Mai multe țări se separă prin punct și virgulă: <code>country/ro;it;es</code>. Construiește-o mai jos, bucată cu bucată.</p>" },
+        { "tip": "interactiv", "componenta": "constructor", "titlu": "Constructor de cereri", "sarcina": "Alege din controale; adresa se construiește în timp real, cu fiecare segment colorat. Sub ea, răspunsul din eșantionul local. Scoate format=json și vezi ce se întâmplă.", "parametri": { "sursa": "wb-data.json" } },
+        { "tip": "text", "continut": "Detaliul de reținut din componentă: dacă scoți bifa <code>format=json</code>, răspunsul vine în <strong>XML</strong>. Formatul implicit al Băncii Mondiale nu e JSON, ci XML — iar mulți se împiedică aici prima dată. Vezi-l o dată acum, ca să nu-l mai uiți." },
+        { "tip": "verificare", "id": "2.5-v1", "intrebare": "Ceri <code>country/ro;it/indicator/SP.POP.TOTL?date=2020:2022&format=json</code>. Ce primești?", "optiuni": [
+          "Doar populația României, pe toți anii",
+          "Populația României și a Italiei, pentru anii 2020, 2021 și 2022, în JSON",
+          "O eroare, pentru că nu poți cere două țări deodată",
+          "Toate țările lumii pentru 2020–2022"
+        ], "corect": 1, "explicatie": "Două țări separate prin punct și virgulă, un interval de ani cu <code>date=2020:2022</code>, format JSON. Fiecare parametru face exact ce spune — nimic ascuns." }
       ]
     },
     {
       "id": "2.6",
-      "titlu": "Autentificare: chei și fișierul .env",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Coduri de stare și erori",
+      "rezumat": "Familiile 2xx–5xx, cine e vinovat la fiecare — și de ce codul de stare nu e niciodată suficient.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Fiecare răspuns HTTP vine cu un cod de stare, grupat în patru familii. <strong>2xx</strong> — a mers. <strong>3xx</strong> — resursa s-a mutat, urmează o redirecționare. <strong>4xx</strong> — greșeala e la tine: ai cerut ceva greșit. <strong>5xx</strong> — greșeala e la server." },
+        { "tip": "text", "continut": "În practică revin câteva: <strong>200</strong> (succes), <strong>400</strong> (cerere greșită), <strong>401</strong> și <strong>403</strong> (nu ești autentificat / nu ai voie), <strong>404</strong> (nu există), <strong>429</strong> (prea multe cereri), <strong>500</strong> și <strong>503</strong> (serverul a căzut sau e supraîncărcat). Regula de citire: 4xx înseamnă că repari tu cererea; 5xx înseamnă că aștepți și reîncerci." },
+        { "tip": "la_proiect", "continut": "<p>Aici e partea care face secțiunea să merite existența: <strong>cele două API-uri ale noastre se comportă opus la erori</strong>. Un cod de țară inexistent la Banca Mondială întoarce <strong>200</strong> — adică „succes” — cu eroarea ascunsă în corpul răspunsului, într-un câmp <code>message</code> (codul 120 = țară sau indicator invalid; 175 = indicator arhivat). Aceeași greșeală la Eurostat întoarce <strong>400</strong>, cu mesajul <code>INVALID_QUERY_DIMENSION_VALUE</code>.</p><p>Concluzia, scrisă apăsat: <strong>codul de stare nu e suficient — uită-te întotdeauna și în corp.</strong></p>" },
+        { "tip": "interactiv", "componenta": "coduri", "titlu": "Cereri corecte și greșite", "sarcina": "Trimite cereri către ambele API-uri și vezi codul, antetul și corpul. Cazul cu 200 înșelător e marcat ca fiind capcana.", "parametri": { "sursa": "coduri.json" } },
+        { "tip": "verificare", "id": "2.6-v1", "intrebare": "O cerere către Banca Mondială a întors 200, dar tabelul tău e gol. Ce verifici întâi?", "optiuni": [
+          "Reîncerci de câteva ori, poate a fost o eroare de rețea",
+          "Te uiți în corpul răspunsului: al doilea element poate fi null sau primul poate conține un mesaj de eroare",
+          "Schimbi biblioteca de HTTP",
+          "Concluzionezi că țara nu are date și treci mai departe"
+        ], "corect": 1, "explicatie": "La Banca Mondială, 200 nu garantează date. Corpul poate avea un <code>message</code> cu eroare (cod 120 sau 175), sau al doilea element poate fi <code>null</code>. Codul de stare te trimite, dar corpul îți spune adevărul." }
       ]
     },
     {
       "id": "2.7",
-      "titlu": "Primul apel din Python",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Documentația ca hartă",
+      "rezumat": "Unde cauți adresa de bază, parametrii, exemplele și limitele — în orice documentație de API.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Orice documentație de API are cam aceleași zone, oricât de diferit ar arăta pagina. Cauți întotdeauna: <strong>adresa de bază</strong> (de unde pornesc toate cererile), <strong>structura apelului</strong> (tiparul căii), <strong>lista de parametri</strong> (ce poți adăuga), <strong>exemple</strong> (adrese gata de copiat) și <strong>limitele</strong> (erori, format implicit, autentificare, cât de des poți cere)." },
+        { "tip": "text", "continut": "Un detaliu ușor de trecut cu vederea: <strong>versiunea</strong>. Când adresa conține <code>v2</code>, aceea e versiunea API-ului. Contează, pentru că o versiune nouă poate schimba forma răspunsului, iar codul scris pentru <code>v1</code> se poate rupe. Verifică ce versiune folosești și dacă e cea curentă." },
+        { "tip": "la_proiect", "continut": "<p>Cele două documentații ale noastre sunt oficiale și merită deschise acum. La <strong>Banca Mondială</strong>, structura apelurilor și lista de parametri sunt descrise în ghidurile din documentația Indicators API. La <strong>Eurostat</strong>, ghidul „API — Getting started” explică forma adresei și codurile seturilor de date.</p><p>Legăturile complete sunt în secțiunea de lecturi de la finalul capitolului. Deschide-le în paralel cu harta de mai jos.</p>" },
+        { "tip": "interactiv", "componenta": "harta_doc", "titlu": "Harta documentației", "sarcina": "Apasă pe o zonă ca să afli ce cauți acolo. Apoi rezolvă sarcina: găsește parametrul care limitează numărul de rezultate.", "parametri": { "sursa": "harta-doc.json" } },
+        { "tip": "verificare", "id": "2.7-v1", "intrebare": "Ai nevoie doar de datele pe ultimii cinci ani. Ce cauți în documentație?", "optiuni": [
+          "Adresa de bază",
+          "Parametrul care filtrează după an sau după cele mai recente valori — <code>date</code>, respectiv <code>mrv</code>",
+          "Codul de eroare 429",
+          "Fragmentul din adresă"
+        ], "corect": 1, "explicatie": "Filtrarea temporală se face cu parametri: <code>date=2019:2023</code> pentru un interval, sau <code>mrv=5</code> pentru cele mai recente cinci valori. Îi găsești în zona de parametri a documentației." }
       ]
     },
     {
       "id": "2.8",
-      "titlu": "Paginare, limite de rată, reîncercări",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Explorarea înainte de a scrie cod",
+      "rezumat": "De ce nu începi cu Python: vezi întâi forma răspunsului, cu browserul sau cu Postman.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Nu începi cu Python. Începi explorând, ca să vezi forma răspunsului <strong>înainte</strong> de a scrie cod care o presupune. Dacă scrii mai întâi codul și abia apoi descoperi că răspunsul arată altfel decât credeai, ai pierdut timpul de două ori: o dată scriind, o dată reparând." },
+        { "tip": "text", "continut": "Două instrumente ajung. Pentru API-uri fără autentificare, <strong>bara de adrese a browserului</strong>: lipești adresa, apeși Enter, vezi răspunsul. Pentru restul — cu chei, cu antete, cu cereri salvate — <strong>Postman</strong>, care ține colecții de cereri, variabile de mediu și istoric. Adevărul simplu: pentru cele două API-uri ale noastre, browserul e destul." },
+        { "tip": "la_proiect", "continut": "<p>Ia aceeași cerere — populația României de la Banca Mondială — și fă-o în două feluri. În <strong>browser</strong>: lipești adresa cu <code>format=json</code> și vezi răspunsul brut. În <strong>Postman</strong>: o salvezi într-o colecție, îi pui intervalul de ani ca variabilă și o poți relua oricând.</p><p>Vei observa același lucru pe care l-ai văzut la constructor: fără <code>format=json</code>, browserul îți arată XML.</p>" },
+        { "tip": "interactiv", "componenta": "constructor", "titlu": "Explorează combinații", "sarcina": "Altă sarcină, același constructor: găsește o combinație care întoarce valori lipsă și încearcă să explici de ce. Indiciu: pentru CO2, anii recenți nu au încă date.", "parametri": { "sursa": "wb-data.json" } },
+        { "tip": "verificare", "id": "2.8-v1", "intrebare": "De ce explorăm un API în browser sau Postman înainte de a scrie cod în Python?", "optiuni": [
+          "Ca să evităm complet scrierea de cod",
+          "Ca să vedem forma reală a răspunsului înainte de a scrie cod care o presupune, și să nu reparăm de două ori",
+          "Pentru că Python nu poate face cereri HTTP",
+          "Pentru că browserul e mai rapid decât Python"
+        ], "corect": 1, "explicatie": "Explorarea îți arată structura răspunsului — câte elemente, ce câmpuri, unde sunt datele — înainte să scrii codul care o parcurge. Așa scrii cod pe ce există, nu pe ce presupui." }
       ]
     },
     {
       "id": "2.9",
-      "titlu": "De la JSON la DataFrame",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Chei, secrete și fișierul .env",
+      "rezumat": "Secțiune pregătitoare: sursele noastre nu cer cheie, dar altele o cer — și un secret ajuns în istoric rămâne acolo.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Să fim deschiși de la început: cele două API-uri ale proiectului — Banca Mondială și Eurostat — <strong>nu cer cheie</strong>. Secțiunea aceasta e pregătitoare, nu simulăm o nevoie inexistentă. Dar aproape orice altă sursă pe care o vei atinge cere o formă de autentificare, și greșelile de aici sunt printre cele mai costisitoare." },
+        { "tip": "text", "continut": "O <strong>cheie</strong> e un șir secret care spune serverului cine ești, ca să-ți poată număra cererile, limita accesul sau factura. Le vei întâlni în trei forme: cheie pusă ca parametru în adresă, cheie pusă într-un antet, sau un <em>token</em> obținut printr-un schimb prealabil. Comună tuturor: <strong>nu se scrie niciodată direct în cod</strong>." },
+        { "tip": "text", "continut": "Locul cheilor e un fișier <code>.env</code>, ținut lângă cod dar în afara lui. Îl adaugi în <code>.gitignore</code>, ca să nu ajungă niciodată pe GitHub. Îl citești cu <code>python-dotenv</code>. Și urci un <code>.env.example</code> — aceleași chei, dar fără valori — ca să știe colegul ce trebuie să completeze la el." },
+        { "tip": "la_proiect", "continut": "<p>Chiar dacă sursele noastre nu cer cheie, tiparul se învață acum, o dată, ca să-l ai gata când vei folosi o sursă care cere. Când echipa va înregistra conturi pentru alte surse de date, cheile intră în <code>.env</code>, iar <code>.env.example</code> se urcă gol în repository.</p>" },
+        { "tip": "interactiv", "componenta": "secrete", "titlu": "Cheia și depozitul", "sarcina": "Vezi același colector cu cheia în cod și cu cheia în .env. Un comutator arată ce vede depozitul public; altul arată istoricul, unde cheia rămâne într-un commit vechi.", "parametri": { "sursa": "secrete.json" } },
+        { "tip": "text", "continut": "Partea care sperie util: o cheie ajunsă într-un commit <strong>rămâne în istoric</strong> chiar dacă o ștergi din fișier și faci alt commit. Cine are depozitul are și toate versiunile anterioare. Ștergerea din cod nu ajunge — cheia expusă trebuie <strong>regenerată</strong>, ca cea veche să nu mai funcționeze." },
+        { "tip": "verificare", "id": "2.9-v1", "intrebare": "Ai observat că ai scris o cheie direct în cod, ai șters-o și ai făcut un commit nou. E în siguranță?", "optiuni": [
+          "Da, am șters-o, deci nu mai există",
+          "Nu: commitul vechi încă o conține în istoric, deci cheia trebuie regenerată",
+          "Da, dacă am șters și fișierul .env",
+          "Nu contează, cheile nu sunt periculoase"
+        ], "corect": 1, "explicatie": "Istoricul Git păstrează versiunile vechi. Cine clonează depozitul poate scoate cheia din commitul în care încă apărea. Singura reparație reală e regenerarea cheii la furnizor." }
+      ]
+    },
+    {
+      "id": "2.10",
+      "titlu": "Primul apel din Python",
+      "rezumat": "requests, cu parametrii separați, tratarea erorilor, timeout — și regula care ține tot restul cărții: datele brute se salvează neatinse.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Cererea din Python se face cu biblioteca <code>requests</code>. Nucleul e <code>requests.get(url, params=..., timeout=...)</code>. Îi dai parametrii ca <strong>dicționar</strong>, nu lipiți în adresă — așa se codifică singuri corect. Răspunsul are <code>status_code</code> (codul de stare), <code>.json()</code> (corpul transformat în structuri Python) și <code>raise_for_status()</code> (aruncă o eroare la 4xx/5xx). Iar <code>timeout</code> nu e opțional: fără el, o cerere blocată îți oprește tot programul." },
+        { "tip": "cod", "limbaj": "python", "continut": "<span class='c'># cod scris bine de la început: parametri separați, funcție cu nume clar,</span>\n<span class='c'># tratarea erorii, salvarea răspunsului brut înainte de orice prelucrare</span>\n<span class='k'>import</span> requests, json\n\n<span class='k'>def</span> adu_indicator(tara, indicator):\n    url = f<span class='c'>\"https://api.worldbank.org/v2/country/{tara}/indicator/{indicator}\"</span>\n    r = requests.get(url, params={<span class='c'>\"format\"</span>: <span class='c'>\"json\"</span>, <span class='c'>\"per_page\"</span>: 100}, timeout=30)\n    r.raise_for_status()\n    date = r.json()\n    <span class='c'># Banca Mondială poate întoarce 200 cu eroare în corp</span>\n    <span class='k'>if</span> isinstance(date[0], dict) <span class='k'>and</span> date[0].get(<span class='c'>\"message\"</span>):\n        <span class='k'>raise</span> ValueError(date[0][<span class='c'>\"message\"</span>])\n    <span class='k'>return</span> date\n\n<span class='c'># salvezi brutul, neatins, apoi lucrezi pe copie</span>\ndate = adu_indicator(<span class='c'>\"ro\"</span>, <span class='c'>\"SP.POP.TOTL\"</span>)\n<span class='k'>with</span> open(<span class='c'>\"brut/ro_populatie.json\"</span>, <span class='c'>\"w\"</span>) <span class='k'>as</span> f:\n    json.dump(date, f, ensure_ascii=<span class='k'>False</span>, indent=2)" },
+        { "tip": "text", "continut": "Regula care se enunță aici și se repetă tot restul cărții: <strong>datele brute se salvează neatinse</strong>. Colectarea și curățarea sunt pași separați, în fișiere separate. Dacă prelucrezi în același loc în care colectezi, prima greșeală de curățare îți strică sursa și nu mai ai la ce te întoarce." },
+        { "tip": "la_proiect", "continut": "<p>Funcția de mai sus e chiar forma pe care o vei folosi în proiect: aduce un indicator pentru o țară și <strong>tratează cazul în care Banca Mondială întoarce 200 cu eroare în corp</strong>, oprindu-se cu un mesaj clar în loc să continue cu date goale. Schimbă valorile mai jos și vezi cum se schimbă ieșirea.</p>" },
+        { "tip": "interactiv", "componenta": "cod_parametri", "titlu": "Cod cu parametri", "sarcina": "Schimbă țara, indicatorul și anul din controale. Codul rămâne același; se schimbă valorile și ieșirea, luată din eșantionul local.", "parametri": { "sursa": "wb-data.json" } },
+        { "tip": "verificare", "id": "2.10-v1", "intrebare": "De ce salvezi răspunsul brut pe disc înainte de orice prelucrare?", "optiuni": [
+          "Ca să ocupi mai mult spațiu",
+          "Ca să poți reveni la sursa neatinsă când descoperi o greșeală de curățare, fără să ceri din nou de la API",
+          "Pentru că altfel requests nu funcționează",
+          "Nu are rost, se poate prelucra direct"
+        ], "corect": 1, "explicatie": "Brutul salvat e plasa ta de siguranță: orice greșeală de curățare o poți relua de la sursă, fără o nouă cerere la API și fără riscul ca datele să se fi schimbat între timp. Colectare și curățare — pași separați, fișiere separate." }
+      ]
+    },
+    {
+      "id": "2.11",
+      "titlu": "Paginare, limite, și de la JSON la tabel",
+      "rezumat": "De ce vin datele pe pagini, cum le aduni politicos, și de ce JSON-ul Băncii Mondiale devine tabel, iar JSON-stat de la Eurostat, nu.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Serviciile paginează pentru că nu-ți pot da mii de rezultate deodată fără să se împotmolească. Îți dau o pagină și îți spun câte mai sunt. Dacă nu citești câmpurile de paginare și nu ceri și restul, lucrezi cu o parte din date fără să știi." },
+        { "tip": "text", "continut": "Tot serviciile impun <strong>limite de rată</strong>: câte cereri poți face într-un interval. Depășirea aduce codul <strong>429</strong>. Răspunsul corect nu e să insiști, ci să <strong>reîncerci cu așteptare crescătoare</strong> — o secundă, apoi două, apoi patru. E și o formă de politețe față de un serviciu public gratuit, pe care îl folosești pe banii altcuiva." },
+        { "tip": "text", "continut": "După ce ai adunat răspunsul, îl <strong>aplatizezi</strong> într-un tabel. Pentru o structură regulată, <code>pandas.json_normalize</code> desface obiectele cuibărite în coloane. Când structura e neregulată, parcurgi manual. Obiectele cuibărite — un <code>country</code> care conține <code>id</code> și <code>value</code> — devin coloane separate, dacă le spui cum." },
+        { "tip": "la_proiect", "continut": "<p>La Banca Mondială, condiția de oprire a paginării nu se ghicește: o iei din răspuns. Primul element are <code>pages</code> și <code>total</code>; ceri pagină după pagină cu <code>page=1,2,3…</code> și <code>per_page</code> fixat, până ajungi la <code>pages</code>.</p><p>Iar la final, contrastul care contează: JSON-ul Băncii Mondiale devine tabel aproape direct, pentru că e o listă de rânduri. <strong>JSON-stat de la Eurostat nu</strong>, pentru că e un <em>cub</em> cu dimensiuni și categorii — valoarea nu stă lângă etichete, ci la o poziție calculată din indici.</p>" },
+        { "tip": "interactiv", "componenta": "paginare", "titlu": "Ce lipsește dacă citești o singură pagină", "sarcina": "Mișcă per_page și vezi câte pagini îți trebuie — și, mai important, care rânduri lipsesc din tabel dacă te oprești la prima pagină.", "parametri": { "sursa": "wb-data.json" } },
+        { "tip": "interactiv", "componenta": "json_tabel", "titlu": "De la JSON la tabel", "sarcina": "Apasă pe o celulă și vezi de unde a venit. Comută pe JSON-stat: acolo o valoare se aprinde în două locuri deodată, pentru că nu vine dintr-un singur câmp.", "parametri": { "sursa": "json-tabel.json" } },
+        { "tip": "rezultat", "continut": "<p>Ai primul tabel propriu al proiectului. Formulează-l ca o cifră, nu ca o competență: din unitățile pe care le voiai — să zicem, toate țările pentru un indicator, pe cinci ani — <strong>atâtea există în sursă, atâtea lipsesc</strong>. Numărul e aproape întotdeauna mai mic decât se așteaptă cineva, iar asta e constatarea, nu un accident.</p>" },
+        { "tip": "limite", "continut": "<p>Un indicator absent dintr-o bază nu înseamnă un fenomen absent din lume. Cine decide ce se măsoară decide, indirect, ce se poate cerceta. Statele mici, teritoriile contestate și regiunile fără capacitate statistică lipsesc <strong>sistematic, nu întâmplător</strong> — iar dacă tratezi lipsa ca pe zgomot, reproduci fără să vrei aceeași tăcere din date.</p>" },
+        { "tip": "verificare", "id": "2.11-v1", "intrebare": "Ai cerut prima pagină de la Banca Mondială, cu <code>per_page=50</code>, și ai primit 50 de rânduri. Cum știi dacă mai sunt date?", "optiuni": [
+          "Dacă am primit fix 50, sigur nu mai sunt",
+          "Mă uit la câmpurile pages și total din primul element și cer paginile rămase până ajung la pages",
+          "Cer aceeași pagină de mai multe ori",
+          "Nu am cum să știu"
+        ], "corect": 1, "explicatie": "Numărul de rânduri de pe o pagină nu spune dacă mai există altele. Răspunsul îți dă <code>pages</code> și <code>total</code>; condiția de oprire se ia de acolo, nu se ghicește." },
+        { "tip": "lecturi", "titlu": "Lecturi", "referinte": [
+          { "autor": "Wilson, G., Bryan, J., Cranston, K., Kitzes, J., Nederbragt, L., Teal, T. K.", "an": 2017, "titlu": "Good Enough Practices in Scientific Computing", "sursa": "PLOS Computational Biology 13(6), e1005510", "url": "https://doi.org/10.1371/journal.pcbi.1005510" },
+          { "autor": "Gentzkow, M., Shapiro, J. M.", "an": 2014, "titlu": "Code and Data for the Social Sciences: A Practitioner's Guide", "sursa": "University of Chicago", "url": "https://web.stanford.edu/~gentzkow/research/CodeAndData.pdf" },
+          { "autor": "Banca Mondială", "titlu": "About the Indicators API Documentation", "sursa": "World Bank Data Help Desk", "url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation" },
+          { "autor": "Eurostat", "titlu": "API — Getting started", "sursa": "Eurostat Data Browser user guides", "url": "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started" }
+        ]}
       ]
     }
   ]

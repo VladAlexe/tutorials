@@ -64,6 +64,48 @@ function inLucru(b) {
   return d;
 }
 
+/* Aplicarea noțiunii generale la sursele proiectului: bandă laterală + etichetă. */
+function laProiect(b) {
+  const d = el("div", "la-proiect");
+  d.appendChild(el("b", null, "LA PROIECTUL NOSTRU"));
+  d.appendChild(el("div", "la-proiect__c", b.continut));
+  return d;
+}
+
+/* Constatarea cu care se închide capitolul: evidențiată. */
+function rezultat(b) {
+  const d = el("div", "rezultat");
+  d.appendChild(el("b", null, "REZULTAT"));
+  d.appendChild(el("div", "rezultat__c", b.continut));
+  return d;
+}
+
+/* Ce nu poate spune ce tocmai am făcut: sobru. */
+function limite(b) {
+  const d = el("div", "limite");
+  d.appendChild(el("b", null, "LIMITE"));
+  d.appendChild(el("div", "limite__c", b.continut));
+  return d;
+}
+
+/* Referințe bibliografice. */
+function lecturi(b) {
+  const d = el("div", "lecturi");
+  d.appendChild(el("b", null, b.titlu || "Lecturi"));
+  const ol = el("ol", "lecturi__list");
+  (b.referinte || []).forEach((r) => {
+    const li = el("li");
+    const meta = [r.autor, r.an].filter(Boolean).join(", ");
+    const titluHtml = r.url
+      ? `<a href="${r.url}" target="_blank" rel="noopener"><i>${r.titlu}</i></a>`
+      : `<i>${r.titlu}</i>`;
+    li.innerHTML = `${meta ? meta + ". " : ""}${titluHtml}${r.sursa ? ". " + r.sursa : ""}`;
+    ol.appendChild(li);
+  });
+  d.appendChild(ol);
+  return d;
+}
+
 /* ---------- verificare (quiz) ---------- */
 
 function aplicaRaspuns(box, corect, ales) {
@@ -79,7 +121,9 @@ function aplicaRaspuns(box, corect, ales) {
 }
 
 function verificare(b, idSectiune, indice) {
-  const idIntrebare = `v${indice}`;
+  // Id stabil pentru întrebare (ex. "2.3-v1"), ca inserarea alteia să nu mute
+  // răspunsurile salvate. Poziția rămâne doar ca rezervă pentru conținut vechi.
+  const idIntrebare = b.id || `v${indice}`;
   const box = el("div", "ix");
   box.innerHTML = `
     <div class="ix__head"><span class="ix__kind">VERIFICARE</span></div>
@@ -147,6 +191,10 @@ export function randeazaBloc(bloc, idSectiune, indice) {
     case "verificare": return verificare(bloc, idSectiune, indice);
     case "interactiv": return interactiv(bloc);
     case "in_lucru":   return inLucru(bloc);
+    case "la_proiect": return laProiect(bloc);
+    case "rezultat":   return rezultat(bloc);
+    case "limite":     return limite(bloc);
+    case "lecturi":    return lecturi(bloc);
     default:           return el("p", null, `Bloc necunoscut: ${bloc.tip}`);
   }
 }

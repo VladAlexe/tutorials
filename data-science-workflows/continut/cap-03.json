@@ -6,97 +6,199 @@
     {
       "id": "3.1",
       "titlu": "De ce versionăm",
-      "rezumat": "",
-      "stare": "schita",
+      "rezumat": "Problema dosarului cu „analiza_finala_buna_ASA” — și de ce versionarea e o cerință de reproductibilitate, nu o comoditate.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "nota", "eticheta": "CUM FOLOSEȘTI CAPITOLUL", "continut": "Ca și până acum, cartea nu rulează Git și nu se conectează nicăieri. Simulatoarele sunt reproduceri fidele, nu terminalul tău. Aici vezi cum arată și cum se comportă Git; comenzile adevărate le dai tu, în terminalul tău." },
+        { "tip": "text", "continut": "Toată lumea a avut dosarul acela: <code>analiza_v2.py</code>, <code>analiza_v3.py</code>, <code>analiza_finala.py</code>, <code>analiza_finala_buna.py</code>, <code>analiza_finala_buna_ASA.py</code>. Pare o glumă, dar e o metodă de versionare — doar că una care nu funcționează." },
+        { "tip": "text", "continut": "Întrebarea nu e că e urât, ci ce anume nu poate spune. Nu știi <strong>ce</strong> s-a schimbat între două versiuni. Nu știi <strong>de ce</strong>. Nu știi <strong>care</strong> fișier a produs figura din raport. Numele lipite manual rețin că există mai multe variante, dar nimic despre ele." },
+        { "tip": "interactiv", "componenta": "versiuni", "titlu": "Aceeași întrebare, două răspunsuri", "sarcina": "Pune fiecare întrebare amândurora: dosarului cu fișiere numite manual și istoricului Git al aceluiași proiect. Vezi care răspunde.", "parametri": { "sursa": "versiuni.json" } },
+        { "tip": "text", "continut": "Ce rezolvă versionarea: înregistrează fiecare schimbare, permite revenirea la orice versiune anterioară, ușurează colaborarea, păstrează tot istoricul într-un singur dosar și te lasă să lucrezi la ceva nou fără să strici ce merge deja." },
+        { "tip": "nota", "eticheta": "IDEEA CARE ORGANIZEAZĂ CAPITOLUL", "continut": "<strong>Git funcționează local; GitHub este doar locul unde sincronizăm.</strong> Poți lucra cu Git luni întregi fără cont GitHub. Poți pierde tot ce e pe GitHub și să ai istoricul complet pe laptop. Aproape toate confuziile vin din amestecarea celor două — ține-le separate de la început." },
+        { "tip": "text", "continut": "Iar pentru cartea noastră, un motiv mai adânc decât comoditatea: <strong>versionarea e o cerință de reproductibilitate</strong>. Un rezultat publicat fără istoricul codului care l-a produs nu poate fi verificat de nimeni — nici măcar de tine, peste un an. Fără el, „am obținut X” rămâne o afirmație, nu o dovadă. Vezi lecturile de la finalul capitolului." },
+        { "tip": "verificare", "id": "3.1-v1", "intrebare": "Ce anume NU poate spune un dosar cu fișiere numite manual (<code>analiza_finala_buna</code>)?", "optiuni": [
+          "Nimic important; e la fel de bun ca Git",
+          "Ce s-a schimbat între versiuni, de ce, și care versiune a produs un anumit rezultat",
+          "Numele fișierelor",
+          "Data la care au fost create"
+        ], "corect": 1, "explicatie": "Numele lipite manual rețin doar că există mai multe variante. Nu spun ce s-a schimbat, de ce, cine a făcut-o, sau care versiune a produs figura din raport. Exact ce înregistrează Git la fiecare commit." }
       ]
     },
     {
       "id": "3.2",
-      "titlu": "Repository local și primul commit",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Depozitul local și configurarea",
+      "rezumat": "Ce e un depozit, ce face de fapt git init, și de ce numele tău intră în fiecare commit.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Un <strong>depozit</strong> (repository) e dosarul proiectului tău, urmărit de Git. Poți avea oricâte, pentru proiecte diferite, pe același calculator. Există depozite <em>locale</em>, pe laptopul tău, și depozite <em>la distanță</em>, precum cele de pe GitHub — dar despre asta, la 3.7." },
+        { "tip": "text", "continut": "<code>git init</code> pornește urmărirea. Ce se întâmplă de fapt: apare un dosar ascuns <code>.git</code>, care conține tot istoricul. Fișierele tale rămân neatinse. Dacă ștergi <code>.git</code>, pierzi istoricul, dar fișierele rămân — devii din nou un dosar obișnuit, neurmărit." },
+        { "tip": "text", "continut": "<code>git status</code> e comanda pe care o rulezi cel mai des. Nu o executa mecanic — <strong>învață s-o citești</strong>: îți spune pe ce ramură ești, ce e pregătit pentru commit, ce e modificat dar nepregătit, și ce fișiere nu sunt încă urmărite deloc." },
+        { "tip": "text", "continut": "Îți configurezi identitatea o dată, cu <code>git config --global user.name</code> și <code>user.email</code>. Numele și adresa apar în <strong>fiecare commit, permanent</strong>, inclusiv în depozitele publice. Nu e o formalitate: e semnătura ta pe fiecare schimbare." },
+        { "tip": "cod", "limbaj": "shell", "continut": "<span class='c'># pornești urmărirea, o singură dată, în folderul proiectului</span>\ngit init\n\n<span class='c'># configurezi identitatea (global, o singură dată pe calculator)</span>\ngit config --global user.name <span class='c'>\"Numele Tău\"</span>\ngit config --global user.email <span class='c'>\"adresa@exemplu.com\"</span>\n\n<span class='c'># comanda pe care o rulezi cel mai des</span>\ngit status" },
+        { "tip": "la_proiect", "continut": "<p>Depozitul echipei pornește cu o structură de dosare folosită tot semestrul: <code>date/brut/</code> pentru datele neatinse, <code>date/curat/</code> pentru cele curățate, <code>cod/</code> pentru scripturi, <code>raport/</code> pentru rezultat. Structura se fixează la primul commit, ca toți să lucreze la fel.</p>" },
+        { "tip": "interactiv", "componenta": "terminal_git", "titlu": "Terminal Git", "sarcina": "Pornește un depozit, verifică starea, configurează-ți identitatea. Terminalul are stare reală și răspunde ca Git-ul adevărat. Scrie ajutor dacă te blochezi.", "parametri": { "dosar": "proiect-echipa", "fisiere": ["colector.py", "README.md"], "sarcini": [
+          { "cheie": "init", "eticheta": "pornești depozitul" },
+          { "cheie": "status", "eticheta": "verifici starea" },
+          { "cheie": "config", "eticheta": "configurezi identitatea" }
+        ] } },
+        { "tip": "verificare", "id": "3.2-v1", "intrebare": "Ce se întâmplă dacă ștergi din greșeală dosarul ascuns <code>.git</code>?", "optiuni": [
+          "Se șterg și fișierele proiectului",
+          "Pierzi tot istoricul, dar fișierele tale rămân neatinse — depozitul redevine un dosar obișnuit",
+          "Nu se întâmplă nimic, Git îl recreează singur",
+          "Se șterge doar ultimul commit"
+        ], "corect": 1, "explicatie": "Tot istoricul stă în <code>.git</code>. Ștergându-l, pierzi commiturile, ramurile, tot — dar fișierele din dosarul de lucru rămân în ultima lor formă. Devii din nou un dosar neurmărit." }
       ]
     },
     {
       "id": "3.3",
-      "titlu": "Staging, istoric, anulări",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Cele trei zone",
+      "rezumat": "Dosarul de lucru, zona de pregătire, depozitul — modelul mental fără de care restul comenzilor sunt magie memorată.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Aceasta e secțiunea conceptuală a capitolului. Fără modelul celor trei zone, comenzile Git par o listă de vrăji învățate pe de rost. Cu el, aproape totul se explică singur." },
+        { "tip": "text", "continut": "<strong>Dosarul de lucru</strong> e unde editezi fișierele. <strong>Zona de pregătire</strong> (staging) e unde alegi ce intră în următoarea înregistrare. <strong>Depozitul</strong> e unde ajunge definitiv, ca un commit." },
+        { "tip": "text", "continut": "De ce există zona intermediară? Pentru că o modificare pe disc și o modificare pe care vrei s-o consemnezi nu sunt același lucru. Ai schimbat cinci fișiere, dar vrei să înregistrezi trei dintre ele, ca o unitate coerentă. Zona de pregătire e locul unde compui acel commit, înainte să-l fixezi." },
+        { "tip": "text", "continut": "Comenzile care mută între zone: <code>git add</code> duce în pregătire, <code>git restore --staged</code> scoate din pregătire, <code>git rm --cached</code> oprește urmărirea. Iar <code>git commit -m</code> mută din pregătire în depozit, definitiv." },
+        { "tip": "interactiv", "componenta": "zone", "titlu": "Cele trei zone", "sarcina": "Mută fișiere între zone. Atenție la fișierul modificat DUPĂ ce l-ai adăugat: apare în două zone deodată — exact confuzia clasică.", "parametri": { "fisiere": ["colector.py", "README.md"] } },
+        { "tip": "text", "continut": "Ce e un <strong>mesaj de commit bun</strong>: nu „modificări” sau „update”, ci ce s-a schimbat și de ce. Regula practică: mesajul completează propoziția „acest commit va…”. „acest commit va <em>repara citirea coloanei cu ani</em>” e un mesaj; „acest commit va <em>update</em>” nu e nimic." },
+        { "tip": "text", "continut": "Istoricul îl citești cu <code>git log</code> (detaliat), <code>git log --oneline</code> (compact, o linie pe commit) și <code>git show &lt;commit_id&gt;</code> (ce anume s-a schimbat într-un commit anume)." },
+        { "tip": "verificare", "id": "3.3-v1", "intrebare": "Ai făcut <code>git add fisier.py</code>, apoi ai mai modificat <code>fisier.py</code> pe disc, fără să dai iar add. Ce se înregistrează la <code>git commit</code>?", "optiuni": [
+          "Versiunea cea mai nouă, cu ultimele modificări",
+          "Versiunea de la momentul git add — modificările de după rămân nepregătite, în dosarul de lucru",
+          "Nimic, pentru că fișierul e în două stări",
+          "Ambele versiuni, în două commituri"
+        ], "corect": 1, "explicatie": "Commitul înregistrează ce era în zona de pregătire la momentul <code>git add</code>. Modificările făcute după aceea sunt în dosarul de lucru, nepregătite — de aceea fișierul apare în ambele zone. Ca să le incluzi, dai <code>git add</code> din nou." }
       ]
     },
     {
       "id": "3.4",
-      "titlu": "Branch-uri",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Anularea",
+      "rezumat": "Trei situații, trei comenzi — restore, restore --staged, revert — pe care studenții le confundă mereu.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Secțiune scurtă și, practic, cea mai utilă. Trei situații diferite cer trei comenzi diferite, iar confuzia dintre ele e sursa multor panici." },
+        { "tip": "text", "continut": "Ai stricat un fișier și nu ai pregătit nimic: <code>git restore nume_fisier</code> îl readuce la ultima versiune înregistrată. Ai pregătit din greșeală cu add: <code>git restore --staged nume_fisier</code> îl scoate din pregătire, păstrând modificările. Ai făcut deja commit și vrei să anulezi efectul fără să rescrii istoricul: <code>git revert &lt;commit_id&gt;</code> creează un commit nou care îl anulează pe cel greșit." },
+        { "tip": "text", "continut": "Ce NU tratăm aici, și de ce: comenzile care <strong>rescriu istoricul</strong> (precum <code>reset --hard</code> sau <code>rebase</code>) sunt periculoase în echipă și nu-ți trebuie la acest nivel. Anularea sigură, în echipă, e cea care lasă o urmă — nu cea care șterge trecutul." },
+        { "tip": "interactiv", "componenta": "anulare", "titlu": "Ce comandă îmi trebuie", "sarcina": "Răspunde la câteva întrebări despre ce ai făcut și primești comanda potrivită, cu ce face și ce pierzi. Un traseu, nu un tabel.", "parametri": { "sursa": "anulare.json" } },
+        { "tip": "verificare", "id": "3.4-v1", "intrebare": "Ai adăugat un fișier cu <code>git add</code> din greșeală, dar NU ai făcut încă commit. Vrei să-l scoți din pregătire, fără să pierzi ce ai scris. Ce folosești?", "optiuni": [
+          "git restore nume_fisier",
+          "git restore --staged nume_fisier",
+          "git revert nume_fisier",
+          "ștergi fișierul și îl scrii din nou"
+        ], "corect": 1, "explicatie": "<code>git restore --staged</code> scoate fișierul din zona de pregătire, dar păstrează modificările în dosarul de lucru. <code>git restore</code> (fără --staged) ar arunca chiar modificările; <code>revert</code> e pentru commituri deja făcute." }
       ]
     },
     {
       "id": "3.5",
-      "titlu": "GitHub și remote",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Ramuri",
+      "rezumat": "Linii de lucru paralele — și ce se întâmplă cu fișierele tale când comuți, lucru pe care majoritatea cursurilor îl sar.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "O <strong>ramură</strong> (branch) e o linie de lucru paralelă, care pornește dintr-un punct al istoriei. La ce folosește: încerci ceva fără să strici ce merge, sau doi oameni lucrează simultan fără să se calce pe picioare." },
+        { "tip": "text", "continut": "Comenzile: <code>git branch</code> listează, <code>git switch -c nume</code> creează și comută, <code>git switch nume</code> comută, <code>git branch -d nume</code> șterge în siguranță (doar ce e îmbinat), <code>git branch -D nume</code> șterge forțat. Forțatul cere o confirmare mentală: chiar vrei să pierzi munca de pe ramura aceea?" },
+        { "tip": "nota", "eticheta": "CE SAR MAJORITATEA CURSURILOR", "continut": "Când comuți pe altă ramură, <strong>dosarul se schimbă sub tine</strong>: fișierele devin cele de pe ramura în care ai intrat. Dacă ai modificări nesalvate care s-ar pierde, Git te oprește și îți cere să le salvezi întâi. Nu e capriciu — te apără." },
+        { "tip": "text", "continut": "Notă de vocabular: cursul folosește <code>git switch</code>, nu <code>git checkout</code>. <code>checkout</code> face prea multe lucruri diferite (comută ramuri, dar și restaurează fișiere), iar <code>switch</code> și <code>restore</code> separă cele două treburi. Vei vedea totuși <code>checkout</code> în orice tutorial mai vechi — să știi că e vărul mai încurcat al lui <code>switch</code>." },
+        { "tip": "la_proiect", "continut": "<p>Pentru echipă ajunge o convenție simplă: o ramură principală, <code>main</code>, care rămâne mereu funcțională, și câte o ramură de lucru pe sarcină (de exemplu <code>curatare-populatie</code>). Când sarcina e gata și verificată, se îmbină în <code>main</code>. Fără fluxuri complicate — la mărimea acestui proiect, ar încurca mai mult decât ajută.</p>" },
+        { "tip": "interactiv", "componenta": "ramuri", "titlu": "Graful ramurilor", "sarcina": "Dă comenzi și vezi cum crește graful: punctul de ramificare, commiturile pe fiecare ramură, unde te afli (HEAD).", "parametri": {} },
+        { "tip": "interactiv", "componenta": "terminal_git", "titlu": "Ramuri în terminal", "sarcina": "Depozitul e deja pornit, cu un commit. Listează ramurile, creează una nouă și comută, apoi îmbin-o la loc.", "parametri": { "preInit": true, "dosar": "proiect-echipa", "fisiere": ["colector.py"], "sarcini": [
+          { "cheie": "branch", "eticheta": "listezi ramurile" },
+          { "cheie": "switch", "eticheta": "creezi și comuți" },
+          { "cheie": "merge", "eticheta": "îmbini la loc" }
+        ] } },
+        { "tip": "verificare", "id": "3.5-v1", "intrebare": "Ai lucrat o oră și ai făcut commit, dar observi că erai pe ramura <code>main</code>, nu pe ramura ta de lucru. Ce înseamnă asta practic?", "optiuni": [
+          "Ai pierdut munca; commitul e distrus",
+          "Commitul există și e în siguranță pe main — doar că e pe altă ramură decât voiai; se poate muta",
+          "Git a refuzat commitul automat",
+          "Trebuie să ștergi tot și să reîncepi"
+        ], "corect": 1, "explicatie": "Munca nu se pierde: commitul e înregistrat, doar pe ramura greșită. Ramurile sunt ieftine și mobile — commitul poate fi mutat pe ramura corectă. Panica vine din a crede că „ramura greșită” înseamnă „pierdut”." }
       ]
     },
     {
       "id": "3.6",
-      "titlu": "Merge și rezolvarea conflictelor",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Îmbinare și conflicte",
+      "rezumat": "Când apare un conflict și, mai important, când NU apare — plus cum ieși din Vim, fără ironie.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "<strong>Îmbinarea</strong> aduce modificările dintr-o ramură în alta. Te muți pe ramura în care vrei să le aduci (de obicei <code>main</code>), apoi <code>git merge nume_ramura</code>." },
+        { "tip": "text", "continut": "Când apare un conflict și, mai important, când <strong>nu</strong> apare. Git se descurcă singur dacă doi oameni au schimbat fișiere diferite, sau chiar zone diferite ale aceluiași fișier. Conflictul apare <strong>doar</strong> când amândoi au schimbat aceleași rânduri — atunci Git nu poate alege în locul tău." },
+        { "tip": "text", "continut": "Într-un fișier cu conflict apar marcaje: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> deasupra (versiunea ta), <code>=======</code> la mijloc, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> dedesubt (versiunea celuilalt). Rezolvarea e manuală: editezi fișierul ca să rămână doar ce trebuie, ștergi marcajele, apoi <code>git add</code> și <code>git commit</code>." },
+        { "tip": "interactiv", "componenta": "conflict", "titlu": "Un conflict real", "sarcina": "Primul scenariu: aceleași rânduri schimbate — apare conflict, îl rezolvi. Al doilea: rânduri diferite — Git le îmbină singur, ca să vezi că nu e capricios.", "parametri": { "sursa": "conflict.json" } },
+        { "tip": "nota", "eticheta": "IEȘIREA DIN VIM", "continut": "Dacă la un merge se deschide un editor negru care nu răspunde la nimic, e Vim, și îți cere un mesaj. Nu e o pedeapsă. Apeși <code>SHIFT</code> + <code>:</code>, scrii <code>wq</code> (write &amp; quit) și apeși <code>Enter</code>. Pare mărunt; e momentul în care jumătate din sală se blochează." },
+        { "tip": "verificare", "id": "3.6-v1", "intrebare": "În ce condiții apare un conflict de îmbinare?", "optiuni": [
+          "De fiecare dată când îmbini două ramuri",
+          "Doar când cele două ramuri au modificat aceleași rânduri din același fișier",
+          "Când cele două ramuri au modificat fișiere diferite",
+          "Când folosești git switch în loc de git checkout"
+        ], "corect": 1, "explicatie": "Git îmbină singur fișiere diferite și chiar zone diferite ale aceluiași fișier. Conflictul apare strict când ambele părți au schimbat aceleași rânduri — singurul caz în care Git nu poate decide singur." }
       ]
     },
     {
       "id": "3.7",
-      "titlu": "Structura repository-ului de echipă",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "GitHub: cont, sincronizare, autentificare",
+      "rezumat": "GitHub găzduiește depozite Git, nu e Git-ul însuși — plus prima piedică reală: parola nu mai funcționează.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "GitHub e o platformă unde <strong>găzduiești</strong> depozite Git, ca să le sincronizezi și să colaborezi. Nu e Git-ul însuși. Repetând ideea de la începutul capitolului: Git funcționează local; GitHub e doar locul unde sincronizăm." },
+        { "tip": "text", "continut": "Două drumuri, după cum pornești. <strong>Ai deja depozit local:</strong> creezi unul gol pe GitHub, apoi <code>git remote add origin &lt;URL&gt;</code> și <code>git push -u origin main</code>. <strong>Nu ai depozit local:</strong> creezi pe GitHub și <code>git clone &lt;URL&gt;</code>, care aduce tot la tine." },
+        { "tip": "interactiv", "componenta": "sincronizare", "titlu": "Local și la distanță", "sarcina": "Rulează push, pull, fetch și vezi ce se mută. Scenariul de aici: colegul a împins ceva între timp, iar push-ul tău e respins — apasă „git push” și vezi de ce.", "parametri": { "seedRemoteAhead": true } },
+        { "tip": "text", "continut": "Acum secțiunea care salvează ora de curs: <strong>autentificarea</strong>. Autentificarea cu parolă pentru Git a fost eliminată. La <code>git push</code> peste HTTPS, când Git cere „parola”, introduci un <strong>token de acces personal</strong>, nu parola contului. Alternativ, o cheie SSH. Un ajutor de credențiale precum Git Credential Manager reține tokenul, ca să nu-l reintroduci de fiecare dată." },
+        { "tip": "nota", "eticheta": "PE WINDOWS, CEL MAI DES", "continut": "Dacă o parolă veche de GitHub e salvată în Credential Manager, autentificarea eșuează în continuare, oricât de corect ai proceda — până când o ștergi de acolo. E prima piedică reală a oricărei ore de Git; dacă „parola e corectă” și tot e respinsă, aici te uiți." },
+        { "tip": "interactiv", "componenta": "terminal_git", "titlu": "Push cu parolă — de ce eșuează", "sarcina": "Depozitul are deja un commit și un remote. Încearcă: git push -u origin main. Vezi mesajul real pe care îl dă GitHub.", "parametri": { "preInit": true, "remote": "https://github.com/echipa/proiect.git", "scenariu": "push-auth", "dosar": "proiect-echipa", "fisiere": ["colector.py"], "sarcini": [ { "cheie": "push", "eticheta": "încerci push" } ] } },
+        { "tip": "text", "continut": "Tratează tokenul ca pe un secret, exact ca la capitolul 2: nu-l scrie în cod, nu-l pune într-un commit. Iar despre ramura implicită: GitHub creează <code>main</code>, depozitele mai vechi au <code>master</code>. Verifici pe care ești cu <code>git branch</code> — ramura curentă e marcată." },
+        { "tip": "la_proiect", "continut": "<p>În echipă, un singur membru creează depozitul pe GitHub și îi adaugă pe ceilalți ca colaboratori (Settings → Collaborators). Ceilalți fac <code>git clone</code> și de acolo lucrează toți pe același depozit la distanță, fiecare de pe laptopul lui.</p>" },
+        { "tip": "verificare", "id": "3.7-v1", "intrebare": "<code>git push</code> îți cere parola, o introduci corect, și tot o respinge. De ce, cel mai probabil?", "optiuni": [
+          "GitHub e picat",
+          "Autentificarea cu parolă a fost eliminată — trebuie un token de acces personal, iar pe Windows o parolă veche salvată în Credential Manager trebuie ștearsă",
+          "Ai scris greșit numele ramurii",
+          "Trebuie să reinstalezi Git"
+        ], "corect": 1, "explicatie": "Parola contului nu mai funcționează pentru Git. La cererea „parolei” se introduce un token de acces personal. Iar pe Windows, o parolă veche rămasă în Credential Manager blochează totul până e ștearsă — cauza numărul unu a „parolei corecte respinse”." }
       ]
     },
     {
       "id": "3.8",
-      "titlu": "Ce nu urci niciodată",
-      "rezumat": "",
-      "stare": "schita",
+      "titlu": "Lucrul în echipă",
+      "rezumat": "Ciclul zilnic, diferența dintre fetch și pull, și de ce împărțirea muncii pe fișiere previne conflictele.",
+      "stare": "gata",
       "blocuri": [
-        {
-          "tip": "in_lucru",
-          "continut": "Structura e fixată, conținutul se scrie după ce alegem sursele de date."
-        }
+        { "tip": "text", "continut": "Ciclul zilnic e scurt și merită automatizat mental: <code>pull</code> înainte de a începe, lucrezi, <code>add</code>, <code>commit</code>, <code>push</code>. <code>pull</code>-ul de la început previne jumătate din conflicte, pentru că pornești de la ultima versiune a tuturor, nu de la una veche." },
+        { "tip": "text", "continut": "Diferența dintre <code>fetch</code> și <code>pull</code>, o dată și clar: <code>git fetch</code> aduce commiturile de la distanță, dar nu le îmbină — le poți vedea înainte de a decide. <code>git pull</code> aduce <strong>și</strong> îmbină, într-un singur pas. <code>pull</code> = <code>fetch</code> + îmbinare." },
+        { "tip": "text", "continut": "Cea mai eficientă metodă de a evita conflictele nu e tehnică, ci de organizare: <strong>împărțiți munca pe fișiere, nu pe rânduri din același fișier</strong>. Dacă fiecare lucrează în fișierul lui, conflictele aproape dispar, pentru că Git le îmbină singur." },
+        { "tip": "interactiv", "componenta": "sincronizare", "titlu": "Ciclul de echipă", "sarcina": "Refă ciclul în trei pași: colegul împinge, tu încerci push (respins), faci pull, apoi push reușește. Vezi ce se mută la fiecare pas.", "parametri": {} },
+        { "tip": "la_proiect", "continut": "<p>Depozitul de echipă are dosare clare: <code>date/brut/</code>, <code>date/curat/</code>, <code>cod/</code>, <code>raport/</code>. Fiecare membru răspunde de fișierele lui, iar rolurile se împart pe pași ai fluxului. Regula care nu se încalcă: <strong>datele brute nu se modifică niciodată</strong> — se colectează o dată și rămân neatinse, ca orice greșeală de curățare să poată fi reluată de la sursă.</p>" },
+        { "tip": "verificare", "id": "3.8-v1", "intrebare": "De ce se face <code>git pull</code> înainte de a începe lucrul, nu doar la final?", "optiuni": [
+          "E o superstiție, nu contează momentul",
+          "Ca să pornești de la ultima versiune a tuturor și să eviți să lucrezi peste ceva deja schimbat — jumătate din conflicte vin din a porni de la o versiune veche",
+          "Pentru că altfel git push nu funcționează deloc",
+          "Ca să ștergi munca colegilor"
+        ], "corect": 1, "explicatie": "Dacă pornești de la o versiune veche și abia la final aduci schimbările altora, te trezești cu conflicte care puteau fi evitate. <code>pull</code> la început te așază pe ultima versiune comună — de acolo, munca ta se adaugă curat." }
+      ]
+    },
+    {
+      "id": "3.9",
+      "titlu": "Ce nu urci niciodată",
+      "rezumat": "Fișierul .gitignore, motivele diferite pentru care excluzi lucruri — și de ce un fișier deja urcat rămâne în istoric.",
+      "stare": "gata",
+      "blocuri": [
+        { "tip": "text", "continut": "Fișierul <code>.gitignore</code> spune Git ce să nu urmărească. Sintaxa e simplă: un tipar pe linie. <code>venv/</code> ignoră un dosar întreg, <code>*.pdf</code> ignoră toate fișierele cu acea extensie, <code>.env</code> ignoră un fișier anume, iar liniile care încep cu <code>#</code> sunt comentarii." },
+        { "tip": "text", "continut": "Ce nu se urcă și, important, <strong>din ce motive diferite</strong>. Dosarul mediului virtual — pentru că e reconstruibil și diferă între sisteme. Secretele (<code>.env</code>) — pentru securitate. Fișierele temporare ale sistemului (<code>.DS_Store</code>) — pentru că nu au ce căuta acolo. Ieșirile care se pot regenera (rapoarte, cache) — pentru că le poți produce oricând din cod." },
+        { "tip": "text", "continut": "Datele mari sunt un caz aparte: Git nu e făcut pentru fișiere binare mari, se împotmolește. Dacă trebuie totuși versionate, soluția e <strong>Git LFS</strong> (Large File Storage), care ține fișierul mare în afara istoricului obișnuit și păstrează în depozit doar o referință." },
+        { "tip": "interactiv", "componenta": "gitignore", "titlu": "Ce devine ignorat", "sarcina": "Scrie tipare în .gitignore și vezi imediat ce fișiere devin ignorate. Atenție la capcană: un fișier deja urmărit nu dispare doar pentru că îl adaugi acum.", "parametri": { "sursa": "gitignore.json" } },
+        { "tip": "nota", "eticheta": "CE NU REPARĂ .GITIGNORE", "continut": "<code>.gitignore</code> oprește urmărirea fișierelor <strong>noi</strong>. Un fișier <strong>deja urcat rămâne în istoric</strong> — adăugarea lui în <code>.gitignore</code> nu îl scoate din trecut. Pentru un secret ajuns deja într-un commit, singura soluție sigură rămâne, ca la capitolul 2, <strong>regenerarea lui</strong>." },
+        { "tip": "la_proiect", "continut": "<p>Un <code>.gitignore</code> complet pentru proiectul nostru, comentat rând cu rând:</p>" },
+        { "tip": "cod", "limbaj": "shell", "continut": "<span class='c'># mediul virtual — reconstruibil, diferă între sisteme</span>\nvenv/\n\n<span class='c'># secrete — niciodată în depozit</span>\n.env\n\n<span class='c'># cache Python — regenerabil</span>\n__pycache__/\n*.pyc\n\n<span class='c'># ieșiri care se pot reproduce din cod</span>\nraport/*.pdf\n\n<span class='c'># fișiere temporare ale sistemului</span>\n.DS_Store" },
+        { "tip": "rezultat", "continut": "<p>Ai depozitul de echipă cu istoric real: cine a schimbat ce și când, pe ramuri, sincronizat pe GitHub. Nu e un rezultat empiric — dar e <strong>primul produs verificabil al proiectului</strong>, și e condiția ca tot ce urmează să poată fi reprodus de altcineva.</p>" },
+        { "tip": "limite", "continut": "<p>Versionarea nu garantează corectitudinea. Un rezultat greșit, versionat impecabil, rămâne greșit — știi doar exact când a apărut și cine l-a introdus. <strong>Reproductibil nu înseamnă adevărat</strong>, iar confuzia dintre cele două e una dintre problemele reale ale științei computaționale de azi: cod curat versionat poate produce, cu aceeași rigoare, și o concluzie corectă, și una falsă.</p>" },
+        { "tip": "verificare", "id": "3.9-v1", "intrebare": "Ai urcat din greșeală <code>.env</code> cu o cheie într-un commit. Îl adaugi acum în <code>.gitignore</code>. E rezolvat?", "optiuni": [
+          "Da, .gitignore îl scoate din depozit",
+          "Nu: .gitignore oprește doar urmărirea de acum înainte; fișierul rămâne în commiturile vechi, deci cheia trebuie regenerată",
+          "Da, dacă faci și git commit",
+          "Nu contează, .env nu se vede pe GitHub"
+        ], "corect": 1, "explicatie": "<code>.gitignore</code> nu atinge trecutul. Fișierul urcat rămâne în istoric și e vizibil oricui clonează depozitul. Trebuie scos din urmărire (<code>git rm --cached</code>) și, fiindcă era un secret, cheia trebuie regenerată — ștergerea nu ajunge." },
+        { "tip": "lecturi", "titlu": "Lecturi", "referinte": [
+          { "autor": "The Turing Way Community", "an": 2022, "titlu": "The Turing Way: A Handbook for Reproducible, Ethical and Collaborative Research", "sursa": "Zenodo, DOI 10.5281/zenodo.7625728", "url": "https://doi.org/10.5281/zenodo.7625728" },
+          { "autor": "Wilson, G., Aruliah, D. A., Brown, C. T., et al.", "an": 2014, "titlu": "Best Practices for Scientific Computing", "sursa": "PLOS Biology 12(1), e1001745", "url": "https://doi.org/10.1371/journal.pbio.1001745" },
+          { "autor": "Chacon, S., Straub, B.", "an": 2014, "titlu": "Pro Git", "sursa": "ediția a doua, Apress — disponibilă liber", "url": "https://git-scm.com/book/en/v2" }
+        ]}
       ]
     }
   ]

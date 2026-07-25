@@ -1,0 +1,22 @@
+{
+  "start": "q1",
+  "noduri": {
+    "q1": { "intrebare": "Ai făcut deja commit la greșeală?", "optiuni": [
+      { "text": "Nu, încă nu am dat commit", "next": "q2" },
+      { "text": "Da, e deja într-un commit", "next": "r_revert" }
+    ]},
+    "q2": { "intrebare": "Ai adăugat fișierul cu git add?", "optiuni": [
+      { "text": "Nu, doar l-am modificat pe disc", "next": "r_restore" },
+      { "text": "Da, l-am pus în staging cu git add", "next": "r_unstage" }
+    ]},
+    "r_restore": { "rezultat": true, "comanda": "git restore nume_fisier",
+      "explicatie": "Aruncă modificările din dosarul de lucru și readuce fișierul la ultima versiune înregistrată.",
+      "pierde": "Modificările nesalvate din fișier — definitiv. Folosește-o doar când ești sigur." },
+    "r_unstage": { "rezultat": true, "comanda": "git restore --staged nume_fisier",
+      "explicatie": "Scoate fișierul din staging, dar păstrează modificările în dosarul de lucru. Poți apoi decide ce faci cu ele.",
+      "pierde": "Nimic. Modificările rămân, doar nu mai sunt pregătite pentru commit." },
+    "r_revert": { "rezultat": true, "comanda": "git revert <commit_id>",
+      "explicatie": "Creează un commit nou care anulează efectul celui greșit, fără să rescrie istoricul.",
+      "pierde": "Nimic din istoric. Anularea e ea însăși înregistrată — de aceea e sigură în echipă, spre deosebire de comenzile care rescriu istoricul." }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "titlu": "Documentația Băncii Mondiale, schematic",
+  "zone": [
+    { "cheie": "baza", "eticheta": "Adresa de bază", "unde": "https://api.worldbank.org/v2",
+      "explicatie": "Punctul comun de plecare al tuturor cererilor. Aici e și versiunea — v2. O versiune nouă poate schimba forma răspunsului, deci contează s-o observi." },
+    { "cheie": "structura", "eticheta": "Structura apelului", "unde": "country/{cod}/indicator/{indicator}",
+      "explicatie": "Tiparul căii: ce resursă ceri și în ce ordine. Aici afli că țările se separă prin punct și virgulă." },
+    { "cheie": "parametri", "eticheta": "Lista de parametri", "unde": "date · page · per_page · mrv · format",
+      "explicatie": "Opțiunile pe care le poți adăuga după semnul întrebării. Aici cauți când vrei să filtrezi anii sau să limitezi numărul de rezultate." },
+    { "cheie": "exemple", "eticheta": "Exemple de cereri", "unde": "adrese complete, gata de copiat",
+      "explicatie": "Cel mai rapid mod de a înțelege un API: iei un exemplu care merge și îl modifici bucată cu bucată." },
+    { "cheie": "note", "eticheta": "Limite și note", "unde": "erori, format implicit, autentificare",
+      "explicatie": "Aici scrie ce te scapă de necazuri: că formatul implicit e XML, că nu e nevoie de cheie, și cum arată erorile." }
+  ],
+  "sarcina": {
+    "intrebare": "Găsește parametrul care limitează numărul de rezultate pe pagină.",
+    "optiuni": ["date", "page", "per_page", "mrv", "format"],
+    "corect": "per_page",
+    "explicatie": "per_page fixează câte rezultate primești pe o pagină. Îl găsești în zona „Lista de parametri”."
+  }
+}

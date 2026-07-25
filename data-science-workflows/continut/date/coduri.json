@@ -1,0 +1,59 @@
+{
+  "scenarii": [
+    {
+      "api": "Banca Mondială",
+      "eticheta": "Cerere corectă",
+      "cerere": "GET /v2/country/ro/indicator/SP.POP.TOTL?format=json",
+      "status": "200 OK",
+      "clasa": "ok",
+      "antet": ["content-type: application/json", "cache-control: public"],
+      "corp": "[\n  { \"page\": 1, \"pages\": 1, \"per_page\": 50, \"total\": 1 },\n  [ { \"country\": {\"id\":\"RO\",\"value\":\"Romania\"}, \"date\": \"2023\", \"value\": 19051562 } ]\n]",
+      "urmator": "Ai datele. Verifici că al doilea element nu e null și treci la prelucrare.",
+      "capcana": false
+    },
+    {
+      "api": "Banca Mondială",
+      "eticheta": "Cod de țară inexistent",
+      "cerere": "GET /v2/country/xx/indicator/SP.POP.TOTL?format=json",
+      "status": "200 OK",
+      "clasa": "ok",
+      "antet": ["content-type: application/json"],
+      "corp": "[\n  { \"message\": [ { \"id\": \"120\", \"key\": \"Invalid value\",\n      \"value\": \"The provided parameter value is not valid\" } ] }\n]",
+      "urmator": "Codul spune 200, deci „succes”. Dar corpul e un mesaj de eroare, nu date. Codul 120 = țară sau indicator invalid.",
+      "capcana": true
+    },
+    {
+      "api": "Banca Mondială",
+      "eticheta": "Indicator arhivat",
+      "cerere": "GET /v2/country/ro/indicator/XX.OLD.CODE?format=json",
+      "status": "200 OK",
+      "clasa": "ok",
+      "antet": ["content-type: application/json"],
+      "corp": "[\n  { \"message\": [ { \"id\": \"175\", \"key\": \"Archived\",\n      \"value\": \"The indicator is archived\" } ] }\n]",
+      "urmator": "Tot 200, tot eroare în corp. Codul 175 = indicator arhivat, nu mai e servit.",
+      "capcana": true
+    },
+    {
+      "api": "Eurostat",
+      "eticheta": "Cerere corectă",
+      "cerere": "GET /statistics/1.0/data/demo_pjan?format=JSON&geo=RO",
+      "status": "200 OK",
+      "clasa": "ok",
+      "antet": ["content-type: application/json"],
+      "corp": "{\n  \"version\": \"2.0\", \"class\": \"dataset\",\n  \"dimension\": { \"geo\": { \"category\": { \"index\": {\"RO\":0} } } },\n  \"value\": { \"0\": 19051562 }\n}",
+      "urmator": "Răspuns JSON-stat valid. E un cub, nu o listă de rânduri — vezi 2.11.",
+      "capcana": false
+    },
+    {
+      "api": "Eurostat",
+      "eticheta": "Cod de dimensiune inexistent",
+      "cerere": "GET /statistics/1.0/data/demo_pjan?format=JSON&geo=XX",
+      "status": "400 Bad Request",
+      "clasa": "err",
+      "antet": ["content-type: application/json"],
+      "corp": "{\n  \"error\": {\n    \"status\": 400,\n    \"id\": \"INVALID_QUERY_DIMENSION_VALUE\",\n    \"label\": \"Dimension value XX not found in dimension geo\"\n  }\n}",
+      "urmator": "Aici e simplu: codul 400 spune clar că cererea e greșită, iar mesajul spune exact ce dimensiune nu se potrivește.",
+      "capcana": false
+    }
+  ]
+}

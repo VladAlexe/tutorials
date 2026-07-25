@@ -1,0 +1,9 @@
+{
+  "folderFisiere": ["analiza_v2.py", "analiza_v3.py", "analiza_finala.py", "analiza_finala_buna.py", "analiza_finala_buna_ASA.py"],
+  "intrebari": [
+    { "q": "Ce s-a schimbat marți?", "folder": "Nu pot ști. Numele fișierelor spun doar că există mai multe, nu ce s-a schimbat între ele.", "git": "git log arată commiturile de marți, fiecare cu mesaj, autor și dată." },
+    { "q": "Cine a scris rândul acesta?", "folder": "Nu pot ști. Un fișier copiat nu reține cine a introdus fiecare linie.", "git": "git blame arată, pentru fiecare rând, commitul și autorul care l-a scris." },
+    { "q": "Cum arăta fișierul când am făcut graficul?", "folder": "Poate „analiza_finala_buna”? Sau „_ASA”? Nu ai cum să fii sigur.", "git": "git show <commit> îți dă exact versiunea de la commitul care a produs graficul." },
+    { "q": "Pot reveni la versiunea de acum trei zile?", "folder": "Doar dacă ai salvat manual o copie atunci. Dacă nu, e pierdută.", "git": "git switch sau git restore la commitul de acum trei zile — istoricul complet e păstrat." }
+  ]
+}
