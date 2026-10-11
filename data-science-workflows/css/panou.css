@@ -328,3 +328,16 @@
 .sl-g__l{font-family:var(--mono);font-size:10px;color:var(--accent-text);
   margin-left:auto;text-decoration:none;white-space:nowrap}
 .sl-g__l:hover{text-decoration:underline}
+
+/* --- textele scrise de ei ------------------------------------------------ */
+
+.scr__g{margin-bottom:24px}
+.scr__gt{display:flex;align-items:baseline;gap:11px;margin-bottom:12px;
+  padding-bottom:7px;border-bottom:1px solid var(--linie);
+  font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:-.01em}
+.scr__gt .mic{margin-left:auto}
+.scr__c{border-left:2px solid var(--accent);padding:2px 0 2px 15px;margin:0 0 13px}
+.scr__c blockquote{font-family:var(--serif);font-size:15.5px;line-height:1.5;
+  margin:0 0 5px;max-width:var(--citit)}
+.scr__c figcaption{font-family:var(--sans);font-size:12px;font-weight:500;
+  color:var(--text-2);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}

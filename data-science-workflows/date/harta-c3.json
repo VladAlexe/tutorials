@@ -1,0 +1,277 @@
+{
+ "capitol": "c3",
+ "total": 23,
+ "sarcini": 23,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Despre ce e ora de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "Cursul",
+   "titlu": "Unde ai rămas",
+   "sarcini": [
+    {
+     "id": "c3-v1",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Ce face Git",
+   "titlu": "La ce e bun",
+   "sarcini": []
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "Ce face Git",
+   "titlu": "Cele trei zone",
+   "sarcini": [
+    {
+     "id": "c3-zone",
+     "fel": "cod"
+    },
+    {
+     "id": "c3-sort-zone",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 5,
+   "id": "s5",
+   "grup": "Ce face Git",
+   "titlu": "Verificare",
+   "sarcini": [
+    {
+     "id": "c3-v2",
+     "fel": "verificare"
+    },
+    {
+     "id": "c3-v3",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 6,
+   "id": "s6",
+   "grup": "Primii pași",
+   "titlu": "Depozitul",
+   "sarcini": [
+    {
+     "id": "c3-v4",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "Primii pași",
+   "titlu": "Cine ești",
+   "sarcini": [
+    {
+     "id": "c3-cod-config",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 8,
+   "id": "s8",
+   "grup": "Primii pași",
+   "titlu": "Primul commit",
+   "sarcini": [
+    {
+     "id": "c3-ordine-commit",
+     "fel": "cod"
+    },
+    {
+     "id": "c3-v5",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 9,
+   "id": "s9",
+   "grup": "Primii pași",
+   "titlu": "Ce nu urci niciodată",
+   "sarcini": [
+    {
+     "id": "c3-sort-gitignore",
+     "fel": "cod"
+    },
+    {
+     "id": "c3-v6",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "GitHub",
+   "titlu": "Ce este GitHub",
+   "sarcini": []
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "GitHub",
+   "titlu": "Legarea celor două",
+   "sarcini": [
+    {
+     "id": "c3-cod-remote",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "GitHub",
+   "titlu": "Drumul complet",
+   "sarcini": [
+    {
+     "id": "c3-ordine-github",
+     "fel": "cod"
+    },
+    {
+     "id": "c3-v7",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s13",
+   "grup": "GitHub",
+   "titlu": "Verificare",
+   "sarcini": [
+    {
+     "id": "c3-v8",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "În echipă",
+   "titlu": "Ramuri",
+   "sarcini": [
+    {
+     "id": "c3-ramuri",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 15,
+   "id": "s15",
+   "grup": "În echipă",
+   "titlu": "Pull request și conflicte",
+   "sarcini": [
+    {
+     "id": "c3-conflict",
+     "fel": "cod"
+    },
+    {
+     "id": "c3-v9",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 16,
+   "id": "s16",
+   "grup": "În echipă",
+   "titlu": "Regulile voastre",
+   "sarcini": []
+  },
+  {
+   "nr": 17,
+   "id": "s17",
+   "grup": "Cadrul teoretic",
+   "titlu": "De ce un cadru",
+   "sarcini": [
+    {
+     "id": "c3-v10",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 18,
+   "id": "s18",
+   "grup": "Cadrul teoretic",
+   "titlu": "Un exemplu lucrat",
+   "sarcini": [
+    {
+     "id": "c3-v11",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 19,
+   "id": "s19",
+   "grup": "Cadrul teoretic",
+   "titlu": "Cadrul vostru",
+   "sarcini": []
+  },
+  {
+   "nr": 20,
+   "id": "s20",
+   "grup": "Cadrul teoretic",
+   "titlu": "Scrieți întrebarea voastră",
+   "sarcini": [
+    {
+     "id": "c3-intrebare",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 21,
+   "id": "s21",
+   "grup": "Datele",
+   "titlu": "Explorarea inițială",
+   "sarcini": [
+    {
+     "id": "c3-cod-explorare",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 22,
+   "id": "s22",
+   "grup": "Proiectul tău",
+   "titlu": "Fă-ți depozitul, acum",
+   "sarcini": [
+    {
+     "id": "c3-dovada-depozit",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 23,
+   "id": "s23",
+   "grup": "Mai departe",
+   "titlu": "Până data viitoare",
+   "sarcini": []
+  }
+ ]
+}

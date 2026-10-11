@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursul 3 — Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără să se calce, și cum se încadrează teoretic un proiect.">
+<meta name="robots" content="index,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/sistem.css?v=14">
+<link rel="stylesheet" href="../../css/slide.css?v=14">
+<link rel="stylesheet" href="../../css/interactiv.css?v=14">
+<link rel="stylesheet" href="../../css/grafice.css?v=14">
+<link rel="stylesheet" href="../../css/exercitii.css?v=14">
+<script src="../../js/tema.js?v=14"></script>
+</head>
+<body class="corp--app">
+<div id="antet" data-aici="Cursul 3 · Versionare și colaborare cu Git" data-crom="1"></div>
+<div class="rnr">
+<main class="rnr__scena" tabindex="-1">
+
+<section class="sld" id="s1" data-grup="Cursul" data-t="Despre ce e ora de azi">
+<h2>Versionare și colaborare cu Git</h2><p class="cheie">Săptămâna trecută ai adus date. Azi faci în așa fel încât ele, și codul care le-a adus, să nu se mai piardă.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Apasă pe un punct ca să vezi ce intră în el.</p><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Ce face Git", "unde": "azi", "text": "Istoric, reveniri, și de ce lucrează local."}, {"nume": "Depozitul și contul", "unde": "azi", "text": "git init, credențiale, primul commit."}, {"nume": "GitHub", "unde": "azi", "text": "Legarea depozitului local de cel de pe internet."}, {"nume": "Lucrul în echipă", "unde": "azi", "text": "Ramuri, pull request, conflicte."}, {"nume": "Încadrarea teoretică", "unde": "azi", "text": "De la o grămadă de date la o întrebare de cercetare."}, {"nume": "Explorarea inițială", "unde": "azi", "text": "Ce te uiți prima dată, în datele colectate săptămâna trecută."}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s2" data-grup="Cursul" data-t="Unde ai rămas">
+<h2>De la cursul trecut</h2><ul><li>un script care cere date de la un API</li><li>un fișier în <code>date/brute/</code></li><li>amândouă, deocamdată, doar pe laptopul tău</li></ul><p>Exact asta reparăm azi.</p><div class="verif" data-id="c3-v1" data-corect="2">
+    <p class="verif__q">Ce se întâmplă cu munca de săptămâna trecută dacă îți moare laptopul în seara asta?</p>
+    <button>Nimic, Python salvează automat</button>
+    <button>Se recuperează din coșul de gunoi</button>
+    <button>Se pierde, dacă nu e nicăieri altundeva</button>
+    <button>GitHub o are deja, orice proiect ajunge acolo</button>
+    <p class="verif__ex">Se pierde. Un fișier salvat pe disc e într-un singur loc. Git nu rezolvă singur asta: Git ține istoria local. Abia când o împingi pe GitHub există în două locuri.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s3" data-grup="Ce face Git" data-t="La ce e bun">
+<h2>Ce face Git</h2><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Șase lucruri</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Ultimul e cel care se înțelege cel mai greu și contează cel mai mult.</p><script type="application/json">{"titlu": "Git, pe scurt", "intro": "Apasă pe oricare.", "etape": [{"nume": "Ține minte fiecare schimbare", "unde": "istoric", "text": "Nu doar ultima versiune: toate, cu cine a făcut-o și când."}, {"nume": "Te duce înapoi", "unde": "reveniri", "text": "La orice versiune de dinainte, fără să pierzi ce ai acum."}, {"nume": "Lasă mai mulți oameni să lucreze", "unde": "colaborare", "text": "Pe aceleași fișiere, în același timp, și le îmbină după."}, {"nume": "Ține tot într-un singur dosar", "unde": "un singur loc", "text": "Istoria întreagă stă în <code>.git</code>, lângă proiect. Nu în cloud, nu la altcineva."}, {"nume": "Permite încercări fără risc", "unde": "ramuri", "text": "Faci o ramură, strici ce vrei pe ea, iar codul principal rămâne întreg."}, {"nume": "Funcționează local", "unde": "fără internet", "text": "Git merge în tren. GitHub e doar locul unde sincronizezi."}]}</script></div>
+</div><p class="cheie">Git lucrează pe calculatorul tău. GitHub e doar locul unde îți sincronizezi proiectele.</p>
+
+</section>
+
+<section class="sld" id="s4" data-grup="Ce face Git" data-t="Cele trei zone">
+<h2>Unde stau fișierele tale</h2><p>Comenzile lui Git par arbitrare până vezi că mută lucruri între trei zone. După aceea se țin minte singure.</p><div class="ix" data-ix="zone">
+  <div class="ix__cap"><span class="ix__fel">Mută tu</span><span class="ix__t">Mută-le tu</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-zone", "sarcina": "Ai două fișiere în dosar. Du-le până pe GitHub, apăsând comenzile în ordinea potrivită. <code>git status</code> nu mută nimic, dar îți spune unde ești.", "fisiere": ["colectare.py", "README.md"]}</script></div>
+</div><div class="ix" data-ix="sortare">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce face fiecare comandă</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-zone", "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.", "elemente": [{"t": "git add", "k": 0}, {"t": "git commit", "k": 1}, {"t": "git push", "k": 2}, {"t": "git pull", "k": 3}, {"t": "git status", "k": 4}], "cosuri": [{"t": "Alege ce intră", "d": "din dosar în pregătire"}, {"t": "Scrie în istoric", "d": "din pregătire în istoricul local"}, {"t": "Trimite sus", "d": "din local pe GitHub"}, {"t": "Aduce jos", "d": "de pe GitHub în local"}, {"t": "Spune unde ești", "d": "nu mută nimic"}], "laBine": "Dacă ții minte tabloul ăsta, nu mai trebuie să ții minte comenzile: le deduci.", "explicatie": "<code>git status</code> e singura care nu schimbă nimic, și tocmai de aceea se dă cel mai des. Când nu știi ce se întâmplă, o dai pe ea întâi."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s5" data-grup="Ce face Git" data-t="Verificare">
+<h2>Git sau GitHub</h2><div class="verif" data-id="c3-v2" data-corect="1">
+    <p class="verif__q">Ești în tren, fără internet. Ce poți face?</p>
+    <button>Nimic, Git are nevoie de legătură</button>
+    <button>Commit-uri, reveniri, ramuri: tot ce ține de istoric</button>
+    <button>Doar să citești istoricul, nu să scrii</button>
+    <button>Doar <code>git status</code></button>
+    <p class="verif__ex">Tot ce ține de istoricul local. Internetul îți trebuie abia la <code>push</code> și <code>pull</code>, adică exact la cele două comenzi care vorbesc cu GitHub.</p>
+  </div><div class="verif" data-id="c3-v3" data-corect="0">
+    <p class="verif__q">Unde stă istoria proiectului tău, pe laptop?</p>
+    <button>Într-un dosar ascuns, <code>.git</code>, lângă fișiere</button>
+    <button>În cloud, Git o descarcă la nevoie</button>
+    <button>În fiecare fișier, la început</button>
+    <button>Într-un program separat, instalat cu Git</button>
+    <p class="verif__ex">În <code>.git</code>. Dacă ștergi dosarul ăla, ștergi istoria și rămâi cu fișierele așa cum sunt acum. Dacă copiezi tot dosarul proiectului pe un stick, copiezi și istoria.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s6" data-grup="Primii pași" data-t="Depozitul">
+<h2>Repository</h2><p>Un depozit e dosarul unui proiect pe care îl urmărești cu Git. Poți avea oricâte, pentru proiecte diferite, pe același calculator.</p><table class="tabel"><thead><tr><th>Local</th><th>Remote</th></tr></thead><tbody><tr><td>pe laptopul tău</td><td>pe GitHub</td></tr><tr><td>acolo lucrezi</td><td>acolo se întâlnesc colegii</td></tr><tr><td>se face cu <code>git init</code></td><td>se face din interfața GitHub</td></tr></tbody></table><pre><code><span class="c"># in dosarul proiectului</span>
+git init
+git status</code></pre><div class="verif" data-id="c3-v4" data-corect="2">
+    <p class="verif__q">Ce face <code>git init</code>?</p>
+    <button>Trimite proiectul pe GitHub</button>
+    <button>Descarcă un proiect de pe GitHub</button>
+    <button>Începe urmărirea dosarului curent, creând <code>.git</code></button>
+    <button>Creează un dosar nou pentru proiect</button>
+    <p class="verif__ex">Pornește urmărirea dosarului în care ești. Nu creează dosarul și nu vorbește cu internetul. Dacă o dai din greșeală în dosarul greșit, ștergi <code>.git</code> și gata.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s7" data-grup="Primii pași" data-t="Cine ești">
+<h2>Credențiale</h2><p>Fiecare commit poartă un nume și un email. Se setează o dată, pe calculator, nu la fiecare proiect.</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Spune-i lui Git cine ești</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-config", "fisier": "terminal.sh", "sarcina": "Completează comenzile de configurare și de verificare.", "cod": "# verifici ce stie deja despre tine\ngit config user.name\ngit config user.email\n\n# le setezi pentru tot calculatorul, nu doar pentru proiectul asta\ngit config {{1}} user.name \"Numele Tau\"\ngit config {{1}} user.email {{2}}\n\n# te uiti la tot ce s-a setat\ngit config --list", "goluri": {"1": {"ok": ["--global"], "ajutor": "steagul"}, "2": {"ok": ["\"adresa@exemplu.com\"", "'adresa@exemplu.com'", "\"nume@stud.ubbcluj.ro\"", "\"adresa@ta.ro\""], "ajutor": "adresa, în ghilimele"}}, "laBine": "Folosește adresa cu care ai contul de GitHub: altfel commit-urile tale nu se leagă de profilul tău.", "laRau": "Steagul începe cu două liniuțe. Adresa se scrie între ghilimele.", "explicatie": "<code>--global</code> scrie în configurarea utilizatorului, deci e valabil pentru toate proiectele. Fără el, setarea rămâne doar în depozitul curent, ceea ce e util exact într-un caz: când lucrezi și pentru o firmă, cu altă identitate."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s8" data-grup="Primii pași" data-t="Primul commit">
+<h2>add, apoi commit</h2><p>Două comenzi, în ordinea asta, de fiecare dată.</p><div class="ix" data-ix="ordine">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pune pașii în ordine</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-ordine-commit", "sarcina": "Ordinea unui prim commit, de la dosar gol la istoric.", "linii": ["git init", "git status                      # ce vede Git", "git add colectare/banca_mondiala.py", "git status                      # acum e in pregatire", "git commit -m \"colectare de la Banca Mondiala\"", "git log --oneline               # a ramas scris"], "explicatie": "<code>git status</code> apare de două ori pentru că e comanda pe care o dai cel mai des: o dată ca să vezi ce e nesalvat, încă o dată ca să confirmi că ai pus în pregătire exact ce voiai."}</script></div>
+</div><div class="verif" data-id="c3-v5" data-corect="1">
+    <p class="verif__q">Ce e un mesaj bun de commit?</p>
+    <button>„update”</button>
+    <button>„colectare de la Banca Mondiala, cu paginare”</button>
+    <button>„am lucrat azi”</button>
+    <button>„fix”</button>
+    <p class="verif__ex">Unul care spune ce s-a schimbat și de ce, destul cât să nu fie nevoie să deschizi codul. Peste trei luni, când cauți momentul în care s-a stricat ceva, mesajele de tip „update” sunt ca și cum n-ar exista.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s9" data-grup="Primii pași" data-t="Ce nu urci niciodată">
+<h2>.gitignore</h2><p class="cheie">Un depozit e public până la proba contrarie, și istoria nu se uită. O parolă urcată o dată rămâne în istoric chiar dacă ștergi fișierul mâine.</p><div class="ix" data-ix="sortare">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Intră sau nu intră în depozit</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-gitignore", "sarcina": "Pune fiecare lucru unde îi e locul.", "elemente": [{"t": "colectare.py", "k": 0}, {"t": ".env cu parole", "k": 1}, {"t": "README.md", "k": 0}, {"t": "venv/", "k": 1}, {"t": "date/brute/mic.csv", "k": 0}, {"t": "date/brute/20GB.csv", "k": 1}, {"t": ".gitignore", "k": 0}, {"t": "cheia de API", "k": 1}], "cosuri": [{"t": "În depozit", "d": "cod, documentație, date mici"}, {"t": "Niciodată", "d": "secrete, mediul, fișiere uriașe"}], "laBine": "Fișierul <code>.gitignore</code> intră în depozit: e o regulă de echipă, nu o preferință personală.", "explicatie": "Mediul virtual nu se urcă pentru că se reface din <code>requirements.txt</code> în zece secunde, și ocupă sute de megabytes. Datele mari nu se urcă pentru că Git ține fiecare versiune: un fișier de 20 GB modificat de trei ori înseamnă 60 GB de istorie."}</script></div>
+</div><div class="verif" data-id="c3-v6" data-corect="3">
+    <p class="verif__q">Ai urcat din greșeală un fișier cu o parolă și ai făcut push. Ce faci?</p>
+    <button>Ștergi fișierul și faci alt commit</button>
+    <button>Îl adaugi în .gitignore</button>
+    <button>Nu e nicio problemă, depozitul e privat</button>
+    <button>Schimbi parola imediat, apoi cureți istoricul</button>
+    <p class="verif__ex">Schimbi parola. Orice altceva lasă parola în istoric, de unde se scoate în zece secunde de cine știe unde să se uite. Curățarea istoricului se face după, și e partea ușoară.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s10" data-grup="GitHub" data-t="Ce este GitHub">
+<h2>GitHub</h2><ul><li>o platformă online care găzduiește depozite Git</li><li>un loc unde proiectul există și dacă laptopul nu mai există</li><li>locul unde echipa se întâlnește, fără să-și trimită arhive pe mail</li><li>un portofoliu: se vede cine ce a făcut, și când</li></ul><div class="nota"><div class="nota__et">Pentru voi, concret</div><p>Nota de la proiect se dă pe ce se vede în depozit. Nu pe fișierul final, ci pe drum: ce ați încercat, ce ați aruncat, cine a lucrat. Un depozit cu un singur commit în ziua predării spune o poveste, și nu una bună.</p></div>
+
+</section>
+
+<section class="sld" id="s11" data-grup="GitHub" data-t="Legarea celor două">
+<h2>Ai deja un depozit local</h2><p>Faci unul gol pe GitHub, fără README, și le legi:</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Leagă-l de GitHub</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-remote", "fisier": "terminal.sh", "sarcina": "Completează comenzile de legare și de prima trimitere.", "cod": "# „origin” e numele obisnuit al depozitului de pe internet\ngit {{1}} add origin https://github.com/echipa/proiect.git\n\n# verifici ca s-a legat\ngit remote -v\n\n# prima trimitere: -u leaga ramura locala de cea de sus\ngit push {{2}} origin {{3}}", "goluri": {"1": {"ok": ["remote"], "ajutor": "comanda"}, "2": {"ok": ["-u", "--set-upstream"], "ajutor": "steagul"}, "3": {"ok": ["main", "master"], "ajutor": "ramura"}}, "laBine": "După prima dată cu <code>-u</code>, e de ajuns <code>git push</code>, fără nimic după.", "laRau": "Numele depozitului de pe internet e „origin”. Ramura principală se cheamă astăzi „main”.", "explicatie": "<code>-u</code> înseamnă „ține minte legătura”. Fără el, Git te întreabă de fiecare dată unde să trimită. Numele ramurii principale e <code>main</code> la depozitele noi și <code>master</code> la cele vechi; <code>git branch</code> îți spune pe care ești."}</script></div>
+</div><h3>Nu ai depozit local</h3><p>Atunci e și mai simplu: îl faci pe GitHub și îl aduci la tine.</p><pre><code>git clone https://github.com/echipa/proiect.git</code></pre><p>Clonarea aduce și fișierele, și toată istoria, și leagă singură <code>origin</code>.</p>
+
+</section>
+
+<section class="sld" id="s12" data-grup="GitHub" data-t="Drumul complet">
+<h2>De la dosar gol la depozit de echipă</h2><div class="ix" data-ix="ordine">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pune pașii în ordine</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-ordine-github", "sarcina": "Drumul de la un dosar cu fișiere la un depozit pe GitHub.", "linii": ["git init", "scrii .gitignore, ca secretele sa nu intre din prima", "git add .", "git commit -m \"structura proiectului si colectarea\"", "creezi pe GitHub un depozit gol, fara README", "git remote add origin <adresa>", "git push -u origin main"], "explicatie": "<code>.gitignore</code> se scrie înainte de primul <code>git add .</code>, nu după. Dacă-l scrii după, fișierele au intrat deja în pregătire și <code>.gitignore</code> nu le mai scoate."}</script></div>
+</div><div class="verif" data-id="c3-v7" data-corect="0">
+    <p class="verif__q">De ce se creează depozitul de pe GitHub gol, fără README?</p>
+    <button>Ca să nu apară un conflict la prima trimitere</button>
+    <button>Ca să ocupe mai puțin</button>
+    <button>Nu contează, e același lucru</button>
+    <button>Ca să fie privat</button>
+    <p class="verif__ex">Pentru că un README creat pe GitHub e un commit pe care depozitul tău local nu-l are. La primul push, Git refuză, și primești un mesaj despre istorii fără legătură. Se rezolvă, dar e un sfert de oră pierdut la prima oră de Git.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s13" data-grup="GitHub" data-t="Verificare">
+<h2>Ce s-a întâmplat de fapt</h2><div class="verif" data-id="c3-v8" data-corect="2">
+    <p class="verif__q">Ai făcut <code>git commit</code> dar nu <code>git push</code>. Ce vede colegul tău?</p>
+    <button>Tot, GitHub se sincronizează singur</button>
+    <button>Doar fișierele, nu și mesajul</button>
+    <button>Nimic nou: commit-ul e doar la tine, pe laptop</button>
+    <button>Vede o cerere de aprobare</button>
+    <p class="verif__ex">Nimic. <code>commit</code> scrie în istoricul tău local. Până la <code>push</code>, munca ta există într-un singur loc, iar asta e exact situația de la începutul orei.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s14" data-grup="În echipă" data-t="Ramuri">
+<h2>De ce ramuri</h2><p>O ramură e o linie de lucru paralelă. Strici ce vrei pe ea, iar <code>main</code> rămâne întreg.</p><div class="ix" data-ix="ramuri">
+  <div class="ix__cap"><span class="ix__fel">Desenează tu</span><span class="ix__t">Desenează-l tu</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-ramuri", "sarcina": "Fă o ramură, pune două commit-uri pe ea, întoarce-te pe main și îmbin-o. Graful crește sub mână."}</script></div>
+</div><p class="cheie">Regula echipei: <code>main</code> trebuie să meargă întotdeauna. Tot ce e în lucru stă pe o ramură.</p>
+
+</section>
+
+<section class="sld" id="s15" data-grup="În echipă" data-t="Pull request și conflicte">
+<h2>Cum ajunge munca ta în main</h2><p>Nu direct. Prin <em>pull request</em>: ceri să ți se ia ramura în main, iar un coleg se uită întâi peste ea.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Unde</th></tr></thead><tbody><tr><td>lucrezi pe ramura ta, faci commit-uri</td><td>la tine</td></tr><tr><td><code>git push -u origin ramura-mea</code></td><td>la tine</td></tr><tr><td>deschizi un pull request</td><td>pe GitHub</td></tr><tr><td>un coleg citește și comentează</td><td>pe GitHub</td></tr><tr><td>se îmbină în main</td><td>pe GitHub</td></tr><tr><td><code>git switch main</code> și <code>git pull</code></td><td>la tine</td></tr></tbody></table><h3>Conflictele</h3><p>Apar când doi oameni schimbă aceleași rânduri. Git nu poate alege, deci îți pune amândouă variantele în fișier și te lasă pe tine.</p><div class="ix" data-ix="conflict">
+  <div class="ix__cap"><span class="ix__fel">Rezolvă tu</span><span class="ix__t">Rezolvă-l</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-conflict", "fisier": "analiza.py", "ramura": "curatare", "sarcina": "Colega ta a redenumit fișierul de date, tu ai rămas cu numele vechi. Alege ce rămâne în fișier.", "alMeu": "d = pd.read_csv(\"date/brute/pop.csv\")", "alLor": "d = pd.read_csv(\"date/brute/populatie_ro.csv\")", "bun": "lor", "deCe": "Fișierul cu numele vechi nu mai există: colega l-a redenumit și a urcat schimbarea. Varianta ta ar da eroare la prima rulare.", "explicatie": "Oricare ai alege, marcajele dispar și fișierul redevine cod valid. Git nu verifică dacă ai ales bine: asta e treaba ta, și de aceea un conflict se rezolvă uitându-te la cod, nu apăsând repede."}</script></div>
+</div><div class="verif" data-id="c3-v9" data-corect="1">
+    <p class="verif__q">Care obicei previne cele mai multe conflicte?</p>
+    <button>Să faci commit-uri cât mai rare</button>
+    <button>Să dai <code>git pull</code> înainte să începi lucrul, în fiecare zi</button>
+    <button>Să lucrați toți pe aceeași ramură</button>
+    <button>Să nu atingeți niciodată aceleași fișiere</button>
+    <p class="verif__ex"><code>git pull</code> la început de zi. Conflictele cresc cu cât stai mai mult despărțit de main: o zi de diferență se rezolvă în două minute, două săptămâni de diferență se rezolvă într-o după-amiază proastă.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s16" data-grup="În echipă" data-t="Regulile voastre">
+<h2>Patru reguli, pentru semestrul ăsta</h2><ol><li><code>git pull</code> înainte să începi, de fiecare dată</li><li>o ramură pentru fiecare lucru; <code>main</code> merge întotdeauna</li><li>mesaje de commit care spun ce s-a schimbat</li><li>niciun secret și niciun fișier uriaș în depozit</li></ol><div class="nota nota--sobru"><div class="nota__et">Cine ce face</div><p>Scrieți în <code>README.md</code> cine răspunde de ce: colectare, curățare, analiză, raport. Nu ca să vă împărțiți vina, ci ca să știe fiecare pe cine întreabă.</p></div>
+
+</section>
+
+<section class="sld" id="s17" data-grup="Cadrul teoretic" data-t="De ce un cadru">
+<h2>Încadrarea teoretică</h2><p class="cheie">Datele nu produc întrebări. Teoria produce întrebări, iar datele răspund la ele sau refuză.</p><p>Fără un cadru, un proiect de analiză devine o colecție de grafice despre care nimeni nu poate spune dacă sunt importante.</p><div class="verif" data-id="c3-v10" data-corect="1">
+    <p class="verif__q">De unde vine o întrebare de cercetare?</p>
+    <button>Din ce se poate calcula cu datele pe care le ai</button>
+    <button>Din literatura pe tema aceea, pusă față în față cu datele</button>
+    <button>Din ce iese mai frumos la grafice</button>
+    <button>Din ce n-a mai făcut nimeni</button>
+    <p class="verif__ex">Din literatură. Datele spun la ce întrebări poți răspunde; literatura spune care întrebări merită puse. Un proiect care pornește de la „ce pot calcula” ajunge la rezultate corecte și fără sens.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s18" data-grup="Cadrul teoretic" data-t="Un exemplu lucrat">
+<h2>Tranzițiile energetice</h2><p>Literatura despre tranziții energetice și cea din economia energiei converg asupra aceleiași idei: traiectoriile energetice ale țărilor sunt modelate de trei dimensiuni care revin.</p><div class="ix" data-ix="flux">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Drumul de la literatură la întrebare</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Urmează drumul”", "intro": "Patru pași, în ordinea asta. Sărirea peste al doilea e greșeala obișnuită.", "buton": "Urmează drumul", "dus": "de la literatură spre întrebare", "intors": "și înapoi: întrebarea verifică dacă ai datele", "gata": "dacă drumul se închide, cadrul ține", "statii": [{"n": "Literatura", "et": "ce spune domeniul", "ic": "📚", "d": "Mai mulți autori ajung la aceeași structură. Nu o alegi tu, o găsești."}, {"n": "Pilonii", "et": "concepte", "ic": "🏛", "d": "Dimensiunile care revin: economie, instituții, sistem energetic."}, {"n": "Sursele", "et": "date concrete", "ic": "🗂", "d": "Fiecare pilon are un indicator măsurabil, dintr-o sursă anume."}, {"n": "Întrebările", "et": "ce testezi", "ic": "❓", "d": "Leagă doi piloni și se pot infirma cu datele din al treilea."}]}</script></div>
+</div><table class="tabel"><thead><tr><th>Pilon</th><th>Date și sursă</th><th>Rol teoretic</th></tr></thead><tbody><tr><td>Economie</td><td>WDI: PIB/locuitor, populație, urbanizare</td><td>Peisajul: capacitatea de a investi și cererea de energie. Explică diferențele dintre țări și intră în regresii.</td></tr><tr><td>Instituții</td><td>WGI: Government Effectiveness</td><td>Modelul de guvernanță: capacitatea de a pune în practică. Explică variația dintre țări aflate la același nivel economic.</td></tr><tr><td>Sistem energetic</td><td>EIA: cărbune, eolian, solar, hidro, nuclear, CO₂</td><td>Regimul și nișele: structura energetică, blocajele moștenite, creșterea regenerabilelor. Baza clusterizării.</td></tr></tbody></table><h3>Întrebările care ies din cadru</h3><ol><li>Țările cu PIB pe locuitor mai mare reduc mai repede cărbunele și cresc regenerabilele?</li><li>Țările cu instituții mai eficiente cresc mai repede eolianul și solarul?</li><li>Ce tipuri de sisteme energetice se disting, după mixul de electricitate și emisii?</li></ol><div class="verif" data-id="c3-v11" data-corect="2">
+    <p class="verif__q">Ce face ca cele trei întrebări de mai sus să fie întrebări de cercetare, și nu simple curiozități?</p>
+    <button>Sunt despre un subiect important</button>
+    <button>Folosesc date din mai multe surse</button>
+    <button>Ies dintr-un cadru teoretic și se pot infirma cu datele</button>
+    <button>Au fost puse și de alții înainte</button>
+    <p class="verif__ex">Ies dintr-un cadru și se pot infirma. O întrebare la care orice răspuns e la fel de interesant nu e o întrebare de cercetare; e o descriere.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s19" data-grup="Cadrul teoretic" data-t="Cadrul vostru">
+<h2>Aceeași formă, pe datele noastre</h2><p>Proiectul nostru are și el piloni. Ai doi deja; al treilea e ce aduceți voi.</p><table class="tabel"><thead><tr><th>Pilon</th><th>Date</th><th>Ce ar putea explica</th></tr></thead><tbody><tr><td>Legătura socială</td><td>SCI: perechi de locuri</td><td>cine cu cine e legat, și cât de tare</td></tr><tr><td>Context economic</td><td class="mono">Banca Mondială, Eurostat</td><td>de ce unele locuri sunt mai legate</td></tr><tr><td>Al vostru</td><td>ce colectați voi</td><td>partea pe care o aduceți la masă</td></tr></tbody></table><p class="cheie">Distanța explică mult din legătura socială. Întrebarea interesantă începe de la ce rămâne neexplicat.</p>
+
+</section>
+
+<section class="sld" id="s20" data-grup="Cadrul teoretic" data-t="Scrieți întrebarea voastră">
+<h2>Întrebarea echipei</h2><p>Două-trei rânduri. Nu trebuie să fie definitivă; trebuie să existe.</p><div class="ix" data-ix="asteptari">
+  <div class="ix__cap"><span class="ix__fel">Scrii tu</span><span class="ix__t">Întrebarea de cercetare</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-intrebare", "tip": "intrebare", "minim": 60, "sarcina": "Scrie întrebarea la care vrea să răspundă echipa ta, și spune din ce pilon vine partea pe care o aduceți voi.", "exemplu": "De exemplu: județele care trimit mulți navetiști spre Cluj sunt și cele mai legate social de Cluj, sau legătura socială urmează altă logică decât naveta?", "multumesc": "O citesc înainte de cursul următor și vă scriu ce cred."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s21" data-grup="Datele" data-t="Explorarea inițială">
+<h2>Prima privire peste ce ai colectat</h2><p>Înainte de orice analiză, patru comenzi. Întotdeauna aceleași.</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Prima privire</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-explorare", "fisier": "explorare.py", "sarcina": "Completează primele patru lucruri pe care le ceri de la un tabel nou.", "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/populatie_ro.csv\")\n\n# cate randuri si cate coloane\nprint(d.{{1}})\n\n# ce coloane, ce tipuri, cate valori lipsesc\nd.{{2}}()\n\n# cum arata primele randuri\nprint(d.head())\n\n# cate valori lipsesc, pe coloana\nprint(d.isna().{{3}}())", "goluri": {"1": {"ok": ["shape"], "ajutor": "atributul"}, "2": {"ok": ["info"], "ajutor": "metoda"}, "3": {"ok": ["sum"], "ajutor": "metoda"}}, "laBine": "Cele patru se dau în ordinea asta, de fiecare dată, pe orice tabel nou. E o rutină, nu o decizie.", "laRau": "Prima e un atribut, deci fără paranteze. Celelalte sunt metode.", "explicatie": "<code>info()</code> e cea mai densă: îți dă dintr-o dată numărul de rânduri, tipurile coloanelor și câte valori non-nule are fiecare. Dacă o coloană care ar trebui să fie numerică apare ca <code>object</code>, ai găsit o problemă înainte s-o cauți."}</script></div>
+</div><div class="nota"><div class="nota__et">Ce cauți la prima privire</div><p>Nu rezultate. Cauți semne că datele nu sunt ce crezi: un număr de rânduri diferit de ce așteptai, o coloană text care ar trebui să fie numerică, valori lipsă unde n-ar trebui. Analiza începe la cursul 6; acum doar verifici că ai ce analiza.</p></div>
+
+</section>
+
+<section class="sld" id="s22" data-grup="Proiectul tău" data-t="Fă-ți depozitul, acum">
+<h2>Depozitul echipei</h2><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>unul din echipă face depozitul pe GitHub și îi adaugă pe ceilalți</td></tr><tr><td>2</td><td>fiecare îl clonează la el</td></tr><tr><td>3</td><td>scrieți <code>.gitignore</code> înainte de primul <code>add</code></td></tr><tr><td>4</td><td>urcați scriptul de colectare de săptămâna trecută</td></tr><tr><td>5</td><td>în <code>README.md</code>: întrebarea și cine ce face</td></tr></tbody></table><div class="ix" data-ix="dovada">
+  <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Dovada</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-dovada-depozit", "sarcina": "Rulează comenzile la tine și lipește ce scrie terminalul.", "pasi": [{"t": "Depozitul e legat de GitHub", "cmd": "git remote -v", "gol": "lipește prima linie", "cauta": "github\\.com", "daca_nu": "Caut adresa de GitHub. Dacă nu apare nimic, n-ai dat încă git remote add origin."}, {"t": "Ai cel puțin două commit-uri", "cmd": "git log --oneline | head -3", "gol": "lipește liniile", "cauta": "[0-9a-f]{7}[\\s\\S]*[0-9a-f]{7}", "daca_nu": "Caut două hash-uri de commit. Unul singur înseamnă că ai urcat tot dintr-o dată, la final."}, {"t": "Secretele sunt ținute afară", "cmd": "git check-ignore -v .env venv", "gol": "lipește ce scrie", "cauta": "\\.gitignore", "daca_nu": "Caut numele fișierului .gitignore în răspuns. Dacă comanda nu scrie nimic, regulile nu prind."}], "explicatie": "Dacă toate trei merg, munca echipei există în două locuri și se poate urmări cine ce a făcut. De aici încolo, fiecare curs adaugă o piesă la același depozit."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s23" data-grup="Mai departe" data-t="Până data viitoare">
+<h2>Cursul 4: curățarea datelor</h2><ul><li>versionare și colaborare, în practică, pe depozitul vostru</li><li>curățarea datelor: lipsuri, duplicate, tipuri greșite</li><li>explorarea inițială, mai în adâncime</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Depozitul echipei, cu scriptul de colectare în el și cu <code>README.md</code> scris: întrebarea de cercetare și cine răspunde de ce. Plus un commit de la fiecare membru, ca să știu că toată lumea a intrat în el.</p></div>
+
+</section>
+
+</main>
+</div>
+
+<script type="module" src="../../js/antet.js?v=14"></script>
+<script type="module">
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=14";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=14";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=14";
+pornesteIx();
+pornesteVerif("c3");
+pornesteSlide({ capitol:"c3", lectie:"c3-versionare-git" });
+</script>
+</body>
+</html>

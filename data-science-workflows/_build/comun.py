@@ -36,7 +36,9 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale",
        "cod": "Scrii cod", "ordine": "Exercițiu", "sortare": "Exercițiu",
        "dovada": "Verificare la tine", "asteptari": "Scrii tu",
-       "url": "Disecție", "metode": "Potrivire", "cronologie": "Explorator"}
+       "url": "Disecție", "metode": "Potrivire", "cronologie": "Cronologie",
+       "flux": "Vezi cum circulă", "raspuns": "Trimite și vezi",
+       "zone": "Mută tu", "ramuri": "Desenează tu", "conflict": "Rezolvă tu"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 
@@ -206,7 +208,9 @@ class Lectie:
     # în rulari_cod și se poate arăta pe slide în panoul profesorului.
     FEL_SARCINA = {"cod": "cod", "ordine": "cod", "sortare": "cod",
                    "dovada": "cod", "tipuri": "cod", "autoevaluare": "cod",
-                   "asteptari": "cod", "url": "cod", "metode": "cod"}
+                   "asteptari": "cod", "url": "cod", "metode": "cod",
+                   "raspuns": "cod", "zone": "cod", "ramuri": "cod",
+                   "conflict": "cod"}
 
     def scrie_harta(self):
         """Ce sarcini stau pe fiecare slide.

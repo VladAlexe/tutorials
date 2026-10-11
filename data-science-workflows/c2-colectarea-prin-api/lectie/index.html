@@ -9,12 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=12">
-<link rel="stylesheet" href="../../css/slide.css?v=12">
-<link rel="stylesheet" href="../../css/interactiv.css?v=12">
-<link rel="stylesheet" href="../../css/grafice.css?v=12">
-<link rel="stylesheet" href="../../css/exercitii.css?v=12">
-<script src="../../js/tema.js?v=12"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=14">
+<link rel="stylesheet" href="../../css/slide.css?v=14">
+<link rel="stylesheet" href="../../css/interactiv.css?v=14">
+<link rel="stylesheet" href="../../css/grafice.css?v=14">
+<link rel="stylesheet" href="../../css/exercitii.css?v=14">
+<script src="../../js/tema.js?v=14"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -42,9 +42,9 @@
 </section>
 
 <section class="sld" id="s3" data-grup="Ce este un API" data-t="Analogia restaurantului">
-<h2>Analogia restaurantului</h2><p class="cheie">Un API e ospătarul. Nu gătește, dar fără el nu ajungi la bucătărie.</p><div class="ix" data-ix="etape">
-  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Cine ce face</span></div>
-  <div class="ix__corp"><p class="ix__sarcina">Apasă pe fiecare rol ca să vezi cu ce se potrivește din cod.</p><script type="application/json">{"titlu": "Cele cinci roluri", "intro": "Apasă pe oricare.", "etape": [{"nume": "Clientul", "unde": "codul tău", "text": "Știe ce vrea, dar nu intră în bucătărie. Formulează o comandă și o dă mai departe."}, {"nume": "Ospătarul", "unde": "API-ul", "text": "Intermediarul. Preia comanda, o duce la bucătărie, aduce răspunsul înapoi. Nu gătește el, dar fără el nu ajungi la bucătărie."}, {"nume": "Meniul", "unde": "documentația", "text": "Ce se poate cere, cu ce opțiuni și în ce condiții. Dacă ceri ceva care nu e în meniu, primești un refuz, nu o surpriză."}, {"nume": "Bucătăria", "unde": "serverul", "text": "Acolo se întâmplă lucrul adevărat. Nu vezi cum, și nici nu te privește: te privește doar ce iese."}, {"nume": "Preparatul", "unde": "răspunsul", "text": "Ce primești înapoi, în forma convenită. La API, de cele mai multe ori, JSON."}]}</script></div>
+<h2>Analogia restaurantului</h2><p class="cheie">Un API e ospătarul. Nu gătește, dar fără el nu ajungi la bucătărie.</p><div class="ix" data-ix="flux">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Comanda, de la masă la bucătărie</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Trimite comanda”", "intro": "Sau apasă pe oricare dintre stații, ca să vezi cu ce se potrivește din cod.", "buton": "Trimite comanda", "dus": "comanda pleacă spre bucătărie", "intors": "preparatul se întoarce la masă", "gata": "gata: ai primit ce ai cerut, în forma convenită", "statii": [{"n": "Clientul", "et": "codul tău", "d": "Știe ce vrea, dar nu intră în bucătărie. Formulează o comandă și o dă mai departe.", "ic": "🙋"}, {"n": "Ospătarul", "et": "API-ul", "d": "Intermediarul. Preia comanda, o duce la bucătărie, aduce răspunsul înapoi. Nu gătește el, dar fără el nu ajungi la bucătărie.", "ic": "🧑‍🍳"}, {"n": "Meniul", "et": "documentația", "d": "Ce se poate cere, cu ce opțiuni și în ce condiții. Dacă ceri ceva care nu e în meniu, primești un refuz, nu o surpriză.", "ic": "📋"}, {"n": "Bucătăria", "et": "serverul", "d": "Acolo se întâmplă lucrul adevărat. Nu vezi cum, și nici nu te privește: te privește doar ce iese.", "ic": "🍳"}, {"n": "Preparatul", "et": "răspunsul", "d": "Ce primești înapoi, în forma convenită. La API, de cele mai multe ori, JSON.", "ic": "🍽"}]}</script></div>
 </div>
 
 </section>
@@ -89,9 +89,9 @@
 </section>
 
 <section class="sld" id="s7" data-grup="Tipuri de API" data-t="De unde vine REST">
-<h2>Un sfert de secol de încercări</h2><p>REST n-a fost inventat ca să fie modern. A fost descris ca să simplifice ce exista deja și era greoi.</p><div class="ix" data-ix="etape">
-  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Cronologia API-urilor</span></div>
-  <div class="ix__corp"><p class="ix__sarcina">Ce supraviețuiește nu e ce e mai puternic, ci ce e mai ușor de citit de un om obosit.</p><script type="application/json">{"titlu": "1991 — 2016", "intro": "Apasă pe oricare.", "etape": [{"nume": "1991 · CORBA", "unde": "obiecte la distanță", "text": "Apeluri între obiecte pe mașini diferite. Greu, dar a pus întrebarea."}, {"nume": "1993 · RDA", "unde": "acces la date", "text": "Standard pentru acces la distanță la baze de date."}, {"nume": "1998 · XML-RPC", "unde": "apeluri în XML", "text": "Prima formă simplă: un apel de funcție, împachetat în XML."}, {"nume": "1999 · SOAP", "unde": "plicul", "text": "XML-RPC cu reguli stricte și un plic în jur. Mult standard, mult ceremonial."}, {"nume": "2000 · REST", "unde": "resurse", "text": "Teza lui Roy Fielding. Nu un protocol, un stil: resurse la adrese, metode HTTP."}, {"nume": "2005 · JSON-RPC", "unde": "mai ușor", "text": "Același apel, dar în JSON, care e mult mai ușor de citit."}, {"nume": "2007 · OData", "unde": "interogări", "text": "REST cu interogări standardizate peste el."}, {"nume": "2015 · GraphQL", "unde": "ceri ce-ți trebuie", "text": "Facebook. O adresă, iar clientul descrie forma răspunsului."}, {"nume": "2016 · gRPC", "unde": "între servicii", "text": "Google. Binar, rapid, pentru comunicarea dintre servicii."}]}</script></div>
+<h2>Un sfert de secol de încercări</h2><p>REST n-a fost inventat ca să fie modern. A fost descris ca să simplifice ce exista deja și era greoi.</p><div class="ix" data-ix="cronologie">
+  <div class="ix__cap"><span class="ix__fel">Cronologie</span><span class="ix__t">Un sfert de secol de încercări</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Ce supraviețuiește nu e ce e mai puternic, ci ce e mai ușor de citit de un om obosit.</p><script type="application/json">{"titlu": "Apasă pe oricare an", "intro": "Se vede ritmul: patru încercări în primii zece ani, apoi liniște, apoi încă două.", "puncte": [{"an": 1991, "nume": "CORBA", "et": "obiecte la distanță", "text": "Apeluri între obiecte pe mașini diferite. Greu, dar a pus întrebarea."}, {"an": 1993, "nume": "RDA", "et": "acces la date", "text": "Standard pentru acces la distanță la baze de date."}, {"an": 1998, "nume": "XML-RPC", "et": "apeluri în XML", "text": "Prima formă simplă: un apel de funcție, împachetat în XML."}, {"an": 1999, "nume": "SOAP", "et": "plicul", "text": "XML-RPC cu reguli stricte și un plic în jur. Mult standard, mult ceremonial."}, {"an": 2000, "nume": "REST", "et": "resurse", "text": "Teza lui Roy Fielding. Nu un protocol, un stil: resurse la adrese, metode HTTP."}, {"an": 2005, "nume": "JSON-RPC", "et": "mai ușor", "text": "Același apel, dar în JSON, care e mult mai ușor de citit."}, {"an": 2007, "nume": "OData", "et": "interogări", "text": "REST cu interogări standardizate peste el."}, {"an": 2015, "nume": "GraphQL", "et": "ceri ce-ți trebuie", "text": "Facebook. O adresă, iar clientul descrie forma răspunsului."}, {"an": 2016, "nume": "gRPC", "et": "între servicii", "text": "Google. Binar, rapid, pentru comunicarea dintre servicii."}]}</script></div>
 </div>
 
 </section>
@@ -109,7 +109,10 @@
 </section>
 
 <section class="sld" id="s9" data-grup="Cum arată o cerere" data-t="Arhitectura REST">
-<h2>Cerere, metodă, răspuns</h2><p class="cheie">Clientul trimite o cerere. Serverul trimite un răspuns. Între ele, o metodă HTTP care spune ce vrei să se întâmple.</p><table class="tabel"><thead><tr><th>Pleacă de la tine</th><th>Ajunge la server</th><th>Se întoarce</th></tr></thead><tbody><tr><td>metoda și adresa</td><td>serverul caută resursa</td><td>un cod de stare</td></tr><tr><td>parametrii</td><td>aplică filtrele</td><td>antetele</td></tr><tr><td>antetele</td><td>pregătește răspunsul</td><td>corpul, de obicei JSON</td></tr></tbody></table><p>Nimic nu rămâne deschis între două cereri: fiecare cerere poartă cu ea tot ce-i trebuie. De aceea poți relua a treia cerere fără să le refaci pe primele două.</p>
+<h2>Cerere, metodă, răspuns</h2><p class="cheie">Clientul trimite o cerere. Serverul trimite un răspuns. Între ele, o metodă HTTP care spune ce vrei să se întâmple.</p><div class="ix" data-ix="flux">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Aceeași drumeție, în cod</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Trimite cererea”", "intro": "Exact stațiile de la restaurant, cu alte nume.", "buton": "Trimite cererea", "dus": "cererea pleacă: metodă, adresă, parametri", "intors": "răspunsul se întoarce: cod, antete, corp", "gata": "ai codul de stare și corpul, de obicei JSON", "statii": [{"n": "Codul tău", "et": "client", "ic": "💻", "d": "Construiește cererea: metoda, adresa, parametrii, antetele."}, {"n": "Internetul", "et": "HTTP", "ic": "🌐", "d": "Cererea călătorește. Dacă pică aici, primești o eroare de rețea, nu un cod de stare."}, {"n": "Serverul", "et": "API", "ic": "🖥", "d": "Primește cererea, verifică dacă are sens, caută resursa, aplică filtrele."}, {"n": "Baza de date", "et": "resursa", "ic": "🗄", "d": "Acolo stau datele propriu-zise. Tu nu ajungi niciodată aici direct."}]}</script></div>
+</div><div class="nota"><div class="nota__et">De ce poți relua o colectare căzută</div><p>Nimic nu rămâne deschis între două cereri: fiecare cerere poartă cu ea tot ce-i trebuie. De aceea a treia cerere merge și dacă primele două s-au făcut ieri, de pe alt calculator.</p></div>
 
 </section>
 
@@ -136,13 +139,16 @@
 <section class="sld" id="s12" data-grup="Cum arată o cerere" data-t="Structura unei adrese">
 <h2>Din ce e făcută o adresă</h2><p>Cinci bucăți, fiecare cu rostul ei. Pe asta se sprijină tot ce scriem mai jos.</p><div class="ix" data-ix="url">
   <div class="ix__cap"><span class="ix__fel">Disecție</span><span class="ix__t">Taie adresa în bucăți</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-url", "sarcina": "Apasă pe fiecare bucată din adresă și spune cum se cheamă.", "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune", "parti": [{"t": "https", "e": "protocol", "d": "Cum se vorbește. <code>https</code> e criptat, <code>http</code> nu."}, {"t": "api.exemplu.com", "e": "host", "d": "Ce server. Numele mașinii care răspunde."}, {"t": "443", "e": "port", "d": "Pe ce ușă. Se scrie rar: 443 pentru https și 80 pentru http se subînțeleg."}, {"t": "/resursa/detalii", "e": "cale", "d": "Ce resursă ceri. Aici se vede ce anume vrei din tot ce oferă serverul."}, {"t": "?culoare=rosu", "e": "parametri", "d": "Opțiuni: filtre, format, pagină. Aici ajung argumentele tale."}, {"t": "#sectiune", "e": "fragment", "d": "Pentru browser, nu pentru server. Nu pleacă în cerere."}], "etichete": ["protocol", "host", "port", "cale", "parametri", "fragment"], "explicatie": "Fragmentul e singurul care nu ajunge niciodată la server: browserul îl folosește ca să sară la o bucată din pagină. Dacă pui ceva important după <code>#</code>, nu se trimite."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-url", "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune", "parti": [{"t": "https", "e": "protocol", "d": "Cum se vorbește. <code>https</code> e criptat, <code>http</code> nu."}, {"t": "api.exemplu.com", "e": "host", "d": "Ce server. Numele mașinii care răspunde."}, {"t": "443", "e": "port", "d": "Pe ce ușă. Se scrie rar: 443 pentru https și 80 pentru http se subînțeleg."}, {"t": "/resursa/detalii", "e": "cale", "d": "Ce resursă ceri. Aici se vede ce anume vrei din tot ce oferă serverul."}, {"t": "?culoare=rosu", "e": "parametri", "d": "Opțiuni: filtre, format, pagină. Aici ajung argumentele tale."}, {"t": "#sectiune", "e": "fragment", "d": "Pentru browser, nu pentru server. Nu pleacă în cerere."}], "etichete": ["protocol", "host", "port", "cale", "parametri", "fragment"], "explicatie": "Fragmentul e singurul care nu ajunge niciodată la server: browserul îl folosește ca să sară la o bucată din pagină. Dacă pui ceva important după <code>#</code>, nu se trimite."}</script></div>
 </div>
 
 </section>
 
 <section class="sld" id="s13" data-grup="Răspunsul" data-t="Codurile de stare">
-<h2>Ce îți răspunde serverul</h2><p>Înainte de date, vine un număr. Dacă nu te uiți la el, vei petrece jumătate de oră întrebându-te de ce tabelul e gol.</p><table class="tabel"><thead><tr><th>Cod</th><th>Ce înseamnă</th><th>Ce faci</th></tr></thead><tbody><tr><td class="mono">200</td><td>a mers</td><td>citești datele</td></tr><tr><td class="mono">400</td><td>cererea ta e greșită</td><td>verifici parametrii</td></tr><tr><td class="mono">401 / 403</td><td>nu ai voie</td><td>cheie lipsă sau greșită</td></tr><tr><td class="mono">404</td><td>adresa nu există</td><td>verifici calea, nu internetul</td></tr><tr><td class="mono">429</td><td>prea multe cereri</td><td>aștepți și reiei mai rar</td></tr><tr><td class="mono">500</td><td>a crăpat la ei</td><td>reiei mai târziu; nu e vina ta</td></tr></tbody></table><div class="verif" data-id="c2-v8" data-corect="3">
+<h2>Ce îți răspunde serverul</h2><p>Înainte de date, vine un număr. Dacă nu te uiți la el, vei petrece jumătate de oră întrebându-te de ce tabelul e gol.</p><div class="ix" data-ix="raspuns">
+  <div class="ix__cap"><span class="ix__fel">Trimite și vezi</span><span class="ix__t">Trimite și vezi ce primești</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-raspuns", "sarcina": "Încearcă-le pe toate. Fiecare e o greșeală pe care o vei face.", "cazuri": [{"et": "cerere bună", "cod": 200, "nume": "OK", "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json", "corp": "[{\"page\":1,\"pages\":2,\"total\":64}, [ … 50 de randuri … ]]", "ce": "A mers. Dar uită-te și la ce e înăuntru: un <code>200</code> cu zero rânduri tot <code>200</code> se cheamă."}, {"et": "adresa greșită", "cod": 404, "nume": "Not Found", "url": "api.worldbank.org/v2/country/RO/indicatorr/SP.POP.TOTL?format=json", "corp": "<html><head><title>404</title></head> …", "ce": "Calea nu există. Observă și că răspunsul nu mai e JSON, ci HTML: dacă dai direct <code>r.json()</code>, crapă acolo, nu la adresă, și cauți în locul greșit."}, {"et": "parametru aiurea", "cod": 400, "nume": "Bad Request", "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=anul-trecut", "corp": "[{\"message\":[{\"id\":\"120\",\"value\":\"Invalid value\"}]}]", "ce": "Cererea a ajuns și a fost înțeleasă, dar e greșită. Greșeala e la tine, și de obicei scrie în corp care anume."}, {"et": "prea des", "cod": 429, "nume": "Too Many Requests", "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?page=97", "corp": "Retry-After: 30", "ce": "Ai depășit limita. Soluția nu e să reîncerci mai des, ci mai rar: o pauză între cereri, care crește după fiecare refuz."}, {"et": "a crăpat la ei", "cod": 503, "nume": "Service Unavailable", "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json", "corp": "Service temporarily unavailable", "ce": "Nu e vina ta. Reiei mai târziu. Un script bun de colectare reîncearcă singur, de câteva ori, cu pauze tot mai mari."}]}</script></div>
+</div><div class="verif" data-id="c2-v8" data-corect="3">
     <p class="verif__q">Primești codul <code>429</code>. Ce s-a întâmplat?</p>
     <button>Adresa e greșită</button>
     <button>Serverul e stricat</button>
@@ -237,11 +243,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=12"></script>
+<script type="module" src="../../js/antet.js?v=14"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=12";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=12";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=12";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=14";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=14";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=14";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });

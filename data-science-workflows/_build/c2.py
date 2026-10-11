@@ -121,19 +121,30 @@ sl("s3", "Ce este un API", "Analogia restaurantului",
    "<h2>Analogia restaurantului</h2>"
    "<p class=\"cheie\">Un API e ospătarul. Nu gătește, dar fără el nu ajungi "
    "la bucătărie.</p>"
-   + ix("etape", "Cine ce face",
-        {"titlu": "Cele cinci roluri", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in RESTAURANT]},
-        "Apasă pe fiecare rol ca să vezi cu ce se potrivește din cod."),
+   + ix("flux", "Comanda, de la masă la bucătărie",
+        {"titlu": "Apasă „Trimite comanda”",
+         "intro": "Sau apasă pe oricare dintre stații, ca să vezi cu ce se potrivește din cod.",
+         "buton": "Trimite comanda",
+         "dus": "comanda pleacă spre bucătărie",
+         "intors": "preparatul se întoarce la masă",
+         "gata": "gata: ai primit ce ai cerut, în forma convenită",
+         "statii": [{"n": n, "et": u, "d": d, "ic": ic}
+                    for (n, u, d), ic in zip(RESTAURANT, ["🙋", "🧑‍🍳", "📋", "🍳", "🍽"])]}),
    manual=
    "<h2>Analogia restaurantului</h2>"
    "<p>Analogia e veche și merită spusă o dată, pentru că fixează un lucru care "
    "altfel se învață greu: tu nu vorbești cu baza de date a celuilalt. Vorbești "
    "cu un intermediar care are voie să intre acolo, în numele tău, în niște "
    "condiții scrise dinainte.</p>"
-   + ix("etape", "Cine ce face",
-        {"titlu": "Cele cinci roluri", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in RESTAURANT]})
+   + ix("flux", "Comanda, de la masă la bucătărie",
+        {"titlu": "Apasă „Trimite comanda”",
+         "intro": "Sau apasă pe oricare dintre stații.",
+         "buton": "Trimite comanda",
+         "dus": "comanda pleacă spre bucătărie",
+         "intors": "preparatul se întoarce la masă",
+         "gata": "gata: ai primit ce ai cerut",
+         "statii": [{"n": n, "et": u, "d": d, "ic": ic}
+                    for (n, u, d), ic in zip(RESTAURANT, ["🙋", "🧑‍🍳", "📋", "🍳", "🍽"])]})
    + "<p>Analogia are și o limită, și e bine s-o știi: ospătarul e politicos, "
      "pe când API-ul nu. Dacă ceri greșit, nu-ți explică nimeni ce ai greșit; "
      "primești un număr și atât. De aceea citirea documentației nu e opțională.</p>")
@@ -258,9 +269,12 @@ sl("s7", "Tipuri de API", "De unde vine REST",
    "<h2>Un sfert de secol de încercări</h2>"
    "<p>REST n-a fost inventat ca să fie modern. A fost descris ca să "
    "simplifice ce exista deja și era greoi.</p>"
-   + ix("etape", "Cronologia API-urilor",
-        {"titlu": "1991 — 2016", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in CRONOLOGIE]},
+   + ix("cronologie", "Un sfert de secol de încercări",
+        {"titlu": "Apasă pe oricare an",
+         "intro": "Se vede ritmul: patru încercări în primii zece ani, apoi "
+                  "liniște, apoi încă două.",
+         "puncte": [{"an": int(n.split(" · ")[0]), "nume": n.split(" · ")[1],
+                     "et": u, "text": d} for n, u, d in CRONOLOGIE]},
         "Ce supraviețuiește nu e ce e mai puternic, ci ce e mai ușor de citit "
         "de un om obosit."))
 
@@ -295,14 +309,26 @@ sl("s9", "Cum arată o cerere", "Arhitectura REST",
    "<h2>Cerere, metodă, răspuns</h2>"
    "<p class=\"cheie\">Clientul trimite o cerere. Serverul trimite un răspuns. "
    "Între ele, o metodă HTTP care spune ce vrei să se întâmple.</p>"
-   + tabel(["Pleacă de la tine", "Ajunge la server", "Se întoarce"], [
-       ["metoda și adresa", "serverul caută resursa", "un cod de stare"],
-       ["parametrii", "aplică filtrele", "antetele"],
-       ["antetele", "pregătește răspunsul", "corpul, de obicei JSON"],
-   ])
-   + "<p>Nimic nu rămâne deschis între două cereri: fiecare cerere poartă cu "
-     "ea tot ce-i trebuie. De aceea poți relua a treia cerere fără să le "
-     "refaci pe primele două.</p>",
+   + ix("flux", "Aceeași drumeție, în cod",
+        {"titlu": "Apasă „Trimite cererea”",
+         "intro": "Exact stațiile de la restaurant, cu alte nume.",
+         "buton": "Trimite cererea",
+         "dus": "cererea pleacă: metodă, adresă, parametri",
+         "intors": "răspunsul se întoarce: cod, antete, corp",
+         "gata": "ai codul de stare și corpul, de obicei JSON",
+         "statii": [
+             {"n": "Codul tău", "et": "client", "ic": "💻",
+              "d": "Construiește cererea: metoda, adresa, parametrii, antetele."},
+             {"n": "Internetul", "et": "HTTP", "ic": "🌐",
+              "d": "Cererea călătorește. Dacă pică aici, primești o eroare de rețea, nu un cod de stare."},
+             {"n": "Serverul", "et": "API", "ic": "🖥",
+              "d": "Primește cererea, verifică dacă are sens, caută resursa, aplică filtrele."},
+             {"n": "Baza de date", "et": "resursa", "ic": "🗄",
+              "d": "Acolo stau datele propriu-zise. Tu nu ajungi niciodată aici direct."}]})
+   + nota("De ce poți relua o colectare căzută",
+          "Nimic nu rămâne deschis între două cereri: fiecare cerere poartă cu "
+          "ea tot ce-i trebuie. De aceea a treia cerere merge și dacă primele "
+          "două s-au făcut ieri, de pe alt calculator."),
    manual=
    "<h2>Arhitectura REST</h2>"
    "<p>REST nu e un protocol, ci un set de constrângeri peste HTTP. Dintre "
@@ -379,7 +405,6 @@ sl("s12", "Cum arată o cerere", "Structura unei adrese",
    "mai jos.</p>"
    + ix("url", "Taie adresa în bucăți",
         {"id": "c2-url",
-         "sarcina": "Apasă pe fiecare bucată din adresă și spune cum se cheamă.",
          "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune",
          "parti": [
              {"t": "https", "e": "protocol",
@@ -406,7 +431,6 @@ sl("s12", "Cum arată o cerere", "Structura unei adrese",
    "și e util să le poți numi.</p>"
    + ix("url", "Taie adresa în bucăți",
         {"id": "c2-url",
-         "sarcina": "Apasă pe fiecare bucată din adresă și spune cum se cheamă.",
          "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune",
          "parti": [
              {"t": "https", "e": "protocol", "d": "Cum se vorbește."},
@@ -433,14 +457,36 @@ sl("s13", "Răspunsul", "Codurile de stare",
    "<h2>Ce îți răspunde serverul</h2>"
    "<p>Înainte de date, vine un număr. Dacă nu te uiți la el, vei petrece "
    "jumătate de oră întrebându-te de ce tabelul e gol.</p>"
-   + tabel(["Cod", "Ce înseamnă", "Ce faci"], [
-       ["~200", "a mers", "citești datele"],
-       ["~400", "cererea ta e greșită", "verifici parametrii"],
-       ["~401 / 403", "nu ai voie", "cheie lipsă sau greșită"],
-       ["~404", "adresa nu există", "verifici calea, nu internetul"],
-       ["~429", "prea multe cereri", "aștepți și reiei mai rar"],
-       ["~500", "a crăpat la ei", "reiei mai târziu; nu e vina ta"],
-   ])
+   + ix("raspuns", "Trimite și vezi ce primești",
+        {"id": "c2-raspuns",
+         "sarcina": "Încearcă-le pe toate. Fiecare e o greșeală pe care o vei face.",
+         "cazuri": [
+             {"et": "cerere bună", "cod": 200, "nume": "OK",
+              "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json",
+              "corp": "[{\"page\":1,\"pages\":2,\"total\":64}, [ … 50 de randuri … ]]",
+              "ce": "A mers. Dar uită-te și la ce e înăuntru: un <code>200</code> "
+                    "cu zero rânduri tot <code>200</code> se cheamă."},
+             {"et": "adresa greșită", "cod": 404, "nume": "Not Found",
+              "url": "api.worldbank.org/v2/country/RO/indicatorr/SP.POP.TOTL?format=json",
+              "corp": "<html><head><title>404</title></head> …",
+              "ce": "Calea nu există. Observă și că răspunsul nu mai e JSON, ci "
+                    "HTML: dacă dai direct <code>r.json()</code>, crapă acolo, "
+                    "nu la adresă, și cauți în locul greșit."},
+             {"et": "parametru aiurea", "cod": 400, "nume": "Bad Request",
+              "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=anul-trecut",
+              "corp": "[{\"message\":[{\"id\":\"120\",\"value\":\"Invalid value\"}]}]",
+              "ce": "Cererea a ajuns și a fost înțeleasă, dar e greșită. "
+                    "Greșeala e la tine, și de obicei scrie în corp care anume."},
+             {"et": "prea des", "cod": 429, "nume": "Too Many Requests",
+              "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?page=97",
+              "corp": "Retry-After: 30",
+              "ce": "Ai depășit limita. Soluția nu e să reîncerci mai des, ci "
+                    "mai rar: o pauză între cereri, care crește după fiecare refuz."},
+             {"et": "a crăpat la ei", "cod": 503, "nume": "Service Unavailable",
+              "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json",
+              "corp": "Service temporarily unavailable",
+              "ce": "Nu e vina ta. Reiei mai târziu. Un script bun de colectare "
+                    "reîncearcă singur, de câteva ori, cu pauze tot mai mari."}]})
    + verif("c2-v8", 3,
            "Primești codul <code>429</code>. Ce s-a întâmplat?",
            ["Adresa e greșită",

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=12">
-<link rel="stylesheet" href="../../css/panou.css?v=12">
-<script src="../../js/tema.js?v=12"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=14">
+<link rel="stylesheet" href="../../css/panou.css?v=14">
+<script src="../../js/tema.js?v=14"></script>
 </head>
 <body class="corp--app">
 
@@ -64,6 +64,7 @@
     <button class="pn__f" data-f="prezenta" type="button">Prezența</button>
     <button class="pn__f" data-f="slide" type="button">Slide cu slide</button>
     <button class="pn__f" data-f="cod" type="button">Codul scris</button>
+    <button class="pn__f" data-f="scrise" type="button">Ce au scris</button>
     <button class="pn__f" data-f="note" type="button">Nota</button>
   </div>
 
@@ -96,6 +97,14 @@
     <div id="v-cod"><p class="gol">Se încarcă…</p></div>
   </section>
 
+  <section class="bl pn__v" data-v="scrise" hidden>
+    <h2>Ce au scris</h2>
+    <p class="bl__d">Textele scrise de ei cu mâna lor, la lecția aleasă: ce
+    așteaptă de la curs, întrebarea de cercetare a echipei, și orice altceva
+    le cer într-o lecție.</p>
+    <div id="v-scrise"><p class="gol">Se încarcă…</p></div>
+  </section>
+
   <section class="bl pn__v" data-v="note" hidden>
     <h2>Nota</h2>
     <p class="bl__d" id="note-d"></p>
@@ -106,7 +115,7 @@
 </template>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, CURS } from "../../js/curs.js?v=12";
+import { LECTII, NOTARE, RADACINA, CURS } from "../../js/curs.js?v=14";
 
 const el  = id => document.getElementById(id);
 const pag = el("pagina");
@@ -119,7 +128,7 @@ const unZec = n => (Math.round(n * 10) / 10).toFixed(1).replace(".", ",");
 
 let A, sb, eu;
 try {
-  A = await import("../../js/auth.js?v=12");
+  A = await import("../../js/auth.js?v=14");
   sb = A.sb;
   eu = await A.profil();
 } catch (e) {
@@ -350,7 +359,7 @@ async function bucataSlide(sarcini){
 /* ===================================================== BANDA DE JOS === */
 
 async function semestru(){
-  sarcini(); prezenta(); slideCuSlide(); codul(); note();
+  sarcini(); prezenta(); slideCuSlide(); codul(); scrise(); note();
 }
 
 /* ------------------------------------------------------------- sarcini -- */
@@ -509,6 +518,41 @@ async function codul(){
     </div>`).join("");
 }
 
+/* -------------------------------------------------------------- scrise -- */
+
+const ET_TIP = { asteptari: "Ce așteaptă de la curs",
+                 intrebare: "Întrebarea de cercetare a echipei",
+                 autoevaluare: "Autoevaluare" };
+
+async function scrise(){
+  const g = el("v-scrise");
+  let d;
+  try {
+    const r = await sb.rpc("sumar_scrise", { p_capitol: capitol(), p_tip: null });
+    if (r.error) throw r.error;
+    d = (r.data || []).filter(x => x.tip !== "autoevaluare");
+  } catch (e) {
+    g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}.
+      Dacă scrie că funcția lipsește, rulează <code>db/13-texte.sql</code>.</p>`;
+    return;
+  }
+  if (!d.length){ g.innerHTML = `<p class="gol">N-a scris nimeni nimic la lecția asta.</p>`; return; }
+
+  const pe = new Map();
+  d.forEach(x => { if (!pe.has(x.tip)) pe.set(x.tip, []); pe.get(x.tip).push(x); });
+
+  g.innerHTML = [...pe.entries()].map(([tip, lst]) => `
+    <div class="scr__g">
+      <div class="scr__gt">${esc(ET_TIP[tip] || tip)}
+        <span class="mic">${lst.length} ${lst.length === 1 ? "răspuns" : "răspunsuri"}</span></div>
+      ${lst.map(x => `<figure class="scr__c">
+        <blockquote>${esc(x.text)}</blockquote>
+        <figcaption>${esc(x.nume)}${x.grupa ? " · " + esc(x.grupa) : ""}
+          <span class="mic">${ora(x.creat_la)}</span></figcaption>
+      </figure>`).join("")}
+    </div>`).join("");
+}
+
 /* ---------------------------------------------------------------- nota -- */
 async function note(){
   const g = el("v-note");
@@ -564,6 +608,6 @@ async function note(){
 
 usa();
 </script>
-<script type="module" src="../../js/antet.js?v=12"></script>
+<script type="module" src="../../js/antet.js?v=14"></script>
 </body>
 </html>

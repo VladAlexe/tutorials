@@ -9,12 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=12">
-<link rel="stylesheet" href="../../css/tutorial.css?v=12">
-<link rel="stylesheet" href="../../css/interactiv.css?v=12">
-<link rel="stylesheet" href="../../css/grafice.css?v=12">
-<link rel="stylesheet" href="../../css/exercitii.css?v=12">
-<script src="../../js/tema.js?v=12"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=14">
+<link rel="stylesheet" href="../../css/tutorial.css?v=14">
+<link rel="stylesheet" href="../../css/interactiv.css?v=14">
+<link rel="stylesheet" href="../../css/grafice.css?v=14">
+<link rel="stylesheet" href="../../css/exercitii.css?v=14">
+<script src="../../js/tema.js?v=14"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 2 · Manual"></div>
@@ -64,9 +64,9 @@
 
 <section class="tut__s" id="s3">
 <span class="tut__nr">03 · Ce este un API</span>
-<h2>Analogia restaurantului</h2><p>Analogia e veche și merită spusă o dată, pentru că fixează un lucru care altfel se învață greu: tu nu vorbești cu baza de date a celuilalt. Vorbești cu un intermediar care are voie să intre acolo, în numele tău, în niște condiții scrise dinainte.</p><div class="ix" data-ix="etape">
-  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Cine ce face</span></div>
-  <div class="ix__corp"><script type="application/json">{"titlu": "Cele cinci roluri", "intro": "Apasă pe oricare.", "etape": [{"nume": "Clientul", "unde": "codul tău", "text": "Știe ce vrea, dar nu intră în bucătărie. Formulează o comandă și o dă mai departe."}, {"nume": "Ospătarul", "unde": "API-ul", "text": "Intermediarul. Preia comanda, o duce la bucătărie, aduce răspunsul înapoi. Nu gătește el, dar fără el nu ajungi la bucătărie."}, {"nume": "Meniul", "unde": "documentația", "text": "Ce se poate cere, cu ce opțiuni și în ce condiții. Dacă ceri ceva care nu e în meniu, primești un refuz, nu o surpriză."}, {"nume": "Bucătăria", "unde": "serverul", "text": "Acolo se întâmplă lucrul adevărat. Nu vezi cum, și nici nu te privește: te privește doar ce iese."}, {"nume": "Preparatul", "unde": "răspunsul", "text": "Ce primești înapoi, în forma convenită. La API, de cele mai multe ori, JSON."}]}</script></div>
+<h2>Analogia restaurantului</h2><p>Analogia e veche și merită spusă o dată, pentru că fixează un lucru care altfel se învață greu: tu nu vorbești cu baza de date a celuilalt. Vorbești cu un intermediar care are voie să intre acolo, în numele tău, în niște condiții scrise dinainte.</p><div class="ix" data-ix="flux">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Comanda, de la masă la bucătărie</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Trimite comanda”", "intro": "Sau apasă pe oricare dintre stații.", "buton": "Trimite comanda", "dus": "comanda pleacă spre bucătărie", "intors": "preparatul se întoarce la masă", "gata": "gata: ai primit ce ai cerut", "statii": [{"n": "Clientul", "et": "codul tău", "d": "Știe ce vrea, dar nu intră în bucătărie. Formulează o comandă și o dă mai departe.", "ic": "🙋"}, {"n": "Ospătarul", "et": "API-ul", "d": "Intermediarul. Preia comanda, o duce la bucătărie, aduce răspunsul înapoi. Nu gătește el, dar fără el nu ajungi la bucătărie.", "ic": "🧑‍🍳"}, {"n": "Meniul", "et": "documentația", "d": "Ce se poate cere, cu ce opțiuni și în ce condiții. Dacă ceri ceva care nu e în meniu, primești un refuz, nu o surpriză.", "ic": "📋"}, {"n": "Bucătăria", "et": "serverul", "d": "Acolo se întâmplă lucrul adevărat. Nu vezi cum, și nici nu te privește: te privește doar ce iese.", "ic": "🍳"}, {"n": "Preparatul", "et": "răspunsul", "d": "Ce primești înapoi, în forma convenită. La API, de cele mai multe ori, JSON.", "ic": "🍽"}]}</script></div>
 </div><p>Analogia are și o limită, și e bine s-o știi: ospătarul e politicos, pe când API-ul nu. Dacă ceri greșit, nu-ți explică nimeni ce ai greșit; primești un număr și atât. De aceea citirea documentației nu e opțională.</p>
 
 </section>
@@ -115,9 +115,9 @@
 
 <section class="tut__s" id="s7">
 <span class="tut__nr">07 · Tipuri de API</span>
-<h2>Un sfert de secol de încercări</h2><p>REST n-a fost inventat ca să fie modern. A fost descris ca să simplifice ce exista deja și era greoi.</p><div class="ix" data-ix="etape">
-  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Cronologia API-urilor</span></div>
-  <div class="ix__corp"><p class="ix__sarcina">Ce supraviețuiește nu e ce e mai puternic, ci ce e mai ușor de citit de un om obosit.</p><script type="application/json">{"titlu": "1991 — 2016", "intro": "Apasă pe oricare.", "etape": [{"nume": "1991 · CORBA", "unde": "obiecte la distanță", "text": "Apeluri între obiecte pe mașini diferite. Greu, dar a pus întrebarea."}, {"nume": "1993 · RDA", "unde": "acces la date", "text": "Standard pentru acces la distanță la baze de date."}, {"nume": "1998 · XML-RPC", "unde": "apeluri în XML", "text": "Prima formă simplă: un apel de funcție, împachetat în XML."}, {"nume": "1999 · SOAP", "unde": "plicul", "text": "XML-RPC cu reguli stricte și un plic în jur. Mult standard, mult ceremonial."}, {"nume": "2000 · REST", "unde": "resurse", "text": "Teza lui Roy Fielding. Nu un protocol, un stil: resurse la adrese, metode HTTP."}, {"nume": "2005 · JSON-RPC", "unde": "mai ușor", "text": "Același apel, dar în JSON, care e mult mai ușor de citit."}, {"nume": "2007 · OData", "unde": "interogări", "text": "REST cu interogări standardizate peste el."}, {"nume": "2015 · GraphQL", "unde": "ceri ce-ți trebuie", "text": "Facebook. O adresă, iar clientul descrie forma răspunsului."}, {"nume": "2016 · gRPC", "unde": "între servicii", "text": "Google. Binar, rapid, pentru comunicarea dintre servicii."}]}</script></div>
+<h2>Un sfert de secol de încercări</h2><p>REST n-a fost inventat ca să fie modern. A fost descris ca să simplifice ce exista deja și era greoi.</p><div class="ix" data-ix="cronologie">
+  <div class="ix__cap"><span class="ix__fel">Cronologie</span><span class="ix__t">Un sfert de secol de încercări</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Ce supraviețuiește nu e ce e mai puternic, ci ce e mai ușor de citit de un om obosit.</p><script type="application/json">{"titlu": "Apasă pe oricare an", "intro": "Se vede ritmul: patru încercări în primii zece ani, apoi liniște, apoi încă două.", "puncte": [{"an": 1991, "nume": "CORBA", "et": "obiecte la distanță", "text": "Apeluri între obiecte pe mașini diferite. Greu, dar a pus întrebarea."}, {"an": 1993, "nume": "RDA", "et": "acces la date", "text": "Standard pentru acces la distanță la baze de date."}, {"an": 1998, "nume": "XML-RPC", "et": "apeluri în XML", "text": "Prima formă simplă: un apel de funcție, împachetat în XML."}, {"an": 1999, "nume": "SOAP", "et": "plicul", "text": "XML-RPC cu reguli stricte și un plic în jur. Mult standard, mult ceremonial."}, {"an": 2000, "nume": "REST", "et": "resurse", "text": "Teza lui Roy Fielding. Nu un protocol, un stil: resurse la adrese, metode HTTP."}, {"an": 2005, "nume": "JSON-RPC", "et": "mai ușor", "text": "Același apel, dar în JSON, care e mult mai ușor de citit."}, {"an": 2007, "nume": "OData", "et": "interogări", "text": "REST cu interogări standardizate peste el."}, {"an": 2015, "nume": "GraphQL", "et": "ceri ce-ți trebuie", "text": "Facebook. O adresă, iar clientul descrie forma răspunsului."}, {"an": 2016, "nume": "gRPC", "et": "între servicii", "text": "Google. Binar, rapid, pentru comunicarea dintre servicii."}]}</script></div>
 </div>
 
 </section>
@@ -167,7 +167,7 @@
 <span class="tut__nr">12 · Cum arată o cerere</span>
 <h2>Structura unui endpoint</h2><p>O adresă pare un șir de caractere, dar are o gramatică. Când o cerere nu merge, aproape întotdeauna greșeala e într-una dintre bucățile astea, și e util să le poți numi.</p><div class="ix" data-ix="url">
   <div class="ix__cap"><span class="ix__fel">Disecție</span><span class="ix__t">Taie adresa în bucăți</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-url", "sarcina": "Apasă pe fiecare bucată din adresă și spune cum se cheamă.", "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune", "parti": [{"t": "https", "e": "protocol", "d": "Cum se vorbește."}, {"t": "api.exemplu.com", "e": "host", "d": "Ce server răspunde."}, {"t": "443", "e": "port", "d": "Pe ce ușă. De obicei se subînțelege."}, {"t": "/resursa/detalii", "e": "cale", "d": "Ce resursă ceri."}, {"t": "?culoare=rosu", "e": "parametri", "d": "Filtre și opțiuni."}, {"t": "#sectiune", "e": "fragment", "d": "Pentru browser, nu pentru server."}], "etichete": ["protocol", "host", "port", "cale", "parametri", "fragment"], "explicatie": "Fragmentul nu ajunge niciodată la server."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-url", "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune", "parti": [{"t": "https", "e": "protocol", "d": "Cum se vorbește."}, {"t": "api.exemplu.com", "e": "host", "d": "Ce server răspunde."}, {"t": "443", "e": "port", "d": "Pe ce ușă. De obicei se subînțelege."}, {"t": "/resursa/detalii", "e": "cale", "d": "Ce resursă ceri."}, {"t": "?culoare=rosu", "e": "parametri", "d": "Filtre și opțiuni."}, {"t": "#sectiune", "e": "fragment", "d": "Pentru browser, nu pentru server."}], "etichete": ["protocol", "host", "port", "cale", "parametri", "fragment"], "explicatie": "Fragmentul nu ajunge niciodată la server."}</script></div>
 </div><div class="verif" data-id="c2-v7" data-corect="2">
     <p class="verif__q">Unde pui filtrele unei cereri, de exemplu anul sau formatul?</p>
     <button>în protocol</button>
@@ -309,11 +309,11 @@ d.to_csv(<span class="s">"date/brute/populatie_ro.csv"</span>, index=<span class
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=12"></script>
+<script type="module" src="../../js/antet.js?v=14"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=12";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=12";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=12";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=14";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=14";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=14";
 pornesteIx();
 pornesteVerif("c2");
 pornesteTut("c2");

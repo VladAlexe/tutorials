@@ -1,7 +1,7 @@
 {
  "capitol": "c2",
  "total": 22,
- "sarcini": 17,
+ "sarcini": 18,
  "slide": [
   {
    "nr": 1,
@@ -132,6 +132,10 @@
    "grup": "Răspunsul",
    "titlu": "Codurile de stare",
    "sarcini": [
+    {
+     "id": "c2-raspuns",
+     "fel": "cod"
+    },
     {
      "id": "c2-v8",
      "fel": "verificare"

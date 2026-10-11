@@ -19,6 +19,10 @@ Panou: https://supabase.com/dashboard/project/ybvtxenerriwstiktebe
       - `10-profesori.sql` → pot face profesor si un al doilea cont
       - `11-context.sql` → de unde vine fiecare raspuns (in ora / singur /
         din manual), si scoaterea contului meu din statisticile clasei
+      - `12-contul-meu-de-profesor.sql` → ma face pe mine profesor; se ruleaza
+        pas cu pas, nu dintr-o bucata, si nu trebuie modificat nimic in el
+      - `13-texte.sql` → textele scrise de ei (asteptari, intrebarea de
+        cercetare) ajung in panou
 
       Fiecare trebuie sa dea `Success`. Se pot rula din nou oricand, nu strica
       nimic.
