@@ -1,0 +1,43 @@
+# Fisiere care NU se publica pe sit.
+# Sintaxa e aceeasi ca la .gitignore.
+#
+# Atentie: aceasta e o lista de publicare, nu una de securitate. Un secret
+# tot nu are ce cauta in repo, pentru ca ramane in istoricul git chiar daca
+# nu ajunge pe sit.
+
+# configurarea si lista insasi
+wrangler.jsonc
+.assetsignore
+
+# baza de date: scheme, politici, instructiuni de configurare
+db/
+**/db/
+
+# unelte locale
+.claude/
+**/.claude/
+.edge-profile*/
+.edge-check*/
+edge-dom.txt
+edge-err.txt
+edge-out.txt
+
+# prototipuri si materiale de lucru
+**/assets/prototip/
+
+# dependinte
+node_modules/
+**/node_modules/
+
+# Python
+__pycache__/
+**/__pycache__/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+venv/
+.venv/
+
+# sisteme
+.DS_Store
+Thumbs.db
+desktop.ini

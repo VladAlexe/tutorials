@@ -1,0 +1,20 @@
+{
+  // Configurarea Worker-ului care serveste acest sit.
+  //
+  // Fara acest fisier, wrangler incearca sa ghiceasca setarile la fiecare
+  // build si intra intr-un pas interactiv pe care, in build-ul automat, nu
+  // il poate duce la capat. De aceea aparea "build failed" chiar daca
+  // fisierele ajungeau pe sit.
+  //
+  // Nu exista cod de Worker: situl e doar fisiere statice. Cererile care nu
+  // nimeresc un fisier primesc 404.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tutorials",
+  "compatibility_date": "2026-10-06",
+  "assets": {
+    "directory": "."
+  },
+  "observability": {
+    "enabled": true
+  }
+}
