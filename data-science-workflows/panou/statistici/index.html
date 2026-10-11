@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=9">
-<link rel="stylesheet" href="../../css/panou.css?v=9">
-<script src="../../js/tema.js?v=9"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=11">
+<link rel="stylesheet" href="../../css/panou.css?v=11">
+<script src="../../js/tema.js?v=11"></script>
 </head>
 <body class="corp--app">
 
@@ -31,8 +31,10 @@
     </label>
     <span class="pn__cand" id="cand">—</span>
     <div class="pn__dr">
+      <a class="btn btn--mic" href="../">Lecțiile mele</a>
+      <a class="btn btn--mic" id="lk-lectie" href="#">Deschide lecția</a>
       <button class="btn btn--mic" id="bt-reia" type="button">Reîncarcă</button>
-      <button class="btn btn--mic" id="bt-fereastra" type="button">Deschide pe alt ecran</button>
+      <button class="btn btn--mic" id="bt-fereastra" type="button">Pe alt ecran</button>
     </div>
   </div>
 
@@ -48,11 +50,10 @@
         <div class="pista" id="pista"></div>
       </div>
       <div class="bl__c">
-        <h3>Ultimele verificări</h3>
-        <p class="bl__d">Cum a răspuns grupa la ultimele două verificări din
-        lecția asta. Pagina nu știe ce întrebări sunt pe slide-ul tău, doar la
-        ce s-a răspuns ultima dată, ceea ce la oră e același lucru.</p>
-        <div id="acum-rasp"><p class="gol">Nicio verificare pe slide-ul ăsta.</p></div>
+        <h3 id="acum-t">Pe slide-ul tău</h3>
+        <p class="bl__d">Sarcinile de pe slide-ul la care ești chiar acum, și
+        cum s-a descurcat grupa la ele.</p>
+        <div id="acum-rasp"><p class="gol">Slide-ul ăsta n-are sarcini.</p></div>
       </div>
     </div>
   </section>
@@ -61,7 +62,7 @@
   <div class="pn__file" role="tablist">
     <button class="pn__f on" data-f="sarcini" type="button">Cine ce a făcut</button>
     <button class="pn__f" data-f="prezenta" type="button">Prezența</button>
-    <button class="pn__f" data-f="raspunsuri" type="button">Răspunsurile</button>
+    <button class="pn__f" data-f="slide" type="button">Slide cu slide</button>
     <button class="pn__f" data-f="cod" type="button">Codul scris</button>
     <button class="pn__f" data-f="note" type="button">Nota</button>
   </div>
@@ -81,11 +82,12 @@
     <div id="v-prezenta"><p class="gol">Se încarcă…</p></div>
   </section>
 
-  <section class="bl pn__v" data-v="raspunsuri" hidden>
-    <h2>Răspunsurile</h2>
-    <p class="bl__d">Pe fiecare verificare, cum s-a împărțit grupa. Varianta
-    corectă e marcată cu o bifă, nu doar cu culoare.</p>
-    <div id="v-raspunsuri"><p class="gol">Se încarcă…</p></div>
+  <section class="bl pn__v" data-v="slide" hidden>
+    <h2>Slide cu slide</h2>
+    <p class="bl__d">Fiecare slide care cere ceva, cu ce a ieșit. La
+    verificări, cum s-a împărțit grupa pe variante; varianta corectă e marcată
+    cu o bifă, nu doar cu culoare. La exerciții, câți au ajuns la capăt.</p>
+    <div id="v-slide"><p class="gol">Se încarcă…</p></div>
   </section>
 
   <section class="bl pn__v" data-v="cod" hidden>
@@ -104,7 +106,7 @@
 </template>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, CURS } from "../../js/curs.js?v=9";
+import { LECTII, NOTARE, RADACINA, CURS } from "../../js/curs.js?v=11";
 
 const el  = id => document.getElementById(id);
 const pag = el("pagina");
@@ -117,7 +119,7 @@ const unZec = n => (Math.round(n * 10) / 10).toFixed(1).replace(".", ",");
 
 let A, sb, eu;
 try {
-  A = await import("../../js/auth.js?v=9");
+  A = await import("../../js/auth.js?v=11");
   sb = A.sb;
   eu = await A.profil();
 } catch (e) {
@@ -157,6 +159,30 @@ const capitol = () => "c" + lectia().nr;
 
 let ceasAcum = null;
 
+/* Harta lecției: ce sarcini stau pe ce slide. O scrie generatorul din _build
+   la fiecare construire a lecției, deci nu se poate învechi. Fără ea, panoul
+   ar ști ce s-a răspuns, dar nu și unde, și n-ar putea spune „la slide-ul 10
+   jumătate au greșit". */
+const HARTI = new Map();
+
+async function harta(){
+  const c = capitol();
+  if (HARTI.has(c)) return HARTI.get(c);
+  let h = null;
+  try {
+    const r = await fetch(`${RADACINA}/date/harta-${c}.json`, { cache:"no-cache" });
+    if (r.ok) h = await r.json();
+  } catch { /* lecțiile nescrise încă n-au hartă; pagina merge fără ea */ }
+  HARTI.set(c, h);
+  return h;
+}
+
+/** Sarcinile de pe un slide anume, după hartă. */
+async function sarciniDe(nr){
+  const h = await harta();
+  return h?.slide?.find(x => x.nr === nr)?.sarcini || [];
+}
+
 function porneste(){
   pag.innerHTML = "";
   pag.appendChild(el("sablon").content.cloneNode(true));
@@ -169,8 +195,10 @@ function porneste(){
   el("sel-lectie").onchange = e => {
     cheie = e.target.value;
     try { localStorage.setItem("dsw.panou.lectie", cheie); } catch {}
+    el("lk-lectie").href = `${RADACINA}/${cheie}/lectie/`;
     acum(); semestru();
   };
+  el("lk-lectie").href = `${RADACINA}/${cheie}/lectie/`;
   el("bt-reia").onclick = () => { acum(); semestru(); };
   el("bt-fereastra").onclick = () => {
     const f = window.open(location.href, "dsw-panou",
@@ -269,23 +297,60 @@ function pista(viata, nrAcum, total){
 const prenume = n => String(n || "?").trim().split(/\s+/)[0];
 
 async function raspunsuriAcum(nr){
-  /* întrebările de pe slide-ul curent nu se pot ști din baza de date: ele
-     trăiesc în pagina lecției. Arătăm tot ce s-a răspuns la lecția asta,
-     cu cele mai recente sus, ceea ce în practică e exact slide-ul curent. */
+  const g = el("acum-rasp"), t = el("acum-t");
+  const sarcini = await sarciniDe(nr);
+  const h = await harta();
+  const titlu = h?.slide?.find(x => x.nr === nr)?.titlu;
+  if (t) t.textContent = titlu ? `Slide ${nr} · ${titlu}` : `Slide ${nr}`;
+
+  if (!sarcini.length){
+    g.innerHTML = `<p class="gol">Slide-ul ăsta n-are sarcini: doar îl arăți
+      și vorbești.</p>`;
+    return;
+  }
+  g.innerHTML = await bucataSlide(sarcini);
+}
+
+/** Pentru o listă de sarcini, ce a ieșit: variante la verificări, câți au
+    ajuns la capăt la exerciții. */
+async function bucataSlide(sarcini){
+  let rasp = [], cod = [];
   try {
-    const { data } = await sb.rpc("sumar_raspunsuri", { p_capitol: capitol() });
-    const pe = grupeaza(data || []);
-    const ultimele = pe.slice(-2).reverse();
-    el("acum-rasp").innerHTML = ultimele.length
-      ? ultimele.map(blocIntrebare).join("")
-      : `<p class="gol">Nimeni n-a răspuns încă la lecția asta.</p>`;
-  } catch { /* banda de sus nu trebuie să cadă pentru asta */ }
+    const [a, b] = await Promise.all([
+      sb.rpc("sumar_raspunsuri", { p_capitol: capitol() }),
+      sb.rpc("sumar_cod")
+    ]);
+    rasp = a.data || []; cod = b.data || [];
+  } catch { return `<p class="gol">Nu pot citi răspunsurile.</p>`; }
+
+  const peId = grupeaza(rasp);
+  return sarcini.map(x => {
+    if (x.fel === "verificare"){
+      const b = peId.find(y => y.id === x.id);
+      return b ? blocIntrebare(b)
+               : `<div class="dz"><div class="dz__cap">
+                    <span class="dz__id">${esc(x.id)}</span>
+                    <span class="dz__n">niciun răspuns încă</span></div></div>`;
+    }
+    const ai = cod.filter(y => y.exercitiu_id === x.id);
+    const reusit = ai.filter(y => y.trecut).length;
+    const inOra = ai.filter(y => y.trecut && y.context === "live").length;
+    return `<div class="dz">
+      <div class="dz__cap"><span class="dz__id">${esc(x.id)}</span>
+        <span class="dz__n">${ai.length ? `${reusit} din ${ai.length} au reușit`
+                                        : "n-a încercat nimeni"}</span></div>
+      ${ai.length ? `<div class="dz__r bun">
+        <span class="dz__v">✓</span>
+        <span class="dz__p"><i style="width:${Math.round(reusit / ai.length * 100)}%"></i></span>
+        <span class="dz__e"><b>${reusit}</b> · ${inOra} în oră</span></div>` : ""}
+    </div>`;
+  }).join("");
 }
 
 /* ===================================================== BANDA DE JOS === */
 
 async function semestru(){
-  sarcini(); prezenta(); raspunsuri(); codul(); note();
+  sarcini(); prezenta(); slideCuSlide(); codul(); note();
 }
 
 /* ------------------------------------------------------------- sarcini -- */
@@ -395,15 +460,27 @@ function blocIntrebare({ id, v }){
     }).join("")}</div>`;
 }
 
-async function raspunsuri(){
-  const g = el("v-raspunsuri");
-  try {
-    const { data, error } = await sb.rpc("sumar_raspunsuri", { p_capitol: capitol() });
-    if (error) throw error;
-    const pe = grupeaza(data || []);
-    g.innerHTML = pe.length ? pe.map(blocIntrebare).join("")
-                            : `<p class="gol">Niciun răspuns la lecția asta.</p>`;
-  } catch (e) { g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}</p>`; }
+async function slideCuSlide(){
+  const g = el("v-slide");
+  const h = await harta();
+  if (!h){
+    g.innerHTML = `<p class="gol">Lecția asta n-are încă hartă de slide-uri.
+      Se face singură când se construiește lecția.</p>`;
+    return;
+  }
+  const cu = h.slide.filter(x => x.sarcini.length);
+  if (!cu.length){ g.innerHTML = `<p class="gol">Lecția n-are sarcini.</p>`; return; }
+
+  const bucati = await Promise.all(cu.map(x => bucataSlide(x.sarcini)));
+  g.innerHTML = cu.map((x, i) => `
+    <div class="sl-g">
+      <div class="sl-g__cap">
+        <span class="sl-g__nr">slide ${x.nr}</span>
+        <span class="sl-g__t">${esc(x.titlu)}</span>
+        <a class="sl-g__l" href="${RADACINA}/${cheie}/lectie/#${x.nr}">deschide</a>
+      </div>
+      ${bucati[i]}
+    </div>`).join("");
 }
 
 /* ----------------------------------------------------------------- cod -- */
@@ -487,6 +564,6 @@ async function note(){
 
 usa();
 </script>
-<script type="module" src="../../js/antet.js?v=9"></script>
+<script type="module" src="../../js/antet.js?v=11"></script>
 </body>
 </html>

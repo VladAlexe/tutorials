@@ -695,7 +695,7 @@ sl("s12", "Tipuri de date", "Tipuri în Python",
 
 sl("s13", "Tipuri de date", "Recunoaște tipul",
    "<h2>Recunoaște tipul</h2>"
-   + ix("tipuri", "Opt valori", {"valori": [
+   + ix("tipuri", "Opt valori", {"id": "c1-tipuri", "valori": [
        {"v": "'2024'", "t": "str", "e": "Ghilimelele fac diferența. Arată ca un an, dar e text: exact capcana din CSV."},
        {"v": "2024", "t": "int", "e": "Fără ghilimele, număr întreg. Se compară și se sortează corect."},
        {"v": "3.7", "t": "float", "e": "Punctul zecimal îl face float. Cu virgulă, în fișiere românești, ajunge text."},
@@ -1256,13 +1256,78 @@ def scrie_tutorial():
     (RAD / "c1-introducere-si-mediu/tutorial/index.html").write_text("".join(b), encoding="utf-8")
 
 
+# Ce fel de bloc interactiv produce un rând în baza de date, şi în care tabel.
+# „cod" ajunge în rulari_cod şi se poate arăta pe slide; „altul" e tot o poartă,
+# dar se salvează ca eveniment, deci nu intră în statistica slide-ului.
+FEL_SARCINA = {"cod": "cod", "ordine": "cod", "sortare": "cod", "dovada": "cod",
+               "tipuri": "cod", "autoevaluare": "cod", "asteptari": "cod"}
+
+
+def scrie_harta():
+    """Harta lecţiei: ce sarcini stau pe fiecare slide.
+
+    Panoul profesorului are nevoie de ea ca să poată spune „la slide-ul 10,
+    uite cum a răspuns grupa". Baza de date ştie răspunsurile, dar nu ştie pe
+    ce slide stă fiecare întrebare: asta se ştie doar aici, unde se scrie
+    lecţia. Deci o scriem acum, într-un fişier pe care panoul îl citeşte.
+
+    Se regenerează la fiecare rulare, deci nu are cum să rămână în urmă.
+    """
+    slides = []
+    for i, s in enumerate(S, 1):
+        h = s["slide"]
+        gasite = []
+
+        # verificările cu variante: id-ul e scris în marcaj
+        for m in re.finditer(r'class="verif" data-id="([^"]+)"', h):
+            gasite.append((m.start(), {"id": m.group(1), "fel": "verificare"}))
+
+        # blocurile interactive: felul e în data-ix, id-ul în JSON-ul de după
+        for m in re.finditer(r'data-ix="(\w+)"', h):
+            fel = FEL_SARCINA.get(m.group(1))
+            if not fel:
+                continue
+            j = h.find('<script type="application/json">', m.end())
+            if j < 0:
+                continue
+            k = h.index("</script>", j)
+            try:
+                date = json.loads(h[j + len('<script type="application/json">'):k])
+            except Exception:
+                continue
+            if isinstance(date, dict) and date.get("id"):
+                gasite.append((m.start(), {"id": date["id"], "fel": fel}))
+
+        gasite.sort(key=lambda x: x[0])
+        vazute, sarcini = set(), []
+        for _, x in gasite:
+            if x["id"] in vazute:
+                continue
+            vazute.add(x["id"])
+            sarcini.append(x)
+
+        slides.append({"nr": i, "id": s["id"], "grup": s["grup"],
+                       "titlu": s["t"], "sarcini": sarcini})
+
+    harta = {"capitol": "c1", "total": len(S),
+             "sarcini": sum(len(x["sarcini"]) for x in slides),
+             "slide": slides}
+    (RAD / "date").mkdir(parents=True, exist_ok=True)
+    (RAD / "date/harta-c1.json").write_text(
+        json.dumps(harta, ensure_ascii=False, indent=1), encoding="utf-8")
+    return harta
+
+
 if __name__ == "__main__":
     scrie_lectie()
     scrie_tutorial()
+    h = scrie_harta()
     porti = sum(len(re.findall(r'class="verif"', s["slide"]))
                 + len(re.findall(r'data-ix="(?:cod|ordine|sortare|dovada|autoevaluare|tipuri)"', s["slide"]))
                 for s in S)
-    print(f"{len(S)} slide-uri, {porti} porți")
+    print(f"{len(S)} slide-uri, {porti} porți, "
+          f"{h['sarcini']} sarcini în harta pentru panou")
+    print(f"  (pune sarcini:{h['sarcini']} la lecţia 1 în js/curs.js)")
     for i, s in enumerate(S, 1):
         n = len(re.findall(r'class="verif"', s["slide"])) + \
             len(re.findall(r'data-ix="(?:cod|ordine|sortare|dovada|autoevaluare|tipuri)"', s["slide"]))

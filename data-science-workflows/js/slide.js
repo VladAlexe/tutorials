@@ -21,11 +21,11 @@
 
    Pornire, din pagina lecției:
 
-     import { porneste } from "../js/slide.js?v=9";
+     import { porneste } from "../js/slide.js?v=11";
      porneste({ capitol:"c1", lectie:"c1-introducere-si-mediu" });
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=9";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=11";
 
 const SVG = {
   gata:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
@@ -110,26 +110,32 @@ export async function porneste({ capitol, lectie }){
   ["verif:raspuns", "poarta:gata"].forEach(nume =>
     document.addEventListener(nume, ev => {
       reinnoieste(); salveaza();
-      import(`${RADACINA}/js/sesiune.js?v=9`)
+      import(`${RADACINA}/js/sesiune.js?v=11`)
         .then(s => s.jurnal(nume === "poarta:gata" ? "cod" : "raspuns", ev.detail))
         .catch(() => {});
     }));
 
   /* până aflăm dacă ora e pornită, ce se salvează e lucru de unul singur */
-  import(`${RADACINA}/js/colectare.js?v=9`)
+  import(`${RADACINA}/js/colectare.js?v=11`)
     .then(m => m.setContext("lectie")).catch(() => {});
 
   /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
-  import(`${RADACINA}/js/sesiune.js?v=9`)
+  import(`${RADACINA}/js/sesiune.js?v=11`)
     .then(s => s.porneste({ capitol, total:N }))
     .catch(() => { /* fără cont, nu se urmărește nimic */ });
 
   /* profesorul navighează liber, ca să poată arăta orice slide la clasă */
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=9`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=11`);
     const p = await profil();
     stare.profesor = !!p.profesor;
     if (stare.profesor){
+      /* profesorul n-are cont de student: are panoul şi statisticile lecţiei */
+      const lg = document.getElementById("leg-cont");
+      if (lg){
+        lg.href = `${RADACINA}/panou/statistici/?l=${lectie}`;
+        lg.querySelector("span").textContent = "Statisticile lecției";
+      }
       stare.liber = true; el.bLiber.hidden = false; reinnoieste();
       /* adresa cu #10 a fost deja limitată de porți, înainte să se știe cine
          e; acum că se știe, mergem unde ceruse link-ul */
@@ -140,7 +146,7 @@ export async function porneste({ capitol, lectie }){
   /* ora condusă: profesorul publică slide-ul lui, studenții sar după el.
      Dacă modulul nu pornește (fără cont, fără rețea), lecția merge la fel. */
   try {
-    const R = await import(`${RADACINA}/js/ritm.js?v=9`);
+    const R = await import(`${RADACINA}/js/ritm.js?v=11`);
     ritm = await R.porneste({
       capitol, total:N,
       esteProfesor: stare.profesor,
@@ -153,7 +159,7 @@ export async function porneste({ capitol, lectie }){
          exercițiu făcut în oră nu e același lucru cu unul făcut acasă */
       laStare: viu => {
         stare.live = viu;
-        import(`${RADACINA}/js/colectare.js?v=9`)
+        import(`${RADACINA}/js/colectare.js?v=11`)
           .then(m => m.setContext(viu ? "live" : "lectie")).catch(() => {});
         if (viu){ stare.liber = true; reinnoieste(); }
       }
@@ -248,7 +254,7 @@ export async function porneste({ capitol, lectie }){
       <div class="sina__jos">
         <a class="sina__leg" href="${RADACINA}/${lectie}/tutorial/">${SVG.carte}<span>Manualul</span></a>
         <a class="sina__leg" href="${RADACINA}/${lectie}/">${SVG.acasa}<span>Pagina cursului</span></a>
-        <a class="sina__leg" href="${RADACINA}/cont/">${SVG.grafic}<span>Contul meu</span></a>
+        <a class="sina__leg" id="leg-cont" href="${RADACINA}/cont/">${SVG.grafic}<span>Contul meu</span></a>
         ${info.notebook ? `<a class="sina__leg" href="${info.notebook}" target="_blank"
             rel="noopener">${SVG.caiet}<span>Caietul lecției</span></a>` : ""}
       </div>`;
@@ -541,11 +547,11 @@ export async function porneste({ capitol, lectie }){
     ceasSalv = setTimeout(async () => {
       const id = slides[stare.i].id;
       try {
-        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=9`);
+        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=11`);
         await marcheazaSectiune(`${capitol}/${id}`);
       } catch {}
       try {
-        const s = await import(`${RADACINA}/js/sesiune.js?v=9`);
+        const s = await import(`${RADACINA}/js/sesiune.js?v=11`);
         s.laSlide({ slide:id, nr:stare.i + 1, total:N });
       } catch {}
     }, 900);

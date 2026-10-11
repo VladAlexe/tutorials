@@ -314,3 +314,17 @@
   .lc__act{grid-column:1/-1;justify-content:flex-start;margin-top:4px}
   .biblio__cap{padding-top:26px}
 }
+
+/* --- slide cu slide ------------------------------------------------------ */
+
+.sl-g{border:1px solid var(--linie);border-radius:12px;background:var(--panza);
+  padding:16px 18px;margin-bottom:11px}
+.sl-g__cap{display:flex;align-items:baseline;gap:11px;margin-bottom:13px;
+  padding-bottom:9px;border-bottom:1px solid var(--linie)}
+.sl-g__nr{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--text-3)}
+.sl-g__t{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:-.01em;
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl-g__l{font-family:var(--mono);font-size:10px;color:var(--accent-text);
+  margin-left:auto;text-decoration:none;white-space:nowrap}
+.sl-g__l:hover{text-decoration:underline}

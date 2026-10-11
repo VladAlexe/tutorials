@@ -360,3 +360,10 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
   .nav-lectii a{max-width:none}
   .antet__nume{display:none}
 }
+
+/* rolul, lângă nume: de aici afli în ce cont ești fără să deschizi nimic */
+.cont-chip__r{font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-3);padding-left:7px;
+  border-left:1px solid var(--linie)}
+.cont-chip--prof{border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+.cont-chip--prof .cont-chip__r{color:var(--accent-text)}

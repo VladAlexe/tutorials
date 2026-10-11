@@ -6,10 +6,29 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=9";
-import EXERCITII from "./exercitii.js?v=9";
+import GRAFICE from "./grafice.js?v=11";
+import EXERCITII from "./exercitii.js?v=11";
 
 const C = { ...GRAFICE, ...EXERCITII };
+
+/* O poartă trecută, scrisă şi în baza de date.
+
+   Fără asta, trei dintre sarcinile lecţiei (recunoaşterea tipurilor,
+   autoevaluarea, aşteptările) deschideau slide-ul următor dar nu se vedeau
+   nicăieri: nici la profesor, nici în punctajul de la teme, care le-ar fi
+   cerut şi nu le-ar fi primit niciodată. */
+async function poarta(gazda, id, ce = ""){
+  const ix = gazda.closest(".ix");
+  if (ix){
+    if (ix.classList.contains("gata")) return;
+    ix.classList.add("gata");
+  }
+  document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
+  try {
+    const m = await import("/data-science-workflows/js/colectare.js?v=11");
+    await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 400), trecut:true });
+  } catch { /* fără cont, poarta se deschide oricum */ }
+}
 
 /* --- 1. Explorator de etape --------------------------------------------- */
 C.etape = (gazda, date) => {
@@ -120,12 +139,7 @@ C.tipuri = (gazda, date) => {
       gazda.querySelector("#din-nou").onclick = () => { i=0; ok=0; raspuns=[]; deseneaza(); };
       /* poarta se deschide când ai parcurs toate valorile, indiferent de scor:
          scopul e să treci prin ele, nu să le nimerești din prima */
-      const ix = gazda.closest(".ix");
-      if (ix && !ix.classList.contains("gata")){
-        ix.classList.add("gata");
-        document.dispatchEvent(new CustomEvent("poarta:gata",
-          { detail:{ id:"c1-tipuri", scor:`${ok}/${Q.length}` } }));
-      }
+      poarta(gazda, "c1-tipuri", `${ok}/${Q.length}`);
       return;
     }
     const q = Q[i];
@@ -272,10 +286,9 @@ C.autoevaluare = (gazda, date) => {
       : medie < 2
         ? "<b>Mulțumesc.</b> Ai pe unde să te agăți, restul construim împreună."
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
-    gazda.closest(".ix")?.classList.add("gata");
-    document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
+    poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=9");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=11");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -354,10 +367,9 @@ C.asteptari = (gazda, date) => {
   bt.onclick = async () => {
     bt.disabled = true; t.disabled = true;
     out.innerHTML = "<b>Mulțumesc.</b> Le citesc pe toate înainte de cursul următor.";
-    gazda.closest(".ix")?.classList.add("gata");
-    document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
+    poarta(gazda, date.id, "scris");
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=9");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=11");
       await s.jurnal("asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}
   };

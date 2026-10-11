@@ -1,0 +1,240 @@
+{
+ "capitol": "c1",
+ "total": 22,
+ "sarcini": 17,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Despre ce e cursul",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "Cursul",
+   "titlu": "Agenda de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Cursul",
+   "titlu": "Ce știi deja",
+   "sarcini": [
+    {
+     "id": "c1-autoevaluare",
+     "fel": "cod"
+    },
+    {
+     "id": "c1-asteptari",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "Softuri și conturi",
+   "titlu": "Softuri și conturi",
+   "sarcini": []
+  },
+  {
+   "nr": 5,
+   "id": "s5",
+   "grup": "Softuri și conturi",
+   "titlu": "Contul GitHub, azi",
+   "sarcini": [
+    {
+     "id": "c1-v8",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 6,
+   "id": "s6",
+   "grup": "Pașii unui proiect",
+   "titlu": "Data Science Workflow",
+   "sarcini": [
+    {
+     "id": "c1-v1",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "Proiectul",
+   "titlu": "Proiectul final",
+   "sarcini": []
+  },
+  {
+   "nr": 8,
+   "id": "s8",
+   "grup": "Proiectul",
+   "titlu": "Sursele de date",
+   "sarcini": []
+  },
+  {
+   "nr": 9,
+   "id": "s9",
+   "grup": "Proiectul",
+   "titlu": "Cluj sau București?",
+   "sarcini": []
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "Proiectul",
+   "titlu": "Ce formă au datele",
+   "sarcini": [
+    {
+     "id": "c1-cod-diadic",
+     "fel": "cod"
+    },
+    {
+     "id": "c1-v5",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "Proiectul",
+   "titlu": "Echipele",
+   "sarcini": []
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "Tipuri de date",
+   "titlu": "Tipuri în Python",
+   "sarcini": [
+    {
+     "id": "c1-cod-tipuri",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s13",
+   "grup": "Tipuri de date",
+   "titlu": "Recunoaște tipul",
+   "sarcini": [
+    {
+     "id": "c1-tipuri",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "Tipuri de date",
+   "titlu": "Tipuri în SQL",
+   "sarcini": [
+    {
+     "id": "c1-cod-sql",
+     "fel": "cod"
+    },
+    {
+     "id": "c1-v9",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 15,
+   "id": "s15",
+   "grup": "Tipuri de date",
+   "titlu": "Tipuri spațiale",
+   "sarcini": []
+  },
+  {
+   "nr": 16,
+   "id": "s16",
+   "grup": "Tipuri de date",
+   "titlu": "Tipuri de fișiere",
+   "sarcini": [
+    {
+     "id": "c1-cod-fisiere",
+     "fel": "cod"
+    },
+    {
+     "id": "c1-v10",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 17,
+   "id": "s17",
+   "grup": "JSON",
+   "titlu": "Formatul JSON",
+   "sarcini": []
+  },
+  {
+   "nr": 18,
+   "id": "s18",
+   "grup": "JSON",
+   "titlu": "Un răspuns real",
+   "sarcini": [
+    {
+     "id": "c1-cod-json",
+     "fel": "cod"
+    },
+    {
+     "id": "c1-v4",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 19,
+   "id": "s19",
+   "grup": "Mediul de lucru",
+   "titlu": "Medii virtuale",
+   "sarcini": []
+  },
+  {
+   "nr": 20,
+   "id": "s20",
+   "grup": "Mediul de lucru",
+   "titlu": "Terminalul",
+   "sarcini": [
+    {
+     "id": "c1-cod-venv",
+     "fel": "cod"
+    },
+    {
+     "id": "c1-v3",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 21,
+   "id": "s21",
+   "grup": "Proiectul tău",
+   "titlu": "Fă-ți proiectul, acum",
+   "sarcini": [
+    {
+     "id": "c1-dovada-mediu",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 22,
+   "id": "s22",
+   "grup": "Mai departe",
+   "titlu": "Până data viitoare",
+   "sarcini": []
+  }
+ ]
+}
