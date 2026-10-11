@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/panou.css?v=1">
+<link rel="stylesheet" href="../css/panou.css?v=3">
 </head>
 <body>
 
@@ -88,7 +88,7 @@
 </div>
 
 <script type="module">
-import { sb, profil } from "../js/auth.js";
+import { sb, profil } from "../js/auth.js?v=3";
 
 const E = id => document.getElementById(id);
 let STUDENTI = [];
@@ -199,6 +199,6 @@ E("grupa").addEventListener("change", tabel);
 
 deseneaza().catch(e => { E("incarca").textContent = "Eroare: " + e.message; });
 </script>
-<script type="module" src="../js/bara-mod.js"></script>
+<script type="module" src="../js/bara-mod.js?v=3"></script>
 </body>
 </html>
