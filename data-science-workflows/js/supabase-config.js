@@ -16,7 +16,7 @@ export const SUPABASE_URL = "https://ybvtxenerriwstiktebe.supabase.co";
    Cauta cheia publica: incepe cu "sb_publishable_".
    Daca proiectul are inca si cheia veche, aceea se numeste "anon public"
    si e un sir lung care incepe cu "eyJ". Oricare dintre ele merge. */
-export const SUPABASE_ANON = "PUNE-AICI-CHEIA-PUBLICA";
+export const SUPABASE_ANON = "sb_publishable_GqsXPLaX1N6P-W0_LepwuQ_Fn8LoxGO";
 
 /* Adresa la care se intoarce studentul dupa ce apasa linkul din e-mail.
    Trebuie trecuta si in Authentication, URL Configuration, Redirect URLs. */
