@@ -1,0 +1,222 @@
+/* ===========================================================================
+   LECȚIA CA APLICAȚIE
+   Rulatorul de slide-uri: bară laterală cu cuprinsul, scena, bară de stare.
+
+   Imprumuta trei lucruri de la un editor de cod: barele din jurul zonei de
+   lucru au alt fundal decat zona de lucru, rândurile din cuprins sunt dese si
+   monospațiate, iar starea curenta se vede jos, nu in mijloc. Restul ramane
+   pagina de citit: coloana ingusta, serif, fara zgomot.
+
+   Structura asteptata in pagina:
+
+     <body class="corp--app">
+       <div id="antet" ...></div>
+       <div class="rnr">
+         <aside class="rnr__sina">…generat…</aside>
+         <main class="rnr__scena">
+           <section class="sld" id="s1" data-t="Titlu scurt">…</section>
+           …
+         </main>
+       </div>
+       <div class="stare">…generat…</div>
+   =========================================================================== */
+
+.corp--app{height:100dvh;overflow:hidden}
+
+.rnr{flex:1;display:grid;grid-template-columns:var(--sina) minmax(0,1fr);
+  min-height:0;overflow:hidden}
+
+/* --- bara laterala: cuprinsul -------------------------------------------- */
+
+.rnr__sina{background:var(--crom);border-right:1px solid var(--crom-linie);
+  display:flex;flex-direction:column;min-height:0;overflow:hidden}
+
+.sina__cap{flex:none;padding:13px 14px 9px;border-bottom:1px solid var(--crom-linie)}
+.sina__et{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:7px}
+.sina__t{font-family:var(--sans);font-size:14px;font-weight:600;line-height:1.3;
+  letter-spacing:-.012em;display:block;color:var(--text)}
+.sina__sub{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-top:6px;
+  display:flex;align-items:center;gap:7px}
+.sina__bara{flex:1;height:3px;border-radius:2px;background:var(--crom-2);
+  overflow:hidden;min-width:0}
+.sina__bara i{display:block;height:100%;width:0;background:var(--accent);
+  transition:width .3s ease}
+
+.sina__lista{flex:1;overflow-y:auto;padding:6px 0 10px;scrollbar-width:thin}
+.sina__lista::-webkit-scrollbar{width:9px}
+.sina__lista::-webkit-scrollbar-thumb{background:var(--linie-2);border-radius:5px;
+  border:3px solid var(--crom)}
+
+.rnd{display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+  padding:5px 13px 5px 10px;border-left:2px solid transparent;
+  font-family:var(--sans);font-size:13px;line-height:1.35;color:var(--crom-text);
+  transition:background .1s,color .1s}
+.rnd:hover{background:var(--crom-2);color:var(--text)}
+.rnd__n{font-family:var(--mono);font-size:10.5px;color:var(--text-3);flex:none;
+  width:2ch;text-align:right;font-variant-numeric:lining-nums tabular-nums}
+.rnd__t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rnd__s{flex:none;width:13px;height:13px;display:grid;place-items:center;
+  color:var(--text-3)}
+.rnd__s svg{width:12px;height:12px}
+
+.rnd.acum{background:var(--accent-slab);color:var(--text);font-weight:500;
+  border-left-color:var(--accent)}
+.rnd.acum .rnd__n{color:var(--accent-text)}
+.rnd.gata .rnd__s{color:var(--ok)}
+.rnd.blocat{color:var(--text-3)}
+.rnd.blocat .rnd__t{opacity:.75}
+
+/* grup: un titlu de secțiune peste câteva slide-uri */
+.sina__grup{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-3);padding:14px 13px 5px 14px}
+.sina__grup:first-child{padding-top:8px}
+
+.sina__jos{flex:none;border-top:1px solid var(--crom-linie);padding:9px 11px;
+  display:flex;flex-direction:column;gap:2px}
+.sina__leg{display:flex;align-items:center;gap:8px;padding:5px 3px;border-radius:5px;
+  font-family:var(--sans);font-size:12.5px;color:var(--crom-text);text-decoration:none;
+  transition:.1s}
+.sina__leg:hover{background:var(--crom-2);color:var(--text)}
+.sina__leg svg{width:13px;height:13px;flex:none;opacity:.8}
+
+/* --- scena: slide-ul curent ---------------------------------------------- */
+
+.rnr__scena:focus{outline:none}
+.rnr__scena{position:relative;min-width:0;min-height:0;overflow-y:auto;
+  background:var(--fundal);scroll-behavior:auto}
+
+.sld{display:none;padding:40px 48px 120px;max-width:860px;margin:0 auto}
+.sld.on{display:block;animation:sldIn .22s ease}
+@keyframes sldIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.sld__cap{display:flex;align-items:center;gap:11px;margin-bottom:17px}
+.sld__nr{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;
+  color:var(--text-3);font-variant-numeric:lining-nums tabular-nums}
+.sld__hr{flex:1;height:1px;background:var(--linie)}
+.sld h2{font-size:28px;margin:0 0 20px;letter-spacing:-.022em}
+.sld h3{font-size:18px;margin:30px 0 10px}
+.sld > p, .sld > ul, .sld > ol{max-width:66ch}
+.sld > p:last-child{margin-bottom:0}
+
+/* o idee scoasa in afara coloanei, cand merita accentuata */
+.sld .cheie{font-family:var(--sans);font-size:19px;line-height:1.45;font-weight:500;
+  color:var(--text);border-left:2px solid var(--accent);padding-left:17px;
+  margin:0 0 24px;max-width:58ch}
+
+/* --- bara de stare, jos -------------------------------------------------- */
+
+.stare{flex:none;height:var(--bara);background:var(--crom);
+  border-top:1px solid var(--crom-linie);display:flex;align-items:center;
+  gap:0;padding:0 8px 0 4px;font-family:var(--mono);font-size:11px;color:var(--crom-text);
+  user-select:none}
+.stare__c{display:flex;align-items:center;gap:6px;padding:0 9px;height:100%;
+  border-radius:0;white-space:nowrap}
+button.stare__c{transition:background .1s}
+button.stare__c:hover:not(:disabled){background:var(--crom-2);color:var(--text)}
+button.stare__c:disabled{opacity:.4;cursor:not-allowed}
+.stare__c svg{width:12px;height:12px}
+.stare__gol{flex:1}
+.stare__poz{color:var(--text-2);font-variant-numeric:lining-nums tabular-nums}
+.stare__poz b{color:var(--text);font-weight:500}
+.stare__dot{width:6px;height:6px;border-radius:50%;background:var(--text-3);flex:none}
+.stare__dot.ok{background:var(--ok)}
+.stare__dot.nu{background:var(--accent)}
+.stare--acc{color:var(--accent-text)}
+
+/* --- poarta: nu treci fără verificare ------------------------------------ */
+
+.poarta{display:flex;align-items:flex-start;gap:12px;margin:30px 0 0;padding:15px 18px;
+  border:1px dashed var(--linie-2);border-radius:10px;background:var(--panza-2);
+  max-width:66ch}
+.poarta__ic{flex:none;width:26px;height:26px;border-radius:7px;background:var(--panza);
+  border:1px solid var(--linie);display:grid;place-items:center;color:var(--text-3)}
+.poarta__ic svg{width:14px;height:14px}
+.poarta__t{font-family:var(--sans);font-size:14px;font-weight:500;margin:0 0 3px;
+  line-height:1.35}
+.poarta__d{font-family:var(--sans);font-size:13px;color:var(--text-2);margin:0;
+  line-height:1.45;max-width:none}
+.poarta.deschisa{border-style:solid;border-color:color-mix(in srgb,var(--ok) 40%,transparent);
+  background:var(--ok-slab)}
+.poarta.deschisa .poarta__ic{color:var(--ok);border-color:transparent;
+  background:color-mix(in srgb,var(--ok) 14%,transparent)}
+
+/* --- navigarea de la baza slide-ului ------------------------------------- */
+
+.pasi{display:flex;align-items:center;gap:10px;margin-top:44px;padding-top:22px;
+  border-top:1px solid var(--linie);max-width:66ch}
+.pasi__gol{flex:1}
+.pas{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:8px;
+  border:1px solid var(--linie-2);background:var(--panza);font-family:var(--sans);
+  font-size:13.5px;font-weight:500;color:var(--text);transition:.13s}
+.pas:hover:not(:disabled){border-color:var(--text-3);box-shadow:var(--umbra)}
+.pas:disabled{opacity:.45;cursor:not-allowed}
+.pas--tare{background:var(--text);color:var(--fundal);border-color:var(--text)}
+.pas--tare:hover:not(:disabled){opacity:.88}
+.pas--tare:disabled{background:var(--panza);color:var(--text-3);border-color:var(--linie)}
+.pas svg{width:14px;height:14px}
+.pas__nota{font-family:var(--sans);font-size:12.5px;color:var(--text-3);
+  max-width:28ch;line-height:1.35}
+
+/* --- saritura la slide: paleta ------------------------------------------- */
+
+.plt{position:fixed;inset:0;z-index:200;background:rgba(10,12,14,.34);
+  display:grid;place-items:start center;padding-top:14vh;
+  backdrop-filter:blur(2px)}
+.plt[hidden]{display:none}
+.plt__cutie{width:min(560px,92vw);background:var(--panza);border:1px solid var(--linie-2);
+  border-radius:11px;box-shadow:var(--umbra-2);overflow:hidden}
+.plt__cauta{display:flex;align-items:center;gap:10px;padding:12px 15px;
+  border-bottom:1px solid var(--linie)}
+.plt__cauta svg{width:15px;height:15px;color:var(--text-3);flex:none}
+.plt__cauta input{flex:1;border:0;background:none;outline:none;font-family:var(--sans);
+  font-size:15px;color:var(--text)}
+.plt__cauta input::placeholder{color:var(--text-3)}
+.plt__lista{max-height:46vh;overflow-y:auto;padding:6px}
+.plt__r{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+  padding:8px 11px;border-radius:7px;font-family:var(--sans);font-size:14px;
+  color:var(--text);transition:background .08s}
+.plt__r:hover,.plt__r.sel{background:var(--accent-slab)}
+.plt__r .n{font-family:var(--mono);font-size:11px;color:var(--text-3);width:2.5ch;
+  text-align:right;flex:none;font-variant-numeric:lining-nums tabular-nums}
+.plt__r .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plt__r .g{font-family:var(--mono);font-size:10px;color:var(--text-3);flex:none}
+.plt__jos{padding:8px 15px;border-top:1px solid var(--linie);background:var(--panza-2);
+  font-family:var(--mono);font-size:10.5px;color:var(--text-3);display:flex;gap:16px;
+  flex-wrap:wrap}
+kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px solid var(--linie-2);
+  border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--text-2)}
+
+/* --- mesaj trecator ------------------------------------------------------ */
+
+.toast{position:fixed;left:50%;bottom:calc(var(--bara) + 18px);transform:translateX(-50%);
+  z-index:210;background:var(--text);color:var(--fundal);font-family:var(--sans);
+  font-size:13.5px;padding:10px 17px;border-radius:9px;box-shadow:var(--umbra-2);
+  max-width:min(460px,90vw);text-align:center;line-height:1.4;
+  opacity:0;transition:opacity .18s,transform .18s;pointer-events:none}
+.toast.vazut{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* --- buton de deschidere a cuprinsului, pe ecran mic -------------------- */
+
+.sina-btn{display:none}
+
+@media(max-width:900px){
+  :root{--bara:34px}
+  .rnr{grid-template-columns:1fr}
+  .rnr__sina{position:fixed;top:var(--antet);bottom:var(--bara);left:0;width:min(300px,86vw);
+    z-index:90;transform:translateX(-101%);transition:transform .2s ease;
+    box-shadow:var(--umbra-2)}
+  .rnr__sina.deschisa{transform:none}
+  .sina-btn{display:flex}
+  .sld{padding:26px 20px 100px}
+  .sld h2{font-size:23px}
+  .sld .cheie{font-size:17.5px;padding-left:14px}
+  .plt{padding-top:8vh}
+
+  /* bara de stare, pe telefon: doar ce e de apăsat și poziția în lecție */
+  .stare{padding:0 2px}
+  .stare__c{padding:0 10px;font-size:11.5px}
+  .stare__c svg{width:15px;height:15px}
+  .stare__ascuns-mic{display:none}
+  #btn-plt span{display:none}
+}

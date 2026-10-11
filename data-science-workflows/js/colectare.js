@@ -1,60 +1,82 @@
 /* ===========================================================================
-   Colectarea raspunsurilor
+   COLECTAREA RĂSPUNSURILOR
 
-   Se ocupa de trei lucruri: marcheaza secțiunea ca parcursa, salveaza
-   raspunsul la o verificare, salveaza o rulare de cod.
+   Se ocupă de trei lucruri: marchează slide-ul ca parcurs, salvează răspunsul
+   la o verificare, salvează o rulare de cod.
 
-   Daca studentul nu e autentificat, nu salveaza nimic si nu se plange:
-   lectia functioneaza la fel si fara cont. Nimic nu blocheaza cititul.
+   Două reguli de care depinde tot restul:
+
+   1. Dacă studentul nu e autentificat, nu salvează nimic și nu se plânge.
+      Lecția funcționează la fel și fără cont.
+
+   2. Autentificarea se încarcă leneș, cu import dinamic. auth.js aduce
+      biblioteca Supabase de pe un CDN; dacă rețeaua aceea e lentă sau blocată,
+      un import static ar dărâma și verificările și rulatorul de slide-uri.
+      Așa, lecția rămâne întreagă și doar salvarea lipsește.
    =========================================================================== */
 
-import { sb, profil } from "./auth.js?v=3";
+let modul = null;   /* null = neîncercat, false = indisponibil, altfel modulul */
+let gata  = null;   /* null = neștiut, true/false = poate salva sau nu */
 
-let gata = null;
+async function autentificare(){
+  if (modul !== null) return modul;
+  try { modul = await import("./auth.js?v=4"); }
+  catch { modul = false; }
+  return modul;
+}
 
 async function pregatit(){
   if (gata !== null) return gata;
+  const a = await autentificare();
+  if (!a){ gata = false; return gata; }
   try {
-    const p = await profil();
+    const p = await a.profil();
     gata = !!(p.autentificat && p.matricol);
   } catch { gata = false; }
   return gata;
 }
 
+/** Utilizatorul curent, sau null. */
+async function cine(){
+  if (!await pregatit()) return null;
+  const a = await autentificare();
+  const { data:{ user } } = await a.sb.auth.getUser();
+  return user ? { user, sb:a.sb } : null;
+}
+
 export async function marcheazaSectiune(sectiuneId){
-  if (!await pregatit()) return;
-  const { data:{ user } } = await sb.auth.getUser();
-  if (!user) return;
-  await sb.from("progres").upsert(
-    { user_id:user.id, sectiune_id:sectiuneId, ultima_data:new Date().toISOString() },
+  const c = await cine();
+  if (!c) return false;
+  const { error } = await c.sb.from("progres").upsert(
+    { user_id:c.user.id, sectiune_id:sectiuneId, ultima_data:new Date().toISOString() },
     { onConflict:"user_id,sectiune_id" }
   );
+  return !error;
 }
 
 export async function salveazaRaspuns({ intrebareId, capitol, raspuns, corect }){
-  if (!await pregatit()) return false;
-  const { data:{ user } } = await sb.auth.getUser();
-  if (!user) return false;
-  const { error } = await sb.from("raspunsuri").insert({
-    user_id:user.id, intrebare_id:intrebareId, capitol, raspuns, corect
+  const c = await cine();
+  if (!c) return false;
+  const { error } = await c.sb.from("raspunsuri").insert({
+    user_id:c.user.id, intrebare_id:intrebareId, capitol, raspuns, corect
   });
   return !error;
 }
 
 export async function salveazaCod({ exercitiuId, cod, trecut }){
-  if (!await pregatit()) return false;
-  const { data:{ user } } = await sb.auth.getUser();
-  if (!user) return false;
-  const { error } = await sb.from("rulari_cod").insert({
-    user_id:user.id, exercitiu_id:exercitiuId, cod:(cod||"").slice(0,4000), trecut
+  const c = await cine();
+  if (!c) return false;
+  const { error } = await c.sb.from("rulari_cod").insert({
+    user_id:c.user.id, exercitiu_id:exercitiuId, cod:(cod||"").slice(0,4000), trecut
   });
   return !error;
 }
 
-/** Raspunsurile deja date la aceasta lectie, ca sa nu reintrebam. */
+/** Răspunsurile deja date la această lecție, ca să nu reîntrebăm. */
 export async function raspunsuriDate(capitol){
-  if (!await pregatit()) return new Map();
-  const { data } = await sb.from("raspunsuri")
+  const c = await cine();
+  if (!c) return new Map();
+  const { data } = await c.sb.from("raspunsuri")
     .select("intrebare_id, raspuns, corect").eq("capitol", capitol);
   return new Map((data||[]).map(r => [r.intrebare_id, r]));
 }

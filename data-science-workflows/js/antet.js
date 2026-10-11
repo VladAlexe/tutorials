@@ -9,7 +9,7 @@
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=1";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=4";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -24,10 +24,13 @@ function construieste(gazda){
   const aici    = gazda.dataset.aici || "";
   const cheie   = gazda.dataset.lectie || null;
   const lectie  = cheie ? dupaCheie(cheie) : null;
+  /* data-crom: antetul unei pagini-aplicație, lipit de barele din jur,
+     fără coloana centrată a paginilor de citit */
+  const crom    = gazda.hasAttribute("data-crom");
 
   gazda.outerHTML = `
-    <header class="antet">
-      <div class="pagina antet__in">
+    <header class="antet ${crom ? "antet--crom" : ""}">
+      <div class="${crom ? "" : "pagina"} antet__in">
         <a class="antet__marca" href="${RADACINA}/" aria-label="${CURS.titlu}">
           ${SVG.marca}<span class="antet__nume">${CURS.scurt}</span>
         </a>
@@ -73,7 +76,7 @@ async function cont(){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=3`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=4`);
     const p = await profil();
     if (!p.autentificat) {
       zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;

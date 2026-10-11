@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecția 6. Analiza exploratorie — Fluxuri de lucru</title>
+<meta name="description" content="Privitul datelor înainte de a le modela: distribuții, relații, și grafice care induc în eroare.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/sistem.css?v=4">
+<link rel="stylesheet" href="../css/intrare.css?v=4">
+<script src="../js/tema.js?v=4"></script>
+</head>
+<body>
+
+<div id="antet" data-aici="Lecția 6" data-lectie="c6-analiza-exploratorie"></div>
+
+<main>
+<div class="pagina">
+
+  <header class="intrare">
+    <div class="intrare__sus">
+      <span class="intrare__nr">Lecția 6</span>
+      <span class="et">în lucru</span>
+    </div>
+    <h1>Analiza exploratorie</h1>
+    <p class="deck">Privitul datelor înainte de a le modela: distribuții, relații, și grafice care induc în eroare.</p>
+
+    <div class="intrare__fapte" style="margin-top:28px">
+      <span class="btn" style="cursor:default;opacity:.6">Lecția se publică înainte de curs</span>
+      <a class="btn" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c6_eda.ipynb" target="_blank" rel="noopener">Caietul lecției</a>
+    </div>
+  </header>
+
+  <div class="doi">
+    <div>
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">01</span><h2>Ce va conține</h2></div>
+        <p style="color:var(--text-2);font-size:16.5px">Planul lecției. Conținutul interactiv,
+        verificările și caietul se adaugă înainte de ședința din semestru.</p>
+        <ul class="obiective">
+          <li>Distribuții, valori extreme, și când o transformare logaritmică e justificată</li>
+          <li>Relații între variabile: ce arată o corelație și ce nu arată niciodată</li>
+          <li>Grafice care induc în eroare, intenționat sau nu</li>
+          <li>Explorare pe date diadice: matrice, hărți, top-uri, și capcanele lor</li>
+          <li>Primele tipare din SCI: distanță, graniță, limbă, istorie</li>
+        </ul>
+      </section>
+
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">02</span><h2>Ce adaugi la proiect</h2></div>
+        <p>Analiza exploratorie, cu primele tipare găsite și graficele care le arată.</p>
+        <p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
+        cu atribute aduse prin API de la Eurostat și Banca Mondială. Dacă vrei să te uiți
+        peste surse din timp, sunt toate adunate în
+        <a class="leg" href="../surse-de-date.html">pagina cu sursele de date</a>.</p>
+      </section>
+    </div>
+
+    <aside class="doi__dr">
+      <div class="panou-c">
+        <span class="panou__et">Pregătire</span>
+        <p style="font-family:var(--sans);font-size:13.5px;line-height:1.5;color:var(--text-2);max-width:none">
+        Până atunci, mergi mai departe cu
+        <a class="leg" href="../c5-agregare-si-baze-de-date/">lecția 5</a> și ține mediul de
+        lucru pregătit.</p>
+      </div>
+      <div class="panou-c">
+        <span class="panou__et">Legături oficiale</span>
+        <div class="legaturi">
+          <a class="legatura" href="https://clauswilke.com/dataviz/" target="_blank" rel="noopener"><span class="legatura__t">Fundamentals of Data Visualization</span><span class="legatura__g">carte</span></a>
+          <a class="legatura" href="https://matplotlib.org/stable/users/index.html" target="_blank" rel="noopener"><span class="legatura__t">matplotlib</span><span class="legatura__g">docs</span></a>
+          <a class="legatura" href="https://seaborn.pydata.org/tutorial.html" target="_blank" rel="noopener"><span class="legatura__t">seaborn</span><span class="legatura__g">docs</span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="altele">
+    <div class="bloc__cap"><span class="nr">03</span><h2>Celelalte lecții</h2></div>
+    <div class="altele__sina" id="altele"></div>
+  </section>
+
+</div>
+</main>
+
+<div id="subsol"></div>
+
+<script type="module">
+import { LECTII, RADACINA } from "../js/curs.js?v=4";
+document.getElementById("altele").innerHTML = LECTII.map(l => `
+  <a class="mini ${l.cheie === "c6-analiza-exploratorie" ? "aceasta" : ""}" href="${RADACINA}/${l.cheie}/">
+    <span class="mini__n">${String(l.nr).padStart(2,"0")}</span>
+    <span class="mini__t">${l.titlu}</span>
+    <span class="mini__s">${l.stare === "gata" ? "gata" : "în lucru"}</span>
+  </a>`).join("");
+</script>
+<script type="module" src="../js/antet.js?v=4"></script>
+<script type="module" src="../js/subsol.js?v=4"></script>
+</body>
+</html>

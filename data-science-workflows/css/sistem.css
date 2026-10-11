@@ -32,13 +32,23 @@
   --umbra:       0 1px 2px rgba(21,24,28,.05), 0 4px 14px rgba(21,24,28,.05);
   --umbra-2:     0 2px 6px rgba(21,24,28,.08), 0 12px 34px rgba(21,24,28,.09);
 
+  /* cromul aplicatiei: bare laterale, bara de stare, bara de file.
+     In VS Code, zona de editare si barele din jurul ei nu au acelasi fundal;
+     diferenta aceea mica e ce face interfata sa arate ca o unealta. */
+  --crom:       #F3F3F1;
+  --crom-2:     #ECECE8;
+  --crom-linie: #DEDEDA;
+  --crom-text:  #4C5257;
+
   --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --sans:  'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --mono:  'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
 
   --citit: 68ch;      /* latimea coloanei de text */
   --lat:   1140px;    /* latimea maxima a paginii */
-  --antet: 52px;
+  --antet: 48px;
+  --bara:  26px;      /* bara de stare, jos */
+  --sina:  258px;     /* bara laterala a lectiei */
 }
 
 @media (prefers-color-scheme: dark){
@@ -60,6 +70,10 @@
     --nu-slab:     #2A1A17;
     --umbra:       0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
     --umbra-2:     0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
+    --crom:        #15181B;
+    --crom-2:      #1B1F23;
+    --crom-linie:  #23282D;
+    --crom-text:   #A8B0B7;
   }
 }
 :root[data-tema="intunecat"]{
@@ -80,6 +94,10 @@
   --nu-slab:     #2A1A17;
   --umbra:       0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
   --umbra-2:     0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
+  --crom:        #15181B;
+  --crom-2:      #1B1F23;
+  --crom-linie:  #23282D;
+  --crom-text:   #A8B0B7;
 }
 
 /* --- baza ---------------------------------------------------------------- */
@@ -148,10 +166,13 @@ a.leg:hover{border-bottom-color:var(--accent)}
 
 /* --- antet --------------------------------------------------------------- */
 
-.antet{position:sticky;top:0;z-index:60;height:var(--antet);
+.antet{position:sticky;top:0;z-index:60;height:var(--antet);flex:none;
   background:color-mix(in srgb, var(--fundal) 88%, transparent);
   backdrop-filter:saturate(1.4) blur(10px);
   border-bottom:1px solid var(--linie)}
+.antet--crom{background:var(--crom);border-bottom-color:var(--crom-linie);
+  backdrop-filter:none}
+.antet--crom .antet__in{max-width:none;padding:0 12px 0 14px}
 .antet__in{height:100%;display:flex;align-items:center;gap:14px}
 .antet__marca{display:flex;align-items:center;gap:9px;text-decoration:none;flex:none}
 .antet__marca svg{flex:none}
