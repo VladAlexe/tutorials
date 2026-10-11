@@ -106,9 +106,49 @@
   .cnt__cap{padding-top:28px}
 }
 
+/* --- intrarea în cont ----------------------------------------------------
+   Aceeași pagină ca progresul: cine nu e conectat vede întâi formularul, iar
+   după ce intră rămâne pe loc. Două pagini pentru un singur lucru erau una
+   în plus.
+   ------------------------------------------------------------------------- */
+
+.lg{max-width:460px;margin:0 auto;padding:46px 0 80px}
+.lg h1{font-size:30px;margin-bottom:10px;text-align:center}
+.lg__d{font-family:var(--sans);font-size:15px;color:var(--text-2);text-align:center;
+  margin:0 0 30px;line-height:1.55;max-width:none}
+.pasi{display:flex;gap:7px;justify-content:center;margin-bottom:26px}
+.pasi i{width:34px;height:3px;border-radius:2px;background:var(--linie);display:block}
+.pasi i.on{background:var(--accent)}
+
+.cutie{border:1px solid var(--linie);border-radius:13px;background:var(--panza);
+  padding:22px 24px;box-shadow:var(--umbra)}
+.cutie + .cutie{margin-top:13px}
+.cutie label{display:block;font-family:var(--sans);font-size:13px;font-weight:500;
+  margin-bottom:7px}
+.cutie input{width:100%;padding:11px 14px;border:1px solid var(--linie-2);
+  border-radius:9px;background:var(--fundal);font-family:var(--sans);font-size:15.5px;
+  outline:none;transition:.13s}
+.cutie input:focus{border-color:var(--accent)}
+.cutie .btn{width:100%;justify-content:center;margin-top:12px;padding:12px}
+
+.ori{display:flex;align-items:center;gap:13px;margin:18px 0;font-family:var(--mono);
+  font-size:10.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.11em}
+.ori::before,.ori::after{content:"";flex:1;height:1px;background:var(--linie)}
+
+.mic{font-family:var(--sans);font-size:12.5px;color:var(--text-3);line-height:1.5;
+  margin:13px 0 0;max-width:none}
+.mesaj{font-family:var(--sans);font-size:14px;line-height:1.5;padding:12px 15px;
+  border-radius:9px;margin-top:14px;display:none;max-width:none}
+.mesaj.vazut{display:block}
+.mesaj.rau{background:var(--nu-slab);color:var(--nu)}
+.mesaj.bun{background:var(--ok-slab);color:var(--ok)}
+
+.leg-bt{font:inherit;color:var(--accent-text);background:none;border:0;padding:0;
+  cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+
 /* --- reia de unde ai rămas ------------------------------------------------
-   Prima decizie pe care o ia cineva care intră în cont e „unde eram?”.
-   Cardul ăsta răspunde singur, ca să nu caute prin listă.
+   Prima întrebare a cuiva care intră în cont e „unde eram?". Cardul ăsta
+   răspunde singur, ca să nu caute prin listă.
    ------------------------------------------------------------------------- */
 
 .reia{display:grid;grid-template-columns:minmax(0,1fr) auto;

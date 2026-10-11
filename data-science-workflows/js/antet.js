@@ -85,11 +85,11 @@ async function cont(){
     }
     /* profesorul are casa lui; studentul nu afla ca exista */
     const clasa = p.profesor
-      ? `<a class="icon-btn" href="${RADACINA}/profesor/clasa/" title="Panou de clasă"
-            aria-label="Panou de clasă">${SVG.clasa}</a>` : "";
+      ? `<a class="icon-btn" href="${RADACINA}/panou/" title="Panou"
+            aria-label="Panou">${SVG.clasa}</a>` : "";
     const nume = p.nume || p.email || "Contul meu";
     const ini = nume.trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "?";
-    const acasa = p.profesor ? `${RADACINA}/profesor/` : `${RADACINA}/panou/`;
+    const acasa = p.profesor ? `${RADACINA}/panou/` : `${RADACINA}/cont/`;
     zona.innerHTML = clasa +
       `<a class="cont-chip" href="${acasa}" title="${nume}">
          <span class="cont-chip__cerc">${ini}</span>

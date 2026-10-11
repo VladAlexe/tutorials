@@ -5,7 +5,7 @@ const g = document.getElementById("subsol");
 if (g) g.outerHTML = `
   <footer class="subsol"><div class="pagina subsol__in">
     <span>${CURS.institutie}</span>
-    <a href="${RADACINA}/progres/">Progresul meu</a>
+    <a href="${RADACINA}/cont/">Contul meu</a>
     <a href="${RADACINA}/surse-de-date.html">Surse de date</a>
     <a href="${RADACINA}/date-personale/">Date personale</a>
     <a href="${CURS.depozit}" target="_blank" rel="noopener">Depozit</a>

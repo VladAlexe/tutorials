@@ -24,14 +24,40 @@ const SVG_JOS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-/** Colorare minimală: suficient cât să semene cu un editor, fără bibliotecă. */
-function coloreaza(s){
-  return esc(s)
-    .replace(/(#[^\n]*)/g, '<span class="c">$1</span>')
-    .replace(/('[^']*'|&quot;[^&]*&quot;|"[^"]*")/g, '<span class="s">$1</span>')
-    .replace(/\b(import|from|as|def|return|if|else|elif|for|in|while|with|open|print|None|True|False|not|and|or)\b/g,
-             '<span class="k">$1</span>')
-    .replace(/\b(\d+\.?\d*)\b/g, '<span class="n">$1</span>');
+/* Colorare minimală: suficient cât să semene cu un editor, fără bibliotecă.
+
+   Se face dintr-o singură trecere, nu din patru `replace` unul peste altul.
+   Varianta cu patru treceri avea un defect care se vedea pe ecran: prima
+   trecere scotea un comentariu ca `<span class="c">#…</span>`, iar trecerea
+   pentru șiruri găsea `"c"` din atributul proaspăt scris și îl împacheta la
+   rândul ei. Pe pagină ieșea `"c">#` în loc de comentariu. Aici, textul deja
+   colorat nu mai e niciodată recitit. */
+
+const TIPARE = {
+  py: /(#[^\n]*)|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|\b(import|from|as|def|return|if|else|elif|for|in|while|with|open|print|None|True|False|not|and|or|lambda|try|except|class)\b|\b(\d+(?:\.\d+)?)\b/g,
+  sql: /(--[^\n]*)|('(?:[^']|'')*')|\b(CREATE|TABLE|PRIMARY|KEY|FOREIGN|REFERENCES|SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|DELETE|NOT|NULL|DEFAULT|UNIQUE|CHAR|VARCHAR|TEXT|INT|INTEGER|BIGINT|SMALLINT|NUMERIC|REAL|BOOLEAN|DATE|TIMESTAMP|JSONB|JSON)\b|\b(\d+(?:\.\d+)?)\b/gi,
+  sh: /(#[^\n]*)|('[^']*'|"[^"]*")|\b(cd|ls|mkdir|source|pip|python|git|echo|export|activate|install|freeze)\b|\b(\d+(?:\.\d+)?)\b/g
+};
+
+/** Ce limbă colorăm, după extensia numelui de fișier. */
+function limba(fisier = ""){
+  if (/\.sql$/i.test(fisier)) return "sql";
+  if (/\.(sh|bash|txt)$/i.test(fisier)) return "sh";
+  return "py";
+}
+
+function coloreaza(s, lb = "py"){
+  const re = TIPARE[lb] || TIPARE.py;
+  re.lastIndex = 0;
+  let iesire = "", ultim = 0, m;
+  while ((m = re.exec(s)) !== null){
+    if (m[0] === ""){ re.lastIndex++; continue; }
+    iesire += esc(s.slice(ultim, m.index));
+    const cls = m[1] ? "c" : m[2] ? "s" : m[3] ? "k" : "n";
+    iesire += `<span class="${cls}">${esc(m[0])}</span>`;
+    ultim = m.index + m[0].length;
+  }
+  return iesire + esc(s.slice(ultim));
 }
 
 /** Normalizare înainte de comparație: spațiile și ghilimelele nu contează. */
@@ -57,6 +83,69 @@ function cadruJos(){
     <p class="ex__stare"></p>`;
 }
 
+/* --------------------------------------------------------------------------
+   Mediul de dinaintea exercițiului
+
+   Nimeni nu scrie un filtru fără să se uite întâi la tabel. Panoul ăsta pune
+   deasupra codului exact lucrurile pe care le tastezi primele într-un caiet,
+   cu răspunsul deja scris: `head()`, `columns`, `dtypes`, `shape`.
+
+   Nu rulează Python. Afișează ce ar afișa pandas pentru fișierul descris în
+   `date`, cu rânduri adevărate din el. Dacă un exercițiu nu are `date`,
+   panoul nu apare și nu se schimbă nimic.
+   -------------------------------------------------------------------------- */
+
+function consolaDate(z){
+  if (!z || !z.coloane?.length) return "";
+  const nume = z.nume || "d";
+  const col  = z.coloane;
+  const lat  = Math.max(...col.map(c => c.nume.length));
+  const pad  = s => esc(s) + " ".repeat(Math.max(0, lat - s.length));
+
+  /* head(): tabel adevărat, ca să se alinieze coloanele ca în terminal */
+  const cap = (z.cap || []).map((r, i) => `<tr><th>${z.index?.[i] ?? i}</th>${
+    r.map(v => `<td class="${typeof v === "number" ? "nr" : ""}">${esc(v)}</td>`)
+     .join("")}</tr>`).join("");
+
+  const vederi = {
+    head: `<table class="cns__t"><thead><tr><th></th>${
+             col.map(c => `<th>${esc(c.nume)}</th>`).join("")}</tr></thead>
+           <tbody>${cap}</tbody></table>${
+           z.capNota ? `<p class="cns__n">${z.capNota}</p>` : ""}`,
+    columns: `<pre class="cns__p">Index([${col.map(c => `'${esc(c.nume)}'`).join(", ")}],\n      dtype='object')</pre>`,
+    dtypes: `<pre class="cns__p">${col.map(c => `${pad(c.nume)}    ${esc(c.tip)}`).join("\n")}\ndtype: object</pre>`,
+    shape: `<pre class="cns__p">(${z.randuri ?? "?"}, ${col.length})</pre>`,
+    ce: `<dl class="cns__d">${col.map(c =>
+           `<dt>${esc(c.nume)}</dt><dd>${c.d || ""}</dd>`).join("")}</dl>`
+  };
+
+  const file = [
+    ["head", `${nume}.head()`], ["columns", `${nume}.columns`],
+    ["dtypes", `${nume}.dtypes`], ["shape", `${nume}.shape`],
+    ["ce", "ce înseamnă"]
+  ];
+
+  return `<div class="cns">
+    <div class="cns__cap">
+      <span class="cns__f">${esc(z.fisier || "date")}</span>
+      <span class="cns__m">${z.randuri ? z.randuri.toLocaleString("ro-RO") + " rânduri × " : ""}${col.length} coloane</span>
+    </div>
+    <div class="cns__file" role="tablist">${file.map(([k, et], i) =>
+      `<button class="cns__fi${i ? "" : " on"}" data-v="${k}" type="button">${esc(et)}</button>`).join("")}</div>
+    ${file.map(([k], i) => `<div class="cns__v" data-v="${k}"${i ? " hidden" : ""}>${vederi[k]}</div>`).join("")}
+  </div>`;
+}
+
+/** Leagă butoanele panoului. Fără el, panoul rămâne pe prima vedere. */
+function legaConsola(gazda){
+  const c = gazda.querySelector(".cns");
+  if (!c) return;
+  c.querySelectorAll(".cns__fi").forEach(b => b.onclick = () => {
+    c.querySelectorAll(".cns__fi").forEach(x => x.classList.toggle("on", x === b));
+    c.querySelectorAll(".cns__v").forEach(v => v.hidden = v.dataset.v !== b.dataset.v);
+  });
+}
+
 /* ==========================================================================
    1. Completează golurile
    ========================================================================== */
@@ -76,15 +165,17 @@ E.cod = (gazda, d) => {
               autocapitalize="off" autocomplete="off"
               placeholder="${esc(g.ajutor || "…")}" aria-label="Golul ${k}">`;
   };
+  const lb = limba(d.fisier);
   const linii = d.cod.replace(/\t/g, "    ").split("\n");
   const corp = linii.map(l => {
     const bucati = l.split(/\{\{(\w+)\}\}/);   // text, cheie, text, cheie, …
-    const h = bucati.map((x, i) => i % 2 ? camp(x) : coloreaza(x)).join("");
+    const h = bucati.map((x, i) => i % 2 ? camp(x) : coloreaza(x, lb)).join("");
     return h || "&nbsp;";
   }).join("\n");
 
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
+    ${consolaDate(d.date)}
     <div class="ed">
       <div class="ed__bara"><span class="ed__pct"><i></i><i></i><i></i></span>
         <span class="ed__nume">${esc(d.fisier || "exercitiu.py")}</span></div>
@@ -94,6 +185,8 @@ E.cod = (gazda, d) => {
       </div>
     </div>
     ${cadruJos()}`;
+
+  legaConsola(gazda);
 
   const goluri = [...gazda.querySelectorAll(".gol")];
   const btV = gazda.querySelector('[data-rol="verifica"]');

@@ -134,3 +134,53 @@
 .dov__aj{font-family:var(--sans);font-size:12.5px;color:var(--nu);margin:7px 0 0;
   display:none;max-width:none}
 .dov__aj.vazut{display:block}
+
+/* --- mediul de dinaintea exercițiului ------------------------------------
+   Stă deasupra editorului și arată ca ieșirea unui caiet: aceleași litere,
+   aceeași sobrietate. Nu concurează cu codul de dedesubt.
+   ------------------------------------------------------------------------- */
+
+.cns{border:1px solid var(--linie);border-radius:11px;background:var(--panza);
+  margin:0 0 12px;overflow:hidden}
+.cns__cap{display:flex;align-items:baseline;gap:12px;padding:10px 14px;
+  border-bottom:1px solid var(--linie);background:var(--panza-2);flex-wrap:wrap}
+.cns__f{font-family:var(--mono);font-size:11.5px;color:var(--text-2);font-weight:500}
+.cns__m{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto;
+  font-variant-numeric:lining-nums}
+
+.cns__file{display:flex;gap:2px;padding:7px 9px 0;overflow-x:auto;scrollbar-width:none;
+  border-bottom:1px solid var(--linie)}
+.cns__file::-webkit-scrollbar{display:none}
+.cns__fi{font-family:var(--mono);font-size:11px;padding:5px 10px 7px;background:none;
+  border:0;border-bottom:2px solid transparent;color:var(--text-3);cursor:pointer;
+  white-space:nowrap;transition:color .12s}
+.cns__fi:hover{color:var(--text-2)}
+.cns__fi.on{color:var(--text);border-bottom-color:var(--accent)}
+
+.cns__v{padding:13px 14px;overflow-x:auto;scrollbar-width:thin}
+.cns__p{font-family:var(--mono);font-size:12px;line-height:1.6;margin:0;color:var(--text-2);
+  white-space:pre;background:none;border:0;padding:0}
+
+/* head(): aliniat ca în terminal — numerele la dreapta, indexul estompat */
+.cns__t{border-collapse:collapse;font-family:var(--mono);font-size:12px;
+  font-variant-numeric:lining-nums tabular-nums}
+.cns__t th,.cns__t td{padding:3px 16px 3px 0;text-align:left;white-space:nowrap}
+.cns__t thead th{color:var(--text-3);font-weight:500;padding-bottom:7px;
+  border-bottom:1px solid var(--linie)}
+.cns__t tbody th{color:var(--text-3);font-weight:400;padding-right:20px}
+.cns__t td{color:var(--text)}
+.cns__t td.nr{text-align:right;padding-right:16px}
+.cns__t tbody tr:first-child td,.cns__t tbody tr:first-child th{padding-top:7px}
+.cns__n{font-family:var(--sans);font-size:11.5px;color:var(--text-3);margin:11px 0 0;
+  max-width:none;line-height:1.45}
+
+.cns__d{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 18px;
+  align-items:baseline}
+.cns__d dt{font-family:var(--mono);font-size:11.5px;color:var(--text)}
+.cns__d dd{font-family:var(--sans);font-size:13px;color:var(--text-2);margin:0;
+  line-height:1.45}
+
+@media(max-width:620px){
+  .cns__d{grid-template-columns:1fr;gap:1px 0}
+  .cns__d dd{margin-bottom:9px}
+}

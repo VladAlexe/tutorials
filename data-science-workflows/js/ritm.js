@@ -22,7 +22,8 @@ import { RADACINA } from "./curs.js?v=7";
 const PAS_STUDENT  = 3000;    /* cât de des întreabă studentul unde e profesorul */
 const PAS_PROFESOR = 12000;   /* cât de des numără profesorul cine e în sală */
 
-export async function porneste({ capitol, total, esteProfesor, mergiLa, unde }){
+export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
+                                 manual, laStare }){
   let A;
   try { A = await import(`${RADACINA}/js/auth.js?v=7`); }
   catch { return null; }
@@ -76,11 +77,11 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde }){
       bara.querySelector(".ritm__b").onclick = async () => {
         const d = await scrie(unde(), !pornit);
         if (d && d.ok === false){ bara.querySelector(".ritm__d").textContent = d.mesaj; return; }
-        deseneaza();
+        deseneaza(); laStare?.(pornit);
       };
     }
 
-    deseneaza(); numara();
+    deseneaza(); numara(); laStare?.(pornit);
     ceas = setInterval(() => { if (!document.hidden && pornit) numara(); }, PAS_PROFESOR);
 
     return {
@@ -90,9 +91,10 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde }){
   }
 
   /* ------------------------------------------------------------- student --- */
-  let urmez = true;        /* sar după profesor? */
-  let eraPornit = false;
-  let ultim = null;
+  /* Nu există buton de desprindere: cât ține ora, pagina lui e pagina mea.
+     Ce poate face e să deschidă manualul în altă filă și să citească în
+     paralel; acolo nimic nu e obligatoriu și poate relua oricând. */
+  let eraPornit = false, ultim = null;
 
   const bate = async () => {
     let d = null;
@@ -100,33 +102,23 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde }){
     catch { return; }
     const acum = !!d?.pornit;
 
-    /* ora tocmai s-a pornit: intrăm automat în ritm, chiar dacă ieșisem
-       dintr-o oră mai veche */
-    if (acum && !eraPornit){ urmez = true; ultim = null; }
-    eraPornit = acum;
-
-    if (!acum){ bara.hidden = true; return; }
+    if (acum !== eraPornit){ eraPornit = acum; laStare?.(acum); }
+    if (!acum){ bara.hidden = true; ultim = null; return; }
 
     const nr = Math.max(1, d.slide_nr | 0);
-    if (urmez && nr !== ultim){ ultim = nr; mergiLa(nr - 1); }
+    if (nr !== ultim){ ultim = nr; mergiLa(nr - 1); }
     deseneaza(nr);
   };
 
   function deseneaza(nr){
     bara.hidden = false;
-    bara.className = "ritm" + (urmez ? " ritm--on" : " ritm--liber");
+    bara.className = "ritm ritm--on";
     bara.innerHTML = `
       <span class="ritm__pct"></span>
-      <span class="ritm__t">${urmez ? "Ora e condusă" : "Te uiți singur"}</span>
-      <span class="ritm__d">${urmez
-        ? `profesorul e la slide-ul ${nr}`
-        : `profesorul e la slide-ul ${nr}, tu nu-l urmezi`}</span>
-      <button class="ritm__b" type="button">${urmez ? "Mă uit singur" : "Revino în ritm"}</button>`;
-    bara.querySelector(".ritm__b").onclick = () => {
-      urmez = !urmez;
-      if (urmez){ ultim = nr; mergiLa(nr - 1); }
-      deseneaza(nr);
-    };
+      <span class="ritm__t">Ora e condusă</span>
+      <span class="ritm__d">slide-ul ${nr}, ca pe ecranul din față</span>
+      ${manual ? `<a class="ritm__b" href="${manual}" target="_blank"
+                     rel="noopener">Deschide manualul</a>` : ""}`;
   }
 
   bate();

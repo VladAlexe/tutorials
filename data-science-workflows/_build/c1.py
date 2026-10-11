@@ -21,7 +21,43 @@ import pathlib
 import re
 
 RAD = pathlib.Path(__file__).resolve().parent.parent
-V = "?v=6"
+V = "?v=5"
+
+
+# --------------------------------------------------------------------------
+# Mediul de dinaintea exercitiilor cu cod.
+#
+# Nimeni nu scrie un filtru fara sa se uite intai la tabel. Blocul asta e pus
+# deasupra editorului si arata ce ar arata pandas: head, columns, dtypes,
+# shape. Randurile sunt adevarate, luate din date/sci-ro-tari.json; nu inventez
+# valori, pentru ca studentul deschide acelasi fisier acasa si trebuie sa-i dea
+# aceleasi numere.
+# --------------------------------------------------------------------------
+
+DATE_SCI = {
+    "nume": "d",
+    "fisier": "date/brute/country.csv",
+    "randuri": 31684,
+    "coloane": [
+        {"nume": "user_country", "tip": "object",
+         "d": "codul de doua litere al tarii de unde pleaca legatura"},
+        {"nume": "friend_country", "tip": "object",
+         "d": "codul tarii spre care merge legatura"},
+        {"nume": "scaled_sci", "tip": "int64",
+         "d": "taria legaturii, scalata; se compara intre perechi, "
+              "nu se citeste ca numar de prietenii"},
+    ],
+    "cap": [
+        ["RO", "RO", 6252768],
+        ["RO", "MD", 173794],
+        ["RO", "AT", 124693],
+        ["RO", "DE", 91228],
+        ["RO", "HU", 85021],
+    ],
+    "capNota": "Cinci rânduri adevărate din fișier, dintre cele cu România pe "
+               "primul capăt. Toate cele 178 de țări au exact aceleași trei "
+               "coloane; se schimbă doar codurile.",
+}
 
 
 def ix(fel, titlu, date=None, sarcina=None, corp=""):
@@ -276,7 +312,7 @@ sl("s5", "Softuri și conturi", "Contul GitHub, azi",
           "ajuns. Nimic altceva. Detaliile sunt în "
           '<a class="leg" href="../../date-personale/">pagina despre date '
           'personale</a>, iar progresul ți-l poți șterge singur, oricând, din '
-          '<a class="leg" href="../../progres/">pagina de progres</a>.')
+          '<a class="leg" href="../../cont/">contul tău</a>.')
    + verif("c1-v8", 1,
            "De ce versionăm codul într-un proiect de analiză de date?",
            ["Ca să ocupe mai puțin spațiu pe disc",
@@ -447,11 +483,11 @@ sl("s10", "Proiectul", "Ce formă au datele",
    ])
    + ix("matrice", "1.764 de rânduri")
    + ix("cod", "Numără perechile", {
-       "id": "c1-cod-diadic", "fisier": "diadic.py",
-       "sarcina": "Ai fișierul SCI încărcat în <code>d</code>. Scrie filtrul "
+       "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
+       "sarcina": "Ai fișierul SCI încărcat în <code>d</code>. Uită-te întâi la "
+                  "el, în panoul de deasupra. Apoi scrie filtrul "
                   "care păstrează doar perechile România–România și apoi "
-                  "numără-le. Coloanele se numesc <code>user_country</code> și "
-                  "<code>friend_country</code>.",
+                  "numără-le.",
        "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/country.csv\")\n\n"
               "# cate randuri are tot fisierul\nprint(len(d))              # 31684\n\n"
               "# doar perechile care pleaca din Romania\n"
@@ -502,11 +538,11 @@ sl("s10", "Proiectul", "Ce formă au datele",
    "erori standard prea mici.</li></ol>"
    + ix("matrice", "1.764 de rânduri")
    + ix("cod", "Numără perechile", {
-       "id": "c1-cod-diadic", "fisier": "diadic.py",
-       "sarcina": "Ai fișierul SCI încărcat în <code>d</code>. Scrie filtrul "
+       "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
+       "sarcina": "Ai fișierul SCI încărcat în <code>d</code>. Uită-te întâi la "
+                  "el, în panoul de deasupra. Apoi scrie filtrul "
                   "care păstrează doar perechile România–România și apoi "
-                  "numără-le. Coloanele se numesc <code>user_country</code> și "
-                  "<code>friend_country</code>.",
+                  "numără-le.",
        "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/country.csv\")\n\n"
               "# cate randuri are tot fisierul\nprint(len(d))              # 31684\n\n"
               "# doar perechile care pleaca din Romania\n"
@@ -686,9 +722,10 @@ sl("s14", "Tipuri de date", "Tipuri în SQL",
    "<li><code>TEXT</code>: fără limită; în PostgreSQL nu e mai lent</li>"
    "</ul>"
    + ix("cod", "Scrie tabelul", {
-       "id": "c1-cod-sql", "fisier": "schema.sql",
-       "sarcina": "Tabelul în care va intra SCI-ul, la cursul 5. Alege tipul "
-                  "potrivit pentru fiecare coloană.",
+       "id": "c1-cod-sql", "fisier": "schema.sql", "date": DATE_SCI,
+       "sarcina": "Tabelul în care va intra SCI-ul, la cursul 5. Uită-te în "
+                  "panou la ce fel de valori primește fiecare coloană, apoi "
+                  "alege tipul potrivit.",
        "cod": "CREATE TABLE sci (\n"
               "  -- codul tarii de plecare, exact 2 caractere\n"
               "  user_country    {{1}},\n"
@@ -749,9 +786,10 @@ sl("s14", "Tipuri de date", "Tipuri în SQL",
    "text Unicode. În PostgreSQL nu există și nici nu trebuie: totul e Unicode "
    "din start, deci diacriticele merg fără nimic special.</p>"
    + ix("cod", "Scrie tabelul", {
-       "id": "c1-cod-sql", "fisier": "schema.sql",
-       "sarcina": "Tabelul în care va intra SCI-ul, la cursul 5. Alege tipul "
-                  "potrivit pentru fiecare coloană.",
+       "id": "c1-cod-sql", "fisier": "schema.sql", "date": DATE_SCI,
+       "sarcina": "Tabelul în care va intra SCI-ul, la cursul 5. Uită-te în "
+                  "panou la ce fel de valori primește fiecare coloană, apoi "
+                  "alege tipul potrivit.",
        "cod": "CREATE TABLE sci (\n"
               "  -- codul tarii de plecare, exact 2 caractere\n"
               "  user_country    {{1}},\n"
@@ -1194,7 +1232,7 @@ def scrie_tutorial():
   <div class="tut__jos">
     <a href="../lectie/">Slide-urile de la curs</a>
     <a href="../">Pagina cursului</a>
-    <a href="{{R}}/progres/">Progresul meu</a>
+    <a href="{{R}}/cont/">Contul meu</a>
   </div>
 </aside>\n'''.replace("{R}", "../.."))
     b.append('<article class="tut__corp">\n')
@@ -1204,7 +1242,7 @@ def scrie_tutorial():
   <p class="deck">Același drum ca la curs, explicat pe larg și cu aceleași
   exerciții. Dacă le-ai făcut la clasă, apar deja rezolvate; dacă vrei să le
   reiei, îți poți reseta progresul din
-  <a class="leg" href="../../progres/">pagina de progres</a>.</p>
+  <a class="leg" href="../../cont/">contul tău</a>.</p>
 </header>\n''')
     for i, s in enumerate(S, 1):
         b.append(f'\n<section class="tut__s" id="{s["id"]}">\n'

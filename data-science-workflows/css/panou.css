@@ -1,100 +1,250 @@
-/* ==========================================================================
-   Panourile: pagina studentului si pagina profesorului.
-   Variabile locale, ca sa nu afecteze celelalte cursuri din repo.
-   ========================================================================== */
-:root{
-  --ink:#16181A; --paper:#E8E8E4; --surface:#FFFFFF; --panel:#1E2022;
-  --olive:#6E7358; --olive-lt:#8D9472; --slate:#3D4451; --muted:#5C6165;
-  --rule:rgba(22,24,26,.13); --rule-strong:rgba(22,24,26,.28);
-  --ok:#4F6B3E; --no:#8C3B2E; --warn:#8A6D2F;
-  --sans:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --serif:'Literata',Georgia,'Times New Roman',serif;
-  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+/* ===========================================================================
+   PANOUL
+
+   O singură pagină, pe care o vede un singur om. Două benzi:
+
+     sus   ACUM        ce se întâmplă în clipa asta; se reîmprospătează singur
+     jos   SEMESTRUL   ce s-a adunat; se încarcă o dată, cu file
+
+   Nimic nu se repetă între ele. Dacă un lucru apare în două locuri, unul
+   dintre ele e de șters.
+   =========================================================================== */
+
+.pn{flex:1;min-height:0;overflow-y:auto;background:var(--fundal)}
+.pn__in{width:100%;max-width:1320px;margin:0 auto;padding:20px 24px 80px}
+
+/* --- bara de sus --------------------------------------------------------- */
+
+.pn__sus{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.pn__sel{display:flex;align-items:center;gap:8px;font-family:var(--mono);
+  font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3)}
+.pn__sel select{border:1px solid var(--linie-2);background:var(--panza);
+  border-radius:8px;padding:7px 11px;font-family:var(--sans);font-size:13.5px;
+  color:var(--text);text-transform:none;letter-spacing:0;max-width:330px}
+.pn__cand{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.pn__dr{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+
+/* --- blocuri ------------------------------------------------------------- */
+
+.bl{margin-bottom:18px}
+.bl h2{font-size:19px;margin:0 0 5px}
+.bl h3{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:-.01em;
+  margin:0 0 4px}
+.bl__d{font-family:var(--sans);font-size:12.5px;color:var(--text-3);line-height:1.5;
+  margin:0 0 15px;max-width:72ch}
+.gol{font-family:var(--sans);font-size:13px;color:var(--text-3);padding:22px 0;
+  margin:0;font-style:italic;max-width:none}
+.mic{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+
+/* --- banda „acum" --------------------------------------------------------
+   E singura parte care se mișcă singură, deci e și singura cu punct pulsant.
+   Restul paginii stă liniștit.
+   ------------------------------------------------------------------------- */
+
+.bl--acum{border:1px solid var(--linie);border-radius:14px;background:var(--panza);
+  padding:0;overflow:hidden;margin-bottom:26px}
+.ora{display:flex;align-items:center;gap:14px;padding:17px 20px;flex-wrap:wrap}
+.ora__pct{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none;
+  box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent);
+  animation:pn-puls 2.2s ease-out infinite}
+.ora__pct--rece{background:var(--linie-2);animation:none;box-shadow:none}
+@keyframes pn-puls{
+  70%{box-shadow:0 0 0 8px color-mix(in srgb, var(--ok) 0%, transparent)}
+  100%{box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 0%, transparent)}
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--paper);color:var(--ink);font-family:var(--serif);
-  font-size:17px;line-height:1.64;-webkit-font-smoothing:antialiased}
-button,input,select{font-family:inherit}
-:focus-visible{outline:2.5px solid var(--olive);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion: reduce){ .ora__pct{animation:none} }
+.ora__t{min-width:0;flex:1}
+.ora__t b{display:block;font-family:var(--sans);font-size:15px;font-weight:600;
+  letter-spacing:-.01em}
+.ora__t span{display:block;font-family:var(--sans);font-size:12.5px;
+  color:var(--text-3);margin-top:2px;line-height:1.45}
+.ora__b{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ora__stop{border-color:var(--nu);color:var(--nu)}
+.ora__stop:hover:not(:disabled){background:var(--nu-slab);border-color:var(--nu)}
+.ora__corp{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:22px;
+  padding:4px 20px 20px;border-top:1px solid var(--linie)}
+.ora__corp > .bl__c{padding-top:17px;min-width:0}
+@media(max-width:1000px){ .ora__corp{grid-template-columns:1fr} }
 
-.top{background:var(--panel);color:#EDEDE9;padding:11px 0;font-family:var(--sans);font-size:13px}
-.top__in{max-width:1000px;margin:0 auto;padding:0 26px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-.top__in a{color:rgba(237,237,233,.72);text-decoration:none;font-weight:600}
-.top__in a:hover{color:#fff}
-.top__sep{color:rgba(237,237,233,.35)}
-.top__here{font-weight:600}
+/* --- șina cu oameni ------------------------------------------------------ */
 
-.shell{max-width:1000px;margin:0 auto;padding:38px 26px 70px}
-.shell--ingust{max-width:680px}
+.pista{display:flex;align-items:flex-end;gap:3px;overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:thin}
+.col{flex:1 1 0;min-width:30px;display:flex;flex-direction:column;align-items:center;
+  gap:5px}
+/* coloana pe care stă cineva se lărgește cât să-i încapă numele: un „B…" nu
+   spune nimic la oră, iar restul coloanelor sunt oricum goale */
+.col.are{flex:0 0 auto;min-width:84px}
+.col__o{display:flex;flex-direction:column-reverse;gap:3px;align-items:center;
+  width:100%;min-height:22px;justify-content:flex-start}
+.om{width:100%;max-width:88px;padding:3px 6px;border-radius:5px;
+  background:var(--accent-slab);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+  font-family:var(--sans);font-size:10.5px;font-weight:500;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--accent-text)}
+.om.lenes{background:var(--panza-2);border-color:var(--linie);color:var(--text-3)}
+.col__b{width:100%;height:4px;border-radius:2px;background:var(--linie)}
+.col.are .col__b{background:var(--accent)}
+.col--tu .col__b{background:var(--text);height:6px}
+.col__n{font-family:var(--mono);font-size:9.5px;color:var(--text-3);
+  font-variant-numeric:lining-nums}
+.col--tu .col__n{color:var(--text);font-weight:500}
 
-.eyebrow{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.2em;
-  color:var(--olive);margin:0 0 10px}
-h1{font-family:var(--sans);font-weight:800;font-size:clamp(25px,4.4vw,33px);line-height:1.1;
-  letter-spacing:-.02em;margin:0 0 9px}
-.deck{color:var(--muted);margin:0 0 28px;font-size:16.5px;max-width:64ch}
-h2{font-family:var(--sans);font-weight:700;font-size:18px;margin:34px 0 12px;
-  padding-bottom:8px;border-bottom:2px solid var(--rule-strong)}
-p{margin:0 0 15px}
+/* --- filele de jos ------------------------------------------------------- */
 
-.ident{display:flex;align-items:center;gap:14px;padding:16px 19px;background:var(--surface);
-  border:1px solid var(--rule-strong);border-radius:9px;margin:0 0 20px}
-.ident__cerc{flex:none;width:46px;height:46px;border-radius:50%;background:var(--olive);
-  color:#fff;display:grid;place-items:center;font-family:var(--sans);font-weight:700;font-size:17px}
-.ident__nume{font-family:var(--sans);font-weight:700;font-size:17px;line-height:1.24}
-.ident__sub{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:3px}
+.pn__file{display:flex;gap:3px;border-bottom:1px solid var(--linie);margin-bottom:20px;
+  overflow-x:auto;scrollbar-width:none}
+.pn__file::-webkit-scrollbar{display:none}
+.pn__f{padding:10px 14px;font-family:var(--sans);font-size:13.5px;font-weight:500;
+  color:var(--text-3);background:none;border:0;border-bottom:2px solid transparent;
+  cursor:pointer;white-space:nowrap;transition:color .12s}
+.pn__f:hover{color:var(--text-2)}
+.pn__f.on{color:var(--text);border-bottom-color:var(--accent)}
 
-.cifre{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 8px}
-.cifra{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:16px 18px}
-.cifra__v{font-family:var(--sans);font-weight:800;font-size:28px;line-height:1;letter-spacing:-.02em}
-.cifra__e{font-family:var(--sans);font-weight:600;font-size:11.5px;letter-spacing:.07em;
-  color:var(--muted);margin-top:7px}
-.cifra__n{font-size:13.5px;color:var(--muted);margin-top:5px}
+/* --- grila studenți × ceva ----------------------------------------------
+   Plin = în oră, contur = singur, gol = nefăcut. Trei stări care se deosebesc
+   și după formă, nu doar după culoare: cine nu distinge nuanțele vede în
+   continuare diferența.
+   ------------------------------------------------------------------------- */
 
-.tbl{width:100%;border-collapse:collapse;font-size:15px;background:var(--surface);
-  border:1px solid var(--rule);border-radius:8px;overflow:hidden}
-.tbl th{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.11em;
-  text-align:left;padding:11px 14px;background:rgba(22,24,26,.04);color:var(--muted);
-  border-bottom:1px solid var(--rule)}
-.tbl td{padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:middle}
-.tbl tr:last-child td{border-bottom:0}
-.tbl td.mono{font-family:var(--mono);font-size:13px}
-.tbl tr:hover td{background:rgba(110,115,88,.05)}
+.leg{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 13px;font-family:var(--mono);
+  font-size:9.5px;color:var(--text-3)}
+.leg__i{display:flex;align-items:center;gap:6px}
 
-.eticheta{display:inline-block;font-family:var(--sans);font-weight:700;font-size:9.5px;
-  letter-spacing:.1em;padding:3px 8px;border-radius:3px}
-.eticheta--da{background:rgba(79,107,62,.16);color:var(--ok)}
-.eticheta--nu{background:rgba(22,24,26,.07);color:var(--muted)}
+.cel{display:inline-block;width:13px;height:13px;border-radius:4px;
+  border:1px solid var(--linie-2);background:transparent;vertical-align:-2px}
+.cel--live{background:var(--accent);border-color:var(--accent)}
+.cel--singur{background:transparent;
+  border:1.5px solid color-mix(in srgb,var(--accent) 65%,transparent)}
+.cel--ratat{opacity:.45}
 
-.gol{background:var(--surface);border:1px dashed var(--rule-strong);border-radius:8px;
-  padding:30px;text-align:center;color:var(--muted);font-size:15.5px}
-.gol b{font-family:var(--sans);display:block;font-size:14px;color:var(--ink);margin-bottom:5px}
+.grila__sul{overflow:auto;max-height:70vh;scrollbar-width:thin;
+  border:1px solid var(--linie);border-radius:11px;background:var(--panza)}
+.grila{border-collapse:separate;border-spacing:0;font-family:var(--sans);font-size:12.5px}
+.grila th,.grila td{padding:5px 6px;text-align:center;white-space:nowrap}
+.grila thead th{position:sticky;top:0;z-index:2;background:var(--panza);
+  border-bottom:1px solid var(--linie-2)}
+.grila__cine{position:sticky;left:0;z-index:1;background:var(--panza);
+  text-align:left!important;font-weight:500;padding-left:14px!important;
+  min-width:150px;border-right:1px solid var(--linie)}
+.grila thead .grila__cine{z-index:3}
+.grila__cine .mic{display:block;font-weight:400}
+.grila__v{font-family:var(--mono);font-size:9px;color:var(--text-3);
+  height:76px;vertical-align:bottom;padding-bottom:9px!important}
+.grila__v span{display:inline-block;writing-mode:vertical-rl;transform:rotate(180deg);
+  max-height:64px;overflow:hidden}
+.grila__t{font-family:var(--mono);font-size:10.5px;color:var(--text-2);
+  padding-right:14px!important;font-variant-numeric:lining-nums}
+.grila tbody tr:hover td,.grila tbody tr:hover .grila__cine{background:var(--panza-2)}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  font-family:var(--sans);font-weight:600;font-size:14px;padding:10px 17px;border-radius:6px;
-  border:1.5px solid var(--ink);background:var(--ink);color:#fff;transition:.15s;
-  cursor:pointer;text-decoration:none}
-.btn:hover{background:var(--slate);border-color:var(--slate)}
-.btn--alt{background:none;color:var(--ink)}
-.btn--alt:hover{background:rgba(22,24,26,.06);color:var(--ink)}
+/* --- distribuția răspunsurilor ------------------------------------------- */
 
-.unelte{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
-.unelte input,.unelte select{padding:8px 11px;border:1.5px solid var(--rule-strong);
-  border-radius:6px;background:var(--surface);font-size:14.5px;color:var(--ink)}
-.unelte input{min-width:190px}
-.unelte .dr{margin-left:auto;font-family:var(--sans);font-size:12.5px;
-  font-weight:600;color:var(--muted)}
+.dz{margin-bottom:18px}
+.dz:last-child{margin-bottom:0}
+.dz__cap{display:flex;align-items:baseline;gap:9px;margin-bottom:7px}
+.dz__id{font-family:var(--mono);font-size:10.5px;color:var(--text-2)}
+.dz__n{font-family:var(--mono);font-size:10.5px;color:var(--text-3);margin-left:auto}
+.dz__r{display:grid;grid-template-columns:20px minmax(0,1fr) 78px;gap:9px;
+  align-items:center;margin-bottom:4px}
+.dz__v{font-family:var(--mono);font-size:10.5px;color:var(--text-3);text-align:center}
+.dz__p{height:12px;background:var(--panza-2);border-radius:3px;overflow:hidden;
+  border:1px solid var(--linie)}
+.dz__p i{display:block;height:100%;background:var(--sci-3)}
+.dz__r.bun .dz__p i{background:var(--ok)}
+.dz__r.bun .dz__v{color:var(--ok);font-weight:500}
+.dz__e{font-family:var(--mono);font-size:10.5px;color:var(--text-2);text-align:right}
+.dz__e b{font-weight:500;color:var(--text)}
 
-.msg{border-radius:6px;padding:13px 16px;margin:0 0 18px;font-size:15px;display:none}
-.msg.on{display:block}
-.msg--no{background:rgba(140,59,46,.1);border-left:3px solid var(--no)}
-.msg--info{background:rgba(110,115,88,.1);border-left:3px solid var(--olive)}
+/* --- codul scris de ei --------------------------------------------------- */
 
-.incarca{text-align:center;padding:50px 0;color:var(--muted);font-style:italic}
-[hidden]{display:none!important}
-@media(max-width:640px){
-  .shell{padding:28px 18px 60px}
-  .tbl{font-size:14px}
-  .tbl th,.tbl td{padding:9px 10px}
+.cod__g{margin-bottom:17px}
+.cod__g:last-child{margin-bottom:0}
+.cod__gt{display:flex;align-items:baseline;gap:10px;margin-bottom:7px;
+  padding-bottom:6px;border-bottom:1px solid var(--linie)}
+.cod__id{font-family:var(--mono);font-size:11px;color:var(--text-2);font-weight:500}
+.cod__n{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto}
+.cod__r{display:grid;grid-template-columns:158px minmax(0,1fr) 34px;gap:11px;
+  align-items:center;padding:6px 0;border-bottom:1px solid var(--linie)}
+.cod__r:last-child{border-bottom:0}
+.cod__cine{font-family:var(--sans);font-size:12.5px;font-weight:500;line-height:1.25;
+  overflow:hidden}
+.cod__cine small{display:block;font-family:var(--mono);font-size:9.5px;
+  color:var(--text-3);font-weight:400}
+.cod__t{font-family:var(--mono);font-size:11.5px;background:var(--panza-2);
+  border:1px solid var(--linie);border-radius:6px;padding:5px 9px;overflow-x:auto;
+  white-space:pre;min-width:0;scrollbar-width:thin}
+.cod__r.bun .cod__t{border-color:color-mix(in srgb,var(--ok) 40%,transparent);
+  background:var(--ok-slab)}
+.cod__r.rau .cod__t{border-color:color-mix(in srgb,var(--nu) 34%,transparent);
+  background:var(--nu-slab)}
+.cod__i{font-family:var(--mono);font-size:10.5px;color:var(--text-3);text-align:right}
+
+/* --- tabelul de note ----------------------------------------------------- */
+
+.tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13px}
+.tb th{font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;text-align:left;padding:9px 12px 9px 14px;color:var(--text-3);
+  border-bottom:1px solid var(--linie-2);white-space:nowrap;position:sticky;top:0;
+  background:var(--panza)}
+.tb th small{font-family:var(--mono);font-weight:400;letter-spacing:0;
+  text-transform:none;color:var(--text-3)}
+.tb td{padding:9px 12px 9px 14px;border-bottom:1px solid var(--linie);
+  vertical-align:middle;white-space:nowrap}
+.tb td.nume{font-weight:500;white-space:normal}
+.tb tr:hover td{background:var(--panza-2)}
+.tb td b{font-variant-numeric:lining-nums;font-size:14px}
+.tb .mic{display:inline-block;margin-left:5px}
+.tb td.nume .mic{display:block;margin:1px 0 0}
+
+/* --- contul de test ------------------------------------------------------ */
+
+.test{border:1px solid var(--linie);border-radius:11px;background:var(--panza);
+  padding:16px 18px;max-width:72ch}
+.test__u{margin:0 0 12px;max-width:none}
+.test__u code{font-family:var(--mono);font-size:12px;word-break:break-all;
+  background:var(--panza-2);border:1px solid var(--linie);border-radius:6px;
+  padding:7px 10px;display:block}
+
+/* --- codul de intrare, proiectat ----------------------------------------- */
+
+.qr{position:fixed;inset:0;z-index:300;background:rgba(10,12,14,.55);
+  display:grid;place-items:center;padding:24px;backdrop-filter:blur(3px)}
+.qr[hidden]{display:none}
+.qr__cutie{position:relative;background:var(--panza);border-radius:16px;
+  padding:30px 34px 26px;text-align:center;box-shadow:var(--umbra-2);
+  max-width:min(480px,92vw)}
+.qr__x{position:absolute;top:10px;right:14px;font-size:24px;line-height:1;
+  color:var(--text-3);padding:4px 8px;border-radius:7px}
+.qr__x:hover{background:var(--panza-2);color:var(--text)}
+.qr__et{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-3);margin-bottom:16px}
+.qr__cod{display:grid;place-items:center;min-height:200px}
+/* codul trebuie citit și pe tema întunecată: fundal alb mereu */
+.qr__cod svg,.qr__cod img{width:min(300px,64vw);height:auto;display:block;
+  background:#fff;padding:10px;border-radius:10px}
+.qr__fallback{font-family:var(--mono);font-size:16px;line-height:1.5;
+  word-break:break-all;color:var(--text);margin:0;max-width:none}
+.qr__jeton{font-family:var(--mono);font-size:30px;font-weight:500;letter-spacing:.22em;
+  color:var(--text);margin:18px 0 0;max-width:none;text-indent:.22em}
+.qr__url{font-family:var(--mono);font-size:12px;color:var(--text-2);margin:12px 0 0;
+  word-break:break-all;max-width:none}
+.qr__act{margin-top:14px}
+.qr__d{font-family:var(--sans);font-size:12.5px;color:var(--text-3);margin:14px 0 0;
+  line-height:1.45;max-width:38ch;margin-inline:auto}
+
+/* --- gol ----------------------------------------------------------------- */
+
+.gol-mare{text-align:center;padding:84px 20px;max-width:46ch;margin:0 auto}
+.gol-mare h1{font-size:28px;margin-bottom:14px}
+.gol-mare p{font-family:var(--sans);font-size:16px;color:var(--text-2);
+  margin:0 auto 24px;max-width:none}
+.gol-mare__bt{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+
+@media(max-width:700px){
+  .pn__in{padding:14px 14px 60px}
+  .pn__dr{margin-left:0;width:100%}
+  .ora{padding:14px 15px}
+  .ora__corp{padding:4px 15px 16px}
+  .col{min-width:30px}
+  .cod__r{grid-template-columns:minmax(0,1fr);gap:4px}
+  .cod__i{text-align:left}
 }

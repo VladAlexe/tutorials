@@ -18,8 +18,9 @@ export function porneste(capitol){
   }, { rootMargin: "-12% 0px -76% 0px" });
   sectiuni.forEach(s => obs.observe(s));
 
-  /* se marchează ca citit, ca să se vadă în progres că a reluat materialul */
+  /* Tot ce se face aici e marcat ca venit din manual, nu din oră. Manualul
+     se reia de câte ori vrea omul și n-are nimic obligatoriu, dar se vede. */
   import("/data-science-workflows/js/colectare.js?v=7")
-    .then(m => m.marcheazaSectiune(`${capitol}/manual`))
+    .then(m => { m.setContext("manual"); m.marcheazaSectiune(`${capitol}/manual`); })
     .catch(() => {});
 }

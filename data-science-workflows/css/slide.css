@@ -227,9 +227,9 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
    ------------------------------------------------------------------------- */
 
 .are-ritm .rnr__scena{padding-top:52px}
-/* sus, sub antet: jos ar acoperi butoanele de înainte/înapoi */
-.ritm{position:fixed;left:50%;transform:translateX(-50%);
-  top:calc(var(--antet) + 12px);z-index:200;
+/* sus-dreapta: jos ar acoperi butoanele de înainte/înapoi, iar în mijloc ar
+   sta peste coloana de text când pagina e derulată */
+.ritm{position:fixed;right:18px;top:calc(var(--antet) + 12px);z-index:200;
   display:flex;align-items:center;gap:11px;padding:8px 10px 8px 15px;
   border-radius:24px;border:1px solid var(--linie-2);background:var(--panza);
   box-shadow:0 6px 24px rgba(0,0,0,.17);font-family:var(--sans);font-size:13px;
@@ -254,6 +254,10 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 .ritm--liber .ritm__t{color:var(--text-2)}
 .ritm--prof.ritm--on{border-color:color-mix(in srgb, var(--accent) 45%, transparent)}
 
+@media(max-width:1180px){
+  /* nu mai e loc în margine: trece peste tot, dar rămâne subțire */
+  .ritm{right:12px;left:12px;justify-content:center}
+}
 @media(max-width:700px){
   .ritm{top:calc(var(--antet) + 8px);font-size:12px;gap:8px;padding:7px 8px 7px 12px}
   .ritm__d{display:none}

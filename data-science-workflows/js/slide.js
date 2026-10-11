@@ -68,7 +68,8 @@ export async function porneste({ capitol, lectie }){
     i: 0,
     vizitate: new Set(),
     liber: false,          /* profesorul poate dezactiva porțile */
-    profesor: false
+    profesor: false,
+    live: false            /* ora e condusă chiar acum */
   };
 
   const CHEIE_LOCAL = `dsw.parcurs.${capitol}`;
@@ -100,7 +101,9 @@ export async function porneste({ capitol, lectie }){
   adaugaPasi();
   lega();
 
-  mergi(dinAdresa(), { tacut:true });
+  /* ce slide cerea adresa, înainte ca porțile să-l mute altundeva */
+  const cerutInitial = dinAdresa();
+  mergi(cerutInitial, { tacut:true });
   harta();
 
   /* verificarile raspund asincron: cand una se completeaza, porțile se mută */
@@ -112,6 +115,10 @@ export async function porneste({ capitol, lectie }){
         .catch(() => {});
     }));
 
+  /* până aflăm dacă ora e pornită, ce se salvează e lucru de unul singur */
+  import(`${RADACINA}/js/colectare.js?v=7`)
+    .then(m => m.setContext("lectie")).catch(() => {});
+
   /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
   import(`${RADACINA}/js/sesiune.js?v=7`)
     .then(s => s.porneste({ capitol, total:N }))
@@ -122,7 +129,12 @@ export async function porneste({ capitol, lectie }){
     const { profil } = await import(`${RADACINA}/js/auth.js?v=7`);
     const p = await profil();
     stare.profesor = !!p.profesor;
-    if (stare.profesor){ stare.liber = true; el.bLiber.hidden = false; reinnoieste(); }
+    if (stare.profesor){
+      stare.liber = true; el.bLiber.hidden = false; reinnoieste();
+      /* adresa cu #10 a fost deja limitată de porți, înainte să se știe cine
+         e; acum că se știe, mergem unde ceruse link-ul */
+      if (cerutInitial !== stare.i) mergi(cerutInitial, { tacut:true });
+    }
   } catch { /* fără cont, lecția merge la fel */ }
 
   /* ora condusă: profesorul publică slide-ul lui, studenții sar după el.
@@ -135,7 +147,16 @@ export async function porneste({ capitol, lectie }){
       unde: () => stare.i + 1,
       /* la ritm nu se aplică porțile: dacă profesorul arată slide-ul 9,
          slide-ul 9 se vede, chiar dacă verificarea de la 4 n-a fost făcută */
-      mergiLa: k => mergi(k, { fortat:true })
+      manual: `${RADACINA}/${lectie}/tutorial/`,
+      mergiLa: k => mergi(k, { fortat:true }),
+      /* ce se salvează de acum înainte poartă eticheta potrivită: un
+         exercițiu făcut în oră nu e același lucru cu unul făcut acasă */
+      laStare: viu => {
+        stare.live = viu;
+        import(`${RADACINA}/js/colectare.js?v=7`)
+          .then(m => m.setContext(viu ? "live" : "lectie")).catch(() => {});
+        if (viu){ stare.liber = true; reinnoieste(); }
+      }
     });
   } catch { /* fără ora condusă, lecția merge la fel */ }
 
@@ -227,7 +248,7 @@ export async function porneste({ capitol, lectie }){
       <div class="sina__jos">
         <a class="sina__leg" href="${RADACINA}/${lectie}/tutorial/">${SVG.carte}<span>Manualul</span></a>
         <a class="sina__leg" href="${RADACINA}/${lectie}/">${SVG.acasa}<span>Pagina cursului</span></a>
-        <a class="sina__leg" href="${RADACINA}/progres/">${SVG.grafic}<span>Progresul meu</span></a>
+        <a class="sina__leg" href="${RADACINA}/cont/">${SVG.grafic}<span>Contul meu</span></a>
         ${info.notebook ? `<a class="sina__leg" href="${info.notebook}" target="_blank"
             rel="noopener">${SVG.caiet}<span>Caietul lecției</span></a>` : ""}
       </div>`;

@@ -17,6 +17,8 @@ Panou: https://supabase.com/dashboard/project/ybvtxenerriwstiktebe
       - `08-ritm.sql` → **ora condusa**: toti sar pe slide-ul meu
       - `09-note.sql` → tabelul cu notele grupei
       - `10-profesori.sql` → pot face profesor si un al doilea cont
+      - `11-context.sql` → de unde vine fiecare raspuns (in ora / singur /
+        din manual), si scoaterea contului meu din statisticile clasei
 
       Fiecare trebuie sa dea `Success`. Se pot rula din nou oricand, nu strica
       nimic.

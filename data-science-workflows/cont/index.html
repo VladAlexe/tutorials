@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Intră în cont — Fluxuri de lucru</title>
+<title>Contul meu — Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,72 +11,48 @@
 <link rel="stylesheet" href="../css/sistem.css?v=7">
 <link rel="stylesheet" href="../css/cont.css?v=7">
 <script src="../js/tema.js?v=7"></script>
-<style>
-  .lg{max-width:460px;margin:0 auto;padding:46px 0 80px}
-  .lg h1{font-size:30px;margin-bottom:10px;text-align:center}
-  .lg__d{font-family:var(--sans);font-size:15px;color:var(--text-2);text-align:center;
-    margin:0 0 30px;line-height:1.55;max-width:none}
-  .cutie{border:1px solid var(--linie);border-radius:13px;background:var(--panza);
-    padding:22px 24px;box-shadow:var(--umbra)}
-  .cutie + .cutie{margin-top:13px}
-  .cutie label{display:block;font-family:var(--sans);font-size:13px;font-weight:500;
-    margin-bottom:7px}
-  .cutie input{width:100%;padding:11px 14px;border:1px solid var(--linie-2);
-    border-radius:9px;background:var(--fundal);font-family:var(--sans);font-size:15.5px;
-    outline:none;transition:.13s}
-  .cutie input:focus{border-color:var(--accent)}
-  .cutie .btn{width:100%;justify-content:center;margin-top:12px;padding:12px}
-  .mic{font-family:var(--sans);font-size:12.5px;color:var(--text-3);line-height:1.5;
-    margin:13px 0 0;max-width:none}
-  .ori{display:flex;align-items:center;gap:13px;margin:18px 0;font-family:var(--mono);
-    font-size:10.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.11em}
-  .ori::before,.ori::after{content:"";flex:1;height:1px;background:var(--linie)}
-  .mesaj{font-family:var(--sans);font-size:14px;line-height:1.5;padding:12px 15px;
-    border-radius:9px;margin-top:14px;display:none;max-width:none}
-  .mesaj.vazut{display:block}
-  .mesaj.rau{background:var(--nu-slab);color:var(--nu)}
-  .mesaj.bun{background:var(--ok-slab);color:var(--ok)}
-  .pasi{display:flex;gap:7px;justify-content:center;margin-bottom:26px}
-  .pasi i{width:34px;height:3px;border-radius:2px;background:var(--linie);display:block}
-  .pasi i.on{background:var(--accent)}
-</style>
 </head>
 <body>
 
-<div id="antet" data-aici="Cont"></div>
+<div id="antet" data-aici="Contul meu"></div>
 
 <main>
 <div class="pagina">
-  <div class="lg" id="lg"><p class="incarca">Se încarcă…</p></div>
+  <div id="pagina"><p class="incarca">Se încarcă…</p></div>
 </div>
 </main>
 
 <div id="subsol"></div>
 
 <script type="module">
-import { RADACINA } from "../js/curs.js?v=7";
+import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=7";
 
-const lg = document.getElementById("lg");
-const msg = (text, fel) => {
-  const m = document.getElementById("mesaj");
-  if (!m) return;
-  m.textContent = text; m.className = "mesaj vazut " + (fel || "");
-};
+const el = id => document.getElementById(id);
+const gazda = el("pagina");
+const cand = s => new Date(s).toLocaleString("ro-RO",
+  { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" });
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
   A = await import("../js/auth.js?v=7");
   CFG = await import("../js/supabase-config.js?v=7");
 } catch (e) {
-  lg.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
-    <p>Nu pot încărca autentificarea: ${e.message}</p></div>`;
+  gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
+    <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
   throw e;
 }
 
-/* dacă ne-am întors de la GitHub cu o eroare, o spunem pe șleau */
-const er = A.intoarcere?.eroare;
+const msg = (text, fel) => {
+  const m = el("mesaj");
+  if (!m) return;
+  m.textContent = text; m.className = "mesaj vazut " + (fel || "");
+};
 
-async function desen(){
+/* Pagina asta are patru stări, în ordinea în care le întâlnește cineva:
+   nimeni conectat, conectat fără matricol, profesor (care are panoul lui),
+   și contul gata, cu progres cu tot. */
+async function unde(){
   p = await A.profil({ proaspat:true });
 
   /* dacă am plecat spre GitHub de pe pagina de prezență, ne întoarcem acolo:
@@ -88,13 +64,24 @@ async function desen(){
     if (inapoi){ location.replace(inapoi); return; }
   }
 
-  /* --- 1. nu e nimeni conectat ------------------------------------------ */
-  if (!p.autentificat){
-    lg.innerHTML = `
+  if (!p.autentificat) return intrare();
+  if (p.profesorReal && A.modVizualizare() !== "student"){
+    location.replace(RADACINA + "/panou/"); return;
+  }
+  if (!p.matricol) return matricol();
+  return deseneaza();
+}
+
+/* --------------------------------------------------------- 1. intrarea -- */
+
+function intrare(){
+  const er = A.intoarcere?.eroare;
+  gazda.innerHTML = `
+    <div class="lg">
       <div class="pasi"><i class="on"></i><i></i></div>
       <h1>Intră în cont</h1>
-      <p class="lg__d">Ca să ți se salveze răspunsurile și ca să apari în
-      progresul grupei.</p>
+      <p class="lg__d">Ca să ți se salveze răspunsurile, ca să-ți văd progresul
+      și ca să apari în prezență.</p>
 
       <div class="cutie">
         <button class="btn btn--tare" id="bt-github" type="button">
@@ -122,47 +109,43 @@ async function desen(){
       </div>
 
       <p class="mic" style="text-align:center">Ce se salvează despre tine scrie în
-      <a class="leg" href="${RADACINA}/date-personale/">pagina despre date personale</a>.</p>`;
+      <a class="leg" href="${RADACINA}/date-personale/">pagina despre date personale</a>.</p>
+    </div>`;
 
-    if (er) msg(er === "access_denied"
-      ? "Ai anulat intrarea cu GitHub. Mai încearcă o dată."
-      : "GitHub a răspuns cu o eroare: " + er, "rau");
+  if (er) msg(er === "access_denied"
+    ? "Ai anulat intrarea cu GitHub. Mai încearcă o dată."
+    : "GitHub a răspuns cu o eroare: " + er, "rau");
 
-    document.getElementById("bt-github").onclick = async e => {
-      e.target.disabled = true;
-      try { await A.intraCuGithub(); }
-      catch (x) { e.target.disabled = false; msg(x.message, "rau"); }
-    };
-    document.getElementById("bt-email")?.addEventListener("click", async () => {
-      const v = document.getElementById("email").value;
-      try { await A.intraCuEmail(v); msg("Ți-am trimis o legătură pe email. Deschide-o de pe calculatorul ăsta.", "bun"); }
-      catch (x) { msg(x.message, "rau"); }
-    });
-    document.getElementById("bt-invitat").onclick = async e => {
-      const nume = document.getElementById("nume").value.trim();
-      if (nume.length < 2){ msg("Scrie un nume, ca să te recunosc în listă.", "rau"); return; }
-      e.target.disabled = true;
-      try {
-        const r = await A.intraCaInvitat(nume);
-        if (!r?.ok) throw new Error(r?.mesaj || "nu a mers");
-        location.href = RADACINA + "/panou/";
-      } catch (x) { e.target.disabled = false; msg(x.message, "rau"); }
-    };
-    return;
-  }
+  el("bt-github").onclick = async e => {
+    e.target.disabled = true;
+    try { await A.intraCuGithub(); }
+    catch (x) { e.target.disabled = false; msg(x.message, "rau"); }
+  };
+  el("bt-email")?.addEventListener("click", async () => {
+    try { await A.intraCuEmail(el("email").value);
+          msg("Ți-am trimis o legătură pe email. Deschide-o de pe calculatorul ăsta.", "bun"); }
+    catch (x) { msg(x.message, "rau"); }
+  });
+  el("bt-invitat").onclick = async e => {
+    const nume = el("nume").value.trim();
+    if (nume.length < 2){ msg("Scrie un nume, ca să te recunosc în listă.", "rau"); return; }
+    e.target.disabled = true;
+    try {
+      const r = await A.intraCaInvitat(nume);
+      if (!r?.ok) throw new Error(r?.mesaj || "nu a mers");
+      unde();
+    } catch (x) { e.target.disabled = false; msg(x.message, "rau"); }
+  };
+}
 
-  /* --- 1b. profesorul n-are număr matricol; are casa lui ---------------- */
-  if (p.profesorReal && A.modVizualizare() !== "student"){
-    location.replace(RADACINA + "/profesor/");
-    return;
-  }
+/* ------------------------------------------------------- 2. matricolul -- */
 
-  /* --- 2. conectat, dar fără matricol ----------------------------------- */
-  if (!p.matricol){
-    lg.innerHTML = `
+function matricol(){
+  gazda.innerHTML = `
+    <div class="lg">
       <div class="pasi"><i class="on"></i><i class="on"></i></div>
       <h1>Numărul matricol</h1>
-      <p class="lg__d">Ești conectat${p.email ? " ca <strong>" + p.email + "</strong>" : ""}.
+      <p class="lg__d">Ești conectat${p.email ? " ca <strong>" + esc(p.email) + "</strong>" : ""}.
       Mai rămâne să-ți leg contul de numărul tău matricol, ca să te pot găsi în listă.</p>
 
       <div class="cutie">
@@ -175,44 +158,291 @@ async function desen(){
       </div>
 
       <p class="mic" style="text-align:center">
-        <button class="leg" id="bt-iesi" type="button"
-          style="background:none;border:0;padding:0;font:inherit;color:var(--accent-text);cursor:pointer">
-          Nu e contul tău? Ieși.</button></p>`;
-
-    const bt = document.getElementById("bt-leg");
-    const camp = document.getElementById("mat");
-    const trimite = async () => {
-      const v = camp.value.trim();
-      if (!v){ msg("Scrie numărul matricol.", "rau"); return; }
-      bt.disabled = true; bt.textContent = "Se verifică…";
-      try {
-        const r = await A.revendicaMatricol(v);
-        if (r?.ok){ msg(`Gata, ${r.nume}. Te duc la contul tău…`, "bun");
-                    setTimeout(() => location.href = RADACINA + "/panou/", 900); }
-        else { msg(r?.mesaj || "Nu a mers.", "rau");
-               bt.disabled = false; bt.textContent = "Leagă contul"; }
-      } catch (x){ msg(x.message, "rau"); bt.disabled = false; bt.textContent = "Leagă contul"; }
-    };
-    bt.onclick = trimite;
-    camp.addEventListener("keydown", e => { if (e.key === "Enter") trimite(); });
-    document.getElementById("bt-iesi").onclick = async () => { await A.iesi(); desen(); };
-    return;
-  }
-
-  /* --- 3. totul e pus la punct ------------------------------------------ */
-  lg.innerHTML = `
-    <h1>Ești în cont</h1>
-    <p class="lg__d"><strong>${p.nume}</strong>, ${p.matricol}${p.grupa ? ", grupa " + p.grupa : ""}.</p>
-    <div class="cutie" style="text-align:center">
-      <a class="btn btn--tare" href="${RADACINA}/panou/">Contul și progresul meu</a>
-      <a class="btn" href="${RADACINA}/c1-introducere-si-mediu/lectie/">Mergi la lecție</a>
+        <button class="leg-bt" id="bt-iesi2" type="button">Nu e contul tău? Ieși.</button></p>
     </div>`;
+
+  const bt = el("bt-leg"), camp = el("mat");
+  const trimite = async () => {
+    const v = camp.value.trim();
+    if (!v){ msg("Scrie numărul matricol.", "rau"); return; }
+    bt.disabled = true; bt.textContent = "Se verifică…";
+    try {
+      const r = await A.revendicaMatricol(v);
+      if (r?.ok){ msg(`Gata, ${r.nume}.`, "bun"); setTimeout(unde, 700); }
+      else { msg(r?.mesaj || "Nu a mers.", "rau");
+             bt.disabled = false; bt.textContent = "Leagă contul"; }
+    } catch (x){ msg(x.message, "rau"); bt.disabled = false; bt.textContent = "Leagă contul"; }
+  };
+  bt.onclick = trimite;
+  camp.addEventListener("keydown", e => { if (e.key === "Enter") trimite(); });
+  el("bt-iesi2").onclick = async () => { await A.iesi(); unde(); };
 }
 
-await desen();
-A.laSchimbare(() => desen());
+/* ====================================================================== */
+
+async function deseneaza(){
+  const invitat = A.esteInvitat(p);
+
+  let progresBaza = new Set(), rasp = [], codul = [], prez = [], totaleBaza = new Map();
+  try {
+    const [g, r, c, z, s] = await Promise.all([
+      A.sb.from("progres").select("sectiune_id, ultima_data"),
+      A.sb.from("raspunsuri").select("intrebare_id, capitol, raspuns, corect, creat_la")
+          .order("creat_la", { ascending:false }),
+      A.sb.from("rulari_cod").select("exercitiu_id, cod, trecut, creat_la")
+          .order("creat_la", { ascending:false }),
+      A.sb.from("prezente").select("curs, marcat_la"),
+      A.sb.from("sesiuni").select("capitol, total_nr")
+    ]);
+    (g.data || []).forEach(x => progresBaza.add(x.sectiune_id));
+    rasp = r.data || []; codul = c.data || []; prez = z.data || [];
+    (s.data || []).forEach(x => { if (x.capitol && x.total_nr)
+      totaleBaza.set(x.capitol, Math.max(totaleBaza.get(x.capitol) || 0, x.total_nr)); });
+  } catch { /* fără rețea, rămâne ce știe browserul */ }
+
+  const harta = c => { try { return JSON.parse(localStorage.getItem(`dsw.harta.${c}`) || "null"); }
+                       catch { return null; } };
+  const local = c => { try { return new Set(JSON.parse(
+                         localStorage.getItem(`dsw.parcurs.${c}`) || "{}").vizitate || []); }
+                       catch { return new Set(); } };
+
+  const lectii = LECTII.map(l => {
+    const cheie = "c" + l.nr, h = harta(cheie), viz = local(cheie);
+    progresBaza.forEach(k => { const m = new RegExp(`^${cheie}/s(\\d+)$`).exec(k);
+                               if (m) viz.add(+m[1] - 1); });
+    const total = (h && h.total) || totaleBaza.get(cheie) || null;
+    const q = rasp.filter(x => x.capitol === cheie);
+    /* exercițiile cu cod n-au coloană de capitol; o citim din id: „c1-cod-…" */
+    const cod = codul.filter(x => x.trecut && String(x.exercitiu_id).startsWith(cheie + "-"));
+    const facute = new Set(q.map(x => x.intrebare_id)).size
+                 + new Set(cod.map(x => x.exercitiu_id)).size;
+    const qTotal = l.sarcini
+      || (h ? h.verif.reduce((a, x) => a + (Array.isArray(x) ? x.length : x), 0) : null);
+    return { l, cheie, total, viz,
+             vazute: Math.min(viz.size, total || viz.size),
+             ultim: viz.size ? Math.max(...viz) + 1 : 0,
+             qDate: facute, qCorecte: q.filter(x => x.corect).length, qTotal };
+  });
+
+  /* --- notarea, din NOTARE, nu din cifre scrise de mână -----------------
+     O sarcină se pune la socoteală o singură dată, oricâte încercări au fost
+     nevoie: contează că ai ajuns la capăt, nu că ai nimerit din prima. */
+  const sarciniFacute =
+      new Set(rasp.map(x => x.intrebare_id)).size +
+      new Set(codul.filter(x => x.trecut).map(x => x.exercitiu_id)).size;
+  const sarciniTotal = LECTII.reduce((a, l) => a + (l.sarcini || 0), 0) || null;
+  const pTeme    = NOTARE.componente.find(x => x.cheie === "teme").puncte;
+  const pProiect = NOTARE.componente.find(x => x.cheie === "proiect").puncte;
+  const pSem     = NOTARE.componente.find(x => x.cheie === "seminar").puncte;
+  const temeAcum = sarciniTotal
+    ? Math.round(Math.min(1, sarciniFacute / sarciniTotal) * pTeme * 10) / 10 : null;
+  const semAcum  = Math.round(Math.min(1, prez.length / LECTII.length) * pSem * 10) / 10;
+
+  const totSlide = lectii.reduce((a, x) => a + (x.total || 0), 0);
+  const totVaz   = lectii.reduce((a, x) => a + x.vazute, 0);
+  const proc = totSlide ? Math.round(totVaz / totSlide * 100) : 0;
+  const urm = lectii.find(x => x.l.stare === "gata" && x.total && x.vazute < x.total)
+           || lectii.find(x => x.l.stare === "gata");
+  const ini = (p.nume || "?").trim().split(/\s+/).slice(0,2).map(x => x[0] || "").join("").toUpperCase();
+
+  gazda.innerHTML = `
+  <header class="cnt__cap">
+    <div class="cnt__cerc" style="--p:${proc}"><i>${ini}</i></div>
+    <div class="cnt__cine">
+      <h1>${esc(p.nume) || "Contul meu"}</h1>
+      <p class="cnt__meta">
+        <span class="et">${esc(p.matricol)}</span>
+        ${p.grupa ? `<span class="et">grupa ${esc(p.grupa)}</span>` : ""}
+        ${invitat ? `<span class="et et--nu">invitat</span>` : ""}
+        ${p.github_login ? `<span class="et">@${esc(p.github_login)}</span>` : ""}
+      </p>
+    </div>
+    <div class="cnt__act">
+      ${p.profesorReal ? `<a class="btn btn--mic" href="${RADACINA}/panou/">Panoul meu</a>` : ""}
+      <button class="btn btn--mic" id="bt-iesi" type="button">Ieși din cont</button>
+    </div>
+  </header>
+
+  ${invitat ? `<div class="nota" style="margin-bottom:30px">
+    <div class="nota__et">Cont de invitat</div>
+    <p>Progresul se salvează și se vede la profesor, dar contul nu e legat de un
+    număr matricol și nu se poate transforma mai târziu. Dacă ești student la
+    curs, ieși și intră cu GitHub.</p></div>` : ""}
+
+  <!-- ------------------------------------------------ unde ai rămas ---- -->
+  ${urm ? `<a class="reia" href="${RADACINA}/${urm.l.cheie}/${urm.total ? "lectie/#" + Math.max(1, urm.ultim) : ""}">
+    <span class="reia__et">${urm.vazute ? "Continuă de unde ai rămas" : "Începe"}</span>
+    <span class="reia__t">Cursul ${urm.l.nr}. ${urm.l.titlu}</span>
+    <span class="reia__d">${urm.total
+      ? `slide ${Math.max(1, urm.ultim)} din ${urm.total}`
+      : "nu l-ai deschis încă"}</span>
+    <span class="reia__b"><i style="width:${urm.total ? urm.vazute / urm.total * 100 : 0}%"></i></span>
+    <span class="reia__sg">→</span>
+  </a>` : ""}
+
+  <!-- ----------------------------------------------------- notarea ----- -->
+  <section class="cnt__s">
+    <h2>Nota</h2>
+    <p class="cnt__d">${NOTARE.total} puncte, din trei surse. Mai jos e unde stai
+    acum la fiecare. Temele și seminarul se calculează singure, din ce ai făcut;
+    proiectul îl notez eu la final.</p>
+
+    <div class="nta">
+      ${nota("teme", temeAcum, pTeme,
+             sarciniTotal ? `${sarciniFacute} din ${sarciniTotal} sarcini` : "încă nimic",
+             sarciniTotal ? sarciniFacute / sarciniTotal : 0)}
+      ${nota("proiect", null, pProiect, "se notează la final", 0)}
+      ${nota("seminar", semAcum, pSem,
+             `${prez.length} din ${LECTII.length} prezențe`, prez.length / LECTII.length)}
+    </div>
+
+    <div class="nta__tot">
+      <span>Acum, din ce se poate calcula</span>
+      <b>${((temeAcum || 0) + semAcum).toFixed(1).replace(".", ",")}</b>
+      <span>din ${(pTeme + pSem)} puncte, plus ${pProiect} de la proiect</span>
+    </div>
+
+    <details class="detalii">
+      <summary>Cum se calculează fiecare</summary>
+      ${NOTARE.componente.map(c => `<div class="detalii__r">
+        <b>${c.nume} · ${c.puncte} ${c.puncte === 1 ? "punct" : "puncte"}</b>
+        <p>${c.d}</p></div>`).join("")}
+    </details>
+  </section>
+
+  <!-- ----------------------------------------------------- lecțiile ---- -->
+  <section class="cnt__s">
+    <h2>Lecțiile</h2>
+    <div class="lect">${lectii.map(randLectie).join("")}</div>
+  </section>
+
+  <!-- --------------------------------------------------- activitatea --- -->
+  <section class="cnt__s">
+    <h2>Ce ai lucrat</h2>
+    <div class="file" role="tablist">
+      <button class="file__f on" data-f="cod" type="button">Cod <i>${codul.length}</i></button>
+      <button class="file__f" data-f="verif" type="button">Verificări <i>${rasp.length}</i></button>
+      <button class="file__f" data-f="prez" type="button">Prezențe <i>${prez.length}</i></button>
+    </div>
+
+    <div class="file__c" data-c="cod">${codul.length ? `
+      <div class="codl">${[...new Map(codul.map(c => [c.exercitiu_id, c])).values()]
+        .map(c => `<div class="codl__r ${c.trecut ? "bun" : ""}">
+          <span class="codl__id">${esc(c.exercitiu_id)}</span>
+          <code>${esc(c.cod)}</code>
+          <span class="codl__c">${cand(c.creat_la)}</span></div>`).join("")}</div>`
+      : `<p class="cnt__gol">Niciun exercițiu cu cod, încă.</p>`}</div>
+
+    <div class="file__c" data-c="verif" hidden>${rasp.length ? `
+      <table class="tabel">
+        <thead><tr><th>Verificare</th><th>Lecția</th><th>Rezultat</th><th>Când</th></tr></thead>
+        <tbody>${rasp.map(r => `<tr>
+          <td class="mono">${esc(r.intrebare_id)}</td><td class="mono">${esc(r.capitol) || "—"}</td>
+          <td>${r.corect ? '<span class="et et--ok">corect</span>'
+                         : '<span class="et et--nu">greșit</span>'}</td>
+          <td class="mono">${cand(r.creat_la)}</td></tr>`).join("")}</tbody></table>`
+      : `<p class="cnt__gol">Nicio verificare, încă.</p>`}</div>
+
+    <div class="file__c" data-c="prez" hidden>${prez.length ? `
+      <div class="codl">${prez.map(z => `<div class="codl__r bun">
+        <span class="codl__id">${esc(z.curs)}</span>
+        <code>prezent</code>
+        <span class="codl__c">${cand(z.marcat_la)}</span></div>`).join("")}</div>`
+      : `<p class="cnt__gol">Nicio prezență marcată. La începutul orei, scanează
+         codul de pe ecran.</p>`}</div>
+  </section>
+
+  <!-- ------------------------------------------------------ resetare --- -->
+  <section class="cnt__s">
+    <h2>Resetare</h2>
+    <div class="rst">
+      <div>
+        <p class="rst__t">Ia lecția de la capăt</p>
+        <p class="rst__d">Se șterg slide-urile parcurse, răspunsurile și exercițiile
+        de la lecția aleasă, și din browser și din contul tău. Porțile se închid la
+        loc. Prezențele rămân. Nu se poate anula.</p>
+      </div>
+      <div class="rst__act">
+        <select id="rst-lectie">
+          <option value="">Toate lecțiile</option>
+          ${LECTII.map(l => `<option value="c${l.nr}">Cursul ${l.nr}. ${l.titlu}</option>`).join("")}
+        </select>
+        <button class="btn btn--mic rst__bt" id="rst-bt" type="button">Resetează</button>
+      </div>
+      <p class="rst__msg" id="rst-msg"></p>
+    </div>
+  </section>`;
+
+  el("bt-iesi").onclick = async () => { await A.iesi(); location.href = RADACINA + "/"; };
+  gazda.querySelectorAll(".file__f").forEach(b => b.onclick = () => {
+    gazda.querySelectorAll(".file__f").forEach(x => x.classList.toggle("on", x === b));
+    gazda.querySelectorAll(".file__c").forEach(x => x.hidden = x.dataset.c !== b.dataset.f);
+  });
+  legaReset();
+}
+
+function nota(cheie, acum, max, sub, fractie){
+  const c = NOTARE.componente.find(x => x.cheie === cheie);
+  const pr = Math.round(Math.min(1, fractie || 0) * 100);
+  return `<div class="nt ${acum === null ? "nt--astept" : ""}">
+    <span class="nt__n">${c.nume}</span>
+    <span class="nt__v">${acum === null ? "—" : String(acum).replace(".", ",")}<small>/${max}</small></span>
+    <span class="nt__b"><i style="width:${pr}%"></i></span>
+    <span class="nt__s">${sub}</span>
+    <span class="nt__d">${c.scurt}</span>
+  </div>`;
+}
+
+function randLectie(x){
+  const proc = x.total ? Math.round(x.vazute / x.total * 100) : 0;
+  const stare = x.l.stare !== "gata" ? "în lucru"
+              : !x.total             ? "nedeschisă"
+              : proc >= 100          ? "parcursă"
+              : `slide ${x.ultim} din ${x.total}`;
+  const unde = x.total ? `${x.l.cheie}/lectie/#${Math.max(1, x.ultim)}` : `${x.l.cheie}/`;
+  return `<a class="lect__r" href="${RADACINA}/${unde}">
+    <span class="lect__n">${String(x.l.nr).padStart(2,"0")}</span>
+    <span class="lect__m">
+      <span class="lect__t">${x.l.titlu}</span>
+      <span class="lect__s">${stare}${x.qTotal ? ` · sarcini ${Math.min(x.qDate, x.qTotal)}/${x.qTotal}` : ""}</span>
+      <span class="lect__b"><i style="width:${proc}%"></i></span>
+    </span>
+    <span class="lect__p">${x.total ? proc + "%" : "—"}</span>
+  </a>`;
+}
+
+function legaReset(){
+  const sel = el("rst-lectie"), bt = el("rst-bt"), msg = el("rst-msg");
+  bt.onclick = async () => {
+    const cheie = sel.value || null;
+    const unde = cheie ? `cursul ${cheie.slice(1)}` : "toate lecțiile";
+    if (!confirm(`Resetezi progresul la ${unde}?\n\nSe șterg slide-urile parcurse, ` +
+                 `răspunsurile și exercițiile. Nu se poate anula.`)) return;
+    bt.disabled = true; bt.textContent = "Se resetează…";
+    for (const l of LECTII){
+      const k = "c" + l.nr;
+      if (cheie && k !== cheie) continue;
+      for (const pref of ["dsw.parcurs.", "dsw.raspunsuri.", "dsw.harta."]){
+        try { localStorage.removeItem(pref + k); } catch {}
+      }
+    }
+    let text = "Șters din browser.";
+    try {
+      const { data, error } = await A.sb.rpc("reset_progresul_meu", { p_capitol: cheie });
+      text = error ? `Local s-a șters, dar în cont nu: ${error.message}`
+           : data?.ok ? `Șters: ${data.progres} slide-uri, ${data.raspunsuri} răspunsuri, ${data.cod} exerciții.`
+           : `Local s-a șters. ${data?.mesaj || ""}`;
+    } catch (e) { text = `Local s-a șters, dar nu am ajuns la baza de date: ${e.message}`; }
+    msg.textContent = text + " Reîncarc…";
+    msg.classList.add("vazut");
+    setTimeout(() => location.reload(), 1500);
+  };
+}
+await unde();
+A.laSchimbare(() => unde());
 </script>
 <script type="module" src="../js/antet.js?v=7"></script>
 <script type="module" src="../js/subsol.js?v=7"></script>
+<script type="module" src="../js/bara-mod.js?v=7"></script>
 </body>
 </html>

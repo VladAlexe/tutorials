@@ -18,6 +18,17 @@
 let modul = null;   /* null = neîncercat, false = indisponibil, altfel modulul */
 let gata  = null;   /* null = neștiut, true/false = poate salva sau nu */
 
+/* De unde vine ce se salvează. Pagina o spune, o dată, cu setContext():
+     'live'    — în oră, cât ora e condusă de profesor
+     'lectie'  — pe pagina lecției, dar singur
+     'manual'  — în tutorial, oricând
+   Fără ea, rândul rămâne cu null și apare la profesor ca „necunoscut".
+   Nu e un amănunt: un exercițiu făcut în oră și unul făcut marți seara spun
+   lucruri diferite, iar panoul trebuie să le poată deosebi. */
+let contextul = null;
+export function setContext(c){ contextul = c || null; }
+export function context(){ return contextul; }
+
 async function autentificare(){
   if (modul !== null) return modul;
   try { modul = await import("./auth.js?v=7"); }
@@ -58,7 +69,8 @@ export async function salveazaRaspuns({ intrebareId, capitol, raspuns, corect })
   const c = await cine();
   if (!c) return false;
   const { error } = await c.sb.from("raspunsuri").insert({
-    user_id:c.user.id, intrebare_id:intrebareId, capitol, raspuns, corect
+    user_id:c.user.id, intrebare_id:intrebareId, capitol, raspuns, corect,
+    context: contextul
   });
   return !error;
 }
@@ -67,7 +79,8 @@ export async function salveazaCod({ exercitiuId, cod, trecut }){
   const c = await cine();
   if (!c) return false;
   const { error } = await c.sb.from("rulari_cod").insert({
-    user_id:c.user.id, exercitiu_id:exercitiuId, cod:(cod||"").slice(0,4000), trecut
+    user_id:c.user.id, exercitiu_id:exercitiuId, cod:(cod||"").slice(0,4000), trecut,
+    context: contextul
   });
   return !error;
 }
