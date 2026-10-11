@@ -248,3 +248,69 @@
   .cod__r{grid-template-columns:minmax(0,1fr);gap:4px}
   .cod__i{text-align:left}
 }
+
+/* ===========================================================================
+   LECȚIILE MELE
+
+   Prima pagină a profesorului. Nu e un tablou de bord, e o listă de lecții cu
+   un buton pe fiecare. Ce se întâmplă la oră se întâmplă în lecție, nu aici.
+   =========================================================================== */
+
+.biblio__cap{display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;
+  padding:40px 0 26px}
+.biblio__cine{flex:1;min-width:280px}
+.biblio__et{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent-text);margin-bottom:9px}
+.biblio__cap h1{font-size:clamp(26px,3.3vw,34px);margin:0 0 10px}
+.biblio__d{font-family:var(--sans);font-size:14.5px;color:var(--text-2);
+  line-height:1.55;margin:0;max-width:58ch}
+.biblio__act{display:flex;gap:8px;flex-wrap:wrap;padding-top:6px}
+.biblio__n{font-family:var(--sans);font-size:13px;color:var(--text-3);line-height:1.55;
+  margin:30px 0 0;max-width:72ch;padding-top:22px;border-top:1px solid var(--linie)}
+.biblio__u{margin:10px 0 0;max-width:none}
+.biblio__u code{font-family:var(--mono);font-size:12.5px;background:var(--panza-2);
+  border:1px solid var(--linie);border-radius:7px;padding:7px 11px;display:inline-block}
+
+/* --- banda „predai acum" ------------------------------------------------- */
+
+.live{display:flex;align-items:center;gap:14px;text-decoration:none;
+  border:1px solid color-mix(in srgb, var(--ok) 42%, transparent);
+  background:var(--ok-slab);border-radius:13px;padding:15px 19px;margin:0 0 20px;
+  transition:box-shadow .13s}
+.live:hover{box-shadow:var(--umbra)}
+.live__pct{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none;
+  box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent);
+  animation:pn-puls 2.2s ease-out infinite}
+.live__m{flex:1;min-width:0}
+.live__m b{display:block;font-family:var(--sans);font-size:14.5px;font-weight:600;
+  color:var(--text)}
+.live__m span{display:block;font-family:var(--sans);font-size:12.5px;color:var(--text-2);
+  margin-top:2px}
+.live__sg{font-size:19px;color:var(--ok);flex:none}
+
+/* --- cardurile lecțiilor -------------------------------------------------- */
+
+.lectii{display:grid;gap:10px}
+.lc{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:18px;
+  align-items:center;border:1px solid var(--linie);border-radius:13px;
+  background:var(--panza);padding:18px 20px;transition:border-color .13s}
+.lc:hover{border-color:var(--linie-2)}
+.lc--schita{background:none;border-style:dashed}
+.lc--schita .lc__t,.lc--schita .lc__d{color:var(--text-3)}
+.lc__nr{font-family:var(--mono);font-size:15px;color:var(--text-3);text-align:center;
+  font-variant-numeric:lining-nums}
+.lc__m{min-width:0}
+.lc__t{font-family:var(--serif);font-size:19px;letter-spacing:-.01em;margin:0 0 4px;
+  line-height:1.25}
+.lc__d{font-family:var(--sans);font-size:13px;color:var(--text-3);line-height:1.5;
+  margin:0;max-width:62ch}
+.lc__meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-3);margin:8px 0 0;max-width:none}
+.lc__act{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;
+  align-items:center}
+
+@media(max-width:760px){
+  .lc{grid-template-columns:28px minmax(0,1fr);gap:12px}
+  .lc__act{grid-column:1/-1;justify-content:flex-start;margin-top:4px}
+  .biblio__cap{padding-top:26px}
+}

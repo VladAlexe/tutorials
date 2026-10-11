@@ -31,7 +31,7 @@ export function context(){ return contextul; }
 
 async function autentificare(){
   if (modul !== null) return modul;
-  try { modul = await import("./auth.js?v=8"); }
+  try { modul = await import("./auth.js?v=9"); }
   catch { modul = false; }
   return modul;
 }

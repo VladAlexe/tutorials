@@ -3,148 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panou — Fluxuri de lucru</title>
+<title>Lecțiile mele — Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=8">
-<link rel="stylesheet" href="../css/panou.css?v=8">
-<script src="../js/tema.js?v=8"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=9">
+<link rel="stylesheet" href="../css/panou.css?v=9">
+<script src="../js/tema.js?v=9"></script>
 </head>
-<body class="corp--app">
+<body>
 
-<div id="antet" data-aici="Panou" data-crom="1"></div>
+<div id="antet" data-aici="Lecțiile mele"></div>
 
-<div class="pn">
-<div class="pn__in" id="pagina">
-  <p class="incarca">Se verifică dacă ai drept de profesor…</p>
+<main>
+<div class="pagina">
+  <div id="pagina"><p class="incarca">Se încarcă…</p></div>
 </div>
-</div>
+</main>
 
-<!-- codul de intrare, proiectat la începutul orei -->
-<div class="qr" id="qr" hidden>
-  <div class="qr__cutie">
-    <button class="qr__x" id="qr-x" type="button" aria-label="Închide">×</button>
-    <span class="qr__et">Intrarea la oră</span>
-    <div class="qr__cod" id="qr-cod"></div>
-    <p class="qr__jeton" id="qr-jeton"></p>
-    <p class="qr__url" id="qr-url"></p>
-    <div class="qr__act">
-      <button class="btn btn--mic" id="qr-copie" type="button">Copiază linkul</button>
-    </div>
-    <p class="qr__d">Proiectează asta, sau pune linkul pe grup. Cine are cont
-      intră cu GitHub și prezența se leagă de numărul matricol; cine nu are,
-      intră ca invitat. În amândouă cazurile prezența se marchează singură.</p>
-  </div>
-</div>
-
-<template id="sablon">
-
-  <!-- ===================================================== bara de sus === -->
-  <div class="pn__sus">
-    <label class="pn__sel">lecția
-      <select id="sel-lectie"></select>
-    </label>
-    <span class="pn__cand" id="cand">—</span>
-    <div class="pn__dr">
-      <button class="btn btn--mic" id="bt-reia" type="button">Reîncarcă</button>
-      <button class="btn btn--mic" id="bt-fereastra" type="button">Deschide pe alt ecran</button>
-    </div>
-  </div>
-
-  <!-- ============================================================ ACUM === -->
-  <section class="bl bl--acum" id="bl-acum">
-    <div class="ora" id="ora"></div>
-    <div class="ora__corp" id="ora-corp" hidden>
-      <div class="bl__c">
-        <h3>Unde e fiecare</h3>
-        <p class="bl__d">Fiecare nume stă pe slide-ul la care se uită acum.
-        Cât ora e pornită, toți ar trebui să fie pe slide-ul tău; cine rămâne
-        în urmă are fila închisă sau conexiunea picată.</p>
-        <div class="pista" id="pista"></div>
-      </div>
-      <div class="bl__c">
-        <h3>Ultimele verificări</h3>
-        <p class="bl__d">Cum a răspuns grupa la ultimele două verificări din
-        lecția asta. Pagina nu știe ce întrebări sunt pe slide-ul tău, doar la
-        ce s-a răspuns ultima dată, ceea ce la oră e același lucru.</p>
-        <div id="acum-rasp"><p class="gol">Nicio verificare pe slide-ul ăsta.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================== SEMESTRUL === -->
-  <div class="pn__file" role="tablist">
-    <button class="pn__f on" data-f="sarcini" type="button">Cine ce a făcut</button>
-    <button class="pn__f" data-f="prezenta" type="button">Prezența</button>
-    <button class="pn__f" data-f="raspunsuri" type="button">Răspunsurile</button>
-    <button class="pn__f" data-f="cod" type="button">Codul scris</button>
-    <button class="pn__f" data-f="note" type="button">Nota</button>
-    <button class="pn__f" data-f="test" type="button">Test</button>
-  </div>
-
-  <section class="bl pn__v" data-v="sarcini">
-    <h2>Cine ce a făcut</h2>
-    <p class="bl__d">O celulă plină înseamnă făcut în oră, cu tine de față. Un
-    contur înseamnă făcut singur, pe lecție sau în manual, altă dată. Gol
-    înseamnă nefăcut. Manualul nu e obligatoriu, deci conturul nu e o
-    pierdere, e doar o altă poveste.</p>
-    <div id="v-sarcini"><p class="gol">Se încarcă…</p></div>
-  </section>
-
-  <section class="bl pn__v" data-v="prezenta" hidden>
-    <h2>Prezența</h2>
-    <p class="bl__d">Cine a scanat codul, la fiecare ședință.</p>
-    <div id="v-prezenta"><p class="gol">Se încarcă…</p></div>
-  </section>
-
-  <section class="bl pn__v" data-v="raspunsuri" hidden>
-    <h2>Răspunsurile</h2>
-    <p class="bl__d">Pe fiecare verificare, cum s-a împărțit grupa. Varianta
-    corectă e marcată cu o bifă, nu doar cu culoare.</p>
-    <div id="v-raspunsuri"><p class="gol">Se încarcă…</p></div>
-  </section>
-
-  <section class="bl pn__v" data-v="cod" hidden>
-    <h2>Codul scris</h2>
-    <p class="bl__d">Ultima rezolvare a fiecăruia, la fiecare exercițiu cu cod.</p>
-    <div id="v-cod"><p class="gol">Se încarcă…</p></div>
-  </section>
-
-  <section class="bl pn__v" data-v="note" hidden>
-    <h2>Nota</h2>
-    <p class="bl__d" id="note-d"></p>
-    <div id="v-note"><p class="gol">Se încarcă…</p></div>
-  </section>
-
-  <section class="bl pn__v" data-v="test" hidden>
-    <h2>Încearcă site-ul ca student</h2>
-    <p class="bl__d">Contul tău e de profesor și rămâne așa. Ca să vezi exact
-    ce vede un student, intră ca invitat <strong>din alt browser sau dintr-o
-    fereastră privată</strong>: e un om separat, cu progresul lui, și apare în
-    panou ca oricare altul. Dacă deschizi linkul în fila asta, ieși din contul
-    tău de profesor.</p>
-    <div id="v-test"></div>
-  </section>
-
-</template>
+<div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, CURS } from "../js/curs.js?v=8";
+import { LECTII, RADACINA } from "../js/curs.js?v=9";
 
 const el  = id => document.getElementById(id);
 const pag = el("pagina");
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
-const ora = s => s ? new Date(s).toLocaleString("ro-RO",
-  { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "—";
-const ceas = s => s ? new Date(s).toLocaleTimeString("ro-RO",
-  { hour:"2-digit", minute:"2-digit" }) : "—";
-const unZec = n => (Math.round(n * 10) / 10).toFixed(1).replace(".", ",");
 
 let A, sb, eu;
 try {
-  A = await import("../js/auth.js?v=8");
+  A = await import("../js/auth.js?v=9");
   sb = A.sb;
   eu = await A.profil();
 } catch (e) {
@@ -153,439 +42,95 @@ try {
   throw e;
 }
 
-/* Ușa paginii. Se cheamă la sfârșitul modulului, nu aici: tot ce urmează
-   mai jos trebuie să existe înainte ca porneste() să se atingă de el. */
-function usa(){
-  if (!eu.autentificat){
-    pag.innerHTML = `<div class="gol-mare"><h1>Panou</h1>
-      <p>Intră în cont ca să ajungi aici.</p>
-      <div class="gol-mare__bt"><a class="btn btn--tare" href="${RADACINA}/cont/">Intră în cont</a></div></div>`;
-  } else if (!eu.profesorReal){
-    /* Studentul are contul lui și nu află de aici că pagina asta există. */
-    pag.innerHTML = `<div class="gol-mare"><h1>Pagina asta nu e pentru tine</h1>
-      <p>Lecțiile, progresul și nota ta sunt la contul tău.</p>
-      <div class="gol-mare__bt">
-        <a class="btn btn--tare" href="${RADACINA}/cont/">Contul meu</a>
-        <a class="btn" href="${RADACINA}/">Pagina cursului</a></div></div>`;
-  } else {
-    porneste();
-  }
+if (!eu.autentificat){
+  pag.innerHTML = `<div class="gol-mare"><h1>Lecțiile mele</h1>
+    <p>Intră în cont ca să ajungi aici.</p>
+    <div class="gol-mare__bt"><a class="btn btn--tare" href="${RADACINA}/cont/">Intră în cont</a></div></div>`;
+} else if (!eu.profesorReal){
+  pag.innerHTML = `<div class="gol-mare"><h1>Pagina asta nu e pentru tine</h1>
+    <p>Lecțiile, progresul și nota ta sunt la contul tău.</p>
+    <div class="gol-mare__bt">
+      <a class="btn btn--tare" href="${RADACINA}/cont/">Contul meu</a>
+      <a class="btn" href="${RADACINA}/">Pagina cursului</a></div></div>`;
+} else {
+  await deseneaza();
 }
 
 /* ========================================================================= */
 
-const GATA = LECTII.filter(l => l.stare === "gata");
-let cheie = (() => { try { return localStorage.getItem("dsw.panou.lectie"); } catch { return null; } })()
-          || GATA[0]?.cheie || LECTII[0].cheie;
-
-const lectia  = () => LECTII.find(l => l.cheie === cheie) || LECTII[0];
-const capitol = () => "c" + lectia().nr;
-
-let ceasAcum = null;
-
-function porneste(){
-  pag.innerHTML = "";
-  pag.appendChild(el("sablon").content.cloneNode(true));
-
-  el("sel-lectie").innerHTML = LECTII.map(l =>
-    `<option value="${l.cheie}" ${l.cheie === cheie ? "selected" : ""}
-      ${l.stare === "gata" ? "" : "disabled"}>Cursul ${l.nr}. ${l.titlu}${
-        l.stare === "gata" ? "" : " (în lucru)"}</option>`).join("");
-
-  el("sel-lectie").onchange = e => {
-    cheie = e.target.value;
-    try { localStorage.setItem("dsw.panou.lectie", cheie); } catch {}
-    acum(); semestru();
-  };
-  el("bt-reia").onclick = () => { acum(); semestru(); };
-  el("bt-fereastra").onclick = () => {
-    const f = window.open(location.href, "dsw-panou",
-      "width=1340,height=940,menubar=no,toolbar=no");
-    if (!f) window.open(location.href, "_blank", "noopener");
-  };
-  el("qr-x").onclick = () => el("qr").hidden = true;
-
-  pag.querySelectorAll(".pn__f").forEach(b => b.onclick = () => {
-    pag.querySelectorAll(".pn__f").forEach(x => x.classList.toggle("on", x === b));
-    pag.querySelectorAll(".pn__v").forEach(v => v.hidden = v.dataset.v !== b.dataset.f);
-  });
-
-  acum();
-  semestru();
-  ceasAcum = setInterval(() => { if (!document.hidden) acum(); }, 5000);
-}
-
-/* ======================================================= BANDA DE SUS === */
-
-let pornita = false;
-
-async function acum(){
-  let r = null, viata = [], prez = [];
-  try {
-    const [a, b, c] = await Promise.all([
-      sb.rpc("citeste_ritm", { p_capitol: capitol() }),
-      sb.rpc("live_acum", { p_minute: 3 }),
-      sb.rpc("sumar_prezenta", { p_curs: capitol() })
-    ]);
-    r = a.data; viata = (b.data || []).filter(x => x.capitol === capitol());
-    prez = c.data || [];
-  } catch (e) {
-    el("ora").innerHTML = `<p class="gol">Nu pot citi starea orei: ${esc(e.message)}</p>`;
-    return;
+async function deseneaza(){
+  /* dacă o oră e deja pornită, primul lucru de pe pagină e drumul înapoi în ea */
+  let live = null;
+  for (const l of LECTII.filter(x => x.stare === "gata")){
+    try {
+      const { data } = await sb.rpc("citeste_ritm", { p_capitol: "c" + l.nr });
+      if (data?.pornit){ live = { l, slide: data.slide_nr || 1 }; break; }
+    } catch { /* fără tabelul ritm, pagina rămâne o listă simplă */ }
   }
 
-  pornita = !!r?.pornit;
-  el("cand").textContent = "actualizat " + ceas(new Date().toISOString());
-
-  const nr = r?.slide_nr || 1;
-  const tot = r?.total_nr || lectia().slide || null;
-  const cuMine = viata.filter(x => x.slide_nr === nr).length;
-
-  el("ora").innerHTML = pornita ? `
-    <span class="ora__pct"></span>
-    <div class="ora__t">
-      <b>Ora e pornită</b>
-      <span>Cursul ${lectia().nr} · slide ${nr}${tot ? " din " + tot : ""} ·
-        ${cuMine} din ${viata.length} sunt pe slide-ul tău ·
-        ${prez.length} ${prez.length === 1 ? "prezent" : "prezenți"}</span>
-    </div>
-    <div class="ora__b">
-      <button class="btn btn--mic" id="bt-cod" type="button">Codul de intrare</button>
-      <button class="btn btn--mic ora__stop" id="bt-ora" type="button">Oprește ora</button>
-    </div>` : `
-    <span class="ora__pct ora__pct--rece"></span>
-    <div class="ora__t">
-      <b>Nicio oră pornită</b>
-      <span>Pornește ora și toți sar pe slide-ul tău. Lecția o deschizi
-        separat, pe proiector.</span>
-    </div>
-    <div class="ora__b">
-      <a class="btn btn--mic" href="${RADACINA}/${cheie}/lectie/" target="_blank"
-         rel="noopener">Deschide lecția</a>
-      <button class="btn btn--mic btn--tare" id="bt-ora" type="button">Pornește ora</button>
-    </div>`;
-
-  el("bt-ora").onclick = comutaOra;
-  el("bt-cod")?.addEventListener("click", aratCod);
-  el("ora-corp").hidden = !pornita;
-  if (!pornita) return;
-
-  pista(viata, nr, tot);
-  await raspunsuriAcum(nr);
-}
-
-async function comutaOra(){
-  const b = el("bt-ora"); b.disabled = true;
-  try {
-    const { data, error } = await sb.rpc("pune_ritm", {
-      p_capitol: capitol(), p_slide_nr: pornita ? null : 1,
-      p_total_nr: null, p_pornit: !pornita });
-    if (error) throw error;
-    if (data?.ok === false) alert(data.mesaj);
-    else if (!pornita) aratCod();         /* la pornire, codul apare singur */
-  } catch (e) { alert(e.message); }
-  b.disabled = false;
-  acum();
-}
-
-/** Șina de slide-uri, cu numele fiecăruia pe slide-ul lui. */
-function pista(viata, nrAcum, total){
-  const n = total || Math.max(nrAcum, ...viata.map(x => x.slide_nr || 1), 1);
-  const peSlide = new Map();
-  viata.forEach(x => {
-    const k = x.slide_nr || 1;
-    if (!peSlide.has(k)) peSlide.set(k, []);
-    peSlide.get(k).push(x);
-  });
-
-  el("pista").innerHTML = Array.from({ length: n }, (_, i) => {
-    const k = i + 1, oameni = peSlide.get(k) || [];
-    return `<div class="col ${k === nrAcum ? "col--tu" : ""} ${oameni.length ? "are" : ""}">
-      <div class="col__o">${oameni.map(o => `<span class="om ${
-        o.de_cat_timp > 60 ? "lenes" : ""}" title="${esc(o.nume)}${
-        o.invitat ? " · invitat" : ""}">${esc(prenume(o.nume))}</span>`).join("")}</div>
-      <span class="col__b"></span>
-      <span class="col__n">${k}</span>
-    </div>`;
-  }).join("");
-}
-
-const prenume = n => String(n || "?").trim().split(/\s+/)[0];
-
-async function raspunsuriAcum(nr){
-  /* întrebările de pe slide-ul curent nu se pot ști din baza de date: ele
-     trăiesc în pagina lecției. Arătăm tot ce s-a răspuns la lecția asta,
-     cu cele mai recente sus, ceea ce în practică e exact slide-ul curent. */
-  try {
-    const { data } = await sb.rpc("sumar_raspunsuri", { p_capitol: capitol() });
-    const pe = grupeaza(data || []);
-    const ultimele = pe.slice(-2).reverse();
-    el("acum-rasp").innerHTML = ultimele.length
-      ? ultimele.map(blocIntrebare).join("")
-      : `<p class="gol">Nimeni n-a răspuns încă la lecția asta.</p>`;
-  } catch { /* banda de sus nu trebuie să cadă pentru asta */ }
-}
-
-/* ===================================================== BANDA DE JOS === */
-
-async function semestru(){
-  sarcini(); prezenta(); raspunsuri(); codul(); note(); test();
-}
-
-/* ------------------------------------------------------------- sarcini -- */
-async function sarcini(){
-  const g = el("v-sarcini");
-  let d;
-  try {
-    const r = await sb.rpc("sumar_sarcini", { p_capitol: capitol() });
-    if (r.error) throw r.error;
-    d = r.data || [];
-  } catch (e) {
-    g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}.
-      Dacă scrie că funcția lipsește, rulează <code>db/11-context.sql</code>.</p>`;
-    return;
-  }
-  if (!d.length){ g.innerHTML = `<p class="gol">Nimeni n-a făcut nimic la lecția asta, încă.</p>`; return; }
-
-  const sarciniLista = [...new Set(d.map(x => x.sarcina))].sort();
-  const studenti = [...new Map(d.map(x => [x.matricol, x])).values()];
-  const cheia = new Map(d.map(x => [x.matricol + "|" + x.sarcina, x]));
-
-  g.innerHTML = `
-    <div class="leg">
-      <span class="leg__i"><i class="cel cel--live"></i> în oră</span>
-      <span class="leg__i"><i class="cel cel--singur"></i> singur, altă dată</span>
-      <span class="leg__i"><i class="cel"></i> nefăcut</span>
-    </div>
-    <div class="grila__sul"><table class="grila">
-      <thead><tr><th class="grila__cine">Student</th>${
-        sarciniLista.map(s => `<th class="grila__v"><span>${esc(scurt(s))}</span></th>`).join("")}
-        <th class="grila__t">în oră</th></tr></thead>
-      <tbody>${studenti.map(st => {
-        const cel = sarciniLista.map(s => {
-          const x = cheia.get(st.matricol + "|" + s);
-          if (!x) return `<td><i class="cel" title="${esc(s)}: nefăcut"></i></td>`;
-          const k = x.context === "live" ? "live" : "singur";
-          return `<td><i class="cel cel--${k} ${x.reusit ? "" : "cel--ratat"}"
-            title="${esc(s)}: ${k === "live" ? "în oră" : "singur"}, ${
-              x.reusit ? "reușit" : "încă nu"}, ${ora(x.creat_la)}"></i></td>`;
-        }).join("");
-        const inOra = sarciniLista.filter(s =>
-          cheia.get(st.matricol + "|" + s)?.context === "live").length;
-        return `<tr><th class="grila__cine">${esc(st.nume)}
-            <span class="mic">${esc(st.matricol)}</span></th>${cel}
-          <td class="grila__t">${inOra}/${sarciniLista.length}</td></tr>`;
-      }).join("")}</tbody>
-    </table></div>`;
-}
-
-const scurt = s => String(s).replace(/^c\d+-/, "").replace(/^cod-/, "").slice(0, 14);
-
-/* ------------------------------------------------------------ prezența -- */
-async function prezenta(){
-  const g = el("v-prezenta");
-  let d;
-  try {
-    const r = await sb.rpc("sumar_prezente_toate");
-    if (r.error) throw r.error;
-    d = r.data || [];
-  } catch (e) {
-    g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}</p>`; return;
-  }
-  if (!d.length){ g.innerHTML = `<p class="gol">Nimeni n-a scanat încă niciun cod.</p>`; return; }
-
-  const cursuri = [...new Set(d.map(x => x.curs))].sort();
-  const oameni = [...new Map(d.map(x => [x.matricol, x])).values()]
-                 .sort((a, b) => String(a.nume).localeCompare(b.nume, "ro"));
-  const are = new Set(d.map(x => x.matricol + "|" + x.curs));
-
-  g.innerHTML = `<div class="grila__sul"><table class="grila">
-    <thead><tr><th class="grila__cine">Student</th>${
-      cursuri.map(c => `<th class="grila__v"><span>${esc(c)}</span></th>`).join("")}
-      <th class="grila__t">total</th></tr></thead>
-    <tbody>${oameni.map(o => {
-      const n = cursuri.filter(c => are.has(o.matricol + "|" + c)).length;
-      return `<tr><th class="grila__cine">${esc(o.nume)}
-          <span class="mic">${esc(o.matricol)}${o.grupa ? " · " + esc(o.grupa) : ""}</span></th>${
-        cursuri.map(c => `<td><i class="cel ${
-          are.has(o.matricol + "|" + c) ? "cel--live" : ""}"></i></td>`).join("")}
-        <td class="grila__t">${n}</td></tr>`;
-    }).join("")}</tbody></table></div>`;
-}
-
-/* --------------------------------------------------------- răspunsurile -- */
-function grupeaza(randuri){
-  const pe = new Map();
-  randuri.forEach(r => {
-    if (!pe.has(r.intrebare_id)) pe.set(r.intrebare_id, []);
-    pe.get(r.intrebare_id).push(r);
-  });
-  return [...pe.entries()].map(([id, v]) => ({ id, v }));
-}
-
-function blocIntrebare({ id, v }){
-  const tot = v.reduce((a, x) => a + x.cati, 0) || 1;
-  const maxi = Math.max(...v.map(x => x.raspuns)) + 1;
-  return `<div class="dz">
-    <div class="dz__cap"><span class="dz__id">${esc(id)}</span>
-      <span class="dz__n">${tot} ${tot === 1 ? "răspuns" : "răspunsuri"}</span></div>
-    ${Array.from({ length: maxi }, (_, i) => {
-      const x = v.find(y => y.raspuns === i);
-      const c = x?.cati || 0, p = Math.round(c / tot * 100);
-      return `<div class="dz__r ${x?.corect ? "bun" : ""}">
-        <span class="dz__v">${"ABCDEFGH"[i] || i}</span>
-        <span class="dz__p"><i style="width:${p}%"></i></span>
-        <span class="dz__e"><b>${c}</b> · ${p}%${x?.corect ? " ✓" : ""}</span></div>`;
-    }).join("")}</div>`;
-}
-
-async function raspunsuri(){
-  const g = el("v-raspunsuri");
-  try {
-    const { data, error } = await sb.rpc("sumar_raspunsuri", { p_capitol: capitol() });
-    if (error) throw error;
-    const pe = grupeaza(data || []);
-    g.innerHTML = pe.length ? pe.map(blocIntrebare).join("")
-                            : `<p class="gol">Niciun răspuns la lecția asta.</p>`;
-  } catch (e) { g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}</p>`; }
-}
-
-/* ----------------------------------------------------------------- cod -- */
-async function codul(){
-  const g = el("v-cod");
-  let d;
-  try {
-    const r = await sb.rpc("sumar_cod");
-    if (r.error) throw r.error;
-    d = (r.data || []).filter(x => String(x.exercitiu_id).startsWith(capitol() + "-"));
-  } catch (e) { g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}</p>`; return; }
-  if (!d.length){ g.innerHTML = `<p class="gol">Nimeni n-a trimis cod la lecția asta.</p>`; return; }
-
-  const pe = new Map();
-  d.forEach(x => { if (!pe.has(x.exercitiu_id)) pe.set(x.exercitiu_id, []); pe.get(x.exercitiu_id).push(x); });
-
-  g.innerHTML = [...pe.entries()].map(([id, v]) => `
-    <div class="cod__g">
-      <div class="cod__gt"><span class="cod__id">${esc(id)}</span>
-        <span class="cod__n">${v.filter(x => x.trecut).length} din ${v.length} au reușit</span></div>
-      ${v.map(x => `<div class="cod__r ${x.trecut ? "bun" : "rau"}">
-        <span class="cod__cine">${esc(x.nume)}
-          <small>${esc(x.matricol)} · ${x.context === "live" ? "în oră" : "singur"}</small></span>
-        <code class="cod__t">${esc(x.cod || "")}</code>
-        <span class="cod__i">${x.incercari}×</span></div>`).join("")}
-    </div>`).join("");
-}
-
-/* ---------------------------------------------------------------- nota -- */
-async function note(){
-  const g = el("v-note");
-  const pTeme = NOTARE.componente.find(x => x.cheie === "teme").puncte;
-  const pProi = NOTARE.componente.find(x => x.cheie === "proiect").puncte;
-  const pSem  = NOTARE.componente.find(x => x.cheie === "seminar").puncte;
-  el("note-d").innerHTML = `${NOTARE.total} puncte: teme ${pTeme}, proiect
-    ${pProi}, seminar și prezență ${pSem}. Temele și seminarul se adună singure
-    din ce au făcut. Proiectul îl pui tu la final, coloana lui stă goală până
-    atunci.`;
-
-  let d;
-  try {
-    const r = await sb.rpc("sumar_note");
-    if (r.error) throw r.error;
-    d = r.data || [];
-  } catch (e) {
-    g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}.
-      Dacă scrie că funcția lipsește, rulează <code>db/09-note.sql</code> și
-      <code>db/11-context.sql</code>.</p>`;
-    return;
-  }
-  if (!d.length){ g.innerHTML = `<p class="gol">Lista de studenți e goală.</p>`; return; }
-
-  const totalSarcini = LECTII.reduce((a, l) => a + (l.sarcini || 0), 0) || 1;
-  const totalOre = LECTII.length;
-
-  g.innerHTML = `<div class="grila__sul"><table class="tb">
-    <thead><tr><th>Student</th><th>Grupa</th>
-      <th>Teme <small>/${pTeme}</small></th><th>din care în oră</th>
-      <th>Seminar <small>/${pSem}</small></th>
-      <th>Proiect <small>/${pProi}</small></th><th>Acum</th></tr></thead>
-    <tbody>${d.map(s => {
-      const facute = (s.verif_date || 0) + (s.cod_trecut || 0);
-      const teme = Math.min(1, facute / totalSarcini) * pTeme;
-      const sem  = Math.min(1, (s.prezente || 0) / totalOre) * pSem;
-      return `<tr>
-        <td class="nume">${esc(s.nume)}
-          <span class="mic">${esc(s.matricol)}${s.invitat ? " · invitat" : ""}${
-            s.are_cont ? "" : " · fără cont"}</span></td>
-        <td class="mic">${esc(s.grupa) || "—"}</td>
-        <td>${unZec(teme)} <span class="mic">${facute}/${totalSarcini}</span></td>
-        <td class="mic">${s.facute_live || 0} în oră · ${s.facute_singur || 0} singur</td>
-        <td>${unZec(sem)} <span class="mic">${s.prezente || 0}/${totalOre}</span></td>
-        <td class="mic">la final</td>
-        <td><b>${unZec(teme + sem)}</b> <span class="mic">din ${pTeme + pSem}</span></td>
-      </tr>`;
-    }).join("")}</tbody></table></div>`;
-}
-
-/* ---------------------------------------------------------------- test -- */
-function test(){
-  const adresa = `${location.origin}${RADACINA}/intra/?spre=` +
-    encodeURIComponent(`${RADACINA}/${cheie}/lectie/`);
-  el("v-test").innerHTML = `
-    <div class="test">
-      <p class="test__u"><code>${esc(adresa)}</code></p>
-      <div class="ora__b">
-        <button class="btn btn--mic" id="t-copie" type="button">Copiază linkul</button>
-        <span class="mic" id="t-msg"></span>
+  pag.innerHTML = `
+    <header class="biblio__cap">
+      <div class="biblio__cine">
+        <span class="biblio__et">Profesor · ${esc(eu.nume) || "contul meu"}</span>
+        <h1>Lecțiile mele</h1>
+        <p class="biblio__d">Apeși <strong>Predă</strong> la lecția de azi. Se
+        deschide lecția, îți sare în față codul de intrare, și de atunci
+        slide-ul tău e slide-ul tuturor. Atât e de făcut.</p>
       </div>
-    </div>`;
-  el("t-copie").onclick = async () => {
-    try { await navigator.clipboard.writeText(adresa); el("t-msg").textContent = "copiat"; }
-    catch { el("t-msg").textContent = "selectează-l și copiază-l cu mâna"; }
+      <div class="biblio__act">
+        <a class="btn btn--mic" href="${RADACINA}/panou/statistici/">Statistici</a>
+        <button class="btn btn--mic" id="bt-iesi" type="button">Ieși din cont</button>
+      </div>
+    </header>
+
+    ${live ? `<a class="live" href="${RADACINA}/${live.l.cheie}/lectie/">
+      <span class="live__pct"></span>
+      <span class="live__m">
+        <b>Predai acum la cursul ${live.l.nr}</b>
+        <span>ești la slide-ul ${live.slide}. Intră la loc în lecție.</span>
+      </span>
+      <span class="live__sg">→</span></a>` : ""}
+
+    <div class="lectii">${LECTII.map(card).join("")}</div>
+
+    <p class="biblio__n">Ca să vezi ce vede un student, deschide
+      <button class="leg-bt" id="bt-test" type="button">linkul de intrare</button>
+      în alt browser sau într-o fereastră privată, și intră acolo ca invitat,
+      cu un nume oarecare. Ăla e un om separat; contul tău rămâne de profesor.</p>
+    <p class="biblio__u" id="u-test" hidden></p>`;
+
+  el("bt-iesi").onclick = async () => { await A.iesi(); location.href = RADACINA + "/"; };
+  el("bt-test").onclick = () => {
+    const a = `${location.origin}${RADACINA}/intra/`;
+    const u = el("u-test");
+    u.hidden = false;
+    u.innerHTML = `<code>${esc(a)}</code>`;
+    navigator.clipboard?.writeText(a).then(
+      () => u.insertAdjacentHTML("beforeend", ' <span class="mic">copiat</span>'),
+      () => {});
   };
 }
 
-/* ------------------------------------------------------------- codul QR -- */
-let jeton = null, jetonPentru = null;
-
-async function aratCod(){
-  el("qr").hidden = false;
-  const c = capitol(), g = el("qr-cod");
-  if (jetonPentru === c && jeton) return;
-
-  g.innerHTML = `<p class="qr__fallback">se face codul…</p>`;
-  el("qr-jeton").textContent = ""; el("qr-url").textContent = "";
-
-  let data;
-  try { ({ data } = await sb.rpc("creeaza_jeton", { p_curs: c, p_minute: 110 })); }
-  catch (e) { g.innerHTML = `<p class="qr__fallback">${esc(e.message)}</p>`; return; }
-  if (!data?.ok){
-    g.innerHTML = `<p class="qr__fallback">${esc(data?.mesaj || "nu a mers")}</p>`; return;
-  }
-
-  jeton = data.jeton; jetonPentru = c;
-  const adresa = `${location.origin}${RADACINA}/intra/?j=${jeton}` +
-                 `&spre=${encodeURIComponent(`${RADACINA}/${cheie}/lectie/`)}`;
-  el("qr-jeton").textContent = jeton;
-  el("qr-url").textContent = adresa;
-  el("qr-copie").onclick = async () => {
-    try { await navigator.clipboard.writeText(adresa);
-          el("qr-copie").textContent = "copiat"; }
-    catch { el("qr-copie").textContent = "selectează linkul de mai sus"; }
-  };
-
-  try {
-    const QR = await import("https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm");
-    const url = await QR.default.toDataURL(adresa,
-      { margin:1, width:460, errorCorrectionLevel:"M" });
-    g.innerHTML = `<img src="${url}" alt="Cod QR pentru intrarea la oră" width="460" height="460">`;
-  } catch {
-    /* fără internet la bibliotecă rămâne adresa scrisă mare: se poate tasta */
-    g.innerHTML = `<p class="qr__fallback">${esc(adresa)}</p>`;
-  }
+function card(l){
+  const gata = l.stare === "gata";
+  return `<div class="lc ${gata ? "" : "lc--schita"}">
+    <span class="lc__nr">${String(l.nr).padStart(2, "0")}</span>
+    <div class="lc__m">
+      <h2 class="lc__t">${esc(l.titlu)}</h2>
+      <p class="lc__d">${esc(l.rezumat)}</p>
+      <p class="lc__meta">${gata
+        ? (l.sarcini ? l.sarcini + " sarcini" : "gata de predat")
+        : "încă în lucru"}</p>
+    </div>
+    <div class="lc__act">
+      ${gata ? `<a class="btn btn--tare" href="${RADACINA}/${l.cheie}/lectie/">Predă</a>` : ""}
+      <a class="btn btn--mic" href="${RADACINA}/${l.cheie}/tutorial/">Manualul</a>
+      <a class="btn btn--mic" href="${RADACINA}/panou/statistici/?l=${l.cheie}">Cum au lucrat</a>
+    </div>
+  </div>`;
 }
-
-usa();
 </script>
-<script type="module" src="../js/antet.js?v=8"></script>
+<script type="module" src="../js/antet.js?v=9"></script>
+<script type="module" src="../js/subsol.js?v=9"></script>
 </body>
 </html>

@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=8">
-<script src="../js/tema.js?v=8"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=9">
+<script src="../js/tema.js?v=9"></script>
 <style>
   body{display:grid;place-items:center;min-height:100dvh;padding:24px}
   .intra{width:100%;max-width:430px}
@@ -39,6 +39,9 @@
   .mesaj.vazut{display:block}
   .mesaj.rau{background:var(--nu-slab);color:var(--nu)}
   .mesaj.bun{background:var(--ok-slab);color:var(--ok)}
+  .cod-in{font-family:var(--mono);font-size:24px;letter-spacing:.3em;
+    text-align:center;text-transform:uppercase;text-indent:.3em}
+  .cutie[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -52,6 +55,15 @@
   <h1>Intră la curs</h1>
   <p class="intra__d">Ca să-ți fie salvate răspunsurile și ca să apari în
   progresul grupei.</p>
+
+  <div class="cutie" id="cutie-cod" hidden>
+    <label for="cod">Codul de pe ecran</label>
+    <input id="cod" type="text" inputmode="latin" autocomplete="off" maxlength="6"
+           spellcheck="false" placeholder="şase litere şi cifre" class="cod-in">
+    <button class="btn btn--tare" id="bt-cod" type="button">Intră la oră</button>
+    <p class="mic">Îl scrie profesorul pe ecran, la începutul orei. Dacă ai
+    scanat codul cu telefonul, câmpul ăsta nu-ţi mai trebuie.</p>
+  </div>
 
   <div class="cutie">
     <div id="zona">
@@ -88,25 +100,44 @@ const spre = par.get("spre") || "/data-science-workflows/c1-introducere-si-mediu
 /* jetonul de prezență din codul QR: ?j=ABC123 */
 const jeton = (par.get("j") || "").trim().toUpperCase() || null;
 
-if (jeton){
-  document.querySelector("h1").textContent = "Prezență la curs";
+/* jetonul poate veni din codul QR (?j=) sau tastat din codul de pe ecran */
+let jetonAcum = jeton;
+
+if (jetonAcum){
+  document.querySelector("h1").textContent = "Intri la oră";
   document.querySelector(".intra__d").innerHTML =
-    "Intră în cont și îți marchez prezența. Dacă ai cont, folosește-l: " +
-    "așa se leagă de numărul tău matricol.";
+    "Ai scanat codul. Mai rămâne să-mi spui cine ești: dacă ai cont, " +
+    "folosește-l, așa se leagă prezența de numărul tău matricol.";
+} else {
+  /* fără cod scanat: îl poate tasta de pe ecranul din față */
+  el("cutie-cod").hidden = false;
+  el("bt-cod").addEventListener("click", () => {
+    const v = el("cod").value.trim().toUpperCase();
+    if (v.length < 4){ msg("Scrie codul de pe ecran, are șase semne.", "rau"); return; }
+    jetonAcum = v;
+    el("cutie-cod").hidden = true;
+    document.querySelector("h1").textContent = "Intri la oră";
+    document.querySelector(".intra__d").textContent =
+      "Codul e bun. Spune-mi cine ești și îți marchez prezența.";
+    el("nume").focus();
+  });
+  el("cod").addEventListener("keydown", e => {
+    if (e.key === "Enter"){ e.preventDefault(); el("bt-cod").click(); }
+  });
 }
 
 /** Marchează prezența, dacă a venit cu jeton. Întoarce textul de afișat. */
 async function prezenta(){
-  if (!jeton) return null;
+  if (!jetonAcum) return null;
   try {
-    const r = await A.marcheazaPrezenta(jeton);
+    const r = await A.marcheazaPrezenta(jetonAcum);
     return r?.ok ? "Prezența e înregistrată." : (r?.mesaj || "Prezența nu s-a putut marca.");
   } catch (e) { return "Prezența nu s-a putut marca: " + e.message; }
 }
 
 let A;
 try {
-  A = await import("../js/auth.js?v=8");
+  A = await import("../js/auth.js?v=9");
 } catch (e) {
   msg("Nu pot încărca autentificarea: " + e.message, "rau");
   throw e;

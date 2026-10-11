@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=8">
-<link rel="stylesheet" href="../css/cont.css?v=8">
-<script src="../js/tema.js?v=8"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=9">
+<link rel="stylesheet" href="../css/cont.css?v=9">
+<script src="../js/tema.js?v=9"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=8";
+import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=9";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -35,8 +35,8 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=8");
-  CFG = await import("../js/supabase-config.js?v=8");
+  A = await import("../js/auth.js?v=9");
+  CFG = await import("../js/supabase-config.js?v=9");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
     <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
@@ -65,7 +65,7 @@ async function unde(){
   }
 
   if (!p.autentificat) return intrare();
-  if (p.profesorReal && A.modVizualizare() !== "student"){
+  if (p.profesorReal){
     location.replace(RADACINA + "/panou/"); return;
   }
   if (!p.matricol) return matricol();
@@ -441,8 +441,7 @@ function legaReset(){
 await unde();
 A.laSchimbare(() => unde());
 </script>
-<script type="module" src="../js/antet.js?v=8"></script>
-<script type="module" src="../js/subsol.js?v=8"></script>
-<script type="module" src="../js/bara-mod.js?v=8"></script>
+<script type="module" src="../js/antet.js?v=9"></script>
+<script type="module" src="../js/subsol.js?v=9"></script>
 </body>
 </html>
