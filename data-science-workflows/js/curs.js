@@ -43,8 +43,8 @@ export const LECTII = [
   { nr:4, cheie:"c4-curatarea-datelor",
     titlu:"Curățarea datelor",
     scurt:"Curățare",
-    rezumat:"Lipsuri, duplicate, unități care nu se potrivesc. Etapa cea mai lungă și cea care decide tot.",
-    stare:"schita", sarcini:null,
+    rezumat:"Git în practică, apoi etapa care mănâncă 60% din timp: profilare, standardizare, duplicate, lipsuri, valori extreme, validare.",
+    stare:"gata", sarcini:22,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c4_curatare.ipynb" },
 
   { nr:5, cheie:"c5-agregare-si-baze-de-date",

@@ -9,12 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=14">
-<link rel="stylesheet" href="../../css/slide.css?v=14">
-<link rel="stylesheet" href="../../css/interactiv.css?v=14">
-<link rel="stylesheet" href="../../css/grafice.css?v=14">
-<link rel="stylesheet" href="../../css/exercitii.css?v=14">
-<script src="../../js/tema.js?v=14"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=15">
+<link rel="stylesheet" href="../../css/slide.css?v=15">
+<link rel="stylesheet" href="../../css/interactiv.css?v=15">
+<link rel="stylesheet" href="../../css/grafice.css?v=15">
+<link rel="stylesheet" href="../../css/exercitii.css?v=15">
+<script src="../../js/tema.js?v=15"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -119,7 +119,7 @@
 <section class="sld" id="s10" data-grup="Cum arată o cerere" data-t="Metodele HTTP">
 <h2>Cinci metode, patru operații</h2><p>Metoda spune ce vrei să se întâmple cu resursa. Noi vom folosi aproape numai una.</p><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Metodă și operație</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-sort-metode", "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.", "elemente": [{"t": "GET", "k": 0}, {"t": "POST", "k": 1}, {"t": "PUT", "k": 2}, {"t": "PATCH", "k": 2}, {"t": "DELETE", "k": 3}], "cosuri": [{"t": "Citește", "d": "nu schimbă nimic"}, {"t": "Creează", "d": "adaugă ceva nou"}, {"t": "Modifică", "d": "schimbă ce există"}, {"t": "Șterge", "d": "scoate definitiv"}], "laBine": "La colectarea de date folosești GET în 99% din cazuri. Celelalte apar când scrii undeva, nu când citești.", "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată din ea. Diferența contează când scrii; la citit, nu."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-sort-metode", "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.", "elemente": [{"t": "GET", "cos": 0}, {"t": "POST", "cos": 1}, {"t": "PUT", "cos": 2}, {"t": "PATCH", "cos": 2}, {"t": "DELETE", "cos": 3}], "cosuri": [{"t": "Citește", "d": "nu schimbă nimic"}, {"t": "Creează", "d": "adaugă ceva nou"}, {"t": "Modifică", "d": "schimbă ce există"}, {"t": "Șterge", "d": "scoate definitiv"}], "laBine": "La colectarea de date folosești GET în 99% din cazuri. Celelalte apar când scrii undeva, nu când citești.", "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată din ea. Diferența contează când scrii; la citit, nu."}</script></div>
 </div>
 
 </section>
@@ -243,11 +243,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=14"></script>
+<script type="module" src="../../js/antet.js?v=15"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=14";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=14";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=14";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=15";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=15";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=15";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });

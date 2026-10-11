@@ -9,12 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=14">
-<link rel="stylesheet" href="../../css/slide.css?v=14">
-<link rel="stylesheet" href="../../css/interactiv.css?v=14">
-<link rel="stylesheet" href="../../css/grafice.css?v=14">
-<link rel="stylesheet" href="../../css/exercitii.css?v=14">
-<script src="../../js/tema.js?v=14"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=15">
+<link rel="stylesheet" href="../../css/slide.css?v=15">
+<link rel="stylesheet" href="../../css/interactiv.css?v=15">
+<link rel="stylesheet" href="../../css/grafice.css?v=15">
+<link rel="stylesheet" href="../../css/exercitii.css?v=15">
+<script src="../../js/tema.js?v=15"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 3 · Versionare și colaborare cu Git" data-crom="1"></div>
@@ -55,7 +55,7 @@
   <div class="ix__corp"><script type="application/json">{"id": "c3-zone", "sarcina": "Ai două fișiere în dosar. Du-le până pe GitHub, apăsând comenzile în ordinea potrivită. <code>git status</code> nu mută nimic, dar îți spune unde ești.", "fisiere": ["colectare.py", "README.md"]}</script></div>
 </div><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce face fiecare comandă</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-zone", "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.", "elemente": [{"t": "git add", "k": 0}, {"t": "git commit", "k": 1}, {"t": "git push", "k": 2}, {"t": "git pull", "k": 3}, {"t": "git status", "k": 4}], "cosuri": [{"t": "Alege ce intră", "d": "din dosar în pregătire"}, {"t": "Scrie în istoric", "d": "din pregătire în istoricul local"}, {"t": "Trimite sus", "d": "din local pe GitHub"}, {"t": "Aduce jos", "d": "de pe GitHub în local"}, {"t": "Spune unde ești", "d": "nu mută nimic"}], "laBine": "Dacă ții minte tabloul ăsta, nu mai trebuie să ții minte comenzile: le deduci.", "explicatie": "<code>git status</code> e singura care nu schimbă nimic, și tocmai de aceea se dă cel mai des. Când nu știi ce se întâmplă, o dai pe ea întâi."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-zone", "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.", "elemente": [{"t": "git add", "cos": 0}, {"t": "git commit", "cos": 1}, {"t": "git push", "cos": 2}, {"t": "git pull", "cos": 3}, {"t": "git status", "cos": 4}], "cosuri": [{"t": "Alege ce intră", "d": "din dosar în pregătire"}, {"t": "Scrie în istoric", "d": "din pregătire în istoricul local"}, {"t": "Trimite sus", "d": "din local pe GitHub"}, {"t": "Aduce jos", "d": "de pe GitHub în local"}, {"t": "Spune unde ești", "d": "nu mută nimic"}], "laBine": "Dacă ții minte tabloul ăsta, nu mai trebuie să ții minte comenzile: le deduci.", "explicatie": "<code>git status</code> e singura care nu schimbă nimic, și tocmai de aceea se dă cel mai des. Când nu știi ce se întâmplă, o dai pe ea întâi."}</script></div>
 </div>
 
 </section>
@@ -119,7 +119,7 @@ git status</code></pre><div class="verif" data-id="c3-v4" data-corect="2">
 <section class="sld" id="s9" data-grup="Primii pași" data-t="Ce nu urci niciodată">
 <h2>.gitignore</h2><p class="cheie">Un depozit e public până la proba contrarie, și istoria nu se uită. O parolă urcată o dată rămâne în istoric chiar dacă ștergi fișierul mâine.</p><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Intră sau nu intră în depozit</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-gitignore", "sarcina": "Pune fiecare lucru unde îi e locul.", "elemente": [{"t": "colectare.py", "k": 0}, {"t": ".env cu parole", "k": 1}, {"t": "README.md", "k": 0}, {"t": "venv/", "k": 1}, {"t": "date/brute/mic.csv", "k": 0}, {"t": "date/brute/20GB.csv", "k": 1}, {"t": ".gitignore", "k": 0}, {"t": "cheia de API", "k": 1}], "cosuri": [{"t": "În depozit", "d": "cod, documentație, date mici"}, {"t": "Niciodată", "d": "secrete, mediul, fișiere uriașe"}], "laBine": "Fișierul <code>.gitignore</code> intră în depozit: e o regulă de echipă, nu o preferință personală.", "explicatie": "Mediul virtual nu se urcă pentru că se reface din <code>requirements.txt</code> în zece secunde, și ocupă sute de megabytes. Datele mari nu se urcă pentru că Git ține fiecare versiune: un fișier de 20 GB modificat de trei ori înseamnă 60 GB de istorie."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-gitignore", "sarcina": "Pune fiecare lucru unde îi e locul.", "elemente": [{"t": "colectare.py", "cos": 0}, {"t": ".env cu parole", "cos": 1}, {"t": "README.md", "cos": 0}, {"t": "venv/", "cos": 1}, {"t": "date/brute/mic.csv", "cos": 0}, {"t": "date/brute/20GB.csv", "cos": 1}, {"t": ".gitignore", "cos": 0}, {"t": "cheia de API", "cos": 1}], "cosuri": [{"t": "În depozit", "d": "cod, documentație, date mici"}, {"t": "Niciodată", "d": "secrete, mediul, fișiere uriașe"}], "laBine": "Fișierul <code>.gitignore</code> intră în depozit: e o regulă de echipă, nu o preferință personală.", "explicatie": "Mediul virtual nu se urcă pentru că se reface din <code>requirements.txt</code> în zece secunde, și ocupă sute de megabytes. Datele mari nu se urcă pentru că Git ține fiecare versiune: un fișier de 20 GB modificat de trei ori înseamnă 60 GB de istorie."}</script></div>
 </div><div class="verif" data-id="c3-v6" data-corect="3">
     <p class="verif__q">Ai urcat din greșeală un fișier cu o parolă și ai făcut push. Ce faci?</p>
     <button>Ștergi fișierul și faci alt commit</button>
@@ -263,11 +263,11 @@ git status</code></pre><div class="verif" data-id="c3-v4" data-corect="2">
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=14"></script>
+<script type="module" src="../../js/antet.js?v=15"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=14";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=14";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=14";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=15";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=15";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=15";
 pornesteIx();
 pornesteVerif("c3");
 pornesteSlide({ capitol:"c3", lectie:"c3-versionare-git" });

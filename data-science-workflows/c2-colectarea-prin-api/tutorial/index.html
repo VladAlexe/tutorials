@@ -9,12 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=14">
-<link rel="stylesheet" href="../../css/tutorial.css?v=14">
-<link rel="stylesheet" href="../../css/interactiv.css?v=14">
-<link rel="stylesheet" href="../../css/grafice.css?v=14">
-<link rel="stylesheet" href="../../css/exercitii.css?v=14">
-<script src="../../js/tema.js?v=14"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=15">
+<link rel="stylesheet" href="../../css/tutorial.css?v=15">
+<link rel="stylesheet" href="../../css/interactiv.css?v=15">
+<link rel="stylesheet" href="../../css/grafice.css?v=15">
+<link rel="stylesheet" href="../../css/exercitii.css?v=15">
+<script src="../../js/tema.js?v=15"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 2 · Manual"></div>
@@ -145,7 +145,7 @@
 <span class="tut__nr">10 · Cum arată o cerere</span>
 <h2>Metodele HTTP și CRUD</h2><p>Cele patru operații pe care le poți face cu orice colecție de date se numesc, pe scurt, CRUD: create, read, update, delete. HTTP le dă câte o metodă.</p><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Metodă și operație</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-sort-metode", "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.", "elemente": [{"t": "GET", "k": 0}, {"t": "POST", "k": 1}, {"t": "PUT", "k": 2}, {"t": "PATCH", "k": 2}, {"t": "DELETE", "k": 3}], "cosuri": [{"t": "Citește", "d": "nu schimbă nimic"}, {"t": "Creează", "d": "adaugă ceva nou"}, {"t": "Modifică", "d": "schimbă ce există"}, {"t": "Șterge", "d": "scoate definitiv"}], "laBine": "La colectarea de date folosești GET în 99% din cazuri.", "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-sort-metode", "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.", "elemente": [{"t": "GET", "cos": 0}, {"t": "POST", "cos": 1}, {"t": "PUT", "cos": 2}, {"t": "PATCH", "cos": 2}, {"t": "DELETE", "cos": 3}], "cosuri": [{"t": "Citește", "d": "nu schimbă nimic"}, {"t": "Creează", "d": "adaugă ceva nou"}, {"t": "Modifică", "d": "schimbă ce există"}, {"t": "Șterge", "d": "scoate definitiv"}], "laBine": "La colectarea de date folosești GET în 99% din cazuri.", "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată."}</script></div>
 </div><div class="nota"><div class="nota__et">Proprietatea care te salvează</div><p><code>GET</code> e <em>sigur</em>: oricâte ori l-ai repeta, nu schimbă nimic pe server. De aceea o colectare căzută se poate relua fără teamă. Cu <code>POST</code> nu e așa: de două ori înseamnă de două ori.</p></div>
 
 </section>
@@ -309,11 +309,11 @@ d.to_csv(<span class="s">"date/brute/populatie_ro.csv"</span>, index=<span class
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=14"></script>
+<script type="module" src="../../js/antet.js?v=15"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=14";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=14";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=14";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=15";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=15";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=15";
 pornesteIx();
 pornesteVerif("c2");
 pornesteTut("c2");

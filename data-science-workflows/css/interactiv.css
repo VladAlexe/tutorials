@@ -340,3 +340,49 @@
 .cf__a{background:rgba(127,184,216,.16);border-left-color:rgba(127,184,216,.75)}
 .cf__b{background:rgba(126,178,140,.17);border-left-color:rgba(126,178,140,.8)}
 .cf__alege{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0 4px}
+
+/* --- cote: cât din întreg ------------------------------------------------
+   Toate barele au aceeași culoare. Lungimea poartă informația; culoarea n-ar
+   purta decât confuzie, pentru că aici categoriile n-au nicio ordine proprie.
+   ------------------------------------------------------------------------- */
+
+.cot__r{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(0,3fr) 54px;
+  gap:12px;align-items:center;padding:5px 0}
+.cot__t{font-family:var(--sans);font-size:13px;color:var(--text-2);line-height:1.3}
+.cot__b{height:16px;border-radius:4px;background:var(--panza-2);
+  border:1px solid var(--linie);overflow:hidden}
+.cot__b i{display:block;height:100%;background:var(--sci-3)}
+.cot__r.ac .cot__t{color:var(--text);font-weight:600}
+.cot__r.ac .cot__b i{background:var(--accent)}
+.cot__v{font-family:var(--mono);font-size:12px;text-align:right;
+  font-variant-numeric:lining-nums tabular-nums;color:var(--text-2)}
+.cot__r.ac .cot__v{color:var(--text);font-weight:500}
+.cot__s{font-family:var(--mono);font-size:10px;color:var(--text-3);
+  margin:13px 0 0;max-width:none}
+
+/* --- prag: unde tai valorile extreme ------------------------------------ */
+
+.prg__banda{position:relative;height:62px;margin:8px 0 4px;
+  border-bottom:1px solid var(--linie-2)}
+.prg__p{position:absolute;bottom:0;width:7px;height:7px;border-radius:50%;
+  transform:translateX(-50%);background:var(--sci-2);opacity:.8;transition:.14s;
+  bottom:14px}
+.prg__p.peste{background:var(--nu);opacity:1;transform:translateX(-50%) scale(1.4)}
+.prg__linie{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);
+  transition:left .1s}
+.prg__linie::after{content:"prag";position:absolute;top:-2px;left:5px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent-text);white-space:nowrap}
+.prg__ctrl{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px}
+.prg__ctrl label{font-family:var(--sans);font-size:13px;color:var(--text-2)}
+.prg__ctrl b{font-family:var(--mono);color:var(--text);font-variant-numeric:lining-nums}
+.prg__s{flex:1;min-width:180px;max-width:330px;accent-color:var(--accent)}
+.prg__cif{font-family:var(--sans);font-size:13.5px;color:var(--text-2);
+  margin:11px 0 0;max-width:none}
+.prg__cif b{font-family:var(--mono);color:var(--text);
+  font-variant-numeric:lining-nums}
+.prg__lista{font-family:var(--mono);font-size:10.5px;color:var(--text-3);
+  margin:5px 0 0;max-width:none;line-height:1.5}
+.prg__intreb{margin-top:18px;padding-top:15px;border-top:1px solid var(--linie)}
+.prg__intreb p{font-family:var(--sans);font-size:14px;font-weight:500;
+  margin:0 0 10px;max-width:var(--citit)}

@@ -1,0 +1,259 @@
+{
+ "capitol": "c4",
+ "total": 21,
+ "sarcini": 22,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Despre ce e ora de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "Cursul",
+   "titlu": "Cât timp ia",
+   "sarcini": [
+    {
+     "id": "c4-v1",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Git în practică",
+   "titlu": "Fluxul complet",
+   "sarcini": [
+    {
+     "id": "c4-v2",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "Git în practică",
+   "titlu": "Staging și commit",
+   "sarcini": [
+    {
+     "id": "c4-cod-staging",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 5,
+   "id": "s5",
+   "grup": "Git în practică",
+   "titlu": "Anulări",
+   "sarcini": [
+    {
+     "id": "c4-sort-undo",
+     "fel": "cod"
+    },
+    {
+     "id": "c4-v3",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 6,
+   "id": "s6",
+   "grup": "Git în practică",
+   "titlu": "Ramuri, în practică",
+   "sarcini": [
+    {
+     "id": "c4-v4",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "Git în practică",
+   "titlu": "Depozitul pe GitHub",
+   "sarcini": [
+    {
+     "id": "c4-v5",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 8,
+   "id": "s8",
+   "grup": "Curățarea",
+   "titlu": "Cele șase etape",
+   "sarcini": []
+  },
+  {
+   "nr": 9,
+   "id": "s9",
+   "grup": "Curățarea",
+   "titlu": "Profilarea",
+   "sarcini": [
+    {
+     "id": "c4-cod-profil",
+     "fel": "cod"
+    },
+    {
+     "id": "c4-v6",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "Curățarea",
+   "titlu": "Aceeași categorie, scrisă în patru feluri",
+   "sarcini": [
+    {
+     "id": "c4-cod-standard",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "Curățarea",
+   "titlu": "Duplicatele",
+   "sarcini": [
+    {
+     "id": "c4-cod-duplicate",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "Curățarea",
+   "titlu": "Verificare",
+   "sarcini": [
+    {
+     "id": "c4-v7",
+     "fel": "verificare"
+    },
+    {
+     "id": "c4-v8",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s13",
+   "grup": "Lipsuri",
+   "titlu": "Ce faci cu ce lipsește",
+   "sarcini": [
+    {
+     "id": "c4-sort-lipsuri",
+     "fel": "cod"
+    },
+    {
+     "id": "c4-v9",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "Lipsuri",
+   "titlu": "Lipsurile, în cod",
+   "sarcini": [
+    {
+     "id": "c4-cod-lipsuri",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 15,
+   "id": "s15",
+   "grup": "Lipsuri",
+   "titlu": "Valorile extreme",
+   "sarcini": [
+    {
+     "id": "c4-prag",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 16,
+   "id": "s16",
+   "grup": "Transformări",
+   "titlu": "Lung sau lat",
+   "sarcini": [
+    {
+     "id": "c4-cod-melt",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 17,
+   "id": "s17",
+   "grup": "Validare",
+   "titlu": "Înainte și după",
+   "sarcini": [
+    {
+     "id": "c4-cod-validare",
+     "fel": "cod"
+    },
+    {
+     "id": "c4-v10",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 18,
+   "id": "s18",
+   "grup": "Validare",
+   "titlu": "Dicționarul de date",
+   "sarcini": []
+  },
+  {
+   "nr": 19,
+   "id": "s19",
+   "grup": "Proiectul tău",
+   "titlu": "Curăță-ți datele",
+   "sarcini": [
+    {
+     "id": "c4-dovada-curatare",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 20,
+   "id": "s20",
+   "grup": "Proiectul tău",
+   "titlu": "Scrieți dicționarul",
+   "sarcini": [
+    {
+     "id": "c4-decizie",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 21,
+   "id": "s21",
+   "grup": "Mai departe",
+   "titlu": "Până data viitoare",
+   "sarcini": []
+  }
+ ]
+}

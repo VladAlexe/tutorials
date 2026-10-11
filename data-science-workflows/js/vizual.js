@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=14");
+    const m = await import("/data-science-workflows/js/colectare.js?v=15");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -502,6 +502,127 @@ V.conflict = (gazda, d) => {
   };
 
   scrie();
+};
+
+
+/* ===========================================================================
+   7. COTE — cât din întreg
+
+   Un cerc tăiat în felii se citește prost: ochiul compară greu unghiuri. Bare
+   orizontale, sortate, cu aceeași culoare, se citesc dintr-o privire. Culoarea
+   nu poartă informație aici: lungimea o poartă.
+   =========================================================================== */
+
+V.cote = (gazda, d) => {
+  const C = (d.cote || []).slice().sort((a, b) => b.v - a.v);
+  const max = Math.max(...C.map(x => x.v), 1);
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="cot">
+      ${C.map(x => `
+        <div class="cot__r ${x.ac ? "ac" : ""}">
+          <span class="cot__t">${esc(x.t)}</span>
+          <span class="cot__b"><i style="width:${(x.v / max) * 100}%"></i></span>
+          <span class="cot__v">${x.v}${d.unitate || "%"}</span>
+        </div>`).join("")}
+      ${d.sursa ? `<p class="cot__s">${d.sursa}</p>` : ""}
+    </div>`;
+};
+
+
+/* ===========================================================================
+   8. PRAG — unde tai valorile extreme
+
+   Regula „peste 1,5 ori intervalul intercuartilic" pare obiectivă până muți
+   pragul și vezi că numărul de „valori extreme" se schimbă cum vrei tu. Asta
+   e lecția: pragul e o alegere, iar o valoare extremă nu e automat o greșeală.
+   =========================================================================== */
+
+V.prag = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const X = (d.valori || []).slice().sort((a, b) => a.v - b.v);
+  if (!X.length) return;
+  const vals = X.map(x => x.v);
+  const cuant = q => {
+    const i = (vals.length - 1) * q, j = Math.floor(i), r = i - j;
+    return vals[j] + (vals[Math.min(j + 1, vals.length - 1)] - vals[j]) * r;
+  };
+  const q1 = cuant(0.25), q3 = cuant(0.75), iqr = q3 - q1;
+  const maxv = vals[vals.length - 1];
+  /* o margine de fiecare parte, ca bulina cea mai mare să nu fie tăiată de
+     marginea benzii, exact ca la cronologie */
+  const MARG = 2;
+  const poz = v => MARG + (Math.min(1, v / maxv)) * (100 - 2 * MARG);
+  let k = 1.5, raspuns = null;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="prg">
+      <div class="prg__banda">
+        ${X.map(x => `<span class="prg__p" data-v="${x.v}"
+            style="left:${poz(x.v)}%" title="${esc(x.t)}: ${x.v}"></span>`).join("")}
+        <span class="prg__linie"></span>
+      </div>
+      <div class="prg__ctrl">
+        <label>prag = Q3 + <b class="prg__k">1,5</b> × IQR</label>
+        <input class="prg__s" type="range" min="5" max="50" step="1" value="15">
+      </div>
+      <p class="prg__cif"></p>
+      <p class="prg__lista"></p>
+      <div class="prg__intreb">
+        <p>${d.intrebare || "Valorile marcate sunt greșeli de date?"}</p>
+        <div class="cf__alege">
+          <button class="zn__cb" data-r="scot" type="button">Sunt greșeli, le scot</button>
+          <button class="zn__cb" data-r="pastrez" type="button">Nu sunt greșeli, le păstrez</button>
+        </div>
+        <p class="ex__raspuns"></p>
+      </div>
+      <p class="ex__stare"></p>
+    </div>`;
+
+  const banda = gazda.querySelector(".prg__banda");
+  const cif   = gazda.querySelector(".prg__cif");
+  const lst   = gazda.querySelector(".prg__lista");
+  const out   = gazda.querySelector(".ex__raspuns");
+  const st    = gazda.querySelector(".ex__stare");
+
+  function deseneaza(){
+    const prag = q3 + k * iqr;
+    const peste = X.filter(x => x.v > prag);
+    gazda.querySelector(".prg__k").textContent = String(k).replace(".", ",");
+    gazda.querySelector(".prg__linie").style.left = poz(prag) + "%";
+    banda.querySelectorAll(".prg__p").forEach(p =>
+      p.classList.toggle("peste", +p.dataset.v > prag));
+    cif.innerHTML = `prag <b>${Math.round(prag).toLocaleString("ro-RO")}</b> · ` +
+      `<b>${peste.length}</b> din ${X.length} sunt peste el`;
+    lst.innerHTML = peste.length
+      ? "marcate: " + peste.slice(-8).reverse().map(x => esc(x.t)).join(", ") +
+        (peste.length > 8 ? ", …" : "")
+      : "nicio valoare peste prag";
+  }
+
+  gazda.querySelector(".prg__s").addEventListener("input", e => {
+    k = (+e.target.value) / 10;
+    deseneaza();
+  });
+
+  gazda.addEventListener("click", async e => {
+    const b = e.target.closest("[data-r]");
+    if (!b || raspuns) return;
+    raspuns = b.dataset.r;
+    gazda.querySelectorAll("[data-r]").forEach(x => { x.disabled = true;
+      x.classList.toggle("on", x === b); });
+    out.innerHTML = raspuns === "pastrez"
+      ? `<b>Da.</b> ${d.laBine || ""}`
+      : `<b>Nu încă.</b> ${d.laRau || ""}`;
+    out.classList.add("vazut");
+    await poarta(gazda, d.id, `k=${k} raspuns=${raspuns}`);
+    st.textContent = "Rezolvare înregistrată.";
+    st.classList.add("vazut");
+  });
+
+  deseneaza();
 };
 
 

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursul 4, manual — Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Suportul de curs pentru cursul 4, explicat pe larg, cu aceleași exerciții ca la clasă.">
+<meta name="robots" content="index,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/sistem.css?v=15">
+<link rel="stylesheet" href="../../css/tutorial.css?v=15">
+<link rel="stylesheet" href="../../css/interactiv.css?v=15">
+<link rel="stylesheet" href="../../css/grafice.css?v=15">
+<link rel="stylesheet" href="../../css/exercitii.css?v=15">
+<script src="../../js/tema.js?v=15"></script>
+</head>
+<body>
+<div id="antet" data-aici="Cursul 4 · Manual"></div>
+<main><div class="pagina"><div class="tut">
+<aside class="tut__stanga">
+  <div class="tut__cap"><span class="tut__et">Manual</span>
+    <span class="tut__t">Cursul 4</span>
+    <span class="tut__st">Curățarea datelor</span></div>
+  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Despre ce e ora de azi</span></a><a href="#s2"><span class="n">2</span><span>Cât timp ia</span></a><div class="tut__g">Git în practică</div><a href="#s3"><span class="n">3</span><span>Fluxul complet</span></a><a href="#s4"><span class="n">4</span><span>Staging și commit</span></a><a href="#s5"><span class="n">5</span><span>Anulări</span></a><a href="#s6"><span class="n">6</span><span>Ramuri, în practică</span></a><a href="#s7"><span class="n">7</span><span>Depozitul pe GitHub</span></a><div class="tut__g">Curățarea</div><a href="#s8"><span class="n">8</span><span>Cele șase etape</span></a><a href="#s9"><span class="n">9</span><span>Profilarea</span></a><a href="#s10"><span class="n">10</span><span>Aceeași categorie, scrisă în patru feluri</span></a><a href="#s11"><span class="n">11</span><span>Duplicatele</span></a><a href="#s12"><span class="n">12</span><span>Verificare</span></a><div class="tut__g">Lipsuri</div><a href="#s13"><span class="n">13</span><span>Ce faci cu ce lipsește</span></a><a href="#s14"><span class="n">14</span><span>Lipsurile, în cod</span></a><a href="#s15"><span class="n">15</span><span>Valorile extreme</span></a><div class="tut__g">Transformări</div><a href="#s16"><span class="n">16</span><span>Lung sau lat</span></a><div class="tut__g">Validare</div><a href="#s17"><span class="n">17</span><span>Înainte și după</span></a><a href="#s18"><span class="n">18</span><span>Dicționarul de date</span></a><div class="tut__g">Proiectul tău</div><a href="#s19"><span class="n">19</span><span>Curăță-ți datele</span></a><a href="#s20"><span class="n">20</span><span>Scrieți dicționarul</span></a><div class="tut__g">Mai departe</div><a href="#s21"><span class="n">21</span><span>Până data viitoare</span></a></nav>
+  <div class="tut__jos">
+    <a href="../lectie/">Slide-urile de la curs</a>
+    <a href="../">Pagina cursului</a>
+    <a href="../../cont/">Contul meu</a>
+  </div>
+</aside>
+<article class="tut__corp">
+<header class="tut__intro">
+  <p class="supratitlu">Cursul 4 · Manual</p>
+  <h1>Curățarea datelor</h1>
+  <p class="deck">Același drum ca la curs, explicat pe larg și cu aceleași
+  exerciții. Dacă le-ai făcut la clasă, apar deja rezolvate; dacă vrei să le
+  reiei, îți poți reseta progresul din
+  <a class="leg" href="../../cont/">contul tău</a>.</p>
+</header>
+
+<section class="tut__s" id="s1">
+<span class="tut__nr">01 · Cursul</span>
+<h2>Curățarea datelor</h2><p>Ora are două părți. Prima duce mai departe Git-ul de săptămâna trecută, cu comenzile care apar abia când lucrezi serios: cum scoți un fișier din pregătire, cum anulezi un commit, cum ștergi o ramură după ce ai îmbinat-o. A doua e despre curățarea datelor, adică despre ce faci cu ce ai colectat înainte să te uiți la rezultate.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Git, în practică", "unde": "azi", "text": "Staging, commit, anulări, ramuri. Comenzile de care chiar ai nevoie."}, {"nume": "De ce curățăm", "unde": "azi", "text": "Cât din timpul unui proiect se duce aici, și de ce."}, {"nume": "Cele șase etape", "unde": "azi", "text": "De la profilare la validare finală, în ordine."}, {"nume": "Pe datele voastre", "unde": "azi", "text": "Fiecare etapă, cu cod, pe ce ați colectat."}, {"nume": "Dicționarul de date", "unde": "azi", "text": "Ce ați schimbat, scris astfel încât să se poată reface."}]}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s2">
+<span class="tut__nr">02 · Cursul</span>
+<h2>Cât timp ia curățarea</h2><p>Cifra asta circulă de zece ani și e cam singura pe care toată lumea din domeniu o recunoaște ca adevărată.</p><div class="ix" data-ix="cote">
+  <div class="ix__cap"><span class="ix__fel">Date reale</span><span class="ix__t">Un studiu din 2016</span></div>
+  <div class="ix__corp"><script type="application/json">{"cote": [{"t": "Curățarea și organizarea datelor", "v": 60, "ac": true}, {"t": "Colectarea datelor", "v": 19}, {"t": "Căutarea tiparelor în date", "v": 9}, {"t": "Altele", "v": 5}, {"t": "Reglarea algoritmilor", "v": 4}, {"t": "Pregătirea seturilor de antrenament", "v": 3}], "sursa": "CrowdFlower, 2016"}</script></div>
+</div><p>Patru cincimi din timp se duc pe adus și curățat date; o zecime pe ceea ce lumea crede că e meseria. Nu e o anomalie a domeniului, e forma lui.</p><div class="verif" data-id="c4-v1" data-corect="1">
+    <p class="verif__q">De ce curățarea ia atât de mult, dacă pare o muncă simplă?</p>
+    <button>Pentru că uneltele sunt slabe</button>
+    <button>Pentru că fiecare decizie e o alegere care schimbă rezultatul, și trebuie gândită</button>
+    <button>Pentru că datele sunt prea mari</button>
+    <button>Pentru că nimeni nu vrea s-o facă</button>
+    <p class="verif__ex">Pentru că nu e muncă mecanică.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s3">
+<span class="tut__nr">03 · Git în practică</span>
+<h2>Cele patru locuri și drumurile dintre ele</h2><div class="ix" data-ix="flux">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Drumul unei schimbări</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Urmărește o schimbare”", "intro": "Dus: add, commit, push. Întors: fetch și merge, adică pull.", "buton": "Urmărește o schimbare", "dus": "add → commit → push", "intors": "pull: fetch, apoi merge", "gata": "ce ai scris tu e la toată lumea, și ce au scris ei e la tine", "statii": [{"n": "Dosarul de lucru", "et": "editezi", "ic": "📝", "d": "Fișierele așa cum sunt acum pe disc. Git le vede schimbate, dar nu le urmărește încă."}, {"n": "Pregătire", "et": "git add", "ic": "📥", "d": "Ce ai ales să intre în următorul commit. Poți alege trei fișiere din șapte."}, {"n": "Istoric local", "et": "git commit", "ic": "📦", "d": "Scris definitiv, pe laptopul tău. Până aici nu ai avut nevoie de internet."}, {"n": "GitHub", "et": "git push", "ic": "☁", "d": "Copia de pe internet. Abia acum munca ta există în două locuri."}]}</script></div>
+</div><div class="verif" data-id="c4-v2" data-corect="2">
+    <p class="verif__q"><code>git pull</code> e, de fapt, două comenzi la un loc. Care?</p>
+    <button>add și commit</button>
+    <button>commit și push</button>
+    <button>fetch și merge</button>
+    <button>clone și checkout</button>
+    <p class="verif__ex"><code>fetch</code> aduce ce e nou de pe GitHub fără să-ți atingă fișierele, iar <code>merge</code> le îmbină cu ale tale. Când vrei să vezi ce vine înainte să accepți, dai <code>fetch</code> separat.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s4">
+<span class="tut__nr">04 · Git în practică</span>
+<h2>Comenzile de zi cu zi</h2><table class="tabel"><thead><tr><th>Comanda</th><th>Ce face</th></tr></thead><tbody><tr><td class="mono">git status</td><td>ce e schimbat și ce e în pregătire</td></tr><tr><td class="mono">git add .</td><td>adaugă tot în pregătire</td></tr><tr><td class="mono">git add nume</td><td>adaugă un singur fișier</td></tr><tr><td class="mono">git rm --cached nume</td><td>scoate un fișier din pregătire, fără să-l șteargă</td></tr><tr><td class="mono">git commit -m "mesaj"</td><td>scrie în istoric</td></tr><tr><td class="mono">git log --oneline</td><td>istoricul, pe scurt</td></tr><tr><td class="mono">git show &lt;id&gt;</td><td>exact ce s-a schimbat într-un commit</td></tr></tbody></table><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scoate fișierul care n-avea ce căuta</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-staging", "fisier": "terminal.sh", "sarcina": "Ai dat <code>git add .</code> și a intrat și <code>.env</code>. Scoate-l înainte de commit.", "cod": "# vezi ce ai in pregatire\ngit {{1}}\n\n# scoate .env din pregatire, dar lasa-l pe disc\ngit rm {{2}} .env\n\n# ca sa nu se mai intample, il treci in .gitignore\necho \".env\" >> .gitignore\n\n# acum poti face commit linistit\ngit commit -m {{3}}", "goluri": {"1": {"ok": ["status"], "ajutor": "comanda"}, "2": {"ok": ["--cached"], "ajutor": "steagul"}, "3": {"ok": ["\"curatare initiala\"", "'curatare initiala'", "\"colectare\"", "\"primul commit\""], "ajutor": "mesajul, în ghilimele"}}, "laBine": "<code>--cached</code> e cuvântul care contează: fără el, <code>git rm</code> șterge fișierul de pe disc.", "laRau": "Steagul începe cu două liniuțe. Mesajul se scrie între ghilimele.", "explicatie": "<code>git rm --cached</code> scoate fișierul din urmărire, dar îl lasă acolo unde e. E exact ce vrei pentru un fișier cu parole: să nu mai plece nicăieri, dar să rămână la tine, ca programul să meargă."}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s5">
+<span class="tut__nr">05 · Git în practică</span>
+<h2>Anulări</h2><p>Git are faima că e greu tocmai pentru că are patru moduri de a „da înapoi”, iar numele lor nu spun de la sine care ce face.</p><div class="ix" data-ix="sortare">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce comandă, în ce situație</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-sort-undo", "sarcina": "Potrivește situația cu comanda care o repară.", "elemente": [{"t": "git restore fisier", "cos": 0}, {"t": "git restore --staged fisier", "cos": 1}, {"t": "git revert <id>", "cos": 2}, {"t": "git checkout <id>", "cos": 3}], "cosuri": [{"t": "Am stricat un fișier", "d": "și vreau versiunea din ultimul commit"}, {"t": "Am dat add din greșeală", "d": "vreau doar să-l scot din pregătire"}, {"t": "Un commit vechi era greșit", "d": "vreau să-l anulez, dar să rămână urma"}, {"t": "Vreau doar să mă uit", "d": "cum arăta proiectul atunci"}], "laBine": "<code>revert</code> nu șterge istoria.", "explicatie": "<code>reset --hard</code> nu e în listă pentru că aruncă munca fără să întrebe."}</script></div>
+</div><div class="nota"><div class="nota__et">Regula simplă</div><p>Dacă greșeala e doar la tine, pe laptop, poți folosi orice. Dacă a ajuns pe GitHub și altcineva a luat-o, singura variantă politicoasă e <code>revert</code>.</p></div>
+
+</section>
+
+<section class="tut__s" id="s6">
+<span class="tut__nr">06 · Git în practică</span>
+<h2>Ciclul complet al unei ramuri</h2><table class="tabel"><thead><tr><th>Comanda</th><th>Ce face</th></tr></thead><tbody><tr><td class="mono">git branch</td><td>ce ramuri există</td></tr><tr><td class="mono">git switch -c nume</td><td>creează și trece pe ea</td></tr><tr><td class="mono">git switch nume</td><td>trece pe una existentă</td></tr><tr><td class="mono">git merge nume</td><td>aduce ramura în cea pe care ești</td></tr><tr><td class="mono">git branch -d nume</td><td>o șterge, dacă a fost îmbinată</td></tr><tr><td class="mono">git branch -D nume</td><td>o șterge oricum; rar, și cu grijă</td></tr></tbody></table><div class="nota"><div class="nota__et">Dacă ți se deschide Vim și nu mai poți ieși</div><p>La <code>git merge</code> sau <code>git commit</code> fără <code>-m</code>, Git deschide un editor. Dacă e Vim, ecranul pare blocat. Nu e: apeși <kbd>Esc</kbd>, apoi scrii <code>:wq</code> și <kbd>Enter</kbd>. Scrie și iese.</p></div><div class="verif" data-id="c4-v4" data-corect="2">
+    <p class="verif__q">De ce <code>git branch -d</code> refuză uneori să șteargă o ramură?</p>
+    <button>Pentru că e ramura curentă</button>
+    <button>Pentru că are prea multe commit-uri</button>
+    <button>Pentru că are commit-uri care nu există în nicio altă ramură</button>
+    <button>Pentru că n-ai drepturi</button>
+    <p class="verif__ex">Pentru că ai pierde munca de pe ea. Litera mică te protejează; <code>-D</code> mare spune „știu ce fac”. Dacă ai ajuns să folosești <code>-D</code>, merită să te întrebi o dată în plus dacă chiar știi.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s7">
+<span class="tut__nr">07 · Git în practică</span>
+<h2>Recapitulare în două cazuri</h2><table class="tabel"><thead><tr><th>Ai deja depozit local</th><th>Nu ai nimic</th></tr></thead><tbody><tr><td>faci un depozit gol pe GitHub</td><td>faci depozitul pe GitHub</td></tr><tr><td><code>git remote add origin &lt;url&gt;</code></td><td><code>git clone &lt;url&gt;</code></td></tr><tr><td><code>git push -u origin main</code></td><td>gata, e deja legat</td></tr></tbody></table><div class="verif" data-id="c4-v5" data-corect="0">
+    <p class="verif__q">Clonezi un depozit. Trebuie să mai dai <code>git remote add</code>?</p>
+    <button>Nu, clonarea leagă singură origin</button>
+    <button>Da, de fiecare dată</button>
+    <button>Doar dacă vrei să faci push</button>
+    <button>Doar dacă depozitul e privat</button>
+    <p class="verif__ex">Clonarea aduce fișierele, toată istoria, și leagă singură <code>origin</code> către adresa de unde ai clonat.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s8">
+<span class="tut__nr">08 · Curățarea</span>
+<h2>Cele șase etape</h2><p>Curățarea nu e o listă de trucuri, e un drum cu o ordine. Fiecare etapă presupune ce s-a aflat la cea dinainte.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Harta curățării</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Șase etape, în ordine", "intro": "Apasă pe oricare.", "etape": [{"nume": "1. Profilare", "unde": "înțelegi ce ai", "text": "Verifici tipurile, distribuțiile, lipsurile, valorile suspecte. Identifici erorile evidente și problemele de structură. Nu schimbi nimic încă."}, {"nume": "2. Integrare și standardizare", "unde": "aliniezi surse", "text": "Aduci sursele diferite la aceeași formă: etichete, formate, unități, tipuri. Corectezi textul, codurile și convențiile."}, {"nume": "3. Curățare de bază", "unde": "scoți ce nu trebuie", "text": "Elimini ce e irelevant sau redundant, scoți duplicatele, repari erorile structurale și categoriile incoerente."}, {"nume": "4. Lipsuri și anomalii", "unde": "decizi", "text": "Analizezi lipsurile și hotărăști ce faci cu ele. Te uiți la valorile extreme sau imposibile. Verifici regulile logice."}, {"nume": "5. Transformări", "unde": "pregătești analiza", "text": "Reorganizezi structura (long sau wide), faci agregări și variabile noi, aplici scalări, completezi cu informații externe."}, {"nume": "6. Validare și documentare", "unde": "închizi", "text": "Verifici cheile unice și coerența. Compari statisticile înainte și după. Notezi transformările, versiunile, și dicționarul de date."}]}</script></div>
+</div><div class="nota"><div class="nota__et">De ce se sare peste prima</div><p>Pentru că nu produce nimic. După o oră de profilare, fișierul arată exact la fel. Dar fără ea, toate deciziile de mai târziu se iau pe ghicite, iar unele nu se mai pot întoarce.</p></div>
+
+</section>
+
+<section class="tut__s" id="s9">
+<span class="tut__nr">09 · Curățarea</span>
+<h2>Prima etapă: te uiți</h2><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Profilează tabelul</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-profil", "fisier": "profilare.py", "sarcina": "Cinci întrebări pe care le pui oricărui tabel nou, înainte să schimbi ceva în el.", "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/populatie_ro.csv\")\n\n# 1. cat de mare e\nprint(d.shape)\n\n# 2. ce coloane, ce tipuri, cate valori non-nule\nd.{{1}}()\n\n# 3. cum arata numeric: medie, minim, maxim, cuartile\nprint(d.{{2}}())\n\n# 4. cate lipsuri, pe coloana\nprint(d.isna().sum())\n\n# 5. ce valori distincte are o coloana categoriala\nprint(d[\"countryiso3code\"].{{3}}())", "goluri": {"1": {"ok": ["info"], "ajutor": "metoda"}, "2": {"ok": ["describe"], "ajutor": "metoda"}, "3": {"ok": ["value_counts", "unique"], "ajutor": "metoda"}}, "laBine": "Cele cinci se dau în ordinea asta, pe orice tabel nou.", "laRau": "Toate trei sunt metode, deci se scriu fără ghilimele și cu paranteze.", "explicatie": "<code>value_counts()</code> e cea mai bună pentru coloanele categoriale: îți arată pe loc dacă ai <code>RO</code>, <code>ro</code> și <code>Ro</code> ca trei categorii diferite, ceea ce e exact genul de problemă pe care o repari la etapa următoare."}</script></div>
+</div><div class="verif" data-id="c4-v6" data-corect="3">
+    <p class="verif__q"><code>info()</code> arată o coloană de prețuri ca <code>object</code>, nu ca număr. Ce înseamnă?</p>
+    <button>Că fișierul e corupt</button>
+    <button>Că pandas nu suportă prețuri</button>
+    <button>Că valorile sunt prea mari</button>
+    <button>Că în coloană e cel puțin o valoare care nu e număr</button>
+    <p class="verif__ex">Că pandas a găsit ceva ce nu poate citi ca număr: o virgulă zecimală, un spațiu, un „n/a” scris cu litere. O singură valoare stricată din zece mii face toată coloana text.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s10">
+<span class="tut__nr">10 · Curățarea</span>
+<h2>Standardizarea</h2><p>Când aduni două surse, aceeași țară apare ca <code>USA</code>, <code>U.S.A.</code>, <code>usa</code> și <code>United States</code>. Pentru calculator sunt patru lucruri.</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Adu-le la aceeași formă</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-standard", "fisier": "standardizare.py", "sarcina": "Curăță coloana de coduri: fără spații la capete, totul cu majuscule, și variantele știute aduse la una singură.", "cod": "# scoate spatiile de la inceput si de la sfarsit\nd[\"tara\"] = d[\"tara\"].str.{{1}}()\n\n# aduce totul la majuscule, ca \"ro\" si \"RO\" sa fie acelasi lucru\nd[\"tara\"] = d[\"tara\"].str.{{2}}()\n\n# variantele care raman se traduc cu o harta scrisa de tine\nharta = {\"U.S.A.\": \"USA\", \"UNITED STATES\": \"USA\"}\nd[\"tara\"] = d[\"tara\"].{{3}}(harta).fillna(d[\"tara\"])\n\nprint(d[\"tara\"].value_counts())", "goluri": {"1": {"ok": ["strip"], "ajutor": "metoda"}, "2": {"ok": ["upper"], "ajutor": "metoda"}, "3": {"ok": ["replace", "map"], "ajutor": "metoda"}}, "laBine": "<code>value_counts()</code> la final e verificarea: dacă mai vezi două variante ale aceluiași lucru, mai ai de lucru.", "laRau": "Primele două sunt metode de text, deci vin după <code>.str</code>.", "explicatie": "Harta scrisă de mână nu e o rușine, e documentația deciziei tale. Peste trei luni, ea e singurul loc din care se află că ai hotărât că „UNITED STATES” și „USA” sunt același lucru."}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s11">
+<span class="tut__nr">11 · Curățarea</span>
+<h2>Același rând, de două ori</h2><p>Vin din colectări reluate, din îmbinări greșite, din export de două ori. Un duplicat nu se vede în medie, dar o schimbă.</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scoate duplicatele</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-duplicate", "fisier": "duplicate.py", "sarcina": "Numără duplicatele, apoi scoate-le păstrând prima apariție.", "cod": "# cate randuri sunt identice cu altul de mai sus\nprint(d.{{1}}().sum())\n\n# le scoatem, pastrand prima aparitie\nd = d.drop_duplicates(keep={{2}})\n\n# atentie: uneori duplicatul nu e pe tot randul, ci pe cheie\n# aici o pereche tara-an nu are voie sa apara de doua ori\nprint(d.duplicated(subset={{3}}).sum())", "goluri": {"1": {"ok": ["duplicated"], "ajutor": "metoda"}, "2": {"ok": ["\"first\"", "'first'"], "ajutor": "care rămâne"}, "3": {"ok": ["[\"tara\", \"an\"]", "['tara','an']", "[\"tara\",\"an\"]", "['tara', 'an']"], "ajutor": "lista de coloane"}}, "laBine": "Al doilea caz e cel periculos: rânduri care diferă printr-o coloană neimportantă, dar care descriu aceeași observație.", "laRau": "Prima e o metodă. A doua e text, între ghilimele. A treia e o listă de nume de coloane.", "explicatie": "<code>drop_duplicates()</code> fără <code>subset</code> compară tot rândul. La date diadice, cheia e perechea: dacă aceeași pereche de locuri apare de două ori cu valori diferite, ai o problemă de colectare, nu de curățare, și merită întâi aflat de unde vine."}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s12">
+<span class="tut__nr">12 · Curățarea</span>
+<h2>Ce schimbă ce</h2><div class="verif" data-id="c4-v7" data-corect="1">
+    <p class="verif__q">Ai 31.684 de rânduri. După <code>drop_duplicates()</code> ai 31.100. Ce faci întâi?</p>
+    <button>Mergi mai departe, s-au curățat</button>
+    <button>Afli de unde vin cele 584, înainte să le arunci</button>
+    <button>Le pui la loc</button>
+    <button>Repeți colectarea</button>
+    <p class="verif__ex">Afli de unde vin. Dacă sunt din colectarea reluată, e în regulă să dispară. Dacă sunt perechi care chiar apar de două ori în sursă, cu valori diferite, ai descoperit ceva despre date, iar ștergerea ascunde descoperirea.</p>
+  </div><div class="verif" data-id="c4-v8" data-corect="2">
+    <p class="verif__q">Ce face <code>d["x"].str.strip()</code> dacă în coloană sunt și numere?</p>
+    <button>Le lasă în pace</button>
+    <button>Le transformă în text</button>
+    <button>Dă <code>NaN</code> pentru ele</button>
+    <button>Dă eroare</button>
+    <p class="verif__ex">Dă <code>NaN</code>. Metodele <code>.str</code> lucrează doar pe text și întorc valoare lipsă pentru restul. E o cale clasică de a pierde date fără să primești nicio eroare: verifici întotdeauna cu <code>isna().sum()</code> după.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s13">
+<span class="tut__nr">13 · Lipsuri</span>
+<h2>Lipsurile nu sunt toate la fel</h2><p>Înainte de a alege o metodă, întrebarea e <em>de ce</em> lipsește.</p><div class="ix" data-ix="sortare">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce faci în fiecare caz</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-sort-lipsuri", "sarcina": "Potrivește situația cu ce e rezonabil să faci.", "elemente": [{"t": "3 rânduri din 30.000, la întâmplare", "cos": 0}, {"t": "O coloană goală în proporție de 80%", "cos": 1}, {"t": "Lipsesc tocmai la țările mici", "cos": 2}, {"t": "Serie de timp, lipsește un an la mijloc", "cos": 3}], "cosuri": [{"t": "Le scoți", "d": "sunt puține și nu par sistematice"}, {"t": "Scoți coloana", "d": "nu mai e informație, e zgomot"}, {"t": "Le păstrezi și scrii asta", "d": "lipsa însăși e o informație"}, {"t": "Completezi din vecini", "d": "interpolare sau ultima valoare"}], "laBine": "Al treilea caz e cel important: dacă lipsa are un tipar, ștergerea rândurilor îți schimbă eșantionul și rezultatul.", "explicatie": "Completarea cu media e cea mai populară și cea mai periculoasă metodă: reduce artificial variația și face rezultatele să pară mai sigure decât sunt. Dacă o folosești, o scrii în raport."}</script></div>
+</div><div class="verif" data-id="c4-v9" data-corect="2">
+    <p class="verif__q">Care e cel mai mare risc când completezi lipsurile cu media coloanei?</p>
+    <button>Pierzi rânduri</button>
+    <button>Schimbi tipul coloanei</button>
+    <button>Micșorezi variația și faci rezultatul să pară mai sigur decât e</button>
+    <button>Nu e niciun risc, e metoda standard</button>
+    <p class="verif__ex">Micșorezi variația. Fiecare valoare completată cade exact pe medie, deci abaterea standard scade, intervalele de încredere se strâng, și totul arată mai convingător decât e.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s14">
+<span class="tut__nr">14 · Lipsuri</span>
+<h2>Cum arată în pandas</h2><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Tratează lipsurile</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-lipsuri", "fisier": "lipsuri.py", "sarcina": "Numără, apoi aplică trei strategii diferite, fiecare potrivită altei situații.", "cod": "# cate lipsuri, pe coloana\nprint(d.{{1}}().sum())\n\n# cazul 1: putine si imprastiate, le scoatem\nd1 = d.dropna(subset=[\"valoare\"])\n\n# cazul 2: completam cu mediana, mai robusta decat media\nd2 = d.copy()\nd2[\"valoare\"] = d2[\"valoare\"].fillna(d2[\"valoare\"].{{2}}())\n\n# cazul 3: serie de timp, luam ultima valoare cunoscuta\nd3 = d.sort_values(\"an\")\nd3[\"valoare\"] = d3[\"valoare\"].{{3}}()\n\nprint(len(d), len(d1), d2[\"valoare\"].isna().sum())", "goluri": {"1": {"ok": ["isna", "isnull"], "ajutor": "metoda"}, "2": {"ok": ["median"], "ajutor": "statistica"}, "3": {"ok": ["ffill", "fillna(method='ffill')"], "ajutor": "metoda"}}, "laBine": "Mediana, nu media: o singură valoare extremă mută media și n-atinge mediana.", "laRau": "Prima și a treia sunt metode fără argumente. A doua e o statistică, tot metodă.", "explicatie": "<code>ffill</code> duce ultima valoare cunoscută mai departe. Are sens la serii de timp, unde anul lipsă seamănă cu cel dinainte, și n-are niciun sens la date fără ordine, unde „rândul dinainte” nu înseamnă nimic."}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s15">
+<span class="tut__nr">15 · Lipsuri</span>
+<h2>Valorile extreme</h2><p>Metoda clasică se numește regula intervalului intercuartilic: calculezi primul și al treilea cuartil, iei diferența dintre ele, și marchezi tot ce iese în afara lui Q3 plus de 1,5 ori diferența.</p><pre><code>q1 = d["sci"].quantile(0.25)
+q3 = d["sci"].quantile(0.75)
+iqr = q3 - q1
+prag = q3 + 1.5 * iqr
+extreme = d[d["sci"] &gt; prag]</code></pre><p>Cifra 1,5 nu vine de nicăieri anume: e o convenție. Mută pragul mai jos și ai mai multe „valori extreme”, mai sus și n-ai niciuna.</p><div class="ix" data-ix="prag">
+  <div class="ix__cap"><span class="ix__fel">Unde tai</span><span class="ix__t">Pe datele voastre</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-prag", "sarcina": "Legătura socială a României cu fiecare țară din set. Mută pragul.", "valori": [{"t": "Republica Moldova", "v": 173794}, {"t": "Austria", "v": 124693}, {"t": "Germania", "v": 91228}, {"t": "Ungaria", "v": 85021}, {"t": "Irlanda", "v": 73377}, {"t": "Italia", "v": 69327}, {"t": "Cipru", "v": 65764}, {"t": "Regatul Unit", "v": 61695}, {"t": "Belgia", "v": 59697}, {"t": "Spania", "v": 54179}, {"t": "Elveția", "v": 50645}, {"t": "Luxemburg", "v": 48306}, {"t": "Danemarca", "v": 35055}, {"t": "Islanda", "v": 34880}, {"t": "Țările de Jos", "v": 30454}, {"t": "Malta", "v": 26726}, {"t": "Sri Lanka", "v": 23049}, {"t": "Grecia", "v": 18304}, {"t": "Franța", "v": 18075}, {"t": "Norvegia", "v": 16566}, {"t": "Nepal", "v": 15793}, {"t": "Suedia", "v": 13700}, {"t": "Serbia", "v": 12279}, {"t": "Bulgaria", "v": 11708}, {"t": "Slovacia", "v": 11664}, {"t": "Portugalia", "v": 9838}, {"t": "AD", "v": 8964}, {"t": "Israel", "v": 8303}, {"t": "Cehia", "v": 8217}, {"t": "Rusia", "v": 8176}, {"t": "Macedonia de Nord", "v": 7900}, {"t": "Ucraina", "v": 7827}, {"t": "Muntenegru", "v": 7360}, {"t": "Kosovo", "v": 7284}, {"t": "Qatar", "v": 6976}, {"t": "Emiratele Arabe Unite", "v": 6952}, {"t": "Albania", "v": 6688}, {"t": "Finlanda", "v": 6418}, {"t": "Croația", "v": 6092}, {"t": "Slovenia", "v": 5447}, {"t": "Bosnia și Herțegovina", "v": 5337}, {"t": "MV", "v": 4822}, {"t": "Belarus", "v": 4655}, {"t": "Canada", "v": 4364}, {"t": "Polonia", "v": 4315}, {"t": "BJ", "v": 4232}, {"t": "Letonia", "v": 4211}, {"t": "Kuwait", "v": 4196}, {"t": "Liban", "v": 4045}, {"t": "BH", "v": 3964}, {"t": "Estonia", "v": 3834}, {"t": "Lituania", "v": 3646}, {"t": "Kazahstan", "v": 3612}, {"t": "Tunisia", "v": 2713}, {"t": "Turcia", "v": 2579}, {"t": "GM", "v": 2550}, {"t": "Armenia", "v": 2491}, {"t": "OM", "v": 2286}, {"t": "Australia", "v": 2111}, {"t": "Statele Unite", "v": 2017}, {"t": "Iordania", "v": 2001}, {"t": "MU", "v": 1910}, {"t": "Arabia Saudită", "v": 1898}, {"t": "Noua Zeelandă", "v": 1793}, {"t": "Japonia", "v": 1748}, {"t": "Maroc", "v": 1552}, {"t": "Georgia", "v": 1534}, {"t": "Coreea de Sud", "v": 1519}, {"t": "Azerbaidjan", "v": 1475}, {"t": "ST", "v": 1411}, {"t": "TJ", "v": 1394}, {"t": "Singapore", "v": 1333}, {"t": "CF", "v": 1318}, {"t": "BS", "v": 1306}, {"t": "Uganda", "v": 1290}, {"t": "Etiopia", "v": 1252}, {"t": "Egipt", "v": 1200}, {"t": "LC", "v": 1065}, {"t": "Uzbekistan", "v": 1017}, {"t": "TG", "v": 1013}, {"t": "Bangladesh", "v": 980}, {"t": "Ghana", "v": 971}, {"t": "CV", "v": 931}, {"t": "TO", "v": 913}, {"t": "Pakistan", "v": 904}, {"t": "VC", "v": 897}, {"t": "BN", "v": 896}, {"t": "KG", "v": 893}, {"t": "Camerun", "v": 886}, {"t": "JM", "v": 877}, {"t": "Nigeria", "v": 872}, {"t": "Malaysia", "v": 869}, {"t": "Republica Dominicană", "v": 856}, {"t": "MG", "v": 829}, {"t": "CG", "v": 826}, {"t": "GA", "v": 789}, {"t": "GQ", "v": 770}, {"t": "GD", "v": 762}, {"t": "BB", "v": 754}, {"t": "Uruguay", "v": 736}, {"t": "PA", "v": 731}, {"t": "Irak", "v": 726}, {"t": "SR", "v": 720}, {"t": "RW", "v": 708}, {"t": "TT", "v": 680}, {"t": "CR", "v": 677}, {"t": "Filipine", "v": 670}, {"t": "Algeria", "v": 662}, {"t": "Paraguay", "v": 651}, {"t": "LR", "v": 647}, {"t": "Coasta de Fildeș", "v": 640}, {"t": "GN", "v": 638}, {"t": "Bolivia", "v": 636}, {"t": "NA", "v": 629}, {"t": "Indonezia", "v": 589}, {"t": "Afganistan", "v": 587}, {"t": "Argentina", "v": 584}, {"t": "Senegal", "v": 583}, {"t": "SL", "v": 560}, {"t": "Kenya", "v": 550}, {"t": "YE", "v": 514}, {"t": "Tanzania", "v": 492}, {"t": "Angola", "v": 470}, {"t": "Libia", "v": 468}, {"t": "ER", "v": 461}, {"t": "Chile", "v": 437}, {"t": "BZ", "v": 418}, {"t": "GY", "v": 405}, {"t": "Brazilia", "v": 390}, {"t": "SO", "v": 388}, {"t": "GW", "v": 387}, {"t": "SS", "v": 385}, {"t": "MN", "v": 384}, {"t": "Venezuela", "v": 382}, {"t": "ZM", "v": 375}, {"t": "Ecuador", "v": 372}, {"t": "Peru", "v": 371}, {"t": "Columbia", "v": 367}, {"t": "Vietnam", "v": 365}, {"t": "BT", "v": 364}, {"t": "BI", "v": 359}, {"t": "India", "v": 350}, {"t": "MR", "v": 342}, {"t": "DJ", "v": 339}, {"t": "Mexic", "v": 336}, {"t": "HN", "v": 327}, {"t": "SV", "v": 320}, {"t": "CD", "v": 317}, {"t": "HT", "v": 313}, {"t": "NI", "v": 305}, {"t": "ML", "v": 304}, {"t": "Taiwan", "v": 303}, {"t": "SZ", "v": 286}, {"t": "NE", "v": 286}, {"t": "Mozambic", "v": 265}, {"t": "Africa de Sud", "v": 250}, {"t": "FJ", "v": 246}, {"t": "BF", "v": 244}, {"t": "Thailanda", "v": 232}, {"t": "GT", "v": 229}, {"t": "WS", "v": 221}, {"t": "TD", "v": 215}, {"t": "Zimbabwe", "v": 214}, {"t": "MW", "v": 205}, {"t": "BW", "v": 202}, {"t": "TL", "v": 176}, {"t": "KM", "v": 163}, {"t": "KH", "v": 152}, {"t": "Sudan", "v": 137}, {"t": "FM", "v": 113}, {"t": "PG", "v": 89}, {"t": "Myanmar", "v": 79}, {"t": "LA", "v": 76}, {"t": "LS", "v": 71}, {"t": "VU", "v": 64}, {"t": "KI", "v": 51}, {"t": "SB", "v": 47}], "intrebare": "Țările marcate roșu sunt greșeli de date?", "laBine": "Sunt Moldova, Austria, Germania, Ungaria. Nu sunt greșeli, sunt răspunsul.", "laRau": "Uită-te ce țări sunt: diaspora și vecinătatea, adică fenomenul pe care îl studiem."}</script></div>
+</div><div class="nota"><div class="nota__et">Deosebirea care contează</div><p>O valoare <em>extremă</em> e departe de restul. O valoare <em>greșită</em> e imposibilă. Prima se păstrează și se explică; a doua se repară sau se scoate. Confuzia dintre ele e felul cel mai elegant de a-ți șterge propria descoperire.</p></div>
+
+</section>
+
+<section class="tut__s" id="s16">
+<span class="tut__nr">16 · Transformări</span>
+<h2>Aceleași date, două forme</h2><table class="tabel"><thead><tr><th>Lat (wide)</th><th>Lung (long)</th></tr></thead><tbody><tr><td>o coloană pe an</td><td>o coloană „an” și una „valoare”</td></tr><tr><td>bun de citit cu ochiul</td><td>bun de calculat și de desenat</td></tr><tr><td><code>2020, 2021, 2022</code> ca nume de coloane</td><td>anul devine o valoare</td></tr></tbody></table><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Treci din lat în lung</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-melt", "fisier": "forma.py", "sarcina": "Transformă tabelul cu o coloană pe an într-unul cu o linie pe țară și an.", "cod": "# din lat in lung: anii devin valori intr-o coloana\nlung = d.{{1}}(id_vars=[\"tara\"], var_name=\"an\",\n                value_name=\"valoare\")\n\n# si inapoi, daca e nevoie\nlat = lung.{{2}}(index=\"tara\", columns=\"an\", values=\"valoare\")\n\n# o variabila noua, calculata\nlung[\"pe_locuitor\"] = lung[\"valoare\"] / lung[\"populatie\"]\nprint(lung.head())", "goluri": {"1": {"ok": ["melt"], "ajutor": "metoda"}, "2": {"ok": ["pivot"], "ajutor": "metoda"}}, "laBine": "Forma lungă e cea cu care lucrează aproape tot ce urmează: agregările, graficele, modelele.", "laRau": "Amândouă sunt metode ale tabelului.", "explicatie": "Un an nu e o proprietate a țării, e o observație despre ea. Când anul e nume de coloană, nu poți filtra după el, nu poți grupa după el, și orice an nou cere o coloană nouă. În forma lungă, anul e o valoare ca oricare alta."}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s17">
+<span class="tut__nr">17 · Validare</span>
+<h2>Ultima etapă: dovedești că n-ai stricat nimic</h2><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Verificările de la final</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-validare", "fisier": "validare.py", "sarcina": "Patru verificări care se fac după curățare, de fiecare dată.", "cod": "# 1. cheia chiar e unica?\nassert d.duplicated(subset=[\"tara\", \"an\"]).sum() == {{1}}\n\n# 2. coloanele critice n-au lipsuri\nassert d[\"valoare\"].isna().sum() == 0\n\n# 3. valorile stau intre limite plauzibile\nassert d[\"procent\"].between(0, {{2}}).all()\n\n# 4. cate randuri am pierdut pe drum\nprint(f\"brut {len(brut)}, curat {len(d)}, \"\n      f\"pierdute {len(brut) - len(d)}\")", "goluri": {"1": {"ok": ["0"], "ajutor": "câte"}, "2": {"ok": ["100"], "ajutor": "maximul"}}, "laBine": "<code>assert</code> oprește programul dacă nu e adevărat. E cel mai ieftin fel de a prinde o stricăciune la câteva secunde după ce ai făcut-o, nu peste trei săptămâni.", "laRau": "O cheie unică înseamnă zero duplicate. Un procent nu trece de o sută.", "explicatie": "Ultima linie e cea pe care o citești cu atenție: dacă ai pierdut un sfert din rânduri și nu știi de ce, curățarea n-a fost o curățare, a fost o tăiere."}</script></div>
+</div><div class="verif" data-id="c4-v10" data-corect="0">
+    <p class="verif__q">De ce se compară statisticile înainte și după curățare?</p>
+    <button>Ca să prinzi schimbările pe care nu le-ai vrut</button>
+    <button>Ca să arăți cât ai lucrat</button>
+    <button>Pentru că o cere pandas</button>
+    <button>Ca să știi cât spațiu ai economisit</button>
+    <p class="verif__ex">Ca să prinzi ce n-ai vrut. O medie care sare de la 50 la 300 după curățare înseamnă că ai scos exact rândurile mici, iar asta schimbă tot ce urmează.</p>
+  </div>
+
+</section>
+
+<section class="tut__s" id="s18">
+<span class="tut__nr">18 · Validare</span>
+<h2>Ce scrii, ca să se poată reface</h2><p>Un fișier, lângă date, în care stă ce înseamnă fiecare coloană și ce ați hotărât pe parcurs.</p><table class="tabel"><thead><tr><th>Ce scrii</th><th>Exemplu</th></tr></thead><tbody><tr><td>numele coloanei</td><td><code>scaled_sci</code></td></tr><tr><td>ce înseamnă</td><td>tăria legăturii dintre două locuri, scalată</td></tr><tr><td>unitatea sau scara</td><td>index relativ, se compară între perechi</td></tr><tr><td>sursa și versiunea</td><td>Meta SCI, fișierul din martie 2021</td></tr><tr><td>ce ați schimbat</td><td>„am scos 584 de duplicate din colectarea reluată”</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">Testul dicționarului bun</div><p>Un coleg care n-a fost la ședințele voastre trebuie să poată reface curățarea citind doar fișierul ăsta și codul. Dacă îi trebuie și o discuție cu voi, mai aveți de scris.</p></div>
+
+</section>
+
+<section class="tut__s" id="s19">
+<span class="tut__nr">19 · Proiectul tău</span>
+<h2>Pe datele voastre, acum</h2><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td><code>curatare/curata.py</code>, care citește din <code>date/brute/</code></td></tr><tr><td>2</td><td>profilare: shape, info, describe, isna</td></tr><tr><td>3</td><td>duplicate, standardizare, lipsuri, valori extreme</td></tr><tr><td>4</td><td>scrie rezultatul în <code>date/curat/</code>, nu peste brut</td></tr><tr><td>5</td><td>cele patru verificări finale, cu <code>assert</code></td></tr></tbody></table><div class="ix" data-ix="dovada">
+  <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Dovada curățării</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-dovada-curatare", "sarcina": "Rulează scriptul și lipește ce scrie.", "pasi": [{"t": "Știi cu ce ai pornit și cu ce ai rămas", "cmd": "python curatare/curata.py", "gol": "lipește linia cu brut, curat, pierdute", "cauta": "\\d+[\\s\\S]*\\d+", "daca_nu": "Caut două numere: câte rânduri aveai și câte ai rămas. Dacă scriptul nu le tipărește, adaugă linia de la slide-ul 17."}, {"t": "Fișierul curat există și e separat de cel brut", "cmd": "python -c \"import pandas as pd; d=pd.read_csv('date/curat/date.csv'); print(d.shape)\"", "gol": "lipește forma", "cauta": "\\(\\s*\\d+\\s*,\\s*\\d+\\s*\\)", "daca_nu": "Caut ceva de forma (rânduri, coloane). Dacă dă eroare de fișier negăsit, scriptul n-a scris în date/curat/."}, {"t": "Curățarea e în depozit", "cmd": "git log --oneline -1", "gol": "lipește linia", "cauta": "[0-9a-f]{7}", "daca_nu": "Caut un hash de commit."}], "explicatie": "Datele brute rămân neatinse, cele curate stau separat, iar drumul dintre ele e un script care se poate rula din nou. Asta e tot ce înseamnă o curățare reproductibilă."}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s20">
+<span class="tut__nr">20 · Proiectul tău</span>
+<h2>Ce ați hotărât</h2><p>Două-trei rânduri despre cea mai importantă decizie de curățare pe care ați luat-o și de ce.</p><div class="ix" data-ix="asteptari">
+  <div class="ix__cap"><span class="ix__fel">Scrii tu</span><span class="ix__t">Decizia voastră de curățare</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-decizie", "tip": "decizie", "minim": 60, "sarcina": "Scrie o decizie de curățare pe care ați luat-o la datele voastre, și motivul. Nu „am curățat datele”: ce anume, și de ce așa.", "exemplu": "De exemplu: am păstrat perechile cu valori foarte mari în loc să le tăiem ca valori extreme, pentru că erau Moldova și Ungaria, adică exact ce voiam să explicăm.", "multumesc": "O citesc înainte de cursul următor."}</script></div>
+</div>
+
+</section>
+
+<section class="tut__s" id="s21">
+<span class="tut__nr">21 · Mai departe</span>
+<h2>Cursul 5: agregare și baze de date</h2><ul><li>îmbinarea surselor pe o cheie comună</li><li>la date diadice, două îmbinări: una pentru fiecare capăt</li><li>unitatea de analiză: la ce nivel răspunzi la întrebare</li><li>de ce un tabel de 31.684 de rânduri vrea o bază de date</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de curățare, rulat și urcat, cu datele curate în <code>date/curat/</code>. Plus dicționarul de date, fie și scurt, în depozit.</p></div>
+
+</section>
+</article>
+</div></div></main>
+<div id="subsol"></div>
+
+<script type="module" src="../../js/antet.js?v=15"></script>
+<script type="module">
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=15";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=15";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=15";
+pornesteIx();
+pornesteVerif("c4");
+pornesteTut("c4");
+</script>
+</body>
+</html>

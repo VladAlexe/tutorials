@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/sistem.css?v=14">
-<script src="js/tema.js?v=14"></script>
+<link rel="stylesheet" href="css/sistem.css?v=15">
+<script src="js/tema.js?v=15"></script>
 <style>
   .hero{padding:58px 0 40px}
   .hero h1{max-width:18ch}
@@ -152,7 +152,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "./js/curs.js?v=14";
+import { LECTII, NOTARE, RADACINA } from "./js/curs.js?v=15";
 
 document.getElementById("flux-mare").innerHTML = LECTII.map(l =>
   `<a class="etapa" href="${l.cheie}/">
@@ -182,7 +182,7 @@ document.getElementById("lista-notare").innerHTML = NOTARE.componente.map(c => `
     <p class="card__d">${c.d}</p>
   </div>`).join("");
 </script>
-<script type="module" src="js/antet.js?v=14"></script>
-<script type="module" src="js/subsol.js?v=14"></script>
+<script type="module" src="js/antet.js?v=15"></script>
+<script type="module" src="js/subsol.js?v=15"></script>
 </body>
 </html>

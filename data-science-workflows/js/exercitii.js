@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=14";
+import { salveazaCod } from "./colectare.js?v=15";
 
 const E = {};
 
@@ -368,7 +368,10 @@ E.sortare = (gazda, d) => {
   gazda.addEventListener("click", e => {
     const el = e.target.closest(".srt__e");
     const cos = e.target.closest(".srt__c");
-    if (el){
+    /* Când am deja ceva ales, orice atingere într-un coș e o punere — chiar
+       dacă nimeresc peste o etichetă pusă acolo mai devreme. Altfel, un coș
+       plin devine imposibil de nimerit, iar cel care mută crede că nu merge. */
+    if (el && !(cos && ales && ales !== el)){
       if (ales === el){ ales.classList.remove("ales"); ales = null; return; }
       gazda.querySelectorAll(".srt__e").forEach(x => x.classList.remove("ales"));
       el.classList.add("ales"); ales = el;
