@@ -3,174 +3,165 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fluxuri de lucru pentru știința datelor — curs</title>
-<meta name="description" content="Curs de masterat despre fluxuri de lucru pentru știința datelor: de la colectarea datelor la raportul final.">
+<title>Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Curs de masterat: de la colectarea datelor prin API până la raportul final, pe date reale de conectivitate socială.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/curs.css?v=20260725">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/sistem.css?v=1">
+<script src="js/tema.js?v=1"></script>
+<style>
+  .hero{padding:58px 0 40px}
+  .hero h1{max-width:18ch}
+  .hero__meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:28px;
+    font-family:var(--mono);font-size:12px;color:var(--text-3)}
+  .hero__meta b{font-weight:500;color:var(--text-2)}
+  .sectiune{padding:46px 0;border-top:1px solid var(--linie)}
+  .sectiune__cap{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+  .sectiune__cap h2{margin:0;font-size:21px}
+  .sectiune__cap .nr{font-family:var(--mono);font-size:11px;color:var(--text-3)}
+  .flux--mare{margin:34px 0 10px}
+  .doua{display:grid;grid-template-columns:1.35fr 1fr;gap:42px;align-items:start}
+  @media(max-width:860px){.doua{grid-template-columns:1fr;gap:30px}}
+</style>
 </head>
 <body>
 
-<div class="top">
-  <div class="top__in">
-    <a href="../index.html" class="top__brand">Tutorials</a>
-    <span class="top__sep">/</span>
-    <span class="top__here">Fluxuri de lucru pentru știința datelor</span>
+<div id="antet" data-aici=""></div>
+
+<main>
+  <div class="pagina">
+
+    <section class="hero">
+      <p class="supratitlu">Analiza Datelor Complexe · Sociologie · UBB · 2026</p>
+      <h1>Fluxuri de lucru pentru știința datelor</h1>
+      <p class="deck">Un drum complet, de la întrebare la rezultat: colectezi date reale
+      prin API, le cureți, le pui într-o bază de date, le explorezi și construiești un
+      model pe care îl poți apăra. Opt lecții, un proiect de echipă.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn--tare" href="c1-introducere-si-mediu/">Începe lecția 1</a>
+        <a class="btn" href="#proiect">Despre proiect</a>
+      </div>
+      <div class="hero__meta">
+        <span><b>8</b> lecții</span>
+        <span><b>1</b> proiect de echipă</span>
+        <span>date reale de <b>conectivitate socială</b></span>
+        <span>Python, Git, SQL</span>
+      </div>
+    </section>
+
+    <section class="sectiune">
+      <div class="sectiune__cap">
+        <span class="nr">01</span>
+        <h2>Fluxul</h2>
+      </div>
+      <p class="coloana" style="color:var(--text-2)">Etapele prin care trece o întrebare
+      până devine un rezultat. Par un lanț ordonat, și în mare parte sunt, dar în practică
+      te întorci constant: descoperi la curățare că lipsesc date și revii la colectare.</p>
+      <div class="flux flux--mare"><div class="flux__sina" id="flux-mare"></div></div>
+    </section>
+
+    <section class="sectiune">
+      <div class="sectiune__cap">
+        <span class="nr">02</span>
+        <h2>Lecțiile</h2>
+      </div>
+      <div class="grila grila--2" id="lista-lectii"></div>
+    </section>
+
+    <section class="sectiune" id="proiect">
+      <div class="sectiune__cap">
+        <span class="nr">03</span>
+        <h2>Proiectul</h2>
+      </div>
+      <div class="doua">
+        <div>
+          <p>Lucrați în echipe, pe aceleași date, cu întrebări diferite. Sursa principală
+          e <strong>Social Connectedness Index</strong>, produs de Data for Good at Meta
+          din rețeaua de prietenii Facebook: pentru fiecare pereche de locuri, cât de
+          probabil e ca doi oameni de acolo să fie prieteni.</p>
+          <p>Datele sunt <em>diadice</em>. Un rând nu descrie un loc, ci o relație între
+          două locuri. Asta schimbă fiecare etapă a fluxului, și e motivul pentru care
+          cursul nu seamănă cu un tutorial obișnuit de analiză a datelor.</p>
+          <p>La atribute folosiți API-urile Eurostat și Banca Mondială. Rezultatul final e
+          un depozit pe GitHub în care se vede tot drumul, de la întrebare la concluzie.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
+            <a class="btn" href="surse-de-date.html">Toate sursele de date</a>
+            <a class="btn" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">Depozitul cursului</a>
+          </div>
+        </div>
+        <div>
+          <div class="nota">
+            <div class="nota__et">Un rezultat din date</div>
+            <p>Italia găzduiește 898.293 de oameni născuți în România, de șase ori mai
+            mulți decât Austria. Dar la conectivitate socială Austria stă pe locul doi, iar
+            Italia pe șase.</p>
+            <p>Diferența nu e o eroare. Ea e prima întrebare a cursului.</p>
+          </div>
+          <div class="legaturi" style="margin-top:22px">
+            <a class="legatura" href="https://data.humdata.org/dataset/social-connectedness-index" target="_blank" rel="noopener">
+              <span class="legatura__t">Social Connectedness Index</span><span class="legatura__g">HDX</span></a>
+            <a class="legatura" href="https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started" target="_blank" rel="noopener">
+              <span class="legatura__t">API Eurostat</span><span class="legatura__g">docs</span></a>
+            <a class="legatura" href="https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures" target="_blank" rel="noopener">
+              <span class="legatura__t">API Banca Mondială</span><span class="legatura__g">docs</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sectiune">
+      <div class="sectiune__cap">
+        <span class="nr">04</span>
+        <h2>De ce ai nevoie</h2>
+      </div>
+      <div class="grila grila--3">
+        <div class="card">
+          <div class="card__t">Un editor</div>
+          <p class="card__d" style="margin-top:6px">VS Code, gratuit. Plus Python 3.11 sau
+          mai nou. Le instalăm împreună la prima lecție.</p>
+        </div>
+        <div class="card">
+          <div class="card__t">Un cont GitHub</div>
+          <p class="card__d" style="margin-top:6px">Gratuit. Cu el intri și pe acest site,
+          iar activitatea din proiect se leagă automat de contul tău.</p>
+        </div>
+        <div class="card">
+          <div class="card__t">Nimic plătit</div>
+          <p class="card__d" style="margin-top:6px">Toate sursele de date și toate
+          uneltele folosite la curs sunt gratuite și deschise.</p>
+        </div>
+      </div>
+    </section>
+
   </div>
-</div>
+</main>
 
-<div class="shell">
+<div id="subsol"></div>
 
-  <!-- ================= HERO ================= -->
-  <!-- DE-COMPLETAT: numele exact al programului de masterat și anul ediției. -->
-  <section class="hero">
-    <p class="hero__eyebrow">Curs de masterat · UBB · ADC</p>
-    <h1 class="hero__title">Fluxuri de lucru pentru știința datelor</h1>
-    <p>Un flux de lucru pentru știința datelor este drumul complet pe care îl parcurge o întrebare până devine un rezultat în care poți avea încredere: de la colectarea datelor, prin curățare și agregare, până la analiză și raport. Nu e o colecție de trucuri, ci o ordine de lucru reproductibilă.</p>
-    <p>Pentru un sociolog, asta schimbă felul în care se pune o întrebare despre societate. În loc să te bazezi pe un singur set de date primit de-a gata, înveți să aduci singur datele, să le verifici, să le combini din mai multe surse și să arăți exact cum ai ajuns la concluzie. Reproductibilitatea nu e un moft tehnic — e ce face diferența dintre o afirmație și o dovadă.</p>
-    <p>Cursul te duce prin tot acest drum o dată, cap-coadă, pe un proiect real de echipă. Cartea explică fiecare pas, ți-l arată pe date și te verifică; munca o faci în editorul tău.</p>
-    <div class="hero__meta">
-      <span><b>Nivel:</b> masterat</span>
-      <span><b>Instituție:</b> UBB · ADC</span>
-      <span><b>Structură:</b> 8 capitole · 59 de subcapitole</span>
-      <span><b>Formă:</b> proiect de echipă</span>
+<script type="module">
+import { LECTII, RADACINA } from "./js/curs.js?v=1";
+
+document.getElementById("flux-mare").innerHTML = LECTII.map(l =>
+  `<a class="etapa" href="${l.cheie}/">
+     <span class="etapa__nod">${l.nr}</span>
+     <span class="etapa__et">${l.scurt}</span></a>`).join("");
+
+document.getElementById("lista-lectii").innerHTML = LECTII.map(l => `
+  <a class="card" href="${l.cheie}/">
+    <div class="card__sus">
+      <span class="card__nr">${String(l.nr).padStart(2,"0")}</span>
+      <span class="card__t">${l.titlu}</span>
     </div>
-    <a class="cta" href="carte.html">Deschide cartea <span class="cta__arrow">→</span></a>
-  </section>
-
-  <!-- ================= CE VEI ȘTI SĂ FACI ================= -->
-  <section>
-    <p class="kicker">CE VEI ȘTI SĂ FACI</p>
-    <h2>La final, singur sau în echipă</h2>
-    <ul class="skills">
-      <li>Configurezi un mediu de lucru izolat și versionezi proiectul cu Git.</li>
-      <li>Colectezi date dintr-un API și le transformi într-un tabel curat.</li>
-      <li>Cureți, standardizezi și îmbini surse diferite pe o cheie comună.</li>
-      <li>Așezi datele într-o bază de date și le interoghezi cu SQL.</li>
-      <li>Explorezi datele și construiești variabilele care răspund la întrebare.</li>
-      <li>Estimezi și interpretezi un model statistic simplu, cu limitele lui.</li>
-      <li>Scrii un raport pe care altcineva îl poate reproduce și critica.</li>
-      <li>Lucrezi în echipă pe un singur repository, cu roluri și verificări încrucișate.</li>
-    </ul>
-  </section>
-
-  <!-- ================= CAPITOLE ================= -->
-  <section>
-    <p class="kicker">CELE OPT CAPITOLE</p>
-    <h2>Ordinea urmează fluxul de lucru</h2>
-    <div class="chs">
-
-      <a class="ch-card" href="carte.html#/cap-1/1.1">
-        <span class="ch-card__n">1</span>
-        <span>
-          <span class="ch-card__part">Partea I · Fundamente</span>
-          <span class="ch-card__t">Introducere și configurare</span>
-          <span class="ch-card__d">De la mediul de lucru la tipurile de date, fișiere și JSON — fundația pe care stă tot restul.</span>
-          <span class="ch-card__meta">6 subcapitole →</span>
-        </span>
-      </a>
-
-      <a class="ch-card" href="carte.html#/cap-2/2.1">
-        <span class="ch-card__n">2</span>
-        <span>
-          <span class="ch-card__part">Partea II · Colectarea</span>
-          <span class="ch-card__t">Colectarea datelor prin API</span>
-          <span class="ch-card__d">Cum aduci date dintr-o sursă externă: REST, autentificare, paginare, primul apel din Python.</span>
-          <span class="ch-card__meta">11 subcapitole →</span>
-        </span>
-      </a>
-
-      <a class="ch-card" href="carte.html#/cap-3/3.1">
-        <span class="ch-card__n">3</span>
-        <span>
-          <span class="ch-card__part">Partea II · Colectarea</span>
-          <span class="ch-card__t">Versionare cu Git</span>
-          <span class="ch-card__d">Versionare și lucrul în echipă pe un repository comun, fără fișiere pierdute pe chat.</span>
-          <span class="ch-card__meta">9 subcapitole →</span>
-        </span>
-      </a>
-
-      <a class="ch-card" href="carte.html#/cap-4/4.1">
-        <span class="ch-card__n">4</span>
-        <span>
-          <span class="ch-card__part">Partea III · Pregătirea</span>
-          <span class="ch-card__t">Curățarea datelor</span>
-          <span class="ch-card__d">Profilezi, standardizezi și repari datele: tipuri, lipsuri, duplicate, anomalii.</span>
-          <span class="ch-card__meta">7 subcapitole →</span>
-        </span>
-      </a>
-
-      <a class="ch-card" href="carte.html#/cap-5/5.1">
-        <span class="ch-card__n">5</span>
-        <span>
-          <span class="ch-card__part">Partea III · Pregătirea</span>
-          <span class="ch-card__t">Agregare și baze de date</span>
-          <span class="ch-card__d">Îmbini sursele într-un tabel unificat și îl așezi într-o bază de date PostgreSQL.</span>
-          <span class="ch-card__meta">8 subcapitole →</span>
-        </span>
-      </a>
-
-      <a class="ch-card" href="carte.html#/cap-6/6.1">
-        <span class="ch-card__n">6</span>
-        <span>
-          <span class="ch-card__part">Partea IV · Analiza</span>
-          <span class="ch-card__t">Analiza exploratorie</span>
-          <span class="ch-card__d">Te uiți la date înainte de a le modela: distribuții, relații, corelații.</span>
-          <span class="ch-card__meta">6 subcapitole →</span>
-        </span>
-      </a>
-
-      <a class="ch-card" href="carte.html#/cap-7/7.1">
-        <span class="ch-card__n">7</span>
-        <span>
-          <span class="ch-card__part">Partea IV · Analiza</span>
-          <span class="ch-card__t">Variabile derivate și model</span>
-          <span class="ch-card__d">Construiești indicatorii care răspund la întrebare și îi treci printr-un model statistic.</span>
-          <span class="ch-card__meta">7 subcapitole →</span>
-        </span>
-      </a>
-
-      <a class="ch-card" href="carte.html#/cap-8/8.1">
-        <span class="ch-card__n">8</span>
-        <span>
-          <span class="ch-card__part">Partea IV · Analiza</span>
-          <span class="ch-card__t">Raportare și proiect final</span>
-          <span class="ch-card__d">Aduni tot într-un raport reproductibil și îl prezinți echipei și profesorului.</span>
-          <span class="ch-card__meta">5 subcapitole →</span>
-        </span>
-      </a>
-
+    <p class="card__d">${l.rezumat}</p>
+    <div class="card__jos">
+      ${l.stare === "gata" ? '<span class="et et--ok">gata</span>'
+                           : '<span class="et">în lucru</span>'}
+      ${l.notebook ? '<span class="et">caiet</span>' : ""}
     </div>
-  </section>
-
-  <!-- ================= PROIECTUL DE ECHIPĂ ================= -->
-  <section>
-    <p class="kicker">PROIECTUL DE ECHIPĂ</p>
-    <h2>Se construiește pe parcurs</h2>
-    <div class="panel">
-      <p>Cursul are un singur produs final: un <strong>repository de echipă</strong> în care se vede tot drumul, de la întrebarea de cercetare până la rezultatul statistic și interpretarea lui. Nu se predă un fișier la final — se construiește săptămână de săptămână, iar fiecare curs adaugă o piesă.</p>
-      <p>Fiecare student răspunde de un pas și de fișierul lui, dar deciziile importante — tema, unitatea de analiză, variabilele finale — se iau împreună. La fiecare pas e prevăzută o scurtă verificare încrucișată în echipă. La final se predau repository-ul, raportul și o scurtă prezentare.</p>
-      <!-- DE-COMPLETAT: tema proiectului ediției curente și cerințele concrete de predare. -->
-      <div class="todo"><b>DE COMPLETAT</b>Tema proiectului ediției curente și lista exactă a livrabilelor.</div>
-    </div>
-  </section>
-
-  <!-- ================= CE ÎȚI TREBUIE ================= -->
-  <section>
-    <p class="kicker">CE ÎȚI TREBUIE</p>
-    <h2>Puțin, și pregătim împreună restul</h2>
-    <ul class="reqs">
-      <li><b>Un editor de cod</b><span>Folosim VS Code. Instalarea și configurarea sunt la capitolul 1.</span></li>
-      <li><b>Un cont de versionare</b><span>Pe platforma de versionare, pentru repository-ul de echipă.</span></li>
-      <li><b>Conturi pentru surse de date</b><span>Pentru API-urile din care colectăm datele proiectului.</span></li>
-    </ul>
-    <!-- DE-COMPLETAT: sursele de date concrete (nume API, linkuri de înregistrare) și grila de evaluare. -->
-    <div class="todo"><b>DE COMPLETAT</b>Sursele de date concrete (ce API-uri, unde se fac conturile) și grila de evaluare.</div>
-  </section>
-
-  <div class="foot">Material educațional · © 2026 Vlad Alexe</div>
-
-</div>
+  </a>`).join("");
+</script>
+<script type="module" src="js/antet.js?v=1"></script>
+<script type="module" src="js/subsol.js?v=1"></script>
 </body>
 </html>

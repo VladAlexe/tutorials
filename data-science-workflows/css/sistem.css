@@ -1,0 +1,338 @@
+/* ===========================================================================
+   FLUXURI DE LUCRU PENTRU ȘTIINȚA DATELOR
+   Sistem de design
+
+   Doua teme, comutate prin atributul data-tema de pe <html>.
+   Fara atribut, se ia preferinta sistemului.
+
+   Tipografie: Source Serif 4 pentru citit, IBM Plex Sans pentru interfata,
+   IBM Plex Mono pentru cod, coduri si etichete de date.
+
+   Culoarea e folosita cu zgarcenie: interfata e aproape alb-negru, iar
+   accentul apare numai acolo unde e ceva de actionat sau unde traiesc datele.
+   =========================================================================== */
+
+:root{
+  /* tema deschisa */
+  --fundal:      #FBFBFA;
+  --panza:       #FFFFFF;
+  --panza-2:     #F4F4F2;
+  --text:        #15181C;
+  --text-2:      #5B6168;
+  --text-3:      #8A9098;
+  --linie:       #E5E5E2;
+  --linie-2:     #CECEC9;
+  --accent:      #2D6A8E;
+  --accent-text: #245A7A;
+  --accent-slab: #EAF1F6;
+  --ok:          #3F6B4A;
+  --ok-slab:     #EAF1EB;
+  --nu:          #8C3B2E;
+  --nu-slab:     #F7ECEA;
+  --umbra:       0 1px 2px rgba(21,24,28,.05), 0 4px 14px rgba(21,24,28,.05);
+  --umbra-2:     0 2px 6px rgba(21,24,28,.08), 0 12px 34px rgba(21,24,28,.09);
+
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans:  'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:  'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --citit: 68ch;      /* latimea coloanei de text */
+  --lat:   1140px;    /* latimea maxima a paginii */
+  --antet: 52px;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema="deschis"]){
+    --fundal:      #111417;
+    --panza:       #181C20;
+    --panza-2:     #1E2328;
+    --text:        #E9EBED;
+    --text-2:      #9AA3AB;
+    --text-3:      #69727A;
+    --linie:       #272D33;
+    --linie-2:     #3A4149;
+    --accent:      #7FB8D8;
+    --accent-text: #9CCAE4;
+    --accent-slab: #15242E;
+    --ok:          #7FB08C;
+    --ok-slab:     #17241A;
+    --nu:          #D79185;
+    --nu-slab:     #2A1A17;
+    --umbra:       0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+    --umbra-2:     0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
+  }
+}
+:root[data-tema="intunecat"]{
+  --fundal:      #111417;
+  --panza:       #181C20;
+  --panza-2:     #1E2328;
+  --text:        #E9EBED;
+  --text-2:      #9AA3AB;
+  --text-3:      #69727A;
+  --linie:       #272D33;
+  --linie-2:     #3A4149;
+  --accent:      #7FB8D8;
+  --accent-text: #9CCAE4;
+  --accent-slab: #15242E;
+  --ok:          #7FB08C;
+  --ok-slab:     #17241A;
+  --nu:          #D79185;
+  --nu-slab:     #2A1A17;
+  --umbra:       0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+  --umbra-2:     0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
+}
+
+/* --- baza ---------------------------------------------------------------- */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--fundal);color:var(--text);
+  font-family:var(--serif);font-size:18px;line-height:1.66;
+  font-variant-numeric:oldstyle-nums proportional-nums;
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;min-height:100vh;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit}
+img,svg{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+::selection{background:var(--accent-slab);color:var(--text)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* --- latimi -------------------------------------------------------------- */
+
+.pagina{width:100%;max-width:var(--lat);margin:0 auto;padding:0 32px}
+.coloana{max-width:var(--citit)}
+main{flex:1}
+
+/* --- tipografie ---------------------------------------------------------- */
+
+h1,h2,h3,h4{font-family:var(--sans);font-weight:600;letter-spacing:-.018em;
+  line-height:1.17;color:var(--text)}
+h1{font-size:clamp(30px,4.2vw,44px);font-weight:600;letter-spacing:-.028em}
+h2{font-size:25px;margin:52px 0 14px}
+h3{font-size:19px;margin:34px 0 10px}
+p{margin:0 0 20px;max-width:var(--citit)}
+p:last-child{margin-bottom:0}
+strong{font-weight:600}
+em{font-style:italic}
+
+.supratitlu{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-3);margin:0 0 14px}
+.deck{font-size:21px;line-height:1.5;color:var(--text-2);max-width:60ch;margin:0 0 34px}
+
+ul,ol{margin:0 0 20px;padding-left:0;max-width:var(--citit);list-style:none}
+ol{counter-reset:n}
+li{position:relative;padding-left:26px;margin-bottom:9px}
+ul>li::before{content:'';position:absolute;left:7px;top:.72em;width:5px;height:5px;
+  border-radius:50%;background:var(--text-3)}
+ol>li{counter-increment:n}
+ol>li::before{content:counter(n);position:absolute;left:0;top:.06em;
+  font-family:var(--mono);font-size:12.5px;color:var(--text-3);font-variant-numeric:lining-nums}
+
+code{font-family:var(--mono);font-size:.855em;background:var(--panza-2);
+  padding:.1em .34em;border-radius:3px;border:1px solid var(--linie)}
+pre{background:var(--panza-2);border:1px solid var(--linie);border-radius:8px;
+  padding:17px 19px;overflow-x:auto;margin:0 0 24px;font-family:var(--mono);
+  font-size:13.5px;line-height:1.72}
+pre code{background:none;border:0;padding:0;font-size:inherit}
+pre .c{color:var(--text-3)}
+pre .k{color:var(--accent-text)}
+
+a.leg{color:var(--accent-text);text-decoration:none;
+  border-bottom:1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  transition:border-color .13s}
+a.leg:hover{border-bottom-color:var(--accent)}
+
+/* --- antet --------------------------------------------------------------- */
+
+.antet{position:sticky;top:0;z-index:60;height:var(--antet);
+  background:color-mix(in srgb, var(--fundal) 88%, transparent);
+  backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--linie)}
+.antet__in{height:100%;display:flex;align-items:center;gap:14px}
+.antet__marca{display:flex;align-items:center;gap:9px;text-decoration:none;flex:none}
+.antet__marca svg{flex:none}
+.antet__nume{font-family:var(--sans);font-weight:600;font-size:13.5px;letter-spacing:-.01em}
+.firimituri{display:flex;align-items:center;gap:8px;font-family:var(--sans);
+  font-size:13px;color:var(--text-2);min-width:0;overflow:hidden}
+.firimituri a{text-decoration:none}
+.firimituri a:hover{color:var(--text)}
+.firimituri span.sep{color:var(--linie-2)}
+.firimituri .aici{color:var(--text);font-weight:500;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.antet__dr{margin-left:auto;display:flex;align-items:center;gap:8px;flex:none}
+
+.icon-btn{width:32px;height:32px;border-radius:7px;display:grid;place-items:center;
+  color:var(--text-2);transition:.13s;border:1px solid transparent}
+.icon-btn:hover{background:var(--panza-2);color:var(--text);border-color:var(--linie)}
+
+.cont-chip{display:flex;align-items:center;gap:8px;padding:4px 11px 4px 5px;
+  border-radius:20px;border:1px solid var(--linie);background:var(--panza);
+  font-family:var(--sans);font-size:12.5px;font-weight:500;text-decoration:none;
+  transition:.13s;white-space:nowrap}
+.cont-chip:hover{border-color:var(--linie-2);box-shadow:var(--umbra)}
+.cont-chip__cerc{width:23px;height:23px;border-radius:50%;background:var(--accent);
+  color:#fff;display:grid;place-items:center;font-size:10px;font-weight:600;flex:none}
+:root[data-tema="intunecat"] .cont-chip__cerc{color:#0F1317}
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema="deschis"]) .cont-chip__cerc{color:#0F1317}
+}
+
+.btn-intra{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;
+  background:var(--text);color:var(--fundal);font-family:var(--sans);font-size:12.5px;
+  font-weight:600;text-decoration:none;transition:.13s;white-space:nowrap}
+.btn-intra:hover{opacity:.86}
+
+/* --- butoane ------------------------------------------------------------- */
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--sans);font-weight:500;font-size:14px;padding:9px 16px;
+  border-radius:8px;border:1px solid var(--linie-2);background:var(--panza);
+  color:var(--text);text-decoration:none;transition:.14s;white-space:nowrap}
+.btn:hover{border-color:var(--text-3);box-shadow:var(--umbra)}
+.btn--tare{background:var(--text);color:var(--fundal);border-color:var(--text)}
+.btn--tare:hover{opacity:.87;box-shadow:var(--umbra-2)}
+.btn--mic{font-size:13px;padding:7px 13px;border-radius:7px}
+
+/* --- fluxul: elementul-semnatura ---------------------------------------------
+   Opt etape, legate printr-o linie. E si navigatie, si imaginea subiectului:
+   un flux de lucru e chiar asta, o succesiune prin care trec datele.
+   --------------------------------------------------------------------------- */
+
+.flux{position:relative;padding:4px 0}
+.flux__sina{display:flex;align-items:flex-start;gap:0;overflow-x:auto;
+  scrollbar-width:none;padding-bottom:4px}
+.flux__sina::-webkit-scrollbar{display:none}
+.etapa{position:relative;flex:1 1 0;min-width:94px;text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;gap:9px;padding:0 2px}
+.etapa::before{content:'';position:absolute;top:10px;left:-50%;width:100%;height:1.5px;
+  background:var(--linie-2)}
+.etapa:first-child::before{display:none}
+.etapa__nod{position:relative;z-index:2;width:21px;height:21px;border-radius:50%;
+  background:var(--fundal);border:1.5px solid var(--linie-2);
+  display:grid;place-items:center;font-family:var(--mono);font-size:10.5px;
+  font-weight:500;color:var(--text-3);transition:.15s}
+.etapa__et{font-family:var(--sans);font-size:11.5px;line-height:1.3;text-align:center;
+  color:var(--text-3);transition:.15s;max-width:13ch}
+.etapa:hover .etapa__nod{border-color:var(--accent);color:var(--accent-text)}
+.etapa:hover .etapa__et{color:var(--text-2)}
+.etapa.gata .etapa__nod{background:var(--accent);border-color:var(--accent);color:var(--fundal)}
+.etapa.gata::before{background:var(--accent)}
+.etapa.acum .etapa__nod{border-color:var(--accent);border-width:2px;color:var(--accent-text);
+  box-shadow:0 0 0 4px var(--accent-slab)}
+.etapa.acum .etapa__et{color:var(--text);font-weight:600}
+.etapa.viitor{opacity:.6}
+
+/* banda subtire, pentru paginile de lectie */
+.flux--banda{border-bottom:1px solid var(--linie);background:var(--panza)}
+.flux--banda .flux__sina{padding:11px 0 13px}
+.flux--banda .etapa{min-width:78px}
+.flux--banda .etapa__et{font-size:10.5px;max-width:11ch}
+
+/* --- carduri ------------------------------------------------------------- */
+
+.grila{display:grid;gap:14px}
+.grila--2{grid-template-columns:repeat(auto-fit,minmax(265px,1fr))}
+.grila--3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+
+.card{background:var(--panza);border:1px solid var(--linie);border-radius:11px;
+  padding:19px 21px;transition:.15s;text-decoration:none;display:block}
+a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:translateY(-1px)}
+.card__sus{display:flex;align-items:baseline;gap:10px;margin-bottom:7px}
+.card__nr{font-family:var(--mono);font-size:11.5px;color:var(--text-3);flex:none}
+.card__t{font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:-.012em;
+  line-height:1.3}
+.card__d{font-size:15.5px;color:var(--text-2);line-height:1.52}
+.card__jos{display:flex;align-items:center;gap:9px;margin-top:13px;
+  font-family:var(--mono);font-size:11px;color:var(--text-3)}
+
+/* --- resurse ------------------------------------------------------------- */
+
+.resurse{display:grid;gap:9px}
+.resursa{display:flex;align-items:center;gap:13px;padding:13px 16px;background:var(--panza);
+  border:1px solid var(--linie);border-radius:9px;text-decoration:none;transition:.14s}
+.resursa:hover{border-color:var(--linie-2);box-shadow:var(--umbra)}
+.resursa__ic{width:30px;height:30px;border-radius:7px;background:var(--panza-2);
+  display:grid;place-items:center;flex:none;color:var(--text-2)}
+.resursa__t{font-family:var(--sans);font-weight:500;font-size:14.5px;line-height:1.3}
+.resursa__d{font-size:13.5px;color:var(--text-3);margin-top:1px}
+.resursa__sageata{margin-left:auto;color:var(--text-3);flex:none}
+
+.legaturi{display:flex;flex-direction:column;gap:2px}
+.legatura{display:flex;align-items:baseline;gap:10px;padding:7px 0;
+  border-bottom:1px solid var(--linie);text-decoration:none;transition:.12s}
+.legatura:last-child{border-bottom:0}
+.legatura:hover .legatura__t{color:var(--accent-text)}
+.legatura__t{font-family:var(--sans);font-size:14.5px;font-weight:500;transition:.12s}
+.legatura__g{font-family:var(--mono);font-size:11.5px;color:var(--text-3);
+  margin-left:auto;flex:none}
+
+/* --- note ---------------------------------------------------------------- */
+
+.nota{border-left:2px solid var(--accent);background:var(--accent-slab);
+  padding:16px 20px;border-radius:0 8px 8px 0;margin:0 0 24px;max-width:var(--citit)}
+.nota__et{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-text);margin-bottom:6px}
+.nota p{font-size:16.5px;margin-bottom:10px}
+.nota p:last-child{margin-bottom:0}
+.nota--sobru{border-left-color:var(--linie-2);background:var(--panza-2)}
+.nota--sobru .nota__et{color:var(--text-3)}
+
+/* --- tabel --------------------------------------------------------------- */
+
+.tabel{width:100%;border-collapse:collapse;font-size:15.5px;margin:0 0 24px}
+.tabel th{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.11em;
+  text-transform:uppercase;text-align:left;padding:9px 14px 9px 0;color:var(--text-3);
+  border-bottom:1px solid var(--linie-2)}
+.tabel td{padding:11px 14px 11px 0;border-bottom:1px solid var(--linie);vertical-align:top}
+.tabel tr:last-child td{border-bottom:0}
+.tabel td.mono{font-family:var(--mono);font-size:13px}
+
+/* --- etichete ------------------------------------------------------------ */
+
+.et{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10.5px;
+  font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;
+  border-radius:4px;background:var(--panza-2);color:var(--text-3);border:1px solid var(--linie)}
+.et--ok{background:var(--ok-slab);color:var(--ok);border-color:transparent}
+.et--nu{background:var(--nu-slab);color:var(--nu);border-color:transparent}
+.et--accent{background:var(--accent-slab);color:var(--accent-text);border-color:transparent}
+
+/* --- subsol -------------------------------------------------------------- */
+
+.subsol{border-top:1px solid var(--linie);margin-top:74px;padding:30px 0 52px;
+  font-family:var(--sans);font-size:13px;color:var(--text-3)}
+.subsol__in{display:flex;gap:26px;flex-wrap:wrap;align-items:baseline}
+.subsol a{text-decoration:none}
+.subsol a:hover{color:var(--text-2)}
+.subsol__dr{margin-left:auto}
+
+/* --- navigare intre lectii ----------------------------------------------- */
+
+.nav-lectii{display:flex;gap:12px;margin-top:60px;padding-top:26px;
+  border-top:1px solid var(--linie)}
+.nav-lectii a{flex:1;max-width:48%;padding:14px 17px;border:1px solid var(--linie);
+  border-radius:10px;text-decoration:none;transition:.14s;background:var(--panza)}
+.nav-lectii a:hover{border-color:var(--linie-2);box-shadow:var(--umbra)}
+.nav-lectii .et-mica{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:4px}
+.nav-lectii .t{font-family:var(--sans);font-size:15px;font-weight:500;line-height:1.3}
+.nav-lectii .dr{margin-left:auto;text-align:right}
+
+/* --- utilitare ----------------------------------------------------------- */
+
+.doar-ecran{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+[hidden]{display:none!important}
+.incarca{color:var(--text-3);font-style:italic;padding:44px 0;text-align:center}
+
+@media(max-width:780px){
+  body{font-size:17px}
+  .pagina{padding:0 20px}
+  h2{font-size:22px;margin-top:42px}
+  .deck{font-size:19px}
+  .nav-lectii{flex-direction:column}
+  .nav-lectii a{max-width:none}
+  .antet__nume{display:none}
+}
