@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Paginile de cont. Variabilele sunt declarate local, ca sa nu afecteze
+   celelalte cursuri din repo.
+   ========================================================================== */
+:root{
+  --ink:#16181A; --paper:#E8E8E4; --surface:#FFFFFF; --panel:#1E2022;
+  --olive:#6E7358; --olive-lt:#8D9472; --slate:#3D4451; --muted:#5C6165;
+  --rule:rgba(22,24,26,.13); --rule-strong:rgba(22,24,26,.28);
+  --ok:#4F6B3E; --no:#8C3B2E;
+  --sans:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --serif:'Literata',Georgia,'Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.66;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+:focus-visible{outline:2.5px solid var(--olive);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{background:var(--panel);color:#EDEDE9;padding:11px 0;font-family:var(--sans);font-size:13px}
+.top__in{max-width:560px;margin:0 auto;padding:0 24px;display:flex;gap:9px;align-items:center}
+.top__in a{color:rgba(237,237,233,.72);text-decoration:none;font-weight:600}
+.top__in a:hover{color:#fff}
+.top__sep{color:rgba(237,237,233,.35)}
+.top__here{font-weight:600}
+
+.shell{max-width:560px;margin:0 auto;padding:44px 24px 70px}
+
+.eyebrow{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.2em;
+  color:var(--olive);margin:0 0 11px}
+h1{font-family:var(--sans);font-weight:800;font-size:clamp(26px,5vw,34px);line-height:1.1;
+  letter-spacing:-.02em;margin:0 0 10px}
+.deck{color:var(--muted);margin:0 0 30px;font-size:17px}
+p{margin:0 0 16px}
+a.leg{color:var(--olive);text-decoration:none;border-bottom:1px solid rgba(110,115,88,.4);
+  font-family:var(--sans);font-weight:600;font-size:14px}
+a.leg:hover{border-bottom-color:var(--olive)}
+
+.card{background:var(--surface);border:1px solid var(--rule-strong);border-radius:9px;
+  padding:24px;margin:0 0 18px}
+.card h2{font-family:var(--sans);font-weight:700;font-size:17px;margin:0 0 6px}
+.card p{font-size:15.5px;color:var(--muted)}
+.card p:last-child{margin-bottom:0}
+
+label{display:block;font-family:var(--sans);font-weight:600;font-size:12.5px;
+  letter-spacing:.04em;margin:0 0 6px;color:var(--muted)}
+input[type=email],input[type=text]{width:100%;padding:11px 13px;border:1.5px solid var(--rule-strong);
+  border-radius:6px;background:var(--surface);font-size:16px;color:var(--ink)}
+input.mat{font-family:var(--mono);letter-spacing:.08em}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;
+  font-family:var(--sans);font-weight:600;font-size:15px;padding:12px 18px;border-radius:7px;
+  border:1.5px solid var(--ink);background:var(--ink);color:#fff;transition:.15s;cursor:pointer}
+.btn:hover:not(:disabled){background:var(--slate);border-color:var(--slate)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn--alt{background:none;color:var(--ink)}
+.btn--alt:hover:not(:disabled){background:rgba(22,24,26,.06);color:var(--ink)}
+.btn + .btn{margin-top:10px}
+.btn svg{flex:none}
+
+.sep{display:flex;align-items:center;gap:12px;margin:18px 0;
+  font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.1em;color:var(--muted)}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+.msg{border-radius:6px;padding:13px 16px;margin:0 0 16px;font-size:15px;display:none}
+.msg.on{display:block}
+.msg--ok{background:rgba(79,107,62,.12);border-left:3px solid var(--ok)}
+.msg--no{background:rgba(140,59,46,.1);border-left:3px solid var(--no)}
+.msg--info{background:rgba(110,115,88,.1);border-left:3px solid var(--olive)}
+
+.ident{display:flex;align-items:center;gap:13px;padding:15px 18px;background:var(--surface);
+  border:1px solid var(--rule-strong);border-radius:9px;margin:0 0 18px}
+.ident__cerc{flex:none;width:42px;height:42px;border-radius:50%;background:var(--olive);
+  color:#fff;display:grid;place-items:center;font-family:var(--sans);font-weight:700;font-size:16px}
+.ident__nume{font-family:var(--sans);font-weight:700;font-size:16px;line-height:1.25}
+.ident__sub{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:2px}
+
+.notita{font-size:14.5px;color:var(--muted);border-left:3px solid var(--rule-strong);
+  padding:2px 0 2px 15px;margin:0 0 18px}
+.notita b{font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;display:block;
+  color:var(--ink);margin-bottom:4px}
+
+.incarca{text-align:center;padding:50px 0;color:var(--muted);font-style:italic}
+[hidden]{display:none!important}

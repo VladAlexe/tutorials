@@ -1,0 +1,43 @@
+# ============================================================================
+#  ATENTIE
+#  Acest repo e servit public prin Cloudflare, cu assets.directory = "."
+#  Orice fisier aflat aici se poate descarca de la adresa lui.
+#  Deci: nicio parola, nicio cheie, nicio lista de studenti.
+# ============================================================================
+
+# Secrete
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.py
+service-role*
+
+# Liste cu date personale
+**/03-lista-studenti.csv
+**/*-studenti-real*.csv
+
+# Unelte locale
+.claude/
+**/.claude/
+.edge-profile*/
+.edge-check*/
+edge-dom.txt
+edge-err.txt
+edge-out.txt
+
+# Sisteme
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.ipynb_checkpoints/
+
+# Node
+node_modules/

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contul meu — Fluxuri de lucru pentru știința datelor</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/cont.css?v=1">
+</head>
+<body>
+
+<div class="top">
+  <div class="top__in">
+    <a href="../../index.html">Tutorials</a>
+    <span class="top__sep">/</span>
+    <a href="../index.html">Fluxuri de lucru</a>
+    <span class="top__sep">/</span>
+    <span class="top__here">Contul meu</span>
+  </div>
+</div>
+
+<div class="shell">
+
+  <div id="incarca" class="incarca">Se verifică...</div>
+
+  <!-- ====================== 1. NEAUTENTIFICAT ====================== -->
+  <div id="pas-intrare" hidden>
+    <p class="eyebrow">CURSUL DE FLUXURI DE LUCRU</p>
+    <h1>Intră în cont</h1>
+    <p class="deck">Ai nevoie de un cont ca să ți se înregistreze răspunsurile la
+    verificări și ca să îți vezi progresul. Te autentifici o singură dată, la
+    începutul semestrului.</p>
+
+    <div id="msg-intrare" class="msg"></div>
+
+    <div class="card">
+      <h2>Cu contul de GitHub</h2>
+      <p>Ai nevoie de el oricum, pentru proiectul de echipă. Are și un avantaj:
+      activitatea ta din depozit se leagă automat de cont, fără să mai potrivim
+      nimic la final de semestru.</p>
+      <button class="btn" id="btn-github" style="margin-top:16px">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+          1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+          0-.87.31-1.59.82-2.15-.07-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27
+          2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.15 1.92.08 2.12.51.56.82
+          1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01
+          2.2 0 .21.15.46.55.38A7.995 7.995 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        Intră cu GitHub
+      </button>
+      <p style="margin-top:14px;font-size:14.5px">Nu ai cont? Îl faci în două minute
+      pe <a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">github.com</a>,
+      apoi revii aici.</p>
+    </div>
+
+    <div id="zona-email" hidden>
+      <div class="sep">SAU</div>
+      <div class="card">
+        <h2>Cu adresa de e-mail</h2>
+        <p>Primești un link pe care apeși. Fără parolă. Folosește adresa
+        instituțională.</p>
+        <form id="form-email" style="margin-top:16px">
+          <label for="email">Adresa de e-mail</label>
+          <input type="email" id="email" name="email" autocomplete="email"
+                 placeholder="nume.prenume@stud.ubbcluj.ro" style="margin-bottom:12px">
+          <button class="btn btn--alt" type="submit" id="btn-email">Trimite-mi linkul</button>
+        </form>
+      </div>
+    </div>
+
+    <p class="notita"><b>CE SE COLECTEAZĂ</b>
+    Răspunsurile la verificări, exercițiile de cod rulate în pagină, secțiunile
+    parcurse și prezențele. Le vezi și tu, oricând, pe pagina ta.
+    <a class="leg" href="../date-personale/">Ce se colectează și de ce</a></p>
+  </div>
+
+  <!-- ====================== 2. LINK TRIMIS ====================== -->
+  <div id="pas-link" hidden>
+    <p class="eyebrow">AI PRIMIT UN MESAJ</p>
+    <h1>Verifică-ți e-mailul</h1>
+    <p class="deck">Am trimis un link la <b id="email-trimis"></b>. Apasă-l și te
+    întorci aici, deja conectat.</p>
+    <div class="card">
+      <h2>Nu a ajuns?</h2>
+      <p>Uită-te și în spam. Serverele universitare uneori întârzie câteva minute.
+      Dacă tot nu ajunge, încearcă intrarea cu GitHub, sau scrie-mi.</p>
+      <button class="btn btn--alt" id="btn-inapoi" style="margin-top:16px">Înapoi</button>
+    </div>
+  </div>
+
+  <!-- ====================== 3. CONECTAT, FĂRĂ MATRICOL ====================== -->
+  <div id="pas-matricol" hidden>
+    <p class="eyebrow">UN SINGUR PAS</p>
+    <h1>Numărul matricol</h1>
+    <p class="deck">Ca să te pot găsi pe lista cursului. Se introduce o singură
+    dată, iar după aceea nu mai ești întrebat niciodată.</p>
+
+    <div id="ident-nou" class="ident"></div>
+    <div id="msg-matricol" class="msg"></div>
+
+    <div class="card">
+      <form id="form-matricol">
+        <label for="matricol">Număr matricol</label>
+        <input type="text" id="matricol" class="mat" required autocomplete="off"
+               inputmode="numeric" placeholder="exact cum apare în carnet"
+               style="margin-bottom:12px">
+        <button class="btn" type="submit" id="btn-matricol">Înregistrează-mă</button>
+      </form>
+    </div>
+
+    <p class="notita"><b>DACĂ NU MERGE</b>
+    Verifică cifrele. Dacă numărul e corect și tot nu funcționează, înseamnă că nu
+    apare pe lista pe care o am sau că a fost deja revendicat. Scrie-mi și rezolv.</p>
+
+    <button class="btn btn--alt" id="btn-iesi-1">Ieși din cont</button>
+  </div>
+
+  <!-- ====================== 4. GATA ====================== -->
+  <div id="pas-gata" hidden>
+    <p class="eyebrow">CONT ACTIV</p>
+    <h1 id="salut">Bun venit</h1>
+    <p class="deck">Contul tău e legat de lista cursului. De acum, răspunsurile la
+    verificări se înregistrează automat.</p>
+
+    <div id="ident-gata" class="ident"></div>
+    <div id="msg-gata" class="msg"></div>
+
+    <div class="card">
+      <h2>Ce poți face acum</h2>
+      <p>Deschide cartea cursului și începe. Progresul se salvează singur, pe orice
+      dispozitiv cu care intri în cont.</p>
+      <a class="btn" href="../carte.html" style="margin-top:16px;text-decoration:none">
+        Deschide cartea</a>
+      <a class="btn btn--alt" href="../panou/" style="text-decoration:none">
+        Pagina mea</a>
+    </div>
+
+    <div class="card" id="card-profesor" hidden>
+      <h2>Ești profesor</h2>
+      <p>Ai acces la răspunsurile întregii grupe.</p>
+      <a class="btn btn--alt" href="../profesor/" style="margin-top:16px;text-decoration:none">
+        Panoul profesorului</a>
+    </div>
+
+    <button class="btn btn--alt" id="btn-iesi-2">Ieși din cont</button>
+  </div>
+
+</div>
+
+<script type="module">
+import { intraCuEmail, intraCuGithub, iesi, profil,
+         revendicaMatricol, laSchimbare } from "../js/auth.js";
+import { PERMITE_EMAIL } from "../js/supabase-config.js";
+
+if (PERMITE_EMAIL) document.getElementById("zona-email").hidden = false;
+
+const E = id => document.getElementById(id);
+const pasi = ["pas-intrare", "pas-link", "pas-matricol", "pas-gata"];
+
+function arata(id){
+  E("incarca").hidden = true;
+  pasi.forEach(p => E(p).hidden = (p !== id));
+}
+
+function mesaj(id, text, fel = "no"){
+  const el = E(id);
+  el.className = "msg msg--" + fel + (text ? " on" : "");
+  el.textContent = text || "";
+}
+
+function initiale(s = ""){
+  return s.trim().split(/\s+/).slice(0, 2).map(x => x[0] || "").join("").toUpperCase() || "?";
+}
+
+function identitate(el, titlu, sub){
+  el.innerHTML = `<div class="ident__cerc">${initiale(titlu)}</div>
+    <div><div class="ident__nume"></div><div class="ident__sub"></div></div>`;
+  el.querySelector(".ident__nume").textContent = titlu;
+  el.querySelector(".ident__sub").textContent = sub;
+}
+
+/* --- desenare in functie de stare ---------------------------------------- */
+
+async function deseneaza(){
+  let p;
+  try {
+    p = await profil({ proaspat: true });
+  } catch (e) {
+    arata("pas-intrare");
+    mesaj("msg-intrare", e.message, "no");
+    return;
+  }
+
+  if (!p.autentificat) { arata("pas-intrare"); return; }
+
+  if (!p.matricol) {
+    identitate(E("ident-nou"), p.email || "Cont nou", "fără număr matricol");
+    arata("pas-matricol");
+    E("matricol").focus();
+    return;
+  }
+
+  E("salut").textContent = "Bun venit, " + (p.nume || "").split(/\s+/)[0];
+  identitate(E("ident-gata"), p.nume || p.email,
+             p.matricol + (p.grupa ? "  ·  grupa " + p.grupa : ""));
+  E("card-profesor").hidden = !p.profesor;
+  arata("pas-gata");
+}
+
+/* --- actiuni -------------------------------------------------------------- */
+
+E("form-email")?.addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const b = E("btn-email"), adresa = E("email").value;
+  b.disabled = true; b.textContent = "Se trimite...";
+  mesaj("msg-intrare", "");
+  try {
+    await intraCuEmail(adresa);
+    E("email-trimis").textContent = adresa;
+    arata("pas-link");
+  } catch (e) {
+    mesaj("msg-intrare", e.message, "no");
+  } finally {
+    b.disabled = false; b.textContent = "Trimite-mi linkul";
+  }
+});
+
+E("btn-github").addEventListener("click", async () => {
+  mesaj("msg-intrare", "");
+  try { await intraCuGithub(); }
+  catch (e) { mesaj("msg-intrare", e.message, "no"); }
+});
+
+E("btn-inapoi").addEventListener("click", () => arata("pas-intrare"));
+
+E("form-matricol").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const b = E("btn-matricol");
+  b.disabled = true; b.textContent = "Se verifică...";
+  mesaj("msg-matricol", "");
+  try {
+    const r = await revendicaMatricol(E("matricol").value);
+    if (r.ok) { await deseneaza(); mesaj("msg-gata", "Înregistrat ca " + r.nume + ".", "ok"); }
+    else mesaj("msg-matricol", r.mesaj, "no");
+  } catch (e) {
+    mesaj("msg-matricol", e.message, "no");
+  } finally {
+    b.disabled = false; b.textContent = "Înregistrează-mă";
+  }
+});
+
+for (const id of ["btn-iesi-1", "btn-iesi-2"]) {
+  E(id).addEventListener("click", async () => { await iesi(); location.reload(); });
+}
+
+laSchimbare(deseneaza);
+deseneaza();
+</script>
+<script type="module" src="../js/bara-mod.js"></script>
+</body>
+</html>

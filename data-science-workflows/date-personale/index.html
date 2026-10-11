@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ce date se colectează — Fluxuri de lucru pentru știința datelor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/cont.css?v=1">
+<style>
+  .shell{max-width:660px}
+  h2{font-family:var(--sans);font-weight:700;font-size:19px;margin:34px 0 10px}
+  .tbl{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:15.5px}
+  .tbl th{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.12em;
+    text-align:left;padding:8px 12px 8px 0;border-bottom:2px solid var(--rule-strong);color:var(--muted)}
+  .tbl td{padding:10px 12px 10px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+  ul{padding-left:0;list-style:none;margin:0 0 18px}
+  li{position:relative;padding-left:21px;margin-bottom:8px}
+  li::before{content:'';position:absolute;left:3px;top:.67em;width:6px;height:6px;
+    background:var(--olive);border-radius:1px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top__in">
+    <a href="../../index.html">Tutorials</a>
+    <span class="top__sep">/</span>
+    <a href="../index.html">Fluxuri de lucru</a>
+    <span class="top__sep">/</span>
+    <span class="top__here">Date personale</span>
+  </div>
+</div>
+
+<div class="shell">
+  <p class="eyebrow">NOTĂ PENTRU STUDENȚI</p>
+  <h1>Ce date se colectează și de ce</h1>
+  <p class="deck">Scrisă pe scurt și fără formule juridice. Predăm un curs despre
+  date, deci felul în care tratăm datele voastre face parte din curs.</p>
+
+  <h2>Ce se păstrează</h2>
+  <table class="tbl">
+    <thead><tr><th>Ce</th><th>De ce</th></tr></thead>
+    <tbody>
+      <tr><td>Numărul matricol și numele, din lista oficială a cursului</td>
+          <td>Ca să pot lega activitatea de pe site de persoana care primește nota</td></tr>
+      <tr><td>Adresa de e-mail sau contul de GitHub cu care intri</td>
+          <td>Autentificare. Nu se folosește pentru altceva și nu primești mesaje</td></tr>
+      <tr><td>Răspunsurile la verificări: întrebarea, ce ai ales, dacă a fost corect, când</td>
+          <td>Parte din evaluarea activității. Îmi arată și care întrebări sunt prost formulate</td></tr>
+      <tr><td>Codul rulat în exercițiile din pagină și dacă a trecut verificarea</td>
+          <td>Ca să văd unde se blochează oamenii și să reiau la curs</td></tr>
+      <tr><td>Secțiunile parcurse și momentul</td>
+          <td>Progresul tău, pe care îl vezi și tu</td></tr>
+      <tr><td>Prezențele marcate prin codul de la curs</td>
+          <td>Înlocuiește lista pe hârtie</td></tr>
+      <tr><td>Activitatea publică din depozitul de proiect</td>
+          <td>Evaluarea proiectului de echipă. Sunt date deja publice pe platformă</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Ce nu se păstrează</h2>
+  <ul>
+    <li>Nicio parolă. Autentificarea se face prin link sau prin GitHub, iar eu nu văd
+    niciodată vreo parolă</li>
+    <li>Nimic din afara acestui site. Nu există urmărire între pagini, nu sunt module
+    de statistică străine, nu sunt cookieuri de publicitate</li>
+    <li>Nicio dată pe care n-o cere direct una dintre liniile din tabelul de sus</li>
+  </ul>
+
+  <h2>Cine vede ce</h2>
+  <p>Tu vezi toate datele tale, oricând, pe pagina ta. Eu, ca titular de curs, văd
+  datele întregii grupe. Nimeni altcineva nu are acces, iar un student nu poate vedea
+  datele altui student.</p>
+  <p>Asta nu e o promisiune pe încredere: restricția e scrisă în baza de date și
+  aplicată de ea. Chiar dacă cineva ar încerca să ceară direct datele altcuiva,
+  serverul refuză.</p>
+
+  <h2>Unde stau</h2>
+  <p>Într-o bază de date gestionată de Supabase, pe servere din Uniunea Europeană.
+  Site-ul în sine e găzduit de Cloudflare și nu conține date personale.</p>
+
+  <h2>Cât timp</h2>
+  <p>Până la încheierea situației școlare pentru acest semestru, plus perioada în care
+  se pot depune contestații. După aceea se șterg, cu excepția notelor finale, care
+  urmează regulile universității.</p>
+
+  <h2>Dacă nu vrei</h2>
+  <p>Participarea la colectare nu e obligatorie. Dacă preferi să nu îți fie
+  înregistrată activitatea de pe site, spune-mi la începutul semestrului și
+  stabilim altă formă de evaluare pentru partea respectivă, fără nicio consecință
+  asupra notei maxime pe care o poți obține.</p>
+  <p>La fel, poți cere oricând să vezi tot ce am despre tine, să corectezi ceva
+  greșit, sau să îți ștergi contul. Ultima variantă șterge și răspunsurile, deci
+  partea de notă care vine de acolo se recuperează altfel.</p>
+
+  <h2>Pe cine întrebi</h2>
+  <p>Pe mine, titularul cursului, la adresa din fișa disciplinei. Dacă răspunsul meu
+  nu te mulțumește, universitatea are un responsabil cu protecția datelor, iar
+  Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal
+  primește plângeri.</p>
+
+  <p class="notita" style="margin-top:34px"><b>DE CE EXISTĂ PAGINA ASTA</b>
+  Pentru că e obligatorie, dar și pentru că e primul exemplu din curs. Orice proiect
+  de date pe care îl veți face mai târziu, în orice organizație, are nevoie de o
+  pagină ca asta. Dacă nu o are, proiectul nu e gata.</p>
+
+  <p style="margin-top:26px"><a class="leg" href="../cont/">Înapoi la cont</a></p>
+</div>
+</body>
+</html>
