@@ -51,7 +51,32 @@ export async function intraCuGithub() {
 
 export async function iesi() {
   await sb.auth.signOut();
+  profilCache = null;
 }
+
+/* --- intrare ca invitat --------------------------------------------------
+   Pentru teste, pentru cineva care intra prin QR la oră, sau pentru un
+   student care încă nu are cont de GitHub. Creează un cont anonim real în
+   Supabase, deci progresul lui se salvează și se vede în panoul de clasă,
+   dar nu are email și nu e legat de un număr matricol din listă.
+
+   Cere ca „Anonymous sign-ins” să fie pornit în Supabase:
+     Authentication → Sign In / Providers → Anonymous sign-ins
+   ------------------------------------------------------------------------- */
+
+export async function intraCaInvitat(nume) {
+  const { error } = await sb.auth.signInAnonymously();
+  if (error) throw new Error(traduEroare(error.message));
+  const { data, error: e2 } = await sb.rpc("intra_ca_invitat", {
+    p_nume: (nume || "").trim() || null
+  });
+  if (e2) throw new Error(traduEroare(e2.message));
+  profilCache = null;
+  return data;   // { ok, matricol, nume }
+}
+
+/** Invitat = cont anonim, fără email, cu matricol care începe cu G-. */
+export const esteInvitat = p => !!(p && p.matricol && String(p.matricol).startsWith("G-"));
 
 /* --- mod de vizualizare --------------------------------------------------
    Un profesor poate alege sa vada site-ul ca un student. Alegerea se
@@ -131,5 +156,8 @@ function traduEroare(m = "") {
     return "Nu pot ajunge la server. Verifica legatura la internet.";
   if (t.includes("not found") && t.includes("function"))
     return "Baza de date nu e configurata complet. Ruleaza fisierele din db/.";
+  if (t.includes("anonymous") && t.includes("disabled"))
+    return "Intrarea ca invitat nu e pornita. In Supabase: Authentication, " +
+           "Sign In / Providers, Anonymous sign-ins.";
   return m;
 }

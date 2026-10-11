@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intră la curs — Fluxuri de lucru</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/sistem.css?v=5">
+<script src="../js/tema.js?v=5"></script>
+<style>
+  body{display:grid;place-items:center;min-height:100dvh;padding:24px}
+  .intra{width:100%;max-width:430px}
+  .intra__marca{display:flex;align-items:center;gap:10px;margin-bottom:30px;
+    justify-content:center;color:var(--text-2)}
+  .intra__marca span{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--text)}
+  .intra h1{font-size:27px;margin-bottom:10px;text-align:center}
+  .intra__d{font-family:var(--sans);font-size:15px;color:var(--text-2);text-align:center;
+    margin:0 0 28px;line-height:1.5;max-width:none}
+  .cutie{border:1px solid var(--linie);border-radius:13px;background:var(--panza);
+    padding:22px 24px;box-shadow:var(--umbra)}
+  .cutie label{display:block;font-family:var(--sans);font-size:13px;font-weight:500;
+    margin-bottom:7px}
+  .cutie input{width:100%;padding:11px 14px;border:1px solid var(--linie-2);
+    border-radius:9px;background:var(--fundal);font-family:var(--sans);font-size:15.5px;
+    outline:none;transition:.13s}
+  .cutie input:focus{border-color:var(--accent)}
+  .cutie .btn{width:100%;justify-content:center;margin-top:13px;padding:12px}
+  .ori{display:flex;align-items:center;gap:13px;margin:22px 0;
+    font-family:var(--mono);font-size:10.5px;color:var(--text-3);
+    text-transform:uppercase;letter-spacing:.11em}
+  .ori::before,.ori::after{content:"";flex:1;height:1px;background:var(--linie)}
+  .mic{font-family:var(--sans);font-size:12.5px;color:var(--text-3);line-height:1.5;
+    margin:16px 0 0;max-width:none}
+  .mesaj{font-family:var(--sans);font-size:14px;line-height:1.5;padding:12px 15px;
+    border-radius:9px;margin-top:15px;display:none}
+  .mesaj.vazut{display:block}
+  .mesaj.rau{background:var(--nu-slab);color:var(--nu)}
+  .mesaj.bun{background:var(--ok-slab);color:var(--ok)}
+</style>
+</head>
+<body>
+
+<main class="intra">
+  <div class="intra__marca">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="6" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="5" cy="18" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="19" cy="12" r="2.3" stroke="currentColor" stroke-width="1.7"/><path d="M7.2 7.1 16.8 11M7.2 16.9 16.8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <span>Fluxuri de lucru</span>
+  </div>
+
+  <h1>Intră la curs</h1>
+  <p class="intra__d">Ca să-ți fie salvate răspunsurile și ca să apari în
+  progresul grupei.</p>
+
+  <div class="cutie">
+    <div id="zona">
+      <label for="nume">Numele tău</label>
+      <input id="nume" type="text" autocomplete="name" maxlength="60"
+             placeholder="Cum să-ți spun" autofocus>
+      <button class="btn btn--tare" id="bt-invitat" type="button">Intră ca invitat</button>
+      <p class="mic">Fără cont și fără parolă. Progresul se salvează și se vede
+      la profesor, dar nu se leagă de numărul tău matricol.</p>
+
+      <div class="ori">sau</div>
+
+      <button class="btn" id="bt-github" type="button" style="width:100%;justify-content:center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 20v-3.2M7 16.8c-2.6 0-3.4-1.7-3.4-3.4 0-1 .3-1.8.9-2.4-.3-.8-.3-2 .1-2.8 1 .1 2 .6 2.7 1.2.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c.7-.6 1.7-1.1 2.7-1.2.4.8.4 2 .1 2.8.6.6.9 1.4.9 2.4 0 1.7-.8 3.4-3.4 3.4"/></svg>
+        Intră cu GitHub
+      </button>
+      <p class="mic">Dacă ești student la curs, intră cu GitHub și leagă-ți
+      numărul matricol. Contul de invitat nu se poate transforma mai târziu.</p>
+    </div>
+    <p class="mesaj" id="mesaj"></p>
+  </div>
+</main>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const msg = (text, fel) => {
+  const m = el("mesaj");
+  m.textContent = text; m.className = "mesaj vazut " + (fel || "");
+};
+
+/* unde trimitem după intrare: ?spre=... sau lecția 1 */
+const spre = new URLSearchParams(location.search).get("spre")
+          || "/data-science-workflows/c1-introducere-si-mediu/lectie/";
+
+let A;
+try {
+  A = await import("../js/auth.js?v=5");
+} catch (e) {
+  msg("Nu pot încărca autentificarea: " + e.message, "rau");
+  throw e;
+}
+
+/* dacă e deja cineva conectat, nu mai întrebăm nimic */
+try {
+  const p = await A.profil();
+  if (p.autentificat){
+    el("zona").innerHTML =
+      `<p style="font-family:var(--sans);font-size:15px;line-height:1.5">
+         Ești deja conectat ca <strong>${p.nume || p.email || "cineva"}</strong>.</p>
+       <a class="btn btn--tare" href="${spre}" style="width:100%;justify-content:center;margin-top:14px">Mergi la lecție</a>
+       <button class="btn" id="bt-iesi" type="button" style="width:100%;justify-content:center;margin-top:9px">Ieși și intră cu alt cont</button>`;
+    el("bt-iesi").onclick = async () => { await A.iesi(); location.reload(); };
+  }
+} catch { /* fără sesiune, rămâne formularul */ }
+
+el("bt-invitat")?.addEventListener("click", async () => {
+  const b = el("bt-invitat");
+  const nume = el("nume").value.trim();
+  if (nume.length < 2){ msg("Scrie un nume, ca să te recunosc în listă.", "rau");
+                        el("nume").focus(); return; }
+  b.disabled = true; b.textContent = "Se intră…";
+  try {
+    const r = await A.intraCaInvitat(nume);
+    if (!r?.ok) throw new Error(r?.mesaj || "nu a mers");
+    msg(`Gata, ${r.nume}. Te duc la lecție…`, "bun");
+    setTimeout(() => location.href = spre, 800);
+  } catch (e) {
+    b.disabled = false; b.textContent = "Intră ca invitat";
+    msg(e.message, "rau");
+  }
+});
+
+el("bt-github")?.addEventListener("click", async () => {
+  try { await A.intraCuGithub(); }
+  catch (e) { msg(e.message, "rau"); }
+});
+</script>
+</body>
+</html>

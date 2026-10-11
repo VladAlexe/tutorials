@@ -1,86 +1,107 @@
-/* ==========================================================================
-   Paginile de cont. Variabilele sunt declarate local, ca sa nu afecteze
-   celelalte cursuri din repo.
-   ========================================================================== */
-:root{
-  --ink:#16181A; --paper:#E8E8E4; --surface:#FFFFFF; --panel:#1E2022;
-  --olive:#6E7358; --olive-lt:#8D9472; --slate:#3D4451; --muted:#5C6165;
-  --rule:rgba(22,24,26,.13); --rule-strong:rgba(22,24,26,.28);
-  --ok:#4F6B3E; --no:#8C3B2E;
-  --sans:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --serif:'Literata',Georgia,'Times New Roman',serif;
-  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+/* ===========================================================================
+   CONTUL ȘI PROGRESUL
+
+   O singură pagină pentru student: cine e, unde a ajuns, ce a scris, și
+   butonul de luat de la capăt. Progresul nu mai stă separat; dacă e al tău,
+   stă la contul tău.
+   =========================================================================== */
+
+/* --- capul paginii ------------------------------------------------------- */
+
+.cnt__cap{display:flex;align-items:center;gap:19px;padding:40px 0 30px;flex-wrap:wrap}
+.cnt__cerc{width:62px;height:62px;flex:none;border-radius:50%;display:grid;
+  place-items:center;
+  background:conic-gradient(var(--accent) calc(var(--p,0) * 1%), var(--linie) 0)}
+.cnt__cerc i{width:52px;height:52px;border-radius:50%;background:var(--fundal);
+  display:grid;place-items:center;font-style:normal;font-family:var(--sans);
+  font-size:17px;font-weight:600;letter-spacing:.01em;color:var(--text-2)}
+.cnt__cine{min-width:0;flex:1}
+.cnt__cine h1{font-size:clamp(24px,3vw,32px);margin:0 0 9px}
+.cnt__meta{display:flex;gap:6px;flex-wrap:wrap;margin:0;max-width:none}
+.cnt__act{display:flex;gap:8px;flex-wrap:wrap}
+
+/* --- cifre --------------------------------------------------------------- */
+
+.cifre{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:11px;
+  margin:0 0 14px}
+.cif{border:1px solid var(--linie);border-radius:11px;background:var(--panza);
+  padding:15px 17px}
+.cif b{display:block;font-family:var(--sans);font-size:26px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.1;font-variant-numeric:lining-nums}
+.cif span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--text-3);margin-top:6px}
+
+/* --- secțiuni ------------------------------------------------------------ */
+
+.cnt__s{padding:34px 0;border-top:1px solid var(--linie)}
+.cnt__s h2{margin:0 0 6px;font-size:20px}
+.cnt__d{font-family:var(--sans);font-size:14px;color:var(--text-3);margin:0 0 18px;
+  max-width:var(--citit)}
+
+/* --- lista lecțiilor ----------------------------------------------------- */
+
+.lect{display:grid;gap:2px}
+.lect__r{display:grid;grid-template-columns:30px minmax(0,1fr) 48px;gap:15px;
+  align-items:center;padding:13px 10px 13px 2px;border-radius:9px;
+  text-decoration:none;transition:background .11s}
+.lect__r:hover{background:var(--panza-2)}
+.lect__n{font-family:var(--mono);font-size:12px;color:var(--text-3);
+  font-variant-numeric:lining-nums tabular-nums}
+.lect__m{min-width:0}
+.lect__t{display:block;font-family:var(--sans);font-size:15.5px;font-weight:500;
+  line-height:1.3;letter-spacing:-.01em}
+.lect__s{display:block;font-family:var(--sans);font-size:12.5px;color:var(--text-3);
+  margin-top:2px}
+.lect__b{display:block;height:3px;border-radius:2px;background:var(--linie);
+  margin-top:8px;overflow:hidden}
+.lect__b i{display:block;height:100%;background:var(--accent)}
+.lect__p{font-family:var(--mono);font-size:12.5px;color:var(--text-2);text-align:right;
+  font-variant-numeric:lining-nums}
+
+/* --- codul trimis -------------------------------------------------------- */
+
+.codl{display:grid;gap:6px}
+.codl__r{display:grid;grid-template-columns:128px minmax(0,1fr) 108px;gap:12px;
+  align-items:center}
+.codl__id{font-family:var(--mono);font-size:11px;color:var(--text-3)}
+.codl__r code{font-family:var(--mono);font-size:12px;background:var(--panza-2);
+  border:1px solid var(--linie);border-radius:6px;padding:7px 11px;overflow-x:auto;
+  white-space:pre;min-width:0;scrollbar-width:thin}
+.codl__r.bun code{border-color:color-mix(in srgb,var(--ok) 38%,transparent);
+  background:var(--ok-slab)}
+.codl__c{font-family:var(--mono);font-size:10.5px;color:var(--text-3);text-align:right}
+
+.tb__sul{max-height:420px;overflow-y:auto;scrollbar-width:thin}
+
+/* --- resetarea ----------------------------------------------------------- */
+
+.rst{border:1px solid var(--linie);border-radius:12px;background:var(--panza);
+  padding:19px 21px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;
+  align-items:center;max-width:var(--citit)}
+.rst__t{font-family:var(--sans);font-size:15px;font-weight:600;margin:0 0 5px}
+.rst__d{font-family:var(--sans);font-size:13.5px;color:var(--text-2);margin:0;
+  line-height:1.5;max-width:none}
+.rst__act{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.rst__act select{border:1px solid var(--linie-2);background:var(--fundal);
+  border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:var(--sans);
+  max-width:200px}
+.rst__bt{border-color:var(--nu);color:var(--nu)}
+.rst__bt:hover:not(:disabled){background:var(--nu-slab);border-color:var(--nu)}
+.rst__msg{grid-column:1/-1;font-family:var(--sans);font-size:13.5px;margin:0;
+  display:none;color:var(--text-2);max-width:none}
+.rst__msg.vazut{display:block}
+
+/* --- gol ----------------------------------------------------------------- */
+
+.gol-mare{text-align:center;padding:84px 20px;max-width:46ch;margin:0 auto}
+.gol-mare h1{font-size:28px;margin-bottom:14px}
+.gol-mare p{font-family:var(--sans);font-size:16px;color:var(--text-2);
+  margin:0 auto 24px;max-width:none}
+.gol-mare__bt{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+
+@media(max-width:700px){
+  .rst{grid-template-columns:1fr}
+  .codl__r{grid-template-columns:minmax(0,1fr);gap:4px}
+  .codl__c{text-align:left}
+  .cnt__cap{padding-top:28px}
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--paper);color:var(--ink);font-family:var(--serif);
-  font-size:17px;line-height:1.66;-webkit-font-smoothing:antialiased}
-button,input{font-family:inherit}
-:focus-visible{outline:2.5px solid var(--olive);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-
-.top{background:var(--panel);color:#EDEDE9;padding:11px 0;font-family:var(--sans);font-size:13px}
-.top__in{max-width:560px;margin:0 auto;padding:0 24px;display:flex;gap:9px;align-items:center}
-.top__in a{color:rgba(237,237,233,.72);text-decoration:none;font-weight:600}
-.top__in a:hover{color:#fff}
-.top__sep{color:rgba(237,237,233,.35)}
-.top__here{font-weight:600}
-
-.shell{max-width:560px;margin:0 auto;padding:44px 24px 70px}
-
-.eyebrow{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.2em;
-  color:var(--olive);margin:0 0 11px}
-h1{font-family:var(--sans);font-weight:800;font-size:clamp(26px,5vw,34px);line-height:1.1;
-  letter-spacing:-.02em;margin:0 0 10px}
-.deck{color:var(--muted);margin:0 0 30px;font-size:17px}
-p{margin:0 0 16px}
-a.leg{color:var(--olive);text-decoration:none;border-bottom:1px solid rgba(110,115,88,.4);
-  font-family:var(--sans);font-weight:600;font-size:14px}
-a.leg:hover{border-bottom-color:var(--olive)}
-
-.card{background:var(--surface);border:1px solid var(--rule-strong);border-radius:9px;
-  padding:24px;margin:0 0 18px}
-.card h2{font-family:var(--sans);font-weight:700;font-size:17px;margin:0 0 6px}
-.card p{font-size:15.5px;color:var(--muted)}
-.card p:last-child{margin-bottom:0}
-
-label{display:block;font-family:var(--sans);font-weight:600;font-size:12.5px;
-  letter-spacing:.04em;margin:0 0 6px;color:var(--muted)}
-input[type=email],input[type=text]{width:100%;padding:11px 13px;border:1.5px solid var(--rule-strong);
-  border-radius:6px;background:var(--surface);font-size:16px;color:var(--ink)}
-input.mat{font-family:var(--mono);letter-spacing:.08em}
-
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;
-  font-family:var(--sans);font-weight:600;font-size:15px;padding:12px 18px;border-radius:7px;
-  border:1.5px solid var(--ink);background:var(--ink);color:#fff;transition:.15s;cursor:pointer}
-.btn:hover:not(:disabled){background:var(--slate);border-color:var(--slate)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn--alt{background:none;color:var(--ink)}
-.btn--alt:hover:not(:disabled){background:rgba(22,24,26,.06);color:var(--ink)}
-.btn + .btn{margin-top:10px}
-.btn svg{flex:none}
-
-.sep{display:flex;align-items:center;gap:12px;margin:18px 0;
-  font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.1em;color:var(--muted)}
-.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--rule)}
-
-.msg{border-radius:6px;padding:13px 16px;margin:0 0 16px;font-size:15px;display:none}
-.msg.on{display:block}
-.msg--ok{background:rgba(79,107,62,.12);border-left:3px solid var(--ok)}
-.msg--no{background:rgba(140,59,46,.1);border-left:3px solid var(--no)}
-.msg--info{background:rgba(110,115,88,.1);border-left:3px solid var(--olive)}
-
-.ident{display:flex;align-items:center;gap:13px;padding:15px 18px;background:var(--surface);
-  border:1px solid var(--rule-strong);border-radius:9px;margin:0 0 18px}
-.ident__cerc{flex:none;width:42px;height:42px;border-radius:50%;background:var(--olive);
-  color:#fff;display:grid;place-items:center;font-family:var(--sans);font-weight:700;font-size:16px}
-.ident__nume{font-family:var(--sans);font-weight:700;font-size:16px;line-height:1.25}
-.ident__sub{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:2px}
-
-.notita{font-size:14.5px;color:var(--muted);border-left:3px solid var(--rule-strong);
-  padding:2px 0 2px 15px;margin:0 0 18px}
-.notita b{font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;display:block;
-  color:var(--ink);margin-bottom:4px}
-
-.incarca{text-align:center;padding:50px 0;color:var(--muted);font-style:italic}
-[hidden]{display:none!important}

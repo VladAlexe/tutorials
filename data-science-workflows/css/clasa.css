@@ -131,3 +131,79 @@
   .col{min-width:34px}
   .col__t{display:none}
 }
+
+/* --- ce au scris ei la exerciții ----------------------------------------- */
+
+#cod{max-height:640px;overflow-y:auto;scrollbar-width:thin;margin-right:-10px;
+  padding-right:10px}
+
+.cod__g{margin-bottom:17px}
+.cod__g:last-child{margin-bottom:0}
+.cod__gt{display:flex;align-items:baseline;gap:10px;margin-bottom:7px;
+  padding-bottom:6px;border-bottom:1px solid var(--linie)}
+.cod__id{font-family:var(--mono);font-size:11px;color:var(--text-2);font-weight:500}
+.cod__n{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto}
+.cod__r{display:grid;grid-template-columns:132px minmax(0,1fr) 30px;gap:11px;
+  align-items:center;padding:6px 0;border-bottom:1px solid var(--linie)}
+.cod__r:last-child{border-bottom:0}
+.cod__cine{font-family:var(--sans);font-size:12.5px;font-weight:500;line-height:1.25;
+  overflow:hidden}
+.cod__cine small{display:block;font-family:var(--mono);font-size:9.5px;
+  color:var(--text-3);font-weight:400}
+.cod__t{font-family:var(--mono);font-size:11.5px;background:var(--panza-2);
+  border:1px solid var(--linie);border-radius:6px;padding:5px 9px;overflow-x:auto;
+  white-space:pre;min-width:0;scrollbar-width:thin}
+.cod__r.bun .cod__t{border-color:color-mix(in srgb,var(--ok) 40%,transparent);
+  background:var(--ok-slab)}
+.cod__r.rau .cod__t{border-color:color-mix(in srgb,var(--nu) 34%,transparent);
+  background:var(--nu-slab)}
+.cod__i{font-family:var(--mono);font-size:10.5px;color:var(--text-3);text-align:right}
+
+/* --- așteptările --------------------------------------------------------- */
+
+.ast__lista{display:grid;gap:11px;max-height:420px;overflow-y:auto;scrollbar-width:thin}
+.ast__c{border-left:2px solid var(--accent);padding:2px 0 2px 14px;margin:0}
+.ast__c p{font-size:15px;line-height:1.5;margin:0 0 5px;max-width:none}
+.ast__c footer{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text-2)}
+.ast__c footer span{display:block;font-family:var(--mono);font-size:9.5px;
+  color:var(--text-3);font-weight:400;margin-top:1px}
+
+/* --- profilul grupei ----------------------------------------------------- */
+
+.aev__legenda{display:flex;gap:13px;flex-wrap:wrap;margin:0 0 12px;
+  font-family:var(--mono);font-size:9.5px;color:var(--text-3)}
+.aev__legenda i{display:inline-block;width:11px;height:7px;border-radius:2px;
+  margin-right:5px;vertical-align:0}
+.aev__b{display:grid;grid-template-columns:104px minmax(0,1fr) 26px;gap:10px;
+  align-items:center;margin-bottom:6px}
+.aev__bt{font-family:var(--sans);font-size:12.5px;color:var(--text-2);text-align:right}
+.aev__bp{display:flex;height:12px;border-radius:3px;overflow:hidden;
+  background:var(--panza-2)}
+.aev__bp i{display:block;height:100%}
+.aev__bn{font-family:var(--mono);font-size:10.5px;color:var(--text-3)}
+.n0{background:var(--sci-1)} .n1{background:var(--sci-2)}
+.n2{background:var(--sci-4)} .n3{background:var(--sci-6)}
+
+/* --- codul de intrare ---------------------------------------------------- */
+
+.qr{position:fixed;inset:0;z-index:300;background:rgba(10,12,14,.55);
+  display:grid;place-items:center;padding:24px;backdrop-filter:blur(3px)}
+.qr[hidden]{display:none}
+.qr__cutie{position:relative;background:var(--panza);border-radius:16px;
+  padding:30px 34px 26px;text-align:center;box-shadow:var(--umbra-2);
+  max-width:min(460px,92vw)}
+.qr__x{position:absolute;top:10px;right:14px;font-size:24px;line-height:1;
+  color:var(--text-3);padding:4px 8px;border-radius:7px}
+.qr__x:hover{background:var(--panza-2);color:var(--text)}
+.qr__et{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-3);margin-bottom:16px}
+.qr__cod{display:grid;place-items:center;min-height:200px}
+.qr__cod svg{width:min(260px,62vw);height:auto;display:block}
+/* codul trebuie citit și pe tema întunecată: fundal alb mereu */
+.qr__cod svg{background:#fff;padding:10px;border-radius:10px}
+.qr__fallback{font-family:var(--mono);font-size:17px;line-height:1.5;word-break:break-all;
+  color:var(--text);margin:0;max-width:none}
+.qr__url{font-family:var(--mono);font-size:13px;color:var(--text-2);margin:16px 0 0;
+  word-break:break-all;max-width:none}
+.qr__d{font-family:var(--sans);font-size:13px;color:var(--text-3);margin:12px 0 0;
+  line-height:1.45;max-width:34ch;margin-inline:auto}

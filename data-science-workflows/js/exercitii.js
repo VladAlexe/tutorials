@@ -66,16 +66,20 @@ E.cod = (gazda, d) => {
   gazda.closest(".ix")?.classList.add("exc");
 
   /* `cod` e un bloc de text cu {{1}}, {{2}} … în locurile de completat */
+  /* Golurile se taie din linie ÎNAINTE de colorare. Altfel colorarea vede
+     cifra din {{1}} ca pe un număr, o înfășoară în <span>, iar tiparul nu se
+     mai potrivește și linia rămâne fără câmp de completat. */
+  const camp = k => {
+    const g = d.goluri[k] || {};
+    const lat = Math.max(5, (g.ok?.[0] || "").length + 2);
+    return `<input class="gol" data-k="${k}" size="${lat}" spellcheck="false"
+              autocapitalize="off" autocomplete="off"
+              placeholder="${esc(g.ajutor || "…")}" aria-label="Golul ${k}">`;
+  };
   const linii = d.cod.replace(/\t/g, "    ").split("\n");
   const corp = linii.map(l => {
-    let h = coloreaza(l);
-    h = h.replace(/\{\{(\w+)\}\}/g, (_, k) => {
-      const g = d.goluri[k] || {};
-      const lat = Math.max(5, (g.ok?.[0] || "").length + 2);
-      return `<input class="gol" data-k="${k}" size="${lat}" spellcheck="false"
-                autocapitalize="off" autocomplete="off"
-                placeholder="${esc(g.ajutor || "…")}" aria-label="Golul ${k}">`;
-    });
+    const bucati = l.split(/\{\{(\w+)\}\}/);   // text, cheie, text, cheie, …
+    const h = bucati.map((x, i) => i % 2 ? camp(x) : coloreaza(x)).join("");
     return h || "&nbsp;";
   }).join("\n");
 

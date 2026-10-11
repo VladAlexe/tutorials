@@ -6,8 +6,8 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=5";
-import EXERCITII from "./exercitii.js?v=5";
+import GRAFICE from "./grafice.js?v=4";
+import EXERCITII from "./exercitii.js?v=4";
 
 const C = { ...GRAFICE, ...EXERCITII };
 
@@ -275,7 +275,7 @@ C.autoevaluare = (gazda, date) => {
     gazda.closest(".ix")?.classList.add("gata");
     document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=5");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=4");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -318,4 +318,47 @@ C.arbore = (gazda, date) => {
     return `<button class="arb__c ${t.imut ? "imut" : ""}" data-n="${t.n}" type="button">
       ${t.n}</button>`;
   }
+};
+
+/* --- 7. Așteptări: text liber, citit de profesor -------------------------
+   A doua jumătate a primului punct din planul cursului: „evaluarea
+   cunoștințelor ȘI a așteptărilor”. Cunoștințele se bifează, așteptările se
+   scriu. Ajung în jurnal și apar la profesor, cu numele celui care a scris.
+   ------------------------------------------------------------------------ */
+C.asteptari = (gazda, date) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const MIN = date.minim || 25;
+
+  gazda.innerHTML = `
+    <p class="ex__sarcina">${date.sarcina || "Două-trei rânduri. Le citesc pe toate."}</p>
+    <div class="ast">
+      <textarea class="ast__t" rows="4" maxlength="600" spellcheck="true"
+        placeholder="${date.exemplu || "De exemplu: vreau să pot lua singur date de pe un site și să le pun cap la cap, fără să aștept pe cineva."}"></textarea>
+      <div class="ast__jos"><span class="ast__nr">0</span>
+        <button class="btn btn--mic btn--tare" data-rol="trimite" type="button" disabled>Trimite</button></div>
+    </div>
+    <p class="ex__raspuns"></p>`;
+
+  const t = gazda.querySelector(".ast__t");
+  const nr = gazda.querySelector(".ast__nr");
+  const bt = gazda.querySelector('[data-rol="trimite"]');
+  const out = gazda.querySelector(".ex__raspuns");
+
+  t.addEventListener("input", () => {
+    const n = t.value.trim().length;
+    nr.textContent = n < MIN ? `încă ${MIN - n} caractere` : `${n} caractere`;
+    nr.classList.toggle("gata", n >= MIN);
+    bt.disabled = n < MIN;
+  });
+
+  bt.onclick = async () => {
+    bt.disabled = true; t.disabled = true;
+    out.innerHTML = "<b>Mulțumesc.</b> Le citesc pe toate înainte de cursul următor.";
+    gazda.closest(".ix")?.classList.add("gata");
+    document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
+    try {
+      const s = await import("/data-science-workflows/js/sesiune.js?v=5");
+      await s.jurnal("asteptari", { text: t.value.trim().slice(0, 600) });
+    } catch {}
+  };
 };

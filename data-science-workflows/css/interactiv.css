@@ -121,3 +121,16 @@
 .arb__i p{font-size:14px;line-height:1.5;margin:0 0 9px;max-width:none}
 .arb__ex{font-size:12px;padding:9px 11px;margin:0 0 9px}
 .arb__la{font-family:var(--mono);font-size:10.5px;color:var(--accent-text);margin:0}
+
+/* --- așteptări ----------------------------------------------------------- */
+.ast{border:1px solid var(--linie);border-radius:10px;background:var(--panza);
+  padding:12px 14px}
+.ast__t{width:100%;border:0;outline:none;background:none;resize:vertical;
+  font-family:var(--serif);font-size:16px;line-height:1.55;color:var(--text);
+  min-height:84px}
+.ast__t::placeholder{color:var(--text-3)}
+.ast__t:disabled{opacity:.75}
+.ast__jos{display:flex;align-items:center;gap:11px;margin-top:9px;
+  border-top:1px solid var(--linie);padding-top:10px}
+.ast__nr{font-family:var(--mono);font-size:10.5px;color:var(--text-3);flex:1}
+.ast__nr.gata{color:var(--ok)}

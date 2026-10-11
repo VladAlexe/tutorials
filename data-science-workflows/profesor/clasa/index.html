@@ -31,6 +31,7 @@
     </label>
     <div class="cls__dr">
       <span class="cls__cand" id="cand">—</span>
+      <button class="btn btn--mic" id="bt-qr" type="button">cod de intrare</button>
       <button class="btn btn--mic" id="bt-pauza" type="button">pune pe pauză</button>
       <a class="btn btn--mic" href="../../profesor/">Panoul vechi</a>
     </div>
@@ -63,7 +64,40 @@
       <div class="tb__sul"><table class="tb" id="tabel"></table></div>
     </div>
   </div>
+
+  <div class="cls__grila" style="margin-top:16px">
+    <div class="pan">
+      <div class="pan__cap"><span class="pan__t">Ce au scris la exerciții</span></div>
+      <p class="pan__d">Ultima rezolvare a fiecăruia, pentru fiecare exercițiu cu
+        cod. Numărul din dreapta arată câte încercări a făcut până acolo.</p>
+      <div id="cod"><p class="pan__gol">Încă nu a trimis nimeni cod.</p></div>
+    </div>
+
+    <div>
+      <div class="pan" style="margin-bottom:16px">
+        <div class="pan__cap"><span class="pan__t">Ce știe grupa</span></div>
+        <p class="pan__d">Autoevaluarea de la începutul cursului, strânsă pe grupă.</p>
+        <div id="autoeval"><p class="pan__gol">Încă nu s-a autoevaluat nimeni.</p></div>
+      </div>
+      <div class="pan">
+        <div class="pan__cap"><span class="pan__t">Ce așteaptă de la curs</span></div>
+        <p class="pan__d">Scris de ei, cu numele lor.</p>
+        <div id="asteptari"><p class="pan__gol">Încă nu a scris nimeni.</p></div>
+      </div>
+    </div>
+  </div>
 </template>
+
+<div class="qr" id="qr" hidden>
+  <div class="qr__cutie">
+    <button class="qr__x" id="qr-x" type="button" aria-label="Închide">×</button>
+    <span class="qr__et">Intrare la curs</span>
+    <div class="qr__cod" id="qr-cod"></div>
+    <p class="qr__url" id="qr-url"></p>
+    <p class="qr__d">Proiectează asta. Cine nu are cont intră ca invitat, cu
+      numele lui, și apare imediat în panou.</p>
+  </div>
+</div>
 
 <script type="module">
 import { LECTII, RADACINA } from "../../js/curs.js?v=5";
@@ -153,11 +187,17 @@ function porneste(){
   /* ---------------------------------------------------------- o rundă ---- */
   async function reimprospateaza(){
     const cheie = sel.value;
-    const [live, prog, rasp] = await Promise.all([
+    const [live, prog, rasp, cod, ast, aev] = await Promise.all([
       sb.rpc("live_acum", { p_minute: 3 }),
       sb.rpc("sumar_progres", { p_capitol: cheie }),
-      sb.rpc("sumar_raspunsuri", { p_capitol: cheie })
+      sb.rpc("sumar_raspunsuri", { p_capitol: cheie }),
+      sb.rpc("sumar_cod", { p_exercitiu: null }),
+      sb.rpc("sumar_asteptari", { p_capitol: cheie }),
+      sb.rpc("sumar_autoevaluare", { p_capitol: cheie })
     ]);
+    deseneazaCod(cod.data || []);
+    deseneazaAsteptari(ast.data || []);
+    deseneazaAutoeval(aev.data || []);
     if (live.error || prog.error || rasp.error){
       el("cand").textContent = "eroare: " + (live.error || prog.error || rasp.error).message;
       return;
@@ -257,6 +297,98 @@ function porneste(){
           (${total ? Math.round(bune / total * 100) : 0}%)</div>
       </div>`;
     }).join("") || `<p class="pan__gol">Încă nu a răspuns nimeni.</p>`;
+  }
+
+  /* ------------------------------------------------- ce au scris ei ------ */
+  const cand = s => new Date(s).toLocaleString("ro-RO",
+    { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" });
+
+  function deseneazaCod(randuri){
+    if (!randuri.length){
+      el("cod").innerHTML = `<p class="pan__gol">Încă nu a trimis nimeni cod.</p>`;
+      return;
+    }
+    const peEx = new Map();
+    randuri.forEach(r => {
+      if (!peEx.has(r.exercitiu_id)) peEx.set(r.exercitiu_id, []);
+      peEx.get(r.exercitiu_id).push(r);
+    });
+    el("cod").innerHTML = [...peEx].map(([ex, lst]) => `
+      <div class="cod__g">
+        <div class="cod__gt"><span class="cod__id">${ex}</span>
+          <span class="cod__n">${lst.filter(x => x.trecut).length}/${lst.length} au trecut</span></div>
+        ${lst.map(r => `<div class="cod__r ${r.trecut ? "bun" : "rau"}">
+          <span class="cod__cine">${r.nume}<small>${r.matricol}</small></span>
+          <code class="cod__t">${(r.cod || "").replace(/</g, "&lt;")}</code>
+          <span class="cod__i" title="încercări">${r.incercari}×</span>
+        </div>`).join("")}
+      </div>`).join("");
+  }
+
+  function deseneazaAsteptari(randuri){
+    if (!randuri.length){
+      el("asteptari").innerHTML = `<p class="pan__gol">Încă nu a scris nimeni.</p>`;
+      return;
+    }
+    el("asteptari").innerHTML = `<div class="ast__lista">` + randuri.map(r => `
+      <blockquote class="ast__c">
+        <p>${(r.text || "").replace(/</g, "&lt;")}</p>
+        <footer>${r.nume}<span>${r.matricol}${r.grupa ? " · " + r.grupa : ""} · ${cand(r.creat_la)}</span></footer>
+      </blockquote>`).join("") + `</div>`;
+  }
+
+  const ETICHETE_AEV = { python:"Python", linie:"Linia de comandă", git:"Git",
+                         sql:"SQL", api:"API-uri", stat:"Statistică" };
+  const NIVELE_AEV = ["n-am auzit", "am citit", "am folosit", "folosesc des"];
+
+  function deseneazaAutoeval(randuri){
+    if (!randuri.length){
+      el("autoeval").innerHTML = `<p class="pan__gol">Încă nu s-a autoevaluat nimeni.</p>`;
+      return;
+    }
+    const pe = new Map();
+    randuri.forEach(r => {
+      if (!pe.has(r.tema)) pe.set(r.tema, [0, 0, 0, 0]);
+      pe.get(r.tema)[r.nivel] = r.cati;
+    });
+    el("autoeval").innerHTML = `
+      <div class="aev__legenda">${NIVELE_AEV.map((n, i) =>
+        `<span><i class="n${i}"></i>${n}</span>`).join("")}</div>
+      ${[...pe].map(([tema, v]) => {
+        const tot = v.reduce((a, b) => a + b, 0) || 1;
+        return `<div class="aev__b">
+          <span class="aev__bt">${ETICHETE_AEV[tema] || tema}</span>
+          <span class="aev__bp">${v.map((k, i) => k
+            ? `<i class="n${i}" style="width:${k / tot * 100}%" title="${NIVELE_AEV[i]}: ${k}"></i>`
+            : "").join("")}</span>
+          <span class="aev__bn">${tot}</span></div>`;
+      }).join("")}`;
+  }
+
+  /* ------------------------------------------------------------ codul QR -- */
+  const adresaIntrare = location.origin + RADACINA + "/intra/";
+  el("qr-url").textContent = adresaIntrare.replace(/^https?:\/\//, "");
+  el("bt-qr").onclick = () => { el("qr").hidden = false; faQr(); };
+  el("qr-x").onclick = () => { el("qr").hidden = true; };
+  el("qr").onclick = e => { if (e.target === el("qr")) el("qr").hidden = true; };
+
+  let qrFacut = false;
+  async function faQr(){
+    if (qrFacut) return;
+    const g = el("qr-cod");
+    try {
+      const { default: qrcode } =
+        await import("https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/+esm");
+      const q = qrcode(0, "M");
+      q.addData(adresaIntrare);
+      q.make();
+      g.innerHTML = q.createSvgTag({ cellSize: 7, margin: 2, scalable: true });
+      qrFacut = true;
+    } catch {
+      /* fără rețea către CDN, adresa scrisă mare e la fel de utilă */
+      g.innerHTML = `<p class="qr__fallback">${adresaIntrare.replace(/^https?:\/\//, "")}</p>`;
+      qrFacut = true;
+    }
   }
 
   /* ---------------------------------------------------------- tabel ------ */

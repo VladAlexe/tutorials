@@ -41,7 +41,7 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "json": "Explorator", "arbore": "Explorator", "autoevaluare": "Evaluare",
        "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale",
        "cod": "Scrii cod", "ordine": "Exercițiu", "sortare": "Exercițiu",
-       "dovada": "Verificare la tine"}
+       "dovada": "Verificare la tine", "asteptari": "Scrii tu", "diverg": "Date reale"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 
@@ -156,7 +156,13 @@ sl("s3", "Cursul", "Ce știi deja",
            {"cheie": "sql", "t": "SQL", "d": "SELECT, JOIN, tabele"},
            {"cheie": "api", "t": "API-uri", "d": "a cere date unui serviciu, prin cod"},
            {"cheie": "stat", "t": "Statistică", "d": "distribuții, corelație, regresie"},
-       ]}),
+       ]})
+   + ix("asteptari", "Ce aștepți de la curs", {
+       "id": "c1-asteptari",
+       "sarcina": "Și a doua jumătate a întrebării: <strong>ce aștepți de la "
+                  "cursul ăsta?</strong> Două-trei rânduri. Le citesc pe toate "
+                  "înainte de cursul următor, și ajustez ce pot.",
+       "exemplu": "De exemplu: vreau să pot lua singur date de pe un site și să le pun cap la cap, fără să aștept pe cineva."}),
    manual=
    "<h2>Unde ești acum</h2>"
    "<p>Cursul pornește de la zero pe partea de unelte, dar o grupă nu e "
@@ -172,7 +178,17 @@ sl("s3", "Cursul", "Ce știi deja",
            {"cheie": "sql", "t": "SQL", "d": "SELECT, JOIN, tabele"},
            {"cheie": "api", "t": "API-uri", "d": "a cere date unui serviciu, prin cod"},
            {"cheie": "stat", "t": "Statistică", "d": "distribuții, corelație, regresie"},
-       ]}))
+       ]})
+   + "<h3>Și așteptările</h3>"
+   "<p>Cealaltă jumătate a întrebării. Un curs se poate preda în multe feluri, "
+   "iar ce scrieți aici chiar schimbă accentele: dacă jumătate din grupă vrea "
+   "în primul rând să scoată date din surse publice, insist pe API-uri; dacă "
+   "majoritatea vine cu o temă de licență în cap, insist pe formularea "
+   "întrebării și pe raport.</p>"
+   + ix("asteptari", "Ce aștepți de la curs", {
+       "id": "c1-asteptari",
+       "sarcina": "Două-trei rânduri. Le citesc pe toate.",
+       "exemplu": "De exemplu: vreau să pot lua singur date de pe un site și să le pun cap la cap, fără să aștept pe cineva."}))
 
 # ------------------------------------------------------- 4-5. softuri, git
 sl("s4", "Softuri și conturi", "Softuri și conturi",
@@ -430,6 +446,31 @@ sl("s10", "Proiectul", "Ce formă au datele",
        ["un merge pentru atribute", "două merge-uri, câte unul pe capăt"],
    ])
    + ix("matrice", "1.764 de rânduri")
+   + ix("cod", "Numără perechile", {
+       "id": "c1-cod-diadic", "fisier": "diadic.py",
+       "sarcina": "Ai fișierul SCI încărcat în <code>d</code>. Scrie filtrul "
+                  "care păstrează doar perechile România–România și apoi "
+                  "numără-le. Coloanele se numesc <code>user_country</code> și "
+                  "<code>friend_country</code>.",
+       "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/country.csv\")\n\n"
+              "# cate randuri are tot fisierul\nprint(len(d))              # 31684\n\n"
+              "# doar perechile care pleaca din Romania\n"
+              "ro = d[d[{{1}}] == {{2}}]\nprint(len(ro))             # 178\n\n"
+              "# cea mai legata tara, fara Romania insasi\n"
+              "altele = ro[ro.friend_country != \"RO\"]\n"
+              "print(altele.nlargest(1, {{3}}).friend_country.values)   # ['MD']",
+       "goluri": {
+           "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
+           "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"},
+           "3": {"ok": ["\"scaled_sci\"", "'scaled_sci'"], "ajutor": "coloana"}},
+       "laBine": "178 de rânduri: România cu fiecare țară din set, inclusiv cu ea însăși.",
+       "laRau": "Numele coloanelor se scriu între ghilimele, ca text.",
+       "explicatie": "Din 31.684 de rânduri rămân 178, câte o pereche pentru "
+                     "fiecare țară. Asta e forma unei <em>felii</em> dintr-un "
+                     "tabel diadic: fixezi un capăt al perechii și obții o "
+                     "listă monadică. Republica Moldova iese prima, ceea ce nu "
+                     "surprinde pe nimeni; interesant devine de la locul doi "
+                     "încolo, dar aia e discuție pentru cursul 6."})
    + verif("c1-v5", 2,
            "Cu cele 178 de țări din SCI, câte rânduri are matricea completă?",
            ["178", "356", "31.684", "15.753"],
@@ -460,6 +501,31 @@ sl("s10", "Proiectul", "Ce formă au datele",
    "de rânduri doar pentru România. Un model care presupune independență dă "
    "erori standard prea mici.</li></ol>"
    + ix("matrice", "1.764 de rânduri")
+   + ix("cod", "Numără perechile", {
+       "id": "c1-cod-diadic", "fisier": "diadic.py",
+       "sarcina": "Ai fișierul SCI încărcat în <code>d</code>. Scrie filtrul "
+                  "care păstrează doar perechile România–România și apoi "
+                  "numără-le. Coloanele se numesc <code>user_country</code> și "
+                  "<code>friend_country</code>.",
+       "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/country.csv\")\n\n"
+              "# cate randuri are tot fisierul\nprint(len(d))              # 31684\n\n"
+              "# doar perechile care pleaca din Romania\n"
+              "ro = d[d[{{1}}] == {{2}}]\nprint(len(ro))             # 178\n\n"
+              "# cea mai legata tara, fara Romania insasi\n"
+              "altele = ro[ro.friend_country != \"RO\"]\n"
+              "print(altele.nlargest(1, {{3}}).friend_country.values)   # ['MD']",
+       "goluri": {
+           "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
+           "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"},
+           "3": {"ok": ["\"scaled_sci\"", "'scaled_sci'"], "ajutor": "coloana"}},
+       "laBine": "178 de rânduri: România cu fiecare țară din set, inclusiv cu ea însăși.",
+       "laRau": "Numele coloanelor se scriu între ghilimele, ca text.",
+       "explicatie": "Din 31.684 de rânduri rămân 178, câte o pereche pentru "
+                     "fiecare țară. Asta e forma unei <em>felii</em> dintr-un "
+                     "tabel diadic: fixezi un capăt al perechii și obții o "
+                     "listă monadică. Republica Moldova iese prima, ceea ce nu "
+                     "surprinde pe nimeni; interesant devine de la locul doi "
+                     "încolo, dar aia e discuție pentru cursul 6."})
    + verif("c1-v5", 2,
            "Cu cele 178 de țări din SCI, câte rânduri are matricea completă?",
            ["178", "356", "31.684", "15.753"],
@@ -558,6 +624,34 @@ sl("s12", "Tipuri de date", "Tipuri în Python",
          "intro": "Apasă pe orice tip ca să vezi ce e, cum arată, și unde apare la noi.",
          "sarcina": "Conturul punctat înseamnă tip nemodificabil.",
          "ramuri": RAMURI_PY})
+   + ix("cod", "Repară tipurile", {
+       "id": "c1-cod-tipuri", "fisier": "tipuri.py",
+       "sarcina": "Trei greșeli de tip, dintre cele care nu dau eroare imediat. "
+                  "Completează conversiile care le repară.",
+       "cod": "an_text = \"2024\"\nurmatorul = {{1}}(an_text) + 1\n"
+              "print(urmatorul)             # 2025\n\n"
+              "# zecimala româneasca vine cu virgula\n"
+              "rata_text = \"3,7\"\n"
+              "rata = float(rata_text.{{2}}(\",\", \".\"))\n"
+              "print(rata * 2)              # 7.4\n\n"
+              "# codul NUTS trebuie sa ramana text, cu zerourile din fata\n"
+              "import pandas as pd\n"
+              "d = pd.read_csv(\"coduri.csv\", dtype={\"cod\": {{3}}})\n"
+              "print(d.cod.iloc[0])         # 01234",
+       "goluri": {
+           "1": {"ok": ["int"], "ajutor": "funcția"},
+           "2": {"ok": ["replace"], "ajutor": "metoda"},
+           "3": {"ok": ["str"], "ajutor": "tipul"}},
+       "laBine": "Toate trei apar în primele zece minute de curățare, la cursul 4.",
+       "laRau": "Nu pune ghilimele: aici se cer funcții și tipuri, nu text.",
+       "explicatie": "Niciuna dintre cele trei nu dă eroare dacă o lași așa. "
+                     "<code>\"2024\" + 1</code> dă eroare, dar "
+                     "<code>\"2024\" + \"1\"</code> dă liniștit "
+                     "<code>\"20241\"</code>. <code>float(\"3,7\")</code> "
+                     "crapă, dar un fișier întreg citit greșit îți dă o coloană "
+                     "de text pe care o sortezi alfabetic fără să observi. Iar "
+                     "<code>dtype={\"cod\": str}</code> e singurul lucru care "
+                     "salvează zerourile din față."})
    + nota("Confuzia care costă cel mai mult",
           "<code>None</code>, <code>0</code> și <code>\"\"</code> arată la fel "
           "într-un tabel gol. Zero e o măsurătoare; <code>None</code> e absența "
@@ -591,6 +685,33 @@ sl("s14", "Tipuri de date", "Tipuri în SQL",
    "<li><code>VARCHAR(n)</code>: lungime variabilă, cu limită</li>"
    "<li><code>TEXT</code>: fără limită; în PostgreSQL nu e mai lent</li>"
    "</ul>"
+   + ix("cod", "Scrie tabelul", {
+       "id": "c1-cod-sql", "fisier": "schema.sql",
+       "sarcina": "Tabelul în care va intra SCI-ul, la cursul 5. Alege tipul "
+                  "potrivit pentru fiecare coloană.",
+       "cod": "CREATE TABLE sci (\n"
+              "  -- codul tarii de plecare, exact 2 caractere\n"
+              "  user_country    {{1}},\n"
+              "  -- codul tarii de sosire, tot 2\n"
+              "  friend_country  {{2}},\n"
+              "  -- indicele; numar intreg, poate trece de 2 miliarde\n"
+              "  scaled_sci      {{3}},\n"
+              "  -- o pereche apare o singura data\n"
+              "  PRIMARY KEY (user_country, friend_country)\n);",
+       "goluri": {
+           "1": {"ok": ["CHAR(2)", "char(2)"], "ajutor": "tipul"},
+           "2": {"ok": ["CHAR(2)", "char(2)"], "ajutor": "tipul"},
+           "3": {"ok": ["BIGINT", "bigint"], "ajutor": "tipul"}},
+       "laBine": "Exact tabelul pe care îl vei crea în Neon, la cursul 5.",
+       "laRau": "Citește comentariile: lungime fixă pentru coduri, iar pentru indice uită-te la cât de mare poate fi.",
+       "explicatie": "<code>CHAR(2)</code> pentru coduri: lungimea e fixă, deci "
+                     "baza de date respinge orice nu are exact două caractere. "
+                     "<code>BIGINT</code> pentru indice: valoarea României cu ea "
+                     "însăși e 6.252.768, dar la nivel de regiune trece de "
+                     "limita lui <code>INT</code>, care se oprește la "
+                     "2.147.483.647. Cheia primară pe pereche e ce împiedică "
+                     "același rând să intre de două ori, greșeala clasică la "
+                     "reîncărcarea unui fișier."})
    + verif("c1-v9", 2,
            "Coduri de județ de forma <code>RO113</code>, toate de cinci "
            "caractere. Ce tip alegi?",
@@ -627,6 +748,33 @@ sl("s14", "Tipuri de date", "Tipuri în SQL",
    "<p><code>NCHAR</code> și <code>NVARCHAR</code> apar în SQL Server pentru "
    "text Unicode. În PostgreSQL nu există și nici nu trebuie: totul e Unicode "
    "din start, deci diacriticele merg fără nimic special.</p>"
+   + ix("cod", "Scrie tabelul", {
+       "id": "c1-cod-sql", "fisier": "schema.sql",
+       "sarcina": "Tabelul în care va intra SCI-ul, la cursul 5. Alege tipul "
+                  "potrivit pentru fiecare coloană.",
+       "cod": "CREATE TABLE sci (\n"
+              "  -- codul tarii de plecare, exact 2 caractere\n"
+              "  user_country    {{1}},\n"
+              "  -- codul tarii de sosire, tot 2\n"
+              "  friend_country  {{2}},\n"
+              "  -- indicele; numar intreg, poate trece de 2 miliarde\n"
+              "  scaled_sci      {{3}},\n"
+              "  -- o pereche apare o singura data\n"
+              "  PRIMARY KEY (user_country, friend_country)\n);",
+       "goluri": {
+           "1": {"ok": ["CHAR(2)", "char(2)"], "ajutor": "tipul"},
+           "2": {"ok": ["CHAR(2)", "char(2)"], "ajutor": "tipul"},
+           "3": {"ok": ["BIGINT", "bigint"], "ajutor": "tipul"}},
+       "laBine": "Exact tabelul pe care îl vei crea în Neon, la cursul 5.",
+       "laRau": "Citește comentariile: lungime fixă pentru coduri, iar pentru indice uită-te la cât de mare poate fi.",
+       "explicatie": "<code>CHAR(2)</code> pentru coduri: lungimea e fixă, deci "
+                     "baza de date respinge orice nu are exact două caractere. "
+                     "<code>BIGINT</code> pentru indice: valoarea României cu ea "
+                     "însăși e 6.252.768, dar la nivel de regiune trece de "
+                     "limita lui <code>INT</code>, care se oprește la "
+                     "2.147.483.647. Cheia primară pe pereche e ce împiedică "
+                     "același rând să intre de două ori, greșeala clasică la "
+                     "reîncărcarea unui fișier."})
    + verif("c1-v9", 2,
            "Coduri de județ de forma <code>RO113</code>, toate de cinci "
            "caractere. Ce tip alegi?",

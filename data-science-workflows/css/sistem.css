@@ -185,6 +185,8 @@ a.leg:hover{border-bottom-color:var(--accent)}
 .firimituri .aici{color:var(--text);font-weight:500;white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis}
 .antet__dr{margin-left:auto;display:flex;align-items:center;gap:8px;flex:none}
+/* zona contului poate avea două elemente: scurtătura de profesor și cipul */
+#zona-cont{display:flex;align-items:center;gap:8px}
 
 .icon-btn{width:32px;height:32px;border-radius:7px;display:grid;place-items:center;
   color:var(--text-2);transition:.13s;border:1px solid transparent}
