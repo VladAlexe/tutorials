@@ -1,5 +1,5 @@
 /* Subsolul comun. <div id="subsol"></div> plus acest modul. */
-import { CURS, RADACINA } from "./curs.js?v=11";
+import { CURS, RADACINA } from "./curs.js?v=12";
 
 const g = document.getElementById("subsol");
 if (g) g.outerHTML = `
@@ -14,7 +14,7 @@ if (g) g.outerHTML = `
 
 /* Profesorul n-are „contul meu": are panoul. Întrebăm abia după ce s-a
    desenat subsolul, ca pagina să nu aştepte după autentificare. */
-import(`${RADACINA}/js/auth.js?v=11`)
+import(`${RADACINA}/js/auth.js?v=12`)
   .then(m => m.profil())
   .then(p => {
     if (!p?.profesor) return;

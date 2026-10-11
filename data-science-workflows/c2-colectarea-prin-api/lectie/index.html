@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursul 2 — Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Ce este un API, cum se citește o documentație, cum arată o cerere și cum aduci primele date reale în proiect.">
+<meta name="robots" content="index,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/sistem.css?v=12">
+<link rel="stylesheet" href="../../css/slide.css?v=12">
+<link rel="stylesheet" href="../../css/interactiv.css?v=12">
+<link rel="stylesheet" href="../../css/grafice.css?v=12">
+<link rel="stylesheet" href="../../css/exercitii.css?v=12">
+<script src="../../js/tema.js?v=12"></script>
+</head>
+<body class="corp--app">
+<div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
+<div class="rnr">
+<main class="rnr__scena" tabindex="-1">
+
+<section class="sld" id="s1" data-grup="Cursul" data-t="Despre ce e ora de azi">
+<h2>Colectarea datelor prin API</h2><p class="cheie">Până acum ai citit un fișier primit de-a gata. De azi, ți-l aduci singur.</p><p>Cinci lucruri, în ordinea asta.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Apasă pe un punct ca să vezi ce intră în el.</p><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Ce este un API", "unde": "azi", "text": "Analogia restaurantului, tipurile de API, de ce ne trebuie unul."}, {"nume": "Cum arată o cerere", "unde": "azi", "text": "Metode HTTP, endpoint, parametri, coduri de răspuns."}, {"nume": "Postman", "unde": "azi", "text": "Aceeași cerere, făcută cu mâna, înainte de a o scrie în cod."}, {"nume": "requests", "unde": "azi", "text": "Biblioteca din Python cu care colectăm de acum înainte."}, {"nume": "Primele date în proiect", "unde": "azi", "text": "O cerere adevărată, salvată în depozitul echipei."}, {"nume": "Git și colaborare", "unde": "cursul 3", "text": "Cum lucrează patru oameni pe același cod."}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s2" data-grup="Cursul" data-t="Unde ai rămas">
+<h2>Înainte de a începe</h2><ul><li>mediul virtual creat și activat</li><li>depozitul echipei pe GitHub</li><li>primul caiet, cu fișierul SCI deschis</li></ul><p>Dacă unul lipsește, îl faci acum: tot ce urmează se adaugă peste el.</p><div class="verif" data-id="c2-v1" data-corect="1">
+    <p class="verif__q">De ce lucrăm într-un mediu virtual și nu direct în Python-ul de sistem?</p>
+    <button>Ca să meargă mai repede</button>
+    <button>Ca fiecare proiect să-și aibă pachetele lui, cu versiunile lui</button>
+    <button>Ca să ocupe mai puțin spațiu</button>
+    <button>Nu contează, e doar o convenție</button>
+    <p class="verif__ex">Două proiecte pot cere versiuni diferite ale aceleiași biblioteci. Fără medii separate, al doilea îl strică pe primul, iar vina cade pe cod, nu pe mediu.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s3" data-grup="Ce este un API" data-t="Analogia restaurantului">
+<h2>Analogia restaurantului</h2><p class="cheie">Un API e ospătarul. Nu gătește, dar fără el nu ajungi la bucătărie.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Cine ce face</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Apasă pe fiecare rol ca să vezi cu ce se potrivește din cod.</p><script type="application/json">{"titlu": "Cele cinci roluri", "intro": "Apasă pe oricare.", "etape": [{"nume": "Clientul", "unde": "codul tău", "text": "Știe ce vrea, dar nu intră în bucătărie. Formulează o comandă și o dă mai departe."}, {"nume": "Ospătarul", "unde": "API-ul", "text": "Intermediarul. Preia comanda, o duce la bucătărie, aduce răspunsul înapoi. Nu gătește el, dar fără el nu ajungi la bucătărie."}, {"nume": "Meniul", "unde": "documentația", "text": "Ce se poate cere, cu ce opțiuni și în ce condiții. Dacă ceri ceva care nu e în meniu, primești un refuz, nu o surpriză."}, {"nume": "Bucătăria", "unde": "serverul", "text": "Acolo se întâmplă lucrul adevărat. Nu vezi cum, și nici nu te privește: te privește doar ce iese."}, {"nume": "Preparatul", "unde": "răspunsul", "text": "Ce primești înapoi, în forma convenită. La API, de cele mai multe ori, JSON."}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s4" data-grup="Ce este un API" data-t="Verificare pe analogie">
+<h2>Cine e cine</h2><div class="verif" data-id="c2-v2" data-corect="2">
+    <p class="verif__q">În analogia restaurantului, documentația API-ului este…</p>
+    <button>ospătarul</button>
+    <button>bucătăria</button>
+    <button>meniul</button>
+    <button>preparatul</button>
+    <p class="verif__ex">Meniul. Spune ce se poate cere și cu ce opțiuni. Un API fără documentație e un restaurant fără meniu: poți ghici, dar pierzi seara întrebând.</p>
+  </div><div class="verif" data-id="c2-v3" data-corect="0">
+    <p class="verif__q">Și serverul?</p>
+    <button>bucătăria</button>
+    <button>clientul</button>
+    <button>meniul</button>
+    <button>ospătarul</button>
+    <p class="verif__ex">Bucătăria. Acolo se face treaba, și tocmai de aceea nu ai acces direct: ar fi și periculos, și inutil.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s5" data-grup="Ce este un API" data-t="De ce nu descărcăm cu mâna">
+<h2>De ce prin API</h2><table class="tabel"><thead><tr><th>Cu mâna</th><th>Prin API</th></tr></thead><tbody><tr><td>cineva a apăsat Download, cândva</td><td>o linie de cod, cu data în ea</td></tr><tr><td>nu se știe ce filtre erau puse</td><td>filtrele sunt în cerere, scrise</td></tr><tr><td>refacerea cere același om</td><td>refacerea cere o rulare</td></tr><tr><td>actualizarea = totul de la capăt</td><td>actualizarea = aceeași rulare</td></tr></tbody></table><p class="cheie">Diferența nu e comoditatea. E că al doilea drum se poate parcurge din nou.</p><div class="verif" data-id="c2-v4" data-corect="1">
+    <p class="verif__q">Care e argumentul cel mai serios pentru colectarea prin API?</p>
+    <button>E mai rapid</button>
+    <button>Colectarea devine reproductibilă: altcineva o poate reface identic</button>
+    <button>Datele sunt mai corecte</button>
+    <button>Nu trebuie citită documentația</button>
+    <p class="verif__ex">Reproductibilitatea. Datele nu devin mai corecte pentru că vin prin API; devine însă verificabil de unde vin și cum au fost filtrate, ceea ce e condiția ca cineva să te poată crede.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s6" data-grup="Tipuri de API" data-t="Ce fel de API-uri există">
+<h2>Tipuri de API</h2><p>Clasificările sunt multe pentru că se taie după criterii diferite: după protocol, după cine are acces, după cine pornește conversația.</p><div class="ix" data-ix="arbore">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Harta tipurilor</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Nouă ne trebuie o singură ramură: REST, public. Restul, ca să știi ce vezi când dai peste altceva.</p><script type="application/json">{"titlu": "Tipuri de API", "intro": "Apasă pe orice ramură.", "ramuri": [{"nume": "API-uri web", "copii": [{"nume": "REST", "text": "Cel mai răspândit pentru API-uri publice. Resurse la adrese, metode HTTP."}, {"nume": "GraphQL", "text": "O singură adresă, iar clientul spune exact ce câmpuri vrea."}, {"nume": "gRPC", "text": "Rapid și strâns tipizat. Între servicii, rar expus publicului."}, {"nume": "SOAP", "text": "Vechi, cu plic XML. Încă viu în bănci și administrație."}]}, {"nume": "După cine are acces", "copii": [{"nume": "Public / Open", "text": "Oricine, uneori cu o cheie gratuită. Banca Mondială, Eurostat."}, {"nume": "Partner", "text": "Doar pentru parteneri, cu contract."}, {"nume": "Privat / intern", "text": "Doar înăuntrul organizației."}]}, {"nume": "Orientate pe evenimente", "copii": [{"nume": "Webhooks", "text": "Nu ceri tu; te sună el când s-a întâmplat ceva."}, {"nume": "Streaming", "text": "Un flux continuu, nu o cerere și un răspuns."}, {"nume": "WebSockets, SSE", "text": "Legătură deschisă, în timp real."}]}, {"nume": "Specializate", "copii": [{"nume": "Baze de date", "text": "PostgreSQL, MongoDB."}, {"nume": "Cloud", "text": "Azure, AWS."}, {"nume": "AI / ML", "text": "OpenAI, HuggingFace."}, {"nume": "IoT", "text": "Senzori, case inteligente."}]}, {"nume": "Comerciale", "copii": [{"nume": "Plăți", "text": "Stripe."}, {"nume": "Comerț", "text": "Shopify."}, {"nume": "Rețele sociale", "text": "YouTube Data API."}]}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s7" data-grup="Tipuri de API" data-t="De unde vine REST">
+<h2>Un sfert de secol de încercări</h2><p>REST n-a fost inventat ca să fie modern. A fost descris ca să simplifice ce exista deja și era greoi.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Cronologia API-urilor</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Ce supraviețuiește nu e ce e mai puternic, ci ce e mai ușor de citit de un om obosit.</p><script type="application/json">{"titlu": "1991 — 2016", "intro": "Apasă pe oricare.", "etape": [{"nume": "1991 · CORBA", "unde": "obiecte la distanță", "text": "Apeluri între obiecte pe mașini diferite. Greu, dar a pus întrebarea."}, {"nume": "1993 · RDA", "unde": "acces la date", "text": "Standard pentru acces la distanță la baze de date."}, {"nume": "1998 · XML-RPC", "unde": "apeluri în XML", "text": "Prima formă simplă: un apel de funcție, împachetat în XML."}, {"nume": "1999 · SOAP", "unde": "plicul", "text": "XML-RPC cu reguli stricte și un plic în jur. Mult standard, mult ceremonial."}, {"nume": "2000 · REST", "unde": "resurse", "text": "Teza lui Roy Fielding. Nu un protocol, un stil: resurse la adrese, metode HTTP."}, {"nume": "2005 · JSON-RPC", "unde": "mai ușor", "text": "Același apel, dar în JSON, care e mult mai ușor de citit."}, {"nume": "2007 · OData", "unde": "interogări", "text": "REST cu interogări standardizate peste el."}, {"nume": "2015 · GraphQL", "unde": "ceri ce-ți trebuie", "text": "Facebook. O adresă, iar clientul descrie forma răspunsului."}, {"nume": "2016 · gRPC", "unde": "între servicii", "text": "Google. Binar, rapid, pentru comunicarea dintre servicii."}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s8" data-grup="Tipuri de API" data-t="REST, SOAP, GraphQL, gRPC">
+<h2>Patru stiluri, față în față</h2><table class="tabel"><thead><tr><th></th><th>RPC</th><th>SOAP</th><th>REST</th><th>GraphQL</th></tr></thead><tbody><tr><td>organizat în jur de</td><td>apel de funcție</td><td>plic de mesaj</td><td>resurse</td><td>schemă și tipuri</td></tr><tr><td>format</td><td class="mono">JSON, XML, Protobuf</td><td class="mono">doar XML</td><td class="mono">JSON, XML, text</td><td class="mono">JSON</td></tr><tr><td>cât de greu se învață</td><td>ușor</td><td>greu</td><td>ușor</td><td>mediu</td></tr><tr><td>comunitate</td><td>mare</td><td>mică</td><td>mare</td><td>în creștere</td></tr><tr><td>unde apare</td><td>între servicii interne</td><td>bănci, administrație</td><td>API-uri publice</td><td>aplicații mobile</td></tr></tbody></table><div class="verif" data-id="c2-v5" data-corect="2">
+    <p class="verif__q">Pentru un API public, simplu, pe care îl folosesc mulți necunoscuți, ce stil alegi?</p>
+    <button>SOAP, pentru că e standardizat</button>
+    <button>gRPC, pentru că e rapid</button>
+    <button>REST, pentru că e ușor de învățat și merge din browser</button>
+    <button>GraphQL, pentru că e cel mai nou</button>
+    <p class="verif__ex">REST. Un API public trăiește din cât de repede îl poate încerca un străin. O adresă pe care o deschizi în browser și vezi JSON e cea mai scurtă cale. gRPC e mai rapid, dar nu se încearcă din bara de adrese; SOAP e standardizat, dar costă o zi doar ca să faci prima cerere.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s9" data-grup="Cum arată o cerere" data-t="Arhitectura REST">
+<h2>Cerere, metodă, răspuns</h2><p class="cheie">Clientul trimite o cerere. Serverul trimite un răspuns. Între ele, o metodă HTTP care spune ce vrei să se întâmple.</p><table class="tabel"><thead><tr><th>Pleacă de la tine</th><th>Ajunge la server</th><th>Se întoarce</th></tr></thead><tbody><tr><td>metoda și adresa</td><td>serverul caută resursa</td><td>un cod de stare</td></tr><tr><td>parametrii</td><td>aplică filtrele</td><td>antetele</td></tr><tr><td>antetele</td><td>pregătește răspunsul</td><td>corpul, de obicei JSON</td></tr></tbody></table><p>Nimic nu rămâne deschis între două cereri: fiecare cerere poartă cu ea tot ce-i trebuie. De aceea poți relua a treia cerere fără să le refaci pe primele două.</p>
+
+</section>
+
+<section class="sld" id="s10" data-grup="Cum arată o cerere" data-t="Metodele HTTP">
+<h2>Cinci metode, patru operații</h2><p>Metoda spune ce vrei să se întâmple cu resursa. Noi vom folosi aproape numai una.</p><div class="ix" data-ix="sortare">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Metodă și operație</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-sort-metode", "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.", "elemente": [{"t": "GET", "k": 0}, {"t": "POST", "k": 1}, {"t": "PUT", "k": 2}, {"t": "PATCH", "k": 2}, {"t": "DELETE", "k": 3}], "cosuri": [{"t": "Citește", "d": "nu schimbă nimic"}, {"t": "Creează", "d": "adaugă ceva nou"}, {"t": "Modifică", "d": "schimbă ce există"}, {"t": "Șterge", "d": "scoate definitiv"}], "laBine": "La colectarea de date folosești GET în 99% din cazuri. Celelalte apar când scrii undeva, nu când citești.", "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată din ea. Diferența contează când scrii; la citit, nu."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s11" data-grup="Cum arată o cerere" data-t="Endpoint-ul">
+<h2>Ce este un endpoint</h2><p class="cheie">Adresa la care ceri un anumit lucru. Fiecare endpoint dă altceva.</p><pre><code>https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL</code></pre><p>Un API nu are o singură adresă, are zeci. Documentația e lista lor.</p><div class="verif" data-id="c2-v6" data-corect="1">
+    <p class="verif__q">Două endpoint-uri diferite ale aceluiași API…</p>
+    <button>întorc aceleași date, în formate diferite</button>
+    <button>întorc lucruri diferite: fiecare e o altă resursă sau funcție</button>
+    <button>sunt același lucru, scris în două feluri</button>
+    <button>se folosesc pe rând, în ordine</button>
+    <p class="verif__ex">Fiecare endpoint e o altă resursă. Ca în meniu: la „supe” scrie altceva decât la „deserturi”.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s12" data-grup="Cum arată o cerere" data-t="Structura unei adrese">
+<h2>Din ce e făcută o adresă</h2><p>Cinci bucăți, fiecare cu rostul ei. Pe asta se sprijină tot ce scriem mai jos.</p><div class="ix" data-ix="url">
+  <div class="ix__cap"><span class="ix__fel">Disecție</span><span class="ix__t">Taie adresa în bucăți</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-url", "sarcina": "Apasă pe fiecare bucată din adresă și spune cum se cheamă.", "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune", "parti": [{"t": "https", "e": "protocol", "d": "Cum se vorbește. <code>https</code> e criptat, <code>http</code> nu."}, {"t": "api.exemplu.com", "e": "host", "d": "Ce server. Numele mașinii care răspunde."}, {"t": "443", "e": "port", "d": "Pe ce ușă. Se scrie rar: 443 pentru https și 80 pentru http se subînțeleg."}, {"t": "/resursa/detalii", "e": "cale", "d": "Ce resursă ceri. Aici se vede ce anume vrei din tot ce oferă serverul."}, {"t": "?culoare=rosu", "e": "parametri", "d": "Opțiuni: filtre, format, pagină. Aici ajung argumentele tale."}, {"t": "#sectiune", "e": "fragment", "d": "Pentru browser, nu pentru server. Nu pleacă în cerere."}], "etichete": ["protocol", "host", "port", "cale", "parametri", "fragment"], "explicatie": "Fragmentul e singurul care nu ajunge niciodată la server: browserul îl folosește ca să sară la o bucată din pagină. Dacă pui ceva important după <code>#</code>, nu se trimite."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s13" data-grup="Răspunsul" data-t="Codurile de stare">
+<h2>Ce îți răspunde serverul</h2><p>Înainte de date, vine un număr. Dacă nu te uiți la el, vei petrece jumătate de oră întrebându-te de ce tabelul e gol.</p><table class="tabel"><thead><tr><th>Cod</th><th>Ce înseamnă</th><th>Ce faci</th></tr></thead><tbody><tr><td class="mono">200</td><td>a mers</td><td>citești datele</td></tr><tr><td class="mono">400</td><td>cererea ta e greșită</td><td>verifici parametrii</td></tr><tr><td class="mono">401 / 403</td><td>nu ai voie</td><td>cheie lipsă sau greșită</td></tr><tr><td class="mono">404</td><td>adresa nu există</td><td>verifici calea, nu internetul</td></tr><tr><td class="mono">429</td><td>prea multe cereri</td><td>aștepți și reiei mai rar</td></tr><tr><td class="mono">500</td><td>a crăpat la ei</td><td>reiei mai târziu; nu e vina ta</td></tr></tbody></table><div class="verif" data-id="c2-v8" data-corect="3">
+    <p class="verif__q">Primești codul <code>429</code>. Ce s-a întâmplat?</p>
+    <button>Adresa e greșită</button>
+    <button>Serverul e stricat</button>
+    <button>Nu ai cheie de acces</button>
+    <button>Ai trimis prea multe cereri prea repede</button>
+    <p class="verif__ex">429 înseamnă „ai depășit limita”. Soluția nu e să reîncerci mai des, ci mai rar: o pauză între cereri, iar la colectări mari, o pauză care crește după fiecare refuz.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s14" data-grup="Surse de date" data-t="De unde se pot lua date">
+<h2>Surse accesibile prin API</h2><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Douăsprezece feluri de surse</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Pentru proiectul nostru, două dintre ele contează.</p><script type="application/json">{"titlu": "Surse de date", "intro": "Apasă pe oricare.", "etape": [{"nume": "Baze de date", "unde": "PostgreSQL, MongoDB", "text": "Le vom folosi la cursul 5, prin Neon."}, {"nume": "Servicii externe", "unde": "vreme, cursuri valutare", "text": "Clasicul exemplu de API public."}, {"nume": "Stocare în cloud", "unde": "Azure Blob, AWS S3", "text": "Fișiere mari, ținute în altă parte."}, {"nume": "Rețele sociale", "unde": "YouTube Data API", "text": "Cu limite stricte și cheie."}, {"nume": "Procesatori de plăți", "unde": "Stripe", "text": "Nu ne privește la curs, dar e același mecanism."}, {"nume": "Senzori, IoT", "unde": "case inteligente", "text": "Flux continuu, nu cerere și răspuns."}, {"nume": "Pagini web", "unde": "HTML de parcurs", "text": "Când nu există API. Ultima soluție, și cea mai fragilă."}, {"nume": "Date publice", "unde": "data.gov, INS, Eurostat", "text": "Sursa noastră principală."}, {"nume": "Servicii financiare", "unde": "AlphaVantage, Yahoo Finance", "text": "Serii de timp, gratuite până la o limită."}, {"nume": "Comerț", "unde": "Shopify", "text": "Date de vânzări, pentru cine lucrează cu firme."}, {"nume": "Hărți și locație", "unde": "OpenStreetMap, Nominatim", "text": "Geocodare: de la adresă la coordonate."}, {"nume": "Servicii AI", "unde": "OpenAI, HuggingFace", "text": "Tot un API, cu aceleași reguli."}]}</script></div>
+</div><p class="cheie">Noi folosim date publice. Fără cheie, fără cont, fără limite care să ne oprească la oră.</p>
+
+</section>
+
+<section class="sld" id="s15" data-grup="Surse de date" data-t="Ce folosim noi">
+<h2>Sursele proiectului</h2><table class="tabel"><thead><tr><th>Sursa</th><th>Cum vine</th><th>Ce ne dă</th></tr></thead><tbody><tr><td>Social Connectedness Index</td><td>fișier descărcat</td><td>legăturile dintre locuri; e deja la voi</td></tr><tr><td>Banca Mondială</td><td class="mono">API REST public</td><td>indicatori pe țară și an</td></tr><tr><td>Eurostat</td><td class="mono">API REST public</td><td>indicatori pe regiuni NUTS</td></tr><tr><td>INS Tempo</td><td class="mono">API</td><td>date despre România, mai greu de citit</td></tr></tbody></table><p>Azi lucrăm cu Banca Mondială, pentru că nu cere nimic și răspunde imediat. Eurostat vine la seminar.</p><div class="verif" data-id="c2-v9" data-corect="1">
+    <p class="verif__q">Fișierul SCI de la cursul 1 e o sursă prin API?</p>
+    <button>Da, orice sursă de date e un API</button>
+    <button>Nu, e un fișier descărcat; API-ul e un serviciu pe care îl întrebi</button>
+    <button>Da, pentru că l-am luat de pe internet</button>
+    <button>Depinde de format</button>
+    <p class="verif__ex">Un fișier descărcat e un fișier. Diferența nu e unde stă, ci dacă îl poți întreba: un API răspunde la cereri, cu parametri, de fiecare dată.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s16" data-grup="requests" data-t="Prima cerere">
+<h2>requests: prima cerere</h2><p>O bibliotecă mică, cu reputația de a fi cea mai plăcut de folosit din tot Python-ul. Trei linii și ai datele.</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scrie cererea</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-prima", "fisier": "prima_cerere.py", "sarcina": "Completează metoda, verificarea codului de stare și transformarea răspunsului în date Python.", "cod": "import requests\n\nurl = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n# metoda prin care se citeste, fara sa se schimbe nimic\nr = requests.{{1}}(url, params={\"format\": \"json\"}, timeout=30)\n\n# primul lucru dupa orice cerere: codul de stare\nprint(r.{{2}})            # 200\n\n# corpul raspunsului, din text JSON in liste si dictionare\ndate = r.{{3}}()\nprint(len(date))            # 2", "goluri": {"1": {"ok": ["get"], "ajutor": "metoda"}, "2": {"ok": ["status_code"], "ajutor": "atributul"}, "3": {"ok": ["json"], "ajutor": "metoda"}}, "laBine": "Astea trei linii sunt tot ce-ți trebuie pentru nouă zecimi din colectările de la curs.", "laRau": "Nu pune ghilimele: se cer un nume de metodă și un atribut, nu text.", "explicatie": "<code>requests.get</code> trimite cererea. <code>r.status_code</code> e numărul despre care am vorbit. <code>r.json()</code> traduce textul primit în liste și dicționare. Dacă răspunsul nu e JSON valid, aici crapă, ceea ce e bine: afli imediat, nu peste trei pași."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s17" data-grup="requests" data-t="Parametrii se dau separat">
+<h2>Nu lipi parametrii în adresă</h2><p>Tentația e să construiești adresa cu <code>+</code>. Nu face asta: spațiile, diacriticele și semnele speciale strică adresa fără să-ți spună.</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Pune parametrii cum trebuie</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-param", "fisier": "parametri.py", "sarcina": "Mută filtrele din adresă în dicționarul de parametri.", "cod": "import requests\n\nbaza = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n# anii si formatul nu se lipesc in adresa, se dau separat\np = {\n    \"format\": \"json\",\n    \"date\": {{1}},\n    \"per_page\": {{2}},\n}\n\nr = requests.get(baza, {{3}}=p, timeout=30)\nprint(r.url)", "goluri": {"1": {"ok": ["\"2000:2023\"", "'2000:2023'"], "ajutor": "intervalul"}, "2": {"ok": ["100", "\"100\"", "'100'"], "ajutor": "numărul"}, "3": {"ok": ["params"], "ajutor": "argumentul"}}, "laBine": "<code>r.url</code> îți arată adresa construită de bibliotecă, cu tot ce a codificat ea. E cel mai rapid fel de a verifica ce ai cerut de fapt.", "laRau": "Intervalul de ani e text, între ghilimele. Argumentul funcției nu e.", "explicatie": "Biblioteca codifică singură ce trebuie codificat: spații, diacritice, semne. Dacă lipești adresa cu mâna, o faci tu, și o vei uita exact la parametrul care conține o virgulă."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s18" data-grup="requests" data-t="Paginarea">
+<h2>Răspunsul vine pe pagini</h2><p>Niciun API serios nu-ți dă zece mii de rânduri dintr-o dată. Îți dă o pagină și îți spune câte mai sunt.</p><pre><code><span class="c"># primul element al raspunsului, la Banca Mondiala</span>
+{"page": 1, "pages": 2, "per_page": 50, "total": 64}</code></pre><div class="ix" data-ix="ordine">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Bucla de colectare</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-ordine-paginare", "sarcina": "Pune pașii unei colectări paginate în ordine.", "linii": ["pagina = 1; tot = []", "r = requests.get(url, params={**p, \"page\": pagina}, timeout=30)", "if r.status_code != 200: break", "cap, date = r.json()", "tot.extend(date)", "if pagina >= cap[\"pages\"]: break", "pagina += 1; time.sleep(0.5)"], "explicatie": "Verificarea codului vine înaintea citirii datelor, iar pauza la final e politețea care te ține sub limita de cereri. Fără <code>sleep</code>, o buclă de o sută de pagini ajunge la 429 în câteva secunde."}</script></div>
+</div><div class="verif" data-id="c2-v10" data-corect="0">
+    <p class="verif__q">De ce pui o pauză între cereri, într-o buclă de colectare?</p>
+    <button>Ca să nu depășesc limita de cereri a serverului</button>
+    <button>Ca să am timp să citesc rezultatele</button>
+    <button>Ca să consume mai puțină memorie</button>
+    <button>Nu e nevoie, serverul se descurcă</button>
+    <p class="verif__ex">Ca să rămâi sub limită. O pauză de jumătate de secundă nu te costă nimic la o sută de pagini, dar te scutește de a fi blocat temporar.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s19" data-grup="requests" data-t="Din JSON în tabel">
+<h2>Ultimul pas: un tabel</h2><p>Răspunsul e o structură cu mai multe niveluri. Analiza vrea rânduri și coloane.</p><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Fă tabelul</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-tabel", "fisier": "in_tabel.py", "sarcina": "Transformă lista de înregistrări într-un tabel și salvează-l.", "cod": "import pandas as pd\n\n# `date` e lista de inregistrari din raspuns\nd = pd.{{1}}(date)\n\n# structurile incuibate devin coloane separate\nd = pd.json_normalize(date)\nprint(d.columns.tolist())\n\n# il salvam ca sa nu mai cerem de doua ori acelasi lucru\nd.to_csv(\"date/brute/populatie_ro.csv\", index={{2}})", "goluri": {"1": {"ok": ["DataFrame"], "ajutor": "constructorul"}, "2": {"ok": ["False"], "ajutor": "valoarea"}}, "laBine": "De aici încolo e pandas, adică teren cunoscut de la cursul 1.", "laRau": "Numele constructorului se scrie cu majuscule unde trebuie. La index, răspunsul e una dintre cele două valori logice.", "explicatie": "<code>json_normalize</code> desface dicționarele încuibate în coloane cu punct în nume, de tipul <code>indicator.value</code>. <code>index=False</code> împiedică pandas să adauge o coloană de numerotare care nu înseamnă nimic și care încurcă la reîncărcare."}</script></div>
+</div><div class="nota"><div class="nota__et">Salvează brutul, nu doar curățatul</div><p>Fișierul din <code>date/brute/</code> se scrie o dată și nu se mai atinge. Curățarea lucrează pe o copie. Altfel, peste două săptămâni, nu mai știi ce ai schimbat și nu te mai poți întoarce.</p></div>
+
+</section>
+
+<section class="sld" id="s20" data-grup="Postman" data-t="Aceeași cerere, cu mâna">
+<h2>Postman</h2><p>Înainte de a scrie cod, merită să faci cererea într-un loc unde vezi tot: adresa, parametrii, antetele, codul de stare și corpul răspunsului.</p><table class="tabel"><thead><tr><th>În Postman</th><th>Ce vezi</th></tr></thead><tbody><tr><td>metoda și adresa</td><td>ce ceri</td></tr><tr><td>tabul Params</td><td>parametrii, pe rânduri, ușor de modificat</td></tr><tr><td>butonul Send</td><td>codul de stare și cât a durat</td></tr><tr><td>panoul de jos</td><td>JSON-ul, pliat pe niveluri</td></tr></tbody></table><p>Când cererea merge acolo, o treci în cod. Când nu merge în cod, te întorci acolo ca să vezi care bucată diferă.</p><div class="ix" data-ix="dovada">
+  <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Arată că ți-a mers</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-postman", "sarcina": "Fă în Postman cererea către Banca Mondială și lipește aici prima linie a răspunsului, cea cu paginarea.", "pasi": [{"t": "Cererea a mers, iar răspunsul are paginare", "cmd": "GET https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json", "gol": "lipește prima linie a răspunsului", "cauta": "\\\"?page\\\"?\\s*:\\s*1", "daca_nu": "Caut câmpul page cu valoarea 1, din primul element al răspunsului. Îl vezi sus de tot în JSON-ul din Postman."}], "explicatie": "Dacă ai asta, ai făcut o cerere adevărată către un server adevărat și ai citit răspunsul. Restul lecției e același lucru, scris în Python."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s21" data-grup="Proiectul tău" data-t="Colectează, acum">
+<h2>Prima colectare din proiect</h2><p>Un script care cere, verifică, salvează. Rulează-l și lipește ce iese.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>creezi <code>colectare/banca_mondiala.py</code> în depozit</td></tr><tr><td>2</td><td>ceri indicatorul pentru România, anii 2000–2023</td></tr><tr><td>3</td><td>verifici codul de stare și câte rânduri ai primit</td></tr><tr><td>4</td><td>salvezi în <code>date/brute/</code> și faci commit</td></tr></tbody></table><div class="ix" data-ix="dovada">
+  <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Dovada colectării</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-colectare", "sarcina": "Lipește ce a tipărit scriptul tău: codul de stare și numărul de rânduri salvate.", "pasi": [{"t": "Cererea a primit 200", "cmd": "python colectare/banca_mondiala.py", "gol": "lipește linia cu codul de stare", "cauta": "\\b200\\b", "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."}, {"t": "Fișierul s-a scris, cu rânduri în el", "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('date/brute/populatie_ro.csv')))\"", "gol": "numărul de rânduri", "cauta": "\\b[1-9]\\d{0,4}\\b", "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers dar filtrul n-a lăsat nimic."}, {"t": "Colectarea e în depozit", "cmd": "git log --oneline -1", "gol": "lipește linia", "cauta": "[0-9a-f]{7}", "daca_nu": "Caut începutul unui hash de commit. Dacă n-ai niciunul, mai întâi git add și git commit."}], "explicatie": "Trei lucruri care, împreună, înseamnă că datele sunt în depozit și că se poate reface drumul până la ele."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s22" data-grup="Mai departe" data-t="Până data viitoare">
+<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git: istoric, reveniri, ramuri, pull request</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat și urcat în depozit. Plus o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
+
+</section>
+
+</main>
+</div>
+
+<script type="module" src="../../js/antet.js?v=12"></script>
+<script type="module">
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=12";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=12";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=12";
+pornesteIx();
+pornesteVerif("c2");
+pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });
+</script>
+</body>
+</html>

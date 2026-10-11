@@ -6,8 +6,8 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=11";
-import EXERCITII from "./exercitii.js?v=11";
+import GRAFICE from "./grafice.js?v=12";
+import EXERCITII from "./exercitii.js?v=12";
 
 const C = { ...GRAFICE, ...EXERCITII };
 
@@ -25,7 +25,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=11");
+    const m = await import("/data-science-workflows/js/colectare.js?v=12");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 400), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -48,6 +48,112 @@ C.etape = (gazda, date) => {
     i.innerHTML = `<h5>${e.nume}</h5><p>${e.text}</p>` +
                   (e.unde ? `<p class="unde">${e.unde}</p>` : "");
   });
+};
+
+/* --- 1b. Disecția unei adrese -------------------------------------------
+   Adresa e arătată întreagă, cu bucățile ei. Apeși pe o bucată, îi alegi
+   numele. Ideea e să o vezi în context, nu ruptă în fișe: când o cerere nu
+   merge, greșeala e aproape mereu într-una dintre bucăți, și prima condiție
+   ca s-o găsești e să o poți numi.
+   ------------------------------------------------------------------------- */
+
+C.url = (gazda, date) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const P = date.parti || [];
+  const ET = date.etichete || [];
+  const ales = new Array(P.length).fill(null);
+  let activ = null;
+
+  const esc = x => String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+  gazda.innerHTML = `
+    ${date.sarcina ? `<p class="ex__sarcina">${date.sarcina}</p>` : ""}
+    <div class="url__bara">${P.map((x, i) =>
+      `<button class="url__p" data-i="${i}" type="button">${esc(x.t)}</button>`).join("")}</div>
+    <div class="url__et" hidden>${ET.map(e =>
+      `<button class="url__e" data-e="${esc(e)}" type="button">${esc(e)}</button>`).join("")}</div>
+    <p class="url__aj">Apasă pe o bucată din adresă, apoi alege cum se cheamă.</p>
+    <div class="ex__jos">
+      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
+      <button class="btn btn--mic" data-rol="din-nou" type="button" hidden>Încearcă din nou</button>
+      <span class="ex__raspuns"></span>
+    </div>
+    <p class="ex__ex"></p>
+    <p class="ex__stare"></p>`;
+
+  const bara = gazda.querySelector(".url__bara");
+  const cos  = gazda.querySelector(".url__et");
+  const aj   = gazda.querySelector(".url__aj");
+  const btV  = gazda.querySelector('[data-rol="verifica"]');
+  const btN  = gazda.querySelector('[data-rol="din-nou"]');
+  const out  = gazda.querySelector(".ex__raspuns");
+  const ex   = gazda.querySelector(".ex__ex");
+  const st   = gazda.querySelector(".ex__stare");
+
+  const scrie = () => {
+    bara.querySelectorAll(".url__p").forEach((b, i) => {
+      b.classList.toggle("are", !!ales[i]);
+      b.classList.toggle("on", activ === i);
+      b.dataset.et = ales[i] || "";
+    });
+  };
+
+  bara.addEventListener("click", e => {
+    const b = e.target.closest(".url__p");
+    if (!b) return;
+    activ = +b.dataset.i;
+    cos.hidden = false;
+    aj.textContent = `Cum se cheamă „${P[activ].t}”?`;
+    scrie();
+  });
+
+  cos.addEventListener("click", e => {
+    const b = e.target.closest(".url__e");
+    if (!b || activ === null) return;
+    ales[activ] = b.dataset.e;
+    activ = null; cos.hidden = true;
+    aj.textContent = ales.every(Boolean)
+      ? "Toate au nume. Apasă Verifică."
+      : "Mai apasă pe o bucată.";
+    scrie();
+  });
+
+  btV.onclick = async () => {
+    let bune = 0;
+    bara.querySelectorAll(".url__p").forEach((b, i) => {
+      const ok = ales[i] === P[i].e;
+      b.classList.toggle("bun", ok);
+      b.classList.toggle("rau", !ok);
+      if (ok) bune++;
+    });
+    const tot = bune === P.length;
+    out.innerHTML = tot ? "<b>Corect.</b>" : `<b>${bune} din ${P.length}.</b>`;
+    btN.hidden = tot;
+    if (!tot) return;
+
+    btV.disabled = true;
+    ex.classList.add("vazut");
+    ex.innerHTML = (date.explicatie || "") +
+      "<ul class=\"url__lista\">" + P.map(x =>
+        `<li><code>${esc(x.t)}</code> <b>${esc(x.e)}</b> ${x.d || ""}</li>`).join("") + "</ul>";
+    gazda.closest(".ix")?.classList.add("gata");
+    document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
+    try {
+      const m = await import("/data-science-workflows/js/colectare.js?v=12");
+      const salvat = await m.salveazaCod({
+        exercitiuId: date.id, cod: ales.join(" | "), trecut: true });
+      st.textContent = salvat ? "Rezolvare înregistrată."
+                              : "Nu e înregistrată: nu ești autentificat.";
+      st.classList.add("vazut");
+    } catch {}
+  };
+
+  btN.onclick = () => {
+    bara.querySelectorAll(".url__p").forEach(b => b.classList.remove("bun", "rau"));
+    out.textContent = ""; btN.hidden = true;
+  };
+
+  scrie();
 };
 
 /* --- 2. Terminal pentru mediul virtual ----------------------------------- */
@@ -288,7 +394,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=11");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=12");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -369,7 +475,7 @@ C.asteptari = (gazda, date) => {
     out.innerHTML = "<b>Mulțumesc.</b> Le citesc pe toate înainte de cursul următor.";
     poarta(gazda, date.id, "scris");
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=11");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=12");
       await s.jurnal("asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}
   };

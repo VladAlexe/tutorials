@@ -134,3 +134,47 @@
   border-top:1px solid var(--linie);padding-top:10px}
 .ast__nr{font-family:var(--mono);font-size:10.5px;color:var(--text-3);flex:1}
 .ast__nr.gata{color:var(--ok)}
+
+/* --- disecția unei adrese ------------------------------------------------
+   Adresa rămâne întreagă și lizibilă: bucățile sunt butoane lipite, nu fișe
+   împrăștiate. Numele ales apare deasupra bucății, ca o etichetă pe o piesă.
+   ------------------------------------------------------------------------- */
+
+.url__bara{display:flex;flex-wrap:wrap;align-items:flex-end;gap:2px;
+  padding:26px 14px 14px;background:var(--panza-2);border:1px solid var(--linie);
+  border-radius:10px;overflow-x:auto}
+.url__p{position:relative;font-family:var(--mono);font-size:15px;
+  padding:7px 8px;border:0;border-bottom:2px solid var(--linie-2);
+  background:none;color:var(--text);cursor:pointer;white-space:nowrap;
+  transition:.12s}
+.url__p:hover{background:var(--panza);border-bottom-color:var(--accent)}
+.url__p.on{background:var(--accent-slab);border-bottom-color:var(--accent)}
+.url__p.are::before{content:attr(data-et);position:absolute;left:8px;top:-17px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent-text);white-space:nowrap}
+.url__p.bun{border-bottom-color:var(--ok)}
+.url__p.bun.are::before{color:var(--ok)}
+.url__p.rau{border-bottom-color:var(--nu)}
+.url__p.rau.are::before{color:var(--nu)}
+
+.url__et{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.url__et[hidden]{display:none}
+.url__e{font-family:var(--mono);font-size:11.5px;padding:6px 12px;border-radius:16px;
+  border:1px solid var(--linie-2);background:var(--panza);color:var(--text-2);
+  cursor:pointer;transition:.12s}
+.url__e:hover{border-color:var(--accent);color:var(--accent-text)}
+
+.url__aj{font-family:var(--sans);font-size:12.5px;color:var(--text-3);
+  margin:11px 0 0;max-width:none}
+.url__lista{list-style:none;padding:0;margin:12px 0 0}
+.url__lista li{font-family:var(--sans);font-size:13px;line-height:1.5;
+  margin-bottom:5px;color:var(--text-2)}
+.url__lista code{font-family:var(--mono);font-size:11.5px;background:var(--panza-2);
+  border:1px solid var(--linie);border-radius:5px;padding:1px 6px;margin-right:6px}
+.url__lista b{font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent-text);margin-right:7px}
+
+@media(max-width:620px){
+  .url__bara{font-size:13px;padding-top:24px}
+  .url__p{font-size:13px;padding:6px 5px}
+}

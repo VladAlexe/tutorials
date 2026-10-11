@@ -29,8 +29,8 @@ export const LECTII = [
   { nr:2, cheie:"c2-colectarea-prin-api",
     titlu:"Colectarea datelor prin API",
     scurt:"API",
-    rezumat:"Ce este un API, cum se citește o documentație, și cum aduci primele date reale în proiect.",
-    stare:"schita", sarcini:null,
+    rezumat:"Ce este un API, cum arată o cerere, codurile de răspuns, requests, și primele date reale în proiect.",
+    stare:"gata", sarcini:17,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c2_api.ipynb" },
 
   { nr:3, cheie:"c3-versionare-git",

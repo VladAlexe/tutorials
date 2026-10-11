@@ -1,0 +1,244 @@
+{
+ "capitol": "c2",
+ "total": 22,
+ "sarcini": 17,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Despre ce e ora de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "Cursul",
+   "titlu": "Unde ai rămas",
+   "sarcini": [
+    {
+     "id": "c2-v1",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Ce este un API",
+   "titlu": "Analogia restaurantului",
+   "sarcini": []
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "Ce este un API",
+   "titlu": "Verificare pe analogie",
+   "sarcini": [
+    {
+     "id": "c2-v2",
+     "fel": "verificare"
+    },
+    {
+     "id": "c2-v3",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 5,
+   "id": "s5",
+   "grup": "Ce este un API",
+   "titlu": "De ce nu descărcăm cu mâna",
+   "sarcini": [
+    {
+     "id": "c2-v4",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 6,
+   "id": "s6",
+   "grup": "Tipuri de API",
+   "titlu": "Ce fel de API-uri există",
+   "sarcini": []
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "Tipuri de API",
+   "titlu": "De unde vine REST",
+   "sarcini": []
+  },
+  {
+   "nr": 8,
+   "id": "s8",
+   "grup": "Tipuri de API",
+   "titlu": "REST, SOAP, GraphQL, gRPC",
+   "sarcini": [
+    {
+     "id": "c2-v5",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 9,
+   "id": "s9",
+   "grup": "Cum arată o cerere",
+   "titlu": "Arhitectura REST",
+   "sarcini": []
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "Cum arată o cerere",
+   "titlu": "Metodele HTTP",
+   "sarcini": [
+    {
+     "id": "c2-sort-metode",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "Cum arată o cerere",
+   "titlu": "Endpoint-ul",
+   "sarcini": [
+    {
+     "id": "c2-v6",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "Cum arată o cerere",
+   "titlu": "Structura unei adrese",
+   "sarcini": [
+    {
+     "id": "c2-url",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s13",
+   "grup": "Răspunsul",
+   "titlu": "Codurile de stare",
+   "sarcini": [
+    {
+     "id": "c2-v8",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "Surse de date",
+   "titlu": "De unde se pot lua date",
+   "sarcini": []
+  },
+  {
+   "nr": 15,
+   "id": "s15",
+   "grup": "Surse de date",
+   "titlu": "Ce folosim noi",
+   "sarcini": [
+    {
+     "id": "c2-v9",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 16,
+   "id": "s16",
+   "grup": "requests",
+   "titlu": "Prima cerere",
+   "sarcini": [
+    {
+     "id": "c2-cod-prima",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 17,
+   "id": "s17",
+   "grup": "requests",
+   "titlu": "Parametrii se dau separat",
+   "sarcini": [
+    {
+     "id": "c2-cod-param",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 18,
+   "id": "s18",
+   "grup": "requests",
+   "titlu": "Paginarea",
+   "sarcini": [
+    {
+     "id": "c2-ordine-paginare",
+     "fel": "cod"
+    },
+    {
+     "id": "c2-v10",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 19,
+   "id": "s19",
+   "grup": "requests",
+   "titlu": "Din JSON în tabel",
+   "sarcini": [
+    {
+     "id": "c2-cod-tabel",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 20,
+   "id": "s20",
+   "grup": "Postman",
+   "titlu": "Aceeași cerere, cu mâna",
+   "sarcini": [
+    {
+     "id": "c2-dovada-postman",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 21,
+   "id": "s21",
+   "grup": "Proiectul tău",
+   "titlu": "Colectează, acum",
+   "sarcini": [
+    {
+     "id": "c2-dovada-colectare",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 22,
+   "id": "s22",
+   "grup": "Mai departe",
+   "titlu": "Până data viitoare",
+   "sarcini": []
+  }
+ ]
+}
