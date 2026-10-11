@@ -21,11 +21,11 @@
 
    Pornire, din pagina lecției:
 
-     import { porneste } from "../js/slide.js?v=4";
+     import { porneste } from "../js/slide.js?v=7";
      porneste({ capitol:"c1", lectie:"c1-introducere-si-mediu" });
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=4";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=7";
 
 const SVG = {
   gata:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
@@ -73,6 +73,7 @@ export async function porneste({ capitol, lectie }){
 
   const CHEIE_LOCAL = `dsw.parcurs.${capitol}`;
   let ceasToast = null, ceasSalv = null;   /* declarate aici: se folosesc din mergi() */
+  let ritm = null;                         /* ora condusă; se umple mai jos */
 
   /* O poartă e fie o verificare cu variante, fie un exercițiu cu cod. */
   const SEL_TOATE = ".verif, .ix.exc";
@@ -106,23 +107,37 @@ export async function porneste({ capitol, lectie }){
   ["verif:raspuns", "poarta:gata"].forEach(nume =>
     document.addEventListener(nume, ev => {
       reinnoieste(); salveaza();
-      import(`${RADACINA}/js/sesiune.js?v=4`)
+      import(`${RADACINA}/js/sesiune.js?v=7`)
         .then(s => s.jurnal(nume === "poarta:gata" ? "cod" : "raspuns", ev.detail))
         .catch(() => {});
     }));
 
   /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
-  import(`${RADACINA}/js/sesiune.js?v=4`)
+  import(`${RADACINA}/js/sesiune.js?v=7`)
     .then(s => s.porneste({ capitol, total:N }))
     .catch(() => { /* fără cont, nu se urmărește nimic */ });
 
   /* profesorul navighează liber, ca să poată arăta orice slide la clasă */
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=4`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=7`);
     const p = await profil();
     stare.profesor = !!p.profesor;
     if (stare.profesor){ stare.liber = true; el.bLiber.hidden = false; reinnoieste(); }
   } catch { /* fără cont, lecția merge la fel */ }
+
+  /* ora condusă: profesorul publică slide-ul lui, studenții sar după el.
+     Dacă modulul nu pornește (fără cont, fără rețea), lecția merge la fel. */
+  try {
+    const R = await import(`${RADACINA}/js/ritm.js?v=7`);
+    ritm = await R.porneste({
+      capitol, total:N,
+      esteProfesor: stare.profesor,
+      unde: () => stare.i + 1,
+      /* la ritm nu se aplică porțile: dacă profesorul arată slide-ul 9,
+         slide-ul 9 se vede, chiar dacă verificarea de la 4 n-a fost făcută */
+      mergiLa: k => mergi(k, { fortat:true })
+    });
+  } catch { /* fără ora condusă, lecția merge la fel */ }
 
   /* --------------------------------------------------------------- porțile */
 
@@ -153,10 +168,10 @@ export async function porneste({ capitol, lectie }){
 
   /* ------------------------------------------------------------- navigarea */
 
-  function mergi(j, { tacut = false } = {}){
+  function mergi(j, { tacut = false, fortat = false } = {}){
     j = Math.max(0, Math.min(N - 1, j | 0));
 
-    if (!permis(j)){
+    if (!fortat && !permis(j)){
       const b = blocaj();
       spune(`Slide-ul ${j + 1} se deschide după verificarea de la slide-ul ${b + 1}.`);
       if (stare.i !== b) mergi(b);
@@ -173,6 +188,7 @@ export async function porneste({ capitol, lectie }){
 
     reinnoieste();
     salveaza();
+    if (!fortat) ritm?.publica(j + 1);   /* fortat = vin de la profesor, nu-i trimit înapoi */
     el.sina.classList.remove("deschisa");
   }
 
@@ -362,7 +378,7 @@ export async function porneste({ capitol, lectie }){
     el.poz.innerHTML = `slide <b>${stare.i + 1}</b>/${N}`;
     const proc = Math.round((stare.vizitate.size / N) * 100);
     el.bara.style.width = proc + "%";
-    el.subT.textContent = proc + "%";
+    el.subT.textContent = `${stare.vizitate.size}/${N} · ${proc}%`;
     el.bLiber.textContent = stare.liber ? "porți: deschise" : "porți: închise";
     el.bLiber.classList.toggle("stare--acc", stare.liber);
   }
@@ -504,11 +520,11 @@ export async function porneste({ capitol, lectie }){
     ceasSalv = setTimeout(async () => {
       const id = slides[stare.i].id;
       try {
-        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=4`);
+        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=7`);
         await marcheazaSectiune(`${capitol}/${id}`);
       } catch {}
       try {
-        const s = await import(`${RADACINA}/js/sesiune.js?v=4`);
+        const s = await import(`${RADACINA}/js/sesiune.js?v=7`);
         s.laSlide({ slide:id, nr:stare.i + 1, total:N });
       } catch {}
     }, 900);

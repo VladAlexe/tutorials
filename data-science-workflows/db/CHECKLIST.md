@@ -10,6 +10,20 @@ Panou: https://supabase.com/dashboard/project/ybvtxenerriwstiktebe
       - `02-politici.sql` → trebuie `Success`
       - `04-studenti-test.sql` → trebuie sa afiseze doua randuri, A cu 12 si B cu 12
 
+- [ ] **1b. Restul fisierelor SQL**, tot in SQL Editor, tot in ordine:
+      - `05-sesiuni-si-reset.sql` → sesiunile live si butonul de reset
+      - `06-invitati-si-asteptari.sql` → intrarea ca invitat si asteptarile lor
+      - `07-prezenta.sql` → codul QR de prezenta
+      - `08-ritm.sql` → **ora condusa**: toti sar pe slide-ul meu
+      - `09-note.sql` → tabelul cu notele grupei
+      - `10-profesori.sql` → pot face profesor si un al doilea cont
+
+      Fiecare trebuie sa dea `Success`. Se pot rula din nou oricand, nu strica
+      nimic.
+
+      Pentru intrarea ca invitat mai e un buton de pornit, nu din SQL:
+      **Authentication** → **Sign In / Providers** → **Anonymous sign-ins**.
+
 - [ ] **2. Ia cheia publica**: butonul verde **Connect**, sus de tot, tabul
       **App Frameworks**. Acolo apare si adresa, si cheia publica.
       Alternativ: **Settings** → **API Keys**.
@@ -37,6 +51,12 @@ Panou: https://supabase.com/dashboard/project/ybvtxenerriwstiktebe
       select id from auth.users where email = 'adresa@ta.ro';
       ```
       Verificare: `select * from public.profesori;` trebuie sa aiba un rand.
+
+      **Un cont separat, numai de profesor** (recomandat: asa poti sa-ti incerci
+      site-ul cu un cont de student fara sa-ti pierzi panoul): intra o data pe
+      site cu celalalt cont, apoi, din `/profesor/`, sectiunea *Conturile de
+      profesor*, scrie-i adresa si apasa *Fa-l profesor*. Contul de profesor nu
+      are nevoie de numar matricol si nu apare in lista studentilor.
 
 - [ ] **7. Proba finala.** Fereastra privata, `/data-science-workflows/cont/`,
       intri cu alta adresa, introduci `900001`.

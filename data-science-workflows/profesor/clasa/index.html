@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=5">
-<link rel="stylesheet" href="../../css/grafice.css?v=5">
-<link rel="stylesheet" href="../../css/clasa.css?v=5">
-<script src="../../js/tema.js?v=5"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=7">
+<link rel="stylesheet" href="../../css/grafice.css?v=7">
+<link rel="stylesheet" href="../../css/clasa.css?v=7">
+<script src="../../js/tema.js?v=7"></script>
 </head>
 <body class="corp--app">
 
@@ -33,7 +33,7 @@
       <span class="cls__cand" id="cand">—</span>
       <button class="btn btn--mic" id="bt-qr" type="button">cod de intrare</button>
       <button class="btn btn--mic" id="bt-pauza" type="button">pune pe pauză</button>
-      <a class="btn btn--mic" href="../../profesor/">Panoul vechi</a>
+      <a class="btn btn--mic" href="../../profesor/">Zona mea</a>
     </div>
   </div>
 
@@ -79,6 +79,14 @@
         <p class="pan__d">Autoevaluarea de la începutul cursului, strânsă pe grupă.</p>
         <div id="autoeval"><p class="pan__gol">Încă nu s-a autoevaluat nimeni.</p></div>
       </div>
+      <div class="pan" style="margin-bottom:16px">
+        <div class="pan__cap"><span class="pan__t">Prezența</span>
+          <span class="pan__n" id="prez-n"></span></div>
+        <p class="pan__d">Cine a scanat codul de la oră. Deschide
+          <button class="leg-bt" id="bt-qr2" type="button">codul de intrare</button>
+          și proiectează-l.</p>
+        <div id="prezenta"><p class="pan__gol">Încă nu a scanat nimeni.</p></div>
+      </div>
       <div class="pan">
         <div class="pan__cap"><span class="pan__t">Ce așteaptă de la curs</span></div>
         <p class="pan__d">Scris de ei, cu numele lor.</p>
@@ -91,16 +99,17 @@
 <div class="qr" id="qr" hidden>
   <div class="qr__cutie">
     <button class="qr__x" id="qr-x" type="button" aria-label="Închide">×</button>
-    <span class="qr__et">Intrare la curs</span>
+    <span class="qr__et">Prezență la curs</span>
     <div class="qr__cod" id="qr-cod"></div>
+    <p class="qr__jeton" id="qr-jeton"></p>
     <p class="qr__url" id="qr-url"></p>
-    <p class="qr__d">Proiectează asta. Cine nu are cont intră ca invitat, cu
-      numele lui, și apare imediat în panou.</p>
+    <p class="qr__d">Proiectează asta. Cine are cont intră cu GitHub, cine nu,
+      ca invitat. În amândouă cazurile prezența se marchează singură.</p>
   </div>
 </div>
 
 <script type="module">
-import { LECTII, RADACINA } from "../../js/curs.js?v=5";
+import { LECTII, RADACINA } from "../../js/curs.js?v=7";
 
 const el = id => document.getElementById(id);
 const pag = el("pagina");
@@ -109,7 +118,7 @@ const nf = new Intl.NumberFormat("ro-RO");
 /* ------------------------------------------------------------ autorizare */
 let sb, profilul;
 try {
-  const m = await import("../../js/auth.js?v=5");
+  const m = await import("../../js/auth.js?v=7");
   sb = m.sb;
   profilul = await m.profil();
 } catch (e) {
@@ -123,11 +132,11 @@ if (!profilul.autentificat){
     <p>Panoul de clasă e vizibil doar profesorului. Intră în cont și revino.</p>
     <a class="btn btn--tare" href="${RADACINA}/cont/" style="margin-top:10px">Intră în cont</a>
     </div>`;
-} else if (!(profilul.profesor || profilul.profesorReal)){
+} else if (!profilul.profesor){
   pag.innerHTML = `<div class="nota nota--sobru"><div class="nota__et">Doar pentru profesor</div>
-    <p>Contul tău nu are drept de profesor. Dacă ar trebui să-l aibă, adaugă-l în
-    tabelul <code>profesori</code> din Supabase.</p>
-    <a class="btn" href="${RADACINA}/panou/" style="margin-top:10px">Mergi la panoul tău</a></div>`;
+    <p>Panoul de clasă e al profesorului. Lecțiile, progresul și nota ta sunt
+    la contul tău.</p>
+    <a class="btn" href="${RADACINA}/panou/" style="margin-top:10px">Contul meu</a></div>`;
 } else {
   porneste();
 }
@@ -187,14 +196,16 @@ function porneste(){
   /* ---------------------------------------------------------- o rundă ---- */
   async function reimprospateaza(){
     const cheie = sel.value;
-    const [live, prog, rasp, cod, ast, aev] = await Promise.all([
+    const [live, prog, rasp, cod, ast, aev, prez] = await Promise.all([
       sb.rpc("live_acum", { p_minute: 3 }),
       sb.rpc("sumar_progres", { p_capitol: cheie }),
       sb.rpc("sumar_raspunsuri", { p_capitol: cheie }),
       sb.rpc("sumar_cod", { p_exercitiu: null }),
       sb.rpc("sumar_asteptari", { p_capitol: cheie }),
-      sb.rpc("sumar_autoevaluare", { p_capitol: cheie })
+      sb.rpc("sumar_autoevaluare", { p_capitol: cheie }),
+      sb.rpc("sumar_prezenta", { p_curs: cheie })
     ]);
+    deseneazaPrezenta(prez.data || []);
     deseneazaCod(cod.data || []);
     deseneazaAsteptari(ast.data || []);
     deseneazaAutoeval(aev.data || []);
@@ -365,31 +376,63 @@ function porneste(){
       }).join("")}`;
   }
 
-  /* ------------------------------------------------------------ codul QR -- */
-  const adresaIntrare = location.origin + RADACINA + "/intra/";
-  el("qr-url").textContent = adresaIntrare.replace(/^https?:\/\//, "");
-  el("bt-qr").onclick = () => { el("qr").hidden = false; faQr(); };
-  el("qr-x").onclick = () => { el("qr").hidden = true; };
-  el("qr").onclick = e => { if (e.target === el("qr")) el("qr").hidden = true; };
+  /* ---------------------------------------------------------- prezența --- */
+  function deseneazaPrezenta(randuri){
+    el("prez-n").textContent = randuri.length ? `${randuri.length} prezenți` : "";
+    if (!randuri.length){
+      el("prezenta").innerHTML = `<p class="pan__gol">Încă nu a scanat nimeni.</p>`;
+      return;
+    }
+    el("prezenta").innerHTML = `<div class="prez">` + randuri.map(r => `
+      <div class="prez__r">
+        <span class="prez__c">${(r.nume || "?").trim()[0] || "?"}</span>
+        <span class="prez__m"><b>${r.nume}</b>
+          <small>${r.matricol}${r.grupa ? " · " + r.grupa : ""}</small></span>
+        <span class="prez__t">${new Date(r.marcat_la).toLocaleTimeString("ro-RO",
+          { hour:"2-digit", minute:"2-digit" })}</span>
+      </div>`).join("") + `</div>`;
+  }
 
-  let qrFacut = false;
-  async function faQr(){
-    if (qrFacut) return;
+  /* ------------------------------------------------------------ codul QR -- */
+  let jeton = null, qrPentru = null;
+
+  const deschideQr = async () => {
+    el("qr").hidden = false;
     const g = el("qr-cod");
+    const cheie = sel.value;
+    if (qrPentru === cheie && jeton) return;       /* deja desenat pentru lecția asta */
+    g.innerHTML = `<p class="qr__fallback" style="font-size:13px">se face codul…</p>`;
+    el("qr-jeton").textContent = ""; el("qr-url").textContent = "";
+
+    const { data, error } = await sb.rpc("creeaza_jeton",
+      { p_curs: cheie, p_minute: 120 });
+    if (error || !data?.ok){
+      g.innerHTML = `<p class="qr__fallback" style="font-size:14px;color:var(--nu)">
+        ${error?.message || data?.mesaj || "nu pot face jetonul"}</p>`;
+      return;
+    }
+    jeton = data.jeton; qrPentru = cheie;
+    const adresa = `${location.origin}${RADACINA}/intra/?j=${jeton}`;
+    el("qr-jeton").textContent = jeton;
+    el("qr-url").textContent = adresa.replace(/^https?:\/\//, "");
+
     try {
       const { default: qrcode } =
         await import("https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/+esm");
       const q = qrcode(0, "M");
-      q.addData(adresaIntrare);
+      q.addData(adresa);
       q.make();
       g.innerHTML = q.createSvgTag({ cellSize: 7, margin: 2, scalable: true });
-      qrFacut = true;
     } catch {
-      /* fără rețea către CDN, adresa scrisă mare e la fel de utilă */
-      g.innerHTML = `<p class="qr__fallback">${adresaIntrare.replace(/^https?:\/\//, "")}</p>`;
-      qrFacut = true;
+      /* fără codul grafic, adresa scrisă mare face aceeași treabă */
+      g.innerHTML = `<p class="qr__fallback">${adresa.replace(/^https?:\/\//, "")}</p>`;
     }
-  }
+  };
+
+  el("bt-qr").onclick = deschideQr;
+  el("bt-qr2").onclick = deschideQr;
+  el("qr-x").onclick = () => { el("qr").hidden = true; };
+  el("qr").onclick = e => { if (e.target === el("qr")) el("qr").hidden = true; };
 
   /* ---------------------------------------------------------- tabel ------ */
   function deseneazaTabel(prog, aici, cheie){
@@ -429,6 +472,6 @@ function porneste(){
   }
 }
 </script>
-<script type="module" src="../../js/antet.js?v=5"></script>
+<script type="module" src="../../js/antet.js?v=7"></script>
 </body>
 </html>

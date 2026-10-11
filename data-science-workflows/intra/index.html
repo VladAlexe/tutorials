@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=5">
-<script src="../js/tema.js?v=5"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=7">
+<script src="../js/tema.js?v=7"></script>
 <style>
   body{display:grid;place-items:center;min-height:100dvh;padding:24px}
   .intra{width:100%;max-width:430px}
@@ -55,21 +55,21 @@
 
   <div class="cutie">
     <div id="zona">
-      <label for="nume">Numele tău</label>
-      <input id="nume" type="text" autocomplete="name" maxlength="60"
-             placeholder="Cum să-ți spun" autofocus>
-      <button class="btn btn--tare" id="bt-invitat" type="button">Intră ca invitat</button>
-      <p class="mic">Fără cont și fără parolă. Progresul se salvează și se vede
-      la profesor, dar nu se leagă de numărul tău matricol.</p>
+      <button class="btn btn--tare" id="bt-github" type="button" style="width:100%;justify-content:center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 20v-3.2M7 16.8c-2.6 0-3.4-1.7-3.4-3.4 0-1 .3-1.8.9-2.4-.3-.8-.3-2 .1-2.8 1 .1 2 .6 2.7 1.2.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c.7-.6 1.7-1.1 2.7-1.2.4.8.4 2 .1 2.8.6.6.9 1.4.9 2.4 0 1.7-.8 3.4-3.4 3.4"/></svg>
+        Am cont, intru cu GitHub
+      </button>
+      <p class="mic">Dacă ești student la curs, asta e varianta ta. Te întorci
+      aici imediat, iar prezența se marchează singură.</p>
 
       <div class="ori">sau</div>
 
-      <button class="btn" id="bt-github" type="button" style="width:100%;justify-content:center">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 20v-3.2M7 16.8c-2.6 0-3.4-1.7-3.4-3.4 0-1 .3-1.8.9-2.4-.3-.8-.3-2 .1-2.8 1 .1 2 .6 2.7 1.2.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c.7-.6 1.7-1.1 2.7-1.2.4.8.4 2 .1 2.8.6.6.9 1.4.9 2.4 0 1.7-.8 3.4-3.4 3.4"/></svg>
-        Intră cu GitHub
-      </button>
-      <p class="mic">Dacă ești student la curs, intră cu GitHub și leagă-ți
-      numărul matricol. Contul de invitat nu se poate transforma mai târziu.</p>
+      <label for="nume">Numele tău</label>
+      <input id="nume" type="text" autocomplete="name" maxlength="60"
+             placeholder="Cum să-ți spun">
+      <button class="btn" id="bt-invitat" type="button">Intru ca invitat</button>
+      <p class="mic">Fără cont și fără parolă. Progresul se salvează și apare la
+      profesor, dar nu se leagă de numărul matricol.</p>
     </div>
     <p class="mesaj" id="mesaj"></p>
   </div>
@@ -82,13 +82,31 @@ const msg = (text, fel) => {
   m.textContent = text; m.className = "mesaj vazut " + (fel || "");
 };
 
+const par = new URLSearchParams(location.search);
 /* unde trimitem după intrare: ?spre=... sau lecția 1 */
-const spre = new URLSearchParams(location.search).get("spre")
-          || "/data-science-workflows/c1-introducere-si-mediu/lectie/";
+const spre = par.get("spre") || "/data-science-workflows/c1-introducere-si-mediu/lectie/";
+/* jetonul de prezență din codul QR: ?j=ABC123 */
+const jeton = (par.get("j") || "").trim().toUpperCase() || null;
+
+if (jeton){
+  document.querySelector("h1").textContent = "Prezență la curs";
+  document.querySelector(".intra__d").innerHTML =
+    "Intră în cont și îți marchez prezența. Dacă ai cont, folosește-l: " +
+    "așa se leagă de numărul tău matricol.";
+}
+
+/** Marchează prezența, dacă a venit cu jeton. Întoarce textul de afișat. */
+async function prezenta(){
+  if (!jeton) return null;
+  try {
+    const r = await A.marcheazaPrezenta(jeton);
+    return r?.ok ? "Prezența e înregistrată." : (r?.mesaj || "Prezența nu s-a putut marca.");
+  } catch (e) { return "Prezența nu s-a putut marca: " + e.message; }
+}
 
 let A;
 try {
-  A = await import("../js/auth.js?v=5");
+  A = await import("../js/auth.js?v=7");
 } catch (e) {
   msg("Nu pot încărca autentificarea: " + e.message, "rau");
   throw e;
@@ -98,12 +116,15 @@ try {
 try {
   const p = await A.profil();
   if (p.autentificat){
+    const pz = await prezenta();
     el("zona").innerHTML =
       `<p style="font-family:var(--sans);font-size:15px;line-height:1.5">
-         Ești deja conectat ca <strong>${p.nume || p.email || "cineva"}</strong>.</p>
+         Ești conectat ca <strong>${p.nume || p.email || "cineva"}</strong>${
+           p.matricol ? `, ${p.matricol}` : ""}.</p>
        <a class="btn btn--tare" href="${spre}" style="width:100%;justify-content:center;margin-top:14px">Mergi la lecție</a>
        <button class="btn" id="bt-iesi" type="button" style="width:100%;justify-content:center;margin-top:9px">Ieși și intră cu alt cont</button>`;
-    el("bt-iesi").onclick = async () => { await A.iesi(); location.reload(); };
+    if (pz) msg(pz, pz.startsWith("Prezența e") ? "bun" : "rau");
+  el("bt-iesi").onclick = async () => { await A.iesi(); location.reload(); };
   }
 } catch { /* fără sesiune, rămâne formularul */ }
 
@@ -116,8 +137,9 @@ el("bt-invitat")?.addEventListener("click", async () => {
   try {
     const r = await A.intraCaInvitat(nume);
     if (!r?.ok) throw new Error(r?.mesaj || "nu a mers");
-    msg(`Gata, ${r.nume}. Te duc la lecție…`, "bun");
-    setTimeout(() => location.href = spre, 800);
+    const pz = await prezenta();
+    msg(`Gata, ${r.nume}. ${pz || ""} Te duc la lecție…`, "bun");
+    setTimeout(() => location.href = spre, 1100);
   } catch (e) {
     b.disabled = false; b.textContent = "Intră ca invitat";
     msg(e.message, "rau");
@@ -125,6 +147,9 @@ el("bt-invitat")?.addEventListener("click", async () => {
 });
 
 el("bt-github")?.addEventListener("click", async () => {
+  /* ne întoarcem exact pe adresa asta, cu tot cu jeton, ca prezența să se
+     marcheze automat după ce GitHub ne trimite înapoi */
+  try { sessionStorage.setItem("dsw.intra", location.href); } catch {}
   try { await A.intraCuGithub(); }
   catch (e) { msg(e.message, "rau"); }
 });

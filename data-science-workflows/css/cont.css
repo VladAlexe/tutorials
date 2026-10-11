@@ -105,3 +105,97 @@
   .codl__c{text-align:left}
   .cnt__cap{padding-top:28px}
 }
+
+/* --- reia de unde ai rămas ------------------------------------------------
+   Prima decizie pe care o ia cineva care intră în cont e „unde eram?”.
+   Cardul ăsta răspunde singur, ca să nu caute prin listă.
+   ------------------------------------------------------------------------- */
+
+.reia{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"et sg" "t sg" "d sg" "b b";
+  gap:3px 20px;align-items:center;text-decoration:none;
+  border:1px solid var(--linie);border-radius:14px;background:var(--panza);
+  padding:19px 22px;margin:0 0 6px;transition:border-color .13s, box-shadow .13s}
+.reia:hover{border-color:var(--linie-2);box-shadow:var(--umbra)}
+.reia__et{grid-area:et;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-text)}
+.reia__t{grid-area:t;font-family:var(--serif);font-size:21px;letter-spacing:-.01em;
+  line-height:1.25;color:var(--text)}
+.reia__d{grid-area:d;font-family:var(--sans);font-size:13px;color:var(--text-3)}
+.reia__sg{grid-area:sg;width:38px;height:38px;border-radius:50%;display:grid;
+  place-items:center;background:var(--accent);color:var(--fundal);
+  font-size:17px;line-height:1;transition:transform .13s}
+.reia:hover .reia__sg{transform:translateX(3px)}
+.reia__b{grid-area:b;height:3px;border-radius:2px;background:var(--linie);
+  margin-top:13px;overflow:hidden}
+.reia__b i{display:block;height:100%;background:var(--accent)}
+:root[data-tema="intunecat"] .reia__sg{color:#0F1317}
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema="deschis"]) .reia__sg{color:#0F1317}
+}
+
+/* --- nota ----------------------------------------------------------------
+   Trei cutii, una pentru fiecare sursă de puncte, cu bara de unde stă acum.
+   Bara e aceeași nuanță peste tot: nu e un clasament, e un progres.
+   ------------------------------------------------------------------------- */
+
+.nta{display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:12px}
+.nt{border:1px solid var(--linie);border-radius:13px;background:var(--panza);
+  padding:17px 19px 19px;display:grid;grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"n v" "b b" "s s" "d d";gap:0 12px;align-items:baseline}
+.nt__n{grid-area:n;font-family:var(--sans);font-size:14px;font-weight:600;
+  letter-spacing:-.01em}
+.nt__v{grid-area:v;font-family:var(--sans);font-size:25px;font-weight:600;
+  letter-spacing:-.025em;line-height:1;font-variant-numeric:lining-nums;
+  color:var(--accent-text);white-space:nowrap}
+.nt__v small{font-size:13px;font-weight:500;color:var(--text-3);letter-spacing:0}
+.nt__b{grid-area:b;height:5px;border-radius:3px;background:var(--linie);
+  margin:13px 0 0;overflow:hidden}
+.nt__b i{display:block;height:100%;background:var(--accent);border-radius:3px;
+  transition:width .35s}
+.nt__s{grid-area:s;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;
+  color:var(--text-2);margin-top:9px}
+.nt__d{grid-area:d;font-family:var(--sans);font-size:12.5px;color:var(--text-3);
+  line-height:1.45;margin-top:7px}
+.nt--astept .nt__v{color:var(--text-3)}
+.nt--astept .nt__b i{background:var(--linie-2)}
+
+.nta__tot{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  margin:14px 0 0;padding:15px 19px;border-radius:12px;background:var(--panza-2);
+  border:1px solid var(--linie);font-family:var(--sans);font-size:13.5px;
+  color:var(--text-2)}
+.nta__tot b{font-size:26px;font-weight:600;letter-spacing:-.025em;color:var(--text);
+  font-variant-numeric:lining-nums;line-height:1}
+
+.detalii{margin-top:14px;border-top:1px solid var(--linie);padding-top:4px}
+.detalii summary{font-family:var(--sans);font-size:13.5px;color:var(--accent-text);
+  cursor:pointer;padding:11px 0;list-style:none;display:flex;align-items:center;gap:7px}
+.detalii summary::-webkit-details-marker{display:none}
+.detalii summary::before{content:"+";font-family:var(--mono);font-size:14px;
+  color:var(--text-3);width:12px}
+.detalii[open] summary::before{content:"−"}
+.detalii__r{padding:0 0 15px 19px;max-width:var(--citit)}
+.detalii__r b{display:block;font-family:var(--sans);font-size:13px;font-weight:600;
+  margin-bottom:4px}
+.detalii__r p{font-family:var(--sans);font-size:13.5px;color:var(--text-2);
+  line-height:1.55;margin:0;max-width:none}
+
+/* --- file (taburi) -------------------------------------------------------- */
+
+.file{display:flex;gap:4px;border-bottom:1px solid var(--linie);margin-bottom:20px;
+  overflow-x:auto;scrollbar-width:none}
+.file::-webkit-scrollbar{display:none}
+.file__f{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;
+  font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--text-3);
+  background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;
+  white-space:nowrap;transition:color .13s}
+.file__f:hover{color:var(--text-2)}
+.file__f.on{color:var(--text);border-bottom-color:var(--accent)}
+.file__f i{font-style:normal;font-family:var(--mono);font-size:10.5px;
+  padding:2px 6px;border-radius:9px;background:var(--panza-2);color:var(--text-3);
+  font-variant-numeric:lining-nums}
+.file__f.on i{background:var(--accent-slab);color:var(--accent-text)}
+.file__c{min-height:60px}
+
+.cnt__gol{font-family:var(--sans);font-size:14px;color:var(--text-3);
+  padding:26px 0;margin:0;max-width:var(--citit);font-style:italic}

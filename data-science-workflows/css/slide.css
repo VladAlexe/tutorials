@@ -220,3 +220,41 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
   .stare__ascuns-mic{display:none}
   #btn-plt span{display:none}
 }
+
+/* --- ora condusă ----------------------------------------------------------
+   O bandă discretă, jos, care spune un singur lucru: urmez sau nu urmez.
+   Nu acoperă conținutul și are mereu butonul de ieșire la vedere.
+   ------------------------------------------------------------------------- */
+
+.are-ritm .rnr__scena{padding-top:52px}
+/* sus, sub antet: jos ar acoperi butoanele de înainte/înapoi */
+.ritm{position:fixed;left:50%;transform:translateX(-50%);
+  top:calc(var(--antet) + 12px);z-index:200;
+  display:flex;align-items:center;gap:11px;padding:8px 10px 8px 15px;
+  border-radius:24px;border:1px solid var(--linie-2);background:var(--panza);
+  box-shadow:0 6px 24px rgba(0,0,0,.17);font-family:var(--sans);font-size:13px;
+  max-width:calc(100vw - 32px)}
+.ritm[hidden]{display:none}
+.ritm__pct{width:8px;height:8px;border-radius:50%;background:var(--linie-2);flex:none}
+.ritm--on .ritm__pct{background:var(--accent);
+  box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  animation:ritm-puls 2.1s ease-out infinite}
+@keyframes ritm-puls{
+  70%{box-shadow:0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent)}
+  100%{box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent)}
+}
+@media (prefers-reduced-motion: reduce){ .ritm--on .ritm__pct{animation:none} }
+.ritm__t{font-weight:600;white-space:nowrap}
+.ritm__d{color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ritm__b{font:inherit;font-size:12px;font-weight:600;padding:6px 13px;border-radius:18px;
+  border:1px solid var(--linie);background:var(--fundal);color:var(--text-2);
+  cursor:pointer;white-space:nowrap;transition:.13s;flex:none}
+.ritm__b:hover{border-color:var(--linie-2);color:var(--text)}
+.ritm--liber{border-color:var(--linie)}
+.ritm--liber .ritm__t{color:var(--text-2)}
+.ritm--prof.ritm--on{border-color:color-mix(in srgb, var(--accent) 45%, transparent)}
+
+@media(max-width:700px){
+  .ritm{top:calc(var(--antet) + 8px);font-size:12px;gap:8px;padding:7px 8px 7px 12px}
+  .ritm__d{display:none}
+}

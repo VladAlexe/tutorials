@@ -3,13 +3,13 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=1"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=7"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=4";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=7";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -77,19 +77,21 @@ async function cont(){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=4`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=7`);
     const p = await profil();
     if (!p.autentificat) {
       zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;
       return;
     }
-    const clasa = (p.profesor || p.profesorReal)
+    /* profesorul are casa lui; studentul nu afla ca exista */
+    const clasa = p.profesor
       ? `<a class="icon-btn" href="${RADACINA}/profesor/clasa/" title="Panou de clasă"
             aria-label="Panou de clasă">${SVG.clasa}</a>` : "";
     const nume = p.nume || p.email || "Contul meu";
     const ini = nume.trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "?";
+    const acasa = p.profesor ? `${RADACINA}/profesor/` : `${RADACINA}/panou/`;
     zona.innerHTML = clasa +
-      `<a class="cont-chip" href="${RADACINA}/panou/" title="${nume}">
+      `<a class="cont-chip" href="${acasa}" title="${nume}">
          <span class="cont-chip__cerc">${ini}</span>
          <span>${nume.split(/\s+/)[0]}</span>
        </a>`;

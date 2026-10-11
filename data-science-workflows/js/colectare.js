@@ -20,7 +20,7 @@ let gata  = null;   /* null = neștiut, true/false = poate salva sau nu */
 
 async function autentificare(){
   if (modul !== null) return modul;
-  try { modul = await import("./auth.js?v=5"); }
+  try { modul = await import("./auth.js?v=7"); }
   catch { modul = false; }
   return modul;
 }

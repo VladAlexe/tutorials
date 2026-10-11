@@ -27,7 +27,7 @@ let curent = { capitol:null, slide:null, slide_nr:null, total_nr:null };
 async function conecteaza(){
   if (sb) return sb;
   try {
-    const m = await import("./auth.js?v=5");
+    const m = await import("./auth.js?v=7");
     const p = await m.profil();
     if (!p.autentificat) return null;
     sb = m.sb;

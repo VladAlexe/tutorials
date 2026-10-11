@@ -21,7 +21,7 @@ import pathlib
 import re
 
 RAD = pathlib.Path(__file__).resolve().parent.parent
-V = "?v=5"
+V = "?v=6"
 
 
 def ix(fel, titlu, date=None, sarcina=None, corp=""):

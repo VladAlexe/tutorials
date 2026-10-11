@@ -19,7 +19,7 @@ export function porneste(capitol){
   sectiuni.forEach(s => obs.observe(s));
 
   /* se marchează ca citit, ca să se vadă în progres că a reluat materialul */
-  import("/data-science-workflows/js/colectare.js?v=5")
+  import("/data-science-workflows/js/colectare.js?v=7")
     .then(m => m.marcheazaSectiune(`${capitol}/manual`))
     .catch(() => {});
 }
