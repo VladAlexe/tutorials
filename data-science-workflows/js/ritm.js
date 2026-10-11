@@ -17,7 +17,7 @@
    iese tăcut și lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=7";
+import { RADACINA } from "./curs.js?v=8";
 
 const PAS_STUDENT  = 3000;    /* cât de des întreabă studentul unde e profesorul */
 const PAS_PROFESOR = 12000;   /* cât de des numără profesorul cine e în sală */
@@ -25,7 +25,7 @@ const PAS_PROFESOR = 12000;   /* cât de des numără profesorul cine e în sal�
 export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A;
-  try { A = await import(`${RADACINA}/js/auth.js?v=7`); }
+  try { A = await import(`${RADACINA}/js/auth.js?v=8`); }
   catch { return null; }
 
   let p = null;

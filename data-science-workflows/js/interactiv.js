@@ -6,8 +6,8 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=7";
-import EXERCITII from "./exercitii.js?v=7";
+import GRAFICE from "./grafice.js?v=8";
+import EXERCITII from "./exercitii.js?v=8";
 
 const C = { ...GRAFICE, ...EXERCITII };
 
@@ -275,7 +275,7 @@ C.autoevaluare = (gazda, date) => {
     gazda.closest(".ix")?.classList.add("gata");
     document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=7");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=8");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -357,7 +357,7 @@ C.asteptari = (gazda, date) => {
     gazda.closest(".ix")?.classList.add("gata");
     document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=7");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=8");
       await s.jurnal("asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}
   };
