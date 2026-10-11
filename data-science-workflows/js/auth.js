@@ -5,12 +5,30 @@
    aici, nu vorbesc direct cu Supabase.
    =========================================================================== */
 
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.0/+esm";
 import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js";
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
+
+/* --- diagnostic ----------------------------------------------------------
+   Ce a venit inapoi in adresa dupa autentificare. Il citim INAINTE ca
+   biblioteca sa curete adresa, ca sa putem spune ce s-a intamplat cand ceva
+   nu merge. Nu pastram valorile jetoanelor, doar numele parametrilor.
+   ------------------------------------------------------------------------- */
+
+export const intoarcere = (() => {
+  const h = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const q = new URLSearchParams(location.search);
+  const chei = [...new Set([...h.keys(), ...q.keys()])];
+  return {
+    chei,
+    areJeton: h.has("access_token") || q.has("code"),
+    eroare: h.get("error") || q.get("error") || null,
+    descriere: h.get("error_description") || q.get("error_description") || null
+  };
+})();
 
 /* --- intrare ------------------------------------------------------------- */
 

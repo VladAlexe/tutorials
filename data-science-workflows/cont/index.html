@@ -156,6 +156,7 @@
 import { intraCuEmail, intraCuGithub, iesi, profil,
          revendicaMatricol, laSchimbare } from "../js/auth.js";
 import { PERMITE_EMAIL } from "../js/supabase-config.js";
+import { intoarcere } from "../js/auth.js";
 
 if (PERMITE_EMAIL) document.getElementById("zona-email").hidden = false;
 
@@ -196,7 +197,21 @@ async function deseneaza(){
     return;
   }
 
-  if (!p.autentificat) { arata("pas-intrare"); return; }
+  if (!p.autentificat) {
+    arata("pas-intrare");
+    /* ne-am intors de la GitHub dar nu avem sesiune: spunem de ce */
+    if (intoarcere.eroare) {
+      mesaj("msg-intrare",
+        "Autentificarea a fost respinsă: " +
+        (intoarcere.descriere || intoarcere.eroare), "no");
+    } else if (intoarcere.areJeton) {
+      mesaj("msg-intrare",
+        "GitHub a răspuns, dar sesiunea nu s-a putut deschide. " +
+        "Parametri primiți: " + intoarcere.chei.join(", ") + ". " +
+        "Trimite-mi acest mesaj.", "no");
+    }
+    return;
+  }
 
   if (!p.matricol) {
     identitate(E("ident-nou"), p.email || "Cont nou", "fără număr matricol");
