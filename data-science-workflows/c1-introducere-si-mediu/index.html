@@ -4,150 +4,241 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>1. Introducere și mediul de lucru — Fluxuri de lucru</title>
-<meta name="description" content="Ce este un flux de lucru pentru date, cum arată proiectul semestrului, și cum îți pregătești mediul.">
+<meta name="description" content="Ce este un flux de lucru pentru date, cum arată proiectul semestrului, și cum îți pregătești mediul de lucru.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=1">
+<link rel="stylesheet" href="../css/sistem.css?v=2">
+<link rel="stylesheet" href="../css/lectie.css?v=2">
+<link rel="stylesheet" href="../css/interactiv.css?v=2">
 <script src="../js/tema.js?v=1"></script>
-<style>
-  .lectie{display:grid;grid-template-columns:minmax(0,1fr) 248px;gap:56px;
-    align-items:start;padding:42px 0 0}
-  .lateral{position:sticky;top:calc(var(--antet) + 72px);display:grid;gap:22px}
-  .lateral h4{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--text-3);margin:0 0 9px}
-  .cuprins a{display:block;font-family:var(--sans);font-size:13.5px;line-height:1.38;
-    padding:5px 0 5px 11px;border-left:2px solid var(--linie);color:var(--text-2);
-    text-decoration:none;transition:.12s}
-  .cuprins a:hover{color:var(--text);border-left-color:var(--linie-2)}
-  .cuprins a.activ{color:var(--text);border-left-color:var(--accent);font-weight:500}
-  @media(max-width:940px){
-    .lectie{grid-template-columns:1fr;gap:34px}
-    .lateral{position:static;order:-1}
-    .cuprins{display:none}
-  }
-  .lectie__cap{padding-bottom:8px}
-  .meta{display:flex;gap:20px;flex-wrap:wrap;margin:22px 0 0;
-    font-family:var(--mono);font-size:12px;color:var(--text-3)}
-  .meta b{font-weight:500;color:var(--text-2)}
-
-  /* exploratorul de flux */
-  .expl{display:grid;grid-template-columns:1fr 290px;gap:18px;background:var(--panza);
-    border:1px solid var(--linie);border-radius:11px;padding:19px;margin:0 0 26px}
-  @media(max-width:720px){.expl{grid-template-columns:1fr}}
-  .expl__et{display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start}
-  .expl__b{font-family:var(--sans);font-size:13px;padding:8px 12px;border-radius:7px;
-    border:1px solid var(--linie-2);background:var(--fundal);transition:.13s;
-    display:flex;align-items:center;gap:7px}
-  .expl__b:hover{border-color:var(--accent);background:var(--accent-slab)}
-  .expl__b.on{background:var(--text);border-color:var(--text);color:var(--fundal)}
-  .expl__b i{font-family:var(--mono);font-size:10px;font-style:normal;opacity:.55}
-  .expl__b.depozit{border-style:dashed}
-  .expl__info{background:var(--panza-2);border-radius:9px;padding:15px 17px;font-size:15px;
-    line-height:1.55}
-  .expl__info h5{font-family:var(--sans);font-size:14.5px;font-weight:600;margin:0 0 7px}
-  .expl__info p{margin:0 0 9px;font-size:15px;max-width:none}
-  .expl__info .unde{font-family:var(--mono);font-size:11px;color:var(--accent-text)}
-</style>
 </head>
 <body>
 
 <div id="antet" data-aici="1. Introducere și mediul de lucru" data-lectie="c1-introducere-si-mediu"></div>
 
 <main>
-  <div class="pagina">
-    <div class="lectie">
+<div class="pagina">
+<div class="lec">
 
-      <article>
-        <header class="lectie__cap">
-          <p class="supratitlu">Lecția 1</p>
-          <h1>Introducere și mediul de lucru</h1>
-          <p class="deck">Ce este un flux de lucru pentru date, cum arată proiectul pe care
-          îl construim tot semestrul, și cum îți pregătești calculatorul ca să poți lucra.</p>
-          <div class="meta">
-            <span>durată <b>90 min</b></span>
-            <span>practic <b>30 min</b></span>
-            <span><b>2</b> verificări</span>
-          </div>
-        </header>
+  <!-- ====================== STÂNGA: CUPRINS ====================== -->
+  <aside class="lec__stanga">
+    <div>
+      <div class="parcurs"><i id="parcurs-bara"></i></div>
+      <div class="parcurs-t" id="parcurs-text">0% parcurs</div>
+    </div>
+    <div>
+      <h4>Cuprins</h4>
+      <nav class="cuprins" id="cuprins"></nav>
+    </div>
+    <div>
+      <h4>Materiale</h4>
+      <div class="resurse">
+        <a class="resursa" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">
+          <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg></span>
+          <span class="resursa__txt"><span class="resursa__t">Caietul lecției</span><span class="resursa__d">Jupyter, pe GitHub</span></span>
+        </a>
+      </div>
+    </div>
+    <div>
+      <h4>Legături</h4>
+      <div class="legaturi">
+        <a class="legatura" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><span class="legatura__t">VS Code</span><span class="legatura__g">↗</span></a>
+        <a class="legatura" href="https://www.python.org/downloads/" target="_blank" rel="noopener"><span class="legatura__t">Python</span><span class="legatura__g">↗</span></a>
+        <a class="legatura" href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener"><span class="legatura__t">venv</span><span class="legatura__g">docs</span></a>
+        <a class="legatura" href="https://www.json.org/json-en.html" target="_blank" rel="noopener"><span class="legatura__t">JSON</span><span class="legatura__g">spec</span></a>
+        <a class="legatura" href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510" target="_blank" rel="noopener"><span class="legatura__t">Good Enough Practices</span><span class="legatura__g">PLOS</span></a>
+        <a class="legatura" href="../surse-de-date.html"><span class="legatura__t">Sursele de date</span><span class="legatura__g">curs</span></a>
+      </div>
+    </div>
+  </aside>
 
-        <h2 id="s1">Un proiect de date nu începe cu datele</h2>
-        <p>Începe cu o întrebare la care cineva chiar vrea un răspuns. Tot restul,
-        colectarea, curățarea, modelul, sunt mijloace prin care întrebarea aceea ajunge să
-        aibă un răspuns în care poți avea încredere.</p>
-        <p>Etapele de mai jos par un lanț ordonat, și în mare parte chiar sunt: nu poți
-        curăța date pe care nu le-ai colectat. Dar în practică te întorci constant.
-        Descoperi la curățare că un indicator lipsește pentru jumătate din unități și revii
-        la colectare. Descoperi la explorare că întrebarea inițială nu se poate testa cu ce
-        ai, și o reformulezi. <strong>Fluxul e ciclic, nu liniar</strong>, iar asta nu e un
-        semn că ai greșit, e felul normal de a lucra.</p>
+  <!-- ====================== DREAPTA: CONȚINUT ====================== -->
+  <article>
 
-        <div class="expl">
-          <div class="expl__et" id="expl-et"></div>
-          <div class="expl__info" id="expl-info">
-            <h5>Fluxul complet</h5>
-            <p>Opt etape și un depozit. Apasă pe oricare ca să vezi ce se întâmplă acolo.</p>
-          </div>
-        </div>
+    <!-- ---------- intrarea în lecție ---------- -->
+    <header class="intro">
+      <p class="supratitlu">Lecția 1</p>
+      <h1>Introducere și mediul de lucru</h1>
+      <p class="deck">Ce este un flux de lucru pentru date, cum arată proiectul pe care îl
+      construim tot semestrul, și cum îți pregătești calculatorul ca să poți lucra.</p>
+      <div class="intro__meta">
+        <span>durată <b>90 min</b></span>
+        <span>practic <b>30 min</b></span>
+        <span><b>4</b> verificări</span>
+        <span><b>4</b> componente interactive</span>
+      </div>
 
-        <p>Observă un lucru: baza de date nu e o etapă, e o <strong>zonă de depozitare</strong>
-        la care se întorc mai multe etape. Colectezi și scrii acolo. Cureți și scrii versiunea
-        curată. Agregi și scrii tabelul final. Fiecare pas își lasă rezultatul într-un loc din
-        care următorul îl poate lua, fără să depindă de fișierele de pe laptopul cuiva anume.</p>
+      <div class="obiective">
+        <h4>La final vei putea</h4>
+        <ul>
+          <li>Să descrii etapele prin care trece o întrebare până devine un rezultat, și să spui de ce ordinea lor nu e strictă.</li>
+          <li>Să explici ce înseamnă date diadice și de ce schimbă fiecare etapă a fluxului.</li>
+          <li>Să îți creezi un mediu de lucru izolat și să știi când e activ.</li>
+          <li>Să recunoști tipurile de date din Python și să spui ce se strică atunci când sunt greșite.</li>
+          <li>Să citești un răspuns JSON și să identifici unde sunt datele în el.</li>
+        </ul>
+      </div>
 
-        <div class="nota">
-          <div class="nota__et">De ce contează pentru echipă</div>
-          <p>Într-un proiect de cinci oameni, etapele se împart. Dacă fiecare își ține
-          rezultatul local, al doilea nu poate începe până nu-i trimite primul un fișier pe
-          chat. Cu o bază de date și un depozit comun, fiecare ia de unde a lăsat celălalt.
-          Cursul e construit exact în jurul acestei probleme.</p>
-        </div>
+      <div class="grila grila--2" style="margin-top:26px">
+        <a class="resursa" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">
+          <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg></span>
+          <span class="resursa__txt"><span class="resursa__t">Caietul lecției</span><span class="resursa__d">Partea practică, de rulat la tine</span></span>
+          <span class="resursa__sageata">→</span>
+        </a>
+        <a class="resursa" href="../surse-de-date.html">
+          <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6"/><path d="M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></svg></span>
+          <span class="resursa__txt"><span class="resursa__t">Sursele de date</span><span class="resursa__d">Tot ce folosim la curs, cu coduri</span></span>
+          <span class="resursa__sageata">→</span>
+        </a>
+      </div>
+    </header>
 
-        <div class="verif" data-id="1.1-v1" data-corect="1">
-          <p class="verif__q">O echipă descoperă la analiza exploratorie că indicatorul ales
-          nu are date pentru 40% din unități. Ce face?</p>
-          <button>Continuă analiza doar pe cele care au date, fără să menționeze</button>
-          <button>Se întoarce la colectare și caută un indicator alternativ</button>
-          <button>Completează valorile lipsă cu media, ca să nu piardă unități</button>
-          <button>Schimbă modelul statistic ca să tolereze lipsurile</button>
-          <p class="verif__ex">Întoarcerea la o etapă anterioară e normală, nu e un eșec.
-          Celelalte variante rămân opțiuni discutabile în anumite cazuri, dar niciuna nu se ia
-          înainte de a verifica dacă problema se poate rezolva la sursă. Iar orice decizie de
-          acest fel se scrie în raport, nu se ascunde.</p>
-        </div>
+    <hr class="hr-lectie">
+    <span class="et-sectiune">Lecția</span>
 
-        <h2 id="s2">Proiectul semestrului</h2>
-        <p>Cursul are un singur produs final: un depozit de echipă în care se vede tot
-        drumul, de la întrebarea de cercetare până la rezultat și interpretarea lui. Nu
-        predați un fișier la final. Construiți săptămână de săptămână, iar fiecare lecție
-        adaugă o piesă.</p>
-        <p>Datele cu care lucrăm măsoară <strong>conectivitatea socială dintre locuri</strong>:
-        pentru fiecare pereche de regiuni, cât de probabil e ca doi oameni de acolo să fie
-        prieteni pe Facebook. Sunt publice, gratuite, și acoperă 178 de țări, până la nivel
-        de județ în Europa.</p>
-        <p>Particularitatea lor schimbă tot ce urmează. Un rând nu descrie un loc, ci
-        <em>o relație între două locuri</em>. Se numesc date diadice, iar diferența pare un
-        detaliu până vezi consecințele: numărul de rânduri crește cu pătratul numărului de
-        unități, atributele se lipesc de două ori, iar observațiile nu mai sunt independente.</p>
+    <!-- ---------- 1 ---------- -->
+    <h2 id="s1">Un proiect de date nu începe cu datele</h2>
+    <p>Începe cu o întrebare la care cineva chiar vrea un răspuns. Tot restul, colectarea,
+    curățarea, modelul, sunt mijloace prin care întrebarea aceea ajunge să aibă un răspuns
+    în care poți avea încredere.</p>
+    <p>Etapele de mai jos par un lanț ordonat, și în mare parte chiar sunt: nu poți curăța
+    date pe care nu le-ai colectat. Dar în practică te întorci constant. Descoperi la
+    curățare că un indicator lipsește pentru jumătate din unități și revii la colectare.
+    Descoperi la explorare că întrebarea inițială nu se poate testa cu ce ai, și o
+    reformulezi. <strong>Fluxul e ciclic, nu liniar</strong>, iar asta nu e un semn că ai
+    greșit, e felul normal de a lucra.</p>
 
-        <div class="nota nota--sobru">
-          <div class="nota__et">Un rezultat, ca să vezi unde mergem</div>
-          <p>Italia găzduiește 898.293 de oameni născuți în România. Austria, 148.487, de
-          șase ori mai puțini. Dar la conectivitate socială Austria stă pe locul doi, iar
-          Italia pe locul șase.</p>
-          <p>Nu e o eroare în date. E consecința felului în care e construit indicatorul, și
-          e prima lecție de metodă a cursului: un indicator normalizat răspunde la altă
-          întrebare decât unul brut.</p>
-        </div>
+    <div class="ix" data-ix="etape">
+      <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Fluxul de lucru</span></div>
+      <div class="ix__corp">
+        <p class="ix__sarcina">Apasă pe o etapă ca să vezi ce se întâmplă acolo și în ce lecție o tratăm.</p>
+        <script type="application/json">{
+          "titlu":"Fluxul complet",
+          "intro":"Opt etape și un depozit. Apasă pe oricare.",
+          "etape":[
+            {"nume":"Definirea problemei","unde":"Lecția 1","text":"Alegi tema, unitatea de analiză și formulezi întrebarea. Aici decizi ce înseamnă un rând în tabelul tău final: o țară, o pereche de regiuni, un an. Toate celelalte etape depind de această alegere."},
+            {"nume":"Colectarea","unde":"Lecția 2","text":"Aduci datele din surse externe, prin API sau fișiere. Salvezi întotdeauna varianta brută, neatinsă, ca să poți reveni la ea când descoperi o greșeală de curățare."},
+            {"nume":"Curățarea","unde":"Lecția 4","text":"Tipuri greșite, coduri care nu se potrivesc între surse, valori lipsă, duplicate, unități diferite. Etapa cea mai lungă și cea care decide dacă rezultatul final înseamnă ceva."},
+            {"nume":"Agregarea","unde":"Lecția 5","text":"Îmbini sursele într-un singur tabel, pe o cheie comună. Aici se văd toate incompatibilitățile pe care curățarea le-a ratat."},
+            {"nume":"Explorarea","unde":"Lecția 6","text":"Te uiți la date înainte de a le modela. Scopul nu e să demonstrezi ceva, e să înțelegi ce ai și să găsești ce merită testat."},
+            {"nume":"Variabile derivate","unde":"Lecția 7","text":"Construiești indicatorii care chiar răspund la întrebare: rate, ponderi, distanțe între locuri, diferențe între unități. La date diadice, cele mai importante variabile nu se descarcă, se calculează."},
+            {"nume":"Modelul","unde":"Lecția 7","text":"Testezi formal relația pe care ai observat-o. Un model simplu, bine interpretat, valorează mai mult decât unul complicat pe care nu îl poți explica."},
+            {"nume":"Raportarea","unde":"Lecția 8","text":"Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica."},
+            {"nume":"Baza de date","unde":"Lecția 5","depozit":true,"text":"Nu e o etapă, e locul unde etapele își lasă rezultatele. Colectarea scrie datele brute, curățarea scrie versiunea curată, agregarea scrie tabelul final. Fiecare membru al echipei citește de acolo, nu de pe laptopul colegului."}
+          ]}</script>
+      </div>
+    </div>
 
-        <h2 id="s3">Mediul de lucru</h2>
-        <p>Python instalează pachetele într-un singur loc comun. Dacă lucrezi la două
-        proiecte care au nevoie de versiuni diferite ale aceleiași biblioteci, al doilea
-        proiect îl strică pe primul în tăcere. Un <strong>mediu virtual</strong> e un dosar
-        separat, al proiectului tău, cu propria copie de Python și propriile pachete. Îl
-        creezi o dată, îl activezi de fiecare dată când lucrezi.</p>
+    <p>Observă un lucru în explorator: baza de date nu e o etapă, e o
+    <strong>zonă de depozitare</strong> la care se întorc mai multe etape. Fiecare pas își
+    lasă rezultatul într-un loc din care următorul îl poate lua, fără să depindă de
+    fișierele de pe laptopul cuiva anume.</p>
 
-        <pre><code><span class="c"># creezi mediul, o singură dată, în folderul proiectului</span>
+    <div class="nota">
+      <div class="nota__et">De ce contează pentru echipă</div>
+      <p>Într-un proiect de cinci oameni, etapele se împart. Dacă fiecare își ține rezultatul
+      local, al doilea nu poate începe până nu-i trimite primul un fișier pe chat. Cu o bază
+      de date și un depozit comun, fiecare ia de unde a lăsat celălalt. Cursul e construit
+      exact în jurul acestei probleme.</p>
+    </div>
+
+    <div class="verif" data-id="c1-v1" data-corect="1">
+      <p class="verif__q">O echipă descoperă la explorare că indicatorul ales nu are date
+      pentru 40% din unități. Ce face?</p>
+      <button>Continuă doar pe unitățile care au date, fără să menționeze</button>
+      <button>Se întoarce la colectare și caută un indicator alternativ</button>
+      <button>Completează valorile lipsă cu media, ca să nu piardă unități</button>
+      <button>Schimbă modelul statistic ca să tolereze lipsurile</button>
+      <p class="verif__ex">Întoarcerea la o etapă anterioară e normală, nu e un eșec.
+      Celelalte variante rămân opțiuni discutabile în anumite cazuri, dar niciuna nu se ia
+      înainte de a verifica dacă problema se poate rezolva la sursă. Iar orice decizie de
+      acest fel se scrie în raport, nu se ascunde.</p>
+    </div>
+
+    <!-- ---------- 2 ---------- -->
+    <h2 id="s2">Proiectul semestrului</h2>
+    <p>Cursul are un singur produs final: un depozit de echipă în care se vede tot drumul,
+    de la întrebarea de cercetare până la rezultat și interpretarea lui. Nu predați un
+    fișier la final; construiți săptămână de săptămână, iar fiecare lecție adaugă o piesă.</p>
+
+    <table class="tabel">
+      <thead><tr><th>Lecția</th><th>Ce adaugi la proiect</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">1</td><td>Mediul de lucru și tema echipei</td></tr>
+        <tr><td class="mono">2</td><td>Primele date colectate prin API</td></tr>
+        <tr><td class="mono">3</td><td>Depozitul de echipă și a doua sursă</td></tr>
+        <tr><td class="mono">4</td><td>Dataseturile curățate și documentate</td></tr>
+        <tr><td class="mono">5</td><td>Tabelul unificat, încărcat în baza de date</td></tr>
+        <tr><td class="mono">6</td><td>Analiza exploratorie și primele tipare</td></tr>
+        <tr><td class="mono">7</td><td>Variabilele derivate și modelul</td></tr>
+        <tr><td class="mono">8</td><td>Raportul final și prezentarea</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Datele</h3>
+    <p>Lucrăm cu <strong>Social Connectedness Index</strong>, produs de Data for Good at
+    Meta din rețeaua de prietenii Facebook. Pentru fiecare pereche de locuri, indicele spune
+    cât de probabil e ca doi oameni de acolo să fie prieteni. Acoperă 178 de țări, iar în
+    Europa coboară până la nivel de județ.</p>
+    <p>Particularitatea lor schimbă tot ce urmează. Un rând nu descrie un loc, ci
+    <em>o relație între două locuri</em>. Se numesc <strong>date diadice</strong>.</p>
+
+    <table class="tabel">
+      <thead><tr><th>Date monadice</th><th>Date diadice</th></tr></thead>
+      <tbody>
+        <tr><td>un rând = o entitate</td><td>un rând = o relație între două entități</td></tr>
+        <tr><td>„de ce e locul ăsta așa?"</td><td>„de ce sunt astea două legate?"</td></tr>
+        <tr><td>178 de rânduri</td><td>178 × 178 = 31.684 de rânduri</td></tr>
+        <tr><td>un merge pentru atribute</td><td>două merge-uri, câte unul pentru fiecare capăt</td></tr>
+      </tbody>
+    </table>
+
+    <p>Trei consecințe care revin tot semestrul. Numărul de rânduri crește cu pătratul
+    numărului de unități, deci tabelul nu se mai poate citi cu ochiul și trebuie interogat.
+    Atributele se lipesc de două ori. Și observațiile nu mai sunt independente, fiindcă
+    același loc apare în sute de rânduri, ceea ce are consecințe asupra modelului.</p>
+
+    <div class="nota nota--sobru">
+      <div class="nota__et">Un rezultat, ca să vezi unde mergem</div>
+      <p>Italia găzduiește 898.293 de oameni născuți în România. Austria, 148.487, de șase
+      ori mai puțini. Dar la conectivitate socială Austria stă pe locul doi, iar Italia pe
+      locul șase.</p>
+      <p>Nu e o eroare în date. E consecința felului în care e construit indicatorul: măsoară
+      probabilitatea <em>relativă</em>, normalizată, nu mărimea diasporei. Un indicator
+      normalizat răspunde la altă întrebare decât unul brut, iar confuzia dintre cele două e
+      prima greșeală pe care o face oricine deschide aceste date.</p>
+    </div>
+
+    <!-- ---------- 3 ---------- -->
+    <h2 id="s3">De ce lucrăm reproductibil</h2>
+    <p>Trei dintre lecțiile cursului, mediul de lucru, versionarea și baza de date, par
+    probleme de unelte. Nu sunt. Sunt condiții pentru ca rezultatul tău să însemne ceva.</p>
+    <p>Un rezultat publicat fără codul care l-a produs nu poate fi verificat de nimeni,
+    inclusiv de tine peste un an. Un rezultat care depinde de ce pachete erau instalate pe
+    laptopul tău în ziua aceea nu se poate reface. Literatura despre practica muncii cu date
+    numește asta <em>good enough practices</em>, iar minimul e surprinzător de mic: mediu
+    izolat, cod versionat, date brute neatinse, și un fișier care spune cum se rulează tot.</p>
+
+    <div class="verif" data-id="c1-v2" data-corect="2">
+      <p class="verif__q">Care dintre acestea face un rezultat reproductibil?</p>
+      <button>Să folosești un model statistic simplu</button>
+      <button>Să ai un grafic clar în raport</button>
+      <button>Să păstrezi codul, datele brute și lista de pachete</button>
+      <button>Să scrii concluziile cu atenție</button>
+      <p class="verif__ex">Reproductibilitatea e despre a putea reface drumul, nu despre
+      calitatea destinației. Un rezultat greșit poate fi perfect reproductibil, iar unul
+      corect poate fi imposibil de refăcut. Sunt două lucruri diferite, și amândouă contează.</p>
+    </div>
+
+    <!-- ---------- 4 ---------- -->
+    <h2 id="s4">Mediul de lucru</h2>
+    <p>Python instalează pachetele într-un singur loc comun. Dacă lucrezi la două proiecte
+    care au nevoie de versiuni diferite ale aceleiași biblioteci, al doilea proiect îl strică
+    pe primul în tăcere. Un <strong>mediu virtual</strong> e un dosar separat, al proiectului
+    tău, cu propria copie de Python și propriile pachete.</p>
+
+    <pre><code><span class="c"># creezi mediul, o singură dată, în folderul proiectului</span>
 python -m venv venv
 
 <span class="c"># îl activezi de fiecare dată când deschizi proiectul</span>
@@ -160,130 +251,233 @@ pip install requests pandas
 <span class="c"># ieși din mediu</span>
 deactivate</code></pre>
 
-        <div class="nota">
-          <div class="nota__et">Cum știi că e activ</div>
-          <p>După activare, promptul din terminal începe cu <code>(venv)</code>. Dacă nu vezi
-          paranteza aceea, instalezi în Python-ul global, care e cea mai frecventă sursă de
-          „la mine mergea".</p>
-        </div>
-
-        <div class="verif" data-id="1.3-v1" data-corect="1">
-          <p class="verif__q">Ai activat mediul, ai instalat pandas, ai închis laptopul.
-          A doua zi deschizi proiectul și <code>import pandas</code> dă eroare. De ce?</p>
-          <button>Pandas s-a dezinstalat singur</button>
-          <button>Ai uitat să activezi mediul virtual</button>
-          <button>Mediul virtual expiră după 24 de ore</button>
-          <button>Trebuie reinstalat Python</button>
-          <p class="verif__ex">Mediul nu se activează singur într-un terminal nou. Fără
-          activare rulezi Python-ul global, care nu are pachetele instalate în mediu.
-          VS Code poate face activarea automat dacă îi selectezi interpretorul din folderul
-          <code>venv</code>.</p>
-        </div>
-
-        <h2 id="s4">Ce faci tu</h2>
-        <p>Partea practică se face în caietul lecției, nu aici. Pagina asta explică și
-        verifică; lucrul adevărat e în editorul tău.</p>
-        <ol>
-          <li>Instalează VS Code și Python, dacă nu le ai.</li>
-          <li>Creează folderul proiectului și mediul virtual în el.</li>
-          <li>Deschide caietul lecției și rulează-l până la capăt.</li>
-          <li>Fă-ți cont pe GitHub, dacă nu ai, și intră cu el pe acest site.</li>
-        </ol>
-
-        <nav class="nav-lectii" aria-label="Navigare între lecții">
-          <a href="../"><span class="et-mica">Înapoi la</span><span class="t">Toate lecțiile</span></a>
-          <a href="../c2-colectarea-prin-api/" class="dr"><span class="et-mica">Urmează</span><span class="t">2. Colectarea datelor prin API</span></a>
-        </nav>
-      </article>
-
-      <aside class="lateral">
-        <div>
-          <h4>Materiale</h4>
-          <div class="resurse">
-            <a class="resursa" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">
-              <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg></span>
-              <span><span class="resursa__t">Caietul lecției</span><span class="resursa__d">Jupyter, pe GitHub</span></span>
-            </a>
-          </div>
-        </div>
-        <div>
-          <h4>Cuprins</h4>
-          <nav class="cuprins" id="cuprins"></nav>
-        </div>
-        <div>
-          <h4>Legături</h4>
-          <div class="legaturi">
-            <a class="legatura" href="https://code.visualstudio.com/" target="_blank" rel="noopener">
-              <span class="legatura__t">VS Code</span><span class="legatura__g">↗</span></a>
-            <a class="legatura" href="https://www.python.org/downloads/" target="_blank" rel="noopener">
-              <span class="legatura__t">Python</span><span class="legatura__g">↗</span></a>
-            <a class="legatura" href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">
-              <span class="legatura__t">venv</span><span class="legatura__g">docs</span></a>
-            <a class="legatura" href="https://github.com/signup" target="_blank" rel="noopener">
-              <span class="legatura__t">Cont GitHub</span><span class="legatura__g">↗</span></a>
-            <a class="legatura" href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">
-              <span class="legatura__t">Good Enough Practices</span><span class="legatura__g">PLOS</span></a>
-            <a class="legatura" href="../surse-de-date.html">
-              <span class="legatura__t">Sursele de date</span><span class="legatura__g">curs</span></a>
-          </div>
-        </div>
-      </aside>
-
+    <div class="ix" data-ix="terminal">
+      <div class="ix__cap"><span class="ix__fel">Terminal</span><span class="ix__t">Mediul virtual</span></div>
+      <div class="ix__corp">
+        <p class="ix__sarcina">Scrie comenzile în ordine. Terminalul răspunde ca cel adevărat,
+        inclusiv la greșeli. Scrie <code>ajutor</code> dacă te blochezi.</p>
+      </div>
     </div>
-  </div>
+
+    <div class="nota">
+      <div class="nota__et">Cum știi că e activ</div>
+      <p>După activare, promptul din terminal începe cu <code>(venv)</code>. Dacă nu vezi
+      paranteza aceea, instalezi în Python-ul global, care e cea mai frecventă sursă de
+      „la mine mergea".</p>
+    </div>
+
+    <div class="verif" data-id="c1-v3" data-corect="1">
+      <p class="verif__q">Ai activat mediul, ai instalat pandas, ai închis laptopul. A doua zi
+      deschizi proiectul și <code>import pandas</code> dă eroare. De ce?</p>
+      <button>Pandas s-a dezinstalat singur</button>
+      <button>Ai uitat să activezi mediul virtual</button>
+      <button>Mediul virtual expiră după 24 de ore</button>
+      <button>Trebuie reinstalat Python</button>
+      <p class="verif__ex">Mediul nu se activează singur într-un terminal nou. Fără activare
+      rulezi Python-ul global, care nu are pachetele instalate în mediu. VS Code poate face
+      activarea automat dacă îi selectezi interpretorul din folderul <code>venv</code>.</p>
+    </div>
+
+    <!-- ---------- 5 ---------- -->
+    <h2 id="s5">Tipuri de date</h2>
+    <p>Tipul unei valori decide ce poți face cu ea. Două numere se adună, două texte se
+    lipesc, un număr și un text dau eroare. Pare banal până în momentul în care citești un
+    fișier și coloana cu anii vine ca text, iar sortarea îți pune 1990 după 189, pentru că le
+    compară literă cu literă.</p>
+
+    <table class="tabel">
+      <thead><tr><th>Tip</th><th>Ce reprezintă și unde apare</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">int</td><td>Numere întregi. Ani, populație, numărători.</td></tr>
+        <tr><td class="mono">float</td><td>Numere cu zecimale. Aproape toți indicatorii calculați.</td></tr>
+        <tr><td class="mono">str</td><td>Text. Nume, coduri, orice vine dintr-un fișier necurățat.</td></tr>
+        <tr><td class="mono">bool</td><td>Adevărat sau fals. Rezultatul unei condiții.</td></tr>
+        <tr><td class="mono">None</td><td>Absența unei valori. Diferit de zero și de text gol.</td></tr>
+        <tr><td class="mono">list</td><td>Secvență ordonată, modificabilă.</td></tr>
+        <tr><td class="mono">tuple</td><td>Secvență ordonată, nemodificabilă. Tipic pentru coordonate.</td></tr>
+        <tr><td class="mono">dict</td><td>Perechi cheie și valoare. Structura oricărui obiect JSON.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <div class="nota__et">Confuzia care costă cel mai mult</div>
+      <p><code>None</code>, <code>0</code> și <code>""</code> arată la fel într-un tabel gol,
+      dar înseamnă lucruri diferite. Zero e o măsurătoare: regiunea nu a raportat nicio
+      legătură. <code>None</code> e absența măsurătorii: nu știm dacă a raportat. Dacă le
+      tratezi la fel la calculul unei medii, rezultatul e greșit fără să dea vreo eroare.</p>
+    </div>
+
+    <div class="ix" data-ix="tipuri">
+      <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Recunoaște tipul</span></div>
+      <div class="ix__corp">
+        <p class="ix__sarcina">Opt valori, una pe rând. Alege tipul fiecăreia.</p>
+        <script type="application/json">{"valori":[
+          {"v":"'2024'","t":"str","e":"Ghilimelele fac diferența. Arată ca un an, dar e text, exact capcana din fișierele CSV."},
+          {"v":"2024","t":"int","e":"Fără ghilimele, e număr întreg. Se poate compara și sorta corect."},
+          {"v":"3.7","t":"float","e":"Punctul zecimal îl face float. În fișiere românești zecimala poate veni cu virgulă, și atunci ajunge text."},
+          {"v":"None","t":"None","e":"Absența valorii. Nu e zero și nu e text gol, e „nu știm”."},
+          {"v":"True","t":"bool","e":"Cu majusculă în Python. Rezultatul oricărei condiții."},
+          {"v":"[1, 2, 3]","t":"list","e":"Parantezele drepte: listă, ordonată și modificabilă."},
+          {"v":"(45.7, 21.2)","t":"tuple","e":"Parantezele rotunde: tuplu, nu se poate modifica. Tipic pentru coordonate."},
+          {"v":"{'tara': 'RO'}","t":"dict","e":"Perechi cheie și valoare. Structura oricărui obiect JSON convertit în Python."}
+        ]}</script>
+      </div>
+    </div>
+
+    <!-- ---------- 6 ---------- -->
+    <h2 id="s6">Fișiere: ce alegi și ce pierzi</h2>
+    <p>Un fișier text îl poți deschide în orice editor și îl poți citi cu ochiul liber. Un
+    fișier binar nu, are nevoie de programul care îl înțelege. Distincția decide dacă poți
+    vedea ce e în datele tale fără să rulezi cod, și dacă versionarea îți poate arăta ce s-a
+    schimbat de la o variantă la alta.</p>
+
+    <table class="tabel">
+      <thead><tr><th>Format</th><th>Când îl folosești</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">.csv</td><td>Tabele simple, plate. Universal, dar nu păstrează tipurile.</td></tr>
+        <tr><td class="mono">.json</td><td>Date cu structură imbricată. Ce întorc aproape toate API-urile.</td></tr>
+        <tr><td class="mono">.parquet</td><td>Tabele mari. Compact, rapid, păstrează tipurile.</td></tr>
+        <tr><td class="mono">.geojson</td><td>Date cu geometrie. Text, deci lizibil și versionabil.</td></tr>
+        <tr><td class="mono">.env</td><td>Chei și parole. Niciodată în depozit.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota nota--sobru">
+      <div class="nota__et">CSV pierde informație</div>
+      <p>Când salvezi un tabel în CSV, tipurile dispar. La recitire, coloana cu coduri care
+      începeau cu zero e reinterpretată ca numere, iar zerourile din față se pierd. Nu e un
+      defect, e limita formatului. Parquet nu are problema asta.</p>
+    </div>
+
+    <!-- ---------- 7 ---------- -->
+    <h2 id="s7">JSON, formatul pe care îl vorbesc API-urile</h2>
+    <p>JSON e felul în care aproape orice serviciu de pe internet îți trimite date. Are doar
+    două structuri de bază, dar ele se pot cuibări una în alta oricât de adânc, și de aici
+    vine toată dificultatea aparentă.</p>
+    <ul>
+      <li><strong>Obiect</strong>, între acolade: perechi cheie și valoare, ca un dicționar.</li>
+      <li><strong>Tablou</strong>, între paranteze drepte: o listă ordonată de valori.</li>
+    </ul>
+    <p>Valorile pot fi text, număr, <code>true</code> sau <code>false</code>,
+    <code>null</code>, sau la rândul lor un obiect ori un tablou. Elementul de la rădăcină
+    poate fi oricare dintre cele două, și mulți se împiedică prima dată exact aici,
+    presupunând că un răspuns începe întotdeauna cu un obiect.</p>
+
+    <div class="ix" data-ix="json">
+      <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Un răspuns real de API</span></div>
+      <div class="ix__corp">
+        <p class="ix__sarcina">Răspunsul Băncii Mondiale pentru populația României.
+        Apasă pe orice rând ca să vezi ce e și cum se ajunge la el.</p>
+        <script type="application/json">{
+          "radacina":"raspuns",
+          "date":[
+            {"page":1,"pages":3,"per_page":2,"total":6},
+            [
+              {"indicator":{"id":"SP.POP.TOTL","value":"Population, total"},
+               "country":{"id":"RO","value":"Romania"},
+               "countryiso3code":"ROU","date":"2023","value":19051562},
+              {"indicator":{"id":"SP.POP.TOTL","value":"Population, total"},
+               "country":{"id":"RO","value":"Romania"},
+               "countryiso3code":"ROU","date":"2022","value":null}
+            ]
+          ]}</script>
+      </div>
+    </div>
+
+    <p>Ai văzut structura: rădăcina e un <strong>tablou cu două elemente</strong>. Primul e
+    un obiect cu informații despre paginare, câte rezultate există în total și câte pagini.
+    Al doilea e tabloul cu datele propriu-zise. Dacă ceri direct primul element presupunând
+    că sunt datele, primești paginarea și nu înțelegi de ce lipsesc valorile.</p>
+
+    <div class="verif" data-id="c1-v4" data-corect="1">
+      <p class="verif__q">Într-un răspuns JSON, ce diferență e între <code>"value": null</code>
+      și lipsa completă a cheii <code>value</code>?</p>
+      <button>Niciuna, ambele înseamnă că nu există valoare</button>
+      <button>null spune explicit că valoarea lipsește; cheia absentă înseamnă că serviciul nu raportează deloc câmpul</button>
+      <button>null înseamnă zero</button>
+      <button>Cheia absentă e o eroare a serverului</button>
+      <p class="verif__ex">Distincția se păstrează până în tabel. Un null devine o valoare
+      lipsă pe care o poți număra și raporta. O cheie absentă poate deveni o coloană care
+      lipsește cu totul pentru anumite înregistrări, iar dacă nu verifici, codul care o
+      folosește cade abia mai târziu, la altă unitate.</p>
+    </div>
+
+    <!-- ---------- 8 ---------- -->
+    <h2 id="s8">Structura proiectului</h2>
+    <p>Aceeași structură pentru toate echipele, din prima zi. Nu e pedanterie: când cineva
+    deschide depozitul altcuiva, trebuie să știe unde se uită.</p>
+
+    <pre><code>proiect/
+├── date/
+│   ├── brute/          <span class="c"># exact cum au venit, nu se modifică niciodată</span>
+│   └── curate/         <span class="c"># rezultatul curățării, se poate reface</span>
+├── caiete/             <span class="c"># Jupyter: explorare, pas cu pas</span>
+├── cod/                <span class="c"># funcții refolosite, importate în caiete</span>
+├── rezultate/          <span class="c"># grafice și tabele pentru raport</span>
+├── .gitignore          <span class="c"># ce nu se urcă: date, mediul, secrete</span>
+├── .env                <span class="c"># chei; NICIODATĂ în depozit</span>
+├── requirements.txt    <span class="c"># pachetele, ca altcineva să refacă mediul</span>
+└── README.md           <span class="c"># raportul final, de fapt</span></code></pre>
+
+    <p>Regula cea mai importantă din schema asta: <strong>datele brute nu se modifică
+    niciodată</strong>. Orice curățare produce un fișier nou. Dacă ai greșit curățarea, te
+    întorci la brut și o iei de la capăt. Dacă ai suprascris brutul, descarci din nou, și
+    uneori nu mai poți, pentru că sursa s-a schimbat între timp.</p>
+
+    <!-- ---------- 9 ---------- -->
+    <h2 id="s9">Ce faci tu</h2>
+    <p>Partea practică se face în caietul lecției, nu aici. Pagina asta explică și verifică;
+    lucrul adevărat e în editorul tău.</p>
+    <ol>
+      <li>Instalează <a class="leg" href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a> și <a class="leg" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.11</a> sau mai nou, dacă nu le ai.</li>
+      <li>Creează folderul proiectului, cu structura de mai sus, și mediul virtual în el.</li>
+      <li>Deschide <a class="leg" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">caietul lecției</a> și rulează-l până la capăt.</li>
+      <li>Fă-ți cont pe <a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">GitHub</a>, dacă nu ai, și intră cu el pe acest site.</li>
+      <li>Vino la lecția următoare cu mediul funcțional. Nu îl mai facem la clasă.</li>
+    </ol>
+
+    <nav class="nav-lectii" aria-label="Navigare între lecții">
+      <a href="../"><span class="et-mica">Înapoi la</span><span class="t">Toate lecțiile</span></a>
+      <a href="../c2-colectarea-prin-api/" class="dr"><span class="et-mica">Urmează</span><span class="t">2. Colectarea datelor prin API</span></a>
+    </nav>
+
+  </article>
+</div>
+</div>
 </main>
 
 <div id="subsol"></div>
 
 <script type="module">
-import { porneste } from "../js/verificare.js?v=1";
-import { marcheazaSectiune } from "../js/colectare.js?v=1";
+import { porneste as pornesteIx } from "../js/interactiv.js?v=2";
+import { porneste as pornesteVerif } from "../js/verificare.js?v=2";
+import { marcheazaSectiune } from "../js/colectare.js?v=2";
 
-/* --- exploratorul de flux ------------------------------------------------ */
-const ETAPE = [
-  ["Definirea problemei","1","Alegi tema, unitatea de analiză și formulezi întrebarea. Aici decizi ce înseamnă un rând în tabelul final: o țară, o pereche de regiuni, un an. Toate celelalte etape depind de această alegere."],
-  ["Colectarea","2","Aduci datele din surse externe, prin API sau fișiere. Salvezi întotdeauna varianta brută, neatinsă, ca să poți reveni la ea când descoperi o greșeală de curățare."],
-  ["Curățarea","4","Tipuri greșite, coduri care nu se potrivesc între surse, valori lipsă, duplicate, unități diferite. Etapa cea mai lungă și cea care decide dacă rezultatul final înseamnă ceva."],
-  ["Agregarea","5","Îmbini sursele într-un singur tabel, pe o cheie comună. Aici se văd toate incompatibilitățile pe care curățarea le-a ratat."],
-  ["Explorarea","6","Te uiți la date înainte de a le modela. Scopul nu e să demonstrezi ceva, e să înțelegi ce ai și să găsești ce merită testat."],
-  ["Variabile derivate","7","Construiești indicatorii care chiar răspund la întrebare: rate, ponderi, distanțe, diferențe între unități."],
-  ["Modelul","7","Testezi formal relația observată. Un model simplu, bine interpretat, valorează mai mult decât unul complicat pe care nu îl poți explica."],
-  ["Raportarea","8","Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica."],
-  ["Baza de date","5","Nu e o etapă, e locul unde etapele își lasă rezultatele. Fiecare membru al echipei citește de acolo, nu de pe laptopul colegului.",true]
-];
-
-const et = document.getElementById("expl-et");
-const info = document.getElementById("expl-info");
-et.innerHTML = ETAPE.map(([n,,,dep], i) =>
-  `<button class="expl__b ${dep?"depozit":""}" data-i="${i}">
-     <i>${dep ? "▣" : String(i+1).padStart(2,"0")}</i>${n}</button>`).join("");
-et.addEventListener("click", e => {
-  const b = e.target.closest(".expl__b"); if (!b) return;
-  et.querySelectorAll(".expl__b").forEach(x => x.classList.remove("on"));
-  b.classList.add("on");
-  const [n, lec, d] = ETAPE[+b.dataset.i];
-  info.innerHTML = `<h5>${n}</h5><p>${d}</p><p class="unde">Lecția ${lec}</p>`;
-});
-
-/* --- cuprins ------------------------------------------------------------- */
-const titluri = [...document.querySelectorAll("article h2[id]")];
-document.getElementById("cuprins").innerHTML =
-  titluri.map(h => `<a href="#${h.id}">${h.textContent}</a>`).join("");
-const legaturiCuprins = [...document.querySelectorAll("#cuprins a")];
-const obs = new IntersectionObserver(intrari => {
-  intrari.forEach(i => {
-    if (!i.isIntersecting) return;
-    legaturiCuprins.forEach(a =>
-      a.classList.toggle("activ", a.getAttribute("href") === "#" + i.target.id));
-  });
-}, { rootMargin: "-18% 0px -72% 0px" });
-titluri.forEach(h => obs.observe(h));
-
-/* --- verificari si progres ----------------------------------------------- */
-porneste("c1");
+pornesteIx();
+pornesteVerif("c1");
 marcheazaSectiune("c1");
+
+/* cuprins, cu sectiunea activa si bara de parcurs */
+const titluri = [...document.querySelectorAll("article h2[id]")];
+document.getElementById("cuprins").innerHTML = titluri.map((h,i) =>
+  `<a href="#${h.id}"><span class="n">${i+1}</span><span>${h.textContent}</span></a>`).join("");
+const legaturi = [...document.querySelectorAll("#cuprins a")];
+const bara = document.getElementById("parcurs-bara");
+const text = document.getElementById("parcurs-text");
+
+const obs = new IntersectionObserver(intrari => {
+  intrari.forEach(it => {
+    if (!it.isIntersecting) return;
+    const k = titluri.indexOf(it.target);
+    legaturi.forEach((a,j) => a.classList.toggle("activ", j === k));
+    const p = Math.round((k + 1) / titluri.length * 100);
+    bara.style.width = p + "%";
+    text.textContent = p + "% parcurs";
+  });
+}, { rootMargin: "-16% 0px -74% 0px" });
+titluri.forEach(h => obs.observe(h));
 </script>
-<script type="module" src="../js/antet.js?v=1"></script>
-<script type="module" src="../js/subsol.js?v=1"></script>
+<script type="module" src="../js/antet.js?v=2"></script>
+<script type="module" src="../js/subsol.js?v=2"></script>
 </body>
 </html>
