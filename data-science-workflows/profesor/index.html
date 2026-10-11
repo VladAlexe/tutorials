@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panoul profesorului — Fluxuri de lucru</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/panou.css?v=1">
+</head>
+<body>
+
+<div class="top">
+  <div class="top__in">
+    <a href="../../index.html">Tutorials</a>
+    <span class="top__sep">/</span>
+    <a href="../index.html">Fluxuri de lucru</a>
+    <span class="top__sep">/</span>
+    <span class="top__here">Panoul profesorului</span>
+  </div>
+</div>
+
+<div class="shell">
+  <div id="incarca" class="incarca">Se încarcă...</div>
+
+  <div id="refuz" hidden>
+    <p class="eyebrow">ACCES</p>
+    <h1>Pagina aceasta nu e pentru tine</h1>
+    <p class="deck">Panoul e vizibil doar titularului cursului. Dacă ești student,
+    pagina ta e în altă parte.</p>
+    <p><a class="btn" href="../panou/">Pagina mea</a></p>
+  </div>
+
+  <div id="continut" hidden>
+    <p class="eyebrow">GRUPA</p>
+    <h1>Panoul profesorului</h1>
+    <p class="deck">Starea grupei, în timp real. Se actualizează la fiecare
+    reîncărcare a paginii.</p>
+
+    <div id="msg" class="msg"></div>
+
+    <div class="cifre">
+      <div class="cifra">
+        <div class="cifra__v" id="c-lista">0</div>
+        <div class="cifra__e">PE LISTĂ</div>
+        <div class="cifra__n">studenți înscriși la curs</div>
+      </div>
+      <div class="cifra">
+        <div class="cifra__v" id="c-conturi">0</div>
+        <div class="cifra__e">ȘI-AU FĂCUT CONT</div>
+        <div class="cifra__n" id="n-conturi"></div>
+      </div>
+      <div class="cifra">
+        <div class="cifra__v" id="c-raspunsuri">0</div>
+        <div class="cifra__e">RĂSPUNSURI</div>
+        <div class="cifra__n" id="n-raspunsuri">la verificări</div>
+      </div>
+      <div class="cifra">
+        <div class="cifra__v" id="c-activi">0</div>
+        <div class="cifra__e">ACTIVI</div>
+        <div class="cifra__n">au făcut ceva pe site</div>
+      </div>
+    </div>
+
+    <h2>Studenții</h2>
+    <div class="unelte">
+      <input type="search" id="cauta" placeholder="Caută după nume sau matricol" aria-label="Caută">
+      <select id="filtru" aria-label="Filtrează">
+        <option value="*">Toți</option>
+        <option value="da">Cu cont</option>
+        <option value="nu">Fără cont</option>
+      </select>
+      <select id="grupa" aria-label="Grupa">
+        <option value="*">Toate grupele</option>
+      </select>
+      <span class="dr" id="numar"></span>
+    </div>
+    <div id="tabel"></div>
+
+    <h2>Răspunsuri pe întrebare</h2>
+    <p class="deck" style="margin-bottom:16px">Procentul de răspunsuri corecte la
+    fiecare verificare. O întrebare la care greșesc mulți e fie grea, fie prost
+    formulată, și merită reluată la curs.</p>
+    <div id="intrebari"></div>
+  </div>
+</div>
+
+<script type="module">
+import { sb, profil } from "../js/auth.js";
+
+const E = id => document.getElementById(id);
+let STUDENTI = [];
+
+function gol(t){ return `<div class="gol"><b>Nimic încă</b>${t}</div>`; }
+
+async function deseneaza(){
+  const p = await profil({ proaspat:true });
+
+  if (!p.autentificat || !p.profesor) {
+    E("incarca").hidden = true;
+    E("refuz").hidden = false;
+    return;
+  }
+
+  const [st, pr, ra, pg] = await Promise.all([
+    sb.from("studenti").select("matricol, nume, an, grupa").order("nume"),
+    sb.from("profiluri").select("matricol, email, github_login, revendicat_la"),
+    sb.from("raspunsuri").select("intrebare_id, capitol, corect, user_id"),
+    sb.from("progres").select("user_id")
+  ]);
+
+  const eroare = [st, pr, ra, pg].find(x => x.error);
+  if (eroare) {
+    E("msg").className = "msg msg--no on";
+    E("msg").textContent = "Eroare la citire: " + eroare.error.message;
+  }
+
+  const S = st.data || [], P = pr.data || [], R = ra.data || [], G = pg.data || [];
+  const dupaMatricol = new Map(P.map(x => [x.matricol, x]));
+
+  STUDENTI = S.map(s => ({ ...s, cont: dupaMatricol.get(s.matricol) || null }));
+
+  E("c-lista").textContent      = S.length;
+  E("c-conturi").textContent    = P.length;
+  E("c-raspunsuri").textContent = R.length;
+  E("c-activi").textContent     = new Set([...R.map(x=>x.user_id), ...G.map(x=>x.user_id)]).size;
+
+  E("n-conturi").textContent = S.length
+    ? Math.round(P.length / S.length * 100) + "% din listă" : "";
+  if (R.length) {
+    const c = R.filter(x => x.corect).length;
+    E("n-raspunsuri").textContent = Math.round(c / R.length * 100) + "% corecte";
+  }
+
+  /* grupele din date */
+  const grupe = [...new Set(S.map(s => s.grupa).filter(Boolean))].sort();
+  E("grupa").innerHTML = '<option value="*">Toate grupele</option>' +
+    grupe.map(g => `<option value="${g}">Grupa ${g}</option>`).join("");
+
+  tabel();
+
+  /* statistica pe intrebare */
+  if (!R.length) {
+    E("intrebari").innerHTML = gol("Statisticile apar după primele verificări rezolvate de studenți.");
+  } else {
+    const dupaIntrebare = new Map();
+    for (const r of R) {
+      const k = r.intrebare_id;
+      if (!dupaIntrebare.has(k)) dupaIntrebare.set(k, { id:k, cap:r.capitol, n:0, c:0 });
+      const o = dupaIntrebare.get(k); o.n++; if (r.corect) o.c++;
+    }
+    const linii = [...dupaIntrebare.values()].sort((a,b) => (a.c/a.n) - (b.c/b.n));
+    E("intrebari").innerHTML =
+      `<table class="tbl"><thead><tr>
+         <th>Întrebare</th><th>Capitol</th><th>Răspunsuri</th><th>Corecte</th></tr></thead><tbody>
+       ${linii.map(l => `<tr>
+         <td class="mono">${l.id}</td><td>${l.cap||""}</td><td>${l.n}</td>
+         <td><strong>${Math.round(l.c/l.n*100)}%</strong></td></tr>`).join("")}
+       </tbody></table>`;
+  }
+
+  E("incarca").hidden = true;
+  E("continut").hidden = false;
+}
+
+function tabel(){
+  const q = E("cauta").value.trim().toLowerCase();
+  const f = E("filtru").value;
+  const g = E("grupa").value;
+
+  const lista = STUDENTI.filter(s => {
+    if (g !== "*" && s.grupa !== g) return false;
+    if (f === "da" && !s.cont) return false;
+    if (f === "nu" && s.cont) return false;
+    if (q && !(s.nume.toLowerCase().includes(q) || s.matricol.includes(q))) return false;
+    return true;
+  });
+
+  E("numar").textContent = lista.length + (lista.length === 1 ? " student" : " studenți");
+
+  E("tabel").innerHTML = lista.length
+    ? `<table class="tbl"><thead><tr>
+         <th>Matricol</th><th>Nume</th><th>Grupa</th><th>Cont</th><th>GitHub</th></tr></thead><tbody>
+       ${lista.map(s => `<tr>
+         <td class="mono">${s.matricol}</td>
+         <td>${s.nume}</td>
+         <td>${s.grupa || ""}</td>
+         <td><span class="eticheta eticheta--${s.cont ? "da" : "nu"}">${s.cont ? "ACTIV" : "NEÎNREGISTRAT"}</span></td>
+         <td class="mono">${s.cont?.github_login || ""}</td></tr>`).join("")}
+       </tbody></table>`
+    : gol("Niciun student nu corespunde filtrelor.");
+}
+
+E("cauta").addEventListener("input", tabel);
+E("filtru").addEventListener("change", tabel);
+E("grupa").addEventListener("change", tabel);
+
+deseneaza().catch(e => { E("incarca").textContent = "Eroare: " + e.message; });
+</script>
+<script type="module" src="../js/bara-mod.js"></script>
+</body>
+</html>

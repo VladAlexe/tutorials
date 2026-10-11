@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagina mea — Fluxuri de lucru pentru știința datelor</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/panou.css?v=1">
+</head>
+<body>
+
+<div class="top">
+  <div class="top__in">
+    <a href="../../index.html">Tutorials</a>
+    <span class="top__sep">/</span>
+    <a href="../index.html">Fluxuri de lucru</a>
+    <span class="top__sep">/</span>
+    <span class="top__here">Pagina mea</span>
+  </div>
+</div>
+
+<div class="shell shell--ingust">
+  <div id="incarca" class="incarca">Se încarcă...</div>
+
+  <div id="continut" hidden>
+    <p class="eyebrow">PROGRESUL MEU</p>
+    <h1 id="titlu">Pagina mea</h1>
+    <p class="deck">Tot ce s-a înregistrat despre activitatea ta la acest curs.
+    Se actualizează singur, pe măsură ce parcurgi cartea.</p>
+
+    <div id="ident" class="ident"></div>
+
+    <div class="cifre">
+      <div class="cifra">
+        <div class="cifra__v" id="c-sectiuni">0</div>
+        <div class="cifra__e">SECȚIUNI PARCURSE</div>
+        <div class="cifra__n" id="n-sectiuni">din cartea cursului</div>
+      </div>
+      <div class="cifra">
+        <div class="cifra__v" id="c-raspunsuri">0</div>
+        <div class="cifra__e">VERIFICĂRI REZOLVATE</div>
+        <div class="cifra__n" id="n-raspunsuri">niciuna încă</div>
+      </div>
+      <div class="cifra">
+        <div class="cifra__v" id="c-cod">0</div>
+        <div class="cifra__e">EXERCIȚII DE COD</div>
+        <div class="cifra__n" id="n-cod">rulate în pagină</div>
+      </div>
+      <div class="cifra">
+        <div class="cifra__v" id="c-prezente">0</div>
+        <div class="cifra__e">PREZENȚE</div>
+        <div class="cifra__n">marcate la curs</div>
+      </div>
+    </div>
+
+    <h2>Verificările tale</h2>
+    <div id="zona-raspunsuri"></div>
+
+    <h2>Prezențe</h2>
+    <div id="zona-prezente"></div>
+
+    <h2>Datele tale</h2>
+    <p>Vezi aici tot ce s-a înregistrat despre tine. Dacă ceva pare greșit,
+    scrie-mi. Poți cere oricând ștergerea contului.</p>
+    <p><a class="btn btn--alt" href="../date-personale/">Ce se colectează și de ce</a></p>
+  </div>
+
+  <div id="fara-cont" hidden>
+    <p class="eyebrow">ACCES</p>
+    <h1>Intră în cont</h1>
+    <p class="deck">Pagina aceasta arată progresul tău, deci are nevoie de un cont.</p>
+    <p><a class="btn" href="../cont/">Mergi la pagina de cont</a></p>
+  </div>
+</div>
+
+<script type="module">
+import { sb, profil } from "../js/auth.js";
+
+const E = id => document.getElementById(id);
+const initiale = s => (s||"").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "?";
+
+function gol(text){
+  return `<div class="gol"><b>Nimic încă</b>${text}</div>`;
+}
+
+function dataRo(iso){
+  return new Date(iso).toLocaleDateString("ro-RO",
+    { day:"numeric", month:"long", hour:"2-digit", minute:"2-digit" });
+}
+
+async function deseneaza(){
+  const p = await profil({ proaspat:true });
+
+  if (!p.autentificat || !p.matricol) {
+    E("incarca").hidden = true;
+    E("fara-cont").hidden = false;
+    return;
+  }
+
+  E("titlu").textContent = "Pagina lui " + (p.nume||"").split(/\s+/)[0];
+  E("ident").innerHTML =
+    `<div class="ident__cerc">${initiale(p.nume)}</div>
+     <div><div class="ident__nume">${p.nume||""}</div>
+     <div class="ident__sub">${p.matricol}${p.grupa ? "  ·  grupa "+p.grupa : ""}${p.github_login ? "  ·  "+p.github_login : ""}</div></div>`;
+
+  /* toate cererile deodata; politicile din baza intorc numai randurile mele */
+  const [prog, rasp, cod, prez] = await Promise.all([
+    sb.from("progres").select("sectiune_id, ultima_data"),
+    sb.from("raspunsuri").select("intrebare_id, capitol, corect, creat_la").order("creat_la", { ascending:false }),
+    sb.from("rulari_cod").select("exercitiu_id, trecut, creat_la"),
+    sb.from("prezente").select("curs, marcat_la").order("marcat_la", { ascending:false })
+  ]);
+
+  const P = prog.data || [], R = rasp.data || [], C = cod.data || [], Z = prez.data || [];
+
+  E("c-sectiuni").textContent  = P.length;
+  E("c-raspunsuri").textContent = R.length;
+  E("c-cod").textContent        = C.filter(x => x.trecut).length;
+  E("c-prezente").textContent   = Z.length;
+
+  if (R.length) {
+    const corecte = R.filter(x => x.corect).length;
+    E("n-raspunsuri").textContent = corecte + " corecte din " + R.length;
+  }
+  if (C.length) E("n-cod").textContent = C.length + " rulări în total";
+
+  /* verificari */
+  E("zona-raspunsuri").innerHTML = R.length
+    ? `<table class="tbl"><thead><tr>
+         <th>Întrebare</th><th>Capitol</th><th>Rezultat</th><th>Când</th></tr></thead><tbody>
+       ${R.map(r => `<tr>
+         <td class="mono">${r.intrebare_id}</td>
+         <td>${r.capitol || ""}</td>
+         <td><span class="eticheta eticheta--${r.corect ? "da" : "nu"}">${r.corect ? "CORECT" : "GREȘIT"}</span></td>
+         <td>${dataRo(r.creat_la)}</td></tr>`).join("")}
+       </tbody></table>`
+    : gol("Verificările din carte apar aici imediat ce le rezolvi. Un răspuns greșit nu se penalizează: contează că ai încercat.");
+
+  /* prezente */
+  E("zona-prezente").innerHTML = Z.length
+    ? `<table class="tbl"><thead><tr><th>Curs</th><th>Marcat la</th></tr></thead><tbody>
+       ${Z.map(z => `<tr><td>${z.curs}</td><td>${dataRo(z.marcat_la)}</td></tr>`).join("")}
+       </tbody></table>`
+    : gol("Prezențele se marchează scanând codul proiectat la curs.");
+
+  E("incarca").hidden = true;
+  E("continut").hidden = false;
+}
+
+deseneaza().catch(e => {
+  E("incarca").textContent = "Eroare: " + e.message;
+});
+</script>
+<script type="module" src="../js/bara-mod.js"></script>
+</body>
+</html>
