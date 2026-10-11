@@ -1,0 +1,160 @@
+/* ===========================================================================
+   GRAFICE DIN DATELE CURSULUI
+
+   O singură nuanță, șase trepte, pentru mărime. Trepte alese separat pentru
+   fiecare temă și verificate: monotone ca luminozitate, cu pas vizibil între
+   ele, iar treapta cea mai deschisă încă se distinge de fundal (2,1:1).
+   Nu sunt o inversare automată a celor de la lumină.
+   =========================================================================== */
+
+:root{
+  --sci-1:#94B3C5; --sci-2:#6F98B1; --sci-3:#4E81A0;
+  --sci-4:#316D90; --sci-5:#265B79; --sci-6:#1F4860;
+  --sci-0:transparent;              /* fără date */
+  --sci-eu:var(--linie-2);          /* diagonala, scoasă din scară */
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema="deschis"]){
+    --sci-1:#395361; --sci-2:#4A6B7D; --sci-3:#5A839A;
+    --sci-4:#6C9CB8; --sci-5:#7CB4D3; --sci-6:#9CC8E1;
+  }
+}
+:root[data-tema="intunecat"]{
+  --sci-1:#395361; --sci-2:#4A6B7D; --sci-3:#5A839A;
+  --sci-4:#6C9CB8; --sci-5:#7CB4D3; --sci-6:#9CC8E1;
+}
+
+/* --- cadrul comun al unui grafic ---------------------------------------- */
+
+.gf{position:relative}
+.gf__cap{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 4px}
+.gf__t{font-family:var(--sans);font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.gf__sub{font-family:var(--sans);font-size:13px;color:var(--text-3);margin:0 0 15px;
+  max-width:62ch;line-height:1.45}
+.gf__unelte{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.gf__bt{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:6px;
+  border:1px solid var(--linie-2);background:var(--fundal);color:var(--text-2);
+  transition:.12s}
+.gf__bt:hover{border-color:var(--text-3);color:var(--text)}
+.gf__bt.on{background:var(--text);border-color:var(--text);color:var(--fundal)}
+.gf__sursa{font-family:var(--sans);font-size:11.5px;color:var(--text-3);margin:14px 0 0;
+  max-width:none;line-height:1.5}
+
+/* --- legenda ------------------------------------------------------------- */
+
+/* Scara citeşte ca o riglă: treptele se ating, iar numerele stau sub
+   îmbinări, nu sub mijlocul fiecărei trepte. Aşa se vede că sunt praguri,
+   nu categorii. */
+.gf__leg{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin:0 0 15px}
+.gf__scara{display:flex;flex-direction:column;gap:4px;flex:0 1 340px;
+  min-width:240px;max-width:340px}
+.gf__scara-et{font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-3)}
+.gf__trepte{display:flex;height:9px;border-radius:2px;overflow:hidden;width:100%}
+.gf__trepte span{flex:1}
+.gf__praguri{display:flex;width:100%;font-family:var(--mono);
+  font-size:9.5px;color:var(--text-3)}
+.gf__praguri span{flex:1;text-align:right;white-space:nowrap}
+.gf__praguri span:last-child{flex:0 0 auto;padding-left:4px}
+.gf__lalt{display:flex;align-items:center;gap:7px;padding-bottom:1px;
+  font-family:var(--mono);font-size:9.5px;color:var(--text-3)}
+.gf__lalt i{width:12px;height:12px;border-radius:2px;display:block;flex:none;
+  background:var(--panza-2);border:1px solid var(--linie-2)}
+
+/* --- matricea ------------------------------------------------------------ */
+
+.mtx{width:100%;display:block;overflow:visible}
+.mtx text{font-family:var(--mono);font-size:7.4px;fill:var(--text-3);
+  letter-spacing:.02em}
+.mtx .et.viu{fill:var(--text);font-weight:500}
+.mtx rect.c{stroke:var(--panza);stroke-width:.6}
+.mtx rect.b1{fill:var(--sci-1)} .mtx rect.b2{fill:var(--sci-2)}
+.mtx rect.b3{fill:var(--sci-3)} .mtx rect.b4{fill:var(--sci-4)}
+.mtx rect.b5{fill:var(--sci-5)} .mtx rect.b6{fill:var(--sci-6)}
+.mtx rect.eu{fill:var(--panza-2);stroke:var(--linie-2);stroke-width:.6}
+.mtx rect.c:hover{stroke:var(--text);stroke-width:1.1}
+.mtx .umbra{fill:var(--text);opacity:0;pointer-events:none}
+.mtx .umbra.viu{opacity:.07}
+.mtx .lovitura{fill:transparent;cursor:pointer}
+
+.gf__balon{position:absolute;z-index:20;pointer-events:none;opacity:0;
+  transition:opacity .09s;background:var(--text);color:var(--fundal);
+  border-radius:7px;padding:7px 10px;font-family:var(--sans);font-size:12.5px;
+  line-height:1.35;white-space:nowrap;box-shadow:var(--umbra-2)}
+.gf__balon.viu{opacity:1}
+.gf__balon b{font-family:var(--mono);font-size:12px;font-weight:500;display:block;
+  margin-top:2px;opacity:.85}
+
+/* --- bare ordonate ------------------------------------------------------- */
+
+.brr{display:grid;gap:4px}
+.brr__r{display:grid;grid-template-columns:118px minmax(0,1fr) 76px;gap:11px;
+  align-items:center}
+.brr__n{font-family:var(--sans);font-size:12.5px;color:var(--text-2);text-align:right;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brr__p{height:13px;position:relative}
+.brr__p i{display:block;height:100%;background:var(--sci-4);
+  border-radius:0 4px 4px 0;min-width:2px}
+
+.brr__v{font-family:var(--mono);font-size:11.5px;color:var(--text-2);
+  font-variant-numeric:lining-nums tabular-nums}
+
+
+.gf__reper{display:flex;align-items:flex-start;gap:10px;margin:16px 0 0;padding:12px 15px;
+  border-left:2px solid var(--linie-2);background:var(--panza-2);border-radius:0 7px 7px 0}
+.gf__reper b{font-family:var(--mono);font-size:14px;font-weight:500;flex:none;
+  font-variant-numeric:lining-nums}
+.gf__reper span{font-family:var(--sans);font-size:12.5px;color:var(--text-2);
+  line-height:1.45}
+
+/* --- panoul de detaliu, legat de matrice --------------------------------- */
+
+.mtx__det{margin-top:17px;padding-top:15px;border-top:1px solid var(--linie)}
+.mtx__dt{font-family:var(--sans);font-size:13.5px;font-weight:600;margin:0 0 3px}
+.mtx__dd{font-family:var(--sans);font-size:12.5px;color:var(--text-3);margin:0 0 13px;
+  max-width:none;line-height:1.45}
+.mtx__gol{font-family:var(--sans);font-size:13px;color:var(--text-3);padding:16px 0;
+  text-align:center}
+
+/* --- tabelul, varianta fără culoare -------------------------------------- */
+
+.gf__tab{width:100%;border-collapse:collapse;font-size:13.5px;
+  font-family:var(--sans);margin:0}
+.gf__tab th{font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;text-align:left;padding:7px 12px 7px 0;color:var(--text-3);
+  border-bottom:1px solid var(--linie-2)}
+.gf__tab td{padding:7px 12px 7px 0;border-bottom:1px solid var(--linie)}
+.gf__tab td.n{font-family:var(--mono);font-size:12px;
+  font-variant-numeric:lining-nums tabular-nums}
+.gf__sul{max-height:330px;overflow-y:auto}
+
+@media(max-width:620px){
+  .brr__r{grid-template-columns:86px minmax(0,1fr) 62px;gap:8px}
+  .brr__n{font-size:11.5px}
+  .gf__leg{gap:0}
+  .gf__lc{width:26px}
+}
+
+/* --- comparație în doi poli ---------------------------------------------- */
+
+.dv{display:grid;gap:2px}
+.dv__cap{display:flex;justify-content:space-between;margin:0 0 9px;
+  padding:0 76px 0 128px}
+.dv__et{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-3)}
+.dv__r{display:grid;grid-template-columns:118px minmax(0,1fr) 46px;gap:10px;
+  align-items:center}
+.dv__n{font-family:var(--sans);font-size:12.5px;color:var(--text-2);text-align:right;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dv__p{height:12px;position:relative}
+.dv__p i{position:absolute;top:0;height:100%;display:block;min-width:2px}
+.dv__a{background:var(--sci-5);border-radius:4px 0 0 4px}
+.dv__b{background:var(--sci-2);border-radius:0 4px 4px 0}
+.dv__ax{position:absolute;left:50%;top:-1px;bottom:-1px;width:1px;
+  background:var(--linie-2);display:block}
+.dv__v{font-family:var(--mono);font-size:11px;color:var(--text-3);
+  font-variant-numeric:lining-nums tabular-nums}
+@media(max-width:620px){
+  .dv__r{grid-template-columns:84px minmax(0,1fr) 40px;gap:7px}
+  .dv__cap{padding:0 46px 0 91px}
+}

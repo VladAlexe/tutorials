@@ -6,7 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-const C = {};
+import GRAFICE from "./grafice.js?v=4";
+import EXERCITII from "./exercitii.js?v=4";
+
+const C = { ...GRAFICE, ...EXERCITII };
 
 /* --- 1. Explorator de etape --------------------------------------------- */
 C.etape = (gazda, date) => {
@@ -100,6 +103,7 @@ C.terminal = (gazda) => {
 
 /* --- 3. Exercițiu de tipuri ---------------------------------------------- */
 C.tipuri = (gazda, date) => {
+  gazda.closest(".ix")?.classList.add("exc");
   const OPT = ["str","int","float","bool","None","list","tuple","dict"];
   const Q = date.valori;
   let i = 0, ok = 0, raspuns = [];
@@ -114,6 +118,14 @@ C.tipuri = (gazda, date) => {
           : "<b>Reia.</b> Cazurile ratate se întorc la curățarea datelor, în lecția 4."}</p>
         <button class="btn btn--mic" id="din-nou" type="button">Încă o dată</button>`;
       gazda.querySelector("#din-nou").onclick = () => { i=0; ok=0; raspuns=[]; deseneaza(); };
+      /* poarta se deschide când ai parcurs toate valorile, indiferent de scor:
+         scopul e să treci prin ele, nu să le nimerești din prima */
+      const ix = gazda.closest(".ix");
+      if (ix && !ix.classList.contains("gata")){
+        ix.classList.add("gata");
+        document.dispatchEvent(new CustomEvent("poarta:gata",
+          { detail:{ id:"c1-tipuri", scor:`${ok}/${Q.length}` } }));
+      }
       return;
     }
     const q = Q[i];
@@ -198,7 +210,112 @@ export function porneste(){
     if (s) { try { date = JSON.parse(s.textContent); } catch {} }
     const corp = document.createElement("div");
     g.appendChild(corp);
-    try { f(corp, date); } catch(e) { corp.innerHTML =
-      `<p style="color:var(--nu)">Componenta nu a pornit: ${e.message}</p>`; }
+    /* unele componente aduc date de pe disc, deci pot întoarce o promisiune */
+    const cad = e => { corp.innerHTML =
+      `<p style="color:var(--nu);font-family:var(--sans);font-size:13.5px">
+         Componenta nu a pornit: ${e.message}</p>`; };
+    try {
+      const rez = f(corp, date);
+      if (rez && typeof rez.catch === "function") rez.catch(cad);
+    } catch(e) { cad(e); }
   });
 }
+
+/* --- 5. Autoevaluare: ce știi deja ---------------------------------------
+   Prima sarcină din curs, din planul cursului: evaluarea cunoștințelor și a
+   așteptărilor. Nu se notează. Se înregistrează ca eveniment, ca să văd
+   profilul grupei înainte de a începe să predau, nu după.
+   ------------------------------------------------------------------------ */
+C.autoevaluare = (gazda, date) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const NIVELE = date.nivele ||
+    ["n-am auzit", "am citit despre", "am folosit o dată", "folosesc des"];
+  const T = date.teme;
+  const ales = new Array(T.length).fill(null);
+
+  gazda.innerHTML = `
+    <p class="ex__sarcina">${date.sarcina || "Pentru fiecare, alege unde te afli acum. Nu se notează, nu se vede la colegi, și nu e nicio problemă dacă bifezi peste tot prima coloană: cursul pornește de la zero."}</p>
+    <div class="aev">
+      <div class="aev__cap"><span></span>${NIVELE.map(n =>
+        `<span class="aev__h">${n}</span>`).join("")}</div>
+      ${T.map((t, i) => `<div class="aev__r" data-i="${i}">
+        <span class="aev__t">${t.t}<small>${t.d || ""}</small></span>
+        ${NIVELE.map((_, k) => `<button class="aev__b" data-i="${i}" data-k="${k}"
+            type="button" aria-label="${t.t}: ${NIVELE[k]}"></button>`).join("")}
+      </div>`).join("")}
+    </div>
+    <div class="ex__jos">
+      <button class="btn btn--mic btn--tare" data-rol="trimite" type="button" disabled>Trimite</button>
+      <span class="ex__raspuns"></span>
+    </div>`;
+
+  const out = gazda.querySelector(".ex__raspuns");
+  const bt = gazda.querySelector('[data-rol="trimite"]');
+
+  gazda.querySelectorAll(".aev__b").forEach(b => b.onclick = () => {
+    const i = +b.dataset.i;
+    ales[i] = +b.dataset.k;
+    gazda.querySelectorAll(`.aev__b[data-i="${i}"]`)
+         .forEach(x => x.classList.toggle("on", x === b));
+    gazda.querySelector(`.aev__r[data-i="${i}"]`).classList.add("ales");
+    const cate = ales.filter(x => x !== null).length;
+    bt.disabled = cate < T.length;
+    out.textContent = cate < T.length ? `${cate} din ${T.length}` : "";
+  });
+
+  bt.onclick = async () => {
+    bt.disabled = true;
+    gazda.querySelectorAll(".aev__b").forEach(x => x.disabled = true);
+    const medie = ales.reduce((a, b) => a + b, 0) / T.length;
+    out.innerHTML = medie < 1
+      ? "<b>Mulțumesc.</b> Pornim de la început, exact cum trebuie."
+      : medie < 2
+        ? "<b>Mulțumesc.</b> Ai pe unde să te agăți, restul construim împreună."
+        : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
+    gazda.closest(".ix")?.classList.add("gata");
+    document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
+    try {
+      const s = await import("/data-science-workflows/js/sesiune.js?v=4");
+      await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
+    } catch {}
+  };
+};
+
+/* --- 6. Arborele tipurilor din Python ------------------------------------ */
+C.arbore = (gazda, date) => {
+  const R = date.ramuri;
+  gazda.innerHTML = `
+    <p class="ix__sarcina">${date.sarcina || "Apasă pe orice tip."}</p>
+    <div class="arb">
+      <div class="arb__coloane">${R.map((g, i) => `
+        <div class="arb__g">
+          <span class="arb__gt">${g.nume}</span>
+          ${g.sub ? g.sub.map(s => `<div class="arb__s">
+              <span class="arb__st">${s.nume}</span>
+              ${s.tipuri.map(t => chip(t)).join("")}
+            </div>`).join("") : g.tipuri.map(t => chip(t)).join("")}
+        </div>`).join("")}
+      </div>
+      <div class="arb__i"><h5>${date.titlu || "Tipurile din Python"}</h5>
+        <p>${date.intro || ""}</p></div>
+    </div>`;
+
+  const toate = R.flatMap(g => g.sub ? g.sub.flatMap(s => s.tipuri) : g.tipuri);
+  const info = gazda.querySelector(".arb__i");
+  gazda.querySelector(".arb__coloane").addEventListener("click", ev => {
+    const b = ev.target.closest(".arb__c");
+    if (!b) return;
+    gazda.querySelectorAll(".arb__c").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    const t = toate.find(x => x.n === b.dataset.n);
+    info.innerHTML = `<h5><code>${t.n}</code> ${t.cls ? `<small>${t.cls}</small>` : ""}</h5>
+      <p>${t.d}</p>
+      ${t.ex ? `<pre class="arb__ex"><code>${t.ex.replace(/</g,"&lt;")}</code></pre>` : ""}
+      ${t.la ? `<p class="arb__la">${t.la}</p>` : ""}`;
+  });
+
+  function chip(t){
+    return `<button class="arb__c ${t.imut ? "imut" : ""}" data-n="${t.n}" type="button">
+      ${t.n}</button>`;
+  }
+};

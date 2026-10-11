@@ -1,0 +1,86 @@
+/* ===========================================================================
+   EXERCIȚII CU COD
+
+   Editorul arată ca unul de cod pentru că asta e și intenția: ce scrii aici
+   să semene cu ce vei scrie în VS Code peste zece minute. Fundal închis în
+   ambele teme, numerotarea liniilor pe stânga, monospațiat peste tot.
+   =========================================================================== */
+
+:root{
+  --ed-fundal:#0E1114; --ed-text:#D4D7DA; --ed-linie:#2A3138;
+  --ed-nr:#5A646D;     --ed-cheie:#8FB8D8; --ed-text2:#9DC08B;
+  --ed-nr-fundal:#141A1F; --ed-com:#6B747C; --ed-num:#E0A08C;
+}
+
+/* --- cadrul exercițiului ------------------------------------------------- */
+
+.exc .ex__sus{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+.ex__sarcina{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--text-2);
+  margin:0 0 14px;max-width:66ch}
+.ex__sarcina code{font-size:.9em}
+
+/* --- editorul ------------------------------------------------------------ */
+
+.ed{background:var(--ed-fundal);border-radius:9px;overflow:hidden;
+  font-family:var(--mono);font-size:13px;line-height:1.9;margin:0 0 13px}
+.ed__bara{display:flex;align-items:center;gap:8px;padding:7px 13px;
+  background:var(--ed-nr-fundal);border-bottom:1px solid var(--ed-linie)}
+.ed__pct{display:flex;gap:5px}
+.ed__pct i{width:9px;height:9px;border-radius:50%;background:var(--ed-linie);display:block}
+.ed__nume{font-family:var(--mono);font-size:11px;color:var(--ed-nr);margin-left:4px}
+.ed__corp{display:flex;overflow-x:auto}
+.ed__nr{flex:none;padding:11px 0 13px;background:var(--ed-nr-fundal);
+  color:var(--ed-nr);text-align:right;user-select:none;min-width:38px}
+.ed__nr span{display:block;padding:0 10px 0 12px}
+.ed__cod{flex:1;padding:11px 15px 13px;color:var(--ed-text);white-space:pre;min-width:0}
+.ed__cod .k{color:var(--ed-cheie)}
+.ed__cod .s{color:var(--ed-text2)}
+.ed__cod .n{color:var(--ed-num)}
+.ed__cod .c{color:var(--ed-com)}
+
+/* golul de completat: un câmp care arată ca parte din cod */
+.gol{display:inline-block;font-family:var(--mono);font-size:13px;line-height:1.5;
+  background:rgba(127,184,216,.12);border:1px solid rgba(127,184,216,.38);
+  border-radius:4px;color:#CFE4F2;padding:0 6px;min-width:5ch;outline:none;
+  caret-color:#8FB8D8;text-align:left}
+.gol:focus{border-color:#8FB8D8;background:rgba(127,184,216,.2)}
+.gol.bun{background:rgba(127,176,140,.18);border-color:rgba(127,176,140,.6);color:#BEE0C6}
+.gol.rau{background:rgba(215,145,133,.16);border-color:rgba(215,145,133,.6);color:#F0C3BA}
+.gol::placeholder{color:#55606A}
+
+/* --- reordonare ---------------------------------------------------------- */
+
+.ord{display:grid;gap:5px;margin:0 0 13px}
+.ord__r{display:grid;grid-template-columns:26px minmax(0,1fr) 54px;gap:10px;
+  align-items:center;background:var(--ed-fundal);border-radius:7px;padding:8px 11px;
+  border:1px solid transparent;transition:border-color .12s}
+.ord__r.bun{border-color:rgba(127,176,140,.5)}
+.ord__r.rau{border-color:rgba(215,145,133,.5)}
+.ord__p{font-family:var(--mono);font-size:11px;color:var(--ed-nr);text-align:center}
+.ord__t{font-family:var(--mono);font-size:12.5px;color:var(--ed-text);
+  overflow-x:auto;white-space:pre}
+.ord__t .c{color:var(--ed-com)}
+.ord__b{display:flex;gap:3px;justify-content:flex-end}
+.ord__b button{width:23px;height:23px;border-radius:5px;display:grid;place-items:center;
+  color:var(--ed-nr);border:1px solid var(--ed-linie);transition:.12s;line-height:1}
+.ord__b button:hover:not(:disabled){color:var(--ed-text);border-color:var(--ed-nr)}
+.ord__b button:disabled{opacity:.3;cursor:not-allowed}
+.ord__b svg{width:12px;height:12px}
+
+/* --- bara de jos --------------------------------------------------------- */
+
+.ex__jos{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.ex__raspuns{font-family:var(--sans);font-size:13.5px;line-height:1.5;flex:1;min-width:200px;
+  color:var(--text-2)}
+.ex__raspuns b{color:var(--text);font-weight:600}
+.ex__ex{margin:13px 0 0;padding:13px 16px;background:var(--panza-2);border-radius:8px;
+  font-size:15px;line-height:1.55;max-width:none;display:none}
+.ex__ex.vazut{display:block}
+.ex__stare{font-family:var(--mono);font-size:10.5px;color:var(--text-3);margin:11px 0 0;
+  max-width:none;display:none}
+.ex__stare.vazut{display:block}
+
+@media(max-width:620px){
+  .ed,.ord__t{font-size:12px}
+  .ord__r{grid-template-columns:20px minmax(0,1fr) 50px;gap:7px}
+}

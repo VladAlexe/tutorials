@@ -1,0 +1,133 @@
+/* ===========================================================================
+   PANOUL DE CLASĂ
+
+   Se deschide într-o filă separată și stă proiectat sau pe al doilea ecran în
+   timpul orei. Deci: text mare, puțin, și o singură imagine care răspunde la
+   întrebarea „unde e grupa acum".
+   =========================================================================== */
+
+.cls{display:flex;flex-direction:column;min-height:0;flex:1;overflow-y:auto;
+  background:var(--fundal)}
+.cls__in{width:100%;max-width:1320px;margin:0 auto;padding:22px 26px 70px}
+
+/* --- rândul de sus: stare și comenzi ------------------------------------- */
+
+.cls__sus{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.puls{display:flex;align-items:center;gap:9px;padding:7px 14px 7px 11px;border-radius:20px;
+  border:1px solid var(--linie);background:var(--panza);font-family:var(--sans);
+  font-size:13.5px;font-weight:500}
+.puls i{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;
+  animation:bate 2s ease-in-out infinite}
+.puls.rece i{background:var(--text-3);animation:none}
+@keyframes bate{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+.puls b{font-variant-numeric:lining-nums}
+
+.cls__sel{display:flex;align-items:center;gap:7px;font-family:var(--sans);font-size:13px;
+  color:var(--text-2)}
+.cls__sel select{border:1px solid var(--linie-2);background:var(--panza);border-radius:7px;
+  padding:6px 10px;font-size:13px;font-family:var(--sans)}
+.cls__dr{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cls__cand{font-family:var(--mono);font-size:11px;color:var(--text-3)}
+
+/* --- banda cu slide-urile și studenții pe ea ----------------------------- */
+
+.banda{background:var(--panza);border:1px solid var(--linie);border-radius:13px;
+  padding:19px 21px 15px;margin-bottom:16px;overflow-x:auto}
+.banda__cap{display:flex;align-items:baseline;gap:11px;margin-bottom:4px}
+.banda__t{font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:-.01em}
+.banda__d{font-family:var(--sans);font-size:12.5px;color:var(--text-3);margin:0 0 18px;
+  max-width:70ch}
+
+.banda__pista{display:flex;align-items:flex-end;gap:3px;min-width:min-content}
+.col{flex:1 1 0;min-width:40px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.col__oameni{display:flex;flex-direction:column-reverse;gap:3px;align-items:center;
+  width:100%;min-height:4px}
+.om{width:100%;max-width:92px;padding:3px 7px;border-radius:5px;background:var(--accent-slab);
+  border:1px solid color-mix(in srgb,var(--accent) 28%,transparent);
+  font-family:var(--sans);font-size:11px;font-weight:500;color:var(--accent-text);
+  text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  animation:apare .25s ease}
+@keyframes apare{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.om.lenes{background:var(--panza-2);border-color:var(--linie);color:var(--text-3)}
+.col__bara{width:100%;height:4px;border-radius:2px;background:var(--linie)}
+.col.are .col__bara{background:var(--accent)}
+.col.poarta .col__bara{background:var(--linie-2);
+  background-image:repeating-linear-gradient(90deg,transparent 0 3px,var(--panza) 3px 5px)}
+.col__n{font-family:var(--mono);font-size:10px;color:var(--text-3);
+  font-variant-numeric:lining-nums tabular-nums}
+.col.are .col__n{color:var(--text);font-weight:500}
+.col__t{font-family:var(--sans);font-size:9.5px;color:var(--text-3);text-align:center;
+  line-height:1.2;height:2.4em;overflow:hidden;width:100%}
+
+/* --- grila de panouri ---------------------------------------------------- */
+
+.cls__grila{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
+@media(max-width:1060px){.cls__grila{grid-template-columns:1fr}}
+.pan{background:var(--panza);border:1px solid var(--linie);border-radius:13px;
+  padding:19px 21px}
+.pan__cap{display:flex;align-items:baseline;gap:11px;margin-bottom:3px}
+.pan__t{font-family:var(--sans);font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.pan__d{font-family:var(--sans);font-size:12.5px;color:var(--text-3);margin:0 0 16px;
+  line-height:1.45;max-width:none}
+.pan__gol{font-family:var(--sans);font-size:13px;color:var(--text-3);padding:24px 0;
+  text-align:center}
+
+/* --- distribuția răspunsurilor ------------------------------------------- */
+
+.dz{margin-bottom:19px}
+.dz:last-child{margin-bottom:0}
+.dz__cap{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}
+.dz__id{font-family:var(--mono);font-size:10.5px;color:var(--text-3)}
+.dz__q{font-family:var(--sans);font-size:13px;font-weight:500;line-height:1.35;flex:1;min-width:0}
+.dz__n{font-family:var(--mono);font-size:10.5px;color:var(--text-3);flex:none}
+.dz__r{display:grid;grid-template-columns:20px minmax(0,1fr) 54px;gap:9px;
+  align-items:center;margin-bottom:4px}
+.dz__v{font-family:var(--mono);font-size:10.5px;color:var(--text-3);text-align:center}
+.dz__p{height:12px;background:var(--panza-2);border-radius:3px;position:relative;
+  overflow:hidden}
+.dz__p i{display:block;height:100%;background:var(--sci-3);border-radius:0 3px 3px 0}
+.dz__r.bun .dz__p i{background:var(--ok)}
+.dz__r.bun .dz__v{color:var(--ok);font-weight:500}
+.dz__e{font-family:var(--mono);font-size:10.5px;color:var(--text-2);
+  font-variant-numeric:lining-nums tabular-nums}
+.dz__e b{font-weight:500;color:var(--text)}
+.dz__bifa{display:inline-block;width:11px;height:11px;vertical-align:-1px;margin-left:4px}
+
+/* --- tabelul grupei ------------------------------------------------------ */
+
+.tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13px}
+.tb th{font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;text-align:left;padding:8px 10px 8px 0;color:var(--text-3);
+  border-bottom:1px solid var(--linie-2);white-space:nowrap;position:sticky;top:0;
+  background:var(--panza)}
+.tb td{padding:8px 10px 8px 0;border-bottom:1px solid var(--linie);vertical-align:middle}
+.tb tr:hover td{background:var(--panza-2)}
+.tb td.n{font-family:var(--mono);font-size:12px;
+  font-variant-numeric:lining-nums tabular-nums}
+.tb td.nume{font-weight:500}
+.tb .mic{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.tb__sul{max-height:680px;overflow-y:auto}
+.tb__bara{height:4px;border-radius:2px;background:var(--linie);width:62px;display:inline-block;
+  vertical-align:middle;overflow:hidden}
+.tb__bara i{display:block;height:100%;background:var(--accent)}
+.rst{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:5px;
+  border:1px solid var(--linie-2);color:var(--text-3);transition:.12s;white-space:nowrap}
+.rst:hover{border-color:var(--nu);color:var(--nu)}
+
+/* --- cifre mari ---------------------------------------------------------- */
+
+.cifre{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;
+  margin-bottom:16px}
+.cif{background:var(--panza);border:1px solid var(--linie);border-radius:11px;
+  padding:13px 16px}
+.cif b{display:block;font-family:var(--sans);font-size:25px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.1;font-variant-numeric:lining-nums}
+.cif span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--text-3);margin-top:5px}
+
+@media(max-width:700px){
+  .cls__in{padding:16px 16px 60px}
+  .banda{padding:15px 14px 12px}
+  .col{min-width:34px}
+  .col__t{display:none}
+}

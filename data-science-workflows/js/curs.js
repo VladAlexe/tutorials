@@ -17,9 +17,9 @@ export const CURS = {
    `notebook` e legatura catre caietul de lucru, pe GitHub. */
 export const LECTII = [
   { nr:1, cheie:"c1-introducere-si-mediu",
-    titlu:"Introducere și mediul de lucru",
+    titlu:"Introducere și configurare",
     scurt:"Introducere",
-    rezumat:"Ce este un flux de lucru pentru date, cum arată proiectul semestrului, și cum îți pregătești mediul.",
+    rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
     stare:"gata",
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" },
 

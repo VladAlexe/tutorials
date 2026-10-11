@@ -72,6 +72,10 @@ export async function porneste({ capitol, lectie }){
 
   const CHEIE_LOCAL = `dsw.parcurs.${capitol}`;
   let ceasToast = null, ceasSalv = null;   /* declarate aici: se folosesc din mergi() */
+
+  /* O poartă e fie o verificare cu variante, fie un exercițiu cu cod. */
+  const SEL_TOATE = ".verif, .ix.exc";
+  const SEL_GATA  = ".verif.raspuns, .ix.exc.gata";
   citesteLocal();
 
   construiesteSchelet();
@@ -98,7 +102,18 @@ export async function porneste({ capitol, lectie }){
   harta();
 
   /* verificarile raspund asincron: cand una se completeaza, porțile se mută */
-  document.addEventListener("verif:raspuns", () => { reinnoieste(); salveaza(); });
+  ["verif:raspuns", "poarta:gata"].forEach(nume =>
+    document.addEventListener(nume, ev => {
+      reinnoieste(); salveaza();
+      import(`${RADACINA}/js/sesiune.js?v=4`)
+        .then(s => s.jurnal(nume === "poarta:gata" ? "cod" : "raspuns", ev.detail))
+        .catch(() => {});
+    }));
+
+  /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
+  import(`${RADACINA}/js/sesiune.js?v=4`)
+    .then(s => s.porneste({ capitol, total:N }))
+    .catch(() => { /* fără cont, nu se urmărește nimic */ });
 
   /* profesorul navighează liber, ca să poată arăta orice slide la clasă */
   try {
@@ -110,12 +125,13 @@ export async function porneste({ capitol, lectie }){
 
   /* --------------------------------------------------------------- porțile */
 
-  /** Câte verificări are slide-ul i și la câte s-a răspuns. */
+  /** Câte porți are slide-ul i și câte sunt trecute. O poartă e fie o
+      verificare cu variante, fie un exercițiu cu cod: amândouă opresc
+      înaintarea până sunt făcute. */
   function porti(i){
     const s = slides[i];
-    const toate = s.querySelectorAll(".verif").length;
-    const date  = s.querySelectorAll(".verif.raspuns").length;
-    return { toate, date };
+    return { toate: s.querySelectorAll(SEL_TOATE).length,
+             date:  s.querySelectorAll(SEL_GATA).length };
   }
   /** Slide-ul i e „rezolvat": nu are verificări, sau s-a răspuns la toate. */
   function rezolvat(i){ const g = porti(i); return g.date >= g.toate; }
@@ -310,13 +326,20 @@ export async function porneste({ capitol, lectie }){
         const ok = g.date >= g.toate;
         p.classList.toggle("deschisa", ok);
         p.querySelector(".poarta__ic").innerHTML = ok ? SVG.gata : SVG.lacat;
-        p.querySelector(".poarta__t").textContent = ok
-          ? (g.toate > 1 ? "Verificările sunt făcute." : "Verificarea e făcută.")
-          : (g.toate > 1 ? `Răspunde la cele ${g.toate} verificări de mai sus.`
-                         : "Răspunde la verificarea de mai sus.");
+        /* numim lucrul după ce e: verificare, exercițiu, sau amândouă */
+        const nQ = s.querySelectorAll(".verif").length;
+        const nC = s.querySelectorAll(".ix.exc").length;
+        const cuv = nQ && nC ? ["sarcinile de mai sus", "Sarcinile de mai sus sunt făcute."]
+                  : nC       ? (nC > 1 ? ["exercițiile de mai sus", "Exercițiile sunt făcute."]
+                                       : ["exercițiul de mai sus", "Exercițiul e făcut."])
+                             : (nQ > 1 ? ["verificările de mai sus", "Verificările sunt făcute."]
+                                       : ["verificarea de mai sus", "Verificarea e făcută."]);
+        p.querySelector(".poarta__t").textContent = ok ? cuv[1] : `Termină ${cuv[0]}.`;
         p.querySelector(".poarta__d").textContent = ok
-          ? "Poți merge mai departe. Răspunsul rămâne înregistrat."
-          : "Nu contează dacă nimerești varianta corectă din prima; contează să te oprești aici. Explicația apare după ce alegi.";
+          ? "Poți merge mai departe. Ce ai făcut rămâne înregistrat."
+          : nC && !nQ
+            ? "Scrie ce crezi și apasă Verifică. Poți încerca de câte ori vrei, nu se scade nimic."
+            : "Nu contează dacă nimerești varianta corectă din prima; contează să te oprești aici. Explicația apare după ce alegi.";
       }
       const inainte = s.querySelector(".pas--inainte");
       const inapoi  = s.querySelector(".pas--inapoi");
@@ -326,8 +349,8 @@ export async function porneste({ capitol, lectie }){
       inainte.disabled = !poate;
       nota.hidden = poate;
       if (!poate) nota.textContent = g.toate > 1
-        ? "Verificările de mai sus deschid slide-ul următor."
-        : "Verificarea de mai sus deschide slide-ul următor.";
+        ? "Cele de mai sus deschid slide-ul următor."
+        : "Sarcina de mai sus deschide slide-ul următor.";
     });
 
     const v = totalVerif();
@@ -477,20 +500,30 @@ export async function porneste({ capitol, lectie }){
     } catch {}
     clearTimeout(ceasSalv);
     ceasSalv = setTimeout(async () => {
+      const id = slides[stare.i].id;
       try {
         const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=4`);
-        await marcheazaSectiune(`${capitol}/${slides[stare.i].id}`);
+        await marcheazaSectiune(`${capitol}/${id}`);
+      } catch {}
+      try {
+        const s = await import(`${RADACINA}/js/sesiune.js?v=4`);
+        s.laSlide({ slide:id, nr:stare.i + 1, total:N });
       } catch {}
     }, 900);
   }
 
-  /** Harta lecției, pentru pagina de progres: câte slide-uri are și cum se numesc. */
+  /** Harta lecției, pentru pagina de progres: câte slide-uri are, cum se
+      numesc, și ce verificări stau pe fiecare. Id-urile, nu doar numărul:
+      altfel pagina de progres nu poate spune care verificare e făcută. */
   function harta(){
     try {
       localStorage.setItem(`dsw.harta.${capitol}`, JSON.stringify({
         total:N,
         titluri:slides.map(s => s.dataset.t),
-        verif:slides.map(s => s.querySelectorAll(".verif").length)
+        verif:slides.map(s => [
+          ...[...s.querySelectorAll(".verif")].map(v => v.dataset.id),
+          ...[...s.querySelectorAll(".ix.exc")].map((_, k) => `${s.id}-cod${k + 1}`)
+        ])
       }));
     } catch {}
   }
