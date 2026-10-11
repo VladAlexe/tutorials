@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=4">
-<link rel="stylesheet" href="../../css/grafice.css?v=4">
-<link rel="stylesheet" href="../../css/clasa.css?v=4">
-<script src="../../js/tema.js?v=4"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=5">
+<link rel="stylesheet" href="../../css/grafice.css?v=5">
+<link rel="stylesheet" href="../../css/clasa.css?v=5">
+<script src="../../js/tema.js?v=5"></script>
 </head>
 <body class="corp--app">
 
@@ -66,7 +66,7 @@
 </template>
 
 <script type="module">
-import { LECTII, RADACINA } from "../../js/curs.js?v=4";
+import { LECTII, RADACINA } from "../../js/curs.js?v=5";
 
 const el = id => document.getElementById(id);
 const pag = el("pagina");
@@ -75,7 +75,7 @@ const nf = new Intl.NumberFormat("ro-RO");
 /* ------------------------------------------------------------ autorizare */
 let sb, profilul;
 try {
-  const m = await import("../../js/auth.js?v=4");
+  const m = await import("../../js/auth.js?v=5");
   sb = m.sb;
   profilul = await m.profil();
 } catch (e) {
@@ -297,6 +297,6 @@ function porneste(){
   }
 }
 </script>
-<script type="module" src="../../js/antet.js?v=4"></script>
+<script type="module" src="../../js/antet.js?v=5"></script>
 </body>
 </html>

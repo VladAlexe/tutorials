@@ -3,394 +3,191 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lecția 1 — Fluxuri de lucru pentru știința datelor</title>
-<meta name="description" content="Introducere și configurare: proiectul, pașii unui proiect de analiză de date, mediul virtual, tipurile de date și formatul JSON.">
+<title>Cursul 1 — Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Introducere și configurare: proiectul, pașii unui proiect de analiză de date, tipurile de date, JSON, mediul virtual.">
 <meta name="robots" content="index,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=4">
-<link rel="stylesheet" href="../../css/slide.css?v=4">
-<link rel="stylesheet" href="../../css/interactiv.css?v=4">
-<link rel="stylesheet" href="../../css/grafice.css?v=4">
-<link rel="stylesheet" href="../../css/exercitii.css?v=4">
-<script src="../../js/tema.js?v=4"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=5">
+<link rel="stylesheet" href="../../css/slide.css?v=5">
+<link rel="stylesheet" href="../../css/interactiv.css?v=5">
+<link rel="stylesheet" href="../../css/grafice.css?v=5">
+<link rel="stylesheet" href="../../css/exercitii.css?v=5">
+<script src="../../js/tema.js?v=5"></script>
 </head>
 <body class="corp--app">
-
-<div id="antet" data-aici="Lecția 1 · Introducere și configurare" data-crom="1"></div>
-
+<div id="antet" data-aici="Cursul 1 · Introducere și configurare" data-crom="1"></div>
 <div class="rnr">
 <main class="rnr__scena" tabindex="-1">
 
-<!-- ======================================================================
-     DESCHIDERE
-     ====================================================================== -->
+<section class="sld" id="s1" data-grup="Cursul" data-t="Despre ce e cursul">
+<h2>Fluxuri de lucru pentru știința datelor</h2><p class="cheie">Un drum complet, de la o întrebare la un rezultat în care poți avea încredere.</p><p>Unsprezece teme, opt ședințe, un proiect de echipă.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Temele semestrului</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Apasă pe o temă ca să vezi ce intră în ea și când o facem.</p><script type="application/json">{"titlu": "Cele unsprezece teme", "intro": "Apasă pe oricare.", "etape": [{"nume": "Introducere și instalarea softurilor", "unde": "Cursul 1", "text": "Ce unelte folosim și de ce fiecare. Conturile, mediul de lucru, structura unui proiect."}, {"nume": "Concepte cheie pentru analiza datelor", "unde": "Cursul 1", "text": "Tipuri de date în Python, în SQL și în fișiere spațiale. Tipuri de fișiere. Formatul JSON."}, {"nume": "Versionare și colaborare cu Git", "unde": "Cursul 3", "text": "Istoric, reveniri, branch-uri, pull request. Cum lucrează patru oameni pe același cod fără să se calce."}, {"nume": "Colectarea datelor prin API", "unde": "Cursul 2", "text": "Ce e un API, cum se citește o documentație, cum se face o cerere. Postman, apoi requests."}, {"nume": "Baze de date cu Neon", "unde": "Cursul 5", "text": "PostgreSQL în cloud. Tabele, chei, interogări. De ce un tabel de 31.684 de rânduri nu stă într-un fișier."}, {"nume": "Explorarea preliminară și curățarea", "unde": "Cursul 4", "text": "Lipsuri, duplicate, tipuri greșite, coduri care nu se potrivesc între surse. Etapa cea mai lungă."}, {"nume": "Agregarea datelor din surse diverse", "unde": "Cursul 5", "text": "Îmbinarea pe o cheie comună. La date diadice, două îmbinări: una pentru fiecare capăt al perechii."}, {"nume": "Analiza exploratorie și vizualizare", "unde": "Cursul 6", "text": "Distribuții, relații, valori extreme. Grafice care lămuresc și grafice care induc în eroare."}, {"nume": "Feature engineering", "unde": "Cursul 7", "text": "Variabilele care răspund la întrebare nu se descarcă, se construiesc: rate, ponderi, distanțe, diferențe."}, {"nume": "Aplicarea modelelor statistice", "unde": "Cursul 7", "text": "Testarea formală a relației observate. Non-independența observațiilor, la date diadice."}, {"nume": "Raportarea analizei și a rezultatelor", "unde": "Cursul 8", "text": "Raport reproductibil, grafice pentru publicare, prezentarea proiectului."}]}</script></div>
+</div>
 
-<section class="sld" id="s1" data-grup="Deschidere" data-t="Cluj sau București?">
-  <h2>O întrebare, înainte de orice</h2>
-
-  <p>Nu despre cod. Despre oameni. Pentru fiecare județ din România: cu care
-  dintre cele două orașe mari au locuitorii lui mai multe legături de
-  prietenie, cu Cluj sau cu București?</p>
-
-  <p>Nu e o întrebare la care se poate răspunde din intuiție, și nici din
-  statistici obișnuite. Răspunsul de mai jos vine din rețeaua de prietenii
-  Facebook, agregată și anonimizată, și e calculat din exact fișierele pe care
-  le veți descărca voi săptămâna viitoare.</p>
-
-  <div class="ix" data-ix="diverg">
-    <div class="ix__cap"><span class="ix__fel">Date reale</span><span class="ix__t">Cluj sau București</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{"a":"Cluj","b":"București"}</script>
-    </div>
-  </div>
-
-  <p>Întrebarea nu e a mea: Social Capital Lab a pus-o pentru
-  <a class="leg" href="https://socialcapital.org/" target="_blank" rel="noopener">Madrid
-  și Barcelona</a>, la nivelul întregii Europe, și harta a circulat peste tot.
-  Noi o punem pentru România, cu aceleași date, și o construim de la zero până
-  la sfârșitul semestrului.</p>
-
-  <div class="nota">
-    <div class="nota__et">Ce nu facem azi</div>
-    <p>Nu analizăm graficul. Analiza exploratorie e lecția 6, și atunci o să
-    avem și uneltele, și răbdarea pentru ea. Azi e aici ca să știți spre ce
-    lucrăm. Dacă vă vine deja o explicație în minte, scrieți-o undeva și
-    verificați-o peste zece săptămâni.</p>
-  </div>
 </section>
 
-<section class="sld" id="s2" data-grup="Deschidere" data-t="Ce știi deja">
-  <h2>Unde ești acum</h2>
+<section class="sld" id="s2" data-grup="Cursul" data-t="Agenda de azi">
+<h2>Cursul I. Introducere și configurare</h2><ol><li>Evaluarea cunoștințelor și a așteptărilor</li><li>Prezentarea proiectului</li><li>Pașii unui proiect de analiză de date</li><li>Configurarea unui mediu de lucru virtual</li><li>Tipuri de date în știința datelor</li><li>Formatul JSON</li></ol><div class="nota"><div class="nota__et">La final de oră</div><p>Ai mediul de lucru pregătit, cont de GitHub legat de numărul matricol, o echipă, și primul tău notebook rulat pe date adevărate.</p></div>
 
-  <p>Cursul pornește de la zero pe partea de unelte, dar o grupă nu e niciodată
-  omogenă, iar eu nu pot ghici. Un minut, șase rânduri, și știm amândoi de unde
-  începem.</p>
-
-  <div class="ix" data-ix="autoevaluare">
-    <div class="ix__cap"><span class="ix__fel">Evaluare inițială</span><span class="ix__t">Nu se notează</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{
-        "id":"c1-autoevaluare",
-        "teme":[
-          {"cheie":"python","t":"Python","d":"variabile, liste, dicționare, funcții"},
-          {"cheie":"linie","t":"Linia de comandă","d":"terminal, cd, rularea unui script"},
-          {"cheie":"git","t":"Git și GitHub","d":"commit, branch, lucru în echipă pe același cod"},
-          {"cheie":"sql","t":"SQL","d":"SELECT, JOIN, tabele într-o bază de date"},
-          {"cheie":"api","t":"API-uri","d":"a cere date unui serviciu, prin cod"},
-          {"cheie":"stat","t":"Statistică","d":"distribuții, corelație, regresie"}
-        ]}</script>
-    </div>
-  </div>
-
-  <div class="nota nota--sobru">
-    <div class="nota__et">Și așteptările</div>
-    <p>Dacă ai venit la curs cu o întrebare anume sau cu un proiect în cap,
-    spune-mi la final de oră. Direcțiile de proiect de la slide-ul 6 nu sunt o
-    listă închisă.</p>
-  </div>
 </section>
 
-<!-- ======================================================================
-     PROIECTUL
-     ====================================================================== -->
+<section class="sld" id="s3" data-grup="Cursul" data-t="Ce știi deja">
+<h2>Unde ești acum</h2><p>Un minut. Nu se notează.</p><div class="ix" data-ix="autoevaluare">
+  <div class="ix__cap"><span class="ix__fel">Evaluare</span><span class="ix__t">Nu se notează</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-autoevaluare", "teme": [{"cheie": "python", "t": "Python", "d": "variabile, liste, dicționare, funcții"}, {"cheie": "linie", "t": "Linia de comandă", "d": "terminal, cd, rularea unui script"}, {"cheie": "git", "t": "Git și GitHub", "d": "commit, branch, lucru în echipă"}, {"cheie": "sql", "t": "SQL", "d": "SELECT, JOIN, tabele"}, {"cheie": "api", "t": "API-uri", "d": "a cere date unui serviciu, prin cod"}, {"cheie": "stat", "t": "Statistică", "d": "distribuții, corelație, regresie"}]}</script></div>
+</div>
 
-<section class="sld" id="s3" data-grup="Proiectul" data-t="Prezentarea proiectului">
-  <h2>Ce construim în semestrul ăsta</h2>
-
-  <p>Cursul are un singur produs final: un depozit de echipă în care se vede
-  tot drumul, de la întrebarea de cercetare până la rezultat și interpretarea
-  lui. Nu predați un fișier la final; construiți săptămână de săptămână, iar
-  fiecare lecție adaugă o piesă.</p>
-
-  <table class="tabel">
-    <thead><tr><th>Lecția</th><th>Ce adaugi la proiect</th></tr></thead>
-    <tbody>
-      <tr><td class="mono">1</td><td>Mediul de lucru, conturile, echipa</td></tr>
-      <tr><td class="mono">2</td><td>Primele date colectate prin API</td></tr>
-      <tr><td class="mono">3</td><td>Depozitul de echipă și a doua sursă</td></tr>
-      <tr><td class="mono">4</td><td>Dataseturile curățate și documentate</td></tr>
-      <tr><td class="mono">5</td><td>Tabelul unificat, încărcat în baza de date</td></tr>
-      <tr><td class="mono">6</td><td>Analiza exploratorie și primele tipare</td></tr>
-      <tr><td class="mono">7</td><td>Variabilele derivate și modelul</td></tr>
-      <tr><td class="mono">8</td><td>Raportul final și prezentarea</td></tr>
-    </tbody>
-  </table>
-
-  <p class="cheie">Nota nu vine din rezultatul final, ci din drumul care se
-  vede în depozit.</p>
-
-  <p>Un rezultat spectaculos, fără codul care l-a produs, nu valorează nimic.
-  Un rezultat modest, reproductibil, documentat și interpretat onest, valorează
-  tot. Nu e o convenție de curs, e regula din cercetarea adevărată.</p>
 </section>
 
-<section class="sld" id="s4" data-grup="Proiectul" data-t="Datele pe care le folosim">
-  <h2>Datele: Social Connectedness Index</h2>
+<section class="sld" id="s4" data-grup="Softuri și conturi" data-t="Softuri și conturi">
+<h2>Softuri și conturi</h2><table class="tabel"><thead><tr><th>Unealtă</th><th>La ce</th><th>Când</th></tr></thead><tbody><tr><td><a class="leg" href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a></td><td>Editorul principal pentru scrierea codului</td><td class="mono">azi</td></tr><tr><td><a class="leg" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.11+</a></td><td>Limbajul. Bifează <em>Add Python to PATH</em></td><td class="mono">azi</td></tr><tr><td><a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">GitHub</a>, cont</td><td>Versionare, backup, colaborare</td><td class="mono">azi</td></tr><tr><td><a class="leg" href="https://neon.tech/" target="_blank" rel="noopener">Neon</a>, cont</td><td>Baze de date PostgreSQL, în cloud</td><td class="mono">cursul 5</td></tr><tr><td><a class="leg" href="https://www.postman.com/downloads/" target="_blank" rel="noopener">Postman</a></td><td>Testarea și explorarea API-urilor</td><td class="mono">cursul 2</td></tr><tr><td><a class="leg" href="https://datahelpdesk.worldbank.org/knowledgebase/articles/889392" target="_blank" rel="noopener">World Bank API</a></td><td>Acces deschis, fără autentificare</td><td class="mono">cursul 2</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">Toate sunt gratuite</div><p>Niciunul nu cere card. Neon și GitHub au planuri gratuite care acoperă cu mult ce facem noi.</p></div>
 
-  <p>Sursa principală e <strong>Social Connectedness Index</strong>, produs de
-  Data for Good at Meta. Pentru fiecare pereche de locuri, indicele spune cât
-  de probabil e ca doi oameni de acolo, unul din fiecare, să fie prieteni pe
-  Facebook. Acoperă 178 de țări, iar în Europa coboară până la nivel de județ.</p>
-
-  <table class="tabel">
-    <thead><tr><th>Sursă</th><th>Ce luăm de acolo</th><th>Cum</th></tr></thead>
-    <tbody>
-      <tr><td><strong>SCI</strong>, Data for Good at Meta</td>
-          <td>Legăturile dintre perechi de locuri</td><td class="mono">fișiere, HDX</td></tr>
-      <tr><td><strong>Eurostat</strong></td>
-          <td>Populație, PIB regional, educație, la nivel de județ</td><td class="mono">API, JSON-stat</td></tr>
-      <tr><td><strong>Banca Mondială</strong></td>
-          <td>Indicatori naționali: populație, PIB, urbanizare</td><td class="mono">API, JSON</td></tr>
-    </tbody>
-  </table>
-
-  <p>Indicele e <strong>normalizat</strong> prin populațiile celor două locuri.
-  Răspunde la „cât de probabil e o prietenie", nu la „câți oameni de acolo
-  trăiesc aici". Sunt două întrebări diferite, iar confuzia dintre ele e prima
-  greșeală pe care o face oricine deschide datele astea.</p>
-
-  <div class="ix" data-ix="bare">
-    <div class="ix__cap"><span class="ix__fel">Date reale</span><span class="ix__t">Partenerii României</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{"cate":15}</script>
-    </div>
-  </div>
-
-  <div class="nota nota--sobru">
-    <div class="nota__et">Două lucruri de observat, fără să le explicăm azi</div>
-    <p>Austria e pe doi, deși în Italia trăiesc de șase ori mai mulți români.
-    Iar Sri Lanka e pe 17, ceea ce nu are nicio legătură cu diaspora
-    românească. Amândouă au explicații, amândouă vin la lecția 6.</p>
-  </div>
 </section>
 
-<section class="sld" id="s5" data-grup="Proiectul" data-t="Ce formă au datele">
-  <h2>Ce formă au, de fapt, datele</h2>
-
-  <p>Un lucru pe care trebuie să-l vedeți cu ochii înainte de orice, pentru că
-  schimbă fiecare etapă de mai târziu: un rând din fișierele astea nu descrie
-  un loc, ci <em>o relație între două locuri</em>.</p>
-
-  <table class="tabel">
-    <thead><tr><th>Date monadice</th><th>Date diadice</th></tr></thead>
-    <tbody>
-      <tr><td>un rând = o entitate</td><td>un rând = o relație între două entități</td></tr>
-      <tr><td>„de ce e locul ăsta așa?"</td><td>„de ce sunt astea două legate?"</td></tr>
-      <tr><td>42 de județe = 42 de rânduri</td><td>42 de județe = 42 × 42 de rânduri</td></tr>
-      <tr><td>un merge pentru atribute</td><td>două merge-uri, câte unul pentru fiecare capăt</td></tr>
-    </tbody>
-  </table>
-
-  <p>Mai jos e chiar tabelul, desenat: fiecare pătrat e un rând, iar culoarea
-  lui e valoarea din coloana <code>scaled_sci</code>. Nu interpretăm nimic azi,
-  ne uităm doar la formă și la mărime.</p>
-
-  <div class="ix" data-ix="matrice">
-    <div class="ix__cap"><span class="ix__fel">Date reale</span><span class="ix__t">1.764 de rânduri</span></div>
-    <div class="ix__corp"></div>
+<section class="sld" id="s5" data-grup="Softuri și conturi" data-t="Contul GitHub, azi">
+<h2>Contul GitHub</h2><p>Singurul lucru cu termen azi.</p><ol><li><a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>, nume de utilizator pe care să-l poți pune în CV</li><li>Confirmă emailul</li><li>Intră cu el <a class="leg" href="../../cont/">pe acest site</a>, cu numărul matricol</li></ol><div class="verif" data-id="c1-v8" data-corect="1">
+    <p class="verif__q">De ce versionăm codul într-un proiect de analiză de date?</p>
+    <button>Ca să ocupe mai puțin spațiu pe disc</button>
+    <button>Ca să se vadă ce s-a schimbat, când și de cine, și ca să se poată reveni</button>
+    <button>Pentru că e obligatoriu la publicare</button>
+    <button>Ca să ruleze codul mai repede</button>
+    <p class="verif__ex">Un rezultat se schimbă pentru că s-a schimbat codul, datele, sau amândouă. Fără istoric nu poți spune care. În plus, Git e singurul mod în care patru oameni lucrează pe același proiect fără să-și suprascrie fișierele. Spațiul pe disc chiar crește.</p>
   </div>
 
-  <div class="verif" data-id="c1-v5" data-corect="2">
-    <p class="verif__q">Dacă în loc de cele 42 de județe ai lucra cu cele 178
-    de țări din SCI, câte rânduri are matricea completă, cu tot cu legătura
-    fiecărei țări cu ea însăși?</p>
+</section>
+
+<section class="sld" id="s6" data-grup="Pașii unui proiect" data-t="Data Science Workflow">
+<h2>Pașii unui proiect de analiză de date</h2><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Data Science Workflow</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Sus: analiza datelor. Jos: ingineria modelelor. Între ele, baza de date.</p><script type="application/json">{"titlu": "Fluxul complet", "intro": "Apasă pe oricare dintre etape.", "etape": [{"nume": "Definirea problemei", "unde": "Cursul 1", "text": "Tema, unitatea de analiză, întrebarea. Aici decizi ce înseamnă un rând în tabelul final: o țară, o pereche de județe, un an. Tot restul depinde de alegerea asta."}, {"nume": "Colectarea datelor", "unde": "Cursul 2", "text": "Aduci datele prin API sau din fișiere. Salvezi întotdeauna varianta brută, neatinsă, ca să poți reveni la ea când descoperi o greșeală de curățare."}, {"nume": "Curățarea datelor", "unde": "Cursul 4", "text": "Tipuri greșite, valori lipsă, duplicate, coduri care nu se potrivesc între surse. Etapa cea mai lungă și cea care decide dacă rezultatul înseamnă ceva."}, {"nume": "Analiza exploratorie", "unde": "Cursul 6", "text": "Te uiți la date înainte de a le modela. Scopul nu e să demonstrezi ceva, e să înțelegi ce ai."}, {"nume": "Feature engineering", "unde": "Cursul 7", "text": "Construiești variabilele care răspund la întrebare: rate, ponderi, distanțe, diferențe între capetele perechii."}, {"nume": "Modelare", "unde": "Cursul 7", "text": "Testezi formal relația observată, statistic sau cu învățare automată. Un model simplu, bine interpretat, bate unul complicat pe care nu îl poți explica."}, {"nume": "Implementarea modelului", "unde": "dincolo de curs", "text": "Modelul ajunge undeva unde îl folosește altcineva. La noi lanțul se oprește la raport, dar el continuă."}, {"nume": "Optimizarea modelului", "unde": "dincolo de curs", "text": "Parametri, performanță, costuri. Zona de inginerie."}, {"nume": "Raportare și vizualizare", "unde": "Cursul 8", "text": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica. Graficele nu sunt decor, sunt argumentul."}, {"nume": "Popularea și gestionarea bazei de date", "unde": "Cursul 5", "text": "Nu e o etapă în lanț, e depozitul la care se întorc mai multe etape. Colectarea scrie datele brute, curățarea versiunea curată, agregarea tabelul final.", "depozit": true}]}</script></div>
+</div><p class="cheie">Fluxul e ciclic, nu liniar.</p><div class="verif" data-id="c1-v1" data-corect="1">
+    <p class="verif__q">O echipă descoperă la analiza exploratorie că indicatorul ales nu are date pentru 40% din unități. Ce face?</p>
+    <button>Continuă doar pe unitățile care au date, fără să menționeze</button>
+    <button>Se întoarce la colectare și caută un indicator alternativ</button>
+    <button>Completează lipsurile cu media</button>
+    <button>Schimbă modelul ca să tolereze lipsurile</button>
+    <p class="verif__ex">Întoarcerea la o etapă anterioară e normală, nu e un eșec. Celelalte variante rămân discutabile în anumite cazuri, dar niciuna nu se ia înainte de a verifica dacă problema se rezolvă la sursă. Și orice decizie de acest fel se scrie în raport.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s7" data-grup="Proiectul" data-t="Proiectul final">
+<h2>Proiectul final</h2><p class="cheie">Un depozit de echipă în care se vede tot drumul.</p><table class="tabel"><thead><tr><th>Cursul</th><th>Ce adaugi</th></tr></thead><tbody><tr><td class="mono">1</td><td>Mediul de lucru, conturile, echipa, primul notebook</td></tr><tr><td class="mono">2</td><td>Primele date colectate prin API</td></tr><tr><td class="mono">3</td><td>Depozitul de echipă și a doua sursă</td></tr><tr><td class="mono">4</td><td>Dataseturile curățate și documentate</td></tr><tr><td class="mono">5</td><td>Tabelul unificat, în baza de date</td></tr><tr><td class="mono">6</td><td>Analiza exploratorie</td></tr><tr><td class="mono">7</td><td>Variabilele derivate și modelul</td></tr><tr><td class="mono">8</td><td>Raportul final și prezentarea</td></tr></tbody></table><p>Nota vine din drumul care se vede în depozit, nu din rezultat.</p>
+
+</section>
+
+<section class="sld" id="s8" data-grup="Proiectul" data-t="Sursele de date">
+<h2>Sursele de date</h2><table class="tabel"><thead><tr><th>Sursă</th><th>Ce luăm</th><th>Cum</th></tr></thead><tbody><tr><td><strong>Social Connectedness Index</strong><br>Data for Good at Meta</td><td>Legăturile de prietenie dintre perechi de locuri, 178 de țări, până la nivel de județ în Europa</td><td class="mono">fișiere, HDX</td></tr><tr><td><strong>Eurostat</strong></td><td>Populație, PIB regional, educație, la nivel de județ</td><td class="mono">API, JSON-stat</td></tr><tr><td><strong>Banca Mondială</strong> (WDI)</td><td>Populație, PIB, urbanizare, la nivel de țară</td><td class="mono">API, JSON</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">Indicele e normalizat</div><p>Spune cât de <em>probabilă</em> e o prietenie între doi oameni din cele două locuri, nu câți oameni de acolo trăiesc aici. Două întrebări diferite.</p></div>
+
+</section>
+
+<section class="sld" id="s9" data-grup="Proiectul" data-t="Cluj sau București?">
+<h2>Cluj sau București?</h2><p>Pentru fiecare județ: cu care dintre cele două are legături mai probabile.</p><div class="ix" data-ix="diverg">
+  <div class="ix__cap"><span class="ix__fel">Date reale</span><span class="ix__t">Cluj sau București</span></div>
+  <div class="ix__corp"><script type="application/json">{"a": "Cluj", "b": "București"}</script></div>
+</div><div class="nota"><div class="nota__et">Nu analizăm azi</div><p>Analiza exploratorie e cursul 6. Deocamdată doar vedem spre ce lucrăm. Întrebarea e luată de la <a class="leg" href="https://socialcapital.org/" target="_blank" rel="noopener">Social Capital Lab</a>, care a pus-o pentru Madrid și Barcelona, la nivelul întregii Europe.</p></div>
+
+</section>
+
+<section class="sld" id="s10" data-grup="Proiectul" data-t="Ce formă au datele">
+<h2>Date diadice</h2><p class="cheie">Un rând nu descrie un loc. Descrie o relație între două locuri.</p><table class="tabel"><thead><tr><th>Monadic</th><th>Diadic</th></tr></thead><tbody><tr><td>un rând = o entitate</td><td>un rând = o relație între două entități</td></tr><tr><td>„de ce e locul ăsta așa?”</td><td>„de ce sunt astea două legate?”</td></tr><tr><td>42 de județe = 42 de rânduri</td><td>42 de județe = 42 × 42 de rânduri</td></tr><tr><td>un merge pentru atribute</td><td>două merge-uri, câte unul pe capăt</td></tr></tbody></table><div class="ix" data-ix="matrice">
+  <div class="ix__cap"><span class="ix__fel">Date reale</span><span class="ix__t">1.764 de rânduri</span></div>
+  <div class="ix__corp"></div>
+</div><div class="verif" data-id="c1-v5" data-corect="2">
+    <p class="verif__q">Cu cele 178 de țări din SCI, câte rânduri are matricea completă?</p>
     <button>178</button>
     <button>356</button>
     <button>31.684</button>
     <button>15.753</button>
-    <p class="verif__ex">178 × 178 = 31.684, și exact atâtea rânduri are
-    fișierul <code>country.csv</code> pe care îl descărcați la lecția 2.
-    Varianta 15.753 ar fi numărul de perechi distincte, fără direcție și fără
-    diagonală. Creșterea cu pătratul e motivul pentru care, de la lecția 5,
-    lucrăm cu o bază de date și nu cu fișiere deschise în Excel.</p>
+    <p class="verif__ex">178 × 178 = 31.684, exact câte rânduri are fișierul <code>country.csv</code> pe care îl descărcați azi. Varianta 15.753 ar fi numărul de perechi distincte, fără direcție și fără diagonală. Creșterea cu pătratul e motivul pentru care, de la cursul 5, lucrăm cu o bază de date.</p>
   </div>
+
 </section>
 
-<section class="sld" id="s6" data-grup="Proiectul" data-t="Echipele și direcțiile">
-  <h2>Echipele și direcțiile de proiect</h2>
+<section class="sld" id="s11" data-grup="Proiectul" data-t="Echipele">
+<h2>Echipele și direcțiile</h2><p>Trei sau patru oameni. Aceleași date, întrebări diferite.</p><ol><li><strong>Distanță și graniță.</strong> Cât din conectivitate se explică prin apropiere geografică, și unde se rupe regula.</li><li><strong>Diaspora.</strong> Migrație față de conectivitate: unde coincid și unde nu.</li><li><strong>Minorități și istorie.</strong> Granițe vechi, regiuni istorice, comunități lingvistice.</li><li><strong>Orașe mari.</strong> Centrele universitare și bazinele lor de atracție.</li><li><strong>Dezvoltare economică.</strong> Conectivitate față de PIB regional, educație, urbanizare.</li><li><strong>Europa.</strong> Aceleași întrebări la nivel de țară sau regiune europeană.</li></ol><div class="nota"><div class="nota__et">Până data viitoare</div><p>Trimiteți componența echipei, cu numerele matricole și direcția aleasă. Cine nu e într-o echipă, îl repartizez eu.</p></div>
 
-  <p>Lucrați în echipe de trei sau patru, pe aceleași date, cu întrebări
-  diferite. Aceleași date înseamnă că atunci când cineva se blochează la
-  curățare, altcineva a trecut deja prin aceeași problemă.</p>
-
-  <h3>Direcții posibile</h3>
-  <ol>
-    <li><strong>Distanță și graniță.</strong> Cât din conectivitate se explică
-    prin simpla apropiere geografică, și unde se rupe regula.</li>
-    <li><strong>Diaspora.</strong> Legătura dintre migrație și conectivitate:
-    unde coincid și unde nu, și ce înseamnă când nu coincid.</li>
-    <li><strong>Minorități și istorie.</strong> Granițe vechi, regiuni
-    istorice, comunități lingvistice: se văd în rețeaua de prietenii de azi?</li>
-    <li><strong>Orașe mari.</strong> Centrele universitare și bazinele lor de
-    atracție, măsurate prin prietenii în loc de statistici de mobilitate.</li>
-    <li><strong>Dezvoltare economică.</strong> Relația dintre conectivitate și
-    PIB regional, educație, urbanizare.</li>
-    <li><strong>Europa.</strong> Aceleași întrebări la nivel de țară sau de
-    regiune europeană, în loc de județ.</li>
-  </ol>
-
-  <div class="nota">
-    <div class="nota__et">Cum se formează echipele</div>
-    <p>Până data viitoare: vă grupați singuri și trimiteți componența, cu
-    numerele matricole și cu direcția aleasă. Cine nu e într-o echipă până
-    atunci, îl repartizez eu. O direcție poate fi luată de două echipe, dacă
-    întrebările concrete sunt diferite.</p>
-  </div>
 </section>
 
-<!-- ======================================================================
-     SOFTURI ȘI CONTURI
-     ====================================================================== -->
+<section class="sld" id="s12" data-grup="Tipuri de date" data-t="Tipuri în Python">
+<h2>Tipuri de date în Python</h2><p>Tipul decide ce poți face cu valoarea. Sortarea pune 1990 după 189 dacă anii au venit ca text.</p><div class="ix" data-ix="arbore">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Arborele tipurilor</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Tipurile din Python", "intro": "Apasă pe orice tip ca să vezi ce e, cum arată, și unde apare la noi.", "sarcina": "Conturul punctat înseamnă tip nemodificabil.", "ramuri": [{"nume": "Nimic", "tipuri": [{"n": "None", "cls": "NoneType", "imut": true, "d": "Absența unei valori. Nu e zero și nu e text gol: înseamnă „nu știm”.", "ex": "valoare = None\nprint(valoare is None)   # True", "la": "O măsurătoare care lipsește. În pandas devine NaN."}]}, {"nume": "Numere", "sub": [{"nume": "Întregi", "tipuri": [{"n": "int", "cls": "class int", "imut": true, "d": "Numere întregi, fără limită de mărime în Python.", "ex": "an = 2024\npopulatie = 19051562", "la": "Ani, populație, numărători."}, {"n": "bool", "cls": "class bool", "imut": true, "d": "Adevărat sau fals. Tehnic e un fel de int: True valorează 1.", "ex": "are_date = True\nprint(True + True)       # 2", "la": "Rezultatul oricărei condiții; filtrele din pandas."}]}, {"nume": "Reale", "tipuri": [{"n": "float", "cls": "class float", "imut": true, "d": "Numere cu zecimale. 0.1 + 0.2 nu dă exact 0.3, din cauza reprezentării binare.", "ex": "rata = 3.7\nprint(0.1 + 0.2 == 0.3)  # False", "la": "Aproape toți indicatorii calculați."}, {"n": "complex", "cls": "class complex", "imut": true, "d": "Numere complexe. Există, dar nu le folosim la curs.", "ex": "z = 2 + 3j"}]}]}, {"nume": "Secvențe", "sub": [{"nume": "Nemodificabile", "tipuri": [{"n": "str", "cls": "class str", "imut": true, "d": "Text. Orice vine dintr-un fișier necurățat e text până îl converteșt tu.", "ex": "cod = \"RO113\"\nan = \"2024\"              # text!\nprint(int(an) + 1)       # 2025", "la": "Nume, coduri NUTS, orice coloană necurățată."}, {"n": "tuple", "cls": "class tuple", "imut": true, "d": "Secvență ordonată care nu se mai poate modifica după creare.", "ex": "coord = (46.77, 23.59)\nperechea = (\"RO113\", \"RO116\")", "la": "Coordonate, și cheia unei perechi de județe."}, {"n": "bytes", "cls": "class bytes", "imut": true, "d": "Octeți bruți. Apare când citești un fișier binar sau un răspuns HTTP neinterpretat.", "ex": "r = requests.get(url)\nprint(type(r.content))   # bytes"}]}, {"nume": "Modificabile", "tipuri": [{"n": "list", "cls": "class list", "d": "Secvență ordonată, modificabilă. Cel mai folosit tip din Python.", "ex": "judete = [\"Cluj\", \"Sălaj\"]\njudete.append(\"Alba\")", "la": "Un tablou dintr-un JSON devine listă."}, {"n": "bytearray", "cls": "class bytearray", "d": "Ca bytes, dar modificabil. Rar în analiza de date."}]}]}, {"nume": "Mulțimi", "tipuri": [{"n": "set", "cls": "class set", "d": "Colecție neordonată, fără duplicate. Verificarea apartenenței e foarte rapidă.", "ex": "coduri = {\"RO113\", \"RO116\"}\nprint(\"RO113\" in coduri)  # True", "la": "Codurile care apar într-o sursă dar nu în alta, la cursul 4."}, {"n": "frozenset", "cls": "class frozenset", "imut": true, "d": "Mulțime nemodificabilă. Poate fi cheie de dicționar."}]}, {"nume": "Dicționare", "tipuri": [{"n": "dict", "cls": "class dict", "d": "Perechi cheie și valoare. Structura oricărui obiect JSON convertit în Python.", "ex": "rand = {\"tara\": \"RO\",\n        \"an\": 2023,\n        \"valoare\": 19051562}\nprint(rand[\"valoare\"])", "la": "Fiecare răspuns de API ajunge aici."}]}, {"nume": "Altele", "tipuri": [{"n": "funcții", "cls": "callable", "d": "Funcțiile sunt și ele valori: le poți pune într-o listă sau da ca argument.", "ex": "def curata(x):\n    return x.strip()\n\nnume = [curata(n) for n in brute]"}, {"n": "module", "cls": "class module", "d": "Un fișier de Python importat devine un obiect cu propriul tip.", "ex": "import pandas as pd\nprint(type(pd))          # module"}]}]}</script></div>
+</div><div class="nota"><div class="nota__et">Confuzia care costă cel mai mult</div><p><code>None</code>, <code>0</code> și <code>""</code> arată la fel într-un tabel gol. Zero e o măsurătoare; <code>None</code> e absența ei. Tratate la fel într-o medie, rezultatul e greșit fără nicio eroare.</p></div>
 
-<section class="sld" id="s7" data-grup="Softuri și conturi" data-t="Softuri și conturi">
-  <h2>Ce instalăm și unde ne facem cont</h2>
-
-  <p>Totul e gratuit și nimic nu cere card. Instalarea o facem acum, la clasă,
-  ca să nu pierdem jumătate de oră data viitoare.</p>
-
-  <table class="tabel">
-    <thead><tr><th>Unealtă</th><th>La ce</th><th>Când</th></tr></thead>
-    <tbody>
-      <tr><td><a class="leg" href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a></td>
-          <td>Editorul în care scriem tot codul</td><td class="mono">azi</td></tr>
-      <tr><td><a class="leg" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.11+</a></td>
-          <td>Limbajul; bifează <em>Add Python to PATH</em></td><td class="mono">azi</td></tr>
-      <tr><td><a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">GitHub</a>, cont</td>
-          <td>Versionare, backup, colaborare</td><td class="mono">azi</td></tr>
-      <tr><td><a class="leg" href="https://neon.tech/" target="_blank" rel="noopener">Neon</a>, cont</td>
-          <td>Baza de date PostgreSQL, în cloud</td><td class="mono">lecția 5</td></tr>
-      <tr><td><a class="leg" href="https://www.postman.com/downloads/" target="_blank" rel="noopener">Postman</a></td>
-          <td>Testarea și explorarea API-urilor</td><td class="mono">lecția 2</td></tr>
-    </tbody>
-  </table>
-
-  <div class="nota nota--sobru">
-    <div class="nota__et">De ce Neon și nu PostgreSQL pe laptop</div>
-    <p>Pentru că o bază de date în cloud e vizibilă pentru toată echipa
-    deodată. Un PostgreSQL instalat local rezolvă problema interogării, dar nu
-    și pe cea a colaborării, care e jumătate din curs.</p>
-  </div>
 </section>
 
-<section class="sld" id="s8" data-grup="Softuri și conturi" data-t="Contul GitHub, acum">
-  <h2>Contul GitHub, chiar acum</h2>
+<section class="sld" id="s13" data-grup="Tipuri de date" data-t="Recunoaște tipul">
+<h2>Recunoaște tipul</h2><div class="ix" data-ix="tipuri">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Opt valori</span></div>
+  <div class="ix__corp"><script type="application/json">{"valori": [{"v": "'2024'", "t": "str", "e": "Ghilimelele fac diferența. Arată ca un an, dar e text: exact capcana din CSV."}, {"v": "2024", "t": "int", "e": "Fără ghilimele, număr întreg. Se compară și se sortează corect."}, {"v": "3.7", "t": "float", "e": "Punctul zecimal îl face float. Cu virgulă, în fișiere românești, ajunge text."}, {"v": "None", "t": "None", "e": "Absența valorii. Nu e zero și nu e text gol."}, {"v": "True", "t": "bool", "e": "Cu majusculă în Python. Rezultatul oricărei condiții."}, {"v": "[1, 2, 3]", "t": "list", "e": "Paranteze drepte: listă, ordonată și modificabilă."}, {"v": "(45.7, 21.2)", "t": "tuple", "e": "Paranteze rotunde: tuplu, nemodificabil. Tipic pentru coordonate."}, {"v": "{'tara': 'RO'}", "t": "dict", "e": "Perechi cheie și valoare. Structura unui obiect JSON."}]}</script></div>
+</div>
 
-  <p>E singurul lucru din lecția asta care are termen azi. Toate celelalte se
-  pot recupera; contul GitHub blochează lecția 3 pentru toată echipa dacă
-  lipsește.</p>
-
-  <ol>
-    <li>Intră pe <a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>
-    și fă-ți cont. Alege un nume de utilizator pe care să-l poți pune în CV:
-    rămâne cu tine mult după curs.</li>
-    <li>Confirmă adresa de email.</li>
-    <li>Intră cu el <a class="leg" href="../../cont/">pe acest site</a> și
-    leagă-l de numărul tău matricol. Din momentul ăla, răspunsurile de la
-    verificări și activitatea de pe GitHub se adună automat la mine.</li>
-    <li>Spune-mi numele de utilizator, dacă nu seamănă cu numele tău real.</li>
-  </ol>
-
-  <div class="nota">
-    <div class="nota__et">Ce se întâmplă cu datele tale</div>
-    <p>Se salvează ce răspunzi la verificări, ce exerciții faci și pe ce slide
-    ai ajuns. Nu se salvează nimic din ce scrii în altă parte, și nimeni în
-    afară de mine nu vede ce ai răspuns. Detaliile sunt în
-    <a class="leg" href="../../date-personale/">pagina despre date personale</a>,
-    iar progresul ți-l poți șterge oricând, din contul tău.</p>
-  </div>
-
-  <div class="verif" data-id="c1-v8" data-corect="1">
-    <p class="verif__q">De ce versionăm codul cu Git într-un proiect de analiză
-    de date, nu doar în programare?</p>
-    <button>Ca să ocupe mai puțin spațiu pe disc</button>
-    <button>Ca să se vadă ce s-a schimbat, când și de cine, și ca să se poată reveni la o variantă anterioară</button>
-    <button>Pentru că e obligatoriu pentru publicare</button>
-    <button>Ca să ruleze codul mai repede</button>
-    <p class="verif__ex">Un rezultat se schimbă pentru că s-a schimbat codul,
-    datele, sau amândouă. Fără istoric nu poți spune care dintre ele, nici la
-    tine, nici la un coleg. În plus, Git e singurul mod în care patru oameni pot
-    lucra pe același proiect fără să-și suprascrie fișierele. Spațiul pe disc
-    chiar crește, nu scade.</p>
-  </div>
 </section>
 
-<!-- ======================================================================
-     PAȘII UNUI PROIECT
-     ====================================================================== -->
-
-<section class="sld" id="s9" data-grup="Pașii unui proiect" data-t="Fluxul de lucru">
-  <h2>Pașii unui proiect de analiză de date</h2>
-
-  <p>Mai jos e fluxul complet. Partea de sus, până la raportare, e
-  <strong>analiza datelor</strong>. Partea de jos, de la variabilele derivate
-  încolo, e <strong>ingineria modelelor</strong>. Împreună, cu baza de date
-  care le leagă, fac <strong>știința datelor</strong>.</p>
-
-  <div class="ix" data-ix="etape">
-    <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Fluxul de lucru</span></div>
-    <div class="ix__corp">
-      <p class="ix__sarcina">Apasă pe o etapă ca să vezi ce se întâmplă acolo și în ce lecție o tratăm.</p>
-      <script type="application/json">{
-        "titlu":"Fluxul complet",
-        "intro":"Zece etape și un depozit. Apasă pe oricare.",
-        "etape":[
-          {"nume":"Definirea problemei","unde":"Lecția 1","text":"Alegi tema, unitatea de analiză și formulezi întrebarea. Aici decizi ce înseamnă un rând în tabelul tău final: o țară, o pereche de județe, un an. Toate celelalte etape depind de această alegere."},
-          {"nume":"Colectarea datelor","unde":"Lecția 2","text":"Aduci datele din surse externe, prin API sau fișiere. Salvezi întotdeauna varianta brută, neatinsă, ca să poți reveni la ea când descoperi o greșeală de curățare."},
-          {"nume":"Curățarea datelor","unde":"Lecția 4","text":"Tipuri greșite, coduri care nu se potrivesc între surse, valori lipsă, duplicate, unități diferite. Etapa cea mai lungă și cea care decide dacă rezultatul final înseamnă ceva."},
-          {"nume":"Agregarea","unde":"Lecția 5","text":"Îmbini sursele într-un singur tabel, pe o cheie comună. Aici se văd toate incompatibilitățile pe care curățarea le-a ratat."},
-          {"nume":"Analiza exploratorie","unde":"Lecția 6","text":"Te uiți la date înainte de a le modela: distribuții, valori extreme, relații. Scopul nu e să demonstrezi ceva, e să înțelegi ce ai și să găsești ce merită testat."},
-          {"nume":"Feature engineering","unde":"Lecția 7","text":"Construiești variabilele care chiar răspund la întrebare: rate, ponderi, distanțe între locuri, diferențe între capetele unei perechi. La date diadice, variabilele importante nu se descarcă, se calculează."},
-          {"nume":"Modelare","unde":"Lecția 7","text":"Testezi formal relația pe care ai observat-o, statistic sau cu învățare automată. Un model simplu, bine interpretat, valorează mai mult decât unul complicat pe care nu îl poți explica."},
-          {"nume":"Implementarea modelului","unde":"dincolo de curs","text":"Modelul ajunge undeva unde îl folosește altcineva: un serviciu, un raport care se reface singur, un tablou de bord. La noi lanțul se oprește la raport, dar e bine să știți că el continuă."},
-          {"nume":"Optimizarea","unde":"dincolo de curs","text":"Reglarea modelului: parametri, performanță, costuri. Tot zona de inginerie, nu de analiză."},
-          {"nume":"Raportare și vizualizare","unde":"Lecția 8","text":"Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica. Graficele nu sunt decor, sunt argumentul."},
-          {"nume":"Baza de date","unde":"Lecția 5","depozit":true,"text":"Nu e o etapă, e locul unde etapele își lasă rezultatele. Colectarea scrie datele brute, curățarea scrie versiunea curată, agregarea scrie tabelul final. Fiecare membru al echipei citește de acolo, nu de pe laptopul colegului."}
-        ]}</script>
-    </div>
+<section class="sld" id="s14" data-grup="Tipuri de date" data-t="Tipuri în SQL">
+<h2>Tipuri de date în SQL</h2><p>În baza de date tipurile nu se ghicesc, se declară. Ce nu se potrivește, e respins.</p><table class="tabel"><thead><tr><th>Familie</th><th>Tipuri</th></tr></thead><tbody><tr><td>Numerice</td><td class="mono">INT, BIGINT, REAL, NUMERIC</td></tr><tr><td>Dată și timp</td><td class="mono">DATE, TIME, TIMESTAMP</td></tr><tr><td>Caractere</td><td class="mono">CHAR, VARCHAR, TEXT</td></tr><tr><td>Logic</td><td class="mono">BOOLEAN</td></tr><tr><td>Structurat</td><td class="mono">JSON, JSONB</td></tr></tbody></table><ul><li><code>CHAR(n)</code>: lungime fixă, completează cu spații</li><li><code>VARCHAR(n)</code>: lungime variabilă, cu limită</li><li><code>TEXT</code>: fără limită; în PostgreSQL nu e mai lent</li></ul><div class="verif" data-id="c1-v9" data-corect="2">
+    <p class="verif__q">Coduri de județ de forma <code>RO113</code>, toate de cinci caractere. Ce tip alegi?</p>
+    <button><code>INT</code>, pentru că par numere</button>
+    <button><code>TEXT</code>, pentru că nu se știe niciodată</button>
+    <button><code>CHAR(5)</code>, pentru că lungimea e fixă</button>
+    <button><code>VARCHAR</code> fără limită</button>
+    <p class="verif__ex">Un cod nu e un număr: nu se adună, nu se sortează numeric, iar <code>INT</code> ar distruge zerourile din față. Dintre variantele text, <code>CHAR(5)</code> transformă o regulă pe care o știi tu într-una pe care o verifică baza de date: un cod stricat e respins la inserare, nu descoperit peste trei săptămâni în grafic.</p>
   </div>
 
-  <p>Săgețile punctate din schemă arată întoarcerile, și sunt partea cea mai
-  importantă. <strong>Fluxul e ciclic, nu liniar.</strong> Descoperi la
-  curățare că un indicator lipsește pentru jumătate din unități și revii la
-  colectare. Nu e un semn că ai greșit, e felul normal de a lucra.</p>
-
-  <div class="verif" data-id="c1-v1" data-corect="1">
-    <p class="verif__q">O echipă descoperă la analiza exploratorie că
-    indicatorul ales nu are date pentru 40% din unități. Ce face?</p>
-    <button>Continuă doar pe unitățile care au date, fără să menționeze</button>
-    <button>Se întoarce la colectare și caută un indicator alternativ</button>
-    <button>Completează valorile lipsă cu media, ca să nu piardă unități</button>
-    <button>Schimbă modelul ca să tolereze lipsurile</button>
-    <p class="verif__ex">Întoarcerea la o etapă anterioară e normală, nu e un
-    eșec. Celelalte variante rămân opțiuni discutabile în anumite cazuri, dar
-    niciuna nu se ia înainte de a verifica dacă problema se poate rezolva la
-    sursă. Iar orice decizie de acest fel se scrie în raport, nu se ascunde.</p>
-  </div>
 </section>
 
-<!-- ======================================================================
-     MEDIUL DE LUCRU
-     ====================================================================== -->
+<section class="sld" id="s15" data-grup="Tipuri de date" data-t="Tipuri spațiale">
+<h2>Tipuri de date spațiale</h2><p>Ne trebuie ca să definim „vecin” și „distanță”.</p><div class="ix" data-ix="arbore">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Ierarhia geometriilor</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Tipurile spațiale", "intro": "Apasă pe oricare. <code>Point</code>, <code>Curve</code> și <code>Surface</code> sunt formele de bază; restul sunt cazurile lor concrete.", "sarcina": "Ierarhia standard, aceeași în PostGIS, GeoJSON și shapefile.", "ramuri": [{"nume": "De bază", "tipuri": [{"n": "Point", "cls": "geometry", "d": "Un punct: o pereche de coordonate.", "ex": "POINT(23.59 46.77)", "la": "Centrul unui județ, de unde calculăm distanțe."}, {"n": "Curve", "cls": "abstract", "d": "Categoria liniilor. Nu se folosește direct."}, {"n": "Surface", "cls": "abstract", "d": "Categoria suprafețelor. Nu se folosește direct."}]}, {"nume": "Linii", "tipuri": [{"n": "LineString", "cls": "Curve", "d": "O linie: o succesiune de puncte.", "ex": "LINESTRING(23.5 46.7, 23.6 46.8)", "la": "Un râu, un drum, o graniță."}, {"n": "CircularString", "cls": "Curve", "d": "Linie din arce de cerc, nu din segmente."}, {"n": "CompoundCurve", "cls": "Curve", "d": "Segmente drepte și arce, lipite într-o singură linie."}]}, {"nume": "Suprafețe", "tipuri": [{"n": "Polygon", "cls": "Surface", "d": "O suprafață închisă, eventual cu găuri.", "ex": "POLYGON((23.5 46.7, 23.6 46.7,\n         23.6 46.8, 23.5 46.7))", "la": "Conturul unui județ. Două județe sunt vecine dacă poligoanele lor se ating."}, {"n": "CurvePolygon", "cls": "Surface", "d": "Poligon cu laturi curbe."}]}, {"nume": "Colecții", "tipuri": [{"n": "MultiPoint", "cls": "GeometryCollection", "d": "Mai multe puncte, ca o singură înregistrare."}, {"n": "MultiLineString", "cls": "GeometryCollection", "d": "Mai multe linii, ca o singură înregistrare."}, {"n": "MultiPolygon", "cls": "GeometryCollection", "d": "Mai multe suprafețe, ca o singură înregistrare.", "la": "România cu insulele din Deltă: un rând, nu trei."}, {"n": "GeometryCollection", "cls": "geometry", "d": "Amestec de geometrii diferite. Rar; de obicei semn că datele nu sunt curate."}]}]}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">De ce contează pentru noi</div><p>Ca să spui „județele vecine sunt mai legate” îți trebuie o definiție pentru vecin, iar aceea se calculează din poligoane. Fără geometrie, variabilele astea nu există.</p></div>
 
-<section class="sld" id="s10" data-grup="Mediul de lucru" data-t="Medii virtuale">
-  <h2>Medii de lucru virtuale în Python</h2>
+</section>
 
-  <p>Python instalează pachetele într-un singur loc comun. Dacă lucrezi la două
-  proiecte care au nevoie de versiuni diferite ale aceleiași biblioteci, al
-  doilea îl strică pe primul în tăcere. Un <strong>mediu virtual</strong> e un
-  dosar separat, al proiectului tău, cu propria copie de Python și propriile
-  pachete.</p>
+<section class="sld" id="s16" data-grup="Tipuri de date" data-t="Tipuri de fișiere">
+<h2>Tipuri de fișiere</h2><p class="cheie">Text îl citești cu ochiul. Binar are nevoie de programul lui.</p><div class="ix" data-ix="sortare">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Text sau binar</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-fisiere", "sarcina": "Pune fiecare extensie în coșul ei. Întrebarea de control: poate Git să-ți arate ce s-a schimbat în el, rând cu rând?", "cosuri": [{"t": "Text", "d": "lizibil, versionabil"}, {"t": "Binar", "d": "are nevoie de un program"}], "elemente": [{"t": ".csv", "cos": 0}, {"t": ".json", "cos": 0}, {"t": ".xlsx", "cos": 1}, {"t": ".parquet", "cos": 1}, {"t": ".geojson", "cos": 0}, {"t": ".shp", "cos": 1}, {"t": ".md", "cos": 0}, {"t": ".pkl", "cos": 1}, {"t": ".yaml", "cos": 0}, {"t": ".sqlite", "cos": 1}, {"t": ".xml", "cos": 0}, {"t": ".png", "cos": 1}], "laBine": "Regula: dacă îl poți deschide în Notepad și înțelegi ceva, e text.", "laRau": "Gândește-te ce se întâmplă dacă îl deschizi într-un editor de text simplu.", "explicatie": "<code>.geojson</code> și <code>.xml</code> păcălesc pentru că par „tehnice”, dar sunt text simplu. <code>.parquet</code> și <code>.shp</code> păcălesc în sens invers: conțin tabele, dar binar. Consecința practică: într-un depozit Git, o modificare într-un <code>.csv</code> se vede rând cu rând, una într-un <code>.xlsx</code> apare ca „fișier schimbat”, atât."}</script></div>
+</div><div class="verif" data-id="c1-v10" data-corect="0">
+    <p class="verif__q">Ai salvat tabelul în CSV. La recitire, coloana cu coduri care începeau cu zero a devenit numerică și zerourile au dispărut. De ce?</p>
+    <button>CSV nu păstrează tipurile; la recitire, fiecare coloană e reinterpretată din conținut</button>
+    <button>Fișierul s-a corupt la salvare</button>
+    <button>Pandas are o eroare cunoscută</button>
+    <button>Codurile trebuiau salvate cu majuscule</button>
+    <p class="verif__ex">CSV e text simplu: nu are unde să scrie că o coloană e text. Trei ieșiri: specifici tipul la citire (<code>dtype={"cod": str}</code>), salvezi în Parquet, care păstrează tipurile, sau ții datele în baza de date.</p>
+  </div>
 
-  <ul>
-    <li>un mediu izolat, cu propriile pachete și versiuni</li>
-    <li>evită conflictele între proiecte</li>
-    <li>menține dependințele separate</li>
-    <li>permite reproducerea proiectului pe alt calculator</li>
-  </ul>
+</section>
 
-<pre><code><span class="c"># creare, o singură dată, în folderul proiectului</span>
+<section class="sld" id="s17" data-grup="JSON" data-t="Formatul JSON">
+<h2>Formatul JSON</h2><p>Două structuri, cuibărite oricât de adânc.</p><div class="grila grila--2"><div class="card"><div class="card__t">Obiect <span class="mono">{ }</span></div><p class="card__d" style="margin-top:8px">Perechi cheie–valoare. În Python: <code>dict</code>.</p></div><div class="card"><div class="card__t">Tablou <span class="mono">[ ]</span></div><p class="card__d" style="margin-top:8px">Listă ordonată. În Python: <code>list</code>.</p></div></div><table class="tabel"><thead><tr><th>În JSON</th><th>În Python</th></tr></thead><tbody><tr><td class="mono">string</td><td class="mono">str</td></tr><tr><td class="mono">number</td><td class="mono">int / float</td></tr><tr><td class="mono">true / false</td><td class="mono">True / False</td></tr><tr><td class="mono">null</td><td class="mono">None</td></tr><tr><td class="mono">object</td><td class="mono">dict</td></tr><tr><td class="mono">array</td><td class="mono">list</td></tr></tbody></table><p class="cheie">Rădăcina poate fi oricare dintre cele două.</p>
+
+</section>
+
+<section class="sld" id="s18" data-grup="JSON" data-t="Un răspuns real">
+<h2>Un răspuns real, desfăcut</h2><p>Banca Mondială, populația României.</p><div class="ix" data-ix="json">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">API Banca Mondială</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Apasă pe orice rând ca să vezi ce e și cum se ajunge la el.</p><script type="application/json">{"radacina": "raspuns", "date": [{"page": 1, "pages": 3, "per_page": 2, "total": 6}, [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2023", "value": 19051562}, {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2022", "value": null}]]}</script></div>
+</div><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Drumul până la valoare</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Completează drumul până la populația din 2023.", "cod": "import requests\n\nurl = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\nraspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n# paginarea e primul element, datele sunt in al doilea\ndate = raspuns[{{1}}]\n\n# cea mai recenta inregistrare e prima din lista\nprima = date[{{2}}]\n\n# populatia propriu-zisa\npopulatie = prima[{{3}}]\n\nprint(populatie)", "goluri": {"1": {"ok": ["1"], "ajutor": "indice"}, "2": {"ok": ["0"], "ajutor": "indice"}, "3": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "laBine": "Ăsta e drumul pe care îl vei scrie la cursul 2, de zeci de ori.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. <code>[0]</code> ia prima înregistrare, cea mai recentă. <code>[\"value\"]</code> scoate numărul. Dacă valoarea lipsește primești <code>None</code>, nu zero."}</script></div>
+</div><div class="verif" data-id="c1-v4" data-corect="1">
+    <p class="verif__q">Ce diferență e între <code>"value": null</code> și lipsa completă a cheii <code>value</code>?</p>
+    <button>Niciuna</button>
+    <button>null spune explicit că valoarea lipsește; cheia absentă înseamnă că serviciul nu raportează deloc câmpul</button>
+    <button>null înseamnă zero</button>
+    <button>Cheia absentă e o eroare a serverului</button>
+    <p class="verif__ex">Un null devine o valoare lipsă pe care o poți număra și raporta. O cheie absentă poate deveni o coloană care lipsește cu totul pentru anumite înregistrări, iar codul care o folosește cade abia mai târziu, la altă unitate.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s19" data-grup="Mediul de lucru" data-t="Medii virtuale">
+<h2>Medii de lucru virtuale în Python</h2><ul><li>un mediu izolat, cu propriile pachete și versiuni</li><li>evită conflictele între proiecte</li><li>menține dependințele separate</li><li>permite reproducerea proiectului</li></ul><pre><code><span class="c"># creare</span>
 python -m venv venv
 
 <span class="c"># activare (Windows)</span>
@@ -399,468 +196,60 @@ venv\Scripts\activate
 <span class="c"># activare (macOS / Linux)</span>
 source venv/bin/activate
 
-<span class="c"># instalare pachete, în mediul activ</span>
-pip install requests pandas
-
-<span class="c"># lista pachetelor, ca altcineva să refacă mediul</span>
-pip freeze &gt; requirements.txt
-
 <span class="c"># dezactivare</span>
-deactivate</code></pre>
+deactivate</code></pre><div class="nota"><div class="nota__et">Cum știi că e activ</div><p>Promptul începe cu <code>(venv)</code>. Fără paranteza aceea, instalezi în Python-ul global: cea mai frecventă sursă de „la mine mergea”.</p></div>
 
-  <div class="nota">
-    <div class="nota__et">Cum știi că e activ</div>
-    <p>După activare, promptul din terminal începe cu <code>(venv)</code>. Dacă
-    nu vezi paranteza aceea, instalezi în Python-ul global, care e cea mai
-    frecventă sursă de „la mine mergea". Folderul <code>venv</code> nu se urcă
-    niciodată în depozit: e mare, e al sistemului tău, și se reface dintr-o
-    singură comandă.</p>
-  </div>
 </section>
 
-<section class="sld" id="s11" data-grup="Mediul de lucru" data-t="Terminalul, pe viu">
-  <h2>Încearcă, înainte să o faci la tine</h2>
-
-  <p>Terminalul de mai jos răspunde ca unul adevărat, inclusiv la greșelile
-  obișnuite: dacă instalezi fără să activezi mediul, te avertizează.</p>
-
-  <div class="ix" data-ix="terminal">
-    <div class="ix__cap"><span class="ix__fel">Terminal</span><span class="ix__t">Mediul virtual</span></div>
-    <div class="ix__corp">
-      <p class="ix__sarcina">Scrie comenzile în ordine. Scrie <code>ajutor</code> dacă te blochezi.</p>
-    </div>
-  </div>
-
-  <div class="ix" data-ix="ordine">
-    <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ordinea comenzilor</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{
-        "id":"c1-cod-venv",
-        "sarcina":"Pune comenzile în ordinea în care se dau, de la folderul gol până la un mediu pregătit și documentat. Două dintre ele fac altceva decât crezi dacă vin prea devreme.",
-        "linii":[
-          "python -m venv venv",
-          "venv\\Scripts\\activate",
-          "pip install requests pandas",
-          "pip freeze > requirements.txt",
-          "deactivate"],
-        "laBine":"Exact asta vei face la începutul fiecărui proiect.",
-        "laRau":"Gândește-te ce există deja pe disc în momentul fiecărei comenzi.",
-        "explicatie":"Mediul se creează o dată, se activează de fiecare dată. <code>pip install</code> înainte de activare instalează în Python-ul global și nu dă nicio eroare, doar te trezești peste o zi că importul nu merge. <code>pip freeze</code> are sens abia după instalare, altfel scrie un fișier gol."
-      }</script>
-    </div>
-  </div>
-
-  <div class="verif" data-id="c1-v3" data-corect="1">
-    <p class="verif__q">Ai activat mediul, ai instalat pandas, ai închis
-    laptopul. A doua zi deschizi proiectul și <code>import pandas</code> dă
-    eroare. De ce?</p>
+<section class="sld" id="s20" data-grup="Mediul de lucru" data-t="Terminalul">
+<h2>Încearcă aici, înainte să o faci la tine</h2><div class="ix" data-ix="terminal">
+  <div class="ix__cap"><span class="ix__fel">Terminal</span><span class="ix__t">Mediul virtual</span></div>
+  <div class="ix__corp"><p class="ix__sarcina">Scrie comenzile în ordine. Terminalul răspunde ca unul adevărat, inclusiv la greșeli. Scrie <code>ajutor</code> dacă te blochezi.</p></div>
+</div><div class="ix" data-ix="ordine">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ordinea comenzilor</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-venv", "sarcina": "Pune comenzile în ordinea în care se dau. Două dintre ele fac altceva decât crezi dacă vin prea devreme.", "linii": ["python -m venv venv", "venv\\Scripts\\activate", "pip install requests pandas", "pip freeze > requirements.txt", "deactivate"], "laBine": "Exact asta vei face la începutul fiecărui proiect.", "laRau": "Gândește-te ce există pe disc în momentul fiecărei comenzi.", "explicatie": "<code>pip install</code> înainte de activare instalează în Python-ul global și nu dă nicio eroare, doar te trezești peste o zi că importul nu merge. <code>pip freeze</code> are sens abia după instalare, altfel scrie un fișier gol."}</script></div>
+</div><div class="verif" data-id="c1-v3" data-corect="1">
+    <p class="verif__q">Ai activat mediul, ai instalat pandas, ai închis laptopul. A doua zi <code>import pandas</code> dă eroare. De ce?</p>
     <button>Pandas s-a dezinstalat singur</button>
     <button>Ai uitat să activezi mediul virtual</button>
-    <button>Mediul virtual expiră după 24 de ore</button>
+    <button>Mediul expiră după 24 de ore</button>
     <button>Trebuie reinstalat Python</button>
-    <p class="verif__ex">Mediul nu se activează singur într-un terminal nou.
-    Fără activare rulezi Python-ul global, care nu are pachetele instalate în
-    mediu. VS Code poate face activarea automat dacă îi selectezi interpretorul
-    din folderul <code>venv</code>:
-    <span class="mono">Ctrl+Shift+P → Python: Select Interpreter</span>.</p>
+    <p class="verif__ex">Mediul nu se activează singur într-un terminal nou. VS Code o face automat dacă îi selectezi interpretorul din folderul <code>venv</code>: <span class="mono">Ctrl+Shift+P → Python: Select Interpreter</span>.</p>
   </div>
+
 </section>
 
-<!-- ======================================================================
-     TIPURI DE DATE
-     ====================================================================== -->
+<section class="sld" id="s21" data-grup="Proiectul tău" data-t="Fă-ți proiectul, acum">
+<h2>Proiectul tău, în patru pași</h2><p>Se face la clasă. La final, completezi dovada de mai jos.</p><pre><code>proiect/
+├── date/
+│   ├── brute/          <span class="c"># exact cum au venit, nu se modifică</span>
+│   └── curate/         <span class="c"># rezultatul curățării</span>
+├── caiete/             <span class="c"># Jupyter: explorare</span>
+├── cod/                <span class="c"># funcții refolosite</span>
+├── rezultate/          <span class="c"># grafice și tabele</span>
+├── venv/               <span class="c"># mediul; NU se urcă</span>
+├── .gitignore
+├── requirements.txt
+└── README.md</code></pre><div class="ix" data-ix="dovada">
+  <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Rulezi la tine, lipești aici</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-dovada-mediu", "sarcina": "Fiecare rând cere o comandă rulată la tine, în terminalul din VS Code, cu mediul activat. Lipești ce scrie terminalul. Nu se poate completa din cap.", "pasi": [{"t": "Mediul virtual e creat și activat", "cmd": "python -c \"import sys; print(sys.prefix)\"", "gol": "calea afișată", "cauta": "venv", "daca_nu": "Calea nu conține „venv”, deci rulezi Python-ul global. Activează mediul întâi."}, {"t": "Pachetele sunt instalate în mediu", "cmd": "pip freeze", "gol": "lipește una dintre liniile cu pandas", "cauta": "pandas\\s*==\\s*\\d", "daca_nu": "Caut o linie de forma pandas==2.x. Rulează pip install requests pandas, cu mediul activat."}, {"t": "Datele brute sunt descărcate", "cmd": "python -c \"import pandas as pd; print(pd.read_csv('date/brute/country.csv').shape)\"", "gol": "forma tabelului", "cauta": "\\(\\s*31684\\s*,\\s*5\\s*\\)", "daca_nu": "Aștept (31684, 5). Dacă primești altceva, fișierul nu e cel bun sau nu e în date/brute/."}, {"t": "Primul notebook rulează", "cmd": "python -c \"import pandas as pd; d=pd.read_csv('date/brute/country.csv'); print(d[d.user_country=='RO'].nlargest(1,'scaled_sci').friend_country.values)\"", "gol": "codul țării", "cauta": "\\bRO\\b", "daca_nu": "Cea mai legată de România e România însăși. Verifică filtrul."}], "laBine": "Mediul, datele și primul calcul sunt la locul lor. Apare la mine în panou.", "laRau": "Rândurile roșii încă nu sunt gata.", "explicatie": "Ultimul rând e deja o analiză, chiar dacă nu pare: ai filtrat 31.684 de rânduri la cele ale României și ai luat maximul. Răspunsul, <code>RO</code>, e legătura României cu ea însăși, care e cu două ordine de mărime peste orice altceva. La cursul 6 o s-o scoatem din calcul, și abia atunci clasamentul devine interesant."}</script></div>
+</div><div class="nota"><div class="nota__et">Datele</div><p>Fișierul <code>country.csv</code> se ia de pe <a class="leg" href="https://data.humdata.org/dataset/social-connectedness-index" target="_blank" rel="noopener">HDX</a>, 0,6 MB. Îl pui în <code>date/brute/</code> și nu îl mai modifici niciodată.</p></div>
 
-<section class="sld" id="s12" data-grup="Tipuri de date" data-t="Tipuri în Python">
-  <h2>Tipuri de date în Python</h2>
-
-  <p>Tipul unei valori decide ce poți face cu ea. Două numere se adună, două
-  texte se lipesc, un număr și un text dau eroare. Pare banal până în momentul
-  în care citești un fișier și coloana cu anii vine ca text, iar sortarea îți
-  pune 1990 după 189, pentru că le compară literă cu literă.</p>
-
-  <div class="ix" data-ix="arbore">
-    <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Arborele tipurilor</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{
-        "titlu":"Tipurile din Python",
-        "intro":"Apasă pe orice tip ca să vezi ce e, cum arată, și unde îl întâlnești în proiectul nostru.",
-        "sarcina":"Cele șase familii de tipuri. Conturul punctat înseamnă tip nemodificabil.",
-        "ramuri":[
-          {"nume":"Nimic","tipuri":[
-            {"n":"None","cls":"NoneType","imut":true,"d":"Absența unei valori. Nu e zero și nu e text gol: înseamnă „nu știm”.","ex":"valoare = None\nprint(valoare is None)   # True","la":"În date: o măsurătoare care lipsește. În pandas devine NaN."}]},
-          {"nume":"Numere","sub":[
-            {"nume":"Întregi","tipuri":[
-              {"n":"int","cls":"class int","imut":true,"d":"Numere întregi, fără limită de mărime în Python.","ex":"an = 2024\npopulatie = 19051562","la":"Ani, populație, numărători, coduri numerice."},
-              {"n":"bool","cls":"class bool","imut":true,"d":"Adevărat sau fals. Tehnic e un fel de int: True valorează 1.","ex":"are_date = True\nprint(True + True)       # 2","la":"Rezultatul oricărei condiții; filtrele din pandas."}]},
-            {"nume":"Reale","tipuri":[
-              {"n":"float","cls":"class float","imut":true,"d":"Numere cu zecimale. Atenție: 0.1 + 0.2 nu dă exact 0.3, din cauza reprezentării binare.","ex":"rata = 3.7\nprint(0.1 + 0.2 == 0.3)  # False","la":"Aproape toți indicatorii calculați: rate, ponderi, medii."},
-              {"n":"complex","cls":"class complex","imut":true,"d":"Numere complexe. Există în Python, dar nu le folosim la curs.","ex":"z = 2 + 3j"}]}]},
-          {"nume":"Secvențe","sub":[
-            {"nume":"Nemodificabile","tipuri":[
-              {"n":"str","cls":"class str","imut":true,"d":"Text. Orice vine dintr-un fișier necurățat e text până îl converteșt tu.","ex":"cod = \"RO113\"\nan = \"2024\"              # text!\nprint(int(an) + 1)       # 2025","la":"Nume, coduri NUTS, orice coloană necurățată."},
-              {"n":"tuple","cls":"class tuple","imut":true,"d":"Secvență ordonată care nu se mai poate modifica după creare.","ex":"coord = (46.77, 23.59)\nperechea = (\"RO113\", \"RO116\")","la":"Coordonate, și cheia unei perechi de județe."},
-              {"n":"bytes","cls":"class bytes","imut":true,"d":"Secvență de octeți bruți. Apare când citești un fișier binar sau un răspuns HTTP neinterpretat.","ex":"r = requests.get(url)\nprint(type(r.content))   # bytes"}]},
-            {"nume":"Modificabile","tipuri":[
-              {"n":"list","cls":"class list","d":"Secvență ordonată, modificabilă. Cel mai folosit tip din Python.","ex":"judete = [\"Cluj\", \"Sălaj\"]\njudete.append(\"Alba\")","la":"Un tablou dintr-un JSON devine listă."},
-              {"n":"bytearray","cls":"class bytearray","d":"Ca bytes, dar modificabil. Rar în analiza de date."}]}]},
-          {"nume":"Mulțimi","tipuri":[
-            {"n":"set","cls":"class set","d":"Colecție neordonată, fără duplicate. Verificarea apartenenței e foarte rapidă.","ex":"coduri = {\"RO113\", \"RO116\"}\nprint(\"RO113\" in coduri)  # True","la":"Codurile care apar într-o sursă dar nu în alta, la lecția 4."},
-            {"n":"frozenset","cls":"class frozenset","imut":true,"d":"Mulțime nemodificabilă. Poate fi folosită drept cheie de dicționar."}]},
-          {"nume":"Dicționare","tipuri":[
-            {"n":"dict","cls":"class dict","d":"Perechi cheie și valoare. Structura oricărui obiect JSON convertit în Python.","ex":"rand = {\"tara\": \"RO\",\n        \"an\": 2023,\n        \"valoare\": 19051562}\nprint(rand[\"valoare\"])","la":"Fiecare răspuns de API ajunge aici."}]},
-          {"nume":"Altele","tipuri":[
-            {"n":"funcții","cls":"callable","d":"Funcțiile sunt și ele valori: le poți pune într-o listă sau da ca argument.","ex":"def curata(x):\n    return x.strip()\n\nnume = [curata(n) for n in brute]"},
-            {"n":"module","cls":"class module","d":"Un fișier de Python importat devine un obiect cu propriul tip.","ex":"import pandas as pd\nprint(type(pd))          # module"}]}
-        ]}</script>
-    </div>
-  </div>
-
-  <div class="nota">
-    <div class="nota__et">Confuzia care costă cel mai mult</div>
-    <p><code>None</code>, <code>0</code> și <code>""</code> arată la fel
-    într-un tabel gol, dar înseamnă lucruri diferite. Zero e o măsurătoare:
-    regiunea nu a raportat nicio legătură. <code>None</code> e absența
-    măsurătorii: nu știm dacă a raportat. Dacă le tratezi la fel la calculul
-    unei medii, rezultatul e greșit fără să dea vreo eroare.</p>
-  </div>
 </section>
 
-<section class="sld" id="s13" data-grup="Tipuri de date" data-t="Recunoaște tipul">
-  <h2>Recunoaște tipul</h2>
+<section class="sld" id="s22" data-grup="Mai departe" data-t="Până data viitoare">
+<h2>Până data viitoare</h2><ol><li><strong>Cont GitHub</strong>, legat de numărul matricol <a class="leg" href="../../cont/">aici</a></li><li><strong>Echipa</strong>: trei sau patru oameni, cu o direcție aleasă</li><li><strong>Proiectul</strong>: folder, mediu virtual, date descărcate, notebook rulat</li></ol><h3>Cursul II</h3><ul><li>Introducere în API</li><li>Postman: prima cerere, fără cod</li><li>Colectarea datelor</li><li>Lucrul cu JSON</li><li>Introducere în Git</li></ul><div class="nota"><div class="nota__et">Dacă ceva nu merge</div><p>Nu pierde o oră singur pe o eroare de instalare. Scrie-mi, sau întreabă în echipă.</p></div><div class="grila grila--2" style="margin-top:28px"><a class="resursa" href="../"><span class="resursa__ic">→</span><span class="resursa__txt"><span class="resursa__t">Pagina cursului 1</span><span class="resursa__d">Materiale și legături</span></span></a><a class="resursa" href="../../c2-colectarea-prin-api/"><span class="resursa__ic">→</span><span class="resursa__txt"><span class="resursa__t">Cursul 2</span><span class="resursa__d">Colectarea datelor prin API</span></span></a></div>
 
-  <p>Opt valori, una pe rând. Pentru fiecare, alege tipul. Explicația apare
-  imediat, mai ales când greșești.</p>
-
-  <div class="ix" data-ix="tipuri">
-    <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Opt valori</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{"valori":[
-        {"v":"'2024'","t":"str","e":"Ghilimelele fac diferența. Arată ca un an, dar e text, exact capcana din fișierele CSV."},
-        {"v":"2024","t":"int","e":"Fără ghilimele, e număr întreg. Se poate compara și sorta corect."},
-        {"v":"3.7","t":"float","e":"Punctul zecimal îl face float. În fișiere românești zecimala poate veni cu virgulă, și atunci ajunge text."},
-        {"v":"None","t":"None","e":"Absența valorii. Nu e zero și nu e text gol, e „nu știm”."},
-        {"v":"True","t":"bool","e":"Cu majusculă în Python. Rezultatul oricărei condiții."},
-        {"v":"[1, 2, 3]","t":"list","e":"Parantezele drepte: listă, ordonată și modificabilă."},
-        {"v":"(45.7, 21.2)","t":"tuple","e":"Parantezele rotunde: tuplu, nu se poate modifica. Tipic pentru coordonate."},
-        {"v":"{'tara': 'RO'}","t":"dict","e":"Perechi cheie și valoare. Structura oricărui obiect JSON convertit în Python."}
-      ]}</script>
-    </div>
-  </div>
-
-  <p>Cazurile pe care le ratezi aici se întorc la lecția 4, la curățare. Acolo
-  nu mai sunt opt valori, sunt 31.684 de rânduri, și greșeala nu se mai vede.</p>
-</section>
-
-<section class="sld" id="s14" data-grup="Tipuri de date" data-t="Tipuri în SQL">
-  <h2>Tipuri de date în SQL</h2>
-
-  <p>De la lecția 5 datele stau într-o bază de date, nu în fișiere. Acolo
-  tipurile nu se ghicesc la citire, se declară la crearea tabelului, iar baza
-  de date refuză ce nu se potrivește. E mai strict decât Python, și e un
-  avantaj.</p>
-
-  <table class="tabel">
-    <thead><tr><th>Familie</th><th>Tipuri</th><th>Pentru ce</th></tr></thead>
-    <tbody>
-      <tr><td>Numerice</td><td class="mono">INT, BIGINT, REAL, NUMERIC</td>
-          <td>Numărători, valori calculate</td></tr>
-      <tr><td>Dată și timp</td><td class="mono">DATE, TIME, TIMESTAMP</td>
-          <td>Momente; nu le ține niciodată ca text</td></tr>
-      <tr><td>Caractere</td><td class="mono">CHAR, VARCHAR, TEXT</td>
-          <td>Nume, coduri, descrieri</td></tr>
-      <tr><td>Logic</td><td class="mono">BOOLEAN</td><td>Adevărat sau fals</td></tr>
-      <tr><td>Structurat</td><td class="mono">JSON, JSONB</td>
-          <td>Răspunsuri de API păstrate ca atare</td></tr>
-    </tbody>
-  </table>
-
-  <h3>CHAR, VARCHAR sau TEXT</h3>
-  <ul>
-    <li><code>CHAR(n)</code> are lungime fixă și completează cu spații până la
-    <code>n</code>. Bun pentru coduri de lungime constantă, ca
-    <code>CHAR(5)</code> pentru NUTS3.</li>
-    <li><code>VARCHAR(n)</code> are lungime variabilă, cu o limită. Ocupă doar
-    cât scrii.</li>
-    <li><code>TEXT</code> e fără limită. În PostgreSQL nu e mai lent decât
-    VARCHAR, deci e alegerea implicită rezonabilă.</li>
-  </ul>
-  <p>Variantele <code>NCHAR</code> și <code>NVARCHAR</code> apar în SQL Server
-  pentru text Unicode. În PostgreSQL nu există și nici nu trebuie: totul e
-  Unicode din start, deci diacriticele românești merg fără nimic special.</p>
-
-  <div class="verif" data-id="c1-v9" data-corect="2">
-    <p class="verif__q">Ai o coloană cu coduri de județ de forma
-    <code>RO113</code>, toate de exact cinci caractere. Ce tip alegi în baza de
-    date?</p>
-    <button><code>INT</code>, pentru că par numere</button>
-    <button><code>TEXT</code>, pentru că nu se știe niciodată</button>
-    <button><code>CHAR(5)</code>, pentru că lungimea e fixă și baza de date respinge ce nu are cinci caractere</button>
-    <button><code>VARCHAR</code> fără limită, ca să încapă orice</button>
-    <p class="verif__ex">Un cod nu e un număr: nu se adună, nu se sortează
-    numeric, iar <code>INT</code> ar distruge zerourile din față. Dintre
-    variantele text, <code>CHAR(5)</code> aduce ceva în plus: transformă o
-    regulă pe care o știi tu într-o regulă pe care o verifică baza de date. Un
-    cod stricat e respins la inserare, nu descoperit peste trei săptămâni
-    într-un grafic.</p>
-  </div>
-</section>
-
-<section class="sld" id="s15" data-grup="Tipuri de date" data-t="Tipuri spațiale">
-  <h2>Tipuri de date spațiale</h2>
-
-  <p>Proiectul nostru are o latură geografică: județe, țări, distanțe între
-  ele. Datele cu geometrie au tipurile lor, standardizate, și e util să le
-  recunoașteți chiar dacă nu facem GIS la curs.</p>
-
-  <table class="tabel">
-    <thead><tr><th>Tip</th><th>Ce e</th><th>La noi</th></tr></thead>
-    <tbody>
-      <tr><td class="mono">Point</td><td>Un punct: o pereche de coordonate</td>
-          <td>Centrul unui județ, de unde calculăm distanțe</td></tr>
-      <tr><td class="mono">LineString</td><td>O linie, o succesiune de puncte</td>
-          <td>Un râu, un drum, o graniță</td></tr>
-      <tr><td class="mono">Polygon</td><td>O suprafață închisă</td>
-          <td>Conturul unui județ</td></tr>
-      <tr><td class="mono">MultiPolygon</td><td>Mai multe suprafețe, ca o singură unitate</td>
-          <td>O țară cu insule</td></tr>
-      <tr><td class="mono">GeometryCollection</td><td>Amestec de geometrii diferite</td>
-          <td>Rar; de obicei semn că datele nu sunt curate</td></tr>
-    </tbody>
-  </table>
-
-  <p>Ierarhia e aceeași peste tot: <code>Point</code>, <code>Curve</code> și
-  <code>Surface</code> sunt cele trei forme de bază, iar <code>LineString</code>
-  și <code>Polygon</code> sunt cazurile lor concrete. Variantele
-  <code>Multi…</code> adună mai multe bucăți sub o singură înregistrare, ceea
-  ce contează: România cu insulele din Deltă e un rând, nu trei.</p>
-
-  <div class="nota nota--sobru">
-    <div class="nota__et">De ce contează pentru noi</div>
-    <p>Ca să spui „județele vecine sunt mai legate" îți trebuie o definiție
-    pentru vecin, iar aceea se calculează din poligoane: două județe sunt
-    vecine dacă poligoanele lor se ating. La fel, distanța dintre două județe
-    se măsoară între centrele lor. Fără geometrie, variabilele astea nu
-    există.</p>
-  </div>
-</section>
-
-<section class="sld" id="s16" data-grup="Tipuri de date" data-t="Tipuri de fișiere">
-  <h2>Tipuri de fișiere</h2>
-
-  <p>Prima împărțire, și cea mai importantă: un fișier <strong>text</strong> îl
-  poți deschide în orice editor și îl poți citi cu ochiul liber. Un fișier
-  <strong>binar</strong> nu, are nevoie de programul care îl înțelege.
-  Distincția decide și dacă Git îți poate arăta ce s-a schimbat de la o
-  versiune la alta.</p>
-
-  <div class="grila grila--2">
-    <div class="card">
-      <div class="card__t">Text</div>
-      <p class="card__d" style="margin-top:8px">
-      <span class="mono">.txt .csv .json .xml .yaml .md .html .geojson</span><br>
-      Lizibile, versionabile; Git arată diferențele rând cu rând.</p>
-    </div>
-    <div class="card">
-      <div class="card__t">Binare</div>
-      <p class="card__d" style="margin-top:8px">
-      <span class="mono">.xlsx .parquet .pkl .sqlite .png .pdf .docx .zip</span><br>
-      Compacte și rapide, dar Git le vede ca pe un bloc schimbat în întregime.</p>
-    </div>
-  </div>
-
-  <table class="tabel">
-    <thead><tr><th>Format</th><th>Când îl folosești</th></tr></thead>
-    <tbody>
-      <tr><td class="mono">.csv</td><td>Tabele simple, plate. Universal, dar nu păstrează tipurile.</td></tr>
-      <tr><td class="mono">.json</td><td>Date cu structură imbricată. Ce întorc aproape toate API-urile.</td></tr>
-      <tr><td class="mono">.parquet</td><td>Tabele mari. Binar, compact, rapid, păstrează tipurile.</td></tr>
-      <tr><td class="mono">.geojson</td><td>Date cu geometrie. Text, deci lizibil și versionabil.</td></tr>
-      <tr><td class="mono">.shp</td><td>Shapefile: tot geometrie, dar binar și format din mai multe fișiere.</td></tr>
-      <tr><td class="mono">.env</td><td>Chei și parole. Niciodată în depozit.</td></tr>
-    </tbody>
-  </table>
-
-  <div class="verif" data-id="c1-v10" data-corect="0">
-    <p class="verif__q">Ai salvat tabelul curățat în CSV. Îl recitești și
-    coloana cu coduri care începeau cu zero a devenit numerică, iar zerourile
-    din față au dispărut. Ce s-a întâmplat?</p>
-    <button>CSV nu păstrează tipurile; la recitire fiecare coloană e reinterpretată din conținut</button>
-    <button>Fișierul s-a corupt la salvare</button>
-    <button>Pandas are o eroare cunoscută la citirea CSV</button>
-    <button>Codurile trebuiau salvate cu majuscule</button>
-    <p class="verif__ex">CSV e text simplu: nu are unde să scrie că o coloană e
-    text. La recitire, programul ghicește din conținut, iar <code>01234</code>
-    arată ca un număr. Nu e un defect, e limita formatului. Ai trei ieșiri:
-    specifici tipul la citire (<code>dtype={"cod": str}</code>), salvezi în
-    Parquet, care păstrează tipurile, sau ții datele în baza de date, unde
-    tipul e declarat o singură dată.</p>
-  </div>
-</section>
-
-<!-- ======================================================================
-     JSON
-     ====================================================================== -->
-
-<section class="sld" id="s17" data-grup="JSON" data-t="Formatul JSON">
-  <h2>JSON, formatul pe care îl vorbesc API-urile</h2>
-
-  <p>JSON e felul în care aproape orice serviciu de pe internet îți trimite
-  date. Are doar două structuri de bază, dar ele se pot cuibări una în alta
-  oricât de adânc, și de aici vine toată dificultatea aparentă.</p>
-
-  <div class="grila grila--2">
-    <div class="card">
-      <div class="card__t">Obiect <span class="mono">{ }</span></div>
-      <p class="card__d" style="margin-top:8px">Perechi cheie–valoare.
-      În Python devine <code>dict</code>.</p>
-    </div>
-    <div class="card">
-      <div class="card__t">Tablou <span class="mono">[ ]</span></div>
-      <p class="card__d" style="margin-top:8px">Listă ordonată de valori.
-      În Python devine <code>list</code>.</p>
-    </div>
-  </div>
-
-  <h3>Ce poate fi o valoare</h3>
-  <table class="tabel">
-    <thead><tr><th>În JSON</th><th>În Python</th><th>De reținut</th></tr></thead>
-    <tbody>
-      <tr><td class="mono">string</td><td class="mono">str</td><td>Întotdeauna cu ghilimele duble</td></tr>
-      <tr><td class="mono">number</td><td class="mono">int / float</td><td>Fără ghilimele</td></tr>
-      <tr><td class="mono">true / false</td><td class="mono">True / False</td><td>Cu literă mică în JSON</td></tr>
-      <tr><td class="mono">null</td><td class="mono">None</td><td>Nu e zero, nu e text gol</td></tr>
-      <tr><td class="mono">object</td><td class="mono">dict</td><td>Se poate cuibări oricât</td></tr>
-      <tr><td class="mono">array</td><td class="mono">list</td><td>Se poate cuibări oricât</td></tr>
-    </tbody>
-  </table>
-
-  <p class="cheie">Elementul de la rădăcină poate fi oricare dintre cele două,
-  obiect sau tablou. Mulți se împiedică prima dată exact aici.</p>
-</section>
-
-<section class="sld" id="s18" data-grup="JSON" data-t="Un răspuns real">
-  <h2>Un răspuns real, desfăcut</h2>
-
-  <p>Mai jos e răspunsul Băncii Mondiale pentru populația României, exact cum
-  vine. Apasă pe orice rând ca să vezi ce e și cum se ajunge la el.</p>
-
-  <div class="ix" data-ix="json">
-    <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">API Banca Mondială</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{
-        "radacina":"raspuns",
-        "date":[
-          {"page":1,"pages":3,"per_page":2,"total":6},
-          [
-            {"indicator":{"id":"SP.POP.TOTL","value":"Population, total"},
-             "country":{"id":"RO","value":"Romania"},
-             "countryiso3code":"ROU","date":"2023","value":19051562},
-            {"indicator":{"id":"SP.POP.TOTL","value":"Population, total"},
-             "country":{"id":"RO","value":"Romania"},
-             "countryiso3code":"ROU","date":"2022","value":null}
-          ]
-        ]}</script>
-    </div>
-  </div>
-
-  <p>Rădăcina e un <strong>tablou cu două elemente</strong>. Primul e un obiect
-  cu informații despre paginare. Al doilea e tabloul cu datele propriu-zise.
-  Dacă ceri direct primul element presupunând că sunt datele, primești
-  paginarea și nu înțelegi de ce lipsesc valorile.</p>
-
-  <div class="ix" data-ix="cod">
-    <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Drumul până la valoare</span></div>
-    <div class="ix__corp">
-      <script type="application/json">{
-        "id":"c1-cod-json",
-        "fisier":"populatie.py",
-        "sarcina":"Completează drumul până la populația României din 2023. Numerotarea în Python începe de la zero, iar cheile se scriu între ghilimele.",
-        "cod":"import requests\n\nurl = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\nraspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n# paginarea e primul element, datele sunt in al doilea\ndate = raspuns[{{1}}]\n\n# cea mai recenta inregistrare e prima din lista\nprima = date[{{2}}]\n\n# populatia propriu-zisa\npopulatie = prima[{{3}}]\n\nprint(populatie)",
-        "goluri":{
-          "1":{"ok":["1"],"ajutor":"indice"},
-          "2":{"ok":["0"],"ajutor":"indice"},
-          "3":{"ok":["\"value\"","'value'"],"ajutor":"cheia"}},
-        "laBine":"Ăsta e drumul pe care îl vei scrie la lecția 2, de zeci de ori.",
-        "laRau":"Numerotarea începe de la zero. Cheia se scrie între ghilimele.",
-        "explicatie":"<code>raspuns[1]</code> sare peste obiectul de paginare și ia tabloul cu datele. <code>[0]</code> ia prima înregistrare, cea mai recentă, pentru că Banca Mondială întoarce anii în ordine descrescătoare. <code>[\"value\"]</code> scoate numărul. Dacă valoarea lipsește pentru anul acela primești <code>None</code>, nu zero, și de aceea codul adevărat verifică înainte de a calcula."
-      }</script>
-    </div>
-  </div>
-
-  <div class="verif" data-id="c1-v4" data-corect="1">
-    <p class="verif__q">Într-un răspuns JSON, ce diferență e între
-    <code>"value": null</code> și lipsa completă a cheii <code>value</code>?</p>
-    <button>Niciuna, ambele înseamnă că nu există valoare</button>
-    <button>null spune explicit că valoarea lipsește; cheia absentă înseamnă că serviciul nu raportează deloc câmpul</button>
-    <button>null înseamnă zero</button>
-    <button>Cheia absentă e o eroare a serverului</button>
-    <p class="verif__ex">Distincția se păstrează până în tabel. Un null devine o
-    valoare lipsă pe care o poți număra și raporta. O cheie absentă poate deveni
-    o coloană care lipsește cu totul pentru anumite înregistrări, iar dacă nu
-    verifici, codul care o folosește cade abia mai târziu, la altă unitate.</p>
-  </div>
-</section>
-
-<!-- ======================================================================
-     MAI DEPARTE
-     ====================================================================== -->
-
-<section class="sld" id="s19" data-grup="Mai departe" data-t="Până data viitoare">
-  <h2>Până data viitoare</h2>
-
-  <p>Trei lucruri, în ordinea importanței. Primele două blochează lecția 2
-  pentru toată echipa dacă lipsesc.</p>
-
-  <ol>
-    <li><strong>Cont GitHub</strong>, făcut și legat de numărul matricol
-    <a class="leg" href="../../cont/">aici, pe site</a>.</li>
-    <li><strong>Echipa</strong>: trei sau patru oameni, cu o direcție aleasă
-    dintre cele șase de la slide-ul 6. Trimiteți componența.</li>
-    <li><strong>Mediul de lucru</strong>: VS Code, Python, și un mediu virtual
-    creat în folderul proiectului. Rulați
-    <a class="leg" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">caietul lecției</a>
-    până la capăt; dacă trece fără erori, ești pregătit.</li>
-  </ol>
-
-  <h3>La lecția 2</h3>
-  <ul>
-    <li>Introducere în API: ce e, cum se citește o documentație</li>
-    <li>Cereri cu Postman, înainte de a scrie o linie de cod</li>
-    <li>Colectarea datelor: Banca Mondială, Eurostat, fișierele SCI</li>
-    <li>Lucrul cu JSON în Python, pe răspunsuri adevărate</li>
-    <li>Introducere în Git</li>
-  </ul>
-
-  <div class="nota">
-    <div class="nota__et">Dacă ceva nu merge</div>
-    <p>Nu pierde o oră singur pe o eroare de instalare. Scrie-mi, sau întreabă
-    în echipă. Jumătate din erorile de mediu se rezolvă în două minute de
-    cineva care le-a mai văzut, și nu înveți nimic util chinuindu-te cu ele.</p>
-  </div>
-
-  <div class="grila grila--2" style="margin-top:28px">
-    <a class="resursa" href="../">
-      <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg></span>
-      <span class="resursa__txt"><span class="resursa__t">Pagina lecției 1</span><span class="resursa__d">Materiale și legături</span></span>
-      <span class="resursa__sageata">→</span>
-    </a>
-    <a class="resursa" href="../../c2-colectarea-prin-api/">
-      <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
-      <span class="resursa__txt"><span class="resursa__t">Lecția 2</span><span class="resursa__d">Colectarea datelor prin API</span></span>
-      <span class="resursa__sageata">→</span>
-    </a>
-  </div>
 </section>
 
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=4"></script>
+<script type="module" src="../../js/antet.js?v=5"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=4";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=4";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=4";
-
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=5";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=5";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=5";
 pornesteIx();
 pornesteVerif("c1");
 pornesteSlide({ capitol:"c1", lectie:"c1-introducere-si-mediu" });

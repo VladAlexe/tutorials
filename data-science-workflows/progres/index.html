@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=4">
-<script src="../js/tema.js?v=4"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=5">
+<script src="../js/tema.js?v=5"></script>
 <style>
   .cap-pag{padding:44px 0 30px}
   .cap-pag h1{font-size:clamp(27px,3.4vw,36px);margin-bottom:14px}
@@ -55,6 +55,20 @@
     background:var(--panza-2);max-width:var(--citit)}
   .goala h3{margin-top:0}
   .sect{padding:34px 0;border-top:1px solid var(--linie)}
+  .rst-zona{border:1px solid var(--linie);border-radius:12px;background:var(--panza);
+    padding:19px 21px;max-width:var(--citit)}
+  .rst-zona h3{margin:0 0 6px;font-size:16px}
+  .rst-zona p{font-size:14.5px;color:var(--text-2);margin:0 0 15px}
+  .rst-rand{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  .rst-rand select{border:1px solid var(--linie-2);background:var(--fundal);border-radius:8px;
+    padding:8px 11px;font-size:14px;font-family:var(--sans);min-width:210px}
+  .rst-bt{font-family:var(--sans);font-size:14px;font-weight:500;padding:8px 15px;
+    border-radius:8px;border:1px solid var(--nu);color:var(--nu);background:var(--panza);
+    transition:.13s}
+  .rst-bt:hover:not(:disabled){background:var(--nu-slab)}
+  .rst-bt:disabled{opacity:.5;cursor:not-allowed}
+  .rst-mesaj{font-family:var(--sans);font-size:13.5px;margin-top:12px;display:none}
+  .rst-mesaj.vazut{display:block}
   .sect h2{margin:0 0 6px;font-size:20px}
   .sect .sub{font-family:var(--sans);font-size:14px;color:var(--text-3);margin-bottom:20px}
 </style>
@@ -90,6 +104,22 @@
     </div>
   </section>
 
+  <section class="sect">
+    <h2>Ia lecția de la capăt</h2>
+    <p class="sub">Resetarea șterge progresul și răspunsurile tale la lecția aleasă, ca să
+    o poți parcurge din nou de la primul slide. Nu se poate anula.</p>
+    <div class="rst-zona">
+      <h3>Resetează progresul</h3>
+      <p>Verificările și slide-urile parcurse dispar, iar porțile se închid la loc.
+      Jurnalul activității rămâne, deci se vede că ai mai trecut o dată pe aici.</p>
+      <div class="rst-rand">
+        <select id="rst-lectie"></select>
+        <button class="rst-bt" id="rst-bt" type="button">Resetează</button>
+      </div>
+      <p class="rst-mesaj" id="rst-mesaj"></p>
+    </div>
+  </section>
+
   <section class="sect" id="sect-raspunsuri" hidden>
     <h2>Verificările la care ai răspuns</h2>
     <p class="sub">Se păstrează toate răspunsurile, și cele corecte și cele greșite. La
@@ -103,7 +133,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, RADACINA } from "../js/curs.js?v=4";
+import { LECTII, RADACINA } from "../js/curs.js?v=5";
 
 const el = id => document.getElementById(id);
 
@@ -127,7 +157,7 @@ function raspunsuriLocale(cheie){
 let din_cont = false, rasp = [], progresBaza = new Map(), profilul = null;
 
 try {
-  const { profil, sb } = await import("../js/auth.js?v=4");
+  const { profil, sb } = await import("../js/auth.js?v=5");
   profilul = await profil();
   if (profilul.autentificat && profilul.matricol){
     din_cont = true;
@@ -172,8 +202,16 @@ for (const l of LECTII){
   const qDinBaza = new Set(rasp.filter(r => r.capitol === cheie).map(r => r.intrebare_id));
   const qDate = new Set([...Object.keys(qLocale), ...qDinBaza]);
 
-  const total = h ? h.total : null;
-  const qTotal = h ? h.verif.reduce((a, x) => a + x, 0) : null;
+  /* hărțile vechi țineau numărul verificărilor, cele noi id-urile lor */
+  const idsPe = i => {
+    const v = h ? h.verif[i] : null;
+    return Array.isArray(v) ? v : [];
+  };
+  const vechi  = h && !Array.isArray(h.verif[0]);
+  const total  = h ? h.total : null;
+  const qTotal = !h ? null
+               : vechi ? h.verif.reduce((a, x) => a + x, 0)
+                       : h.verif.reduce((a, x) => a + x.length, 0);
 
   if (total){
     totSlide += total; totVazute += Math.min(viz.size, total);
@@ -181,14 +219,20 @@ for (const l of LECTII){
   }
   if (viz.size) lectiiIncepute++;
 
-  /* banda de celule: una pe slide, mai înaltă dacă slide-ul are verificare */
+  /* banda de celule: una pe slide. Cele mai înalte au verificare, iar verdele
+     înseamnă verificare făcută, nu doar slide deschis. */
   let celule = "";
   if (h){
     for (let i = 0; i < h.total; i++){
-      const areQ = h.verif[i] > 0;
-      const vz = viz.has(i);
-      celule += `<span class="cel ${areQ ? "q" : ""} ${vz ? "vz" : ""}"
-        style="${areQ ? "height:9px" : ""}" title="slide ${i+1}: ${h.titluri[i]}"></span>`;
+      const ids   = idsPe(i);
+      const areQ  = ids.length > 0;
+      const qGata = areQ && ids.every(id => qDate.has(id));
+      const vz    = viz.has(i);
+      const clase = areQ ? `cel q${qGata ? " vz" : ""}` : `cel${vz ? " vz" : ""}`;
+      const titlu = `slide ${i+1}: ${h.titluri[i]}` +
+        (areQ ? (qGata ? " · verificare făcută" : " · verificare rămasă") : "");
+      celule += `<span class="${clase}" style="${areQ ? "height:9px" : ""}"
+        title="${titlu}"></span>`;
     }
   }
 
@@ -223,6 +267,52 @@ el("sumar").innerHTML = `
   ${din_cont ? `<div class="sum"><b>${corecte}/${rasp.length || 0}</b><span>răspunsuri corecte</span></div>`
              : `<div class="sum"><b>—</b><span>fără cont</span></div>`}`;
 
+/* ------------------------------------------------------------- resetarea */
+{
+  const sel = el("rst-lectie"), bt = el("rst-bt"), msg = el("rst-mesaj");
+  sel.innerHTML = `<option value="">Toate lecțiile</option>` +
+    LECTII.map(l => `<option value="c${l.nr}">Lecția ${l.nr}. ${l.titlu}</option>`).join("");
+
+  bt.onclick = async () => {
+    const cheie = sel.value || null;
+    const unde = cheie ? `lecția ${cheie.slice(1)}` : "toate lecțiile";
+    if (!confirm(`Resetezi progresul la ${unde}?\n\n` +
+                 `Se șterg slide-urile parcurse și răspunsurile la verificări. ` +
+                 `Nu se poate anula.`)) return;
+
+    bt.disabled = true; bt.textContent = "Se resetează…";
+    msg.classList.remove("vazut");
+
+    /* întâi local, ca să se vadă efectul chiar dacă nu există cont */
+    let sterse = 0;
+    for (const l of LECTII){
+      const k = "c" + l.nr;
+      if (cheie && k !== cheie) continue;
+      for (const pref of ["dsw.parcurs.", "dsw.raspunsuri.", "dsw.harta."]){
+        try { if (localStorage.getItem(pref + k) !== null){ localStorage.removeItem(pref + k); sterse++; } }
+        catch {}
+      }
+    }
+
+    /* apoi în baza de date, dacă e cont */
+    let text = `Șters din browserul ăsta.`;
+    if (din_cont){
+      try {
+        const { sb } = await import("../js/auth.js?v=5");
+        const { data, error } = await sb.rpc("reset_progresul_meu", { p_capitol: cheie });
+        text = error ? `Local s-a șters, dar în baza de date nu: ${error.message}`
+             : data?.ok ? `Șters: ${data.progres} slide-uri și ${data.raspunsuri} răspunsuri, și din browser, și din contul tău.`
+             : `Local s-a șters. ${data?.mesaj || ""}`;
+      } catch (e) { text = `Local s-a șters, dar nu am ajuns la baza de date: ${e.message}`; }
+    } else {
+      text += ` Nu ești în cont, deci nu era nimic de șters din baza de date.`;
+    }
+    msg.textContent = text + " Reîncarc pagina…";
+    msg.classList.add("vazut");
+    setTimeout(() => location.reload(), 1600);
+  };
+}
+
 /* --------------------------------------------------- tabelul de răspunsuri */
 if (din_cont && rasp.length){
   el("sect-raspunsuri").hidden = false;
@@ -238,7 +328,7 @@ if (din_cont && rasp.length){
       <td class="mono">${cand(r.creat_la)}</td></tr>`).join("")}</tbody>`;
 }
 </script>
-<script type="module" src="../js/antet.js?v=4"></script>
-<script type="module" src="../js/subsol.js?v=4"></script>
+<script type="module" src="../js/antet.js?v=5"></script>
+<script type="module" src="../js/subsol.js?v=5"></script>
 </body>
 </html>

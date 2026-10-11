@@ -37,6 +37,7 @@ const SVG = {
   caut:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.5 15.5 20 20"/></svg>',
   caiet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg>',
   acasa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>',
+  carte: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg>',
   grafic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V9M10 20V4M16 20v-7M22 20H2"/></svg>'
 };
 
@@ -208,7 +209,8 @@ export async function porneste({ capitol, lectie }){
       </div>
       <nav class="sina__lista" aria-label="Cuprinsul lecției"></nav>
       <div class="sina__jos">
-        <a class="sina__leg" href="${RADACINA}/${lectie}/">${SVG.acasa}<span>Pagina lecției</span></a>
+        <a class="sina__leg" href="${RADACINA}/${lectie}/tutorial/">${SVG.carte}<span>Manualul</span></a>
+        <a class="sina__leg" href="${RADACINA}/${lectie}/">${SVG.acasa}<span>Pagina cursului</span></a>
         <a class="sina__leg" href="${RADACINA}/progres/">${SVG.grafic}<span>Progresul meu</span></a>
         ${info.notebook ? `<a class="sina__leg" href="${info.notebook}" target="_blank"
             rel="noopener">${SVG.caiet}<span>Caietul lecției</span></a>` : ""}

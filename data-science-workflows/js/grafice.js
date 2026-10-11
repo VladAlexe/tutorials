@@ -13,7 +13,7 @@
    grafic are legendă cu praguri, și fiecare are o variantă de tabel.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=4";
+import { RADACINA } from "./curs.js?v=5";
 
 const G = {};
 

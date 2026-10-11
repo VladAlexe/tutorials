@@ -234,3 +234,169 @@ function amesteca(a){
 }
 
 export default E;
+
+/* ==========================================================================
+   3. Sortare în două coșuri
+   Pentru distincții binare care se rețin prin mână, nu prin citit:
+   text / binar, monadic / diadic, lizibil / nelizibil.
+   ========================================================================== */
+
+E.sortare = (gazda, d) => {
+  const id = d.id || "sortare";
+  gazda.closest(".ix")?.classList.add("exc");
+  let puse = {};            /* eticheta elementului -> cosul ales */
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
+    <div class="srt__banc" id="banc">${d.elemente.map((e, i) =>
+      `<button class="srt__e" data-i="${i}" type="button">${esc(e.t)}</button>`).join("")}</div>
+    <div class="srt__cosuri">
+      ${d.cosuri.map((c, k) => `<div class="srt__c" data-k="${k}">
+        <span class="srt__ct">${esc(c.t)}</span>
+        <span class="srt__cd">${esc(c.d || "")}</span>
+        <div class="srt__in"></div></div>`).join("")}
+    </div>
+    ${cadruJos()}`;
+
+  const banc = gazda.querySelector("#banc");
+  const cosuri = [...gazda.querySelectorAll(".srt__c")];
+  const btV = gazda.querySelector('[data-rol="verifica"]');
+  const btN = gazda.querySelector('[data-rol="din-nou"]');
+  const out = gazda.querySelector(".ex__raspuns");
+  const ex  = gazda.querySelector(".ex__ex");
+  const st  = gazda.querySelector(".ex__stare");
+  let ales = null;
+
+  /* două atingeri: alegi elementul, apoi coșul. Merge și cu mouse, și pe telefon. */
+  gazda.addEventListener("click", e => {
+    const el = e.target.closest(".srt__e");
+    const cos = e.target.closest(".srt__c");
+    if (el){
+      if (ales === el){ ales.classList.remove("ales"); ales = null; return; }
+      gazda.querySelectorAll(".srt__e").forEach(x => x.classList.remove("ales"));
+      el.classList.add("ales"); ales = el;
+      cosuri.forEach(c => c.classList.add("tinta"));
+      return;
+    }
+    if (cos && ales){
+      cos.querySelector(".srt__in").appendChild(ales);
+      puse[ales.dataset.i] = +cos.dataset.k;
+      ales.classList.remove("ales"); ales = null;
+      cosuri.forEach(c => c.classList.remove("tinta"));
+      out.textContent = "";
+      btV.disabled = Object.keys(puse).length < d.elemente.length;
+      return;
+    }
+    if (e.target.closest("#banc") && ales){
+      banc.appendChild(ales);
+      delete puse[ales.dataset.i];
+      ales.classList.remove("ales"); ales = null;
+      cosuri.forEach(c => c.classList.remove("tinta"));
+      btV.disabled = true;
+    }
+  });
+  btV.disabled = true;
+
+  btV.onclick = async () => {
+    let bune = 0;
+    gazda.querySelectorAll(".srt__e").forEach(el => {
+      const i = +el.dataset.i;
+      const ok = puse[i] === d.elemente[i].cos;
+      el.classList.toggle("bun", ok); el.classList.toggle("rau", !ok);
+      if (ok) bune++;
+    });
+    const tot = bune === d.elemente.length;
+    out.innerHTML = tot ? `<b>Tot corect.</b> ${d.laBine || ""}`
+                        : `<b>${bune} din ${d.elemente.length}.</b> ${d.laRau || ""}`;
+    btN.hidden = tot;
+    if (tot){
+      btV.disabled = true;
+      ex.classList.add("vazut"); ex.innerHTML = d.explicatie || "";
+      gata(gazda, id);
+      const salvat = await salveazaCod({ exercitiuId:id,
+        cod:JSON.stringify(puse), trecut:true });
+      st.textContent = salvat ? "Rezolvare înregistrată."
+                              : "Nu e înregistrată: nu ești autentificat.";
+      st.classList.add("vazut");
+    }
+  };
+  btN.onclick = () => {
+    gazda.querySelectorAll(".srt__e").forEach(el => el.classList.remove("bun","rau"));
+    out.textContent = ""; btN.hidden = true;
+  };
+};
+
+/* ==========================================================================
+   4. Dovada: ai făcut-o cu adevărat?
+   Fiecare rând cere o comandă rulată la tine și textul pe care ea îl scoate.
+   Nu se poate completa din cap: ieșirea depinde de starea calculatorului tău.
+   ========================================================================== */
+
+E.dovada = (gazda, d) => {
+  const id = d.id || "dovada";
+  gazda.closest(".ix")?.classList.add("exc");
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
+    <div class="dov">${d.pasi.map((p, i) => `
+      <div class="dov__r" data-i="${i}">
+        <div class="dov__sus"><span class="dov__n">${i + 1}</span>
+          <span class="dov__t">${p.t}</span>
+          <span class="dov__s" data-s="${i}"></span></div>
+        <div class="dov__cmd"><code>${esc(p.cmd)}</code>
+          <button class="dov__copie" data-c="${i}" type="button">copiază</button></div>
+        <input class="dov__in" data-i="${i}" spellcheck="false" autocomplete="off"
+          placeholder="${esc(p.gol || "lipește aici ce a scris terminalul")}">
+        <p class="dov__aj" data-a="${i}"></p>
+      </div>`).join("")}</div>
+    ${cadruJos()}`;
+
+  const btV = gazda.querySelector('[data-rol="verifica"]');
+  const btN = gazda.querySelector('[data-rol="din-nou"]');
+  const out = gazda.querySelector(".ex__raspuns");
+  const ex  = gazda.querySelector(".ex__ex");
+  const st  = gazda.querySelector(".ex__stare");
+  btN.textContent = "Mai încerc";
+
+  gazda.querySelectorAll(".dov__copie").forEach(b => b.onclick = async () => {
+    try { await navigator.clipboard.writeText(d.pasi[+b.dataset.c].cmd);
+          b.textContent = "copiat"; setTimeout(() => b.textContent = "copiază", 1400); }
+    catch { b.textContent = "selectează manual"; }
+  });
+
+  btV.onclick = async () => {
+    let bune = 0;
+    d.pasi.forEach((p, i) => {
+      const camp = gazda.querySelector(`.dov__in[data-i="${i}"]`);
+      const sem  = gazda.querySelector(`.dov__s[data-s="${i}"]`);
+      const aj   = gazda.querySelector(`.dov__aj[data-a="${i}"]`);
+      const val  = (camp.value || "").trim();
+      const ok   = val !== "" && new RegExp(p.cauta, "i").test(val);
+      camp.classList.toggle("bun", ok); camp.classList.toggle("rau", !ok);
+      sem.textContent = ok ? "✓" : (val ? "✕" : "—");
+      sem.className = `dov__s ${ok ? "bun" : val ? "rau" : ""}`;
+      aj.textContent = ok ? "" : (val ? (p.daca_nu || "Nu pare să fie ieșirea comenzii de mai sus.") : "");
+      aj.classList.toggle("vazut", !ok && !!val);
+      if (ok) bune++;
+    });
+    const tot = bune === d.pasi.length;
+    out.innerHTML = tot ? `<b>Gata.</b> ${d.laBine || ""}`
+                        : `<b>${bune} din ${d.pasi.length}.</b> ${d.laRau || ""}`;
+    btN.hidden = tot;
+    if (tot){
+      btV.disabled = true;
+      gazda.querySelectorAll(".dov__in").forEach(x => x.disabled = true);
+      ex.classList.add("vazut"); ex.innerHTML = d.explicatie || "";
+      gata(gazda, id);
+      const salvat = await salveazaCod({ exercitiuId:id, trecut:true,
+        cod:[...gazda.querySelectorAll(".dov__in")].map(x => x.value).join(" ⏎ ") });
+      st.textContent = salvat ? "Înregistrat. Apare la mine în panou."
+                              : "Nu e înregistrat: nu ești autentificat.";
+      st.classList.add("vazut");
+    }
+  };
+  btN.onclick = () => {
+    gazda.querySelectorAll(".dov__in").forEach(x => x.classList.remove("bun","rau"));
+    out.textContent = ""; btN.hidden = true;
+  };
+};

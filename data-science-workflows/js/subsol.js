@@ -1,5 +1,5 @@
 /* Subsolul comun. <div id="subsol"></div> plus acest modul. */
-import { CURS, RADACINA } from "./curs.js?v=4";
+import { CURS, RADACINA } from "./curs.js?v=5";
 
 const g = document.getElementById("subsol");
 if (g) g.outerHTML = `

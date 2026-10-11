@@ -14,6 +14,7 @@ import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=4";
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
   luna:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.9 6.9 0 0 0 10.7 10.7z"/></svg>',
+  clasa: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 20V9M9 20V4M15 20v-8M21 20v-5"/></svg>',
   marca: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="6" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="5" cy="18" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="19" cy="12" r="2.3" stroke="currentColor" stroke-width="1.7"/><path d="M7.2 7.1 16.8 11M7.2 16.9 16.8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>'
 };
 
@@ -82,9 +83,12 @@ async function cont(){
       zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;
       return;
     }
+    const clasa = (p.profesor || p.profesorReal)
+      ? `<a class="icon-btn" href="${RADACINA}/profesor/clasa/" title="Panou de clasă"
+            aria-label="Panou de clasă">${SVG.clasa}</a>` : "";
     const nume = p.nume || p.email || "Contul meu";
     const ini = nume.trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "?";
-    zona.innerHTML =
+    zona.innerHTML = clasa +
       `<a class="cont-chip" href="${RADACINA}/panou/" title="${nume}">
          <span class="cont-chip__cerc">${ini}</span>
          <span>${nume.split(/\s+/)[0]}</span>
