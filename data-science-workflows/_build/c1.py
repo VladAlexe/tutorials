@@ -22,6 +22,15 @@ Rulare:  python _build/c1.py
 
 from comun import Lectie, ix, verif, tabel, nota
 
+
+def carduri(lista):
+    """Șase cutii cu titlul și întrebarea la vedere. Nimic de apăsat: pe un
+    slide de alegere, textul ascuns sub un clic e text pe care nu-l citește
+    nimeni."""
+    return ('<div class="grila grila--3">' + "".join(
+        f'<div class="card"><div class="card__t">{n}</div>'
+        f'<p class="card__d">{d}</p></div>' for n, d in lista) + "</div>")
+
 L = Lectie(1, "c1-introducere-si-mediu", "Introducere și configurare",
            "Proiectul, pașii unui proiect de analiză de date, tipurile de "
            "date, JSON și mediul de lucru.")
@@ -64,38 +73,43 @@ DATE_SCI = {
 # ===========================================================================
 
 TEME = [
-    ("Introducere și instalarea softurilor", "Cursul 1",
+    (1, "Introducere și instalarea softurilor",
      "Ce unelte folosim și de ce fiecare. Conturile, mediul de lucru, structura unui proiect."),
-    ("Concepte cheie pentru analiza datelor", "Cursul 1",
+    (1, "Concepte cheie pentru analiza datelor",
      "Tipuri de date în Python, în SQL și în fișiere spațiale. Tipuri de fișiere. Formatul JSON."),
-    ("Versionare și colaborare cu Git", "Cursul 3",
-     "Istoric, reveniri, branch-uri, pull request. Cum lucrează patru oameni pe același cod fără să se calce."),
-    ("Colectarea datelor prin API", "Cursul 2",
+    (2, "Colectarea datelor prin API",
      "Ce e un API, cum se citește o documentație, cum se face o cerere. Postman, apoi requests."),
-    ("Baze de date cu Neon", "Cursul 5",
-     "PostgreSQL în cloud. Tabele, chei, interogări. De ce un tabel de 31.684 de rânduri nu stă într-un fișier."),
-    ("Explorarea preliminară și curățarea", "Cursul 4",
+    (3, "Versionare și colaborare cu Git",
+     "Istoric, reveniri, branch-uri, pull request. Cum lucrează patru oameni pe același cod fără să se calce."),
+    (4, "Explorarea preliminară și curățarea",
      "Lipsuri, duplicate, tipuri greșite, coduri care nu se potrivesc între surse. Etapa cea mai lungă."),
-    ("Agregarea datelor din surse diverse", "Cursul 5",
+    (5, "Baze de date cu Neon",
+     "PostgreSQL în cloud. Tabele, chei, interogări. De ce un tabel de 31.684 de rânduri nu stă într-un fișier."),
+    (5, "Agregarea datelor din surse diverse",
      "Îmbinarea pe o cheie comună. La date diadice, două îmbinări: una pentru fiecare capăt al perechii."),
-    ("Analiza exploratorie și vizualizare", "Cursul 6",
+    (6, "Analiza exploratorie și vizualizare",
      "Distribuții, relații, valori extreme. Grafice care lămuresc și grafice care induc în eroare."),
-    ("Feature engineering", "Cursul 7",
+    (7, "Feature engineering",
      "Variabilele care răspund la întrebare nu se descarcă, se construiesc: rate, ponderi, distanțe, diferențe."),
-    ("Aplicarea modelelor statistice", "Cursul 7",
+    (7, "Aplicarea modelelor statistice",
      "Testarea formală a relației observate. Non-independența observațiilor, la date diadice."),
-    ("Raportarea analizei și a rezultatelor", "Cursul 8",
+    (8, "Raportarea analizei și a rezultatelor",
      "Raport reproductibil, grafice pentru publicare, prezentarea proiectului."),
 ]
+
+CRONOLOGIE = {
+    "titlu": "Apasă pe o temă",
+    "intro": "Unsprezece teme, opt ședințe. Punctele pline sunt ședințele care "
+             "au temă nouă.",
+    "sedinte": 8,
+    "teme": [{"c": c, "n": n, "d": d} for c, n, d in TEME],
+}
 
 sl("s1", "Cursul", "Despre ce e cursul",
    "<h2>Fluxuri de lucru pentru știința datelor</h2>"
    "<p class=\"cheie\">Un drum complet, de la o întrebare la un rezultat în "
    "care poți avea încredere.</p>"
-   + ix("etape", "Temele semestrului",
-        {"titlu": "Unsprezece teme, opt ședințe", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in TEME]},
-        "Apasă pe o temă ca să vezi ce intră în ea și când o facem.")
+   + ix("semestru", "Temele semestrului", CRONOLOGIE)
    + nota("La final de oră", "Ai mediul de lucru pregătit, cont de GitHub legat "
           "de numărul matricol, o echipă, și primul tău notebook rulat pe date "
           "adevărate."),
@@ -109,10 +123,7 @@ sl("s1", "Cursul", "Despre ce e cursul",
    "<p>Unsprezece teme, împărțite pe opt ședințe. Fiecare ședință adaugă o "
    "piesă la proiectul vostru, iar la final predați un depozit de cod, nu un "
    "fișier.</p>"
-   + ix("etape", "Temele semestrului",
-        {"titlu": "Unsprezece teme, opt ședințe", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in TEME]},
-        "Apasă pe o temă ca să vezi ce intră în ea și când o facem.")
+   + ix("semestru", "Temele semestrului", CRONOLOGIE)
    + "<h3>Agenda primei ore</h3>"
    "<ol><li>Evaluarea cunoștințelor și a așteptărilor</li>"
    "<li>Prezentarea proiectului</li>"
@@ -247,28 +258,55 @@ sl("s3", "Softuri și conturi", "Ce instalezi, ce cont faci",
 #  4. Pașii unui proiect
 # ===========================================================================
 
-ETAPE = [
-    ("Definirea problemei", "Cursul 1", "Tema, unitatea de analiză, întrebarea. Aici decizi ce înseamnă un rând în tabelul final: o țară, o pereche de județe, un an. Tot restul depinde de alegerea asta."),
-    ("Colectarea datelor", "Cursul 2", "Aduci datele prin API sau din fișiere. Salvezi întotdeauna varianta brută, neatinsă, ca să poți reveni la ea când descoperi o greșeală de curățare."),
-    ("Curățarea datelor", "Cursul 4", "Tipuri greșite, valori lipsă, duplicate, coduri care nu se potrivesc între surse. Etapa cea mai lungă și cea care decide dacă rezultatul înseamnă ceva."),
-    ("Analiza exploratorie", "Cursul 6", "Te uiți la date înainte de a le modela. Scopul nu e să demonstrezi ceva, e să înțelegi ce ai."),
-    ("Feature engineering", "Cursul 7", "Construiești variabilele care răspund la întrebare: rate, ponderi, distanțe, diferențe între capetele perechii."),
-    ("Modelare", "Cursul 7", "Testezi formal relația observată. Un model simplu, bine interpretat, bate unul complicat pe care nu îl poți explica."),
-    ("Implementarea modelului", "dincolo de curs", "Modelul ajunge undeva unde îl folosește altcineva. La noi lanțul se oprește la raport, dar el continuă."),
-    ("Optimizarea modelului", "dincolo de curs", "Parametri, performanță, costuri. Zona de inginerie."),
-    ("Raportare și vizualizare", "Cursul 8", "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica. Graficele nu sunt decor, sunt argumentul."),
-    ("Popularea și gestionarea bazei de date", "Cursul 5", "Nu e o etapă în lanț, e depozitul la care se întorc mai multe etape. Colectarea scrie datele brute, curățarea versiunea curată, agregarea tabelul final."),
-]
+DRUM = {
+    "titlu": "Apasă pe o etapă",
+    "intro": "Sus curge analiza datelor, jos ingineria modelelor. "
+             "Baza de date stă deoparte fiindcă nu e o etapă.",
+    "bandaSus": "Analiza datelor", "bandaJos": "Ingineria modelelor",
+    "sus": [
+        {"n": "Definirea problemei", "unde": "cursul 1",
+         "d": "Tema, unitatea de analiză, întrebarea. Aici decizi ce înseamnă un "
+              "rând în tabelul final: o țară, o pereche de județe, un an. Tot "
+              "restul depinde de alegerea asta."},
+        {"n": "Colectarea datelor", "unde": "cursul 2",
+         "d": "Aduci datele prin API sau din fișiere. Salvezi întotdeauna "
+              "varianta brută, neatinsă, ca să poți reveni la ea când descoperi "
+              "o greșeală de curățare."},
+        {"n": "Curățarea datelor", "unde": "cursul 4",
+         "d": "Tipuri greșite, valori lipsă, duplicate, coduri care nu se "
+              "potrivesc între surse. Etapa cea mai lungă și cea care decide "
+              "dacă rezultatul înseamnă ceva."},
+        {"n": "Analiza exploratorie", "unde": "cursul 6",
+         "d": "Te uiți la date înainte de a le modela. Scopul nu e să "
+              "demonstrezi ceva, e să înțelegi ce ai."}],
+    "jos": [
+        {"n": "Feature engineering", "unde": "cursul 7",
+         "d": "Construiești variabilele care răspund la întrebare: rate, "
+              "ponderi, distanțe, diferențe între capetele perechii."},
+        {"n": "Modelare", "unde": "cursul 7",
+         "d": "Testezi formal relația observată. Un model simplu, bine "
+              "interpretat, bate unul complicat pe care nu îl poți explica."},
+        {"n": "Implementare", "unde": "dincolo de curs",
+         "d": "Modelul ajunge undeva unde îl folosește altcineva. La noi lanțul "
+              "se oprește la raport, dar el continuă."},
+        {"n": "Optimizare", "unde": "dincolo de curs",
+         "d": "Parametri, performanță, costuri. Zona de inginerie."}],
+    "final": {"n": "Raportare și vizualizare", "unde": "cursul 8",
+              "d": "Rezultatul devine util abia când altcineva îl poate citi, "
+                   "reproduce și critica. Graficele nu sunt decor, sunt "
+                   "argumentul."},
+    "baza": {"n": "Popularea și gestionarea bazei de date", "unde": "cursul 5",
+             "d": "Nu e o etapă în lanț, e depozitul la care se întorc mai "
+                  "multe etape. Colectarea scrie datele brute, curățarea "
+                  "versiunea curată, agregarea tabelul final. Fără ea, într-o "
+                  "echipă de patru, al doilea nu poate începe până nu-i trimite "
+                  "primul un fișier pe chat."},
+}
 
 sl("s4", "Pașii unui proiect", "Data Science Workflow",
    "<h2>Pașii unui proiect de analiză de date</h2>"
    "<p class=\"cheie\">Fluxul e ciclic, nu liniar.</p>"
-   + ix("etape", "Data Science Workflow",
-        {"titlu": "Fluxul complet", "intro": "Apasă pe oricare dintre etape.",
-         "etape": [{"nume": n, "unde": u, "text": d,
-                    **({"depozit": True} if "bazei de date" in n else {})}
-                   for n, u, d in ETAPE]},
-        "Sus: analiza datelor. Jos: ingineria modelelor. Între ele, baza de date."),
+   + ix("drum", "Data Science Workflow", DRUM),
    manual=
    "<h2>Pașii unui proiect de analiză de date</h2>"
    "<p>Schema de mai jos are trei straturi. Partea de sus, de la definirea "
@@ -276,12 +314,7 @@ sl("s4", "Pașii unui proiect", "Data Science Workflow",
    "jos, de la feature engineering până la optimizare, e <strong>ingineria "
    "modelelor</strong>. Împreună, cu baza de date care le leagă, fac "
    "<strong>știința datelor</strong>.</p>"
-   + ix("etape", "Data Science Workflow",
-        {"titlu": "Fluxul complet", "intro": "Apasă pe oricare dintre etape.",
-         "etape": [{"nume": n, "unde": u, "text": d,
-                    **({"depozit": True} if "bazei de date" in n else {})}
-                   for n, u, d in ETAPE]},
-        "Sus: analiza datelor. Jos: ingineria modelelor. Între ele, baza de date.")
+   + ix("drum", "Data Science Workflow", DRUM)
    + "<p>Săgețile punctate arată întoarcerile, și sunt partea cea mai "
    "importantă. Descoperi la curățare că un indicator lipsește pentru jumătate "
    "din unități și revii la colectare. Nu e un semn că ai greșit, e felul "
@@ -318,10 +351,9 @@ DIRECTII = [
 sl("s5", "Proiectul", "Proiectul și echipele",
    "<h2>Un depozit de echipă în care se vede tot drumul</h2>"
    "<p>Trei sau patru oameni. Aceleași date, întrebări diferite.</p>"
-   + ix("etape", "Direcțiile dintre care alegeți",
-        {"titlu": "Șase direcții", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": "proiect", "text": d} for n, d in DIRECTII]},
-        "Alegeți una până data viitoare. Cine nu e într-o echipă, îl repartizez eu.")
+   + carduri(DIRECTII)
+   + nota("Alegeți una până data viitoare",
+          "Cine nu e într-o echipă, îl repartizez eu.", True)
    + nota("Nota vine din drum, nu din rezultat",
           "Se notează ce se vede în depozit: datele colectate, curățarea, "
           "deciziile scrise. Un rezultat negativ bine argumentat ia aceeași "
@@ -341,9 +373,7 @@ sl("s5", "Proiectul", "Proiectul și echipele",
    ])
    + "<h3>Direcțiile</h3>"
    "<p>Toate pornesc din aceleași fișiere. Ce se schimbă e întrebarea.</p>"
-   + ix("etape", "Direcțiile dintre care alegeți",
-        {"titlu": "Șase direcții", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": "proiect", "text": d} for n, d in DIRECTII]})
+   + carduri(DIRECTII)
    + nota("Până data viitoare", "Trimiteți componența echipei, cu numerele "
           "matricole și direcția aleasă."))
 

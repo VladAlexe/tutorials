@@ -3,13 +3,13 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=17"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=18"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=17";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=18";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -77,7 +77,7 @@ async function cont(){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=17`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=18`);
     const p = await profil();
     if (!p.autentificat) {
       zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;

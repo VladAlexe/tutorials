@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=17");
+    const m = await import("/data-science-workflows/js/colectare.js?v=18");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -943,6 +943,202 @@ V.desfa = (gazda, d) => {
   };
 
   deseneaza();
+};
+
+
+/* ===========================================================================
+   12. DRUM — fluxul unui proiect de analiză, ca schemă
+
+   Zece cartonașe egale într-un grid nu spun nimic despre ordine. Schema de
+   la curs spune: etapele curg spre dreapta, sunt două benzi (analiza sus,
+   ingineria jos), baza de date stă deoparte fiindcă nu e o etapă, iar
+   săgețile punctate sunt întoarcerile, adică partea cea mai importantă.
+
+   Forma e fixă, ca în prezentare. Ce se schimbă e textul, care vine din
+   lecție. Apeși pe o etapă și îi citești rostul.
+   =========================================================================== */
+
+V.drum = (gazda, d) => {
+  const SUS = (d.sus || []).slice(0, 4);
+  const JOS = (d.jos || []).slice(0, 4);
+  const FIN = d.final || { n: "Raportare" };
+  const BAZA = d.baza || { n: "Baza de date" };
+  const toate = [...SUS, ...JOS, FIN, BAZA];
+
+  const chev = (x, i, banda) => `
+    <button class="drm__e drm__e--${banda}" data-i="${esc(x.n)}"
+      style="--k:${i}" type="button">
+      <span class="drm__nr">${String(i + 1).padStart(2, "0")}</span>
+      <span class="drm__n">${esc(x.n)}</span>
+    </button>`;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="drm">
+      <div class="drm__plan">
+        <svg class="drm__linii" aria-hidden="true"></svg>
+
+        <span class="drm__banda drm__banda--sus">${esc(d.bandaSus || "Analiza datelor")}</span>
+        <div class="drm__rand drm__rand--sus">${SUS.map((x, i) => chev(x, i, "a")).join("")}</div>
+
+        <button class="drm__fin" data-i="${esc(FIN.n)}" type="button">${esc(FIN.n)}</button>
+
+        <button class="drm__baza" data-i="${esc(BAZA.n)}" type="button">
+          <span class="drm__bt">${esc(BAZA.n)}</span>
+          <span class="drm__bd">nu e o etapă, e depozitul</span>
+        </button>
+
+        <div class="drm__rand drm__rand--jos">${JOS.map((x, i) => chev(x, i + 4, "b")).join("")}</div>
+        <span class="drm__banda drm__banda--jos">${esc(d.bandaJos || "Ingineria modelelor")}</span>
+      </div>
+
+      <p class="drm__leg">
+        <span class="drm__lp"></span>drumul înainte
+        <span class="drm__lp drm__lp--p"></span>întoarcerile, la fel de normale
+      </p>
+      <div class="drm__i"><h5>${esc(d.titlu || "Apasă pe o etapă")}</h5>
+        <p>${d.intro || ""}</p></div>
+    </div>`;
+
+  const plan = gazda.querySelector(".drm__plan");
+  const svg  = gazda.querySelector(".drm__linii");
+  const info = gazda.querySelector(".drm__i");
+
+  function trage(){
+    const P = plan.getBoundingClientRect();
+    if (!P.width) return;
+    svg.setAttribute("viewBox", `0 0 ${P.width} ${P.height}`);
+    svg.setAttribute("width", P.width); svg.setAttribute("height", P.height);
+
+    const c = sel => {
+      const el = plan.querySelector(sel);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return { st: r.left - P.left, dr: r.right - P.left,
+               sus: r.top - P.top, jos: r.bottom - P.top,
+               x: r.left - P.left + r.width / 2,
+               y: r.top - P.top + r.height / 2 };
+    };
+
+    const ultimSus = c(".drm__rand--sus .drm__e:last-child");
+    const primJos  = c(".drm__rand--jos .drm__e:first-child");
+    const alDoiJos = c(".drm__rand--jos .drm__e:nth-child(2)");
+    const fin      = c(".drm__fin");
+    const baza     = c(".drm__baza");
+    const primSus  = c(".drm__rand--sus .drm__e:nth-child(2)");
+
+    const pline = [], punct = [], varf = [];
+    const sageata = (x, y, rot) => {
+      const p = [[0,0],[-4.4,-6.4],[4.4,-6.4]]
+        .map(([a,b]) => { const r = rot * Math.PI / 180;
+          return `${(x + a*Math.cos(r) - b*Math.sin(r)).toFixed(1)},` +
+                 `${(y + a*Math.sin(r) + b*Math.cos(r)).toFixed(1)}`; });
+      varf.push(p.join(" "));
+    };
+
+    if (ultimSus && fin){                       /* EDA → raportare */
+      const m = (ultimSus.dr + fin.st) / 2;
+      pline.push(`M${ultimSus.dr},${ultimSus.y} H${fin.st - 7}`);
+      sageata(fin.st, ultimSus.y, 90);
+    }
+    if (ultimSus && primJos){                   /* EDA ↓ feature engineering */
+      pline.push(`M${ultimSus.x},${ultimSus.jos} V${primJos.sus - 7}`);
+      sageata(primJos.x, primJos.sus, 180);
+      pline.push(`M${ultimSus.x},${ultimSus.jos} V${(ultimSus.jos + primJos.sus)/2} ` +
+                 `H${primJos.x}`);
+    }
+    if (alDoiJos && fin){                       /* modelare ↗ raportare */
+      pline.push(`M${alDoiJos.x},${alDoiJos.sus} V${fin.jos + 7}`);
+      sageata(alDoiJos.x, fin.jos, 0);
+    }
+    if (primSus && baza){                       /* colectarea ↕ baza */
+      pline.push(`M${primSus.x},${primSus.jos} V${baza.sus - 7}`);
+      sageata(primSus.x, baza.sus, 180);
+    }
+    if (baza && fin){                           /* intoarcerile, punctate */
+      punct.push(`M${baza.dr},${baza.y} H${fin.st - 14} V${fin.jos + 10}`);
+      sageata(fin.st - 14, fin.jos + 8, 0);
+    }
+    if (baza && primJos){
+      punct.push(`M${primJos.st - 10},${primJos.jos + 12} H${baza.x} V${baza.jos + 7}`);
+      sageata(baza.x, baza.jos + 9, 0);
+    }
+
+    svg.innerHTML =
+      `<path d="${pline.join(" ")}" fill="none" stroke="currentColor" stroke-width="1.6"/>` +
+      `<path d="${punct.join(" ")}" fill="none" stroke="currentColor" stroke-width="1.3"
+         stroke-dasharray="3 4" opacity=".65"/>` +
+      varf.map(v => `<polygon points="${v}" fill="currentColor"/>`).join("");
+  }
+
+  trage();
+  requestAnimationFrame(trage);
+  if (window.ResizeObserver) new ResizeObserver(trage).observe(plan);
+
+  plan.addEventListener("click", ev => {
+    const b = ev.target.closest("[data-i]");
+    if (!b) return;
+    plan.querySelectorAll("[data-i]").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    const x = toate.find(t => t.n === b.dataset.i);
+    if (!x) return;
+    info.innerHTML = `<h5>${esc(x.n)}${x.unde ? ` <small>${esc(x.unde)}</small>` : ""}</h5>
+      <p>${x.d || ""}</p>`;
+  });
+};
+
+
+/* ===========================================================================
+   13. SEMESTRU — cele unsprezece teme, așezate pe cele opt ședințe
+
+   O grilă de cartonașe răspunde la „ce teme sunt” și deloc la „când”. Aici
+   ședințele sunt o linie, iar temele atârnă de ședința în care se fac: se
+   vede dintr-o privire că primul curs duce două teme, că Git-ul vine înaintea
+   API-urilor, și unde e aglomerat semestrul.
+   =========================================================================== */
+
+V.semestru = (gazda, d) => {
+  const T = d.teme || [];
+  const N = d.sedinte || 8;
+  const pe = k => T.filter(t => t.c === k);
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="sem">
+      <div class="sem__linie">
+        ${Array.from({ length: N }, (_, i) => {
+          const k = i + 1, lista = pe(k);
+          return `
+          <div class="sem__c ${lista.length ? "" : "sem__c--gol"}">
+            <span class="sem__cap">
+              <i class="sem__pct"></i>
+              <b>C${k}</b>
+            </span>
+            <div class="sem__teme">
+              ${lista.map(t => `
+                <button class="sem__t" data-n="${esc(t.n)}" type="button">
+                  <span class="sem__tn">${String(T.indexOf(t) + 1).padStart(2, "0")}</span>
+                  <span class="sem__tt">${esc(t.n)}</span>
+                </button>`).join("")}
+            </div>
+          </div>`;
+        }).join("")}
+      </div>
+      <div class="sem__i"><h5>${esc(d.titlu || "Apasă pe o temă")}</h5>
+        <p>${d.intro || ""}</p></div>
+    </div>`;
+
+  const info = gazda.querySelector(".sem__i");
+  gazda.querySelector(".sem__linie").addEventListener("click", ev => {
+    const b = ev.target.closest(".sem__t");
+    if (!b) return;
+    gazda.querySelectorAll(".sem__t").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    const t = T.find(x => x.n === b.dataset.n);
+    if (!t) return;
+    info.innerHTML = `<h5>${esc(t.n)} <small>cursul ${t.c}</small></h5>
+      <p>${t.d || ""}</p>`;
+  });
 };
 
 

@@ -26,7 +26,7 @@ RAD = pathlib.Path(__file__).resolve().parent.parent
 
 # Ștampila împotriva memoriei browserului. Nu se scrie de mână aici: o
 # rescrie `_build/versiune.py` peste toate fișierele deodată, la fiecare push.
-V = "?v=16"
+V = "?v=17"
 
 
 # ---------------------------------------------------------------- bucăți ---
@@ -41,7 +41,8 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "zone": "Mută tu", "ramuri": "Desenează tu", "conflict": "Rezolvă tu",
        "cote": "Date reale", "prag": "Unde tai",
        "imbinare": "Încearcă felurile", "tabel": "Tabel",
-       "coloane": "Declară tipul", "desfa": "Vezi cum se desface"}
+       "coloane": "Declară tipul", "desfa": "Vezi cum se desface",
+       "drum": "Schema fluxului", "semestru": "Cronologia"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 

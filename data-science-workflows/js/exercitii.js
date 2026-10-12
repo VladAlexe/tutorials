@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=17";
+import { salveazaCod } from "./colectare.js?v=18";
 
 const E = {};
 
