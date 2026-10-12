@@ -26,7 +26,7 @@ RAD = pathlib.Path(__file__).resolve().parent.parent
 
 # Ștampila împotriva memoriei browserului. Nu se scrie de mână aici: o
 # rescrie `_build/versiune.py` peste toate fișierele deodată, la fiecare push.
-V = "?v=17"
+V = "?v=18"
 
 
 # ---------------------------------------------------------------- bucăți ---
@@ -39,10 +39,11 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "url": "Disecție", "metode": "Potrivire", "cronologie": "Cronologie",
        "flux": "Vezi cum circulă", "raspuns": "Trimite și vezi",
        "zone": "Mută tu", "ramuri": "Desenează tu", "conflict": "Rezolvă tu",
-       "cote": "Date reale", "prag": "Unde tai",
+       "cote": "Cât din întreg", "prag": "Unde tai",
        "imbinare": "Încearcă felurile", "tabel": "Tabel",
        "coloane": "Declară tipul", "desfa": "Vezi cum se desface",
-       "drum": "Schema fluxului", "semestru": "Cronologia"}
+       "drum": "Schema fluxului", "semestru": "Cronologia",
+       "anatomie": "Pe bucăți", "indice": "Ce măsoară"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 
@@ -215,7 +216,7 @@ class Lectie:
                    "asteptari": "cod", "url": "cod", "metode": "cod",
                    "raspuns": "cod", "zone": "cod", "ramuri": "cod",
                    "conflict": "cod", "prag": "cod", "imbinare": "cod",
-                   "coloane": "cod", "desfa": "cod"}
+                   "coloane": "cod", "desfa": "cod", "anatomie": "cod"}
 
     def scrie_harta(self):
         """Ce sarcini stau pe fiecare slide.

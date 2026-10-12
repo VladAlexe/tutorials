@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=18");
+    const m = await import("/data-science-workflows/js/colectare.js?v=19");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -1139,6 +1139,177 @@ V.semestru = (gazda, d) => {
     info.innerHTML = `<h5>${esc(t.n)} <small>cursul ${t.c}</small></h5>
       <p>${t.d || ""}</p>`;
   });
+};
+
+
+/* ===========================================================================
+   14. ANATOMIE — părțile unui JSON, arătate pe el
+
+   Un tabel „object → dict, array → list" se învață pe de rost și nu ajută la
+   primul răspuns real. Aici stă JSON-ul întreg, iar fiecare parte se aprinde
+   pe el: obiectul principal, tabloul, un obiect din tablou, o pereche
+   cheie–valoare, un tablou de numere. Se vede unde începe și unde se termină
+   fiecare, care e tot ce lipsea.
+   =========================================================================== */
+
+V.anatomie = (gazda, d) => {
+  /* Poartă după ce au deschis câteva părți: scopul e să se uite pe cod, nu
+     să nimerească un răspuns. */
+  if (d.id) gazda.closest(".ix")?.classList.add("exc");
+  const L = d.linii || [];
+  const P = d.parti || [];
+  const CERUT = d.cerute || 4;
+  const vazute = new Set();
+  let ales = null;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="ana">
+      <div class="ana__parti">
+        ${P.map((x, i) => `<button class="ana__p" data-i="${i}" type="button">
+          <span class="ana__pe">${esc(x.et)}</span>
+          ${x.py ? `<span class="ana__py">${esc(x.py)}</span>` : ""}
+        </button>`).join("")}
+      </div>
+      <div class="ana__cod">
+        <span class="ana__acolada"></span>
+        ${L.map((l, i) => `<span class="ana__l" data-l="${i}">${
+          esc(l) || "&nbsp;"}</span>`).join("")}
+      </div>
+      <p class="ana__i">${d.intro || "Apasă pe o parte ca s-o vezi aprinsă."}</p>
+      <p class="ex__stare ana__st"></p>
+    </div>`;
+
+  const cod = gazda.querySelector(".ana__cod");
+  const acol = gazda.querySelector(".ana__acolada");
+  const info = gazda.querySelector(".ana__i");
+  const linii = [...gazda.querySelectorAll(".ana__l")];
+
+  gazda.querySelector(".ana__parti").addEventListener("click", ev => {
+    const b = ev.target.closest(".ana__p");
+    if (!b) return;
+    const i = +b.dataset.i, x = P[i];
+    if (ales === i){                       /* a doua apăsare stinge */
+      ales = null;
+      b.classList.remove("on");
+      linii.forEach(l => l.classList.remove("on"));
+      acol.style.display = "none";
+      info.textContent = d.intro || "";
+      return;
+    }
+    ales = i;
+    gazda.querySelectorAll(".ana__p").forEach(y => y.classList.remove("on"));
+    b.classList.add("on");
+    const a = Math.max(0, Math.min(x.l[0], linii.length - 1));
+    const z = Math.max(a, Math.min(x.l[1], linii.length - 1));
+    linii.forEach((l, k) => l.classList.toggle("on", k >= a && k <= z));
+
+    /* acolada din stânga, exact cât ține partea aleasă */
+    const r1 = linii[a].getBoundingClientRect();
+    const r2 = linii[Math.min(z, linii.length - 1)].getBoundingClientRect();
+    const rc = cod.getBoundingClientRect();
+    acol.style.display = "block";
+    acol.style.top = (r1.top - rc.top + cod.scrollTop) + "px";
+    acol.style.height = (r2.bottom - r1.top) + "px";
+
+    info.innerHTML = `<b>${esc(x.et)}</b> ${x.d || ""}`;
+
+    vazute.add(i);
+    const st = gazda.querySelector(".ana__st");
+    if (vazute.size >= CERUT && d.id){
+      poarta(gazda, d.id, [...vazute].join(","));
+      st.textContent = "Le-ai văzut. Înregistrat.";
+    } else if (d.id){
+      st.textContent = `${vazute.size} din ${CERUT} părți deschise.`;
+    }
+    st.classList.add("vazut");
+  });
+};
+
+
+/* ===========================================================================
+   15. INDICE — ce măsoară SCI, și ce nu
+
+   Prima oră trebuie să lase un singur lucru în cap: indicele e o
+   probabilitate, nu o numărătoare. Formula scrisă pe tablă se uită; aici se
+   mută un cursor și se vede cum aceeași legătură dă alt indice când locul
+   partener e mare sau mic. Asta e exact capcana în care cade oricine
+   deschide datele.
+   =========================================================================== */
+
+V.indice = (gazda, d) => {
+  const A = d.a || { n: "Cluj", u: 300 };
+  const B = d.b || [];                       /* locuri partenere, cu marimea */
+  let i = 0;
+
+  const linii = 1200;                        /* legaturi observate, fix */
+  const maxSci = Math.max(...B.map(x => linii / (A.u * x.u) * 1e6), 1);
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="ind">
+      <div class="ind__scena">
+        <div class="ind__loc ind__loc--a">
+          <span class="ind__ln">${esc(A.n)}</span>
+          <span class="ind__lu"><b>${A.u}</b> mii de utilizatori</span>
+        </div>
+        <div class="ind__pod"><i class="ind__banda"></i>
+          <span class="ind__pn"><b>${linii}</b> de legături</span></div>
+        <div class="ind__loc ind__loc--b">
+          <span class="ind__ln ind__ln--b"></span>
+          <span class="ind__lu ind__lu--b"></span>
+        </div>
+      </div>
+
+      <div class="ind__alege">
+        ${B.map((x, k) => `<button class="ind__b" data-k="${k}" type="button">${
+          esc(x.n)}</button>`).join("")}
+      </div>
+
+      <div class="ind__calcul">
+        <span class="ind__f">
+          <i>SCI</i> =
+          <span class="ind__fr">
+            <span class="ind__sus">legături</span>
+            <span class="ind__jos">utilizatori ${esc(A.n)} × utilizatori partener</span>
+          </span>
+        </span>
+        <span class="ind__rez">= <b class="ind__v">—</b></span>
+      </div>
+
+      <p class="ind__i">${d.intro || ""}</p>
+    </div>`;
+
+  const nume = gazda.querySelector(".ind__ln--b");
+  const util = gazda.querySelector(".ind__lu--b");
+  const val  = gazda.querySelector(".ind__v");
+  const info = gazda.querySelector(".ind__i");
+  const banda = gazda.querySelector(".ind__banda");
+
+  function arata(k){
+    const x = B[k]; if (!x) return;
+    i = k;
+    gazda.querySelectorAll(".ind__b").forEach((b, j) =>
+      b.classList.toggle("on", j === k));
+    nume.textContent = x.n;
+    util.innerHTML = `<b>${x.u.toLocaleString("ro-RO")}</b> mii de utilizatori`;
+    const sci = Math.round(linii / (A.u * x.u) * 1e6);
+    val.textContent = sci.toLocaleString("ro-RO");
+    /* marimea locului partener se vede in cerc, indicele in grosimea benzii */
+    gazda.querySelector(".ind__loc--b").style.setProperty("--m",
+      Math.min(2.4, 0.5 + Math.sqrt(x.u / A.u)));
+    /* grosimea benzii o raportez la cel mai mare indice dintre variante:
+       altfel se lovește de limită la toate și nu se mai vede scăderea */
+    banda.style.setProperty("--g", (3 + 23 * (sci / maxSci)).toFixed(1));
+    info.innerHTML = x.d || "";
+  }
+
+  gazda.querySelector(".ind__alege").addEventListener("click", ev => {
+    const b = ev.target.closest(".ind__b");
+    if (b) arata(+b.dataset.k);
+  });
+
+  arata(0);
 };
 
 

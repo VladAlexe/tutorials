@@ -1,6 +1,6 @@
 {
  "capitol": "c1",
- "total": 18,
+ "total": 19,
  "sarcini": 18,
  "slide": [
   {
@@ -54,25 +54,32 @@
    "nr": 5,
    "id": "s5",
    "grup": "Proiectul",
-   "titlu": "Proiectul și echipele",
+   "titlu": "Ce măsurăm, de fapt",
    "sarcini": []
   },
   {
    "nr": 6,
+   "id": "s5b",
+   "grup": "Proiectul",
+   "titlu": "Proiectul și echipele",
+   "sarcini": []
+  },
+  {
+   "nr": 7,
    "id": "s6",
    "grup": "Proiectul",
    "titlu": "Sursele de date",
    "sarcini": []
   },
   {
-   "nr": 7,
+   "nr": 8,
    "id": "s7",
    "grup": "Proiectul",
    "titlu": "Cluj sau București?",
    "sarcini": []
   },
   {
-   "nr": 8,
+   "nr": 9,
    "id": "s8",
    "grup": "Proiectul",
    "titlu": "Ce formă au datele",
@@ -88,14 +95,14 @@
    ]
   },
   {
-   "nr": 9,
+   "nr": 10,
    "id": "s9",
    "grup": "Tipuri de date",
    "titlu": "Tipuri în Python",
    "sarcini": []
   },
   {
-   "nr": 10,
+   "nr": 11,
    "id": "s10",
    "grup": "Tipuri de date",
    "titlu": "Recunoaște tipul",
@@ -107,7 +114,7 @@
    ]
   },
   {
-   "nr": 11,
+   "nr": 12,
    "id": "s11",
    "grup": "Tipuri de date",
    "titlu": "Capcanele de tip",
@@ -119,7 +126,7 @@
    ]
   },
   {
-   "nr": 12,
+   "nr": 13,
    "id": "s12",
    "grup": "Tipuri de date",
    "titlu": "Tipuri în SQL",
@@ -135,14 +142,14 @@
    ]
   },
   {
-   "nr": 13,
+   "nr": 14,
    "id": "s13",
    "grup": "Tipuri de date",
    "titlu": "Tipuri spațiale",
    "sarcini": []
   },
   {
-   "nr": 14,
+   "nr": 15,
    "id": "s14",
    "grup": "Tipuri de date",
    "titlu": "Tipuri de fișiere",
@@ -158,19 +165,19 @@
    ]
   },
   {
-   "nr": 15,
+   "nr": 16,
    "id": "s15",
    "grup": "JSON",
    "titlu": "Formatul JSON",
    "sarcini": [
     {
-     "id": "c1-desfa",
+     "id": "c1-json-anatomie",
      "fel": "cod"
     }
    ]
   },
   {
-   "nr": 16,
+   "nr": 17,
    "id": "s16",
    "grup": "JSON",
    "titlu": "Drumul până la valoare",
@@ -186,7 +193,7 @@
    ]
   },
   {
-   "nr": 17,
+   "nr": 18,
    "id": "s17",
    "grup": "Mediul de lucru",
    "titlu": "Mediul virtual",
@@ -202,7 +209,7 @@
    ]
   },
   {
-   "nr": 18,
+   "nr": 19,
    "id": "s18",
    "grup": "Proiectul tău",
    "titlu": "Fă-ți proiectul, acum",
