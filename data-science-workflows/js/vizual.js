@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=15");
+    const m = await import("/data-science-workflows/js/colectare.js?v=17");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -621,6 +621,326 @@ V.prag = (gazda, d) => {
     st.textContent = "Rezolvare înregistrată.";
     st.classList.add("vazut");
   });
+
+  deseneaza();
+};
+
+
+/* ===========================================================================
+   9. ÎMBINARE — ce rămâne când lipești două tabele
+
+   `inner`, `left`, `outer` se învață prost din definiție și bine din numărare.
+   Aici stau două tabele mici, unul lângă altul, cu cheile colorate după cum se
+   potrivesc sau nu. Apeși un fel de îmbinare și vezi tabelul care iese: câte
+   rânduri, care au goluri, care au dispărut.
+
+   Poarta se deschide după ce au fost încercate toate felurile: scopul nu e să
+   nimerească unul, e să le vadă pe toate patru una după alta.
+   =========================================================================== */
+
+V.imbinare = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+
+  const chS = d.cheie || "cod";                     /* coloana-cheie */
+  const A = d.stanga || { nume: "stânga", randuri: [] };
+  const B = d.dreapta || { nume: "dreapta", randuri: [] };
+  const colA = Object.keys(A.randuri[0] || {});
+  const colB = Object.keys(B.randuri[0] || {});
+  const doarB = colB.filter(c => c !== chS);        /* ce aduce tabelul din dreapta */
+
+  const FELURI = d.feluri || ["concat", "inner", "left", "right", "outer"];
+  const NUME = { concat: "concat", inner: "inner", left: "left",
+                 right: "right", outer: "outer" };
+  const vazute = new Set();
+  let fel = null;
+
+  /* ---- ce iese din fiecare fel de îmbinare ---------------------------- */
+  function rezultat(f){
+    const cheiA = A.randuri.map(r => r[chS]);
+    const cheiB = B.randuri.map(r => r[chS]);
+
+    if (f === "concat"){
+      /* una sub alta: coloanele se reunesc, ce lipsește rămâne gol */
+      const col = [...new Set([...colA, ...colB])];
+      const r = [...A.randuri.map(x => ({ ...x, _din: "a" })),
+                 ...B.randuri.map(x => ({ ...x, _din: "b" }))];
+      return { col, randuri: r };
+    }
+
+    const col = [...colA, ...doarB];
+    const out = [];
+    const potrivit = k => B.randuri.filter(x => x[chS] === k);
+
+    if (f === "inner" || f === "left"){
+      for (const a of A.randuri){
+        const p = potrivit(a[chS]);
+        if (p.length) p.forEach(b => out.push({ ...a, ...b, _din: "ab" }));
+        else if (f === "left") out.push({ ...a, _din: "a" });
+      }
+    }
+    if (f === "right"){
+      for (const b of B.randuri){
+        const p = A.randuri.filter(x => x[chS] === b[chS]);
+        if (p.length) p.forEach(a => out.push({ ...a, ...b, _din: "ab" }));
+        else out.push({ ...b, _din: "b" });
+      }
+    }
+    if (f === "outer"){
+      for (const a of A.randuri){
+        const p = potrivit(a[chS]);
+        if (p.length) p.forEach(b => out.push({ ...a, ...b, _din: "ab" }));
+        else out.push({ ...a, _din: "a" });
+      }
+      for (const b of B.randuri)
+        if (!cheiA.includes(b[chS])) out.push({ ...b, _din: "b" });
+    }
+    return { col, randuri: out };
+  }
+
+  /* ---- tabelele de sus, cu cheile colorate ---------------------------- */
+  const cheiComune = new Set(A.randuri.map(r => r[chS])
+    .filter(k => B.randuri.some(x => x[chS] === k)));
+
+  const tabel = (t, col, randuri, lat) => `
+    <div class="imb__t">
+      <span class="imb__tn">${esc(t)}<small>${randuri.length} rânduri</small></span>
+      <table class="imb__tb">
+        <thead><tr>${col.map(c =>
+          `<th class="${c === chS ? "ch" : ""}">${esc(c)}</th>`).join("")}</tr></thead>
+        <tbody>${randuri.map(r => `<tr>${col.map(c => {
+          const v = r[c];
+          const gol = v === undefined || v === null || v === "";
+          const ch = c === chS;
+          const sg = ch && !cheiComune.has(r[c]);
+          return `<td class="${ch ? "ch " : ""}${sg ? "sg " : ""}${gol ? "gol" : ""}">${
+            gol ? (lat ? "NaN" : "—") : esc(v)}</td>`;
+        }).join("")}</tr>`).join("")}</tbody>
+      </table>
+    </div>`;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="imb">
+      <div class="imb__sus">
+        ${tabel(A.nume, colA, A.randuri)}
+        <span class="imb__plus">+</span>
+        ${tabel(B.nume, colB, B.randuri)}
+      </div>
+      <p class="imb__leg">
+        <span class="imb__pct imb__pct--ab"></span>cheie în amândouă
+        <span class="imb__pct imb__pct--un"></span>cheie într-unul singur
+      </p>
+      <div class="imb__fel">
+        ${FELURI.map(f => `<button class="imb__b" data-f="${f}" type="button">${
+          f === "concat" ? "pd.concat" : `how=&quot;${NUME[f]}&quot;`}</button>`).join("")}
+      </div>
+      <div class="imb__jos"><p class="imb__gol">Apasă pe un fel de îmbinare.</p></div>
+      <p class="imb__exp"></p>
+      <p class="ex__stare"></p>
+    </div>`;
+
+  const jos = gazda.querySelector(".imb__jos");
+  const exp = gazda.querySelector(".imb__exp");
+  const st  = gazda.querySelector(".ex__stare");
+
+  gazda.addEventListener("click", async e => {
+    const b = e.target.closest(".imb__b");
+    if (!b) return;
+    fel = b.dataset.f;
+    gazda.querySelectorAll(".imb__b").forEach(x => x.classList.toggle("on", x === b));
+    const r = rezultat(fel);
+    jos.innerHTML = tabel(d.numeRez || "rezultat", r.col, r.randuri, true);
+    jos.querySelectorAll("tbody tr").forEach((tr, i) =>
+      tr.classList.add("din-" + (r.randuri[i]._din || "ab")));
+    exp.innerHTML = (d.explicatii || {})[fel] || "";
+
+    vazute.add(fel);
+    if (vazute.size >= FELURI.length){
+      await poarta(gazda, d.id || "imbinare", [...vazute].join(","));
+      st.textContent = "Le-ai văzut pe toate. Înregistrat.";
+      st.classList.add("vazut");
+    } else {
+      st.textContent = `${vazute.size} din ${FELURI.length} încercate.`;
+      st.classList.add("vazut");
+    }
+  });
+};
+
+
+/* ===========================================================================
+   10. COLOANE — ce tip are fiecare coloană
+
+   Un tabel de tipuri cu patru rânduri se citește și se uită. Aici se vede
+   tabelul adevărat, cu valorile lui, și pentru fiecare coloană trebuie ales
+   un tip. Alegerea se face uitându-te la valori, care e exact ce faci în
+   realitate când scrii un `create table`.
+   =========================================================================== */
+
+V.coloane = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const C = d.coloane || [];
+  const T = d.tipuri || [];
+  let verificat = false;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="col">
+      <div class="col__t">
+        <span class="col__tn">${esc(d.fisier || "tabel")}<small>${
+          d.nota || `${C.length} coloane`}</small></span>
+        <table class="col__tb">
+          <thead><tr>${C.map(c => `<th>${esc(c.nume)}</th>`).join("")}</tr></thead>
+          <tbody>${(d.cap || []).map(r => `<tr>${r.map(v =>
+            `<td class="${typeof v === "number" ? "nr" : ""}">${esc(v)}</td>`
+            ).join("")}</tr>`).join("")}</tbody>
+          <tfoot><tr>${C.map((c, i) => `<td>
+            <select class="col__s" data-i="${i}">
+              <option value="">alege tipul…</option>
+              ${T.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("")}
+            </select></td>`).join("")}</tr></tfoot>
+        </table>
+      </div>
+      <div class="col__act">
+        <button class="btn btn--mic btn--tare" data-rol="verifica" type="button"
+          disabled>Verifică</button>
+        <button class="btn btn--mic" data-rol="din-nou" type="button" hidden>Încearcă din nou</button>
+      </div>
+      <p class="ex__raspuns"></p>
+      <div class="col__de"></div>
+      <p class="ex__stare"></p>
+    </div>`;
+
+  const sel = [...gazda.querySelectorAll(".col__s")];
+  const btV = gazda.querySelector('[data-rol="verifica"]');
+  const btN = gazda.querySelector('[data-rol="din-nou"]');
+  const out = gazda.querySelector(".ex__raspuns");
+  const de  = gazda.querySelector(".col__de");
+  const st  = gazda.querySelector(".ex__stare");
+
+  const gata = () => sel.every(s => s.value);
+  sel.forEach(s => s.addEventListener("change", () => {
+    btV.disabled = !gata();
+    if (verificat) return;
+    s.classList.remove("bun", "rau");
+  }));
+
+  btV.onclick = async () => {
+    verificat = true;
+    let bune = 0;
+    sel.forEach((s, i) => {
+      const ok = String(s.value).toUpperCase() === String(C[i].ok).toUpperCase();
+      s.classList.toggle("bun", ok); s.classList.toggle("rau", !ok);
+      if (ok) bune++;
+    });
+    const tot = bune === C.length;
+    out.innerHTML = tot ? `<b>Tot corect.</b> ${d.laBine || ""}`
+                        : `<b>${bune} din ${C.length}.</b> ${d.laRau || ""}`;
+    btN.hidden = tot;
+    if (!tot) return;
+    btV.disabled = true;
+    de.innerHTML = C.map(c => `<p><code>${esc(c.nume)}</code>
+      <b>${esc(c.ok)}</b> ${c.de_ce || ""}</p>`).join("");
+    de.classList.add("vazut");
+    await poarta(gazda, d.id || "coloane", sel.map(s => s.value).join(","));
+    st.textContent = "Rezolvare înregistrată.";
+    st.classList.add("vazut");
+  };
+
+  btN.onclick = () => {
+    verificat = false; btN.hidden = true; out.textContent = "";
+    sel.forEach(s => s.classList.remove("bun", "rau"));
+    btV.disabled = !gata();
+  };
+};
+
+
+/* ===========================================================================
+   11. DESFĂ — cum devine un JSON un tabel
+
+   Ce se întâmplă între răspunsul unui API și `DataFrame` e operația pe care
+   toată lumea o scrie fără s-o vadă. Aici se vede: apeși, se aprinde lista
+   dinăuntru, apoi fiecare element devine un rând, unul câte unul.
+   =========================================================================== */
+
+V.desfa = (gazda, d) => {
+  /* E poartă: se deschide după ce au apăsat de două ori, adică după ce au
+     văzut și lista aprinsă, și tabelul făcut din ea. */
+  if (d.id) gazda.closest(".ix")?.classList.add("exc");
+  const EL = d.elemente || [];
+  const COL = d.coloane || [];
+  const PASI = [
+    d.p0 || "Tot răspunsul, așa cum vine.",
+    d.p1 || "Lista dinăuntru: asta devine tabel.",
+    d.p2 || "Fiecare element al listei devine un rând.",
+  ];
+  let pas = 0;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="dsf">
+      <div class="dsf__doi">
+        <div class="dsf__st">
+          <span class="dsf__et">${esc(d.sursa || "răspunsul API")}</span>
+          <pre class="dsf__j"></pre>
+        </div>
+        <div class="dsf__dr">
+          <span class="dsf__et">DataFrame</span>
+          <table class="dsf__tb">
+            <thead><tr>${COL.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="dsf__gol">Încă nimic.</p>
+        </div>
+      </div>
+      <div class="dsf__act">
+        <button class="btn btn--mic btn--tare" data-rol="pas" type="button"></button>
+        <span class="dsf__stare"></span>
+      </div>
+    </div>`;
+
+  const j    = gazda.querySelector(".dsf__j");
+  const tb   = gazda.querySelector(".dsf__tb tbody");
+  const gol  = gazda.querySelector(".dsf__gol");
+  const bt   = gazda.querySelector('[data-rol="pas"]');
+  const stare= gazda.querySelector(".dsf__stare");
+
+  /* JSON-ul scris de mână, ca să pot aprinde exact ce vreau */
+  function scrieJson(aprins){
+    const cap = `{\n  "${esc(d.cheieCap || "cap")}": { "pagina": 1, "total": ${EL.length} },\n`;
+    const lista = EL.map((e, i) =>
+      `    {${COL.map(c => ` "${esc(c)}": ${
+        typeof e[c] === "number" ? e[c] : `"${esc(e[c])}"`}`).join(",")} }`
+    ).join(",\n");
+    const corp = `  "${esc(d.cheieLista || "date")}": [\n${lista}\n  ]\n}`;
+    j.innerHTML = aprins
+      ? esc(cap) + `<mark>${esc(corp.slice(0, corp.length))}</mark>`
+      : esc(cap + corp);
+  }
+
+  function deseneaza(){
+    scrieJson(pas >= 1);
+    tb.innerHTML = "";
+    if (pas >= 2){
+      EL.forEach((e, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = COL.map(c => `<td class="${
+          typeof e[c] === "number" ? "nr" : ""}">${esc(e[c])}</td>`).join("");
+        tr.style.animationDelay = (i * 90) + "ms";
+        tb.appendChild(tr);
+      });
+    }
+    gol.hidden = pas >= 2;
+    stare.textContent = PASI[Math.min(pas, PASI.length - 1)];
+    bt.textContent = pas === 0 ? (d.buton || "Arată-mi lista")
+                   : pas === 1 ? "Fă tabelul"
+                   : "Încă o dată";
+  }
+
+  bt.onclick = async () => {
+    pas = pas >= 2 ? 0 : pas + 1;
+    deseneaza();
+    if (pas === 2 && d.id) await poarta(gazda, d.id, d.cheieLista || "date");
+  };
 
   deseneaza();
 };

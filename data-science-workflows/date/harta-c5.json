@@ -1,0 +1,268 @@
+{
+ "capitol": "c5",
+ "total": 21,
+ "sarcini": 24,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Despre ce e ora de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "Cursul",
+   "titlu": "De ce nu ajunge un fișier",
+   "sarcini": [
+    {
+     "id": "c5-v1",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Unirea tabelelor",
+   "titlu": "Două operații, nu una",
+   "sarcini": [
+    {
+     "id": "c5-v2",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "Unirea tabelelor",
+   "titlu": "Ce iese din fiecare fel",
+   "sarcini": [
+    {
+     "id": "c5-imbinare-feluri",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 5,
+   "id": "s5",
+   "grup": "Unirea tabelelor",
+   "titlu": "Îmbinarea, în cod",
+   "sarcini": [
+    {
+     "id": "c5-cod-merge",
+     "fel": "cod"
+    },
+    {
+     "id": "c5-v3",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 6,
+   "id": "s6",
+   "grup": "Unirea tabelelor",
+   "titlu": "Când rândurile se înmulțesc",
+   "sarcini": [
+    {
+     "id": "c5-imbinare-explozie",
+     "fel": "cod"
+    },
+    {
+     "id": "c5-v4",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "Unirea tabelelor",
+   "titlu": "Când cheile nu se potrivesc",
+   "sarcini": [
+    {
+     "id": "c5-cod-chei",
+     "fel": "cod"
+    },
+    {
+     "id": "c5-v5",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 8,
+   "id": "s8",
+   "grup": "Unirea tabelelor",
+   "titlu": "Unitatea de analiză",
+   "sarcini": [
+    {
+     "id": "c5-sort-unitate",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 9,
+   "id": "s9",
+   "grup": "Unirea tabelelor",
+   "titlu": "Agregarea",
+   "sarcini": [
+    {
+     "id": "c5-cod-agregare",
+     "fel": "cod"
+    },
+    {
+     "id": "c5-v6",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "Unirea tabelelor",
+   "titlu": "Join pe index",
+   "sarcini": [
+    {
+     "id": "c5-v7",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "Baze de date",
+   "titlu": "Ce e Neon",
+   "sarcini": []
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "Baze de date",
+   "titlu": "Postgres sau MySQL",
+   "sarcini": [
+    {
+     "id": "c5-sort-baze",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s13",
+   "grup": "Baze de date",
+   "titlu": "Conectarea",
+   "sarcini": [
+    {
+     "id": "c5-cod-conectare",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "Baze de date",
+   "titlu": "Scrii și citești",
+   "sarcini": [
+    {
+     "id": "c5-cod-tosql",
+     "fel": "cod"
+    },
+    {
+     "id": "c5-v8",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 15,
+   "id": "s15",
+   "grup": "Baze de date",
+   "titlu": "SQL, cât vă trebuie",
+   "sarcini": [
+    {
+     "id": "c5-cod-sql",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 16,
+   "id": "s16",
+   "grup": "Baze de date",
+   "titlu": "Ramurile bazei",
+   "sarcini": [
+    {
+     "id": "c5-v9",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 17,
+   "id": "s17",
+   "grup": "Baze de date",
+   "titlu": "Unde faci ce",
+   "sarcini": [
+    {
+     "id": "c5-sort-unde",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 18,
+   "id": "s18",
+   "grup": "Baze de date",
+   "titlu": "Verificare",
+   "sarcini": [
+    {
+     "id": "c5-v10",
+     "fel": "verificare"
+    },
+    {
+     "id": "c5-v11",
+     "fel": "verificare"
+    }
+   ]
+  },
+  {
+   "nr": 19,
+   "id": "s19",
+   "grup": "Proiectul tău",
+   "titlu": "Fă tabelul final",
+   "sarcini": [
+    {
+     "id": "c5-dovada-baza",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 20,
+   "id": "s20",
+   "grup": "Proiectul tău",
+   "titlu": "Unitatea voastră",
+   "sarcini": [
+    {
+     "id": "c5-unitate",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 21,
+   "id": "s21",
+   "grup": "Mai departe",
+   "titlu": "Până data viitoare",
+   "sarcini": []
+  }
+ ]
+}

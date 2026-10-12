@@ -97,29 +97,51 @@
 }
 
 /* --- arborele tipurilor -------------------------------------------------- */
-.arb{display:grid;grid-template-columns:minmax(0,1fr) 288px;gap:17px}
-@media(max-width:780px){.arb{grid-template-columns:1fr}}
-.arb__coloane{display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));gap:11px;
-  align-content:flex-start}
-.arb__g{border:1px solid var(--linie);border-radius:9px;padding:10px 11px;background:var(--fundal)}
-.arb__gt{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
-.arb__s{margin-bottom:9px}
-.arb__s:last-child{margin-bottom:0}
-.arb__st{display:block;font-family:var(--sans);font-size:11px;color:var(--text-3);
-  margin-bottom:5px}
+.arb{display:grid;grid-template-columns:minmax(0,1fr) 272px;
+  grid-template-areas:"plan info" "leg info";gap:6px 17px;align-items:start}
+.arb__plan{grid-area:plan;position:relative;display:flex;align-items:center;
+  gap:0;padding:4px 0}
+.arb__linii{position:absolute;inset:0;pointer-events:none;color:var(--linie-2);
+  overflow:visible}
+.arb__rad{flex:none;padding-right:22px}
+.arb__rad span{display:inline-block;font-family:var(--mono);font-size:11px;
+  padding:5px 10px;border:1px solid var(--linie-2);border-radius:6px;
+  background:var(--panza-2);color:var(--text-2);white-space:nowrap}
+.arb__ram{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+.arb__gr{display:flex;align-items:center;gap:0;min-height:30px}
+.arb__gt{flex:none;width:92px;padding-right:20px;font-family:var(--mono);
+  font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-3);text-align:right;line-height:1.25}
+.arb__sub{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+.arb__sr{display:flex;align-items:center;min-height:28px}
+.arb__st{flex:none;width:92px;padding-right:18px;font-family:var(--sans);
+  font-size:10.5px;color:var(--text-3);text-align:right;line-height:1.2}
+.arb__f{flex:1;display:flex;flex-wrap:wrap;gap:5px;min-width:0}
 .arb__c{font-family:var(--mono);font-size:12px;padding:4px 9px;border-radius:6px;
-  border:1px solid var(--linie-2);background:var(--panza);transition:.12s;
-  margin:0 4px 4px 0}
+  border:1px solid var(--linie-2);background:var(--panza);color:var(--text);
+  cursor:pointer;transition:.12s}
 .arb__c:hover{border-color:var(--accent);background:var(--accent-slab)}
 .arb__c.on{background:var(--text);border-color:var(--text);color:var(--fundal)}
 .arb__c.imut{border-style:dashed}
-.arb__i{background:var(--panza-2);border-radius:9px;padding:14px 16px;align-self:flex-start}
+.arb__leg{grid-area:leg;display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  font-family:var(--sans);font-size:11.5px;color:var(--text-3);margin:0;
+  max-width:none}
+.arb__lc{font-family:var(--mono);font-size:10.5px;padding:2px 7px;
+  border-radius:5px;border:1px solid var(--linie-2);background:var(--panza);
+  color:var(--text-2);display:inline-block}
+.arb__lc--i{border-style:dashed;margin-left:14px}
+.arb__i{grid-area:info;background:var(--panza-2);border-radius:9px;
+  padding:14px 16px;align-self:start}
 .arb__i h5{font-family:var(--sans);font-size:14px;font-weight:600;margin:0 0 7px}
 .arb__i h5 code{font-size:14px;background:none;border:0;padding:0}
 .arb__i h5 small{font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:400}
 .arb__i p{font-size:14px;line-height:1.5;margin:0 0 9px;max-width:none}
 .arb__ex{font-size:12px;padding:9px 11px;margin:0 0 9px}
+@media (max-width:760px){
+  .arb{grid-template-columns:minmax(0,1fr);grid-template-areas:"plan" "leg" "info"}
+  .arb__gt{width:62px;padding-right:14px}
+  .arb__st{width:66px;padding-right:12px}
+}
 .arb__la{font-family:var(--mono);font-size:10.5px;color:var(--accent-text);margin:0}
 
 /* --- așteptări ----------------------------------------------------------- */
@@ -386,3 +408,117 @@
 .prg__intreb{margin-top:18px;padding-top:15px;border-top:1px solid var(--linie)}
 .prg__intreb p{font-family:var(--sans);font-size:14px;font-weight:500;
   margin:0 0 10px;max-width:var(--citit)}
+
+/* --- 9. imbinare: doua tabele si ce iese din ele ------------------------- */
+.imb__sus{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;
+  margin:4px 0 0}
+.imb__plus{font-family:var(--mono);font-size:19px;color:var(--text-3);
+  align-self:center;padding:0 2px}
+.imb__t{flex:1 1 220px;min-width:200px}
+.imb__tn{display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--text-3);margin-bottom:5px}
+.imb__tn small{font-size:10px;letter-spacing:0;text-transform:none;
+  color:var(--text-3);font-variant-numeric:lining-nums}
+.imb__tb{width:100%;border-collapse:collapse;font-family:var(--mono);
+  font-size:11.5px;background:var(--panza);border:1px solid var(--linie);
+  border-radius:5px;overflow:hidden}
+.imb__tb th{text-align:left;padding:5px 8px;background:var(--panza-2);
+  color:var(--text-3);font-weight:500;border-bottom:1px solid var(--linie);
+  white-space:nowrap}
+.imb__tb td{padding:5px 8px;border-bottom:1px solid var(--linie);color:var(--text);
+  white-space:nowrap;font-variant-numeric:lining-nums}
+.imb__tb tr:last-child td{border-bottom:0}
+.imb__tb th.ch,.imb__tb td.ch{background:var(--accent-slab);
+  color:var(--accent-text);font-weight:500}
+/* o cheie care nu se potriveste nicaieri: gri, taiata cu o linie punctata.
+   Diferenta fata de celelalte trebuie sa se vada de la distanta, de pe
+   proiector, nu doar de aproape. */
+.imb__tb td.ch.sg{background:var(--panza-2);color:var(--text-3);
+  box-shadow:inset 2px 0 0 var(--linie-2);font-style:italic}
+.imb__tb td.gol{color:var(--nu);background:var(--nu-slab);font-style:normal}
+.imb__leg{display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  font-family:var(--sans);font-size:11.5px;color:var(--text-3);
+  margin:9px 0 0;max-width:none}
+.imb__pct{width:13px;height:13px;border-radius:3px;display:inline-block;
+  margin-left:12px;flex:none}
+.imb__pct--ab{background:var(--accent-slab);border:1px solid var(--accent);
+  margin-left:0}
+.imb__pct--un{background:var(--panza-2);border:1px solid var(--linie-2);
+  box-shadow:inset 2px 0 0 var(--linie-2)}
+.imb__fel{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0 0;
+  padding-top:14px;border-top:1px solid var(--linie)}
+.imb__b{font-family:var(--mono);font-size:11.5px;padding:6px 11px;
+  background:var(--panza);border:1px solid var(--linie-2);border-radius:5px;
+  color:var(--text-2);cursor:pointer;transition:.12s}
+.imb__b:hover{border-color:var(--accent);color:var(--accent-text)}
+.imb__b.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.imb__jos{margin-top:14px}
+.imb__gol{font-family:var(--sans);font-size:13px;color:var(--text-3);
+  margin:0;max-width:none}
+.imb__jos .imb__t{flex:none;width:100%}
+.imb__jos tbody tr.din-a td:not(.ch){box-shadow:inset 2px 0 0 var(--linie-2)}
+.imb__jos tbody tr.din-ab td.ch{background:var(--accent-slab)}
+.imb__exp{font-family:var(--sans);font-size:13.5px;color:var(--text-2);
+  margin:11px 0 0;max-width:var(--citit);line-height:1.55}
+.imb__exp b{color:var(--text);font-weight:600}
+@media (max-width:620px){
+  .imb__plus{display:none}
+  .imb__t{flex:1 1 100%}
+}
+
+/* --- 10. coloane: ce tip are fiecare coloana ---------------------------- */
+.col__t{border:1px solid var(--linie);border-radius:7px;overflow:hidden;
+  background:var(--panza)}
+.col__tn{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  padding:7px 11px;background:var(--panza-2);border-bottom:1px solid var(--linie);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-3)}
+.col__tn small{font-size:10px;letter-spacing:0;font-variant-numeric:lining-nums}
+.col__tb{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px}
+.col__tb th{text-align:left;padding:7px 11px;color:var(--text-2);font-weight:500;
+  border-bottom:1px solid var(--linie);white-space:nowrap}
+.col__tb td{padding:6px 11px;border-bottom:1px solid var(--linie);color:var(--text);
+  white-space:nowrap}
+.col__tb td.nr{font-variant-numeric:lining-nums}
+.col__tb tfoot td{background:var(--panza-2);border-bottom:0;border-top:1px solid var(--linie)}
+.col__s{font-family:var(--mono);font-size:11.5px;padding:5px 7px;width:100%;
+  min-width:118px;border:1px solid var(--linie-2);border-radius:5px;
+  background:var(--panza);color:var(--text);cursor:pointer}
+.col__s:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.col__s.bun{border-color:var(--ok);background:var(--ok-slab);color:var(--ok)}
+.col__s.rau{border-color:var(--nu);background:var(--nu-slab);color:var(--nu)}
+.col__act{display:flex;gap:8px;margin-top:13px}
+.col__de{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--linie)}
+.col__de.vazut{display:block}
+.col__de p{font-family:var(--sans);font-size:13px;line-height:1.5;margin:0 0 6px;
+  color:var(--text-2);max-width:none}
+.col__de p:last-child{margin-bottom:0}
+.col__de code{font-size:11.5px}
+.col__de b{font-family:var(--mono);font-size:11.5px;color:var(--accent-text);
+  margin-right:5px}
+
+/* --- 11. desfa: din JSON in tabel --------------------------------------- */
+.dsf__doi{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.dsf__et{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-3);margin-bottom:6px}
+.dsf__j{font-family:var(--mono);font-size:11px;line-height:1.55;margin:0;
+  padding:11px 13px;background:var(--ed-fundal);color:var(--ed-text);
+  border-radius:7px;overflow-x:auto;white-space:pre;max-height:290px}
+.dsf__j mark{background:rgba(109,160,196,.22);color:inherit;border-radius:3px;
+  box-shadow:0 0 0 1px rgba(109,160,196,.45)}
+.dsf__tb{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px;
+  background:var(--panza);border:1px solid var(--linie);border-radius:7px;
+  overflow:hidden}
+.dsf__tb th{text-align:left;padding:6px 10px;background:var(--panza-2);
+  color:var(--text-3);font-weight:500;border-bottom:1px solid var(--linie);
+  white-space:nowrap}
+.dsf__tb td{padding:6px 10px;border-bottom:1px solid var(--linie);color:var(--text);
+  white-space:nowrap}
+.dsf__tb td.nr{font-variant-numeric:lining-nums}
+.dsf__tb tbody tr{animation:dsf-in .34s both}
+@keyframes dsf-in{from{opacity:0;transform:translateX(-7px)}to{opacity:1;transform:none}}
+.dsf__gol{font-family:var(--sans);font-size:12.5px;color:var(--text-3);
+  margin:9px 0 0;max-width:none}
+.dsf__act{display:flex;align-items:center;gap:12px;margin-top:14px}
+.dsf__stare{font-family:var(--sans);font-size:13px;color:var(--text-2)}
+@media (max-width:720px){ .dsf__doi{grid-template-columns:minmax(0,1fr)} }

@@ -26,7 +26,7 @@ RAD = pathlib.Path(__file__).resolve().parent.parent
 
 # Ștampila împotriva memoriei browserului. Nu se scrie de mână aici: o
 # rescrie `_build/versiune.py` peste toate fișierele deodată, la fiecare push.
-V = "?v=5"
+V = "?v=16"
 
 
 # ---------------------------------------------------------------- bucăți ---
@@ -39,7 +39,9 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "url": "Disecție", "metode": "Potrivire", "cronologie": "Cronologie",
        "flux": "Vezi cum circulă", "raspuns": "Trimite și vezi",
        "zone": "Mută tu", "ramuri": "Desenează tu", "conflict": "Rezolvă tu",
-       "cote": "Date reale", "prag": "Unde tai"}
+       "cote": "Date reale", "prag": "Unde tai",
+       "imbinare": "Încearcă felurile", "tabel": "Tabel",
+       "coloane": "Declară tipul", "desfa": "Vezi cum se desface"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 
@@ -211,7 +213,8 @@ class Lectie:
                    "dovada": "cod", "tipuri": "cod", "autoevaluare": "cod",
                    "asteptari": "cod", "url": "cod", "metode": "cod",
                    "raspuns": "cod", "zone": "cod", "ramuri": "cod",
-                   "conflict": "cod", "prag": "cod"}
+                   "conflict": "cod", "prag": "cod", "imbinare": "cod",
+                   "coloane": "cod", "desfa": "cod"}
 
     def scrie_harta(self):
         """Ce sarcini stau pe fiecare slide.
@@ -223,7 +226,10 @@ class Lectie:
         """
         slides = []
         for i, s in enumerate(self.S, 1):
-            h, gasite = s["slide"], []
+            # și ce stă în `dupa`: o verificare pusă sub slide e tot o
+            # poartă în browser, deci trebuie să apară și în hartă,
+            # altfel profesorul n-o vede la slide-ul pe care e.
+            h, gasite = s["slide"] + s.get("dupa", ""), []
 
             for m in re.finditer(r'class="verif" data-id="([^"]+)"', h):
                 gasite.append((m.start(), {"id": m.group(1), "fel": "verificare"}))
@@ -267,9 +273,9 @@ class Lectie:
         self.scrie_lectie()
         self.scrie_tutorial()
         h = self.scrie_harta()
-        porti = sum(len(re.findall(r'class="verif"', s["slide"])) +
+        porti = sum(len(re.findall(r'class="verif"', s["slide"] + s.get("dupa", ""))) +
                     len(re.findall(r'data-ix="(?:' + "|".join(self.FEL_SARCINA) + r')"',
-                                   s["slide"]))
+                                   s["slide"] + s.get("dupa", "")))
                     for s in self.S)
         print(f"Cursul {self.nr}: {len(self.S)} slide-uri, {porti} porți, "
               f"{h['sarcini']} sarcini în hartă")

@@ -6,9 +6,9 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=15";
-import EXERCITII from "./exercitii.js?v=15";
-import VIZUAL from "./vizual.js?v=15";
+import GRAFICE from "./grafice.js?v=17";
+import EXERCITII from "./exercitii.js?v=17";
+import VIZUAL from "./vizual.js?v=17";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL };
 
@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=15");
+    const m = await import("/data-science-workflows/js/colectare.js?v=17");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 400), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -140,7 +140,7 @@ C.url = (gazda, date) => {
     gazda.closest(".ix")?.classList.add("gata");
     document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
     try {
-      const m = await import("/data-science-workflows/js/colectare.js?v=15");
+      const m = await import("/data-science-workflows/js/colectare.js?v=17");
       const salvat = await m.salveazaCod({
         exercitiuId: date.id, cod: ales.join(" | "), trecut: true });
       st.textContent = salvat ? "Rezolvare înregistrată."
@@ -395,7 +395,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=15");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=17");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -403,42 +403,117 @@ C.autoevaluare = (gazda, date) => {
 
 /* --- 6. Arborele tipurilor din Python ------------------------------------ */
 C.arbore = (gazda, date) => {
-  const R = date.ramuri;
+  /* Un arbore desenat ca arbore: rădăcină la stânga, familii care se desfac
+     spre dreapta, frunzele la capăt. Liniile se trag cu SVG DUPĂ ce browserul
+     a așezat cutiile, fiindcă numai atunci se știe unde sunt. Se redesenează
+     la fiecare schimbare de lățime. Un grid de cartonașe spune aceleași
+     cuvinte, dar nu arată că `int` stă sub „numere”: asta e tot rostul. */
+  const R = date.ramuri || [];
+  const rad = date.radacina || "valoare";
+
+  const chip = t => `<button class="arb__c ${t.imut ? "imut" : ""}"
+      data-n="${t.n}" type="button">${t.n}</button>`;
+
   gazda.innerHTML = `
-    <p class="ix__sarcina">${date.sarcina || "Apasă pe orice tip."}</p>
+    ${date.sarcina ? `<p class="ix__sarcina">${date.sarcina}</p>` : ""}
     <div class="arb">
-      <div class="arb__coloane">${R.map((g, i) => `
-        <div class="arb__g">
-          <span class="arb__gt">${g.nume}</span>
-          ${g.sub ? g.sub.map(s => `<div class="arb__s">
-              <span class="arb__st">${s.nume}</span>
-              ${s.tipuri.map(t => chip(t)).join("")}
-            </div>`).join("") : g.tipuri.map(t => chip(t)).join("")}
-        </div>`).join("")}
+      <div class="arb__plan">
+        <svg class="arb__linii" aria-hidden="true"></svg>
+        <div class="arb__rad"><span>${rad}</span></div>
+        <div class="arb__ram">
+          ${R.map((g, i) => `
+            <div class="arb__gr">
+              <span class="arb__gt" data-g="${i}">${g.nume}</span>
+              <div class="arb__sub">
+                ${g.sub
+                  ? g.sub.map((sb, j) => `
+                      <div class="arb__sr">
+                        <span class="arb__st" data-s="${i}-${j}">${sb.nume}</span>
+                        <div class="arb__f">${sb.tipuri.map(chip).join("")}</div>
+                      </div>`).join("")
+                  : `<div class="arb__sr"><div class="arb__f">${
+                      g.tipuri.map(chip).join("")}</div></div>`}
+              </div>
+            </div>`).join("")}
+        </div>
       </div>
-      <div class="arb__i"><h5>${date.titlu || "Tipurile din Python"}</h5>
+      ${date.legenda ? `<p class="arb__leg">
+         <span class="arb__lc">list</span>se poate schimba
+         <span class="arb__lc arb__lc--i">tuple</span>nu se poate schimba</p>` : ""}
+      <div class="arb__i"><h5>${date.titlu || "Apasă pe orice tip"}</h5>
         <p>${date.intro || ""}</p></div>
     </div>`;
 
   const toate = R.flatMap(g => g.sub ? g.sub.flatMap(s => s.tipuri) : g.tipuri);
-  const info = gazda.querySelector(".arb__i");
-  gazda.querySelector(".arb__coloane").addEventListener("click", ev => {
+  const info  = gazda.querySelector(".arb__i");
+  const plan  = gazda.querySelector(".arb__plan");
+  const svg   = gazda.querySelector(".arb__linii");
+
+  /* ---- liniile ---------------------------------------------------------
+     Cot în trei bucăți: ies pe orizontală din părinte, cobor pe verticală la
+     jumătatea drumului, intru pe orizontală în copil. Așa se văd ramurile
+     care pleacă din același punct, ceea ce un arc curb ascunde. */
+  function trage(){
+    const P = plan.getBoundingClientRect();
+    if (!P.width) return;
+    svg.setAttribute("viewBox", `0 0 ${P.width} ${P.height}`);
+    svg.setAttribute("width", P.width);
+    svg.setAttribute("height", P.height);
+
+    const pct = el => {
+      const r = el.getBoundingClientRect();
+      return { st: r.left - P.left, dr: r.right - P.left,
+               y: r.top - P.top + r.height / 2 };
+    };
+    const cot = (a, b) => {
+      const A = pct(a), B = pct(b), m = A.dr + Math.max(9, (B.st - A.dr) / 2);
+      return `M${A.dr.toFixed(1)},${A.y.toFixed(1)} H${m.toFixed(1)} ` +
+             `V${B.y.toFixed(1)} H${B.st.toFixed(1)}`;
+    };
+
+    const d = [];
+    const radEl = gazda.querySelector(".arb__rad span");
+    gazda.querySelectorAll(".arb__gt").forEach(gt => {
+      d.push(cot(radEl, gt));
+      const gr = gt.closest(".arb__gr");
+      const sts = gr.querySelectorAll(".arb__st");
+      /* Spre frunze trag o singură linie, la primul chip din rând: chipurile
+         de pe același rând se citesc oricum ca un grup, iar o linie pentru
+         fiecare ar trece peste cele dinainte. */
+      if (sts.length){
+        sts.forEach(st => {
+          d.push(cot(gt, st));
+          const c = st.closest(".arb__sr").querySelector(".arb__c");
+          if (c) d.push(cot(st, c));
+        });
+      } else {
+        const c = gr.querySelector(".arb__c");
+        if (c) d.push(cot(gt, c));
+      }
+    });
+    svg.innerHTML = `<path d="${d.join(" ")}" fill="none"
+      stroke="currentColor" stroke-width="1" stroke-linejoin="round"/>`;
+  }
+
+  trage();
+  requestAnimationFrame(trage);               /* după ce se încarcă fonturile */
+  if (window.ResizeObserver) new ResizeObserver(trage).observe(plan);
+
+  /* ---- apăsarea pe un tip --------------------------------------------- */
+  gazda.querySelector(".arb__ram").addEventListener("click", ev => {
     const b = ev.target.closest(".arb__c");
     if (!b) return;
     gazda.querySelectorAll(".arb__c").forEach(x => x.classList.remove("on"));
     b.classList.add("on");
     const t = toate.find(x => x.n === b.dataset.n);
+    if (!t) return;
     info.innerHTML = `<h5><code>${t.n}</code> ${t.cls ? `<small>${t.cls}</small>` : ""}</h5>
       <p>${t.d}</p>
       ${t.ex ? `<pre class="arb__ex"><code>${t.ex.replace(/</g,"&lt;")}</code></pre>` : ""}
       ${t.la ? `<p class="arb__la">${t.la}</p>` : ""}`;
   });
-
-  function chip(t){
-    return `<button class="arb__c ${t.imut ? "imut" : ""}" data-n="${t.n}" type="button">
-      ${t.n}</button>`;
-  }
 };
+
 
 /* --- 7. Așteptări: text liber, citit de profesor -------------------------
    A doua jumătate a primului punct din planul cursului: „evaluarea
@@ -477,7 +552,7 @@ C.asteptari = (gazda, date) => {
       || "Le citesc pe toate înainte de cursul următor."}`;
     poarta(gazda, date.id, "scris");
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=15");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=17");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

@@ -23,7 +23,7 @@ export const LECTII = [
     titlu:"Introducere și configurare",
     scurt:"Introducere",
     rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
-    stare:"gata", sarcini:17,
+    stare:"gata", sarcini:18,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" },
 
   { nr:2, cheie:"c2-colectarea-prin-api",
@@ -50,8 +50,8 @@ export const LECTII = [
   { nr:5, cheie:"c5-agregare-si-baze-de-date",
     titlu:"Agregare și baze de date",
     scurt:"Agregare",
-    rezumat:"Îmbinarea surselor, unitatea de analiză, și de ce un tabel mare are nevoie de o bază de date.",
-    stare:"schita", sarcini:null,
+    rezumat:"Îmbinarea surselor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-un Postgres pe Neon.",
+    stare:"gata", sarcini:24,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c5_agregare.ipynb" },
 
   { nr:6, cheie:"c6-analiza-exploratorie",

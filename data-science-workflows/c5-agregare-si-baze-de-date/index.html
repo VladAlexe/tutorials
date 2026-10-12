@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 5. Agregare și baze de date — Fluxuri de lucru</title>
-<meta name="description" content="Îmbinarea surselor, unitatea de analiză, și de ce un tabel mare are nevoie de o bază de date.">
+<meta name="description" content="Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=15">
-<link rel="stylesheet" href="../css/intrare.css?v=15">
-<script src="../js/tema.js?v=15"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=17">
+<link rel="stylesheet" href="../css/intrare.css?v=17">
+<script src="../js/tema.js?v=17"></script>
 </head>
 <body>
 
@@ -19,66 +19,174 @@
 <main>
 <div class="pagina">
 
+  <!-- ===================== intrarea ===================== -->
   <header class="intrare">
     <div class="intrare__sus">
       <span class="intrare__nr">Lecția 5</span>
-      <span class="et">în lucru</span>
+      <span class="et et--ok">gata</span>
     </div>
     <h1>Agregare și baze de date</h1>
-    <p class="deck">Îmbinarea surselor, unitatea de analiză, și de ce un tabel mare are nevoie de o bază de date.</p>
+    <p class="deck">Ai mai multe tabele curate. Azi devin unul singur, și pleacă dintr-un folder într-un loc din care se poate întreba.</p>
 
-    <div class="intrare__fapte" style="margin-top:28px">
-      <span class="btn" style="cursor:default;opacity:.6">Lecția se publică înainte de curs</span>
+    <div class="intrare__meta">
+      <div class="fisa"><b>90</b><span>minute</span></div>
+      <div class="fisa"><b id="f-slide">21</b><span>slide-uri</span></div>
+      <div class="fisa"><b id="f-verif">11</b><span>verificări</span></div>
+      <div class="fisa"><b>13</b><span>interactive</span></div>
+      <div class="fisa"><b>1</b><span>caiet</span></div>
+    </div>
+
+    <div class="intrare__fapte">
+      <a class="intra-lectie" id="btn-intra" href="lectie/">
+        <span>Intră în lecție</span>
+        <small id="btn-sub">slide 1</small>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg>
+      </a>
+      <a class="btn" href="tutorial/">Manualul cursului</a>
       <a class="btn" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c5_agregare.ipynb" target="_blank" rel="noopener">Caietul lecției</a>
     </div>
   </header>
 
+  <!-- ===================== corpul ===================== -->
   <div class="doi">
+
+    <!-- ---------- stânga ---------- -->
     <div>
+
       <section class="bloc">
-        <div class="bloc__cap"><span class="nr">01</span><h2>Ce va conține</h2></div>
-        <p style="color:var(--text-2);font-size:16.5px">Planul lecției. Conținutul interactiv,
-        verificările și caietul se adaugă înainte de ședința din semestru.</p>
+        <div class="bloc__cap"><span class="nr">01</span><h2>Despre lecția asta</h2></div>
+        <p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, indicatorii
+        Băncii Mondiale în altul, ce ați adus de la Eurostat în al treilea. Merge cât
+        timp te uiți la ele pe rând. În momentul în care vrei să spui ceva de forma
+        „țările cu legătură socială puternică au și X”, îți trebuie un singur tabel.</p>
+        <p>Unirea tabelelor pare o operație tehnică și e, de fapt, o decizie de
+        cercetare: ce păstrezi când o sursă n-are o țară pe care cealaltă o are.
+        Fiecare fel de join e un răspuns diferit la întrebarea asta, iar răspunsul
+        schimbă câte rânduri rămân în analiză. Jumătate din oră o petrecem acolo,
+        inclusiv la cele două capcane care nu dau nicio eroare: chei care nu se
+        potrivesc, și rânduri care se înmulțesc pe tăcute.</p>
+        <p>A doua jumătate mută rezultatul dintr-un CSV într-un Postgres pe Neon. Nu
+        pentru că e mai modern, ci pentru că din momentul în care lucrați mai mulți pe
+        aceleași date, fișierul devine problema.</p>
+        </section>
+
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">02</span><h2>La final vei putea</h2></div>
         <ul class="obiective">
-          <li>Unitatea de analiză și cheia de îmbinare: ce decide ce e un rând</li>
-          <li>Cele două merge-uri ale datelor diadice, unul pentru fiecare capăt al perechii</li>
-          <li>De la fișiere la o bază de date relațională: tabele, chei, indecși</li>
-          <li>SELECT, JOIN, GROUP BY pe un tabel pe care nu îl poți citi cu ochiul</li>
-          <li>Încărcarea tabelului unificat, de unde citește toată echipa</li>
+          <li>Să spui, înainte să scrii codul, dacă vrei mai multe rânduri sau mai multe coloane, și deci dacă e <code>concat</code> sau <code>merge</code>.</li>
+          <li>Să alegi între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code> după ce vrei să păstrezi, nu după ce ți-a rămas în minte.</li>
+          <li>Să recunoști un join care ți-a înmulțit rândurile, și să-l oprești cu <code>validate</code>.</li>
+          <li>Să numeri cheile comune înainte de îmbinare, în loc să te întrebi după de ce tabelul e gol.</li>
+          <li>Să răspunzi, într-o propoziție, la întrebarea „ce e un rând în tabelul nostru final”.</li>
+          <li>Să agregi de la o unitate la alta, știind că alegerea dintre sumă, medie și număr de parteneri e teoretică, nu tehnică.</li>
+          <li>Să explici de ce o echipă de trei oameni are nevoie de o bază de date, și de ce mărimea datelor n-are legătură cu asta.</li>
+          <li>Să te conectezi la Neon din Python fără să scrii parola nicăieri în cod.</li>
+          <li>Să scrii tabelul în bază cu o cheie primară, și să-l citești înapoi.</li>
+          <li>Să scrii un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code>, și să știi când e mai bine acolo decât în pandas.</li>
         </ul>
       </section>
 
       <section class="bloc">
-        <div class="bloc__cap"><span class="nr">02</span><h2>Ce adaugi la proiect</h2></div>
-        <p>Tabelul unificat, încărcat în baza de date, de unde citesc toți membrii echipei.</p>
+        <div class="bloc__cap"><span class="nr">03</span><h2>Prin ce treci</h2></div>
+        <p style="color:var(--text-2);font-size:16.5px">Lecția e împărțită în slide-uri.
+        Poți sări direct la oricare, dar slide-urile cu verificare se deschid pe rând:
+        nu treci mai departe până nu răspunzi. Nu contează dacă nimerești corect din
+        prima, contează să te oprești.</p>
+        <nav class="harta" id="harta"><div style="padding:16px;color:var(--text-3);
+          font-family:var(--sans);font-size:13.5px">Se încarcă cuprinsul…</div></nav>
+      </section>
+
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">04</span><h2>De ce ai nevoie, înainte</h2></div>
+        <p>Prima jumătate merge cu ce aveți deja. Pentru a doua vă trebuie un cont, care
+        e gratuit:</p>
+        <ol>
+          <li>Fișierele curate de la cursul 4, în <code>date/curat/</code>. Pe ele îmbinăm.</li>
+          <li>Un cont pe <a class="leg" href="https://neon.com/" target="_blank" rel="noopener">Neon</a>, și un proiect nou. Planul gratuit e mai mult decât suficient.</li>
+          <li>Două pachete: <code>pip install sqlalchemy psycopg[binary] python-dotenv</code>.</li>
+          <li>Un fișier <code>.env</code> în rădăcina proiectului, și <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>
+        </ol>
+        <p>Dacă nu apucați să faceți contul până la curs, partea de pandas se poate urmări
+        oricum; baza o puteți face după.</p>
+      </section>
+
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">05</span><h2>Ce adaugi la proiect</h2></div>
+        <ul class="obiective">
+          <li><code>agregare/uneste.py</code> — de la fișierele curate la un singur tabel, cu <code>how</code> scris explicit și cu numărul de rânduri tipărit înainte și după.</li>
+          <li><code>baza/incarca.py</code> — tabelul în Neon, cu o cheie primară.</li>
+          <li><code>baza/intrebari.sql</code> — un <code>select</code> al vostru, legat de întrebarea de cercetare.</li>
+          <li>În <code>decizii.md</code>: unitatea de analiză, într-o propoziție.</li>
+        </ul>
         <p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-        cu atribute aduse prin API de la Eurostat și Banca Mondială. Dacă vrei să te uiți
-        peste surse din timp, sunt toate adunate în
+        cu atribute aduse prin API de la Eurostat și Banca Mondială. Toate sunt adunate în
         <a class="leg" href="../surse-de-date.html">pagina cu sursele de date</a>.</p>
       </section>
+
     </div>
 
+    <!-- ---------- dreapta ---------- -->
     <aside class="doi__dr">
-      <div class="panou-c">
-        <span class="panou__et">Pregătire</span>
-        <p style="font-family:var(--sans);font-size:13.5px;line-height:1.5;color:var(--text-2);max-width:none">
-        Până atunci, mergi mai departe cu
-        <a class="leg" href="../c4-curatarea-datelor/">lecția 4</a> și ține mediul de
-        lucru pregătit.</p>
+
+      <div class="a-mea" id="a-mea">
+        <span class="a-mea__inel" style="--p:0"><i id="a-mea-p">0%</i></span>
+        <div>
+          <div class="a-mea__t" id="a-mea-t">Nu ai început lecția</div>
+          <div class="a-mea__d" id="a-mea-d">Progresul se ține minte în browser.</div>
+        </div>
       </div>
+
+      <div class="panou-c">
+        <span class="panou__et">Materiale</span>
+        <div class="resurse">
+          <a class="resursa" href="tutorial/">
+            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
+            <span class="resursa__txt"><span class="resursa__t">Manualul cursului</span><span class="resursa__d">Tot materialul, explicat pe larg</span></span>
+          </a>
+          <a class="resursa" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c5_agregare.ipynb" target="_blank" rel="noopener">
+            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg></span>
+            <span class="resursa__txt"><span class="resursa__t">Caietul lecției</span><span class="resursa__d">Jupyter, îmbinarea pas cu pas</span></span>
+          </a>
+          <a class="resursa" href="../surse-de-date.html">
+            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6"/><path d="M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></svg></span>
+            <span class="resursa__txt"><span class="resursa__t">Sursele de date</span><span class="resursa__d">Tot ce folosim, cu coduri</span></span>
+          </a>
+          <a class="resursa" href="../c4-curatarea-datelor/">
+            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M7 11h10M10 16h4"/></svg></span>
+            <span class="resursa__txt"><span class="resursa__t">Lecția 4: curățarea</span><span class="resursa__d">Fișierele de la care pornim azi</span></span>
+          </a>
+        </div>
+      </div>
+
       <div class="panou-c">
         <span class="panou__et">Legături oficiale</span>
         <div class="legaturi">
-          <a class="legatura" href="https://www.postgresql.org/docs/current/tutorial.html" target="_blank" rel="noopener"><span class="legatura__t">SQL, tutorial</span><span class="legatura__g">PostgreSQL</span></a>
-          <a class="legatura" href="https://duckdb.org/docs/" target="_blank" rel="noopener"><span class="legatura__t">DuckDB</span><span class="legatura__g">docs</span></a>
-          <a class="legatura" href="https://pandas.pydata.org/docs/user_guide/merging.html" target="_blank" rel="noopener"><span class="legatura__t">pandas merge</span><span class="legatura__g">docs</span></a>
+          <a class="legatura" href="https://pandas.pydata.org/docs/user_guide/merging.html" target="_blank" rel="noopener"><span class="legatura__t">merge, join, concat</span><span class="legatura__g">pandas</span></a>
+          <a class="legatura" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html" target="_blank" rel="noopener"><span class="legatura__t">groupby</span><span class="legatura__g">pandas</span></a>
+          <a class="legatura" href="https://neon.com/docs/introduction" target="_blank" rel="noopener"><span class="legatura__t">Ce e Neon</span><span class="legatura__g">docs</span></a>
+          <a class="legatura" href="https://neon.com/docs/introduction/branching" target="_blank" rel="noopener"><span class="legatura__t">Ramuri de bază de date</span><span class="legatura__g">Neon</span></a>
+          <a class="legatura" href="https://www.postgresql.org/docs/current/tutorial.html" target="_blank" rel="noopener"><span class="legatura__t">Tutorialul PostgreSQL</span><span class="legatura__g">docs</span></a>
+          <a class="legatura" href="https://docs.sqlalchemy.org/en/20/core/engines.html" target="_blank" rel="noopener"><span class="legatura__t">create_engine</span><span class="legatura__g">SQLAlchemy</span></a>
+          <a class="legatura" href="https://www.iso.org/iso-3166-country-codes.html" target="_blank" rel="noopener"><span class="legatura__t">Codurile de țară ISO 3166</span><span class="legatura__g">ISO</span></a>
         </div>
       </div>
+
+      <div class="panou-c">
+        <span class="panou__et">Cum merge lecția</span>
+        <p style="font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--text-2);max-width:none">
+        Un slide pe ecran. Treci cu <kbd>→</kbd> și <kbd>←</kbd>, sari tastând numărul
+        slide-ului, cauți cu <kbd>Ctrl</kbd>+<kbd>K</kbd>. Fiecare slide are adresa lui,
+        deci „slide-ul 7” e același pentru toată grupa.</p>
+      </div>
+
     </aside>
   </div>
 
+  <!-- ===================== celelalte lecții ===================== -->
   <section class="altele">
-    <div class="bloc__cap"><span class="nr">03</span><h2>Celelalte lecții</h2></div>
+    <div class="bloc__cap"><span class="nr">06</span><h2>Celelalte lecții</h2></div>
+    <p style="color:var(--text-2);font-size:16.5px">Opt lecții, un singur proiect. Fiecare
+    adaugă o piesă la depozitul echipei.</p>
     <div class="altele__sina" id="altele"></div>
   </section>
 
@@ -88,15 +196,82 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, RADACINA } from "../js/curs.js?v=15";
+import { LECTII, RADACINA } from "../js/curs.js?v=17";
+
+const CHEIE = "c5";
+const AICI  = "c5-agregare-si-baze-de-date";
+
+/* --- celelalte lecții ---------------------------------------------------- */
 document.getElementById("altele").innerHTML = LECTII.map(l => `
-  <a class="mini ${l.cheie === "c5-agregare-si-baze-de-date" ? "aceasta" : ""}" href="${RADACINA}/${l.cheie}/">
+  <a class="mini ${l.cheie === AICI ? "aceasta" : ""}" href="${RADACINA}/${l.cheie}/">
     <span class="mini__n">${String(l.nr).padStart(2,"0")}</span>
     <span class="mini__t">${l.titlu}</span>
     <span class="mini__s">${l.stare === "gata" ? "gata" : "în lucru"}</span>
   </a>`).join("");
+
+/* --- cuprinsul, citit direct din pagina lecției --------------------------
+   O singură sursă de adevăr: slide-urile sunt definite în lectie/index.html,
+   iar pagina asta le citește de acolo. Dacă adaug un slide, harta se schimbă
+   singură. */
+let harta = null;
+try {
+  const r = await fetch("lectie/", { cache:"no-cache" });
+  const d = new DOMParser().parseFromString(await r.text(), "text/html");
+  const sl = [...d.querySelectorAll(".sld")];
+  if (sl.length){
+    harta = sl.map((s, i) => ({
+      n: i + 1,
+      t: s.dataset.t || s.querySelector("h2")?.textContent?.trim() || `Slide ${i+1}`,
+      grup: s.dataset.grup || "",
+      verif: s.querySelectorAll(".verif").length
+    }));
+  }
+} catch { /* dacă nu se poate citi, pagina rămâne completă fără hartă */ }
+
+const zona = document.getElementById("harta");
+if (!harta){
+  zona.innerHTML = `<div style="padding:16px"><a class="leg" href="lectie/">Deschide
+    lecția</a> ca să vezi cuprinsul.</div>`;
+} else {
+  document.getElementById("f-slide").textContent = harta.length;
+  document.getElementById("f-verif").textContent = harta.reduce((a,x) => a + x.verif, 0);
+
+  let html = "", grup = null;
+  for (const x of harta){
+    if (x.grup && x.grup !== grup){ grup = x.grup; html += `<div class="harta__grup">${grup}</div>`; }
+    html += `<a class="harta__r" href="lectie/#${x.n}">
+      <span class="harta__n">${x.n}</span>
+      <span class="harta__t">${x.t}</span>
+      ${x.verif ? `<span class="harta__v">verificare</span>` : ""}
+    </a>`;
+  }
+  zona.innerHTML = html;
+}
+
+/* --- unde am rămas ------------------------------------------------------- */
+const total = harta ? harta.length : 21;
+let vizitate = [];
+try { vizitate = JSON.parse(localStorage.getItem(`dsw.parcurs.${CHEIE}`) || "{}").vizitate || []; }
+catch {}
+
+if (vizitate.length){
+  const proc = Math.round(vizitate.length / total * 100);
+  const ultim = Math.max(...vizitate) + 1;
+  document.getElementById("a-mea").querySelector(".a-mea__inel").style.setProperty("--p", proc);
+  document.getElementById("a-mea-p").textContent = proc + "%";
+  document.getElementById("a-mea-t").textContent =
+    proc >= 100 ? "Ai parcurs lecția" : `${vizitate.length} din ${total} slide-uri`;
+  document.getElementById("a-mea-d").textContent =
+    proc >= 100 ? "Poți reveni oricând la orice slide." : `Ai rămas la slide-ul ${ultim}.`;
+  const b = document.getElementById("btn-intra");
+  b.href = `lectie/#${ultim}`;
+  b.querySelector("span").textContent = proc >= 100 ? "Reia lecția" : "Continuă lecția";
+  document.getElementById("btn-sub").textContent = `slide ${ultim}`;
+} else {
+  document.getElementById("btn-sub").textContent = `slide 1 din ${total}`;
+}
 </script>
-<script type="module" src="../js/antet.js?v=15"></script>
-<script type="module" src="../js/subsol.js?v=15"></script>
+<script type="module" src="../js/antet.js?v=17"></script>
+<script type="module" src="../js/subsol.js?v=17"></script>
 </body>
 </html>
