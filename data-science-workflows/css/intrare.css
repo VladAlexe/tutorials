@@ -26,7 +26,7 @@
 
 /* butonul mare de intrare: singurul lucru vizibil de la distanță pe pagină */
 .intra-lectie{display:inline-flex;align-items:center;gap:11px;padding:13px 22px;
-  border-radius:10px;background:var(--text);color:var(--fundal);font-family:var(--sans);
+  border-radius:10px;background:var(--buton);color:var(--buton-text);font-family:var(--sans);
   font-size:15.5px;font-weight:600;letter-spacing:-.008em;text-decoration:none;
   transition:.15s;box-shadow:var(--umbra)}
 .intra-lectie:hover{box-shadow:var(--umbra-2);transform:translateY(-1px)}

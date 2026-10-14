@@ -6,7 +6,7 @@
    =========================================================================== */
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.0/+esm";
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=19";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=23";
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -78,6 +78,31 @@ export async function intraCaInvitat(nume) {
 /** Invitat = cont anonim, fără email, cu matricol care începe cu G-. */
 export const esteInvitat = p => !!(p && p.matricol && String(p.matricol).startsWith("G-"));
 
+/* --- mod de vizualizare --------------------------------------------------
+   Un profesor poate alege sa vada site-ul ca un student. Alegerea se
+   pastreaza pentru tot site-ul, pe toate paginile, pana o schimba inapoi.
+
+   ATENTIE: e o simulare a interfetei, nu a drepturilor. Baza de date stie in
+   continuare ca esti profesor. Deci intrebarea "poate un student sa vada
+   raspunsurile altuia" NU se testeaza asa; aceea se testeaza doar cu un cont
+   care chiar e de student.
+   ------------------------------------------------------------------------- */
+
+const CHEIE_MOD = "dsw.mod";
+
+export function modVizualizare() {
+  try { return localStorage.getItem(CHEIE_MOD) === "student" ? "student" : "profesor"; }
+  catch { return "profesor"; }
+}
+
+export function setModVizualizare(mod) {
+  try {
+    if (mod === "student") localStorage.setItem(CHEIE_MOD, "student");
+    else localStorage.removeItem(CHEIE_MOD);
+  } catch {}
+  profilCache = null;
+}
+
 /* --- profil -------------------------------------------------------------- */
 
 let profilCache = null;
@@ -93,11 +118,9 @@ export async function profil({ proaspat = false } = {}) {
   const { data, error } = await sb.rpc("profilul_meu");
   if (error) throw new Error(traduEroare(error.message));
 
-  /* Un singur cont, un singur rol. Cine vrea să vadă partea de student intră
-     ca invitat din alt browser: ăla e un om adevărat, separat, nu o simulare
-     care te lasă să crezi că ai testat drepturile. */
   const p = { ...data, email: session.user.email };
   p.profesorReal = !!p.profesor;
+  if (p.profesorReal && modVizualizare() === "student") p.profesor = false;
 
   profilCache = p;
   return profilCache;

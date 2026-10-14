@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propunere de design: infrastructura de predare</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+/* ===========================================================================
+   Paleta caldă, derivată din TranscriptionLab.
+   Neutrele și salvia sunt luate direct din captură. Culorile de stare sunt
+   calculate și verificate: teal / teracotă, nu verde / roșu, fiindcă perechea
+   verde-roșu e exact cea pe care n-o deosebește un daltonist, și tocmai ea ar
+   purta „corect / greșit".
+   =========================================================================== */
+:root{
+  --fundal:#F7F6F1; --panza:#FFFFFF; --panza-2:#EFEEE7;
+  --text:#23231A; --text-2:#5A594E; --text-3:#8C8A7E;
+  --linie:#E2E0D7; --linie-2:#CBC9BD;
+  --salvie:#8DAE9F; --salvie-slab:#E6EEEA;
+  --accent:#0E7A6E; --accent-slab:#E3EFEC;
+  --trecut:#0E8A7A; --gresit:#AB3E24; --gresit-slab:#F6E9E5;
+  --serif:'Source Serif 4',Georgia,serif;
+  --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --lat:1180px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-tema="deschis"]){
+    --fundal:#292921; --panza:#31312A; --panza-2:#23231A;
+    --text:#E9E7E0; --text-2:#A9A79D; --text-3:#7A7971;
+    --linie:#3A3A31; --linie-2:#4D4D44;
+    --salvie:#8DAE9F; --salvie-slab:#20291F;
+    --accent:#8DAE9F; --accent-slab:#1E2724;
+    --trecut:#35A89A; --gresit:#D4664E; --gresit-slab:#2A1F1B;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:66px}
+body{margin:0;background:var(--fundal);color:var(--text);
+  font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+
+.sus{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fundal) 93%,transparent);
+  backdrop-filter:blur(9px);border-bottom:1px solid var(--linie)}
+.sus__in{max-width:var(--lat);margin:0 auto;padding:0 28px;height:54px;
+  display:flex;align-items:center;gap:20px}
+.sus__t{font-family:var(--sans);font-size:13.5px;font-weight:600;flex:none}
+.sus__n{display:flex;gap:3px;overflow-x:auto;scrollbar-width:none}
+.sus__n::-webkit-scrollbar{display:none}
+.sus__n a{font-family:var(--sans);font-size:12.5px;color:var(--text-2);
+  text-decoration:none;padding:5px 9px;border-radius:6px;white-space:nowrap}
+.sus__n a:hover{background:var(--panza-2);color:var(--text)}
+
+.pag{max-width:var(--lat);margin:0 auto;padding:0 28px}
+.cap{padding:56px 0 34px;border-bottom:1px solid var(--linie)}
+.cap__et{font-family:var(--mono);font-size:11px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--text-3);margin:0 0 12px}
+h1{font-family:var(--sans);font-weight:600;font-size:clamp(30px,4.3vw,42px);
+  line-height:1.1;letter-spacing:-.02em;margin:0 0 16px;max-width:18ch}
+.deck{font-size:19px;color:var(--text-2);margin:0;max-width:64ch;line-height:1.55}
+
+section{padding:52px 0;border-bottom:1px solid var(--linie)}
+.s__nr{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 9px}
+h2{font-family:var(--sans);font-weight:600;font-size:25px;line-height:1.2;
+  letter-spacing:-.015em;margin:0 0 12px}
+h3{font-family:var(--sans);font-weight:600;font-size:16px;margin:32px 0 10px}
+p{max-width:66ch;margin:0 0 14px}
+code{font-family:var(--mono);font-size:.87em;background:var(--panza-2);
+  padding:1px 5px;border-radius:4px}
+
+/* comparatia */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0 0;
+  align-items:start}
+.vs--1{grid-template-columns:1fr}
+.vs__c{border:1px solid var(--linie);border-radius:12px;overflow:hidden;
+  background:var(--panza)}
+.vs__c--rau{border-color:color-mix(in srgb,var(--gresit) 30%,var(--linie))}
+.vs__c--bun{border-color:color-mix(in srgb,var(--accent) 34%,var(--linie))}
+.vs__et{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;padding:8px 14px;border-bottom:1px solid var(--linie);
+  display:flex;justify-content:space-between;align-items:center;gap:10px}
+.vs__c--rau .vs__et{background:var(--gresit-slab);color:var(--gresit);
+  border-color:color-mix(in srgb,var(--gresit) 30%,var(--linie))}
+.vs__c--bun .vs__et{background:var(--accent-slab);color:var(--accent);
+  border-color:color-mix(in srgb,var(--accent) 34%,var(--linie))}
+.vs__corp{padding:15px}
+.vs__de{padding:12px 15px;border-top:1px solid var(--linie);
+  background:var(--panza-2);font-size:14px;line-height:1.5;color:var(--text-2)}
+.vs__de b{color:var(--text);font-family:var(--sans);font-size:13px}
+@media (max-width:880px){ .vs{grid-template-columns:1fr} }
+
+/* machete */
+.m{font-family:var(--sans);font-size:12px;border-radius:8px;overflow:hidden;
+  border:1px solid var(--linie);background:var(--panza)}
+.m__bara{display:flex;align-items:center;gap:9px;padding:7px 11px;
+  background:var(--panza-2);border-bottom:1px solid var(--linie);font-size:11px;
+  color:var(--text-2);font-family:var(--mono)}
+.m__pct{display:flex;gap:4px}
+.m__pct i{width:8px;height:8px;border-radius:50%;background:var(--linie-2);display:block}
+.m__corp{padding:14px}
+.m__h{font-family:var(--sans);font-weight:600;font-size:17px;margin:0 0 3px;
+  letter-spacing:-.01em}
+.m__sub{font-size:11.5px;color:var(--text-3);margin:0 0 12px;font-family:var(--mono);
+  letter-spacing:.04em}
+
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);
+  font-size:12px;font-weight:500;padding:7px 13px;border-radius:7px;
+  border:1px solid var(--linie-2);background:var(--panza);color:var(--text-2)}
+.btn--tare{background:var(--salvie);border-color:var(--salvie);color:#23231A}
+.btn--mic{font-size:11px;padding:5px 10px}
+.randb{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+
+.file{display:flex;gap:2px;border-bottom:1px solid var(--linie);margin:0 0 13px;
+  overflow-x:auto}
+.file span{font-size:11.5px;padding:7px 10px;color:var(--text-3);
+  border-bottom:2px solid transparent;white-space:nowrap}
+.file span.on{color:var(--text);border-bottom-color:var(--text);font-weight:600}
+
+.cutie{border:1px solid var(--linie);border-radius:8px;padding:11px 13px;
+  margin:0 0 9px;background:var(--panza)}
+.cutie--gri{background:var(--panza-2)}
+.cutie--acc{background:var(--accent-slab);
+  border-color:color-mix(in srgb,var(--accent) 30%,var(--linie))}
+.cutie__t{font-weight:600;font-size:13px;margin:0 0 2px}
+.cutie__d{font-size:11.5px;color:var(--text-2);margin:0}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+
+.cifra b{display:block;font-family:var(--sans);font-size:22px;font-weight:600;
+  line-height:1.1;letter-spacing:-.02em;font-variant-numeric:lining-nums}
+.cifra b small{font-size:13px;color:var(--text-3);font-weight:400}
+.cifra span{font-size:11px;color:var(--text-3)}
+
+.banda{display:flex;align-items:center;gap:10px;padding:8px 12px;
+  border-radius:8px;font-size:12px;margin:0 0 13px;flex-wrap:wrap}
+.banda--viu{background:var(--accent-slab);
+  border:1px solid color-mix(in srgb,var(--accent) 30%,var(--linie));
+  color:var(--accent)}
+.banda--mort{background:var(--panza-2);border:1px solid var(--linie);
+  color:var(--text-3)}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+.cod{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:.1em;
+  color:var(--text)}
+
+table.t{width:100%;border-collapse:collapse;font-size:11.5px}
+table.t th{text-align:left;font-weight:500;color:var(--text-3);padding:5px 7px;
+  border-bottom:1px solid var(--linie);font-size:10px;white-space:nowrap;
+  font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+table.t td{padding:6px 7px;border-bottom:1px solid var(--linie);
+  color:var(--text-2)}
+table.t tr:last-child td{border-bottom:0}
+table.t td b{color:var(--text);font-weight:500}
+
+/* glifele de stare: forma poarta informatia, culoarea doar o intareste */
+.g{display:inline-flex;align-items:center;justify-content:center;
+  width:15px;height:15px;border-radius:50%;font-size:9px;line-height:1;
+  font-family:var(--sans);font-weight:600;vertical-align:middle;margin-right:3px}
+.g--ok{background:var(--trecut);color:var(--fundal)}
+.g--nu{background:var(--gresit);color:var(--fundal)}
+.g--gol{border:1.5px solid var(--linie-2);color:var(--text-3)}
+.g--nim{border:1.5px dotted var(--linie-2)}
+
+.legenda{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-3);
+  font-family:var(--sans);margin:9px 0 0}
+.legenda span{display:inline-flex;align-items:center;gap:4px}
+
+.lista{list-style:none;padding:0;margin:0}
+.lista li{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--linie);
+  font-size:12px;align-items:baseline}
+.lista li:last-child{border-bottom:0}
+.lista b{font-family:var(--mono);font-size:10.5px;color:var(--text-3);flex:none;
+  width:52px}
+
+/* bara mica de progres, ca la AI engineering */
+.bm{display:inline-block;width:48px;height:4px;border-radius:99px;
+  background:var(--linie);vertical-align:middle;overflow:hidden}
+.bm i{display:block;height:100%;background:var(--salvie);border-radius:99px}
+
+.prob{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));
+  gap:13px;margin:20px 0 0}
+.prob__c{border:1px solid var(--linie);border-radius:10px;padding:15px 16px;
+  background:var(--panza)}
+.prob__n{font-family:var(--mono);font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--gresit);margin:0 0 6px}
+.prob__t{font-family:var(--sans);font-size:14.5px;font-weight:600;margin:0 0 6px}
+.prob__d{font-size:13.5px;color:var(--text-2);margin:0;line-height:1.5}
+
+.tab{width:100%;border-collapse:collapse;margin:20px 0 0;font-size:14.5px}
+.tab th{text-align:left;font-family:var(--sans);font-size:11px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);
+  padding:0 12px 9px 0;border-bottom:1px solid var(--linie-2)}
+.tab td{padding:11px 12px 11px 0;border-bottom:1px solid var(--linie);
+  vertical-align:top;color:var(--text-2)}
+.tab td:first-child{color:var(--text);font-family:var(--sans);font-size:13.5px;
+  font-weight:500;width:26%}
+
+.nota{border-left:3px solid var(--salvie);background:var(--salvie-slab);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin:22px 0 0}
+.nota__e{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 5px}
+.nota p{margin:0;font-size:15px;color:var(--text-2)}
+
+.pasi{counter-reset:p;list-style:none;padding:0;margin:22px 0 0}
+.pasi li{counter-increment:p;position:relative;padding:0 0 18px 42px;
+  border-left:1px solid var(--linie);margin-left:12px}
+.pasi li:last-child{border-left-color:transparent;padding-bottom:0}
+.pasi li::before{content:counter(p);position:absolute;left:-13px;top:-2px;
+  width:26px;height:26px;border-radius:50%;background:var(--panza);
+  border:1px solid var(--linie-2);font-family:var(--mono);font-size:11px;
+  display:flex;align-items:center;justify-content:center;color:var(--text-2)}
+.pasi b{display:block;font-family:var(--sans);font-size:15px;margin:0 0 3px}
+.pasi p{margin:0;font-size:14.5px;color:var(--text-2)}
+
+/* paleta */
+.pal{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+  gap:10px;margin:18px 0 0}
+.pal__c{border:1px solid var(--linie);border-radius:9px;overflow:hidden;
+  background:var(--panza)}
+.pal__p{height:56px}
+.pal__n{padding:8px 10px;font-family:var(--mono);font-size:10.5px;
+  color:var(--text-2);line-height:1.5}
+.pal__n b{display:block;font-family:var(--sans);font-size:12px;color:var(--text);
+  font-weight:600;margin-bottom:1px}
+
+.marunt{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:11px;margin:20px 0 0}
+.marunt__c{border:1px solid var(--linie);border-radius:9px;padding:13px 15px;
+  background:var(--panza);font-size:13.5px;color:var(--text-2);line-height:1.5}
+.marunt__c b{display:block;font-family:var(--sans);font-size:13.5px;
+  color:var(--text);margin-bottom:3px}
+.marunt__c i{font-style:normal;color:var(--accent);font-family:var(--sans);
+  font-size:12px;display:block;margin-top:5px}
+
+/* --- telefoane și intrarea în oră ------------------------------------- */
+.telg{display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));
+  gap:18px;margin:22px 0 0}
+.telg figure{margin:0}
+.telg figcaption{font-family:var(--sans);font-size:12.5px;color:var(--text-2);
+  text-align:center;margin:11px 0 0;line-height:1.45}
+.telg figcaption b{display:block;color:var(--text);font-size:13px;margin:0 0 2px}
+.tel{border:1px solid var(--linie-2);border-radius:18px;background:var(--panza);
+  padding:8px;max-width:240px;margin:0 auto}
+.tel__e{border:1px solid var(--linie);border-radius:12px;background:var(--fundal);
+  padding:14px 13px;min-height:252px;display:flex;flex-direction:column}
+.tel__et{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-3);margin:0 0 8px}
+.tel__h{font-family:var(--sans);font-size:15px;font-weight:600;margin:0 0 4px;
+  letter-spacing:-.01em;line-height:1.25}
+.tel__d{font-size:11.5px;color:var(--text-2);margin:0 0 12px;line-height:1.45}
+.tel__l{display:flex;flex-direction:column;gap:5px;margin:0 0 11px}
+.tel__l span{font-family:var(--sans);font-size:11.5px;padding:7px 9px;
+  border:1px solid var(--linie);border-radius:7px;background:var(--panza);
+  color:var(--text-2);display:flex;justify-content:space-between;gap:6px}
+.tel__l span.on{border-color:var(--salvie);background:var(--salvie-slab);
+  color:var(--text);font-weight:500}
+.tel__l span i{font-style:normal;font-family:var(--mono);font-size:9.5px;
+  color:var(--text-3)}
+.tel__j{margin-top:auto}
+.tel .btn{width:100%;justify-content:center;font-size:12px;padding:8px 10px}
+.tel__n{font-size:10.5px;color:var(--text-2);margin:8px 0 0;line-height:1.4;
+  text-align:center;text-decoration:underline;text-decoration-color:var(--linie-2);
+  text-underline-offset:2px}
+/* starea „intrat, inactiv": nu e o greșeală, deci nu poartă culoarea de greșit */
+.g--sta{border:1.5px solid var(--salvie);background:var(--salvie-slab);
+  color:var(--text-2)}
+.proi{border:1px solid var(--linie);border-radius:12px;background:var(--panza);
+  padding:26px 24px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.proi__qr{flex:none}
+.proi__t{font-family:var(--mono);font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--text-3);margin:0 0 8px}
+.proi__c{font-family:var(--mono);font-size:44px;font-weight:500;letter-spacing:.14em;
+  margin:0 0 8px;color:var(--text);line-height:1}
+.proi__d{font-size:14px;color:var(--text-2);margin:0;font-family:var(--sans)}
+
+.jos{padding:40px 0 70px;color:var(--text-3);font-size:13.5px;
+  font-family:var(--sans)}
+</style>
+</head>
+<body>
+
+<header class="sus">
+  <div class="sus__in">
+    <span class="sus__t">Propunere de design</span>
+    <nav class="sus__n">
+      <a href="#dg">Diagnostic</a>
+      <a href="#sed">Ședința</a>
+      <a href="#intra">Intrarea</a>
+      <a href="#live">Panoul live</a>
+      <a href="#acasa">Acasă</a>
+      <a href="#raport">Raportul</a>
+      <a href="#echipe">Echipele</a>
+      <a href="#culori">Culorile</a>
+      <a href="#marunt">Mărunțișuri</a>
+      <a href="#ordine">Ordinea</a>
+    </nav>
+  </div>
+</header>
+
+<div class="pag">
+
+  <div class="cap">
+    <p class="cap__et">Fluxuri de lucru pentru știința datelor · a treia versiune</p>
+    <h1>Două produse, și un panou care chiar spune ce fac ei</h1>
+    <p class="deck">Panoul live pentru slide-ul curent, intrarea în oră cu grupa
+    în cod, și progresul pe GitHub ca instantaneu, nu ca flux. Deciziile tale sunt
+    puse în secțiunea 10, împreună cu singura contradicție pe care o lasă în urmă.
+    Toată pagina e desenată în paleta caldă din TranscriptionLab, ca s-o poți
+    judeca pe viu, nu din descriere.</p>
+  </div>
+
+  <!-- ============================================= DIAGNOSTIC -->
+  <section id="dg">
+    <p class="s__nr">01</p>
+    <h2>Cauza de fond, pe scurt</h2>
+    <p>Situl e trei produse purtând o haină: produsul studentului, instrumentul
+    tău de predare, registrul tău. Al doilea și al treilea sunt adăugiri peste
+    primul.</p>
+
+    <div class="prob">
+      <div class="prob__c">
+        <p class="prob__n">cauza</p>
+        <p class="prob__t">Nu există obiectul „ședință"</p>
+        <p class="prob__d">Nicăieri nu scrie „ora de marți, 14 octombrie, grupa 1,
+        lecția 3". Fără el, „statisticile zilei" n-au despre ce vorbi.</p>
+      </div>
+      <div class="prob__c">
+        <p class="prob__n">consecință</p>
+        <p class="prob__t">Prezența se marchează o dată, vreodată</p>
+        <p class="prob__d">Cheia e <code>(student, curs)</code>. Nu poți ține
+        aceeași lecție la două grupe, nici anul viitor.</p>
+      </div>
+      <div class="prob__c">
+        <p class="prob__n">consecință</p>
+        <p class="prob__t">Ora nu se poate închide</p>
+        <p class="prob__d">Nu e nimic de închis. Un steag global pe lecție, fără
+        istoric, fără raport, fără export.</p>
+      </div>
+      <div class="prob__c">
+        <p class="prob__n">ce lipsea din prima propunere</p>
+        <p class="prob__t">Panoul nu arată ce au făcut, pe slide</p>
+        <p class="prob__d">Aveam cifrele, dar nu și tabelul. În ora ta, ai nevoie
+        de amândouă deodată: cât la sută din sală, și cine anume.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= SEDINTA -->
+  <section id="sed">
+    <p class="s__nr">02</p>
+    <h2>Piesa care lipsește</h2>
+    <p>O <strong>ședință</strong> e o oră anume: lecția, grupa, ziua, modul, ora
+    de început și de sfârșit. Tot ce fac studenții în timpul ei se leagă de ea.
+    Un singur obiect nou, și se deblochează tot.</p>
+
+    <table class="tab">
+      <thead><tr><th>Ce ai cerut</th><th>Cum iese din ședință</th></tr></thead>
+      <tbody>
+        <tr><td>Marchezi ziua</td><td>Deschizi o ședință. Data e în ea.</td></tr>
+        <tr><td>Închizi ora</td><td>Pui ora de sfârșit. Codul de intrare moare.</td></tr>
+        <tr><td>Statisticile acelei zile</td><td>Tot ce poartă id-ul ședinței.</td></tr>
+        <tr><td>Ștergi logul</td><td>Ștergi ședința, cu tot ce atârnă de ea.</td></tr>
+        <tr><td>Export</td><td>Un CSV per ședință, sau unul pe semestru.</td></tr>
+        <tr><td>Aceeași lecție la două grupe</td><td>Două ședințe. Rezolvă și bug-ul de prezență.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================= INTRAREA -->
+  <section id="intra">
+    <p class="s__nr">03</p>
+    <h2>Intrarea în oră, și grupa</h2>
+    <p>Ai decis: ședința se leagă și de grupă, și de lecție. Asta are o
+    consecință bună care merită spusă pe față: <strong>codul duce contextul, iar
+    studentul duce doar numele lui.</strong> Nimeni nu alege grupa dintr-o listă,
+    deci nimeni nu o alege greșit, și nu mai ai de curățat după aceea.</p>
+
+    <div class="cutie cutie--acc" style="margin:20px 0 0">
+      <p class="cutie__t">Un singur cod, trei uși</p>
+      <p class="cutie__d">QR-ul de pe proiector, codul de șase semne tastat, și
+      linkul pus pe Teams duc toate în același loc:
+      <code>/intra/?c=K7MQ2X</code>. Codul știe deja lecția, grupa și ședința.
+      Mecanismul există deja în <code>jetoane_prezenta</code>, cu șase semne din
+      care lipsesc O/0 și I/1/L, ca să nu se citească greșit de pe ecran. Ce
+      lipsește e doar legătura cu ședința și cu grupa.</p>
+    </div>
+
+    <h3 style="font-family:var(--sans);font-size:17px;font-weight:600;margin:30px 0 0">
+      Răspunsul la întrebarea ta: GitHub e o ușă, nu un câmp</h3>
+    <p>Întrebi dacă să le ceri GitHub-ul în formularul de la început. Răspunsul
+    meu e <strong>nu, și nici mai târziu ca text scris de ei.</strong> Motivul e
+    că „GitHub" înseamnă două lucruri diferite, la două momente diferite:</p>
+
+    <div class="prob">
+      <div class="prob__c">
+        <p class="prob__n">ziua întâi</p>
+        <p class="prob__t">GitHub ca ușă de intrare</p>
+        <p class="prob__d">Butonul „Intru cu GitHub" <strong>există deja</strong>
+        și merge. Cine are cont, intră cu el și numele de utilizator vine
+        verificat, din jeton. Cine nu are, intră ca invitat. Nimic de completat,
+        nimic de cerut.</p>
+      </div>
+      <div class="prob__c">
+        <p class="prob__n">cursul 3</p>
+        <p class="prob__t">GitHub ca identitate pentru echipă</p>
+        <p class="prob__d">Numele de utilizator îți trebuie abia când faci
+        depozitele. Cursul 3 e chiar lecția de Git: acolo, „fă-ți cont și
+        leagă-l" nu e birocrație, e primul exercițiu din lecție.</p>
+      </div>
+      <div class="prob__c">
+        <p class="prob__n">de ce nu un câmp de text</p>
+        <p class="prob__t">Ce scriu ei nu e ce ai nevoie</p>
+        <p class="prob__d">Într-un câmp liber primești profiluri
+        <code>github.com/x</code> în loc de <code>x</code>, conturi vechi pe care
+        le abandonează, litere lipsă, și „fac mai târziu". Prin autentificare,
+        numele vine corect sau nu vine deloc.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:20px">Deci: la cursul 1 le ceri <em>numele</em>. La
+    cursul 3 le ceri <em>contul</em>, ca temă. Între ele, un singur rând în contul
+    lor, care nu ceartă pe nimeni: „GitHub: nelegat, îl legi la cursul 3".</p>
+
+    <div class="telg">
+      <figure>
+        <div class="tel"><div class="tel__e">
+          <p class="tel__et">prima dată · după cod</p>
+          <p class="tel__h">Cine ești?</p>
+          <p class="tel__d">Cursul 1 · grupa 1 · marți, 14 oct</p>
+          <div class="tel__l">
+            <span>Andreea Pop <i>…214</i></span>
+            <span class="on">Bogdan Ilie <i>…077</i></span>
+            <span>Carmen Radu <i>…392</i></span>
+            <span>Dan Marin <i>…145</i></span>
+          </div>
+          <div class="tel__j">
+            <button class="btn btn--tare">Asta sunt eu</button>
+            <p class="tel__n">Nu mă găsesc în listă</p>
+          </div>
+        </div></div>
+        <figcaption><b>Prima dată</b>Lista grupei, nu un formular. Un tap, fără
+        matricol de tastat și fără grupă de ales.</figcaption>
+      </figure>
+
+      <figure>
+        <div class="tel"><div class="tel__e">
+          <p class="tel__et">cursurile următoare</p>
+          <p class="tel__h">Bine ai revenit, Bogdan</p>
+          <p class="tel__d">Intri în <strong>Cursul 3, grupa 1</strong>.
+          Versionare și colaborare cu Git.</p>
+          <div class="cutie" style="font-size:11px;padding:9px 10px;margin:0 0 11px">
+            <p class="cutie__t" style="font-size:11.5px">GitHub: nelegat</p>
+            <p class="cutie__d" style="font-size:10.5px">Azi e lecția în care îl legi.</p>
+          </div>
+          <div class="tel__j">
+            <button class="btn btn--tare">Intru la oră</button>
+            <p class="tel__n">Nu sunt eu</p>
+          </div>
+        </div></div>
+        <figcaption><b>A doua oară încolo</b>Te știe deja. Un singur buton, și
+        exact o informație în plus, dacă e cazul.</figcaption>
+      </figure>
+
+      <figure>
+        <div class="tel"><div class="tel__e">
+          <p class="tel__et">pe proiector</p>
+          <p class="tel__h">Cursul 3, grupa 1</p>
+          <p class="tel__d">Intrați de pe telefon.</p>
+          <svg class="qr" viewBox="0 0 21 21" width="104" height="104"
+               style="display:block;margin:2px auto 10px" aria-label="cod QR">
+            <rect width="21" height="21" fill="#FFFFFF"/>
+            <path fill="#23231A" d="M0 0h7v1h-7z M8 0h2v1h-2z M14 0h7v1h-7z M0 1h1v1h-1z M6 1h1v1h-1z M8 1h1v1h-1z M11 1h2v1h-2z M14 1h1v1h-1z M20 1h1v1h-1z M0 2h1v1h-1z M2 2h3v1h-3z M6 2h1v1h-1z M8 2h1v1h-1z M10 2h1v1h-1z M12 2h1v1h-1z M14 2h1v1h-1z M16 2h3v1h-3z M20 2h1v1h-1z M0 3h1v1h-1z M2 3h3v1h-3z M6 3h1v1h-1z M9 3h1v1h-1z M11 3h1v1h-1z M14 3h1v1h-1z M16 3h3v1h-3z M20 3h1v1h-1z M0 4h1v1h-1z M2 4h3v1h-3z M6 4h1v1h-1z M14 4h1v1h-1z M16 4h3v1h-3z M20 4h1v1h-1z M0 5h1v1h-1z M6 5h1v1h-1z M8 5h4v1h-4z M14 5h1v1h-1z M20 5h1v1h-1z M0 6h7v1h-7z M8 6h1v1h-1z M10 6h1v1h-1z M12 6h1v1h-1z M14 6h7v1h-7z M8 7h1v1h-1z M10 7h1v1h-1z M0 8h1v1h-1z M2 8h2v1h-2z M5 8h2v1h-2z M14 8h3v1h-3z M19 8h1v1h-1z M0 9h6v1h-6z M8 9h2v1h-2z M11 9h3v1h-3z M15 9h1v1h-1z M17 9h1v1h-1z M20 9h1v1h-1z M3 10h4v1h-4z M8 10h1v1h-1z M13 10h1v1h-1z M15 10h2v1h-2z M19 10h1v1h-1z M0 11h1v1h-1z M2 11h1v1h-1z M7 11h3v1h-3z M11 11h1v1h-1z M17 11h2v1h-2z M20 11h1v1h-1z M3 12h4v1h-4z M8 12h3v1h-3z M13 12h1v1h-1z M16 12h2v1h-2z M9 13h1v1h-1z M11 13h1v1h-1z M13 13h1v1h-1z M15 13h2v1h-2z M18 13h1v1h-1z M20 13h1v1h-1z M0 14h7v1h-7z M12 14h1v1h-1z M18 14h2v1h-2z M0 15h1v1h-1z M6 15h1v1h-1z M11 15h1v1h-1z M13 15h1v1h-1z M15 15h1v1h-1z M19 15h1v1h-1z M0 16h1v1h-1z M2 16h3v1h-3z M6 16h1v1h-1z M8 16h3v1h-3z M12 16h1v1h-1z M15 16h4v1h-4z M0 17h1v1h-1z M2 17h3v1h-3z M6 17h1v1h-1z M8 17h3v1h-3z M13 17h1v1h-1z M16 17h1v1h-1z M18 17h1v1h-1z M0 18h1v1h-1z M2 18h3v1h-3z M6 18h1v1h-1z M8 18h3v1h-3z M15 18h1v1h-1z M0 19h1v1h-1z M6 19h1v1h-1z M13 19h1v1h-1z M17 19h1v1h-1z M19 19h2v1h-2z M0 20h7v1h-7z M8 20h1v1h-1z M11 20h1v1h-1z M13 20h2v1h-2z M16 20h1v1h-1z M18 20h3v1h-3z"/>
+          </svg>
+          <div class="tel__j">
+            <p class="cod" style="text-align:center;font-size:19px;margin:0 0 4px">K7MQ2X</p>
+            <p class="tel__n">sau pe Teams · 18 în clasă</p>
+          </div>
+        </div></div>
+        <figcaption><b>Ecranul din față</b>Cod, QR, și câți au intrat. Nimic
+        altceva, ca să încapă citibil din ultima bancă.</figcaption>
+      </figure>
+    </div>
+
+    <div class="nota" style="margin-top:26px">
+      <p class="nota__e">De ce lista, și nu un formular</p>
+      <p>Un formular cu nume, matricol și grupă înseamnă 21 de ocazii de a scrie
+      greșit, și cel puțin doi oameni care aleg grupa cealaltă. Lista se poate
+      arăta tocmai pentru că <em>codul știe deja grupa</em>: vede doar cei 21 din
+      grupa aia, după ce s-a autentificat, iar ultimele trei cifre din matricol
+      apar doar ca să deosebești doi oameni cu același nume. Cine nu e în listă
+      (venit mai târziu, transferat) apasă „nu mă găsesc" și ajunge într-o căsuță
+      pe care o aprobi tu, nu direct în date.</p>
+    </div>
+
+    <h3 style="font-family:var(--sans);font-size:17px;font-weight:600;margin:30px 0 0">
+      Grupa, ca obiect</h3>
+    <p>Acum grupa e o coloană de text pe student, scrisă de mână. Devine un rând,
+    cu ziua și ora ei, ca ședința să se poată deschide dintr-un clic și ca
+    „marți, grupa 1" să însemne ceva pentru sit, nu doar pentru tine.</p>
+
+    <table class="tab">
+      <thead><tr><th>Ce ține grupa</th><th>La ce folosește</th></tr></thead>
+      <tbody>
+        <tr><td>Numele și ziua ei</td><td>„Marți 10:00, grupa 1" apare pe butonul de pornire, nu îl scrii de fiecare dată.</td></tr>
+        <tr><td>Lista studenților</td><td>Ecranul de intrare arată exact oamenii ăștia, și nimeni altcineva.</td></tr>
+        <tr><td>Anul</td><td>Anul viitor e altă grupă, nu aceiași studenți suprascriși.</td></tr>
+        <tr><td>Echipele</td><td>O echipă stă într-o grupă. Depozitele se fac pe grupă, nu pe curs.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-family:var(--sans);font-size:17px;font-weight:600;margin:30px 0 0">
+      Prezența se ia din activitate, nu din scanare</h3>
+    <p>Ai zis-o limpede, și e corect: cine n-a completat nimic nu e prezent. Ca
+    să poți vedea asta, scanarea și prezența devin două lucruri diferite, și între
+    ele mai e unul, care îți spune cel mai mult.</p>
+
+    <table class="tab">
+      <thead><tr><th>Stare</th><th>Ce înseamnă</th><th>Ce faci cu ea</th></tr></thead>
+      <tbody>
+        <tr><td><span class="g g--gol">○</span> intrat</td>
+            <td>A scanat codul, n-a trimis nimic</td>
+            <td>E în sală, sau măcar telefonul lui. Nu e prezență.</td></tr>
+        <tr><td><span class="g g--sta">◐</span> intrat, inactiv</td>
+            <td>A scanat, și de 20 de minute nimic</td>
+            <td>Ăsta e rândul de care ai nevoie în timpul orei. Un nume, o întrebare.</td></tr>
+        <tr><td><span class="g g--ok">✓</span> prezent</td>
+            <td>A trimis cel puțin o sarcină</td>
+            <td>Prezența, calculată singură la închiderea ședinței.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota" style="margin-top:22px">
+      <p class="nota__e">două fire de prins</p>
+      <p>Întâi: pragul e <em>o trimitere</em>, nu <em>o trimitere corectă</em>. Cine
+      a încercat și a greșit a fost acolo; altfel prezența ajunge să măsoare
+      performanța, ceea ce nu vrei. Apoi: la închidere poți răsturna o prezență cu
+      un clic, pentru că uneori moare bateria sau pică Wi-Fi-ul, iar regula
+      automată n-are cum să știe. Calculată automat, corectabilă manual, cu
+      urmă în raport că ai corectat-o.</p>
+    </div>
+  </section>
+
+  <!-- ============================================= PANOUL LIVE -->
+  <section id="live">
+    <p class="s__nr">04</p>
+    <h2>Panoul live, pe slide-ul curent</h2>
+    <p>Asta e bucata pe care am ratat-o. Pe slide-ul de pe ecran e un quiz. Tu ai
+    nevoie de două lucruri <strong>în același timp</strong>: cât din sală a
+    răspuns și cum, ca cifră globală, și cine anume ce a făcut, ca tabel. Nu una
+    după alta, nu în file diferite.</p>
+
+    <div class="vs vs--1">
+      <div class="vs__c vs__c--bun">
+        <div class="vs__et"><span>propus</span><span>/predau/ora · slide 9 din 23</span></div>
+        <div class="vs__corp">
+          <div class="m">
+            <div class="m__bara"><span class="m__pct"><i></i><i></i><i></i></span>
+              predau/ora</div>
+            <div class="m__corp">
+
+              <div class="banda banda--viu"><span class="pulse"></span>
+                <strong>Live</strong>
+                <span class="cod">K7MQ2X</span>
+                <span style="color:var(--text-2)">18 din 21 în clasă · 42 min</span>
+                <span style="margin-left:auto" class="randb">
+                  <span class="btn btn--mic">← înapoi</span>
+                  <span class="btn btn--tare btn--mic">înainte →</span>
+                  <span class="btn btn--mic">Închide ora</span>
+                </span>
+              </div>
+
+              <p class="m__sub" style="margin:0 0 2px">SLIDE 9 DIN 23 · VERIFICARE</p>
+              <p class="m__h" style="font-size:15px;margin-bottom:14px">
+                Ce face <code style="font-size:12px">git pull</code>, de fapt?</p>
+
+              <div style="display:grid;grid-template-columns:232px minmax(0,1fr);
+                gap:20px;align-items:start">
+
+                <!-- stanga: cercul global -->
+                <div>
+                  <svg viewBox="0 0 132 132" width="132" height="132"
+                    role="img" aria-label="11 din 18 au trimis: 8 corect, 3 greșit">
+                    <circle cx="66" cy="66" r="52" fill="none"
+                      stroke="var(--linie)" stroke-width="15"/>
+                    <!-- segmentele, cu 2px pauza intre ele -->
+                    <g transform="rotate(-90 66 66)" stroke-width="15" fill="none"
+                       stroke-linecap="butt">
+                      <circle cx="66" cy="66" r="52" stroke="var(--trecut)"
+                        stroke-dasharray="143.2 183.5" stroke-dashoffset="0"/>
+                      <circle cx="66" cy="66" r="52" stroke="var(--gresit)"
+                        stroke-dasharray="52.5 274.2" stroke-dashoffset="-145.2"/>
+                      <circle cx="66" cy="66" r="52" stroke="var(--linie-2)"
+                        stroke-dasharray="34.3 292.4" stroke-dashoffset="-199.7"/>
+                    </g>
+                    <text x="66" y="62" text-anchor="middle"
+                      style="font-family:var(--sans);font-size:25px;font-weight:600;
+                      fill:var(--text)">11</text>
+                    <text x="66" y="80" text-anchor="middle"
+                      style="font-family:var(--sans);font-size:11px;
+                      fill:var(--text-3)">din 18 au trimis</text>
+                  </svg>
+                  <table class="t" style="margin-top:6px">
+                    <tbody>
+                      <tr><td><span class="g g--ok">✓</span> corect</td>
+                        <td style="text-align:right"><b>8</b></td></tr>
+                      <tr><td><span class="g g--nu">✕</span> greșit</td>
+                        <td style="text-align:right"><b>3</b></td></tr>
+                      <tr><td><span class="g g--gol">○</span> trimis gol</td>
+                        <td style="text-align:right"><b>2</b></td></tr>
+                      <tr><td><span class="g g--nim"></span> n-a trimis</td>
+                        <td style="text-align:right"><b>5</b></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- dreapta: tabelul, cine ce a facut -->
+                <div>
+                  <table class="t">
+                    <thead><tr>
+                      <th style="width:38%">Student</th>
+                      <th>Acest slide</th>
+                      <th>Ce a ales</th>
+                      <th style="text-align:right">Toată ora</th>
+                    </tr></thead>
+                    <tbody>
+                      <tr><td><b>Andreea Pop</b></td>
+                        <td><span class="g g--ok">✓</span></td>
+                        <td style="font-family:var(--mono);font-size:10.5px">fetch și merge</td>
+                        <td style="text-align:right"><span class="bm"><i style="width:78%"></i></span> 7/9</td></tr>
+                      <tr><td><b>Bogdan Ilie</b></td>
+                        <td><span class="g g--nu">✕</span></td>
+                        <td style="font-family:var(--mono);font-size:10.5px">add și commit</td>
+                        <td style="text-align:right"><span class="bm"><i style="width:44%"></i></span> 4/9</td></tr>
+                      <tr><td><b>Carmen Radu</b></td>
+                        <td><span class="g g--gol">○</span></td>
+                        <td style="color:var(--text-3)">trimis fără răspuns</td>
+                        <td style="text-align:right"><span class="bm"><i style="width:22%"></i></span> 2/9</td></tr>
+                      <tr><td><b>Dan Marin</b></td>
+                        <td><span class="g g--nim"></span></td>
+                        <td style="color:var(--text-3)">—</td>
+                        <td style="text-align:right"><span class="bm"><i style="width:11%"></i></span> 1/9</td></tr>
+                      <tr><td><b>Elena Vasile</b></td>
+                        <td><span class="g g--ok">✓</span></td>
+                        <td style="font-family:var(--mono);font-size:10.5px">fetch și merge</td>
+                        <td style="text-align:right"><span class="bm"><i style="width:89%"></i></span> 8/9</td></tr>
+                      <tr><td><b>Florin Șerban</b></td>
+                        <td><span class="g g--ok">✓</span></td>
+                        <td style="font-family:var(--mono);font-size:10.5px">fetch și merge</td>
+                        <td style="text-align:right"><span class="bm"><i style="width:67%"></i></span> 6/9</td></tr>
+                    </tbody>
+                  </table>
+                  <p class="legenda">
+                    <span><span class="g g--ok">✓</span> corect</span>
+                    <span><span class="g g--nu">✕</span> greșit</span>
+                    <span><span class="g g--gol">○</span> a trimis gol</span>
+                    <span><span class="g g--nim"></span> n-a trimis</span>
+                    <span style="margin-left:auto;color:var(--text-3)">sortează după:
+                      slide · nume · cât a făcut</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="cutie" style="margin-top:14px">
+                <p class="cutie__t">Blocați acum</p>
+                <p class="cutie__d">Dan Marin · pe slide 5 de 7 minute ·
+                  Carmen Radu · 3 trimiteri goale la rând</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="vs__de"><b>De ce așa.</b> Cercul răspunde la „pot merge mai
+          departe?" dintr-o privire, de la doi metri. Tabelul răspunde la „pe cine
+          întreb acum?" Ambele se uită la același slide, deci stau pe același
+          ecran. Coloana „ce a ales" e cea care-ți spune <em>de ce</em> au greșit,
+          nu doar că au greșit: dacă trei au ales aceeași variantă falsă, aia e
+          următoarea ta propoziție.</div>
+      </div>
+    </div>
+
+    <h3>Patru stări, nu două</h3>
+    <p>Acum o sarcină e trecută sau nu, iar cine apasă Verifică pe gol arată
+    identic cu cine nu e în sală. Forma glifului poartă informația, culoarea doar
+    o întărește, deci se citește și alb-negru, și de un daltonist.</p>
+    <table class="tab">
+      <thead><tr><th>Stare</th><th>Când</th><th>La notă</th></tr></thead>
+      <tbody>
+        <tr><td><span class="g g--ok">✓</span> trecut</td><td>a completat corect</td><td>punct</td></tr>
+        <tr><td><span class="g g--nu">✕</span> greșit</td><td>a completat, dar greșit</td><td>zero, dar a încercat</td></tr>
+        <tr><td><span class="g g--gol">○</span> trimis gol</td><td>a apăsat Verifică fără să completeze</td><td>zero</td></tr>
+        <tr><td><span class="g g--nim"></span> n-a trimis</td><td>nu a atins sarcina</td><td>zero</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <p class="nota__e">live înseamnă și feedback</p>
+      <p>În modul live, când trimit, <strong>văd imediat dacă au nimerit</strong>.
+      Asta lipsește acum, și e jumătate din motivul pentru care un quiz la clasă
+      funcționează. Iar când treci tu la slide-ul următor, ce e în lucru se
+      trimite automat, așa cum e: de aceea există starea „trimis gol".</p>
+    </div>
+
+    <h3 style="font-family:var(--sans);font-size:17px;font-weight:600;margin:30px 0 0">
+      Reluarea: o dată se notează, după aceea e al lor</h3>
+    <p>Regula ta, pusă în trei rânduri. Partea importantă e că nu adaugă niciun
+    tabel nou: răspunsurile se păstrează oricum toate, cu ora lor. Se schimbă doar
+    care dintre ele se citește la notă.</p>
+
+    <table class="tab">
+      <thead><tr><th>Încercarea</th><th>Ce se întâmplă cu ea</th><th>Ce vede studentul</th></tr></thead>
+      <tbody>
+        <tr><td>Prima completată</td><td>Se notează. Rămâne așa.</td><td>„Nota ta la sarcina asta: corect."</td></tr>
+        <tr><td>Trimiterea automată goală</td><td>Se vede în panou și în raport, dar nu îngheață nota.</td><td>„N-ai apucat. Poți relua."</td></tr>
+        <tr><td>Reluările, în ritm propriu</td><td>Oricâte. Nu schimbă nota.</td><td>„Ai refăcut de 3 ori, ultima corect."</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:18px">Rândul al treilea e cel care face sistemul
+    sănătos: un student care a greșit la oră și a refăcut acasă până i-a ieșit are
+    pe ecran, scris, că i-a ieșit, chiar dacă nota a rămas cea de la prima
+    încercare. Nota măsoară ora; linia de dedesubt măsoară dacă au învățat. Și
+    pentru tine sunt două coloane diferite în raport, nu una.</p>
+  </section>
+
+  <!-- ============================================= ACASA -->
+  <section id="acasa">
+    <p class="s__nr">05</p>
+    <h2>Prima pagină, când intri tu</h2>
+
+    <div class="vs">
+      <div class="vs__c vs__c--rau">
+        <div class="vs__et"><span>acum</span><span>pagina cursului</span></div>
+        <div class="vs__corp">
+          <div class="m">
+            <div class="m__bara"><span class="m__pct"><i></i><i></i><i></i></span>
+              /data-science-workflows/</div>
+            <div class="m__corp">
+              <p class="m__sub">ANALIZA DATELOR COMPLEXE · SOCIOLOGIE · UBB · 2026</p>
+              <p class="m__h">Fluxuri de lucru pentru știința datelor</p>
+              <p class="m__sub" style="margin-bottom:14px;font-family:var(--serif);
+                letter-spacing:0;font-size:12.5px">Un drum complet, de la întrebare
+                la rezultat…</p>
+              <div class="randb">
+                <span class="btn btn--tare">Începe lecția 1</span>
+                <span class="btn" style="border-color:var(--gresit);color:var(--gresit)">Progresul meu</span>
+                <span class="btn">Despre proiect</span>
+              </div>
+              <div class="cutie cutie--gri" style="margin-top:14px">
+                <p class="cutie__t" style="color:var(--gresit)">Cum se pune nota</p>
+                <p class="cutie__d">Teme 3p · Proiect 5p · Seminar 2p</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vs__de"><b>Problema.</b> E pagina studentului, arătată ție.
+          „Progresul meu" și „Cum se pune nota" n-au ce căuta la cineva care predă.
+          Ca să ajungi unde ai treabă, mai sunt două clicuri.</div>
+      </div>
+
+      <div class="vs__c vs__c--bun">
+        <div class="vs__et"><span>propus</span><span>/predau</span></div>
+        <div class="vs__corp">
+          <div class="m">
+            <div class="m__bara"><span class="m__pct"><i></i><i></i><i></i></span>
+              /predau</div>
+            <div class="m__corp">
+              <p class="m__sub">PREDAU · MARȚI, 14 OCTOMBRIE</p>
+              <p class="m__h">Cursul 3, grupa 1</p>
+              <p class="m__sub" style="margin-bottom:13px;font-family:var(--serif);
+                letter-spacing:0;font-size:12.5px">Versionare și colaborare cu Git ·
+                23 de sarcini · 90 de minute</p>
+              <div class="randb" style="margin-bottom:15px">
+                <span class="btn btn--tare">Pornește ora</span>
+                <span class="btn">Deschide lecția</span>
+                <span class="btn">Manualul</span>
+              </div>
+              <div class="grid3" style="margin-bottom:13px">
+                <div class="cifra"><b>21</b><span>în grupa 1</span></div>
+                <div class="cifra"><b>18</b><span>au cont legat</span></div>
+                <div class="cifra"><b>2</b><span>ședințe ținute</span></div>
+              </div>
+              <p class="m__sub" style="margin:0 0 7px">ULTIMELE ȘEDINȚE</p>
+              <ul class="lista">
+                <li><b>9 oct</b><span>Cursul 2, grupa 1 · 19 prezenți · 94 min</span></li>
+                <li><b>7 oct</b><span>Cursul 1, grupa 1 · 20 prezenți · 88 min</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="vs__de"><b>Ce se schimbă.</b> O singură întrebare: ce predau
+          acum, și pornesc? O acțiune principală, în salvie. Istoricul sub ea, nu
+          într-un alt meniu.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= RAPORT -->
+  <section id="raport">
+    <p class="s__nr">06</p>
+    <h2>Când închizi ora</h2>
+    <p>Asta nu există deloc acum. La închidere, ședința îngheață și devine un
+    raport care rămâne, cu export și ștergere pe el, nu într-un meniu de setări.</p>
+
+    <div class="vs">
+      <div class="vs__c vs__c--rau">
+        <div class="vs__et"><span>acum</span><span>—</span></div>
+        <div class="vs__corp">
+          <div class="m"><div class="m__corp" style="min-height:220px;display:flex;
+            align-items:center;justify-content:center;text-align:center">
+            <div>
+              <p class="m__sub" style="margin:0 0 6px;font-family:var(--serif);
+                letter-spacing:0;font-size:12.5px">Apeși „Oprește ora"</p>
+              <p style="font-family:var(--sans);font-size:13px;color:var(--text-3);margin:0">
+                Steagul <code>pornit</code> devine fals.<br>Atât.</p>
+            </div>
+          </div></div>
+        </div>
+        <div class="vs__de"><b>Problema.</b> Ce s-a lucrat marți nu se poate
+          separa de ce s-a lucrat singur, acasă, joi.</div>
+      </div>
+
+      <div class="vs__c vs__c--bun">
+        <div class="vs__et"><span>propus</span><span>raportul ședinței</span></div>
+        <div class="vs__corp">
+          <div class="m">
+            <div class="m__bara"><span class="m__pct"><i></i><i></i><i></i></span>
+              /predau/sedinte/14-oct-c3-g1</div>
+            <div class="m__corp">
+              <p class="m__sub">ȘEDINȚĂ ÎNCHISĂ</p>
+              <p class="m__h">Cursul 3, grupa 1</p>
+              <p class="m__sub" style="margin-bottom:13px">14 OCT · 10:02–11:38 ·
+                96 MIN · LIVE</p>
+              <div class="grid2" style="margin-bottom:12px">
+                <div class="cifra"><b>18 <small>din 21</small></b><span>prezenți</span></div>
+                <div class="cifra"><b>14 <small>din 23</small></b><span>sarcini parcurse</span></div>
+              </div>
+              <div class="cutie cutie--acc">
+                <p class="cutie__t">Unde s-a împotmolit grupa</p>
+                <p class="cutie__d">Slide 9, „Rezolvă conflictul": 6 din 18 au
+                  trecut. Media pe celelalte: 15 din 18.</p>
+              </div>
+              <div class="cutie"><p class="cutie__t">Au scris 3 texte</p>
+                <p class="cutie__d">Întrebarea de cercetare a echipei · le poți citi</p></div>
+              <div class="randb" style="margin-top:12px">
+                <span class="btn btn--mic">Export CSV</span>
+                <span class="btn btn--mic">Notițele mele</span>
+                <span class="btn btn--mic" style="color:var(--gresit);
+                  border-color:color-mix(in srgb,var(--gresit) 34%,var(--linie))">Arhivează</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vs__de"><b>Ce se schimbă.</b> „Ce s-a întâmplat în ziua aia"
+          devine o pagină. Lista lor e istoricul cursului.</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--sans);font-size:17px;font-weight:600;margin:30px 0 0">
+      Ștergerea, cu plasă dedesubt</h3>
+    <p>Ai ales arhivarea pe un număr de zile, și e varianta bună: o repetiție sau
+    o ședință deschisă din greșeală trebuie să dispară din listă imediat, dar nu
+    din existență imediat.</p>
+
+    <ol class="pasi" style="margin-top:18px">
+      <li><b>Arhivezi</b>
+        <p>Ședința iese din listă și din toate statisticile, în aceeași secundă.
+        Butonul nu cere confirmare, pentru că nu e distructiv.</p></li>
+      <li><b>Stă 30 de zile</b>
+        <p>Într-o listă separată, „Arhivate", cu numărul de zile rămase scris pe
+        fiecare rând. Un clic o aduce înapoi, întreagă.</p></li>
+      <li><b>Se șterge singură</b>
+        <p>După termen, definitiv, cu tot ce atârnă de ea. Sau mai devreme, din
+        arhivă, cu o confirmare adevărată.</p></li>
+    </ol>
+
+    <p style="margin-top:16px">Treizeci de zile e o propunere, nu o lege: se
+    schimbă într-un singur loc. Important e că singurul buton pe care îl apeși în
+    grabă, la sfârșitul orei, e cel care <em>nu</em> distruge nimic.</p>
+  </section>
+
+  <!-- ============================================= ECHIPE -->
+  <section id="echipe">
+    <p class="s__nr">07</p>
+    <h2>Echipele pe GitHub: un instantaneu, nu un flux</h2>
+    <p>Aici am scris confuz prima dată. Să fie limpede: <strong>progresul pe
+    GitHub nu e live și nu trebuie să fie.</strong> E o fotografie, făcută când
+    rulezi tu scriptul. Exact ca la AI engineering, unde pagina spune în antet
+    <code>Actualizat: 2026-06-22 23:38</code> și toată lumea știe la ce se uită.</p>
+
+    <div class="vs">
+      <div class="vs__c vs__c--bun">
+        <div class="vs__et"><span>cum e la AI engineering</span><span>de copiat</span></div>
+        <div class="vs__corp">
+          <div class="m"><div class="m__corp">
+            <p class="m__sub">ADC 2026 · INGINERIA AI</p>
+            <p class="m__h">Team Dashboard</p>
+            <p class="m__sub" style="margin-bottom:12px">github.com/AIE-2026 ↗ ·
+              6 ECHIPE · ACTUALIZAT: 2026-06-22 23:38</p>
+            <div class="grid3" style="margin-bottom:10px">
+              <div class="cifra"><b>485<small>/509</small></b><span>task-uri finalizate</span></div>
+              <div class="cifra"><b>31<small>/31</small></b><span>studenți conectați</span></div>
+              <div class="cifra"><b>6</b><span>echipe</span></div>
+            </div>
+            <div class="cutie cutie--gri">
+              <p class="cutie__t">Status curs</p>
+              <p class="cutie__d">C2 Models este etapa curentă; backlog-ul cel mai
+                mare este în C6 cu 7 task-uri deschise.</p>
+            </div>
+          </div></div>
+        </div>
+        <div class="vs__de"><b>Ce e bun și se păstrează.</b> Data actualizării în
+          antet. Rapoarte ca <em>n din m</em>, niciodată numere singure. O
+          propoziție scrisă care rezumă starea, generată din cifre. Și bara de
+          etape C1…C9 pentru fiecare echipă.</div>
+      </div>
+
+      <div class="vs__c vs__c--bun">
+        <div class="vs__et"><span>propus pentru noi</span><span>/predau/clasa · Echipe</span></div>
+        <div class="vs__corp">
+          <div class="m"><div class="m__corp">
+            <div class="banda banda--mort" style="justify-content:space-between">
+              <span>instantaneu din <strong style="color:var(--text)">GitHub</strong></span>
+              <span style="font-family:var(--mono)">actualizat marți, 12:04</span>
+              <span class="btn btn--mic">Reîmprospătează</span>
+            </div>
+            <table class="t">
+              <thead><tr><th>Echipa</th><th>Etapa</th><th>Pe etape</th>
+                <th style="text-align:right">Total</th></tr></thead>
+              <tbody>
+                <tr><td><b>Diaspora</b></td><td>C3</td>
+                  <td><span class="bm"><i style="width:100%"></i></span>
+                      <span class="bm"><i style="width:100%"></i></span>
+                      <span class="bm"><i style="width:67%"></i></span></td>
+                  <td style="text-align:right"><b>12/18</b></td></tr>
+                <tr><td><b>Granița</b></td><td>C3</td>
+                  <td><span class="bm"><i style="width:100%"></i></span>
+                      <span class="bm"><i style="width:80%"></i></span>
+                      <span class="bm"><i style="width:40%"></i></span></td>
+                  <td style="text-align:right"><b>9/14</b></td></tr>
+                <tr><td><b>Orașe</b></td><td>C2</td>
+                  <td><span class="bm"><i style="width:100%"></i></span>
+                      <span class="bm"><i style="width:25%"></i></span>
+                      <span class="bm"><i style="width:0%"></i></span></td>
+                  <td style="text-align:right"><b>3/14</b></td></tr>
+              </tbody>
+            </table>
+            <div class="cutie" style="margin-top:10px">
+              <p class="cutie__t" style="color:var(--gresit)">Blocaje</p>
+              <p class="cutie__d">Orașe · „Colectează datele Eurostat" · deschis de
+                11 zile, fără mișcare</p>
+            </div>
+          </div></div>
+        </div>
+        <div class="vs__de"><b>Constrângerea, pe față.</b> Un browser nu poate citi
+          API-ul GitHub pentru depozite private fără token, iar un token n-are ce
+          căuta într-un depozit public. Deci: script local, commit la JSON, pagina
+          îl citește. „Reîmprospătează" înseamnă „rulează scriptul și fă commit",
+          nu o cerere din pagină.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= CULORI -->
+  <section id="culori">
+    <p class="s__nr">08</p>
+    <h2>Culorile</h2>
+    <p>Neutrele și salvia sunt luate direct din captura TranscriptionLab. Ce am
+    adăugat sunt culorile de stare, iar acolo am făcut o alegere pe care merită
+    s-o discutăm.</p>
+
+    <h3>Luate din captura ta</h3>
+    <div class="pal">
+      <div class="pal__c"><div class="pal__p" style="background:#292921"></div>
+        <p class="pal__n"><b>Fundal închis</b>#292921</p></div>
+      <div class="pal__c"><div class="pal__p" style="background:#31312A"></div>
+        <p class="pal__n"><b>Pânză</b>#31312A</p></div>
+      <div class="pal__c"><div class="pal__p" style="background:#8DAE9F"></div>
+        <p class="pal__n"><b>Salvie</b>#8DAE9F</p></div>
+      <div class="pal__c"><div class="pal__p" style="background:#E9E7E0"></div>
+        <p class="pal__n"><b>Cremă</b>#E9E7E0</p></div>
+      <div class="pal__c"><div class="pal__p" style="background:#A9A79D"></div>
+        <p class="pal__n"><b>Gri cald</b>#A9A79D</p></div>
+    </div>
+
+    <h3>Lecția din butonul tău</h3>
+    <p>Butonul verde din captură are <strong>scris închis pe umplere deschisă</strong>,
+    nu alb pe verde. Raportul de contrast iese 6,55:1, mult peste prag, și arată
+    mai cald decât orice buton alb-pe-culoare. Îl facem regula pentru acțiunea
+    principală din tot situl.</p>
+    <p><span class="btn btn--tare">Pornește ora</span>
+       <span class="btn" style="margin-left:7px">Acțiune secundară</span></p>
+
+    <h3>Culorile de stare, și de ce nu sunt verde și roșu</h3>
+    <p>„Corect" și „greșit" sunt exact locul unde verdele și roșul nu au voie să
+    fie singura diferență: e perechea pe care n-o deosebește cel mai frecvent tip
+    de daltonism. Am verificat cu un validator, nu din ochi. Verde-roșu dă o
+    separare de 6,2 pentru deuteranopie, sub prag. Teal și teracotă dau 11,1, iar
+    în temă închisă 10,5. Ambele trec toate cele cinci verificări: bandă de
+    luminozitate, saturație minimă, separare pentru daltonism, separare pentru
+    vedere normală, și contrast față de fundal.</p>
+
+    <div class="pal">
+      <div class="pal__c"><div class="pal__p" style="background:#0E8A7A"></div>
+        <p class="pal__n"><b>Trecut</b>#0E8A7A · deschis</p></div>
+      <div class="pal__c"><div class="pal__p" style="background:#AB3E24"></div>
+        <p class="pal__n"><b>Greșit</b>#AB3E24 · deschis</p></div>
+      <div class="pal__c"><div class="pal__p" style="background:#35A89A"></div>
+        <p class="pal__n"><b>Trecut</b>#35A89A · închis</p></div>
+      <div class="pal__c"><div class="pal__p" style="background:#D4664E"></div>
+        <p class="pal__n"><b>Greșit</b>#D4664E · închis</p></div>
+    </div>
+
+    <div class="nota">
+      <p class="nota__e">și totuși, forma pe primul loc</p>
+      <p>Chiar cu perechea verificată, culoarea nu rămâne singurul semn. Fiecare
+      stare are gliful ei: <span class="g g--ok">✓</span>
+      <span class="g g--nu">✕</span> <span class="g g--gol">○</span>
+      <span class="g g--nim"></span>. Se citește pe un proiector decolorat, la o
+      imprimantă alb-negru, și de oricine.</p>
+    </div>
+
+    <h3>Ce se schimbă față de acum</h3>
+    <p>Situl e acum pe un albastru-oțel rece, cu neutre reci. Trecerea e la o
+    familie caldă: hârtia bate în cremă, grijile bat în măsliniu, accentul e
+    salvie. E aceeași structură, altă temperatură. Vizual, cursul încetează să
+    semene cu un tablou de bord corporativ și începe să semene cu un caiet.</p>
+  </section>
+
+  <!-- ============================================= MARUNTISURI -->
+  <section id="marunt">
+    <p class="s__nr">09</p>
+    <h2>Mărunțișurile care se adună</h2>
+    <p>Ai cerut să mă uit și la ce e mic. Sunt lucruri de câteva minute fiecare,
+    dar împreună fac diferența dintre „merge" și „e făcut cu grijă".</p>
+
+    <div class="marunt">
+      <div class="marunt__c"><b>Legături moarte</b>
+        Cele opt linkuri „Caietul lecției" trimit către fișiere
+        <code>.ipynb</code> care nu există în depozit. Și
+        <code>surse-de-date.html</code> e linkat din toate lecțiile, dar nu e în sit.
+        <i>De reparat: ori le facem, ori le ascundem până există.</i></div>
+
+      <div class="marunt__c"><b>Linkurile externe nu se văd că sunt externe</b>
+        Un link către Eurostat arată la fel ca unul către slide-ul 7. Un
+        indicator mic de „pleacă din sit" pune omul în temă înainte să apese.
+        <i>Un semn ↗ la 0,75 din mărimea textului, nu o iconiță colorată.</i></div>
+
+      <div class="marunt__c"><b>Numerele fără numitor</b>
+        „Cod 12 · Verificări 31 · Prezențe 3" nu înseamnă nimic. Din câte? AI
+        engineering face bine: <em>485/509</em>, <em>31/31</em>.
+        <i>Regulă: orice cifră de progres se scrie ca raport.</i></div>
+
+      <div class="marunt__c"><b>Butonul distructiv lângă cel util</b>
+        „Resetează" stă în aceeași coloană cu nota. Un clic greșit șterge tot
+        progresul.
+        <i>Trece în Setări, cu o confirmare care cere scris cuvântul.</i></div>
+
+      <div class="marunt__c"><b>Starea goală nu spune nimic</b>
+        Un student fără echipă vede o liniuță. Un profesor fără ședințe vede un
+        tabel gol.
+        <i>Fiecare stare goală primește o propoziție și o acțiune.</i></div>
+
+      <div class="marunt__c"><b>Focusul la tastatură</b>
+        Porțile și exercițiile se pot parcurge cu mausul, dar tabulatorul sare
+        imprevizibil, iar conturul de focus lipsește pe chipuri.
+        <i>Un contur de 2px în salvie, peste tot, și o ordine care urmează citirea.</i></div>
+
+      <div class="marunt__c"><b>Titlul paginii în bara browserului</b>
+        Toate lecțiile se numesc la fel în istoric. Cu cinci taburi deschise la
+        clasă, nu știi care e care.
+        <i>„Slide 9 · Cursul 3 · Fluxuri de lucru", în ordinea asta.</i></div>
+
+      <div class="marunt__c"><b>Scrisul mic sub 11px</b>
+        În tabelul de statistici și în subsol se coboară la 10px. Pe un proiector
+        de amfiteatru nu se citește de la rândul trei.
+        <i>Prag minim 11,5px în interfață, 13px în tot ce se proiectează.</i></div>
+
+      <div class="marunt__c"><b>Antetul nu spune unde ești</b>
+        „Cursul 1 · Introducere și configurare" e corect, dar nu arată că ești
+        într-o oră condusă, nici dacă ești student sau profesor.
+        <i>Antetul capătă starea: rolul, și ședința dacă e una deschisă.</i></div>
+
+      <div class="marunt__c"><b>Un singur fel de card pentru lucruri diferite</b>
+        Aceeași cutie cu contur subțire e și pentru o notă, și pentru o acțiune,
+        și pentru un rezultat.
+        <i>Trei forme distincte: notă (bară laterală), acțiune (umplere salvie),
+        rezultat (cifră mare).</i></div>
+
+      <div class="marunt__c"><b>Nu există stare de „se încarcă"</b>
+        Panoul sare de la gol la plin. La o conexiune proastă pare stricat.
+        <i>Schelete, nu rotițe: formele apar goale, apoi se umplu.</i></div>
+
+      <div class="marunt__c"><b>Nimic nu e de tipărit</b>
+        Raportul unei ședințe va fi, uneori, printat sau pus în PDF pentru
+        secretariat.
+        <i>O foaie de stil de tipar pentru raport și pentru tabelul de note.</i></div>
+    </div>
+  </section>
+
+  <!-- ============================================= ORDINE -->
+  <section id="ordine">
+    <p class="s__nr">10</p>
+    <h2>În ce ordine</h2>
+    <ol class="pasi">
+      <li><b>Ședințele și grupele</b>
+        <p>Tabelul ședințelor, grupa ca obiect, deschiderea și închiderea. Nu se
+        vede mai nimic pe ecran, dar nimic din rest nu merge fără ea.</p></li>
+      <li><b>Intrarea în oră</b>
+        <p>Codul care duce grupa, ecranul cu lista grupei, starea
+        <code>intrat / activ / prezent</code>. Scurtă, și se vede imediat la
+        următorul curs.</p></li>
+      <li><b>Panoul live</b>
+        <p>Cercul plus tabelul pentru slide-ul curent, cele patru stări, feedback
+        imediat la trimitere, auto-trimitere la schimbarea slide-ului.</p></li>
+      <li><b>Produsul tău</b>
+        <p><code>/predau</code> cu cele trei pagini, raportul, exportul. Scoaterea
+        limbajului de student din tot ce vezi tu.</p></li>
+      <li><b>Culorile și mărunțișurile</b>
+        <p>Paleta caldă peste tot, apoi lista de mai sus. Se poate face în
+        paralel cu orice, și nu strică nimic dacă rămâne pe jumătate.</p></li>
+      <li><b>Echipele</b>
+        <p>Scriptul, fișierul, cardul din contul studentului, tabelul tău.
+        Complet independentă.</p></li>
+    </ol>
+
+    <div class="cutie cutie--gri" style="margin-top:26px">
+      <p class="cutie__t">Ce ai decis, pe scurt</p>
+      <p class="cutie__d"><strong>1.</strong> Ședința se leagă și de grupă, și de
+      lecție. <strong>2.</strong> La trecerea mai departe, ce e început se trimite
+      automat; pot relua în ritm propriu de câte ori vor, dar nota ți-o dă prima
+      încercare. <strong>3.</strong> Prezența se ia din activitate, nu din
+      scanare. <strong>4.</strong> Ștergerea unei ședințe o arhivează, și se
+      șterge definitiv după un timp.</p>
+    </div>
+
+    <div class="nota" style="margin-top:18px">
+      <p class="nota__e">o singură contradicție, de rezolvat acum</p>
+      <p>Regula 2 are două jumătăți care se bat cap în cap: dacă <em>prima
+      încercare</em> e cea notată, iar la schimbarea slide-ului se trimite automat
+      ce e în lucru, atunci un student mai lent primește un „trimis gol" ca primă
+      încercare și rămâne cu zero, deși știa. Propunerea mea:
+      <strong>încercarea notată e prima încercare completată</strong>. Trimiterile
+      automate goale se înregistrează, se văd în panou și se adună în raport, dar
+      nu îngheață nota. Altfel regula ta de auto-trimitere pedepsește exact
+      oamenii pe care vrei să-i prinzi din urmă.</p>
+    </div>
+  </section>
+
+  <div class="jos">
+    Machete, nu capturi. Culorile sunt cele propuse și sunt reale: pagina asta e
+    desenată în ele. Schimbă tema sistemului ca să vezi și varianta închisă.
+  </div>
+
+</div>
+</body>
+</html>

@@ -169,9 +169,9 @@
 .reia__b{grid-area:b;height:3px;border-radius:2px;background:var(--linie);
   margin-top:13px;overflow:hidden}
 .reia__b i{display:block;height:100%;background:var(--accent)}
-:root[data-tema="intunecat"] .reia__sg{color:#0F1317}
+:root[data-tema="intunecat"] .reia__sg{color:var(--salvie-text)}
 @media (prefers-color-scheme: dark){
-  :root:not([data-tema="deschis"]) .reia__sg{color:#0F1317}
+  :root:not([data-tema="deschis"]) .reia__sg{color:var(--salvie-text)}
 }
 
 /* --- nota ----------------------------------------------------------------

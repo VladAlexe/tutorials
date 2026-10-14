@@ -3,13 +3,13 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=19"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=23"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=19";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=23";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -77,7 +77,7 @@ async function cont(){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=19`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=23`);
     const p = await profil();
     if (!p.autentificat) {
       zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;
@@ -85,21 +85,15 @@ async function cont(){
     }
     /* profesorul are casa lui; studentul nu afla ca exista */
     const clasa = p.profesor
-      ? `<a class="icon-btn" href="${RADACINA}/panou/" title="Panou"
-            aria-label="Panou">${SVG.clasa}</a>` : "";
+      ? `<a class="icon-btn" href="${RADACINA}/profesor/clasa/" title="Panou de clasă"
+            aria-label="Panou de clasă">${SVG.clasa}</a>` : "";
     const nume = p.nume || p.email || "Contul meu";
     const ini = nume.trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "?";
-    const acasa = p.profesor ? `${RADACINA}/panou/` : `${RADACINA}/cont/`;
-    /* Rolul scris lângă nume. Pare un amănunt, dar e singurul loc din care
-       afli, dintr-o privire, în ce cont ești: al tău, sau cel de test cu care
-       tocmai ai verificat cum arată lecția pentru un student. */
-    const rol = p.profesor ? "profesor"
-              : (p.matricol && String(p.matricol).startsWith("G-")) ? "invitat" : "";
+    const acasa = p.profesor ? `${RADACINA}/profesor/` : `${RADACINA}/panou/`;
     zona.innerHTML = clasa +
-      `<a class="cont-chip ${p.profesor ? "cont-chip--prof" : ""}" href="${acasa}" title="${nume}">
+      `<a class="cont-chip" href="${acasa}" title="${nume}">
          <span class="cont-chip__cerc">${ini}</span>
-         <span class="cont-chip__n">${nume.split(/\s+/)[0]}</span>
-         ${rol ? `<span class="cont-chip__r">${rol}</span>` : ""}
+         <span>${nume.split(/\s+/)[0]}</span>
        </a>`;
   } catch {
     zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;

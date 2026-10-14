@@ -4,12 +4,17 @@
    Editorul arată ca unul de cod pentru că asta e și intenția: ce scrii aici
    să semene cu ce vei scrie în VS Code peste zece minute. Fundal închis în
    ambele teme, numerotarea liniilor pe stânga, monospațiat peste tot.
+
+   Două culori de sintaxă, nu patru: teal pentru cuvinte-cheie, paiu pentru
+   literale (șiruri și numere deopotrivă, pentru că sunt același fel de lucru).
+   Perechea e verificată, 20,3 separare la vedere normală și 14,2 la daltonism.
+   Comentariile stau în gri, nu în culoare.
    =========================================================================== */
 
 :root{
-  --ed-fundal:#0E1114; --ed-text:#D4D7DA; --ed-linie:#2A3138;
-  --ed-nr:#5A646D;     --ed-cheie:#8FB8D8; --ed-text2:#9DC08B;
-  --ed-nr-fundal:#141A1F; --ed-com:#6B747C; --ed-num:#E0A08C;
+  --ed-fundal:#1B1B15; --ed-text:#D9D7CE; --ed-linie:#32322A;
+  --ed-nr:#6E6D63;     --ed-cheie:#4BC0B7; --ed-text2:#E9C85E;
+  --ed-nr-fundal:#23231C; --ed-com:#7E7C70; --ed-num:#E9C85E;
 }
 
 /* --- cadrul exercițiului ------------------------------------------------- */
@@ -40,13 +45,13 @@
 
 /* golul de completat: un câmp care arată ca parte din cod */
 .gol{display:inline-block;font-family:var(--mono);font-size:13px;line-height:1.5;
-  background:rgba(127,184,216,.12);border:1px solid rgba(127,184,216,.38);
-  border-radius:4px;color:#CFE4F2;padding:0 6px;min-width:5ch;outline:none;
-  caret-color:#8FB8D8;text-align:left}
-.gol:focus{border-color:#8FB8D8;background:rgba(127,184,216,.2)}
-.gol.bun{background:rgba(127,176,140,.18);border-color:rgba(127,176,140,.6);color:#BEE0C6}
-.gol.rau{background:rgba(215,145,133,.16);border-color:rgba(215,145,133,.6);color:#F0C3BA}
-.gol::placeholder{color:#55606A}
+  background:rgba(75,192,183,.12);border:1px solid rgba(75,192,183,.38);
+  border-radius:4px;color:#CCE7E2;padding:0 6px;min-width:5ch;outline:none;
+  caret-color:#4BC0B7;text-align:left}
+.gol:focus{border-color:#4BC0B7;background:rgba(75,192,183,.2)}
+.gol.bun{background:rgba(53,168,154,.2);border-color:rgba(53,168,154,.65);color:#A9DED4}
+.gol.rau{background:rgba(212,102,78,.18);border-color:rgba(212,102,78,.62);color:#F0BCAC}
+.gol::placeholder{color:#6E6D63}
 
 /* --- reordonare ---------------------------------------------------------- */
 

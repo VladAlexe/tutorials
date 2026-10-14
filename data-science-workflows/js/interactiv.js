@@ -6,9 +6,9 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=19";
-import EXERCITII from "./exercitii.js?v=19";
-import VIZUAL from "./vizual.js?v=19";
+import GRAFICE from "./grafice.js?v=23";
+import EXERCITII from "./exercitii.js?v=23";
+import VIZUAL from "./vizual.js?v=23";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL };
 
@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=19");
+    const m = await import("/data-science-workflows/js/colectare.js?v=23");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 400), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -140,7 +140,7 @@ C.url = (gazda, date) => {
     gazda.closest(".ix")?.classList.add("gata");
     document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
     try {
-      const m = await import("/data-science-workflows/js/colectare.js?v=19");
+      const m = await import("/data-science-workflows/js/colectare.js?v=23");
       const salvat = await m.salveazaCod({
         exercitiuId: date.id, cod: ales.join(" | "), trecut: true });
       st.textContent = salvat ? "Rezolvare înregistrată."
@@ -299,8 +299,9 @@ C.json = (gazda, date) => {
       Object.entries(v).forEach(([kk,vv]) => mergi(vv, kk, adanc+1, `${cale}["${kk}"]`));
       randuri.push({ gol:true, html:`${sp}   <span class="jp">}</span>` });
     } else {
-      const afis = v === null ? '<span class="jb">null</span>'
-        : typeof v === "string" ? `<span class="js">"${v}"</span>`
+      const afis = v === null ? '<span class="jl">null</span>'
+        : typeof v === "string"  ? `<span class="js">"${v}"</span>`
+        : typeof v === "boolean" ? `<span class="jb">${v}</span>`
         : `<span class="jn">${v}</span>`;
       randuri.push({ cale, fel:fel(v), html:`${sp}   ${k}${afis}` });
     }
@@ -395,7 +396,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=19");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=23");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -569,7 +570,7 @@ C.asteptari = (gazda, date) => {
       || "Le citesc pe toate înainte de cursul următor."}`;
     poarta(gazda, date.id, "scris");
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=19");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=23");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

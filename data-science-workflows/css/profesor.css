@@ -1,0 +1,73 @@
+/* ===========================================================================
+   ZONA PROFESORULUI
+
+   O pagină pe care o vede un singur om. Deci nu e un tablou de bord plin de
+   cifre frumoase, ci trei lucruri de apăsat la începutul orei și două tabele
+   de citit după.
+
+   Împrumută cutiile și tabelele din clasa.css; aici stă doar ce e al ei.
+   =========================================================================== */
+
+/* --- capul paginii ------------------------------------------------------- */
+
+.pf__cap{display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;
+  padding:40px 0 28px}
+.pf__cap > div:first-child{flex:1;min-width:280px}
+.pf__et{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent-text);margin-bottom:9px}
+.pf__cap h1{font-size:clamp(26px,3.3vw,34px);margin:0 0 10px}
+.pf__d{font-family:var(--sans);font-size:14.5px;color:var(--text-2);line-height:1.55;
+  margin:0;max-width:60ch}
+.pf__act{display:flex;gap:8px;flex-wrap:wrap;padding-top:6px}
+
+/* --- secțiuni ------------------------------------------------------------ */
+
+.pf__s{padding:32px 0;border-top:1px solid var(--linie)}
+.pf__st{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:5px}
+.pf__st h2{margin:0;font-size:20px}
+.pf__mic{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;
+  color:var(--text-3);margin-left:auto}
+.pf__dd{font-family:var(--sans);font-size:13.5px;color:var(--text-3);margin:0 0 18px;
+  max-width:var(--citit)}
+.pf__sel{border:1px solid var(--linie-2);background:var(--panza);border-radius:8px;
+  padding:7px 11px;font-family:var(--sans);font-size:13.5px;color:var(--text);
+  max-width:330px}
+
+/* --- cei trei pași de la începutul orei ----------------------------------
+   Numerotați, pentru că se fac în ordine și pentru că la ora opt dimineața
+   nimeni nu vrea să-și amintească ordinea.
+   ------------------------------------------------------------------------- */
+
+.ora{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:12px;
+  margin:16px 0 18px}
+.ora__p{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;
+  border:1px solid var(--linie);border-radius:13px;background:var(--panza)}
+.ora__n{flex:none;width:25px;height:25px;border-radius:50%;display:grid;
+  place-items:center;background:var(--accent-slab);color:var(--accent-text);
+  font-family:var(--mono);font-size:11.5px;font-weight:500;margin-top:1px}
+.ora__m{min-width:0;flex:1}
+.ora__m b{display:block;font-family:var(--sans);font-size:14.5px;font-weight:600;
+  letter-spacing:-.01em;margin-bottom:5px}
+.ora__m p{font-family:var(--sans);font-size:13px;color:var(--text-3);line-height:1.5;
+  margin:0 0 13px;max-width:none}
+.ora__b{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.ora__c{font-family:var(--mono);font-size:10.5px;color:var(--text-3);
+  min-width:0;overflow:hidden;text-overflow:ellipsis}
+
+/* --- tabelul de note ------------------------------------------------------
+   Barele sunt toate de aceeași culoare: arată cât a făcut cineva, nu cine e
+   mai bun decât cine.
+   ------------------------------------------------------------------------- */
+
+#note .tb th small{font-family:var(--mono);font-weight:400;color:var(--text-3);
+  letter-spacing:0;text-transform:none}
+#note .tb td{white-space:nowrap}
+#note .tb td.nume{white-space:normal}
+#note .tb td b{font-variant-numeric:lining-nums;font-size:14px}
+#note .tb__bara{margin:0 7px}
+
+@media(max-width:700px){
+  .pf__cap{padding-top:26px}
+  .pf__mic{margin-left:0;flex-basis:100%}
+  #note .tb{font-size:12px}
+}

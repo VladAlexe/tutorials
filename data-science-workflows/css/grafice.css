@@ -3,25 +3,27 @@
 
    O singură nuanță, șase trepte, pentru mărime. Trepte alese separat pentru
    fiecare temă și verificate: monotone ca luminozitate, cu pas vizibil între
-   ele, iar treapta cea mai deschisă încă se distinge de fundal (2,1:1).
-   Nu sunt o inversare automată a celor de la lumină.
+   ele, iar treapta cea mai slabă încă se distinge de fundal (2,11:1 la lumină,
+   2,13:1 la întuneric). Nu sunt o inversare automată a celor de la lumină.
+   Nuanța e aceeași cu a accentului, ca graficele să nu introducă o a treia
+   culoare în sit.
    =========================================================================== */
 
 :root{
-  --sci-1:#94B3C5; --sci-2:#6F98B1; --sci-3:#4E81A0;
-  --sci-4:#316D90; --sci-5:#265B79; --sci-6:#1F4860;
+  --sci-1:#8CB4A8; --sci-2:#659D8D; --sci-3:#3E8975;
+  --sci-4:#127661; --sci-5:#006351; --sci-6:#094F40;
   --sci-0:transparent;              /* fără date */
   --sci-eu:var(--linie-2);          /* diagonala, scoasă din scară */
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-tema="deschis"]){
-    --sci-1:#395361; --sci-2:#4A6B7D; --sci-3:#5A839A;
-    --sci-4:#6C9CB8; --sci-5:#7CB4D3; --sci-6:#9CC8E1;
+    --sci-1:#386256; --sci-2:#3D7667; --sci-3:#418B78;
+    --sci-4:#4AA089; --sci-5:#5CB39C; --sci-6:#84C3B0;
   }
 }
 :root[data-tema="intunecat"]{
-  --sci-1:#395361; --sci-2:#4A6B7D; --sci-3:#5A839A;
-  --sci-4:#6C9CB8; --sci-5:#7CB4D3; --sci-6:#9CC8E1;
+  --sci-1:#386256; --sci-2:#3D7667; --sci-3:#418B78;
+  --sci-4:#4AA089; --sci-5:#5CB39C; --sci-6:#84C3B0;
 }
 
 /* --- cadrul comun al unui grafic ---------------------------------------- */

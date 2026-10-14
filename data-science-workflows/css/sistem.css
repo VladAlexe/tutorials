@@ -8,37 +8,52 @@
    Tipografie: Source Serif 4 pentru citit, IBM Plex Sans pentru interfata,
    IBM Plex Mono pentru cod, coduri si etichete de date.
 
-   Culoarea e folosita cu zgarcenie: interfata e aproape alb-negru, iar
-   accentul apare numai acolo unde e ceva de actionat sau unde traiesc datele.
+   Paleta e calda: hartia bate in crema, griurile in masliniu. Doua culori
+   cromatice, atat: salvia/teal pentru tot ce se actioneaza si pentru „bun", si
+   teracota pentru „gresit". Perechea de stare e teal/teracota, nu verde/rosu,
+   pentru ca verde-rosu e exact perechea pe care n-o deosebeste cel mai frecvent
+   tip de daltonism; separarea e verificata cu validatorul, nu din ochi.
+
+   Salvia e culoare de umplere, nu de date: are saturatie mica si contrast 2,35:1
+   fata de hartia deschisa, deci nu poarta niciodata singura un inteles.
+
+   Butonul principal e singurul lucru plin si saturat de pe pagina, in ambele
+   teme, dar nu cu aceeasi culoare: pe hartie deschisa e teal cu scris crem
+   (5,97:1), pe hartie inchisa e salvie cu scris inchis (6,55:1), ca in
+   TranscriptionLab. Aceeasi idee, intoarsa corect pentru suprafata.
    =========================================================================== */
 
 :root{
   /* tema deschisa */
-  --fundal:      #FBFBFA;
-  --panza:       #FFFFFF;
-  --panza-2:     #F4F4F2;
-  --text:        #15181C;
-  --text-2:      #5B6168;
-  --text-3:      #8A9098;
-  --linie:       #E5E5E2;
-  --linie-2:     #CECEC9;
-  --accent:      #2D6A8E;
-  --accent-text: #245A7A;
-  --accent-slab: #EAF1F6;
-  --ok:          #3F6B4A;
-  --ok-slab:     #EAF1EB;
-  --nu:          #8C3B2E;
-  --nu-slab:     #F7ECEA;
-  --umbra:       0 1px 2px rgba(21,24,28,.05), 0 4px 14px rgba(21,24,28,.05);
-  --umbra-2:     0 2px 6px rgba(21,24,28,.08), 0 12px 34px rgba(21,24,28,.09);
+  --fundal:       #F7F6F1;
+  --panza:        #FFFFFF;
+  --panza-2:      #EFEEE7;
+  --text:         #23231A;
+  --text-2:       #5A594E;
+  --text-3:       #777569;
+  --linie:        #E2E0D7;
+  --linie-2:      #CBC9BD;
+  --salvie:       #8DAE9F;
+  --salvie-text:  #23231A;
+  --buton:        #116A5F;
+  --buton-text:   #F7F6F1;
+  --accent:       #116A5F;
+  --accent-text:  #0E5A50;
+  --accent-slab:  #E3EFEC;
+  --ok:           #0E8A7A;
+  --ok-slab:      #E4F0EE;
+  --nu:           #AB3E24;
+  --nu-slab:      #F6E9E5;
+  --umbra:        0 1px 2px rgba(35,35,26,.05), 0 4px 14px rgba(35,35,26,.05);
+  --umbra-2:      0 2px 6px rgba(35,35,26,.08), 0 12px 34px rgba(35,35,26,.09);
 
   /* cromul aplicatiei: bare laterale, bara de stare, bara de file.
      In VS Code, zona de editare si barele din jurul ei nu au acelasi fundal;
      diferenta aceea mica e ce face interfata sa arate ca o unealta. */
-  --crom:       #F3F3F1;
-  --crom-2:     #ECECE8;
-  --crom-linie: #DEDEDA;
-  --crom-text:  #4C5257;
+  --crom:         #F1EFE8;
+  --crom-2:       #E9E7DD;
+  --crom-linie:   #DCDAD0;
+  --crom-text:    #55544A;
 
   --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --sans:  'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -53,51 +68,59 @@
 
 @media (prefers-color-scheme: dark){
   :root:not([data-tema="deschis"]){
-    --fundal:      #111417;
-    --panza:       #181C20;
-    --panza-2:     #1E2328;
-    --text:        #E9EBED;
-    --text-2:      #9AA3AB;
-    --text-3:      #69727A;
-    --linie:       #272D33;
-    --linie-2:     #3A4149;
-    --accent:      #7FB8D8;
-    --accent-text: #9CCAE4;
-    --accent-slab: #15242E;
-    --ok:          #7FB08C;
-    --ok-slab:     #17241A;
-    --nu:          #D79185;
-    --nu-slab:     #2A1A17;
-    --umbra:       0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
-    --umbra-2:     0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
-    --crom:        #15181B;
-    --crom-2:      #1B1F23;
-    --crom-linie:  #23282D;
-    --crom-text:   #A8B0B7;
+    --fundal:       #292921;
+    --panza:        #31312A;
+    --panza-2:      #23231A;
+    --text:         #E9E7E0;
+    --text-2:       #B4B2A7;
+    --text-3:       #9A998F;
+    --linie:        #3A3A31;
+    --linie-2:      #4D4D44;
+    --salvie:       #8DAE9F;
+    --salvie-text:  #23231A;
+    --buton:        #8DAE9F;
+    --buton-text:   #23231A;
+    --accent:       #8DAE9F;
+    --accent-text:  #A6C4B7;
+    --accent-slab:  #1E2724;
+    --ok:           #35A89A;
+    --ok-slab:      #1C2B28;
+    --nu:           #D4664E;
+    --nu-slab:      #2E201C;
+    --umbra:        0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+    --umbra-2:      0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
+    --crom:         #232319;
+    --crom-2:       #2B2B22;
+    --crom-linie:   #3A3A31;
+    --crom-text:    #B4B2A7;
   }
 }
 :root[data-tema="intunecat"]{
-  --fundal:      #111417;
-  --panza:       #181C20;
-  --panza-2:     #1E2328;
-  --text:        #E9EBED;
-  --text-2:      #9AA3AB;
-  --text-3:      #69727A;
-  --linie:       #272D33;
-  --linie-2:     #3A4149;
-  --accent:      #7FB8D8;
-  --accent-text: #9CCAE4;
-  --accent-slab: #15242E;
-  --ok:          #7FB08C;
-  --ok-slab:     #17241A;
-  --nu:          #D79185;
-  --nu-slab:     #2A1A17;
-  --umbra:       0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
-  --umbra-2:     0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
-  --crom:        #15181B;
-  --crom-2:      #1B1F23;
-  --crom-linie:  #23282D;
-  --crom-text:   #A8B0B7;
+  --fundal:       #292921;
+  --panza:        #31312A;
+  --panza-2:      #23231A;
+  --text:         #E9E7E0;
+  --text-2:       #B4B2A7;
+  --text-3:       #9A998F;
+  --linie:        #3A3A31;
+  --linie-2:      #4D4D44;
+  --salvie:       #8DAE9F;
+  --salvie-text:  #23231A;
+  --buton:        #8DAE9F;
+  --buton-text:   #23231A;
+  --accent:       #8DAE9F;
+  --accent-text:  #A6C4B7;
+  --accent-slab:  #1E2724;
+  --ok:           #35A89A;
+  --ok-slab:      #1C2B28;
+  --nu:           #D4664E;
+  --nu-slab:      #2E201C;
+  --umbra:        0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+  --umbra-2:      0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
+  --crom:         #232319;
+  --crom-2:       #2B2B22;
+  --crom-linie:   #3A3A31;
+  --crom-text:    #B4B2A7;
 }
 
 /* --- baza ---------------------------------------------------------------- */
@@ -199,24 +222,34 @@ a.leg:hover{border-bottom-color:var(--accent)}
 .cont-chip:hover{border-color:var(--linie-2);box-shadow:var(--umbra)}
 .cont-chip__cerc{width:23px;height:23px;border-radius:50%;background:var(--accent);
   color:#fff;display:grid;place-items:center;font-size:10px;font-weight:600;flex:none}
-:root[data-tema="intunecat"] .cont-chip__cerc{color:#0F1317}
+:root[data-tema="intunecat"] .cont-chip__cerc{color:var(--salvie-text)}
 @media (prefers-color-scheme: dark){
-  :root:not([data-tema="deschis"]) .cont-chip__cerc{color:#0F1317}
+  :root:not([data-tema="deschis"]) .cont-chip__cerc{color:var(--salvie-text)}
 }
 
 .btn-intra{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;
-  background:var(--text);color:var(--fundal);font-family:var(--sans);font-size:12.5px;
+  background:var(--buton);color:var(--buton-text);font-family:var(--sans);font-size:12.5px;
   font-weight:600;text-decoration:none;transition:.13s;white-space:nowrap}
 .btn-intra:hover{opacity:.86}
 
-/* --- butoane ------------------------------------------------------------- */
+/* --- butoane -------------------------------------------------------------
+
+   Trei feluri de umplere, si nu se amesteca intre ele:
+
+     --buton      ce apesi ca sa mergi inainte  (Incepe lectia, Inainte, Intra)
+     --text       ce ai ales tu                 (chipul selectat, filtrul activ)
+     --ok / --nu  verdictul                     (corect, gresit)
+
+   De aceea un chip selectat ramane negru, nu salvie: altfel „am ales asta"
+   si „asta e bun" ar arata la fel, iar in exercitii exact aia conteaza.
+   -------------------------------------------------------------------------- */
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
   font-family:var(--sans);font-weight:500;font-size:14px;padding:9px 16px;
   border-radius:8px;border:1px solid var(--linie-2);background:var(--panza);
   color:var(--text);text-decoration:none;transition:.14s;white-space:nowrap}
 .btn:hover{border-color:var(--text-3);box-shadow:var(--umbra)}
-.btn--tare{background:var(--text);color:var(--fundal);border-color:var(--text)}
+.btn--tare{background:var(--buton);color:var(--buton-text);border-color:var(--buton)}
 .btn--tare:hover{opacity:.87;box-shadow:var(--umbra-2)}
 .btn--mic{font-size:13px;padding:7px 13px;border-radius:7px}
 
@@ -360,10 +393,3 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
   .nav-lectii a{max-width:none}
   .antet__nume{display:none}
 }
-
-/* rolul, lângă nume: de aici afli în ce cont ești fără să deschizi nimic */
-.cont-chip__r{font-family:var(--mono);font-size:9px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--text-3);padding-left:7px;
-  border-left:1px solid var(--linie)}
-.cont-chip--prof{border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
-.cont-chip--prof .cont-chip__r{color:var(--accent-text)}
