@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=30">
-<link rel="stylesheet" href="../css/predau.css?v=30">
-<script src="../js/tema.js?v=30"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=31">
+<link rel="stylesheet" href="../css/predau.css?v=31">
+<script src="../js/tema.js?v=31"></script>
 </head>
 <body>
 
@@ -40,10 +40,10 @@
   <div id="istoric"><div class="sch sch--r"></div><div class="sch sch--r"></div></div>
 </main>
 
-<script type="module" src="../js/antet.js?v=30"></script>
+<script type="module" src="../js/antet.js?v=31"></script>
 <script type="module">
-import { RADACINA, LECTII } from "../js/curs.js?v=30";
-import * as O from "../js/ora.js?v=30";
+import { RADACINA, LECTII } from "../js/curs.js?v=31";
+import * as O from "../js/ora.js?v=31";
 
 const el = id => document.getElementById(id);
 const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
@@ -58,7 +58,7 @@ function azi(){
 /* --- cine ești ---------------------------------------------------------- */
 
 let A;
-try { A = await import("../js/auth.js?v=30"); }
+try { A = await import("../js/auth.js?v=31"); }
 catch { el("sub").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();
@@ -125,50 +125,134 @@ function corp(s, gr){
     return;
   }
 
+  /* Decizia e aproape întotdeauna aceeași: lecția următoare, grupa ta, live.
+     Deci nu un formular cu trei meniuri, ci o propoziție cu trei cuvinte pe
+     care le poți schimba dacă azi e altfel. Cuvântul se subliniază punctat,
+     ca să se vadă că e de apăsat, dar rămâne parte din frază. */
+
+  const gata = LECTII.filter(l => l.sarcini);
+  const tinute = new Set((sedinte || []).map(x => x.capitol));
+  const urmatoarea = gata.find(l => !tinute.has("c" + l.nr)) || gata[gata.length - 1];
+
   el("titlu").textContent = "Nu predai acum";
-  el("sub").textContent = "Alege lecția și grupa, și pornește ora. Din momentul ăla, tot ce fac studenții se leagă de ședința asta.";
+  el("sub").textContent = "Când pornești ora, tot ce fac studenții se leagă de ședința asta: prezența, răspunsurile, punctele.";
 
-  const gata = LECTII.filter(l => l.stare === "gata" || l.sarcini);
-  el("corp").innerHTML = `
-    <div class="card" style="max-width:620px">
-      <p class="card__et">pornește ora</p>
-      <p class="card__t">Ce predai azi?</p>
-      <p class="card__d">Ședința ține lecția, grupa, ziua și modul. Codul de
-        intrare se face singur și moare când închizi ora.</p>
-      <div class="randb" style="margin-bottom:14px">
-        <label class="cutie-sel">Lecția
-          <select id="sel-lectie">
-            ${LECTII.map(l => `<option value="${l.cheie}" data-cap="c${l.nr}"
-               ${l.stare !== "gata" ? "" : "selected"}>Cursul ${l.nr} · ${l.titlu}</option>`).join("")}
-          </select></label>
-        <label class="cutie-sel">Grupa
-          <select id="sel-grupa">
-            ${gr.length
-              ? gr.map(g => `<option value="${g.id}">${g.nume}${g.zi ? ` · ${g.zi} ${g.ora || ""}` : ""}</option>`).join("")
-              : `<option value="">(nicio grupă)</option>`}
-          </select></label>
-        <label class="cutie-sel">Modul
-          <select id="sel-mod">
-            <option value="live">Live, îi țin cu mine</option>
-            <option value="propriu">Ritm propriu</option>
-          </select></label>
-      </div>
-      <div class="randb">
-        <button class="btn btn--tare" id="bt-start" type="button">Pornește ora</button>
-        <a class="btn" href="sedinte/">Ședințele de până acum</a>
-      </div>
-      ${gr.length ? "" : `<p class="card__d" style="margin:14px 0 0;color:var(--nu)">
-        Nu există nicio grupă. Rulează în Supabase:
-        <code>select public.pune_grupa('g1','Grupa 1','2026','marți','10:00');</code></p>`}
-    </div>`;
+  if (!gr.length){ faraGrupa(); return; }
 
-  el("bt-start").onclick = async () => {
-    const o = el("sel-lectie").selectedOptions[0];
-    const r = await O.deschide(o.dataset.cap, el("sel-grupa").value || null,
-                               el("sel-mod").value);
-    if (r?.ok) location.href = "ora/";
-    else alert(r?.mesaj || "Nu am putut deschide ședința. Ai rulat db/14 și db/15?");
-  };
+  let ales = { lectie: urmatoarea, grupa: gr[0], mod: "live" };
+
+  deseneazaPornirea();
+
+  function deseneazaPornirea(){
+    el("corp").innerHTML = `
+      <div class="card" style="max-width:660px">
+        <p class="card__et">pornește ora</p>
+        <p class="fraza">
+          Predau <button class="ales" id="a-lectie" type="button"
+            >Cursul ${ales.lectie.nr}, ${ales.lectie.scurt.toLowerCase()}</button>
+          ${gr.length > 1
+            ? `cu <button class="ales" id="a-grupa" type="button">${ales.grupa.nume}</button>`
+            : `cu <span class="fix">${ales.grupa.nume}</span>`},
+          <button class="ales" id="a-mod" type="button"
+            >${ales.mod === "live" ? "ținându-i cu mine" : "în ritmul lor"}</button>.
+        </p>
+        <p class="card__d" id="explic">${ales.mod === "live"
+          ? "Slide-ul meu e slide-ul lor: nu pot merge înainte singuri."
+          : "Fiecare merge în ritmul lui; eu văd unde a ajuns fiecare."}</p>
+        <div class="randb">
+          <button class="btn btn--tare" id="bt-start" type="button">Pornește ora</button>
+          <a class="btn" href="sedinte/">Ședințele de până acum</a>
+        </div>
+      </div>`;
+
+    /* lecția: o listă mică, deschisă sub cuvânt, nu un <select> de sistem */
+    el("a-lectie").onclick = e => alege(e.currentTarget,
+      gata.map(l => ({ et:`Cursul ${l.nr} · ${l.titlu}`, v:l })),
+      v => { ales.lectie = v; deseneazaPornirea(); });
+
+    el("a-grupa") && (el("a-grupa").onclick = e => alege(e.currentTarget,
+      gr.map(g => ({ et:g.nume + (g.zi ? ` · ${g.zi} ${g.ora || ""}` : ""), v:g })),
+      v => { ales.grupa = v; deseneazaPornirea(); }));
+
+    el("a-mod").onclick = () => {
+      ales.mod = ales.mod === "live" ? "propriu" : "live";
+      deseneazaPornirea();
+    };
+
+    el("bt-start").onclick = async () => {
+      const b = el("bt-start"); b.disabled = true; b.textContent = "Se pornește…";
+      const r = await O.deschide("c" + ales.lectie.nr, ales.grupa.id, ales.mod);
+      if (r?.ok) location.href = "ora/";
+      else { b.disabled = false; b.textContent = "Pornește ora";
+             spune(r?.mesaj || "N-am putut deschide ședința. E rulat db/14 și db/15?"); }
+    };
+  }
+
+  /* --- prima dată: grupa se face aici, nu în Supabase ---------------------
+     Un profesor n-are de ce să deschidă consola bazei de date ca să-și spună
+     numele grupei. Dacă funcția există, formularul ăsta o cheamă. */
+
+  function faraGrupa(){
+    el("titlu").textContent = "Întâi, grupa";
+    el("sub").textContent = "O singură dată. După asta, pornirea orei e un buton.";
+    el("corp").innerHTML = `
+      <div class="card" style="max-width:560px">
+        <p class="card__et">prima dată</p>
+        <p class="card__t">Cum se cheamă grupa ta?</p>
+        <p class="card__d">Ziua și ora sunt doar ca să apară pe buton, ca să nu
+          le scrii de fiecare dată. Se pot schimba oricând.</p>
+        <div class="camp3">
+          <label>Numele<input id="g-nume" value="Grupa 1" maxlength="40"></label>
+          <label>Ziua<input id="g-zi" value="marți" maxlength="12"></label>
+          <label>Ora<input id="g-ora" value="10:00" maxlength="8"></label>
+        </div>
+        <div class="randb" style="margin-top:14px">
+          <button class="btn btn--tare" id="bt-grupa" type="button">Fă grupa</button>
+        </div>
+      </div>`;
+    el("g-nume").focus();
+    el("bt-grupa").onclick = async () => {
+      const b = el("bt-grupa"), nume = el("g-nume").value.trim();
+      if (nume.length < 2){ spune("Scrie un nume pentru grupă."); return; }
+      b.disabled = true; b.textContent = "Se face…";
+      const r = await O.puneGrupa("g" + (gr.length + 1), nume, String(new Date().getFullYear()),
+                                  el("g-zi").value.trim() || null,
+                                  el("g-ora").value.trim() || null);
+      if (r?.ok) location.reload();
+      else { b.disabled = false; b.textContent = "Fă grupa";
+             spune(r?.mesaj || "N-am putut face grupa. E rulat db/14 în Supabase?"); }
+    };
+  }
+}
+
+/* --- alegerea dintr-o listă mică, lipită de cuvântul apăsat --------------- */
+
+function alege(langa, optiuni, gata){
+  document.querySelector(".pica")?.remove();
+  const d = document.createElement("div");
+  d.className = "pica";
+  d.innerHTML = optiuni.map((o, i) =>
+    `<button type="button" data-i="${i}">${o.et}</button>`).join("");
+  document.body.appendChild(d);
+  const r = langa.getBoundingClientRect();
+  d.style.left = `${Math.min(r.left, innerWidth - d.offsetWidth - 16)}px`;
+  d.style.top  = `${r.bottom + scrollY + 6}px`;
+  d.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    d.remove(); gata(optiuni[+b.dataset.i].v);
+  });
+  setTimeout(() => document.addEventListener("click", function afara(e){
+    if (!d.contains(e.target)){ d.remove(); document.removeEventListener("click", afara); }
+  }), 0);
+}
+
+let ceasT = null;
+function spune(text, ms = 3200){
+  let t = document.querySelector(".toast");
+  if (!t){ t = document.createElement("div"); t.className = "toast"; document.body.appendChild(t); }
+  t.textContent = text; t.classList.add("vazut");
+  clearTimeout(ceasT);
+  ceasT = setTimeout(() => t.classList.remove("vazut"), ms);
 }
 
 function lectieDe(capitol){
@@ -208,11 +292,36 @@ function data(t){
 </script>
 
 <style>
-.cutie-sel{display:flex;flex-direction:column;gap:4px;font-family:var(--sans);
-  font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3)}
-.cutie-sel select{font-family:var(--sans);font-size:13.5px;text-transform:none;
-  letter-spacing:0;color:var(--text);padding:7px 9px;border-radius:8px;
-  border:1px solid var(--linie-2);background:var(--panza);min-width:150px}
+/* Propoziția de pornire. Cuvintele care se pot schimba arată ca text, nu ca
+   formular: subliniate punctat, în culoarea textului. Un formular cu trei
+   meniuri te pune să citești trei etichete ca să afli ce faci; propoziția se
+   citește o dată și e gata. */
+.fraza{font-family:var(--sans);font-size:21px;line-height:1.5;margin:0 0 8px;
+  letter-spacing:-.012em;max-width:none}
+.ales{font:inherit;color:var(--text);font-weight:600;cursor:pointer;
+  border:0;background:none;padding:0 1px;
+  border-bottom:2px dotted var(--linie-2);transition:.12s}
+.ales:hover{border-bottom-color:var(--accent);color:var(--accent-text)}
+.ales:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.fix{font-weight:600}
+
+/* lista mică, lipită de cuvânt */
+.pica{position:absolute;z-index:200;background:var(--panza);
+  border:1px solid var(--linie-2);border-radius:10px;box-shadow:var(--umbra-2);
+  padding:5px;min-width:230px;display:flex;flex-direction:column;gap:1px}
+.pica button{font-family:var(--sans);font-size:13.5px;text-align:left;
+  padding:8px 11px;border-radius:7px;color:var(--text);background:none;border:0;
+  cursor:pointer;white-space:nowrap}
+.pica button:hover{background:var(--panza-2)}
+
+.camp3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.camp3 label{display:flex;flex-direction:column;gap:5px;font-family:var(--mono);
+  font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3)}
+.camp3 input{font-family:var(--sans);font-size:15px;text-transform:none;
+  letter-spacing:0;color:var(--text);padding:9px 11px;border-radius:8px;
+  border:1px solid var(--linie-2);background:var(--panza);outline:none}
+.camp3 input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-slab)}
+@media (max-width:560px){ .camp3{grid-template-columns:1fr} }
 </style>
 </body>
 </html>

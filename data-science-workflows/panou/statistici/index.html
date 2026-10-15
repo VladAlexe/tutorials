@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=30">
-<link rel="stylesheet" href="../../css/panou.css?v=30">
-<script src="../../js/tema.js?v=30"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=31">
+<link rel="stylesheet" href="../../css/panou.css?v=31">
+<script src="../../js/tema.js?v=31"></script>
 </head>
 <body class="corp--app">
 
@@ -115,7 +115,7 @@
 </template>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, CURS } from "../../js/curs.js?v=30";
+import { LECTII, NOTARE, RADACINA, CURS } from "../../js/curs.js?v=31";
 
 const el  = id => document.getElementById(id);
 const pag = el("pagina");
@@ -128,7 +128,7 @@ const unZec = n => (Math.round(n * 10) / 10).toFixed(1).replace(".", ",");
 
 let A, sb, eu;
 try {
-  A = await import("../../js/auth.js?v=30");
+  A = await import("../../js/auth.js?v=31");
   sb = A.sb;
   eu = await A.profil();
 } catch (e) {
@@ -608,6 +608,6 @@ async function note(){
 
 usa();
 </script>
-<script type="module" src="../../js/antet.js?v=30"></script>
+<script type="module" src="../../js/antet.js?v=31"></script>
 </body>
 </html>

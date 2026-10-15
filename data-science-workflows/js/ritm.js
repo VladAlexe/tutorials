@@ -18,7 +18,7 @@
    merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=30";
+import { RADACINA } from "./curs.js?v=31";
 
 const PAS_STUDENT  = 3000;    /* cât de des întreabă studentul unde e profesorul */
 const PAS_PROFESOR = 10000;   /* cât de des numără profesorul cine e în sală */
@@ -26,7 +26,7 @@ const PAS_PROFESOR = 10000;   /* cât de des numără profesorul cine e în sal�
 export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A;
-  try { A = await import(`${RADACINA}/js/auth.js?v=30`); }
+  try { A = await import(`${RADACINA}/js/auth.js?v=31`); }
   catch { return null; }
 
   let p = null;
@@ -167,7 +167,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d?.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=30`)
+    import(`${RADACINA}/js/colectare.js?v=31`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     if (viu !== eraViu || d?.mod !== modAcum){
