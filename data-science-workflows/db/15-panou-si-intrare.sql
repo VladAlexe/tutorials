@@ -18,6 +18,23 @@
 
 
 -- ===========================================================================
+-- 0. PGCRYPTO
+--
+-- `digest()` vine din pgcrypto, iar în Supabase pgcrypto stă în schema
+-- `extensions`, nu în `public`. O funcție scrisă cu `set search_path = public`
+-- pur și simplu nu-l vede, și creșterea ei eșuează cu
+--     ERROR: function digest(text, unknown) does not exist
+--
+-- De aceea funcțiile care îl folosesc au `search_path = public, extensions`,
+-- iar extensia se declară aici, înainte de ele: o funcție `language sql` se
+-- verifică la creare, nu la prima chemare.
+-- ===========================================================================
+
+create schema if not exists extensions;
+create extension if not exists pgcrypto with schema extensions;
+
+
+-- ===========================================================================
 -- A. PANOUL, PE SLIDE-UL CURENT
 -- ===========================================================================
 
@@ -156,14 +173,15 @@ $$;
 
 create or replace function public.lista_grupei(p_cod text)
 returns table (cheie text, nume text, luat boolean)
-language sql security definer stable set search_path = public as $$
+language sql security definer stable
+  set search_path = public, extensions as $$
   with s as (
     select * from public.sedinte
      where upper(btrim(cod)) = upper(btrim(p_cod))
        and inchisa_la is null
      limit 1
   )
-  select encode(digest(st.matricol || 'dsw', 'sha256'), 'hex'),
+  select encode(extensions.digest(st.matricol || 'dsw', 'sha256'), 'hex'),
          st.nume,
          (p.user_id is not null)
     from public.studenti st
@@ -181,7 +199,8 @@ $$;
 
 create or replace function public.intra_in_sedinta(p_cod text, p_cheie text)
 returns jsonb
-language plpgsql security definer set search_path = public as $$
+language plpgsql security definer
+  set search_path = public, extensions as $$
 declare
   v_user uuid := auth.uid();
   v_sed  public.sedinte;
@@ -203,7 +222,7 @@ begin
   select st.matricol, st.nume into v_mat, v_nume
     from public.studenti st
    where st.grupa_id is not distinct from v_sed.grupa_id
-     and encode(digest(st.matricol || 'dsw', 'sha256'), 'hex') = p_cheie;
+     and encode(extensions.digest(st.matricol || 'dsw', 'sha256'), 'hex') = p_cheie;
 
   if v_mat is null then
     return jsonb_build_object('ok', false, 'mesaj', 'Nu te găsesc în lista grupei.');
@@ -270,6 +289,3 @@ language sql security definer stable set search_path = public as $$
     jsonb_build_object('viu', false));
 $$;
 
-
--- pgcrypto pentru digest(); în Supabase e deja acolo, dar nu strică.
-create extension if not exists pgcrypto with schema extensions;
