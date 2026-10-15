@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Predau · Fluxuri de lucru</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/sistem.css?v=26">
+<link rel="stylesheet" href="../css/predau.css?v=26">
+<script src="../js/tema.js?v=26"></script>
+</head>
+<body>
+
+<div id="antet" data-aici="Predau" data-predau></div>
+
+<main class="pd">
+  <div id="banda"></div>
+
+  <div class="pd__cap">
+    <div>
+      <p class="pd__et" id="ziua">—</p>
+      <h1 class="pd__t" id="titlu">Ce predai acum</h1>
+      <p class="pd__d" id="sub">Se încarcă…</p>
+    </div>
+  </div>
+
+  <div id="corp">
+    <div class="pd__grid">
+      <div class="card"><div class="sch sch--c"></div></div>
+      <div class="card"><div class="sch sch--c"></div></div>
+    </div>
+  </div>
+
+  <h2 class="pd__t" style="font-size:19px;margin:34px 0 4px">Ultimele ședințe</h2>
+  <p class="pd__d" style="margin:0 0 14px">Istoricul cursului. De aici se deschide
+  raportul fiecărei ore.</p>
+  <div id="istoric"><div class="sch sch--r"></div><div class="sch sch--r"></div></div>
+</main>
+
+<script type="module" src="../js/antet.js?v=26"></script>
+<script type="module">
+import { RADACINA, LECTII } from "../js/curs.js?v=26";
+import * as O from "../js/ora.js?v=26";
+
+const el = id => document.getElementById(id);
+const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
+const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
+              "august","septembrie","octombrie","noiembrie","decembrie"];
+
+function azi(){
+  const d = new Date();
+  return `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`;
+}
+
+/* --- cine ești ---------------------------------------------------------- */
+
+let A;
+try { A = await import("../js/auth.js?v=26"); }
+catch { el("sub").textContent = "Nu pot încărca autentificarea."; throw 0; }
+
+const p = await A.profil();
+if (!p.autentificat){ location.replace(`${RADACINA}/intra/?spre=${encodeURIComponent(location.pathname)}`); throw 0; }
+if (!p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
+
+el("ziua").textContent = `Predau · ${azi()}`;
+
+/* --- ce e deschis acum --------------------------------------------------- */
+
+const [viu, grupe, sedinte] = await Promise.all([
+  O.deschisa(), O.grupe(), O.lista(false)
+]);
+
+banda(viu);
+corp(viu, grupe);
+istoric(sedinte);
+
+/* --- banda de stare ------------------------------------------------------ */
+
+function banda(s){
+  el("banda").innerHTML = s
+    ? `<div class="st st--viu">
+         <span class="st__pct"></span>
+         <span class="st__t">Ora e deschisă</span>
+         <span class="st__d">${s.titlu} · ${s.mod === "live" ? "live" : "ritm propriu"}
+           · de ${s.minute} min · ${s.in_clasa} au lucrat</span>
+         <span class="st__sp"></span>
+         <a class="btn btn--tare" href="ora/">Mergi la oră</a>
+       </div>`
+    : `<div class="st">
+         <span class="st__pct"></span>
+         <span class="st__t">Nicio oră deschisă</span>
+         <span class="st__d">nimic nu se înregistrează ca fiind la clasă</span>
+       </div>`;
+}
+
+/* --- cardul principal ----------------------------------------------------
+   O singură întrebare pe pagina asta: ce predau acum, și pornesc? O acțiune
+   principală, restul secundare și arătând secundar. */
+
+function corp(s, gr){
+  if (s){
+    el("titlu").textContent = s.titlu;
+    el("sub").textContent = "Ora e în desfășurare. Panoul live îți arată, pe slide-ul de pe ecran, cât din sală a răspuns și cine anume.";
+    el("corp").innerHTML = `
+      <div class="pd__grid">
+        <div class="card">
+          <p class="card__et">în desfășurare</p>
+          <p class="card__t">${s.titlu}</p>
+          <p class="card__d">De ${s.minute} de minute, în ${s.mod === "live" ? "mod live" : "ritm propriu"}.
+            Codul de intrare e <strong>${s.cod || "—"}</strong>.</p>
+          <div class="randb">
+            <a class="btn btn--tare" href="ora/">Panoul live</a>
+            <a class="btn" href="${RADACINA}/${lectieDe(s.capitol)}/lectie/">Deschide lecția</a>
+            <button class="btn" id="bt-inchide" type="button">Închide ora</button>
+          </div>
+        </div>
+      </div>`;
+    el("bt-inchide").onclick = async () => {
+      const r = await O.inchide(s.id);
+      if (r?.ok) location.href = `sedinte/?id=${s.id}`;
+    };
+    return;
+  }
+
+  el("titlu").textContent = "Nu predai acum";
+  el("sub").textContent = "Alege lecția și grupa, și pornește ora. Din momentul ăla, tot ce fac studenții se leagă de ședința asta.";
+
+  const gata = LECTII.filter(l => l.stare === "gata" || l.sarcini);
+  el("corp").innerHTML = `
+    <div class="card" style="max-width:620px">
+      <p class="card__et">pornește ora</p>
+      <p class="card__t">Ce predai azi?</p>
+      <p class="card__d">Ședința ține lecția, grupa, ziua și modul. Codul de
+        intrare se face singur și moare când închizi ora.</p>
+      <div class="randb" style="margin-bottom:14px">
+        <label class="cutie-sel">Lecția
+          <select id="sel-lectie">
+            ${LECTII.map(l => `<option value="${l.cheie}" data-cap="c${l.nr}"
+               ${l.stare !== "gata" ? "" : "selected"}>Cursul ${l.nr} · ${l.titlu}</option>`).join("")}
+          </select></label>
+        <label class="cutie-sel">Grupa
+          <select id="sel-grupa">
+            ${gr.length
+              ? gr.map(g => `<option value="${g.id}">${g.nume}${g.zi ? ` · ${g.zi} ${g.ora || ""}` : ""}</option>`).join("")
+              : `<option value="">(nicio grupă)</option>`}
+          </select></label>
+        <label class="cutie-sel">Modul
+          <select id="sel-mod">
+            <option value="live">Live, îi țin cu mine</option>
+            <option value="propriu">Ritm propriu</option>
+          </select></label>
+      </div>
+      <div class="randb">
+        <button class="btn btn--tare" id="bt-start" type="button">Pornește ora</button>
+        <a class="btn" href="sedinte/">Ședințele de până acum</a>
+      </div>
+      ${gr.length ? "" : `<p class="card__d" style="margin:14px 0 0;color:var(--nu)">
+        Nu există nicio grupă. Rulează în Supabase:
+        <code>select public.pune_grupa('g1','Grupa 1','2026','marți','10:00');</code></p>`}
+    </div>`;
+
+  el("bt-start").onclick = async () => {
+    const o = el("sel-lectie").selectedOptions[0];
+    const r = await O.deschide(o.dataset.cap, el("sel-grupa").value || null,
+                               el("sel-mod").value);
+    if (r?.ok) location.href = "ora/";
+    else alert(r?.mesaj || "Nu am putut deschide ședința. Ai rulat db/14 și db/15?");
+  };
+}
+
+function lectieDe(capitol){
+  const nr = parseInt(String(capitol).replace("c",""), 10);
+  return (LECTII.find(l => l.nr === nr) || LECTII[0]).cheie;
+}
+
+/* --- istoricul ----------------------------------------------------------- */
+
+function istoric(list){
+  if (!list || !list.length){
+    el("istoric").innerHTML = `
+      <div class="gol">
+        <p class="gol__t">Încă nicio ședință</p>
+        <p class="gol__d">Când pornești prima oră, apare aici, cu raportul ei.</p>
+      </div>`;
+    return;
+  }
+  el("istoric").innerHTML = `<ul class="sed">${list.slice(0,6).map(s => `
+    <li>
+      <div>
+        <p class="sed__t">${s.titlu}</p>
+        <p class="sed__d">${data(s.deschisa_la)} · ${s.minute} min ·
+          ${s.prezenti} prezenți · ${s.mod === "live" ? "live" : "ritm propriu"}</p>
+      </div>
+      <div class="sed__a">
+        <a class="btn btn--mic" href="sedinte/?id=${s.id}">Raportul</a>
+      </div>
+    </li>`).join("")}</ul>
+    <p style="margin:14px 0 0"><a class="leg" href="sedinte/">Toate ședințele</a></p>`;
+}
+
+function data(t){
+  const d = new Date(t);
+  return `${d.getDate()} ${LUNI[d.getMonth()].slice(0,3)}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+}
+</script>
+
+<style>
+.cutie-sel{display:flex;flex-direction:column;gap:4px;font-family:var(--sans);
+  font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3)}
+.cutie-sel select{font-family:var(--sans);font-size:13.5px;text-transform:none;
+  letter-spacing:0;color:var(--text);padding:7px 9px;border-radius:8px;
+  border:1px solid var(--linie-2);background:var(--panza);min-width:150px}
+</style>
+</body>
+</html>

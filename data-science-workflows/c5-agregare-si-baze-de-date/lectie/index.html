@@ -9,12 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=23">
-<link rel="stylesheet" href="../../css/slide.css?v=23">
-<link rel="stylesheet" href="../../css/interactiv.css?v=23">
-<link rel="stylesheet" href="../../css/grafice.css?v=23">
-<link rel="stylesheet" href="../../css/exercitii.css?v=23">
-<script src="../../js/tema.js?v=23"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=26">
+<link rel="stylesheet" href="../../css/slide.css?v=26">
+<link rel="stylesheet" href="../../css/interactiv.css?v=26">
+<link rel="stylesheet" href="../../css/grafice.css?v=26">
+<link rel="stylesheet" href="../../css/exercitii.css?v=26">
+<script src="../../js/tema.js?v=26"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 5 · Agregare și baze de date" data-crom="1"></div>
@@ -79,7 +79,7 @@
 <section class="sld" id="s6" data-grup="Unirea tabelelor" data-t="Când rândurile se înmulțesc">
 <h2>Capcana care nu dă eroare</h2><p>Același tabel <code>sci</code>, dar în dreapta populația e pe ani. Patru rânduri în stânga, patru în dreapta. Apasă <code>left</code>.</p><div class="ix" data-ix="imbinare">
   <div class="ix__cap"><span class="ix__fel">Încearcă felurile</span><span class="ix__t">Patru plus patru nu dau patru</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-imbinare-explozie", "cheie": "cod", "stanga": {"nume": "sci", "randuri": [{"cod": "MD", "sci": 173794}, {"cod": "AT", "sci": 124693}, {"cod": "DE", "sci": 91228}, {"cod": "HU", "sci": 85021}]}, "dreapta": {"nume": "an_pop", "randuri": [{"cod": "MD", "an": 2020, "pop": 2.6}, {"cod": "MD", "an": 2021, "pop": 2.6}, {"cod": "MD", "an": 2022, "pop": 2.5}, {"cod": "DE", "an": 2020, "pop": 83.2}]}, "numeRez": "rezultat", "feluri": ["inner", "left"], "sarcina": "Numără rândurile care ies. Erau patru în stânga.", "explicatii": {"inner": "<b>Patru rânduri, din trei chei.</b> MD apare de trei ori, fiindcă în dreapta are trei ani. Valoarea SCI s-a copiat identic pe toate trei. Dacă acum faci o medie pe SCI, MD cântărește de trei ori cât AT.", "left": "<b>Cinci rânduri, din patru.</b> MD de trei ori, DE o dată, HU o dată... și AT, cu gol. Tabelul a crescut fără să dea nicio eroare. Asta e tot pericolul: codul merge, iar numerele de la final sunt greșite."}}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-imbinare-explozie", "cheie": "cod", "stanga": {"nume": "sci", "randuri": [{"cod": "MD", "sci": 173794}, {"cod": "AT", "sci": 124693}, {"cod": "DE", "sci": 91228}, {"cod": "HU", "sci": 85021}]}, "dreapta": {"nume": "an_pop", "randuri": [{"cod": "MD", "an": 2020, "pop": 2.6}, {"cod": "MD", "an": 2021, "pop": 2.6}, {"cod": "MD", "an": 2022, "pop": 2.5}, {"cod": "DE", "an": 2020, "pop": 83.2}]}, "numeRez": "rezultat", "feluri": ["inner", "left"], "sarcina": "Numără rândurile care ies. Erau patru în stânga.", "explicatii": {"inner": "<b>Patru rânduri, din două chei.</b> Se potrivesc doar MD și DE, dar MD apare de trei ori, fiindcă în dreapta are trei ani. Valoarea SCI s-a copiat identic pe toate trei. Dacă acum faci o medie pe SCI, MD cântărește de trei ori cât DE.", "left": "<b>Șase rânduri, din patru.</b> MD de trei ori, DE o dată, plus AT și HU cu goluri. Tabelul a crescut cu cincizeci la sută fără să dea nicio eroare. Ăsta e tot pericolul: codul merge, iar numerele de la final sunt greșite."}}</script></div>
 </div><div class="nota"><div class="nota__et">CUM TE APERI</div><p><code>pd.merge(..., validate="one_to_one")</code> aruncă o eroare dacă cheia nu e unică. E o linie în plus care te scutește de o analiză refăcută.</p></div>
 <div class="verif" data-id="c5-v4" data-corect="2">
     <p class="verif__q">Vrei ca merge-ul să crape dacă o cheie apare de mai multe ori în dreapta. Ce adaugi?</p>
@@ -254,11 +254,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=23"></script>
+<script type="module" src="../../js/antet.js?v=26"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=23";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=23";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=23";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=26";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=26";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=26";
 pornesteIx();
 pornesteVerif("c5");
 pornesteSlide({ capitol:"c5", lectie:"c5-agregare-si-baze-de-date" });

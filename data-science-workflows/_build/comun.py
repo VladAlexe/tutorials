@@ -47,6 +47,19 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 
+def _text(h):
+    """Textul gol al unui fragment de marcaj, pentru hartă.
+
+    Întrebările au <code>, <strong> și altele în ele. În panou le arăt ca text
+    simplu, pe un rând, deci marcajul se scoate aici, o dată, nu în browser.
+    """
+    t = re.sub(r"<[^>]+>", "", h)
+    t = (t.replace("&nbsp;", " ").replace("&amp;", "&")
+          .replace("&lt;", "<").replace("&gt;", ">").replace("&#39;", "'")
+          .replace("&quot;", '"'))
+    return re.sub(r"\s+", " ", t).strip()
+
+
 def ix(fel, titlu, date=None, sarcina=None, corp=""):
     """Un bloc interactiv, identic în slide și în manual."""
     j = ""
@@ -233,8 +246,22 @@ class Lectie:
             # altfel profesorul n-o vede la slide-ul pe care e.
             h, gasite = s["slide"] + s.get("dupa", ""), []
 
-            for m in re.finditer(r'class="verif" data-id="([^"]+)"', h):
-                gasite.append((m.start(), {"id": m.group(1), "fel": "verificare"}))
+            # Verificările duc și întrebarea cu variantele ei. Panoul live
+            # are nevoie de ele ca să poată spune nu doar „a greșit", ci „a
+            # ales varianta a doua" — care e singurul lucru din care afli ce
+            # anume n-au înțeles, cât încă mai poți face ceva.
+            for m in re.finditer(
+                    r'<div class="verif" data-id="([^"]+)" data-corect="(\d+)">(.*?)</div>',
+                    h, re.S):
+                corp = m.group(3)
+                q = re.search(r'<p class="verif__q">(.*?)</p>', corp, re.S)
+                gasite.append((m.start(), {
+                    "id": m.group(1), "fel": "verificare",
+                    "corect": int(m.group(2)),
+                    "q": _text(q.group(1)) if q else "",
+                    "optiuni": [_text(x) for x in
+                                re.findall(r"<button>(.*?)</button>", corp, re.S)],
+                }))
 
             for m in re.finditer(r'data-ix="(\w+)"', h):
                 fel = self.FEL_SARCINA.get(m.group(1))

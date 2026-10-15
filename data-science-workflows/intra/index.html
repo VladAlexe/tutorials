@@ -3,187 +3,332 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Intră la curs — Fluxuri de lucru</title>
+<title>Intră la oră · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=23">
-<script src="../js/tema.js?v=23"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=26">
+<script src="../js/tema.js?v=26"></script>
 <style>
-  body{display:grid;place-items:center;min-height:100dvh;padding:24px}
-  .intra{width:100%;max-width:430px}
-  .intra__marca{display:flex;align-items:center;gap:10px;margin-bottom:30px;
+  /* Un ecran de telefon, ținut în mână, într-o sală. Un singur lucru de făcut
+     pe pas, scris mare, cu ținte de atins cu degetul mare. */
+  body{display:grid;place-items:center;min-height:100dvh;padding:22px}
+  .in{width:100%;max-width:420px}
+  .in__marca{display:flex;align-items:center;gap:9px;margin-bottom:26px;
     justify-content:center;color:var(--text-2)}
-  .intra__marca span{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--text)}
-  .intra h1{font-size:27px;margin-bottom:10px;text-align:center}
-  .intra__d{font-family:var(--sans);font-size:15px;color:var(--text-2);text-align:center;
-    margin:0 0 28px;line-height:1.5;max-width:none}
-  .cutie{border:1px solid var(--linie);border-radius:13px;background:var(--panza);
-    padding:22px 24px;box-shadow:var(--umbra)}
-  .cutie label{display:block;font-family:var(--sans);font-size:13px;font-weight:500;
-    margin-bottom:7px}
+  .in__marca span{font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--text)}
+  .in__et{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--text-3);text-align:center;margin:0 0 7px}
+  .in h1{font-size:25px;margin:0 0 8px;text-align:center;letter-spacing:-.022em}
+  .in__d{font-family:var(--sans);font-size:14.5px;color:var(--text-2);text-align:center;
+    margin:0 0 24px;line-height:1.5;max-width:none}
+
+  .cutie{border:1px solid var(--linie);border-radius:14px;background:var(--panza);
+    padding:20px 22px;box-shadow:var(--umbra)}
+  .cutie[hidden]{display:none}
+  .cutie label{display:block;font-family:var(--sans);font-size:12.5px;font-weight:500;
+    margin-bottom:7px;color:var(--text-2)}
   .cutie input{width:100%;padding:11px 14px;border:1px solid var(--linie-2);
-    border-radius:9px;background:var(--fundal);font-family:var(--sans);font-size:15.5px;
+    border-radius:9px;background:var(--fundal);font-family:var(--sans);font-size:16px;
     outline:none;transition:.13s}
-  .cutie input:focus{border-color:var(--accent)}
-  .cutie .btn{width:100%;justify-content:center;margin-top:13px;padding:12px}
-  .ori{display:flex;align-items:center;gap:13px;margin:22px 0;
-    font-family:var(--mono);font-size:10.5px;color:var(--text-3);
-    text-transform:uppercase;letter-spacing:.11em}
+  .cutie input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-slab)}
+  .cutie .btn{width:100%;justify-content:center;margin-top:12px;padding:12px}
+  .cod-in{font-family:var(--mono);font-size:25px;letter-spacing:.28em;
+    text-align:center;text-transform:uppercase;text-indent:.28em}
+
+  .ori{display:flex;align-items:center;gap:12px;margin:20px 0;
+    font-family:var(--mono);font-size:10px;color:var(--text-3);
+    text-transform:uppercase;letter-spacing:.12em}
   .ori::before,.ori::after{content:"";flex:1;height:1px;background:var(--linie)}
   .mic{font-family:var(--sans);font-size:12.5px;color:var(--text-3);line-height:1.5;
-    margin:16px 0 0;max-width:none}
+    margin:14px 0 0;max-width:none}
+  .mic a{color:var(--accent-text)}
+
+  /* Lista grupei: nume, atât. Nicio bucată din matricol nu pleacă de pe
+     server; ce se trimite înapoi e o amprentă, nu numărul. */
+  .lista{display:flex;flex-direction:column;gap:6px;max-height:48vh;
+    overflow-y:auto;margin:0 0 4px;padding:1px}
+  .nume{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    font-family:var(--sans);font-size:15px;padding:12px 14px;border-radius:10px;
+    border:1px solid var(--linie);background:var(--panza);color:var(--text);
+    cursor:pointer;transition:.12s}
+  .nume:hover{border-color:var(--linie-2);background:var(--panza-2)}
+  .nume.on{border-color:var(--accent);background:var(--accent-slab);font-weight:600;
+    box-shadow:0 0 0 2px var(--accent-slab)}
+  .nume[disabled]{opacity:.5;cursor:not-allowed}
+  .nume small{margin-left:auto;font-family:var(--mono);font-size:10px;
+    color:var(--text-3);text-transform:uppercase;letter-spacing:.09em}
+  .cauta{margin-bottom:10px}
+
   .mesaj{font-family:var(--sans);font-size:14px;line-height:1.5;padding:12px 15px;
-    border-radius:9px;margin-top:15px;display:none}
+    border-radius:9px;margin-top:14px;display:none}
   .mesaj.vazut{display:block}
   .mesaj.rau{background:var(--nu-slab);color:var(--nu)}
   .mesaj.bun{background:var(--ok-slab);color:var(--ok)}
-  .cod-in{font-family:var(--mono);font-size:24px;letter-spacing:.3em;
-    text-align:center;text-transform:uppercase;text-indent:.3em}
-  .cutie[hidden]{display:none}
+
+  .schelet{height:44px;border-radius:10px;background:var(--panza-2);
+    animation:puls 1.5s infinite;margin-bottom:6px}
+  @keyframes puls{0%,100%{opacity:.5}50%{opacity:.85}}
 </style>
 </head>
 <body>
 
-<main class="intra">
-  <div class="intra__marca">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="6" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="5" cy="18" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="19" cy="12" r="2.3" stroke="currentColor" stroke-width="1.7"/><path d="M7.2 7.1 16.8 11M7.2 16.9 16.8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+<main class="in">
+  <div class="in__marca">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="6" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="5" cy="18" r="2.3" stroke="currentColor" stroke-width="1.7"/><circle cx="19" cy="12" r="2.3" stroke="currentColor" stroke-width="1.7"/><path d="M7.2 7.1 16.8 11M7.2 16.9 16.8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
     <span>Fluxuri de lucru</span>
   </div>
 
-  <h1>Intră la curs</h1>
-  <p class="intra__d">Ca să-ți fie salvate răspunsurile și ca să apari în
-  progresul grupei.</p>
+  <p class="in__et" id="et" hidden></p>
+  <h1 id="titlu">Intră la oră</h1>
+  <p class="in__d" id="sub">Se încarcă…</p>
 
-  <div class="cutie" id="cutie-cod" hidden>
-    <label for="cod">Codul de pe ecran</label>
-    <input id="cod" type="text" inputmode="latin" autocomplete="off" maxlength="6"
-           spellcheck="false" placeholder="şase litere şi cifre" class="cod-in">
-    <button class="btn btn--tare" id="bt-cod" type="button">Intră la oră</button>
-    <p class="mic">Îl scrie profesorul pe ecran, la începutul orei. Dacă ai
-    scanat codul cu telefonul, câmpul ăsta nu-ţi mai trebuie.</p>
-  </div>
-
-  <div class="cutie">
-    <div id="zona">
-      <button class="btn btn--tare" id="bt-github" type="button" style="width:100%;justify-content:center">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 20v-3.2M7 16.8c-2.6 0-3.4-1.7-3.4-3.4 0-1 .3-1.8.9-2.4-.3-.8-.3-2 .1-2.8 1 .1 2 .6 2.7 1.2.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c.7-.6 1.7-1.1 2.7-1.2.4.8.4 2 .1 2.8.6.6.9 1.4.9 2.4 0 1.7-.8 3.4-3.4 3.4"/></svg>
-        Am cont, intru cu GitHub
-      </button>
-      <p class="mic">Dacă ești student la curs, asta e varianta ta. Te întorci
-      aici imediat, iar prezența se marchează singură.</p>
-
-      <div class="ori">sau</div>
-
-      <label for="nume">Numele tău</label>
-      <input id="nume" type="text" autocomplete="name" maxlength="60"
-             placeholder="Cum să-ți spun">
-      <button class="btn" id="bt-invitat" type="button">Intru ca invitat</button>
-      <p class="mic">Fără cont și fără parolă. Progresul se salvează și apare la
-      profesor, dar nu se leagă de numărul matricol.</p>
-    </div>
-    <p class="mesaj" id="mesaj"></p>
-  </div>
+  <div id="pas"></div>
+  <p class="mesaj" id="mesaj"></p>
 </main>
 
 <script type="module">
+/* ===========================================================================
+   INTRAREA ÎN ORĂ
+
+   Trei pași, și niciunul nu cere ceva ce studentul ar putea greși:
+
+     1. codul   vine din QR (?c=) sau se tastează de pe proiector. Codul duce
+                lecția, grupa și ședința, deci nimeni nu alege grupa, deci
+                nimeni nu o alege greșit.
+     2. contul  GitHub, dacă are; invitat, dacă nu. Butonul de GitHub nu cere
+                nimic de scris, iar numele de utilizator vine verificat.
+     3. cine    lista grupei, un tap. Fără matricol de tastat. A doua oară
+                pasul ăsta nu mai există: te știe.
+
+   Matricolul nu iese din server niciodată: lista vine cu o amprentă a lui,
+   iar înapoi se trimite amprenta.
+   =========================================================================== */
+
 const el = id => document.getElementById(id);
-const msg = (text, fel) => {
-  const m = el("mesaj");
-  m.textContent = text; m.className = "mesaj vazut " + (fel || "");
-};
-
 const par = new URLSearchParams(location.search);
-/* unde trimitem după intrare: ?spre=... sau lecția 1 */
-const spre = par.get("spre") || "/data-science-workflows/c1-introducere-si-mediu/lectie/";
-/* jetonul de prezență din codul QR: ?j=ABC123 */
-const jeton = (par.get("j") || "").trim().toUpperCase() || null;
+const RAD = "/data-science-workflows";
 
-/* jetonul poate veni din codul QR (?j=) sau tastat din codul de pe ecran */
-let jetonAcum = jeton;
+/* ?c= e codul ședinței; ?j= era jetonul vechi de prezență, îl primim la fel */
+let cod  = (par.get("c") || par.get("j") || "").trim().toUpperCase() || null;
+let spre = par.get("spre") || null;
 
-if (jetonAcum){
-  document.querySelector("h1").textContent = "Intri la oră";
-  document.querySelector(".intra__d").innerHTML =
-    "Ai scanat codul. Mai rămâne să-mi spui cine ești: dacă ai cont, " +
-    "folosește-l, așa se leagă prezența de numărul tău matricol.";
-} else {
-  /* fără cod scanat: îl poate tasta de pe ecranul din față */
-  el("cutie-cod").hidden = false;
-  el("bt-cod").addEventListener("click", () => {
-    const v = el("cod").value.trim().toUpperCase();
-    if (v.length < 4){ msg("Scrie codul de pe ecran, are șase semne.", "rau"); return; }
-    jetonAcum = v;
-    el("cutie-cod").hidden = true;
-    document.querySelector("h1").textContent = "Intri la oră";
-    document.querySelector(".intra__d").textContent =
-      "Codul e bun. Spune-mi cine ești și îți marchez prezența.";
-    el("nume").focus();
-  });
-  el("cod").addEventListener("keydown", e => {
-    if (e.key === "Enter"){ e.preventDefault(); el("bt-cod").click(); }
-  });
+function mesaj(text, fel){
+  const m = el("mesaj");
+  m.textContent = text || "";
+  m.className = "mesaj " + (text ? "vazut " : "") + (fel || "");
+}
+function cap(et, titlu, sub){
+  el("et").textContent = et || ""; el("et").hidden = !et;
+  el("titlu").textContent = titlu;
+  el("sub").textContent = sub;
 }
 
-/** Marchează prezența, dacă a venit cu jeton. Întoarce textul de afișat. */
-async function prezenta(){
-  if (!jetonAcum) return null;
-  try {
-    const r = await A.marcheazaPrezenta(jetonAcum);
-    return r?.ok ? "Prezența e înregistrată." : (r?.mesaj || "Prezența nu s-a putut marca.");
-  } catch (e) { return "Prezența nu s-a putut marca: " + e.message; }
-}
-
-let A;
+let A, O;
 try {
-  A = await import("../js/auth.js?v=23");
+  A = await import("../js/auth.js?v=26");
+  O = await import("../js/ora.js?v=26");
 } catch (e) {
-  msg("Nu pot încărca autentificarea: " + e.message, "rau");
+  cap("", "Intră la curs", "Nu pot încărca autentificarea: " + e.message);
   throw e;
 }
 
-/* dacă e deja cineva conectat, nu mai întrebăm nimic */
-try {
-  const p = await A.profil();
-  if (p.autentificat){
-    const pz = await prezenta();
-    el("zona").innerHTML =
-      `<p style="font-family:var(--sans);font-size:15px;line-height:1.5">
-         Ești conectat ca <strong>${p.nume || p.email || "cineva"}</strong>${
-           p.matricol ? `, ${p.matricol}` : ""}.</p>
-       <a class="btn btn--tare" href="${spre}" style="width:100%;justify-content:center;margin-top:14px">Mergi la lecție</a>
-       <button class="btn" id="bt-iesi" type="button" style="width:100%;justify-content:center;margin-top:9px">Ieși și intră cu alt cont</button>`;
-    if (pz) msg(pz, pz.startsWith("Prezența e") ? "bun" : "rau");
-  el("bt-iesi").onclick = async () => { await A.iesi(); location.reload(); };
-  }
-} catch { /* fără sesiune, rămâne formularul */ }
+const p = await A.profil().catch(() => ({ autentificat:false }));
 
-el("bt-invitat")?.addEventListener("click", async () => {
-  const b = el("bt-invitat");
-  const nume = el("nume").value.trim();
-  if (nume.length < 2){ msg("Scrie un nume, ca să te recunosc în listă.", "rau");
-                        el("nume").focus(); return; }
-  b.disabled = true; b.textContent = "Se intră…";
-  try {
-    const r = await A.intraCaInvitat(nume);
-    if (!r?.ok) throw new Error(r?.mesaj || "nu a mers");
-    const pz = await prezenta();
-    msg(`Gata, ${r.nume}. ${pz || ""} Te duc la lecție…`, "bun");
-    setTimeout(() => location.href = spre, 1100);
-  } catch (e) {
-    b.disabled = false; b.textContent = "Intră ca invitat";
-    msg(e.message, "rau");
-  }
-});
+if (!cod) pasCod();
+else      await dupaCod();
 
-el("bt-github")?.addEventListener("click", async () => {
-  /* ne întoarcem exact pe adresa asta, cu tot cu jeton, ca prezența să se
-     marcheze automat după ce GitHub ne trimite înapoi */
-  try { sessionStorage.setItem("dsw.intra", location.href); } catch {}
-  try { await A.intraCuGithub(); }
-  catch (e) { msg(e.message, "rau"); }
-});
+/* --- pasul 1: codul ------------------------------------------------------ */
+
+function pasCod(){
+  cap("", "Intră la oră",
+      "Scrie codul de pe ecranul din față. Dacă ai scanat codul cu telefonul, " +
+      "ai sărit deja peste pasul ăsta.");
+  el("pas").innerHTML = `
+    <div class="cutie">
+      <label for="cod">Codul de pe ecran</label>
+      <input id="cod" type="text" inputmode="latin" autocomplete="off" maxlength="6"
+             spellcheck="false" placeholder="şase semne" class="cod-in">
+      <button class="btn btn--tare" id="bt-cod" type="button">Intră la oră</button>
+      <p class="mic">Nu e nicio oră acum? Poți
+        <a href="${RAD}/">să intri singur în curs</a>.</p>
+    </div>`;
+  const i = el("cod");
+  i.focus();
+  const du = async () => {
+    const v = i.value.trim().toUpperCase();
+    if (v.length < 4){ mesaj("Codul are șase semne.", "rau"); i.focus(); return; }
+    cod = v; mesaj(""); await dupaCod();
+  };
+  el("bt-cod").onclick = du;
+  i.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); du(); } });
+}
+
+/* --- ce e în spatele codului --------------------------------------------- */
+
+async function dupaCod(){
+  el("pas").innerHTML = `<div class="cutie"><div class="schelet"></div>
+    <div class="schelet"></div></div>`;
+
+  if (!p.autentificat){ pasCont(); return; }
+
+  const s = await O.dupaCod(cod);
+  if (!s?.ok){ mesaj(s?.mesaj || "Codul nu e bun sau ora s-a închis.", "rau"); pasCod(); return; }
+
+  spre = spre || lectieDe(s.capitol);
+  if (s.cunoscut) pasRevenit(s);
+  else            pasLista(s);
+}
+
+/* --- pasul 2: contul ----------------------------------------------------- */
+
+function pasCont(){
+  cap("cod bun", "Cine ești?",
+      "Intră cu GitHub dacă ai cont: așa se leagă tot ce faci de numărul tău " +
+      "matricol, și tot așa îți fac depozitul echipei, la cursul 3.");
+  el("pas").innerHTML = `
+    <div class="cutie">
+      <button class="btn btn--tare" id="bt-gh" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 20v-3.2M7 16.8c-2.6 0-3.4-1.7-3.4-3.4 0-1 .3-1.8.9-2.4-.3-.8-.3-2 .1-2.8 1 .1 2 .6 2.7 1.2.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c.7-.6 1.7-1.1 2.7-1.2.4.8.4 2 .1 2.8.6.6.9 1.4.9 2.4 0 1.7-.8 3.4-3.4 3.4"/></svg>
+        Intru cu GitHub</button>
+      <p class="mic">Durează două minute dacă nu ai cont încă:
+        <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup ↗</a>.
+        Îl faci acasă, îl legi data viitoare.</p>
+
+      <div class="ori">sau, doar pentru azi</div>
+
+      <label for="nume">Numele tău</label>
+      <input id="nume" type="text" autocomplete="name" maxlength="60" placeholder="Cum să-ți spun">
+      <button class="btn" id="bt-inv" type="button">Intru fără cont</button>
+      <p class="mic">Progresul se salvează și apare la profesor, dar nu se leagă
+        de matricol până nu îți faci cont.</p>
+    </div>`;
+
+  el("bt-gh").onclick = async () => {
+    try { sessionStorage.setItem("dsw.intra", location.href); } catch {}
+    try { await A.intraCuGithub(); } catch (e) { mesaj(e.message, "rau"); }
+  };
+  el("bt-inv").onclick = async () => {
+    const b = el("bt-inv"), nume = el("nume").value.trim();
+    if (nume.length < 2){ mesaj("Scrie un nume, ca să te recunosc în listă.", "rau");
+                          el("nume").focus(); return; }
+    b.disabled = true; b.textContent = "Se intră…";
+    try {
+      const r = await A.intraCaInvitat(nume);
+      if (!r?.ok) throw new Error(r?.mesaj || "nu a mers");
+      location.reload();
+    } catch (e) { b.disabled = false; b.textContent = "Intru fără cont"; mesaj(e.message, "rau"); }
+  };
+}
+
+/* --- pasul 3: lista grupei ------------------------------------------------
+   Nu un formular. Numele oamenilor din grupa aia, și un tap. Un formular cu
+   nume, matricol și grupă ar fi douăzeci și una de ocazii de a scrie greșit,
+   plus cel puțin doi care aleg grupa cealaltă. */
+
+async function pasLista(s){
+  cap(s.titlu || "la oră", "Cine ești?",
+      "Apasă pe numele tău. O singură dată, în tot semestrul.");
+
+  const oameni = await O.listaGrupei(cod) || [];
+  if (!oameni.length){ pasFaraLista(s); return; }
+
+  el("pas").innerHTML = `
+    <div class="cutie">
+      ${oameni.length > 9 ? `<input class="cauta" id="cauta" type="search"
+         placeholder="caută-ți numele" autocomplete="off">` : ""}
+      <div class="lista" id="lista">
+        ${oameni.map(o => `
+          <button class="nume" type="button" data-k="${o.cheie}" ${o.luat ? "disabled" : ""}>
+            ${o.nume}${o.luat ? "<small>deja ales</small>" : ""}</button>`).join("")}
+      </div>
+      <button class="btn btn--tare" id="bt-sunt" type="button" disabled>Asta sunt eu</button>
+      <p class="mic"><a href="#" id="bt-nu">Nu mă găsesc în listă</a></p>
+    </div>`;
+
+  let ales = null;
+  el("lista").addEventListener("click", e => {
+    const b = e.target.closest(".nume"); if (!b || b.disabled) return;
+    el("lista").querySelectorAll(".nume").forEach(x => x.classList.remove("on"));
+    b.classList.add("on"); ales = b.dataset.k;
+    el("bt-sunt").disabled = false;
+  });
+
+  el("cauta")?.addEventListener("input", e => {
+    const q = e.target.value.trim().toLowerCase();
+    el("lista").querySelectorAll(".nume").forEach(b =>
+      b.hidden = !!q && !b.textContent.toLowerCase().includes(q));
+  });
+
+  el("bt-sunt").onclick = async () => {
+    if (!ales) return;
+    const b = el("bt-sunt"); b.disabled = true; b.textContent = "Se intră…";
+    const r = await O.intra(cod, ales);
+    if (!r?.ok){ b.disabled = false; b.textContent = "Asta sunt eu";
+                 mesaj(r?.mesaj || "Nu a mers.", "rau"); return; }
+    gata(r.nume, s);
+  };
+
+  el("bt-nu").onclick = e => { e.preventDefault(); pasFaraLista(s, true); };
+}
+
+/* Venit mai târziu, transferat, sau pur și simplu lipsă din listă. Nu intră
+   direct în date: rămâne invitat, cu numele lui, iar profesorul îl leagă. */
+function pasFaraLista(s, dinLista){
+  cap(s.titlu || "la oră", "Spune-mi cum te cheamă",
+      dinLista ? "Intri ca invitat, iar profesorul te leagă de matricol după oră."
+               : "Lista grupei nu e pregătită încă. Intri cu numele tău.");
+  el("pas").innerHTML = `
+    <div class="cutie">
+      <label for="nume2">Numele tău</label>
+      <input id="nume2" type="text" autocomplete="name" maxlength="60"
+             placeholder="Nume și prenume">
+      <button class="btn btn--tare" id="bt-ok" type="button">Intru la oră</button>
+      <p class="mic">Ce faci azi se salvează și se vede la profesor. Se leagă de
+        matricol când te adaugă el în listă.</p>
+    </div>`;
+  el("nume2").focus();
+  el("bt-ok").onclick = () => {
+    const nume = el("nume2").value.trim();
+    if (nume.length < 3){ mesaj("Scrie numele întreg, ca să te recunoască.", "rau"); return; }
+    gata(nume, s);
+  };
+}
+
+/* --- a doua oară încolo --------------------------------------------------- */
+
+function pasRevenit(s){
+  cap(s.titlu || "la oră", `Bine ai revenit${s.nume ? ", " + s.nume.split(" ")[0] : ""}`,
+      `Intri în ${s.titlu}.`);
+  el("pas").innerHTML = `
+    <div class="cutie">
+      <button class="btn btn--tare" id="bt-du" type="button">Intru la oră</button>
+      <p class="mic"><a href="#" id="bt-alt">Nu sunt eu</a></p>
+    </div>`;
+  el("bt-du").onclick = () => gata(s.nume, s);
+  el("bt-alt").onclick = async e => { e.preventDefault(); await A.iesi(); location.reload(); };
+}
+
+/* --- gata ---------------------------------------------------------------- */
+
+function gata(nume, s){
+  const unde = spre || lectieDe(s?.capitol);
+  cap("", `Gata${nume ? ", " + String(nume).split(" ")[0] : ""}`,
+      "Te duc la lecție. Prezența se ia din ce lucrezi, nu din scanare.");
+  el("pas").innerHTML = `<div class="cutie">
+    <a class="btn btn--tare" href="${unde}"
+       style="width:100%;justify-content:center">Mergi la lecție</a></div>`;
+  setTimeout(() => location.href = unde, 900);
+}
+
+function lectieDe(capitol){
+  const nr = parseInt(String(capitol || "c1").replace("c",""), 10) || 1;
+  const chei = ["c1-introducere-si-mediu","c2-colectarea-prin-api","c3-versionare-git",
+                "c4-curatarea-datelor","c5-agregare-si-baze-de-date",
+                "c6-analiza-exploratorie","c7-variabile-si-model","c8-raportare"];
+  return `${RAD}/${chei[nr-1] || chei[0]}/lectie/`;
+}
 </script>
 </body>
 </html>

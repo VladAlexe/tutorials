@@ -21,11 +21,11 @@
 
    Pornire, din pagina lecției:
 
-     import { porneste } from "../js/slide.js?v=23";
+     import { porneste } from "../js/slide.js?v=26";
      porneste({ capitol:"c1", lectie:"c1-introducere-si-mediu" });
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=23";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=26";
 
 const SVG = {
   gata:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
@@ -68,6 +68,7 @@ export async function porneste({ capitol, lectie }){
     i: 0,
     vizitate: new Set(),
     liber: false,          /* profesorul poate dezactiva porțile */
+    tinut: false,          /* în mod live, slide-ul meu e slide-ul lui */
     profesor: false,
     live: false            /* ora e condusă chiar acum */
   };
@@ -110,23 +111,23 @@ export async function porneste({ capitol, lectie }){
   ["verif:raspuns", "poarta:gata"].forEach(nume =>
     document.addEventListener(nume, ev => {
       reinnoieste(); salveaza();
-      import(`${RADACINA}/js/sesiune.js?v=23`)
+      import(`${RADACINA}/js/sesiune.js?v=26`)
         .then(s => s.jurnal(nume === "poarta:gata" ? "cod" : "raspuns", ev.detail))
         .catch(() => {});
     }));
 
   /* până aflăm dacă ora e pornită, ce se salvează e lucru de unul singur */
-  import(`${RADACINA}/js/colectare.js?v=23`)
+  import(`${RADACINA}/js/colectare.js?v=26`)
     .then(m => m.setContext("lectie")).catch(() => {});
 
   /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
-  import(`${RADACINA}/js/sesiune.js?v=23`)
+  import(`${RADACINA}/js/sesiune.js?v=26`)
     .then(s => s.porneste({ capitol, total:N }))
     .catch(() => { /* fără cont, nu se urmărește nimic */ });
 
   /* profesorul navighează liber, ca să poată arăta orice slide la clasă */
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=23`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=26`);
     const p = await profil();
     stare.profesor = !!p.profesor;
     if (stare.profesor){
@@ -140,7 +141,7 @@ export async function porneste({ capitol, lectie }){
   /* ora condusă: profesorul publică slide-ul lui, studenții sar după el.
      Dacă modulul nu pornește (fără cont, fără rețea), lecția merge la fel. */
   try {
-    const R = await import(`${RADACINA}/js/ritm.js?v=23`);
+    const R = await import(`${RADACINA}/js/ritm.js?v=26`);
     ritm = await R.porneste({
       capitol, total:N,
       esteProfesor: stare.profesor,
@@ -148,14 +149,19 @@ export async function porneste({ capitol, lectie }){
       /* la ritm nu se aplică porțile: dacă profesorul arată slide-ul 9,
          slide-ul 9 se vede, chiar dacă verificarea de la 4 n-a fost făcută */
       manual: `${RADACINA}/${lectie}/tutorial/`,
-      mergiLa: k => mergi(k, { fortat:true }),
+      mergiLa: k => { trimiteCeEInLucru(stare.i); mergi(k, { fortat:true }); },
       /* ce se salvează de acum înainte poartă eticheta potrivită: un
          exercițiu făcut în oră nu e același lucru cu unul făcut acasă */
-      laStare: viu => {
-        stare.live = viu;
-        import(`${RADACINA}/js/colectare.js?v=23`)
-          .then(m => m.setContext(viu ? "live" : "lectie")).catch(() => {});
-        if (viu){ stare.liber = true; reinnoieste(); }
+      laStare: (viu, mod) => {
+        stare.live  = viu;
+        /* ținut = ora e deschisă ȘI e în mod live ȘI nu sunt eu cel care
+           predă. Profesorul umblă liber, altfel n-ar putea arăta nimic. */
+        stare.tinut = !!viu && mod === "live" && !stare.profesor;
+        if (viu && !stare.profesor) stare.liber = true;  /* porțile nu mai au rost: el conduce */
+        import(`${RADACINA}/js/colectare.js?v=26`)
+          .then(m => m.setContext(viu ? (mod === "live" ? "live" : "ora") : "lectie"))
+          .catch(() => {});
+        reinnoieste();
       }
     });
   } catch { /* fără ora condusă, lecția merge la fel */ }
@@ -187,10 +193,48 @@ export async function porneste({ capitol, lectie }){
     return { t, d };
   }
 
+  /* --------------------------------------------- ce rămâne în urmă, în oră
+
+     Când profesorul trece mai departe, ce e în lucru pe slide-ul pe care îl
+     părăsim se trimite automat, așa cum e. Dacă nu s-a completat nimic, se
+     înregistrează ca „trimis gol": zero la notă, exact ca necompletat, dar
+     pentru profesor diferența e tot. Un om care a trimis gol e blocat sau se
+     grăbește; unul care n-a trimis deloc nu e acolo. Două conversații
+     diferite, și le vede pe amândouă în panou.
+
+     Se întâmplă doar în oră. Acasă, un exercițiu neatins rămâne neatins. */
+
+  async function trimiteCeEInLucru(i){
+    if (!stare.live || i == null || !slides[i]) return;
+    let C;
+    try { C = await import(`${RADACINA}/js/colectare.js?v=26`); } catch { return; }
+
+    for (const v of slides[i].querySelectorAll(".verif:not(.raspuns)")){
+      const id = v.dataset.id;
+      if (id) C.salveazaRaspuns({ intrebareId:id, capitol, raspuns:null, corect:false });
+    }
+    for (const x of slides[i].querySelectorAll(".ix.exc:not(.gata)")){
+      const j = x.querySelector('script[type="application/json"]');
+      if (!j) continue;
+      try {
+        const d = JSON.parse(j.textContent);
+        if (d?.id) C.salveazaCod({ exercitiuId:d.id, cod:"", trecut:false });
+      } catch {}
+    }
+  }
+
   /* ------------------------------------------------------------- navigarea */
 
   function mergi(j, { tacut = false, fortat = false } = {}){
     j = Math.max(0, Math.min(N - 1, j | 0));
+
+    /* în mod live, singurul care mută slide-ul e cel de la catedră. Nu e o
+       poartă, e altceva: nu „n-ai terminat încă", ci „ne uităm toți la
+       același lucru". De aceea mesajul e altul, și nu te duce înapoi. */
+    if (!fortat && stare.tinut){
+      spune("Ora e condusă. Slide-ul se schimbă de la catedră.");
+      return;
+    }
 
     if (!fortat && !permis(j)){
       const b = blocaj();
@@ -384,10 +428,15 @@ export async function porneste({ capitol, lectie }){
       const inapoi  = s.querySelector(".pas--inapoi");
       const nota    = s.querySelector(".pas__nota");
       const poate = stare.liber || g.date >= g.toate;
+      /* în mod live butoanele dispar cu totul, nu doar se sting: altfel
+         jumătate din clasă le apasă la nesfârșit și crede că s-a stricat */
+      inapoi.hidden  = stare.tinut;
+      inainte.hidden = stare.tinut;
       inapoi.disabled = i === 0;
       inainte.disabled = !poate;
-      nota.hidden = poate;
-      if (!poate) nota.textContent = g.toate > 1
+      nota.hidden = stare.tinut ? false : poate;
+      if (stare.tinut) nota.textContent = "Ora e condusă. Slide-ul se schimbă de la catedră.";
+      else if (!poate) nota.textContent = g.toate > 1
         ? "Cele de mai sus deschid slide-ul următor."
         : "Sarcina de mai sus deschide slide-ul următor.";
     });
@@ -541,11 +590,11 @@ export async function porneste({ capitol, lectie }){
     ceasSalv = setTimeout(async () => {
       const id = slides[stare.i].id;
       try {
-        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=23`);
+        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=26`);
         await marcheazaSectiune(`${capitol}/${id}`);
       } catch {}
       try {
-        const s = await import(`${RADACINA}/js/sesiune.js?v=23`);
+        const s = await import(`${RADACINA}/js/sesiune.js?v=26`);
         s.laSlide({ slide:id, nr:stare.i + 1, total:N });
       } catch {}
     }, 900);

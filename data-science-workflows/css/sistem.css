@@ -8,7 +8,11 @@
    Tipografie: Source Serif 4 pentru citit, IBM Plex Sans pentru interfata,
    IBM Plex Mono pentru cod, coduri si etichete de date.
 
-   Paleta e calda: hartia bate in crema, griurile in masliniu. Doua culori
+   Paleta e calda: hartia bate in crema, griurile in masliniu. La tema deschisa,
+   crema e retinuta: destul cat sa se vada ca hartia nu e alba, nu atat cat sa
+   bata la ochi. Fundalul e #F4F2EA, cardurile stau pe #FDFCF9 si se desprind
+   de el. Daca vreodata pare prea mult sau prea putin, se misca din aceste doua
+   valori si din --linie, nicaieri altundeva. Doua culori
    cromatice, atat: salvia/teal pentru tot ce se actioneaza si pentru „bun", si
    teracota pentru „gresit". Perechea de stare e teal/teracota, nu verde/rosu,
    pentru ca verde-rosu e exact perechea pe care n-o deosebeste cel mai frecvent
@@ -25,35 +29,35 @@
 
 :root{
   /* tema deschisa */
-  --fundal:       #F7F6F1;
-  --panza:        #FFFFFF;
-  --panza-2:      #EFEEE7;
-  --text:         #23231A;
-  --text-2:       #5A594E;
-  --text-3:       #777569;
-  --linie:        #E2E0D7;
-  --linie-2:      #CBC9BD;
+  --fundal:       #F4F2EA;
+  --panza:        #FDFCF9;
+  --panza-2:      #EBE8DF;
+  --text:         #22221A;
+  --text-2:       #56554A;
+  --text-3:       #75746A;
+  --linie:        #E3E0D6;
+  --linie-2:      #CBC7BA;
   --salvie:       #8DAE9F;
   --salvie-text:  #23231A;
   --buton:        #116A5F;
-  --buton-text:   #F7F6F1;
+  --buton-text:   #FDFCF9;
   --accent:       #116A5F;
   --accent-text:  #0E5A50;
-  --accent-slab:  #E3EFEC;
+  --accent-slab:  #E4EFEB;
   --ok:           #0E8A7A;
-  --ok-slab:      #E4F0EE;
+  --ok-slab:      #E4EFEB;
   --nu:           #AB3E24;
-  --nu-slab:      #F6E9E5;
-  --umbra:        0 1px 2px rgba(35,35,26,.05), 0 4px 14px rgba(35,35,26,.05);
-  --umbra-2:      0 2px 6px rgba(35,35,26,.08), 0 12px 34px rgba(35,35,26,.09);
+  --nu-slab:      #F6EAE4;
+  --umbra:        0 1px 2px rgba(34,34,26,.06), 0 4px 14px rgba(34,34,26,.06);
+  --umbra-2:      0 2px 6px rgba(34,34,26,.09), 0 12px 34px rgba(34,34,26,.10);
 
   /* cromul aplicatiei: bare laterale, bara de stare, bara de file.
      In VS Code, zona de editare si barele din jurul ei nu au acelasi fundal;
      diferenta aceea mica e ce face interfata sa arate ca o unealta. */
-  --crom:         #F1EFE8;
-  --crom-2:       #E9E7DD;
-  --crom-linie:   #DCDAD0;
-  --crom-text:    #55544A;
+  --crom:         #EEEBE1;
+  --crom-2:       #E6E2D7;
+  --crom-linie:   #D9D5C9;
+  --crom-text:    #4F4E44;
 
   --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --sans:  'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -251,6 +255,10 @@ a.leg:hover{border-bottom-color:var(--accent)}
 .btn:hover{border-color:var(--text-3);box-shadow:var(--umbra)}
 .btn--tare{background:var(--buton);color:var(--buton-text);border-color:var(--buton)}
 .btn--tare:hover{opacity:.87;box-shadow:var(--umbra-2)}
+/* Un buton stins trebuie sa arate stins. Altfel omul il apasa, nu se intampla
+   nimic, si crede ca s-a stricat pagina. */
+.btn[disabled],.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn[disabled]:hover,.btn:disabled:hover{opacity:.45;box-shadow:none}
 .btn--mic{font-size:13px;padding:7px 13px;border-radius:7px}
 
 /* --- fluxul: elementul-semnatura ---------------------------------------------

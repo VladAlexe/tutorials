@@ -34,7 +34,15 @@
    "sarcini": [
     {
      "id": "c1-v8",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "De ce versionăm codul într-un proiect de analiză de date?",
+     "optiuni": [
+      "Ca să ocupe mai puțin spațiu pe disc",
+      "Ca să se vadă ce s-a schimbat, când și de cine, și ca să se poată reveni",
+      "Pentru că e obligatoriu la publicare",
+      "Ca să ruleze codul mai repede"
+     ]
     }
    ]
   },
@@ -46,7 +54,15 @@
    "sarcini": [
     {
      "id": "c1-v1",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "O echipă descoperă la analiza exploratorie că indicatorul ales nu are date pentru 40% din unități. Ce face?",
+     "optiuni": [
+      "Continuă doar pe unitățile care au date, fără să menționeze",
+      "Se întoarce la colectare și caută un indicator alternativ",
+      "Completează lipsurile cu media",
+      "Schimbă modelul ca să tolereze lipsurile"
+     ]
     }
    ]
   },
@@ -90,7 +106,15 @@
     },
     {
      "id": "c1-v5",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Cu cele 178 de țări din SCI, câte rânduri are matricea completă?",
+     "optiuni": [
+      "178",
+      "356",
+      "31.684",
+      "15.753"
+     ]
     }
    ]
   },
@@ -137,7 +161,15 @@
     },
     {
      "id": "c1-v9",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Coduri de județ de forma RO113, toate de cinci caractere. Ce tip alegi?",
+     "optiuni": [
+      "INT, pentru că par numere",
+      "TEXT, pentru că nu se știe niciodată",
+      "CHAR(5), pentru că lungimea e fixă",
+      "VARCHAR fără limită"
+     ]
     }
    ]
   },
@@ -160,7 +192,15 @@
     },
     {
      "id": "c1-v10",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "Ai salvat tabelul în CSV. La recitire, coloana cu coduri care începeau cu zero a devenit numerică și zerourile au dispărut. De ce?",
+     "optiuni": [
+      "CSV nu păstrează tipurile; la recitire, fiecare coloană e reinterpretată din conținut",
+      "Fișierul s-a corupt la salvare",
+      "Pandas are o eroare cunoscută",
+      "Codurile trebuiau salvate cu majuscule"
+     ]
     }
    ]
   },
@@ -188,7 +228,15 @@
     },
     {
      "id": "c1-v4",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Ce diferență e între \"value\": null și lipsa completă a cheii value?",
+     "optiuni": [
+      "Niciuna",
+      "null spune explicit că valoarea lipsește; cheia absentă înseamnă că serviciul nu raportează deloc câmpul",
+      "null înseamnă zero",
+      "Cheia absentă e o eroare a serverului"
+     ]
     }
    ]
   },
@@ -204,7 +252,15 @@
     },
     {
      "id": "c1-v3",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Ai activat mediul, ai instalat pandas, ai închis laptopul. A doua zi import pandas dă eroare. De ce?",
+     "optiuni": [
+      "Pandas s-a dezinstalat singur",
+      "Ai uitat să activezi mediul virtual",
+      "Mediul expiră după 24 de ore",
+      "Trebuie reinstalat Python"
+     ]
     }
    ]
   },

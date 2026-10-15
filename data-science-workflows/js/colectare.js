@@ -29,9 +29,18 @@ let contextul = null;
 export function setContext(c){ contextul = c || null; }
 export function context(){ return contextul; }
 
+/* De care oră ține ce se salvează. Pagina lecției o află din `ora_acum` și o
+   pune aici. `null` înseamnă „a lucrat singur, în afara orei", și din diferența
+   asta ies și prezența, și regula de notare: în ședință punct întreg, singur
+   acasă jumătate, la prima completare. Nu e o etichetă scrisă de client, ca
+   `context`, e o legătură adevărată către un rând din `sedinte`. */
+let sedinta = null;
+export function setSedinta(id){ sedinta = id || null; }
+export function sedintaAcum(){ return sedinta; }
+
 async function autentificare(){
   if (modul !== null) return modul;
-  try { modul = await import("./auth.js?v=23"); }
+  try { modul = await import("./auth.js?v=26"); }
   catch { modul = false; }
   return modul;
 }
@@ -70,7 +79,7 @@ export async function salveazaRaspuns({ intrebareId, capitol, raspuns, corect })
   if (!c) return false;
   const { error } = await c.sb.from("raspunsuri").insert({
     user_id:c.user.id, intrebare_id:intrebareId, capitol, raspuns, corect,
-    context: contextul
+    context: contextul, sedinta_id: sedinta
   });
   return !error;
 }
@@ -80,7 +89,7 @@ export async function salveazaCod({ exercitiuId, cod, trecut }){
   if (!c) return false;
   const { error } = await c.sb.from("rulari_cod").insert({
     user_id:c.user.id, exercitiu_id:exercitiuId, cod:(cod||"").slice(0,4000), trecut,
-    context: contextul
+    context: contextul, sedinta_id: sedinta
   });
   return !error;
 }

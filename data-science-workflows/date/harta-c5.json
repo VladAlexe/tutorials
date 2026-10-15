@@ -18,7 +18,15 @@
    "sarcini": [
     {
      "id": "c5-v1",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Echipa voastră are 40.000 de rânduri și trei oameni care lucrează pe ele. Ce argument e cel mai bun pentru o bază de date?",
+     "optiuni": [
+      "Că 40.000 de rânduri sunt prea multe pentru pandas",
+      "Că trei oameni au nevoie de o singură copie, nu de trei",
+      "Că bazele de date sunt mai rapide",
+      "Că așa se face în industrie"
+     ]
     }
    ]
   },
@@ -30,7 +38,15 @@
    "sarcini": [
     {
      "id": "c5-v2",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Ai câte un fișier pentru fiecare an, toate cu aceleași coloane. Ce folosești?",
+     "optiuni": [
+      "pd.merge, pentru că sunt fișiere diferite",
+      "df.join, pentru că anul e indexul",
+      "pd.concat, pentru că vrei mai multe rânduri",
+      "Depinde de mărimea fișierelor"
+     ]
     }
    ]
   },
@@ -58,7 +74,15 @@
     },
     {
      "id": "c5-v3",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "După un merge cu how=\"left\", tabelul are mai multe rânduri decât cel din stânga. Ce s-a întâmplat?",
+     "optiuni": [
+      "Tabelul din dreapta are cheia repetată pe mai multe rânduri",
+      "Merge-ul a eșuat",
+      "Trebuia folosit inner",
+      "Au apărut rânduri goale"
+     ]
     }
    ]
   },
@@ -74,7 +98,15 @@
     },
     {
      "id": "c5-v4",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Vrei ca merge-ul să crape dacă o cheie apare de mai multe ori în dreapta. Ce adaugi?",
+     "optiuni": [
+      "how=\"inner\"",
+      "on=[\"cod\", \"an\"]",
+      "validate=\"one_to_one\"",
+      "indicator=True"
+     ]
     }
    ]
   },
@@ -90,7 +122,15 @@
     },
     {
      "id": "c5-v5",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 3,
+     "q": "Un merge cu how=\"inner\" întoarce zero rânduri. Care e prima verificare?",
+     "optiuni": [
+      "Dacă fișierele s-au citit corect",
+      "Dacă pandas e actualizat",
+      "Dacă tabelele au aceeași mărime",
+      "Dacă valorile cheii arată la fel în amândouă"
+     ]
     }
    ]
   },
@@ -118,7 +158,15 @@
     },
     {
      "id": "c5-v6",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "După groupby uiți reset_index(). Ce se întâmplă la merge-ul de după?",
+     "optiuni": [
+      "Merge-ul funcționează la fel",
+      "Coloana-cheie nu mai există ca și coloană, e index",
+      "Datele se pierd",
+      "Pandas dă eroare de memorie"
+     ]
     }
    ]
   },
@@ -130,7 +178,15 @@
    "sarcini": [
     {
      "id": "c5-v7",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "pd.merge(a, b, on=\"cod\"), fără how. Ce fel de îmbinare s-a făcut?",
+     "optiuni": [
+      "left, pentru că a e primul",
+      "outer, ca să nu se piardă nimic",
+      "inner, adică doar cheile comune",
+      "Depinde de date"
+     ]
     }
    ]
   },
@@ -177,7 +233,15 @@
     },
     {
      "id": "c5-v8",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "Rulezi scriptul de încărcare de două ori, cu if_exists=\"append\" și fără cheie primară. Ce ai în bază?",
+     "optiuni": [
+      "Fiecare rând de două ori",
+      "Același lucru ca la prima rulare",
+      "O eroare",
+      "Doar rândurile noi"
+     ]
     }
    ]
   },
@@ -201,7 +265,15 @@
    "sarcini": [
     {
      "id": "c5-v9",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "De ce poate Neon să facă ramuri atât de repede?",
+     "optiuni": [
+      "Pentru că bazele sunt mici",
+      "Pentru că datele stau separat de partea care calculează",
+      "Pentru că folosește Git intern",
+      "Pentru că face copii noaptea"
+     ]
     }
    ]
   },
@@ -225,11 +297,27 @@
    "sarcini": [
     {
      "id": "c5-v10",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Ai nevoie de toate țările din tabelul tău, plus atributele care există, fără să pierzi nimic. Ce scrii?",
+     "optiuni": [
+      "pd.concat([a, b])",
+      "pd.merge(a, b, on=\"cod\")",
+      "pd.merge(a, b, on=\"cod\", how=\"left\")",
+      "a.join(b, how=\"inner\")"
+     ]
     },
     {
      "id": "c5-v11",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "DATABASE_URL a ajuns într-un commit, pe GitHub. Ce faci întâi?",
+     "optiuni": [
+      "Ștergi linia și faci un commit nou",
+      "Schimbi parola din Neon",
+      "Faci depozitul privat",
+      "Ștergi depozitul"
+     ]
     }
    ]
   },

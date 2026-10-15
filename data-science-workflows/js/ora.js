@@ -1,0 +1,122 @@
+/* ===========================================================================
+   ORA, CA OBIECT
+
+   Un singur loc din care se vorbește cu ședințele. Paginile de predare și
+   pagina lecției cer de aici, nu scriu RPC-uri de mână.
+
+   O ședință e o oră anume: lecția, grupa, ziua, modul, ora de început și cea
+   de sfârșit. Tot ce fac studenții în timpul ei se leagă de ea, iar din asta
+   ies prezența, raportul, exportul și ștergerea.
+
+   Dacă baza nu are încă tabelele din db/14 și db/15, funcțiile de aici
+   întorc null sau o listă goală. Nimic nu aruncă și nicio pagină nu se rupe:
+   doar nu se vede nimic, ceea ce e adevărul.
+   =========================================================================== */
+
+import { sb } from "./auth.js?v=26";
+import { RADACINA } from "./curs.js?v=26";
+
+/** Cheamă o funcție din bază și întoarce null în loc să arunce. */
+async function cheama(nume, argumente = {}) {
+  try {
+    const { data, error } = await sb.rpc(nume, argumente);
+    if (error) { console.warn(`[ora] ${nume}:`, error.message); return null; }
+    return data;
+  } catch (e) { console.warn(`[ora] ${nume}:`, e.message); return null; }
+}
+
+/* --- grupe ---------------------------------------------------------------- */
+
+export async function grupe() {
+  try {
+    const { data } = await sb.from("grupe").select("*").order("nume");
+    return data || [];
+  } catch { return []; }
+}
+
+export const puneGrupa = (id, nume, an, zi, ora) =>
+  cheama("pune_grupa", { p_id:id, p_nume:nume, p_an:an, p_zi:zi, p_ora:ora });
+
+/* --- ședința, la profesor ------------------------------------------------- */
+
+/** Ora deschisă acum, sau null. */
+export async function deschisa(capitol = null) {
+  const r = await cheama("sedinta_deschisa", { p_capitol: capitol });
+  return (r && r[0]) || null;
+}
+
+export const deschide = (capitol, grupaId, mod = "live", total = null) =>
+  cheama("deschide_sedinta", { p_capitol:capitol, p_grupa_id:grupaId,
+                               p_mod:mod, p_total_nr:total });
+
+export const pune = (id, { slide = null, mod = null, note = null } = {}) =>
+  cheama("pune_sedinta", { p_id:id, p_slide_nr:slide, p_mod:mod, p_note:note });
+
+export const inchide  = id => cheama("inchide_sedinta", { p_id:id });
+export const raport   = id => cheama("raport_sedinta", { p_id:id });
+export const sumar    = id => cheama("sumar_sedinta", { p_id:id });
+export const arhiveaza = (id, inapoi = false) =>
+  cheama("arhiveaza_sedinta", { p_id:id, p_inapoi:inapoi });
+export const lista = (arhivate = false, capitol = null) =>
+  cheama("lista_sedinte", { p_arhivate:arhivate, p_capitol:capitol });
+export const punePrezenta = (sedinta, matricol, prezent) =>
+  cheama("pune_prezenta", { p_sedinta:sedinta, p_matricol:matricol, p_prezent:prezent });
+
+/** Un rând per student, pentru sarcinile de pe slide-ul care e pe ecran. */
+export const panou = (sedinta, sarcini) =>
+  cheama("panou_slide", { p_sedinta:sedinta, p_sarcini:sarcini || [] });
+
+/* --- intrarea, la student ------------------------------------------------- */
+
+export const dupaCod     = cod => cheama("sedinta_dupa_cod", { p_cod:cod });
+export const listaGrupei = cod => cheama("lista_grupei", { p_cod:cod });
+export const intra       = (cod, cheie) =>
+  cheama("intra_in_sedinta", { p_cod:cod, p_cheie:cheie });
+
+/** Ce trebuie să știe pagina lecției: e ora pornită, în ce mod, la ce slide. */
+export const acum = capitol => cheama("ora_acum", { p_capitol:capitol });
+
+/* --- harta slide-urilor --------------------------------------------------- */
+
+const harti = new Map();
+
+/** Ce sarcini stau pe fiecare slide, cu întrebarea și variantele ei. */
+export async function harta(capitol) {
+  if (harti.has(capitol)) return harti.get(capitol);
+  try {
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=26`);
+    const h = r.ok ? await r.json() : null;
+    harti.set(capitol, h);
+    return h;
+  } catch { harti.set(capitol, null); return null; }
+}
+
+/** Sarcinile de pe un slide anume (1-based), din hartă. */
+export function sarciniDe(h, nr) {
+  if (!h) return [];
+  const s = (h.slide || []).find(x => x.nr === nr);
+  return s ? s.sarcini : [];
+}
+
+/* --- cuvinte -------------------------------------------------------------- */
+
+/** Cele patru stări, cu glif și nume. Forma poartă informația, culoarea doar
+    o întărește: se citesc și pe un proiector decolorat, și alb-negru. */
+export const STARI = {
+  trecut:        { glif:"✓", nume:"corect",     clasa:"g--ok"  },
+  trimis_gresit: { glif:"✕", nume:"greșit",     clasa:"g--nu"  },
+  trimis_gol:    { glif:"◉", nume:"trimis gol", clasa:"g--gol" },
+  nefacut:       { glif:"○", nume:"n-a trimis", clasa:"g--nim" }
+};
+
+export const ORDINEA = ["trecut", "trimis_gresit", "trimis_gol", "nefacut"];
+
+/** „acum 3 minute", „acum o oră”. */
+export function deCand(t) {
+  if (!t) return "—";
+  const m = Math.round((Date.now() - new Date(t).getTime()) / 60000);
+  if (m < 1) return "acum";
+  if (m < 60) return `acum ${m} min`;
+  const h = Math.round(m / 60);
+  return h === 1 ? "acum o oră" : `acum ${h} ore`;
+}

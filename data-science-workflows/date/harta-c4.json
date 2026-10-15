@@ -18,7 +18,15 @@
    "sarcini": [
     {
      "id": "c4-v1",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "De ce curățarea ia atât de mult, dacă pare o muncă simplă?",
+     "optiuni": [
+      "Pentru că uneltele sunt slabe",
+      "Pentru că fiecare decizie e o alegere care schimbă rezultatul, și trebuie gândită",
+      "Pentru că datele sunt prea mari",
+      "Pentru că nimeni nu vrea s-o facă"
+     ]
     }
    ]
   },
@@ -30,7 +38,15 @@
    "sarcini": [
     {
      "id": "c4-v2",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "git pull e, de fapt, două comenzi la un loc. Care?",
+     "optiuni": [
+      "add și commit",
+      "commit și push",
+      "fetch și merge",
+      "clone și checkout"
+     ]
     }
    ]
   },
@@ -58,7 +74,15 @@
     },
     {
      "id": "c4-v3",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Ai făcut push unui commit greșit. Colegii l-au luat deja. Ce faci?",
+     "optiuni": [
+      "git reset --hard și push forțat",
+      "git revert, care adaugă un commit ce îl anulează",
+      "Ștergi depozitul și îl refaci",
+      "Nimic, nu se mai poate"
+     ]
     }
    ]
   },
@@ -70,7 +94,15 @@
    "sarcini": [
     {
      "id": "c4-v4",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "De ce git branch -d refuză uneori să șteargă o ramură?",
+     "optiuni": [
+      "Pentru că e ramura curentă",
+      "Pentru că are prea multe commit-uri",
+      "Pentru că are commit-uri care nu există în nicio altă ramură",
+      "Pentru că n-ai drepturi"
+     ]
     }
    ]
   },
@@ -82,7 +114,15 @@
    "sarcini": [
     {
      "id": "c4-v5",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "Clonezi un depozit. Trebuie să mai dai git remote add?",
+     "optiuni": [
+      "Nu, clonarea leagă singură origin",
+      "Da, de fiecare dată",
+      "Doar dacă vrei să faci push",
+      "Doar dacă depozitul e privat"
+     ]
     }
    ]
   },
@@ -105,7 +145,15 @@
     },
     {
      "id": "c4-v6",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 3,
+     "q": "info() arată o coloană de prețuri ca object, nu ca număr. Ce înseamnă?",
+     "optiuni": [
+      "Că fișierul e corupt",
+      "Că pandas nu suportă prețuri",
+      "Că valorile sunt prea mari",
+      "Că în coloană e cel puțin o valoare care nu e număr"
+     ]
     }
    ]
   },
@@ -141,11 +189,27 @@
    "sarcini": [
     {
      "id": "c4-v7",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Ai 31.684 de rânduri. După drop_duplicates() ai 31.100. Ce faci întâi?",
+     "optiuni": [
+      "Mergi mai departe, s-au curățat",
+      "Afli de unde vin cele 584, înainte să le arunci",
+      "Le pui la loc",
+      "Repeți colectarea"
+     ]
     },
     {
      "id": "c4-v8",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Ce face d[\"x\"].str.strip() dacă în coloană sunt și numere?",
+     "optiuni": [
+      "Le lasă în pace",
+      "Le transformă în text",
+      "Dă NaN pentru ele",
+      "Dă eroare"
+     ]
     }
    ]
   },
@@ -161,7 +225,15 @@
     },
     {
      "id": "c4-v9",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Care e cel mai mare risc când completezi lipsurile cu media coloanei?",
+     "optiuni": [
+      "Pierzi rânduri",
+      "Schimbi tipul coloanei",
+      "Micșorezi variația și faci rezultatul să pară mai sigur decât e",
+      "Nu e niciun risc, e metoda standard"
+     ]
     }
    ]
   },
@@ -213,7 +285,15 @@
     },
     {
      "id": "c4-v10",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "De ce se compară statisticile înainte și după curățare?",
+     "optiuni": [
+      "Ca să prinzi schimbările pe care nu le-ai vrut",
+      "Ca să arăți cât ai lucrat",
+      "Pentru că o cere pandas",
+      "Ca să știi cât spațiu ai economisit"
+     ]
     }
    ]
   },

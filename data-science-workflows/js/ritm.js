@@ -18,7 +18,7 @@
    merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=23";
+import { RADACINA } from "./curs.js?v=26";
 
 const PAS_STUDENT  = 3000;    /* cât de des întreabă studentul unde e profesorul */
 const PAS_PROFESOR = 10000;   /* cât de des numără profesorul cine e în sală */
@@ -26,7 +26,7 @@ const PAS_PROFESOR = 10000;   /* cât de des numără profesorul cine e în sal�
 export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A;
-  try { A = await import(`${RADACINA}/js/auth.js?v=23`); }
+  try { A = await import(`${RADACINA}/js/auth.js?v=26`); }
   catch { return null; }
 
   let p = null;
@@ -82,6 +82,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         <button class="ritm__cod" type="button" title="Arată codul mare, de proiectat">
           <small>cod</small>${jeton || "…"}</button>
         <span class="ritm__d"><b>${inClasa}</b> în clasă · sunt pe slide-ul tău</span>
+        <a class="ritm__b" href="${RADACINA}/predau/ora/">Panoul live</a>
         <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Oprește ora</button>`
       : `
         <span class="ritm__pct"></span>
@@ -153,30 +154,46 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
   }
 
   /* ============================================================= STUDENT === */
-  /* Nu există buton de desprindere: cât ține ora, pagina lui e pagina mea. */
-  let eraPornit = false, ultim = null;
+  /* Cât ține ora în mod live, pagina lui e pagina mea: nu are buton de
+     desprindere, pentru că n-ar mai fi live. În ritm propriu merge singur,
+     dar ce trimite se leagă tot de ședință, deci se vede în panou și se
+     notează ca lucru făcut la clasă. */
+  let eraViu = false, ultim = null, modAcum = null;
 
   const bate = async () => {
     let d = null;
-    try { ({ data: d } = await sb.rpc("citeste_ritm", { p_capitol: capitol })); }
+    try { ({ data: d } = await sb.rpc("ora_acum", { p_capitol: capitol })); }
     catch { return; }
-    const acum = !!d?.pornit;
+    const viu = !!d?.viu;
 
-    if (acum !== eraPornit){ eraPornit = acum; laStare?.(acum); }
-    if (!acum){ bara.hidden = true; ultim = null; return; }
+    /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
+    import(`${RADACINA}/js/colectare.js?v=26`)
+      .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
-    const nr = Math.max(1, d.slide_nr | 0);
-    if (nr !== ultim){ ultim = nr; mergiLa(nr - 1); }
-    deseneazaStudent(nr);
+    if (viu !== eraViu || d?.mod !== modAcum){
+      eraViu = viu; modAcum = d?.mod || null;
+      laStare?.(viu, d?.mod || null);
+    }
+    if (!viu){ bara.hidden = true; ultim = null; return; }
+
+    /* numai în live îl mut după mine; în ritm propriu umblă singur */
+    if (d.mod === "live"){
+      const nr = Math.max(1, d.slide_nr | 0);
+      if (nr !== ultim){ ultim = nr; mergiLa(nr - 1); }
+    }
+    deseneazaStudent(d);
   };
 
-  function deseneazaStudent(nr){
+  function deseneazaStudent(d){
+    const live = d.mod === "live";
     bara.hidden = false;
     bara.className = "ritm ritm--on";
     bara.innerHTML = `
       <span class="ritm__pct"></span>
-      <span class="ritm__t">Ora e condusă</span>
-      <span class="ritm__d">slide-ul ${nr}, ca pe ecranul din față</span>
+      <span class="ritm__t">${live ? "Ora e condusă" : "Ești la oră"}</span>
+      <span class="ritm__d">${live
+        ? `slide-ul ${d.slide_nr}, ca pe ecranul din față`
+        : "mergi în ritmul tău; ce faci se vede la profesor"}</span>
       ${manual ? `<a class="ritm__b" href="${manual}" target="_blank"
                      rel="noopener">Deschide manualul</a>` : ""}`;
   }

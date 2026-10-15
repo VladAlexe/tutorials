@@ -18,7 +18,15 @@
    "sarcini": [
     {
      "id": "c2-v1",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "De ce lucrăm într-un mediu virtual și nu direct în Python-ul de sistem?",
+     "optiuni": [
+      "Ca să meargă mai repede",
+      "Ca fiecare proiect să-și aibă pachetele lui, cu versiunile lui",
+      "Ca să ocupe mai puțin spațiu",
+      "Nu contează, e doar o convenție"
+     ]
     }
    ]
   },
@@ -37,11 +45,27 @@
    "sarcini": [
     {
      "id": "c2-v2",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "În analogia restaurantului, documentația API-ului este…",
+     "optiuni": [
+      "ospătarul",
+      "bucătăria",
+      "meniul",
+      "preparatul"
+     ]
     },
     {
      "id": "c2-v3",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "Și serverul?",
+     "optiuni": [
+      "bucătăria",
+      "clientul",
+      "meniul",
+      "ospătarul"
+     ]
     }
    ]
   },
@@ -53,7 +77,15 @@
    "sarcini": [
     {
      "id": "c2-v4",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Care e argumentul cel mai serios pentru colectarea prin API?",
+     "optiuni": [
+      "E mai rapid",
+      "Colectarea devine reproductibilă: altcineva o poate reface identic",
+      "Datele sunt mai corecte",
+      "Nu trebuie citită documentația"
+     ]
     }
    ]
   },
@@ -79,7 +111,15 @@
    "sarcini": [
     {
      "id": "c2-v5",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Pentru un API public, simplu, pe care îl folosesc mulți necunoscuți, ce stil alegi?",
+     "optiuni": [
+      "SOAP, pentru că e standardizat",
+      "gRPC, pentru că e rapid",
+      "REST, pentru că e ușor de învățat și merge din browser",
+      "GraphQL, pentru că e cel mai nou"
+     ]
     }
    ]
   },
@@ -110,7 +150,15 @@
    "sarcini": [
     {
      "id": "c2-v6",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Două endpoint-uri diferite ale aceluiași API…",
+     "optiuni": [
+      "întorc aceleași date, în formate diferite",
+      "întorc lucruri diferite: fiecare e o altă resursă sau funcție",
+      "sunt același lucru, scris în două feluri",
+      "se folosesc pe rând, în ordine"
+     ]
     }
    ]
   },
@@ -138,7 +186,15 @@
     },
     {
      "id": "c2-v8",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 3,
+     "q": "Primești codul 429. Ce s-a întâmplat?",
+     "optiuni": [
+      "Adresa e greșită",
+      "Serverul e stricat",
+      "Nu ai cheie de acces",
+      "Ai trimis prea multe cereri prea repede"
+     ]
     }
    ]
   },
@@ -157,7 +213,15 @@
    "sarcini": [
     {
      "id": "c2-v9",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Fișierul SCI de la cursul 1 e o sursă prin API?",
+     "optiuni": [
+      "Da, orice sursă de date e un API",
+      "Nu, e un fișier descărcat; API-ul e un serviciu pe care îl întrebi",
+      "Da, pentru că l-am luat de pe internet",
+      "Depinde de format"
+     ]
     }
    ]
   },
@@ -197,7 +261,15 @@
     },
     {
      "id": "c2-v10",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "De ce pui o pauză între cereri, într-o buclă de colectare?",
+     "optiuni": [
+      "Ca să nu depășesc limita de cereri a serverului",
+      "Ca să am timp să citesc rezultatele",
+      "Ca să consume mai puțină memorie",
+      "Nu e nevoie, serverul se descurcă"
+     ]
     }
    ]
   },

@@ -18,7 +18,15 @@
    "sarcini": [
     {
      "id": "c3-v1",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Ce se întâmplă cu munca de săptămâna trecută dacă îți moare laptopul în seara asta?",
+     "optiuni": [
+      "Nimic, Python salvează automat",
+      "Se recuperează din coșul de gunoi",
+      "Se pierde, dacă nu e nicăieri altundeva",
+      "GitHub o are deja, orice proiect ajunge acolo"
+     ]
     }
    ]
   },
@@ -53,11 +61,27 @@
    "sarcini": [
     {
      "id": "c3-v2",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Ești în tren, fără internet. Ce poți face?",
+     "optiuni": [
+      "Nimic, Git are nevoie de legătură",
+      "Commit-uri, reveniri, ramuri: tot ce ține de istoric",
+      "Doar să citești istoricul, nu să scrii",
+      "Doar git status"
+     ]
     },
     {
      "id": "c3-v3",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "Unde stă istoria proiectului tău, pe laptop?",
+     "optiuni": [
+      "Într-un dosar ascuns, .git, lângă fișiere",
+      "În cloud, Git o descarcă la nevoie",
+      "În fiecare fișier, la început",
+      "Într-un program separat, instalat cu Git"
+     ]
     }
    ]
   },
@@ -69,7 +93,15 @@
    "sarcini": [
     {
      "id": "c3-v4",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Ce face git init?",
+     "optiuni": [
+      "Trimite proiectul pe GitHub",
+      "Descarcă un proiect de pe GitHub",
+      "Începe urmărirea dosarului curent, creând .git",
+      "Creează un dosar nou pentru proiect"
+     ]
     }
    ]
   },
@@ -97,7 +129,15 @@
     },
     {
      "id": "c3-v5",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Ce e un mesaj bun de commit?",
+     "optiuni": [
+      "„update”",
+      "„colectare de la Banca Mondiala, cu paginare”",
+      "„am lucrat azi”",
+      "„fix”"
+     ]
     }
    ]
   },
@@ -113,7 +153,15 @@
     },
     {
      "id": "c3-v6",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 3,
+     "q": "Ai urcat din greșeală un fișier cu o parolă și ai făcut push. Ce faci?",
+     "optiuni": [
+      "Ștergi fișierul și faci alt commit",
+      "Îl adaugi în .gitignore",
+      "Nu e nicio problemă, depozitul e privat",
+      "Schimbi parola imediat, apoi cureți istoricul"
+     ]
     }
    ]
   },
@@ -148,7 +196,15 @@
     },
     {
      "id": "c3-v7",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 0,
+     "q": "De ce se creează depozitul de pe GitHub gol, fără README?",
+     "optiuni": [
+      "Ca să nu apară un conflict la prima trimitere",
+      "Ca să ocupe mai puțin",
+      "Nu contează, e același lucru",
+      "Ca să fie privat"
+     ]
     }
    ]
   },
@@ -160,7 +216,15 @@
    "sarcini": [
     {
      "id": "c3-v8",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Ai făcut git commit dar nu git push. Ce vede colegul tău?",
+     "optiuni": [
+      "Tot, GitHub se sincronizează singur",
+      "Doar fișierele, nu și mesajul",
+      "Nimic nou: commit-ul e doar la tine, pe laptop",
+      "Vede o cerere de aprobare"
+     ]
     }
    ]
   },
@@ -188,7 +252,15 @@
     },
     {
      "id": "c3-v9",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Care obicei previne cele mai multe conflicte?",
+     "optiuni": [
+      "Să faci commit-uri cât mai rare",
+      "Să dai git pull înainte să începi lucrul, în fiecare zi",
+      "Să lucrați toți pe aceeași ramură",
+      "Să nu atingeți niciodată aceleași fișiere"
+     ]
     }
    ]
   },
@@ -207,7 +279,15 @@
    "sarcini": [
     {
      "id": "c3-v10",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 1,
+     "q": "De unde vine o întrebare de cercetare?",
+     "optiuni": [
+      "Din ce se poate calcula cu datele pe care le ai",
+      "Din literatura pe tema aceea, pusă față în față cu datele",
+      "Din ce iese mai frumos la grafice",
+      "Din ce n-a mai făcut nimeni"
+     ]
     }
    ]
   },
@@ -219,7 +299,15 @@
    "sarcini": [
     {
      "id": "c3-v11",
-     "fel": "verificare"
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Ce face ca cele trei întrebări de mai sus să fie întrebări de cercetare, și nu simple curiozități?",
+     "optiuni": [
+      "Sunt despre un subiect important",
+      "Folosesc date din mai multe surse",
+      "Ies dintr-un cadru teoretic și se pot infirma cu datele",
+      "Au fost puse și de alții înainte"
+     ]
     }
    ]
   },
