@@ -253,12 +253,25 @@ end $$;
 create or replace function public.sedinta_dupa_cod(p_cod text)
 returns jsonb
 language plpgsql security definer stable set search_path = public as $$
-declare v_sed public.sedinte; v_mat text; v_nume text;
+declare v_sed public.sedinte; v_mat text; v_nume text; v_inchisa boolean;
 begin
+  /* Caut întâi fără filtru de „deschisă", ca să pot spune care din două e:
+     un cod inventat și o oră care tocmai s-a închis cer de la om lucruri
+     diferite. „Codul nu e bun sau ora s-a închis" nu ajută pe nimeni. */
   select * into v_sed from public.sedinte
-   where upper(btrim(cod)) = upper(btrim(p_cod)) and inchisa_la is null limit 1;
+   where upper(btrim(cod)) = upper(btrim(p_cod))
+   order by deschisa_la desc limit 1;
+
   if v_sed.id is null then
-    return jsonb_build_object('ok', false, 'mesaj', 'Codul nu e bun sau ora s-a închis.');
+    return jsonb_build_object('ok', false, 'cod_gresit', true,
+      'mesaj', 'Codul ăsta nu există. Verifică semnele de pe ecran.');
+  end if;
+
+  v_inchisa := v_sed.inchisa_la is not null;
+  if v_inchisa then
+    return jsonb_build_object('ok', false, 'inchisa', true,
+      'mesaj', 'Ora s-a închis. Poți intra în lecție, dar nu mai contează ca prezență.',
+      'capitol', v_sed.capitol);
   end if;
 
   select p.matricol, st.nume into v_mat, v_nume
@@ -269,6 +282,9 @@ begin
   return jsonb_build_object('ok', true, 'sedinta', v_sed.id,
     'capitol', v_sed.capitol, 'titlu', v_sed.titlu, 'mod', v_sed.mod,
     'slide_nr', v_sed.slide_nr, 'grupa_id', v_sed.grupa_id,
+    /* profesorul care scanează propriul cod nu e un student fără nume:
+       nu are ce căuta în lista grupei */
+    'profesor', public.sunt_profesor(),
     'cunoscut', (v_mat is not null and v_mat not like 'G-%'),
     'nume', v_nume);
 end $$;

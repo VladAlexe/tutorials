@@ -8,7 +8,7 @@
    Alegerea e valabila pe tot site-ul, nu doar pe pagina curenta.
    =========================================================================== */
 
-import { profil, modVizualizare, setModVizualizare } from "./auth.js?v=31";
+import { profil, modVizualizare, setModVizualizare } from "./auth.js?v=34";
 
 const CSS = `
 .bara-mod{position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;align-items:center;

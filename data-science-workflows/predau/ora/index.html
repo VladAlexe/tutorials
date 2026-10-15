@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=31">
-<link rel="stylesheet" href="../../css/predau.css?v=31">
-<script src="../../js/tema.js?v=31"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=34">
+<link rel="stylesheet" href="../../css/predau.css?v=34">
+<script src="../../js/tema.js?v=34"></script>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
   </div>
 </main>
 
-<script type="module" src="../../js/antet.js?v=31"></script>
+<script type="module" src="../../js/antet.js?v=34"></script>
 <script type="module">
 /* ===========================================================================
    PANOUL LIVE
@@ -48,14 +48,14 @@
    vizibilă: nu are rost să interoghez baza cât te uiți la altceva.
    =========================================================================== */
 
-import { RADACINA, LECTII } from "../../js/curs.js?v=31";
-import * as O from "../../js/ora.js?v=31";
+import { RADACINA, LECTII } from "../../js/curs.js?v=34";
+import * as O from "../../js/ora.js?v=34";
 
 const PAS = 4000;
 const el = id => document.getElementById(id);
 
 let A;
-try { A = await import("../../js/auth.js?v=31"); }
+try { A = await import("../../js/auth.js?v=34"); }
 catch { document.getElementById("corp").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();

@@ -259,8 +259,16 @@ begin
 
   get diagnostics v_prez = row_count;
 
+  /* Codul RĂMÂNE scris pe ședință după închidere. Nu mai funcționează, pentru
+     că tot ce îl caută cere `inchisa_la is null`, dar faptul că e încă acolo
+     înseamnă că un student care scanează cu un minut mai târziu primește „ora
+     s-a închis", nu „codul ăsta nu există". Prima propoziție e adevărată, a
+     doua îl pune să se uite pe ecran după un cod care era bun.
+
+     Indexul de unicitate e parțial (doar peste ședințele deschise), deci un
+     cod păstrat nu blochează refolosirea lui. */
   update public.sedinte
-     set inchisa_la = now(), cod = null       -- codul moare odată cu ora
+     set inchisa_la = now()
    where id = p_id;
 
   return jsonb_build_object('ok', true, 'prezenti', v_prez);

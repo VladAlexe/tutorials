@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=31">
-<link rel="stylesheet" href="../css/predau.css?v=31">
-<script src="../js/tema.js?v=31"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=34">
+<link rel="stylesheet" href="../css/predau.css?v=34">
+<script src="../js/tema.js?v=34"></script>
 </head>
 <body>
 
@@ -22,59 +22,59 @@
   <div class="pd__cap">
     <div>
       <p class="pd__et" id="ziua">—</p>
-      <h1 class="pd__t" id="titlu">Ce predai acum</h1>
+      <h1 class="pd__t" id="titlu">Lecțiile</h1>
       <p class="pd__d" id="sub">Se încarcă…</p>
     </div>
   </div>
 
-  <div id="corp">
-    <div class="pd__grid">
-      <div class="card"><div class="sch sch--c"></div></div>
-      <div class="card"><div class="sch sch--c"></div></div>
-    </div>
-  </div>
+  <div id="corp"><div class="sch sch--r"></div><div class="sch sch--r"></div></div>
 
   <h2 class="pd__t" style="font-size:19px;margin:34px 0 4px">Ultimele ședințe</h2>
   <p class="pd__d" style="margin:0 0 14px">Istoricul cursului. De aici se deschide
   raportul fiecărei ore.</p>
-  <div id="istoric"><div class="sch sch--r"></div><div class="sch sch--r"></div></div>
+  <div id="istoric"><div class="sch sch--r"></div></div>
 </main>
 
-<script type="module" src="../js/antet.js?v=31"></script>
+<script type="module" src="../js/antet.js?v=34"></script>
 <script type="module">
-import { RADACINA, LECTII } from "../js/curs.js?v=31";
-import * as O from "../js/ora.js?v=31";
+/* ===========================================================================
+   PAGINA ASTA NU PORNEȘTE ORA.
+
+   Până acum o porneai din două locuri: de aici, cu o propoziție în care alegeai
+   lecția, grupa și modul, și din bara de jos a lecției, cu un buton. Două
+   porniri, două coduri, și un profesor care nu știa pe care să se uite. Acum
+   ora pornește într-un singur loc: în lecție, de la butonul din bandă — adică
+   exact acolo unde stai când intri la clasă.
+
+   Aici e doar lista: ce am predat, ce urmează, și intrarea în fiecare lecție.
+   =========================================================================== */
+
+import { RADACINA, LECTII } from "../js/curs.js?v=34";
+import * as O from "../js/ora.js?v=34";
 
 const el = id => document.getElementById(id);
 const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
 const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
               "august","septembrie","octombrie","noiembrie","decembrie"];
 
-function azi(){
-  const d = new Date();
-  return `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`;
-}
-
-/* --- cine ești ---------------------------------------------------------- */
-
 let A;
-try { A = await import("../js/auth.js?v=31"); }
+try { A = await import("../js/auth.js?v=34"); }
 catch { el("sub").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();
 if (!p.autentificat){ location.replace(`${RADACINA}/intra/?spre=${encodeURIComponent(location.pathname)}`); throw 0; }
 if (!p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
 
-el("ziua").textContent = `Predau · ${azi()}`;
+const d = new Date();
+el("ziua").textContent = `Predau · ${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`;
 
-/* --- ce e deschis acum --------------------------------------------------- */
-
-const [viu, grupe, sedinte] = await Promise.all([
-  O.deschisa(), O.grupe(), O.lista(false)
-]);
+const [viu, raw] = await Promise.all([O.deschisa(), O.lista(false)]);
+/* Dacă baza n-are încă funcția, O.lista() întoarce null. Listă goală, nu
+   pagină ruptă: pagina spune „încă nicio ședință", care e adevărul. */
+const sedinte = Array.isArray(raw) ? raw : [];
 
 banda(viu);
-corp(viu, grupe);
+lista(viu, sedinte);
 istoric(sedinte);
 
 /* --- banda de stare ------------------------------------------------------ */
@@ -84,186 +84,59 @@ function banda(s){
     ? `<div class="st st--viu">
          <span class="st__pct"></span>
          <span class="st__t">Ora e deschisă</span>
-         <span class="st__d">${s.titlu} · ${s.mod === "live" ? "live" : "ritm propriu"}
+         <span class="st__d">${s.titlu} · codul <strong>${s.cod || "—"}</strong>
            · de ${s.minute} min · ${s.in_clasa} au lucrat</span>
          <span class="st__sp"></span>
-         <a class="btn btn--tare" href="ora/">Mergi la oră</a>
+         <a class="btn btn--tare" href="ora/">Panoul live</a>
        </div>`
     : `<div class="st">
          <span class="st__pct"></span>
          <span class="st__t">Nicio oră deschisă</span>
-         <span class="st__d">nimic nu se înregistrează ca fiind la clasă</span>
+         <span class="st__d">deschide lecția și pornești ora din bara de jos</span>
        </div>`;
 }
 
-/* --- cardul principal ----------------------------------------------------
-   O singură întrebare pe pagina asta: ce predau acum, și pornesc? O acțiune
-   principală, restul secundare și arătând secundar. */
+/* --- lista lecțiilor ------------------------------------------------------
+   Un rând per lecție, în ordine. Rândul spune ce s-a ținut și când, și are un
+   singur buton: intri în lecție. Lecția care urmează e scoasă în față. */
 
-function corp(s, gr){
-  if (s){
-    el("titlu").textContent = s.titlu;
-    el("sub").textContent = "Ora e în desfășurare. Panoul live îți arată, pe slide-ul de pe ecran, cât din sală a răspuns și cine anume.";
-    el("corp").innerHTML = `
-      <div class="pd__grid">
-        <div class="card">
-          <p class="card__et">în desfășurare</p>
-          <p class="card__t">${s.titlu}</p>
-          <p class="card__d">De ${s.minute} de minute, în ${s.mod === "live" ? "mod live" : "ritm propriu"}.
-            Codul de intrare e <strong>${s.cod || "—"}</strong>.</p>
-          <div class="randb">
-            <a class="btn btn--tare" href="ora/">Panoul live</a>
-            <a class="btn" href="${RADACINA}/${lectieDe(s.capitol)}/lectie/">Deschide lecția</a>
-            <button class="btn" id="bt-inchide" type="button">Închide ora</button>
-          </div>
-        </div>
-      </div>`;
-    el("bt-inchide").onclick = async () => {
-      const r = await O.inchide(s.id);
-      if (r?.ok) location.href = `sedinte/?id=${s.id}`;
-    };
-    return;
-  }
-
-  /* Decizia e aproape întotdeauna aceeași: lecția următoare, grupa ta, live.
-     Deci nu un formular cu trei meniuri, ci o propoziție cu trei cuvinte pe
-     care le poți schimba dacă azi e altfel. Cuvântul se subliniază punctat,
-     ca să se vadă că e de apăsat, dar rămâne parte din frază. */
-
+function lista(viu, sedinte){
   const gata = LECTII.filter(l => l.sarcini);
-  const tinute = new Set((sedinte || []).map(x => x.capitol));
-  const urmatoarea = gata.find(l => !tinute.has("c" + l.nr)) || gata[gata.length - 1];
+  const cand = new Map();
+  for (const s of sedinte) if (!cand.has(s.capitol)) cand.set(s.capitol, s);
 
-  el("titlu").textContent = "Nu predai acum";
-  el("sub").textContent = "Când pornești ora, tot ce fac studenții se leagă de ședința asta: prezența, răspunsurile, punctele.";
+  const urmatoarea = viu
+    ? gata.find(l => "c" + l.nr === viu.capitol)
+    : gata.find(l => !cand.has("c" + l.nr)) || gata[gata.length - 1];
 
-  if (!gr.length){ faraGrupa(); return; }
+  el("titlu").textContent = viu ? viu.titlu : "Lecțiile";
+  el("sub").textContent = viu
+    ? "Ești în oră. Panoul live îți arată, pe slide-ul de pe ecran, cât din sală a răspuns și cine anume."
+    : "Deschide lecția și pornești ora dintr-un buton, din bara de jos. Codul apare mare, de proiectat.";
 
-  let ales = { lectie: urmatoarea, grupa: gr[0], mod: "live" };
-
-  deseneazaPornirea();
-
-  function deseneazaPornirea(){
-    el("corp").innerHTML = `
-      <div class="card" style="max-width:660px">
-        <p class="card__et">pornește ora</p>
-        <p class="fraza">
-          Predau <button class="ales" id="a-lectie" type="button"
-            >Cursul ${ales.lectie.nr}, ${ales.lectie.scurt.toLowerCase()}</button>
-          ${gr.length > 1
-            ? `cu <button class="ales" id="a-grupa" type="button">${ales.grupa.nume}</button>`
-            : `cu <span class="fix">${ales.grupa.nume}</span>`},
-          <button class="ales" id="a-mod" type="button"
-            >${ales.mod === "live" ? "ținându-i cu mine" : "în ritmul lor"}</button>.
-        </p>
-        <p class="card__d" id="explic">${ales.mod === "live"
-          ? "Slide-ul meu e slide-ul lor: nu pot merge înainte singuri."
-          : "Fiecare merge în ritmul lui; eu văd unde a ajuns fiecare."}</p>
-        <div class="randb">
-          <button class="btn btn--tare" id="bt-start" type="button">Pornește ora</button>
-          <a class="btn" href="sedinte/">Ședințele de până acum</a>
-        </div>
-      </div>`;
-
-    /* lecția: o listă mică, deschisă sub cuvânt, nu un <select> de sistem */
-    el("a-lectie").onclick = e => alege(e.currentTarget,
-      gata.map(l => ({ et:`Cursul ${l.nr} · ${l.titlu}`, v:l })),
-      v => { ales.lectie = v; deseneazaPornirea(); });
-
-    el("a-grupa") && (el("a-grupa").onclick = e => alege(e.currentTarget,
-      gr.map(g => ({ et:g.nume + (g.zi ? ` · ${g.zi} ${g.ora || ""}` : ""), v:g })),
-      v => { ales.grupa = v; deseneazaPornirea(); }));
-
-    el("a-mod").onclick = () => {
-      ales.mod = ales.mod === "live" ? "propriu" : "live";
-      deseneazaPornirea();
-    };
-
-    el("bt-start").onclick = async () => {
-      const b = el("bt-start"); b.disabled = true; b.textContent = "Se pornește…";
-      const r = await O.deschide("c" + ales.lectie.nr, ales.grupa.id, ales.mod);
-      if (r?.ok) location.href = "ora/";
-      else { b.disabled = false; b.textContent = "Pornește ora";
-             spune(r?.mesaj || "N-am putut deschide ședința. E rulat db/14 și db/15?"); }
-    };
-  }
-
-  /* --- prima dată: grupa se face aici, nu în Supabase ---------------------
-     Un profesor n-are de ce să deschidă consola bazei de date ca să-și spună
-     numele grupei. Dacă funcția există, formularul ăsta o cheamă. */
-
-  function faraGrupa(){
-    el("titlu").textContent = "Întâi, grupa";
-    el("sub").textContent = "O singură dată. După asta, pornirea orei e un buton.";
-    el("corp").innerHTML = `
-      <div class="card" style="max-width:560px">
-        <p class="card__et">prima dată</p>
-        <p class="card__t">Cum se cheamă grupa ta?</p>
-        <p class="card__d">Ziua și ora sunt doar ca să apară pe buton, ca să nu
-          le scrii de fiecare dată. Se pot schimba oricând.</p>
-        <div class="camp3">
-          <label>Numele<input id="g-nume" value="Grupa 1" maxlength="40"></label>
-          <label>Ziua<input id="g-zi" value="marți" maxlength="12"></label>
-          <label>Ora<input id="g-ora" value="10:00" maxlength="8"></label>
-        </div>
-        <div class="randb" style="margin-top:14px">
-          <button class="btn btn--tare" id="bt-grupa" type="button">Fă grupa</button>
-        </div>
-      </div>`;
-    el("g-nume").focus();
-    el("bt-grupa").onclick = async () => {
-      const b = el("bt-grupa"), nume = el("g-nume").value.trim();
-      if (nume.length < 2){ spune("Scrie un nume pentru grupă."); return; }
-      b.disabled = true; b.textContent = "Se face…";
-      const r = await O.puneGrupa("g" + (gr.length + 1), nume, String(new Date().getFullYear()),
-                                  el("g-zi").value.trim() || null,
-                                  el("g-ora").value.trim() || null);
-      if (r?.ok) location.reload();
-      else { b.disabled = false; b.textContent = "Fă grupa";
-             spune(r?.mesaj || "N-am putut face grupa. E rulat db/14 în Supabase?"); }
-    };
-  }
-}
-
-/* --- alegerea dintr-o listă mică, lipită de cuvântul apăsat --------------- */
-
-function alege(langa, optiuni, gata){
-  document.querySelector(".pica")?.remove();
-  const d = document.createElement("div");
-  d.className = "pica";
-  d.innerHTML = optiuni.map((o, i) =>
-    `<button type="button" data-i="${i}">${o.et}</button>`).join("");
-  document.body.appendChild(d);
-  const r = langa.getBoundingClientRect();
-  d.style.left = `${Math.min(r.left, innerWidth - d.offsetWidth - 16)}px`;
-  d.style.top  = `${r.bottom + scrollY + 6}px`;
-  d.addEventListener("click", e => {
-    const b = e.target.closest("button"); if (!b) return;
-    d.remove(); gata(optiuni[+b.dataset.i].v);
-  });
-  setTimeout(() => document.addEventListener("click", function afara(e){
-    if (!d.contains(e.target)){ d.remove(); document.removeEventListener("click", afara); }
-  }), 0);
-}
-
-let ceasT = null;
-function spune(text, ms = 3200){
-  let t = document.querySelector(".toast");
-  if (!t){ t = document.createElement("div"); t.className = "toast"; document.body.appendChild(t); }
-  t.textContent = text; t.classList.add("vazut");
-  clearTimeout(ceasT);
-  ceasT = setTimeout(() => t.classList.remove("vazut"), ms);
-}
-
-function lectieDe(capitol){
-  const nr = parseInt(String(capitol).replace("c",""), 10);
-  return (LECTII.find(l => l.nr === nr) || LECTII[0]).cheie;
+  el("corp").innerHTML = `<ul class="lec">${gata.map(l => {
+    const s = cand.get("c" + l.nr);
+    const acum = urmatoarea && l.nr === urmatoarea.nr;
+    return `<li class="${acum ? "lec--acum" : ""}">
+      <span class="lec__nr">${l.nr}</span>
+      <div class="lec__c">
+        <p class="lec__t">${l.titlu}</p>
+        <p class="lec__d">${l.sarcini} sarcini · ${
+          viu && "c" + l.nr === viu.capitol
+            ? `<strong>se predă acum</strong>, codul ${viu.cod || "—"}`
+            : s ? `ținută ${data(s.deschisa_la)}, ${s.prezenti} prezenți`
+                : acum ? "urmează" : "neținută"}</p>
+      </div>
+      <a class="btn ${acum ? "btn--tare" : "btn--mic"}"
+         href="${RADACINA}/${l.cheie}/lectie/">${acum && !viu ? "Predă" : "Deschide"}</a>
+    </li>`;
+  }).join("")}</ul>`;
 }
 
 /* --- istoricul ----------------------------------------------------------- */
 
 function istoric(list){
-  if (!list || !list.length){
+  if (!list.length){
     el("istoric").innerHTML = `
       <div class="gol">
         <p class="gol__t">Încă nicio ședință</p>
@@ -276,7 +149,7 @@ function istoric(list){
       <div>
         <p class="sed__t">${s.titlu}</p>
         <p class="sed__d">${data(s.deschisa_la)} · ${s.minute} min ·
-          ${s.prezenti} prezenți · ${s.mod === "live" ? "live" : "ritm propriu"}</p>
+          ${s.prezenti} prezenți${s.inchisa_la ? "" : " · <strong>deschisă</strong>"}</p>
       </div>
       <div class="sed__a">
         <a class="btn btn--mic" href="sedinte/?id=${s.id}">Raportul</a>
@@ -286,42 +159,33 @@ function istoric(list){
 }
 
 function data(t){
-  const d = new Date(t);
-  return `${d.getDate()} ${LUNI[d.getMonth()].slice(0,3)}, ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+  const x = new Date(t);
+  return `${x.getDate()} ${LUNI[x.getMonth()].slice(0,3)}, ${String(x.getHours()).padStart(2,"0")}:${String(x.getMinutes()).padStart(2,"0")}`;
 }
 </script>
 
 <style>
-/* Propoziția de pornire. Cuvintele care se pot schimba arată ca text, nu ca
-   formular: subliniate punctat, în culoarea textului. Un formular cu trei
-   meniuri te pune să citești trei etichete ca să afli ce faci; propoziția se
-   citește o dată și e gata. */
-.fraza{font-family:var(--sans);font-size:21px;line-height:1.5;margin:0 0 8px;
-  letter-spacing:-.012em;max-width:none}
-.ales{font:inherit;color:var(--text);font-weight:600;cursor:pointer;
-  border:0;background:none;padding:0 1px;
-  border-bottom:2px dotted var(--linie-2);transition:.12s}
-.ales:hover{border-bottom-color:var(--accent);color:var(--accent-text)}
-.ales:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
-.fix{font-weight:600}
-
-/* lista mică, lipită de cuvânt */
-.pica{position:absolute;z-index:200;background:var(--panza);
-  border:1px solid var(--linie-2);border-radius:10px;box-shadow:var(--umbra-2);
-  padding:5px;min-width:230px;display:flex;flex-direction:column;gap:1px}
-.pica button{font-family:var(--sans);font-size:13.5px;text-align:left;
-  padding:8px 11px;border-radius:7px;color:var(--text);background:none;border:0;
-  cursor:pointer;white-space:nowrap}
-.pica button:hover{background:var(--panza-2)}
-
-.camp3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
-.camp3 label{display:flex;flex-direction:column;gap:5px;font-family:var(--mono);
-  font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3)}
-.camp3 input{font-family:var(--sans);font-size:15px;text-transform:none;
-  letter-spacing:0;color:var(--text);padding:9px 11px;border-radius:8px;
-  border:1px solid var(--linie-2);background:var(--panza);outline:none}
-.camp3 input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-slab)}
-@media (max-width:560px){ .camp3{grid-template-columns:1fr} }
+/* Lista lecțiilor. Un rând e un rând: număr, titlu, o linie de stare, un
+   buton. Lecția care urmează are fundalul puțin mai cald și butonul plin —
+   nu altă formă, nu alt chenar, doar mai multă greutate. */
+.lec{list-style:none;margin:0;padding:0;max-width:none;
+  display:flex;flex-direction:column;gap:7px}
+.lec li{display:flex;align-items:center;gap:15px;margin:0;padding:13px 16px;
+  background:var(--panza);border:1px solid var(--linie);border-radius:11px}
+.lec li::before{content:none}
+.lec--acum{background:var(--panza-2);border-color:var(--linie-2)}
+.lec__nr{font-family:var(--mono);font-size:13px;color:var(--text-3);
+  width:22px;flex:none;text-align:center}
+.lec--acum .lec__nr{color:var(--accent-text);font-weight:500}
+.lec__c{flex:1;min-width:0}
+.lec__t{font-family:var(--sans);font-size:15.5px;font-weight:500;
+  color:var(--text);margin:0 0 2px;letter-spacing:-.008em}
+.lec__d{font-family:var(--sans);font-size:12.5px;color:var(--text-2);margin:0}
+@media (max-width:560px){
+  .lec li{flex-wrap:wrap}
+  .lec__c{flex-basis:calc(100% - 37px)}
+  .lec li .btn{margin-left:37px}
+}
 </style>
 </body>
 </html>

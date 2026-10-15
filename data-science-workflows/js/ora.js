@@ -13,16 +13,34 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=31";
-import { RADACINA } from "./curs.js?v=31";
+import { sb } from "./auth.js?v=34";
+import { RADACINA } from "./curs.js?v=34";
+
+/* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
+
+   Fără ea, o funcție care lipsește din bază arăta pe ecran ca „codul nu e
+   bun". Omul schimbă codul de trei ori, se enervează, și de fapt problema era
+   că n-a rulat un fișier SQL. Un mesaj greșit costă mai mult decât niciunul. */
+let eroare = null;
+export function ultimaEroare(){ return eroare; }
+
+/** Adevărat dacă baza nu are încă funcțiile din db/14 și db/15. */
+export function lipsesteBaza(){
+  const m = (eroare || "").toLowerCase();
+  return m.includes("could not find the function")
+      || m.includes("schema cache")
+      || m.includes("does not exist")
+      || m.includes("pgrst202");
+}
 
 /** Cheamă o funcție din bază și întoarce null în loc să arunce. */
 async function cheama(nume, argumente = {}) {
   try {
     const { data, error } = await sb.rpc(nume, argumente);
-    if (error) { console.warn(`[ora] ${nume}:`, error.message); return null; }
+    if (error) { eroare = error.message; console.warn(`[ora] ${nume}:`, error.message); return null; }
+    eroare = null;
     return data;
-  } catch (e) { console.warn(`[ora] ${nume}:`, e.message); return null; }
+  } catch (e) { eroare = e.message; console.warn(`[ora] ${nume}:`, e.message); return null; }
 }
 
 /* --- grupe ---------------------------------------------------------------- */
@@ -45,9 +63,25 @@ export async function deschisa(capitol = null) {
   return (r && r[0]) || null;
 }
 
-export const deschide = (capitol, grupaId, mod = "live", total = null) =>
-  cheama("deschide_sedinta", { p_capitol:capitol, p_grupa_id:grupaId,
-                               p_mod:mod, p_total_nr:total });
+/** Deschide ora. Grupa se alege singură: dacă ai una, e aia; dacă n-ai
+    niciuna, se face „Grupa 1" pe loc.
+
+    Înainte, lipsa grupei oprea pornirea orei și te trimitea la un formular cu
+    trei câmpuri — adică stăteai în fața clasei și completai un formular. Grupa
+    e o etichetă pentru statistici; se poate redenumi oricând, pe urmă. */
+export async function deschide(capitol, grupaId = null, mod = "live", total = null) {
+  if (!grupaId) {
+    const gr = await grupe();
+    if (gr.length === 1) grupaId = gr[0].id;
+    else if (!gr.length) {
+      const f = await cheama("pune_grupa", { p_id:"g1", p_nume:"Grupa 1",
+        p_an:String(new Date().getFullYear()), p_zi:null, p_ora:null });
+      if (f?.ok) grupaId = "g1";
+    }
+  }
+  return cheama("deschide_sedinta", { p_capitol:capitol, p_grupa_id:grupaId,
+                                      p_mod:mod, p_total_nr:total });
+}
 
 export const pune = (id, { slide = null, mod = null, note = null } = {}) =>
   cheama("pune_sedinta", { p_id:id, p_slide_nr:slide, p_mod:mod, p_note:note });
@@ -84,7 +118,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=31`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=34`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

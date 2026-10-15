@@ -111,7 +111,8 @@
 .sub{font-family:var(--sans);font-size:10.5px;fill:var(--text-3)}
 
 /* legenda cu numărătoarea, sub inel */
-.nr{list-style:none;padding:0;margin:0}
+.nr{list-style:none;padding:0;margin:0;max-width:none}
+.nr li::before{content:none}
 .nr li{display:flex;align-items:center;gap:9px;padding:6px 2px;
   border-bottom:1px solid var(--linie);font-family:var(--sans);font-size:13px}
 .nr li:last-child{border-bottom:0}
@@ -160,7 +161,10 @@
 
 /* --- liste de ședințe ---------------------------------------------------- */
 
-.sed{list-style:none;padding:0;margin:0}
+/* ul din sistem.css e un ul de citit: îngust (--citit) și cu bulină. Listele
+   astea sunt rânduri de interfață, nu text: toată lățimea, fără bulină. */
+.sed{list-style:none;padding:0;margin:0;max-width:none}
+.sed li::before{content:none}
 .sed li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;
   align-items:center;padding:13px 0;border-bottom:1px solid var(--linie)}
 .sed li:last-child{border-bottom:0}
