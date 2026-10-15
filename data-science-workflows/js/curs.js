@@ -17,41 +17,46 @@ export const CURS = {
    `notebook` e legatura catre caietul de lucru, pe GitHub.
    `sarcini` e cate porti are lectia: verificarile cu variante plus exercitiile
    cu cod. Din numarul asta ies punctele de la teme, si pentru student si in
-   tabelul meu, deci se tine la zi cand se schimba continutul lectiei. */
+   tabelul meu.
+
+   Numarul NU se scrie din cap: e cel din date/harta-cN.json, pe care il
+   tipareste generatorul la fiecare rulare ("lectia N trebuie sa aiba
+   sarcini:X"). Daca cele doua nu se potrivesc, studentul vede "18 din 17
+   sarcini" si ia punctajul maxim pe o lectie nefacuta. */
 export const LECTII = [
   { nr:1, cheie:"c1-introducere-si-mediu",
     titlu:"Introducere și configurare",
     scurt:"Introducere",
     rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
-    stare:"gata", sarcini:17,
+    stare:"gata", sarcini:18,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" },
 
   { nr:2, cheie:"c2-colectarea-prin-api",
     titlu:"Colectarea datelor prin API",
     scurt:"API",
     rezumat:"Ce este un API, cum se citește o documentație, și cum aduci primele date reale în proiect.",
-    stare:"schita", sarcini:null,
+    stare:"gata", sarcini:18,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c2_api.ipynb" },
 
   { nr:3, cheie:"c3-versionare-git",
     titlu:"Versionare cu Git",
     scurt:"Git",
     rezumat:"De ce versionăm, cum lucrează o echipă pe același proiect, și ce nu se urcă niciodată.",
-    stare:"schita", sarcini:null,
+    stare:"gata", sarcini:23,
     notebook:null },
 
   { nr:4, cheie:"c4-curatarea-datelor",
     titlu:"Curățarea datelor",
     scurt:"Curățare",
     rezumat:"Lipsuri, duplicate, unități care nu se potrivesc. Etapa cea mai lungă și cea care decide tot.",
-    stare:"schita", sarcini:null,
+    stare:"gata", sarcini:22,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c4_curatare.ipynb" },
 
   { nr:5, cheie:"c5-agregare-si-baze-de-date",
     titlu:"Agregare și baze de date",
     scurt:"Agregare",
     rezumat:"Îmbinarea surselor, unitatea de analiză, și de ce un tabel mare are nevoie de o bază de date.",
-    stare:"schita", sarcini:null,
+    stare:"gata", sarcini:24,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c5_agregare.ipynb" },
 
   { nr:6, cheie:"c6-analiza-exploratorie",

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=29">
-<link rel="stylesheet" href="../css/predau.css?v=29">
-<script src="../js/tema.js?v=29"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=30">
+<link rel="stylesheet" href="../css/predau.css?v=30">
+<script src="../js/tema.js?v=30"></script>
 </head>
 <body>
 
@@ -40,10 +40,10 @@
   <div id="istoric"><div class="sch sch--r"></div><div class="sch sch--r"></div></div>
 </main>
 
-<script type="module" src="../js/antet.js?v=29"></script>
+<script type="module" src="../js/antet.js?v=30"></script>
 <script type="module">
-import { RADACINA, LECTII } from "../js/curs.js?v=29";
-import * as O from "../js/ora.js?v=29";
+import { RADACINA, LECTII } from "../js/curs.js?v=30";
+import * as O from "../js/ora.js?v=30";
 
 const el = id => document.getElementById(id);
 const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
@@ -58,7 +58,7 @@ function azi(){
 /* --- cine ești ---------------------------------------------------------- */
 
 let A;
-try { A = await import("../js/auth.js?v=29"); }
+try { A = await import("../js/auth.js?v=30"); }
 catch { el("sub").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();

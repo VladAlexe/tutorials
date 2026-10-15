@@ -6,9 +6,9 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=29";
-import EXERCITII from "./exercitii.js?v=29";
-import VIZUAL from "./vizual.js?v=29";
+import GRAFICE from "./grafice.js?v=30";
+import EXERCITII from "./exercitii.js?v=30";
+import VIZUAL from "./vizual.js?v=30";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL };
 
@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=29");
+    const m = await import("/data-science-workflows/js/colectare.js?v=30");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 400), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -140,7 +140,7 @@ C.url = (gazda, date) => {
     gazda.closest(".ix")?.classList.add("gata");
     document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
     try {
-      const m = await import("/data-science-workflows/js/colectare.js?v=29");
+      const m = await import("/data-science-workflows/js/colectare.js?v=30");
       const salvat = await m.salveazaCod({
         exercitiuId: date.id, cod: ales.join(" | "), trecut: true });
       st.textContent = salvat ? "Rezolvare înregistrată."
@@ -396,7 +396,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=29");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=30");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -570,7 +570,7 @@ C.asteptari = (gazda, date) => {
       || "Le citesc pe toate înainte de cursul următor."}`;
     poarta(gazda, date.id, "scris");
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=29");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=30");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

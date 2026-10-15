@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=29">
-<link rel="stylesheet" href="../css/cont.css?v=29">
-<script src="../js/tema.js?v=29"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=30">
+<link rel="stylesheet" href="../css/cont.css?v=30">
+<script src="../js/tema.js?v=30"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=29";
+import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=30";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -35,8 +35,8 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=29");
-  CFG = await import("../js/supabase-config.js?v=29");
+  A = await import("../js/auth.js?v=30");
+  CFG = await import("../js/supabase-config.js?v=30");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
     <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
@@ -65,7 +65,14 @@ async function unde(){
   }
 
   if (!p.autentificat) return intrare();
-  if (p.profesorReal && A.modVizualizare() !== "student"){
+  /* Un cont de profesor nu intră în contul de student, punct. Nici dacă are
+     pornit modul „vezi ca student": ăla e pentru paginile de lecție, ca să
+     poți verifica ce văd ei, nu ca să ai două conturi deodată.
+
+     Dacă chiar vrei să vezi pagina asta așa cum o vede un student, o deschizi
+     cu ?ca=student. E o ușă de probă, nu o stare în care rămâi. */
+  const proba = new URLSearchParams(location.search).get("ca") === "student";
+  if (p.profesorReal && !proba){
     location.replace(RADACINA + "/predau/"); return;
   }
   if (!p.matricol) return matricol();
@@ -218,10 +225,16 @@ async function deseneaza(){
                  + new Set(cod.map(x => x.exercitiu_id)).size;
     const qTotal = l.sarcini
       || (h ? h.verif.reduce((a, x) => a + (Array.isArray(x) ? x.length : x), 0) : null);
+    /* Nicio cifră nu trece de numitorul ei. Progresul vechi poate ști de un
+       slide 21 dintr-o versiune a lecției care avea 21; lecția are acum 19, și
+       „slide 21 din 19" face situl să pară stricat. La fel, o sarcină scoasă
+       din lecție rămâne în răspunsurile vechi: fără plafon iese „18 din 17". */
+    const ultimBrut = viz.size ? Math.max(...viz) + 1 : 0;
     return { l, cheie, total, viz,
              vazute: Math.min(viz.size, total || viz.size),
-             ultim: viz.size ? Math.max(...viz) + 1 : 0,
-             qDate: facute, qCorecte: q.filter(x => x.corect).length, qTotal };
+             ultim: total ? Math.min(ultimBrut, total) : ultimBrut,
+             qDate: qTotal ? Math.min(facute, qTotal) : facute,
+             qCorecte: q.filter(x => x.corect).length, qTotal };
   });
 
   /* --- notarea, din NOTARE, nu din cifre scrise de mână -----------------
@@ -231,6 +244,8 @@ async function deseneaza(){
       new Set(rasp.map(x => x.intrebare_id)).size +
       new Set(codul.filter(x => x.trecut).map(x => x.exercitiu_id)).size;
   const sarciniTotal = LECTII.reduce((a, l) => a + (l.sarcini || 0), 0) || null;
+  const sarciniAfis  = sarciniTotal ? Math.min(sarciniFacute, sarciniTotal) : sarciniFacute;
+  const prezAfis     = Math.min(prez.length, LECTII.length);
   const pTeme    = NOTARE.componente.find(x => x.cheie === "teme").puncte;
   const pProiect = NOTARE.componente.find(x => x.cheie === "proiect").puncte;
   const pSem     = NOTARE.componente.find(x => x.cheie === "seminar").puncte;
@@ -289,11 +304,11 @@ async function deseneaza(){
 
     <div class="nta">
       ${nota("teme", temeAcum, pTeme,
-             sarciniTotal ? `${sarciniFacute} din ${sarciniTotal} sarcini` : "încă nimic",
+             sarciniTotal ? `${sarciniAfis} din ${sarciniTotal} sarcini` : "încă nimic",
              sarciniTotal ? sarciniFacute / sarciniTotal : 0)}
       ${nota("proiect", null, pProiect, "se notează la final", 0)}
       ${nota("seminar", semAcum, pSem,
-             `${prez.length} din ${LECTII.length} prezențe`, prez.length / LECTII.length)}
+             `${prezAfis} din ${LECTII.length} prezențe`, prezAfis / LECTII.length)}
     </div>
 
     <div class="nta__tot">
@@ -441,8 +456,8 @@ function legaReset(){
 await unde();
 A.laSchimbare(() => unde());
 </script>
-<script type="module" src="../js/antet.js?v=29"></script>
-<script type="module" src="../js/subsol.js?v=29"></script>
-<script type="module" src="../js/bara-mod.js?v=29"></script>
+<script type="module" src="../js/antet.js?v=30"></script>
+<script type="module" src="../js/subsol.js?v=30"></script>
+<script type="module" src="../js/bara-mod.js?v=30"></script>
 </body>
 </html>
