@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=26";
-import { RADACINA } from "./curs.js?v=26";
+import { sb } from "./auth.js?v=29";
+import { RADACINA } from "./curs.js?v=29";
 
 /** Cheamă o funcție din bază și întoarce null în loc să arunce. */
 async function cheama(nume, argumente = {}) {
@@ -84,7 +84,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=26`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=29`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

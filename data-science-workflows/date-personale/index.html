@@ -3,38 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ce date se colectează — Fluxuri de lucru pentru știința datelor</title>
+<title>Ce date se colectează · Fluxuri de lucru</title>
+<meta name="description" content="Ce date se păstrează despre studenți, de ce, cât timp, și cine le vede.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/cont.css?v=19">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/sistem.css?v=29">
+<script src="../js/tema.js?v=29"></script>
 <style>
-  .shell{max-width:660px}
-  h2{font-family:var(--sans);font-weight:700;font-size:19px;margin:34px 0 10px}
-  .tbl{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:15.5px}
-  .tbl th{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.12em;
-    text-align:left;padding:8px 12px 8px 0;border-bottom:2px solid var(--rule-strong);color:var(--muted)}
-  .tbl td{padding:10px 12px 10px 0;border-bottom:1px solid var(--rule);vertical-align:top}
-  ul{padding-left:0;list-style:none;margin:0 0 18px}
-  li{position:relative;padding-left:21px;margin-bottom:8px}
-  li::before{content:'';position:absolute;left:3px;top:.67em;width:6px;height:6px;
-    background:var(--olive);border-radius:1px}
+  /* Pagina asta rămăsese pe tipografia și pe jetoanele unei generații
+     anterioare a sitului: fonturi Archivo și Literata, variabile --rule și
+     --olive care nu mai există nicăieri. De aceea arăta nestilizată. Acum
+     folosește sistemul, ca tot restul. */
+  .pdp{max-width:70ch;margin:0 auto;padding:44px 28px 80px}
+  .pdp h2{font-size:19px;margin:36px 0 10px}
+  .tbl{width:100%;border-collapse:collapse;margin:0 0 22px;font-size:15px;
+    font-family:var(--sans)}
+  .tbl th{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;text-align:left;padding:0 14px 9px 0;
+    border-bottom:1px solid var(--linie-2);color:var(--text-3)}
+  .tbl td{padding:11px 14px 11px 0;border-bottom:1px solid var(--linie);
+    vertical-align:top;line-height:1.5}
+  .pdp ul{padding-left:0;list-style:none;margin:0 0 20px}
+  .pdp li{position:relative;padding-left:21px;margin-bottom:9px;max-width:var(--citit)}
+  .pdp li::before{content:"";position:absolute;left:3px;top:.68em;width:6px;height:6px;
+    background:var(--accent);border-radius:1px}
 </style>
 </head>
 <body>
 
-<div class="top">
-  <div class="top__in">
-    <a href="../../index.html">Tutorials</a>
-    <span class="top__sep">/</span>
-    <a href="../index.html">Fluxuri de lucru</a>
-    <span class="top__sep">/</span>
-    <span class="top__here">Date personale</span>
-  </div>
-</div>
+<div id="antet" data-aici="Date personale"></div>
 
-<div class="shell">
-  <p class="eyebrow">NOTĂ PENTRU STUDENȚI</p>
+<main>
+<div class="pdp">
+  <p class="supratitlu">Notă pentru studenți</p>
   <h1>Ce date se colectează și de ce</h1>
   <p class="deck">Scrisă pe scurt și fără formule juridice. Predăm un curs despre
   date, deci felul în care tratăm datele voastre face parte din curs.</p>
@@ -101,12 +103,17 @@
   Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal
   primește plângeri.</p>
 
-  <p class="notita" style="margin-top:34px"><b>DE CE EXISTĂ PAGINA ASTA</b>
+  <div class="nota" style="margin-top:34px"><div class="nota__et">De ce există pagina asta</div><p>
   Pentru că e obligatorie, dar și pentru că e primul exemplu din curs. Orice proiect
   de date pe care îl veți face mai târziu, în orice organizație, are nevoie de o
-  pagină ca asta. Dacă nu o are, proiectul nu e gata.</p>
+  pagină ca asta. Dacă nu o are, proiectul nu e gata.</p></div>
 
   <p style="margin-top:26px"><a class="leg" href="../cont/">Înapoi la cont</a></p>
 </div>
+</main>
+
+<div id="subsol"></div>
+<script type="module" src="../js/antet.js?v=29"></script>
+<script type="module" src="../js/subsol.js?v=29"></script>
 </body>
 </html>

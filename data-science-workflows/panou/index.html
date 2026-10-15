@@ -2,135 +2,21 @@
 <html lang="ro">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lecțiile mele — Fluxuri de lucru</title>
+<title>Predau</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=26">
-<link rel="stylesheet" href="../css/panou.css?v=26">
-<script src="../js/tema.js?v=26"></script>
-</head>
-<body>
-
-<div id="antet" data-aici="Lecțiile mele"></div>
-
-<main>
-<div class="pagina">
-  <div id="pagina"><p class="incarca">Se încarcă…</p></div>
-</div>
-</main>
-
-<div id="subsol"></div>
-
 <script type="module">
-import { LECTII, RADACINA } from "../js/curs.js?v=26";
-
-const el  = id => document.getElementById(id);
-const pag = el("pagina");
-const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
-
-let A, sb, eu;
+/* Pagina asta era casa profesorului. Acum casa e /predau/, iar studentul care
+   nimerește aici n-are ce căuta: îl trimit la contul lui. Un singur loc per
+   rol, altfel pare că ai două conturi deodată. */
+const RAD = "/data-science-workflows";
 try {
-  A = await import("../js/auth.js?v=26");
-  sb = A.sb;
-  eu = await A.profil();
-} catch (e) {
-  pag.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
-    <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
-  throw e;
-}
-
-if (!eu.autentificat){
-  pag.innerHTML = `<div class="gol-mare"><h1>Lecțiile mele</h1>
-    <p>Intră în cont ca să ajungi aici.</p>
-    <div class="gol-mare__bt"><a class="btn btn--tare" href="${RADACINA}/cont/">Intră în cont</a></div></div>`;
-} else if (!eu.profesorReal){
-  pag.innerHTML = `<div class="gol-mare"><h1>Pagina asta nu e pentru tine</h1>
-    <p>Lecțiile, progresul și nota ta sunt la contul tău.</p>
-    <div class="gol-mare__bt">
-      <a class="btn btn--tare" href="${RADACINA}/cont/">Contul meu</a>
-      <a class="btn" href="${RADACINA}/">Pagina cursului</a></div></div>`;
-} else {
-  await deseneaza();
-}
-
-/* ========================================================================= */
-
-async function deseneaza(){
-  /* dacă o oră e deja pornită, primul lucru de pe pagină e drumul înapoi în ea */
-  let live = null;
-  for (const l of LECTII.filter(x => x.stare === "gata")){
-    try {
-      const { data } = await sb.rpc("citeste_ritm", { p_capitol: "c" + l.nr });
-      if (data?.pornit){ live = { l, slide: data.slide_nr || 1 }; break; }
-    } catch { /* fără tabelul ritm, pagina rămâne o listă simplă */ }
-  }
-
-  pag.innerHTML = `
-    <header class="biblio__cap">
-      <div class="biblio__cine">
-        <span class="biblio__et">Profesor · ${esc(eu.nume) || "contul meu"}</span>
-        <h1>Lecțiile mele</h1>
-        <p class="biblio__d">Apeși <strong>Predă</strong> la lecția de azi. Se
-        deschide lecția, îți sare în față codul de intrare, și de atunci
-        slide-ul tău e slide-ul tuturor. Atât e de făcut.</p>
-      </div>
-      <div class="biblio__act">
-        <a class="btn btn--mic" href="${RADACINA}/panou/statistici/">Statistici</a>
-        <button class="btn btn--mic" id="bt-iesi" type="button">Ieși din cont</button>
-      </div>
-    </header>
-
-    ${live ? `<a class="live" href="${RADACINA}/${live.l.cheie}/lectie/">
-      <span class="live__pct"></span>
-      <span class="live__m">
-        <b>Predai acum la cursul ${live.l.nr}</b>
-        <span>ești la slide-ul ${live.slide}. Intră la loc în lecție.</span>
-      </span>
-      <span class="live__sg">→</span></a>` : ""}
-
-    <div class="lectii">${LECTII.map(card).join("")}</div>
-
-    <p class="biblio__n">Ca să vezi ce vede un student, deschide
-      <button class="leg-bt" id="bt-test" type="button">linkul de intrare</button>
-      în alt browser sau într-o fereastră privată, și intră acolo ca invitat,
-      cu un nume oarecare. Ăla e un om separat; contul tău rămâne de profesor.</p>
-    <p class="biblio__u" id="u-test" hidden></p>`;
-
-  el("bt-iesi").onclick = async () => { await A.iesi(); location.href = RADACINA + "/"; };
-  el("bt-test").onclick = () => {
-    const a = `${location.origin}${RADACINA}/intra/`;
-    const u = el("u-test");
-    u.hidden = false;
-    u.innerHTML = `<code>${esc(a)}</code>`;
-    navigator.clipboard?.writeText(a).then(
-      () => u.insertAdjacentHTML("beforeend", ' <span class="mic">copiat</span>'),
-      () => {});
-  };
-}
-
-function card(l){
-  const gata = l.stare === "gata";
-  return `<div class="lc ${gata ? "" : "lc--schita"}">
-    <span class="lc__nr">${String(l.nr).padStart(2, "0")}</span>
-    <div class="lc__m">
-      <h2 class="lc__t">${esc(l.titlu)}</h2>
-      <p class="lc__d">${esc(l.rezumat)}</p>
-      <p class="lc__meta">${gata
-        ? (l.sarcini ? l.sarcini + " sarcini" : "gata de predat")
-        : "încă în lucru"}</p>
-    </div>
-    <div class="lc__act">
-      ${gata ? `<a class="btn btn--tare" href="${RADACINA}/${l.cheie}/lectie/">Predă</a>` : ""}
-      <a class="btn btn--mic" href="${RADACINA}/${l.cheie}/tutorial/">Manualul</a>
-      <a class="btn btn--mic" href="${RADACINA}/panou/statistici/?l=${l.cheie}">Statistici</a>
-    </div>
-  </div>`;
-}
+  const { profil } = await import(RAD + "/js/auth.js?v=29");
+  const p = await profil();
+  location.replace(p.profesorReal ? RAD + "/predau/" : RAD + "/cont/");
+} catch { location.replace(RAD + "/cont/"); }
 </script>
-<script type="module" src="../js/antet.js?v=26"></script>
-<script type="module" src="../js/subsol.js?v=26"></script>
+</head>
+<body style="font-family:system-ui;padding:40px">
+<p>S-a mutat la <a href="/data-science-workflows/predau/">/predau/</a>.</p>
 </body>
 </html>

@@ -1,0 +1,32 @@
+# ===========================================================================
+# Ce ține browserul în memorie, și ce nu.
+#
+# Stilurile și modulele au `?v=N` în adresă, deci o versiune nouă are adresă
+# nouă: pot fi ținute oricât, nu se va cere niciodată una veche din greșeală.
+#
+# HTML-ul nu poate avea `?v=`, pentru că el e cel care conține adresele. Dacă
+# browserul îl ține, îți arată pagina veche, care linkează stilul vechi, iar
+# tu te uiți la ea și crezi că nu s-a schimbat nimic. De aceea HTML-ul se
+# reverifică la fiecare încărcare.
+#
+# Fișierul stă în rădăcina depozitului, lângă wrangler.jsonc, pentru că acolo
+# e `assets.directory` din configurare. Regulile sunt pe tot situl, nu doar
+# pe cursul ăsta.
+# ===========================================================================
+
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.json
+  Cache-Control: public, max-age=3600
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=26">
-<link rel="stylesheet" href="../../css/predau.css?v=26">
-<script src="../../js/tema.js?v=26"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=29">
+<link rel="stylesheet" href="../../css/predau.css?v=29">
+<script src="../../js/tema.js?v=29"></script>
 </head>
 <body>
 
@@ -28,7 +28,7 @@
   <div id="corp"><div class="sch sch--r"></div><div class="sch sch--r"></div></div>
 </main>
 
-<script type="module" src="../../js/antet.js?v=26"></script>
+<script type="module" src="../../js/antet.js?v=29"></script>
 <script type="module">
 /* ===========================================================================
    ȘEDINȚELE, ȘI RAPORTUL UNEIA
@@ -41,8 +41,8 @@
    stă în arhivă, cu o confirmare adevărată.
    =========================================================================== */
 
-import { RADACINA, LECTII } from "../../js/curs.js?v=26";
-import * as O from "../../js/ora.js?v=26";
+import { RADACINA, LECTII } from "../../js/curs.js?v=29";
+import * as O from "../../js/ora.js?v=29";
 
 const el = id => document.getElementById(id);
 const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
@@ -50,7 +50,7 @@ const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
 const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
 
 let A;
-try { A = await import("../../js/auth.js?v=26"); }
+try { A = await import("../../js/auth.js?v=29"); }
 catch { el("corp").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();
@@ -163,6 +163,7 @@ async function unaSingura(id){
     <div class="randb" style="margin-top:24px">
       <button class="btn btn--tare" id="bt-csv" type="button">Export CSV</button>
       <a class="btn" href="./">Toate ședințele</a>
+      <a class="btn" href="../../panou/statistici/?l=${li || ""}">Statistici pe semestru</a>
       <button class="btn" id="bt-arh" type="button"
         style="color:var(--nu);border-color:color-mix(in srgb,var(--nu) 32%,var(--linie))">Arhivează</button>
     </div>`;

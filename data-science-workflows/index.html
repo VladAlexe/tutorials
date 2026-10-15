@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/sistem.css?v=26">
-<script src="js/tema.js?v=26"></script>
+<link rel="stylesheet" href="css/sistem.css?v=29">
+<script src="js/tema.js?v=29"></script>
 <style>
   .hero{padding:58px 0 40px}
   .hero h1{max-width:18ch}
@@ -38,9 +38,9 @@
       <p class="deck">Un drum complet, de la întrebare la rezultat: colectezi date reale
       prin API, le cureți, le pui într-o bază de date, le explorezi și construiești un
       model pe care îl poți apăra. Opt lecții, un proiect de echipă.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div style="display:flex;gap:10px;flex-wrap:wrap" id="fapte-hero">
         <a class="btn btn--tare" href="c1-introducere-si-mediu/">Începe lecția 1</a>
-        <a class="btn" href="progres/">Progresul meu</a>
+        <a class="btn" href="cont/">Progresul meu</a>
         <a class="btn" href="#proiect">Despre proiect</a>
       </div>
       <div class="hero__meta">
@@ -138,7 +138,7 @@
     <section class="sectiune">
       <div class="sectiune__cap">
         <span class="nr">05</span>
-        <h2>Cum se pune nota</h2>
+        <h2 id="nota-cap">Cum se pune nota</h2>
       </div>
       <p class="deck" style="margin-bottom:22px">Zece puncte, din trei surse. Două
       dintre ele se adună pe parcurs, din ce lucrezi la lecții și de la seminar;
@@ -152,7 +152,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "./js/curs.js?v=26";
+import { LECTII, NOTARE, RADACINA } from "./js/curs.js?v=29";
 
 document.getElementById("flux-mare").innerHTML = LECTII.map(l =>
   `<a class="etapa" href="${l.cheie}/">
@@ -182,7 +182,24 @@ document.getElementById("lista-notare").innerHTML = NOTARE.componente.map(c => `
     <p class="card__d">${c.d}</p>
   </div>`).join("");
 </script>
-<script type="module" src="js/antet.js?v=26"></script>
-<script type="module" src="js/subsol.js?v=26"></script>
+<script type="module">
+/* Pagina cursului e aceeași pentru amândoi, dar butoanele nu pot fi. „Progresul
+   meu" pe pagina cursului, când tu ești cel care îl ține, e fără sens: aici
+   predai, nu parcurgi. Un singur loc de schimbat, aici. */
+try {
+  const { profil } = await import("./js/auth.js?v=29");
+  const p = await profil();
+  if (p.profesorReal){
+    document.getElementById("fapte-hero").innerHTML =
+      `<a class="btn btn--tare" href="predau/">Predau</a>
+       <a class="btn" href="predau/sedinte/">Ședințele</a>
+       <a class="btn" href="c1-introducere-si-mediu/lectie/">Deschide lecția 1</a>`;
+    const n = document.getElementById("nota-cap");
+    if (n) n.textContent = "Cum se pune nota, pentru ei";
+  }
+} catch { /* fără cont, pagina rămâne cea publică */ }
+</script>
+<script type="module" src="js/antet.js?v=29"></script>
+<script type="module" src="js/subsol.js?v=29"></script>
 </body>
 </html>
