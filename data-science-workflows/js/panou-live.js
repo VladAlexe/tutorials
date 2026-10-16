@@ -7,8 +7,13 @@
 
    Acum panoul e desenat de aici, și apare în două locuri, cu același cod:
 
-     sertar        peste treimea de jos a lecției, la tasta V
-     al doilea ecran  la /predau/ora/, ca oglindă fără butoane
+     sertar        peste treimea de jos a lecției, la tasta V, FĂRĂ NUME
+     al doilea ecran  la /predau/ora/, ca oglindă fără butoane, CU NUME
+
+   Diferența nu e de spațiu, e de public. Sertarul se deschide peste lecție,
+   adică peste exact ce e pe proiector: acolo numele studenților ar fi citite
+   de toată sala. În sertar vezi câți, nu cine. Cine anume vezi pe al doilea
+   ecran, care e laptopul tău și nu se proiectează.
 
    Modulul își aduce stilul singur, cu clase `pv-`, ca să nu depindă de
    css/predau.css. Lecția nu încarcă foaia de predare și nici nu trebuie.
@@ -16,7 +21,7 @@
    Nu are niciun buton care schimbă ora. Panoul doar se uită.
    =========================================================================== */
 
-import { STARI, ORDINEA } from "./ora.js?v=35";
+import { STARI, ORDINEA } from "./ora.js?v=36";
 
 /* --- stilul --------------------------------------------------------------- */
 
@@ -76,6 +81,10 @@ const CSS = `
 .pv-sort button{font:inherit;color:var(--text-3);background:none;border:0;
   cursor:pointer;padding:0 2px;text-decoration:underline dotted}
 .pv-sort button:hover,.pv-sort button.on{color:var(--text)}
+.pv-anonim__d{font-family:var(--sans);font-size:13px;color:var(--text-3);
+  margin:14px 0 0;max-width:52ch;line-height:1.5}
+.pv-anonim__d b{color:var(--text-2);font-weight:600}
+.pv--anonim .pv-inel{margin-left:0}
 `;
 
 let pus = false;
@@ -240,12 +249,35 @@ function tabel(randuri, intrebari, sortare, totalSarcini){
  * @param secunde      de câte secunde e slide-ul pe ecran, sau null
  * @param totalSarcini câte sarcini are lecția, pentru coloana „toată ora"
  */
+/**
+ * @param nume  true pe al doilea ecran (tabelul cu cine ce a ales), false în
+ *              sertar, care se deschide peste proiector și n-are voie cu nume.
+ */
 export function randeaza({ slide, sarcini = [], randuri = [], sortare = "slide",
-                           secunde = null, totalSarcini = null }){
+                           secunde = null, totalSarcini = null, nume = true }){
   const intrebari = sarcini.filter(x => x.fel === "verificare" && x.q);
   const cate = numara(randuri);
   const total = randuri.length;
   const trimis = total - cate.nefacut;
+
+  /* fără nume: cifrele pe un rând, mari, de citit de la doi metri */
+  if (!nume) return `<div class="pv pv--anonim">
+    <div class="pv__st">
+      <p class="pv__n">slide-ul de pe ecran${secunde != null ? " · " + ceasText(secunde) : ""}</p>
+      <p class="pv__q">${slide?.titlu || "—"}</p>
+      ${sarcini.length ? inel(cate, trimis, total)
+        : `<div class="pv-gol">Slide-ul ăsta n-are nimic de trimis.</div>`}
+    </div>
+    <div class="pv__dr">
+      ${intrebari.length
+        ? `<p class="pv__n">${intrebari.length === 1 ? "întrebarea de pe ecran"
+            : intrebari.length + " întrebări pe slide"}</p>
+           <p class="pv__q">${intrebari.map(i => i.q).join(" &nbsp;·&nbsp; ")}</p>`
+        : ""}
+      <p class="pv-anonim__d">Aici vezi <b>câți</b>, pentru că sertarul ăsta se
+        deschide peste proiector. <b>Cine anume</b> se vede pe al doilea ecran.</p>
+    </div>
+  </div>`;
 
   return `<div class="pv">
     <div class="pv__st">

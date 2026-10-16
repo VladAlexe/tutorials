@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/sistem.css?v=35">
-<script src="js/tema.js?v=35"></script>
+<link rel="stylesheet" href="css/sistem.css?v=36">
+<script src="js/tema.js?v=36"></script>
 <style>
   .hero{padding:58px 0 40px}
   .hero h1{max-width:18ch}
@@ -87,7 +87,6 @@
           <p>La atribute folosiți API-urile Eurostat și Banca Mondială. Rezultatul final e
           un depozit pe GitHub în care se vede tot drumul, de la întrebare la concluzie.</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
-            <a class="btn" href="surse-de-date.html">Toate sursele de date</a>
             <a class="btn" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">Depozitul cursului</a>
           </div>
         </div>
@@ -152,7 +151,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "./js/curs.js?v=35";
+import { LECTII, NOTARE, RADACINA } from "./js/curs.js?v=36";
 
 /* Studentul vede doar lecțiile ținute deja. Vizitatorul fără cont și
    profesorul le văd pe toate. Dacă baza nu răspunde, se văd toate: o pagină
@@ -160,7 +159,7 @@ import { LECTII, NOTARE, RADACINA } from "./js/curs.js?v=35";
 let vizibile = LECTII;
 try {
   const [{ profil }, O] = await Promise.all([
-    import("./js/auth.js?v=35"), import("./js/ora.js?v=35")
+    import("./js/auth.js?v=36"), import("./js/ora.js?v=36")
   ]);
   const p = await profil();
   if (p.autentificat) vizibile = await O.lectiiVizibile(LECTII, p.profesorReal);
@@ -209,7 +208,7 @@ document.getElementById("lista-notare").innerHTML = NOTARE.componente.map(c => `
    meu" pe pagina cursului, când tu ești cel care îl ține, e fără sens: aici
    predai, nu parcurgi. Un singur loc de schimbat, aici. */
 try {
-  const { profil } = await import("./js/auth.js?v=35");
+  const { profil } = await import("./js/auth.js?v=36");
   const p = await profil();
   if (p.profesorReal){
     document.getElementById("fapte-hero").innerHTML =
@@ -221,7 +220,7 @@ try {
   }
 } catch { /* fără cont, pagina rămâne cea publică */ }
 </script>
-<script type="module" src="js/antet.js?v=35"></script>
-<script type="module" src="js/subsol.js?v=35"></script>
+<script type="module" src="js/antet.js?v=36"></script>
+<script type="module" src="js/subsol.js?v=36"></script>
 </body>
 </html>

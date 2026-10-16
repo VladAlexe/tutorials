@@ -12,7 +12,13 @@
    complicat, nu din numărul lor. Acum rămân patru, într-un singur loc, și
    niciodată toate patru deodată.
 
-   Taste:  → ←  slide   ·   V  panoul   ·   C  codul mare   ·   Esc  închide
+   Nu mai există mod „ritm propriu". Cât ora e deschisă, ei sunt pe slide-ul
+   tău; când o închizi, lecția rămâne deschisă pentru acasă. Butonul de
+   comutare a existat o vreme, nu-i aducea curat înapoi, și folosea la un
+   singur moment din oră. Un buton care te minte o dată pe oră e mai rău decât
+   niciunul.
+
+   Taste:  → ←  slide   ·   V  cifrele   ·   C  codul mare   ·   F  prezentare
 
    Panoul nu e pe „P" pentru că js/slide.js folosește deja p și n pentru slide-ul
    precedent și următor, și apăsarea lui ar sări înapoi în lecție în loc să
@@ -28,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=35";
+import { RADACINA } from "./curs.js?v=36";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -38,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=35`);
-    O = await import(`${RADACINA}/js/ora.js?v=35`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=35`);
+    A = await import(`${RADACINA}/js/auth.js?v=36`);
+    O = await import(`${RADACINA}/js/ora.js?v=36`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=36`);
   } catch { return null; }
 
   let p = null;
@@ -62,7 +68,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
   if (esteProfesor){
     P.stil();
     let S = await O.deschisa(capitol);
-    let randuri = [], sortare = "slide", sertarDeschis = false;
+    let randuri = [], sertarDeschis = false;
 
     const slideAcum = () => Math.max(1, (unde?.() | 0) || 1);
 
@@ -108,7 +114,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
           <span class="ritm__stari">${P.ceasHTML(secunde())}</span>
           <span class="ritm__d"><b>${trimis}</b> din ${randuri.length} au trimis</span>
           <span class="ritm__sp"></span>
-          <button class="ritm__b" type="button" data-rol="panou">Strânge panoul</button>`
+          <button class="ritm__b" type="button" data-rol="panou">Strânge cifrele</button>`
         : `
           ${sarcini.length ? `
             <span class="ritm__stari">
@@ -118,15 +124,15 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                   { trecut:"✓", trimis_gresit:"✕", trimis_gol:"◉", nefacut:"○" }[k]
                 }<b>${cate[k]}</b></span>`).join("")}
             </span>`
-          : `<span class="ritm__d"><b>${S.in_clasa || 0}</b> în clasă ·
-               ${S.mod === "live" ? "sunt pe slide-ul tău" : "merg în ritmul lor"}</span>`}
+          : `<span class="ritm__d"><b>${S.in_clasa || 0}</b> în clasă,
+               pe slide-ul tău</span>`}
           <span class="ritm__sp"></span>
+          <button class="ritm__b" type="button" data-rol="link"
+                  title="Pentru cine ajunge mai târziu">copiază linkul</button>
           <button class="ritm__b" type="button" data-rol="panou"
-                  title="Panoul cu nume (V)">Panoul</button>
+                  title="Câți au răspuns, fără nume (V)">Cifrele</button>
           <a class="ritm__b" href="${RADACINA}/predau/ora/" target="_blank"
-             rel="noopener" title="Panoul pe al doilea ecran">al doilea ecran ↗</a>
-          <button class="ritm__b" type="button" data-rol="mod">${
-            S.mod === "live" ? "Lasă-i singuri" : "Ține-i cu mine"}</button>
+             rel="noopener" title="Panoul cu nume, pe al doilea ecran">al doilea ecran ↗</a>
           <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Închide ora</button>`}`;
       lega();
       if (sertarDeschis) deseneazaSertar();
@@ -135,7 +141,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     function lega(){
       bara.querySelector('[data-rol="start"]')?.addEventListener("click", porneste);
       bara.querySelector('[data-rol="stop"]') ?.addEventListener("click", opresteOra);
-      bara.querySelector('[data-rol="mod"]')  ?.addEventListener("click", comutaModul);
+      bara.querySelector('[data-rol="link"]') ?.addEventListener("click", copiaza);
       bara.querySelector('[data-rol="cod"]')  ?.addEventListener("click", ecran);
       bara.querySelector('[data-rol="panou"]')?.addEventListener("click", comutaPanoul);
     }
@@ -169,10 +175,19 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       deseneaza();
     }
 
-    async function comutaModul(){
-      if (!S) return;
-      const r = await O.pune(S.id, { mod: S.mod === "live" ? "propriu" : "live" });
-      if (r?.ok){ S.mod = r.mod; laStare?.(true, S.mod); deseneaza(); }
+    /* Linkul de intrare, copiat în clipboard. Cineva ajunge la minutul 20 și
+       codul mare nu mai e pe ecran: i-l trimiți pe chat și intră. */
+    async function copiaza(e){
+      const b = e.currentTarget;
+      const adresa = `${location.origin}${RADACINA}/intra/?c=${S.cod}`;
+      try {
+        await navigator.clipboard.writeText(adresa);
+        b.textContent = "copiat ✓";
+      } catch {
+        b.textContent = adresa;        /* fără clipboard, îl arăt ca să-l iei cu mâna */
+        getSelection()?.selectAllChildren(b);
+      }
+      setTimeout(() => { if (b.isConnected) b.textContent = "copiază linkul"; }, 2400);
     }
 
     /* --- sertarul, peste treimea de jos ---------------------------------- */
@@ -200,10 +215,10 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       }
       const nr = slideAcum();
       gazdaSertar.innerHTML = P.randeaza({
-        slide: slideDe(nr), sarcini: sarciniDe(nr), randuri, sortare,
-        secunde: secunde(), totalSarcini: harta?.sarcini || null
+        slide: slideDe(nr), sarcini: sarciniDe(nr), randuri,
+        secunde: secunde(), totalSarcini: harta?.sarcini || null,
+        nume: false   /* se deschide peste proiector: cifre, nu nume */
       });
-      P.legaSortarea(gazdaSertar, s => { sortare = s; deseneazaSertar(); });
     }
 
     /* --- codul mare ------------------------------------------------------ */
@@ -258,7 +273,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     /* --- ceasuri ---------------------------------------------------------- */
 
     deseneaza();
-    if (S) laStare?.(true, S.mod);
+    if (S) laStare?.(true, "live");
 
     /* ticăitul: o dată pe secundă, doar textul ceasului, fără să redesenez tot */
     ceasul = setInterval(() => {
@@ -301,10 +316,10 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
   }
 
   /* ============================================================= STUDENT === */
-  /* Cât ține ora în mod live, pagina lui e pagina mea: nu are buton de
-     desprindere, pentru că n-ar mai fi live. În ritm propriu merge singur,
-     dar ce trimite se leagă tot de ședință. */
-  let eraViu = false, ultim = null, modAcum = null;
+  /* Cât ora e deschisă, pagina lui e pagina mea. Atât. Nu mai există două
+     moduri de urmat, deci nici stare de ținut minte, nici buton. Când ora se
+     închide, banda dispare și lecția rămâne a lui, pentru acasă. */
+  let eraViu = false, ultim = null;
 
   const bate = async () => {
     const d = await O.acum(capitol);
@@ -312,34 +327,26 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=35`)
+    import(`${RADACINA}/js/colectare.js?v=36`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
-    if (viu !== eraViu || d.mod !== modAcum){
-      eraViu = viu; modAcum = d.mod || null;
-      laStare?.(viu, d.mod || null);
-    }
+    if (viu !== eraViu){ eraViu = viu; laStare?.(viu, viu ? "live" : null); }
     if (!viu){ bara.hidden = true; ultim = null; return; }
 
-    if (d.mod === "live"){
-      const nr = Math.max(1, d.slide_nr | 0);
-      if (nr !== ultim){ ultim = nr; dinCand = Date.now(); mergiLa(nr - 1); }
-    }
+    const nr = Math.max(1, d.slide_nr | 0);
+    if (nr !== ultim){ ultim = nr; dinCand = Date.now(); mergiLa(nr - 1); }
     deseneazaStudent(d);
   };
 
   function deseneazaStudent(d){
-    const live = d.mod === "live";
     const areIntrebare = sarciniDe(Math.max(1, d.slide_nr | 0)).length > 0;
     bara.hidden = false;
     bara.className = "ritm ritm--on";
     bara.innerHTML = `
       <span class="ritm__pct"></span>
-      <span class="ritm__t">${live ? "Ora e condusă" : "Ești la oră"}</span>
-      ${live && areIntrebare ? `<span class="ritm__stari">${P.ceasHTML(secunde())}</span>` : ""}
-      <span class="ritm__d">${live
-        ? `slide-ul ${d.slide_nr}, ca pe ecranul din față`
-        : "mergi în ritmul tău; ce faci se vede la profesor"}</span>
+      <span class="ritm__t">Ești la oră</span>
+      ${areIntrebare ? `<span class="ritm__stari">${P.ceasHTML(secunde())}</span>` : ""}
+      <span class="ritm__d">slide-ul ${d.slide_nr}, ca pe ecranul din față</span>
       <span class="ritm__sp"></span>
       ${manual ? `<a class="ritm__b" href="${manual}" target="_blank"
                      rel="noopener">Deschide manualul</a>` : ""}`;

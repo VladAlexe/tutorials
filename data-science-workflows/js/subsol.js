@@ -10,7 +10,7 @@
    ziua în care există fișierul, nu înainte.
    =========================================================================== */
 
-import { CURS, RADACINA } from "./curs.js?v=35";
+import { CURS, RADACINA } from "./curs.js?v=36";
 
 deseneaza(false);
 
@@ -23,7 +23,9 @@ function deseneaza(profesor){
     ${profesor
       ? `<a href="${RADACINA}/predau/">Predau</a>
          <a href="${RADACINA}/predau/sedinte/">Ședințele</a>`
-      : `<a href="${RADACINA}/cont/">Progresul meu</a>`}
+      : (location.pathname.replace(/\/+$/, "/") === `${RADACINA}/cont/`
+          ? ""                       /* ești deja acolo: linkul ar fi spre tine */
+          : `<a href="${RADACINA}/cont/">Contul meu</a>`)}
     <a href="${RADACINA}/date-personale/">Date personale</a>
     <a href="${CURS.depozit}" target="_blank" rel="noopener">Depozit ↗</a>
     <span class="subsol__dr">${CURS.an}</span>
@@ -33,7 +35,7 @@ function deseneaza(profesor){
 /* Rolul se află târziu, deci subsolul se desenează o dată fără el și se
    rescrie doar dacă e cazul. Pagina nu așteaptă după autentificare. */
 try {
-  const { profil } = await import(`${RADACINA}/js/auth.js?v=35`);
+  const { profil } = await import(`${RADACINA}/js/auth.js?v=36`);
   const p = await profil();
   if (p.profesorReal) deseneaza(true);
 } catch { /* fără cont, subsolul public e cel bun */ }

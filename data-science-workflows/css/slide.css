@@ -352,3 +352,43 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 .ritm__b--stop{border-color:color-mix(in srgb,var(--nu) 45%,transparent);
   color:var(--nu)}
 .ritm__b--stop:hover{background:var(--nu-slab);border-color:var(--nu)}
+
+/* --- comanda de sus, și modul prezentare -----------------------------------
+   Butonul de slide următor trebuie să fie mereu la vedere, ca să nu cauți
+   tastatura în fața clasei, dar să nu stea în drumul textului. Stă în colțul
+   din dreapta sus, decolorat până pui mâna pe el.
+
+   Jos nu se putea pune: acolo stă banda orei. Iar în mod prezentare dispare
+   cuprinsul, deci dacă n-ar fi butonul ăsta n-ar mai rămâne nimic de apăsat.
+   ------------------------------------------------------------------------- */
+
+.nav-sus{position:fixed;z-index:150;display:flex;align-items:center;gap:2px;
+  top:calc(var(--antet) + 10px);right:max(14px,env(safe-area-inset-right,0px));
+  background:color-mix(in srgb,var(--panza) 88%,transparent);
+  border:1px solid var(--linie);border-radius:9px;padding:2px;
+  backdrop-filter:blur(6px);opacity:.42;transition:opacity .18s}
+.nav-sus:hover,.nav-sus:focus-within{opacity:1}
+.nav-sus__b{font-family:var(--sans);font-size:16px;line-height:1;color:var(--text-2);
+  background:none;border:0;border-radius:7px;padding:6px 10px;cursor:pointer}
+.nav-sus__b:hover{background:var(--panza-2);color:var(--text)}
+.nav-sus__b:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.nav-sus__b--f{font-size:13px}
+.nav-sus__n{font-family:var(--mono);font-size:11px;color:var(--text-3);
+  padding:0 5px;font-variant-numeric:tabular-nums;min-width:38px;text-align:center}
+
+/* Prezentare: rămâne slide-ul și banda orei. Pleacă antetul, cuprinsul, bara
+   de jos. Nimic de citit care să nu fie pentru sală. */
+body.prezint .antet,
+body.prezint .rnr__sina,
+body.prezint .stare,
+body.prezint .flux--banda{display:none}
+body.prezint .rnr{grid-template-columns:minmax(0,1fr)}
+body.prezint .nav-sus{top:max(12px,env(safe-area-inset-top,0px))}
+body.prezint .sld{padding-top:52px;max-width:1040px}
+body.prezint .sld h2{font-size:34px}
+body.prezint .sld{font-size:1.06em}
+
+@media(max-width:700px){
+  .nav-sus{top:calc(var(--antet) + 6px);opacity:.75}
+  .nav-sus__n{display:none}
+}

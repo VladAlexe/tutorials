@@ -21,11 +21,11 @@
 
    Pornire, din pagina lecției:
 
-     import { porneste } from "../js/slide.js?v=35";
+     import { porneste } from "../js/slide.js?v=36";
      porneste({ capitol:"c1", lectie:"c1-introducere-si-mediu" });
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=35";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=36";
 
 const SVG = {
   gata:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
@@ -111,23 +111,23 @@ export async function porneste({ capitol, lectie }){
   ["verif:raspuns", "poarta:gata"].forEach(nume =>
     document.addEventListener(nume, ev => {
       reinnoieste(); salveaza();
-      import(`${RADACINA}/js/sesiune.js?v=35`)
+      import(`${RADACINA}/js/sesiune.js?v=36`)
         .then(s => s.jurnal(nume === "poarta:gata" ? "cod" : "raspuns", ev.detail))
         .catch(() => {});
     }));
 
   /* până aflăm dacă ora e pornită, ce se salvează e lucru de unul singur */
-  import(`${RADACINA}/js/colectare.js?v=35`)
+  import(`${RADACINA}/js/colectare.js?v=36`)
     .then(m => m.setContext("lectie")).catch(() => {});
 
   /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
-  import(`${RADACINA}/js/sesiune.js?v=35`)
+  import(`${RADACINA}/js/sesiune.js?v=36`)
     .then(s => s.porneste({ capitol, total:N }))
     .catch(() => { /* fără cont, nu se urmărește nimic */ });
 
   /* profesorul navighează liber, ca să poată arăta orice slide la clasă */
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=35`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=36`);
     const p = await profil();
     stare.profesor = !!p.profesor;
     if (stare.profesor){
@@ -141,7 +141,7 @@ export async function porneste({ capitol, lectie }){
   /* ora condusă: profesorul publică slide-ul lui, studenții sar după el.
      Dacă modulul nu pornește (fără cont, fără rețea), lecția merge la fel. */
   try {
-    const R = await import(`${RADACINA}/js/ritm.js?v=35`);
+    const R = await import(`${RADACINA}/js/ritm.js?v=36`);
     ritm = await R.porneste({
       capitol, total:N,
       esteProfesor: stare.profesor,
@@ -152,14 +152,15 @@ export async function porneste({ capitol, lectie }){
       mergiLa: k => { trimiteCeEInLucru(stare.i); mergi(k, { fortat:true }); },
       /* ce se salvează de acum înainte poartă eticheta potrivită: un
          exercițiu făcut în oră nu e același lucru cu unul făcut acasă */
-      laStare: (viu, mod) => {
+      laStare: (viu) => {
         stare.live  = viu;
-        /* ținut = ora e deschisă ȘI e în mod live ȘI nu sunt eu cel care
-           predă. Profesorul umblă liber, altfel n-ar putea arăta nimic. */
-        stare.tinut = !!viu && mod === "live" && !stare.profesor;
+        /* ținut = ora e deschisă ȘI nu sunt eu cel care predă. Profesorul
+           umblă liber, altfel n-ar putea arăta nimic. Nu mai există al doilea
+           mod: cât ora e deschisă, ei sunt pe slide-ul lui. */
+        stare.tinut = !!viu && !stare.profesor;
         if (viu && !stare.profesor) stare.liber = true;  /* porțile nu mai au rost: el conduce */
-        import(`${RADACINA}/js/colectare.js?v=35`)
-          .then(m => m.setContext(viu ? (mod === "live" ? "live" : "ora") : "lectie"))
+        import(`${RADACINA}/js/colectare.js?v=36`)
+          .then(m => m.setContext(viu ? "live" : "lectie"))
           .catch(() => {});
         reinnoieste();
       }
@@ -207,7 +208,7 @@ export async function porneste({ capitol, lectie }){
   async function trimiteCeEInLucru(i){
     if (!stare.live || i == null || !slides[i]) return;
     let C;
-    try { C = await import(`${RADACINA}/js/colectare.js?v=35`); } catch { return; }
+    try { C = await import(`${RADACINA}/js/colectare.js?v=36`); } catch { return; }
 
     for (const v of slides[i].querySelectorAll(".verif:not(.raspuns)")){
       const id = v.dataset.id;
@@ -310,6 +311,41 @@ export async function porneste({ capitol, lectie }){
       <span class="stare__c stare__poz"></span>
       <button class="stare__c" type="button" id="btn-plt">${SVG.caut}<span>sari la…</span></button>`;
     document.body.appendChild(bara);
+
+    /* --- comanda de sus ---------------------------------------------------
+       Un buton de slide următor care e mereu la vedere, ca să nu cauți
+       tastatura în fața clasei, și care nu stă în drum: stă decolorat până
+       pui mâna pe el. Lângă el, modul de prezentare.
+
+       Jos nu se putea pune: acolo e banda orei, iar în mod prezentare
+       cuprinsul dispare și n-ar mai rămâne niciun buton de mers înainte. */
+    const sus = document.createElement("div");
+    sus.className = "nav-sus";
+    sus.innerHTML = `
+      <button class="nav-sus__b" type="button" data-n="-1" aria-label="Slide-ul anterior">‹</button>
+      <span class="nav-sus__n" aria-live="off"></span>
+      <button class="nav-sus__b" type="button" data-n="1" aria-label="Slide-ul următor">›</button>
+      <button class="nav-sus__b nav-sus__b--f" type="button" data-rol="prezint"
+              title="Prezentare, fără cuprins și antet (F)" aria-label="Mod prezentare">⛶</button>`;
+    document.body.appendChild(sus);
+    sus.querySelectorAll("[data-n]").forEach(b =>
+      b.addEventListener("click", () => mergi(stare.i + (+b.dataset.n))));
+    sus.querySelector('[data-rol="prezint"]').addEventListener("click", prezint);
+
+    /* --- modul prezentare -------------------------------------------------
+       Ascunde tot ce nu e slide: antetul, cuprinsul, bara de jos. Cere și
+       ecranul întreg de la browser, dar nu se supără dacă îl refuză: clasa
+       de pe <body> face oricum treaba. */
+    function prezint(){
+      const acum = document.body.classList.toggle("prezint");
+      try {
+        if (acum && !document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else if (!acum && document.fullscreenElement) document.exitFullscreen?.();
+      } catch { /* fără ecran întreg, tot se vede doar slide-ul */ }
+    }
+    document.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement) document.body.classList.remove("prezint");
+    });
 
     const plt = document.createElement("div");
     plt.className = "plt";
@@ -446,6 +482,8 @@ export async function porneste({ capitol, lectie }){
       ? `<span class="stare__dot ${v.d >= v.t ? "ok" : "nu"}"></span>verificări ${v.d}/${v.t}`
       : "";
     el.poz.innerHTML = `slide <b>${stare.i + 1}</b>/${N}`;
+    const nsus = document.querySelector(".nav-sus__n");
+    if (nsus) nsus.textContent = `${stare.i + 1}/${N}`;
     const proc = Math.round((stare.vizitate.size / N) * 100);
     el.bara.style.width = proc + "%";
     el.subT.textContent = `${stare.vizitate.size}/${N} · ${proc}%`;
@@ -542,6 +580,9 @@ export async function porneste({ capitol, lectie }){
         e.preventDefault(); mergi(stare.i + 1);
       } else if (e.key === "ArrowLeft" || e.key === "PageUp" || e.key === "p"){
         e.preventDefault(); mergi(stare.i - 1);
+      } else if (e.key === "f" || e.key === "F"){
+        e.preventDefault();
+        document.querySelector('[data-rol="prezint"]')?.click();
       } else if (e.key === "Home"){ e.preventDefault(); mergi(0); }
       else if (e.key === "End"){ e.preventDefault(); mergi(N - 1); }
       else if (/^[0-9]$/.test(e.key)){
@@ -590,11 +631,11 @@ export async function porneste({ capitol, lectie }){
     ceasSalv = setTimeout(async () => {
       const id = slides[stare.i].id;
       try {
-        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=35`);
+        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=36`);
         await marcheazaSectiune(`${capitol}/${id}`);
       } catch {}
       try {
-        const s = await import(`${RADACINA}/js/sesiune.js?v=35`);
+        const s = await import(`${RADACINA}/js/sesiune.js?v=36`);
         s.laSlide({ slide:id, nr:stare.i + 1, total:N });
       } catch {}
     }, 900);

@@ -86,30 +86,52 @@ export const dupaCheie = c => LECTII.find(l => l.cheie === c) || null;
 /* ===========================================================================
    NOTAREA
 
-   Zece puncte, din trei surse. Scris aici o singura data: contul studentului,
-   pagina cursului si panoul profesorului citesc de aici, ca sa nu existe doua
-   variante care se bat cap in cap.
+   Unsprezece puncte, din patru surse. Scris aici o singură dată: contul
+   studentului, pagina cursului și catalogul citesc de aici, ca să nu existe
+   două variante care se bat cap în cap.
+
+   Două dintre ele le pun eu de mână (temele și proiectul), una o calculează
+   situl din ce s-a lucrat la seminar, una se primește.
+
+   Activitatea, în detaliu, pentru că e singura care se calculează:
+
+     pe seminar   2 p ÷ 7 seminare = 0,2857
+     pe quiz      0,2857 ÷ câte quiz-uri are seminarul
+     la oră       întreg
+     acasă        jumătate
+     se ia cel mai bun dintre cele două
+
+   De aici iese regula pe care o spui o dată la început de semestru și nu o
+   mai explici: ORA LIVE VALOREAZĂ DE DOUĂ ORI CÂT ACEEAȘI LECȚIE FĂCUTĂ
+   ACASĂ. Și, important pentru tine: numărul de quiz-uri dintr-un seminar NU
+   schimbă cât valorează seminarul. Zece sau patru, tot 0,2857. Deci tai din
+   ele pentru atenția lor, nu pentru notă.
    =========================================================================== */
 
 export const NOTARE = {
-  total: 10,
+  total: 11,
+  activitate: { puncte: 2, seminare: 7, acasa: 0.5 },
   componente: [
     { cheie:"teme", nume:"Teme", puncte:3,
-      scurt:"verificările și exercițiile din lecții",
-      d:"Se adună din ce faci în lecții: verificările cu variante și exercițiile cu cod. " +
-        "Contează că le-ai făcut, nu că le-ai nimerit din prima — poți relua orice slide " +
-        "până iese." },
+      scurt:"trei teme, predate pe Teams",
+      d:"Trei teme de seminar, pe care le încarci în Teams. N-au legătură cu " +
+        "lecțiile de pe sit: le citesc și le notez eu." },
+
+    { cheie:"seminar", nume:"Activitate la seminar", puncte:2,
+      scurt:"quiz-urile din lecții",
+      d:"Se adună din quiz-urile din lecții. La oră valorează întreg, acasă " +
+        "jumătate, și se ia cel mai bun dintre cele două. Fiecare seminar " +
+        "valorează la fel, indiferent câte quiz-uri are." },
 
     { cheie:"proiect", nume:"Proiect", puncte:5,
       scurt:"depozitul de echipă și raportul final",
-      d:"Proiectul de echipă, cu tot cu depozitul pe GitHub: datele colectate, curățarea, " +
-        "analiza și raportul. Se notează drumul care se vede în depozit, nu spectaculozitatea " +
-        "rezultatului." },
+      d:"Proiectul de echipă, cu tot cu depozitul pe GitHub: datele colectate, " +
+        "curățarea, analiza și raportul. Se notează drumul care se vede în " +
+        "depozit, nu spectaculozitatea rezultatului. Nota e pe om." },
 
-    { cheie:"seminar", nume:"Seminar și prezență", puncte:2,
-      scurt:"prezența la ore și lucrul la seminar",
-      d:"Prezența se marchează la începutul orei, scanând codul de pe ecran. Punctajul " +
-        "crește cu fiecare ședință la care ai fost și ai lucrat." }
+    { cheie:"oficiu", nume:"Din oficiu", puncte:1,
+      scurt:"se primește",
+      d:"Un punct pe care îl ai de la început. Nu trebuie făcut nimic pentru el." }
   ]
 };
 
