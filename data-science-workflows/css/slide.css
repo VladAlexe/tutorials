@@ -226,41 +226,93 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
    Nu acoperă conținutul și are mereu butonul de ieșire la vedere.
    ------------------------------------------------------------------------- */
 
-.are-ritm .rnr__scena{padding-top:52px}
-/* sus-dreapta: jos ar acoperi butoanele de înainte/înapoi, iar în mijloc ar
-   sta peste coloana de text când pagina e derulată */
-.ritm{position:fixed;right:18px;top:calc(var(--antet) + 12px);z-index:200;
-  display:flex;align-items:center;gap:11px;padding:8px 10px 8px 15px;
-  border-radius:24px;border:1px solid var(--linie-2);background:var(--panza);
-  box-shadow:0 6px 24px rgba(0,0,0,.17);font-family:var(--sans);font-size:13px;
-  max-width:calc(100vw - 32px)}
+.are-ritm .rnr__scena{padding-bottom:62px}
+.are-sertar .rnr__scena{padding-bottom:calc(42vh + 62px)}
+
+/* Jos, pe toată lățimea, pe cromul aplicației. Înainte era o pastilă
+   sus-dreapta, care se bătea cu titlul slide-ului și nu avea loc pentru ceas
+   și pentru cifre. Jos e locul unde te uiți oricum între două slide-uri, și
+   lasă toată pagina liberă pentru ce proiectezi. */
+.ritm{position:fixed;left:0;right:0;bottom:0;z-index:200;
+  display:flex;align-items:center;gap:12px;
+  padding:9px max(14px,env(safe-area-inset-left,0px))
+          calc(9px + env(safe-area-inset-bottom,0px))
+          max(14px,env(safe-area-inset-right,0px));
+  border-top:1px solid var(--crom-linie);background:var(--crom);
+  font-family:var(--sans);font-size:12.5px;color:var(--text-2);
+  min-height:46px;box-shadow:0 -2px 14px rgba(0,0,0,.05)}
 .ritm[hidden]{display:none}
+.ritm__sp{flex:1;min-width:0}
 .ritm__pct{width:8px;height:8px;border-radius:50%;background:var(--linie-2);flex:none}
-.ritm--on .ritm__pct{background:var(--accent);
-  box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+.ritm--on .ritm__pct{background:var(--ok);
+  box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent);
   animation:ritm-puls 2.1s ease-out infinite}
 @keyframes ritm-puls{
-  70%{box-shadow:0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent)}
-  100%{box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent)}
+  70%{box-shadow:0 0 0 7px color-mix(in srgb, var(--ok) 0%, transparent)}
+  100%{box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 0%, transparent)}
 }
 @media (prefers-reduced-motion: reduce){ .ritm--on .ritm__pct{animation:none} }
-.ritm__t{font-weight:600;white-space:nowrap}
-.ritm__d{color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ritm__b{font:inherit;font-size:12px;font-weight:600;padding:6px 13px;border-radius:18px;
-  border:1px solid var(--linie);background:var(--fundal);color:var(--text-2);
-  cursor:pointer;white-space:nowrap;transition:.13s;flex:none}
-.ritm__b:hover{border-color:var(--linie-2);color:var(--text)}
-.ritm--liber{border-color:var(--linie)}
-.ritm--liber .ritm__t{color:var(--text-2)}
-.ritm--prof.ritm--on{border-color:color-mix(in srgb, var(--accent) 45%, transparent)}
+.ritm__t{font-weight:600;color:var(--text);white-space:nowrap}
+.ritm__d{color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  min-width:0}
+.ritm__d b{color:var(--text);font-weight:600}
 
-@media(max-width:1180px){
-  /* nu mai e loc în margine: trece peste tot, dar rămâne subțire */
-  .ritm{right:12px;left:12px;justify-content:center}
+/* codul: rămâne în bandă toată ora, pentru întârziați, și se apasă ca să
+   revină mare pe proiector */
+.ritm__cod{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.17em;
+  color:var(--text);background:var(--panza);border:1px solid var(--linie-2);
+  border-radius:6px;padding:3px 9px;cursor:pointer;flex:none}
+.ritm__cod:hover{border-color:var(--accent);color:var(--accent-text)}
+
+.ritm__b{font:inherit;font-size:12px;padding:5px 11px;border-radius:7px;
+  border:1px solid var(--linie-2);background:var(--panza);color:var(--text-2);
+  cursor:pointer;white-space:nowrap;transition:.13s;flex:none;text-decoration:none}
+.ritm__b:hover{border-color:var(--accent);color:var(--accent-text)}
+.ritm__b--tare{background:var(--buton);color:var(--buton-text);border-color:var(--buton);
+  font-weight:500}
+.ritm__b--tare:hover{color:var(--buton-text);filter:brightness(1.07)}
+.ritm__b--stop{color:var(--nu);border-color:color-mix(in srgb,var(--nu) 30%,var(--linie-2))}
+.ritm__b--stop:hover{border-color:var(--nu);color:var(--nu)}
+
+/* rândul de stări: ceasul, apoi cele patru cifre cu glifele lor */
+.ritm__stari{display:flex;align-items:center;gap:12px;flex:none;flex-wrap:nowrap}
+.ritm__g{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);
+  font-size:11px;color:var(--text-3)}
+.ritm__g b{color:var(--text);font-weight:500;font-variant-numeric:tabular-nums}
+.ritm__g--trecut{color:var(--ok)}
+.ritm__g--trimis_gresit{color:var(--nu)}
+
+/* Ceasul numără în sus de când a apărut slide-ul. Chihlimbarul e un jeton
+   separat, nu --nu: cărămiziul înseamnă „greșit" în tot situl, iar un ceas de
+   aceeași culoare s-ar citi de la distanță ca un verdict. */
+.ceas{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;
+  letter-spacing:.04em;padding:2px 8px;border-radius:6px;flex:none;
+  color:var(--ok);background:var(--ok-slab);
+  border:1px solid color-mix(in srgb,var(--ok) 34%,transparent);
+  transition:color .4s,background .4s,border-color .4s}
+.ceas--tarziu{color:var(--ceas);background:var(--ceas-slab);
+  border-color:color-mix(in srgb,var(--ceas) 40%,transparent)}
+
+/* --- sertarul cu nume ------------------------------------------------------
+   Peste treimea de jos, la tasta P. Studenții nu văd nimic: slide-ul rămâne
+   întreg pe proiector, iar asta e numai pentru tine.
+   ------------------------------------------------------------------------- */
+
+.sertar{position:fixed;left:0;right:0;bottom:46px;z-index:199;
+  max-height:42vh;overflow-y:auto;background:var(--panza);
+  border-top:1px solid var(--linie-2);box-shadow:0 -8px 30px rgba(0,0,0,.14);
+  padding:16px max(16px,env(safe-area-inset-left,0px)) 18px
+              max(16px,env(safe-area-inset-right,0px))}
+@media (prefers-reduced-motion: no-preference){
+  .sertar{animation:sertar-intra .16s ease-out}
+  @keyframes sertar-intra{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
 }
-@media(max-width:700px){
-  .ritm{top:calc(var(--antet) + 8px);font-size:12px;gap:8px;padding:7px 8px 7px 12px}
-  .ritm__d{display:none}
+
+@media(max-width:820px){
+  .ritm{font-size:12px;gap:9px;flex-wrap:wrap;min-height:0}
+  .ritm__d{flex-basis:100%;order:9}
+  .sertar{max-height:52vh;bottom:70px}
+  .are-sertar .rnr__scena{padding-bottom:calc(52vh + 86px)}
 }
 
 /* --- codul de intrare, de proiectat --------------------------------------

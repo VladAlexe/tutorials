@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=34">
-<link rel="stylesheet" href="../../css/predau.css?v=34">
-<script src="../../js/tema.js?v=34"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=35">
+<link rel="stylesheet" href="../../css/predau.css?v=35">
+<script src="../../js/tema.js?v=35"></script>
 </head>
 <body>
 
@@ -19,74 +19,79 @@
 <main class="pd">
   <div id="banda"></div>
   <div id="corp">
-    <div class="live">
-      <div><div class="sch sch--c" style="height:150px"></div></div>
-      <div><div class="sch sch--r"></div><div class="sch sch--r"></div>
-           <div class="sch sch--r"></div><div class="sch sch--r"></div></div>
-    </div>
+    <div class="sch sch--c" style="height:150px"></div>
   </div>
 </main>
 
-<script type="module" src="../../js/antet.js?v=34"></script>
+<script type="module" src="../../js/antet.js?v=35"></script>
 <script type="module">
 /* ===========================================================================
-   PANOUL LIVE
+   AL DOILEA ECRAN
 
-   Nu arată „progresul general al clasei". Arată slide-ul care e chiar acum pe
-   proiector, și două lucruri deodată:
+   Pagina asta e o OGLINDĂ. Nu are niciun buton care schimbă ora.
 
-     stânga   cifra globală, un inel tăiat în cele patru stări. Răspunde de la
-              doi metri la singura întrebare care contează în fața clasei:
-              pot merge mai departe?
+   Înainte avea nouă: înainte, înapoi, proiector, mod, închide ora, plus
+   săgețile de la tastatură. Erau aceleași comenzi care există în banda din
+   lecție, deci aceeași oră avea două volane și nu știai la care să te uiți.
+   De acolo venea senzația de complicat, nu din numărul butoanelor.
 
-     dreapta  tabelul, cine ce a făcut, cu coloana „ce a ales". Aia e cea care
-              își merită locul: nu-ți spune doar CĂ au greșit, ci CE au greșit.
-              Dacă trei au ales aceeași variantă falsă, aia e următoarea ta
-              propoziție.
+   Acum conduci din lecție, întotdeauna, iar aici doar te uiți: cine ce a ales
+   pe slide-ul care e chiar acum pe proiector. Se mișcă singură după tine.
 
-   Se reîmprospătează din 4 în 4 secunde, și se oprește când fila nu e
-   vizibilă: nu are rost să interoghez baza cât te uiți la altceva.
+   Ce desenează e același cod cu sertarul din lecție (tasta P): js/panou-live.js.
+   O singură randare, două locuri.
    =========================================================================== */
 
-import { RADACINA, LECTII } from "../../js/curs.js?v=34";
-import * as O from "../../js/ora.js?v=34";
+import { RADACINA, LECTII } from "../../js/curs.js?v=35";
+import * as O from "../../js/ora.js?v=35";
+import * as P from "../../js/panou-live.js?v=35";
 
 const PAS = 4000;
 const el = id => document.getElementById(id);
 
 let A;
-try { A = await import("../../js/auth.js?v=34"); }
-catch { document.getElementById("corp").textContent = "Nu pot încărca autentificarea."; throw 0; }
+try { A = await import("../../js/auth.js?v=35"); }
+catch { el("corp").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();
 if (!p.autentificat){ location.replace(`${RADACINA}/intra/?spre=${encodeURIComponent(location.pathname)}`); throw 0; }
 if (!p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
 
+P.stil();
+
 let S = await O.deschisa();
+
 if (!S){
   el("banda").innerHTML = `<div class="st"><span class="st__pct"></span>
     <span class="st__t">Nicio oră deschisă</span>
-    <span class="st__d">panoul live arată ce se întâmplă într-o ședință; întâi pornește una</span></div>`;
+    <span class="st__d">oglinda asta arată ce se întâmplă într-o ședință; întâi pornește una</span></div>`;
   el("corp").innerHTML = `<div class="gol">
     <p class="gol__t">Nu e nicio oră în desfășurare</p>
-    <p class="gol__d">Panoul ăsta se umple din ședința deschisă. Pornește una și
-      revino: o să vezi, slide cu slide, cine a răspuns și ce a ales.</p>
-    <a class="btn btn--tare" href="../">Pornește ora</a></div>`;
+    <p class="gol__d">Ora se pornește din lecție, de la butonul din banda de jos.
+      Cum pornește, pagina asta se umple singură.</p>
+    <a class="btn btn--tare" href="../">Lecțiile</a></div>`;
   throw 0;
 }
 
 const H = await O.harta(S.capitol);
-let sortare = "slide";          /* slide | nume | tot */
-let ultimul = null;
+let sortare = "slide";
+let slideVechi = S.slide_nr;
+let dinCand = Date.now();
 
 deseneazaBanda();
-await reimprospateaza();
+reimprospateaza();
 setInterval(() => { if (!document.hidden) reimprospateaza(); }, PAS);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) reimprospateaza(); });
+setInterval(() => {
+  if (document.hidden) return;
+  const c = document.querySelector(".pv__n");
+  if (c) c.textContent = `slide-ul de pe ecran · ${P.ceasText((Date.now() - dinCand) / 1000)}`;
+}, 1000);
 
 function nrDe(c){ return parseInt(String(c).replace("c",""), 10); }
 
-/* --- banda de stare, cu comanda ------------------------------------------ */
+/* --- banda de sus ----------------------------------------------------------
+   Spune ce oră e deschisă și unde ești, și atât. Singurul link de aici e
+   înapoi în lecție, pentru că acolo se conduce. */
 
 function deseneazaBanda(){
   const lectie = (LECTII.find(l => l.nr === nrDe(S.capitol)) || LECTII[0]).cheie;
@@ -94,181 +99,36 @@ function deseneazaBanda(){
     <div class="st st--viu">
       <span class="st__pct"></span>
       <span class="st__t">Live</span>
-      <button class="st__cod" id="bt-cod" type="button"
-              title="Arată codul mare, de proiectat">${S.cod || "—"}</button>
-      <span class="st__d">${S.titlu} · ${S.in_clasa} au lucrat · ${S.minute} min</span>
+      <span class="st__cod" style="cursor:default">${S.cod || "—"}</span>
+      <span class="st__d">${S.titlu} · slide ${S.slide_nr}${
+        S.total_nr ? ` din ${S.total_nr}` : ""} · ${S.in_clasa} au lucrat ·
+        ${S.mod === "live" ? "sunt pe slide-ul tău" : "merg în ritmul lor"}</span>
       <span class="st__sp"></span>
-      <div class="randb">
-        <button class="btn btn--mic" id="bt-inapoi" type="button">← Înapoi</button>
-        <span class="rap" id="unde">slide ${S.slide_nr}${S.total_nr ? ` din ${S.total_nr}` : ""}</span>
-        <button class="btn btn--mic btn--tare" id="bt-inainte" type="button">Înainte →</button>
-        <a class="btn btn--mic" href="${RADACINA}/${lectie}/lectie/#${S.slide_nr}"
-           target="_blank" rel="noopener">Proiector</a>
-        <button class="btn btn--mic" id="bt-mod" type="button">${S.mod === "live" ? "Treci pe ritm propriu" : "Treci pe live"}</button>
-        <button class="btn btn--mic" id="bt-inchide" type="button">Închide ora</button>
-      </div>
+      <a class="btn btn--mic" href="${RADACINA}/${lectie}/lectie/">Înapoi în lecție</a>
     </div>`;
-
-  el("bt-cod").onclick = proiecteaza;
-  el("bt-inapoi").onclick  = () => muta(-1);
-  el("bt-inainte").onclick = () => muta(+1);
-  el("bt-mod").onclick = async () => {
-    const nou = S.mod === "live" ? "propriu" : "live";
-    const r = await O.pune(S.id, { mod: nou });
-    if (r?.ok){ S.mod = r.mod; deseneazaBanda(); spune(
-      nou === "live" ? "Mod live: studenții stau pe slide-ul tău."
-                     : "Ritm propriu: fiecare merge singur."); }
-  };
-  el("bt-inchide").onclick = async () => {
-    const r = await O.inchide(S.id);
-    if (r?.ok) location.href = `../sedinte/?id=${S.id}`;
-  };
 }
 
-async function muta(d){
-  const nr = Math.max(1, (S.slide_nr || 1) + d);
-  const r = await O.pune(S.id, { slide: nr });
-  if (r?.ok){
-    S.slide_nr = r.slide_nr;
-    el("unde").textContent = `slide ${S.slide_nr}${S.total_nr ? ` din ${S.total_nr}` : ""}`;
-    ultimul = null;                 /* slide nou: redesenez tot, nu doar cifrele */
-    reimprospateaza();
-  }
-}
-
-/* --- bătaia ---------------------------------------------------------------- */
+/* --- ce se întâmplă acum --------------------------------------------------- */
 
 async function reimprospateaza(){
   const proaspat = await O.deschisa();
-  if (!proaspat){ location.href = "../"; return; }
+  if (!proaspat){ location.reload(); return; }
   S = { ...S, ...proaspat };
-  el("unde") && (el("unde").textContent =
-    `slide ${S.slide_nr}${S.total_nr ? ` din ${S.total_nr}` : ""}`);
+
+  if (S.slide_nr !== slideVechi){ slideVechi = S.slide_nr; dinCand = Date.now(); }
 
   const sarcini = O.sarciniDe(H, S.slide_nr);
   const randuri = await O.panou(S.id, sarcini.map(x => x.id)) || [];
-  deseneaza(sarcini, randuri);
-}
 
-/* --- desenul --------------------------------------------------------------- */
+  deseneazaBanda();
+  el("corp").innerHTML = P.randeaza({
+    slide: (H?.slide || []).find(x => x.nr === S.slide_nr) || null,
+    sarcini, randuri, sortare,
+    secunde: (Date.now() - dinCand) / 1000,
+    totalSarcini: H?.sarcini || null
+  }) + blocaj(randuri);
 
-function deseneaza(sarcini, randuri){
-  const slide = (H?.slide || []).find(x => x.nr === S.slide_nr);
-  const intrebarea = sarcini.find(x => x.fel === "verificare" && x.q);
-
-  const cate = {};
-  O.ORDINEA.forEach(k => cate[k] = randuri.filter(r => r.stare === k).length);
-  const total = randuri.length;
-  const trimis = total - cate.nefacut;
-
-  el("corp").innerHTML = `
-    <div class="live">
-      <div>
-        <p class="live__n">slide ${S.slide_nr}${S.total_nr ? ` din ${S.total_nr}` : ""}
-           · ${sarcini.length ? sarcini.length + (sarcini.length === 1 ? " sarcină" : " sarcini") : "fără sarcină"}</p>
-        <p class="live__q">${slide?.titlu || ""}</p>
-        ${sarcini.length ? inel(cate, trimis, total) : `
-          <p class="inel__gol">Slide-ul ăsta n-are nimic de trimis.
-             Tabelul arată unde a ajuns fiecare în toată ora.</p>`}
-      </div>
-
-      <div>
-        ${intrebarea ? `<p class="live__n">întrebarea de pe ecran</p>
-          <p class="live__q" style="margin-bottom:14px">${intrebarea.q}</p>` : ""}
-        ${tabel(randuri, intrebarea)}
-        ${blocaj(randuri)}
-      </div>
-    </div>`;
-
-  document.querySelectorAll(".tb th.cl").forEach(th =>
-    th.onclick = () => { sortare = th.dataset.s; deseneaza(sarcini, randuri); });
-}
-
-/* --- inelul ----------------------------------------------------------------
-   Patru segmente, în ordinea stărilor, desenate ca arce pe același cerc.
-   Numărul din mijloc e cel care contează: câți au trimis ceva, din câți. */
-
-function inel(cate, trimis, total){
-  const R = 52, C = 2 * Math.PI * R;
-  let unghi = -90;
-  const culori = { trecut:"var(--ok)", trimis_gresit:"var(--nu)",
-                   trimis_gol:"var(--linie-2)", nefacut:"var(--linie)" };
-  const arce = O.ORDINEA.map(k => {
-    const n = cate[k];
-    if (!n || !total) return "";
-    const lung = C * n / total;
-    const s = `<circle cx="66" cy="66" r="${R}" fill="none" stroke="${culori[k]}"
-      stroke-width="13" stroke-dasharray="${lung - 2} ${C - lung + 2}"
-      transform="rotate(${unghi} 66 66)"></circle>`;
-    unghi += 360 * n / total;
-    return s;
-  }).join("");
-
-  return `
-    <svg class="inel" width="132" height="132" viewBox="0 0 132 132" role="img"
-         aria-label="${trimis} din ${total} au trimis">
-      <circle cx="66" cy="66" r="${R}" fill="none" stroke="var(--linie)" stroke-width="13"/>
-      ${arce}
-      <text class="num" x="66" y="64" text-anchor="middle" dominant-baseline="middle"
-            fill="var(--text)">${trimis}</text>
-      <text class="sub" x="66" y="84" text-anchor="middle">din ${total} au trimis</text>
-    </svg>
-    <ul class="nr">
-      ${O.ORDINEA.map(k => `<li>
-        <span class="g ${O.STARI[k].clasa}">${O.STARI[k].glif}</span>
-        <span>${O.STARI[k].nume}</span><b>${cate[k]}</b></li>`).join("")}
-    </ul>`;
-}
-
-/* --- tabelul ---------------------------------------------------------------
-   Coloana „ce a ales" e motivul pentru care tabelul există. Fără ea ar fi o
-   listă de bife, și n-ai ști de unde să începi. */
-
-function tabel(randuri, intrebarea){
-  if (!randuri.length) return `
-    <div class="gol">
-      <p class="gol__t">Încă n-a intrat nimeni</p>
-      <p class="gol__d">Arată codul pe proiector. Cum intră primul, apare aici.</p>
-    </div>`;
-
-  const r = [...randuri];
-  const rang = { trimis_gol:0, trimis_gresit:1, nefacut:2, trecut:3 };
-  if (sortare === "slide") r.sort((a,b) => rang[a.stare] - rang[b.stare] ||
-                                           a.nume.localeCompare(b.nume, "ro"));
-  else if (sortare === "tot") r.sort((a,b) => a.facute - b.facute ||
-                                              a.nume.localeCompare(b.nume, "ro"));
-  else r.sort((a,b) => a.nume.localeCompare(b.nume, "ro"));
-
-  const max = Math.max(1, ...r.map(x => x.trimise), H?.sarcini || 1);
-
-  return `<table class="tb">
-    <thead><tr>
-      <th class="cl ${sortare==="nume"?"on":""}" data-s="nume">Student</th>
-      <th class="cl ${sortare==="slide"?"on":""}" data-s="slide">Acest slide</th>
-      <th>Ce a ales</th>
-      <th class="cl ${sortare==="tot"?"on":""}" data-s="tot" style="text-align:right">Toată ora</th>
-    </tr></thead>
-    <tbody>${r.map(x => {
-      const st = O.STARI[x.stare] || O.STARI.nefacut;
-      const plecat = x.vazut_la && (Date.now() - new Date(x.vazut_la)) > 120000;
-      return `<tr class="${plecat ? "plecat" : ""}">
-        <td><span class="tb__nume"><span>${x.nume}</span></span></td>
-        <td><span class="g ${st.clasa}" title="${st.nume}">${st.glif}</span></td>
-        <td class="tb__ales">${ales(x, intrebarea)}</td>
-        <td><span class="tb__tot">
-          <span class="bm"><i style="width:${Math.round(100*x.facute/max)}%"></i></span>
-          <span class="rap">${x.facute}/${H?.sarcini ?? max}</span></span></td>
-      </tr>`;
-    }).join("")}</tbody></table>
-    <p class="rap" style="margin:11px 0 0">sortează după: slide · nume · cât a făcut</p>`;
-}
-
-function ales(x, intrebarea){
-  if (x.stare === "nefacut") return "—";
-  if (x.stare === "trimis_gol") return "<em>trimis fără răspuns</em>";
-  if (intrebarea && x.ales != null && intrebarea.optiuni?.[x.ales])
-    return intrebarea.optiuni[x.ales];
-  return x.stare === "trecut" ? "<em>corect</em>" : "<em>greșit</em>";
+  P.legaSortarea(el("corp"), s => { sortare = s; reimprospateaza(); });
 }
 
 /* --- blocații acum ---------------------------------------------------------
@@ -285,57 +145,6 @@ function blocaj(randuri){
   if (plecati.length) b.push(`${plecati.map(x => x.nume).join(", ")} ${plecati.length === 1 ? "nu mai e" : "nu mai sunt"} pe pagină`);
   return `<div class="blocaj"><b>Acum</b><span>${b.join(" · ")}</span></div>`;
 }
-
-/* --- codul, mare, de proiectat --------------------------------------------- */
-
-function proiecteaza(){
-  if (document.querySelector(".proiect")) return;
-  const scurta = `${location.host}${RADACINA}/intra`;
-  const adresa = `${location.origin}${RADACINA}/intra/?c=${S.cod}`;
-  const d = document.createElement("div");
-  d.className = "proiect";
-  d.innerHTML = `
-    <button class="proiect__x" type="button" aria-label="Închide">×</button>
-    <div class="proiect__in">
-      <p class="proiect__et">${S.titlu}</p>
-      <p class="proiect__c">${S.cod || "—"}</p>
-      <p class="proiect__u">${scurta}</p>
-      <div class="proiect__qr"></div>
-      <p class="proiect__d">Scanați codul cu telefonul, sau deschideți adresa și
-        tastați cele șase semne. Codul știe lecția și grupa; voi spuneți doar
-        cine sunteți.</p>
-    </div>`;
-  document.body.appendChild(d);
-  const inchide = () => d.remove();
-  d.addEventListener("click", e => {
-    if (e.target === d || e.target.closest(".proiect__x")) inchide(); });
-  document.addEventListener("keydown", function esc(e){
-    if (e.key === "Escape"){ inchide(); document.removeEventListener("keydown", esc); } });
-
-  import("https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm")
-    .then(Q => Q.default.toDataURL(adresa, { margin:1, width:460, errorCorrectionLevel:"M" }))
-    .then(u => { const g = d.querySelector(".proiect__qr");
-                 if (g) g.innerHTML = `<img src="${u}" alt="Cod QR pentru intrarea la oră">`; })
-    .catch(() => {});
-}
-
-/* --- mesaje ---------------------------------------------------------------- */
-
-let ceasT = null;
-function spune(text, ms = 2600){
-  let t = document.querySelector(".toast");
-  if (!t){ t = document.createElement("div"); t.className = "toast"; document.body.appendChild(t); }
-  t.textContent = text; t.classList.add("vazut");
-  clearTimeout(ceasT);
-  ceasT = setTimeout(() => t.classList.remove("vazut"), ms);
-}
-
-/* săgețile mută slide-ul, ca la o telecomandă */
-document.addEventListener("keydown", e => {
-  if (e.target.matches("input, textarea, select")) return;
-  if (e.key === "ArrowRight") muta(+1);
-  if (e.key === "ArrowLeft")  muta(-1);
-});
 </script>
 </body>
 </html>

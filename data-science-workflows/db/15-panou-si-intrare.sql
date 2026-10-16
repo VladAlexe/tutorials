@@ -42,7 +42,13 @@ create extension if not exists pgcrypto with schema extensions;
 -- lucrat în ea. Cine n-a atins nimic apare oricum, cu starea `nefacut`:
 -- absența lui din tabel ar fi exact informația pe care o pierzi.
 
-create or replace function public.panou_slide(
+-- Drop înainte de create: dacă fișierul se rulează după db/16, care adaugă o
+-- coloană, Postgres refuză un simplu `create or replace` („cannot change
+-- return type of existing function"). Așa, fișierele se pot rula în orice
+-- ordine, iar ultimul rulat decide.
+drop function if exists public.panou_slide(uuid, text[]);
+
+create function public.panou_slide(
   p_sedinta  uuid,
   p_sarcini  text[] default '{}'
 )

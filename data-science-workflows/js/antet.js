@@ -3,13 +3,13 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=34"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=35"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=34";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=35";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -71,11 +71,30 @@ function construieste(gazda){
   cont(predau);
 }
 
+/* Banda de sub antet, pe pagina unei lecții. Studentul vede în ea doar
+   lecțiile ținute, ca să nu i se arate drumul până la capăt din prima zi.
+   Se desenează întâi întreagă, pentru că pagina nu așteaptă după rețea, și se
+   taie pe urmă dacă e cazul. */
+async function taieBanda(profesor){
+  const g = document.querySelector(".flux__sina");
+  if (!g || profesor) return;
+  try {
+    const O = await import(`${RADACINA}/js/ora.js?v=35`);
+    const p = await O.predate();
+    if (!p) return;
+    g.querySelectorAll("[data-c]").forEach(a => {
+      if (!p.has(a.dataset.c)) a.remove();
+    });
+    /* dacă n-a mai rămas nimic, banda goală arată ca un sit stricat: o scot */
+    if (!g.querySelector(".etapa")) g.closest(".flux")?.remove();
+  } catch { /* fără bază, banda rămâne întreagă */ }
+}
+
 function banda(lectie){
   return `<div class="flux flux--banda"><div class="pagina"><div class="flux__sina">
     ${LECTII.map(l => {
       const stare = l.nr < lectie.nr ? "gata" : l.nr === lectie.nr ? "acum" : "viitor";
-      return `<a class="etapa ${stare}" href="${RADACINA}/${l.cheie}/"
+      return `<a class="etapa ${stare}" href="${RADACINA}/${l.cheie}/" data-c="c${l.nr}"
                  ${stare === "acum" ? 'aria-current="page"' : ""}>
                 <span class="etapa__nod">${l.nr}</span>
                 <span class="etapa__et">${l.scurt}</span></a>`;
@@ -92,8 +111,9 @@ async function cont(predau){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=34`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=35`);
     const p = await profil();
+    if (p.autentificat) taieBanda(p.profesorReal);
     if (!p.autentificat) {
       zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;
       return;
@@ -104,7 +124,7 @@ async function cont(predau){
          două săptămâni, intrarea în /predau/ îl stinge. Altfel situl te ține
          jumătate profesor, jumătate student, și pare că ai două conturi. */
       try {
-        const { modVizualizare, setModVizualizare } = await import(`${RADACINA}/js/auth.js?v=34`);
+        const { modVizualizare, setModVizualizare } = await import(`${RADACINA}/js/auth.js?v=35`);
         if (modVizualizare() === "student") setModVizualizare("profesor");
       } catch {}
       zona.innerHTML = `<span class="pred-cine">${p.nume || p.email || ""}</span>

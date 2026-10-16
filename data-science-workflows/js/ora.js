@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=34";
-import { RADACINA } from "./curs.js?v=34";
+import { sb } from "./auth.js?v=35";
+import { RADACINA } from "./curs.js?v=35";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -110,6 +110,34 @@ export const intra       = (cod, cheie) =>
 /** Ce trebuie să știe pagina lecției: e ora pornită, în ce mod, la ce slide. */
 export const acum = capitol => cheama("ora_acum", { p_capitol:capitol });
 
+/* --- ce lecții se văd ------------------------------------------------------
+   Studentul vede doar lecțiile pe care le-ai predat deja. Nu e o chestiune de
+   secret, e una de ordine: cursul se desfășoară în timp, iar opt lecții puse
+   toate deodată în față, dintre care trei sunt schelete, spun „ai rămas în
+   urmă" cuiva care e exact la zi. */
+
+/** Capitolele care au avut cel puțin o ședință, sau `null` dacă nu pot afla.
+
+    `null` înseamnă „nu filtra". Dacă baza nu răspunde, sau cine se uită nu e
+    autentificat, se vede tot cursul. O pagină goală din cauza rețelei ar fi
+    mai rea decât o lecție văzută prea devreme. */
+export async function predate() {
+  try {
+    const { data, error } = await sb.from("sedinte").select("capitol");
+    if (error) return null;
+    return new Set((data || []).map(r => r.capitol));
+  } catch { return null; }
+}
+
+/** Lecțiile pe care are voie să le vadă cine se uită acum. Profesorul le vede
+    pe toate; studentul, doar pe cele predate. */
+export async function lectiiVizibile(lectii, profesor) {
+  if (profesor) return lectii;
+  const p = await predate();
+  if (!p) return lectii;
+  return lectii.filter(l => p.has("c" + l.nr));
+}
+
 /* --- harta slide-urilor --------------------------------------------------- */
 
 const harti = new Map();
@@ -118,7 +146,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=34`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=35`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

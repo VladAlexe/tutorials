@@ -40,7 +40,7 @@ export function sedintaAcum(){ return sedinta; }
 
 async function autentificare(){
   if (modul !== null) return modul;
-  try { modul = await import("./auth.js?v=34"); }
+  try { modul = await import("./auth.js?v=35"); }
   catch { modul = false; }
   return modul;
 }
@@ -95,10 +95,16 @@ export async function salveazaCod({ exercitiuId, cod, trecut }){
 }
 
 /** Răspunsurile deja date la această lecție, ca să nu reîntrebăm. */
-export async function raspunsuriDate(capitol){
+/** La care întrebări din lecție a mai răspuns cândva. Doar id-urile.
+
+    Înainte exista `raspunsuriDate`, care aducea și ce a ales, și dacă a
+    nimerit, ca să le pună înapoi pe ecran. Asta strica ora: veneau la clasă și
+    vedeau deja bifat de acasă. Acum fiecare deschidere a lecției e o încercare
+    nouă, iar din bază se află doar că a mai trecut pe aici. */
+export async function aMaiRaspuns(capitol){
   const c = await cine();
-  if (!c) return new Map();
+  if (!c) return new Set();
   const { data } = await c.sb.from("raspunsuri")
-    .select("intrebare_id, raspuns, corect").eq("capitol", capitol);
-  return new Map((data||[]).map(r => [r.intrebare_id, r]));
+    .select("intrebare_id").eq("capitol", capitol);
+  return new Set((data||[]).map(r => r.intrebare_id));
 }

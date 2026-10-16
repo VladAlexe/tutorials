@@ -12,15 +12,22 @@
 
    data-corect e indexul variantei corecte, de la 0.
 
-   Pornește în două timpi, și asta e important la clasă: întâi restaurează din
-   browser, imediat, fără rețea; apoi, în fundal, aduce din baza de date ce s-a
-   răspuns de pe alt calculator. Dacă rețeaua e lentă, lecția nu așteaptă.
+   FIECARE DESCHIDERE A LECȚIEI E O ÎNCERCARE NOUĂ. Pagina pornește curată.
+
+   Înainte restaura răspunsurile, din browser și din bază, și asta strica exact
+   lucrul pentru care există ora: veneau la clasă, vedeau deja bifat de acasă,
+   iar întrebarea live nu mai măsura nimic. Acum nu se restaurează nimic.
+
+   Istoricul nu se pierde: fiecare răspuns e un rând nou în `raspunsuri`, și
+   din el se face nota (în oră întreg, acasă jumătate, se ia cel mai bun).
+   Singurul lucru care rămâne pe ecran e o linie cenușie la întrebările la care
+   a mai răspuns altă dată, fără să spună ce a ales sau dacă a nimerit.
 
    Pune clasa .raspuns pe element și trimite evenimentul „verif:raspuns",
    de care se folosește rulatorul de slide-uri ca să deschidă poarta.
    =========================================================================== */
 
-import { salveazaRaspuns, raspunsuriDate } from "./colectare.js?v=34";
+import { salveazaRaspuns, aMaiRaspuns } from "./colectare.js?v=35";
 
 const CSS = `
 .verif{background:var(--panza);border:1px solid var(--linie);border-radius:11px;
@@ -47,20 +54,6 @@ const CSS = `
 .verif__stare.vazut{display:block}
 `;
 
-const cheieLocal = capitol => `dsw.raspunsuri.${capitol}`;
-
-function citesteLocal(capitol){
-  try { return JSON.parse(localStorage.getItem(cheieLocal(capitol)) || "{}"); }
-  catch { return {}; }
-}
-function scrieLocal(capitol, id, raspuns){
-  try {
-    const x = citesteLocal(capitol);
-    x[id] = raspuns;
-    localStorage.setItem(cheieLocal(capitol), JSON.stringify(x));
-  } catch { /* fără memorie locală, verificarea merge la fel */ }
-}
-
 export function porneste(capitol){
   const toate = [...document.querySelectorAll(".verif")];
   if (!toate.length) return;
@@ -69,8 +62,7 @@ export function porneste(capitol){
   stil.textContent = CSS;
   document.head.appendChild(stil);
 
-  const local = citesteLocal(capitol);
-  const comenzi = new Map();   /* id -> funcția care afișează un răspuns */
+  const comenzi = new Map();   /* id -> funcția care arată o linie de stare */
 
   for (const v of toate){
     const id      = v.dataset.id;
@@ -106,11 +98,8 @@ export function porneste(capitol){
         detail:{ id, capitol, raspuns:ales, corect:(ales === corect) }
       }));
     };
-    comenzi.set(id, arata);
-
     optiuni.forEach(b => b.addEventListener("click", async () => {
       const ales = +b.dataset.i;
-      scrieLocal(capitol, id, ales);
       arata(ales, null);
       const ok = await salveazaRaspuns({
         intrebareId:id, capitol, raspuns:ales, corect:(ales === corect)
@@ -120,17 +109,19 @@ export function porneste(capitol){
       stare.classList.add("vazut");
     }));
 
-    /* timpul 1: ce s-a răspuns pe calculatorul ăsta, fără să aștepte nimic */
-    if (id in local) arata(local[id], null);
+    /* Nimic restaurat: întrebarea pornește deschisă, de fiecare dată.
+       Singurul lucru pe care îl poate afla din fundal e că a mai trecut pe
+       aici, fără ce a ales și fără verdict. */
+    comenzi.set(id, () => {
+      if (v.classList.contains("raspuns")) return;
+      stare.textContent = "Ai mai răspuns la asta, altă dată.";
+      stare.classList.add("vazut");
+    });
   }
 
-  /* timpul 2: ce s-a răspuns de pe alt calculator, când ajunge răspunsul */
-  raspunsuriDate(capitol).then(dinBaza => {
-    dinBaza.forEach((r, id) => {
-      const f = comenzi.get(id);
-      if (!f) return;
-      scrieLocal(capitol, id, r.raspuns);
-      f(r.raspuns, "Răspuns înregistrat.");
-    });
-  }).catch(() => { /* fără baza de date, rămâne ce e în browser */ });
+  /* în fundal: la care întrebări a mai răspuns cândva. Doar atât, fără ce a
+     ales și fără verdict. Dacă a răspuns deja acum, nu suprascriem. */
+  aMaiRaspuns(capitol).then(vazute => {
+    vazute.forEach(id => comenzi.get(id)?.());
+  }).catch(() => { /* fără bază, întrebarea arată pur și simplu curată */ });
 }
