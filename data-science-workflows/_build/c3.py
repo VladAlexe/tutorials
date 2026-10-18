@@ -19,6 +19,19 @@ Rulare:  python _build/c3.py
 
 from comun import Lectie, ix, verif, tabel, nota
 
+def templu(acoperis, stalpi, baza, et_sus="Întrebarea"):
+    """Un cadru teoretic desenat ca templu: literatura e temelia, pilonii
+    sunt conceptele cu datele lor, iar întrebarea stă deasupra, pe toți."""
+    st = "".join(
+        f'<div class="pil__s"><div class="pil__n">{n}</div>'
+        f'<div class="pil__d">{d}</div><div class="pil__r">{r}</div></div>'
+        for n, d, r in stalpi)
+    return (f'<div class="pil" style="--n:{len(stalpi)}">'
+            f'<div class="pil__acoperis"><span>{et_sus}</span><b>{acoperis}</b></div>'
+            f'<div class="pil__stalpi">{st}</div>'
+            f'<div class="pil__baza"><span>temelia</span>{baza}</div></div>')
+
+
 L = Lectie(3, "c3-versionare-git", "Versionare și colaborare cu Git",
            "Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează "
            "o echipă fără să se calce, și cum se încadrează teoretic un proiect.")
@@ -35,7 +48,7 @@ AGENDA = [
     ("GitHub", "azi", "Legarea depozitului local de cel de pe internet."),
     ("Lucrul în echipă", "azi", "Ramuri, pull request, conflicte."),
     ("Încadrarea teoretică", "azi", "De la o grămadă de date la o întrebare de cercetare."),
-    ("Explorarea inițială", "azi", "Ce te uiți prima dată, în datele colectate săptămâna trecută."),
+    ("Explorarea inițială", "azi", "Prima privire peste migrația colectată săptămâna trecută."),
 ]
 
 sl("s1", "Cursul", "Despre ce e ora de azi",
@@ -63,7 +76,7 @@ sl("s2", "Cursul", "Unde ai rămas",
    "<h2>De la cursul trecut</h2>"
    "<ul>"
    "<li>un script care cere date de la un API</li>"
-   "<li>un fișier în <code>date/brute/</code></li>"
+   "<li><code>migratie.csv</code> și indicatorii, în <code>date/brute/</code></li>"
    "<li>amândouă, deocamdată, doar pe laptopul tău</li>"
    "</ul>"
    "<p>Exact asta reparăm azi.</p>"
@@ -190,16 +203,7 @@ sl("s5", "Ce face Git", "Verificare",
             "Doar <code>git status</code>"],
            "Tot ce ține de istoricul local. Internetul îți trebuie abia la "
            "<code>push</code> și <code>pull</code>, adică exact la cele două "
-           "comenzi care vorbesc cu GitHub.")
-   + verif("c3-v3", 0,
-           "Unde stă istoria proiectului tău, pe laptop?",
-           ["Într-un dosar ascuns, <code>.git</code>, lângă fișiere",
-            "În cloud, Git o descarcă la nevoie",
-            "În fiecare fișier, la început",
-            "Într-un program separat, instalat cu Git"],
-           "În <code>.git</code>. Dacă ștergi dosarul ăla, ștergi istoria și "
-           "rămâi cu fișierele așa cum sunt acum. Dacă copiezi tot dosarul "
-           "proiectului pe un stick, copiezi și istoria."))
+           "comenzi care vorbesc cu GitHub."))
 
 
 # ===========================================================================
@@ -313,9 +317,9 @@ sl("s8", "Primii pași", "Primul commit",
        "linii": [
            "git init",
            "git status                      # ce vede Git",
-           "git add colectare/banca_mondiala.py",
+           "git add colectare/migratie.py",
            "git status                      # acum e in pregatire",
-           "git commit -m \"colectare de la Banca Mondiala\"",
+           "git commit -m \"colectare migratie, Eurostat migr_pop1ctz\"",
            "git log --oneline               # a ramas scris"],
        "explicatie": "<code>git status</code> apare de două ori pentru că e "
                      "comanda pe care o dai cel mai des: o dată ca să vezi ce "
@@ -324,7 +328,7 @@ sl("s8", "Primii pași", "Primul commit",
    + verif("c3-v5", 1,
            "Ce e un mesaj bun de commit?",
            ["„update”",
-            "„colectare de la Banca Mondiala, cu paginare”",
+            "„colectare migratie, Eurostat migr_pop1ctz, anul 2024”",
             "„am lucrat azi”",
             "„fix”"],
            "Unul care spune ce s-a schimbat și de ce, destul cât să nu fie "
@@ -336,9 +340,9 @@ sl("s8", "Primii pași", "Primul commit",
    "<p>În practică, o zi de lucru arată așa:</p>"
    "<pre><code><span class=\"c\"># unde sunt?</span>\ngit status\n\n"
    "<span class=\"c\"># aleg ce intra in commit-ul asta</span>\n"
-   "git add colectare/banca_mondiala.py\n\n"
+   "git add colectare/migratie.py\n\n"
    "<span class=\"c\"># il scriu in istoric, cu un mesaj care spune ceva</span>\n"
-   "git commit -m \"colectare de la Banca Mondiala, cu paginare\"\n\n"
+   "git commit -m \"colectare migratie, Eurostat migr_pop1ctz\"\n\n"
    "<span class=\"c\"># il trimit colegilor</span>\ngit push</code></pre>"
    + nota("Cât de des faci commit",
           "Mai des decât crezi. Un commit nu e o livrare, e un punct la care "
@@ -350,9 +354,9 @@ sl("s8", "Primii pași", "Primul commit",
        "linii": [
            "git init",
            "git status                      # ce vede Git",
-           "git add colectare/banca_mondiala.py",
+           "git add colectare/migratie.py",
            "git status                      # acum e in pregatire",
-           "git commit -m \"colectare de la Banca Mondiala\"",
+           "git commit -m \"colectare migratie, Eurostat migr_pop1ctz\"",
            "git log --oneline               # a ramas scris"],
        "explicatie": "<code>git status</code> e comanda pe care o dai cel mai des."}))
 
@@ -478,22 +482,9 @@ sl("s12", "GitHub", "Drumul complet",
            "git remote add origin <adresa>",
            "git push -u origin main"],
        "explicatie": "<code>.gitignore</code> se scrie înainte de primul "
-                     "<code>git add .</code>, nu după. Dacă-l scrii după, "
-                     "fișierele au intrat deja în pregătire și "
-                     "<code>.gitignore</code> nu le mai scoate."})
-   + verif("c3-v7", 0,
-           "De ce se creează depozitul de pe GitHub gol, fără README?",
-           ["Ca să nu apară un conflict la prima trimitere",
-            "Ca să ocupe mai puțin",
-            "Nu contează, e același lucru",
-            "Ca să fie privat"],
-           "Pentru că un README creat pe GitHub e un commit pe care "
-           "depozitul tău local nu-l are. La primul push, Git refuză, și "
-           "primești un mesaj despre istorii fără legătură. Se rezolvă, dar "
-           "e un sfert de oră pierdut la prima oră de Git."))
-
-sl("s13", "GitHub", "Verificare",
-   "<h2>Ce s-a întâmplat de fapt</h2>"
+                     "<code>git add .</code>, nu după. Iar depozitul de pe "
+                     "GitHub se face gol: un README creat acolo e un commit pe "
+                     "care laptopul tău nu-l are, și primul push e refuzat."})
    + verif("c3-v8", 2,
            "Ai făcut <code>git commit</code> dar nu <code>git push</code>. "
            "Ce vede colegul tău?",
@@ -613,12 +604,15 @@ sl("s15", "În echipă", "Pull request și conflicte",
 
 sl("s16", "În echipă", "Regulile voastre",
    "<h2>Patru reguli, pentru semestrul ăsta</h2>"
-   "<ol>"
-   "<li><code>git pull</code> înainte să începi, de fiecare dată</li>"
-   "<li>o ramură pentru fiecare lucru; <code>main</code> merge întotdeauna</li>"
-   "<li>mesaje de commit care spun ce s-a schimbat</li>"
-   "<li>niciun secret și niciun fișier uriaș în depozit</li>"
-   "</ol>"
+   + '<div class="reg">'
+   + "".join(f'<div class="reg__c"><span class="reg__n">{i}</span><b>{t}</b><p>{d}</p></div>'
+             for i, (t, d) in enumerate([
+                 ("<code>git pull</code> întâi", "înainte să începi, de fiecare dată"),
+                 ("o ramură pe lucru", "<code>main</code> merge întotdeauna"),
+                 ("mesaje care spun ceva", "ce s-a schimbat, nu „update”"),
+                 ("nimic secret, nimic uriaș", "parolele și datele mari rămân afară"),
+             ], 1))
+   + "</div>"
    + nota("Cine ce face",
           "Scrieți în <code>README.md</code> cine răspunde de ce: colectare, "
           "curățare, analiză, raport. Nu ca să vă împărțiți vina, ci ca să "
@@ -660,28 +654,11 @@ PILONI = [
 
 sl("s18", "Cadrul teoretic", "Un exemplu lucrat",
    "<h2>Tranzițiile energetice</h2>"
-   "<p>Literatura despre tranziții energetice și cea din economia energiei "
-   "converg asupra aceleiași idei: traiectoriile energetice ale țărilor sunt "
-   "modelate de trei dimensiuni care revin.</p>"
-   + ix("flux", "Drumul de la literatură la întrebare",
-        {"titlu": "Apasă „Urmează drumul”",
-         "intro": "Patru pași, în ordinea asta. Sărirea peste al doilea e "
-                  "greșeala obișnuită.",
-         "buton": "Urmează drumul",
-         "dus": "de la literatură spre întrebare",
-         "intors": "și înapoi: întrebarea verifică dacă ai datele",
-         "gata": "dacă drumul se închide, cadrul ține",
-         "statii": [
-             {"n": "Literatura", "et": "ce spune domeniul", "ic": "📚",
-              "d": "Mai mulți autori ajung la aceeași structură. Nu o alegi tu, o găsești."},
-             {"n": "Pilonii", "et": "concepte", "ic": "🏛",
-              "d": "Dimensiunile care revin: economie, instituții, sistem energetic."},
-             {"n": "Sursele", "et": "date concrete", "ic": "🗂",
-              "d": "Fiecare pilon are un indicator măsurabil, dintr-o sursă anume."},
-             {"n": "Întrebările", "et": "ce testezi", "ic": "❓",
-              "d": "Leagă doi piloni și se pot infirma cu datele din al treilea."}]})
-   + tabel(["Pilon", "Date și sursă", "Rol teoretic"],
-           [[n, u, d] for n, u, d in PILONI])
+   "<p>Literatura găsește trei dimensiuni care revin. Ele devin pilonii; "
+   "întrebarea stă pe toți trei.</p>"
+   + templu("Cum diferă traiectoriile energetice ale țărilor, și de ce?",
+            [(n, u, d.split(".")[0] + ".") for n, u, d in PILONI],
+            "literatura despre tranziții energetice și economia energiei")
    + "<h3>Întrebările care ies din cadru</h3>"
    + "<ol>"
      "<li>Țările cu PIB pe locuitor mai mare reduc mai repede cărbunele și "
@@ -708,6 +685,9 @@ sl("s18", "Cadrul teoretic", "Un exemplu lucrat",
    "<p>Punctul de plecare e literatura: mai mulți autori, care studiază "
    "tranzițiile energetice și economia energiei, ajung la aceeași structură în "
    "trei dimensiuni. Nu e o alegere a cercetătorului, e ce spune domeniul.</p>"
+   + templu("Cum diferă traiectoriile energetice ale țărilor, și de ce?",
+            [(n, u, d.split(".")[0] + ".") for n, u, d in PILONI],
+            "literatura despre tranziții energetice și economia energiei")
    + tabel(["Pilon", "Date și sursă", "Rol teoretic"],
            [[n, u, d] for n, u, d in PILONI])
    + "<p>Abia după ce există tabelul ăsta se pot scrie întrebările, și fiecare "
@@ -733,17 +713,46 @@ sl("s18", "Cadrul teoretic", "Un exemplu lucrat",
             "Au fost puse și de alții înainte"],
            "Ies dintr-un cadru și se pot infirma."))
 
-sl("s19", "Cadrul teoretic", "Cadrul vostru",
+PILONI_NOI = [
+    ("Legăturile", "SCI, Meta: perechi de țări, regiuni, județe",
+     "Cine cu cine e legat, și cât de tare."),
+    ("Oamenii", "Eurostat migr_pop1ctz: cetățeni pe țări",
+     "Pe unde au plecat oamenii care țin legăturile."),
+    ("Locul", "GISCO: distanță, graniță; Eurostat: PIB, populație",
+     "Ce explică legăturile fără nicio migrație."),
+]
+
+sl("s19", "Cadrul teoretic", "Cadrul nostru",
    "<h2>Aceeași formă, pe datele noastre</h2>"
-   "<p>Proiectul nostru are și el piloni. Ai doi deja; al treilea e ce aduceți "
-   "voi.</p>"
-   + tabel(["Pilon", "Date", "Ce ar putea explica"], [
-       ["Legătura socială", "SCI: perechi de locuri", "cine cu cine e legat, și cât de tare"],
-       ["Context economic", "~Banca Mondială, Eurostat", "de ce unele locuri sunt mai legate"],
-       ["Al vostru", "ce colectați voi", "partea pe care o aduceți la masă"],
-   ])
-   + "<p class=\"cheie\">Distanța explică mult din legătura socială. "
-     "Întrebarea interesantă începe de la ce rămâne neexplicat.</p>")
+   + templu("Cât din legăturile dintre locuri se explică prin oamenii care "
+            "au migrat între ele?", PILONI_NOI,
+            "sistemele migratorii, rețelele de migranți, Bailey și colegii (2018) despre SCI")
+   + "<p class=\"cheie\">Distanța explică mult. Migrația, încă ceva. "
+     "Întrebarea interesantă e ce rămâne după amândouă.</p>",
+   manual=
+   "<h2>Cadrul nostru: legături și migrație</h2>"
+   "<p>Aceeași formă ca la tranzițiile energetice, pe datele cursului. "
+   "Temelia e literatura despre sistemele migratorii: locurile legate prin "
+   "migrație rămân legate și prin informație, bani și vizite, iar rețelele "
+   "de migranți fac drumul mai ușor pentru cei care vin după. Indicele SCI "
+   "ne lasă să vedem o parte din legăturile astea, măsurate direct.</p>"
+   + templu("Cât din legăturile dintre locuri se explică prin oamenii care "
+            "au migrat între ele?", PILONI_NOI,
+            "sistemele migratorii, rețelele de migranți, Bailey și colegii (2018) despre SCI")
+   + "<h3>Întrebările care ies din cadru</h3>"
+   "<ol>"
+   "<li><em>Migrația:</em> perechile de țări cu mai mulți migranți sunt mai "
+   "legate, la aceeași distanță?</li>"
+   "<li><em>Istoria:</em> granițele vechi și minoritățile, cum e cazul "
+   "României cu Ungaria, dau legături pe care migrația recentă nu le "
+   "explică?</li>"
+   "<li><em>Ce rămâne:</em> unde sunt legăturile mai puternice decât prezic "
+   "distanța și migrația împreună, și ce au în comun locurile acelea?</li>"
+   "</ol>"
+   + nota("Unde intrați voi",
+          "Fiecare echipă alege un colț din templu: un coridor, de exemplu "
+          "România și Italia, sau o țară privită pe regiuni. Puteți adăuga un "
+          "pilon, de exemplu limba sau religia, dacă îl puteți măsura."))
 
 sl("s20", "Cadrul teoretic", "Scrieți întrebarea voastră",
    "<h2>Întrebarea echipei</h2>"
@@ -752,9 +761,9 @@ sl("s20", "Cadrul teoretic", "Scrieți întrebarea voastră",
        "id": "c3-intrebare", "tip": "intrebare", "minim": 60,
        "sarcina": "Scrie întrebarea la care vrea să răspundă echipa ta, și "
                   "spune din ce pilon vine partea pe care o aduceți voi.",
-       "exemplu": "De exemplu: județele care trimit mulți navetiști spre Cluj "
-                  "sunt și cele mai legate social de Cluj, sau legătura socială "
-                  "urmează altă logică decât naveta?",
+       "exemplu": "De exemplu: regiunile din Italia cu mai mulți români sunt "
+                  "și cele mai legate de România, sau legătura urmează altă "
+                  "logică decât migrația?",
        "multumesc": "O citesc înainte de cursul următor și vă scriu ce cred."}))
 
 
@@ -769,7 +778,7 @@ sl("s21", "Datele", "Explorarea inițială",
        "id": "c3-cod-explorare", "fisier": "explorare.py",
        "sarcina": "Completează primele patru lucruri pe care le ceri de la un tabel nou.",
        "cod": "import pandas as pd\n\n"
-              "d = pd.read_csv(\"date/brute/populatie_ro.csv\")\n\n"
+              "d = pd.read_csv(\"date/brute/migratie.csv\")\n\n"
               "# cate randuri si cate coloane\nprint(d.{{1}})\n\n"
               "# ce coloane, ce tipuri, cate valori lipsesc\nd.{{2}}()\n\n"
               "# cum arata primele randuri\nprint(d.head())\n\n"
@@ -779,7 +788,8 @@ sl("s21", "Datele", "Explorarea inițială",
            "2": {"ok": ["info"], "ajutor": "metoda"},
            "3": {"ok": ["sum"], "ajutor": "metoda"}},
        "laBine": "Cele patru se dau în ordinea asta, de fiecare dată, pe orice "
-                 "tabel nou. E o rutină, nu o decizie.",
+                 "tabel nou. La migrație vei vedea multe valori lipsă: țările "
+                 "care nu raportează. Le tratăm la cursul 4.",
        "laRau": "Prima e un atribut, deci fără paranteze. Celelalte sunt metode.",
        "explicatie": "<code>info()</code> e cea mai densă: îți dă dintr-o dată "
                      "numărul de rânduri, tipurile coloanelor și câte valori "
@@ -798,7 +808,7 @@ sl("s22", "Proiectul tău", "Fă-ți depozitul, acum",
        ["1", "unul din echipă face depozitul pe GitHub și îi adaugă pe ceilalți"],
        ["2", "fiecare îl clonează la el"],
        ["3", "scrieți <code>.gitignore</code> înainte de primul <code>add</code>"],
-       ["4", "urcați scriptul de colectare de săptămâna trecută"],
+       ["4", "urcați scriptele de colectare de săptămâna trecută, cu migrația"],
        ["5", "în <code>README.md</code>: întrebarea și cine ce face"],
    ])
    + ix("dovada", "Dovada", {
@@ -831,7 +841,8 @@ sl("s23", "Mai departe", "Până data viitoare",
    "<h2>Cursul 4: curățarea datelor</h2>"
    "<ul>"
    "<li>versionare și colaborare, în practică, pe depozitul vostru</li>"
-   "<li>curățarea datelor: lipsuri, duplicate, tipuri greșite</li>"
+   "<li>curățarea datelor: lipsuri, duplicate, coduri care încurcă (EL, NA)</li>"
+   "<li>SCI și migrația, puse în același tabel</li>"
    "<li>explorarea inițială, mai în adâncime</li>"
    "</ul>"
    + nota("De făcut până atunci",

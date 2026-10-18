@@ -1,7 +1,7 @@
 {
  "capitol": "c5",
- "total": 21,
- "sarcini": 24,
+ "total": 20,
+ "sarcini": 22,
  "slide": [
   {
    "nr": 1,
@@ -291,38 +291,6 @@
   },
   {
    "nr": 18,
-   "id": "s18",
-   "grup": "Baze de date",
-   "titlu": "Verificare",
-   "sarcini": [
-    {
-     "id": "c5-v10",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Ai nevoie de toate țările din tabelul tău, plus atributele care există, fără să pierzi nimic. Ce scrii?",
-     "optiuni": [
-      "pd.concat([a, b])",
-      "pd.merge(a, b, on=\"cod\")",
-      "pd.merge(a, b, on=\"cod\", how=\"left\")",
-      "a.join(b, how=\"inner\")"
-     ]
-    },
-    {
-     "id": "c5-v11",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "DATABASE_URL a ajuns într-un commit, pe GitHub. Ce faci întâi?",
-     "optiuni": [
-      "Ștergi linia și faci un commit nou",
-      "Schimbi parola din Neon",
-      "Faci depozitul privat",
-      "Ștergi depozitul"
-     ]
-    }
-   ]
-  },
-  {
-   "nr": 19,
    "id": "s19",
    "grup": "Proiectul tău",
    "titlu": "Fă tabelul final",
@@ -334,7 +302,7 @@
    ]
   },
   {
-   "nr": 20,
+   "nr": 19,
    "id": "s20",
    "grup": "Proiectul tău",
    "titlu": "Unitatea voastră",
@@ -346,7 +314,7 @@
    ]
   },
   {
-   "nr": 21,
+   "nr": 20,
    "id": "s21",
    "grup": "Mai departe",
    "titlu": "Până data viitoare",

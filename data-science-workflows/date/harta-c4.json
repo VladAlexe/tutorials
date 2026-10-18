@@ -1,7 +1,7 @@
 {
  "capitol": "c4",
  "total": 21,
- "sarcini": 22,
+ "sarcini": 21,
  "slide": [
   {
    "nr": 1,
@@ -161,7 +161,7 @@
    "nr": 10,
    "id": "s10",
    "grup": "Curățarea",
-   "titlu": "Aceeași categorie, scrisă în patru feluri",
+   "titlu": "Codurile care mint",
    "sarcini": [
     {
      "id": "c4-cod-standard",
@@ -178,43 +178,23 @@
     {
      "id": "c4-cod-duplicate",
      "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 12,
-   "id": "s12",
-   "grup": "Curățarea",
-   "titlu": "Verificare",
-   "sarcini": [
+    },
     {
      "id": "c4-v7",
      "fel": "verificare",
      "corect": 1,
-     "q": "Ai 31.684 de rânduri. După drop_duplicates() ai 31.100. Ce faci întâi?",
+     "q": "După drop_duplicates() ai cu 584 de rânduri mai puține. Ce faci întâi?",
      "optiuni": [
       "Mergi mai departe, s-au curățat",
       "Afli de unde vin cele 584, înainte să le arunci",
       "Le pui la loc",
       "Repeți colectarea"
      ]
-    },
-    {
-     "id": "c4-v8",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Ce face d[\"x\"].str.strip() dacă în coloană sunt și numere?",
-     "optiuni": [
-      "Le lasă în pace",
-      "Le transformă în text",
-      "Dă NaN pentru ele",
-      "Dă eroare"
-     ]
     }
    ]
   },
   {
-   "nr": 13,
+   "nr": 12,
    "id": "s13",
    "grup": "Lipsuri",
    "titlu": "Ce faci cu ce lipsește",
@@ -238,7 +218,7 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 13,
    "id": "s14",
    "grup": "Lipsuri",
    "titlu": "Lipsurile, în cod",
@@ -250,7 +230,7 @@
    ]
   },
   {
-   "nr": 15,
+   "nr": 14,
    "id": "s15",
    "grup": "Lipsuri",
    "titlu": "Valorile extreme",
@@ -262,7 +242,7 @@
    ]
   },
   {
-   "nr": 16,
+   "nr": 15,
    "id": "s16",
    "grup": "Transformări",
    "titlu": "Lung sau lat",
@@ -272,6 +252,13 @@
      "fel": "cod"
     }
    ]
+  },
+  {
+   "nr": 16,
+   "id": "s16b",
+   "grup": "Transformări",
+   "titlu": "Două direcții, un rând",
+   "sarcini": []
   },
   {
    "nr": 17,

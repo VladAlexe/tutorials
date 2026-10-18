@@ -43,7 +43,8 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "imbinare": "Încearcă felurile", "tabel": "Tabel",
        "coloane": "Declară tipul", "desfa": "Vezi cum se desface",
        "drum": "Schema fluxului", "semestru": "Cronologia",
-       "anatomie": "Pe bucăți", "indice": "Ce măsoară"}
+       "anatomie": "Pe bucăți", "indice": "Ce măsoară",
+       "harta": "Harta, date reale", "cub": "Vezi cum se desface", "comanda": "Vezi cum circulă", "directii": "Vezi cum se desface", "histo": "Comută", "nor": "Explorează", "axa": "Comută"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 
@@ -111,6 +112,7 @@ CAP = """<!DOCTYPE html>
 <link rel="stylesheet" href="../../css/interactiv.css{v}">
 <link rel="stylesheet" href="../../css/grafice.css{v}">
 <link rel="stylesheet" href="../../css/exercitii.css{v}">
+<link rel="stylesheet" href="../../css/explorator.css{v}">
 <script src="../../js/tema.js{v}"></script>
 </head>
 <body{corp}>

@@ -123,6 +123,10 @@ sl("s1", "Cursul", "Despre ce e cursul",
    "<p>Unsprezece teme, împărțite pe opt ședințe. Fiecare ședință adaugă o "
    "piesă la proiectul vostru, iar la final predați un depozit de cod, nu un "
    "fișier.</p>"
+   "<p>Tot semestrul lucrăm pe aceeași întrebare, ca într-o cercetare "
+   "adevărată: cât de legate sunt locurile Europei pe Facebook, și cât din "
+   "asta se explică prin oamenii care au migrat între ele. Eu o duc până la "
+   "un articol, voi o duceți până la proiectul echipei.</p>"
    + ix("semestru", "Temele semestrului", CRONOLOGIE)
    + "<h3>Agenda primei ore</h3>"
    "<ol><li>Evaluarea cunoștințelor și a așteptărilor</li>"
@@ -350,12 +354,12 @@ PUNCTAJ = {
 }
 
 DIRECTII = [
-    ("Distanță și graniță", "Cât din conectivitate se explică prin apropiere geografică, și unde se rupe regula."),
-    ("Diaspora", "Migrație față de conectivitate: unde coincid și unde nu."),
-    ("Minorități și istorie", "Granițe vechi, regiuni istorice, comunități lingvistice."),
-    ("Orașe mari", "Centrele universitare și bazinele lor de atracție."),
-    ("Dezvoltare economică", "Conectivitate față de PIB regional, educație, urbanizare."),
-    ("Europa", "Aceleași întrebări la nivel de țară sau regiune europeană."),
+    ("Coridoare de muncă", "România cu Italia sau Spania, Polonia cu Germania, Bulgaria cu Spania. Unde au plecat oamenii, și cât de legați au rămas."),
+    ("Minorități și granițe vechi", "România cu Ungaria, Slovacia cu Ungaria, Austria cu Cehia. Legături care nu vin din migrația recentă."),
+    ("Vecinii din est", "Moldova și Ucraina: legături puternice, dar cu date de migrație puține. Ce se vede doar în SCI?"),
+    ("Diaspora pe județe", "Care județ e legat de care regiune din Italia, Spania sau Germania, și de ce tocmai de ea."),
+    ("Orașe și bani", "Capitalele, centrele universitare și PIB-ul regional: cine are legături departe și cine doar aproape."),
+    ("O țară, pe regiuni", "Alegeți o țară și o desfaceți pe județe: unde e legată de restul Europei, și unde nu."),
 ]
 
 # --------------------------------------------------------------------------
@@ -390,12 +394,9 @@ sl("s5", "Proiectul", "Ce măsurăm, de fapt",
    + ix("indice", "Probabilitate, nu numărătoare", INDICE)
    + nota("Instantaneul pe care lucrăm",
           "25 ianuarie 2026, 178 de țări, până la nivel de județ în Europa. "
-          'Harta interactivă e la <a class="leg" '
-          'href="https://social-connectedness.org/explore" target="_blank" '
-          'rel="noopener">social-connectedness.org/explore</a>, iar fișierele '
-          'se iau de pe <a class="leg" '
+          'Fișierele se iau de pe <a class="leg" '
           'href="https://data.humdata.org/dataset/social-connectedness-index" '
-          'target="_blank" rel="noopener">HDX</a>.'),
+          'target="_blank" rel="noopener">HDX</a>. Harta e pe slide-ul următor.'),
    manual=
    "<h2>Social Connectedness Index</h2>"
    "<p>Indicele e produs de Data for Good at Meta din rețeaua de prietenii "
@@ -421,17 +422,119 @@ sl("s5", "Proiectul", "Ce măsurăm, de fapt",
    + nota("Instantaneul pe care lucrăm",
           "25 ianuarie 2026, 178 de țări, pe clasificările NUTS 2024, GADM 4.1 "
           "și geoBoundaries 6.0.0. E un instantaneu: nu are dimensiune "
-          "temporală, deci nimic longitudinal. Harta interactivă e la "
-          '<a class="leg" href="https://social-connectedness.org/explore" '
-          'target="_blank" rel="noopener">social-connectedness.org/explore</a>.'))
+          "temporală, deci nimic longitudinal. Harta noastră, pe județe, "
+          "regiuni și țări, e mai jos și în "
+          '<a class="leg" href="../../explorator/">Exploratorul legăturilor sociale</a>.'))
+
+
+HARTA_JUDETE = {
+    "niveluri": ["judete"], "nivel": "judete", "masura": "sci", "ales": "RO113",
+    "povesti": [
+        {"t": "Cluj", "nivel": "judete", "masura": "sci", "ales": "RO113",
+         "text": "În țară, Clujul e legat întâi de Sălaj și Bistrița-Năsăud. "
+                 "În afara ei, de Lleida și Huesca, în nord-estul Spaniei."},
+        {"t": "Harghita", "nivel": "judete", "masura": "sci", "ales": "RO124",
+         "text": "Cu Covasna, cea mai puternică legătură dintre două județe "
+                 "românești. Afară: Ungaria și, neașteptat, cantonul elvețian Thurgau."},
+        {"t": "Bihor", "nivel": "judete", "masura": "sci", "ales": "RO111",
+         "text": "Peste graniță, Hajdú-Bihar, cealaltă jumătate a vechiului "
+                 "comitat. Apoi Straubing, în Bavaria."},
+        {"t": "Suceava", "nivel": "judete", "masura": "sci", "ales": "RO215",
+         "text": "Primul partener din afară e Turnhout, în Belgia. Un singur "
+                 "județ, o singură destinație, foarte clar."},
+        {"t": "Dolj", "nivel": "judete", "masura": "sci", "ales": "RO411",
+         "text": "Districte agricole din nordul Germaniei, apoi Huelva, regiunea "
+                 "căpșunilor din sudul Spaniei. Munca sezonieră lasă urme."},
+    ],
+}
+
+HARTA_TARI = {
+    "niveluri": ["tari"], "nivel": "tari", "masura": "migr", "ales": "RO",
+    "masuri": ["migr", "sci"],
+    "povesti": [
+        {"t": "Unde trăiesc românii", "nivel": "tari", "masura": "migr", "ales": "RO",
+         "text": "Cetățeni români după țara în care locuiesc (Eurostat, 2024). "
+                 "Italia e prima, cu 1,07 milioane, apoi Germania și Spania."},
+        {"t": "Cât de legați suntem", "nivel": "tari", "masura": "sci", "ales": "RO",
+         "text": "Aceeași hartă, dar după SCI. Moldova, Austria, Germania și "
+                 "Ungaria trec în față. Italia coboară."},
+        {"t": "Polonia", "nivel": "tari", "masura": "migr", "ales": "PL",
+         "text": "Cei mai mulți polonezi trăiesc în Germania. Comută pe "
+                 "Legături: pe primul loc trece Islanda, o țară mică în care "
+                 "polonezii sunt cea mai mare comunitate străină."},
+    ],
+}
+
+sl("s5h", "Proiectul", "Harta, pe județe",
+   "<h2>Cu cine e legat județul tău?</h2>"
+   + ix("harta", "1.343 de județe din toată Europa", HARTA_JUDETE)
+   + nota("Cum se citește",
+          "Culoarea arată de câte ori e mai legat județul ales de fiecare loc "
+          "decât de partenerul lui obișnuit. Apasă pe orice județ.", True),
+   manual=
+   "<h2>Harta, pe județe</h2>"
+   "<p>Asta e harta la care ajungem. Fiecare din cele 1.343 de regiuni NUTS3 "
+   "ale Europei, pentru România chiar județele, se colorează după cât de "
+   "legată e de județul ales. Numărul din listă e un raport: de câte ori e "
+   "mai mare SCI-ul cu locul acela decât SCI-ul median al județului ales.</p>"
+   + ix("harta", "1.343 de județe din toată Europa", HARTA_JUDETE)
+   + "<p>Două lucruri sar în ochi imediat. Primul: aproape tot ce e foarte "
+   "legat e aproape, în aceeași țară. Distanța și granița sunt regula. Al "
+   "doilea: fiecare județ are, totuși, câteva locuri îndepărtate cu care e "
+   "neobișnuit de legat, și ele nu sunt aceleași pentru județe vecine. "
+   "Suceava are Belgia, Clujul are nord-estul Spaniei, Doljul are Germania "
+   "de nord și Huelva.</p>"
+   "<p>A doua observație e cea care face proiectul interesant. Hărțile astea "
+   "seamănă cu hărțile migrației, dar nu sunt hărți ale migrației: SCI-ul nu "
+   "știe cine unde locuiește. De aici întrebarea cursului: cât din legături "
+   "se explică prin oamenii care au plecat?</p>"
+   + nota("De unde vine harta",
+          "Din fișierul <code>nuts3_2024.csv</code> pe care îl veți descărca la "
+          "cursul 2, și din contururile NUTS 2024 de la Eurostat. Pe toată "
+          "Europa, cu toate nivelurile, e în "
+          '<a class="leg" href="../../explorator/">Exploratorul legăturilor sociale</a>.'))
+
+
+sl("s5m", "Proiectul", "Oameni și legături",
+   "<h2>Unde sunt românii, și unde sunt prietenii lor?</h2>"
+   + ix("harta", "Două hărți ale aceleiași Europe", HARTA_TARI)
+   + nota("Întrebarea proiectului",
+          "Migrația e o hartă a oamenilor, SCI-ul e o hartă a legăturilor. "
+          "Unde coincid, unde nu, și de ce.", True),
+   manual=
+   "<h2>Oameni și legături</h2>"
+   "<p>A doua sursă a cursului e migrația: câți cetățeni ai fiecărei țări "
+   "trăiesc în fiecare altă țară. O luăm tot prin API, de la Eurostat "
+   "(<code>migr_pop1ctz</code>), la cursul 2. Pe hartă, prima poveste arată "
+   "unde trăiesc românii, a doua arată cât de legată e România de fiecare "
+   "țară.</p>"
+   + ix("harta", "Două hărți ale aceleiași Europe", HARTA_TARI)
+   + "<p>Cele două clasamente nu se potrivesc. Italia are cei mai mulți "
+   "români, dar în SCI e abia pe locul șase. Moldova, care nu raportează "
+   "migrație către Eurostat, e prima în SCI. Austria și Ungaria sunt peste "
+   "Italia, deși au mult mai puțini români.</p>"
+   "<p>Explicațiile posibile sunt mai multe și vor fi verificate pe rând în "
+   "curs: numitorul indicelui (Italia e mare), istoria și minoritățile "
+   "(Ungaria, Moldova), distanța, vechimea migrației. Proiectul vostru "
+   "alege una dintre ele.</p>"
+   + nota("Ce date de migrație avem",
+          "Stocul de cetățeni străini, pe 1 ianuarie, pentru 24 de țări care "
+          "raportează pe țări de cetățenie. Polonia, Danemarca, Grecia, "
+          "Croația și Regatul Unit nu o fac, deci acolo harta rămâne gri. E o limită a datelor, "
+          "nu o eroare a voastră."),
+   dupa=verif("c1-v11", 2,
+              "Pe ce loc e Italia printre partenerii României, după SCI?",
+              ["primul", "al treilea", "al șaselea", "al doisprezecelea"],
+              "Al șaselea, după Moldova, Austria, Germania, Ungaria și Irlanda. "
+              "La migrație e prima. Diferența dintre cele două clasamente e "
+              "chiar întrebarea proiectului."))
 
 
 sl("s5b", "Proiectul", "Proiectul și echipele",
    "<h2>Un depozit de echipă în care se vede tot drumul</h2>"
-   "<p>Trei sau patru oameni, aceleași date, întrebări diferite. "
-   "<strong>Direcțiile de mai jos sunt sugestii</strong>, ca să vedeți ce se "
-   "poate întreba cu datele astea. Nu sunt decise, și nu e obligatoriu să "
-   "alegeți dintre ele.</p>"
+   "<p>Trei sau patru oameni, aceleași două surse, SCI și migrație, "
+   "întrebări diferite. <strong>Direcțiile sunt sugestii</strong>, nu un "
+   "meniu închis.</p>"
    + carduri(DIRECTII)
    + nota("Până data viitoare",
           "Veniți cu echipa formată și cu o idee de direcție, chiar dacă e "
@@ -452,9 +555,15 @@ sl("s5b", "Proiectul", "Proiectul și echipele",
        ["~8", "Raportul final și prezentarea"],
    ])
    + "<h3>Direcții posibile</h3>"
-   "<p>Toate pornesc din aceleași fișiere; ce se schimbă e întrebarea. Lista "
-   "nu e un meniu închis: e acolo ca să arate ce fel de întrebări suportă "
-   "datele. Dacă aveți alta, cu atât mai bine.</p>"
+   "<p>Toate pornesc din aceleași fișiere, SCI și migrație; ce se schimbă e "
+   "întrebarea. Practic, proiectele au una din două forme:</p>"
+   "<ul><li><strong>A. Un coridor.</strong> O pereche de țări, de exemplu "
+   "România și Italia, privită pe regiuni: care județe sunt legate de care "
+   "regiuni, și cât explică migrația.</li>"
+   "<li><strong>B. O țară pe regiuni.</strong> O singură țară, desfăcută pe "
+   "județe: unde e legată de restul Europei, și unde nu.</li></ul>"
+   "<p>Lista de mai jos arată ce fel de întrebări suportă datele. Dacă aveți "
+   "alta, cu atât mai bine.</p>"
    + carduri(DIRECTII)
    + "<h3>Cum se dă nota</h3>"
    "<p>Zece puncte, din trei surse.</p>"
@@ -486,6 +595,8 @@ SURSE_ACUM = [
      "Meta, prin HDX"],
     ["Geografia <strong>NUTS 2024</strong>", "poligoane, centroide",
      "exact versiunea cu care e făcut SCI-ul nostru", "Eurostat GISCO"],
+    ["<strong>Migrație</strong>, cetățeni străini", "~migr_pop1ctz",
+     "țară de cetățenie × țară de rezidență, anual", "Eurostat, prin API"],
     ["<strong>Populație și densitate</strong>", "~demo_r_pjangrp3, demo_r_d3dens",
      "la nivel de județ, anual", "Eurostat, prin API"],
     ["<strong>PIB regional</strong>", "~nama_10r_3gdp",
@@ -497,7 +608,7 @@ SURSE_ACUM = [
 ]
 
 SURSE_APOI = [
-    ["Migrație", "fluxuri și stocuri, țară cu țară", "Eurostat, ONU, INS"],
+    ["Migrație pe regiuni", "străini pe provincii, pentru un coridor", "ISTAT, INE"],
     ["Comerț bilateral", "țară cu țară, pe produs", "Eurostat Comext, UN Comtrade"],
     ["Rețeaua rutieră", "distanță și timp de drum, nu doar în linie dreaptă", "OpenStreetMap"],
     ["Relief", "munții ca barieră, ca măsură continuă", "Copernicus, GISCO"],
@@ -513,13 +624,13 @@ sl("s6", "Proiectul", "Sursele de date",
    + nota("Mai sunt",
           "Inventarul complet are mult mai multe surse, și vi-l dau când "
           "ajungem la ele. Tabelul de sus e ce ne trebuie ca să pornim: cu "
-          "atât se poate face deja o analiză serioasă.", True),
+          "atât, SCI plus migrație, se poate face deja o analiză serioasă.", True),
    manual=
    "<h2>Sursele de date</h2>"
    "<p>Un proiect de date nu începe cu toate sursele adunate, ci cu un nucleu "
    "riguros peste care se adaugă module, în funcție de întrebare. Tabelul de "
    "mai jos e nucleul: cu el se poate scrie deja un model al legăturii dintre "
-   "conectivitate și distanță.</p>"
+   "conectivitate, distanță și migrație.</p>"
    "<h3>Ce folosim de la început</h3>"
    + tabel(["Ce e", "Fișier sau cod", "Cât și la ce nivel", "De unde"],
            SURSE_ACUM)
@@ -571,6 +682,9 @@ sl("s8", "Proiectul", "Ce formă au datele",
    "<h2>Date diadice</h2>"
    "<p class=\"cheie\">Un rând nu descrie un loc. Descrie o relație între două locuri.</p>"
    + ix("matrice", "1.764 de rânduri")
+   + nota("Simetric și cu direcție",
+          "SCI România–Italia = SCI Italia–România. Dar românii din Italia "
+          "nu sunt italienii din România.", True)
    + ix("cod", "Taie o felie din matrice", {
        "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
        "sarcina": "Din 31.684 de rânduri vrei doar perechile care pleacă din "
@@ -611,6 +725,11 @@ sl("s8", "Proiectul", "Ce formă au datele",
    "<li><strong>Observațiile nu sunt independente.</strong> Cluj apare în 41 "
    "de rânduri doar pentru România. Un model care presupune independență dă "
    "erori standard prea mici.</li></ol>"
+   + nota("SCI și migrația, două feluri de perechi",
+          "SCI-ul e simetric: România cu Italia e același număr ca Italia cu "
+          "România. Migrația are direcție: românii din Italia nu sunt italienii "
+          "din România. Când le punem în același tabel, la cursul 4, trebuie "
+          "să hotărâm ce facem cu cele două direcții.")
    + ix("matrice", "1.764 de rânduri")
    + ix("cod", "Taie o felie din matrice", {
        "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,

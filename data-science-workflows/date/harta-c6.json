@@ -1,0 +1,171 @@
+{
+ "capitol": "c6",
+ "total": 14,
+ "sarcini": 7,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Despre ce e ora de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "Cursul",
+   "titlu": "Întrebările",
+   "sarcini": []
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "O variabilă",
+   "titlu": "Coada lungă",
+   "sarcini": []
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "O variabilă",
+   "titlu": "Descrierea, în cod",
+   "sarcini": [
+    {
+     "id": "c6-cod-descrie",
+     "fel": "cod"
+    },
+    {
+     "id": "c6-v1",
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Media SCI-ului e de peste două ori mai mare decât mediana. Ce îți spune asta?",
+     "optiuni": [
+      "Că datele sunt greșite",
+      "Că jumătate din perechi au SCI zero",
+      "Că o coadă de valori foarte mari trage media în sus",
+      "Nimic, media și mediana sunt de obicei diferite"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 5,
+   "id": "s5",
+   "grup": "O variabilă",
+   "titlu": "Top-uri",
+   "sarcini": []
+  },
+  {
+   "nr": 6,
+   "id": "s6",
+   "grup": "Două variabile",
+   "titlu": "Norul de puncte",
+   "sarcini": []
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "Două variabile",
+   "titlu": "Corelațiile",
+   "sarcini": [
+    {
+     "id": "c6-v2",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Migrația și SCI-ul au r = 0,70. Ce poți spune?",
+     "optiuni": [
+      "Că migrația produce legăturile",
+      "Că cele două cresc împreună; de ce, nu știm încă",
+      "Că legăturile produc migrația",
+      "Că 70% din SCI se explică prin migrație"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 8,
+   "id": "s8",
+   "grup": "Categorii",
+   "titlu": "Din numere în categorii",
+   "sarcini": []
+  },
+  {
+   "nr": 9,
+   "id": "s9",
+   "grup": "Categorii",
+   "titlu": "Grupuri comparate",
+   "sarcini": [
+    {
+     "id": "c6-v3",
+     "fel": "verificare",
+     "corect": 3,
+     "q": "Vecinii au SCI median de 5 ori mai mare. Înseamnă că granița produce legăturile?",
+     "optiuni": [
+      "Da, diferența e prea mare ca să fie altfel",
+      "Da, testul e semnificativ",
+      "Nu, pentru că sunt doar 30 de perechi",
+      "Nu neapărat: vecinii sunt și aproape, și au adesea migrație între ei"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "Harta",
+   "titlu": "Comunitățile",
+   "sarcini": []
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "Grafice care mint",
+   "titlu": "Axa tăiată",
+   "sarcini": [
+    {
+     "id": "c6-v4",
+     "fel": "verificare",
+     "corect": 0,
+     "q": "Când e acceptabil să nu pornești axa de la zero?",
+     "optiuni": [
+      "La un grafic cu linii sau cu puncte, unde contează forma, nu lungimea",
+      "La orice grafic, dacă diferențele sunt mici",
+      "Niciodată",
+      "La barele care au valori mari"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "Proiectul tău",
+   "titlu": "Explorarea voastră",
+   "sarcini": [
+    {
+     "id": "c6-dovada-eda",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s13",
+   "grup": "Proiectul tău",
+   "titlu": "Primul tipar",
+   "sarcini": [
+    {
+     "id": "c6-tipar",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "Mai departe",
+   "titlu": "Până data viitoare",
+   "sarcini": []
+  }
+ ]
+}

@@ -113,7 +113,7 @@
 
 /* --- dovada -------------------------------------------------------------- */
 
-.dov{display:grid;gap:11px;margin:0 0 14px}
+.dov{display:grid;grid-template-columns:minmax(0,1fr);gap:11px;margin:0 0 14px}
 .dov__r{border:1px solid var(--linie);border-radius:10px;padding:12px 14px;
   background:var(--panza)}
 .dov__sus{display:flex;align-items:center;gap:9px;margin-bottom:9px}

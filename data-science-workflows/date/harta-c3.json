@@ -1,7 +1,7 @@
 {
  "capitol": "c3",
- "total": 23,
- "sarcini": 23,
+ "total": 22,
+ "sarcini": 21,
  "slide": [
   {
    "nr": 1,
@@ -70,18 +70,6 @@
       "Doar să citești istoricul, nu să scrii",
       "Doar git status"
      ]
-    },
-    {
-     "id": "c3-v3",
-     "fel": "verificare",
-     "corect": 0,
-     "q": "Unde stă istoria proiectului tău, pe laptop?",
-     "optiuni": [
-      "Într-un dosar ascuns, .git, lângă fișiere",
-      "În cloud, Git o descarcă la nevoie",
-      "În fiecare fișier, la început",
-      "Într-un program separat, instalat cu Git"
-     ]
     }
    ]
   },
@@ -134,7 +122,7 @@
      "q": "Ce e un mesaj bun de commit?",
      "optiuni": [
       "„update”",
-      "„colectare de la Banca Mondiala, cu paginare”",
+      "„colectare migratie, Eurostat migr_pop1ctz, anul 2024”",
       "„am lucrat azi”",
       "„fix”"
      ]
@@ -195,26 +183,6 @@
      "fel": "cod"
     },
     {
-     "id": "c3-v7",
-     "fel": "verificare",
-     "corect": 0,
-     "q": "De ce se creează depozitul de pe GitHub gol, fără README?",
-     "optiuni": [
-      "Ca să nu apară un conflict la prima trimitere",
-      "Ca să ocupe mai puțin",
-      "Nu contează, e același lucru",
-      "Ca să fie privat"
-     ]
-    }
-   ]
-  },
-  {
-   "nr": 13,
-   "id": "s13",
-   "grup": "GitHub",
-   "titlu": "Verificare",
-   "sarcini": [
-    {
      "id": "c3-v8",
      "fel": "verificare",
      "corect": 2,
@@ -229,7 +197,7 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 13,
    "id": "s14",
    "grup": "În echipă",
    "titlu": "Ramuri",
@@ -241,7 +209,7 @@
    ]
   },
   {
-   "nr": 15,
+   "nr": 14,
    "id": "s15",
    "grup": "În echipă",
    "titlu": "Pull request și conflicte",
@@ -265,14 +233,14 @@
    ]
   },
   {
-   "nr": 16,
+   "nr": 15,
    "id": "s16",
    "grup": "În echipă",
    "titlu": "Regulile voastre",
    "sarcini": []
   },
   {
-   "nr": 17,
+   "nr": 16,
    "id": "s17",
    "grup": "Cadrul teoretic",
    "titlu": "De ce un cadru",
@@ -292,7 +260,7 @@
    ]
   },
   {
-   "nr": 18,
+   "nr": 17,
    "id": "s18",
    "grup": "Cadrul teoretic",
    "titlu": "Un exemplu lucrat",
@@ -312,14 +280,14 @@
    ]
   },
   {
-   "nr": 19,
+   "nr": 18,
    "id": "s19",
    "grup": "Cadrul teoretic",
-   "titlu": "Cadrul vostru",
+   "titlu": "Cadrul nostru",
    "sarcini": []
   },
   {
-   "nr": 20,
+   "nr": 19,
    "id": "s20",
    "grup": "Cadrul teoretic",
    "titlu": "Scrieți întrebarea voastră",
@@ -331,7 +299,7 @@
    ]
   },
   {
-   "nr": 21,
+   "nr": 20,
    "id": "s21",
    "grup": "Datele",
    "titlu": "Explorarea inițială",
@@ -343,7 +311,7 @@
    ]
   },
   {
-   "nr": 22,
+   "nr": 21,
    "id": "s22",
    "grup": "Proiectul tău",
    "titlu": "Fă-ți depozitul, acum",
@@ -355,7 +323,7 @@
    ]
   },
   {
-   "nr": 23,
+   "nr": 22,
    "id": "s23",
    "grup": "Mai departe",
    "titlu": "Până data viitoare",

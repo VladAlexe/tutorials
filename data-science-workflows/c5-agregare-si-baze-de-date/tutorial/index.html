@@ -9,12 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=36">
-<link rel="stylesheet" href="../../css/tutorial.css?v=36">
-<link rel="stylesheet" href="../../css/interactiv.css?v=36">
-<link rel="stylesheet" href="../../css/grafice.css?v=36">
-<link rel="stylesheet" href="../../css/exercitii.css?v=36">
-<script src="../../js/tema.js?v=36"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=39">
+<link rel="stylesheet" href="../../css/tutorial.css?v=39">
+<link rel="stylesheet" href="../../css/interactiv.css?v=39">
+<link rel="stylesheet" href="../../css/grafice.css?v=39">
+<link rel="stylesheet" href="../../css/exercitii.css?v=39">
+<link rel="stylesheet" href="../../css/explorator.css?v=39">
+<script src="../../js/tema.js?v=39"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 5 · Manual"></div>
@@ -23,7 +24,7 @@
   <div class="tut__cap"><span class="tut__et">Manual</span>
     <span class="tut__t">Cursul 5</span>
     <span class="tut__st">Agregare și baze de date</span></div>
-  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Despre ce e ora de azi</span></a><a href="#s2"><span class="n">2</span><span>De ce nu ajunge un fișier</span></a><div class="tut__g">Unirea tabelelor</div><a href="#s3"><span class="n">3</span><span>Două operații, nu una</span></a><a href="#s4"><span class="n">4</span><span>Ce iese din fiecare fel</span></a><a href="#s5"><span class="n">5</span><span>Îmbinarea, în cod</span></a><a href="#s6"><span class="n">6</span><span>Când rândurile se înmulțesc</span></a><a href="#s7"><span class="n">7</span><span>Când cheile nu se potrivesc</span></a><a href="#s8"><span class="n">8</span><span>Unitatea de analiză</span></a><a href="#s9"><span class="n">9</span><span>Agregarea</span></a><a href="#s10"><span class="n">10</span><span>Join pe index</span></a><div class="tut__g">Baze de date</div><a href="#s11"><span class="n">11</span><span>Ce e Neon</span></a><a href="#s12"><span class="n">12</span><span>Postgres sau MySQL</span></a><a href="#s13"><span class="n">13</span><span>Conectarea</span></a><a href="#s14"><span class="n">14</span><span>Scrii și citești</span></a><a href="#s15"><span class="n">15</span><span>SQL, cât vă trebuie</span></a><a href="#s16"><span class="n">16</span><span>Ramurile bazei</span></a><a href="#s17"><span class="n">17</span><span>Unde faci ce</span></a><a href="#s18"><span class="n">18</span><span>Verificare</span></a><div class="tut__g">Proiectul tău</div><a href="#s19"><span class="n">19</span><span>Fă tabelul final</span></a><a href="#s20"><span class="n">20</span><span>Unitatea voastră</span></a><div class="tut__g">Mai departe</div><a href="#s21"><span class="n">21</span><span>Până data viitoare</span></a></nav>
+  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Despre ce e ora de azi</span></a><a href="#s2"><span class="n">2</span><span>De ce nu ajunge un fișier</span></a><div class="tut__g">Unirea tabelelor</div><a href="#s3"><span class="n">3</span><span>Două operații, nu una</span></a><a href="#s4"><span class="n">4</span><span>Ce iese din fiecare fel</span></a><a href="#s5"><span class="n">5</span><span>Îmbinarea, în cod</span></a><a href="#s6"><span class="n">6</span><span>Când rândurile se înmulțesc</span></a><a href="#s7"><span class="n">7</span><span>Când cheile nu se potrivesc</span></a><a href="#s8"><span class="n">8</span><span>Unitatea de analiză</span></a><a href="#s9"><span class="n">9</span><span>Agregarea</span></a><a href="#s10"><span class="n">10</span><span>Join pe index</span></a><div class="tut__g">Baze de date</div><a href="#s11"><span class="n">11</span><span>Ce e Neon</span></a><a href="#s12"><span class="n">12</span><span>Postgres sau MySQL</span></a><a href="#s13"><span class="n">13</span><span>Conectarea</span></a><a href="#s14"><span class="n">14</span><span>Scrii și citești</span></a><a href="#s15"><span class="n">15</span><span>SQL, cât vă trebuie</span></a><a href="#s16"><span class="n">16</span><span>Ramurile bazei</span></a><a href="#s17"><span class="n">17</span><span>Unde faci ce</span></a><div class="tut__g">Proiectul tău</div><a href="#s19"><span class="n">18</span><span>Fă tabelul final</span></a><a href="#s20"><span class="n">19</span><span>Unitatea voastră</span></a><div class="tut__g">Mai departe</div><a href="#s21"><span class="n">20</span><span>Până data viitoare</span></a></nav>
   <div class="tut__jos">
     <a href="../lectie/">Slide-urile de la curs</a>
     <a href="../">Pagina cursului</a>
@@ -42,7 +43,7 @@
 
 <section class="tut__s" id="s1">
 <span class="tut__nr">01 · Cursul</span>
-<h2>Agregare și baze de date</h2><p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, indicatorii Băncii Mondiale în altul, ce ați adus de la Eurostat în al treilea. Funcționează cât timp te uiți la ele pe rând. În momentul în care vrei să spui ceva de forma „țările cu legătură socială puternică au și X”, îți trebuie un singur tabel.</p><p>Unirea tabelelor pare o operație tehnică și e, de fapt, o decizie de cercetare: ce păstrezi când o sursă n-are o țară pe care cealaltă o are. Fiecare fel de join e un răspuns diferit la întrebarea asta, iar răspunsul schimbă câte rânduri rămân în analiză.</p><p>A doua jumătate mută rezultatul dintr-un CSV într-o bază de date Postgres. Nu pentru că e mai modern, ci pentru că din momentul în care lucrați mai mulți pe aceleași date, fișierul devine problema.</p><div class="ix" data-ix="etape">
+<h2>Agregare și baze de date</h2><p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, migrația în altul, indicatorii de la Eurostat în al treilea. Funcționează cât timp te uiți la ele pe rând. În momentul în care vrei să spui ceva de forma „perechile de țări cu mulți migranți sunt și mai legate”, îți trebuie un singur tabel.</p><p>Unirea tabelelor pare o operație tehnică și e, de fapt, o decizie de cercetare: ce păstrezi când o sursă n-are o țară pe care cealaltă o are. Fiecare fel de join e un răspuns diferit la întrebarea asta, iar răspunsul schimbă câte rânduri rămân în analiză.</p><p>A doua jumătate mută rezultatul dintr-un CSV într-o bază de date Postgres. Nu pentru că e mai modern, ci pentru că din momentul în care lucrați mai mulți pe aceleași date, fișierul devine problema.</p><div class="ix" data-ix="etape">
   <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
   <div class="ix__corp"><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Unirea tabelelor", "unde": "azi", "text": "Una sub alta, sau una lângă alta. Două operații complet diferite, cu nume care seamănă."}, {"nume": "Tipurile de join", "unde": "azi", "text": "inner, left, right, outer. Care ce păstrează și, mai ales, ce aruncă."}, {"nume": "Capcanele", "unde": "azi", "text": "Chei care nu se potrivesc și rânduri care se înmulțesc. Aici se pierd datele."}, {"nume": "Unitatea de analiză", "unde": "azi", "text": "Ce e un rând în tabelul vostru final. Fără răspunsul ăsta, agregarea n-are formă."}, {"nume": "Baza de date", "unde": "azi", "text": "Când fișierul nu mai ajunge, și cum se pun datele într-un Postgres pe Neon."}]}</script></div>
 </div>
@@ -64,7 +65,7 @@
 
 <section class="tut__s" id="s3">
 <span class="tut__nr">03 · Unirea tabelelor</span>
-<h2>Una sub alta, sau una lângă alta</h2><p>Confuzia dintre cele două e cea mai frecventă greșeală la agregare, și e ușor de evitat dacă pui întrebarea în forma potrivită: vreau ca tabelul să crească în jos sau în lateral?</p><p>Descarci datele Eurostat an cu an și vrei un singur tabel cu toți anii: cresc rândurile, deci <code>concat</code>. Ai tabelul cu SCI și vrei să-i adaugi populația fiecărei țări: cresc coloanele, deci <code>merge</code>.</p><table class="tabel"><thead><tr><th></th><th>Concatenare</th><th>Merge / join</th></tr></thead><tbody><tr><td>Ce adaugă</td><td>rânduri</td><td>coloane</td></tr><tr><td>Când</td><td>aceleași coloane, surse diferite</td><td>tabele diferite, cu o cheie comună</td></tr><tr><td>Exemplu la voi</td><td>2020, 2021, 2022, descărcate separat</td><td>SCI plus populație, pe cod de țară</td></tr><tr><td>În cod</td><td class="mono">pd.concat([a, b])</td><td class="mono">pd.merge(a, b, on="cod")</td></tr><tr><td>Ce poate strica</td><td>coloane cu nume ușor diferite</td><td>chei care nu se potrivesc</td></tr></tbody></table><div class="nota"><div class="nota__et">ÎNTREBAREA CARE LE SEPARĂ</div><p>„Vreau mai multe rânduri sau mai multe coloane?” Dacă răspunsul e rânduri, e <code>concat</code>. Dacă e coloane, e <code>merge</code>.</p></div>
+<h2>Una sub alta, sau una lângă alta</h2><p>Confuzia dintre cele două e cea mai frecventă greșeală la agregare, și e ușor de evitat dacă pui întrebarea în forma potrivită: vreau ca tabelul să crească în jos sau în lateral?</p><p>Descarci datele Eurostat an cu an și vrei un singur tabel cu toți anii: cresc rândurile, deci <code>concat</code>. Ai tabelul cu SCI și vrei să-i adaugi populația fiecărei țări: cresc coloanele, deci <code>merge</code>.</p><table class="tabel"><thead><tr><th></th><th>Concatenare</th><th>Merge / join</th></tr></thead><tbody><tr><td>Ce adaugă</td><td>rânduri</td><td>coloane</td></tr><tr><td>Când</td><td>aceleași coloane, surse diferite</td><td>tabele diferite, cu o cheie comună</td></tr><tr><td>Exemplu la voi</td><td>2020, 2021, 2022, descărcate separat</td><td>SCI plus migrație, pe cod de țară</td></tr><tr><td>În cod</td><td class="mono">pd.concat([a, b])</td><td class="mono">pd.merge(a, b, on="cod")</td></tr><tr><td>Ce poate strica</td><td>coloane cu nume ușor diferite</td><td>chei care nu se potrivesc</td></tr></tbody></table><div class="nota"><div class="nota__et">ÎNTREBAREA CARE LE SEPARĂ</div><p>„Vreau mai multe rânduri sau mai multe coloane?” Dacă răspunsul e rânduri, e <code>concat</code>. Dacă e coloane, e <code>merge</code>.</p></div>
 <div class="verif" data-id="c5-v2" data-corect="2">
     <p class="verif__q">Ai câte un fișier pentru fiecare an, toate cu aceleași coloane. Ce folosești?</p>
     <button>pd.merge, pentru că sunt fișiere diferite</button>
@@ -77,9 +78,9 @@
 
 <section class="tut__s" id="s4">
 <span class="tut__nr">04 · Unirea tabelelor</span>
-<h2>Numără rândurile</h2><p>Definițiile din documentație sunt corecte și inutile: se rețin cu greu și se confundă între ele. Felul în care se învață un join e să te uiți la două tabele mici și să numeri ce iese.</p><p>Tabelele de mai jos au trei chei comune (MD, DE, HU), una doar în stânga (AT, care n-are populație) și una doar în dreapta (CS, codul pentru Serbia și Muntenegru, o țară care nu mai există, rămasă într-un tabel vechi).</p><div class="ix" data-ix="imbinare">
+<h2>Numără rândurile</h2><p>Definițiile din documentație sunt corecte și inutile: se rețin cu greu și se confundă între ele. Felul în care se învață un join e să te uiți la două tabele mici și să numeri ce iese.</p><p>Tabelele de mai jos au trei chei comune (AT, DE, HU), una doar în stânga (MD: Moldova nu raportează migrația la Eurostat) și una doar în dreapta (IT, pentru că în stânga am pus doar patru parteneri ai României).</p><div class="ix" data-ix="imbinare">
   <div class="ix__cap"><span class="ix__fel">Încearcă felurile</span><span class="ix__t">Pe două tabele adevărate</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-imbinare-feluri", "cheie": "cod", "stanga": {"nume": "sci", "randuri": [{"cod": "MD", "sci": 173794}, {"cod": "AT", "sci": 124693}, {"cod": "DE", "sci": 91228}, {"cod": "HU", "sci": 85021}]}, "dreapta": {"nume": "populatie", "randuri": [{"cod": "MD", "pop": 2.6}, {"cod": "DE", "pop": 83.2}, {"cod": "HU", "pop": 9.6}, {"cod": "CS", "pop": 10.5}]}, "numeRez": "rezultat", "sarcina": "Încearcă-le pe toate cinci.", "explicatii": {"concat": "<b>Una sub alta.</b> Opt rânduri: nimic nu se potrivește cu nimic, fiindcă <code>concat</code> nici nu se uită la chei. Coloanele se reunesc, iar unde tabelul nu avea coloana aceea rămâne <code>NaN</code>. E ce vrei când lipești luni diferite din aceeași sursă, nu când adaugi coloane.", "inner": "<b>Doar ce e în amândouă.</b> Trei rânduri: MD, DE, HU. AT a dispărut fiindcă n-are populație, CS fiindcă n-are SCI. Nicio celulă goală — și nicio urmă a celor două care au căzut. De asta <code>inner</code> e periculos ca implicit: pierzi date fără să-ți spună nimeni.", "left": "<b>Tot ce e în stânga.</b> Patru rânduri, câte avea tabelul <code>sci</code>. AT rămâne, dar cu <code>NaN</code> la populație. CS nu apare deloc. Ăsta e felul pe care îl vrei când stânga e tabelul tău de bază și dreapta doar adaugă atribute.", "right": "<b>Tot ce e în dreapta.</b> Oglinda lui <code>left</code>: acum CS rămâne cu <code>NaN</code> la SCI, iar AT dispare. Se folosește rar: de obicei schimbi ordinea tabelelor și scrii <code>left</code>, care se citește mai ușor.", "outer": "<b>Tot, de peste tot.</b> Cinci rânduri: cele trei comune, plus AT fără populație, plus CS fără SCI. E felul cu care verifici: dacă <code>outer</code> dă mai multe rânduri decât <code>inner</code>, știi exact cât ai fi pierdut."}}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-imbinare-feluri", "cheie": "cod", "stanga": {"nume": "sci", "randuri": [{"cod": "MD", "sci": 173794}, {"cod": "AT", "sci": 124693}, {"cod": "DE", "sci": 91228}, {"cod": "HU", "sci": 85021}]}, "dreapta": {"nume": "romani", "randuri": [{"cod": "AT", "romani": 153427}, {"cod": "DE", "romani": 776424}, {"cod": "HU", "romani": 15740}, {"cod": "IT", "romani": 1073196}]}, "numeRez": "rezultat", "sarcina": "Încearcă-le pe toate cinci.", "explicatii": {"concat": "<b>Una sub alta.</b> Opt rânduri: nimic nu se potrivește cu nimic, fiindcă <code>concat</code> nici nu se uită la chei. Coloanele se reunesc, iar unde tabelul nu avea coloana aceea rămâne <code>NaN</code>. E ce vrei când lipești ani diferiți din aceeași sursă, nu când adaugi coloane.", "inner": "<b>Doar ce e în amândouă.</b> Trei rânduri: AT, DE, HU. Moldova a dispărut, adică cel mai puternic partener al României, doar pentru că nu raportează migrația. Nicio celulă goală și nicio urmă a ei. De asta <code>inner</code> e periculos ca implicit.", "left": "<b>Tot ce e în stânga.</b> Patru rânduri, câte avea tabelul <code>sci</code>. MD rămâne, cu <code>NaN</code> la români: nu știm, și se vede că nu știm. IT nu apare, fiindcă în stânga am pus doar patru parteneri. Ăsta e felul pe care îl vrei când stânga e tabelul tău de bază.", "right": "<b>Tot ce e în dreapta.</b> Oglinda lui <code>left</code>: acum IT rămâne cu <code>NaN</code> la SCI, iar MD dispare. Se folosește rar: de obicei schimbi ordinea tabelelor și scrii <code>left</code>, care se citește mai ușor.", "outer": "<b>Tot, de peste tot.</b> Cinci rânduri: cele trei comune, plus MD fără migrație, plus IT fără SCI. E felul cu care verifici: dacă <code>outer</code> dă mai multe rânduri decât <code>inner</code>, știi exact cât ai fi pierdut."}}</script></div>
 </div><div class="nota"><div class="nota__et">DE CE CONTEAZĂ</div><p>Diferența dintre <code>inner</code> și <code>left</code> poate însemna douăzeci de țări care dispar din analiză fără să scrie nicăieri că au dispărut.</p></div>
 
 </section>
@@ -88,7 +89,7 @@
 <span class="tut__nr">05 · Unirea tabelelor</span>
 <h2>Scrie-o</h2><p>Sintaxa e scurtă; grija e la ce scrii după ea. Cele două linii de verificare de la final valorează mai mult decât îmbinarea în sine.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Lipește populația peste SCI</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-cod-merge", "fisier": "agregare/uneste.py", "sarcina": "Păstrezi toate țările din tabelul cu SCI.", "cod": "import pandas as pd\n\nsci = pd.read_csv(\"date/curat/sci.csv\")\npop = pd.read_csv(\"date/curat/populatie.csv\")\n\nd = pd.merge(sci, pop, {{1}}=\"cod\", how={{2}})\n\nprint(len(sci), \"->\", len(d))\nprint(d[\"pop\"].{{3}}().sum())", "goluri": {"1": {"ok": ["on"], "ajutor": "parametrul"}, "2": {"ok": ["\"left\"", "'left'"], "ajutor": "felul"}, "3": {"ok": ["isna", "isnull"], "ajutor": "metoda"}}, "laBine": "Verificările de la final sunt partea importantă.", "laRau": "Felul îmbinării se scrie între ghilimele.", "explicatie": "Dacă <code>len(d)</code> e mai mare decât <code>len(sci)</code>, ai chei duplicate în dreapta."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-cod-merge", "fisier": "agregare/uneste.py", "sarcina": "Păstrezi toate țările din tabelul cu SCI.", "cod": "import pandas as pd\n\nsci = pd.read_csv(\"date/curat/sci.csv\")\nrom = pd.read_csv(\"date/curat/romani.csv\")\n\nd = pd.merge(sci, rom, {{1}}=\"cod\", how={{2}})\n\nprint(len(sci), \"->\", len(d))\nprint(d[\"romani\"].{{3}}().sum())", "goluri": {"1": {"ok": ["on"], "ajutor": "parametrul"}, "2": {"ok": ["\"left\"", "'left'"], "ajutor": "felul"}, "3": {"ok": ["isna", "isnull"], "ajutor": "metoda"}}, "laBine": "Verificările de la final sunt partea importantă.", "laRau": "Felul îmbinării se scrie între ghilimele.", "explicatie": "Dacă <code>len(d)</code> e mai mare decât <code>len(sci)</code>, ai chei duplicate în dreapta."}</script></div>
 </div>
 
 </section>
@@ -111,7 +112,7 @@
 
 <section class="tut__s" id="s7">
 <span class="tut__nr">07 · Unirea tabelelor</span>
-<h2>Aceeași țară, trei scrieri</h2><p>Fiecare sursă are nomenclatorul ei, iar codurile seamănă suficient cât să pară interschimbabile. Nu sunt.</p><table class="tabel"><thead><tr><th>Sursă</th><th>Cum scrie România</th><th>Ce fel de cod</th></tr></thead><tbody><tr><td>Facebook SCI</td><td class="mono">RO</td><td>ISO 3166-1 alpha-2</td></tr><tr><td>Banca Mondială</td><td class="mono">ROU</td><td>ISO 3166-1 alpha-3</td></tr><tr><td>Eurostat</td><td class="mono">RO</td><td>cod NUTS de nivel 0</td></tr><tr><td>Un fișier făcut de om</td><td class="mono">Romania, România, ROMANIA</td><td>nimic</td></tr></tbody></table><p>Mai există o capcană care nu se vede cu ochiul: tipul. <code>2020</code> citit ca text nu se potrivește cu <code>2020</code> citit ca număr, iar <code>merge</code> nu te avertizează, pur și simplu nu găsește nimic.</p><div class="ix" data-ix="cod">
+<h2>Aceeași țară, trei scrieri</h2><p>Fiecare sursă are nomenclatorul ei, iar codurile seamănă suficient cât să pară interschimbabile. Nu sunt.</p><table class="tabel"><thead><tr><th>Sursă</th><th>Cum scrie România</th><th>Ce fel de cod</th></tr></thead><tbody><tr><td>Facebook SCI</td><td class="mono">RO</td><td>ISO 3166-1 alpha-2</td></tr><tr><td>Banca Mondială</td><td class="mono">ROU</td><td>ISO 3166-1 alpha-3</td></tr><tr><td>Eurostat</td><td class="mono">RO</td><td>NUTS 0; dar Grecia e EL și Regatul Unit e UK</td></tr><tr><td>Un fișier făcut de om</td><td class="mono">Romania, România, ROMANIA</td><td>nimic</td></tr></tbody></table><p>Mai există o capcană care nu se vede cu ochiul: tipul. <code>2020</code> citit ca text nu se potrivește cu <code>2020</code> citit ca număr, iar <code>merge</code> nu te avertizează, pur și simplu nu găsește nimic.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Fă-le să se potrivească</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c5-cod-chei", "fisier": "agregare/chei.py", "sarcina": "Aduci tabelul mare la cheia celui mic și verifici.", "cod": "harta = pd.read_csv(\"date/referinta/coduri.csv\")  # iso3, iso2\nbm = bm.merge(harta, {{1}}=\"iso3\", how=\"left\")\n\ncomune = set(sci[\"cod\"]) {{2}} set(bm[\"iso2\"])\nprint(len(comune), \"chei comune din\", len(set(sci[\"cod\"])))\n\nd = sci.merge(bm, left_on=\"cod\", {{3}}=\"iso2\", how=\"left\")", "goluri": {"1": {"ok": ["on"], "ajutor": "parametrul"}, "2": {"ok": ["&", "intersection"], "ajutor": "operatorul"}, "3": {"ok": ["right_on"], "ajutor": "parametrul"}}, "laBine": "Numără cheile comune înainte de îmbinare.", "laRau": "Intersecția a două mulțimi e un singur caracter.", "explicatie": "Dacă din 178 de chei se potrivesc 12, e o problemă de coduri, nu de <code>merge</code>."}</script></div>
 </div>
@@ -122,7 +123,7 @@
 <span class="tut__nr">08 · Unirea tabelelor</span>
 <h2>Ce e un rând în tabelul vostru</h2><p>Unitatea de analiză e nivelul la care observi: țara, perechea de țări, țara-an, individul, gospodăria. Pare o chestiune de vocabular, dar decide forma tabelului final și, prin ea, ce întrebări poți pune.</p><p>Datele voastre pornesc de la o unitate diadică: SCI măsoară legătura <em>dintre</em> două locuri, deci un rând e o pereche. Dacă vreți să spuneți ceva despre o țară, trebuie să agregați perechile, și atunci alegerea funcției de agregare e o decizie teoretică: suma spune „cât de conectată e în total”, media spune „cât de conectată e în medie”, iar maximul spune „cât de tare e cea mai puternică legătură a ei”. Trei lucruri diferite.</p><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce unitate cere fiecare întrebare</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-sort-unitate", "sarcina": "Potrivește întrebarea cu forma unui rând.", "elemente": [{"t": "Ce țări au cea mai puternică legătură cu România?", "cos": 0}, {"t": "Cum a evoluat PIB-ul fiecărei țări între 2015 și 2022?", "cos": 1}, {"t": "Între care perechi de țări e legătura cea mai puternică?", "cos": 2}, {"t": "Cât de conectate sunt județele între ele, pe ani?", "cos": 3}], "cosuri": [{"t": "o țară", "d": "un rând = o țară"}, {"t": "o țară și un an", "d": "un rând = o țară într-un an"}, {"t": "o pereche de țări", "d": "un rând = o legătură"}, {"t": "o pereche și un an", "d": "un rând = o legătură într-un an"}], "laBine": "Datele SCI sunt diadice: unitatea naturală e perechea.", "explicatie": "Unitatea de analiză decide ce chei folosești la îmbinare și ce înseamnă o medie."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-sort-unitate", "sarcina": "Potrivește întrebarea cu forma unui rând.", "elemente": [{"t": "În ce țări trăiesc cei mai mulți români?", "cos": 0}, {"t": "Care județe au cele mai multe legături în afara țării?", "cos": 1}, {"t": "Perechile de țări cu mai mulți migranți sunt mai legate?", "cos": 2}, {"t": "Județele din Moldova sunt legate de alte regiuni italiene decât cele din Ardeal?", "cos": 3}], "cosuri": [{"t": "o țară", "d": "un rând = o țară"}, {"t": "o regiune", "d": "un rând = un județ sau o regiune"}, {"t": "o pereche de țări", "d": "un rând = o legătură între țări"}, {"t": "o pereche de regiuni", "d": "un rând = o legătură între regiuni"}], "laBine": "Datele SCI sunt diadice: unitatea naturală e perechea.", "explicatie": "Unitatea de analiză decide ce chei folosești la îmbinare și ce înseamnă o medie."}</script></div>
 </div>
 
 </section>
@@ -153,7 +154,7 @@
 <span class="tut__nr">11 · Baze de date</span>
 <h2>Postgres, fără server de întreținut</h2><p>Neon e o platformă care oferă PostgreSQL complet gestionat, accesibil prin SQL standard. Tot ce știți despre Postgres rămâne valabil: aceleași comenzi, aceleași tipuri, aceleași extensii.</p><p>Trei lucruri o deosebesc de un Postgres pus pe un server:</p><ul><li><strong>Serverless.</strong> Partea care execută interogările pornește automat la prima cerere și se oprește când nu mai e folosită. Plătești cât folosești, iar pentru un proiect de curs asta înseamnă, de obicei, zero.</li><li><strong>Branching.</strong> Poți face o copie izolată a bazei, ca o ramură în Git, ca să încerci o transformare fără să strici datele bune.</li><li><strong>Compute separat de storage.</strong> Motivul tehnic din spatele primelor două.</li></ul><div class="ix" data-ix="flux">
   <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Ce se întâmplă când pui o întrebare</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-flux-neon", "buton": "Trimite o interogare", "dus": "întrebarea pleacă", "intors": "rândurile se întorc", "gata": "gata, ai rezultatul", "titlu": "Apasă pe o stație", "intro": "Patru locuri prin care trece un <code>select</code>.", "statii": [{"n": "Scriptul tău", "et": "pandas", "ic": "🐍", "d": "Un text SQL trimis mai departe."}, {"n": "Conexiunea", "et": "psycopg", "ic": "🔌", "d": "Șirul de conectare stă în <code>.env</code>, niciodată în cod."}, {"n": "Compute", "et": "pornește la cerere", "ic": "⚡", "d": "Se trezește la prima întrebare. De aici întârzierea de o secundă la prima cerere."}, {"n": "Storage", "et": "mereu acolo", "ic": "🗄️", "d": "Datele, separate de partea care calculează. De aceea se pot face ramuri."}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-flux-neon", "buton": "Trimite o interogare", "dus": "întrebarea pleacă", "intors": "rândurile se întorc", "gata": "gata, ai rezultatul", "titlu": "Apasă pe o stație", "intro": "Patru locuri prin care trece un <code>select</code>.", "statii": [{"n": "Scriptul tău", "et": "pandas", "ic": "🐍", "c": "ceas", "d": "Un text SQL trimis mai departe."}, {"n": "Conexiunea", "et": "psycopg", "ic": "🔌", "c": "salvie", "d": "Șirul de conectare stă în <code>.env</code>, niciodată în cod."}, {"n": "Compute", "et": "pornește la cerere", "ic": "⚡", "c": "accent", "d": "Se trezește la prima întrebare. De aici întârzierea de o secundă la prima cerere."}, {"n": "Storage", "et": "mereu acolo", "ic": "🗄️", "c": "text-2", "d": "Datele, separate de partea care calculează. De aceea se pot face ramuri."}]}</script></div>
 </div>
 
 </section>
@@ -189,7 +190,7 @@
 <span class="tut__nr">15 · Baze de date</span>
 <h2>Patru cuvinte și o ordine</h2><p>N-aveți nevoie de SQL avansat. Aveți nevoie de cinci construcții, care acoperă aproape tot ce faceți în pandas.</p><table class="tabel"><thead><tr><th>În pandas</th><th>În SQL</th></tr></thead><tbody><tr><td class="mono">d[d.cod == 'RO']</td><td class="mono">where cod = 'RO'</td></tr><tr><td class="mono">d.merge(t, on='cod')</td><td class="mono">join tari t on t.cod = d.cod</td></tr><tr><td class="mono">d.groupby('cod').sum()</td><td class="mono">group by cod</td></tr><tr><td class="mono">d.sort_values('sci', ascending=False)</td><td class="mono">order by sci desc</td></tr><tr><td class="mono">d.head(10)</td><td class="mono">limit 10</td></tr></tbody></table><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scrie interogarea</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-cod-sql", "fisier": "baza/intrebari.sql", "sarcina": "Primele zece țări din UE, după legătura cu România.", "cod": "select t.cod, t.nume, s.sci, t.populatie\nfrom legaturi s\n{{1}} tari t on t.cod = s.tara_tinta\n{{2}} s.tara_sursa = 'RO'\n  and t.in_ue = true\norder by s.sci {{3}}\nlimit 10;", "goluri": {"1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"}, "2": {"ok": ["where", "WHERE"], "ajutor": "filtrarea"}, "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}}, "laBine": "<code>join ... on</code> e <code>pd.merge</code> scris altfel.", "laRau": "Al treilea pune valorile mari sus.", "explicatie": "Ordinea de scriere nu e ordinea de execuție: <code>where</code>, apoi grupare, apoi sortare, apoi <code>limit</code>."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-cod-sql", "fisier": "baza/intrebari.sql", "sarcina": "Cele zece țări cu cei mai mulți români, cu SCI-ul lor.", "cod": "select m.geo, m.persoane, s.sci\nfrom migratie m\n{{1}} legaturi s on s.tara_1 = 'RO' and s.tara_2 = m.geo\n{{2}} m.citizen = 'RO'\norder by m.persoane {{3}}\nlimit 10;", "goluri": {"1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"}, "2": {"ok": ["where", "WHERE"], "ajutor": "filtrarea"}, "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}}, "laBine": "<code>join ... on</code> e <code>pd.merge</code> scris altfel.", "laRau": "Al treilea pune valorile mari sus.", "explicatie": "Ordinea de scriere nu e ordinea de execuție: <code>where</code>, apoi grupare, apoi sortare, apoi <code>limit</code>."}</script></div>
 </div>
 
 </section>
@@ -216,28 +217,8 @@
 
 </section>
 
-<section class="tut__s" id="s18">
-<span class="tut__nr">18 · Baze de date</span>
-<h2>Două întrebări</h2><div class="verif" data-id="c5-v10" data-corect="2">
-    <p class="verif__q">Ai nevoie de toate țările din tabelul tău, plus atributele care există, fără să pierzi nimic. Ce scrii?</p>
-    <button>pd.concat([a, b])</button>
-    <button>pd.merge(a, b, on="cod")</button>
-    <button>pd.merge(a, b, on="cod", how="left")</button>
-    <button>a.join(b, how="inner")</button>
-    <p class="verif__ex">Toate rândurile din stânga, plus ce se găsește în dreapta: <code>left</code>. Varianta fără <code>how</code> e <code>inner</code>, care ar tăia țările fără atribute.</p>
-  </div><div class="verif" data-id="c5-v11" data-corect="1">
-    <p class="verif__q"><code>DATABASE_URL</code> a ajuns într-un commit, pe GitHub. Ce faci întâi?</p>
-    <button>Ștergi linia și faci un commit nou</button>
-    <button>Schimbi parola din Neon</button>
-    <button>Faci depozitul privat</button>
-    <button>Ștergi depozitul</button>
-    <p class="verif__ex">Un secret ajuns în istorie e compromis: rămâne în commit-urile vechi, în fork-uri și în cache-uri. Ștergerea din fișier nu-l scoate de acolo. Singurul lucru care contează e să-l schimbi, și s-o faci repede.</p>
-  </div>
-
-</section>
-
 <section class="tut__s" id="s19">
-<span class="tut__nr">19 · Proiectul tău</span>
+<span class="tut__nr">18 · Proiectul tău</span>
 <h2>Un tabel, o unitate, o bază</h2><p>Pasul de proiect al acestei lecții are patru bucăți, iar a patra e cea care arată că baza de date v-a folosit la ceva, nu doar că există.</p><div class="ix" data-ix="etape">
   <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Pașii</span></div>
   <div class="ix__corp"><script type="application/json">{"titlu": "Patru pași", "intro": "Apasă pe fiecare.", "etape": [{"nume": "Scrieți unitatea", "unde": "decizii.md", "text": "„Un rând în tabelul nostru final înseamnă ___”."}, {"nume": "Îmbinați", "unde": "agregare/uneste.py", "text": "Un script de la fișierele curate la un singur tabel."}, {"nume": "Încărcați", "unde": "baza/incarca.py", "text": "Tabelul în Neon, cu cheie primară, cu secretele în .env."}, {"nume": "Puneți o întrebare", "unde": "baza/intrebari.sql", "text": "Un select al vostru, legat de întrebarea de cercetare."}]}</script></div>
@@ -249,16 +230,16 @@
 </section>
 
 <section class="tut__s" id="s20">
-<span class="tut__nr">20 · Proiectul tău</span>
+<span class="tut__nr">19 · Proiectul tău</span>
 <h2>Scrieți-o acum</h2><p>Propoziția asta pare banală până o scrieți: de obicei e momentul în care echipa descoperă că doi membri lucrau la tabele cu forme diferite.</p><div class="ix" data-ix="asteptari">
   <div class="ix__cap"><span class="ix__fel">Scrii tu</span><span class="ix__t">Un rând în tabelul vostru</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-unitate", "tip": "unitate", "minim": 40, "sarcina": "Completează: „Un rând în tabelul nostru final înseamnă ___, iar cheia care îl identifică e ___.”", "exemplu": "De exemplu: o pereche de țări într-un an, cu cheia (tara_sursa, tara_tinta, an).", "multumesc": "O citesc înainte de cursul următor."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-unitate", "tip": "unitate", "minim": 40, "sarcina": "Completează: „Un rând în tabelul nostru final înseamnă ___, iar cheia care îl identifică e ___.”", "exemplu": "De exemplu: o pereche de țări, cu cheia (tara_1, tara_2).", "multumesc": "O citesc înainte de cursul următor."}</script></div>
 </div>
 
 </section>
 
 <section class="tut__s" id="s21">
-<span class="tut__nr">21 · Mai departe</span>
+<span class="tut__nr">20 · Mai departe</span>
 <h2>Cursul 6: analiza exploratorie</h2><p>Cu tabelul final în mână, lecția următoare e despre cum te uiți la el: statistici descriptive, distribuții, și vizualizare exploratorie, adică graficele pe care le faci pentru tine, nu pentru raport.</p><table class="tabel"><thead><tr><th>Ce aduceți</th><th>Unde</th></tr></thead><tbody><tr><td>Tabelul final, îmbinat</td><td class="mono">date/curat/tabel_final.csv</td></tr><tr><td>Scriptul de îmbinare</td><td class="mono">agregare/uneste.py</td></tr><tr><td>Tabelul încărcat în Neon</td><td>o captură cu numărul de rânduri</td></tr><tr><td>Unitatea de analiză, scrisă</td><td class="mono">decizii.md</td></tr><tr><td>Un select al vostru</td><td class="mono">baza/intrebari.sql</td></tr></tbody></table>
 
 </section>
@@ -266,11 +247,11 @@
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=36"></script>
+<script type="module" src="../../js/antet.js?v=39"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=36";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=36";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=36";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=39";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=39";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=39";
 pornesteIx();
 pornesteVerif("c5");
 pornesteTut("c5");

@@ -9,12 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=36">
-<link rel="stylesheet" href="../../css/slide.css?v=36">
-<link rel="stylesheet" href="../../css/interactiv.css?v=36">
-<link rel="stylesheet" href="../../css/grafice.css?v=36">
-<link rel="stylesheet" href="../../css/exercitii.css?v=36">
-<script src="../../js/tema.js?v=36"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=39">
+<link rel="stylesheet" href="../../css/slide.css?v=39">
+<link rel="stylesheet" href="../../css/interactiv.css?v=39">
+<link rel="stylesheet" href="../../css/grafice.css?v=39">
+<link rel="stylesheet" href="../../css/exercitii.css?v=39">
+<link rel="stylesheet" href="../../css/explorator.css?v=39">
+<script src="../../js/tema.js?v=39"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -22,9 +23,9 @@
 <main class="rnr__scena" tabindex="-1">
 
 <section class="sld" id="s1" data-grup="Cursul" data-t="Despre ce e ora de azi">
-<h2>Colectarea datelor prin API</h2><p class="cheie">Până acum ai citit un fișier primit de-a gata. De azi, ți-l aduci singur.</p><p>Cinci lucruri, în ordinea asta.</p><div class="ix" data-ix="etape">
+<h2>Colectarea datelor prin API</h2><p class="cheie">Până acum ai citit un fișier primit de-a gata. De azi, ți-l aduci singur.</p><p>Șase lucruri, în ordinea asta.</p><div class="ix" data-ix="etape">
   <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
-  <div class="ix__corp"><p class="ix__sarcina">Apasă pe un punct ca să vezi ce intră în el.</p><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Ce este un API", "unde": "azi", "text": "Analogia restaurantului, tipurile de API, de ce ne trebuie unul."}, {"nume": "Cum arată o cerere", "unde": "azi", "text": "Metode HTTP, endpoint, parametri, coduri de răspuns."}, {"nume": "Postman", "unde": "azi", "text": "Aceeași cerere, făcută cu mâna, înainte de a o scrie în cod."}, {"nume": "requests", "unde": "azi", "text": "Biblioteca din Python cu care colectăm de acum înainte."}, {"nume": "Primele date în proiect", "unde": "azi", "text": "O cerere adevărată, salvată în depozitul echipei."}, {"nume": "Git și colaborare", "unde": "cursul 3", "text": "Cum lucrează patru oameni pe același cod."}]}</script></div>
+  <div class="ix__corp"><p class="ix__sarcina">Apasă pe un punct ca să vezi ce intră în el.</p><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Ce este un API", "unde": "azi", "text": "Analogia restaurantului, tipurile de API, de ce ne trebuie unul."}, {"nume": "Cum arată o cerere", "unde": "azi", "text": "Metode HTTP, endpoint, parametri, coduri de răspuns."}, {"nume": "Postman", "unde": "azi", "text": "Aceeași cerere, făcută cu mâna, înainte de a o scrie în cod."}, {"nume": "requests", "unde": "azi", "text": "Biblioteca din Python cu care colectăm de acum înainte."}, {"nume": "Eurostat și migrația", "unde": "azi", "text": "Un răspuns care vine ca un cub, și a doua sursă a proiectului."}, {"nume": "Primele date în proiect", "unde": "azi", "text": "O cerere adevărată, salvată în depozitul echipei."}, {"nume": "Git și colaborare", "unde": "cursul 3", "text": "Cum lucrează patru oameni pe același cod."}]}</script></div>
 </div>
 
 </section>
@@ -42,30 +43,18 @@
 </section>
 
 <section class="sld" id="s3" data-grup="Ce este un API" data-t="Analogia restaurantului">
-<h2>Analogia restaurantului</h2><p class="cheie">Un API e ospătarul. Nu gătește, dar fără el nu ajungi la bucătărie.</p><div class="ix" data-ix="flux">
+<h2>Analogia restaurantului</h2><p class="cheie">Un API e ospătarul. Nu gătește, dar fără el nu ajungi la bucătărie.</p><div class="ix" data-ix="comanda">
   <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Comanda, de la masă la bucătărie</span></div>
-  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Trimite comanda”", "intro": "Sau apasă pe oricare dintre stații, ca să vezi cu ce se potrivește din cod.", "buton": "Trimite comanda", "dus": "comanda pleacă spre bucătărie", "intors": "preparatul se întoarce la masă", "gata": "gata: ai primit ce ai cerut, în forma convenită", "statii": [{"n": "Clientul", "et": "codul tău", "d": "Știe ce vrea, dar nu intră în bucătărie. Formulează o comandă și o dă mai departe.", "ic": "🙋"}, {"n": "Ospătarul", "et": "API-ul", "d": "Intermediarul. Preia comanda, o duce la bucătărie, aduce răspunsul înapoi. Nu gătește el, dar fără el nu ajungi la bucătărie.", "ic": "🧑‍🍳"}, {"n": "Meniul", "et": "documentația", "d": "Ce se poate cere, cu ce opțiuni și în ce condiții. Dacă ceri ceva care nu e în meniu, primești un refuz, nu o surpriză.", "ic": "📋"}, {"n": "Bucătăria", "et": "serverul", "d": "Acolo se întâmplă lucrul adevărat. Nu vezi cum, și nici nu te privește: te privește doar ce iese.", "ic": "🍳"}, {"n": "Preparatul", "et": "răspunsul", "d": "Ce primești înapoi, în forma convenită. La API, de cele mai multe ori, JSON.", "ic": "🍽"}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"buton": "Începe comanda", "intro": "Trei locuri, două drumuri: comanda pleacă spre bucătărie, farfuria se întoarce. Apasă „Începe comanda”.", "etBon": "bonul", "zone": [{"ic": "🙋", "n": "Clientul", "et": "codul tău", "obiect": {"ic": "📋", "n": "Meniul", "et": "documentația"}}, {"ic": "🤵", "n": "Ospătarul", "et": "API-ul"}, {"ic": "👩‍🍳", "n": "Bucătăria", "et": "serverul", "obiect": {"ic": "🥫", "n": "Cămara", "et": "baza de date"}}], "pasi": [{"t": "Citești meniul", "d": "Înainte de a comanda te uiți ce se poate cere. La API, meniul e documentația."}, {"t": "Scrii comanda", "d": "Pe bon scrie exact ce vrei, în forma din meniu."}, {"t": "Ospătarul o duce", "d": "Tu nu intri în bucătărie. Bonul ajunge acolo prin intermediar."}, {"t": "Bucătăria pregătește", "d": "Ia din cămară ce trebuie. Tu nu vezi cum, și nici nu te privește."}, {"t": "Primești farfuria", "d": "Se întoarce pe același drum, în forma convenită."}], "scenarii": [{"t": "Comandă din meniu", "bon": "o ciorbă de burtă, fără ardei", "cod": "200", "far": "ciorbă de burtă, fără ardei"}, {"t": "Comandă ce nu e în meniu", "bon": "o pizza hawaiiană", "cod": "404", "far": "nu avem așa ceva", "rau": true, "text": {"3": "Bucătăria caută și nu găsește. Nu improvizează.", "4": "Farfuria vine goală, cu un număr. API-ul nu e politicos: nu-ți explică, îți dă codul și atât."}}]}</script></div>
 </div>
-
-</section>
-
-<section class="sld" id="s4" data-grup="Ce este un API" data-t="Verificare pe analogie">
-<h2>Cine e cine</h2><div class="verif" data-id="c2-v2" data-corect="2">
+<div class="verif" data-id="c2-v2" data-corect="2">
     <p class="verif__q">În analogia restaurantului, documentația API-ului este…</p>
     <button>ospătarul</button>
     <button>bucătăria</button>
     <button>meniul</button>
-    <button>preparatul</button>
+    <button>farfuria</button>
     <p class="verif__ex">Meniul. Spune ce se poate cere și cu ce opțiuni. Un API fără documentație e un restaurant fără meniu: poți ghici, dar pierzi seara întrebând.</p>
-  </div><div class="verif" data-id="c2-v3" data-corect="0">
-    <p class="verif__q">Și serverul?</p>
-    <button>bucătăria</button>
-    <button>clientul</button>
-    <button>meniul</button>
-    <button>ospătarul</button>
-    <p class="verif__ex">Bucătăria. Acolo se face treaba, și tocmai de aceea nu ai acces direct: ar fi și periculos, și inutil.</p>
   </div>
-
 </section>
 
 <section class="sld" id="s5" data-grup="Ce este un API" data-t="De ce nu descărcăm cu mâna">
@@ -83,7 +72,7 @@
 <section class="sld" id="s6" data-grup="Tipuri de API" data-t="Ce fel de API-uri există">
 <h2>Tipuri de API</h2><p>Clasificările sunt multe pentru că se taie după criterii diferite: după protocol, după cine are acces, după cine pornește conversația.</p><div class="ix" data-ix="arbore">
   <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Harta tipurilor</span></div>
-  <div class="ix__corp"><p class="ix__sarcina">Nouă ne trebuie o singură ramură: REST, public. Restul, ca să știi ce vezi când dai peste altceva.</p><script type="application/json">{"titlu": "Tipuri de API", "intro": "Apasă pe orice ramură.", "ramuri": [{"nume": "API-uri web", "copii": [{"nume": "REST", "text": "Cel mai răspândit pentru API-uri publice. Resurse la adrese, metode HTTP."}, {"nume": "GraphQL", "text": "O singură adresă, iar clientul spune exact ce câmpuri vrea."}, {"nume": "gRPC", "text": "Rapid și strâns tipizat. Între servicii, rar expus publicului."}, {"nume": "SOAP", "text": "Vechi, cu plic XML. Încă viu în bănci și administrație."}]}, {"nume": "După cine are acces", "copii": [{"nume": "Public / Open", "text": "Oricine, uneori cu o cheie gratuită. Banca Mondială, Eurostat."}, {"nume": "Partner", "text": "Doar pentru parteneri, cu contract."}, {"nume": "Privat / intern", "text": "Doar înăuntrul organizației."}]}, {"nume": "Orientate pe evenimente", "copii": [{"nume": "Webhooks", "text": "Nu ceri tu; te sună el când s-a întâmplat ceva."}, {"nume": "Streaming", "text": "Un flux continuu, nu o cerere și un răspuns."}, {"nume": "WebSockets, SSE", "text": "Legătură deschisă, în timp real."}]}, {"nume": "Specializate", "copii": [{"nume": "Baze de date", "text": "PostgreSQL, MongoDB."}, {"nume": "Cloud", "text": "Azure, AWS."}, {"nume": "AI / ML", "text": "OpenAI, HuggingFace."}, {"nume": "IoT", "text": "Senzori, case inteligente."}]}, {"nume": "Comerciale", "copii": [{"nume": "Plăți", "text": "Stripe."}, {"nume": "Comerț", "text": "Shopify."}, {"nume": "Rețele sociale", "text": "YouTube Data API."}]}]}</script></div>
+  <div class="ix__corp"><p class="ix__sarcina">Nouă ne trebuie o singură ramură: REST, public. Restul, ca să știi ce vezi când dai peste altceva.</p><script type="application/json">{"titlu": "Tipuri de API", "intro": "Apasă pe orice ramură.", "ramuri": [{"nume": "API-uri web", "tipuri": [{"n": "REST", "d": "Cel mai răspândit pentru API-uri publice. Resurse la adrese, metode HTTP."}, {"n": "GraphQL", "d": "O singură adresă, iar clientul spune exact ce câmpuri vrea."}, {"n": "gRPC", "d": "Rapid și strâns tipizat. Între servicii, rar expus publicului."}, {"n": "SOAP", "d": "Vechi, cu plic XML. Încă viu în bănci și administrație."}]}, {"nume": "După acces", "tipuri": [{"n": "public", "d": "Oricine, uneori cu o cheie gratuită. Banca Mondială, Eurostat."}, {"n": "partener", "d": "Doar pentru parteneri, cu contract."}, {"n": "intern", "d": "Doar înăuntrul organizației."}]}, {"nume": "Pe evenimente", "tipuri": [{"n": "webhooks", "d": "Nu ceri tu; te anunță el când s-a întâmplat ceva."}, {"n": "streaming", "d": "Un flux continuu, nu o cerere și un răspuns."}, {"n": "WebSockets", "d": "Legătură deschisă, în timp real."}]}, {"nume": "Specializate", "tipuri": [{"n": "baze de date", "d": "PostgreSQL, MongoDB."}, {"n": "cloud", "d": "Azure, AWS."}, {"n": "AI", "d": "OpenAI, HuggingFace."}, {"n": "IoT", "d": "Senzori, case inteligente."}]}]}</script></div>
 </div>
 
 </section>
@@ -109,9 +98,9 @@
 </section>
 
 <section class="sld" id="s9" data-grup="Cum arată o cerere" data-t="Arhitectura REST">
-<h2>Cerere, metodă, răspuns</h2><p class="cheie">Clientul trimite o cerere. Serverul trimite un răspuns. Între ele, o metodă HTTP care spune ce vrei să se întâmple.</p><div class="ix" data-ix="flux">
-  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Aceeași drumeție, în cod</span></div>
-  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Trimite cererea”", "intro": "Exact stațiile de la restaurant, cu alte nume.", "buton": "Trimite cererea", "dus": "cererea pleacă: metodă, adresă, parametri", "intors": "răspunsul se întoarce: cod, antete, corp", "gata": "ai codul de stare și corpul, de obicei JSON", "statii": [{"n": "Codul tău", "et": "client", "ic": "💻", "d": "Construiește cererea: metoda, adresa, parametrii, antetele."}, {"n": "Internetul", "et": "HTTP", "ic": "🌐", "d": "Cererea călătorește. Dacă pică aici, primești o eroare de rețea, nu un cod de stare."}, {"n": "Serverul", "et": "API", "ic": "🖥", "d": "Primește cererea, verifică dacă are sens, caută resursa, aplică filtrele."}, {"n": "Baza de date", "et": "resursa", "ic": "🗄", "d": "Acolo stau datele propriu-zise. Tu nu ajungi niciodată aici direct."}]}</script></div>
+<h2>Cerere, metodă, răspuns</h2><p class="cheie">Clientul trimite o cerere. Serverul trimite un răspuns. Între ele, o metodă HTTP care spune ce vrei să se întâmple.</p><div class="ix" data-ix="comanda">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Aceeași scenă, în cod</span></div>
+  <div class="ix__corp"><script type="application/json">{"buton": "Trimite cererea", "intro": "Aceleași trei locuri ca la restaurant, cu numele din cod.", "etBon": "cererea", "etFar": "răspunsul", "zone": [{"ic": "💻", "n": "Codul tău", "et": "client", "obiect": {"ic": "📖", "n": "Documentația", "et": "ce se poate cere"}}, {"ic": "🔌", "n": "API-ul", "et": "intermediar"}, {"ic": "🖥️", "n": "Serverul", "et": "worldbank.org", "obiect": {"ic": "🗄️", "n": "Baza de date", "et": "resursa"}}], "pasi": [{"t": "Citești documentația", "d": "Afli adresa resursei și ce parametri primește."}, {"t": "Construiești cererea", "d": "Metoda GET, adresa, parametrii."}, {"t": "Cererea pleacă", "d": "Prin internet, la API. Dacă pică aici, e eroare de rețea, nu un cod de stare."}, {"t": "Serverul caută", "d": "Verifică cererea, caută resursa, aplică filtrele."}, {"t": "Vine răspunsul", "d": "Un cod de stare, apoi corpul, de obicei JSON."}], "scenarii": [{"t": "Cerere bună", "bon": "GET /v2/country/RO/indicator/SP.POP.TOTL?format=json", "cod": "200", "far": "[{\"page\": 1, \"total\": 64}, [ ... ]]"}, {"t": "Adresă greșită", "bon": "GET /v2/country/RO/indicatorr/SP.POP.TOTL", "cod": "404", "far": "Not Found", "rau": true, "text": {"3": "Calea nu există. Serverul nu ghicește ce ai vrut să scrii.", "4": "Vine 404, iar corpul nu mai e JSON. Te uiți întâi la cod, apoi la date."}}]}</script></div>
 </div><div class="nota"><div class="nota__et">De ce poți relua o colectare căzută</div><p>Nimic nu rămâne deschis între două cereri: fiecare cerere poartă cu ea tot ce-i trebuie. De aceea a treia cerere merge și dacă primele două s-au făcut ieri, de pe alt calculator.</p></div>
 
 </section>
@@ -168,7 +157,7 @@
 </section>
 
 <section class="sld" id="s15" data-grup="Surse de date" data-t="Ce folosim noi">
-<h2>Sursele proiectului</h2><table class="tabel"><thead><tr><th>Sursa</th><th>Cum vine</th><th>Ce ne dă</th></tr></thead><tbody><tr><td>Social Connectedness Index</td><td>fișier descărcat</td><td>legăturile dintre locuri; e deja la voi</td></tr><tr><td>Banca Mondială</td><td class="mono">API REST public</td><td>indicatori pe țară și an</td></tr><tr><td>Eurostat</td><td class="mono">API REST public</td><td>indicatori pe regiuni NUTS</td></tr><tr><td>INS Tempo</td><td class="mono">API</td><td>date despre România, mai greu de citit</td></tr></tbody></table><p>Azi lucrăm cu Banca Mondială, pentru că nu cere nimic și răspunde imediat. Eurostat vine la seminar.</p><div class="verif" data-id="c2-v9" data-corect="1">
+<h2>Sursele proiectului</h2><table class="tabel"><thead><tr><th>Sursa</th><th>Cum vine</th><th>Ce ne dă</th></tr></thead><tbody><tr><td>Social Connectedness Index</td><td>fișier descărcat (HDX)</td><td>legăturile dintre locuri; e deja la voi</td></tr><tr><td>Banca Mondială</td><td class="mono">API REST public</td><td>indicatori pe țară și an</td></tr><tr><td>Eurostat</td><td class="mono">API REST public</td><td>indicatori pe regiuni NUTS</td></tr><tr><td><strong>Eurostat, migrație</strong></td><td class="mono">migr_pop1ctz</td><td>câți cetățeni ai unei țări trăiesc în alta</td></tr></tbody></table><p>Întâi Banca Mondială, pentru că răspunde simplu. Apoi Eurostat, cu indicatorii pe regiuni și cu migrația.</p><div class="verif" data-id="c2-v9" data-corect="1">
     <p class="verif__q">Fișierul SCI de la cursul 1 e o sursă prin API?</p>
     <button>Da, orice sursă de date e un API</button>
     <button>Nu, e un fișier descărcat; API-ul e un serviciu pe care îl întrebi</button>
@@ -219,6 +208,30 @@
 
 </section>
 
+<section class="sld" id="s19e" data-grup="Eurostat" data-t="Un cub, nu un tabel">
+<h2>Eurostat răspunde altfel</h2><p class="cheie">Nu trimite rânduri. Trimite coduri cu poziții, și valori puse pe poziții.</p><div class="ix" data-ix="cub">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum se desface</span><span class="ix__t">Câți cetățeni, în ce țară</span></div>
+  <div class="ix__corp"><script type="application/json">{"sursa": "migr_pop1ctz, 2024 (doar două dimensiuni, ca să se vadă)", "dimensiuni": [{"id": "citizen", "coduri": ["BG", "PL", "RO"]}, {"id": "geo", "coduri": ["DE", "ES", "IT"]}], "valori": [371128, 112834, 48659, 741784, 59132, 73320, 776424, 620463, 1073196], "intro": "Răspunsul nu are rânduri. Are coduri cu poziții și valori puse pe poziții. Apasă pe o valoare din <code>value</code>.", "cine": {"8": "Asta e ghicitoarea: 1,07 milioane de români în Italia."}}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">Regula</div><p>Ultima dimensiune se schimbă cel mai repede, ca secundele la ceas. O valoare care lipsește e <code>null</code>, nu zero.</p></div>
+
+</section>
+
+<section class="sld" id="s19m" data-grup="Eurostat" data-t="Migrația, prin API">
+<h2>A doua sursă a proiectului</h2><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Adu migrația</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-migr", "fisier": "migratie.py", "sarcina": "Completează datasetul și cele două coduri, ca să afli câți români trăiesc în Italia.", "cod": "# cere_eurostat face cererea si desface cubul (caietul C2)\np = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\nmigratie = cere_eurostat({{1}}, p)\n\n# geo = tara unde traiesc, citizen = cetatenia\nmigratie[(migratie[\"geo\"] == {{2}}) & (migratie[\"citizen\"] == {{3}})]", "goluri": {"1": {"ok": ["\"migr_pop1ctz\"", "'migr_pop1ctz'"], "ajutor": "datasetul"}, "2": {"ok": ["\"IT\"", "'IT'"], "ajutor": "țara"}, "3": {"ok": ["\"RO\"", "'RO'"], "ajutor": "cetățenia"}}, "laBine": "1.073.196 de cetățeni români în Italia, la 1 ianuarie 2024.", "laRau": "Codurile sunt text, între ghilimele: întâi țara unde trăiesc, apoi cetățenia.", "explicatie": "Un rând din tabelul ăsta e o pereche de țări, ca la SCI. Diferența: migrația are sens. Românii din Italia nu sunt italienii din România."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s19h" data-grup="Eurostat" data-t="Ce ai adus, pe hartă">
+<h2>Unde trăiesc cetățenii unei țări</h2><div class="ix" data-ix="harta">
+  <div class="ix__cap"><span class="ix__fel">Harta, date reale</span><span class="ix__t">Același tabel, desenat</span></div>
+  <div class="ix__corp"><script type="application/json">{"niveluri": ["tari"], "nivel": "tari", "masura": "migr", "ales": "RO", "masuri": ["migr", "sci"], "povesti": [{"t": "Românii", "nivel": "tari", "masura": "migr", "ales": "RO", "text": "Italia, Germania, Spania: trei țări cu peste 600.000 de cetățeni români fiecare."}, {"t": "Bulgarii", "nivel": "tari", "masura": "migr", "ales": "BG", "text": "Germania întâi, apoi Spania. Același coridor ca la români, dar mai mic."}, {"t": "Polonezii", "nivel": "tari", "masura": "migr", "ales": "PL", "text": "Aproape toți spre nord și vest: Germania, Olanda, Norvegia, Irlanda."}]}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">Gri înseamnă că nu știm</div><p>Polonia, Danemarca, Grecia, Croația și Regatul Unit nu raportează pe țări de cetățenie. Nu înseamnă zero.</p></div>
+
+</section>
+
 <section class="sld" id="s20" data-grup="Postman" data-t="Aceeași cerere, cu mâna">
 <h2>Postman</h2><p>Înainte de a scrie cod, merită să faci cererea într-un loc unde vezi tot: adresa, parametrii, antetele, codul de stare și corpul răspunsului.</p><table class="tabel"><thead><tr><th>În Postman</th><th>Ce vezi</th></tr></thead><tbody><tr><td>metoda și adresa</td><td>ce ceri</td></tr><tr><td>tabul Params</td><td>parametrii, pe rânduri, ușor de modificat</td></tr><tr><td>butonul Send</td><td>codul de stare și cât a durat</td></tr><tr><td>panoul de jos</td><td>JSON-ul, pliat pe niveluri</td></tr></tbody></table><p>Când cererea merge acolo, o treci în cod. Când nu merge în cod, te întorci acolo ca să vezi care bucată diferă.</p><div class="ix" data-ix="dovada">
   <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Arată că ți-a mers</span></div>
@@ -236,18 +249,18 @@
 </section>
 
 <section class="sld" id="s22" data-grup="Mai departe" data-t="Până data viitoare">
-<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git: istoric, reveniri, ramuri, pull request</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat și urcat în depozit. Plus o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
+<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git: istoric, reveniri, ramuri, pull request</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat și urcat în depozit, plus <code>migratie.csv</code> din caietul de seminar. Și o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
 
 </section>
 
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=36"></script>
+<script type="module" src="../../js/antet.js?v=39"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=36";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=36";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=36";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=39";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=39";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=39";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });

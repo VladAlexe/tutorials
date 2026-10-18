@@ -12,9 +12,9 @@ Ce am adăugat peste prezentare, și de ce:
   - exercițiile cu cod, pentru că o cerere se învață scriind-o;
   - pasul de proiect de la final, ca ora să lase ceva în depozit.
 
-Datele proiectului nu sunt încă toate adunate, deci exercițiile lucrează pe
-API-ul Băncii Mondiale, care e public, nu cere cheie și e deja folosit la
-cursul 1.
+Exercițiile cu requests lucrează pe API-ul Băncii Mondiale, care e public și
+nu cere cheie. Apoi aceeași idee la Eurostat, cu formatul lui (JSON-stat), și
+a doua sursă a proiectului: migrația (migr_pop1ctz), tot prin API.
 
 Rulare:  python _build/c2.py
 """
@@ -36,6 +36,7 @@ AGENDA = [
     ("Cum arată o cerere", "azi", "Metode HTTP, endpoint, parametri, coduri de răspuns."),
     ("Postman", "azi", "Aceeași cerere, făcută cu mâna, înainte de a o scrie în cod."),
     ("requests", "azi", "Biblioteca din Python cu care colectăm de acum înainte."),
+    ("Eurostat și migrația", "azi", "Un răspuns care vine ca un cub, și a doua sursă a proiectului."),
     ("Primele date în proiect", "azi", "O cerere adevărată, salvată în depozitul echipei."),
     ("Git și colaborare", "cursul 3", "Cum lucrează patru oameni pe același cod."),
 ]
@@ -44,7 +45,7 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Colectarea datelor prin API</h2>"
    "<p class=\"cheie\">Până acum ai citit un fișier primit de-a gata. "
    "De azi, ți-l aduci singur.</p>"
-   "<p>Cinci lucruri, în ordinea asta.</p>"
+   "<p>Șase lucruri, în ordinea asta.</p>"
    + ix("etape", "Agenda",
         {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
@@ -101,67 +102,73 @@ sl("s2", "Cursul", "Unde ai rămas",
 #  3-5. Ce este un API
 # ===========================================================================
 
-RESTAURANT = [
-    ("Clientul", "codul tău",
-     "Știe ce vrea, dar nu intră în bucătărie. Formulează o comandă și o dă mai departe."),
-    ("Ospătarul", "API-ul",
-     "Intermediarul. Preia comanda, o duce la bucătărie, aduce răspunsul înapoi. "
-     "Nu gătește el, dar fără el nu ajungi la bucătărie."),
-    ("Meniul", "documentația",
-     "Ce se poate cere, cu ce opțiuni și în ce condiții. Dacă ceri ceva care nu e "
-     "în meniu, primești un refuz, nu o surpriză."),
-    ("Bucătăria", "serverul",
-     "Acolo se întâmplă lucrul adevărat. Nu vezi cum, și nici nu te privește: "
-     "te privește doar ce iese."),
-    ("Preparatul", "răspunsul",
-     "Ce primești înapoi, în forma convenită. La API, de cele mai multe ori, JSON."),
+PASI_CERERE = [
+    {"t": "Citești meniul",
+     "d": "Înainte de a comanda te uiți ce se poate cere. La API, meniul e documentația."},
+    {"t": "Scrii comanda",
+     "d": "Pe bon scrie exact ce vrei, în forma din meniu."},
+    {"t": "Ospătarul o duce",
+     "d": "Tu nu intri în bucătărie. Bonul ajunge acolo prin intermediar."},
+    {"t": "Bucătăria pregătește",
+     "d": "Ia din cămară ce trebuie. Tu nu vezi cum, și nici nu te privește."},
+    {"t": "Primești farfuria",
+     "d": "Se întoarce pe același drum, în forma convenită."},
 ]
+
+RESTAURANT = {
+    "buton": "Începe comanda",
+    "intro": "Trei locuri, două drumuri: comanda pleacă spre bucătărie, "
+             "farfuria se întoarce. Apasă „Începe comanda”.",
+    "etBon": "bonul",
+    "zone": [
+        {"ic": "🙋", "n": "Clientul", "et": "codul tău",
+         "obiect": {"ic": "📋", "n": "Meniul", "et": "documentația"}},
+        {"ic": "🤵", "n": "Ospătarul", "et": "API-ul"},
+        {"ic": "👩‍🍳", "n": "Bucătăria", "et": "serverul",
+         "obiect": {"ic": "🥫", "n": "Cămara", "et": "baza de date"}},
+    ],
+    "pasi": PASI_CERERE,
+    "scenarii": [
+        {"t": "Comandă din meniu", "bon": "o ciorbă de burtă, fără ardei",
+         "cod": "200", "far": "ciorbă de burtă, fără ardei"},
+        {"t": "Comandă ce nu e în meniu", "bon": "o pizza hawaiiană",
+         "cod": "404", "far": "nu avem așa ceva", "rau": True,
+         "text": {"3": "Bucătăria caută și nu găsește. Nu improvizează.",
+                  "4": "Farfuria vine goală, cu un număr. API-ul nu e politicos: "
+                       "nu-ți explică, îți dă codul și atât."}},
+    ],
+}
 
 sl("s3", "Ce este un API", "Analogia restaurantului",
    "<h2>Analogia restaurantului</h2>"
    "<p class=\"cheie\">Un API e ospătarul. Nu gătește, dar fără el nu ajungi "
    "la bucătărie.</p>"
-   + ix("flux", "Comanda, de la masă la bucătărie",
-        {"titlu": "Apasă „Trimite comanda”",
-         "intro": "Sau apasă pe oricare dintre stații, ca să vezi cu ce se potrivește din cod.",
-         "buton": "Trimite comanda",
-         "dus": "comanda pleacă spre bucătărie",
-         "intors": "preparatul se întoarce la masă",
-         "gata": "gata: ai primit ce ai cerut, în forma convenită",
-         "statii": [{"n": n, "et": u, "d": d, "ic": ic}
-                    for (n, u, d), ic in zip(RESTAURANT, ["🙋", "🧑‍🍳", "📋", "🍳", "🍽"])]}),
+   + ix("comanda", "Comanda, de la masă la bucătărie", RESTAURANT),
+   dupa=verif("c2-v2", 2,
+              "În analogia restaurantului, documentația API-ului este…",
+              ["ospătarul", "bucătăria", "meniul", "farfuria"],
+              "Meniul. Spune ce se poate cere și cu ce opțiuni. Un API fără "
+              "documentație e un restaurant fără meniu: poți ghici, dar pierzi "
+              "seara întrebând."),
    manual=
    "<h2>Analogia restaurantului</h2>"
    "<p>Analogia e veche și merită spusă o dată, pentru că fixează un lucru care "
    "altfel se învață greu: tu nu vorbești cu baza de date a celuilalt. Vorbești "
    "cu un intermediar care are voie să intre acolo, în numele tău, în niște "
    "condiții scrise dinainte.</p>"
-   + ix("flux", "Comanda, de la masă la bucătărie",
-        {"titlu": "Apasă „Trimite comanda”",
-         "intro": "Sau apasă pe oricare dintre stații.",
-         "buton": "Trimite comanda",
-         "dus": "comanda pleacă spre bucătărie",
-         "intors": "preparatul se întoarce la masă",
-         "gata": "gata: ai primit ce ai cerut",
-         "statii": [{"n": n, "et": u, "d": d, "ic": ic}
-                    for (n, u, d), ic in zip(RESTAURANT, ["🙋", "🧑‍🍳", "📋", "🍳", "🍽"])]})
+   + ix("comanda", "Comanda, de la masă la bucătărie", RESTAURANT)
+   + tabel(["La restaurant", "La API"], [
+       ["clientul", "codul tău"],
+       ["meniul", "documentația: ce se poate cere și cum"],
+       ["bonul", "cererea: metoda, adresa, parametrii"],
+       ["ospătarul", "API-ul, intermediarul"],
+       ["bucătăria și cămara", "serverul și baza de date"],
+       ["farfuria", "răspunsul: un cod de stare și datele"],
+   ])
    + "<p>Analogia are și o limită, și e bine s-o știi: ospătarul e politicos, "
-     "pe când API-ul nu. Dacă ceri greșit, nu-ți explică nimeni ce ai greșit; "
-     "primești un număr și atât. De aceea citirea documentației nu e opțională.</p>")
-
-sl("s4", "Ce este un API", "Verificare pe analogie",
-   "<h2>Cine e cine</h2>"
-   + verif("c2-v2", 2,
-           "În analogia restaurantului, documentația API-ului este…",
-           ["ospătarul", "bucătăria", "meniul", "preparatul"],
-           "Meniul. Spune ce se poate cere și cu ce opțiuni. Un API fără "
-           "documentație e un restaurant fără meniu: poți ghici, dar pierzi "
-           "seara întrebând.")
-   + verif("c2-v3", 0,
-           "Și serverul?",
-           ["bucătăria", "clientul", "meniul", "ospătarul"],
-           "Bucătăria. Acolo se face treaba, și tocmai de aceea nu ai acces "
-           "direct: ar fi și periculos, și inutil."))
+     "pe când API-ul nu. Dacă ceri ceva ce nu e în meniu, nu-ți explică nimeni "
+     "ce ai greșit; primești un număr și atât. De aceea citirea documentației "
+     "nu e opțională.</p>")
 
 sl("s5", "Ce este un API", "De ce nu descărcăm cu mâna",
    "<h2>De ce prin API</h2>"
@@ -208,29 +215,29 @@ sl("s5", "Ce este un API", "De ce nu descărcăm cu mâna",
 #  6-9. Tipuri de API
 # ===========================================================================
 
+def _ramura(nume, frunze):
+    return {"nume": nume, "tipuri": [{"n": n, "d": d} for n, d in frunze]}
+
+
 TIPURI_API = [
-    {"nume": "API-uri web", "copii": [
-        {"nume": "REST", "text": "Cel mai răspândit pentru API-uri publice. Resurse la adrese, metode HTTP."},
-        {"nume": "GraphQL", "text": "O singură adresă, iar clientul spune exact ce câmpuri vrea."},
-        {"nume": "gRPC", "text": "Rapid și strâns tipizat. Între servicii, rar expus publicului."},
-        {"nume": "SOAP", "text": "Vechi, cu plic XML. Încă viu în bănci și administrație."}]},
-    {"nume": "După cine are acces", "copii": [
-        {"nume": "Public / Open", "text": "Oricine, uneori cu o cheie gratuită. Banca Mondială, Eurostat."},
-        {"nume": "Partner", "text": "Doar pentru parteneri, cu contract."},
-        {"nume": "Privat / intern", "text": "Doar înăuntrul organizației."}]},
-    {"nume": "Orientate pe evenimente", "copii": [
-        {"nume": "Webhooks", "text": "Nu ceri tu; te sună el când s-a întâmplat ceva."},
-        {"nume": "Streaming", "text": "Un flux continuu, nu o cerere și un răspuns."},
-        {"nume": "WebSockets, SSE", "text": "Legătură deschisă, în timp real."}]},
-    {"nume": "Specializate", "copii": [
-        {"nume": "Baze de date", "text": "PostgreSQL, MongoDB."},
-        {"nume": "Cloud", "text": "Azure, AWS."},
-        {"nume": "AI / ML", "text": "OpenAI, HuggingFace."},
-        {"nume": "IoT", "text": "Senzori, case inteligente."}]},
-    {"nume": "Comerciale", "copii": [
-        {"nume": "Plăți", "text": "Stripe."},
-        {"nume": "Comerț", "text": "Shopify."},
-        {"nume": "Rețele sociale", "text": "YouTube Data API."}]},
+    _ramura("API-uri web", [
+        ("REST", "Cel mai răspândit pentru API-uri publice. Resurse la adrese, metode HTTP."),
+        ("GraphQL", "O singură adresă, iar clientul spune exact ce câmpuri vrea."),
+        ("gRPC", "Rapid și strâns tipizat. Între servicii, rar expus publicului."),
+        ("SOAP", "Vechi, cu plic XML. Încă viu în bănci și administrație.")]),
+    _ramura("După acces", [
+        ("public", "Oricine, uneori cu o cheie gratuită. Banca Mondială, Eurostat."),
+        ("partener", "Doar pentru parteneri, cu contract."),
+        ("intern", "Doar înăuntrul organizației.")]),
+    _ramura("Pe evenimente", [
+        ("webhooks", "Nu ceri tu; te anunță el când s-a întâmplat ceva."),
+        ("streaming", "Un flux continuu, nu o cerere și un răspuns."),
+        ("WebSockets", "Legătură deschisă, în timp real.")]),
+    _ramura("Specializate", [
+        ("baze de date", "PostgreSQL, MongoDB."),
+        ("cloud", "Azure, AWS."),
+        ("AI", "OpenAI, HuggingFace."),
+        ("IoT", "Senzori, case inteligente.")]),
 ]
 
 sl("s6", "Tipuri de API", "Ce fel de API-uri există",
@@ -305,26 +312,39 @@ sl("s8", "Tipuri de API", "REST, SOAP, GraphQL, gRPC",
 #  10-13. Cum arată o cerere
 # ===========================================================================
 
+CERERE = {
+    "buton": "Trimite cererea",
+    "intro": "Aceleași trei locuri ca la restaurant, cu numele din cod.",
+    "etBon": "cererea", "etFar": "răspunsul",
+    "zone": [
+        {"ic": "💻", "n": "Codul tău", "et": "client",
+         "obiect": {"ic": "📖", "n": "Documentația", "et": "ce se poate cere"}},
+        {"ic": "🔌", "n": "API-ul", "et": "intermediar"},
+        {"ic": "🖥️", "n": "Serverul", "et": "worldbank.org",
+         "obiect": {"ic": "🗄️", "n": "Baza de date", "et": "resursa"}},
+    ],
+    "pasi": [
+        {"t": "Citești documentația", "d": "Afli adresa resursei și ce parametri primește."},
+        {"t": "Construiești cererea", "d": "Metoda GET, adresa, parametrii."},
+        {"t": "Cererea pleacă", "d": "Prin internet, la API. Dacă pică aici, e eroare de rețea, nu un cod de stare."},
+        {"t": "Serverul caută", "d": "Verifică cererea, caută resursa, aplică filtrele."},
+        {"t": "Vine răspunsul", "d": "Un cod de stare, apoi corpul, de obicei JSON."},
+    ],
+    "scenarii": [
+        {"t": "Cerere bună", "bon": "GET /v2/country/RO/indicator/SP.POP.TOTL?format=json",
+         "cod": "200", "far": "[{\"page\": 1, \"total\": 64}, [ ... ]]"},
+        {"t": "Adresă greșită", "bon": "GET /v2/country/RO/indicatorr/SP.POP.TOTL",
+         "cod": "404", "far": "Not Found", "rau": True,
+         "text": {"3": "Calea nu există. Serverul nu ghicește ce ai vrut să scrii.",
+                  "4": "Vine 404, iar corpul nu mai e JSON. Te uiți întâi la cod, apoi la date."}},
+    ],
+}
+
 sl("s9", "Cum arată o cerere", "Arhitectura REST",
    "<h2>Cerere, metodă, răspuns</h2>"
    "<p class=\"cheie\">Clientul trimite o cerere. Serverul trimite un răspuns. "
    "Între ele, o metodă HTTP care spune ce vrei să se întâmple.</p>"
-   + ix("flux", "Aceeași drumeție, în cod",
-        {"titlu": "Apasă „Trimite cererea”",
-         "intro": "Exact stațiile de la restaurant, cu alte nume.",
-         "buton": "Trimite cererea",
-         "dus": "cererea pleacă: metodă, adresă, parametri",
-         "intors": "răspunsul se întoarce: cod, antete, corp",
-         "gata": "ai codul de stare și corpul, de obicei JSON",
-         "statii": [
-             {"n": "Codul tău", "et": "client", "ic": "💻",
-              "d": "Construiește cererea: metoda, adresa, parametrii, antetele."},
-             {"n": "Internetul", "et": "HTTP", "ic": "🌐",
-              "d": "Cererea călătorește. Dacă pică aici, primești o eroare de rețea, nu un cod de stare."},
-             {"n": "Serverul", "et": "API", "ic": "🖥",
-              "d": "Primește cererea, verifică dacă are sens, caută resursa, aplică filtrele."},
-             {"n": "Baza de date", "et": "resursa", "ic": "🗄",
-              "d": "Acolo stau datele propriu-zise. Tu nu ajungi niciodată aici direct."}]})
+   + ix("comanda", "Aceeași scenă, în cod", CERERE)
    + nota("De ce poți relua o colectare căzută",
           "Nimic nu rămâne deschis între două cereri: fiecare cerere poartă cu "
           "ea tot ce-i trebuie. De aceea a treia cerere merge și dacă primele "
@@ -551,13 +571,13 @@ sl("s14", "Surse de date", "De unde se pot lua date",
 sl("s15", "Surse de date", "Ce folosim noi",
    "<h2>Sursele proiectului</h2>"
    + tabel(["Sursa", "Cum vine", "Ce ne dă"], [
-       ["Social Connectedness Index", "fișier descărcat", "legăturile dintre locuri; e deja la voi"],
+       ["Social Connectedness Index", "fișier descărcat (HDX)", "legăturile dintre locuri; e deja la voi"],
        ["Banca Mondială", "~API REST public", "indicatori pe țară și an"],
        ["Eurostat", "~API REST public", "indicatori pe regiuni NUTS"],
-       ["INS Tempo", "~API", "date despre România, mai greu de citit"],
+       ["<strong>Eurostat, migrație</strong>", "~migr_pop1ctz", "câți cetățeni ai unei țări trăiesc în alta"],
    ])
-   + "<p>Azi lucrăm cu Banca Mondială, pentru că nu cere nimic și răspunde "
-     "imediat. Eurostat vine la seminar.</p>"
+   + "<p>Întâi Banca Mondială, pentru că răspunde simplu. Apoi Eurostat, "
+     "cu indicatorii pe regiuni și cu migrația.</p>"
    + verif("c2-v9", 1,
            "Fișierul SCI de la cursul 1 e o sursă prin API?",
            ["Da, orice sursă de date e un API",
@@ -753,6 +773,120 @@ sl("s19", "requests", "Din JSON în tabel",
 
 
 # ===========================================================================
+#  Eurostat și migrația
+# ===========================================================================
+
+CUB = {
+    "sursa": "migr_pop1ctz, 2024 (doar două dimensiuni, ca să se vadă)",
+    "dimensiuni": [
+        {"id": "citizen", "coduri": ["BG", "PL", "RO"]},
+        {"id": "geo", "coduri": ["DE", "ES", "IT"]},
+    ],
+    "valori": [371128, 112834, 48659, 741784, 59132, 73320, 776424, 620463, 1073196],
+    "intro": "Răspunsul nu are rânduri. Are coduri cu poziții și valori puse "
+             "pe poziții. Apasă pe o valoare din <code>value</code>.",
+    "cine": {"8": "Asta e ghicitoarea: 1,07 milioane de români în Italia."},
+}
+
+sl("s19e", "Eurostat", "Un cub, nu un tabel",
+   "<h2>Eurostat răspunde altfel</h2>"
+   "<p class=\"cheie\">Nu trimite rânduri. Trimite coduri cu poziții, și "
+   "valori puse pe poziții.</p>"
+   + ix("cub", "Câți cetățeni, în ce țară", CUB)
+   + nota("Regula",
+          "Ultima dimensiune se schimbă cel mai repede, ca secundele la ceas. "
+          "O valoare care lipsește e <code>null</code>, nu zero.", True),
+   manual=
+   "<h2>Eurostat: JSON-stat</h2>"
+   "<p>Banca Mondială dă o listă de înregistrări, deci se face tabel direct. "
+   "Eurostat folosește JSON-stat, un format pentru tabele cu multe "
+   "dimensiuni: regiune, an, sex, vârstă, unitate. În loc să repete codurile "
+   "pe fiecare rând, le scrie o singură dată, cu poziția lor, iar valorile "
+   "le pune pe poziții.</p>"
+   + tabel(["Cheie", "Ce ne spune"], [
+       ["~id", "numele dimensiunilor, în ordine"],
+       ["~dimension", "codurile fiecărei dimensiuni și poziția lor"],
+       ["~value", "valorile, după poziție; ce lipsește nu apare deloc"],
+   ])
+   + ix("cub", "Câți cetățeni, în ce țară", CUB)
+   + "<p>Cu două dimensiuni, poziția e <code>cetățenie × 3 + țară</code>. Cu "
+     "șapte dimensiuni regula e aceeași, doar mai lungă, de aceea o scriem o "
+     "dată într-o funcție, <code>jsonstat_in_tabel</code>, și n-o mai gândim. "
+     "Funcția e în caietul cursului 2.</p>"
+   + nota("API-ul nu păstrează ordinea cererii",
+          "Dacă ceri Cluj și Bihor, Bihor poate veni primul. De aceea citim "
+          "pozițiile din <code>dimension</code>, nu presupunem."))
+
+HARTA_MIGR = {
+    "niveluri": ["tari"], "nivel": "tari", "masura": "migr", "ales": "RO",
+    "masuri": ["migr", "sci"],
+    "povesti": [
+        {"t": "Românii", "nivel": "tari", "masura": "migr", "ales": "RO",
+         "text": "Italia, Germania, Spania: trei țări cu peste 600.000 de "
+                 "cetățeni români fiecare."},
+        {"t": "Bulgarii", "nivel": "tari", "masura": "migr", "ales": "BG",
+         "text": "Germania întâi, apoi Spania. Același coridor ca la români, "
+                 "dar mai mic."},
+        {"t": "Polonezii", "nivel": "tari", "masura": "migr", "ales": "PL",
+         "text": "Aproape toți spre nord și vest: Germania, Olanda, Norvegia, Irlanda."},
+    ],
+}
+
+COD_MIGR = {
+    "id": "c2-cod-migr", "fisier": "migratie.py",
+    "sarcina": "Completează datasetul și cele două coduri, ca să afli câți "
+               "români trăiesc în Italia.",
+    "cod": "# cere_eurostat face cererea si desface cubul (caietul C2)\n"
+           "p = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\n"
+           "migratie = cere_eurostat({{1}}, p)\n\n"
+           "# geo = tara unde traiesc, citizen = cetatenia\n"
+           "migratie[(migratie[\"geo\"] == {{2}}) & (migratie[\"citizen\"] == {{3}})]",
+    "goluri": {
+        "1": {"ok": ["\"migr_pop1ctz\"", "'migr_pop1ctz'"], "ajutor": "datasetul"},
+        "2": {"ok": ["\"IT\"", "'IT'"], "ajutor": "țara"},
+        "3": {"ok": ["\"RO\"", "'RO'"], "ajutor": "cetățenia"}},
+    "laBine": "1.073.196 de cetățeni români în Italia, la 1 ianuarie 2024.",
+    "laRau": "Codurile sunt text, între ghilimele: întâi țara unde trăiesc, "
+             "apoi cetățenia.",
+    "explicatie": "Un rând din tabelul ăsta e o pereche de țări, ca la SCI. "
+                  "Diferența: migrația are sens. Românii din Italia nu sunt "
+                  "italienii din România.",
+}
+
+sl("s19m", "Eurostat", "Migrația, prin API",
+   "<h2>A doua sursă a proiectului</h2>"
+   + ix("cod", "Adu migrația", COD_MIGR),
+   manual=
+   "<h2>Migrația, prin API</h2>"
+   "<p>Datasetul <code>migr_pop1ctz</code> spune câți oameni cu o anumită "
+   "cetățenie trăiesc într-o țară, la 1 ianuarie. Filtrele "
+   "<code>sex=T</code>, <code>age=TOTAL</code> și <code>unit=NR</code> "
+   "înseamnă toată populația, în număr de persoane.</p>"
+   "<p>Am ales cetățenia, nu țara nașterii (<code>migr_pop3ctb</code>), "
+   "pentru că mai multe țări mari, printre ele Germania, nu raportează "
+   "nașterile pe țări. Cetățenia are și ea o limită: cine a luat cetățenia "
+   "țării în care trăiește nu mai apare ca migrant.</p>"
+   + ix("cod", "Adu migrația", COD_MIGR)
+   + nota("Codurile care încurcă",
+          "Eurostat scrie Grecia <code>EL</code>, nu <code>GR</code>. Iar "
+          "<code>NA</code> e Namibia, pe care pandas o citește ca valoare "
+          "lipsă dacă nu-i spui altfel. Le reluăm la curățare, la cursul 4."))
+
+sl("s19h", "Eurostat", "Ce ai adus, pe hartă",
+   "<h2>Unde trăiesc cetățenii unei țări</h2>"
+   + ix("harta", "Același tabel, desenat", HARTA_MIGR)
+   + nota("Gri înseamnă că nu știm",
+          "Polonia, Danemarca, Grecia, Croația și Regatul Unit nu raportează "
+          "pe țări de cetățenie. Nu înseamnă zero.", True),
+   manual=
+   "<h2>Ce ai adus, pe hartă</h2>"
+   "<p>Tabelul de pe slide-ul anterior, cu cetățenia fixată, e o hartă. "
+   "Alege o țară și vezi unde trăiesc cetățenii ei. Pentru proiect, "
+   "întrebarea vine abia acum: seamănă harta asta cu harta legăturilor din "
+   "cursul 1?</p>"
+   + ix("harta", "Același tabel, desenat", HARTA_MIGR))
+
+# ===========================================================================
 #  22. Postman
 # ===========================================================================
 
@@ -887,7 +1021,8 @@ sl("s22", "Mai departe", "Până data viitoare",
    "<li>tema echipei și cine ce face</li>"
    "</ul>"
    + nota("De făcut până atunci",
-          "Scriptul de colectare, rulat și urcat în depozit. Plus o propunere "
+          "Scriptul de colectare, rulat și urcat în depozit, plus "
+          "<code>migratie.csv</code> din caietul de seminar. Și o propunere "
           "de temă pentru echipă, în două-trei rânduri, în "
           "<code>README.md</code>.", True))
 

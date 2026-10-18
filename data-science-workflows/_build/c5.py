@@ -30,10 +30,10 @@ sl = L.sl
 
 # --------------------------------------------------------------------------
 # Tabelele mici pe care se învață îmbinările. Valorile sunt adevărate: SCI-ul
-# României cu fiecare țară, și populația. Sunt mici ca să se poată număra
-# rândurile cu ochiul, dar nu sunt inventate — și cheia care nu se potrivește
-# (CS, Serbia și Muntenegru, cod ieșit din uz) e o problemă reală de la
-# îmbinarea unui tabel vechi cu unul nou.
+# României cu patru parteneri, și câți cetățeni români trăiesc în patru țări
+# (Eurostat migr_pop1ctz, 2024). Cheia care lipsește din dreapta e MD:
+# Moldova nu raportează la Eurostat, deci cel mai puternic partener al
+# României dispare la un inner join. Problema e reală, nu de exercițiu.
 # --------------------------------------------------------------------------
 
 STANGA = {"nume": "sci", "randuri": [
@@ -43,34 +43,34 @@ STANGA = {"nume": "sci", "randuri": [
     {"cod": "HU", "sci": 85021},
 ]}
 
-DREAPTA = {"nume": "populatie", "randuri": [
-    {"cod": "MD", "pop": 2.6},
-    {"cod": "DE", "pop": 83.2},
-    {"cod": "HU", "pop": 9.6},
-    {"cod": "CS", "pop": 10.5},
+DREAPTA = {"nume": "romani", "randuri": [
+    {"cod": "AT", "romani": 153427},
+    {"cod": "DE", "romani": 776424},
+    {"cod": "HU", "romani": 15740},
+    {"cod": "IT", "romani": 1073196},
 ]}
 
 EXPLIC = {
     "concat": "<b>Una sub alta.</b> Opt rânduri: nimic nu se potrivește cu "
               "nimic, fiindcă <code>concat</code> nici nu se uită la chei. "
               "Coloanele se reunesc, iar unde tabelul nu avea coloana aceea "
-              "rămâne <code>NaN</code>. E ce vrei când lipești luni diferite "
+              "rămâne <code>NaN</code>. E ce vrei când lipești ani diferiți "
               "din aceeași sursă, nu când adaugi coloane.",
-    "inner": "<b>Doar ce e în amândouă.</b> Trei rânduri: MD, DE, HU. AT a "
-             "dispărut fiindcă n-are populație, CS fiindcă n-are SCI. Nicio "
-             "celulă goală — și nicio urmă a celor două care au căzut. De "
-             "asta <code>inner</code> e periculos ca implicit: pierzi date "
-             "fără să-ți spună nimeni.",
+    "inner": "<b>Doar ce e în amândouă.</b> Trei rânduri: AT, DE, HU. Moldova "
+             "a dispărut, adică cel mai puternic partener al României, doar "
+             "pentru că nu raportează migrația. Nicio celulă goală și nicio "
+             "urmă a ei. De asta <code>inner</code> e periculos ca implicit.",
     "left": "<b>Tot ce e în stânga.</b> Patru rânduri, câte avea tabelul "
-            "<code>sci</code>. AT rămâne, dar cu <code>NaN</code> la "
-            "populație. CS nu apare deloc. Ăsta e felul pe care îl vrei când "
-            "stânga e tabelul tău de bază și dreapta doar adaugă atribute.",
+            "<code>sci</code>. MD rămâne, cu <code>NaN</code> la români: nu "
+            "știm, și se vede că nu știm. IT nu apare, fiindcă în stânga am pus "
+            "doar patru parteneri. Ăsta e felul pe care îl vrei când stânga e "
+            "tabelul tău de bază.",
     "right": "<b>Tot ce e în dreapta.</b> Oglinda lui <code>left</code>: "
-             "acum CS rămâne cu <code>NaN</code> la SCI, iar AT dispare. "
+             "acum IT rămâne cu <code>NaN</code> la SCI, iar MD dispare. "
              "Se folosește rar: de obicei schimbi ordinea tabelelor și "
              "scrii <code>left</code>, care se citește mai ușor.",
     "outer": "<b>Tot, de peste tot.</b> Cinci rânduri: cele trei comune, plus "
-             "AT fără populație, plus CS fără SCI. E felul cu care verifici: "
+             "MD fără migrație, plus IT fără SCI. E felul cu care verifici: "
              "dacă <code>outer</code> dă mai multe rânduri decât "
              "<code>inner</code>, știi exact cât ai fi pierdut.",
 }
@@ -111,10 +111,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    manual=
    "<h2>Agregare și baze de date</h2>"
    "<p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, "
-   "indicatorii Băncii Mondiale în altul, ce ați adus de la Eurostat în al "
-   "treilea. Funcționează cât timp te uiți la ele pe rând. În momentul în "
-   "care vrei să spui ceva de forma „țările cu legătură socială puternică au "
-   "și X”, îți trebuie un singur tabel.</p>"
+   "migrația în altul, indicatorii de la Eurostat în al treilea. Funcționează "
+   "cât timp te uiți la ele pe rând. În momentul în care vrei să spui ceva "
+   "de forma „perechile de țări cu mulți migranți sunt și mai legate”, îți "
+   "trebuie un singur tabel.</p>"
    "<p>Unirea tabelelor pare o operație tehnică și e, de fapt, o decizie de "
    "cercetare: ce păstrezi când o sursă n-are o țară pe care cealaltă o are. "
    "Fiecare fel de join e un răspuns diferit la întrebarea asta, iar "
@@ -190,7 +190,7 @@ sl("s3", "Unirea tabelelor", "Două operații, nu una",
             ["Când", "aceleași coloane, surse diferite",
              "tabele diferite, cu o cheie comună"],
             ["Exemplu la voi", "2020, 2021, 2022, descărcate separat",
-             "SCI plus populație, pe cod de țară"],
+             "SCI plus migrație, pe cod de țară"],
             ["În cod", "~pd.concat([a, b])", "~pd.merge(a, b, on=\"cod\")"],
             ["Ce poate strica", "coloane cu nume ușor diferite",
              "chei care nu se potrivesc"]])
@@ -211,7 +211,7 @@ sl("s3", "Unirea tabelelor", "Două operații, nu una",
             ["Când", "aceleași coloane, surse diferite",
              "tabele diferite, cu o cheie comună"],
             ["Exemplu la voi", "2020, 2021, 2022, descărcate separat",
-             "SCI plus populație, pe cod de țară"],
+             "SCI plus migrație, pe cod de țară"],
             ["În cod", "~pd.concat([a, b])", "~pd.merge(a, b, on=\"cod\")"],
             ["Ce poate strica", "coloane cu nume ușor diferite",
              "chei care nu se potrivesc"]])
@@ -240,19 +240,18 @@ sl("s4", "Unirea tabelelor", "Ce iese din fiecare fel",
                   "rânduri ies, și unde apar celule goale.",
        "explicatii": EXPLIC})
    + nota("DE CE CONTEAZĂ",
-          "AT și CS nu sunt un detaliu de exercițiu: la datele voastre, "
-          "diferența dintre <code>inner</code> și <code>left</code> poate "
-          "însemna douăzeci de țări care dispar din analiză fără să scrie "
-          "nicăieri că au dispărut."),
+          "Moldova nu e un detaliu de exercițiu: la datele noastre, "
+          "<code>inner</code> scoate din analiză toate țările care nu "
+          "raportează migrația, fără să scrie nicăieri că au dispărut."),
    manual=
    "<h2>Numără rândurile</h2>"
    "<p>Definițiile din documentație sunt corecte și inutile: se rețin cu "
    "greu și se confundă între ele. Felul în care se învață un join e să te "
    "uiți la două tabele mici și să numeri ce iese.</p>"
-   "<p>Tabelele de mai jos au trei chei comune (MD, DE, HU), una doar în "
-   "stânga (AT, care n-are populație) și una doar în dreapta (CS, codul "
-   "pentru Serbia și Muntenegru, o țară care nu mai există, rămasă într-un "
-   "tabel vechi).</p>"
+   "<p>Tabelele de mai jos au trei chei comune (AT, DE, HU), una doar în "
+   "stânga (MD: Moldova nu raportează migrația la Eurostat) și una doar în "
+   "dreapta (IT, pentru că în stânga am pus doar patru parteneri ai "
+   "României).</p>"
    + ix("imbinare", "Pe două tabele adevărate", {
        "id": "c5-imbinare-feluri", "cheie": "cod",
        "stanga": STANGA, "dreapta": DREAPTA, "numeRez": "rezultat",
@@ -269,16 +268,16 @@ sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
    + ix("cod", "Lipește populația peste SCI", {
        "id": "c5-cod-merge", "fisier": "agregare/uneste.py",
        "sarcina": "Vrei să păstrezi toate țările din tabelul cu SCI, chiar "
-                  "dacă n-au populație.",
+                  "dacă n-au date de migrație.",
        "cod": "import pandas as pd\n\n"
               "sci = pd.read_csv(\"date/curat/sci.csv\")\n"
-              "pop = pd.read_csv(\"date/curat/populatie.csv\")\n\n"
-              "# pastram tot ce e in sci, adaugam ce gasim in pop\n"
-              "d = pd.merge(sci, pop, {{1}}=\"cod\", how={{2}})\n\n"
+              "rom = pd.read_csv(\"date/curat/romani.csv\")\n\n"
+              "# pastram tot ce e in sci, adaugam ce gasim in rom\n"
+              "d = pd.merge(sci, rom, {{1}}=\"cod\", how={{2}})\n\n"
               "# verificare: numarul de randuri nu trebuie sa creasca\n"
               "print(len(sci), \"->\", len(d))\n\n"
-              "# cate tari au ramas fara populatie\n"
-              "print(d[\"pop\"].{{3}}().sum())",
+              "# cate tari au ramas fara date de migratie\n"
+              "print(d[\"romani\"].{{3}}().sum())",
        "goluri": {
            "1": {"ok": ["on"], "ajutor": "parametrul"},
            "2": {"ok": ["\"left\"", "'left'"], "ajutor": "felul, cu ghilimele"},
@@ -311,10 +310,10 @@ sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
        "sarcina": "Păstrezi toate țările din tabelul cu SCI.",
        "cod": "import pandas as pd\n\n"
               "sci = pd.read_csv(\"date/curat/sci.csv\")\n"
-              "pop = pd.read_csv(\"date/curat/populatie.csv\")\n\n"
-              "d = pd.merge(sci, pop, {{1}}=\"cod\", how={{2}})\n\n"
+              "rom = pd.read_csv(\"date/curat/romani.csv\")\n\n"
+              "d = pd.merge(sci, rom, {{1}}=\"cod\", how={{2}})\n\n"
               "print(len(sci), \"->\", len(d))\n"
-              "print(d[\"pop\"].{{3}}().sum())",
+              "print(d[\"romani\"].{{3}}().sum())",
        "goluri": {
            "1": {"ok": ["on"], "ajutor": "parametrul"},
            "2": {"ok": ["\"left\"", "'left'"], "ajutor": "felul"},
@@ -391,7 +390,7 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
    + tabel(["Sursă", "Cum scrie România", "Ce fel de cod"],
            [["Facebook SCI", "~RO", "ISO 3166-1 alpha-2"],
             ["Banca Mondială", "~ROU", "ISO 3166-1 alpha-3"],
-            ["Eurostat", "~RO", "cod NUTS de nivel 0"],
+            ["Eurostat", "~RO", "NUTS 0; dar Grecia e EL și Regatul Unit e UK"],
             ["Un fișier făcut de om", "~Romania, România, ROMANIA", "nimic"]])
    + ix("cod", "Fă-le să se potrivească", {
        "id": "c5-cod-chei", "fisier": "agregare/chei.py",
@@ -438,7 +437,7 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
    + tabel(["Sursă", "Cum scrie România", "Ce fel de cod"],
            [["Facebook SCI", "~RO", "ISO 3166-1 alpha-2"],
             ["Banca Mondială", "~ROU", "ISO 3166-1 alpha-3"],
-            ["Eurostat", "~RO", "cod NUTS de nivel 0"],
+            ["Eurostat", "~RO", "NUTS 0; dar Grecia e EL și Regatul Unit e UK"],
             ["Un fișier făcut de om", "~Romania, România, ROMANIA", "nimic"]])
    + "<p>Mai există o capcană care nu se vede cu ochiul: tipul. "
      "<code>2020</code> citit ca text nu se potrivește cu <code>2020</code> "
@@ -471,15 +470,15 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
        "sarcina": "Potrivește întrebarea de cercetare cu forma pe care "
                   "trebuie s-o aibă un rând.",
        "elemente": [
-           {"t": "Ce țări au cea mai puternică legătură cu România?", "cos": 0},
-           {"t": "Cum a evoluat PIB-ul fiecărei țări între 2015 și 2022?", "cos": 1},
-           {"t": "Între care perechi de țări e legătura cea mai puternică?", "cos": 2},
-           {"t": "Cât de conectate sunt județele între ele, pe ani?", "cos": 3}],
+           {"t": "În ce țări trăiesc cei mai mulți români?", "cos": 0},
+           {"t": "Care județe au cele mai multe legături în afara țării?", "cos": 1},
+           {"t": "Perechile de țări cu mai mulți migranți sunt mai legate?", "cos": 2},
+           {"t": "Județele din Moldova sunt legate de alte regiuni italiene decât cele din Ardeal?", "cos": 3}],
        "cosuri": [
            {"t": "o țară", "d": "un rând = o țară"},
-           {"t": "o țară și un an", "d": "un rând = o țară într-un an"},
-           {"t": "o pereche de țări", "d": "un rând = o legătură"},
-           {"t": "o pereche și un an", "d": "un rând = o legătură într-un an"}],
+           {"t": "o regiune", "d": "un rând = un județ sau o regiune"},
+           {"t": "o pereche de țări", "d": "un rând = o legătură între țări"},
+           {"t": "o pereche de regiuni", "d": "un rând = o legătură între regiuni"}],
        "laBine": "Datele SCI sunt diadice: unitatea naturală e perechea, nu "
                  "țara. Ca să ajungi la o unitate „țară”, trebuie să agregi "
                  "explicit, și atunci alegi cum: sumă, medie, maxim.",
@@ -508,15 +507,15 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
        "id": "c5-sort-unitate",
        "sarcina": "Potrivește întrebarea cu forma unui rând.",
        "elemente": [
-           {"t": "Ce țări au cea mai puternică legătură cu România?", "cos": 0},
-           {"t": "Cum a evoluat PIB-ul fiecărei țări între 2015 și 2022?", "cos": 1},
-           {"t": "Între care perechi de țări e legătura cea mai puternică?", "cos": 2},
-           {"t": "Cât de conectate sunt județele între ele, pe ani?", "cos": 3}],
+           {"t": "În ce țări trăiesc cei mai mulți români?", "cos": 0},
+           {"t": "Care județe au cele mai multe legături în afara țării?", "cos": 1},
+           {"t": "Perechile de țări cu mai mulți migranți sunt mai legate?", "cos": 2},
+           {"t": "Județele din Moldova sunt legate de alte regiuni italiene decât cele din Ardeal?", "cos": 3}],
        "cosuri": [
            {"t": "o țară", "d": "un rând = o țară"},
-           {"t": "o țară și un an", "d": "un rând = o țară într-un an"},
-           {"t": "o pereche de țări", "d": "un rând = o legătură"},
-           {"t": "o pereche și un an", "d": "un rând = o legătură într-un an"}],
+           {"t": "o regiune", "d": "un rând = un județ sau o regiune"},
+           {"t": "o pereche de țări", "d": "un rând = o legătură între țări"},
+           {"t": "o pereche de regiuni", "d": "un rând = o legătură între regiuni"}],
        "laBine": "Datele SCI sunt diadice: unitatea naturală e perechea.",
        "explicatie": "Unitatea de analiză decide ce chei folosești la "
                      "îmbinare și ce înseamnă o medie."}))
@@ -638,18 +637,18 @@ sl("s11", "Baze de date", "Ce e Neon",
        "titlu": "Apasă pe o stație",
        "intro": "Patru locuri prin care trece un <code>select</code>.",
        "statii": [
-           {"n": "Scriptul tău", "et": "pandas", "ic": "🐍",
+           {"n": "Scriptul tău", "et": "pandas", "ic": "🐍", "c": "ceas",
             "d": "<code>pd.read_sql(\"select ...\", con)</code>. Aici nu se "
                  "întâmplă nimic special: e doar un text trimis mai departe."},
-           {"n": "Conexiunea", "et": "psycopg", "ic": "🔌",
+           {"n": "Conexiunea", "et": "psycopg", "ic": "🔌", "c": "salvie",
             "d": "Șirul de conectare spune unde e baza, cine ești și pe ce "
                  "canal criptat. Stă în <code>.env</code>, niciodată în cod."},
-           {"n": "Compute", "et": "pornește la cerere", "ic": "⚡",
+           {"n": "Compute", "et": "pornește la cerere", "ic": "⚡", "c": "accent",
             "d": "Partea care execută interogarea. Dacă n-a mai fost "
                  "întrebată nimic de câteva minute, e oprită, și prima "
                  "întrebare o trezește. De aici vine „serverless”, și tot de "
                  "aici vine întârzierea de o secundă la prima cerere."},
-           {"n": "Storage", "et": "mereu acolo", "ic": "🗄️",
+           {"n": "Storage", "et": "mereu acolo", "ic": "🗄️", "c": "text-2",
             "d": "Datele propriu-zise, separate de partea care calculează. "
                  "Fiindcă sunt separate, se poate face o ramură: o copie a "
                  "bazei pe care experimentezi, fără să atingi originalul."}]})
@@ -682,14 +681,14 @@ sl("s11", "Baze de date", "Ce e Neon",
        "titlu": "Apasă pe o stație",
        "intro": "Patru locuri prin care trece un <code>select</code>.",
        "statii": [
-           {"n": "Scriptul tău", "et": "pandas", "ic": "🐍",
+           {"n": "Scriptul tău", "et": "pandas", "ic": "🐍", "c": "ceas",
             "d": "Un text SQL trimis mai departe."},
-           {"n": "Conexiunea", "et": "psycopg", "ic": "🔌",
+           {"n": "Conexiunea", "et": "psycopg", "ic": "🔌", "c": "salvie",
             "d": "Șirul de conectare stă în <code>.env</code>, niciodată în cod."},
-           {"n": "Compute", "et": "pornește la cerere", "ic": "⚡",
+           {"n": "Compute", "et": "pornește la cerere", "ic": "⚡", "c": "accent",
             "d": "Se trezește la prima întrebare. De aici întârzierea de o "
                  "secundă la prima cerere."},
-           {"n": "Storage", "et": "mereu acolo", "ic": "🗄️",
+           {"n": "Storage", "et": "mereu acolo", "ic": "🗄️", "c": "text-2",
             "d": "Datele, separate de partea care calculează. De aceea se pot "
                  "face ramuri."}]}))
 
@@ -899,18 +898,17 @@ sl("s15", "Baze de date", "SQL, cât vă trebuie",
    "Avantajul e că filtrarea se face acolo, și vine înapoi doar ce ai cerut.</p>"
    + ix("cod", "Scrie interogarea", {
        "id": "c5-cod-sql", "fisier": "baza/intrebari.sql",
-       "sarcina": "Țările cu care România are legătura cea mai puternică, "
-                  "doar cele din UE, primele zece.",
+       "sarcina": "Cele zece țări cu cei mai mulți români, și cât de legată "
+                  "e România de fiecare.",
        "cod": "select\n"
-              "    t.cod,\n"
-              "    t.nume,\n"
-              "    s.sci,\n"
-              "    t.populatie\n"
-              "from legaturi s\n"
-              "{{1}} tari t on t.cod = s.tara_tinta\n"
-              "{{2}} s.tara_sursa = 'RO'\n"
-              "  and t.in_ue = true\n"
-              "order by s.sci {{3}}\n"
+              "    m.geo,\n"
+              "    m.persoane,\n"
+              "    s.sci\n"
+              "from migratie m\n"
+              "{{1}} legaturi s\n"
+              "  on s.tara_1 = 'RO' and s.tara_2 = m.geo\n"
+              "{{2}} m.citizen = 'RO'\n"
+              "order by m.persoane {{3}}\n"
               "limit 10;",
        "goluri": {
            "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"},
@@ -927,12 +925,10 @@ sl("s15", "Baze de date", "SQL, cât vă trebuie",
                      "apoi taie (<code>limit</code>). De asta "
                      "<code>limit 10</code> nu face interogarea de zece ori "
                      "mai rapidă: tot tabelul a fost parcurs oricum."})
-   + tabel(["În pandas", "În SQL"],
-           [["~d[d.cod == 'RO']", "~where cod = 'RO'"],
-            ["~d.merge(t, on='cod')", "~join tari t on t.cod = d.cod"],
-            ["~d.groupby('cod').sum()", "~group by cod"],
-            ["~d.sort_values('sci', ascending=False)", "~order by sci desc"],
-            ["~d.head(10)", "~limit 10"]]),
+   + nota("Ce iese",
+          "Italia, Germania, Spania sus la migrație, cu SCI-uri care nu urmează "
+          "aceeași ordine. E ghicitoarea din cursul 1, de data asta scoasă cu "
+          "o interogare.", True),
    manual=
    "<h2>Patru cuvinte și o ordine</h2>"
    "<p>N-aveți nevoie de SQL avansat. Aveți nevoie de cinci construcții, care "
@@ -945,13 +941,12 @@ sl("s15", "Baze de date", "SQL, cât vă trebuie",
             ["~d.head(10)", "~limit 10"]])
    + ix("cod", "Scrie interogarea", {
        "id": "c5-cod-sql", "fisier": "baza/intrebari.sql",
-       "sarcina": "Primele zece țări din UE, după legătura cu România.",
-       "cod": "select t.cod, t.nume, s.sci, t.populatie\n"
-              "from legaturi s\n"
-              "{{1}} tari t on t.cod = s.tara_tinta\n"
-              "{{2}} s.tara_sursa = 'RO'\n"
-              "  and t.in_ue = true\n"
-              "order by s.sci {{3}}\n"
+       "sarcina": "Cele zece țări cu cei mai mulți români, cu SCI-ul lor.",
+       "cod": "select m.geo, m.persoane, s.sci\n"
+              "from migratie m\n"
+              "{{1}} legaturi s on s.tara_1 = 'RO' and s.tara_2 = m.geo\n"
+              "{{2}} m.citizen = 'RO'\n"
+              "order by m.persoane {{3}}\n"
               "limit 10;",
        "goluri": {
            "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"},
@@ -1039,31 +1034,6 @@ sl("s17", "Baze de date", "Unde faci ce",
            {"t": "În pandas", "d": "datele sunt deja puține"}],
        "laBine": "Adu în memorie ce ai nevoie, nu tot.",
        "explicatie": "Baza face munca grea, pandas face explorarea."}))
-
-
-sl("s18", "Baze de date", "Verificare",
-   "<h2>Două întrebări</h2>"
-   + verif("c5-v10", 2,
-           "Ai nevoie de toate țările din tabelul tău, plus atributele care "
-           "există, fără să pierzi nimic. Ce scrii?",
-           ["pd.concat([a, b])",
-            "pd.merge(a, b, on=\"cod\")",
-            "pd.merge(a, b, on=\"cod\", how=\"left\")",
-            "a.join(b, how=\"inner\")"],
-           "Toate rândurile din stânga, plus ce se găsește în dreapta: "
-           "<code>left</code>. Varianta fără <code>how</code> e "
-           "<code>inner</code>, care ar tăia țările fără atribute.")
-   + verif("c5-v11", 1,
-           "<code>DATABASE_URL</code> a ajuns într-un commit, pe GitHub. Ce "
-           "faci întâi?",
-           ["Ștergi linia și faci un commit nou",
-            "Schimbi parola din Neon",
-            "Faci depozitul privat",
-            "Ștergi depozitul"],
-           "Un secret ajuns în istorie e compromis: rămâne în commit-urile "
-           "vechi, în fork-uri și în cache-uri. Ștergerea din fișier nu-l "
-           "scoate de acolo. Singurul lucru care contează e să-l schimbi, și "
-           "s-o faci repede."))
 
 
 # ===========================================================================
@@ -1163,10 +1133,10 @@ sl("s20", "Proiectul tău", "Unitatea voastră",
        "id": "c5-unitate", "tip": "unitate", "minim": 40,
        "sarcina": "Completează: „Un rând în tabelul nostru final înseamnă "
                   "___, iar cheia care îl identifică e ___.”",
-       "exemplu": "De exemplu: un rând înseamnă o pereche de țări într-un an, "
-                  "iar cheia e (tara_sursa, tara_tinta, an). Sau: un rând "
-                  "înseamnă o țară, agregată ca medie peste toți partenerii, "
-                  "iar cheia e codul ISO2.",
+       "exemplu": "De exemplu: un rând înseamnă o pereche de țări, cu SCI, "
+                  "migranții în ambele direcții și distanța, iar cheia e "
+                  "(tara_1, tara_2). Sau: un rând e o pereche județ românesc, "
+                  "provincie italiană, cu cheia (judet, provincie).",
        "multumesc": "O citesc înainte de cursul următor, și o compar cu ce "
                     "scrie în decizii.md."}),
    manual=
@@ -1177,8 +1147,7 @@ sl("s20", "Proiectul tău", "Unitatea voastră",
        "id": "c5-unitate", "tip": "unitate", "minim": 40,
        "sarcina": "Completează: „Un rând în tabelul nostru final înseamnă "
                   "___, iar cheia care îl identifică e ___.”",
-       "exemplu": "De exemplu: o pereche de țări într-un an, cu cheia "
-                  "(tara_sursa, tara_tinta, an).",
+       "exemplu": "De exemplu: o pereche de țări, cu cheia (tara_1, tara_2).",
        "multumesc": "O citesc înainte de cursul următor."}))
 
 
