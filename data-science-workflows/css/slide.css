@@ -392,3 +392,8 @@ body.prezint .sld{font-size:1.06em}
   .nav-sus{top:calc(var(--antet) + 6px);opacity:.75}
   .nav-sus__n{display:none}
 }
+
+/* bara orei: „Arată clasei” apăsat, și copierea din codul mare */
+.ritm__b--on{background:var(--ambra-slab);border-color:var(--ambra);color:var(--ambra)}
+.ritm__b--on:hover{border-color:var(--ambra);color:var(--ambra)}
+.cod-mare__copiaza{margin-top:18px;font-family:var(--sans);font-size:13px;padding:7px 14px}

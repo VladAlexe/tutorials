@@ -12,7 +12,8 @@ cN-.../lectie/             slide-urile lecției (generate)
 cN-.../tutorial/           manualul lecției (generat)
 cont/                      intrarea în cont și contul studentului
 intra/                     intrarea la oră, cu codul de pe ecran
-predau/                    doar profesorul: ora live, ședințele, semestrul
+predau/                    doar profesorul: panoul (orele, studenții)
+predau/ora/                doar profesorul: rezultatele orei, cu nume
 explorator/                harta SCI
 date-personale/            ce se salvează
 css/  js/  img/  date/     stiluri, cod, logo, date pentru componente
@@ -24,7 +25,10 @@ _build/                    generatoarele
 
 - Pe pagina lecției, profesorul are în plus butonul **Predă**: pornește ora și
   deschide lecția. Codul apare mare, de proiectat.
-- În lecție, bara de sus are **Încheie ora**. E singurul loc din care se oprește.
+- În lecție, bara orei are patru lucruri: codul (un clic îl face mare, cu QR și
+  link), câți sunt, **Arată clasei** (răspunsurile agregate, fără nume, pentru
+  proiector), **Rezultate ↗** (cu nume, în altă filă) și **Încheie ora**, singurul
+  loc din care se oprește.
 - O oră uitată deschisă se închide singură după 3 ore (`db/17-inchidere-automata.sql`).
 - Studentul vede doar lecțiile predate grupei. **Începe lecția** pornește mereu de
   la primul slide.

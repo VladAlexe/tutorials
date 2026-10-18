@@ -21,7 +21,7 @@
    Nu are niciun buton care schimbă ora. Panoul doar se uită.
    =========================================================================== */
 
-import { STARI, ORDINEA } from "./ora.js?v=43";
+import { STARI, ORDINEA } from "./ora.js?v=44";
 
 /* --- stilul --------------------------------------------------------------- */
 
@@ -43,7 +43,7 @@ const CSS = `
 .pv-gol{font-family:var(--sans);font-size:13px;color:var(--text-3);
   text-align:center;padding:26px 10px;line-height:1.5}
 
-.pv-nr{list-style:none;padding:0;margin:0;max-width:none;font-size:13px}
+.pv-nr{list-style:none;padding:0;margin:0;max-width:none;font-family:var(--sans);font-size:13px}
 .pv-nr li{display:flex;align-items:center;gap:9px;padding:5px 2px;margin:0;
   border-bottom:1px solid var(--linie)}
 .pv-nr li::before{content:none}
@@ -81,9 +81,17 @@ const CSS = `
 .pv-sort button{font:inherit;color:var(--text-3);background:none;border:0;
   cursor:pointer;padding:0 2px;text-decoration:underline dotted}
 .pv-sort button:hover,.pv-sort button.on{color:var(--text)}
-.pv-anonim__d{font-family:var(--sans);font-size:13px;color:var(--text-3);
-  margin:14px 0 0;max-width:52ch;line-height:1.5}
-.pv-anonim__d b{color:var(--text-2);font-weight:600}
+.pv-dist{display:flex;flex-direction:column;gap:8px;margin:0 0 20px}
+.pv-dist__r{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) 34px;gap:12px;align-items:center}
+.pv-dist__t{font-family:var(--sans);font-size:15px;color:var(--text)}
+.pv-dist__b{height:14px;border-radius:99px;background:var(--panza-2);overflow:hidden}
+.pv-dist__b i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.pv-dist__r:nth-child(2) .pv-dist__b i{background:var(--ambra)}
+.pv-dist__r:nth-child(3) .pv-dist__b i{background:var(--roza)}
+.pv-dist__r:nth-child(4) .pv-dist__b i{background:var(--salvie)}
+.pv-dist__r b{font-family:var(--mono);font-size:16px;font-weight:500;text-align:right}
+.pv-mare{font-family:var(--sans);font-size:22px;color:var(--text-2);margin:6px 0 0}
+.pv-mare b{font-size:40px;color:var(--text);font-weight:600}
 .pv--anonim .pv-inel{margin-left:0}
 `;
 
@@ -156,7 +164,7 @@ function inel(cate, trimis, total){
       ${arce}
       <text class="num" x="66" y="64" text-anchor="middle" dominant-baseline="middle"
             fill="var(--text)">${trimis}</text>
-      <text class="sub" x="66" y="84" text-anchor="middle">din ${total} au trimis</text>
+      <text class="sub" x="66" y="86" text-anchor="middle">din ${total}</text>
     </svg>
     <ul class="pv-nr">
       ${ORDINEA.map(k => `<li>
@@ -260,24 +268,32 @@ export function randeaza({ slide, sarcini = [], randuri = [], sortare = "slide",
   const total = randuri.length;
   const trimis = total - cate.nefacut;
 
-  /* fără nume: cifrele pe un rând, mari, de citit de la doi metri */
-  if (!nume) return `<div class="pv pv--anonim">
-    <div class="pv__st">
-      <p class="pv__n">slide-ul de pe ecran${secunde != null ? " · " + ceasText(secunde) : ""}</p>
-      <p class="pv__q">${slide?.titlu || "—"}</p>
-      ${sarcini.length ? inel(cate, trimis, total)
-        : `<div class="pv-gol">Slide-ul ăsta n-are nimic de trimis.</div>`}
-    </div>
-    <div class="pv__dr">
-      ${intrebari.length
-        ? `<p class="pv__n">${intrebari.length === 1 ? "întrebarea de pe ecran"
-            : intrebari.length + " întrebări pe slide"}</p>
-           <p class="pv__q">${intrebari.map(i => i.q).join(" &nbsp;·&nbsp; ")}</p>`
-        : ""}
-      <p class="pv-anonim__d">Aici vezi <b>câți</b>, pentru că sertarul ăsta se
-        deschide peste proiector. <b>Cine anume</b> se vede pe al doilea ecran.</p>
-    </div>
-  </div>`;
+  /* Fără nume: ce vede clasa pe proiector. Doar cifre agregate: câți au
+     trimis și, la fiecare întrebare, câți au ales fiecare variantă. Niciun
+     text pentru profesor, nimic despre cine. */
+  if (!nume){
+    const dist = intrebari.filter(q => Array.isArray(q.optiuni)).map(q => {
+      const n = q.optiuni.map(() => 0);
+      randuri.forEach(x => {
+        if (x.ales == null) return;
+        const aici = x.ales_la ? x.ales_la === q.id : intrebari.length === 1;
+        if (aici && n[x.ales] != null) n[x.ales]++;
+      });
+      return { q, n };
+    });
+    return `<div class="pv pv--anonim">
+      <div class="pv__st">${inel(cate, trimis, total)}</div>
+      <div class="pv__dr">${dist.length ? dist.map(({ q, n }) => {
+        const tot = n.reduce((a, b) => a + b, 0);
+        return `<p class="pv__q">${q.q}</p>
+          <div class="pv-dist">${q.optiuni.map((o, k) => `
+            <div class="pv-dist__r"><span class="pv-dist__t">${o}</span>
+              <span class="pv-dist__b"><i style="width:${tot ? Math.round(100 * n[k] / tot) : 0}%"></i></span>
+              <b>${n[k]}</b></div>`).join("")}</div>`;
+      }).join("") : `<p class="pv__q">${slide?.titlu || ""}</p>
+          <p class="pv-mare"><b>${trimis}</b> din ${total} au trimis</p>`}</div>
+    </div>`;
+  }
 
   return `<div class="pv">
     <div class="pv__st">

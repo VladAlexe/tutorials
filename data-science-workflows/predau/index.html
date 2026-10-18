@@ -8,185 +8,370 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=43">
-<link rel="stylesheet" href="../css/predau.css?v=43">
-<script src="../js/tema.js?v=43"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=44">
+<link rel="stylesheet" href="../css/panou.css?v=44">
+<link rel="stylesheet" href="../css/predau.css?v=44">
+<script src="../js/tema.js?v=44"></script>
+<style>
+  /* Panoul profesorului: o singură pagină, trei secțiuni, una sub alta.
+     Acum (dacă e o oră pornită), Orele (fiecare cu raportul ei, deschis pe
+     loc), Studenții (semestrul). Ora nu se pornește de aici: se pornește cu
+     „Predă”, din pagina lecției. */
+  .pd{max-width:1040px}
+  .ps{padding:30px 0 6px}
+  .ps__et{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-3);padding-bottom:10px;border-bottom:1px solid var(--linie);margin:0 0 16px;max-width:none}
+  .ps__et small{letter-spacing:0;text-transform:none;font-size:11.5px}
+
+  .sed li{flex-wrap:wrap}
+  .sed__rap{grid-column:1/-1;width:100%;max-width:none;margin-top:14px;padding-top:16px;border-top:1px dashed var(--linie-2)}
+  .sed__rap[hidden]{display:none}
+  details.arh{margin-top:18px}
+  details.arh summary{cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--text-2);padding:6px 0}
+
+  .st--viu{border-color:color-mix(in srgb,var(--ambra) 40%,var(--linie));background:var(--ambra-slab)}
+  .st--viu .st__pct{background:var(--ambra);box-shadow:0 0 0 3px color-mix(in srgb,var(--ambra) 22%,transparent)}
+
+  /* studenții: aceleași grile ca înainte, cu golul simplu */
+  .stud .gol{border:0;padding:16px 0;font-size:13.5px;color:var(--text-3)}
+  .stud__sus{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+  .stud__sus select{font-family:var(--sans);font-size:13.5px;padding:6px 10px;border-radius:8px;
+    border:1px solid var(--linie-2);background:var(--panza);color:var(--text)}
+  .stud__d{font-family:var(--sans);font-size:13px;color:var(--text-2);margin:0 0 12px;max-width:70ch}
+</style>
 </head>
 <body>
 
 <div id="antet" data-aici="Predau" data-predau></div>
 
 <main class="pd">
-  <div id="banda"></div>
-
   <div class="pd__cap">
     <div>
-      <p class="pd__et" id="ziua">—</p>
-      <h1 class="pd__t" id="titlu">Lecțiile</h1>
-      <p class="pd__d" id="sub">Se încarcă…</p>
+      <p class="pd__et" id="ziua">Predau</p>
+      <h1 class="pd__t">Panoul tău</h1>
+      <p class="pd__d">Ora se pornește din pagina lecției, cu <b>Predă</b>, și se
+      încheie din lecție, cu <b>Încheie ora</b>. Dacă o uiți deschisă, se închide
+      singură după 3 ore. Aici vezi ce a ieșit.</p>
     </div>
   </div>
 
-  <div id="corp"><div class="sch sch--r"></div><div class="sch sch--r"></div></div>
+  <div id="acum"></div>
 
-  <h2 class="pd__t" style="font-size:19px;margin:34px 0 4px">Ultimele ședințe</h2>
-  <p class="pd__d" style="margin:0 0 14px">Istoricul cursului. De aici se deschide
-  raportul fiecărei ore.</p>
-  <div id="istoric"><div class="sch sch--r"></div></div>
+  <section class="ps" id="ore">
+    <p class="ps__et">Orele <small id="ore-n"></small></p>
+    <div id="ore-corp"><div class="sch sch--r"></div></div>
+  </section>
+
+  <section class="ps stud" id="studenti">
+    <p class="ps__et">Studenții</p>
+    <div class="stud__sus">
+      <select id="sel-lectie" aria-label="Lecția"></select>
+    </div>
+    <div class="pn__file" role="tablist">
+      <button class="pn__f on" data-f="sarcini" type="button">Cine ce a făcut</button>
+      <button class="pn__f" data-f="prezenta" type="button">Prezența</button>
+      <button class="pn__f" data-f="cod" type="button">Codul scris</button>
+      <button class="pn__f" data-f="scrise" type="button">Ce au scris</button>
+      <button class="pn__f" data-f="note" type="button">Nota</button>
+    </div>
+    <div class="pn__v" data-v="sarcini">
+      <p class="stud__d">Plin: făcut în oră. Contur: făcut singur, altă dată. Gol: nefăcut.</p>
+      <div id="v-sarcini"><p class="gol">Se încarcă…</p></div></div>
+    <div class="pn__v" data-v="prezenta" hidden>
+      <p class="stud__d">Cine a fost la fiecare oră (din activitate și din cod).</p>
+      <div id="v-prezenta"><p class="gol">Se încarcă…</p></div></div>
+    <div class="pn__v" data-v="cod" hidden>
+      <p class="stud__d">Ultima rezolvare a fiecăruia, la fiecare exercițiu cu cod.</p>
+      <div id="v-cod"><p class="gol">Se încarcă…</p></div></div>
+    <div class="pn__v" data-v="scrise" hidden>
+      <p class="stud__d">Textele scrise de ei la lecția aleasă.</p>
+      <div id="v-scrise"><p class="gol">Se încarcă…</p></div></div>
+    <div class="pn__v" data-v="note" hidden>
+      <p class="stud__d" id="note-d"></p>
+      <div id="v-note"><p class="gol">Se încarcă…</p></div></div>
+  </section>
 </main>
 
-<script type="module" src="../js/antet.js?v=43"></script>
+<script type="module" src="../js/antet.js?v=44"></script>
 <script type="module">
-/* ===========================================================================
-   PAGINA ASTA NU PORNEȘTE ORA.
+import { RADACINA, LECTII, NOTARE } from "../js/curs.js?v=44";
+import * as O from "../js/ora.js?v=44";
 
-   Până acum o porneai din două locuri: de aici, cu o propoziție în care alegeai
-   lecția, grupa și modul, și din bara de jos a lecției, cu un buton. Două
-   porniri, două coduri, și un profesor care nu știa pe care să se uite. Acum
-   ora pornește într-un singur loc: butonul „Predă” de pe pagina lecției. Se
-   încheie tot dintr-un loc: „Încheie ora”, în bara din lecție.
-
-   Aici e doar lista: ce am predat, ce urmează, și intrarea în fiecare lecție.
-   =========================================================================== */
-
-import { RADACINA, LECTII } from "../js/curs.js?v=43";
-import * as O from "../js/ora.js?v=43";
-
-const el = id => document.getElementById(id);
+const el  = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
 const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
               "august","septembrie","octombrie","noiembrie","decembrie"];
+const cheieDe = cap => (LECTII.find(l => "c" + l.nr === cap) || {}).cheie;
 
 let A;
-try { A = await import("../js/auth.js?v=43"); }
-catch { el("sub").textContent = "Nu pot încărca autentificarea."; throw 0; }
-
+try { A = await import("../js/auth.js?v=44"); }
+catch { el("ore-corp").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil();
-if (!p.autentificat){ location.replace(`${RADACINA}/intra/?spre=${encodeURIComponent(location.pathname)}`); throw 0; }
+if (!p.autentificat){ location.replace(`${RADACINA}/cont/`); throw 0; }
 if (!p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
+const sb = A.sb;
 
 const d = new Date();
 el("ziua").textContent = `Predau · ${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`;
 
-const [viu, raw] = await Promise.all([O.deschisa(), O.lista(false)]);
-/* Dacă baza n-are încă funcția, O.lista() întoarce null. Listă goală, nu
-   pagină ruptă: pagina spune „încă nicio ședință", care e adevărul. */
-const sedinte = Array.isArray(raw) ? raw : [];
+/* ============================================================ ACUM ===== */
+const viu = await O.deschisa();
+el("acum").innerHTML = viu ? `
+  <div class="st st--viu">
+    <span class="st__pct"></span>
+    <span class="st__t">Ora e pornită</span>
+    <span class="st__d">${esc(viu.titlu)} · codul <strong>${viu.cod || "—"}</strong>
+      · de ${viu.minute} min · ${viu.in_clasa} au lucrat</span>
+    <span class="st__sp"></span>
+    <a class="btn btn--tare" href="${RADACINA}/${cheieDe(viu.capitol) || ""}/lectie/">Mergi la oră</a>
+  </div>` : "";
 
-banda(viu);
-lista(viu, sedinte);
-istoric(sedinte);
-
-/* --- banda de stare ------------------------------------------------------ */
-
-function banda(s){
-  el("banda").innerHTML = s
-    ? `<div class="st st--viu">
-         <span class="st__pct"></span>
-         <span class="st__t">Ora e deschisă</span>
-         <span class="st__d">${s.titlu} · codul <strong>${s.cod || "—"}</strong>
-           · de ${s.minute} min · ${s.in_clasa} au lucrat</span>
-         <span class="st__sp"></span>
-         <a class="btn" href="ora/">Panoul live</a>
-         <a class="btn btn--tare" href="${RADACINA}/${LECTII.find(l => "c" + l.nr === s.capitol)?.cheie || ""}/lectie/">Mergi la oră</a>
-       </div>`
-    : `<div class="st">
-         <span class="st__pct"></span>
-         <span class="st__t">Nicio oră deschisă</span>
-         <span class="st__d">ora se pornește din pagina lecției, cu butonul Predă</span>
-       </div>`;
-}
-
-/* --- lista lecțiilor ------------------------------------------------------
-   Un rând per lecție, în ordine. Rândul spune ce s-a ținut și când, și are un
-   singur buton: intri în lecție. Lecția care urmează e scoasă în față. */
-
-function lista(viu, sedinte){
-  const gata = LECTII.filter(l => l.sarcini);
-  const cand = new Map();
-  for (const s of sedinte) if (!cand.has(s.capitol)) cand.set(s.capitol, s);
-
-  const urmatoarea = viu
-    ? gata.find(l => "c" + l.nr === viu.capitol)
-    : gata.find(l => !cand.has("c" + l.nr)) || gata[gata.length - 1];
-
-  el("titlu").textContent = viu ? viu.titlu : "Lecțiile";
-  el("sub").textContent = viu
-    ? "Ești în oră. O închei din lecție, cu Încheie ora. Dacă o uiți deschisă, se închide singură după 3 ore."
-    : "Intri în lecție și apeși Predă: ora pornește, iar codul apare mare, de proiectat. Atât.";
-
-  el("corp").innerHTML = `<ul class="lec">${gata.map(l => {
-    const s = cand.get("c" + l.nr);
-    const acum = urmatoarea && l.nr === urmatoarea.nr;
-    return `<li class="${acum ? "lec--acum" : ""}">
-      <span class="lec__nr">${l.nr}</span>
-      <div class="lec__c">
-        <p class="lec__t">${l.titlu}</p>
-        <p class="lec__d">${l.sarcini} sarcini · ${
-          viu && "c" + l.nr === viu.capitol
-            ? `<strong>se predă acum</strong>, codul ${viu.cod || "—"}`
-            : s ? `ținută ${data(s.deschisa_la)}, ${s.prezenti} prezenți`
-                : acum ? "urmează" : "neținută"}</p>
-      </div>
-      <a class="btn ${acum ? "btn--tare" : "btn--mic"}"
-         href="${RADACINA}/${l.cheie}/">Deschide</a>
-    </li>`;
-  }).join("")}</ul>`;
-}
-
-/* --- istoricul ----------------------------------------------------------- */
-
-function istoric(list){
-  if (!list.length){
-    el("istoric").innerHTML = `
-      <div class="gol">
-        <p class="gol__t">Încă nicio ședință</p>
-        <p class="gol__d">Când pornești prima oră, apare aici, cu raportul ei.</p>
-      </div>`;
+/* ============================================================ ORELE ==== */
+async function ore(){
+  const [vii, arhivate] = await Promise.all([O.lista(false), O.lista(true)]);
+  const v = Array.isArray(vii) ? vii : [], a = Array.isArray(arhivate) ? arhivate : [];
+  el("ore-n").textContent = v.length ? `${v.length} ${v.length === 1 ? "oră ținută" : "ore ținute"}` : "";
+  if (!v.length && !a.length){
+    el("ore-corp").innerHTML = `<div class="gol"><p class="gol__t">Încă nicio oră</p>
+      <p class="gol__d">Când apeși Predă pe pagina unei lecții, ora apare aici, cu raportul ei.</p></div>`;
     return;
   }
-  el("istoric").innerHTML = `<ul class="sed">${list.slice(0,6).map(s => `
-    <li>
-      <div>
-        <p class="sed__t">${s.titlu}</p>
-        <p class="sed__d">${data(s.deschisa_la)} · ${s.minute} min ·
-          ${s.prezenti} prezenți${s.inchisa_la ? "" : " · <strong>deschisă</strong>"}</p>
-      </div>
-      <div class="sed__a">
-        <a class="btn btn--mic" href="sedinte/?id=${s.id}">Raportul</a>
-      </div>
-    </li>`).join("")}</ul>
-    <p style="margin:14px 0 0"><a class="leg" href="sedinte/">Toate ședințele</a></p>`;
+  el("ore-corp").innerHTML = `
+    ${v.length ? `<ul class="sed">${v.map(rand).join("")}</ul>`
+               : `<p class="pd__d">Toate orele sunt arhivate.</p>`}
+    ${a.length ? `<details class="arh"><summary>Arhivate (${a.length}): ies din statistici, rămân 30 de zile</summary>
+      <ul class="sed">${a.map(rand).join("")}</ul></details>` : ""}`;
+
+  el("ore-corp").querySelectorAll("[data-arh]").forEach(b => b.onclick = async () => {
+    await O.arhiveaza(b.dataset.arh, b.dataset.inapoi === "1"); ore();
+  });
+  el("ore-corp").querySelectorAll("[data-rap]").forEach(b => b.onclick = () => {
+    const g = el("rap-" + b.dataset.rap);
+    g.hidden = !g.hidden;
+    b.textContent = g.hidden ? "Raportul" : "Închide raportul";
+    if (!g.hidden && !g.dataset.gata) raport(b.dataset.rap, g);
+  });
 }
 
-function data(t){
-  const x = new Date(t);
-  return `${x.getDate()} ${LUNI[x.getMonth()].slice(0,3)}, ${String(x.getHours()).padStart(2,"0")}:${String(x.getMinutes()).padStart(2,"0")}`;
+function rand(s){
+  const arh = s.zile_ramase != null;
+  return `<li>
+    <div style="flex:1;min-width:0">
+      <p class="sed__t">${esc(s.titlu)}</p>
+      <p class="sed__d">${dataLunga(s.deschisa_la)} · ${s.minute} min · ${s.prezenti} prezenți
+        ${s.inchisa_la ? "" : " · <strong>pornită</strong>"}
+        ${arh ? ` · se șterge în ${s.zile_ramase} zile` : ""}</p>
+    </div>
+    <div class="sed__a">
+      <button class="btn btn--mic" type="button" data-rap="${s.id}">Raportul</button>
+      <button class="btn btn--mic" type="button" data-arh="${s.id}" data-inapoi="${arh ? 1 : 0}">
+        ${arh ? "Adu înapoi" : "Arhivează"}</button>
+    </div>
+    <div class="sed__rap" id="rap-${s.id}" hidden></div>
+  </li>`;
 }
+
+async function raport(id, g){
+  g.innerHTML = `<div class="sch sch--r"></div>`;
+  const [r, randuri] = await Promise.all([O.raport(id), O.sumar(id)]);
+  if (!r?.ok){ g.innerHTML = `<p class="pd__d">Raportul nu se poate citi.</p>`; return; }
+  g.dataset.gata = "1";
+  const li = cheieDe(r.capitol);
+  g.innerHTML = `
+    <div class="cif">
+      <div class="cif__c"><p class="cif__n">${r.prezenti}<small>/${r.inscrisi || "—"}</small></p>
+        <p class="cif__e">prezenți, din înscriși</p></div>
+      <div class="cif__c"><p class="cif__n">${r.sarcini_atinse}<small>/${total(r.capitol)}</small></p>
+        <p class="cif__e">sarcini atinse</p></div>
+      <div class="cif__c"><p class="cif__n">${r.texte}</p>
+        <p class="cif__e">texte scrise de ei</p></div>
+    </div>
+    ${r.impotmolire ? `<div class="card" style="margin-bottom:20px">
+      <p class="card__et">unde s-a împotmolit grupa</p>
+      <p class="card__t">${esc(r.impotmolire.sarcina)}</p>
+      <p class="card__d">Doar ${r.impotmolire.trecuti} din ${r.impotmolire.din} au trecut-o.</p>
+    </div>` : ""}
+    ${tabel(randuri)}
+    <div class="randb" style="margin-top:16px">
+      <button class="btn btn--mic" type="button" data-csv>Export CSV</button>
+      ${li ? `<a class="btn btn--mic" href="${RADACINA}/${li}/">Pagina lecției</a>` : ""}
+    </div>`;
+  g.querySelector("[data-csv]").onclick = () => csv(r, randuri);
+  g.querySelectorAll("[data-prez]").forEach(b => b.onclick = async () => {
+    await O.punePrezenta(id, b.dataset.prez, b.dataset.val === "1");
+    g.dataset.gata = ""; raport(id, g);
+  });
+}
+
+function tabel(randuri){
+  if (!randuri?.length) return `<p class="pd__d">Nimeni n-a trimis nimic la ora asta.</p>`;
+  return `<table class="tb">
+    <thead><tr><th>Student</th><th>Prezent</th><th>Trimise</th><th>Trecute</th>
+      <th style="text-align:right">A intrat</th></tr></thead>
+    <tbody>${randuri.map(x => `<tr>
+      <td>${esc(x.nume)}</td>
+      <td><button class="btn btn--mic" type="button" data-prez="${x.matricol}" data-val="${x.prezent ? 0 : 1}">
+          <span class="g ${x.prezent ? "g--ok" : "g--nim"}">${x.prezent ? "✓" : "○"}</span>
+          ${x.prezent ? "prezent" : "absent"}</button></td>
+      <td class="rap">${x.trimise}</td><td class="rap">${x.trecute}</td>
+      <td style="text-align:right" class="rap">${x.prima ? ora(x.prima) : "—"}</td>
+    </tr>`).join("")}</tbody></table>
+    <p class="rap" style="margin:10px 0 0">Prezent = a trimis cel puțin o sarcină. Se schimbă cu un clic.</p>`;
+}
+function total(capitol){
+  const l = LECTII.find(x => "c" + x.nr === capitol); return l?.sarcini ?? "—";
+}
+function csv(r, randuri){
+  const cap = ["matricol","nume","prezent","trimise","trecute","prima_activitate"];
+  const linii = [cap.join(";")].concat((randuri||[]).map(x =>
+    [x.matricol, x.nume, x.prezent ? "da" : "nu", x.trimise, x.trecute, x.prima || ""]
+      .map(v => `"${String(v).replace(/"/g,'""')}"`).join(";")));
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿" + linii.join("\r\n")], { type:"text/csv;charset=utf-8" }));
+  a.download = `${r.capitol}-${(r.deschisa_la||"").slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function dataLunga(t){ const x = new Date(t); return `${ZILE[x.getDay()]}, ${x.getDate()} ${LUNI[x.getMonth()]}, ${ora(t)}`; }
+function ora(t){ const x = new Date(t); return `${String(x.getHours()).padStart(2,"0")}:${String(x.getMinutes()).padStart(2,"0")}`; }
+
+ore();
+
+/* ========================================================= STUDENȚII === */
+const oraS = s => s ? new Date(s).toLocaleString("ro-RO",
+  { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "—";
+const unZec = n => (Math.round(n * 10) / 10).toFixed(1).replace(".", ",");
+const GATA = LECTII.filter(l => l.stare === "gata");
+let cheie = (viu && cheieDe(viu.capitol))
+  || (() => { try { return localStorage.getItem("dsw.panou.lectie"); } catch { return null; } })()
+  || GATA[GATA.length - 1]?.cheie || LECTII[0].cheie;
+const capitol = () => "c" + (LECTII.find(l => l.cheie === cheie) || LECTII[0]).nr;
+
+el("sel-lectie").innerHTML = LECTII.map(l =>
+  `<option value="${l.cheie}" ${l.cheie === cheie ? "selected" : ""} ${l.stare === "gata" ? "" : "disabled"}>
+     Lecția ${l.nr}. ${l.titlu}</option>`).join("");
+el("sel-lectie").onchange = e => {
+  cheie = e.target.value;
+  try { localStorage.setItem("dsw.panou.lectie", cheie); } catch {}
+  semestru();
+};
+document.querySelectorAll(".pn__f").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".pn__f").forEach(x => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".pn__v").forEach(v => v.hidden = v.dataset.v !== b.dataset.f);
+});
+
+function semestru(){ sarcini(); prezenta(); codul(); scrise(); note(); }
+const nuPot = (g, e, fis) => g.innerHTML = `<p class="gol">Nu pot citi: ${esc(e.message)}${
+  fis ? `. Dacă scrie că funcția lipsește, rulează <code>${fis}</code>.` : ""}</p>`;
+const scurt = s => String(s).replace(/^c\d+-/, "").replace(/^cod-/, "").slice(0, 14);
+
+async function sarcini(){
+  const g = el("v-sarcini"); let d;
+  try { const r = await sb.rpc("sumar_sarcini", { p_capitol: capitol() }); if (r.error) throw r.error; d = r.data || []; }
+  catch (e) { return nuPot(g, e, "db/11-context.sql"); }
+  if (!d.length){ g.innerHTML = `<p class="gol">Nimeni n-a făcut nimic la lecția asta, încă.</p>`; return; }
+  const lista = [...new Set(d.map(x => x.sarcina))].sort();
+  const oameni = [...new Map(d.map(x => [x.matricol, x])).values()];
+  const k = new Map(d.map(x => [x.matricol + "|" + x.sarcina, x]));
+  g.innerHTML = `<div class="grila__sul"><table class="grila">
+    <thead><tr><th class="grila__cine">Student</th>${lista.map(s => `<th class="grila__v"><span>${esc(scurt(s))}</span></th>`).join("")}
+      <th class="grila__t">în oră</th></tr></thead>
+    <tbody>${oameni.map(st => {
+      const cel = lista.map(s => {
+        const x = k.get(st.matricol + "|" + s);
+        if (!x) return `<td><i class="cel" title="${esc(s)}: nefăcut"></i></td>`;
+        const c = x.context === "live" ? "live" : "singur";
+        return `<td><i class="cel cel--${c} ${x.reusit ? "" : "cel--ratat"}"
+          title="${esc(s)}: ${c === "live" ? "în oră" : "singur"}, ${x.reusit ? "reușit" : "încă nu"}, ${oraS(x.creat_la)}"></i></td>`;
+      }).join("");
+      const n = lista.filter(s => k.get(st.matricol + "|" + s)?.context === "live").length;
+      return `<tr><th class="grila__cine">${esc(st.nume)} <span class="mic">${esc(st.matricol)}</span></th>${cel}
+        <td class="grila__t">${n}/${lista.length}</td></tr>`;
+    }).join("")}</tbody></table></div>`;
+}
+
+async function prezenta(){
+  const g = el("v-prezenta"); let d;
+  try { const r = await sb.rpc("sumar_prezente_toate"); if (r.error) throw r.error; d = r.data || []; }
+  catch (e) { return nuPot(g, e); }
+  if (!d.length){ g.innerHTML = `<p class="gol">Nicio prezență încă.</p>`; return; }
+  const cursuri = [...new Set(d.map(x => x.curs))].sort();
+  const oameni = [...new Map(d.map(x => [x.matricol, x])).values()].sort((a, b) => String(a.nume).localeCompare(b.nume, "ro"));
+  const are = new Set(d.map(x => x.matricol + "|" + x.curs));
+  g.innerHTML = `<div class="grila__sul"><table class="grila">
+    <thead><tr><th class="grila__cine">Student</th>${cursuri.map(c => `<th class="grila__v"><span>${esc(c)}</span></th>`).join("")}
+      <th class="grila__t">total</th></tr></thead>
+    <tbody>${oameni.map(o => `<tr><th class="grila__cine">${esc(o.nume)}
+        <span class="mic">${esc(o.matricol)}${o.grupa ? " · " + esc(o.grupa) : ""}</span></th>${
+      cursuri.map(c => `<td><i class="cel ${are.has(o.matricol + "|" + c) ? "cel--live" : ""}"></i></td>`).join("")}
+      <td class="grila__t">${cursuri.filter(c => are.has(o.matricol + "|" + c)).length}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
+async function codul(){
+  const g = el("v-cod"); let d;
+  try { const r = await sb.rpc("sumar_cod"); if (r.error) throw r.error;
+        d = (r.data || []).filter(x => String(x.exercitiu_id).startsWith(capitol() + "-")); }
+  catch (e) { return nuPot(g, e); }
+  if (!d.length){ g.innerHTML = `<p class="gol">Nimeni n-a trimis cod la lecția asta.</p>`; return; }
+  const pe = new Map();
+  d.forEach(x => { if (!pe.has(x.exercitiu_id)) pe.set(x.exercitiu_id, []); pe.get(x.exercitiu_id).push(x); });
+  g.innerHTML = [...pe.entries()].map(([id, v]) => `
+    <div class="cod__g">
+      <div class="cod__gt"><span class="cod__id">${esc(id)}</span>
+        <span class="cod__n">${v.filter(x => x.trecut).length} din ${v.length} au reușit</span></div>
+      ${v.map(x => `<div class="cod__r ${x.trecut ? "bun" : "rau"}">
+        <span class="cod__cine">${esc(x.nume)} <small>${esc(x.matricol)} · ${x.context === "live" ? "în oră" : "singur"}</small></span>
+        <code class="cod__t">${esc(x.cod || "")}</code><span class="cod__i">${x.incercari}×</span></div>`).join("")}
+    </div>`).join("");
+}
+
+const ET_TIP = { asteptari: "Ce așteaptă de la curs", intrebare: "Întrebarea de cercetare a echipei" };
+async function scrise(){
+  const g = el("v-scrise"); let d;
+  try { const r = await sb.rpc("sumar_scrise", { p_capitol: capitol(), p_tip: null }); if (r.error) throw r.error;
+        d = (r.data || []).filter(x => x.tip !== "autoevaluare"); }
+  catch (e) { return nuPot(g, e, "db/13-texte.sql"); }
+  if (!d.length){ g.innerHTML = `<p class="gol">N-a scris nimeni nimic la lecția asta.</p>`; return; }
+  const pe = new Map();
+  d.forEach(x => { if (!pe.has(x.tip)) pe.set(x.tip, []); pe.get(x.tip).push(x); });
+  g.innerHTML = [...pe.entries()].map(([tip, lst]) => `
+    <div class="scr__g"><div class="scr__gt">${esc(ET_TIP[tip] || tip)} <span class="mic">${lst.length}</span></div>
+      ${lst.map(x => `<figure class="scr__c"><blockquote>${esc(x.text)}</blockquote>
+        <figcaption>${esc(x.nume)}${x.grupa ? " · " + esc(x.grupa) : ""} <span class="mic">${oraS(x.creat_la)}</span></figcaption>
+      </figure>`).join("")}</div>`).join("");
+}
+
+async function note(){
+  const g = el("v-note");
+  const pc = k => NOTARE.componente.find(x => x.cheie === k).puncte;
+  const pTeme = pc("teme"), pProi = pc("proiect"), pSem = pc("seminar");
+  el("note-d").textContent = `${NOTARE.total} puncte: teme ${pTeme}, proiect ${pProi}, seminar și prezență ${pSem}. Proiectul îl pui la final.`;
+  let d;
+  try { const r = await sb.rpc("sumar_note"); if (r.error) throw r.error; d = r.data || []; }
+  catch (e) { return nuPot(g, e, "db/09-note.sql"); }
+  if (!d.length){ g.innerHTML = `<p class="gol">Lista de studenți e goală.</p>`; return; }
+  const totS = LECTII.reduce((a, l) => a + (l.sarcini || 0), 0) || 1, totO = LECTII.length;
+  g.innerHTML = `<div class="grila__sul"><table class="tb">
+    <thead><tr><th>Student</th><th>Grupa</th><th>Teme <small>/${pTeme}</small></th><th>din care în oră</th>
+      <th>Seminar <small>/${pSem}</small></th><th>Proiect <small>/${pProi}</small></th><th>Acum</th></tr></thead>
+    <tbody>${d.map(s => {
+      const f = (s.verif_date || 0) + (s.cod_trecut || 0);
+      const teme = Math.min(1, f / totS) * pTeme, sem = Math.min(1, (s.prezente || 0) / totO) * pSem;
+      return `<tr><td class="nume">${esc(s.nume)}
+          <span class="mic">${esc(s.matricol)}${s.invitat ? " · invitat" : ""}${s.are_cont ? "" : " · fără cont"}</span></td>
+        <td class="mic">${esc(s.grupa) || "—"}</td>
+        <td>${unZec(teme)} <span class="mic">${f}/${totS}</span></td>
+        <td class="mic">${s.facute_live || 0} în oră · ${s.facute_singur || 0} singur</td>
+        <td>${unZec(sem)} <span class="mic">${s.prezente || 0}/${totO}</span></td>
+        <td class="mic">la final</td>
+        <td><b>${unZec(teme + sem)}</b> <span class="mic">din ${pTeme + pSem}</span></td></tr>`;
+    }).join("")}</tbody></table></div>`;
+}
+
+semestru();
 </script>
-
-<style>
-/* Lista lecțiilor. Un rând e un rând: număr, titlu, o linie de stare, un
-   buton. Lecția care urmează are fundalul puțin mai cald și butonul plin —
-   nu altă formă, nu alt chenar, doar mai multă greutate. */
-.lec{list-style:none;margin:0;padding:0;max-width:none;
-  display:flex;flex-direction:column;gap:7px}
-.lec li{display:flex;align-items:center;gap:15px;margin:0;padding:13px 16px;
-  background:var(--panza);border:1px solid var(--linie);border-radius:11px}
-.lec li::before{content:none}
-.lec--acum{background:var(--panza-2);border-color:var(--linie-2)}
-.lec__nr{font-family:var(--mono);font-size:13px;color:var(--text-3);
-  width:22px;flex:none;text-align:center}
-.lec--acum .lec__nr{color:var(--accent-text);font-weight:500}
-.lec__c{flex:1;min-width:0}
-.lec__t{font-family:var(--sans);font-size:15.5px;font-weight:500;
-  color:var(--text);margin:0 0 2px;letter-spacing:-.008em}
-.lec__d{font-family:var(--sans);font-size:12.5px;color:var(--text-2);margin:0}
-@media (max-width:560px){
-  .lec li{flex-wrap:wrap}
-  .lec__c{flex-basis:calc(100% - 37px)}
-  .lec li .btn{margin-left:37px}
-}
-</style>
+<script type="module" src="../js/subsol.js?v=44"></script>
+<div id="subsol"></div>
 </body>
 </html>

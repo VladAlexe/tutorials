@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ora · Predau · Fluxuri de lucru</title>
+<title>Rezultate · Predau · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=43">
-<link rel="stylesheet" href="../../css/predau.css?v=43">
-<script src="../../js/tema.js?v=43"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=44">
+<link rel="stylesheet" href="../../css/predau.css?v=44">
+<script src="../../js/tema.js?v=44"></script>
 </head>
 <body>
 
-<div id="antet" data-aici="Ora" data-predau></div>
+<div id="antet" data-aici="Rezultatele orei" data-predau></div>
 
 <main class="pd">
   <div id="banda"></div>
@@ -23,7 +23,7 @@
   </div>
 </main>
 
-<script type="module" src="../../js/antet.js?v=43"></script>
+<script type="module" src="../../js/antet.js?v=44"></script>
 <script type="module">
 /* ===========================================================================
    AL DOILEA ECRAN
@@ -42,19 +42,19 @@
    O singură randare, două locuri.
    =========================================================================== */
 
-import { RADACINA, LECTII } from "../../js/curs.js?v=43";
-import * as O from "../../js/ora.js?v=43";
-import * as P from "../../js/panou-live.js?v=43";
+import { RADACINA, LECTII } from "../../js/curs.js?v=44";
+import * as O from "../../js/ora.js?v=44";
+import * as P from "../../js/panou-live.js?v=44";
 
 const PAS = 4000;
 const el = id => document.getElementById(id);
 
 let A;
-try { A = await import("../../js/auth.js?v=43"); }
+try { A = await import("../../js/auth.js?v=44"); }
 catch { el("corp").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();
-if (!p.autentificat){ location.replace(`${RADACINA}/intra/?spre=${encodeURIComponent(location.pathname)}`); throw 0; }
+if (!p.autentificat){ location.replace(`${RADACINA}/cont/`); throw 0; }
 if (!p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
 
 P.stil();
@@ -63,13 +63,12 @@ let S = await O.deschisa();
 
 if (!S){
   el("banda").innerHTML = `<div class="st"><span class="st__pct"></span>
-    <span class="st__t">Nicio oră deschisă</span>
-    <span class="st__d">oglinda asta arată ce se întâmplă într-o ședință; întâi pornește una</span></div>`;
+    <span class="st__t">Nicio oră pornită</span></div>`;
   el("corp").innerHTML = `<div class="gol">
-    <p class="gol__t">Nu e nicio oră în desfășurare</p>
-    <p class="gol__d">Ora se pornește din lecție, de la butonul din banda de jos.
-      Cum pornește, pagina asta se umple singură.</p>
-    <a class="btn btn--tare" href="../">Lecțiile</a></div>`;
+    <p class="gol__t">Nu e nicio oră pornită</p>
+    <p class="gol__d">Apeși Predă pe pagina lecției. Pagina asta arată apoi, cu
+      nume, cine ce a răspuns la slide-ul de pe ecran.</p>
+    <a class="btn" href="../">Panoul tău</a></div>`;
   throw 0;
 }
 
@@ -98,7 +97,7 @@ function deseneazaBanda(){
   el("banda").innerHTML = `
     <div class="st st--viu">
       <span class="st__pct"></span>
-      <span class="st__t">Live</span>
+      <span class="st__t">Rezultatele orei</span>
       <span class="st__cod" style="cursor:default">${S.cod || "—"}</span>
       <span class="st__d">${S.titlu} · slide ${S.slide_nr}${
         S.total_nr ? ` din ${S.total_nr}` : ""} · ${S.in_clasa} au lucrat</span>

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=43">
-<link rel="stylesheet" href="../css/cont.css?v=43">
-<script src="../js/tema.js?v=43"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=44">
+<link rel="stylesheet" href="../css/cont.css?v=44">
+<script src="../js/tema.js?v=44"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=43";
+import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=44";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -35,8 +35,8 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=43");
-  CFG = await import("../js/supabase-config.js?v=43");
+  A = await import("../js/auth.js?v=44");
+  CFG = await import("../js/supabase-config.js?v=44");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
     <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
@@ -75,7 +75,6 @@ async function unde(){
   if (p.profesorReal && !proba){
     location.replace(RADACINA + "/predau/"); return;
   }
-  if (!p.matricol) return matricol();
   return deseneaza();
 }
 
@@ -85,7 +84,6 @@ function intrare(){
   const er = A.intoarcere?.eroare;
   gazda.innerHTML = `
     <div class="lg">
-      <div class="pasi"><i class="on"></i><i></i></div>
       <h1>Intră în cont</h1>
       <p class="lg__d">Ca să ți se salveze răspunsurile, ca să-ți văd progresul
       și ca să apari în prezență.</p>
@@ -98,11 +96,7 @@ function intrare(){
         cont GitHub de la cursul 3, iar activitatea din depozit se leagă singură
         de contul tău.</p>
 
-        ${CFG.PERMITE_EMAIL ? `
-        <div class="ori">sau</div>
-        <label for="email">Adresa de email</label>
-        <input id="email" type="email" autocomplete="email" placeholder="nume@stud.ubbcluj.ro">
-        <button class="btn" id="bt-email" type="button">Trimite-mi o legătură</button>` : ""}
+
 
         <div class="ori">sau</div>
         <label for="nume">Numele tău, pentru intrare ca invitat</label>
@@ -128,11 +122,6 @@ function intrare(){
     try { await A.intraCuGithub(); }
     catch (x) { e.target.disabled = false; msg(x.message, "rau"); }
   };
-  el("bt-email")?.addEventListener("click", async () => {
-    try { await A.intraCuEmail(el("email").value);
-          msg("Ți-am trimis o legătură pe email. Deschide-o de pe calculatorul ăsta.", "bun"); }
-    catch (x) { msg(x.message, "rau"); }
-  });
   el("bt-invitat").onclick = async e => {
     const nume = el("nume").value.trim();
     if (nume.length < 2){ msg("Scrie un nume, ca să te recunosc în listă.", "rau"); return; }
@@ -143,46 +132,6 @@ function intrare(){
       unde();
     } catch (x) { e.target.disabled = false; msg(x.message, "rau"); }
   };
-}
-
-/* ------------------------------------------------------- 2. matricolul -- */
-
-function matricol(){
-  gazda.innerHTML = `
-    <div class="lg">
-      <div class="pasi"><i class="on"></i><i class="on"></i></div>
-      <h1>Numărul matricol</h1>
-      <p class="lg__d">Ești conectat${p.email ? " ca <strong>" + esc(p.email) + "</strong>" : ""}.
-      Mai rămâne să-ți leg contul de numărul tău matricol, ca să te pot găsi în listă.</p>
-
-      <div class="cutie">
-        <label for="mat">Numărul matricol</label>
-        <input id="mat" type="text" inputmode="numeric" autocomplete="off"
-               placeholder="de exemplu 900001" autofocus>
-        <button class="btn btn--tare" id="bt-leg" type="button">Leagă contul</button>
-        <p class="mic">Se poate face o singură dată. Dacă greșești, scrie-mi și îl schimb eu.</p>
-        <p class="mesaj" id="mesaj"></p>
-      </div>
-
-      <p class="mic" style="text-align:center">
-        <button class="leg-bt" id="bt-iesi2" type="button">Nu e contul tău? Ieși.</button></p>
-    </div>`;
-
-  const bt = el("bt-leg"), camp = el("mat");
-  const trimite = async () => {
-    const v = camp.value.trim();
-    if (!v){ msg("Scrie numărul matricol.", "rau"); return; }
-    bt.disabled = true; bt.textContent = "Se verifică…";
-    try {
-      const r = await A.revendicaMatricol(v);
-      if (r?.ok){ msg(`Gata, ${r.nume}.`, "bun"); setTimeout(unde, 700); }
-      else { msg(r?.mesaj || "Nu a mers.", "rau");
-             bt.disabled = false; bt.textContent = "Leagă contul"; }
-    } catch (x){ msg(x.message, "rau"); bt.disabled = false; bt.textContent = "Leagă contul"; }
-  };
-  bt.onclick = trimite;
-  camp.addEventListener("keydown", e => { if (e.key === "Enter") trimite(); });
-  el("bt-iesi2").onclick = async () => { await A.iesi(); unde(); };
 }
 
 /* ====================================================================== */
@@ -217,7 +166,7 @@ async function deseneaza(){
      spun unde ajungi la final, nu unde am ajuns noi astăzi. */
   let listaL = LECTII;
   try {
-    const Ora = await import("../js/ora.js?v=43");
+    const Ora = await import("../js/ora.js?v=44");
     listaL = await Ora.lectiiVizibile(LECTII, p.profesorReal);
   } catch { /* fără bază, se văd toate */ }
 
@@ -290,7 +239,7 @@ async function deseneaza(){
     <div class="cnt__cine">
       <h1>${esc(p.nume) || "Contul meu"}</h1>
       <p class="cnt__meta">
-        <span class="et">${esc(p.matricol)}</span>
+        ${p.matricol ? `<span class="et">${esc(p.matricol)}</span>` : ""}
         ${p.grupa ? `<span class="et">grupa ${esc(p.grupa)}</span>` : ""}
         ${invitat ? `<span class="et et--nu">invitat</span>` : ""}
         ${p.github_login ? `<span class="et">@${esc(p.github_login)}</span>` : ""}
@@ -301,6 +250,11 @@ async function deseneaza(){
       <button class="btn btn--mic" id="bt-iesi" type="button">Ieși din cont</button>
     </div>
   </header>
+
+  ${!p.matricol && !invitat ? `<div class="nota" style="margin-bottom:30px">
+    <div class="nota__et">Încă nu ești în lista grupei</div>
+    <p>La prima oră scanezi codul de pe ecran și îți alegi numele din listă. Atât:
+    de atunci tot ce faci se leagă de tine.</p></div>` : ""}
 
   ${invitat ? `<div class="nota" style="margin-bottom:30px">
     <div class="nota__et">Cont de invitat</div>
@@ -453,7 +407,7 @@ function randLectie(x){
 await unde();
 A.laSchimbare(() => unde());
 </script>
-<script type="module" src="../js/antet.js?v=43"></script>
-<script type="module" src="../js/subsol.js?v=43"></script>
+<script type="module" src="../js/antet.js?v=44"></script>
+<script type="module" src="../js/subsol.js?v=44"></script>
 </body>
 </html>

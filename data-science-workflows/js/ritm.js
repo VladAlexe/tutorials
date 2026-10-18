@@ -34,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=43";
+import { RADACINA } from "./curs.js?v=44";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -44,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=43`);
-    O = await import(`${RADACINA}/js/ora.js?v=43`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=43`);
+    A = await import(`${RADACINA}/js/auth.js?v=44`);
+    O = await import(`${RADACINA}/js/ora.js?v=44`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=44`);
   } catch { return null; }
 
   let p = null;
@@ -110,34 +110,25 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       const cate = P.numara(randuri);
       const trimis = randuri.length - cate.nefacut;
 
+      /* Patru lucruri, mereu în aceeași ordine: codul (un clic îl face mare,
+         cu QR și link), câți sunt, ce le arăți, încheierea. „Arată clasei”
+         apare doar pe slide-urile cu întrebare; „Rezultate” e un link
+         obișnuit, spre pagina cu nume, de deschis în altă filă. */
+      if (!sarcini.length && sertarDeschis){ sertarDeschis = false; inchideSertar(); }
+      const inClasa = randuri.length || S.in_clasa || 0;
       bara.innerHTML = `
         <span class="ritm__pct"></span>
         <button class="ritm__cod" type="button" data-rol="cod"
-                title="Arată codul mare, de proiectat (C)">${S.cod || "…"}</button>
-        ${sertarDeschis ? `
-          <span class="ritm__stari">${P.ceasHTML(secunde())}</span>
-          <span class="ritm__d"><b>${trimis}</b> din ${randuri.length} au trimis</span>
-          <span class="ritm__sp"></span>
-          <button class="ritm__b" type="button" data-rol="panou">Strânge cifrele</button>`
-        : `
-          ${sarcini.length ? `
-            <span class="ritm__stari">
-              ${P.ceasHTML(secunde())}
-              ${["trecut","trimis_gresit","trimis_gol","nefacut"].map(k =>
-                `<span class="ritm__g ritm__g--${k}">${
-                  { trecut:"✓", trimis_gresit:"✕", trimis_gol:"◉", nefacut:"○" }[k]
-                }<b>${cate[k]}</b></span>`).join("")}
-            </span>`
-          : `<span class="ritm__d"><b>${S.in_clasa || 0}</b> în clasă,
-               pe slide-ul tău</span>`}
-          <span class="ritm__sp"></span>
-          <button class="ritm__b" type="button" data-rol="link"
-                  title="Pentru cine ajunge mai târziu">copiază linkul</button>
-          <button class="ritm__b" type="button" data-rol="panou"
-                  title="Câți au răspuns, fără nume (V)">Cifrele</button>
-          <a class="ritm__b" href="${RADACINA}/predau/ora/" target="_blank"
-             rel="noopener" title="Panoul cu nume, pe al doilea ecran">al doilea ecran ↗</a>
-          <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Încheie ora</button>`}`;
+                title="Codul mare, cu QR și linkul de intrare">${S.cod || "…"}</button>
+        <span class="ritm__d"><b>${inClasa}</b> în clasă${sarcini.length
+          ? ` · <b>${trimis}</b> au răspuns` : ""}</span>
+        <span class="ritm__sp"></span>
+        ${sarcini.length ? `<button class="ritm__b${sertarDeschis ? " ritm__b--on" : ""}" type="button"
+            data-rol="panou" title="Răspunsurile clasei, fără nume, pentru proiector">${
+            sertarDeschis ? "Ascunde răspunsurile" : "Arată clasei"}</button>` : ""}
+        <a class="ritm__b" href="${RADACINA}/predau/ora/" target="_blank" rel="noopener"
+           title="Cine ce a răspuns, cu nume. Doar pentru tine.">Rezultate ↗</a>
+        <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Încheie ora</button>`;
       lega();
       if (sertarDeschis) deseneazaSertar();
     }
@@ -179,7 +170,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     /* Linkul de intrare, copiat în clipboard. Cineva ajunge la minutul 20 și
        codul mare nu mai e pe ecran: i-l trimiți pe chat și intră. */
     async function copiaza(e){
-      const b = e.currentTarget;
+      const b = e.target.closest('[data-rol="link"]') || e.currentTarget;
       const adresa = `${location.origin}${RADACINA}/intra/?c=${S.cod}`;
       try {
         await navigator.clipboard.writeText(adresa);
@@ -188,7 +179,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         b.textContent = adresa;        /* fără clipboard, îl arăt ca să-l iei cu mâna */
         getSelection()?.selectAllChildren(b);
       }
-      setTimeout(() => { if (b.isConnected) b.textContent = "copiază linkul"; }, 2400);
+      setTimeout(() => { if (b.isConnected) b.textContent = "Copiază linkul"; }, 2400);
     }
 
     /* --- sertarul, peste treimea de jos ---------------------------------- */
@@ -238,11 +229,12 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
           <p class="cod-mare__u">${scurta}</p>
           <div class="cod-mare__qr"></div>
           <p class="cod-mare__d">Scanați codul cu telefonul, sau deschideți
-            adresa și tastați cele șase semne. Codul știe lecția și grupa;
-            voi spuneți doar cine sunteți.</p>
+            adresa și tastați cele șase semne.</p>
+          <button class="ritm__b cod-mare__copiaza" type="button" data-rol="link">Copiază linkul</button>
         </div>`;
       document.body.appendChild(d);
       d.addEventListener("click", e => {
+        if (e.target.closest('[data-rol="link"]')){ copiaza(e); return; }
         if (e.target === d || e.target.closest(".cod-mare__x")) d.remove();
       });
 
@@ -329,7 +321,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=43`)
+    import(`${RADACINA}/js/colectare.js?v=44`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     if (viu !== eraViu){ eraViu = viu; laStare?.(viu, viu ? "live" : null); }

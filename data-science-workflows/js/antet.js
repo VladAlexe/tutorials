@@ -3,13 +3,13 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=43"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=44"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=43";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=44";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -48,16 +48,7 @@ function construieste(gazda){
         <a class="antet__marca" href="${RADACINA}/" aria-label="${CURS.titlu}">
           ${SVG.marca}<span class="antet__nume">${CURS.scurt}</span>
         </a>
-        ${predau ? `
-        <nav class="predau-nav" aria-label="Predare">
-          ${[["", "Predau"], ["ora/", "Ora live"], ["sedinte/", "Ședințele"],
-             ["semestru/", "Semestrul"]].map(([u, t]) => {
-            const h = `${RADACINA}/predau/${u}`;
-            const acum = location.pathname.replace(/\/+$/, "/") === h.replace(/\/+$/, "/");
-            return `<a href="${h}" class="${acum ? "on" : ""}"
-                       ${acum ? 'aria-current="page"' : ""}>${t}</a>`;
-          }).join("")}
-        </nav>` : `
+        ${`
         <nav class="firimituri" aria-label="Unde ești">
           ${aici ? `<span class="sep">/</span><span class="aici">${aici}</span>` : ""}
         </nav>`}
@@ -87,7 +78,7 @@ async function taieBanda(profesor){
   const g = document.querySelector(".flux__sina");
   if (!g || profesor) return;
   try {
-    const O = await import(`${RADACINA}/js/ora.js?v=43`);
+    const O = await import(`${RADACINA}/js/ora.js?v=44`);
     const p = await O.predate();
     if (!p) return;
     g.querySelectorAll("[data-c]").forEach(a => {
@@ -119,7 +110,7 @@ async function cont(predau){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=43`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=44`);
     const p = await profil();
     if (p.autentificat) taieBanda(p.profesorReal);
     if (!p.autentificat) {
@@ -130,11 +121,11 @@ async function cont(predau){
     const ini = nume.trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "?";
     /* În predare: înapoi la curs, și ieșirea din cont. */
     if (predau){
-      zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/">← Cursul</a>
+      zona.innerHTML = `<a class="btn btn--mic" href="${RADACINA}/">← Cursul</a>
         <button class="icon-btn" id="btn-iesi" type="button" title="Ieși din cont"
                 aria-label="Ieși din cont">${SVG.iesi}</button>`;
       document.getElementById("btn-iesi").onclick = async () => {
-        const { iesi } = await import(`${RADACINA}/js/auth.js?v=43`);
+        const { iesi } = await import(`${RADACINA}/js/auth.js?v=44`);
         await iesi(); location.href = `${RADACINA}/`;
       };
       return;
