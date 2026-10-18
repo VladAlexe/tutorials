@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=51">
-<link rel="stylesheet" href="../css/cont.css?v=51">
-<script src="../js/tema.js?v=51"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=52">
+<link rel="stylesheet" href="../css/cont.css?v=52">
+<script src="../js/tema.js?v=52"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=51";
+import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=52";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -35,8 +35,8 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=51");
-  CFG = await import("../js/supabase-config.js?v=51");
+  A = await import("../js/auth.js?v=52");
+  CFG = await import("../js/supabase-config.js?v=52");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
     <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
@@ -173,7 +173,7 @@ async function deseneaza(){
   /* lecțiile pe care le vezi: cele predate grupei, plus cele în care ai lucrat */
   let lectii = LECTII;
   try {
-    const Ora = await import("../js/ora.js?v=51");
+    const Ora = await import("../js/ora.js?v=52");
     const pred = await Ora.predate();
     if (pred) lectii = LECTII.filter(l => pred.has("c" + l.nr) || a.pe[l.nr]?.incercari);
   } catch {}
@@ -254,7 +254,7 @@ catch (e) {
 }
 A.laSchimbare(() => unde().catch(() => {}));
 </script>
-<script type="module" src="../js/antet.js?v=51"></script>
-<script type="module" src="../js/subsol.js?v=51"></script>
+<script type="module" src="../js/antet.js?v=52"></script>
+<script type="module" src="../js/subsol.js?v=52"></script>
 </body>
 </html>

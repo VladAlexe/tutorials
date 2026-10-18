@@ -34,7 +34,7 @@ V = "?v=18"
 FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "json": "Explorator", "arbore": "Explorator", "autoevaluare": "Evaluare",
        "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale",
-       "cod": "Scrii cod", "prezice": "Ce afișează?", "ordine": "Exercițiu", "sortare": "Exercițiu",
+       "cod": "Scrii cod", "prezice": "Ce afișează?", "pas": "Rulează pas cu pas", "ordine": "Exercițiu", "sortare": "Exercițiu",
        "dovada": "Verificare la tine", "asteptari": "Scrii tu",
        "url": "Disecție", "metode": "Potrivire", "cronologie": "Cronologie",
        "flux": "Vezi cum circulă", "raspuns": "Trimite și vezi",

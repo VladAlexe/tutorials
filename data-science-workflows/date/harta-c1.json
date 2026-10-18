@@ -1,6 +1,6 @@
 {
  "capitol": "c1",
- "total": 21,
+ "total": 24,
  "sarcini": 12,
  "slide": [
   {
@@ -113,12 +113,7 @@
    "id": "s8",
    "grup": "Proiectul",
    "titlu": "Ce formă au datele",
-   "sarcini": [
-    {
-     "id": "c1-cod-diadic",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 12,
@@ -178,21 +173,36 @@
   },
   {
    "nr": 18,
+   "id": "s14l",
+   "grup": "JSON",
+   "titlu": "Liste și dicționare",
+   "sarcini": [
+    {
+     "id": "c1-prezice-index",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 19,
    "id": "s15",
    "grup": "JSON",
    "titlu": "Formatul JSON",
    "sarcini": []
   },
   {
-   "nr": 19,
+   "nr": 20,
+   "id": "s15p",
+   "grup": "JSON",
+   "titlu": "Drumul prin persoane.json",
+   "sarcini": []
+  },
+  {
+   "nr": 21,
    "id": "s16",
    "grup": "JSON",
    "titlu": "Drumul până la valoare",
    "sarcini": [
-    {
-     "id": "c1-prezice-index",
-     "fel": "cod"
-    },
     {
      "id": "c1-cod-json",
      "fel": "cod"
@@ -200,7 +210,19 @@
    ]
   },
   {
-   "nr": 20,
+   "nr": 22,
+   "id": "s16s",
+   "grup": "Primul contact cu SCI",
+   "titlu": "Un tabel adevărat",
+   "sarcini": [
+    {
+     "id": "c1-cod-diadic",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 23,
    "id": "s17",
    "grup": "Mediul de lucru",
    "titlu": "Mediul virtual",
@@ -212,7 +234,7 @@
    ]
   },
   {
-   "nr": 21,
+   "nr": 24,
    "id": "s18",
    "grup": "Proiectul tău",
    "titlu": "Fă-ți proiectul, acum",

@@ -239,3 +239,53 @@ pre > code{color:var(--ed-text)}
 pre > code .k{color:var(--ed-cheie)} pre > code .s{color:var(--ed-text2)}
 pre > code .n,pre > code .v{color:var(--ed-num)} pre > code .b{color:var(--ed-incl)}
 pre > code .f{color:var(--ed-apel)} pre > code .c{color:var(--ed-com);font-style:italic}
+
+
+/* --- pas cu pas ------------------------------------------------------------ */
+.ps{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.ps__ed .ed__corp{overflow-x:auto}
+.ps__ed{margin:0}
+.ps__r{display:block;white-space:pre;border-left:3px solid transparent;margin-left:-15px;padding-left:12px;transition:background .15s}
+.ps__r.on{background:rgba(232,135,30,.16);border-left-color:#E8871E}
+.ps__r.trecut{opacity:.78}
+.ed__nr span.on{color:#E8871E}
+.ps__dr{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:10px;min-width:0;align-items:stretch}
+@media(max-width:760px){.ps__dr{grid-template-columns:minmax(0,1fr)}}
+.ps__p{border:1px solid var(--linie);border-radius:9px;background:var(--panza);padding:8px 10px 10px;min-width:0}
+.ps__p--out{background:var(--ed-fundal);border-color:var(--ed-linie)}
+.ps__et{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin:0 0 6px}
+.ps__p--out .ps__et{color:var(--ed-nr)}
+.ps__out{margin:0;padding:0;background:none;border:0;min-height:2.2em;color:#CFE6DC;font-family:var(--mono);font-size:12.5px;line-height:1.55;white-space:pre-wrap}
+.ps__mem{display:flex;flex-direction:column;gap:6px;max-height:230px;overflow:auto}
+.ps__gol{font-family:var(--sans);font-size:13px;color:var(--text-3);margin:0}
+.ps-v{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:8px;align-items:center;padding:4px 6px;border-radius:7px}
+.ps-v.nou{background:var(--ambra-slab);animation:ps-nou .6s ease-out}
+@keyframes ps-nou{from{transform:translateX(-6px);opacity:.3}to{transform:none;opacity:1}}
+.ps-v__n{font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--text)}
+.ps-v__t{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:9px;background:var(--panza-2);color:var(--text-2)}
+.ps-v__t.s{background:var(--ambra-slab);color:var(--ambra)} .ps-v__t.n,.ps-v__t.v{background:var(--roza-slab);color:var(--roza)}
+.ps-v__t.l{background:var(--accent-slab);color:var(--accent-text)} .ps-v__t.d{background:color-mix(in srgb,var(--salvie) 25%,var(--panza));color:var(--text)}
+.ps-v__t.t{background:var(--ceas-slab);color:var(--ceas)}
+.ps-v__v{min-width:0;font-family:var(--mono);font-size:12px;overflow-x:auto}
+.ps-sc.s,.ps-lista b.s,.ps-dict b.s{color:var(--ambra)} .ps-sc.n,.ps-lista b.n,.ps-dict b.n,.ps-sc.v{color:var(--roza)}
+.ps-lista{display:inline-flex;gap:3px}
+.ps-c{display:inline-flex;flex-direction:column;align-items:center;border:1px solid var(--linie-2);border-radius:5px;padding:1px 6px;background:var(--fundal)}
+.ps-c i{font-style:normal;font-size:9px;color:var(--text-3)}
+.ps-c.hl,.ps-kv.hl{border-color:#E8871E;box-shadow:0 0 0 2px rgba(232,135,30,.25)}
+.ps-dict{display:flex;flex-direction:column;gap:2px}
+.ps-kv{display:flex;gap:6px;border:1px solid transparent;border-radius:5px;padding:0 4px}
+.ps-kv i{font-style:normal;color:var(--accent-text)}
+.ps-kv i::after{content:":";color:var(--text-3)}
+.ps-lista b.x,.ps-dict b.x{color:var(--text-2);font-weight:400}
+.ps-df table{border-collapse:collapse;font-size:11.5px}
+.ps-df th,.ps-df td{padding:1px 7px;border-bottom:1px solid var(--linie);text-align:right;white-space:nowrap}
+.ps-df thead th{color:var(--text-3);font-weight:500}
+.ps-df tbody th{color:var(--text-3);font-weight:400}
+.ps-df small{display:block;color:var(--text-3);font-size:10.5px;margin-top:3px}
+.ps__txt{margin:10px 0 0;padding:10px 14px;border-left:3px solid #E8871E;background:var(--ambra-slab);border-radius:0 9px 9px 0;
+  font-family:var(--sans);font-size:14px;line-height:1.55;color:var(--text)}
+.ps__txt code{font-size:.9em}
+.ps__nav{display:flex;align-items:center;gap:10px;margin:10px 0 0}
+.ps__puncte{flex:1;display:flex;gap:4px;justify-content:center}
+.ps__puncte i{width:7px;height:7px;border-radius:50%;background:var(--linie-2)}
+.ps__puncte i.on{background:#E8871E}

@@ -105,6 +105,189 @@ CRONOLOGIE = {
     "teme": [{"c": c, "n": n, "d": d} for c, n, d in TEME],
 }
 
+# Pașii pentru lecția 1, luați celulă cu celulă din 01_introducere_si_datele_proiectului.ipynb.
+# Se lipesc în _build/c1.py.
+
+PAS_TIPURI = {
+    "fisier": "01_introducere.ipynb · 2. Variabile și tipuri",
+    "intro": "Celulele de la începutul caietului. Rulează rând cu rând: în stânga e codul, în dreapta ce ține minte Python și ce afișează.",
+    "cod": "tara = \"RO\"\nnumar_tari = 178\nore_de_studiu = 8.5\neste_student = True\nocupatie = None\n\n"
+           "print(type(tara))\nprint(type(numar_tari))\nprint(type(ore_de_studiu))\nprint(type(este_student))\nprint(type(ocupatie))",
+    "pasi": [
+        {"l": 1, "set": {"tara": {"t": "str", "v": "RO"}},
+         "txt": "<code>=</code> pune o valoare sub un nume. Ghilimelele fac din RO un <b>text</b> (<code>str</code>): un cod de țară e text, chiar dacă identifică ceva."},
+        {"l": 2, "set": {"numar_tari": {"t": "int", "v": 178}},
+         "txt": "Fără ghilimele, 178 e un <b>număr întreg</b> (<code>int</code>). Cu el se poate socoti."},
+        {"l": 3, "set": {"ore_de_studiu": {"t": "float", "v": 8.5}},
+         "txt": "Cu punct zecimal: <code>float</code>. În Python zecimalele se scriu cu punct, nu cu virgulă."},
+        {"l": 4, "set": {"este_student": {"t": "bool", "v": True}},
+         "txt": "<code>True</code> și <code>False</code>, cu majusculă: valori logice (<code>bool</code>). Orice comparație dă una dintre ele."},
+        {"l": 5, "set": {"ocupatie": {"t": "NoneType", "v": None}},
+         "txt": "<code>None</code> înseamnă „lipsește”. Nu e zero și nu e text gol: e absența valorii."},
+        {"l": 7, "out": "<class 'str'>",
+         "txt": "<code>type()</code> spune ce fel de valoare e sub un nume. E prima întrebare când ceva nu merge cum te aștepți."},
+        {"l": 8, "out": "<class 'int'>", "txt": "178 e întreg."},
+        {"l": 9, "out": "<class 'float'>", "txt": "8.5 are zecimale."},
+        {"l": 10, "out": "<class 'bool'>", "txt": "True e o valoare logică."},
+        {"l": 11, "out": "<class 'NoneType'>",
+         "txt": "Și lipsa are un tip. Acum ai văzut toate cele cinci tipuri simple: le recunoști imediat, pe slide-ul următor."},
+    ],
+}
+
+PAS_LISTE = {
+    "fisier": "01_introducere.ipynb · liste și dicționare",
+    "intro": "Două feluri de a ține mai multe valori împreună. Urmărește în memorie cum arată fiecare.",
+    "cod": "tari = [\"RO\", \"IT\", \"ES\"]\nprint(tari[0])  # prima pozitie are indicele 0\nprint(len(tari))\n\n"
+           "persoana = {\"name\": \"Ana\", \"age\": 24, \"city\": \"Cluj-Napoca\"}\nprint(persoana.keys())\nprint(persoana[\"city\"])",
+    "pasi": [
+        {"l": 1, "set": {"tari": {"t": "list", "v": ["RO", "IT", "ES"]}},
+         "txt": "Parantezele drepte fac o <b>listă</b>: valori puse în ordine. Fiecare are o <b>poziție</b>, scrisă deasupra căsuței."},
+        {"l": 2, "out": "RO", "hl": {"var": "tari", "k": 0},
+         "txt": "<code>tari[0]</code> cere valoarea de pe poziția 0. Numărătoarea începe de la <b>0</b>, nu de la 1: prima țară e la 0."},
+        {"l": 3, "out": "3", "txt": "<code>len()</code> numără elementele: 3. Ultima poziție e deci 2."},
+        {"l": 5, "set": {"persoana": {"t": "dict", "v": {"name": "Ana", "age": 24, "city": "Cluj-Napoca"}}},
+         "txt": "Acoladele fac un <b>dicționar</b>: perechi <b>cheie: valoare</b>. Aici nu contează ordinea, contează numele cheii."},
+        {"l": 6, "out": "dict_keys(['name', 'age', 'city'])",
+         "txt": "<code>.keys()</code> arată cheile. E primul lucru pe care îl ceri unui dicționar pe care nu-l cunoști."},
+        {"l": 7, "out": "Cluj-Napoca", "hl": {"var": "persoana", "k": "city"},
+         "txt": "<code>persoana[\"city\"]</code> cere valoarea cheii <code>city</code>. Listă: <b>poziție</b>. Dicționar: <b>cheie</b>. Cu asta citești orice JSON."},
+    ],
+}
+
+PERS = [
+    {"id": 1, "name": "Ana Popescu", "age": 24, "city": "Cluj-Napoca",
+     "hobbies": ["lectură", "drumeții", "fotografie"], "student": True,
+     "study_hours_per_week": 8.5, "occupation": None},
+    {"id": 2, "name": "Mihai Ionescu", "age": 29, "city": "București",
+     "hobbies": ["ciclism", "muzică"], "student": False,
+     "study_hours_per_week": 0.0, "occupation": "bibliotecar"},
+    {"id": 3, "name": "Elena Marin", "age": 26, "city": "Timișoara",
+     "hobbies": ["înot", "lectură", "călătorii"], "student": True,
+     "study_hours_per_week": 6.0, "occupation": "asistent de cercetare"},
+]
+
+PAS_JSON = {
+    "fisier": "01_introducere.ipynb · 4. JSON",
+    "intro": "Fișierul persoane.json din caiet: trei persoane fictive. Coborâm pas cu pas până la o singură valoare.",
+    "cod": "import json\nwith open(\"exemple_curs1/persoane.json\",\n"
+           "          encoding=\"utf-8\") as fisier:\n"
+           "    user_data = json.load(fisier)\n\nprint(user_data.keys())\n"
+           "users = user_data[\"users\"]\nprint(len(users))\n\n"
+           "prima_persoana = users[0]\nprint(prima_persoana[\"name\"])\n"
+           "print(user_data[\"users\"][0][\"hobbies\"][1])",
+    "pasi": [
+        {"l": 4, "set": {"user_data": {"t": "dict", "v": {"users": PERS}}},
+         "txt": "<code>json.load</code> citește fișierul și îl transformă în dicționare și liste Python. Ce e afară e un dicționar cu o singură cheie."},
+        {"l": 6, "out": "dict_keys(['users'])",
+         "txt": "Prima întrebare, mereu: ce chei are? Una singură, <code>users</code>."},
+        {"l": 7, "set": {"users": {"t": "list", "v": PERS}}, "hl": {"var": "user_data", "k": "users"},
+         "txt": "Intrăm pe cheia <code>users</code>. Valoarea ei e o <b>listă</b>: fiecare căsuță e o persoană."},
+        {"l": 8, "out": "3", "txt": "Trei persoane, pe pozițiile 0, 1 și 2."},
+        {"l": 10, "set": {"prima_persoana": {"t": "dict", "v": PERS[0]}}, "hl": {"var": "users", "k": 0},
+         "txt": "<code>users[0]</code> e prima persoană. Ea însăși e un dicționar, cu nume, oraș, hobby-uri…"},
+        {"l": 11, "out": "Ana Popescu", "hl": {"var": "prima_persoana", "k": "name"},
+         "txt": "Cheia <code>name</code> dă numele. Am ajuns la o valoare."},
+        {"l": 12, "out": "drumeții", "hl": {"var": "prima_persoana", "k": "hobbies"},
+         "txt": "Tot drumul, într-un rând, citit de la stânga la dreapta: lista <code>users</code> → poziția 0 → cheia <code>hobbies</code> → poziția 1. Al doilea hobby: drumeții."},
+    ],
+}
+
+PAS_SCI = {
+    "fisier": "01_introducere.ipynb · 5. Primul contact cu SCI",
+    "intro": "Fișierul adevărat, country.csv. Aceleași idei, pe un tabel: întâi te uiți cât e de mare, apoi păstrezi doar ce te interesează.",
+    "cod": "import pandas as pd\nsci = pd.read_csv(\"data/country.csv\", keep_default_na=False)\nprint(sci.shape)\n\n"
+           "conditie_ro = sci[\"user_country\"] == \"RO\"\nro = sci[conditie_ro]\nprint(len(ro))\n\n"
+           "ro_extern = ro[ro[\"friend_country\"] != \"RO\"]\nprint(len(ro_extern))\n\n"
+           "top_ro = ro_extern.sort_values(\"scaled_sci\", ascending=False)\n"
+           "print(top_ro[\"friend_country\"].head(6).tolist())",
+    "pasi": [
+        {"l": 2, "set": {"sci": {"t": "DataFrame", "v": {
+            "cols": ["user_country", "friend_country", "scaled_sci"],
+            "rows": [["NI", "BS", 2066], ["…", "…", "…"]],
+            "nota": "31.684 de rânduri: câte unul pentru fiecare pereche de țări"}}},
+         "txt": "<code>pd.read_csv</code> citește fișierul într-un <b>tabel</b> (DataFrame). <code>keep_default_na=False</code>: NA e Namibia, nu o valoare lipsă."},
+        {"l": 3, "out": "(31684, 5)",
+         "txt": "<code>.shape</code> dă (rânduri, coloane). 31.684 = 178 × 178: fiecare țară cu fiecare, inclusiv cu ea însăși."},
+        {"l": 5, "set": {"conditie_ro": {"t": "Series", "v": {
+            "rows": [["0", "False"], ["1", "False"], ["…", "…"]],
+            "nota": "câte un True sau False pentru fiecare rând; 178 sunt True"}}},
+         "txt": "<code>==</code> compară (un singur <code>=</code> atribuie!). Comparația se face pe fiecare rând și dă o coloană de True și False."},
+        {"l": 6, "set": {"ro": {"t": "DataFrame", "v": {
+            "cols": ["user_country", "friend_country", "scaled_sci"],
+            "rows": [["RO", "CI", 640], ["RO", "ES", 54179], ["RO", "MW", 205]],
+            "nota": "178 de rânduri"}}},
+         "txt": "<code>sci[conditie_ro]</code> păstrează doar rândurile unde condiția e True: perechile care pleacă din România."},
+        {"l": 7, "out": "178", "txt": "178 de rânduri: România cu fiecare țară, inclusiv RO–RO."},
+        {"l": 9, "set": {"ro_extern": {"t": "DataFrame", "v": {
+            "cols": ["user_country", "friend_country", "scaled_sci"],
+            "rows": [["RO", "CI", 640], ["RO", "ES", 54179], ["RO", "MW", 205]],
+            "nota": "177 de rânduri, fără RO–RO"}}},
+         "txt": "<code>!=</code> înseamnă „diferit de”. Scoatem perechea România–România: vrem partenerii din afară."},
+        {"l": 10, "out": "177", "txt": "177 de parteneri externi."},
+        {"l": 12, "set": {"top_ro": {"t": "DataFrame", "v": {
+            "cols": ["friend_country", "scaled_sci"],
+            "rows": [["MD", 173794], ["AT", 124693], ["DE", 91228]],
+            "nota": "aceleași 177 de rânduri, de la cel mai legat în jos"}}},
+         "txt": "<code>sort_values</code> ordonează după o coloană; <code>ascending=False</code> pune valorile mari primele."},
+        {"l": 13, "out": "['MD', 'AT', 'DE', 'HU', 'IE', 'IT']",
+         "txt": "Primii șase parteneri. Italia, cu cei mai mulți români, e abia a șasea. Ghicitoarea semestrului."},
+    ],
+}
+
+
+PZ_INDEX = ix("prezice", "Liste și dicționare", {
+       "id": "c1-prezice-index", "fisier": "01_introducere.ipynb · liste și dicționare",
+       "cod": "tari = [\"RO\", \"IT\", \"ES\"]\n"
+              "persoana = {\"name\": \"Ana\", \"city\": \"Cluj-Napoca\"}\n\n"
+              "print(tari[1], persoana[\"city\"])",
+       "intrebare": "Ce afișează?",
+       "variante": ["RO Ana", "IT Cluj-Napoca", "RO Cluj-Napoca", "IT city"],
+       "corect": 1,
+       "indiciu": "Într-o listă, numărătoarea începe de la 0. Într-un dicționar, între paranteze pui cheia și primești valoarea.",
+       "laBine": "Indice pentru liste, cheie pentru dicționare: asta e tot drumul prin JSON.",
+       "explicatie": "<code>tari[1]</code> e al doilea element, pentru că primul e <code>tari[0]</code>. "
+                     "<code>persoana[\"city\"]</code> dă valoarea cheii. Cu aceste două mișcări "
+                     "ajungi la orice valoare dintr-un răspuns JSON, oricât de adânc."})
+
+DIADIC_SLIDE = ix("cod", "Taie o felie din matrice", {
+       "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
+       "sarcina": "Din 31.684 de rânduri vrei doar perechile care pleacă din "
+                  "România. Uită-te în panoul de deasupra la numele coloanelor.",
+       "cod": "import pandas as pd\n\n"
+              "d = pd.read_csv(\"date/brute/country.csv\")\n"
+              "print(len(d))                  # 31684\n\n"
+              "# doar perechile care pleaca din Romania\n"
+              "ro = d[d[{{1}}] == {{2}}]\n"
+              "print(len(ro))                 # 178",
+       "goluri": {
+           "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
+           "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
+       "indiciu": "Pe stânga lui <code>==</code> stă coloana (o alegi cu <code>d[\"...\"]</code>), "
+                  "pe dreapta valoarea căutată. Amândouă sunt text, deci între ghilimele.",
+       "iesire": "31684\n178",
+       "laBine": "178 de rânduri: România cu fiecare țară din set, inclusiv cu ea însăși.",
+       "laRau": "Numele coloanei și codul se scriu între ghilimele, ca text.",
+       "explicatie": "Fixezi un capăt al perechii și obții o listă monadică: "
+                     "178 de rânduri, câte unul pentru fiecare țară. Asta e "
+                     "mișcarea pe care o faci de fiecare dată când vrei să te "
+                     "uiți la date diadice cu ochiul."})
+
+DIADIC_MANUAL = ix("cod", "Taie o felie din matrice", {
+       "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
+       "sarcina": "Păstrează doar perechile care pleacă din România.",
+       "cod": "import pandas as pd\n\n"
+              "d = pd.read_csv(\"date/brute/country.csv\")\n"
+              "print(len(d))                  # 31684\n\n"
+              "ro = d[d[{{1}}] == {{2}}]\n"
+              "print(len(ro))                 # 178",
+       "goluri": {
+           "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
+           "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
+       "laBine": "178 de rânduri: România cu fiecare țară, inclusiv cu ea însăși.",
+       "laRau": "Numele coloanei se scrie între ghilimele.",
+       "explicatie": "Fixezi un capăt al perechii și obții o listă monadică."})
+
+
 sl("s1", "Cursul", "Despre ce e cursul",
    "<h2>Fluxuri de lucru pentru știința datelor</h2>"
    "<p class=\"cheie\">Un drum complet, de la o întrebare la un rezultat în "
@@ -675,29 +858,7 @@ sl("s8", "Proiectul", "Ce formă au datele",
    + ix("matrice", "1.764 de rânduri")
    + nota("Simetric și cu direcție",
           "SCI România–Italia = SCI Italia–România. Dar românii din Italia "
-          "nu sunt italienii din România.", True)
-   + ix("cod", "Taie o felie din matrice", {
-       "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
-       "sarcina": "Din 31.684 de rânduri vrei doar perechile care pleacă din "
-                  "România. Uită-te în panoul de deasupra la numele coloanelor.",
-       "cod": "import pandas as pd\n\n"
-              "d = pd.read_csv(\"date/brute/country.csv\")\n"
-              "print(len(d))                  # 31684\n\n"
-              "# doar perechile care pleaca din Romania\n"
-              "ro = d[d[{{1}}] == {{2}}]\n"
-              "print(len(ro))                 # 178",
-       "goluri": {
-           "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
-           "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
-       "indiciu": "Pe stânga lui <code>==</code> stă coloana (o alegi cu <code>d[\"...\"]</code>), "
-                  "pe dreapta valoarea căutată. Amândouă sunt text, deci între ghilimele.",
-       "iesire": "31684\n178",
-       "laBine": "178 de rânduri: România cu fiecare țară din set, inclusiv cu ea însăși.",
-       "laRau": "Numele coloanei și codul se scriu între ghilimele, ca text.",
-       "explicatie": "Fixezi un capăt al perechii și obții o listă monadică: "
-                     "178 de rânduri, câte unul pentru fiecare țară. Asta e "
-                     "mișcarea pe care o faci de fiecare dată când vrei să te "
-                     "uiți la date diadice cu ochiul."}),
+          "nu sunt italienii din România.", True),
    manual=
    "<h2>Date diadice</h2>"
    "<p>Particularitatea datelor noastre schimbă fiecare etapă de mai târziu, "
@@ -724,21 +885,7 @@ sl("s8", "Proiectul", "Ce formă au datele",
           "România. Migrația are direcție: românii din Italia nu sunt italienii "
           "din România. Când le punem în același tabel, la cursul 4, trebuie "
           "să hotărâm ce facem cu cele două direcții.")
-   + ix("matrice", "1.764 de rânduri")
-   + ix("cod", "Taie o felie din matrice", {
-       "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
-       "sarcina": "Păstrează doar perechile care pleacă din România.",
-       "cod": "import pandas as pd\n\n"
-              "d = pd.read_csv(\"date/brute/country.csv\")\n"
-              "print(len(d))                  # 31684\n\n"
-              "ro = d[d[{{1}}] == {{2}}]\n"
-              "print(len(ro))                 # 178",
-       "goluri": {
-           "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
-           "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
-       "laBine": "178 de rânduri: România cu fiecare țară, inclusiv cu ea însăși.",
-       "laRau": "Numele coloanei se scrie între ghilimele.",
-       "explicatie": "Fixezi un capăt al perechii și obții o listă monadică."}))
+   + ix("matrice", "1.764 de rânduri"))
 
 
 # ===========================================================================
@@ -812,12 +959,8 @@ RAMURI_PY = [
 
 sl("s9", "Tipuri de date", "Tipuri în Python",
    "<h2>Tipuri de date în Python</h2>"
-   "<p>Tipul decide ce poți face cu valoarea. Sortarea pune 1990 după 189 dacă "
-   "anii au venit ca text.</p>"
-   + ix("arbore", "Arborele tipurilor",
-        {"titlu": "Apasă pe orice tip",
-         "intro": "Vezi ce e, cum arată, și unde apare la noi.",
-         "legenda": True, "radacina": "valoare", "ramuri": RAMURI_PY}),
+   "<p>Tipul decide ce poți face cu valoarea. Întâi îl vezi, rând cu rând.</p>"
+   + ix("pas", "Cinci valori, cinci tipuri", PAS_TIPURI),
    manual=
    "<h2>Tipuri de date în Python</h2>"
    "<p>Tipul unei valori decide ce poți face cu ea. Nu e o chestiune de "
@@ -827,6 +970,7 @@ sl("s9", "Tipuri de date", "Tipuri în Python",
         {"titlu": "Apasă pe orice tip",
          "intro": "Vezi ce e, cum arată, și unde apare la noi.",
          "legenda": True, "radacina": "valoare", "ramuri": RAMURI_PY})
+   + ix("pas", "Cinci valori, cinci tipuri", PAS_TIPURI)
    + "<p>Împărțirea care contează cel mai des în practică e cea dintre tipuri "
    "modificabile și nemodificabile. O listă se schimbă pe loc; un tuplu nu. De "
    "aceea un tuplu poate fi cheie de dicționar, iar o listă nu.</p>")
@@ -1153,6 +1297,21 @@ ANATOMIE = {
 }
 
 
+sl("s14l", "JSON", "Liste și dicționare",
+   "<h2>Mai multe valori, împreună</h2>"
+   "<p class=\"cheie\">Listă: valori în ordine, cerute după <b>poziție</b>. "
+   "Dicționar: perechi, cerute după <b>cheie</b>.</p>"
+   + ix("pas", "Poziție și cheie", PAS_LISTE)
+   + PZ_INDEX,
+   manual=
+   "<h2>Liste și dicționare</h2>"
+   "<p>O listă ține valori în ordine; fiecare are o poziție, numărată de la 0. "
+   "Un dicționar ține perechi cheie–valoare; o valoare se cere după numele "
+   "cheii. Diferența dintre poziție și cheie e tot ce trebuie ca să citești "
+   "un JSON, oricât de adânc.</p>"
+   + ix("pas", "Poziție și cheie", PAS_LISTE)
+   + PZ_INDEX)
+
 sl("s15", "JSON", "Formatul JSON",
    "<h2>Două structuri, cuibărite oricât de adânc</h2>"
    + '<div class="grila grila--2">'
@@ -1200,6 +1359,17 @@ sl("s15", "JSON", "Formatul JSON",
           "O scriem la cursul 2, dar e bine să fi văzut întâi ce face."))
 
 
+sl("s15p", "JSON", "Drumul prin persoane.json",
+   "<h2>Coborâm până la o valoare</h2>"
+   "<p>La fiecare pas te întrebi: e dicționar (cer o cheie) sau listă (cer o poziție)?</p>"
+   + ix("pas", "Trei persoane, un hobby", PAS_JSON),
+   manual=
+   "<h2>Drumul până la o valoare</h2>"
+   "<p>Exemplul din caiet: <code>persoane.json</code>, trei persoane fictive. "
+   "Tiparul e același în orice răspuns de API: la fiecare nivel verifici "
+   "tipul, apoi ceri o cheie (dicționar) sau o poziție (listă).</p>"
+   + ix("pas", "Trei persoane, un hobby", PAS_JSON))
+
 sl("s16", "JSON", "Drumul până la valoare",
    "<h2>Un răspuns real, desfăcut</h2>"
    "<p>Banca Mondială, populația României.</p>"
@@ -1214,19 +1384,6 @@ sl("s16", "JSON", "Drumul până la valoare",
              "country": {"id": "RO", "value": "Romania"},
              "countryiso3code": "ROU", "date": "2022", "value": None}]]},
       "Apasă pe orice rând ca să vezi cum se ajunge la el.")
-   + ix("prezice", "Liste și dicționare", {
-       "id": "c1-prezice-index", "fisier": "01_introducere.ipynb · liste și dicționare",
-       "cod": "tari = [\"RO\", \"IT\", \"ES\"]\n"
-              "persoana = {\"name\": \"Ana\", \"city\": \"Cluj-Napoca\"}\n\n"
-              "print(tari[1], persoana[\"city\"])",
-       "intrebare": "Ce afișează?",
-       "variante": ["RO Ana", "IT Cluj-Napoca", "RO Cluj-Napoca", "IT city"],
-       "corect": 1,
-       "indiciu": "Într-o listă, numărătoarea începe de la 0. Într-un dicționar, între paranteze pui cheia și primești valoarea.",
-       "laBine": "Indice pentru liste, cheie pentru dicționare: asta e tot drumul prin JSON.",
-       "explicatie": "<code>tari[1]</code> e al doilea element, pentru că primul e <code>tari[0]</code>. "
-                     "<code>persoana[\"city\"]</code> dă valoarea cheii. Cu aceste două mișcări "
-                     "ajungi la orice valoare dintr-un răspuns JSON, oricât de adânc."})
    + ix("cod", "Scrie drumul", {
        "id": "c1-cod-json", "fisier": "populatie.py",
        "sarcina": "Mergi până la populația din 2023.",
@@ -1246,6 +1403,22 @@ sl("s16", "JSON", "Drumul până la valoare",
        "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. "
                      "<code>[\"value\"]</code> scoate numărul. Dacă valoarea "
                      "lipsește primești <code>None</code>, nu zero."}))
+
+
+sl("s16s", "Primul contact cu SCI", "Un tabel adevărat",
+   "<h2>country.csv, primul contact</h2>"
+   "<p>Aceleași idei, pe un tabel: cât e de mare, apoi păstrezi doar ce te interesează.</p>"
+   + ix("pas", "România și partenerii ei", PAS_SCI)
+   + DIADIC_SLIDE,
+   manual=
+   "<h2>Primul contact cu SCI</h2>"
+   "<p>Secțiunea 5 din caiet. Un rând din <code>country.csv</code> e o "
+   "pereche de țări, deci fișierul are 178 × 178 = 31.684 de rânduri. Ca să "
+   "te uiți la o singură țară, fixezi un capăt al perechii: o comparație pe "
+   "coloană dă True sau False pe fiecare rând, iar tabelul păstrează doar "
+   "rândurile adevărate.</p>"
+   + ix("pas", "România și partenerii ei", PAS_SCI)
+   + DIADIC_MANUAL)
 
 
 # ===========================================================================

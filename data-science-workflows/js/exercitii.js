@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=51";
+import { salveazaCod } from "./colectare.js?v=52";
 
 const E = {};
 
@@ -452,6 +452,125 @@ E.prezice = (gazda, d) => {
     st.textContent = stareSalvare(salvat, gazda);
     st.classList.add("vazut");
   });
+};
+
+/* ==========================================================================
+   4. Pas cu pas — înveți întâi, abia apoi te verifici
+   Codul din caiet, rulat rând cu rând. La fiecare pas se luminează rândul,
+   apare ce s-a schimbat în memorie (variabilele, desenate: o listă ca șir de
+   căsuțe cu pozițiile lor, un dicționar ca chei și valori, un tabel ca tabel)
+   și ce s-a afișat. Nu e sarcină și nu se notează: e explicația, jucată.
+     { fisier, cod, pasi: [{ l, set:{nume:{t,v}}, sterge:[...], out, hl:{var,k}, txt }] }
+   ========================================================================== */
+
+const TIP_CLS = { str: "s", int: "n", float: "n", bool: "v", NoneType: "v",
+                  list: "l", dict: "d", tuple: "l", DataFrame: "t", Series: "t" };
+
+function repr(v){
+  if (v === null) return "None";
+  if (v === true) return "True";
+  if (v === false) return "False";
+  if (typeof v === "string") return `"${v}"`;
+  if (Array.isArray(v)) return "[" + v.map(repr).join(", ") + "]";
+  if (typeof v === "object") return "{" + Object.entries(v).map(([k, x]) => `"${k}": ${repr(x)}`).join(", ") + "}";
+  return String(v);
+}
+/* o valoare încuibată, prea lungă pentru o căsuță, se arată pe scurt */
+function scurt(x){
+  const r = repr(x);
+  if (r.length <= 34) return r;
+  if (Array.isArray(x)) return `[… ${x.length} elemente]`;
+  if (x && typeof x === "object") return `{… ${Object.keys(x).length} chei}`;
+  return r.slice(0, 32) + "…";
+}
+function valoareHTML(sp, hl){
+  const t = sp.t, v = sp.v;
+  if (t === "list" || t === "tuple"){
+    return `<span class="ps-lista">${(v || []).map((x, i) => `<span class="ps-c ${hl === i ? "hl" : ""}">
+      <i>${i}</i><b class="${typeof x === "string" ? "s" : typeof x === "object" && x ? "x" : "n"}">${esc(scurt(x))}</b></span>`).join("")}</span>`;
+  }
+  if (t === "dict"){
+    return `<span class="ps-dict">${Object.entries(v || {}).map(([k, x]) => `<span class="ps-kv ${hl === k ? "hl" : ""}">
+      <i>"${esc(k)}"</i><b class="${typeof x === "string" ? "s" : Array.isArray(x) || (x && typeof x === "object") ? "x" : "n"}">${esc(scurt(x))}</b></span>`).join("")}</span>`;
+  }
+  if (t === "DataFrame"){
+    const c = v.cols || [], r = v.rows || [];
+    return `<span class="ps-df"><table><thead><tr><th></th>${c.map(x => `<th>${esc(x)}</th>`).join("")}</tr></thead>
+      <tbody>${r.map((row, i) => `<tr><th>${esc((v.index || [])[i] ?? i)}</th>${row.map(x => `<td>${esc(x)}</td>`).join("")}</tr>`).join("")}</tbody></table>
+      ${v.nota ? `<small>${esc(v.nota)}</small>` : ""}</span>`;
+  }
+  if (t === "Series"){
+    return `<span class="ps-df"><table><tbody>${(v.rows || []).map(([k, x]) => `<tr><th>${esc(k)}</th><td>${esc(x)}</td></tr>`).join("")}</tbody></table>
+      ${v.nota ? `<small>${esc(v.nota)}</small>` : ""}</span>`;
+  }
+  return `<span class="ps-sc ${TIP_CLS[t] || ""}">${esc(t === "str" ? `"${v}"` : repr(v))}</span>`;
+}
+
+E.pas = (gazda, d) => {
+  const lb = limba(d.fisier);
+  const linii = String(d.cod || "").replace(/\t/g, "    ").split("\n");
+  const P = d.pasi || [];
+  let i = -1;                                    // -1 = încă n-a pornit
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
+    <div class="ps">
+      <div class="ed ps__ed">
+        <div class="ed__bara"><span class="ed__pct"><i></i><i></i><i></i></span>
+          <span class="ed__nume">${esc(d.fisier || "caiet.ipynb")}</span></div>
+        <div class="ed__corp">
+          <div class="ed__nr">${linii.map((_, k) => `<span data-l="${k + 1}">${k + 1}</span>`).join("")}</div>
+          <div class="ed__cod">${linii.map((l, k) => `<span class="ps__r" data-l="${k + 1}">${coloreaza(l, lb) || "&nbsp;"}</span>`).join("")}</div>
+        </div>
+      </div>
+      <div class="ps__dr">
+        <div class="ps__p"><span class="ps__et">memoria</span><div class="ps__mem"></div></div>
+        <div class="ps__p ps__p--out"><span class="ps__et">ieșire</span><pre class="ps__out"></pre></div>
+      </div>
+    </div>
+    <div class="ps__txt"></div>
+    <div class="ps__nav">
+      <button class="btn btn--mic" type="button" data-rol="inapoi">◀ Înapoi</button>
+      <span class="ps__puncte">${P.map((_, k) => `<i data-k="${k}"></i>`).join("")}</span>
+      <button class="btn btn--mic btn--tare" type="button" data-rol="inainte">▶ Rulează primul rând</button>
+    </div>`;
+  const $ = q => gazda.querySelector(q);
+
+  let ultimul = {};
+  function stare(pana){
+    const mem = {}, out = [];
+    ultimul = {};
+    for (let k = 0; k <= pana; k++){
+      const p = P[k];
+      Object.entries(p.set || {}).forEach(([n, sp]) => { mem[n] = sp; ultimul[n] = k; });
+      (p.sterge || []).forEach(n => delete mem[n]);
+      if (p.out != null) out.push(p.out);
+    }
+    return { mem, out };
+  }
+  function arata(){
+    const p = P[i] || {};
+    const { mem, out } = stare(i);
+    gazda.querySelectorAll(".ps__r, .ed__nr span").forEach(r => r.classList.toggle("on", +r.dataset.l === p.l));
+    gazda.querySelectorAll(".ps__r").forEach(r => r.classList.toggle("trecut", i >= 0 && +r.dataset.l < (p.l || 0)));
+    const noi = new Set(Object.keys(p.set || {}));
+    /* cea mai nouă variabilă sus: acolo se uită ochiul după fiecare rând */
+    const ord = Object.entries(mem).sort(([a], [b]) => (noi.has(b) ? 1 : 0) - (noi.has(a) ? 1 : 0) || ultimul[b] - ultimul[a]);
+    $(".ps__mem").innerHTML = ord.length ? ord.map(([n, sp]) => `
+      <div class="ps-v ${noi.has(n) ? "nou" : ""}">
+        <span class="ps-v__n">${esc(n)}</span>
+        <span class="ps-v__t ${TIP_CLS[sp.t] || ""}">${esc(sp.t)}</span>
+        <span class="ps-v__v">${valoareHTML(sp, p.hl?.var === n ? p.hl.k : undefined)}</span>
+      </div>`).join("") : `<p class="ps__gol">${i < 0 ? "Încă nimic: apasă ▶ și rulăm primul rând." : "Rândul ăsta n-a creat nimic nou."}</p>`;
+    $(".ps__out").textContent = out.join("\n");
+    $(".ps__txt").innerHTML = i < 0 ? (d.intro || "Rulează rând cu rând și urmărește ce apare în memorie și la ieșire.")
+                                    : `<b>Rândul ${p.l}.</b> ${p.txt || ""}`;
+    gazda.querySelectorAll(".ps__puncte i").forEach(e => e.classList.toggle("on", +e.dataset.k <= i));
+    $('[data-rol="inapoi"]').disabled = i < 0;
+    $('[data-rol="inainte"]').textContent = i < 0 ? "▶ Rulează primul rând" : i >= P.length - 1 ? "↺ De la capăt" : "▶ Rândul următor";
+  }
+  $('[data-rol="inainte"]').onclick = () => { i = i >= P.length - 1 ? -1 : i + 1; arata(); };
+  $('[data-rol="inapoi"]').onclick = () => { i = Math.max(-1, i - 1); arata(); };
+  arata();
 };
 
 function amesteca(a){
