@@ -156,10 +156,19 @@ try {{
     import("../js/auth.js?v={V}"), import("../js/ora.js?v={V}"), import("../js/curs.js?v={V}")]);
   const p = await profil();
   if (p.profesor){{
-    document.querySelector('[data-rol="preda"]')?.removeAttribute("hidden");
+    const b = document.querySelector('[data-rol="preda"]');
+    if (b){{
+      b.removeAttribute("hidden");
+      /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
+      const viu = await O.deschisa("c{nr}");
+      if (viu){{ b.textContent = "● Mergi la oră"; b.href = "lectie/"; b.title = "Ora e pornită"; }}
+    }}
   }} else if (p.autentificat){{
-    const vazute = await O.lectiiVizibile(LECTII, false);
-    if (!vazute.some(l => l.nr === {nr})){{
+    /* deschisă dacă a fost predată grupei sau dacă ai lucrat deja în ea */
+    let atinsa = false;
+    try {{ atinsa = !!localStorage.getItem("dsw.parcurs.c{nr}"); }} catch {{}}
+    const pred = atinsa ? null : await O.predate();
+    if (!atinsa && pred && !pred.has("c{nr}")){{
       document.getElementById("inchis").hidden = false;
       document.querySelectorAll('[data-rol="incepe"], .mat__c[href^="lectie"]').forEach(a => {{
         a.removeAttribute("href"); a.classList.add("bl__b--stins", "stins");

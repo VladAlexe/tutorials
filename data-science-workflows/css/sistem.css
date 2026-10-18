@@ -425,3 +425,8 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
   .nav-lectii a{max-width:none}
   .antet__nume{display:none}
 }
+/* butonul profesorului, cât e o oră pornită */
+.cont-chip--live{background:var(--ambra-slab);border-color:var(--ambra)}
+.cont-chip--live .cont-chip__cerc{position:relative}
+.cont-chip--live .cont-chip__cerc::after{content:"";position:absolute;right:-2px;top:-2px;width:8px;height:8px;
+  border-radius:50%;background:var(--ambra);box-shadow:0 0 0 2px var(--panza)}

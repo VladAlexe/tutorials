@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/sistem.css?v=44">
-<script src="js/tema.js?v=44"></script>
+<link rel="stylesheet" href="css/sistem.css?v=45">
+<script src="js/tema.js?v=45"></script>
 <style>
   /* Pagina cursului: o coloană, ca la Ingineria AI. Sus cursul, apoi linia
      lecțiilor, apoi lista lor, una sub alta. Toate lecțiile sunt egale: nu
@@ -130,53 +130,71 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE } from "./js/curs.js?v=44";
+import { LECTII, NOTARE } from "./js/curs.js?v=45";
 
 /* Ce lecții sunt deschise. Profesorul și vizitatorul fără cont le au pe toate.
-   Studentul are doar lecțiile predate grupei (o oră ținută și nearhivată).
-   Dacă baza nu răspunde, se deschid toate: o pagină goală din cauza rețelei ar
-   fi mai rea decât o lecție văzută prea devreme. */
-let deschise = new Set(LECTII.map(l => l.nr)), student = false;
+   Studentul are lecțiile predate grupei, plus orice lecție în care a lucrat deja.
+
+   Pagina se desenează IMEDIAT, fără să aștepte rețeaua: cu ce știa browserul
+   data trecută, sau cu tot cursul dacă e prima vizită. Răspunsul bazei vine pe
+   urmă și doar rafinează. O listă goală pentru că autentificarea întârzie e
+   cel mai rău lucru pe care îl poate vedea un student. */
+const toate = LECTII.map(l => l.nr);
+const atinse = LECTII.filter(l => { try { return !!localStorage.getItem(`dsw.parcurs.c${l.nr}`); } catch { return false; } }).map(l => l.nr);
+let memorat = null;
+try { memorat = JSON.parse(localStorage.getItem("dsw.deschise") || "null"); } catch {}
+deseneaza(new Set(memorat ? [...memorat, ...atinse] : toate), !!memorat);
+
+const peTermen = (pr, ms) => Promise.race([pr, new Promise((_, r) => setTimeout(() => r(new Error("timp")), ms))]);
 try {
-  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=44"), import("./js/ora.js?v=44")]);
-  const p = await profil();
+  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=45"), import("./js/ora.js?v=45")]);
+  const p = await peTermen(profil(), 8000);
   if (p.autentificat && !p.profesorReal){
-    student = true;
-    deschise = new Set((await O.lectiiVizibile(LECTII, false)).map(l => l.nr));
+    const pred = await peTermen(O.predate(), 8000);
+    if (pred){
+      const nr = LECTII.filter(l => pred.has("c" + l.nr)).map(l => l.nr);
+      try { localStorage.setItem("dsw.deschise", JSON.stringify(nr)); } catch {}
+      deseneaza(new Set([...nr, ...atinse]), true);
+    }
+  } else {
+    try { localStorage.removeItem("dsw.deschise"); } catch {}
+    deseneaza(new Set(toate), false);
+    if (p.profesorReal){
+      const n = document.getElementById("nota-cap");
+      if (n) n.textContent = "Cum se pune nota, pentru ei";
+    }
   }
-  if (p.profesorReal){
-    const n = document.getElementById("nota-cap");
-    if (n) n.textContent = "Cum se pune nota, pentru ei";
-  }
-} catch { /* fără cont sau fără rețea: cursul se vede întreg */ }
+} catch { /* fără cont, fără rețea sau prea încet: rămâne ce s-a desenat */ }
 
-document.getElementById("flux").innerHTML = LECTII.map(l => deschise.has(l.nr)
-  ? `<a class="etapa${student ? " aprinsa" : ""}" href="${l.cheie}/"><span class="etapa__nod">${l.nr}</span><span class="etapa__et">${l.scurt}</span></a>`
-  : `<span class="etapa stinsa"><span class="etapa__nod">${l.nr}</span><span class="etapa__et">${l.scurt}</span></span>`).join("");
+function deseneaza(deschise, student){
+  document.getElementById("flux").innerHTML = LECTII.map(l => deschise.has(l.nr)
+    ? `<a class="etapa${student ? " aprinsa" : ""}" href="${l.cheie}/"><span class="etapa__nod">${l.nr}</span><span class="etapa__et">${l.scurt}</span></a>`
+    : `<span class="etapa stinsa"><span class="etapa__nod">${l.nr}</span><span class="etapa__et">${l.scurt}</span></span>`).join("");
 
-document.getElementById("lectii").innerHTML = LECTII.map(l => {
-  const nr = `C${l.nr}`;
-  if (!deschise.has(l.nr)) return `
-    <div class="lr inchisa" aria-disabled="true">
-      <span class="lr__nr">${nr}</span>
-      <div><div class="lr__t">${l.titlu}</div><div class="lr__d">${l.rezumat}</div></div>
-      <span class="lr__dr"><span class="lr__lacat">se deschide la oră</span></span>
-    </div>`;
-  return `
-    <a class="lr" href="${l.cheie}/">
-      <span class="lr__nr">${nr}</span>
-      <div><div class="lr__t">${l.titlu}</div><div class="lr__d">${l.rezumat}</div></div>
-      <span class="lr__dr"><span class="lr__sag">→</span></span>
-    </a>`;
-}).join("");
+  document.getElementById("lectii").innerHTML = LECTII.map(l => {
+    const nr = `C${l.nr}`;
+    if (!deschise.has(l.nr)) return `
+      <div class="lr inchisa" aria-disabled="true">
+        <span class="lr__nr">${nr}</span>
+        <div><div class="lr__t">${l.titlu}</div><div class="lr__d">${l.rezumat}</div></div>
+        <span class="lr__dr"><span class="lr__lacat">se deschide la oră</span></span>
+      </div>`;
+    return `
+      <a class="lr" href="${l.cheie}/">
+        <span class="lr__nr">${nr}</span>
+        <div><div class="lr__t">${l.titlu}</div><div class="lr__d">${l.rezumat}</div></div>
+        <span class="lr__dr"><span class="lr__sag">→</span></span>
+      </a>`;
+  }).join("");
 
-if (student) document.getElementById("lectii-sub").textContent =
-  `${deschise.size} din ${LECTII.length} deschise`;
+  document.getElementById("lectii-sub").textContent =
+    student ? `${deschise.size} din ${LECTII.length} deschise` : "";
+}
 
 document.getElementById("notare").innerHTML = NOTARE.componente.map(c => `
   <div class="punct"><b>${c.puncte}p</b><span>${c.nume}</span><p>${c.d}</p></div>`).join("");
 </script>
-<script type="module" src="js/antet.js?v=44"></script>
-<script type="module" src="js/subsol.js?v=44"></script>
+<script type="module" src="js/antet.js?v=45"></script>
+<script type="module" src="js/subsol.js?v=45"></script>
 </body>
 </html>

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=44">
-<link rel="stylesheet" href="../css/intrare.css?v=44">
-<script src="../js/tema.js?v=44"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=45">
+<link rel="stylesheet" href="../css/intrare.css?v=45">
+<script src="../js/tema.js?v=45"></script>
 </head>
 <body>
 
@@ -132,13 +132,22 @@ personal devine depozitul echipei când adaugi ceilalți membri.</p></div>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=44"), import("../js/ora.js?v=44"), import("../js/curs.js?v=44")]);
+    import("../js/auth.js?v=45"), import("../js/ora.js?v=45"), import("../js/curs.js?v=45")]);
   const p = await profil();
   if (p.profesor){
-    document.querySelector('[data-rol="preda"]')?.removeAttribute("hidden");
+    const b = document.querySelector('[data-rol="preda"]');
+    if (b){
+      b.removeAttribute("hidden");
+      /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
+      const viu = await O.deschisa("c3");
+      if (viu){ b.textContent = "● Mergi la oră"; b.href = "lectie/"; b.title = "Ora e pornită"; }
+    }
   } else if (p.autentificat){
-    const vazute = await O.lectiiVizibile(LECTII, false);
-    if (!vazute.some(l => l.nr === 3)){
+    /* deschisă dacă a fost predată grupei sau dacă ai lucrat deja în ea */
+    let atinsa = false;
+    try { atinsa = !!localStorage.getItem("dsw.parcurs.c3"); } catch {}
+    const pred = atinsa ? null : await O.predate();
+    if (!atinsa && pred && !pred.has("c3")){
       document.getElementById("inchis").hidden = false;
       document.querySelectorAll('[data-rol="incepe"], .mat__c[href^="lectie"]').forEach(a => {
         a.removeAttribute("href"); a.classList.add("bl__b--stins", "stins");
@@ -149,7 +158,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=44"></script>
-<script type="module" src="../js/subsol.js?v=44"></script>
+<script type="module" src="../js/antet.js?v=45"></script>
+<script type="module" src="../js/subsol.js?v=45"></script>
 </body>
 </html>

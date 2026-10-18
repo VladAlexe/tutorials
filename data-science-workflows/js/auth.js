@@ -6,7 +6,7 @@
    =========================================================================== */
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.0/+esm";
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=44";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=45";
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -110,12 +110,16 @@ let profilCache = null;
 /** { autentificat, matricol, nume, grupa, github_login, profesor } */
 export async function profil({ proaspat = false } = {}) {
   if (profilCache && !proaspat) return profilCache;
-  const { data: { session } } = await sb.auth.getSession();
+  /* Dacă autentificarea nu răspunde (rețea proastă, filă blocată), nu ținem
+     pagina în loc la nesfârșit: după 8 secunde, eroare, pe care paginile o
+     tratează ca „fără cont deocamdată”. */
+  const termen = ms => new Promise((_, r) => setTimeout(() => r(new Error("Autentificarea nu răspunde.")), ms));
+  const { data: { session } } = await Promise.race([sb.auth.getSession(), termen(8000)]);
   if (!session) {
     profilCache = { autentificat: false };
     return profilCache;
   }
-  const { data, error } = await sb.rpc("profilul_meu");
+  const { data, error } = await Promise.race([sb.rpc("profilul_meu"), termen(8000)]);
   if (error) throw new Error(traduEroare(error.message));
 
   const p = { ...data, email: session.user.email };

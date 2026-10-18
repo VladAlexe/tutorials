@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=44">
-<link rel="stylesheet" href="../css/panou.css?v=44">
-<link rel="stylesheet" href="../css/predau.css?v=44">
-<script src="../js/tema.js?v=44"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=45">
+<link rel="stylesheet" href="../css/panou.css?v=45">
+<link rel="stylesheet" href="../css/predau.css?v=45">
+<script src="../js/tema.js?v=45"></script>
 <style>
   /* Panoul profesorului: o singură pagină, trei secțiuni, una sub alta.
      Acum (dacă e o oră pornită), Orele (fiecare cu raportul ei, deschis pe
@@ -93,10 +93,10 @@
   </section>
 </main>
 
-<script type="module" src="../js/antet.js?v=44"></script>
+<script type="module" src="../js/antet.js?v=45"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE } from "../js/curs.js?v=44";
-import * as O from "../js/ora.js?v=44";
+import { RADACINA, LECTII, NOTARE } from "../js/curs.js?v=45";
+import * as O from "../js/ora.js?v=45";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
@@ -106,7 +106,7 @@ const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
 const cheieDe = cap => (LECTII.find(l => "c" + l.nr === cap) || {}).cheie;
 
 let A;
-try { A = await import("../js/auth.js?v=44"); }
+try { A = await import("../js/auth.js?v=45"); }
 catch { el("ore-corp").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil();
 if (!p.autentificat){ location.replace(`${RADACINA}/cont/`); throw 0; }
@@ -153,6 +153,13 @@ async function ore(){
     b.textContent = g.hidden ? "Raportul" : "Închide raportul";
     if (!g.hidden && !g.dataset.gata) raport(b.dataset.rap, g);
   });
+  /* venit de la „Raportul orei”, la încheierea orei: îl deschid direct */
+  const cerut = new URLSearchParams(location.search).get("raport");
+  const b = cerut && el("ore-corp").querySelector(`[data-rap="${CSS.escape(cerut)}"]`);
+  if (b && !el("rap-" + cerut).dataset.vazut){
+    el("rap-" + cerut).dataset.vazut = "1";
+    b.click(); b.closest("li").scrollIntoView({ block:"start", behavior:"smooth" });
+  }
 }
 
 function rand(s){
@@ -371,7 +378,7 @@ async function note(){
 
 semestru();
 </script>
-<script type="module" src="../js/subsol.js?v=44"></script>
+<script type="module" src="../js/subsol.js?v=45"></script>
 <div id="subsol"></div>
 </body>
 </html>

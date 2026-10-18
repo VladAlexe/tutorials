@@ -3,13 +3,13 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=44"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=45"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=44";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=45";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -78,15 +78,36 @@ async function taieBanda(profesor){
   const g = document.querySelector(".flux__sina");
   if (!g || profesor) return;
   try {
-    const O = await import(`${RADACINA}/js/ora.js?v=44`);
+    const O = await import(`${RADACINA}/js/ora.js?v=45`);
     const p = await O.predate();
     if (!p) return;
+    const atinsa = c => { try { return !!localStorage.getItem(`dsw.parcurs.${c}`); } catch { return false; } };
     g.querySelectorAll("[data-c]").forEach(a => {
-      if (!p.has(a.dataset.c)) a.remove();
+      if (!p.has(a.dataset.c) && !atinsa(a.dataset.c)) a.remove();
     });
     /* dacă n-a mai rămas nimic, banda goală arată ca un sit stricat: o scot */
     if (!g.querySelector(".etapa")) g.closest(".flux")?.remove();
   } catch { /* fără bază, banda rămâne întreagă */ }
+}
+
+async function oraPornita(){
+  try {
+    const O = await import(`${RADACINA}/js/ora.js?v=45`);
+    const S = await O.deschisa();
+    const chip = document.getElementById("chip-prof");
+    if (!chip) return;
+    if (!S || O.prea_veche(S)){
+      chip.href = `${RADACINA}/predau/`; chip.classList.remove("cont-chip--live");
+      chip.querySelector("span:last-child").textContent = "Predau";
+      return;
+    }
+    const l = LECTII.find(x => "c" + x.nr === S.capitol);
+    if (!l) return;
+    chip.href = `${RADACINA}/${l.cheie}/lectie/`;
+    chip.title = `Ora e pornită: ${S.titlu || "lecția " + l.nr}`;
+    chip.classList.add("cont-chip--live");
+    chip.querySelector("span:last-child").textContent = `La oră · C${l.nr}`;
+  } catch {}
 }
 
 function banda(lectie){
@@ -110,7 +131,7 @@ async function cont(predau){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=44`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=45`);
     const p = await profil();
     if (p.autentificat) taieBanda(p.profesorReal);
     if (!p.autentificat) {
@@ -125,7 +146,7 @@ async function cont(predau){
         <button class="icon-btn" id="btn-iesi" type="button" title="Ieși din cont"
                 aria-label="Ieși din cont">${SVG.iesi}</button>`;
       document.getElementById("btn-iesi").onclick = async () => {
-        const { iesi } = await import(`${RADACINA}/js/auth.js?v=44`);
+        const { iesi } = await import(`${RADACINA}/js/auth.js?v=45`);
         await iesi(); location.href = `${RADACINA}/`;
       };
       return;
@@ -133,11 +154,18 @@ async function cont(predau){
     /* Un singur buton, după rol: profesorul merge la „Predau”, studentul la
        contul lui. */
     zona.innerHTML = p.profesor
-      ? `<a class="cont-chip cont-chip--prof" href="${RADACINA}/predau/" title="${nume}">
+      ? `<a class="cont-chip cont-chip--prof" href="${RADACINA}/predau/" title="${nume}" id="chip-prof">
            <span class="cont-chip__cerc">${ini}</span><span>Predau</span></a>`
       : `<a class="cont-chip" href="${RADACINA}/cont/" title="${nume}">
            <span class="cont-chip__cerc">${ini}</span>
            <span>${nume.split(/\s+/)[0]}</span></a>`;
+    /* Cât e o oră pornită, butonul profesorului spune asta pe orice pagină și
+       duce direct în ea. Nu mai cauți de unde ai pornit-o. */
+    if (p.profesor){
+      oraPornita();
+      /* ritm.js anunță când pornește sau încheie ora din pagina asta */
+      document.addEventListener("dsw:ora", oraPornita);
+    }
   } catch {
     zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;
   }
