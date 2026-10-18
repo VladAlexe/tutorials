@@ -1,7 +1,7 @@
 {
  "capitol": "c2",
  "total": 24,
- "sarcini": 18,
+ "sarcini": 12,
  "slide": [
   {
    "nr": 1,
@@ -15,20 +15,7 @@
    "id": "s2",
    "grup": "Cursul",
    "titlu": "Unde ai rămas",
-   "sarcini": [
-    {
-     "id": "c2-v1",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "De ce lucrăm într-un mediu virtual și nu direct în Python-ul de sistem?",
-     "optiuni": [
-      "Ca să meargă mai repede",
-      "Ca fiecare proiect să-și aibă pachetele lui, cu versiunile lui",
-      "Ca să ocupe mai puțin spațiu",
-      "Nu contează, e doar o convenție"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 3,
@@ -89,20 +76,7 @@
    "id": "s8",
    "grup": "Tipuri de API",
    "titlu": "REST, SOAP, GraphQL, gRPC",
-   "sarcini": [
-    {
-     "id": "c2-v5",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Pentru un API public, simplu, pe care îl folosesc mulți necunoscuți, ce stil alegi?",
-     "optiuni": [
-      "SOAP, pentru că e standardizat",
-      "gRPC, pentru că e rapid",
-      "REST, pentru că e ușor de învățat și merge din browser",
-      "GraphQL, pentru că e cel mai nou"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 8,
@@ -116,32 +90,14 @@
    "id": "s10",
    "grup": "Cum arată o cerere",
    "titlu": "Metodele HTTP",
-   "sarcini": [
-    {
-     "id": "c2-sort-metode",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 10,
    "id": "s11",
    "grup": "Cum arată o cerere",
    "titlu": "Endpoint-ul",
-   "sarcini": [
-    {
-     "id": "c2-v6",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Două endpoint-uri diferite ale aceluiași API…",
-     "optiuni": [
-      "întorc aceleași date, în formate diferite",
-      "întorc lucruri diferite: fiecare e o altă resursă sau funcție",
-      "sunt același lucru, scris în două feluri",
-      "se folosesc pe rând, în ordine"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 11,
@@ -191,20 +147,7 @@
    "id": "s15",
    "grup": "Surse de date",
    "titlu": "Ce folosim noi",
-   "sarcini": [
-    {
-     "id": "c2-v9",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Fișierul SCI de la cursul 1 e o sursă prin API?",
-     "optiuni": [
-      "Da, orice sursă de date e un API",
-      "Nu, e un fișier descărcat; API-ul e un serviciu pe care îl întrebi",
-      "Da, pentru că l-am luat de pe internet",
-      "Depinde de format"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 15,
@@ -237,20 +180,8 @@
    "titlu": "Paginarea",
    "sarcini": [
     {
-     "id": "c2-ordine-paginare",
+     "id": "c2-prezice-pagini",
      "fel": "cod"
-    },
-    {
-     "id": "c2-v10",
-     "fel": "verificare",
-     "corect": 0,
-     "q": "De ce pui o pauză între cereri, într-o buclă de colectare?",
-     "optiuni": [
-      "Ca să nu depășesc limita de cereri a serverului",
-      "Ca să am timp să citesc rezultatele",
-      "Ca să consume mai puțină memorie",
-      "Nu e nevoie, serverul se descurcă"
-     ]
     }
    ]
   },
@@ -271,7 +202,12 @@
    "id": "s19e",
    "grup": "Eurostat",
    "titlu": "Un cub, nu un tabel",
-   "sarcini": []
+   "sarcini": [
+    {
+     "id": "c2-prezice-cub",
+     "fel": "cod"
+    }
+   ]
   },
   {
    "nr": 20,
@@ -297,12 +233,7 @@
    "id": "s20",
    "grup": "Postman",
    "titlu": "Aceeași cerere, cu mâna",
-   "sarcini": [
-    {
-     "id": "c2-dovada-postman",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 23,

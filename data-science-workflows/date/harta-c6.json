@@ -1,7 +1,7 @@
 {
  "capitol": "c6",
  "total": 14,
- "sarcini": 7,
+ "sarcini": 9,
  "slide": [
   {
    "nr": 1,
@@ -30,6 +30,10 @@
    "grup": "O variabilă",
    "titlu": "Descrierea, în cod",
    "sarcini": [
+    {
+     "id": "c6-prezice-coada",
+     "fel": "cod"
+    },
     {
      "id": "c6-cod-descrie",
      "fel": "cod"
@@ -68,6 +72,10 @@
    "grup": "Două variabile",
    "titlu": "Corelațiile",
    "sarcini": [
+    {
+     "id": "c6-prezice-rang",
+     "fel": "cod"
+    },
     {
      "id": "c6-v2",
      "fel": "verificare",
@@ -156,7 +164,7 @@
    "sarcini": [
     {
      "id": "c6-tipar",
-     "fel": "cod"
+     "fel": "text"
     }
    ]
   },

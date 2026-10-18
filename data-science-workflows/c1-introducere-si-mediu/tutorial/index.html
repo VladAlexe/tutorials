@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=48">
-<link rel="stylesheet" href="../../css/tutorial.css?v=48">
-<link rel="stylesheet" href="../../css/interactiv.css?v=48">
-<link rel="stylesheet" href="../../css/grafice.css?v=48">
-<link rel="stylesheet" href="../../css/exercitii.css?v=48">
-<link rel="stylesheet" href="../../css/explorator.css?v=48">
-<script src="../../js/tema.js?v=48"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=51">
+<link rel="stylesheet" href="../../css/tutorial.css?v=51">
+<link rel="stylesheet" href="../../css/interactiv.css?v=51">
+<link rel="stylesheet" href="../../css/grafice.css?v=51">
+<link rel="stylesheet" href="../../css/exercitii.css?v=51">
+<link rel="stylesheet" href="../../css/explorator.css?v=51">
+<script src="../../js/tema.js?v=51"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 1 · Manual"></div>
@@ -65,14 +65,7 @@
 <section class="tut__s" id="s3">
 <span class="tut__nr">03 · Softuri și conturi</span>
 <h2>Softuri și conturi</h2><p>Cinci unelte pentru tot semestrul. Primele trei se instalează azi, restul la lecția în care apar. Niciuna nu cere card.</p><table class="tabel"><thead><tr><th>Unealtă</th><th>La ce</th><th>Când</th></tr></thead><tbody><tr><td><a class="leg" href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a></td><td>Editorul în care scriem cod</td><td class="mono">azi</td></tr><tr><td><a class="leg" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.11+</a></td><td>Limbajul. Bifează <em>Add Python to PATH</em></td><td class="mono">azi</td></tr><tr><td><a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">GitHub</a>, cont</td><td>Versionare, backup, colaborare</td><td class="mono">azi</td></tr><tr><td><a class="leg" href="https://neon.com/" target="_blank" rel="noopener">Neon</a>, cont</td><td>Baze de date PostgreSQL, în cloud</td><td class="mono">cursul 5</td></tr><tr><td><a class="leg" href="https://www.postman.com/downloads/" target="_blank" rel="noopener">Postman</a></td><td>Testarea și explorarea API-urilor</td><td class="mono">cursul 2</td></tr></tbody></table><h3>De ce Neon și nu PostgreSQL pe laptop</h3><p>Pentru că o bază de date în cloud e vizibilă pentru toată echipa deodată. Un PostgreSQL instalat local rezolvă problema interogării, dar nu și pe cea a colaborării, care e jumătate din curs. În plus, nu pierdem o ședință pe instalare și pe diferențele dintre Windows și macOS.</p><h3>De ce Postman, dacă tot scriem cod</h3><p>Pentru că un API necunoscut se explorează mai repede cu un clic decât cu un script. Vezi imediat ce parametri acceptă, ce coduri de răspuns întoarce și ce formă are JSON-ul, și abia apoi scrii codul.</p><h3>Contul GitHub</h3><p>E singurul lucru din lecția asta care are termen azi. Toate celelalte se pot recupera; contul GitHub blochează lecția 3 pentru toată echipa dacă lipsește.</p><ol><li>Intră pe <a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>. Alege un nume de utilizator pe care să-l poți pune în CV: rămâne cu tine mult după curs.</li><li>Confirmă adresa de email.</li><li>Intră cu el <a class="leg" href="../../cont/">pe acest site</a> și leagă-l de numărul matricol.</li></ol><div class="nota"><div class="nota__et">Ce se salvează despre tine</div><p>Răspunsurile la verificări, exercițiile făcute, și pe ce slide ai ajuns. Nimic altceva. Detaliile sunt în <a class="leg" href="../../date-personale/">pagina despre date personale</a>, iar progresul ți-l poți șterge singur, oricând, din <a class="leg" href="../../cont/">contul tău</a>.</p></div>
-<div class="verif" data-id="c1-v8" data-corect="1">
-    <p class="verif__q">De ce versionăm codul într-un proiect de analiză de date?</p>
-    <button>Ca să ocupe mai puțin spațiu pe disc</button>
-    <button>Ca să se vadă ce s-a schimbat, când și de cine, și ca să se poată reveni</button>
-    <button>Pentru că e obligatoriu la publicare</button>
-    <button>Ca să ruleze codul mai repede</button>
-    <p class="verif__ex">Un rezultat se schimbă pentru că s-a schimbat codul, datele, sau amândouă. Fără istoric nu poți spune care. Spațiul pe disc chiar crește.</p>
-  </div>
+
 </section>
 
 <section class="tut__s" id="s4">
@@ -161,14 +154,7 @@
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Taie o felie din matrice</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c1-cod-diadic", "fisier": "diadic.py", "date": {"nume": "d", "fisier": "date/brute/country.csv", "randuri": 31684, "coloane": [{"nume": "user_country", "tip": "object", "d": "codul de doua litere al tarii de unde pleaca legatura"}, {"nume": "friend_country", "tip": "object", "d": "codul tarii spre care merge legatura"}, {"nume": "scaled_sci", "tip": "int64", "d": "taria legaturii, scalata; se compara intre perechi, nu se citeste ca numar de prietenii"}], "cap": [["RO", "RO", 6252768], ["RO", "MD", 173794], ["RO", "AT", 124693], ["RO", "DE", 91228], ["RO", "HU", 85021]], "capNota": "Cinci rânduri adevărate din fișier, dintre cele cu România pe primul capăt. Toate cele 178 de țări au exact aceleași trei coloane; se schimbă doar codurile."}, "sarcina": "Păstrează doar perechile care pleacă din România.", "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/country.csv\")\nprint(len(d))                  # 31684\n\nro = d[d[{{1}}] == {{2}}]\nprint(len(ro))                 # 178", "goluri": {"1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"}, "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}}, "laBine": "178 de rânduri: România cu fiecare țară, inclusiv cu ea însăși.", "laRau": "Numele coloanei se scrie între ghilimele.", "explicatie": "Fixezi un capăt al perechii și obții o listă monadică."}</script></div>
 </div>
-<div class="verif" data-id="c1-v5" data-corect="2">
-    <p class="verif__q">Cu cele 178 de țări din SCI, câte rânduri are matricea completă?</p>
-    <button>178</button>
-    <button>356</button>
-    <button>31.684</button>
-    <button>15.753</button>
-    <p class="verif__ex">178 × 178 = 31.684, exact câte rânduri are fișierul <code>country.csv</code> pe care îl descărcați azi. Creșterea cu pătratul e motivul pentru care, de la cursul 5, lucrăm cu o bază de date.</p>
-  </div>
+
 </section>
 
 <section class="tut__s" id="s9">
@@ -191,7 +177,10 @@
 
 <section class="tut__s" id="s11">
 <span class="tut__nr">14 · Tipuri de date</span>
-<h2>Greșelile care nu dau eroare</h2><p>Greșelile de tip care crapă se repară în două minute. Problema o fac cele care trec: codul rulează, fișierul se scrie, iar rezultatul e greșit fără ca nimic să semnaleze.</p><div class="ix" data-ix="cod">
+<h2>Greșelile care nu dau eroare</h2><p>Greșelile de tip care crapă se repară în două minute. Problema o fac cele care trec: codul rulează, fișierul se scrie, iar rezultatul e greșit fără ca nimic să semnaleze.</p><div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Ce afișează?</span><span class="ix__t">Text plus text</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-prezice-tip", "fisier": "01_introducere.ipynb · 2. Variabile", "sarcina": "Aceeași celulă ca în caietul de azi. Nu o rula: ghicește.", "cod": "varsta_text = \"24\"\nprint(varsta_text + \"1\")", "intrebare": "Ce afișează?", "variante": ["25", "241", "Eroare", "24 1"], "corect": 1, "indiciu": "Ghilimelele fac din 24 un text. Ce face <code>+</code> cu două texte?", "laBine": "Plusul lipește textele, nu le adună.", "explicatie": "Cu ghilimele, <code>\"24\"</code> e <code>str</code>, iar <code>+</code> între două texte le lipește. Exact asta pățește un an citit din CSV ca text. Mai jos îl repari cu <code>int()</code>."}</script></div>
+</div><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Repară două conversii</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c1-cod-tipuri", "fisier": "tipuri.py", "sarcina": "Două greșeli de tip, dintre cele care nu crapă imediat.", "cod": "an_text = \"2024\"\nurmatorul = {{1}}(an_text) + 1\nprint(urmatorul)             # 2025\n\nd = pd.read_csv(\"coduri.csv\", dtype={\"cod\": {{2}}})\nprint(d.cod.iloc[0])         # 01234", "goluri": {"1": {"ok": ["int"], "ajutor": "funcția"}, "2": {"ok": ["str"], "ajutor": "tipul"}}, "laBine": "Amândouă apar la cursul 4.", "laRau": "Fără ghilimele: o funcție și un tip.", "explicatie": "<code>\"2024\" + \"1\"</code> dă <code>\"20241\"</code> fără să se plângă nimeni."}</script></div>
 </div><h3>A treia capcană: virgula zecimală</h3><p>Un fișier românesc scrie <code>3,7</code>. <code>float("3,7")</code> crapă, ceea ce e vestea bună. Vestea proastă e că un fișier întreg citit greșit îți dă o coloană de text pe care o sortezi alfabetic fără să observi. Reparația e <code>float(x.replace(",", "."))</code>, sau <code>decimal=","</code> la citire.</p><div class="nota"><div class="nota__et">Confuzia care costă cel mai mult</div><p><code>None</code>, <code>0</code> și <code>""</code> arată la fel într-un tabel gol. Zero e o măsurătoare; <code>None</code> e absența ei. Tratate la fel într-o medie, rezultatul e greșit fără nicio eroare.</p></div>
@@ -202,16 +191,9 @@
 <span class="tut__nr">15 · Tipuri de date</span>
 <h2>Tipuri de date în SQL</h2><p>De la cursul 5 datele stau într-o bază de date, nu în fișiere. Acolo tipurile nu se ghicesc la citire, se declară la crearea tabelului, iar baza refuză ce nu se potrivește. E mai strict decât Python, și e un avantaj: greșeala apare la inserare, nu peste trei săptămâni.</p><table class="tabel"><thead><tr><th>Familie</th><th>Tipuri</th><th>Pentru ce</th></tr></thead><tbody><tr><td>Numerice</td><td class="mono">INT, BIGINT, REAL, NUMERIC</td><td>Numărători, valori calculate</td></tr><tr><td>Dată și timp</td><td class="mono">DATE, TIME, TIMESTAMP</td><td>Momente; nu le ține niciodată ca text</td></tr><tr><td>Caractere</td><td class="mono">CHAR, VARCHAR, TEXT</td><td>Nume, coduri, descrieri</td></tr><tr><td>Logic</td><td class="mono">BOOLEAN</td><td>Adevărat sau fals</td></tr><tr><td>Structurat</td><td class="mono">JSON, JSONB</td><td>Răspunsuri de API păstrate ca atare</td></tr></tbody></table><h3>CHAR, VARCHAR sau TEXT</h3><ul><li><code>CHAR(n)</code> are lungime fixă și completează cu spații. Bun pentru coduri de lungime constantă.</li><li><code>VARCHAR(n)</code> are lungime variabilă, cu o limită.</li><li><code>TEXT</code> e fără limită. În PostgreSQL nu e mai lent decât VARCHAR, deci e alegerea implicită rezonabilă.</li></ul><div class="ix" data-ix="coloane">
   <div class="ix__cap"><span class="ix__fel">Declară tipul</span><span class="ix__t">Tabelul SCI, la cursul 5</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-sql-coloane", "fisier": "create table sci (…)", "nota": "valori adevărate din country.csv", "sarcina": "Pentru fiecare coloană, tipul potrivit.", "tipuri": ["CHAR(2)", "VARCHAR(50)", "TEXT", "INT", "BIGINT", "BOOLEAN"], "coloane": [{"nume": "user_country", "ok": "CHAR(2)", "de_ce": "lungime fixă, exact două caractere"}, {"nume": "friend_country", "ok": "CHAR(2)", "de_ce": "același cod, aceeași regulă"}, {"nume": "scaled_sci", "ok": "BIGINT", "de_ce": "la nivel de regiune valorile trec de limita lui INT"}], "cap": [["RO", "RO", 6252768], ["RO", "MD", 173794], ["RO", "AT", 124693], ["RO", "HU", 85021]], "laBine": "Exact tabelul din Neon, la cursul 5.", "laRau": "Codurile au lungime fixă."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-sql-coloane", "poarta": false, "fisier": "create table sci (…)", "nota": "valori adevărate din country.csv", "sarcina": "Pentru fiecare coloană, tipul potrivit.", "tipuri": ["CHAR(2)", "VARCHAR(50)", "TEXT", "INT", "BIGINT", "BOOLEAN"], "coloane": [{"nume": "user_country", "ok": "CHAR(2)", "de_ce": "lungime fixă, exact două caractere"}, {"nume": "friend_country", "ok": "CHAR(2)", "de_ce": "același cod, aceeași regulă"}, {"nume": "scaled_sci", "ok": "BIGINT", "de_ce": "la nivel de regiune valorile trec de limita lui INT"}], "cap": [["RO", "RO", 6252768], ["RO", "MD", 173794], ["RO", "AT", 124693], ["RO", "HU", 85021]], "laBine": "Exact tabelul din Neon, la cursul 5.", "laRau": "Codurile au lungime fixă."}</script></div>
 </div><div class="nota"><div class="nota__et">Și cheia primară</div><p><code>primary key (user_country, friend_country)</code> e ce împiedică aceeași pereche să intre de două ori: greșeala clasică la reîncărcarea unui fișier.</p></div>
-<div class="verif" data-id="c1-v9" data-corect="2">
-    <p class="verif__q">Coduri de județ de forma <code>RO113</code>, toate de cinci caractere. Ce tip alegi?</p>
-    <button><code>INT</code>, pentru că par numere</button>
-    <button><code>TEXT</code>, pentru că nu se știe niciodată</button>
-    <button><code>CHAR(5)</code>, pentru că lungimea e fixă</button>
-    <button><code>VARCHAR</code> fără limită</button>
-    <p class="verif__ex">Un cod nu e un număr: nu se adună, nu se sortează numeric, iar <code>INT</code> ar distruge zerourile din față. <code>CHAR(5)</code> transformă o regulă pe care o știi tu într-una pe care o verifică baza de date.</p>
-  </div>
+
 </section>
 
 <section class="tut__s" id="s13">
@@ -227,23 +209,16 @@
 <span class="tut__nr">17 · Tipuri de date</span>
 <h2>Tipuri de fișiere</h2><p>Prima împărțire, și cea mai importantă: un fișier <strong>text</strong> îl poți deschide în orice editor și îl poți citi cu ochiul liber. Un fișier <strong>binar</strong> nu, are nevoie de programul care îl înțelege. Distincția decide și dacă Git îți poate arăta ce s-a schimbat.</p><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pune fiecare extensie în coșul ei</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-fisiere", "sarcina": "Poate Git să-ți arate ce s-a schimbat în el, rând cu rând?", "cosuri": [{"t": "Text", "d": "lizibil, versionabil"}, {"t": "Binar", "d": "are nevoie de un program"}], "elemente": [{"t": ".csv", "cos": 0}, {"t": ".json", "cos": 0}, {"t": ".xlsx", "cos": 1}, {"t": ".parquet", "cos": 1}, {"t": ".geojson", "cos": 0}, {"t": ".shp", "cos": 1}, {"t": ".md", "cos": 0}, {"t": ".pkl", "cos": 1}, {"t": ".yaml", "cos": 0}, {"t": ".sqlite", "cos": 1}, {"t": ".xml", "cos": 0}, {"t": ".png", "cos": 1}], "laBine": "Dacă îl poți deschide în Notepad și înțelegi ceva, e text.", "laRau": "Gândește-te ce vezi într-un editor simplu.", "explicatie": "<code>.geojson</code> și <code>.xml</code> par „tehnice”, dar sunt text simplu."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-fisiere", "poarta": false, "sarcina": "Poate Git să-ți arate ce s-a schimbat în el, rând cu rând?", "cosuri": [{"t": "Text", "d": "lizibil, versionabil"}, {"t": "Binar", "d": "are nevoie de un program"}], "elemente": [{"t": ".csv", "cos": 0}, {"t": ".json", "cos": 0}, {"t": ".xlsx", "cos": 1}, {"t": ".parquet", "cos": 1}, {"t": ".geojson", "cos": 0}, {"t": ".shp", "cos": 1}, {"t": ".md", "cos": 0}, {"t": ".pkl", "cos": 1}, {"t": ".yaml", "cos": 0}, {"t": ".sqlite", "cos": 1}, {"t": ".xml", "cos": 0}, {"t": ".png", "cos": 1}], "laBine": "Dacă îl poți deschide în Notepad și înțelegi ceva, e text.", "laRau": "Gândește-te ce vezi într-un editor simplu.", "explicatie": "<code>.geojson</code> și <code>.xml</code> par „tehnice”, dar sunt text simplu."}</script></div>
 </div><table class="tabel"><thead><tr><th>Format</th><th>Când îl folosești</th></tr></thead><tbody><tr><td class="mono">.csv</td><td>Tabele simple, plate. Universal, dar nu păstrează tipurile.</td></tr><tr><td class="mono">.json</td><td>Date cu structură imbricată. Ce întorc aproape toate API-urile.</td></tr><tr><td class="mono">.parquet</td><td>Tabele mari. Binar, compact, rapid, păstrează tipurile.</td></tr><tr><td class="mono">.geojson</td><td>Date cu geometrie. Text, deci lizibil și versionabil.</td></tr><tr><td class="mono">.shp</td><td>Shapefile: geometrie, dar binar și format din mai multe fișiere.</td></tr><tr><td class="mono">.env</td><td>Chei și parole. Niciodată în depozit.</td></tr></tbody></table>
-<div class="verif" data-id="c1-v10" data-corect="0">
-    <p class="verif__q">Ai salvat tabelul în CSV. La recitire, coloana cu coduri care începeau cu zero a devenit numerică și zerourile au dispărut. De ce?</p>
-    <button>CSV nu păstrează tipurile; la recitire, fiecare coloană e reinterpretată din conținut</button>
-    <button>Fișierul s-a corupt la salvare</button>
-    <button>Pandas are o eroare cunoscută</button>
-    <button>Codurile trebuiau salvate cu majuscule</button>
-    <p class="verif__ex">CSV e text simplu: nu are unde să scrie că o coloană e text. Trei ieșiri: specifici tipul la citire (<code>dtype={"cod": str}</code>), salvezi în Parquet, sau ții datele în baza de date.</p>
-  </div>
+
 </section>
 
 <section class="tut__s" id="s15">
 <span class="tut__nr">18 · JSON</span>
 <h2>Formatul JSON</h2><p>JSON are exact două structuri: <strong>obiectul</strong>, între acolade, care e o colecție de perechi cheie–valoare, și <strong>tabloul</strong>, între paranteze drepte, care e o listă ordonată. Se pot cuibări una în alta oricât de adânc, iar din asta ies toate răspunsurile de API pe care le veți vedea.</p><table class="tabel"><thead><tr><th>În JSON</th><th>În Python</th></tr></thead><tbody><tr><td class="mono">string</td><td class="mono">str</td></tr><tr><td class="mono">number</td><td class="mono">int / float</td></tr><tr><td class="mono">true / false</td><td class="mono">True / False</td></tr><tr><td class="mono">null</td><td class="mono">None</td></tr><tr><td class="mono">object</td><td class="mono">dict</td></tr><tr><td class="mono">array</td><td class="mono">list</td></tr></tbody></table><p>Rădăcina poate fi oricare dintre cele două. Banca Mondială întoarce un tablou cu două elemente: paginarea, apoi datele.</p><div class="ix" data-ix="anatomie">
   <div class="ix__cap"><span class="ix__fel">Pe bucăți</span><span class="ix__t">Un răspuns real, pe bucăți</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-json-anatomie", "cerute": 4, "intro": "Apasă pe o parte ca s-o vezi aprinsă în cod.", "linii": ["{", "  \"paginare\": { \"pagina\": 1, \"total\": 3 },", "  \"date\": [", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2023\",", "      \"valoare\": 19051562,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": false", "    },", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2022\",", "      \"valoare\": null,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": true", "    }", "  ]", "}"], "parti": [{"et": "Obiectul principal", "py": "dict", "l": [0, 18], "d": "Tot răspunsul, între acolade. În Python devine un <code>dict</code> cu două chei: <code>paginare</code> și <code>date</code>."}, {"et": "Tabloul de obiecte", "py": "list", "l": [2, 17], "d": "Între paranteze drepte. Numai asta devine tabel: fiecare element al listei e un rând."}, {"et": "Un obiect din tablou", "py": "dict", "l": [3, 9], "d": "Un rând al viitorului tabel. Cheile lui devin coloane."}, {"et": "Obiect cuibărit", "py": "dict în dict", "l": [4, 4], "d": "O valoare care e, la rândul ei, un obiect. În tabel, <code>json_normalize</code> îl desface în două coloane: <code>tara.cod</code> și <code>tara.nume</code>."}, {"et": "Pereche cheie–valoare", "py": "str", "l": [5, 5], "d": "<code>\"2023\"</code> are ghilimele, deci e <em>text</em>, nu număr. Capcana clasică: sortat alfabetic, 1990 ajunge după 189."}, {"et": "Număr", "py": "int", "l": [6, 6], "d": "Fără ghilimele. Devine <code>int</code> sau <code>float</code>, după cum arată."}, {"et": "Tablou de numere", "py": "list", "l": [7, 7], "d": "O listă ca valoare. Într-un tabel plat nu încape ca atare: ori o desfaci în două coloane, ori o lași ca listă într-o celulă, ceea ce de obicei doare mai târziu."}, {"et": "Adevărat sau fals", "py": "bool", "l": [8, 8], "d": "<code>true</code> și <code>false</code> se scriu cu literă mică în JSON, cu majusculă în Python."}, {"et": "Valoare lipsă", "py": "None", "l": [13, 13], "d": "<code>null</code> spune explicit „nu știm”. Nu e zero. În Python devine <code>None</code>, în pandas devine <code>NaN</code>."}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-json-anatomie", "poarta": false, "cerute": 4, "intro": "Apasă pe o parte ca s-o vezi aprinsă în cod.", "linii": ["{", "  \"paginare\": { \"pagina\": 1, \"total\": 3 },", "  \"date\": [", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2023\",", "      \"valoare\": 19051562,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": false", "    },", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2022\",", "      \"valoare\": null,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": true", "    }", "  ]", "}"], "parti": [{"et": "Obiectul principal", "py": "dict", "l": [0, 18], "d": "Tot răspunsul, între acolade. În Python devine un <code>dict</code> cu două chei: <code>paginare</code> și <code>date</code>."}, {"et": "Tabloul de obiecte", "py": "list", "l": [2, 17], "d": "Între paranteze drepte. Numai asta devine tabel: fiecare element al listei e un rând."}, {"et": "Un obiect din tablou", "py": "dict", "l": [3, 9], "d": "Un rând al viitorului tabel. Cheile lui devin coloane."}, {"et": "Obiect cuibărit", "py": "dict în dict", "l": [4, 4], "d": "O valoare care e, la rândul ei, un obiect. În tabel, <code>json_normalize</code> îl desface în două coloane: <code>tara.cod</code> și <code>tara.nume</code>."}, {"et": "Pereche cheie–valoare", "py": "str", "l": [5, 5], "d": "<code>\"2023\"</code> are ghilimele, deci e <em>text</em>, nu număr. Capcana clasică: sortat alfabetic, 1990 ajunge după 189."}, {"et": "Număr", "py": "int", "l": [6, 6], "d": "Fără ghilimele. Devine <code>int</code> sau <code>float</code>, după cum arată."}, {"et": "Tablou de numere", "py": "list", "l": [7, 7], "d": "O listă ca valoare. Într-un tabel plat nu încape ca atare: ori o desfaci în două coloane, ori o lași ca listă într-o celulă, ceea ce de obicei doare mai târziu."}, {"et": "Adevărat sau fals", "py": "bool", "l": [8, 8], "d": "<code>true</code> și <code>false</code> se scriu cu literă mică în JSON, cu majusculă în Python."}, {"et": "Valoare lipsă", "py": "None", "l": [13, 13], "d": "<code>null</code> spune explicit „nu știm”. Nu e zero. În Python devine <code>None</code>, în pandas devine <code>NaN</code>."}]}</script></div>
 </div><h3>Și cum devine tabel</h3><p>Structura de sus nu e un tabel. Pasul care o face tabel e tot timpul același: alegi lista dinăuntru, și fiecare element al ei devine un rând.</p><div class="ix" data-ix="desfa">
   <div class="ix__cap"><span class="ix__fel">Vezi cum se desface</span><span class="ix__t">Cum devine un răspuns un tabel</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c1-desfa", "sursa": "api.worldbank.org", "buton": "Arată-mi lista", "cheieCap": "paginare", "cheieLista": "date", "coloane": ["tara", "an", "populatie"], "elemente": [{"tara": "RO", "an": 2023, "populatie": 19051562}, {"tara": "RO", "an": 2022, "populatie": 19047009}, {"tara": "HU", "an": 2023, "populatie": 9589872}], "p0": "Tot răspunsul, așa cum vine de la API.", "p1": "Lista dinăuntru: numai asta devine tabel.", "p2": "Fiecare element al listei a devenit un rând."}</script></div>
@@ -256,18 +231,14 @@
 <h2>Un răspuns real, desfăcut</h2><p>Banca Mondială, populația României.</p><div class="ix" data-ix="json">
   <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">API Banca Mondială</span></div>
   <div class="ix__corp"><p class="ix__sarcina">Apasă pe orice rând ca să vezi cum se ajunge la el.</p><script type="application/json">{"radacina": "raspuns", "date": [{"page": 1, "pages": 3, "per_page": 2, "total": 6}, [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2023", "value": 19051562}, {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2022", "value": null}]]}</script></div>
+</div><div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Ce afișează?</span><span class="ix__t">Liste și dicționare</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-prezice-index", "fisier": "01_introducere.ipynb · liste și dicționare", "cod": "tari = [\"RO\", \"IT\", \"ES\"]\npersoana = {\"name\": \"Ana\", \"city\": \"Cluj-Napoca\"}\n\nprint(tari[1], persoana[\"city\"])", "intrebare": "Ce afișează?", "variante": ["RO Ana", "IT Cluj-Napoca", "RO Cluj-Napoca", "IT city"], "corect": 1, "indiciu": "Într-o listă, numărătoarea începe de la 0. Într-un dicționar, între paranteze pui cheia și primești valoarea.", "laBine": "Indice pentru liste, cheie pentru dicționare: asta e tot drumul prin JSON.", "explicatie": "<code>tari[1]</code> e al doilea element, pentru că primul e <code>tari[0]</code>. <code>persoana[\"city\"]</code> dă valoarea cheii. Cu aceste două mișcări ajungi la orice valoare dintr-un răspuns JSON, oricât de adânc."}</script></div>
 </div><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scrie drumul</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Mergi până la populația din 2023.", "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n# paginarea e primul element, datele sunt in al doilea\ndate = raspuns[{{1}}]\n\n# prima inregistrare, cea mai recenta\npopulatie = date[0][{{2}}]\nprint(populatie)             # 19051562", "goluri": {"1": {"ok": ["1"], "ajutor": "indice"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "laBine": "Ăsta e drumul pe care îl vei scrie la cursul 2, de zeci de ori.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. <code>[\"value\"]</code> scoate numărul. Dacă valoarea lipsește primești <code>None</code>, nu zero."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Mergi până la populația din 2023.", "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n# paginarea e primul element, datele sunt in al doilea\ndate = raspuns[{{1}}]\n\n# prima inregistrare, cea mai recenta\npopulatie = date[0][{{2}}]\nprint(populatie)             # 19051562", "goluri": {"1": {"ok": ["1"], "ajutor": "indice"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "indiciu": "Răspunsul e o listă cu două elemente: paginarea pe poziția 0, datele pe poziția 1. Apoi, din prima înregistrare, vrei cheia cu numărul.", "iesire": "19051562", "laBine": "Ăsta e drumul pe care îl vei scrie la cursul 2, de zeci de ori.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. <code>[\"value\"]</code> scoate numărul. Dacă valoarea lipsește primești <code>None</code>, nu zero."}</script></div>
 </div>
-<div class="verif" data-id="c1-v4" data-corect="1">
-    <p class="verif__q">Ce diferență e între <code>"value": null</code> și lipsa completă a cheii <code>value</code>?</p>
-    <button>Niciuna</button>
-    <button>null spune explicit că valoarea lipsește; cheia absentă înseamnă că serviciul nu raportează deloc câmpul</button>
-    <button>null înseamnă zero</button>
-    <button>Cheia absentă e o eroare a serverului</button>
-    <p class="verif__ex">Un null devine o valoare lipsă pe care o poți număra și raporta. O cheie absentă poate deveni o coloană care lipsește cu totul pentru anumite înregistrări, iar codul cade abia mai târziu.</p>
-  </div>
+
 </section>
 
 <section class="tut__s" id="s17">
@@ -294,15 +265,8 @@ deactivate</code></pre><div class="ix" data-ix="terminal">
 </div><div class="nota"><div class="nota__et">Cum știi că e activ</div><p>Promptul începe cu <code>(venv)</code>. Folderul <code>venv</code> nu se urcă niciodată în depozit: e mare, e al sistemului tău, și se reface dintr-o comandă, din <code>requirements.txt</code>.</p></div>
 <div class="ix" data-ix="ordine">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ordinea comenzilor</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-venv", "sarcina": "Pune comenzile în ordinea în care se dau. Două dintre ele fac altceva decât crezi dacă vin prea devreme.", "linii": ["python -m venv venv", "venv\\Scripts\\activate", "pip install requests pandas", "pip freeze > requirements.txt", "deactivate"], "laBine": "Exact asta vei face la începutul fiecărui proiect.", "laRau": "Gândește-te ce există pe disc în momentul fiecărei comenzi.", "explicatie": "<code>pip install</code> înainte de activare instalează în Python-ul global și nu dă nicio eroare, doar te trezești peste o zi că importul nu merge. <code>pip freeze</code> are sens abia după instalare, altfel scrie un fișier gol."}</script></div>
-</div><div class="verif" data-id="c1-v3" data-corect="1">
-    <p class="verif__q">Ai activat mediul, ai instalat pandas, ai închis laptopul. A doua zi <code>import pandas</code> dă eroare. De ce?</p>
-    <button>Pandas s-a dezinstalat singur</button>
-    <button>Ai uitat să activezi mediul virtual</button>
-    <button>Mediul expiră după 24 de ore</button>
-    <button>Trebuie reinstalat Python</button>
-    <p class="verif__ex">Mediul nu se activează singur într-un terminal nou. VS Code o face automat dacă îi selectezi interpretorul din folderul <code>venv</code>: <span class="mono">Ctrl+Shift+P → Python: Select Interpreter</span>.</p>
-  </div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-venv", "sarcina": "Pune comenzile în ordinea în care se dau. Două dintre ele fac altceva decât crezi dacă vin prea devreme.", "linii": ["python -m venv venv", "venv\\Scripts\\activate", "pip install requests pandas", "pip freeze > requirements.txt", "deactivate"], "indiciu": "Nu poți activa un mediu care nu există încă, iar o listă de pachete are sens abia după ce le-ai instalat.", "iesire": "(venv) PS C:\\proiect> pip freeze > requirements.txt\n(venv) PS C:\\proiect> deactivate\nPS C:\\proiect>", "laBine": "Exact asta vei face la începutul fiecărui proiect.", "laRau": "Gândește-te ce există pe disc în momentul fiecărei comenzi.", "explicatie": "<code>pip install</code> înainte de activare instalează în Python-ul global și nu dă nicio eroare, doar te trezești peste o zi că importul nu merge. <code>pip freeze</code> are sens abia după instalare, altfel scrie un fișier gol."}</script></div>
+</div>
 </section>
 
 <section class="tut__s" id="s18">
@@ -327,11 +291,11 @@ deactivate</code></pre><div class="ix" data-ix="terminal">
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=48"></script>
+<script type="module" src="../../js/antet.js?v=51"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=48";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=48";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=48";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=51";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=51";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=51";
 pornesteIx();
 pornesteVerif("c1");
 pornesteTut("c1");

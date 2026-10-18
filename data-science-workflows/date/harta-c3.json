@@ -1,7 +1,7 @@
 {
  "capitol": "c3",
  "total": 23,
- "sarcini": 21,
+ "sarcini": 12,
  "slide": [
   {
    "nr": 1,
@@ -15,20 +15,7 @@
    "id": "s2",
    "grup": "Cursul",
    "titlu": "Unde ai rămas",
-   "sarcini": [
-    {
-     "id": "c3-v1",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Ce se întâmplă cu munca de săptămâna trecută dacă îți moare laptopul în seara asta?",
-     "optiuni": [
-      "Nimic, Python salvează automat",
-      "Se recuperează din coșul de gunoi",
-      "Se pierde, dacă nu e nicăieri altundeva",
-      "GitHub o are deja, orice proiect ajunge acolo"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 3,
@@ -46,10 +33,6 @@
     {
      "id": "c3-zone",
      "fel": "cod"
-    },
-    {
-     "id": "c3-sort-zone",
-     "fel": "cod"
     }
    ]
   },
@@ -58,40 +41,14 @@
    "id": "s5",
    "grup": "Ce face Git",
    "titlu": "Verificare",
-   "sarcini": [
-    {
-     "id": "c3-v2",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Ești în tren, fără internet. Ce poți face?",
-     "optiuni": [
-      "Nimic, Git are nevoie de legătură",
-      "Commit-uri, reveniri, ramuri: tot ce ține de istoric",
-      "Doar să citești istoricul, nu să scrii",
-      "Doar git status"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 6,
    "id": "s6",
    "grup": "Primii pași",
    "titlu": "Depozitul",
-   "sarcini": [
-    {
-     "id": "c3-v4",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Ce face git init?",
-     "optiuni": [
-      "Trimite proiectul pe GitHub",
-      "Descarcă un proiect de pe GitHub",
-      "Începe urmărirea dosarului curent, creând .git",
-      "Creează un dosar nou pentru proiect"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 7,
@@ -112,20 +69,12 @@
    "titlu": "Primul commit",
    "sarcini": [
     {
-     "id": "c3-ordine-commit",
+     "id": "c3-prezice-status",
      "fel": "cod"
     },
     {
-     "id": "c3-v5",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Ce e un mesaj bun de commit?",
-     "optiuni": [
-      "„update”",
-      "„colectare migratie, Eurostat migr_pop1ctz, anul 2024”",
-      "„am lucrat azi”",
-      "„fix”"
-     ]
+     "id": "c3-ordine-commit",
+     "fel": "cod"
     }
    ]
   },
@@ -177,24 +126,7 @@
    "id": "s12",
    "grup": "GitHub",
    "titlu": "Drumul complet",
-   "sarcini": [
-    {
-     "id": "c3-ordine-github",
-     "fel": "cod"
-    },
-    {
-     "id": "c3-v8",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Ai făcut git commit dar nu git push. Ce vede colegul tău?",
-     "optiuni": [
-      "Tot, GitHub se sincronizează singur",
-      "Doar fișierele, nu și mesajul",
-      "Nimic nou: commit-ul e doar la tine, pe laptop",
-      "Vede o cerere de aprobare"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 13,
@@ -224,18 +156,6 @@
     {
      "id": "c3-conflict",
      "fel": "cod"
-    },
-    {
-     "id": "c3-v9",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Care obicei previne cele mai multe conflicte?",
-     "optiuni": [
-      "Să faci commit-uri cât mai rare",
-      "Să dai git pull înainte să începi lucrul, în fiecare zi",
-      "Să lucrați toți pe aceeași ramură",
-      "Să nu atingeți niciodată aceleași fișiere"
-     ]
     }
    ]
   },
@@ -251,40 +171,14 @@
    "id": "s17",
    "grup": "Cadrul teoretic",
    "titlu": "De ce un cadru",
-   "sarcini": [
-    {
-     "id": "c3-v10",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "De unde vine o întrebare de cercetare?",
-     "optiuni": [
-      "Din ce se poate calcula cu datele pe care le ai",
-      "Din literatura pe tema aceea, pusă față în față cu datele",
-      "Din ce iese mai frumos la grafice",
-      "Din ce n-a mai făcut nimeni"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 18,
    "id": "s18",
    "grup": "Cadrul teoretic",
    "titlu": "Un exemplu lucrat",
-   "sarcini": [
-    {
-     "id": "c3-v11",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Ce face ca cele trei întrebări de mai sus să fie întrebări de cercetare, și nu simple curiozități?",
-     "optiuni": [
-      "Sunt despre un subiect important",
-      "Folosesc date din mai multe surse",
-      "Ies dintr-un cadru teoretic și se pot infirma cu datele",
-      "Au fost puse și de alții înainte"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 19,
@@ -301,7 +195,7 @@
    "sarcini": [
     {
      "id": "c3-intrebare",
-     "fel": "cod"
+     "fel": "text"
     }
    ]
   },

@@ -232,8 +232,22 @@ sl("s3", "O variabilă", "Coada lungă",
 
 sl("s4", "O variabilă", "Descrierea, în cod",
    "<h2>Trei linii, un portret</h2>"
+   + ix("prezice", "Media și mediana", {
+       "id": "c6-prezice-coada", "fisier": "05_explorare.ipynb · 1. O pereche obișnuită",
+       "cod": "import pandas as pd\n\n"
+              "sci = pd.Series([2, 3, 4, 5, 100])   # o pereche foarte legata\n"
+              "print(sci.mean(), sci.median())",
+       "intrebare": "Ce afișează?",
+       "variante": ["4.0 4.0", "22.8 4.0", "22.8 22.8", "4.0 22.8"],
+       "corect": 1,
+       "indiciu": "Media adună tot și împarte la 5. Mediana e valoarea din mijloc, după sortare.",
+       "laBine": "O singură valoare uriașă trage media în sus; mediana nu se clintește.",
+       "explicatie": "Media e (2 + 3 + 4 + 5 + 100) / 5 = 22,8, mediana e 4. Când media e mult peste mediană, "
+                     "distribuția are coadă spre dreapta: exact ce are SCI-ul. De aceea raportăm mediana și "
+                     "lucrăm pe logaritm."})
    + ix("cod", "Descrie variabila", {
-       "id": "c6-cod-descrie", "fisier": "eda/univariat.py",
+       "id": "c6-cod-descrie", "indiciu": "Portretul complet al unei coloane numerice e o „descriere”: describe. Asimetria, în engleză „skewness”, e metoda skew. Logaritmul din numpy e np.log.",
+       "iesire": "count       702.0\nmean       1863.4\n50%         812.0\n...\n7.61\n0.49", "fisier": "eda/univariat.py",
        "sarcina": "Descrie SCI-ul perechilor, măsoară asimetria, apoi "
                   "compar-o cu cea a logaritmului.",
        "cod": "import numpy as np\nimport pandas as pd\n\n"
@@ -324,7 +338,21 @@ sl("s7", "Două variabile", "Corelațiile",
           f"Teal: cresc împreună. Cărămiziu: una crește, cealaltă scade. "
           f"Distanța și granița merg împreună (r = {ro(r_('dist', 'gr'))}): "
           "vecinii sunt aproape. De aceea nu le poți judeca separat.", True),
-   dupa=verif("c6-v2", 1,
+   dupa=ix("prezice", "Spearman, pe ranguri", {
+       "id": "c6-prezice-rang", "fisier": "05_explorare.ipynb · 3. H1, distanța",
+       "cod": "import pandas as pd\n\n"
+              "d = pd.DataFrame({\"distanta\": [100, 500, 1000, 3000],\n"
+              "                  \"sci\":      [900, 200, 150, 20]})\n\n"
+              "print(d[\"distanta\"].corr(d[\"sci\"], method=\"spearman\"))",
+       "intrebare": "Ce afișează?",
+       "variante": ["1.0", "-1.0", "0.0", "-0.5"],
+       "corect": 1,
+       "indiciu": "Spearman se uită doar la ordine. Când distanța crește pas cu pas, ce face SCI-ul, mereu?",
+       "laBine": "Ordine perfect inversă: -1.",
+       "explicatie": "Spearman înlocuiește valorile cu rangurile lor. Distanța urcă 1, 2, 3, 4, iar SCI-ul coboară "
+                     "4, 3, 2, 1: o relație perfect descrescătoare, deci -1, oricât de inegale ar fi pașii. "
+                     "Pe SCI și distanță e o alegere bună, pentru că nu cere o linie dreaptă."})
+   + verif("c6-v2", 1,
               f"Migrația și SCI-ul au r = {ro(r_('sci', 'migr'))}. Ce poți spune?",
               ["Că migrația produce legăturile",
                "Că cele două cresc împreună; de ce, nu știm încă",
@@ -370,7 +398,7 @@ sl("s8", "Categorii", "Din numere în categorii",
      "tare: 0 înseamnă nicio legătură, 0,1 slabă, 0,3 medie, peste 0,5 "
      f"puternică. Aici V = {ro(CRAMER)}.</p>"
    + ix("cod", "Tabelul de contingență", {
-       "id": "c6-cod-ct", "fisier": "eda/categorii.py",
+       "id": "c6-cod-ct", "indiciu": "Tabelul de contingență se face cu pd.crosstab; procentele pe rând cer normalize=\"index\".", "fisier": "eda/categorii.py",
        "sarcina": "Taie SCI-ul în trei treimi, fă tabelul cu granița și "
                   "testează asocierea.",
        "cod": "from scipy.stats import chi2_contingency\n\n"

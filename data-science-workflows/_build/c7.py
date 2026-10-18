@@ -122,7 +122,8 @@ sl("s3", "Variabilele", "Construcția",
         "un milion de migranți înseamnă altceva între țări mari și mici"],
    ])
    + ix("cod", "Construiește rata", {
-       "id": "c7-cod-rata", "fisier": "model/variabile.py",
+       "id": "c7-cod-rata", "indiciu": "Populația perechii e suma celor două țări. „La mie” înseamnă înmulțit cu o mie.",
+       "iesire": "count    702.00\nmean       4.81\n50%        0.62\nmax      160.30", "fisier": "model/variabile.py",
        "sarcina": "Fă rata migranților la mia de locuitori ai celor două țări.",
        "cod": "# migranti = din_1_in_2 + din_2_in_1 (cursul 4)\n"
               "d[\"populatie\"] = d[\"pop_1\"] {{1}} d[\"pop_2\"]\n\n"
@@ -154,7 +155,8 @@ sl("s3", "Variabilele", "Construcția",
      "populația e lângă oameni. Pentru legături sociale, ăsta e centrul care "
      "contează.</p>"
    + ix("cod", "Construiește rata", {
-       "id": "c7-cod-rata", "fisier": "model/variabile.py",
+       "id": "c7-cod-rata", "indiciu": "Populația perechii e suma celor două țări. „La mie” înseamnă înmulțit cu o mie.",
+       "iesire": "count    702.00\nmean       4.81\n50%        0.62\nmax      160.30", "fisier": "model/variabile.py",
        "sarcina": "Fă rata migranților la mia de locuitori.",
        "cod": "d[\"populatie\"] = d[\"pop_1\"] {{1}} d[\"pop_2\"]\n"
               "d[\"la_mie\"] = d[\"migranti\"] / d[\"populatie\"] * {{2}}",
@@ -167,6 +169,19 @@ sl("s3", "Variabilele", "Construcția",
 
 sl("s4", "Variabilele", "Transformarea",
    "<h2>Ce pui pe logaritm</h2>"
+   + ix("prezice", "Ce face logaritmul", {
+       "id": "c7-prezice-log", "fisier": "07_model.ipynb · 3. Același eșantion",
+       "cod": "import numpy as np\n\n"
+              "km = np.array([10, 100, 1000])\n"
+              "print(np.log10(km))",
+       "intrebare": "Ce afișează?",
+       "variante": ["[1. 2. 3.]", "[10. 100. 1000.]", "[2.3 4.6 6.9]", "[0.1 0.01 0.001]"],
+       "corect": 0,
+       "indiciu": "log10 întreabă: „10 la ce putere dă numărul ăsta?”",
+       "laBine": "Fiecare înmulțire cu 10 devine un pas de 1.",
+       "explicatie": "10 = 10¹, 100 = 10², 1000 = 10³. Logaritmul transformă înmulțirile în adunări: "
+                     "de la 100 la 1000 km e același pas ca de la 10 la 100. De aceea distanța și SCI-ul "
+                     "intră în model pe logaritm, iar coeficientul se citește în procente."})
    + ix("sortare", "Logaritm sau nu", {
        "id": "c7-sort-log",
        "sarcina": "Pune fiecare variabilă unde îi e locul.",
@@ -323,7 +338,8 @@ sl("s7", "Modelul", "Patru modele",
 sl("s8", "Modelul", "Modelul, în cod",
    "<h2>O formulă, un rând</h2>"
    + ix("cod", "Scrie modelul", {
-       "id": "c7-cod-ols", "fisier": "model/model.py",
+       "id": "c7-cod-ols", "indiciu": "Regresia liniară cu cele mai mici pătrate: ols. Estimarea se face cu fit. R² e atributul rsquared, fără paranteze.",
+       "iesire": "Intercept       11.92\nlog_distanta    -0.25\nlog_la_mie       0.41\ngranita          0.38\n0.56", "fisier": "model/model.py",
        "sarcina": "Estimează modelul complet și uită-te la coeficienți și la R².",
        "cod": "import statsmodels.formula.api as smf\n\n"
               "m = smf.{{1}}(\"log_sci ~ log_distanta + log_la_mie + granita\",\n"
@@ -349,7 +365,8 @@ sl("s8", "Modelul", "Modelul, în cod",
    "<p>Cu <code>statsmodels</code>, un model se scrie ca o formulă. Partea din "
    "stânga lui <code>~</code> e ce explici, partea din dreapta e cu ce.</p>"
    + ix("cod", "Scrie modelul", {
-       "id": "c7-cod-ols", "fisier": "model/model.py",
+       "id": "c7-cod-ols", "indiciu": "Regresia liniară cu cele mai mici pătrate: ols. Estimarea se face cu fit. R² e atributul rsquared, fără paranteze.",
+       "iesire": "Intercept       11.92\nlog_distanta    -0.25\nlog_la_mie       0.41\ngranita          0.38\n0.56", "fisier": "model/model.py",
        "sarcina": "Estimează modelul complet.",
        "cod": "import statsmodels.formula.api as smf\n\n"
               "m = smf.{{1}}(\"log_sci ~ log_distanta + log_la_mie + granita\",\n"

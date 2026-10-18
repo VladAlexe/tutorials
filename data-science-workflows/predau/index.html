@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Predau · Fluxuri de lucru</title>
+<title>Catalog · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=48">
-<link rel="stylesheet" href="../css/panou.css?v=48">
-<link rel="stylesheet" href="../css/predau.css?v=48">
-<script src="../js/tema.js?v=48"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=51">
+<link rel="stylesheet" href="../css/panou.css?v=51">
+<link rel="stylesheet" href="../css/predau.css?v=51">
+<script src="../js/tema.js?v=51"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -121,6 +121,21 @@
   .grupa.on small{color:rgba(255,255,255,.8)}
   .btn-sterge{color:var(--nu);border-color:color-mix(in srgb,var(--nu) 35%,var(--linie))}
 
+  .obs-b{all:unset;cursor:pointer;color:var(--text-3);font-size:14px;padding:2px 6px;border-radius:6px}
+  .obs-b:hover{background:var(--panza-2);color:var(--text)}
+  .obs-b.are{color:var(--ambra)}
+  .fisa__in{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .fisa__in label{display:flex;flex-direction:column;gap:4px;font-family:var(--sans);font-size:12.5px;color:var(--text-2)}
+  .fisa__in label small{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+  .fisa__in input.n{width:100%;font-family:var(--mono);font-size:14px;text-align:center;padding:7px;border:1px solid var(--linie-2);
+    border-radius:8px;background:var(--panza);color:var(--text)}
+  .fisa__in input.n.salvat{border-color:var(--ok)} .fisa__in input.n.rau{border-color:var(--nu)}
+  .fisa__obs{width:100%;font-family:var(--sans);font-size:14px;line-height:1.5;padding:10px 12px;border:1px solid var(--linie-2);
+    border-radius:9px;background:var(--panza);color:var(--text);resize:vertical}
+  .fisa__obs:focus{outline:none;border-color:var(--ambra);box-shadow:0 0 0 2px var(--ambra-slab)}
+  .lec2__h{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin:18px 0 10px;font-weight:500}
+  .tabla2{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+
   /* fișa studentului */
   .fisa-fundal{position:fixed;inset:0;background:rgba(20,20,15,.32);z-index:80}
   .fisa{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:var(--fundal);z-index:81;
@@ -141,13 +156,13 @@
 </head>
 <body>
 
-<div id="antet" data-aici="Predau" data-predau></div>
+<div id="antet" data-aici="Catalog" data-predau></div>
 
 <main class="pd">
   <div class="pp__cap">
     <div>
       <p class="pp__et" id="ziua">Predau</p>
-      <h1 class="pp__t">Cursul tău</h1>
+      <h1 class="pp__t">Catalog</h1>
     </div>
   </div>
 
@@ -182,11 +197,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=48"></script>
-<script type="module" src="../js/subsol.js?v=48"></script>
+<script type="module" src="../js/antet.js?v=51"></script>
+<script type="module" src="../js/subsol.js?v=51"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=48";
-import * as O from "../js/ora.js?v=48";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=51";
+import * as O from "../js/ora.js?v=51";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -197,14 +212,14 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=48"); }
+try { A = await import("../js/auth.js?v=51"); }
 catch { el("cat").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
 const sb = A.sb;
 
 const d = new Date();
-el("ziua").textContent = `Predau · ${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`;
+el("ziua").textContent = `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`;
 
 /* ---------------------------------------------------------------- notarea --
    Regula stă în js/curs.js (activitate): două șanse pe întrebare, una la oră
@@ -223,10 +238,13 @@ function nota(r){
 
 /* ------------------------------------------------------------------ date --- */
 const rpc = (f, a) => sb.rpc(f, a).then(r => r.error ? { eroare: r.error.message } : r.data).catch(e => ({ eroare: e.message }));
-const [catRaw, oreRaw, arhRaw, grupeRaw, viuStart] = await Promise.all([
+const [catRaw, oreRaw, arhRaw, grupeRaw, viuStart, obsRaw] = await Promise.all([
   rpc("catalog"), rpc("ore_lista", { p_arhivate: false }), rpc("ore_lista", { p_arhivate: true }),
-  O.grupe(), O.deschisa()
+  O.grupe(), O.deschisa(), rpc("observatii")
 ]);
+/* observațiile tale, pe student (db/21); fără tabel, câmpul spune ce lipsește */
+const OBS = new Map((Array.isArray(obsRaw) ? obsRaw : []).map(o => [o.matricol, o.text]));
+const areObs = Array.isArray(obsRaw);
 const CAT_TOT = Array.isArray(catRaw) ? catRaw : [];
 const ORE_TOT = Array.isArray(oreRaw) ? oreRaw : (await O.lista(false)) || [];
 const ARH_TOT = Array.isArray(arhRaw) ? arhRaw : (await O.lista(true)) || [];
@@ -351,6 +369,7 @@ function catalog(){
       <th class="sep">Tema 1<small>/ ${nr2(TEMA)}</small></th><th>Tema 2<small>/ ${nr2(TEMA)}</small></th><th>Tema 3<small>/ ${nr2(TEMA)}</small></th>
       <th class="sep">Proiect<small>/ ${PCT.proiect}</small></th>
       <th class="sep" data-sort="total">Total<small>/ ${NOTARE.total}</small></th>
+      <th class="sep" title="Observațiile tale">Obs.</th>
     </tr></thead>
     <tbody>${r.map(x => `<tr>
       <td class="cs"><button type="button" data-fisa="${esc(x.matricol)}">${esc(x.nume)}</button>
@@ -366,6 +385,8 @@ function catalog(){
       <td class="sep">${inp(x, "tema1", TEMA)}</td><td>${inp(x, "tema2", TEMA)}</td><td>${inp(x, "tema3", TEMA)}</td>
       <td class="sep">${inp(x, "proiect", PCT.proiect)}</td>
       <td class="sep tot" data-tot="${esc(x.matricol)}">${nr2(x._n.total)}</td>
+      <td class="sep"><button type="button" class="obs-b ${OBS.has(x.matricol) ? "are" : ""}" data-fisa="${esc(x.matricol)}"
+        title="${OBS.has(x.matricol) ? esc(OBS.get(x.matricol).slice(0, 140)) : "Adaugă o observație"}">✎</button></td>
     </tr>`).join("")}</tbody></table></div>`;
 
   el("cat-leg").innerHTML = `<b>Activitatea</b>: fiecare seminar valorează ${nr2(PCT.seminar / NOTARE.activitate.seminare)} puncte.
@@ -431,6 +452,18 @@ function fisa(matricol){
       <div class="fisa__n"><b>${nr2(n.act)}</b><span>activitate, din ${PCT.seminar}</span></div>
       <div class="fisa__n"><b>${nr2(n.teme + n.proiect)}</b><span>teme și proiect, din ${PCT.teme + PCT.proiect}</span></div>
     </div>
+    <h3>Notele tale</h3>
+    <div class="fisa__in">
+      ${[["tema1", "Tema 1", TEMA], ["tema2", "Tema 2", TEMA], ["tema3", "Tema 3", TEMA], ["proiect", "Proiect", PCT.proiect]].map(([k, t, max]) => `
+        <label>${t}<small>/ ${nr2(max).replace(",00", "")}</small>
+          <input class="n" inputmode="decimal" data-m="${esc(x.matricol)}" data-k="${k}" data-max="${max}"
+            value="${x.note?.[k] != null ? String(x.note[k]).replace(".", ",") : ""}" placeholder="—"></label>`).join("")}
+    </div>
+    <h3>Observațiile tale</h3>
+    ${areObs ? `<textarea class="fisa__obs" data-obs="${esc(x.matricol)}" rows="5"
+      placeholder="Ce ai observat la clasă, ce urmărești, cu ce are probleme. Doar tu vezi asta.">${esc(OBS.get(x.matricol) || "")}</textarea>
+      <p class="mic fisa__salv" aria-live="polite"></p>`
+      : `<p class="gol-s">Rulează <code>db/21-observatii.sql</code> ca să poți scrie observații.</p>`}
     <h3>Seminar cu seminar</h3>
     ${LECTII.map(l => {
       const c = "c" + l.nr, pe = a.pe[l.nr];
@@ -443,6 +476,20 @@ function fisa(matricol){
     <div id="fisa-scris"><p class="gol-s">Se încarcă…</p></div>
   </aside>`;
   document.body.appendChild(f);
+  f.querySelectorAll("input.n").forEach(i => {
+    i.onkeydown = e => { if (e.key === "Enter") i.blur(); };
+    i.onchange = async () => { await salveaza(i); catalog(); kpi(); };
+  });
+  const ta = f.querySelector("[data-obs]");
+  if (ta){
+    const salv = f.querySelector(".fisa__salv");
+    ta.onchange = async () => {
+      salv.textContent = "Se salvează…";
+      const r = await rpc("pune_observatie", { p_matricol: ta.dataset.obs, p_text: ta.value });
+      if (r?.ok){ salv.textContent = "Salvat."; if (ta.value.trim()) OBS.set(ta.dataset.obs, ta.value); else OBS.delete(ta.dataset.obs); catalog(); }
+      else salv.textContent = "Nu s-a salvat: " + (r?.eroare || r?.mesaj || "");
+    };
+  }
   const inchide = () => { history.replaceState(null, "", "#catalog"); arata(); };
   f.querySelector(".fisa__x").onclick = inchide;
   f.querySelector(".fisa-fundal").onclick = inchide;
@@ -501,8 +548,8 @@ async function detalii(nr, g){
     sb.rpc("sumar_scrise", { p_capitol: c, p_tip: null }).then(r => (r.data || []).filter(x => x.tip !== "autoevaluare" && aiGrupei.has(x.matricol))).catch(() => [])
   ]);
   g.querySelector(".d-sarcini").innerHTML = grila(sar);
-  g.querySelector(".d-scrise").innerHTML = scr.length ? scr.map(x => `<figure class="scr__c"><blockquote>${esc(x.text)}</blockquote>
-      <figcaption>${esc(x.nume)}</figcaption></figure>`).join("") : `<p class="gol-s">Nimic scris la lecția asta.</p>`;
+  g.querySelector(".d-scrise").innerHTML = scr.length ? `<div class="tabla2">${scr.map(x => `<figure class="scr__c"><blockquote>${esc(x.text)}</blockquote>
+      <figcaption>${esc(x.nume)} <span class="mic">${new Date(x.creat_la).toLocaleDateString("ro-RO", { day:"numeric", month:"short" })}</span></figcaption></figure>`).join("")}</div>` : `<p class="gol-s">Nimic scris la lecția asta.</p>`;
 }
 
 function grila(d){
@@ -598,6 +645,12 @@ async function raport(id, g){
   if (!r?.ok){ g.innerHTML = `<p class="gol-s">Raportul nu se poate citi.</p>`; return; }
   g.dataset.gata = "1";
   const l = lectiaDe(r.capitol);
+  /* ce au scris în ora asta: textele lecției, din fereastra orei, ale celor din oră */
+  const inOra = new Set((randuri || []).map(x => x.matricol));
+  const pana = r.inchisa_la ? new Date(r.inchisa_la) : new Date();
+  const texte = await sb.rpc("sumar_scrise", { p_capitol: r.capitol, p_tip: null })
+    .then(x => (x.data || []).filter(t => inOra.has(t.matricol) && new Date(t.creat_la) >= new Date(r.deschisa_la) && new Date(t.creat_la) <= pana))
+    .catch(() => []);
   g.innerHTML = `
     <div class="cif">
       <div class="cif__c"><p class="cif__n">${r.prezenti}<small>/${r.inscrisi || "—"}</small></p><p class="cif__e">prezenți, din înscriși</p></div>
@@ -613,7 +666,9 @@ async function raport(id, g){
         <td class="rap">${x.trimise}</td><td class="rap">${x.trecute}</td>
         <td style="text-align:right" class="rap">${x.prima ? ora(x.prima) : "—"}</td></tr>`).join("")}</tbody></table>
       <p class="rap" style="margin:10px 0 0">Prezent = a lucrat în oră. Se schimbă cu un clic.</p>`
-      : `<p class="gol-s">Nimeni n-a lucrat în ora asta.</p>`}`;
+      : `<p class="gol-s">Nimeni n-a lucrat în ora asta.</p>`}
+    ${texte.length ? `<h3 class="lec2__h">Ce au scris în ora asta</h3><div class="tabla2">${texte.map(t =>
+      `<figure class="scr__c"><blockquote>${esc(t.text)}</blockquote><figcaption>${esc(t.nume)}</figcaption></figure>`).join("")}</div>` : ""}`;
   g.querySelectorAll("[data-prez]").forEach(b => b.onclick = async () => {
     await O.punePrezenta(id, b.dataset.prez, b.dataset.val === "1"); g.dataset.gata = ""; raport(id, g);
   });

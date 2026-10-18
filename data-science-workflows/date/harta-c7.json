@@ -1,7 +1,7 @@
 {
  "capitol": "c7",
  "total": 14,
- "sarcini": 8,
+ "sarcini": 9,
  "slide": [
   {
    "nr": 1,
@@ -35,6 +35,10 @@
    "grup": "Variabilele",
    "titlu": "Transformarea",
    "sarcini": [
+    {
+     "id": "c7-prezice-log",
+     "fel": "cod"
+    },
     {
      "id": "c7-sort-log",
      "fel": "cod"
@@ -154,7 +158,7 @@
    "sarcini": [
     {
      "id": "c7-reziduu",
-     "fel": "cod"
+     "fel": "text"
     }
    ]
   },

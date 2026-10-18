@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=48">
-<link rel="stylesheet" href="../../css/tutorial.css?v=48">
-<link rel="stylesheet" href="../../css/interactiv.css?v=48">
-<link rel="stylesheet" href="../../css/grafice.css?v=48">
-<link rel="stylesheet" href="../../css/exercitii.css?v=48">
-<link rel="stylesheet" href="../../css/explorator.css?v=48">
-<script src="../../js/tema.js?v=48"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=51">
+<link rel="stylesheet" href="../../css/tutorial.css?v=51">
+<link rel="stylesheet" href="../../css/interactiv.css?v=51">
+<link rel="stylesheet" href="../../css/grafice.css?v=51">
+<link rel="stylesheet" href="../../css/exercitii.css?v=51">
+<link rel="stylesheet" href="../../css/explorator.css?v=51">
+<script src="../../js/tema.js?v=51"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 3 · Manual"></div>
@@ -52,14 +52,7 @@
 
 <section class="tut__s" id="s2">
 <span class="tut__nr">02 · Cursul</span>
-<h2>De la cursul trecut</h2><ul><li>un script care cere date de la un API</li><li><code>migratie.csv</code> și indicatorii, în <code>date/brute/</code></li><li>amândouă, deocamdată, doar pe laptopul tău</li></ul><p>Exact asta reparăm azi.</p><div class="verif" data-id="c3-v1" data-corect="2">
-    <p class="verif__q">Ce se întâmplă cu munca de săptămâna trecută dacă îți moare laptopul în seara asta?</p>
-    <button>Nimic, Python salvează automat</button>
-    <button>Se recuperează din coșul de gunoi</button>
-    <button>Se pierde, dacă nu e nicăieri altundeva</button>
-    <button>GitHub o are deja, orice proiect ajunge acolo</button>
-    <p class="verif__ex">Se pierde. Un fișier salvat pe disc e într-un singur loc. Git nu rezolvă singur asta: Git ține istoria local. Abia când o împingi pe GitHub există în două locuri.</p>
-  </div>
+<h2>De la cursul trecut</h2><ul><li>un script care cere date de la un API</li><li><code>migratie.csv</code> și indicatorii, în <code>date/brute/</code></li><li>amândouă, deocamdată, doar pe laptopul tău</li></ul><p>Exact asta reparăm azi.</p>
 
 </section>
 
@@ -79,21 +72,14 @@
   <div class="ix__corp"><script type="application/json">{"id": "c3-zone", "sarcina": "Du cele două fișiere până pe GitHub, apăsând comenzile.", "fisiere": ["colectare.py", "README.md"]}</script></div>
 </div><table class="tabel"><thead><tr><th>Zona</th><th>Ce e acolo</th><th>Cum ajunge mai departe</th></tr></thead><tbody><tr><td>Dosarul de lucru</td><td>fișierele pe care le editezi</td><td class="mono">git add</td></tr><tr><td>Zona de pregătire</td><td>ce ai ales pentru următorul commit</td><td class="mono">git commit</td></tr><tr><td>Istoricul local</td><td>commit-urile tale, pe laptop</td><td class="mono">git push</td></tr><tr><td>GitHub</td><td>copia de pe internet</td><td class="mono">git pull, înapoi</td></tr></tbody></table><p>Zona de pregătire pare un pas în plus, inutil. Rostul ei e să poți face un commit cu trei din cele șapte fișiere pe care le-ai atins, pentru că numai alea trei țin de aceeași schimbare.</p><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce face fiecare comandă</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-zone", "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.", "elemente": [{"t": "git add", "cos": 0}, {"t": "git commit", "cos": 1}, {"t": "git push", "cos": 2}, {"t": "git pull", "cos": 3}, {"t": "git status", "cos": 4}], "cosuri": [{"t": "Alege ce intră", "d": "din dosar în pregătire"}, {"t": "Scrie în istoric", "d": "din pregătire în istoricul local"}, {"t": "Trimite sus", "d": "din local pe GitHub"}, {"t": "Aduce jos", "d": "de pe GitHub în local"}, {"t": "Spune unde ești", "d": "nu mută nimic"}], "laBine": "Dacă ții minte tabloul ăsta, nu mai trebuie să ții minte comenzile.", "explicatie": "<code>git status</code> nu schimbă nimic, deci se poate da oricând, de oricâte ori."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-sort-zone", "poarta": false, "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.", "elemente": [{"t": "git add", "cos": 0}, {"t": "git commit", "cos": 1}, {"t": "git push", "cos": 2}, {"t": "git pull", "cos": 3}, {"t": "git status", "cos": 4}], "cosuri": [{"t": "Alege ce intră", "d": "din dosar în pregătire"}, {"t": "Scrie în istoric", "d": "din pregătire în istoricul local"}, {"t": "Trimite sus", "d": "din local pe GitHub"}, {"t": "Aduce jos", "d": "de pe GitHub în local"}, {"t": "Spune unde ești", "d": "nu mută nimic"}], "laBine": "Dacă ții minte tabloul ăsta, nu mai trebuie să ții minte comenzile.", "explicatie": "<code>git status</code> nu schimbă nimic, deci se poate da oricând, de oricâte ori."}</script></div>
 </div>
 
 </section>
 
 <section class="tut__s" id="s5">
 <span class="tut__nr">05 · Ce face Git</span>
-<h2>Git sau GitHub</h2><div class="verif" data-id="c3-v2" data-corect="1">
-    <p class="verif__q">Ești în tren, fără internet. Ce poți face?</p>
-    <button>Nimic, Git are nevoie de legătură</button>
-    <button>Commit-uri, reveniri, ramuri: tot ce ține de istoric</button>
-    <button>Doar să citești istoricul, nu să scrii</button>
-    <button>Doar <code>git status</code></button>
-    <p class="verif__ex">Tot ce ține de istoricul local. Internetul îți trebuie abia la <code>push</code> și <code>pull</code>, adică exact la cele două comenzi care vorbesc cu GitHub.</p>
-  </div>
+<h2>Git sau GitHub</h2>
 
 </section>
 
@@ -106,14 +92,7 @@ cd C:\PROIECTE\dsw-echipa-3
 git init
 
 <span class="c"># prima intrebare, mereu: unde sunt?</span>
-git status</code></pre><div class="nota"><div class="nota__et">Greșeala de început</div><p><code>git init</code> dat din greșeală în dosarul tău de acasă pune sub urmărire tot ce ai pe calculator. Dacă ți se întâmplă, ștergi dosarul <code>.git</code> de acolo și nu s-a pierdut nimic. În PowerShell, din dosarul acela: <code>Remove-Item -Recurse -Force .git</code>.</p></div><div class="verif" data-id="c3-v4" data-corect="2">
-    <p class="verif__q">Ce face <code>git init</code>?</p>
-    <button>Trimite proiectul pe GitHub</button>
-    <button>Descarcă un proiect de pe GitHub</button>
-    <button>Începe urmărirea dosarului curent, creând <code>.git</code></button>
-    <button>Creează un dosar nou pentru proiect</button>
-    <p class="verif__ex">Pornește urmărirea dosarului în care ești.</p>
-  </div>
+git status</code></pre><div class="nota"><div class="nota__et">Greșeala de început</div><p><code>git init</code> dat din greșeală în dosarul tău de acasă pune sub urmărire tot ce ai pe calculator. Dacă ți se întâmplă, ștergi dosarul <code>.git</code> de acolo și nu s-a pierdut nimic. În PowerShell, din dosarul acela: <code>Remove-Item -Recurse -Force .git</code>.</p></div>
 
 </section>
 
@@ -121,7 +100,7 @@ git status</code></pre><div class="nota"><div class="nota__et">Greșeala de înc
 <span class="tut__nr">07 · Primii pași</span>
 <h2>Credențiale</h2><p>Git scrie în fiecare commit cine l-a făcut. Nu verifică nimic: scrie ce i-ai spus. De aceea, dacă pui o adresă greșită, commit-urile tale apar pe GitHub ca ale nimănui.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Spune-i lui Git cine ești</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-config", "fisier": "terminal.sh", "sarcina": "Completează comenzile de configurare și de verificare.", "cod": "# verifici ce stie deja despre tine\ngit config user.name\ngit config user.email\n\n# le setezi pentru tot calculatorul, nu doar pentru proiectul asta\ngit config {{1}} user.name \"Numele Tau\"\ngit config {{1}} user.email {{2}}\n\n# te uiti la tot ce s-a setat\ngit config --list", "goluri": {"1": {"ok": ["--global"], "ajutor": "steagul"}, "2": {"ok": ["\"adresa@exemplu.com\"", "'adresa@exemplu.com'", "\"nume@stud.ubbcluj.ro\"", "\"adresa@ta.ro\""], "ajutor": "adresa, în ghilimele"}}, "laBine": "Folosește adresa cu care ai contul de GitHub.", "laRau": "Steagul începe cu două liniuțe.", "explicatie": "<code>--global</code> e valabil pentru toate proiectele."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-config", "indiciu": "Steagul care face setarea valabilă pe tot calculatorul înseamnă „global”, cu două liniuțe în față. Adresa e a ta (cea de pe GitHub), scrisă între ghilimele.", "iesire": "user.name=Numele Tau\nuser.email=nume@stud.ubbcluj.ro\ncore.autocrlf=true", "fisier": "terminal.sh", "sarcina": "Completează comenzile de configurare și de verificare.", "cod": "# verifici ce stie deja despre tine\ngit config user.name\ngit config user.email\n\n# le setezi pentru tot calculatorul, nu doar pentru proiectul asta\ngit config {{1}} user.name \"Numele Tau\"\ngit config {{1}} user.email {{2}}\n\n# te uiti la tot ce s-a setat\ngit config --list", "goluri": {"1": {"ok": ["--global"], "ajutor": "steagul"}, "2": {"ok": ["\"adresa@exemplu.com\"", "'adresa@exemplu.com'", "\"nume@stud.ubbcluj.ro\"", "\"adresa@ta.ro\""], "re": "^[\"'][^\"'\\s]+@[^\"'\\s]+\\.[a-z]{2,}[\"']$", "ajutor": "adresa ta, în ghilimele"}}, "laBine": "Folosește adresa cu care ai contul de GitHub.", "laRau": "Steagul începe cu două liniuțe.", "explicatie": "<code>--global</code> e valabil pentru toate proiectele."}</script></div>
 </div>
 
 </section>
@@ -140,7 +119,7 @@ git commit -m "colectare migratie, Eurostat migr_pop1ctz"
 <span class="c"># il trimit colegilor</span>
 git push</code></pre><div class="nota"><div class="nota__et">Cât de des faci commit</div><p>Mai des decât crezi. Un commit nu e o livrare, e un punct la care te poți întoarce. Regula practică: de fiecare dată când ai terminat un lucru care are un nume.</p></div><div class="ix" data-ix="ordine">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pune pașii în ordine</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-ordine-commit", "sarcina": "Ordinea unui prim commit, de la dosar gol la istoric.", "linii": ["git init", "git status                      # ce vede Git", "git add colectare/migratie.py", "git status                      # acum e in pregatire", "git commit -m \"colectare migratie, Eurostat migr_pop1ctz\"", "git log --oneline               # a ramas scris"], "explicatie": "<code>git status</code> e comanda pe care o dai cel mai des."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-ordine-commit", "indiciu": "Întâi faci dosarul depozit. Apoi te uiți ce vede Git, pui fișierul în pregătire, verifici, și abia apoi salvezi în istoric.", "iesire": "a1b2c3d (HEAD -> main) colectare migratie, Eurostat migr_pop1ctz", "sarcina": "Ordinea unui prim commit, de la dosar gol la istoric.", "linii": ["git init", "git status                      # ce vede Git", "git add colectare/migratie.py", "git status                      # acum e in pregatire", "git commit -m \"colectare migratie, Eurostat migr_pop1ctz\"", "git log --oneline               # a ramas scris"], "explicatie": "<code>git status</code> e comanda pe care o dai cel mai des."}</script></div>
 </div>
 
 </section>
@@ -190,7 +169,7 @@ git branch -vv            <span class="c"># main urmareste origin/main</span></c
 git pull origin main --allow-unrelated-histories
 git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verificare</th><th>Ce vezi</th></tr></thead><tbody><tr><td class="mono">git branch</td><td>ramurile locale</td></tr><tr><td class="mono">git branch -r</td><td>ramurile de pe GitHub (origin/...)</td></tr><tr><td class="mono">git branch -a</td><td>toate</td></tr><tr><td class="mono">git branch -vv</td><td>fiecare ramură și pe cine urmărește (upstream)</td></tr><tr><td class="mono">git remote -v</td><td>adresa lui origin</td></tr></tbody></table><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Leagă-l de GitHub</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-remote", "fisier": "terminal.sh", "sarcina": "Varianta 1: completează comenzile.", "cod": "git branch -m master main\ngit {{1}} add origin https://github.com/echipa/proiect.git\ngit push {{2}} origin {{3}}", "goluri": {"1": {"ok": ["remote"], "ajutor": "comanda"}, "2": {"ok": ["-u", "--set-upstream"], "ajutor": "steagul"}, "3": {"ok": ["main"], "ajutor": "ramura"}}, "laBine": "După prima dată cu <code>-u</code>, e de ajuns <code>git push</code>.", "laRau": "Ramura e „main”.", "explicatie": "<code>-u</code> leagă ramura locală de cea de pe GitHub."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-remote", "indiciu": "Comanda care gestionează depozitele de la distanță se numește chiar „remote”. La primul push, -u ține minte legătura; ramura principală e main.", "iesire": "origin  https://github.com/echipa/proiect.git (fetch)\norigin  https://github.com/echipa/proiect.git (push)\nbranch 'main' set up to track 'origin/main'.", "fisier": "terminal.sh", "sarcina": "Varianta 1: completează comenzile.", "cod": "git branch -m master main\ngit {{1}} add origin https://github.com/echipa/proiect.git\ngit push {{2}} origin {{3}}", "goluri": {"1": {"ok": ["remote"], "ajutor": "comanda"}, "2": {"ok": ["-u", "--set-upstream"], "ajutor": "steagul"}, "3": {"ok": ["main"], "ajutor": "ramura"}}, "laBine": "După prima dată cu <code>-u</code>, e de ajuns <code>git push</code>.", "laRau": "Ramura e „main”.", "explicatie": "<code>-u</code> leagă ramura locală de cea de pe GitHub."}</script></div>
 </div>
 
 </section>
@@ -199,15 +178,8 @@ git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verifi
 <span class="tut__nr">12 · GitHub</span>
 <h2>De la dosar gol la depozit de echipă</h2><div class="ix" data-ix="ordine">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pune pașii în ordine</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-ordine-github", "sarcina": "Drumul de la un dosar cu fișiere la un depozit pe GitHub.", "linii": ["git init", "scrii .gitignore, ca secretele sa nu intre din prima", "git add .", "git commit -m \"structura proiectului si colectarea\"", "git branch -m master main", "creezi pe GitHub un depozit gol, fara README", "git remote add origin <adresa>", "git push -u origin main"], "explicatie": "<code>.gitignore</code> se scrie înainte de primul <code>git add .</code>, nu după. Iar depozitul de pe GitHub se face gol: un README creat acolo e un commit pe care laptopul tău nu-l are, și primul push e refuzat."}</script></div>
-</div><div class="verif" data-id="c3-v8" data-corect="2">
-    <p class="verif__q">Ai făcut <code>git commit</code> dar nu <code>git push</code>. Ce vede colegul tău?</p>
-    <button>Tot, GitHub se sincronizează singur</button>
-    <button>Doar fișierele, nu și mesajul</button>
-    <button>Nimic nou: commit-ul e doar la tine, pe laptop</button>
-    <button>Vede o cerere de aprobare</button>
-    <p class="verif__ex">Nimic. <code>commit</code> scrie în istoricul tău local. Până la <code>push</code>, munca ta există într-un singur loc, iar asta e exact situația de la începutul orei.</p>
-  </div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-ordine-github", "poarta": false, "sarcina": "Drumul de la un dosar cu fișiere la un depozit pe GitHub.", "linii": ["git init", "scrii .gitignore, ca secretele sa nu intre din prima", "git add .", "git commit -m \"structura proiectului si colectarea\"", "git branch -m master main", "creezi pe GitHub un depozit gol, fara README", "git remote add origin <adresa>", "git push -u origin main"], "explicatie": "<code>.gitignore</code> se scrie înainte de primul <code>git add .</code>, nu după. Iar depozitul de pe GitHub se face gol: un README creat acolo e un commit pe care laptopul tău nu-l are, și primul push e refuzat."}</script></div>
+</div>
 
 </section>
 
@@ -234,14 +206,7 @@ git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verifi
 <h2>Conflictele</h2><p>Un conflict apare la <code>git pull</code> (sau la <code>git merge</code>) când tu și un coleg ați schimbat aceleași rânduri. După rezolvare: <code>git add .</code>, <code>git commit -m "rezolvat conflict"</code>, <code>git push</code>.</p><div class="nota"><div class="nota__et">Pull request</div><p>Pe GitHub, aducerea lui dev în main se poate face și printr-un pull request: ceri îmbinarea, iar un coleg se uită întâi peste ea. Pentru proiectul nostru ajunge <code>git merge dev</code> din terminal; pull request-ul e un pas în plus, util când echipa vrea să citească înainte.</p></div><h3>Conflictele nu sunt o avarie</h3><p>Sunt felul în care Git spune că nu poate decide în locul tău. Sus e ce ai tu, jos e ce vine.</p><div class="ix" data-ix="conflict">
   <div class="ix__cap"><span class="ix__fel">Rezolvă tu</span><span class="ix__t">Rezolvă-l</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c3-conflict", "fisier": "analiza.py", "ramura": "curatare", "sarcina": "Colega ta a redenumit fișierul de date, tu ai rămas cu numele vechi. Alege ce rămâne în fișier.", "alMeu": "d = pd.read_csv(\"date/brute/pop.csv\")", "alLor": "d = pd.read_csv(\"date/brute/populatie_ro.csv\")", "bun": "lor", "deCe": "Fișierul cu numele vechi nu mai există.", "explicatie": "Git nu verifică dacă ai ales bine: asta e treaba ta."}</script></div>
-</div><div class="verif" data-id="c3-v9" data-corect="1">
-    <p class="verif__q">Care obicei previne cele mai multe conflicte?</p>
-    <button>Să faci commit-uri cât mai rare</button>
-    <button>Să dai <code>git pull</code> înainte să începi lucrul, în fiecare zi</button>
-    <button>Să lucrați toți pe aceeași ramură</button>
-    <button>Să nu atingeți niciodată aceleași fișiere</button>
-    <p class="verif__ex"><code>git pull</code> la început de zi.</p>
-  </div>
+</div>
 
 </section>
 
@@ -253,27 +218,13 @@ git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verifi
 
 <section class="tut__s" id="s17">
 <span class="tut__nr">17 · Cadrul teoretic</span>
-<h2>Încadrarea teoretică</h2><p class="cheie">Datele nu produc întrebări. Teoria produce întrebări, iar datele răspund la ele sau refuză.</p><p>Fără un cadru, un proiect de analiză devine o colecție de grafice despre care nimeni nu poate spune dacă sunt importante.</p><div class="verif" data-id="c3-v10" data-corect="1">
-    <p class="verif__q">De unde vine o întrebare de cercetare?</p>
-    <button>Din ce se poate calcula cu datele pe care le ai</button>
-    <button>Din literatura pe tema aceea, pusă față în față cu datele</button>
-    <button>Din ce iese mai frumos la grafice</button>
-    <button>Din ce n-a mai făcut nimeni</button>
-    <p class="verif__ex">Din literatură. Datele spun la ce întrebări poți răspunde; literatura spune care întrebări merită puse. Un proiect care pornește de la „ce pot calcula” ajunge la rezultate corecte și fără sens.</p>
-  </div>
+<h2>Încadrarea teoretică</h2><p class="cheie">Datele nu produc întrebări. Teoria produce întrebări, iar datele răspund la ele sau refuză.</p><p>Fără un cadru, un proiect de analiză devine o colecție de grafice despre care nimeni nu poate spune dacă sunt importante.</p>
 
 </section>
 
 <section class="tut__s" id="s18">
 <span class="tut__nr">18 · Cadrul teoretic</span>
-<h2>Un exemplu lucrat: tranzițiile energetice</h2><p>Exemplul e dintr-o cercetare adevărată, și merită urmărit pas cu pas pentru că arată forma pe care trebuie s-o aibă și proiectul vostru.</p><p>Punctul de plecare e literatura: mai mulți autori, care studiază tranzițiile energetice și economia energiei, ajung la aceeași structură în trei dimensiuni. Nu e o alegere a cercetătorului, e ce spune domeniul.</p><div class="pil" style="--n:3"><div class="pil__acoperis"><span>Întrebarea</span><b>Cum diferă traiectoriile energetice ale țărilor, și de ce?</b></div><div class="pil__stalpi"><div class="pil__s"><div class="pil__n">Economie</div><div class="pil__d">WDI: PIB/locuitor, populație, urbanizare</div><div class="pil__r">Peisajul: capacitatea de a investi și cererea de energie.</div></div><div class="pil__s"><div class="pil__n">Instituții</div><div class="pil__d">WGI: Government Effectiveness</div><div class="pil__r">Modelul de guvernanță: capacitatea de a pune în practică.</div></div><div class="pil__s"><div class="pil__n">Sistem energetic</div><div class="pil__d">EIA: cărbune, eolian, solar, hidro, nuclear, CO₂</div><div class="pil__r">Regimul și nișele: structura energetică, blocajele moștenite, creșterea regenerabilelor.</div></div></div><div class="pil__baza"><span>temelia</span>literatura despre tranziții energetice și economia energiei</div></div><table class="tabel"><thead><tr><th>Pilon</th><th>Date și sursă</th><th>Rol teoretic</th></tr></thead><tbody><tr><td>Economie</td><td>WDI: PIB/locuitor, populație, urbanizare</td><td>Peisajul: capacitatea de a investi și cererea de energie. Explică diferențele dintre țări și intră în regresii.</td></tr><tr><td>Instituții</td><td>WGI: Government Effectiveness</td><td>Modelul de guvernanță: capacitatea de a pune în practică. Explică variația dintre țări aflate la același nivel economic.</td></tr><tr><td>Sistem energetic</td><td>EIA: cărbune, eolian, solar, hidro, nuclear, CO₂</td><td>Regimul și nișele: structura energetică, blocajele moștenite, creșterea regenerabilelor. Baza clusterizării.</td></tr></tbody></table><p>Abia după ce există tabelul ăsta se pot scrie întrebările, și fiecare întrebare atinge cel puțin doi piloni:</p><ol><li><em>Economia și tranziția:</em> țările cu PIB pe locuitor mai mare reduc mai repede ponderea cărbunelui și cresc ponderea regenerabilelor?</li><li><em>Instituțiile:</em> țările cu un nivel mai ridicat al eficienței guvernamentale au o creștere mai rapidă a energiei eoliene și solare?</li><li><em>Regimurile energetice:</em> ce tipuri de sisteme energetice se disting între țări, pe baza mixului de electricitate și a emisiilor?</li></ol><div class="nota"><div class="nota__et">Ce se vede în tabelul ăla</div><p>Fiecare rând leagă trei lucruri: un concept, o sursă de date concretă, și rolul pe care îl joacă în argument. Dacă unul dintre cele trei lipsește, pilonul nu ține: un concept fără date nu se poate testa, iar date fără rol teoretic sunt doar coloane.</p></div><div class="verif" data-id="c3-v11" data-corect="2">
-    <p class="verif__q">Ce face ca cele trei întrebări să fie întrebări de cercetare?</p>
-    <button>Sunt despre un subiect important</button>
-    <button>Folosesc date din mai multe surse</button>
-    <button>Ies dintr-un cadru teoretic și se pot infirma cu datele</button>
-    <button>Au fost puse și de alții înainte</button>
-    <p class="verif__ex">Ies dintr-un cadru și se pot infirma.</p>
-  </div>
+<h2>Un exemplu lucrat: tranzițiile energetice</h2><p>Exemplul e dintr-o cercetare adevărată, și merită urmărit pas cu pas pentru că arată forma pe care trebuie s-o aibă și proiectul vostru.</p><p>Punctul de plecare e literatura: mai mulți autori, care studiază tranzițiile energetice și economia energiei, ajung la aceeași structură în trei dimensiuni. Nu e o alegere a cercetătorului, e ce spune domeniul.</p><div class="pil" style="--n:3"><div class="pil__acoperis"><span>Întrebarea</span><b>Cum diferă traiectoriile energetice ale țărilor, și de ce?</b></div><div class="pil__stalpi"><div class="pil__s"><div class="pil__n">Economie</div><div class="pil__d">WDI: PIB/locuitor, populație, urbanizare</div><div class="pil__r">Peisajul: capacitatea de a investi și cererea de energie.</div></div><div class="pil__s"><div class="pil__n">Instituții</div><div class="pil__d">WGI: Government Effectiveness</div><div class="pil__r">Modelul de guvernanță: capacitatea de a pune în practică.</div></div><div class="pil__s"><div class="pil__n">Sistem energetic</div><div class="pil__d">EIA: cărbune, eolian, solar, hidro, nuclear, CO₂</div><div class="pil__r">Regimul și nișele: structura energetică, blocajele moștenite, creșterea regenerabilelor.</div></div></div><div class="pil__baza"><span>temelia</span>literatura despre tranziții energetice și economia energiei</div></div><table class="tabel"><thead><tr><th>Pilon</th><th>Date și sursă</th><th>Rol teoretic</th></tr></thead><tbody><tr><td>Economie</td><td>WDI: PIB/locuitor, populație, urbanizare</td><td>Peisajul: capacitatea de a investi și cererea de energie. Explică diferențele dintre țări și intră în regresii.</td></tr><tr><td>Instituții</td><td>WGI: Government Effectiveness</td><td>Modelul de guvernanță: capacitatea de a pune în practică. Explică variația dintre țări aflate la același nivel economic.</td></tr><tr><td>Sistem energetic</td><td>EIA: cărbune, eolian, solar, hidro, nuclear, CO₂</td><td>Regimul și nișele: structura energetică, blocajele moștenite, creșterea regenerabilelor. Baza clusterizării.</td></tr></tbody></table><p>Abia după ce există tabelul ăsta se pot scrie întrebările, și fiecare întrebare atinge cel puțin doi piloni:</p><ol><li><em>Economia și tranziția:</em> țările cu PIB pe locuitor mai mare reduc mai repede ponderea cărbunelui și cresc ponderea regenerabilelor?</li><li><em>Instituțiile:</em> țările cu un nivel mai ridicat al eficienței guvernamentale au o creștere mai rapidă a energiei eoliene și solare?</li><li><em>Regimurile energetice:</em> ce tipuri de sisteme energetice se disting între țări, pe baza mixului de electricitate și a emisiilor?</li></ol><div class="nota"><div class="nota__et">Ce se vede în tabelul ăla</div><p>Fiecare rând leagă trei lucruri: un concept, o sursă de date concretă, și rolul pe care îl joacă în argument. Dacă unul dintre cele trei lipsește, pilonul nu ține: un concept fără date nu se poate testa, iar date fără rol teoretic sunt doar coloane.</p></div>
 
 </section>
 
@@ -296,7 +247,7 @@ git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verifi
 <span class="tut__nr">21 · Datele</span>
 <h2>Prima privire peste ce ai colectat</h2><p>Înainte de orice analiză, patru comenzi. Întotdeauna aceleași.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Prima privire</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-explorare", "fisier": "explorare.py", "sarcina": "Completează primele patru lucruri pe care le ceri de la un tabel nou.", "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/migratie.csv\")\n\n# cate randuri si cate coloane\nprint(d.{{1}})\n\n# ce coloane, ce tipuri, cate valori lipsesc\nd.{{2}}()\n\n# cum arata primele randuri\nprint(d.head())\n\n# cate valori lipsesc, pe coloana\nprint(d.isna().{{3}}())", "goluri": {"1": {"ok": ["shape"], "ajutor": "atributul"}, "2": {"ok": ["info"], "ajutor": "metoda"}, "3": {"ok": ["sum"], "ajutor": "metoda"}}, "laBine": "Cele patru se dau în ordinea asta, de fiecare dată, pe orice tabel nou. La migrație vei vedea multe valori lipsă: țările care nu raportează. Le tratăm la cursul 4.", "laRau": "Prima e un atribut, deci fără paranteze. Celelalte sunt metode.", "explicatie": "<code>info()</code> e cea mai densă: îți dă dintr-o dată numărul de rânduri, tipurile coloanelor și câte valori non-nule are fiecare. Dacă o coloană care ar trebui să fie numerică apare ca <code>object</code>, ai găsit o problemă înainte s-o cauți."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c3-cod-explorare", "indiciu": "Dimensiunea tabelului e un atribut (fără paranteze), cu „formă” în engleză. Rezumatul pe coloane e metoda „informații”. Lipsurile se adună cu metoda „sumă”.", "iesire": "(5104, 3)\n<class 'pandas.core.frame.DataFrame'>\nRangeIndex: 5104 entries ...\ngeo           0\ncitizen       0\nvaloare     812", "fisier": "explorare.py", "sarcina": "Completează primele patru lucruri pe care le ceri de la un tabel nou.", "cod": "import pandas as pd\n\nd = pd.read_csv(\"date/brute/migratie.csv\")\n\n# cate randuri si cate coloane\nprint(d.{{1}})\n\n# ce coloane, ce tipuri, cate valori lipsesc\nd.{{2}}()\n\n# cum arata primele randuri\nprint(d.head())\n\n# cate valori lipsesc, pe coloana\nprint(d.isna().{{3}}())", "goluri": {"1": {"ok": ["shape"], "ajutor": "atributul"}, "2": {"ok": ["info"], "ajutor": "metoda"}, "3": {"ok": ["sum"], "ajutor": "metoda"}}, "laBine": "Cele patru se dau în ordinea asta, de fiecare dată, pe orice tabel nou. La migrație vei vedea multe valori lipsă: țările care nu raportează. Le tratăm la cursul 4.", "laRau": "Prima e un atribut, deci fără paranteze. Celelalte sunt metode.", "explicatie": "<code>info()</code> e cea mai densă: îți dă dintr-o dată numărul de rânduri, tipurile coloanelor și câte valori non-nule are fiecare. Dacă o coloană care ar trebui să fie numerică apare ca <code>object</code>, ai găsit o problemă înainte s-o cauți."}</script></div>
 </div><div class="nota"><div class="nota__et">Ce cauți la prima privire</div><p>Nu rezultate. Cauți semne că datele nu sunt ce crezi: un număr de rânduri diferit de ce așteptai, o coloană text care ar trebui să fie numerică, valori lipsă unde n-ar trebui. Analiza începe la cursul 6; acum doar verifici că ai ce analiza.</p></div>
 
 </section>
@@ -319,11 +270,11 @@ git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verifi
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=48"></script>
+<script type="module" src="../../js/antet.js?v=51"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=48";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=48";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=48";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=51";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=51";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=51";
 pornesteIx();
 pornesteVerif("c3");
 pornesteTut("c3");

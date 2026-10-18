@@ -40,7 +40,7 @@ export function sedintaAcum(){ return sedinta; }
 
 async function autentificare(){
   if (modul !== null) return modul;
-  try { modul = await import("./auth.js?v=48"); }
+  try { modul = await import("./auth.js?v=51"); }
   catch { modul = false; }
   return modul;
 }
@@ -85,6 +85,7 @@ export async function salveazaRaspuns({ intrebareId, capitol, raspuns, corect })
 }
 
 export async function salveazaCod({ exercitiuId, cod, trecut }){
+  if (globalThis.dswFaraPoarta?.has(exercitiuId)) return false;   /* de încercat, nu sarcină */
   const c = await cine();
   if (!c) return false;
   const { error } = await c.sb.from("rulari_cod").insert({

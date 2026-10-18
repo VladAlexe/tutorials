@@ -21,7 +21,7 @@
    Nu are niciun buton care schimbă ora. Panoul doar se uită.
    =========================================================================== */
 
-import { STARI, ORDINEA } from "./ora.js?v=48";
+import { STARI, ORDINEA } from "./ora.js?v=51";
 
 /* --- stilul --------------------------------------------------------------- */
 
@@ -90,6 +90,13 @@ const CSS = `
 .pv-dist__r:nth-child(3) .pv-dist__b i{background:var(--roza)}
 .pv-dist__r:nth-child(4) .pv-dist__b i{background:var(--salvie)}
 .pv-dist__r b{font-family:var(--mono);font-size:16px;font-weight:500;text-align:right}
+.tabla{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;max-height:46vh;overflow:auto;padding:2px}
+.tabla__b{font-family:var(--sans);font-size:16px;line-height:1.45;color:var(--text);padding:14px 16px;border-radius:10px;
+  border:1px solid var(--linie);background:var(--panza);box-shadow:var(--umbra)}
+.tabla__b--0{border-top:4px solid var(--accent)}
+.tabla__b--1{border-top:4px solid var(--ambra)}
+.tabla__b--2{border-top:4px solid var(--roza)}
+.tabla__b--3{border-top:4px solid var(--salvie)}
 .pv-mare{font-family:var(--sans);font-size:22px;color:var(--text-2);margin:6px 0 0}
 .pv-mare b{font-size:40px;color:var(--text);font-weight:600}
 .pv--anonim .pv-inel{margin-left:0}
@@ -262,7 +269,7 @@ function tabel(randuri, intrebari, sortare, totalSarcini){
  *              sertar, care se deschide peste proiector și n-are voie cu nume.
  */
 export function randeaza({ slide, sarcini = [], randuri = [], sortare = "slide",
-                           secunde = null, totalSarcini = null, nume = true }){
+                           secunde = null, totalSarcini = null, nume = true, texte = null }){
   const intrebari = sarcini.filter(x => x.fel === "verificare" && x.q);
   const cate = numara(randuri);
   const total = randuri.length;
@@ -271,6 +278,19 @@ export function randeaza({ slide, sarcini = [], randuri = [], sortare = "slide",
   /* Fără nume: ce vede clasa pe proiector. Doar cifre agregate: câți au
      trimis și, la fiecare întrebare, câți au ales fiecare variantă. Niciun
      text pentru profesor, nimic despre cine. */
+  /* Tabla: la slide-urile unde scriu text, proiectezi ce au scris, fără
+     nume, ca bilețele. Se umple pe măsură ce trimit. */
+  if (!nume && texte){
+    return `<div class="pv pv--tabla">
+      <div class="pv__st">${inel(cate, trimis, total)}</div>
+      <div class="pv__dr">
+        <p class="pv__q">${slide?.titlu || ""}</p>
+        ${texte.length ? `<div class="tabla">${texte.map((t, i) =>
+          `<div class="tabla__b tabla__b--${i % 4}">${t}</div>`).join("")}</div>`
+          : `<p class="pv-mare">Încă n-a scris nimeni. Bilețelele apar aici pe măsură ce trimit.</p>`}
+      </div></div>`;
+  }
+
   if (!nume){
     const dist = intrebari.filter(q => Array.isArray(q.optiuni)).map(q => {
       const n = q.optiuni.map(() => 0);

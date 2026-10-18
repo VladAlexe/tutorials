@@ -21,11 +21,11 @@
 
    Pornire, din pagina lecției:
 
-     import { porneste } from "../js/slide.js?v=48";
+     import { porneste } from "../js/slide.js?v=51";
      porneste({ capitol:"c1", lectie:"c1-introducere-si-mediu" });
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=48";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=51";
 
 const SVG = {
   gata:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
@@ -78,8 +78,8 @@ export async function porneste({ capitol, lectie }){
   let ritm = null;                         /* ora condusă; se umple mai jos */
 
   /* O poartă e fie o verificare cu variante, fie un exercițiu cu cod. */
-  const SEL_TOATE = ".verif, .ix.exc";
-  const SEL_GATA  = ".verif.raspuns, .ix.exc.gata";
+  const SEL_TOATE = ".verif, .ix.exc:not(.liber)";
+  const SEL_GATA  = ".verif.raspuns, .ix.exc.gata:not(.liber)";
   citesteLocal();
 
   construiesteSchelet();
@@ -111,23 +111,23 @@ export async function porneste({ capitol, lectie }){
   ["verif:raspuns", "poarta:gata"].forEach(nume =>
     document.addEventListener(nume, ev => {
       reinnoieste(); salveaza();
-      import(`${RADACINA}/js/sesiune.js?v=48`)
+      import(`${RADACINA}/js/sesiune.js?v=51`)
         .then(s => s.jurnal(nume === "poarta:gata" ? "cod" : "raspuns", ev.detail))
         .catch(() => {});
     }));
 
   /* până aflăm dacă ora e pornită, ce se salvează e lucru de unul singur */
-  import(`${RADACINA}/js/colectare.js?v=48`)
+  import(`${RADACINA}/js/colectare.js?v=51`)
     .then(m => m.setContext("lectie")).catch(() => {});
 
   /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
-  import(`${RADACINA}/js/sesiune.js?v=48`)
+  import(`${RADACINA}/js/sesiune.js?v=51`)
     .then(s => s.porneste({ capitol, total:N }))
     .catch(() => { /* fără cont, nu se urmărește nimic */ });
 
   /* profesorul navighează liber, ca să poată arăta orice slide la clasă */
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=48`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=51`);
     const p = await profil();
     stare.profesor = !!p.profesor;
     if (stare.profesor){
@@ -141,7 +141,7 @@ export async function porneste({ capitol, lectie }){
   /* ora condusă: profesorul publică slide-ul lui, studenții sar după el.
      Dacă modulul nu pornește (fără cont, fără rețea), lecția merge la fel. */
   try {
-    const R = await import(`${RADACINA}/js/ritm.js?v=48`);
+    const R = await import(`${RADACINA}/js/ritm.js?v=51`);
     ritm = await R.porneste({
       capitol, total:N,
       esteProfesor: stare.profesor,
@@ -159,7 +159,7 @@ export async function porneste({ capitol, lectie }){
            mod: cât ora e deschisă, ei sunt pe slide-ul lui. */
         stare.tinut = !!viu && !stare.profesor;
         if (viu && !stare.profesor) stare.liber = true;  /* porțile nu mai au rost: el conduce */
-        import(`${RADACINA}/js/colectare.js?v=48`)
+        import(`${RADACINA}/js/colectare.js?v=51`)
           .then(m => m.setContext(viu ? "live" : "lectie"))
           .catch(() => {});
         reinnoieste();
@@ -208,13 +208,13 @@ export async function porneste({ capitol, lectie }){
   async function trimiteCeEInLucru(i){
     if (!stare.live || i == null || !slides[i]) return;
     let C;
-    try { C = await import(`${RADACINA}/js/colectare.js?v=48`); } catch { return; }
+    try { C = await import(`${RADACINA}/js/colectare.js?v=51`); } catch { return; }
 
     for (const v of slides[i].querySelectorAll(".verif:not(.raspuns)")){
       const id = v.dataset.id;
       if (id) C.salveazaRaspuns({ intrebareId:id, capitol, raspuns:null, corect:false });
     }
-    for (const x of slides[i].querySelectorAll(".ix.exc:not(.gata)")){
+    for (const x of slides[i].querySelectorAll(".ix.exc:not(.gata):not(.liber)")){
       const j = x.querySelector('script[type="application/json"]');
       if (!j) continue;
       try {
@@ -449,7 +449,7 @@ export async function porneste({ capitol, lectie }){
         p.querySelector(".poarta__ic").innerHTML = ok ? SVG.gata : SVG.lacat;
         /* numim lucrul după ce e: verificare, exercițiu, sau amândouă */
         const nQ = s.querySelectorAll(".verif").length;
-        const nC = s.querySelectorAll(".ix.exc").length;
+        const nC = s.querySelectorAll(".ix.exc:not(.liber)").length;
         const cuv = nQ && nC ? ["sarcinile de mai sus", "Sarcinile de mai sus sunt făcute."]
                   : nC       ? (nC > 1 ? ["exercițiile de mai sus", "Exercițiile sunt făcute."]
                                        : ["exercițiul de mai sus", "Exercițiul e făcut."])
@@ -459,7 +459,7 @@ export async function porneste({ capitol, lectie }){
         p.querySelector(".poarta__d").textContent = ok
           ? "Poți merge mai departe. Ce ai făcut rămâne înregistrat."
           : nC && !nQ
-            ? "Scrie ce crezi și apasă Verifică. Poți încerca de câte ori vrei, nu se scade nimic."
+            ? "Rezolvă-l și apasă Rulează. Dacă te blochezi, ai butonul Indiciu."
             : "Nu contează dacă nimerești varianta corectă din prima; contează să te oprești aici. Explicația apare după ce alegi.";
       }
       const inainte = s.querySelector(".pas--inainte");
@@ -633,11 +633,11 @@ export async function porneste({ capitol, lectie }){
     ceasSalv = setTimeout(async () => {
       const id = slides[stare.i].id;
       try {
-        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=48`);
+        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=51`);
         await marcheazaSectiune(`${capitol}/${id}`);
       } catch {}
       try {
-        const s = await import(`${RADACINA}/js/sesiune.js?v=48`);
+        const s = await import(`${RADACINA}/js/sesiune.js?v=51`);
         s.laSlide({ slide:id, nr:stare.i + 1, total:N });
       } catch {}
     }, 900);
@@ -653,7 +653,7 @@ export async function porneste({ capitol, lectie }){
         titluri:slides.map(s => s.dataset.t),
         verif:slides.map(s => [
           ...[...s.querySelectorAll(".verif")].map(v => v.dataset.id),
-          ...[...s.querySelectorAll(".ix.exc")].map((_, k) => `${s.id}-cod${k + 1}`)
+          ...[...s.querySelectorAll(".ix.exc:not(.liber)")].map((_, k) => `${s.id}-cod${k + 1}`)
         ])
       }));
     } catch {}

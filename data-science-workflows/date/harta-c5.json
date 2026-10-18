@@ -1,7 +1,7 @@
 {
  "capitol": "c5",
  "total": 20,
- "sarcini": 22,
+ "sarcini": 12,
  "slide": [
   {
    "nr": 1,
@@ -35,20 +35,7 @@
    "id": "s3",
    "grup": "Unirea tabelelor",
    "titlu": "Două operații, nu una",
-   "sarcini": [
-    {
-     "id": "c5-v2",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "Ai câte un fișier pentru fiecare an, toate cu aceleași coloane. Ce folosești?",
-     "optiuni": [
-      "pd.merge, pentru că sunt fișiere diferite",
-      "df.join, pentru că anul e indexul",
-      "pd.concat, pentru că vrei mai multe rânduri",
-      "Depinde de mărimea fișierelor"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 4,
@@ -71,18 +58,6 @@
     {
      "id": "c5-cod-merge",
      "fel": "cod"
-    },
-    {
-     "id": "c5-v3",
-     "fel": "verificare",
-     "corect": 0,
-     "q": "După un merge cu how=\"left\", tabelul are mai multe rânduri decât cel din stânga. Ce s-a întâmplat?",
-     "optiuni": [
-      "Tabelul din dreapta are cheia repetată pe mai multe rânduri",
-      "Merge-ul a eșuat",
-      "Trebuia folosit inner",
-      "Au apărut rânduri goale"
-     ]
     }
    ]
   },
@@ -92,10 +67,6 @@
    "grup": "Unirea tabelelor",
    "titlu": "Când rândurile se înmulțesc",
    "sarcini": [
-    {
-     "id": "c5-imbinare-explozie",
-     "fel": "cod"
-    },
     {
      "id": "c5-v4",
      "fel": "verificare",
@@ -119,18 +90,6 @@
     {
      "id": "c5-cod-chei",
      "fel": "cod"
-    },
-    {
-     "id": "c5-v5",
-     "fel": "verificare",
-     "corect": 3,
-     "q": "Un merge cu how=\"inner\" întoarce zero rânduri. Care e prima verificare?",
-     "optiuni": [
-      "Dacă fișierele s-au citit corect",
-      "Dacă pandas e actualizat",
-      "Dacă tabelele au aceeași mărime",
-      "Dacă valorile cheii arată la fel în amândouă"
-     ]
     }
    ]
   },
@@ -139,12 +98,7 @@
    "id": "s8",
    "grup": "Unirea tabelelor",
    "titlu": "Unitatea de analiză",
-   "sarcini": [
-    {
-     "id": "c5-sort-unitate",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 9,
@@ -153,20 +107,12 @@
    "titlu": "Agregarea",
    "sarcini": [
     {
-     "id": "c5-cod-agregare",
+     "id": "c5-prezice-grup",
      "fel": "cod"
     },
     {
-     "id": "c5-v6",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "După groupby uiți reset_index(). Ce se întâmplă la merge-ul de după?",
-     "optiuni": [
-      "Merge-ul funcționează la fel",
-      "Coloana-cheie nu mai există ca și coloană, e index",
-      "Datele se pierd",
-      "Pandas dă eroare de memorie"
-     ]
+     "id": "c5-cod-agregare",
+     "fel": "cod"
     }
    ]
   },
@@ -175,20 +121,7 @@
    "id": "s10",
    "grup": "Unirea tabelelor",
    "titlu": "Join pe index",
-   "sarcini": [
-    {
-     "id": "c5-v7",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "pd.merge(a, b, on=\"cod\"), fără how. Ce fel de îmbinare s-a făcut?",
-     "optiuni": [
-      "left, pentru că a e primul",
-      "outer, ca să nu se piardă nimic",
-      "inner, adică doar cheile comune",
-      "Depinde de date"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 11,
@@ -202,12 +135,7 @@
    "id": "s12",
    "grup": "Baze de date",
    "titlu": "Postgres sau MySQL",
-   "sarcini": [
-    {
-     "id": "c5-sort-baze",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 13,
@@ -230,18 +158,6 @@
     {
      "id": "c5-cod-tosql",
      "fel": "cod"
-    },
-    {
-     "id": "c5-v8",
-     "fel": "verificare",
-     "corect": 0,
-     "q": "Rulezi scriptul de încărcare de două ori, cu if_exists=\"append\" și fără cheie primară. Ce ai în bază?",
-     "optiuni": [
-      "Fiecare rând de două ori",
-      "Același lucru ca la prima rulare",
-      "O eroare",
-      "Doar rândurile noi"
-     ]
     }
    ]
   },
@@ -262,32 +178,14 @@
    "id": "s16",
    "grup": "Baze de date",
    "titlu": "Ramurile bazei",
-   "sarcini": [
-    {
-     "id": "c5-v9",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "De ce poate Neon să facă ramuri atât de repede?",
-     "optiuni": [
-      "Pentru că bazele sunt mici",
-      "Pentru că datele stau separat de partea care calculează",
-      "Pentru că folosește Git intern",
-      "Pentru că face copii noaptea"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 17,
    "id": "s17",
    "grup": "Baze de date",
    "titlu": "Unde faci ce",
-   "sarcini": [
-    {
-     "id": "c5-sort-unde",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 18,
@@ -309,7 +207,7 @@
    "sarcini": [
     {
      "id": "c5-unitate",
-     "fel": "cod"
+     "fel": "text"
     }
    ]
   },

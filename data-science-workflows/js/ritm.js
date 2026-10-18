@@ -34,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=48";
+import { RADACINA } from "./curs.js?v=51";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -44,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=48`);
-    O = await import(`${RADACINA}/js/ora.js?v=48`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=48`);
+    A = await import(`${RADACINA}/js/auth.js?v=51`);
+    O = await import(`${RADACINA}/js/ora.js?v=51`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=51`);
   } catch { return null; }
 
   let p = null;
@@ -270,6 +270,19 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         document.body.classList.add("are-sertar");
       }
       const nr = slideAcum();
+      /* la slide-urile cu text: tabla, cu ce au scris în ora asta, fără nume */
+      const deText = sarciniDe(nr).filter(x => x.fel === "text");
+      if (deText.length){
+        A.sb.rpc("trimise_in_sedinta", { p_sedinta: S.id, p_sarcini: deText.map(x => x.id) })
+          .then(r => {
+            if (!gazdaSertar) return;
+            const esc = x => String(x ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+            gazdaSertar.innerHTML = P.randeaza({ slide: slideDe(nr), sarcini: sarciniDe(nr),
+              randuri: randuri.filter(x => x.stare !== "nefacut" || (x.vazut_la && Date.now() - new Date(x.vazut_la) < 90000)),
+              secunde: secunde(), nume: false, texte: (r.data || []).map(t => esc(t.cod)) });
+          }).catch(() => {});
+        return;
+      }
       gazdaSertar.innerHTML = P.randeaza({
         /* proiectat: doar cine e acum în clasă, ca „din câți” să fie sala */
         slide: slideDe(nr), sarcini: sarciniDe(nr),
@@ -355,7 +368,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         const rand = await O.panou(S.id, sarcini.map(x => x.id)) || [];
         /* ce au trimis la exercițiile cu cod sau text de pe slide */
         /* doar din ora asta, ultimul răspuns ne-gol al fiecăruia (db/20) */
-        const coduri = sarcini.filter(x => x.fel === "cod");
+        const coduri = sarcini.filter(x => x.fel === "cod" || x.fel === "text");
         const trimise = coduri.length
           ? await sb.rpc("trimise_in_sedinta", { p_sedinta: S.id, p_sarcini: coduri.map(x => x.id) })
               .then(r => r.data || []).catch(() => [])
@@ -365,7 +378,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         if (!document.querySelector(".rz")) return;
         corp.innerHTML = P.randeaza({ slide: slideDe(nr), sarcini, randuri: rand, sortare: rzSort,
                                       secunde: secunde(), totalSarcini: harta?.sarcini || null, nume: true })
-          + (trimise.length ? `<h3 class="rz__h">Ce au trimis pe slide-ul ăsta</h3>
+          + (trimise.length ? `<h3 class="rz__h">${coduri.some(x => x.fel === "text") ? "Ce au scris" : "Ce au trimis"} pe slide-ul ăsta, în ora asta</h3>
             <div class="rz__txt">${trimise.map(t => `<div class="rz__t ${t.trecut ? "bun" : ""}">
               <b>${escR(t.nume)} ${eticheta(t.sarcina)}</b><pre>${escR(t.cod || "")}</pre></div>`).join("")}</div>` : "");
         P.legaSortarea(corp, s => { rzSort = s; umpleRezultate(); });
@@ -475,7 +488,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=48`)
+    import(`${RADACINA}/js/colectare.js?v=51`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     const tocmaiS_aIncheiat = eraViu && !viu;

@@ -71,31 +71,14 @@ sl("s2", "Cursul", "Unde ai rămas",
    "<li>depozitul echipei pe GitHub</li>"
    "<li>primul caiet, cu fișierul SCI deschis</li>"
    "</ul>"
-   "<p>Dacă unul lipsește, îl faci acum: tot ce urmează se adaugă peste el.</p>"
-   + verif("c2-v1", 1,
-           "De ce lucrăm într-un mediu virtual și nu direct în Python-ul de sistem?",
-           ["Ca să meargă mai repede",
-            "Ca fiecare proiect să-și aibă pachetele lui, cu versiunile lui",
-            "Ca să ocupe mai puțin spațiu",
-            "Nu contează, e doar o convenție"],
-           "Două proiecte pot cere versiuni diferite ale aceleiași biblioteci. "
-           "Fără medii separate, al doilea îl strică pe primul, iar vina cade "
-           "pe cod, nu pe mediu."),
+   "<p>Dacă unul lipsește, îl faci acum: tot ce urmează se adaugă peste el.</p>",
    manual=
    "<h2>Înainte de a începe</h2>"
    "<p>Lecția de azi presupune trei lucruri de la cursul 1: un mediu virtual "
    "activat, depozitul echipei pe GitHub, și un caiet în care ai deschis "
    "fișierul SCI. Dacă îți lipsește vreunul, întoarce-te la "
    "<a class=\"leg\" href=\"../../c1-introducere-si-mediu/tutorial/\">manualul "
-   "cursului 1</a> și fă-l acum: tot ce urmează se adaugă peste.</p>"
-   + verif("c2-v1", 1,
-           "De ce lucrăm într-un mediu virtual și nu direct în Python-ul de sistem?",
-           ["Ca să meargă mai repede",
-            "Ca fiecare proiect să-și aibă pachetele lui, cu versiunile lui",
-            "Ca să ocupe mai puțin spațiu",
-            "Nu contează, e doar o convenție"],
-           "Două proiecte pot cere versiuni diferite ale aceleiași biblioteci. "
-           "Fără medii separate, al doilea îl strică pe primul."))
+   "cursului 1</a> și fă-l acum: tot ce urmează se adaugă peste.</p>")
 
 
 # ===========================================================================
@@ -293,19 +276,7 @@ sl("s8", "Tipuri de API", "REST, SOAP, GraphQL, gRPC",
        ["cât de greu se învață", "ușor", "greu", "ușor", "mediu"],
        ["comunitate", "mare", "mică", "mare", "în creștere"],
        ["unde apare", "între servicii interne", "bănci, administrație", "API-uri publice", "aplicații mobile"],
-   ])
-   + verif("c2-v5", 2,
-           "Pentru un API public, simplu, pe care îl folosesc mulți necunoscuți, "
-           "ce stil alegi?",
-           ["SOAP, pentru că e standardizat",
-            "gRPC, pentru că e rapid",
-            "REST, pentru că e ușor de învățat și merge din browser",
-            "GraphQL, pentru că e cel mai nou"],
-           "REST. Un API public trăiește din cât de repede îl poate încerca un "
-           "străin. O adresă pe care o deschizi în browser și vezi JSON e cea "
-           "mai scurtă cale. gRPC e mai rapid, dar nu se încearcă din bara de "
-           "adrese; SOAP e standardizat, dar costă o zi doar ca să faci prima "
-           "cerere."))
+   ]))
 
 
 # ===========================================================================
@@ -368,7 +339,7 @@ sl("s10", "Cum arată o cerere", "Metodele HTTP",
    "<p>Metoda spune ce vrei să se întâmple cu resursa. Noi vom folosi aproape "
    "numai una.</p>"
    + ix("sortare", "Metodă și operație",
-        {"id": "c2-sort-metode",
+        {"id": "c2-sort-metode", "poarta": False,
          "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.",
          "elemente": [{"t": "GET", "cos": 0}, {"t": "POST", "cos": 1},
                       {"t": "PUT", "cos": 2}, {"t": "PATCH", "cos": 2},
@@ -387,7 +358,7 @@ sl("s10", "Cum arată o cerere", "Metodele HTTP",
    "numesc, pe scurt, CRUD: create, read, update, delete. HTTP le dă câte o "
    "metodă.</p>"
    + ix("sortare", "Metodă și operație",
-        {"id": "c2-sort-metode",
+        {"id": "c2-sort-metode", "poarta": False,
          "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.",
          "elemente": [{"t": "GET", "cos": 0}, {"t": "POST", "cos": 1},
                       {"t": "PUT", "cos": 2}, {"t": "PATCH", "cos": 2},
@@ -409,15 +380,7 @@ sl("s11", "Cum arată o cerere", "Endpoint-ul",
    "<p class=\"cheie\">Adresa la care ceri un anumit lucru. Fiecare endpoint "
    "dă altceva.</p>"
    "<pre><code>https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL</code></pre>"
-   "<p>Un API nu are o singură adresă, are zeci. Documentația e lista lor.</p>"
-   + verif("c2-v6", 1,
-           "Două endpoint-uri diferite ale aceluiași API…",
-           ["întorc aceleași date, în formate diferite",
-            "întorc lucruri diferite: fiecare e o altă resursă sau funcție",
-            "sunt același lucru, scris în două feluri",
-            "se folosesc pe rând, în ordine"],
-           "Fiecare endpoint e o altă resursă. Ca în meniu: la „supe” scrie "
-           "altceva decât la „deserturi”."))
+   "<p>Un API nu are o singură adresă, are zeci. Documentația e lista lor.</p>")
 
 sl("s12", "Cum arată o cerere", "Structura unei adrese",
    "<h2>Din ce e făcută o adresă</h2>"
@@ -577,16 +540,7 @@ sl("s15", "Surse de date", "Ce folosim noi",
        ["<strong>Eurostat, migrație</strong>", "~migr_pop1ctz", "câți cetățeni ai unei țări trăiesc în alta"],
    ])
    + "<p>Întâi Banca Mondială, pentru că răspunde simplu. Apoi Eurostat, "
-     "cu indicatorii pe regiuni și cu migrația.</p>"
-   + verif("c2-v9", 1,
-           "Fișierul SCI de la cursul 1 e o sursă prin API?",
-           ["Da, orice sursă de date e un API",
-            "Nu, e un fișier descărcat; API-ul e un serviciu pe care îl întrebi",
-            "Da, pentru că l-am luat de pe internet",
-            "Depinde de format"],
-           "Un fișier descărcat e un fișier. Diferența nu e unde stă, ci dacă "
-           "îl poți întreba: un API răspunde la cereri, cu parametri, de "
-           "fiecare dată."))
+     "cu indicatorii pe regiuni și cu migrația.</p>")
 
 
 # ===========================================================================
@@ -598,7 +552,9 @@ sl("s16", "requests", "Prima cerere",
    "<p>O bibliotecă mică, cu reputația de a fi cea mai plăcut de folosit din "
    "tot Python-ul. Trei linii și ai datele.</p>"
    + ix("cod", "Scrie cererea", {
-       "id": "c2-cod-prima", "fisier": "prima_cerere.py",
+       "id": "c2-cod-prima", "indiciu": "Pentru citire, metoda HTTP e GET; în requests are același nume, cu litere mici. "
+                  "Codul de stare e un atribut al răspunsului (status_...), iar datele se scot cu metoda care poartă numele formatului.",
+       "iesire": "200\n2", "fisier": "prima_cerere.py",
        "sarcina": "Completează metoda, verificarea codului de stare și "
                   "transformarea răspunsului în date Python.",
        "cod": "import requests\n\n"
@@ -629,7 +585,9 @@ sl("s16", "requests", "Prima cerere",
    "<p>Și apoi se folosește așa. Reține ordinea: ceri, verifici codul, abia pe "
    "urmă te uiți la date.</p>"
    + ix("cod", "Scrie cererea", {
-       "id": "c2-cod-prima", "fisier": "prima_cerere.py",
+       "id": "c2-cod-prima", "indiciu": "Pentru citire, metoda HTTP e GET; în requests are același nume, cu litere mici. "
+                  "Codul de stare e un atribut al răspunsului (status_...), iar datele se scot cu metoda care poartă numele formatului.",
+       "iesire": "200\n2", "fisier": "prima_cerere.py",
        "sarcina": "Completează metoda, verificarea codului de stare și "
                   "transformarea răspunsului în date Python.",
        "cod": "import requests\n\n"
@@ -661,7 +619,8 @@ sl("s17", "requests", "Parametrii se dau separat",
    "<p>Tentația e să construiești adresa cu <code>+</code>. Nu face asta: "
    "spațiile, diacriticele și semnele speciale strică adresa fără să-ți spună.</p>"
    + ix("cod", "Pune parametrii cum trebuie", {
-       "id": "c2-cod-param", "fisier": "parametri.py",
+       "id": "c2-cod-param", "indiciu": "Anii se scriu ca text, de forma „de la:până la”. Argumentul care primește dicționarul se numește, pe englezește, chiar „parametri”.",
+       "iesire": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=2000%3A2023&per_page=100", "fisier": "parametri.py",
        "sarcina": "Mută filtrele din adresă în dicționarul de parametri.",
        "cod": "import requests\n\n"
               "baza = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n"
@@ -690,7 +649,8 @@ sl("s17", "requests", "Parametrii se dau separat",
    "adresei. Două motive: codificarea se face singură, și adresa rămâne "
    "lizibilă atunci când o citești peste o lună.</p>"
    + ix("cod", "Pune parametrii cum trebuie", {
-       "id": "c2-cod-param", "fisier": "parametri.py",
+       "id": "c2-cod-param", "indiciu": "Anii se scriu ca text, de forma „de la:până la”. Argumentul care primește dicționarul se numește, pe englezește, chiar „parametri”.",
+       "iesire": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=2000%3A2023&per_page=100", "fisier": "parametri.py",
        "sarcina": "Mută filtrele din adresă în dicționarul de parametri.",
        "cod": "import requests\n\n"
               "baza = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n"
@@ -716,8 +676,22 @@ sl("s18", "requests", "Paginarea",
    "pagină și îți spune câte mai sunt.</p>"
    "<pre><code><span class=\"c\"># primul element al raspunsului, la Banca Mondiala</span>\n"
    "{\"page\": 1, \"pages\": 2, \"per_page\": 50, \"total\": 64}</code></pre>"
+   + ix("prezice", "Câte sunt, câte ai primit", {
+       "id": "c2-prezice-pagini", "fisier": "02_colectarea.ipynb · 4. Paginarea",
+       "cod": "date = r.json()\n"
+              "meta, valori = date[0], date[1]\n\n"
+              "# meta = {\"page\": 1, \"pages\": 3, \"per_page\": 2, \"total\": 6}\n"
+              "print(meta[\"total\"], len(valori))",
+       "intrebare": "Ce afișează?",
+       "variante": ["6 6", "6 2", "2 6", "3 2"],
+       "corect": 1,
+       "indiciu": "total spune câte valori există în total; len(valori) numără câte au venit pe pagina asta.",
+       "laBine": "Ai primit 2 din 6: mai sunt două pagini de cerut.",
+       "explicatie": "Primul element e paginarea: în total sunt 6 valori, câte 2 pe pagină, pe 3 pagini. "
+                     "Pe pagina asta au venit doar 2. De aici bucla de mai jos: ceri pagină după pagină "
+                     "până când <code>page</code> ajunge la <code>pages</code>."})
    + ix("ordine", "Bucla de colectare", {
-       "id": "c2-ordine-paginare",
+       "id": "c2-ordine-paginare", "poarta": False,
        "sarcina": "Pune pașii unei colectări paginate în ordine.",
        "linii": [
            "pagina = 1; tot = []",
@@ -730,15 +704,7 @@ sl("s18", "requests", "Paginarea",
        "explicatie": "Verificarea codului vine înaintea citirii datelor, iar "
                      "pauza la final e politețea care te ține sub limita de "
                      "cereri. Fără <code>sleep</code>, o buclă de o sută de "
-                     "pagini ajunge la 429 în câteva secunde."})
-   + verif("c2-v10", 0,
-           "De ce pui o pauză între cereri, într-o buclă de colectare?",
-           ["Ca să nu depășesc limita de cereri a serverului",
-            "Ca să am timp să citesc rezultatele",
-            "Ca să consume mai puțină memorie",
-            "Nu e nevoie, serverul se descurcă"],
-           "Ca să rămâi sub limită. O pauză de jumătate de secundă nu te costă "
-           "nimic la o sută de pagini, dar te scutește de a fi blocat temporar."))
+                     "pagini ajunge la 429 în câteva secunde."}))
 
 sl("s19", "requests", "Din JSON în tabel",
    "<h2>Ultimul pas: un tabel</h2>"
@@ -748,19 +714,20 @@ sl("s19", "requests", "Din JSON în tabel",
        "id": "c2-cod-tabel", "fisier": "in_tabel.py",
        "sarcina": "Transformă lista de înregistrări într-un tabel și salvează-l.",
        "cod": "import pandas as pd\n\n"
-              "# `date` e lista de inregistrari din raspuns\n"
-              "d = pd.{{1}}(date)\n\n"
-              "# structurile incuibate devin coloane separate\n"
-              "d = pd.json_normalize(date)\n"
-              "print(d.columns.tolist())\n\n"
+              "# `valori` e lista de inregistrari din raspuns (date[1])\n"
+              "# dictionarele dinauntru devin coloane: country.value, indicator.id ...\n"
+              "d = pd.{{1}}(valori)\n"
+              "print(d[[\"country.id\", \"date\", \"value\"]])\n\n"
               "# il salvam ca sa nu mai cerem de doua ori acelasi lucru\n"
               "d.to_csv(\"date/brute/populatie_ro.csv\", index={{2}})",
        "goluri": {
-           "1": {"ok": ["DataFrame"], "ajutor": "constructorul"},
-           "2": {"ok": ["False"], "ajutor": "valoarea"}},
+           "1": {"ok": ["json_normalize"], "ajutor": "funcția din caiet"},
+           "2": {"ok": ["False"], "ajutor": "True sau False"}},
+       "indiciu": "Funcția care desface JSON-ul în tabel are în nume cuvântul „normalize”. "
+                  "Coloana de numerotare n-o vrem în fișier, deci index = valoarea logică „nu”.",
+       "iesire": "  country.id  date     value\n0         RO  2024  19064409\n1         RO  2023  19051562",
        "laBine": "De aici încolo e pandas, adică teren cunoscut de la cursul 1.",
-       "laRau": "Numele constructorului se scrie cu majuscule unde trebuie. "
-                "La index, răspunsul e una dintre cele două valori logice.",
+       "laRau": "Numele funcției se scrie exact ca în caiet. La index, răspunsul e una dintre cele două valori logice.",
        "explicatie": "<code>json_normalize</code> desface dicționarele "
                      "încuibate în coloane cu punct în nume, de tipul "
                      "<code>indicator.value</code>. <code>index=False</code> "
@@ -793,6 +760,21 @@ sl("s19e", "Eurostat", "Un cub, nu un tabel",
    "<p class=\"cheie\">Nu trimite rânduri. Trimite coduri cu poziții, și "
    "valori puse pe poziții.</p>"
    + ix("cub", "Câți cetățeni, în ce țară", CUB)
+   + ix("prezice", "Poziția din cub", {
+       "id": "c2-prezice-cub", "fisier": "02_colectarea.ipynb · 6.1. JSON-stat",
+       "cod": "citizen = [\"BG\", \"PL\", \"RO\"]\n"
+              "geo     = [\"DE\", \"ES\", \"IT\"]\n"
+              "value   = [371128, 112834, 48659, 741784, 59132, 73320, 776424, 620463, 1073196]\n\n"
+              "i = citizen.index(\"RO\") * 3 + geo.index(\"IT\")\n"
+              "print(i, value[i])",
+       "intrebare": "Ce afișează?",
+       "variante": ["8 1073196", "6 776424", "2 48659", "9 Eroare"],
+       "corect": 0,
+       "indiciu": "citizen.index(\"RO\") e 2 (numărăm de la 0), geo.index(\"IT\") e tot 2. Câte valori are un rând de cetățenie?",
+       "laBine": "Asta face funcția jsonstat_in_tabel din caiet, pentru fiecare valoare.",
+       "explicatie": "Fiecare cetățenie are câte 3 valori, una pentru fiecare țară de rezidență. "
+                     "România e a treia cetățenie (poziția 2), deci sare peste 2 × 3 = 6 valori; Italia e a "
+                     "treia țară (poziția 2): 6 + 2 = 8. <code>value[8]</code> e 1.073.196."})
    + nota("Regula",
           "Ultima dimensiune se schimbă cel mai repede, ca secundele la ceas. "
           "O valoare care lipsește e <code>null</code>, nu zero.", True),
@@ -833,7 +815,9 @@ HARTA_MIGR = {
 }
 
 COD_MIGR = {
-    "id": "c2-cod-migr", "fisier": "migratie.py",
+    "id": "c2-cod-migr", "indiciu": "Datasetul Eurostat al populației după cetățenie se numește migr_pop1ctz. "
+                  "geo e țara unde trăiesc (Italia), citizen e cetățenia (România). Toate trei sunt text.",
+       "iesire": "     geo citizen    valoare\n4812  IT      RO    1073196", "fisier": "migratie.py",
     "sarcina": "Completează datasetul și cele două coduri, ca să afli câți "
                "români trăiesc în Italia.",
     "cod": "# cere_eurostat face cererea si desface cubul (caietul C2)\n"
@@ -903,7 +887,7 @@ sl("s20", "Postman", "Aceeași cerere, cu mâna",
    + "<p>Când cererea merge acolo, o treci în cod. Când nu merge în cod, te "
      "întorci acolo ca să vezi care bucată diferă.</p>"
    + ix("dovada", "Arată că ți-a mers", {
-       "id": "c2-dovada-postman",
+       "id": "c2-dovada-postman", "poarta": False,
        "sarcina": "Fă în Postman cererea către Banca Mondială și lipește aici "
                   "prima linie a răspunsului, cea cu paginarea.",
        "pasi": [

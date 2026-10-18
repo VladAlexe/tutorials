@@ -79,17 +79,7 @@ sl("s2", "Cursul", "Unde ai rămas",
    "<li><code>migratie.csv</code> și indicatorii, în <code>date/brute/</code></li>"
    "<li>amândouă, deocamdată, doar pe laptopul tău</li>"
    "</ul>"
-   "<p>Exact asta reparăm azi.</p>"
-   + verif("c3-v1", 2,
-           "Ce se întâmplă cu munca de săptămâna trecută dacă îți moare laptopul "
-           "în seara asta?",
-           ["Nimic, Python salvează automat",
-            "Se recuperează din coșul de gunoi",
-            "Se pierde, dacă nu e nicăieri altundeva",
-            "GitHub o are deja, orice proiect ajunge acolo"],
-           "Se pierde. Un fișier salvat pe disc e într-un singur loc. Git nu "
-           "rezolvă singur asta: Git ține istoria local. Abia când o împingi "
-           "pe GitHub există în două locuri."))
+   "<p>Exact asta reparăm azi.</p>")
 
 
 # ===========================================================================
@@ -145,7 +135,7 @@ sl("s4", "Ce face Git", "Cele trei zone",
                     "nu mută nimic, dar îți spune unde ești.",
          "fisiere": ["colectare.py", "README.md"]})
    + ix("sortare", "Ce face fiecare comandă", {
-       "id": "c3-sort-zone",
+       "id": "c3-sort-zone", "poarta": False,
        "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.",
        "elemente": [{"t": "git add", "cos": 0}, {"t": "git commit", "cos": 1},
                     {"t": "git push", "cos": 2}, {"t": "git pull", "cos": 3},
@@ -179,7 +169,7 @@ sl("s4", "Ce face Git", "Cele trei zone",
      "face un commit cu trei din cele șapte fișiere pe care le-ai atins, "
      "pentru că numai alea trei țin de aceeași schimbare.</p>"
    + ix("sortare", "Ce face fiecare comandă", {
-       "id": "c3-sort-zone",
+       "id": "c3-sort-zone", "poarta": False,
        "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.",
        "elemente": [{"t": "git add", "cos": 0}, {"t": "git commit", "cos": 1},
                     {"t": "git push", "cos": 2}, {"t": "git pull", "cos": 3},
@@ -194,16 +184,7 @@ sl("s4", "Ce face Git", "Cele trei zone",
                      "da oricând, de oricâte ori."}))
 
 sl("s5", "Ce face Git", "Verificare",
-   "<h2>Git sau GitHub</h2>"
-   + verif("c3-v2", 1,
-           "Ești în tren, fără internet. Ce poți face?",
-           ["Nimic, Git are nevoie de legătură",
-            "Commit-uri, reveniri, ramuri: tot ce ține de istoric",
-            "Doar să citești istoricul, nu să scrii",
-            "Doar <code>git status</code>"],
-           "Tot ce ține de istoricul local. Internetul îți trebuie abia la "
-           "<code>push</code> și <code>pull</code>, adică exact la cele două "
-           "comenzi care vorbesc cu GitHub."))
+   "<h2>Git sau GitHub</h2>")
 
 
 # ===========================================================================
@@ -222,16 +203,7 @@ sl("s6", "Primii pași", "Depozitul",
    + "<pre><code><span class=\"c\"># o singura data pe laptop: e instalat?</span>\n"
      "git --version\n\n"
      "<span class=\"c\"># in dosarul proiectului</span>\n"
-     "git init\ngit status</code></pre>"
-   + verif("c3-v4", 2,
-           "Ce face <code>git init</code>?",
-           ["Trimite proiectul pe GitHub",
-            "Descarcă un proiect de pe GitHub",
-            "Începe urmărirea dosarului curent, creând <code>.git</code>",
-            "Creează un dosar nou pentru proiect"],
-           "Pornește urmărirea dosarului în care ești. Nu creează dosarul și "
-           "nu vorbește cu internetul. Dacă o dai din greșeală în dosarul "
-           "greșit, ștergi <code>.git</code> și gata."),
+     "git init\ngit status</code></pre>",
    manual=
    "<h2>Repository</h2>"
    "<p>Un depozit (repository, sau pe scurt repo) e un dosar obișnuit, în care "
@@ -252,21 +224,16 @@ sl("s6", "Primii pași", "Depozitul",
           "pune sub urmărire tot ce ai pe calculator. Dacă ți se întâmplă, "
           "ștergi dosarul <code>.git</code> de acolo și nu s-a pierdut nimic. "
           "În PowerShell, din dosarul acela: "
-          "<code>Remove-Item -Recurse -Force .git</code>.")
-   + verif("c3-v4", 2,
-           "Ce face <code>git init</code>?",
-           ["Trimite proiectul pe GitHub",
-            "Descarcă un proiect de pe GitHub",
-            "Începe urmărirea dosarului curent, creând <code>.git</code>",
-            "Creează un dosar nou pentru proiect"],
-           "Pornește urmărirea dosarului în care ești."))
+          "<code>Remove-Item -Recurse -Force .git</code>."))
 
 sl("s7", "Primii pași", "Cine ești",
    "<h2>Credențiale</h2>"
    "<p>Fiecare commit poartă un nume și un email. Se setează o dată, pe "
    "calculator, nu la fiecare proiect.</p>"
    + ix("cod", "Spune-i lui Git cine ești", {
-       "id": "c3-cod-config", "fisier": "terminal.sh",
+       "id": "c3-cod-config", "indiciu": "Steagul care face setarea valabilă pe tot calculatorul înseamnă „global”, cu două liniuțe în față. "
+                  "Adresa e a ta (cea de pe GitHub), scrisă între ghilimele.",
+       "iesire": "user.name=Numele Tau\nuser.email=nume@stud.ubbcluj.ro\ncore.autocrlf=true", "fisier": "terminal.sh",
        "sarcina": "Completează comenzile de configurare și de verificare.",
        "cod": "# verifici ce stie deja despre tine\n"
               "git config user.name\ngit config user.email\n\n"
@@ -279,7 +246,8 @@ sl("s7", "Primii pași", "Cine ești",
            "1": {"ok": ["--global"], "ajutor": "steagul"},
            "2": {"ok": ["\"adresa@exemplu.com\"", "'adresa@exemplu.com'",
                         "\"nume@stud.ubbcluj.ro\"", "\"adresa@ta.ro\""],
-                 "ajutor": "adresa, în ghilimele"}},
+                 "re": "^[\"'][^\"'\\s]+@[^\"'\\s]+\\.[a-z]{2,}[\"']$",
+                 "ajutor": "adresa ta, în ghilimele"}},
        "laBine": "Folosește adresa cu care ai contul de GitHub: altfel "
                  "commit-urile tale nu se leagă de profilul tău.",
        "laRau": "Steagul începe cu două liniuțe. Adresa se scrie între ghilimele.",
@@ -294,7 +262,9 @@ sl("s7", "Primii pași", "Cine ești",
    "i-ai spus. De aceea, dacă pui o adresă greșită, commit-urile tale apar pe "
    "GitHub ca ale nimănui.</p>"
    + ix("cod", "Spune-i lui Git cine ești", {
-       "id": "c3-cod-config", "fisier": "terminal.sh",
+       "id": "c3-cod-config", "indiciu": "Steagul care face setarea valabilă pe tot calculatorul înseamnă „global”, cu două liniuțe în față. "
+                  "Adresa e a ta (cea de pe GitHub), scrisă între ghilimele.",
+       "iesire": "user.name=Numele Tau\nuser.email=nume@stud.ubbcluj.ro\ncore.autocrlf=true", "fisier": "terminal.sh",
        "sarcina": "Completează comenzile de configurare și de verificare.",
        "cod": "# verifici ce stie deja despre tine\n"
               "git config user.name\ngit config user.email\n\n"
@@ -307,7 +277,8 @@ sl("s7", "Primii pași", "Cine ești",
            "1": {"ok": ["--global"], "ajutor": "steagul"},
            "2": {"ok": ["\"adresa@exemplu.com\"", "'adresa@exemplu.com'",
                         "\"nume@stud.ubbcluj.ro\"", "\"adresa@ta.ro\""],
-                 "ajutor": "adresa, în ghilimele"}},
+                 "re": "^[\"'][^\"'\\s]+@[^\"'\\s]+\\.[a-z]{2,}[\"']$",
+                 "ajutor": "adresa ta, în ghilimele"}},
        "laBine": "Folosește adresa cu care ai contul de GitHub.",
        "laRau": "Steagul începe cu două liniuțe.",
        "explicatie": "<code>--global</code> e valabil pentru toate proiectele."}))
@@ -315,8 +286,23 @@ sl("s7", "Primii pași", "Cine ești",
 sl("s8", "Primii pași", "Primul commit",
    "<h2>add, apoi commit</h2>"
    "<p>Două comenzi, în ordinea asta, de fiecare dată.</p>"
+   + ix("prezice", "Ce spune git status", {
+       "id": "c3-prezice-status", "fisier": "terminal.sh",
+       "cod": "# ai modificat doua fisiere: migratie.py si README.md\n"
+              "git add migratie.py\n"
+              "git status --short",
+       "intrebare": "Ce arată git status, pe scurt?",
+       "variante": ["M  migratie.py\n M README.md", "M  migratie.py\nM  README.md",
+                    " M migratie.py\n M README.md", "nothing to commit"],
+       "corect": 0,
+       "indiciu": "În --short, prima coloană e zona de pregătire, a doua e dosarul de lucru. Ce fișier ai pus cu add?",
+       "laBine": "Doar ce ai pus cu add intră în commit.",
+       "explicatie": "<code>M</code> pe prima coloană: modificat și pus în pregătire (intră în commit). "
+                     "<code>M</code> pe a doua: modificat, dar încă doar în dosar. Un <code>git commit</code> "
+                     "acum ar lua doar <code>migratie.py</code>; <code>README.md</code> rămâne pe dinafară."})
    + ix("ordine", "Pune pașii în ordine", {
-       "id": "c3-ordine-commit",
+       "id": "c3-ordine-commit", "indiciu": "Întâi faci dosarul depozit. Apoi te uiți ce vede Git, pui fișierul în pregătire, verifici, și abia apoi salvezi în istoric.",
+       "iesire": "a1b2c3d (HEAD -> main) colectare migratie, Eurostat migr_pop1ctz",
        "sarcina": "Ordinea unui prim commit, de la dosar gol la istoric.",
        "linii": [
            "git init",
@@ -328,17 +314,7 @@ sl("s8", "Primii pași", "Primul commit",
        "explicatie": "<code>git status</code> apare de două ori pentru că e "
                      "comanda pe care o dai cel mai des: o dată ca să vezi ce "
                      "e nesalvat, încă o dată ca să confirmi că ai pus în "
-                     "pregătire exact ce voiai."})
-   + verif("c3-v5", 1,
-           "Ce e un mesaj bun de commit?",
-           ["„update”",
-            "„colectare migratie, Eurostat migr_pop1ctz, anul 2024”",
-            "„am lucrat azi”",
-            "„fix”"],
-           "Unul care spune ce s-a schimbat și de ce, destul cât să nu fie "
-           "nevoie să deschizi codul. Peste trei luni, când cauți momentul în "
-           "care s-a stricat ceva, mesajele de tip „update” sunt ca și cum "
-           "n-ar exista."),
+                     "pregătire exact ce voiai."}),
    manual=
    "<h2>Ciclul de lucru</h2>"
    "<p>În practică, o zi de lucru arată așa:</p>"
@@ -353,7 +329,8 @@ sl("s8", "Primii pași", "Primul commit",
           "te poți întoarce. Regula practică: de fiecare dată când ai terminat "
           "un lucru care are un nume.")
    + ix("ordine", "Pune pașii în ordine", {
-       "id": "c3-ordine-commit",
+       "id": "c3-ordine-commit", "indiciu": "Întâi faci dosarul depozit. Apoi te uiți ce vede Git, pui fișierul în pregătire, verifici, și abia apoi salvezi în istoric.",
+       "iesire": "a1b2c3d (HEAD -> main) colectare migratie, Eurostat migr_pop1ctz",
        "sarcina": "Ordinea unui prim commit, de la dosar gol la istoric.",
        "linii": [
            "git init",
@@ -457,7 +434,9 @@ sl("s11", "GitHub", "Legarea celor două",
           "clonează. Clonarea aduce fișierele, toată istoria, și leagă singură "
           "<code>origin</code>.", True)
    + ix("cod", "Leagă-l de GitHub", {
-       "id": "c3-cod-remote", "fisier": "terminal.sh",
+       "id": "c3-cod-remote", "indiciu": "Comanda care gestionează depozitele de la distanță se numește chiar „remote”. "
+                  "La primul push, -u ține minte legătura; ramura principală e main.",
+       "iesire": "origin  https://github.com/echipa/proiect.git (fetch)\norigin  https://github.com/echipa/proiect.git (push)\nbranch 'main' set up to track 'origin/main'.", "fisier": "terminal.sh",
        "sarcina": "Varianta 1: ai deja un depozit local. Completează comenzile.",
        "cod": "# ramura principala se cheama azi main\n"
               "git branch -m master main\n\n"
@@ -508,7 +487,9 @@ sl("s11", "GitHub", "Legarea celor două",
        ["~git remote -v", "adresa lui origin"],
    ])
    + ix("cod", "Leagă-l de GitHub", {
-       "id": "c3-cod-remote", "fisier": "terminal.sh",
+       "id": "c3-cod-remote", "indiciu": "Comanda care gestionează depozitele de la distanță se numește chiar „remote”. "
+                  "La primul push, -u ține minte legătura; ramura principală e main.",
+       "iesire": "origin  https://github.com/echipa/proiect.git (fetch)\norigin  https://github.com/echipa/proiect.git (push)\nbranch 'main' set up to track 'origin/main'.", "fisier": "terminal.sh",
        "sarcina": "Varianta 1: completează comenzile.",
        "cod": "git branch -m master main\n"
               "git {{1}} add origin https://github.com/echipa/proiect.git\n"
@@ -525,7 +506,7 @@ sl("s11", "GitHub", "Legarea celor două",
 sl("s12", "GitHub", "Drumul complet",
    "<h2>De la dosar gol la depozit de echipă</h2>"
    + ix("ordine", "Pune pașii în ordine", {
-       "id": "c3-ordine-github",
+       "id": "c3-ordine-github", "poarta": False,
        "sarcina": "Drumul de la un dosar cu fișiere la un depozit pe GitHub.",
        "linii": [
            "git init",
@@ -539,17 +520,7 @@ sl("s12", "GitHub", "Drumul complet",
        "explicatie": "<code>.gitignore</code> se scrie înainte de primul "
                      "<code>git add .</code>, nu după. Iar depozitul de pe "
                      "GitHub se face gol: un README creat acolo e un commit pe "
-                     "care laptopul tău nu-l are, și primul push e refuzat."})
-   + verif("c3-v8", 2,
-           "Ai făcut <code>git commit</code> dar nu <code>git push</code>. "
-           "Ce vede colegul tău?",
-           ["Tot, GitHub se sincronizează singur",
-            "Doar fișierele, nu și mesajul",
-            "Nimic nou: commit-ul e doar la tine, pe laptop",
-            "Vede o cerere de aprobare"],
-           "Nimic. <code>commit</code> scrie în istoricul tău local. Până la "
-           "<code>push</code>, munca ta există într-un singur loc, iar asta e "
-           "exact situația de la începutul orei."))
+                     "care laptopul tău nu-l are, și primul push e refuzat."}))
 
 
 # ===========================================================================
@@ -716,17 +687,7 @@ sl("s15", "În echipă", "Conflictele",
        "explicatie": "Oricare ai alege, marcajele dispar și fișierul redevine "
                      "cod valid. Git nu verifică dacă ai ales bine: asta e "
                      "treaba ta, și de aceea un conflict se rezolvă uitându-te "
-                     "la cod, nu apăsând repede."})
-   + verif("c3-v9", 1,
-           "Care obicei previne cele mai multe conflicte?",
-           ["Să faci commit-uri cât mai rare",
-            "Să dai <code>git pull</code> înainte să începi lucrul, în fiecare zi",
-            "Să lucrați toți pe aceeași ramură",
-            "Să nu atingeți niciodată aceleași fișiere"],
-           "<code>git pull</code> la început de zi. Conflictele cresc cu cât "
-           "stai mai mult despărțit de main: o zi de diferență se rezolvă în "
-           "două minute, două săptămâni de diferență se rezolvă într-o "
-           "după-amiază proastă."),
+                     "la cod, nu apăsând repede."}),
    manual=
    "<h2>Conflictele</h2>"
    "<p>Un conflict apare la <code>git pull</code> (sau la <code>git merge</code>) "
@@ -750,14 +711,7 @@ sl("s15", "În echipă", "Conflictele",
        "alLor": 'd = pd.read_csv("date/brute/populatie_ro.csv")',
        "bun": "lor",
        "deCe": "Fișierul cu numele vechi nu mai există.",
-       "explicatie": "Git nu verifică dacă ai ales bine: asta e treaba ta."})
-   + verif("c3-v9", 1,
-           "Care obicei previne cele mai multe conflicte?",
-           ["Să faci commit-uri cât mai rare",
-            "Să dai <code>git pull</code> înainte să începi lucrul, în fiecare zi",
-            "Să lucrați toți pe aceeași ramură",
-            "Să nu atingeți niciodată aceleași fișiere"],
-           "<code>git pull</code> la început de zi."))
+       "explicatie": "Git nu verifică dacă ai ales bine: asta e treaba ta."}))
 
 sl("s16", "În echipă", "Regulile voastre",
    "<h2>Patru reguli, pentru semestrul ăsta</h2>"
@@ -785,17 +739,7 @@ sl("s17", "Cadrul teoretic", "De ce un cadru",
    "<p class=\"cheie\">Datele nu produc întrebări. Teoria produce întrebări, "
    "iar datele răspund la ele sau refuză.</p>"
    "<p>Fără un cadru, un proiect de analiză devine o colecție de grafice "
-   "despre care nimeni nu poate spune dacă sunt importante.</p>"
-   + verif("c3-v10", 1,
-           "De unde vine o întrebare de cercetare?",
-           ["Din ce se poate calcula cu datele pe care le ai",
-            "Din literatura pe tema aceea, pusă față în față cu datele",
-            "Din ce iese mai frumos la grafice",
-            "Din ce n-a mai făcut nimeni"],
-           "Din literatură. Datele spun la ce întrebări poți răspunde; "
-           "literatura spune care întrebări merită puse. Un proiect care "
-           "pornește de la „ce pot calcula” ajunge la rezultate corecte și "
-           "fără sens."))
+   "despre care nimeni nu poate spune dacă sunt importante.</p>")
 
 PILONI = [
     ("Economie", "WDI: PIB/locuitor, populație, urbanizare",
@@ -824,17 +768,7 @@ sl("s18", "Cadrul teoretic", "Un exemplu lucrat",
      "solarul?</li>"
      "<li>Ce tipuri de sisteme energetice se disting, după mixul de "
      "electricitate și emisii?</li>"
-     "</ol>"
-   + verif("c3-v11", 2,
-           "Ce face ca cele trei întrebări de mai sus să fie întrebări de "
-           "cercetare, și nu simple curiozități?",
-           ["Sunt despre un subiect important",
-            "Folosesc date din mai multe surse",
-            "Ies dintr-un cadru teoretic și se pot infirma cu datele",
-            "Au fost puse și de alții înainte"],
-           "Ies dintr-un cadru și se pot infirma. O întrebare la care orice "
-           "răspuns e la fel de interesant nu e o întrebare de cercetare; e o "
-           "descriere."),
+     "</ol>",
    manual=
    "<h2>Un exemplu lucrat: tranzițiile energetice</h2>"
    "<p>Exemplul e dintr-o cercetare adevărată, și merită urmărit pas cu pas "
@@ -861,14 +795,7 @@ sl("s18", "Cadrul teoretic", "Un exemplu lucrat",
           "Fiecare rând leagă trei lucruri: un concept, o sursă de date "
           "concretă, și rolul pe care îl joacă în argument. Dacă unul dintre "
           "cele trei lipsește, pilonul nu ține: un concept fără date nu se "
-          "poate testa, iar date fără rol teoretic sunt doar coloane.")
-   + verif("c3-v11", 2,
-           "Ce face ca cele trei întrebări să fie întrebări de cercetare?",
-           ["Sunt despre un subiect important",
-            "Folosesc date din mai multe surse",
-            "Ies dintr-un cadru teoretic și se pot infirma cu datele",
-            "Au fost puse și de alții înainte"],
-           "Ies dintr-un cadru și se pot infirma."))
+          "poate testa, iar date fără rol teoretic sunt doar coloane."))
 
 PILONI_NOI = [
     ("Legăturile", "SCI, Meta: perechi de țări, regiuni, județe",
@@ -932,7 +859,8 @@ sl("s21", "Datele", "Explorarea inițială",
    "<h2>Prima privire peste ce ai colectat</h2>"
    "<p>Înainte de orice analiză, patru comenzi. Întotdeauna aceleași.</p>"
    + ix("cod", "Prima privire", {
-       "id": "c3-cod-explorare", "fisier": "explorare.py",
+       "id": "c3-cod-explorare", "indiciu": "Dimensiunea tabelului e un atribut (fără paranteze), cu „formă” în engleză. Rezumatul pe coloane e metoda „informații”. Lipsurile se adună cu metoda „sumă”.",
+       "iesire": "(5104, 3)\n<class 'pandas.core.frame.DataFrame'>\nRangeIndex: 5104 entries ...\ngeo           0\ncitizen       0\nvaloare     812", "fisier": "explorare.py",
        "sarcina": "Completează primele patru lucruri pe care le ceri de la un tabel nou.",
        "cod": "import pandas as pd\n\n"
               "d = pd.read_csv(\"date/brute/migratie.csv\")\n\n"

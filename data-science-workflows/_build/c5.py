@@ -217,16 +217,7 @@ sl("s3", "Unirea tabelelor", "Două operații, nu una",
              "chei care nu se potrivesc"]])
    + nota("ÎNTREBAREA CARE LE SEPARĂ",
           "„Vreau mai multe rânduri sau mai multe coloane?” Dacă răspunsul e "
-          "rânduri, e <code>concat</code>. Dacă e coloane, e <code>merge</code>."),
-   dupa=verif("c5-v2", 2,
-              "Ai câte un fișier pentru fiecare an, toate cu aceleași coloane. "
-              "Ce folosești?",
-              ["pd.merge, pentru că sunt fișiere diferite",
-               "df.join, pentru că anul e indexul",
-               "pd.concat, pentru că vrei mai multe rânduri",
-               "Depinde de mărimea fișierelor"],
-              "Aceleași coloane, surse diferite: rândurile cresc, coloanele "
-              "nu. <code>concat</code>."))
+          "rânduri, e <code>concat</code>. Dacă e coloane, e <code>merge</code>."))
 
 
 sl("s4", "Unirea tabelelor", "Ce iese din fiecare fel",
@@ -266,7 +257,8 @@ sl("s4", "Unirea tabelelor", "Ce iese din fiecare fel",
 sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
    "<h2>Scrie-o</h2>"
    + ix("cod", "Lipește populația peste SCI", {
-       "id": "c5-cod-merge", "fisier": "agregare/uneste.py",
+       "id": "c5-cod-merge", "indiciu": "Coloana după care lipești se dă cu parametrul on. Ca să păstrezi tot ce e în tabelul din stânga, felul e \"left\". Lipsurile rămase le găsești cu isna.",
+       "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
        "sarcina": "Vrei să păstrezi toate țările din tabelul cu SCI, chiar "
                   "dacă n-au date de migrație.",
        "cod": "import pandas as pd\n\n"
@@ -290,23 +282,14 @@ sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
                      "de bază. Verificarea de după nu e paranoia: dacă "
                      "<code>len(d)</code> e mai mare decât <code>len(sci)</code>, "
                      "ai chei duplicate în dreapta și tocmai ți-ai înmulțit "
-                     "rândurile — exact capcana de la slide-ul următor."})
-   + verif("c5-v3", 0,
-           "După un <code>merge</code> cu <code>how=\"left\"</code>, tabelul "
-           "are mai multe rânduri decât cel din stânga. Ce s-a întâmplat?",
-           ["Tabelul din dreapta are cheia repetată pe mai multe rânduri",
-            "Merge-ul a eșuat",
-            "Trebuia folosit inner",
-            "Au apărut rânduri goale"],
-           "Un join potrivește fiecare rând din stânga cu <em>fiecare</em> "
-           "rând din dreapta care are aceeași cheie. Dacă dreapta are cheia "
-           "de trei ori, rândul din stânga iese de trei ori."),
+                     "rândurile — exact capcana de la slide-ul următor."}),
    manual=
    "<h2>Scrie-o</h2>"
    "<p>Sintaxa e scurtă; grija e la ce scrii după ea. Cele două linii de "
    "verificare de la final valorează mai mult decât îmbinarea în sine.</p>"
    + ix("cod", "Lipește populația peste SCI", {
-       "id": "c5-cod-merge", "fisier": "agregare/uneste.py",
+       "id": "c5-cod-merge", "indiciu": "Coloana după care lipești se dă cu parametrul on. Ca să păstrezi tot ce e în tabelul din stânga, felul e \"left\". Lipsurile rămase le găsești cu isna.",
+       "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
        "sarcina": "Păstrezi toate țările din tabelul cu SCI.",
        "cod": "import pandas as pd\n\n"
               "sci = pd.read_csv(\"date/curat/sci.csv\")\n"
@@ -329,7 +312,7 @@ sl("s6", "Unirea tabelelor", "Când rândurile se înmulțesc",
    "<p>Același tabel <code>sci</code>, dar în dreapta populația e pe ani. "
    "Patru rânduri în stânga, patru în dreapta. Apasă <code>left</code>.</p>"
    + ix("imbinare", "Patru plus patru nu dau patru", {
-       "id": "c5-imbinare-explozie", "cheie": "cod",
+       "id": "c5-imbinare-explozie", "poarta": False, "cheie": "cod",
        "stanga": STANGA, "dreapta": DUBLE, "numeRez": "rezultat",
        "feluri": ["inner", "left"],
        "sarcina": "Numără rândurile care ies. Erau patru în stânga.",
@@ -369,7 +352,7 @@ sl("s6", "Unirea tabelelor", "Când rândurile se înmulțesc",
    "calculate după aceea sunt ponderate greșit, fiindcă unele țări apar de "
    "mai multe ori.</p>"
    + ix("imbinare", "Patru plus patru nu dau patru", {
-       "id": "c5-imbinare-explozie", "cheie": "cod",
+       "id": "c5-imbinare-explozie", "poarta": False, "cheie": "cod",
        "stanga": STANGA, "dreapta": DUBLE, "numeRez": "rezultat",
        "feluri": ["inner", "left"],
        "sarcina": "Numără rândurile care ies.",
@@ -393,7 +376,8 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
             ["Eurostat", "~RO", "NUTS 0; dar Grecia e EL și Regatul Unit e UK"],
             ["Un fișier făcut de om", "~Romania, România, ROMANIA", "nimic"]])
    + ix("cod", "Fă-le să se potrivească", {
-       "id": "c5-cod-chei", "fisier": "agregare/chei.py",
+       "id": "c5-cod-chei", "indiciu": "Mai întâi lipești după aceeași coloană, deci on. Cheile comune sunt intersecția a două mulțimi: operatorul &. Când coloanele au nume diferite, dai left_on și right_on.",
+       "iesire": "171 chei comune din 178", "fisier": "agregare/chei.py",
        "sarcina": "Banca Mondială dă coduri de trei litere, SCI dă două. "
                   "Aduci tabelul mare la cheia celui mic și verifici.",
        "cod": "# tabelul de traducere, adus o singura data\n"
@@ -417,19 +401,7 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
        "explicatie": "Numărul tipărit de la mijloc e diagnosticul: dacă din "
                      "178 de chei se potrivesc 12, nu e o problemă de "
                      "<code>merge</code>, e o problemă de coduri, și se "
-                     "repară înainte, nu după."})
-   + verif("c5-v5", 3,
-           "Un <code>merge</code> cu <code>how=\"inner\"</code> întoarce zero "
-           "rânduri. Care e prima verificare?",
-           ["Dacă fișierele s-au citit corect",
-            "Dacă pandas e actualizat",
-            "Dacă tabelele au aceeași mărime",
-            "Dacă valorile cheii arată la fel în amândouă"],
-           "Zero rânduri la <code>inner</code> înseamnă, aproape întotdeauna, "
-           "chei care nu se potrivesc: <code>\"RO\"</code> față de "
-           "<code>\"ROU\"</code>, sau <code>\"RO \"</code> cu un spațiu la "
-           "final, sau <code>2020</code> ca text față de <code>2020</code> ca "
-           "număr."),
+                     "repară înainte, nu după."}),
    manual=
    "<h2>Aceeași țară, trei scrieri</h2>"
    "<p>Fiecare sursă are nomenclatorul ei, iar codurile seamănă suficient cât "
@@ -444,7 +416,8 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
      "citit ca număr, iar <code>merge</code> nu te avertizează, pur și simplu "
      "nu găsește nimic.</p>"
    + ix("cod", "Fă-le să se potrivească", {
-       "id": "c5-cod-chei", "fisier": "agregare/chei.py",
+       "id": "c5-cod-chei", "indiciu": "Mai întâi lipești după aceeași coloană, deci on. Cheile comune sunt intersecția a două mulțimi: operatorul &. Când coloanele au nume diferite, dai left_on și right_on.",
+       "iesire": "171 chei comune din 178", "fisier": "agregare/chei.py",
        "sarcina": "Aduci tabelul mare la cheia celui mic și verifici.",
        "cod": "harta = pd.read_csv(\"date/referinta/coduri.csv\")  # iso3, iso2\n"
               "bm = bm.merge(harta, {{1}}=\"iso3\", how=\"left\")\n\n"
@@ -466,7 +439,7 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
    "<p>Înainte de orice îmbinare, răspunsul la întrebarea asta. După, e prea "
    "târziu: tabelul are deja o formă, și de obicei nu cea pe care o voiai.</p>"
    + ix("sortare", "Ce unitate cere fiecare întrebare", {
-       "id": "c5-sort-unitate",
+       "id": "c5-sort-unitate", "poarta": False,
        "sarcina": "Potrivește întrebarea de cercetare cu forma pe care "
                   "trebuie s-o aibă un rând.",
        "elemente": [
@@ -504,7 +477,7 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
    "maximul spune „cât de tare e cea mai puternică legătură a ei”. Trei "
    "lucruri diferite.</p>"
    + ix("sortare", "Ce unitate cere fiecare întrebare", {
-       "id": "c5-sort-unitate",
+       "id": "c5-sort-unitate", "poarta": False,
        "sarcina": "Potrivește întrebarea cu forma unui rând.",
        "elemente": [
            {"t": "În ce țări trăiesc cei mai mulți români?", "cos": 0},
@@ -523,8 +496,24 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
 
 sl("s9", "Unirea tabelelor", "Agregarea",
    "<h2>De la perechi la țări</h2>"
+   + ix("prezice", "Ce face groupby", {
+       "id": "c5-prezice-grup", "fisier": "agregare/proba.py",
+       "cod": "import pandas as pd\n\n"
+              "d = pd.DataFrame({\"tara\": [\"RO\", \"RO\", \"IT\"],\n"
+              "                  \"sci\":  [10, 30, 5]})\n\n"
+              "print(d.groupby(\"tara\")[\"sci\"].sum())",
+       "intrebare": "Ce afișează?",
+       "variante": ["tara\nIT     5\nRO    40", "tara\nRO    10\nRO    30\nIT     5",
+                    "45", "tara\nRO    40\nIT     5"],
+       "corect": 0,
+       "indiciu": "groupby face câte un grup pentru fiecare valoare distinctă din tara; sum adună în fiecare grup. Și sortează grupurile după nume.",
+       "laBine": "Din trei rânduri pe pereche, două rânduri pe țară.",
+       "explicatie": "Rândurile cu aceeași țară se strâng într-un grup și se adună: RO = 10 + 30 = 40, IT = 5. "
+                     "Grupurile ies în ordine alfabetică, de aceea IT e primul. Asta e schimbarea unității "
+                     "de analiză, de la pereche la țară, din exercițiul de mai jos."})
    + ix("cod", "Adu datele la unitatea pe care o vrei", {
-       "id": "c5-cod-agregare", "fisier": "agregare/agrega.py",
+       "id": "c5-cod-agregare", "indiciu": "Grupezi cu groupby, media se cere ca text, ca și \"sum\" de deasupra: \"mean\". La final, coloana de grupare redevine coloană cu reset_index.",
+       "iesire": "(31684, 3)\n(178, 4)", "fisier": "agregare/agrega.py",
        "sarcina": "Ai un rând pe pereche. Vrei un rând pe țară, cu trei "
                   "măsuri diferite ale conectării.",
        "cod": "# un rand pe perechea (tara_sursa, tara_tinta)\n"
@@ -552,25 +541,15 @@ sl("s9", "Unirea tabelelor", "Agregarea",
                      "parteneri, <code>medie</code> le pune pe toate pe picior "
                      "de egalitate, iar <code>parteneri</code> nu măsoară "
                      "deloc tăria, ci întinderea. Alegerea dintre ele e "
-                     "teoretică, nu tehnică."})
-   + verif("c5-v6", 1,
-           "După <code>groupby</code> uiți <code>reset_index()</code>. Ce se "
-           "întâmplă la <code>merge</code>-ul de după?",
-           ["Merge-ul funcționează la fel",
-            "Coloana-cheie nu mai există ca și coloană, e index",
-            "Datele se pierd",
-            "Pandas dă eroare de memorie"],
-           "După <code>groupby</code>, cheia devine indexul. "
-           "<code>merge(on=\"tara\")</code> caută o coloană cu numele ăsta și "
-           "nu o găsește. Ori pui <code>reset_index()</code>, ori folosești "
-           "<code>left_index=True</code>."),
+                     "teoretică, nu tehnică."}),
    manual=
    "<h2>De la perechi la țări</h2>"
    "<p>Agregarea e locul în care datele își schimbă unitatea. E și locul în "
    "care se iau, pe tăcute, decizii teoretice: ce funcție folosești ca să "
    "rezumi mai multe rânduri într-unul singur.</p>"
    + ix("cod", "Adu datele la unitatea pe care o vrei", {
-       "id": "c5-cod-agregare", "fisier": "agregare/agrega.py",
+       "id": "c5-cod-agregare", "indiciu": "Grupezi cu groupby, media se cere ca text, ca și \"sum\" de deasupra: \"mean\". La final, coloana de grupare redevine coloană cu reset_index.",
+       "iesire": "(31684, 3)\n(178, 4)", "fisier": "agregare/agrega.py",
        "sarcina": "De la un rând pe pereche, la un rând pe țară.",
        "cod": "print(d.shape)\n\n"
               "t = (d\n"
@@ -607,18 +586,7 @@ sl("s10", "Unirea tabelelor", "Join pe index",
           "<code>join</code> are <code>how=\"left\"</code> din oficiu, iar "
           "<code>merge</code> are <code>how=\"inner\"</code>. Două funcții "
           "care fac același lucru, cu implicit diferit: de aici vine o parte "
-          "din confuzie."),
-   dupa=verif("c5-v7", 2,
-              "<code>pd.merge(a, b, on=\"cod\")</code>, fără "
-              "<code>how</code>. Ce fel de îmbinare s-a făcut?",
-              ["left, pentru că a e primul",
-               "outer, ca să nu se piardă nimic",
-               "inner, adică doar cheile comune",
-               "Depinde de date"],
-              "Implicitul lui <code>merge</code> e <code>inner</code>. De "
-              "aceea se recomandă să scrii <code>how</code> de fiecare dată, "
-              "chiar și când e cel implicit: cine citește codul vede ce ai "
-              "vrut, nu ce s-a întâmplat."))
+          "din confuzie."))
 
 
 # ===========================================================================
@@ -696,7 +664,7 @@ sl("s11", "Baze de date", "Ce e Neon",
 sl("s12", "Baze de date", "Postgres sau MySQL",
    "<h2>Două baze, două profiluri</h2>"
    + ix("sortare", "Care bază, pentru ce", {
-       "id": "c5-sort-baze",
+       "id": "c5-sort-baze", "poarta": False,
        "sarcina": "Pune fiecare situație la baza care i se potrivește mai bine.",
        "elemente": [
            {"t": "Date geografice, cu PostGIS", "cos": 0},
@@ -742,7 +710,7 @@ sl("s12", "Baze de date", "Postgres sau MySQL",
             ["Ecosistem", "extensii puternice: PostGIS, pgvector",
              "simplu, stabil, foarte răspândit în web"]])
    + ix("sortare", "Care bază, pentru ce", {
-       "id": "c5-sort-baze",
+       "id": "c5-sort-baze", "poarta": False,
        "sarcina": "Pune fiecare situație la baza potrivită.",
        "elemente": [
            {"t": "Date geografice, cu PostGIS", "cos": 0},
@@ -763,7 +731,8 @@ sl("s13", "Baze de date", "Conectarea",
    "<p>Un singur șir conține adresa, utilizatorul și parola. Dacă ajunge pe "
    "GitHub, baza voastră e a oricui.</p>"
    + ix("cod", "Conectează-te fără să scrii parola în cod", {
-       "id": "c5-cod-conectare", "fisier": "baza/conecteaza.py",
+       "id": "c5-cod-conectare", "indiciu": "Toate trei sunt importate în primele rânduri: funcția care citește .env, funcția din os care citește o variabilă de mediu (getenv) și funcția care face motorul de conectare.",
+       "iesire": "PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by gcc ...", "fisier": "baza/conecteaza.py",
        "sarcina": "Șirul vine din <code>.env</code>, nu din fișierul cu cod.",
        "cod": "import os\n"
               "import pandas as pd\n"
@@ -803,7 +772,8 @@ sl("s13", "Baze de date", "Conectarea",
    "la început. În depozit pui un <code>.env.exemplu</code> cu numele "
    "variabilelor și valori false.</p>"
    + ix("cod", "Conectează-te fără să scrii parola în cod", {
-       "id": "c5-cod-conectare", "fisier": "baza/conecteaza.py",
+       "id": "c5-cod-conectare", "indiciu": "Toate trei sunt importate în primele rânduri: funcția care citește .env, funcția din os care citește o variabilă de mediu (getenv) și funcția care face motorul de conectare.",
+       "iesire": "PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by gcc ...", "fisier": "baza/conecteaza.py",
        "sarcina": "Șirul vine din <code>.env</code>.",
        "cod": "import os\n"
               "import pandas as pd\n"
@@ -828,7 +798,8 @@ sl("s13", "Baze de date", "Conectarea",
 sl("s14", "Baze de date", "Scrii și citești",
    "<h2>Tabelul vostru, în bază</h2>"
    + ix("cod", "Pune tabelul curat în Postgres", {
-       "id": "c5-cod-tosql", "fisier": "baza/incarca.py",
+       "id": "c5-cod-tosql", "indiciu": "Dacă tabelul există deja, îl înlocuiești: \"replace\". Citirea din bază se face cu read_sql. Constrângerea care face cheia unică e primary key.",
+       "iesire": "178 scrise, 178 gasite", "fisier": "baza/incarca.py",
        "sarcina": "Scrii tabelul, apoi îl citești înapoi ca să verifici.",
        "cod": "d = pd.read_csv(\"date/curat/tabel_final.csv\")\n\n"
               "# scrie tabelul; daca exista deja, il inlocuieste\n"
@@ -854,25 +825,15 @@ sl("s14", "Baze de date", "Scrii și citești",
                      "scrie din nou. E ce vrei cât timp construiești, dar "
                      "atenție: într-o bază pe care o folosesc și alții, "
                      "<code>\"append\"</code> e mai cuminte, iar "
-                     "<code>\"fail\"</code> e cel mai cuminte."})
-   + verif("c5-v8", 0,
-           "Rulezi scriptul de încărcare de două ori, cu "
-           "<code>if_exists=\"append\"</code> și fără cheie primară. Ce ai în "
-           "bază?",
-           ["Fiecare rând de două ori",
-            "Același lucru ca la prima rulare",
-            "O eroare",
-            "Doar rândurile noi"],
-           "<code>append</code> adaugă, fără să se uite dacă rândul există "
-           "deja. Cheia primară e singura care oprește asta, și o oprește cu "
-           "o eroare — ceea ce e exact ce vrei."),
+                     "<code>\"fail\"</code> e cel mai cuminte."}),
    manual=
    "<h2>Tabelul vostru, în bază</h2>"
    "<p><code>to_sql</code> și <code>read_sql</code> sunt cele două capete ale "
    "drumului. Între ele, singura grijă e ce se întâmplă când rulezi scriptul "
    "a doua oară.</p>"
    + ix("cod", "Pune tabelul curat în Postgres", {
-       "id": "c5-cod-tosql", "fisier": "baza/incarca.py",
+       "id": "c5-cod-tosql", "indiciu": "Dacă tabelul există deja, îl înlocuiești: \"replace\". Citirea din bază se face cu read_sql. Constrângerea care face cheia unică e primary key.",
+       "iesire": "178 scrise, 178 gasite", "fisier": "baza/incarca.py",
        "sarcina": "Scrii tabelul, apoi îl citești înapoi ca să verifici.",
        "cod": "d = pd.read_csv(\"date/curat/tabel_final.csv\")\n\n"
               "d.to_sql(\"sci_tari\", motor, if_exists={{1}}, index=False)\n\n"
@@ -897,7 +858,8 @@ sl("s15", "Baze de date", "SQL, cât vă trebuie",
    "<p>Aceeași operație pe care o faceți în pandas, scrisă în limba bazei. "
    "Avantajul e că filtrarea se face acolo, și vine înapoi doar ce ai cerut.</p>"
    + ix("cod", "Scrie interogarea", {
-       "id": "c5-cod-sql", "fisier": "baza/intrebari.sql",
+       "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori sus: ordine descrescătoare, desc.",
+       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  14210\n DE  |   776424 |   8321\n ES  |   620463 |  12054", "fisier": "baza/intrebari.sql",
        "sarcina": "Cele zece țări cu cei mai mulți români, și cât de legată "
                   "e România de fiecare.",
        "cod": "select\n"
@@ -940,7 +902,8 @@ sl("s15", "Baze de date", "SQL, cât vă trebuie",
             ["~d.sort_values('sci', ascending=False)", "~order by sci desc"],
             ["~d.head(10)", "~limit 10"]])
    + ix("cod", "Scrie interogarea", {
-       "id": "c5-cod-sql", "fisier": "baza/intrebari.sql",
+       "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori sus: ordine descrescătoare, desc.",
+       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  14210\n DE  |   776424 |   8321\n ES  |   620463 |  12054", "fisier": "baza/intrebari.sql",
        "sarcina": "Cele zece țări cu cei mai mulți români, cu SCI-ul lor.",
        "cod": "select m.geo, m.persoane, s.sci\n"
               "from migratie m\n"
@@ -974,16 +937,7 @@ sl("s16", "Baze de date", "Ramurile bazei",
    + nota("PENTRU PROIECT",
           "Nu e obligatoriu, dar e ieftin: faceți o ramură înainte de "
           "încărcarea mare, și o ștergeți după ce ați verificat. E cel mai "
-          "simplu fel de a nu pierde o după-amiază."),
-   dupa=verif("c5-v9", 1,
-              "De ce poate Neon să facă ramuri atât de repede?",
-              ["Pentru că bazele sunt mici",
-               "Pentru că datele stau separat de partea care calculează",
-               "Pentru că folosește Git intern",
-               "Pentru că face copii noaptea"],
-              "Separarea compute–storage: ramura nu copiază datele, pornește "
-              "doar altă parte care calculează peste aceleași date, și scrie "
-              "separat doar ce se schimbă."))
+          "simplu fel de a nu pierde o după-amiază."))
 
 
 sl("s17", "Baze de date", "Unde faci ce",
@@ -991,7 +945,7 @@ sl("s17", "Baze de date", "Unde faci ce",
    "<p>Aceeași operație se poate scrie în amândouă. Regula practică: "
    "<strong>filtrezi și agregi în bază, analizezi în pandas.</strong></p>"
    + ix("sortare", "Unde e mai bine", {
-       "id": "c5-sort-unde",
+       "id": "c5-sort-unde", "poarta": False,
        "sarcina": "Unde faci fiecare lucru?",
        "elemente": [
            {"t": "Iei doar anii 2018–2022 din 40 de milioane de rânduri", "cos": 0},
@@ -1020,7 +974,7 @@ sl("s17", "Baze de date", "Unde faci ce",
    "câteva sute de rânduri; același lucru făcut prin citirea întregului "
    "tabel în pandas trimite milioane.</p>"
    + ix("sortare", "Unde e mai bine", {
-       "id": "c5-sort-unde",
+       "id": "c5-sort-unde", "poarta": False,
        "sarcina": "Unde faci fiecare lucru?",
        "elemente": [
            {"t": "Iei doar anii 2018–2022 din 40 de milioane de rânduri", "cos": 0},

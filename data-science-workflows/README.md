@@ -12,7 +12,7 @@ cN-.../lectie/             slide-urile lecției (generate)
 cN-.../tutorial/           manualul lecției (generat)
 cont/                      intrarea în cont și contul studentului
 intra/                     intrarea la oră, cu codul de pe ecran
-predau/                    doar profesorul: catalogul, lecțiile, orele
+predau/                    doar profesorul: Catalogul (pe grupe), lecțiile, orele, observații
 explorator/                harta SCI
 date-personale/            ce se salvează
 css/  js/  img/  date/     stiluri, cod, logo, date pentru componente
@@ -31,6 +31,8 @@ _build/                    generatoarele
 - O oră uitată deschisă se închide singură după 3 ore (`db/17-inchidere-automata.sql`).
 - O singură oră, condusă dintr-o singură filă. Dacă ieși din ea, butonul **Înapoi la oră**
   din antet te duce înapoi (profesor sau student). După 3 ore ora se închide singură.
+- Textele scrise de studenți (așteptări, întrebarea de cercetare...) apar pe tablă la oră
+  (**Arată clasei**, fără nume), în **Rezultate** (cu nume) și rămân în Catalog.
 - `db/19-viteza.sql` face panoul orei rapid și cu 30 de studenți.
 - Catalogul (prezență, activitate, teme, proiect, total) cere `db/18-catalog.sql`.
   Temele și proiectul se scriu direct în catalog; studentul le vede în contul lui.

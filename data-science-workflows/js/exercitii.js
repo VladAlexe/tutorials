@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=48";
+import { salveazaCod } from "./colectare.js?v=51";
 
 const E = {};
 
@@ -33,8 +33,14 @@ const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(
    rândul ei. Pe pagină ieșea `"c">#` în loc de comentariu. Aici, textul deja
    colorat nu mai e niciodată recitit. */
 
+/* Tema „DSW”, ca un theme de VS Code, din paleta cursului: cuvinte-cheie
+   teal, șiruri chihlimbar, numere și True/False/None roz, funcții incluse
+   (print, len, type…) aurii, apeluri de funcții și metode salvie,
+   comentarii gri-verzui, cursive. Grupurile din tipar dau clasele:
+     1 c comentariu · 2 s șir · 3 k cuvânt-cheie · 4 v constantă
+     5 b funcție inclusă · 6 f apel · 7 n număr */
 const TIPARE = {
-  py: /(#[^\n]*)|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|\b(import|from|as|def|return|if|else|elif|for|in|while|with|open|print|None|True|False|not|and|or|lambda|try|except|class)\b|\b(\d+(?:\.\d+)?)\b/g,
+  py: /(#[^\n]*)|((?:f|r|b)?'(?:[^'\\]|\\.)*'|(?:f|r|b)?"(?:[^"\\]|\\.)*")|\b(import|from|as|def|return|if|else|elif|for|in|while|with|not|and|or|is|lambda|try|except|class|pass|break|continue|yield|global)\b|\b(None|True|False)\b|\b(print|len|type|int|str|float|bool|list|dict|tuple|set|range|open|sorted|sum|min|max|round|abs|enumerate|zip|isinstance)\b(?=\s*\()|\b([A-Za-z_]\w*)(?=\s*\()|\b(\d+(?:\.\d+)?)\b/g,
   sql: /(--[^\n]*)|('(?:[^']|'')*')|\b(CREATE|TABLE|PRIMARY|KEY|FOREIGN|REFERENCES|SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|DELETE|NOT|NULL|DEFAULT|UNIQUE|CHAR|VARCHAR|TEXT|INT|INTEGER|BIGINT|SMALLINT|NUMERIC|REAL|BOOLEAN|DATE|TIMESTAMP|JSONB|JSON)\b|\b(\d+(?:\.\d+)?)\b/gi,
   sh: /(#[^\n]*)|('[^']*'|"[^"]*")|\b(cd|ls|mkdir|source|pip|python|git|echo|export|activate|install|freeze)\b|\b(\d+(?:\.\d+)?)\b/g
 };
@@ -46,14 +52,15 @@ function limba(fisier = ""){
   return "py";
 }
 
-function coloreaza(s, lb = "py"){
+export function coloreaza(s, lb = "py"){
   const re = TIPARE[lb] || TIPARE.py;
   re.lastIndex = 0;
   let iesire = "", ultim = 0, m;
   while ((m = re.exec(s)) !== null){
     if (m[0] === ""){ re.lastIndex++; continue; }
     iesire += esc(s.slice(ultim, m.index));
-    const cls = m[1] ? "c" : m[2] ? "s" : m[3] ? "k" : "n";
+    const cls = m[1] ? "c" : m[2] ? "s" : m[3] ? "k" : m[4] ? "v"
+              : m[5] ? "b" : m[6] ? "f" : "n";
     iesire += `<span class="${cls}">${esc(m[0])}</span>`;
     ultim = m.index + m[0].length;
   }
@@ -73,12 +80,58 @@ function gata(gazda, id){
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
 }
 
-function cadruJos(){
+/* --- indiciul și ieșirea ---------------------------------------------------
+   Fiecare exercițiu de cod are un buton de indiciu. Primul clic spune ideea
+   (din `indiciu`, sau din ce cere fiecare gol); al doilea arată începutul
+   răspunsului. Nu dă rezolvarea întreagă: o completezi tu.
+
+   După ce e corect, apare ce ar afișa codul dacă l-ai rula (`iesire`), ca
+   într-un terminal: vezi efectul, nu doar bifa verde. */
+function iesireHTML(t){
+  return t ? `<div class="ex__out"><span class="ex__out-et">ieșire</span><pre>${esc(t)}</pre></div>` : "";
+}
+function arataIesire(gazda, t){
+  const g = gazda.querySelector(".ex__iesire");
+  if (!g || !t) return;
+  g.innerHTML = iesireHTML(t);
+  const pre = g.querySelector("pre");
+  const tot = pre.textContent; pre.textContent = "";
+  let i = 0;
+  const pas = () => { pre.textContent = tot.slice(0, i += 3); if (i < tot.length) setTimeout(pas, 12); };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) pre.textContent = tot; else pas();
+}
+function legaIndiciu(gazda, nivele){
+  const b = gazda.querySelector('[data-rol="indiciu"]');
+  const g = gazda.querySelector(".ex__ind");
+  if (!b || !g) return;
+  let k = 0;
+  b.onclick = () => {
+    const lista = (typeof nivele === "function" ? nivele() : nivele).filter(Boolean);
+    if (!lista.length) return;
+    g.innerHTML = lista.slice(0, k + 1).map(t => `<p>💡 ${t}</p>`).join("");
+    g.classList.add("vazut");
+    k = Math.min(k + 1, lista.length - 1);
+    b.textContent = k >= lista.length - 1 && g.children.length >= lista.length ? "Indiciu" : "Încă un indiciu";
+  };
+}
+function stareSalvare(salvat, gazda){
+  if (gazda.closest(".ix")?.classList.contains("liber")) return "Exercițiu de încercat: nu se notează.";
+  return salvat ? "Rezolvare înregistrată." : "Nu e înregistrată: nu ești autentificat.";
+}
+function sarbatoare(gazda){
+  const ix = gazda.closest(".ix") || gazda;
+  ix.classList.remove("ura"); void ix.offsetWidth; ix.classList.add("ura");
+}
+
+function cadruJos(eticheta = "▶ Rulează"){
   return `<div class="ex__jos">
-      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
+      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">${eticheta}</button>
+      <button class="btn btn--mic btn--ind" data-rol="indiciu" type="button">Indiciu</button>
       <button class="btn btn--mic" data-rol="din-nou" type="button" hidden>Încearcă din nou</button>
       <span class="ex__raspuns"></span>
     </div>
+    <div class="ex__ind"></div>
+    <div class="ex__iesire"></div>
     <p class="ex__ex"></p>
     <p class="ex__stare"></p>`;
 }
@@ -160,7 +213,7 @@ E.cod = (gazda, d) => {
      mai potrivește și linia rămâne fără câmp de completat. */
   const camp = k => {
     const g = d.goluri[k] || {};
-    const lat = Math.max(5, (g.ok?.[0] || "").length + 2);
+    const lat = Math.max(5, (g.ok?.[0] || "").length + 2, (g.ajutor || "").length + 2);
     return `<input class="gol" data-k="${k}" size="${lat}" spellcheck="false"
               autocapitalize="off" autocomplete="off"
               placeholder="${esc(g.ajutor || "…")}" aria-label="Golul ${k}">`;
@@ -198,12 +251,24 @@ E.cod = (gazda, d) => {
   goluri.forEach(g => g.addEventListener("keydown", e => {
     if (e.key === "Enter"){ e.preventDefault(); btV.click(); }
   }));
+  /* indiciul: întâi ideea, apoi începutul fiecărui gol încă greșit */
+  legaIndiciu(gazda, () => [
+    d.indiciu || goluri.map(g => d.goluri[g.dataset.k]?.ajutor).filter(Boolean)
+                  .map((a, i) => `golul ${i + 1}: ${a}`).join(" · "),
+    "Începutul răspunsului: " + goluri.filter(g => !g.classList.contains("bun")).map(g => {
+      const r = String(d.goluri[g.dataset.k]?.ok?.[0] || "");
+      return `<code>${esc(r.slice(0, Math.max(1, Math.ceil(r.length / 3))))}…</code>`;
+    }).join(" · ")
+  ]);
 
   btV.onclick = async () => {
     let bune = 0;
     goluri.forEach(g => {
-      const asteptat = (d.goluri[g.dataset.k]?.ok || []).map(normal);
-      const ok = asteptat.includes(normal(g.value));
+      const gg = d.goluri[g.dataset.k] || {};
+      const asteptat = (gg.ok || []).map(normal);
+      /* un gol poate accepta orice potrivire a unui tipar (de ex. orice
+         adresă de email între ghilimele), nu doar o listă fixă */
+      const ok = asteptat.includes(normal(g.value)) || (gg.re ? new RegExp(gg.re).test(normal(g.value)) : false);
       g.classList.toggle("bun", ok);
       g.classList.toggle("rau", !ok);
       if (ok) bune++;
@@ -218,14 +283,15 @@ E.cod = (gazda, d) => {
       goluri.forEach(g => g.disabled = true);
       ex.classList.add("vazut");
       ex.innerHTML = d.explicatie || "";
+      arataIesire(gazda, d.iesire);
+      sarbatoare(gazda);
       gata(gazda, id);
       const salvat = await salveazaCod({
         exercitiuId: id,
         cod: goluri.map(g => `${g.dataset.k}=${g.value}`).join(" | "),
         trecut: true
       });
-      st.textContent = salvat ? "Rezolvare înregistrată."
-                              : "Nu e înregistrată: nu ești autentificat.";
+      st.textContent = stareSalvare(salvat, gazda);
       st.classList.add("vazut");
     }
   };
@@ -252,7 +318,7 @@ E.ordine = (gazda, d) => {
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
     <div class="ord"></div>
-    ${cadruJos()}`;
+    ${cadruJos("Verifică ordinea")}`;
 
   const lista = gazda.querySelector(".ord");
   const btV = gazda.querySelector('[data-rol="verifica"]');
@@ -275,6 +341,10 @@ E.ordine = (gazda, d) => {
       </div>`).join("");
   }
   deseneaza();
+  legaIndiciu(gazda, () => [
+    d.indiciu || "Întreabă-te: ce trebuie să existe înainte ca linia asta să poată rula?",
+    `Prima linie e: <code>${esc(d.linii[0])}</code>`
+  ]);
 
   lista.addEventListener("click", e => {
     const b = e.target.closest("button[data-m]");
@@ -306,12 +376,13 @@ E.ordine = (gazda, d) => {
       lista.querySelectorAll("button").forEach(b => b.disabled = true);
       ex.classList.add("vazut");
       ex.innerHTML = d.explicatie || "";
+      arataIesire(gazda, d.iesire);
+      sarbatoare(gazda);
       gata(gazda, id);
       const salvat = await salveazaCod({
         exercitiuId: id, cod: ordine.join(","), trecut: true
       });
-      st.textContent = salvat ? "Rezolvare înregistrată."
-                              : "Nu e înregistrată: nu ești autentificat.";
+      st.textContent = stareSalvare(salvat, gazda);
       st.classList.add("vazut");
     }
   };
@@ -319,6 +390,68 @@ E.ordine = (gazda, d) => {
     lista.querySelectorAll(".ord__r").forEach(r => r.classList.remove("bun", "rau"));
     out.textContent = ""; btN.hidden = true;
   };
+};
+
+/* ==========================================================================
+   3. Ce afișează? — citești codul și ghicești ce iese
+   Cel mai scurt drum spre un concept: nu scrii nimic, doar citești și alegi.
+   Greșeala e ieftină și se vede pe loc ce ar fi afișat de fapt.
+     { id, fisier, cod, intrebare, variante:[...], corect, explicatie,
+       indiciu, iesire }
+   ========================================================================== */
+
+E.prezice = (gazda, d) => {
+  const id = d.id || "prezice";
+  gazda.closest(".ix")?.classList.add("exc");
+  const lb = limba(d.fisier);
+  const linii = String(d.cod || "").replace(/\t/g, "    ").split("\n");
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
+    <div class="ed">
+      <div class="ed__bara"><span class="ed__pct"><i></i><i></i><i></i></span>
+        <span class="ed__nume">${esc(d.fisier || "exercitiu.py")}</span></div>
+      <div class="ed__corp">
+        <div class="ed__nr">${linii.map((_, i) => `<span>${i + 1}</span>`).join("")}</div>
+        <div class="ed__cod">${linii.map(l => coloreaza(l, lb) || "&nbsp;").join("\n")}</div>
+      </div>
+    </div>
+    <p class="pz__q">${d.intrebare || "Ce afișează?"}</p>
+    <div class="pz__v">${(d.variante || []).map((v, i) =>
+      `<button type="button" class="pz__b" data-i="${i}"><code>${esc(v)}</code></button>`).join("")}</div>
+    <div class="ex__jos">
+      <button class="btn btn--mic btn--ind" data-rol="indiciu" type="button">Indiciu</button>
+      <span class="ex__raspuns"></span>
+    </div>
+    <div class="ex__ind"></div>
+    <div class="ex__iesire"></div>
+    <p class="ex__ex"></p>
+    <p class="ex__stare"></p>`;
+  const out = gazda.querySelector(".ex__raspuns");
+  const ex  = gazda.querySelector(".ex__ex");
+  const st  = gazda.querySelector(".ex__stare");
+  legaIndiciu(gazda, [d.indiciu || "Citește rândul cu print și întreabă-te ce tip are valoarea dinăuntru."]);
+  let incercari = 0;
+  gazda.querySelectorAll(".pz__b").forEach(b => b.onclick = async () => {
+    if (gazda.closest(".ix")?.classList.contains("gata")) return;
+    incercari++;
+    const ok = +b.dataset.i === +d.corect;
+    b.classList.add(ok ? "bun" : "rau");
+    if (!ok){
+      b.disabled = true;
+      out.innerHTML = `<b>Nu chiar.</b> ${d.laRau || "Mai încearcă: uită-te încă o dată la tipuri."}`;
+      return;
+    }
+    gazda.querySelectorAll(".pz__b").forEach(x => x.disabled = true);
+    out.innerHTML = `<b>${incercari === 1 ? "Din prima!" : "Corect."}</b> ${d.laBine || ""}`;
+    ex.classList.add("vazut");
+    ex.innerHTML = d.explicatie || "";
+    arataIesire(gazda, d.iesire ?? d.variante[d.corect]);
+    sarbatoare(gazda);
+    gata(gazda, id);
+    const salvat = await salveazaCod({ exercitiuId: id, cod: String(d.variante[+b.dataset.i]), trecut: true });
+    st.textContent = stareSalvare(salvat, gazda);
+    st.classList.add("vazut");
+  });
 };
 
 function amesteca(a){
@@ -330,6 +463,7 @@ function amesteca(a){
   return b;
 }
 
+E.coloreaza = coloreaza;   /* folosit de interactiv.js pentru blocurile statice */
 export default E;
 
 /* ==========================================================================
@@ -415,8 +549,7 @@ E.sortare = (gazda, d) => {
       gata(gazda, id);
       const salvat = await salveazaCod({ exercitiuId:id,
         cod:JSON.stringify(puse), trecut:true });
-      st.textContent = salvat ? "Rezolvare înregistrată."
-                              : "Nu e înregistrată: nu ești autentificat.";
+      st.textContent = stareSalvare(salvat, gazda);
       st.classList.add("vazut");
     }
   };

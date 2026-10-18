@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=48">
-<link rel="stylesheet" href="../../css/tutorial.css?v=48">
-<link rel="stylesheet" href="../../css/interactiv.css?v=48">
-<link rel="stylesheet" href="../../css/grafice.css?v=48">
-<link rel="stylesheet" href="../../css/exercitii.css?v=48">
-<link rel="stylesheet" href="../../css/explorator.css?v=48">
-<script src="../../js/tema.js?v=48"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=51">
+<link rel="stylesheet" href="../../css/tutorial.css?v=51">
+<link rel="stylesheet" href="../../css/interactiv.css?v=51">
+<link rel="stylesheet" href="../../css/grafice.css?v=51">
+<link rel="stylesheet" href="../../css/exercitii.css?v=51">
+<link rel="stylesheet" href="../../css/explorator.css?v=51">
+<script src="../../js/tema.js?v=51"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 6 · Manual"></div>
@@ -67,9 +67,12 @@
 
 <section class="tut__s" id="s4">
 <span class="tut__nr">04 · O variabilă</span>
-<h2>Trei linii, un portret</h2><div class="ix" data-ix="cod">
+<h2>Trei linii, un portret</h2><div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Ce afișează?</span><span class="ix__t">Media și mediana</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c6-prezice-coada", "fisier": "05_explorare.ipynb · 1. O pereche obișnuită", "cod": "import pandas as pd\n\nsci = pd.Series([2, 3, 4, 5, 100])   # o pereche foarte legata\nprint(sci.mean(), sci.median())", "intrebare": "Ce afișează?", "variante": ["4.0 4.0", "22.8 4.0", "22.8 22.8", "4.0 22.8"], "corect": 1, "indiciu": "Media adună tot și împarte la 5. Mediana e valoarea din mijloc, după sortare.", "laBine": "O singură valoare uriașă trage media în sus; mediana nu se clintește.", "explicatie": "Media e (2 + 3 + 4 + 5 + 100) / 5 = 22,8, mediana e 4. Când media e mult peste mediană, distribuția are coadă spre dreapta: exact ce are SCI-ul. De aceea raportăm mediana și lucrăm pe logaritm."}</script></div>
+</div><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Descrie variabila</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c6-cod-descrie", "fisier": "eda/univariat.py", "sarcina": "Descrie SCI-ul perechilor, măsoară asimetria, apoi compar-o cu cea a logaritmului.", "cod": "import numpy as np\nimport pandas as pd\n\nd = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n# media, mediana, quartilele, minimul, maximul\nprint(d[\"sci\"].{{1}}())\n\n# cat de lunga e coada\nprint(d[\"sci\"].{{2}}())          # in jur de 7,6\n\n# acelasi lucru, pe logaritm\nd[\"log_sci\"] = np.{{3}}(d[\"sci\"])\nprint(d[\"log_sci\"].skew())      # in jur de 0,5", "goluri": {"1": {"ok": ["describe"], "ajutor": "metoda"}, "2": {"ok": ["skew"], "ajutor": "metoda"}, "3": {"ok": ["log", "log10"], "ajutor": "funcția"}}, "laBine": "De la 7,6 la 0,5: logaritmul a făcut variabila aproape simetrică.", "laRau": "Primele două sunt metode ale coloanei. A treia e funcția numpy pentru logaritm.", "explicatie": "Uită-te în <code>describe()</code> la medie și mediană. Media e mult peste mediană: semnul unei cozi spre dreapta, chiar înainte să calculezi asimetria."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c6-cod-descrie", "indiciu": "Portretul complet al unei coloane numerice e o „descriere”: describe. Asimetria, în engleză „skewness”, e metoda skew. Logaritmul din numpy e np.log.", "iesire": "count       702.0\nmean       1863.4\n50%         812.0\n...\n7.61\n0.49", "fisier": "eda/univariat.py", "sarcina": "Descrie SCI-ul perechilor, măsoară asimetria, apoi compar-o cu cea a logaritmului.", "cod": "import numpy as np\nimport pandas as pd\n\nd = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n# media, mediana, quartilele, minimul, maximul\nprint(d[\"sci\"].{{1}}())\n\n# cat de lunga e coada\nprint(d[\"sci\"].{{2}}())          # in jur de 7,6\n\n# acelasi lucru, pe logaritm\nd[\"log_sci\"] = np.{{3}}(d[\"sci\"])\nprint(d[\"log_sci\"].skew())      # in jur de 0,5", "goluri": {"1": {"ok": ["describe"], "ajutor": "metoda"}, "2": {"ok": ["skew"], "ajutor": "metoda"}, "3": {"ok": ["log", "log10"], "ajutor": "funcția"}}, "laBine": "De la 7,6 la 0,5: logaritmul a făcut variabila aproape simetrică.", "laRau": "Primele două sunt metode ale coloanei. A treia e funcția numpy pentru logaritm.", "explicatie": "Uită-te în <code>describe()</code> la medie și mediană. Media e mult peste mediană: semnul unei cozi spre dreapta, chiar înainte să calculezi asimetria."}</script></div>
 </div>
 <div class="verif" data-id="c6-v1" data-corect="2">
     <p class="verif__q">Media SCI-ului e de peste două ori mai mare decât mediana. Ce îți spune asta?</p>
@@ -103,7 +106,10 @@
 <span class="tut__nr">07 · Două variabile</span>
 <h2>Matricea de corelații</h2><p>Coeficientul lui Pearson, <em>r</em>, merge de la -1 la 1. Aproape de 1, două variabile cresc împreună; aproape de -1, una crește când cealaltă scade; aproape de 0, nu au o relație liniară. Matricea le pune pe toate perechile de variabile deodată.</p><table class="tcol"><tr><th></th><th>SCI</th><th>distanța</th><th>migranți la mie</th><th>graniță</th></tr><tr><th class="st">SCI</th><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td><td style="background:color-mix(in srgb,var(--nu) 28%,var(--panza))">-0,40</td><td style="background:color-mix(in srgb,var(--accent) 49%,var(--panza));color:var(--panza)">0,70</td><td style="background:color-mix(in srgb,var(--accent) 26%,var(--panza))">0,38</td></tr><tr><th class="st">distanța</th><td style="background:color-mix(in srgb,var(--nu) 28%,var(--panza))">-0,40</td><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td><td style="background:color-mix(in srgb,var(--nu) 23%,var(--panza))">-0,33</td><td style="background:color-mix(in srgb,var(--nu) 46%,var(--panza));color:var(--panza)">-0,66</td></tr><tr><th class="st">migranți la mie</th><td style="background:color-mix(in srgb,var(--accent) 49%,var(--panza));color:var(--panza)">0,70</td><td style="background:color-mix(in srgb,var(--nu) 23%,var(--panza))">-0,33</td><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td><td style="background:color-mix(in srgb,var(--accent) 23%,var(--panza))">0,33</td></tr><tr><th class="st">graniță</th><td style="background:color-mix(in srgb,var(--accent) 26%,var(--panza))">0,38</td><td style="background:color-mix(in srgb,var(--nu) 46%,var(--panza));color:var(--panza)">-0,66</td><td style="background:color-mix(in srgb,var(--accent) 23%,var(--panza))">0,33</td><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td></tr></table><p>Două lucruri de citit în ea. Primul: migrația e mai strâns legată de SCI decât distanța. Al doilea: distanța și granița sunt legate între ele, deci efectul uneia se amestecă în al celeilalte. Un model care le pune pe amândouă deodată le poate separa; o corelație, nu.</p><pre><code>cols = ["log_sci", "log_distanta", "log_la_mie", "granita"]
 d[cols].corr()</code></pre>
-<div class="verif" data-id="c6-v2" data-corect="1">
+<div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Ce afișează?</span><span class="ix__t">Spearman, pe ranguri</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c6-prezice-rang", "fisier": "05_explorare.ipynb · 3. H1, distanța", "cod": "import pandas as pd\n\nd = pd.DataFrame({\"distanta\": [100, 500, 1000, 3000],\n                  \"sci\":      [900, 200, 150, 20]})\n\nprint(d[\"distanta\"].corr(d[\"sci\"], method=\"spearman\"))", "intrebare": "Ce afișează?", "variante": ["1.0", "-1.0", "0.0", "-0.5"], "corect": 1, "indiciu": "Spearman se uită doar la ordine. Când distanța crește pas cu pas, ce face SCI-ul, mereu?", "laBine": "Ordine perfect inversă: -1.", "explicatie": "Spearman înlocuiește valorile cu rangurile lor. Distanța urcă 1, 2, 3, 4, iar SCI-ul coboară 4, 3, 2, 1: o relație perfect descrescătoare, deci -1, oricât de inegale ar fi pașii. Pe SCI și distanță e o alegere bună, pentru că nu cere o linie dreaptă."}</script></div>
+</div><div class="verif" data-id="c6-v2" data-corect="1">
     <p class="verif__q">Migrația și SCI-ul au r = 0,70. Ce poți spune?</p>
     <button>Că migrația produce legăturile</button>
     <button>Că cele două cresc împreună; de ce, nu știm încă</button>
@@ -117,7 +123,7 @@ d[cols].corr()</code></pre>
 <span class="tut__nr">08 · Categorii</span>
 <h2>Din numere în categorii</h2><p>Uneori e mai clar să tai o variabilă numerică în categorii. Aici SCI-ul e tăiat în trei treimi egale (slab, mediu, tare), iar granița e deja o categorie: au sau nu au graniță comună.</p><table class="tcol"><tr><th></th><th>SCI slab</th><th>mediu</th><th>tare</th><th>total</th></tr><tr><th class="st">fără graniță</th><td style="background:color-mix(in srgb,var(--accent) 32%,var(--panza))">87<br><small>37%</small></td><td style="background:color-mix(in srgb,var(--accent) 29%,var(--panza))">79<br><small>34%</small></td><td style="background:color-mix(in srgb,var(--accent) 24%,var(--panza))">67<br><small>29%</small></td><td>233</td></tr><tr><th class="st">cu graniță</th><td style="background:color-mix(in srgb,var(--ceas) 0%,var(--panza))">0<br><small>0%</small></td><td style="background:color-mix(in srgb,var(--ceas) 26%,var(--panza))">9<br><small>30%</small></td><td style="background:color-mix(in srgb,var(--ceas) 59%,var(--panza));color:var(--panza)">21<br><small>70%</small></td><td>30</td></tr></table><p>Testul χ² (hi-pătrat) spune dacă distribuția pe treimi diferă între cele două grupuri mai mult decât din întâmplare. Cramér's V spune cât de tare: 0 înseamnă nicio legătură, 0,1 slabă, 0,3 medie, peste 0,5 puternică. Aici V = 0,31.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Tabelul de contingență</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c6-cod-ct", "fisier": "eda/categorii.py", "sarcina": "Taie SCI-ul în trei treimi, fă tabelul cu granița și testează asocierea.", "cod": "from scipy.stats import chi2_contingency\n\n# trei grupuri egale ca numar de perechi\nd[\"treime\"] = pd.{{1}}(d[\"sci\"], 3, labels=[\"slab\", \"mediu\", \"tare\"])\n\nct = pd.{{2}}(d[\"granita\"], d[\"treime\"])\nprint(ct)\n\nchi2, p, dof, asteptat = {{3}}(ct)\nprint(round(chi2, 1), p)", "goluri": {"1": {"ok": ["qcut"], "ajutor": "funcția"}, "2": {"ok": ["crosstab"], "ajutor": "funcția"}, "3": {"ok": ["chi2_contingency"], "ajutor": "funcția"}}, "laBine": "χ² în jur de 25, cu p foarte mic.", "laRau": "<code>qcut</code> taie în grupuri egale; <code>crosstab</code> numără combinațiile.", "explicatie": "<code>qcut</code> taie după quantile, deci fiecare treime are același număr de perechi. <code>cut</code> ar tăia după valori, și treimea de sus ar avea doar câteva perechi."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c6-cod-ct", "indiciu": "Tabelul de contingență se face cu pd.crosstab; procentele pe rând cer normalize=\"index\".", "fisier": "eda/categorii.py", "sarcina": "Taie SCI-ul în trei treimi, fă tabelul cu granița și testează asocierea.", "cod": "from scipy.stats import chi2_contingency\n\n# trei grupuri egale ca numar de perechi\nd[\"treime\"] = pd.{{1}}(d[\"sci\"], 3, labels=[\"slab\", \"mediu\", \"tare\"])\n\nct = pd.{{2}}(d[\"granita\"], d[\"treime\"])\nprint(ct)\n\nchi2, p, dof, asteptat = {{3}}(ct)\nprint(round(chi2, 1), p)", "goluri": {"1": {"ok": ["qcut"], "ajutor": "funcția"}, "2": {"ok": ["crosstab"], "ajutor": "funcția"}, "3": {"ok": ["chi2_contingency"], "ajutor": "funcția"}}, "laBine": "χ² în jur de 25, cu p foarte mic.", "laRau": "<code>qcut</code> taie în grupuri egale; <code>crosstab</code> numără combinațiile.", "explicatie": "<code>qcut</code> taie după quantile, deci fiecare treime are același număr de perechi. <code>cut</code> ar tăia după valori, și treimea de sus ar avea doar câteva perechi."}</script></div>
 </div>
 
 </section>
@@ -184,11 +190,11 @@ d[cols].corr()</code></pre>
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=48"></script>
+<script type="module" src="../../js/antet.js?v=51"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=48";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=48";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=48";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=51";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=51";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=51";
 pornesteIx();
 pornesteVerif("c6");
 pornesteTut("c6");

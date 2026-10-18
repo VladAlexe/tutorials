@@ -12,9 +12,17 @@
    =========================================================================== */
 
 :root{
-  --ed-fundal:#1B1B15; --ed-text:#D9D7CE; --ed-linie:#32322A;
-  --ed-nr:#6E6D63;     --ed-cheie:#4BC0B7; --ed-text2:#E9C85E;
-  --ed-nr-fundal:#23231C; --ed-com:#7E7C70; --ed-num:#E9C85E;
+  /* Tema „DSW”, ca un theme de VS Code, din paleta cursului (Transcription
+     Lab + DSW). Fundal cărbune în ambele teme, ca un editor adevărat. */
+  --ed-fundal:#1E1E16; --ed-text:#E6E3D8; --ed-linie:#34342B;
+  --ed-nr:#6F6E62;     --ed-nr-fundal:#26261D;
+  --ed-cheie:#5FB8AC;  /* import, def, for, if        — teal       */
+  --ed-text2:#E8A34F;  /* "șiruri"                    — chihlimbar */
+  --ed-num:#D99A9B;    /* 42, 3.7                     — roz        */
+  --ed-const:#D99A9B;  /* True, False, None           — roz        */
+  --ed-incl:#E3C26A;   /* print, len, type            — auriu      */
+  --ed-apel:#A9C9BA;   /* read_csv(, head(            — salvie     */
+  --ed-com:#7F8C78;    /* # comentarii                — gri-verzui */
 }
 
 /* --- cadrul exercițiului ------------------------------------------------- */
@@ -41,7 +49,10 @@
 .ed__cod .k{color:var(--ed-cheie)}
 .ed__cod .s{color:var(--ed-text2)}
 .ed__cod .n{color:var(--ed-num)}
-.ed__cod .c{color:var(--ed-com)}
+.ed__cod .c{color:var(--ed-com);font-style:italic}
+.ed__cod .v{color:var(--ed-const);font-weight:500}
+.ed__cod .b{color:var(--ed-incl)}
+.ed__cod .f{color:var(--ed-apel)}
 
 /* golul de completat: un câmp care arată ca parte din cod */
 .gol{display:inline-block;font-family:var(--mono);font-size:13px;line-height:1.5;
@@ -64,7 +75,9 @@
 .ord__p{font-family:var(--mono);font-size:11px;color:var(--ed-nr);text-align:center}
 .ord__t{font-family:var(--mono);font-size:12.5px;color:var(--ed-text);
   overflow-x:auto;white-space:pre}
-.ord__t .c{color:var(--ed-com)}
+.ord__t .c{color:var(--ed-com);font-style:italic}
+.ord__t .k{color:var(--ed-cheie)} .ord__t .s{color:var(--ed-text2)} .ord__t .n,.ord__t .v{color:var(--ed-num)}
+.ord__t .b{color:var(--ed-incl)} .ord__t .f{color:var(--ed-apel)}
 .ord__b{display:flex;gap:3px;justify-content:flex-end}
 .ord__b button{width:23px;height:23px;border-radius:5px;display:grid;place-items:center;
   color:var(--ed-nr);border:1px solid var(--ed-linie);transition:.12s;line-height:1}
@@ -189,3 +202,40 @@
   .cns__d{grid-template-columns:1fr;gap:1px 0}
   .cns__d dd{margin-bottom:9px}
 }
+
+
+/* --- indiciul, ieșirea, „ce afișează?” ------------------------------------ */
+.btn--ind{border-color:color-mix(in srgb,var(--ceas) 45%,var(--linie-2));color:var(--ceas)}
+.btn--ind:hover{background:var(--ceas-slab);color:var(--ceas)}
+.ex__ind{display:none;margin:10px 0 0;padding:10px 14px;border-radius:9px;background:var(--ceas-slab);
+  border-left:3px solid var(--ceas)}
+.ex__ind.vazut{display:block}
+.ex__ind p{font-family:var(--sans);font-size:13.5px;color:var(--text);margin:0;max-width:none;line-height:1.5}
+.ex__ind p + p{margin-top:6px}
+.ex__out{margin:12px 0 0;border-radius:9px;overflow:hidden;background:#151510;border:1px solid var(--ed-linie)}
+.ex__out-et{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ed-nr);padding:6px 12px;border-bottom:1px solid var(--ed-linie)}
+.ex__out pre{margin:0;padding:10px 14px;background:none;border:0;color:#CFE6DC;font-family:var(--mono);
+  font-size:12.5px;line-height:1.6;white-space:pre-wrap}
+.pz__q{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--text);margin:4px 0 10px}
+.pz__v{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:0 0 12px}
+.pz__b{text-align:left;padding:10px 12px;border-radius:9px;border:1px solid var(--linie-2);background:var(--panza);
+  cursor:pointer;transition:.12s}
+.pz__b code{font-family:var(--mono);font-size:13px;background:none;border:0;padding:0;color:var(--text);white-space:pre-wrap}
+.pz__b:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}
+.pz__b.bun{border-color:var(--ok);background:var(--ok-slab)}
+.pz__b.rau{border-color:var(--nu);background:var(--nu-slab);animation:pz-scutura .3s}
+.pz__b:disabled{cursor:default}
+.pz__b.rau:disabled{opacity:.7}
+@keyframes pz-scutura{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.ix.ura{animation:ix-ura .7s ease-out}
+@keyframes ix-ura{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 50%,transparent)}
+  100%{box-shadow:0 0 0 14px color-mix(in srgb,var(--ok) 0%,transparent)}}
+@media (prefers-reduced-motion: reduce){.ix.ura,.pz__b.rau{animation:none}}
+
+/* --- blocurile de cod din slide-uri și din manual, în aceeași temă -------- */
+pre:has(> code){background:var(--ed-fundal);border-color:var(--ed-linie);color:var(--ed-text)}
+pre > code{color:var(--ed-text)}
+pre > code .k{color:var(--ed-cheie)} pre > code .s{color:var(--ed-text2)}
+pre > code .n,pre > code .v{color:var(--ed-num)} pre > code .b{color:var(--ed-incl)}
+pre > code .f{color:var(--ed-apel)} pre > code .c{color:var(--ed-com);font-style:italic}

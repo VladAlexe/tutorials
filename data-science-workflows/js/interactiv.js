@@ -6,10 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=48";
-import EXERCITII from "./exercitii.js?v=48";
-import VIZUAL from "./vizual.js?v=48";
-import HARTA from "./harta-sci.js?v=48";
+import GRAFICE from "./grafice.js?v=51";
+import EXERCITII from "./exercitii.js?v=51";
+import VIZUAL from "./vizual.js?v=51";
+import HARTA from "./harta-sci.js?v=51";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA };
 
@@ -27,8 +27,8 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=48");
-    await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 400), trecut:true });
+    const m = await import("/data-science-workflows/js/colectare.js?v=51");
+    await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
 
@@ -141,7 +141,7 @@ C.url = (gazda, date) => {
     gazda.closest(".ix")?.classList.add("gata");
     document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
     try {
-      const m = await import("/data-science-workflows/js/colectare.js?v=48");
+      const m = await import("/data-science-workflows/js/colectare.js?v=51");
       const salvat = await m.salveazaCod({
         exercitiuId: date.id, cod: ales.join(" | "), trecut: true });
       st.textContent = salvat ? "Rezolvare înregistrată."
@@ -324,6 +324,16 @@ C.json = (gazda, date) => {
 
 /* --- pornire -------------------------------------------------------------- */
 export function porneste(){
+  /* blocurile de cod scrise în slide-uri fără culori primesc tema editorului;
+     cele colorate de mână rămân cum sunt */
+  document.querySelectorAll("pre > code").forEach(c => {
+    if (c.children.length) return;
+    const t = c.textContent;
+    const lb = /^\s*(\$|pip |git |cd |python |source |mkdir )/m.test(t) ? "sh"
+             : /^\s*(SELECT|CREATE|INSERT)\b/im.test(t) ? "sql"
+             : /^https?:\/\//.test(t.trim()) ? null : "py";
+    if (lb) c.innerHTML = EXERCITII.coloreaza ? EXERCITII.coloreaza(t, lb) : c.innerHTML;
+  });
   document.querySelectorAll("[data-ix]").forEach(g => {
     const nume = g.dataset.ix;
     const f = C[nume];
@@ -331,6 +341,12 @@ export function porneste(){
     let date = {};
     const s = g.querySelector('script[type="application/json"]');
     if (s) { try { date = JSON.parse(s.textContent); } catch {} }
+    /* "poarta": false = componentă de încercat, nu sarcină: nu oprește
+       slide-ul, nu intră la notă, nu se salvează */
+    if (date && date.poarta === false){
+      g.classList.add("liber");
+      (globalThis.dswFaraPoarta ||= new Set()).add(date.id);
+    }
     const corp = document.createElement("div");
     g.appendChild(corp);
     /* unele componente aduc date de pe disc, deci pot întoarce o promisiune */
@@ -397,7 +413,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=48");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=51");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -569,9 +585,11 @@ C.asteptari = (gazda, date) => {
     bt.disabled = true; t.disabled = true;
     out.innerHTML = `<b>Mulțumesc.</b> ${date.multumesc
       || "Le citesc pe toate înainte de cursul următor."}`;
-    poarta(gazda, date.id, "scris");
+    /* textul însuși ajunge și la poartă (legat de ora pornită), ca profesorul
+       să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
+    poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=48");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=51");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

@@ -34,7 +34,7 @@ V = "?v=18"
 FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "json": "Explorator", "arbore": "Explorator", "autoevaluare": "Evaluare",
        "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale",
-       "cod": "Scrii cod", "ordine": "Exercițiu", "sortare": "Exercițiu",
+       "cod": "Scrii cod", "prezice": "Ce afișează?", "ordine": "Exercițiu", "sortare": "Exercițiu",
        "dovada": "Verificare la tine", "asteptari": "Scrii tu",
        "url": "Disecție", "metode": "Potrivire", "cronologie": "Cronologie",
        "flux": "Vezi cum circulă", "raspuns": "Trimite și vezi",
@@ -226,9 +226,9 @@ class Lectie:
     # --------------------------------------------------------------------
     # Ce fel de bloc interactiv produce un rând în baza de date. „cod" ajunge
     # în rulari_cod și se poate arăta pe slide în panoul profesorului.
-    FEL_SARCINA = {"cod": "cod", "ordine": "cod", "sortare": "cod",
+    FEL_SARCINA = {"cod": "cod", "prezice": "cod", "ordine": "cod", "sortare": "cod",
                    "dovada": "cod", "tipuri": "cod", "autoevaluare": "cod",
-                   "asteptari": "cod", "url": "cod", "metode": "cod",
+                   "asteptari": "text", "url": "cod", "metode": "cod",
                    "raspuns": "cod", "zone": "cod", "ramuri": "cod",
                    "conflict": "cod", "prag": "cod", "imbinare": "cod",
                    "coloane": "cod", "desfa": "cod", "anatomie": "cod"}
@@ -277,7 +277,7 @@ class Lectie:
                     date = json.loads(h[j + len('<script type="application/json">'):k])
                 except Exception:
                     continue
-                if isinstance(date, dict) and date.get("id"):
+                if isinstance(date, dict) and date.get("id") and date.get("poarta") is not False:
                     gasite.append((m.start(), {"id": date["id"], "fel": fel}))
 
             gasite.sort(key=lambda x: x[0])
@@ -307,6 +307,7 @@ class Lectie:
         porti = sum(len(re.findall(r'class="verif"', s["slide"] + s.get("dupa", ""))) +
                     len(re.findall(r'data-ix="(?:' + "|".join(self.FEL_SARCINA) + r')"',
                                    s["slide"] + s.get("dupa", "")))
+                    - (s["slide"] + s.get("dupa", "")).count('"poarta": false')
                     for s in self.S)
         print(f"Cursul {self.nr}: {len(self.S)} slide-uri, {porti} porți, "
               f"{h['sarcini']} sarcini în hartă")

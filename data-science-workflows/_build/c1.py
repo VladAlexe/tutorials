@@ -246,16 +246,7 @@ sl("s3", "Softuri și conturi", "Ce instalezi, ce cont faci",
           "ajuns. Nimic altceva. Detaliile sunt în "
           '<a class="leg" href="../../date-personale/">pagina despre date '
           'personale</a>, iar progresul ți-l poți șterge singur, oricând, din '
-          '<a class="leg" href="../../cont/">contul tău</a>.'),
-   dupa=verif("c1-v8", 1,
-              "De ce versionăm codul într-un proiect de analiză de date?",
-              ["Ca să ocupe mai puțin spațiu pe disc",
-               "Ca să se vadă ce s-a schimbat, când și de cine, și ca să se poată reveni",
-               "Pentru că e obligatoriu la publicare",
-               "Ca să ruleze codul mai repede"],
-              "Un rezultat se schimbă pentru că s-a schimbat codul, datele, sau "
-              "amândouă. Fără istoric nu poți spune care. Spațiul pe disc chiar "
-              "crește."))
+          '<a class="leg" href="../../cont/">contul tău</a>.'))
 
 
 # ===========================================================================
@@ -698,6 +689,9 @@ sl("s8", "Proiectul", "Ce formă au datele",
        "goluri": {
            "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
            "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
+       "indiciu": "Pe stânga lui <code>==</code> stă coloana (o alegi cu <code>d[\"...\"]</code>), "
+                  "pe dreapta valoarea căutată. Amândouă sunt text, deci între ghilimele.",
+       "iesire": "31684\n178",
        "laBine": "178 de rânduri: România cu fiecare țară din set, inclusiv cu ea însăși.",
        "laRau": "Numele coloanei și codul se scriu între ghilimele, ca text.",
        "explicatie": "Fixezi un capăt al perechii și obții o listă monadică: "
@@ -744,14 +738,7 @@ sl("s8", "Proiectul", "Ce formă au datele",
            "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
        "laBine": "178 de rânduri: România cu fiecare țară, inclusiv cu ea însăși.",
        "laRau": "Numele coloanei se scrie între ghilimele.",
-       "explicatie": "Fixezi un capăt al perechii și obții o listă monadică."}),
-   dupa=verif("c1-v5", 2,
-              "Cu cele 178 de țări din SCI, câte rânduri are matricea completă?",
-              ["178", "356", "31.684", "15.753"],
-              "178 × 178 = 31.684, exact câte rânduri are fișierul "
-              "<code>country.csv</code> pe care îl descărcați azi. Creșterea cu "
-              "pătratul e motivul pentru care, de la cursul 5, lucrăm cu o bază "
-              "de date."))
+       "explicatie": "Fixezi un capăt al perechii și obții o listă monadică."}))
 
 
 # ===========================================================================
@@ -864,6 +851,18 @@ sl("s11", "Tipuri de date", "Capcanele de tip",
    "<p class=\"cheie\"><code>None</code>, <code>0</code> și <code>\"\"</code> "
    "arată la fel într-un tabel gol. Zero e o măsurătoare; <code>None</code> e "
    "absența ei.</p>"
+   + ix("prezice", "Text plus text", {
+       "id": "c1-prezice-tip", "fisier": "01_introducere.ipynb · 2. Variabile",
+       "sarcina": "Aceeași celulă ca în caietul de azi. Nu o rula: ghicește.",
+       "cod": "varsta_text = \"24\"\nprint(varsta_text + \"1\")",
+       "intrebare": "Ce afișează?",
+       "variante": ["25", "241", "Eroare", "24 1"],
+       "corect": 1,
+       "indiciu": "Ghilimelele fac din 24 un text. Ce face <code>+</code> cu două texte?",
+       "laBine": "Plusul lipește textele, nu le adună.",
+       "explicatie": "Cu ghilimele, <code>\"24\"</code> e <code>str</code>, iar <code>+</code> "
+                     "între două texte le lipește. Exact asta pățește un an citit din CSV ca text. "
+                     "Mai jos îl repari cu <code>int()</code>."})
    + ix("cod", "Repară două conversii", {
        "id": "c1-cod-tipuri", "fisier": "tipuri.py",
        "sarcina": "Două greșeli de tip, dintre cele care nu crapă imediat.",
@@ -877,6 +876,9 @@ sl("s11", "Tipuri de date", "Capcanele de tip",
        "goluri": {
            "1": {"ok": ["int"], "ajutor": "funcția"},
            "2": {"ok": ["str"], "ajutor": "tipul"}},
+       "indiciu": "Funcția care face un număr întreg din text are același nume ca tipul <code>int</code>; "
+                  "iar ca să păstrezi zerourile din față, coloana trebuie citită ca text.",
+       "iesire": "2025\n01234",
        "laBine": "Amândouă apar în primele zece minute de curățare, la cursul 4.",
        "laRau": "Fără ghilimele: aici se cer o funcție și un tip, nu text.",
        "explicatie": "Niciuna nu dă eroare dacă o lași așa. "
@@ -889,6 +891,18 @@ sl("s11", "Tipuri de date", "Capcanele de tip",
    "<p>Greșelile de tip care crapă se repară în două minute. Problema o fac "
    "cele care trec: codul rulează, fișierul se scrie, iar rezultatul e greșit "
    "fără ca nimic să semnaleze.</p>"
+   + ix("prezice", "Text plus text", {
+       "id": "c1-prezice-tip", "fisier": "01_introducere.ipynb · 2. Variabile",
+       "sarcina": "Aceeași celulă ca în caietul de azi. Nu o rula: ghicește.",
+       "cod": "varsta_text = \"24\"\nprint(varsta_text + \"1\")",
+       "intrebare": "Ce afișează?",
+       "variante": ["25", "241", "Eroare", "24 1"],
+       "corect": 1,
+       "indiciu": "Ghilimelele fac din 24 un text. Ce face <code>+</code> cu două texte?",
+       "laBine": "Plusul lipește textele, nu le adună.",
+       "explicatie": "Cu ghilimele, <code>\"24\"</code> e <code>str</code>, iar <code>+</code> "
+                     "între două texte le lipește. Exact asta pățește un an citit din CSV ca text. "
+                     "Mai jos îl repari cu <code>int()</code>."})
    + ix("cod", "Repară două conversii", {
        "id": "c1-cod-tipuri", "fisier": "tipuri.py",
        "sarcina": "Două greșeli de tip, dintre cele care nu crapă imediat.",
@@ -922,7 +936,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
    "<h2>În baza de date, tipul se declară</h2>"
    "<p>Ce nu se potrivește, e respins. Uită-te la valori și alege.</p>"
    + ix("coloane", "Tabelul SCI, la cursul 5", {
-       "id": "c1-sql-coloane",
+       "id": "c1-sql-coloane", "poarta": False,
        "fisier": "create table sci (…)",
        "nota": "valori adevărate din country.csv",
        "sarcina": "Pentru fiecare coloană, tipul potrivit.",
@@ -960,7 +974,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
    "<li><code>TEXT</code> e fără limită. În PostgreSQL nu e mai lent decât "
    "VARCHAR, deci e alegerea implicită rezonabilă.</li></ul>"
    + ix("coloane", "Tabelul SCI, la cursul 5", {
-       "id": "c1-sql-coloane",
+       "id": "c1-sql-coloane", "poarta": False,
        "fisier": "create table sci (…)",
        "nota": "valori adevărate din country.csv",
        "sarcina": "Pentru fiecare coloană, tipul potrivit.",
@@ -979,18 +993,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
    + nota("Și cheia primară",
           "<code>primary key (user_country, friend_country)</code> e ce "
           "împiedică aceeași pereche să intre de două ori: greșeala clasică la "
-          "reîncărcarea unui fișier."),
-   dupa=verif("c1-v9", 2,
-              "Coduri de județ de forma <code>RO113</code>, toate de cinci "
-              "caractere. Ce tip alegi?",
-              ["<code>INT</code>, pentru că par numere",
-               "<code>TEXT</code>, pentru că nu se știe niciodată",
-               "<code>CHAR(5)</code>, pentru că lungimea e fixă",
-               "<code>VARCHAR</code> fără limită"],
-              "Un cod nu e un număr: nu se adună, nu se sortează numeric, iar "
-              "<code>INT</code> ar distruge zerourile din față. "
-              "<code>CHAR(5)</code> transformă o regulă pe care o știi tu "
-              "într-una pe care o verifică baza de date."))
+          "reîncărcarea unui fișier."))
 
 
 RAMURI_GEO = [
@@ -1036,7 +1039,7 @@ sl("s14", "Tipuri de date", "Tipuri de fișiere",
    "<h2>Text sau binar</h2>"
    "<p class=\"cheie\">Text îl citești cu ochiul. Binar are nevoie de programul lui.</p>"
    + ix("sortare", "Pune fiecare extensie în coșul ei", {
-       "id": "c1-cod-fisiere",
+       "id": "c1-cod-fisiere", "poarta": False,
        "sarcina": "Întrebarea de control: poate Git să-ți arate ce s-a schimbat "
                   "în el, rând cu rând?",
        "cosuri": [{"t": "Text", "d": "lizibil, versionabil"},
@@ -1062,7 +1065,7 @@ sl("s14", "Tipuri de date", "Tipuri de fișiere",
    "<strong>binar</strong> nu, are nevoie de programul care îl înțelege. "
    "Distincția decide și dacă Git îți poate arăta ce s-a schimbat.</p>"
    + ix("sortare", "Pune fiecare extensie în coșul ei", {
-       "id": "c1-cod-fisiere",
+       "id": "c1-cod-fisiere", "poarta": False,
        "sarcina": "Poate Git să-ți arate ce s-a schimbat în el, rând cu rând?",
        "cosuri": [{"t": "Text", "d": "lizibil, versionabil"},
                   {"t": "Binar", "d": "are nevoie de un program"}],
@@ -1083,18 +1086,7 @@ sl("s14", "Tipuri de date", "Tipuri de fișiere",
        ["~.geojson", "Date cu geometrie. Text, deci lizibil și versionabil."],
        ["~.shp", "Shapefile: geometrie, dar binar și format din mai multe fișiere."],
        ["~.env", "Chei și parole. Niciodată în depozit."],
-   ]),
-   dupa=verif("c1-v10", 0,
-              "Ai salvat tabelul în CSV. La recitire, coloana cu coduri care "
-              "începeau cu zero a devenit numerică și zerourile au dispărut. De ce?",
-              ["CSV nu păstrează tipurile; la recitire, fiecare coloană e reinterpretată din conținut",
-               "Fișierul s-a corupt la salvare",
-               "Pandas are o eroare cunoscută",
-               "Codurile trebuiau salvate cu majuscule"],
-              "CSV e text simplu: nu are unde să scrie că o coloană e text. "
-              "Trei ieșiri: specifici tipul la citire "
-              "(<code>dtype={\"cod\": str}</code>), salvezi în Parquet, sau ții "
-              "datele în baza de date."))
+   ]))
 
 
 # ===========================================================================
@@ -1102,7 +1094,7 @@ sl("s14", "Tipuri de date", "Tipuri de fișiere",
 # ===========================================================================
 
 ANATOMIE = {
-    "id": "c1-json-anatomie", "cerute": 4,
+    "id": "c1-json-anatomie", "poarta": False, "cerute": 4,
     "intro": "Apasă pe o parte ca s-o vezi aprinsă în cod.",
     "linii": [
         "{",
@@ -1222,6 +1214,19 @@ sl("s16", "JSON", "Drumul până la valoare",
              "country": {"id": "RO", "value": "Romania"},
              "countryiso3code": "ROU", "date": "2022", "value": None}]]},
       "Apasă pe orice rând ca să vezi cum se ajunge la el.")
+   + ix("prezice", "Liste și dicționare", {
+       "id": "c1-prezice-index", "fisier": "01_introducere.ipynb · liste și dicționare",
+       "cod": "tari = [\"RO\", \"IT\", \"ES\"]\n"
+              "persoana = {\"name\": \"Ana\", \"city\": \"Cluj-Napoca\"}\n\n"
+              "print(tari[1], persoana[\"city\"])",
+       "intrebare": "Ce afișează?",
+       "variante": ["RO Ana", "IT Cluj-Napoca", "RO Cluj-Napoca", "IT city"],
+       "corect": 1,
+       "indiciu": "Într-o listă, numărătoarea începe de la 0. Într-un dicționar, între paranteze pui cheia și primești valoarea.",
+       "laBine": "Indice pentru liste, cheie pentru dicționare: asta e tot drumul prin JSON.",
+       "explicatie": "<code>tari[1]</code> e al doilea element, pentru că primul e <code>tari[0]</code>. "
+                     "<code>persoana[\"city\"]</code> dă valoarea cheii. Cu aceste două mișcări "
+                     "ajungi la orice valoare dintr-un răspuns JSON, oricât de adânc."})
    + ix("cod", "Scrie drumul", {
        "id": "c1-cod-json", "fisier": "populatie.py",
        "sarcina": "Mergi până la populația din 2023.",
@@ -1233,21 +1238,14 @@ sl("s16", "JSON", "Drumul până la valoare",
               "print(populatie)             # 19051562",
        "goluri": {"1": {"ok": ["1"], "ajutor": "indice"},
                   "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}},
+       "indiciu": "Răspunsul e o listă cu două elemente: paginarea pe poziția 0, datele pe poziția 1. "
+                  "Apoi, din prima înregistrare, vrei cheia cu numărul.",
+       "iesire": "19051562",
        "laBine": "Ăsta e drumul pe care îl vei scrie la cursul 2, de zeci de ori.",
        "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.",
        "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. "
                      "<code>[\"value\"]</code> scoate numărul. Dacă valoarea "
-                     "lipsește primești <code>None</code>, nu zero."}),
-   dupa=verif("c1-v4", 1,
-              "Ce diferență e între <code>\"value\": null</code> și lipsa "
-              "completă a cheii <code>value</code>?",
-              ["Niciuna",
-               "null spune explicit că valoarea lipsește; cheia absentă înseamnă că serviciul nu raportează deloc câmpul",
-               "null înseamnă zero",
-               "Cheia absentă e o eroare a serverului"],
-              "Un null devine o valoare lipsă pe care o poți număra și raporta. "
-              "O cheie absentă poate deveni o coloană care lipsește cu totul "
-              "pentru anumite înregistrări, iar codul cade abia mai târziu."))
+                     "lipsește primești <code>None</code>, nu zero."}))
 
 
 # ===========================================================================
@@ -1290,21 +1288,14 @@ sl("s17", "Mediul de lucru", "Mediul virtual",
        "linii": ["python -m venv venv", "venv\\Scripts\\activate",
                  "pip install requests pandas", "pip freeze > requirements.txt",
                  "deactivate"],
+       "indiciu": "Nu poți activa un mediu care nu există încă, iar o listă de pachete are sens abia după ce le-ai instalat.",
+       "iesire": "(venv) PS C:\\proiect> pip freeze > requirements.txt\n(venv) PS C:\\proiect> deactivate\nPS C:\\proiect>",
        "laBine": "Exact asta vei face la începutul fiecărui proiect.",
        "laRau": "Gândește-te ce există pe disc în momentul fiecărei comenzi.",
        "explicatie": "<code>pip install</code> înainte de activare instalează în "
                      "Python-ul global și nu dă nicio eroare, doar te trezești "
                      "peste o zi că importul nu merge. <code>pip freeze</code> "
-                     "are sens abia după instalare, altfel scrie un fișier gol."})
-   + verif("c1-v3", 1,
-           "Ai activat mediul, ai instalat pandas, ai închis laptopul. A doua "
-           "zi <code>import pandas</code> dă eroare. De ce?",
-           ["Pandas s-a dezinstalat singur", "Ai uitat să activezi mediul virtual",
-            "Mediul expiră după 24 de ore", "Trebuie reinstalat Python"],
-           "Mediul nu se activează singur într-un terminal nou. VS Code o face "
-           "automat dacă îi selectezi interpretorul din folderul "
-           "<code>venv</code>: <span class=\"mono\">Ctrl+Shift+P → Python: "
-           "Select Interpreter</span>."))
+                     "are sens abia după instalare, altfel scrie un fișier gol."}))
 
 
 STRUCTURA = """proiect/

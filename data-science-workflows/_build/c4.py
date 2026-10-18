@@ -90,16 +90,7 @@ sl("s2", "Cursul", "Cât timp ia",
             {"t": "Reglarea algoritmilor", "v": 4},
             {"t": "Pregătirea seturilor de antrenament", "v": 3}],
          "sursa": "CrowdFlower, 2016 · ce au răspuns oameni care fac asta zilnic"},
-        "Șaizeci la sută. Nu analiza, nu modelele: curățarea.")
-   + verif("c4-v1", 1,
-           "De ce curățarea ia atât de mult, dacă pare o muncă simplă?",
-           ["Pentru că uneltele sunt slabe",
-            "Pentru că fiecare decizie e o alegere care schimbă rezultatul, și trebuie gândită",
-            "Pentru că datele sunt prea mari",
-            "Pentru că nimeni nu vrea s-o facă"],
-           "Pentru că nu e muncă mecanică. „Ce fac cu rândurile fără valoare” "
-           "nu are un răspuns universal: depinde de ce întrebi. Fiecare "
-           "asemenea alegere trebuie luată conștient și scrisă undeva."),
+        "Șaizeci la sută. Nu analiza, nu modelele: curățarea."),
    manual=
    "<h2>Cât timp ia curățarea</h2>"
    "<p>Cifra asta circulă de zece ani și e cam singura pe care toată lumea din "
@@ -115,14 +106,7 @@ sl("s2", "Cursul", "Cât timp ia",
          "sursa": "CrowdFlower, 2016"})
    + "<p>Patru cincimi din timp se duc pe adus și curățat date; o zecime pe "
      "ceea ce lumea crede că e meseria. Nu e o anomalie a domeniului, e forma "
-     "lui.</p>"
-   + verif("c4-v1", 1,
-           "De ce curățarea ia atât de mult, dacă pare o muncă simplă?",
-           ["Pentru că uneltele sunt slabe",
-            "Pentru că fiecare decizie e o alegere care schimbă rezultatul, și trebuie gândită",
-            "Pentru că datele sunt prea mari",
-            "Pentru că nimeni nu vrea s-o facă"],
-           "Pentru că nu e muncă mecanică."))
+     "lui.</p>")
 
 
 # ===========================================================================
@@ -146,13 +130,7 @@ sl("s3", "Git în practică", "Fluxul complet",
              {"n": "Istoric local", "et": "git commit", "ic": "📦", "c": "accent",
               "d": "Scris definitiv, pe laptopul tău. Până aici nu ai avut nevoie de internet."},
              {"n": "GitHub", "et": "git push", "ic": "☁", "c": "text-2",
-              "d": "Copia de pe internet. Abia acum munca ta există în două locuri."}]})
-   + verif("c4-v2", 2,
-           "<code>git pull</code> e, de fapt, două comenzi la un loc. Care?",
-           ["add și commit", "commit și push", "fetch și merge", "clone și checkout"],
-           "<code>fetch</code> aduce ce e nou de pe GitHub fără să-ți atingă "
-           "fișierele, iar <code>merge</code> le îmbină cu ale tale. Când vrei "
-           "să vezi ce vine înainte să accepți, dai <code>fetch</code> separat."))
+              "d": "Copia de pe internet. Abia acum munca ta există în două locuri."}]}))
 
 sl("s4", "Git în practică", "Staging și commit",
    "<h2>Comenzile de zi cu zi</h2>"
@@ -168,7 +146,8 @@ sl("s4", "Git în practică", "Staging și commit",
        ["~git show &lt;id&gt;", "exact ce s-a schimbat într-un commit"],
    ])
    + ix("cod", "Scoate fișierul care n-avea ce căuta", {
-       "id": "c4-cod-staging", "fisier": "terminal.sh",
+       "id": "c4-cod-staging", "indiciu": "Ce e în pregătire îți arată comanda pe care o dai cel mai des. Steagul care scoate doar din pregătire, nu și de pe disc, e --cached. Mesajul îl alegi tu.",
+       "iesire": "rm '.env'\n[dev 4f2a9c1] curatare initiala\n 2 files changed, 18 insertions(+)", "fisier": "terminal.sh",
        "sarcina": "Ai dat <code>git add .</code> și a intrat și <code>.env</code>. "
                   "Scoate-l înainte de commit.",
        "cod": "# vezi ce ai in pregatire\ngit {{1}}\n\n"
@@ -183,7 +162,8 @@ sl("s4", "Git în practică", "Staging și commit",
            "2": {"ok": ["--cached"], "ajutor": "steagul"},
            "3": {"ok": ["\"curatare initiala\"", "'curatare initiala'",
                         "\"colectare\"", "\"primul commit\""],
-                 "ajutor": "mesajul, în ghilimele"}},
+                 "re": "^[\"'].{3,}[\"']$",
+                 "ajutor": "un mesaj, în ghilimele"}},
        "laBine": "<code>--cached</code> e cuvântul care contează: fără el, "
                  "<code>git rm</code> șterge fișierul de pe disc.",
        "laRau": "Steagul începe cu două liniuțe. Mesajul se scrie între ghilimele.",
@@ -197,7 +177,7 @@ sl("s5", "Git în practică", "Anulări",
    "<p>Patru situații diferite, patru comenzi diferite. Confuzia dintre ele e "
    "cea mai frecventă sursă de muncă pierdută.</p>"
    + ix("sortare", "Ce comandă, în ce situație", {
-       "id": "c4-sort-undo",
+       "id": "c4-sort-undo", "poarta": False,
        "sarcina": "Potrivește situația cu comanda care o repară.",
        "elemente": [
            {"t": "git restore fisier", "cos": 0},
@@ -217,22 +197,13 @@ sl("s5", "Git în practică", "Anulări",
                      "<code>checkout</code> te plimbă prin istorie fără să "
                      "schimbe nimic. Ce nu e în listă e <code>reset --hard</code>: "
                      "aruncă munca fără să întrebe, și nu are ce căuta "
-                     "într-un depozit de echipă."})
-   + verif("c4-v3", 1,
-           "Ai făcut push unui commit greșit. Colegii l-au luat deja. Ce faci?",
-           ["<code>git reset --hard</code> și push forțat",
-            "<code>git revert</code>, care adaugă un commit ce îl anulează",
-            "Ștergi depozitul și îl refaci",
-            "Nimic, nu se mai poate"],
-           "<code>revert</code>. Rescrierea istoriei după ce alții au luat-o le "
-           "strică depozitul lor, iar un push forțat le poate șterge munca. "
-           "Un commit care anulează e mai urât de citit și infinit mai sigur."),
+                     "într-un depozit de echipă."}),
    manual=
    "<h2>Anulări</h2>"
    "<p>Git are faima că e greu tocmai pentru că are patru moduri de a „da "
    "înapoi”, iar numele lor nu spun de la sine care ce face.</p>"
    + ix("sortare", "Ce comandă, în ce situație", {
-       "id": "c4-sort-undo",
+       "id": "c4-sort-undo", "poarta": False,
        "sarcina": "Potrivește situația cu comanda care o repară.",
        "elemente": [
            {"t": "git restore fisier", "cos": 0},
@@ -268,16 +239,7 @@ sl("s6", "Git în practică", "Ramuri, în practică",
           "La <code>git merge</code> sau <code>git commit</code> fără "
           "<code>-m</code>, Git deschide un editor. Dacă e Vim, ecranul pare "
           "blocat. Nu e: apeși <kbd>Esc</kbd>, apoi scrii <code>:wq</code> și "
-          "<kbd>Enter</kbd>. Scrie și iese.")
-   + verif("c4-v4", 2,
-           "De ce <code>git branch -d</code> refuză uneori să șteargă o ramură?",
-           ["Pentru că e ramura curentă",
-            "Pentru că are prea multe commit-uri",
-            "Pentru că are commit-uri care nu există în nicio altă ramură",
-            "Pentru că n-ai drepturi"],
-           "Pentru că ai pierde munca de pe ea. Litera mică te protejează; "
-           "<code>-D</code> mare spune „știu ce fac”. Dacă ai ajuns să folosești "
-           "<code>-D</code>, merită să te întrebi o dată în plus dacă chiar știi."))
+          "<kbd>Enter</kbd>. Scrie și iese."))
 
 sl("s7", "Git în practică", "Depozitul pe GitHub",
    "<h2>Recapitulare în două cazuri</h2>"
@@ -285,15 +247,7 @@ sl("s7", "Git în practică", "Depozitul pe GitHub",
        ["faci un depozit gol pe GitHub", "faci depozitul pe GitHub"],
        ["<code>git remote add origin &lt;url&gt;</code>", "<code>git clone &lt;url&gt;</code>"],
        ["<code>git push -u origin main</code>", "gata, e deja legat"],
-   ])
-   + verif("c4-v5", 0,
-           "Clonezi un depozit. Trebuie să mai dai <code>git remote add</code>?",
-           ["Nu, clonarea leagă singură origin",
-            "Da, de fiecare dată",
-            "Doar dacă vrei să faci push",
-            "Doar dacă depozitul e privat"],
-           "Clonarea aduce fișierele, toată istoria, și leagă singură "
-           "<code>origin</code> către adresa de unde ai clonat."))
+   ]))
 
 
 # ===========================================================================
@@ -345,7 +299,8 @@ sl("s8", "Curățarea", "Cele șase etape",
 sl("s9", "Curățarea", "Profilarea",
    "<h2>Prima etapă: te uiți</h2>"
    + ix("cod", "Profilează tabelul", {
-       "id": "c4-cod-profil", "fisier": "profilare.py",
+       "id": "c4-cod-profil", "indiciu": "Rezumatul pe coloane e „informații” (info). Statisticile numerice sunt o „descriere” (describe). Valorile distincte, cu frecvența lor, se numără cu value_counts.",
+       "iesire": "(5104, 3)\n          valoare\ncount     4292.0\nmean     18736.2\n...\nRO    37\nPL    37\nBG    36", "fisier": "profilare.py",
        "sarcina": "Cinci întrebări pe care le pui oricărui tabel nou, înainte "
                   "să schimbi ceva în el.",
        "cod": "import pandas as pd\n\n"
@@ -394,7 +349,8 @@ sl("s10", "Curățarea", "Codurile care mint",
        ["Namibia", "~NA", "~NA", "pandas o citește ca valoare lipsă"],
    ])
    + ix("cod", "Repară codurile", {
-       "id": "c4-cod-standard", "fisier": "standardizare.py",
+       "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină lipsă, oprești lista implicită de lipsuri: keep_default_na = valoarea logică „nu”. Codul britanic din SCI e GB. Metoda care schimbă valori după un dicționar e replace.",
+       "iesire": "0", "fisier": "standardizare.py",
        "sarcina": "Citește fișierul fără să piardă Namibia, apoi adu codurile "
                   "Eurostat la cele din SCI.",
        "cod": "# NA e Namibia, nu o valoare lipsa: doar celula goala e lipsa\n"
@@ -433,7 +389,8 @@ sl("s10", "Curățarea", "Codurile care mint",
        ["Namibia", "~NA", "~NA", "pandas o citește ca valoare lipsă"],
    ])
    + ix("cod", "Repară codurile", {
-       "id": "c4-cod-standard", "fisier": "standardizare.py",
+       "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină lipsă, oprești lista implicită de lipsuri: keep_default_na = valoarea logică „nu”. Codul britanic din SCI e GB. Metoda care schimbă valori după un dicționar e replace.",
+       "iesire": "0", "fisier": "standardizare.py",
        "sarcina": "Citește fără să piardă Namibia și aliniază codurile.",
        "cod": "d = pd.read_csv(\"date/brute/migratie.csv\",\n"
               "                keep_default_na={{1}}, na_values=[\"\"])\n\n"
@@ -456,7 +413,8 @@ sl("s11", "Curățarea", "Duplicatele",
    "<p>Vin din colectări reluate, din îmbinări greșite, din export de două "
    "ori. Un duplicat nu se vede în medie, dar o schimbă.</p>"
    + ix("cod", "Scoate duplicatele", {
-       "id": "c4-cod-duplicate", "fisier": "duplicate.py",
+       "id": "c4-cod-duplicate", "indiciu": "Metoda care marchează rândurile repetate e duplicated. Păstrăm prima apariție: \"first\". Cheia e perechea de coloane citizen și geo, ca listă.",
+       "iesire": "584\n0", "fisier": "duplicate.py",
        "sarcina": "Numără duplicatele, apoi scoate-le păstrând prima apariție.",
        "cod": "# cate randuri sunt identice cu altul de mai sus\n"
               "print(d.{{1}}().sum())\n\n"
@@ -469,7 +427,9 @@ sl("s11", "Curățarea", "Duplicatele",
            "1": {"ok": ["duplicated"], "ajutor": "metoda"},
            "2": {"ok": ["\"first\"", "'first'"], "ajutor": "care rămâne"},
            "3": {"ok": ["[\"citizen\", \"geo\"]", "['citizen','geo']", "[\"citizen\",\"geo\"]",
-                        "['citizen', 'geo']"], "ajutor": "lista de coloane"}},
+                        "['citizen', 'geo']"],
+                 "re": "^\\[\\s*[\"']citizen[\"']\\s*,\\s*[\"']geo[\"']\\s*\\]$",
+                 "ajutor": "lista de coloane"}},
        "laBine": "Al doilea caz e cel periculos: rânduri care diferă printr-o "
                  "coloană neimportantă, dar care descriu aceeași observație.",
        "laRau": "Prima e o metodă. A doua e text, între ghilimele. A treia e o "
@@ -478,18 +438,7 @@ sl("s11", "Curățarea", "Duplicatele",
                      "compară tot rândul. La date diadice, cheia e perechea: "
                      "dacă aceeași pereche de locuri apare de două ori cu "
                      "valori diferite, ai o problemă de colectare, nu de "
-                     "curățare, și merită întâi aflat de unde vine."}),
-   dupa=verif("c4-v7", 1,
-              "După <code>drop_duplicates()</code> ai cu 584 de rânduri mai "
-              "puține. Ce faci întâi?",
-              ["Mergi mai departe, s-au curățat",
-               "Afli de unde vin cele 584, înainte să le arunci",
-               "Le pui la loc",
-               "Repeți colectarea"],
-              "Afli de unde vin. Dacă sunt din colectarea reluată, e în regulă să "
-              "dispară. Dacă sunt perechi care chiar apar de două ori în sursă, cu "
-              "valori diferite, ai descoperit ceva despre date, iar ștergerea "
-              "ascunde descoperirea."))
+                     "curățare, și merită întâi aflat de unde vine."}))
 
 # ===========================================================================
 #  13-15. Lipsuri și valori extreme
@@ -499,7 +448,7 @@ sl("s13", "Lipsuri", "Ce faci cu ce lipsește",
    "<h2>Lipsurile nu sunt toate la fel</h2>"
    "<p>Înainte de a alege o metodă, întrebarea e <em>de ce</em> lipsește.</p>"
    + ix("sortare", "Ce faci în fiecare caz", {
-       "id": "c4-sort-lipsuri",
+       "id": "c4-sort-lipsuri", "poarta": False,
        "sarcina": "Potrivește situația cu ce e rezonabil să faci.",
        "elemente": [
            {"t": "3 rânduri din 30.000, la întâmplare", "cos": 0},
@@ -517,21 +466,27 @@ sl("s13", "Lipsuri", "Ce faci cu ce lipsește",
        "explicatie": "Completarea cu media e cea mai populară și cea mai "
                      "periculoasă metodă: reduce artificial variația și face "
                      "rezultatele să pară mai sigure decât sunt. Dacă o "
-                     "folosești, o scrii în raport."})
-   + verif("c4-v9", 2,
-           "Care e cel mai mare risc când completezi lipsurile cu media coloanei?",
-           ["Pierzi rânduri",
-            "Schimbi tipul coloanei",
-            "Micșorezi variația și faci rezultatul să pară mai sigur decât e",
-            "Nu e niciun risc, e metoda standard"],
-           "Micșorezi variația. Fiecare valoare completată cade exact pe medie, "
-           "deci abaterea standard scade, intervalele de încredere se "
-           "strâng, și totul arată mai convingător decât e."))
+                     "folosești, o scrii în raport."}))
 
 sl("s14", "Lipsuri", "Lipsurile, în cod",
    "<h2>Cum arată în pandas</h2>"
+   + ix("prezice", "Media și golurile", {
+       "id": "c4-prezice-nan", "fisier": "04_curatarea.ipynb",
+       "cod": "import pandas as pd\n\n"
+              "s = pd.Series([10, None, 30])\n"
+              "print(s.mean(), s.isna().sum())",
+       "intrebare": "Ce afișează?",
+       "variante": ["13.33 0", "20.0 1", "NaN 1", "Eroare"],
+       "corect": 1,
+       "indiciu": "pandas sare peste valorile lipsă când calculează media. Câte valori lipsesc?",
+       "laBine": "Media se face din ce există: (10 + 30) / 2.",
+       "explicatie": "<code>None</code> devine <code>NaN</code>, iar <code>mean()</code> îl ignoră: "
+                     "media e din două valori, nu din trei. Comod, dar periculos: dacă lipsesc tocmai "
+                     "valorile mari sau mici, media se mută fără să-ți spună. De aceea numeri întâi "
+                     "lipsurile, cu <code>isna().sum()</code>."})
    + ix("cod", "Tratează lipsurile", {
-       "id": "c4-cod-lipsuri", "fisier": "lipsuri.py",
+       "id": "c4-cod-lipsuri", "indiciu": "Lipsurile se găsesc cu isna. Mediana e median. „Forward fill”, adică ia valoarea de dinainte, se scrie ffill.",
+       "iesire": "5104 4292 0", "fisier": "lipsuri.py",
        "sarcina": "Numără, apoi aplică trei strategii diferite, fiecare "
                   "potrivită altei situații.",
        "cod": "# cate lipsuri, pe coloana\nprint(d.{{1}}().sum())\n\n"
@@ -616,7 +571,8 @@ sl("s16", "Transformări", "Lung sau lat",
        ["<code>2020, 2021, 2022</code> ca nume de coloane", "anul devine o valoare"],
    ])
    + ix("cod", "Treci din lat în lung", {
-       "id": "c4-cod-melt", "fisier": "forma.py",
+       "id": "c4-cod-melt", "indiciu": "Din lat în lung: „topești” tabelul, melt. Înapoi, din lung în lat: îl „rotești”, pivot.",
+       "iesire": "   tara    an  valoare  pe_locuitor\n0    RO  2022   1044.0     0.000055\n1    IT  2022   5030.0     0.000085", "fisier": "forma.py",
        "sarcina": "Transformă tabelul cu o coloană pe an într-unul cu o linie "
                   "pe țară și an.",
        "cod": "# din lat in lung: anii devin valori intr-o coloana\n"
@@ -682,7 +638,8 @@ sl("s16b", "Transformări", "Două direcții, un rând",
 sl("s17", "Validare", "Înainte și după",
    "<h2>Ultima etapă: dovedești că n-ai stricat nimic</h2>"
    + ix("cod", "Verificările de la final", {
-       "id": "c4-cod-validare", "fisier": "validare.py",
+       "id": "c4-cod-validare", "indiciu": "O cheie unică are zero duplicate. Un număr de oameni nu poate fi sub zero.",
+       "iesire": "brut 5104, curat 4290, pierdute 814", "fisier": "validare.py",
        "sarcina": "Patru verificări care se fac după curățare, de fiecare dată.",
        "cod": "# 1. cheia chiar e unica?\n"
               "assert d.duplicated(subset=[\"citizen\", \"geo\"]).sum() == {{1}}\n\n"
@@ -703,16 +660,7 @@ sl("s17", "Validare", "Înainte și după",
                 "e negativ.",
        "explicatie": "Ultima linie e cea pe care o citești cu atenție: dacă ai "
                      "pierdut un sfert din rânduri și nu știi de ce, curățarea "
-                     "n-a fost o curățare, a fost o tăiere."})
-   + verif("c4-v10", 0,
-           "De ce se compară statisticile înainte și după curățare?",
-           ["Ca să prinzi schimbările pe care nu le-ai vrut",
-            "Ca să arăți cât ai lucrat",
-            "Pentru că o cere pandas",
-            "Ca să știi cât spațiu ai economisit"],
-           "Ca să prinzi ce n-ai vrut. O medie care sare de la 50 la 300 după "
-           "curățare înseamnă că ai scos exact rândurile mici, iar asta "
-           "schimbă tot ce urmează."))
+                     "n-a fost o curățare, a fost o tăiere."}))
 
 sl("s18", "Validare", "Dicționarul de date",
    "<h2>Ce scrii, ca să se poată reface</h2>"

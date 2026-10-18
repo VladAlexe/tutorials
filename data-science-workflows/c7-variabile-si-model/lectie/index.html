@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=48">
-<link rel="stylesheet" href="../../css/slide.css?v=48">
-<link rel="stylesheet" href="../../css/interactiv.css?v=48">
-<link rel="stylesheet" href="../../css/grafice.css?v=48">
-<link rel="stylesheet" href="../../css/exercitii.css?v=48">
-<link rel="stylesheet" href="../../css/explorator.css?v=48">
-<script src="../../js/tema.js?v=48"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=51">
+<link rel="stylesheet" href="../../css/slide.css?v=51">
+<link rel="stylesheet" href="../../css/interactiv.css?v=51">
+<link rel="stylesheet" href="../../css/grafice.css?v=51">
+<link rel="stylesheet" href="../../css/exercitii.css?v=51">
+<link rel="stylesheet" href="../../css/explorator.css?v=51">
+<script src="../../js/tema.js?v=51"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 7 · Variabile derivate și model" data-crom="1"></div>
@@ -41,13 +41,16 @@
 <section class="sld" id="s3" data-grup="Variabilele" data-t="Construcția">
 <h2>Trei variabile pe care nu le aveam</h2><table class="tabel"><thead><tr><th>Variabila</th><th>Din ce o facem</th><th>De ce așa</th></tr></thead><tbody><tr><td><strong>distanța</strong></td><td>centrele țărilor, ponderate cu populația județelor</td><td>contează unde trăiesc oamenii, nu centrul hărții</td></tr><tr><td><strong>granița</strong></td><td>contururile GISCO, cu o toleranță de 10 km</td><td>contururile nu se ating perfect</td></tr><tr><td><strong>migranți la mie</strong></td><td>migranții în ambele direcții, la populația celor două țări</td><td>un milion de migranți înseamnă altceva între țări mari și mici</td></tr></tbody></table><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Construiește rata</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c7-cod-rata", "fisier": "model/variabile.py", "sarcina": "Fă rata migranților la mia de locuitori ai celor două țări.", "cod": "# migranti = din_1_in_2 + din_2_in_1 (cursul 4)\nd[\"populatie\"] = d[\"pop_1\"] {{1}} d[\"pop_2\"]\n\nd[\"la_mie\"] = d[\"migranti\"] / d[\"populatie\"] * {{2}}\n\nprint(d[\"la_mie\"].describe())", "goluri": {"1": {"ok": ["+"], "ajutor": "operatorul"}, "2": {"ok": ["1000"], "ajutor": "cât"}}, "laBine": "Rata compară perechi de țări de mărimi foarte diferite: Luxemburg–Portugalia cu Germania–Polonia.", "laRau": "Populația perechii e suma celor două. La mie înseamnă înmulțit cu o mie.", "explicatie": "Numărul absolut de migranți favorizează țările mari. Rata îl pune în raport cu câți oameni sunt în total. La model se vede diferența: cu rata, R² aproape se dublează."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-cod-rata", "indiciu": "Populația perechii e suma celor două țări. „La mie” înseamnă înmulțit cu o mie.", "iesire": "count    702.00\nmean       4.81\n50%        0.62\nmax      160.30", "fisier": "model/variabile.py", "sarcina": "Fă rata migranților la mia de locuitori ai celor două țări.", "cod": "# migranti = din_1_in_2 + din_2_in_1 (cursul 4)\nd[\"populatie\"] = d[\"pop_1\"] {{1}} d[\"pop_2\"]\n\nd[\"la_mie\"] = d[\"migranti\"] / d[\"populatie\"] * {{2}}\n\nprint(d[\"la_mie\"].describe())", "goluri": {"1": {"ok": ["+"], "ajutor": "operatorul"}, "2": {"ok": ["1000"], "ajutor": "cât"}}, "laBine": "Rata compară perechi de țări de mărimi foarte diferite: Luxemburg–Portugalia cu Germania–Polonia.", "laRau": "Populația perechii e suma celor două. La mie înseamnă înmulțit cu o mie.", "explicatie": "Numărul absolut de migranți favorizează țările mari. Rata îl pune în raport cu câți oameni sunt în total. La model se vede diferența: cu rata, R² aproape se dublează."}</script></div>
 </div>
 
 </section>
 
 <section class="sld" id="s4" data-grup="Variabilele" data-t="Transformarea">
-<h2>Ce pui pe logaritm</h2><div class="ix" data-ix="sortare">
+<h2>Ce pui pe logaritm</h2><div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Ce afișează?</span><span class="ix__t">Ce face logaritmul</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-prezice-log", "fisier": "07_model.ipynb · 3. Același eșantion", "cod": "import numpy as np\n\nkm = np.array([10, 100, 1000])\nprint(np.log10(km))", "intrebare": "Ce afișează?", "variante": ["[1. 2. 3.]", "[10. 100. 1000.]", "[2.3 4.6 6.9]", "[0.1 0.01 0.001]"], "corect": 0, "indiciu": "log10 întreabă: „10 la ce putere dă numărul ăsta?”", "laBine": "Fiecare înmulțire cu 10 devine un pas de 1.", "explicatie": "10 = 10¹, 100 = 10², 1000 = 10³. Logaritmul transformă înmulțirile în adunări: de la 100 la 1000 km e același pas ca de la 10 la 100. De aceea distanța și SCI-ul intră în model pe logaritm, iar coeficientul se citește în procente."}</script></div>
+</div><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Logaritm sau nu</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c7-sort-log", "sarcina": "Pune fiecare variabilă unde îi e locul.", "elemente": [{"t": "SCI", "cos": 0}, {"t": "distanța, în km", "cos": 0}, {"t": "numărul de migranți", "cos": 0}, {"t": "populația", "cos": 0}, {"t": "granița (da / nu)", "cos": 1}, {"t": "procentul de populație urbană", "cos": 1}, {"t": "un indice între 0 și 100", "cos": 1}], "cosuri": [{"t": "Logaritm", "d": "mărimi cu coadă lungă, relații multiplicative"}, {"t": "Rămâne așa", "d": "proporții, procente, indici, variabile 0/1"}], "laBine": "Regula din planul cursului: logaritmezi mărimile cu coadă lungă, nu logaritmezi proporții, procente sau indici.", "explicatie": "O variabilă 0/1 nu are logaritm la zero. Un procent are deja o scară închisă, de la 0 la 100; logaritmul îl deformează fără niciun câștig."}</script></div>
 </div>
@@ -82,7 +85,7 @@
 <section class="sld" id="s8" data-grup="Modelul" data-t="Modelul, în cod">
 <h2>O formulă, un rând</h2><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scrie modelul</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c7-cod-ols", "fisier": "model/model.py", "sarcina": "Estimează modelul complet și uită-te la coeficienți și la R².", "cod": "import statsmodels.formula.api as smf\n\nm = smf.{{1}}(\"log_sci ~ log_distanta + log_la_mie + granita\",\n            data=d).{{2}}()\n\nprint(m.params)\nprint(m.{{3}})        # cat explica modelul\n\n# ce ramane neexplicat, pereche cu pereche\nd[\"rezidual\"] = m.resid", "goluri": {"1": {"ok": ["ols"], "ajutor": "funcția"}, "2": {"ok": ["fit"], "ajutor": "metoda"}, "3": {"ok": ["rsquared"], "ajutor": "atributul"}}, "laBine": "R² = 0,53: modelul explică puțin peste jumătate din variația SCI-ului.", "laRau": "<code>ols</code> construiește modelul, <code>fit</code> îl estimează. R² e un atribut, fără paranteze.", "explicatie": "Formula se citește ca o propoziție: SCI-ul, pe logaritm, explicat de distanță, rata migranților și graniță. <code>m.summary()</code> dă tabelul complet, cu erori standard și p-valori."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-cod-ols", "indiciu": "Regresia liniară cu cele mai mici pătrate: ols. Estimarea se face cu fit. R² e atributul rsquared, fără paranteze.", "iesire": "Intercept       11.92\nlog_distanta    -0.25\nlog_la_mie       0.41\ngranita          0.38\n0.56", "fisier": "model/model.py", "sarcina": "Estimează modelul complet și uită-te la coeficienți și la R².", "cod": "import statsmodels.formula.api as smf\n\nm = smf.{{1}}(\"log_sci ~ log_distanta + log_la_mie + granita\",\n            data=d).{{2}}()\n\nprint(m.params)\nprint(m.{{3}})        # cat explica modelul\n\n# ce ramane neexplicat, pereche cu pereche\nd[\"rezidual\"] = m.resid", "goluri": {"1": {"ok": ["ols"], "ajutor": "funcția"}, "2": {"ok": ["fit"], "ajutor": "metoda"}, "3": {"ok": ["rsquared"], "ajutor": "atributul"}}, "laBine": "R² = 0,53: modelul explică puțin peste jumătate din variația SCI-ului.", "laRau": "<code>ols</code> construiește modelul, <code>fit</code> îl estimează. R² e un atribut, fără paranteze.", "explicatie": "Formula se citește ca o propoziție: SCI-ul, pe logaritm, explicat de distanță, rata migranților și graniță. <code>m.summary()</code> dă tabelul complet, cu erori standard și p-valori."}</script></div>
 </div>
 
 </section>
@@ -143,11 +146,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=48"></script>
+<script type="module" src="../../js/antet.js?v=51"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=48";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=48";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=48";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=51";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=51";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=51";
 pornesteIx();
 pornesteVerif("c7");
 pornesteSlide({ capitol:"c7", lectie:"c7-variabile-si-model" });

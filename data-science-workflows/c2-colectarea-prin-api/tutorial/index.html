@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=48">
-<link rel="stylesheet" href="../../css/tutorial.css?v=48">
-<link rel="stylesheet" href="../../css/interactiv.css?v=48">
-<link rel="stylesheet" href="../../css/grafice.css?v=48">
-<link rel="stylesheet" href="../../css/exercitii.css?v=48">
-<link rel="stylesheet" href="../../css/explorator.css?v=48">
-<script src="../../js/tema.js?v=48"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=51">
+<link rel="stylesheet" href="../../css/tutorial.css?v=51">
+<link rel="stylesheet" href="../../css/interactiv.css?v=51">
+<link rel="stylesheet" href="../../css/grafice.css?v=51">
+<link rel="stylesheet" href="../../css/exercitii.css?v=51">
+<link rel="stylesheet" href="../../css/explorator.css?v=51">
+<script src="../../js/tema.js?v=51"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 2 · Manual"></div>
@@ -52,14 +52,7 @@
 
 <section class="tut__s" id="s2">
 <span class="tut__nr">02 · Cursul</span>
-<h2>Înainte de a începe</h2><p>Lecția de azi presupune trei lucruri de la cursul 1: un mediu virtual activat, depozitul echipei pe GitHub, și un caiet în care ai deschis fișierul SCI. Dacă îți lipsește vreunul, întoarce-te la <a class="leg" href="../../c1-introducere-si-mediu/tutorial/">manualul cursului 1</a> și fă-l acum: tot ce urmează se adaugă peste.</p><div class="verif" data-id="c2-v1" data-corect="1">
-    <p class="verif__q">De ce lucrăm într-un mediu virtual și nu direct în Python-ul de sistem?</p>
-    <button>Ca să meargă mai repede</button>
-    <button>Ca fiecare proiect să-și aibă pachetele lui, cu versiunile lui</button>
-    <button>Ca să ocupe mai puțin spațiu</button>
-    <button>Nu contează, e doar o convenție</button>
-    <p class="verif__ex">Două proiecte pot cere versiuni diferite ale aceleiași biblioteci. Fără medii separate, al doilea îl strică pe primul.</p>
-  </div>
+<h2>Înainte de a începe</h2><p>Lecția de azi presupune trei lucruri de la cursul 1: un mediu virtual activat, depozitul echipei pe GitHub, și un caiet în care ai deschis fișierul SCI. Dacă îți lipsește vreunul, întoarce-te la <a class="leg" href="../../c1-introducere-si-mediu/tutorial/">manualul cursului 1</a> și fă-l acum: tot ce urmează se adaugă peste.</p>
 
 </section>
 
@@ -112,14 +105,7 @@
 
 <section class="tut__s" id="s8">
 <span class="tut__nr">07 · Tipuri de API</span>
-<h2>Patru stiluri, față în față</h2><table class="tabel"><thead><tr><th></th><th>RPC</th><th>SOAP</th><th>REST</th><th>GraphQL</th></tr></thead><tbody><tr><td>organizat în jur de</td><td>apel de funcție</td><td>plic de mesaj</td><td>resurse</td><td>schemă și tipuri</td></tr><tr><td>format</td><td class="mono">JSON, XML, Protobuf</td><td class="mono">doar XML</td><td class="mono">JSON, XML, text</td><td class="mono">JSON</td></tr><tr><td>cât de greu se învață</td><td>ușor</td><td>greu</td><td>ușor</td><td>mediu</td></tr><tr><td>comunitate</td><td>mare</td><td>mică</td><td>mare</td><td>în creștere</td></tr><tr><td>unde apare</td><td>între servicii interne</td><td>bănci, administrație</td><td>API-uri publice</td><td>aplicații mobile</td></tr></tbody></table><div class="verif" data-id="c2-v5" data-corect="2">
-    <p class="verif__q">Pentru un API public, simplu, pe care îl folosesc mulți necunoscuți, ce stil alegi?</p>
-    <button>SOAP, pentru că e standardizat</button>
-    <button>gRPC, pentru că e rapid</button>
-    <button>REST, pentru că e ușor de învățat și merge din browser</button>
-    <button>GraphQL, pentru că e cel mai nou</button>
-    <p class="verif__ex">REST. Un API public trăiește din cât de repede îl poate încerca un străin. O adresă pe care o deschizi în browser și vezi JSON e cea mai scurtă cale. gRPC e mai rapid, dar nu se încearcă din bara de adrese; SOAP e standardizat, dar costă o zi doar ca să faci prima cerere.</p>
-  </div>
+<h2>Patru stiluri, față în față</h2><table class="tabel"><thead><tr><th></th><th>RPC</th><th>SOAP</th><th>REST</th><th>GraphQL</th></tr></thead><tbody><tr><td>organizat în jur de</td><td>apel de funcție</td><td>plic de mesaj</td><td>resurse</td><td>schemă și tipuri</td></tr><tr><td>format</td><td class="mono">JSON, XML, Protobuf</td><td class="mono">doar XML</td><td class="mono">JSON, XML, text</td><td class="mono">JSON</td></tr><tr><td>cât de greu se învață</td><td>ușor</td><td>greu</td><td>ușor</td><td>mediu</td></tr><tr><td>comunitate</td><td>mare</td><td>mică</td><td>mare</td><td>în creștere</td></tr><tr><td>unde apare</td><td>între servicii interne</td><td>bănci, administrație</td><td>API-uri publice</td><td>aplicații mobile</td></tr></tbody></table>
 
 </section>
 
@@ -133,21 +119,14 @@
 <span class="tut__nr">09 · Cum arată o cerere</span>
 <h2>Metodele HTTP și CRUD</h2><p>Cele patru operații pe care le poți face cu orice colecție de date se numesc, pe scurt, CRUD: create, read, update, delete. HTTP le dă câte o metodă.</p><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Metodă și operație</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-sort-metode", "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.", "elemente": [{"t": "GET", "cos": 0}, {"t": "POST", "cos": 1}, {"t": "PUT", "cos": 2}, {"t": "PATCH", "cos": 2}, {"t": "DELETE", "cos": 3}], "cosuri": [{"t": "Citește", "d": "nu schimbă nimic"}, {"t": "Creează", "d": "adaugă ceva nou"}, {"t": "Modifică", "d": "schimbă ce există"}, {"t": "Șterge", "d": "scoate definitiv"}], "laBine": "La colectarea de date folosești GET în 99% din cazuri.", "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-sort-metode", "poarta": false, "sarcina": "Pune fiecare metodă HTTP în dreptul operației pe care o face.", "elemente": [{"t": "GET", "cos": 0}, {"t": "POST", "cos": 1}, {"t": "PUT", "cos": 2}, {"t": "PATCH", "cos": 2}, {"t": "DELETE", "cos": 3}], "cosuri": [{"t": "Citește", "d": "nu schimbă nimic"}, {"t": "Creează", "d": "adaugă ceva nou"}, {"t": "Modifică", "d": "schimbă ce există"}, {"t": "Șterge", "d": "scoate definitiv"}], "laBine": "La colectarea de date folosești GET în 99% din cazuri.", "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată."}</script></div>
 </div><div class="nota"><div class="nota__et">Proprietatea care te salvează</div><p><code>GET</code> e <em>sigur</em>: oricâte ori l-ai repeta, nu schimbă nimic pe server. De aceea o colectare căzută se poate relua fără teamă. Cu <code>POST</code> nu e așa: de două ori înseamnă de două ori.</p></div>
 
 </section>
 
 <section class="tut__s" id="s11">
 <span class="tut__nr">10 · Cum arată o cerere</span>
-<h2>Ce este un endpoint</h2><p class="cheie">Adresa la care ceri un anumit lucru. Fiecare endpoint dă altceva.</p><pre><code>https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL</code></pre><p>Un API nu are o singură adresă, are zeci. Documentația e lista lor.</p><div class="verif" data-id="c2-v6" data-corect="1">
-    <p class="verif__q">Două endpoint-uri diferite ale aceluiași API…</p>
-    <button>întorc aceleași date, în formate diferite</button>
-    <button>întorc lucruri diferite: fiecare e o altă resursă sau funcție</button>
-    <button>sunt același lucru, scris în două feluri</button>
-    <button>se folosesc pe rând, în ordine</button>
-    <p class="verif__ex">Fiecare endpoint e o altă resursă. Ca în meniu: la „supe” scrie altceva decât la „deserturi”.</p>
-  </div>
+<h2>Ce este un endpoint</h2><p class="cheie">Adresa la care ceri un anumit lucru. Fiecare endpoint dă altceva.</p><pre><code>https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL</code></pre><p>Un API nu are o singură adresă, are zeci. Documentația e lista lor.</p>
 
 </section>
 
@@ -191,14 +170,7 @@
 
 <section class="tut__s" id="s15">
 <span class="tut__nr">14 · Surse de date</span>
-<h2>Sursele proiectului</h2><table class="tabel"><thead><tr><th>Sursa</th><th>Cum vine</th><th>Ce ne dă</th></tr></thead><tbody><tr><td>Social Connectedness Index</td><td>fișier descărcat (HDX)</td><td>legăturile dintre locuri; e deja la voi</td></tr><tr><td>Banca Mondială</td><td class="mono">API REST public</td><td>indicatori pe țară și an</td></tr><tr><td>Eurostat</td><td class="mono">API REST public</td><td>indicatori pe regiuni NUTS</td></tr><tr><td><strong>Eurostat, migrație</strong></td><td class="mono">migr_pop1ctz</td><td>câți cetățeni ai unei țări trăiesc în alta</td></tr></tbody></table><p>Întâi Banca Mondială, pentru că răspunde simplu. Apoi Eurostat, cu indicatorii pe regiuni și cu migrația.</p><div class="verif" data-id="c2-v9" data-corect="1">
-    <p class="verif__q">Fișierul SCI de la cursul 1 e o sursă prin API?</p>
-    <button>Da, orice sursă de date e un API</button>
-    <button>Nu, e un fișier descărcat; API-ul e un serviciu pe care îl întrebi</button>
-    <button>Da, pentru că l-am luat de pe internet</button>
-    <button>Depinde de format</button>
-    <p class="verif__ex">Un fișier descărcat e un fișier. Diferența nu e unde stă, ci dacă îl poți întreba: un API răspunde la cereri, cu parametri, de fiecare dată.</p>
-  </div>
+<h2>Sursele proiectului</h2><table class="tabel"><thead><tr><th>Sursa</th><th>Cum vine</th><th>Ce ne dă</th></tr></thead><tbody><tr><td>Social Connectedness Index</td><td>fișier descărcat (HDX)</td><td>legăturile dintre locuri; e deja la voi</td></tr><tr><td>Banca Mondială</td><td class="mono">API REST public</td><td>indicatori pe țară și an</td></tr><tr><td>Eurostat</td><td class="mono">API REST public</td><td>indicatori pe regiuni NUTS</td></tr><tr><td><strong>Eurostat, migrație</strong></td><td class="mono">migr_pop1ctz</td><td>câți cetățeni ai unei țări trăiesc în alta</td></tr></tbody></table><p>Întâi Banca Mondială, pentru că răspunde simplu. Apoi Eurostat, cu indicatorii pe regiuni și cu migrația.</p>
 
 </section>
 
@@ -206,7 +178,7 @@
 <span class="tut__nr">15 · requests</span>
 <h2>requests</h2><p>Se instalează în mediul virtual, o singură dată:</p><pre><code>pip install requests</code></pre><p>Și apoi se folosește așa. Reține ordinea: ceri, verifici codul, abia pe urmă te uiți la date.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scrie cererea</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-prima", "fisier": "prima_cerere.py", "sarcina": "Completează metoda, verificarea codului de stare și transformarea răspunsului în date Python.", "cod": "import requests\n\nurl = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n# metoda prin care se citeste, fara sa se schimbe nimic\nr = requests.{{1}}(url, params={\"format\": \"json\"}, timeout=30)\n\n# primul lucru dupa orice cerere: codul de stare\nprint(r.{{2}})            # 200\n\n# corpul raspunsului, din text JSON in liste si dictionare\ndate = r.{{3}}()\nprint(len(date))            # 2", "goluri": {"1": {"ok": ["get"], "ajutor": "metoda"}, "2": {"ok": ["status_code"], "ajutor": "atributul"}, "3": {"ok": ["json"], "ajutor": "metoda"}}, "laBine": "Astea trei linii sunt tot ce-ți trebuie pentru nouă zecimi din colectările de la curs.", "laRau": "Nu pune ghilimele: se cer un nume de metodă și un atribut.", "explicatie": "<code>r.json()</code> traduce textul primit în liste și dicționare."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-prima", "indiciu": "Pentru citire, metoda HTTP e GET; în requests are același nume, cu litere mici. Codul de stare e un atribut al răspunsului (status_...), iar datele se scot cu metoda care poartă numele formatului.", "iesire": "200\n2", "fisier": "prima_cerere.py", "sarcina": "Completează metoda, verificarea codului de stare și transformarea răspunsului în date Python.", "cod": "import requests\n\nurl = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n# metoda prin care se citeste, fara sa se schimbe nimic\nr = requests.{{1}}(url, params={\"format\": \"json\"}, timeout=30)\n\n# primul lucru dupa orice cerere: codul de stare\nprint(r.{{2}})            # 200\n\n# corpul raspunsului, din text JSON in liste si dictionare\ndate = r.{{3}}()\nprint(len(date))            # 2", "goluri": {"1": {"ok": ["get"], "ajutor": "metoda"}, "2": {"ok": ["status_code"], "ajutor": "atributul"}, "3": {"ok": ["json"], "ajutor": "metoda"}}, "laBine": "Astea trei linii sunt tot ce-ți trebuie pentru nouă zecimi din colectările de la curs.", "laRau": "Nu pune ghilimele: se cer un nume de metodă și un atribut.", "explicatie": "<code>r.json()</code> traduce textul primit în liste și dicționare."}</script></div>
 </div><div class="nota"><div class="nota__et">timeout</div><p><code>timeout=30</code> nu e decorativ. Fără el, o cerere către un server care nu răspunde blochează programul la nesfârșit, iar la o colectare de o mie de cereri asta înseamnă un script care pare pornit toată noaptea și n-a făcut nimic.</p></div>
 
 </section>
@@ -215,7 +187,7 @@
 <span class="tut__nr">16 · requests</span>
 <h2>Parametrii</h2><p>Tot ce ține de filtrare merge în <code>params</code>, nu în șirul adresei. Două motive: codificarea se face singură, și adresa rămâne lizibilă atunci când o citești peste o lună.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Pune parametrii cum trebuie</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-param", "fisier": "parametri.py", "sarcina": "Mută filtrele din adresă în dicționarul de parametri.", "cod": "import requests\n\nbaza = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n# anii si formatul nu se lipesc in adresa, se dau separat\np = {\n    \"format\": \"json\",\n    \"date\": {{1}},\n    \"per_page\": {{2}},\n}\n\nr = requests.get(baza, {{3}}=p, timeout=30)\nprint(r.url)", "goluri": {"1": {"ok": ["\"2000:2023\"", "'2000:2023'"], "ajutor": "intervalul"}, "2": {"ok": ["100", "\"100\"", "'100'"], "ajutor": "numărul"}, "3": {"ok": ["params"], "ajutor": "argumentul"}}, "laBine": "<code>r.url</code> îți arată adresa construită de bibliotecă.", "laRau": "Intervalul de ani e text, între ghilimele.", "explicatie": "Biblioteca codifică singură ce trebuie codificat."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-param", "indiciu": "Anii se scriu ca text, de forma „de la:până la”. Argumentul care primește dicționarul se numește, pe englezește, chiar „parametri”.", "iesire": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=2000%3A2023&per_page=100", "fisier": "parametri.py", "sarcina": "Mută filtrele din adresă în dicționarul de parametri.", "cod": "import requests\n\nbaza = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n\n# anii si formatul nu se lipesc in adresa, se dau separat\np = {\n    \"format\": \"json\",\n    \"date\": {{1}},\n    \"per_page\": {{2}},\n}\n\nr = requests.get(baza, {{3}}=p, timeout=30)\nprint(r.url)", "goluri": {"1": {"ok": ["\"2000:2023\"", "'2000:2023'"], "ajutor": "intervalul"}, "2": {"ok": ["100", "\"100\"", "'100'"], "ajutor": "numărul"}, "3": {"ok": ["params"], "ajutor": "argumentul"}}, "laBine": "<code>r.url</code> îți arată adresa construită de bibliotecă.", "laRau": "Intervalul de ani e text, între ghilimele.", "explicatie": "Biblioteca codifică singură ce trebuie codificat."}</script></div>
 </div>
 
 </section>
@@ -223,17 +195,13 @@
 <section class="tut__s" id="s18">
 <span class="tut__nr">17 · requests</span>
 <h2>Răspunsul vine pe pagini</h2><p>Niciun API serios nu-ți dă zece mii de rânduri dintr-o dată. Îți dă o pagină și îți spune câte mai sunt.</p><pre><code><span class="c"># primul element al raspunsului, la Banca Mondiala</span>
-{"page": 1, "pages": 2, "per_page": 50, "total": 64}</code></pre><div class="ix" data-ix="ordine">
+{"page": 1, "pages": 2, "per_page": 50, "total": 64}</code></pre><div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Ce afișează?</span><span class="ix__t">Câte sunt, câte ai primit</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-prezice-pagini", "fisier": "02_colectarea.ipynb · 4. Paginarea", "cod": "date = r.json()\nmeta, valori = date[0], date[1]\n\n# meta = {\"page\": 1, \"pages\": 3, \"per_page\": 2, \"total\": 6}\nprint(meta[\"total\"], len(valori))", "intrebare": "Ce afișează?", "variante": ["6 6", "6 2", "2 6", "3 2"], "corect": 1, "indiciu": "total spune câte valori există în total; len(valori) numără câte au venit pe pagina asta.", "laBine": "Ai primit 2 din 6: mai sunt două pagini de cerut.", "explicatie": "Primul element e paginarea: în total sunt 6 valori, câte 2 pe pagină, pe 3 pagini. Pe pagina asta au venit doar 2. De aici bucla de mai jos: ceri pagină după pagină până când <code>page</code> ajunge la <code>pages</code>."}</script></div>
+</div><div class="ix" data-ix="ordine">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Bucla de colectare</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-ordine-paginare", "sarcina": "Pune pașii unei colectări paginate în ordine.", "linii": ["pagina = 1; tot = []", "r = requests.get(url, params={**p, \"page\": pagina}, timeout=30)", "if r.status_code != 200: break", "cap, date = r.json()", "tot.extend(date)", "if pagina >= cap[\"pages\"]: break", "pagina += 1; time.sleep(0.5)"], "explicatie": "Verificarea codului vine înaintea citirii datelor, iar pauza la final e politețea care te ține sub limita de cereri. Fără <code>sleep</code>, o buclă de o sută de pagini ajunge la 429 în câteva secunde."}</script></div>
-</div><div class="verif" data-id="c2-v10" data-corect="0">
-    <p class="verif__q">De ce pui o pauză între cereri, într-o buclă de colectare?</p>
-    <button>Ca să nu depășesc limita de cereri a serverului</button>
-    <button>Ca să am timp să citesc rezultatele</button>
-    <button>Ca să consume mai puțină memorie</button>
-    <button>Nu e nevoie, serverul se descurcă</button>
-    <p class="verif__ex">Ca să rămâi sub limită. O pauză de jumătate de secundă nu te costă nimic la o sută de pagini, dar te scutește de a fi blocat temporar.</p>
-  </div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-ordine-paginare", "poarta": false, "sarcina": "Pune pașii unei colectări paginate în ordine.", "linii": ["pagina = 1; tot = []", "r = requests.get(url, params={**p, \"page\": pagina}, timeout=30)", "if r.status_code != 200: break", "cap, date = r.json()", "tot.extend(date)", "if pagina >= cap[\"pages\"]: break", "pagina += 1; time.sleep(0.5)"], "explicatie": "Verificarea codului vine înaintea citirii datelor, iar pauza la final e politețea care te ține sub limita de cereri. Fără <code>sleep</code>, o buclă de o sută de pagini ajunge la 429 în câteva secunde."}</script></div>
+</div>
 
 </section>
 
@@ -241,7 +209,7 @@
 <span class="tut__nr">18 · requests</span>
 <h2>Ultimul pas: un tabel</h2><p>Răspunsul e o structură cu mai multe niveluri. Analiza vrea rânduri și coloane.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Fă tabelul</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-tabel", "fisier": "in_tabel.py", "sarcina": "Transformă lista de înregistrări într-un tabel și salvează-l.", "cod": "import pandas as pd\n\n# `date` e lista de inregistrari din raspuns\nd = pd.{{1}}(date)\n\n# structurile incuibate devin coloane separate\nd = pd.json_normalize(date)\nprint(d.columns.tolist())\n\n# il salvam ca sa nu mai cerem de doua ori acelasi lucru\nd.to_csv(\"date/brute/populatie_ro.csv\", index={{2}})", "goluri": {"1": {"ok": ["DataFrame"], "ajutor": "constructorul"}, "2": {"ok": ["False"], "ajutor": "valoarea"}}, "laBine": "De aici încolo e pandas, adică teren cunoscut de la cursul 1.", "laRau": "Numele constructorului se scrie cu majuscule unde trebuie. La index, răspunsul e una dintre cele două valori logice.", "explicatie": "<code>json_normalize</code> desface dicționarele încuibate în coloane cu punct în nume, de tipul <code>indicator.value</code>. <code>index=False</code> împiedică pandas să adauge o coloană de numerotare care nu înseamnă nimic și care încurcă la reîncărcare."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-tabel", "fisier": "in_tabel.py", "sarcina": "Transformă lista de înregistrări într-un tabel și salvează-l.", "cod": "import pandas as pd\n\n# `valori` e lista de inregistrari din raspuns (date[1])\n# dictionarele dinauntru devin coloane: country.value, indicator.id ...\nd = pd.{{1}}(valori)\nprint(d[[\"country.id\", \"date\", \"value\"]])\n\n# il salvam ca sa nu mai cerem de doua ori acelasi lucru\nd.to_csv(\"date/brute/populatie_ro.csv\", index={{2}})", "goluri": {"1": {"ok": ["json_normalize"], "ajutor": "funcția din caiet"}, "2": {"ok": ["False"], "ajutor": "True sau False"}}, "indiciu": "Funcția care desface JSON-ul în tabel are în nume cuvântul „normalize”. Coloana de numerotare n-o vrem în fișier, deci index = valoarea logică „nu”.", "iesire": "  country.id  date     value\n0         RO  2024  19064409\n1         RO  2023  19051562", "laBine": "De aici încolo e pandas, adică teren cunoscut de la cursul 1.", "laRau": "Numele funcției se scrie exact ca în caiet. La index, răspunsul e una dintre cele două valori logice.", "explicatie": "<code>json_normalize</code> desface dicționarele încuibate în coloane cu punct în nume, de tipul <code>indicator.value</code>. <code>index=False</code> împiedică pandas să adauge o coloană de numerotare care nu înseamnă nimic și care încurcă la reîncărcare."}</script></div>
 </div><div class="nota"><div class="nota__et">Salvează brutul, nu doar curățatul</div><p>Fișierul din <code>date/brute/</code> se scrie o dată și nu se mai atinge. Curățarea lucrează pe o copie. Altfel, peste două săptămâni, nu mai știi ce ai schimbat și nu te mai poți întoarce.</p></div>
 
 </section>
@@ -259,7 +227,7 @@
 <span class="tut__nr">20 · Eurostat</span>
 <h2>Migrația, prin API</h2><p>Datasetul <code>migr_pop1ctz</code> spune câți oameni cu o anumită cetățenie trăiesc într-o țară, la 1 ianuarie. Filtrele <code>sex=T</code>, <code>age=TOTAL</code> și <code>unit=NR</code> înseamnă toată populația, în număr de persoane.</p><p>Am ales cetățenia, nu țara nașterii (<code>migr_pop3ctb</code>), pentru că mai multe țări mari, printre ele Germania, nu raportează nașterile pe țări. Cetățenia are și ea o limită: cine a luat cetățenia țării în care trăiește nu mai apare ca migrant.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Adu migrația</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-migr", "fisier": "migratie.py", "sarcina": "Completează datasetul și cele două coduri, ca să afli câți români trăiesc în Italia.", "cod": "# cere_eurostat face cererea si desface cubul (caietul C2)\np = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\nmigratie = cere_eurostat({{1}}, p)\n\n# geo = tara unde traiesc, citizen = cetatenia\nmigratie[(migratie[\"geo\"] == {{2}}) & (migratie[\"citizen\"] == {{3}})]", "goluri": {"1": {"ok": ["\"migr_pop1ctz\"", "'migr_pop1ctz'"], "ajutor": "datasetul"}, "2": {"ok": ["\"IT\"", "'IT'"], "ajutor": "țara"}, "3": {"ok": ["\"RO\"", "'RO'"], "ajutor": "cetățenia"}}, "laBine": "1.073.196 de cetățeni români în Italia, la 1 ianuarie 2024.", "laRau": "Codurile sunt text, între ghilimele: întâi țara unde trăiesc, apoi cetățenia.", "explicatie": "Un rând din tabelul ăsta e o pereche de țări, ca la SCI. Diferența: migrația are sens. Românii din Italia nu sunt italienii din România."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-migr", "indiciu": "Datasetul Eurostat al populației după cetățenie se numește migr_pop1ctz. geo e țara unde trăiesc (Italia), citizen e cetățenia (România). Toate trei sunt text.", "iesire": "     geo citizen    valoare\n4812  IT      RO    1073196", "fisier": "migratie.py", "sarcina": "Completează datasetul și cele două coduri, ca să afli câți români trăiesc în Italia.", "cod": "# cere_eurostat face cererea si desface cubul (caietul C2)\np = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\nmigratie = cere_eurostat({{1}}, p)\n\n# geo = tara unde traiesc, citizen = cetatenia\nmigratie[(migratie[\"geo\"] == {{2}}) & (migratie[\"citizen\"] == {{3}})]", "goluri": {"1": {"ok": ["\"migr_pop1ctz\"", "'migr_pop1ctz'"], "ajutor": "datasetul"}, "2": {"ok": ["\"IT\"", "'IT'"], "ajutor": "țara"}, "3": {"ok": ["\"RO\"", "'RO'"], "ajutor": "cetățenia"}}, "laBine": "1.073.196 de cetățeni români în Italia, la 1 ianuarie 2024.", "laRau": "Codurile sunt text, între ghilimele: întâi țara unde trăiesc, apoi cetățenia.", "explicatie": "Un rând din tabelul ăsta e o pereche de țări, ca la SCI. Diferența: migrația are sens. Românii din Italia nu sunt italienii din România."}</script></div>
 </div><div class="nota"><div class="nota__et">Codurile care încurcă</div><p>Eurostat scrie Grecia <code>EL</code>, nu <code>GR</code>. Iar <code>NA</code> e Namibia, pe care pandas o citește ca valoare lipsă dacă nu-i spui altfel. Le reluăm la curățare, la cursul 4.</p></div>
 
 </section>
@@ -277,7 +245,7 @@
 <span class="tut__nr">22 · Postman</span>
 <h2>Postman</h2><p>Înainte de a scrie cod, merită să faci cererea într-un loc unde vezi tot: adresa, parametrii, antetele, codul de stare și corpul răspunsului.</p><table class="tabel"><thead><tr><th>În Postman</th><th>Ce vezi</th></tr></thead><tbody><tr><td>metoda și adresa</td><td>ce ceri</td></tr><tr><td>tabul Params</td><td>parametrii, pe rânduri, ușor de modificat</td></tr><tr><td>butonul Send</td><td>codul de stare și cât a durat</td></tr><tr><td>panoul de jos</td><td>JSON-ul, pliat pe niveluri</td></tr></tbody></table><p>Când cererea merge acolo, o treci în cod. Când nu merge în cod, te întorci acolo ca să vezi care bucată diferă.</p><div class="ix" data-ix="dovada">
   <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Arată că ți-a mers</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-postman", "sarcina": "Fă în Postman cererea către Banca Mondială și lipește aici prima linie a răspunsului, cea cu paginarea.", "pasi": [{"t": "Cererea a mers, iar răspunsul are paginare", "cmd": "GET https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json", "gol": "lipește prima linie a răspunsului", "cauta": "\\\"?page\\\"?\\s*:\\s*1", "daca_nu": "Caut câmpul page cu valoarea 1, din primul element al răspunsului. Îl vezi sus de tot în JSON-ul din Postman."}], "explicatie": "Dacă ai asta, ai făcut o cerere adevărată către un server adevărat și ai citit răspunsul. Restul lecției e același lucru, scris în Python."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-postman", "poarta": false, "sarcina": "Fă în Postman cererea către Banca Mondială și lipește aici prima linie a răspunsului, cea cu paginarea.", "pasi": [{"t": "Cererea a mers, iar răspunsul are paginare", "cmd": "GET https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json", "gol": "lipește prima linie a răspunsului", "cauta": "\\\"?page\\\"?\\s*:\\s*1", "daca_nu": "Caut câmpul page cu valoarea 1, din primul element al răspunsului. Îl vezi sus de tot în JSON-ul din Postman."}], "explicatie": "Dacă ai asta, ai făcut o cerere adevărată către un server adevărat și ai citit răspunsul. Restul lecției e același lucru, scris în Python."}</script></div>
 </div>
 
 </section>
@@ -324,11 +292,11 @@ d.to_csv(<span class="s">"date/brute/populatie_ro.csv"</span>, index=<span class
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=48"></script>
+<script type="module" src="../../js/antet.js?v=51"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=48";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=48";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=48";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=51";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=51";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=51";
 pornesteIx();
 pornesteVerif("c2");
 pornesteTut("c2");
