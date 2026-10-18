@@ -10,7 +10,7 @@
    ziua în care există fișierul, nu înainte.
    =========================================================================== */
 
-import { CURS, RADACINA } from "./curs.js?v=45";
+import { CURS, RADACINA } from "./curs.js?v=46";
 
 deseneaza();
 

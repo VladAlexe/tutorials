@@ -12,7 +12,7 @@ cN-.../lectie/             slide-urile lecției (generate)
 cN-.../tutorial/           manualul lecției (generat)
 cont/                      intrarea în cont și contul studentului
 intra/                     intrarea la oră, cu codul de pe ecran
-predau/                    doar profesorul: panoul (orele, studenții)
+predau/                    doar profesorul: catalogul, lecțiile, orele
 predau/ora/                doar profesorul: rezultatele orei, cu nume
 explorator/                harta SCI
 date-personale/            ce se salvează
@@ -30,6 +30,8 @@ _build/                    generatoarele
   proiector), **Rezultate ↗** (cu nume, în altă filă) și **Încheie ora**, singurul
   loc din care se oprește.
 - O oră uitată deschisă se închide singură după 3 ore (`db/17-inchidere-automata.sql`).
+- Catalogul (prezență, activitate, teme, proiect, total) cere `db/18-catalog.sql`.
+  Temele și proiectul se scriu direct în catalog; studentul le vede în contul lui.
 - Studentul vede doar lecțiile predate grupei. **Începe lecția** pornește mereu de
   la primul slide.
 

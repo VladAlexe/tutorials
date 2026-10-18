@@ -15,6 +15,16 @@ returns int
 language plpgsql security definer set search_path = public as $$
 declare n int;
 begin
+  -- prezența se ia din activitate, ca la închiderea obișnuită (inchide_sedinta)
+  insert into public.prezente (user_id, curs, sedinta_id, marcat_la)
+  select i.user_id, s.capitol, s.id, min(i.creat_la)
+    from public.sedinte s
+    join public.incercari i on i.sedinta_id = s.id
+   where s.inchisa_la is null
+     and s.deschisa_la < now() - interval '3 hours'
+   group by i.user_id, s.capitol, s.id
+  on conflict do nothing;
+
   update public.sedinte
      set inchisa_la = deschisa_la + interval '3 hours'
    where inchisa_la is null

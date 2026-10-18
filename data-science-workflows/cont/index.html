@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=45">
-<link rel="stylesheet" href="../css/cont.css?v=45">
-<script src="../js/tema.js?v=45"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=46">
+<link rel="stylesheet" href="../css/cont.css?v=46">
+<script src="../js/tema.js?v=46"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=45";
+import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=46";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -35,8 +35,8 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=45");
-  CFG = await import("../js/supabase-config.js?v=45");
+  A = await import("../js/auth.js?v=46");
+  CFG = await import("../js/supabase-config.js?v=46");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
     <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
@@ -139,7 +139,7 @@ function intrare(){
 async function deseneaza(){
   const invitat = A.esteInvitat(p);
 
-  let progresBaza = new Set(), rasp = [], codul = [], prez = [], totaleBaza = new Map();
+  let progresBaza = new Set(), rasp = [], codul = [], prez = [], totaleBaza = new Map(), noteMele = {};
   try {
     const [g, r, c, z, s] = await Promise.all([
       A.sb.from("progres").select("sectiune_id, ultima_data"),
@@ -150,6 +150,8 @@ async function deseneaza(){
       A.sb.from("prezente").select("curs, marcat_la"),
       A.sb.from("sesiuni").select("capitol, total_nr")
     ]);
+    /* notele puse de profesor (teme, proiect); fără db/18, rămân goale */
+    noteMele = await A.sb.rpc("note_mele").then(x => x.data || {}).catch(() => ({}));
     (g.data || []).forEach(x => progresBaza.add(x.sectiune_id));
     rasp = r.data || []; codul = c.data || []; prez = z.data || [];
     (s.data || []).forEach(x => { if (x.capitol && x.total_nr)
@@ -166,7 +168,7 @@ async function deseneaza(){
      spun unde ajungi la final, nu unde am ajuns noi astăzi. */
   let listaL = LECTII;
   try {
-    const Ora = await import("../js/ora.js?v=45");
+    const Ora = await import("../js/ora.js?v=46");
     listaL = await Ora.lectiiVizibile(LECTII, p.profesorReal);
   } catch { /* fără bază, se văd toate */ }
 
@@ -233,6 +235,8 @@ async function deseneaza(){
            || lectii.find(x => x.l.stare === "gata");
   const ini = (p.nume || "?").trim().split(/\s+/).slice(0,2).map(x => x[0] || "").join("").toUpperCase();
 
+  const pTeme = ["tema1","tema2","tema3"].reduce((a, k) => a + (+noteMele[k] || 0), 0);
+  const areTeme = ["tema1","tema2","tema3"].some(k => noteMele[k] != null);
   gazda.innerHTML = `
   <header class="cnt__cap">
     <div class="cnt__cerc" style="--p:0"><i>${ini}</i></div>
@@ -273,15 +277,18 @@ async function deseneaza(){
       ${nota("seminar", nr1(pActiv), pct.seminar,
              seminare ? `${seminare} din ${ACT.seminare} seminare` : "încă niciun seminar",
              pActiv / pct.seminar)}
-      ${nota("teme", null, pct.teme, "le notez eu, după fiecare temă", 0)}
-      ${nota("proiect", null, pct.proiect, "se notează la prezentare", 0)}
+      ${nota("teme", areTeme ? nr1(pTeme) : null, pct.teme,
+             areTeme ? `${["tema1","tema2","tema3"].filter(k => noteMele[k] != null).length} din 3 teme notate` : "le notez eu, după fiecare temă",
+             pTeme / pct.teme)}
+      ${nota("proiect", noteMele.proiect != null ? nr1(+noteMele.proiect) : null, pct.proiect,
+             noteMele.proiect != null ? "notat" : "se notează la prezentare", (+noteMele.proiect || 0) / pct.proiect)}
       ${nota("oficiu", nr1(pct.oficiu), pct.oficiu, "îl ai", 1)}
     </div>
 
     <div class="nta__tot">
       <span>Acum, din ce se poate calcula</span>
-      <b>${nr1(pActiv + pct.oficiu)}</b>
-      <span>din ${NOTARE.total}; restul vin de la teme și de la proiect</span>
+      <b>${nr1(pActiv + pct.oficiu + pTeme + (+noteMele.proiect || 0))}</b>
+      <span>din ${NOTARE.total}${noteMele.proiect != null ? "" : "; proiectul se adaugă la final"}</span>
     </div>
 
     <details class="detalii">
@@ -412,7 +419,7 @@ catch (e) {
 }
 A.laSchimbare(() => unde().catch(() => {}));
 </script>
-<script type="module" src="../js/antet.js?v=45"></script>
-<script type="module" src="../js/subsol.js?v=45"></script>
+<script type="module" src="../js/antet.js?v=46"></script>
+<script type="module" src="../js/subsol.js?v=46"></script>
 </body>
 </html>
