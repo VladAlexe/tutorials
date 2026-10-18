@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=41";
-import { RADACINA } from "./curs.js?v=41";
+import { sb } from "./auth.js?v=42";
+import { RADACINA } from "./curs.js?v=42";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -123,7 +123,9 @@ export const acum = capitol => cheama("ora_acum", { p_capitol:capitol });
     mai rea decât o lecție văzută prea devreme. */
 export async function predate() {
   try {
-    const { data, error } = await sb.from("sedinte").select("capitol");
+    /* doar orele adevărate: o oră de test o arhivezi din „Ședințele” și
+       lecția nu mai apare ca predată */
+    const { data, error } = await sb.from("sedinte").select("capitol").is("arhivata_la", null);
     if (error) return null;
     return new Set((data || []).map(r => r.capitol));
   } catch { return null; }
@@ -146,7 +148,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=41`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=42`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

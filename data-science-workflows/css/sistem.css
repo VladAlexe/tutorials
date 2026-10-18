@@ -53,6 +53,11 @@
      coada ochiului, ca un verdict. */
   --ceas:         #8A6D14;
   --ceas-slab:    #F2ECDC;
+  /* din paleta Transcription Lab: Amber Earth și Smoky Rose, folosite discret */
+  --ambra:        #B8650F;
+  --ambra-slab:   #F7E9D9;
+  --roza:         #945D5E;
+  --roza-slab:    #F2E6E5;
   --umbra:        0 1px 2px rgba(34,34,26,.06), 0 4px 14px rgba(34,34,26,.06);
   --umbra-2:      0 2px 6px rgba(34,34,26,.09), 0 12px 34px rgba(34,34,26,.10);
 
@@ -98,6 +103,10 @@
     --nu-slab:      #2E201C;
     --ceas:         #E3B55C;
     --ceas-slab:    #2C2619;
+    --ambra:        #E8871E;
+    --ambra-slab:   #33261A;
+    --roza:         #C9898A;
+    --roza-slab:    #32232A;
     --umbra:        0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
     --umbra-2:      0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
     --crom:         #232319;
@@ -128,6 +137,10 @@
   --nu-slab:      #2E201C;
   --ceas:         #E3B55C;
   --ceas-slab:    #2C2619;
+  --ambra:        #E8871E;
+  --ambra-slab:   #33261A;
+  --roza:         #C9898A;
+  --roza-slab:    #32232A;
   --umbra:        0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
   --umbra-2:      0 2px 6px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.35);
   --crom:         #232319;

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=41">
-<link rel="stylesheet" href="../css/predau.css?v=41">
-<script src="../js/tema.js?v=41"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=42">
+<link rel="stylesheet" href="../css/predau.css?v=42">
+<script src="../js/tema.js?v=42"></script>
 </head>
 <body>
 
@@ -35,7 +35,7 @@
   <div id="istoric"><div class="sch sch--r"></div></div>
 </main>
 
-<script type="module" src="../js/antet.js?v=41"></script>
+<script type="module" src="../js/antet.js?v=42"></script>
 <script type="module">
 /* ===========================================================================
    PAGINA ASTA NU PORNEȘTE ORA.
@@ -49,8 +49,8 @@
    Aici e doar lista: ce am predat, ce urmează, și intrarea în fiecare lecție.
    =========================================================================== */
 
-import { RADACINA, LECTII } from "../js/curs.js?v=41";
-import * as O from "../js/ora.js?v=41";
+import { RADACINA, LECTII } from "../js/curs.js?v=42";
+import * as O from "../js/ora.js?v=42";
 
 const el = id => document.getElementById(id);
 const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
@@ -58,7 +58,7 @@ const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
               "august","septembrie","octombrie","noiembrie","decembrie"];
 
 let A;
-try { A = await import("../js/auth.js?v=41"); }
+try { A = await import("../js/auth.js?v=42"); }
 catch { el("sub").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();
