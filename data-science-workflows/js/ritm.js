@@ -34,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=46";
+import { RADACINA } from "./curs.js?v=47";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -44,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=46`);
-    O = await import(`${RADACINA}/js/ora.js?v=46`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=46`);
+    A = await import(`${RADACINA}/js/auth.js?v=47`);
+    O = await import(`${RADACINA}/js/ora.js?v=47`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=47`);
   } catch { return null; }
 
   let p = null;
@@ -80,6 +80,28 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     }
     let randuri = [], sertarDeschis = false;
 
+    /* O SINGURĂ ORĂ, CONDUSĂ DINTR-UN SINGUR LOC. Dacă lecția e deschisă în
+       două file (ai ieșit și ai intrat din nou, ai deschis-o din panou),
+       doar una mută slide-urile clasei. Cealaltă stă liniștită și spune
+       asta, cu un buton de preluare. Fila care conduce bate la 2 secunde;
+       dacă tace mai mult de 6, următoarea preia singură. */
+    const FILA = Math.random().toString(36).slice(2);
+    const CHEIE_SOFER = "dsw.sofer";
+    const citesteSofer = () => { try { return JSON.parse(localStorage.getItem(CHEIE_SOFER) || "null"); } catch { return null; } };
+    const pot = () => { const x = citesteSofer(); return !x || x.fila === FILA || Date.now() - x.t > 6000; };
+    const iauVolanul = () => { try { localStorage.setItem(CHEIE_SOFER, JSON.stringify({ fila: FILA, t: Date.now() })); } catch {} };
+    let pasiv = !!S && !pot();
+    if (S && !pasiv) iauVolanul();
+    setInterval(() => {
+      if (!S) return;
+      if (!pasiv) iauVolanul();
+      else if (pot()){ pasiv = false; iauVolanul(); deseneaza(); }
+    }, 2000);
+    addEventListener("pagehide", () => {
+      const x = citesteSofer();
+      if (x?.fila === FILA){ try { localStorage.removeItem(CHEIE_SOFER); } catch {} }
+    });
+
     const slideAcum = () => Math.max(1, (unde?.() | 0) || 1);
 
     /** Câți sunt, și cine ce a trimis pe slide-ul de pe ecran. */
@@ -105,6 +127,17 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       /* fără oră pornită, bara nu există: profesorul răsfoiește lecția ca
          oricine. Ora se pornește de pe pagina lecției, cu „Predă”. */
       if (!S){ bara.hidden = true; bara.innerHTML = ""; return; }
+      if (pasiv){
+        bara.innerHTML = `<span class="ritm__pct"></span>
+          <span class="ritm__t">Ora e condusă din altă filă</span>
+          <span class="ritm__d">aici doar te uiți; slide-urile clasei nu se mută de aici</span>
+          <span class="ritm__sp"></span>
+          <button class="ritm__b ritm__b--tare" type="button" data-rol="preia">Condu ora de aici</button>`;
+        bara.querySelector('[data-rol="preia"]').onclick = () => {
+          pasiv = false; iauVolanul(); O.pune(S.id, { slide: slideAcum() }); deseneaza(); numara();
+        };
+        return;
+      }
 
       const sarcini = sarciniDe(slideAcum());
       const cate = P.numara(randuri);
@@ -137,8 +170,8 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         ${sarcini.length ? `<button class="ritm__b${sertarDeschis ? " ritm__b--on" : ""}" type="button"
             data-rol="panou" title="Răspunsurile clasei, fără nume, pentru proiector">${
             sertarDeschis ? "Ascunde răspunsurile" : "Arată clasei"}</button>` : ""}
-        <a class="ritm__b" href="${RADACINA}/predau/ora/" target="_blank" rel="noopener"
-           title="Cine ce a răspuns, cu nume. Doar pentru tine.">Rezultate ↗</a>
+        <button class="ritm__b" type="button" data-rol="rezultate"
+           title="Cine ce a răspuns, cu nume: pe slide și pe toată ora. Doar pentru tine.">Rezultate</button>
         <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Încheie ora</button>`;
       lega();
       if (sertarDeschis) deseneazaSertar();
@@ -149,6 +182,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       bara.querySelector('[data-rol="link"]') ?.addEventListener("click", copiaza);
       bara.querySelector('[data-rol="cod"]')  ?.addEventListener("click", ecran);
       bara.querySelector('[data-rol="panou"]')?.addEventListener("click", comutaPanoul);
+      bara.querySelector('[data-rol="rezultate"]')?.addEventListener("click", rezultate);
     }
 
     async function porneste(){
@@ -166,6 +200,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         return;
       }
       S = await O.deschisa(capitol);
+      pasiv = false; iauVolanul();
       if (S) await O.pune(S.id, { slide: slideAcum() });
       dinCand = Date.now();
       laStare?.(true, S?.mod || "live");
@@ -276,6 +311,84 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         .catch(() => { /* fără bibliotecă, codul scris mare e de ajuns */ });
     }
 
+    /* --- rezultatele, peste lecție -------------------------------------------
+       Doar pentru tine (nu e pentru proiector): cu nume. Două file: slide-ul
+       de pe ecran, cu ce a ales sau ce a scris fiecare, și toată ora. Nimic de
+       apăsat în afară de X; se reîmprospătează singur cât e deschis. */
+    let rzFila = "slide", rzCeas = null, rzSort = "slide";
+    function inchideRezultate(){
+      clearInterval(rzCeas); rzCeas = null;
+      document.querySelector(".rz")?.remove();
+    }
+    function rezultate(){
+      if (document.querySelector(".rz")) return;
+      const d = document.createElement("div");
+      d.className = "rz";
+      d.innerHTML = `<div class="rz__in" role="dialog" aria-label="Rezultatele orei">
+        <div class="rz__cap">
+          <div class="rz__file">
+            <button type="button" data-f="slide">Slide-ul de pe ecran</button>
+            <button type="button" data-f="ora">Toată ora</button>
+          </div>
+          <button class="rz__x" type="button" aria-label="Închide">✕</button>
+        </div>
+        <div class="rz__corp"><p class="rz__gol">Se încarcă…</p></div></div>`;
+      document.body.appendChild(d);
+      d.addEventListener("click", e => {
+        if (e.target === d || e.target.closest(".rz__x")) inchideRezultate();
+        const f = e.target.closest("[data-f]");
+        if (f){ rzFila = f.dataset.f; umpleRezultate(); }
+      });
+      umpleRezultate();
+      rzCeas = setInterval(() => { if (!document.hidden) umpleRezultate(); }, 4000);
+    }
+    const escR = x => String(x ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+    async function umpleRezultate(){
+      const d = document.querySelector(".rz");
+      if (!d || !S) return;
+      d.querySelectorAll("[data-f]").forEach(b => b.classList.toggle("on", b.dataset.f === rzFila));
+      const corp = d.querySelector(".rz__corp");
+      const sb = A.sb;
+      if (rzFila === "slide"){
+        const nr = slideAcum(), sarcini = sarciniDe(nr);
+        const rand = await O.panou(S.id, sarcini.map(x => x.id)) || [];
+        /* ce au trimis la exercițiile cu cod sau text de pe slide */
+        const coduri = sarcini.filter(x => x.fel === "cod");
+        const trimise = coduri.length ? (await Promise.all(coduri.map(x =>
+          sb.rpc("sumar_cod", { p_exercitiu: x.id }).then(r => r.data || []).catch(() => [])))).flat() : [];
+        if (!document.querySelector(".rz")) return;
+        corp.innerHTML = P.randeaza({ slide: slideDe(nr), sarcini, randuri: rand, sortare: rzSort,
+                                      secunde: secunde(), totalSarcini: harta?.sarcini || null, nume: true })
+          + (trimise.length ? `<h3 class="rz__h">Ce au trimis pe slide-ul ăsta</h3>
+            <div class="rz__txt">${trimise.map(t => `<div class="rz__t ${t.trecut ? "bun" : ""}">
+              <b>${escR(t.nume)}</b><pre>${escR(t.cod || "")}</pre></div>`).join("")}</div>` : "");
+        P.legaSortarea(corp, s => { rzSort = s; umpleRezultate(); });
+      } else {
+        const [r, oameni, texte] = await Promise.all([
+          O.raport(S.id), O.sumar(S.id),
+          sb.rpc("sumar_scrise", { p_capitol: capitol, p_tip: null })
+            .then(x => (x.data || []).filter(t => new Date(t.creat_la) >= new Date(S.deschisa_la))).catch(() => [])
+        ]);
+        if (!document.querySelector(".rz")) return;
+        const vii = randuri.filter(x => x.vazut_la && Date.now() - new Date(x.vazut_la) < 90000).length;
+        corp.innerHTML = `
+          <div class="rz__cif">
+            <div><b>${vii}</b><span>în clasă acum</span></div>
+            <div><b>${r?.intrati ?? "—"}</b><span>au lucrat în oră</span></div>
+            <div><b>${r?.sarcini_atinse ?? "—"}<small>/${harta?.sarcini || "—"}</small></b><span>sarcini atinse</span></div>
+            <div><b>${S.minute ?? "—"}</b><span>minute de oră</span></div>
+          </div>
+          ${r?.impotmolire ? `<p class="rz__imp">Unde se împotmolesc: <b>${escR(r.impotmolire.sarcina)}</b>,
+            doar ${r.impotmolire.trecuti} din ${r.impotmolire.din} au trecut-o.</p>` : ""}
+          <h3 class="rz__h">Fiecare student, pe toată ora</h3>
+          ${oameni?.length ? `<table class="pv-tb"><thead><tr><th>Student</th><th>Trimise</th><th>Trecute</th><th>Goale</th></tr></thead>
+            <tbody>${oameni.map(x => `<tr><td>${escR(x.nume)}</td><td>${x.trimise}</td><td>${x.trecute}</td><td>${x.goale ?? 0}</td></tr>`).join("")}</tbody></table>`
+            : `<p class="rz__gol">Încă n-a trimis nimeni nimic în ora asta.</p>`}
+          ${texte.length ? `<h3 class="rz__h">Ce au scris în ora asta</h3>
+            <div class="rz__txt">${texte.map(t => `<div class="rz__t"><b>${escR(t.nume)}</b><p>${escR(t.text)}</p></div>`).join("")}</div>` : ""}`;
+      }
+    }
+
     /* --- taste ------------------------------------------------------------ */
 
     document.addEventListener("keydown", e => {
@@ -284,6 +397,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
 
       if (e.key === "Escape"){
+        if (document.querySelector(".rz")){ inchideRezultate(); return; }
         if (document.querySelector(".cod-mare")) document.querySelector(".cod-mare").remove();
         else if (sertarDeschis) comutaPanoul();
         return;
@@ -330,7 +444,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         if (nr === publicat) return;
         publicat = nr;
         dinCand = Date.now();               /* slide nou, ceas de la zero */
-        if (!S) return;
+        if (!S || pasiv) return;
         O.pune(S.id, { slide: nr });
         randuri = [];
         deseneaza();
@@ -352,7 +466,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=46`)
+    import(`${RADACINA}/js/colectare.js?v=47`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     const tocmaiS_aIncheiat = eraViu && !viu;

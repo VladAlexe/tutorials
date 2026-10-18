@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=46";
-import { RADACINA } from "./curs.js?v=46";
+import { sb } from "./auth.js?v=47";
+import { RADACINA } from "./curs.js?v=47";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -65,6 +65,18 @@ export function prea_veche(s) {
   const min = Number.isFinite(s.minute) ? s.minute
     : s.deschisa_la ? (Date.now() - new Date(s.deschisa_la)) / 60000 : 0;
   return min > ORE_MAX * 60;
+}
+
+/** Pentru student: ora pornită acum, oricare lecție, sau null. Citește direct
+    tabelul (studenții au voie să-l citească), fără funcție nouă în bază. */
+export async function oraDeschisa() {
+  try {
+    const { data } = await sb.from("sedinte").select("capitol, slide_nr, deschisa_la")
+      .is("inchisa_la", null).is("arhivata_la", null)
+      .gt("deschisa_la", new Date(Date.now() - ORE_MAX * 3600e3).toISOString())
+      .order("deschisa_la", { ascending: false }).limit(1);
+    return data?.[0] || null;
+  } catch { return null; }
 }
 
 /** Ora deschisă acum, sau null. */
@@ -158,7 +170,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=46`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=47`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

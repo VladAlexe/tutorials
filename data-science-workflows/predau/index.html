@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=46">
-<link rel="stylesheet" href="../css/panou.css?v=46">
-<link rel="stylesheet" href="../css/predau.css?v=46">
-<script src="../js/tema.js?v=46"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=47">
+<link rel="stylesheet" href="../css/panou.css?v=47">
+<link rel="stylesheet" href="../css/predau.css?v=47">
+<script src="../js/tema.js?v=47"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -172,11 +172,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=46"></script>
-<script type="module" src="../js/subsol.js?v=46"></script>
+<script type="module" src="../js/antet.js?v=47"></script>
+<script type="module" src="../js/subsol.js?v=47"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE } from "../js/curs.js?v=46";
-import * as O from "../js/ora.js?v=46";
+import { RADACINA, LECTII, NOTARE } from "../js/curs.js?v=47";
+import * as O from "../js/ora.js?v=47";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -187,7 +187,7 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const capDin = id => (String(id).match(/^c(\d+)-/) || [])[1];
 
 let A;
-try { A = await import("../js/auth.js?v=46"); }
+try { A = await import("../js/auth.js?v=47"); }
 catch { el("cat").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
@@ -231,8 +231,7 @@ function nota(r){
 }
 
 /* ------------------------------------------------------------------ date --- */
-const [viu, catRaw, oreRaw, arhRaw] = await Promise.all([
-  O.deschisa(),
+const [catRaw, oreRaw, arhRaw] = await Promise.all([
   sb.rpc("catalog").then(r => r.error ? { eroare: r.error.message } : r.data).catch(e => ({ eroare: e.message })),
   O.lista(false), O.lista(true)
 ]);
@@ -241,16 +240,28 @@ const ARH = Array.isArray(arhRaw) ? arhRaw : [];
 const CAT = Array.isArray(catRaw) ? catRaw : [];
 const predate = new Set(ORE.map(s => s.capitol));
 
-/* ------------------------------------------------------------------ acum --- */
-if (viu){
-  const l = lectiaDe(viu.capitol);
+/* ------------------------------------------------------------------ acum ---
+   Cât e o oră pornită, sus stă ora în direct: câți sunt, pe ce slide, cum au
+   răspuns. Se reîmprospătează singură. Un singur buton: înapoi la oră. */
+async function acum(){
+  const S = await O.deschisa();
+  if (!S || O.prea_veche(S)){ el("acum").innerHTML = ""; return; }
+  const l = lectiaDe(S.capitol);
+  const H = await O.harta(S.capitol);
+  const sarcini = O.sarciniDe(H, S.slide_nr || 1);
+  const rand = await O.panou(S.id, sarcini.map(x => x.id)) || [];
+  const vii = rand.filter(x => x.vazut_la && Date.now() - new Date(x.vazut_la) < 90000);
+  const c = k => rand.filter(x => x.stare === k).length;
   el("acum").innerHTML = `<div class="st st--viu">
-    <span class="st__pct"></span><span class="st__t">Ora e pornită</span>
-    <span class="st__d">${esc(viu.titlu)} · codul <strong>${viu.cod || "—"}</strong> · de ${viu.minute} min</span>
+    <span class="st__pct"></span><span class="st__t">Ora e pornită · C${l?.nr ?? ""}</span>
+    <span class="st__d">codul <strong>${S.cod || "—"}</strong> · slide ${S.slide_nr || 1}${S.total_nr ? " din " + S.total_nr : ""}
+      · <b>${vii.length}</b> în clasă${sarcini.length ? ` · pe slide: ✓ ${c("trecut")} ✕ ${c("trimis_gresit")} ◉ ${c("trimis_gol")}` : ""}
+      · de ${S.minute} min</span>
     <span class="st__sp"></span>
-    <a class="btn btn--mic" href="ora/" target="_blank" rel="noopener">Rezultate ↗</a>
-    <a class="btn btn--tare" href="${RADACINA}/${l?.cheie || ""}/lectie/">Mergi la oră</a></div>`;
+    <a class="btn btn--tare" href="${RADACINA}/${l?.cheie || ""}/lectie/#${S.slide_nr || 1}">Înapoi la oră</a></div>`;
 }
+acum();
+setInterval(() => { if (!document.hidden) acum(); }, 6000);
 
 /* ------------------------------------------------------------------- kpi --- */
 {

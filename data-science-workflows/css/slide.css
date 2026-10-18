@@ -397,3 +397,36 @@ body.prezint .sld{font-size:1.06em}
 .ritm__b--on{background:var(--ambra-slab);border-color:var(--ambra);color:var(--ambra)}
 .ritm__b--on:hover{border-color:var(--ambra);color:var(--ambra)}
 .cod-mare__copiaza{margin-top:18px;font-family:var(--sans);font-size:13px;padding:7px 14px}
+
+/* --- rezultatele orei, peste lecție (doar profesorul) ---------------------- */
+.rz{position:fixed;inset:0;z-index:90;background:rgba(20,20,15,.42);display:grid;place-items:center;padding:24px}
+.rz__in{width:min(1100px,100%);max-height:calc(100vh - 48px);overflow:auto;background:var(--fundal);
+  border:1px solid var(--linie);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.rz__cap{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:var(--fundal);border-bottom:1px solid var(--linie)}
+.rz__file{display:flex;gap:4px;flex:1}
+.rz__file button{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--text-2);background:none;
+  border:0;border-bottom:2px solid transparent;padding:6px 10px;cursor:pointer}
+.rz__file button.on{color:var(--text);border-bottom-color:var(--ambra)}
+.rz__x{font-size:18px;line-height:1;width:34px;height:34px;border-radius:50%;border:1px solid var(--linie-2);
+  background:var(--panza);color:var(--text-2);cursor:pointer}
+.rz__x:hover{color:var(--text);border-color:var(--text-3)}
+.rz__corp{padding:20px 22px 26px}
+.rz__gol{font-family:var(--sans);font-size:14px;color:var(--text-3)}
+.rz__h{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-3);margin:24px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--linie)}
+.rz__cif{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rz__cif div{border:1px solid var(--linie);border-radius:10px;background:var(--panza);padding:12px 14px}
+.rz__cif b{display:block;font-family:var(--sans);font-size:26px;font-weight:600;color:var(--text)}
+.rz__cif b small{font-size:13px;color:var(--text-3);font-weight:500}
+.rz__cif span{font-family:var(--sans);font-size:12.5px;color:var(--text-2)}
+.rz__cif div:nth-child(1) b{color:var(--ambra)}
+.rz__imp{font-family:var(--sans);font-size:14px;color:var(--text-2);margin:14px 0 0;padding:10px 14px;
+  border-left:3px solid var(--roza);background:var(--roza-slab);border-radius:0 8px 8px 0}
+.rz__txt{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.rz__t{border:1px solid var(--linie);border-radius:10px;background:var(--panza);padding:10px 12px;min-width:0}
+.rz__t.bun{border-left:3px solid var(--ok)}
+.rz__t b{display:block;font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px}
+.rz__t p{font-family:var(--sans);font-size:14px;color:var(--text);margin:0;line-height:1.5}
+.rz__t pre{font-family:var(--mono);font-size:12px;margin:0;white-space:pre-wrap;word-break:break-word;
+  color:var(--text);max-height:180px;overflow:auto}

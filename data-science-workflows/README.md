@@ -13,7 +13,6 @@ cN-.../tutorial/           manualul lecției (generat)
 cont/                      intrarea în cont și contul studentului
 intra/                     intrarea la oră, cu codul de pe ecran
 predau/                    doar profesorul: catalogul, lecțiile, orele
-predau/ora/                doar profesorul: rezultatele orei, cu nume
 explorator/                harta SCI
 date-personale/            ce se salvează
 css/  js/  img/  date/     stiluri, cod, logo, date pentru componente
@@ -27,9 +26,12 @@ _build/                    generatoarele
   deschide lecția. Codul apare mare, de proiectat.
 - În lecție, bara orei are patru lucruri: codul (un clic îl face mare, cu QR și
   link), câți sunt, **Arată clasei** (răspunsurile agregate, fără nume, pentru
-  proiector), **Rezultate ↗** (cu nume, în altă filă) și **Încheie ora**, singurul
+  proiector), **Rezultate** (cu nume, într-o fereastră peste lecție: slide-ul de pe ecran și toată ora) și **Încheie ora**, singurul
   loc din care se oprește.
 - O oră uitată deschisă se închide singură după 3 ore (`db/17-inchidere-automata.sql`).
+- O singură oră, condusă dintr-o singură filă. Dacă ieși din ea, butonul **Înapoi la oră**
+  din antet te duce înapoi (profesor sau student). După 3 ore ora se închide singură.
+- `db/19-viteza.sql` face panoul orei rapid și cu 30 de studenți.
 - Catalogul (prezență, activitate, teme, proiect, total) cere `db/18-catalog.sql`.
   Temele și proiectul se scriu direct în catalog; studentul le vede în contul lui.
 - Studentul vede doar lecțiile predate grupei. **Începe lecția** pornește mereu de
