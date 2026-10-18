@@ -118,10 +118,10 @@ export const NOTARE = {
         "lecțiile de pe sit: le citesc și le notez eu." },
 
     { cheie:"seminar", nume:"Activitate la seminar", puncte:2,
-      scurt:"quiz-urile din lecții",
-      d:"Se adună din quiz-urile din lecții. La oră valorează întreg, acasă " +
-        "jumătate, și se ia cel mai bun dintre cele două. Fiecare seminar " +
-        "valorează la fel, indiferent câte quiz-uri are." },
+      scurt:"întrebările din lecții",
+      d:"Fiecare din cele 7 seminare valorează la fel. La fiecare întrebare ai " +
+        "două șanse: una la oră și una acasă, și contează doar primul răspuns " +
+        "din fiecare. Corect la oră = întreg, corect acasă = jumătate." },
 
     { cheie:"proiect", nume:"Proiect", puncte:5,
       scurt:"depozitul de echipă și raportul final",
@@ -134,5 +134,63 @@ export const NOTARE = {
       d:"Un punct pe care îl ai de la început. Nu trebuie făcut nimic pentru el." }
   ]
 };
+
+/* ---------------------------------------------------------------------------
+   ACTIVITATEA LA SEMINAR, CALCULATĂ ÎNTR-UN SINGUR LOC
+
+   Aceeași funcție o folosesc contul studentului și catalogul profesorului,
+   deci amândoi văd exact aceeași cifră.
+
+   Regula, cum i-o spui studentului:
+     - fiecare seminar valorează 2 ÷ 7 = 0,29 puncte;
+     - la fiecare întrebare ai DOUĂ ȘANSE: una la oră, una acasă;
+     - contează doar PRIMUL răspuns din fiecare (încercările de după nu mai
+       schimbă nimic; se numără doar, ca să știi cât a exersat);
+     - corect la oră = întreg, corect acasă = jumătate; se ia cea mai bună;
+     - punctele seminarului = media întrebărilor lui × 0,29.
+   Un „trimis gol” (Verifică fără răspuns) nu consumă șansa.
+
+   Intrare: rezolvari = [[sarcina, laOra, acasa, incercari], ...]
+     laOra / acasa: true (primul răspuns corect), false (greșit), null (n-a încercat)
+   --------------------------------------------------------------------------- */
+export function activitate(rezolvari){
+  const A = NOTARE.activitate, V = A.puncte / A.seminare;
+  const pe = {};
+  for (const l of LECTII.filter(x => x.sarcini)){
+    pe[l.nr] = { n: l.sarcini, laOra: 0, acasa: 0, gresite: 0, incercari: 0, valoare: 0, puncte: 0 };
+  }
+  for (const [s, laOra, acasa, inc] of rezolvari || []){
+    const nr = +(String(s).match(/^c(\d+)-/) || [])[1];
+    const x = pe[nr];
+    if (!x) continue;
+    x.incercari += inc || 0;
+    if (laOra === true){ x.laOra++; x.valoare += 1; }
+    else if (acasa === true){ x.acasa++; x.valoare += A.acasa; }
+    else if (laOra === false || acasa === false) x.gresite++;
+  }
+  let total = 0;
+  for (const x of Object.values(pe)){
+    x.puncte = Math.min(1, x.valoare / x.n) * V;
+    total += x.puncte;
+  }
+  return { total, pe, valoareSeminar: V };
+}
+
+/** Din rândurile brute ale unui student (răspunsuri și cod), rezolvările de
+    mai sus: primul răspuns ne-gol la oră, primul ne-gol acasă, și câte
+    încercări a avut în total. Rândurile: {sarcina, laOra, corect, gol, cand}. */
+export function rezolvariDin(randuri){
+  const m = new Map();
+  [...(randuri || [])].sort((a, b) => new Date(a.cand) - new Date(b.cand)).forEach(r => {
+    const x = m.get(r.sarcina) || { laOra: null, acasa: null, n: 0 };
+    x.n++;
+    if (!r.gol){
+      if (r.laOra && x.laOra === null) x.laOra = !!r.corect;
+      if (!r.laOra && x.acasa === null) x.acasa = !!r.corect;
+    }
+    m.set(r.sarcina, x);
+  });
+  return [...m.entries()].map(([s, x]) => [s, x.laOra, x.acasa, x.n]);
+}
 
 export const punctaj = cheie => NOTARE.componente.find(c => c.cheie === cheie)?.puncte || 0;

@@ -161,7 +161,24 @@ try {{
       b.removeAttribute("hidden");
       /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
       const viu = await O.deschisa("c{nr}");
-      if (viu){{ b.textContent = "● Mergi la oră"; b.href = "lectie/"; b.title = "Ora e pornită"; }}
+      if (viu){{ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora e pornită"; }}
+      else {{
+        /* cu mai multe grupe, alegi întâi grupa: statisticile rămân curate */
+        const gr = (await O.grupe()).filter(g => g.activa !== false);
+        if (gr.length > 1){{
+          b.href = "#";
+          b.onclick = e => {{
+            e.preventDefault();
+            let m = document.getElementById("alege-grupa");
+            if (m){{ m.remove(); return; }}
+            m = document.createElement("div");
+            m.id = "alege-grupa"; m.className = "alege-grupa";
+            m.innerHTML = `<p>Cu ce grupă predai?</p>` + gr.map(g =>
+              `<a href="lectie/?preda=${{encodeURIComponent(g.id)}}#1">${{g.nume}}</a>`).join("");
+            b.after(m);
+          }};
+        }} else if (gr.length === 1) b.href = `lectie/?preda=${{encodeURIComponent(gr[0].id)}}#1`;
+      }}
     }}
   }} else if (p.autentificat){{
     /* deschisă dacă a fost predată grupei sau dacă ai lucrat deja în ea */

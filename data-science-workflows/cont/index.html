@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=47">
-<link rel="stylesheet" href="../css/cont.css?v=47">
-<script src="../js/tema.js?v=47"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=48">
+<link rel="stylesheet" href="../css/cont.css?v=48">
+<script src="../js/tema.js?v=48"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA } from "../js/curs.js?v=47";
+import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=48";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -35,8 +35,8 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=47");
-  CFG = await import("../js/supabase-config.js?v=47");
+  A = await import("../js/auth.js?v=48");
+  CFG = await import("../js/supabase-config.js?v=48");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
     <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
@@ -139,276 +139,110 @@ function intrare(){
 async function deseneaza(){
   const invitat = A.esteInvitat(p);
 
-  let progresBaza = new Set(), rasp = [], codul = [], prez = [], totaleBaza = new Map(), noteMele = {};
+  /* Tot ce trebuie pentru notă: răspunsurile tale și codul tău (le citești
+     doar pe ale tale), orele arhivate (de test, nu se pun), notele puse de
+     profesor. */
+  let randuri = [], noteMele = {}, prezente = [];
   try {
-    const [g, r, c, z, s] = await Promise.all([
-      A.sb.from("progres").select("sectiune_id, ultima_data"),
-      A.sb.from("raspunsuri").select("intrebare_id, capitol, raspuns, corect, creat_la, sedinta_id")
-          .order("creat_la", { ascending:false }),
-      A.sb.from("rulari_cod").select("exercitiu_id, cod, trecut, creat_la, sedinta_id")
-          .order("creat_la", { ascending:false }),
-      A.sb.from("prezente").select("curs, marcat_la"),
-      A.sb.from("sesiuni").select("capitol, total_nr")
+    const [r, c, arh, z] = await Promise.all([
+      A.sb.from("raspunsuri").select("intrebare_id, raspuns, corect, creat_la, sedinta_id"),
+      A.sb.from("rulari_cod").select("exercitiu_id, cod, trecut, creat_la, sedinta_id"),
+      A.sb.from("sedinte").select("id").not("arhivata_la", "is", null),
+      A.sb.from("prezente").select("curs, sedinta_id")
     ]);
-    /* notele puse de profesor (teme, proiect); fără db/18, rămân goale */
+    const arhivate = new Set((arh.data || []).map(x => x.id));
+    const buna = x => !x.sedinta_id || !arhivate.has(x.sedinta_id);
+    randuri = [
+      ...(r.data || []).filter(buna).map(x => ({ sarcina: x.intrebare_id, laOra: !!x.sedinta_id,
+          corect: !!x.corect, gol: x.raspuns == null, cand: x.creat_la })),
+      ...(c.data || []).filter(buna).map(x => ({ sarcina: x.exercitiu_id, laOra: !!x.sedinta_id,
+          corect: !!x.trecut, gol: !String(x.cod || "").trim(), cand: x.creat_la }))
+    ];
+    prezente = [...new Set((z.data || []).filter(x => !x.sedinta_id || !arhivate.has(x.sedinta_id)).map(x => x.curs))];
     noteMele = await A.sb.rpc("note_mele").then(x => x.data || {}).catch(() => ({}));
-    (g.data || []).forEach(x => progresBaza.add(x.sectiune_id));
-    rasp = r.data || []; codul = c.data || []; prez = z.data || [];
-    (s.data || []).forEach(x => { if (x.capitol && x.total_nr)
-      totaleBaza.set(x.capitol, Math.max(totaleBaza.get(x.capitol) || 0, x.total_nr)); });
-  } catch { /* fără rețea, rămâne ce știe browserul */ }
+  } catch { /* fără rețea, nota rămâne goală */ }
 
-  const harta = c => { try { return JSON.parse(localStorage.getItem(`dsw.harta.${c}`) || "null"); }
-                       catch { return null; } };
-  const local = c => { try { return new Set(JSON.parse(
-                         localStorage.getItem(`dsw.parcurs.${c}`) || "{}").vizitate || []); }
-                       catch { return new Set(); } };
+  const a = activitate(rezolvariDin(randuri));
+  const PCT = Object.fromEntries(NOTARE.componente.map(c => [c.cheie, c.puncte]));
+  const teme = ["tema1","tema2","tema3"].map(k => noteMele[k] != null ? +noteMele[k] : null);
+  const pTeme = teme.reduce((s, v) => s + (v || 0), 0);
+  const pProiect = noteMele.proiect != null ? +noteMele.proiect : null;
+  const total = a.total + pTeme + (pProiect || 0) + PCT.oficiu;
+  const nr2 = v => (Math.round(v * 100) / 100).toFixed(2).replace(".", ",");
 
-  /* Vezi doar lecțiile ținute. Cifrele de mai jos rămân pe tot cursul: ele
-     spun unde ajungi la final, nu unde am ajuns noi astăzi. */
-  let listaL = LECTII;
+  /* lecțiile pe care le vezi: cele predate grupei, plus cele în care ai lucrat */
+  let lectii = LECTII;
   try {
-    const Ora = await import("../js/ora.js?v=47");
-    listaL = await Ora.lectiiVizibile(LECTII, p.profesorReal);
-  } catch { /* fără bază, se văd toate */ }
+    const Ora = await import("../js/ora.js?v=48");
+    const pred = await Ora.predate();
+    if (pred) lectii = LECTII.filter(l => pred.has("c" + l.nr) || a.pe[l.nr]?.incercari);
+  } catch {}
 
-  const lectii = listaL.map(l => {
-    const cheie = "c" + l.nr, h = harta(cheie), viz = local(cheie);
-    progresBaza.forEach(k => { const m = new RegExp(`^${cheie}/s(\\d+)$`).exec(k);
-                               if (m) viz.add(+m[1] - 1); });
-    const total = (h && h.total) || totaleBaza.get(cheie) || null;
-    const q = rasp.filter(x => x.capitol === cheie);
-    /* exercițiile cu cod n-au coloană de capitol; o citim din id: „c1-cod-…" */
-    const cod = codul.filter(x => x.trecut && String(x.exercitiu_id).startsWith(cheie + "-"));
-    const facute = new Set(q.map(x => x.intrebare_id)).size
-                 + new Set(cod.map(x => x.exercitiu_id)).size;
-    const qTotal = l.sarcini
-      || (h ? h.verif.reduce((a, x) => a + (Array.isArray(x) ? x.length : x), 0) : null);
-    /* Nicio cifră nu trece de numitorul ei. Progresul vechi poate ști de un
-       slide 21 dintr-o versiune a lecției care avea 21; lecția are acum 19, și
-       „slide 21 din 19" face situl să pară stricat. La fel, o sarcină scoasă
-       din lecție rămâne în răspunsurile vechi: fără plafon iese „18 din 17". */
-    const ultimBrut = viz.size ? Math.max(...viz) + 1 : 0;
-    return { l, cheie, total, viz,
-             vazute: Math.min(viz.size, total || viz.size),
-             ultim: total ? Math.min(ultimBrut, total) : ultimBrut,
-             qDate: qTotal ? Math.min(facute, qTotal) : facute,
-             qCorecte: q.filter(x => x.corect).length, qTotal };
-  });
-
-  /* --- activitatea la seminar -------------------------------------------
-     Singura componentă pe care o calculează situl. Regula, pe fiecare sarcină:
-     corect la oră = întreg, corect acasă = jumătate, se ia cel mai bun dintre
-     cele două. Suma pe seminar se raportează la câte sarcini are seminarul,
-     iar seminarul valorează 2/7 indiferent câte are. „La oră" nu e o etichetă
-     scrisă de client, e legătura cu o ședință: `sedinta_id`. */
-  const ACT = NOTARE.activitate;
-  const V_SEM = ACT.puncte / ACT.seminare;
-
-  const activitatea = LECTII.filter(l => l.sarcini).map(l => {
-    const cheie = "c" + l.nr, n = l.sarcini;
-    const val = new Map();                       /* sarcină -> cât valorează */
-    const pune = (id, laOra) => {
-      const v = laOra ? 1 : ACT.acasa;
-      if ((val.get(id) || 0) < v) val.set(id, v);
-    };
-    rasp.filter(x => x.capitol === cheie && x.corect)
-        .forEach(x => pune(x.intrebare_id, !!x.sedinta_id));
-    codul.filter(x => x.trecut && String(x.exercitiu_id).startsWith(cheie + "-"))
-         .forEach(x => pune(x.exercitiu_id, !!x.sedinta_id));
-    const suma = [...val.values()].reduce((a, b) => a + b, 0);
-    return { l, cheie, n,
-             facute: val.size,
-             laOra:  [...val.values()].filter(v => v === 1).length,
-             puncte: n ? Math.min(1, suma / n) * V_SEM : 0 };
-  });
-
-  const pActiv   = activitatea.reduce((a, x) => a + x.puncte, 0);
-  const seminare = activitatea.filter(x => x.facute).length;
-  const pct = NOTARE.componente.reduce((o, c) => (o[c.cheie] = c.puncte, o), {});
-  const nr1 = v => v.toFixed(2).replace(".", ",");
-
-  const totSlide = lectii.reduce((a, x) => a + (x.total || 0), 0);
-  const totVaz   = lectii.reduce((a, x) => a + x.vazute, 0);
-  const proc = totSlide ? Math.round(totVaz / totSlide * 100) : 0;
-  const urm = lectii.find(x => x.l.stare === "gata" && x.total && x.vazute < x.total)
-           || lectii.find(x => x.l.stare === "gata");
   const ini = (p.nume || "?").trim().split(/\s+/).slice(0,2).map(x => x[0] || "").join("").toUpperCase();
+  const rand = (nume, val, max, d) => `<div class="nr">
+    <span class="nr__n">${nume}</span><span class="nr__d">${d}</span>
+    <span class="nr__v">${val == null ? "—" : nr2(val)}<small> / ${nr2(max).replace(",00", "")}</small></span></div>`;
 
-  const pTeme = ["tema1","tema2","tema3"].reduce((a, k) => a + (+noteMele[k] || 0), 0);
-  const areTeme = ["tema1","tema2","tema3"].some(k => noteMele[k] != null);
   gazda.innerHTML = `
   <header class="cnt__cap">
-    <div class="cnt__cerc" style="--p:0"><i>${ini}</i></div>
+    <div class="cnt__cerc"><i>${ini}</i></div>
     <div class="cnt__cine">
       <h1>${esc(p.nume) || "Contul meu"}</h1>
       <p class="cnt__meta">
-        ${p.matricol ? `<span class="et">${esc(p.matricol)}</span>` : ""}
-        ${p.grupa ? `<span class="et">grupa ${esc(p.grupa)}</span>` : ""}
-        ${invitat ? `<span class="et et--nu">invitat</span>` : ""}
-        ${p.github_login ? `<span class="et">@${esc(p.github_login)}</span>` : ""}
+        ${p.matricol && !invitat ? `<span class="et">${esc(p.matricol)}</span>` : ""}
+        ${p.grupa ? `<span class="et">${esc(p.grupa)}</span>` : ""}
+        ${invitat ? `<span class="et">invitat</span>` : ""}
       </p>
     </div>
-    <div class="cnt__act">
-      ${p.profesorReal ? `<a class="btn btn--mic" href="${RADACINA}/predau/">Predau</a>` : ""}
-      <button class="btn btn--mic" id="bt-iesi" type="button">Ieși din cont</button>
-    </div>
+    <div class="cnt__act"><button class="btn btn--mic" id="bt-iesi" type="button">Ieși din cont</button></div>
   </header>
 
-  ${!p.matricol && !invitat ? `<div class="nota" style="margin-bottom:30px">
-    <div class="nota__et">Încă nu ești în lista grupei</div>
-    <p>La prima oră scanezi codul de pe ecran și îți alegi numele din listă. Atât:
-    de atunci tot ce faci se leagă de tine.</p></div>` : ""}
+  ${invitat ? `<div class="nota" style="margin-bottom:26px"><div class="nota__et">Cont de invitat</div>
+    <p>Ce lucrezi se salvează, dar nu intră în catalog. Dacă ești student la curs, ieși și intră cu GitHub.</p></div>`
+  : !p.matricol ? `<div class="nota" style="margin-bottom:26px"><div class="nota__et">Încă nu ești în lista grupei</div>
+    <p>La prima oră scanezi codul de pe ecran și îți alegi numele din listă. De atunci tot ce faci se leagă de tine.</p></div>` : ""}
 
-  ${invitat ? `<div class="nota" style="margin-bottom:30px">
-    <div class="nota__et">Cont de invitat</div>
-    <p>Progresul se salvează și se vede la profesor, dar contul nu e legat de un
-    număr matricol și nu se poate transforma mai târziu. Dacă ești student la
-    curs, ieși și intră cu GitHub.</p></div>` : ""}
-
-  <!-- ----------------------------------------------------- notarea ----- -->
   <section class="cnt__s">
-    <h2>Nota</h2>
-    <p class="cnt__d">${NOTARE.total} puncte. Unul îl ai din oficiu. Două se adună
-    singure, din ce lucrezi la seminar. Opt le pun eu: trei pentru teme, cinci
-    pentru proiect.</p>
-
-    <div class="nta">
-      ${nota("seminar", nr1(pActiv), pct.seminar,
-             seminare ? `${seminare} din ${ACT.seminare} seminare` : "încă niciun seminar",
-             pActiv / pct.seminar)}
-      ${nota("teme", areTeme ? nr1(pTeme) : null, pct.teme,
-             areTeme ? `${["tema1","tema2","tema3"].filter(k => noteMele[k] != null).length} din 3 teme notate` : "le notez eu, după fiecare temă",
-             pTeme / pct.teme)}
-      ${nota("proiect", noteMele.proiect != null ? nr1(+noteMele.proiect) : null, pct.proiect,
-             noteMele.proiect != null ? "notat" : "se notează la prezentare", (+noteMele.proiect || 0) / pct.proiect)}
-      ${nota("oficiu", nr1(pct.oficiu), pct.oficiu, "îl ai", 1)}
+    <h2>Nota ta, până acum</h2>
+    <div class="tot"><b>${nr2(total)}</b><span>din ${NOTARE.total}</span>
+      <i class="tot__b"><i style="width:${Math.min(100, total / NOTARE.total * 100)}%"></i></i></div>
+    <div class="note">
+      ${rand("Activitate la seminar", a.total, PCT.seminar, "se calculează singură, din întrebările din lecții (vezi mai jos)")}
+      ${rand("Teme", teme.some(v => v != null) ? pTeme : null, PCT.teme,
+        `trei teme, pe Teams, notate de profesor: ${teme.map((v, i) => `tema ${i + 1}: ${v == null ? "—" : nr2(v)}`).join(" · ")}`)}
+      ${rand("Proiect", pProiect, PCT.proiect, pProiect == null ? "se notează la prezentarea finală" : "notat")}
+      ${rand("Din oficiu", PCT.oficiu, PCT.oficiu, "îl ai de la început")}
     </div>
-
-    <div class="nta__tot">
-      <span>Acum, din ce se poate calcula</span>
-      <b>${nr1(pActiv + pct.oficiu + pTeme + (+noteMele.proiect || 0))}</b>
-      <span>din ${NOTARE.total}${noteMele.proiect != null ? "" : "; proiectul se adaugă la final"}</span>
-    </div>
-
-    <details class="detalii">
-      <summary>Seminar cu seminar, cum s-au adunat cele ${pct.seminar} puncte</summary>
-      <table class="tabel" style="margin-top:12px">
-        <thead><tr><th>Seminar</th><th>Făcute</th><th>La oră</th><th>Acasă</th>
-          <th style="text-align:right">Puncte</th></tr></thead>
-        <tbody>${activitatea.map(x => `<tr>
-          <td>${x.l.titlu}</td>
-          <td class="mono">${x.facute}/${x.n}</td>
-          <td class="mono">${x.laOra}</td>
-          <td class="mono">${x.facute - x.laOra}</td>
-          <td class="mono" style="text-align:right">${nr1(x.puncte)}<small
-            style="color:var(--text-3)">/${nr1(V_SEM)}</small></td>
-        </tr>`).join("")}</tbody>
-      </table>
-      <p class="cnt__d" style="margin-top:10px">O sarcină făcută la oră valorează
-      întreg, aceeași sarcină făcută acasă valorează jumătate, și se ia cea mai
-      bună dintre cele două. Un seminar valorează ${nr1(V_SEM)} puncte, oricâte
-      sarcini ar avea.</p>
-    </details>
-
-    <details class="detalii">
-      <summary>Cum se calculează fiecare</summary>
-      ${NOTARE.componente.map(c => `<div class="detalii__r">
-        <b>${c.nume} · ${c.puncte} ${c.puncte === 1 ? "punct" : "puncte"}</b>
-        <p>${c.d}</p></div>`).join("")}
-    </details>
   </section>
 
-  <!-- ----------------------------------------------------- lecțiile ---- -->
+  <section class="cnt__s">
+    <h2>Cum se calculează activitatea</h2>
+    <ul class="reguli">
+      <li>Fiecare din cele ${NOTARE.activitate.seminare} seminare valorează la fel: <b>${nr2(a.valoareSeminar)}</b> puncte.</li>
+      <li>La fiecare întrebare ai <b>două șanse</b>: una la oră și una acasă. Contează doar <b>primul răspuns</b> din fiecare.</li>
+      <li>Corect la oră = <b>întreg</b>. Corect acasă = <b>jumătate</b>. Se ia cea mai bună dintre cele două.</li>
+      <li>Poți reface întrebările oricât, ca să exersezi; nota nu se mai schimbă.</li>
+    </ul>
+    <table class="tabel tabel--sem">
+      <thead><tr><th>Seminar</th><th>Corecte la oră</th><th>Corecte acasă</th><th style="text-align:right">Puncte</th></tr></thead>
+      <tbody>${LECTII.filter(l => l.sarcini).map(l => { const x = a.pe[l.nr]; return `<tr>
+        <td>C${l.nr}. ${esc(l.titlu)}${prezente.includes("c" + l.nr) ? ` <span class="et">prezent</span>` : ""}</td>
+        <td class="mono">${x.laOra} / ${x.n}</td><td class="mono">${x.acasa} / ${x.n}</td>
+        <td class="mono" style="text-align:right">${nr2(x.puncte)}</td></tr>`; }).join("")}</tbody>
+    </table>
+  </section>
+
   <section class="cnt__s">
     <h2>Lecțiile</h2>
-    <div class="lect">${lectii.map(randLectie).join("")}</div>
-  </section>
-
-  <!-- --------------------------------------------------- activitatea --- -->
-  <section class="cnt__s">
-    <h2>Ce ai lucrat</h2>
-    <div class="file" role="tablist">
-      <button class="file__f on" data-f="cod" type="button">Cod <i>${codul.length}</i></button>
-      <button class="file__f" data-f="verif" type="button">Verificări <i>${rasp.length}</i></button>
-      <button class="file__f" data-f="prez" type="button">Prezențe <i>${prez.length}</i></button>
-    </div>
-
-    <div class="file__c" data-c="cod">${codul.length ? `
-      <div class="codl">${[...new Map(codul.map(c => [c.exercitiu_id, c])).values()]
-        .map(c => `<div class="codl__r ${c.trecut ? "bun" : ""}">
-          <span class="codl__id">${esc(c.exercitiu_id)}</span>
-          <code>${esc(c.cod)}</code>
-          <span class="codl__c">${cand(c.creat_la)}</span></div>`).join("")}</div>`
-      : `<p class="cnt__gol">Niciun exercițiu cu cod, încă.</p>`}</div>
-
-    <div class="file__c" data-c="verif" hidden>${rasp.length ? `
-      <table class="tabel">
-        <thead><tr><th>Verificare</th><th>Lecția</th><th>Rezultat</th><th>Când</th></tr></thead>
-        <tbody>${rasp.map(r => `<tr>
-          <td class="mono">${esc(r.intrebare_id)}</td><td class="mono">${esc(r.capitol) || "—"}</td>
-          <td>${r.corect ? '<span class="et et--ok">corect</span>'
-                         : '<span class="et et--nu">greșit</span>'}</td>
-          <td class="mono">${cand(r.creat_la)}</td></tr>`).join("")}</tbody></table>`
-      : `<p class="cnt__gol">Nicio verificare, încă.</p>`}</div>
-
-    <div class="file__c" data-c="prez" hidden>${prez.length ? `
-      <div class="codl">${prez.map(z => `<div class="codl__r bun">
-        <span class="codl__id">${esc(z.curs)}</span>
-        <code>prezent</code>
-        <span class="codl__c">${cand(z.marcat_la)}</span></div>`).join("")}</div>`
-      : `<p class="cnt__gol">Nicio prezență marcată. La începutul orei, scanează
-         codul de pe ecran.</p>`}</div>
-  </section>
-
-  <!-- --------------------------------------------- proiect și echipă --- -->
-  <section class="cnt__s">
-    <h2>Proiect și echipă</h2>
-    <p class="cnt__d">Cinci puncte din ${NOTARE.total}, cea mai mare bucată din
-    notă. Se face în echipă și se prezintă la ultimul seminar, dar nota e pe om.</p>
-    <div class="cnt__gol" style="border:1px dashed var(--linie-2);border-radius:11px;
-      padding:22px 20px;text-align:center">
-      Echipele se formează în a doua parte a semestrului.<br>
-      Aici o să apară echipa ta, depozitul ei pe GitHub, și nota.
-    </div>
+    <div class="lect">${lectii.map(l => { const x = a.pe[l.nr]; return `
+      <a class="lect__r" href="${RADACINA}/${l.cheie}/">
+        <span class="lect__n">${String(l.nr).padStart(2, "0")}</span>
+        <span class="lect__m"><span class="lect__t">${l.titlu}</span>
+          <span class="lect__s">${x ? `${x.laOra + x.acasa} din ${x.n} întrebări corecte` : "fără întrebări"}</span></span>
+        <span class="lect__p">→</span></a>`; }).join("")}</div>
   </section>`;
 
   el("bt-iesi").onclick = async () => { await A.iesi(); location.href = RADACINA + "/"; };
-  gazda.querySelectorAll(".file__f").forEach(b => b.onclick = () => {
-    gazda.querySelectorAll(".file__f").forEach(x => x.classList.toggle("on", x === b));
-    gazda.querySelectorAll(".file__c").forEach(x => x.hidden = x.dataset.c !== b.dataset.f);
-  });
-}
-
-function nota(cheie, acum, max, sub, fractie){
-  const c = NOTARE.componente.find(x => x.cheie === cheie);
-  const pr = Math.round(Math.min(1, fractie || 0) * 100);
-  return `<div class="nt ${acum === null ? "nt--astept" : ""}">
-    <span class="nt__n">${c.nume}</span>
-    <span class="nt__v">${acum === null ? "—" : String(acum).replace(".", ",")}<small>/${max}</small></span>
-    <span class="nt__b"><i style="width:${pr}%"></i></span>
-    <span class="nt__s">${sub}</span>
-    <span class="nt__d">${c.scurt}</span>
-  </div>`;
-}
-
-function randLectie(x){
-  const proc = x.total ? Math.round(x.vazute / x.total * 100) : 0;
-  const stare = x.l.stare !== "gata" ? "în lucru"
-              : !x.total             ? "nedeschisă"
-              : proc >= 100          ? "parcursă"
-              : `${x.vazute} din ${x.total} slide-uri văzute`;
-  /* intrarea e mereu pagina lecției: de acolo se începe de la capăt */
-  const unde = `${x.l.cheie}/`;
-  return `<a class="lect__r" href="${RADACINA}/${unde}">
-    <span class="lect__n">${String(x.l.nr).padStart(2,"0")}</span>
-    <span class="lect__m">
-      <span class="lect__t">${x.l.titlu}</span>
-      <span class="lect__s">${stare}${x.qTotal ? ` · sarcini ${Math.min(x.qDate, x.qTotal)}/${x.qTotal}` : ""}</span>
-      <span class="lect__b"><i style="width:${proc}%"></i></span>
-    </span>
-    <span class="lect__p">${x.total ? proc + "%" : "—"}</span>
-  </a>`;
 }
 
 try { await unde(); }
@@ -419,7 +253,7 @@ catch (e) {
 }
 A.laSchimbare(() => unde().catch(() => {}));
 </script>
-<script type="module" src="../js/antet.js?v=47"></script>
-<script type="module" src="../js/subsol.js?v=47"></script>
+<script type="module" src="../js/antet.js?v=48"></script>
+<script type="module" src="../js/subsol.js?v=48"></script>
 </body>
 </html>

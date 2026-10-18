@@ -34,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=47";
+import { RADACINA } from "./curs.js?v=48";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -44,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=47`);
-    O = await import(`${RADACINA}/js/ora.js?v=47`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=47`);
+    A = await import(`${RADACINA}/js/auth.js?v=48`);
+    O = await import(`${RADACINA}/js/ora.js?v=48`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=48`);
   } catch { return null; }
 
   let p = null;
@@ -74,6 +74,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
        lecției, care aduce aici ?preda=1. Adresa se curăță imediat, ca un
        refresh să nu pornească încă o oră. */
     const cerePredare = new URLSearchParams(location.search).has("preda");
+    const grupaCeruta = (v => v && v !== "1" ? v : null)(new URLSearchParams(location.search).get("preda"));
     if (cerePredare){
       const u = new URL(location.href); u.searchParams.delete("preda");
       history.replaceState(null, "", u.pathname + u.search + u.hash);
@@ -192,7 +193,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
          lecție), se încheie înainte să pornească asta */
       const alta = await O.deschisa();
       if (alta && alta.capitol !== capitol) await O.inchide(alta.id);
-      const r = await O.deschide(capitol, null, "live", total);
+      const r = await O.deschide(capitol, grupaCeruta, "live", total);
       if (!r?.ok){
         alert(r?.mesaj || (O.lipsesteBaza()
           ? "Baza nu e pregătită: rulează db/14 și db/15 în Supabase."
@@ -353,15 +354,20 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         const nr = slideAcum(), sarcini = sarciniDe(nr);
         const rand = await O.panou(S.id, sarcini.map(x => x.id)) || [];
         /* ce au trimis la exercițiile cu cod sau text de pe slide */
+        /* doar din ora asta, ultimul răspuns ne-gol al fiecăruia (db/20) */
         const coduri = sarcini.filter(x => x.fel === "cod");
-        const trimise = coduri.length ? (await Promise.all(coduri.map(x =>
-          sb.rpc("sumar_cod", { p_exercitiu: x.id }).then(r => r.data || []).catch(() => [])))).flat() : [];
+        const trimise = coduri.length
+          ? await sb.rpc("trimise_in_sedinta", { p_sedinta: S.id, p_sarcini: coduri.map(x => x.id) })
+              .then(r => r.data || []).catch(() => [])
+          : [];
+        const eticheta = id => coduri.length > 1
+          ? `<small>${escR((coduri.find(x => x.id === id)?.q) || String(id).replace(/^c\d+-/, ""))}</small>` : "";
         if (!document.querySelector(".rz")) return;
         corp.innerHTML = P.randeaza({ slide: slideDe(nr), sarcini, randuri: rand, sortare: rzSort,
                                       secunde: secunde(), totalSarcini: harta?.sarcini || null, nume: true })
           + (trimise.length ? `<h3 class="rz__h">Ce au trimis pe slide-ul ăsta</h3>
             <div class="rz__txt">${trimise.map(t => `<div class="rz__t ${t.trecut ? "bun" : ""}">
-              <b>${escR(t.nume)}</b><pre>${escR(t.cod || "")}</pre></div>`).join("")}</div>` : "");
+              <b>${escR(t.nume)} ${eticheta(t.sarcina)}</b><pre>${escR(t.cod || "")}</pre></div>`).join("")}</div>` : "");
         P.legaSortarea(corp, s => { rzSort = s; umpleRezultate(); });
       } else {
         const [r, oameni, texte] = await Promise.all([
@@ -370,6 +376,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
             .then(x => (x.data || []).filter(t => new Date(t.creat_la) >= new Date(S.deschisa_la))).catch(() => [])
         ]);
         if (!document.querySelector(".rz")) return;
+        /* doar ce au scris cei care au lucrat în ora asta */
+        const inOra = new Set((oameni || []).map(x => x.matricol));
+        texte.splice(0, texte.length, ...texte.filter(t => inOra.has(t.matricol)));
         const vii = randuri.filter(x => x.vazut_la && Date.now() - new Date(x.vazut_la) < 90000).length;
         corp.innerHTML = `
           <div class="rz__cif">
@@ -466,7 +475,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=47`)
+    import(`${RADACINA}/js/colectare.js?v=48`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     const tocmaiS_aIncheiat = eraViu && !viu;

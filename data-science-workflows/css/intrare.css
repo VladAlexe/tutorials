@@ -97,3 +97,12 @@
 
 /* bara și coloana pornesc din aceeași margine */
 .bl__in{max-width:860px}
+
+/* alegerea grupei, la „Predă”, când ai mai multe grupe */
+.bl__fapte{position:relative}
+.alege-grupa{position:absolute;right:0;top:calc(100% + 8px);z-index:50;min-width:200px;padding:10px;
+  background:var(--panza);border:1px solid var(--linie-2);border-radius:10px;box-shadow:var(--umbra);
+  display:flex;flex-direction:column;gap:4px}
+.alege-grupa p{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin:0 0 4px}
+.alege-grupa a{font-family:var(--sans);font-size:14px;padding:7px 10px;border-radius:7px;color:var(--text);text-decoration:none}
+.alege-grupa a:hover{background:var(--ambra-slab);color:var(--ambra)}
