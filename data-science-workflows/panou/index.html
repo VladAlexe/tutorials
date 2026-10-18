@@ -10,7 +10,7 @@
    rol, altfel pare că ai două conturi deodată. */
 const RAD = "/data-science-workflows";
 try {
-  const { profil } = await import(RAD + "/js/auth.js?v=39");
+  const { profil } = await import(RAD + "/js/auth.js?v=41");
   const p = await profil();
   location.replace(p.profesorReal ? RAD + "/predau/" : RAD + "/cont/");
 } catch { location.replace(RAD + "/cont/"); }

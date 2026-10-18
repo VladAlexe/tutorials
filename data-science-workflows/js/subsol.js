@@ -10,7 +10,7 @@
    ziua în care există fișierul, nu înainte.
    =========================================================================== */
 
-import { CURS, RADACINA } from "./curs.js?v=39";
+import { CURS, RADACINA } from "./curs.js?v=41";
 
 deseneaza(false);
 
@@ -35,7 +35,7 @@ function deseneaza(profesor){
 /* Rolul se află târziu, deci subsolul se desenează o dată fără el și se
    rescrie doar dacă e cazul. Pagina nu așteaptă după autentificare. */
 try {
-  const { profil } = await import(`${RADACINA}/js/auth.js?v=39`);
+  const { profil } = await import(`${RADACINA}/js/auth.js?v=41`);
   const p = await profil();
   if (p.profesorReal) deseneaza(true);
 } catch { /* fără cont, subsolul public e cel bun */ }

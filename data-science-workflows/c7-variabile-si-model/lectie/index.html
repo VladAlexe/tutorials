@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursul 7 — Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Construirea variabilelor, transformarea și selecția lor, apoi un model care le pune pe toate deodată, și reziduurile lui.">
+<meta name="robots" content="index,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/sistem.css?v=41">
+<link rel="stylesheet" href="../../css/slide.css?v=41">
+<link rel="stylesheet" href="../../css/interactiv.css?v=41">
+<link rel="stylesheet" href="../../css/grafice.css?v=41">
+<link rel="stylesheet" href="../../css/exercitii.css?v=41">
+<link rel="stylesheet" href="../../css/explorator.css?v=41">
+<script src="../../js/tema.js?v=41"></script>
+</head>
+<body class="corp--app">
+<div id="antet" data-aici="Cursul 7 · Variabile derivate și model" data-crom="1"></div>
+<div class="rnr">
+<main class="rnr__scena" tabindex="-1">
+
+<section class="sld" id="s1" data-grup="Cursul" data-t="Despre ce e ora de azi">
+<h2>Variabile derivate și model</h2><p class="cheie">EDA a arătat tipare. Azi le punem pe toate în același model, ca să vedem ce rămâne din fiecare.</p><div class="ix" data-ix="etape">
+  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Variabilele", "unde": "azi", "text": "Construcție, transformare, extragere, scalare, selecție."}, {"nume": "Modelul", "unde": "azi", "text": "Patru modele, fiecare cu o variabilă în plus."}, {"nume": "Coeficienții", "unde": "azi", "text": "Cum se citește un model pe logaritmi."}, {"nume": "Reziduurile", "unde": "azi", "text": "Perechile mai legate sau mai puțin legate decât prezice modelul."}, {"nume": "Ce avem voie să spunem", "unde": "azi", "text": "Și ce nu."}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s2" data-grup="Variabilele" data-t="Cinci etape">
+<h2>Ingineria variabilelor</h2><div class="ix" data-ix="flux">
+  <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">De la date brute la variabile</span></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Cinci etape", "intro": "Apasă pe oricare stație.", "buton": "Urmează drumul", "dus": "de la date brute la variabile", "intors": "înapoi, dacă modelul cere altceva", "gata": "variabilele sunt gata de model", "statii": [{"n": "Construcție", "et": "variabile noi", "ic": "🧱", "c": "ceas", "d": "Faci din ce ai ceva ce n-aveai: distanța din coordonate, rata din numere."}, {"n": "Transformare", "et": "forma", "ic": "〰️", "c": "salvie", "d": "Schimbi forma distribuției, de obicei cu logaritmul."}, {"n": "Extragere", "et": "mai puține", "ic": "🧪", "c": "accent", "d": "Mai mulți indicatori devin unul singur, de exemplu cu PCA."}, {"n": "Scalare", "et": "aceeași scară", "ic": "📏", "c": "text-2", "d": "Aduci variabilele la scări comparabile, de exemplu cu scorul z."}, {"n": "Selecție", "et": "ce păstrezi", "ic": "✂️", "c": "text-3", "d": "Păstrezi un set mic, cu sens teoretic și fără redundanță."}]}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">Ce facem noi azi</div><p>Construim trei variabile, le punem pe logaritm, verificăm că nu se repetă una pe alta. Extragerea și scalarea le vedeți în caiet.</p></div>
+
+</section>
+
+<section class="sld" id="s3" data-grup="Variabilele" data-t="Construcția">
+<h2>Trei variabile pe care nu le aveam</h2><table class="tabel"><thead><tr><th>Variabila</th><th>Din ce o facem</th><th>De ce așa</th></tr></thead><tbody><tr><td><strong>distanța</strong></td><td>centrele țărilor, ponderate cu populația județelor</td><td>contează unde trăiesc oamenii, nu centrul hărții</td></tr><tr><td><strong>granița</strong></td><td>contururile GISCO, cu o toleranță de 10 km</td><td>contururile nu se ating perfect</td></tr><tr><td><strong>migranți la mie</strong></td><td>migranții în ambele direcții, la populația celor două țări</td><td>un milion de migranți înseamnă altceva între țări mari și mici</td></tr></tbody></table><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Construiește rata</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-cod-rata", "fisier": "model/variabile.py", "sarcina": "Fă rata migranților la mia de locuitori ai celor două țări.", "cod": "# migranti = din_1_in_2 + din_2_in_1 (cursul 4)\nd[\"populatie\"] = d[\"pop_1\"] {{1}} d[\"pop_2\"]\n\nd[\"la_mie\"] = d[\"migranti\"] / d[\"populatie\"] * {{2}}\n\nprint(d[\"la_mie\"].describe())", "goluri": {"1": {"ok": ["+"], "ajutor": "operatorul"}, "2": {"ok": ["1000"], "ajutor": "cât"}}, "laBine": "Rata compară perechi de țări de mărimi foarte diferite: Luxemburg–Portugalia cu Germania–Polonia.", "laRau": "Populația perechii e suma celor două. La mie înseamnă înmulțit cu o mie.", "explicatie": "Numărul absolut de migranți favorizează țările mari. Rata îl pune în raport cu câți oameni sunt în total. La model se vede diferența: cu rata, R² aproape se dublează."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s4" data-grup="Variabilele" data-t="Transformarea">
+<h2>Ce pui pe logaritm</h2><div class="ix" data-ix="sortare">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Logaritm sau nu</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-sort-log", "sarcina": "Pune fiecare variabilă unde îi e locul.", "elemente": [{"t": "SCI", "cos": 0}, {"t": "distanța, în km", "cos": 0}, {"t": "numărul de migranți", "cos": 0}, {"t": "populația", "cos": 0}, {"t": "granița (da / nu)", "cos": 1}, {"t": "procentul de populație urbană", "cos": 1}, {"t": "un indice între 0 și 100", "cos": 1}], "cosuri": [{"t": "Logaritm", "d": "mărimi cu coadă lungă, relații multiplicative"}, {"t": "Rămâne așa", "d": "proporții, procente, indici, variabile 0/1"}], "laBine": "Regula din planul cursului: logaritmezi mărimile cu coadă lungă, nu logaritmezi proporții, procente sau indici.", "explicatie": "O variabilă 0/1 nu are logaritm la zero. Un procent are deja o scară închisă, de la 0 la 100; logaritmul îl deformează fără niciun câștig."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s5" data-grup="Variabilele" data-t="Scalare și extragere">
+<h2>Două unelte pentru mai târziu</h2><table class="tabel"><thead><tr><th></th><th>Ce face</th><th>Când</th></tr></thead><tbody><tr><td><strong>Scorul z</strong></td><td>(x − media) / abaterea standard</td><td>când vrei să compari coeficienți ai unor variabile cu unități diferite</td></tr><tr><td><strong>PCA</strong></td><td>mai mulți indicatori devin un scor</td><td>când ai cinci măsuri ale aceluiași concept, de exemplu dezvoltarea</td></tr></tbody></table><div class="verif" data-id="c7-v1" data-corect="1">
+    <p class="verif__q">Scalarea cu scorul z schimbă forma distribuției?</p>
+    <button>Da, o face normală</button>
+    <button>Nu, doar o mută și o întinde; forma rămâne</button>
+    <button>Da, scoate valorile extreme</button>
+    <button>Doar dacă variabila are coadă lungă</button>
+    <p class="verif__ex">Scorul z mută media la zero și abaterea la unu. Forma rămâne exact aceeași: o coadă lungă rămâne coadă lungă. Pentru formă ai nevoie de o transformare, ca logaritmul.</p>
+  </div>
+
+</section>
+
+<section class="sld" id="s6" data-grup="Variabilele" data-t="Selecția">
+<h2>Nu se repetă una pe alta?</h2><table class="tabel"><thead><tr><th>Variabila</th><th>VIF</th><th>Verdict</th></tr></thead><tbody><tr><td>distanța (log)</td><td>1,81</td><td>în regulă</td></tr><tr><td>migranți la mie (log)</td><td>1,15</td><td>în regulă</td></tr><tr><td>granița</td><td>1,81</td><td>în regulă</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">Regula VIF</div><p>Sub 5, în regulă. Între 5 și 10, atenție. Peste 10, scoți una. Distanța și granița sunt corelate (r = −0,66), dar nu atât cât să nu le poți pune împreună.</p></div>
+
+</section>
+
+<section class="sld" id="s7" data-grup="Modelul" data-t="Patru modele">
+<h2>O variabilă în plus, de fiecare dată</h2><div class="ix" data-ix="modele">
+  <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">Coeficienții și R², model cu model</span></div>
+  <div class="ix__corp"><script type="application/json">{"lim": 0.8, "variabile": [{"k": "dist", "et": "distanța (log)", "c": "ceas"}, {"k": "migr", "et": "migranți (log)", "c": "salvie"}, {"k": "rata", "et": "migranți la mie (log)", "c": "accent"}, {"k": "gr", "et": "graniță", "c": "text-2"}], "modele": [{"nume": "M1", "formula": "log_sci ~ log_distanta", "r2": 0.160627447751929, "text": "Doar distanța. Explică 16% din variația SCI-ului.", "coef": {"dist": -0.719, "migr": null, "rata": null, "gr": null}}, {"nume": "M2", "formula": "log_sci ~ log_distanta + log_migranti", "r2": 0.241694083556735, "text": "Intră numărul de migranți. Coeficientul distanței scade: o parte din ce părea distanță era migrație.", "coef": {"dist": -0.585, "migr": 0.166, "rata": null, "gr": null}}, {"nume": "M3", "formula": "log_sci ~ log_distanta + log_la_mie", "r2": 0.5224385054438411, "text": "Cu rata în loc de număr, R² sare la 0,52. Rata e variabila potrivită. Distanța scade din nou.", "coef": {"dist": -0.342, "migr": null, "rata": 0.45, "gr": null}}, {"nume": "M4", "formula": "log_sci ~ log_distanta + log_la_mie + granita", "r2": 0.5259318291729317, "text": "Granița adaugă foarte puțin peste distanță și migrație. Efectul ei, văzut la EDA, era în mare parte distanță.", "coef": {"dist": -0.254, "migr": null, "rata": 0.443, "gr": 0.288}}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s8" data-grup="Modelul" data-t="Modelul, în cod">
+<h2>O formulă, un rând</h2><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scrie modelul</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-cod-ols", "fisier": "model/model.py", "sarcina": "Estimează modelul complet și uită-te la coeficienți și la R².", "cod": "import statsmodels.formula.api as smf\n\nm = smf.{{1}}(\"log_sci ~ log_distanta + log_la_mie + granita\",\n            data=d).{{2}}()\n\nprint(m.params)\nprint(m.{{3}})        # cat explica modelul\n\n# ce ramane neexplicat, pereche cu pereche\nd[\"rezidual\"] = m.resid", "goluri": {"1": {"ok": ["ols"], "ajutor": "funcția"}, "2": {"ok": ["fit"], "ajutor": "metoda"}, "3": {"ok": ["rsquared"], "ajutor": "atributul"}}, "laBine": "R² = 0,53: modelul explică puțin peste jumătate din variația SCI-ului.", "laRau": "<code>ols</code> construiește modelul, <code>fit</code> îl estimează. R² e un atribut, fără paranteze.", "explicatie": "Formula se citește ca o propoziție: SCI-ul, pe logaritm, explicat de distanță, rata migranților și graniță. <code>m.summary()</code> dă tabelul complet, cu erori standard și p-valori."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s9" data-grup="Modelul" data-t="Cum se citește">
+<h2>Ce înseamnă coeficienții</h2><table class="tabel"><thead><tr><th>Variabila</th><th>Coeficient</th><th>În cuvinte</th></tr></thead><tbody><tr><td>distanța (log)</td><td>-0,25</td><td>cu 10% mai departe: SCI cu 2,4% mai mic</td></tr><tr><td>migranți la mie (log)</td><td>0,44</td><td>cu 10% mai mulți migranți: SCI cu 4,3% mai mare</td></tr><tr><td>granița</td><td>0,29</td><td>vecinii: cu 33% mai mult, dar nesigur</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">„Nesigur”</div><p>Eroarea standard a graniței e aproape cât coeficientul. Cu 263 de perechi și doar 30 de vecini, nu putem spune că granița adaugă ceva peste distanță și migrație.</p></div>
+<div class="verif" data-id="c7-v2" data-corect="2">
+    <p class="verif__q">Coeficientul distanței e -0,25. Ce înseamnă?</p>
+    <button>Că la fiecare kilometru SCI-ul scade cu 0,25</button>
+    <button>Că distanța explică 25% din SCI</button>
+    <button>Că la o distanță cu 10% mai mare, SCI-ul e cu aproximativ 2,4% mai mic</button>
+    <button>Că distanța nu contează</button>
+    <p class="verif__ex">Pe logaritmi, coeficientul e o elasticitate: procent la procent. Cu 10% mai departe, SCI-ul scade cu aproximativ 2,4%, cu migrația și granița ținute pe loc.</p>
+  </div>
+</section>
+
+<section class="sld" id="s10" data-grup="Reziduurile" data-t="Peste și sub model">
+<h2>Ce nu explică modelul</h2><div class="ix" data-ix="harta">
+  <div class="ix__cap"><span class="ix__fel">Harta, date reale</span><span class="ix__t">Reziduurile, pe hartă</span></div>
+  <div class="ix__corp"><script type="application/json">{"niveluri": ["tari"], "nivel": "tari", "masura": "model", "ales": "RO", "masuri": ["model", "sci", "migr"], "povesti": [{"t": "România", "nivel": "tari", "masura": "model", "ales": "RO", "text": "Austria și Ungaria peste model, Italia sub. Pentru Ungaria, explicația probabilă e minoritatea maghiară, pe care modelul nu o știe."}, {"t": "Turcia", "nivel": "tari", "masura": "model", "ales": "TR", "text": "Aproape toate perechile cu Turcia sunt mult sub model. Poate limba, poate cine folosește Facebook: modelul nu știe niciuna."}, {"t": "Islanda", "nivel": "tari", "masura": "model", "ales": "IS", "text": "Islanda e peste model cu aproape toată lumea. Posibil un efect al măsurii: o țară foarte mică, cu un numitor mic."}, {"t": "Portugalia", "nivel": "tari", "masura": "model", "ales": "PT", "text": "Luxemburg–Portugalia e cea mai mare abatere pozitivă din tot setul, chiar și după migrație."}]}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">Cum se citește</div><p>Teal: legătură mai puternică decât prezic distanța, migrația și granița. Cărămiziu: mai slabă. Reziduurile sunt întrebările următoare.</p></div>
+
+</section>
+
+<section class="sld" id="s11" data-grup="Limite" data-t="Ce avem voie să spunem">
+<h2>Asociere, nu cauză</h2><table class="tabel"><thead><tr><th>Putem spune</th><th>Nu putem spune</th></tr></thead><tbody><tr><td>perechile cu mai mulți migranți sunt mai legate, la aceeași distanță</td><td>migrația produce legăturile</td></tr><tr><td>modelul explică puțin peste jumătate din variație</td><td>am explicat legăturile</td></tr><tr><td>vecinii nu par mai legați decât prezic distanța și migrația</td><td>granițele nu contează</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">Observațiile nu sunt independente</div><p>Germania apare în zeci de perechi. Un model obișnuit presupune că fiecare pereche e independentă, deci erorile standard ies prea mici. În articol folosim erori standard grupate pe țară.</p></div>
+<div class="verif" data-id="c7-v3" data-corect="1">
+    <p class="verif__q">Modelul arată o asociere puternică între migrație și SCI. De ce nu putem spune că migrația produce legăturile?</p>
+    <button>Pentru că R² e sub 1</button>
+    <button>Pentru că legăturile vechi pot atrage și ele migrație, iar datele sunt dintr-un singur moment</button>
+    <button>Pentru că eșantionul e mic</button>
+    <button>Pentru că am folosit logaritmi</button>
+    <p class="verif__ex">Direcția poate merge în ambele sensuri: oamenii migrează unde au deja cunoscuți. Cu un singur instantaneu SCI, nu putem separa cele două. Asta e o limită de scris în raport, nu de ascuns.</p>
+  </div>
+</section>
+
+<section class="sld" id="s12" data-grup="Proiectul tău" data-t="Modelul vostru">
+<h2>Un model, o hartă a reziduurilor, trei propoziții</h2><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faceți</th></tr></thead><tbody><tr><td>1</td><td>variabilele voastre, construite și scrise în <code>decizii.md</code></td></tr><tr><td>2</td><td>același eșantion pentru toate modelele</td></tr><tr><td>3</td><td>modelele, pas cu pas, cu R² și coeficienți</td></tr><tr><td>4</td><td>reziduurile: cele mai mari cinci în sus și în jos</td></tr><tr><td>5</td><td>în <code>README.md</code>: ce putem spune și ce nu</td></tr></tbody></table><div class="ix" data-ix="dovada">
+  <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Dovada</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-dovada-model", "sarcina": "Rulează scriptul și lipește ce scrie.", "pasi": [{"t": "Modelul are un R²", "cmd": "python model/model.py", "gol": "lipește linia cu R²", "cauta": "0[.,]\\d+", "daca_nu": "Caut un număr între 0 și 1. Tipărește m.rsquared."}, {"t": "Reziduurile sunt salvate", "cmd": "python -c \"import pandas as pd; print(pd.read_csv('date/curat/reziduuri.csv').shape)\"", "gol": "lipește forma", "cauta": "\\(\\s*\\d+\\s*,\\s*\\d+\\s*\\)", "daca_nu": "Salvează tabelul cu coloana rezidual în date/curat/."}], "explicatie": "Modelul și reziduurile lui sunt baza raportului de la cursul 8."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s13" data-grup="Proiectul tău" data-t="Un reziduu">
+<h2>Un reziduu care vă interesează</h2><div class="ix" data-ix="asteptari">
+  <div class="ix__cap"><span class="ix__fel">Scrii tu</span><span class="ix__t">Reziduul vostru</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c7-reziduu", "tip": "reziduu", "minim": 50, "sarcina": "Alege o pereche cu reziduu mare și scrie o explicație posibilă, pe care ați putea-o verifica.", "exemplu": "De exemplu: Ungaria–România e peste model; explicația posibilă e minoritatea maghiară; o verificăm pe județe, comparând Harghita și Covasna cu restul.", "multumesc": "O citesc înainte de cursul următor."}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="s14" data-grup="Mai departe" data-t="Până data viitoare">
+<h2>Cursul 8: raportul</h2><ul><li>figura principală și tabelul modelelor</li><li>README-ul care permite refacerea întregului drum</li><li>prezentarea echipei</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Modelul și reziduurile în depozit, plus cele trei propoziții despre ce putem spune.</p></div>
+
+</section>
+
+</main>
+</div>
+
+<script type="module" src="../../js/antet.js?v=41"></script>
+<script type="module">
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=41";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=41";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=41";
+pornesteIx();
+pornesteVerif("c7");
+pornesteSlide({ capitol:"c7", lectie:"c7-variabile-si-model" });
+</script>
+</body>
+</html>

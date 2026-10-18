@@ -1,6 +1,6 @@
 {
  "capitol": "c3",
- "total": 22,
+ "total": 23,
  "sarcini": 21,
  "slide": [
   {
@@ -210,9 +210,16 @@
   },
   {
    "nr": 14,
+   "id": "s14b",
+   "grup": "În echipă",
+   "titlu": "Fluxul echipei",
+   "sarcini": []
+  },
+  {
+   "nr": 15,
    "id": "s15",
    "grup": "În echipă",
-   "titlu": "Pull request și conflicte",
+   "titlu": "Conflictele",
    "sarcini": [
     {
      "id": "c3-conflict",
@@ -233,14 +240,14 @@
    ]
   },
   {
-   "nr": 15,
+   "nr": 16,
    "id": "s16",
    "grup": "În echipă",
    "titlu": "Regulile voastre",
    "sarcini": []
   },
   {
-   "nr": 16,
+   "nr": 17,
    "id": "s17",
    "grup": "Cadrul teoretic",
    "titlu": "De ce un cadru",
@@ -260,7 +267,7 @@
    ]
   },
   {
-   "nr": 17,
+   "nr": 18,
    "id": "s18",
    "grup": "Cadrul teoretic",
    "titlu": "Un exemplu lucrat",
@@ -280,14 +287,14 @@
    ]
   },
   {
-   "nr": 18,
+   "nr": 19,
    "id": "s19",
    "grup": "Cadrul teoretic",
    "titlu": "Cadrul nostru",
    "sarcini": []
   },
   {
-   "nr": 19,
+   "nr": 20,
    "id": "s20",
    "grup": "Cadrul teoretic",
    "titlu": "Scrieți întrebarea voastră",
@@ -299,7 +306,7 @@
    ]
   },
   {
-   "nr": 20,
+   "nr": 21,
    "id": "s21",
    "grup": "Datele",
    "titlu": "Explorarea inițială",
@@ -311,7 +318,7 @@
    ]
   },
   {
-   "nr": 21,
+   "nr": 22,
    "id": "s22",
    "grup": "Proiectul tău",
    "titlu": "Fă-ți depozitul, acum",
@@ -323,7 +330,7 @@
    ]
   },
   {
-   "nr": 22,
+   "nr": 23,
    "id": "s23",
    "grup": "Mai departe",
    "titlu": "Până data viitoare",

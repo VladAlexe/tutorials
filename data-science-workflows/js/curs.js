@@ -70,7 +70,7 @@ export const LECTII = [
     titlu:"Variabile derivate și model",
     scurt:"Model",
     rezumat:"De la descriere la explicație: variabile construite de tine și un model pe care îl poți apăra.",
-    stare:"schita", sarcini:null,
+    stare:"gata", sarcini:8,
     notebook:"https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c7_model.ipynb" },
 
   { nr:8, cheie:"c8-raportare",

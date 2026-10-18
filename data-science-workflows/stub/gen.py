@@ -98,9 +98,9 @@ SABLON = """<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=39">
-<link rel="stylesheet" href="../css/intrare.css?v=39">
-<script src="../js/tema.js?v=39"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=41">
+<link rel="stylesheet" href="../css/intrare.css?v=41">
+<script src="../js/tema.js?v=41"></script>
 </head>
 <body>
 
@@ -172,7 +172,7 @@ SABLON = """<!DOCTYPE html>
 <div id="subsol"></div>
 
 <script type="module">
-import {{ LECTII, RADACINA }} from "../js/curs.js?v=39";
+import {{ LECTII, RADACINA }} from "../js/curs.js?v=41";
 document.getElementById("altele").innerHTML = LECTII.map(l => `
   <a class="mini ${{l.cheie === "{cheie}" ? "aceasta" : ""}}" href="${{RADACINA}}/${{l.cheie}}/">
     <span class="mini__n">${{String(l.nr).padStart(2,"0")}}</span>
@@ -180,8 +180,8 @@ document.getElementById("altele").innerHTML = LECTII.map(l => `
     <span class="mini__s">${{l.stare === "gata" ? "gata" : "în lucru"}}</span>
   </a>`).join("");
 </script>
-<script type="module" src="../js/antet.js?v=39"></script>
-<script type="module" src="../js/subsol.js?v=39"></script>
+<script type="module" src="../js/antet.js?v=41"></script>
+<script type="module" src="../js/subsol.js?v=41"></script>
 </body>
 </html>
 """

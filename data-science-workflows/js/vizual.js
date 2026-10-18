@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=39");
+    const m = await import("/data-science-workflows/js/colectare.js?v=41");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -1694,6 +1694,154 @@ V.axa = (gazda, d) => {
   }
   gazda.querySelectorAll(".axa__sc button").forEach(b => b.onclick = () => { taiat = b.dataset.t === "1"; deseneaza(); });
   deseneaza();
+};
+
+/* ===========================================================================
+   22. MODELE — patru modele, pas cu pas
+   Fiecare model adaugă o variabilă. Coeficienții stau ca bare în jurul lui
+   zero, fiecare variabilă cu culoarea ei, iar R² crește dedesubt. Se vede
+   lucrul care contează: când intră migrația, coeficientul distanței se
+   micșorează. O parte din ce părea efectul distanței era migrație.
+   =========================================================================== */
+V.modele = (gazda, d) => {
+  const M = d.modele || [];             // [{nume, formula, r2, coef: {k: v}, text}]
+  const VAR = d.variabile || [];        // [{k, et, c}]
+  const LIM = d.lim || 0.8;
+  let i = 0;
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="mdl">
+      <div class="cmd__sc mdl__sc">${M.map((m, k) => `<button type="button" data-m="${k}">${esc(m.nume)}</button>`).join("")}</div>
+      <code class="mdl__f"></code>
+      <div class="mdl__rand mdl__cap"><span></span><span class="mdl__axa"><i>−${LIM}</i><i>0</i><i>+${LIM}</i></span><span></span></div>
+      ${VAR.map(v => `<div class="mdl__rand" data-k="${v.k}" style="--vc:var(--${v.c})">
+          <span class="mdl__n">${esc(v.et)}</span>
+          <span class="mdl__pista"><span class="mdl__zero"></span><span class="mdl__b"></span></span>
+          <span class="mdl__v"></span></div>`).join("")}
+      <div class="mdl__r2"><span class="mdl__n">R²</span>
+        <span class="mdl__pista mdl__pista--r2"><span class="mdl__b mdl__b--r2"></span></span>
+        <span class="mdl__v mdl__v--r2"></span></div>
+      <p class="cub__regula mdl__txt"></p>
+      <div class="dsf__act"><button class="btn btn--mic btn--tare" data-rol="urm" type="button">Modelul următor</button></div>
+    </div>`;
+  const $ = q => gazda.querySelector(q);
+  function deseneaza(){
+    const m = M[i];
+    gazda.querySelectorAll(".mdl__sc button").forEach(b => b.classList.toggle("on", +b.dataset.m === i));
+    $(".mdl__f").textContent = m.formula;
+    VAR.forEach(v => {
+      const r = gazda.querySelector(`.mdl__rand[data-k="${v.k}"]`), c = m.coef[v.k];
+      const b = r.querySelector(".mdl__b"), val = r.querySelector(".mdl__v");
+      r.classList.toggle("absent", c == null);
+      if (c == null){ b.style.width = "0"; val.textContent = "nu intră"; return; }
+      const w = Math.min(1, Math.abs(c) / LIM) * 50;
+      b.style.width = w + "%";
+      b.style.left = c >= 0 ? "50%" : (50 - w) + "%";
+      val.textContent = (c >= 0 ? "+" : "−") + Math.abs(c).toFixed(2).replace(".", ",");
+    });
+    $(".mdl__b--r2").style.width = (m.r2 * 100) + "%";
+    $(".mdl__v--r2").textContent = m.r2.toFixed(2).replace(".", ",");
+    $(".mdl__txt").innerHTML = m.text || "";
+    $('[data-rol="urm"]').textContent = i === M.length - 1 ? "De la capăt" : "Modelul următor";
+  }
+  gazda.querySelectorAll(".mdl__sc button").forEach(b => b.onclick = () => { i = +b.dataset.m; deseneaza(); });
+  $('[data-rol="urm"]').onclick = () => { i = (i + 1) % M.length; deseneaza(); };
+  deseneaza();
+};
+
+/* ===========================================================================
+   23. GITDAG — laptopul tău și GitHub, pas cu pas
+   Două depozite, unul lângă altul. Commit-urile sunt buline, colorate după
+   cine le-a făcut; ramurile sunt etichete lipite de un commit; HEAD arată pe
+   ce ramură ești. Fiecare pas e o comandă din fluxul de lucru al echipei
+   (main + dev). Se vede ce se mută și ce nu: commit-urile rămân pe loc,
+   etichetele avansează, iar push și pull copiază buline dintr-o parte în alta.
+   =========================================================================== */
+V.gitdag = (gazda, d) => {
+  const C = d.commituri || {};          // id -> {x, r (rând), autor, mesaj, parinti: []}
+  const A = d.autori || {};             // autor -> {et, c}
+  const P = d.pasi || [];               // [{cmd, cine, txt, rau, L: {commits, et: {ram: id}, head}, R: {...}}]
+  let i = 0;
+  const panou = (titlu, cls) => `
+    <div class="gd__panou ${cls}">
+      <div class="gd__titlu">${titlu}</div>
+      <svg viewBox="0 0 330 200" role="img" aria-label="${esc(titlu)}"></svg>
+    </div>`;
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="gd">
+      <div class="gd__term"><span class="gd__cine"></span><code class="gd__cmd"></code></div>
+      <div class="gd__doua">
+        ${panou(d.etLocal || "💻 Laptopul tău", "gd__panou--l")}
+        <div class="gd__sageti"><span class="gd__s gd__s--sus">push →</span><span class="gd__s gd__s--jos">← pull</span></div>
+        ${panou(d.etRemote || "☁️ GitHub (origin)", "gd__panou--r")}
+      </div>
+      <div class="gd__leg">${Object.entries(A).map(([k, a]) => `<span><i style="background:var(--${a.c})"></i>${esc(a.et)}</span>`).join("")}</div>
+      <div class="cmd__jos">
+        <div class="cmd__txt gd__txt"></div>
+        <div class="cmd__nav">
+          <div class="cmd__puncte">${P.map((_, k) => `<i data-p="${k}"></i>`).join("")}</div>
+          <button class="btn btn--mic" data-rol="inapoi" type="button">Înapoi</button>
+          <button class="btn btn--mic btn--tare" data-rol="inainte" type="button">Pasul următor</button>
+        </div>
+      </div>
+    </div>`;
+  const $ = q => gazda.querySelector(q);
+  const X = x => 40 + x * 78, Y = r => 64 + r * 50;
+  let vazute = { L: new Set(), R: new Set() };
+
+  function deseneaza(svg, st, latura, prefix){
+    const are = new Set(st.commits);
+    const linii = [], buline = [], etichete = [];
+    st.commits.forEach(id => {
+      const c = C[id];
+      (c.parinti || []).filter(p => are.has(p)).forEach(p => {
+        const a = C[p], x1 = X(a.x), y1 = Y(a.r), x2 = X(c.x), y2 = Y(c.r);
+        linii.push(y1 === y2 ? `M${x1} ${y1} H${x2}`
+          : `M${x1} ${y1} C${x1 + 30} ${y1} ${x2 - 30} ${y2} ${x2} ${y2}`);
+      });
+      const nou = !vazute[latura].has(id);
+      buline.push(`<circle cx="${X(c.x)}" cy="${Y(c.r)}" r="${c.merge ? 10 : 9}" class="gd__c${nou ? " nou" : ""}${c.merge ? " merge" : ""}"
+        style="--cc:var(--${(A[c.autor] || {}).c || "accent"})"><title>${esc(c.mesaj || id)}</title></circle>`);
+    });
+    /* etichetele: mai multe pe același commit se stivuiesc deasupra */
+    const peCommit = {};
+    Object.entries(st.et || {}).forEach(([ram, id]) => { (peCommit[id] = peCommit[id] || []).push(ram); });
+    Object.entries(peCommit).forEach(([id, rams]) => {
+      const c = C[id];
+      rams.forEach((ram, k) => {
+        const head = st.head === ram, txt = prefix + ram, w = (txt.length + (head ? 7 : 0)) * 7.1 + 14;
+        const x = X(c.x) - w / 2, y = Y(c.r) - 34 - k * 22;
+        etichete.push(`<g class="gd__et gd__et--${ram}${head ? " head" : ""}">
+          <rect x="${x}" y="${y}" width="${w}" height="18" rx="9"/>
+          <text x="${x + 7}" y="${y + 12.5}">${head ? "HEAD → " : ""}${txt}</text></g>`);
+      });
+    });
+    svg.innerHTML = `${linii.map(l => `<path d="${l}" class="gd__l"/>`).join("")}${buline.join("")}${etichete.join("")}`;
+    st.commits.forEach(id => vazute[latura].add(id));
+  }
+
+  function arata(){
+    const p = P[i];
+    $(".gd__cine").textContent = p.cine || "tu $";
+    $(".gd__cine").classList.toggle("alt", !!p.cine && p.cine !== "tu $");
+    $(".gd__cmd").textContent = p.cmd;
+    $(".gd__term").classList.toggle("rau", !!p.rau);
+    $(".gd__s--sus").classList.toggle("on", !!p.sus);
+    $(".gd__s--jos").classList.toggle("on", !!p.jos);
+    deseneaza($(".gd__panou--l svg"), p.L, "L", "");
+    deseneaza($(".gd__panou--r svg"), p.R, "R", "origin/");
+    $(".gd__txt").innerHTML = `<b>${i + 1}. ${p.t || ""}</b><p>${p.txt || ""}</p>`;
+    gazda.querySelectorAll(".cmd__puncte i").forEach(e => e.classList.toggle("on", +e.dataset.p <= i));
+    $('[data-rol="inapoi"]').disabled = i === 0;
+    $('[data-rol="inainte"]').textContent = i === P.length - 1 ? "De la capăt" : "Pasul următor";
+  }
+  $('[data-rol="inainte"]').onclick = () => {
+    if (i === P.length - 1){ i = 0; vazute = { L: new Set(), R: new Set() }; } else i++;
+    arata();
+  };
+  $('[data-rol="inapoi"]').onclick = () => { i = Math.max(0, i - 1); arata(); };
+  arata();
 };
 
 export default V;

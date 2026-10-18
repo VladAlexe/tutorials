@@ -44,7 +44,7 @@ FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "coloane": "Declară tipul", "desfa": "Vezi cum se desface",
        "drum": "Schema fluxului", "semestru": "Cronologia",
        "anatomie": "Pe bucăți", "indice": "Ce măsoară",
-       "harta": "Harta, date reale", "cub": "Vezi cum se desface", "comanda": "Vezi cum circulă", "directii": "Vezi cum se desface", "histo": "Comută", "nor": "Explorează", "axa": "Comută"}
+       "harta": "Harta, date reale", "cub": "Vezi cum se desface", "comanda": "Vezi cum circulă", "directii": "Vezi cum se desface", "histo": "Comută", "nor": "Explorează", "axa": "Comută", "modele": "Pas cu pas", "gitdag": "Pas cu pas"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 

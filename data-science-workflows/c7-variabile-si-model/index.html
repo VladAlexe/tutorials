@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 7. Variabile derivate și model — Fluxuri de lucru</title>
-<meta name="description" content="De la descriere la explicație: variabile construite de tine și un model pe care îl poți apăra.">
+<meta name="description" content="Construirea variabilelor, un model care le pune pe toate deodată, și reziduurile lui.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=39">
-<link rel="stylesheet" href="../css/intrare.css?v=39">
-<script src="../js/tema.js?v=39"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=41">
+<link rel="stylesheet" href="../css/intrare.css?v=41">
+<script src="../js/tema.js?v=41"></script>
 </head>
 <body>
 
@@ -19,65 +19,152 @@
 <main>
 <div class="pagina">
 
+  <!-- ===================== intrarea ===================== -->
   <header class="intrare">
     <div class="intrare__sus">
       <span class="intrare__nr">Lecția 7</span>
-      <span class="et">în lucru</span>
+      <span class="et et--ok">gata</span>
     </div>
     <h1>Variabile derivate și model</h1>
-    <p class="deck">De la descriere la explicație: variabile construite de tine și un model pe care îl poți apăra.</p>
+    <p class="deck">EDA a arătat tipare. Azi le punem pe toate în același model, ca să vedem ce rămâne din fiecare.</p>
 
-    <div class="intrare__fapte" style="margin-top:28px">
-      <span class="btn" style="cursor:default;opacity:.6">Lecția se publică înainte de curs</span>
+    <div class="intrare__meta">
+      <div class="fisa"><b>90</b><span>minute</span></div>
+      <div class="fisa"><b id="f-slide">14</b><span>slide-uri</span></div>
+      <div class="fisa"><b id="f-verif">8</b><span>verificări</span></div>
+      <div class="fisa"><b>8</b><span>interactive</span></div>
+      <div class="fisa"><b>1</b><span>caiet</span></div>
+    </div>
+
+    <div class="intrare__fapte">
+      <a class="intra-lectie" id="btn-intra" href="lectie/">
+        <span>Intră în lecție</span>
+        <small id="btn-sub">slide 1</small>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg>
+      </a>
+      <a class="btn" href="tutorial/">Manualul cursului</a>
       <a class="btn" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c7_model.ipynb" target="_blank" rel="noopener">Caietul lecției</a>
+      <a class="btn btn--tare" href="../explorator/">Exploratorul legăturilor sociale</a>
     </div>
   </header>
 
+  <!-- ===================== corpul ===================== -->
   <div class="doi">
+
+    <!-- ---------- stânga ---------- -->
     <div>
+
       <section class="bloc">
-        <div class="bloc__cap"><span class="nr">01</span><h2>Ce va conține</h2></div>
-        <p style="color:var(--text-2);font-size:16.5px">Planul lecției. Conținutul interactiv,
-        verificările și caietul se adaugă înainte de ședința din semestru.</p>
+        <div class="bloc__cap"><span class="nr">01</span><h2>Despre lecția asta</h2></div>
+        <p>La cursul 6 am văzut că SCI-ul scade cu distanța, crește cu migrația și e
+        mai mare între vecini. Dar vecinii sunt și aproape, și au adesea migrație între
+        ei, deci cele trei tipare se amestecă. Un model le pune pe toate deodată.</p>
+        <p>Prima jumătate e ingineria variabilelor, ca în planul cursului: construcție,
+        transformare, extragere, scalare, selecție. A doua jumătate e modelul: patru
+        modele pe același eșantion, cum se citesc coeficienții pe logaritmi, și
+        reziduurile, pe hartă.</p>
+        </section>
+
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">02</span><h2>La final vei putea</h2></div>
         <ul class="obiective">
-          <li>Rate, ponderi, distanțe și diferențe între capetele perechii</li>
-          <li>Variabile diadice construite: distanță geografică, graniță comună, limbă comună</li>
-          <li>Modelul gravitațional, folosit în comerț și migrație, aplicat pe conectivitate</li>
-          <li>Non-independența observațiilor și ce faci cu erorile standard</li>
-          <li>Interpretarea coeficienților: ce propoziție ai dreptul să scrii în raport</li>
+          <li>Să construiești o variabilă nouă și să scrii decizia din spatele ei.</li>
+          <li>Să știi ce pui pe logaritm și ce nu.</li>
+          <li>Să deosebești scalarea, care nu schimbă forma, de transformare, care o schimbă.</li>
+          <li>Să verifici cu VIF că variabilele nu se repetă una pe alta.</li>
+          <li>Să scrii un model cu <code>statsmodels</code> și să citești coeficienții ca elasticități.</li>
+          <li>Să explici de ce un coeficient se schimbă când adaugi o variabilă.</li>
+          <li>Să citești reziduurile ca întrebări noi, nu ca erori.</li>
+          <li>Să spui ce poate și ce nu poate susține un model observațional.</li>
         </ul>
       </section>
 
       <section class="bloc">
-        <div class="bloc__cap"><span class="nr">02</span><h2>Ce adaugi la proiect</h2></div>
-        <p>Variabilele derivate, modelul, și interpretarea coeficienților.</p>
-        <p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-        cu atribute aduse prin API de la Eurostat și Banca Mondială. Dacă vrei să te uiți
-        peste surse din timp, sunt toate.</p>
+        <div class="bloc__cap"><span class="nr">03</span><h2>Prin ce treci</h2></div>
+        <p style="color:var(--text-2);font-size:16.5px">Lecția e împărțită în slide-uri.
+        Poți sări direct la oricare, dar slide-urile cu verificare se deschid pe rând:
+        nu treci mai departe până nu răspunzi. Nu contează dacă nimerești corect din
+        prima, contează să te oprești.</p>
+        <nav class="harta" id="harta"><div style="padding:16px;color:var(--text-3);
+          font-family:var(--sans);font-size:13.5px">Se încarcă cuprinsul…</div></nav>
       </section>
+
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">04</span><h2>De ce ai nevoie, înainte</h2></div>
+        <ol>
+          <li>Tabelul de perechi de la cursul 5 și graficele de la cursul 6.</li>
+          <li>Pachetele pentru model: <code>pip install statsmodels scikit-learn</code>.</li>
+          <li>Pentru distanță și graniță în caiet: <code>pip install geopandas</code>.</li>
+        </ol>
+      </section>
+
+      <section class="bloc">
+        <div class="bloc__cap"><span class="nr">05</span><h2>Ce adaugi la proiect</h2></div>
+        <ul class="obiective">
+          <li><code>model/variabile.py</code>: variabilele construite, cu deciziile în <code>decizii.md</code>.</li>
+          <li><code>model/model.py</code>: modelele, pas cu pas, pe același eșantion.</li>
+          <li><code>date/curat/reziduuri.csv</code>: reziduurile, pentru raport.</li>
+          <li>În <code>README.md</code>: ce putem spune și ce nu.</li>
+        </ul>
+      </section>
+
     </div>
 
+    <!-- ---------- dreapta ---------- -->
     <aside class="doi__dr">
-      <div class="panou-c">
-        <span class="panou__et">Pregătire</span>
-        <p style="font-family:var(--sans);font-size:13.5px;line-height:1.5;color:var(--text-2);max-width:none">
-        Până atunci, mergi mai departe cu
-        <a class="leg" href="../c6-analiza-exploratorie/">lecția 6</a> și ține mediul de
-        lucru pregătit.</p>
+
+      <div class="a-mea" id="a-mea">
+        <span class="a-mea__inel" style="--p:0"><i id="a-mea-p">0%</i></span>
+        <div>
+          <div class="a-mea__t" id="a-mea-t">Nu ai început lecția</div>
+          <div class="a-mea__d" id="a-mea-d">Progresul se ține minte în browser.</div>
+        </div>
       </div>
+
+      <div class="panou-c">
+        <span class="panou__et">Materiale</span>
+        <div class="resurse">
+          <a class="resursa" href="tutorial/">
+            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
+            <span class="resursa__txt"><span class="resursa__t">Manualul cursului</span><span class="resursa__d">Tot materialul, explicat pe larg</span></span>
+          </a>
+          <a class="resursa" href="../explorator/">
+            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+            <span class="resursa__txt"><span class="resursa__t">Exploratorul legăturilor sociale</span><span class="resursa__d">Harta pe județe, regiuni și țări</span></span>
+          </a>
+          <a class="resursa" href="../c6-analiza-exploratorie/">
+            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M7 11h10M10 16h4"/></svg></span>
+            <span class="resursa__txt"><span class="resursa__t">Lecția 6: explorarea</span><span class="resursa__d">Tiparele pe care le testăm azi</span></span>
+          </a>
+        </div>
+      </div>
+
       <div class="panou-c">
         <span class="panou__et">Legături oficiale</span>
         <div class="legaturi">
-          <a class="legatura" href="https://www.statsmodels.org/stable/index.html" target="_blank" rel="noopener"><span class="legatura__t">statsmodels</span><span class="legatura__g">docs</span></a>
-          <a class="legatura" href="https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259" target="_blank" rel="noopener"><span class="legatura__t">Bailey et al., Social Connectedness</span><span class="legatura__g">JEP</span></a>
-          <a class="legatura" href="https://scikit-learn.org/stable/user_guide.html" target="_blank" rel="noopener"><span class="legatura__t">scikit-learn</span><span class="legatura__g">docs</span></a>
+          <a class="legatura" href="https://www.statsmodels.org/stable/example_formulas.html" target="_blank" rel="noopener"><span class="legatura__t">Modele cu formule</span><span class="legatura__g">statsmodels</span></a>
+          <a class="legatura" href="https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html" target="_blank" rel="noopener"><span class="legatura__t">VIF</span><span class="legatura__g">statsmodels</span></a>
+          <a class="legatura" href="https://scikit-learn.org/stable/modules/preprocessing.html" target="_blank" rel="noopener"><span class="legatura__t">Scalare</span><span class="legatura__g">scikit-learn</span></a>
+          <a class="legatura" href="https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259" target="_blank" rel="noopener"><span class="legatura__t">Bailey și colegii, 2018</span><span class="legatura__g">articol</span></a>
         </div>
       </div>
+
+      <div class="panou-c">
+        <span class="panou__et">Cum merge lecția</span>
+        <p style="font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--text-2);max-width:none">
+        Un slide pe ecran. Treci cu <kbd>→</kbd> și <kbd>←</kbd>, sari tastând numărul
+        slide-ului, cauți cu <kbd>Ctrl</kbd>+<kbd>K</kbd>. Fiecare slide are adresa lui,
+        deci „slide-ul 7” e același pentru toată grupa.</p>
+      </div>
+
     </aside>
   </div>
 
+  <!-- ===================== celelalte lecții ===================== -->
   <section class="altele">
-    <div class="bloc__cap"><span class="nr">03</span><h2>Celelalte lecții</h2></div>
+    <div class="bloc__cap"><span class="nr">06</span><h2>Celelalte lecții</h2></div>
+    <p style="color:var(--text-2);font-size:16.5px">Opt lecții, un singur proiect. Fiecare
+    adaugă o piesă la depozitul echipei.</p>
     <div class="altele__sina" id="altele"></div>
   </section>
 
@@ -87,15 +174,82 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, RADACINA } from "../js/curs.js?v=39";
+import { LECTII, RADACINA } from "../js/curs.js?v=41";
+
+const CHEIE = "c7";
+const AICI  = "c7-variabile-si-model";
+
+/* --- celelalte lecții ---------------------------------------------------- */
 document.getElementById("altele").innerHTML = LECTII.map(l => `
-  <a class="mini ${l.cheie === "c7-variabile-si-model" ? "aceasta" : ""}" href="${RADACINA}/${l.cheie}/">
+  <a class="mini ${l.cheie === AICI ? "aceasta" : ""}" href="${RADACINA}/${l.cheie}/">
     <span class="mini__n">${String(l.nr).padStart(2,"0")}</span>
     <span class="mini__t">${l.titlu}</span>
     <span class="mini__s">${l.stare === "gata" ? "gata" : "în lucru"}</span>
   </a>`).join("");
+
+/* --- cuprinsul, citit direct din pagina lecției --------------------------
+   O singură sursă de adevăr: slide-urile sunt definite în lectie/index.html,
+   iar pagina asta le citește de acolo. Dacă adaug un slide, harta se schimbă
+   singură. */
+let harta = null;
+try {
+  const r = await fetch("lectie/", { cache:"no-cache" });
+  const d = new DOMParser().parseFromString(await r.text(), "text/html");
+  const sl = [...d.querySelectorAll(".sld")];
+  if (sl.length){
+    harta = sl.map((s, i) => ({
+      n: i + 1,
+      t: s.dataset.t || s.querySelector("h2")?.textContent?.trim() || `Slide ${i+1}`,
+      grup: s.dataset.grup || "",
+      verif: s.querySelectorAll(".verif").length
+    }));
+  }
+} catch { /* dacă nu se poate citi, pagina rămâne completă fără hartă */ }
+
+const zona = document.getElementById("harta");
+if (!harta){
+  zona.innerHTML = `<div style="padding:16px"><a class="leg" href="lectie/">Deschide
+    lecția</a> ca să vezi cuprinsul.</div>`;
+} else {
+  document.getElementById("f-slide").textContent = harta.length;
+  document.getElementById("f-verif").textContent = harta.reduce((a,x) => a + x.verif, 0);
+
+  let html = "", grup = null;
+  for (const x of harta){
+    if (x.grup && x.grup !== grup){ grup = x.grup; html += `<div class="harta__grup">${grup}</div>`; }
+    html += `<a class="harta__r" href="lectie/#${x.n}">
+      <span class="harta__n">${x.n}</span>
+      <span class="harta__t">${x.t}</span>
+      ${x.verif ? `<span class="harta__v">verificare</span>` : ""}
+    </a>`;
+  }
+  zona.innerHTML = html;
+}
+
+/* --- unde am rămas ------------------------------------------------------- */
+const total = harta ? harta.length : 21;
+let vizitate = [];
+try { vizitate = JSON.parse(localStorage.getItem(`dsw.parcurs.${CHEIE}`) || "{}").vizitate || []; }
+catch {}
+
+if (vizitate.length){
+  const proc = Math.round(vizitate.length / total * 100);
+  const ultim = Math.max(...vizitate) + 1;
+  document.getElementById("a-mea").querySelector(".a-mea__inel").style.setProperty("--p", proc);
+  document.getElementById("a-mea-p").textContent = proc + "%";
+  document.getElementById("a-mea-t").textContent =
+    proc >= 100 ? "Ai parcurs lecția" : `${vizitate.length} din ${total} slide-uri`;
+  document.getElementById("a-mea-d").textContent =
+    proc >= 100 ? "Poți reveni oricând la orice slide." : `Ai rămas la slide-ul ${ultim}.`;
+  const b = document.getElementById("btn-intra");
+  b.href = `lectie/#${ultim}`;
+  b.querySelector("span").textContent = proc >= 100 ? "Reia lecția" : "Continuă lecția";
+  document.getElementById("btn-sub").textContent = `slide ${ultim}`;
+} else {
+  document.getElementById("btn-sub").textContent = `slide 1 din ${total}`;
+}
 </script>
-<script type="module" src="../js/antet.js?v=39"></script>
-<script type="module" src="../js/subsol.js?v=39"></script>
+<script type="module" src="../js/antet.js?v=41"></script>
+<script type="module" src="../js/subsol.js?v=41"></script>
 </body>
 </html>

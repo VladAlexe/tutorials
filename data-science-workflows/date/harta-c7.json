@@ -1,0 +1,169 @@
+{
+ "capitol": "c7",
+ "total": 14,
+ "sarcini": 8,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Despre ce e ora de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "Variabilele",
+   "titlu": "Cinci etape",
+   "sarcini": []
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Variabilele",
+   "titlu": "Construcția",
+   "sarcini": [
+    {
+     "id": "c7-cod-rata",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "Variabilele",
+   "titlu": "Transformarea",
+   "sarcini": [
+    {
+     "id": "c7-sort-log",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 5,
+   "id": "s5",
+   "grup": "Variabilele",
+   "titlu": "Scalare și extragere",
+   "sarcini": [
+    {
+     "id": "c7-v1",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Scalarea cu scorul z schimbă forma distribuției?",
+     "optiuni": [
+      "Da, o face normală",
+      "Nu, doar o mută și o întinde; forma rămâne",
+      "Da, scoate valorile extreme",
+      "Doar dacă variabila are coadă lungă"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 6,
+   "id": "s6",
+   "grup": "Variabilele",
+   "titlu": "Selecția",
+   "sarcini": []
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "Modelul",
+   "titlu": "Patru modele",
+   "sarcini": []
+  },
+  {
+   "nr": 8,
+   "id": "s8",
+   "grup": "Modelul",
+   "titlu": "Modelul, în cod",
+   "sarcini": [
+    {
+     "id": "c7-cod-ols",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 9,
+   "id": "s9",
+   "grup": "Modelul",
+   "titlu": "Cum se citește",
+   "sarcini": [
+    {
+     "id": "c7-v2",
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Coeficientul distanței e -0,25. Ce înseamnă?",
+     "optiuni": [
+      "Că la fiecare kilometru SCI-ul scade cu 0,25",
+      "Că distanța explică 25% din SCI",
+      "Că la o distanță cu 10% mai mare, SCI-ul e cu aproximativ 2,4% mai mic",
+      "Că distanța nu contează"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "Reziduurile",
+   "titlu": "Peste și sub model",
+   "sarcini": []
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "Limite",
+   "titlu": "Ce avem voie să spunem",
+   "sarcini": [
+    {
+     "id": "c7-v3",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Modelul arată o asociere puternică între migrație și SCI. De ce nu putem spune că migrația produce legăturile?",
+     "optiuni": [
+      "Pentru că R² e sub 1",
+      "Pentru că legăturile vechi pot atrage și ele migrație, iar datele sunt dintr-un singur moment",
+      "Pentru că eșantionul e mic",
+      "Pentru că am folosit logaritmi"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "Proiectul tău",
+   "titlu": "Modelul vostru",
+   "sarcini": [
+    {
+     "id": "c7-dovada-model",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s13",
+   "grup": "Proiectul tău",
+   "titlu": "Un reziduu",
+   "sarcini": [
+    {
+     "id": "c7-reziduu",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "Mai departe",
+   "titlu": "Până data viitoare",
+   "sarcini": []
+  }
+ ]
+}

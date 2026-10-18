@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=39">
-<link rel="stylesheet" href="../../css/tutorial.css?v=39">
-<link rel="stylesheet" href="../../css/interactiv.css?v=39">
-<link rel="stylesheet" href="../../css/grafice.css?v=39">
-<link rel="stylesheet" href="../../css/exercitii.css?v=39">
-<link rel="stylesheet" href="../../css/explorator.css?v=39">
-<script src="../../js/tema.js?v=39"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=41">
+<link rel="stylesheet" href="../../css/tutorial.css?v=41">
+<link rel="stylesheet" href="../../css/interactiv.css?v=41">
+<link rel="stylesheet" href="../../css/grafice.css?v=41">
+<link rel="stylesheet" href="../../css/exercitii.css?v=41">
+<link rel="stylesheet" href="../../css/explorator.css?v=41">
+<script src="../../js/tema.js?v=41"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 4 · Manual"></div>
@@ -84,7 +84,7 @@
 
 <section class="tut__s" id="s4">
 <span class="tut__nr">04 · Git în practică</span>
-<h2>Comenzile de zi cu zi</h2><table class="tabel"><thead><tr><th>Comanda</th><th>Ce face</th></tr></thead><tbody><tr><td class="mono">git status</td><td>ce e schimbat și ce e în pregătire</td></tr><tr><td class="mono">git add .</td><td>adaugă tot în pregătire</td></tr><tr><td class="mono">git add nume</td><td>adaugă un singur fișier</td></tr><tr><td class="mono">git rm --cached nume</td><td>scoate un fișier din pregătire, fără să-l șteargă</td></tr><tr><td class="mono">git commit -m "mesaj"</td><td>scrie în istoric</td></tr><tr><td class="mono">git log --oneline</td><td>istoricul, pe scurt</td></tr><tr><td class="mono">git show &lt;id&gt;</td><td>exact ce s-a schimbat într-un commit</td></tr></tbody></table><div class="ix" data-ix="cod">
+<h2>Comenzile de zi cu zi</h2><table class="tabel"><thead><tr><th>Comanda</th><th>Ce face</th></tr></thead><tbody><tr><td class="mono">git status</td><td>ce e schimbat și ce e în pregătire</td></tr><tr><td class="mono">git pull</td><td>aduce ce e nou; dă-l când <code>git status</code> e curat</td></tr><tr><td class="mono">git add .</td><td>adaugă tot în pregătire</td></tr><tr><td class="mono">git add nume</td><td>adaugă un singur fișier</td></tr><tr><td class="mono">git reset -- nume</td><td>scoate un fișier din pregătire; rămâne pe disc</td></tr><tr><td class="mono">git rm --cached nume</td><td>Git nu-l mai urmărește deloc, dar rămâne în proiect</td></tr><tr><td class="mono">git commit -m "mesaj"</td><td>scrie în istoric</td></tr><tr><td class="mono">git log --oneline</td><td>istoricul, pe scurt</td></tr><tr><td class="mono">git show &lt;id&gt;</td><td>exact ce s-a schimbat într-un commit</td></tr></tbody></table><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scoate fișierul care n-avea ce căuta</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c4-cod-staging", "fisier": "terminal.sh", "sarcina": "Ai dat <code>git add .</code> și a intrat și <code>.env</code>. Scoate-l înainte de commit.", "cod": "# vezi ce ai in pregatire\ngit {{1}}\n\n# scoate .env din pregatire, dar lasa-l pe disc\ngit rm {{2}} .env\n\n# ca sa nu se mai intample, il treci in .gitignore\necho \".env\" >> .gitignore\n\n# acum poti face commit linistit\ngit commit -m {{3}}", "goluri": {"1": {"ok": ["status"], "ajutor": "comanda"}, "2": {"ok": ["--cached"], "ajutor": "steagul"}, "3": {"ok": ["\"curatare initiala\"", "'curatare initiala'", "\"colectare\"", "\"primul commit\""], "ajutor": "mesajul, în ghilimele"}}, "laBine": "<code>--cached</code> e cuvântul care contează: fără el, <code>git rm</code> șterge fișierul de pe disc.", "laRau": "Steagul începe cu două liniuțe. Mesajul se scrie între ghilimele.", "explicatie": "<code>git rm --cached</code> scoate fișierul din urmărire, dar îl lasă acolo unde e. E exact ce vrei pentru un fișier cu parole: să nu mai plece nicăieri, dar să rămână la tine, ca programul să meargă."}</script></div>
 </div>
@@ -102,7 +102,7 @@
 
 <section class="tut__s" id="s6">
 <span class="tut__nr">06 · Git în practică</span>
-<h2>Ciclul complet al unei ramuri</h2><table class="tabel"><thead><tr><th>Comanda</th><th>Ce face</th></tr></thead><tbody><tr><td class="mono">git branch</td><td>ce ramuri există</td></tr><tr><td class="mono">git switch -c nume</td><td>creează și trece pe ea</td></tr><tr><td class="mono">git switch nume</td><td>trece pe una existentă</td></tr><tr><td class="mono">git merge nume</td><td>aduce ramura în cea pe care ești</td></tr><tr><td class="mono">git branch -d nume</td><td>o șterge, dacă a fost îmbinată</td></tr><tr><td class="mono">git branch -D nume</td><td>o șterge oricum; rar, și cu grijă</td></tr></tbody></table><div class="nota"><div class="nota__et">Dacă ți se deschide Vim și nu mai poți ieși</div><p>La <code>git merge</code> sau <code>git commit</code> fără <code>-m</code>, Git deschide un editor. Dacă e Vim, ecranul pare blocat. Nu e: apeși <kbd>Esc</kbd>, apoi scrii <code>:wq</code> și <kbd>Enter</kbd>. Scrie și iese.</p></div><div class="verif" data-id="c4-v4" data-corect="2">
+<h2>Ciclul complet al unei ramuri</h2><table class="tabel"><thead><tr><th>Comanda</th><th>Ce face</th></tr></thead><tbody><tr><td class="mono">git branch</td><td>ramurile locale</td></tr><tr><td class="mono">git branch -r / -a</td><td>ramurile de pe GitHub / toate</td></tr><tr><td class="mono">git branch -vv</td><td>fiecare ramură și pe cine urmărește (upstream)</td></tr><tr><td class="mono">git switch -c nume</td><td>creează și trece pe ea</td></tr><tr><td class="mono">git switch nume</td><td>trece pe una existentă</td></tr><tr><td class="mono">git merge nume</td><td>aduce ramura în cea pe care ești</td></tr><tr><td class="mono">git branch -d nume</td><td>o șterge, dacă a fost îmbinată</td></tr><tr><td class="mono">git branch -D nume</td><td>o șterge oricum; rar, și cu grijă</td></tr></tbody></table><div class="nota"><div class="nota__et">Dacă ți se deschide Vim și nu mai poți ieși</div><p>La <code>git merge</code> sau <code>git commit</code> fără <code>-m</code>, Git deschide un editor. Dacă e Vim, ecranul pare blocat. Nu e: apeși <kbd>Esc</kbd>, apoi scrii <code>:wq</code> și <kbd>Enter</kbd>. Scrie și iese.</p></div><div class="verif" data-id="c4-v4" data-corect="2">
     <p class="verif__q">De ce <code>git branch -d</code> refuză uneori să șteargă o ramură?</p>
     <button>Pentru că e ramura curentă</button>
     <button>Pentru că are prea multe commit-uri</button>
@@ -286,11 +286,11 @@ tari["migranti"] = tari["din_1_in_2"] + tari["din_2_in_1"]</code></pre><p>Codul 
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=39"></script>
+<script type="module" src="../../js/antet.js?v=41"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=39";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=39";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=39";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=41";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=41";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=41";
 pornesteIx();
 pornesteVerif("c4");
 pornesteTut("c4");

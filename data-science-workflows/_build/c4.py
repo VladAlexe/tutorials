@@ -158,9 +158,11 @@ sl("s4", "Git în practică", "Staging și commit",
    "<h2>Comenzile de zi cu zi</h2>"
    + tabel(["Comanda", "Ce face"], [
        ["~git status", "ce e schimbat și ce e în pregătire"],
+       ["~git pull", "aduce ce e nou; dă-l când <code>git status</code> e curat"],
        ["~git add .", "adaugă tot în pregătire"],
        ["~git add nume", "adaugă un singur fișier"],
-       ["~git rm --cached nume", "scoate un fișier din pregătire, fără să-l șteargă"],
+       ["~git reset -- nume", "scoate un fișier din pregătire; rămâne pe disc"],
+       ["~git rm --cached nume", "Git nu-l mai urmărește deloc, dar rămâne în proiect"],
        ["~git commit -m \"mesaj\"", "scrie în istoric"],
        ["~git log --oneline", "istoricul, pe scurt"],
        ["~git show &lt;id&gt;", "exact ce s-a schimbat într-un commit"],
@@ -253,7 +255,9 @@ sl("s5", "Git în practică", "Anulări",
 sl("s6", "Git în practică", "Ramuri, în practică",
    "<h2>Ciclul complet al unei ramuri</h2>"
    + tabel(["Comanda", "Ce face"], [
-       ["~git branch", "ce ramuri există"],
+       ["~git branch", "ramurile locale"],
+       ["~git branch -r / -a", "ramurile de pe GitHub / toate"],
+       ["~git branch -vv", "fiecare ramură și pe cine urmărește (upstream)"],
        ["~git switch -c nume", "creează și trece pe ea"],
        ["~git switch nume", "trece pe una existentă"],
        ["~git merge nume", "aduce ramura în cea pe care ești"],

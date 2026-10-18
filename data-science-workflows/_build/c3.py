@@ -219,7 +219,9 @@ sl("s6", "Primii pași", "Depozitul",
        ["acolo lucrezi", "acolo se întâlnesc colegii"],
        ["se face cu <code>git init</code>", "se face din interfața GitHub"],
    ])
-   + "<pre><code><span class=\"c\"># in dosarul proiectului</span>\n"
+   + "<pre><code><span class=\"c\"># o singura data pe laptop: e instalat?</span>\n"
+     "git --version\n\n"
+     "<span class=\"c\"># in dosarul proiectului</span>\n"
      "git init\ngit status</code></pre>"
    + verif("c3-v4", 2,
            "Ce face <code>git init</code>?",
@@ -248,7 +250,9 @@ sl("s6", "Primii pași", "Depozitul",
    + nota("Greșeala de început",
           "<code>git init</code> dat din greșeală în dosarul tău de acasă "
           "pune sub urmărire tot ce ai pe calculator. Dacă ți se întâmplă, "
-          "ștergi dosarul <code>.git</code> de acolo și nu s-a pierdut nimic.")
+          "ștergi dosarul <code>.git</code> de acolo și nu s-a pierdut nimic. "
+          "În PowerShell, din dosarul acela: "
+          "<code>Remove-Item -Recurse -Force .git</code>.")
    + verif("c3-v4", 2,
            "Ce face <code>git init</code>?",
            ["Trimite proiectul pe GitHub",
@@ -394,18 +398,19 @@ sl("s9", "Primii pași", "Ce nu urci niciodată",
    manual=
    "<h2>.gitignore</h2>"
    "<p>Un fișier text, în rădăcina proiectului, cu ce nu trebuie urmărit:</p>"
-   "<pre><code><span class=\"c\"># mediul virtual: se reface din requirements.txt</span>\n"
-   "venv/\n.venv/\n\n"
-   "<span class=\"c\"># secrete: niciodata, in niciun fel</span>\n"
-   ".env\n*.key\n\n"
-   "<span class=\"c\"># date mari: se aduc cu scriptul de colectare</span>\n"
-   "date/brute/*.csv\n!date/brute/mic_exemplu.csv\n\n"
+   "<pre><code><span class=\"c\"># mediul virtual si secretele</span>\n"
+   "venv/\n.env\n\n"
+   "<span class=\"c\"># datele: se aduc cu scriptul de colectare</span>\n"
+   "data/\n*.csv\n*.parquet\n*.xlsx\n\n"
    "<span class=\"c\"># gunoiul uneltelor</span>\n"
-   "__pycache__/\n.ipynb_checkpoints/\n.DS_Store</code></pre>"
-   + "<p>Semnul exclamării face o excepție: linia de mai sus exclude toate "
-     "fișierele CSV din <code>date/brute/</code>, iar cea cu "
-     "<code>!</code> lasă totuși unul mic, de exemplu, ca să poată rula cineva "
-     "codul fără să colecteze tot.</p>"
+   ".ipynb_checkpoints/\n__pycache__/\n*.pyc\n.vscode/\n.DS_Store\nThumbs.db</code></pre>"
+   + "<p>După ce îl scrii, îl urci ca pe orice fișier: "
+     "<code>git add .gitignore</code>, <code>git commit -m \"add gitignore\"</code>, "
+     "<code>git push</code>.</p>"
+   + tabel(["Ai pus din greșeală un fișier și vrei…", "Comanda"], [
+       ["doar să-l scoți din pregătire; rămâne pe disc", "~git reset -- \"nume fisier.ipynb\""],
+       ["ca Git să nu-l mai urmărească deloc, dar să rămână în proiect", "~git rm --cached nume_fisier"],
+   ])
    + ix("sortare", "Intră sau nu intră în depozit", {
        "id": "c3-sort-gitignore",
        "sarcina": "Pune fiecare lucru unde îi e locul.",
@@ -439,34 +444,83 @@ sl("s10", "GitHub", "Ce este GitHub",
           "și nu una bună."))
 
 sl("s11", "GitHub", "Legarea celor două",
-   "<h2>Ai deja un depozit local</h2>"
-   "<p>Faci unul gol pe GitHub, fără README, și le legi:</p>"
+   "<h2>Două feluri de a începe</h2>"
+   + tabel(["Varianta 1: <code>git init</code>", "Varianta 2: <code>git clone</code>"], [
+       ["nu există încă depozit pe GitHub", "depozitul echipei există deja pe GitHub"],
+       ["<code>git init</code>, <code>add</code>, <code>commit</code>", "<code>git clone &lt;adresa&gt; Proiect</code>"],
+       ["<code>git branch -m master main</code>", "<code>cd Proiect</code>"],
+       ["<code>git remote add origin &lt;adresa&gt;</code>", "<code>git branch -vv</code>: main urmărește origin/main"],
+       ["<code>git push -u origin main</code>", "gata, e deja legat"],
+   ])
+   + nota("La curs: varianta 2",
+          "Depozitul echipei îl face unul dintre voi pe GitHub, iar ceilalți îl "
+          "clonează. Clonarea aduce fișierele, toată istoria, și leagă singură "
+          "<code>origin</code>.", True)
    + ix("cod", "Leagă-l de GitHub", {
        "id": "c3-cod-remote", "fisier": "terminal.sh",
-       "sarcina": "Completează comenzile de legare și de prima trimitere.",
-       "cod": "# „origin” e numele obisnuit al depozitului de pe internet\n"
-              "git {{1}} add origin https://github.com/echipa/proiect.git\n\n"
-              "# verifici ca s-a legat\ngit remote -v\n\n"
-              "# prima trimitere: -u leaga ramura locala de cea de sus\n"
+       "sarcina": "Varianta 1: ai deja un depozit local. Completează comenzile.",
+       "cod": "# ramura principala se cheama azi main\n"
+              "git branch -m master main\n\n"
+              "# „origin” e numele obisnuit al depozitului de pe GitHub\n"
+              "git {{1}} add origin https://github.com/echipa/proiect.git\n"
+              "git remote -v\n\n"
+              "# prima trimitere: -u leaga main local de origin/main\n"
               "git push {{2}} origin {{3}}",
        "goluri": {
            "1": {"ok": ["remote"], "ajutor": "comanda"},
            "2": {"ok": ["-u", "--set-upstream"], "ajutor": "steagul"},
-           "3": {"ok": ["main", "master"], "ajutor": "ramura"}},
-       "laBine": "După prima dată cu <code>-u</code>, e de ajuns "
-                 "<code>git push</code>, fără nimic după.",
-       "laRau": "Numele depozitului de pe internet e „origin”. Ramura "
-                "principală se cheamă astăzi „main”.",
-       "explicatie": "<code>-u</code> înseamnă „ține minte legătura”. Fără el, "
-                     "Git te întreabă de fiecare dată unde să trimită. Numele "
-                     "ramurii principale e <code>main</code> la depozitele noi "
-                     "și <code>master</code> la cele vechi; "
-                     "<code>git branch</code> îți spune pe care ești."})
-   + "<h3>Nu ai depozit local</h3>"
-   + "<p>Atunci e și mai simplu: îl faci pe GitHub și îl aduci la tine.</p>"
-   + "<pre><code>git clone https://github.com/echipa/proiect.git</code></pre>"
-   + "<p>Clonarea aduce și fișierele, și toată istoria, și leagă singură "
-     "<code>origin</code>.</p>")
+           "3": {"ok": ["main"], "ajutor": "ramura"}},
+       "laBine": "După prima dată cu <code>-u</code>, e de ajuns <code>git push</code>.",
+       "laRau": "Numele depozitului de pe internet e „origin”. Ramura e „main”.",
+       "explicatie": "<code>-u</code> înseamnă „ține minte legătura” (upstream). "
+                     "De atunci, <code>git push</code> și <code>git pull</code> "
+                     "știu singure unde să meargă."}),
+   manual=
+   "<h2>Două feluri de a începe</h2>"
+   "<p>Ca în fișa „Lucrul cu Git” de la curs, sunt două variante, după cum "
+   "există sau nu deja depozitul pe GitHub.</p>"
+   "<h3>Varianta 1: <code>git init</code></h3>"
+   "<p>Doar dacă nu există încă depozit pe GitHub.</p>"
+   "<pre><code>git init                          <span class=\"c\"># depozit local, gol</span>\n"
+   "git add .                         <span class=\"c\"># fisierele existente</span>\n"
+   "git commit -m \"first commit\"\n"
+   "git branch -m master main         <span class=\"c\"># ramura principala devine main</span>\n"
+   "git remote add origin &lt;GitHub_URL&gt;\n"
+   "git push -u origin main</code></pre>"
+   "<h3>Varianta 2: <code>git clone</code>, cea de la curs</h3>"
+   "<p>Când depozitul echipei există deja pe GitHub.</p>"
+   "<pre><code>git clone https://github.com/DSW2026-ORG/TeamX.git Proiect\n"
+   "cd Proiect\n"
+   "git status\n"
+   "git branch -vv            <span class=\"c\"># main urmareste origin/main</span></code></pre>"
+   "<h3>Caz special</h3>"
+   "<p>Ai făcut local <code>git init</code>, dar depozitul de pe GitHub "
+   "există deja și are conținut (de exemplu un README). Istoriile nu au "
+   "legătură, deci le unești o dată:</p>"
+   "<pre><code>git remote add origin &lt;GitHub_URL&gt;\n"
+   "git pull origin main --allow-unrelated-histories\n"
+   "git branch -u origin/main</code></pre>"
+   + tabel(["Verificare", "Ce vezi"], [
+       ["~git branch", "ramurile locale"],
+       ["~git branch -r", "ramurile de pe GitHub (origin/...)"],
+       ["~git branch -a", "toate"],
+       ["~git branch -vv", "fiecare ramură și pe cine urmărește (upstream)"],
+       ["~git remote -v", "adresa lui origin"],
+   ])
+   + ix("cod", "Leagă-l de GitHub", {
+       "id": "c3-cod-remote", "fisier": "terminal.sh",
+       "sarcina": "Varianta 1: completează comenzile.",
+       "cod": "git branch -m master main\n"
+              "git {{1}} add origin https://github.com/echipa/proiect.git\n"
+              "git push {{2}} origin {{3}}",
+       "goluri": {
+           "1": {"ok": ["remote"], "ajutor": "comanda"},
+           "2": {"ok": ["-u", "--set-upstream"], "ajutor": "steagul"},
+           "3": {"ok": ["main"], "ajutor": "ramura"}},
+       "laBine": "După prima dată cu <code>-u</code>, e de ajuns <code>git push</code>.",
+       "laRau": "Ramura e „main”.",
+       "explicatie": "<code>-u</code> leagă ramura locală de cea de pe GitHub."}))
+
 
 sl("s12", "GitHub", "Drumul complet",
    "<h2>De la dosar gol la depozit de echipă</h2>"
@@ -478,6 +532,7 @@ sl("s12", "GitHub", "Drumul complet",
            "scrii .gitignore, ca secretele sa nu intre din prima",
            "git add .",
            "git commit -m \"structura proiectului si colectarea\"",
+           "git branch -m master main",
            "creezi pe GitHub un depozit gol, fara README",
            "git remote add origin <adresa>",
            "git push -u origin main"],
@@ -530,21 +585,125 @@ sl("s14", "În echipă", "Ramuri",
           "toată lumea. Cu ramuri, main e întotdeauna o versiune care "
           "funcționează, iar ce e în lucru stă deoparte până e gata."))
 
-sl("s15", "În echipă", "Pull request și conflicte",
-   "<h2>Cum ajunge munca ta în main</h2>"
-   "<p>Nu direct. Prin <em>pull request</em>: ceri să ți se ia ramura în main, "
-   "iar un coleg se uită întâi peste ea.</p>"
-   + tabel(["Pasul", "Unde"], [
-       ["lucrezi pe ramura ta, faci commit-uri", "la tine"],
-       ["<code>git push -u origin ramura-mea</code>", "la tine"],
-       ["deschizi un pull request", "pe GitHub"],
-       ["un coleg citește și comentează", "pe GitHub"],
-       ["se îmbină în main", "pe GitHub"],
-       ["<code>git switch main</code> și <code>git pull</code>", "la tine"],
-   ])
-   + "<h3>Conflictele</h3>"
-   + "<p>Apar când doi oameni schimbă aceleași rânduri. Git nu poate alege, "
-     "deci îți pune amândouă variantele în fișier și te lasă pe tine.</p>"
+# --------------------------------------------------------------------------
+# Fluxul echipei din fișa „Lucrul cu Git”: main și dev. Fiecare pas e o
+# comandă; panourile arată ce commit-uri are fiecare depozit și unde stau
+# etichetele (ramurile). x = coloana, r = rândul pe desen.
+# --------------------------------------------------------------------------
+
+COMMITURI = {
+    "c1": {"x": 0, "r": 0, "autor": "baza", "mesaj": "structura proiectului"},
+    "c2": {"x": 1, "r": 0, "autor": "baza", "mesaj": "colectare migratie", "parinti": ["c1"]},
+    "y1": {"x": 2, "r": 1, "autor": "tu", "mesaj": "curatare migratie", "parinti": ["c2"]},
+    "m1": {"x": 2, "r": 2, "autor": "maria", "mesaj": "harta pe judete", "parinti": ["c2"]},
+    "x1": {"x": 3, "r": 1, "autor": "tu", "merge": True, "mesaj": "merge origin/dev", "parinti": ["y1", "m1"]},
+}
+
+
+def stare(commits, et, head=None):
+    return {"commits": commits, "et": et, "head": head}
+
+
+B = ["c1", "c2"]
+GITDAG = {
+    "commituri": COMMITURI,
+    "autori": {"baza": {"et": "commit-urile de la început", "c": "text-3"},
+               "tu": {"et": "commit-urile tale", "c": "ceas"},
+               "maria": {"et": "commit-urile Mariei", "c": "accent"}},
+    "pasi": [
+        {"t": "Depozitul clonat", "cmd": "git clone <adresa> Proiect",
+         "txt": "Laptopul tău și GitHub au aceleași două commit-uri. Eticheta "
+                "<code>main</code> stă pe ultimul. HEAD arată pe ce ramură ești.",
+         "L": stare(B, {"main": "c2"}, "main"), "R": stare(B, {"main": "c2"})},
+        {"t": "Unul din echipă face dev", "cmd": "git switch -c dev",
+         "txt": "O ramură nouă e doar o etichetă nouă pe același commit. Nu se "
+                "copiază nimic. HEAD trece pe dev.",
+         "L": stare(B, {"main": "c2", "dev": "c2"}, "dev"), "R": stare(B, {"main": "c2"})},
+        {"t": "Dev ajunge pe GitHub", "cmd": "git push -u origin dev", "sus": True,
+         "txt": "Acum există și <code>origin/dev</code>. Colegii o aduc cu "
+                "<code>git fetch</code> și <code>git switch dev</code>.",
+         "L": stare(B, {"main": "c2", "dev": "c2"}, "dev"), "R": stare(B, {"main": "c2", "dev": "c2"})},
+        {"t": "Lucrezi și salvezi", "cmd": "git commit -m \"curatare migratie\"",
+         "txt": "Un commit nou, doar pe laptopul tău. Eticheta dev avansează "
+                "pe el; main rămâne pe loc.",
+         "L": stare(B + ["y1"], {"main": "c2", "dev": "y1"}, "dev"),
+         "R": stare(B, {"main": "c2", "dev": "c2"})},
+        {"t": "Între timp, Maria", "cmd": "git push", "cine": "maria $",
+         "txt": "Maria a lucrat și ea pe dev și a urcat primul. Pe GitHub, "
+                "dev e acum pe commit-ul ei. Laptopul tău nu știe încă.",
+         "L": stare(B + ["y1"], {"main": "c2", "dev": "y1"}, "dev"),
+         "R": stare(B + ["m1"], {"main": "c2", "dev": "m1"})},
+        {"t": "Push refuzat", "cmd": "git push   ✗ rejected (fetch first)", "rau": True,
+         "txt": "GitHub are un commit pe care tu nu-l ai. Git refuză, ca să nu "
+                "ștergi munca Mariei. De aceea în fișă scrie: <b>pull, apoi push</b>.",
+         "L": stare(B + ["y1"], {"main": "c2", "dev": "y1"}, "dev"),
+         "R": stare(B + ["m1"], {"main": "c2", "dev": "m1"})},
+        {"t": "Aduci ce a făcut ea", "cmd": "git pull", "jos": True,
+         "txt": "Commit-ul Mariei coboară, iar Git le unește pe ale voastre "
+                "într-un commit de îmbinare (cel cu contur). Dacă ați atins "
+                "aceleași rânduri, aici apare un conflict.",
+         "L": stare(B + ["y1", "m1", "x1"], {"main": "c2", "dev": "x1"}, "dev"),
+         "R": stare(B + ["m1"], {"main": "c2", "dev": "m1"})},
+        {"t": "Acum merge", "cmd": "git push", "sus": True,
+         "txt": "Commit-ul tău și cel de îmbinare urcă. GitHub și laptopul tău "
+                "au din nou același dev.",
+         "L": stare(B + ["y1", "m1", "x1"], {"main": "c2", "dev": "x1"}, "dev"),
+         "R": stare(B + ["y1", "m1", "x1"], {"main": "c2", "dev": "x1"})},
+        {"t": "Task terminat: treci pe main", "cmd": "git switch main && git pull",
+         "txt": "Curățarea e gata, deci e momentul să ajungă în main. Întâi "
+                "treci pe main și te asiguri că e la zi.",
+         "L": stare(B + ["y1", "m1", "x1"], {"main": "c2", "dev": "x1"}, "main"),
+         "R": stare(B + ["y1", "m1", "x1"], {"main": "c2", "dev": "x1"})},
+        {"t": "Aduci dev în main", "cmd": "git merge dev",
+         "txt": "Main nu avea nimic nou, deci eticheta main doar sare pe ultimul "
+                "commit din dev. Commit-urile nu se mută și nu se copiază: "
+                "se mută eticheta.",
+         "L": stare(B + ["y1", "m1", "x1"], {"main": "x1", "dev": "x1"}, "main"),
+         "R": stare(B + ["y1", "m1", "x1"], {"main": "c2", "dev": "x1"})},
+        {"t": "Main ajunge pe GitHub", "cmd": "git push", "sus": True,
+         "txt": "Gata: main de pe GitHub conține tot ce s-a făcut și verificat "
+                "pe dev. Ciclul se reia de la pasul 4.",
+         "L": stare(B + ["y1", "m1", "x1"], {"main": "x1", "dev": "x1"}, "main"),
+         "R": stare(B + ["y1", "m1", "x1"], {"main": "x1", "dev": "x1"})},
+    ],
+}
+
+FLUX_DEV = [
+    ["o dată, unul din echipă", "~git switch -c dev", "~git push -u origin dev"],
+    ["o dată, ceilalți", "~git fetch", "~git switch dev"],
+    ["zilnic, fiecare", "~git switch dev", "~git pull"],
+    ["când salvezi", "~git add . ; git commit -m \"...\"", "~git pull ; git push"],
+    ["după un task important", "~git switch main ; git pull", "~git merge dev ; git push"],
+]
+
+sl("s14b", "În echipă", "Fluxul echipei",
+   "<h2>main și dev, pas cu pas</h2>"
+   + ix("gitdag", "Ce se întâmplă cu commit-urile", GITDAG),
+   manual=
+   "<h2>Fluxul echipei: main și dev</h2>"
+   "<p>Fluxul din fișa „Lucrul cu Git” are două ramuri. <code>main</code> e "
+   "versiunea care merge și care se predă. <code>dev</code> e ramura pe "
+   "care lucrează toată echipa zi de zi. Ce e pe dev ajunge în main după "
+   "fiecare task important terminat: curățarea datelor, setul de "
+   "vizualizări, modelul. Nu la fiecare commit, și nu doar la final.</p>"
+   + ix("gitdag", "Ce se întâmplă cu commit-urile", GITDAG)
+   + tabel(["Cine, când", "Comanda", "Apoi"], FLUX_DEV)
+   + nota("Fișiere separate",
+          "Lucrați, pe cât se poate, în fișiere separate (de exemplu "
+          "<code>analiza_vlad.ipynb</code>, <code>analiza_maria.ipynb</code>). "
+          "Conflictele apar doar când doi oameni schimbă aceleași rânduri.")
+   + nota("Ce face <code>git merge dev</code>",
+          "Ia toate commit-urile care există în dev, dar nu încă în main, și "
+          "le aduce în main. Dacă main n-a primit nimic între timp, eticheta "
+          "main doar avansează (fast-forward)."))
+
+
+sl("s15", "În echipă", "Conflictele",
+   "<h2>Când doi oameni schimbă aceleași rânduri</h2>"
+   + "<p>La <code>git pull</code>, Git nu poate alege, deci îți pune amândouă "
+     "variantele în fișier și te lasă pe tine. Rezolvi, apoi "
+     "<code>git add .</code>, <code>git commit -m \"rezolvat conflict\"</code>, "
+     "<code>git push</code>.</p>"
    + ix("conflict", "Rezolvă-l", {
        "id": "c3-conflict", "fisier": "analiza.py", "ramura": "curatare",
        "sarcina": "Colega ta a redenumit fișierul de date, tu ai rămas cu "
@@ -569,19 +728,17 @@ sl("s15", "În echipă", "Pull request și conflicte",
            "două minute, două săptămâni de diferență se rezolvă într-o "
            "după-amiază proastă."),
    manual=
-   "<h2>Pull request și conflicte</h2>"
-   "<p>Pull request-ul nu e o formalitate birocratică. E momentul în care "
-   "altcineva se uită la ce ai scris înainte ca asta să devină parte din "
-   "proiect. La un proiect de echipă de patru oameni, e singura ocazie în care "
-   "ceilalți trei află ce ai făcut.</p>"
-   + tabel(["Pasul", "Unde"], [
-       ["lucrezi pe ramura ta, faci commit-uri", "la tine"],
-       ["<code>git push -u origin ramura-mea</code>", "la tine"],
-       ["deschizi un pull request", "pe GitHub"],
-       ["un coleg citește și comentează", "pe GitHub"],
-       ["se îmbină în main", "pe GitHub"],
-       ["<code>git switch main</code> și <code>git pull</code>", "la tine"],
-   ])
+   "<h2>Conflictele</h2>"
+   "<p>Un conflict apare la <code>git pull</code> (sau la <code>git merge</code>) "
+   "când tu și un coleg ați schimbat aceleași rânduri. După rezolvare: "
+   "<code>git add .</code>, <code>git commit -m \"rezolvat conflict\"</code>, "
+   "<code>git push</code>.</p>"
+   + nota("Pull request",
+          "Pe GitHub, aducerea lui dev în main se poate face și printr-un pull "
+          "request: ceri îmbinarea, iar un coleg se uită întâi peste ea. Pentru "
+          "proiectul nostru ajunge <code>git merge dev</code> din terminal; "
+          "pull request-ul e un pas în plus, util când echipa vrea să citească "
+          "înainte.")
    + "<h3>Conflictele nu sunt o avarie</h3>"
    + "<p>Sunt felul în care Git spune că nu poate decide în locul tău. Sus e ce "
      "ai tu, jos e ce vine.</p>"
@@ -607,8 +764,8 @@ sl("s16", "În echipă", "Regulile voastre",
    + '<div class="reg">'
    + "".join(f'<div class="reg__c"><span class="reg__n">{i}</span><b>{t}</b><p>{d}</p></div>'
              for i, (t, d) in enumerate([
-                 ("<code>git pull</code> întâi", "înainte să începi, de fiecare dată"),
-                 ("o ramură pe lucru", "<code>main</code> merge întotdeauna"),
+                 ("<code>git pull</code> întâi", "pe dev, înainte să începi; și înainte de push"),
+                 ("lucrați pe dev", "<code>main</code> primește doar task-uri terminate"),
                  ("mesaje care spun ceva", "ce s-a schimbat, nu „update”"),
                  ("nimic secret, nimic uriaș", "parolele și datele mari rămân afară"),
              ], 1))
@@ -808,8 +965,9 @@ sl("s22", "Proiectul tău", "Fă-ți depozitul, acum",
        ["1", "unul din echipă face depozitul pe GitHub și îi adaugă pe ceilalți"],
        ["2", "fiecare îl clonează la el"],
        ["3", "scrieți <code>.gitignore</code> înainte de primul <code>add</code>"],
-       ["4", "urcați scriptele de colectare de săptămâna trecută, cu migrația"],
-       ["5", "în <code>README.md</code>: întrebarea și cine ce face"],
+       ["4", "unul face ramura <code>dev</code>; ceilalți o aduc cu <code>git fetch</code>"],
+       ["5", "urcați pe dev scriptele de colectare de săptămâna trecută"],
+       ["6", "în <code>README.md</code>: întrebarea și cine ce face"],
    ])
    + ix("dovada", "Dovada", {
        "id": "c3-dovada-depozit",
@@ -827,6 +985,13 @@ sl("s22", "Proiectul tău", "Fă-ți depozitul, acum",
             "cauta": r"[0-9a-f]{7}[\s\S]*[0-9a-f]{7}",
             "daca_nu": "Caut două hash-uri de commit. Unul singur înseamnă că "
                        "ai urcat tot dintr-o dată, la final."},
+           {"t": "Ramura dev există și pe GitHub",
+            "cmd": "git branch -a",
+            "gol": "lipește lista",
+            "cauta": r"remotes/origin/dev",
+            "daca_nu": "Caut remotes/origin/dev. Unul din echipă face "
+                       "git switch -c dev și git push -u origin dev; ceilalți "
+                       "dau git fetch."},
            {"t": "Secretele sunt ținute afară",
             "cmd": "git check-ignore -v .env venv",
             "gol": "lipește ce scrie",

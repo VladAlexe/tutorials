@@ -1,0 +1,38 @@
+{
+ "M1": {
+  "r2": 0.160627447751929,
+  "coef": {
+   "log_distanta": -0.719,
+   "log_migranti": null,
+   "log_la_mie": null,
+   "granita[T.True]": null
+  }
+ },
+ "M2": {
+  "r2": 0.241694083556735,
+  "coef": {
+   "log_distanta": -0.585,
+   "log_migranti": 0.166,
+   "log_la_mie": null,
+   "granita[T.True]": null
+  }
+ },
+ "M3": {
+  "r2": 0.5224385054438411,
+  "coef": {
+   "log_distanta": -0.342,
+   "log_migranti": null,
+   "log_la_mie": 0.45,
+   "granita[T.True]": null
+  }
+ },
+ "M4": {
+  "r2": 0.5259318291729317,
+  "coef": {
+   "log_distanta": -0.254,
+   "log_migranti": null,
+   "log_la_mie": 0.443,
+   "granita[T.True]": 0.288
+  }
+ }
+}

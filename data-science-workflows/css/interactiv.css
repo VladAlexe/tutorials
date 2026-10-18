@@ -964,3 +964,53 @@ circle.nor__p:hover{r:6.5}
 .tcol th{font-weight:500;color:var(--text-2);padding:6px 8px;text-align:center;font-size:11.5px}
 .tcol th.st{text-align:right}
 .tcol td{padding:10px 12px;text-align:center;border-radius:5px;min-width:64px;color:var(--text)}
+
+/* --- modele: coeficienți ca bare în jurul lui zero ---------------------- */
+.mdl__f{display:block;font-family:var(--mono);font-size:12.5px;background:var(--panza-2);border-radius:6px;
+  padding:8px 11px;margin:0 0 14px;color:var(--text)}
+.mdl__rand,.mdl__r2{display:grid;grid-template-columns:150px 1fr 74px;gap:12px;align-items:center;padding:6px 0;
+  font-family:var(--sans);font-size:13.5px}
+.mdl__cap{padding:0 0 2px}
+.mdl__axa{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.mdl__pista{position:relative;height:18px;background:var(--panza-2);border-radius:4px}
+.mdl__zero{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--text-3)}
+.mdl__b{position:absolute;top:2px;bottom:2px;border-radius:3px;background:var(--vc);
+  transition:width .55s cubic-bezier(.5,0,.3,1),left .55s cubic-bezier(.5,0,.3,1)}
+.mdl__v{font-family:var(--mono);font-size:12.5px;text-align:right;color:var(--text)}
+.mdl__rand.absent .mdl__n,.mdl__rand.absent .mdl__v{color:var(--text-3)}
+.mdl__r2{border-top:1px solid var(--linie);margin-top:6px;padding-top:12px}
+.mdl__b--r2{left:0;background:var(--text-2)}
+.mdl__v--r2{font-weight:600}
+@media(max-width:640px){.mdl__rand,.mdl__r2{grid-template-columns:96px 1fr 58px;font-size:12.5px}}
+.flx__sina{padding-right:2px}
+
+/* --- gitdag: laptopul și GitHub, cu commit-uri și etichete -------------- */
+.gd__term{display:flex;align-items:center;gap:10px;background:var(--ed-fundal);border-radius:8px;padding:10px 14px;
+  margin:0 0 12px;font-family:var(--mono);font-size:13px;color:var(--ed-text);border-left:4px solid var(--ok)}
+.gd__term.rau{border-left-color:var(--nu)}
+.gd__cine{color:var(--ceas);white-space:nowrap}
+.gd__cine.alt{color:var(--ed-cheie)}
+.gd__term .gd__cmd{font-family:var(--mono);font-size:13px;color:var(--ed-text);background:none;padding:0;border:0;box-shadow:none}
+.gd__doua{display:grid;grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:8px;align-items:stretch}
+.gd__panou{background:var(--fundal);border:1px solid var(--linie);border-radius:10px;padding:8px 8px 4px}
+.gd__panou svg{width:100%;height:auto;display:block}
+.gd__titlu{font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--text-2);padding:2px 4px 0}
+.gd__sageti{display:flex;flex-direction:column;justify-content:center;gap:16px;font-family:var(--mono);font-size:11px;
+  color:var(--text-3);text-align:center}
+.gd__s{padding:4px 0;border-radius:6px;transition:.25s}
+.gd__s.on{color:var(--fundal);background:var(--accent);font-weight:600}
+.gd__l{fill:none;stroke:var(--linie-2);stroke-width:3}
+.gd__c{fill:var(--cc);stroke:var(--fundal);stroke-width:2.5}
+.gd__c.merge{stroke:var(--text);stroke-width:2}
+.gd__c.nou{animation:gd-vine .5s cubic-bezier(.3,1.4,.6,1)}
+@keyframes gd-vine{from{r:0;opacity:0}}
+.gd__et rect{fill:var(--panza);stroke:var(--linie-2);stroke-width:1}
+.gd__et text{font-family:var(--mono);font-size:11px;fill:var(--text)}
+.gd__et--main rect{stroke:var(--accent)} .gd__et--main text{fill:var(--accent-text)}
+.gd__et--dev rect{stroke:var(--ceas)} .gd__et--dev text{fill:var(--ceas)}
+.gd__et.head rect{stroke-width:2}
+.gd__et.head text{font-weight:600}
+.gd__leg{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--sans);font-size:12.5px;color:var(--text-2);margin:10px 0 0}
+.gd__leg span{display:flex;align-items:center;gap:6px}
+.gd__leg i{width:11px;height:11px;border-radius:50%;display:inline-block}
+@media(max-width:700px){.gd__doua{grid-template-columns:1fr}.gd__sageti{flex-direction:row;justify-content:center}}
