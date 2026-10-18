@@ -6,7 +6,7 @@
    =========================================================================== */
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.0/+esm";
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=42";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=43";
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -90,15 +90,15 @@ export const esteInvitat = p => !!(p && p.matricol && String(p.matricol).startsW
 
 const CHEIE_MOD = "dsw.mod";
 
-export function modVizualizare() {
-  try { return localStorage.getItem(CHEIE_MOD) === "student" ? "student" : "profesor"; }
-  catch { return "profesor"; }
-}
+/* Modul „vezi ca student” a fost scos: făcea situl jumătate profesor,
+   jumătate student, și părea că ai două conturi. Ce văd ei se vede dintr-o
+   fereastră privată. Cheia veche se șterge, ca să nu rămână nimeni prins. */
+try { localStorage.removeItem(CHEIE_MOD); } catch {}
+export function modVizualizare() { return "profesor"; }
 
 export function setModVizualizare(mod) {
   try {
-    if (mod === "student") localStorage.setItem(CHEIE_MOD, "student");
-    else localStorage.removeItem(CHEIE_MOD);
+    localStorage.removeItem(CHEIE_MOD);
   } catch {}
   profilCache = null;
 }

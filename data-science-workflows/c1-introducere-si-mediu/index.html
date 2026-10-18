@@ -3,172 +3,125 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lecția 1. Introducere și configurare — Fluxuri de lucru</title>
+<title>Lecția 1. Introducere și configurare · Fluxuri de lucru</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=42">
-<link rel="stylesheet" href="../css/intrare.css?v=42">
-<script src="../js/tema.js?v=42"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=43">
+<link rel="stylesheet" href="../css/intrare.css?v=43">
+<script src="../js/tema.js?v=43"></script>
 </head>
 <body>
 
-<div id="antet" data-aici="Lecția 1" data-lectie="c1-introducere-si-mediu"></div>
+<div id="antet" data-aici="Lecția 1"></div>
+
+<div class="bl">
+  <div class="pagina bl__in">
+    <a class="bl__inapoi" href="../">← Fluxuri de lucru</a>
+    <span class="bl__sep"></span>
+    <span class="bl__aici">Lecția 1</span>
+    <span class="bl__sp"></span>
+    <span class="bl__fapte" id="fapte">
+      <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
+      <a class="bl__b" href="tutorial/">Manualul</a>
+      <a class="bl__b" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
+      <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
+    </span>
+  </div>
+</div>
 
 <main>
-<div class="pagina">
+<div class="pagina intr">
 
-  <!-- ===================== intrarea ===================== -->
-  <header class="intrare">
-    <div class="intrare__sus">
-      <span class="intrare__nr">Lecția 1</span>
-      <span class="et et--ok">gata</span>
-    </div>
+  <header class="intr__erou">
+    <p class="intr__tag">Lecția 1 din 8</p>
     <h1>Introducere și configurare</h1>
     <p class="deck">Proiectul pe care îl construim tot semestrul, pașii prin care trece
     o analiză de date, și configurarea calculatorului tău: mediu virtual, tipuri de date,
     formatul JSON.</p>
-
-    <div class="intrare__meta">
-      <div class="fisa"><b>90</b><span>minute</span></div>
-      <div class="fisa"><b id="f-slide">15</b><span>slide-uri</span></div>
-      <div class="fisa"><b id="f-verif">5</b><span>verificări</span></div>
-      <div class="fisa"><b>6</b><span>interactive</span></div>
-      <div class="fisa"><b>1</b><span>caiet</span></div>
-    </div>
-
-    <div class="intrare__fapte">
-      <a class="intra-lectie" id="btn-intra" href="lectie/">
-        <span>Intră în lecție</span>
-        <small id="btn-sub">slide 1</small>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg>
-      </a>
-      <a class="btn" href="tutorial/">Manualul cursului</a>
-      <a class="btn" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">Caietul lecției</a>
-    </div>
+    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce o facem la oră.
+    Până atunci poți citi ce urmează, mai jos.</p>
   </header>
 
-  <!-- ===================== corpul ===================== -->
-  <div class="doi">
-
-    <!-- ---------- stânga ---------- -->
-    <div>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">01</span><h2>Despre lecția asta</h2></div>
-        <p>Prima oră are două jumătăți. În prima stabilim ce construim: proiectul
-        semestrului, datele pe care le folosim, echipele, și harta completă a pașilor
-        prin care trece o analiză de date, de la definirea problemei până la raportare.
-        În a doua ne configurăm calculatoarele, ca data viitoare să putem începe direct
-        cu datele.</p>
-        <p>Între ele stau noțiunile fără de care nimic din ce urmează nu are sens:
-        tipurile de date, în Python, în SQL și în fișiere spațiale; diferența dintre un
-        fișier text și unul binar; și formatul JSON, pe care îl vorbesc toate API-urile
-        de la care vom cere date.</p>
-        <p>Lecția începe cu o întrebare la care nu se poate răspunde din intuiție, pusă
-        pe datele noastre reale, și cu o evaluare scurtă a ceea ce știi deja. Nu se
-        notează; e ca să știu de unde pornim.</p>
-      </section>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">02</span><h2>La final vei putea</h2></div>
-        <ul class="obiective">
-          <li>Să descrii pașii unui proiect de analiză de date și să spui de ce te întorci constant la etapele anterioare.</li>
-          <li>Să ai instalate VS Code și Python, cont de GitHub legat de numărul matricol, și o echipă.</li>
-          <li>Să îți creezi un mediu de lucru virtual și să știi, dintr-o privire, când e activ.</li>
-          <li>Să recunoști tipurile de date din Python și să spui ce se strică atunci când sunt greșite.</li>
-          <li>Să alegi un tip potrivit pentru o coloană dintr-o bază de date, și să explici de ce.</li>
-          <li>Să deosebești un fișier text de unul binar, și să știi ce pierde fiecare format.</li>
-          <li>Să citești un răspuns JSON și să scrii drumul până la valoarea care te interesează.</li>
-        </ul>
-      </section>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">03</span><h2>Prin ce treci</h2></div>
-        <p style="color:var(--text-2);font-size:16.5px">Lecția e împărțită în slide-uri.
-        Poți sări direct la oricare, dar slide-urile cu verificare se deschid pe rând:
-        nu treci mai departe până nu răspunzi. Nu contează dacă nimerești corect din
-        prima, contează să te oprești.</p>
-        <nav class="harta" id="harta"><div style="padding:16px;color:var(--text-3);
-          font-family:var(--sans);font-size:13.5px">Se încarcă cuprinsul…</div></nav>
-      </section>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">04</span><h2>De ce ai nevoie, înainte</h2></div>
-        <p>Lecția se poate citi fără nimic instalat. Partea practică, din caiet, are nevoie
-        de două lucruri, amândouă gratuite:</p>
-        <ol>
-          <li><a class="leg" href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a>, editorul în care lucrăm tot semestrul.</li>
-          <li><a class="leg" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.11</a> sau mai nou. La instalare, pe Windows, bifează <em>Add Python to PATH</em>.</li>
-        </ol>
-        <p>Dacă vrei să-ți apară activitatea în progresul grupei și să îți salvez
-        răspunsurile, intră în cont cu GitHub și leagă-l de numărul matricol. Fără cont,
-        lecția merge la fel, dar răspunsurile rămân doar în browserul tău.</p>
-      </section>
-
-    </div>
-
-    <!-- ---------- dreapta ---------- -->
-    <aside class="doi__dr">
-
-      <div class="a-mea" id="a-mea">
-        <span class="a-mea__inel" style="--p:0"><i id="a-mea-p">0%</i></span>
-        <div>
-          <div class="a-mea__t" id="a-mea-t">Nu ai început lecția</div>
-          <div class="a-mea__d" id="a-mea-d">Progresul se ține minte în browser.</div>
-        </div>
-      </div>
-
-      <div class="panou-c">
-        <span class="panou__et">Materiale</span>
-        <div class="resurse">
-          <a class="resursa" href="tutorial/">
-            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
-            <span class="resursa__txt"><span class="resursa__t">Manualul cursului</span><span class="resursa__d">Tot materialul, explicat pe larg</span></span>
-          </a>
-          <a class="resursa" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">
-            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg></span>
-            <span class="resursa__txt"><span class="resursa__t">Caietul lecției</span><span class="resursa__d">Jupyter, partea practică</span></span>
-          </a>
-          <a class="resursa" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">
-            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 20v-3.2M7 16.8c-2.6 0-3.4-1.7-3.4-3.4 0-1 .3-1.8.9-2.4-.3-.8-.3-2 .1-2.8 1 .1 2 .6 2.7 1.2.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c.7-.6 1.7-1.1 2.7-1.2.4.8.4 2 .1 2.8.6.6.9 1.4.9 2.4 0 1.7-.8 3.4-3.4 3.4"/></svg></span>
-            <span class="resursa__txt"><span class="resursa__t">Depozitul cursului</span><span class="resursa__d">Codul și caietele</span></span>
-          </a>
-        </div>
-      </div>
-
-      <div class="panou-c">
-        <span class="panou__et">Legături oficiale</span>
-        <div class="legaturi">
-          <a class="legatura" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><span class="legatura__t">VS Code</span><span class="legatura__g">↗</span></a>
-          <a class="legatura" href="https://www.python.org/downloads/" target="_blank" rel="noopener"><span class="legatura__t">Python</span><span class="legatura__g">↗</span></a>
-          <a class="legatura" href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener"><span class="legatura__t">venv</span><span class="legatura__g">docs</span></a>
-          <a class="legatura" href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noopener"><span class="legatura__t">Tipuri în Python</span><span class="legatura__g">docs</span></a>
-          <a class="legatura" href="https://www.json.org/json-en.html" target="_blank" rel="noopener"><span class="legatura__t">JSON</span><span class="legatura__g">spec</span></a>
-          <a class="legatura" href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510" target="_blank" rel="noopener"><span class="legatura__t">Good Enough Practices</span><span class="legatura__g">PLOS</span></a>
-          <a class="legatura" href="https://data.humdata.org/dataset/social-connectedness-index" target="_blank" rel="noopener"><span class="legatura__t">Social Connectedness Index</span><span class="legatura__g">HDX</span></a>
-        </div>
-      </div>
-
-      <div class="panou-c">
-        <span class="panou__et">Cum merge lecția</span>
-        <p style="font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--text-2);max-width:none">
-        Un slide pe ecran. Treci cu <kbd>→</kbd> și <kbd>←</kbd>, sari tastând numărul
-        slide-ului, cauți cu <kbd>Ctrl</kbd>+<kbd>K</kbd>. Fiecare slide are adresa lui,
-        deci „slide-ul 7" e același pentru toată grupa.</p>
-      </div>
-
-    </aside>
-  </div>
-
-  <!-- ===================== celelalte lecții ===================== -->
-  <section class="altele">
-    <div class="bloc__cap"><span class="nr">05</span><h2>Celelalte lecții</h2></div>
-    <p style="color:var(--text-2);font-size:16.5px">Opt lecții, un singur proiect. Fiecare
-    adaugă o piesă la depozitul echipei.</p>
-    <div class="altele__sina" id="altele"></div>
+  <section class="sec sec--despre">
+    <p class="sec__et">Despre</p>
+    <div class="sec__corp"><p>Prima oră are două jumătăți. În prima stabilim ce construim: proiectul
+semestrului, datele pe care le folosim, echipele, și harta completă a pașilor
+prin care trece o analiză de date, de la definirea problemei până la raportare.
+În a doua ne configurăm calculatoarele, ca data viitoare să putem începe direct
+cu datele.</p>
+<p>Între ele stau noțiunile fără de care nimic din ce urmează nu are sens:
+tipurile de date, în Python, în SQL și în fișiere spațiale; diferența dintre un
+fișier text și unul binar; și formatul JSON, pe care îl vorbesc toate API-urile
+de la care vom cere date.</p>
+<p>Lecția începe cu o întrebare la care nu se poate răspunde din intuiție, pusă
+pe datele noastre reale, și cu o evaluare scurtă a ceea ce știi deja. Nu se
+notează; e ca să știu de unde pornim.</p></div>
   </section>
+  <section class="sec sec--obiective">
+    <p class="sec__et">La final vei putea</p>
+    <div class="sec__corp"><ul class="obiective">
+<li>Să descrii pașii unui proiect de analiză de date și să spui de ce te întorci constant la etapele anterioare.</li>
+<li>Să ai instalate VS Code și Python, cont de GitHub legat de numărul matricol, și o echipă.</li>
+<li>Să îți creezi un mediu de lucru virtual și să știi, dintr-o privire, când e activ.</li>
+<li>Să recunoști tipurile de date din Python și să spui ce se strică atunci când sunt greșite.</li>
+<li>Să alegi un tip potrivit pentru o coloană dintr-o bază de date, și să explici de ce.</li>
+<li>Să deosebești un fișier text de unul binar, și să știi ce pierde fiecare format.</li>
+<li>Să citești un răspuns JSON și să scrii drumul până la valoarea care te interesează.</li>
+</ul></div>
+  </section>
+  <section class="sec">
+    <p class="sec__et">Materiale</p>
+    <div class="mat">
+      <a class="mat__c" href="lectie/#1">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
+        <span class="mat__t">Lecția</span>
+        <span class="mat__d">Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.</span>
+      </a>
+      <a class="mat__c" href="tutorial/">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
+        <span class="mat__t">Manualul</span>
+        <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c1_mediu.ipynb" target="_blank" rel="noopener">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg></span>
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Notebook-ul lecției, pe GitHub. Codul de la seminar.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
+        <span class="mat__t">Depozitul cursului ↗</span>
+        <span class="mat__d">Codul și caietele</span>
+      </a>
+    </div>
+  </section>
+  <section class="sec sec--nevoie">
+    <p class="sec__et">De ce ai nevoie, înainte</p>
+    <div class="sec__corp"><p>Lecția se poate citi fără nimic instalat. Partea practică, din caiet, are nevoie
+de două lucruri, amândouă gratuite:</p>
+<ol>
+<li><a class="leg" href="https://code.visualstudio.com/" rel="noopener" target="_blank">VS Code</a>, editorul în care lucrăm tot semestrul.</li>
+<li><a class="leg" href="https://www.python.org/downloads/" rel="noopener" target="_blank">Python 3.11</a> sau mai nou. La instalare, pe Windows, bifează <em>Add Python to PATH</em>.</li>
+</ol>
+<p>Dacă vrei să-ți apară activitatea în progresul grupei și să îți salvez
+răspunsurile, intră în cont cu GitHub și leagă-l de numărul matricol. Fără cont,
+lecția merge la fel, dar răspunsurile rămân doar în browserul tău.</p></div>
+  </section>
+  <section class="sec">
+    <p class="sec__et">Legături</p>
+    <div class="leg-lista">
+      <a href="https://code.visualstudio.com/" target="_blank" rel="noopener"><span>VS Code</span><small>↗</small></a>
+      <a href="https://www.python.org/downloads/" target="_blank" rel="noopener"><span>Python</span><small>↗</small></a>
+      <a href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener"><span>venv</span><small>docs</small></a>
+      <a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noopener"><span>Tipuri în Python</span><small>docs</small></a>
+      <a href="https://www.json.org/json-en.html" target="_blank" rel="noopener"><span>JSON</span><small>spec</small></a>
+      <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510" target="_blank" rel="noopener"><span>Good Enough Practices</span><small>PLOS</small></a>
+      <a href="https://data.humdata.org/dataset/social-connectedness-index" target="_blank" rel="noopener"><span>Social Connectedness Index</span><small>HDX</small></a>
+    </div>
+  </section>
+
+  <p class="intr__jos"><a href="../">← Înapoi la curs</a></p>
 
 </div>
 </main>
@@ -176,82 +129,28 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, RADACINA } from "../js/curs.js?v=42";
-
-const CHEIE = "c1";
-const AICI  = "c1-introducere-si-mediu";
-
-/* --- celelalte lecții ---------------------------------------------------- */
-document.getElementById("altele").innerHTML = LECTII.map(l => `
-  <a class="mini ${l.cheie === AICI ? "aceasta" : ""}" href="${RADACINA}/${l.cheie}/">
-    <span class="mini__n">${String(l.nr).padStart(2,"0")}</span>
-    <span class="mini__t">${l.titlu}</span>
-    <span class="mini__s">${l.stare === "gata" ? "gata" : "în lucru"}</span>
-  </a>`).join("");
-
-/* --- cuprinsul, citit direct din pagina lecției --------------------------
-   O singură sursă de adevăr: slide-urile sunt definite în lectie/index.html,
-   iar pagina asta le citește de acolo. Dacă adaug un slide, harta se schimbă
-   singură. */
-let harta = null;
+/* Profesorul vede în plus „Predă”. Studentul, dacă lecția nu i-a fost
+   predată încă, vede pagina, dar fără intrare în lecție. */
 try {
-  const r = await fetch("lectie/", { cache:"no-cache" });
-  const d = new DOMParser().parseFromString(await r.text(), "text/html");
-  const sl = [...d.querySelectorAll(".sld")];
-  if (sl.length){
-    harta = sl.map((s, i) => ({
-      n: i + 1,
-      t: s.dataset.t || s.querySelector("h2")?.textContent?.trim() || `Slide ${i+1}`,
-      grup: s.dataset.grup || "",
-      verif: s.querySelectorAll(".verif").length
-    }));
+  const [{ profil }, O, { LECTII }] = await Promise.all([
+    import("../js/auth.js?v=43"), import("../js/ora.js?v=43"), import("../js/curs.js?v=43")]);
+  const p = await profil();
+  if (p.profesor){
+    document.querySelector('[data-rol="preda"]')?.removeAttribute("hidden");
+  } else if (p.autentificat){
+    const vazute = await O.lectiiVizibile(LECTII, false);
+    if (!vazute.some(l => l.nr === 1)){
+      document.getElementById("inchis").hidden = false;
+      document.querySelectorAll('[data-rol="incepe"], .mat__c[href^="lectie"]').forEach(a => {
+        a.removeAttribute("href"); a.classList.add("bl__b--stins", "stins");
+      });
+      const b = document.querySelector('[data-rol="incepe"]');
+      if (b) b.textContent = "Se deschide la oră";
+    }
   }
-} catch { /* dacă nu se poate citi, pagina rămâne completă fără hartă */ }
-
-const zona = document.getElementById("harta");
-if (!harta){
-  zona.innerHTML = `<div style="padding:16px"><a class="leg" href="lectie/">Deschide
-    lecția</a> ca să vezi cuprinsul.</div>`;
-} else {
-  document.getElementById("f-slide").textContent = harta.length;
-  document.getElementById("f-verif").textContent = harta.reduce((a,x) => a + x.verif, 0);
-
-  let html = "", grup = null;
-  for (const x of harta){
-    if (x.grup && x.grup !== grup){ grup = x.grup; html += `<div class="harta__grup">${grup}</div>`; }
-    html += `<a class="harta__r" href="lectie/#${x.n}">
-      <span class="harta__n">${x.n}</span>
-      <span class="harta__t">${x.t}</span>
-      ${x.verif ? `<span class="harta__v">verificare</span>` : ""}
-    </a>`;
-  }
-  zona.innerHTML = html;
-}
-
-/* --- unde am rămas ------------------------------------------------------- */
-const total = harta ? harta.length : 15;
-let vizitate = [];
-try { vizitate = JSON.parse(localStorage.getItem(`dsw.parcurs.${CHEIE}`) || "{}").vizitate || []; }
-catch {}
-
-if (vizitate.length){
-  const proc = Math.round(vizitate.length / total * 100);
-  const ultim = Math.max(...vizitate) + 1;
-  document.getElementById("a-mea").querySelector(".a-mea__inel").style.setProperty("--p", proc);
-  document.getElementById("a-mea-p").textContent = proc + "%";
-  document.getElementById("a-mea-t").textContent =
-    proc >= 100 ? "Ai parcurs lecția" : `${vizitate.length} din ${total} slide-uri`;
-  document.getElementById("a-mea-d").textContent =
-    proc >= 100 ? "Poți reveni oricând la orice slide." : `Ai rămas la slide-ul ${ultim}.`;
-  const b = document.getElementById("btn-intra");
-  b.href = `lectie/#${ultim}`;
-  b.querySelector("span").textContent = proc >= 100 ? "Reia lecția" : "Continuă lecția";
-  document.getElementById("btn-sub").textContent = `slide ${ultim}`;
-} else {
-  document.getElementById("btn-sub").textContent = `slide 1 din ${total}`;
-}
+} catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=42"></script>
-<script type="module" src="../js/subsol.js?v=42"></script>
+<script type="module" src="../js/antet.js?v=43"></script>
+<script type="module" src="../js/subsol.js?v=43"></script>
 </body>
 </html>

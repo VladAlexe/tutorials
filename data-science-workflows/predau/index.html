@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=42">
-<link rel="stylesheet" href="../css/predau.css?v=42">
-<script src="../js/tema.js?v=42"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=43">
+<link rel="stylesheet" href="../css/predau.css?v=43">
+<script src="../js/tema.js?v=43"></script>
 </head>
 <body>
 
@@ -35,7 +35,7 @@
   <div id="istoric"><div class="sch sch--r"></div></div>
 </main>
 
-<script type="module" src="../js/antet.js?v=42"></script>
+<script type="module" src="../js/antet.js?v=43"></script>
 <script type="module">
 /* ===========================================================================
    PAGINA ASTA NU PORNEȘTE ORA.
@@ -43,14 +43,14 @@
    Până acum o porneai din două locuri: de aici, cu o propoziție în care alegeai
    lecția, grupa și modul, și din bara de jos a lecției, cu un buton. Două
    porniri, două coduri, și un profesor care nu știa pe care să se uite. Acum
-   ora pornește într-un singur loc: în lecție, de la butonul din bandă — adică
-   exact acolo unde stai când intri la clasă.
+   ora pornește într-un singur loc: butonul „Predă” de pe pagina lecției. Se
+   încheie tot dintr-un loc: „Încheie ora”, în bara din lecție.
 
    Aici e doar lista: ce am predat, ce urmează, și intrarea în fiecare lecție.
    =========================================================================== */
 
-import { RADACINA, LECTII } from "../js/curs.js?v=42";
-import * as O from "../js/ora.js?v=42";
+import { RADACINA, LECTII } from "../js/curs.js?v=43";
+import * as O from "../js/ora.js?v=43";
 
 const el = id => document.getElementById(id);
 const ZILE = ["duminică","luni","marți","miercuri","joi","vineri","sâmbătă"];
@@ -58,7 +58,7 @@ const LUNI = ["ianuarie","februarie","martie","aprilie","mai","iunie","iulie",
               "august","septembrie","octombrie","noiembrie","decembrie"];
 
 let A;
-try { A = await import("../js/auth.js?v=42"); }
+try { A = await import("../js/auth.js?v=43"); }
 catch { el("sub").textContent = "Nu pot încărca autentificarea."; throw 0; }
 
 const p = await A.profil();
@@ -87,12 +87,13 @@ function banda(s){
          <span class="st__d">${s.titlu} · codul <strong>${s.cod || "—"}</strong>
            · de ${s.minute} min · ${s.in_clasa} au lucrat</span>
          <span class="st__sp"></span>
-         <a class="btn btn--tare" href="ora/">Panoul live</a>
+         <a class="btn" href="ora/">Panoul live</a>
+         <a class="btn btn--tare" href="${RADACINA}/${LECTII.find(l => "c" + l.nr === s.capitol)?.cheie || ""}/lectie/">Mergi la oră</a>
        </div>`
     : `<div class="st">
          <span class="st__pct"></span>
          <span class="st__t">Nicio oră deschisă</span>
-         <span class="st__d">deschide lecția și pornești ora din bara de jos</span>
+         <span class="st__d">ora se pornește din pagina lecției, cu butonul Predă</span>
        </div>`;
 }
 
@@ -111,8 +112,8 @@ function lista(viu, sedinte){
 
   el("titlu").textContent = viu ? viu.titlu : "Lecțiile";
   el("sub").textContent = viu
-    ? "Ești în oră. Panoul live îți arată, pe slide-ul de pe ecran, cât din sală a răspuns și cine anume."
-    : "Deschide lecția și pornești ora dintr-un buton, din bara de jos. Codul apare mare, de proiectat.";
+    ? "Ești în oră. O închei din lecție, cu Încheie ora. Dacă o uiți deschisă, se închide singură după 3 ore."
+    : "Intri în lecție și apeși Predă: ora pornește, iar codul apare mare, de proiectat. Atât.";
 
   el("corp").innerHTML = `<ul class="lec">${gata.map(l => {
     const s = cand.get("c" + l.nr);
@@ -128,7 +129,7 @@ function lista(viu, sedinte){
                 : acum ? "urmează" : "neținută"}</p>
       </div>
       <a class="btn ${acum ? "btn--tare" : "btn--mic"}"
-         href="${RADACINA}/${l.cheie}/lectie/">${acum && !viu ? "Predă" : "Deschide"}</a>
+         href="${RADACINA}/${l.cheie}/">Deschide</a>
     </li>`;
   }).join("")}</ul>`;
 }

@@ -3,190 +3,142 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lecția 4. Curățarea datelor — Fluxuri de lucru</title>
+<title>Lecția 4. Curățarea datelor · Fluxuri de lucru</title>
 <meta name="description" content="Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=42">
-<link rel="stylesheet" href="../css/intrare.css?v=42">
-<script src="../js/tema.js?v=42"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=43">
+<link rel="stylesheet" href="../css/intrare.css?v=43">
+<script src="../js/tema.js?v=43"></script>
 </head>
 <body>
 
-<div id="antet" data-aici="Lecția 4" data-lectie="c4-curatarea-datelor"></div>
+<div id="antet" data-aici="Lecția 4"></div>
+
+<div class="bl">
+  <div class="pagina bl__in">
+    <a class="bl__inapoi" href="../">← Fluxuri de lucru</a>
+    <span class="bl__sep"></span>
+    <span class="bl__aici">Lecția 4</span>
+    <span class="bl__sp"></span>
+    <span class="bl__fapte" id="fapte">
+      <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
+      <a class="bl__b" href="tutorial/">Manualul</a>
+      <a class="bl__b" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c4_curatare.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
+      <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
+    </span>
+  </div>
+</div>
 
 <main>
-<div class="pagina">
+<div class="pagina intr">
 
-  <!-- ===================== intrarea ===================== -->
-  <header class="intrare">
-    <div class="intrare__sus">
-      <span class="intrare__nr">Lecția 4</span>
-      <span class="et et--ok">gata</span>
-    </div>
+  <header class="intr__erou">
+    <p class="intr__tag">Lecția 4 din 8</p>
     <h1>Curățarea datelor</h1>
     <p class="deck">Prima oră: Git, de la comenzi la obișnuință — ce muți, ce salvezi, cum dai înapoi. A doua: etapa care mănâncă 60% din timpul oricărui proiect de date, și care decide dacă rezultatele mai înseamnă ceva.</p>
-
-    <div class="intrare__meta">
-      <div class="fisa"><b>90</b><span>minute</span></div>
-      <div class="fisa"><b id="f-slide">21</b><span>slide-uri</span></div>
-      <div class="fisa"><b id="f-verif">10</b><span>verificări</span></div>
-      <div class="fisa"><b>16</b><span>interactive</span></div>
-      <div class="fisa"><b>1</b><span>caiet</span></div>
-    </div>
-
-    <div class="intrare__fapte">
-      <a class="intra-lectie" id="btn-intra" href="lectie/">
-        <span>Intră în lecție</span>
-        <small id="btn-sub">slide 1</small>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg>
-      </a>
-      <a class="btn" href="tutorial/">Manualul cursului</a>
-      <a class="btn" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c4_curatare.ipynb" target="_blank" rel="noopener">Caietul lecției</a>
-    </div>
+    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce o facem la oră.
+    Până atunci poți citi ce urmează, mai jos.</p>
   </header>
 
-  <!-- ===================== corpul ===================== -->
-  <div class="doi">
-
-    <!-- ---------- stânga ---------- -->
-    <div>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">01</span><h2>Despre lecția asta</h2></div>
-        <p>Săptămâna trecută ai aflat la ce e bun Git. Azi îl folosești: muți fișiere
-        între zone, faci commit-uri care spun ceva, dai înapoi din patru feluri diferite
-        fără să-ți pierzi munca, și lucrezi pe o ramură pe care o poți arunca fără
-        regrete. Partea asta e scurtă pe slide-uri și lungă în terminal.</p>
-        <p>A doua jumătate e despre ce se întâmplă după ce ai datele în mână. Un
-        <a class="leg" href="https://visit.figure-eight.com/data-science-report" target="_blank" rel="noopener">sondaj
-        CrowdFlower</a> pe oameni care fac asta zilnic spune că aproape 60% din timp se
-        duce pe curățat și pe pus datele în ordine. Nu e un defect al meseriei, e
-        meseria: datele reale vin cu categorii scrise în patru feluri, cu rânduri
-        duplicate, cu lipsuri care nu înseamnă zero, și cu valori care par greșite dar
-        sunt corecte.</p>
-        <p>Trecem prin cele șase etape, pe rând, pe datele noastre. Iar pentru fiecare
-        decizie — ce ștergi, ce completezi, ce tai — întrebarea nu e „ce face comanda”, e
-        „ce pierd când o rulez”.</p>
-        </section>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">02</span><h2>La final vei putea</h2></div>
-        <ul class="obiective">
-          <li>Să duci un fișier de la editor până pe GitHub fără să te uiți la notițe, și să spui în ce zonă e în fiecare moment.</li>
-          <li>Să scrii un mesaj de commit care îi spune ceva celui care îl citește în februarie.</li>
-          <li>Să alegi între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code> după ce vrei să anulezi, nu după ce ți-a rămas în minte.</li>
-          <li>Să ieși din Vim, și să nu mai fie o glumă.</li>
-          <li>Să profilezi un dataset în cinci comenzi și să spui, din profil, ce te așteaptă.</li>
-          <li>Să standardizezi categorii scrise inconsecvent, și să verifici că nu ai topit două categorii diferite într-una.</li>
-          <li>Să deosebești un duplicat real de o pereche inversată, care la date diadice e altceva.</li>
-          <li>Să alegi între ștergere, completare și păstrare pentru valorile lipsă, știind ce introduce fiecare variantă.</li>
-          <li>Să calculezi un prag pentru valori extreme și să decizi dacă ce iese deasupra e eroare sau e exact rezultatul.</li>
-          <li>Să treci un tabel din formă lată în lungă și invers, și să știi care formă îți trebuie pentru ce.</li>
-          <li>Să scrii un dicționar de date și un fișier de decizii pe care un coleg le poate citi fără tine.</li>
-        </ul>
-      </section>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">03</span><h2>Prin ce treci</h2></div>
-        <p style="color:var(--text-2);font-size:16.5px">Lecția e împărțită în slide-uri.
-        Poți sări direct la oricare, dar slide-urile cu verificare se deschid pe rând:
-        nu treci mai departe până nu răspunzi. Nu contează dacă nimerești corect din
-        prima, contează să te oprești.</p>
-        <nav class="harta" id="harta"><div style="padding:16px;color:var(--text-3);
-          font-family:var(--sans);font-size:13.5px">Se încarcă cuprinsul…</div></nav>
-      </section>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">04</span><h2>De ce ai nevoie, înainte</h2></div>
-        <p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie
-        ce aveai deja de la cursurile 2 și 3:</p>
-        <ol>
-          <li><a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>
-          <li>Depozitul proiectului, legat de GitHub. Dacă nu l-ai făcut încă, prima jumătate a lecției e exact despre asta.</li>
-          <li>Datele aduse la cursul 2, în <code>date/brute/</code>. Pe ele lucrăm azi.</li>
-          <li><code>pandas</code> în mediul de lucru. Verifici cu <code>python -c "import pandas; print(pandas.__version__)"</code>.</li>
-        </ol>
-        <p>Dacă ți-ai pierdut datele de la cursul 2, scriptul de colectare le aduce din
-        nou. De asta îl păstrăm în depozit și nu doar fișierele.</p>
-      </section>
-
-      <section class="bloc">
-        <div class="bloc__cap"><span class="nr">05</span><h2>Ce adaugi la proiect</h2></div>
-        <p>Dataseturile curățate, în <code>date/curate/</code>, plus două fișiere text pe
-        care le va citi cineva și nu un calculator:</p>
-        <ul class="obiective">
-          <li><code>date/curate/dicționar.md</code> — fiecare coloană: ce e, în ce unitate, de unde vine, ce înseamnă o lipsă.</li>
-          <li><code>decizii.md</code> — fiecare curățare: ce ai schimbat, câte rânduri a atins, și de ce ai ales așa.</li>
-        </ul>
-        <p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-        cu atribute aduse prin API de la Eurostat și Banca Mondială.</p>
-      </section>
-
-    </div>
-
-    <!-- ---------- dreapta ---------- -->
-    <aside class="doi__dr">
-
-      <div class="a-mea" id="a-mea">
-        <span class="a-mea__inel" style="--p:0"><i id="a-mea-p">0%</i></span>
-        <div>
-          <div class="a-mea__t" id="a-mea-t">Nu ai început lecția</div>
-          <div class="a-mea__d" id="a-mea-d">Progresul se ține minte în browser.</div>
-        </div>
-      </div>
-
-      <div class="panou-c">
-        <span class="panou__et">Materiale</span>
-        <div class="resurse">
-          <a class="resursa" href="tutorial/">
-            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
-            <span class="resursa__txt"><span class="resursa__t">Manualul cursului</span><span class="resursa__d">Tot materialul, explicat pe larg</span></span>
-          </a>
-          <a class="resursa" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c4_curatare.ipynb" target="_blank" rel="noopener">
-            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg></span>
-            <span class="resursa__txt"><span class="resursa__t">Caietul lecției</span><span class="resursa__d">Jupyter, curățarea pas cu pas</span></span>
-          </a>
-          <a class="resursa" href="../c3-versionare-git/">
-            <span class="resursa__ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="7" cy="18" r="2.5"/><circle cx="7" cy="6" r="2.5"/><circle cx="17" cy="12" r="2.5"/><path d="M7 8.5v7M9.5 6h2.5a2.5 2.5 0 0 1 2.5 2.5V10"/></svg></span>
-            <span class="resursa__txt"><span class="resursa__t">Lecția 3: Git</span><span class="resursa__d">Teoria din spatele comenzilor de azi</span></span>
-          </a>
-        </div>
-      </div>
-
-      <div class="panou-c">
-        <span class="panou__et">Legături oficiale</span>
-        <div class="legaturi">
-          <a class="legatura" href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener"><span class="legatura__t">Lucrul cu date lipsă</span><span class="legatura__g">pandas</span></a>
-          <a class="legatura" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html" target="_blank" rel="noopener"><span class="legatura__t">drop_duplicates</span><span class="legatura__g">pandas</span></a>
-          <a class="legatura" href="https://pandas.pydata.org/docs/user_guide/reshaping.html" target="_blank" rel="noopener"><span class="legatura__t">melt, pivot, reshape</span><span class="legatura__g">pandas</span></a>
-          <a class="legatura" href="https://vita.had.co.nz/papers/tidy-data.pdf" target="_blank" rel="noopener"><span class="legatura__t">Tidy Data (Wickham)</span><span class="legatura__g">articol</span></a>
-          <a class="legatura" href="https://git-scm.com/docs/git-restore" target="_blank" rel="noopener"><span class="legatura__t">git restore</span><span class="legatura__g">docs</span></a>
-          <a class="legatura" href="https://git-scm.com/docs/git-revert" target="_blank" rel="noopener"><span class="legatura__t">git revert</span><span class="legatura__g">docs</span></a>
-          <a class="legatura" href="https://docs.ydata.ai/latest/" target="_blank" rel="noopener"><span class="legatura__t">ydata-profiling</span><span class="legatura__g">raport automat</span></a>
-          <a class="legatura" href="https://ec.europa.eu/eurostat/web/nuts/overview" target="_blank" rel="noopener"><span class="legatura__t">Nomenclatorul NUTS</span><span class="legatura__g">Eurostat</span></a>
-        </div>
-      </div>
-
-      <div class="panou-c">
-        <span class="panou__et">Cum merge lecția</span>
-        <p style="font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--text-2);max-width:none">
-        Un slide pe ecran. Treci cu <kbd>→</kbd> și <kbd>←</kbd>, sari tastând numărul
-        slide-ului, cauți cu <kbd>Ctrl</kbd>+<kbd>K</kbd>. Fiecare slide are adresa lui,
-        deci „slide-ul 7” e același pentru toată grupa.</p>
-      </div>
-
-    </aside>
-  </div>
-
-  <!-- ===================== celelalte lecții ===================== -->
-  <section class="altele">
-    <div class="bloc__cap"><span class="nr">06</span><h2>Celelalte lecții</h2></div>
-    <p style="color:var(--text-2);font-size:16.5px">Opt lecții, un singur proiect. Fiecare
-    adaugă o piesă la depozitul echipei.</p>
-    <div class="altele__sina" id="altele"></div>
+  <section class="sec sec--despre">
+    <p class="sec__et">Despre</p>
+    <div class="sec__corp"><p>Săptămâna trecută ai aflat la ce e bun Git. Azi îl folosești: muți fișiere
+între zone, faci commit-uri care spun ceva, dai înapoi din patru feluri diferite
+fără să-ți pierzi munca, și lucrezi pe o ramură pe care o poți arunca fără
+regrete. Partea asta e scurtă pe slide-uri și lungă în terminal.</p>
+<p>A doua jumătate e despre ce se întâmplă după ce ai datele în mână. Un
+<a class="leg" href="https://visit.figure-eight.com/data-science-report" rel="noopener" target="_blank">sondaj
+CrowdFlower</a> pe oameni care fac asta zilnic spune că aproape 60% din timp se
+duce pe curățat și pe pus datele în ordine. Nu e un defect al meseriei, e
+meseria: datele reale vin cu categorii scrise în patru feluri, cu rânduri
+duplicate, cu lipsuri care nu înseamnă zero, și cu valori care par greșite dar
+sunt corecte.</p>
+<p>Trecem prin cele șase etape, pe rând, pe datele noastre. Iar pentru fiecare
+decizie — ce ștergi, ce completezi, ce tai — întrebarea nu e „ce face comanda”, e
+„ce pierd când o rulez”.</p></div>
   </section>
+  <section class="sec sec--obiective">
+    <p class="sec__et">La final vei putea</p>
+    <div class="sec__corp"><ul class="obiective">
+<li>Să duci un fișier de la editor până pe GitHub fără să te uiți la notițe, și să spui în ce zonă e în fiecare moment.</li>
+<li>Să scrii un mesaj de commit care îi spune ceva celui care îl citește în februarie.</li>
+<li>Să alegi între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code> după ce vrei să anulezi, nu după ce ți-a rămas în minte.</li>
+<li>Să ieși din Vim, și să nu mai fie o glumă.</li>
+<li>Să profilezi un dataset în cinci comenzi și să spui, din profil, ce te așteaptă.</li>
+<li>Să standardizezi categorii scrise inconsecvent, și să verifici că nu ai topit două categorii diferite într-una.</li>
+<li>Să deosebești un duplicat real de o pereche inversată, care la date diadice e altceva.</li>
+<li>Să alegi între ștergere, completare și păstrare pentru valorile lipsă, știind ce introduce fiecare variantă.</li>
+<li>Să calculezi un prag pentru valori extreme și să decizi dacă ce iese deasupra e eroare sau e exact rezultatul.</li>
+<li>Să treci un tabel din formă lată în lungă și invers, și să știi care formă îți trebuie pentru ce.</li>
+<li>Să scrii un dicționar de date și un fișier de decizii pe care un coleg le poate citi fără tine.</li>
+</ul></div>
+  </section>
+  <section class="sec">
+    <p class="sec__et">Materiale</p>
+    <div class="mat">
+      <a class="mat__c" href="lectie/#1">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
+        <span class="mat__t">Lecția</span>
+        <span class="mat__d">Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.</span>
+      </a>
+      <a class="mat__c" href="tutorial/">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
+        <span class="mat__t">Manualul</span>
+        <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/VladAlexe/tutorials/blob/main/data-science-workflows/caiete/c4_curatare.ipynb" target="_blank" rel="noopener">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg></span>
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Notebook-ul lecției, pe GitHub. Codul de la seminar.</span>
+      </a>
+      <a class="mat__c" href="../c3-versionare-git/">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
+        <span class="mat__t">Lecția 3: Git</span>
+        <span class="mat__d">Teoria din spatele comenzilor de azi</span>
+      </a>
+    </div>
+  </section>
+  <section class="sec sec--nevoie">
+    <p class="sec__et">De ce ai nevoie, înainte</p>
+    <div class="sec__corp"><p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie
+ce aveai deja de la cursurile 2 și 3:</p>
+<ol>
+<li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>
+<li>Depozitul proiectului, legat de GitHub. Dacă nu l-ai făcut încă, prima jumătate a lecției e exact despre asta.</li>
+<li>Datele aduse la cursul 2, în <code>date/brute/</code>. Pe ele lucrăm azi.</li>
+<li><code>pandas</code> în mediul de lucru. Verifici cu <code>python -c "import pandas; print(pandas.__version__)"</code>.</li>
+</ol>
+<p>Dacă ți-ai pierdut datele de la cursul 2, scriptul de colectare le aduce din
+nou. De asta îl păstrăm în depozit și nu doar fișierele.</p></div>
+  </section>
+  <section class="sec sec--proiect">
+    <p class="sec__et">Ce adaugi la proiect</p>
+    <div class="sec__corp"><p>Dataseturile curățate, în <code>date/curate/</code>, plus două fișiere text pe
+care le va citi cineva și nu un calculator:</p>
+<ul class="obiective">
+<li><code>date/curate/dicționar.md</code> — fiecare coloană: ce e, în ce unitate, de unde vine, ce înseamnă o lipsă.</li>
+<li><code>decizii.md</code> — fiecare curățare: ce ai schimbat, câte rânduri a atins, și de ce ai ales așa.</li>
+</ul>
+<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
+cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca Mondială.</p></div>
+  </section>
+  <section class="sec">
+    <p class="sec__et">Legături</p>
+    <div class="leg-lista">
+      <a href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener"><span>Lucrul cu date lipsă</span><small>pandas</small></a>
+      <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html" target="_blank" rel="noopener"><span>drop_duplicates</span><small>pandas</small></a>
+      <a href="https://pandas.pydata.org/docs/user_guide/reshaping.html" target="_blank" rel="noopener"><span>melt, pivot, reshape</span><small>pandas</small></a>
+      <a href="https://vita.had.co.nz/papers/tidy-data.pdf" target="_blank" rel="noopener"><span>Tidy Data (Wickham)</span><small>articol</small></a>
+      <a href="https://git-scm.com/docs/git-restore" target="_blank" rel="noopener"><span>git restore</span><small>docs</small></a>
+      <a href="https://git-scm.com/docs/git-revert" target="_blank" rel="noopener"><span>git revert</span><small>docs</small></a>
+      <a href="https://docs.ydata.ai/latest/" target="_blank" rel="noopener"><span>ydata-profiling</span><small>raport automat</small></a>
+      <a href="https://ec.europa.eu/eurostat/web/nuts/overview" target="_blank" rel="noopener"><span>Nomenclatorul NUTS</span><small>Eurostat</small></a>
+    </div>
+  </section>
+
+  <p class="intr__jos"><a href="../">← Înapoi la curs</a></p>
 
 </div>
 </main>
@@ -194,82 +146,28 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, RADACINA } from "../js/curs.js?v=42";
-
-const CHEIE = "c4";
-const AICI  = "c4-curatarea-datelor";
-
-/* --- celelalte lecții ---------------------------------------------------- */
-document.getElementById("altele").innerHTML = LECTII.map(l => `
-  <a class="mini ${l.cheie === AICI ? "aceasta" : ""}" href="${RADACINA}/${l.cheie}/">
-    <span class="mini__n">${String(l.nr).padStart(2,"0")}</span>
-    <span class="mini__t">${l.titlu}</span>
-    <span class="mini__s">${l.stare === "gata" ? "gata" : "în lucru"}</span>
-  </a>`).join("");
-
-/* --- cuprinsul, citit direct din pagina lecției --------------------------
-   O singură sursă de adevăr: slide-urile sunt definite în lectie/index.html,
-   iar pagina asta le citește de acolo. Dacă adaug un slide, harta se schimbă
-   singură. */
-let harta = null;
+/* Profesorul vede în plus „Predă”. Studentul, dacă lecția nu i-a fost
+   predată încă, vede pagina, dar fără intrare în lecție. */
 try {
-  const r = await fetch("lectie/", { cache:"no-cache" });
-  const d = new DOMParser().parseFromString(await r.text(), "text/html");
-  const sl = [...d.querySelectorAll(".sld")];
-  if (sl.length){
-    harta = sl.map((s, i) => ({
-      n: i + 1,
-      t: s.dataset.t || s.querySelector("h2")?.textContent?.trim() || `Slide ${i+1}`,
-      grup: s.dataset.grup || "",
-      verif: s.querySelectorAll(".verif").length
-    }));
+  const [{ profil }, O, { LECTII }] = await Promise.all([
+    import("../js/auth.js?v=43"), import("../js/ora.js?v=43"), import("../js/curs.js?v=43")]);
+  const p = await profil();
+  if (p.profesor){
+    document.querySelector('[data-rol="preda"]')?.removeAttribute("hidden");
+  } else if (p.autentificat){
+    const vazute = await O.lectiiVizibile(LECTII, false);
+    if (!vazute.some(l => l.nr === 4)){
+      document.getElementById("inchis").hidden = false;
+      document.querySelectorAll('[data-rol="incepe"], .mat__c[href^="lectie"]').forEach(a => {
+        a.removeAttribute("href"); a.classList.add("bl__b--stins", "stins");
+      });
+      const b = document.querySelector('[data-rol="incepe"]');
+      if (b) b.textContent = "Se deschide la oră";
+    }
   }
-} catch { /* dacă nu se poate citi, pagina rămâne completă fără hartă */ }
-
-const zona = document.getElementById("harta");
-if (!harta){
-  zona.innerHTML = `<div style="padding:16px"><a class="leg" href="lectie/">Deschide
-    lecția</a> ca să vezi cuprinsul.</div>`;
-} else {
-  document.getElementById("f-slide").textContent = harta.length;
-  document.getElementById("f-verif").textContent = harta.reduce((a,x) => a + x.verif, 0);
-
-  let html = "", grup = null;
-  for (const x of harta){
-    if (x.grup && x.grup !== grup){ grup = x.grup; html += `<div class="harta__grup">${grup}</div>`; }
-    html += `<a class="harta__r" href="lectie/#${x.n}">
-      <span class="harta__n">${x.n}</span>
-      <span class="harta__t">${x.t}</span>
-      ${x.verif ? `<span class="harta__v">verificare</span>` : ""}
-    </a>`;
-  }
-  zona.innerHTML = html;
-}
-
-/* --- unde am rămas ------------------------------------------------------- */
-const total = harta ? harta.length : 21;
-let vizitate = [];
-try { vizitate = JSON.parse(localStorage.getItem(`dsw.parcurs.${CHEIE}`) || "{}").vizitate || []; }
-catch {}
-
-if (vizitate.length){
-  const proc = Math.round(vizitate.length / total * 100);
-  const ultim = Math.max(...vizitate) + 1;
-  document.getElementById("a-mea").querySelector(".a-mea__inel").style.setProperty("--p", proc);
-  document.getElementById("a-mea-p").textContent = proc + "%";
-  document.getElementById("a-mea-t").textContent =
-    proc >= 100 ? "Ai parcurs lecția" : `${vizitate.length} din ${total} slide-uri`;
-  document.getElementById("a-mea-d").textContent =
-    proc >= 100 ? "Poți reveni oricând la orice slide." : `Ai rămas la slide-ul ${ultim}.`;
-  const b = document.getElementById("btn-intra");
-  b.href = `lectie/#${ultim}`;
-  b.querySelector("span").textContent = proc >= 100 ? "Reia lecția" : "Continuă lecția";
-  document.getElementById("btn-sub").textContent = `slide ${ultim}`;
-} else {
-  document.getElementById("btn-sub").textContent = `slide 1 din ${total}`;
-}
+} catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=42"></script>
-<script type="module" src="../js/subsol.js?v=42"></script>
+<script type="module" src="../js/antet.js?v=43"></script>
+<script type="module" src="../js/subsol.js?v=43"></script>
 </body>
 </html>

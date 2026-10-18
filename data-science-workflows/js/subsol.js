@@ -10,32 +10,21 @@
    ziua în care există fișierul, nu înainte.
    =========================================================================== */
 
-import { CURS, RADACINA } from "./curs.js?v=42";
+import { CURS, RADACINA } from "./curs.js?v=43";
 
-deseneaza(false);
+deseneaza();
 
-function deseneaza(profesor){
+/* Subsolul e același pentru toți: contul și predarea stau în antet, într-un
+   singur loc, nu repetate jos. */
+function deseneaza(){
   const g = document.getElementById("subsol");
   if (!g) return;
   g.outerHTML = `
   <footer class="subsol" id="subsol"><div class="pagina subsol__in">
     <span>${CURS.institutie}</span>
-    ${profesor
-      ? `<a href="${RADACINA}/predau/">Predau</a>
-         <a href="${RADACINA}/predau/sedinte/">Ședințele</a>`
-      : (location.pathname.replace(/\/+$/, "/") === `${RADACINA}/cont/`
-          ? ""                       /* ești deja acolo: linkul ar fi spre tine */
-          : `<a href="${RADACINA}/cont/">Contul meu</a>`)}
+    <a href="${RADACINA}/">Cursul</a>
     <a href="${RADACINA}/date-personale/">Date personale</a>
     <a href="${CURS.depozit}" target="_blank" rel="noopener">Depozit ↗</a>
     <span class="subsol__dr">${CURS.an}</span>
   </div></footer>`;
 }
-
-/* Rolul se află târziu, deci subsolul se desenează o dată fără el și se
-   rescrie doar dacă e cazul. Pagina nu așteaptă după autentificare. */
-try {
-  const { profil } = await import(`${RADACINA}/js/auth.js?v=42`);
-  const p = await profil();
-  if (p.profesorReal) deseneaza(true);
-} catch { /* fără cont, subsolul public e cel bun */ }

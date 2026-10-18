@@ -11,7 +11,7 @@
 .cnt__cap{display:flex;align-items:center;gap:19px;padding:40px 0 30px;flex-wrap:wrap}
 .cnt__cerc{width:62px;height:62px;flex:none;border-radius:50%;display:grid;
   place-items:center;
-  background:conic-gradient(var(--accent) calc(var(--p,0) * 1%), var(--linie) 0)}
+  background:linear-gradient(135deg,var(--accent),var(--ambra))}
 .cnt__cerc i{width:52px;height:52px;border-radius:50%;background:var(--fundal);
   display:grid;place-items:center;font-style:normal;font-family:var(--sans);
   font-size:17px;font-weight:600;letter-spacing:.01em;color:var(--text-2)}

@@ -29,7 +29,7 @@ TIPARE = ("*.html", "*.js", "*.css", "*.py")
 
 # Ce nu se atinge: ce nu ajunge la browser, și orfanii păstrați ca arhivă.
 SARI_PESTE = {".git", "_build", "node_modules", "db", "date", ".claude"}
-SARI_FISIERE = {"carte.html"}          # pagina veche, cu ștampilă pe dată
+SARI_FISIERE = set()
 
 # ?v=3  sau  ?v=20260725 ; prinde și în șiruri de tip `...js?v=4`
 RE_V = re.compile(r"(\?v=)(\d+)")

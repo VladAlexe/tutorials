@@ -249,6 +249,8 @@ a.leg:hover{border-bottom-color:var(--accent)}
 .cont-chip__cerc{width:23px;height:23px;border-radius:50%;background:var(--accent);
   color:#fff;display:grid;place-items:center;font-size:10px;font-weight:600;flex:none}
 :root[data-tema="intunecat"] .cont-chip__cerc{color:var(--salvie-text)}
+.cont-chip--prof .cont-chip__cerc{background:var(--ambra)}
+.cont-chip--prof{border-color:color-mix(in srgb,var(--ambra) 40%,var(--linie))}
 @media (prefers-color-scheme: dark){
   :root:not([data-tema="deschis"]) .cont-chip__cerc{color:var(--salvie-text)}
 }

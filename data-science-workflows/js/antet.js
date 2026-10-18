@@ -3,18 +3,19 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=42"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=43"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=42";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=43";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
   luna:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.9 6.9 0 0 0 10.7 10.7z"/></svg>',
   clasa: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 20V9M9 20V4M15 20v-8M21 20v-5"/></svg>',
+  iesi:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></svg>',
   ochi:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>',
   /* marca DSW: fluxul intră, trece prin două noduri și se ramifică.
      Liniile iau culoarea textului (merg în ambele teme), nodurile paleta. */
@@ -49,7 +50,7 @@ function construieste(gazda){
         </a>
         ${predau ? `
         <nav class="predau-nav" aria-label="Predare">
-          ${[["", "Lecțiile"], ["ora/", "Ora"], ["sedinte/", "Ședințele"],
+          ${[["", "Predau"], ["ora/", "Ora live"], ["sedinte/", "Ședințele"],
              ["semestru/", "Semestrul"]].map(([u, t]) => {
             const h = `${RADACINA}/predau/${u}`;
             const acum = location.pathname.replace(/\/+$/, "/") === h.replace(/\/+$/, "/");
@@ -86,7 +87,7 @@ async function taieBanda(profesor){
   const g = document.querySelector(".flux__sina");
   if (!g || profesor) return;
   try {
-    const O = await import(`${RADACINA}/js/ora.js?v=42`);
+    const O = await import(`${RADACINA}/js/ora.js?v=43`);
     const p = await O.predate();
     if (!p) return;
     g.querySelectorAll("[data-c]").forEach(a => {
@@ -118,39 +119,34 @@ async function cont(predau){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=42`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=43`);
     const p = await profil();
     if (p.autentificat) taieBanda(p.profesorReal);
     if (!p.autentificat) {
       zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;
       return;
     }
-    /* în produsul de predare, antetul nu mai vinde nimic: numele, și ieșirea */
-    if (predau){
-      /* Dacă ai rămas cu „vezi ca student" pornit de la o verificare de acum
-         două săptămâni, intrarea în /predau/ îl stinge. Altfel situl te ține
-         jumătate profesor, jumătate student, și pare că ai două conturi. */
-      try {
-        const { modVizualizare, setModVizualizare } = await import(`${RADACINA}/js/auth.js?v=42`);
-        if (modVizualizare() === "student") setModVizualizare("profesor");
-      } catch {}
-      zona.innerHTML = `<span class="pred-cine">${p.nume || p.email || ""}</span>
-        <a class="icon-btn" href="${RADACINA}/" title="Pagina cursului, cum o văd ei"
-           aria-label="Pagina cursului">${SVG.ochi}</a>`;
-      return;
-    }
-    /* profesorul are casa lui; studentul nu afla ca exista */
-    const clasa = p.profesor
-      ? `<a class="btn-intra" href="${RADACINA}/predau/" title="Produsul de predare">Predau</a>`
-      : "";
     const nume = p.nume || p.email || "Contul meu";
     const ini = nume.trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "?";
-    const acasa = p.profesor ? `${RADACINA}/predau/` : `${RADACINA}/cont/`;
-    zona.innerHTML = clasa +
-      `<a class="cont-chip" href="${acasa}" title="${nume}">
-         <span class="cont-chip__cerc">${ini}</span>
-         <span>${nume.split(/\s+/)[0]}</span>
-       </a>`;
+    /* În predare: înapoi la curs, și ieșirea din cont. */
+    if (predau){
+      zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/">← Cursul</a>
+        <button class="icon-btn" id="btn-iesi" type="button" title="Ieși din cont"
+                aria-label="Ieși din cont">${SVG.iesi}</button>`;
+      document.getElementById("btn-iesi").onclick = async () => {
+        const { iesi } = await import(`${RADACINA}/js/auth.js?v=43`);
+        await iesi(); location.href = `${RADACINA}/`;
+      };
+      return;
+    }
+    /* Un singur buton, după rol: profesorul merge la „Predau”, studentul la
+       contul lui. */
+    zona.innerHTML = p.profesor
+      ? `<a class="cont-chip cont-chip--prof" href="${RADACINA}/predau/" title="${nume}">
+           <span class="cont-chip__cerc">${ini}</span><span>Predau</span></a>`
+      : `<a class="cont-chip" href="${RADACINA}/cont/" title="${nume}">
+           <span class="cont-chip__cerc">${ini}</span>
+           <span>${nume.split(/\s+/)[0]}</span></a>`;
   } catch {
     zona.innerHTML = `<a class="btn-intra" href="${RADACINA}/cont/">Intră în cont</a>`;
   }

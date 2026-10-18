@@ -34,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=42";
+import { RADACINA } from "./curs.js?v=43";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -44,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=42`);
-    O = await import(`${RADACINA}/js/ora.js?v=42`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=42`);
+    A = await import(`${RADACINA}/js/auth.js?v=43`);
+    O = await import(`${RADACINA}/js/ora.js?v=43`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=43`);
   } catch { return null; }
 
   let p = null;
@@ -68,6 +68,16 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
   if (esteProfesor){
     P.stil();
     let S = await O.deschisa(capitol);
+    /* o oră uitată deschisă se închide singură după 3 ore */
+    if (S && O.prea_veche(S)){ await O.inchide(S.id); S = null; }
+    /* ora se pornește dintr-un singur loc: butonul „Predă” de pe pagina
+       lecției, care aduce aici ?preda=1. Adresa se curăță imediat, ca un
+       refresh să nu pornească încă o oră. */
+    const cerePredare = new URLSearchParams(location.search).has("preda");
+    if (cerePredare){
+      const u = new URL(location.href); u.searchParams.delete("preda");
+      history.replaceState(null, "", u.pathname + u.search + u.hash);
+    }
     let randuri = [], sertarDeschis = false;
 
     const slideAcum = () => Math.max(1, (unde?.() | 0) || 1);
@@ -75,7 +85,8 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     /** Câți sunt, și cine ce a trimis pe slide-ul de pe ecran. */
     async function numara(){
       const proaspat = await O.deschisa(capitol);
-      if (!proaspat){ S = null; randuri = []; deseneaza(); return; }
+      if (!proaspat){ S = null; randuri = []; deseneaza(); laStare?.(false, null); return; }
+      if (O.prea_veche(proaspat)){ await opresteOra(); return; }
       S = { ...S, ...proaspat };
 
       const sarcini = sarciniDe(slideAcum());
@@ -91,16 +102,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       bara.hidden = false;
       bara.className = "ritm ritm--prof" + (S ? " ritm--on" : "");
 
-      if (!S){
-        bara.innerHTML = `
-          <span class="ritm__pct"></span>
-          <span class="ritm__t">Nu predai acum</span>
-          <span class="ritm__d">umbli prin lecție de unul singur</span>
-          <span class="ritm__sp"></span>
-          <button class="ritm__b ritm__b--tare" type="button" data-rol="start">Pornește ora</button>`;
-        lega();
-        return;
-      }
+      /* fără oră pornită, bara nu există: profesorul răsfoiește lecția ca
+         oricine. Ora se pornește de pe pagina lecției, cu „Predă”. */
+      if (!S){ bara.hidden = true; bara.innerHTML = ""; return; }
 
       const sarcini = sarciniDe(slideAcum());
       const cate = P.numara(randuri);
@@ -133,26 +137,23 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                   title="Câți au răspuns, fără nume (V)">Cifrele</button>
           <a class="ritm__b" href="${RADACINA}/predau/ora/" target="_blank"
              rel="noopener" title="Panoul cu nume, pe al doilea ecran">al doilea ecran ↗</a>
-          <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Închide ora</button>`}`;
+          <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Încheie ora</button>`}`;
       lega();
       if (sertarDeschis) deseneazaSertar();
     }
 
     function lega(){
-      bara.querySelector('[data-rol="start"]')?.addEventListener("click", porneste);
       bara.querySelector('[data-rol="stop"]') ?.addEventListener("click", opresteOra);
       bara.querySelector('[data-rol="link"]') ?.addEventListener("click", copiaza);
       bara.querySelector('[data-rol="cod"]')  ?.addEventListener("click", ecran);
       bara.querySelector('[data-rol="panou"]')?.addEventListener("click", comutaPanoul);
     }
 
-    async function porneste(e){
-      const b = e.currentTarget; b.disabled = true; b.textContent = "Se pornește…";
+    async function porneste(){
       /* Grupa se alege singură, în js/ora.js. Aici ești în fața clasei: un
          buton, și ora e pornită. */
       const r = await O.deschide(capitol, null, "live", total);
       if (!r?.ok){
-        b.disabled = false; b.textContent = "Pornește ora";
         alert(r?.mesaj || (O.lipsesteBaza()
           ? "Baza nu e pregătită: rulează db/14 și db/15 în Supabase."
           : "N-am putut porni ora."));
@@ -294,6 +295,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       bate();
     }, pas);
     if (S) numara();
+    else if (cerePredare) porneste();
 
     /* js/slide.js cheamă publica() la fiecare mișcare prin lecție, inclusiv
        când ajunge pe același slide. Ceasul se pune la zero doar când slide-ul
@@ -327,7 +329,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=42`)
+    import(`${RADACINA}/js/colectare.js?v=43`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     if (viu !== eraViu){ eraViu = viu; laStare?.(viu, viu ? "live" : null); }

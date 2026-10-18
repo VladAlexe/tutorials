@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=42";
-import { RADACINA } from "./curs.js?v=42";
+import { sb } from "./auth.js?v=43";
+import { RADACINA } from "./curs.js?v=43";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -56,6 +56,16 @@ export const puneGrupa = (id, nume, an, zi, ora) =>
   cheama("pune_grupa", { p_id:id, p_nume:nume, p_an:an, p_zi:zi, p_ora:ora });
 
 /* --- ședința, la profesor ------------------------------------------------- */
+
+/** O oră deschisă de mai mult de 3 ore e o oră uitată: se închide singură.
+    Aceeași regulă stă și în bază (db/17); aici e pentru cine n-a rulat-o. */
+export const ORE_MAX = 3;
+export function prea_veche(s) {
+  if (!s) return false;
+  const min = Number.isFinite(s.minute) ? s.minute
+    : s.deschisa_la ? (Date.now() - new Date(s.deschisa_la)) / 60000 : 0;
+  return min > ORE_MAX * 60;
+}
 
 /** Ora deschisă acum, sau null. */
 export async function deschisa(capitol = null) {
@@ -148,7 +158,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=42`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=43`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;
