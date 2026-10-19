@@ -100,6 +100,102 @@ AGENDA = [
                             "într-un Postgres pe Neon."),
 ]
 
+# Pașii pentru lecția 5.
+# Regiunile și perechile: data/analiza_c4/referinta_c2_20261013/nuts2 (SCI ianuarie 2026, Eurostat 2024).
+# Migrația: Eurostat migr_pop1ctz, 2024. SCI între țări: data/country.csv.
+
+PAS_MERGE = {
+    "fisier": "04_curatarea.ipynb · 5. Perechile de regiuni",
+    "intro": "Un rând e o pereche de regiuni. Vrem lângă el populația <b>ambelor</b> capete. Asta cere două îmbinări, nu una.",
+    "cod": "perechi = sci[sci[\"regiune_1\"] < sci[\"regiune_2\"]]\n"
+           "atribute = regiuni[[\"regiune\", \"populatie\"]]\n\n"
+           "capat_1 = atribute.add_suffix(\"_1\")\n"
+           "perechi = perechi.merge(capat_1, on=\"regiune_1\", how=\"left\")\n"
+           "perechi = perechi.merge(atribute.add_suffix(\"_2\"), on=\"regiune_2\", how=\"left\")\n"
+           "print(len(perechi))",
+    "pasi": [
+        {"l": 1, "set": {"perechi": {"t": "DataFrame", "v": {"cols": ["regiune_1", "regiune_2", "sci"],
+            "rows": [["HU11", "RO11", 34160], ["RO11", "RO12", 308881], ["…", "…", "…"]],
+            "nota": "44.253 de perechi, fiecare o singură dată"}}},
+         "txt": "SCI are fiecare pereche de două ori: Budapesta–Nord-Vest și Nord-Vest–Budapesta. <code>&lt;</code> între coduri păstrează doar una dintre ele."},
+        {"l": 2, "set": {"atribute": {"t": "DataFrame", "v": {"cols": ["regiune", "populatie"],
+            "rows": [["HU11", 1686222], ["RO11", 2539784], ["RO12", 2288061], ["…", "…"]],
+            "nota": "un rând pe regiune (în caiet: și densitatea, și PIB-ul)"}}},
+         "txt": "Tabelul regiunilor are o coloană <code>regiune</code>. Perechile au două: <code>regiune_1</code> și <code>regiune_2</code>. Numele nu se potrivesc."},
+        {"l": 4, "set": {"capat_1": {"t": "DataFrame", "v": {"cols": ["regiune_1", "populatie_1"],
+            "rows": [["HU11", 1686222], ["RO11", 2539784], ["RO12", 2288061], ["…", "…"]]}}},
+         "txt": "<code>add_suffix(\"_1\")</code> pune <code>_1</code> la toate coloanele, inclusiv la cheie. Acum cheia se cheamă ca în perechi."},
+        {"l": 5, "set": {"perechi": {"t": "DataFrame", "v": {"cols": ["regiune_1", "regiune_2", "sci", "populatie_1"],
+            "rows": [["HU11", "RO11", 34160, 1686222], ["RO11", "RO12", 308881, 2539784], ["…", "…", "…", "…"]]}}},
+         "txt": "Prima îmbinare: fiecare pereche primește populația primului capăt. Budapesta pe primul rând, Nord-Vest pe al doilea."},
+        {"l": 6, "set": {"perechi": {"t": "DataFrame", "v": {"cols": ["regiune_1", "regiune_2", "sci", "populatie_1", "populatie_2"],
+            "rows": [["HU11", "RO11", 34160, 1686222, 2539784], ["RO11", "RO12", 308881, 2539784, 2288061], ["…", "…", "…", "…", "…"]]}}}, "sterge": ["capat_1", "atribute"],
+         "txt": "A doua îmbinare, același tabel de atribute, alt sufix. Nord-Vest apare acum ca al doilea capăt pe primul rând și ca primul pe al doilea."},
+        {"l": 7, "out": "44253",
+         "txt": "Verificarea din exercițiul de mai jos: tot 44.253. Cheile din dreapta sunt unice, deci niciun rând nu s-a înmulțit."},
+    ],
+}
+
+PAS_AGREG = {
+    "fisier": "tabelul regiunilor din C4 · de la regiuni la țări",
+    "intro": "Ai un rând pe regiune. Vrei un rând pe țară. Schimbi unitatea de analiză cu <code>groupby</code>.",
+    "cod": "regiuni = pd.read_csv(DATE / \"c4\" / \"regiuni_nuts2.csv\")\n\n"
+           "pe_tara = regiuni.groupby(\"tara\")[\"populatie\"].agg([\"size\", \"sum\"])\n"
+           "pe_tara.loc[[\"RO\", \"HU\", \"IT\", \"DE\"]]\n\n"
+           "print(pe_tara.loc[\"RO\", \"sum\"] - 19051804)",
+    "pasi": [
+        {"l": 1, "set": {"regiuni": {"t": "DataFrame", "v": {"cols": ["regiune", "tara", "populatie"],
+            "rows": [["RO11", "RO", 2539784], ["RO12", "RO", 2288061], ["HU11", "HU", 1686222], ["…", "…", "…"]],
+            "nota": "298 de regiuni NUTS 2"}}},
+         "txt": "Unitatea de acum: regiunea. Coloana <code>tara</code> spune în ce grup intră fiecare."},
+        {"l": 3, "set": {"pe_tara": {"t": "DataFrame", "v": {"cols": ["size", "sum"], "index": ["…", "DE", "…", "HU", "IT", "…", "RO", "…"],
+            "rows": [["…", "…"], [38, 83456045], ["…", "…"], [8, 9584627], [21, 58971230], ["…", "…"], [8, 19067576], ["…", "…"]],
+            "nota": "un rând pe țară, în ordine alfabetică"}}},
+         "txt": "<code>groupby(\"tara\")</code> strânge regiunile fiecărei țări; <code>agg</code> aplică două funcții deodată: <code>size</code> le numără, <code>sum</code> le adună populația."},
+        {"l": 4, "out": "      size         sum\ntara\nRO       8  19067576.0\nHU       8   9584627.0\nIT      21  58971230.0\nDE      38  83456045.0",
+         "txt": "România are 8 regiuni, Germania 38. Țara a devenit unitatea, iar țara e acum index: de aceea <code>.loc</code> o găsește după cod."},
+        {"l": 6, "out": "15772.0",
+         "txt": "Suma regiunilor (Eurostat) față de Banca Mondială, din C2: diferă cu 15.772 de oameni. Două surse, momente și estimări diferite. În proiect folosești una singură, și scrii care."},
+    ],
+}
+
+_MIGR = [["IT", "RO", 1073196], ["IT", "AL", 416229], ["DE", "RO", 776424], ["ES", "RO", 620463], ["…", "…", "…"]]
+
+PAS_SQL = {
+    "fisier": "baza/intrebari.sql",
+    "memoria": "ce are baza în mână",
+    "intro": "SQL se scrie începând cu <code>select</code>, dar baza nu-l execută în ordinea asta. Urmărește ordinea adevărată: rândurile sar.",
+    "cod": "select m.geo, m.persoane, s.sci\n"
+           "from migratie m\n"
+           "join legaturi s on s.tara_1 = 'RO' and s.tara_2 = m.geo\n"
+           "where m.citizen = 'RO'\n"
+           "order by m.persoane desc\n"
+           "limit 3;",
+    "pasi": [
+        {"l": 2, "set": {"rezultat": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "persoane"], "rows": _MIGR,
+            "nota": "tot tabelul migratie"}}},
+         "txt": "Întâi <code>from</code>: din ce tabel. <code>m</code> e o poreclă scurtă pentru <code>migratie</code>."},
+        {"l": 3, "set": {"rezultat": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "persoane", "sci"],
+            "rows": [["IT", "RO", 1073196, 69327], ["IT", "AL", 416229, 69327], ["DE", "RO", 776424, 91228], ["ES", "RO", 620463, 54179], ["…", "…", "…", "…"]],
+            "nota": "fiecare rând a primit SCI-ul România–țara lui"}}},
+         "txt": "<code>join ... on</code> e <code>merge</code>: lângă fiecare rând se pune SCI-ul dintre România și țara de rezidență. Albanezii din Italia primesc tot SCI-ul România–Italia: e o legătură între țări, nu între cetățenii lor."},
+        {"l": 4, "set": {"rezultat": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "persoane", "sci"],
+            "rows": [["IT", "RO", 1073196, 69327], ["DE", "RO", 776424, 91228], ["ES", "RO", 620463, 54179], ["FR", "RO", 161220, 18075], ["…", "…", "…", "…"]],
+            "nota": "doar românii"}}},
+         "txt": "<code>where</code> filtrează, ca <code>d[d[\"citizen\"] == \"RO\"]</code>. Albanezii au plecat."},
+        {"l": 5, "txt": "<code>order by ... desc</code> sortează descrescător. Aici ordinea era deja bună; de obicei nu e."},
+        {"l": 6, "set": {"rezultat": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "persoane", "sci"],
+            "rows": [["IT", "RO", 1073196, 69327], ["DE", "RO", 776424, 91228], ["ES", "RO", 620463, 54179]],
+            "nota": "primele trei"}}},
+         "txt": "<code>limit</code> taie la final. Baza a parcurs oricum tot tabelul."},
+        {"l": 1, "set": {"rezultat": {"t": "DataFrame", "v": {"cols": ["geo", "persoane", "sci"],
+            "rows": [["IT", 1073196, 69327], ["DE", 776424, 91228], ["ES", 620463, 54179]]}}},
+         "out": " geo | persoane |   sci\n-----+----------+-------\n IT  |  1073196 | 69327\n DE  |   776424 | 91228\n ES  |   620463 | 54179",
+         "txt": "Abia la urmă <code>select</code> alege coloanele de arătat. Ordinea după migranți nu e ordinea după SCI: Germania e mai legată de România decât Italia."},
+    ],
+}
+
+
 sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Agregare și baze de date</h2>"
    "<p class=\"cheie\">Ai mai multe tabele curate. Azi devin unul singur, "
@@ -256,6 +352,7 @@ sl("s4", "Unirea tabelelor", "Ce iese din fiecare fel",
 
 sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
    "<h2>Scrie-o</h2>"
+   + ix("pas", "Două capete, două îmbinări", PAS_MERGE)
    + ix("cod", "Lipește populația peste SCI", {
        "id": "c5-cod-merge", "indiciu": "Coloana după care lipești se dă cu parametrul on. Ca să păstrezi tot ce e în tabelul din stânga, felul e \"left\". Lipsurile rămase le găsești cu isna.",
        "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
@@ -287,6 +384,7 @@ sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
    "<h2>Scrie-o</h2>"
    "<p>Sintaxa e scurtă; grija e la ce scrii după ea. Cele două linii de "
    "verificare de la final valorează mai mult decât îmbinarea în sine.</p>"
+   + ix("pas", "Două capete, două îmbinări", PAS_MERGE)
    + ix("cod", "Lipește populația peste SCI", {
        "id": "c5-cod-merge", "indiciu": "Coloana după care lipești se dă cu parametrul on. Ca să păstrezi tot ce e în tabelul din stânga, felul e \"left\". Lipsurile rămase le găsești cu isna.",
        "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
@@ -511,6 +609,7 @@ sl("s9", "Unirea tabelelor", "Agregarea",
        "explicatie": "Rândurile cu aceeași țară se strâng într-un grup și se adună: RO = 10 + 30 = 40, IT = 5. "
                      "Grupurile ies în ordine alfabetică, de aceea IT e primul. Asta e schimbarea unității "
                      "de analiză, de la pereche la țară, din exercițiul de mai jos."})
+   + ix("pas", "De la regiuni la țări", PAS_AGREG)
    + ix("cod", "Adu datele la unitatea pe care o vrei", {
        "id": "c5-cod-agregare", "indiciu": "Grupezi cu groupby, media se cere ca text, ca și \"sum\" de deasupra: \"mean\". La final, coloana de grupare redevine coloană cu reset_index.",
        "iesire": "(31684, 3)\n(178, 4)", "fisier": "agregare/agrega.py",
@@ -547,6 +646,7 @@ sl("s9", "Unirea tabelelor", "Agregarea",
    "<p>Agregarea e locul în care datele își schimbă unitatea. E și locul în "
    "care se iau, pe tăcute, decizii teoretice: ce funcție folosești ca să "
    "rezumi mai multe rânduri într-unul singur.</p>"
+   + ix("pas", "De la regiuni la țări", PAS_AGREG)
    + ix("cod", "Adu datele la unitatea pe care o vrei", {
        "id": "c5-cod-agregare", "indiciu": "Grupezi cu groupby, media se cere ca text, ca și \"sum\" de deasupra: \"mean\". La final, coloana de grupare redevine coloană cu reset_index.",
        "iesire": "(31684, 3)\n(178, 4)", "fisier": "agregare/agrega.py",
@@ -857,9 +957,10 @@ sl("s15", "Baze de date", "SQL, cât vă trebuie",
    "<h2>Patru cuvinte și o ordine</h2>"
    "<p>Aceeași operație pe care o faceți în pandas, scrisă în limba bazei. "
    "Avantajul e că filtrarea se face acolo, și vine înapoi doar ce ai cerut.</p>"
+   + ix("pas", "Ordinea în care lucrează baza", PAS_SQL)
    + ix("cod", "Scrie interogarea", {
        "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori sus: ordine descrescătoare, desc.",
-       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  14210\n DE  |   776424 |   8321\n ES  |   620463 |  12054", "fisier": "baza/intrebari.sql",
+       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  69327\n DE  |   776424 |  91228\n ES  |   620463 |  54179", "fisier": "baza/intrebari.sql",
        "sarcina": "Cele zece țări cu cei mai mulți români, și cât de legată "
                   "e România de fiecare.",
        "cod": "select\n"
@@ -901,9 +1002,10 @@ sl("s15", "Baze de date", "SQL, cât vă trebuie",
             ["~d.groupby('cod').sum()", "~group by cod"],
             ["~d.sort_values('sci', ascending=False)", "~order by sci desc"],
             ["~d.head(10)", "~limit 10"]])
+   + ix("pas", "Ordinea în care lucrează baza", PAS_SQL)
    + ix("cod", "Scrie interogarea", {
        "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori sus: ordine descrescătoare, desc.",
-       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  14210\n DE  |   776424 |   8321\n ES  |   620463 |  12054", "fisier": "baza/intrebari.sql",
+       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  69327\n DE  |   776424 |  91228\n ES  |   620463 |  54179", "fisier": "baza/intrebari.sql",
        "sarcina": "Cele zece țări cu cei mai mulți români, cu SCI-ul lor.",
        "cod": "select m.geo, m.persoane, s.sci\n"
               "from migratie m\n"

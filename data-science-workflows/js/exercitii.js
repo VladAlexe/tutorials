@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=52";
+import { salveazaCod } from "./colectare.js?v=55";
 
 const E = {};
 
@@ -41,7 +41,7 @@ const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(
      5 b funcție inclusă · 6 f apel · 7 n număr */
 const TIPARE = {
   py: /(#[^\n]*)|((?:f|r|b)?'(?:[^'\\]|\\.)*'|(?:f|r|b)?"(?:[^"\\]|\\.)*")|\b(import|from|as|def|return|if|else|elif|for|in|while|with|not|and|or|is|lambda|try|except|class|pass|break|continue|yield|global)\b|\b(None|True|False)\b|\b(print|len|type|int|str|float|bool|list|dict|tuple|set|range|open|sorted|sum|min|max|round|abs|enumerate|zip|isinstance)\b(?=\s*\()|\b([A-Za-z_]\w*)(?=\s*\()|\b(\d+(?:\.\d+)?)\b/g,
-  sql: /(--[^\n]*)|('(?:[^']|'')*')|\b(CREATE|TABLE|PRIMARY|KEY|FOREIGN|REFERENCES|SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|DELETE|NOT|NULL|DEFAULT|UNIQUE|CHAR|VARCHAR|TEXT|INT|INTEGER|BIGINT|SMALLINT|NUMERIC|REAL|BOOLEAN|DATE|TIMESTAMP|JSONB|JSON)\b|\b(\d+(?:\.\d+)?)\b/gi,
+  sql: /(--[^\n]*)|('(?:[^']|'')*')|\b(CREATE|TABLE|PRIMARY|KEY|FOREIGN|REFERENCES|SELECT|FROM|WHERE|JOIN|LEFT|INNER|OUTER|ON|AND|OR|AS|ORDER|GROUP|BY|DESC|ASC|LIMIT|HAVING|COUNT|SUM|AVG|DISTINCT|INSERT|INTO|VALUES|UPDATE|DELETE|NOT|NULL|DEFAULT|UNIQUE|CHAR|VARCHAR|TEXT|INT|INTEGER|BIGINT|SMALLINT|NUMERIC|REAL|BOOLEAN|DATE|TIMESTAMP|JSONB|JSON)\b|\b(\d+(?:\.\d+)?)\b/gi,
   sh: /(#[^\n]*)|('[^']*'|"[^"]*")|\b(cd|ls|mkdir|source|pip|python|git|echo|export|activate|install|freeze)\b|\b(\d+(?:\.\d+)?)\b/g
 };
 
@@ -460,7 +460,8 @@ E.prezice = (gazda, d) => {
    apare ce s-a schimbat în memorie (variabilele, desenate: o listă ca șir de
    căsuțe cu pozițiile lor, un dicționar ca chei și valori, un tabel ca tabel)
    și ce s-a afișat. Nu e sarcină și nu se notează: e explicația, jucată.
-     { fisier, cod, pasi: [{ l, set:{nume:{t,v}}, sterge:[...], out, hl:{var,k}, txt }] }
+     { fisier, cod, memoria?, fixa?, pasi: [{ l, set:{nume:{t,v,e?}}, sterge:[...], out, hl:{var,k}, txt }] }
+   memoria = eticheta panoului; fixa = nu reordona; e = ce scrie pe insignă în loc de tip.
    ========================================================================== */
 
 const TIP_CLS = { str: "s", int: "n", float: "n", bool: "v", NoneType: "v",
@@ -523,7 +524,7 @@ E.pas = (gazda, d) => {
         </div>
       </div>
       <div class="ps__dr">
-        <div class="ps__p"><span class="ps__et">memoria</span><div class="ps__mem"></div></div>
+        <div class="ps__p"><span class="ps__et">${esc(d.memoria || "memoria")}</span><div class="ps__mem"></div></div>
         <div class="ps__p ps__p--out"><span class="ps__et">ieșire</span><pre class="ps__out"></pre></div>
       </div>
     </div>
@@ -554,11 +555,12 @@ E.pas = (gazda, d) => {
     gazda.querySelectorAll(".ps__r").forEach(r => r.classList.toggle("trecut", i >= 0 && +r.dataset.l < (p.l || 0)));
     const noi = new Set(Object.keys(p.set || {}));
     /* cea mai nouă variabilă sus: acolo se uită ochiul după fiecare rând */
-    const ord = Object.entries(mem).sort(([a], [b]) => (noi.has(b) ? 1 : 0) - (noi.has(a) ? 1 : 0) || ultimul[b] - ultimul[a]);
+    /* d.fixa: ordinea rămâne cea de la prima apariție (zone, nu variabile) */
+    const ord = d.fixa ? Object.entries(mem) : Object.entries(mem).sort(([a], [b]) => (noi.has(b) ? 1 : 0) - (noi.has(a) ? 1 : 0) || ultimul[b] - ultimul[a]);
     $(".ps__mem").innerHTML = ord.length ? ord.map(([n, sp]) => `
       <div class="ps-v ${noi.has(n) ? "nou" : ""}">
         <span class="ps-v__n">${esc(n)}</span>
-        <span class="ps-v__t ${TIP_CLS[sp.t] || ""}">${esc(sp.t)}</span>
+        <span class="ps-v__t ${TIP_CLS[sp.t] || ""}">${esc(sp.e || sp.t)}</span>
         <span class="ps-v__v">${valoareHTML(sp, p.hl?.var === n ? p.hl.k : undefined)}</span>
       </div>`).join("") : `<p class="ps__gol">${i < 0 ? "Încă nimic: apasă ▶ și rulăm primul rând." : "Rândul ăsta n-a creat nimic nou."}</p>`;
     $(".ps__out").textContent = out.join("\n");

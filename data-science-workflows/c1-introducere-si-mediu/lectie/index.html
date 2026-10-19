@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=52">
-<link rel="stylesheet" href="../../css/slide.css?v=52">
-<link rel="stylesheet" href="../../css/interactiv.css?v=52">
-<link rel="stylesheet" href="../../css/grafice.css?v=52">
-<link rel="stylesheet" href="../../css/exercitii.css?v=52">
-<link rel="stylesheet" href="../../css/explorator.css?v=52">
-<script src="../../js/tema.js?v=52"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=55">
+<link rel="stylesheet" href="../../css/slide.css?v=55">
+<link rel="stylesheet" href="../../css/interactiv.css?v=55">
+<link rel="stylesheet" href="../../css/grafice.css?v=55">
+<link rel="stylesheet" href="../../css/exercitii.css?v=55">
+<link rel="stylesheet" href="../../css/explorator.css?v=55">
+<script src="../../js/tema.js?v=55"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 1 · Introducere și configurare" data-crom="1"></div>
@@ -189,7 +189,7 @@
 <section class="sld" id="s15" data-grup="JSON" data-t="Formatul JSON">
 <h2>Două structuri, cuibărite oricât de adânc</h2><div class="grila grila--2"><div class="card"><div class="card__t">Obiect <span class="mono">{ }</span></div><p class="card__d" style="margin-top:8px">Perechi cheie–valoare. În Python: <code>dict</code>.</p></div><div class="card"><div class="card__t">Tablou <span class="mono">[ ]</span></div><p class="card__d" style="margin-top:8px">Listă ordonată. În Python: <code>list</code>.</p></div></div><div class="ix" data-ix="anatomie">
   <div class="ix__cap"><span class="ix__fel">Pe bucăți</span><span class="ix__t">Un răspuns real, pe bucăți</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-json-anatomie", "poarta": false, "cerute": 4, "intro": "Apasă pe o parte ca s-o vezi aprinsă în cod.", "linii": ["{", "  \"paginare\": { \"pagina\": 1, \"total\": 3 },", "  \"date\": [", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2023\",", "      \"valoare\": 19051562,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": false", "    },", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2022\",", "      \"valoare\": null,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": true", "    }", "  ]", "}"], "parti": [{"et": "Obiectul principal", "py": "dict", "l": [0, 18], "d": "Tot răspunsul, între acolade. În Python devine un <code>dict</code> cu două chei: <code>paginare</code> și <code>date</code>."}, {"et": "Tabloul de obiecte", "py": "list", "l": [2, 17], "d": "Între paranteze drepte. Numai asta devine tabel: fiecare element al listei e un rând."}, {"et": "Un obiect din tablou", "py": "dict", "l": [3, 9], "d": "Un rând al viitorului tabel. Cheile lui devin coloane."}, {"et": "Obiect cuibărit", "py": "dict în dict", "l": [4, 4], "d": "O valoare care e, la rândul ei, un obiect. În tabel, <code>json_normalize</code> îl desface în două coloane: <code>tara.cod</code> și <code>tara.nume</code>."}, {"et": "Pereche cheie–valoare", "py": "str", "l": [5, 5], "d": "<code>\"2023\"</code> are ghilimele, deci e <em>text</em>, nu număr. Capcana clasică: sortat alfabetic, 1990 ajunge după 189."}, {"et": "Număr", "py": "int", "l": [6, 6], "d": "Fără ghilimele. Devine <code>int</code> sau <code>float</code>, după cum arată."}, {"et": "Tablou de numere", "py": "list", "l": [7, 7], "d": "O listă ca valoare. Într-un tabel plat nu încape ca atare: ori o desfaci în două coloane, ori o lași ca listă într-o celulă, ceea ce de obicei doare mai târziu."}, {"et": "Adevărat sau fals", "py": "bool", "l": [8, 8], "d": "<code>true</code> și <code>false</code> se scriu cu literă mică în JSON, cu majusculă în Python."}, {"et": "Valoare lipsă", "py": "None", "l": [13, 13], "d": "<code>null</code> spune explicit „nu știm”. Nu e zero. În Python devine <code>None</code>, în pandas devine <code>NaN</code>."}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-json-anatomie", "poarta": false, "cerute": 4, "intro": "Apasă pe o parte ca s-o vezi aprinsă în cod.", "linii": ["{", "  \"paginare\": { \"pagina\": 1, \"total\": 3 },", "  \"date\": [", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2023\",", "      \"valoare\": 19051804,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": false", "    },", "    {", "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },", "      \"an\": \"2022\",", "      \"valoare\": null,", "      \"coordonate\": [46.77, 23.59],", "      \"estimat\": true", "    }", "  ]", "}"], "parti": [{"et": "Obiectul principal", "py": "dict", "l": [0, 18], "d": "Tot răspunsul, între acolade. În Python devine un <code>dict</code> cu două chei: <code>paginare</code> și <code>date</code>."}, {"et": "Tabloul de obiecte", "py": "list", "l": [2, 17], "d": "Între paranteze drepte. Numai asta devine tabel: fiecare element al listei e un rând."}, {"et": "Un obiect din tablou", "py": "dict", "l": [3, 9], "d": "Un rând al viitorului tabel. Cheile lui devin coloane."}, {"et": "Obiect cuibărit", "py": "dict în dict", "l": [4, 4], "d": "O valoare care e, la rândul ei, un obiect. În tabel, <code>json_normalize</code> îl desface în două coloane: <code>tara.cod</code> și <code>tara.nume</code>."}, {"et": "Pereche cheie–valoare", "py": "str", "l": [5, 5], "d": "<code>\"2023\"</code> are ghilimele, deci e <em>text</em>, nu număr. Capcana clasică: sortat alfabetic, 1990 ajunge după 189."}, {"et": "Număr", "py": "int", "l": [6, 6], "d": "Fără ghilimele. Devine <code>int</code> sau <code>float</code>, după cum arată."}, {"et": "Tablou de numere", "py": "list", "l": [7, 7], "d": "O listă ca valoare. Într-un tabel plat nu încape ca atare: ori o desfaci în două coloane, ori o lași ca listă într-o celulă, ceea ce de obicei doare mai târziu."}, {"et": "Adevărat sau fals", "py": "bool", "l": [8, 8], "d": "<code>true</code> și <code>false</code> se scriu cu literă mică în JSON, cu majusculă în Python."}, {"et": "Valoare lipsă", "py": "None", "l": [13, 13], "d": "<code>null</code> spune explicit „nu știm”. Nu e zero. În Python devine <code>None</code>, în pandas devine <code>NaN</code>."}]}</script></div>
 </div>
 
 </section>
@@ -205,10 +205,10 @@
 <section class="sld" id="s16" data-grup="JSON" data-t="Drumul până la valoare">
 <h2>Un răspuns real, desfăcut</h2><p>Banca Mondială, populația României.</p><div class="ix" data-ix="json">
   <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">API Banca Mondială</span></div>
-  <div class="ix__corp"><p class="ix__sarcina">Apasă pe orice rând ca să vezi cum se ajunge la el.</p><script type="application/json">{"radacina": "raspuns", "date": [{"page": 1, "pages": 3, "per_page": 2, "total": 6}, [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2023", "value": 19051562}, {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2022", "value": null}]]}</script></div>
+  <div class="ix__corp"><p class="ix__sarcina">Apasă pe orice rând ca să vezi cum se ajunge la el.</p><script type="application/json">{"radacina": "raspuns", "date": [{"page": 1, "pages": 3, "per_page": 2, "total": 6}, [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2024", "value": 19051804}, {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2023", "value": 19061062}]]}</script></div>
 </div><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Scrii cod</span><span class="ix__t">Scrie drumul</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Mergi până la populația din 2023.", "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n# paginarea e primul element, datele sunt in al doilea\ndate = raspuns[{{1}}]\n\n# prima inregistrare, cea mai recenta\npopulatie = date[0][{{2}}]\nprint(populatie)             # 19051562", "goluri": {"1": {"ok": ["1"], "ajutor": "indice"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "indiciu": "Răspunsul e o listă cu două elemente: paginarea pe poziția 0, datele pe poziția 1. Apoi, din prima înregistrare, vrei cheia cu numărul.", "iesire": "19051562", "laBine": "Ăsta e drumul pe care îl vei scrie la cursul 2, de zeci de ori.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. <code>[\"value\"]</code> scoate numărul. Dacă valoarea lipsește primești <code>None</code>, nu zero."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Mergi până la populația din 2024, prima înregistrare.", "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n# paginarea e primul element, datele sunt in al doilea\ndate = raspuns[{{1}}]\n\n# prima inregistrare, cea mai recenta\npopulatie = date[0][{{2}}]\nprint(populatie)             # 19051804", "goluri": {"1": {"ok": ["1"], "ajutor": "indice"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "indiciu": "Răspunsul e o listă cu două elemente: paginarea pe poziția 0, datele pe poziția 1. Apoi, din prima înregistrare, vrei cheia cu numărul.", "iesire": "19051804", "laBine": "Ăsta e drumul pe care îl vei scrie la cursul 2, de zeci de ori.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. <code>[\"value\"]</code> scoate numărul. Dacă valoarea lipsește primești <code>None</code>, nu zero."}</script></div>
 </div>
 
 </section>
@@ -256,11 +256,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=52"></script>
+<script type="module" src="../../js/antet.js?v=55"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=52";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=52";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=52";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=55";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=55";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=55";
 pornesteIx();
 pornesteVerif("c1");
 pornesteSlide({ capitol:"c1", lectie:"c1-introducere-si-mediu" });

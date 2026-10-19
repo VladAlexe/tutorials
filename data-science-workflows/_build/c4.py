@@ -60,6 +60,99 @@ AGENDA = [
     ("Dicționarul de date", "azi", "Ce ați schimbat, scris astfel încât să se poată reface."),
 ]
 
+# Pașii pentru lecția 4, din 04_curatarea_si_integrarea_datelor.ipynb.
+# Cifrele regionale: data/analiza_c4/referinta_c2_20261013/nuts2/regional_lung.csv (Eurostat, 2024).
+# Migrația: Eurostat migr_pop1ctz, 2024.
+
+PAS_PROFIL = {
+    "fisier": "04_curatarea.ipynb · 2. Calitatea",
+    "intro": "Înainte să schimbi ceva într-un tabel, te uiți la el. Indicatorii regionali din C3, la nivel NUTS 2.",
+    "cod": "regional = pd.read_csv(DATE / \"c3\" / \"regional.csv\")\n"
+           "regional = regional[regional[\"nivel\"] == 2]\n\n"
+           "print(\"Duplicate:\", regional.duplicated([\"regiune\", \"indicator\"]).sum())\n"
+           "print(\"Valori negative:\", (regional[\"valoare\"] < 0).sum())\n\n"
+           "regional.groupby(\"indicator\")[\"valoare\"].describe().round(1)\n\n"
+           "regional.nsmallest(1, \"valoare\")",
+    "pasi": [
+        {"l": 1, "set": {"regional": {"t": "DataFrame", "v": {"cols": ["regiune", "indicator", "valoare"],
+            "rows": [["BE10", "populatie", 1264371], ["BE21", "populatie", 1932876], ["…", "…", "…"], ["RO11", "densitate", 74.7]],
+            "nota": "format lung: un rând pe regiune și indicator"}}},
+         "txt": "Tabelul salvat în C3. Un rând e identificat de două coloane împreună: <b>regiune + indicator</b>."},
+        {"l": 2, "txt": "Păstrăm doar nivelul NUTS 2 (regiunile de dezvoltare, la noi). La seminar lucrați pe NUTS 3, județele."},
+        {"l": 4, "out": "Duplicate: 0",
+         "txt": "<code>duplicated</code> cu o listă de coloane caută aceeași <b>cheie</b> de două ori. Zero: fiecare regiune are fiecare indicator o singură dată."},
+        {"l": 5, "out": "Valori negative: 0",
+         "txt": "Populația și densitatea nu pot fi negative. Comparația dă True sau False pe fiecare rând; <code>.sum()</code> numără True-urile."},
+        {"l": 7, "out": "              count       mean      min        50%         max\n"
+                        "densitate     284.0      337.0      3.5      113.2      7827.4\n"
+                        "pib_locuitor  276.0    35810.9  11700.0    33550.0    107200.0\n"
+                        "populatie     291.0  1920320.8      0.0  1484402.0  15655924.0",
+         "txt": "Un rezumat pe indicator (aici, cinci coloane din opt). Două lucruri sar în ochi: o densitate de 7.827 de locuitori pe km² și o <b>populație 0</b>."},
+        {"l": 9, "out": "  regiune               denumire  indicator  valoare\n  NO0B    Svalbard og Jan Mayen  populatie      0.0",
+         "txt": "Cine are populație 0? Svalbard, arhipelagul norvegian: Eurostat chiar raportează 0. Iar 7.827 e Bruxelles, un oraș-regiune. Nu sunt greșeli. De aceea nu ștergem automat: întâi căutăm în sursă."},
+    ],
+}
+
+PAS_CODURI = {
+    "fisier": "04_curatarea.ipynb · 7. Capcana codurilor",
+    "intro": "Două capcane care nu dau nicio eroare. Pierzi țări în tăcere, și afli abia când lipsesc din grafic.",
+    "cod": "gresit = pd.read_csv(DATE / \"c3\" / \"migratie.csv\")\n"
+           "migratie = pd.read_csv(DATE / \"c3\" / \"migratie.csv\",\n"
+           "                       keep_default_na=False, na_values=[\"\"])\n\n"
+           "coduri = {\"EL\": \"GR\", \"UK\": \"GB\"}\n"
+           "migratie = migratie.replace({\"tara_rezidenta\": coduri, \"cetatenie\": coduri})\n"
+           "print(migratie[\"cetatenie\"].isin([\"EL\", \"UK\"]).sum())",
+    "pasi": [
+        {"l": 1, "set": {"gresit": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
+            "rows": [["DE", "NaN", "…"], ["DE", "EL", 303375], ["ES", "UK", 272402], ["…", "…", "…"]],
+            "nota": "Namibia (NA) a devenit NaN"}}},
+         "txt": "Citit fără grijă. Pandas are o listă de texte pe care le ia drept „lipsă”, iar <code>NA</code> e pe ea. Namibienii din Germania au rămas fără țară."},
+        {"l": 2, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
+            "rows": [["DE", "NA", "…"], ["DE", "EL", 303375], ["ES", "UK", 272402], ["…", "…", "…"]],
+            "nota": "NA e din nou Namibia"}}},
+         "txt": "<code>keep_default_na=False</code> oprește lista; <code>na_values=[\"\"]</code> spune că doar celula goală e lipsă. Același lucru l-ai făcut în C1 cu SCI."},
+        {"l": 5, "set": {"coduri": {"t": "dict", "v": {"EL": "GR", "UK": "GB"}}},
+         "txt": "A doua capcană: Eurostat scrie Grecia <code>EL</code> și Regatul Unit <code>UK</code>. SCI scrie <code>GR</code> și <code>GB</code>. Un dicționar spune ce devine ce."},
+        {"l": 6, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
+            "rows": [["DE", "NA", "…"], ["DE", "GR", 303375], ["ES", "GB", 272402], ["…", "…", "…"]],
+            "nota": "codurile, ca în SCI"}}},
+         "hl": {"var": "coduri", "k": "EL"},
+         "txt": "<code>replace</code> primește, pentru fiecare coloană, dicționarul de schimbat. Cei 303.375 de greci din Germania nu se mai pierd la join."},
+        {"l": 7, "out": "0",
+         "txt": "Verificarea de după: niciun EL sau UK n-a rămas. Dicționarul <code>coduri</code> e și documentația deciziei: peste trei luni, din el afli de ce Grecia e GR."},
+    ],
+}
+
+_LUNG = [["RO11", "densitate", 74.7], ["RO12", "densitate", 67.4],
+         ["RO11", "pib_locuitor", 28300.0], ["RO12", "pib_locuitor", 28400.0],
+         ["RO11", "populatie", 2539784.0], ["RO12", "populatie", 2288061.0]]
+
+PAS_PIVOT = {
+    "fisier": "04_curatarea.ipynb · 4. Tabelul regiunilor",
+    "intro": "Din lung în lat și înapoi, pe două regiuni: Nord-Vest (RO11, cu Clujul) și Centru (RO12).",
+    "cod": "lung = regional[regional[\"regiune\"].isin([\"RO11\", \"RO12\"])]\n\n"
+           "lat = lung.pivot(index=\"regiune\", columns=\"indicator\", values=\"valoare\")\n"
+           "lat = lat.reset_index()\n\n"
+           "inapoi = lat.melt(id_vars=\"regiune\", var_name=\"indicator\", value_name=\"valoare\")",
+    "pasi": [
+        {"l": 1, "set": {"lung": {"t": "DataFrame", "v": {"cols": ["regiune", "indicator", "valoare"], "rows": _LUNG,
+            "nota": "lung: 6 rânduri, un rând pe regiune și indicator"}}},
+         "txt": "Forma <b>lungă</b>: fiecare regiune apare de trei ori, o dată pentru fiecare indicator."},
+        {"l": 3, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["densitate", "pib_locuitor", "populatie"],
+            "index": ["RO11", "RO12"], "rows": [[74.7, 28300.0, 2539784.0], [67.4, 28400.0, 2288061.0]],
+            "nota": "lat: regiunea a ajuns în index"}}},
+         "txt": "<code>pivot</code>: <code>index</code> spune ce devine rând, <code>columns</code> ce devine coloană, <code>values</code> ce se pune în celule. Un rând pe regiune."},
+        {"l": 4, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["regiune", "densitate", "pib_locuitor", "populatie"],
+            "rows": [["RO11", 74.7, 28300.0, 2539784.0], ["RO12", 67.4, 28400.0, 2288061.0]],
+            "nota": "lat: 2 rânduri, regiunea e din nou coloană"}}},
+         "txt": "<code>reset_index</code> scoate regiunea din index înapoi într-o coloană obișnuită, ca să poată fi folosită la <code>merge</code>."},
+        {"l": 6, "set": {"inapoi": {"t": "DataFrame", "v": {"cols": ["regiune", "indicator", "valoare"], "rows": _LUNG,
+            "nota": "din nou 6 rânduri"}}},
+         "txt": "<code>melt</code> e drumul invers: coloanele de indicatori se „topesc” într-o coloană de nume și una de valori. Pe asta o scrii tu, mai jos."},
+    ],
+}
+
+
 sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Curățarea datelor</h2>"
    "<p class=\"cheie\">Etapa cea mai lungă, cea mai plictisitoare, și singura "
@@ -298,6 +391,7 @@ sl("s8", "Curățarea", "Cele șase etape",
 
 sl("s9", "Curățarea", "Profilarea",
    "<h2>Prima etapă: te uiți</h2>"
+   + ix("pas", "Te uiți înainte să schimbi", PAS_PROFIL)
    + ix("cod", "Profilează tabelul", {
        "id": "c4-cod-profil", "indiciu": "Rezumatul pe coloane e „informații” (info). Statisticile numerice sunt o „descriere” (describe). Valorile distincte, cu frecvența lor, se numără cu value_counts.",
        "iesire": "(5104, 3)\n          valoare\ncount     4292.0\nmean     18736.2\n...\nRO    37\nPL    37\nBG    36", "fisier": "profilare.py",
@@ -348,6 +442,7 @@ sl("s10", "Curățarea", "Codurile care mint",
        ["Regatul Unit", "~GB", "~UK", "la fel"],
        ["Namibia", "~NA", "~NA", "pandas o citește ca valoare lipsă"],
    ])
+   + ix("pas", "Două capcane tăcute", PAS_CODURI)
    + ix("cod", "Repară codurile", {
        "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină lipsă, oprești lista implicită de lipsuri: keep_default_na = valoarea logică „nu”. Codul britanic din SCI e GB. Metoda care schimbă valori după un dicționar e replace.",
        "iesire": "0", "fisier": "standardizare.py",
@@ -388,6 +483,7 @@ sl("s10", "Curățarea", "Codurile care mint",
        ["Regatul Unit", "~GB", "~UK", "la fel"],
        ["Namibia", "~NA", "~NA", "pandas o citește ca valoare lipsă"],
    ])
+   + ix("pas", "Două capcane tăcute", PAS_CODURI)
    + ix("cod", "Repară codurile", {
        "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină lipsă, oprești lista implicită de lipsuri: keep_default_na = valoarea logică „nu”. Codul britanic din SCI e GB. Metoda care schimbă valori după un dicționar e replace.",
        "iesire": "0", "fisier": "standardizare.py",
@@ -570,6 +666,7 @@ sl("s16", "Transformări", "Lung sau lat",
        ["bun de citit cu ochiul", "bun de calculat și de desenat"],
        ["<code>2020, 2021, 2022</code> ca nume de coloane", "anul devine o valoare"],
    ])
+   + ix("pas", "Din lung în lat și înapoi", PAS_PIVOT)
    + ix("cod", "Treci din lat în lung", {
        "id": "c4-cod-melt", "indiciu": "Din lat în lung: „topești” tabelul, melt. Înapoi, din lung în lat: îl „rotești”, pivot.",
        "iesire": "   tara    an  valoare  pe_locuitor\n0    RO  2022   1044.0     0.000055\n1    IT  2022   5030.0     0.000085", "fisier": "forma.py",

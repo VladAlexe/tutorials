@@ -41,6 +41,122 @@ AGENDA = [
     ("Git și colaborare", "cursul 3", "Cum lucrează patru oameni pe același cod."),
 ]
 
+# Pașii pentru lecția 2, din 02_colectarea_datelor_prin_api.ipynb.
+# Valorile sunt cele din colectarea de referință (data/colectari_c2/referinta_c2_20261013).
+
+_REC = lambda an, val: {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"},
+                        "country": {"id": "RO", "value": "Romania"},
+                        "countryiso3code": "ROU", "date": an, "value": val}
+_META = {"page": 1, "pages": 2, "per_page": 2, "total": 3}
+
+PAS_CERERE = {
+    "fisier": "02_colectarea.ipynb · 3. Prima cerere",
+    "intro": "Prima cerere din caiet: populația României, de la Banca Mondială. Urmărește ce se întâmplă cu fiecare rând.",
+    "cod": "url = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\n"
+           "parametri = {\"format\": \"json\", \"date\": \"2022:2024\", \"per_page\": 2, \"page\": 1}\n\n"
+           "raspuns = requests.get(url, params=parametri)\n"
+           "print(raspuns.status_code)  # 200 = a mers\n\n"
+           "date = raspuns.json()\n"
+           "meta = date[0]\nvalori = date[1]\n"
+           "print(valori[0][\"country\"][\"value\"], valori[0][\"date\"], valori[0][\"value\"])\n\n"
+           "pd.json_normalize(valori)[[\"country.id\", \"date\", \"value\"]]",
+    "pasi": [
+        {"l": 1, "set": {"url": {"t": "str", "v": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL"}},
+         "txt": "Adresa: <b>cine</b> răspunde (api.worldbank.org), <b>ce țară</b> (RO) și <b>ce indicator</b> (populația totală)."},
+        {"l": 2, "set": {"parametri": {"t": "dict", "v": {"format": "json", "date": "2022:2024", "per_page": 2, "page": 1}}},
+         "txt": "Filtrele stau într-un dicționar, ca în C1: ce format vrei, ce ani, câte valori pe pagină. Am cerut intenționat doar 2."},
+        {"l": 4, "set": {"raspuns": {"t": "Response", "v": "<Response [200]>"}},
+         "txt": "<code>requests.get</code> trimite cererea. Cu <code>params=</code>, biblioteca lipește singură filtrele în adresă."},
+        {"l": 5, "out": "200",
+         "txt": "Primul lucru după orice cerere: codul de stare. 200 = a mers. 404 = adresă greșită, 429 = prea multe cereri."},
+        {"l": 7, "set": {"date": {"t": "list", "v": [_META, [_REC("2024", 19051804), _REC("2023", 19061062)]]}},
+         "txt": "<code>.json()</code> transformă răspunsul în liste și dicționare. Exact structurile din C1: o listă cu două elemente."},
+        {"l": 8, "set": {"meta": {"t": "dict", "v": _META}}, "hl": {"var": "date", "k": 0},
+         "txt": "Poziția 0: paginarea. 3 valori în total, câte 2 pe pagină, deci 2 pagini."},
+        {"l": 9, "set": {"valori": {"t": "list", "v": [_REC("2024", 19051804), _REC("2023", 19061062)]}}, "hl": {"var": "date", "k": 1},
+         "txt": "Poziția 1: lista valorilor. Pe pagina asta au venit 2024 și 2023."},
+        {"l": 10, "out": "Romania 2024 19051804", "hl": {"var": "valori", "k": 0},
+         "txt": "Drumul până la o valoare, ca în C1: <code>valori[0]</code> (poziție) → <code>[\"country\"]</code> (cheie) → <code>[\"value\"]</code> (cheie)."},
+        {"l": 12, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["country.id", "date", "value"],
+                                                          "rows": [["RO", "2024", 19051804], ["RO", "2023", 19061062]]}}},
+         "txt": "<code>pd.json_normalize</code> face din lista de dicționare un tabel. Dicționarele dinăuntru devin coloane cu punct: <code>country.id</code>."},
+    ],
+}
+
+PAS_PAGINI = {
+    "fisier": "02_colectarea.ipynb · 4. Paginarea",
+    "intro": "Am cerut trei ani, dar câte două valori pe pagină. Unde e a treia valoare?",
+    "cod": "print(\"Pagina\", meta[\"page\"], \"din\", meta[\"pages\"], \"· valori în total:\", meta[\"total\"])\n\n"
+           "parametri[\"page\"] = 2\n"
+           "pagina2 = requests.get(url, params=parametri).json()\n"
+           "pagina2[1]",
+    "pasi": [
+        {"l": 1, "set": {"meta": {"t": "dict", "v": _META}}, "out": "Pagina 1 din 2 · valori în total: 3",
+         "txt": "Paginarea spune tot: suntem pe pagina 1 din 2, iar în total există 3 valori. Pe pagina asta au venit doar 2."},
+        {"l": 3, "set": {"parametri": {"t": "dict", "v": {"format": "json", "date": "2022:2024", "per_page": 2, "page": 2}}},
+         "hl": {"var": "parametri", "k": "page"},
+         "txt": "Schimbăm o singură cheie din dicționar: <code>page</code> devine 2."},
+        {"l": 4, "set": {"pagina2": {"t": "list", "v": [{"page": 2, "pages": 2, "per_page": 2, "total": 3}, [_REC("2022", 19048502)]]}},
+         "txt": "Aceeași cerere, pagina 2."},
+        {"l": 5, "out": "[{'date': '2022', 'value': 19048502, ...}]", "hl": {"var": "pagina2", "k": 1},
+         "txt": "Aici era a treia valoare: 2022. Pentru proiect cerem <code>per_page=1000</code> și verificăm că <code>pages</code> e 1."},
+    ],
+}
+
+PAS_CUB = {
+    "fisier": "02_colectarea.ipynb · 6. Eurostat",
+    "intro": "Eurostat: densitatea județelor, în 2024. Același requests, alt format de răspuns.",
+    "cod": "EUROSTAT = \"https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/\"\n\n"
+           "parametri = {\"geo\": \"RO113\", \"time\": 2024, \"unit\": \"PER_KM2\"}\n"
+           "cluj = requests.get(EUROSTAT + \"demo_r_d3dens\", params=parametri).json()\n"
+           "print(cluj[\"value\"])\n\n"
+           "parametri[\"geo\"] = [\"RO113\", \"RO111\"]\n"
+           "doua = requests.get(EUROSTAT + \"demo_r_d3dens\", params=parametri).json()\n"
+           "print(doua[\"dimension\"][\"geo\"][\"category\"][\"index\"])  # cod -> pozitie\n"
+           "print(doua[\"value\"])                                  # pozitie -> valoare",
+    "pasi": [
+        {"l": 3, "set": {"parametri": {"t": "dict", "v": {"geo": "RO113", "time": 2024, "unit": "PER_KM2"}}},
+         "txt": "<code>RO113</code> e codul NUTS al județului Cluj. <code>PER_KM2</code>: locuitori pe kilometru pătrat."},
+        {"l": 4, "set": {"cluj": {"t": "dict", "v": {"id": ["freq", "unit", "geo", "time"], "value": {"0": 104.8}, "dimension": {"geo": "…"}}}},
+         "txt": "Răspunsul e tot un dicționar, dar altfel construit: <b>JSON-stat</b>. Valorile nu stau în rânduri, ci pe poziții."},
+        {"l": 5, "out": "{'0': 104.8}", "hl": {"var": "cluj", "k": "value"},
+         "txt": "Cheia <code>value</code> leagă o <b>poziție</b> (\"0\") de o valoare: 104,8 locuitori pe km² în Cluj."},
+        {"l": 7, "set": {"parametri": {"t": "dict", "v": {"geo": ["RO113", "RO111"], "time": 2024, "unit": "PER_KM2"}}},
+         "hl": {"var": "parametri", "k": "geo"},
+         "txt": "Cerem două județe: Cluj și Bihor, în ordinea asta."},
+        {"l": 9, "set": {"doua": {"t": "dict", "v": {"value": {"0": 74.2, "1": 104.8}, "dimension": {"geo": {"category": {"index": {"RO111": 0, "RO113": 1}}}}}}},
+         "out": "{'RO111': 0, 'RO113': 1}",
+         "txt": "Surpriză: API-ul nu păstrează ordinea cerută. Bihor (RO111) e pe poziția 0, Cluj pe 1."},
+        {"l": 10, "out": "{'0': 74.2, '1': 104.8}", "hl": {"var": "doua", "k": "value"},
+         "txt": "Deci 74,2 e Bihorul, nu Clujul. De aceea citim pozițiile din <code>index</code>, nu presupunem. Asta face funcția <code>jsonstat_in_tabel</code> din caiet."},
+    ],
+}
+
+PAS_MIGR = {
+    "fisier": "02_colectarea.ipynb · 8. Migrația",
+    "intro": "Migrația: câți oameni cu o cetățenie trăiesc în fiecare țară. Un rând e o pereche de țări, ca la SCI.",
+    "cod": "parametri = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\n"
+           "migratie = cere_eurostat(\"migr_pop1ctz\", parametri)\n\n"
+           "in_italia = migratie[\"geo\"] == \"IT\"\n"
+           "romani = migratie[\"citizen\"] == \"RO\"\n"
+           "migratie[in_italia & romani]",
+    "pasi": [
+        {"l": 1, "set": {"parametri": {"t": "dict", "v": {"sex": "T", "age": "TOTAL", "unit": "NR", "time": 2024}}},
+         "txt": "<code>sex=T</code> și <code>age=TOTAL</code>: toată populația, nu o grupă. <code>unit=NR</code>: număr de persoane."},
+        {"l": 2, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["citizen", "geo", "valoare"],
+                                                            "rows": [["BG", "DE", 371128], ["RO", "ES", 620463], ["RO", "IT", 1073196], ["…", "…", "…"]],
+                                                            "nota": "un rând pe pereche cetățenie–țară"}}},
+         "txt": "<code>cere_eurostat</code> e funcția din caiet: face cererea și desface cubul în tabel. <code>citizen</code> = cetățenia, <code>geo</code> = țara unde trăiesc."},
+        {"l": 4, "set": {"in_italia": {"t": "Series", "v": {"rows": [["0", "False"], ["1", "False"], ["2", "True"], ["…", "…"]], "nota": "True unde geo e IT"}}},
+         "txt": "Prima condiție, ca în C1: trăiesc în Italia."},
+        {"l": 5, "set": {"romani": {"t": "Series", "v": {"rows": [["0", "False"], ["1", "True"], ["2", "True"], ["…", "…"]], "nota": "True unde citizen e RO"}}},
+         "txt": "A doua condiție: au cetățenie română."},
+        {"l": 6, "out": "  citizen geo    valoare\n  RO      IT    1073196",
+         "txt": "<code>&</code> înseamnă „și”: rămân rândurile unde ambele sunt True. 1.073.196 de români în Italia: ghicitoarea din C1."},
+    ],
+}
+
+
 sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Colectarea datelor prin API</h2>"
    "<p class=\"cheie\">Până acum ai citit un fișier primit de-a gata. "
@@ -550,7 +666,8 @@ sl("s15", "Surse de date", "Ce folosim noi",
 sl("s16", "requests", "Prima cerere",
    "<h2>requests: prima cerere</h2>"
    "<p>O bibliotecă mică, cu reputația de a fi cea mai plăcut de folosit din "
-   "tot Python-ul. Trei linii și ai datele.</p>"
+   "tot Python-ul. Întâi o vezi rulând, rând cu rând.</p>"
+   + ix("pas", "Prima cerere, pas cu pas", PAS_CERERE)
    + ix("cod", "Scrie cererea", {
        "id": "c2-cod-prima", "indiciu": "Pentru citire, metoda HTTP e GET; în requests are același nume, cu litere mici. "
                   "Codul de stare e un atribut al răspunsului (status_...), iar datele se scot cu metoda care poartă numele formatului.",
@@ -584,6 +701,7 @@ sl("s16", "requests", "Prima cerere",
    "<pre><code>pip install requests</code></pre>"
    "<p>Și apoi se folosește așa. Reține ordinea: ceri, verifici codul, abia pe "
    "urmă te uiți la date.</p>"
+   + ix("pas", "Prima cerere, pas cu pas", PAS_CERERE)
    + ix("cod", "Scrie cererea", {
        "id": "c2-cod-prima", "indiciu": "Pentru citire, metoda HTTP e GET; în requests are același nume, cu litere mici. "
                   "Codul de stare e un atribut al răspunsului (status_...), iar datele se scot cu metoda care poartă numele formatului.",
@@ -676,20 +794,21 @@ sl("s18", "requests", "Paginarea",
    "pagină și îți spune câte mai sunt.</p>"
    "<pre><code><span class=\"c\"># primul element al raspunsului, la Banca Mondiala</span>\n"
    "{\"page\": 1, \"pages\": 2, \"per_page\": 50, \"total\": 64}</code></pre>"
+   + ix("pas", "Unde e a treia valoare", PAS_PAGINI)
    + ix("prezice", "Câte sunt, câte ai primit", {
        "id": "c2-prezice-pagini", "fisier": "02_colectarea.ipynb · 4. Paginarea",
        "cod": "date = r.json()\n"
               "meta, valori = date[0], date[1]\n\n"
-              "# meta = {\"page\": 1, \"pages\": 3, \"per_page\": 2, \"total\": 6}\n"
+              "# meta = {\"page\": 1, \"pages\": 4, \"per_page\": 50, \"total\": 180}\n"
               "print(meta[\"total\"], len(valori))",
        "intrebare": "Ce afișează?",
-       "variante": ["6 6", "6 2", "2 6", "3 2"],
+       "variante": ["180 180", "180 50", "50 180", "4 50"],
        "corect": 1,
        "indiciu": "total spune câte valori există în total; len(valori) numără câte au venit pe pagina asta.",
-       "laBine": "Ai primit 2 din 6: mai sunt două pagini de cerut.",
-       "explicatie": "Primul element e paginarea: în total sunt 6 valori, câte 2 pe pagină, pe 3 pagini. "
-                     "Pe pagina asta au venit doar 2. De aici bucla de mai jos: ceri pagină după pagină "
-                     "până când <code>page</code> ajunge la <code>pages</code>."})
+       "laBine": "Ai primit 50 din 180: mai sunt trei pagini de cerut.",
+       "explicatie": "Altă cerere, aceeași logică: în total sunt 180 de valori, câte 50 pe pagină, pe 4 pagini. "
+                     "Pe pagina asta au venit 50. Ori ceri pagină după pagină până când <code>page</code> "
+                     "ajunge la <code>pages</code>, ori, ca în caiet, ceri <code>per_page=1000</code> dintr-odată."})
    + ix("ordine", "Bucla de colectare", {
        "id": "c2-ordine-paginare", "poarta": False,
        "sarcina": "Pune pașii unei colectări paginate în ordine.",
@@ -725,7 +844,7 @@ sl("s19", "requests", "Din JSON în tabel",
            "2": {"ok": ["False"], "ajutor": "True sau False"}},
        "indiciu": "Funcția care desface JSON-ul în tabel are în nume cuvântul „normalize”. "
                   "Coloana de numerotare n-o vrem în fișier, deci index = valoarea logică „nu”.",
-       "iesire": "  country.id  date     value\n0         RO  2024  19064409\n1         RO  2023  19051562",
+       "iesire": "  country.id  date     value\n0         RO  2024  19051804\n1         RO  2023  19061062",
        "laBine": "De aici încolo e pandas, adică teren cunoscut de la cursul 1.",
        "laRau": "Numele funcției se scrie exact ca în caiet. La index, răspunsul e una dintre cele două valori logice.",
        "explicatie": "<code>json_normalize</code> desface dicționarele "
@@ -759,6 +878,7 @@ sl("s19e", "Eurostat", "Un cub, nu un tabel",
    "<h2>Eurostat răspunde altfel</h2>"
    "<p class=\"cheie\">Nu trimite rânduri. Trimite coduri cu poziții, și "
    "valori puse pe poziții.</p>"
+   + ix("pas", "Cluj și Bihor, pe poziții", PAS_CUB)
    + ix("cub", "Câți cetățeni, în ce țară", CUB)
    + ix("prezice", "Poziția din cub", {
        "id": "c2-prezice-cub", "fisier": "02_colectarea.ipynb · 6.1. JSON-stat",
@@ -839,6 +959,7 @@ COD_MIGR = {
 
 sl("s19m", "Eurostat", "Migrația, prin API",
    "<h2>A doua sursă a proiectului</h2>"
+   + ix("pas", "Câți români în Italia", PAS_MIGR)
    + ix("cod", "Adu migrația", COD_MIGR),
    manual=
    "<h2>Migrația, prin API</h2>"
@@ -850,6 +971,7 @@ sl("s19m", "Eurostat", "Migrația, prin API",
    "pentru că mai multe țări mari, printre ele Germania, nu raportează "
    "nașterile pe țări. Cetățenia are și ea o limită: cine a luat cetățenia "
    "țării în care trăiește nu mai apare ca migrant.</p>"
+   + ix("pas", "Câți români în Italia", PAS_MIGR)
    + ix("cod", "Adu migrația", COD_MIGR)
    + nota("Codurile care încurcă",
           "Eurostat scrie Grecia <code>EL</code>, nu <code>GR</code>. Iar "

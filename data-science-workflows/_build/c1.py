@@ -902,7 +902,7 @@ RAMURI_PY = [
         {"nume": "întregi", "tipuri": [
             {"n": "int", "cls": "class int", "imut": True,
              "d": "Numere întregi, fără limită de mărime în Python.",
-             "ex": "an = 2024\npopulatie = 19051562",
+             "ex": "an = 2024\npopulatie = 19051804",
              "la": "Ani, populație, numărători."},
             {"n": "bool", "cls": "class bool", "imut": True,
              "d": "Adevărat sau fals. Tehnic e un fel de int: True valorează 1.",
@@ -946,7 +946,7 @@ RAMURI_PY = [
     {"nume": "Dicționare", "tipuri": [
         {"n": "dict", "cls": "class dict",
          "d": "Perechi cheie și valoare. Structura oricărui obiect JSON convertit în Python.",
-         "ex": "rand = {\"tara\": \"RO\",\n        \"an\": 2023,\n        \"valoare\": 19051562}\nprint(rand[\"valoare\"])",
+         "ex": "rand = {\"tara\": \"RO\",\n        \"an\": 2024,\n        \"valoare\": 19051804}\nprint(rand[\"valoare\"])",
          "la": "Fiecare răspuns de API ajunge aici."}]},
     {"nume": "Altele", "tipuri": [
         {"n": "funcții", "cls": "callable",
@@ -1247,7 +1247,7 @@ ANATOMIE = {
         "    {",
         "      \"tara\": { \"cod\": \"RO\", \"nume\": \"Romania\" },",
         "      \"an\": \"2023\",",
-        "      \"valoare\": 19051562,",
+        "      \"valoare\": 19051804,",
         "      \"coordonate\": [46.77, 23.59],",
         "      \"estimat\": false",
         "    },",
@@ -1347,9 +1347,9 @@ sl("s15", "JSON", "Formatul JSON",
        "cheieCap": "paginare", "cheieLista": "date",
        "coloane": ["tara", "an", "populatie"],
        "elemente": [
-           {"tara": "RO", "an": 2023, "populatie": 19051562},
-           {"tara": "RO", "an": 2022, "populatie": 19047009},
-           {"tara": "HU", "an": 2023, "populatie": 9589872},
+           {"tara": "RO", "an": 2024, "populatie": 19051804},
+           {"tara": "RO", "an": 2023, "populatie": 19061062},
+           {"tara": "HU", "an": 2024, "populatie": 9562065},
        ],
        "p0": "Tot răspunsul, așa cum vine de la API.",
        "p1": "Lista dinăuntru: numai asta devine tabel.",
@@ -1379,25 +1379,25 @@ sl("s16", "JSON", "Drumul până la valoare",
            {"page": 1, "pages": 3, "per_page": 2, "total": 6},
            [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"},
              "country": {"id": "RO", "value": "Romania"},
-             "countryiso3code": "ROU", "date": "2023", "value": 19051562},
+             "countryiso3code": "ROU", "date": "2024", "value": 19051804},
             {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"},
              "country": {"id": "RO", "value": "Romania"},
-             "countryiso3code": "ROU", "date": "2022", "value": None}]]},
+             "countryiso3code": "ROU", "date": "2023", "value": 19061062}]]},
       "Apasă pe orice rând ca să vezi cum se ajunge la el.")
    + ix("cod", "Scrie drumul", {
        "id": "c1-cod-json", "fisier": "populatie.py",
-       "sarcina": "Mergi până la populația din 2023.",
+       "sarcina": "Mergi până la populația din 2024, prima înregistrare.",
        "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n"
               "# paginarea e primul element, datele sunt in al doilea\n"
               "date = raspuns[{{1}}]\n\n"
               "# prima inregistrare, cea mai recenta\n"
               "populatie = date[0][{{2}}]\n"
-              "print(populatie)             # 19051562",
+              "print(populatie)             # 19051804",
        "goluri": {"1": {"ok": ["1"], "ajutor": "indice"},
                   "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}},
        "indiciu": "Răspunsul e o listă cu două elemente: paginarea pe poziția 0, datele pe poziția 1. "
                   "Apoi, din prima înregistrare, vrei cheia cu numărul.",
-       "iesire": "19051562",
+       "iesire": "19051804",
        "laBine": "Ăsta e drumul pe care îl vei scrie la cursul 2, de zeci de ori.",
        "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.",
        "explicatie": "<code>raspuns[1]</code> sare peste obiectul de paginare. "

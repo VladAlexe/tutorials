@@ -51,6 +51,96 @@ AGENDA = [
     ("Explorarea inițială", "azi", "Prima privire peste migrația colectată săptămâna trecută."),
 ]
 
+# Pașii pentru lecția 3: Git (caietul 03, secțiunea 6) și migrația (caietul 03, secțiunea 5).
+# Cifrele migrației: Eurostat migr_pop1ctz, 2024 (aceleași ca în date/explorator.json).
+
+_NB3 = "notebooks/03_surse_diverse_si_preprocesare.ipynb"
+_MSG = "Pregatim tabelele regionale si migratia"
+_Z = lambda v, e: {"t": "list", "v": v, "e": e}
+
+PAS_GIT = {
+    "fisier": "terminal.sh · caietul 03, secțiunea 6",
+    "memoria": "cele trei zone (și GitHub)",
+    "fixa": True,
+    "intro": "Pasul de Git din caietul 03, în depozitul echipei. În dreapta nu mai e memoria lui Python, "
+             "ci zonele lui Git: urmărește cum trec fișierele dintr-una în alta.",
+    "cod": "git init\n"
+           "git status --short\n\n"
+           "echo \"data/\" > .gitignore\n"
+           "git status --short\n\n"
+           f"git add {_NB3} README.md .gitignore\n"
+           "git status --short\n\n"
+           f"git commit -m \"{_MSG}\"\n"
+           "git log -1 --oneline\n"
+           "git push",
+    "pasi": [
+        {"l": 1, "set": {"dosarul": _Z(["03_….ipynb", "README.md", "data/"], "zona 1"),
+                         "pregătire": _Z([], "zona 2"), "istoric": _Z([], "zona 3")},
+         "out": "Initialized empty Git repository in .../proiect/.git/",
+         "txt": "<code>git init</code> face din dosar un depozit. Fișierele sunt în <b>dosar</b> (03_….ipynb e caietul din <code>notebooks/</code>), dar pregătirea și istoricul sunt goale: Git încă nu a salvat nimic."},
+        {"l": 2, "out": "?? README.md\n?? data/\n?? notebooks/",
+         "txt": "<code>??</code> înseamnă: Git vede fișierul, dar nu-l urmărește. Și <code>data/</code> e acolo: zeci de MB pe care nu vrem să-i urcăm."},
+        {"l": 4, "set": {"dosarul": _Z(["03_….ipynb", "README.md", ".gitignore"], "zona 1")},
+         "txt": "<code>.gitignore</code> e lista cu ce Git trebuie să nu vadă. Datele nu intră în Git: se descarcă din nou cu caietul."},
+        {"l": 5, "out": "?? .gitignore\n?? README.md\n?? notebooks/",
+         "txt": "<code>data/</code> a dispărut din listă. <code>.gitignore</code> a apărut: și el e un fișier al proiectului."},
+        {"l": 7, "set": {"dosarul": _Z([], "zona 1"), "pregătire": _Z([".gitignore", "README.md", "03_….ipynb"], "zona 2")},
+         "hl": {"var": "pregătire", "k": 2},
+         "txt": "<code>git add</code> mută fișierele numite în <b>pregătire</b>. Numești exact ce intră; nimic altceva nu se mută."},
+        {"l": 8, "out": f"A  .gitignore\nA  README.md\nA  {_NB3}",
+         "txt": "<code>A</code> pe prima coloană: adăugat în pregătire. Asta va intra în commit."},
+        {"l": 10, "set": {"pregătire": _Z([], "zona 2"), "istoric": _Z(["a1b2c3d Pregatim tabelele…"], "zona 3")},
+         "out": f"[main (root-commit) a1b2c3d] {_MSG}\n 3 files changed",
+         "txt": "<code>git commit</code> golește pregătirea și scrie un punct în <b>istoric</b>, cu mesajul tău. Mesajul spune <b>ce</b> ai făcut, nu „update”."},
+        {"l": 11, "out": f"a1b2c3d (HEAD -> main) {_MSG}",
+         "txt": "Commit-ul a rămas scris. Te poți întoarce oricând la el."},
+        {"l": 12, "set": {"GitHub": _Z(["a1b2c3d Pregatim tabelele…"], "acolo")},
+         "txt": "Până acum totul era doar pe calculatorul tău. <code>git push</code> trimite istoricul pe GitHub, la colegi."},
+    ],
+}
+
+PAS_TARI = {
+    "fisier": "03_surse_diverse.ipynb · 5. Migrația: ce e țară și ce nu",
+    "intro": "Prima decizie de curățare din caietul 03. Eurostat pune în aceeași coloană țări și grupuri de țări. Le despărțim.",
+    "cod": "migratie = pd.read_csv(DATE / \"c2\" / \"migratie.csv\",\n"
+           "                       keep_default_na=False, na_values=[\"\"])\n"
+           "migratie[\"citizen\"].unique()\n\n"
+           "este_tara = (migratie[\"citizen\"].str.len() == 2) & (migratie[\"geo\"].str.len() == 2)\n"
+           "migratie = migratie[este_tara]\n\n"
+           "migratie = migratie[migratie[\"citizen\"] != migratie[\"geo\"]]\n"
+           "migratie = migratie[[\"geo\", \"citizen\", \"valoare\"]]\n"
+           "migratie.columns = [\"tara_rezidenta\", \"cetatenie\", \"persoane\"]\n\n"
+           "romani = migratie[migratie[\"cetatenie\"] == \"RO\"]\n"
+           "romani.sort_values(\"persoane\", ascending=False).head(10)",
+    "pasi": [
+        {"l": 1, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
+            "rows": [["IT", "RO", 1073196], ["IT", "TOTAL", "…"], ["IT", "IT", "…"], ["DE", "EU27_2020_FOR", "…"], ["…", "…", "…"]],
+            "nota": "țări și grupuri de țări, amestecate"}}},
+         "txt": "<code>keep_default_na=False</code>: <code>NA</code> e Namibia, nu o valoare lipsă. Doar celula goală e lipsă."},
+        {"l": 3, "out": "array([..., 'RO', 'RS', 'RU', ..., 'EU27_2020_FOR', 'FOR', 'NAT', 'TOTAL'], dtype=object)",
+         "txt": "<code>unique()</code> arată valorile distincte. Printre țări stau grupuri: străinii din UE, toți străinii, cetățenii proprii, totalul. Dacă rămân, Italia își numără migranții de mai multe ori."},
+        {"l": 5, "set": {"este_tara": {"t": "Series", "v": {"rows": [["0", "True"], ["1", "False"], ["2", "True"], ["3", "False"], ["…", "…"]],
+            "nota": "True unde ambele coduri au două litere"}}},
+         "txt": "Codurile de țară au exact două litere. <code>.str.len()</code> măsoară textul; <code>&</code> cere ca <b>ambele</b> coloane să fie țări."},
+        {"l": 6, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
+            "rows": [["IT", "RO", 1073196], ["IT", "IT", "…"], ["…", "…", "…"]], "nota": "doar țări"}}},
+         "txt": "Grupurile au plecat. Dar a rămas un rând ciudat: italienii din Italia."},
+        {"l": 8, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
+            "rows": [["IT", "RO", 1073196], ["…", "…", "…"]], "nota": "fără cetățenii propriei țări"}}},
+         "txt": "<code>!=</code>: păstrăm rândurile unde cetățenia diferă de țara de rezidență. Românii din România nu sunt migranți."},
+        {"l": 10, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
+            "rows": [["IT", "RO", 1073196], ["DE", "RO", 776424], ["IT", "AL", 416229], ["…", "…", "…"]],
+            "nota": "un rând = câte persoane cu o cetățenie trăiesc într-o țară"}}},
+         "txt": "Trei coloane, cu nume care spun ce sunt. Peste o lună, <code>tara_rezidenta</code> se înțelege; <code>geo</code> nu."},
+        {"l": 12, "set": {"romani": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
+            "rows": [["IT", "RO", 1073196], ["DE", "RO", 776424], ["ES", "RO", 620463], ["…", "…", "…"]], "nota": "românii, după țara în care trăiesc"}}},
+         "txt": "Filtrul din C1, pe tabelul curățat."},
+        {"l": 13, "out": "tara_rezidenta  persoane\nIT              1073196\nDE               776424\nES               620463\nFR               161220\nAT               153427\nBE               127539\nNL                52265\nIE                48220\nSE                21442\nPT                19692",
+         "txt": "Italia, Germania, Spania. În C1, după SCI, Italia era abia a șasea. Ghicitoarea are acum ambele jumătăți."},
+    ],
+}
+
+
 sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Versionare și colaborare cu Git</h2>"
    "<p class=\"cheie\">Săptămâna trecută ai adus date. Azi faci în așa fel "
@@ -286,6 +376,7 @@ sl("s7", "Primii pași", "Cine ești",
 sl("s8", "Primii pași", "Primul commit",
    "<h2>add, apoi commit</h2>"
    "<p>Două comenzi, în ordinea asta, de fiecare dată.</p>"
+   + ix("pas", "Primul commit, pas cu pas", PAS_GIT)
    + ix("prezice", "Ce spune git status", {
        "id": "c3-prezice-status", "fisier": "terminal.sh",
        "cod": "# ai modificat doua fisiere: migratie.py si README.md\n"
@@ -324,6 +415,7 @@ sl("s8", "Primii pași", "Primul commit",
    "<span class=\"c\"># il scriu in istoric, cu un mesaj care spune ceva</span>\n"
    "git commit -m \"colectare migratie, Eurostat migr_pop1ctz\"\n\n"
    "<span class=\"c\"># il trimit colegilor</span>\ngit push</code></pre>"
+   + ix("pas", "Primul commit, pas cu pas", PAS_GIT)
    + nota("Cât de des faci commit",
           "Mai des decât crezi. Un commit nu e o livrare, e un punct la care "
           "te poți întoarce. Regula practică: de fiecare dată când ai terminat "
@@ -881,6 +973,7 @@ sl("s21", "Datele", "Explorarea inițială",
                      "non-nule are fiecare. Dacă o coloană care ar trebui să fie "
                      "numerică apare ca <code>object</code>, ai găsit o problemă "
                      "înainte s-o cauți."})
+   + ix("pas", "Ce e țară și ce nu", PAS_TARI)
    + nota("Ce cauți la prima privire",
           "Nu rezultate. Cauți semne că datele nu sunt ce crezi: un număr de "
           "rânduri diferit de ce așteptai, o coloană text care ar trebui să fie "

@@ -148,6 +148,81 @@ AGENDA = [
     ("Grafice care mint", "azi", "Axa tăiată, și alte feluri de a induce în eroare."),
 ]
 
+# Pașii pentru lecția 6, din caietele 05 (explorarea) și 06 (rețele).
+# Cifrele: data/analiza_c4 și data/explorare_c5/referinta_c2_20261013/nuts2 (perechi de regiuni NUTS 2).
+
+PAS_COADA = {
+    "fisier": "05_explorare.ipynb · 1. Cum arată o pereche obișnuită?",
+    "intro": "Exemplul de sus, pe datele adevărate: 44.253 de perechi de regiuni europene.",
+    "cod": "perechi[\"sci\"].describe().round(0)\n\n"
+           "perechi.nlargest(1, \"sci\")\n\n"
+           "log_sci = np.log10(perechi[\"sci\"])\n"
+           "log_sci.describe().round(2)",
+    "pasi": [
+        {"l": 1, "out": "count      44253.0\nmean       10254.0\nstd        62609.0\nmin            1.0\n25%          495.0\n50%         1233.0\n75%         3075.0\nmax      4001835.0",
+         "txt": "Media e de opt ori mediana. Trei sferturi din perechi sunt sub 3.075, dar maximul trece de patru milioane. Coada e foarte lungă."},
+        {"l": 3, "out": " regiune_1  regiune_2      sci\n NO07       NO0B       4001835",
+         "txt": "Cine e în vârful cozii? Nord-Norge și Svalbard. Svalbard, cu populația raportată 0 din C4: SCI e relativ, împărțit la numărul de utilizatori, deci câțiva oameni dau un indice uriaș."},
+        {"l": 5, "set": {"log_sci": {"t": "Series", "v": {"rows": [["HU11–RO11", "4.53"], ["RO11–RO12", "5.49"], ["NO07–NO0B", "6.60"], ["…", "…"]],
+            "nota": "log10: 100 → 2, 1.000 → 3, 1.000.000 → 6"}}},
+         "txt": "<code>np.log10</code> numără zerourile: 34.160 devine 4,53, iar patru milioane devine 6,6. Distanțele uriașe dintre valori se strâng."},
+        {"l": 6, "out": "count    44253.00\nmean         3.14\nstd          0.71\nmin          0.00\n25%          2.69\n50%          3.09\n75%          3.49\nmax          6.60",
+         "txt": "Pe logaritm, media (3,14) și mediana (3,09) aproape coincid: distribuția e aproape simetrică. De aici înainte lucrăm pe scara log, ca în caiet."},
+    ],
+}
+
+PAS_INTERVALE = {
+    "fisier": "05_explorare.ipynb · 3–4. H1 și H2",
+    "intro": "Un singur număr spune puțin. Tăiem distanța în intervale și ne uităm la mediana fiecăruia.",
+    "cod": "print(perechi[\"distanta_km\"].corr(perechi[\"sci\"], method=\"spearman\"))\n\n"
+           "praguri = [0, 100, 250, 500, 1000, 2000, 4000, np.inf]\n"
+           "perechi[\"interval_km\"] = pd.cut(perechi[\"distanta_km\"], praguri)\n"
+           "perechi.groupby(\"interval_km\", observed=True)[\"sci\"].agg([\"size\", \"median\"])\n\n"
+           "perechi[\"aceeasi_tara\"] = perechi[\"tara_1\"] == perechi[\"tara_2\"]\n"
+           "(perechi.groupby([\"interval_km\", \"aceeasi_tara\"], observed=True)[\"sci\"]\n"
+           "        .median().unstack())",
+    "pasi": [
+        {"l": 1, "out": "-0.46460232789747474",
+         "txt": "Spearman, pe toate perechile: negativ, deci legăturile scad cu distanța. Dar cum scad? Un număr nu arată forma."},
+        {"l": 3, "set": {"praguri": {"t": "list", "v": [0, 100, 250, 500, 1000, 2000, 4000, "inf"]}},
+         "txt": "Marginile intervalelor. <code>np.inf</code> e „infinit”: ultimul interval prinde tot ce trece de 4.000 km."},
+        {"l": 4, "set": {"interval_km": {"t": "Series", "v": {"rows": [["…", "(250, 500]"], ["…", "(1000, 2000]"], ["…", "(500, 1000]"]],
+            "nota": "o categorie pentru fiecare pereche"}}}, "sterge": ["praguri"],
+         "txt": "<code>pd.cut</code> transformă un număr într-o categorie: în ce interval cade. <code>(250, 500]</code> înseamnă peste 250, până la 500 inclusiv."},
+        {"l": 5, "out": "interval_km   size    median\n(0, 100]       223  242323.0\n(100, 250]    1445   31405.0\n(250, 500]    3972    3465.0\n(500, 1000]  10454    1593.5\n(1000, 2000] 16855    1095.0\n(2000, 4000]  9453     650.0\n(4000, inf]   1851     185.0",
+         "txt": "Forma: scade abrupt în primele sute de km, apoi tot mai încet. Între 0–100 și 250–500 km, mediana cade de 70 de ori; după 1.000 km abia se mai mișcă."},
+        {"l": 7, "set": {"aceeasi_tara": {"t": "Series", "v": {"rows": [["HU11–RO11", "False"], ["RO11–RO12", "True"], ["…", "…"]],
+            "nota": "2.385 de perechi din aceeași țară"}}},
+         "txt": "H2: o comparație dă o coloană de True și False. Nord-Vest și Centru sunt în aceeași țară, Budapesta nu."},
+        {"l": 8, "out": "aceeasi_tara     False      True\ninterval_km\n(0, 100]       27814.0  317411.0\n(100, 250]      6492.5   99996.0\n(250, 500]      2370.0   36415.0\n(500, 1000]     1498.0   39067.5\n…",
+         "txt": "<code>unstack</code> întinde a doua grupare pe coloane. La 250–500 km, perechile din aceeași țară au o mediană de 15 ori mai mare. Granița contează, la orice distanță."},
+    ],
+}
+
+PAS_RETEA = {
+    "fisier": "06_retele.ipynb · 1. O rețea mică",
+    "intro": "Înainte de harta comunităților, o rețea de cinci noduri. Aceleași întrebări, numere pe care le verifici de mână.",
+    "cod": "mica = nx.Graph()\n"
+           "mica.add_weighted_edges_from([(\"A\", \"B\", 9), (\"A\", \"C\", 7), (\"B\", \"C\", 8),\n"
+           "                              (\"C\", \"D\", 1), (\"D\", \"E\", 9)])\n\n"
+           "legaturi = dict(mica.degree())\n"
+           "forta = dict(mica.degree(weight=\"weight\"))\n"
+           "pd.DataFrame({\"legaturi\": legaturi, \"forta\": forta})",
+    "pasi": [
+        {"l": 1, "set": {"mica": {"t": "dict", "e": "Graph", "v": {}}},
+         "txt": "O rețea goală. În <code>networkx</code>, rețeaua ține minte pentru fiecare nod cu cine e legat."},
+        {"l": 2, "set": {"mica": {"t": "dict", "e": "Graph", "v": {"A": {"B": 9, "C": 7}, "B": {"A": 9, "C": 8}, "C": {"A": 7, "B": 8, "D": 1}, "D": {"C": 1, "E": 9}, "E": {"D": 9}}}},
+         "txt": "Fiecare legătură e un triplet: două noduri și o pondere, ca la noi o pereche de regiuni și SCI-ul ei. Legătura merge în ambele sensuri."},
+        {"l": 5, "set": {"legaturi": {"t": "dict", "v": {"A": 2, "B": 2, "C": 3, "D": 2, "E": 1}}}, "hl": {"var": "legaturi", "k": "C"},
+         "txt": "<code>degree()</code> numără legăturile. C are cele mai multe: trei."},
+        {"l": 6, "set": {"forta": {"t": "dict", "v": {"A": 16, "B": 17, "C": 16, "D": 10, "E": 9}}}, "hl": {"var": "forta", "k": "C"},
+         "txt": "Cu <code>weight=</code>, adună ponderile: <b>forța</b>. C: 7 + 8 + 1 = 16, cât A, care are doar două legături. B, cu două legături tari, e cel mai puternic."},
+        {"l": 7, "out": "   legaturi  forta\nA         2     16\nB         2     17\nC         3     16\nD         2     10\nE         1      9",
+         "txt": "În SCI, fiecare regiune e legată de toate celelalte, deci numărul de legături nu mai spune nimic. Rămâne forța. Iar o <b>comunitate</b> e un grup ca A, B, C: mai legați între ei decât cu restul. Pe asta o caută algoritmul de pe hartă."},
+    ],
+}
+
+
 sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Analiza exploratorie</h2>"
    "<p class=\"cheie\">Te uiți la date înainte să le crezi. Și înainte să le "
@@ -245,6 +320,7 @@ sl("s4", "O variabilă", "Descrierea, în cod",
        "explicatie": "Media e (2 + 3 + 4 + 5 + 100) / 5 = 22,8, mediana e 4. Când media e mult peste mediană, "
                      "distribuția are coadă spre dreapta: exact ce are SCI-ul. De aceea raportăm mediana și "
                      "lucrăm pe logaritm."})
+   + ix("pas", "Coada lungă, pe datele adevărate", PAS_COADA)
    + ix("cod", "Descrie variabila", {
        "id": "c6-cod-descrie", "indiciu": "Portretul complet al unei coloane numerice e o „descriere”: describe. Asimetria, în engleză „skewness”, e metoda skew. Logaritmul din numpy e np.log.",
        "iesire": "count       702.0\nmean       1863.4\n50%         812.0\n...\n7.61\n0.49", "fisier": "eda/univariat.py",
@@ -386,7 +462,8 @@ sl("s8", "Categorii", "Din numere în categorii",
    + TAB_CT
    + nota("χ² și Cramér's V",
           f"χ² = {ro(CHI2, 1)}, iar Cramér's V = {ro(CRAMER)}: o asociere "
-          f"moderată. Niciun vecin nu e în treimea slabă.", True),
+          f"moderată. Niciun vecin nu e în treimea slabă.", True)
+   + ix("pas", "Distanța, tăiată în intervale", PAS_INTERVALE),
    manual=
    "<h2>Din numere în categorii</h2>"
    "<p>Uneori e mai clar să tai o variabilă numerică în categorii. Aici SCI-ul "
@@ -397,6 +474,7 @@ sl("s8", "Categorii", "Din numere în categorii",
      "cele două grupuri mai mult decât din întâmplare. Cramér's V spune cât de "
      "tare: 0 înseamnă nicio legătură, 0,1 slabă, 0,3 medie, peste 0,5 "
      f"puternică. Aici V = {ro(CRAMER)}.</p>"
+   + ix("pas", "Distanța, tăiată în intervale", PAS_INTERVALE)
    + ix("cod", "Tabelul de contingență", {
        "id": "c6-cod-ct", "indiciu": "Tabelul de contingență se face cu pd.crosstab; procentele pe rând cer normalize=\"index\".", "fisier": "eda/categorii.py",
        "sarcina": "Taie SCI-ul în trei treimi, fă tabelul cu granița și "
@@ -468,6 +546,7 @@ HARTA_COM = {
 
 sl("s10", "Harta", "Comunitățile",
    "<h2>Cine e legat de cine, fără să-i spunem noi</h2>"
+   + ix("pas", "O rețea de cinci noduri", PAS_RETEA)
    + ix("harta", "Comunitățile SCI, pe regiuni", HARTA_COM)
    + nota("Cum s-au făcut",
           "Algoritmul Louvain grupează regiunile mai legate între ele decât "
@@ -480,6 +559,7 @@ sl("s10", "Harta", "Comunitățile",
    "o pune algoritmul Louvain, care caută grupuri de regiuni mai legate între "
    "ele decât cu restul. Nu îi spunem nimic despre țări sau granițe; le "
    "găsește singur.</p>"
+   + ix("pas", "O rețea de cinci noduri", PAS_RETEA)
    + ix("harta", "Comunitățile SCI, pe regiuni", HARTA_COM)
    + "<p>Cele mai multe comunități urmează granițele de stat, ceea ce nu "
      "surprinde. Interesante sunt excepțiile: România cu Germania, Polonia cu "
