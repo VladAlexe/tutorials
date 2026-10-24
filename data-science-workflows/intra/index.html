@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Intră la oră · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=61">
-<link rel="stylesheet" href="../css/sistem.css?v=61">
-<script src="../js/tema.js?v=61"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=62">
+<link rel="stylesheet" href="../css/sistem.css?v=62">
+<script src="../js/tema.js?v=62"></script>
 <style>
   /* Un ecran de telefon, ținut în mână, într-o sală. Un singur lucru de făcut
      pe pas, scris mare, cu ținte de atins cu degetul mare. */
@@ -68,6 +68,10 @@
   .schelet{height:44px;border-radius:10px;background:var(--panza-2);
     animation:puls 1.5s infinite;margin-bottom:6px}
   @keyframes puls{0%,100%{opacity:.5}50%{opacity:.85}}
+  .inf{margin:0 0 12px;padding-left:18px;font-size:14px;line-height:1.55}
+  .inf li{margin-bottom:6px}
+  .bifa{display:flex;gap:10px;align-items:flex-start;margin:14px 0 12px;font-size:14px;line-height:1.45;cursor:pointer}
+  .bifa input{margin-top:3px;width:16px;height:16px;flex:none}
 </style>
 </head>
 <body>
@@ -125,8 +129,8 @@ function cap(et, titlu, sub){
 
 let A, O;
 try {
-  A = await import("../js/auth.js?v=61");
-  O = await import("../js/ora.js?v=61");
+  A = await import("../js/auth.js?v=62");
+  O = await import("../js/ora.js?v=62");
 } catch (e) {
   cap("", "Intră la curs", "Nu pot încărca autentificarea: " + e.message);
   throw e;
@@ -201,11 +205,51 @@ async function dupaCod(){
 
   /* Profesorul care își scanează propriul cod nu e un student fără nume. Nu-i
      arăt lista grupei: l-ar pune să aleagă numele altcuiva. */
-  if (s.profesor) pasProfesor(s);
+  if (s.profesor){ pasProfesor(s); return; }
+
+  /* Informarea GDPR: o dată pe cont și pe versiune a politicii. Dacă funcția
+     nu există încă în bază (db/22 nerulat), întoarce null și nu blocăm ora. */
+  if (await O.informareConfirmata() === false){ pasInformare(() => continua(s)); return; }
+  continua(s);
+}
+
+function continua(s){
   /* Deja conectat și legat de un nume (student sau invitat)? Nu mai întreb
      nimic: „Bine ai venit, Mihai” și intră. Lista apare doar prima dată. */
-  else if (s.cunoscut || p.matricol) pasRevenit({ ...s, nume: s.nume || p.nume });
+  if (s.cunoscut || p.matricol) pasRevenit({ ...s, nume: s.nume || p.nume });
   else pasLista(s);
+}
+
+/* --- informarea GDPR ------------------------------------------------------
+   Nu e consimțământ (temeiul e interesul legitim), ci dovada că studentul a
+   primit informarea. Se cere o dată pe cont, și din nou când se schimbă
+   versiunea politicii (O.INFORMARE). */
+
+function pasInformare(dupa){
+  cap("protecția datelor", "Înainte de prima oră",
+      "Situl înregistrează activitatea ta la curs. Citește politica de confidențialitate și confirmă că ai luat la cunoștință.");
+  el("pas").innerHTML = `
+    <div class="cutie">
+      <ul class="inf">
+        <li>Operator: Vlad Alexe, titularul cursului.</li>
+        <li>Se prelucrează numele, contul GitHub, răspunsurile, prezența și notele, pentru organizarea și evaluarea cursului.</li>
+        <li>Datele tale le vezi tu și titularul. Datele se șterg cel târziu la 31 martie 2027.</li>
+        <li>Ai dreptul de acces, rectificare, ștergere, restricționare, portabilitate și opoziție.</li>
+      </ul>
+      <p class="mic"><a href="${RAD}/date-personale/" target="_blank" rel="noopener">Citește politica de confidențialitate completă ↗</a></p>
+      <label class="bifa"><input type="checkbox" id="inf-ok">
+        <span>Am citit și am luat la cunoștință Politica de confidențialitate (versiunea ${O.INFORMARE}).</span></label>
+      <button class="btn btn--tare" id="bt-inf" type="button" disabled>Confirm și intru</button>
+      <p class="mic">Confirmarea nu este un consimțământ. Se păstrează data și versiunea, ca dovadă a informării.</p>
+    </div>`;
+  el("inf-ok").onchange = e => { el("bt-inf").disabled = !e.target.checked; };
+  el("bt-inf").onclick = async () => {
+    const b = el("bt-inf"); b.disabled = true; b.textContent = "Se salvează…";
+    const r = await O.confirmaInformarea();
+    if (!r?.ok){ b.disabled = false; b.textContent = "Confirm și intru";
+                 mesaj(r?.mesaj || "Nu s-a putut salva confirmarea.", "rau"); return; }
+    dupa();
+  };
 }
 
 /* --- pasul 2: contul ----------------------------------------------------- */

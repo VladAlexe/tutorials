@@ -3,29 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Protecția datelor (GDPR) · Fluxuri de lucru</title>
-<meta name="description" content="Informarea privind prelucrarea datelor personale pe situl cursului Fluxuri de lucru pentru știința datelor: ce date, de ce, cine le vede, cât timp, și drepturile tale.">
-<link rel="stylesheet" href="../css/fonturi.css?v=61">
-<link rel="stylesheet" href="../css/sistem.css?v=61">
-<script src="../js/tema.js?v=61"></script>
+<title>Politica de confidențialitate · Fluxuri de lucru</title>
+<meta name="description" content="Politica de confidențialitate a sitului cursului Fluxuri de lucru pentru știința datelor: operatorul, datele prelucrate, scopurile și temeiurile, destinatarii, transferurile, durata stocării și drepturile persoanelor vizate.">
+<link rel="stylesheet" href="../css/fonturi.css?v=62">
+<link rel="stylesheet" href="../css/sistem.css?v=62">
+<script src="../js/tema.js?v=62"></script>
 <style>
-  /* Pagina asta rămăsese pe tipografia și pe jetoanele unei generații
-     anterioare a sitului: fonturi Archivo și Literata, variabile --rule și
-     --olive care nu mai există nicăieri. De aceea arăta nestilizată. Acum
-     folosește sistemul, ca tot restul. */
-  .pdp{max-width:70ch;margin:0 auto;padding:44px 28px 80px}
-  .pdp h2{font-size:19px;margin:36px 0 10px}
-  .tbl{width:100%;border-collapse:collapse;margin:0 0 22px;font-size:15px;
-    font-family:var(--sans)}
+  .pdp{max-width:76ch;margin:0 auto;padding:44px 28px 80px}
+  .pdp h2{font-size:19px;margin:40px 0 10px}
+  .pdp h3{font-size:15.5px;margin:22px 0 6px;font-family:var(--sans);font-weight:600}
+  .pdp p,.pdp li{font-size:15.5px;line-height:1.6}
+  .pdp .meta{font-family:var(--mono);font-size:11.5px;color:var(--text-3);letter-spacing:.04em;margin:0 0 4px}
+  .tbl{width:100%;border-collapse:collapse;margin:8px 0 22px;font-family:var(--sans)}
   .tbl th{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.12em;
     text-transform:uppercase;text-align:left;padding:0 14px 9px 0;
-    border-bottom:1px solid var(--linie-2);color:var(--text-3)}
-  .tbl td{padding:11px 14px 11px 0;font-size:14.5px;border-bottom:1px solid var(--linie);
+    border-bottom:1px solid var(--linie-2);color:var(--text-3);vertical-align:bottom}
+  .tbl td{padding:10px 14px 10px 0;font-size:14px;border-bottom:1px solid var(--linie);
     vertical-align:top;line-height:1.5}
-  .pdp ul{padding-left:0;list-style:none;margin:0 0 20px}
-  .pdp li{position:relative;padding-left:21px;margin-bottom:9px;max-width:var(--citit)}
-  .pdp li::before{content:"";position:absolute;left:3px;top:.68em;width:6px;height:6px;
+  .tbl td:first-child{font-weight:500}
+  .pdp ol.cuprins{columns:2;column-gap:28px;padding-left:20px;margin:14px 0 8px}
+  .pdp ol.cuprins li{font-size:14px;margin-bottom:4px;break-inside:avoid}
+  .pdp ul{padding-left:0;list-style:none;margin:0 0 18px}
+  .pdp ul li{position:relative;padding-left:21px;margin-bottom:8px}
+  .pdp ul li::before{content:"";position:absolute;left:3px;top:.68em;width:6px;height:6px;
     background:var(--accent);border-radius:1px}
+  .pdp .caseta{border:1px solid var(--linie-2);border-radius:6px;padding:14px 18px;margin:16px 0 22px}
+  .pdp .caseta p{margin:0 0 6px}
+  .pdp .caseta p:last-child{margin:0}
+  .tblw{overflow-x:auto}
+  @media (max-width:640px){ .pdp ol.cuprins{columns:1} .pdp{padding:32px 16px 64px} }
 </style>
 </head>
 <body>
@@ -34,136 +40,286 @@
 
 <main>
 <div class="pdp">
-  <p class="supratitlu">Informare GDPR · actualizată 24 octombrie 2026</p>
-  <h1>Ce date se colectează și de ce</h1>
-  <p class="deck">Scrisă pe scurt și fără formule juridice. Predăm un curs despre date,
-  deci felul în care tratăm datele voastre face parte din curs.</p>
+  <p class="supratitlu">Protecția datelor cu caracter personal</p>
+  <h1>Politica de confidențialitate</h1>
+  <p class="meta">Versiunea 1 · în vigoare de la 24 octombrie 2026</p>
+  <p class="deck">Informare în temeiul art. 13 și 14 din Regulamentul (UE) 2016/679
+  (Regulamentul general privind protecția datelor, „GDPR”) privind prelucrarea datelor
+  cu caracter personal pe situl cursului <em>Fluxuri de lucru pentru știința datelor</em>.</p>
 
-  <h2>Pe scurt</h2>
+  <ol class="cuprins">
+    <li><a class="leg" href="#operator">Operatorul</a></li>
+    <li><a class="leg" href="#domeniu">Domeniul de aplicare</a></li>
+    <li><a class="leg" href="#date">Datele prelucrate</a></li>
+    <li><a class="leg" href="#scopuri">Scopuri și temeiuri juridice</a></li>
+    <li><a class="leg" href="#interes">Interesul legitim</a></li>
+    <li><a class="leg" href="#destinatari">Destinatarii datelor</a></li>
+    <li><a class="leg" href="#transferuri">Transferuri internaționale</a></li>
+    <li><a class="leg" href="#durata">Durata stocării</a></li>
+    <li><a class="leg" href="#automat">Evaluarea automată</a></li>
+    <li><a class="leg" href="#stocare">Cookie-uri și stocare locală</a></li>
+    <li><a class="leg" href="#securitate">Măsuri de securitate</a></li>
+    <li><a class="leg" href="#drepturi">Drepturile tale</a></li>
+    <li><a class="leg" href="#plangere">Plângeri</a></li>
+    <li><a class="leg" href="#obligatoriu">Caracterul furnizării datelor</a></li>
+    <li><a class="leg" href="#confirmare">Confirmarea informării</a></li>
+    <li><a class="leg" href="#modificari">Modificări</a></li>
+  </ol>
+
+  <h2 id="operator">1. Operatorul</h2>
+  <p>Operatorul datelor prelucrate prin acest sit este <strong>Vlad Alexe</strong>,
+  titularul cursului <em>Fluxuri de lucru pentru știința datelor</em>, care stabilește
+  scopurile și mijloacele prelucrării descrise mai jos și administrează situl,
+  baza de date și conturile furnizorilor.</p>
+  <div class="caseta">
+    <p><strong>Contact pentru orice cerere privind datele personale:</strong>
+      <a class="leg" href="mailto:alexe.vld@gmail.com">alexe.vld@gmail.com</a></p>
+    <p>Operatorul nu are obligația de a desemna un responsabil cu protecția datelor
+      (art. 37 GDPR); cererile se adresează direct la adresa de mai sus.</p>
+  </div>
+  <p>Universitatea Babeș-Bolyai din Cluj-Napoca nu este operator pentru prelucrările
+  efectuate prin acest sit. Universitatea este operator distinct pentru datele din
+  evidențele sale oficiale (inclusiv catalogul în care se trece nota finală), conform
+  propriei <a class="leg" href="https://www.ubbcluj.ro/ro/politici/files/Informare_PDCP_studenti_masteranzi_doctoranzi_UBB.pdf" target="_blank" rel="noopener">informări pentru studenți</a>.</p>
+
+  <h2 id="domeniu">2. Domeniul de aplicare</h2>
+  <p>Politica se aplică următoarelor categorii de persoane vizate:</p>
   <ul>
-    <li>Îți alegi numele din lista grupei și intri cu GitHub. Numărul matricol nu îl vezi și nu îl scrii nicăieri.</li>
-    <li>Se salvează ce faci în lecții (răspunsuri, cod, texte, prezență), ca să se poată calcula activitatea de seminar.</li>
-    <li>Datele tale le vezi tu și titularul cursului. Niciun alt student.</li>
-    <li>Nu sunt reclame, nu sunt module de statistică, nu sunt cookie-uri de urmărire.</li>
-    <li>Datele de pe site se șterg cel târziu la 31 martie 2027.</li>
+    <li><strong>studenții înscriși</strong> la curs, care folosesc situl cu un cont GitHub;</li>
+    <li><strong>invitații</strong>, care participă la o oră fără cont, sub un nume ales de ei;</li>
+    <li><strong>vizitatorii</strong>, care citesc paginile publice ale sitului fără autentificare.</li>
   </ul>
+  <p>Pentru vizitatori, situl nu prelucrează alte date decât cele tehnice descrise la
+  secțiunea 3 (jurnalele de acces ale furnizorului de găzduire).</p>
 
-  <h2>Cine răspunde de date</h2>
-  <p>Operatorul este <strong>Universitatea Babeș-Bolyai</strong>, str. M. Kogălniceanu nr. 1,
-  400084 Cluj-Napoca. Situl e folosit în cadrul cursului <em>Fluxuri de lucru pentru
-  știința datelor</em>, iar de el se ocupă titularul cursului, Vlad Alexe.</p>
-  <p>Responsabilul cu protecția datelor al universității: <a class="leg" href="mailto:dpo@ubbcluj.ro">dpo@ubbcluj.ro</a>,
-  telefon 0264 405 300.</p>
-
-  <h2>Ce se păstrează</h2>
-  <table class="tbl">
-    <thead><tr><th>Ce</th><th>De unde</th><th>De ce</th></tr></thead>
+  <h2 id="date">3. Datele prelucrate</h2>
+  <div class="tblw"><table class="tbl">
+    <thead><tr><th>Categorie</th><th>Date</th><th>Sursă</th></tr></thead>
     <tbody>
-      <tr><td>Numele, prenumele, numărul matricol și grupa</td>
-          <td>Lista oficială a cursului, de la facultate</td>
-          <td>Ca activitatea de pe site să ajungă la persoana care primește nota. Matricolul nu ajunge niciodată în browserul altui student</td></tr>
-      <tr><td>Numele de utilizator GitHub și identificatorul contului</td>
-          <td>GitHub, când alegi să intri cu el</td>
-          <td>Autentificare, fără parolă. Contul îl leagă de numele tău din listă, ca să nu te întrebe din nou</td></tr>
-      <tr><td>Adresa de e-mail a contului GitHub</td>
-          <td>GitHub o trimite la autentificare</td>
-          <td>O păstrează sistemul de autentificare. Nu o folosesc și nu primești mesaje</td></tr>
-      <tr><td>Răspunsurile la întrebări: ce ai ales, dacă a fost corect, când, la oră sau acasă</td>
-          <td>Lecțiile de pe site</td>
-          <td>Activitatea de seminar (2 puncte din notă), după regulile din contul tău</td></tr>
-      <tr><td>Codul trimis în exercițiile din pagină și textele scrise (de exemplu întrebarea de cercetare)</td>
-          <td>Lecțiile de pe site</td>
-          <td>Activitatea și urmărirea locurilor unde se blochează grupa</td></tr>
-      <tr><td>Prezența la oră și slide-ul pe care ești în timpul orei</td>
-          <td>Intrarea cu codul de pe ecran</td>
-          <td>Prezența și numărul celor din clasă, afișat profesorului</td></tr>
-      <tr><td>Notele la teme și la proiect, observațiile profesorului</td>
-          <td>Scrise de titular, în catalogul de pe site</td>
-          <td>Evaluare. Le poți cere oricând, inclusiv observațiile</td></tr>
-      <tr><td>Pentru intrarea ca invitat: doar numele pe care îl scrii</td>
-          <td>Tu</td>
-          <td>Ca să poți încerca o lecție fără cont</td></tr>
+      <tr><td>Identificare</td>
+          <td>nume, prenume, număr matricol, formația de studiu</td>
+          <td>lista studenților înscriși la curs, comunicată titularului de facultate</td></tr>
+      <tr><td>Cont și autentificare</td>
+          <td>identificatorul intern al contului, numele de utilizator GitHub, adresa de
+              e-mail asociată contului GitHub, data creării și a ultimei autentificări</td>
+          <td>GitHub, la autentificare (OAuth), cu acordul tău în fereastra GitHub</td></tr>
+      <tr><td>Invitați</td>
+          <td>numele introdus și un identificator anonim de sesiune</td>
+          <td>persoana vizată</td></tr>
+      <tr><td>Activitate didactică</td>
+          <td>răspunsurile la întrebări (varianta aleasă, corectitudinea, momentul),
+              codul trimis în exercițiile din pagină, textele scrise, progresul în lecții</td>
+          <td>persoana vizată, prin utilizarea sitului</td></tr>
+      <tr><td>Prezență</td>
+          <td>intrarea în ședința de curs, slide-ul la care te afli în timpul orei,
+              semnalul periodic de prezență</td>
+          <td>persoana vizată, prin utilizarea sitului</td></tr>
+      <tr><td>Evaluare</td>
+          <td>punctajul de activitate, notele la teme și proiect, observațiile titularului</td>
+          <td>calculate de sit sau introduse de titular</td></tr>
+      <tr><td>Confirmări</td>
+          <td>versiunea prezentei politici confirmată și data confirmării</td>
+          <td>persoana vizată</td></tr>
+      <tr><td>Date tehnice</td>
+          <td>adresa IP, tipul de browser, data și ora cererii</td>
+          <td>generate automat, în jurnalele furnizorilor de găzduire și de bază de date</td></tr>
     </tbody>
-  </table>
+  </table></div>
+  <p>Nu sunt prelucrate categorii speciale de date (art. 9 GDPR) și nici date privind
+  condamnări penale. Numărul matricol nu este afișat niciodată altor studenți și nu
+  este transmis browserului niciunui student.</p>
 
-  <h2>Temeiul legal</h2>
-  <p>Organizarea și evaluarea activității didactice, inclusiv online: interesul legitim al
-  universității (art. 6 alin. (1) lit. f din GDPR) și obligațiile legale privind evaluarea
-  studenților (art. 6 alin. (1) lit. c), la fel ca în
-  <a class="leg" href="https://www.ubbcluj.ro/ro/politici/files/Informare_PDCP_studenti_masteranzi_doctoranzi_UBB.pdf" target="_blank" rel="noopener">informarea UBB pentru studenți</a>.
-  Contul de GitHub ți-l faci tu, după condițiile GitHub.</p>
-
-  <h2>Cine vede ce</h2>
-  <ul>
-    <li><strong>Tu</strong> vezi toate datele tale, în contul tău.</li>
-    <li><strong>Titularul cursului</strong> vede datele grupei, ca să pună notele și să știe unde e nevoie de reluat ceva.</li>
-    <li><strong>Colegii</strong> nu văd nimic despre tine. La prima oră, cine are codul de pe ecran și a intrat cu GitHub vede numele încă nealese din lista grupei, ca să și-l aleagă pe al lui. Numele deja alese nu mai apar.</li>
-    <li><strong>Pe proiector</strong> apar răspunsurile clasei adunate, fără nume. Textele scurte (de exemplu ce așteptați de la curs) pot apărea pe ecran, tot fără nume.</li>
-  </ul>
-  <p>Restricțiile nu sunt o promisiune pe încredere: sunt scrise în baza de date și aplicate
-  de ea. Dacă cineva ar cere direct datele altcuiva, serverul refuză.</p>
-
-  <h2>Unde stau și cine le prelucrează pentru noi</h2>
-  <table class="tbl">
-    <thead><tr><th>Furnizor</th><th>Ce face</th><th>Unde</th></tr></thead>
+  <h2 id="scopuri">4. Scopuri și temeiuri juridice</h2>
+  <div class="tblw"><table class="tbl">
+    <thead><tr><th>Scop</th><th>Date</th><th>Temei juridic</th></tr></thead>
     <tbody>
-      <tr><td>Supabase</td><td>Baza de date și autentificarea</td>
-          <td>Servere în Londra. Regatul Unit are decizie de adecvare a Comisiei Europene, reînnoită în decembrie 2025, valabilă până în 2031</td></tr>
-      <tr><td>Cloudflare</td><td>Găzduirea paginilor sitului; vede adresa IP, ca să trimită paginile</td>
-          <td>Rețea globală; paginile nu conțin date personale</td></tr>
-      <tr><td>GitHub</td><td>Autentificarea, doar dacă intri cu GitHub</td>
-          <td>SUA, după politica GitHub</td></tr>
+      <tr><td>Autentificarea și asocierea contului cu persoana înscrisă</td>
+          <td>identificare, cont</td>
+          <td>art. 6 alin. (1) lit. f) GDPR, interes legitim</td></tr>
+      <tr><td>Desfășurarea orelor interactive și adaptarea predării la răspunsurile grupei</td>
+          <td>activitate, prezență</td>
+          <td>art. 6 alin. (1) lit. f) GDPR, interes legitim</td></tr>
+      <tr><td>Evidența prezenței și calculul punctajului de activitate</td>
+          <td>identificare, activitate, prezență</td>
+          <td>art. 6 alin. (1) lit. f) GDPR, interes legitim</td></tr>
+      <tr><td>Evaluarea temelor și a proiectului și comunicarea notei finale către facultate</td>
+          <td>identificare, evaluare</td>
+          <td>art. 6 alin. (1) lit. f) GDPR, interes legitim; transmiterea către universitate
+              servește îndeplinirii obligațiilor acesteia de evidență a rezultatelor</td></tr>
+      <tr><td>Participarea invitaților la o oră</td>
+          <td>invitați, activitate</td>
+          <td>art. 6 alin. (1) lit. f) GDPR, interes legitim</td></tr>
+      <tr><td>Securitatea sitului și prevenirea abuzurilor</td>
+          <td>date tehnice, cont</td>
+          <td>art. 6 alin. (1) lit. f) GDPR, interes legitim</td></tr>
+      <tr><td>Dovada informării persoanelor vizate</td>
+          <td>confirmări</td>
+          <td>art. 6 alin. (1) lit. c) GDPR, coroborat cu art. 5 alin. (2) și art. 13 GDPR</td></tr>
     </tbody>
-  </table>
-  <p>Fonturile și bibliotecile de cod sunt găzduite pe sit, nu la terți: deschiderea unei
-  lecții nu trimite adresa ta IP către Google sau către alte servicii.</p>
+  </table></div>
+  <p>Prelucrarea nu se întemeiază pe consimțământ. Raportul dintre student și titularul
+  cursului nu permite un consimțământ liber exprimat, în sensul art. 4 pct. 11 și art. 7 GDPR.
+  Datele nu sunt folosite în alte scopuri decât cele de mai sus. Datele nu sunt vândute,
+  nu sunt folosite pentru publicitate și nu sunt folosite pentru antrenarea modelelor de
+  inteligență artificială.</p>
 
-  <h2>Ce ține browserul tău</h2>
-  <p>Nu folosim cookie-uri de urmărire. Browserul ține local sesiunea de autentificare,
-  tema aleasă și unde ai rămas într-o lecție. Sunt strict necesare ca situl să funcționeze,
-  deci nu cer acord separat, și se șterg când ieși din cont sau golești datele sitului.</p>
+  <h2 id="interes">5. Interesul legitim</h2>
+  <p>Interesul urmărit este organizarea și evaluarea activității didactice a cursului:
+  predarea interactivă, urmărirea înțelegerii în timp real, evidența prezenței și o
+  evaluare a activității transparentă și verificabilă. Prelucrarea este limitată la
+  datele necesare acestor scopuri, este cunoscută și previzibilă pentru studenți și
+  este însoțită de garanțiile descrise la secțiunile 10 și 11: acces limitat la propriile
+  date, afișarea fără nume pe proiector, lipsa oricărei urmăriri în afara sitului și
+  ștergerea la încheierea anului universitar. Pe această bază, operatorul a apreciat că
+  interesele și drepturile persoanelor vizate nu prevalează asupra interesului urmărit.
+  Poți solicita detalii despre această evaluare și te poți opune prelucrării (secțiunea 12).</p>
 
-  <h2>Cât timp</h2>
-  <p>Datele de pe site se păstrează până după încheierea situației școlare și a contestațiilor,
-  și se șterg cel târziu la <strong>31 martie 2027</strong>. Notele finale se trec în catalogul
-  facultății și urmează regulile universității, nu ale sitului.</p>
-
-  <h2>Cum se calculează nota</h2>
-  <p>Punctajul de activitate se calculează automat, după reguli publice, pe care le vezi în
-  contul tău. Nota finală o stabilește titularul, iar orice calcul se poate contesta.</p>
-
-  <h2>Drepturile tale</h2>
+  <h2 id="destinatari">6. Destinatarii datelor</h2>
+  <h3>Persoane împuternicite de operator (art. 28 GDPR)</h3>
+  <div class="tblw"><table class="tbl">
+    <thead><tr><th>Furnizor</th><th>Serviciu</th><th>Garanții</th></tr></thead>
+    <tbody>
+      <tr><td>Supabase Pte. Ltd. (Singapore)</td>
+          <td>baza de date și autentificarea; datele sunt găzduite în centrul de date din Londra, Regatul Unit</td>
+          <td><a class="leg" href="https://supabase.com/legal/customer-resources/data-processing-addendum" target="_blank" rel="noopener">acord de prelucrare a datelor</a>,
+              cu clauzele contractuale standard ale UE și addendumul pentru Regatul Unit</td></tr>
+      <tr><td>Cloudflare, Inc. (SUA)</td>
+          <td>găzduirea și livrarea paginilor sitului</td>
+          <td><a class="leg" href="https://www.cloudflare.com/dpa/" target="_blank" rel="noopener">acord de prelucrare a datelor</a>;
+              certificare în cadrul EU-U.S. Data Privacy Framework</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Operatori independenți</h3>
   <ul>
-    <li><strong>Acces:</strong> poți cere tot ce am despre tine, inclusiv observațiile, într-un fișier.</li>
-    <li><strong>Rectificare:</strong> un nume greșit sau un cont GitHub legat greșit se repară imediat.</li>
-    <li><strong>Ștergere:</strong> poți cere ștergerea contului. Se șterg și răspunsurile, deci partea de notă care vine din ele se recuperează altfel.</li>
-    <li><strong>Opoziție și restricționare:</strong> dacă nu vrei să-ți fie înregistrată activitatea de pe site, spune-mi la începutul semestrului și stabilim altă formă de evaluare, fără nicio consecință asupra notei maxime.</li>
-    <li><strong>Plângere:</strong> la <a class="leg" href="mailto:dpo@ubbcluj.ro">responsabilul UBB cu protecția datelor</a> și la
-      <a class="leg" href="https://www.dataprotection.ro/" target="_blank" rel="noopener">Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal</a>.</li>
+    <li><strong>GitHub, Inc. / GitHub B.V.</strong>, pentru autentificarea cu contul tău GitHub.
+      Contul GitHub și datele din el sunt prelucrate de GitHub conform propriei
+      <a class="leg" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">declarații de confidențialitate</a>.</li>
+    <li><strong>Universitatea Babeș-Bolyai</strong>, căreia i se comunică nota finală pentru catalogul oficial.</li>
   </ul>
-  <p>Pentru toate, scrie-mi întâi mie, titularul cursului, la adresa din fișa disciplinei.</p>
-
-  <h2>Cum sunt protejate</h2>
+  <h3>Acces în interiorul sitului</h3>
   <ul>
-    <li>Nicio parolă: intrarea se face prin GitHub, iar eu nu văd niciodată vreo parolă.</li>
-    <li>Fiecare student poate citi și scrie doar rândurile lui; regula e în baza de date.</li>
-    <li>Lista grupei nu trimite matricole: fiecare nume vine cu o cheie aleatoare, iar lista apare doar cu codul orei, doar conturilor GitHub.</li>
-    <li>Un nume ales rămâne legat de un singur cont; doar titularul îl poate dezlega.</li>
-    <li>Cheile secrete și lista cu matricole nu stau în depozitul public al sitului.</li>
-    <li>Tot traficul e criptat (HTTPS), iar situl trimite antete care opresc încadrarea lui în alte pagini și încărcarea de cod de pe alte domenii.</li>
+    <li>Fiecare student are acces numai la propriile date.</li>
+    <li>Titularul cursului are acces la datele tuturor studenților cursului.</li>
+    <li>Pe ecranul din sală sunt afișate numai rezultate agregate și texte fără numele autorului.</li>
+    <li>La prima autentificare, un student care a introdus codul ședinței vede numele
+      colegilor din formația sa care nu și-au asociat încă contul, pentru a-și putea
+      selecta propriul nume. Numele deja asociate nu mai sunt afișate.</li>
+  </ul>
+  <p>Restricțiile de acces sunt impuse de baza de date (politici de securitate la nivel de
+  rând), nu doar de interfață. Datele pot fi comunicate autorităților publice numai
+  atunci când legea o impune.</p>
+
+  <h2 id="transferuri">7. Transferuri internaționale</h2>
+  <ul>
+    <li>Baza de date este găzduită în Regatul Unit, stat pentru care Comisia Europeană a
+      adoptat o decizie privind caracterul adecvat al protecției (art. 45 GDPR), reînnoită
+      în decembrie 2025.</li>
+    <li>Furnizorul bazei de date, Supabase Pte. Ltd., are sediul în Singapore; accesul
+      acestuia la date este acoperit de clauzele contractuale standard (art. 46 GDPR).</li>
+    <li>Cloudflare, Inc. și GitHub, Inc. sunt certificate în cadrul EU-U.S. Data Privacy
+      Framework (art. 45 GDPR).</li>
   </ul>
 
-  <div class="nota" style="margin-top:34px"><div class="nota__et">De ce există pagina asta</div><p>
-  Pentru că e obligatorie, dar și pentru că e primul exemplu din curs. Orice proiect
-  de date pe care îl veți face mai târziu, în orice organizație, are nevoie de o
-  pagină ca asta. Dacă nu o are, proiectul nu e gata.</p></div>
+  <h2 id="durata">8. Durata stocării</h2>
+  <div class="tblw"><table class="tbl">
+    <thead><tr><th>Date</th><th>Durată</th></tr></thead>
+    <tbody>
+      <tr><td>Toate datele din baza de date a sitului (identificare, cont, activitate, prezență,
+              evaluare, confirmări, invitați)</td>
+          <td>până la încheierea situației școlare și soluționarea contestațiilor,
+              dar nu mai târziu de 31 martie 2027, după care sunt șterse</td></tr>
+      <tr><td>Nota finală comunicată universității</td>
+          <td>conform regulilor de arhivare ale universității, în calitatea acesteia de operator</td></tr>
+      <tr><td>Jurnalele tehnice ale furnizorilor</td>
+          <td>conform politicilor furnizorilor, de regulă câteva zile</td></tr>
+      <tr><td>Contul de invitat neutilizat</td>
+          <td>se șterge odată cu restul datelor, la termenul de mai sus</td></tr>
+    </tbody>
+  </table></div>
 
-  <p style="margin-top:26px"><a class="leg" href="../cont/">Înapoi la cont</a></p>
+  <h2 id="automat">9. Evaluarea automată</h2>
+  <p>Punctajul de activitate este calculat automat de sit, după reguli publicate în
+  pagina contului. Calculul nu constituie o decizie bazată exclusiv pe prelucrarea
+  automată, în sensul art. 22 GDPR: nota finală este stabilită de titular, care poate
+  corecta orice punctaj. Ai dreptul să ceri verificarea umană a oricărui punctaj, să îți
+  exprimi punctul de vedere și să contești rezultatul.</p>
+
+  <h2 id="stocare">10. Cookie-uri și stocare locală</h2>
+  <p>Situl nu folosește cookie-uri de urmărire, instrumente de analiză a traficului,
+  publicitate sau conținut încărcat de la terți (fonturile și bibliotecile sunt găzduite
+  pe sit). În browser sunt păstrate local numai informațiile strict necesare funcționării,
+  exceptate de la obligația de consimțământ potrivit art. 4 alin. (5) din Legea nr. 506/2004:</p>
+  <div class="tblw"><table class="tbl">
+    <thead><tr><th>Element</th><th>Rol</th><th>Durată</th></tr></thead>
+    <tbody>
+      <tr><td><code>sb-…-auth-token</code></td><td>sesiunea de autentificare</td><td>până la deconectare</td></tr>
+      <tr><td><code>dsw.parcurs.*</code>, <code>dsw.deschise</code>, <code>dsw.harta.*</code></td><td>locul la care ai rămas în lecții și stările interfeței</td><td>până la ștergerea datelor sitului din browser</td></tr>
+      <tr><td><code>dsw.tema</code>, <code>dsw.mod</code></td><td>tema de culoare și modul de afișare alese</td><td>până la ștergerea datelor sitului din browser</td></tr>
+      <tr><td><code>dsw.intra</code></td><td>revenirea în pagina de intrare după autentificare</td><td>sesiunea browserului</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="securitate">11. Măsuri de securitate</h2>
+  <ul>
+    <li>autentificare fără parolă proprie a sitului, prin GitHub (OAuth); operatorul nu are acces la parole;</li>
+    <li>politici de securitate la nivel de rând în baza de date: fiecare cont citește și scrie numai propriile date;</li>
+    <li>modificarea asocierii dintre cont și persoană numai prin funcții controlate, nu prin acces direct la tabele;</li>
+    <li>lista formației este transmisă cu identificatori aleatori, fără numere matricole, numai pe durata unei ședințe deschise și numai conturilor GitHub;</li>
+    <li>criptarea traficului (HTTPS) și antete de securitate care limitează sursele de cod și interzic încadrarea sitului în alte pagini;</li>
+    <li>cheile de administrare și lista studenților nu sunt păstrate în depozitul public al sitului;</li>
+    <li>acces administrativ numai pentru operator.</li>
+  </ul>
+  <p>În cazul unei încălcări a securității datelor, operatorul notifică autoritatea de
+  supraveghere și persoanele vizate, în condițiile art. 33 și 34 GDPR.</p>
+
+  <h2 id="drepturi">12. Drepturile tale</h2>
+  <p>În condițiile art. 15 la 21 GDPR, ai următoarele drepturi:</p>
+  <ul>
+    <li><strong>dreptul de acces</strong>: să obții confirmarea prelucrării și o copie a datelor tale, inclusiv a observațiilor titularului;</li>
+    <li><strong>dreptul la rectificare</strong>: să corectezi datele inexacte, inclusiv o asociere greșită între cont și nume;</li>
+    <li><strong>dreptul la ștergere</strong>: în cazurile prevăzute de art. 17 GDPR;</li>
+    <li><strong>dreptul la restricționarea prelucrării</strong>: de exemplu, pe durata verificării exactității datelor;</li>
+    <li><strong>dreptul la portabilitate</strong>: să primești datele furnizate de tine într-un format structurat, care poate fi citit automat;</li>
+    <li><strong>dreptul la opoziție</strong>: să te opui, din motive legate de situația ta, prelucrării întemeiate pe interes legitim. În acest caz, activitatea ta nu mai este înregistrată pe sit, iar evaluarea se face printr-o modalitate alternativă stabilită cu titularul, fără a afecta nota maximă care poate fi obținută.</li>
+  </ul>
+  <p>Cererile se trimit la <a class="leg" href="mailto:alexe.vld@gmail.com">alexe.vld@gmail.com</a>.
+  Răspunsul se comunică fără întârzieri nejustificate și cel târziu în termen de o lună de
+  la primire, termen care poate fi prelungit cu două luni în cazurile prevăzute de art. 12
+  alin. (3) GDPR. Exercitarea drepturilor este gratuită. Operatorul poate solicita
+  informații suplimentare pentru confirmarea identității.</p>
+
+  <h2 id="plangere">13. Plângeri</h2>
+  <p>Ai dreptul să depui o plângere la autoritatea de supraveghere:</p>
+  <div class="caseta">
+    <p><strong>Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP)</strong></p>
+    <p>B-dul G-ral. Gheorghe Magheru nr. 28-30, sector 1, cod poștal 010336, București</p>
+    <p><a class="leg" href="mailto:anspdcp@dataprotection.ro">anspdcp@dataprotection.ro</a> ·
+       <a class="leg" href="https://www.dataprotection.ro/" target="_blank" rel="noopener">www.dataprotection.ro</a></p>
+  </div>
+  <p>Ai, de asemenea, dreptul de a te adresa instanței competente.</p>
+
+  <h2 id="obligatoriu">14. Caracterul furnizării datelor</h2>
+  <p>Furnizarea datelor nu este o obligație legală sau contractuală. Utilizarea sitului cu un
+  cont GitHub este necesară pentru evidența activității și a prezenței pe sit. Poți participa la
+  ore și ca invitat, fără cont; în acest caz activitatea nu este asociată numelui tău din lista
+  cursului, iar evaluarea se stabilește cu titularul.</p>
+
+  <h2 id="confirmare">15. Confirmarea informării</h2>
+  <p>La prima intrare într-o oră, situl îți cere să confirmi că ai citit această politică.
+  Confirmarea, împreună cu versiunea politicii și data, se păstrează ca dovadă a informării.
+  Confirmarea <strong>nu este un consimțământ</strong> și nu modifică temeiurile juridice de la
+  secțiunea 4. La fiecare modificare substanțială a politicii, confirmarea se cere din nou.</p>
+
+  <h2 id="modificari">16. Modificări</h2>
+  <p>Politica poate fi actualizată când se schimbă prelucrările, furnizorii sau cadrul legal.
+  Fiecare versiune este numerotată și datată în partea de sus a paginii.</p>
+
+  <p style="margin-top:34px"><a class="leg" href="../cont/">Înapoi la cont</a></p>
 </div>
 </main>
 
 <div id="subsol"></div>
-<script type="module" src="../js/antet.js?v=61"></script>
-<script type="module" src="../js/subsol.js?v=61"></script>
+<script type="module" src="../js/antet.js?v=62"></script>
+<script type="module" src="../js/subsol.js?v=62"></script>
 </body>
 </html>

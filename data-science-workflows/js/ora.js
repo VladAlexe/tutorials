@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=61";
-import { RADACINA } from "./curs.js?v=61";
+import { sb } from "./auth.js?v=62";
+import { RADACINA } from "./curs.js?v=62";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -117,6 +117,14 @@ export const panou = (sedinta, sarcini) =>
 /* --- intrarea, la student ------------------------------------------------- */
 
 export const dupaCod     = cod => cheama("sedinta_dupa_cod", { p_cod:cod });
+
+/** Versiunea politicii de confidențialitate (date-personale/). O schimbi
+    aici când politica se schimbă substanțial: toți o confirmă din nou. */
+export const INFORMARE = "1";
+export const informareConfirmata = () =>
+  cheama("informare_confirmata", { p_versiune:INFORMARE });
+export const confirmaInformarea = () =>
+  cheama("confirma_informarea", { p_versiune:INFORMARE });
 export const listaGrupei = cod => cheama("lista_grupei", { p_cod:cod });
 export const intra       = (cod, cheie) =>
   cheama("intra_in_sedinta", { p_cod:cod, p_cheie:cheie });
@@ -162,7 +170,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=61`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=62`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

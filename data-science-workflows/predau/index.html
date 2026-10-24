@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catalog · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=61">
-<link rel="stylesheet" href="../css/sistem.css?v=61">
-<link rel="stylesheet" href="../css/panou.css?v=61">
-<link rel="stylesheet" href="../css/predau.css?v=61">
-<script src="../js/tema.js?v=61"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=62">
+<link rel="stylesheet" href="../css/sistem.css?v=62">
+<link rel="stylesheet" href="../css/panou.css?v=62">
+<link rel="stylesheet" href="../css/predau.css?v=62">
+<script src="../js/tema.js?v=62"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -196,11 +196,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=61"></script>
-<script type="module" src="../js/subsol.js?v=61"></script>
+<script type="module" src="../js/antet.js?v=62"></script>
+<script type="module" src="../js/subsol.js?v=62"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=61";
-import * as O from "../js/ora.js?v=61";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=62";
+import * as O from "../js/ora.js?v=62";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -211,7 +211,7 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=61"); }
+try { A = await import("../js/auth.js?v=62"); }
 catch { el("cat").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
@@ -496,7 +496,9 @@ function fisa(matricol){
     rpc("contul_studentului", { p_matricol: x.matricol }).then(c => {
       if (!c){ fc.textContent = "Rulează db/22-intrare-sigura.sql ca să vezi contul legat."; return; }
       const zi = c.legat_la ? new Date(c.legat_la).toLocaleDateString("ro-RO", { day:"numeric", month:"short" }) : "";
-      fc.innerHTML = `Legat de ${c.github_login ? `<a class="leg" href="https://github.com/${encodeURIComponent(c.github_login)}" target="_blank" rel="noopener">@${esc(c.github_login)}</a>` : "un cont GitHub"}${zi ? " din " + zi : ""}.
+      fc.innerHTML = `Legat de ${c.github_login ? `<a class="leg" href="https://github.com/${encodeURIComponent(c.github_login)}" target="_blank" rel="noopener">@${esc(c.github_login)}</a>` : "un cont GitHub"}${zi ? " din " + zi : ""}. ${c.informare_la
+          ? `Informarea GDPR confirmată pe ${new Date(c.informare_la).toLocaleDateString("ro-RO", { day:"numeric", month:"short", year:"numeric" })}.`
+          : "Informarea GDPR nu e confirmată încă."}
         <button type="button" class="btn btn--mic" id="bt-dezleaga">Nu e el? Dezleagă</button>`;
       const b = fc.querySelector("#bt-dezleaga");
       b.onclick = async () => {

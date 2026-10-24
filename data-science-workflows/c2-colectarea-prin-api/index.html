@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 2. Colectarea datelor prin API · Fluxuri de lucru</title>
 <meta name="description" content="Ce este un API, cum arată o cerere, codurile de răspuns, requests, și primele date reale în proiectul tău.">
-<link rel="stylesheet" href="../css/fonturi.css?v=61">
-<link rel="stylesheet" href="../css/sistem.css?v=61">
-<link rel="stylesheet" href="../css/intrare.css?v=61">
-<script src="../js/tema.js?v=61"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=62">
+<link rel="stylesheet" href="../css/sistem.css?v=62">
+<link rel="stylesheet" href="../css/intrare.css?v=62">
+<script src="../js/tema.js?v=62"></script>
 </head>
 <body>
 
@@ -124,7 +124,7 @@ intră în cont cu GitHub.</p></div>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=61"), import("../js/ora.js?v=61"), import("../js/curs.js?v=61")]);
+    import("../js/auth.js?v=62"), import("../js/ora.js?v=62"), import("../js/curs.js?v=62")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -152,7 +152,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=61"></script>
-<script type="module" src="../js/subsol.js?v=61"></script>
+<script type="module" src="../js/antet.js?v=62"></script>
+<script type="module" src="../js/subsol.js?v=62"></script>
 </body>
 </html>

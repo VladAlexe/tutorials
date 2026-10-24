@@ -19,6 +19,9 @@
 --       folosită ca să ghicești matricole. Nu se mai poate apela.
 --    6. Numele deja alese nu mai apar în listă deloc.
 --    7. Profesorul vede contul GitHub legat și poate dezlega o alegere greșită.
+--    8. Confirmarea informării GDPR: la prima intrare într-o oră, fiecare
+--       cont confirmă că a citit politica de confidențialitate (versiunea și
+--       data rămân ca dovadă). Nu e consimțământ, e dovada informării.
 --
 --  Rulează-l întreg, după 21. E sigur de rulat de mai multe ori.
 -- ============================================================================
@@ -132,11 +135,45 @@ revoke insert, update, delete on public.profiluri from anon, authenticated;
 revoke execute on function public.revendica_matricol(text) from public, anon, authenticated;
 
 -- 7. Profesorul: ce cont e legat de un student, și dezlegarea ----------------
+-- 7a. Confirmarea informării GDPR ------------------------------------------
+create table if not exists public.confirmari_informare (
+  user_id       uuid not null references auth.users(id) on delete cascade,
+  versiune      text not null,
+  confirmat_la  timestamptz not null default now(),
+  primary key (user_id, versiune)
+);
+alter table public.confirmari_informare enable row level security;
+-- fără politici: tabelul se citește și se scrie doar prin funcțiile de mai jos
+revoke all on public.confirmari_informare from anon, authenticated;
+
+create or replace function public.informare_confirmata(p_versiune text)
+returns boolean
+language sql security definer stable set search_path = public as $$
+  select exists (select 1 from public.confirmari_informare
+                  where user_id = auth.uid() and versiune = p_versiune);
+$$;
+
+create or replace function public.confirma_informarea(p_versiune text)
+returns jsonb
+language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is null then
+    return jsonb_build_object('ok', false, 'mesaj', 'Nu ești autentificat.');
+  end if;
+  insert into public.confirmari_informare (user_id, versiune)
+  values (auth.uid(), left(p_versiune, 20))
+  on conflict do nothing;
+  return jsonb_build_object('ok', true);
+end $$;
+
+-- 7b. Contul legat, cu data confirmării
 create or replace function public.contul_studentului(p_matricol text)
 returns jsonb
 language sql security definer stable set search_path = public as $$
   select case when not public.sunt_profesor() then null else
-    (select jsonb_build_object('github_login', p.github_login, 'legat_la', p.revendicat_la)
+    (select jsonb_build_object('github_login', p.github_login, 'legat_la', p.revendicat_la,
+              'informare_la', (select max(c.confirmat_la) from public.confirmari_informare c
+                                where c.user_id = p.user_id))
        from public.profiluri p where p.matricol = p_matricol)
   end;
 $$;
@@ -157,6 +194,8 @@ grant execute on function public.lista_grupei(text)            to authenticated;
 grant execute on function public.intra_in_sedinta(text, text)  to authenticated;
 grant execute on function public.contul_studentului(text)      to authenticated;
 grant execute on function public.dezleaga_student(text)        to authenticated;
+grant execute on function public.informare_confirmata(text)    to authenticated;
+grant execute on function public.confirma_informarea(text)     to authenticated;
 
 -- ----------------------------------------------------------------------------
 --  La sfârșitul anului (după contestații), ștergerea datelor cursului.
@@ -167,5 +206,6 @@ grant execute on function public.dezleaga_student(text)        to authenticated;
 --  delete from public.evenimente;  delete from public.prezente;
 --  delete from public.observatii;  delete from public.note_manuale;
 --  delete from public.profiluri;   delete from public.studenti;
+--  delete from public.confirmari_informare;
 --  delete from auth.users where id not in (select user_id from public.profesori);
 -- ----------------------------------------------------------------------------
