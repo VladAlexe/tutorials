@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 4. Curățarea datelor · Fluxuri de lucru</title>
 <meta name="description" content="Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=60">
-<link rel="stylesheet" href="../css/sistem.css?v=60">
-<link rel="stylesheet" href="../css/intrare.css?v=60">
-<script src="../js/tema.js?v=60"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=61">
+<link rel="stylesheet" href="../css/sistem.css?v=61">
+<link rel="stylesheet" href="../css/intrare.css?v=61">
+<script src="../js/tema.js?v=61"></script>
 </head>
 <body>
 
@@ -143,7 +143,7 @@ cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca 
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=60"), import("../js/ora.js?v=60"), import("../js/curs.js?v=60")]);
+    import("../js/auth.js?v=61"), import("../js/ora.js?v=61"), import("../js/curs.js?v=61")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -152,23 +152,8 @@ try {
       /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
       const viu = await O.deschisa("c4");
       if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora e pornită"; }
-      else {
-        /* cu mai multe grupe, alegi întâi grupa: statisticile rămân curate */
-        const gr = (await O.grupe()).filter(g => g.activa !== false);
-        if (gr.length > 1){
-          b.href = "#";
-          b.onclick = e => {
-            e.preventDefault();
-            let m = document.getElementById("alege-grupa");
-            if (m){ m.remove(); return; }
-            m = document.createElement("div");
-            m.id = "alege-grupa"; m.className = "alege-grupa";
-            m.innerHTML = `<p>Cu ce grupă predai?</p>` + gr.map(g =>
-              `<a href="lectie/?preda=${encodeURIComponent(g.id)}#1">${g.nume}</a>`).join("");
-            b.after(m);
-          };
-        } else if (gr.length === 1) b.href = `lectie/?preda=${encodeURIComponent(gr[0].id)}#1`;
-      }
+      /* altfel butonul pornește ora direct: nu alegi nicio grupă, cine are
+         codul intră, iar fiecare student e deja în grupa lui din listă */
     }
   } else if (p.autentificat){
     /* deschisă dacă a fost predată grupei sau dacă ai lucrat deja în ea */
@@ -186,7 +171,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=60"></script>
-<script type="module" src="../js/subsol.js?v=60"></script>
+<script type="module" src="../js/antet.js?v=61"></script>
+<script type="module" src="../js/subsol.js?v=61"></script>
 </body>
 </html>

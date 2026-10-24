@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catalog · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=60">
-<link rel="stylesheet" href="../css/sistem.css?v=60">
-<link rel="stylesheet" href="../css/panou.css?v=60">
-<link rel="stylesheet" href="../css/predau.css?v=60">
-<script src="../js/tema.js?v=60"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=61">
+<link rel="stylesheet" href="../css/sistem.css?v=61">
+<link rel="stylesheet" href="../css/panou.css?v=61">
+<link rel="stylesheet" href="../css/predau.css?v=61">
+<script src="../js/tema.js?v=61"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -196,11 +196,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=60"></script>
-<script type="module" src="../js/subsol.js?v=60"></script>
+<script type="module" src="../js/antet.js?v=61"></script>
+<script type="module" src="../js/subsol.js?v=61"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=60";
-import * as O from "../js/ora.js?v=60";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=61";
+import * as O from "../js/ora.js?v=61";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -211,7 +211,7 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=60"); }
+try { A = await import("../js/auth.js?v=61"); }
 catch { el("cat").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
@@ -593,7 +593,7 @@ function ore(){
   const invit = grupa === INV && CAT.length;
   if (!ORE.length && !ARH.length){
     el("ore-corp").innerHTML = `<div class="gol"><p class="gol__t">Încă nicio oră cu grupa asta</p>
-      <p class="gol__d">Când apeși Predă pe pagina unei lecții și alegi grupa, ora apare aici, cu raportul ei.</p></div>`
+      <p class="gol__d">Când apeși Predă pe pagina unei lecții, ora apare aici, cu raportul ei.</p></div>`
       + (invit ? stergeInvitatiHTML() : "");
     legaStergeri();
     return;

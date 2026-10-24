@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=60";
-import { RADACINA } from "./curs.js?v=60";
+import { sb } from "./auth.js?v=61";
+import { RADACINA } from "./curs.js?v=61";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -85,21 +85,13 @@ export async function deschisa(capitol = null) {
   return (r && r[0]) || null;
 }
 
-/** Deschide ora. Grupa se alege singură: dacă ai una, e aia; dacă n-ai
-    niciuna, se face „Grupa 1" pe loc.
-
-    Înainte, lipsa grupei oprea pornirea orei și te trimitea la un formular cu
-    trei câmpuri — adică stăteai în fața clasei și completai un formular. Grupa
-    e o etichetă pentru statistici; se poate redenumi oricând, pe urmă. */
+/** Deschide ora. Nu se alege nicio grupă: ora primește grupa activă a
+    cursului (acum una singură, ADC2026). Cine are codul intră; studentul e
+    deja în grupa lui din listă, invitații sunt invitați. */
 export async function deschide(capitol, grupaId = null, mod = "live", total = null) {
   if (!grupaId) {
-    const gr = await grupe();
-    if (gr.length === 1) grupaId = gr[0].id;
-    else if (!gr.length) {
-      const f = await cheama("pune_grupa", { p_id:"g1", p_nume:"Grupa 1",
-        p_an:String(new Date().getFullYear()), p_zi:null, p_ora:null });
-      if (f?.ok) grupaId = "g1";
-    }
+    const gr = (await grupe()).filter(g => g.activa !== false);
+    grupaId = gr[0]?.id ?? null;
   }
   return cheama("deschide_sedinta", { p_capitol:capitol, p_grupa_id:grupaId,
                                       p_mod:mod, p_total_nr:total });
@@ -170,7 +162,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=60`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=61`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;
