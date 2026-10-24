@@ -19,7 +19,8 @@ Rulare:  python _build/c6.py
 import json
 import math
 
-from comun import Lectie, ix, verif, tabel, nota, RAD
+from literatura import lecturi
+from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
 L = Lectie(6, "c6-analiza-exploratorie", "Analiza exploratorie",
            "Privitul datelor înainte de a le modela: distribuții, relații, "
@@ -153,7 +154,7 @@ AGENDA = [
 
 PAS_COADA = {
     "fisier": "05_explorare.ipynb · 1. Cum arată o pereche obișnuită?",
-    "intro": "Exemplul de sus, pe datele adevărate: 44.253 de perechi de regiuni europene.",
+    "intro": "Histograma și exercițiul de pe slide folosesc cele 263 de perechi de <b>țări</b> care au și migrație. Caietul 05 lucrează pe perechi de <b>regiuni</b>: 44.253, de 168 de ori mai multe. Aceeași formă, cu altă unitate.",
     "cod": "perechi[\"sci\"].describe().round(0)\n\n"
            "perechi.nlargest(1, \"sci\")\n\n"
            "log_sci = np.log10(perechi[\"sci\"])\n"
@@ -223,13 +224,19 @@ PAS_RETEA = {
 }
 
 
+import json as _json, pathlib as _pl
+_EXPL = _json.loads((_pl.Path(__file__).resolve().parent.parent / "date" / "explorator.json").read_text(encoding="utf-8"))
+ROMANI = _EXPL["migratie"]["RO"]
+RAPORT = _EXPL["raportoare"]
+
 sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Analiza exploratorie</h2>"
    "<p class=\"cheie\">Te uiți la date înainte să le crezi. Și înainte să le "
    "modelezi.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}),
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>05_explorare_si_ipoteze.ipynb</code> (distribuția, distanța, granița) și <code>06_retele_si_indicatori_regionali.ipynb</code> (rețeaua și comunitățile).", True),
    manual=
    "<h2>Analiza exploratorie</h2>"
    "<p>Analiza exploratorie (EDA) e partea în care te uiți la date fără să "
@@ -239,9 +246,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    f"<p>Toate graficele de mai jos sunt pe aceleași {N} perechi de țări: cele "
    "pentru care avem și SCI-ul, și migrația în ambele direcții. E tabelul "
    "făcut la cursurile 4 și 5.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}))
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>05_explorare_si_ipoteze.ipynb</code> (distribuția, distanța, granița) și <code>06_retele_si_indicatori_regionali.ipynb</code> (rețeaua și comunitățile).", True))
 
 sl("s2", "Cursul", "Întrebările",
    "<h2>Ce căutăm</h2>"
@@ -256,7 +264,8 @@ sl("s2", "Cursul", "Întrebările",
    + "</div>"
    + nota("De unde vin",
           "Din templul de la cursul 3: fiecare întrebare leagă doi piloni. EDA "
-          "nu le răspunde definitiv, doar arată dacă merită testate.", True),
+          "nu le răspunde definitiv, doar arată dacă merită testate.", True)
+   + lecturi(["bailey2018", "bailey2020", "blondel2008"], "De unde vin ipotezele"),
    manual=
    "<h2>Întrebările, din cadru</h2>"
    "<p>EDA fără întrebări devine o colecție de grafice. Întrebările de azi "
@@ -272,7 +281,8 @@ sl("s2", "Cursul", "Întrebările",
    + nota("Ce nu face EDA",
           "Nu dovedește nimic. Un tipar văzut într-un grafic e o ipoteză. La "
           "cursul 7 o testăm cu un model, care ține cont de toate variabilele "
-          "deodată."))
+          "deodată.")
+   + lecturi(["bailey2018", "bailey2020", "blondel2008"], "De unde vin ipotezele"))
 
 
 # ===========================================================================
@@ -323,7 +333,7 @@ sl("s4", "O variabilă", "Descrierea, în cod",
    + ix("pas", "Coada lungă, pe datele adevărate", PAS_COADA)
    + ix("cod", "Descrie variabila", {
        "id": "c6-cod-descrie", "indiciu": "Portretul complet al unei coloane numerice e o „descriere”: describe. Asimetria, în engleză „skewness”, e metoda skew. Logaritmul din numpy e np.log.",
-       "iesire": "count       702.0\nmean       1863.4\n50%         812.0\n...\n7.61\n0.49", "fisier": "eda/univariat.py",
+       "iesire": "count       263.0\nmean      39432.6\n50%       15543.0\n...\n7.57\n0.49", "fisier": "eda/univariat.py",
        "sarcina": "Descrie SCI-ul perechilor, măsoară asimetria, apoi "
                   "compar-o cu cea a logaritmului.",
        "cod": "import numpy as np\nimport pandas as pd\n\n"
@@ -357,7 +367,7 @@ sl("s4", "O variabilă", "Descrierea, în cod",
 
 sl("s5", "O variabilă", "Top-uri",
    "<h2>Primele zece, și capcana lor</h2>"
-   + ix("bare", "Partenerii României, după SCI", {"cate": 12})
+   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia are cei mai mulți români din străinătate. Pe ce loc e printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "A șasea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI e împărțit la numărul de utilizatori, deci o țară mare cu o diasporă mare nu iese neapărat sus."}})
    + nota("Un top depinde de ce numeri",
           "După SCI, Moldova e prima. După numărul de români, Italia. Un top "
           "spune ceva doar dacă știi ce măsoară.", True),
@@ -367,7 +377,7 @@ sl("s5", "O variabilă", "Top-uri",
    "greșit. Depinde de ce numeri: SCI-ul e o probabilitate relativă, deci "
    "favorizează țările mici legate de România (Moldova). Numărul de "
    "migranți favorizează țările mari în care au plecat mulți (Italia).</p>"
-   + ix("bare", "Partenerii României, după SCI", {"cate": 12})
+   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia are cei mai mulți români din străinătate. Pe ce loc e printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "A șasea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI e împărțit la numărul de utilizatori, deci o țară mare cu o diasporă mare nu iese neapărat sus."}})
    + nota("Exercițiu",
           "Fă același top după numărul de români care trăiesc acolo și pune "
           "cele două liste una lângă alta. Diferența dintre ele e ghicitoarea "
@@ -386,11 +396,13 @@ NOR = {
          "text": "Cu cât mai departe, cu atât mai puțin legate. Punctele "
                  "chihlimbar, vecinii, stau sus și la stânga."},
         {"k": "migr", "et": "migranți la mie",
-         "text": "Legătura cea mai strânsă dintre toate. Punctul din dreapta "
-                 "sus e Luxemburg–Portugalia: multă migrație, legătură uriașă, "
-                 "deși sunt departe."},
+         "text": "Legătura cea mai strânsă dintre toate: punctele stau mai aproape de linie decât la distanță."},
     ],
     "etY": "SCI (scară logaritmică)",
+    "cauta": {"v": "dist",
+              "t": "perechea care stă cel mai sus peste linie, adică mult mai legată decât ar spune distanța.",
+              "dupa": "Aproape unul din șapte locuitori ai Luxemburgului e cetățean portughez. Comută acum pe "
+                      "„migranți la mie”: punctul se apropie de linie. Migrația explică o bună parte din ce distanța nu explica."},
 }
 
 sl("s6", "Două variabile", "Norul de puncte",
@@ -672,7 +684,13 @@ sl("s14", "Mai departe", "Până data viitoare",
    "</ul>"
    + nota("De făcut până atunci",
           "Cele trei grafice în depozit și tiparul vostru în "
-          "<code>README.md</code>.", True))
+          "<code>README.md</code>.", True)
+   + surse("Documentația analizei", [
+       ("pandas: cut", "https://pandas.pydata.org/docs/reference/api/pandas.cut.html", "tăierea unei variabile numerice în intervale"),
+       ("pandas: corr", "https://pandas.pydata.org/docs/reference/api/pandas.Series.corr.html", "Pearson și Spearman, cu <code>method=</code>"),
+       ("networkx: Louvain", "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html", "<code>louvain_communities</code>, <code>weight</code>, <code>resolution</code>, <code>seed</code>"),
+       ("scikit-learn: Adjusted Rand", "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html", "cât de asemănătoare sunt două împărțiri în grupuri"),
+   ]))
 
 
 if __name__ == "__main__":

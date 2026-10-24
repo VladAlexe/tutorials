@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=55">
-<link rel="stylesheet" href="../css/panou.css?v=55">
-<link rel="stylesheet" href="../css/predau.css?v=55">
-<script src="../js/tema.js?v=55"></script>
+<link rel="stylesheet" href="../css/sistem.css?v=59">
+<link rel="stylesheet" href="../css/panou.css?v=59">
+<link rel="stylesheet" href="../css/predau.css?v=59">
+<script src="../js/tema.js?v=59"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -197,11 +197,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=55"></script>
-<script type="module" src="../js/subsol.js?v=55"></script>
+<script type="module" src="../js/antet.js?v=59"></script>
+<script type="module" src="../js/subsol.js?v=59"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=55";
-import * as O from "../js/ora.js?v=55";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=59";
+import * as O from "../js/ora.js?v=59";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -212,7 +212,7 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=55"); }
+try { A = await import("../js/auth.js?v=59"); }
 catch { el("cat").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }

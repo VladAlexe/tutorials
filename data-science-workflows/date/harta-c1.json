@@ -43,12 +43,12 @@
      "id": "c1-v1",
      "fel": "verificare",
      "corect": 1,
-     "q": "O echipă descoperă la analiza exploratorie că indicatorul ales nu are date pentru 40% din unități. Ce face?",
+     "q": "La explorare afli că PIB-ul pe locuitor lipsește pentru mai mult de jumătate din județele Europei. Care e primul pas?",
      "optiuni": [
-      "Continuă doar pe unitățile care au date, fără să menționeze",
-      "Se întoarce la colectare și caută un indicator alternativ",
-      "Completează lipsurile cu media",
-      "Schimbă modelul ca să tolereze lipsurile"
+      "Ștergi județele fără PIB și mergi mai departe",
+      "Te întorci un pas: de ce lipsesc, și există altă sursă sau alt nivel (regiuni) care le are?",
+      "Completezi golurile cu media",
+      "Alegi alt model, care tolerează lipsurile"
      ]
     }
    ]

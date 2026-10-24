@@ -289,3 +289,43 @@ pre > code .f{color:var(--ed-apel)} pre > code .c{color:var(--ed-com);font-style
 .ps__puncte{flex:1;display:flex;gap:4px;justify-content:center}
 .ps__puncte i{width:7px;height:7px;border-radius:50%;background:var(--linie-2)}
 .ps__puncte i.on{background:#E8871E}
+
+/* --- întâi ghicești: predicția dinaintea unei componente ------------------ */
+.intai{border:1px dashed var(--linie-2);border-radius:10px;padding:10px 14px 4px;margin:0 0 12px;background:var(--panza)}
+.intai__et{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0}
+.intai__dupa{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--text-2);margin:0 0 10px}
+.intai__acum{color:var(--text-3)}
+.intai-ascuns{filter:blur(5px) grayscale(.6);opacity:.45;pointer-events:none;user-select:none;transition:filter .35s,opacity .35s}
+@media (prefers-reduced-motion: reduce){.intai-ascuns{transition:none}}
+
+/* --- agenda orei, statică -------------------------------------------------- */
+.etp-st{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.etp-st__r{display:grid;grid-template-columns:28px minmax(0,13em) minmax(0,1fr);gap:10px;align-items:baseline;
+  padding:7px 4px;border-bottom:1px solid var(--linie)}
+.etp-st__r:last-child{border-bottom:0}
+.etp-st i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--text-3)}
+.etp-st b{font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--text)}
+.etp-st span{font-family:var(--sans);font-size:13.5px;color:var(--text-2);line-height:1.45}
+@media(max-width:640px){.etp-st__r{grid-template-columns:24px minmax(0,1fr)}.etp-st span{grid-column:2}}
+
+/* --- exploratorul JSON: drumul scris de mână -------------------------------- */
+.jsn__prov{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;font-family:var(--sans);font-size:13px;color:var(--text-2)}
+.jsn__pv{border:1px solid var(--linie-2);border-radius:999px;padding:2px 10px;background:var(--panza)}
+.jsn__pv i{font-style:normal;margin-right:5px;color:var(--text-3)}
+.jsn__pv.ok{border-color:var(--ok);background:var(--ok-slab)} .jsn__pv.ok i{color:var(--ok)}
+.jsn__scrie{display:flex;gap:8px;align-items:center;margin:0 0 8px;font-family:var(--sans);font-size:13px;color:var(--text-2)}
+.jsn__scrie input{flex:1;min-width:0;font-family:var(--mono);font-size:13.5px;padding:6px 9px;border:1px solid var(--linie-2);
+  border-radius:7px;background:var(--ed-fundal);color:var(--ed-text,#e8e6e1)}
+.jsn__scrie input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.jsn__pil.rau{background:var(--nu-slab);color:var(--nu)}
+
+/* --- norul de puncte: găsește punctul ---------------------------------------- */
+.nor__cauta{font-family:var(--sans);font-size:14px;line-height:1.5;margin:8px 0 0;padding:8px 12px;border:1px dashed var(--linie-2);border-radius:9px;color:var(--text)}
+.nor__cauta span{color:var(--text-2)} .nor__cauta.ok{border-style:solid;border-color:var(--ok);background:var(--ok-slab)}
+.nor__p--ales{stroke:var(--text);stroke-width:2.2}
+svg circle.nor__p{cursor:pointer}
+.intai .pz__b{font-family:var(--sans);font-size:14px;line-height:1.4}
+
+.intai .pz__b{font-family:var(--sans);font-size:14.5px;line-height:1.4}
+
+.ix > .intai{margin:12px 16px 0}

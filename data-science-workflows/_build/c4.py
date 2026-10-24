@@ -20,7 +20,7 @@ Rulare:  python _build/c4.py
 import json
 import pathlib
 
-from comun import Lectie, ix, verif, tabel, nota, RAD
+from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
 L = Lectie(4, "c4-curatarea-datelor", "Curățarea datelor",
            "Git în practică, cele șase etape ale curățării, lipsurile, "
@@ -157,10 +157,11 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Curățarea datelor</h2>"
    "<p class=\"cheie\">Etapa cea mai lungă, cea mai plictisitoare, și singura "
    "care decide dacă restul are vreun sens.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
-        "Prima jumătate e Git, a doua e curățarea."),
+        "Prima jumătate e Git, a doua e curățarea.")
+   + nota("Caietul de azi", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 1–3 și 6–7: calitatea, acoperirea, codurile care mint.", True),
    manual=
    "<h2>Curățarea datelor</h2>"
    "<p>Ora are două părți. Prima duce mai departe Git-ul de săptămâna trecută, "
@@ -168,9 +169,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "pregătire, cum anulezi un commit, cum ștergi o ramură după ce ai îmbinat-o. "
    "A doua e despre curățarea datelor, adică despre ce faci cu ce ai colectat "
    "înainte să te uiți la rezultate.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}))
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 1–3 și 6–7: calitatea, acoperirea, codurile care mint.", True))
 
 sl("s2", "Cursul", "Cât timp ia",
    "<h2>Cu ce își petrec timpul oamenii din meseria asta</h2>"
@@ -209,7 +211,7 @@ sl("s2", "Cursul", "Cât timp ia",
 sl("s3", "Git în practică", "Fluxul complet",
    "<h2>Cele patru locuri și drumurile dintre ele</h2>"
    + ix("flux", "Drumul unei schimbări",
-        {"titlu": "Apasă „Urmărește o schimbare”",
+        {"titlu": "Apasă „Urmărește o schimbare”", "intai": {"q": "Colegul tău a urcat un commit pe GitHub azi-dimineață. Tu ai lucrat pe laptop, ai făcut commit și dai git push. Ce se întâmplă?", "variante": ["Merge: fiecare urcă ce are", "E refuzat: întâi aduci commit-ul lui cu git pull", "Commit-ul colegului se șterge"], "corect": 1, "dupa": "GitHub are un commit pe care laptopul tău nu-l are. Ca să nu-l piardă, refuză push-ul până îl aduci și tu: drumul întors, pull."},
          "intro": "Dus: add, commit, push. Întors: fetch și merge, adică pull.",
          "buton": "Urmărește o schimbare",
          "dus": "add → commit → push",
@@ -269,48 +271,40 @@ sl("s5", "Git în practică", "Anulări",
    "<h2>Când ai greșit</h2>"
    "<p>Patru situații diferite, patru comenzi diferite. Confuzia dintre ele e "
    "cea mai frecventă sursă de muncă pierdută.</p>"
-   + ix("sortare", "Ce comandă, în ce situație", {
-       "id": "c4-sort-undo", "poarta": False,
-       "sarcina": "Potrivește situația cu comanda care o repară.",
-       "elemente": [
-           {"t": "git restore fisier", "cos": 0},
-           {"t": "git restore --staged fisier", "cos": 1},
-           {"t": "git revert <id>", "cos": 2},
-           {"t": "git checkout <id>", "cos": 3}],
-       "cosuri": [
-           {"t": "Am stricat un fișier", "d": "și vreau versiunea din ultimul commit"},
-           {"t": "Am dat add din greșeală", "d": "vreau doar să-l scot din pregătire"},
-           {"t": "Un commit vechi era greșit", "d": "vreau să-l anulez, dar să rămână urma"},
-           {"t": "Vreau doar să mă uit", "d": "cum arăta proiectul atunci"}],
-       "laBine": "<code>revert</code> nu șterge istoria: adaugă un commit care "
-                 "face pe dos. De aceea e singurul sigur într-un depozit pe "
-                 "care îl folosesc și alții.",
-       "explicatie": "<code>restore</code> lucrează pe fișiere, "
-                     "<code>revert</code> pe commit-uri, "
-                     "<code>checkout</code> te plimbă prin istorie fără să "
-                     "schimbe nimic. Ce nu e în listă e <code>reset --hard</code>: "
-                     "aruncă munca fără să întrebe, și nu are ce căuta "
-                     "într-un depozit de echipă."}),
+   + ix("prezice", "Repară fără să strici", {
+       "id": "c4-prezice-undo", "poarta": False, "fisier": "terminal.sh",
+       "cod": "# commit-ul a3f9c21 a stricat tabelul curat,\n"
+              "# iar colegii l-au tras deja la ei\n"
+              "git ??? a3f9c21",
+       "intrebare": "Ce pui în loc de ???, ca să repari fără să strici istoricul colegilor?",
+       "variante": ["reset --hard", "revert", "restore", "checkout"],
+       "corect": 1,
+       "indiciu": "Îți trebuie o comandă care lucrează pe commit-uri și adaugă ceva, nu șterge.",
+       "laBine": "revert anulează adăugând, nu ștergând.",
+       "explicatie": "<code>revert</code> face un commit nou care face pe dos; istoria rămâne, iar colegii trag doar un commit în plus. "
+                     "<code>reset --hard</code> rescrie istoria și strică depozitul celorlalți. "
+                     "<code>restore</code> lucrează pe fișiere (un fișier stricat, sau un <code>add</code> greșit cu <code>--staged</code>), "
+                     "iar <code>checkout</code> doar te plimbă prin istorie, ca să te uiți.",
+       "iesire": "[main 7d10e4b] Revert \"curatare: tabel final\"\n 1 file changed"}),
    manual=
    "<h2>Anulări</h2>"
    "<p>Git are faima că e greu tocmai pentru că are patru moduri de a „da "
    "înapoi”, iar numele lor nu spun de la sine care ce face.</p>"
-   + ix("sortare", "Ce comandă, în ce situație", {
-       "id": "c4-sort-undo", "poarta": False,
-       "sarcina": "Potrivește situația cu comanda care o repară.",
-       "elemente": [
-           {"t": "git restore fisier", "cos": 0},
-           {"t": "git restore --staged fisier", "cos": 1},
-           {"t": "git revert <id>", "cos": 2},
-           {"t": "git checkout <id>", "cos": 3}],
-       "cosuri": [
-           {"t": "Am stricat un fișier", "d": "și vreau versiunea din ultimul commit"},
-           {"t": "Am dat add din greșeală", "d": "vreau doar să-l scot din pregătire"},
-           {"t": "Un commit vechi era greșit", "d": "vreau să-l anulez, dar să rămână urma"},
-           {"t": "Vreau doar să mă uit", "d": "cum arăta proiectul atunci"}],
-       "laBine": "<code>revert</code> nu șterge istoria.",
-       "explicatie": "<code>reset --hard</code> nu e în listă pentru că aruncă "
-                     "munca fără să întrebe."})
+   + ix("prezice", "Repară fără să strici", {
+       "id": "c4-prezice-undo", "poarta": False, "fisier": "terminal.sh",
+       "cod": "# commit-ul a3f9c21 a stricat tabelul curat,\n"
+              "# iar colegii l-au tras deja la ei\n"
+              "git ??? a3f9c21",
+       "intrebare": "Ce pui în loc de ???, ca să repari fără să strici istoricul colegilor?",
+       "variante": ["reset --hard", "revert", "restore", "checkout"],
+       "corect": 1,
+       "indiciu": "Îți trebuie o comandă care lucrează pe commit-uri și adaugă ceva, nu șterge.",
+       "laBine": "revert anulează adăugând, nu ștergând.",
+       "explicatie": "<code>revert</code> face un commit nou care face pe dos; istoria rămâne, iar colegii trag doar un commit în plus. "
+                     "<code>reset --hard</code> rescrie istoria și strică depozitul celorlalți. "
+                     "<code>restore</code> lucrează pe fișiere (un fișier stricat, sau un <code>add</code> greșit cu <code>--staged</code>), "
+                     "iar <code>checkout</code> doar te plimbă prin istorie, ca să te uiți.",
+       "iesire": "[main 7d10e4b] Revert \"curatare: tabel final\"\n 1 file changed"})
    + nota("Regula simplă",
           "Dacă greșeala e doar la tine, pe laptop, poți folosi orice. Dacă a "
           "ajuns pe GitHub și altcineva a luat-o, singura variantă politicoasă "
@@ -347,6 +341,31 @@ sl("s7", "Git în practică", "Depozitul pe GitHub",
 #  8-9. Curățarea: harta
 # ===========================================================================
 
+ORD_CUR = {
+ "id": "c4-ordine-curatare",
+ "poarta": False,
+ "sarcina": "Șase etape, amestecate. Pune-le în ordinea în care le faci. Dacă greșești, afli ce s-ar strica.",
+ "linii": [
+  "Profilare: te uiți, nu schimbi nimic",
+  "Integrare: aduci codurile la aceeași formă (EL devine GR)",
+  "Curățare de bază: scoți duplicatele",
+  "Lipsuri și anomalii: decizi ce faci cu ele",
+  "Transformări: pivot, rate, variabile noi",
+  "Validare: compari înainte și după, notezi deciziile"
+ ],
+ "consecinte": {
+  "0": "Profilarea vine prima: fără ea decizi pe ghicite. Nu știi încă câte lipsuri ai, nici că NA e Namibia.",
+  "1": "Codurile se aliniază înainte de duplicate: cât timp Grecia e și EL, și GR, dublura nu se vede.",
+  "2": "Duplicatele ies înainte de lipsuri: altfel media cu care completezi e calculată pe rânduri numărate de două ori.",
+  "3": "Lipsurile se decid înainte de transformări: după un pivot, un gol devine goluri în mai multe coloane și nu mai știi de unde vin.",
+  "4": "Transformările vin după ce datele sunt curate: altfel calculezi rate pe valori pe care urmează să le schimbi.",
+  "5": "Validarea închide drumul: compară tabelul final cu cel de la început. Mai devreme, n-are ce compara."
+ },
+ "indiciu": "Întreabă-te la fiecare etapă: ce trebuie să știu deja ca s-o pot face?",
+ "laBine": "Fiecare etapă se sprijină pe ce ai aflat la cea dinainte.",
+ "explicatie": "Ordinea nu e o convenție: fiecare etapă presupune ce s-a aflat la cea dinainte. Sărită, profilarea face ca toate deciziile de mai târziu să fie luate pe ghicite."
+}
+
 ETAPE_CUR = [
     ("1. Profilare", "înțelegi ce ai",
      "Verifici tipurile, distribuțiile, lipsurile, valorile suspecte. "
@@ -370,11 +389,7 @@ ETAPE_CUR = [
 
 sl("s8", "Curățarea", "Cele șase etape",
    "<h2>De la date brute la date pe care te poți baza</h2>"
-   + ix("etape", "Harta curățării",
-        {"titlu": "Șase etape, în ordine", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in ETAPE_CUR]},
-        "Ordinea contează: nu poți decide ce faci cu lipsurile înainte să știi "
-        "câte sunt și unde.")
+   + ix("ordine", "Harta curățării", ORD_CUR)
    + "<p class=\"cheie\">Prima etapă nu schimbă nimic. Doar te uiți. E și cea "
      "pe care o sare toată lumea.</p>",
    manual=
@@ -384,6 +399,7 @@ sl("s8", "Curățarea", "Cele șase etape",
    + ix("etape", "Harta curățării",
         {"titlu": "Șase etape, în ordine", "intro": "Apasă pe oricare.",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in ETAPE_CUR]})
+   + ix("ordine", "Pune-le în ordine", ORD_CUR)
    + nota("De ce se sare peste prima",
           "Pentru că nu produce nimic. După o oră de profilare, fișierul arată "
           "exact la fel. Dar fără ea, toate deciziile de mai târziu se iau pe "
@@ -704,6 +720,7 @@ DIRECTII = {
     "t2": "Suma. La Polonia–Germania iese lipsă, nu 741.784: nu știm câți germani "
           "sunt în Polonia, deci nu știm totalul.",
 }
+DIRECTII["intai"] = {"q": "Polonezii din Germania: 741.784. Germanii din Polonia: Polonia nu raportează. Câți migranți sunt, în total, între cele două țări?", "variante": ["741.784", "741.784 plus o estimare", "Nu se poate spune"], "corect": 2, "dupa": "O direcție lipsește, deci lipsește și suma. Zero ar fi o afirmație falsă („nu e niciun german în Polonia”), iar o estimare ar fi o decizie de scris în jurnal, nu un calcul."}
 
 sl("s16b", "Transformări", "Două direcții, un rând",
    "<h2>Migrația în forma SCI-ului</h2>"
@@ -838,7 +855,14 @@ sl("s21", "Mai departe", "Până data viitoare",
    + nota("De făcut până atunci",
           "Scriptul de curățare, rulat și urcat, cu datele curate în "
           "<code>date/curat/</code>. Plus dicționarul de date, fie și scurt, "
-          "în depozit.", True))
+          "în depozit.", True)
+   + surse("Documentația curățării", [
+       ("pandas: date lipsă", "https://pandas.pydata.org/docs/user_guide/missing_data.html", "NaN, <code>isna</code>, <code>dropna</code>, <code>fillna</code> și ce face fiecare"),
+       ("pandas: lung și lat", "https://pandas.pydata.org/docs/user_guide/reshaping.html", "<code>pivot</code>, <code>melt</code>, cu desene"),
+       ("pandas: duplicate", "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html", "<code>duplicated</code> și <code>subset</code>"),
+       ("pandas: read_csv", "https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html", "<code>keep_default_na</code> și <code>na_values</code>, capcana Namibiei"),
+       ("Eurostat: migr_pop1ctz", "https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table", "tabelul în browser, cu notele și semnele (flags) fiecărei valori"),
+   ]))
 
 
 if __name__ == "__main__":

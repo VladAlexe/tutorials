@@ -31,7 +31,7 @@ V = "?v=18"
 
 # ---------------------------------------------------------------- bucăți ---
 
-FEL = {"etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
+FEL = {"agenda": "Cuprins", "etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
        "json": "Explorator", "arbore": "Explorator", "autoevaluare": "Evaluare",
        "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale",
        "cod": "Scrii cod", "prezice": "Ce afișează?", "pas": "Rulează pas cu pas", "ordine": "Exercițiu", "sortare": "Exercițiu",
@@ -79,6 +79,14 @@ def verif(id_, corect, q, optiuni, ex):
     return (f'<div class="verif" data-id="{id_}" data-corect="{corect}">\n'
             f'    <p class="verif__q">{q}</p>\n    {o}\n'
             f'    <p class="verif__ex">{ex}</p>\n  </div>')
+
+
+def surse(titlu, linkuri):
+    """Surse oficiale: documentația de care ai nevoie, cu ce găsești în ea.
+    linkuri = [(nume, url, ce găsești acolo)]"""
+    li = "".join(f'<li><a class="surse__a" href="{u}" target="_blank" rel="noopener">{n}</a>'
+                 f'<span>{d}</span></li>' for n, u, d in linkuri)
+    return f'<div class="surse"><div class="surse__et">{titlu}</div><ul>{li}</ul></div>'
 
 
 def tabel(capete, randuri):

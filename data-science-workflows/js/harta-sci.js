@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=55";
+const V = "?v=59";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */
@@ -70,6 +70,8 @@ export async function monteaza(gazda, opt = {}){
         <button type="button" data-z="1.4" aria-label="Apropie">+</button>
         <button type="button" data-z="0.71" aria-label="Depărtează">−</button>
         <button type="button" data-z="0" aria-label="Toată harta">⟲</button>
+        <button type="button" data-rol="linii" class="on" aria-label="Arată legăturile ca linii" title="Linii spre cei mai legați parteneri">⌒</button>
+        <button type="button" data-rol="mare" aria-label="Deschide harta mare" title="Deschide mare (Esc închide)">⤢</button>
       </div>
       <div class="hs__balon" hidden></div>
       <p class="hs__incarc">Se încarcă harta…</p>
@@ -86,6 +88,9 @@ export async function monteaza(gazda, opt = {}){
         <span class="hs__et">Povești din date</span>
         <div class="hs__povesti">${povesti.map((p, i) => `<button type="button" data-i="${i}">${p.t}</button>`).join("")}</div>
         <p class="hs__poveste" hidden></p></div>` : ""}
+      <label class="hs__cauta"><span class="hs__et">Caută un loc</span>
+        <input type="search" list="hs-l-${Math.random().toString(36).slice(2, 8)}" placeholder="Cluj, Napoli, Bavaria…" autocomplete="off">
+        <datalist></datalist></label>
       <div class="hs__ales">
         <span class="hs__et" data-rol="ales-et"></span>
         <div class="hs__nume"></div>
@@ -97,6 +102,9 @@ export async function monteaza(gazda, opt = {}){
     </aside>`;
   const $ = (s) => gazda.querySelector(s);
   const svg = $("svg");
+  const cautare = $(".hs__cauta input"), dl = $(".hs__cauta datalist");
+  dl.id = cautare.getAttribute("list");
+  let linii = !opt.faraLinii, centre = [];
 
   const B = await incarcaBaza();
   let J = null;
@@ -149,6 +157,18 @@ export async function monteaza(gazda, opt = {}){
       for (const t of B.tari) if (!cuDate.has(t.cod) && t.d) svg.appendChild(cale(t.d, "fundal"));
     }
     locuri().forEach((l, i) => { if (l.d){ const p = cale(l.d, "zona"); p.dataset.i = i; svg.appendChild(p); } });
+    /* centrul fiecărui loc, pentru liniile spre parteneri */
+    /* din coordonatele conturului, nu din getBBox: harta poate fi încă ascunsă (alt slide) */
+    centre = locuri().map(l => {
+      if (!l.d) return null;
+      const n = l.d.match(/-?\d+(?:\.\d+)?/g).map(Number);
+      let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+      for (let k = 0; k + 1 < n.length; k += 2){ const x = n[k], y = n[k + 1];
+        if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+      return [(x0 + x1) / 2, (y0 + y1) / 2];
+    });
+    const g = document.createElementNS(NS, "g"); g.setAttribute("class", "arce"); svg.appendChild(g);
+    dl.innerHTML = locuri().filter(l => l.d).map(l => `<option value="${l.nume}">${st.nivel === "tari" ? "" : numeTara(l.tara)}</option>`).join("");
     await actualizeaza();
   }
   function cale(d, cls){
@@ -173,10 +193,48 @@ export async function monteaza(gazda, opt = {}){
       const i = +p.dataset.i, e = L[i].cod === st.ales;
       p.style.fill = e && st.masura !== "com" ? "var(--panza)" : c[i];
       p.classList.toggle("ales", e);
-      if (e) svg.appendChild(p);
+      if (e) svg.insertBefore(p, svg.querySelector(".arce"));
     }
+    arce();
     panou();
     scrieAdresa();
+  }
+
+  /* --- liniile spre cei mai legați parteneri ------------------------------
+     Arce, nu drumuri: unesc centrele. Grosimea crește cu legătura. */
+  function arce(){
+    const g = svg.querySelector(".arce"); if (!g) return;
+    g.innerHTML = "";
+    if (!linii || st.masura === "com") return;
+    const L = locuri(), i0 = L.findIndex(l => l.cod === st.ales), c0 = centre[i0];
+    if (!c0) return;
+    let top;
+    /* la județe și regiuni, vecinii din aceeași țară ar fi doar un ghem în jurul locului ales:
+       liniile merg spre partenerii din alte țări, adică spre diaspora */
+    const taraAles = tara(L[i0]);
+    if (st.masura === "sci") top = rapoarte().map((r, j) => [r, j])
+      .filter(([r, j]) => r !== null && centre[j] && (st.nivel === "tari" || L[j].tara !== taraAles))
+      .sort((a, b) => b[0] - a[0]).slice(0, 8);
+    else if (st.masura === "migr") top = L.map((l, j) => [migranti(l.cod), j]).filter(([v, j]) => v && centre[j]).sort((a, b) => b[0] - a[0]).slice(0, 8);
+    else top = L.map((l, j) => [rezidual(l.cod), j]).filter(([r, j]) => r !== null && centre[j]).sort((a, b) => b[0] - a[0]).slice(0, 6);
+    if (!top.length) return;
+    const max = top[0][0], min = top[top.length - 1][0];
+    top.forEach(([v, j], k) => {
+      const [x1, y1] = centre[j], [x0, y0] = c0, dx = x1 - x0, dy = y1 - y0, d = Math.hypot(dx, dy) || 1;
+      const cx = (x0 + x1) / 2 - dy * 0.22, cy = (y0 + y1) / 2 + dx * 0.22;
+      const p = document.createElementNS(NS, "path");
+      p.setAttribute("d", `M${x0},${y0} Q${cx},${cy} ${x1},${y1}`);
+      const t = max === min ? 1 : (v - min) / (max - min);
+      p.setAttribute("class", "arc"); p.setAttribute("pathLength", "1");
+      p.style.strokeWidth = (0.7 + 1.8 * t) * (vb[2] / 2600) + "";
+      p.style.animationDelay = (k * 60) + "ms";
+      p.dataset.i = j;
+      g.appendChild(p);
+      const pt = document.createElementNS(NS, "circle");
+      pt.setAttribute("cx", x1); pt.setAttribute("cy", y1); pt.setAttribute("r", (1.4 + 1.4 * t) * (vb[2] / 2600));
+      pt.setAttribute("class", "arc__cap"); pt.style.animationDelay = (k * 60 + 300) + "ms";
+      g.appendChild(pt);
+    });
   }
 
   /* --- panoul ----------------------------------------------------------- */
@@ -197,7 +255,7 @@ export async function monteaza(gazda, opt = {}){
     legenda();
     lista();
     $(".hs__note").textContent = (st.nivel === "tari"
-      ? "La migrație, Polonia, Danemarca, Grecia, Croația și țările din afara UE nu raportează cetățeniile. "
+      ? "La migrație raportează doar 24 de țări; lipsesc, între altele, Polonia, Danemarca, Grecia, Croația, Cipru, Malta, Elveția, Regatul Unit și cele mai multe țări din afara UE. "
       : "Regiunile ultraperiferice (Canare, Azore, Madeira, teritoriile franceze de peste mări) sunt în date, dar nu încap pe hartă. ")
       + B.surse;
   }
@@ -206,7 +264,7 @@ export async function monteaza(gazda, opt = {}){
     const scara = (et, trepte, praguri, fara) => `
       <div class="gf__leg"><div class="gf__scara">
         <span class="gf__scara-et">${et}</span>
-        <div class="gf__trepte">${trepte.map(c => `<span style="background:${c}"></span>`).join("")}</div>
+        <div class="gf__trepte">${trepte.map((c, k) => `<span data-k="${k}" style="background:${c}" title="Treci peste: doar locurile din treapta asta"></span>`).join("")}</div>
         <div class="gf__praguri">${praguri.map(p => `<span>${p}</span>`).join("")}<span></span></div>
       </div></div><div class="hs__fara"><i></i>${fara}</div>`;
     $('[data-rol="legenda"]').innerHTML =
@@ -255,6 +313,31 @@ export async function monteaza(gazda, opt = {}){
   }
 
   function alege(cod){ st.ales = cod; st.poveste = null; actualizeaza(); }
+
+  /* treapta de sub mouse, în legendă: aprinde doar locurile din ea */
+  gazda.addEventListener("pointerover", (e) => {
+    const t = e.target.closest(".gf__trepte span[data-k]"); if (!t) return;
+    const c = culori(), cul = (st.masura === "model" ? DIVERG : SECV)[+t.dataset.k];
+    for (const p of svg.querySelectorAll(".zona")) p.classList.toggle("stins", c[+p.dataset.i] !== cul);
+  });
+  gazda.addEventListener("pointerout", (e) => {
+    if (e.target.closest(".gf__trepte span[data-k]")) svg.querySelectorAll(".zona.stins").forEach(p => p.classList.remove("stins"));
+  });
+  /* căutarea: după nume, la nivelul curent */
+  cautare.addEventListener("change", () => {
+    const q = cautare.value.trim().toLowerCase(); if (!q) return;
+    const fara = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const l = locuri().find(x => x.d && fara(x.nume) === fara(q)) || locuri().find(x => x.d && fara(x.nume).includes(fara(q)));
+    if (l){ alege(l.cod); cautare.value = ""; cautare.blur(); }
+  });
+  /* harta mare: peste toată pagina, Esc o închide */
+  function mare(da){
+    gazda.classList.toggle("hs--mare", da);
+    document.documentElement.classList.toggle("hs-deschis", da);
+    const b = $('[data-rol="mare"]'); b.textContent = da ? "✕" : "⤢"; b.setAttribute("aria-label", da ? "Închide harta mare" : "Deschide harta mare");
+    vb = cutie.slice(); pune(); arce();
+  }
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && gazda.classList.contains("hs--mare")) mare(false); });
 
   /* --- evenimente ------------------------------------------------------- */
   gazda.addEventListener("click", (e) => {
@@ -307,6 +390,7 @@ export async function monteaza(gazda, opt = {}){
   const scala = (f, cx, cy) => {
     const w = Math.min(cutie[2], Math.max(200, vb[2] / f)), k = w / vb[2];
     vb = [cx - (cx - vb[0]) * k, cy - (cy - vb[1]) * k, w, vb[3] * k]; pune();
+    clearTimeout(scala.t); scala.t = setTimeout(arce, 120);
   };
   svg.addEventListener("wheel", (e) => { e.preventDefault(); const [x, y] = punct(e); scala(e.deltaY < 0 ? 1.25 : 0.8, x, y); }, { passive: false });
   let start = null;
@@ -321,6 +405,9 @@ export async function monteaza(gazda, opt = {}){
   svg.addEventListener("pointerup", opreste);
   svg.addEventListener("pointerleave", opreste);
   $(".hs__zoom").addEventListener("click", (e) => {
+    const r = e.target.closest("button")?.dataset.rol;
+    if (r === "mare") return mare(!gazda.classList.contains("hs--mare"));
+    if (r === "linii"){ linii = !linii; e.target.classList.toggle("on", linii); return arce(); }
     const z = e.target.dataset.z; if (z === undefined) return;
     if (+z === 0){ vb = cutie.slice(); pune(); } else scala(+z, vb[0] + vb[2] / 2, vb[1] + vb[3] / 2);
   });

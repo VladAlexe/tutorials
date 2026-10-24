@@ -19,7 +19,7 @@ a doua sursă a proiectului: migrația (migr_pop1ctz), tot prin API.
 Rulare:  python _build/c2.py
 """
 
-from comun import Lectie, ix, verif, tabel, nota
+from comun import Lectie, ix, verif, tabel, nota, surse
 
 L = Lectie(2, "c2-colectarea-prin-api", "Colectarea datelor prin API",
            "Ce este un API, cum se citește o documentație, cum arată o cerere "
@@ -98,7 +98,7 @@ PAS_PAGINI = {
          "txt": "Schimbăm o singură cheie din dicționar: <code>page</code> devine 2."},
         {"l": 4, "set": {"pagina2": {"t": "list", "v": [{"page": 2, "pages": 2, "per_page": 2, "total": 3}, [_REC("2022", 19048502)]]}},
          "txt": "Aceeași cerere, pagina 2."},
-        {"l": 5, "out": "[{'date': '2022', 'value': 19048502, ...}]", "hl": {"var": "pagina2", "k": 1},
+        {"l": 5, "out": "[{'indicator': {...}, 'country': {...}, ..., 'date': '2022', 'value': 19048502, ...}]", "hl": {"var": "pagina2", "k": 1},
          "txt": "Aici era a treia valoare: 2022. Pentru proiect cerem <code>per_page=1000</code> și verificăm că <code>pages</code> e 1."},
     ],
 }
@@ -143,15 +143,15 @@ PAS_MIGR = {
     "pasi": [
         {"l": 1, "set": {"parametri": {"t": "dict", "v": {"sex": "T", "age": "TOTAL", "unit": "NR", "time": 2024}}},
          "txt": "<code>sex=T</code> și <code>age=TOTAL</code>: toată populația, nu o grupă. <code>unit=NR</code>: număr de persoane."},
-        {"l": 2, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["citizen", "geo", "valoare"],
-                                                            "rows": [["BG", "DE", 371128], ["RO", "ES", 620463], ["RO", "IT", 1073196], ["…", "…", "…"]],
+        {"l": 2, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
+                                                            "rows": [["DE", "BG", 371128], ["ES", "RO", 620463], ["IT", "RO", 1073196], ["…", "…", "…"]],
                                                             "nota": "un rând pe pereche cetățenie–țară"}}},
          "txt": "<code>cere_eurostat</code> e funcția din caiet: face cererea și desface cubul în tabel. <code>citizen</code> = cetățenia, <code>geo</code> = țara unde trăiesc."},
         {"l": 4, "set": {"in_italia": {"t": "Series", "v": {"rows": [["0", "False"], ["1", "False"], ["2", "True"], ["…", "…"]], "nota": "True unde geo e IT"}}},
          "txt": "Prima condiție, ca în C1: trăiesc în Italia."},
         {"l": 5, "set": {"romani": {"t": "Series", "v": {"rows": [["0", "False"], ["1", "True"], ["2", "True"], ["…", "…"]], "nota": "True unde citizen e RO"}}},
          "txt": "A doua condiție: au cetățenie română."},
-        {"l": 6, "out": "  citizen geo    valoare\n  RO      IT    1073196",
+        {"l": 6, "out": "     geo citizen  valoare\n4812  IT      RO  1073196",
          "txt": "<code>&</code> înseamnă „și”: rămân rândurile unde ambele sunt True. 1.073.196 de români în Italia: ghicitoarea din C1."},
     ],
 }
@@ -162,10 +162,11 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<p class=\"cheie\">Până acum ai citit un fișier primit de-a gata. "
    "De azi, ți-l aduci singur.</p>"
    "<p>Șase lucruri, în ordinea asta.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
-        "Apasă pe un punct ca să vezi ce intră în el."),
+        "Apasă pe un punct ca să vezi ce intră în el.")
+   + nota("Caietul de azi", "<code>02_colectarea_datelor_prin_api.ipynb</code>, de la prima cerere până la migrația de la Eurostat.", True),
    manual=
    "<h2>Colectarea datelor prin API</h2>"
    "<p>La cursul 1 ai deschis un fișier care era deja pe disc. E felul cel mai "
@@ -176,9 +177,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<p>Un API rezolvă exact asta. Datele nu mai vin printr-un om care apasă "
    "„Download”, ci printr-o linie de cod care se poate rula din nou, mâine, de "
    "altcineva, și care dă același rezultat sau spune răspicat de ce nu.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}))
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>02_colectarea_datelor_prin_api.ipynb</code>, de la prima cerere până la migrația de la Eurostat.", True))
 
 sl("s2", "Cursul", "Unde ai rămas",
    "<h2>Înainte de a începe</h2>"
@@ -314,8 +316,11 @@ sl("s5", "Ce este un API", "De ce nu descărcăm cu mâna",
 #  6-9. Tipuri de API
 # ===========================================================================
 
+NOI = {"REST", "public"}   # ce folosim la curs: se aprinde pe arbore
+
+
 def _ramura(nume, frunze):
-    return {"nume": nume, "tipuri": [{"n": n, "d": d} for n, d in frunze]}
+    return {"nume": nume, "tipuri": [{"n": n, "d": d, **({"noi": True} if n in NOI else {})} for n, d in frunze]}
 
 
 TIPURI_API = [
@@ -377,8 +382,8 @@ sl("s7", "Tipuri de API", "De unde vine REST",
    "simplifice ce exista deja și era greoi.</p>"
    + ix("cronologie", "Un sfert de secol de încercări",
         {"titlu": "Apasă pe oricare an",
-         "intro": "Se vede ritmul: patru încercări în primii zece ani, apoi "
-                  "liniște, apoi încă două.",
+         "intro": "Se vede ritmul: cinci încercări în primii zece ani, apoi "
+                  "alte patru, ultimele două aproape una după alta.",
          "puncte": [{"an": int(n.split(" · ")[0]), "nume": n.split(" · ")[1],
                      "et": u, "text": d} for n, u, d in CRONOLOGIE]},
         "Ce supraviețuiește nu e ce e mai puternic, ci ce e mai ușor de citit "
@@ -419,13 +424,14 @@ CERERE = {
     ],
     "scenarii": [
         {"t": "Cerere bună", "bon": "GET /v2/country/RO/indicator/SP.POP.TOTL?format=json",
-         "cod": "200", "far": "[{\"page\": 1, \"total\": 64}, [ ... ]]"},
+         "cod": "200", "far": "[{\"page\": 1, \"total\": 65}, [ ... ]]"},
         {"t": "Adresă greșită", "bon": "GET /v2/country/RO/indicatorr/SP.POP.TOTL",
          "cod": "404", "far": "Not Found", "rau": True,
          "text": {"3": "Calea nu există. Serverul nu ghicește ce ai vrut să scrii.",
                   "4": "Vine 404, iar corpul nu mai e JSON. Te uiți întâi la cod, apoi la date."}},
     ],
 }
+CERERE["intai"] = {"q": "Ieri ai cerut paginile 1 și 2. Azi ceri pagina 3, de pe alt calculator. Ce face serverul?", "variante": ["Te refuză: nu te mai știe", "Ți-o dă: cererea are tot ce-i trebuie", "Îți trimite iar paginile 1 și 2"], "corect": 1, "dupa": "Serverul nu ține minte nimic între cereri. Fiecare cerere poartă cu ea adresa și parametrii, deci pagina 3 vine oricând, de oriunde."}
 
 sl("s9", "Cum arată o cerere", "Arhitectura REST",
    "<h2>Cerere, metodă, răspuns</h2>"
@@ -486,10 +492,11 @@ sl("s10", "Cum arată o cerere", "Metodele HTTP",
          "laBine": "La colectarea de date folosești GET în 99% din cazuri.",
          "explicatie": "PUT înlocuiește toată resursa, PATCH doar o bucată."})
    + nota("Proprietatea care te salvează",
-          "<code>GET</code> e <em>sigur</em>: oricâte ori l-ai repeta, nu "
-          "schimbă nimic pe server. De aceea o colectare căzută se poate "
-          "relua fără teamă. Cu <code>POST</code> nu e așa: de două ori "
-          "înseamnă de două ori."))
+          "<code>GET</code> e <em>sigur</em> (nu schimbă nimic pe server) și "
+          "<em>idempotent</em> (repetat, are același efect). Pentru reluarea unei "
+          "colectări contează a doua: o poți relua fără teamă. <code>PUT</code> și "
+          "<code>DELETE</code> sunt și ele idempotente, deși schimbă ceva; "
+          "<code>POST</code> nu e: de două ori înseamnă de două ori."))
 
 sl("s11", "Cum arată o cerere", "Endpoint-ul",
    "<h2>Ce este un endpoint</h2>"
@@ -504,25 +511,26 @@ sl("s12", "Cum arată o cerere", "Structura unei adrese",
    "mai jos.</p>"
    + ix("url", "Taie adresa în bucăți",
         {"id": "c2-url",
-         "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune",
+         "sarcina": "Adresa primei cereri din caietul 02. Numește fiecare bucată.",
+         "url": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=2022:2024&per_page=2&page=1",
          "parti": [
              {"t": "https", "e": "protocol",
               "d": "Cum se vorbește. <code>https</code> e criptat, <code>http</code> nu."},
-             {"t": "api.exemplu.com", "e": "host",
-              "d": "Ce server. Numele mașinii care răspunde."},
-             {"t": "443", "e": "port",
-              "d": "Pe ce ușă. Se scrie rar: 443 pentru https și 80 pentru http se subînțeleg."},
-             {"t": "/resursa/detalii", "e": "cale",
-              "d": "Ce resursă ceri. Aici se vede ce anume vrei din tot ce oferă serverul."},
-             {"t": "?culoare=rosu", "e": "parametri",
-              "d": "Opțiuni: filtre, format, pagină. Aici ajung argumentele tale."},
-             {"t": "#sectiune", "e": "fragment",
-              "d": "Pentru browser, nu pentru server. Nu pleacă în cerere."}],
-         "etichete": ["protocol", "host", "port", "cale", "parametri", "fragment"],
-         "explicatie": "Fragmentul e singurul care nu ajunge niciodată la "
-                       "server: browserul îl folosește ca să sară la o bucată "
-                       "din pagină. Dacă pui ceva important după <code>#</code>, "
-                       "nu se trimite."}),
+             {"t": "api.worldbank.org", "e": "host",
+              "d": "Ce server. Serverul de date al Băncii Mondiale, nu site-ul ei."},
+             {"t": "/v2", "e": "versiune",
+              "d": "Versiunea API-ului. Dacă Banca Mondială schimbă formatul, face o versiune nouă, iar codul tău vechi merge mai departe."},
+             {"t": "/country/RO", "e": "țara",
+              "d": "Prima resursă din cale: ce țară. <code>all</code> le-ar cere pe toate."},
+             {"t": "/indicator/SP.POP.TOTL", "e": "indicatorul",
+              "d": "A doua resursă: ce măsură. Populația totală. PIB-ul pe locuitor ar fi <code>NY.GDP.PCAP.CD</code>."},
+             {"t": "?format=json&date=2022:2024&per_page=2&page=1", "e": "parametri",
+              "d": "Filtrele, după semnul întrebării, legate cu <code>&amp;</code>. Exact dicționarul <code>parametri</code> din caiet, lipit de <code>requests</code> în adresă."}],
+         "etichete": ["protocol", "host", "versiune", "țara", "indicatorul", "parametri"],
+         "explicatie": "Calea spune <b>ce</b> ceri (țara, indicatorul), parametrii spun <b>cum</b> (format, ani, pagină). "
+                       "Când o cerere nu merge, greșeala e aproape mereu într-una dintre bucăți: un cod de indicator scris greșit în cale "
+                       "dă alt răspuns decât un an greșit în parametri. Mai există o bucată, <code>#...</code> (fragmentul), "
+                       "care nu pleacă niciodată la server."}),
    manual=
    "<h2>Structura unui endpoint</h2>"
    "<p>O adresă pare un șir de caractere, dar are o gramatică. Când o cerere "
@@ -530,16 +538,26 @@ sl("s12", "Cum arată o cerere", "Structura unei adrese",
    "și e util să le poți numi.</p>"
    + ix("url", "Taie adresa în bucăți",
         {"id": "c2-url",
-         "url": "https://api.exemplu.com:443/resursa/detalii?culoare=rosu#sectiune",
+         "sarcina": "Adresa primei cereri din caietul 02. Numește fiecare bucată.",
+         "url": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=2022:2024&per_page=2&page=1",
          "parti": [
-             {"t": "https", "e": "protocol", "d": "Cum se vorbește."},
-             {"t": "api.exemplu.com", "e": "host", "d": "Ce server răspunde."},
-             {"t": "443", "e": "port", "d": "Pe ce ușă. De obicei se subînțelege."},
-             {"t": "/resursa/detalii", "e": "cale", "d": "Ce resursă ceri."},
-             {"t": "?culoare=rosu", "e": "parametri", "d": "Filtre și opțiuni."},
-             {"t": "#sectiune", "e": "fragment", "d": "Pentru browser, nu pentru server."}],
-         "etichete": ["protocol", "host", "port", "cale", "parametri", "fragment"],
-         "explicatie": "Fragmentul nu ajunge niciodată la server."})
+             {"t": "https", "e": "protocol",
+              "d": "Cum se vorbește. <code>https</code> e criptat, <code>http</code> nu."},
+             {"t": "api.worldbank.org", "e": "host",
+              "d": "Ce server. Serverul de date al Băncii Mondiale, nu site-ul ei."},
+             {"t": "/v2", "e": "versiune",
+              "d": "Versiunea API-ului. Dacă Banca Mondială schimbă formatul, face o versiune nouă, iar codul tău vechi merge mai departe."},
+             {"t": "/country/RO", "e": "țara",
+              "d": "Prima resursă din cale: ce țară. <code>all</code> le-ar cere pe toate."},
+             {"t": "/indicator/SP.POP.TOTL", "e": "indicatorul",
+              "d": "A doua resursă: ce măsură. Populația totală. PIB-ul pe locuitor ar fi <code>NY.GDP.PCAP.CD</code>."},
+             {"t": "?format=json&date=2022:2024&per_page=2&page=1", "e": "parametri",
+              "d": "Filtrele, după semnul întrebării, legate cu <code>&amp;</code>. Exact dicționarul <code>parametri</code> din caiet, lipit de <code>requests</code> în adresă."}],
+         "etichete": ["protocol", "host", "versiune", "țara", "indicatorul", "parametri"],
+         "explicatie": "Calea spune <b>ce</b> ceri (țara, indicatorul), parametrii spun <b>cum</b> (format, ani, pagină). "
+                       "Când o cerere nu merge, greșeala e aproape mereu într-una dintre bucăți: un cod de indicator scris greșit în cale "
+                       "dă alt răspuns decât un an greșit în parametri. Mai există o bucată, <code>#...</code> (fragmentul), "
+                       "care nu pleacă niciodată la server."})
    + verif("c2-v7", 2,
            "Unde pui filtrele unei cereri, de exemplu anul sau formatul?",
            ["în protocol", "în host", "în parametri, după semnul întrebării",
@@ -561,8 +579,8 @@ sl("s13", "Răspunsul", "Codurile de stare",
          "sarcina": "Încearcă-le pe toate. Fiecare e o greșeală pe care o vei face.",
          "cazuri": [
              {"et": "cerere bună", "cod": 200, "nume": "OK",
-              "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json",
-              "corp": "[{\"page\":1,\"pages\":2,\"total\":64}, [ … 50 de randuri … ]]",
+              "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=1960:2024",
+              "corp": "[{\"page\":1,\"pages\":2,\"total\":65}, [ … 50 de randuri … ]]",
               "ce": "A mers. Dar uită-te și la ce e înăuntru: un <code>200</code> "
                     "cu zero rânduri tot <code>200</code> se cheamă."},
              {"et": "adresa greșită", "cod": 404, "nume": "Not Found",
@@ -571,14 +589,16 @@ sl("s13", "Răspunsul", "Codurile de stare",
               "ce": "Calea nu există. Observă și că răspunsul nu mai e JSON, ci "
                     "HTML: dacă dai direct <code>r.json()</code>, crapă acolo, "
                     "nu la adresă, și cauți în locul greșit."},
-             {"et": "parametru aiurea", "cod": 400, "nume": "Bad Request",
+             {"et": "parametru aiurea", "cod": 200, "nume": "OK, dar fără date",
               "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=anul-trecut",
-              "corp": "[{\"message\":[{\"id\":\"120\",\"value\":\"Invalid value\"}]}]",
-              "ce": "Cererea a ajuns și a fost înțeleasă, dar e greșită. "
-                    "Greșeala e la tine, și de obicei scrie în corp care anume."},
+              "corp": "[{\"message\":[{\"id\":\"120\",\"key\":\"Invalid value\",\"value\":\"The provided parameter value is not valid\"}]}]",
+              "ce": "Capcană: Banca Mondială răspunde <code>200</code> și la o cerere greșită. "
+                    "Eroarea e în corp, sub cheia <code>message</code>. Alte API-uri dau aici "
+                    "<code>400 Bad Request</code>. De aceea, după codul de stare, te uiți și dacă "
+                    "primul element are <code>page</code> sau <code>message</code>."},
              {"et": "prea des", "cod": 429, "nume": "Too Many Requests",
               "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?page=97",
-              "corp": "Retry-After: 30",
+              "corp": "antet: Retry-After: 30 (corpul poate fi gol)",
               "ce": "Ai depășit limita. Soluția nu e să reîncerci mai des, ci "
                     "mai rar: o pauză între cereri, care crește după fiecare refuz."},
              {"et": "a crăpat la ei", "cod": 503, "nume": "Service Unavailable",
@@ -656,7 +676,26 @@ sl("s15", "Surse de date", "Ce folosim noi",
        ["<strong>Eurostat, migrație</strong>", "~migr_pop1ctz", "câți cetățeni ai unei țări trăiesc în alta"],
    ])
    + "<p>Întâi Banca Mondială, pentru că răspunde simplu. Apoi Eurostat, "
-     "cu indicatorii pe regiuni și cu migrația.</p>")
+     "cu indicatorii pe regiuni și cu migrația.</p>"
+   + surse("Documentația de care ai nevoie", [
+       ("Banca Mondială: structura unei cereri", "https://datahelpdesk.worldbank.org/knowledgebase/articles/898581",
+        "cum se scrie adresa: țara, indicatorul, <code>format</code>, <code>date</code>, <code>per_page</code>, <code>page</code>"),
+       ("Banca Mondială: despre API", "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api",
+        "ce date are, cum găsești codul unui indicator"),
+       ("Eurostat: primii pași cu API-ul", "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started",
+        "adresa de bază, primul exemplu, filtrele pe dimensiuni"),
+       ("Eurostat: ghidul detaliat", "https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-detailed-guidelines",
+        "toți parametrii și formatele, când primul exemplu nu mai ajunge"),
+       ("Eurostat: setul migr_pop1ctz", "https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table",
+        "tabelul migrației în browser: vezi dimensiunile înainte să le ceri din cod"),
+       ("JSON-stat: formatul", "https://json-stat.org/format/",
+        "cum e construit cubul: <code>id</code>, <code>size</code>, <code>dimension</code>, <code>value</code>"),
+       ("requests: ghidul rapid", "https://requests.readthedocs.io/en/latest/user/quickstart/",
+        "<code>get</code>, <code>params</code>, <code>status_code</code>, <code>json()</code>, <code>timeout</code>"),
+       ("MDN: codurile de stare HTTP", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+        "ce înseamnă fiecare cod, de la 200 la 503"),
+   ])
+   + "<p>Regula de lucru: când o cerere nu merge, deschizi întâi documentația, nu un forum. Acolo e scris ce parametri există și ce înseamnă.</p>")
 
 
 # ===========================================================================
@@ -793,7 +832,7 @@ sl("s18", "requests", "Paginarea",
    "<p>Niciun API serios nu-ți dă zece mii de rânduri dintr-o dată. Îți dă o "
    "pagină și îți spune câte mai sunt.</p>"
    "<pre><code><span class=\"c\"># primul element al raspunsului, la Banca Mondiala</span>\n"
-   "{\"page\": 1, \"pages\": 2, \"per_page\": 50, \"total\": 64}</code></pre>"
+   "{\"page\": 1, \"pages\": 2, \"per_page\": 50, \"total\": 65}</code></pre>"
    + ix("pas", "Unde e a treia valoare", PAS_PAGINI)
    + ix("prezice", "Câte sunt, câte ai primit", {
        "id": "c2-prezice-pagini", "fisier": "02_colectarea.ipynb · 4. Paginarea",
@@ -809,21 +848,22 @@ sl("s18", "requests", "Paginarea",
        "explicatie": "Altă cerere, aceeași logică: în total sunt 180 de valori, câte 50 pe pagină, pe 4 pagini. "
                      "Pe pagina asta au venit 50. Ori ceri pagină după pagină până când <code>page</code> "
                      "ajunge la <code>pages</code>, ori, ca în caiet, ceri <code>per_page=1000</code> dintr-odată."})
-   + ix("ordine", "Bucla de colectare", {
+   + ix("ordine", "De la adresă la tabel", {
        "id": "c2-ordine-paginare", "poarta": False,
-       "sarcina": "Pune pașii unei colectări paginate în ordine.",
+       "sarcina": "Pașii primei cereri din caietul 02, amestecați. Pune-i în ordine.",
        "linii": [
-           "pagina = 1; tot = []",
-           "r = requests.get(url, params={**p, \"page\": pagina}, timeout=30)",
-           "if r.status_code != 200: break",
-           "cap, date = r.json()",
-           "tot.extend(date)",
-           "if pagina >= cap[\"pages\"]: break",
-           "pagina += 1; time.sleep(0.5)"],
-       "explicatie": "Verificarea codului vine înaintea citirii datelor, iar "
-                     "pauza la final e politețea care te ține sub limita de "
-                     "cereri. Fără <code>sleep</code>, o buclă de o sută de "
-                     "pagini ajunge la 429 în câteva secunde."}))
+           "url = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"",
+           "parametri = {\"format\": \"json\", \"date\": \"2022:2024\", \"per_page\": 1000}",
+           "raspuns = requests.get(url, params=parametri)",
+           "print(raspuns.status_code)",
+           "date = raspuns.json()",
+           "valori = date[1]",
+           "tabel = pd.json_normalize(valori)"],
+       "indiciu": "Întreabă-te la fiecare rând: ce trebuie să existe deja ca să poată rula?",
+       "laBine": "Cererea, verificarea, citirea, tabelul: aceeași ordine la orice API.",
+       "explicatie": "Codul de stare se verifică înainte de <code>json()</code>: dacă cererea n-a mers, "
+                     "corpul poate fi o pagină de eroare, nu JSON. Cu <code>per_page=1000</code> toate "
+                     "valorile vin pe o singură pagină, așa că nu mai e nevoie de buclă."}))
 
 sl("s19", "requests", "Din JSON în tabel",
    "<h2>Ultimul pas: un tabel</h2>"
@@ -897,7 +937,7 @@ sl("s19e", "Eurostat", "Un cub, nu un tabel",
                      "treia țară (poziția 2): 6 + 2 = 8. <code>value[8]</code> e 1.073.196."})
    + nota("Regula",
           "Ultima dimensiune se schimbă cel mai repede, ca secundele la ceas. "
-          "O valoare care lipsește e <code>null</code>, nu zero.", True),
+          "O valoare care lipsește nu apare deloc în <code>value</code>: poziția ei pur și simplu lipsește. Nu înseamnă zero.", True),
    manual=
    "<h2>Eurostat: JSON-stat</h2>"
    "<p>Banca Mondială dă o listă de înregistrări, deci se face tabel direct. "
@@ -933,6 +973,7 @@ HARTA_MIGR = {
          "text": "Aproape toți spre nord și vest: Germania, Olanda, Norvegia, Irlanda."},
     ],
 }
+HARTA_MIGR["intai"] = {"q": "Alege România pe hartă. În ce țară raportoare trăiesc cei mai mulți cetățeni români?", "variante": ["Germania", "Italia", "Spania"], "corect": 1, "dupa": "Italia, cu 1.073.196, apoi Germania (776.424) și Spania (620.463). Ghicitoarea din C1, acum pe datele Eurostat."}
 
 COD_MIGR = {
     "id": "c2-cod-migr", "indiciu": "Datasetul Eurostat al populației după cetățenie se numește migr_pop1ctz. "
@@ -982,8 +1023,9 @@ sl("s19h", "Eurostat", "Ce ai adus, pe hartă",
    "<h2>Unde trăiesc cetățenii unei țări</h2>"
    + ix("harta", "Același tabel, desenat", HARTA_MIGR)
    + nota("Gri înseamnă că nu știm",
-          "Polonia, Danemarca, Grecia, Croația și Regatul Unit nu raportează "
-          "pe țări de cetățenie. Nu înseamnă zero.", True),
+          "Doar 24 de țări raportează pe țări de cetățenie. Printre cele care nu o fac: "
+          "Polonia, Danemarca, Grecia, Croația, Cipru, Malta, Elveția, Regatul Unit și cele mai multe "
+          "țări din afara UE. Gri nu înseamnă zero.", True),
    manual=
    "<h2>Ce ai adus, pe hartă</h2>"
    "<p>Tabelul de pe slide-ul anterior, cu cetățenia fixată, e o hartă. "

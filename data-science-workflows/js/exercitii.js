@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=55";
+import { salveazaCod } from "./colectare.js?v=59";
 
 const E = {};
 
@@ -357,6 +357,15 @@ E.ordine = (gazda, d) => {
     out.textContent = "";
   });
 
+  /* consecinte: {indexul corect al liniei: ce se strică dacă nu e la locul ei}.
+     Se arată pentru primul rând greșit, ca greșeala să spună ceva, nu doar „nu”. */
+  function consecinta(){
+    if (!d.consecinte) return "";
+    const poz = ordine.findIndex((k, p) => k !== p);
+    const k = ordine[poz];
+    const t = d.consecinte[k] ?? d.consecinte[String(k)];
+    return t ? `Pe locul ${poz + 1} ai pus <i>${esc(d.linii[k].split(":")[0])}</i>. ${t}` : "";
+  }
   btV.onclick = async () => {
     const randuri = [...lista.querySelectorAll(".ord__r")];
     let bune = 0;
@@ -369,7 +378,7 @@ E.ordine = (gazda, d) => {
     const tot = bune === n;
     out.innerHTML = tot
       ? `<b>Corect.</b> ${d.laBine || ""}`
-      : `<b>${bune} din ${n} pe locul lor.</b> ${d.laRau || "Mută-le pe celelalte."}`;
+      : `<b>${bune} din ${n} pe locul lor.</b> ${consecinta() || d.laRau || "Mută-le pe celelalte."}`;
     btN.hidden = tot;
     if (tot){
       btV.disabled = true;

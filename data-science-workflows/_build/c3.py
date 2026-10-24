@@ -17,6 +17,7 @@ Ce am adăugat peste prezentare, și de ce:
 Rulare:  python _build/c3.py
 """
 
+from literatura import lecturi
 from comun import Lectie, ix, verif, tabel, nota
 
 def templu(acoperis, stalpi, baza, et_sus="Întrebarea"):
@@ -141,14 +142,63 @@ PAS_TARI = {
 }
 
 
+# Caietul 03, secțiunile 2–4: nomenclatorul NUTS și tabelul regional.
+# Cifrele: data/surse_c3/NUTS_AT_2024.csv și data/intermediare_c3/referinta_c2_20261013.
+
+PAS_NUTS = {
+    "fisier": "03_surse_diverse.ipynb · 2–3. NUTS și tabelul regional",
+    "intro": "Din C2 ai șase fișiere: trei indicatori pe două niveluri. Codurile lor (RO113) nu spun nimic singure. Le dăm nume, apoi le punem pe toate într-un singur tabel.",
+    "cod": "nuts = pd.read_csv(DATE / \"surse_c3\" / \"NUTS_AT_2024.csv\")\n"
+           "nuts = nuts[[\"NUTS_ID\", \"CNTR_CODE\", \"NAME_LATN\"]]\n"
+           "nuts.columns = [\"regiune\", \"tara\", \"denumire\"]\n"
+           "nuts[nuts[\"tara\"] == \"RO\"].head(6)\n\n"
+           "tabele = []\n"
+           "for indicator in [\"populatie\", \"densitate\", \"pib_locuitor\"]:\n"
+           "    for nivel in [2, 3]:\n"
+           "        fisier = DATE / \"c2\" / f\"{indicator}_nuts{nivel}.csv\"\n"
+           "        tabel = pd.read_csv(fisier)[[\"geo\", \"valoare\"]]\n"
+           "        tabel[\"indicator\"] = indicator\n"
+           "        tabel[\"nivel\"] = nivel\n"
+           "        tabele.append(tabel)\n"
+           "regional = pd.concat(tabele).rename(columns={\"geo\": \"regiune\"})\n"
+           "regional.groupby([\"nivel\", \"indicator\"])[\"valoare\"].agg([\"size\", \"count\"])",
+    "pasi": [
+        {"l": 3, "set": {"nuts": {"t": "DataFrame", "v": {"cols": ["regiune", "tara", "denumire"],
+            "rows": [["CZ06", "CZ", "Jihovýchod"], ["CZ063", "CZ", "Kraj Vysočina"], ["…", "…", "…"]],
+            "nota": "1.971 de coduri, toate nivelurile, de la Eurostat GISCO"}}},
+         "txt": "Nomenclatorul: o a doua sursă, doar ca să traducem coduri în nume. Păstrăm trei coloane și le dăm nume românești."},
+        {"l": 4, "out": "  regiune tara           denumire\n  RO      RO            România\n  RO1     RO  Macroregiunea Unu\n  RO11    RO          Nord-Vest\n  RO111   RO              Bihor\n  RO112   RO    Bistriţa-Năsăud\n  RO113   RO               Cluj",
+         "txt": "Lungimea codului spune nivelul: 2 caractere țara, 3 macroregiunea, 4 regiunea NUTS 2, 5 județul NUTS 3. RO113 e Cluj, în Nord-Vest (RO11)."},
+        {"l": 6, "set": {"tabele": {"t": "list", "v": []}},
+         "txt": "O listă goală, în care strângem tabelele. Le lipim abia la final."},
+        {"l": 10, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["geo", "valoare"],
+            "rows": [["BE10", 1264371], ["BE21", 1932876], ["…", "…"]], "nota": "populația, NUTS 2: prima trecere prin buclă"}}},
+         "txt": "Două bucle una în alta: 3 indicatori × 2 niveluri = 6 fișiere. Din fiecare păstrăm doar ce variază: regiunea și valoarea."},
+        {"l": 12, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["geo", "valoare", "indicator", "nivel"],
+            "rows": [["BE10", 1264371, "populatie", 2], ["BE21", 1932876, "populatie", 2], ["…", "…", "…", "…"]]}}},
+         "txt": "Două coloane noi spun de unde vine fiecare rând. Fără ele, după lipire nu mai știi ce e populație și ce e densitate."},
+        {"l": 13, "set": {"tabele": {"t": "list", "v": ["populatie · 2", "populatie · 3", "densitate · 2", "densitate · 3", "pib_locuitor · 2", "pib_locuitor · 3"]}},
+         "txt": "După cele șase treceri, lista are șase tabele (aici, doar numele lor)."},
+        {"l": 14, "set": {"regional": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator", "nivel"],
+            "rows": [["BE10", 1264371, "populatie", 2], ["…", "…", "…", "…"], ["RO113", 104.8, "densitate", 3], ["…", "…", "…", "…"]],
+            "nota": "un singur tabel lung, din șase fișiere"}}},
+         "sterge": ["tabel"],
+         "txt": "<code>pd.concat</code> pune tabelele unul sub altul (rânduri în plus, ca în C5). <code>rename</code> schimbă <code>geo</code> în <code>regiune</code>, ca în nomenclator."},
+        {"l": 15, "out": "                    size  count\nnivel indicator\n2     densitate      340    285\n      pib_locuitor   309    276\n      populatie      359    292\n3     densitate     1580   1279\n      pib_locuitor  1343    524\n      populatie     1621   1326",
+         "txt": "<code>size</code> numără rândurile, <code>count</code> doar valorile prezente. Diferența e ce lipsește. PIB-ul pe județ are valoare doar la 524 din 1.343: o problemă de decis în C4."},
+    ],
+}
+
+
 sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Versionare și colaborare cu Git</h2>"
    "<p class=\"cheie\">Săptămâna trecută ai adus date. Azi faci în așa fel "
    "încât ele, și codul care le-a adus, să nu se mai piardă.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
-        "Apasă pe un punct ca să vezi ce intră în el."),
+        "Apasă pe un punct ca să vezi ce intră în el.")
+   + nota("Caietul de azi", "<code>03_surse_diverse_si_preprocesare.ipynb</code>. Secțiunile 1–5 sunt datele (nomenclatorul, tabelul regional, migrația curățată de grupuri), secțiunea 6 e Git.", True),
    manual=
    "<h2>Versionare și colaborare cu Git</h2>"
    "<p>Ora de azi are două jumătăți care par fără legătură, dar nu sunt. În "
@@ -158,9 +208,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "fișiere, e un drum. Git păstrează drumul, iar cadrul teoretic spune "
    "încotro duce. Fără primul, nu poți arăta cum ai ajuns; fără al doilea, nu "
    "poți spune de ce ai pornit.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}))
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>03_surse_diverse_si_preprocesare.ipynb</code>. Secțiunile 1–5 sunt datele (nomenclatorul, tabelul regional, migrația curățată de grupuri), secțiunea 6 e Git.", True))
 
 sl("s2", "Cursul", "Unde ai rămas",
    "<h2>De la cursul trecut</h2>"
@@ -224,22 +275,23 @@ sl("s4", "Ce face Git", "Cele trei zone",
                     "comenzile în ordinea potrivită. <code>git status</code> "
                     "nu mută nimic, dar îți spune unde ești.",
          "fisiere": ["colectare.py", "README.md"]})
-   + ix("sortare", "Ce face fiecare comandă", {
-       "id": "c3-sort-zone", "poarta": False,
-       "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.",
-       "elemente": [{"t": "git add", "cos": 0}, {"t": "git commit", "cos": 1},
-                    {"t": "git push", "cos": 2}, {"t": "git pull", "cos": 3},
-                    {"t": "git status", "cos": 4}],
-       "cosuri": [{"t": "Alege ce intră", "d": "din dosar în pregătire"},
-                  {"t": "Scrie în istoric", "d": "din pregătire în istoricul local"},
-                  {"t": "Trimite sus", "d": "din local pe GitHub"},
-                  {"t": "Aduce jos", "d": "de pe GitHub în local"},
-                  {"t": "Spune unde ești", "d": "nu mută nimic"}],
-       "laBine": "Dacă ții minte tabloul ăsta, nu mai trebuie să ții minte "
-                 "comenzile: le deduci.",
-       "explicatie": "<code>git status</code> e singura care nu schimbă nimic, "
-                     "și tocmai de aceea se dă cel mai des. Când nu știi ce se "
-                     "întâmplă, o dai pe ea întâi."}),
+   + ix("prezice", "Fotografia de la add", {
+       "id": "c3-prezice-add", "poarta": False, "fisier": "terminal.sh",
+       "cod": "# ai modificat analiza.py\n"
+              "git add analiza.py\n\n"
+              "# mai schimbi un rand in analiza.py, apoi:\n"
+              "git commit -m \"analiza pe migratie\"",
+       "intrebare": "Ce intră în commit?",
+       "variante": ["Ambele schimbări", "Doar prima, cea de dinainte de add",
+                    "Nimic: fișierul s-a schimbat după add", "Doar a doua"],
+       "corect": 1,
+       "indiciu": "git add face o fotografie a fișierului în clipa în care îl dai, nu un abonament la el.",
+       "laBine": "add e o fotografie, nu un abonament.",
+       "explicatie": "Pregătirea ține fișierul cum era la <code>add</code>. A doua schimbare rămâne în dosar, "
+                     "iar <code>git status</code> arată fișierul de două ori: o dată în pregătire, o dată modificat. "
+                     "Ca să intre și ea, mai dai o dată <code>git add</code>. Asta e și puterea pregătirii: "
+                     "alegi exact ce intră.",
+       "iesire": "[main 4f2a9c1] analiza pe migratie\n 1 file changed"}),
    manual=
    "<h2>Cele trei zone</h2>"
    "<p>Ăsta e modelul mental fără de care Git pare un set de incantații. Nu e "
@@ -258,20 +310,23 @@ sl("s4", "Ce face Git", "Cele trei zone",
    + "<p>Zona de pregătire pare un pas în plus, inutil. Rostul ei e să poți "
      "face un commit cu trei din cele șapte fișiere pe care le-ai atins, "
      "pentru că numai alea trei țin de aceeași schimbare.</p>"
-   + ix("sortare", "Ce face fiecare comandă", {
-       "id": "c3-sort-zone", "poarta": False,
-       "sarcina": "Pune fiecare comandă în dreptul a ceea ce face.",
-       "elemente": [{"t": "git add", "cos": 0}, {"t": "git commit", "cos": 1},
-                    {"t": "git push", "cos": 2}, {"t": "git pull", "cos": 3},
-                    {"t": "git status", "cos": 4}],
-       "cosuri": [{"t": "Alege ce intră", "d": "din dosar în pregătire"},
-                  {"t": "Scrie în istoric", "d": "din pregătire în istoricul local"},
-                  {"t": "Trimite sus", "d": "din local pe GitHub"},
-                  {"t": "Aduce jos", "d": "de pe GitHub în local"},
-                  {"t": "Spune unde ești", "d": "nu mută nimic"}],
-       "laBine": "Dacă ții minte tabloul ăsta, nu mai trebuie să ții minte comenzile.",
-       "explicatie": "<code>git status</code> nu schimbă nimic, deci se poate "
-                     "da oricând, de oricâte ori."}))
+   + ix("prezice", "Fotografia de la add", {
+       "id": "c3-prezice-add", "poarta": False, "fisier": "terminal.sh",
+       "cod": "# ai modificat analiza.py\n"
+              "git add analiza.py\n\n"
+              "# mai schimbi un rand in analiza.py, apoi:\n"
+              "git commit -m \"analiza pe migratie\"",
+       "intrebare": "Ce intră în commit?",
+       "variante": ["Ambele schimbări", "Doar prima, cea de dinainte de add",
+                    "Nimic: fișierul s-a schimbat după add", "Doar a doua"],
+       "corect": 1,
+       "indiciu": "git add face o fotografie a fișierului în clipa în care îl dai, nu un abonament la el.",
+       "laBine": "add e o fotografie, nu un abonament.",
+       "explicatie": "Pregătirea ține fișierul cum era la <code>add</code>. A doua schimbare rămâne în dosar, "
+                     "iar <code>git status</code> arată fișierul de două ori: o dată în pregătire, o dată modificat. "
+                     "Ca să intre și ea, mai dai o dată <code>git add</code>. Asta e și puterea pregătirii: "
+                     "alegi exact ce intră.",
+       "iesire": "[main 4f2a9c1] analiza pe migratie\n 1 file changed"}))
 
 sl("s5", "Ce face Git", "Verificare",
    "<h2>Git sau GitHub</h2>")
@@ -831,7 +886,30 @@ sl("s17", "Cadrul teoretic", "De ce un cadru",
    "<p class=\"cheie\">Datele nu produc întrebări. Teoria produce întrebări, "
    "iar datele răspund la ele sau refuză.</p>"
    "<p>Fără un cadru, un proiect de analiză devine o colecție de grafice "
-   "despre care nimeni nu poate spune dacă sunt importante.</p>")
+   "despre care nimeni nu poate spune dacă sunt importante. Literatura nu se "
+   "scrie la final: intră în flux în locuri precise.</p>"
+   + tabel(["Felul", "Ce îți spune", "Când intră în flux", "La noi"], [
+       ["<strong>Teoria</strong>", "de ce ar fi legate două locuri", "la definirea întrebării", "rețelele de migranți, câmpurile de migrație"],
+       ["<strong>Metoda</strong>", "cum au analizat alții aceeași întrebare", "la analiză și la model", "log SCI explicat prin distanță și graniță"],
+       ["<strong>Documentația</strong>", "cum faci tehnic pasul", "la fiecare pas de cod", "API-ul Eurostat, pandas, networkx"],
+       ["<strong>Datele</strong>", "de unde vin și ce înseamnă", "oriunde le folosești", "articolul care descrie SCI 2026"],
+   ]),
+   manual=
+   "<h2>Încadrarea teoretică</h2>"
+   "<p>Datele nu produc întrebări. Teoria produce întrebări, iar datele răspund "
+   "la ele sau refuză. Fără un cadru, un proiect devine o colecție de grafice "
+   "despre care nimeni nu poate spune dacă sunt importante.</p>"
+   "<p>În fluxul de lucru, literatura apare de patru ori, și fiecare fel răspunde "
+   "la altă întrebare. Teoria vine prima, la definirea întrebării. Metoda vine la "
+   "analiză: dacă alții au răspuns deja la o întrebare asemănătoare, pornești de "
+   "la modelul lor, nu de la zero. Documentația o deschizi la fiecare pas de cod. "
+   "Iar descrierea datelor o citezi oriunde le folosești.</p>"
+   + tabel(["Felul", "Ce îți spune", "Când intră în flux", "La noi"], [
+       ["<strong>Teoria</strong>", "de ce ar fi legate două locuri", "la definirea întrebării", "rețelele de migranți, câmpurile de migrație"],
+       ["<strong>Metoda</strong>", "cum au analizat alții aceeași întrebare", "la analiză și la model", "log SCI explicat prin distanță și graniță"],
+       ["<strong>Documentația</strong>", "cum faci tehnic pasul", "la fiecare pas de cod", "API-ul Eurostat, pandas, networkx"],
+       ["<strong>Datele</strong>", "de unde vin și ce înseamnă", "oriunde le folosești", "articolul care descrie SCI 2026"],
+   ]))
 
 PILONI = [
     ("Economie", "WDI: PIB/locuitor, populație, urbanizare",
@@ -845,49 +923,60 @@ PILONI = [
      "regenerabilelor. Baza clusterizării."),
 ]
 
-sl("s18", "Cadrul teoretic", "Un exemplu lucrat",
-   "<h2>Tranzițiile energetice</h2>"
-   "<p>Literatura găsește trei dimensiuni care revin. Ele devin pilonii; "
-   "întrebarea stă pe toți trei.</p>"
-   + templu("Cum diferă traiectoriile energetice ale țărilor, și de ce?",
-            [(n, u, d.split(".")[0] + ".") for n, u, d in PILONI],
-            "literatura despre tranziții energetice și economia energiei")
-   + "<h3>Întrebările care ies din cadru</h3>"
-   + "<ol>"
-     "<li>Țările cu PIB pe locuitor mai mare reduc mai repede cărbunele și "
-     "cresc regenerabilele?</li>"
-     "<li>Țările cu instituții mai eficiente cresc mai repede eolianul și "
-     "solarul?</li>"
-     "<li>Ce tipuri de sisteme energetice se disting, după mixul de "
-     "electricitate și emisii?</li>"
-     "</ol>",
+sl("s18", "Cadrul teoretic", "Cum cauți literatura",
+   "<h2>Cum cauți literatura</h2>"
+   "<p>Nu cauți „tot ce s-a scris”. Cauți ce ține de întrebarea voastră, pornind "
+   "dintr-un loc sigur.</p>"
+   + ix("ordine", "Pașii căutării", {
+       "id": "c3-ordine-literatura", "poarta": False,
+       "sarcina": "Cum găsești literatura pentru întrebarea echipei. Pune pașii în ordine.",
+       "linii": [
+           "pornești de la un articol-ancoră: Bailey și colegii (2018)",
+           "mergi înapoi: alegi din referințele lui ce ține de întrebarea voastră",
+           "mergi înainte: „Citat de” arată lucrările mai noi",
+           "cauți în engleză, cu cuvintele din titluri și coridorul vostru",
+           "citești rezumatul și metoda, apoi decizi",
+           "notezi lucrarea pe un rând din matricea literaturii"],
+       "indiciu": "Întâi ai nevoie de un punct de plecare sigur; abia apoi lărgești căutarea și, la final, notezi.",
+       "laBine": "Pornești dintr-un loc sigur și lărgești cercul, în loc să cauți la întâmplare.",
+       "explicatie": "Un articol-ancoră bun te scutește de căutarea oarbă: referințele lui sunt trecutul "
+                     "temei, citările lui sunt prezentul. Matricea de la final e cea din care scrieți "
+                     "partea de cadru a raportului."})
+   + "<h3>Matricea literaturii</h3>"
+   + tabel(["Lucrarea", "Întrebarea", "Datele", "Metoda", "Ce luăm"], [
+       ["Bailey și colegii (2018)", "ce măsoară SCI, ce îl explică", "SCI, comitate SUA și țări", "descriptiv, regresii pe distanță", "definiția, scăderea cu distanța, legătura cu migrația"],
+       ["Sandu (2025)", "cum se leagă județele de destinațiile emigrației", "fluxuri NUTS3 × 6 țări, 2011–2021", "regresii, analiză factorială", "reperul cu care comparăm harta diasporei din SCI"],
+   ])
+   + lecturi(["scholar", "semantic", "zotero"], "Unelte"),
    manual=
-   "<h2>Un exemplu lucrat: tranzițiile energetice</h2>"
-   "<p>Exemplul e dintr-o cercetare adevărată, și merită urmărit pas cu pas "
-   "pentru că arată forma pe care trebuie s-o aibă și proiectul vostru.</p>"
-   "<p>Punctul de plecare e literatura: mai mulți autori, care studiază "
-   "tranzițiile energetice și economia energiei, ajung la aceeași structură în "
-   "trei dimensiuni. Nu e o alegere a cercetătorului, e ce spune domeniul.</p>"
-   + templu("Cum diferă traiectoriile energetice ale țărilor, și de ce?",
-            [(n, u, d.split(".")[0] + ".") for n, u, d in PILONI],
-            "literatura despre tranziții energetice și economia energiei")
-   + tabel(["Pilon", "Date și sursă", "Rol teoretic"],
-           [[n, u, d] for n, u, d in PILONI])
-   + "<p>Abia după ce există tabelul ăsta se pot scrie întrebările, și fiecare "
-     "întrebare atinge cel puțin doi piloni:</p>"
-   + "<ol>"
-     "<li><em>Economia și tranziția:</em> țările cu PIB pe locuitor mai mare "
-     "reduc mai repede ponderea cărbunelui și cresc ponderea regenerabilelor?</li>"
-     "<li><em>Instituțiile:</em> țările cu un nivel mai ridicat al eficienței "
-     "guvernamentale au o creștere mai rapidă a energiei eoliene și solare?</li>"
-     "<li><em>Regimurile energetice:</em> ce tipuri de sisteme energetice se "
-     "disting între țări, pe baza mixului de electricitate și a emisiilor?</li>"
-     "</ol>"
-   + nota("Ce se vede în tabelul ăla",
-          "Fiecare rând leagă trei lucruri: un concept, o sursă de date "
-          "concretă, și rolul pe care îl joacă în argument. Dacă unul dintre "
-          "cele trei lipsește, pilonul nu ține: un concept fără date nu se "
-          "poate testa, iar date fără rol teoretic sunt doar coloane."))
+   "<h2>Cum cauți literatura</h2>"
+   "<p>O căutare bună nu începe cu un motor de căutare, ci cu un articol în care "
+   "ai încredere. Pentru proiectul nostru, acela e Bailey și colegii (2018), "
+   "articolul care a introdus indicele SCI. Din el mergi în două direcții: înapoi, "
+   "prin referințele lui, și înainte, prin lucrările care l-au citat de atunci.</p>"
+   + ix("ordine", "Pașii căutării", {
+       "id": "c3-ordine-literatura", "poarta": False,
+       "sarcina": "Cum găsești literatura pentru întrebarea echipei. Pune pașii în ordine.",
+       "linii": [
+           "pornești de la un articol-ancoră: Bailey și colegii (2018)",
+           "mergi înapoi: alegi din referințele lui ce ține de întrebarea voastră",
+           "mergi înainte: „Citat de” arată lucrările mai noi",
+           "cauți în engleză, cu cuvintele din titluri și coridorul vostru",
+           "citești rezumatul și metoda, apoi decizi",
+           "notezi lucrarea pe un rând din matricea literaturii"],
+       "indiciu": "Întâi ai nevoie de un punct de plecare sigur; abia apoi lărgești căutarea și, la final, notezi.",
+       "laBine": "Pornești dintr-un loc sigur și lărgești cercul, în loc să cauți la întâmplare.",
+       "explicatie": "Un articol-ancoră bun te scutește de căutarea oarbă: referințele lui sunt trecutul "
+                     "temei, citările lui sunt prezentul. Matricea de la final e cea din care scrieți "
+                     "partea de cadru a raportului."})
+   + "<p>Fiecare lucrare găsită se notează pe un rând, cu aceleași coloane. Matricea "
+   "asta e lucrul cel mai util pe care îl lasă căutarea: din ea scrieți partea de "
+   "cadru a raportului, și tot ea vă arată ce nu s-a făcut încă.</p>"
+   + tabel(["Lucrarea", "Întrebarea", "Datele", "Metoda", "Ce luăm"], [
+       ["Bailey și colegii (2018)", "ce măsoară SCI, ce îl explică", "SCI, comitate SUA și țări", "descriptiv, regresii pe distanță", "definiția, scăderea cu distanța, legătura cu migrația"],
+       ["Sandu (2025)", "cum se leagă județele de destinațiile emigrației", "fluxuri NUTS3 × 6 țări, 2011–2021", "regresii, analiză factorială", "reperul cu care comparăm harta diasporei din SCI"],
+   ])
+   + lecturi(["scholar", "semantic", "zotero"], "Unelte"))
 
 PILONI_NOI = [
     ("Legăturile", "SCI, Meta: perechi de țări, regiuni, județe",
@@ -899,22 +988,23 @@ PILONI_NOI = [
 ]
 
 sl("s19", "Cadrul teoretic", "Cadrul nostru",
-   "<h2>Aceeași formă, pe datele noastre</h2>"
+   "<h2>Cadrul nostru, ca un templu</h2>"
    + templu("Cât din legăturile dintre locuri se explică prin oamenii care "
             "au migrat între ele?", PILONI_NOI,
-            "sistemele migratorii, rețelele de migranți, Bailey și colegii (2018) despre SCI")
+            "Bailey și colegii (2018, 2020) despre legături; Palloni și colegii (2001) și de Haas (2010) despre rețelele de migranți; Sandu (2005, 2025) despre migrația românească")
    + "<p class=\"cheie\">Distanța explică mult. Migrația, încă ceva. "
-     "Întrebarea interesantă e ce rămâne după amândouă.</p>",
+     "Întrebarea interesantă e ce rămâne după amândouă.</p>"
+   + lecturi(["bailey2018", "palloni2001", "dehaas2010", "sandu2005", "sandu2025", "bailey2020"], "Literatura cadrului"),
    manual=
    "<h2>Cadrul nostru: legături și migrație</h2>"
-   "<p>Aceeași formă ca la tranzițiile energetice, pe datele cursului. "
+   "<p>Un cadru are forma unui templu: întrebarea sus, conceptele cu datele lor ca piloni, literatura ca temelie. "
    "Temelia e literatura despre sistemele migratorii: locurile legate prin "
    "migrație rămân legate și prin informație, bani și vizite, iar rețelele "
    "de migranți fac drumul mai ușor pentru cei care vin după. Indicele SCI "
    "ne lasă să vedem o parte din legăturile astea, măsurate direct.</p>"
    + templu("Cât din legăturile dintre locuri se explică prin oamenii care "
             "au migrat între ele?", PILONI_NOI,
-            "sistemele migratorii, rețelele de migranți, Bailey și colegii (2018) despre SCI")
+            "Bailey și colegii (2018, 2020) despre legături; Palloni și colegii (2001) și de Haas (2010) despre rețelele de migranți; Sandu (2005, 2025) despre migrația românească")
    + "<h3>Întrebările care ies din cadru</h3>"
    "<ol>"
    "<li><em>Migrația:</em> perechile de țări cu mai mulți migranți sunt mai "
@@ -928,7 +1018,8 @@ sl("s19", "Cadrul teoretic", "Cadrul nostru",
    + nota("Unde intrați voi",
           "Fiecare echipă alege un colț din templu: un coridor, de exemplu "
           "România și Italia, sau o țară privită pe regiuni. Puteți adăuga un "
-          "pilon, de exemplu limba sau religia, dacă îl puteți măsura."))
+          "pilon, de exemplu limba sau religia, dacă îl puteți măsura.")
+   + lecturi(["bailey2018", "palloni2001", "dehaas2010", "sandu2005", "sandu2025", "bailey2020"], "Literatura cadrului"))
 
 sl("s20", "Cadrul teoretic", "Scrieți întrebarea voastră",
    "<h2>Întrebarea echipei</h2>"
@@ -979,6 +1070,26 @@ sl("s21", "Datele", "Explorarea inițială",
           "rânduri diferit de ce așteptai, o coloană text care ar trebui să fie "
           "numerică, valori lipsă unde n-ar trebui. Analiza începe la cursul 6; "
           "acum doar verifici că ai ce analiza."))
+
+sl("s21n", "Datele", "Regiunile, într-un tabel",
+   "<h2>Șase fișiere, un tabel</h2>"
+   "<p>Caietul 03 începe cu datele colectate în C2. Înainte de Git, le aduci la "
+   "aceeași formă: nume pentru coduri și un singur tabel pentru toți indicatorii.</p>"
+   + ix("pas", "Nomenclatorul și tabelul regional", PAS_NUTS)
+   + nota("De ce lung, nu lat",
+          "Un rând pe regiune, indicator și nivel. Așa se adaugă un indicator nou fără "
+          "coloane noi, iar lipsurile se numără dintr-o singură privire. În C4 îl întorci "
+          "în formă lată, un rând pe regiune.", True),
+   manual=
+   "<h2>Regiunile, într-un tabel</h2>"
+   "<p>Fiecare fișier din C2 are câte un rând pe regiune, cu un cod NUTS. Numele "
+   "regiunilor vin din nomenclatorul Eurostat GISCO, iar lungimea codului spune "
+   "nivelul: 2 caractere țara, 4 regiunea, 5 județul.</p>"
+   + ix("pas", "Nomenclatorul și tabelul regional", PAS_NUTS)
+   + "<p>Același pas se face și pentru SCI: coloanele în engleză primesc nume care "
+     "spun ce înseamnă în proiect (<code>user_region</code> devine <code>regiune_1</code>, "
+     "<code>scaled_sci</code> devine <code>sci</code>). Sunt 88.804 de rânduri la "
+     "NUTS 2 și 1.803.649 la NUTS 3.</p>")
 
 sl("s22", "Proiectul tău", "Fă-ți depozitul, acum",
    "<h2>Depozitul echipei</h2>"

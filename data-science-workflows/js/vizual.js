@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=55");
+    const m = await import("/data-science-workflows/js/colectare.js?v=59");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -145,19 +145,35 @@ V.cronologie = (gazda, d) => {
             <span class="crn__nume">${esc(p.nume)}</span>
           </button>`).join("")}
       </div>
+      <div class="crn__bara"><button class="btn btn--mic btn--tare" data-rol="joc" type="button">▶ Derulează</button>
+        <span class="crn__prog"><i></i></span></div>
       <div class="crn__i"><h5>${esc(d.titlu || "Apasă pe oricare")}</h5>
         <p>${d.intro || ""}</p></div>
     </div>`;
 
-  const info = gazda.querySelector(".crn__i");
+  const info = gazda.querySelector(".crn__i"), joc = gazda.querySelector('[data-rol="joc"]'), prog = gazda.querySelector(".crn__prog i");
+  let t = null, k = -1;
+  function arata(i){
+    k = i;
+    gazda.querySelectorAll(".crn__p").forEach((x, j) => { x.classList.toggle("on", j === i); x.classList.toggle("trecut", j < i); });
+    const p = P[i];
+    info.innerHTML = `<h5>${p.an} · ${esc(p.nume)}${
+      p.et ? ` <small>${esc(p.et)}</small>` : ""}</h5><p>${p.text || ""}</p>`;
+    prog.style.width = ((i + 1) / P.length * 100) + "%";
+  }
+  /* derularea: un an după altul, ca la proiector; un clic pe un an o oprește */
+  function opreste(){ clearInterval(t); t = null; joc.textContent = k >= P.length - 1 ? "↺ De la capăt" : "▶ Derulează"; }
+  joc.onclick = () => {
+    if (t) return opreste();
+    if (k >= P.length - 1) k = -1;
+    joc.textContent = "❚❚ Pauză";
+    arata(k + 1);
+    t = setInterval(() => { if (k >= P.length - 1) return opreste(); arata(k + 1); }, 2200);
+  };
   gazda.addEventListener("click", e => {
     const b = e.target.closest(".crn__p");
     if (!b) return;
-    gazda.querySelectorAll(".crn__p").forEach(x => x.classList.remove("on"));
-    b.classList.add("on");
-    const p = P[+b.dataset.i];
-    info.innerHTML = `<h5>${p.an} · ${esc(p.nume)}${
-      p.et ? ` <small>${esc(p.et)}</small>` : ""}</h5><p>${p.text || ""}</p>`;
+    opreste(); arata(+b.dataset.i); opreste();
   });
 };
 
@@ -1615,8 +1631,11 @@ V.nor = (gazda, d) => {
       <div class="nor__leg"><span><i class="nor__p nor__p--g"></i>${esc(d.etG || "au graniță comună")}</span>
         <span><i class="nor__p"></i>${esc(d.etN || "nu au")}</span></div>
       <p class="cub__regula nor__txt"></p>
+      ${d.cauta ? `<p class="nor__cauta"><b>Găsește:</b> ${d.cauta.t} <span>Dă clic pe punct.</span></p>` : ""}
     </div>`;
   const svg = gazda.querySelector("svg"), bal = gazda.querySelector(".nor__balon"), txt = gazda.querySelector(".nor__txt");
+  const cauta = gazda.querySelector(".nor__cauta");
+  let gasit = false;
   const L = 78, R = 588, T = 18, B = 290;
   function deseneaza(){
     gazda.querySelectorAll(".nor__sc button").forEach(b => b.classList.toggle("on", +b.dataset.v === vx));
@@ -1648,6 +1667,21 @@ V.nor = (gazda, d) => {
         bal.hidden = false; const rc = svg.getBoundingClientRect(), k = rc.width / 600;
         bal.style.left = Math.min(rc.width - 200, +c.getAttribute("cx") * k + 10) + "px"; bal.style.top = (+c.getAttribute("cy") * k - 10) + "px"; };
       c.onmouseleave = () => { bal.hidden = true; };
+      /* căutarea: cât de departe e punctul ales deasupra dreptei, față de toate */
+      if (d.cauta) c.onclick = () => {
+        if (VX[vx].k !== (d.cauta.v || VX[0].k)){
+          cauta.innerHTML = `<b>Găsește:</b> ${d.cauta.t} <span>Comută întâi pe „${esc((VX.find(x => x.k === (d.cauta.v || VX[0].k)) || VX[0]).et)}”.</span>`; return; }
+        const rez = pts.map(q => q.yy - (a + b * q.xx));
+        const i = +c.dataset.i, ord = rez.map((r, k) => [r, k]).sort((u, w) => w[0] - u[0]);
+        const loc = ord.findIndex(([, k]) => k === i);
+        svg.querySelectorAll("circle").forEach(x => x.classList.remove("nor__p--ales"));
+        c.classList.add("nor__p--ales");
+        if (loc === 0){ gasit = true;
+          cauta.innerHTML = `<b>Găsit: ${esc(pts[i].t)}.</b> ${d.cauta.dupa || ""}`; cauta.classList.add("ok"); }
+        else if (!gasit) cauta.innerHTML = `<b>Găsește:</b> ${d.cauta.t} <span>${esc(pts[i].t)} e ${rez[i] < 0
+          ? "sub linie: mai puțin legată decât ar spune distanța"
+          : `a ${loc + 1}-a din ${pts.length}, cât de sus stă peste linie`}. Caută mai sus, mai departe de linie.</span>`;
+      };
     });
     txt.innerHTML = `<b>r = ${r.toFixed(2).replace(".", ",")}</b>, pe ${n} perechi. ${v.text || ""}`;
   }

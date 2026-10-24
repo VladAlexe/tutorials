@@ -13,7 +13,7 @@
    grafic are legendă cu praguri, și fiecare are o variantă de tabel.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=55";
+import { RADACINA } from "./curs.js?v=59";
 
 const G = {};
 
@@ -90,7 +90,7 @@ async function adu(cale){
    1. Matricea județelor
    ========================================================================== */
 
-G.matrice = async (gazda) => {
+G.matrice = async (gazda, date = {}) => {
   const d = await adu("sci-ro-nuts3.json");
   const { judete, sigle, matrice: M } = d;
   const n = judete.length;
@@ -192,9 +192,31 @@ G.matrice = async (gazda) => {
       : `${judete[i]} → ${judete[j]}<b>${nf.format(v)}</b>`);
   });
   svg.addEventListener("mouseleave", () => { bal.ascunde(); stinge(); });
+  /* căutarea: un pătrat anume, găsit cu ochiul pe culori, nu din listă */
+  const cz = date.cauta;
+  let cutie = null, gasit = false;
+  if (cz){
+    cutie = document.createElement("p");
+    cutie.className = "nor__cauta";
+    cutie.innerHTML = `<b>Găsește:</b> ${cz.t} <span>Dă clic pe pătrat.</span>`;
+    svg.parentNode.insertBefore(cutie, svg);
+  }
+  function verifica(i, j){
+    const a = sigle.indexOf(cz.din);
+    if (i !== a && j !== a){ if (!gasit) cutie.innerHTML = `<b>Găsește:</b> ${cz.t} <span>Caută pe rândul sau pe coloana ${judete[a]}.</span>`; return; }
+    const k = i === a ? j : i, s = sigle[k];
+    if (k === a) return;
+    if (s === cz.tinta){ gasit = true; cutie.classList.add("ok");
+      cutie.innerHTML = `<b>Găsit: ${judete[k]}.</b> ${cz.dupa || ""}`; detaliu(a, false); return; }
+    if (gasit) return;
+    cutie.innerHTML = `<b>Găsește:</b> ${cz.t} <span>${judete[k]}${(cz.vecini || []).includes(s)
+      ? " e vecin cu " + judete[a] + "; caută dincolo de vecini."
+      : `: ${nf.format(M[a][k])}. Există un județ nevecin mai legat.`}</span>`;
+  }
   svg.addEventListener("click", ev => {
     const r = ev.target.closest("rect.c");
     const e = ev.target.closest("text.et");
+    if (r && cz) return verifica(+r.dataset.i, +r.dataset.j);
     if (r) detaliu(+r.dataset.i, true);
     else if (e) detaliu(+e.dataset.i, true);
   });
@@ -228,7 +250,8 @@ G.matrice = async (gazda) => {
   }
 
   /* o deschidere implicită, ca panoul să nu fie gol la prima vedere */
-  detaliu(judete.indexOf("Cluj") >= 0 ? judete.indexOf("Cluj") : 0);
+  /* cu o căutare, nu deschidem rândul Clujului: ar da răspunsul */
+  if (!cz) detaliu(judete.indexOf("Cluj") >= 0 ? judete.indexOf("Cluj") : 0);
 };
 
 /* ==========================================================================
@@ -243,16 +266,18 @@ G.bare = async (gazda, date) => {
 
   const u = cadru(gazda, {
     titlu: "România, către celelalte țări",
-    sub: `Primele ${cate} de țări după conectivitate socială cu România. Indicele e
-      normalizat prin populațiile celor două țări, deci răspunde la întrebarea
-      „cât de probabil e ca doi oameni să fie prieteni", nu la „câți români
-      trăiesc acolo". Cele două ordini nu coincid, și aici e toată lecția.`,
-    unelte: `<button class="gf__bt on" data-vedere="bare" type="button">bare</button>
+    sub: `Primele ${cate} țări după conectivitatea socială cu România. Indicele e
+      împărțit la numărul de utilizatori Facebook din cele două țări, deci răspunde la
+      „cât de probabilă e o prietenie", nu la „câți români trăiesc acolo".
+      ${date.romani ? "Comută ordinea și urmărește cum se mută țările." : "Cele două ordini nu coincid, și aici e toată lecția."}`,
+    unelte: `${date.romani ? `<button class="gf__bt on" data-ord="sci" type="button">după SCI</button>
+             <button class="gf__bt" data-ord="rom" type="button">după câți români trăiesc acolo</button>` : ""}
+             <button class="gf__bt ${date.romani ? "" : "on"}" data-vedere="bare" type="button">bare</button>
              <button class="gf__bt" data-vedere="tabel" type="button">tabel</button>`
   });
 
   const bare = `<div class="brr">
-      ${t.map(x => `<div class="brr__r">
+      ${t.map(x => `<div class="brr__r" data-cod="${x.cod}">
         <span class="brr__n" title="${x.nume}">${x.nume}</span>
         <span class="brr__p"><i style="width:${(x.sci / max * 100).toFixed(1)}%"></i></span>
         <span class="brr__v">${nf.format(x.sci)}</span></div>`).join("")}
@@ -278,6 +303,37 @@ G.bare = async (gazda, date) => {
   u.gf.querySelectorAll("[data-vedere]").forEach(b => b.onclick = () => {
     u.gf.querySelectorAll("[data-vedere]").forEach(x => x.classList.toggle("on", x === b));
     u.corp.innerHTML = b.dataset.vedere === "tabel" ? tabel : bare;
+  });
+
+  /* comutatorul: aceleași țări, reordonate după altă măsură. Rândurile alunecă
+     la noul loc (FLIP), ca să se vadă cine urcă și cine coboară. */
+  if (!date.romani) return;
+  const R = date.romani, rap = new Set(date.raport || Object.keys(R));
+  const locSci = new Map(t.map((x, k) => [x.cod, k + 1]));
+  u.gf.querySelectorAll("[data-ord]").forEach(b => b.onclick = () => {
+    u.gf.querySelectorAll("[data-ord]").forEach(x => x.classList.toggle("on", x === b));
+    const pe = b.dataset.ord;
+    const brr = u.corp.querySelector(".brr"); if (!brr) return;
+    const randuri = [...brr.querySelectorAll(".brr__r")];
+    const inainte = new Map(randuri.map(r => [r.dataset.cod || r.querySelector(".brr__n").title, r.getBoundingClientRect().top]));
+    const val = x => pe === "sci" ? x.sci : (rap.has(x.cod) ? (R[x.cod] || 0) : -1);
+    const ord = t.slice().sort((a, c) => val(c) - val(a));
+    const mx = Math.max(...ord.map(val));
+    brr.innerHTML = ord.map((x, k) => {
+      const v = val(x), dif = locSci.get(x.cod) - (k + 1);
+      const sag = pe === "sci" || v < 0 ? "" : dif > 0 ? `<em class="sus">↑${dif}</em>` : dif < 0 ? `<em class="jos">↓${-dif}</em>` : "";
+      return `<div class="brr__r${v < 0 ? " brr__r--gol" : ""}" data-cod="${x.cod}">
+        <span class="brr__n" title="${x.nume}">${x.nume}${sag}</span>
+        <span class="brr__p"><i style="width:${v < 0 ? 0 : (v / mx * 100).toFixed(1)}%"></i></span>
+        <span class="brr__v">${v < 0 ? "nu raportează" : nf.format(v)}</span></div>`;
+    }).join("");
+    brr.querySelectorAll(".brr__r").forEach(r => {
+      const nume = r.querySelector(".brr__n").title;
+      const de = inainte.get(r.dataset.cod) ?? inainte.get(nume);
+      if (de === undefined) return;
+      const dy = de - r.getBoundingClientRect().top;
+      r.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 650, easing: "cubic-bezier(.2,.7,.2,1)" });
+    });
   });
 };
 

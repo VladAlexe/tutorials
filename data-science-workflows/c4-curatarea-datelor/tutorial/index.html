@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=55">
-<link rel="stylesheet" href="../../css/tutorial.css?v=55">
-<link rel="stylesheet" href="../../css/interactiv.css?v=55">
-<link rel="stylesheet" href="../../css/grafice.css?v=55">
-<link rel="stylesheet" href="../../css/exercitii.css?v=55">
-<link rel="stylesheet" href="../../css/explorator.css?v=55">
-<script src="../../js/tema.js?v=55"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=59">
+<link rel="stylesheet" href="../../css/tutorial.css?v=59">
+<link rel="stylesheet" href="../../css/interactiv.css?v=59">
+<link rel="stylesheet" href="../../css/grafice.css?v=59">
+<link rel="stylesheet" href="../../css/exercitii.css?v=59">
+<link rel="stylesheet" href="../../css/explorator.css?v=59">
+<script src="../../js/tema.js?v=59"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 4 · Manual"></div>
@@ -43,10 +43,10 @@
 
 <section class="tut__s" id="s1">
 <span class="tut__nr">01 · Cursul</span>
-<h2>Curățarea datelor</h2><p>Ora are două părți. Prima duce mai departe Git-ul de săptămâna trecută, cu comenzile care apar abia când lucrezi serios: cum scoți un fișier din pregătire, cum anulezi un commit, cum ștergi o ramură după ce ai îmbinat-o. A doua e despre curățarea datelor, adică despre ce faci cu ce ai colectat înainte să te uiți la rezultate.</p><div class="ix" data-ix="etape">
-  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
-  <div class="ix__corp"><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Git, în practică", "unde": "azi", "text": "Staging, commit, anulări, ramuri. Comenzile de care chiar ai nevoie."}, {"nume": "De ce curățăm", "unde": "azi", "text": "Cât din timpul unui proiect se duce aici, și de ce."}, {"nume": "Cele șase etape", "unde": "azi", "text": "De la profilare la validare finală, în ordine."}, {"nume": "Pe datele noastre", "unde": "azi", "text": "Fiecare etapă, cu cod, pe migrația colectată la cursul 2."}, {"nume": "Două direcții, un rând", "unde": "azi", "text": "Migrația pusă în forma SCI-ului: o pereche pe rând."}, {"nume": "Dicționarul de date", "unde": "azi", "text": "Ce ați schimbat, scris astfel încât să se poată reface."}]}</script></div>
-</div>
+<h2>Curățarea datelor</h2><p>Ora are două părți. Prima duce mai departe Git-ul de săptămâna trecută, cu comenzile care apar abia când lucrezi serios: cum scoți un fișier din pregătire, cum anulezi un commit, cum ștergi o ramură după ce ai îmbinat-o. A doua e despre curățarea datelor, adică despre ce faci cu ce ai colectat înainte să te uiți la rezultate.</p><div class="ix" data-ix="agenda">
+  <div class="ix__cap"><span class="ix__fel">Cuprins</span><span class="ix__t">Ora de azi</span></div>
+  <div class="ix__corp"><script type="application/json">{"static": true, "titlu": "Ora de azi", "etape": [{"nume": "Git, în practică", "unde": "azi", "text": "Staging, commit, anulări, ramuri. Comenzile de care chiar ai nevoie."}, {"nume": "De ce curățăm", "unde": "azi", "text": "Cât din timpul unui proiect se duce aici, și de ce."}, {"nume": "Cele șase etape", "unde": "azi", "text": "De la profilare la validare finală, în ordine."}, {"nume": "Pe datele noastre", "unde": "azi", "text": "Fiecare etapă, cu cod, pe migrația colectată la cursul 2."}, {"nume": "Două direcții, un rând", "unde": "azi", "text": "Migrația pusă în forma SCI-ului: o pereche pe rând."}, {"nume": "Dicționarul de date", "unde": "azi", "text": "Ce ați schimbat, scris astfel încât să se poată reface."}]}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">Caietul de azi</div><p><code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 1–3 și 6–7: calitatea, acoperirea, codurile care mint.</p></div>
 
 </section>
 
@@ -63,7 +63,7 @@
 <span class="tut__nr">03 · Git în practică</span>
 <h2>Cele patru locuri și drumurile dintre ele</h2><div class="ix" data-ix="flux">
   <div class="ix__cap"><span class="ix__fel">Vezi cum circulă</span><span class="ix__t">Drumul unei schimbări</span></div>
-  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Urmărește o schimbare”", "intro": "Dus: add, commit, push. Întors: fetch și merge, adică pull.", "buton": "Urmărește o schimbare", "dus": "add → commit → push", "intors": "pull: fetch, apoi merge", "gata": "ce ai scris tu e la toată lumea, și ce au scris ei e la tine", "statii": [{"n": "Dosarul de lucru", "et": "editezi", "ic": "📝", "c": "ceas", "d": "Fișierele așa cum sunt acum pe disc. Git le vede schimbate, dar nu le urmărește încă."}, {"n": "Pregătire", "et": "git add", "ic": "📥", "c": "salvie", "d": "Ce ai ales să intre în următorul commit. Poți alege trei fișiere din șapte."}, {"n": "Istoric local", "et": "git commit", "ic": "📦", "c": "accent", "d": "Scris definitiv, pe laptopul tău. Până aici nu ai avut nevoie de internet."}, {"n": "GitHub", "et": "git push", "ic": "☁", "c": "text-2", "d": "Copia de pe internet. Abia acum munca ta există în două locuri."}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"titlu": "Apasă „Urmărește o schimbare”", "intai": {"q": "Colegul tău a urcat un commit pe GitHub azi-dimineață. Tu ai lucrat pe laptop, ai făcut commit și dai git push. Ce se întâmplă?", "variante": ["Merge: fiecare urcă ce are", "E refuzat: întâi aduci commit-ul lui cu git pull", "Commit-ul colegului se șterge"], "corect": 1, "dupa": "GitHub are un commit pe care laptopul tău nu-l are. Ca să nu-l piardă, refuză push-ul până îl aduci și tu: drumul întors, pull."}, "intro": "Dus: add, commit, push. Întors: fetch și merge, adică pull.", "buton": "Urmărește o schimbare", "dus": "add → commit → push", "intors": "pull: fetch, apoi merge", "gata": "ce ai scris tu e la toată lumea, și ce au scris ei e la tine", "statii": [{"n": "Dosarul de lucru", "et": "editezi", "ic": "📝", "c": "ceas", "d": "Fișierele așa cum sunt acum pe disc. Git le vede schimbate, dar nu le urmărește încă."}, {"n": "Pregătire", "et": "git add", "ic": "📥", "c": "salvie", "d": "Ce ai ales să intre în următorul commit. Poți alege trei fișiere din șapte."}, {"n": "Istoric local", "et": "git commit", "ic": "📦", "c": "accent", "d": "Scris definitiv, pe laptopul tău. Până aici nu ai avut nevoie de internet."}, {"n": "GitHub", "et": "git push", "ic": "☁", "c": "text-2", "d": "Copia de pe internet. Abia acum munca ta există în două locuri."}]}</script></div>
 </div>
 
 </section>
@@ -79,9 +79,9 @@
 
 <section class="tut__s" id="s5">
 <span class="tut__nr">05 · Git în practică</span>
-<h2>Anulări</h2><p>Git are faima că e greu tocmai pentru că are patru moduri de a „da înapoi”, iar numele lor nu spun de la sine care ce face.</p><div class="ix" data-ix="sortare">
-  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce comandă, în ce situație</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c4-sort-undo", "poarta": false, "sarcina": "Potrivește situația cu comanda care o repară.", "elemente": [{"t": "git restore fisier", "cos": 0}, {"t": "git restore --staged fisier", "cos": 1}, {"t": "git revert <id>", "cos": 2}, {"t": "git checkout <id>", "cos": 3}], "cosuri": [{"t": "Am stricat un fișier", "d": "și vreau versiunea din ultimul commit"}, {"t": "Am dat add din greșeală", "d": "vreau doar să-l scot din pregătire"}, {"t": "Un commit vechi era greșit", "d": "vreau să-l anulez, dar să rămână urma"}, {"t": "Vreau doar să mă uit", "d": "cum arăta proiectul atunci"}], "laBine": "<code>revert</code> nu șterge istoria.", "explicatie": "<code>reset --hard</code> nu e în listă pentru că aruncă munca fără să întrebe."}</script></div>
+<h2>Anulări</h2><p>Git are faima că e greu tocmai pentru că are patru moduri de a „da înapoi”, iar numele lor nu spun de la sine care ce face.</p><div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Ce afișează?</span><span class="ix__t">Repară fără să strici</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-prezice-undo", "poarta": false, "fisier": "terminal.sh", "cod": "# commit-ul a3f9c21 a stricat tabelul curat,\n# iar colegii l-au tras deja la ei\ngit ??? a3f9c21", "intrebare": "Ce pui în loc de ???, ca să repari fără să strici istoricul colegilor?", "variante": ["reset --hard", "revert", "restore", "checkout"], "corect": 1, "indiciu": "Îți trebuie o comandă care lucrează pe commit-uri și adaugă ceva, nu șterge.", "laBine": "revert anulează adăugând, nu ștergând.", "explicatie": "<code>revert</code> face un commit nou care face pe dos; istoria rămâne, iar colegii trag doar un commit în plus. <code>reset --hard</code> rescrie istoria și strică depozitul celorlalți. <code>restore</code> lucrează pe fișiere (un fișier stricat, sau un <code>add</code> greșit cu <code>--staged</code>), iar <code>checkout</code> doar te plimbă prin istorie, ca să te uiți.", "iesire": "[main 7d10e4b] Revert \"curatare: tabel final\"\n 1 file changed"}</script></div>
 </div><div class="nota"><div class="nota__et">Regula simplă</div><p>Dacă greșeala e doar la tine, pe laptop, poți folosi orice. Dacă a ajuns pe GitHub și altcineva a luat-o, singura variantă politicoasă e <code>revert</code>.</p></div>
 
 </section>
@@ -103,6 +103,9 @@
 <h2>Cele șase etape</h2><p>Curățarea nu e o listă de trucuri, e un drum cu o ordine. Fiecare etapă presupune ce s-a aflat la cea dinainte.</p><div class="ix" data-ix="etape">
   <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Harta curățării</span></div>
   <div class="ix__corp"><script type="application/json">{"titlu": "Șase etape, în ordine", "intro": "Apasă pe oricare.", "etape": [{"nume": "1. Profilare", "unde": "înțelegi ce ai", "text": "Verifici tipurile, distribuțiile, lipsurile, valorile suspecte. Identifici erorile evidente și problemele de structură. Nu schimbi nimic încă."}, {"nume": "2. Integrare și standardizare", "unde": "aliniezi surse", "text": "Aduci sursele diferite la aceeași formă: etichete, formate, unități, tipuri. Corectezi textul, codurile și convențiile."}, {"nume": "3. Curățare de bază", "unde": "scoți ce nu trebuie", "text": "Elimini ce e irelevant sau redundant, scoți duplicatele, repari erorile structurale și categoriile incoerente."}, {"nume": "4. Lipsuri și anomalii", "unde": "decizi", "text": "Analizezi lipsurile și hotărăști ce faci cu ele. Te uiți la valorile extreme sau imposibile. Verifici regulile logice."}, {"nume": "5. Transformări", "unde": "pregătești analiza", "text": "Reorganizezi structura (long sau wide), faci agregări și variabile noi, aplici scalări, completezi cu informații externe."}, {"nume": "6. Validare și documentare", "unde": "închizi", "text": "Verifici cheile unice și coerența. Compari statisticile înainte și după. Notezi transformările, versiunile, și dicționarul de date."}]}</script></div>
+</div><div class="ix" data-ix="ordine">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pune-le în ordine</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-ordine-curatare", "poarta": false, "sarcina": "Șase etape, amestecate. Pune-le în ordinea în care le faci. Dacă greșești, afli ce s-ar strica.", "linii": ["Profilare: te uiți, nu schimbi nimic", "Integrare: aduci codurile la aceeași formă (EL devine GR)", "Curățare de bază: scoți duplicatele", "Lipsuri și anomalii: decizi ce faci cu ele", "Transformări: pivot, rate, variabile noi", "Validare: compari înainte și după, notezi deciziile"], "consecinte": {"0": "Profilarea vine prima: fără ea decizi pe ghicite. Nu știi încă câte lipsuri ai, nici că NA e Namibia.", "1": "Codurile se aliniază înainte de duplicate: cât timp Grecia e și EL, și GR, dublura nu se vede.", "2": "Duplicatele ies înainte de lipsuri: altfel media cu care completezi e calculată pe rânduri numărate de două ori.", "3": "Lipsurile se decid înainte de transformări: după un pivot, un gol devine goluri în mai multe coloane și nu mai știi de unde vin.", "4": "Transformările vin după ce datele sunt curate: altfel calculezi rate pe valori pe care urmează să le schimbi.", "5": "Validarea închide drumul: compară tabelul final cu cel de la început. Mai devreme, n-are ce compara."}, "indiciu": "Întreabă-te la fiecare etapă: ce trebuie să știu deja ca s-o pot face?", "laBine": "Fiecare etapă se sprijină pe ce ai aflat la cea dinainte.", "explicatie": "Ordinea nu e o convenție: fiecare etapă presupune ce s-a aflat la cea dinainte. Sărită, profilarea face ca toate deciziile de mai târziu să fie luate pe ghicite."}</script></div>
 </div><div class="nota"><div class="nota__et">De ce se sare peste prima</div><p>Pentru că nu produce nimic. După o oră de profilare, fișierul arată exact la fel. Dar fără ea, toate deciziile de mai târziu se iau pe ghicite, iar unele nu se mai pot întoarce.</p></div>
 
 </section>
@@ -197,7 +200,7 @@ extreme = d[d["sci"] &gt; prag]</code></pre><p>Cifra 1,5 nu vine de nicăieri an
 <span class="tut__nr">16 · Transformări</span>
 <h2>Două direcții, un rând</h2><p>SCI-ul e simetric: o valoare pe pereche de țări. Migrația are sens: un rând pentru românii din Italia, alt rând pentru italienii din România. Ca să le punem în același tabel, aducem cele două direcții pe același rând, cu două merge-uri: unul pentru fiecare direcție.</p><div class="ix" data-ix="directii">
   <div class="ix__cap"><span class="ix__fel">Vezi cum se desface</span><span class="ix__t">Românii din Italia și italienii din România</span></div>
-  <div class="ix__corp"><script type="application/json">{"randuri": [{"a": "RO", "b": "IT", "ab": 1073196, "ba": 14856}, {"a": "RO", "b": "HU", "ab": 15740, "ba": 4879}, {"a": "PL", "b": "DE", "ab": 741784, "ba": null}], "t0": "Migrația are sens: românii din Italia sunt un rând, italienii din România sunt alt rând. SCI-ul are un singur rând pe pereche.", "t1": "Cele două direcții stau acum pe același rând, ca la SCI. Germanii din Polonia lipsesc: Polonia nu raportează.", "t2": "Suma. La Polonia–Germania iese lipsă, nu 741.784: nu știm câți germani sunt în Polonia, deci nu știm totalul."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"randuri": [{"a": "RO", "b": "IT", "ab": 1073196, "ba": 14856}, {"a": "RO", "b": "HU", "ab": 15740, "ba": 4879}, {"a": "PL", "b": "DE", "ab": 741784, "ba": null}], "t0": "Migrația are sens: românii din Italia sunt un rând, italienii din România sunt alt rând. SCI-ul are un singur rând pe pereche.", "t1": "Cele două direcții stau acum pe același rând, ca la SCI. Germanii din Polonia lipsesc: Polonia nu raportează.", "t2": "Suma. La Polonia–Germania iese lipsă, nu 741.784: nu știm câți germani sunt în Polonia, deci nu știm totalul.", "intai": {"q": "Polonezii din Germania: 741.784. Germanii din Polonia: Polonia nu raportează. Câți migranți sunt, în total, între cele două țări?", "variante": ["741.784", "741.784 plus o estimare", "Nu se poate spune"], "corect": 2, "dupa": "O direcție lipsește, deci lipsește și suma. Zero ar fi o afirmație falsă („nu e niciun german în Polonia”), iar o estimare ar fi o decizie de scris în jurnal, nu un calcul."}}</script></div>
 </div><pre><code>din_1_in_2 = migratie.rename(columns={"citizen": "tara_1", "geo": "tara_2", "persoane": "din_1_in_2"})
 din_2_in_1 = migratie.rename(columns={"citizen": "tara_2", "geo": "tara_1", "persoane": "din_2_in_1"})
 
@@ -242,18 +245,18 @@ tari["migranti"] = tari["din_1_in_2"] + tari["din_2_in_1"]</code></pre><p>Codul 
 
 <section class="tut__s" id="s21">
 <span class="tut__nr">21 · Mai departe</span>
-<h2>Cursul 5: agregare și baze de date</h2><ul><li>îmbinarea surselor pe o cheie comună: SCI, migrație, distanță</li><li>la date diadice, două îmbinări: una pentru fiecare capăt</li><li>unitatea de analiză: la ce nivel răspunzi la întrebare</li><li>de ce un tabel de 31.684 de rânduri vrea o bază de date</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de curățare, rulat și urcat, cu datele curate în <code>date/curat/</code>. Plus dicționarul de date, fie și scurt, în depozit.</p></div>
+<h2>Cursul 5: agregare și baze de date</h2><ul><li>îmbinarea surselor pe o cheie comună: SCI, migrație, distanță</li><li>la date diadice, două îmbinări: una pentru fiecare capăt</li><li>unitatea de analiză: la ce nivel răspunzi la întrebare</li><li>de ce un tabel de 31.684 de rânduri vrea o bază de date</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de curățare, rulat și urcat, cu datele curate în <code>date/curat/</code>. Plus dicționarul de date, fie și scurt, în depozit.</p></div><div class="surse"><div class="surse__et">Documentația curățării</div><ul><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener">pandas: date lipsă</a><span>NaN, <code>isna</code>, <code>dropna</code>, <code>fillna</code> și ce face fiecare</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/reshaping.html" target="_blank" rel="noopener">pandas: lung și lat</a><span><code>pivot</code>, <code>melt</code>, cu desene</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html" target="_blank" rel="noopener">pandas: duplicate</a><span><code>duplicated</code> și <code>subset</code></span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html" target="_blank" rel="noopener">pandas: read_csv</a><span><code>keep_default_na</code> și <code>na_values</code>, capcana Namibiei</span></li><li><a class="surse__a" href="https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table" target="_blank" rel="noopener">Eurostat: migr_pop1ctz</a><span>tabelul în browser, cu notele și semnele (flags) fiecărei valori</span></li></ul></div>
 
 </section>
 </article>
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=55"></script>
+<script type="module" src="../../js/antet.js?v=59"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=55";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=55";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=55";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=59";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=59";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=59";
 pornesteIx();
 pornesteVerif("c4");
 pornesteTut("c4");

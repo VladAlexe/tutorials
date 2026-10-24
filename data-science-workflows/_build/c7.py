@@ -16,7 +16,8 @@ Rulare:  python _build/c7.py
 import json
 import math
 
-from comun import Lectie, ix, verif, tabel, nota, RAD
+from literatura import lecturi
+from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
 L = Lectie(7, "c7-variabile-si-model", "Variabile derivate și model",
            "Construirea variabilelor, transformarea și selecția lor, apoi un "
@@ -55,9 +56,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Variabile derivate și model</h2>"
    "<p class=\"cheie\">EDA a arătat tipare. Azi le punem pe toate în același "
    "model, ca să vedem ce rămâne din fiecare.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}),
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>07_variabile_derivate_si_model.ipynb</code>.", True),
    manual=
    "<h2>Variabile derivate și model</h2>"
    "<p>La cursul 6 am văzut că SCI-ul scade cu distanța, crește cu migrația "
@@ -68,9 +70,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<p>Înainte de model vine ingineria variabilelor: ce construiești, ce "
    "transformi, ce păstrezi. E partea în care se iau cele mai multe decizii, "
    "și cele mai multe nu se văd în rezultatul final.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}))
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>07_variabile_derivate_si_model.ipynb</code>.", True))
 
 
 # ===========================================================================
@@ -317,10 +320,12 @@ MODELE = {
               "văzut la EDA, era în mare parte distanță."),
     ],
 }
+MODELE["intai"] = {"q": "În M1 e doar distanța. În M2 intră și numărul de migranți. Ce se întâmplă cu efectul distanței?", "variante": ["Crește", "Scade", "Rămâne la fel"], "corect": 1, "dupa": "Țările apropiate au și mai mulți migranți între ele. Singură, distanța lua asupra ei și efectul migrației; cu migrația în model, pierde partea aceea."}
 
 sl("s7", "Modelul", "Patru modele",
    "<h2>O variabilă în plus, de fiecare dată</h2>"
-   + ix("modele", "Coeficienții și R², model cu model", MODELE),
+   + ix("modele", "Coeficienții și R², model cu model", MODELE)
+   + lecturi(["bailey2020", "aronow2015", "dehaas2010"], "Modelul, în literatură"),
    manual=
    "<h2>Patru modele, pas cu pas</h2>"
    "<p>Regresia liniară pe logaritmi (OLS) estimează cât se schimbă "
@@ -333,7 +338,8 @@ sl("s7", "Modelul", "Patru modele",
      "micșorează la o treime. Asta nu înseamnă că distanța nu contează; "
      "înseamnă că o parte din efectul ei trecea prin migrație: țările "
      "apropiate au mai mulți migranți între ele, iar migranții țin "
-     "legăturile.</p>")
+     "legăturile.</p>"
+   + lecturi(["bailey2020", "aronow2015", "dehaas2010"], "Modelul, în literatură"))
 
 sl("s8", "Modelul", "Modelul, în cod",
    "<h2>O formulă, un rând</h2>"
@@ -578,7 +584,12 @@ sl("s14", "Mai departe", "Până data viitoare",
    "</ul>"
    + nota("De făcut până atunci",
           "Modelul și reziduurile în depozit, plus cele trei propoziții despre "
-          "ce putem spune.", True))
+          "ce putem spune.", True)
+   + surse("Documentația modelului", [
+       ("statsmodels: formule", "https://www.statsmodels.org/stable/example_formulas.html", "<code>smf.ols(\"log_sci ~ log_distanta\", data=d)</code>, pas cu pas"),
+       ("statsmodels: regresia liniară", "https://www.statsmodels.org/stable/regression.html", "ce înseamnă fiecare rând din <code>summary()</code>"),
+       ("geopandas: dissolve și sjoin", "https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html", "lipirea județelor în țări, pentru graniță"),
+   ]))
 
 
 if __name__ == "__main__":

@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/sistem.css?v=55">
-<script src="js/tema.js?v=55"></script>
+<link rel="stylesheet" href="css/sistem.css?v=59">
+<script src="js/tema.js?v=59"></script>
 <style>
   /* Pagina cursului: o coloană, ca la Ingineria AI. Sus cursul, apoi linia
      lecțiilor, apoi lista lor, una sub alta. Toate lecțiile sunt egale: nu
@@ -104,12 +104,15 @@
         <div>
           <p>Lucrați în echipe, pe aceleași date, cu întrebări diferite. Sursa principală
           e <strong>Social Connectedness Index</strong>, produs de Data for Good at Meta:
-          pentru fiecare pereche de locuri, cât de probabil e ca doi oameni de acolo să fie
-          prieteni pe Facebook. A doua sursă e <strong>migrația</strong>, de la Eurostat:
+          pentru fiecare pereche de locuri, cât de probabilă e o prietenie pe Facebook între doi oameni de acolo,
+          față de alte perechi de locuri. A doua sursă e <strong>migrația</strong>, de la Eurostat:
           câți cetățeni ai fiecărei țări trăiesc în fiecare altă țară.</p>
           <p>Datele sunt <em>diadice</em>: un rând nu descrie un loc, ci o relație între
           două locuri. Rezultatul final e un depozit pe GitHub în care se vede tot drumul,
           de la întrebare la concluzie.</p>
+          <p>Literatura pe care se sprijină proiectul, de la datele SCI la teoria rețelelor
+          de migranți, e într-o singură pagină: <a class="leg" href="lecturi/">Literatura proiectului</a>.
+          Harta legăturilor, pe țări, regiuni și județe: <a class="leg" href="explorator/">Exploratorul</a>.</p>
         </div>
         <div class="nota nota--roza">
           <div class="nota__et">Prima întrebare</div>
@@ -130,7 +133,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE } from "./js/curs.js?v=55";
+import { LECTII, NOTARE } from "./js/curs.js?v=59";
 
 /* Ce lecții sunt deschise. Profesorul și vizitatorul fără cont le au pe toate.
    Studentul are lecțiile predate grupei, plus orice lecție în care a lucrat deja.
@@ -147,7 +150,7 @@ deseneaza(new Set(memorat ? [...memorat, ...atinse] : toate), !!memorat);
 
 const peTermen = (pr, ms) => Promise.race([pr, new Promise((_, r) => setTimeout(() => r(new Error("timp")), ms))]);
 try {
-  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=55"), import("./js/ora.js?v=55")]);
+  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=59"), import("./js/ora.js?v=59")]);
   const p = await peTermen(profil(), 8000);
   if (p.autentificat && !p.profesorReal){
     const pred = await peTermen(O.predate(), 8000);
@@ -194,7 +197,7 @@ function deseneaza(deschise, student){
 document.getElementById("notare").innerHTML = NOTARE.componente.map(c => `
   <div class="punct"><b>${c.puncte}p</b><span>${c.nume}</span><p>${c.d}</p></div>`).join("");
 </script>
-<script type="module" src="js/antet.js?v=55"></script>
-<script type="module" src="js/subsol.js?v=55"></script>
+<script type="module" src="js/antet.js?v=59"></script>
+<script type="module" src="js/subsol.js?v=59"></script>
 </body>
 </html>

@@ -20,7 +20,7 @@ Ce am adăugat peste prezentare, și de ce:
 Rulare:  python _build/c5.py
 """
 
-from comun import Lectie, ix, verif, tabel, nota
+from comun import Lectie, ix, verif, tabel, nota, surse
 
 L = Lectie(5, "c5-agregare-si-baze-de-date", "Agregare și baze de date",
            "Unirea tabelelor în pandas, tipurile de join, capcanele lor, "
@@ -200,10 +200,11 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<h2>Agregare și baze de date</h2>"
    "<p class=\"cheie\">Ai mai multe tabele curate. Azi devin unul singur, "
    "și pleacă dintr-un folder într-un loc din care se poate întreba.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
-        "Prima jumătate e pandas, a doua e SQL."),
+        "Prima jumătate e pandas, a doua e SQL.")
+   + nota("Caietul de azi", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 4–5 și 8: tabelul lat al regiunilor, perechile și îmbinările. Partea de baze de date nu are caiet: se face pe site și în Neon.", True),
    manual=
    "<h2>Agregare și baze de date</h2>"
    "<p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, "
@@ -218,9 +219,10 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<p>A doua jumătate mută rezultatul dintr-un CSV într-o bază de date "
    "Postgres. Nu pentru că e mai modern, ci pentru că din momentul în care "
    "lucrați mai mulți pe aceleași date, fișierul devine problema.</p>"
-   + ix("etape", "Agenda",
-        {"titlu": "Ora de azi", "intro": "Apasă pe oricare.",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]}))
+   + ix("agenda", "Ora de azi",
+        {"static": True, "titlu": "Ora de azi",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul de azi", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 4–5 și 8: tabelul lat al regiunilor, perechile și îmbinările. Partea de baze de date nu are caiet: se face pe site și în Neon.", True))
 
 
 sl("s2", "Cursul", "De ce nu ajunge un fișier",
@@ -321,7 +323,7 @@ sl("s4", "Unirea tabelelor", "Ce iese din fiecare fel",
    "<p>Două tabele mici, cu o cheie comună și câte una care nu se potrivește. "
    "Apasă pe fiecare fel de îmbinare și uită-te ce rămâne jos.</p>"
    + ix("imbinare", "Pe două tabele adevărate", {
-       "id": "c5-imbinare-feluri", "cheie": "cod",
+       "id": "c5-imbinare-feluri", "intai": {"q": "În stânga: MD, AT, DE, HU. În dreapta: AT, DE, HU, IT. Câte rânduri dă un inner join?", "variante": ["4", "3", "5", "8"], "corect": 1, "dupa": "Inner păstrează doar cheile care sunt în amândouă: AT, DE, HU. Moldova și Italia cad, fără nicio eroare."}, "cheie": "cod",
        "stanga": STANGA, "dreapta": DREAPTA, "numeRez": "rezultat",
        "sarcina": "Încearcă-le pe toate cinci. Urmărește două lucruri: câte "
                   "rânduri ies, și unde apar celule goale.",
@@ -340,7 +342,7 @@ sl("s4", "Unirea tabelelor", "Ce iese din fiecare fel",
    "dreapta (IT, pentru că în stânga am pus doar patru parteneri ai "
    "României).</p>"
    + ix("imbinare", "Pe două tabele adevărate", {
-       "id": "c5-imbinare-feluri", "cheie": "cod",
+       "id": "c5-imbinare-feluri", "intai": {"q": "În stânga: MD, AT, DE, HU. În dreapta: AT, DE, HU, IT. Câte rânduri dă un inner join?", "variante": ["4", "3", "5", "8"], "corect": 1, "dupa": "Inner păstrează doar cheile care sunt în amândouă: AT, DE, HU. Moldova și Italia cad, fără nicio eroare."}, "cheie": "cod",
        "stanga": STANGA, "dreapta": DREAPTA, "numeRez": "rezultat",
        "sarcina": "Încearcă-le pe toate cinci.",
        "explicatii": EXPLIC})
@@ -410,7 +412,7 @@ sl("s6", "Unirea tabelelor", "Când rândurile se înmulțesc",
    "<p>Același tabel <code>sci</code>, dar în dreapta populația e pe ani. "
    "Patru rânduri în stânga, patru în dreapta. Apasă <code>left</code>.</p>"
    + ix("imbinare", "Patru plus patru nu dau patru", {
-       "id": "c5-imbinare-explozie", "poarta": False, "cheie": "cod",
+       "id": "c5-imbinare-explozie", "intai": {"q": "În stânga sunt 4 țări. În dreapta, Moldova apare de trei ori (trei ani). Câte rânduri dă un left join?", "variante": ["4", "6", "12"], "corect": 1, "dupa": "Moldova din stânga se potrivește cu toate trei rândurile ei din dreapta: un rând devine trei. 4 − 1 + 3 = 6."}, "poarta": False, "cheie": "cod",
        "stanga": STANGA, "dreapta": DUBLE, "numeRez": "rezultat",
        "feluri": ["inner", "left"],
        "sarcina": "Numără rândurile care ies. Erau patru în stânga.",
@@ -450,7 +452,7 @@ sl("s6", "Unirea tabelelor", "Când rândurile se înmulțesc",
    "calculate după aceea sunt ponderate greșit, fiindcă unele țări apar de "
    "mai multe ori.</p>"
    + ix("imbinare", "Patru plus patru nu dau patru", {
-       "id": "c5-imbinare-explozie", "poarta": False, "cheie": "cod",
+       "id": "c5-imbinare-explozie", "intai": {"q": "În stânga sunt 4 țări. În dreapta, Moldova apare de trei ori (trei ani). Câte rânduri dă un left join?", "variante": ["4", "6", "12"], "corect": 1, "dupa": "Moldova din stânga se potrivește cu toate trei rândurile ei din dreapta: un rând devine trei. 4 − 1 + 3 = 6."}, "poarta": False, "cheie": "cod",
        "stanga": STANGA, "dreapta": DUBLE, "numeRez": "rezultat",
        "feluri": ["inner", "left"],
        "sarcina": "Numără rândurile care ies.",
@@ -698,7 +700,7 @@ sl("s11", "Baze de date", "Ce e Neon",
    "<p>Neon e PostgreSQL obișnuit, pus într-un loc în care nu trebuie să-l "
    "instalezi și nu trebuie să-l ții pornit.</p>"
    + ix("flux", "Ce se întâmplă când pui o întrebare", {
-       "id": "c5-flux-neon",
+       "id": "c5-flux-neon", "intai": {"q": "Prima interogare de azi durează o secundă. A doua, o zecime. De ce?", "variante": ["Baza a ținut minte rezultatul", "Partea care calculează era oprită și s-a trezit la prima cerere", "Internetul era mai lent la început"], "corect": 1, "dupa": "Neon oprește partea care calculează (compute) când nu o folosește nimeni; datele (storage) rămân pe loc. Prima cerere o pornește, de aici secunda în plus."},
        "buton": "Trimite o interogare",
        "dus": "întrebarea pleacă", "intors": "rândurile se întorc",
        "gata": "gata, ai rezultatul",
@@ -742,7 +744,7 @@ sl("s11", "Baze de date", "Ce e Neon",
    "spatele primelor două.</li>"
    "</ul>"
    + ix("flux", "Ce se întâmplă când pui o întrebare", {
-       "id": "c5-flux-neon",
+       "id": "c5-flux-neon", "intai": {"q": "Prima interogare de azi durează o secundă. A doua, o zecime. De ce?", "variante": ["Baza a ținut minte rezultatul", "Partea care calculează era oprită și s-a trezit la prima cerere", "Internetul era mai lent la început"], "corect": 1, "dupa": "Neon oprește partea care calculează (compute) când nu o folosește nimeni; datele (storage) rămân pe loc. Prima cerere o pornește, de aici secunda în plus."},
        "buton": "Trimite o interogare",
        "dus": "întrebarea pleacă", "intors": "rândurile se întorc",
        "gata": "gata, ai rezultatul",
@@ -763,28 +765,24 @@ sl("s11", "Baze de date", "Ce e Neon",
 
 sl("s12", "Baze de date", "Postgres sau MySQL",
    "<h2>Două baze, două profiluri</h2>"
-   + ix("sortare", "Care bază, pentru ce", {
-       "id": "c5-sort-baze", "poarta": False,
-       "sarcina": "Pune fiecare situație la baza care i se potrivește mai bine.",
-       "elemente": [
-           {"t": "Date geografice, cu PostGIS", "cos": 0},
-           {"t": "Analitică pe date eterogene, cu JSONB", "cos": 0},
-           {"t": "Magazin online cu trafic mare, multe citiri", "cos": 1},
-           {"t": "Aplicație web simplă, CRUD", "cos": 1},
-           {"t": "Căutare pe vectori, cu pgvector", "cos": 0},
-           {"t": "Scrieri concurente multe, în paralel", "cos": 0}],
-       "cosuri": [
-           {"t": "PostgreSQL", "d": "puternic, flexibil, multe funcții avansate"},
-           {"t": "MySQL", "d": "simplu, rapid pe citiri, foarte folosit în web"}],
-       "laBine": "Proiectul vostru cade limpede pe Postgres: date eterogene, "
-                 "potențial geografic, și analiză mai degrabă decât trafic.",
-       "explicatie": "Niciuna nu e „mai bună”. MySQL e simplu și foarte rapid "
-                     "la citiri, ceea ce îl face potrivit pentru aplicații web "
-                     "cu trafic intens. Postgres are tipuri bogate (JSONB, "
-                     "array-uri, tipuri proprii) și extensii puternice "
-                     "(PostGIS pentru date geografice, pgvector pentru "
-                     "căutare semantică), ceea ce îl face potrivit pentru "
-                     "analiză."})
+   + ix("prezice", "Ce bază, pentru proiectul vostru", {
+       "id": "c5-prezice-baza", "poarta": False, "fisier": "baza/intrebari.sql",
+       "cod": "-- vreti contururile judetelor in baza\n"
+              "-- si o intrebare: ce regiuni se invecineaza cu Clujul?\n"
+              "select b.nume\n"
+              "from regiuni a join regiuni b\n"
+              "  on st_touches(a.contur, b.contur)\n"
+              "where a.cod = 'RO113';",
+       "intrebare": "Pe ce bază merge interogarea asta, fără nimic în plus?",
+       "variante": ["MySQL: e mai rapid la citiri", "PostgreSQL, cu extensia PostGIS", "Pe orice bază SQL", "Pe niciuna: se face doar în Python"],
+       "corect": 1,
+       "indiciu": "st_touches e o funcție geografică. Care dintre cele două baze are o extensie geografică puternică?",
+       "laBine": "Date eterogene, hărți, analiză: Postgres.",
+       "explicatie": "<code>st_touches</code> vine din PostGIS, extensia geografică a lui Postgres. Niciuna dintre baze nu e "
+                     "„mai bună”: MySQL e simplu și foarte rapid la citiri, potrivit pentru aplicații web cu trafic mare. "
+                     "Postgres are tipuri bogate (JSONB) și extensii (PostGIS, pgvector), potrivite pentru analiză. "
+                     "Proiectul vostru cade limpede pe Postgres.",
+       "iesire": "  nume\n------------\n Bihor\n Sălaj\n Maramureș\n Bistrița-Năsăud\n Mureș\n Alba"})
    + tabel(["Diferență", "PostgreSQL", "MySQL"],
            [["Caracter", "puternic, flexibil, multe funcții avansate",
              "simplu, ușor, foarte rapid în aplicații web"],
@@ -809,21 +807,24 @@ sl("s12", "Baze de date", "Postgres sau MySQL",
              "aplicații web mari, e-commerce, trafic intens"],
             ["Ecosistem", "extensii puternice: PostGIS, pgvector",
              "simplu, stabil, foarte răspândit în web"]])
-   + ix("sortare", "Care bază, pentru ce", {
-       "id": "c5-sort-baze", "poarta": False,
-       "sarcina": "Pune fiecare situație la baza potrivită.",
-       "elemente": [
-           {"t": "Date geografice, cu PostGIS", "cos": 0},
-           {"t": "Analitică pe date eterogene, cu JSONB", "cos": 0},
-           {"t": "Magazin online cu trafic mare, multe citiri", "cos": 1},
-           {"t": "Aplicație web simplă, CRUD", "cos": 1},
-           {"t": "Căutare pe vectori, cu pgvector", "cos": 0},
-           {"t": "Scrieri concurente multe, în paralel", "cos": 0}],
-       "cosuri": [
-           {"t": "PostgreSQL", "d": "puternic, flexibil, funcții avansate"},
-           {"t": "MySQL", "d": "simplu, rapid pe citiri, web"}],
-       "laBine": "Proiectul vostru cade limpede pe Postgres.",
-       "explicatie": "Niciuna nu e „mai bună”: au profiluri diferite."}))
+   + ix("prezice", "Ce bază, pentru proiectul vostru", {
+       "id": "c5-prezice-baza", "poarta": False, "fisier": "baza/intrebari.sql",
+       "cod": "-- vreti contururile judetelor in baza\n"
+              "-- si o intrebare: ce regiuni se invecineaza cu Clujul?\n"
+              "select b.nume\n"
+              "from regiuni a join regiuni b\n"
+              "  on st_touches(a.contur, b.contur)\n"
+              "where a.cod = 'RO113';",
+       "intrebare": "Pe ce bază merge interogarea asta, fără nimic în plus?",
+       "variante": ["MySQL: e mai rapid la citiri", "PostgreSQL, cu extensia PostGIS", "Pe orice bază SQL", "Pe niciuna: se face doar în Python"],
+       "corect": 1,
+       "indiciu": "st_touches e o funcție geografică. Care dintre cele două baze are o extensie geografică puternică?",
+       "laBine": "Date eterogene, hărți, analiză: Postgres.",
+       "explicatie": "<code>st_touches</code> vine din PostGIS, extensia geografică a lui Postgres. Niciuna dintre baze nu e "
+                     "„mai bună”: MySQL e simplu și foarte rapid la citiri, potrivit pentru aplicații web cu trafic mare. "
+                     "Postgres are tipuri bogate (JSONB) și extensii (PostGIS, pgvector), potrivite pentru analiză. "
+                     "Proiectul vostru cade limpede pe Postgres.",
+       "iesire": "  nume\n------------\n Bihor\n Sălaj\n Maramureș\n Bistrița-Năsăud\n Mureș\n Alba"}))
 
 
 sl("s13", "Baze de date", "Conectarea",
@@ -1046,27 +1047,25 @@ sl("s17", "Baze de date", "Unde faci ce",
    "<h2>În bază, sau în pandas?</h2>"
    "<p>Aceeași operație se poate scrie în amândouă. Regula practică: "
    "<strong>filtrezi și agregi în bază, analizezi în pandas.</strong></p>"
-   + ix("sortare", "Unde e mai bine", {
-       "id": "c5-sort-unde", "poarta": False,
-       "sarcina": "Unde faci fiecare lucru?",
-       "elemente": [
-           {"t": "Iei doar anii 2018–2022 din 40 de milioane de rânduri", "cos": 0},
-           {"t": "Numeri rândurile pe fiecare țară", "cos": 0},
-           {"t": "Faci un grafic", "cos": 1},
-           {"t": "Rulezi o regresie", "cos": 1},
-           {"t": "Legi două tabele mari, pe cheie", "cos": 0},
-           {"t": "Încerci cinci variante de transformare, rând pe rând", "cos": 1}],
-       "cosuri": [
-           {"t": "În bază, cu SQL", "d": "unde datele sunt multe și vrei puține"},
-           {"t": "În pandas", "d": "unde datele sunt deja puține și vrei să te joci"}],
-       "laBine": "Linia de despărțire e cantitatea: adu în memorie ce ai "
-                 "nevoie, nu tot.",
-       "explicatie": "Un <code>select</code> cu <code>where</code> și "
-                     "<code>group by</code> lasă baza să facă munca grea și "
-                     "aduce înapoi un tabel mic. Odată ce tabelul e mic și "
-                     "încape în memorie, pandas e mai comod pentru orice "
-                     "altceva: încerci, greșești, încerci din nou, fără să "
-                     "mai aștepți rețeaua."}),
+   + ix("prezice", "Ce aduci pe rețea", {
+       "id": "c5-prezice-unde", "poarta": False, "fisier": "baza/unde.py",
+       "cod": "# in baza: 40 de milioane de randuri (tara, an, sci)\n\n"
+              "# A\n"
+              "d = pd.read_sql(\"select * from legaturi\", con)\n"
+              "m = d[d[\"an\"] == 2022].groupby(\"tara\")[\"sci\"].mean()\n\n"
+              "# B\n"
+              "m = pd.read_sql(\"select tara, avg(sci) from legaturi \"\n"
+              "                \"where an = 2022 group by tara\", con)",
+       "intrebare": "Amândouă dau aceeași medie pe țară. Câte rânduri vin pe rețea, în fiecare?",
+       "variante": ["A: 40 de milioane · B: 40 de milioane", "A: 40 de milioane · B: câte o țară, sub 200",
+                    "A: sub 200 · B: sub 200", "A: un rând · B: un rând"],
+       "corect": 1,
+       "indiciu": "În A, ce întoarce select * ? În B, filtrarea și gruparea le face baza, înainte să trimită ceva.",
+       "laBine": "Lasă baza să reducă datele; adu în pandas doar ce a rămas.",
+       "explicatie": "A aduce tot tabelul în memorie și abia apoi filtrează. B lasă baza să filtreze și să grupeze, și trimite înapoi un rând pe țară. "
+                     "Regula: în bază ce reduce datele multe (filtrare, grupare, legare de tabele mari); în pandas ce e de încercat "
+                     "pe date puține (grafice, modele, variante de transformare).",
+       "iesire": "A: 40.000.000 de rânduri aduse\nB: 178 de rânduri aduse"}),
    manual=
    "<h2>În bază, sau în pandas?</h2>"
    "<p>Întrebarea apare la fiecare pas, iar răspunsul e aproape mereu același: "
@@ -1075,21 +1074,25 @@ sl("s17", "Baze de date", "Unde faci ce",
    "costă. Un <code>select count(*) group by tara</code> trimite înapoi "
    "câteva sute de rânduri; același lucru făcut prin citirea întregului "
    "tabel în pandas trimite milioane.</p>"
-   + ix("sortare", "Unde e mai bine", {
-       "id": "c5-sort-unde", "poarta": False,
-       "sarcina": "Unde faci fiecare lucru?",
-       "elemente": [
-           {"t": "Iei doar anii 2018–2022 din 40 de milioane de rânduri", "cos": 0},
-           {"t": "Numeri rândurile pe fiecare țară", "cos": 0},
-           {"t": "Faci un grafic", "cos": 1},
-           {"t": "Rulezi o regresie", "cos": 1},
-           {"t": "Legi două tabele mari, pe cheie", "cos": 0},
-           {"t": "Încerci cinci variante de transformare, rând pe rând", "cos": 1}],
-       "cosuri": [
-           {"t": "În bază, cu SQL", "d": "datele sunt multe, vrei puține"},
-           {"t": "În pandas", "d": "datele sunt deja puține"}],
-       "laBine": "Adu în memorie ce ai nevoie, nu tot.",
-       "explicatie": "Baza face munca grea, pandas face explorarea."}))
+   + ix("prezice", "Ce aduci pe rețea", {
+       "id": "c5-prezice-unde", "poarta": False, "fisier": "baza/unde.py",
+       "cod": "# in baza: 40 de milioane de randuri (tara, an, sci)\n\n"
+              "# A\n"
+              "d = pd.read_sql(\"select * from legaturi\", con)\n"
+              "m = d[d[\"an\"] == 2022].groupby(\"tara\")[\"sci\"].mean()\n\n"
+              "# B\n"
+              "m = pd.read_sql(\"select tara, avg(sci) from legaturi \"\n"
+              "                \"where an = 2022 group by tara\", con)",
+       "intrebare": "Amândouă dau aceeași medie pe țară. Câte rânduri vin pe rețea, în fiecare?",
+       "variante": ["A: 40 de milioane · B: 40 de milioane", "A: 40 de milioane · B: câte o țară, sub 200",
+                    "A: sub 200 · B: sub 200", "A: un rând · B: un rând"],
+       "corect": 1,
+       "indiciu": "În A, ce întoarce select * ? În B, filtrarea și gruparea le face baza, înainte să trimită ceva.",
+       "laBine": "Lasă baza să reducă datele; adu în pandas doar ce a rămas.",
+       "explicatie": "A aduce tot tabelul în memorie și abia apoi filtrează. B lasă baza să filtreze și să grupeze, și trimite înapoi un rând pe țară. "
+                     "Regula: în bază ce reduce datele multe (filtrare, grupare, legare de tabele mari); în pandas ce e de încercat "
+                     "pe date puține (grafice, modele, variante de transformare).",
+       "iesire": "A: 40.000.000 de rânduri aduse\nB: 178 de rânduri aduse"}))
 
 
 # ===========================================================================
@@ -1221,7 +1224,13 @@ sl("s21", "Mai departe", "Până data viitoare",
    + nota("DACĂ V-A RĂMAS CEVA",
           "Manualul lecției are tot ce am spus azi, pe larg, și puteți relua "
           "exercițiile de câte ori vreți. Ce faceți acolo se vede la mine, "
-          "dar nu e obligatoriu și nu se notează."),
+          "dar nu e obligatoriu și nu se notează.")
+   + surse("Documentația agregării și a bazei", [
+       ("pandas: merge, join, concat", "https://pandas.pydata.org/docs/user_guide/merging.html", "cele cinci feluri de îmbinare și <code>validate</code>"),
+       ("pandas: groupby", "https://pandas.pydata.org/docs/user_guide/groupby.html", "grupare, <code>agg</code>, mai multe funcții deodată"),
+       ("PostgreSQL: tutorialul", "https://www.postgresql.org/docs/current/tutorial.html", "<code>select</code>, <code>where</code>, <code>join</code>, <code>group by</code>, de la zero"),
+       ("Neon: documentația", "https://neon.com/docs/introduction", "proiect, conectare, ramuri"),
+   ]),
    manual=
    "<h2>Cursul 6: analiza exploratorie</h2>"
    "<p>Cu tabelul final în mână, lecția următoare e despre cum te uiți la el: "
@@ -1232,7 +1241,13 @@ sl("s21", "Mai departe", "Până data viitoare",
             ["Scriptul de îmbinare", "~agregare/uneste.py"],
             ["Tabelul încărcat în Neon", "o captură cu numărul de rânduri"],
             ["Unitatea de analiză, scrisă", "~decizii.md"],
-            ["Un select al vostru", "~baza/intrebari.sql"]]))
+            ["Un select al vostru", "~baza/intrebari.sql"]])
+   + surse("Documentația agregării și a bazei", [
+       ("pandas: merge, join, concat", "https://pandas.pydata.org/docs/user_guide/merging.html", "cele cinci feluri de îmbinare și <code>validate</code>"),
+       ("pandas: groupby", "https://pandas.pydata.org/docs/user_guide/groupby.html", "grupare, <code>agg</code>, mai multe funcții deodată"),
+       ("PostgreSQL: tutorialul", "https://www.postgresql.org/docs/current/tutorial.html", "<code>select</code>, <code>where</code>, <code>join</code>, <code>group by</code>, de la zero"),
+       ("Neon: documentația", "https://neon.com/docs/introduction", "proiect, conectare, ramuri"),
+   ]))
 
 
 L.scrie_tot()

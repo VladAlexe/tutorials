@@ -128,3 +128,24 @@
   .hs--pagina,.hs--slide{grid-template-columns:1fr;grid-template-rows:60vh auto;height:auto}
   .hs--pagina .hs__panou,.hs--slide .hs__panou{order:1;border:0;border-top:1px solid var(--crom-linie);overflow:visible}
 }
+
+/* --- linii spre parteneri, căutare, harta mare ------------------------------ */
+.hs .zona{transition:fill .35s ease, opacity .2s}
+.hs .zona.stins{opacity:.12}
+.hs .arce{pointer-events:none}
+.hs .arc{fill:none;stroke:var(--ambra);stroke-opacity:.85;stroke-linecap:round;
+  stroke-dasharray:1 0;animation:hs-arc .7s ease-out both}
+.hs .arc__cap{fill:var(--ambra);stroke:var(--fundal);stroke-width:.4;animation:hs-cap .35s ease-out both}
+@keyframes hs-arc{from{stroke-dasharray:0 1}to{stroke-dasharray:1 0}}
+@keyframes hs-cap{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion: reduce){.hs .arc,.hs .arc__cap{animation:none}.hs .zona{transition:none}}
+.hs__zoom button.on{background:var(--text);color:var(--fundal)}
+.hs__cauta{display:flex;flex-direction:column;gap:5px}
+.hs__cauta input{font-family:var(--sans);font-size:13.5px;padding:7px 10px;border:1px solid var(--linie-2);border-radius:8px;background:var(--panza);color:var(--text)}
+.hs__cauta input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.gf__trepte span[data-k]{cursor:help}
+.hs--mare{position:fixed !important;inset:0;z-index:1000;height:100dvh !important;max-height:none !important;border:0 !important;border-radius:0 !important;
+  grid-template-columns:1fr 340px !important;box-shadow:none}
+.hs--mare .hs__harta{height:100%}
+html.hs-deschis, html.hs-deschis body{overflow:hidden}
+@media(max-width:760px){.hs--mare{grid-template-columns:1fr !important;grid-template-rows:62dvh 1fr}}

@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/sistem.css?v=55">
-<link rel="stylesheet" href="../../css/tutorial.css?v=55">
-<link rel="stylesheet" href="../../css/interactiv.css?v=55">
-<link rel="stylesheet" href="../../css/grafice.css?v=55">
-<link rel="stylesheet" href="../../css/exercitii.css?v=55">
-<link rel="stylesheet" href="../../css/explorator.css?v=55">
-<script src="../../js/tema.js?v=55"></script>
+<link rel="stylesheet" href="../../css/sistem.css?v=59">
+<link rel="stylesheet" href="../../css/tutorial.css?v=59">
+<link rel="stylesheet" href="../../css/interactiv.css?v=59">
+<link rel="stylesheet" href="../../css/grafice.css?v=59">
+<link rel="stylesheet" href="../../css/exercitii.css?v=59">
+<link rel="stylesheet" href="../../css/explorator.css?v=59">
+<script src="../../js/tema.js?v=59"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 7 · Manual"></div>
@@ -43,10 +43,10 @@
 
 <section class="tut__s" id="s1">
 <span class="tut__nr">01 · Cursul</span>
-<h2>Variabile derivate și model</h2><p>La cursul 6 am văzut că SCI-ul scade cu distanța, crește cu migrația și e mai mare între vecini. Dar vecinii sunt și aproape, și au adesea migrație între ei, deci cele trei tipare se amestecă. Un model le pune pe toate deodată și spune cât contează fiecare când celelalte stau pe loc.</p><p>Înainte de model vine ingineria variabilelor: ce construiești, ce transformi, ce păstrezi. E partea în care se iau cele mai multe decizii, și cele mai multe nu se văd în rezultatul final.</p><div class="ix" data-ix="etape">
-  <div class="ix__cap"><span class="ix__fel">Explorator</span><span class="ix__t">Agenda</span></div>
-  <div class="ix__corp"><script type="application/json">{"titlu": "Ora de azi", "intro": "Apasă pe oricare.", "etape": [{"nume": "Variabilele", "unde": "azi", "text": "Construcție, transformare, extragere, scalare, selecție."}, {"nume": "Modelul", "unde": "azi", "text": "Patru modele, fiecare cu o variabilă în plus."}, {"nume": "Coeficienții", "unde": "azi", "text": "Cum se citește un model pe logaritmi."}, {"nume": "Reziduurile", "unde": "azi", "text": "Perechile mai legate sau mai puțin legate decât prezice modelul."}, {"nume": "Ce avem voie să spunem", "unde": "azi", "text": "Și ce nu."}]}</script></div>
-</div>
+<h2>Variabile derivate și model</h2><p>La cursul 6 am văzut că SCI-ul scade cu distanța, crește cu migrația și e mai mare între vecini. Dar vecinii sunt și aproape, și au adesea migrație între ei, deci cele trei tipare se amestecă. Un model le pune pe toate deodată și spune cât contează fiecare când celelalte stau pe loc.</p><p>Înainte de model vine ingineria variabilelor: ce construiești, ce transformi, ce păstrezi. E partea în care se iau cele mai multe decizii, și cele mai multe nu se văd în rezultatul final.</p><div class="ix" data-ix="agenda">
+  <div class="ix__cap"><span class="ix__fel">Cuprins</span><span class="ix__t">Ora de azi</span></div>
+  <div class="ix__corp"><script type="application/json">{"static": true, "titlu": "Ora de azi", "etape": [{"nume": "Variabilele", "unde": "azi", "text": "Construcție, transformare, extragere, scalare, selecție."}, {"nume": "Modelul", "unde": "azi", "text": "Patru modele, fiecare cu o variabilă în plus."}, {"nume": "Coeficienții", "unde": "azi", "text": "Cum se citește un model pe logaritmi."}, {"nume": "Reziduurile", "unde": "azi", "text": "Perechile mai legate sau mai puțin legate decât prezice modelul."}, {"nume": "Ce avem voie să spunem", "unde": "azi", "text": "Și ce nu."}]}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">Caietul de azi</div><p><code>07_variabile_derivate_si_model.ipynb</code>.</p></div>
 
 </section>
 
@@ -103,8 +103,8 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 <span class="tut__nr">07 · Modelul</span>
 <h2>Patru modele, pas cu pas</h2><p>Regresia liniară pe logaritmi (OLS) estimează cât se schimbă logaritmul SCI-ului când o variabilă crește, cu celelalte ținute constante. Pornim cu distanța singură și adăugăm câte o variabilă. Toate cele patru modele sunt pe același eșantion de 263 de perechi, ca să le putem compara.</p><div class="ix" data-ix="modele">
   <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">Coeficienții și R², model cu model</span></div>
-  <div class="ix__corp"><script type="application/json">{"lim": 0.8, "variabile": [{"k": "dist", "et": "distanța (log)", "c": "ceas"}, {"k": "migr", "et": "migranți (log)", "c": "salvie"}, {"k": "rata", "et": "migranți la mie (log)", "c": "accent"}, {"k": "gr", "et": "graniță", "c": "text-2"}], "modele": [{"nume": "M1", "formula": "log_sci ~ log_distanta", "r2": 0.160627447751929, "text": "Doar distanța. Explică 16% din variația SCI-ului.", "coef": {"dist": -0.719, "migr": null, "rata": null, "gr": null}}, {"nume": "M2", "formula": "log_sci ~ log_distanta + log_migranti", "r2": 0.241694083556735, "text": "Intră numărul de migranți. Coeficientul distanței scade: o parte din ce părea distanță era migrație.", "coef": {"dist": -0.585, "migr": 0.166, "rata": null, "gr": null}}, {"nume": "M3", "formula": "log_sci ~ log_distanta + log_la_mie", "r2": 0.5224385054438411, "text": "Cu rata în loc de număr, R² sare la 0,52. Rata e variabila potrivită. Distanța scade din nou.", "coef": {"dist": -0.342, "migr": null, "rata": 0.45, "gr": null}}, {"nume": "M4", "formula": "log_sci ~ log_distanta + log_la_mie + granita", "r2": 0.5259318291729317, "text": "Granița adaugă foarte puțin peste distanță și migrație. Efectul ei, văzut la EDA, era în mare parte distanță.", "coef": {"dist": -0.254, "migr": null, "rata": 0.443, "gr": 0.288}}]}</script></div>
-</div><p>Lucrul de urmărit e bara chihlimbar, distanța. De la M1 la M4 se micșorează la o treime. Asta nu înseamnă că distanța nu contează; înseamnă că o parte din efectul ei trecea prin migrație: țările apropiate au mai mulți migranți între ele, iar migranții țin legăturile.</p>
+  <div class="ix__corp"><script type="application/json">{"lim": 0.8, "variabile": [{"k": "dist", "et": "distanța (log)", "c": "ceas"}, {"k": "migr", "et": "migranți (log)", "c": "salvie"}, {"k": "rata", "et": "migranți la mie (log)", "c": "accent"}, {"k": "gr", "et": "graniță", "c": "text-2"}], "modele": [{"nume": "M1", "formula": "log_sci ~ log_distanta", "r2": 0.160627447751929, "text": "Doar distanța. Explică 16% din variația SCI-ului.", "coef": {"dist": -0.719, "migr": null, "rata": null, "gr": null}}, {"nume": "M2", "formula": "log_sci ~ log_distanta + log_migranti", "r2": 0.241694083556735, "text": "Intră numărul de migranți. Coeficientul distanței scade: o parte din ce părea distanță era migrație.", "coef": {"dist": -0.585, "migr": 0.166, "rata": null, "gr": null}}, {"nume": "M3", "formula": "log_sci ~ log_distanta + log_la_mie", "r2": 0.5224385054438411, "text": "Cu rata în loc de număr, R² sare la 0,52. Rata e variabila potrivită. Distanța scade din nou.", "coef": {"dist": -0.342, "migr": null, "rata": 0.45, "gr": null}}, {"nume": "M4", "formula": "log_sci ~ log_distanta + log_la_mie + granita", "r2": 0.5259318291729317, "text": "Granița adaugă foarte puțin peste distanță și migrație. Efectul ei, văzut la EDA, era în mare parte distanță.", "coef": {"dist": -0.254, "migr": null, "rata": 0.443, "gr": 0.288}}], "intai": {"q": "În M1 e doar distanța. În M2 intră și numărul de migranți. Ce se întâmplă cu efectul distanței?", "variante": ["Crește", "Scade", "Rămâne la fel"], "corect": 1, "dupa": "Țările apropiate au și mai mulți migranți între ele. Singură, distanța lua asupra ei și efectul migrației; cu migrația în model, pierde partea aceea."}}</script></div>
+</div><p>Lucrul de urmărit e bara chihlimbar, distanța. De la M1 la M4 se micșorează la o treime. Asta nu înseamnă că distanța nu contează; înseamnă că o parte din efectul ei trecea prin migrație: țările apropiate au mai mulți migranți între ele, iar migranții țin legăturile.</p><div class="lit"><div class="lit__et">Modelul, în literatură<a class="lit__toata" href="../../lecturi/">toată literatura proiectului</a></div><div class="lit__g"><div class="lit__f lit__f--teorie">Teoria<small>de ce ar fi legate două locuri: de aici vin ipotezele</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a><span>migrația și legăturile se întrețin una pe alta (feedback), dar nu la nesfârșit. De aici regula noastră: legătura dintre SCI și migrație e în ambele sensuri, deci nu spunem cine pe cine produce.</span></li></ul></div><div class="lit__g"><div class="lit__f lit__f--metoda">Metoda<small>cum au analizat alții aceeași întrebare: de aici vin alegerile</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a><span>aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.</span></li><li><a class="lit__a" href="https://doi.org/10.1093/pan/mpv018" target="_blank" rel="noopener">Aronow, Samii și Assenova (2015)</a><span>de ce perechile nu sunt observații independente (România–Italia și România–Spania au un capăt comun) și ce înseamnă asta pentru erorile standard. Limita principală a modelului din C7.</span></li></ul></div></div>
 
 </section>
 
@@ -169,18 +169,18 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 
 <section class="tut__s" id="s14">
 <span class="tut__nr">14 · Mai departe</span>
-<h2>Cursul 8: raportul</h2><ul><li>figura principală și tabelul modelelor</li><li>README-ul care permite refacerea întregului drum</li><li>prezentarea echipei</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Modelul și reziduurile în depozit, plus cele trei propoziții despre ce putem spune.</p></div>
+<h2>Cursul 8: raportul</h2><ul><li>figura principală și tabelul modelelor</li><li>README-ul care permite refacerea întregului drum</li><li>prezentarea echipei</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Modelul și reziduurile în depozit, plus cele trei propoziții despre ce putem spune.</p></div><div class="surse"><div class="surse__et">Documentația modelului</div><ul><li><a class="surse__a" href="https://www.statsmodels.org/stable/example_formulas.html" target="_blank" rel="noopener">statsmodels: formule</a><span><code>smf.ols("log_sci ~ log_distanta", data=d)</code>, pas cu pas</span></li><li><a class="surse__a" href="https://www.statsmodels.org/stable/regression.html" target="_blank" rel="noopener">statsmodels: regresia liniară</a><span>ce înseamnă fiecare rând din <code>summary()</code></span></li><li><a class="surse__a" href="https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html" target="_blank" rel="noopener">geopandas: dissolve și sjoin</a><span>lipirea județelor în țări, pentru graniță</span></li></ul></div>
 
 </section>
 </article>
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=55"></script>
+<script type="module" src="../../js/antet.js?v=59"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=55";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=55";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=55";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=59";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=59";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=59";
 pornesteIx();
 pornesteVerif("c7");
 pornesteTut("c7");
