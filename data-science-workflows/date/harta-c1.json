@@ -1,7 +1,7 @@
 {
  "capitol": "c1",
- "total": 24,
- "sarcini": 12,
+ "total": 25,
+ "sarcini": 11,
  "slide": [
   {
    "nr": 1,
@@ -30,7 +30,7 @@
    "nr": 3,
    "id": "s3",
    "grup": "Softuri și conturi",
-   "titlu": "Ce instalezi, ce cont faci",
+   "titlu": "Uneltele semestrului",
    "sarcini": []
   },
   {
@@ -38,20 +38,7 @@
    "id": "s4",
    "grup": "Pașii unui proiect",
    "titlu": "Data Science Workflow",
-   "sarcini": [
-    {
-     "id": "c1-v1",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "La explorare afli că PIB-ul pe locuitor lipsește pentru mai mult de jumătate din județele Europei. Care e primul pas?",
-     "optiuni": [
-      "Ștergi județele fără PIB și mergi mai departe",
-      "Te întorci un pas: de ce lipsesc, și există altă sursă sau alt nivel (regiuni) care le are?",
-      "Completezi golurile cu media",
-      "Alegi alt model, care tolerează lipsurile"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 5,
@@ -117,16 +104,16 @@
   },
   {
    "nr": 12,
-   "id": "s9",
+   "id": "s9o",
    "grup": "Tipuri de date",
-   "titlu": "Tipuri în Python",
+   "titlu": "Ce tipuri de date există",
    "sarcini": []
   },
   {
    "nr": 13,
-   "id": "s10",
+   "id": "s9",
    "grup": "Tipuri de date",
-   "titlu": "Recunoaște tipul",
+   "titlu": "Ce tip are fiecare valoare",
    "sarcini": [
     {
      "id": "c1-tipuri",
@@ -237,13 +224,20 @@
    "nr": 24,
    "id": "s18",
    "grup": "Proiectul tău",
-   "titlu": "Fă-ți proiectul, acum",
+   "titlu": "Proiectul, pe disc",
    "sarcini": [
     {
-     "id": "c1-dovada-mediu",
+     "id": "c1-folder",
      "fel": "cod"
     }
    ]
+  },
+  {
+   "nr": 25,
+   "id": "s19",
+   "grup": "Mai departe",
+   "titlu": "Ce urmează la cursul 2",
+   "sarcini": []
   }
  ]
 }

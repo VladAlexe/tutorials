@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=62");
+    const m = await import("/data-science-workflows/js/colectare.js?v=63");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -984,7 +984,7 @@ V.drum = (gazda, d) => {
   const toate = [...SUS, ...JOS, FIN, BAZA];
 
   const chev = (x, i, banda) => `
-    <button class="drm__e drm__e--${banda}" data-i="${esc(x.n)}"
+    <button class="drm__e drm__e--${banda} et--${esc(x.et || "")}" data-i="${esc(x.n)}"
       style="--k:${i}" type="button">
       <span class="drm__nr">${String(i + 1).padStart(2, "0")}</span>
       <span class="drm__n">${esc(x.n)}</span>
@@ -999,9 +999,9 @@ V.drum = (gazda, d) => {
         <span class="drm__banda drm__banda--sus">${esc(d.bandaSus || "Analiza datelor")}</span>
         <div class="drm__rand drm__rand--sus">${SUS.map((x, i) => chev(x, i, "a")).join("")}</div>
 
-        <button class="drm__fin" data-i="${esc(FIN.n)}" type="button">${esc(FIN.n)}</button>
+        <button class="drm__fin et--${esc(FIN.et || "raport")}" data-i="${esc(FIN.n)}" type="button">${esc(FIN.n)}</button>
 
-        <button class="drm__baza" data-i="${esc(BAZA.n)}" type="button">
+        <button class="drm__baza et--${esc(BAZA.et || "agregare")}" data-i="${esc(BAZA.n)}" type="button">
           <span class="drm__bt">${esc(BAZA.n)}</span>
           <span class="drm__bd">nu e o etapă, e depozitul</span>
         </button>
@@ -1100,8 +1100,14 @@ V.drum = (gazda, d) => {
     b.classList.add("on");
     const x = toate.find(t => t.n === b.dataset.i);
     if (!x) return;
+    info.className = `drm__i drm__i--plin et--${x.et || ""}`;
     info.innerHTML = `<h5>${esc(x.n)}${x.unde ? ` <small>${esc(x.unde)}</small>` : ""}</h5>
-      <p>${x.d || ""}</p>`;
+      <p>${x.d || ""}</p>
+      ${x.noi || x.lit || x.capcana ? `<div class="drm__blocuri">
+        ${x.noi ? `<div><h6>În proiectul nostru</h6><p>${x.noi}</p></div>` : ""}
+        ${x.lit ? `<div><h6>Ce citești aici</h6><p>${x.lit}</p></div>` : ""}
+        ${x.capcana ? `<div class="drm__cap"><h6>Capcana</h6><p>${x.capcana}</p></div>` : ""}
+      </div>` : ""}`;
   });
 };
 
@@ -1118,45 +1124,89 @@ V.drum = (gazda, d) => {
 V.semestru = (gazda, d) => {
   const T = d.teme || [];
   const N = d.sedinte || 8;
+  const F = d.fise || [];
+  const ET = d.etape || {};
   const pe = k => T.filter(t => t.c === k);
+  const fisa = k => F.find(f => f.c === k) || { c: k, titlu: pe(k)[0]?.n || "" };
+  let ales = d.azi || 1;
 
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="sem">
-      <div class="sem__linie">
+    <div class="sem2">
+      <div class="sem2__pista" role="tablist">
         ${Array.from({ length: N }, (_, i) => {
-          const k = i + 1, lista = pe(k);
-          return `
-          <div class="sem__c ${lista.length ? "" : "sem__c--gol"}">
-            <span class="sem__cap">
-              <i class="sem__pct"></i>
-              <b>C${k}</b>
-            </span>
-            <div class="sem__teme">
-              ${lista.map(t => `
-                <button class="sem__t" data-n="${esc(t.n)}" type="button">
-                  <span class="sem__tn">${String(T.indexOf(t) + 1).padStart(2, "0")}</span>
-                  <span class="sem__tt">${esc(t.n)}</span>
-                </button>`).join("")}
-            </div>
-          </div>`;
+          const k = i + 1, f = fisa(k);
+          return `<button class="sem2__st et--${esc(f.etapa || "")}" data-c="${k}" role="tab" type="button">
+            <span class="sem2__nr">C${k}${k === d.azi ? `<em>azi</em>` : ""}</span>
+            <span class="sem2__nume">${esc(f.titlu)}</span>
+            <span class="sem2__bara"></span>
+          </button>`;
         }).join("")}
       </div>
-      <div class="sem__i"><h5>${esc(d.titlu || "Apasă pe o temă")}</h5>
-        <p>${d.intro || ""}</p></div>
+      <div class="sem2__leg">${Object.entries(ET).map(([k, v]) =>
+        `<span class="et--${k}"><i></i>${esc(v)}</span>`).join("")}</div>
+      <div class="sem2__fisa" aria-live="polite"></div>
     </div>`;
 
-  const info = gazda.querySelector(".sem__i");
-  gazda.querySelector(".sem__linie").addEventListener("click", ev => {
-    const b = ev.target.closest(".sem__t");
-    if (!b) return;
-    gazda.querySelectorAll(".sem__t").forEach(x => x.classList.remove("on"));
-    b.classList.add("on");
-    const t = T.find(x => x.n === b.dataset.n);
-    if (!t) return;
-    info.innerHTML = `<h5>${esc(t.n)} <small>cursul ${t.c}</small></h5>
-      <p>${t.d || ""}</p>`;
+  const corp = gazda.querySelector(".sem2__fisa");
+
+  function arata(k){
+    ales = Math.max(1, Math.min(N, k));
+    const f = fisa(ales);
+    gazda.querySelectorAll(".sem2__st").forEach(b => {
+      const on = +b.dataset.c === ales;
+      b.classList.toggle("on", on); b.setAttribute("aria-selected", on);
+    });
+    const teme = pe(ales);
+    corp.className = `sem2__fisa et--${f.etapa || ""}`;
+    corp.innerHTML = `
+      <div class="sem2__cap">
+        <button class="sem2__nav" data-m="-1" type="button" ${ales === 1 ? "disabled" : ""} aria-label="ședința anterioară">‹</button>
+        <div>
+          <span class="sem2__et"><i></i>${esc(ET[f.etapa] || "")}</span>
+          <h5>Cursul ${ales} · ${esc(f.titlu)}</h5>
+        </div>
+        <button class="sem2__nav" data-m="1" type="button" ${ales === N ? "disabled" : ""} aria-label="ședința următoare">›</button>
+      </div>
+      <div class="sem2__grila">
+        <section class="sem2__b sem2__b--teme">
+          <h6>${teme.length === 1 ? "Tema" : "Temele"}</h6>
+          ${teme.map(t => `<div class="sem2__tema">
+            <span class="sem2__tn">${String(T.indexOf(t) + 1).padStart(2, "0")}</span>
+            <div><b>${esc(t.n)}</b><p>${t.d || ""}</p></div></div>`).join("")}
+        </section>
+        <section class="sem2__b">
+          <h6>Ce înveți</h6>
+          <ul>${(f.invata || []).map(x => `<li>${x}</li>`).join("")}</ul>
+        </section>
+        <section class="sem2__b">
+          <h6>La laborator</h6>
+          ${f.caiet ? `<code class="sem2__caiet">${esc(f.caiet)}</code>` : ""}
+          <p>${f.lab || ""}</p>
+        </section>
+        <section class="sem2__b sem2__b--proiect">
+          <h6>În proiectul echipei</h6>
+          <p class="sem2__livr">${f.proiect || ""}</p>
+          ${(f.unelte || []).length ? `<h6 class="sem2__h6b">Unelte</h6>
+            <div class="sem2__unelte">${f.unelte.map(u => `<span>${esc(u)}</span>`).join("")}</div>` : ""}
+        </section>
+      </div>`;
+  }
+
+  gazda.querySelector(".sem2__pista").addEventListener("click", ev => {
+    const b = ev.target.closest(".sem2__st"); if (b) arata(+b.dataset.c);
   });
+  corp.addEventListener("click", ev => {
+    const b = ev.target.closest(".sem2__nav"); if (b) arata(ales + +b.dataset.m);
+  });
+  gazda.querySelector(".sem2__pista").addEventListener("keydown", ev => {
+    if (ev.key === "ArrowRight" || ev.key === "ArrowLeft"){
+      ev.preventDefault(); arata(ales + (ev.key === "ArrowRight" ? 1 : -1));
+      gazda.querySelector(`.sem2__st[data-c="${ales}"]`)?.focus();
+    }
+  });
+
+  arata(ales);
 };
 
 
@@ -1876,6 +1926,803 @@ V.gitdag = (gazda, d) => {
   };
   $('[data-rol="inapoi"]').onclick = () => { i = Math.max(0, i - 1); arata(); };
   arata();
+};
+
+
+/* ===========================================================================
+   SCI — indicele construit sub ochii lor, pas cu pas
+
+   Formula scrisă pe tablă se uită. Aici se vede de unde vine fiecare bucată:
+   punctele sunt utilizatori, liniile gri sunt toate prieteniile posibile
+   (numitorul), liniile colorate sunt prieteniile reale (numărătorul). Apoi
+   intră un loc mare, cu mai multe prietenii și indice mai mic, apoi o rețea
+   de cinci locuri în care ordinea se schimbă după ce măsori. La final,
+   scalarea din fișier. Numerele sunt mici, ca să se poată număra; raporturile
+   sunt alese ca aritmetica să iasă rotund.
+   =========================================================================== */
+
+V.sci = (gazda, d) => {
+  const NS = "http://www.w3.org/2000/svg";
+  const W = 760, H = 380;
+  const nf = (x, z = 2) => x.toLocaleString("ro-RO", { minimumFractionDigits: z, maximumFractionDigits: z });
+  const ni = x => Math.round(x).toLocaleString("ro-RO");
+
+  const grila = (cx, cy, n, col, sp) => {
+    const rows = Math.ceil(n / col), r = [];
+    for (let k = 0; k < n; k++){
+      const i = k % col, j = Math.floor(k / col);
+      r.push([cx + (i - (col - 1) / 2) * sp, cy + (j - (rows - 1) / 2) * sp]);
+    }
+    return r;
+  };
+  const A  = { n: "Cluj", u: 6, pts: grila(190, 186, 6, 2, 42) };
+  const MD = { n: "Republica Moldova", u: 4, pts: grila(560, 96, 4, 2, 42) };
+  const IT = { n: "Italia", u: 12, pts: grila(560, 268, 12, 4, 34) };
+  const FMD = [[0,0],[0,3],[1,1],[2,2],[4,0],[5,3]];
+  const FIT = [[0,1],[1,5],[2,3],[2,8],[3,10],[4,4],[4,11],[5,6],[1,9]];
+
+  /* rețeaua: aceleași calcule, pe cinci locuri */
+  const NOD = [
+    { k: "cj", n: "Cluj",              u: 6,  x: 380, y: 196 },
+    { k: "sj", n: "Sălaj",             u: 2,  x: 175, y: 82,  f: 5 },
+    { k: "md", n: "Rep. Moldova",      u: 4,  x: 600, y: 82,  f: 6 },
+    { k: "it", n: "Italia",            u: 12, x: 600, y: 302, f: 9 },
+    { k: "hu", n: "Ungaria",           u: 8,  x: 165, y: 302, f: 4 },
+  ];
+  NOD.slice(1).forEach(x => { x.sci = x.f / (6 * x.u); });
+  const MAXS = Math.max(...NOD.slice(1).map(x => x.sci));
+  NOD.slice(1).forEach(x => { x.sc = x.sci / MAXS * 1e9; });
+
+  const PASI = [
+    { t: "Doi oameni, două locuri", ly: ["ua", "umd"], hl: ["ui", "uj"],
+      ui: "6", uj: "4",
+      txt: "Fiecare punct e un <b>utilizator Facebook</b>: 6 în Cluj, 4 în Republica Moldova. Numerele sunt mici, ca să le poți număra; în date sunt sute de mii." },
+    { t: "Câte prietenii ar fi posibile?", ly: ["ua", "umd", "pmd"], hl: ["den"],
+      ui: "6", uj: "4", den: "24",
+      txt: "Oricare om din Cluj ar putea fi prieten cu oricare om din Moldova. Liniile gri sunt toate perechile posibile: <b>6 × 4 = 24</b>. Ăsta e numitorul." },
+    { t: "Câte prietenii există", ly: ["ua", "umd", "pmd", "fmd"], hl: ["num"],
+      ui: "6", uj: "4", den: "24", num: "6",
+      txt: "Dintre cele 24 de perechi, <b>6</b> chiar sunt prieteni pe Facebook. Ăsta e numărătorul." },
+    { t: "Indicele", ly: ["ua", "umd", "pmd", "fmd"], hl: ["rez"],
+      ui: "6", uj: "4", den: "24", num: "6", rez: "0,25",
+      txt: "<b>SCI = 6 / 24 = 0,25.</b> Un sfert dintre perechile posibile sunt prieteni. Indicele e o <b>probabilitate</b>: cât de probabil e ca doi oameni, unul de aici și unul de acolo, să fie prieteni." },
+    { t: "Un loc mare", ly: ["ua", "umd", "fmd", "uit", "pit", "fit", "cmp"], hl: ["rez"],
+      ui: "6", uj: "12", den: "72", num: "9", rez: "0,125",
+      txt: "Italia: 12 utilizatori și <b>9 prietenii</b> cu Clujul, mai multe decât Moldova. Dar perechile posibile sunt 72, deci SCI = 9 / 72 = <b>0,125</b>, jumătate din cel al Moldovei. <b>Mai multe prietenii, indice mai mic.</b>" },
+    { t: "Rețeaua, după numărul de prietenii", ly: ["net"], mod: "f", hl: ["num"],
+      txt: "Cinci locuri, aceleași calcule. Dacă grosimea liniei e <b>numărul de prietenii</b>, Italia pare partenerul cel mai legat de Cluj." },
+    { t: "Rețeaua, după SCI", ly: ["net"], mod: "sci", hl: ["rez"],
+      txt: "Cu grosimea după <b>SCI</b>, ordinea se întoarce: Sălajul, mic și vecin, e primul; Italia coboară pe trei. Exact asta se vede și în datele reale: Italia are cei mai mulți români, dar e abia <b>a șasea</b> după SCI." },
+    { t: "Ce e în fișier: scaled_sci", ly: ["net"], mod: "sc", hl: ["rez"],
+      txt: "Meta nu publică 0,42 sau 0,25. Înmulțește toate valorile, ca <b>cea mai mare pereche din fișier să fie exact 1.000.000.000</b>. Raporturile rămân: Moldova are 60% din valoarea Sălajului. De aceea <code>scaled_sci</code> se compară între perechi din același fișier și nu se citește ca număr de prieteni. În <code>country.csv</code>: România–Moldova <b>173.794</b>, România–Italia <b>69.327</b>, de 2,5 ori mai puțin." },
+  ];
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="sci">
+      <div class="sci__f" aria-live="polite">
+        <span class="sci__fl">SCI<sub>i,j</sub></span><span class="sci__eg">=</span>
+        <span class="sci__fr">
+          <span class="sci__t sci__t--num" data-p="num"><span class="sci__te">prieteniile dintre i și j</span><b class="sci__tv"></b></span>
+          <span class="sci__t sci__t--den" data-p="den">
+            <span class="sci__t sci__t--ui" data-p="ui"><span class="sci__te">utilizatori în i</span><b class="sci__tv"></b></span>
+            <span class="sci__x">×</span>
+            <span class="sci__t sci__t--uj" data-p="uj"><span class="sci__te">utilizatori în j</span><b class="sci__tv"></b></span>
+            <b class="sci__tv sci__tv--den"></b>
+          </span>
+        </span>
+        <span class="sci__eg">=</span><span class="sci__t sci__t--rez" data-p="rez"><b class="sci__tv">?</b></span>
+      </div>
+      <div class="sci__scena"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Utilizatori și prietenii între locuri"></svg>
+        <div class="sci__mod" hidden>
+          <span>grosimea liniei =</span>
+          <button type="button" data-m="f">prietenii</button>
+          <button type="button" data-m="sci">SCI</button>
+          <button type="button" data-m="sc">scaled_sci</button>
+        </div>
+      </div>
+      <div class="sci__jos">
+        <div class="sci__txt"></div>
+        <div class="sci__nav">
+          <button class="btn btn--mic" data-rol="inapoi" type="button">Înapoi</button>
+          <div class="sci__puncte">${PASI.map((x, k) => `<button type="button" data-k="${k}" title="${esc(x.t)}" aria-label="pasul ${k + 1}: ${esc(x.t)}"></button>`).join("")}</div>
+          <button class="btn btn--mic btn--tare" data-rol="inainte" type="button">Pasul următor</button>
+        </div>
+      </div>
+    </div>`;
+
+  const $ = q => gazda.querySelector(q);
+  const svg = $("svg");
+  const el = (tag, at = {}, par = svg) => {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(at)) e.setAttribute(k, v);
+    par.appendChild(e); return e;
+  };
+  const strat = k => el("g", { class: `ly ly--${k}` });
+
+  /* straturile scenei cu puncte */
+  const L = {};
+  ["pmd", "pit", "fmd", "fit", "ua", "umd", "uit", "cmp", "net"].forEach(k => L[k] = strat(k));
+  const linie = (g, a, b, cls) => el("line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1], class: cls, pathLength: 1 }, g);
+  A.pts.forEach(a => MD.pts.forEach(b => linie(L.pmd, a, b, "sci__pos")));
+  A.pts.forEach(a => IT.pts.forEach(b => linie(L.pit, a, b, "sci__pos")));
+  FMD.forEach(([i, j]) => linie(L.fmd, A.pts[i], MD.pts[j], "sci__pr"));
+  FIT.forEach(([i, j]) => linie(L.fit, A.pts[i], IT.pts[j], "sci__pr"));
+  const puncte = (g, loc, cls, ety, sub) => {
+    loc.pts.forEach(([x, y], k) => el("circle", { cx: x, cy: y, r: 11, class: cls, style: `--d:${k * 40}ms` }, g));
+    const t = el("text", { x: loc.pts.reduce((s, p) => s + p[0], 0) / loc.pts.length, y: ety, class: "sci__et", "text-anchor": "middle" }, g);
+    t.textContent = loc.n;
+    const t2 = el("text", { x: t.getAttribute("x"), y: ety + 16, class: "sci__sub", "text-anchor": "middle" }, g);
+    t2.textContent = sub;
+  };
+  puncte(L.ua, A, "sci__u sci__u--i", 256, "6 utilizatori");
+  puncte(L.umd, MD, "sci__u sci__u--j", 38, "4 utilizatori");
+  puncte(L.uit, IT, "sci__u sci__u--j", 340, "12 utilizatori");
+  /* comparația de la pasul 5, lângă cele două locuri */
+  const cmp = (y, txt, v) => {
+    const g = el("g", { transform: `translate(668 ${y})` }, L.cmp);
+    el("rect", { x: 0, y: -15, width: 88, height: 40, rx: 7, class: "sci__cmp" }, g);
+    const a = el("text", { x: 44, y: 1, "text-anchor": "middle", class: "sci__cmpv" }, g); a.textContent = v;
+    const b = el("text", { x: 44, y: 17, "text-anchor": "middle", class: "sci__cmpt" }, g); b.textContent = txt;
+  };
+  cmp(96, "6 / 24", "0,25");
+  cmp(268, "9 / 72", "0,125");
+
+  /* rețeaua */
+  const cj = NOD[0];
+  const muchii = NOD.slice(1).map(x => {
+    const g = el("g", { class: "sci__m" }, L.net);
+    const l = el("line", { x1: cj.x, y1: cj.y, x2: x.x, y2: x.y, class: "sci__ml" }, g);
+    const mx = (cj.x + x.x) / 2, my = (cj.y + x.y) / 2;
+    const bg = el("rect", { class: "sci__mlb", rx: 6, height: 22, y: my - 13 }, g);
+    const t = el("text", { x: mx, y: my + 3, "text-anchor": "middle", class: "sci__mlt" }, g);
+    return { x, l, bg, t, mx };
+  });
+  NOD.forEach((x, k) => {
+    const g = el("g", { class: "sci__n" + (k ? "" : " sci__n--a") }, L.net);
+    const r = 12 + Math.sqrt(x.u) * 7.5;
+    el("circle", { cx: x.x, cy: x.y, r, class: k ? "sci__nc" : "sci__nc sci__nc--a" }, g);
+    const t = el("text", { x: x.x, y: x.y + 4, "text-anchor": "middle", class: "sci__nu" }, g); t.textContent = x.u;
+    const n = el("text", { x: x.x, y: x.y + r + 16, "text-anchor": "middle", class: "sci__et" }, g); n.textContent = x.n;
+  });
+
+  const leg = el("text", { x: 16, y: H - 14, class: "sci__sub" }, L.net);
+  leg.textContent = "în cerc: utilizatori · pe linie: Clujul cu fiecare loc";
+
+  let mod = "f";
+  function grosimi(){
+    const vmax = { f: 9, sci: MAXS, sc: 1e9 }[mod];
+    muchii.forEach(({ x, l, bg, t, mx }) => {
+      const v = mod === "f" ? x.f : mod === "sci" ? x.sci : x.sc;
+      l.style.strokeWidth = (2 + 16 * v / vmax).toFixed(1);
+      t.textContent = mod === "f" ? `${x.f} prietenii` : mod === "sci" ? nf(x.sci) : ni(x.sc);
+      const w = t.textContent.length * 7.2 + 14;
+      bg.setAttribute("x", mx - w / 2); bg.setAttribute("width", w);
+    });
+    gazda.querySelectorAll(".sci__mod button").forEach(b => b.classList.toggle("on", b.dataset.m === mod));
+  }
+  $(".sci__mod").addEventListener("click", ev => {
+    const b = ev.target.closest("button[data-m]"); if (!b) return;
+    mod = b.dataset.m; grosimi();
+  });
+
+  let i = 0;
+  function arata(){
+    const P = PASI[i];
+    Object.entries(L).forEach(([k, g]) => g.classList.toggle("on", P.ly.includes(k)));
+    /* la pasul cu Italia, prieteniile cu Moldova rămân, dar trec în fundal */
+    L.fmd.classList.toggle("stins", i === 4);
+    const f = $(".sci__f");
+    f.querySelectorAll("[data-p]").forEach(e => e.classList.toggle("hl", (P.hl || []).includes(e.dataset.p)));
+    const pune = (q, v) => { const e = f.querySelector(q); if (e) e.textContent = v || ""; };
+    pune(".sci__t--ui > .sci__tv", P.ui); pune(".sci__t--uj > .sci__tv", P.uj);
+    pune(".sci__tv--den", P.den ? `= ${P.den}` : "");
+    pune(".sci__t--num > .sci__tv", P.num);
+    pune(".sci__t--rez > .sci__tv", P.rez || (P.mod ? { f: "nu e SCI", sci: "0,42 (Sălaj)", sc: "1.000.000.000 (Sălaj)" }[P.mod] : "?"));
+    f.classList.toggle("sci__f--net", !!P.mod);
+    if (P.mod){ mod = P.mod; grosimi(); }
+    $(".sci__mod").hidden = !P.mod;
+    $(".sci__txt").innerHTML = `<span class="sci__nr">${i + 1} / ${PASI.length}</span><b class="sci__tt">${P.t}</b><p>${P.txt}</p>`;
+    gazda.querySelectorAll(".sci__puncte button").forEach((b, k) => { b.classList.toggle("on", k === i); b.classList.toggle("vazut", k < i); });
+    $('[data-rol="inapoi"]').disabled = i === 0;
+    $('[data-rol="inainte"]').textContent = i === PASI.length - 1 ? "De la capăt" : "Pasul următor";
+  }
+  $('[data-rol="inainte"]').onclick = () => { i = i === PASI.length - 1 ? 0 : i + 1; arata(); };
+  $('[data-rol="inapoi"]').onclick = () => { i = Math.max(0, i - 1); arata(); };
+  $(".sci__puncte").addEventListener("click", ev => {
+    const b = ev.target.closest("button[data-k]"); if (b){ i = +b.dataset.k; arata(); }
+  });
+  arata();
+};
+
+
+/* ===========================================================================
+   PY — un Python foarte mic, cât să răspundă ca o celulă Jupyter
+
+   Știe exact ce trebuie la tipuri, liste, dicționare și JSON: nume, numere,
+   texte, indexare (și negativă), type(), len(), print(), str(), int(),
+   float(), .keys(), .values(). Răspunsurile și erorile au forma celor
+   adevărate, ca să le recunoască în VS Code. Valorile vin din JSON, deci
+   un float întreg (0.0) se scrie {"__f": 0}, iar un tuplu {"__t": [...]}.
+   =========================================================================== */
+const PY = (() => {
+  const T = v => v === null ? "NoneType" : typeof v === "boolean" ? "bool"
+    : typeof v === "string" ? "str"
+    : typeof v === "number" ? (Number.isInteger(v) ? "int" : "float")
+    : Array.isArray(v) ? "list"
+    : v && typeof v === "object" && "__f" in v ? "float"
+    : v && typeof v === "object" && "__t" in v ? "tuple"
+    : v && v.__py ? v.__py : "dict";
+  const nr = v => v && typeof v === "object" && "__f" in v ? v.__f : v;
+  const fl = x => { const s = String(x); return /[.e]/.test(s) || !isFinite(x) ? s : s + ".0"; };
+  const strRepr = s => {
+    const q = s.includes("'") && !s.includes('"') ? '"' : "'";
+    return q + s.replace(/\\/g, "\\\\").replace(new RegExp(q, "g"), "\\" + q).replace(/\n/g, "\\n") + q;
+  };
+  const repr = v => {
+    const t = T(v);
+    if (t === "NoneType") return "None";
+    if (t === "bool") return v ? "True" : "False";
+    if (t === "str") return strRepr(v);
+    if (t === "int") return String(v);
+    if (t === "float") return fl(nr(v));
+    if (t === "tuple") return "(" + v.__t.map(repr).join(", ") + (v.__t.length === 1 ? ",)" : ")");
+    if (t === "list") return "[" + v.map(repr).join(", ") + "]";
+    if (t === "type") return `<class '${v.n}'>`;
+    if (t === "dict_keys" || t === "dict_values") return `${t}([${v.v.map(repr).join(", ")}])`;
+    return "{" + Object.entries(v).map(([k, x]) => strRepr(k) + ": " + repr(x)).join(", ") + "}";
+  };
+  /* ce afișează Jupyter pentru rezultatul unei celule */
+  const afis = v => T(v) === "type" ? v.n : repr(v);
+  const prt = v => T(v) === "str" ? v : repr(v);
+
+  class Er extends Error { constructor(tip, msg){ super(msg); this.tip = tip; } }
+
+  function tokeni(src){
+    const t = [], re = /\s*(?:(\d+\.\d*|\d*\.\d+|\d+)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|([A-Za-z_]\w*)|(.))/gy;
+    let m; re.lastIndex = 0;
+    while (re.lastIndex < src.length && (m = re.exec(src))){
+      if (m[1] !== undefined) t.push({ k: "n", v: m[1] });
+      else if (m[2] !== undefined) t.push({ k: "s", v: m[2].slice(1, -1).replace(/\\(.)/g, "$1") });
+      else if (m[3] !== undefined) t.push({ k: "i", v: m[3] });
+      else if (m[4] !== undefined && m[4].trim()) t.push({ k: "p", v: m[4] });
+    }
+    return t;
+  }
+
+  function evalueaza(src, env){
+    const tk = tokeni(src.trim()); let i = 0, tiparit = null;
+    const vezi = () => tk[i], ia = () => tk[i++];
+    const cere = v => { const x = ia(); if (!x || x.v !== v) throw new Er("SyntaxError", "invalid syntax"); };
+    const FN = {
+      type: a => ({ __py: "type", n: T(a) }),
+      len: a => { const t = T(a);
+        if (t === "str" || t === "list") return a.length;
+        if (t === "tuple") return a.__t.length;
+        if (t === "dict") return Object.keys(a).length;
+        throw new Er("TypeError", `object of type '${t}' has no len()`); },
+      print: a => { tiparit = (tiparit === null ? "" : tiparit + "\n") + prt(a); return null; },
+      str: a => prt(a),
+      int: a => { const t = T(a);
+        if (t === "str"){ if (!/^\s*-?\d+\s*$/.test(a)) throw new Er("ValueError", `invalid literal for int() with base 10: ${strRepr(a)}`); return parseInt(a, 10); }
+        if (t === "int" || t === "bool") return +a;
+        if (t === "float") return Math.trunc(nr(a));
+        throw new Er("TypeError", `int() argument must be a string or a number, not '${t}'`); },
+      float: a => { const t = T(a);
+        if (t === "str"){ if (!/^\s*-?(\d+\.?\d*|\.\d+)\s*$/.test(a)) throw new Er("ValueError", `could not convert string to float: ${strRepr(a)}`); return { __f: parseFloat(a) }; }
+        if (t === "int" || t === "float" || t === "bool") return { __f: +nr(a) };
+        throw new Er("TypeError", `float() argument must be a string or a real number, not '${t}'`); },
+    };
+    function primar(){
+      const x = ia(); if (!x) throw new Er("SyntaxError", "invalid syntax");
+      if (x.k === "n") return x.v.includes(".") ? { __f: parseFloat(x.v) } : parseInt(x.v, 10);
+      if (x.k === "s") return x.v;
+      if (x.k === "p" && x.v === "-"){ const y = primar(); const t = T(y);
+        if (t === "int") return -y; if (t === "float") return { __f: -nr(y) };
+        throw new Er("TypeError", `bad operand type for unary -: '${t}'`); }
+      if (x.k === "p" && x.v === "("){ const v = expr(); cere(")"); return v; }
+      if (x.k === "i"){
+        if (x.v === "True") return true; if (x.v === "False") return false; if (x.v === "None") return null;
+        if (vezi() && vezi().v === "(" && FN[x.v]){ ia(); const a = expr(); cere(")"); return FN[x.v](a); }
+        if (!(x.v in env)) throw new Er("NameError", `name '${x.v}' is not defined`);
+        return env[x.v];
+      }
+      throw new Er("SyntaxError", "invalid syntax");
+    }
+    function postfix(){
+      let v = primar();
+      for (;;){
+        const x = vezi(); if (!x || x.k !== "p") break;
+        if (x.v === "["){ ia(); const k = expr(); cere("]"); v = indexeaza(v, k); continue; }
+        if (x.v === "."){ ia(); const m = ia(); cere("("); cere(")");
+          if (T(v) === "dict" && m.v === "keys") { v = { __py: "dict_keys", v: Object.keys(v) }; continue; }
+          if (T(v) === "dict" && m.v === "values") { v = { __py: "dict_values", v: Object.values(v) }; continue; }
+          throw new Er("AttributeError", `'${T(v)}' object has no attribute '${m.v}'`); }
+        break;
+      }
+      return v;
+    }
+    function expr(){
+      let a = postfix();
+      while (vezi() && vezi().k === "p" && (vezi().v === "+" || vezi().v === "-")){
+        const op = ia().v, b = postfix(), ta = T(a), tb = T(b);
+        const num = t => t === "int" || t === "float" || t === "bool";
+        if (op === "+" && ta === "str" && tb === "str") a = a + b;
+        else if (op === "+" && ta === "list" && tb === "list") a = [...a, ...b];
+        else if (num(ta) && num(tb)){
+          const r = op === "+" ? nr(a) + nr(b) : nr(a) - nr(b);
+          a = ta === "float" || tb === "float" ? { __f: r } : r;
+        }
+        else if (op === "+" && ta === "str") throw new Er("TypeError", `can only concatenate str (not "${tb}") to str`);
+        else throw new Er("TypeError", `unsupported operand type(s) for ${op}: '${ta}' and '${tb}'`);
+      }
+      return a;
+    }
+    const v = expr();
+    if (i < tk.length) throw new Er("SyntaxError", "invalid syntax");
+    return { v, tiparit };
+  }
+
+  function indexeaza(v, k){
+    const t = T(v), tk = T(k);
+    if (t === "list" || t === "tuple" || t === "str"){
+      const a = t === "tuple" ? v.__t : v;
+      if (tk !== "int") throw new Er("TypeError", `${t === "str" ? "string" : t} indices must be integers${t === "str" ? "" : " or slices"}, not ${tk}`);
+      const j = k < 0 ? a.length + k : k;
+      if (j < 0 || j >= a.length) throw new Er("IndexError", `${t === "str" ? "string" : t} index out of range`);
+      return a[j];
+    }
+    if (t === "dict"){
+      if (!(String(k) in v) || tk !== "str") throw new Er("KeyError", repr(k));
+      return v[k];
+    }
+    throw new Er("TypeError", `'${t}' object is not subscriptable`);
+  }
+
+  /* drumul unei expresii de tip a[1]["b"]: rădăcina și pașii, pentru evidențiere */
+  function drum(src){
+    const m = src.trim().match(/^([A-Za-z_]\w*)((?:\s*\[[^\]]+\])*)\s*$/);
+    if (!m) return null;
+    const pasi = [...m[2].matchAll(/\[\s*([^\]]+?)\s*\]/g)].map(x => {
+      const s = x[1]; return /^-?\d+$/.test(s) ? parseInt(s, 10) : s.replace(/^["']|["']$/g, "");
+    });
+    return { rad: m[1], pasi };
+  }
+
+  return { T, repr, afis, prt, evalueaza, indexeaza, drum, Er };
+})();
+
+
+/* Consola, ca o celulă Jupyter: scrii o expresie, apeși Enter, primești Out.
+   Săgeata în sus aduce comanda de dinainte. Întoarce o funcție care spune
+   de câte ori a fost folosită. */
+function consolaJupyter(gazda, env, { start = 2, loc = "", laRulare = null } = {}){
+  let n = start, ist = [], poz = 0;
+  gazda.innerHTML = `<div class="jc__ist"></div>
+    <label class="jc__linie"><span class="jc__in">In [${n}]:</span>
+      <input class="jc__intrare" autocomplete="off" spellcheck="false" placeholder="${esc(loc)}" aria-label="Scrie o expresie Python și apasă Enter"></label>`;
+  const istEl = gazda.querySelector(".jc__ist"), inp = gazda.querySelector(".jc__intrare");
+  const eticheta = gazda.querySelector(".jc__in");
+  inp.addEventListener("keydown", ev => {
+    if (ev.key === "ArrowUp" && ist.length){ poz = Math.max(0, poz - 1); inp.value = ist[poz] || ""; ev.preventDefault(); return; }
+    if (ev.key === "ArrowDown" && ist.length){ poz = Math.min(ist.length, poz + 1); inp.value = ist[poz] || ""; ev.preventDefault(); return; }
+    if (ev.key !== "Enter") return;
+    const src = inp.value.trim(); if (!src) return;
+    ist.push(src); poz = ist.length;
+    let html = `<div class="jc__r"><span class="jc__in">In [${n}]:</span><code>${esc(src)}</code></div>`;
+    let rez = null;
+    try {
+      rez = PY.evalueaza(src, env);
+      if (rez.tiparit !== null) html += `<pre class="jc__print">${esc(rez.tiparit)}</pre>`;
+      if (rez.v === null && rez.tiparit === null)
+        html += `<div class="jc__nota">nimic afișat: Jupyter nu arată rezultatul când e None</div>`;
+      else if (!(rez.v === null && rez.tiparit !== null))
+        html += `<div class="jc__r jc__r--out"><span class="jc__out">Out[${n}]:</span><code>${esc(PY.afis(rez.v))}</code></div>`;
+    } catch (e){
+      html += `<pre class="jc__err"><b>${esc(e.tip || "Error")}</b>: ${esc(e.message)}</pre>`;
+    }
+    istEl.insertAdjacentHTML("beforeend", html);
+    istEl.scrollTop = istEl.scrollHeight;
+    n++; eticheta.textContent = `In [${n}]:`; inp.value = "";
+    if (laRulare) laRulare(src, rez);
+  });
+  return { folosiri: () => ist.length, focus: () => inp.focus() };
+}
+
+
+/* ===========================================================================
+   CONSOLA DE TIPURI — ghicești tipul, iar dacă nu ești sigur, întrebi Python
+
+   Valorile le-au văzut deja în caiet; aici nu le mai arăt pas cu pas. Scriu
+   tipul fiecăreia, iar consola de dedesubt le răspunde ca Jupyter la
+   type(variabila). Se înregistrează scorul și de câte ori au întrebat consola.
+   =========================================================================== */
+V.consola = (gazda, d) => {
+  if (d.id) gazda.closest(".ix")?.classList.add("exc");
+  const VARS = d.vars || [];
+  const SIN = { none: "nonetype" };
+  const norm = x => { const k = x.trim().replace(/^<class '|'>$/g, "").toLowerCase(); return SIN[k] || k; };
+  let verificat = false;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="cns">
+      <div class="cns__celula">
+        <div class="cns__cap"><span>${esc(d.fisier || "celulă")}</span><span class="jc__in">In [1]:</span></div>
+        <pre class="cns__cod">${(d.cod || []).map(l => esc(l)).join("\n")}</pre>
+      </div>
+      <div class="cns__grila">
+        ${VARS.map((x, k) => `<label class="cns__r" data-k="${k}">
+          <code class="cns__n">${esc(x.n)}</code>
+          <input class="cns__t" autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}">
+          <span class="cns__st" aria-hidden="true"></span>
+          <span class="cns__e"></span>
+        </label>`).join("")}
+      </div>
+      <div class="cns__act">
+        <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
+        <span class="cns__scor"></span>
+      </div>
+      <div class="cns__ajutor">
+        <p><b>Nu ești sigur?</b> Întreabă Python. Scrie <code>type(${esc(VARS[0]?.n || "x")})</code> și apasă Enter, ca într-o celulă din Jupyter.</p>
+        <div class="jc"></div>
+      </div>
+    </div>`;
+
+  const cons = consolaJupyter(gazda.querySelector(".jc"), d.env || {}, { loc: `type(${VARS[0]?.n || "x"})` });
+  const randuri = [...gazda.querySelectorAll(".cns__r")];
+
+  gazda.querySelector('[data-rol="verifica"]').onclick = async () => {
+    let ok = 0, goale = 0;
+    randuri.forEach((r, k) => {
+      const x = VARS[k], inp = r.querySelector(".cns__t"), v = inp.value;
+      if (!v.trim()){ goale++; r.className = "cns__r"; r.querySelector(".cns__e").textContent = ""; return; }
+      const bun = norm(v) === x.t.toLowerCase();
+      if (bun) ok++;
+      r.className = "cns__r " + (bun ? "ok" : "nu");
+      r.querySelector(".cns__st").textContent = bun ? "✓" : "✗";
+      r.querySelector(".cns__e").innerHTML = bun ? (x.e || "") : `Tipul e <code>${esc(x.t)}</code>. ${x.e || ""}`;
+    });
+    const sc = gazda.querySelector(".cns__scor");
+    if (goale){ sc.textContent = `Mai ai ${goale} ${goale === 1 ? "rând gol" : "rânduri goale"}.`; return; }
+    sc.innerHTML = `<b>${ok} din ${VARS.length}</b>${ok === VARS.length ? " · toate corecte" : " · citește explicațiile de sub rândurile roșii"}`;
+    if (!verificat && d.id){
+      verificat = true;
+      await poarta(gazda, d.id, `${ok}/${VARS.length} consola:${cons.folosiri()}`);
+    }
+  };
+};
+
+
+/* ===========================================================================
+   ACCES — drumul până la o valoare, construit cu clicul sau scris
+
+   Trei feluri de a privi aceleași date:
+     memorie   listele ca șir de căsuțe cu poziții (și pozițiile negative),
+               dicționarele ca etichete cheie → valoare;
+     coborare  vezi doar nivelul la care ai ajuns, ca niște cutii una în alta:
+               intri într-o cutie și expresia crește cu un pas;
+     arbore    tot răspunsul, cu fiecare rând apăsabil.
+   Sub fiecare: expresia Python, „ce ai în mână” la fiecare pas (tipul și
+   mărimea), Out ca în Jupyter, o consolă, și câteva ținte de găsit.
+   =========================================================================== */
+V.acces = (gazda, d) => {
+  const ENV = d.env || {};
+  const RAD = d.radacini || Object.keys(ENV);
+  const VED = d.vedere || "arbore";
+  const JSN = d.limbaj === "json";
+  const PROV = d.provocari || [];
+  const gasite = new Set();
+  let cale = { rad: d.start || RAD[0], pasi: [] };
+
+  const fmtCale = c => c.rad + c.pasi.map(p => typeof p === "number" ? `[${p}]` : `["${p}"]`).join("");
+  const laCale = c => c.pasi.reduce((v, p) => PY.indexeaza(v, p), ENV[c.rad]);
+  const norm = c => { let v = ENV[c.rad]; const o = [c.rad];
+    for (const p of c.pasi){ const a = PY.T(v) === "tuple" ? v.__t : v;
+      o.push(typeof p === "number" && p < 0 && Array.isArray(a) ? a.length + p : p); v = PY.indexeaza(v, p); }
+    return JSON.stringify(o); };
+  const marime = v => { const t = PY.T(v);
+    if (t === "list") return `${v.length} ${v.length === 1 ? "element" : "elemente"}`;
+    if (t === "tuple") return `${v.__t.length} elemente`;
+    if (t === "dict") { const n = Object.keys(v).length; return `${n} ${n === 1 ? "cheie" : "chei"}`; }
+    if (t === "str") return `${v.length} caractere`;
+    return ""; };
+  const NUME_T = { dict: "un dicționar", list: "o listă", tuple: "un tuplu", str: "un text (str)",
+    int: "un număr întreg", float: "un număr cu zecimale", bool: "o valoare logică", NoneType: "None, nicio valoare" };
+  const CE_FACI = { dict: "Ceri o <b>cheie</b>, între ghilimele: <code>[\"nume\"]</code>.",
+    list: "Ceri o <b>poziție</b>, numărată de la 0: <code>[0]</code>, <code>[1]</code>… sau de la coadă: <code>[-1]</code>.",
+    tuple: "Ceri o <b>poziție</b>, ca la listă." };
+  const scurt = (v, n = 34) => { const r = PY.repr(v); return r.length > n ? r.slice(0, n - 1) + "…" : r; };
+  const jsonVal = v => { const t = PY.T(v);
+    if (t === "NoneType") return "null"; if (t === "bool") return v ? "true" : "false";
+    if (t === "str") return JSON.stringify(v); if (t === "float") return String(v.__f ?? v); return String(v); };
+  const cheie = k => JSN ? `"${esc(k)}"` : `'${esc(k)}'`;
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="acs acs--${VED}">
+      ${PROV.length ? `<div class="acs__tinte"><span class="acs__tet">Găsește</span>${PROV.map((x, k) =>
+        `<button class="acs__tinta" data-k="${k}" type="button"><i></i>${x.t}</button>`).join("")}</div>` : ""}
+      <div class="acs__scena"></div>
+      <div class="acs__expr"><span class="acs__eet">expresia</span><code class="acs__ec"></code></div>
+      <div class="acs__mana"></div>
+      <div class="acs__out"></div>
+      ${d.consola !== false ? `<details class="acs__cons"${d.consolaDeschisa ? " open" : ""}><summary>Sau scrie tu expresia, în consolă</summary><div class="jc"></div></details>` : ""}
+    </div>`;
+
+  const $ = q => gazda.querySelector(q);
+  const scena = $(".acs__scena");
+
+  /* ---------- memorie: căsuțe pentru liste, etichete pentru dicționare ---- */
+  function deseneazaMemorie(){
+    scena.innerHTML = RAD.map(r => {
+      const v = ENV[r], t = PY.T(v);
+      if (t === "list" || t === "tuple"){
+        const a = t === "tuple" ? v.__t : v;
+        return `<div class="mem"><div class="mem__n"><code>${esc(r)}</code><span>${t}</span></div>
+          <div class="mem__lista">${a.map((x, i) => `<div class="mem__cel">
+            <button class="mem__i" data-c='${esc(JSON.stringify({ rad: r, pasi: [i] }))}' type="button">${i}</button>
+            <button class="mem__v" data-c='${esc(JSON.stringify({ rad: r, pasi: [i] }))}' type="button">${esc(PY.repr(x))}</button>
+            <button class="mem__i mem__i--neg" data-c='${esc(JSON.stringify({ rad: r, pasi: [i - a.length] }))}' type="button">${i - a.length}</button>
+          </div>`).join("")}</div></div>`;
+      }
+      if (t === "dict"){
+        return `<div class="mem"><div class="mem__n"><code>${esc(r)}</code><span>dict</span></div>
+          <div class="mem__dict">${Object.entries(v).map(([k, x]) => `<button class="mem__pereche" data-c='${esc(JSON.stringify({ rad: r, pasi: [k] }))}' type="button">
+            <span class="mem__k">${cheie(k)}</span><span class="mem__sag">→</span><span class="mem__dv">${esc(scurt(x, 26))}</span></button>`).join("")}</div></div>`;
+      }
+      return `<div class="mem"><button class="mem__simplu" data-c='${esc(JSON.stringify({ rad: r, pasi: [] }))}' type="button"><code>${esc(r)}</code> = ${esc(PY.repr(v))}</button></div>`;
+    }).join("");
+  }
+
+  /* ---------- arbore: tot răspunsul, fiecare rând apăsabil --------------- */
+  function nod(v, c, ind, eticheta){
+    const t = PY.T(v), dc = esc(JSON.stringify(c));
+    const pad = `style="--ind:${ind}"`;
+    const et = eticheta ? `<span class="arb__k">${eticheta}</span><span class="arb__p">: </span>` : "";
+    if (t === "dict" || t === "list" || t === "tuple"){
+      const des = t === "dict" ? "{" : t === "list" ? "[" : "(", inc = t === "dict" ? "}" : t === "list" ? "]" : ")";
+      const copii = t === "dict" ? Object.entries(v).map(([k, x]) => nod(x, { rad: c.rad, pasi: [...c.pasi, k] }, ind + 1, cheie(k)))
+        : (t === "tuple" ? v.__t : v).map((x, i) => nod(x, { rad: c.rad, pasi: [...c.pasi, i] }, ind + 1, `<span class="arb__idx">${i}</span>`));
+      return `<div class="arb__r arb__r--des" data-c='${dc}' ${pad}>${et}<span class="arb__b">${des}</span><span class="arb__m">${marime(v)}</span></div>
+        ${copii.join("")}<div class="arb__r arb__r--inc" ${pad}><span class="arb__b">${inc}</span></div>`;
+    }
+    return `<div class="arb__r" data-c='${dc}' ${pad}>${et}<span class="arb__v arb__v--${t}">${esc(JSN ? jsonVal(v) : PY.repr(v))}</span></div>`;
+  }
+  function deseneazaArbore(){
+    scena.innerHTML = `<div class="arb">${RAD.map(r => `<div class="arb__rad"><code>${esc(r)}</code> =</div>` + nod(ENV[r], { rad: r, pasi: [] }, 0, "")).join("")}</div>`;
+  }
+
+  /* ---------- coborâre: doar nivelul curent, ca niște cutii -------------- */
+  function deseneazaCoborare(){
+    let v; try { v = laCale(cale); } catch { cale = { rad: cale.rad, pasi: [] }; v = ENV[cale.rad]; }
+    const t = PY.T(v);
+    let corp;
+    if (t === "dict" || t === "list" || t === "tuple"){
+      const intrari = t === "dict" ? Object.entries(v) : (t === "tuple" ? v.__t : v).map((x, i) => [i, x]);
+      corp = `<div class="cob__cutii cob__cutii--${t}">${intrari.map(([k, x]) => {
+        const tx = PY.T(x), dc = esc(JSON.stringify({ rad: cale.rad, pasi: [...cale.pasi, k] }));
+        return `<button class="cob__cut cob__cut--${tx === "dict" || tx === "list" ? "cont" : "frunza"}" data-c='${dc}' type="button">
+          <span class="cob__acc">${typeof k === "number" ? `[${k}]` : `["${esc(k)}"]`}</span>
+          <span class="cob__tip">${tx}${marime(x) ? ` · ${marime(x)}` : ""}</span>
+          <span class="cob__prev">${esc(scurt(x, 40))}</span>
+        </button>`; }).join("")}</div>`;
+    } else {
+      corp = `<div class="cob__frunza"><span class="cob__tip">${t}</span><b>${esc(PY.repr(v))}</b><span>Ai ajuns la o valoare. Mai jos nu se mai poate coborî.</span></div>`;
+    }
+    const sus = cale.pasi.length ? `<button class="cob__sus" type="button">↑ un nivel mai sus</button>` : "";
+    scena.innerHTML = `<div class="cob__cadru" style="--niv:${cale.pasi.length}">
+      <div class="cob__cap"><span class="cob__niv">nivelul ${cale.pasi.length}</span>${sus}</div>${corp}</div>`;
+    scena.querySelector(".cob__sus")?.addEventListener("click", () => { cale = { rad: cale.rad, pasi: cale.pasi.slice(0, -1) }; arata(); });
+  }
+
+  const deseneaza = { memorie: deseneazaMemorie, arbore: deseneazaArbore, coborare: deseneazaCoborare }[VED];
+
+  function arata(){
+    if (VED === "coborare") deseneaza();
+    /* evidențierea în scenă */
+    const tinta = JSON.stringify(cale);
+    scena.querySelectorAll("[data-c]").forEach(e => {
+      const c = JSON.parse(e.dataset.c);
+      const egal = e.dataset.c === tinta;
+      const stramos = c.rad === cale.rad && c.pasi.length < cale.pasi.length &&
+        c.pasi.every((p, i) => p === cale.pasi[i]);
+      e.classList.toggle("on", egal); e.classList.toggle("drum", stramos);
+    });
+    /* expresia, colorată pe pași */
+    $(".acs__ec").innerHTML = `<span class="ex__r">${esc(cale.rad)}</span>` + cale.pasi.map(p =>
+      typeof p === "number" ? `<span class="ex__i">[${p}]</span>` : `<span class="ex__k">["${esc(p)}"]</span>`).join("");
+    /* ce ai în mână, la fiecare pas */
+    let v = ENV[cale.rad]; const lant = [{ acc: cale.rad, v }];
+    let er = null;
+    for (const p of cale.pasi){ try { v = PY.indexeaza(v, p); lant.push({ acc: typeof p === "number" ? `[${p}]` : `["${p}"]`, v, p }); }
+      catch (e){ er = e; break; } }
+    $(".acs__mana").innerHTML = `<span class="acs__met">ce ai în mână</span><div class="acs__lant">${lant.map((x, i) => {
+      const t = PY.T(x.v);
+      return `${i ? `<span class="acs__sag">→</span>` : ""}<button class="acs__za" data-i="${i}" type="button">
+        <code>${esc(x.acc)}</code><span class="acs__zt acs__zt--${t}">${t}</span><span class="acs__zm">${marime(x.v)}</span></button>`; }).join("")}</div>
+      <p class="acs__sfat">${er ? "" : (() => { const t = PY.T(v);
+        return `Acum ai ${NUME_T[t] || t}. ${CE_FACI[t] || "Asta e o valoare: drumul s-a terminat aici."}`; })()}</p>`;
+    $(".acs__out").innerHTML = er
+      ? `<pre class="jc__err"><b>${esc(er.tip)}</b>: ${esc(er.message)}</pre>`
+      : `<span class="jc__out">Out:</span><code>${esc(PY.afis(v))}</code>`;
+    /* în arbore, rândul ales rămâne la vedere */
+    if (VED === "arbore"){
+      const box = scena.querySelector(".arb"), on = scena.querySelector(".arb__r.on");
+      if (box && on && (on.offsetTop < box.scrollTop || on.offsetTop > box.scrollTop + box.clientHeight - 30))
+        box.scrollTop = Math.max(0, on.offsetTop - 80);
+    }
+    /* ținte */
+    PROV.forEach((x, k) => {
+      if (gasite.has(k)) return;
+      try { const c = PY.drum(x.cale);
+        if (c && c.rad === cale.rad && (x.exact ? fmtCale(c) === fmtCale(cale) : norm(c) === norm(cale))) gasite.add(k); } catch {}
+    });
+    gazda.querySelectorAll(".acs__tinta").forEach((b, k) => b.classList.toggle("gata", gasite.has(k)));
+  }
+
+  scena.addEventListener("click", ev => {
+    const e = ev.target.closest("[data-c]"); if (!e) return;
+    cale = JSON.parse(e.dataset.c); arata();
+  });
+  $(".acs__mana").addEventListener("click", ev => {
+    const b = ev.target.closest(".acs__za"); if (!b) return;
+    cale = { rad: cale.rad, pasi: cale.pasi.slice(0, +b.dataset.i) }; arata();
+  });
+  gazda.querySelectorAll(".acs__tinta").forEach(b => b.addEventListener("click", () => {
+    const x = PROV[+b.dataset.k];
+    b.classList.add("ales"); setTimeout(() => b.classList.remove("ales"), 600);
+    if (x.indiciu) $(".acs__mana .acs__sfat").innerHTML = `<b>Indiciu:</b> ${x.indiciu}`;
+  }));
+  if (d.consola !== false){
+    consolaJupyter($(".jc"), ENV, { start: 1, loc: d.exemplu || `${RAD[0]}[0]`, laRulare: (src, rez) => {
+      const c = PY.drum(src);
+      if (c && c.rad in ENV){ try { c.pasi.reduce((v, p) => PY.indexeaza(v, p), ENV[c.rad]); cale = c; arata(); } catch {} }
+    }});
+  }
+  if (VED !== "coborare") deseneaza();
+  arata();
+};
+
+
+/* ===========================================================================
+   GEOM — geometriile din Simple Features, desenate, cu fișa fiecăreia
+
+   Arborele cu liniuțe arăta ierarhia, dar nu forma. Aici fiecare tip e
+   desenat cum arată pe hartă, grupat după dimensiune (0 puncte, 1 linii,
+   2 suprafețe), iar la clic primești fișa tehnică: definiția, WKT-ul, cum
+   îl scrii în Shapely și PostGIS, regulile de validitate și ce facem noi cu
+   el în proiect.
+   =========================================================================== */
+V.geom = (gazda, d) => {
+  const G = d.geometrii || [];
+  const I = {
+    point: `<circle cx="40" cy="28" r="5"/>`,
+    multipoint: `<circle cx="20" cy="18" r="4.5"/><circle cx="46" cy="36" r="4.5"/><circle cx="62" cy="16" r="4.5"/>`,
+    linestring: `<polyline points="8,44 26,20 44,34 72,10" fill="none" class="g__l"/><circle cx="8" cy="44" r="3"/><circle cx="26" cy="20" r="3"/><circle cx="44" cy="34" r="3"/><circle cx="72" cy="10" r="3"/>`,
+    multilinestring: `<polyline points="6,40 24,22 38,30" fill="none" class="g__l"/><polyline points="46,46 60,24 76,30" fill="none" class="g__l"/>`,
+    polygon: `<path d="M10,46 L18,10 L52,6 L72,30 L54,50 Z M30,22 L44,20 L46,34 L32,36 Z" fill-rule="evenodd" class="g__s"/>`,
+    multipolygon: `<path d="M6,40 L14,12 L38,10 L42,38 Z" class="g__s"/><path d="M50,22 L66,14 L76,30 L62,46 L50,40 Z" class="g__s"/><path d="M58,6 L66,4 L68,10 L60,12 Z" class="g__s"/>`,
+    collection: `<circle cx="14" cy="16" r="4.5"/><polyline points="8,46 24,30 36,40" fill="none" class="g__l"/><path d="M46,12 L72,10 L70,40 L48,36 Z" class="g__s"/>`,
+  };
+  const DIM = ["0 · puncte", "1 · linii", "2 · suprafețe", "amestec"];
+  let ales = d.start ?? G.findIndex(g => g.k === "polygon");
+
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="geo">
+      <div class="geo__grila">${G.map((g, k) => `<button class="geo__c geo__c--d${g.dim}" data-k="${k}" type="button">
+        <svg viewBox="0 0 80 56" aria-hidden="true">${I[g.k] || ""}</svg>
+        <span class="geo__n">${esc(g.n).replace(/^(Multi|Geometry)(?=[A-Z])/, "$1<wbr>")}</span><span class="geo__et">${esc(g.et)}</span>
+      </button>`).join("")}</div>
+      <div class="geo__fisa" aria-live="polite"></div>
+    </div>`;
+
+  const fisa = gazda.querySelector(".geo__fisa");
+  function arata(k){
+    ales = k; const g = G[k]; if (!g) return;
+    gazda.querySelectorAll(".geo__c").forEach((b, j) => b.classList.toggle("on", j === k));
+    const rand = (et, v, cod) => v ? `<div class="geo__r"><span class="geo__re">${et}</span>${cod ? `<code>${esc(v)}</code>` : `<p>${v}</p>`}</div>` : "";
+    fisa.className = `geo__fisa geo__fisa--d${g.dim}`;
+    fisa.innerHTML = `
+      <div class="geo__fc">
+        <svg viewBox="0 0 80 56" aria-hidden="true">${I[g.k] || ""}</svg>
+        <div><h5>${esc(g.n)} <small>${esc(g.et)}</small></h5>
+          <span class="geo__dim">dimensiune ${DIM[g.dim] ?? ""}</span></div>
+      </div>
+      <p class="geo__def">${g.def || ""}</p>
+      <div class="geo__rs">
+        ${rand("WKT", g.wkt, true)}
+        ${rand("Python", g.py, true)}
+        ${rand("PostGIS", g.pg, true)}
+        ${rand("E validă dacă", g.valid)}
+        ${rand("La noi", g.la)}
+      </div>`;
+  }
+  gazda.querySelector(".geo__grila").addEventListener("click", ev => {
+    const b = ev.target.closest(".geo__c"); if (b) arata(+b.dataset.k);
+  });
+  arata(ales < 0 ? 0 : ales);
+};
+
+
+/* ===========================================================================
+   MASCA — cum păstrează pandas doar rândurile care te interesează
+
+   Trei pași, fiecare cu bucata lui de cod aprinsă: alegi coloana, o compari
+   (iese o coloană de True și False), apoi tabelul păstrează doar rândurile
+   True. Rândurile sunt adevărate, din country.csv.
+   =========================================================================== */
+V.masca = (gazda, d) => {
+  const R = d.randuri || [], C = d.coloane || [], col = d.coloana, val = d.valoare;
+  const ki = C.indexOf(col);
+  let pas = 0;
+  const PASI = [
+    { cod: `d`, txt: `Tabelul întreg. Aici, ${R.length} rânduri din cele ${d.total || "?"}.` },
+    { cod: `d["${col}"]`, txt: `<code>d["${col}"]</code> alege o singură coloană: e o serie, cu o valoare pe fiecare rând.` },
+    { cod: `d["${col}"] == "${val}"`, txt: `<code>==</code> compară <b>fiecare rând</b> cu <code>"${val}"</code>. Rezultatul e tot o coloană, de <code>True</code> și <code>False</code>: o mască.` },
+    { cod: `d[d["${col}"] == "${val}"]`, txt: `Pusă între parantezele tabelului, masca păstrează doar rândurile <code>True</code>. Din tot fișierul rămân ${d.ramase || "?"} de rânduri.` },
+  ];
+  gazda.innerHTML = `
+    <div class="msk">
+      <div class="msk__cod"><code></code></div>
+      <div class="msk__tab"><table>
+        <thead><tr>${C.map((c, j) => `<th class="${j === ki ? "msk__k" : ""}">${esc(c)}</th>`).join("")}<th class="msk__m">== "${esc(val)}"</th></tr></thead>
+        <tbody>${R.map(r => `<tr class="${r[ki] === val ? "da" : "nu"}">${r.map((x, j) => `<td class="${j === ki ? "msk__k" : ""}">${esc(x)}</td>`).join("")}
+          <td class="msk__m">${r[ki] === val ? "True" : "False"}</td></tr>`).join("")}</tbody></table></div>
+      <p class="msk__txt"></p>
+      <div class="msk__nav">
+        <button class="btn btn--mic" data-rol="inapoi" type="button">Înapoi</button>
+        <span class="msk__pct">${PASI.map((_, k) => `<i data-k="${k}"></i>`).join("")}</span>
+        <button class="btn btn--mic btn--tare" data-rol="inainte" type="button">Pasul următor</button>
+      </div>
+    </div>`;
+  const $ = q => gazda.querySelector(q);
+  function arata(){
+    const m = $(".msk"); m.dataset.pas = pas;
+    $(".msk__cod code").textContent = PASI[pas].cod;
+    $(".msk__txt").innerHTML = PASI[pas].txt;
+    gazda.querySelectorAll(".msk__pct i").forEach((e, k) => e.classList.toggle("on", k <= pas));
+    $('[data-rol="inapoi"]').disabled = pas === 0;
+    $('[data-rol="inainte"]').textContent = pas === PASI.length - 1 ? "De la capăt" : "Pasul următor";
+  }
+  $('[data-rol="inainte"]').onclick = () => { pas = pas === PASI.length - 1 ? 0 : pas + 1; arata(); };
+  $('[data-rol="inapoi"]').onclick = () => { pas = Math.max(0, pas - 1); arata(); };
+  arata();
+};
+
+
+/* ===========================================================================
+   FOLDER — cum arată proiectul pe disc, și ce stă în fiecare dosar
+
+   Lucrezi în folderul proiectului. Mediul virtual stă în el, în .venv, dar
+   tu nu scrii acolo nimic. La clic pe fiecare dosar: ce pui în el, cine
+   scrie acolo, și dacă urcă pe GitHub.
+   =========================================================================== */
+V.folder = (gazda, d) => {
+  const N = d.noduri || [];
+  let ales = d.start ?? 0;
+  gazda.innerHTML = `
+    <div class="fld">
+      <div class="fld__arb">${N.map((x, k) => `<button class="fld__n fld__n--${x.fel || "dir"}${x.interzis ? " fld__n--x" : ""}" data-k="${k}" style="--ind:${x.ind || 0}" type="button">
+        <span class="fld__ic" aria-hidden="true">${x.fel === "fis" ? "▤" : "▸"}</span><code>${esc(x.n)}</code>${x.scurt ? `<span class="fld__sc">${esc(x.scurt)}</span>` : ""}
+      </button>`).join("")}</div>
+      <div class="fld__fisa" aria-live="polite"></div>
+    </div>`;
+  const fisa = gazda.querySelector(".fld__fisa");
+  function arata(k){
+    ales = k; const x = N[k];
+    gazda.querySelectorAll(".fld__n").forEach((b, j) => b.classList.toggle("on", j === k));
+    fisa.className = "fld__fisa" + (x.interzis ? " fld__fisa--x" : "");
+    fisa.innerHTML = `<h5><code>${esc(x.n)}</code></h5><p>${x.d || ""}</p>
+      <dl>${x.cine ? `<dt>Cine scrie aici</dt><dd>${x.cine}</dd>` : ""}
+          ${x.ex ? `<dt>De exemplu</dt><dd>${x.ex}</dd>` : ""}
+          ${x.git ? `<dt>Pe GitHub</dt><dd>${x.git}</dd>` : ""}</dl>`;
+  }
+  gazda.querySelector(".fld__arb").addEventListener("click", ev => {
+    const b = ev.target.closest(".fld__n"); if (b) arata(+b.dataset.k);
+  });
+  arata(ales);
 };
 
 export default V;

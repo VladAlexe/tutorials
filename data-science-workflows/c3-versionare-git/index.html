@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 3. Versionare și colaborare cu Git · Fluxuri de lucru</title>
 <meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără să se calce, și cum se încadrează teoretic un proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=62">
-<link rel="stylesheet" href="../css/sistem.css?v=62">
-<link rel="stylesheet" href="../css/intrare.css?v=62">
-<script src="../js/tema.js?v=62"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=63">
+<link rel="stylesheet" href="../css/sistem.css?v=63">
+<link rel="stylesheet" href="../css/intrare.css?v=63">
+<script src="../js/tema.js?v=63"></script>
 </head>
 <body>
 
@@ -125,7 +125,7 @@ personal devine depozitul echipei când adaugi ceilalți membri.</p></div>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=62"), import("../js/ora.js?v=62"), import("../js/curs.js?v=62")]);
+    import("../js/auth.js?v=63"), import("../js/ora.js?v=63"), import("../js/curs.js?v=63")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -153,7 +153,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=62"></script>
-<script type="module" src="../js/subsol.js?v=62"></script>
+<script type="module" src="../js/antet.js?v=63"></script>
+<script type="module" src="../js/subsol.js?v=63"></script>
 </body>
 </html>

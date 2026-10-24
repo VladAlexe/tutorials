@@ -1,493 +1,497 @@
 {
- "c1-introducere-si-mediu": {
-  "nr": 1,
-  "titlu": "Introducere și configurare",
-  "deck": "Proiectul pe care îl construim tot semestrul, pașii prin care trece\n    o analiză de date, și configurarea calculatorului tău: mediu virtual, tipuri de date,\n    formatul JSON.",
-  "descriere": "Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Despre lecția asta",
-    "html": "<p>Prima oră are două jumătăți. În prima stabilim ce construim: proiectul\n        semestrului, datele pe care le folosim, echipele, și harta completă a pașilor\n        prin care trece o analiză de date, de la definirea problemei până la raportare.\n        În a doua ne configurăm calculatoarele, ca data viitoare să putem începe direct\n        cu datele.</p>\n<p>Între ele stau noțiunile fără de care nimic din ce urmează nu are sens:\n        tipurile de date, în Python, în SQL și în fișiere spațiale; diferența dintre un\n        fișier text și unul binar; și formatul JSON, pe care îl vorbesc toate API-urile\n        de la care vom cere date.</p>\n<p>Lecția începe cu o întrebare la care nu se poate răspunde din intuiție, pusă\n        pe datele noastre reale, și cu o evaluare scurtă a ceea ce știi deja. Nu se\n        notează; e ca să știu de unde pornim.</p>"
-   },
-   {
-    "t": "La final vei putea",
-    "html": "<ul class=\"obiective\">\n<li>Să descrii pașii unui proiect de analiză de date și să spui de ce te întorci constant la etapele anterioare.</li>\n<li>Să ai instalate VS Code și Python, cont de GitHub legat de numărul matricol, și o echipă.</li>\n<li>Să îți creezi un mediu de lucru virtual și să știi, dintr-o privire, când e activ.</li>\n<li>Să recunoști tipurile de date din Python și să spui ce se strică atunci când sunt greșite.</li>\n<li>Să alegi un tip potrivit pentru o coloană dintr-o bază de date, și să explici de ce.</li>\n<li>Să deosebești un fișier text de unul binar, și să știi ce pierde fiecare format.</li>\n<li>Să citești un răspuns JSON și să scrii drumul până la valoarea care te interesează.</li>\n</ul>"
-   },
-   {
-    "t": "De ce ai nevoie, înainte",
-    "html": "<p>Lecția se poate citi fără nimic instalat. Partea practică, din caiet, are nevoie\n        de două lucruri, amândouă gratuite:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://code.visualstudio.com/\" rel=\"noopener\" target=\"_blank\">VS Code</a>, editorul în care lucrăm tot semestrul.</li>\n<li><a class=\"leg\" href=\"https://www.python.org/downloads/\" rel=\"noopener\" target=\"_blank\">Python 3.11</a> sau mai nou. La instalare, pe Windows, bifează <em>Add Python to PATH</em>.</li>\n</ol>\n<p>Dacă vrei să-ți apară activitatea în progresul grupei și să îți salvez\n        răspunsurile, intră în cont cu GitHub și leagă-l de numărul matricol. Fără cont,\n        lecția merge la fel, dar răspunsurile rămân doar în browserul tău.</p>"
-   }
-  ],
-  "resurse": [
-   {
-    "href": "https://github.com/VladAlexe/tutorials",
-    "t": "Depozitul cursului",
-    "d": "Codul și caietele"
-   }
-  ],
-  "legaturi": [
-   {
-    "href": "https://code.visualstudio.com/",
-    "t": "VS Code",
-    "g": "↗"
-   },
-   {
-    "href": "https://www.python.org/downloads/",
-    "t": "Python",
-    "g": "↗"
-   },
-   {
-    "href": "https://docs.python.org/3/library/venv.html",
-    "t": "venv",
-    "g": "docs"
-   },
-   {
-    "href": "https://docs.python.org/3/library/stdtypes.html",
-    "t": "Tipuri în Python",
-    "g": "docs"
-   },
-   {
-    "href": "https://www.json.org/json-en.html",
-    "t": "JSON",
-    "g": "spec"
-   },
-   {
-    "href": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510",
-    "t": "Good Enough Practices",
-    "g": "PLOS"
-   },
-   {
-    "href": "https://data.humdata.org/dataset/social-connectedness-index",
-    "t": "Social Connectedness Index",
-    "g": "HDX"
-   }
-  ]
- },
- "c2-colectarea-prin-api": {
-  "nr": 2,
-  "titlu": "Colectarea datelor prin API",
-  "deck": "Până acum ai citit un fișier primit de-a gata. De azi ți-l aduci singur: ce este un API, cum arată o cerere, ce înseamnă codurile pe care le primești înapoi, și cum ajung datele în depozitul echipei.",
-  "descriere": "Ce este un API, cum arată o cerere, codurile de răspuns, requests, și primele date reale în proiectul tău.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Despre lecția asta",
-    "html": "<p>A doua oră e despre singurul lucru care desparte o analiză pe care o poate\n        reface altcineva de una pe care n-o mai poți reface nici tu: de unde vin datele.\n        Până acum ai deschis un fișier care era deja pe disc. Nimeni nu mai știe exact\n        cine l-a descărcat, de unde, când, și cu ce filtre.</p>\n<p>Începem cu analogia restaurantului, care fixează rolurile, și mergem până la\n        un script care cere date reale de la Banca Mondială, le verifică, le salvează și\n        le urcă în depozit. Între ele: tipurile de API și de ce REST a câștigat, metodele\n        HTTP, structura unei adrese, codurile de răspuns, și biblioteca requests.</p>\n<p>Partea de Postman e acolo dintr-un motiv practic: o cerere se încearcă întâi\n        într-un loc unde vezi tot, și abia apoi se scrie în cod. Când codul nu merge, te\n        întorci acolo ca să vezi care bucată diferă.</p>"
-   },
-   {
-    "t": "La final vei putea",
-    "html": "<ul class=\"obiective\">\n<li>Să explici ce face un API și de ce nu vorbești direct cu baza de date a altcuiva.</li>\n<li>Să deosebești REST de SOAP, GraphQL și gRPC, și să spui de ce API-urile publice sunt aproape toate REST.</li>\n<li>Să potrivești metodele HTTP cu operațiile pe care le fac, și să știi de ce GET se poate relua fără teamă.</li>\n<li>Să numești fiecare bucată dintr-o adresă și să știi care dintre ele nici măcar nu ajunge la server.</li>\n<li>Să citești un cod de răspuns și să știi dacă greșeala e la tine, la ei, sau în ritmul cererilor.</li>\n<li>Să scrii o cerere cu <code>requests</code>, cu parametri dați separat și cu timeout.</li>\n<li>Să colectezi un răspuns paginat fără să fii blocat pentru prea multe cereri.</li>\n<li>Să transformi răspunsul JSON într-un tabel și să-l salvezi ca date brute, în depozit.</li>\n</ul>"
-   },
-   {
-    "t": "De ce ai nevoie, înainte",
-    "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie\n        ce ai de la cursul 1, plus două lucruri noi, amândouă gratuite:</p>\n<ol>\n<li>Mediul virtual din cursul 1, activat, cu <code>pip install requests</code> rulat în el.</li>\n<li><a class=\"leg\" href=\"https://www.postman.com/downloads/\" rel=\"noopener\" target=\"_blank\">Postman</a>, ca să faci prima cerere cu mâna. Merge și varianta din browser, fără instalare.</li>\n</ol>\n<p>Nu ai nevoie de nicio cheie de acces: API-urile pe care le folosim azi sunt\n        publice. Dacă vrei să ți se salveze răspunsurile și să apari în progresul grupei,\n        intră în cont cu GitHub.</p>"
-   }
-  ],
-  "resurse": [
-   {
-    "href": "https://github.com/VladAlexe/tutorials",
-    "t": "Depozitul cursului",
-    "d": "Codul și caietele"
-   }
-  ],
-  "legaturi": [
-   {
-    "href": "https://requests.readthedocs.io/en/latest/",
-    "t": "requests",
-    "g": "docs"
-   },
-   {
-    "href": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation",
-    "t": "Banca Mondială",
-    "g": "API"
-   },
-   {
-    "href": "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started",
-    "t": "Eurostat",
-    "g": "API"
-   },
-   {
-    "href": "https://www.postman.com/downloads/",
-    "t": "Postman",
-    "g": "↗"
-   },
-   {
-    "href": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
-    "t": "Coduri HTTP",
-    "g": "MDN"
-   },
-   {
-    "href": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
-    "t": "Metode HTTP",
-    "g": "MDN"
-   },
-   {
-    "href": "https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm",
-    "t": "REST, teza originală",
-    "g": "Fielding"
-   }
-  ]
- },
- "c3-versionare-git": {
-  "nr": 3,
-  "titlu": "Versionare și colaborare cu Git",
-  "deck": "Săptămâna trecută ai adus date. Azi faci în așa fel încât ele, și codul care le-a adus, să nu se mai piardă: Git, GitHub, lucrul în echipă, și întrebarea de cercetare a proiectului vostru.",
-  "descriere": "Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără să se calce, și cum se încadrează teoretic un proiect.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Despre lecția asta",
-    "html": "<p>Ora are două jumătăți care par fără legătură, dar nu sunt. În prima învățăm\n        Git, adică felul în care un proiect își ține minte propria istorie: cele trei\n        zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile\n        și pull request-ul.</p>\n<p>În a doua punem întrebarea de cercetare a proiectului, pornind de la un\n        exemplu lucrat pe tranzițiile energetice: cum se ajunge de la literatură la trei\n        piloni, de la piloni la surse de date, și de la surse la întrebări care se pot\n        infirma.</p>\n<p>Legătura dintre cele două e că un proiect de analiză nu e o grămadă de\n        fișiere, e un drum. Git păstrează drumul, iar cadrul teoretic spune încotro\n        duce. Fără primul, nu poți arăta cum ai ajuns; fără al doilea, nu poți spune de\n        ce ai pornit.</p>"
-   },
-   {
-    "t": "La final vei putea",
-    "html": "<ul class=\"obiective\">\n<li>Să explici diferența dintre Git și GitHub, și de ce un commit nu înseamnă că munca ta e în siguranță.</li>\n<li>Să spui ce face fiecare comandă prin zona din care mută fișierele, nu pe de rost.</li>\n<li>Să pornești un depozit, să-ți setezi identitatea și să faci commit-uri cu mesaje care spun ceva.</li>\n<li>Să scrii un <code>.gitignore</code> înainte de primul <code>add</code>, și să știi de ce ordinea contează.</li>\n<li>Să legi depozitul local de unul de pe GitHub, sau să clonezi unul existent.</li>\n<li>Să lucrezi pe ramuri, să deschizi un pull request și să rezolvi un conflict fără panică.</li>\n<li>Să recunoști forma unui cadru teoretic: concept, sursă de date, rol în argument.</li>\n<li>Să formulezi o întrebare de cercetare care se poate infirma cu datele pe care le aveți.</li>\n</ul>"
-   },
-   {
-    "t": "De ce ai nevoie, înainte",
-    "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie\n        trei lucruri, toate gratuite:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a>, instalat. Pe Windows vine cu Git Bash, un terminal în care merg comenzile din lecție.</li>\n<li>Un cont de <a class=\"leg\" href=\"https://github.com/\" rel=\"noopener\" target=\"_blank\">GitHub</a>, același cu care intri pe site.</li>\n<li>Scriptul de colectare de la cursul 2, ca să ai ce urca.</li>\n</ol>\n<p>Dacă echipa nu e încă formată, lecția se poate face și singur: depozitul\n        personal devine depozitul echipei când adaugi ceilalți membri.</p>"
-   }
-  ],
-  "resurse": [
-   {
-    "href": "https://github.com/VladAlexe/tutorials",
-    "t": "Depozitul cursului",
-    "d": "Codul și caietele"
-   }
-  ],
-  "legaturi": [
-   {
-    "href": "https://git-scm.com/downloads",
-    "t": "Git",
-    "g": "download"
-   },
-   {
-    "href": "https://git-scm.com/book/ro/v2",
-    "t": "Pro Git",
-    "g": "carte, gratuit"
-   },
-   {
-    "href": "https://docs.github.com/en/get-started",
-    "t": "GitHub Docs",
-    "g": "docs"
-   },
-   {
-    "href": "https://docs.github.com/en/pull-requests",
-    "t": "Pull requests",
-    "g": "GitHub"
-   },
-   {
-    "href": "https://www.toptal.com/developers/gitignore",
-    "t": "gitignore.io",
-    "g": "generator"
-   },
-   {
-    "href": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
-    "t": "Worldwide Governance Indicators",
-    "g": "WGI"
-   },
-   {
-    "href": "https://databank.worldbank.org/source/world-development-indicators",
-    "t": "World Development Indicators",
-    "g": "WDI"
-   }
-  ]
- },
- "c4-curatarea-datelor": {
-  "nr": 4,
-  "titlu": "Curățarea datelor",
-  "deck": "Prima oră: Git, de la comenzi la obișnuință — ce muți, ce salvezi, cum dai înapoi. A doua: etapa care mănâncă 60% din timpul oricărui proiect de date, și care decide dacă rezultatele mai înseamnă ceva.",
-  "descriere": "Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Despre lecția asta",
-    "html": "<p>Săptămâna trecută ai aflat la ce e bun Git. Azi îl folosești: muți fișiere\n        între zone, faci commit-uri care spun ceva, dai înapoi din patru feluri diferite\n        fără să-ți pierzi munca, și lucrezi pe o ramură pe care o poți arunca fără\n        regrete. Partea asta e scurtă pe slide-uri și lungă în terminal.</p>\n<p>A doua jumătate e despre ce se întâmplă după ce ai datele în mână. Un\n        <a class=\"leg\" href=\"https://visit.figure-eight.com/data-science-report\" rel=\"noopener\" target=\"_blank\">sondaj\n        CrowdFlower</a> pe oameni care fac asta zilnic spune că aproape 60% din timp se\n        duce pe curățat și pe pus datele în ordine. Nu e un defect al meseriei, e\n        meseria: datele reale vin cu categorii scrise în patru feluri, cu rânduri\n        duplicate, cu lipsuri care nu înseamnă zero, și cu valori care par greșite dar\n        sunt corecte.</p>\n<p>Trecem prin cele șase etape, pe rând, pe datele noastre. Iar pentru fiecare\n        decizie — ce ștergi, ce completezi, ce tai — întrebarea nu e „ce face comanda”, e\n        „ce pierd când o rulez”.</p>"
-   },
-   {
-    "t": "La final vei putea",
-    "html": "<ul class=\"obiective\">\n<li>Să duci un fișier de la editor până pe GitHub fără să te uiți la notițe, și să spui în ce zonă e în fiecare moment.</li>\n<li>Să scrii un mesaj de commit care îi spune ceva celui care îl citește în februarie.</li>\n<li>Să alegi între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code> după ce vrei să anulezi, nu după ce ți-a rămas în minte.</li>\n<li>Să ieși din Vim, și să nu mai fie o glumă.</li>\n<li>Să profilezi un dataset în cinci comenzi și să spui, din profil, ce te așteaptă.</li>\n<li>Să standardizezi categorii scrise inconsecvent, și să verifici că nu ai topit două categorii diferite într-una.</li>\n<li>Să deosebești un duplicat real de o pereche inversată, care la date diadice e altceva.</li>\n<li>Să alegi între ștergere, completare și păstrare pentru valorile lipsă, știind ce introduce fiecare variantă.</li>\n<li>Să calculezi un prag pentru valori extreme și să decizi dacă ce iese deasupra e eroare sau e exact rezultatul.</li>\n<li>Să treci un tabel din formă lată în lungă și invers, și să știi care formă îți trebuie pentru ce.</li>\n<li>Să scrii un dicționar de date și un fișier de decizii pe care un coleg le poate citi fără tine.</li>\n</ul>"
-   },
-   {
-    "t": "De ce ai nevoie, înainte",
-    "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie\n        ce aveai deja de la cursurile 2 și 3:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>\n<li>Depozitul proiectului, legat de GitHub. Dacă nu l-ai făcut încă, prima jumătate a lecției e exact despre asta.</li>\n<li>Datele aduse la cursul 2, în <code>date/brute/</code>. Pe ele lucrăm azi.</li>\n<li><code>pandas</code> în mediul de lucru. Verifici cu <code>python -c \"import pandas; print(pandas.__version__)\"</code>.</li>\n</ol>\n<p>Dacă ți-ai pierdut datele de la cursul 2, scriptul de colectare le aduce din\n        nou. De asta îl păstrăm în depozit și nu doar fișierele.</p>"
-   },
-   {
-    "t": "Ce adaugi la proiect",
-    "html": "<p>Dataseturile curățate, în <code>date/curate/</code>, plus două fișiere text pe\n        care le va citi cineva și nu un calculator:</p>\n<ul class=\"obiective\">\n<li><code>date/curate/dicționar.md</code> — fiecare coloană: ce e, în ce unitate, de unde vine, ce înseamnă o lipsă.</li>\n<li><code>decizii.md</code> — fiecare curățare: ce ai schimbat, câte rânduri a atins, și de ce ai ales așa.</li>\n</ul>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,\n        cu atribute aduse prin API de la Eurostat și Banca Mondială.</p>"
-   }
-  ],
-  "resurse": [
-   {
-    "href": "../c3-versionare-git/",
-    "t": "Lecția 3: Git",
-    "d": "Teoria din spatele comenzilor de azi"
-   }
-  ],
-  "legaturi": [
-   {
-    "href": "https://pandas.pydata.org/docs/user_guide/missing_data.html",
-    "t": "Lucrul cu date lipsă",
-    "g": "pandas"
-   },
-   {
-    "href": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html",
-    "t": "drop_duplicates",
-    "g": "pandas"
-   },
-   {
-    "href": "https://pandas.pydata.org/docs/user_guide/reshaping.html",
-    "t": "melt, pivot, reshape",
-    "g": "pandas"
-   },
-   {
-    "href": "https://vita.had.co.nz/papers/tidy-data.pdf",
-    "t": "Tidy Data (Wickham)",
-    "g": "articol"
-   },
-   {
-    "href": "https://git-scm.com/docs/git-restore",
-    "t": "git restore",
-    "g": "docs"
-   },
-   {
-    "href": "https://git-scm.com/docs/git-revert",
-    "t": "git revert",
-    "g": "docs"
-   },
-   {
-    "href": "https://docs.ydata.ai/latest/",
-    "t": "ydata-profiling",
-    "g": "raport automat"
-   },
-   {
-    "href": "https://ec.europa.eu/eurostat/web/nuts/overview",
-    "t": "Nomenclatorul NUTS",
-    "g": "Eurostat"
-   }
-  ]
- },
- "c5-agregare-si-baze-de-date": {
-  "nr": 5,
-  "titlu": "Agregare și baze de date",
-  "deck": "Ai mai multe tabele curate. Azi devin unul singur, și pleacă dintr-un folder într-un loc din care se poate întreba.",
-  "descriere": "Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Despre lecția asta",
-    "html": "<p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, indicatorii\n        Băncii Mondiale în altul, ce ați adus de la Eurostat în al treilea. Merge cât\n        timp te uiți la ele pe rând. În momentul în care vrei să spui ceva de forma\n        „țările cu legătură socială puternică au și X”, îți trebuie un singur tabel.</p>\n<p>Unirea tabelelor pare o operație tehnică și e, de fapt, o decizie de\n        cercetare: ce păstrezi când o sursă n-are o țară pe care cealaltă o are.\n        Fiecare fel de join e un răspuns diferit la întrebarea asta, iar răspunsul\n        schimbă câte rânduri rămân în analiză. Jumătate din oră o petrecem acolo,\n        inclusiv la cele două capcane care nu dau nicio eroare: chei care nu se\n        potrivesc, și rânduri care se înmulțesc pe tăcute.</p>\n<p>A doua jumătate mută rezultatul dintr-un CSV într-un Postgres pe Neon. Nu\n        pentru că e mai modern, ci pentru că din momentul în care lucrați mai mulți pe\n        aceleași date, fișierul devine problema.</p>"
-   },
-   {
-    "t": "La final vei putea",
-    "html": "<ul class=\"obiective\">\n<li>Să spui, înainte să scrii codul, dacă vrei mai multe rânduri sau mai multe coloane, și deci dacă e <code>concat</code> sau <code>merge</code>.</li>\n<li>Să alegi între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code> după ce vrei să păstrezi, nu după ce ți-a rămas în minte.</li>\n<li>Să recunoști un join care ți-a înmulțit rândurile, și să-l oprești cu <code>validate</code>.</li>\n<li>Să numeri cheile comune înainte de îmbinare, în loc să te întrebi după de ce tabelul e gol.</li>\n<li>Să răspunzi, într-o propoziție, la întrebarea „ce e un rând în tabelul nostru final”.</li>\n<li>Să agregi de la o unitate la alta, știind că alegerea dintre sumă, medie și număr de parteneri e teoretică, nu tehnică.</li>\n<li>Să explici de ce o echipă de trei oameni are nevoie de o bază de date, și de ce mărimea datelor n-are legătură cu asta.</li>\n<li>Să te conectezi la Neon din Python fără să scrii parola nicăieri în cod.</li>\n<li>Să scrii tabelul în bază cu o cheie primară, și să-l citești înapoi.</li>\n<li>Să scrii un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code>, și să știi când e mai bine acolo decât în pandas.</li>\n</ul>"
-   },
-   {
-    "t": "De ce ai nevoie, înainte",
-    "html": "<p>Prima jumătate merge cu ce aveți deja. Pentru a doua vă trebuie un cont, care\n        e gratuit:</p>\n<ol>\n<li>Fișierele curate de la cursul 4, în <code>date/curat/</code>. Pe ele îmbinăm.</li>\n<li>Un cont pe <a class=\"leg\" href=\"https://neon.com/\" rel=\"noopener\" target=\"_blank\">Neon</a>, și un proiect nou. Planul gratuit e mai mult decât suficient.</li>\n<li>Două pachete: <code>pip install sqlalchemy psycopg[binary] python-dotenv</code>.</li>\n<li>Un fișier <code>.env</code> în rădăcina proiectului, și <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>\n</ol>\n<p>Dacă nu apucați să faceți contul până la curs, partea de pandas se poate urmări\n        oricum; baza o puteți face după.</p>"
-   },
-   {
-    "t": "Ce adaugi la proiect",
-    "html": "<ul class=\"obiective\">\n<li><code>agregare/uneste.py</code> — de la fișierele curate la un singur tabel, cu <code>how</code> scris explicit și cu numărul de rânduri tipărit înainte și după.</li>\n<li><code>baza/incarca.py</code> — tabelul în Neon, cu o cheie primară.</li>\n<li><code>baza/intrebari.sql</code> — un <code>select</code> al vostru, legat de întrebarea de cercetare.</li>\n<li>În <code>decizii.md</code>: unitatea de analiză, într-o propoziție.</li>\n</ul>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,\n        cu atribute aduse prin API de la Eurostat și Banca Mondială.</p>"
-   }
-  ],
-  "resurse": [
-   {
-    "href": "../c4-curatarea-datelor/",
-    "t": "Lecția 4: curățarea",
-    "d": "Fișierele de la care pornim azi"
-   }
-  ],
-  "legaturi": [
-   {
-    "href": "https://pandas.pydata.org/docs/user_guide/merging.html",
-    "t": "merge, join, concat",
-    "g": "pandas"
-   },
-   {
-    "href": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html",
-    "t": "groupby",
-    "g": "pandas"
-   },
-   {
-    "href": "https://neon.com/docs/introduction",
-    "t": "Ce e Neon",
-    "g": "docs"
-   },
-   {
-    "href": "https://neon.com/docs/introduction/branching",
-    "t": "Ramuri de bază de date",
-    "g": "Neon"
-   },
-   {
-    "href": "https://www.postgresql.org/docs/current/tutorial.html",
-    "t": "Tutorialul PostgreSQL",
-    "g": "docs"
-   },
-   {
-    "href": "https://docs.sqlalchemy.org/en/20/core/engines.html",
-    "t": "create_engine",
-    "g": "SQLAlchemy"
-   },
-   {
-    "href": "https://www.iso.org/iso-3166-country-codes.html",
-    "t": "Codurile de țară ISO 3166",
-    "g": "ISO"
-   }
-  ]
- },
- "c6-analiza-exploratorie": {
-  "nr": 6,
-  "titlu": "Analiza exploratorie",
-  "deck": "Te uiți la date înainte să le crezi, și înainte să le modelezi.",
-  "descriere": "Privitul datelor înainte de a le modela: distribuții, relații, categorii, hărți și grafice care induc în eroare.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Despre lecția asta",
-    "html": "<p>Aveți un tabel cu perechi de țări: SCI, migranți în ambele direcții,\n        distanță, graniță. Înainte de orice model, vă uitați la el. Analiza\n        exploratorie are două scopuri: să vedeți dacă datele sunt ce credeți că sunt,\n        și să vedeți ce tipare merită apoi testate.</p>\n<p>Lucrăm pe trei direcții, ca în planul cursului: o variabilă (distribuții,\n        asimetrie, logaritm, top-uri), două variabile (norul de puncte, corelațiile)\n        și categorii (tabelul de contingență, χ², grupuri comparate). La final, harta\n        comunităților și un slide despre graficele care induc în eroare.</p>\n<p>Toate graficele sunt pe datele adevărate ale cursului: cele 263 de perechi\n        de țări pentru care avem și SCI-ul, și migrația.</p>"
-   },
-   {
-    "t": "La final vei putea",
-    "html": "<ul class=\"obiective\">\n<li>Să recunoști o variabilă cu coadă lungă și să știi de ce o pui pe logaritm.</li>\n<li>Să descrii o variabilă cu <code>describe()</code> și <code>skew()</code>, și să citești diferența dintre medie și mediană.</li>\n<li>Să citești un top știind ce măsoară, și de ce după SCI iese altceva decât după numărul de migranți.</li>\n<li>Să faci și să citești un nor de puncte, și să găsești perechile care ies din el.</li>\n<li>Să citești o matrice de corelații și să spui de ce corelația nu e cauzalitate.</li>\n<li>Să tai o variabilă în categorii, să faci un tabel de contingență și să-l testezi cu χ² și Cramér's V.</li>\n<li>Să compari grupuri când distribuția nu e normală.</li>\n<li>Să citești harta comunităților și să recunoști o axă tăiată.</li>\n</ul>"
-   },
-   {
-    "t": "De ce ai nevoie, înainte",
-    "html": "<ol>\n<li>Tabelul de perechi de la cursul 5, cu SCI și migrație.</li>\n<li>Pachetele de grafice și teste: <code>pip install matplotlib seaborn scipy</code>.</li>\n<li>Pentru hărți în caiet: <code>pip install geopandas folium mapclassify networkx</code>.</li>\n</ol>"
-   },
-   {
-    "t": "Ce adaugi la proiect",
-    "html": "<ul class=\"obiective\">\n<li>O distribuție, liniar și pe logaritm, pentru variabila voastră principală.</li>\n<li>Un nor de puncte între SCI și variabila voastră.</li>\n<li>O hartă sau un top, cu ce iese din tipar.</li>\n<li>În <code>README.md</code>: primul tipar găsit, într-o propoziție.</li>\n</ul>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>\n        și migrația de la Eurostat, plus distanța și granița.</p>"
-   }
-  ],
-  "resurse": [
-   {
-    "href": "../explorator/",
-    "t": "Exploratorul legăturilor sociale",
-    "d": "Harta pe județe, regiuni și țări"
-   },
-   {
-    "href": "../c5-agregare-si-baze-de-date/",
-    "t": "Lecția 5: agregarea",
-    "d": "Tabelul de la care pornim azi"
-   }
-  ],
-  "legaturi": [
-   {
-    "href": "https://clauswilke.com/dataviz/",
-    "t": "Fundamentals of Data Visualization",
-    "g": "carte"
-   },
-   {
-    "href": "https://seaborn.pydata.org/tutorial.html",
-    "t": "seaborn",
-    "g": "docs"
-   },
-   {
-    "href": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html",
-    "t": "chi2_contingency",
-    "g": "SciPy"
-   },
-   {
-    "href": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html",
-    "t": "Comunitățile Louvain",
-    "g": "networkx"
-   }
-  ]
- },
- "c7-variabile-si-model": {
-  "nr": 7,
-  "titlu": "Variabile derivate și model",
-  "deck": "EDA a arătat tipare. Azi le punem pe toate în același model, ca să vedem ce rămâne din fiecare.",
-  "descriere": "Construirea variabilelor, un model care le pune pe toate deodată, și reziduurile lui.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Despre lecția asta",
-    "html": "<p>La cursul 6 am văzut că SCI-ul scade cu distanța, crește cu migrația și e\n        mai mare între vecini. Dar vecinii sunt și aproape, și au adesea migrație între\n        ei, deci cele trei tipare se amestecă. Un model le pune pe toate deodată.</p>\n<p>Prima jumătate e ingineria variabilelor, ca în planul cursului: construcție,\n        transformare, extragere, scalare, selecție. A doua jumătate e modelul: patru\n        modele pe același eșantion, cum se citesc coeficienții pe logaritmi, și\n        reziduurile, pe hartă.</p>"
-   },
-   {
-    "t": "La final vei putea",
-    "html": "<ul class=\"obiective\">\n<li>Să construiești o variabilă nouă și să scrii decizia din spatele ei.</li>\n<li>Să știi ce pui pe logaritm și ce nu.</li>\n<li>Să deosebești scalarea, care nu schimbă forma, de transformare, care o schimbă.</li>\n<li>Să verifici cu VIF că variabilele nu se repetă una pe alta.</li>\n<li>Să scrii un model cu <code>statsmodels</code> și să citești coeficienții ca elasticități.</li>\n<li>Să explici de ce un coeficient se schimbă când adaugi o variabilă.</li>\n<li>Să citești reziduurile ca întrebări noi, nu ca erori.</li>\n<li>Să spui ce poate și ce nu poate susține un model observațional.</li>\n</ul>"
-   },
-   {
-    "t": "De ce ai nevoie, înainte",
-    "html": "<ol>\n<li>Tabelul de perechi de la cursul 5 și graficele de la cursul 6.</li>\n<li>Pachetele pentru model: <code>pip install statsmodels scikit-learn</code>.</li>\n<li>Pentru distanță și graniță în caiet: <code>pip install geopandas</code>.</li>\n</ol>"
-   },
-   {
-    "t": "Ce adaugi la proiect",
-    "html": "<ul class=\"obiective\">\n<li><code>model/variabile.py</code>: variabilele construite, cu deciziile în <code>decizii.md</code>.</li>\n<li><code>model/model.py</code>: modelele, pas cu pas, pe același eșantion.</li>\n<li><code>date/curat/reziduuri.csv</code>: reziduurile, pentru raport.</li>\n<li>În <code>README.md</code>: ce putem spune și ce nu.</li>\n</ul>"
-   }
-  ],
-  "resurse": [
-   {
-    "href": "../explorator/",
-    "t": "Exploratorul legăturilor sociale",
-    "d": "Harta pe județe, regiuni și țări"
-   },
-   {
-    "href": "../c6-analiza-exploratorie/",
-    "t": "Lecția 6: explorarea",
-    "d": "Tiparele pe care le testăm azi"
-   }
-  ],
-  "legaturi": [
-   {
-    "href": "https://www.statsmodels.org/stable/example_formulas.html",
-    "t": "Modele cu formule",
-    "g": "statsmodels"
-   },
-   {
-    "href": "https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html",
-    "t": "VIF",
-    "g": "statsmodels"
-   },
-   {
-    "href": "https://scikit-learn.org/stable/modules/preprocessing.html",
-    "t": "Scalare",
-    "g": "scikit-learn"
-   },
-   {
-    "href": "https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259",
-    "t": "Bailey și colegii, 2018",
-    "g": "articol"
-   }
-  ]
- },
- "c8-raportare": {
-  "nr": 8,
-  "titlu": "Raportare și proiect final",
-  "deck": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.",
-  "descriere": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.",
-  "caiet": null,
-  "sectiuni": [
-   {
-    "t": "Ce va conține",
-    "html": "<p style=\"color:var(--text-2);font-size:16.5px\">Planul lecției. Conținutul interactiv,\n        verificările și caietul se adaugă înainte de ședința din semestru.</p>\n<ul class=\"obiective\">\n<li>Structura unui raport reproductibil: întrebare, date, metodă, rezultat, limite</li>\n<li>Grafice și tabele pregătite pentru publicare, nu pentru ecranul tău</li>\n<li><code>README.md</code> ca raport: cum se rulează tot, de la zero</li>\n<li>Prezentarea proiectului și întrebările la care trebuie să poți răspunde</li>\n<li>Criteriile de evaluare, punct cu punct</li>\n</ul>"
-   },
-   {
-    "t": "Ce adaugi la proiect",
-    "html": "<p>Raportul final și prezentarea.</p>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,\n        cu atribute aduse prin API de la Eurostat și Banca Mondială. Dacă vrei să te uiți\n        peste surse din timp, sunt toate.</p>"
-   }
-  ],
-  "resurse": [],
-  "legaturi": [
-   {
-    "href": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510",
-    "t": "Good Enough Practices",
-    "g": "PLOS"
-   },
-   {
-    "href": "https://book.the-turing-way.org/",
-    "t": "The Turing Way",
-    "g": "carte"
-   },
-   {
-    "href": "https://quarto.org/docs/guide/",
-    "t": "Quarto",
-    "g": "docs"
-   }
-  ]
- }
+  "c1-introducere-si-mediu": {
+    "nr": 1,
+    "titlu": "Introducere și configurare",
+    "deck": "Proiectul pe care îl construim tot semestrul, pașii prin care trece\n    o analiză de date, și configurarea calculatorului tău: mediu virtual, tipuri de date,\n    formatul JSON.",
+    "descriere": "Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Înainte de prima oră",
+        "html": "<div class=\"gh\">\n<div class=\"gh__cap\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21\"/></svg><div><b>Fă-ți un cont de GitHub</b><span>Cinci minute, gratuit. Fără el nu poți intra la oră.</span></div></div>\n<ol class=\"gh__pasi\">\n<li><b>Intră pe <a class=\"leg\" href=\"https://github.com/signup\" target=\"_blank\" rel=\"noopener\">github.com/signup</a>.</b> Folosește o adresă de e-mail pe care o păstrezi și după facultate.</li>\n<li><b>Alege un nume de utilizator pe care l-ai pune în CV.</b> Rămâne cu tine: proiectul echipei va fi acolo, sub numele tău.</li>\n<li><b>Confirmă adresa de e-mail.</b> GitHub îți trimite un cod; fără el contul nu e activ.</li>\n<li><b>La prima oră</b> scanezi codul de pe ecran, apeși <em>Intru cu GitHub</em> și îți alegi numele din lista grupei. O singură dată, pentru tot semestrul.</li>\n</ol>\n<p class=\"gh__de-ce\">De ce GitHub: cu el intri pe site, fără parolă nouă; tot cu el lucrați, de la cursul 3, în depozitul echipei. Ce se salvează despre tine scrie în <a class=\"leg\" href=\"../date-personale/\">politica de confidențialitate</a>.</p>\n</div>"
+      },
+      {
+        "t": "Despre lecția asta",
+        "html": "<p>Prima oră are două jumătăți. În prima stabilim ce construim: proiectul\n        semestrului, datele pe care le folosim, echipele, și harta completă a pașilor\n        prin care trece o analiză de date, de la definirea problemei până la raportare.\n        În a doua ne configurăm calculatoarele, ca data viitoare să putem începe direct\n        cu datele.</p>\n<p>Între ele stau noțiunile fără de care nimic din ce urmează nu are sens:\n        tipurile de date, în Python, în SQL și în fișiere spațiale; diferența dintre un\n        fișier text și unul binar; și formatul JSON, pe care îl vorbesc toate API-urile\n        de la care vom cere date.</p>\n<p>Lecția începe cu o întrebare la care nu se poate răspunde din intuiție, pusă\n        pe datele noastre reale, și cu o evaluare scurtă a ceea ce știi deja. Nu se\n        notează; e ca să știu de unde pornim.</p>"
+      },
+      {
+        "t": "La final vei putea",
+        "html": "<ul class=\"obiective\">\n<li>Să descrii pașii unui proiect de analiză de date și să spui de ce te întorci constant la etapele anterioare.</li>\n<li>Să ai instalate VS Code și Python și să lucrezi pe site cu contul tău GitHub.</li>\n<li>Să îți creezi un mediu de lucru virtual și să știi, dintr-o privire, când e activ.</li>\n<li>Să recunoști tipurile de date din Python și să spui ce se strică atunci când sunt greșite.</li>\n<li>Să alegi un tip potrivit pentru o coloană dintr-o bază de date, și să explici de ce.</li>\n<li>Să deosebești un fișier text de unul binar, și să știi ce pierde fiecare format.</li>\n<li>Să citești un răspuns JSON și să scrii drumul până la valoarea care te interesează.</li>\n</ul>"
+      },
+      {
+        "t": "De ce ai nevoie, înainte",
+        "html": "<p>Lecția se poate citi fără nimic instalat. Partea practică, din caiet, are nevoie\nde două lucruri, amândouă gratuite:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://code.visualstudio.com/\" rel=\"noopener\" target=\"_blank\">VS Code</a>, editorul în care lucrăm tot semestrul.</li>\n<li><a class=\"leg\" href=\"https://www.python.org/downloads/\" rel=\"noopener\" target=\"_blank\">Python 3.11</a> sau mai nou. La instalare, pe Windows, bifează <em>Add Python to PATH</em>.</li>\n</ol>"
+      }
+    ],
+    "resurse": [
+      {
+        "href": "https://github.com/VladAlexe/tutorials",
+        "t": "Depozitul cursului",
+        "d": "Codul și caietele"
+      }
+    ],
+    "legaturi": [
+      {
+        "href": "https://code.visualstudio.com/",
+        "t": "VS Code",
+        "g": "↗"
+      },
+      {
+        "href": "https://www.python.org/downloads/",
+        "t": "Python",
+        "g": "↗"
+      },
+      {
+        "href": "https://docs.python.org/3/library/venv.html",
+        "t": "venv",
+        "g": "docs"
+      },
+      {
+        "href": "https://docs.python.org/3/library/stdtypes.html",
+        "t": "Tipuri în Python",
+        "g": "docs"
+      },
+      {
+        "href": "https://www.json.org/json-en.html",
+        "t": "JSON",
+        "g": "spec"
+      },
+      {
+        "href": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510",
+        "t": "Good Enough Practices",
+        "g": "PLOS"
+      },
+      {
+        "href": "https://data.humdata.org/dataset/social-connectedness-index",
+        "t": "Social Connectedness Index",
+        "g": "HDX"
+      }
+    ]
+  },
+  "c2-colectarea-prin-api": {
+    "nr": 2,
+    "titlu": "Colectarea datelor prin API",
+    "deck": "Până acum ai citit un fișier primit de-a gata. De azi ți-l aduci singur: ce este un API, cum arată o cerere, ce înseamnă codurile pe care le primești înapoi, și cum ajung datele în depozitul echipei.",
+    "descriere": "Ce este un API, cum arată o cerere, codurile de răspuns, requests, și primele date reale în proiectul tău.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Despre lecția asta",
+        "html": "<p>A doua oră e despre singurul lucru care desparte o analiză pe care o poate\n        reface altcineva de una pe care n-o mai poți reface nici tu: de unde vin datele.\n        Până acum ai deschis un fișier care era deja pe disc. Nimeni nu mai știe exact\n        cine l-a descărcat, de unde, când, și cu ce filtre.</p>\n<p>Începem cu analogia restaurantului, care fixează rolurile, și mergem până la\n        un script care cere date reale de la Banca Mondială, le verifică, le salvează și\n        le urcă în depozit. Între ele: tipurile de API și de ce REST a câștigat, metodele\n        HTTP, structura unei adrese, codurile de răspuns, și biblioteca requests.</p>\n<p>Partea de Postman e acolo dintr-un motiv practic: o cerere se încearcă întâi\n        într-un loc unde vezi tot, și abia apoi se scrie în cod. Când codul nu merge, te\n        întorci acolo ca să vezi care bucată diferă.</p>"
+      },
+      {
+        "t": "La final vei putea",
+        "html": "<ul class=\"obiective\">\n<li>Să explici ce face un API și de ce nu vorbești direct cu baza de date a altcuiva.</li>\n<li>Să deosebești REST de SOAP, GraphQL și gRPC, și să spui de ce API-urile publice sunt aproape toate REST.</li>\n<li>Să potrivești metodele HTTP cu operațiile pe care le fac, și să știi de ce GET se poate relua fără teamă.</li>\n<li>Să numești fiecare bucată dintr-o adresă și să știi care dintre ele nici măcar nu ajunge la server.</li>\n<li>Să citești un cod de răspuns și să știi dacă greșeala e la tine, la ei, sau în ritmul cererilor.</li>\n<li>Să scrii o cerere cu <code>requests</code>, cu parametri dați separat și cu timeout.</li>\n<li>Să colectezi un răspuns paginat fără să fii blocat pentru prea multe cereri.</li>\n<li>Să transformi răspunsul JSON într-un tabel și să-l salvezi ca date brute, în depozit.</li>\n</ul>"
+      },
+      {
+        "t": "De ce ai nevoie, înainte",
+        "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie\n        ce ai de la cursul 1, plus două lucruri noi, amândouă gratuite:</p>\n<ol>\n<li>Mediul virtual din cursul 1, activat, cu <code>pip install requests</code> rulat în el.</li>\n<li><a class=\"leg\" href=\"https://www.postman.com/downloads/\" rel=\"noopener\" target=\"_blank\">Postman</a>, ca să faci prima cerere cu mâna. Merge și varianta din browser, fără instalare.</li>\n</ol>\n<p>Nu ai nevoie de nicio cheie de acces: API-urile pe care le folosim azi sunt\n        publice. Dacă vrei să ți se salveze răspunsurile și să apari în progresul grupei,\n        intră în cont cu GitHub.</p>"
+      }
+    ],
+    "resurse": [
+      {
+        "href": "https://github.com/VladAlexe/tutorials",
+        "t": "Depozitul cursului",
+        "d": "Codul și caietele"
+      }
+    ],
+    "legaturi": [
+      {
+        "href": "https://requests.readthedocs.io/en/latest/",
+        "t": "requests",
+        "g": "docs"
+      },
+      {
+        "href": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation",
+        "t": "Banca Mondială",
+        "g": "API"
+      },
+      {
+        "href": "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started",
+        "t": "Eurostat",
+        "g": "API"
+      },
+      {
+        "href": "https://www.postman.com/downloads/",
+        "t": "Postman",
+        "g": "↗"
+      },
+      {
+        "href": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+        "t": "Coduri HTTP",
+        "g": "MDN"
+      },
+      {
+        "href": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+        "t": "Metode HTTP",
+        "g": "MDN"
+      },
+      {
+        "href": "https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm",
+        "t": "REST, teza originală",
+        "g": "Fielding"
+      }
+    ]
+  },
+  "c3-versionare-git": {
+    "nr": 3,
+    "titlu": "Versionare și colaborare cu Git",
+    "deck": "Săptămâna trecută ai adus date. Azi faci în așa fel încât ele, și codul care le-a adus, să nu se mai piardă: Git, GitHub, lucrul în echipă, și întrebarea de cercetare a proiectului vostru.",
+    "descriere": "Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără să se calce, și cum se încadrează teoretic un proiect.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Despre lecția asta",
+        "html": "<p>Ora are două jumătăți care par fără legătură, dar nu sunt. În prima învățăm\n        Git, adică felul în care un proiect își ține minte propria istorie: cele trei\n        zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile\n        și pull request-ul.</p>\n<p>În a doua punem întrebarea de cercetare a proiectului, pornind de la un\n        exemplu lucrat pe tranzițiile energetice: cum se ajunge de la literatură la trei\n        piloni, de la piloni la surse de date, și de la surse la întrebări care se pot\n        infirma.</p>\n<p>Legătura dintre cele două e că un proiect de analiză nu e o grămadă de\n        fișiere, e un drum. Git păstrează drumul, iar cadrul teoretic spune încotro\n        duce. Fără primul, nu poți arăta cum ai ajuns; fără al doilea, nu poți spune de\n        ce ai pornit.</p>"
+      },
+      {
+        "t": "La final vei putea",
+        "html": "<ul class=\"obiective\">\n<li>Să explici diferența dintre Git și GitHub, și de ce un commit nu înseamnă că munca ta e în siguranță.</li>\n<li>Să spui ce face fiecare comandă prin zona din care mută fișierele, nu pe de rost.</li>\n<li>Să pornești un depozit, să-ți setezi identitatea și să faci commit-uri cu mesaje care spun ceva.</li>\n<li>Să scrii un <code>.gitignore</code> înainte de primul <code>add</code>, și să știi de ce ordinea contează.</li>\n<li>Să legi depozitul local de unul de pe GitHub, sau să clonezi unul existent.</li>\n<li>Să lucrezi pe ramuri, să deschizi un pull request și să rezolvi un conflict fără panică.</li>\n<li>Să recunoști forma unui cadru teoretic: concept, sursă de date, rol în argument.</li>\n<li>Să formulezi o întrebare de cercetare care se poate infirma cu datele pe care le aveți.</li>\n</ul>"
+      },
+      {
+        "t": "De ce ai nevoie, înainte",
+        "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie\n        trei lucruri, toate gratuite:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a>, instalat. Pe Windows vine cu Git Bash, un terminal în care merg comenzile din lecție.</li>\n<li>Un cont de <a class=\"leg\" href=\"https://github.com/\" rel=\"noopener\" target=\"_blank\">GitHub</a>, același cu care intri pe site.</li>\n<li>Scriptul de colectare de la cursul 2, ca să ai ce urca.</li>\n</ol>\n<p>Dacă echipa nu e încă formată, lecția se poate face și singur: depozitul\n        personal devine depozitul echipei când adaugi ceilalți membri.</p>"
+      }
+    ],
+    "resurse": [
+      {
+        "href": "https://github.com/VladAlexe/tutorials",
+        "t": "Depozitul cursului",
+        "d": "Codul și caietele"
+      }
+    ],
+    "legaturi": [
+      {
+        "href": "https://git-scm.com/downloads",
+        "t": "Git",
+        "g": "download"
+      },
+      {
+        "href": "https://git-scm.com/book/ro/v2",
+        "t": "Pro Git",
+        "g": "carte, gratuit"
+      },
+      {
+        "href": "https://docs.github.com/en/get-started",
+        "t": "GitHub Docs",
+        "g": "docs"
+      },
+      {
+        "href": "https://docs.github.com/en/pull-requests",
+        "t": "Pull requests",
+        "g": "GitHub"
+      },
+      {
+        "href": "https://www.toptal.com/developers/gitignore",
+        "t": "gitignore.io",
+        "g": "generator"
+      },
+      {
+        "href": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "t": "Worldwide Governance Indicators",
+        "g": "WGI"
+      },
+      {
+        "href": "https://databank.worldbank.org/source/world-development-indicators",
+        "t": "World Development Indicators",
+        "g": "WDI"
+      }
+    ]
+  },
+  "c4-curatarea-datelor": {
+    "nr": 4,
+    "titlu": "Curățarea datelor",
+    "deck": "Prima oră: Git, de la comenzi la obișnuință — ce muți, ce salvezi, cum dai înapoi. A doua: etapa care mănâncă 60% din timpul oricărui proiect de date, și care decide dacă rezultatele mai înseamnă ceva.",
+    "descriere": "Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Despre lecția asta",
+        "html": "<p>Săptămâna trecută ai aflat la ce e bun Git. Azi îl folosești: muți fișiere\n        între zone, faci commit-uri care spun ceva, dai înapoi din patru feluri diferite\n        fără să-ți pierzi munca, și lucrezi pe o ramură pe care o poți arunca fără\n        regrete. Partea asta e scurtă pe slide-uri și lungă în terminal.</p>\n<p>A doua jumătate e despre ce se întâmplă după ce ai datele în mână. Un\n        <a class=\"leg\" href=\"https://visit.figure-eight.com/data-science-report\" rel=\"noopener\" target=\"_blank\">sondaj\n        CrowdFlower</a> pe oameni care fac asta zilnic spune că aproape 60% din timp se\n        duce pe curățat și pe pus datele în ordine. Nu e un defect al meseriei, e\n        meseria: datele reale vin cu categorii scrise în patru feluri, cu rânduri\n        duplicate, cu lipsuri care nu înseamnă zero, și cu valori care par greșite dar\n        sunt corecte.</p>\n<p>Trecem prin cele șase etape, pe rând, pe datele noastre. Iar pentru fiecare\n        decizie — ce ștergi, ce completezi, ce tai — întrebarea nu e „ce face comanda”, e\n        „ce pierd când o rulez”.</p>"
+      },
+      {
+        "t": "La final vei putea",
+        "html": "<ul class=\"obiective\">\n<li>Să duci un fișier de la editor până pe GitHub fără să te uiți la notițe, și să spui în ce zonă e în fiecare moment.</li>\n<li>Să scrii un mesaj de commit care îi spune ceva celui care îl citește în februarie.</li>\n<li>Să alegi între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code> după ce vrei să anulezi, nu după ce ți-a rămas în minte.</li>\n<li>Să ieși din Vim, și să nu mai fie o glumă.</li>\n<li>Să profilezi un dataset în cinci comenzi și să spui, din profil, ce te așteaptă.</li>\n<li>Să standardizezi categorii scrise inconsecvent, și să verifici că nu ai topit două categorii diferite într-una.</li>\n<li>Să deosebești un duplicat real de o pereche inversată, care la date diadice e altceva.</li>\n<li>Să alegi între ștergere, completare și păstrare pentru valorile lipsă, știind ce introduce fiecare variantă.</li>\n<li>Să calculezi un prag pentru valori extreme și să decizi dacă ce iese deasupra e eroare sau e exact rezultatul.</li>\n<li>Să treci un tabel din formă lată în lungă și invers, și să știi care formă îți trebuie pentru ce.</li>\n<li>Să scrii un dicționar de date și un fișier de decizii pe care un coleg le poate citi fără tine.</li>\n</ul>"
+      },
+      {
+        "t": "De ce ai nevoie, înainte",
+        "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie\n        ce aveai deja de la cursurile 2 și 3:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>\n<li>Depozitul proiectului, legat de GitHub. Dacă nu l-ai făcut încă, prima jumătate a lecției e exact despre asta.</li>\n<li>Datele aduse la cursul 2, în <code>date/brute/</code>. Pe ele lucrăm azi.</li>\n<li><code>pandas</code> în mediul de lucru. Verifici cu <code>python -c \"import pandas; print(pandas.__version__)\"</code>.</li>\n</ol>\n<p>Dacă ți-ai pierdut datele de la cursul 2, scriptul de colectare le aduce din\n        nou. De asta îl păstrăm în depozit și nu doar fișierele.</p>"
+      },
+      {
+        "t": "Ce adaugi la proiect",
+        "html": "<p>Dataseturile curățate, în <code>date/curate/</code>, plus două fișiere text pe\n        care le va citi cineva și nu un calculator:</p>\n<ul class=\"obiective\">\n<li><code>date/curate/dicționar.md</code> — fiecare coloană: ce e, în ce unitate, de unde vine, ce înseamnă o lipsă.</li>\n<li><code>decizii.md</code> — fiecare curățare: ce ai schimbat, câte rânduri a atins, și de ce ai ales așa.</li>\n</ul>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,\n        cu atribute aduse prin API de la Eurostat și Banca Mondială.</p>"
+      }
+    ],
+    "resurse": [
+      {
+        "href": "../c3-versionare-git/",
+        "t": "Lecția 3: Git",
+        "d": "Teoria din spatele comenzilor de azi"
+      }
+    ],
+    "legaturi": [
+      {
+        "href": "https://pandas.pydata.org/docs/user_guide/missing_data.html",
+        "t": "Lucrul cu date lipsă",
+        "g": "pandas"
+      },
+      {
+        "href": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html",
+        "t": "drop_duplicates",
+        "g": "pandas"
+      },
+      {
+        "href": "https://pandas.pydata.org/docs/user_guide/reshaping.html",
+        "t": "melt, pivot, reshape",
+        "g": "pandas"
+      },
+      {
+        "href": "https://vita.had.co.nz/papers/tidy-data.pdf",
+        "t": "Tidy Data (Wickham)",
+        "g": "articol"
+      },
+      {
+        "href": "https://git-scm.com/docs/git-restore",
+        "t": "git restore",
+        "g": "docs"
+      },
+      {
+        "href": "https://git-scm.com/docs/git-revert",
+        "t": "git revert",
+        "g": "docs"
+      },
+      {
+        "href": "https://docs.ydata.ai/latest/",
+        "t": "ydata-profiling",
+        "g": "raport automat"
+      },
+      {
+        "href": "https://ec.europa.eu/eurostat/web/nuts/overview",
+        "t": "Nomenclatorul NUTS",
+        "g": "Eurostat"
+      }
+    ]
+  },
+  "c5-agregare-si-baze-de-date": {
+    "nr": 5,
+    "titlu": "Agregare și baze de date",
+    "deck": "Ai mai multe tabele curate. Azi devin unul singur, și pleacă dintr-un folder într-un loc din care se poate întreba.",
+    "descriere": "Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Despre lecția asta",
+        "html": "<p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, indicatorii\n        Băncii Mondiale în altul, ce ați adus de la Eurostat în al treilea. Merge cât\n        timp te uiți la ele pe rând. În momentul în care vrei să spui ceva de forma\n        „țările cu legătură socială puternică au și X”, îți trebuie un singur tabel.</p>\n<p>Unirea tabelelor pare o operație tehnică și e, de fapt, o decizie de\n        cercetare: ce păstrezi când o sursă n-are o țară pe care cealaltă o are.\n        Fiecare fel de join e un răspuns diferit la întrebarea asta, iar răspunsul\n        schimbă câte rânduri rămân în analiză. Jumătate din oră o petrecem acolo,\n        inclusiv la cele două capcane care nu dau nicio eroare: chei care nu se\n        potrivesc, și rânduri care se înmulțesc pe tăcute.</p>\n<p>A doua jumătate mută rezultatul dintr-un CSV într-un Postgres pe Neon. Nu\n        pentru că e mai modern, ci pentru că din momentul în care lucrați mai mulți pe\n        aceleași date, fișierul devine problema.</p>"
+      },
+      {
+        "t": "La final vei putea",
+        "html": "<ul class=\"obiective\">\n<li>Să spui, înainte să scrii codul, dacă vrei mai multe rânduri sau mai multe coloane, și deci dacă e <code>concat</code> sau <code>merge</code>.</li>\n<li>Să alegi între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code> după ce vrei să păstrezi, nu după ce ți-a rămas în minte.</li>\n<li>Să recunoști un join care ți-a înmulțit rândurile, și să-l oprești cu <code>validate</code>.</li>\n<li>Să numeri cheile comune înainte de îmbinare, în loc să te întrebi după de ce tabelul e gol.</li>\n<li>Să răspunzi, într-o propoziție, la întrebarea „ce e un rând în tabelul nostru final”.</li>\n<li>Să agregi de la o unitate la alta, știind că alegerea dintre sumă, medie și număr de parteneri e teoretică, nu tehnică.</li>\n<li>Să explici de ce o echipă de trei oameni are nevoie de o bază de date, și de ce mărimea datelor n-are legătură cu asta.</li>\n<li>Să te conectezi la Neon din Python fără să scrii parola nicăieri în cod.</li>\n<li>Să scrii tabelul în bază cu o cheie primară, și să-l citești înapoi.</li>\n<li>Să scrii un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code>, și să știi când e mai bine acolo decât în pandas.</li>\n</ul>"
+      },
+      {
+        "t": "De ce ai nevoie, înainte",
+        "html": "<p>Prima jumătate merge cu ce aveți deja. Pentru a doua vă trebuie un cont, care\n        e gratuit:</p>\n<ol>\n<li>Fișierele curate de la cursul 4, în <code>date/curat/</code>. Pe ele îmbinăm.</li>\n<li>Un cont pe <a class=\"leg\" href=\"https://neon.com/\" rel=\"noopener\" target=\"_blank\">Neon</a>, și un proiect nou. Planul gratuit e mai mult decât suficient.</li>\n<li>Două pachete: <code>pip install sqlalchemy psycopg[binary] python-dotenv</code>.</li>\n<li>Un fișier <code>.env</code> în rădăcina proiectului, și <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>\n</ol>\n<p>Dacă nu apucați să faceți contul până la curs, partea de pandas se poate urmări\n        oricum; baza o puteți face după.</p>"
+      },
+      {
+        "t": "Ce adaugi la proiect",
+        "html": "<ul class=\"obiective\">\n<li><code>agregare/uneste.py</code> — de la fișierele curate la un singur tabel, cu <code>how</code> scris explicit și cu numărul de rânduri tipărit înainte și după.</li>\n<li><code>baza/incarca.py</code> — tabelul în Neon, cu o cheie primară.</li>\n<li><code>baza/intrebari.sql</code> — un <code>select</code> al vostru, legat de întrebarea de cercetare.</li>\n<li>În <code>decizii.md</code>: unitatea de analiză, într-o propoziție.</li>\n</ul>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,\n        cu atribute aduse prin API de la Eurostat și Banca Mondială.</p>"
+      }
+    ],
+    "resurse": [
+      {
+        "href": "../c4-curatarea-datelor/",
+        "t": "Lecția 4: curățarea",
+        "d": "Fișierele de la care pornim azi"
+      }
+    ],
+    "legaturi": [
+      {
+        "href": "https://pandas.pydata.org/docs/user_guide/merging.html",
+        "t": "merge, join, concat",
+        "g": "pandas"
+      },
+      {
+        "href": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html",
+        "t": "groupby",
+        "g": "pandas"
+      },
+      {
+        "href": "https://neon.com/docs/introduction",
+        "t": "Ce e Neon",
+        "g": "docs"
+      },
+      {
+        "href": "https://neon.com/docs/introduction/branching",
+        "t": "Ramuri de bază de date",
+        "g": "Neon"
+      },
+      {
+        "href": "https://www.postgresql.org/docs/current/tutorial.html",
+        "t": "Tutorialul PostgreSQL",
+        "g": "docs"
+      },
+      {
+        "href": "https://docs.sqlalchemy.org/en/20/core/engines.html",
+        "t": "create_engine",
+        "g": "SQLAlchemy"
+      },
+      {
+        "href": "https://www.iso.org/iso-3166-country-codes.html",
+        "t": "Codurile de țară ISO 3166",
+        "g": "ISO"
+      }
+    ]
+  },
+  "c6-analiza-exploratorie": {
+    "nr": 6,
+    "titlu": "Analiza exploratorie",
+    "deck": "Te uiți la date înainte să le crezi, și înainte să le modelezi.",
+    "descriere": "Privitul datelor înainte de a le modela: distribuții, relații, categorii, hărți și grafice care induc în eroare.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Despre lecția asta",
+        "html": "<p>Aveți un tabel cu perechi de țări: SCI, migranți în ambele direcții,\n        distanță, graniță. Înainte de orice model, vă uitați la el. Analiza\n        exploratorie are două scopuri: să vedeți dacă datele sunt ce credeți că sunt,\n        și să vedeți ce tipare merită apoi testate.</p>\n<p>Lucrăm pe trei direcții, ca în planul cursului: o variabilă (distribuții,\n        asimetrie, logaritm, top-uri), două variabile (norul de puncte, corelațiile)\n        și categorii (tabelul de contingență, χ², grupuri comparate). La final, harta\n        comunităților și un slide despre graficele care induc în eroare.</p>\n<p>Toate graficele sunt pe datele adevărate ale cursului: cele 263 de perechi\n        de țări pentru care avem și SCI-ul, și migrația.</p>"
+      },
+      {
+        "t": "La final vei putea",
+        "html": "<ul class=\"obiective\">\n<li>Să recunoști o variabilă cu coadă lungă și să știi de ce o pui pe logaritm.</li>\n<li>Să descrii o variabilă cu <code>describe()</code> și <code>skew()</code>, și să citești diferența dintre medie și mediană.</li>\n<li>Să citești un top știind ce măsoară, și de ce după SCI iese altceva decât după numărul de migranți.</li>\n<li>Să faci și să citești un nor de puncte, și să găsești perechile care ies din el.</li>\n<li>Să citești o matrice de corelații și să spui de ce corelația nu e cauzalitate.</li>\n<li>Să tai o variabilă în categorii, să faci un tabel de contingență și să-l testezi cu χ² și Cramér's V.</li>\n<li>Să compari grupuri când distribuția nu e normală.</li>\n<li>Să citești harta comunităților și să recunoști o axă tăiată.</li>\n</ul>"
+      },
+      {
+        "t": "De ce ai nevoie, înainte",
+        "html": "<ol>\n<li>Tabelul de perechi de la cursul 5, cu SCI și migrație.</li>\n<li>Pachetele de grafice și teste: <code>pip install matplotlib seaborn scipy</code>.</li>\n<li>Pentru hărți în caiet: <code>pip install geopandas folium mapclassify networkx</code>.</li>\n</ol>"
+      },
+      {
+        "t": "Ce adaugi la proiect",
+        "html": "<ul class=\"obiective\">\n<li>O distribuție, liniar și pe logaritm, pentru variabila voastră principală.</li>\n<li>Un nor de puncte între SCI și variabila voastră.</li>\n<li>O hartă sau un top, cu ce iese din tipar.</li>\n<li>În <code>README.md</code>: primul tipar găsit, într-o propoziție.</li>\n</ul>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>\n        și migrația de la Eurostat, plus distanța și granița.</p>"
+      }
+    ],
+    "resurse": [
+      {
+        "href": "../explorator/",
+        "t": "Exploratorul legăturilor sociale",
+        "d": "Harta pe județe, regiuni și țări"
+      },
+      {
+        "href": "../c5-agregare-si-baze-de-date/",
+        "t": "Lecția 5: agregarea",
+        "d": "Tabelul de la care pornim azi"
+      }
+    ],
+    "legaturi": [
+      {
+        "href": "https://clauswilke.com/dataviz/",
+        "t": "Fundamentals of Data Visualization",
+        "g": "carte"
+      },
+      {
+        "href": "https://seaborn.pydata.org/tutorial.html",
+        "t": "seaborn",
+        "g": "docs"
+      },
+      {
+        "href": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html",
+        "t": "chi2_contingency",
+        "g": "SciPy"
+      },
+      {
+        "href": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html",
+        "t": "Comunitățile Louvain",
+        "g": "networkx"
+      }
+    ]
+  },
+  "c7-variabile-si-model": {
+    "nr": 7,
+    "titlu": "Variabile derivate și model",
+    "deck": "EDA a arătat tipare. Azi le punem pe toate în același model, ca să vedem ce rămâne din fiecare.",
+    "descriere": "Construirea variabilelor, un model care le pune pe toate deodată, și reziduurile lui.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Despre lecția asta",
+        "html": "<p>La cursul 6 am văzut că SCI-ul scade cu distanța, crește cu migrația și e\n        mai mare între vecini. Dar vecinii sunt și aproape, și au adesea migrație între\n        ei, deci cele trei tipare se amestecă. Un model le pune pe toate deodată.</p>\n<p>Prima jumătate e ingineria variabilelor, ca în planul cursului: construcție,\n        transformare, extragere, scalare, selecție. A doua jumătate e modelul: patru\n        modele pe același eșantion, cum se citesc coeficienții pe logaritmi, și\n        reziduurile, pe hartă.</p>"
+      },
+      {
+        "t": "La final vei putea",
+        "html": "<ul class=\"obiective\">\n<li>Să construiești o variabilă nouă și să scrii decizia din spatele ei.</li>\n<li>Să știi ce pui pe logaritm și ce nu.</li>\n<li>Să deosebești scalarea, care nu schimbă forma, de transformare, care o schimbă.</li>\n<li>Să verifici cu VIF că variabilele nu se repetă una pe alta.</li>\n<li>Să scrii un model cu <code>statsmodels</code> și să citești coeficienții ca elasticități.</li>\n<li>Să explici de ce un coeficient se schimbă când adaugi o variabilă.</li>\n<li>Să citești reziduurile ca întrebări noi, nu ca erori.</li>\n<li>Să spui ce poate și ce nu poate susține un model observațional.</li>\n</ul>"
+      },
+      {
+        "t": "De ce ai nevoie, înainte",
+        "html": "<ol>\n<li>Tabelul de perechi de la cursul 5 și graficele de la cursul 6.</li>\n<li>Pachetele pentru model: <code>pip install statsmodels scikit-learn</code>.</li>\n<li>Pentru distanță și graniță în caiet: <code>pip install geopandas</code>.</li>\n</ol>"
+      },
+      {
+        "t": "Ce adaugi la proiect",
+        "html": "<ul class=\"obiective\">\n<li><code>model/variabile.py</code>: variabilele construite, cu deciziile în <code>decizii.md</code>.</li>\n<li><code>model/model.py</code>: modelele, pas cu pas, pe același eșantion.</li>\n<li><code>date/curat/reziduuri.csv</code>: reziduurile, pentru raport.</li>\n<li>În <code>README.md</code>: ce putem spune și ce nu.</li>\n</ul>"
+      }
+    ],
+    "resurse": [
+      {
+        "href": "../explorator/",
+        "t": "Exploratorul legăturilor sociale",
+        "d": "Harta pe județe, regiuni și țări"
+      },
+      {
+        "href": "../c6-analiza-exploratorie/",
+        "t": "Lecția 6: explorarea",
+        "d": "Tiparele pe care le testăm azi"
+      }
+    ],
+    "legaturi": [
+      {
+        "href": "https://www.statsmodels.org/stable/example_formulas.html",
+        "t": "Modele cu formule",
+        "g": "statsmodels"
+      },
+      {
+        "href": "https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html",
+        "t": "VIF",
+        "g": "statsmodels"
+      },
+      {
+        "href": "https://scikit-learn.org/stable/modules/preprocessing.html",
+        "t": "Scalare",
+        "g": "scikit-learn"
+      },
+      {
+        "href": "https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259",
+        "t": "Bailey și colegii, 2018",
+        "g": "articol"
+      }
+    ]
+  },
+  "c8-raportare": {
+    "nr": 8,
+    "titlu": "Raportare și proiect final",
+    "deck": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.",
+    "descriere": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.",
+    "caiet": null,
+    "sectiuni": [
+      {
+        "t": "Ce va conține",
+        "html": "<p style=\"color:var(--text-2);font-size:16.5px\">Planul lecției. Conținutul interactiv,\n        verificările și caietul se adaugă înainte de ședința din semestru.</p>\n<ul class=\"obiective\">\n<li>Structura unui raport reproductibil: întrebare, date, metodă, rezultat, limite</li>\n<li>Grafice și tabele pregătite pentru publicare, nu pentru ecranul tău</li>\n<li><code>README.md</code> ca raport: cum se rulează tot, de la zero</li>\n<li>Prezentarea proiectului și întrebările la care trebuie să poți răspunde</li>\n<li>Criteriile de evaluare, punct cu punct</li>\n</ul>"
+      },
+      {
+        "t": "Ce adaugi la proiect",
+        "html": "<p>Raportul final și prezentarea.</p>\n<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,\n        cu atribute aduse prin API de la Eurostat și Banca Mondială. Dacă vrei să te uiți\n        peste surse din timp, sunt toate.</p>"
+      }
+    ],
+    "resurse": [],
+    "legaturi": [
+      {
+        "href": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510",
+        "t": "Good Enough Practices",
+        "g": "PLOS"
+      },
+      {
+        "href": "https://book.the-turing-way.org/",
+        "t": "The Turing Way",
+        "g": "carte"
+      },
+      {
+        "href": "https://quarto.org/docs/guide/",
+        "t": "Quarto",
+        "g": "docs"
+      }
+    ]
+  }
 }

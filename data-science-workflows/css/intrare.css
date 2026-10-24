@@ -106,3 +106,15 @@
 .alege-grupa p{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin:0 0 4px}
 .alege-grupa a{font-family:var(--sans);font-size:14px;padding:7px 10px;border-radius:7px;color:var(--text);text-decoration:none}
 .alege-grupa a:hover{background:var(--ambra-slab);color:var(--ambra)}
+
+/* contul GitHub, pe pagina primului curs: pașii, la vedere */
+.gh{border:1px solid var(--linie-2);border-left:4px solid var(--accent);border-radius:10px;
+  background:var(--panza);padding:16px 18px}
+.gh__cap{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.gh__cap svg{flex:none;color:var(--accent)}
+.gh__cap b{display:block;font-family:var(--sans);font-size:17px;font-weight:600}
+.gh__cap span{font-family:var(--sans);font-size:13.5px;color:var(--text-2)}
+.gh__pasi{margin:0 0 10px;padding-left:22px}
+.gh__pasi li{margin-bottom:8px;line-height:1.5}
+.gh__pasi li::marker{font-family:var(--mono);color:var(--accent)}
+.gh__de-ce{font-size:14px;color:var(--text-2);margin:0}

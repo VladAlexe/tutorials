@@ -28,7 +28,7 @@ export const LECTII = [
     titlu:"Introducere și configurare",
     scurt:"Introducere",
     rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
-    stare:"gata", sarcini:12,
+    stare:"gata", sarcini:11,
     notebook:null },
 
   { nr:2, cheie:"c2-colectarea-prin-api",

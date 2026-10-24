@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 1. Introducere și configurare · Fluxuri de lucru</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.">
-<link rel="stylesheet" href="../css/fonturi.css?v=62">
-<link rel="stylesheet" href="../css/sistem.css?v=62">
-<link rel="stylesheet" href="../css/intrare.css?v=62">
-<script src="../js/tema.js?v=62"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=63">
+<link rel="stylesheet" href="../css/sistem.css?v=63">
+<link rel="stylesheet" href="../css/intrare.css?v=63">
+<script src="../js/tema.js?v=63"></script>
 </head>
 <body>
 
@@ -42,6 +42,19 @@
     Până atunci poți citi ce urmează, mai jos.</p>
   </header>
 
+  <section class="sec sec--alt">
+    <p class="sec__et">Înainte de prima oră</p>
+    <div class="sec__corp"><div class="gh">
+<div class="gh__cap"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><div><b>Fă-ți un cont de GitHub</b><span>Cinci minute, gratuit. Fără el nu poți intra la oră.</span></div></div>
+<ol class="gh__pasi">
+<li><b>Intră pe <a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>.</b> Folosește o adresă de e-mail pe care o păstrezi și după facultate.</li>
+<li><b>Alege un nume de utilizator pe care l-ai pune în CV.</b> Rămâne cu tine: proiectul echipei va fi acolo, sub numele tău.</li>
+<li><b>Confirmă adresa de e-mail.</b> GitHub îți trimite un cod; fără el contul nu e activ.</li>
+<li><b>La prima oră</b> scanezi codul de pe ecran, apeși <em>Intru cu GitHub</em> și îți alegi numele din lista grupei. O singură dată, pentru tot semestrul.</li>
+</ol>
+<p class="gh__de-ce">De ce GitHub: cu el intri pe site, fără parolă nouă; tot cu el lucrați, de la cursul 3, în depozitul echipei. Ce se salvează despre tine scrie în <a class="leg" href="../date-personale/">politica de confidențialitate</a>.</p>
+</div></div>
+  </section>
   <section class="sec sec--despre">
     <p class="sec__et">Despre</p>
     <div class="sec__corp"><p>Prima oră are două jumătăți. În prima stabilim ce construim: proiectul
@@ -61,7 +74,7 @@ notează; e ca să știu de unde pornim.</p></div>
     <p class="sec__et">La final vei putea</p>
     <div class="sec__corp"><ul class="obiective">
 <li>Să descrii pașii unui proiect de analiză de date și să spui de ce te întorci constant la etapele anterioare.</li>
-<li>Să ai instalate VS Code și Python, cont de GitHub legat de numărul matricol, și o echipă.</li>
+<li>Să ai instalate VS Code și Python și să lucrezi pe site cu contul tău GitHub.</li>
 <li>Să îți creezi un mediu de lucru virtual și să știi, dintr-o privire, când e activ.</li>
 <li>Să recunoști tipurile de date din Python și să spui ce se strică atunci când sunt greșite.</li>
 <li>Să alegi un tip potrivit pentru o coloană dintr-o bază de date, și să explici de ce.</li>
@@ -96,10 +109,7 @@ de două lucruri, amândouă gratuite:</p>
 <ol>
 <li><a class="leg" href="https://code.visualstudio.com/" rel="noopener" target="_blank">VS Code</a>, editorul în care lucrăm tot semestrul.</li>
 <li><a class="leg" href="https://www.python.org/downloads/" rel="noopener" target="_blank">Python 3.11</a> sau mai nou. La instalare, pe Windows, bifează <em>Add Python to PATH</em>.</li>
-</ol>
-<p>Dacă vrei să-ți apară activitatea în progresul grupei și să îți salvez
-răspunsurile, intră în cont cu GitHub și leagă-l de numărul matricol. Fără cont,
-lecția merge la fel, dar răspunsurile rămân doar în browserul tău.</p></div>
+</ol></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -126,7 +136,7 @@ lecția merge la fel, dar răspunsurile rămân doar în browserul tău.</p></di
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=62"), import("../js/ora.js?v=62"), import("../js/curs.js?v=62")]);
+    import("../js/auth.js?v=63"), import("../js/ora.js?v=63"), import("../js/curs.js?v=63")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -154,7 +164,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=62"></script>
-<script type="module" src="../js/subsol.js?v=62"></script>
+<script type="module" src="../js/antet.js?v=63"></script>
+<script type="module" src="../js/subsol.js?v=63"></script>
 </body>
 </html>
