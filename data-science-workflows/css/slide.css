@@ -431,3 +431,48 @@ body.prezint .sld{font-size:1.06em}
 .rz__t pre{font-family:var(--mono);font-size:12px;margin:0;white-space:pre-wrap;word-break:break-word;
   color:var(--text);max-height:180px;overflow:auto}
 .rz__t b small{font-weight:400;color:var(--text-3);font-family:var(--mono);font-size:10.5px;margin-left:4px}
+
+/* ===========================================================================
+   SLIDE-URI MAI AERISITE
+   O idee pe slide, fără cutii în cutii. Componenta interactivă nu mai are
+   antet și chenar: are o etichetă mică deasupra și stă direct pe slide.
+   Notele sunt o linie discretă, nu un bloc colorat.
+   =========================================================================== */
+.sld .ix{background:none;border:0;border-radius:0;overflow:visible;margin:0 0 20px}
+.sld .ix__cap{padding:0 0 8px;background:none;border:0}
+.sld .ix__fel{font-size:9.5px;color:var(--text-3)}
+.sld .ix__t{font-size:13px;color:var(--text-2);font-weight:400}
+.sld .ix__corp{padding:0}
+.sld .ix > .ix__corp + div,
+.sld .ix > .ix__corp:has(> :not(script)) + div{padding:0}
+.sld .ix__sarcina{font-size:14.5px;margin:0 0 10px}
+.sld .nota{background:none;border-left:2px solid var(--linie-2);padding:2px 0 2px 14px;margin:0 0 14px}
+.sld .nota p{font-size:15px;color:var(--text-2)}
+.sld .nota__et{margin-bottom:3px}
+.sld h2{margin-bottom:14px}
+.sld .cheie{font-size:18px;margin-bottom:18px}
+.sld > p{margin-bottom:14px}
+body.prezint .sld{padding-top:34px;padding-bottom:40px;max-width:1080px}
+body.prezint .sld__cap{margin-bottom:10px}
+body.prezint .sld h2{font-size:32px;margin-bottom:12px}
+
+/* eticheta „date SCI”, pe slide-urile care arată SCI */
+.sld__sci{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  color:var(--text-2);border:1px solid var(--linie-2);border-radius:20px;padding:2px 9px 2px 4px;white-space:nowrap}
+.sld__sci b{font-weight:600;color:var(--panza);background:var(--accent);border-radius:20px;padding:1px 6px;letter-spacing:.08em}
+
+/* verificările, pe slide: variantele pe un rând, nu una sub alta */
+.sld .verif{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;max-width:none;
+  background:none;border:0;border-top:1px solid var(--linie);border-radius:0;padding:14px 0 0;margin:18px 0 0}
+.sld .verif > :not(.verif__opt){grid-column:1 / -1}
+.sld .verif .verif__q{margin:0 0 4px;font-size:16px}
+.sld .verif .verif__opt{margin:0;font-family:var(--sans);font-size:14.5px;padding:9px 12px}
+.sld .verif .verif__ex{margin:4px 0 0;padding:10px 14px;font-size:14.5px}
+body.prezint #s5m .hs--slide{height:min(52vh,470px)}
+
+/* poarta de sub exerciții, pe slide: o linie discretă, nu o cutie */
+.sld .poarta{background:none;border:0;border-top:1px dashed var(--linie-2);border-radius:0;padding:8px 0 0;margin:14px 0 0;gap:8px;align-items:center}
+.sld .poarta__ic{width:20px;height:20px;border:0;background:none}
+.sld .poarta__t{font-size:13px;margin:0}
+.sld .poarta__d{display:none}
+.sld .poarta.deschisa{background:none}

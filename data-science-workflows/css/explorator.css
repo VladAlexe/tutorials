@@ -18,8 +18,8 @@
    cărămiziu sub model, neutru, teal peste model. La întuneric scara se
    întoarce: valorile mici se pierd în fundal, cele mari se aprind. */
 :root{
-  --hs-1:#F1EFC4; --hs-2:#D9E8B0; --hs-3:#B4D9A3; --hs-4:#86C49B; --hs-5:#57AA90;
-  --hs-6:#2F8E84; --hs-7:#167277; --hs-8:#145668; --hs-9:#1A3A52;
+  --hs-1:#F1EFC4; --hs-2:#DCE7C0; --hs-3:#BCD7B3; --hs-4:#99C4A8; --hs-5:#76AE9C;
+  --hs-6:#55978E; --hs-7:#377F7D; --hs-8:#1F6A69; --hs-9:#11554F;
   --hsd-1:#9A3A22; --hsd-2:#C8694C; --hsd-3:#E8B49E; --hsd-4:#EADDA8;
   --hsd-5:#9FCBBE; --hsd-6:#3E9A87; --hsd-7:#0F6656;
 }
@@ -149,3 +149,10 @@
 .hs--mare .hs__harta{height:100%}
 html.hs-deschis, html.hs-deschis body{overflow:hidden}
 @media(max-width:760px){.hs--mare{grid-template-columns:1fr !important;grid-template-rows:62dvh 1fr}}
+
+/* lista hărții, cu bare: se citește ca un grafic */
+.hs__lista li.cu-bara{background:linear-gradient(to right,color-mix(in srgb,var(--accent) 16%,transparent) var(--w),transparent var(--w));border-radius:4px}
+/* pe slide, panoul hărții păstrează doar ce se citește din sală */
+.sld .hs--slide .hs__cauta,.sld .hs--slide .hs__meta,.sld .hs--slide .hs__note{display:none}
+.sld .hs--slide .hs__panou{gap:10px;overflow-y:auto}
+.sld .hs--slide .hs__nume{font-size:18px}

@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=63");
+    const m = await import("/data-science-workflows/js/colectare.js?v=64");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -1122,90 +1122,27 @@ V.drum = (gazda, d) => {
    =========================================================================== */
 
 V.semestru = (gazda, d) => {
-  const T = d.teme || [];
-  const N = d.sedinte || 8;
-  const F = d.fise || [];
-  const ET = d.etape || {};
-  const pe = k => T.filter(t => t.c === k);
-  const fisa = k => F.find(f => f.c === k) || { c: k, titlu: pe(k)[0]?.n || "" };
+  const T = d.teme || [], F = d.fise || [], N = d.sedinte || 8;
+  const fisa = k => F.find(f => f.c === k) || { c: k, titlu: "" };
   let ales = d.azi || 1;
-
   gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="sem2">
-      <div class="sem2__pista" role="tablist">
-        ${Array.from({ length: N }, (_, i) => {
-          const k = i + 1, f = fisa(k);
-          return `<button class="sem2__st et--${esc(f.etapa || "")}" data-c="${k}" role="tab" type="button">
-            <span class="sem2__nr">C${k}${k === d.azi ? `<em>azi</em>` : ""}</span>
-            <span class="sem2__nume">${esc(f.titlu)}</span>
-            <span class="sem2__bara"></span>
-          </button>`;
-        }).join("")}
-      </div>
-      <div class="sem2__leg">${Object.entries(ET).map(([k, v]) =>
-        `<span class="et--${k}"><i></i>${esc(v)}</span>`).join("")}</div>
-      <div class="sem2__fisa" aria-live="polite"></div>
+    <div class="sm">
+      <ol class="sm__linie">${Array.from({ length: N }, (_, i) => { const k = i + 1, f = fisa(k);
+        return `<li><button class="sm__p et--${esc(f.etapa || "")}" data-c="${k}" type="button">
+          <i></i><span class="sm__c">C${k}</span><span class="sm__t">${esc(f.scurt || f.titlu)}</span></button></li>`; }).join("")}</ol>
+      <div class="sm__det" aria-live="polite"></div>
     </div>`;
-
-  const corp = gazda.querySelector(".sem2__fisa");
-
+  const det = gazda.querySelector(".sm__det");
   function arata(k){
-    ales = Math.max(1, Math.min(N, k));
-    const f = fisa(ales);
-    gazda.querySelectorAll(".sem2__st").forEach(b => {
-      const on = +b.dataset.c === ales;
-      b.classList.toggle("on", on); b.setAttribute("aria-selected", on);
-    });
-    const teme = pe(ales);
-    corp.className = `sem2__fisa et--${f.etapa || ""}`;
-    corp.innerHTML = `
-      <div class="sem2__cap">
-        <button class="sem2__nav" data-m="-1" type="button" ${ales === 1 ? "disabled" : ""} aria-label="ședința anterioară">‹</button>
-        <div>
-          <span class="sem2__et"><i></i>${esc(ET[f.etapa] || "")}</span>
-          <h5>Cursul ${ales} · ${esc(f.titlu)}</h5>
-        </div>
-        <button class="sem2__nav" data-m="1" type="button" ${ales === N ? "disabled" : ""} aria-label="ședința următoare">›</button>
-      </div>
-      <div class="sem2__grila">
-        <section class="sem2__b sem2__b--teme">
-          <h6>${teme.length === 1 ? "Tema" : "Temele"}</h6>
-          ${teme.map(t => `<div class="sem2__tema">
-            <span class="sem2__tn">${String(T.indexOf(t) + 1).padStart(2, "0")}</span>
-            <div><b>${esc(t.n)}</b><p>${t.d || ""}</p></div></div>`).join("")}
-        </section>
-        <section class="sem2__b">
-          <h6>Ce înveți</h6>
-          <ul>${(f.invata || []).map(x => `<li>${x}</li>`).join("")}</ul>
-        </section>
-        <section class="sem2__b">
-          <h6>La laborator</h6>
-          ${f.caiet ? `<code class="sem2__caiet">${esc(f.caiet)}</code>` : ""}
-          <p>${f.lab || ""}</p>
-        </section>
-        <section class="sem2__b sem2__b--proiect">
-          <h6>În proiectul echipei</h6>
-          <p class="sem2__livr">${f.proiect || ""}</p>
-          ${(f.unelte || []).length ? `<h6 class="sem2__h6b">Unelte</h6>
-            <div class="sem2__unelte">${f.unelte.map(u => `<span>${esc(u)}</span>`).join("")}</div>` : ""}
-        </section>
-      </div>`;
+    ales = k; const f = fisa(k);
+    gazda.querySelectorAll(".sm__p").forEach(b => b.classList.toggle("on", +b.dataset.c === k));
+    const teme = T.filter(t => t.c === k).map(t => t.n).join(" · ");
+    det.innerHTML = `<p class="sm__d1"><b>Cursul ${k}</b> ${esc(teme)}</p>
+      <p class="sm__d2">În proiect: ${f.proiect || ""}</p>`;
   }
-
-  gazda.querySelector(".sem2__pista").addEventListener("click", ev => {
-    const b = ev.target.closest(".sem2__st"); if (b) arata(+b.dataset.c);
+  gazda.querySelector(".sm__linie").addEventListener("click", ev => {
+    const b = ev.target.closest(".sm__p"); if (b) arata(+b.dataset.c);
   });
-  corp.addEventListener("click", ev => {
-    const b = ev.target.closest(".sem2__nav"); if (b) arata(ales + +b.dataset.m);
-  });
-  gazda.querySelector(".sem2__pista").addEventListener("keydown", ev => {
-    if (ev.key === "ArrowRight" || ev.key === "ArrowLeft"){
-      ev.preventDefault(); arata(ales + (ev.key === "ArrowRight" ? 1 : -1));
-      gazda.querySelector(`.sem2__st[data-c="${ales}"]`)?.focus();
-    }
-  });
-
   arata(ales);
 };
 
@@ -1943,196 +1880,39 @@ V.gitdag = (gazda, d) => {
 
 V.sci = (gazda, d) => {
   const NS = "http://www.w3.org/2000/svg";
-  const W = 760, H = 380;
-  const nf = (x, z = 2) => x.toLocaleString("ro-RO", { minimumFractionDigits: z, maximumFractionDigits: z });
-  const ni = x => Math.round(x).toLocaleString("ro-RO");
-
-  const grila = (cx, cy, n, col, sp) => {
-    const rows = Math.ceil(n / col), r = [];
-    for (let k = 0; k < n; k++){
-      const i = k % col, j = Math.floor(k / col);
-      r.push([cx + (i - (col - 1) / 2) * sp, cy + (j - (rows - 1) / 2) * sp]);
-    }
-    return r;
+  const grila = (cx, cy, n, col, sp) => { const rows = Math.ceil(n / col), r = [];
+    for (let k = 0; k < n; k++){ const i = k % col, j = Math.floor(k / col);
+      r.push([cx + (i - (col - 1) / 2) * sp, cy + (j - (rows - 1) / 2) * sp]); } return r; };
+  const CAZ = d.cazuri || [
+    { n: "Republica Moldova", u: 4, col: 2, f: [[0,0],[0,3],[1,1],[2,2],[4,0],[5,3]] },
+    { n: "Italia", u: 12, col: 4, f: [[0,1],[1,5],[2,3],[2,8],[3,10],[4,4],[4,11],[5,6],[1,9]] },
+  ];
+  const A = 6, nf = x => x.toLocaleString("ro-RO", { maximumFractionDigits: 3 });
+  const panou = (c, k) => {
+    const a = grila(80, 110, A, 2, 34), b = grila(300, 110, c.u, c.col, c.col > 2 ? 28 : 34);
+    const pos = a.flatMap(p => b.map(q => `<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" class="sc__pos"/>`)).join("");
+    const pr = c.f.map(([i, j]) => `<line x1="${a[i][0]}" y1="${a[i][1]}" x2="${b[j][0]}" y2="${b[j][1]}" class="sc__pr"/>`).join("");
+    const pt = (arr, cls) => arr.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" class="${cls}"/>`).join("");
+    const posibile = A * c.u, v = c.f.length / posibile;
+    return `<figure class="sc__p">
+      <svg viewBox="0 0 380 220" aria-hidden="true"><g class="sc__gpos">${pos}</g>${pr}${pt(a, "sc__i")}${pt(b, "sc__j")}
+        <text x="80" y="208" text-anchor="middle" class="sc__et">Cluj · ${A}</text>
+        <text x="300" y="208" text-anchor="middle" class="sc__et">${esc(c.n)} · ${c.u}</text></svg>
+      <figcaption><span class="sc__calc"><b class="sc__f">${c.f.length}</b> prietenii / (${A} × ${c.u} = <b class="sc__u">${posibile}</b> posibile)</span>
+        <span class="sc__v">= ${nf(v)}</span></figcaption></figure>`;
   };
-  const A  = { n: "Cluj", u: 6, pts: grila(190, 186, 6, 2, 42) };
-  const MD = { n: "Republica Moldova", u: 4, pts: grila(560, 96, 4, 2, 42) };
-  const IT = { n: "Italia", u: 12, pts: grila(560, 268, 12, 4, 34) };
-  const FMD = [[0,0],[0,3],[1,1],[2,2],[4,0],[5,3]];
-  const FIT = [[0,1],[1,5],[2,3],[2,8],[3,10],[4,4],[4,11],[5,6],[1,9]];
-
-  /* rețeaua: aceleași calcule, pe cinci locuri */
-  const NOD = [
-    { k: "cj", n: "Cluj",              u: 6,  x: 380, y: 196 },
-    { k: "sj", n: "Sălaj",             u: 2,  x: 175, y: 82,  f: 5 },
-    { k: "md", n: "Rep. Moldova",      u: 4,  x: 600, y: 82,  f: 6 },
-    { k: "it", n: "Italia",            u: 12, x: 600, y: 302, f: 9 },
-    { k: "hu", n: "Ungaria",           u: 8,  x: 165, y: 302, f: 4 },
-  ];
-  NOD.slice(1).forEach(x => { x.sci = x.f / (6 * x.u); });
-  const MAXS = Math.max(...NOD.slice(1).map(x => x.sci));
-  NOD.slice(1).forEach(x => { x.sc = x.sci / MAXS * 1e9; });
-
-  const PASI = [
-    { t: "Doi oameni, două locuri", ly: ["ua", "umd"], hl: ["ui", "uj"],
-      ui: "6", uj: "4",
-      txt: "Fiecare punct e un <b>utilizator Facebook</b>: 6 în Cluj, 4 în Republica Moldova. Numerele sunt mici, ca să le poți număra; în date sunt sute de mii." },
-    { t: "Câte prietenii ar fi posibile?", ly: ["ua", "umd", "pmd"], hl: ["den"],
-      ui: "6", uj: "4", den: "24",
-      txt: "Oricare om din Cluj ar putea fi prieten cu oricare om din Moldova. Liniile gri sunt toate perechile posibile: <b>6 × 4 = 24</b>. Ăsta e numitorul." },
-    { t: "Câte prietenii există", ly: ["ua", "umd", "pmd", "fmd"], hl: ["num"],
-      ui: "6", uj: "4", den: "24", num: "6",
-      txt: "Dintre cele 24 de perechi, <b>6</b> chiar sunt prieteni pe Facebook. Ăsta e numărătorul." },
-    { t: "Indicele", ly: ["ua", "umd", "pmd", "fmd"], hl: ["rez"],
-      ui: "6", uj: "4", den: "24", num: "6", rez: "0,25",
-      txt: "<b>SCI = 6 / 24 = 0,25.</b> Un sfert dintre perechile posibile sunt prieteni. Indicele e o <b>probabilitate</b>: cât de probabil e ca doi oameni, unul de aici și unul de acolo, să fie prieteni." },
-    { t: "Un loc mare", ly: ["ua", "umd", "fmd", "uit", "pit", "fit", "cmp"], hl: ["rez"],
-      ui: "6", uj: "12", den: "72", num: "9", rez: "0,125",
-      txt: "Italia: 12 utilizatori și <b>9 prietenii</b> cu Clujul, mai multe decât Moldova. Dar perechile posibile sunt 72, deci SCI = 9 / 72 = <b>0,125</b>, jumătate din cel al Moldovei. <b>Mai multe prietenii, indice mai mic.</b>" },
-    { t: "Rețeaua, după numărul de prietenii", ly: ["net"], mod: "f", hl: ["num"],
-      txt: "Cinci locuri, aceleași calcule. Dacă grosimea liniei e <b>numărul de prietenii</b>, Italia pare partenerul cel mai legat de Cluj." },
-    { t: "Rețeaua, după SCI", ly: ["net"], mod: "sci", hl: ["rez"],
-      txt: "Cu grosimea după <b>SCI</b>, ordinea se întoarce: Sălajul, mic și vecin, e primul; Italia coboară pe trei. Exact asta se vede și în datele reale: Italia are cei mai mulți români, dar e abia <b>a șasea</b> după SCI." },
-    { t: "Ce e în fișier: scaled_sci", ly: ["net"], mod: "sc", hl: ["rez"],
-      txt: "Meta nu publică 0,42 sau 0,25. Înmulțește toate valorile, ca <b>cea mai mare pereche din fișier să fie exact 1.000.000.000</b>. Raporturile rămân: Moldova are 60% din valoarea Sălajului. De aceea <code>scaled_sci</code> se compară între perechi din același fișier și nu se citește ca număr de prieteni. În <code>country.csv</code>: România–Moldova <b>173.794</b>, România–Italia <b>69.327</b>, de 2,5 ori mai puțin." },
-  ];
-
   gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="sci">
-      <div class="sci__f" aria-live="polite">
-        <span class="sci__fl">SCI<sub>i,j</sub></span><span class="sci__eg">=</span>
-        <span class="sci__fr">
-          <span class="sci__t sci__t--num" data-p="num"><span class="sci__te">prieteniile dintre i și j</span><b class="sci__tv"></b></span>
-          <span class="sci__t sci__t--den" data-p="den">
-            <span class="sci__t sci__t--ui" data-p="ui"><span class="sci__te">utilizatori în i</span><b class="sci__tv"></b></span>
-            <span class="sci__x">×</span>
-            <span class="sci__t sci__t--uj" data-p="uj"><span class="sci__te">utilizatori în j</span><b class="sci__tv"></b></span>
-            <b class="sci__tv sci__tv--den"></b>
-          </span>
-        </span>
-        <span class="sci__eg">=</span><span class="sci__t sci__t--rez" data-p="rez"><b class="sci__tv">?</b></span>
-      </div>
-      <div class="sci__scena"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Utilizatori și prietenii între locuri"></svg>
-        <div class="sci__mod" hidden>
-          <span>grosimea liniei =</span>
-          <button type="button" data-m="f">prietenii</button>
-          <button type="button" data-m="sci">SCI</button>
-          <button type="button" data-m="sc">scaled_sci</button>
-        </div>
-      </div>
-      <div class="sci__jos">
-        <div class="sci__txt"></div>
-        <div class="sci__nav">
-          <button class="btn btn--mic" data-rol="inapoi" type="button">Înapoi</button>
-          <div class="sci__puncte">${PASI.map((x, k) => `<button type="button" data-k="${k}" title="${esc(x.t)}" aria-label="pasul ${k + 1}: ${esc(x.t)}"></button>`).join("")}</div>
-          <button class="btn btn--mic btn--tare" data-rol="inainte" type="button">Pasul următor</button>
-        </div>
+    <div class="sc">
+      <p class="sc__formula"><i>SCI</i> = <span class="sc__fr"><span class="sc__f">prieteniile dintre cele două locuri</span>
+        <span class="sc__u">utilizatori într-un loc × utilizatori în celălalt</span></span></p>
+      <div class="sc__duo">${CAZ.map(panou).join("")}</div>
+      <div class="sc__jos">
+        <label class="sc__comut"><input type="checkbox"> arată și toate perechile posibile</label>
+        <p class="sc__conc">${d.concluzie || ""}</p>
       </div>
     </div>`;
-
-  const $ = q => gazda.querySelector(q);
-  const svg = $("svg");
-  const el = (tag, at = {}, par = svg) => {
-    const e = document.createElementNS(NS, tag);
-    for (const [k, v] of Object.entries(at)) e.setAttribute(k, v);
-    par.appendChild(e); return e;
-  };
-  const strat = k => el("g", { class: `ly ly--${k}` });
-
-  /* straturile scenei cu puncte */
-  const L = {};
-  ["pmd", "pit", "fmd", "fit", "ua", "umd", "uit", "cmp", "net"].forEach(k => L[k] = strat(k));
-  const linie = (g, a, b, cls) => el("line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1], class: cls, pathLength: 1 }, g);
-  A.pts.forEach(a => MD.pts.forEach(b => linie(L.pmd, a, b, "sci__pos")));
-  A.pts.forEach(a => IT.pts.forEach(b => linie(L.pit, a, b, "sci__pos")));
-  FMD.forEach(([i, j]) => linie(L.fmd, A.pts[i], MD.pts[j], "sci__pr"));
-  FIT.forEach(([i, j]) => linie(L.fit, A.pts[i], IT.pts[j], "sci__pr"));
-  const puncte = (g, loc, cls, ety, sub) => {
-    loc.pts.forEach(([x, y], k) => el("circle", { cx: x, cy: y, r: 11, class: cls, style: `--d:${k * 40}ms` }, g));
-    const t = el("text", { x: loc.pts.reduce((s, p) => s + p[0], 0) / loc.pts.length, y: ety, class: "sci__et", "text-anchor": "middle" }, g);
-    t.textContent = loc.n;
-    const t2 = el("text", { x: t.getAttribute("x"), y: ety + 16, class: "sci__sub", "text-anchor": "middle" }, g);
-    t2.textContent = sub;
-  };
-  puncte(L.ua, A, "sci__u sci__u--i", 256, "6 utilizatori");
-  puncte(L.umd, MD, "sci__u sci__u--j", 38, "4 utilizatori");
-  puncte(L.uit, IT, "sci__u sci__u--j", 340, "12 utilizatori");
-  /* comparația de la pasul 5, lângă cele două locuri */
-  const cmp = (y, txt, v) => {
-    const g = el("g", { transform: `translate(668 ${y})` }, L.cmp);
-    el("rect", { x: 0, y: -15, width: 88, height: 40, rx: 7, class: "sci__cmp" }, g);
-    const a = el("text", { x: 44, y: 1, "text-anchor": "middle", class: "sci__cmpv" }, g); a.textContent = v;
-    const b = el("text", { x: 44, y: 17, "text-anchor": "middle", class: "sci__cmpt" }, g); b.textContent = txt;
-  };
-  cmp(96, "6 / 24", "0,25");
-  cmp(268, "9 / 72", "0,125");
-
-  /* rețeaua */
-  const cj = NOD[0];
-  const muchii = NOD.slice(1).map(x => {
-    const g = el("g", { class: "sci__m" }, L.net);
-    const l = el("line", { x1: cj.x, y1: cj.y, x2: x.x, y2: x.y, class: "sci__ml" }, g);
-    const mx = (cj.x + x.x) / 2, my = (cj.y + x.y) / 2;
-    const bg = el("rect", { class: "sci__mlb", rx: 6, height: 22, y: my - 13 }, g);
-    const t = el("text", { x: mx, y: my + 3, "text-anchor": "middle", class: "sci__mlt" }, g);
-    return { x, l, bg, t, mx };
-  });
-  NOD.forEach((x, k) => {
-    const g = el("g", { class: "sci__n" + (k ? "" : " sci__n--a") }, L.net);
-    const r = 12 + Math.sqrt(x.u) * 7.5;
-    el("circle", { cx: x.x, cy: x.y, r, class: k ? "sci__nc" : "sci__nc sci__nc--a" }, g);
-    const t = el("text", { x: x.x, y: x.y + 4, "text-anchor": "middle", class: "sci__nu" }, g); t.textContent = x.u;
-    const n = el("text", { x: x.x, y: x.y + r + 16, "text-anchor": "middle", class: "sci__et" }, g); n.textContent = x.n;
-  });
-
-  const leg = el("text", { x: 16, y: H - 14, class: "sci__sub" }, L.net);
-  leg.textContent = "în cerc: utilizatori · pe linie: Clujul cu fiecare loc";
-
-  let mod = "f";
-  function grosimi(){
-    const vmax = { f: 9, sci: MAXS, sc: 1e9 }[mod];
-    muchii.forEach(({ x, l, bg, t, mx }) => {
-      const v = mod === "f" ? x.f : mod === "sci" ? x.sci : x.sc;
-      l.style.strokeWidth = (2 + 16 * v / vmax).toFixed(1);
-      t.textContent = mod === "f" ? `${x.f} prietenii` : mod === "sci" ? nf(x.sci) : ni(x.sc);
-      const w = t.textContent.length * 7.2 + 14;
-      bg.setAttribute("x", mx - w / 2); bg.setAttribute("width", w);
-    });
-    gazda.querySelectorAll(".sci__mod button").forEach(b => b.classList.toggle("on", b.dataset.m === mod));
-  }
-  $(".sci__mod").addEventListener("click", ev => {
-    const b = ev.target.closest("button[data-m]"); if (!b) return;
-    mod = b.dataset.m; grosimi();
-  });
-
-  let i = 0;
-  function arata(){
-    const P = PASI[i];
-    Object.entries(L).forEach(([k, g]) => g.classList.toggle("on", P.ly.includes(k)));
-    /* la pasul cu Italia, prieteniile cu Moldova rămân, dar trec în fundal */
-    L.fmd.classList.toggle("stins", i === 4);
-    const f = $(".sci__f");
-    f.querySelectorAll("[data-p]").forEach(e => e.classList.toggle("hl", (P.hl || []).includes(e.dataset.p)));
-    const pune = (q, v) => { const e = f.querySelector(q); if (e) e.textContent = v || ""; };
-    pune(".sci__t--ui > .sci__tv", P.ui); pune(".sci__t--uj > .sci__tv", P.uj);
-    pune(".sci__tv--den", P.den ? `= ${P.den}` : "");
-    pune(".sci__t--num > .sci__tv", P.num);
-    pune(".sci__t--rez > .sci__tv", P.rez || (P.mod ? { f: "nu e SCI", sci: "0,42 (Sălaj)", sc: "1.000.000.000 (Sălaj)" }[P.mod] : "?"));
-    f.classList.toggle("sci__f--net", !!P.mod);
-    if (P.mod){ mod = P.mod; grosimi(); }
-    $(".sci__mod").hidden = !P.mod;
-    $(".sci__txt").innerHTML = `<span class="sci__nr">${i + 1} / ${PASI.length}</span><b class="sci__tt">${P.t}</b><p>${P.txt}</p>`;
-    gazda.querySelectorAll(".sci__puncte button").forEach((b, k) => { b.classList.toggle("on", k === i); b.classList.toggle("vazut", k < i); });
-    $('[data-rol="inapoi"]').disabled = i === 0;
-    $('[data-rol="inainte"]').textContent = i === PASI.length - 1 ? "De la capăt" : "Pasul următor";
-  }
-  $('[data-rol="inainte"]').onclick = () => { i = i === PASI.length - 1 ? 0 : i + 1; arata(); };
-  $('[data-rol="inapoi"]').onclick = () => { i = Math.max(0, i - 1); arata(); };
-  $(".sci__puncte").addEventListener("click", ev => {
-    const b = ev.target.closest("button[data-k]"); if (b){ i = +b.dataset.k; arata(); }
-  });
-  arata();
+  const box = gazda.querySelector(".sc");
+  gazda.querySelector(".sc__comut input").addEventListener("change", e => box.classList.toggle("sc--pos", e.target.checked));
 };
 
 
@@ -2346,44 +2126,44 @@ V.consola = (gazda, d) => {
 
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="cns">
-      <div class="cns__celula">
-        <div class="cns__cap"><span>${esc(d.fisier || "celulă")}</span><span class="jc__in">In [1]:</span></div>
-        <pre class="cns__cod">${(d.cod || []).map(l => esc(l)).join("\n")}</pre>
+    <div class="tcs">
+      <div class="tcs__celula">
+        <div class="tcs__cap"><span>${esc(d.fisier || "celulă")}</span><span class="jc__in">In [1]:</span></div>
+        <pre class="tcs__cod">${(d.cod || []).map(l => esc(l)).join("\n")}</pre>
       </div>
-      <div class="cns__grila">
-        ${VARS.map((x, k) => `<label class="cns__r" data-k="${k}">
-          <code class="cns__n">${esc(x.n)}</code>
-          <input class="cns__t" autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}">
-          <span class="cns__st" aria-hidden="true"></span>
-          <span class="cns__e"></span>
+      <div class="tcs__grila">
+        ${VARS.map((x, k) => `<label class="tcs__r" data-k="${k}">
+          <code class="tcs__n">${esc(x.n)}</code>
+          <input class="tcs__t" autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}">
+          <span class="tcs__st" aria-hidden="true"></span>
+          <span class="tcs__e"></span>
         </label>`).join("")}
       </div>
-      <div class="cns__act">
+      <div class="tcs__act">
         <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
-        <span class="cns__scor"></span>
+        <span class="tcs__scor"></span>
       </div>
-      <div class="cns__ajutor">
+      <div class="tcs__ajutor">
         <p><b>Nu ești sigur?</b> Întreabă Python. Scrie <code>type(${esc(VARS[0]?.n || "x")})</code> și apasă Enter, ca într-o celulă din Jupyter.</p>
         <div class="jc"></div>
       </div>
     </div>`;
 
   const cons = consolaJupyter(gazda.querySelector(".jc"), d.env || {}, { loc: `type(${VARS[0]?.n || "x"})` });
-  const randuri = [...gazda.querySelectorAll(".cns__r")];
+  const randuri = [...gazda.querySelectorAll(".tcs__r")];
 
   gazda.querySelector('[data-rol="verifica"]').onclick = async () => {
     let ok = 0, goale = 0;
     randuri.forEach((r, k) => {
-      const x = VARS[k], inp = r.querySelector(".cns__t"), v = inp.value;
-      if (!v.trim()){ goale++; r.className = "cns__r"; r.querySelector(".cns__e").textContent = ""; return; }
+      const x = VARS[k], inp = r.querySelector(".tcs__t"), v = inp.value;
+      if (!v.trim()){ goale++; r.className = "tcs__r"; r.querySelector(".tcs__e").textContent = ""; return; }
       const bun = norm(v) === x.t.toLowerCase();
       if (bun) ok++;
-      r.className = "cns__r " + (bun ? "ok" : "nu");
-      r.querySelector(".cns__st").textContent = bun ? "✓" : "✗";
-      r.querySelector(".cns__e").innerHTML = bun ? (x.e || "") : `Tipul e <code>${esc(x.t)}</code>. ${x.e || ""}`;
+      r.className = "tcs__r " + (bun ? "ok" : "nu");
+      r.querySelector(".tcs__st").textContent = bun ? "✓" : "✗";
+      r.querySelector(".tcs__e").innerHTML = bun ? (x.e || "") : `Tipul e <code>${esc(x.t)}</code>. ${x.e || ""}`;
     });
-    const sc = gazda.querySelector(".cns__scor");
+    const sc = gazda.querySelector(".tcs__scor");
     if (goale){ sc.textContent = `Mai ai ${goale} ${goale === 1 ? "rând gol" : "rânduri goale"}.`; return; }
     sc.innerHTML = `<b>${ok} din ${VARS.length}</b>${ok === VARS.length ? " · toate corecte" : " · citește explicațiile de sub rândurile roșii"}`;
     if (!verificat && d.id){
@@ -2545,7 +2325,7 @@ V.acces = (gazda, d) => {
         return `Acum ai ${NUME_T[t] || t}. ${CE_FACI[t] || "Asta e o valoare: drumul s-a terminat aici."}`; })()}</p>`;
     $(".acs__out").innerHTML = er
       ? `<pre class="jc__err"><b>${esc(er.tip)}</b>: ${esc(er.message)}</pre>`
-      : `<span class="jc__out">Out:</span><code>${esc(PY.afis(v))}</code>`;
+      : `<span class="jc__out">Out:</span><code>${esc((t => t.length > 170 ? t.slice(0, 169) + " …" : t)(PY.afis(v)))}</code>`;
     /* în arbore, rândul ales rămâne la vedere */
     if (VED === "arbore"){
       const box = scena.querySelector(".arb"), on = scena.querySelector(".arb__r.on");
@@ -2723,6 +2503,199 @@ V.folder = (gazda, d) => {
     const b = ev.target.closest(".fld__n"); if (b) arata(+b.dataset.k);
   });
   arata(ales);
+};
+
+
+/* ===========================================================================
+   DSW — schema „Data Science Workflow”, exact ca la curs
+
+   Aceleași piese și aceleași legături ca în schema din prezentare: banda
+   „Analiza datelor” peste primele patru etape, raportarea în dreapta, baza
+   de date jos în stânga, „ML engineering” sub implementare și optimizare,
+   „Data science” dedesubt, peste tot. Săgețile pline sunt drumul, cele
+   punctate sunt întoarcerile. Culorile sunt ale paletei sitului.
+   =========================================================================== */
+V.dsw = (gazda, d) => {
+  const E = d.etape || {};
+  const ch = (x0, y0, x1, y1, n = 46) => { const m = (y0 + y1) / 2;
+    return `M${x0},${y0} L${x1 - n},${y0} L${x1},${m} L${x1 - n},${y1} L${x0},${y1} L${x0 + n},${m} Z`; };
+  const txt = (x, y, linii, cls = "") => `<text x="${x}" y="${y - (linii.length - 1) * 14}" class="dsw__tx ${cls}" text-anchor="middle">${
+    linii.map((l, i) => `<tspan x="${x}" dy="${i ? 28 : 0}">${esc(l)}</tspan>`).join("")}</text>`;
+  const etapa = (k, forma, cx, cy, linii, cls) => `<g class="dsw__e dsw__e--${k}" data-k="${k}" tabindex="0" role="button" aria-label="${esc((E[k] || {}).n || k)}">
+      ${forma}${txt(cx, cy + 8, linii, cls)}</g>`;
+  const banda = (x, y, w, h, t, cls) => `<g class="dsw__b ${cls}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/>${txt(x + w / 2, y + h / 2 + 9, [t], "dsw__bt")}</g>`;
+  const sag = (id, w = 5) => `<marker id="${id}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="${w}" markerHeight="${w}" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker>`;
+
+  gazda.innerHTML = `
+    <div class="dsw">
+      <svg viewBox="0 0 1720 800" role="img" aria-label="Schema fluxului de lucru în știința datelor">
+        <defs>${sag("dsw-a", 3.4)}${sag("dsw-p", 3.6)}${sag("dsw-g", 2.3)}</defs>
+        ${banda(5, 3, 890, 74, "ANALIZA DATELOR", "dsw__b--ad")}
+        ${banda(1149, 612, 482, 74, "ML ENGINEERING", "dsw__b--ml")}
+        ${banda(40, 713, 1591, 74, "DATA SCIENCE", "dsw__b--ds")}
+
+        <!-- săgețile punctate: întoarcerile -->
+        <path d="M525,352 C600,300 690,330 735,420" class="dsw__p" marker-start="url(#dsw-p)" marker-end="url(#dsw-p)"/>
+        <path d="M795,268 C830,360 930,410 1030,425" class="dsw__p" marker-start="url(#dsw-p)" marker-end="url(#dsw-p)"/>
+        <path d="M1060,422 C1200,340 1450,345 1565,425" class="dsw__p" marker-start="url(#dsw-p)" marker-end="url(#dsw-p)"/>
+        <path d="M1325,425 C1350,370 1395,330 1425,298" class="dsw__p" marker-start="url(#dsw-p)" marker-end="url(#dsw-p)"/>
+        <path d="M360,642 C540,700 900,705 1045,600" class="dsw__p" marker-start="url(#dsw-p)" marker-end="url(#dsw-p)"/>
+
+        ${etapa("def", `<path d="${ch(7, 93, 260, 263)}"/>`, 140, 178, ["DEFINIREA", "PROBLEMEI"], "")}
+        ${etapa("col", `<path d="${ch(225, 93, 478, 263)}"/>`, 360, 178, ["COLECTAREA", "DATELOR"], "")}
+        ${etapa("cur", `<path d="${ch(440, 93, 693, 263)}"/>`, 575, 178, ["CURĂȚAREA", "DATELOR"], "")}
+        ${etapa("eda", `<path d="${ch(653, 93, 932, 263)}"/>`, 800, 178, ["ANALIZA", "EXPLORATORIE", "(EDA)"], "")}
+        ${etapa("rap", `<rect x="1253" y="63" width="357" height="235" rx="50"/>`, 1432, 180, ["RAPORTARE", "VIZUALIZARE"], "dsw__tx--inv")}
+        ${etapa("db", `<rect x="148" y="358" width="405" height="282" rx="46"/>`, 350, 499, ["POPULAREA ȘI", "GESTIONAREA UNEI", "BAZE DE DATE"], "dsw__tx--inv")}
+        ${etapa("fe", `<path d="${ch(657, 428, 927, 598)}"/>`, 800, 513, ["FEATURE", "ENGINEERING"], "")}
+        ${etapa("mod", `<path d="${ch(890, 428, 1205, 598)}"/>`, 1055, 513, ["MODELARE", "(Statistică/ML)"], "")}
+        ${etapa("imp", `<path d="${ch(1173, 428, 1470, 598)}"/>`, 1328, 513, ["IMPLEMENTAREA", "MODELULUI"], "")}
+        ${etapa("opt", `<path d="${ch(1438, 428, 1705, 598)}"/>`, 1580, 513, ["OPTIMIZAREA", "MODELULUI"], "")}
+        <!-- săgețile pline: drumul -->
+        <line x1="935" y1="178" x2="1238" y2="178" class="dsw__s dsw__s--sub" marker-end="url(#dsw-a)"/>
+        <line x1="350" y1="268" x2="350" y2="353" class="dsw__s dsw__s--dublu" marker-start="url(#dsw-a)" marker-end="url(#dsw-a)"/>
+        <line x1="555" y1="268" x2="385" y2="355" class="dsw__s dsw__s--dublu" marker-start="url(#dsw-a)" marker-end="url(#dsw-a)"/>
+        <line x1="792" y1="268" x2="792" y2="398" class="dsw__s dsw__s--gros" marker-end="url(#dsw-g)"/>
+        <line x1="1040" y1="425" x2="1225" y2="290" class="dsw__s dsw__s--gros dsw__s--mod" marker-end="url(#dsw-g)"/>
+
+      </svg>
+      <div class="dsw__i" aria-live="polite"><p class="dsw__d">${d.intro || ""}</p></div>
+    </div>`;
+
+  const info = gazda.querySelector(".dsw__i");
+  const alege = k => {
+    const x = E[k]; if (!x) return;
+    gazda.querySelectorAll(".dsw__e").forEach(g => g.classList.toggle("on", g.dataset.k === k));
+    info.innerHTML = `<p class="dsw__d"><b>${esc(x.n)}</b>${x.unde ? `<span class="dsw__u">${esc(x.unde)}</span>` : ""} ${x.d || ""}</p>
+      ${x.noi ? `<p class="dsw__noi">La noi: ${x.noi}</p>` : ""}`;
+  };
+  gazda.querySelector("svg").addEventListener("click", ev => { const g = ev.target.closest(".dsw__e"); if (g) alege(g.dataset.k); });
+  gazda.querySelector("svg").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " "){ const g = ev.target.closest(".dsw__e"); if (g){ ev.preventDefault(); alege(g.dataset.k); } } });
+};
+
+
+/* ===========================================================================
+   PANTA — aceeași listă de țări, ordonată în trei feluri
+
+   Stânga: câți români trăiesc acolo. Mijloc: câți români la 1.000 de
+   locuitori ai țării. Dreapta: SCI. Liniile arată cum urcă sau coboară
+   fiecare țară. Apeși pe o țară și i se aprinde drumul.
+   =========================================================================== */
+V.panta = (gazda, d) => {
+  const R = d.randuri || [], COL = d.coloane || [];
+  const W = 760, H = 30 + R.length * 30, X = [150, 380, 610];
+  const loc = k => { const o = [...R].sort((a, b) => b[k] - a[k]); return Object.fromEntries(o.map((r, i) => [r.cod, i])); };
+  const L = COL.map(c => loc(c.k));
+  const y = i => 30 + i * 30;
+  const fmt = (v, c) => c.fmt === "mie" ? v.toLocaleString("ro-RO", { maximumFractionDigits: 1 }) : Math.round(v).toLocaleString("ro-RO");
+  const evid = new Set(d.evidentiate || []);
+  let ales = d.start || null;
+  gazda.innerHTML = `
+    <div class="pt">
+      <svg viewBox="0 0 ${W} ${H + 10}" role="img" aria-label="Țările ordonate după numărul de români, după români la mie și după SCI">
+        ${COL.map((c, j) => `<text x="${X[j]}" y="14" text-anchor="middle" class="pt__h">${esc(c.t)}</text>`).join("")}
+        ${R.map(r => {
+          const sus = L[2][r.cod] < L[0][r.cod], jos = L[2][r.cod] > L[0][r.cod];
+          return `<g class="pt__r${evid.has(r.cod) ? " ev" : ""} ${sus ? "sus" : jos ? "jos" : ""}" data-c="${r.cod}">
+            <polyline points="${X.map((x, j) => `${x},${y(L[j][r.cod]) + 6}`).join(" ")}" class="pt__l"/>
+            ${COL.map((c, j) => `<circle cx="${X[j]}" cy="${y(L[j][r.cod]) + 6}" r="4.5" class="pt__c"/>`).join("")}
+            <text x="${X[0] - 12}" y="${y(L[0][r.cod]) + 10}" text-anchor="end" class="pt__n">${esc(r.nume)} <tspan class="pt__v">${fmt(r[COL[0].k], COL[0])}</tspan></text>
+            <text x="${X[2] + 12}" y="${y(L[2][r.cod]) + 10}" class="pt__n">${esc(r.nume)}</text>
+          </g>`; }).join("")}
+      </svg>
+      <p class="pt__i" aria-live="polite"></p>
+    </div>`;
+  const info = gazda.querySelector(".pt__i");
+  function arata(cod){
+    ales = cod;
+    gazda.querySelectorAll(".pt__r").forEach(g => g.classList.toggle("on", g.dataset.c === cod));
+    gazda.querySelector(".pt").classList.toggle("pt--ales", !!cod);
+    const r = R.find(x => x.cod === cod);
+    info.innerHTML = r ? `<b>${esc(r.nume)}</b>: ${COL.map((c, j) => `${esc(c.scurt || c.t)} ${fmt(r[c.k], c)} (locul ${L[j][cod] + 1})`).join(" · ")}${r.nota ? `. ${r.nota}` : ""}` : (d.intro || "");
+  }
+  gazda.querySelector("svg").addEventListener("click", ev => { const g = ev.target.closest(".pt__r"); arata(g ? (g.dataset.c === ales ? null : g.dataset.c) : null); });
+  arata(ales);
+};
+
+
+/* ===========================================================================
+   DIADIC — de la un tabel de locuri la un tabel de perechi
+
+   Trei județe. În stânga, tabelul lor obișnuit: un rând pe județ. În mijloc,
+   matricea SCI: fiecare căsuță e o pereche. În dreapta, aceeași matrice
+   scrisă ca tabel lung: un rând pe pereche, cu populația „de unde” și „spre
+   unde” lipite din tabelul din stânga. Apeși o căsuță și vezi de unde vine
+   fiecare valoare din rând.
+   =========================================================================== */
+V.diadic = (gazda, d) => {
+  const J = d.judete || [], M = d.matrice || [];
+  const n = J.length, f = x => Math.round(x).toLocaleString("ro-RO");
+  let a = 0, b = 1;
+  gazda.innerHTML = `
+    <div class="dd">
+      <section class="dd__c"><h4>Un rând = un județ</h4>
+        <table class="dd__t dd__mon"><thead><tr><th>județ</th><th>populație</th></tr></thead>
+        <tbody>${J.map((x, i) => `<tr data-i="${i}"><td>${esc(x.nume)}</td><td>${f(x.pop)}</td></tr>`).join("")}</tbody></table>
+        <p class="dd__n">${n} rânduri</p></section>
+      <section class="dd__c"><h4>Matricea SCI: o căsuță = o pereche</h4>
+        <table class="dd__t dd__mat"><thead><tr><th></th>${J.map(x => `<th>${esc(x.sigla)}</th>`).join("")}</tr></thead>
+        <tbody>${J.map((x, i) => `<tr><th>${esc(x.sigla)}</th>${J.map((y, j) => `<td><button data-a="${i}" data-b="${j}" type="button">${f(M[i][j] / 1000)}</button></td>`).join("")}</tr>`).join("")}</tbody></table>
+        <p class="dd__n">în mii; apasă o căsuță</p></section>
+      <section class="dd__c dd__c--lat"><h4>Un rând = o pereche</h4>
+        <table class="dd__t dd__lung"><thead><tr><th>de unde</th><th>spre unde</th><th>SCI</th><th>pop. de unde</th><th>pop. spre unde</th></tr></thead>
+        <tbody>${J.flatMap((x, i) => J.map((y, j) => `<tr data-a="${i}" data-b="${j}"><td>${esc(x.sigla)}</td><td>${esc(y.sigla)}</td><td>${f(M[i][j] / 1000)}</td><td class="dd__pa">${f(x.pop)}</td><td class="dd__pb">${f(y.pop)}</td></tr>`)).join("")}</tbody></table>
+        <p class="dd__n">${n} × ${n} = ${n * n} rânduri</p></section>
+    </div>
+    <p class="dd__i" aria-live="polite"></p>`;
+  const info = gazda.querySelector(".dd__i");
+  function arata(){
+    gazda.querySelectorAll(".dd__mat button").forEach(e => e.classList.toggle("on", +e.dataset.a === a && +e.dataset.b === b));
+    gazda.querySelectorAll(".dd__mat button").forEach(e => e.classList.toggle("sim", +e.dataset.a === b && +e.dataset.b === a && a !== b));
+    gazda.querySelectorAll(".dd__lung tr[data-a]").forEach(e => e.classList.toggle("on", +e.dataset.a === a && +e.dataset.b === b));
+    gazda.querySelectorAll(".dd__mon tr[data-i]").forEach(e => { const i = +e.dataset.i;
+      e.classList.toggle("ea", i === a); e.classList.toggle("eb", i === b); });
+    const A = J[a], B = J[b];
+    info.innerHTML = a === b
+      ? `<b>${esc(A.nume)} cu ${esc(A.nume)}</b>: și perechea unui loc cu el însuși e un rând. Prieteniile din interiorul județului.`
+      : `<b>${esc(A.nume)} → ${esc(B.nume)}</b>: SCI-ul vine din matrice. Populația „de unde” se lipește din rândul ${esc(A.nume)}, cea „spre unde” din rândul ${esc(B.nume)}: <b>două îmbinări</b> cu același tabel. Căsuța cu contur punctat e perechea inversă: la SCI, aceeași valoare.`;
+  }
+  gazda.querySelector(".dd__mat").addEventListener("click", ev => { const e = ev.target.closest("button[data-a]"); if (!e) return; a = +e.dataset.a; b = +e.dataset.b; arata(); });
+  arata();
+};
+
+
+/* ===========================================================================
+   RO — harta României, colorată după o întrebare simplă
+
+   Pentru fiecare județ: e mai legat de Cluj sau de București? Culoarea arată
+   încotro, intensitatea de câte ori. Treci cu mouse-ul peste un județ.
+   =========================================================================== */
+V.ro = (gazda, d) => {
+  const J = d.judete || [], A = d.a || "Cluj", B = d.b || "București";
+  const max = Math.max(...J.filter(x => x.r).map(x => Math.abs(Math.log2(x.r))));
+  const cul = x => { if (!x.r) return "var(--ro-c)"; const t = Math.min(1, Math.abs(Math.log2(x.r)) / max);
+    const p = Math.round(18 + 72 * Math.sqrt(t)); return `color-mix(in srgb,var(${x.r > 1 ? "--ro-a" : "--ro-b"}) ${p}%,var(--panza))`; };
+  const spreA = J.filter(x => x.r > 1).length, spreB = J.filter(x => x.r && x.r < 1).length;
+  gazda.innerHTML = `
+    <div class="ro">
+      <svg viewBox="${d.vb}" role="img" aria-label="Județele României, după legătura cu ${esc(A)} sau ${esc(B)}">
+        ${J.map(x => `<path d="${x.d}" data-c="${x.cod}" class="ro__j${x.r ? "" : " ro__j--ref"}" style="fill:${cul(x)}"><title>${esc(x.nume)}</title></path>`).join("")}
+        ${J.filter(x => !x.r).map(x => `<text x="${x.cx}" y="${x.cy}" text-anchor="middle" class="ro__et">${esc(x.nume)}</text>`).join("")}
+      </svg>
+      <aside class="ro__p">
+        <div class="ro__leg"><span><i style="background:var(--ro-a)"></i>mai legat de ${esc(A)}</span><span><i style="background:var(--ro-b)"></i>mai legat de ${esc(B)}</span></div>
+        <p class="ro__nr"><b>${spreA}</b> județe spre ${esc(A)}, <b>${spreB}</b> spre ${esc(B)}</p>
+        <p class="ro__i" aria-live="polite">${d.intro || ""}</p>
+      </aside>
+    </div>`;
+  const info = gazda.querySelector(".ro__i");
+  const arata = cod => { const x = J.find(j => j.cod === cod); if (!x) return;
+    gazda.querySelectorAll(".ro__j").forEach(p => p.classList.toggle("on", p.dataset.c === cod));
+    info.innerHTML = !x.r ? `<b>${esc(x.nume)}</b>: unul dintre cele două orașe comparate.`
+      : `<b>${esc(x.nume)}</b>: de ${(x.r > 1 ? x.r : 1 / x.r).toLocaleString("ro-RO", { maximumFractionDigits: 1 })} ori mai legat de ${esc(x.r > 1 ? A : B)} decât de ${esc(x.r > 1 ? B : A)}.`; };
+  const svg = gazda.querySelector("svg");
+  svg.addEventListener("mouseover", ev => { const p = ev.target.closest(".ro__j"); if (p) arata(p.dataset.c); });
+  svg.addEventListener("click", ev => { const p = ev.target.closest(".ro__j"); if (p) arata(p.dataset.c); });
 };
 
 export default V;

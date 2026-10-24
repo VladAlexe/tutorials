@@ -151,11 +151,12 @@ class Lectie:
         self.desc = desc
         self.S = []
 
-    def sl(self, id_, grup, t, slide, manual=None, dupa=""):
-        """Un slide. `manual` e versiunea lungă; dacă lipsește, e aceeași."""
+    def sl(self, id_, grup, t, slide, manual=None, dupa="", sci=False):
+        """Un slide. `manual` e versiunea lungă; dacă lipsește, e aceeași.
+        `sci=True` pune eticheta „date SCI” în capul slide-ului."""
         self.S.append(dict(id=id_, grup=grup, t=t, slide=slide,
                            manual=manual if manual is not None else slide,
-                           dupa=dupa))
+                           dupa=dupa, sci=sci))
 
     # --------------------------------------------------------------------
     def scrie_lectie(self):
@@ -165,8 +166,9 @@ class Lectie:
                  f'data-crom="1"></div>\n')
         b.append('<div class="rnr">\n<main class="rnr__scena" tabindex="-1">\n')
         for s in self.S:
+            sci = ' data-sci="1"' if s.get("sci") else ""
             b.append(f'\n<section class="sld" id="{s["id"]}" data-grup="{s["grup"]}" '
-                     f'data-t="{s["t"]}">\n{s["slide"]}\n{s["dupa"]}\n</section>\n')
+                     f'data-t="{s["t"]}"{sci}>\n{s["slide"]}\n{s["dupa"]}\n</section>\n')
         b.append('\n</main>\n</div>\n\n')
         b.append(JS_COMUN.format(
             v=V, capitol=self.capitol,
@@ -182,7 +184,8 @@ class Lectie:
         for s in self.S:
             if not grupuri or grupuri[-1][0] != s["grup"]:
                 grupuri.append((s["grup"], []))
-            grupuri[-1][1].append(s)
+            if s["manual"].strip() or s["dupa"]:
+                grupuri[-1][1].append(s)
 
         cuprins = "".join(
             f'<div class="tut__g">{g}</div>' +
@@ -217,6 +220,9 @@ class Lectie:
   <a class="leg" href="../../cont/">contul tău</a>.</p>
 </header>\n''')
         for i, s in enumerate(self.S, 1):
+            # un slide care doar împarte în două ce are deja manualul nu mai apare aici
+            if not s["manual"].strip() and not s["dupa"]:
+                continue
             b.append(f'\n<section class="tut__s" id="{s["id"]}">\n'
                      f'<span class="tut__nr">{i:02d} · {s["grup"]}</span>\n'
                      f'{s["manual"]}\n{s["dupa"]}\n</section>\n')

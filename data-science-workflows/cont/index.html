@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contul meu — Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=63">
-<link rel="stylesheet" href="../css/sistem.css?v=63">
-<link rel="stylesheet" href="../css/cont.css?v=63">
-<script src="../js/tema.js?v=63"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=64">
+<link rel="stylesheet" href="../css/sistem.css?v=64">
+<link rel="stylesheet" href="../css/cont.css?v=64">
+<script src="../js/tema.js?v=64"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=63";
+import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=64";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -33,8 +33,8 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=63");
-  CFG = await import("../js/supabase-config.js?v=63");
+  A = await import("../js/auth.js?v=64");
+  CFG = await import("../js/supabase-config.js?v=64");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
     <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
@@ -171,7 +171,7 @@ async function deseneaza(){
   /* lecțiile pe care le vezi: cele predate grupei, plus cele în care ai lucrat */
   let lectii = LECTII;
   try {
-    const Ora = await import("../js/ora.js?v=63");
+    const Ora = await import("../js/ora.js?v=64");
     const pred = await Ora.predate();
     if (pred) lectii = LECTII.filter(l => pred.has("c" + l.nr) || a.pe[l.nr]?.incercari);
   } catch {}
@@ -251,7 +251,7 @@ catch (e) {
 }
 A.laSchimbare(() => unde().catch(() => {}));
 </script>
-<script type="module" src="../js/antet.js?v=63"></script>
-<script type="module" src="../js/subsol.js?v=63"></script>
+<script type="module" src="../js/antet.js?v=64"></script>
+<script type="module" src="../js/subsol.js?v=64"></script>
 </body>
 </html>

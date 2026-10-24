@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=63";
+const V = "?v=64";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */
@@ -278,12 +278,13 @@ export async function monteaza(gazda, opt = {}){
     const L = locuri(), taraAles = tara(loc(st.ales));
     let h = [], nr = 0;
     const sep = (t) => { h.push(`<li class="sep">${t}</li>`); nr = 0; };
-    const rnd = (j, val) => h.push(`<li data-cod="${L[j].cod}"><span class="nr">${++nr}</span><span>${L[j].nume}</span><span class="val">${val}</span></li>`);
+    /* fiecare rând are bara lui: lista se citește ca un grafic, nu ca un tabel */
+    const rnd = (j, val, w) => h.push(`<li data-cod="${L[j].cod}"${w != null ? ` class="cu-bara" style="--w:${Math.max(3, Math.round(w * 100))}%"` : ""}><span class="nr">${++nr}</span><span>${L[j].nume}</span><span class="val">${val}</span></li>`);
     const ori = (r) => `${fmt(r, r < 10 ? 1 : 0)}×`;
 
     if (st.masura === "sci"){
       const R = rapoarte().map((r, j) => [r, j]).filter(([r]) => r !== null).sort((a, b) => b[0] - a[0]);
-      if (st.nivel === "tari"){ sep("Cei mai legați parteneri"); R.slice(0, 8).forEach(([r, j]) => rnd(j, ori(r))); }
+      if (st.nivel === "tari"){ sep("Cei mai legați parteneri"); const mx = R[0]?.[0] || 1; R.slice(0, 8).forEach(([r, j]) => rnd(j, ori(r), r / mx)); }
       else {
         sep("Cei mai legați, în aceeași țară");
         R.filter(([, j]) => L[j].tara === taraAles).slice(0, 3).forEach(([r, j]) => rnd(j, ori(r)));
@@ -293,7 +294,7 @@ export async function monteaza(gazda, opt = {}){
     } else if (st.masura === "migr"){
       sep("Unde trăiesc cei mai mulți cetățeni ai ei");
       const R = L.map((l, j) => [migranti(l.cod), j]).filter(([v]) => v).sort((a, b) => b[0] - a[0]).slice(0, 8);
-      R.forEach(([v, j]) => rnd(j, fmt(v)));
+      const mx = R[0]?.[0] || 1; R.forEach(([v, j]) => rnd(j, fmt(v), v / mx));
       if (!R.length) sep("nu avem date pentru această cetățenie");
     } else if (st.masura === "model"){
       const R = L.map((l, j) => [rezidual(l.cod), j]).filter(([r]) => r !== null).sort((a, b) => b[0] - a[0]);
