@@ -3,13 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ce date se colectează · Fluxuri de lucru</title>
-<meta name="description" content="Ce date se păstrează despre studenți, de ce, cât timp, și cine le vede.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/sistem.css?v=59">
-<script src="../js/tema.js?v=59"></script>
+<title>Protecția datelor (GDPR) · Fluxuri de lucru</title>
+<meta name="description" content="Informarea privind prelucrarea datelor personale pe situl cursului Fluxuri de lucru pentru știința datelor: ce date, de ce, cine le vede, cât timp, și drepturile tale.">
+<link rel="stylesheet" href="../css/fonturi.css?v=60">
+<link rel="stylesheet" href="../css/sistem.css?v=60">
+<script src="../js/tema.js?v=60"></script>
 <style>
   /* Pagina asta rămăsese pe tipografia și pe jetoanele unei generații
      anterioare a sitului: fonturi Archivo și Literata, variabile --rule și
@@ -22,7 +20,7 @@
   .tbl th{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.12em;
     text-transform:uppercase;text-align:left;padding:0 14px 9px 0;
     border-bottom:1px solid var(--linie-2);color:var(--text-3)}
-  .tbl td{padding:11px 14px 11px 0;border-bottom:1px solid var(--linie);
+  .tbl td{padding:11px 14px 11px 0;font-size:14.5px;border-bottom:1px solid var(--linie);
     vertical-align:top;line-height:1.5}
   .pdp ul{padding-left:0;list-style:none;margin:0 0 20px}
   .pdp li{position:relative;padding-left:21px;margin-bottom:9px;max-width:var(--citit)}
@@ -32,76 +30,128 @@
 </head>
 <body>
 
-<div id="antet" data-aici="Date personale"></div>
+<div id="antet" data-aici="Protecția datelor"></div>
 
 <main>
 <div class="pdp">
-  <p class="supratitlu">Notă pentru studenți</p>
+  <p class="supratitlu">Informare GDPR · actualizată 24 octombrie 2026</p>
   <h1>Ce date se colectează și de ce</h1>
-  <p class="deck">Scrisă pe scurt și fără formule juridice. Predăm un curs despre
-  date, deci felul în care tratăm datele voastre face parte din curs.</p>
+  <p class="deck">Scrisă pe scurt și fără formule juridice. Predăm un curs despre date,
+  deci felul în care tratăm datele voastre face parte din curs.</p>
+
+  <h2>Pe scurt</h2>
+  <ul>
+    <li>Îți alegi numele din lista grupei și intri cu GitHub. Numărul matricol nu îl vezi și nu îl scrii nicăieri.</li>
+    <li>Se salvează ce faci în lecții (răspunsuri, cod, texte, prezență), ca să se poată calcula activitatea de seminar.</li>
+    <li>Datele tale le vezi tu și titularul cursului. Niciun alt student.</li>
+    <li>Nu sunt reclame, nu sunt module de statistică, nu sunt cookie-uri de urmărire.</li>
+    <li>Datele de pe site se șterg cel târziu la 31 martie 2027.</li>
+  </ul>
+
+  <h2>Cine răspunde de date</h2>
+  <p>Operatorul este <strong>Universitatea Babeș-Bolyai</strong>, str. M. Kogălniceanu nr. 1,
+  400084 Cluj-Napoca. Situl e folosit în cadrul cursului <em>Fluxuri de lucru pentru
+  știința datelor</em>, iar de el se ocupă titularul cursului, Vlad Alexe.</p>
+  <p>Responsabilul cu protecția datelor al universității: <a class="leg" href="mailto:dpo@ubbcluj.ro">dpo@ubbcluj.ro</a>,
+  telefon 0264 405 300.</p>
 
   <h2>Ce se păstrează</h2>
   <table class="tbl">
-    <thead><tr><th>Ce</th><th>De ce</th></tr></thead>
+    <thead><tr><th>Ce</th><th>De unde</th><th>De ce</th></tr></thead>
     <tbody>
-      <tr><td>Numărul matricol și numele, din lista oficială a cursului</td>
-          <td>Ca să pot lega activitatea de pe site de persoana care primește nota</td></tr>
-      <tr><td>Contul de GitHub cu care intri (cine intră ca invitat nu dă niciun cont)</td>
-          <td>Autentificare. Nu se folosește pentru altceva și nu primești mesaje</td></tr>
-      <tr><td>Răspunsurile la verificări: întrebarea, ce ai ales, dacă a fost corect, când</td>
-          <td>Parte din evaluarea activității. Îmi arată și care întrebări sunt prost formulate</td></tr>
-      <tr><td>Codul rulat în exercițiile din pagină și dacă a trecut verificarea</td>
-          <td>Ca să văd unde se blochează oamenii și să reiau la curs</td></tr>
-      <tr><td>Secțiunile parcurse și momentul</td>
-          <td>Progresul tău, pe care îl vezi și tu</td></tr>
-      <tr><td>Prezențele marcate prin codul de la curs</td>
-          <td>Înlocuiește lista pe hârtie</td></tr>
-      <tr><td>Activitatea publică din depozitul de proiect</td>
-          <td>Evaluarea proiectului de echipă. Sunt date deja publice pe platformă</td></tr>
+      <tr><td>Numele, prenumele, numărul matricol și grupa</td>
+          <td>Lista oficială a cursului, de la facultate</td>
+          <td>Ca activitatea de pe site să ajungă la persoana care primește nota. Matricolul nu ajunge niciodată în browserul altui student</td></tr>
+      <tr><td>Numele de utilizator GitHub și identificatorul contului</td>
+          <td>GitHub, când alegi să intri cu el</td>
+          <td>Autentificare, fără parolă. Contul îl leagă de numele tău din listă, ca să nu te întrebe din nou</td></tr>
+      <tr><td>Adresa de e-mail a contului GitHub</td>
+          <td>GitHub o trimite la autentificare</td>
+          <td>O păstrează sistemul de autentificare. Nu o folosesc și nu primești mesaje</td></tr>
+      <tr><td>Răspunsurile la întrebări: ce ai ales, dacă a fost corect, când, la oră sau acasă</td>
+          <td>Lecțiile de pe site</td>
+          <td>Activitatea de seminar (2 puncte din notă), după regulile din contul tău</td></tr>
+      <tr><td>Codul trimis în exercițiile din pagină și textele scrise (de exemplu întrebarea de cercetare)</td>
+          <td>Lecțiile de pe site</td>
+          <td>Activitatea și urmărirea locurilor unde se blochează grupa</td></tr>
+      <tr><td>Prezența la oră și slide-ul pe care ești în timpul orei</td>
+          <td>Intrarea cu codul de pe ecran</td>
+          <td>Prezența și numărul celor din clasă, afișat profesorului</td></tr>
+      <tr><td>Notele la teme și la proiect, observațiile profesorului</td>
+          <td>Scrise de titular, în catalogul de pe site</td>
+          <td>Evaluare. Le poți cere oricând, inclusiv observațiile</td></tr>
+      <tr><td>Pentru intrarea ca invitat: doar numele pe care îl scrii</td>
+          <td>Tu</td>
+          <td>Ca să poți încerca o lecție fără cont</td></tr>
     </tbody>
   </table>
 
-  <h2>Ce nu se păstrează</h2>
-  <ul>
-    <li>Nicio parolă. Autentificarea se face prin GitHub, iar eu nu văd
-    niciodată vreo parolă</li>
-    <li>Nimic din afara acestui site. Nu există urmărire între pagini, nu sunt module
-    de statistică străine, nu sunt cookieuri de publicitate</li>
-    <li>Nicio dată pe care n-o cere direct una dintre liniile din tabelul de sus</li>
-  </ul>
+  <h2>Temeiul legal</h2>
+  <p>Organizarea și evaluarea activității didactice, inclusiv online: interesul legitim al
+  universității (art. 6 alin. (1) lit. f din GDPR) și obligațiile legale privind evaluarea
+  studenților (art. 6 alin. (1) lit. c), la fel ca în
+  <a class="leg" href="https://www.ubbcluj.ro/ro/politici/files/Informare_PDCP_studenti_masteranzi_doctoranzi_UBB.pdf" target="_blank" rel="noopener">informarea UBB pentru studenți</a>.
+  Contul de GitHub ți-l faci tu, după condițiile GitHub.</p>
 
   <h2>Cine vede ce</h2>
-  <p>Tu vezi toate datele tale, oricând, pe pagina ta. Eu, ca titular de curs, văd
-  datele întregii grupe. Nimeni altcineva nu are acces, iar un student nu poate vedea
-  datele altui student.</p>
-  <p>Asta nu e o promisiune pe încredere: restricția e scrisă în baza de date și
-  aplicată de ea. Chiar dacă cineva ar încerca să ceară direct datele altcuiva,
-  serverul refuză.</p>
+  <ul>
+    <li><strong>Tu</strong> vezi toate datele tale, în contul tău.</li>
+    <li><strong>Titularul cursului</strong> vede datele grupei, ca să pună notele și să știe unde e nevoie de reluat ceva.</li>
+    <li><strong>Colegii</strong> nu văd nimic despre tine. La prima oră, cine are codul de pe ecran și a intrat cu GitHub vede numele încă nealese din lista grupei, ca să și-l aleagă pe al lui. Numele deja alese nu mai apar.</li>
+    <li><strong>Pe proiector</strong> apar răspunsurile clasei adunate, fără nume. Textele scurte (de exemplu ce așteptați de la curs) pot apărea pe ecran, tot fără nume.</li>
+  </ul>
+  <p>Restricțiile nu sunt o promisiune pe încredere: sunt scrise în baza de date și aplicate
+  de ea. Dacă cineva ar cere direct datele altcuiva, serverul refuză.</p>
 
-  <h2>Unde stau</h2>
-  <p>Într-o bază de date gestionată de Supabase, pe servere din Uniunea Europeană.
-  Site-ul în sine e găzduit de Cloudflare și nu conține date personale.</p>
+  <h2>Unde stau și cine le prelucrează pentru noi</h2>
+  <table class="tbl">
+    <thead><tr><th>Furnizor</th><th>Ce face</th><th>Unde</th></tr></thead>
+    <tbody>
+      <tr><td>Supabase</td><td>Baza de date și autentificarea</td>
+          <td>Servere în Londra. Regatul Unit are decizie de adecvare a Comisiei Europene, reînnoită în decembrie 2025, valabilă până în 2031</td></tr>
+      <tr><td>Cloudflare</td><td>Găzduirea paginilor sitului; vede adresa IP, ca să trimită paginile</td>
+          <td>Rețea globală; paginile nu conțin date personale</td></tr>
+      <tr><td>GitHub</td><td>Autentificarea, doar dacă intri cu GitHub</td>
+          <td>SUA, după politica GitHub</td></tr>
+    </tbody>
+  </table>
+  <p>Fonturile și bibliotecile de cod sunt găzduite pe sit, nu la terți: deschiderea unei
+  lecții nu trimite adresa ta IP către Google sau către alte servicii.</p>
+
+  <h2>Ce ține browserul tău</h2>
+  <p>Nu folosim cookie-uri de urmărire. Browserul ține local sesiunea de autentificare,
+  tema aleasă și unde ai rămas într-o lecție. Sunt strict necesare ca situl să funcționeze,
+  deci nu cer acord separat, și se șterg când ieși din cont sau golești datele sitului.</p>
 
   <h2>Cât timp</h2>
-  <p>Până la încheierea situației școlare pentru acest semestru, plus perioada în care
-  se pot depune contestații. După aceea se șterg, cu excepția notelor finale, care
-  urmează regulile universității.</p>
+  <p>Datele de pe site se păstrează până după încheierea situației școlare și a contestațiilor,
+  și se șterg cel târziu la <strong>31 martie 2027</strong>. Notele finale se trec în catalogul
+  facultății și urmează regulile universității, nu ale sitului.</p>
 
-  <h2>Dacă nu vrei</h2>
-  <p>Participarea la colectare nu e obligatorie. Dacă preferi să nu îți fie
-  înregistrată activitatea de pe site, spune-mi la începutul semestrului și
-  stabilim altă formă de evaluare pentru partea respectivă, fără nicio consecință
-  asupra notei maxime pe care o poți obține.</p>
-  <p>La fel, poți cere oricând să vezi tot ce am despre tine, să corectezi ceva
-  greșit, sau să îți ștergi contul. Ultima variantă șterge și răspunsurile, deci
-  partea de notă care vine de acolo se recuperează altfel.</p>
+  <h2>Cum se calculează nota</h2>
+  <p>Punctajul de activitate se calculează automat, după reguli publice, pe care le vezi în
+  contul tău. Nota finală o stabilește titularul, iar orice calcul se poate contesta.</p>
 
-  <h2>Pe cine întrebi</h2>
-  <p>Pe mine, titularul cursului, la adresa din fișa disciplinei. Dacă răspunsul meu
-  nu te mulțumește, universitatea are un responsabil cu protecția datelor, iar
-  Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal
-  primește plângeri.</p>
+  <h2>Drepturile tale</h2>
+  <ul>
+    <li><strong>Acces:</strong> poți cere tot ce am despre tine, inclusiv observațiile, într-un fișier.</li>
+    <li><strong>Rectificare:</strong> un nume greșit sau un cont GitHub legat greșit se repară imediat.</li>
+    <li><strong>Ștergere:</strong> poți cere ștergerea contului. Se șterg și răspunsurile, deci partea de notă care vine din ele se recuperează altfel.</li>
+    <li><strong>Opoziție și restricționare:</strong> dacă nu vrei să-ți fie înregistrată activitatea de pe site, spune-mi la începutul semestrului și stabilim altă formă de evaluare, fără nicio consecință asupra notei maxime.</li>
+    <li><strong>Plângere:</strong> la <a class="leg" href="mailto:dpo@ubbcluj.ro">responsabilul UBB cu protecția datelor</a> și la
+      <a class="leg" href="https://www.dataprotection.ro/" target="_blank" rel="noopener">Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal</a>.</li>
+  </ul>
+  <p>Pentru toate, scrie-mi întâi mie, titularul cursului, la adresa din fișa disciplinei.</p>
+
+  <h2>Cum sunt protejate</h2>
+  <ul>
+    <li>Nicio parolă: intrarea se face prin GitHub, iar eu nu văd niciodată vreo parolă.</li>
+    <li>Fiecare student poate citi și scrie doar rândurile lui; regula e în baza de date.</li>
+    <li>Lista grupei nu trimite matricole: fiecare nume vine cu o cheie aleatoare, iar lista apare doar cu codul orei, doar conturilor GitHub.</li>
+    <li>Un nume ales rămâne legat de un singur cont; doar titularul îl poate dezlega.</li>
+    <li>Cheile secrete și lista cu matricole nu stau în depozitul public al sitului.</li>
+    <li>Tot traficul e criptat (HTTPS), iar situl trimite antete care opresc încadrarea lui în alte pagini și încărcarea de cod de pe alte domenii.</li>
+  </ul>
 
   <div class="nota" style="margin-top:34px"><div class="nota__et">De ce există pagina asta</div><p>
   Pentru că e obligatorie, dar și pentru că e primul exemplu din curs. Orice proiect
@@ -113,7 +163,7 @@
 </main>
 
 <div id="subsol"></div>
-<script type="module" src="../js/antet.js?v=59"></script>
-<script type="module" src="../js/subsol.js?v=59"></script>
+<script type="module" src="../js/antet.js?v=60"></script>
+<script type="module" src="../js/subsol.js?v=60"></script>
 </body>
 </html>

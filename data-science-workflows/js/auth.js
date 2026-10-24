@@ -5,8 +5,8 @@
    aici, nu vorbesc direct cu Supabase.
    =========================================================================== */
 
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.0/+esm";
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=59";
+import { createClient } from "./vendor/supabase-js-2.117.0.js";   /* găzduită aici: nicio cerere la un CDN străin */
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=60";
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -130,12 +130,6 @@ export async function profil({ proaspat = false } = {}) {
   return profilCache;
 }
 
-export async function revendicaMatricol(matricol) {
-  const { data, error } = await sb.rpc("revendica_matricol", { p_matricol: matricol });
-  if (error) throw new Error(traduEroare(error.message));
-  profilCache = null;
-  return data;   // { ok, mesaj, nume }
-}
 
 export async function marcheazaPrezenta(jeton) {
   const { data, error } = await sb.rpc("marcheaza_prezenta", { p_jeton: jeton });

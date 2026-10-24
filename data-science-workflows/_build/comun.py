@@ -112,9 +112,7 @@ CAP = """<!DOCTYPE html>
 <title>{titlu}</title>
 <meta name="description" content="{desc}">
 <meta name="robots" content="index,nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/fonturi.css{v}">
 <link rel="stylesheet" href="../../css/sistem.css{v}">
 <link rel="stylesheet" href="../../css/{stil}.css{v}">
 <link rel="stylesheet" href="../../css/interactiv.css{v}">

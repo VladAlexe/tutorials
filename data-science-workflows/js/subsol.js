@@ -10,7 +10,7 @@
    ziua în care există fișierul, nu înainte.
    =========================================================================== */
 
-import { CURS, RADACINA } from "./curs.js?v=59";
+import { CURS, RADACINA } from "./curs.js?v=60";
 
 deseneaza();
 
@@ -23,7 +23,7 @@ function deseneaza(){
   <footer class="subsol" id="subsol"><div class="pagina subsol__in">
     <span>${CURS.institutie}</span>
     <a href="${RADACINA}/">Cursul</a>
-    <a href="${RADACINA}/date-personale/">Date personale</a>
+    <a href="${RADACINA}/date-personale/">Protecția datelor</a>
     <a href="${CURS.depozit}" target="_blank" rel="noopener">Depozit ↗</a>
     <span class="subsol__dr">${CURS.an}</span>
   </div></footer>`;

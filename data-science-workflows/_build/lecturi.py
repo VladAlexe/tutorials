@@ -57,9 +57,7 @@ def pagina():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Literatura proiectului · Fluxuri de lucru</title>
 <meta name="description" content="Literatura pe care se sprijină proiectul cursului: datele SCI, teoria rețelelor și sistemelor migratorii, metodele folosite.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/fonturi.css?v=57">
 <link rel="stylesheet" href="../css/sistem.css?v=57">
 <link rel="stylesheet" href="../css/slide.css?v=57">
 <link rel="stylesheet" href="../css/interactiv.css?v=57">

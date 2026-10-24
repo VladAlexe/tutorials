@@ -103,9 +103,7 @@ def pagina(cheie, x):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția {nr}. {titlu} · Fluxuri de lucru</title>
 <meta name="description" content="{html.escape(x["descriere"], quote=True)}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/fonturi.css?v={V}">
 <link rel="stylesheet" href="../css/sistem.css?v={V}">
 <link rel="stylesheet" href="../css/intrare.css?v={V}">
 <script src="../js/tema.js?v={V}"></script>
