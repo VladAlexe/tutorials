@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 1. Introducere și configurare · Fluxuri de lucru</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.">
-<link rel="stylesheet" href="../css/fonturi.css?v=65">
-<link rel="stylesheet" href="../css/sistem.css?v=65">
-<link rel="stylesheet" href="../css/intrare.css?v=65">
-<script src="../js/tema.js?v=65"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=68">
+<link rel="stylesheet" href="../css/sistem.css?v=68">
+<link rel="stylesheet" href="../css/intrare.css?v=68">
+<script src="../js/tema.js?v=68"></script>
 </head>
 <body>
 
@@ -95,6 +95,21 @@ notează; e ca să știu de unde pornim.</p></div>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
       </a>
+      <a class="mat__c" href="scurtaturi/">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
+        <span class="mat__t">Scurtăturile din Jupyter</span>
+        <span class="mat__d">Tastele caietului în VS Code și JupyterLab, pe Windows și macOS, cu un exercițiu.</span>
+      </a>
+      <a class="mat__c" href="https://data.humdata.org/dataset/social-connectedness-index" target="_blank" rel="noopener">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
+        <span class="mat__t">Datele SCI, de pe HDX ↗</span>
+        <span class="mat__d">country.csv (0,6 MB), din lista de resurse a paginii. Se pune în data/ și nu se modifică.</span>
+      </a>
+      <a class="mat__c" href="exemple_curs1.zip">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
+        <span class="mat__t">Datele de exemplu</span>
+        <span class="mat__d">persoane.json și activitati.txt, pentru caietul 01. Se dezarhivează lângă caiet.</span>
+      </a>
       <a class="mat__c" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Depozitul cursului ↗</span>
@@ -136,7 +151,7 @@ de două lucruri, amândouă gratuite:</p>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=65"), import("../js/ora.js?v=65"), import("../js/curs.js?v=65")]);
+    import("../js/auth.js?v=68"), import("../js/ora.js?v=68"), import("../js/curs.js?v=68")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -164,7 +179,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=65"></script>
-<script type="module" src="../js/subsol.js?v=65"></script>
+<script type="module" src="../js/antet.js?v=68"></script>
+<script type="module" src="../js/subsol.js?v=68"></script>
 </body>
 </html>

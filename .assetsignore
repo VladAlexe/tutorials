@@ -47,3 +47,6 @@ _build/
 
 # documente de lucru, nu fac parte din curs
 _design/
+
+# Arhivele de transfer (nu se publica)
+*.tgz

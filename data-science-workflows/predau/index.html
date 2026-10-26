@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catalog · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=65">
-<link rel="stylesheet" href="../css/sistem.css?v=65">
-<link rel="stylesheet" href="../css/panou.css?v=65">
-<link rel="stylesheet" href="../css/predau.css?v=65">
-<script src="../js/tema.js?v=65"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=68">
+<link rel="stylesheet" href="../css/sistem.css?v=68">
+<link rel="stylesheet" href="../css/panou.css?v=68">
+<link rel="stylesheet" href="../css/predau.css?v=68">
+<script src="../js/tema.js?v=68"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -196,11 +196,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=65"></script>
-<script type="module" src="../js/subsol.js?v=65"></script>
+<script type="module" src="../js/antet.js?v=68"></script>
+<script type="module" src="../js/subsol.js?v=68"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=65";
-import * as O from "../js/ora.js?v=65";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=68";
+import * as O from "../js/ora.js?v=68";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -211,7 +211,7 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=65"); }
+try { A = await import("../js/auth.js?v=68"); }
 catch { el("cat").textContent = "Nu pot încărca autentificarea."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }

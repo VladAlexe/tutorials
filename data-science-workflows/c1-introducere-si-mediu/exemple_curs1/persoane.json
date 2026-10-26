@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Ana Popescu",
+      "age": 24,
+      "city": "Cluj-Napoca",
+      "hobbies": [
+        "lectură",
+        "drumeții",
+        "fotografie"
+      ],
+      "student": true,
+      "study_hours_per_week": 8.5,
+      "occupation": null
+    },
+    {
+      "id": 2,
+      "name": "Mihai Ionescu",
+      "age": 29,
+      "city": "București",
+      "hobbies": [
+        "ciclism",
+        "muzică"
+      ],
+      "student": false,
+      "study_hours_per_week": 0.0,
+      "occupation": "bibliotecar"
+    },
+    {
+      "id": 3,
+      "name": "Elena Marin",
+      "age": 26,
+      "city": "Timișoara",
+      "hobbies": [
+        "înot",
+        "lectură",
+        "călătorii"
+      ],
+      "student": true,
+      "study_hours_per_week": 6.0,
+      "occupation": "asistent de cercetare"
+    }
+  ]
+}

@@ -6,14 +6,14 @@
 <title>Cursul 2 — Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns și cum aduci primele date reale în proiect.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=65">
-<link rel="stylesheet" href="../../css/sistem.css?v=65">
-<link rel="stylesheet" href="../../css/slide.css?v=65">
-<link rel="stylesheet" href="../../css/interactiv.css?v=65">
-<link rel="stylesheet" href="../../css/grafice.css?v=65">
-<link rel="stylesheet" href="../../css/exercitii.css?v=65">
-<link rel="stylesheet" href="../../css/explorator.css?v=65">
-<script src="../../js/tema.js?v=65"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=68">
+<link rel="stylesheet" href="../../css/sistem.css?v=68">
+<link rel="stylesheet" href="../../css/slide.css?v=68">
+<link rel="stylesheet" href="../../css/interactiv.css?v=68">
+<link rel="stylesheet" href="../../css/grafice.css?v=68">
+<link rel="stylesheet" href="../../css/exercitii.css?v=68">
+<link rel="stylesheet" href="../../css/explorator.css?v=68">
+<script src="../../js/tema.js?v=68"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -193,26 +193,26 @@
 </section>
 
 <section class="sld" id="s21" data-grup="Proiectul tău" data-t="Colectează, acum">
-<h2>Prima colectare din proiect</h2><div class="c2doi"><div><p>Un script care cere, verifică, salvează. Rulează-l și lipește ce iese.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>creezi <code>code/banca_mondiala.py</code> în folderul proiectului</td></tr><tr><td>2</td><td>ceri indicatorul pentru România, anii 2000 la 2023</td></tr><tr><td>3</td><td>verifici codul de stare și câte rânduri ai primit</td></tr><tr><td>4</td><td>salvezi în <code>data/c2/</code> și faci commit</td></tr></tbody></table></div><div><div class="ix" data-ix="dovada">
+<h2>Prima colectare din proiect</h2><div class="c2doi"><div><p>Un script care cere, verifică, salvează. Rulează-l și lipește ce iese.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>creezi <code>code/banca_mondiala.py</code> în folderul proiectului</td></tr><tr><td>2</td><td>ceri indicatorul pentru România, anii 2000 la 2023</td></tr><tr><td>3</td><td>verifici codul de stare și câte rânduri ai primit</td></tr><tr><td>4</td><td>salvezi tabelul în <code>data/c2/</code></td></tr></tbody></table></div><div><div class="ix" data-ix="dovada">
   <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Dovada colectării</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-colectare", "sarcina": "Lipește ce a tipărit scriptul tău: codul de stare și numărul de rânduri salvate.", "pasi": [{"t": "Cererea a primit 200", "cmd": "python code/banca_mondiala.py", "gol": "lipește linia cu codul de stare", "cauta": "\\b200\\b", "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."}, {"t": "Fișierul s-a scris, cu rânduri în el", "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('data/c2/populatie_ro.csv')))\"", "gol": "numărul de rânduri", "cauta": "\\b[1-9]\\d{0,4}\\b", "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."}, {"t": "Colectarea e în depozit", "cmd": "git log --oneline -1", "gol": "lipește linia", "cauta": "[0-9a-f]{7}", "daca_nu": "Caut începutul unui hash de commit. Dacă nu ai niciunul, întâi git add și git commit."}], "explicatie": "Trei lucruri care, împreună, înseamnă că datele sunt salvate și că drumul până la ele se poate reface."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-colectare", "sarcina": "Lipește ce a tipărit scriptul tău: codul de stare și numărul de rânduri salvate.", "pasi": [{"t": "Cererea a primit 200", "cmd": "python code/banca_mondiala.py", "gol": "lipește linia cu codul de stare", "cauta": "\\b200\\b", "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."}, {"t": "Fișierul s-a scris în data/c2, cu rânduri în el", "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('data/c2/populatie_ro.csv')))\"", "gol": "numărul de rânduri", "cauta": "\\b[1-9]\\d{0,4}\\b", "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."}], "explicatie": "Cererea a reușit, iar datele sunt salvate în proiect, împreună cu scriptul care le reface."}</script></div>
 </div></div></div>
 
 </section>
 
 <section class="sld" id="s22" data-grup="Mai departe" data-t="Până data viitoare">
-<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git: istoric, reveniri, ramuri, pull request</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat și urcat în depozit, plus <code>migratie.csv</code> din caietul de seminar. Și o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
+<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git și GitHub: istoricul proiectului și depozitul echipei</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat, cu tabelul salvat în <code>data/c2</code>, plus <code>migratie.csv</code> din caietul de seminar. Și o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
 
 </section>
 
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=65"></script>
+<script type="module" src="../../js/antet.js?v=68"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=65";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=65";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=65";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=68";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=68";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=68";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });

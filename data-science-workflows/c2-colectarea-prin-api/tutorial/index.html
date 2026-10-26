@@ -6,14 +6,14 @@
 <title>Cursul 2, manual — Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Suportul de curs pentru cursul 2, explicat pe larg, cu aceleași exerciții ca la clasă.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=65">
-<link rel="stylesheet" href="../../css/sistem.css?v=65">
-<link rel="stylesheet" href="../../css/tutorial.css?v=65">
-<link rel="stylesheet" href="../../css/interactiv.css?v=65">
-<link rel="stylesheet" href="../../css/grafice.css?v=65">
-<link rel="stylesheet" href="../../css/exercitii.css?v=65">
-<link rel="stylesheet" href="../../css/explorator.css?v=65">
-<script src="../../js/tema.js?v=65"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=68">
+<link rel="stylesheet" href="../../css/sistem.css?v=68">
+<link rel="stylesheet" href="../../css/tutorial.css?v=68">
+<link rel="stylesheet" href="../../css/interactiv.css?v=68">
+<link rel="stylesheet" href="../../css/grafice.css?v=68">
+<link rel="stylesheet" href="../../css/exercitii.css?v=68">
+<link rel="stylesheet" href="../../css/explorator.css?v=68">
+<script src="../../js/tema.js?v=68"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 2 · Manual"></div>
@@ -50,7 +50,7 @@
 
 <section class="tut__s" id="s2">
 <span class="tut__nr">02 · Cursul</span>
-<h2>Unde ai rămas</h2><p>Lecția pornește de la ce s-a construit la cursul 1: folderul proiectului cu <code>data/</code>, <code>notebooks/</code> și <code>code/</code>, mediul virtual <code>.venv</code> cu pandas și caietul 01 rulat de sus până jos. Dacă lipsește ceva, pașii sunt în <a class="leg" href="../../c1-introducere-si-mediu/tutorial/">manualul cursului 1</a>. Echipa de cinci e formată; direcția proiectului se alege la cursul 3.</p><p>Biblioteca nouă se instalează o singură dată, cu Python-ul mediului:</p><pre><code>.venv\Scripts\python -m pip install requests</code></pre><p>Pe macOS și Linux: <code>.venv/bin/python -m pip install requests</code>.</p>
+<h2>Unde ai rămas</h2><p>Lecția pornește de la ce s-a construit la cursul 1: folderul proiectului cu <code>data/</code>, <code>notebooks/</code> și <code>code/</code>, mediul virtual <code>.venv</code> cu pandas și caietul 01 rulat de sus până jos. Dacă lipsește ceva, pașii sunt în <a class="leg" href="../../c1-introducere-si-mediu/tutorial/">manualul cursului 1</a>. Echipa de cinci e formată; direcția proiectului se alege la cursul 3.</p><p>Biblioteca nouă se instalează o singură dată, cu Python-ul mediului:</p><pre><code>.venv\Scripts\python -m pip install requests</code></pre><p>Pe macOS: <code>.venv/bin/python -m pip install requests</code>.</p>
 
 </section>
 
@@ -253,7 +253,7 @@ tabel.to_csv("data/c2/populatie_ro.csv", index=False)</code></pre><div class="no
 
 <section class="tut__s" id="s21">
 <span class="tut__nr">22 · Proiectul tău</span>
-<h2>Prima colectare din proiect</h2><p>Scriptul întreg, de pornire, de adaptat la indicatorul echipei. Stă în <code>code/</code>, iar datele în <code>data/c2/</code>.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>creezi <code>code/banca_mondiala.py</code> în folderul proiectului</td></tr><tr><td>2</td><td>ceri indicatorul pentru România, anii 2000 la 2023</td></tr><tr><td>3</td><td>verifici codul de stare și câte rânduri ai primit</td></tr><tr><td>4</td><td>salvezi în <code>data/c2/</code> și faci commit</td></tr></tbody></table><pre><code>import time
+<h2>Prima colectare din proiect</h2><p>Scriptul întreg, de pornire, de adaptat la indicatorul echipei. Stă în <code>code/</code>, iar datele în <code>data/c2/</code>.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>creezi <code>code/banca_mondiala.py</code> în folderul proiectului</td></tr><tr><td>2</td><td>ceri indicatorul pentru România, anii 2000 la 2023</td></tr><tr><td>3</td><td>verifici codul de stare și câte rânduri ai primit</td></tr><tr><td>4</td><td>salvezi tabelul în <code>data/c2/</code></td></tr></tbody></table><pre><code>import time
 import pandas as pd
 import requests
 
@@ -275,27 +275,27 @@ def aduce(url, parametri):
 randuri = aduce(URL, {"format": "json", "date": "2000:2023", "per_page": 100})
 tabel = pd.json_normalize(randuri)
 tabel.to_csv("data/c2/populatie_ro.csv", index=False)
-print("salvate", len(tabel), "rânduri")</code></pre><div class="nota"><div class="nota__et">Ce nu urcă în depozit</div><p>Fișierele mari și cheile de acces. Datele brute mici, de câțiva kilobytes, pot sta în depozit. Pentru cele de zeci de megabytes urcă scriptul care le aduce.</p></div><div class="ix" data-ix="dovada">
+print("salvate", len(tabel), "rânduri")</code></pre><div class="nota"><div class="nota__et">Când folderul devine depozit</div><p>De la cursul 3, folderul proiectului urcă pe GitHub. Nu urcă fișierele mari și cheile de acces: pentru datele de zeci de megabytes urcă scriptul care le aduce.</p></div><div class="ix" data-ix="dovada">
   <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Dovada colectării</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-colectare", "sarcina": "Lipește ce a tipărit scriptul tău: codul de stare și numărul de rânduri salvate.", "pasi": [{"t": "Cererea a primit 200", "cmd": "python code/banca_mondiala.py", "gol": "lipește linia cu codul de stare", "cauta": "\\b200\\b", "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."}, {"t": "Fișierul s-a scris, cu rânduri în el", "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('data/c2/populatie_ro.csv')))\"", "gol": "numărul de rânduri", "cauta": "\\b[1-9]\\d{0,4}\\b", "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."}, {"t": "Colectarea e în depozit", "cmd": "git log --oneline -1", "gol": "lipește linia", "cauta": "[0-9a-f]{7}", "daca_nu": "Caut începutul unui hash de commit. Dacă nu ai niciunul, întâi git add și git commit."}], "explicatie": "Trei lucruri care, împreună, înseamnă că datele sunt salvate și că drumul până la ele se poate reface."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-colectare", "sarcina": "Lipește ce a tipărit scriptul tău: codul de stare și numărul de rânduri salvate.", "pasi": [{"t": "Cererea a primit 200", "cmd": "python code/banca_mondiala.py", "gol": "lipește linia cu codul de stare", "cauta": "\\b200\\b", "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."}, {"t": "Fișierul s-a scris în data/c2, cu rânduri în el", "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('data/c2/populatie_ro.csv')))\"", "gol": "numărul de rânduri", "cauta": "\\b[1-9]\\d{0,4}\\b", "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."}], "explicatie": "Cererea a reușit, iar datele sunt salvate în proiect, împreună cu scriptul care le reface."}</script></div>
 </div>
 
 </section>
 
 <section class="tut__s" id="s22">
 <span class="tut__nr">23 · Mai departe</span>
-<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git: istoric, reveniri, ramuri, pull request</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat și urcat în depozit, plus <code>migratie.csv</code> din caietul de seminar. Și o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
+<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git și GitHub: istoricul proiectului și depozitul echipei</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat, cu tabelul salvat în <code>data/c2</code>, plus <code>migratie.csv</code> din caietul de seminar. Și o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
 
 </section>
 </article>
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=65"></script>
+<script type="module" src="../../js/antet.js?v=68"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=65";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=65";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=65";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=68";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=68";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=68";
 pornesteIx();
 pornesteVerif("c2");
 pornesteTut("c2");

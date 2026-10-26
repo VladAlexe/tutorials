@@ -25,6 +25,21 @@
     ],
     "resurse": [
       {
+        "href": "scurtaturi/",
+        "t": "Scurtăturile din Jupyter",
+        "d": "Tastele caietului în VS Code și JupyterLab, pe Windows și macOS, cu un exercițiu."
+      },
+      {
+        "href": "https://data.humdata.org/dataset/social-connectedness-index",
+        "t": "Datele SCI, de pe HDX",
+        "d": "country.csv (0,6 MB), din lista de resurse a paginii. Se pune în data/ și nu se modifică."
+      },
+      {
+        "href": "exemple_curs1.zip",
+        "t": "Datele de exemplu",
+        "d": "persoane.json și activitati.txt, pentru caietul 01. Se dezarhivează lângă caiet."
+      },
+      {
         "href": "https://github.com/VladAlexe/tutorials",
         "t": "Depozitul cursului",
         "d": "Codul și caietele"

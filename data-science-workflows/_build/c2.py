@@ -88,7 +88,7 @@ sl("s2", "Cursul", "Unde ai rămas",
    "cursului 1</a>. Echipa de cinci e formată; direcția proiectului se alege la cursul 3.</p>"
    "<p>Biblioteca nouă se instalează o singură dată, cu Python-ul mediului:</p>"
    "<pre><code>.venv\\Scripts\\python -m pip install requests</code></pre>"
-   "<p>Pe macOS și Linux: <code>.venv/bin/python -m pip install requests</code>.</p>")
+   "<p>Pe macOS: <code>.venv/bin/python -m pip install requests</code>.</p>")
 
 
 # ===========================================================================
@@ -1280,23 +1280,18 @@ DOVADA = {
          "gol": "lipește linia cu codul de stare",
          "cauta": r"\b200\b",
          "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."},
-        {"t": "Fișierul s-a scris, cu rânduri în el",
+        {"t": "Fișierul s-a scris în data/c2, cu rânduri în el",
          "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('data/c2/populatie_ro.csv')))\"",
          "gol": "numărul de rânduri",
          "cauta": r"\b[1-9]\d{0,4}\b",
-         "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."},
-        {"t": "Colectarea e în depozit",
-         "cmd": "git log --oneline -1",
-         "gol": "lipește linia",
-         "cauta": r"[0-9a-f]{7}",
-         "daca_nu": "Caut începutul unui hash de commit. Dacă nu ai niciunul, întâi git add și git commit."}],
-    "explicatie": "Trei lucruri care, împreună, înseamnă că datele sunt salvate și că drumul până la ele se poate reface.",
+         "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."}],
+    "explicatie": "Cererea a reușit, iar datele sunt salvate în proiect, împreună cu scriptul care le reface.",
 }
 PASI_COLECTARE = tabel(["Pasul", "Ce faci"], [
     ["1", "creezi <code>code/banca_mondiala.py</code> în folderul proiectului"],
     ["2", "ceri indicatorul pentru România, anii 2000 la 2023"],
     ["3", "verifici codul de stare și câte rânduri ai primit"],
-    ["4", "salvezi în <code>data/c2/</code> și faci commit"],
+    ["4", "salvezi tabelul în <code>data/c2/</code>"],
 ])
 
 sl("s21", "Proiectul tău", "Colectează, acum",
@@ -1330,21 +1325,21 @@ sl("s21", "Proiectul tău", "Colectează, acum",
      "tabel = pd.json_normalize(randuri)\n"
      "tabel.to_csv(\"data/c2/populatie_ro.csv\", index=False)\n"
      "print(\"salvate\", len(tabel), \"rânduri\")</code></pre>"
-   + nota("Ce nu urcă în depozit",
-          "Fișierele mari și cheile de acces. Datele brute mici, de câțiva kilobytes, pot sta în "
-          "depozit. Pentru cele de zeci de megabytes urcă scriptul care le aduce.")
+   + nota("Când folderul devine depozit",
+          "De la cursul 3, folderul proiectului urcă pe GitHub. Nu urcă fișierele mari și cheile de "
+          "acces: pentru datele de zeci de megabytes urcă scriptul care le aduce.")
    + ix("dovada", "Dovada colectării", DOVADA))
 
 sl("s22", "Mai departe", "Până data viitoare",
    "<h2>Cursul 3: versionare și colaborare</h2>"
    "<ul>"
-   "<li>Git: istoric, reveniri, ramuri, pull request</li>"
+   "<li>Git și GitHub: istoricul proiectului și depozitul echipei</li>"
    "<li>pregătirea și explorarea datelor colectate</li>"
    "<li>cadrul teoretic al proiectului</li>"
    "<li>tema echipei și cine ce face</li>"
    "</ul>"
    + nota("De făcut până atunci",
-          "Scriptul de colectare, rulat și urcat în depozit, plus "
+          "Scriptul de colectare, rulat, cu tabelul salvat în <code>data/c2</code>, plus "
           "<code>migratie.csv</code> din caietul de seminar. Și o propunere "
           "de temă pentru echipă, în două-trei rânduri, în "
           "<code>README.md</code>.", True))

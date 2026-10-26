@@ -456,7 +456,8 @@ UNELTE = [
         ('<a class="leg" href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a>',
          "editorul: caiete și fișiere de cod, în același loc", "azi"),
         ('<a class="leg" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="noopener">extensiile Python și Jupyter</a>',
-         "rulează caietele direct în VS Code", "azi"),
+         "rulează caietele direct în VS Code; "
+         '<a class="leg" href="../scurtaturi/">scurtăturile din caiet</a>', "azi"),
         ('<a class="leg" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.11+</a>',
          "limbajul; pe Windows bifezi <em>Add Python to PATH</em>", "azi"),
         ('<a class="leg" href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">mediul virtual (venv)</a>',
@@ -1907,6 +1908,11 @@ sl("s15p", "JSON", "Drumul prin persoane.json",
    "<p>Exemplul din caiet: <code>persoane.json</code>, trei persoane fictive. "
    "Tiparul e același în orice răspuns de API: la fiecare nivel verifici "
    "tipul, apoi ceri o cheie (dicționar) sau o poziție (listă).</p>"
+   "<p>Fișierele de exemplu ale caietului se descarcă de aici: "
+   '<a class="leg" href="../exemple_curs1/persoane.json" download>persoane.json</a>, '
+   '<a class="leg" href="../exemple_curs1/activitati.txt" download>activitati.txt</a>, '
+   'sau amândouă, în <a class="leg" href="../exemple_curs1.zip" download>exemple_curs1.zip</a>. '
+   "Arhiva se dezarhivează lângă caietul 01, ca să existe folderul <code>exemple_curs1</code>.</p>"
    + ix("acces", "Intră din cutie în cutie", PERS_ACCES)
    + ix("pas", "Același drum, în cod", PAS_JSON))
 
@@ -2020,10 +2026,10 @@ PASI_VENV = (
     "<li><b>Faci folderul proiectului</b> și îl deschizi în VS Code: <em>File → Open Folder</em>.</li>"
     "<li><b>Deschizi terminalul</b>: <em>Terminal → New Terminal</em>. Pornește deja în folderul proiectului.</li>"
     "<li><b>Creezi mediul</b>, o singură dată:<br><code>py -m venv .venv</code>"
-    '<span class="venvp__os">macOS / Linux: python3 -m venv .venv</span></li>'
+    '<span class="venvp__os">macOS: python3 -m venv .venv</span></li>'
     "<li><b>Instalezi pachetele în el</b>, cu Python-ul mediului:<br>"
     "<code>.venv\\Scripts\\python -m pip install pandas ipykernel</code>"
-    '<span class="venvp__os">macOS / Linux: .venv/bin/python -m pip install pandas ipykernel</span></li>'
+    '<span class="venvp__os">macOS: .venv/bin/python -m pip install pandas ipykernel</span></li>'
     "<li><b>În caiet</b> alegi <em>Select Kernel → Python Environments → .venv</em>. Gata.</li>"
     "</ol>")
 
@@ -2138,9 +2144,9 @@ sl("s18", "Proiectul tău", "Proiectul, pe disc",
        "laBine": "Fiecare lucru la locul lui.",
        "laRau": "Ce descrie tot proiectul stă în rădăcină."})
    + nota("Datele",
-          'Fișierul <code>country.csv</code> se ia de pe '
+          'Fișierul <code>country.csv</code> (0,6 MB) se descarcă de pe '
           '<a class="leg" href="https://data.humdata.org/dataset/social-connectedness-index" '
-          'target="_blank" rel="noopener">HDX</a>, 0,6 MB. Îl pui în '
+          'target="_blank" rel="noopener">pagina SCI de pe HDX</a>, din lista de resurse. Îl pui în '
           "<code>data/</code> și nu îl mai modifici niciodată."))
 
 
@@ -2179,10 +2185,16 @@ sl("s19", "Mai departe", "Ce urmează la cursul 2",
    "<li><strong>Echipa de cinci</strong>, formată. Direcția proiectului o alegem la cursul 3.</li>"
    '<li><strong>Contul GitHub</strong>, cu care intri pe <a class="leg" href="../../cont/">site</a>.</li>'
    "</ol>"
-   + '<div class="grila grila--2" style="margin-top:22px">'
+   + '<div class="grila grila--2" style="margin-top:22px;grid-template-columns:repeat(2,minmax(0,1fr))">'
    '<a class="resursa" href="../"><span class="resursa__ic">→</span>'
    '<span class="resursa__txt"><span class="resursa__t">Pagina cursului 1</span>'
-   '<span class="resursa__d">Materiale și legături</span></span></a>'
+   '<span class="resursa__d">Materiale și datele cursului</span></span></a>'
+   '<a class="resursa" href="../scurtaturi/"><span class="resursa__ic">→</span>'
+   '<span class="resursa__txt"><span class="resursa__t">Scurtăturile din Jupyter</span>'
+   '<span class="resursa__d">Tastele caietului, cu exercițiu</span></span></a>'
+   '<a class="resursa" href="../exemple_curs1.zip" download><span class="resursa__ic">↓</span>'
+   '<span class="resursa__txt"><span class="resursa__t">Datele de exemplu</span>'
+   '<span class="resursa__d">persoane.json și activitati.txt, pentru caietul 01</span></span></a>'
    '<a class="resursa" href="../../c2-colectarea-prin-api/"><span class="resursa__ic">→</span>'
    '<span class="resursa__txt"><span class="resursa__t">Cursul 2</span>'
    '<span class="resursa__d">Colectarea datelor prin API</span></span></a></div>')
