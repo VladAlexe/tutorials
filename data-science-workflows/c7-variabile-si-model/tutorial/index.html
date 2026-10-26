@@ -6,14 +6,14 @@
 <title>Cursul 7, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 7: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=73">
-<link rel="stylesheet" href="../../css/sistem.css?v=73">
-<link rel="stylesheet" href="../../css/tutorial.css?v=73">
-<link rel="stylesheet" href="../../css/interactiv.css?v=73">
-<link rel="stylesheet" href="../../css/grafice.css?v=73">
-<link rel="stylesheet" href="../../css/exercitii.css?v=73">
-<link rel="stylesheet" href="../../css/explorator.css?v=73">
-<script src="../../js/tema.js?v=73"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=74">
+<link rel="stylesheet" href="../../css/sistem.css?v=74">
+<link rel="stylesheet" href="../../css/tutorial.css?v=74">
+<link rel="stylesheet" href="../../css/interactiv.css?v=74">
+<link rel="stylesheet" href="../../css/grafice.css?v=74">
+<link rel="stylesheet" href="../../css/exercitii.css?v=74">
+<link rel="stylesheet" href="../../css/explorator.css?v=74">
+<script src="../../js/tema.js?v=74"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 7 · Manual"></div>
@@ -22,7 +22,7 @@
   <div class="tut__cap"><span class="tut__et">Manual</span>
     <span class="tut__t">Cursul 7</span>
     <span class="tut__st">Variabile derivate și model</span></div>
-  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Planul lecției</span></a><div class="tut__g">Variabilele</div><a href="#s2"><span class="n">2</span><span>Cinci etape</span></a><a href="#s3"><span class="n">3</span><span>Construcția</span></a><a href="#s4"><span class="n">4</span><span>Transformarea</span></a><a href="#s5"><span class="n">5</span><span>Scalare și extragere</span></a><a href="#s6"><span class="n">6</span><span>Selecția</span></a><div class="tut__g">Modelul</div><a href="#s7"><span class="n">7</span><span>Patru modele</span></a><a href="#s8"><span class="n">8</span><span>Modelul, în cod</span></a><a href="#s9"><span class="n">9</span><span>Interpretarea coeficienților</span></a><div class="tut__g">Reziduurile</div><a href="#s10"><span class="n">10</span><span>Abateri de la model</span></a><div class="tut__g">Limite</div><a href="#s11"><span class="n">11</span><span>Ce putem concluziona</span></a><div class="tut__g">Proiectul tău</div><a href="#s12"><span class="n">12</span><span>Modelul vostru</span></a><a href="#s13"><span class="n">13</span><span>Un reziduu</span></a><div class="tut__g">Mai departe</div><a href="#s14"><span class="n">14</span><span>Pentru cursul următor</span></a></nav>
+  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Planul lecției</span></a><div class="tut__g">Variabilele</div><a href="#s2"><span class="n">2</span><span>Cinci etape</span></a><a href="#s3"><span class="n">3</span><span>Construcția</span></a><a href="#s4"><span class="n">4</span><span>Transformarea</span></a><a href="#s5"><span class="n">5</span><span>Scalare și extragere</span></a><a href="#s6"><span class="n">6</span><span>Selecția</span></a><div class="tut__g">Modelul</div><a href="#s7"><span class="n">7</span><span>Patru modele</span></a><a href="#s8"><span class="n">9</span><span>Modelul, în cod</span></a><a href="#s9"><span class="n">10</span><span>Interpretarea coeficienților</span></a><div class="tut__g">Reziduurile</div><a href="#s10"><span class="n">11</span><span>Abateri de la model</span></a><div class="tut__g">Limite</div><a href="#s11"><span class="n">12</span><span>Ce putem concluziona</span></a><div class="tut__g">Proiectul tău</div><a href="#s12"><span class="n">13</span><span>Modelul vostru</span></a><a href="#s13"><span class="n">14</span><span>Un reziduu</span></a><div class="tut__g">Mai departe</div><a href="#s14"><span class="n">15</span><span>Pentru cursul următor</span></a></nav>
   <div class="tut__jos">
     <a href="../lectie/">Slide-urile de la curs</a>
     <a href="../">Pagina cursului</a>
@@ -106,7 +106,7 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 </section>
 
 <section class="tut__s" id="s8">
-<span class="tut__nr">08 · Modelul</span>
+<span class="tut__nr">09 · Modelul</span>
 <h2>Modelul, în cod</h2><p>În <code>statsmodels</code>, un model se specifică printr-o formulă. În stânga lui <code>~</code> se află variabila explicată, iar în dreapta, variabilele explicative.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Scrie modelul</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c7-cod-ols", "indiciu": "Regresia liniară prin metoda celor mai mici pătrate: ols. Estimarea se face cu fit. R² este atributul rsquared, fără paranteze.", "iesire": "Intercept          11.92\nlog_distanta       -0.25\nlog_la_mie          0.44\ngranita[T.True]     0.29\n0.53", "fisier": "model/model.py", "sarcina": "Estimează modelul complet.", "cod": "import statsmodels.formula.api as smf\n\nm = smf.{{1}}(\"log_sci ~ log_distanta + log_la_mie + granita\",\n            data=d).{{2}}()\nprint(m.params)\nprint(m.{{3}})\nd[\"rezidual\"] = m.resid", "goluri": {"1": {"ok": ["ols"], "ajutor": "funcția"}, "2": {"ok": ["fit"], "ajutor": "metoda"}, "3": {"ok": ["rsquared"], "ajutor": "atributul"}}, "laBine": "R² = 0,53.", "laRau": "R² este un atribut, fără paranteze.", "explicatie": "<code>m.summary()</code> afișează tabelul complet."}</script></div>
@@ -115,7 +115,7 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 </section>
 
 <section class="tut__s" id="s9">
-<span class="tut__nr">09 · Modelul</span>
+<span class="tut__nr">10 · Modelul</span>
 <h2>Cum se citește un model pe logaritmi</h2><p>Când atât variabila explicată, cât și cea explicativă sunt logaritmate, coeficientul este o elasticitate: variația procentuală a SCI când variabila explicativă crește cu un procent. Pentru o variabilă 0/1, cum este granița, coeficientul se interpretează prin funcția exponențială: e la puterea coeficientului, minus unu, dă diferența procentuală.</p><table class="tabel"><thead><tr><th>Variabila</th><th>Coeficient</th><th>Interpretare</th></tr></thead><tbody><tr><td>distanța (log)</td><td>-0,25</td><td>distanță cu 10% mai mare: SCI cu 2,4% mai mic</td></tr><tr><td>migranți la mie (log)</td><td>0,44</td><td>cu 10% mai mulți migranți: SCI cu 4,3% mai mare</td></tr><tr><td>granița</td><td>0,29</td><td>vecinii: SCI cu 33% mai mare, dar incert</td></tr></tbody></table><p>Granița ilustrează cel mai clar diferența dintre explorare și model: la EDA, vecinii aveau un SCI median de circa cinci ori mai mare. În model, cu distanța și migrația ținute constante, rămâne un plus mic și incert. Diferența observată la EDA era în mare parte un efect al distanței.</p>
 <div class="verif" data-id="c7-v2" data-corect="2">
     <p class="verif__q">Coeficientul distanței este -0,25. Cum se interpretează?</p>
@@ -128,7 +128,7 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 </section>
 
 <section class="tut__s" id="s10">
-<span class="tut__nr">10 · Reziduurile</span>
+<span class="tut__nr">11 · Reziduurile</span>
 <h2>Reziduurile</h2><p>Reziduul este diferența dintre SCI observat și SCI prezis, pe scara logaritmică. Pe hartă, după selectarea unei țări, se vede pentru fiecare partener dacă legătura este mai puternică sau mai slabă decât prezice modelul.</p><div class="ix" data-ix="harta">
   <div class="ix__cap"><span class="ix__fel">Hartă, date reale</span><span class="ix__t">Reziduurile, pe hartă</span></div>
   <div class="ix__corp"><script type="application/json">{"niveluri": ["tari"], "nivel": "tari", "masura": "model", "ales": "RO", "masuri": ["model", "sci", "migr"], "povesti": [{"t": "România", "nivel": "tari", "masura": "model", "ales": "RO", "text": "Austria și Ungaria sunt peste valoarea prezisă, Italia sub. Pentru Ungaria, explicația probabilă este minoritatea maghiară, care nu este inclusă în model."}, {"t": "Turcia", "nivel": "tari", "masura": "model", "ales": "TR", "text": "Aproape toate perechile cu Turcia sunt mult sub valoarea prezisă. Explicații posibile: limba sau profilul utilizatorilor Facebook, niciuna inclusă în model."}, {"t": "Islanda", "nivel": "tari", "masura": "model", "ales": "IS", "text": "Islanda este peste valoarea prezisă cu aproape toți partenerii. Posibil un efect al măsurii: o țară foarte mică, deci cu un numitor mic."}, {"t": "Portugalia", "nivel": "tari", "masura": "model", "ales": "PT", "text": "Luxemburg-Portugalia are cea mai mare abatere pozitivă din întregul set, chiar și după controlul migrației."}]}</script></div>
@@ -137,7 +137,7 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 </section>
 
 <section class="tut__s" id="s11">
-<span class="tut__nr">11 · Limite</span>
+<span class="tut__nr">12 · Limite</span>
 <h2>Ce putem concluziona</h2><p>Un model estimat pe date observaționale, dintr-un singur moment, arată asocieri. Direcția relației nu reiese din el: migrația poate crea legături, dar și legăturile preexistente pot atrage migrație, prin rețelele de migranți discutate în cadrul teoretic de la cursul 3.</p><table class="tabel"><thead><tr><th>Putem afirma</th><th>Nu putem afirma</th></tr></thead><tbody><tr><td>perechile cu mai mulți migranți sunt mai legate, la aceeași distanță</td><td>migrația produce legăturile</td></tr><tr><td>modelul explică puțin peste jumătate din variație</td><td>am explicat legăturile</td></tr><tr><td>vecinii nu par mai legați decât prezic distanța și migrația</td><td>granițele nu contează</td></tr></tbody></table><div class="nota"><div class="nota__et">Erori standard</div><p>Aceeași țară apare în multe perechi, deci perechile nu sunt independente, iar erorile standard obișnuite sunt subestimate. Corecția uzuală constă în erori standard grupate pe țară; în caiet, ea necesită un singur rând în plus la <code>fit</code>.</p></div>
 <div class="verif" data-id="c7-v3" data-corect="1">
     <p class="verif__q">Modelul arată o asociere puternică între migrație și SCI. De ce nu putem afirma că migrația produce legăturile?</p>
@@ -150,13 +150,13 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 </section>
 
 <section class="tut__s" id="s12">
-<span class="tut__nr">12 · Proiectul tău</span>
+<span class="tut__nr">13 · Proiectul tău</span>
 <h2>Modelul vostru</h2><p>Pasul de proiect: un model construit pas cu pas pentru întrebarea de cercetare a echipei, ca în lecție. Reziduurile sunt partea centrală a discuției din raport.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faceți</th></tr></thead><tbody><tr><td>1</td><td>variabilele proiectului, construite și documentate în <code>decizii.md</code></td></tr><tr><td>2</td><td>același eșantion pentru toate modelele</td></tr><tr><td>3</td><td>modelele, pas cu pas, cu R² și coeficienți</td></tr><tr><td>4</td><td>reziduurile: cele mai mari cinci, pozitive și negative</td></tr><tr><td>5</td><td>în <code>README.md</code>: ce putem afirma și ce nu</td></tr></tbody></table>
 
 </section>
 
 <section class="tut__s" id="s13">
-<span class="tut__nr">13 · Proiectul tău</span>
+<span class="tut__nr">14 · Proiectul tău</span>
 <h2>Un reziduu de investigat</h2><div class="ix" data-ix="asteptari">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Reziduul vostru</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c7-reziduu", "tip": "reziduu", "minim": 50, "sarcina": "Alege o pereche cu reziduu mare și formulează o explicație posibilă, care poate fi verificată.", "exemplu": "De exemplu: Ungaria-România este peste valoarea prezisă de model; o explicație posibilă este minoritatea maghiară, verificabilă la nivel de județ, comparând Harghita și Covasna cu celelalte județe.", "multumesc": "Răspunsul va fi citit înainte de cursul următor."}</script></div>
@@ -165,7 +165,7 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 </section>
 
 <section class="tut__s" id="s14">
-<span class="tut__nr">14 · Mai departe</span>
+<span class="tut__nr">15 · Mai departe</span>
 <h2>Cursul 8: raportul</h2><ul><li>figura principală și tabelul modelelor</li><li>README-ul care permite reproducerea întregii analize</li><li>prezentarea echipei</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Modelul și reziduurile în depozit, împreună cu cele trei propoziții despre ce putem afirma.</p></div><div class="surse"><div class="surse__et">Documentația modelului</div><ul><li><a class="surse__a" href="https://www.statsmodels.org/stable/example_formulas.html" target="_blank" rel="noopener">statsmodels: formule</a><span><code>smf.ols("log_sci ~ log_distanta", data=d)</code>, pas cu pas</span></li><li><a class="surse__a" href="https://www.statsmodels.org/stable/regression.html" target="_blank" rel="noopener">statsmodels: regresia liniară</a><span>ce înseamnă fiecare rând din <code>summary()</code></span></li><li><a class="surse__a" href="https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html" target="_blank" rel="noopener">geopandas: dissolve și sjoin</a><span>agregarea județelor în țări, pentru calculul graniței</span></li></ul></div>
 
 </section>
@@ -173,11 +173,11 @@ X = sm.add_constant(d[["log_distanta", "log_la_mie", "granita"]].astype(float))
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=73"></script>
+<script type="module" src="../../js/antet.js?v=74"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=73";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=73";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=73";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=74";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=74";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=74";
 pornesteIx();
 pornesteVerif("c7");
 pornesteTut("c7");

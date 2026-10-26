@@ -332,7 +332,7 @@
   font-family:var(--sans);font-size:var(--t2);font-weight:600;letter-spacing:-.01em}
 .scr__gt .mic{margin-left:auto}
 .scr__c{border-left:2px solid var(--accent);padding:2px 0 2px 15px;margin:0 0 13px}
-.scr__c blockquote{font-family:var(--serif);font-size:var(--t3);line-height:1.5;
+.scr__c blockquote{font-family:var(--sans);font-size:var(--t3);line-height:1.5;
   margin:0 0 5px;max-width:var(--citit)}
 .scr__c figcaption{font-family:var(--sans);font-size:var(--t1);font-weight:500;
   color:var(--text-2);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}

@@ -6,14 +6,14 @@
 <title>Cursul 6 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Examinarea datelor înainte de modelare: distribuții, relații, categorii, hărți și grafice care induc în eroare.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=73">
-<link rel="stylesheet" href="../../css/sistem.css?v=73">
-<link rel="stylesheet" href="../../css/slide.css?v=73">
-<link rel="stylesheet" href="../../css/interactiv.css?v=73">
-<link rel="stylesheet" href="../../css/grafice.css?v=73">
-<link rel="stylesheet" href="../../css/exercitii.css?v=73">
-<link rel="stylesheet" href="../../css/explorator.css?v=73">
-<script src="../../js/tema.js?v=73"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=74">
+<link rel="stylesheet" href="../../css/sistem.css?v=74">
+<link rel="stylesheet" href="../../css/slide.css?v=74">
+<link rel="stylesheet" href="../../css/interactiv.css?v=74">
+<link rel="stylesheet" href="../../css/grafice.css?v=74">
+<link rel="stylesheet" href="../../css/exercitii.css?v=74">
+<link rel="stylesheet" href="../../css/explorator.css?v=74">
+<script src="../../js/tema.js?v=74"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 6 · Analiza exploratorie" data-crom="1"></div>
@@ -41,16 +41,18 @@
 
 </section>
 
-<section class="sld" id="s4" data-grup="O variabilă" data-t="Descrierea, în cod">
+<section class="sld" id="s4" data-grup="O variabilă" data-t="Media și mediana">
 <h2>Descrierea unei variabile</h2><div class="ix" data-ix="prezice">
   <div class="ix__cap"><span class="ix__fel">Predicție</span><span class="ix__t">Media și mediana</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c6-prezice-coada", "fisier": "05_explorare.ipynb · 1. O pereche obișnuită", "cod": "import pandas as pd\n\nsci = pd.Series([2, 3, 4, 5, 100])   # o pereche foarte legata\nprint(sci.mean(), sci.median())", "intrebare": "Ce afișează?", "variante": ["4.0 4.0", "22.8 4.0", "22.8 22.8", "4.0 22.8"], "corect": 1, "indiciu": "Media este suma valorilor împărțită la 5. Mediana este valoarea din mijloc a șirului sortat.", "laBine": "O singură valoare extremă ridică media; mediana rămâne neschimbată.", "explicatie": "Media este (2 + 3 + 4 + 5 + 100) / 5 = 22,8, iar mediana este 4. Când media este mult peste mediană, distribuția are o coadă spre dreapta, cum este cazul SCI. De aceea raportăm mediana și lucrăm pe scara logaritmică."}</script></div>
-</div><div class="ix" data-ix="pas">
+</div>
+
+</section>
+
+<section class="sld" id="s4b" data-grup="O variabilă" data-t="Coada lungă, în date">
+<h2>Coada lungă, pe datele reale</h2><div class="ix" data-ix="pas">
   <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">Coada lungă, pe datele reale</span></div>
   <div class="ix__corp"><script type="application/json">{"fisier": "05_explorare.ipynb · 1. Cum arată o pereche obișnuită?", "intro": "Histograma și exercițiul de pe slide folosesc cele 263 de perechi de <b>țări</b> pentru care există și date de migrație. Caietul 05 lucrează pe perechi de <b>regiuni</b>: 44.253, de 168 de ori mai multe. Distribuția are aceeași formă, la o altă unitate de analiză.", "cod": "perechi[\"sci\"].describe().round(0)\n\nperechi.nlargest(1, \"sci\")\n\nlog_sci = np.log10(perechi[\"sci\"])\nlog_sci.describe().round(2)", "pasi": [{"l": 1, "out": "count      44253.0\nmean       10254.0\nstd        62609.0\nmin            1.0\n25%          495.0\n50%         1233.0\n75%         3075.0\nmax      4001835.0", "txt": "Media este de opt ori mai mare decât mediana. Trei sferturi din perechi sunt sub 3.075, iar maximul depășește patru milioane: distribuția are o coadă foarte lungă."}, {"l": 3, "out": " regiune_1  regiune_2      sci\n NO07       NO0B       4001835", "txt": "Extremul cozii: Nord-Norge și Svalbard. Svalbard are populația raportată 0 în C4. SCI este o măsură relativă, împărțită la numărul de utilizatori, astfel încât câțiva utilizatori pot produce un indice foarte mare."}, {"l": 5, "set": {"log_sci": {"t": "Series", "v": {"rows": [["HU11–RO11", "4.53"], ["RO11–RO12", "5.49"], ["NO07–NO0B", "6.60"], ["…", "…"]], "nota": "log10: 100 → 2, 1.000 → 3, 1.000.000 → 6"}}}, "txt": "<code>np.log10</code> exprimă valorile în ordine de mărime: 34.160 devine 4,53, iar patru milioane devine 6,6. Diferențele foarte mari dintre valori se comprimă."}, {"l": 6, "out": "count    44253.00\nmean         3.14\nstd          0.71\nmin          0.00\n25%          2.69\n50%          3.09\n75%          3.49\nmax          6.60", "txt": "Pe scara logaritmică, media (3,14) și mediana (3,09) aproape coincid: distribuția este aproximativ simetrică. De aici înainte lucrăm pe scara logaritmică, ca în caiet."}]}</script></div>
-</div><div class="ix" data-ix="cod">
-  <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Descrie variabila</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c6-cod-descrie", "indiciu": "Statisticile descriptive ale unei coloane numerice se obțin cu metoda describe. Asimetria (în engleză, „skewness”) se calculează cu metoda skew. Logaritmul din numpy este np.log.", "iesire": "count       263.0\nmean      39432.6\n50%       15543.0\n...\n7.57\n0.49", "fisier": "eda/univariat.py", "sarcina": "Calculează statisticile descriptive ale SCI, măsoară asimetria și compar-o cu asimetria logaritmului.", "cod": "import numpy as np\nimport pandas as pd\n\nd = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n# media, mediana, quartilele, minimul, maximul\nprint(d[\"sci\"].{{1}}())\n\n# cat de lunga e coada\nprint(d[\"sci\"].{{2}}())          # in jur de 7,6\n\n# acelasi lucru, pe logaritm\nd[\"log_sci\"] = np.{{3}}(d[\"sci\"])\nprint(d[\"log_sci\"].skew())      # in jur de 0,5", "goluri": {"1": {"ok": ["describe"], "ajutor": "metoda"}, "2": {"ok": ["skew"], "ajutor": "metoda"}, "3": {"ok": ["log", "log10"], "ajutor": "funcția"}}, "laBine": "Asimetria scade de la 7,6 la 0,5: după logaritmare, variabila este aproape simetrică.", "laRau": "Primele două sunt metode ale coloanei; a treia este funcția numpy pentru logaritm.", "explicatie": "În rezultatul <code>describe()</code>, compară media cu mediana. O medie mult peste mediană indică o coadă spre dreapta, chiar înainte de calculul asimetriei."}</script></div>
 </div>
 <div class="verif" data-id="c6-v1" data-corect="2">
     <p class="verif__q">Media SCI este de peste două ori mai mare decât mediana. Ce indică acest lucru?</p>
@@ -62,11 +64,19 @@
   </div>
 </section>
 
+<section class="sld" id="s4c" data-grup="O variabilă" data-t="Descrierea, în cod">
+<h2>Descrierea unei variabile, în cod</h2><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Descrie variabila</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c6-cod-descrie", "indiciu": "Statisticile descriptive ale unei coloane numerice se obțin cu metoda describe. Asimetria (în engleză, „skewness”) se calculează cu metoda skew. Logaritmul din numpy este np.log.", "iesire": "count       263.0\nmean      39432.6\n50%       15543.0\n...\n7.57\n0.49", "fisier": "eda/univariat.py", "sarcina": "Calculează statisticile descriptive ale SCI, măsoară asimetria și compar-o cu asimetria logaritmului.", "cod": "import numpy as np\nimport pandas as pd\n\nd = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n# media, mediana, quartilele, minimul, maximul\nprint(d[\"sci\"].{{1}}())\n\n# cat de lunga e coada\nprint(d[\"sci\"].{{2}}())          # in jur de 7,6\n\n# acelasi lucru, pe logaritm\nd[\"log_sci\"] = np.{{3}}(d[\"sci\"])\nprint(d[\"log_sci\"].skew())      # in jur de 0,5", "goluri": {"1": {"ok": ["describe"], "ajutor": "metoda"}, "2": {"ok": ["skew"], "ajutor": "metoda"}, "3": {"ok": ["log", "log10"], "ajutor": "funcția"}}, "laBine": "Asimetria scade de la 7,6 la 0,5: după logaritmare, variabila este aproape simetrică.", "laRau": "Primele două sunt metode ale coloanei; a treia este funcția numpy pentru logaritm.", "explicatie": "În rezultatul <code>describe()</code>, compară media cu mediana. O medie mult peste mediană indică o coadă spre dreapta, chiar înainte de calculul asimetriei."}</script></div>
+</div>
+
+</section>
+
 <section class="sld" id="s5" data-grup="O variabilă" data-t="Clasamente">
 <h2>Un clasament și limitele lui</h2><div class="ix" data-ix="bare">
   <div class="ix__cap"><span class="ix__fel">Date reale</span><span class="ix__t">Partenerii României, după SCI</span></div>
   <div class="ix__corp"><script type="application/json">{"cate": 12, "romani": {"AT": 153427, "BE": 127539, "BG": 1595, "CZ": 15208, "DE": 776424, "EE": 829, "ES": 620463, "FI": 5761, "FR": 161220, "HU": 15740, "IE": 48220, "IS": 3382, "IT": 1073196, "LT": 199, "LU": 6828, "LV": 50, "NL": 52265, "NO": 17972, "PT": 19692, "SE": 21442, "SI": 524, "SK": 4504, "TR": 1948}, "raport": ["AT", "BE", "BG", "CZ", "DE", "EE", "ES", "FI", "FR", "HU", "IE", "IS", "IT", "LT", "LU", "LV", "NL", "NO", "PT", "RO", "SE", "SI", "SK", "TR"], "intai": {"q": "Italia este țara cu cei mai mulți români stabiliți în străinătate. Pe ce loc se află printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "Pe locul al șaselea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI este normalizat la numărul de utilizatori, astfel că o țară mare, cu o diasporă numeroasă, nu ocupă neapărat un loc fruntaș."}}</script></div>
-</div><div class="nota nota--sobru"><div class="nota__et">Clasamentul depinde de măsură</div><p>După SCI, pe primul loc este Moldova; după numărul de români, Italia. Un clasament se interpretează doar în raport cu ce măsoară.</p></div>
+</div>
 
 </section>
 
@@ -80,6 +90,11 @@
 
 <section class="sld" id="s7" data-grup="Două variabile" data-t="Corelațiile">
 <h2>Matricea de corelații</h2><table class="tcol"><tr><th></th><th>SCI</th><th>distanța</th><th>migranți la mie</th><th>graniță</th></tr><tr><th class="st">SCI</th><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td><td style="background:color-mix(in srgb,var(--nu) 28%,var(--panza))">-0,40</td><td style="background:color-mix(in srgb,var(--accent) 49%,var(--panza));color:var(--panza)">0,70</td><td style="background:color-mix(in srgb,var(--accent) 26%,var(--panza))">0,38</td></tr><tr><th class="st">distanța</th><td style="background:color-mix(in srgb,var(--nu) 28%,var(--panza))">-0,40</td><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td><td style="background:color-mix(in srgb,var(--nu) 23%,var(--panza))">-0,33</td><td style="background:color-mix(in srgb,var(--nu) 46%,var(--panza));color:var(--panza)">-0,66</td></tr><tr><th class="st">migranți la mie</th><td style="background:color-mix(in srgb,var(--accent) 49%,var(--panza));color:var(--panza)">0,70</td><td style="background:color-mix(in srgb,var(--nu) 23%,var(--panza))">-0,33</td><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td><td style="background:color-mix(in srgb,var(--accent) 23%,var(--panza))">0,33</td></tr><tr><th class="st">graniță</th><td style="background:color-mix(in srgb,var(--accent) 26%,var(--panza))">0,38</td><td style="background:color-mix(in srgb,var(--nu) 46%,var(--panza));color:var(--panza)">-0,66</td><td style="background:color-mix(in srgb,var(--accent) 23%,var(--panza))">0,33</td><td style="background:color-mix(in srgb,var(--accent) 70%,var(--panza));color:var(--panza)">1,00</td></tr></table><div class="nota nota--sobru"><div class="nota__et">Cum se citește</div><p>Teal: corelație pozitivă. Cărămiziu: corelație negativă. Distanța și granița sunt corelate (r = -0,66), deoarece vecinii sunt apropiați. De aceea efectele lor nu pot fi evaluate separat.</p></div>
+
+</section>
+
+<section class="sld" id="s7b" data-grup="Două variabile" data-t="Spearman">
+<h2>Spearman, pe ranguri</h2>
 <div class="ix" data-ix="prezice">
   <div class="ix__cap"><span class="ix__fel">Predicție</span><span class="ix__t">Spearman, pe ranguri</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c6-prezice-rang", "fisier": "05_explorare.ipynb · 3. H1, distanța", "cod": "import pandas as pd\n\nd = pd.DataFrame({\"distanta\": [100, 500, 1000, 3000],\n                  \"sci\":      [900, 200, 150, 20]})\n\nprint(d[\"distanta\"].corr(d[\"sci\"], method=\"spearman\"))", "intrebare": "Ce afișează?", "variante": ["1.0", "-1.0", "0.0", "-0.5"], "corect": 1, "indiciu": "Coeficientul Spearman ține cont doar de ordinea valorilor. Când distanța crește, cum variază SCI?", "laBine": "Ordinea este perfect inversă: -1.", "explicatie": "Coeficientul Spearman înlocuiește valorile cu rangurile lor. Rangurile distanței sunt 1, 2, 3, 4, iar cele ale SCI sunt 4, 3, 2, 1: o relație perfect descrescătoare, deci -1, indiferent cât de inegale sunt diferențele. Pentru SCI și distanță este o alegere potrivită, deoarece nu presupune o relație liniară."}</script></div>
@@ -117,7 +132,12 @@
 <h2>Comunități detectate doar din legături</h2><div class="ix" data-ix="pas">
   <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">O rețea de cinci noduri</span></div>
   <div class="ix__corp"><script type="application/json">{"fisier": "06_retele.ipynb · 1. O rețea mică", "intro": "Înainte de harta comunităților, o rețea de cinci noduri: aceleași întrebări, pe valori care se pot verifica manual.", "cod": "mica = nx.Graph()\nmica.add_weighted_edges_from([(\"A\", \"B\", 9), (\"A\", \"C\", 7), (\"B\", \"C\", 8),\n                              (\"C\", \"D\", 1), (\"D\", \"E\", 9)])\n\nlegaturi = dict(mica.degree())\nforta = dict(mica.degree(weight=\"weight\"))\npd.DataFrame({\"legaturi\": legaturi, \"forta\": forta})", "pasi": [{"l": 1, "set": {"mica": {"t": "dict", "e": "Graph", "v": {}}}, "txt": "O rețea goală. În <code>networkx</code>, rețeaua reține, pentru fiecare nod, nodurile cu care este legat."}, {"l": 2, "set": {"mica": {"t": "dict", "e": "Graph", "v": {"A": {"B": 9, "C": 7}, "B": {"A": 9, "C": 8}, "C": {"A": 7, "B": 8, "D": 1}, "D": {"C": 1, "E": 9}, "E": {"D": 9}}}}, "txt": "Fiecare legătură este un triplet: două noduri și o pondere, analog unei perechi de regiuni și SCI-ului ei. Legătura este neorientată: merge în ambele sensuri."}, {"l": 5, "set": {"legaturi": {"t": "dict", "v": {"A": 2, "B": 2, "C": 3, "D": 2, "E": 1}}}, "hl": {"var": "legaturi", "k": "C"}, "txt": "<code>degree()</code> numără legăturile fiecărui nod (gradul). C are cele mai multe: trei."}, {"l": 6, "set": {"forta": {"t": "dict", "v": {"A": 16, "B": 17, "C": 16, "D": 10, "E": 9}}}, "hl": {"var": "forta", "k": "C"}, "txt": "Cu <code>weight=</code>, se adună ponderile: rezultatul este <b>forța</b> nodului. C: 7 + 8 + 1 = 16, cât A, care are doar două legături. B, cu două legături puternice, are forța cea mai mare."}, {"l": 7, "out": "   legaturi  forta\nA         2     16\nB         2     17\nC         3     16\nD         2     10\nE         1      9", "txt": "În SCI, fiecare regiune este legată de toate celelalte, deci gradul nu mai diferențiază regiunile; relevantă rămâne forța. O <b>comunitate</b> este un grup de noduri ca A, B, C, mai puternic legate între ele decât cu restul rețelei. Algoritmul folosit pentru hartă identifică astfel de grupuri."}]}</script></div>
-</div><div class="ix" data-ix="harta">
+</div>
+
+</section>
+
+<section class="sld" id="s10b" data-grup="Harta" data-t="Comunitățile SCI">
+<h2>Comunitățile SCI, pe regiuni</h2><div class="ix" data-ix="harta">
   <div class="ix__cap"><span class="ix__fel">Hartă, date reale</span><span class="ix__t">Comunitățile SCI, pe regiuni</span></div>
   <div class="ix__corp"><script type="application/json">{"niveluri": ["regiuni"], "nivel": "regiuni", "masura": "com", "ales": "RO11", "masuri": ["com", "sci"], "povesti": [{"t": "România și Germania", "nivel": "regiuni", "masura": "com", "ales": "RO11", "text": "Algoritmul plasează toate regiunile României în aceeași comunitate cu Germania, nu cu țările vecine: o urmă a migrației de muncă."}, {"t": "Polonia și Irlanda", "nivel": "regiuni", "masura": "com", "ales": "PL91", "text": "Polonia, Irlanda, Islanda și Lituania formează o singură comunitate, urmă a emigrației de după 2004."}, {"t": "Luxemburg și Portugalia", "nivel": "regiuni", "masura": "com", "ales": "LU00", "text": "Perechea cu cea mai puternică legătură din întregul set. Aproape unul din șapte locuitori ai Luxemburgului este cetățean portughez."}, {"t": "Fosta Iugoslavie", "nivel": "regiuni", "masura": "com", "ales": "SI04", "text": "Slovenia, Croația, Bosnia, Serbia, Muntenegru, plus Austria: o graniță veche, încă vizibilă în legături."}]}</script></div>
 </div><div class="nota nota--sobru"><div class="nota__et">Metoda</div><p>Algoritmul Louvain grupează regiunile mai puternic legate între ele decât cu restul. Culorile sunt doar etichete. Toate nivelurile sunt disponibile în <a class="leg" href="../../explorator/">Exploratorul legăturilor sociale</a>.</p></div>
@@ -129,6 +149,11 @@
   <div class="ix__cap"><span class="ix__fel">Comparație</span><span class="ix__t">SCI-ul României cu Italia și cu Spania</span></div>
   <div class="ix__corp"><script type="application/json">{"bare": [{"t": "România-Italia", "v": 69327}, {"t": "România-Spania", "v": 54179}], "taie": 50000, "txtZero": "Legăturile cu Italia și cu Spania au valori apropiate.", "txtTaiat": "Aceleași valori; doar axa nu mai pornește de la zero."}</script></div>
 </div><div class="nota nota--sobru"><div class="nota__et">Regula</div><p>La graficele cu bare, axa pornește de la zero. La linii și la norii de puncte poate fi trunchiată, cu condiția ca trunchierea să fie marcată clar.</p></div>
+
+</section>
+
+<section class="sld" id="s11b" data-grup="Grafice înșelătoare" data-t="Axa și scara">
+<h2>Când axa poate să nu pornească de la zero</h2>
 <div class="verif" data-id="c6-v4" data-corect="0">
     <p class="verif__q">Când este acceptabil ca axa să nu pornească de la zero?</p>
     <button>La un grafic cu linii sau cu puncte, unde contează forma, nu lungimea</button>
@@ -163,11 +188,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=73"></script>
+<script type="module" src="../../js/antet.js?v=74"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=73";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=73";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=73";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=74";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=74";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=74";
 pornesteIx();
 pornesteVerif("c6");
 pornesteSlide({ capitol:"c6", lectie:"c6-analiza-exploratorie" });

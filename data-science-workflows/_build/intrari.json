@@ -12,7 +12,7 @@
         "html": "<div class=\"gh\">\n<div class=\"gh__cap\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21\"/></svg><div><b>Creează-ți un cont GitHub</b><span>Contul este gratuit și se creează în câteva minute. Este necesar pentru intrarea la oră.</span></div></div>\n<ol class=\"gh__pasi\">\n<li><b>Accesează <a class=\"leg\" href=\"https://github.com/signup\" target=\"_blank\" rel=\"noopener\">github.com/signup</a>.</b> Folosește o adresă de e-mail pe care o vei păstra și după absolvire.</li>\n<li><b>Alege un nume de utilizator potrivit pentru un CV.</b> Numele rămâne asociat contului, iar proiectul echipei va apărea sub el.</li>\n<li><b>Confirmă adresa de e-mail.</b> GitHub trimite un cod de confirmare; contul devine activ după confirmare.</li>\n<li><b>La prima oră</b> scanezi codul de pe ecran, apeși <em>Intru cu GitHub</em> și îți alegi numele din lista grupei. Pasul se face o singură dată pe semestru.</li>\n</ol>\n<p class=\"gh__de-ce\">De ce GitHub: contul servește la autentificarea pe site, fără o parolă nouă, iar de la cursul 3 este folosit pentru depozitul echipei. Datele înregistrate sunt descrise în <a class=\"leg\" href=\"../date-personale/\">politica de confidențialitate</a>.</p>\n</div>"
       },
       {
-        "t": "Despre lecția asta",
+        "t": "Despre lecție",
         "html": "<p>Prima oră are două părți. În prima stabilim ce construim: proiectul semestrului, datele folosite, echipele și succesiunea completă a pașilor unei analize de date, de la definirea problemei până la raportare. În a doua configurăm mediul de lucru, astfel încât de la cursul următor să putem lucra direct cu datele.</p>\n<p>Între ele stau noțiunile pe care se sprijină restul cursului: tipurile de date în Python, în SQL și în fișierele spațiale; diferența dintre un fișier text și unul binar; formatul JSON, folosit de toate API-urile de la care vom solicita date.</p>\n<p>Lecția începe cu o întrebare formulată pe datele reale ale cursului, la care intuiția nu oferă un răspuns, și cu o evaluare scurtă a cunoștințelor inițiale. Evaluarea nu se notează; rolul ei este să stabilească punctul de plecare.</p>"
       },
       {
@@ -94,7 +94,7 @@
     "caiet_d": "Caietul 02, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/.",
     "sectiuni": [
       {
-        "t": "Despre lecția asta",
+        "t": "Despre lecție",
         "html": "<p>Lecția tratează proveniența datelor: o analiză poate fi verificată doar dacă drumul de la sursă la tabel poate fi refăcut. La cursul 1, datele au provenit dintr-un fișier descărcat în prealabil; de la această lecție provin dintr-o cerere scrisă, care conține sursa, setul și filtrele.</p>\n<p>Începem cu ce este un API și de ce colectăm date prin el, trecem prin tipurile și istoria API-urilor, apoi analizăm un mesaj HTTP element cu element: metoda, endpoint-ul, adresa cu parametrii, codul de stare. Aceeași cerere se scrie apoi în Python, cu <code>requests</code>, iar la final ideea se aplică la Eurostat, al cărui răspuns e un cub JSON-stat, pe datele migrației.</p>"
       },
       {
@@ -159,8 +159,8 @@
     "caiet": null,
     "sectiuni": [
       {
-        "t": "Despre lecția asta",
-        "html": "<p>Ora are două părți, aparent fără legătură. În prima învățăm Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile și pull request-ul.</p>\n<p>În a doua formulăm întrebarea de cercetare a proiectului, pornind de la un exemplu lucrat pe tranzițiile energetice: cum se ajunge de la literatură la trei piloni, de la piloni la surse de date și de la surse la întrebări care pot fi infirmate.</p>\n<p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p>"
+        "t": "Despre lecție",
+        "html": "<p>Ora are două părți, aparent fără legătură. În prima învățăm Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile și pull request-ul.</p>\n<p>În a doua formulăm întrebarea de cercetare a proiectului, pornind de la proiectul cursului: cum se ajunge de la literatură la trei piloni (legăturile, oamenii, locul), de la piloni la surse de date și de la surse la întrebări care pot fi infirmate.</p>\n<p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p>"
       },
       {
         "t": "La final vei putea",
@@ -224,7 +224,7 @@
     "caiet": null,
     "sectiuni": [
       {
-        "t": "Despre lecția asta",
+        "t": "Despre lecție",
         "html": "<p>La lecția anterioară am văzut rolul lui Git. Acum îl folosim: mutăm fișiere între zone, facem commit-uri cu mesaje informative, anulăm modificări în patru moduri diferite fără pierderi de lucru și lucrăm pe o ramură care poate fi ștearsă fără consecințe. Partea aceasta ocupă puțin spațiu pe slide-uri și mult timp în terminal.</p>\n<p>A doua parte tratează etapa de după obținerea datelor. Un <a class=\"leg\" href=\"https://visit.figure-eight.com/data-science-report\" rel=\"noopener\" target=\"_blank\">sondaj CrowdFlower</a> printre specialiștii care lucrează zilnic cu date arată că aproape 60% din timpul lor este dedicat curățării și organizării datelor. Aceasta nu este o deficiență a profesiei, ci o parte centrală a ei: datele reale conțin aceeași categorie scrisă în mai multe feluri, rânduri duplicate, valori lipsă care nu înseamnă zero și valori care par eronate, dar sunt corecte.</p>\n<p>Parcurgem cele șase etape, pe rând, pe datele cursului. Pentru fiecare decizie (ce se șterge, ce se completează, ce se elimină), întrebarea relevantă nu este „ce face comanda”, ci „ce informație se pierde când este rulată”.</p>"
       },
       {
@@ -298,7 +298,7 @@
     "caiet": null,
     "sectiuni": [
       {
-        "t": "Despre lecția asta",
+        "t": "Despre lecție",
         "html": "<p>Până acum fiecare sursă a fost păstrată în fișierul ei: SCI într-unul, indicatorii Băncii Mondiale în altul, datele de la Eurostat în al treilea. Separarea funcționează cât timp sursele sunt analizate pe rând. Pentru o afirmație de forma „țările cu legătură socială puternică au și X” este nevoie de un singur tabel.</p>\n<p>Unirea tabelelor pare o operație tehnică, dar este o decizie de cercetare: ce se păstrează când o sursă nu conține o țară prezentă în cealaltă. Fiecare tip de join oferă un alt răspuns la această întrebare, iar răspunsul determină câte rânduri rămân în analiză. Prima parte a orei tratează aceste decizii, inclusiv două probleme care nu generează niciun mesaj de eroare: chei care nu se potrivesc și rânduri multiplicate fără avertisment.</p>\n<p>A doua parte mută rezultatul dintr-un fișier CSV într-o bază Postgres pe Neon. Motivul nu este noutatea tehnologiei: atunci când mai multe persoane lucrează pe aceleași date, fișierul partajat devine o sursă de probleme.</p>"
       },
       {
@@ -367,7 +367,7 @@
     "caiet": null,
     "sectiuni": [
       {
-        "t": "Despre lecția asta",
+        "t": "Despre lecție",
         "html": "<p>Punctul de plecare este un tabel cu perechi de țări: SCI, migranți în ambele direcții, distanță, graniță. Înainte de orice model, tabelul trebuie examinat. Analiza exploratorie are două scopuri: să verifice că datele corespund așteptărilor și să identifice tiparele care merită testate ulterior.</p>\n<p>Lucrăm pe trei direcții, ca în planul cursului: o variabilă (distribuții,\n        asimetrie, logaritm, top-uri), două variabile (norul de puncte, corelațiile)\n        și categorii (tabelul de contingență, χ², grupuri comparate). La final, harta\n        comunităților și un slide despre graficele care induc în eroare.</p>\n<p>Toate graficele folosesc datele reale ale cursului: cele 263 de perechi de țări pentru care există atât SCI, cât și date de migrație.</p>"
       },
       {
@@ -426,7 +426,7 @@
     "caiet": null,
     "sectiuni": [
       {
-        "t": "Despre lecția asta",
+        "t": "Despre lecție",
         "html": "<p>La cursul 6 am văzut că SCI scade cu distanța, crește cu migrația și este mai mare între țările vecine. Țările vecine sunt însă și apropiate geografic și au adesea migrație între ele, deci cele trei tipare se suprapun. Un model le estimează simultan.</p>\n<p>Prima parte tratează ingineria variabilelor, ca în planul cursului: construcție, transformare, extragere, scalare, selecție. A doua parte este dedicată modelului: patru modele pe același eșantion, interpretarea coeficienților pe logaritmi și reziduurile, pe hartă.</p>"
       },
       {

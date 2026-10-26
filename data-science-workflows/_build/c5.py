@@ -357,7 +357,33 @@ sl("s4", "Unirea tabelelor", "Rezultatul fiecărui tip",
 
 sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
    "<h2>Îmbinarea în pandas</h2>"
+   + ix("pas", "Două regiuni, două îmbinări", PAS_MERGE),
+   manual="<h2>Îmbinarea în pandas</h2>"
+   "<p>Sintaxa este scurtă; atenția trebuie să cadă pe verificările de după. "
+   "Cele două linii de verificare de la final sunt mai importante decât "
+   "îmbinarea în sine.</p>"
    + ix("pas", "Două regiuni, două îmbinări", PAS_MERGE)
+   + ix("cod", "Adaugă populația la tabelul SCI", {
+       "id": "c5-cod-merge", "indiciu": "Coloana-cheie se indică prin parametrul on. Pentru a păstra toate rândurile din tabelul din stânga, tipul este \"left\". Valorile lipsă se identifică cu isna.",
+       "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
+       "sarcina": "Păstrează toate țările din tabelul cu SCI.",
+       "cod": "import pandas as pd\n\n"
+              "sci = pd.read_csv(\"date/curat/sci.csv\")\n"
+              "rom = pd.read_csv(\"date/curat/romani.csv\")\n\n"
+              "d = pd.merge(sci, rom, {{1}}=\"cod\", how={{2}})\n\n"
+              "print(len(sci), \"->\", len(d))\n"
+              "print(d[\"romani\"].{{3}}().sum())",
+       "goluri": {
+           "1": {"ok": ["on"], "ajutor": "parametrul"},
+           "2": {"ok": ["\"left\"", "'left'"], "ajutor": "tipul"},
+           "3": {"ok": ["isna", "isnull"], "ajutor": "metoda"}},
+       "laBine": "Verificările de la final sunt partea importantă.",
+       "laRau": "Tipul îmbinării se scrie între ghilimele.",
+       "explicatie": "Dacă <code>len(d)</code> este mai mare decât "
+                     "<code>len(sci)</code>, tabelul din dreapta are chei duplicate."}))
+
+sl("s5b", "Unirea tabelelor", "Adăugarea populației",
+   "<h2>Adaugă populația la tabelul SCI</h2>"
    + ix("cod", "Adaugă populația la tabelul SCI", {
        "id": "c5-cod-merge", "indiciu": "Coloana-cheie se indică prin parametrul on. Pentru a păstra toate rândurile din tabelul din stânga, tipul este \"left\". Valorile lipsă se identifică cu isna.",
        "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
@@ -385,30 +411,7 @@ sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
                      "<code>len(d)</code> este mai mare decât <code>len(sci)</code>, "
                      "tabelul din dreapta are chei duplicate, iar îmbinarea a "
                      "multiplicat rândurile. Este problema de la slide-ul următor."}),
-   manual=
-   "<h2>Îmbinarea în pandas</h2>"
-   "<p>Sintaxa este scurtă; atenția trebuie să cadă pe verificările de după. "
-   "Cele două linii de verificare de la final sunt mai importante decât "
-   "îmbinarea în sine.</p>"
-   + ix("pas", "Două regiuni, două îmbinări", PAS_MERGE)
-   + ix("cod", "Adaugă populația la tabelul SCI", {
-       "id": "c5-cod-merge", "indiciu": "Coloana-cheie se indică prin parametrul on. Pentru a păstra toate rândurile din tabelul din stânga, tipul este \"left\". Valorile lipsă se identifică cu isna.",
-       "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
-       "sarcina": "Păstrează toate țările din tabelul cu SCI.",
-       "cod": "import pandas as pd\n\n"
-              "sci = pd.read_csv(\"date/curat/sci.csv\")\n"
-              "rom = pd.read_csv(\"date/curat/romani.csv\")\n\n"
-              "d = pd.merge(sci, rom, {{1}}=\"cod\", how={{2}})\n\n"
-              "print(len(sci), \"->\", len(d))\n"
-              "print(d[\"romani\"].{{3}}().sum())",
-       "goluri": {
-           "1": {"ok": ["on"], "ajutor": "parametrul"},
-           "2": {"ok": ["\"left\"", "'left'"], "ajutor": "tipul"},
-           "3": {"ok": ["isna", "isnull"], "ajutor": "metoda"}},
-       "laBine": "Verificările de la final sunt partea importantă.",
-       "laRau": "Tipul îmbinării se scrie între ghilimele.",
-       "explicatie": "Dacă <code>len(d)</code> este mai mare decât "
-                     "<code>len(sci)</code>, tabelul din dreapta are chei duplicate."}))
+   manual="")
 
 
 sl("s6", "Unirea tabelelor", "Rânduri multiplicate",
@@ -430,24 +433,8 @@ sl("s6", "Unirea tabelelor", "Rânduri multiplicate",
                    "dată, plus AT și HU cu valori lipsă. Tabelul a crescut cu "
                    "cincizeci la sută fără niciun mesaj de eroare. Aici este "
                    "riscul: codul rulează, dar rezultatele finale sunt "
-                   "greșite."}})
-   + nota("Prevenire",
-          "<code>pd.merge(..., validate=\"one_to_one\")</code> produce o eroare "
-          "dacă cheia nu este unică. Un singur parametru în plus evită "
-          "refacerea analizei."),
-   dupa=verif("c5-v4", 2,
-              "Vrei ca merge-ul să se oprească cu o eroare dacă o cheie apare "
-              "de mai multe ori în dreapta. Ce parametru adaugi?",
-              ["how=\"inner\"",
-               "on=[\"cod\", \"an\"]",
-               "validate=\"one_to_one\"",
-               "indicator=True"],
-              "<code>validate</code> verifică relația dintre chei și produce o "
-              "eroare dacă relația nu este cea declarată. "
-              "<code>indicator=True</code> este și el util, dar doar adaugă o "
-              "coloană care arată din ce tabel provine fiecare rând."),
-   manual=
-   "<h2>O eroare fără mesaj de eroare</h2>"
+                   "greșite."}}),
+   manual="<h2>O eroare fără mesaj de eroare</h2>"
    "<p>Un join potrivește fiecare rând din stânga cu fiecare rând din dreapta "
    "care are aceeași cheie. Când cheia este unică în ambele tabele, rezultatul "
    "este cel așteptat. Când nu este, tabelul crește, iar valorile din stânga "
@@ -469,6 +456,25 @@ sl("s6", "Unirea tabelelor", "Rânduri multiplicate",
           "este unică. Dacă unitatea dorită este într-adevăr țara-an, cheia "
           "este <code>on=[\"cod\", \"an\"]</code>, nu doar codul."))
 
+sl("s6b", "Unirea tabelelor", "Prevenirea",
+   "<h2>Prevenirea multiplicării rândurilor</h2>"
+   + nota("Prevenire",
+          "<code>pd.merge(..., validate=\"one_to_one\")</code> produce o eroare "
+          "dacă cheia nu este unică. Un singur parametru în plus evită "
+          "refacerea analizei."),
+   manual="",
+   dupa=verif("c5-v4", 2,
+              "Vrei ca merge-ul să se oprească cu o eroare dacă o cheie apare "
+              "de mai multe ori în dreapta. Ce parametru adaugi?",
+              ["how=\"inner\"",
+               "on=[\"cod\", \"an\"]",
+               "validate=\"one_to_one\"",
+               "indicator=True"],
+              "<code>validate</code> verifică relația dintre chei și produce o "
+              "eroare dacă relația nu este cea declarată. "
+              "<code>indicator=True</code> este și el util, dar doar adaugă o "
+              "coloană care arată din ce tabel provine fiecare rând."))
+
 
 sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
    "<h2>Aceeași țară, notații diferite</h2>"
@@ -478,37 +484,8 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
            [["Facebook SCI", "~RO", "ISO 3166-1 alpha-2"],
             ["Banca Mondială", "~ROU", "ISO 3166-1 alpha-3"],
             ["Eurostat", "~RO", "NUTS 0; excepții: Grecia este EL, Regatul Unit este UK"],
-            ["Un fișier completat manual", "~Romania, România, ROMANIA", "niciun standard"]])
-   + ix("cod", "Armonizarea cheilor", {
-       "id": "c5-cod-chei", "indiciu": "Prima îmbinare se face după o coloană cu același nume în ambele tabele, deci on. Cheile comune sunt intersecția a două mulțimi: operatorul &. Când coloanele-cheie au nume diferite, se folosesc left_on și right_on.",
-       "iesire": "171 chei comune din 178", "fisier": "agregare/chei.py",
-       "sarcina": "Banca Mondială folosește coduri de trei litere, SCI coduri "
-                  "de două litere. Adu tabelul Băncii Mondiale la cheia SCI "
-                  "și verifică potrivirea.",
-       "cod": "# tabelul de traducere, adus o singura data\n"
-              "harta = pd.read_csv(\"date/referinta/coduri.csv\")  # iso3, iso2\n\n"
-              "# aducem codul de 3 litere la cel de 2\n"
-              "bm = bm.merge(harta, {{1}}=\"iso3\", how=\"left\")\n\n"
-              "# INAINTE de a imbina: cate chei chiar se potrivesc?\n"
-              "comune = set(sci[\"cod\"]) {{2}} set(bm[\"iso2\"])\n"
-              "print(len(comune), \"chei comune din\", len(set(sci[\"cod\"])))\n\n"
-              "# abia acum\n"
-              "d = sci.merge(bm, left_on=\"cod\", {{3}}=\"iso2\", how=\"left\")",
-       "goluri": {
-           "1": {"ok": ["on"], "ajutor": "parametrul"},
-           "2": {"ok": ["&", "intersection"], "ajutor": "operatorul"},
-           "3": {"ok": ["right_on"], "ajutor": "parametrul"}},
-       "laBine": "Numărarea cheilor comune înainte de îmbinare previne "
-                 "majoritatea erorilor de potrivire.",
-       "laRau": "În Python, intersecția a două mulțimi se scrie cu un singur "
-                "caracter. Când coloanele-cheie au nume diferite, "
-                "<code>on</code> se înlocuiește cu doi parametri.",
-       "explicatie": "Numărul tipărit la mijloc este diagnosticul: dacă din "
-                     "178 de chei se potrivesc 12, problema nu ține de "
-                     "<code>merge</code>, ci de coduri, și se rezolvă înainte "
-                     "de îmbinare, nu după."}),
-   manual=
-   "<h2>Aceeași țară, notații diferite</h2>"
+            ["Un fișier completat manual", "~Romania, România, ROMANIA", "niciun standard"]]),
+   manual="<h2>Aceeași țară, notații diferite</h2>"
    "<p>Fiecare sursă are propriul nomenclator, iar codurile seamănă suficient "
    "de mult încât să pară interschimbabile, deși nu sunt.</p>"
    + tabel(["Sursă", "Codul României", "Tip de cod"],
@@ -539,6 +516,38 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
        "laRau": "Intersecția a două mulțimi se scrie cu un singur caracter.",
        "explicatie": "Dacă din 178 de chei se potrivesc 12, problema ține de "
                      "coduri, nu de <code>merge</code>."}))
+
+sl("s7b", "Unirea tabelelor", "Armonizarea cheilor",
+   "<h2>Armonizarea cheilor</h2>"
+   + ix("cod", "Armonizarea cheilor", {
+       "id": "c5-cod-chei", "indiciu": "Prima îmbinare se face după o coloană cu același nume în ambele tabele, deci on. Cheile comune sunt intersecția a două mulțimi: operatorul &. Când coloanele-cheie au nume diferite, se folosesc left_on și right_on.",
+       "iesire": "171 chei comune din 178", "fisier": "agregare/chei.py",
+       "sarcina": "Banca Mondială folosește coduri de trei litere, SCI coduri "
+                  "de două litere. Adu tabelul Băncii Mondiale la cheia SCI "
+                  "și verifică potrivirea.",
+       "cod": "# tabelul de traducere, adus o singura data\n"
+              "harta = pd.read_csv(\"date/referinta/coduri.csv\")  # iso3, iso2\n\n"
+              "# aducem codul de 3 litere la cel de 2\n"
+              "bm = bm.merge(harta, {{1}}=\"iso3\", how=\"left\")\n\n"
+              "# INAINTE de a imbina: cate chei chiar se potrivesc?\n"
+              "comune = set(sci[\"cod\"]) {{2}} set(bm[\"iso2\"])\n"
+              "print(len(comune), \"chei comune din\", len(set(sci[\"cod\"])))\n\n"
+              "# abia acum\n"
+              "d = sci.merge(bm, left_on=\"cod\", {{3}}=\"iso2\", how=\"left\")",
+       "goluri": {
+           "1": {"ok": ["on"], "ajutor": "parametrul"},
+           "2": {"ok": ["&", "intersection"], "ajutor": "operatorul"},
+           "3": {"ok": ["right_on"], "ajutor": "parametrul"}},
+       "laBine": "Numărarea cheilor comune înainte de îmbinare previne "
+                 "majoritatea erorilor de potrivire.",
+       "laRau": "În Python, intersecția a două mulțimi se scrie cu un singur "
+                "caracter. Când coloanele-cheie au nume diferite, "
+                "<code>on</code> se înlocuiește cu doi parametri.",
+       "explicatie": "Numărul tipărit la mijloc este diagnosticul: dacă din "
+                     "178 de chei se potrivesc 12, problema nu ține de "
+                     "<code>merge</code>, ci de coduri, și se rezolvă înainte "
+                     "de îmbinare, nu după."}),
+   manual="")
 
 
 sl("s8", "Unirea tabelelor", "Unitatea de analiză",
@@ -618,8 +627,41 @@ sl("s9", "Unirea tabelelor", "Agregarea",
        "laBine": "Trei rânduri inițiale devin două rânduri, unul pe țară.",
        "explicatie": "Rândurile cu aceeași țară formează un grup, iar valorile se însumează: RO = 10 + 30 = 40, IT = 5. "
                      "Grupurile sunt afișate în ordine alfabetică, de aceea IT apare primul. Este aceeași schimbare a "
-                     "unității de analiză, de la pereche la țară, ca în exercițiul de mai jos."})
+                     "unității de analiză, de la pereche la țară, ca în exercițiul de mai jos."}),
+   manual="<h2>De la perechi la țări</h2>"
+   "<p>Agregarea este etapa în care datele își schimbă unitatea de analiză. "
+   "Este și etapa în care se iau, adesea implicit, decizii teoretice: funcția "
+   "folosită pentru a rezuma mai multe rânduri într-unul singur.</p>"
    + ix("pas", "De la regiuni la țări", PAS_AGREG)
+   + ix("cod", "Schimbarea unității de analiză", {
+       "id": "c5-cod-agregare", "indiciu": "Gruparea se face cu groupby. Media se cere ca șir de caractere, la fel ca \"sum\" de deasupra: \"mean\". La final, reset_index transformă indexul de grupare înapoi în coloană.",
+       "iesire": "(31684, 3)\n(178, 4)", "fisier": "agregare/agrega.py",
+       "sarcina": "De la un rând pe pereche la un rând pe țară.",
+       "cod": "print(d.shape)\n\n"
+              "t = (d\n"
+              "     .{{1}}(\"tara_sursa\")\n"
+              "     .agg(total=(\"sci\", \"sum\"),\n"
+              "          medie=(\"sci\", {{2}}),\n"
+              "          parteneri=(\"tara_tinta\", \"nunique\"))\n"
+              "     .{{3}}())\n\n"
+              "print(t.shape)",
+       "goluri": {
+           "1": {"ok": ["groupby"], "ajutor": "metoda"},
+           "2": {"ok": ["\"mean\"", "'mean'"], "ajutor": "funcția"},
+           "3": {"ok": ["reset_index"], "ajutor": "metoda"}},
+       "laBine": "<code>reset_index()</code> transformă cheia înapoi în coloană.",
+       "laRau": "Al doilea gol se scrie ca șir de caractere, între ghilimele.",
+       "explicatie": "Suma favorizează țările cu mulți parteneri, media nu "
+                     "depinde de numărul de parteneri, iar numărul de parteneri "
+                     "măsoară întinderea, nu intensitatea."}))
+
+sl("s9b", "Unirea tabelelor", "De la regiuni la țări",
+   "<h2>De la regiuni la țări</h2>"
+   + ix("pas", "De la regiuni la țări", PAS_AGREG),
+   manual="")
+
+sl("s9c", "Unirea tabelelor", "Schimbarea unității",
+   "<h2>Schimbarea unității de analiză</h2>"
    + ix("cod", "Schimbarea unității de analiză", {
        "id": "c5-cod-agregare", "indiciu": "Gruparea se face cu groupby. Media se cere ca șir de caractere, la fel ca \"sum\" de deasupra: \"mean\". La final, reset_index transformă indexul de grupare înapoi în coloană.",
        "iesire": "(31684, 3)\n(178, 4)", "fisier": "agregare/agrega.py",
@@ -652,33 +694,7 @@ sl("s9", "Unirea tabelelor", "Agregarea",
                      "parteneri, iar <code>parteneri</code> nu măsoară "
                      "intensitatea legăturilor, ci întinderea lor. Alegerea "
                      "dintre ele este teoretică, nu tehnică."}),
-   manual=
-   "<h2>De la perechi la țări</h2>"
-   "<p>Agregarea este etapa în care datele își schimbă unitatea de analiză. "
-   "Este și etapa în care se iau, adesea implicit, decizii teoretice: funcția "
-   "folosită pentru a rezuma mai multe rânduri într-unul singur.</p>"
-   + ix("pas", "De la regiuni la țări", PAS_AGREG)
-   + ix("cod", "Schimbarea unității de analiză", {
-       "id": "c5-cod-agregare", "indiciu": "Gruparea se face cu groupby. Media se cere ca șir de caractere, la fel ca \"sum\" de deasupra: \"mean\". La final, reset_index transformă indexul de grupare înapoi în coloană.",
-       "iesire": "(31684, 3)\n(178, 4)", "fisier": "agregare/agrega.py",
-       "sarcina": "De la un rând pe pereche la un rând pe țară.",
-       "cod": "print(d.shape)\n\n"
-              "t = (d\n"
-              "     .{{1}}(\"tara_sursa\")\n"
-              "     .agg(total=(\"sci\", \"sum\"),\n"
-              "          medie=(\"sci\", {{2}}),\n"
-              "          parteneri=(\"tara_tinta\", \"nunique\"))\n"
-              "     .{{3}}())\n\n"
-              "print(t.shape)",
-       "goluri": {
-           "1": {"ok": ["groupby"], "ajutor": "metoda"},
-           "2": {"ok": ["\"mean\"", "'mean'"], "ajutor": "funcția"},
-           "3": {"ok": ["reset_index"], "ajutor": "metoda"}},
-       "laBine": "<code>reset_index()</code> transformă cheia înapoi în coloană.",
-       "laRau": "Al doilea gol se scrie ca șir de caractere, între ghilimele.",
-       "explicatie": "Suma favorizează țările cu mulți parteneri, media nu "
-                     "depinde de numărul de parteneri, iar numărul de parteneri "
-                     "măsoară întinderea, nu intensitatea."}))
+   manual="")
 
 
 sl("s10", "Unirea tabelelor", "Join pe index",
@@ -871,11 +887,7 @@ sl("s13", "Baze de date", "Conectarea",
                      "înainte de primul <code>add</code>. În depozit se pune un "
                      "<code>.env.exemplu</code> cu numele variabilelor și "
                      "valori fictive, ca colegii să știe ce variabile trebuie "
-                     "definite."})
-   + nota("Atenție", "Șirul de conectare conține parola în clar. Dacă ajunge "
-                     "din greșeală într-un commit, ștergerea lui nu este "
-                     "suficientă, pentru că rămâne în istoric. Parola trebuie "
-                     "schimbată imediat din Neon."),
+                     "definite."}),
    manual=
    "<h2>Șirul de conectare și păstrarea lui</h2>"
    "<p>Neon furnizează un șir de forma "
@@ -908,7 +920,11 @@ sl("s13", "Baze de date", "Conectarea",
                  "de interpretat cu un mesaj clar.",
        "laRau": "Toate trei sunt importate în primele patru linii.",
        "explicatie": "Dacă parola ajunge într-un commit, trebuie schimbată din "
-                     "Neon: ștergerea din fișier nu o elimină din istoric."}))
+                     "Neon: ștergerea din fișier nu o elimină din istoric."})
+   + nota("Atenție", "Șirul de conectare conține parola în clar. Dacă ajunge "
+                     "din greșeală într-un commit, ștergerea lui nu este "
+                     "suficientă, pentru că rămâne în istoric. Parola trebuie "
+                     "schimbată imediat din Neon."))
 
 
 sl("s14", "Baze de date", "Scriere și citire",
@@ -973,7 +989,39 @@ sl("s15", "Baze de date", "SQL: noțiunile de bază",
    "<h2>Patru clauze și ordinea lor</h2>"
    "<p>Aceleași operații ca în pandas, scrise în limbajul bazei de date. "
    "Avantajul: filtrarea are loc în bază, iar înapoi vine doar rezultatul cerut.</p>"
+   + ix("pas", "Ordinea de execuție", PAS_SQL),
+   manual="<h2>Patru clauze și ordinea lor</h2>"
+   "<p>Proiectul nu cere SQL avansat. Sunt suficiente cinci construcții, care "
+   "acoperă aproape toate operațiile făcute în pandas.</p>"
+   + tabel(["În pandas", "În SQL"],
+           [["~d[d.cod == 'RO']", "~where cod = 'RO'"],
+            ["~d.merge(t, on='cod')", "~join tari t on t.cod = d.cod"],
+            ["~d.groupby('cod').sum()", "~group by cod"],
+            ["~d.sort_values('sci', ascending=False)", "~order by sci desc"],
+            ["~d.head(10)", "~limit 10"]])
    + ix("pas", "Ordinea de execuție", PAS_SQL)
+   + ix("cod", "Scrie interogarea", {
+       "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori primele: ordine descrescătoare, desc.",
+       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  69327\n DE  |   776424 |  91228\n ES  |   620463 |  54179", "fisier": "baza/intrebari.sql",
+       "sarcina": "Cele zece țări cu cei mai mulți cetățeni români, cu SCI-ul lor.",
+       "cod": "select m.geo, m.persoane, s.sci\n"
+              "from migratie m\n"
+              "{{1}} legaturi s on s.tara_1 = 'RO' and s.tara_2 = m.geo\n"
+              "{{2}} m.citizen = 'RO'\n"
+              "order by m.persoane {{3}}\n"
+              "limit 10;",
+       "goluri": {
+           "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"},
+           "2": {"ok": ["where", "WHERE"], "ajutor": "filtrarea"},
+           "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}},
+       "laBine": "<code>join ... on</code> este echivalentul lui <code>pd.merge</code>.",
+       "laRau": "Al treilea gol așază valorile mari primele.",
+       "explicatie": "Ordinea de scriere nu este ordinea de execuție: "
+                     "<code>where</code>, apoi grupare, apoi sortare, apoi "
+                     "<code>limit</code>."}))
+
+sl("s15b", "Baze de date", "Scrierea interogării",
+   "<h2>Scrie interogarea</h2>"
    + ix("cod", "Scrie interogarea", {
        "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori primele: ordine descrescătoare, desc.",
        "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  69327\n DE  |   776424 |  91228\n ES  |   620463 |  54179", "fisier": "baza/intrebari.sql",
@@ -1008,36 +1056,7 @@ sl("s15", "Baze de date", "SQL: noțiunile de bază",
           "Italia, Germania și Spania conduc la migrație, dar SCI-urile lor nu "
           "urmează aceeași ordine. Este întrebarea din cursul 1, reprodusă de "
           "această dată printr-o interogare.", True),
-   manual=
-   "<h2>Patru clauze și ordinea lor</h2>"
-   "<p>Proiectul nu cere SQL avansat. Sunt suficiente cinci construcții, care "
-   "acoperă aproape toate operațiile făcute în pandas.</p>"
-   + tabel(["În pandas", "În SQL"],
-           [["~d[d.cod == 'RO']", "~where cod = 'RO'"],
-            ["~d.merge(t, on='cod')", "~join tari t on t.cod = d.cod"],
-            ["~d.groupby('cod').sum()", "~group by cod"],
-            ["~d.sort_values('sci', ascending=False)", "~order by sci desc"],
-            ["~d.head(10)", "~limit 10"]])
-   + ix("pas", "Ordinea de execuție", PAS_SQL)
-   + ix("cod", "Scrie interogarea", {
-       "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori primele: ordine descrescătoare, desc.",
-       "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  69327\n DE  |   776424 |  91228\n ES  |   620463 |  54179", "fisier": "baza/intrebari.sql",
-       "sarcina": "Cele zece țări cu cei mai mulți cetățeni români, cu SCI-ul lor.",
-       "cod": "select m.geo, m.persoane, s.sci\n"
-              "from migratie m\n"
-              "{{1}} legaturi s on s.tara_1 = 'RO' and s.tara_2 = m.geo\n"
-              "{{2}} m.citizen = 'RO'\n"
-              "order by m.persoane {{3}}\n"
-              "limit 10;",
-       "goluri": {
-           "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"},
-           "2": {"ok": ["where", "WHERE"], "ajutor": "filtrarea"},
-           "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}},
-       "laBine": "<code>join ... on</code> este echivalentul lui <code>pd.merge</code>.",
-       "laRau": "Al treilea gol așază valorile mari primele.",
-       "explicatie": "Ordinea de scriere nu este ordinea de execuție: "
-                     "<code>where</code>, apoi grupare, apoi sortare, apoi "
-                     "<code>limit</code>."}))
+   manual="")
 
 
 sl("s16", "Baze de date", "Ramurile bazei",
@@ -1116,8 +1135,7 @@ sl("s17", "Baze de date", "Bază sau pandas",
 
 sl("s19", "Proiectul tău", "Tabelul final",
    "<h2>Un tabel, o unitate, o bază</h2>"
-   "<p>Sarcinile până la cursul următor.</p>"
-   + ix("etape", "Pașii", {
+   + ix("etape", "Pașii până la cursul următor", {
        "titlu": "Patru pași", "intro": "Selectează fiecare pas pentru detalii.",
        "etape": [
            {"nume": "Scrieți unitatea", "unde": "decizii.md",

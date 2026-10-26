@@ -1,6 +1,6 @@
 {
  "capitol": "c3",
- "total": 24,
+ "total": 32,
  "sarcini": 12,
  "slide": [
   {
@@ -38,20 +38,27 @@
   },
   {
    "nr": 5,
-   "id": "s5",
+   "id": "s4b",
    "grup": "Ce face Git",
-   "titlu": "Verificare",
+   "titlu": "Instantaneul de la add",
    "sarcini": []
   },
   {
    "nr": 6,
+   "id": "s5",
+   "grup": "Ce face Git",
+   "titlu": "Git sau GitHub",
+   "sarcini": []
+  },
+  {
+   "nr": 7,
    "id": "s6",
    "grup": "Primii pași",
    "titlu": "Depozitul",
    "sarcini": []
   },
   {
-   "nr": 7,
+   "nr": 8,
    "id": "s7",
    "grup": "Primii pași",
    "titlu": "Identitatea autorului",
@@ -63,15 +70,30 @@
    ]
   },
   {
-   "nr": 8,
+   "nr": 9,
    "id": "s8",
    "grup": "Primii pași",
    "titlu": "Primul commit",
+   "sarcini": []
+  },
+  {
+   "nr": 10,
+   "id": "s8b",
+   "grup": "Primii pași",
+   "titlu": "Ce afișează git status",
    "sarcini": [
     {
      "id": "c3-prezice-status",
      "fel": "cod"
-    },
+    }
+   ]
+  },
+  {
+   "nr": 11,
+   "id": "s8c",
+   "grup": "Primii pași",
+   "titlu": "Ordinea pașilor",
+   "sarcini": [
     {
      "id": "c3-ordine-commit",
      "fel": "cod"
@@ -79,7 +101,7 @@
    ]
   },
   {
-   "nr": 9,
+   "nr": 12,
    "id": "s9",
    "grup": "Primii pași",
    "titlu": "Ce nu se versionează",
@@ -103,17 +125,24 @@
    ]
   },
   {
-   "nr": 10,
+   "nr": 13,
    "id": "s10",
    "grup": "GitHub",
    "titlu": "Ce este GitHub",
    "sarcini": []
   },
   {
-   "nr": 11,
+   "nr": 14,
    "id": "s11",
    "grup": "GitHub",
    "titlu": "Legarea depozitelor",
+   "sarcini": []
+  },
+  {
+   "nr": 15,
+   "id": "s11b",
+   "grup": "GitHub",
+   "titlu": "Legarea de GitHub",
    "sarcini": [
     {
      "id": "c3-cod-remote",
@@ -122,14 +151,14 @@
    ]
   },
   {
-   "nr": 12,
+   "nr": 16,
    "id": "s12",
    "grup": "GitHub",
    "titlu": "Fluxul complet",
    "sarcini": []
   },
   {
-   "nr": 13,
+   "nr": 17,
    "id": "s14",
    "grup": "În echipă",
    "titlu": "Ramuri",
@@ -141,14 +170,14 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 18,
    "id": "s14b",
    "grup": "În echipă",
    "titlu": "Fluxul echipei",
    "sarcini": []
   },
   {
-   "nr": 15,
+   "nr": 19,
    "id": "s15",
    "grup": "În echipă",
    "titlu": "Conflictele",
@@ -160,35 +189,49 @@
    ]
   },
   {
-   "nr": 16,
+   "nr": 20,
    "id": "s16",
    "grup": "În echipă",
    "titlu": "Regulile echipei",
    "sarcini": []
   },
   {
-   "nr": 17,
+   "nr": 21,
    "id": "s17",
    "grup": "Cadrul teoretic",
    "titlu": "De ce un cadru",
    "sarcini": []
   },
   {
-   "nr": 18,
+   "nr": 22,
    "id": "s18",
    "grup": "Cadrul teoretic",
    "titlu": "Căutarea literaturii",
    "sarcini": []
   },
   {
-   "nr": 19,
+   "nr": 23,
+   "id": "s18b",
+   "grup": "Cadrul teoretic",
+   "titlu": "Matricea literaturii",
+   "sarcini": []
+  },
+  {
+   "nr": 24,
    "id": "s19",
    "grup": "Cadrul teoretic",
    "titlu": "Cadrul nostru",
    "sarcini": []
   },
   {
-   "nr": 20,
+   "nr": 25,
+   "id": "s19b",
+   "grup": "Cadrul teoretic",
+   "titlu": "Literatura cadrului",
+   "sarcini": []
+  },
+  {
+   "nr": 26,
    "id": "s20",
    "grup": "Cadrul teoretic",
    "titlu": "Întrebarea echipei",
@@ -200,7 +243,7 @@
    ]
   },
   {
-   "nr": 21,
+   "nr": 27,
    "id": "s21",
    "grup": "Datele",
    "titlu": "Explorarea inițială",
@@ -212,17 +255,31 @@
    ]
   },
   {
-   "nr": 22,
+   "nr": 28,
+   "id": "s21b",
+   "grup": "Datele",
+   "titlu": "Țări și grupuri de țări",
+   "sarcini": []
+  },
+  {
+   "nr": 29,
    "id": "s21n",
    "grup": "Datele",
    "titlu": "Regiunile, într-un tabel",
    "sarcini": []
   },
   {
-   "nr": 23,
+   "nr": 30,
    "id": "s22",
    "grup": "Proiectul echipei",
    "titlu": "Depozitul echipei",
+   "sarcini": []
+  },
+  {
+   "nr": 31,
+   "id": "s22b",
+   "grup": "Proiectul echipei",
+   "titlu": "Verificarea depozitului",
    "sarcini": [
     {
      "id": "c3-dovada-depozit",
@@ -231,7 +288,7 @@
    ]
   },
   {
-   "nr": 24,
+   "nr": 32,
    "id": "s23",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

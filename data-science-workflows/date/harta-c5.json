@@ -1,6 +1,6 @@
 {
  "capitol": "c5",
- "total": 20,
+ "total": 26,
  "sarcini": 12,
  "slide": [
   {
@@ -54,6 +54,13 @@
    "id": "s5",
    "grup": "Unirea tabelelor",
    "titlu": "Îmbinarea, în cod",
+   "sarcini": []
+  },
+  {
+   "nr": 6,
+   "id": "s5b",
+   "grup": "Unirea tabelelor",
+   "titlu": "Adăugarea populației",
    "sarcini": [
     {
      "id": "c5-cod-merge",
@@ -62,10 +69,17 @@
    ]
   },
   {
-   "nr": 6,
+   "nr": 7,
    "id": "s6",
    "grup": "Unirea tabelelor",
    "titlu": "Rânduri multiplicate",
+   "sarcini": []
+  },
+  {
+   "nr": 8,
+   "id": "s6b",
+   "grup": "Unirea tabelelor",
+   "titlu": "Prevenirea",
    "sarcini": [
     {
      "id": "c5-v4",
@@ -82,10 +96,17 @@
    ]
   },
   {
-   "nr": 7,
+   "nr": 9,
    "id": "s7",
    "grup": "Unirea tabelelor",
    "titlu": "Când cheile nu se potrivesc",
+   "sarcini": []
+  },
+  {
+   "nr": 10,
+   "id": "s7b",
+   "grup": "Unirea tabelelor",
+   "titlu": "Armonizarea cheilor",
    "sarcini": [
     {
      "id": "c5-cod-chei",
@@ -94,14 +115,14 @@
    ]
   },
   {
-   "nr": 8,
+   "nr": 11,
    "id": "s8",
    "grup": "Unirea tabelelor",
    "titlu": "Unitatea de analiză",
    "sarcini": []
   },
   {
-   "nr": 9,
+   "nr": 12,
    "id": "s9",
    "grup": "Unirea tabelelor",
    "titlu": "Agregarea",
@@ -109,7 +130,22 @@
     {
      "id": "c5-prezice-grup",
      "fel": "cod"
-    },
+    }
+   ]
+  },
+  {
+   "nr": 13,
+   "id": "s9b",
+   "grup": "Unirea tabelelor",
+   "titlu": "De la regiuni la țări",
+   "sarcini": []
+  },
+  {
+   "nr": 14,
+   "id": "s9c",
+   "grup": "Unirea tabelelor",
+   "titlu": "Schimbarea unității",
+   "sarcini": [
     {
      "id": "c5-cod-agregare",
      "fel": "cod"
@@ -117,28 +153,28 @@
    ]
   },
   {
-   "nr": 10,
+   "nr": 15,
    "id": "s10",
    "grup": "Unirea tabelelor",
    "titlu": "Join pe index",
    "sarcini": []
   },
   {
-   "nr": 11,
+   "nr": 16,
    "id": "s11",
    "grup": "Baze de date",
    "titlu": "Ce este Neon",
    "sarcini": []
   },
   {
-   "nr": 12,
+   "nr": 17,
    "id": "s12",
    "grup": "Baze de date",
    "titlu": "Postgres sau MySQL",
    "sarcini": []
   },
   {
-   "nr": 13,
+   "nr": 18,
    "id": "s13",
    "grup": "Baze de date",
    "titlu": "Conectarea",
@@ -150,7 +186,7 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 19,
    "id": "s14",
    "grup": "Baze de date",
    "titlu": "Scriere și citire",
@@ -162,10 +198,17 @@
    ]
   },
   {
-   "nr": 15,
+   "nr": 20,
    "id": "s15",
    "grup": "Baze de date",
    "titlu": "SQL: noțiunile de bază",
+   "sarcini": []
+  },
+  {
+   "nr": 21,
+   "id": "s15b",
+   "grup": "Baze de date",
+   "titlu": "Scrierea interogării",
    "sarcini": [
     {
      "id": "c5-cod-sql",
@@ -174,21 +217,21 @@
    ]
   },
   {
-   "nr": 16,
+   "nr": 22,
    "id": "s16",
    "grup": "Baze de date",
    "titlu": "Ramurile bazei",
    "sarcini": []
   },
   {
-   "nr": 17,
+   "nr": 23,
    "id": "s17",
    "grup": "Baze de date",
    "titlu": "Bază sau pandas",
    "sarcini": []
   },
   {
-   "nr": 18,
+   "nr": 24,
    "id": "s19",
    "grup": "Proiectul tău",
    "titlu": "Tabelul final",
@@ -200,7 +243,7 @@
    ]
   },
   {
-   "nr": 19,
+   "nr": 25,
    "id": "s20",
    "grup": "Proiectul tău",
    "titlu": "Unitatea proiectului",
@@ -212,7 +255,7 @@
    ]
   },
   {
-   "nr": 20,
+   "nr": 26,
    "id": "s21",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

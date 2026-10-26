@@ -6,14 +6,14 @@
 <title>Cursul 1 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, tipurile de date, JSON și mediul de lucru.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=73">
-<link rel="stylesheet" href="../../css/sistem.css?v=73">
-<link rel="stylesheet" href="../../css/slide.css?v=73">
-<link rel="stylesheet" href="../../css/interactiv.css?v=73">
-<link rel="stylesheet" href="../../css/grafice.css?v=73">
-<link rel="stylesheet" href="../../css/exercitii.css?v=73">
-<link rel="stylesheet" href="../../css/explorator.css?v=73">
-<script src="../../js/tema.js?v=73"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=74">
+<link rel="stylesheet" href="../../css/sistem.css?v=74">
+<link rel="stylesheet" href="../../css/slide.css?v=74">
+<link rel="stylesheet" href="../../css/interactiv.css?v=74">
+<link rel="stylesheet" href="../../css/grafice.css?v=74">
+<link rel="stylesheet" href="../../css/exercitii.css?v=74">
+<link rel="stylesheet" href="../../css/explorator.css?v=74">
+<script src="../../js/tema.js?v=74"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 1 · Introducere și configurare" data-crom="1"></div>
@@ -32,8 +32,13 @@
 <h2>Punctul de pornire</h2><div class="ix" data-ix="autoevaluare">
   <div class="ix__cap"><span class="ix__fel">Autoevaluare</span><span class="ix__t">Autoevaluare, fără notă</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c1-autoevaluare", "teme": [{"cheie": "python", "t": "Python", "d": "variabile, liste, dicționare, funcții"}, {"cheie": "linie", "t": "Linia de comandă", "d": "terminal, cd, rularea unui script"}, {"cheie": "git", "t": "Git și GitHub", "d": "commit, branch, lucru în echipă"}, {"cheie": "sql", "t": "SQL", "d": "SELECT, JOIN, tabele"}, {"cheie": "api", "t": "API-uri", "d": "a cere date unui serviciu, prin cod"}, {"cheie": "stat", "t": "Statistică", "d": "distribuții, corelație, regresie"}]}</script></div>
-</div><div class="ix" data-ix="asteptari">
-  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ce aștepți de la curs</span></div>
+</div>
+
+</section>
+
+<section class="sld" id="s2b" data-grup="Cursul" data-t="Așteptările">
+<h2>Ce aștepți de la curs</h2><div class="ix" data-ix="asteptari">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Așteptările</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c1-asteptari", "sarcina": "Două-trei rânduri. Răspunsurile sunt citite înainte de cursul următor, iar cursul se ajustează în funcție de ele.", "exemplu": "De exemplu: vreau să pot colecta singur date de pe un site și să le integrez într-un singur tabel."}</script></div>
 </div>
 
@@ -245,8 +250,13 @@ pip install -r requirements.txt</code></pre><p class="venv2__os">macOS: <code>py
   <div class="ix__cap"><span class="ix__fel">Terminal</span><span class="ix__t">Terminalul pornește în folderul tău de utilizator</span></div>
   <div class="ix__corp"><p class="ix__sarcina">Intră în <code>dsw</code>, creează mediul, activează-l și instalează pachetele. Comanda <code>ajutor</code> afișează comenzile necesare, în ordine.</p></div>
 </div>
+
+</section>
+
+<section class="sld" id="s17o" data-grup="Mediul de lucru" data-t="Ordinea comenzilor">
+<h2>Ordinea comenzilor</h2>
 <div class="ix" data-ix="ordine">
-  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Ordinea comenzilor</span></div>
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Mediul virtual, de la zero</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c1-cod-venv", "sarcina": "Pune comenzile în ordinea în care se dau, de la folderul tău de utilizator până la pachetele instalate.", "linii": ["cd dsw", "py -m venv .venv", ".\\.venv\\Scripts\\Activate.ps1", "pip install -r requirements.txt", "pip list"], "indiciu": "Mediul se creează în dsw, deci primul pas este intrarea în acest folder. pip instalează în mediu numai după activarea acestuia.", "iesire": "(.venv) PS C:\\Users\\student\\dsw> pip list\nPackage    Version\n---------- -------\nipykernel  …\npandas     …\nrequests   …", "laBine": "Aceasta este secvența care se execută o singură dată, la cursul 1.", "laRau": "Verifică, pentru fiecare comandă, folderul curent și interpretorul Python care o execută.", "explicatie": "Dacă <code>py -m venv .venv</code> vine înainte de <code>cd dsw</code>, mediul ajunge în folderul tău de utilizator, fără nicio eroare. <code>pip install</code> înainte de activare pune pachetele în Python-ul comun, iar <code>requirements.txt</code> se găsește doar în <code>dsw</code>."}</script></div>
 </div>
 </section>
@@ -275,11 +285,11 @@ pip install -r requirements.txt</code></pre><p class="venv2__os">macOS: <code>py
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=73"></script>
+<script type="module" src="../../js/antet.js?v=74"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=73";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=73";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=73";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=74";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=74";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=74";
 pornesteIx();
 pornesteVerif("c1");
 pornesteSlide({ capitol:"c1", lectie:"c1-introducere-si-mediu" });

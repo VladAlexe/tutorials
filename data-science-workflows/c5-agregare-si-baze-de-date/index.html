@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 5. Agregare și baze de date · Fluxuri de lucru</title>
 <meta name="description" content="Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.">
-<link rel="stylesheet" href="../css/fonturi.css?v=73">
-<link rel="stylesheet" href="../css/sistem.css?v=73">
-<link rel="stylesheet" href="../css/intrare.css?v=73">
-<script src="../js/tema.js?v=73"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=74">
+<link rel="stylesheet" href="../css/sistem.css?v=74">
+<link rel="stylesheet" href="../css/intrare.css?v=74">
+<script src="../js/tema.js?v=74"></script>
 </head>
 <body>
 
@@ -40,8 +40,8 @@
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
-  <section class="sec sec--despre">
-    <p class="sec__et">Despre</p>
+  <section class="sec sec--alt">
+    <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>Până acum fiecare sursă a fost păstrată în fișierul ei: SCI într-unul, indicatorii Băncii Mondiale în altul, datele de la Eurostat în al treilea. Separarea funcționează cât timp sursele sunt analizate pe rând. Pentru o afirmație de forma „țările cu legătură socială puternică au și X” este nevoie de un singur tabel.</p>
 <p>Unirea tabelelor pare o operație tehnică, dar este o decizie de cercetare: ce se păstrează când o sursă nu conține o țară prezentă în cealaltă. Fiecare tip de join oferă un alt răspuns la această întrebare, iar răspunsul determină câte rânduri rămân în analiză. Prima parte a orei tratează aceste decizii, inclusiv două probleme care nu generează niciun mesaj de eroare: chei care nu se potrivesc și rânduri multiplicate fără avertisment.</p>
 <p>A doua parte mută rezultatul dintr-un fișier CSV într-o bază Postgres pe Neon. Motivul nu este noutatea tehnologiei: atunci când mai multe persoane lucrează pe aceleași date, fișierul partajat devine o sursă de probleme.</p></div>
@@ -128,7 +128,7 @@ cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la 
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=73"), import("../js/ora.js?v=73"), import("../js/curs.js?v=73")]);
+    import("../js/auth.js?v=74"), import("../js/ora.js?v=74"), import("../js/curs.js?v=74")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -156,7 +156,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=73"></script>
-<script type="module" src="../js/subsol.js?v=73"></script>
+<script type="module" src="../js/antet.js?v=74"></script>
+<script type="module" src="../js/subsol.js?v=74"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
    =========================================================================== */
 
 import { createClient } from "./vendor/supabase-js-2.117.0.js";   /* găzduită aici: nicio cerere la un CDN străin */
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=73";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=74";
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }

@@ -320,8 +320,22 @@ sl("s3", "O variabilă", "Coada lungă",
      "logaritmare, asimetria scade sub 0,5; de aceea modelul de la "
      "cursul 7 folosește logaritmul SCI, nu valorile brute.</p>")
 
-sl("s4", "O variabilă", "Descrierea, în cod",
+sl("s4", "O variabilă", "Media și mediana",
    "<h2>Descrierea unei variabile</h2>"
+   + ix("prezice", "Media și mediana", {
+       "id": "c6-prezice-coada", "fisier": "05_explorare.ipynb · 1. O pereche obișnuită",
+       "cod": "import pandas as pd\n\n"
+              "sci = pd.Series([2, 3, 4, 5, 100])   # o pereche foarte legata\n"
+              "print(sci.mean(), sci.median())",
+       "intrebare": "Ce afișează?",
+       "variante": ["4.0 4.0", "22.8 4.0", "22.8 22.8", "4.0 22.8"],
+       "corect": 1,
+       "indiciu": "Media este suma valorilor împărțită la 5. Mediana este valoarea din mijloc a șirului sortat.",
+       "laBine": "O singură valoare extremă ridică media; mediana rămâne neschimbată.",
+       "explicatie": "Media este (2 + 3 + 4 + 5 + 100) / 5 = 22,8, iar mediana este 4. Când media este mult peste "
+                     "mediană, distribuția are o coadă spre dreapta, cum este cazul SCI. De aceea raportăm mediana "
+                     "și lucrăm pe scara logaritmică."}),
+   manual="<h2>Descrierea unei variabile</h2>"
    + ix("prezice", "Media și mediana", {
        "id": "c6-prezice-coada", "fisier": "05_explorare.ipynb · 1. O pereche obișnuită",
        "cod": "import pandas as pd\n\n"
@@ -359,7 +373,12 @@ sl("s4", "O variabilă", "Descrierea, în cod",
                 "numpy pentru logaritm.",
        "explicatie": "În rezultatul <code>describe()</code>, compară media cu "
                      "mediana. O medie mult peste mediană indică o coadă spre "
-                     "dreapta, chiar înainte de calculul asimetriei."}),
+                     "dreapta, chiar înainte de calculul asimetriei."}))
+
+sl("s4b", "O variabilă", "Coada lungă, în date",
+   "<h2>Coada lungă, pe datele reale</h2>"
+   + ix("pas", "Coada lungă, pe datele reale", PAS_COADA),
+   manual="",
    dupa=verif("c6-v1", 2,
               "Media SCI este de peste două ori mai mare decât mediana. Ce "
               "indică acest lucru?",
@@ -371,13 +390,37 @@ sl("s4", "O variabilă", "Descrierea, în cod",
               "mediana nu se modifică. Când diferența este mare, se raportează "
               "mediana sau se lucrează pe scara logaritmică."))
 
+sl("s4c", "O variabilă", "Descrierea, în cod",
+   "<h2>Descrierea unei variabile, în cod</h2>"
+   + ix("cod", "Descrie variabila", {
+       "id": "c6-cod-descrie", "indiciu": "Statisticile descriptive ale unei coloane numerice se obțin cu metoda describe. Asimetria (în engleză, „skewness”) se calculează cu metoda skew. Logaritmul din numpy este np.log.",
+       "iesire": "count       263.0\nmean      39432.6\n50%       15543.0\n...\n7.57\n0.49", "fisier": "eda/univariat.py",
+       "sarcina": "Calculează statisticile descriptive ale SCI, măsoară "
+                  "asimetria și compar-o cu asimetria logaritmului.",
+       "cod": "import numpy as np\nimport pandas as pd\n\n"
+              "d = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n"
+              "# media, mediana, quartilele, minimul, maximul\n"
+              "print(d[\"sci\"].{{1}}())\n\n"
+              "# cat de lunga e coada\n"
+              "print(d[\"sci\"].{{2}}())          # in jur de 7,6\n\n"
+              "# acelasi lucru, pe logaritm\n"
+              "d[\"log_sci\"] = np.{{3}}(d[\"sci\"])\n"
+              "print(d[\"log_sci\"].skew())      # in jur de 0,5",
+       "goluri": {
+           "1": {"ok": ["describe"], "ajutor": "metoda"},
+           "2": {"ok": ["skew"], "ajutor": "metoda"},
+           "3": {"ok": ["log", "log10"], "ajutor": "funcția"}},
+       "laBine": "Asimetria scade de la 7,6 la 0,5: după logaritmare, variabila este aproape simetrică.",
+       "laRau": "Primele două sunt metode ale coloanei; a treia este funcția "
+                "numpy pentru logaritm.",
+       "explicatie": "În rezultatul <code>describe()</code>, compară media cu "
+                     "mediana. O medie mult peste mediană indică o coadă spre "
+                     "dreapta, chiar înainte de calculul asimetriei."}),
+   manual="")
+
 sl("s5", "O variabilă", "Clasamente",
    "<h2>Un clasament și limitele lui</h2>"
-   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia este țara cu cei mai mulți români stabiliți în străinătate. Pe ce loc se află printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "Pe locul al șaselea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI este normalizat la numărul de utilizatori, astfel că o țară mare, cu o diasporă numeroasă, nu ocupă neapărat un loc fruntaș."}})
-   + nota("Clasamentul depinde de măsură",
-          "După SCI, pe primul loc este Moldova; după numărul de români, "
-          "Italia. Un clasament se interpretează doar în raport cu ce "
-          "măsoară.", True),
+   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia este țara cu cei mai mulți români stabiliți în străinătate. Pe ce loc se află printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "Pe locul al șaselea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI este normalizat la numărul de utilizatori, astfel că o țară mare, cu o diasporă numeroasă, nu ocupă neapărat un loc fruntaș."}}),
    manual=
    "<h2>Clasamente</h2>"
    "<p>Clasamentul este cel mai simplu grafic exploratoriu și, totodată, cel "
@@ -436,6 +479,24 @@ sl("s7", "Două variabile", "Corelațiile",
           f"Distanța și granița sunt corelate (r = {ro(r_('dist', 'gr'))}), "
           "deoarece vecinii sunt apropiați. De aceea efectele lor nu pot fi "
           "evaluate separat.", True),
+   manual="<h2>Matricea de corelații</h2>"
+   "<p>Coeficientul de corelație Pearson, <em>r</em>, ia valori între -1 și "
+   "1. O valoare apropiată de 1 indică variabile care cresc împreună; una "
+   "apropiată de -1, variabile care evoluează în sens opus; una apropiată de "
+   "0, absența unei relații liniare. Matricea de corelații prezintă "
+   "coeficienții pentru toate perechile de variabile.</p>"
+   + TAB_CORR
+   + "<p>Matricea arată două lucruri. Primul: migrația este mai puternic "
+     "asociată cu SCI decât distanța. Al doilea: distanța și granița sunt "
+     "corelate între ele, deci efectul uneia se suprapune parțial peste al "
+     "celeilalte. Un model care le include pe amândouă le poate separa; o "
+     "corelație simplă, nu.</p>"
+   + "<pre><code>cols = [\"log_sci\", \"log_distanta\", \"log_la_mie\", \"granita\"]\n"
+     "d[cols].corr()</code></pre>")
+
+sl("s7b", "Două variabile", "Spearman",
+   "<h2>Spearman, pe ranguri</h2>",
+   manual="",
    dupa=ix("prezice", "Spearman, pe ranguri", {
        "id": "c6-prezice-rang", "fisier": "05_explorare.ipynb · 3. H1, distanța",
        "cod": "import pandas as pd\n\n"
@@ -460,22 +521,7 @@ sl("s7", "Două variabile", "Corelațiile",
               "Corelația arată că variabilele variază împreună, nu care o "
               "determină pe cealaltă. Migrația poate crea legături, legăturile "
               "vechi pot atrage migrație sau ambele pot proveni din proximitate. "
-              "Modelul de la cursul 7 separă o parte din aceste efecte."),
-   manual=
-   "<h2>Matricea de corelații</h2>"
-   "<p>Coeficientul de corelație Pearson, <em>r</em>, ia valori între -1 și "
-   "1. O valoare apropiată de 1 indică variabile care cresc împreună; una "
-   "apropiată de -1, variabile care evoluează în sens opus; una apropiată de "
-   "0, absența unei relații liniare. Matricea de corelații prezintă "
-   "coeficienții pentru toate perechile de variabile.</p>"
-   + TAB_CORR
-   + "<p>Matricea arată două lucruri. Primul: migrația este mai puternic "
-     "asociată cu SCI decât distanța. Al doilea: distanța și granița sunt "
-     "corelate între ele, deci efectul uneia se suprapune parțial peste al "
-     "celeilalte. Un model care le include pe amândouă le poate separa; o "
-     "corelație simplă, nu.</p>"
-   + "<pre><code>cols = [\"log_sci\", \"log_distanta\", \"log_la_mie\", \"granita\"]\n"
-     "d[cols].corr()</code></pre>")
+              "Modelul de la cursul 7 separă o parte din aceste efecte."))
 
 
 # ===========================================================================
@@ -577,14 +623,8 @@ HARTA_COM = {
 
 sl("s10", "Harta", "Comunitățile",
    "<h2>Comunități detectate doar din legături</h2>"
-   + ix("pas", "O rețea de cinci noduri", PAS_RETEA)
-   + ix("harta", "Comunitățile SCI, pe regiuni", HARTA_COM)
-   + nota("Metoda",
-          "Algoritmul Louvain grupează regiunile mai puternic legate între ele "
-          "decât cu restul. Culorile sunt doar etichete. Toate nivelurile sunt "
-          'disponibile în <a class="leg" href="../../explorator/">Exploratorul legăturilor sociale</a>.', True),
-   manual=
-   "<h2>Comunitățile</h2>"
+   + ix("pas", "O rețea de cinci noduri", PAS_RETEA),
+   manual="<h2>Comunitățile</h2>"
    "<p>Harta este un mod de explorare a datelor diadice pe care un tabel nu "
    "îl poate înlocui. Fiecare regiune NUTS 2 este colorată după comunitatea "
    "în care o plasează algoritmul Louvain, care identifică grupuri de regiuni "
@@ -602,6 +642,15 @@ sl("s10", "Harta", "Comunitățile",
           "<code>networkx</code>, și se compară cu comunitățile din rețeaua "
           "migrației. Harta de aici este construită din rezultatele acelui "
           "caiet."))
+
+sl("s10b", "Harta", "Comunitățile SCI",
+   "<h2>Comunitățile SCI, pe regiuni</h2>"
+   + ix("harta", "Comunitățile SCI, pe regiuni", HARTA_COM)
+   + nota("Metoda",
+          "Algoritmul Louvain grupează regiunile mai puternic legate între ele "
+          "decât cu restul. Culorile sunt doar etichete. Toate nivelurile sunt "
+          'disponibile în <a class="leg" href="../../explorator/">Exploratorul legăturilor sociale</a>.', True),
+   manual="")
 
 
 # ===========================================================================
@@ -622,18 +671,7 @@ sl("s11", "Grafice înșelătoare", "Axa trunchiată",
           "La graficele cu bare, axa pornește de la zero. La linii și la norii "
           "de puncte poate fi trunchiată, cu condiția ca trunchierea să fie "
           "marcată clar.", True),
-   dupa=verif("c6-v4", 0,
-              "Când este acceptabil ca axa să nu pornească de la zero?",
-              ["La un grafic cu linii sau cu puncte, unde contează forma, nu lungimea",
-               "La orice grafic, dacă diferențele sunt mici",
-               "Niciodată",
-               "La graficele cu bare care au valori mari"],
-              "La graficele cu bare, informația este transmisă de lungime, deci "
-              "o axă trunchiată o distorsionează. La linii și puncte contează "
-              "poziția și forma, iar o axă trunchiată, marcată ca atare, este "
-              "acceptabilă."),
-   manual=
-   "<h2>Grafice care induc în eroare</h2>"
+   manual="<h2>Grafice care induc în eroare</h2>"
    "<p>Un grafic poate fi corect în fiecare valoare și totuși să inducă în "
    "eroare. Cel mai frecvent, prin axa care nu pornește de la zero: la "
    "graficele cu bare, cititorul compară lungimi, iar o axă trunchiată "
@@ -644,6 +682,20 @@ sl("s11", "Grafice înșelătoare", "Axa trunchiată",
      "(pe care țările mari ies mereu în evidență) și medii raportate fără "
      "distribuție. Sunt tratate pe larg în cartea lui Claus Wilke, menționată "
      "la „Legături”.</p>")
+
+sl("s11b", "Grafice înșelătoare", "Axa și scara",
+   "<h2>Când axa poate să nu pornească de la zero</h2>",
+   manual="",
+   dupa=verif("c6-v4", 0,
+              "Când este acceptabil ca axa să nu pornească de la zero?",
+              ["La un grafic cu linii sau cu puncte, unde contează forma, nu lungimea",
+               "La orice grafic, dacă diferențele sunt mici",
+               "Niciodată",
+               "La graficele cu bare care au valori mari"],
+              "La graficele cu bare, informația este transmisă de lungime, deci "
+              "o axă trunchiată o distorsionează. La linii și puncte contează "
+              "poziția și forma, iar o axă trunchiată, marcată ca atare, este "
+              "acceptabilă."))
 
 
 # ===========================================================================

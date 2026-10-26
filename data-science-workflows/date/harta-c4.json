@@ -1,6 +1,6 @@
 {
  "capitol": "c4",
- "total": 21,
+ "total": 27,
  "sarcini": 12,
  "slide": [
   {
@@ -29,6 +29,13 @@
    "id": "s4",
    "grup": "Git în practică",
    "titlu": "Staging și commit",
+   "sarcini": []
+  },
+  {
+   "nr": 5,
+   "id": "s4b",
+   "grup": "Git în practică",
+   "titlu": "Scoaterea din pregătire",
    "sarcini": [
     {
      "id": "c4-cod-staging",
@@ -37,43 +44,39 @@
    ]
   },
   {
-   "nr": 5,
+   "nr": 6,
    "id": "s5",
    "grup": "Git în practică",
    "titlu": "Anulări",
    "sarcini": []
   },
   {
-   "nr": 6,
+   "nr": 7,
    "id": "s6",
    "grup": "Git în practică",
    "titlu": "Ramuri, în practică",
    "sarcini": []
   },
   {
-   "nr": 7,
+   "nr": 8,
    "id": "s7",
    "grup": "Git în practică",
    "titlu": "Depozitul pe GitHub",
    "sarcini": []
   },
   {
-   "nr": 8,
+   "nr": 9,
    "id": "s8",
    "grup": "Curățarea",
    "titlu": "Cele șase etape",
    "sarcini": []
   },
   {
-   "nr": 9,
+   "nr": 10,
    "id": "s9",
    "grup": "Curățarea",
    "titlu": "Profilarea",
    "sarcini": [
-    {
-     "id": "c4-cod-profil",
-     "fel": "cod"
-    },
     {
      "id": "c4-v6",
      "fel": "verificare",
@@ -89,10 +92,29 @@
    ]
   },
   {
-   "nr": 10,
+   "nr": 11,
+   "id": "s9b",
+   "grup": "Curățarea",
+   "titlu": "Profilarea tabelului",
+   "sarcini": [
+    {
+     "id": "c4-cod-profil",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 12,
    "id": "s10",
    "grup": "Curățarea",
    "titlu": "Coduri incompatibile",
+   "sarcini": []
+  },
+  {
+   "nr": 13,
+   "id": "s10b",
+   "grup": "Curățarea",
+   "titlu": "Repararea codurilor",
    "sarcini": [
     {
      "id": "c4-cod-standard",
@@ -101,7 +123,7 @@
    ]
   },
   {
-   "nr": 11,
+   "nr": 14,
    "id": "s11",
    "grup": "Curățarea",
    "titlu": "Duplicatele",
@@ -113,14 +135,14 @@
    ]
   },
   {
-   "nr": 12,
+   "nr": 15,
    "id": "s13",
    "grup": "Valori lipsă și extreme",
    "titlu": "Tratarea valorilor lipsă",
    "sarcini": []
   },
   {
-   "nr": 13,
+   "nr": 16,
    "id": "s14",
    "grup": "Valori lipsă și extreme",
    "titlu": "Valorile lipsă, în cod",
@@ -128,7 +150,15 @@
     {
      "id": "c4-prezice-nan",
      "fel": "cod"
-    },
+    }
+   ]
+  },
+  {
+   "nr": 17,
+   "id": "s14b",
+   "grup": "Valori lipsă și extreme",
+   "titlu": "Tratarea valorilor lipsă",
+   "sarcini": [
     {
      "id": "c4-cod-lipsuri",
      "fel": "cod"
@@ -136,7 +166,7 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 18,
    "id": "s15",
    "grup": "Valori lipsă și extreme",
    "titlu": "Valorile extreme",
@@ -148,10 +178,17 @@
    ]
   },
   {
-   "nr": 15,
+   "nr": 19,
    "id": "s16",
    "grup": "Transformări",
    "titlu": "Lung sau lat",
+   "sarcini": []
+  },
+  {
+   "nr": 20,
+   "id": "s16m",
+   "grup": "Transformări",
+   "titlu": "Din lat în lung",
    "sarcini": [
     {
      "id": "c4-cod-melt",
@@ -160,14 +197,14 @@
    ]
   },
   {
-   "nr": 16,
+   "nr": 21,
    "id": "s16b",
    "grup": "Transformări",
    "titlu": "Două direcții, un rând",
    "sarcini": []
   },
   {
-   "nr": 17,
+   "nr": 22,
    "id": "s17",
    "grup": "Validare",
    "titlu": "Înainte și după",
@@ -179,17 +216,24 @@
    ]
   },
   {
-   "nr": 18,
+   "nr": 23,
    "id": "s18",
    "grup": "Validare",
    "titlu": "Dicționarul de date",
    "sarcini": []
   },
   {
-   "nr": 19,
+   "nr": 24,
    "id": "s19",
    "grup": "Proiectul tău",
    "titlu": "Curățarea datelor proprii",
+   "sarcini": []
+  },
+  {
+   "nr": 25,
+   "id": "s19b",
+   "grup": "Proiectul tău",
+   "titlu": "Dovada curățării",
    "sarcini": [
     {
      "id": "c4-dovada-curatare",
@@ -198,7 +242,7 @@
    ]
   },
   {
-   "nr": 20,
+   "nr": 26,
    "id": "s20",
    "grup": "Proiectul tău",
    "titlu": "Documentarea deciziilor",
@@ -210,7 +254,7 @@
    ]
   },
   {
-   "nr": 21,
+   "nr": 27,
    "id": "s21",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

@@ -329,10 +329,8 @@ MODELE["intai"] = {"q": "M1 conține doar distanța; M2 adaugă numărul de migr
 
 sl("s7", "Modelul", "Patru modele",
    "<h2>O variabilă în plus, de fiecare dată</h2>"
-   + ix("modele", "Coeficienții și R², model cu model", MODELE)
-   + lecturi(["bailey2020", "aronow2015", "dehaas2010"], "Modelul, în literatură"),
-   manual=
-   "<h2>Patru modele, pas cu pas</h2>"
+   + ix("modele", "Coeficienții și R², model cu model", MODELE),
+   manual="<h2>Patru modele, pas cu pas</h2>"
    "<p>Regresia liniară pe logaritmi (OLS) estimează cât se schimbă "
    "logaritmul SCI când o variabilă crește, cu celelalte ținute constante. "
    "Pornim de la distanță și adăugăm câte o variabilă. Toate cele patru "
@@ -345,6 +343,11 @@ sl("s7", "Modelul", "Patru modele",
      "migrație: țările apropiate au mai mulți migranți între ele, iar "
      "migranții mențin legăturile.</p>"
    + lecturi(["bailey2020", "aronow2015", "dehaas2010"], "Modelul, în literatură"))
+
+sl("s7b", "Modelul", "Modelul, în literatură",
+   "<h2>Modelul, în literatură</h2>"
+   + lecturi(["bailey2020", "aronow2015", "dehaas2010"], "Modelul, în literatură"),
+   manual="")
 
 sl("s8", "Modelul", "Modelul, în cod",
    "<h2>Modelul ca formulă</h2>"

@@ -1,6 +1,6 @@
 {
  "capitol": "c6",
- "total": 14,
+ "total": 19,
  "sarcini": 9,
  "slide": [
   {
@@ -28,16 +28,20 @@
    "nr": 4,
    "id": "s4",
    "grup": "O variabilă",
-   "titlu": "Descrierea, în cod",
+   "titlu": "Media și mediana",
    "sarcini": [
     {
      "id": "c6-prezice-coada",
      "fel": "cod"
-    },
-    {
-     "id": "c6-cod-descrie",
-     "fel": "cod"
-    },
+    }
+   ]
+  },
+  {
+   "nr": 5,
+   "id": "s4b",
+   "grup": "O variabilă",
+   "titlu": "Coada lungă, în date",
+   "sarcini": [
     {
      "id": "c6-v1",
      "fel": "verificare",
@@ -53,24 +57,43 @@
    ]
   },
   {
-   "nr": 5,
+   "nr": 6,
+   "id": "s4c",
+   "grup": "O variabilă",
+   "titlu": "Descrierea, în cod",
+   "sarcini": [
+    {
+     "id": "c6-cod-descrie",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 7,
    "id": "s5",
    "grup": "O variabilă",
    "titlu": "Clasamente",
    "sarcini": []
   },
   {
-   "nr": 6,
+   "nr": 8,
    "id": "s6",
    "grup": "Două variabile",
    "titlu": "Norul de puncte",
    "sarcini": []
   },
   {
-   "nr": 7,
+   "nr": 9,
    "id": "s7",
    "grup": "Două variabile",
    "titlu": "Corelațiile",
+   "sarcini": []
+  },
+  {
+   "nr": 10,
+   "id": "s7b",
+   "grup": "Două variabile",
+   "titlu": "Spearman",
    "sarcini": [
     {
      "id": "c6-prezice-rang",
@@ -91,14 +114,14 @@
    ]
   },
   {
-   "nr": 8,
+   "nr": 11,
    "id": "s8",
    "grup": "Categorii",
    "titlu": "Din numere în categorii",
    "sarcini": []
   },
   {
-   "nr": 9,
+   "nr": 12,
    "id": "s9",
    "grup": "Categorii",
    "titlu": "Grupuri comparate",
@@ -118,17 +141,31 @@
    ]
   },
   {
-   "nr": 10,
+   "nr": 13,
    "id": "s10",
    "grup": "Harta",
    "titlu": "Comunitățile",
    "sarcini": []
   },
   {
-   "nr": 11,
+   "nr": 14,
+   "id": "s10b",
+   "grup": "Harta",
+   "titlu": "Comunitățile SCI",
+   "sarcini": []
+  },
+  {
+   "nr": 15,
    "id": "s11",
    "grup": "Grafice înșelătoare",
    "titlu": "Axa trunchiată",
+   "sarcini": []
+  },
+  {
+   "nr": 16,
+   "id": "s11b",
+   "grup": "Grafice înșelătoare",
+   "titlu": "Axa și scara",
    "sarcini": [
     {
      "id": "c6-v4",
@@ -145,7 +182,7 @@
    ]
   },
   {
-   "nr": 12,
+   "nr": 17,
    "id": "s12",
    "grup": "Proiectul tău",
    "titlu": "Explorarea voastră",
@@ -157,7 +194,7 @@
    ]
   },
   {
-   "nr": 13,
+   "nr": 18,
    "id": "s13",
    "grup": "Proiectul tău",
    "titlu": "Primul tipar",
@@ -169,7 +206,7 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 19,
    "id": "s14",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

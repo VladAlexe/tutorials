@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 7. Variabile derivate și model · Fluxuri de lucru</title>
 <meta name="description" content="Construirea variabilelor, un model care le pune pe toate deodată, și reziduurile lui.">
-<link rel="stylesheet" href="../css/fonturi.css?v=73">
-<link rel="stylesheet" href="../css/sistem.css?v=73">
-<link rel="stylesheet" href="../css/intrare.css?v=73">
-<script src="../js/tema.js?v=73"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=74">
+<link rel="stylesheet" href="../css/sistem.css?v=74">
+<link rel="stylesheet" href="../css/intrare.css?v=74">
+<script src="../js/tema.js?v=74"></script>
 </head>
 <body>
 
@@ -40,8 +40,8 @@
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
-  <section class="sec sec--despre">
-    <p class="sec__et">Despre</p>
+  <section class="sec sec--alt">
+    <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>La cursul 6 am văzut că SCI scade cu distanța, crește cu migrația și este mai mare între țările vecine. Țările vecine sunt însă și apropiate geografic și au adesea migrație între ele, deci cele trei tipare se suprapun. Un model le estimează simultan.</p>
 <p>Prima parte tratează ingineria variabilelor, ca în planul cursului: construcție, transformare, extragere, scalare, selecție. A doua parte este dedicată modelului: patru modele pe același eșantion, interpretarea coeficienților pe logaritmi și reziduurile, pe hartă.</p></div>
   </section>
@@ -122,7 +122,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=73"), import("../js/ora.js?v=73"), import("../js/curs.js?v=73")]);
+    import("../js/auth.js?v=74"), import("../js/ora.js?v=74"), import("../js/curs.js?v=74")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -150,7 +150,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=73"></script>
-<script type="module" src="../js/subsol.js?v=73"></script>
+<script type="module" src="../js/antet.js?v=74"></script>
+<script type="module" src="../js/subsol.js?v=74"></script>
 </body>
 </html>

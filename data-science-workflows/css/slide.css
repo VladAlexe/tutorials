@@ -463,7 +463,7 @@ body.prezint .sld h2{font-size:var(--t7);margin-bottom:12px}
 .sld .verif .verif__q{margin:0 0 4px;font-size:var(--t4)}
 .sld .verif .verif__opt{margin:0;font-family:var(--sans);font-size:var(--t3);padding:9px 12px}
 .sld .verif .verif__ex{margin:4px 0 0;padding:10px 14px;font-size:var(--t3)}
-body.prezint #s5m .hs--slide{height:min(52vh,470px)}
+body.prezint #s5m .hs--slide,body.prezint #s5h .hs--slide{height:min(52vh,470px)}
 
 /* poarta de sub exerciții, pe slide: o linie discretă, nu o cutie */
 .sld .poarta{background:none;border:0;border-top:1px dashed var(--linie-2);border-radius:0;padding:8px 0 0;margin:14px 0 0;gap:8px;align-items:center}

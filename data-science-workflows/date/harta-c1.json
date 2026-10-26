@@ -1,6 +1,6 @@
 {
  "capitol": "c1",
- "total": 33,
+ "total": 35,
  "sarcini": 10,
  "slide": [
   {
@@ -19,7 +19,15 @@
     {
      "id": "c1-autoevaluare",
      "fel": "cod"
-    },
+    }
+   ]
+  },
+  {
+   "nr": 3,
+   "id": "s2b",
+   "grup": "Cursul",
+   "titlu": "Așteptările",
+   "sarcini": [
     {
      "id": "c1-asteptari",
      "fel": "text"
@@ -27,42 +35,42 @@
    ]
   },
   {
-   "nr": 3,
+   "nr": 4,
    "id": "s3",
    "grup": "Softuri și conturi",
    "titlu": "Uneltele semestrului",
    "sarcini": []
   },
   {
-   "nr": 4,
+   "nr": 5,
    "id": "s4",
    "grup": "Pașii unui proiect",
    "titlu": "Data Science Workflow",
    "sarcini": []
   },
   {
-   "nr": 5,
+   "nr": 6,
    "id": "s4l",
    "grup": "Pașii unui proiect",
    "titlu": "Unde intră literatura",
    "sarcini": []
   },
   {
-   "nr": 6,
+   "nr": 7,
    "id": "s5",
    "grup": "Proiectul",
    "titlu": "Ce măsoară SCI",
    "sarcini": []
   },
   {
-   "nr": 7,
+   "nr": 8,
    "id": "s5h",
    "grup": "Proiectul",
    "titlu": "Harta, pe județe",
    "sarcini": []
   },
   {
-   "nr": 8,
+   "nr": 9,
    "id": "s5m",
    "grup": "Proiectul",
    "titlu": "Oameni și legături",
@@ -82,56 +90,56 @@
    ]
   },
   {
-   "nr": 9,
+   "nr": 10,
    "id": "s5r",
    "grup": "Proiectul",
    "titlu": "Migrația și SCI",
    "sarcini": []
   },
   {
-   "nr": 10,
+   "nr": 11,
    "id": "s5b",
    "grup": "Proiectul",
    "titlu": "Echipele",
    "sarcini": []
   },
   {
-   "nr": 11,
+   "nr": 12,
    "id": "s5d",
    "grup": "Proiectul",
    "titlu": "Direcții posibile",
    "sarcini": []
   },
   {
-   "nr": 12,
+   "nr": 13,
    "id": "s5n",
    "grup": "Proiectul",
    "titlu": "Calculul notei",
    "sarcini": []
   },
   {
-   "nr": 13,
+   "nr": 14,
    "id": "s6",
    "grup": "Datele proiectului",
    "titlu": "Ce date folosim",
    "sarcini": []
   },
   {
-   "nr": 14,
+   "nr": 15,
    "id": "s8",
    "grup": "Datele proiectului",
    "titlu": "Date diadice",
    "sarcini": []
   },
   {
-   "nr": 15,
+   "nr": 16,
    "id": "s9o",
    "grup": "Tipuri de date",
    "titlu": "Ce tipuri de date există",
    "sarcini": []
   },
   {
-   "nr": 16,
+   "nr": 17,
    "id": "s9",
    "grup": "Tipuri de date",
    "titlu": "Ce tip are fiecare valoare",
@@ -143,7 +151,7 @@
    ]
   },
   {
-   "nr": 17,
+   "nr": 18,
    "id": "s11",
    "grup": "Tipuri de date",
    "titlu": "Capcanele de tip",
@@ -155,7 +163,7 @@
    ]
   },
   {
-   "nr": 18,
+   "nr": 19,
    "id": "s11c",
    "grup": "Tipuri de date",
    "titlu": "Conversiile",
@@ -167,35 +175,35 @@
    ]
   },
   {
-   "nr": 19,
+   "nr": 20,
    "id": "s12",
    "grup": "Tipuri de date",
    "titlu": "Tipuri în SQL",
    "sarcini": []
   },
   {
-   "nr": 20,
+   "nr": 21,
    "id": "s13",
    "grup": "Tipuri de date",
    "titlu": "Tipuri spațiale",
    "sarcini": []
   },
   {
-   "nr": 21,
+   "nr": 22,
    "id": "s14",
    "grup": "Tipuri de date",
    "titlu": "Tipuri de fișiere",
    "sarcini": []
   },
   {
-   "nr": 22,
+   "nr": 23,
    "id": "s14l",
    "grup": "JSON",
    "titlu": "Liste și dicționare",
    "sarcini": []
   },
   {
-   "nr": 23,
+   "nr": 24,
    "id": "s14p",
    "grup": "JSON",
    "titlu": "Poziție sau cheie",
@@ -207,35 +215,35 @@
    ]
   },
   {
-   "nr": 24,
+   "nr": 25,
    "id": "s15",
    "grup": "JSON",
    "titlu": "Formatul JSON",
    "sarcini": []
   },
   {
-   "nr": 25,
+   "nr": 26,
    "id": "s15p",
    "grup": "JSON",
    "titlu": "Drumul prin persoane.json",
    "sarcini": []
   },
   {
-   "nr": 26,
+   "nr": 27,
    "id": "s16",
    "grup": "JSON",
    "titlu": "Drumul până la valoare",
    "sarcini": []
   },
   {
-   "nr": 27,
+   "nr": 28,
    "id": "s16s",
    "grup": "Primul contact cu SCI",
    "titlu": "Un tabel real",
    "sarcini": []
   },
   {
-   "nr": 28,
+   "nr": 29,
    "id": "s16x",
    "grup": "Primul contact cu SCI",
    "titlu": "Exercițiu: perechile României",
@@ -247,17 +255,24 @@
    ]
   },
   {
-   "nr": 29,
+   "nr": 30,
    "id": "s17",
    "grup": "Mediul de lucru",
    "titlu": "Mediul virtual",
    "sarcini": []
   },
   {
-   "nr": 30,
+   "nr": 31,
    "id": "s17t",
    "grup": "Mediul de lucru",
    "titlu": "Exercițiu în terminal",
+   "sarcini": []
+  },
+  {
+   "nr": 32,
+   "id": "s17o",
+   "grup": "Mediul de lucru",
+   "titlu": "Ordinea comenzilor",
    "sarcini": [
     {
      "id": "c1-cod-venv",
@@ -266,14 +281,14 @@
    ]
   },
   {
-   "nr": 31,
+   "nr": 33,
    "id": "s18",
    "grup": "Proiectul tău",
    "titlu": "Folderul cursului, pe disc",
    "sarcini": []
   },
   {
-   "nr": 32,
+   "nr": 34,
    "id": "s18s",
    "grup": "Proiectul tău",
    "titlu": "Unde pui fiecare fișier",
@@ -285,7 +300,7 @@
    ]
   },
   {
-   "nr": 33,
+   "nr": 35,
    "id": "s19",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

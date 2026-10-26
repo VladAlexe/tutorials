@@ -426,13 +426,7 @@ sl("s2", "Cursul", "Punctul de pornire",
            {"cheie": "sql", "t": "SQL", "d": "SELECT, JOIN, tabele"},
            {"cheie": "api", "t": "API-uri", "d": "a cere date unui serviciu, prin cod"},
            {"cheie": "stat", "t": "Statistică", "d": "distribuții, corelație, regresie"},
-       ]})
-   + ix("asteptari", "Ce aștepți de la curs", {
-       "id": "c1-asteptari",
-       "sarcina": "Două-trei rânduri. Răspunsurile sunt citite înainte de cursul "
-                  "următor, iar cursul se ajustează în funcție de ele.",
-       "exemplu": "De exemplu: vreau să pot colecta singur date de pe un site și "
-                  "să le integrez într-un singur tabel."}),
+       ]}),
    manual=
    "<h2>Punctul de pornire</h2>"
    "<p>Cursul presupune experiență anterioară cu Python, dar experiența cu linia de "
@@ -532,6 +526,17 @@ def unelte_slide():
             + '</ul></section><section><h4>Pe parcurs</h4><ul>' + "".join(li(x, True) for x in apoi)
             + "</ul></section></div>")
 
+
+
+sl("s2b", "Cursul", "Așteptările",
+   "<h2>Ce aștepți de la curs</h2>"
+   + ix("asteptari", "Așteptările", {
+       "id": "c1-asteptari",
+       "sarcina": "Două-trei rânduri. Răspunsurile sunt citite înainte de cursul "
+                  "următor, iar cursul se ajustează în funcție de ele.",
+       "exemplu": "De exemplu: vreau să pot colecta singur date de pe un site și "
+                  "să le integrez într-un singur tabel."}),
+   manual="")
 
 sl("s3", "Softuri și conturi", "Uneltele semestrului",
    "<h2>Uneltele semestrului</h2>"
@@ -827,7 +832,7 @@ sl("s5", "Proiectul", "Ce măsoară SCI",
    "</ul>"
    "<p>Dintr-o valoare SCI se poate spune cât de conectați sunt, relativ, utilizatorii "
    "Facebook din două locuri. Nu se poate spune câți migranți trăiesc într-un loc sau de "
-   "ce sunt legate locurile: pentru asta este nevoie de alte date, iar a doua sursă a cursului "
+   "ce sunt legate locurile: pentru aceasta este nevoie de alte date, iar a doua sursă a cursului "
    "este migrația.</p>"
    + surse("Surse oficiale despre SCI", [
        ("Meta, Data for Good: SCI", "https://ai.meta.com/ai-for-good/datasets/social-connectedness-index/",
@@ -2295,8 +2300,12 @@ sl("s17t", "Mediul de lucru", "Exercițiu în terminal",
    + ix("terminal", "Terminalul pornește în folderul tău de utilizator", None,
         "Intră în <code>dsw</code>, creează mediul, activează-l și instalează pachetele. "
         "Comanda <code>ajutor</code> afișează comenzile necesare, în ordine."),
+   manual="")
+
+sl("s17o", "Mediul de lucru", "Ordinea comenzilor",
+   "<h2>Ordinea comenzilor</h2>",
    manual="",
-   dupa=ix("ordine", "Ordinea comenzilor", {
+   dupa=ix("ordine", "Mediul virtual, de la zero", {
        "id": "c1-cod-venv",
        "sarcina": "Pune comenzile în ordinea în care se dau, de la folderul tău de utilizator până la "
                   "pachetele instalate.",

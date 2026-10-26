@@ -6,14 +6,14 @@
 <title>Cursul 7 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Construirea, transformarea și selecția variabilelor, apoi un model care le include simultan și analiza reziduurilor.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=73">
-<link rel="stylesheet" href="../../css/sistem.css?v=73">
-<link rel="stylesheet" href="../../css/slide.css?v=73">
-<link rel="stylesheet" href="../../css/interactiv.css?v=73">
-<link rel="stylesheet" href="../../css/grafice.css?v=73">
-<link rel="stylesheet" href="../../css/exercitii.css?v=73">
-<link rel="stylesheet" href="../../css/explorator.css?v=73">
-<script src="../../js/tema.js?v=73"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=74">
+<link rel="stylesheet" href="../../css/sistem.css?v=74">
+<link rel="stylesheet" href="../../css/slide.css?v=74">
+<link rel="stylesheet" href="../../css/interactiv.css?v=74">
+<link rel="stylesheet" href="../../css/grafice.css?v=74">
+<link rel="stylesheet" href="../../css/exercitii.css?v=74">
+<link rel="stylesheet" href="../../css/explorator.css?v=74">
+<script src="../../js/tema.js?v=74"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 7 · Variabile derivate și model" data-crom="1"></div>
@@ -76,7 +76,12 @@
 <h2>O variabilă în plus, de fiecare dată</h2><div class="ix" data-ix="modele">
   <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">Coeficienții și R², model cu model</span></div>
   <div class="ix__corp"><script type="application/json">{"lim": 0.8, "variabile": [{"k": "dist", "et": "distanța (log)", "c": "ceas"}, {"k": "migr", "et": "migranți (log)", "c": "salvie"}, {"k": "rata", "et": "migranți la mie (log)", "c": "accent"}, {"k": "gr", "et": "graniță", "c": "text-2"}], "modele": [{"nume": "M1", "formula": "log_sci ~ log_distanta", "r2": 0.160627447751929, "text": "Doar distanța. Explică 16% din variația SCI.", "coef": {"dist": -0.719, "migr": null, "rata": null, "gr": null}}, {"nume": "M2", "formula": "log_sci ~ log_distanta + log_migranti", "r2": 0.241694083556735, "text": "Se adaugă numărul de migranți. Coeficientul distanței scade: o parte din efectul atribuit distanței ținea de migrație.", "coef": {"dist": -0.585, "migr": 0.166, "rata": null, "gr": null}}, {"nume": "M3", "formula": "log_sci ~ log_distanta + log_la_mie", "r2": 0.5224385054438411, "text": "Cu rata în locul numărului absolut, R² crește la 0,52. Rata este specificarea mai potrivită. Coeficientul distanței scade din nou.", "coef": {"dist": -0.342, "migr": null, "rata": 0.45, "gr": null}}, {"nume": "M4", "formula": "log_sci ~ log_distanta + log_la_mie + granita", "r2": 0.5259318291729317, "text": "Granița adaugă foarte puțin peste distanță și migrație. Efectul observat la EDA era în mare parte un efect al distanței.", "coef": {"dist": -0.254, "migr": null, "rata": 0.443, "gr": 0.288}}], "intai": {"q": "M1 conține doar distanța; M2 adaugă numărul de migranți. Cum se modifică efectul distanței?", "variante": ["Crește", "Scade", "Rămâne la fel"], "corect": 1, "dupa": "Țările apropiate au și mai mulți migranți între ele. Fără migrație în model, coeficientul distanței preia și o parte din efectul acesteia; după includerea migrației, această parte dispare."}}</script></div>
-</div><div class="lit"><div class="lit__et">Modelul, în literatură<a class="lit__toata" href="../../lecturi/">toată literatura proiectului</a></div><div class="lit__g"><div class="lit__f lit__f--teorie">Teoria<small>de ce ar fi legate două locuri: sursa ipotezelor</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a><span>migrația și legăturile se întrețin reciproc (mecanisme de feedback), dar nu nelimitat. De aici regula proiectului: relația dintre SCI și migrație acționează în ambele sensuri, deci nu afirmăm care o produce pe cealaltă.</span></li></ul></div><div class="lit__g"><div class="lit__f lit__f--metoda">Metoda<small>cum au analizat alții aceeași întrebare: sursa alegerilor metodologice</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a><span>aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.</span></li><li><a class="lit__a" href="https://doi.org/10.1093/pan/mpv018" target="_blank" rel="noopener">Aronow, Samii și Assenova (2015)</a><span>de ce perechile nu sunt observații independente (România-Italia și România-Spania au un capăt comun) și ce implică acest fapt pentru erorile standard. Limita principală a modelului din C7.</span></li></ul></div></div>
+</div>
+
+</section>
+
+<section class="sld" id="s7b" data-grup="Modelul" data-t="Modelul, în literatură">
+<h2>Modelul, în literatură</h2><div class="lit"><div class="lit__et">Modelul, în literatură<a class="lit__toata" href="../../lecturi/">toată literatura proiectului</a></div><div class="lit__g"><div class="lit__f lit__f--teorie">Teoria<small>de ce ar fi legate două locuri: sursa ipotezelor</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a><span>migrația și legăturile se întrețin reciproc (mecanisme de feedback), dar nu nelimitat. De aici regula proiectului: relația dintre SCI și migrație acționează în ambele sensuri, deci nu afirmăm care o produce pe cealaltă.</span></li></ul></div><div class="lit__g"><div class="lit__f lit__f--metoda">Metoda<small>cum au analizat alții aceeași întrebare: sursa alegerilor metodologice</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a><span>aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.</span></li><li><a class="lit__a" href="https://doi.org/10.1093/pan/mpv018" target="_blank" rel="noopener">Aronow, Samii și Assenova (2015)</a><span>de ce perechile nu sunt observații independente (România-Italia și România-Spania au un capăt comun) și ce implică acest fapt pentru erorile standard. Limita principală a modelului din C7.</span></li></ul></div></div>
 
 </section>
 
@@ -144,11 +149,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=73"></script>
+<script type="module" src="../../js/antet.js?v=74"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=73";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=73";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=73";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=74";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=74";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=74";
 pornesteIx();
 pornesteVerif("c7");
 pornesteSlide({ capitol:"c7", lectie:"c7-variabile-si-model" });

@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 4. Curățarea datelor · Fluxuri de lucru</title>
 <meta name="description" content="Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=73">
-<link rel="stylesheet" href="../css/sistem.css?v=73">
-<link rel="stylesheet" href="../css/intrare.css?v=73">
-<script src="../js/tema.js?v=73"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=74">
+<link rel="stylesheet" href="../css/sistem.css?v=74">
+<link rel="stylesheet" href="../css/intrare.css?v=74">
+<script src="../js/tema.js?v=74"></script>
 </head>
 <body>
 
@@ -40,8 +40,8 @@
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
-  <section class="sec sec--despre">
-    <p class="sec__et">Despre</p>
+  <section class="sec sec--alt">
+    <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>La lecția anterioară am văzut rolul lui Git. Acum îl folosim: mutăm fișiere între zone, facem commit-uri cu mesaje informative, anulăm modificări în patru moduri diferite fără pierderi de lucru și lucrăm pe o ramură care poate fi ștearsă fără consecințe. Partea aceasta ocupă puțin spațiu pe slide-uri și mult timp în terminal.</p>
 <p>A doua parte tratează etapa de după obținerea datelor. Un <a class="leg" href="https://visit.figure-eight.com/data-science-report" rel="noopener" target="_blank">sondaj CrowdFlower</a> printre specialiștii care lucrează zilnic cu date arată că aproape 60% din timpul lor este dedicat curățării și organizării datelor. Aceasta nu este o deficiență a profesiei, ci o parte centrală a ei: datele reale conțin aceeași categorie scrisă în mai multe feluri, rânduri duplicate, valori lipsă care nu înseamnă zero și valori care par eronate, dar sunt corecte.</p>
 <p>Parcurgem cele șase etape, pe rând, pe datele cursului. Pentru fiecare decizie (ce se șterge, ce se completează, ce se elimină), întrebarea relevantă nu este „ce face comanda”, ci „ce informație se pierde când este rulată”.</p></div>
@@ -129,7 +129,7 @@ cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la 
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=73"), import("../js/ora.js?v=73"), import("../js/curs.js?v=73")]);
+    import("../js/auth.js?v=74"), import("../js/ora.js?v=74"), import("../js/curs.js?v=74")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -157,7 +157,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=73"></script>
-<script type="module" src="../js/subsol.js?v=73"></script>
+<script type="module" src="../js/antet.js?v=74"></script>
+<script type="module" src="../js/subsol.js?v=74"></script>
 </body>
 </html>
