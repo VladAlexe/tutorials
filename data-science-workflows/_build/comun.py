@@ -44,7 +44,7 @@ FEL = {"agenda": "Cuprins", "etape": "Explorator", "terminal": "Terminal", "tipu
        "coloane": "Declară tipul", "desfa": "Vezi cum se desface",
        "drum": "Schema fluxului", "semestru": "Cronologia",
        "anatomie": "Pe bucăți", "indice": "Ce măsoară", "sci": "Pas cu pas", "consola": "Întreabă Python", "acces": "Construiește drumul", "geom": "Explorator", "masca": "Pas cu pas", "folder": "Explorator",
-       "harta": "Harta, date reale", "cub": "Vezi cum se desface", "comanda": "Vezi cum circulă", "directii": "Vezi cum se desface", "histo": "Comută", "nor": "Explorează", "axa": "Comută", "modele": "Pas cu pas", "gitdag": "Pas cu pas"}
+       "harta": "Harta, date reale", "cub": "Vezi cum se desface", "restaurant": "Vezi cum circulă", "criterii": "Explorator", "benzi": "Cronologie", "mesaj": "Pe bucăți", "verbe": "Vezi efectul", "jupyter": "Întreabă Python", "pagini": "Comută", "directii": "Vezi cum se desface", "histo": "Comută", "nor": "Explorează", "axa": "Comută", "modele": "Pas cu pas", "gitdag": "Pas cu pas"}
 fel_et = lambda f: FEL.get(f, "Interactiv")
 
 
@@ -243,7 +243,8 @@ class Lectie:
                    "asteptari": "text", "url": "cod", "metode": "cod",
                    "raspuns": "cod", "zone": "cod", "ramuri": "cod",
                    "conflict": "cod", "prag": "cod", "imbinare": "cod",
-                   "coloane": "cod", "desfa": "cod", "anatomie": "cod", "consola": "cod"}
+                   "coloane": "cod", "desfa": "cod", "anatomie": "cod", "consola": "cod",
+                   "jupyter": "cod"}
 
     def scrie_harta(self):
         """Ce sarcini stau pe fiecare slide.

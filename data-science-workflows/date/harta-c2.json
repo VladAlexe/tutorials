@@ -1,7 +1,7 @@
 {
  "capitol": "c2",
- "total": 24,
- "sarcini": 12,
+ "total": 23,
+ "sarcini": 9,
  "slide": [
   {
    "nr": 1,
@@ -24,15 +24,15 @@
    "titlu": "Analogia restaurantului",
    "sarcini": [
     {
-     "id": "c2-v2",
+     "id": "c2-v2b",
      "fel": "verificare",
-     "corect": 2,
-     "q": "În analogia restaurantului, documentația API-ului este…",
+     "corect": 1,
+     "q": "Banca Mondială își mută datele pe alt server și schimbă baza de date, dar păstrează adresele și parametrii din documentație. Ce se întâmplă cu scriptul tău de colectare?",
      "optiuni": [
-      "ospătarul",
-      "bucătăria",
-      "meniul",
-      "farfuria"
+      "Trebuie rescris, pentru că baza de date e alta",
+      "Merge la fel: contractul nu s-a schimbat",
+      "Merge doar de pe calculatorul pe care a fost scris",
+      "Primește 404 la prima cerere"
      ]
     }
    ]
@@ -41,48 +41,35 @@
    "nr": 4,
    "id": "s5",
    "grup": "Ce este un API",
-   "titlu": "De ce nu descărcăm cu mâna",
-   "sarcini": [
-    {
-     "id": "c2-v4",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Care e argumentul cel mai serios pentru colectarea prin API?",
-     "optiuni": [
-      "E mai rapid",
-      "Colectarea devine reproductibilă: altcineva o poate reface identic",
-      "Datele sunt mai corecte",
-      "Nu trebuie citită documentația"
-     ]
-    }
-   ]
+   "titlu": "De ce prin API",
+   "sarcini": []
   },
   {
    "nr": 5,
    "id": "s6",
    "grup": "Tipuri de API",
-   "titlu": "Ce fel de API-uri există",
+   "titlu": "Tipuri de API",
    "sarcini": []
   },
   {
    "nr": 6,
    "id": "s7",
    "grup": "Tipuri de API",
-   "titlu": "De unde vine REST",
+   "titlu": "Trei decenii de API-uri",
    "sarcini": []
   },
   {
    "nr": 7,
    "id": "s8",
    "grup": "Tipuri de API",
-   "titlu": "REST, SOAP, GraphQL, gRPC",
+   "titlu": "Aceeași întrebare, patru stiluri",
    "sarcini": []
   },
   {
    "nr": 8,
    "id": "s9",
    "grup": "Cum arată o cerere",
-   "titlu": "Arhitectura REST",
+   "titlu": "O cerere și un răspuns",
    "sarcini": []
   },
   {
@@ -94,16 +81,28 @@
   },
   {
    "nr": 10,
+   "id": "s10v",
+   "grup": "Cum arată o cerere",
+   "titlu": "Metodele, la lucru",
+   "sarcini": [
+    {
+     "id": "c2-sort-metode2",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 11,
    "id": "s11",
    "grup": "Cum arată o cerere",
    "titlu": "Endpoint-ul",
    "sarcini": []
   },
   {
-   "nr": 11,
+   "nr": 12,
    "id": "s12",
    "grup": "Cum arată o cerere",
-   "titlu": "Structura unei adrese",
+   "titlu": "Adresa, bucată cu bucată",
    "sarcini": [
     {
      "id": "c2-url",
@@ -112,10 +111,10 @@
    ]
   },
   {
-   "nr": 12,
+   "nr": 13,
    "id": "s13",
-   "grup": "Răspunsul",
-   "titlu": "Codurile de stare",
+   "grup": "Cum arată o cerere",
+   "titlu": "Răspunsul începe cu un cod",
    "sarcini": [
     {
      "id": "c2-raspuns",
@@ -125,56 +124,51 @@
      "id": "c2-v8",
      "fel": "verificare",
      "corect": 3,
-     "q": "Primești codul 429. Ce s-a întâmplat?",
+     "q": "Răspunsul are codul 429. Ce înseamnă?",
      "optiuni": [
       "Adresa e greșită",
-      "Serverul e stricat",
-      "Nu ai cheie de acces",
-      "Ai trimis prea multe cereri prea repede"
+      "Serverul nu funcționează",
+      "Lipsește cheia de acces",
+      "Au fost trimise prea multe cereri într-un interval scurt"
      ]
     }
    ]
   },
   {
-   "nr": 13,
+   "nr": 14,
    "id": "s14",
-   "grup": "Surse de date",
+   "grup": "De unde vin datele",
    "titlu": "De unde se pot lua date",
    "sarcini": []
   },
   {
-   "nr": 14,
+   "nr": 15,
    "id": "s15",
-   "grup": "Surse de date",
-   "titlu": "Ce folosim noi",
+   "grup": "De unde vin datele",
+   "titlu": "Sursele proiectului",
    "sarcini": []
   },
   {
-   "nr": 15,
+   "nr": 16,
    "id": "s16",
    "grup": "requests",
-   "titlu": "Prima cerere",
-   "sarcini": [
-    {
-     "id": "c2-cod-prima",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 16,
-   "id": "s17",
-   "grup": "requests",
-   "titlu": "Parametrii se dau separat",
-   "sarcini": [
-    {
-     "id": "c2-cod-param",
-     "fel": "cod"
-    }
-   ]
+   "titlu": "Aceeași cerere, în Python",
+   "sarcini": []
   },
   {
    "nr": 17,
+   "id": "s17",
+   "grup": "requests",
+   "titlu": "Un răspuns, cercetat",
+   "sarcini": [
+    {
+     "id": "c2-cerere",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 18,
    "id": "s18",
    "grup": "requests",
    "titlu": "Paginarea",
@@ -186,57 +180,33 @@
    ]
   },
   {
-   "nr": 18,
-   "id": "s19",
-   "grup": "requests",
-   "titlu": "Din JSON în tabel",
-   "sarcini": [
-    {
-     "id": "c2-cod-tabel",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
    "nr": 19,
    "id": "s19e",
    "grup": "Eurostat",
-   "titlu": "Un cub, nu un tabel",
-   "sarcini": [
-    {
-     "id": "c2-prezice-cub",
-     "fel": "cod"
-    }
-   ]
+   "titlu": "Eurostat: cum ceri",
+   "sarcini": []
   },
   {
    "nr": 20,
-   "id": "s19m",
+   "id": "s20",
    "grup": "Eurostat",
-   "titlu": "Migrația, prin API",
+   "titlu": "Cubul JSON-stat",
+   "sarcini": []
+  },
+  {
+   "nr": 21,
+   "id": "s20v",
+   "grup": "Eurostat",
+   "titlu": "Poziția din cub",
    "sarcini": [
     {
-     "id": "c2-cod-migr",
+     "id": "c2-prezice-cub2",
      "fel": "cod"
     }
    ]
   },
   {
-   "nr": 21,
-   "id": "s19h",
-   "grup": "Eurostat",
-   "titlu": "Ce ai adus, pe hartă",
-   "sarcini": []
-  },
-  {
    "nr": 22,
-   "id": "s20",
-   "grup": "Postman",
-   "titlu": "Aceeași cerere, cu mâna",
-   "sarcini": []
-  },
-  {
-   "nr": 23,
    "id": "s21",
    "grup": "Proiectul tău",
    "titlu": "Colectează, acum",
@@ -248,7 +218,7 @@
    ]
   },
   {
-   "nr": 24,
+   "nr": 23,
    "id": "s22",
    "grup": "Mai departe",
    "titlu": "Până data viitoare",

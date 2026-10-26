@@ -71,21 +71,21 @@
   "c2-colectarea-prin-api": {
     "nr": 2,
     "titlu": "Colectarea datelor prin API",
-    "deck": "Până acum ai citit un fișier primit de-a gata. De azi ți-l aduci singur: ce este un API, cum arată o cerere, ce înseamnă codurile pe care le primești înapoi, și cum ajung datele în depozitul echipei.",
-    "descriere": "Ce este un API, cum arată o cerere, codurile de răspuns, requests, și primele date reale în proiectul tău.",
+    "deck": "Până acum datele au venit dintr-un fișier primit. De azi vin dintr-o cerere scrisă: ce este un API, cum arată un mesaj HTTP, cum se citește un răspuns, și cum ajung primele date reale în proiect.",
+    "descriere": "Ce este un API, mesajul HTTP, codurile de stare, requests, cubul Eurostat și primele date reale în proiect.",
     "caiet": null,
     "sectiuni": [
       {
         "t": "Despre lecția asta",
-        "html": "<p>A doua oră e despre singurul lucru care desparte o analiză pe care o poate\n        reface altcineva de una pe care n-o mai poți reface nici tu: de unde vin datele.\n        Până acum ai deschis un fișier care era deja pe disc. Nimeni nu mai știe exact\n        cine l-a descărcat, de unde, când, și cu ce filtre.</p>\n<p>Începem cu analogia restaurantului, care fixează rolurile, și mergem până la\n        un script care cere date reale de la Banca Mondială, le verifică, le salvează și\n        le urcă în depozit. Între ele: tipurile de API și de ce REST a câștigat, metodele\n        HTTP, structura unei adrese, codurile de răspuns, și biblioteca requests.</p>\n<p>Partea de Postman e acolo dintr-un motiv practic: o cerere se încearcă întâi\n        într-un loc unde vezi tot, și abia apoi se scrie în cod. Când codul nu merge, te\n        întorci acolo ca să vezi care bucată diferă.</p>"
+        "html": "<p>Lecția e despre proveniența datelor: o analiză se poate verifica doar dacă drumul de la sursă la tabel se poate reface. La cursul 1, datele au venit dintr-un fișier descărcat dinainte; de azi vin printr-o cerere scrisă, care conține sursa, setul și filtrele.</p>\n<p>Începem cu ce este un API și de ce colectăm prin el, trecem prin tipurile și istoria API-urilor, apoi desfacem un mesaj HTTP piesă cu piesă: metoda, endpoint-ul, adresa cu parametrii, codul de stare. Aceeași cerere se scrie apoi în Python, cu <code>requests</code>, iar la final ideea se aplică la Eurostat, al cărui răspuns e un cub JSON-stat, pe datele migrației.</p>"
       },
       {
         "t": "La final vei putea",
-        "html": "<ul class=\"obiective\">\n<li>Să explici ce face un API și de ce nu vorbești direct cu baza de date a altcuiva.</li>\n<li>Să deosebești REST de SOAP, GraphQL și gRPC, și să spui de ce API-urile publice sunt aproape toate REST.</li>\n<li>Să potrivești metodele HTTP cu operațiile pe care le fac, și să știi de ce GET se poate relua fără teamă.</li>\n<li>Să numești fiecare bucată dintr-o adresă și să știi care dintre ele nici măcar nu ajunge la server.</li>\n<li>Să citești un cod de răspuns și să știi dacă greșeala e la tine, la ei, sau în ritmul cererilor.</li>\n<li>Să scrii o cerere cu <code>requests</code>, cu parametri dați separat și cu timeout.</li>\n<li>Să colectezi un răspuns paginat fără să fii blocat pentru prea multe cereri.</li>\n<li>Să transformi răspunsul JSON într-un tabel și să-l salvezi ca date brute, în depozit.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Să explici ce este un API ca intermediar cu un contract și ce înseamnă abstractizarea, versionarea și lipsa stării.</li>\n<li>Să argumentezi de ce colectezi prin API, și când un fișier publicat, datat și versionat e suficient.</li>\n<li>Să deosebești stilurile REST, GraphQL, gRPC și SOAP și criteriile după care se clasifică API-urile.</li>\n<li>Să citești un mesaj HTTP: prima linie, antetele, corpul.</li>\n<li>Să alegi metoda HTTP potrivită și să explici de ce o cerere GET se poate relua fără riscuri.</li>\n<li>Să numești bucățile unei adrese și să legi parametrii de dicționarul <code>params</code> din requests.</li>\n<li>Să interpretezi clasa unui cod de stare și să verifici corpul după cod.</li>\n<li>Să faci o cerere cu <code>requests</code>, să citești răspunsul și să gestionezi paginarea.</li>\n<li>Să desfaci un răspuns JSON-stat de la Eurostat într-un tabel.</li>\n</ul>"
       },
       {
         "t": "De ce ai nevoie, înainte",
-        "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie\n        ce ai de la cursul 1, plus două lucruri noi, amândouă gratuite:</p>\n<ol>\n<li>Mediul virtual din cursul 1, activat, cu <code>pip install requests</code> rulat în el.</li>\n<li><a class=\"leg\" href=\"https://www.postman.com/downloads/\" rel=\"noopener\" target=\"_blank\">Postman</a>, ca să faci prima cerere cu mâna. Merge și varianta din browser, fără instalare.</li>\n</ol>\n<p>Nu ai nevoie de nicio cheie de acces: API-urile pe care le folosim azi sunt\n        publice. Dacă vrei să ți se salveze răspunsurile și să apari în progresul grupei,\n        intră în cont cu GitHub.</p>"
+        "html": "<p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie ce ai de la cursul 1 și o bibliotecă nouă:</p>\n<ol>\n<li>Mediul virtual din cursul 1, cu <code>requests</code> instalat în el: <code>.venv\\Scripts\\python -m pip install requests</code>.</li>\n<li>Caietul <code>02_colectarea_datelor_prin_api.ipynb</code>, în folderul <code>notebooks/</code>.</li>\n</ol>\n<p>Nu e nevoie de nicio cheie de acces: API-urile folosite azi sunt publice. Ca răspunsurile să se salveze și să apari în progresul grupei, intră în cont cu GitHub.</p>"
       }
     ],
     "resurse": [
@@ -112,9 +112,9 @@
         "g": "API"
       },
       {
-        "href": "https://www.postman.com/downloads/",
-        "t": "Postman",
-        "g": "↗"
+        "href": "https://json-stat.org/format/",
+        "t": "JSON-stat",
+        "g": "format"
       },
       {
         "href": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",

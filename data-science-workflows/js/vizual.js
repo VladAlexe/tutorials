@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=64");
+    const m = await import("/data-science-workflows/js/colectare.js?v=65");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -112,145 +112,6 @@ V.flux = (gazda, d) => {
   };
 
   arata(0);
-};
-
-
-/* ===========================================================================
-   2. CRONOLOGIE — o axă cu ani
-
-   Lista de ani dintr-un tabel nu spune nimic despre ritm. O axă spune: se
-   vede că între 1991 și 2000 s-a încercat de patru ori, și că de atunci s-a
-   mai schimbat de două ori.
-   =========================================================================== */
-
-V.cronologie = (gazda, d) => {
-  const P = (d.puncte || []).slice().sort((a, b) => a.an - b.an);
-  if (!P.length) return;
-  const a0 = P[0].an, a1 = P[P.length - 1].an, lat = Math.max(1, a1 - a0);
-  /* nu de la 0 la 100: primul și ultimul punct ar fi tăiate pe jumătate de
-     marginea casetei, iar anul lor n-ar mai încăpea întreg */
-  const MARG = 7;
-  const poz = p => MARG + ((p.an - a0) / lat) * (100 - 2 * MARG);
-
-  gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="crn">
-      <div class="crn__axa">
-        <span class="crn__linie"></span>
-        ${P.map((p, i) => `
-          <button class="crn__p ${i % 2 ? "jos" : "sus"}" data-i="${i}" type="button"
-                  style="left:${poz(p)}%">
-            <span class="crn__an">${p.an}</span>
-            <span class="crn__nod"></span>
-            <span class="crn__nume">${esc(p.nume)}</span>
-          </button>`).join("")}
-      </div>
-      <div class="crn__bara"><button class="btn btn--mic btn--tare" data-rol="joc" type="button">▶ Derulează</button>
-        <span class="crn__prog"><i></i></span></div>
-      <div class="crn__i"><h5>${esc(d.titlu || "Apasă pe oricare")}</h5>
-        <p>${d.intro || ""}</p></div>
-    </div>`;
-
-  const info = gazda.querySelector(".crn__i"), joc = gazda.querySelector('[data-rol="joc"]'), prog = gazda.querySelector(".crn__prog i");
-  let t = null, k = -1;
-  function arata(i){
-    k = i;
-    gazda.querySelectorAll(".crn__p").forEach((x, j) => { x.classList.toggle("on", j === i); x.classList.toggle("trecut", j < i); });
-    const p = P[i];
-    info.innerHTML = `<h5>${p.an} · ${esc(p.nume)}${
-      p.et ? ` <small>${esc(p.et)}</small>` : ""}</h5><p>${p.text || ""}</p>`;
-    prog.style.width = ((i + 1) / P.length * 100) + "%";
-  }
-  /* derularea: un an după altul, ca la proiector; un clic pe un an o oprește */
-  function opreste(){ clearInterval(t); t = null; joc.textContent = k >= P.length - 1 ? "↺ De la capăt" : "▶ Derulează"; }
-  joc.onclick = () => {
-    if (t) return opreste();
-    if (k >= P.length - 1) k = -1;
-    joc.textContent = "❚❚ Pauză";
-    arata(k + 1);
-    t = setInterval(() => { if (k >= P.length - 1) return opreste(); arata(k + 1); }, 2200);
-  };
-  gazda.addEventListener("click", e => {
-    const b = e.target.closest(".crn__p");
-    if (!b) return;
-    opreste(); arata(+b.dataset.i); opreste();
-  });
-};
-
-
-/* ===========================================================================
-   3. RĂSPUNS — ce întoarce serverul
-
-   Codurile de stare se învață prost dintr-un tabel și bine dintr-o cerere
-   care eșuează sub ochii tăi. Alegi o situație, apeși trimite, vezi codul.
-   =========================================================================== */
-
-V.raspuns = (gazda, d) => {
-  gazda.closest(".ix")?.classList.add("exc");
-  const C = d.cazuri || [];
-  const incercate = new Set();
-  let ales = 0;
-
-  gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="rsp">
-      <div class="rsp__cazuri">${C.map((c, i) =>
-        `<button class="rsp__c ${i ? "" : "on"}" data-i="${i}" type="button">${esc(c.et)}</button>`).join("")}</div>
-      <div class="rsp__bara">
-        <span class="rsp__met">GET</span>
-        <code class="rsp__url">${esc(C[0]?.url || "")}</code>
-        <button class="btn btn--mic btn--tare" data-rol="trimite" type="button">Trimite</button>
-      </div>
-      <div class="rsp__out" hidden>
-        <div class="rsp__cod"><b></b><span></span></div>
-        <pre class="rsp__corp"></pre>
-        <p class="rsp__ce"></p>
-      </div>
-      <p class="rsp__nr"></p>
-      <p class="ex__stare"></p>
-    </div>`;
-
-  const url  = gazda.querySelector(".rsp__url");
-  const out  = gazda.querySelector(".rsp__out");
-  const cod  = gazda.querySelector(".rsp__cod");
-  const corp = gazda.querySelector(".rsp__corp");
-  const ce   = gazda.querySelector(".rsp__ce");
-  const nr   = gazda.querySelector(".rsp__nr");
-  const st   = gazda.querySelector(".ex__stare");
-
-  const numara = () => {
-    nr.textContent = `${incercate.size} din ${C.length} încercate`;
-    nr.classList.toggle("gata", incercate.size >= C.length);
-  };
-
-  gazda.addEventListener("click", e => {
-    const b = e.target.closest(".rsp__c");
-    if (!b) return;
-    gazda.querySelectorAll(".rsp__c").forEach(x => x.classList.toggle("on", x === b));
-    ales = +b.dataset.i;
-    url.textContent = C[ales].url || "";
-    out.hidden = true;
-  });
-
-  gazda.querySelector('[data-rol="trimite"]').onclick = async () => {
-    const c = C[ales];
-    out.hidden = false;
-    const fel = c.cod < 300 ? "ok" : c.cod < 500 ? "tu" : "ei";
-    cod.className = "rsp__cod rsp__cod--" + fel;
-    cod.querySelector("b").textContent = c.cod;
-    cod.querySelector("span").textContent = c.nume || "";
-    corp.textContent = c.corp || "";
-    ce.innerHTML = c.ce || "";
-    incercate.add(ales);
-    numara();
-    if (incercate.size >= C.length){
-      const salvat = await poarta(gazda, d.id, [...incercate].join(","));
-      st.textContent = "Le-ai încercat pe toate.";
-      st.classList.add("vazut");
-    }
-  };
-
-  numara();
 };
 
 
@@ -1319,178 +1180,6 @@ V.indice = (gazda, d) => {
 
 
 /* ===========================================================================
-   16. CUB — cum devine un răspuns JSON-stat un tabel
-   Eurostat nu trimite rânduri, trimite un cub: lista dimensiunilor, codurile
-   fiecăreia cu poziția lor, și valorile puse pe poziții. Aici se vede regula:
-   apeși o valoare (sau „Următoarea”), se aprind codurile din care vine, iar
-   rândul ei apare în tabel. Nu e poartă: e de privit, nu de nimerit.
-   =========================================================================== */
-V.cub = (gazda, d) => {
-  const DIM = d.dimensiuni || [];            // [{id, et, coduri:[...]}], ultima variază cel mai repede
-  const VAL = d.valori || [];                // în ordinea pozițiilor
-  const fmtN = x => x == null ? "null" : Number(x).toLocaleString("ro-RO");
-  const marimi = DIM.map(x => x.coduri.length);
-  const combinatie = poz => {                // poziție -> indicele fiecărei dimensiuni
-    const r = []; let rest = poz;
-    for (let k = DIM.length - 1; k >= 0; k--){ r[k] = rest % marimi[k]; rest = Math.floor(rest / marimi[k]); }
-    return r;
-  };
-  const vazute = new Set();
-  let ales = null;
-
-  /* valorile, câte un rând pe codul primei dimensiuni: așa se vede cubul */
-  const randuriValori = () => {
-    const pe = marimi.slice(1).reduce((a, b) => a * b, 1), r = [];
-    for (let i = 0; i < VAL.length; i += pe)
-      r.push("    " + VAL.slice(i, i + pe).map((v, j) =>
-        `<span class="cub__v" data-p="${i + j}">"${i + j}": ${v == null ? "null" : v}</span>`).join(", "));
-    return r.join(",\n");
-  };
-  const linieDim = (x, k) => `    "${esc(x.id)}": { "category": { "index": {\n      ${x.coduri.map((c, i) =>
-      `<span class="cub__c" data-k="${k}" data-i="${i}">"${esc(c)}": ${i}</span>`).join(", ")} } } }`;
-  gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="cub">
-      <div class="dsf__doi">
-        <div>
-          <span class="dsf__et">${esc(d.sursa || "răspunsul Eurostat")}</span>
-<pre class="dsf__j cub__j">{
-  "id": [${DIM.map(x => `"${esc(x.id)}"`).join(", ")}],
-  "dimension": {
-${DIM.map(linieDim).join(",\n")}
-  },
-  "value": {
-${randuriValori()}
-  }
-}</pre>
-        </div>
-        <div>
-          <span class="dsf__et">DataFrame</span>
-          <table class="dsf__tb cub__tb">
-            <thead><tr>${DIM.map((x, k) => `<th class="k${k}">${esc(x.id)}</th>`).join("")}<th>valoare</th></tr></thead>
-            <tbody></tbody>
-          </table>
-          <p class="dsf__gol">Apasă pe o valoare din <code>value</code>.</p>
-        </div>
-      </div>
-      <p class="cub__regula"></p>
-      <div class="dsf__act">
-        <button class="btn btn--mic btn--tare" data-rol="urm" type="button">Următoarea valoare</button>
-        <button class="btn btn--mic" data-rol="tot" type="button">Toate odată</button>
-        <span class="dsf__stare"></span>
-      </div>
-    </div>`;
-
-  const tb = gazda.querySelector(".cub__tb tbody"), gol = gazda.querySelector(".dsf__gol");
-  const reg = gazda.querySelector(".cub__regula"), stare = gazda.querySelector(".dsf__stare");
-
-  function deseneaza(){
-    const ci = ales === null ? null : combinatie(ales);
-    gazda.querySelectorAll(".cub__v").forEach(e => {
-      e.classList.toggle("on", +e.dataset.p === ales); e.classList.toggle("vazut", vazute.has(+e.dataset.p)); });
-    gazda.querySelectorAll(".cub__c").forEach(e => e.classList.toggle("on", ci !== null && ci[+e.dataset.k] === +e.dataset.i));
-    const rand = [...vazute].sort((a, b) => a - b);
-    tb.innerHTML = rand.map(p => { const c = combinatie(p);
-      return `<tr class="${p === ales ? "on" : ""}">${c.map((i, k) => `<td class="k${k}">${esc(DIM[k].coduri[i])}</td>`).join("")}<td class="nr">${fmtN(VAL[p])}</td></tr>`; }).join("");
-    gol.hidden = vazute.size > 0;
-    if (ci){
-      const parti = ci.map((i, k) => `${esc(DIM[k].id)} „${esc(DIM[k].coduri[i])}” e pe poziția ${i}`).join(", ");
-      const n = marimi[marimi.length - 1];
-      reg.innerHTML = `<b>Poziția ${ales}</b>: ${parti}. ${DIM.length === 2
-        ? `${ci[0]} × ${n} + ${ci[1]} = ${ales}.` : ""} ${d.cine && d.cine[ales] ? esc(d.cine[ales]) : ""}`;
-    } else reg.innerHTML = d.intro || "Fiecare valoare stă pe o poziție. Poziția spune din ce coduri vine.";
-    stare.textContent = `${vazute.size} din ${VAL.length} rânduri`;
-  }
-  const alege = p => { ales = p; vazute.add(p); deseneaza(); };
-  gazda.querySelector(".cub__j").addEventListener("click", e => { const v = e.target.closest(".cub__v"); if (v) alege(+v.dataset.p); });
-  gazda.querySelector('[data-rol="urm"]').onclick = () => alege(ales === null ? 0 : (ales + 1) % VAL.length);
-  gazda.querySelector('[data-rol="tot"]').onclick = () => { VAL.forEach((_, i) => vazute.add(i)); ales = null; deseneaza(); };
-  deseneaza();
-};
-
-/* ===========================================================================
-   17. COMANDA — o cerere, ca scenă: masa, ospătarul, bucătăria
-   Logica analogiei, nu doar numele ei: meniul stă pe masă (se citește înainte
-   de a comanda, nu e o stație pe drum), bonul pleacă de la client prin ospătar
-   la bucătărie, bucătăria scoate din cămară, iar farfuria se întoarce pe
-   același drum. A doua comandă cere ceva ce nu e în meniu: farfuria vine
-   goală, cu un număr. Aceeași scenă servește și varianta „în cod”.
-   =========================================================================== */
-V.comanda = (gazda, d) => {
-  const Z = d.zone || [];                      // [client, intermediar, bucătărie]
-  const SC = d.scenarii || [];
-  const PASI = d.pasi || [];                   // 5 explicații, câte una pe pas
-  let sc = 0, pas = -1;
-
-  const zona = (z, i) => `
-    <div class="cmd__z cmd__z--${i}" data-z="${i}">
-      <div class="cmd__ic">${z.ic}</div>
-      <div class="cmd__n">${esc(z.n)}</div>
-      <div class="cmd__et">${esc(z.et)}</div>
-      ${z.obiect ? `<div class="cmd__ob" data-ob="${i}"><span>${z.obiect.ic}</span>
-        <b>${esc(z.obiect.n)}</b><i>${esc(z.obiect.et)}</i></div>` : ""}
-    </div>`;
-
-  gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="cmd">
-      <div class="cmd__sc">${SC.map((s, i) => `<button type="button" data-sc="${i}">${esc(s.t)}</button>`).join("")}</div>
-      <div class="cmd__scena">
-        <div class="cmd__drum"><span></span><span></span></div>
-        ${Z.map(zona).join("")}
-        <div class="cmd__bon" hidden></div>
-        <div class="cmd__far" hidden></div>
-      </div>
-      <div class="cmd__jos">
-        <div class="cmd__txt"></div>
-        <div class="cmd__nav">
-          <div class="cmd__puncte">${PASI.map((_, i) => `<i data-p="${i}"></i>`).join("")}</div>
-          <button class="btn btn--mic" data-rol="inapoi" type="button">Înapoi</button>
-          <button class="btn btn--mic btn--tare" data-rol="inainte" type="button"></button>
-        </div>
-      </div>
-    </div>`;
-
-  const $ = q => gazda.querySelector(q);
-  const bon = $(".cmd__bon"), far = $(".cmd__far"), txt = $(".cmd__txt");
-
-  function deseneaza(){
-    const s = SC[sc] || {};
-    gazda.querySelectorAll(".cmd__sc button").forEach(b => b.classList.toggle("on", +b.dataset.sc === sc));
-    gazda.querySelectorAll(".cmd__puncte i").forEach(e => e.classList.toggle("on", +e.dataset.p <= pas));
-    /* cine e activ la pasul ăsta */
-    const activ = [[0], [0], [1], [2], [0]][pas] || [];
-    gazda.querySelectorAll(".cmd__z").forEach(z => z.classList.toggle("on", activ.includes(+z.dataset.z)));
-    $('.cmd__ob[data-ob="0"]')?.classList.toggle("on", pas === 0);
-    $('.cmd__ob[data-ob="2"]')?.classList.toggle("on", pas === 3);
-    $(".cmd__drum span:first-child").classList.toggle("on", pas === 2);
-    $(".cmd__drum span:last-child").classList.toggle("on", pas === 4);
-
-    bon.hidden = !(pas >= 1 && pas <= 3);
-    bon.innerHTML = `<span class="cmd__mic">${esc(d.etBon || "comanda")}</span>${esc(s.bon || "")}`;
-    const la = pas <= 1 ? 0 : pas === 2 ? 1 : 2;      // bonul: la client, la ospătar, la bucătărie
-    bon.className = `cmd__bon la-${la}${pas >= 2 ? " dus" : ""}`;
-
-    const vine = pas === 4 && far.hidden;
-    far.hidden = pas !== 4;
-    const rau = s.rau ? " rau" : "";
-    if (vine){ far.className = "cmd__far la-2" + rau; void far.offsetWidth; }
-    if (pas === 4) far.className = "cmd__far la-0" + rau;
-    far.innerHTML = `<span class="cmd__mic">${esc(d.etFar || "farfuria")}</span><span class="cmd__cod">${esc(s.cod || "")}</span><span class="cmd__corp">${esc(s.far || "")}</span>`;
-
-    const p = pas < 0 ? (d.intro || "") : (PASI[pas] || {});
-    txt.innerHTML = pas < 0 ? `<p>${p}</p>`
-      : `<b>${pas + 1}. ${p.t}</b><p>${(s.text && s.text[pas]) || p.d}</p>`;
-    $('[data-rol="inapoi"]').disabled = pas < 0;
-    $('[data-rol="inainte"]').textContent = pas < 0 ? (d.buton || "Începe") : pas >= PASI.length - 1 ? "Încă o dată" : "Pasul următor";
-  }
-  $('[data-rol="inainte"]').onclick = () => { pas = pas >= PASI.length - 1 ? -1 : pas + 1; deseneaza(); };
-  $('[data-rol="inapoi"]').onclick = () => { pas = Math.max(-1, pas - 1); deseneaza(); };
-  gazda.querySelectorAll(".cmd__sc button").forEach(b => b.onclick = () => { sc = +b.dataset.sc; pas = 0; deseneaza(); });
-  deseneaza();
-};
-
-/* ===========================================================================
    18. DIRECȚII — migrația are sens, SCI-ul nu
    Tabelul de migrație are un rând pe direcție: românii din Italia, apoi
    italienii din România. Ca să stea lângă SCI, care are o valoare pe pereche,
@@ -1940,6 +1629,7 @@ const PY = (() => {
     return q + s.replace(/\\/g, "\\\\").replace(new RegExp(q, "g"), "\\" + q).replace(/\n/g, "\\n") + q;
   };
   const repr = v => {
+    if (v && typeof v === "object" && v.__repr) return v.__repr;
     const t = T(v);
     if (t === "NoneType") return "None";
     if (t === "bool") return v ? "True" : "False";
@@ -1971,11 +1661,14 @@ const PY = (() => {
   }
 
   function evalueaza(src, env){
+    /* o atribuire simplă, nume = expresie: Jupyter nu afișează nimic */
+    const at = src.trim().match(/^([A-Za-z_]\w*)\s*=(?!=)\s*(.+)$/s);
+    if (at){ const r = evalueaza(at[2], env); env[at[1]] = r.v; return { v: null, tiparit: r.tiparit, atrib: true }; }
     const tk = tokeni(src.trim()); let i = 0, tiparit = null;
     const vezi = () => tk[i], ia = () => tk[i++];
     const cere = v => { const x = ia(); if (!x || x.v !== v) throw new Er("SyntaxError", "invalid syntax"); };
     const FN = {
-      type: a => ({ __py: "type", n: T(a) }),
+      type: a => ({ __py: "type", n: (a && a.__cls) || T(a) }),
       len: a => { const t = T(a);
         if (t === "str" || t === "list") return a.length;
         if (t === "tuple") return a.__t.length;
@@ -2014,9 +1707,26 @@ const PY = (() => {
       for (;;){
         const x = vezi(); if (!x || x.k !== "p") break;
         if (x.v === "["){ ia(); const k = expr(); cere("]"); v = indexeaza(v, k); continue; }
-        if (x.v === "."){ ia(); const m = ia(); cere("("); cere(")");
-          if (T(v) === "dict" && m.v === "keys") { v = { __py: "dict_keys", v: Object.keys(v) }; continue; }
-          if (T(v) === "dict" && m.v === "values") { v = { __py: "dict_values", v: Object.values(v) }; continue; }
+        if (x.v === "."){ ia(); const m = ia();
+          if (!m || m.k !== "i") throw new Er("SyntaxError", "invalid syntax");
+          const apel = vezi() && vezi().v === "(";
+          let arg;
+          if (apel){ ia(); if (vezi() && vezi().v !== ")") arg = expr(); cere(")"); }
+          /* obiecte simulate (de exemplu un răspuns requests): atribute și metode fără argumente */
+          if (v && typeof v === "object" && (v.__attr || v.__met)){
+            if (v.__met && m.v in v.__met){
+              v = apel ? v.__met[m.v] : { __py: "method", __repr: `<bound method ${T(v)}.${m.v} of ${repr(v)}>` };
+              continue;
+            }
+            if (v.__attr && m.v in v.__attr){
+              if (apel) throw new Er("TypeError", `'${T(v.__attr[m.v])}' object is not callable`);
+              v = v.__attr[m.v]; continue;
+            }
+            throw new Er("AttributeError", `'${T(v)}' object has no attribute '${m.v}'`);
+          }
+          if (T(v) === "dict" && apel && m.v === "keys") { v = { __py: "dict_keys", v: Object.keys(v) }; continue; }
+          if (T(v) === "dict" && apel && m.v === "values") { v = { __py: "dict_values", v: Object.values(v) }; continue; }
+          if (T(v) === "dict" && apel && m.v === "get") { v = (arg !== undefined && String(arg) in v) ? v[arg] : null; continue; }
           throw new Er("AttributeError", `'${T(v)}' object has no attribute '${m.v}'`); }
         break;
       }
@@ -2076,7 +1786,7 @@ const PY = (() => {
 /* Consola, ca o celulă Jupyter: scrii o expresie, apeși Enter, primești Out.
    Săgeata în sus aduce comanda de dinainte. Întoarce o funcție care spune
    de câte ori a fost folosită. */
-function consolaJupyter(gazda, env, { start = 2, loc = "", laRulare = null } = {}){
+function consolaJupyter(gazda, env, { start = 2, loc = "", laRulare = null, taie = 0 } = {}){
   let n = start, ist = [], poz = 0;
   gazda.innerHTML = `<div class="jc__ist"></div>
     <label class="jc__linie"><span class="jc__in">In [${n}]:</span>
@@ -2094,10 +1804,14 @@ function consolaJupyter(gazda, env, { start = 2, loc = "", laRulare = null } = {
     try {
       rez = PY.evalueaza(src, env);
       if (rez.tiparit !== null) html += `<pre class="jc__print">${esc(rez.tiparit)}</pre>`;
-      if (rez.v === null && rez.tiparit === null)
+      if (rez.atrib) { /* atribuirea nu afișează nimic, ca în Jupyter */ }
+      else if (rez.v === null && rez.tiparit === null)
         html += `<div class="jc__nota">nimic afișat: Jupyter nu arată rezultatul când e None</div>`;
       else if (!(rez.v === null && rez.tiparit !== null))
-        html += `<div class="jc__r jc__r--out"><span class="jc__out">Out[${n}]:</span><code>${esc(PY.afis(rez.v))}</code></div>`;
+        { let o = PY.afis(rez.v);
+          /* un răspuns întreg are mii de caractere; pe slide se arată începutul */
+          if (taie && o.length > taie) o = o.slice(0, taie) + " … (" + o.length + " caractere)";
+          html += `<div class="jc__r jc__r--out"><span class="jc__out">Out[${n}]:</span><code>${esc(o)}</code></div>`; }
     } catch (e){
       html += `<pre class="jc__err"><b>${esc(e.tip || "Error")}</b>: ${esc(e.message)}</pre>`;
     }
@@ -2696,6 +2410,469 @@ V.ro = (gazda, d) => {
   const svg = gazda.querySelector("svg");
   svg.addEventListener("mouseover", ev => { const p = ev.target.closest(".ro__j"); if (p) arata(p.dataset.c); });
   svg.addEventListener("click", ev => { const p = ev.target.closest(".ro__j"); if (p) arata(p.dataset.c); });
+};
+
+
+/* ===========================================================================
+   CURSUL 2: componentele lecției despre API-uri
+
+   O regulă comună: fiecare componentă pornește cu ceva deja ales, ca să nu
+   existe panouri goale, iar culorile vin numai din variabilele paletei, ca
+   să meargă la fel în modul întunecat.
+   =========================================================================== */
+
+/* --- RESTAURANT: aceeași scenă pe două straturi --------------------------
+   Sus, sala restaurantului; jos, același lucru în realitate. Bonul și
+   cererea HTTP se mișcă împreună, iar fiecare scenariu arată o proprietate a
+   unui API: drumul unei cereri, abstractizarea, versiunea, lipsa stării.
+   ------------------------------------------------------------------------- */
+V.restaurant = (gazda, d) => {
+  const COL = d.coloane || [], SC = d.scenarii || [];
+  let sc = 0, pas = 0;
+  const poz = i => i === 0 ? "left:0;transform:none"
+                : i === COL.length - 1 ? "left:100%;transform:translateX(-100%)"
+                : `left:${(i + .5) * (100 / COL.length)}%;transform:translateX(-50%)`;
+
+  gazda.innerHTML = `
+    <div class="rst">
+      <div class="rst__sc" role="tablist">${SC.map((s, k) =>
+        `<button type="button" role="tab" data-sc="${k}">${esc(s.t)}</button>`).join("")}</div>
+      <div class="rst__scena">
+        <span class="rst__et">La restaurant</span>
+        <div class="rst__rand">${COL.map((c, i) => `<div class="rst__c" data-i="${i}" style="--c:var(--${c.c})">
+          <b>${esc(c.sus)}</b><span>${esc(c.dsus || "")}</span><em class="rst__sch">schimbat</em></div>`).join("")}</div>
+        <span></span>
+        <div class="rst__pista"><div class="rst__tok"><span class="rst__bon"></span><code class="rst__cer"></code></div></div>
+        <span class="rst__et">În realitate</span>
+        <div class="rst__rand rst__rand--jos">${COL.map((c, i) => `<div class="rst__c" data-i="${i}" style="--c:var(--${c.c})">
+          <b>${esc(c.jos)}</b><span>${esc(c.djos || "")}</span><em class="rst__sch">schimbat</em></div>`).join("")}</div>
+      </div>
+      <div class="rst__txt" aria-live="polite"></div>
+      <div class="rst__nav">
+        <button type="button" class="btn btn--mic" data-rol="inapoi">‹</button>
+        <span class="rst__pas"></span>
+        <button type="button" class="btn btn--mic btn--tare" data-rol="inainte">Pasul următor ›</button>
+      </div>
+    </div>`;
+
+  const $ = s => gazda.querySelector(s);
+  const tok = $(".rst__tok");
+  function deseneaza(){
+    const S = SC[sc], P = S.pasi[pas];
+    gazda.querySelectorAll(".rst__sc button").forEach((b, k) => b.classList.toggle("on", k === sc));
+    gazda.querySelectorAll(".rst__c").forEach(c => {
+      const i = +c.dataset.i;
+      c.classList.toggle("on", (P.col || []).includes(i));
+      c.classList.toggle("schimbat", (P.schimb || []).includes(i));
+    });
+    tok.style.cssText = poz(P.la ?? 0);
+    tok.classList.toggle("intors", !!P.intors);
+    tok.classList.toggle("rau", !!P.rau);
+    $(".rst__bon").textContent = P.bon || "";
+    $(".rst__cer").textContent = P.cer || "";
+    $(".rst__txt").innerHTML = `<p><i>La restaurant</i>${P.sus || ""}</p><p><i>În realitate</i>${P.jos || ""}</p>` +
+      (pas === S.pasi.length - 1 && S.concluzie ? `<p class="rst__concl">${S.concluzie}</p>` : "");
+    $(".rst__pas").textContent = `Pasul ${pas + 1} din ${S.pasi.length}`;
+    $('[data-rol="inapoi"]').disabled = pas === 0;
+    $('[data-rol="inainte"]').textContent = pas < S.pasi.length - 1 ? "Pasul următor ›"
+      : sc < SC.length - 1 ? "Scenariul următor ›" : "De la început ↺";
+  }
+  $(".rst__sc").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    sc = +b.dataset.sc; pas = 0; deseneaza();
+  });
+  $('[data-rol="inapoi"]').onclick = () => { pas = Math.max(0, pas - 1); deseneaza(); };
+  $('[data-rol="inainte"]').onclick = () => {
+    if (pas < SC[sc].pasi.length - 1) pas++;
+    else { sc = (sc + 1) % SC.length; pas = 0; }
+    deseneaza();
+  };
+  deseneaza();
+};
+
+
+/* --- CRITERII: tipurile de API, pe criteriile după care se taie -----------
+   Patru coloane, fiecare cu întrebarea ei. Clasificările nu se contrazic:
+   același API e REST, public și de tip cerere și răspuns în același timp.
+   ------------------------------------------------------------------------- */
+V.criterii = (gazda, d) => {
+  const C = d.coloane || [];
+  const toate = C.flatMap((c, k) => c.tipuri.map(t => ({ ...t, k, ct: c.t })));
+  let ales = Math.max(0, toate.findIndex(t => t.n === d.ales));
+
+  gazda.innerHTML = `
+    <div class="crt">
+      <div class="crt__col">${C.map((c, k) => { const o = C.slice(0, k).reduce((s, x) => s + x.tipuri.length, 0); return `
+        <div class="crt__c" style="--c:var(--${c.c || "accent"})">
+          <div class="crt__cap"><b>${esc(c.t)}</b><span>${esc(c.q || "")}</span></div>
+          ${c.tipuri.map((t, q) =>
+            `<button type="button" class="crt__t${t.noi ? " noi" : ""}" data-j="${o + q}">${esc(t.n)}${t.noi ? `<i>folosim</i>` : ""}</button>`).join("")}
+        </div>`; }).join("")}</div>
+      <div class="crt__det" aria-live="polite"></div>
+    </div>`;
+
+  const det = gazda.querySelector(".crt__det");
+  function arata(j){
+    ales = j; const t = toate[j];
+    gazda.querySelectorAll(".crt__t").forEach(b => b.classList.toggle("on", +b.dataset.j === j));
+    det.style.setProperty("--c", `var(--${C[t.k].c || "accent"})`);
+    det.innerHTML = `<h5>${esc(t.n)} <small>${esc(t.ct)}</small></h5>
+      <dl><div><dt>Ce este</dt><dd>${t.ce || ""}</dd></div>
+      <div><dt>Cum funcționează</dt><dd>${t.cum || ""}</dd></div>
+      <div><dt>Un exemplu real</dt><dd>${t.ex || ""}</dd></div>
+      <div><dt>Pentru analiza datelor</dt><dd>${t.ds || ""}</dd></div></dl>`;
+  }
+  gazda.querySelector(".crt__col").addEventListener("click", e => {
+    const b = e.target.closest(".crt__t"); if (b) arata(+b.dataset.j);
+  });
+  arata(ales);
+};
+
+
+/* --- BENZI: cronologia pe familii -------------------------------------------
+   O axă singură amestecă lucruri care nu se înlocuiesc unele pe altele. Pe
+   benzi se vede ce a venit după ce, în aceeași familie, și ce s-a petrecut
+   în paralel. Versiunile HTTP stau ca repere pe axă: transportul de dedesubt.
+   ------------------------------------------------------------------------- */
+V.benzi = (gazda, d) => {
+  const A0 = d.de || 1990, A1 = d.pana || 2026, B = d.benzi || [], R = d.repere || [];
+  const x = an => ((an - A0) / (A1 - A0) * 100).toFixed(2);
+  const ani = []; for (let a = Math.ceil(A0 / 5) * 5; a <= A1; a += 5) ani.push(a);
+  let ales = d.ales || [0, 0];
+
+  const banda = (b, k) => {
+    const P = b.puncte.slice().sort((p, q) => p.an - q.an);
+    return `<div class="bnz__b" style="--c:var(--${b.c})">
+      <span class="bnz__n">${esc(b.t)}</span>
+      <div class="bnz__pista">${P.map(p => {
+        const xp = +x(p.an);
+        const j = b.puncte.indexOf(p);
+        return `<button type="button" class="bnz__p" data-b="${k}" data-p="${j}" style="left:${xp}%"
+          aria-label="${p.an}, ${esc(p.n)}"><i></i><span>${esc(p.n)}</span></button>`; }).join("")}</div>
+    </div>`;
+  };
+
+  gazda.innerHTML = `
+    <div class="bnz">
+      ${B.map(banda).join("")}
+      <div class="bnz__axa"><span></span><div class="bnz__ani">
+        ${ani.map(a => `<i style="left:${x(a)}%">${a}</i>`).join("")}
+        ${R.map(r => `<b style="left:${x(r.an)}%" title="${esc(r.n)}, ${r.an}">${esc(r.n)}</b>`).join("")}
+      </div></div>
+      <div class="bnz__det" aria-live="polite"></div>
+    </div>`;
+
+  const det = gazda.querySelector(".bnz__det");
+  function arata(k, j){
+    ales = [k, j]; const b = B[k], p = b.puncte[j];
+    gazda.querySelectorAll(".bnz__p").forEach(e => e.classList.toggle("on", +e.dataset.b === k && +e.dataset.p === j));
+    det.style.setProperty("--c", `var(--${b.c})`);
+    det.innerHTML = `<h5><span class="bnz__an">${p.data || p.an}</span> ${esc(p.n)} <small>${esc(b.t)}</small></h5>
+      <dl><div><dt>Ce problemă rezolva</dt><dd>${p.problema || ""}</dd></div>
+      <div><dt>Cum funcționează</dt><dd>${p.cum || ""}</dd></div>
+      <div><dt>Unde îl întâlnești azi</dt><dd>${p.azi || ""}</dd></div></dl>`;
+  }
+  gazda.addEventListener("click", e => {
+    const p = e.target.closest(".bnz__p"); if (p) arata(+p.dataset.b, +p.dataset.p);
+  });
+  /* etichetele: deasupra punctului, iar dacă s-ar suprapune cu cea dinainte,
+     dedesubt. Se calculează când componenta are lățime (slide-ul ascuns are
+     zero) și din nou la fiecare redimensionare. */
+  const aseaza = () => {
+    gazda.querySelectorAll(".bnz__pista").forEach(pista => {
+      const P = [...pista.querySelectorAll(".bnz__p")].sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
+      let sus = -1e9, jos = -1e9;
+      P.forEach(p => {
+        p.classList.remove("jos", "dr");
+        const sp = p.querySelector("span"), s = sp.getBoundingClientRect();
+        if (!s.width) return;
+        if (s.left >= sus + 8){ sus = s.right; return; }
+        if (s.left >= jos + 8){ p.classList.add("jos"); jos = s.right; return; }
+        /* ambele locuri ocupate: eticheta rămâne deasupra, dar pleacă din punct spre dreapta */
+        p.classList.add("dr"); sus = sp.getBoundingClientRect().right;
+      });
+    });
+  };
+  if ("ResizeObserver" in window) new ResizeObserver(aseaza).observe(gazda);
+  arata(ales[0], ales[1]);
+};
+
+
+/* --- MESAJ: o cerere și un răspuns HTTP, ca două texte ------------------------
+   HTTP e text cu o structură fixă. Fiecare rând se poate apăsa, iar
+   explicația lui apare dedesubt, într-un loc care nu se mișcă.
+   ------------------------------------------------------------------------- */
+V.mesaj = (gazda, d) => {
+  const P = d.parti || {};                       // {linie:{n,c}, antet:{…}, gol:{…}, corp:{…}}
+  const M = [["cerere", d.titluCerere || "Cererea"], ["raspuns", d.titluRaspuns || "Răspunsul"]];
+  let ales = d.ales || ["cerere", 0];
+
+  const rand = (r, s, i) => `<button type="button" class="msj__r msj__r--${r.p}" data-s="${s}" data-i="${i}"
+      style="--c:var(--${(P[r.p] || {}).c || "text-3"})">${r.t ? esc(r.t) : "&nbsp;"}</button>`;
+  gazda.innerHTML = `
+    <div class="msj">
+      <div class="msj__doi">${M.map(([s, t]) => `
+        <div class="msj__m"><span class="msj__t">${esc(t)}</span>
+          <div class="msj__text">${(d[s] || []).map((r, i) => rand(r, s, i)).join("")}</div></div>`).join("")}</div>
+      <div class="msj__leg">${Object.entries(P).map(([k, p]) =>
+        `<span style="--c:var(--${p.c})"><i></i>${esc(p.n)}</span>`).join("")}</div>
+      <div class="msj__det" aria-live="polite"></div>
+    </div>`;
+
+  const det = gazda.querySelector(".msj__det");
+  function arata(s, i){
+    ales = [s, i]; const r = d[s][i], p = P[r.p] || {};
+    gazda.querySelectorAll(".msj__r").forEach(b => b.classList.toggle("on", b.dataset.s === s && +b.dataset.i === i));
+    det.style.setProperty("--c", `var(--${p.c || "text-3"})`);
+    det.innerHTML = `<b>${esc(p.n || "")}</b><span>${r.e || ""}</span>`;
+  }
+  gazda.addEventListener("click", e => {
+    const b = e.target.closest(".msj__r"); if (b) arata(b.dataset.s, +b.dataset.i);
+  });
+  arata(ales[0], ales[1]);
+};
+
+
+/* --- VERBE: ce face fiecare metodă HTTP cu o resursă ---------------------------
+   O colecție mică de fișe și cinci metode. Apeși o metodă și vezi efectul ei
+   asupra fișelor, cererea care l-a produs și cele două proprietăți care
+   contează la colectare: sigură și idempotentă.
+   ------------------------------------------------------------------------- */
+V.verbe = (gazda, d) => {
+  const F = d.fise || [], M = d.metode || [];
+  let ales = 0;
+  gazda.innerHTML = `
+    <div class="vrb">
+      <div class="vrb__m">${M.map((m, k) => `<button type="button" data-k="${k}" style="--c:var(--${m.c})">
+        <b>${m.m}</b><span>${esc(m.crud)}</span></button>`).join("")}</div>
+      <div class="vrb__scena">
+        <code class="vrb__cer"></code>
+        <div class="vrb__fise"></div>
+        <p class="vrb__efect"></p>
+      </div>
+      <table class="vrb__prop"><thead><tr><th></th><th>sigură</th><th>idempotentă</th></tr></thead>
+        <tbody>${M.map((m, k) => `<tr data-k="${k}"><td>${m.m}</td><td>${m.sigura ? "da" : "nu"}</td><td>${m.idem}</td></tr>`).join("")}</tbody></table>
+    </div>`;
+  const fise = gazda.querySelector(".vrb__fise");
+  function arata(k){
+    ales = k; const m = M[k];
+    gazda.querySelectorAll(".vrb__m button").forEach(b => b.classList.toggle("on", +b.dataset.k === k));
+    gazda.querySelectorAll(".vrb__prop tr[data-k]").forEach(r => r.classList.toggle("on", +r.dataset.k === k));
+    gazda.querySelector(".vrb__scena").style.setProperty("--c", `var(--${m.c})`);
+    gazda.querySelector(".vrb__cer").innerHTML = `<b>${m.m}</b> ${esc(m.cale)}${m.corp ? ` <span>${esc(m.corp)}</span>` : ""}`;
+    let L = F.map(f => ({ ...f, st: "" }));
+    const t = L.find(f => f.id === m.tinta);
+    if (m.op === "citeste" && t) t.st = "citit";
+    if (m.op === "adauga") L.push({ ...m.nou, st: "nou" });
+    if (m.op === "inlocuieste" && t){ Object.assign(t, m.nou); t.st = "inlocuit"; t.toate = true; }
+    if (m.op === "modifica" && t){ t[m.camp] = m.valoare; t.st = "modificat"; t.ce = m.camp; }
+    if (m.op === "sterge" && t) t.st = "sters";
+    fise.innerHTML = L.map(f => `<div class="vrb__f ${f.st}">
+      <span class="vrb__id">/echipe/${f.id}</span>
+      <span class="${f.toate || f.ce === "nume" ? "sch" : ""}">${esc(f.nume)}</span>
+      <span class="${f.toate || f.ce === "tema" ? "sch" : ""}">${esc(f.tema)}</span>
+      ${f.st ? `<em>${{ citit: "citită", nou: "creată", inlocuit: "înlocuită", modificat: "modificată", sters: "ștearsă" }[f.st]}</em>` : ""}
+    </div>`).join("");
+    gazda.querySelector(".vrb__efect").innerHTML = m.efect || "";
+  }
+  gazda.querySelector(".vrb__m").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (b) arata(+b.dataset.k);
+  });
+  arata(0);
+};
+
+
+/* --- RĂSPUNS: cinci situații ale aceleiași cereri ---------------------------
+   Codul de stare e primul câmp al răspunsului; clasa lui spune unde e
+   problema. Antetul Content-Type arată dacă mai urmează JSON sau o pagină
+   de eroare. Poarta se deschide după ce au fost încercate toate.
+   ------------------------------------------------------------------------- */
+V.raspuns = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const C = d.cazuri || [], K = d.clase || [];
+  const clasa = cod => Math.floor(cod / 100);
+  const incercate = new Set();
+  let ales = 0;
+  gazda.innerHTML = `
+    <div class="rsc">
+      <div class="rsc__clase">${K.map(k => `<span data-k="${k.k}" style="--c:var(--${k.c})"><b>${k.k}xx</b>${esc(k.n)}</span>`).join("")}</div>
+      <div class="rsc__cazuri">${C.map((c, i) => `<button type="button" data-i="${i}">${esc(c.et)}</button>`).join("")}</div>
+      <div class="rsc__bara"><span class="rsc__met">GET</span><code class="rsc__url"></code>
+        <button type="button" class="btn btn--mic btn--tare" data-rol="trimite">Trimite</button></div>
+      <div class="rsc__out" hidden>
+        <div class="rsc__st"><b class="rsc__cod"></b><span class="rsc__nume"></span></div>
+        <pre class="rsc__ant"></pre>
+        <pre class="rsc__corp"></pre>
+        <dl class="rsc__ce"><div><dt>Ce înseamnă</dt><dd></dd></div><div><dt>Ce faci</dt><dd></dd></div></dl>
+      </div>
+      <p class="rsc__nr"></p>
+      <p class="ex__stare"></p>
+    </div>`;
+  const $ = s => gazda.querySelector(s);
+  const numara = () => { $(".rsc__nr").textContent = `${incercate.size} din ${C.length} încercate`;
+    $(".rsc__nr").classList.toggle("gata", incercate.size >= C.length); };
+  function alege(i){
+    ales = i;
+    gazda.querySelectorAll(".rsc__cazuri button").forEach(b => b.classList.toggle("on", +b.dataset.i === i));
+    $(".rsc__url").textContent = C[i].url || "";
+    $(".rsc__out").hidden = true;
+    gazda.querySelectorAll(".rsc__clase span").forEach(s => s.classList.remove("on"));
+  }
+  $(".rsc__cazuri").addEventListener("click", e => { const b = e.target.closest("button"); if (b) alege(+b.dataset.i); });
+  $('[data-rol="trimite"]').onclick = async () => {
+    const c = C[ales], k = clasa(c.cod), kk = K.find(x => +x.k === k) || {};
+    $(".rsc__out").hidden = false;
+    $(".rsc__out").style.setProperty("--c", `var(--${kk.c || "text-3"})`);
+    $(".rsc__cod").textContent = c.cod;
+    $(".rsc__nume").textContent = c.nume || "";
+    $(".rsc__ant").textContent = (c.antete || []).join("\n");
+    $(".rsc__corp").textContent = c.corp || "";
+    const dd = gazda.querySelectorAll(".rsc__ce dd");
+    dd[0].innerHTML = c.ce || ""; dd[1].innerHTML = c.faci || "";
+    gazda.querySelectorAll(".rsc__clase span").forEach(s => s.classList.toggle("on", +s.dataset.k === k));
+    incercate.add(ales); numara();
+    if (incercate.size >= C.length){
+      await poarta(gazda, d.id, [...incercate].join(","));
+      $(".ex__stare").textContent = "Toate cele cinci situații au fost încercate.";
+      $(".ex__stare").classList.add("vazut");
+    }
+  };
+  alege(0); numara();
+};
+
+
+/* --- JUPYTER: un răspuns requests, cercetat ca într-un caiet --------------------
+   Prima celulă e deja rulată: în `r` stă răspunsul. Trei ținte, fiecare cu
+   indiciul ei; o țintă se bifează când o expresie care pornește de la date
+   (nu un număr scris de mână) dă valoarea căutată.
+   ------------------------------------------------------------------------- */
+V.jupyter = (gazda, d) => {
+  if (d.id) gazda.closest(".ix")?.classList.add("exc");
+  const T = d.tinte || [];
+  const atinse = new Array(T.length).fill(null);
+  const egal = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  gazda.innerHTML = `
+    <div class="jpy">
+      <div class="jpy__tinte">${T.map((t, k) => `<div class="jpy__ti" data-k="${k}"><span class="jpy__bif" aria-hidden="true"></span>
+        <span class="jpy__t">${t.t}</span><button type="button" class="jpy__ind">indiciu</button>
+        <span class="jpy__h" hidden>${t.ind || ""}</span><code class="jpy__e"></code></div>`).join("")}</div>
+      <div class="jpy__caiet">
+        <div class="jpy__celula"><span class="jc__in">In [1]:</span><pre>${esc(d.celula || "")}</pre></div>
+        <div class="jc"></div>
+      </div>
+      <p class="ex__stare"></p>
+    </div>`;
+  gazda.querySelector(".jpy__tinte").addEventListener("click", e => {
+    const b = e.target.closest(".jpy__ind"); if (!b) return;
+    const h = b.parentElement.querySelector(".jpy__h"); h.hidden = !h.hidden;
+  });
+  const env = JSON.parse(JSON.stringify(d.env || {}));
+  consolaJupyter(gazda.querySelector(".jc"), env, { start: 2, loc: d.loc || "r.status_code", taie: d.taie || 260,
+    laRulare: async (src, rez) => {
+      if (!rez || rez.atrib || !/[A-Za-z_]/.test(src)) return;
+      T.forEach((t, k) => {
+        if (atinse[k] === null && egal(rez.v, t.v)){
+          atinse[k] = src;
+          const li = gazda.querySelector(`.jpy__ti[data-k="${k}"]`);
+          li.classList.add("ok"); li.querySelector(".jpy__e").textContent = src;
+        }
+      });
+      if (atinse.every(x => x !== null) && d.id){
+        await poarta(gazda, d.id, atinse.join(" | "));
+        const st = gazda.querySelector(".ex__stare");
+        st.textContent = "Toate trei găsite."; st.classList.add("vazut");
+      }
+    } });
+};
+
+
+/* --- PAGINI: aceleași 65 de valori, tăiate în pagini --------------------------
+   Schimbi per_page și vezi pe loc câte pagini ies și ce are fiecare. Primul
+   element al răspunsului, dicționarul de paginare, se rescrie odată cu ele.
+   ------------------------------------------------------------------------- */
+V.pagini = (gazda, d) => {
+  const ANI = d.ani || [], N = ANI.length, OPT = d.optiuni || [10, 50, 1000];
+  const CUL = ["accent", "ambra", "roza", "ardezie", "ceas", "salvie", "text-3"];
+  let pp = d.implicit || 50, pg = 1;
+  gazda.innerHTML = `
+    <div class="pgn">
+      <div class="pgn__sus">
+        <span class="pgn__et">per_page</span>
+        <div class="pgn__opt">${OPT.map(o => `<button type="button" data-o="${o}">${o}</button>`).join("")}</div>
+        <code class="pgn__meta"></code>
+      </div>
+      <div class="pgn__celule">${ANI.map((a, i) => `<i data-i="${i}" title="${a}"></i>`).join("")}</div>
+      <div class="pgn__leg"></div>
+    </div>`;
+  const $ = s => gazda.querySelector(s);
+  function deseneaza(){
+    const pagini = Math.max(1, Math.ceil(N / pp));
+    pg = Math.min(pg, pagini);
+    gazda.querySelectorAll(".pgn__opt button").forEach(b => b.classList.toggle("on", +b.dataset.o === pp));
+    gazda.querySelectorAll(".pgn__celule i").forEach(c => {
+      const p = Math.floor(+c.dataset.i / pp) + 1;
+      c.style.setProperty("--c", `var(--${CUL[(p - 1) % CUL.length]})`);
+      c.classList.toggle("on", p === pg);
+    });
+    $(".pgn__meta").innerHTML = `{"page": <b>${pg}</b>, "pages": <b>${pagini}</b>, "per_page": ${pp}, "total": ${N}}`;
+    $(".pgn__leg").innerHTML = Array.from({ length: pagini }, (_, k) => {
+      const a = k * pp, b = Math.min(N, (k + 1) * pp) - 1;
+      return `<button type="button" data-p="${k + 1}" class="${k + 1 === pg ? "on" : ""}" style="--c:var(--${CUL[k % CUL.length]})">
+        <i></i>pagina ${k + 1}<span>${ANI[a]}${a !== b ? ` la ${ANI[b]}` : ""} · ${b - a + 1} valori</span></button>`; }).join("");
+  }
+  $(".pgn__opt").addEventListener("click", e => { const b = e.target.closest("button"); if (b){ pp = +b.dataset.o; pg = 1; deseneaza(); } });
+  $(".pgn__leg").addEventListener("click", e => { const b = e.target.closest("button"); if (b){ pg = +b.dataset.p; deseneaza(); } });
+  deseneaza();
+};
+
+
+/* --- CUB: un răspuns JSON-stat, desfăcut ----------------------------------------
+   Grila e cubul cu două dimensiuni. JSON-stat scrie codurile o singură dată,
+   cu poziția lor, iar valorile le pune pe un singur rând, în ordinea în care
+   ultima dimensiune se schimbă cea mai repede. Apeși o celulă: se aprind
+   pozițiile, calculul și rândul din tabelul lung.
+   ------------------------------------------------------------------------- */
+V.cub = (gazda, d) => {
+  const R = d.randuri, K = d.coloane, VAL = d.valori || [];
+  const n = K.coduri.length;
+  const fmt = v => Number(v).toLocaleString("ro-RO");
+  let [ri, ci] = d.ales || [0, 0];
+  const idx = o => "{" + o.coduri.map((c, i) => `<span data-c="${c}">"${c}": ${i}</span>`).join(", ") + "}";
+  gazda.innerHTML = `
+    <div class="cbx">
+      <div class="cbx__grila">
+        <table><thead><tr><th class="cbx__colt"><span class="r">${esc(R.id)}</span> \\ <span class="k">${esc(K.id)}</span></th>
+          ${K.coduri.map((c, j) => `<th class="k" data-j="${j}">${c}<small>${esc(K.nume[j])}</small></th>`).join("")}</tr></thead>
+        <tbody>${R.coduri.map((c, i) => `<tr><th class="r" data-i="${i}">${c}<small>${esc(R.nume[i])}</small></th>
+          ${K.coduri.map((_, j) => `<td><button type="button" data-i="${i}" data-j="${j}">${fmt(VAL[i * n + j])}</button></td>`).join("")}</tr>`).join("")}</tbody></table>
+      </div>
+      <div class="cbx__js">
+        <div><span class="cbx__k">"id":</span> ["<span class="r">${esc(R.id)}</span>", "<span class="k">${esc(K.id)}</span>"]</div>
+        <div><span class="cbx__k">"size":</span> [${R.coduri.length}, ${n}]</div>
+        <div><span class="cbx__k">"dimension":</span></div>
+        <div class="cbx__ind r">${esc(R.id)} → index ${idx(R)}</div>
+        <div class="cbx__ind k">${esc(K.id)} → index ${idx(K)}</div>
+        <div><span class="cbx__k">"value":</span></div>
+        <div class="cbx__val">${VAL.map((v, p) => `<span data-p="${p}"><i>${p}</i>${fmt(v)}</span>`).join("")}</div>
+      </div>
+      <div class="cbx__calc" aria-live="polite"></div>
+    </div>`;
+  function arata(i, j){
+    ri = i; ci = j; const p = i * n + j;
+    gazda.querySelectorAll(".cbx__grila td button").forEach(b => b.classList.toggle("on", +b.dataset.i === i && +b.dataset.j === j));
+    gazda.querySelectorAll(".cbx__grila th.r").forEach(t => t.classList.toggle("on", +t.dataset.i === i));
+    gazda.querySelectorAll(".cbx__grila th.k").forEach(t => t.classList.toggle("on", +t.dataset.j === j));
+    gazda.querySelectorAll(".cbx__ind.r span").forEach(s => s.classList.toggle("on", s.dataset.c === R.coduri[i]));
+    gazda.querySelectorAll(".cbx__ind.k span").forEach(s => s.classList.toggle("on", s.dataset.c === K.coduri[j]));
+    gazda.querySelectorAll(".cbx__val span").forEach(s => s.classList.toggle("on", +s.dataset.p === p));
+    gazda.querySelector(".cbx__calc").innerHTML =
+      `<p><span class="cbx__et">poziția</span> <span class="r">${i}</span> × ${n} + <span class="k">${j}</span> = <b>${p}</b></p>
+       <p><span class="cbx__et">rândul din tabelul lung</span> <span class="r">${esc(R.id)} ${R.coduri[i]}</span> · <span class="k">${esc(K.id)} ${K.coduri[j]}</span> · <b>${fmt(VAL[p])}</b></p>`;
+  }
+  gazda.querySelector(".cbx__grila").addEventListener("click", e => {
+    const b = e.target.closest("td button"); if (b) arata(+b.dataset.i, +b.dataset.j);
+  });
+  arata(ri, ci);
 };
 
 export default V;

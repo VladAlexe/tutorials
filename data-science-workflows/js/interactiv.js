@@ -6,10 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=64";
-import EXERCITII from "./exercitii.js?v=64";
-import VIZUAL from "./vizual.js?v=64";
-import HARTA from "./harta-sci.js?v=64";
+import GRAFICE from "./grafice.js?v=65";
+import EXERCITII from "./exercitii.js?v=65";
+import VIZUAL from "./vizual.js?v=65";
+import HARTA from "./harta-sci.js?v=65";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA };
 
@@ -27,7 +27,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=64");
+    const m = await import("/data-science-workflows/js/colectare.js?v=65");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -60,108 +60,87 @@ C.etape = (gazda, date) => {
 
 C.agenda = (gazda, date) => C.etape(gazda, { ...date, static: true });
 
-/* --- 1b. Disecția unei adrese -------------------------------------------
-   Adresa e arătată întreagă, cu bucățile ei. Apeși pe o bucată, îi alegi
-   numele. Ideea e să o vezi în context, nu ruptă în fișe: când o cerere nu
-   merge, greșeala e aproape mereu într-una dintre bucăți, și prima condiție
-   ca s-o găsești e să o poți numi.
+/* --- 1b. Adresa, bucată cu bucată ---------------------------------------
+   Adresa e desenată ca un șir de plăci separate; partea de după „?” e o
+   singură placă, cu perechile cheie=valoare înăuntru, pentru că rolul ei e
+   unul singur. Alegi o placă, apoi rolul ei din legendă; răspunsul vine pe
+   loc. O placă e rezolvată dinainte, ca exemplu. Când toate sunt numite, se
+   arată legătura dintre parametri și dicționarul `params` din requests.
    ------------------------------------------------------------------------- */
 
 C.url = (gazda, date) => {
   gazda.closest(".ix")?.classList.add("exc");
-  const P = date.parti || [];
-  const ET = date.etichete || [];
-  const ales = new Array(P.length).fill(null);
-  let activ = null;
-
+  const P = date.parti || [], R = date.roluri || [];
+  const pus = P.map((p, i) => i === date.rezolvat ? p.e : null);
+  let activ = null, gresite = 0;
   const esc = x => String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  const rol = e => R.find(r => r.e === e) || {};
 
   gazda.innerHTML = `
     ${date.sarcina ? `<p class="ex__sarcina">${date.sarcina}</p>` : ""}
-    <div class="url__bara">${P.map((x, i) =>
-      `<button class="url__p" data-i="${i}" type="button">${esc(x.t)}</button>`).join("")}</div>
-    <div class="url__et" hidden>${ET.map(e =>
-      `<button class="url__e" data-e="${esc(e)}" type="button">${esc(e)}</button>`).join("")}</div>
-    <p class="url__aj">Apasă pe o bucată din adresă, apoi alege cum se cheamă.</p>
-    <div class="ex__jos">
-      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
-      <button class="btn btn--mic" data-rol="din-nou" type="button" hidden>Încearcă din nou</button>
-      <span class="ex__raspuns"></span>
-    </div>
-    <p class="ex__ex"></p>
-    <p class="ex__stare"></p>`;
+    <div class="adr">
+      <div class="adr__bara">${P.map((p, i) => `
+        <button type="button" class="adr__p" data-i="${i}">
+          <span class="adr__t">${p.kv ? p.kv.map((x, k) => `${k ? '<i class="adr__amp">&amp;</i>' : '<i class="adr__amp">?</i>'}<span class="adr__kv">${esc(x)}</span>`).join("") : esc(p.t)}</span>
+          <span class="adr__rol"></span>
+        </button>`).join("")}</div>
+      <div class="adr__roluri">${R.map(r => `
+        <button type="button" class="adr__r" data-e="${esc(r.e)}" style="--c:var(--${r.c})">
+          <b>${esc(r.e)}</b><span>${r.d}</span></button>`).join("")}</div>
+      <p class="adr__aj"></p>
+      <div class="adr__dupa" hidden>${date.dupa || ""}</div>
+      <p class="ex__stare"></p>
+    </div>`;
 
-  const bara = gazda.querySelector(".url__bara");
-  const cos  = gazda.querySelector(".url__et");
-  const aj   = gazda.querySelector(".url__aj");
-  const btV  = gazda.querySelector('[data-rol="verifica"]');
-  const btN  = gazda.querySelector('[data-rol="din-nou"]');
-  const out  = gazda.querySelector(".ex__raspuns");
-  const ex   = gazda.querySelector(".ex__ex");
-  const st   = gazda.querySelector(".ex__stare");
-
+  const aj = gazda.querySelector(".adr__aj");
+  const placi = [...gazda.querySelectorAll(".adr__p")];
   const scrie = () => {
-    bara.querySelectorAll(".url__p").forEach((b, i) => {
-      b.classList.toggle("are", !!ales[i]);
+    placi.forEach((b, i) => {
+      const e = pus[i];
       b.classList.toggle("on", activ === i);
-      b.dataset.et = ales[i] || "";
+      b.classList.toggle("are", !!e);
+      b.style.setProperty("--c", e ? `var(--${rol(e).c})` : "var(--linie-2)");
+      b.querySelector(".adr__rol").textContent = e || "";
     });
+    gazda.querySelectorAll(".adr__r").forEach(r => r.classList.toggle("tinta", activ !== null));
+    const rest = pus.filter(x => !x).length;
+    aj.textContent = activ !== null ? `Ce rol are placa ${activ + 1}? Alege din legendă.`
+      : rest === 1 ? "Mai e o placă fără rol." : rest ? `Mai sunt ${rest} plăci fără rol.` : "";
   };
 
-  bara.addEventListener("click", e => {
-    const b = e.target.closest(".url__p");
-    if (!b) return;
-    activ = +b.dataset.i;
-    cos.hidden = false;
-    aj.textContent = `Cum se cheamă „${P[activ].t}”?`;
-    scrie();
+  gazda.querySelector(".adr__bara").addEventListener("click", e => {
+    const b = e.target.closest(".adr__p"); if (!b) return;
+    const i = +b.dataset.i;
+    if (pus[i]) return;                       // placa e deja numită corect
+    activ = activ === i ? null : i; scrie();
   });
 
-  cos.addEventListener("click", e => {
-    const b = e.target.closest(".url__e");
-    if (!b || activ === null) return;
-    ales[activ] = b.dataset.e;
-    activ = null; cos.hidden = true;
-    aj.textContent = ales.every(Boolean)
-      ? "Toate au nume. Apasă Verifică."
-      : "Mai apasă pe o bucată.";
-    scrie();
+  gazda.querySelector(".adr__roluri").addEventListener("click", async e => {
+    const b = e.target.closest(".adr__r"); if (!b || activ === null) return;
+    const i = activ, ales = b.dataset.e;
+    if (ales === P[i].e){
+      pus[i] = ales; activ = null; scrie();
+    } else {
+      gresite++;
+      const pl = placi[i]; pl.classList.add("rau");
+      aj.innerHTML = `<b>Nu e ${esc(ales)}.</b> ${rol(ales).d ? "Citește din nou ce face fiecare rol." : ""}`;
+      setTimeout(() => pl.classList.remove("rau"), 700);
+      return;
+    }
+    if (pus.every(Boolean)){
+      gazda.querySelector(".adr__dupa").hidden = false;
+      aj.textContent = !gresite ? "Toate plăcile au rol." : gresite === 1 ? "Toate plăcile au rol, cu o încercare greșită pe drum." : `Toate plăcile au rol, cu ${gresite} încercări greșite pe drum.`;
+      gazda.closest(".ix")?.classList.add("gata");
+      document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
+      const st = gazda.querySelector(".ex__stare");
+      try {
+        const m = await import("/data-science-workflows/js/colectare.js?v=65");
+        const salvat = await m.salveazaCod({ exercitiuId: date.id, cod: `${pus.join(" | ")} · greșite: ${gresite}`, trecut: true });
+        st.textContent = salvat ? "Rezolvare înregistrată." : "Nu e înregistrată: nu ești autentificat.";
+        st.classList.add("vazut");
+      } catch {}
+    }
   });
-
-  btV.onclick = async () => {
-    let bune = 0;
-    bara.querySelectorAll(".url__p").forEach((b, i) => {
-      const ok = ales[i] === P[i].e;
-      b.classList.toggle("bun", ok);
-      b.classList.toggle("rau", !ok);
-      if (ok) bune++;
-    });
-    const tot = bune === P.length;
-    out.innerHTML = tot ? "<b>Corect.</b>" : `<b>${bune} din ${P.length}.</b>`;
-    btN.hidden = tot;
-    if (!tot) return;
-
-    btV.disabled = true;
-    ex.classList.add("vazut");
-    ex.innerHTML = (date.explicatie || "") +
-      "<ul class=\"url__lista\">" + P.map(x =>
-        `<li><code>${esc(x.t)}</code> <b>${esc(x.e)}</b> ${x.d || ""}</li>`).join("") + "</ul>";
-    gazda.closest(".ix")?.classList.add("gata");
-    document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
-    try {
-      const m = await import("/data-science-workflows/js/colectare.js?v=64");
-      const salvat = await m.salveazaCod({
-        exercitiuId: date.id, cod: ales.join(" | "), trecut: true });
-      st.textContent = salvat ? "Rezolvare înregistrată."
-                              : "Nu e înregistrată: nu ești autentificat.";
-      st.classList.add("vazut");
-    } catch {}
-  };
-
-  btN.onclick = () => {
-    bara.querySelectorAll(".url__p").forEach(b => b.classList.remove("bun", "rau"));
-    out.textContent = ""; btN.hidden = true;
-  };
 
   scrie();
 };
@@ -528,7 +507,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=64");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=65");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -705,7 +684,7 @@ C.asteptari = (gazda, date) => {
        să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
     poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=64");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=65");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

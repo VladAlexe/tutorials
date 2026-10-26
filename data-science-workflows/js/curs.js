@@ -34,8 +34,8 @@ export const LECTII = [
   { nr:2, cheie:"c2-colectarea-prin-api",
     titlu:"Colectarea datelor prin API",
     scurt:"API",
-    rezumat:"Ce este un API, cum se citește o documentație, și cum aduci primele date reale în proiect.",
-    stare:"gata", sarcini:12,
+    rezumat:"Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns, și cum aduci primele date reale în proiect.",
+    stare:"gata", sarcini:9,
     notebook:null },
 
   { nr:3, cheie:"c3-versionare-git",
