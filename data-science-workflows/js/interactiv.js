@@ -6,10 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=68";
-import EXERCITII from "./exercitii.js?v=68";
-import VIZUAL from "./vizual.js?v=68";
-import HARTA from "./harta-sci.js?v=68";
+import GRAFICE from "./grafice.js?v=69";
+import EXERCITII from "./exercitii.js?v=69";
+import VIZUAL from "./vizual.js?v=69";
+import HARTA from "./harta-sci.js?v=69";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA };
 
@@ -27,7 +27,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=68");
+    const m = await import("/data-science-workflows/js/colectare.js?v=69");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -134,7 +134,7 @@ C.url = (gazda, date) => {
       document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
       const st = gazda.querySelector(".ex__stare");
       try {
-        const m = await import("/data-science-workflows/js/colectare.js?v=68");
+        const m = await import("/data-science-workflows/js/colectare.js?v=69");
         const salvat = await m.salveazaCod({ exercitiuId: date.id, cod: `${pus.join(" | ")} · greșite: ${gresite}`, trecut: true });
         st.textContent = salvat ? "Rezolvare înregistrată." : "Nu e înregistrată: nu ești autentificat.";
         st.classList.add("vazut");
@@ -146,15 +146,26 @@ C.url = (gazda, date) => {
 };
 
 /* --- 2. Terminal pentru mediul virtual -----------------------------------
-   Pornește în folderul utilizatorului, ca un terminal adevărat. Ordinea
-   contează: întâi folderul proiectului, apoi intri în el, abia apoi .venv.
-   Un .venv făcut în altă parte e semnalat, pentru că e greșeala cea mai
-   frecventă de la prima oră. */
+   Pornește în folderul utilizatorului, ca un terminal adevărat, unde stă
+   deja dsw (arhiva cursului, dezarhivată și redenumită). Ordinea contează:
+   întâi intri în dsw, apoi .venv, apoi activarea, abia apoi pip. Un .venv
+   făcut în altă parte și un pip fără mediu activ sunt semnalate, pentru că
+   sunt greșelile cele mai frecvente de la prima oră. Prima activare dă
+   eroarea de execution policy, ca pe multe calculatoare cu Windows. */
 C.terminal = (gazda) => {
-  const SARCINI = [["mkdir","faci folderul"],["cd","intri în el"],["venv","creezi .venv"],
+  const SARCINI = [["cd","intri în dsw"],["venv","creezi .venv"],["activ","îl activezi"],
                    ["install","instalezi pachetele"],["dir","te uiți în folder"]];
   const ACASA = "C:\\Users\\student";
-  let cwd = ACASA, proiecte = new Set(), cuVenv = new Set(), instalate = [], activ = false;
+  const NB = "01_introducere_si_datele_proiectului.ipynb";
+  /* folderele, cu ce e în ele; "d:" = dosar */
+  const FS = {
+    "": ["d:Desktop", "d:Documents", "d:Downloads", "d:dsw"],
+    "dsw": ["d:curs", "-a---:.gitignore", "-a---:README.md", "-a---:requirements.txt"],
+    "dsw\\curs": ["d:data", "d:exemple_curs1", "-a---:" + NB],
+    "dsw\\curs\\data": ["-a---:country.csv"],
+    "dsw\\curs\\exemple_curs1": ["-a---:activitati.txt", "-a---:persoane.json"],
+  };
+  let cwd = "", cuVenv = new Set(), instalate = [], activ = false, politica = false, prAcum = "";
   const facute = new Set();
   let linii = ["Windows PowerShell", "", "_"];
 
@@ -165,7 +176,8 @@ C.terminal = (gazda) => {
       <input autocomplete="off" spellcheck="false" aria-label="Comandă" placeholder="scrie o comandă; ajutor, dacă te blochezi"></div>`;
   const ecran = gazda.querySelector(".trm__ecran"), prompt = gazda.querySelector(".trm__pr");
   const intrare = gazda.querySelector("input"), chipuri = [...gazda.querySelectorAll(".trm__chip")];
-  const pr = () => `${activ ? "(.venv) " : ""}PS ${cwd}&gt;`;
+  const cale = (c = cwd) => c ? ACASA + "\\" + c : ACASA;
+  const pr = () => `${activ ? "(.venv) " : ""}PS ${cale()}&gt;`;
   const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
   const deseneaza = () => {
     ecran.innerHTML = linii.map(l => l.startsWith("!") ? `<div class="er">${l.slice(1)}</div>`
@@ -176,58 +188,100 @@ C.terminal = (gazda) => {
   };
   const scrie = (cmd, iesire) => {
     linii.splice(linii.length - 1, 1);
-    linii.push(`<span class="pr">${pr()}</span> ${esc(cmd)}`);
+    linii.push(`<span class="pr">${prAcum}</span> ${esc(cmd)}`);   /* promptul de dinaintea comenzii */
     iesire.forEach(x => linii.push(x)); linii.push("", "_");
   };
-  const nume = () => cwd.split("\\").pop();
-  const inProiect = () => cwd !== ACASA;
-  const instaleaza = (c, pk) => {
-    if (!pk.length) return scrie(c, ["!Spune ce instalezi. De exemplu: pandas ipykernel"]);
+  const continut = c => FS[c] || [];
+  const areDosar = (c, n) => continut(c).some(x => x.toLowerCase() === "d:" + n.toLowerCase());
+  const numeDosar = (c, n) => continut(c).find(x => x.toLowerCase() === "d:" + n.toLowerCase()).slice(2);
+  const inDsw = () => cwd === "dsw";
+  const mergi = tinta => {
+    /* cd relativ: dsw, dsw\curs, .., ~ */
+    if (tinta === "~" || tinta === ACASA) return "";
+    let c = cwd;
+    for (const p of tinta.replace(/\//g, "\\").split("\\").filter(Boolean)){
+      if (p === ".") continue;
+      if (p === "..") { c = c.includes("\\") ? c.slice(0, c.lastIndexOf("\\")) : ""; continue; }
+      if (!areDosar(c, p)) return null;
+      c = (c ? c + "\\" : "") + numeDosar(c, p);
+    }
+    return c;
+  };
+  const instaleaza = (c, pk, dinLista) => {
+    if (!pk.length) return scrie(c, ["!Spune ce instalezi. Aici: pip install -r requirements.txt"]);
     instalate = [...new Set([...instalate, ...pk])]; facute.add("install");
-    scrie(c, ["", ...pk.map(x => `Collecting ${x}`), `~Successfully installed ${pk.join(" ")} (în ${nume()}\\.venv)`]);
+    scrie(c, ["", ...pk.map((x, i) => `Collecting ${x}${dinLista ? ` (from -r requirements.txt (line ${i + 1}))` : ""}`),
+      `~Successfully installed ${pk.join(" ")} (în dsw\\.venv)`]);
+  };
+  const pip = (c, rest) => {
+    const r = rest.trim();
+    if (/^-r\s+requirements\.txt$/i.test(r)){
+      if (!continut(cwd).some(x => /:requirements\.txt$/i.test(x)))
+        return scrie(c, ["!ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'",
+          "!Lista pachetelor stă în dsw. Intră acolo întâi."]);
+      return instaleaza(c, ["pandas", "requests", "ipykernel"], true);
+    }
+    return instaleaza(c, r.split(/\s+/).filter(Boolean), false);
   };
 
   const ruleaza = brut => {
     const c = brut.trim(); if (!c) return;
+    prAcum = pr();
     let m;
-    if ((m = c.match(/^(mkdir|md)\s+(\S+)$/))){
-      if (inProiect()) scrie(c, ["!Ești deja în folderul unui proiect. Un proiect nu stă în alt proiect."]);
-      else { proiecte.add(m[2]); facute.add("mkdir"); scrie(c, ["", `    Directory: ${ACASA}`, "", `d----   ${m[2]}`]); } }
-    else if ((m = c.match(/^cd\s+(\S+)$/))){
-      if (m[1] === "..") { cwd = ACASA; activ = false; scrie(c, []); }
-      else if (!inProiect() && proiecte.has(m[1])) { cwd = ACASA + "\\" + m[1]; facute.add("cd"); scrie(c, []); }
-      else scrie(c, [`!cd : Cannot find path '${cwd}\\${m[1]}' because it does not exist.`]); }
-    else if (/^(py|python3?)\s+-m\s+venv\s+\S+$/.test(c)){
+    if ((m = c.match(/^(cd|chdir|set-location)\s+(.+)$/i))){
+      const t = m[2].trim().replace(/^["']|["']$/g, "");
+      const nou = mergi(t);
+      if (nou === null) scrie(c, [`!cd : Cannot find path '${cale()}\\${esc(t)}' because it does not exist.`]);
+      else { cwd = nou; if (cwd === "dsw") facute.add("cd"); scrie(c, []); } }
+    else if (/^cd$/i.test(c)) scrie(c, ["", cale()]);
+    else if ((m = c.match(/^(mkdir|md)\s+(\S+)$/i))){
+      if (areDosar(cwd, m[2])) scrie(c, [`!mkdir : An item with the specified name ${cale()}\\${esc(m[2])} already exists.`]);
+      else { (FS[cwd] ||= []).push("d:" + m[2]); FS[(cwd ? cwd + "\\" : "") + m[2]] = [];
+        scrie(c, ["", `    Directory: ${cale()}`, "", `d----   ${esc(m[2])}`,
+          ...(m[2].toLowerCase().startsWith("dsw") || /proiect/i.test(m[2]) ? ["", "~Nu e nevoie de un folder nou: dsw există deja, din arhiva cursului."] : [])]); } }
+    else if (/^(py|python3?)\s+-m\s+venv\s+\S+$/i.test(c)){
       const dir = c.split(/\s+/).pop();
-      if (!inProiect()) scrie(c, ["", `!Ai creat ${dir} direct în ${ACASA}, nu într-un proiect.`,
-        "!Fă întâi folderul proiectului (mkdir) și intră în el (cd), apoi creează mediul acolo."]);
+      if (!inDsw()) scrie(c, ["", `!Ai creat ${esc(dir)} în ${cale()}, nu în dsw.`,
+        cwd.startsWith("dsw\\") ? "!Mediul stă direct în dsw, lângă requirements.txt. Urcă un nivel (cd ..) și creează-l acolo."
+                                : "!Intră întâi în folderul cursului (cd dsw), apoi creează mediul acolo."]);
       else { cuVenv.add(cwd); facute.add("venv");
-        scrie(c, ["", `~Mediul e în ${cwd}\\${dir}. Nu scrii nimic acolo: e al lui Python.`]); } }
-    else if (/^\.?\\?\.venv\\Scripts\\activate(\.ps1)?$/.test(c)){
-      if (!cuVenv.has(cwd)) scrie(c, ["!Aici nu există .venv. Ești în folderul bun?"]);
-      else { activ = true; scrie(c, []); } }
-    else if ((m = c.match(/^\.?\\?\.venv\\Scripts\\python(?:\.exe)?\s+-m\s+pip\s+install\s*(.*)$/))){
-      if (!cuVenv.has(cwd)) scrie(c, ["!Aici nu există .venv. Creează-l întâi, în folderul proiectului."]);
-      else instaleaza(c, m[1].split(/\s+/).filter(Boolean)); }
-    else if ((m = c.match(/^pip\s+install\s*(.*)$/))){
-      if (!activ) scrie(c, ["!Atenție: fără mediu activ, pip instalează în Python-ul global.",
-        "!Folosește .venv\\Scripts\\python -m pip install …, sau activează întâi mediul."]);
-      else instaleaza(c, m[1].split(/\s+/).filter(Boolean)); }
-    else if (/^(pip\s+list|\.?\\?\.venv\\Scripts\\python(?:\.exe)?\s+-m\s+pip\s+list)$/.test(c)){
-      const glob = /^pip/.test(c) && !activ;
-      scrie(c, ["", "Package    Version", "---------- -------", ...(glob ? ["(pachetele globale, nu ale proiectului)"]
+        if (!FS.dsw.includes("d:.venv")) FS.dsw.unshift("d:.venv");
+        scrie(c, ["", `~Mediul e în ${cale()}\\${esc(dir)}. Nu scrii nimic acolo: e al lui Python.`]); } }
+    else if (/^(\.[\\/])?\.venv[\\/]scripts[\\/]activate(\.ps1|\.bat)?$/i.test(c)){
+      if (!cuVenv.has(cwd)) scrie(c, [`!${esc(c)} : The term '${esc(c)}' is not recognized.`, "!Aici nu există .venv. Ești în dsw? L-ai creat?"]);
+      else if (!politica) scrie(c, [
+        `!${esc(c)} : File ${cale()}\\.venv\\Scripts\\Activate.ps1 cannot be loaded because running scripts is disabled on this system.`,
+        "!Rulează o dată: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser",
+        "!apoi activează din nou."]);
+      else { activ = true; facute.add("activ"); scrie(c, []); } }
+    else if (/^set-executionpolicy\b/i.test(c)){
+      if (!/remotesigned/i.test(c)) scrie(c, ["!Folosește: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"]);
+      else { politica = true; scrie(c, ["", "~Gata. Acum activarea merge."]); } }
+    else if (/^source\s+\.venv\/bin\/activate$/i.test(c))
+      scrie(c, ["!Asta e comanda de pe macOS. În PowerShell: .\\.venv\\Scripts\\Activate.ps1"]);
+    else if ((m = c.match(/^(?:\.[\\/])?\.venv[\\/]scripts[\\/]python(?:\.exe)?\s+-m\s+pip\s+install\s*(.*)$/i))){
+      if (!cuVenv.has(cwd)) scrie(c, ["!Aici nu există .venv. Creează-l întâi, în dsw."]);
+      else pip(c, m[1]); }
+    else if ((m = c.match(/^(?:python\s+-m\s+)?pip3?\s+install\s*(.*)$/i))){
+      if (!activ) scrie(c, ["!Atenție: fără mediu activ, pip instalează în Python-ul comun al calculatorului.",
+        "!Activează întâi mediul: .\\.venv\\Scripts\\Activate.ps1"]);
+      else pip(c, m[1]); }
+    else if (/^(pip3?\s+list|(\.[\\/])?\.venv[\\/]scripts[\\/]python(\.exe)?\s+-m\s+pip\s+list)$/i.test(c)){
+      const glob = /^pip/i.test(c) && !activ;
+      scrie(c, ["", "Package    Version", "---------- -------", ...(glob ? ["(pachetele comune, nu ale mediului)"]
         : instalate.length ? instalate.map(x => `${x.padEnd(11)}…`) : ["pip        …", "(încă nimic instalat)"])]); }
-    else if (/^(dir|ls)$/.test(c)){
+    else if (/^(dir|ls|gci|get-childitem)$/i.test(c)){
       facute.add("dir");
-      if (!inProiect()) scrie(c, ["", `    Directory: ${cwd}`, "", ...[...proiecte].map(x => `d----   ${x}`), "d----   Desktop", "d----   Documents"]);
-      else scrie(c, ["", `    Directory: ${cwd}`, "", ...(cuVenv.has(cwd) ? ["d----   .venv        <span class=\"c\"># al lui Python, nu umbli aici</span>"] : []),
-        "d----   data", "d----   notebooks", "d----   code", "-a---   README.md"]); }
-    else if (/^deactivate$/.test(c)){ if (activ) { activ = false; scrie(c, []); } else scrie(c, ["!Niciun mediu activ."]); }
-    else if (/^(ajutor|help)$/.test(c)) scrie(c, ["", "Comenzile, în ordine:",
-      "  mkdir proiect-dsw", "  cd proiect-dsw", "  py -m venv .venv",
-      "  .venv\\Scripts\\python -m pip install pandas ipykernel", "  dir",
-      "Și: cd .., .venv\\Scripts\\activate, pip list, deactivate, curata"]);
-    else if (/^(curata|clear|cls)$/.test(c)) linii = ["_"];
+      scrie(c, ["", `    Directory: ${cale()}`, "", ...continut(cwd).map(x => {
+        const [fel, n] = x.startsWith("d:") ? ["d----", x.slice(2)] : x.split(/:(.*)/s);
+        return `${fel}   ${esc(n)}${n === ".venv" ? '   <span class="c"># al lui Python, nu umbli aici</span>' : ""}`;
+      })]); }
+    else if (/^deactivate$/i.test(c)){ if (activ) { activ = false; scrie(c, []); } else scrie(c, ["!Niciun mediu activ."]); }
+    else if (/^(ajutor|help)$/i.test(c)) scrie(c, ["", "Comenzile, în ordine:",
+      "  cd dsw", "  py -m venv .venv", "  .\\.venv\\Scripts\\Activate.ps1",
+      "  pip install -r requirements.txt", "  dir",
+      "Și: cd .., pip list, deactivate, curata"]);
+    else if (/^(curata|clear|cls)$/i.test(c)) linii = ["_"];
     else scrie(c, [`!${esc(c.split(" ")[0])} : The term is not recognized. Scrie ajutor.`]);
     deseneaza();
   };
@@ -507,7 +561,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=68");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=69");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -684,7 +738,7 @@ C.asteptari = (gazda, date) => {
        să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
     poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=68");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=69");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=68");
+    const m = await import("/data-science-workflows/js/colectare.js?v=69");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }

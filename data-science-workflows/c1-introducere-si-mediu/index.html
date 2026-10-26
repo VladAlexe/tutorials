@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 1. Introducere și configurare · Fluxuri de lucru</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.">
-<link rel="stylesheet" href="../css/fonturi.css?v=68">
-<link rel="stylesheet" href="../css/sistem.css?v=68">
-<link rel="stylesheet" href="../css/intrare.css?v=68">
-<script src="../js/tema.js?v=68"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=69">
+<link rel="stylesheet" href="../css/sistem.css?v=69">
+<link rel="stylesheet" href="../css/intrare.css?v=69">
+<script src="../js/tema.js?v=69"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <span class="bl__fapte" id="fapte">
       <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
       <a class="bl__b" href="tutorial/">Manualul</a>
-      
+      <a class="bl__b" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/01_introducere_si_datele_proiectului.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
       <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
     </span>
   </div>
@@ -95,6 +95,16 @@ notează; e ca să știu de unde pornim.</p></div>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
       </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/01_introducere_si_datele_proiectului.ipynb" target="_blank" rel="noopener">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg></span>
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Caietul 01, pe GitHub. E deja în ZIP-ul cursului, în dsw/curs/.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip" target="_blank" rel="noopener">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg></span>
+        <span class="mat__t">Folderul cursului, ZIP ↗</span>
+        <span class="mat__d">Caietul 01, country.csv, fișierele de exemplu și requirements.txt. Se redenumește dsw.</span>
+      </a>
       <a class="mat__c" href="scurtaturi/">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Scurtăturile din Jupyter</span>
@@ -103,28 +113,39 @@ notează; e ca să știu de unde pornim.</p></div>
       <a class="mat__c" href="https://data.humdata.org/dataset/social-connectedness-index" target="_blank" rel="noopener">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Datele SCI, de pe HDX ↗</span>
-        <span class="mat__d">country.csv (0,6 MB), din lista de resurse a paginii. Se pune în data/ și nu se modifică.</span>
+        <span class="mat__d">Sursa lui country.csv. Fișierul e deja în ZIP, în curs/data/, și nu se modifică.</span>
       </a>
-      <a class="mat__c" href="exemple_curs1.zip">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
-        <span class="mat__t">Datele de exemplu</span>
-        <span class="mat__d">persoane.json și activitati.txt, pentru caietul 01. Se dezarhivează lângă caiet.</span>
-      </a>
-      <a class="mat__c" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Depozitul cursului ↗</span>
-        <span class="mat__d">Codul și caietele</span>
+        <span class="mat__d">Caietele și datele cursului, pe GitHub.</span>
       </a>
     </div>
   </section>
   <section class="sec sec--nevoie">
     <p class="sec__et">De ce ai nevoie, înainte</p>
     <div class="sec__corp"><p>Lecția se poate citi fără nimic instalat. Partea practică, din caiet, are nevoie
-de două lucruri, amândouă gratuite:</p>
+de două programe, amândouă gratuite, și de folderul cursului:</p>
 <ol>
-<li><a class="leg" href="https://code.visualstudio.com/" rel="noopener" target="_blank">VS Code</a>, editorul în care lucrăm tot semestrul.</li>
+<li><a class="leg" href="https://code.visualstudio.com/" rel="noopener" target="_blank">VS Code</a>, editorul în care lucrăm tot semestrul, cu extensiile <em>Python</em> și <em>Jupyter</em>.</li>
 <li><a class="leg" href="https://www.python.org/downloads/" rel="noopener" target="_blank">Python 3.11</a> sau mai nou. La instalare, pe Windows, bifează <em>Add Python to PATH</em>.</li>
-</ol></div>
+</ol>
+<div class="gh gh--dsw" id="folderul-cursului">
+<div class="gh__cap"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.6l2 2.2h8.4A1.5 1.5 0 0 1 21 8.7v9.8A1.5 1.5 0 0 1 19.5 20h-15A1.5 1.5 0 0 1 3 18.5z"/><path d="M12 10.5v6M9.5 14l2.5 2.5 2.5-2.5"/></svg><div><b>Folderul cursului, o singură dată</b><span>Caietul 01, datele lui și lista pachetelor, într-o arhivă de pe GitHub.</span></div></div>
+<a class="gh__zip" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">↓ Descarcă ZIP-ul cursului</a>
+<ol class="gh__pasi">
+<li><b>Dezarhivezi arhiva</b> unde vrei pe calculator. Folderul obținut se numește <code>-DSW2026-main</code>: <b>redenumește-l <code>dsw</code></b>.</li>
+<li><b>Deschizi <code>dsw</code> în VS Code</b> (<em>File → Open Folder</em>), apoi terminalul: <em>Terminal → New Terminal</em>. Pornește deja în <code>dsw</code>.</li>
+<li><b>Creezi mediul virtual, îl activezi și instalezi pachetele</b>, o singură dată:
+<div class="gh__os"><div><b>Windows, PowerShell</b><pre><code>py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt</code></pre></div><div><b>macOS, Terminal</b><pre><code>python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt</code></pre></div></div></li>
+<li><b>În caiet</b> alegi <em>Select Kernel → Python Environments → .venv</em>. Caietul 01 e în <code>curs/</code>.</li>
+</ol>
+<p class="gh__de-ce">Dacă PowerShell refuză activarea, cu o eroare despre <em>execution policy</em>, rulezi o dată <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code> și repeți. Arhiva se descarcă o singură dată: de la cursul 2 descarci doar caietul zilei, în <code>dsw/curs/</code>. Pe larg, în <a class="leg" href="tutorial/#s17">manual</a>.</p>
+</div></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -151,7 +172,7 @@ de două lucruri, amândouă gratuite:</p>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=68"), import("../js/ora.js?v=68"), import("../js/curs.js?v=68")]);
+    import("../js/auth.js?v=69"), import("../js/ora.js?v=69"), import("../js/curs.js?v=69")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -179,7 +200,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=68"></script>
-<script type="module" src="../js/subsol.js?v=68"></script>
+<script type="module" src="../js/antet.js?v=69"></script>
+<script type="module" src="../js/subsol.js?v=69"></script>
 </body>
 </html>

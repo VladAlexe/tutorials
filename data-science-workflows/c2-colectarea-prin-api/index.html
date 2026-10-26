@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 2. Colectarea datelor prin API · Fluxuri de lucru</title>
 <meta name="description" content="Ce este un API, mesajul HTTP, codurile de stare, requests, cubul Eurostat și primele date reale în proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=68">
-<link rel="stylesheet" href="../css/sistem.css?v=68">
-<link rel="stylesheet" href="../css/intrare.css?v=68">
-<script src="../js/tema.js?v=68"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=69">
+<link rel="stylesheet" href="../css/sistem.css?v=69">
+<link rel="stylesheet" href="../css/intrare.css?v=69">
+<script src="../js/tema.js?v=69"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <span class="bl__fapte" id="fapte">
       <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
       <a class="bl__b" href="tutorial/">Manualul</a>
-      
+      <a class="bl__b" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
       <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
     </span>
   </div>
@@ -72,21 +72,27 @@
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
       </a>
-      <a class="mat__c" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" target="_blank" rel="noopener">
+        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg></span>
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Caietul 02, pe GitHub. Download raw file, apoi îl salvezi în dsw/curs/.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Depozitul cursului ↗</span>
-        <span class="mat__d">Codul și caietele</span>
+        <span class="mat__d">Caietele și datele cursului, pe GitHub.</span>
       </a>
     </div>
   </section>
   <section class="sec sec--nevoie">
     <p class="sec__et">De ce ai nevoie, înainte</p>
-    <div class="sec__corp"><p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie ce ai de la cursul 1 și o bibliotecă nouă:</p>
+    <div class="sec__corp"><p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie ce ai de la cursul 1, caietul zilei și Git:</p>
 <ol>
-<li>Mediul virtual din cursul 1, cu <code>requests</code> instalat în el: <code>.venv\Scripts\python -m pip install requests</code>.</li>
-<li>Caietul <code>02_colectarea_datelor_prin_api.ipynb</code>, în folderul <code>notebooks/</code>.</li>
+<li>Folderul <code>dsw</code> de la cursul 1, cu mediul <code>.venv</code>. <code>requests</code> e deja instalat, din <code>requirements.txt</code>.</li>
+<li>Caietul <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" rel="noopener" target="_blank"><code>02_colectarea_datelor_prin_api.ipynb</code></a>: pe pagina lui de pe GitHub apeși <em>Download raw file</em> și îl salvezi în <code>dsw/curs/</code>, lângă caietul 01. Nu descărca din nou arhiva întreagă peste <code>dsw</code>: îți poate înlocui caietele completate.</li>
+<li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. La finalul orei aduci cu el depozitul echipei în <code>dsw/proiect/</code>.</li>
 </ol>
-<p>Nu e nevoie de nicio cheie de acces: API-urile folosite azi sunt publice. Ca răspunsurile să se salveze și să apari în progresul grupei, intră în cont cu GitHub.</p></div>
+<p>Datele de azi nu se descarcă: vin prin API și se salvează în <code>dsw/curs/data/c2/</code>. Nu e nevoie de nicio cheie de acces, API-urile folosite sunt publice. Ca răspunsurile să se salveze și să apari în progresul grupei, intră în cont cu GitHub.</p></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -113,7 +119,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=68"), import("../js/ora.js?v=68"), import("../js/curs.js?v=68")]);
+    import("../js/auth.js?v=69"), import("../js/ora.js?v=69"), import("../js/curs.js?v=69")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -141,7 +147,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=68"></script>
-<script type="module" src="../js/subsol.js?v=68"></script>
+<script type="module" src="../js/antet.js?v=69"></script>
+<script type="module" src="../js/subsol.js?v=69"></script>
 </body>
 </html>

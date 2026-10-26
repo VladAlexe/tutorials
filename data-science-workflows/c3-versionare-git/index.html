@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 3. Versionare și colaborare cu Git · Fluxuri de lucru</title>
 <meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără să se calce, și cum se încadrează teoretic un proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=68">
-<link rel="stylesheet" href="../css/sistem.css?v=68">
-<link rel="stylesheet" href="../css/intrare.css?v=68">
-<script src="../js/tema.js?v=68"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=69">
+<link rel="stylesheet" href="../css/sistem.css?v=69">
+<link rel="stylesheet" href="../css/intrare.css?v=69">
+<script src="../js/tema.js?v=69"></script>
 </head>
 <body>
 
@@ -81,24 +81,22 @@ ce ai pornit.</p></div>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
       </a>
-      <a class="mat__c" href="https://github.com/VladAlexe/tutorials" target="_blank" rel="noopener">
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Depozitul cursului ↗</span>
-        <span class="mat__d">Codul și caietele</span>
+        <span class="mat__d">Caietele și datele cursului, pe GitHub.</span>
       </a>
     </div>
   </section>
   <section class="sec sec--nevoie">
     <p class="sec__et">De ce ai nevoie, înainte</p>
     <div class="sec__corp"><p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie
-trei lucruri, toate gratuite:</p>
+ce ai adus de la cursul 2:</p>
 <ol>
 <li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. Pe Windows vine cu Git Bash, un terminal în care merg comenzile din lecție.</li>
-<li>Un cont de <a class="leg" href="https://github.com/" rel="noopener" target="_blank">GitHub</a>, același cu care intri pe site.</li>
-<li>Scriptul de colectare de la cursul 2, ca să ai ce urca.</li>
-</ol>
-<p>Dacă echipa nu e încă formată, lecția se poate face și singur: depozitul
-personal devine depozitul echipei când adaugi ceilalți membri.</p></div>
+<li>Contul de <a class="leg" href="https://github.com/" rel="noopener" target="_blank">GitHub</a>, același cu care intri pe site.</li>
+<li>Depozitul echipei, clonat la cursul 2 în <code>dsw/proiect</code>, și datele colectate în <code>dsw/curs/data/c2</code>.</li>
+</ol></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -125,7 +123,7 @@ personal devine depozitul echipei când adaugi ceilalți membri.</p></div>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=68"), import("../js/ora.js?v=68"), import("../js/curs.js?v=68")]);
+    import("../js/auth.js?v=69"), import("../js/ora.js?v=69"), import("../js/curs.js?v=69")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -153,7 +151,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=68"></script>
-<script type="module" src="../js/subsol.js?v=68"></script>
+<script type="module" src="../js/antet.js?v=69"></script>
+<script type="module" src="../js/subsol.js?v=69"></script>
 </body>
 </html>

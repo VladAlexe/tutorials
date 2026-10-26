@@ -16,7 +16,14 @@ import json, re, pathlib, html
 
 R = pathlib.Path(__file__).resolve().parent.parent
 V = (R / "_build" / "VERSIUNE").read_text().strip() if (R / "_build" / "VERSIUNE").exists() else "1"
-D = json.loads((R / "_build" / "intrari.json").read_text(encoding="utf-8"))
+from comun import REPO, REPO_ZIP, REPO_FOLDER
+
+# În intrari.json, depozitul cursului se scrie @REPO@ (pagina lui), @ZIP@
+# (arhiva) și @FOLDER@ (numele folderului din arhivă): așa, o redenumire pe
+# GitHub se schimbă într-un singur loc, în comun.py.
+_T = (R / "_build" / "intrari.json").read_text(encoding="utf-8")
+_T = _T.replace("@ZIP@", REPO_ZIP).replace("@FOLDER@", REPO_FOLDER).replace("@REPO@", REPO)
+D = json.loads(_T)
 
 ETICHETE = {
     "Despre lecția asta": ("despre", "Despre"),
@@ -30,6 +37,7 @@ IC = {
     "lectie": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg>',
     "manual": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg>',
     "caiet": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg>',
+    "jos": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg>',
     "alt": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg>',
 }
 
@@ -59,9 +67,10 @@ def pagina(cheie, x):
     mat = [("lectie/#1", IC["lectie"], "Lecția", "Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.", False),
            ("tutorial/", IC["manual"], "Manualul", "Tot materialul, pe larg, de citit în ritmul tău.", False)]
     if x["caiet"]:
-        mat.append((x["caiet"], IC["caiet"], "Caietul", "Notebook-ul lecției, pe GitHub. Codul de la seminar.", True))
+        mat.append((x["caiet"], IC["caiet"], "Caietul",
+                    x.get("caiet_d") or "Notebook-ul lecției, pe GitHub. Codul de la seminar.", True))
     for r in x["resurse"]:
-        mat.append((r["href"], IC["alt"], r["t"], r["d"], r["href"].startswith("http")))
+        mat.append((r["href"], IC[r.get("ic", "alt")], r["t"], r["d"], r["href"].startswith("http")))
     materiale = f'''
   <section class="sec">
     <p class="sec__et">Materiale</p>

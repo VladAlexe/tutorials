@@ -10,7 +10,9 @@ export const CURS = {
   scurt: "Fluxuri de lucru",
   institutie: "Analiza Datelor Complexe · Sociologie · UBB",
   an: "2026",
-  depozit: "https://github.com/VladAlexe/tutorials"
+  /* depozitul cursului: caietele și datele studenților, nu codul sitului.
+     Dacă se redenumește, se schimbă și în _build/comun.py (REPO_NUME). */
+  depozit: "https://github.com/dsw-ubb-2026/-DSW2026"
 };
 
 /* Opt lectii. `stare` e "gata" sau "schita".
@@ -29,14 +31,14 @@ export const LECTII = [
     scurt:"Introducere",
     rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
     stare:"gata", sarcini:11,
-    notebook:null },
+    notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/01_introducere_si_datele_proiectului.ipynb" },
 
   { nr:2, cheie:"c2-colectarea-prin-api",
     titlu:"Colectarea datelor prin API",
     scurt:"API",
     rezumat:"Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns, și cum aduci primele date reale în proiect.",
     stare:"gata", sarcini:9,
-    notebook:null },
+    notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" },
 
   { nr:3, cheie:"c3-versionare-git",
     titlu:"Versionare cu Git",

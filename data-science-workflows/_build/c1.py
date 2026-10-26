@@ -21,7 +21,7 @@ Rulare:  python _build/c1.py
 """
 
 from literatura import lecturi
-from comun import Lectie, ix, verif, tabel, nota, surse
+from comun import Lectie, ix, verif, tabel, nota, surse, REPO, REPO_ZIP, REPO_FOLDER, repo_fisier
 
 
 def carduri(lista):
@@ -110,21 +110,21 @@ SEDINTE = [
                 "tipurile de date în Python, SQL și fișiere spațiale", "cum se citește un JSON"],
      "caiet": "01_introducere_si_datele_proiectului.ipynb",
      "lab": "Primul caiet rulat pe date adevărate: country.csv, România și partenerii ei.",
-     "proiect": "Mediul de lucru gata. Echipele se formează până la cursul 2.",
+     "proiect": "Folderul cursului, dsw, cu mediul de lucru gata. Echipele se formează până la cursul 2.",
      "unelte": ["VS Code", "Python", "mediu virtual", "Jupyter", "pandas"]},
     {"c": 2, "scurt": "API", "titlu": "Colectarea datelor prin API", "etapa": "colectare",
      "invata": ["ce e un API REST și cum se citește documentația", "cererea, parametrii, paginarea, codurile de stare",
                 "cum devine un răspuns JSON un tabel", "cubul JSON-stat de la Eurostat"],
      "caiet": "02_colectarea_datelor_prin_api.ipynb",
      "lab": "De la prima cerere la migrația de la Eurostat, salvată brut, cu data descărcării.",
-     "proiect": "Primele date ale echipei: SCI și migrația, aduse din cod.",
+     "proiect": "Depozitul echipei, clonat în dsw/proiect, și primele date, aduse din cod.",
      "unelte": ["requests", "API Eurostat", "HDX", "JSON"]},
     {"c": 3, "scurt": "Git", "titlu": "Versionare și colaborare cu Git", "etapa": "colectare",
      "invata": ["cele trei zone ale Git și commit-ul", "GitHub, ramuri, pull request, conflicte",
                 "cum se caută literatura pe teorie și pe metodă", "cum se scrie o întrebare de cercetare"],
      "caiet": "03_surse_diverse_si_preprocesare.ipynb",
      "lab": "Nomenclatorul regiunilor, tabelul regional, migrația fără grupuri de țări; apoi Git.",
-     "proiect": "Depozitul echipei pe GitHub, direcția proiectului și întrebarea voastră.",
+     "proiect": "Direcția proiectului, întrebarea voastră și primele commit-uri în depozitul echipei.",
      "unelte": ["Git", "GitHub", "pandas"]},
     {"c": 4, "scurt": "Curățare", "titlu": "Curățarea datelor", "etapa": "curatare",
      "invata": ["cele șase etape ale curățării", "lipsuri, duplicate, valori extreme, coduri care mint",
@@ -463,7 +463,7 @@ UNELTE = [
         ('<a class="leg" href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">mediul virtual (venv)</a>',
          "pachetele proiectului, separate de restul calculatorului", "azi"),
         ('<a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a>',
-         "istoricul proiectului și lucrul în echipă", "cursul 3"),
+         "depozitul echipei, adus pe calculator; istoricul lui", "cursul 2"),
     ]),
     ("În mediul virtual, pachetele Python", [
         ('<a class="leg" href="https://pandas.pydata.org/docs/" target="_blank" rel="noopener">pandas</a>',
@@ -522,7 +522,7 @@ sl("s3", "Softuri și conturi", "Uneltele semestrului",
    "<p class=\"cheie\">Toate gratuite. Azi instalezi doar coloana din stânga.</p>"
    + unelte_slide()
    + nota("Contul GitHub", "Îl ai deja, de pe "
-          '<a class="leg" href="../">pagina cursului</a>. Cu el intri pe site și, de la cursul 3, '
+          '<a class="leg" href="../">pagina cursului</a>. Cu el intri pe site și, de la cursul 2, '
           "în depozitul echipei.", True),
    manual=
    "<h2>Uneltele semestrului</h2>"
@@ -541,7 +541,7 @@ sl("s3", "Softuri și conturi", "Uneltele semestrului",
    "peste un an.</p>"
    + nota("Contul GitHub", "Îl faci înainte de prima oră, după pașii de pe "
           '<a class="leg" href="../">pagina cursului</a>. La prima oră intri cu el pe site și '
-          "îți alegi numele din lista grupei, o singură dată. De la cursul 3, tot cu el "
+          "îți alegi numele din lista grupei, o singură dată. De la cursul 2, tot cu el "
           "lucrezi în depozitul echipei.")
    + nota("Ce se salvează despre tine",
           "Răspunsurile la întrebări, exercițiile făcute, prezența la oră. Detaliile sunt în "
@@ -948,8 +948,8 @@ sl("s5r", "Proiectul", "Migrația și SCI",
 
 ECHIPE = (
     '<ol class="ech">'
-    "<li><span>cursurile 1–2</span><b>Faceți echipa</b><p>Cinci oameni. Cine nu are echipă, e repartizat.</p></li>"
-    "<li><span>cursul 3</span><b>Alegeți direcția</b><p>Întrebarea voastră, cadrul teoretic și depozitul echipei pe GitHub.</p></li>"
+    "<li><span>cursurile 1–2</span><b>Faceți echipa</b><p>Cinci oameni. La cursul 2, echipa primește depozitul ei pe GitHub.</p></li>"
+    "<li><span>cursul 3</span><b>Alegeți direcția</b><p>Întrebarea voastră și cadrul teoretic.</p></li>"
     "<li><span>cursurile 4–7</span><b>Construiți, bucată cu bucată</b><p>Datele curate, tabelul final, explorarea, modelul: toate în depozit.</p></li>"
     "<li><span>cursul 8</span><b>Prezentați</b><p>Raportul și drumul până la el.</p></li>"
     "</ol>"
@@ -966,12 +966,13 @@ sl("s5b", "Proiectul", "Echipele",
    manual=
    "<h2>Echipe de cinci, un depozit comun</h2>"
    "<p>Proiectul se face în echipe de cinci, pe aceleași date pentru toată grupa: SCI și "
-   "migrația. Ce diferă de la o echipă la alta e întrebarea. Până la cursul 2 formați echipa; "
-   "direcția o alegeți la cursul 3, după ce ați văzut datele și literatura.</p>"
+   "migrația. Ce diferă de la o echipă la alta e întrebarea. Până la cursul 2 formați echipa, "
+   "care primește atunci depozitul ei pe GitHub; direcția o alegeți la cursul 3, după ce ați "
+   "văzut datele și literatura. Cine nu are echipă, e repartizat.</p>"
    + ECHIPE
    + tabel(["Cursul", "Ce adaugi în depozit"], [
-       ["~1–2", "Echipa, mediul de lucru, primele date"],
-       ["~3", "Depozitul de echipă, direcția, întrebarea, cadrul teoretic"],
+       ["~1–2", "Echipa, depozitul ei, primele date"],
+       ["~3", "Direcția, întrebarea, cadrul teoretic"],
        ["~4", "Dataseturile curățate și dicționarul de date"],
        ["~5", "Tabelul final, la unitatea de analiză aleasă"],
        ["~6", "Analiza exploratorie"],
@@ -1908,11 +1909,13 @@ sl("s15p", "JSON", "Drumul prin persoane.json",
    "<p>Exemplul din caiet: <code>persoane.json</code>, trei persoane fictive. "
    "Tiparul e același în orice răspuns de API: la fiecare nivel verifici "
    "tipul, apoi ceri o cheie (dicționar) sau o poziție (listă).</p>"
-   "<p>Fișierele de exemplu ale caietului se descarcă de aici: "
-   '<a class="leg" href="../exemple_curs1/persoane.json" download>persoane.json</a>, '
-   '<a class="leg" href="../exemple_curs1/activitati.txt" download>activitati.txt</a>, '
-   'sau amândouă, în <a class="leg" href="../exemple_curs1.zip" download>exemple_curs1.zip</a>. '
-   "Arhiva se dezarhivează lângă caietul 01, ca să existe folderul <code>exemple_curs1</code>.</p>"
+   "<p>Fișierele de exemplu ale caietului sunt în ZIP-ul cursului, în "
+   "<code>dsw/curs/exemple_curs1/</code>, lângă caietul 01. Dacă lipsesc, le iei "
+   f'de pe GitHub: <a class="leg" href="{repo_fisier("curs/exemple_curs1/persoane.json")}" '
+   'target="_blank" rel="noopener">persoane.json</a> și '
+   f'<a class="leg" href="{repo_fisier("curs/exemple_curs1/activitati.txt")}" '
+   'target="_blank" rel="noopener">activitati.txt</a>, cu <em>Download raw file</em>, '
+   "în același folder.</p>"
    + ix("acces", "Intră din cutie în cutie", PERS_ACCES)
    + ix("pas", "Același drum, în cod", PAS_JSON))
 
@@ -2015,163 +2018,193 @@ sl("s16x", "Primul contact cu SCI", "Taie o felie",
 # ===========================================================================
 
 FOLDER_VENV = (
-    '<span class="a">proiect-dsw/</span>    <span class="c"># aici lucrezi</span>\n'
-    '├── <span class="x">.venv/</span>      <span class="c"># nu umbli aici</span>\n'
-    '├── data/       <span class="c"># datele</span>\n'
-    '├── notebooks/  <span class="c"># caietele</span>\n'
-    '└── code/       <span class="c"># fișierele .py</span>')
+    '<span class="a">dsw/</span>                  <span class="c"># aici lucrezi</span>\n'
+    '├── <span class="x">.venv/</span>            <span class="c"># nu umbli aici</span>\n'
+    '├── README.md\n'
+    '├── requirements.txt  <span class="c"># pachetele</span>\n'
+    '├── curs/             <span class="c"># caietele tale</span>\n'
+    '└── proiect/          <span class="c"># de la cursul 2</span>')
 
 PASI_VENV = (
     '<ol class="venvp__pasi">'
-    "<li><b>Faci folderul proiectului</b> și îl deschizi în VS Code: <em>File → Open Folder</em>.</li>"
-    "<li><b>Deschizi terminalul</b>: <em>Terminal → New Terminal</em>. Pornește deja în folderul proiectului.</li>"
+    f'<li><b>Descarci <a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a></b>, îl dezarhivezi și '
+    f'redenumești folderul <code style="white-space:nowrap">{REPO_FOLDER}</code> în <code>dsw</code>.</li>'
+    "<li><b>Deschizi <code>dsw</code> în VS Code</b> (<em>File → Open Folder</em>) și pornești "
+    "<em>Terminal → New Terminal</em>. Terminalul pornește în <code>dsw</code>.</li>"
     "<li><b>Creezi mediul</b>, o singură dată:<br><code>py -m venv .venv</code>"
     '<span class="venvp__os">macOS: python3 -m venv .venv</span></li>'
-    "<li><b>Instalezi pachetele în el</b>, cu Python-ul mediului:<br>"
-    "<code>.venv\\Scripts\\python -m pip install pandas ipykernel</code>"
-    '<span class="venvp__os">macOS: .venv/bin/python -m pip install pandas ipykernel</span></li>'
+    "<li><b>Îl activezi și instalezi pachetele</b>:<br><code>.\\.venv\\Scripts\\Activate.ps1</code><br>"
+    "<code>pip install -r requirements.txt</code>"
+    '<span class="venvp__os">macOS: source .venv/bin/activate</span></li>'
     "<li><b>În caiet</b> alegi <em>Select Kernel → Python Environments → .venv</em>. Gata.</li>"
     "</ol>")
 
+VENV_BOX = '<div class="venvp"><div class="venvp__fld">' + FOLDER_VENV + "</div>" + PASI_VENV + "</div>"
+
 sl("s17", "Mediul de lucru", "Mediul virtual",
-   "<h2>Mediul virtual, în folderul proiectului</h2>"
-   "<p class=\"cheie\">Lucrezi în folderul proiectului. Mediul virtual stă în el, în "
+   "<h2>Mediul virtual, în folderul cursului</h2>"
+   "<p class=\"cheie\">Lucrezi în <code>dsw</code>. Mediul virtual stă în el, în "
    "<code>.venv</code>, și acolo nu scrii nimic.</p>"
-   + '<div class="venvp"><div class="venvp__fld">' + FOLDER_VENV + "</div>" + PASI_VENV + "</div>",
+   + VENV_BOX,
    manual=
    "<h2>Medii de lucru virtuale în Python</h2>"
    "<p>Python instalează pachetele într-un singur loc comun. Dacă lucrezi la "
    "două proiecte care au nevoie de versiuni diferite ale aceleiași "
    "biblioteci, al doilea îl strică pe primul în tăcere. Un mediu virtual e un "
    "dosar al proiectului, cu propria copie de Python și propriile pachete.</p>"
-   "<p>Două reguli: mediul stă <strong>în folderul proiectului</strong>, iar tu "
-   "<strong>nu lucrezi în el</strong>. Caietele, datele și codul tău stau alături, nu "
-   "înăuntrul lui <code>.venv</code>.</p>"
-   + '<div class="venvp"><div class="venvp__fld">' + FOLDER_VENV + "</div>" + PASI_VENV + "</div>"
-   + "<h3>Și activarea?</h3>"
-   "<p>Comenzile de mai sus folosesc direct Python-ul din <code>.venv</code>, deci nu trebuie "
-   "activat nimic. Dacă vrei să scrii doar <code>pip</code> și <code>python</code>, activezi mediul: "
-   "<code>.venv\\Scripts\\activate</code> pe Windows, <code>source .venv/bin/activate</code> pe macOS. "
-   "Promptul începe atunci cu <code>(.venv)</code>. Pe Windows, PowerShell poate refuza scriptul de "
-   "activare; VS Code activează oricum mediul singur în terminalele noi, după ce l-ai ales ca "
-   "interpretor.</p>"
+   "<p>Două reguli: mediul stă <strong>în folderul cursului</strong>, <code>dsw</code>, iar tu "
+   "<strong>nu lucrezi în el</strong>. Caietele și datele tale stau alături, în <code>curs/</code>, "
+   "nu înăuntrul lui <code>.venv</code>.</p>"
+   f'<p>Folderul cursului vine dintr-o arhivă, <a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a>, '
+   f'descărcată din <a class="leg" href="{REPO}" target="_blank" rel="noopener">depozitul cursului</a> '
+   "de pe GitHub, cu caietul 01, datele lui și <code>requirements.txt</code>, lista pachetelor: <code>pandas</code> "
+   "pentru tabele, <code>requests</code> pentru cererile de la cursul 2 și <code>ipykernel</code>, ca "
+   "Python să ruleze în caiet. Arhiva se descarcă o singură dată. De la cursul 2 descarci doar "
+   "caietul zilei, în <code>dsw/curs/</code>: arhiva întreagă, despachetată peste <code>dsw</code>, "
+   "ți-ar putea înlocui caietele completate.</p>"
+   + VENV_BOX
+   + "<h3>Activarea</h3>"
+   "<p>După activare, <code>pip</code> și <code>python</code> din terminal sunt cele din "
+   "<code>.venv</code>, iar linia din terminal începe cu <code>(.venv)</code>. Fără activare, "
+   "<code>pip install</code> pune pachetele în Python-ul comun al calculatorului, iar caietul nu "
+   "le găsește în mediu.</p>"
+   "<p>Pe Windows, PowerShell poate refuza scriptul de activare, cu o eroare despre "
+   "<em>execution policy</em>. Rulezi o dată comanda de mai jos, apoi repeți activarea:</p>"
+   "<pre><code><span>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</span></code></pre>"
+   "<p>Merge și fără activare, cu Python-ul mediului scris întreg: "
+   "<code>.venv\\Scripts\\python -m pip install -r requirements.txt</code> pe Windows, "
+   "<code>.venv/bin/python -m pip install -r requirements.txt</code> pe macOS. VS Code activează "
+   "oricum mediul singur în terminalele noi, după ce l-ai ales ca interpretor.</p>"
    + ix("terminal", "Exersează aici, înainte să o faci la tine", None,
         "Terminalul răspunde ca unul adevărat, inclusiv la greșeli.")
-   + nota("De ce .venv nu urcă pe GitHub",
-          "E mare, e făcut pentru calculatorul tău și se reface dintr-o comandă. Pe GitHub urcă lista "
-          "pachetelor, <code>requirements.txt</code>, iar colegul își face propriul <code>.venv</code> din ea."))
+   + nota("De ce .venv nu e în arhivă",
+          "E mare, e făcut pentru calculatorul tău și se reface din două comenzi. În arhivă e doar "
+          "lista pachetelor, <code>requirements.txt</code>, din care fiecare își face propriul "
+          "<code>.venv</code>, identic. La fel se face și în depozitul echipei."))
 
 
 sl("s17t", "Mediul de lucru", "Exersează",
    "<h2>Exersează, înainte să o faci la tine</h2>"
    + ix("terminal", "Terminalul pornește în folderul tău de utilizator", None,
-        "Fă proiectul, intră în el, apoi creează mediul. Scrie <code>ajutor</code> dacă te blochezi."),
+        "Intră în <code>dsw</code>, creează mediul, activează-l și instalează pachetele. "
+        "Scrie <code>ajutor</code> dacă te blochezi."),
    manual="",
    dupa=ix("ordine", "Ordinea comenzilor", {
        "id": "c1-cod-venv",
        "sarcina": "Pune comenzile în ordinea în care se dau, de la folderul tău de utilizator până la "
                   "pachetele instalate.",
-       "linii": ["mkdir proiect-dsw", "cd proiect-dsw", "py -m venv .venv",
-                 ".venv\\Scripts\\python -m pip install pandas ipykernel",
-                 ".venv\\Scripts\\python -m pip freeze > requirements.txt"],
-       "indiciu": "Mediul se face în folderul proiectului, deci întâi folderul și intrarea în el. "
-                  "Lista pachetelor are sens abia după ce le-ai instalat.",
-       "iesire": "PS C:\\Users\\student\\proiect-dsw> .venv\\Scripts\\python -m pip freeze > requirements.txt\n"
-                 "PS C:\\Users\\student\\proiect-dsw>",
-       "laBine": "Exact asta faci la începutul fiecărui proiect.",
-       "laRau": "Gândește-te în ce folder ești în momentul fiecărei comenzi.",
-       "explicatie": "Dacă <code>py -m venv .venv</code> vine înainte de <code>cd</code>, mediul ajunge în "
-                     "folderul tău de utilizator, nu în proiect, și nu dă nicio eroare. "
-                     "<code>pip freeze</code> înainte de instalare scrie o listă goală."}))
+       "linii": ["cd dsw", "py -m venv .venv", ".\\.venv\\Scripts\\Activate.ps1",
+                 "pip install -r requirements.txt", "pip list"],
+       "indiciu": "Mediul se face în dsw, deci întâi intri acolo. pip instalează în mediu abia după "
+                  "ce mediul e activ.",
+       "iesire": "(.venv) PS C:\\Users\\student\\dsw> pip list\n"
+                 "Package    Version\n---------- -------\nipykernel  …\npandas     …\nrequests   …",
+       "laBine": "Exact asta faci o singură dată, la cursul 1.",
+       "laRau": "Gândește-te în ce folder ești și ce Python răspunde, la fiecare comandă.",
+       "explicatie": "Dacă <code>py -m venv .venv</code> vine înainte de <code>cd dsw</code>, mediul ajunge "
+                     "în folderul tău de utilizator, fără nicio eroare. <code>pip install</code> înainte de "
+                     "activare pune pachetele în Python-ul comun, iar <code>requirements.txt</code> se "
+                     "găsește doar în <code>dsw</code>."}))
 
 
 NODURI_FOLDER = [
-    {"n": "proiect-dsw/", "ind": 0, "scurt": "aici lucrezi",
-     "d": "Folderul proiectului. Pe el îl deschizi în VS Code, în el pornește terminalul, iar toate "
-          "căile din cod pornesc de aici. De la cursul 3, el devine depozitul echipei pe GitHub.",
-     "cine": "tu", "git": "da: e chiar depozitul"},
+    {"n": "dsw/", "ind": 0, "scurt": "aici lucrezi",
+     "d": "Folderul cursului: arhiva de pe GitHub, dezarhivată și redenumită din "
+          f"<code>{REPO_FOLDER}</code>. Pe el îl deschizi în VS Code și în el pornește terminalul.",
+     "cine": "tu, o singură dată, la cursul 1",
+     "git": "nu ca folder: e copia ta a depozitului cursului, fără Git"},
     {"n": ".venv/", "ind": 1, "scurt": "nu umbli aici", "interzis": True,
-     "d": "Python-ul proiectului și pachetele lui, făcute de <code>py -m venv .venv</code> și de "
-          "<code>pip install</code>. Nu deschizi nimic de aici, nu salvezi nimic aici. Dacă se strică, "
-          "îl ștergi și îl faci din nou.",
+     "d": "Python-ul cursului și pachetele lui, făcute de <code>py -m venv .venv</code> și de "
+          "<code>pip install -r requirements.txt</code>. Nu deschizi nimic de aici, nu salvezi nimic "
+          "aici. Dacă se strică, îl ștergi și îl faci din nou, cu aceleași comenzi.",
      "cine": "Python și pip, niciodată tu", "ex": "Lib/, Scripts/, pyvenv.cfg",
-     "git": "nu: e trecut în <code>.gitignore</code>"},
-    {"n": "data/", "ind": 1,
-     "d": "Datele, așa cum au venit: le descarci o dată și nu le mai modifici. Ce produce curățarea "
-          "salvezi în fișiere noi, alături, nu peste cele brute.",
-     "cine": "descărcarea, apoi codul de curățare",
-     "ex": "<code>country.csv</code> de pe HDX, migrația de la Eurostat",
-     "git": "fișierele mici da; cele mari nu, se descarcă din cod"},
-    {"n": "notebooks/", "ind": 1,
-     "d": "Caietele Jupyter, pentru explorare: rulezi pas cu pas și te uiți la rezultat. Un caiet bun "
-          "rulează de sus până jos după <em>Restart Kernel → Run All</em>.",
-     "cine": "tu", "ex": "<code>01_introducere_si_datele_proiectului.ipynb</code>", "git": "da"},
-    {"n": "code/", "ind": 1,
-     "d": "Fișierele <code>.py</code>: ce rulezi din nou, la fel, de fiecare dată. Descărcarea datelor, "
-          "funcțiile de curățare, construirea tabelului final.",
-     "cine": "tu", "ex": "<code>descarca_migratie.py</code>", "git": "da"},
-    {"n": "requirements.txt", "ind": 1, "fel": "fis",
-     "d": "Lista pachetelor, cu versiunile lor. Din ea, un coleg își face propriul <code>.venv</code> "
-          "identic: <code>pip install -r requirements.txt</code>.",
-     "cine": "<code>pip freeze &gt; requirements.txt</code>", "git": "da"},
-    {"n": ".gitignore", "ind": 1, "fel": "fis",
-     "d": "Ce nu urcă pe GitHub: <code>.venv/</code>, fișierul <code>.env</code> cu chei și parole, "
-          "fișierele mari de date.",
-     "cine": "tu, o dată, la început", "git": "da"},
+     "git": "nu: se reface din <code>requirements.txt</code>"},
     {"n": "README.md", "ind": 1, "fel": "fis",
-     "d": "Prima pagină a proiectului: ce întrebare are, de unde vin datele, cum se rulează.",
-     "cine": "echipa", "git": "da: GitHub îl arată pe prima pagină a depozitului"},
+     "d": "Prima pagină a depozitului cursului: ce e în folder și cum pornești.",
+     "cine": "profesorul", "git": "da: GitHub o arată sub lista fișierelor"},
+    {"n": "requirements.txt", "ind": 1, "fel": "fis",
+     "d": "Lista pachetelor cursului: <code>pandas</code>, <code>requests</code>, <code>ipykernel</code>. "
+          "Din ea, fiecare își face același mediu: <code>pip install -r requirements.txt</code>.",
+     "cine": "profesorul; tu doar o folosești", "git": "da, în depozitul cursului"},
+    {"n": "curs/", "ind": 1, "scurt": "caietele tale",
+     "d": "Caietele cursului, pe care le completezi la oră. La fiecare curs nou descarci doar caietul "
+          "zilei aici, lângă celelalte. Căile din caiete pornesc din <code>curs/</code>: "
+          "<code>data/country.csv</code> înseamnă <code>curs/data/country.csv</code>.",
+     "cine": "tu", "ex": "<code>01_introducere_si_datele_proiectului.ipynb</code>",
+     "git": "caietele goale, în depozitul cursului; ce completezi tu rămâne la tine"},
+    {"n": "data/", "ind": 2,
+     "d": "Datele, așa cum au venit: nu le mai modifici. Ce produce curățarea salvezi în fișiere noi, "
+          "alături, nu peste cele brute. De la cursul 2, fiecare curs are folderul lui, ca "
+          "<code>data/c2/</code>.",
+     "cine": "arhiva cursului, apoi codul din caiete",
+     "ex": "<code>country.csv</code> de pe HDX, apoi <code>c2/migratie.csv</code> de la Eurostat",
+     "git": "<code>country.csv</code> da; ce colectezi tu, nu"},
+    {"n": "exemple_curs1/", "ind": 2,
+     "d": "Două fișiere mici, fictive, pentru partea de JSON și de text din caietul 01.",
+     "cine": "arhiva cursului", "ex": "<code>persoane.json</code>, <code>activitati.txt</code>",
+     "git": "da, în depozitul cursului"},
+    {"n": "proiect/", "ind": 1, "scurt": "de la cursul 2",
+     "d": "Depozitul echipei, adus de pe GitHub la cursul 2, cu o singură comandă dată în "
+          "<code>dsw</code>: <code>git clone &lt;adresa depozitului echipei&gt; proiect</code>. "
+          "E singurul folder cu Git: munca echipei stă aici, exercițiile de la curs rămân în "
+          "<code>curs/</code>.",
+     "cine": "echipa", "git": "da: e chiar depozitul echipei"},
 ]
 
-sl("s18", "Proiectul tău", "Proiectul, pe disc",
-   "<h2>Proiectul tău, pe disc</h2>"
+SORTARE_FOLDER = {
+    "id": "c1-folder",
+    "cosuri": [{"t": "curs/data/", "d": "datele cursului"}, {"t": "curs/", "d": "caietele tale"},
+               {"t": "proiect/", "d": "munca echipei"}, {"t": "dsw/", "d": "direct în rădăcină"}],
+    "elemente": [{"t": "country.csv", "cos": 0}, {"t": "c2/migratie.csv", "cos": 0},
+                 {"t": "01_introducere.ipynb", "cos": 1}, {"t": "02_colectarea.ipynb", "cos": 1},
+                 {"t": "raport.ipynb, al echipei", "cos": 2}, {"t": "intrebarea.md, a echipei", "cos": 2},
+                 {"t": "requirements.txt", "cos": 3}, {"t": "README.md, al cursului", "cos": 3}],
+}
+
+sl("s18", "Proiectul tău", "Folderul cursului, pe disc",
+   "<h2>Folderul cursului, pe disc</h2>"
    "<p class=\"cheie\">Un singur folder, cu un loc pentru fiecare lucru. Apasă pe fiecare.</p>"
-   + ix("folder", "Folderul proiectului", {"noduri": NODURI_FOLDER}),
+   + ix("folder", "Folderul cursului", {"noduri": NODURI_FOLDER}),
    manual=
-   "<h2>Proiectul tău, pe disc</h2>"
+   "<h2>Folderul cursului, pe disc</h2>"
    "<p>Un proiect de date nu e un caiet, e un folder: datele, caietele, codul și mediul virtual, "
-   "fiecare la locul lui. Structura de mai jos e cea din caietele cursului.</p>"
-   + ix("folder", "Folderul proiectului", {"noduri": NODURI_FOLDER})
-   + ix("sortare", "Unde pui fiecare fișier?", {
-       "id": "c1-folder",
+   "fiecare la locul lui. Structura de mai jos e cea din depozitul cursului și din caiete. "
+   "<code>curs/</code> e al tău, fără Git; <code>proiect/</code> e al echipei, cu Git.</p>"
+   + ix("folder", "Folderul cursului", {"noduri": NODURI_FOLDER})
+   + "<h3>Căile pornesc din folderul caietului</h3>"
+   "<p>Un caiet caută fișierele pornind din folderul în care se află el, adică din "
+   "<code>curs/</code>. <code>data/country.csv</code> înseamnă: din <code>curs/</code>, intră în "
+   "<code>data/</code>. <code>..</code> înseamnă: urcă un nivel, deci <code>../proiect</code> "
+   "înseamnă: din <code>curs/</code>, urcă în <code>dsw/</code>, apoi intră în "
+   "<code>proiect/</code>.</p>"
+   + ix("sortare", "Unde pui fiecare fișier?", dict(SORTARE_FOLDER, **{
        "sarcina": "Trage fiecare fișier în folderul lui.",
-       "cosuri": [{"t": "data/", "d": "datele"}, {"t": "notebooks/", "d": "caietele"},
-                  {"t": "code/", "d": "fișierele .py"}, {"t": "proiect-dsw/", "d": "direct în rădăcină"}],
-       "elemente": [{"t": "country.csv", "cos": 0}, {"t": "migratie_2024.json", "cos": 0},
-                    {"t": "01_introducere.ipynb", "cos": 1}, {"t": "explorare.ipynb", "cos": 1},
-                    {"t": "descarca_migratie.py", "cos": 2}, {"t": "curatare.py", "cos": 2},
-                    {"t": "requirements.txt", "cos": 3}, {"t": "README.md", "cos": 3}],
        "laBine": "Fiecare lucru la locul lui.",
-       "laRau": "Ce descrie tot proiectul stă în rădăcină."})
+       "laRau": "Ce e al tău stă în curs/, ce e al echipei în proiect/, ce descrie tot folderul în dsw/."}))
    + nota("Datele",
-          'Fișierul <code>country.csv</code> (0,6 MB) se descarcă de pe '
+          "Fișierul <code>country.csv</code> (0,6 MB) e deja în arhivă, în <code>curs/data/</code>. Vine de pe "
           '<a class="leg" href="https://data.humdata.org/dataset/social-connectedness-index" '
-          'target="_blank" rel="noopener">pagina SCI de pe HDX</a>, din lista de resurse. Îl pui în '
-          "<code>data/</code> și nu îl mai modifici niciodată."))
+          'target="_blank" rel="noopener">pagina SCI de pe HDX</a>, din lista de resurse; dacă îl pierzi, '
+          f'îl iei din nou de acolo sau din <a class="leg" href="{repo_fisier("curs/data/country.csv")}" '
+          'target="_blank" rel="noopener">depozitul cursului</a>. Nu îl modifici niciodată.'))
 
 
 sl("s18s", "Proiectul tău", "Unde pui fiecare fișier",
    "<h2>Unde pui fiecare fișier?</h2>"
-   + ix("sortare", "Unde pui fiecare fișier?", {
-       "id": "c1-folder",
+   + ix("sortare", "Unde pui fiecare fișier?", dict(SORTARE_FOLDER, **{
        "sarcina": "Trage fiecare fișier în folderul lui. În <code>.venv</code> nu pui nimic.",
-       "cosuri": [{"t": "data/", "d": "datele"}, {"t": "notebooks/", "d": "caietele"},
-                  {"t": "code/", "d": "fișierele .py"}, {"t": "proiect-dsw/", "d": "direct în rădăcină"}],
-       "elemente": [{"t": "country.csv", "cos": 0}, {"t": "migratie_2024.json", "cos": 0},
-                    {"t": "01_introducere.ipynb", "cos": 1}, {"t": "explorare.ipynb", "cos": 1},
-                    {"t": "descarca_migratie.py", "cos": 2}, {"t": "curatare.py", "cos": 2},
-                    {"t": "requirements.txt", "cos": 3}, {"t": "README.md", "cos": 3}],
-       "laBine": "Fiecare lucru la locul lui. Peste o lună, oricine din echipă găsește orice.",
-       "laRau": "Datele, caietele și codul au fiecare folderul lor; ce descrie tot proiectul stă în rădăcină.",
-       "explicatie": "<code>requirements.txt</code> și <code>README.md</code> descriu tot proiectul, deci stau "
-                     "în rădăcină, unde le caută și GitHub, și colegii."}),
+       "laBine": "Fiecare lucru la locul lui. Peste o lună, găsești orice din prima.",
+       "laRau": "Caietele de la curs stau în curs/, datele lor în curs/data/; ce face echipa stă în "
+                "proiect/; ce descrie tot folderul stă direct în dsw/.",
+       "explicatie": "<code>curs/</code> e al tău, fără Git. <code>proiect/</code> e al echipei: ce pui "
+                     "acolo ajunge, după commit, în istoricul pe care îl vede toată echipa."})),
    manual="")
 
 
 sl("s19", "Mai departe", "Ce urmează la cursul 2",
    "<h2>La cursul 2: datele vin prin API</h2>"
    '<div class="urm__flux"><span>codul tău</span><i>→ cerere →</i><span>API-ul Eurostat</span>'
-   "<i>→ răspuns JSON →</i><span>tabel pandas</span><i>→</i><span>data/</span></div>"
+   "<i>→ răspuns JSON →</i><span>tabel pandas</span><i>→</i><span>curs/data/c2</span></div>"
    '<div class="urm">'
    "<div><b>Ce e un API</b><p>Cum citești documentația, ce e un endpoint, ce înseamnă codurile de stare.</p></div>"
    "<div><b>Prima cerere</b><p>Cu <code>requests</code>, din cod: parametrii, paginarea, din JSON în tabel.</p></div>"
@@ -2180,21 +2213,22 @@ sl("s19", "Mai departe", "Ce urmează la cursul 2",
    "</div>"
    "<h3>Până atunci</h3>"
    "<ol>"
-   "<li><strong>Mediul de lucru</strong>: folderul proiectului, <code>.venv</code> cu pandas, și caietul 01 rulat "
-   "de sus până jos (<em>Restart Kernel → Run All</em>).</li>"
-   "<li><strong>Echipa de cinci</strong>, formată. Direcția proiectului o alegem la cursul 3.</li>"
+   "<li><strong>Folderul <code>dsw</code></strong>, cu <code>.venv</code> și pachetele din "
+   "<code>requirements.txt</code>, și caietul 01 rulat de sus până jos (<em>Restart Kernel → Run All</em>).</li>"
+   '<li><strong>Echipa de cinci</strong>, formată, și <a class="leg" href="https://git-scm.com/downloads" '
+   'target="_blank" rel="noopener">Git</a> instalat: la cursul 2 aduceți depozitul echipei.</li>'
    '<li><strong>Contul GitHub</strong>, cu care intri pe <a class="leg" href="../../cont/">site</a>.</li>'
    "</ol>"
    + '<div class="grila grila--2" style="margin-top:22px;grid-template-columns:repeat(2,minmax(0,1fr))">'
    '<a class="resursa" href="../"><span class="resursa__ic">→</span>'
    '<span class="resursa__txt"><span class="resursa__t">Pagina cursului 1</span>'
-   '<span class="resursa__d">Materiale și datele cursului</span></span></a>'
+   '<span class="resursa__d">Materialele și pașii pentru folderul cursului</span></span></a>'
+   f'<a class="resursa" href="{REPO_ZIP}"><span class="resursa__ic">↓</span>'
+   '<span class="resursa__txt"><span class="resursa__t">Folderul cursului, ZIP</span>'
+   '<span class="resursa__d">Caietul 01, datele și requirements.txt</span></span></a>'
    '<a class="resursa" href="../scurtaturi/"><span class="resursa__ic">→</span>'
    '<span class="resursa__txt"><span class="resursa__t">Scurtăturile din Jupyter</span>'
    '<span class="resursa__d">Tastele caietului, cu exercițiu</span></span></a>'
-   '<a class="resursa" href="../exemple_curs1.zip" download><span class="resursa__ic">↓</span>'
-   '<span class="resursa__txt"><span class="resursa__t">Datele de exemplu</span>'
-   '<span class="resursa__d">persoane.json și activitati.txt, pentru caietul 01</span></span></a>'
    '<a class="resursa" href="../../c2-colectarea-prin-api/"><span class="resursa__ic">→</span>'
    '<span class="resursa__txt"><span class="resursa__t">Cursul 2</span>'
    '<span class="resursa__d">Colectarea datelor prin API</span></span></a></div>')

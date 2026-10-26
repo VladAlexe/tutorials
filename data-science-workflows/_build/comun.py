@@ -28,6 +28,22 @@ RAD = pathlib.Path(__file__).resolve().parent.parent
 # rescrie `_build/versiune.py` peste toate fișierele deodată, la fiecare push.
 V = "?v=18"
 
+# Depozitul cursului: caietele și datele studenților. Nu e depozitul sitului.
+# Dacă se redenumește pe GitHub, se schimbă aici, în js/curs.js (depozit,
+# notebook) și se reconstruiesc paginile. Folderul din arhivă poartă numele
+# depozitului urmat de -main; studentul îl redenumește dsw.
+REPO_ORG = "dsw-ubb-2026"
+REPO_NUME = "-DSW2026"
+REPO = f"https://github.com/{REPO_ORG}/{REPO_NUME}"
+REPO_ZIP = f"{REPO}/archive/refs/heads/main.zip"
+REPO_FOLDER = f"{REPO_NUME}-main"
+
+
+def repo_fisier(cale):
+    """Pagina unui fișier pe GitHub, cu butonul Download raw file. Nu linkul
+    raw: acela deschide fișierul în browser în loc să-l descarce."""
+    return f"{REPO}/blob/main/{cale}"
+
 
 # ---------------------------------------------------------------- bucăți ---
 

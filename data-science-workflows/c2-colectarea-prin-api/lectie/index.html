@@ -6,14 +6,14 @@
 <title>Cursul 2 — Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns și cum aduci primele date reale în proiect.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=68">
-<link rel="stylesheet" href="../../css/sistem.css?v=68">
-<link rel="stylesheet" href="../../css/slide.css?v=68">
-<link rel="stylesheet" href="../../css/interactiv.css?v=68">
-<link rel="stylesheet" href="../../css/grafice.css?v=68">
-<link rel="stylesheet" href="../../css/exercitii.css?v=68">
-<link rel="stylesheet" href="../../css/explorator.css?v=68">
-<script src="../../js/tema.js?v=68"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=69">
+<link rel="stylesheet" href="../../css/sistem.css?v=69">
+<link rel="stylesheet" href="../../css/slide.css?v=69">
+<link rel="stylesheet" href="../../css/interactiv.css?v=69">
+<link rel="stylesheet" href="../../css/grafice.css?v=69">
+<link rel="stylesheet" href="../../css/exercitii.css?v=69">
+<link rel="stylesheet" href="../../css/explorator.css?v=69">
+<script src="../../js/tema.js?v=69"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -23,13 +23,13 @@
 <section class="sld" id="s1" data-grup="Cursul" data-t="Despre ce e ora de azi">
 <h2>Colectarea datelor prin API</h2><p class="cheie">Datele nu mai vin dintr-un fișier primit, ci dintr-o cerere scrisă, care se poate rula din nou.</p><div class="ix" data-ix="agenda">
   <div class="ix__cap"><span class="ix__fel">Cuprins</span><span class="ix__t">Ora de azi</span></div>
-  <div class="ix__corp"><script type="application/json">{"static": true, "titlu": "Ora de azi", "etape": [{"nume": "Ce este un API", "unde": "azi", "text": "Un intermediar cu un contract; de ce colectăm prin API și ce costă."}, {"nume": "Tipuri de API", "unde": "azi", "text": "Criteriile de clasificare, trei decenii de istorie, patru stiluri."}, {"nume": "Cum arată o cerere", "unde": "azi", "text": "Mesajul HTTP: metoda, endpoint-ul, adresa cu parametrii, codul de stare."}, {"nume": "De unde vin datele", "unde": "azi", "text": "Surse accesibile prin API și sursele proiectului."}, {"nume": "requests", "unde": "azi", "text": "Aceeași cerere în Python; paginarea."}, {"nume": "Eurostat", "unde": "azi", "text": "Cererea pe dimensiuni și cubul JSON-stat, pe datele migrației."}, {"nume": "Primele date în proiect", "unde": "azi", "text": "O colectare reală, salvată în data/c2."}]}</script></div>
-</div><div class="nota nota--sobru"><div class="nota__et">Caietul de azi</div><p><code>02_colectarea_datelor_prin_api.ipynb</code>, în folderul <code>notebooks/</code>. Fișierele colectate ajung în <code>data/c2</code>.</p></div>
+  <div class="ix__corp"><script type="application/json">{"static": true, "titlu": "Ora de azi", "etape": [{"nume": "Ce este un API", "unde": "azi", "text": "Un intermediar cu un contract; de ce colectăm prin API și ce costă."}, {"nume": "Tipuri de API", "unde": "azi", "text": "Criteriile de clasificare, trei decenii de istorie, patru stiluri."}, {"nume": "Cum arată o cerere", "unde": "azi", "text": "Mesajul HTTP: metoda, endpoint-ul, adresa cu parametrii, codul de stare."}, {"nume": "De unde vin datele", "unde": "azi", "text": "Surse accesibile prin API și sursele proiectului."}, {"nume": "requests", "unde": "azi", "text": "Aceeași cerere în Python; paginarea."}, {"nume": "Eurostat", "unde": "azi", "text": "Cererea pe dimensiuni și cubul JSON-stat, pe datele migrației."}, {"nume": "Primele date și echipa", "unde": "azi", "text": "O colectare reală, în curs/data/c2; apoi depozitul echipei, în proiect/."}]}</script></div>
+</div><div class="nota nota--sobru"><div class="nota__et">Caietul de azi</div><p><a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" target="_blank" rel="noopener"><code>02_colectarea_datelor_prin_api.ipynb</code></a>, salvat în <code>dsw/curs/</code>, lângă caietul 01. Fișierele colectate ajung în <code>curs/data/c2</code>.</p></div>
 
 </section>
 
 <section class="sld" id="s2" data-grup="Cursul" data-t="Unde ai rămas">
-<h2>Unde ai rămas</h2><ul><li><strong>Mediul de lucru</strong>: folderul proiectului, <code>.venv</code> cu pandas, caietul 01 rulat de sus până jos.</li><li><strong>Echipa de cinci</strong>, formată.</li><li><strong>Contul GitHub</strong>, cu care intri pe site.</li></ul><p>Pentru caietul de azi se adaugă în <code>.venv</code> biblioteca <code>requests</code>.</p>
+<h2>Unde ai rămas</h2><ul><li><strong>Folderul <code>dsw</code></strong>, cu <code>.venv</code> și pachetele din <code>requirements.txt</code>, și caietul 01 rulat de sus până jos.</li><li><strong>Echipa de cinci</strong>, formată.</li><li><strong>Contul GitHub</strong>, cu care intri pe site.</li></ul><p>Caietul de azi se descarcă singur, în <code>dsw/curs/</code>. <code>requests</code> e deja în mediu, din <code>requirements.txt</code>.</p>
 
 </section>
 
@@ -193,26 +193,36 @@
 </section>
 
 <section class="sld" id="s21" data-grup="Proiectul tău" data-t="Colectează, acum">
-<h2>Prima colectare din proiect</h2><div class="c2doi"><div><p>Un script care cere, verifică, salvează. Rulează-l și lipește ce iese.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>creezi <code>code/banca_mondiala.py</code> în folderul proiectului</td></tr><tr><td>2</td><td>ceri indicatorul pentru România, anii 2000 la 2023</td></tr><tr><td>3</td><td>verifici codul de stare și câte rânduri ai primit</td></tr><tr><td>4</td><td>salvezi tabelul în <code>data/c2/</code></td></tr></tbody></table></div><div><div class="ix" data-ix="dovada">
+<h2>Prima colectare, în caiet</h2><div class="c2doi"><div><p>Caietul cere, verifică, salvează. Rulează-l și lipește ce iese.</p><table class="tabel"><thead><tr><th>Pasul</th><th>Ce faci</th></tr></thead><tbody><tr><td>1</td><td>deschizi caietul 02 din <code>dsw/curs/</code>, cu kernelul <code>.venv</code></td></tr><tr><td>2</td><td>rulezi secțiunile 1 la 5: prima cerere, paginarea, cei trei indicatori</td></tr><tr><td>3</td><td>verifici că fiecare indicator a venit pe o singură pagină</td></tr><tr><td>4</td><td>salvezi tabelul în <code>data/c2/bm.csv</code></td></tr></tbody></table></div><div><div class="ix" data-ix="dovada">
   <div class="ix__cap"><span class="ix__fel">Verificare la tine</span><span class="ix__t">Dovada colectării</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-colectare", "sarcina": "Lipește ce a tipărit scriptul tău: codul de stare și numărul de rânduri salvate.", "pasi": [{"t": "Cererea a primit 200", "cmd": "python code/banca_mondiala.py", "gol": "lipește linia cu codul de stare", "cauta": "\\b200\\b", "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."}, {"t": "Fișierul s-a scris în data/c2, cu rânduri în el", "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('data/c2/populatie_ro.csv')))\"", "gol": "numărul de rânduri", "cauta": "\\b[1-9]\\d{0,4}\\b", "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."}], "explicatie": "Cererea a reușit, iar datele sunt salvate în proiect, împreună cu scriptul care le reface."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-dovada-colectare", "sarcina": "Rulează în caietul 02, după secțiunea 5, cele două celule de mai jos și lipește ce afișează.", "pasi": [{"t": "Indicatorul a venit pe o singură pagină", "cmd": "tabel = cere_bm(\"SP.POP.TOTL\", TARI)", "gol": "lipește linia cu numărul de pagini", "cauta": "pagini:\\s*1\\b", "daca_nu": "Caut „pagini: 1”. Mai multe pagini înseamnă că per_page e prea mic; o eroare înseamnă, de obicei, că celulele de deasupra nu au rulat."}, {"t": "Tabelul s-a scris în data/c2, cu rânduri în el", "cmd": "len(pd.read_csv(\"data/c2/bm.csv\"))", "gol": "numărul de rânduri", "cauta": "\\b[1-9]\\d{0,4}\\b", "daca_nu": "Caut un număr mai mare ca zero. FileNotFoundError înseamnă că celula care salvează nu a rulat sau că acest caiet nu stă în dsw/curs/."}], "explicatie": "Cererile au reușit, iar datele sunt salvate în curs/data/c2, lângă celulele care le refac."}</script></div>
 </div></div></div>
 
 </section>
 
+<section class="sld" id="s21e" data-grup="Proiectul tău" data-t="Depozitul echipei">
+<h2>Depozitul echipei, în dsw/proiect</h2><p class="cheie">O singură comandă, o singură dată. Munca echipei stă în <code>proiect/</code>; exercițiile de la curs rămân în <code>curs/</code>.</p><div class="c2doi"><div><ol class="venvp__pasi"><li><b>Echipa de cinci primește un depozit</b> al ei, în organizația <a class="leg" href="https://github.com/dsw-ubb-2026" target="_blank" rel="noopener">dsw-ubb-2026</a>, pornit din același șablon pentru toate echipele.</li><li><b>Accepți invitația</b> de pe GitHub, care vine pe e-mail, ca să poți scrie în depozit.</li><li><b>Copiezi adresa depozitului</b>: pe pagina lui, <em>Code → HTTPS</em>.</li><li><b>În terminalul din VS Code</b>, în <code>dsw</code>:<br><code>git clone &lt;adresa&gt; proiect</code><span class="venvp__os">ultimul cuvânt e numele folderului: proiect</span></li></ol></div><div><div class="venvp__fld"><span class="a">dsw/</span>
+├── <span class="x">.venv/</span>
+├── curs/            <span class="c"># al tău, fără Git</span>
+└── <span class="a">proiect/</span>         <span class="c"># al echipei, cu Git</span>
+    ├── .git/        <span class="c"># istoricul</span>
+    └── README.md</div><div class="nota"><div class="nota__et">Git</div><p>Trebuie să fie instalat: <code>git --version</code> răspunde cu un număr. La prima clonare, Git îți poate cere să intri în contul GitHub, într-o fereastră din browser. Ce faci apoi în <code>proiect/</code> vedem la cursul 3.</p></div></div></div>
+
+</section>
+
 <section class="sld" id="s22" data-grup="Mai departe" data-t="Până data viitoare">
-<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git și GitHub: istoricul proiectului și depozitul echipei</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Scriptul de colectare, rulat, cu tabelul salvat în <code>data/c2</code>, plus <code>migratie.csv</code> din caietul de seminar. Și o propunere de temă pentru echipă, în două-trei rânduri, în <code>README.md</code>.</p></div>
+<h2>Cursul 3: versionare și colaborare</h2><ul><li>Git în <code>proiect/</code>: istoricul și lucrul în echipă</li><li>pregătirea și explorarea datelor colectate</li><li>cadrul teoretic al proiectului</li><li>tema echipei și cine ce face</li></ul><div class="nota nota--sobru"><div class="nota__et">De făcut până atunci</div><p>Caietul 02 rulat, cu <code>bm.csv</code> și <code>migratie.csv</code> în <code>curs/data/c2</code>. Depozitul echipei, clonat în <code>dsw/proiect</code>. Și fișa echipei de la finalul caietului: direcția provizorie și indicatorul încercat.</p></div>
 
 </section>
 
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=68"></script>
+<script type="module" src="../../js/antet.js?v=69"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=68";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=68";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=68";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=69";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=69";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=69";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });

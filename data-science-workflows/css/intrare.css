@@ -118,3 +118,16 @@
 .gh__pasi li{margin-bottom:8px;line-height:1.5}
 .gh__pasi li::marker{font-family:var(--mono);color:var(--accent)}
 .gh__de-ce{font-size:14px;color:var(--text-2);margin:0}
+
+/* folderul cursului, pe pagina primului curs: arhiva și pașii, la vedere */
+.gh--dsw{border-left-color:var(--salvie);margin-top:18px}
+.gh--dsw .gh__cap svg{color:var(--salvie)}
+.gh__zip{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;padding:9px 15px;border-radius:8px;
+  background:var(--buton);color:var(--buton-text);font-family:var(--sans);font-size:14.5px;font-weight:600;
+  text-decoration:none}
+.gh__zip:hover{filter:brightness(1.08);color:var(--buton-text)}
+.gh__os{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 2px}
+.gh__os b{display:block;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text-3);margin-bottom:5px}
+.gh__os pre{margin:0;font-size:12.5px;padding:9px 11px;overflow-x:auto}
+@media (max-width:640px){.gh__os{grid-template-columns:1fr}}

@@ -20,7 +20,7 @@ Banca Mondială, 2022 la 2024. Valorile vin din colectarea de referință
 Rulare:  python _build/c2.py
 """
 
-from comun import Lectie, ix, verif, tabel, nota, surse
+from comun import Lectie, ix, verif, tabel, nota, surse, REPO, REPO_ORG, repo_fisier
 
 L = Lectie(2, "c2-colectarea-prin-api", "Colectarea datelor prin API",
            "Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns "
@@ -42,8 +42,11 @@ AGENDA = [
     ("De unde vin datele", "Surse accesibile prin API și sursele proiectului."),
     ("requests", "Aceeași cerere în Python; paginarea."),
     ("Eurostat", "Cererea pe dimensiuni și cubul JSON-stat, pe datele migrației."),
-    ("Primele date în proiect", "O colectare reală, salvată în data/c2."),
+    ("Primele date și echipa", "O colectare reală, în curs/data/c2; apoi depozitul echipei, în proiect/."),
 ]
+CAIET_NOTA = (f'<a class="leg" href="{repo_fisier("curs/" + CAIET)}" target="_blank" rel="noopener">'
+              f"<code>{CAIET}</code></a>, salvat în <code>dsw/curs/</code>, lângă caietul 01. "
+              "Fișierele colectate ajung în <code>curs/data/c2</code>.")
 AGENDA_IX = {"static": True, "titlu": "Ora de azi",
              "etape": [{"nume": n, "unde": "azi", "text": d} for n, d in AGENDA]}
 
@@ -52,8 +55,7 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<p class=\"cheie\">Datele nu mai vin dintr-un fișier primit, ci dintr-o cerere "
    "scrisă, care se poate rula din nou.</p>"
    + ix("agenda", "Ora de azi", AGENDA_IX)
-   + nota("Caietul de azi", f"<code>{CAIET}</code>, în folderul <code>notebooks/</code>. "
-          "Fișierele colectate ajung în <code>data/c2</code>.", True),
+   + nota("Caietul de azi", CAIET_NOTA, True),
    manual=
    "<h2>Colectarea datelor prin API</h2>"
    "<p>La cursul 1, datele au venit dintr-un fișier descărcat dinainte. Pentru o analiză "
@@ -67,28 +69,33 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "<p>Capitolul urmează ordinea de la curs. Codul complet e în caietul cursului; aici "
    "stau conceptele, motivele și capcanele.</p>"
    + ix("agenda", "Ora de azi", AGENDA_IX)
-   + nota("Caietul de azi", f"<code>{CAIET}</code>, în folderul <code>notebooks/</code>. "
-          "Fișierele colectate ajung în <code>data/c2</code>.", True))
+   + nota("Caietul de azi", CAIET_NOTA, True))
 
 sl("s2", "Cursul", "Unde ai rămas",
    "<h2>Unde ai rămas</h2>"
    "<ul>"
-   "<li><strong>Mediul de lucru</strong>: folderul proiectului, <code>.venv</code> cu pandas, "
-   "caietul 01 rulat de sus până jos.</li>"
+   "<li><strong>Folderul <code>dsw</code></strong>, cu <code>.venv</code> și pachetele din "
+   "<code>requirements.txt</code>, și caietul 01 rulat de sus până jos.</li>"
    "<li><strong>Echipa de cinci</strong>, formată.</li>"
    "<li><strong>Contul GitHub</strong>, cu care intri pe site.</li>"
    "</ul>"
-   "<p>Pentru caietul de azi se adaugă în <code>.venv</code> biblioteca <code>requests</code>.</p>",
+   "<p>Caietul de azi se descarcă singur, în <code>dsw/curs/</code>. <code>requests</code> e deja "
+   "în mediu, din <code>requirements.txt</code>.</p>",
    manual=
    "<h2>Unde ai rămas</h2>"
-   "<p>Lecția pornește de la ce s-a construit la cursul 1: folderul proiectului cu "
-   "<code>data/</code>, <code>notebooks/</code> și <code>code/</code>, mediul virtual "
-   "<code>.venv</code> cu pandas și caietul 01 rulat de sus până jos. Dacă lipsește ceva, "
+   "<p>Lecția pornește de la ce s-a construit la cursul 1: folderul cursului, <code>dsw</code>, "
+   "cu mediul virtual <code>.venv</code> și pachetele din <code>requirements.txt</code>, și caietul 01 "
+   "rulat de sus până jos. Dacă lipsește ceva, "
    "pașii sunt în <a class=\"leg\" href=\"../../c1-introducere-si-mediu/tutorial/\">manualul "
-   "cursului 1</a>. Echipa de cinci e formată; direcția proiectului se alege la cursul 3.</p>"
-   "<p>Biblioteca nouă se instalează o singură dată, cu Python-ul mediului:</p>"
-   "<pre><code>.venv\\Scripts\\python -m pip install requests</code></pre>"
-   "<p>Pe macOS: <code>.venv/bin/python -m pip install requests</code>.</p>")
+   "cursului 1</a>. Echipa de cinci e formată; la finalul orei își aduce depozitul, iar direcția "
+   "proiectului se alege la cursul 3.</p>"
+   "<p>Caietul de azi se descarcă singur, nu odată cu toată arhiva: pe "
+   f'<a class="leg" href="{repo_fisier("curs/" + CAIET)}" target="_blank" rel="noopener">pagina lui de pe GitHub</a> '
+   "apeși <em>Download raw file</em> și îl salvezi în <code>dsw/curs/</code>, lângă caietul 01. Arhiva "
+   "întreagă, despachetată din nou peste <code>dsw</code>, ți-ar putea înlocui caietele completate.</p>"
+   "<p>Biblioteca de azi, <code>requests</code>, e deja în mediu: e în <code>requirements.txt</code>. "
+   "Dacă lipsește, cu mediul activ:</p>"
+   "<pre><code>pip install -r requirements.txt</code></pre>")
 
 
 # ===========================================================================
@@ -1108,7 +1115,8 @@ sl("s18", "requests", "Paginarea",
    "<p>Lista de înregistrări devine tabel cu <code>pd.json_normalize</code>: dicționarele "
    "dinăuntru devin coloane cu punct în nume, de exemplu <code>country.id</code>. Tabelul se "
    "salvează în <code>data/c2</code> cu <code>index=False</code>, ca să nu se adauge o coloană "
-   "de numerotare fără sens.</p>"
+   "de numerotare fără sens. Calea pornește din folderul caietului, deci fișierul ajunge în "
+   "<code>dsw/curs/data/c2/</code>.</p>"
    "<pre><code>tabel = pd.json_normalize(valori)[[\"country.id\", \"date\", \"value\"]]\n"
    "tabel.to_csv(\"data/c2/populatie_ro.csv\", index=False)</code></pre>"
    + nota("Fișierul brut nu se modifică",
@@ -1273,38 +1281,44 @@ sl("s20v", "Eurostat", "Poziția din cub",
 
 DOVADA = {
     "id": "c2-dovada-colectare",
-    "sarcina": "Lipește ce a tipărit scriptul tău: codul de stare și numărul de rânduri salvate.",
+    "sarcina": "Rulează în caietul 02, după secțiunea 5, cele două celule de mai jos și lipește ce afișează.",
     "pasi": [
-        {"t": "Cererea a primit 200",
-         "cmd": "python code/banca_mondiala.py",
-         "gol": "lipește linia cu codul de stare",
-         "cauta": r"\b200\b",
-         "daca_nu": "Caut un 200. Dacă vezi 404, greșeala e în adresă; dacă vezi 429, ai cerut prea des."},
-        {"t": "Fișierul s-a scris în data/c2, cu rânduri în el",
-         "cmd": "python -c \"import pandas as pd; print(len(pd.read_csv('data/c2/populatie_ro.csv')))\"",
+        {"t": "Indicatorul a venit pe o singură pagină",
+         "cmd": "tabel = cere_bm(\"SP.POP.TOTL\", TARI)",
+         "gol": "lipește linia cu numărul de pagini",
+         "cauta": r"pagini:\s*1\b",
+         "daca_nu": "Caut „pagini: 1”. Mai multe pagini înseamnă că per_page e prea mic; o eroare "
+                    "înseamnă, de obicei, că celulele de deasupra nu au rulat."},
+        {"t": "Tabelul s-a scris în data/c2, cu rânduri în el",
+         "cmd": "len(pd.read_csv(\"data/c2/bm.csv\"))",
          "gol": "numărul de rânduri",
          "cauta": r"\b[1-9]\d{0,4}\b",
-         "daca_nu": "Caut un număr mai mare ca zero. Zero rânduri înseamnă că cererea a mers, dar filtrul n-a lăsat nimic."}],
-    "explicatie": "Cererea a reușit, iar datele sunt salvate în proiect, împreună cu scriptul care le reface.",
+         "daca_nu": "Caut un număr mai mare ca zero. FileNotFoundError înseamnă că celula care salvează "
+                    "nu a rulat sau că acest caiet nu stă în dsw/curs/."}],
+    "explicatie": "Cererile au reușit, iar datele sunt salvate în curs/data/c2, lângă celulele care le refac.",
 }
 PASI_COLECTARE = tabel(["Pasul", "Ce faci"], [
-    ["1", "creezi <code>code/banca_mondiala.py</code> în folderul proiectului"],
-    ["2", "ceri indicatorul pentru România, anii 2000 la 2023"],
-    ["3", "verifici codul de stare și câte rânduri ai primit"],
-    ["4", "salvezi tabelul în <code>data/c2/</code>"],
+    ["1", "deschizi caietul 02 din <code>dsw/curs/</code>, cu kernelul <code>.venv</code>"],
+    ["2", "rulezi secțiunile 1 la 5: prima cerere, paginarea, cei trei indicatori"],
+    ["3", "verifici că fiecare indicator a venit pe o singură pagină"],
+    ["4", "salvezi tabelul în <code>data/c2/bm.csv</code>"],
 ])
 
 sl("s21", "Proiectul tău", "Colectează, acum",
-   "<h2>Prima colectare din proiect</h2>"
+   "<h2>Prima colectare, în caiet</h2>"
    '<div class="c2doi"><div>'
-   "<p>Un script care cere, verifică, salvează. Rulează-l și lipește ce iese.</p>"
+   "<p>Caietul cere, verifică, salvează. Rulează-l și lipește ce iese.</p>"
    + PASI_COLECTARE + "</div><div>"
    + ix("dovada", "Dovada colectării", DOVADA) + "</div></div>",
    manual=
-   "<h2>Prima colectare din proiect</h2>"
-   "<p>Scriptul întreg, de pornire, de adaptat la indicatorul echipei. Stă în "
-   "<code>code/</code>, iar datele în <code>data/c2/</code>.</p>"
+   "<h2>Prima colectare, în caiet</h2>"
+   "<p>Colectarea se face în caietul 02, din <code>dsw/curs/</code>. Căile pornesc de acolo: "
+   "<code>data/c2/bm.csv</code> înseamnă <code>dsw/curs/data/c2/bm.csv</code>. Folderul îl face "
+   "prima celulă a caietului, cu <code>Path(\"data/c2\").mkdir(exist_ok=True)</code>.</p>"
    + PASI_COLECTARE
+   + "<p>Mai jos, aceeași idee scrisă întreg, cu paginarea făcută pas cu pas: o funcție care "
+   "cere pagină după pagină, până la ultima. Se poate rula într-o celulă nouă, la finalul "
+   "caietului, și se adaptează la indicatorul echipei.</p>"
    + "<pre><code>import time\n"
      "import pandas as pd\n"
      "import requests\n\n"
@@ -1325,24 +1339,77 @@ sl("s21", "Proiectul tău", "Colectează, acum",
      "tabel = pd.json_normalize(randuri)\n"
      "tabel.to_csv(\"data/c2/populatie_ro.csv\", index=False)\n"
      "print(\"salvate\", len(tabel), \"rânduri\")</code></pre>"
-   + nota("Când folderul devine depozit",
-          "De la cursul 3, folderul proiectului urcă pe GitHub. Nu urcă fișierele mari și cheile de "
-          "acces: pentru datele de zeci de megabytes urcă scriptul care le aduce.")
+   + nota("Ce rămâne la tine și ce ajunge la echipă",
+          "Datele și caietele de la curs rămân în <code>curs/</code>. În depozitul echipei, "
+          "<code>proiect/</code>, ajunge ce face echipa. Acolo nu urcă fișierele mari și cheile de "
+          "acces: pentru datele de zeci de megabytes urcă codul care le aduce.")
    + ix("dovada", "Dovada colectării", DOVADA))
+
+
+ARBORE_PROIECT = (
+    '<span class="a">dsw/</span>\n'
+    '├── <span class="x">.venv/</span>\n'
+    '├── curs/            <span class="c"># al tău, fără Git</span>\n'
+    '└── <span class="a">proiect/</span>         <span class="c"># al echipei, cu Git</span>\n'
+    '    ├── .git/        <span class="c"># istoricul</span>\n'
+    '    └── README.md')
+
+PASI_ECHIPA = (
+    '<ol class="venvp__pasi">'
+    "<li><b>Echipa de cinci primește un depozit</b> al ei, în organizația "
+    f'<a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, '
+    "pornit din același șablon pentru toate echipele.</li>"
+    "<li><b>Accepți invitația</b> de pe GitHub, care vine pe e-mail, ca să poți scrie în depozit.</li>"
+    "<li><b>Copiezi adresa depozitului</b>: pe pagina lui, <em>Code → HTTPS</em>.</li>"
+    "<li><b>În terminalul din VS Code</b>, în <code>dsw</code>:<br>"
+    "<code>git clone &lt;adresa&gt; proiect</code>"
+    '<span class="venvp__os">ultimul cuvânt e numele folderului: proiect</span></li>'
+    "</ol>")
+
+sl("s21e", "Proiectul tău", "Depozitul echipei",
+   "<h2>Depozitul echipei, în dsw/proiect</h2>"
+   "<p class=\"cheie\">O singură comandă, o singură dată. Munca echipei stă în "
+   "<code>proiect/</code>; exercițiile de la curs rămân în <code>curs/</code>.</p>"
+   '<div class="c2doi"><div>' + PASI_ECHIPA + "</div><div>"
+   '<div class="venvp__fld">' + ARBORE_PROIECT + "</div>"
+   + nota("Git", "Trebuie să fie instalat: <code>git --version</code> răspunde cu un număr. La prima "
+          "clonare, Git îți poate cere să intri în contul GitHub, într-o fereastră din browser. Ce faci "
+          "apoi în <code>proiect/</code> vedem la cursul 3.")
+   + "</div></div>",
+   manual=
+   "<h2>Depozitul echipei, în dsw/proiect</h2>"
+   "<p>Până acum, tot ce ai făcut stă în <code>curs/</code>, pe calculatorul tău, fără Git. "
+   "Proiectul de semestru e altceva: îl lucrează cinci oameni, iar fiecare trebuie să vadă ce au "
+   "făcut ceilalți. De aceea fiecare echipă are un depozit al ei pe GitHub, în organizația "
+   f'<a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, '
+   "pornit din același șablon pentru toate echipele, iar fiecare membru îl aduce pe calculatorul lui, "
+   "în <code>dsw/proiect</code>.</p>"
+   + PASI_ECHIPA
+   + '<div class="venvp__fld" style="margin:14px 0">' + ARBORE_PROIECT + "</div>"
+   + "<p><code>git clone</code> copiază depozitul cu tot cu istoricul lui, în folderul <code>.git/</code>, "
+   "și ține minte de unde l-a luat. Ultimul cuvânt din comandă e numele folderului: fără el, folderul "
+   "ar purta numele depozitului. Comanda se dă o singură dată, din <code>dsw</code>; dacă o dai din "
+   "alt folder, de exemplu din <code>curs/</code>, depozitul ajunge acolo, iar căile din caiete nu "
+   "mai sunt cele din manual.</p>"
+   + nota("Git",
+          'Se instalează de pe <a class="leg" href="https://git-scm.com/downloads" target="_blank" '
+          'rel="noopener">git-scm.com</a>; verifici cu <code>git --version</code>. La prima clonare, Git '
+          "îți poate cere să intri în contul GitHub, într-o fereastră din browser. Commit, push și "
+          "lucrul pe ramuri, în <code>proiect/</code>, sunt la cursul 3."))
+
 
 sl("s22", "Mai departe", "Până data viitoare",
    "<h2>Cursul 3: versionare și colaborare</h2>"
    "<ul>"
-   "<li>Git și GitHub: istoricul proiectului și depozitul echipei</li>"
+   "<li>Git în <code>proiect/</code>: istoricul și lucrul în echipă</li>"
    "<li>pregătirea și explorarea datelor colectate</li>"
    "<li>cadrul teoretic al proiectului</li>"
    "<li>tema echipei și cine ce face</li>"
    "</ul>"
    + nota("De făcut până atunci",
-          "Scriptul de colectare, rulat, cu tabelul salvat în <code>data/c2</code>, plus "
-          "<code>migratie.csv</code> din caietul de seminar. Și o propunere "
-          "de temă pentru echipă, în două-trei rânduri, în "
-          "<code>README.md</code>.", True))
+          "Caietul 02 rulat, cu <code>bm.csv</code> și <code>migratie.csv</code> în "
+          "<code>curs/data/c2</code>. Depozitul echipei, clonat în <code>dsw/proiect</code>. Și fișa "
+          "echipei de la finalul caietului: direcția provizorie și indicatorul încercat.", True))
 
 
 if __name__ == "__main__":
