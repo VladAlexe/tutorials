@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 5. Agregare și baze de date · Fluxuri de lucru</title>
 <meta name="description" content="Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.">
-<link rel="stylesheet" href="../css/fonturi.css?v=77">
-<link rel="stylesheet" href="../css/sistem.css?v=77">
-<link rel="stylesheet" href="../css/intrare.css?v=77">
-<script src="../js/tema.js?v=77"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=78">
+<link rel="stylesheet" href="../css/sistem.css?v=78">
+<link rel="stylesheet" href="../css/intrare.css?v=78">
+<script src="../js/tema.js?v=78"></script>
 </head>
 <body>
 
@@ -47,35 +47,32 @@
 <p>A doua parte mută rezultatul dintr-un fișier CSV într-o bază Postgres pe Neon. Motivul nu este noutatea tehnologiei: atunci când mai multe persoane lucrează pe aceleași date, fișierul partajat devine o sursă de probleme.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La finalul lecției vei putea</p>
+    <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să stabilești, înainte de a scrie codul, dacă rezultatul trebuie să aibă mai multe rânduri sau mai multe coloane, deci dacă operația este <code>concat</code> sau <code>merge</code>.</li>
-<li>Să alegi între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code> în funcție de rândurile care trebuie păstrate.</li>
-<li>Să recunoști un join care a multiplicat rândurile și să îl previi cu <code>validate</code>.</li>
-<li>Să numeri cheile comune înainte de îmbinare, pentru a evita un tabel rezultat gol.</li>
-<li>Să răspunzi, într-o propoziție, la întrebarea „ce reprezintă un rând în tabelul final”.</li>
-<li>Să agregi de la o unitate la alta, știind că alegerea dintre sumă, medie și număr de parteneri este teoretică, nu tehnică.</li>
-<li>Să explici de ce o echipă de cinci persoane are nevoie de o bază de date și de ce volumul datelor nu este criteriul decisiv.</li>
-<li>Să te conectezi la Neon din Python fără ca parola să apară în cod.</li>
-<li>Să scrii tabelul în bază, cu o cheie primară, și să îl citești înapoi.</li>
-<li>Să scrii un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code> și să știi când interogarea SQL este preferabilă prelucrării în pandas.</li>
+<li>Decizia, înainte de cod, dacă rezultatul trebuie să aibă mai multe rânduri sau mai multe coloane, deci dacă operația este <code>concat</code> sau <code>merge</code>.</li>
+<li>Alegerea între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code>, în funcție de rândurile care trebuie păstrate.</li>
+<li>Recunoașterea unui join care a multiplicat rândurile și prevenirea lui cu <code>validate</code>.</li>
+<li>Numărarea cheilor comune înainte de îmbinare, pentru a evita un tabel rezultat gol.</li>
+<li>Răspunsul, într-o propoziție, la întrebarea „ce reprezintă un rând în tabelul final”.</li>
+<li>Agregarea de la o unitate la alta, cu alegerea dintre sumă, medie și număr de parteneri tratată ca decizie teoretică, nu tehnică.</li>
+<li>Motivul pentru care o echipă de cinci persoane are nevoie de o bază de date și de ce volumul datelor nu este criteriul decisiv.</li>
+<li>Conectarea la Neon din Python fără ca parola să apară în cod.</li>
+<li>Scrierea tabelului în bază, cu o cheie primară, și citirea lui înapoi.</li>
+<li>Un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code> și situațiile în care interogarea SQL este preferabilă prelucrării în pandas.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Materiale</p>
     <div class="mat">
       <a class="mat__c" href="lectie/#1">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="../c4-curatarea-datelor/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Lecția 4: curățarea</span>
         <span class="mat__d">Fișierele de la care pornește lecția</span>
       </a>
@@ -88,7 +85,7 @@
 <li>Fișierele curățate la cursul 4, în <code>date/curat/</code>, pe care se face îmbinarea.</li>
 <li>Un cont pe <a class="leg" href="https://neon.com/" rel="noopener" target="_blank">Neon</a> și un proiect nou. Planul gratuit este suficient.</li>
 <li>Trei pachete: <code>pip install sqlalchemy psycopg[binary] python-dotenv</code>.</li>
-<li>Un fișier <code>.env</code> în rădăcina proiectului, cu <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>
+<li>Un fișier <code>.env</code> în rădăcina depozitului echipei, cu <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>
 </ol>
 <p>Dacă contul nu este creat până la curs, partea de pandas poate fi urmărită oricum, iar baza de date poate fi configurată ulterior.</p></div>
   </section>
@@ -99,9 +96,7 @@
 <li><code>baza/incarca.py</code>: încărcarea tabelului în Neon, cu o cheie primară.</li>
 <li><code>baza/intrebari.sql</code>: o interogare <code>select</code> proprie, legată de întrebarea de cercetare.</li>
 <li>În <code>decizii.md</code>: unitatea de analiză, într-o propoziție.</li>
-</ul>
-<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la Banca Mondială.</p></div>
+</ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -128,7 +123,7 @@ cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la 
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=77"), import("../js/ora.js?v=77"), import("../js/curs.js?v=77")]);
+    import("../js/auth.js?v=78"), import("../js/ora.js?v=78"), import("../js/curs.js?v=78")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -156,7 +151,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=77"></script>
-<script type="module" src="../js/subsol.js?v=77"></script>
+<script type="module" src="../js/antet.js?v=78"></script>
+<script type="module" src="../js/subsol.js?v=78"></script>
 </body>
 </html>

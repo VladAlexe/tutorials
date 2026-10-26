@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 6. Analiza exploratorie · Fluxuri de lucru</title>
 <meta name="description" content="Examinarea datelor înainte de modelare: distribuții, relații, categorii, hărți și grafice care induc în eroare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=77">
-<link rel="stylesheet" href="../css/sistem.css?v=77">
-<link rel="stylesheet" href="../css/intrare.css?v=77">
-<script src="../js/tema.js?v=77"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=78">
+<link rel="stylesheet" href="../css/sistem.css?v=78">
+<link rel="stylesheet" href="../css/intrare.css?v=78">
+<script src="../js/tema.js?v=78"></script>
 </head>
 <body>
 
@@ -43,45 +43,41 @@
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>Punctul de plecare este un tabel cu perechi de țări: SCI, migranți în ambele direcții, distanță, graniță. Înainte de orice model, tabelul trebuie examinat. Analiza exploratorie are două scopuri: să verifice că datele corespund așteptărilor și să identifice tiparele care merită testate ulterior.</p>
-<p>Lucrăm pe trei direcții, ca în planul cursului: o variabilă (distribuții,
+<p>Lecția urmează trei direcții, ca în planul cursului: o variabilă (distribuții,
 asimetrie, logaritm, top-uri), două variabile (norul de puncte, corelațiile)
 și categorii (tabelul de contingență, χ², grupuri comparate). La final, harta
 comunităților și un slide despre graficele care induc în eroare.</p>
 <p>Toate graficele folosesc datele reale ale cursului: cele 263 de perechi de țări pentru care există atât SCI, cât și date de migrație.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La finalul lecției vei putea</p>
+    <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să recunoști o variabilă cu distribuție cu coadă lungă și să explici de ce se transformă logaritmic.</li>
-<li>Să descrii o variabilă cu <code>describe()</code> și <code>skew()</code> și să interpretezi diferența dintre medie și mediană.</li>
-<li>Să interpretezi un clasament știind ce măsoară și de ce ordonarea după SCI diferă de cea după numărul de migranți.</li>
-<li>Să construiești și să interpretezi un nor de puncte și să identifici perechile care se abat de la tipar.</li>
-<li>Să citești o matrice de corelații și să explici de ce corelația nu implică o relație cauzală.</li>
-<li>Să împarți o variabilă în categorii, să construiești un tabel de contingență și să îl testezi cu χ² și Cramér's V.</li>
-<li>Să compari grupuri atunci când distribuția nu este normală.</li>
-<li>Să citești harta comunităților și să recunoști o axă trunchiată.</li>
+<li>Recunoașterea unei distribuții cu coadă lungă și motivul transformării logaritmice.</li>
+<li>Descrierea unei variabile cu <code>describe()</code> și <code>skew()</code> și interpretarea diferenței dintre medie și mediană.</li>
+<li>Interpretarea unui clasament: ce măsoară și de ce ordonarea după SCI diferă de cea după numărul de migranți.</li>
+<li>Construirea și interpretarea unui nor de puncte, cu perechile care se abat de la tipar.</li>
+<li>Citirea unei matrice de corelații și motivul pentru care corelația nu implică o relație cauzală.</li>
+<li>Împărțirea unei variabile în categorii, tabelul de contingență și testarea lui cu χ² și Cramér's V.</li>
+<li>Compararea grupurilor atunci când distribuția nu este normală.</li>
+<li>Citirea hărții comunităților și recunoașterea unei axe trunchiate.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Materiale</p>
     <div class="mat">
       <a class="mat__c" href="lectie/#1">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="../explorator/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Exploratorul legăturilor sociale</span>
         <span class="mat__d">Harta pe județe, regiuni și țări</span>
       </a>
       <a class="mat__c" href="../c5-agregare-si-baze-de-date/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Lecția 5: agregarea</span>
         <span class="mat__d">Tabelul de la care pornește lecția</span>
       </a>
@@ -102,9 +98,7 @@ comunităților și un slide despre graficele care induc în eroare.</p>
 <li>Un nor de puncte între SCI și variabila principală.</li>
 <li>O hartă sau un clasament, cu observațiile care ies din tipar.</li>
 <li>În <code>README.md</code>: primul tipar identificat, într-o propoziție.</li>
-</ul>
-<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>
-și migrația de la Eurostat, plus distanța și granița.</p></div>
+</ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -128,7 +122,7 @@ comunităților și un slide despre graficele care induc în eroare.</p>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=77"), import("../js/ora.js?v=77"), import("../js/curs.js?v=77")]);
+    import("../js/auth.js?v=78"), import("../js/ora.js?v=78"), import("../js/curs.js?v=78")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -156,7 +150,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=77"></script>
-<script type="module" src="../js/subsol.js?v=77"></script>
+<script type="module" src="../js/antet.js?v=78"></script>
+<script type="module" src="../js/subsol.js?v=78"></script>
 </body>
 </html>

@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 7. Variabile derivate și model · Fluxuri de lucru</title>
 <meta name="description" content="Construirea variabilelor, un model care le pune pe toate deodată, și reziduurile lui.">
-<link rel="stylesheet" href="../css/fonturi.css?v=77">
-<link rel="stylesheet" href="../css/sistem.css?v=77">
-<link rel="stylesheet" href="../css/intrare.css?v=77">
-<script src="../js/tema.js?v=77"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=78">
+<link rel="stylesheet" href="../css/sistem.css?v=78">
+<link rel="stylesheet" href="../css/intrare.css?v=78">
+<script src="../js/tema.js?v=78"></script>
 </head>
 <body>
 
@@ -35,49 +35,45 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 7 din 8</p>
     <h1>Variabile derivate și model</h1>
-    <p class="deck">Analiza exploratorie a arătat tipare. Le introducem acum în același model, pentru a vedea ce rămâne din efectul fiecăruia.</p>
+    <p class="deck">Analiza exploratorie a arătat tipare. Această lecție le introduce în același model, pentru a vedea ce rămâne din efectul fiecăruia.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>La cursul 6 am văzut că SCI scade cu distanța, crește cu migrația și este mai mare între țările vecine. Țările vecine sunt însă și apropiate geografic și au adesea migrație între ele, deci cele trei tipare se suprapun. Un model le estimează simultan.</p>
+    <div class="sec__corp"><p>La cursul 6, datele au arătat că SCI scade cu distanța, crește cu migrația și este mai mare între țările vecine. Țările vecine sunt însă și apropiate geografic și au adesea migrație între ele, deci cele trei tipare se suprapun. Un model le estimează simultan.</p>
 <p>Prima parte tratează ingineria variabilelor, ca în planul cursului: construcție, transformare, extragere, scalare, selecție. A doua parte este dedicată modelului: patru modele pe același eșantion, interpretarea coeficienților pe logaritmi și reziduurile, pe hartă.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La finalul lecției vei putea</p>
+    <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să construiești o variabilă nouă și să scrii decizia din spatele ei.</li>
-<li>Să decizi ce variabile se transformă logaritmic și care nu.</li>
-<li>Să deosebești scalarea, care nu schimbă forma, de transformare, care o schimbă.</li>
-<li>Să verifici cu VIF că variabilele nu sunt redundante.</li>
-<li>Să scrii un model cu <code>statsmodels</code> și să citești coeficienții ca elasticități.</li>
-<li>Să explici de ce un coeficient se schimbă când adaugi o variabilă.</li>
-<li>Să interpretezi reziduurile ca surse de întrebări noi, nu ca erori.</li>
-<li>Să spui ce poate și ce nu poate susține un model observațional.</li>
+<li>Construirea unei variabile noi, cu decizia din spatele ei scrisă.</li>
+<li>Decizia privind variabilele care se transformă logaritmic și cele care nu.</li>
+<li>Diferența dintre scalare, care nu schimbă forma distribuției, și transformare, care o schimbă.</li>
+<li>Verificarea cu VIF că variabilele nu sunt redundante.</li>
+<li>Un model cu <code>statsmodels</code> și citirea coeficienților ca elasticități.</li>
+<li>Motivul pentru care un coeficient se schimbă când se adaugă o variabilă.</li>
+<li>Reziduurile, interpretate ca surse de întrebări noi, nu ca erori.</li>
+<li>Ce poate și ce nu poate susține un model observațional.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Materiale</p>
     <div class="mat">
       <a class="mat__c" href="lectie/#1">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="../explorator/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Exploratorul legăturilor sociale</span>
         <span class="mat__d">Harta pe județe, regiuni și țări</span>
       </a>
       <a class="mat__c" href="../c6-analiza-exploratorie/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Lecția 6: explorarea</span>
         <span class="mat__d">Tiparele testate în această lecție</span>
       </a>
@@ -122,7 +118,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=77"), import("../js/ora.js?v=77"), import("../js/curs.js?v=77")]);
+    import("../js/auth.js?v=78"), import("../js/ora.js?v=78"), import("../js/curs.js?v=78")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -150,7 +146,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=77"></script>
-<script type="module" src="../js/subsol.js?v=77"></script>
+<script type="module" src="../js/antet.js?v=78"></script>
+<script type="module" src="../js/subsol.js?v=78"></script>
 </body>
 </html>

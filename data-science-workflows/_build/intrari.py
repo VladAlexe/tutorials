@@ -26,28 +26,16 @@ _T = _T.replace("@ZIP@", REPO_ZIP).replace("@FOLDER@", REPO_FOLDER).replace("@RE
 D = json.loads(_T)
 
 ETICHETE = {
-    "Despre lecția asta": ("despre", "Despre"),
-    "Ce va conține": ("despre", "Despre"),
-    "La final vei putea": ("obiective", "La finalul lecției vei putea"),
-    "De ce ai nevoie, înainte": ("nevoie", "Pregătire"),
-    "Ce adaugi la proiect": ("proiect", "Ce se adaugă la proiect"),
-}
-
-IC = {
-    "lectie": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg>',
-    "manual": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg>',
-    "caiet": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg>',
-    "jos": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg>',
-    "alt": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg>',
+    "Despre lecția asta": ("despre", "Despre lecție"),
+    "Ce va conține": ("despre", "Despre lecție"),
+    "Obiective": ("obiective", "Obiectivele lecției"),
+    "Pregătire": ("nevoie", "Pregătire"),
+    "Ce se adaugă la proiect": ("proiect", "Ce se adaugă la proiect"),
 }
 
 
 def curata(h):
-    h = re.sub(r"\n\s+", "\n", h)
-    h = h.replace("cu atribute aduse prin API de la Eurostat și Banca Mondială",
-                  "cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la Banca Mondială")
-    h = h.replace(' style="color:var(--text-2);font-size:16.5px"', "")
-    return h
+    return re.sub(r"\n\s+", "\n", h)
 
 
 def pagina(cheie, x):
@@ -64,24 +52,27 @@ def pagina(cheie, x):
             sec.append("@@MATERIALE@@")
     corp = "".join(sec)
 
-    mat = [("lectie/#1", IC["lectie"], "Lecția", "Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.", False),
-           ("tutorial/", IC["manual"], "Manualul", "Materialul complet al lecției, pentru studiu individual.", False)]
+    are_lectie = (R / cheie / "lectie" / "index.html").exists()
+    # materialele: rânduri simple, titlu și o propoziție; fără iconițe, fără cartonașe
+    mat = []
+    if are_lectie:
+        mat += [("lectie/#1", "Lecția", "Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.", False),
+                ("tutorial/", "Manualul", "Materialul complet al lecției, pentru studiu individual.", False)]
     if x["caiet"]:
-        mat.append((x["caiet"], IC["caiet"], "Caietul",
+        mat.append((x["caiet"], "Caietul",
                     x.get("caiet_d") or "Caietul Jupyter al lecției, pe GitHub, cu codul de la seminar.", True))
     for r in x["resurse"]:
-        mat.append((r["href"], IC[r.get("ic", "alt")], r["t"], r["d"], r["href"].startswith("http")))
+        mat.append((r["href"], r["t"], r["d"], r["href"].startswith("http")))
     materiale = f'''
   <section class="sec">
     <p class="sec__et">Materiale</p>
     <div class="mat">{"".join(f"""
       <a class="mat__c" href="{h}"{' target="_blank" rel="noopener"' if ext else ""}>
-        <span class="mat__ic">{ic}</span>
         <span class="mat__t">{t}{" ↗" if ext else ""}</span>
         <span class="mat__d">{d}</span>
-      </a>""" for h, ic, t, d, ext in mat)}
+      </a>""" for h, t, d, ext in mat)}
     </div>
-  </section>'''
+  </section>''' if mat else ""
     if "@@MATERIALE@@" in corp:
         corp = corp.replace("@@MATERIALE@@", materiale, 1)
     else:
@@ -99,7 +90,6 @@ def pagina(cheie, x):
     caiet_btn = (f'<a class="bl__b" href="{x["caiet"]}" target="_blank" rel="noopener">Caietul ↗</a>'
                  if x["caiet"] else "")
     titlu = html.unescape(x["titlu"])
-    are_lectie = (R / cheie / "lectie" / "index.html").exists()
     incepe = ('<a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>'
               if are_lectie else '<span class="bl__b bl__b--stins">Lecție în pregătire</span>')
     preda = ('<a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden '
@@ -129,7 +119,7 @@ def pagina(cheie, x):
     <span class="bl__sp"></span>
     <span class="bl__fapte" id="fapte">
       {incepe}
-      <a class="bl__b" href="tutorial/">Manualul</a>
+      {'<a class="bl__b" href="tutorial/">Manualul</a>' if are_lectie else ""}
       {caiet_btn}
       {preda}
     </span>

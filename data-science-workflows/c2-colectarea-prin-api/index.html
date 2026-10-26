@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 2. Colectarea datelor prin API · Fluxuri de lucru</title>
 <meta name="description" content="Ce este un API, mesajul HTTP, codurile de stare, requests, cubul Eurostat și primele date reale în proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=77">
-<link rel="stylesheet" href="../css/sistem.css?v=77">
-<link rel="stylesheet" href="../css/intrare.css?v=77">
-<script src="../js/tema.js?v=77"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=78">
+<link rel="stylesheet" href="../css/sistem.css?v=78">
+<link rel="stylesheet" href="../css/intrare.css?v=78">
+<script src="../js/tema.js?v=78"></script>
 </head>
 <body>
 
@@ -43,42 +43,39 @@
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>Lecția tratează proveniența datelor: o analiză poate fi verificată doar dacă drumul de la sursă la tabel poate fi refăcut. La cursul 1, datele au provenit dintr-un fișier descărcat în prealabil; de la această lecție provin dintr-o cerere scrisă, care conține sursa, setul și filtrele.</p>
-<p>Începem cu ce este un API și de ce colectăm date prin el, trecem prin tipurile și istoria API-urilor, apoi analizăm un mesaj HTTP element cu element: metoda, endpoint-ul, adresa cu parametrii, codul de stare. Aceeași cerere se scrie apoi în Python, cu <code>requests</code>, iar la final ideea se aplică la Eurostat, al cărui răspuns e un cub JSON-stat, pe datele migrației.</p></div>
+<p>Lecția începe cu ce este un API și de ce se colectează date prin el, trece prin tipurile și istoria API-urilor, apoi analizează un mesaj HTTP element cu element: metoda, endpoint-ul, adresa cu parametrii, codul de stare. Aceeași cerere se scrie apoi în Python, cu <code>requests</code>, iar la final ideea se aplică la Eurostat, al cărui răspuns este un cub JSON-stat, pe datele migrației.</p>
+<p>Ora se încheie cu formarea echipelor, pe site, și cu clonarea depozitului echipei din organizația comună a cursului.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La finalul lecției vei putea</p>
+    <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să explici ce este un API ca intermediar cu un contract și ce înseamnă abstractizarea, versionarea și lipsa stării.</li>
-<li>Să argumentezi de ce datele se colectează prin API și când un fișier publicat, datat și versionat este suficient.</li>
-<li>Să deosebești stilurile REST, GraphQL, gRPC și SOAP și criteriile după care se clasifică API-urile.</li>
-<li>Să citești un mesaj HTTP: prima linie, antetele, corpul.</li>
-<li>Să alegi metoda HTTP potrivită și să explici de ce o cerere GET se poate relua fără riscuri.</li>
-<li>Să numești componentele unei adrese și să legi parametrii de dicționarul <code>params</code> din requests.</li>
-<li>Să interpretezi clasa unui cod de stare și să verifici corpul după cod.</li>
-<li>Să faci o cerere cu <code>requests</code>, să citești răspunsul și să gestionezi paginarea.</li>
-<li>Să transformi un răspuns JSON-stat de la Eurostat într-un tabel.</li>
+<li>API-ul ca intermediar cu un contract: abstractizarea, versionarea și lipsa stării.</li>
+<li>Motivele colectării prin API și situațiile în care un fișier publicat, datat și versionat este suficient.</li>
+<li>Stilurile REST, GraphQL, gRPC și SOAP și criteriile după care se clasifică API-urile.</li>
+<li>Citirea unui mesaj HTTP: prima linie, antetele, corpul.</li>
+<li>Alegerea metodei HTTP potrivite și motivul pentru care o cerere GET se poate relua fără riscuri.</li>
+<li>Componentele unei adrese și legătura dintre parametri și dicționarul <code>params</code> din requests.</li>
+<li>Clasa unui cod de stare și verificarea corpului după cod.</li>
+<li>O cerere cu <code>requests</code>: citirea răspunsului și gestionarea paginării.</li>
+<li>Transformarea unui răspuns JSON-stat de la Eurostat într-un tabel.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Materiale</p>
     <div class="mat">
       <a class="mat__c" href="lectie/#1">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" target="_blank" rel="noopener">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg></span>
         <span class="mat__t">Caietul ↗</span>
         <span class="mat__d">Caietul 02, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/.</span>
       </a>
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Depozitul cursului ↗</span>
         <span class="mat__d">Caietele și datele cursului, pe GitHub.</span>
       </a>
@@ -88,9 +85,9 @@
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită mediul de la cursul 1, caietul lecției și Git:</p>
 <ol>
-<li>Folderul <code>dsw</code> de la cursul 1, cu mediul <code>.venv</code>. <code>requests</code> e deja instalat, din <code>requirements.txt</code>.</li>
-<li>Caietul <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" rel="noopener" target="_blank"><code>02_colectarea_datelor_prin_api.ipynb</code></a>: pe pagina lui de pe GitHub apeși <em>Download raw file</em> și îl salvezi în <code>dsw/curs/</code>, lângă caietul 01. Nu descărca din nou arhiva întreagă peste <code>dsw</code>: poate suprascrie caietele completate.</li>
-<li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. La finalul orei îl folosești pentru a clona depozitul echipei în <code>dsw/proiect/</code>.</li>
+<li>Folderul <code>dsw</code> de la cursul 1, cu mediul <code>.venv</code>. <code>requests</code> este deja instalat, din <code>requirements.txt</code>.</li>
+<li>Caietul <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" rel="noopener" target="_blank"><code>02_colectarea_datelor_prin_api.ipynb</code></a>: pe pagina lui de pe GitHub se apasă <em>Download raw file</em>, iar fișierul se salvează în <code>dsw/curs/</code>, lângă caietul 01. Arhiva întreagă nu se descarcă din nou peste <code>dsw</code>, deoarece poate suprascrie caietele completate.</li>
+<li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. La finalul orei este folosit pentru clonarea depozitului echipei în <code>dsw/proiect/</code>.</li>
 </ol>
 <p>Datele lecției nu se descarcă manual: sunt obținute prin API și se salvează în <code>dsw/curs/data/c2/</code>. Nu este necesară o cheie de acces, deoarece API-urile folosite sunt publice. Pentru ca răspunsurile să fie salvate și incluse în progresul grupei, autentificarea se face cu GitHub.</p></div>
   </section>
@@ -119,7 +116,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=77"), import("../js/ora.js?v=77"), import("../js/curs.js?v=77")]);
+    import("../js/auth.js?v=78"), import("../js/ora.js?v=78"), import("../js/curs.js?v=78")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -147,7 +144,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=77"></script>
-<script type="module" src="../js/subsol.js?v=77"></script>
+<script type="module" src="../js/antet.js?v=78"></script>
+<script type="module" src="../js/subsol.js?v=78"></script>
 </body>
 </html>

@@ -124,3 +124,27 @@
 .gh__os b{display:block;font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);margin-bottom:5px}
 .gh__os pre{margin:0;font-size:var(--t1);padding:9px 11px;overflow-x:auto}
 @media (max-width:640px){.gh__os{grid-template-columns:1fr}}
+
+/* v77: aceeași regulă ca în lecții. Fără cartonașe și fără iconițe:
+   blocurile au o linie sus și una jos, rândurile o linie subțire. */
+.sec--obiective ul.obiective li{padding-left:0}
+.sec--obiective ul.obiective li::before{content:none}
+.sec--obiective ul.obiective,.sec--proiect ul.obiective,.leg-lista{border-top:1.5px solid var(--text)}
+.sec--obiective ul.obiective li:last-child,.sec--proiect ul.obiective li:last-child,.leg-lista a:last-child{border-bottom:1.5px solid var(--text)}
+.mat{display:block;border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text)}
+.mat__c{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:4px 24px;align-items:baseline;
+  padding:10px 0;border:0;border-bottom:1px solid var(--linie);border-radius:0;background:none}
+.mat__c:last-child{border-bottom:0}
+.mat__c:hover,.mat__c:first-child{border-color:var(--linie);transform:none}
+.mat__c:last-child:hover{border-color:transparent}
+.mat__c:hover .mat__t{color:var(--accent-text)}
+.mat__t{font-weight:500}
+.mat__c.stins{border-style:solid;opacity:.5}
+@media (max-width:640px){.mat__c{grid-template-columns:1fr}}
+.gh{border:0;border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text);border-radius:0;background:none;padding:14px 0 16px}
+.gh__cap{display:block;margin-bottom:12px}
+.gh__cap b{font-size:var(--t3)}
+.gh__cap span{display:block;margin-top:2px}
+/* când secțiunea începe cu un bloc cu linii, linia de sub etichetă ar dubla linia de sus a blocului */
+.sec:has(> .sec__corp > :first-child:is(ul.obiective,.gh,.tabel)) > .sec__et,
+.sec:has(> .sec__et + :is(.mat,.leg-lista)) > .sec__et{border-bottom:0;padding-bottom:0;margin-bottom:10px}

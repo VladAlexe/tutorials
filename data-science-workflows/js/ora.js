@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=77";
-import { RADACINA } from "./curs.js?v=77";
+import { sb } from "./auth.js?v=78";
+import { RADACINA } from "./curs.js?v=78";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -170,7 +170,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=77`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=78`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

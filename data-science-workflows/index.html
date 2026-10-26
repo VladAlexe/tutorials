@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Curs de masterat: de la colectarea datelor prin API până la raportul final, pe date reale de conectivitate socială și migrație.">
-<link rel="stylesheet" href="css/fonturi.css?v=77">
-<link rel="stylesheet" href="css/sistem.css?v=77">
-<script src="js/tema.js?v=77"></script>
+<link rel="stylesheet" href="css/fonturi.css?v=78">
+<link rel="stylesheet" href="css/sistem.css?v=78">
+<script src="js/tema.js?v=78"></script>
 <style>
   /* Pagina cursului: o coloană, ca la Ingineria AI. Sus cursul, apoi linia
      lecțiilor, apoi lista lor, una sub alta. Toate lecțiile sunt egale: nu
@@ -34,14 +34,12 @@
   .etapa.aprinsa .etapa__nod{background:var(--accent);border-color:var(--accent);color:var(--fundal)}
 
   /* lista lecțiilor */
-  .lectii{border:1px solid var(--linie);border-radius:10px;overflow:hidden;background:var(--panza)}
+  /* aceeași regulă ca tabelele din lecții: o linie sus, una jos, rânduri subțiri */
+  .lectii{border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text)}
   .lr{position:relative;display:grid;grid-template-columns:54px 1fr auto;gap:14px;align-items:center;
-    padding:15px 18px;text-decoration:none;color:inherit;border-top:1px solid var(--linie);
-    transition:background .12s}
+    padding:13px 0;text-decoration:none;color:inherit;border-top:1px solid var(--linie)}
   .lr:first-child{border-top:0}
-  .lr::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:.12s}
-  a.lr:hover{background:var(--panza-2)}
-  a.lr:hover::before{background:var(--accent)}
+  a.lr:hover .lr__t{color:var(--accent-text)}
   .lr__nr{font-family:var(--sans);font-size:var(--t2);font-weight:500;color:var(--text-3)}
   .lr__t{font-family:var(--sans);font-size:var(--t3);font-weight:600;letter-spacing:-.01em;color:var(--text)}
   .lr__d{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin-top:2px;line-height:1.45}
@@ -57,12 +55,11 @@
   .doua{display:grid;grid-template-columns:1.4fr 1fr;gap:34px;align-items:start}
   @media(max-width:820px){.doua{grid-template-columns:1fr;gap:22px}}
   .nota--roza .nota__et{color:var(--text)}
-  .puncte{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
-  .punct{border:1px solid var(--linie);border-radius:10px;padding:14px 16px;background:var(--panza)}
-  .punct b{display:block;font-family:var(--sans);font-size:var(--t5);font-weight:500;color:var(--text)}
-  .punct span{display:block;font-family:var(--sans);font-size:var(--t2);font-weight:600;margin-top:2px}
-  .punct p{font-size:var(--t2);color:var(--text-2);margin:6px 0 0;max-width:none;line-height:1.5}
-  .punct b{color:var(--text)}
+  /* lista și tabelul au linia lor de sus: eticheta nu mai trage încă una */
+  .sec:has(> .lectii) > .sec__et,.sec:has(> .puncte) > .sec__et{border-bottom:0;padding-bottom:0;margin-bottom:10px}
+  .puncte .tabel{width:100%}
+  .puncte .tabel td:first-child{white-space:nowrap;font-weight:500;color:var(--text)}
+  .puncte .tabel td{vertical-align:top}
 </style>
 </head>
 <body>
@@ -130,7 +127,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE } from "./js/curs.js?v=77";
+import { LECTII, NOTARE } from "./js/curs.js?v=78";
 
 /* Ce lecții sunt deschise. Profesorul și vizitatorul fără cont le au pe toate.
    Studentul are lecțiile predate grupei, plus orice lecție în care a lucrat deja.
@@ -145,9 +142,15 @@ let memorat = null;
 try { memorat = JSON.parse(localStorage.getItem("dsw.deschise") || "null"); } catch {}
 deseneaza(new Set(memorat ? [...memorat, ...atinse] : toate), !!memorat);
 
+/* notarea nu depinde de cont: se desenează înainte de orice așteptare */
+document.getElementById("notare").innerHTML =
+  `<table class="tabel"><thead><tr><th>Componenta</th><th class="num">Puncte</th><th>Ce cuprinde</th></tr></thead><tbody>` +
+  NOTARE.componente.map(c => `<tr><td>${c.nume}</td><td class="num">${c.puncte}</td><td>${c.d}</td></tr>`).join("") +
+  `<tr><td>Total</td><td class="num">${NOTARE.total}</td><td></td></tr></tbody></table>`;
+
 const peTermen = (pr, ms) => Promise.race([pr, new Promise((_, r) => setTimeout(() => r(new Error("timp")), ms))]);
 try {
-  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=77"), import("./js/ora.js?v=77")]);
+  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=78"), import("./js/ora.js?v=78")]);
   const p = await peTermen(profil(), 8000);
   if (p.autentificat && !p.profesorReal){
     const pred = await peTermen(O.predate(), 8000);
@@ -191,10 +194,8 @@ function deseneaza(deschise, student){
     student ? `${deschise.size} din ${LECTII.length} deschise` : "";
 }
 
-document.getElementById("notare").innerHTML = NOTARE.componente.map(c => `
-  <div class="punct"><b>${c.puncte}p</b><span>${c.nume}</span><p>${c.d}</p></div>`).join("");
 </script>
-<script type="module" src="js/antet.js?v=77"></script>
-<script type="module" src="js/subsol.js?v=77"></script>
+<script type="module" src="js/antet.js?v=78"></script>
+<script type="module" src="js/subsol.js?v=78"></script>
 </body>
 </html>

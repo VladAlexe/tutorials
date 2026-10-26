@@ -43,7 +43,7 @@ export const LECTII = [
   { nr:3, cheie:"c3-versionare-git",
     titlu:"Versionare cu Git",
     scurt:"Git",
-    rezumat:"De ce versionăm, cum lucrează o echipă pe același proiect și ce nu se încarcă niciodată în depozit.",
+    rezumat:"Rolul versionării, lucrul unei echipe pe același depozit și ce nu se încarcă niciodată în depozit.",
     stare:"gata", sarcini:12,
     notebook:null },
 

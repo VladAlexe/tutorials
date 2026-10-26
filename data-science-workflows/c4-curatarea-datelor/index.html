@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 4. Curățarea datelor · Fluxuri de lucru</title>
 <meta name="description" content="Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=77">
-<link rel="stylesheet" href="../css/sistem.css?v=77">
-<link rel="stylesheet" href="../css/intrare.css?v=77">
-<script src="../js/tema.js?v=77"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=78">
+<link rel="stylesheet" href="../css/sistem.css?v=78">
+<link rel="stylesheet" href="../css/intrare.css?v=78">
+<script src="../js/tema.js?v=78"></script>
 </head>
 <body>
 
@@ -42,41 +42,38 @@
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>La lecția anterioară am văzut rolul lui Git. Acum îl folosim: mutăm fișiere între zone, facem commit-uri cu mesaje informative, anulăm modificări în patru moduri diferite fără pierderi de lucru și lucrăm pe o ramură care poate fi ștearsă fără consecințe. Partea aceasta ocupă puțin spațiu pe slide-uri și mult timp în terminal.</p>
+    <div class="sec__corp"><p>La lecția anterioară a fost prezentat rolul lui Git. Această lecție îl folosește: fișiere mutate între zone, commit-uri cu mesaje informative, modificări anulate în patru moduri diferite fără pierderi de lucru și o ramură care poate fi ștearsă fără consecințe. Partea aceasta ocupă puțin spațiu pe slide-uri și mult timp în terminal.</p>
 <p>A doua parte tratează etapa de după obținerea datelor. Un <a class="leg" href="https://visit.figure-eight.com/data-science-report" rel="noopener" target="_blank">sondaj CrowdFlower</a> printre specialiștii care lucrează zilnic cu date arată că aproape 60% din timpul lor este dedicat curățării și organizării datelor. Aceasta nu este o deficiență a profesiei, ci o parte centrală a ei: datele reale conțin aceeași categorie scrisă în mai multe feluri, rânduri duplicate, valori lipsă care nu înseamnă zero și valori care par eronate, dar sunt corecte.</p>
-<p>Parcurgem cele șase etape, pe rând, pe datele cursului. Pentru fiecare decizie (ce se șterge, ce se completează, ce se elimină), întrebarea relevantă nu este „ce face comanda”, ci „ce informație se pierde când este rulată”.</p></div>
+<p>Cele șase etape se parcurg pe rând, pe datele cursului. Pentru fiecare decizie (ce se șterge, ce se completează, ce se elimină), întrebarea relevantă nu este „ce face comanda”, ci „ce informație se pierde când este rulată”.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La finalul lecției vei putea</p>
+    <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să duci un fișier de la editor până pe GitHub și să spui în ce zonă se află în fiecare moment.</li>
-<li>Să scrii mesaje de commit care rămân informative pentru cine le citește peste câteva luni.</li>
-<li>Să alegi între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code> în funcție de ce trebuie anulat.</li>
-<li>Să ieși din editorul Vim, deschis de Git pentru mesajele de commit.</li>
-<li>Să profilezi un set de date în cinci comenzi și să identifici, din profil, problemele care trebuie rezolvate.</li>
-<li>Să standardizezi categorii scrise inconsecvent și să verifici că nu ai comasat două categorii distincte.</li>
-<li>Să deosebești un duplicat real de o pereche inversată, care, la datele diadice, are alt statut.</li>
-<li>Să alegi între ștergere, completare și păstrare pentru valorile lipsă, știind ce introduce fiecare variantă.</li>
-<li>Să calculezi un prag pentru valori extreme și să decizi dacă valorile de peste prag sunt erori sau observații reale.</li>
-<li>Să treci un tabel din formă lată în formă lungă și invers și să știi ce formă este potrivită pentru fiecare operație.</li>
-<li>Să scrii un dicționar de date și un fișier de decizii pe care un coleg le poate înțelege fără explicații suplimentare.</li>
+<li>Drumul unui fișier de la editor până pe GitHub, cu zona în care se află în fiecare moment.</li>
+<li>Mesaje de commit care rămân informative pentru cine le citește peste câteva luni.</li>
+<li>Alegerea între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code>, în funcție de ce trebuie anulat.</li>
+<li>Ieșirea din editorul Vim, deschis de Git pentru mesajele de commit.</li>
+<li>Profilarea unui set de date în cinci comenzi și identificarea, din profil, a problemelor care trebuie rezolvate.</li>
+<li>Standardizarea categoriilor scrise inconsecvent, cu verificarea că nu au fost comasate două categorii distincte.</li>
+<li>Diferența dintre un duplicat real și o pereche inversată, care, la datele diadice, are alt statut.</li>
+<li>Alegerea între ștergere, completare și păstrare pentru valorile lipsă, cu ce introduce fiecare variantă.</li>
+<li>Un prag pentru valori extreme și decizia dacă valorile de peste prag sunt erori sau observații reale.</li>
+<li>Trecerea unui tabel din formă lată în formă lungă și invers, cu forma potrivită pentru fiecare operație.</li>
+<li>Un dicționar de date și un fișier de decizii pe care un coleg le poate înțelege fără explicații suplimentare.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Materiale</p>
     <div class="mat">
       <a class="mat__c" href="lectie/#1">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="../c3-versionare-git/">
-        <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Lecția 3: Git</span>
         <span class="mat__d">Conceptele din spatele comenzilor folosite aici</span>
       </a>
@@ -87,9 +84,9 @@
     <div class="sec__corp"><p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursurile 2 și 3:</p>
 <ol>
 <li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>
-<li>Depozitul proiectului, legat de GitHub. Dacă nu este creat încă, prima parte a lecției tratează exact acest pas.</li>
-<li>Datele colectate la cursul 2, în <code>date/brute/</code>, pe care lucrăm în această lecție.</li>
-<li><code>pandas</code> în mediul de lucru. Verifici cu <code>python -c "import pandas; print(pandas.__version__)"</code>.</li>
+<li>Depozitul echipei, clonat la cursul 2 din organizația comună a cursului.</li>
+<li>Datele colectate la cursul 2, în <code>date/brute/</code> din depozitul echipei.</li>
+<li><code>pandas</code> în mediul de lucru. Verificarea: <code>python -c "import pandas; print(pandas.__version__)"</code>.</li>
 </ol>
 <p>Dacă datele de la cursul 2 s-au pierdut, scriptul de colectare le poate obține din nou. Din acest motiv, în depozit se păstrează scriptul, nu doar fișierele.</p></div>
   </section>
@@ -99,9 +96,7 @@
 <ul class="obiective">
 <li><code>date/curat/dicționar.md</code>: pentru fiecare coloană, ce reprezintă, în ce unitate este exprimată, de unde provine și ce înseamnă o valoare lipsă.</li>
 <li><code>decizii.md</code>: pentru fiecare operație de curățare, ce s-a schimbat, câte rânduri au fost afectate și de ce s-a ales această variantă.</li>
-</ul>
-<p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la Banca Mondială.</p></div>
+</ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -129,7 +124,7 @@ cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la 
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=77"), import("../js/ora.js?v=77"), import("../js/curs.js?v=77")]);
+    import("../js/auth.js?v=78"), import("../js/ora.js?v=78"), import("../js/curs.js?v=78")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -157,7 +152,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=77"></script>
-<script type="module" src="../js/subsol.js?v=77"></script>
+<script type="module" src="../js/antet.js?v=78"></script>
+<script type="module" src="../js/subsol.js?v=78"></script>
 </body>
 </html>
