@@ -27,29 +27,28 @@
    de care se folosește rulatorul de slide-uri ca să deschidă poarta.
    =========================================================================== */
 
-import { salveazaRaspuns, aMaiRaspuns } from "./colectare.js?v=69";
+import { salveazaRaspuns, aMaiRaspuns } from "./colectare.js?v=73";
 
 const CSS = `
 .verif{background:var(--panza);border:1px solid var(--linie);border-radius:11px;
   padding:19px 21px;margin:26px 0;max-width:66ch}
-.verif__et{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--text-3);margin-bottom:9px;display:flex;
+.verif__et{font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);margin-bottom:9px;display:flex;
   align-items:center;gap:7px}
 .verif__et::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent)}
 .verif.raspuns .verif__et::before{background:var(--ok)}
-.verif__q{font-family:var(--sans);font-weight:500;font-size:16.5px;line-height:1.42;
+.verif__q{font-family:var(--sans);font-weight:500;font-size:var(--t4);line-height:1.42;
   margin:0 0 15px;max-width:none}
 .verif__opt{display:block;width:100%;text-align:left;font-family:var(--serif);
-  font-size:16px;line-height:1.45;padding:11px 15px;margin-bottom:8px;border-radius:8px;
+  font-size:var(--t4);line-height:1.45;padding:11px 15px;margin-bottom:8px;border-radius:8px;
   border:1px solid var(--linie-2);background:var(--fundal);transition:.13s}
 .verif__opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-slab)}
 .verif__opt:disabled{cursor:default}
 .verif__opt.bun{border-color:var(--ok);background:var(--ok-slab)}
 .verif__opt.rau{border-color:var(--nu);background:var(--nu-slab)}
 .verif__ex{display:none;margin:14px 0 0;padding:14px 16px;background:var(--panza-2);
-  border-radius:8px;font-size:15.5px;line-height:1.56;max-width:none}
+  border-radius:8px;font-size:var(--t3);line-height:1.56;max-width:none}
 .verif__ex.vazut{display:block}
-.verif__stare{font-family:var(--mono);font-size:10.5px;color:var(--text-3);margin-top:11px;
+.verif__stare{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-top:11px;
   display:none;max-width:none}
 .verif__stare.vazut{display:block}
 `;
@@ -105,7 +104,7 @@ export function porneste(capitol){
         intrebareId:id, capitol, raspuns:ales, corect:(ales === corect)
       });
       stare.textContent = ok ? "Răspuns înregistrat."
-                             : "Nu e înregistrat: nu ești autentificat.";
+                             : "Răspunsul nu a fost înregistrat: nu ești autentificat.";
       stare.classList.add("vazut");
     }));
 
@@ -114,7 +113,7 @@ export function porneste(capitol){
        aici, fără ce a ales și fără verdict. */
     comenzi.set(id, () => {
       if (v.classList.contains("raspuns")) return;
-      stare.textContent = "Ai mai răspuns la asta, altă dată.";
+      stare.textContent = "Ai mai răspuns la această întrebare într-o sesiune anterioară.";
       stare.classList.add("vazut");
     });
   }

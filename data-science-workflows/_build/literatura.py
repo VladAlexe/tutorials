@@ -15,10 +15,10 @@ sistemele migratorii (2026), restrânse la ce intră în curs.
 """
 
 FEL = {
-    "date": ("Datele", "de unde vin datele și ce înseamnă"),
-    "teorie": ("Teoria", "de ce ar fi legate două locuri: de aici vin ipotezele"),
-    "metoda": ("Metoda", "cum au analizat alții aceeași întrebare: de aici vin alegerile"),
-    "documentatie": ("Documentația", "cum faci tehnic pasul"),
+    "date": ("Datele", "de unde provin datele și ce reprezintă"),
+    "teorie": ("Teoria", "de ce ar fi legate două locuri: sursa ipotezelor"),
+    "metoda": ("Metoda", "cum au analizat alții aceeași întrebare: sursa alegerilor metodologice"),
+    "documentatie": ("Documentația", "cum se realizează tehnic fiecare pas"),
 }
 
 # cheie: (fel, citare scurtă, referința completă, link, ce luăm de acolo, lecțiile)
@@ -28,48 +28,48 @@ REF = {
         "Johnston, D., Kuchler, T., Kulkarni, M. și Stroebel, J. (2026). The Social Connectedness Index: "
         "A large-scale dataset of social ties across geographic locations. <i>Data in Brief</i>, 67, 112905.",
         "https://doi.org/10.1016/j.dib.2026.112905",
-        "descrierea exactă a setului pe care lucrăm: instantaneul din ianuarie 2026, 178 de țări, "
-        "nivelurile geografice, cine intră (utilizatori activi, cu peste 20 de prieteni) și de ce "
-        "valorile nu se compară între fișiere. E referința pe care o citezi pentru date.", [1, 8]),
+        "descrierea exactă a setului folosit: instantaneul din ianuarie 2026, 178 de țări, "
+        "nivelurile geografice, populația inclusă (utilizatori activi, cu peste 20 de prieteni) și motivul pentru care "
+        "valorile nu sunt comparabile între fișiere. Este referința care se citează pentru date.", [1, 8]),
 
     # --- teoria ---------------------------------------------------------------
     "bailey2018": ("teorie", "Bailey și colegii (2018)",
         "Bailey, M., Cao, R., Kuchler, T., Stroebel, J. și Wong, A. (2018). Social connectedness: "
-        "Measurement, determinants, and effects. <i>Journal of Economic Perspectives</i>, 32(3), 259–280.",
+        "Measurement, determinants, and effects. <i>Journal of Economic Perspectives</i>, 32(3), 259-280.",
         "https://doi.org/10.1257/jep.32.3.259",
         "articolul care a introdus indicele: ce măsoară (o probabilitate relativă de prietenie), "
-        "că scade puternic cu distanța și că urmează migrația, inclusiv cea veche.", [1, 3, 6]),
+        "faptul că scade puternic cu distanța și că reflectă migrația, inclusiv pe cea veche.", [1, 3, 6]),
     "palloni2001": ("teorie", "Palloni și colegii (2001)",
         "Palloni, A., Massey, D. S., Ceballos, M., Espinosa, K. și Spittel, M. (2001). Social capital "
         "and international migration: A test using information on family networks. "
-        "<i>American Journal of Sociology</i>, 106(5), 1262–1298.",
+        "<i>American Journal of Sociology</i>, 106(5), 1262-1298.",
         "https://doi.org/10.1086/320817",
-        "teoria rețelelor de migranți: legăturile cu cei plecați înainte fac drumul mai ieftin și mai "
-        "sigur pentru cei care vin după. De aici ideea că migrația și legăturile merg împreună.", [3]),
+        "teoria rețelelor de migranți: legăturile cu cei plecați anterior reduc costurile și riscurile "
+        "migrației pentru cei care urmează. De aici ideea că migrația și legăturile sociale sunt asociate.", [3]),
     "dehaas2010": ("teorie", "de Haas (2010)",
         "de Haas, H. (2010). The internal dynamics of migration processes: A theoretical inquiry. "
-        "<i>Journal of Ethnic and Migration Studies</i>, 36(10), 1587–1617.",
+        "<i>Journal of Ethnic and Migration Studies</i>, 36(10), 1587-1617.",
         "https://doi.org/10.1080/1369183X.2010.489361",
-        "migrația și legăturile se întrețin una pe alta (feedback), dar nu la nesfârșit. De aici "
-        "regula noastră: legătura dintre SCI și migrație e în ambele sensuri, deci nu spunem cine pe cine produce.", [3, 7]),
+        "migrația și legăturile se întrețin reciproc (mecanisme de feedback), dar nu nelimitat. De aici "
+        "regula proiectului: relația dintre SCI și migrație acționează în ambele sensuri, deci nu afirmăm care o produce pe cealaltă.", [3, 7]),
     "sandu2005": ("teorie", "Sandu (2005)",
         "Sandu, D. (2005). Emerging transnational migration from Romanian villages. "
-        "<i>Current Sociology</i>, 53(4), 555–582.",
+        "<i>Current Sociology</i>, 53(4), 555-582.",
         "https://doi.org/10.1177/0011392105052715",
-        "migrația românească nu pleacă uniform: localitățile se organizează în câmpuri de migrație, "
-        "fiecare cu destinațiile lui (între altele Germania, Ungaria, Italia, Turcia, Spania). Cadrul românesc al întrebării noastre.", [3]),
+        "migrația românească nu este uniformă: localitățile se organizează în câmpuri de migrație, "
+        "fiecare cu destinațiile lui (între altele Germania, Ungaria, Italia, Turcia, Spania). Oferă cadrul românesc al întrebării de cercetare.", [3]),
     "sandu2025": ("teorie", "Sandu (2025)",
         "Sandu, D. (2025). A multi-level migration system between regions of origin and the European "
         "hexagon of attraction. <i>International Migration</i>, 63(5), e70092.",
         "https://doi.org/10.1111/imig.70092",
         "județele României și cele șase destinații mari (Italia, Spania, Germania, Regatul Unit, Franța, "
-        "Austria), pe fluxuri 2011–2021. Reperul cu care se compară orice hartă a diasporei făcută din SCI.", [3]),
+        "Austria), pe fluxuri 2011-2021. Reperul cu care se compară orice hartă a diasporei construită din SCI.", [3]),
 
     # --- metoda ---------------------------------------------------------------
     "bailey2020": ("metoda", "Bailey și colegii (2020)",
         "Bailey, M., Johnston, D., Kuchler, T., Russel, D., State, B. și Stroebel, J. (2020). The "
         "determinants of social connectedness in Europe. În <i>Social Informatics (SocInfo 2020)</i>, "
-        "LNCS 12467 (pp. 1–14). Springer.",
+        "LNCS 12467 (pp. 1-14). Springer.",
         "https://doi.org/10.1007/978-3-030-60975-7_1",
         "aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, "
         "istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.", [6, 7]),
@@ -77,25 +77,25 @@ REF = {
         "Blondel, V. D., Guillaume, J.-L., Lambiotte, R. și Lefebvre, E. (2008). Fast unfolding of "
         "communities in large networks. <i>Journal of Statistical Mechanics: Theory and Experiment</i>, 2008(10), P10008.",
         "https://doi.org/10.1088/1742-5468/2008/10/P10008",
-        "algoritmul Louvain, cu care găsim comunitățile. Exemplul lor, o rețea de telefonie din Belgia, "
-        "regăsește granița dintre limbi: aceeași logică ca la noi.", [6]),
+        "algoritmul Louvain, folosit pentru identificarea comunităților. Exemplul din articol, o rețea de telefonie din Belgia, "
+        "regăsește granița lingvistică: aceeași logică se aplică și în proiect.", [6]),
     "aronow2015": ("metoda", "Aronow, Samii și Assenova (2015)",
         "Aronow, P. M., Samii, C. și Assenova, V. A. (2015). Cluster-robust variance estimation for "
-        "dyadic data. <i>Political Analysis</i>, 23(4), 564–577.",
+        "dyadic data. <i>Political Analysis</i>, 23(4), 564-577.",
         "https://doi.org/10.1093/pan/mpv018",
-        "de ce perechile nu sunt observații independente (România–Italia și România–Spania au un capăt "
-        "comun) și ce înseamnă asta pentru erorile standard. Limita principală a modelului din C7.", [7]),
+        "de ce perechile nu sunt observații independente (România-Italia și România-Spania au un capăt "
+        "comun) și ce implică acest fapt pentru erorile standard. Limita principală a modelului din C7.", [7]),
 
     # --- căutarea literaturii -------------------------------------------------
     "scholar": ("documentatie", "Google Scholar",
         "Google Scholar: căutare de articole, cu „Citat de” pentru lucrările mai noi.",
-        "https://scholar.google.com/", "căutarea pornind de la un articol-ancoră: cine l-a citat de atunci.", [3]),
+        "https://scholar.google.com/", "căutarea pornind de la un articol-ancoră: lucrările care l-au citat ulterior.", [3]),
     "semantic": ("documentatie", "Semantic Scholar",
         "Semantic Scholar: căutare de articole, cu referințe și citări navigabile.",
         "https://www.semanticscholar.org/", "referințele și citările unui articol, una lângă alta.", [3]),
     "zotero": ("documentatie", "Zotero",
         "Zotero: program gratuit pentru gestionarea referințelor și formatarea bibliografiei.",
-        "https://www.zotero.org/", "salvezi articolele din browser și scoți bibliografia gata formatată în raport.", [3, 8]),
+        "https://www.zotero.org/", "salvarea articolelor din browser și generarea bibliografiei formatate pentru raport.", [3, 8]),
 }
 
 

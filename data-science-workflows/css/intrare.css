@@ -7,20 +7,19 @@
 .bl{position:sticky;top:var(--antet);z-index:40;background:color-mix(in srgb,var(--fundal) 92%,transparent);
   backdrop-filter:blur(6px);border-bottom:1px solid var(--linie)}
 .bl__in{max-width:860px;display:flex;align-items:center;gap:12px;min-height:46px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
-.bl__inapoi{font-family:var(--mono);font-size:12px;color:var(--text-2);text-decoration:none}
+.bl__inapoi{font-family:var(--sans);font-size:var(--t1);color:var(--text-2);text-decoration:none}
 .bl__inapoi:hover{color:var(--text)}
 .bl__sep{width:1px;height:14px;background:var(--linie-2)}
-.bl__aici{font-family:var(--mono);font-size:12px;color:var(--text)}
+.bl__aici{font-family:var(--sans);font-size:var(--t1);color:var(--text)}
 .bl__sp{flex:1}
 .bl__fapte{display:flex;gap:6px;flex-wrap:wrap}
-.bl__b{display:inline-flex;align-items:center;font-family:var(--mono);font-size:12px;
+.bl__b{display:inline-flex;align-items:center;font-family:var(--sans);font-size:var(--t1);
   padding:5px 12px;border-radius:6px;border:1px solid var(--linie-2);color:var(--text-2);
   text-decoration:none;white-space:nowrap;background:transparent;transition:.12s}
 .bl__b:hover{color:var(--text);border-color:var(--text-3)}
 .bl__b--tare{background:var(--buton);border-color:var(--buton);color:var(--buton-text)}
 .bl__b--tare:hover{color:var(--buton-text);filter:brightness(1.08)}
-.bl__b--preda{border-color:var(--ambra);color:var(--ambra)}
-.bl__b--preda:hover{background:var(--ambra-slab);color:var(--ambra);border-color:var(--ambra)}
+.bl__b--preda{color:var(--text-2)}
 .bl__b--stins,.bl__b--stins:hover{background:transparent;border-style:dashed;border-color:var(--linie-2);
   color:var(--text-3);cursor:default;filter:none}
 @media(max-width:640px){.bl__sp{flex-basis:100%;height:0}.bl__sep{display:none}}
@@ -28,33 +27,32 @@
 /* --- coloana --- */
 .intr{max-width:860px;padding-bottom:40px}
 .intr__erou{padding:46px 0 8px}
-.intr__tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ambra);margin:0 0 10px}
+.intr__tag{font-family:var(--sans);font-size:var(--t2);font-weight:500;
+  color:var(--text-3);margin:0 0 10px}
 .intr__erou h1{max-width:22ch;margin-bottom:12px}
 .intr__erou .deck{max-width:62ch}
 .intr__inchis{margin:18px 0 0;padding:10px 14px;border:1px dashed var(--linie-2);border-radius:8px;
-  font-family:var(--sans);font-size:13.5px;color:var(--text-2);max-width:62ch}
+  font-family:var(--sans);font-size:var(--t2);color:var(--text-2);max-width:62ch}
 
 .sec{padding:34px 0 6px}
-.sec__et{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+.sec__et{font-family:var(--sans);font-size:var(--t1);
   color:var(--text-3);padding-bottom:10px;border-bottom:1px solid var(--linie);margin:0 0 18px;max-width:none}
 .sec__corp > :first-child{margin-top:0}
 .sec__corp p,.sec__corp li{max-width:68ch}
 
-/* obiective: o listă încadrată, cu bifă salvie */
-.sec--obiective ul.obiective{list-style:none;margin:0;padding:0;border:1px solid var(--linie);
-  border-radius:10px;overflow:hidden;background:var(--panza);max-width:none}
-.sec--obiective ul.obiective li{position:relative;padding:11px 16px 11px 42px;margin:0;
-  border-top:1px solid var(--linie);font-family:var(--sans);font-size:14.5px;line-height:1.55;color:var(--text-2)}
+/* obiective: o listă simplă, cu bifă */
+.sec--obiective ul.obiective{list-style:none;margin:0;padding:0;border-top:1px solid var(--linie);max-width:none}
+.sec--obiective ul.obiective li{position:relative;padding:10px 0 10px 28px;margin:0;
+  border-top:1px solid var(--linie);font-family:var(--sans);font-size:var(--t3);line-height:1.55;color:var(--text-2)}
 .sec--obiective ul.obiective li:first-child{border-top:0}
-.sec--obiective ul.obiective li::before{content:"✓";position:absolute;left:16px;top:11px;
+.sec--obiective ul.obiective li{border-top:0;border-bottom:1px solid var(--linie)}
+.sec--obiective ul.obiective li::before{content:"✓";position:absolute;left:2px;top:10px;
   color:var(--accent);font-weight:600}
 
-/* ce adaugi la proiect: fișierele, cu o bandă de chihlimbar */
-.sec--proiect ul.obiective{list-style:none;margin:0 0 14px;padding:0;border:1px solid var(--linie);
-  border-left:3px solid var(--ambra);border-radius:10px;overflow:hidden;background:var(--panza);max-width:none}
-.sec--proiect ul.obiective li{padding:11px 16px;margin:0;border-top:1px solid var(--linie);
-  font-family:var(--sans);font-size:14.5px;line-height:1.55;color:var(--text-2)}
+/* ce adaugi la proiect: fișierele, ca listă simplă */
+.sec--proiect ul.obiective{list-style:none;margin:0 0 14px;padding:0;border-top:1px solid var(--linie);max-width:none}
+.sec--proiect ul.obiective li{padding:10px 0;margin:0;border-top:0;border-bottom:1px solid var(--linie);
+  font-family:var(--sans);font-size:var(--t3);line-height:1.55;color:var(--text-2)}
 .sec--proiect ul.obiective li:first-child{border-top:0}
 .sec--proiect ul.obiective li code{color:var(--text)}
 
@@ -66,33 +64,30 @@
 .mat__c:first-child{border-color:color-mix(in srgb,var(--accent) 45%,var(--linie))}
 .mat__ic{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
   background:var(--accent-slab);color:var(--accent-text)}
-.mat__c:nth-child(2) .mat__ic{background:var(--ambra-slab);color:var(--ambra)}
-.mat__c:nth-child(3) .mat__ic{background:var(--roza-slab);color:var(--roza)}
-.mat__c:nth-child(n+4) .mat__ic{background:var(--panza-2);color:var(--text-2)}
+.mat__c .mat__ic{background:var(--panza-2);color:var(--text-2)}
+.mat__c:first-child .mat__ic{background:var(--accent-slab);color:var(--accent-text)}
 .mat__ic svg{width:16px;height:16px}
-.mat__t{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--text)}
-.mat__d{font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--text-2)}
+.mat__t{font-family:var(--sans);font-size:var(--t3);font-weight:600;color:var(--text)}
+.mat__d{font-family:var(--sans);font-size:var(--t2);line-height:1.5;color:var(--text-2)}
 .mat__c.stins{pointer-events:none;opacity:.55;border-style:dashed}
 
 /* legături */
-.leg-lista{display:flex;flex-direction:column;border:1px solid var(--linie);border-radius:10px;
-  overflow:hidden;background:var(--panza);max-width:none}
-.leg-lista a{display:flex;justify-content:space-between;gap:12px;padding:10px 16px;
+.leg-lista{display:flex;flex-direction:column;border-top:1px solid var(--linie);max-width:none}
+.leg-lista a{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--linie);
   border-top:1px solid var(--linie);text-decoration:none;color:var(--text);
-  font-family:var(--sans);font-size:14px;transition:background .12s}
-.leg-lista a:first-child{border-top:0}
-.leg-lista a:hover{background:var(--panza-2)}
+  font-family:var(--sans);font-size:var(--t2);transition:background .12s}
+.leg-lista a{border-top:0}
 .leg-lista a:hover span{color:var(--accent-text)}
-.leg-lista small{font-family:var(--mono);font-size:11.5px;color:var(--text-3);white-space:nowrap}
+.leg-lista small{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);white-space:nowrap}
 
-.intr__jos{margin:44px 0 0;padding-top:16px;border-top:1px solid var(--linie);font-family:var(--mono);font-size:12.5px}
+.intr__jos{margin:44px 0 0;padding-top:16px;border-top:1px solid var(--linie);font-family:var(--sans);font-size:var(--t1)}
 .intr__jos a{color:var(--text-2);text-decoration:none}
 .intr__jos a:hover{color:var(--text)}
 
 /* listele din sistem au o bulină în ::before; aici o înlocuim */
 .sec ul.obiective li{max-width:none}
 .sec--obiective ul.obiective li::before{width:auto;height:auto;background:none;border-radius:0;
-  font-size:13px;line-height:1.55}
+  font-size:var(--t2);line-height:1.55}
 .sec--proiect ul.obiective li::before{content:none}
 
 /* bara și coloana pornesc din aceeași margine */
@@ -103,31 +98,29 @@
 .alege-grupa{position:absolute;right:0;top:calc(100% + 8px);z-index:50;min-width:200px;padding:10px;
   background:var(--panza);border:1px solid var(--linie-2);border-radius:10px;box-shadow:var(--umbra);
   display:flex;flex-direction:column;gap:4px}
-.alege-grupa p{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin:0 0 4px}
-.alege-grupa a{font-family:var(--sans);font-size:14px;padding:7px 10px;border-radius:7px;color:var(--text);text-decoration:none}
-.alege-grupa a:hover{background:var(--ambra-slab);color:var(--ambra)}
+.alege-grupa p{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:0 0 4px}
+.alege-grupa a{font-family:var(--sans);font-size:var(--t2);padding:7px 10px;border-radius:7px;color:var(--text);text-decoration:none}
+.alege-grupa a:hover{background:var(--accent-slab);color:var(--accent-text)}
 
 /* contul GitHub, pe pagina primului curs: pașii, la vedere */
-.gh{border:1px solid var(--linie-2);border-left:4px solid var(--accent);border-radius:10px;
+.gh{border:1px solid var(--linie);border-radius:10px;
   background:var(--panza);padding:16px 18px}
 .gh__cap{display:flex;gap:12px;align-items:center;margin-bottom:12px}
 .gh__cap svg{flex:none;color:var(--accent)}
-.gh__cap b{display:block;font-family:var(--sans);font-size:17px;font-weight:600}
-.gh__cap span{font-family:var(--sans);font-size:13.5px;color:var(--text-2)}
+.gh__cap b{display:block;font-family:var(--sans);font-size:var(--t4);font-weight:600}
+.gh__cap span{font-family:var(--sans);font-size:var(--t2);color:var(--text-2)}
 .gh__pasi{margin:0 0 10px;padding-left:22px}
 .gh__pasi li{margin-bottom:8px;line-height:1.5}
-.gh__pasi li::marker{font-family:var(--mono);color:var(--accent)}
-.gh__de-ce{font-size:14px;color:var(--text-2);margin:0}
+.gh__pasi li::marker{font-family:var(--sans);color:var(--text-3)}
+.gh__de-ce{font-size:var(--t2);color:var(--text-2);margin:0}
 
 /* folderul cursului, pe pagina primului curs: arhiva și pașii, la vedere */
-.gh--dsw{border-left-color:var(--salvie);margin-top:18px}
-.gh--dsw .gh__cap svg{color:var(--salvie)}
+.gh--dsw{margin-top:18px}
 .gh__zip{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;padding:9px 15px;border-radius:8px;
-  background:var(--buton);color:var(--buton-text);font-family:var(--sans);font-size:14.5px;font-weight:600;
+  background:var(--buton);color:var(--buton-text);font-family:var(--sans);font-size:var(--t3);font-weight:600;
   text-decoration:none}
 .gh__zip:hover{filter:brightness(1.08);color:var(--buton-text)}
 .gh__os{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 2px}
-.gh__os b{display:block;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--text-3);margin-bottom:5px}
-.gh__os pre{margin:0;font-size:12.5px;padding:9px 11px;overflow-x:auto}
+.gh__os b{display:block;font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);margin-bottom:5px}
+.gh__os pre{margin:0;font-size:var(--t1);padding:9px 11px;overflow-x:auto}
 @media (max-width:640px){.gh__os{grid-template-columns:1fr}}

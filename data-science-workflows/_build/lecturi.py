@@ -15,10 +15,10 @@ TITLU_LECTIE = {1: "Introducere", 2: "API", 3: "Git și cadrul teoretic", 4: "Cu
                 8: "Raportul"}
 
 PILONI = [
-    ("Legăturile", "Cine cu cine e legat, și cât de tare.", ["bailey2018", "johnston2026"]),
-    ("Oamenii", "Rețelele de migranți și câmpurile de migrație: pe unde au plecat cei care țin legăturile.",
+    ("Legăturile", "Ce locuri sunt legate între ele și cât de puternic.", ["bailey2018", "johnston2026"]),
+    ("Oamenii", "Rețelele de migranți și câmpurile de migrație: destinațiile celor care întrețin legăturile.",
      ["palloni2001", "dehaas2010", "sandu2005", "sandu2025"]),
-    ("Locul", "Ce explică legăturile fără nicio migrație: distanța, granița, limba, istoria.",
+    ("Locul", "Factorii care explică legăturile independent de migrație: distanța, granița, limba, istoria.",
      ["bailey2020"]),
 ]
 
@@ -46,7 +46,7 @@ def pagina():
             continue
         li = "".join(
             f'<li><p class="lp__ref">{r[2]} <a href="{r[3]}" target="_blank" rel="noopener">{r[3]}</a></p>'
-            f'<p class="lp__ce"><b>Ce luăm:</b> {r[4]}</p></li>'
+            f'<p class="lp__ce"><b>Ce preluăm:</b> {r[4]}</p></li>'
             for k, r in REF.items() if r[0] == f)
         complete += f'<h3><span class="lit__f lit__f--{f}">{et}</span></h3><ul class="lp__lista">{li}</ul>'
     unelte = ", ".join(a(k) for k, r in REF.items() if r[0] == "documentatie")
@@ -64,21 +64,21 @@ def pagina():
 <script src="../js/tema.js?v=57"></script>
 <style>
   .lp{{max-width:74ch;margin:0 auto;padding:44px 28px 80px}}
-  .lp h2{{font-size:20px;margin:40px 0 12px}}
-  .lp h3{{font-size:16px;margin:26px 0 8px}}
+  .lp h2{{font-size:var(--t5);margin:40px 0 12px}}
+  .lp h3{{font-size:var(--t4);margin:26px 0 8px}}
   .lp__feluri{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}}
   .lp__fel{{border:1px solid var(--linie);border-radius:10px;padding:10px 14px;background:var(--panza)}}
-  .lp__fel p{{margin:4px 0 0;font-family:var(--sans);font-size:14px;color:var(--text-2)}}
-  .lp table{{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:14.5px}}
+  .lp__fel p{{margin:4px 0 0;font-family:var(--sans);font-size:var(--t2);color:var(--text-2)}}
+  .lp table{{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:var(--t3)}}
   .lp td{{padding:9px 12px 9px 0;border-bottom:1px solid var(--linie);vertical-align:top}}
   .lp td.mono{{font-family:var(--mono);color:var(--text-3)}}
   .lp__lista{{list-style:none;padding:0;margin:0}}
   .lp__lista li{{padding:10px 0;border-bottom:1px solid var(--linie)}}
   .lp__lista li::before{{content:none !important}}
-  .lp__ref{{font-family:var(--serif);font-size:16px;line-height:1.5;margin:0}}
-  .lp__ref a{{font-family:var(--mono);font-size:12px;color:var(--text-3);word-break:break-all}}
-  .lp__ce{{font-family:var(--sans);font-size:14px;color:var(--text-2);margin:4px 0 0}}
-  .lp ol.pasi{{display:block !important;font-family:var(--sans);font-size:15px;line-height:1.55;padding-left:1.5em;list-style:decimal;counter-reset:none}}
+  .lp__ref{{font-family:var(--serif);font-size:var(--t4);line-height:1.5;margin:0}}
+  .lp__ref a{{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);word-break:break-all}}
+  .lp__ce{{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:4px 0 0}}
+  .lp ol.pasi{{display:block !important;font-family:var(--sans);font-size:var(--t3);line-height:1.55;padding-left:1.5em;list-style:decimal;counter-reset:none}}
   .lp ol.pasi>li{{display:list-item !important;padding:0 !important;margin:0 0 8px;max-width:none}}
   .lp ol.pasi>li::before{{content:none !important;display:none !important}}
   @media(max-width:640px){{.lp{{padding:28px 16px 60px}}.lp__feluri{{grid-template-columns:1fr}}}}
@@ -90,21 +90,21 @@ def pagina():
 <div class="lp">
   <p class="supratitlu">Proiectul cursului</p>
   <h1>Literatura proiectului</h1>
-  <p class="deck">Nu toată literatura despre SCI și migrație: doar ce folosesc caietele și ce
-  susține direct pașii proiectului. Fiecare lectură apare și în lecția în care o folosim.</p>
+  <p class="deck">Selecția nu acoperă toată literatura despre SCI și migrație, ci doar lucrările folosite
+  în caiete și cele care susțin direct pașii proiectului. Fiecare lectură apare și în lecția în care este folosită.</p>
 
-  <h2>Patru feluri de surse</h2>
-  <p>Într-un flux de lucru, literatura nu e un capitol scris la final. Intră în momente precise:
-  teoria la definirea întrebării, metoda la analiză și model, documentația la fiecare pas tehnic,
-  iar descrierea datelor oriunde le folosești.</p>
+  <h2>Patru tipuri de surse</h2>
+  <p>Într-un flux de lucru, literatura nu este un capitol scris la final, ci intră în momente precise:
+  teoria la definirea întrebării, metoda la analiză și modelare, documentația la fiecare pas tehnic,
+  iar descrierea datelor oriunde acestea sunt folosite.</p>
   <div class="lp__feluri">{feluri}</div>
 
   <h2>Cadrul proiectului</h2>
-  <p>Întrebarea: <b>cât din legăturile dintre locuri se explică prin oamenii care au migrat între ele,
-  și ce rămâne după distanță și migrație?</b> Ea stă pe trei piloni, fiecare cu literatura lui.</p>
+  <p>Întrebarea: <b>în ce măsură legăturile dintre locuri se explică prin migrația dintre ele
+  și ce rămâne neexplicat după distanță și migrație?</b> Ea se sprijină pe trei piloni, fiecare cu literatura lui.</p>
   <div class="pil" style="--n:3"><div class="pil__stalpi">{piloni}</div>
-  <div class="pil__baza"><span>regula</span>SCI nu e o măsură a migrației, iar un SCI din 2026 nu poate
-  explica o migrație de dinainte: spunem „merg împreună”, nu „una o produce pe cealaltă” (de Haas, 2010).</div></div>
+  <div class="pil__baza"><span>regula</span>SCI nu este o măsură a migrației, iar un SCI din 2026 nu poate
+  explica o migrație anterioară: formulăm o asociere („variază împreună”), nu o relație cauzală (de Haas, 2010).</div></div>
 
   <h2>Pe lecții</h2>
   <table><tbody>{pe_lectii}</tbody></table>
@@ -112,16 +112,16 @@ def pagina():
   <h2>Referințele complete</h2>
   {complete}
 
-  <h2>Cum cauți mai departe</h2>
+  <h2>Cum se extinde căutarea</h2>
   <ol class="pasi">
-    <li><b>Pornești de la un articol-ancoră</b>, de exemplu Bailey și colegii (2018).</li>
-    <li><b>Mergi înapoi:</b> din referințele lui alegi ce ține de întrebarea voastră.</li>
-    <li><b>Mergi înainte:</b> „Citat de” arată lucrările mai noi care l-au folosit.</li>
-    <li><b>Cauți în engleză</b>, cu cuvintele din titluri: <i>social connectedness index</i>,
-    <i>migrant networks</i>, <i>migration systems</i>, plus țara sau coridorul vostru.</li>
-    <li><b>Citești întâi rezumatul și metoda</b>, apoi decizi dacă merită tot articolul.</li>
-    <li><b>Notezi fiecare lucrare pe un rând:</b> întrebarea, datele, metoda, rezultatul și ce luați de acolo.
-    Asta e matricea literaturii, din care scrieți partea de cadru a raportului.</li>
+    <li><b>Se pornește de la un articol-ancoră</b>, de exemplu Bailey și colegii (2018).</li>
+    <li><b>Căutarea înapoi:</b> din referințele lui se aleg lucrările relevante pentru întrebarea de cercetare.</li>
+    <li><b>Căutarea înainte:</b> funcția „Citat de” arată lucrările mai noi care îl citează.</li>
+    <li><b>Căutarea se face în engleză</b>, cu termenii din titluri: <i>social connectedness index</i>,
+    <i>migrant networks</i>, <i>migration systems</i>, plus țara sau coridorul studiat.</li>
+    <li><b>Se citesc întâi rezumatul și metoda</b>, apoi se decide dacă articolul merită citit integral.</li>
+    <li><b>Fiecare lucrare se notează pe un rând:</b> întrebarea, datele, metoda, rezultatul și ce se preia din ea.
+    Aceasta este matricea literaturii, din care se scrie secțiunea de cadru teoretic a raportului.</li>
   </ol>
   <p>Unelte: {unelte}.</p>
 </div>

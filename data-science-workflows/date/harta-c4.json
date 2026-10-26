@@ -7,14 +7,14 @@
    "nr": 1,
    "id": "s1",
    "grup": "Cursul",
-   "titlu": "Despre ce e ora de azi",
+   "titlu": "Planul lecției",
    "sarcini": []
   },
   {
    "nr": 2,
    "id": "s2",
    "grup": "Cursul",
-   "titlu": "Cât timp ia",
+   "titlu": "Timpul curățării",
    "sarcini": []
   },
   {
@@ -80,10 +80,10 @@
      "corect": 3,
      "q": "info() arată o coloană de prețuri ca object, nu ca număr. Ce înseamnă?",
      "optiuni": [
-      "Că fișierul e corupt",
-      "Că pandas nu suportă prețuri",
-      "Că valorile sunt prea mari",
-      "Că în coloană e cel puțin o valoare care nu e număr"
+      "Fișierul este corupt",
+      "Pandas nu poate reprezenta prețuri",
+      "Valorile sunt prea mari",
+      "Coloana conține cel puțin o valoare nenumerică"
      ]
     }
    ]
@@ -92,7 +92,7 @@
    "nr": 10,
    "id": "s10",
    "grup": "Curățarea",
-   "titlu": "Codurile care mint",
+   "titlu": "Coduri incompatibile",
    "sarcini": [
     {
      "id": "c4-cod-standard",
@@ -115,15 +115,15 @@
   {
    "nr": 12,
    "id": "s13",
-   "grup": "Lipsuri",
-   "titlu": "Ce faci cu ce lipsește",
+   "grup": "Valori lipsă și extreme",
+   "titlu": "Tratarea valorilor lipsă",
    "sarcini": []
   },
   {
    "nr": 13,
    "id": "s14",
-   "grup": "Lipsuri",
-   "titlu": "Lipsurile, în cod",
+   "grup": "Valori lipsă și extreme",
+   "titlu": "Valorile lipsă, în cod",
    "sarcini": [
     {
      "id": "c4-prezice-nan",
@@ -138,7 +138,7 @@
   {
    "nr": 14,
    "id": "s15",
-   "grup": "Lipsuri",
+   "grup": "Valori lipsă și extreme",
    "titlu": "Valorile extreme",
    "sarcini": [
     {
@@ -189,7 +189,7 @@
    "nr": 19,
    "id": "s19",
    "grup": "Proiectul tău",
-   "titlu": "Curăță-ți datele",
+   "titlu": "Curățarea datelor proprii",
    "sarcini": [
     {
      "id": "c4-dovada-curatare",
@@ -201,7 +201,7 @@
    "nr": 20,
    "id": "s20",
    "grup": "Proiectul tău",
-   "titlu": "Scrieți dicționarul",
+   "titlu": "Documentarea deciziilor",
    "sarcini": [
     {
      "id": "c4-decizie",
@@ -213,7 +213,7 @@
    "nr": 21,
    "id": "s21",
    "grup": "Mai departe",
-   "titlu": "Până data viitoare",
+   "titlu": "Pentru cursul următor",
    "sarcini": []
   }
  ]

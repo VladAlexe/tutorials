@@ -7,7 +7,7 @@
    "nr": 1,
    "id": "s1",
    "grup": "Cursul",
-   "titlu": "Despre ce e ora de azi",
+   "titlu": "Planul lecției",
    "sarcini": []
   },
   {
@@ -42,12 +42,12 @@
      "id": "c6-v1",
      "fel": "verificare",
      "corect": 2,
-     "q": "Media SCI-ului e de peste două ori mai mare decât mediana. Ce îți spune asta?",
+     "q": "Media SCI este de peste două ori mai mare decât mediana. Ce indică acest lucru?",
      "optiuni": [
-      "Că datele sunt greșite",
-      "Că jumătate din perechi au SCI zero",
-      "Că o coadă de valori foarte mari trage media în sus",
-      "Nimic, media și mediana sunt de obicei diferite"
+      "Datele sunt eronate",
+      "Jumătate din perechi au SCI zero",
+      "O coadă de valori foarte mari ridică media",
+      "Nimic: media și mediana diferă de obicei"
      ]
     }
    ]
@@ -56,7 +56,7 @@
    "nr": 5,
    "id": "s5",
    "grup": "O variabilă",
-   "titlu": "Top-uri",
+   "titlu": "Clasamente",
    "sarcini": []
   },
   {
@@ -80,12 +80,12 @@
      "id": "c6-v2",
      "fel": "verificare",
      "corect": 1,
-     "q": "Migrația și SCI-ul au r = 0,70. Ce poți spune?",
+     "q": "Corelația dintre migrație și SCI este r = 0,70. Ce se poate concluziona?",
      "optiuni": [
-      "Că migrația produce legăturile",
-      "Că cele două cresc împreună; de ce, nu știm încă",
-      "Că legăturile produc migrația",
-      "Că 70% din SCI se explică prin migrație"
+      "Migrația produce legăturile",
+      "Cele două variabile cresc împreună; cauza nu este încă stabilită",
+      "Legăturile produc migrația",
+      "70% din SCI se explică prin migrație"
      ]
     }
    ]
@@ -107,12 +107,12 @@
      "id": "c6-v3",
      "fel": "verificare",
      "corect": 3,
-     "q": "Vecinii au SCI median de 5 ori mai mare. Înseamnă că granița produce legăturile?",
+     "q": "Vecinii au un SCI median de 5 ori mai mare. Rezultă că granița comună produce legăturile?",
      "optiuni": [
-      "Da, diferența e prea mare ca să fie altfel",
-      "Da, testul e semnificativ",
-      "Nu, pentru că sunt doar 30 de perechi",
-      "Nu neapărat: vecinii sunt și aproape, și au adesea migrație între ei"
+      "Da, diferența este prea mare pentru a avea altă explicație",
+      "Da, testul este semnificativ statistic",
+      "Nu, pentru că sunt doar 30 de perechi de vecini",
+      "Nu neapărat: vecinii sunt și apropiați geografic, și au adesea migrație între ei"
      ]
     }
    ]
@@ -127,19 +127,19 @@
   {
    "nr": 11,
    "id": "s11",
-   "grup": "Grafice care mint",
-   "titlu": "Axa tăiată",
+   "grup": "Grafice înșelătoare",
+   "titlu": "Axa trunchiată",
    "sarcini": [
     {
      "id": "c6-v4",
      "fel": "verificare",
      "corect": 0,
-     "q": "Când e acceptabil să nu pornești axa de la zero?",
+     "q": "Când este acceptabil ca axa să nu pornească de la zero?",
      "optiuni": [
       "La un grafic cu linii sau cu puncte, unde contează forma, nu lungimea",
       "La orice grafic, dacă diferențele sunt mici",
       "Niciodată",
-      "La barele care au valori mari"
+      "La graficele cu bare care au valori mari"
      ]
     }
    ]
@@ -172,7 +172,7 @@
    "nr": 14,
    "id": "s14",
    "grup": "Mai departe",
-   "titlu": "Până data viitoare",
+   "titlu": "Pentru cursul următor",
    "sarcini": []
   }
  ]

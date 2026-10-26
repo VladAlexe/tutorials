@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 4. Curățarea datelor · Fluxuri de lucru</title>
 <meta name="description" content="Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=69">
-<link rel="stylesheet" href="../css/sistem.css?v=69">
-<link rel="stylesheet" href="../css/intrare.css?v=69">
-<script src="../js/tema.js?v=69"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=73">
+<link rel="stylesheet" href="../css/sistem.css?v=73">
+<link rel="stylesheet" href="../css/intrare.css?v=73">
+<script src="../js/tema.js?v=73"></script>
 </head>
 <body>
 
@@ -35,42 +35,31 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 4 din 8</p>
     <h1>Curățarea datelor</h1>
-    <p class="deck">Prima oră: Git, de la comenzi la obișnuință — ce muți, ce salvezi, cum dai înapoi. A doua: etapa care mănâncă 60% din timpul oricărui proiect de date, și care decide dacă rezultatele mai înseamnă ceva.</p>
-    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce o facem la oră.
-    Până atunci poți citi ce urmează, mai jos.</p>
+    <p class="deck">Prima parte: Git în practică, adică ce se mută între zone, ce se salvează și cum se anulează o modificare. A doua: curățarea datelor, etapa care ocupă 60% din timpul unui proiect de date și de care depinde validitatea rezultatelor.</p>
+    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
+    Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--despre">
     <p class="sec__et">Despre</p>
-    <div class="sec__corp"><p>Săptămâna trecută ai aflat la ce e bun Git. Azi îl folosești: muți fișiere
-între zone, faci commit-uri care spun ceva, dai înapoi din patru feluri diferite
-fără să-ți pierzi munca, și lucrezi pe o ramură pe care o poți arunca fără
-regrete. Partea asta e scurtă pe slide-uri și lungă în terminal.</p>
-<p>A doua jumătate e despre ce se întâmplă după ce ai datele în mână. Un
-<a class="leg" href="https://visit.figure-eight.com/data-science-report" rel="noopener" target="_blank">sondaj
-CrowdFlower</a> pe oameni care fac asta zilnic spune că aproape 60% din timp se
-duce pe curățat și pe pus datele în ordine. Nu e un defect al meseriei, e
-meseria: datele reale vin cu categorii scrise în patru feluri, cu rânduri
-duplicate, cu lipsuri care nu înseamnă zero, și cu valori care par greșite dar
-sunt corecte.</p>
-<p>Trecem prin cele șase etape, pe rând, pe datele noastre. Iar pentru fiecare
-decizie — ce ștergi, ce completezi, ce tai — întrebarea nu e „ce face comanda”, e
-„ce pierd când o rulez”.</p></div>
+    <div class="sec__corp"><p>La lecția anterioară am văzut rolul lui Git. Acum îl folosim: mutăm fișiere între zone, facem commit-uri cu mesaje informative, anulăm modificări în patru moduri diferite fără pierderi de lucru și lucrăm pe o ramură care poate fi ștearsă fără consecințe. Partea aceasta ocupă puțin spațiu pe slide-uri și mult timp în terminal.</p>
+<p>A doua parte tratează etapa de după obținerea datelor. Un <a class="leg" href="https://visit.figure-eight.com/data-science-report" rel="noopener" target="_blank">sondaj CrowdFlower</a> printre specialiștii care lucrează zilnic cu date arată că aproape 60% din timpul lor este dedicat curățării și organizării datelor. Aceasta nu este o deficiență a profesiei, ci o parte centrală a ei: datele reale conțin aceeași categorie scrisă în mai multe feluri, rânduri duplicate, valori lipsă care nu înseamnă zero și valori care par eronate, dar sunt corecte.</p>
+<p>Parcurgem cele șase etape, pe rând, pe datele cursului. Pentru fiecare decizie (ce se șterge, ce se completează, ce se elimină), întrebarea relevantă nu este „ce face comanda”, ci „ce informație se pierde când este rulată”.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La final vei putea</p>
+    <p class="sec__et">La finalul lecției vei putea</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să duci un fișier de la editor până pe GitHub fără să te uiți la notițe, și să spui în ce zonă e în fiecare moment.</li>
-<li>Să scrii un mesaj de commit care îi spune ceva celui care îl citește în februarie.</li>
-<li>Să alegi între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code> după ce vrei să anulezi, nu după ce ți-a rămas în minte.</li>
-<li>Să ieși din Vim, și să nu mai fie o glumă.</li>
-<li>Să profilezi un dataset în cinci comenzi și să spui, din profil, ce te așteaptă.</li>
-<li>Să standardizezi categorii scrise inconsecvent, și să verifici că nu ai topit două categorii diferite într-una.</li>
-<li>Să deosebești un duplicat real de o pereche inversată, care la date diadice e altceva.</li>
+<li>Să duci un fișier de la editor până pe GitHub și să spui în ce zonă se află în fiecare moment.</li>
+<li>Să scrii mesaje de commit care rămân informative pentru cine le citește peste câteva luni.</li>
+<li>Să alegi între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code> în funcție de ce trebuie anulat.</li>
+<li>Să ieși din editorul Vim, deschis de Git pentru mesajele de commit.</li>
+<li>Să profilezi un set de date în cinci comenzi și să identifici, din profil, problemele care trebuie rezolvate.</li>
+<li>Să standardizezi categorii scrise inconsecvent și să verifici că nu ai comasat două categorii distincte.</li>
+<li>Să deosebești un duplicat real de o pereche inversată, care, la datele diadice, are alt statut.</li>
 <li>Să alegi între ștergere, completare și păstrare pentru valorile lipsă, știind ce introduce fiecare variantă.</li>
-<li>Să calculezi un prag pentru valori extreme și să decizi dacă ce iese deasupra e eroare sau e exact rezultatul.</li>
-<li>Să treci un tabel din formă lată în lungă și invers, și să știi care formă îți trebuie pentru ce.</li>
-<li>Să scrii un dicționar de date și un fișier de decizii pe care un coleg le poate citi fără tine.</li>
+<li>Să calculezi un prag pentru valori extreme și să decizi dacă valorile de peste prag sunt erori sau observații reale.</li>
+<li>Să treci un tabel din formă lată în formă lungă și invers și să știi ce formă este potrivită pentru fiecare operație.</li>
+<li>Să scrii un dicționar de date și un fișier de decizii pe care un coleg le poate înțelege fără explicații suplimentare.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -79,43 +68,40 @@ decizie — ce ștergi, ce completezi, ce tai — întrebarea nu e „ce face co
       <a class="mat__c" href="lectie/#1">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
-        <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
+        <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="../c3-versionare-git/">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Lecția 3: Git</span>
-        <span class="mat__d">Teoria din spatele comenzilor de azi</span>
+        <span class="mat__d">Conceptele din spatele comenzilor folosite aici</span>
       </a>
     </div>
   </section>
   <section class="sec sec--nevoie">
-    <p class="sec__et">De ce ai nevoie, înainte</p>
-    <div class="sec__corp"><p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie
-ce aveai deja de la cursurile 2 și 3:</p>
+    <p class="sec__et">Pregătire</p>
+    <div class="sec__corp"><p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursurile 2 și 3:</p>
 <ol>
 <li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>
-<li>Depozitul proiectului, legat de GitHub. Dacă nu l-ai făcut încă, prima jumătate a lecției e exact despre asta.</li>
-<li>Datele aduse la cursul 2, în <code>date/brute/</code>. Pe ele lucrăm azi.</li>
+<li>Depozitul proiectului, legat de GitHub. Dacă nu este creat încă, prima parte a lecției tratează exact acest pas.</li>
+<li>Datele colectate la cursul 2, în <code>date/brute/</code>, pe care lucrăm în această lecție.</li>
 <li><code>pandas</code> în mediul de lucru. Verifici cu <code>python -c "import pandas; print(pandas.__version__)"</code>.</li>
 </ol>
-<p>Dacă ți-ai pierdut datele de la cursul 2, scriptul de colectare le aduce din
-nou. De asta îl păstrăm în depozit și nu doar fișierele.</p></div>
+<p>Dacă datele de la cursul 2 s-au pierdut, scriptul de colectare le poate obține din nou. Din acest motiv, în depozit se păstrează scriptul, nu doar fișierele.</p></div>
   </section>
   <section class="sec sec--proiect">
-    <p class="sec__et">Ce adaugi la proiect</p>
-    <div class="sec__corp"><p>Dataseturile curățate, în <code>date/curate/</code>, plus două fișiere text pe
-care le va citi cineva și nu un calculator:</p>
+    <p class="sec__et">Ce se adaugă la proiect</p>
+    <div class="sec__corp"><p>Seturile de date curățate, în <code>date/curat/</code>, și două fișiere text destinate cititorilor umani:</p>
 <ul class="obiective">
-<li><code>date/curate/dicționar.md</code> — fiecare coloană: ce e, în ce unitate, de unde vine, ce înseamnă o lipsă.</li>
-<li><code>decizii.md</code> — fiecare curățare: ce ai schimbat, câte rânduri a atins, și de ce ai ales așa.</li>
+<li><code>date/curat/dicționar.md</code>: pentru fiecare coloană, ce reprezintă, în ce unitate este exprimată, de unde provine și ce înseamnă o valoare lipsă.</li>
+<li><code>decizii.md</code>: pentru fiecare operație de curățare, ce s-a schimbat, câte rânduri au fost afectate și de ce s-a ales această variantă.</li>
 </ul>
 <p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca Mondială.</p></div>
+cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la Banca Mondială.</p></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -143,7 +129,7 @@ cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca 
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=69"), import("../js/ora.js?v=69"), import("../js/curs.js?v=69")]);
+    import("../js/auth.js?v=73"), import("../js/ora.js?v=73"), import("../js/curs.js?v=73")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -151,7 +137,7 @@ try {
       b.removeAttribute("hidden");
       /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
       const viu = await O.deschisa("c4");
-      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora e pornită"; }
+      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora este în desfășurare"; }
       /* altfel butonul pornește ora direct: nu alegi nicio grupă, cine are
          codul intră, iar fiecare student e deja în grupa lui din listă */
     }
@@ -171,7 +157,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=69"></script>
-<script type="module" src="../js/subsol.js?v=69"></script>
+<script type="module" src="../js/antet.js?v=73"></script>
+<script type="module" src="../js/subsol.js?v=73"></script>
 </body>
 </html>

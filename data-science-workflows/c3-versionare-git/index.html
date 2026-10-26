@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 3. Versionare și colaborare cu Git · Fluxuri de lucru</title>
-<meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără să se calce, și cum se încadrează teoretic un proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=69">
-<link rel="stylesheet" href="../css/sistem.css?v=69">
-<link rel="stylesheet" href="../css/intrare.css?v=69">
-<script src="../js/tema.js?v=69"></script>
+<meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără conflicte între modificări și cum se încadrează teoretic un proiect.">
+<link rel="stylesheet" href="../css/fonturi.css?v=73">
+<link rel="stylesheet" href="../css/sistem.css?v=73">
+<link rel="stylesheet" href="../css/intrare.css?v=73">
+<script src="../js/tema.js?v=73"></script>
 </head>
 <body>
 
@@ -35,37 +35,28 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 3 din 8</p>
     <h1>Versionare și colaborare cu Git</h1>
-    <p class="deck">Săptămâna trecută ai adus date. Azi faci în așa fel încât ele, și codul care le-a adus, să nu se mai piardă: Git, GitHub, lucrul în echipă, și întrebarea de cercetare a proiectului vostru.</p>
-    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce o facem la oră.
-    Până atunci poți citi ce urmează, mai jos.</p>
+    <p class="deck">La lecția anterioară am colectat date. Acum ne asigurăm că datele și codul care le-a colectat nu se pierd: Git, GitHub, lucrul în echipă și întrebarea de cercetare a proiectului.</p>
+    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
+    Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--despre">
     <p class="sec__et">Despre</p>
-    <div class="sec__corp"><p>Ora are două jumătăți care par fără legătură, dar nu sunt. În prima învățăm
-Git, adică felul în care un proiect își ține minte propria istorie: cele trei
-zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile
-și pull request-ul.</p>
-<p>În a doua punem întrebarea de cercetare a proiectului, pornind de la un
-exemplu lucrat pe tranzițiile energetice: cum se ajunge de la literatură la trei
-piloni, de la piloni la surse de date, și de la surse la întrebări care se pot
-infirma.</p>
-<p>Legătura dintre cele două e că un proiect de analiză nu e o grămadă de
-fișiere, e un drum. Git păstrează drumul, iar cadrul teoretic spune încotro
-duce. Fără primul, nu poți arăta cum ai ajuns; fără al doilea, nu poți spune de
-ce ai pornit.</p></div>
+    <div class="sec__corp"><p>Ora are două părți, aparent fără legătură. În prima învățăm Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile și pull request-ul.</p>
+<p>În a doua formulăm întrebarea de cercetare a proiectului, pornind de la un exemplu lucrat pe tranzițiile energetice: cum se ajunge de la literatură la trei piloni, de la piloni la surse de date și de la surse la întrebări care pot fi infirmate.</p>
+<p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La final vei putea</p>
+    <p class="sec__et">La finalul lecției vei putea</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să explici diferența dintre Git și GitHub, și de ce un commit nu înseamnă că munca ta e în siguranță.</li>
-<li>Să spui ce face fiecare comandă prin zona din care mută fișierele, nu pe de rost.</li>
-<li>Să pornești un depozit, să-ți setezi identitatea și să faci commit-uri cu mesaje care spun ceva.</li>
-<li>Să scrii un <code>.gitignore</code> înainte de primul <code>add</code>, și să știi de ce ordinea contează.</li>
-<li>Să legi depozitul local de unul de pe GitHub, sau să clonezi unul existent.</li>
-<li>Să lucrezi pe ramuri, să deschizi un pull request și să rezolvi un conflict fără panică.</li>
-<li>Să recunoști forma unui cadru teoretic: concept, sursă de date, rol în argument.</li>
-<li>Să formulezi o întrebare de cercetare care se poate infirma cu datele pe care le aveți.</li>
+<li>Să explici diferența dintre Git și GitHub și de ce un commit local nu este o copie de siguranță a muncii.</li>
+<li>Să explici fiecare comandă prin zonele între care mută fișierele.</li>
+<li>Să inițializezi un depozit, să îți setezi identitatea și să faci commit-uri cu mesaje informative.</li>
+<li>Să scrii un <code>.gitignore</code> înainte de primul <code>add</code> și să explici de ce contează ordinea.</li>
+<li>Să legi depozitul local de unul de pe GitHub sau să clonezi unul existent.</li>
+<li>Să lucrezi pe ramuri, să deschizi un pull request și să rezolvi un conflict de îmbinare.</li>
+<li>Să recunoști structura unui cadru teoretic: concept, sursă de date, rol în argument.</li>
+<li>Să formulezi o întrebare de cercetare care poate fi infirmată cu datele disponibile.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -74,12 +65,12 @@ ce ai pornit.</p></div>
       <a class="mat__c" href="lectie/#1">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
-        <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
+        <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
@@ -89,11 +80,10 @@ ce ai pornit.</p></div>
     </div>
   </section>
   <section class="sec sec--nevoie">
-    <p class="sec__et">De ce ai nevoie, înainte</p>
-    <div class="sec__corp"><p>Lecția se poate urmări fără nimic instalat. Pentru partea practică îți trebuie
-ce ai adus de la cursul 2:</p>
+    <p class="sec__et">Pregătire</p>
+    <div class="sec__corp"><p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursul 2:</p>
 <ol>
-<li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. Pe Windows vine cu Git Bash, un terminal în care merg comenzile din lecție.</li>
+<li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. Pe Windows include Git Bash, un terminal în care funcționează comenzile din lecție.</li>
 <li>Contul de <a class="leg" href="https://github.com/" rel="noopener" target="_blank">GitHub</a>, același cu care intri pe site.</li>
 <li>Depozitul echipei, clonat la cursul 2 în <code>dsw/proiect</code>, și datele colectate în <code>dsw/curs/data/c2</code>.</li>
 </ol></div>
@@ -102,7 +92,7 @@ ce ai adus de la cursul 2:</p>
     <p class="sec__et">Legături</p>
     <div class="leg-lista">
       <a href="https://git-scm.com/downloads" target="_blank" rel="noopener"><span>Git</span><small>download</small></a>
-      <a href="https://git-scm.com/book/ro/v2" target="_blank" rel="noopener"><span>Pro Git</span><small>carte, gratuit</small></a>
+      <a href="https://git-scm.com/book/ro/v2" target="_blank" rel="noopener"><span>Pro Git</span><small>carte gratuită</small></a>
       <a href="https://docs.github.com/en/get-started" target="_blank" rel="noopener"><span>GitHub Docs</span><small>docs</small></a>
       <a href="https://docs.github.com/en/pull-requests" target="_blank" rel="noopener"><span>Pull requests</span><small>GitHub</small></a>
       <a href="https://www.toptal.com/developers/gitignore" target="_blank" rel="noopener"><span>gitignore.io</span><small>generator</small></a>
@@ -123,7 +113,7 @@ ce ai adus de la cursul 2:</p>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=69"), import("../js/ora.js?v=69"), import("../js/curs.js?v=69")]);
+    import("../js/auth.js?v=73"), import("../js/ora.js?v=73"), import("../js/curs.js?v=73")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -131,7 +121,7 @@ try {
       b.removeAttribute("hidden");
       /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
       const viu = await O.deschisa("c3");
-      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora e pornită"; }
+      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora este în desfășurare"; }
       /* altfel butonul pornește ora direct: nu alegi nicio grupă, cine are
          codul intră, iar fiecare student e deja în grupa lui din listă */
     }
@@ -151,7 +141,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=69"></script>
-<script type="module" src="../js/subsol.js?v=69"></script>
+<script type="module" src="../js/antet.js?v=73"></script>
+<script type="module" src="../js/subsol.js?v=73"></script>
 </body>
 </html>

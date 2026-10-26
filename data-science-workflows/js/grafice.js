@@ -13,7 +13,10 @@
    grafic are legendă cu praguri, și fiecare are o variantă de tabel.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=69";
+import { RADACINA } from "./curs.js?v=73";
+
+/* „de 5 ori”, dar „de 25 de ori”: în română, „de” apare de la 20 în sus */
+const deOri = n => { const r = Math.abs(n) % 100; return `${n.toLocaleString("ro-RO")} ${(r >= 20 || (r === 0 && n !== 0)) ? "de " : ""}ori`; };
 
 const G = {};
 
@@ -57,7 +60,7 @@ function legenda(){
         ${PRAG_ET.map(e => `<span>${e}</span>`).join("")}<span>+</span>
       </div>
     </div>
-    <span class="gf__lalt"><i></i>același județ, scos din scară</span>
+    <span class="gf__lalt"><i></i>același județ, exclus din scară</span>
   </div>`;
 }
 
@@ -82,7 +85,7 @@ function leagaBalon(zona, balon){
 
 async function adu(cale){
   const r = await fetch(`${RADACINA}/date/${cale}`, { cache:"force-cache" });
-  if (!r.ok) throw new Error(`nu pot citi ${cale} (${r.status})`);
+  if (!r.ok) throw new Error(`fișierul ${cale} nu poate fi citit (${r.status})`);
   return r.json();
 }
 
@@ -97,11 +100,11 @@ G.matrice = async (gazda, date = {}) => {
 
   const u = cadru(gazda, {
     titlu: "Conectivitate între județe",
-    sub: `Fiecare pătrat e o pereche de județe: cât de probabil e ca un om din
-      județul de pe rând și unul din județul de pe coloană să fie prieteni pe
-      Facebook. ${n} × ${n} = ${nf.format(n * n)} de pătrate, adică exact atâtea
-      rânduri are tabelul de la care pornim. Treci cu mouse-ul peste oricare,
-      sau apasă pe un județ ca să-i vezi tot rândul.`,
+    sub: `Fiecare pătrat reprezintă o pereche de județe: cât de probabil este ca o
+      persoană din județul de pe rând și una din județul de pe coloană să fie
+      prieteni pe Facebook. ${n} × ${n} = ${nf.format(n * n)} de pătrate, exact
+      numărul de rânduri din tabelul inițial. Treci cu mouse-ul peste un pătrat
+      sau apasă pe un județ pentru a vedea întregul rând.`,
     unelte: `<button class="gf__bt on" data-vedere="harta" type="button">hartă</button>
              <button class="gf__bt" data-vedere="tabel" type="button">tabel</button>`
   });
@@ -132,10 +135,10 @@ G.matrice = async (gazda, date = {}) => {
   }
   html += `</svg><div class="mtx__det"></div>
     <p class="gf__sursa">Date: Data for Good at Meta, Social Connectedness Index,
-    instantaneu ianuarie 2026, nivel NUTS 3. Diagonala, adică legăturile din
-    interiorul aceluiași județ, e scoasă din scară: mediana ei e de 238 de ori
-    mai mare decât mediana restului, și ar face toate celelalte pătrate să
-    arate la fel.</p></div>`;
+    instantaneu ianuarie 2026, nivel NUTS 3. Diagonala (legăturile din
+    interiorul aceluiași județ) este exclusă din scară: mediana ei este de 238
+    de ori mai mare decât mediana celorlalte valori și ar uniformiza culorile
+    tuturor celorlalte pătrate.</p></div>`;
 
   /* --- varianta de tabel, fără culoare ------------------------------------ */
   const perechi = [];
@@ -146,10 +149,10 @@ G.matrice = async (gazda, date = {}) => {
   html += `<div class="v-tabel" hidden><div class="gf__sul"><table class="gf__tab">
       <thead><tr><th>#</th><th>Pereche</th><th>Conectivitate</th></tr></thead>
       <tbody>${perechi.slice(0, 40).map((p, k) => `<tr>
-        <td class="n">${k + 1}</td><td>${p.a} – ${p.b}</td>
+        <td class="n">${k + 1}</td><td>${p.a} și ${p.b}</td>
         <td class="n">${nf.format(p.v)}</td></tr>`).join("")}</tbody></table></div>
     <p class="gf__sursa">Primele 40 dintre cele ${nf.format(perechi.length)} de perechi
-    distincte de județe. Același tabel pe care îl obții cu un sort în pandas.</p></div>`;
+    distincte de județe. Același tabel se obține prin sortare în pandas.</p></div>`;
 
   u.corp.innerHTML = html;
 
@@ -198,7 +201,7 @@ G.matrice = async (gazda, date = {}) => {
   if (cz){
     cutie = document.createElement("p");
     cutie.className = "nor__cauta";
-    cutie.innerHTML = `<b>Găsește:</b> ${cz.t} <span>Dă clic pe pătrat.</span>`;
+    cutie.innerHTML = `<b>Găsește:</b> ${cz.t} <span>Apasă pe pătratul corespunzător.</span>`;
     svg.parentNode.insertBefore(cutie, svg);
   }
   function verifica(i, j){
@@ -210,8 +213,8 @@ G.matrice = async (gazda, date = {}) => {
       cutie.innerHTML = `<b>Găsit: ${judete[k]}.</b> ${cz.dupa || ""}`; detaliu(a, false); return; }
     if (gasit) return;
     cutie.innerHTML = `<b>Găsește:</b> ${cz.t} <span>${judete[k]}${(cz.vecini || []).includes(s)
-      ? " e vecin cu " + judete[a] + "; caută dincolo de vecini."
-      : `: ${nf.format(M[a][k])}. Există un județ nevecin mai legat.`}</span>`;
+      ? " este vecin cu " + judete[a] + "; caută printre județele nevecine."
+      : `: ${nf.format(M[a][k])}. Există un județ nevecin cu o legătură mai puternică.`}</span>`;
   }
   svg.addEventListener("click", ev => {
     const r = ev.target.closest("rect.c");
@@ -234,16 +237,16 @@ G.matrice = async (gazda, date = {}) => {
         <span class="brr__p"><i style="width:${(x.v / max * 100).toFixed(1)}%"></i></span>
         <span class="brr__v">${nf.format(x.v)}</span></div>`;
     det.innerHTML = `
-      <p class="mtx__dt">${judete[i]}: cu cine e legat</p>
-      <p class="mtx__dd">Rândul lui ${judete[i]} din matrice, ordonat. În interiorul
-      județului: <b style="font-family:var(--mono);font-weight:500">${nf.format(M[i][i])}</b>,
-      de ${Math.round(M[i][i] / sus[0].v)} de ori mai mult decât cu primul vecin.</p>
+      <p class="mtx__dt">${judete[i]}: legăturile cu celelalte județe</p>
+      <p class="mtx__dd">Rândul județului ${judete[i]} din matrice, ordonat descrescător. În interiorul
+      județului: <b style="font-weight:600">${nf.format(M[i][i])}</b>,
+      de ${deOri(Math.round(M[i][i] / sus[0].v))} mai mult decât cu județul de pe primul loc.</p>
       <div class="brr">
         ${sus.map(rand).join("")}
         <div class="brr__r" style="opacity:.5"><span class="brr__n"></span>
           <span class="brr__p" style="display:grid;place-items:center">
-            <span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">
-              ${r.length - 11} de județe la mijloc</span></span><span></span></div>
+            <span style="font-size:var(--t1);color:var(--text-3)">
+              alte ${r.length - 11} de județe</span></span><span></span></div>
         ${jos.map(rand).join("")}
       </div>`;
     if (sari) det.scrollIntoView({ block:"nearest", behavior:"smooth" });
@@ -265,13 +268,13 @@ G.bare = async (gazda, date) => {
   const max = t[0].sci;
 
   const u = cadru(gazda, {
-    titlu: "România, către celelalte țări",
-    sub: `Primele ${cate} țări după conectivitatea socială cu România. Indicele e
-      împărțit la numărul de utilizatori Facebook din cele două țări, deci răspunde la
-      „cât de probabilă e o prietenie", nu la „câți români trăiesc acolo".
-      ${date.romani ? "Comută ordinea și urmărește cum se mută țările." : "Cele două ordini nu coincid, și aici e toată lecția."}`,
+    titlu: "Conectivitatea României cu celelalte țări",
+    sub: `Primele ${cate} țări după conectivitatea socială cu România. Indicele este
+      raportat la numărul de utilizatori Facebook din cele două țări, deci măsoară
+      „cât de probabilă este o prietenie”, nu „câți români trăiesc acolo”.
+      ${date.romani ? "Schimbă ordonarea și urmărește cum își schimbă țările pozițiile." : "Cele două ordonări nu coincid, iar această diferență este ideea centrală a lecției."}`,
     unelte: `${date.romani ? `<button class="gf__bt on" data-ord="sci" type="button">după SCI</button>
-             <button class="gf__bt" data-ord="rom" type="button">după câți români trăiesc acolo</button>` : ""}
+             <button class="gf__bt" data-ord="rom" type="button">după numărul de români rezidenți</button>` : ""}
              <button class="gf__bt ${date.romani ? "" : "on"}" data-vedere="bare" type="button">bare</button>
              <button class="gf__bt" data-vedere="tabel" type="button">tabel</button>`
   });
@@ -283,11 +286,11 @@ G.bare = async (gazda, date) => {
         <span class="brr__v">${nf.format(x.sci)}</span></div>`).join("")}
     </div>
     <div class="gf__reper"><b>${scurt(d.ro_ro)}</b>
-      <span>Conectivitatea României cu ea însăși, pe aceeași scară.
-      De ${Math.round(d.ro_ro / t[0].sci)} de ori mai mare decât cu
-      ${t[0].nume}, prima din clasament. Dacă ar intra în grafic, toate barele
-      de mai sus s-ar lipi de zero. Asta e prima problemă practică a
-      indicatorului, și motivul pentru care la lecția 6 lucrăm pe scară
+      <span>Conectivitatea internă a României, pe aceeași scară.
+      De ${deOri(Math.round(d.ro_ro / t[0].sci))} mai mare decât cu
+      ${t[0].nume}, prima din clasament. Inclusă în grafic, ar reduce toate
+      barele de mai sus la valori apropiate de zero. Aceasta este prima problemă
+      practică a indicatorului și motivul pentru care lecția 6 folosește o scară
       logaritmică.</span></div>
     <p class="gf__sursa">Date: Data for Good at Meta, Social Connectedness Index,
     instantaneu ianuarie 2026, nivel de țară. ${d.tari.length} de parteneri în total.</p>`;
@@ -351,7 +354,7 @@ G.diverg = async (gazda, date) => {
   const { judete, matrice: M } = d;
   const A = date.a || "Cluj", B = date.b || "București";
   const ia = judete.indexOf(A), ib = judete.indexOf(B);
-  if (ia < 0 || ib < 0) throw new Error(`nu găsesc ${A} sau ${B}`);
+  if (ia < 0 || ib < 0) throw new Error(`${A} sau ${B} nu se găsește în date`);
 
   const r = judete.map((nume, j) => ({ nume, j, va:M[ia][j], vb:M[ib][j] }))
                   .filter(x => x.j !== ia && x.j !== ib)
@@ -363,8 +366,8 @@ G.diverg = async (gazda, date) => {
   const u = cadru(gazda, {
     titlu: `${A} sau ${B}?`,
     sub: `Pentru fiecare județ: cu care dintre cele două orașe are legături de
-      prietenie mai probabile. Bara spre stânga înseamnă ${A}, spre dreapta
-      ${B}. Lungimea arată de câte ori, nu cu cât.`,
+      prietenie mai probabile. Bara spre stânga indică ${A}, spre dreapta
+      ${B}. Lungimea arată raportul (de câte ori), nu diferența.`,
     unelte: `<button class="gf__bt on" data-vedere="bare" type="button">grafic</button>
              <button class="gf__bt" data-vedere="tabel" type="button">tabel</button>`
   });
@@ -388,11 +391,11 @@ G.diverg = async (gazda, date) => {
       <span class="dv__et dv__et--b">mai legat de ${B}</span></div>
     <div class="dv">${r.map(rand).join("")}</div>
     <div class="gf__reper"><b>${spreA} / ${r.length}</b>
-      <span>Atâtea județe înclină spre ${A}. Nu e o hartă politică și nu e o
-      hartă a distanțelor, deși seamănă cu amândouă. E doar cine pe cine
-      cunoaște.</span></div>
+      <span>Numărul de județe mai legate de ${A}. Nu este o hartă politică și
+      nici o hartă a distanțelor, deși seamănă cu amândouă: reflectă doar
+      rețelele de cunoștințe.</span></div>
     <p class="gf__sursa">Date: Data for Good at Meta, Social Connectedness Index,
-    nivel NUTS 3. Întrebarea e luată de la Social Capital Lab, care a făcut
+    nivel NUTS 3. Întrebarea este preluată de la Social Capital Lab, care a făcut
     aceeași comparație pentru Madrid și Barcelona, la nivelul întregii Europe.</p>`;
 
   const tabel = `<div class="gf__sul"><table class="gf__tab">

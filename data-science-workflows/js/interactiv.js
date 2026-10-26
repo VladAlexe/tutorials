@@ -6,10 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=69";
-import EXERCITII from "./exercitii.js?v=69";
-import VIZUAL from "./vizual.js?v=69";
-import HARTA from "./harta-sci.js?v=69";
+import GRAFICE from "./grafice.js?v=73";
+import EXERCITII from "./exercitii.js?v=73";
+import VIZUAL from "./vizual.js?v=73";
+import HARTA from "./harta-sci.js?v=73";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA };
 
@@ -27,7 +27,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=69");
+    const m = await import("/data-science-workflows/js/colectare.js?v=73");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -105,7 +105,7 @@ C.url = (gazda, date) => {
     gazda.querySelectorAll(".adr__r").forEach(r => r.classList.toggle("tinta", activ !== null));
     const rest = pus.filter(x => !x).length;
     aj.textContent = activ !== null ? `Ce rol are placa ${activ + 1}? Alege din legendă.`
-      : rest === 1 ? "Mai e o placă fără rol." : rest ? `Mai sunt ${rest} plăci fără rol.` : "";
+      : rest === 1 ? "Mai este o placă fără rol." : rest ? `Mai sunt ${rest} plăci fără rol.` : "";
   };
 
   gazda.querySelector(".adr__bara").addEventListener("click", e => {
@@ -123,20 +123,20 @@ C.url = (gazda, date) => {
     } else {
       gresite++;
       const pl = placi[i]; pl.classList.add("rau");
-      aj.innerHTML = `<b>Nu e ${esc(ales)}.</b> ${rol(ales).d ? "Citește din nou ce face fiecare rol." : ""}`;
+      aj.innerHTML = `<b>Nu este ${esc(ales)}.</b> ${rol(ales).d ? "Recitește descrierea fiecărui rol." : ""}`;
       setTimeout(() => pl.classList.remove("rau"), 700);
       return;
     }
     if (pus.every(Boolean)){
       gazda.querySelector(".adr__dupa").hidden = false;
-      aj.textContent = !gresite ? "Toate plăcile au rol." : gresite === 1 ? "Toate plăcile au rol, cu o încercare greșită pe drum." : `Toate plăcile au rol, cu ${gresite} încercări greșite pe drum.`;
+      aj.textContent = !gresite ? "Toate plăcile au rol." : gresite === 1 ? "Toate plăcile au rol, după o încercare greșită." : `Toate plăcile au rol, după ${gresite} încercări greșite.`;
       gazda.closest(".ix")?.classList.add("gata");
       document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
       const st = gazda.querySelector(".ex__stare");
       try {
-        const m = await import("/data-science-workflows/js/colectare.js?v=69");
+        const m = await import("/data-science-workflows/js/colectare.js?v=73");
         const salvat = await m.salveazaCod({ exercitiuId: date.id, cod: `${pus.join(" | ")} · greșite: ${gresite}`, trecut: true });
-        st.textContent = salvat ? "Rezolvare înregistrată." : "Nu e înregistrată: nu ești autentificat.";
+        st.textContent = salvat ? "Rezolvare înregistrată." : "Rezolvarea nu a fost înregistrată: nu ești autentificat.";
         st.classList.add("vazut");
       } catch {}
     }
@@ -153,8 +153,8 @@ C.url = (gazda, date) => {
    sunt greșelile cele mai frecvente de la prima oră. Prima activare dă
    eroarea de execution policy, ca pe multe calculatoare cu Windows. */
 C.terminal = (gazda) => {
-  const SARCINI = [["cd","intri în dsw"],["venv","creezi .venv"],["activ","îl activezi"],
-                   ["install","instalezi pachetele"],["dir","te uiți în folder"]];
+  const SARCINI = [["cd","intri în dsw"],["venv","creezi .venv"],["activ","activezi mediul"],
+                   ["install","instalezi pachetele"],["dir","listezi conținutul folderului"]];
   const ACASA = "C:\\Users\\student";
   const NB = "01_introducere_si_datele_proiectului.ipynb";
   /* folderele, cu ce e în ele; "d:" = dosar */
@@ -173,7 +173,7 @@ C.terminal = (gazda) => {
     <div class="trm__sarcini">${SARCINI.map(([,e]) => `<span class="trm__chip">${e}</span>`).join("")}</div>
     <div class="trm__ecran"></div>
     <div class="trm__linie"><span class="trm__pr"></span>
-      <input autocomplete="off" spellcheck="false" aria-label="Comandă" placeholder="scrie o comandă; ajutor, dacă te blochezi"></div>`;
+      <input autocomplete="off" spellcheck="false" aria-label="Comandă" placeholder="scrie o comandă (ajutor afișează lista comenzilor)"></div>`;
   const ecran = gazda.querySelector(".trm__ecran"), prompt = gazda.querySelector(".trm__pr");
   const intrare = gazda.querySelector("input"), chipuri = [...gazda.querySelectorAll(".trm__chip")];
   const cale = (c = cwd) => c ? ACASA + "\\" + c : ACASA;
@@ -208,7 +208,7 @@ C.terminal = (gazda) => {
     return c;
   };
   const instaleaza = (c, pk, dinLista) => {
-    if (!pk.length) return scrie(c, ["!Spune ce instalezi. Aici: pip install -r requirements.txt"]);
+    if (!pk.length) return scrie(c, ["!Specifică pachetele de instalat. Aici: pip install -r requirements.txt"]);
     instalate = [...new Set([...instalate, ...pk])]; facute.add("install");
     scrie(c, ["", ...pk.map((x, i) => `Collecting ${x}${dinLista ? ` (from -r requirements.txt (line ${i + 1}))` : ""}`),
       `~Successfully installed ${pk.join(" ")} (în dsw\\.venv)`]);
@@ -218,7 +218,7 @@ C.terminal = (gazda) => {
     if (/^-r\s+requirements\.txt$/i.test(r)){
       if (!continut(cwd).some(x => /:requirements\.txt$/i.test(x)))
         return scrie(c, ["!ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'",
-          "!Lista pachetelor stă în dsw. Intră acolo întâi."]);
+          "!Fișierul requirements.txt se află în dsw. Intră mai întâi în acest folder."]);
       return instaleaza(c, ["pandas", "requests", "ipykernel"], true);
     }
     return instaleaza(c, r.split(/\s+/).filter(Boolean), false);
@@ -238,51 +238,51 @@ C.terminal = (gazda) => {
       if (areDosar(cwd, m[2])) scrie(c, [`!mkdir : An item with the specified name ${cale()}\\${esc(m[2])} already exists.`]);
       else { (FS[cwd] ||= []).push("d:" + m[2]); FS[(cwd ? cwd + "\\" : "") + m[2]] = [];
         scrie(c, ["", `    Directory: ${cale()}`, "", `d----   ${esc(m[2])}`,
-          ...(m[2].toLowerCase().startsWith("dsw") || /proiect/i.test(m[2]) ? ["", "~Nu e nevoie de un folder nou: dsw există deja, din arhiva cursului."] : [])]); } }
+          ...(m[2].toLowerCase().startsWith("dsw") || /proiect/i.test(m[2]) ? ["", "~Nu este nevoie de un folder nou: dsw există deja, din arhiva cursului."] : [])]); } }
     else if (/^(py|python3?)\s+-m\s+venv\s+\S+$/i.test(c)){
       const dir = c.split(/\s+/).pop();
       if (!inDsw()) scrie(c, ["", `!Ai creat ${esc(dir)} în ${cale()}, nu în dsw.`,
-        cwd.startsWith("dsw\\") ? "!Mediul stă direct în dsw, lângă requirements.txt. Urcă un nivel (cd ..) și creează-l acolo."
-                                : "!Intră întâi în folderul cursului (cd dsw), apoi creează mediul acolo."]);
+        cwd.startsWith("dsw\\") ? "!Mediul virtual se creează direct în dsw, lângă requirements.txt. Revino un nivel mai sus (cd ..) și creează-l acolo."
+                                : "!Intră mai întâi în folderul cursului (cd dsw), apoi creează mediul acolo."]);
       else { cuVenv.add(cwd); facute.add("venv");
         if (!FS.dsw.includes("d:.venv")) FS.dsw.unshift("d:.venv");
-        scrie(c, ["", `~Mediul e în ${cale()}\\${esc(dir)}. Nu scrii nimic acolo: e al lui Python.`]); } }
+        scrie(c, ["", `~Mediul virtual a fost creat în ${cale()}\\${esc(dir)}. Conținutul lui este gestionat de Python și nu se editează manual.`]); } }
     else if (/^(\.[\\/])?\.venv[\\/]scripts[\\/]activate(\.ps1|\.bat)?$/i.test(c)){
-      if (!cuVenv.has(cwd)) scrie(c, [`!${esc(c)} : The term '${esc(c)}' is not recognized.`, "!Aici nu există .venv. Ești în dsw? L-ai creat?"]);
+      if (!cuVenv.has(cwd)) scrie(c, [`!${esc(c)} : The term '${esc(c)}' is not recognized.`, "!În acest folder nu există .venv. Verifică dacă ești în dsw și dacă mediul a fost creat."]);
       else if (!politica) scrie(c, [
         `!${esc(c)} : File ${cale()}\\.venv\\Scripts\\Activate.ps1 cannot be loaded because running scripts is disabled on this system.`,
-        "!Rulează o dată: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser",
-        "!apoi activează din nou."]);
+        "!Rulează o singură dată: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser",
+        "!apoi activează din nou mediul."]);
       else { activ = true; facute.add("activ"); scrie(c, []); } }
     else if (/^set-executionpolicy\b/i.test(c)){
       if (!/remotesigned/i.test(c)) scrie(c, ["!Folosește: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"]);
-      else { politica = true; scrie(c, ["", "~Gata. Acum activarea merge."]); } }
+      else { politica = true; scrie(c, ["", "~Politica de execuție a fost modificată. Mediul poate fi activat acum."]); } }
     else if (/^source\s+\.venv\/bin\/activate$/i.test(c))
-      scrie(c, ["!Asta e comanda de pe macOS. În PowerShell: .\\.venv\\Scripts\\Activate.ps1"]);
+      scrie(c, ["!Aceasta este comanda pentru macOS. În PowerShell: .\\.venv\\Scripts\\Activate.ps1"]);
     else if ((m = c.match(/^(?:\.[\\/])?\.venv[\\/]scripts[\\/]python(?:\.exe)?\s+-m\s+pip\s+install\s*(.*)$/i))){
-      if (!cuVenv.has(cwd)) scrie(c, ["!Aici nu există .venv. Creează-l întâi, în dsw."]);
+      if (!cuVenv.has(cwd)) scrie(c, ["!În acest folder nu există .venv. Creează-l mai întâi, în dsw."]);
       else pip(c, m[1]); }
     else if ((m = c.match(/^(?:python\s+-m\s+)?pip3?\s+install\s*(.*)$/i))){
-      if (!activ) scrie(c, ["!Atenție: fără mediu activ, pip instalează în Python-ul comun al calculatorului.",
-        "!Activează întâi mediul: .\\.venv\\Scripts\\Activate.ps1"]);
+      if (!activ) scrie(c, ["!Atenție: fără un mediu activ, pip instalează pachetele în instalarea globală de Python.",
+        "!Activează mai întâi mediul: .\\.venv\\Scripts\\Activate.ps1"]);
       else pip(c, m[1]); }
     else if (/^(pip3?\s+list|(\.[\\/])?\.venv[\\/]scripts[\\/]python(\.exe)?\s+-m\s+pip\s+list)$/i.test(c)){
       const glob = /^pip/i.test(c) && !activ;
-      scrie(c, ["", "Package    Version", "---------- -------", ...(glob ? ["(pachetele comune, nu ale mediului)"]
-        : instalate.length ? instalate.map(x => `${x.padEnd(11)}…`) : ["pip        …", "(încă nimic instalat)"])]); }
+      scrie(c, ["", "Package    Version", "---------- -------", ...(glob ? ["(pachetele instalării globale, nu ale mediului)"]
+        : instalate.length ? instalate.map(x => `${x.padEnd(11)}…`) : ["pip        …", "(niciun pachet instalat încă)"])]); }
     else if (/^(dir|ls|gci|get-childitem)$/i.test(c)){
       facute.add("dir");
       scrie(c, ["", `    Directory: ${cale()}`, "", ...continut(cwd).map(x => {
         const [fel, n] = x.startsWith("d:") ? ["d----", x.slice(2)] : x.split(/:(.*)/s);
-        return `${fel}   ${esc(n)}${n === ".venv" ? '   <span class="c"># al lui Python, nu umbli aici</span>' : ""}`;
+        return `${fel}   ${esc(n)}${n === ".venv" ? '   <span class="c"># gestionat de Python, nu se editează</span>' : ""}`;
       })]); }
     else if (/^deactivate$/i.test(c)){ if (activ) { activ = false; scrie(c, []); } else scrie(c, ["!Niciun mediu activ."]); }
     else if (/^(ajutor|help)$/i.test(c)) scrie(c, ["", "Comenzile, în ordine:",
       "  cd dsw", "  py -m venv .venv", "  .\\.venv\\Scripts\\Activate.ps1",
       "  pip install -r requirements.txt", "  dir",
-      "Și: cd .., pip list, deactivate, curata"]);
+      "Alte comenzi: cd .., pip list, deactivate, curata"]);
     else if (/^(curata|clear|cls)$/i.test(c)) linii = ["_"];
-    else scrie(c, [`!${esc(c.split(" ")[0])} : The term is not recognized. Scrie ajutor.`]);
+    else scrie(c, [`!${esc(c.split(" ")[0])} : The term is not recognized. Scrie ajutor pentru lista comenzilor.`]);
     deseneaza();
   };
   intrare.addEventListener("keydown", e => { if (e.key === "Enter"){ ruleaza(intrare.value); intrare.value = ""; } });
@@ -302,9 +302,9 @@ C.tipuri = (gazda, date) => {
         <div class="tip__bara">${raspuns.map(a=>`<span class="${a?"ok":"nu"}"></span>`).join("")}</div>
         <div class="tip__val">${ok} / ${Q.length}</div>
         <p class="tip__fb">${ok === Q.length
-          ? "<b>Tot corect.</b> Distincția dintre <code>'2024'</code> și <code>2024</code> produce cele mai multe erori tăcute la citirea fișierelor."
-          : "<b>Reia.</b> Cazurile ratate se întorc la curățarea datelor, în lecția 4."}</p>
-        <button class="btn btn--mic" id="din-nou" type="button">Încă o dată</button>`;
+          ? "<b>Toate răspunsurile sunt corecte.</b> Distincția dintre <code>'2024'</code> și <code>2024</code> produce cele mai multe erori tăcute la citirea fișierelor."
+          : "<b>Unele răspunsuri sunt greșite.</b> Aceste cazuri sunt reluate la curățarea datelor, în lecția 4."}</p>
+        <button class="btn btn--mic" id="din-nou" type="button">Reia exercițiul</button>`;
       gazda.querySelector("#din-nou").onclick = () => { i=0; ok=0; raspuns=[]; deseneaza(); };
       /* poarta se deschide când ai parcurs toate valorile, indiferent de scor:
          scopul e să treci prin ele, nu să le nimerești din prima */
@@ -325,7 +325,7 @@ C.tipuri = (gazda, date) => {
         if (x.dataset.o === q.t) x.classList.add("ok");
         else if (x === b) x.classList.add("nu"); });
       raspuns[i] = bun; if (bun) ok++;
-      gazda.querySelector(".tip__fb").innerHTML = `<b>${bun?"Corect.":"Nu."}</b> ${q.e}`;
+      gazda.querySelector(".tip__fb").innerHTML = `<b>${bun?"Corect.":"Incorect."}</b> ${q.e}`;
       setTimeout(() => { i++; deseneaza(); }, bun ? 1150 : 2300);
     });
   };
@@ -335,9 +335,9 @@ C.tipuri = (gazda, date) => {
 /* --- 4. Explorator JSON --------------------------------------------------- */
 C.json = (gazda, date) => {
   const DESC = {
-    tablou:"Listă ordonată. Accesezi elementele după poziție, de la 0.",
-    obiect:"Perechi cheie și valoare. În Python devine dicționar.",
-    text:"Șir de caractere. Chiar dacă arată ca un an, rămâne text până îl converteșt tu.",
+    tablou:"Listă ordonată. Elementele se accesează după poziție, începând de la 0.",
+    obiect:"Perechi cheie-valoare. În Python devine dicționar.",
+    text:"Șir de caractere. Chiar dacă arată ca un an, rămâne text până la o conversie explicită.",
     "număr":"Valoare numerică.",
     null:"Valoarea lipsește explicit. În pandas devine NaN, nu zero.",
     boolean:"Adevărat sau fals."
@@ -373,11 +373,11 @@ C.json = (gazda, date) => {
   const P = date.provocari || [];
   gazda.innerHTML = `${P.length ? `<div class="jsn__prov"><span>Ajunge la:</span>${P.map((x, i) =>
         `<span class="jsn__pv" data-i="${i}"><i>○</i>${x.t}</span>`).join("")}</div>` : ""}
-    <label class="jsn__scrie"><span>Scrie drumul</span>
+    <label class="jsn__scrie"><span>Scrie calea</span>
       <input type="text" spellcheck="false" autocomplete="off" placeholder='${rad}[1][0]["date"]'></label>
     <div class="jsn__arb">${randuri.map((r,k) =>
       `<span class="jsn__r" data-k="${k}">${r.html}</span>`).join("")}</div>
-    <p class="jsn__out">Scrie un drum sau apasă pe orice rând din arbore.</p>`;
+    <p class="jsn__out">Scrie o cale sau apasă pe un rând din arbore.</p>`;
   const out = gazda.querySelector(".jsn__out");
   const inp = gazda.querySelector(".jsn__scrie input");
 
@@ -386,23 +386,23 @@ C.json = (gazda, date) => {
   const fara = t => t.replace(/\s+/g, "").replace(/'/g, '"');
   function parcurge(text){
     const t = fara(text);
-    if (!t.startsWith(rad)) return { err: `Drumul pornește de la <code>${rad}</code>.` };
+    if (!t.startsWith(rad)) return { err: `Calea pornește de la <code>${rad}</code>.` };
     const re = /\[(\d+)\]|\["([^"]*)"\]/y;
     let i = rad.length, v = date.date, cale = rad;
     re.lastIndex = i;
     while (i < t.length){
       re.lastIndex = i;
       const m = re.exec(t);
-      if (!m) return { err: `Nu înțeleg ce vine după <code>${cale}</code>. Un pas e <code>[0]</code> (poziție) sau <code>["cheie"]</code> (cheie).`, cale };
+      if (!m) return { err: `Expresia de după <code>${cale}</code> nu este validă. Un pas este <code>[0]</code> (poziție) sau <code>["cheie"]</code> (cheie).`, cale };
       if (m[1] !== undefined){
         const n = +m[1];
-        if (!Array.isArray(v)) return { err: `<code>${cale}</code> e ${ce(v)}, nu o listă: aici se cere o cheie între ghilimele, nu o poziție.`, cale };
-        if (n >= v.length) return { err: `<code>${cale}</code> are doar ${v.length} elemente, pe pozițiile 0–${v.length - 1}.`, cale };
+        if (!Array.isArray(v)) return { err: `<code>${cale}</code> este ${ce(v)}, nu o listă: aici se cere o cheie între ghilimele, nu o poziție.`, cale };
+        if (n >= v.length) return { err: `<code>${cale}</code> are doar ${v.length} elemente, pe pozițiile de la 0 la ${v.length - 1}.`, cale };
         v = v[n]; cale += `[${n}]`;
       } else {
         const k = m[2];
         if (!v || typeof v !== "object" || Array.isArray(v))
-          return { err: `<code>${cale}</code> e ${ce(v)}, nu un dicționar: aici se cere o poziție, de exemplu <code>[0]</code>.`, cale };
+          return { err: `<code>${cale}</code> este ${ce(v)}, nu un dicționar: aici se cere o poziție, de exemplu <code>[0]</code>.`, cale };
         if (!(k in v)) return { err: `<code>${cale}</code> nu are cheia <code>"${k}"</code>. Are: ${Object.keys(v).map(x => `<code>"${x}"</code>`).join(", ")}.`, cale };
         v = v[k]; cale += `["${k}"]`;
       }
@@ -418,7 +418,7 @@ C.json = (gazda, date) => {
     return randuri[k];
   }
   inp.addEventListener("input", () => {
-    if (!inp.value.trim()){ out.innerHTML = "Scrie un drum sau apasă pe orice rând din arbore."; return; }
+    if (!inp.value.trim()){ out.innerHTML = "Scrie o cale sau apasă pe un rând din arbore."; return; }
     const r = parcurge(inp.value);
     if (r.err){ if (r.cale) aprinde(r.cale); out.innerHTML = `<span class="jsn__pil rau">încă nu</span>${r.err}`; return; }
     const rr = aprinde(r.cale);
@@ -471,7 +471,7 @@ export function porneste(){
     if (date && date.intai) intai(g, corp, date.intai);
     /* unele componente aduc date de pe disc, deci pot întoarce o promisiune */
     const cad = e => { corp.innerHTML =
-      `<p style="color:var(--nu);font-family:var(--sans);font-size:13.5px">
+      `<p style="color:var(--nu);font-family:var(--sans);font-size:var(--t2)">
          Componenta nu a pornit: ${e.message}</p>`; };
     try {
       const rez = f(corp, date);
@@ -488,7 +488,7 @@ function intai(g, corp, d){
   const esc = t => String(t).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
   const box = document.createElement("div");
   box.className = "intai";
-  box.innerHTML = `<p class="intai__et">întâi ghicești</p><p class="pz__q">${d.q}</p>
+  box.innerHTML = `<p class="intai__et">mai întâi, o predicție</p><p class="pz__q">${d.q}</p>
     <div class="pz__v">${(d.variante || []).map((v, i) =>
       `<button class="pz__b" type="button" data-i="${i}">${esc(v)}</button>`).join("")}</div>
     <p class="intai__dupa" hidden></p>`;
@@ -502,7 +502,7 @@ function intai(g, corp, d){
     });
     if (!bine) b.classList.add("rau");
     const p = box.querySelector(".intai__dupa");
-    p.innerHTML = `<b>${bine ? "Exact." : "Nu chiar."}</b> ${d.dupa || ""} <span class="intai__acum">Acum verifică singur, mai jos.</span>`;
+    p.innerHTML = `<b>${bine ? "Corect." : "Incorect."}</b> ${d.dupa || ""} <span class="intai__acum">Verifică rezultatul în componenta de mai jos.</span>`;
     p.hidden = false;
     corp.classList.remove("intai-ascuns");
   });
@@ -516,12 +516,12 @@ function intai(g, corp, d){
 C.autoevaluare = (gazda, date) => {
   gazda.closest(".ix")?.classList.add("exc");
   const NIVELE = date.nivele ||
-    ["n-am auzit", "am citit despre", "am folosit o dată", "folosesc des"];
+    ["nu am auzit de", "am citit despre", "am folosit o dată", "folosesc des"];
   const T = date.teme;
   const ales = new Array(T.length).fill(null);
 
   gazda.innerHTML = `
-    <p class="ex__sarcina">${date.sarcina || "Pentru fiecare, alege unde te afli acum. Nu se notează, nu se vede la colegi, și nu e nicio problemă dacă bifezi peste tot prima coloană: cursul pornește de la zero."}</p>
+    <p class="ex__sarcina">${date.sarcina || "Pentru fiecare temă, alege nivelul actual. Răspunsurile nu se notează și nu sunt vizibile colegilor. Și prima coloană, bifată peste tot, este un răspuns valid."}</p>
     <div class="aev">
       <div class="aev__cap"><span></span>${NIVELE.map(n =>
         `<span class="aev__h">${n}</span>`).join("")}</div>
@@ -555,13 +555,13 @@ C.autoevaluare = (gazda, date) => {
     gazda.querySelectorAll(".aev__b").forEach(x => x.disabled = true);
     const medie = ales.reduce((a, b) => a + b, 0) / T.length;
     out.innerHTML = medie < 1
-      ? "<b>Mulțumesc.</b> Pornim de la început, exact cum trebuie."
+      ? "<b>Mulțumim.</b> Cursul pornește de la noțiunile de bază."
       : medie < 2
-        ? "<b>Mulțumesc.</b> Ai pe unde să te agăți, restul construim împreună."
-        : "<b>Mulțumesc.</b> O să ai de lucru pe partea de flux, nu pe sintaxă.";
+        ? "<b>Mulțumim.</b> Există deja o bază; restul se construiește pe parcursul cursului."
+        : "<b>Mulțumim.</b> Accentul cursului cade pe fluxul de lucru, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=69");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=73");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -613,9 +613,9 @@ C.arbore = (gazda, date) => {
         }).join("")}
       </div>
       ${date.legenda ? `<p class="trb__leg">
-         <span class="trb__lc">list</span>se poate schimba
-         <span class="trb__lc trb__lc--i">tuple</span>nu se poate schimba</p>` : ""}
-      <div class="trb__i"><h5>${date.titlu || "Apasă pe orice tip"}</h5>
+         <span class="trb__lc">list</span>se poate modifica
+         <span class="trb__lc trb__lc--i">tuple</span>nu se poate modifica</p>` : ""}
+      <div class="trb__i"><h5>${date.titlu || "Selectează un tip"}</h5>
         <p>${date.intro || ""}</p></div>
     </div>`;
 
@@ -709,10 +709,10 @@ C.asteptari = (gazda, date) => {
   const MIN = date.minim || 25;
 
   gazda.innerHTML = `
-    <p class="ex__sarcina">${date.sarcina || "Două-trei rânduri. Le citesc pe toate."}</p>
+    <p class="ex__sarcina">${date.sarcina || "Două-trei rânduri. Toate răspunsurile sunt citite de profesor."}</p>
     <div class="ast">
       <textarea class="ast__t" rows="4" maxlength="600" spellcheck="true"
-        placeholder="${date.exemplu || "De exemplu: vreau să pot lua singur date de pe un site și să le pun cap la cap, fără să aștept pe cineva."}"></textarea>
+        placeholder="${date.exemplu || "De exemplu: vreau să pot colecta singur date de pe un site și să le combin, fără să depind de altcineva."}"></textarea>
       <div class="ast__jos"><span class="ast__nr">0</span>
         <button class="btn btn--mic btn--tare" data-rol="trimite" type="button" disabled>Trimite</button></div>
     </div>
@@ -732,13 +732,13 @@ C.asteptari = (gazda, date) => {
 
   bt.onclick = async () => {
     bt.disabled = true; t.disabled = true;
-    out.innerHTML = `<b>Mulțumesc.</b> ${date.multumesc
-      || "Le citesc pe toate înainte de cursul următor."}`;
+    out.innerHTML = `<b>Mulțumim.</b> ${date.multumesc
+      || "Răspunsurile sunt citite înainte de cursul următor."}`;
     /* textul însuși ajunge și la poartă (legat de ora pornită), ca profesorul
        să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
     poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=69");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=73");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

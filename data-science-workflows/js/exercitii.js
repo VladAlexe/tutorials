@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=69";
+import { salveazaCod } from "./colectare.js?v=73";
 
 const E = {};
 
@@ -115,8 +115,8 @@ function legaIndiciu(gazda, nivele){
   };
 }
 function stareSalvare(salvat, gazda){
-  if (gazda.closest(".ix")?.classList.contains("liber")) return "Exercițiu de încercat: nu se notează.";
-  return salvat ? "Rezolvare înregistrată." : "Nu e înregistrată: nu ești autentificat.";
+  if (gazda.closest(".ix")?.classList.contains("liber")) return "Exercițiu facultativ: nu se notează.";
+  return salvat ? "Rezolvare înregistrată." : "Rezolvarea nu a fost înregistrată: nu ești autentificat.";
 }
 function sarbatoare(gazda){
   const ix = gazda.closest(".ix") || gazda;
@@ -175,8 +175,16 @@ function consolaDate(z){
   const file = [
     ["head", `${nume}.head()`], ["columns", `${nume}.columns`],
     ["dtypes", `${nume}.dtypes`], ["shape", `${nume}.shape`],
-    ["ce", "ce înseamnă"]
+    ["ce", "descriere"]
   ];
+
+  if (z.simplu) return `<div class="cns cns--simplu">
+    <div class="cns__cap">
+      <span class="cns__f">${esc(nume)}.head()</span>
+      <span class="cns__m">${z.randuri ? z.randuri.toLocaleString("ro-RO") + " rânduri × " : ""}${col.length} coloane</span>
+    </div>
+    <div class="cns__v">${vederi.head}</div>
+  </div>`;
 
   return `<div class="cns">
     <div class="cns__cap">
@@ -276,7 +284,7 @@ E.cod = (gazda, d) => {
     const tot = bune === goluri.length;
     out.innerHTML = tot
       ? `<b>Corect.</b> ${d.laBine || ""}`
-      : `<b>${bune} din ${goluri.length}.</b> ${d.laRau || "Golurile roșii nu sunt încă bune."}`;
+      : `<b>${bune} din ${goluri.length}.</b> ${d.laRau || "Câmpurile marcate cu roșu nu sunt încă corecte."}`;
     btN.hidden = tot;
     if (tot){
       btV.disabled = true;
@@ -342,8 +350,8 @@ E.ordine = (gazda, d) => {
   }
   deseneaza();
   legaIndiciu(gazda, () => [
-    d.indiciu || "Întreabă-te: ce trebuie să existe înainte ca linia asta să poată rula?",
-    `Prima linie e: <code>${esc(d.linii[0])}</code>`
+    d.indiciu || "Ce trebuie să existe înainte ca o linie să poată rula?",
+    `Prima linie este: <code>${esc(d.linii[0])}</code>`
   ]);
 
   lista.addEventListener("click", e => {
@@ -364,7 +372,7 @@ E.ordine = (gazda, d) => {
     const poz = ordine.findIndex((k, p) => k !== p);
     const k = ordine[poz];
     const t = d.consecinte[k] ?? d.consecinte[String(k)];
-    return t ? `Pe locul ${poz + 1} ai pus <i>${esc(d.linii[k].split(":")[0])}</i>. ${t}` : "";
+    return t ? `Pe poziția ${poz + 1} se află <i>${esc(d.linii[k].split(":")[0])}</i>. ${t}` : "";
   }
   btV.onclick = async () => {
     const randuri = [...lista.querySelectorAll(".ord__r")];
@@ -378,7 +386,7 @@ E.ordine = (gazda, d) => {
     const tot = bune === n;
     out.innerHTML = tot
       ? `<b>Corect.</b> ${d.laBine || ""}`
-      : `<b>${bune} din ${n} pe locul lor.</b> ${consecinta() || d.laRau || "Mută-le pe celelalte."}`;
+      : `<b>${bune} din ${n} sunt la locul lor.</b> ${consecinta() || d.laRau || "Liniile marcate cu roșu nu sunt încă la locul lor."}`;
     btN.hidden = tot;
     if (tot){
       btV.disabled = true;
@@ -424,7 +432,7 @@ E.prezice = (gazda, d) => {
         <div class="ed__cod">${linii.map(l => coloreaza(l, lb) || "&nbsp;").join("\n")}</div>
       </div>
     </div>
-    <p class="pz__q">${d.intrebare || "Ce afișează?"}</p>
+    <p class="pz__q">${d.intrebare || "Ce afișează codul?"}</p>
     <div class="pz__v">${(d.variante || []).map((v, i) =>
       `<button type="button" class="pz__b" data-i="${i}"><code>${esc(v)}</code></button>`).join("")}</div>
     <div class="ex__jos">
@@ -438,7 +446,7 @@ E.prezice = (gazda, d) => {
   const out = gazda.querySelector(".ex__raspuns");
   const ex  = gazda.querySelector(".ex__ex");
   const st  = gazda.querySelector(".ex__stare");
-  legaIndiciu(gazda, [d.indiciu || "Citește rândul cu print și întreabă-te ce tip are valoarea dinăuntru."]);
+  legaIndiciu(gazda, [d.indiciu || "Pornește de la rândul cu print: ce tip are valoarea transmisă funcției?"]);
   let incercari = 0;
   gazda.querySelectorAll(".pz__b").forEach(b => b.onclick = async () => {
     if (gazda.closest(".ix")?.classList.contains("gata")) return;
@@ -447,11 +455,11 @@ E.prezice = (gazda, d) => {
     b.classList.add(ok ? "bun" : "rau");
     if (!ok){
       b.disabled = true;
-      out.innerHTML = `<b>Nu chiar.</b> ${d.laRau || "Mai încearcă: uită-te încă o dată la tipuri."}`;
+      out.innerHTML = `<b>Nu încă.</b> ${d.laRau || "Verifică din nou tipurile valorilor."}`;
       return;
     }
     gazda.querySelectorAll(".pz__b").forEach(x => x.disabled = true);
-    out.innerHTML = `<b>${incercari === 1 ? "Din prima!" : "Corect."}</b> ${d.laBine || ""}`;
+    out.innerHTML = `<b>${incercari === 1 ? "Corect, la prima încercare." : "Corect."}</b> ${d.laBine || ""}`;
     ex.classList.add("vazut");
     ex.innerHTML = d.explicatie || "";
     arataIesire(gazda, d.iesire ?? d.variante[d.corect]);
@@ -571,7 +579,7 @@ E.pas = (gazda, d) => {
         <span class="ps-v__n">${esc(n)}</span>
         <span class="ps-v__t ${TIP_CLS[sp.t] || ""}">${esc(sp.e || sp.t)}</span>
         <span class="ps-v__v">${valoareHTML(sp, p.hl?.var === n ? p.hl.k : undefined)}</span>
-      </div>`).join("") : `<p class="ps__gol">${i < 0 ? "Încă nimic: apasă ▶ și rulăm primul rând." : "Rândul ăsta n-a creat nimic nou."}</p>`;
+      </div>`).join("") : `<p class="ps__gol">${i < 0 ? "Memoria este goală. Apasă ▶ pentru a rula primul rând." : "Acest rând nu a creat nicio variabilă."}</p>`;
     $(".ps__out").textContent = out.join("\n");
     $(".ps__txt").innerHTML = i < 0 ? (d.intro || "Rulează rând cu rând și urmărește ce apare în memorie și la ieșire.")
                                     : `<b>Rândul ${p.l}.</b> ${p.txt || ""}`;
@@ -617,7 +625,11 @@ E.sortare = (gazda, d) => {
         <span class="srt__cd">${esc(c.d || "")}</span>
         <div class="srt__in"></div></div>`).join("")}
     </div>
-    ${cadruJos()}`;
+    ${cadruJos("Verifică")}`;
+  /* sortarea nu e exercițiu de cod: butonul de indiciu apare doar dacă
+     exercițiul are unul */
+  if (d.indiciu) legaIndiciu(gazda, [d.indiciu]);
+  else { const bi = gazda.querySelector('[data-rol="indiciu"]'); if (bi) bi.hidden = true; }
 
   const banc = gazda.querySelector("#banc");
   const cosuri = [...gazda.querySelectorAll(".srt__c")];
@@ -670,7 +682,7 @@ E.sortare = (gazda, d) => {
       if (ok) bune++;
     });
     const tot = bune === d.elemente.length;
-    out.innerHTML = tot ? `<b>Tot corect.</b> ${d.laBine || ""}`
+    out.innerHTML = tot ? `<b>Corect.</b> ${d.laBine || ""}`
                         : `<b>${bune} din ${d.elemente.length}.</b> ${d.laRau || ""}`;
     btN.hidden = tot;
     if (tot){
@@ -709,7 +721,7 @@ E.dovada = (gazda, d) => {
         <div class="dov__cmd"><code>${esc(p.cmd)}</code>
           <button class="dov__copie" data-c="${i}" type="button">copiază</button></div>
         <input class="dov__in" data-i="${i}" spellcheck="false" autocomplete="off"
-          placeholder="${esc(p.gol || "lipește aici ce a scris terminalul")}">
+          placeholder="${esc(p.gol || "lipește aici ieșirea din terminal")}">
         <p class="dov__aj" data-a="${i}"></p>
       </div>`).join("")}</div>
     ${cadruJos()}`;
@@ -719,7 +731,7 @@ E.dovada = (gazda, d) => {
   const out = gazda.querySelector(".ex__raspuns");
   const ex  = gazda.querySelector(".ex__ex");
   const st  = gazda.querySelector(".ex__stare");
-  btN.textContent = "Mai încerc";
+  btN.textContent = "Încearcă din nou";
 
   gazda.querySelectorAll(".dov__copie").forEach(b => b.onclick = async () => {
     try { await navigator.clipboard.writeText(d.pasi[+b.dataset.c].cmd);
@@ -738,12 +750,12 @@ E.dovada = (gazda, d) => {
       camp.classList.toggle("bun", ok); camp.classList.toggle("rau", !ok);
       sem.textContent = ok ? "✓" : (val ? "✕" : "—");
       sem.className = `dov__s ${ok ? "bun" : val ? "rau" : ""}`;
-      aj.textContent = ok ? "" : (val ? (p.daca_nu || "Nu pare să fie ieșirea comenzii de mai sus.") : "");
+      aj.textContent = ok ? "" : (val ? (p.daca_nu || "Textul nu corespunde ieșirii comenzii de mai sus.") : "");
       aj.classList.toggle("vazut", !ok && !!val);
       if (ok) bune++;
     });
     const tot = bune === d.pasi.length;
-    out.innerHTML = tot ? `<b>Gata.</b> ${d.laBine || ""}`
+    out.innerHTML = tot ? `<b>Toate ieșirile corespund.</b> ${d.laBine || ""}`
                         : `<b>${bune} din ${d.pasi.length}.</b> ${d.laRau || ""}`;
     btN.hidden = tot;
     if (tot){
@@ -753,8 +765,8 @@ E.dovada = (gazda, d) => {
       gata(gazda, id);
       const salvat = await salveazaCod({ exercitiuId:id, trecut:true,
         cod:[...gazda.querySelectorAll(".dov__in")].map(x => x.value).join(" ⏎ ") });
-      st.textContent = salvat ? "Înregistrat. Apare la mine în panou."
-                              : "Nu e înregistrat: nu ești autentificat.";
+      st.textContent = salvat ? "Rezolvare înregistrată. Apare în panoul profesorului."
+                              : "Rezolvarea nu a fost înregistrată: nu ești autentificat.";
       st.classList.add("vazut");
     }
   };

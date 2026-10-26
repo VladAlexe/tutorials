@@ -21,11 +21,11 @@
 
    Pornire, din pagina lecției:
 
-     import { porneste } from "../js/slide.js?v=69";
+     import { porneste } from "../js/slide.js?v=73";
      porneste({ capitol:"c1", lectie:"c1-introducere-si-mediu" });
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=69";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=73";
 
 const SVG = {
   gata:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
@@ -112,23 +112,23 @@ export async function porneste({ capitol, lectie }){
   ["verif:raspuns", "poarta:gata"].forEach(nume =>
     document.addEventListener(nume, ev => {
       reinnoieste(); salveaza();
-      import(`${RADACINA}/js/sesiune.js?v=69`)
+      import(`${RADACINA}/js/sesiune.js?v=73`)
         .then(s => s.jurnal(nume === "poarta:gata" ? "cod" : "raspuns", ev.detail))
         .catch(() => {});
     }));
 
   /* până aflăm dacă ora e pornită, ce se salvează e lucru de unul singur */
-  import(`${RADACINA}/js/colectare.js?v=69`)
+  import(`${RADACINA}/js/colectare.js?v=73`)
     .then(m => m.setContext("lectie")).catch(() => {});
 
   /* urmărirea sesiunii: de aici știu, la oră, unde a ajuns fiecare */
-  import(`${RADACINA}/js/sesiune.js?v=69`)
+  import(`${RADACINA}/js/sesiune.js?v=73`)
     .then(s => s.porneste({ capitol, total:N }))
     .catch(() => { /* fără cont, nu se urmărește nimic */ });
 
   /* profesorul navighează liber, ca să poată arăta orice slide la clasă */
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=69`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=73`);
     const p = await profil();
     stare.profesor = !!p.profesor;
     if (stare.profesor){
@@ -142,7 +142,7 @@ export async function porneste({ capitol, lectie }){
   /* ora condusă: profesorul publică slide-ul lui, studenții sar după el.
      Dacă modulul nu pornește (fără cont, fără rețea), lecția merge la fel. */
   try {
-    const R = await import(`${RADACINA}/js/ritm.js?v=69`);
+    const R = await import(`${RADACINA}/js/ritm.js?v=73`);
     ritm = await R.porneste({
       capitol, total:N,
       esteProfesor: stare.profesor,
@@ -160,7 +160,7 @@ export async function porneste({ capitol, lectie }){
            mod: cât ora e deschisă, ei sunt pe slide-ul lui. */
         stare.tinut = !!viu && !stare.profesor;
         if (viu && !stare.profesor) stare.liber = true;  /* porțile nu mai au rost: el conduce */
-        import(`${RADACINA}/js/colectare.js?v=69`)
+        import(`${RADACINA}/js/colectare.js?v=73`)
           .then(m => m.setContext(viu ? "live" : "lectie"))
           .catch(() => {});
         reinnoieste();
@@ -209,7 +209,7 @@ export async function porneste({ capitol, lectie }){
   async function trimiteCeEInLucru(i){
     if (!stare.live || i == null || !slides[i]) return;
     let C;
-    try { C = await import(`${RADACINA}/js/colectare.js?v=69`); } catch { return; }
+    try { C = await import(`${RADACINA}/js/colectare.js?v=73`); } catch { return; }
 
     for (const v of slides[i].querySelectorAll(".verif:not(.raspuns)")){
       const id = v.dataset.id;
@@ -234,13 +234,13 @@ export async function porneste({ capitol, lectie }){
        poartă, e altceva: nu „n-ai terminat încă", ci „ne uităm toți la
        același lucru". De aceea mesajul e altul, și nu te duce înapoi. */
     if (!fortat && stare.tinut){
-      spune("Ora e condusă. Slide-ul se schimbă de la catedră.");
+      spune("Ora este condusă de profesor, care schimbă slide-urile.");
       return;
     }
 
     if (!fortat && !permis(j)){
       const b = blocaj();
-      spune(`Slide-ul ${j + 1} se deschide după verificarea de la slide-ul ${b + 1}.`);
+      spune(`Slide-ul ${j + 1} se deschide după sarcina de la slide-ul ${b + 1}.`);
       if (stare.i !== b) mergi(b);
       return;
     }
@@ -310,9 +310,9 @@ export async function porneste({ capitol, lectie }){
       <span class="stare__gol"></span>
       <span class="stare__c stare__verif"></span>
       <button class="stare__c stare__liber" type="button" hidden
-              title="Profesor: trece peste porți">porți: închise</button>
+              title="Profesor: dezactivează porțile">porți: închise</button>
       <span class="stare__c stare__poz"></span>
-      <button class="stare__c" type="button" id="btn-plt">${SVG.caut}<span>sari la…</span></button>`;
+      <button class="stare__c" type="button" id="btn-plt">${SVG.caut}<span>salt la…</span></button>`;
     document.body.appendChild(bara);
 
     /* --- comanda de sus ---------------------------------------------------
@@ -354,16 +354,16 @@ export async function porneste({ capitol, lectie }){
     plt.className = "plt";
     plt.hidden = true;
     plt.innerHTML = `
-      <div class="plt__cutie" role="dialog" aria-label="Sari la slide">
+      <div class="plt__cutie" role="dialog" aria-label="Salt la slide">
         <div class="plt__cauta">${SVG.caut}
           <input type="text" placeholder="Numărul slide-ului sau un cuvânt din titlu…"
                  autocomplete="off" spellcheck="false"></div>
         <div class="plt__lista"></div>
         <div class="plt__jos">
-          <span><kbd>↑</kbd><kbd>↓</kbd> alegi</span>
-          <span><kbd>Enter</kbd> mergi</span>
-          <span><kbd>Esc</kbd> închizi</span>
-          <span>oriunde: tastează un număr</span>
+          <span><kbd>↑</kbd><kbd>↓</kbd> selectare</span>
+          <span><kbd>Enter</kbd> deschidere</span>
+          <span><kbd>Esc</kbd> închidere</span>
+          <span>în orice moment: tastează numărul slide-ului</span>
         </div>
       </div>`;
     document.body.appendChild(plt);
@@ -414,7 +414,7 @@ export async function porneste({ capitol, lectie }){
         <span class="pasi__gol"></span>
         <span class="pas__nota" hidden></span>
         <button class="pas pas--tare pas--inainte" type="button">
-          <span>${i === N - 1 ? "Termină lecția" : "Înainte"}</span>${SVG.dreapta}</button>`;
+          <span>${i === N - 1 ? "Încheie lecția" : "Înainte"}</span>${SVG.dreapta}</button>`;
       s.appendChild(nav);
       nav.querySelector(".pas--inapoi").onclick = () => mergi(i - 1);
       nav.querySelector(".pas--inainte").onclick = () => {
@@ -451,17 +451,17 @@ export async function porneste({ capitol, lectie }){
         /* numim lucrul după ce e: verificare, exercițiu, sau amândouă */
         const nQ = s.querySelectorAll(".verif").length;
         const nC = s.querySelectorAll(".ix.exc:not(.liber)").length;
-        const cuv = nQ && nC ? ["sarcinile de mai sus", "Sarcinile de mai sus sunt făcute."]
-                  : nC       ? (nC > 1 ? ["exercițiile de mai sus", "Exercițiile sunt făcute."]
-                                       : ["exercițiul de mai sus", "Exercițiul e făcut."])
-                             : (nQ > 1 ? ["verificările de mai sus", "Verificările sunt făcute."]
-                                       : ["verificarea de mai sus", "Verificarea e făcută."]);
-        p.querySelector(".poarta__t").textContent = ok ? cuv[1] : `Termină ${cuv[0]}.`;
+        const cuv = nQ && nC ? ["sarcinile de mai sus", "Sarcinile de mai sus sunt rezolvate."]
+                  : nC       ? (nC > 1 ? ["exercițiile de mai sus", "Exercițiile sunt rezolvate."]
+                                       : ["exercițiul de mai sus", "Exercițiul este rezolvat."])
+                             : (nQ > 1 ? ["verificările de mai sus", "Verificările sunt completate."]
+                                       : ["verificarea de mai sus", "Verificarea este completată."]);
+        p.querySelector(".poarta__t").textContent = ok ? cuv[1] : `Completează ${cuv[0]}.`;
         p.querySelector(".poarta__d").textContent = ok
-          ? "Poți merge mai departe. Ce ai făcut rămâne înregistrat."
+          ? "Poți trece la slide-ul următor. Rezolvarea rămâne înregistrată."
           : nC && !nQ
-            ? "Rezolvă-l și apasă Rulează. Dacă te blochezi, ai butonul Indiciu."
-            : "Nu contează dacă nimerești varianta corectă din prima; contează să te oprești aici. Explicația apare după ce alegi.";
+            ? "Apasă Rulează pentru verificare. Butonul Indiciu oferă o sugestie."
+            : "Pentru a trece mai departe este suficient un răspuns, nu neapărat cel corect. Explicația apare după alegere.";
       }
       const inainte = s.querySelector(".pas--inainte");
       const inapoi  = s.querySelector(".pas--inapoi");
@@ -474,10 +474,10 @@ export async function porneste({ capitol, lectie }){
       inapoi.disabled = i === 0;
       inainte.disabled = !poate;
       nota.hidden = stare.tinut ? false : poate;
-      if (stare.tinut) nota.textContent = "Ora e condusă. Slide-ul se schimbă de la catedră.";
+      if (stare.tinut) nota.textContent = "Ora este condusă de profesor, care schimbă slide-urile.";
       else if (!poate) nota.textContent = g.toate > 1
-        ? "Cele de mai sus deschid slide-ul următor."
-        : "Sarcina de mai sus deschide slide-ul următor.";
+        ? "Sarcinile de mai sus deblochează slide-ul următor."
+        : "Sarcina de mai sus deblochează slide-ul următor.";
     });
 
     const v = totalVerif();
@@ -525,7 +525,7 @@ export async function porneste({ capitol, lectie }){
         <span class="n">${x.i + 1}</span><span class="t">${x.t}</span>
         <span class="g">${et}</span></button>`;
     }).join("") : `<div style="padding:14px;color:var(--text-3);font-family:var(--sans);
-        font-size:13.5px">Nimic cu „${q}".</div>`;
+        font-size:var(--t2)">Niciun slide nu conține „${q}”.</div>`;
   }
 
   function alege(d){
@@ -544,8 +544,8 @@ export async function porneste({ capitol, lectie }){
     el.bLiber.onclick = () => {
       if (!stare.profesor) return;
       stare.liber = !stare.liber; reinnoieste();
-      spune(stare.liber ? "Porțile sunt deschise. Doar pentru tine, pe calculatorul ăsta."
-                        : "Porțile sunt închise, ca la studenți.");
+      spune(stare.liber ? "Porțile sunt deschise doar pentru tine, pe acest calculator."
+                        : "Porțile sunt închise, ca pentru studenți.");
     };
 
     el.plt.addEventListener("click", ev => {
@@ -634,11 +634,11 @@ export async function porneste({ capitol, lectie }){
     ceasSalv = setTimeout(async () => {
       const id = slides[stare.i].id;
       try {
-        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=69`);
+        const { marcheazaSectiune } = await import(`${RADACINA}/js/colectare.js?v=73`);
         await marcheazaSectiune(`${capitol}/${id}`);
       } catch {}
       try {
-        const s = await import(`${RADACINA}/js/sesiune.js?v=69`);
+        const s = await import(`${RADACINA}/js/sesiune.js?v=73`);
         s.laSlide({ slide:id, nr:stare.i + 1, total:N });
       } catch {}
     }, 900);

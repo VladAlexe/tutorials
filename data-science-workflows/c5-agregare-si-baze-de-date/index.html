@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 5. Agregare și baze de date · Fluxuri de lucru</title>
 <meta name="description" content="Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.">
-<link rel="stylesheet" href="../css/fonturi.css?v=69">
-<link rel="stylesheet" href="../css/sistem.css?v=69">
-<link rel="stylesheet" href="../css/intrare.css?v=69">
-<script src="../js/tema.js?v=69"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=73">
+<link rel="stylesheet" href="../css/sistem.css?v=73">
+<link rel="stylesheet" href="../css/intrare.css?v=73">
+<script src="../js/tema.js?v=73"></script>
 </head>
 <body>
 
@@ -35,40 +35,30 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 5 din 8</p>
     <h1>Agregare și baze de date</h1>
-    <p class="deck">Ai mai multe tabele curate. Azi devin unul singur, și pleacă dintr-un folder într-un loc din care se poate întreba.</p>
-    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce o facem la oră.
-    Până atunci poți citi ce urmează, mai jos.</p>
+    <p class="deck">Tabelele curățate se unesc într-unul singur, care trece apoi dintr-un folder într-o bază de date ce poate fi interogată.</p>
+    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
+    Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--despre">
     <p class="sec__et">Despre</p>
-    <div class="sec__corp"><p>Până acum fiecare sursă a stat în fișierul ei: SCI într-unul, indicatorii
-Băncii Mondiale în altul, ce ați adus de la Eurostat în al treilea. Merge cât
-timp te uiți la ele pe rând. În momentul în care vrei să spui ceva de forma
-„țările cu legătură socială puternică au și X”, îți trebuie un singur tabel.</p>
-<p>Unirea tabelelor pare o operație tehnică și e, de fapt, o decizie de
-cercetare: ce păstrezi când o sursă n-are o țară pe care cealaltă o are.
-Fiecare fel de join e un răspuns diferit la întrebarea asta, iar răspunsul
-schimbă câte rânduri rămân în analiză. Jumătate din oră o petrecem acolo,
-inclusiv la cele două capcane care nu dau nicio eroare: chei care nu se
-potrivesc, și rânduri care se înmulțesc pe tăcute.</p>
-<p>A doua jumătate mută rezultatul dintr-un CSV într-un Postgres pe Neon. Nu
-pentru că e mai modern, ci pentru că din momentul în care lucrați mai mulți pe
-aceleași date, fișierul devine problema.</p></div>
+    <div class="sec__corp"><p>Până acum fiecare sursă a fost păstrată în fișierul ei: SCI într-unul, indicatorii Băncii Mondiale în altul, datele de la Eurostat în al treilea. Separarea funcționează cât timp sursele sunt analizate pe rând. Pentru o afirmație de forma „țările cu legătură socială puternică au și X” este nevoie de un singur tabel.</p>
+<p>Unirea tabelelor pare o operație tehnică, dar este o decizie de cercetare: ce se păstrează când o sursă nu conține o țară prezentă în cealaltă. Fiecare tip de join oferă un alt răspuns la această întrebare, iar răspunsul determină câte rânduri rămân în analiză. Prima parte a orei tratează aceste decizii, inclusiv două probleme care nu generează niciun mesaj de eroare: chei care nu se potrivesc și rânduri multiplicate fără avertisment.</p>
+<p>A doua parte mută rezultatul dintr-un fișier CSV într-o bază Postgres pe Neon. Motivul nu este noutatea tehnologiei: atunci când mai multe persoane lucrează pe aceleași date, fișierul partajat devine o sursă de probleme.</p></div>
   </section>
   <section class="sec sec--obiective">
-    <p class="sec__et">La final vei putea</p>
+    <p class="sec__et">La finalul lecției vei putea</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Să spui, înainte să scrii codul, dacă vrei mai multe rânduri sau mai multe coloane, și deci dacă e <code>concat</code> sau <code>merge</code>.</li>
-<li>Să alegi între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code> după ce vrei să păstrezi, nu după ce ți-a rămas în minte.</li>
-<li>Să recunoști un join care ți-a înmulțit rândurile, și să-l oprești cu <code>validate</code>.</li>
-<li>Să numeri cheile comune înainte de îmbinare, în loc să te întrebi după de ce tabelul e gol.</li>
-<li>Să răspunzi, într-o propoziție, la întrebarea „ce e un rând în tabelul nostru final”.</li>
-<li>Să agregi de la o unitate la alta, știind că alegerea dintre sumă, medie și număr de parteneri e teoretică, nu tehnică.</li>
-<li>Să explici de ce o echipă de trei oameni are nevoie de o bază de date, și de ce mărimea datelor n-are legătură cu asta.</li>
-<li>Să te conectezi la Neon din Python fără să scrii parola nicăieri în cod.</li>
-<li>Să scrii tabelul în bază cu o cheie primară, și să-l citești înapoi.</li>
-<li>Să scrii un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code>, și să știi când e mai bine acolo decât în pandas.</li>
+<li>Să stabilești, înainte de a scrie codul, dacă rezultatul trebuie să aibă mai multe rânduri sau mai multe coloane, deci dacă operația este <code>concat</code> sau <code>merge</code>.</li>
+<li>Să alegi între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code> în funcție de rândurile care trebuie păstrate.</li>
+<li>Să recunoști un join care a multiplicat rândurile și să îl previi cu <code>validate</code>.</li>
+<li>Să numeri cheile comune înainte de îmbinare, pentru a evita un tabel rezultat gol.</li>
+<li>Să răspunzi, într-o propoziție, la întrebarea „ce reprezintă un rând în tabelul final”.</li>
+<li>Să agregi de la o unitate la alta, știind că alegerea dintre sumă, medie și număr de parteneri este teoretică, nu tehnică.</li>
+<li>Să explici de ce o echipă de cinci persoane are nevoie de o bază de date și de ce volumul datelor nu este criteriul decisiv.</li>
+<li>Să te conectezi la Neon din Python fără ca parola să apară în cod.</li>
+<li>Să scrii tabelul în bază, cu o cheie primară, și să îl citești înapoi.</li>
+<li>Să scrii un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code> și să știi când interogarea SQL este preferabilă prelucrării în pandas.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -77,43 +67,41 @@ aceleași date, fișierul devine problema.</p></div>
       <a class="mat__c" href="lectie/#1">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
-        <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
+        <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
       <a class="mat__c" href="../c4-curatarea-datelor/">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H6a3 3 0 0 0 0 6h3M15 7h3a3 3 0 0 1 0 6h-3M8 10h8"/></svg></span>
         <span class="mat__t">Lecția 4: curățarea</span>
-        <span class="mat__d">Fișierele de la care pornim azi</span>
+        <span class="mat__d">Fișierele de la care pornește lecția</span>
       </a>
     </div>
   </section>
   <section class="sec sec--nevoie">
-    <p class="sec__et">De ce ai nevoie, înainte</p>
-    <div class="sec__corp"><p>Prima jumătate merge cu ce aveți deja. Pentru a doua vă trebuie un cont, care
-e gratuit:</p>
+    <p class="sec__et">Pregătire</p>
+    <div class="sec__corp"><p>Prima parte se poate parcurge cu ce este deja instalat. A doua necesită un cont gratuit:</p>
 <ol>
-<li>Fișierele curate de la cursul 4, în <code>date/curat/</code>. Pe ele îmbinăm.</li>
-<li>Un cont pe <a class="leg" href="https://neon.com/" rel="noopener" target="_blank">Neon</a>, și un proiect nou. Planul gratuit e mai mult decât suficient.</li>
-<li>Două pachete: <code>pip install sqlalchemy psycopg[binary] python-dotenv</code>.</li>
-<li>Un fișier <code>.env</code> în rădăcina proiectului, și <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>
+<li>Fișierele curățate la cursul 4, în <code>date/curat/</code>, pe care se face îmbinarea.</li>
+<li>Un cont pe <a class="leg" href="https://neon.com/" rel="noopener" target="_blank">Neon</a> și un proiect nou. Planul gratuit este suficient.</li>
+<li>Trei pachete: <code>pip install sqlalchemy psycopg[binary] python-dotenv</code>.</li>
+<li>Un fișier <code>.env</code> în rădăcina proiectului, cu <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>
 </ol>
-<p>Dacă nu apucați să faceți contul până la curs, partea de pandas se poate urmări
-oricum; baza o puteți face după.</p></div>
+<p>Dacă contul nu este creat până la curs, partea de pandas poate fi urmărită oricum, iar baza de date poate fi configurată ulterior.</p></div>
   </section>
   <section class="sec sec--proiect">
-    <p class="sec__et">Ce adaugi la proiect</p>
+    <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li><code>agregare/uneste.py</code> — de la fișierele curate la un singur tabel, cu <code>how</code> scris explicit și cu numărul de rânduri tipărit înainte și după.</li>
-<li><code>baza/incarca.py</code> — tabelul în Neon, cu o cheie primară.</li>
-<li><code>baza/intrebari.sql</code> — un <code>select</code> al vostru, legat de întrebarea de cercetare.</li>
+<li><code>agregare/uneste.py</code>: de la fișierele curățate la un singur tabel, cu <code>how</code> scris explicit și cu numărul de rânduri afișat înainte și după îmbinare.</li>
+<li><code>baza/incarca.py</code>: încărcarea tabelului în Neon, cu o cheie primară.</li>
+<li><code>baza/intrebari.sql</code>: o interogare <code>select</code> proprie, legată de întrebarea de cercetare.</li>
 <li>În <code>decizii.md</code>: unitatea de analiză, într-o propoziție.</li>
 </ul>
 <p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca Mondială.</p></div>
+cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la Banca Mondială.</p></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -140,7 +128,7 @@ cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca 
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=69"), import("../js/ora.js?v=69"), import("../js/curs.js?v=69")]);
+    import("../js/auth.js?v=73"), import("../js/ora.js?v=73"), import("../js/curs.js?v=73")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -148,7 +136,7 @@ try {
       b.removeAttribute("hidden");
       /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
       const viu = await O.deschisa("c5");
-      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora e pornită"; }
+      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora este în desfășurare"; }
       /* altfel butonul pornește ora direct: nu alegi nicio grupă, cine are
          codul intră, iar fiecare student e deja în grupa lui din listă */
     }
@@ -168,7 +156,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=69"></script>
-<script type="module" src="../js/subsol.js?v=69"></script>
+<script type="module" src="../js/antet.js?v=73"></script>
+<script type="module" src="../js/subsol.js?v=73"></script>
 </body>
 </html>

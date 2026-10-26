@@ -23,7 +23,7 @@ from literatura import lecturi
 from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
 L = Lectie(6, "c6-analiza-exploratorie", "Analiza exploratorie",
-           "Privitul datelor înainte de a le modela: distribuții, relații, "
+           "Examinarea datelor înainte de modelare: distribuții, relații, "
            "categorii, hărți și grafice care induc în eroare.")
 sl = L.sl
 
@@ -111,7 +111,7 @@ def tab_ct():
         rd += f"<tr><th class=\"st\">{et}</th>"
         for t in ("slab", "mediu", "tare"):
             pc = CT[(g, t)] / rand[g]
-            tinta = "var(--ceas)" if g else "var(--accent)"
+            tinta = "var(--ambra)" if g else "var(--accent)"
             rd += (f'<td style="background:color-mix(in srgb,{tinta} {round(pc * 85)}%,var(--panza))'
                    f'{";color:var(--panza)" if pc > .5 else ""}">{CT[(g, t)]}'
                    f'<br><small>{round(pc * 100)}%</small></td>')
@@ -141,12 +141,12 @@ TOP = sorted(P, key=lambda p: -p["sci"])[0]
 # ===========================================================================
 
 AGENDA = [
-    ("Întrebările", "azi", "Ce vrem să aflăm, din cadrul de la cursul 3."),
-    ("O variabilă", "azi", "Distribuții, asimetrie, logaritm, top-uri."),
-    ("Două variabile", "azi", "Nor de puncte, corelații, și ce nu spun ele."),
-    ("Categorii și grupuri", "azi", "Tabelul de contingență, χ², grupuri comparate."),
-    ("Harta", "azi", "Comunitățile: cine e legat de cine, pe regiuni."),
-    ("Grafice care mint", "azi", "Axa tăiată, și alte feluri de a induce în eroare."),
+    ("Întrebările", "azi", "Întrebările care decurg din cadrul de la cursul 3."),
+    ("O variabilă", "azi", "Distribuții, asimetrie, logaritm, clasamente."),
+    ("Două variabile", "azi", "Norul de puncte, corelațiile și limitele lor."),
+    ("Categorii și grupuri", "azi", "Tabelul de contingență, testul χ², compararea grupurilor."),
+    ("Harta", "azi", "Comunitățile de regiuni din rețeaua SCI."),
+    ("Grafice înșelătoare", "azi", "Axa trunchiată și alte procedee care induc în eroare."),
 ]
 
 # Pașii pentru lecția 6, din caietele 05 (explorarea) și 06 (rețele).
@@ -154,27 +154,27 @@ AGENDA = [
 
 PAS_COADA = {
     "fisier": "05_explorare.ipynb · 1. Cum arată o pereche obișnuită?",
-    "intro": "Histograma și exercițiul de pe slide folosesc cele 263 de perechi de <b>țări</b> care au și migrație. Caietul 05 lucrează pe perechi de <b>regiuni</b>: 44.253, de 168 de ori mai multe. Aceeași formă, cu altă unitate.",
+    "intro": "Histograma și exercițiul de pe slide folosesc cele 263 de perechi de <b>țări</b> pentru care există și date de migrație. Caietul 05 lucrează pe perechi de <b>regiuni</b>: 44.253, de 168 de ori mai multe. Distribuția are aceeași formă, la o altă unitate de analiză.",
     "cod": "perechi[\"sci\"].describe().round(0)\n\n"
            "perechi.nlargest(1, \"sci\")\n\n"
            "log_sci = np.log10(perechi[\"sci\"])\n"
            "log_sci.describe().round(2)",
     "pasi": [
         {"l": 1, "out": "count      44253.0\nmean       10254.0\nstd        62609.0\nmin            1.0\n25%          495.0\n50%         1233.0\n75%         3075.0\nmax      4001835.0",
-         "txt": "Media e de opt ori mediana. Trei sferturi din perechi sunt sub 3.075, dar maximul trece de patru milioane. Coada e foarte lungă."},
+         "txt": "Media este de opt ori mai mare decât mediana. Trei sferturi din perechi sunt sub 3.075, iar maximul depășește patru milioane: distribuția are o coadă foarte lungă."},
         {"l": 3, "out": " regiune_1  regiune_2      sci\n NO07       NO0B       4001835",
-         "txt": "Cine e în vârful cozii? Nord-Norge și Svalbard. Svalbard, cu populația raportată 0 din C4: SCI e relativ, împărțit la numărul de utilizatori, deci câțiva oameni dau un indice uriaș."},
+         "txt": "Extremul cozii: Nord-Norge și Svalbard. Svalbard are populația raportată 0 în C4. SCI este o măsură relativă, împărțită la numărul de utilizatori, astfel încât câțiva utilizatori pot produce un indice foarte mare."},
         {"l": 5, "set": {"log_sci": {"t": "Series", "v": {"rows": [["HU11–RO11", "4.53"], ["RO11–RO12", "5.49"], ["NO07–NO0B", "6.60"], ["…", "…"]],
             "nota": "log10: 100 → 2, 1.000 → 3, 1.000.000 → 6"}}},
-         "txt": "<code>np.log10</code> numără zerourile: 34.160 devine 4,53, iar patru milioane devine 6,6. Distanțele uriașe dintre valori se strâng."},
+         "txt": "<code>np.log10</code> exprimă valorile în ordine de mărime: 34.160 devine 4,53, iar patru milioane devine 6,6. Diferențele foarte mari dintre valori se comprimă."},
         {"l": 6, "out": "count    44253.00\nmean         3.14\nstd          0.71\nmin          0.00\n25%          2.69\n50%          3.09\n75%          3.49\nmax          6.60",
-         "txt": "Pe logaritm, media (3,14) și mediana (3,09) aproape coincid: distribuția e aproape simetrică. De aici înainte lucrăm pe scara log, ca în caiet."},
+         "txt": "Pe scara logaritmică, media (3,14) și mediana (3,09) aproape coincid: distribuția este aproximativ simetrică. De aici înainte lucrăm pe scara logaritmică, ca în caiet."},
     ],
 }
 
 PAS_INTERVALE = {
-    "fisier": "05_explorare.ipynb · 3–4. H1 și H2",
-    "intro": "Un singur număr spune puțin. Tăiem distanța în intervale și ne uităm la mediana fiecăruia.",
+    "fisier": "05_explorare.ipynb · 3-4. H1 și H2",
+    "intro": "Un singur coeficient descrie puțin din relație. Împărțim distanța în intervale și calculăm mediana SCI în fiecare interval.",
     "cod": "print(perechi[\"distanta_km\"].corr(perechi[\"sci\"], method=\"spearman\"))\n\n"
            "praguri = [0, 100, 250, 500, 1000, 2000, 4000, np.inf]\n"
            "perechi[\"interval_km\"] = pd.cut(perechi[\"distanta_km\"], praguri)\n"
@@ -184,25 +184,25 @@ PAS_INTERVALE = {
            "        .median().unstack())",
     "pasi": [
         {"l": 1, "out": "-0.46460232789747474",
-         "txt": "Spearman, pe toate perechile: negativ, deci legăturile scad cu distanța. Dar cum scad? Un număr nu arată forma."},
+         "txt": "Coeficientul Spearman, calculat pe toate perechile, este negativ: legăturile scad cu distanța. Un singur coeficient nu arată însă forma acestei scăderi."},
         {"l": 3, "set": {"praguri": {"t": "list", "v": [0, 100, 250, 500, 1000, 2000, 4000, "inf"]}},
-         "txt": "Marginile intervalelor. <code>np.inf</code> e „infinit”: ultimul interval prinde tot ce trece de 4.000 km."},
+         "txt": "Limitele intervalelor. <code>np.inf</code> reprezintă infinitul: ultimul interval cuprinde toate distanțele de peste 4.000 km."},
         {"l": 4, "set": {"interval_km": {"t": "Series", "v": {"rows": [["…", "(250, 500]"], ["…", "(1000, 2000]"], ["…", "(500, 1000]"]],
             "nota": "o categorie pentru fiecare pereche"}}}, "sterge": ["praguri"],
-         "txt": "<code>pd.cut</code> transformă un număr într-o categorie: în ce interval cade. <code>(250, 500]</code> înseamnă peste 250, până la 500 inclusiv."},
+         "txt": "<code>pd.cut</code> transformă o valoare numerică într-o categorie: intervalul în care se încadrează. <code>(250, 500]</code> înseamnă peste 250 și cel mult 500."},
         {"l": 5, "out": "interval_km   size    median\n(0, 100]       223  242323.0\n(100, 250]    1445   31405.0\n(250, 500]    3972    3465.0\n(500, 1000]  10454    1593.5\n(1000, 2000] 16855    1095.0\n(2000, 4000]  9453     650.0\n(4000, inf]   1851     185.0",
-         "txt": "Forma: scade abrupt în primele sute de km, apoi tot mai încet. Între 0–100 și 250–500 km, mediana cade de 70 de ori; după 1.000 km abia se mai mișcă."},
+         "txt": "Mediana scade abrupt în primele sute de kilometri, apoi tot mai lent. Între 0-100 și 250-500 km scade de 70 de ori; după 1.000 km scade mult mai lent."},
         {"l": 7, "set": {"aceeasi_tara": {"t": "Series", "v": {"rows": [["HU11–RO11", "False"], ["RO11–RO12", "True"], ["…", "…"]],
             "nota": "2.385 de perechi din aceeași țară"}}},
-         "txt": "H2: o comparație dă o coloană de True și False. Nord-Vest și Centru sunt în aceeași țară, Budapesta nu."},
+         "txt": "H2: comparația produce o coloană de valori True și False. Nord-Vest și Centru sunt în aceeași țară; Budapesta nu."},
         {"l": 8, "out": "aceeasi_tara     False      True\ninterval_km\n(0, 100]       27814.0  317411.0\n(100, 250]      6492.5   99996.0\n(250, 500]      2370.0   36415.0\n(500, 1000]     1498.0   39067.5\n…",
-         "txt": "<code>unstack</code> întinde a doua grupare pe coloane. La 250–500 km, perechile din aceeași țară au o mediană de 15 ori mai mare. Granița contează, la orice distanță."},
+         "txt": "<code>unstack</code> mută al doilea nivel al grupării pe coloane. La 250-500 km, perechile din aceeași țară au o mediană de 15 ori mai mare. Granița de stat contează la orice distanță."},
     ],
 }
 
 PAS_RETEA = {
     "fisier": "06_retele.ipynb · 1. O rețea mică",
-    "intro": "Înainte de harta comunităților, o rețea de cinci noduri. Aceleași întrebări, numere pe care le verifici de mână.",
+    "intro": "Înainte de harta comunităților, o rețea de cinci noduri: aceleași întrebări, pe valori care se pot verifica manual.",
     "cod": "mica = nx.Graph()\n"
            "mica.add_weighted_edges_from([(\"A\", \"B\", 9), (\"A\", \"C\", 7), (\"B\", \"C\", 8),\n"
            "                              (\"C\", \"D\", 1), (\"D\", \"E\", 9)])\n\n"
@@ -211,15 +211,15 @@ PAS_RETEA = {
            "pd.DataFrame({\"legaturi\": legaturi, \"forta\": forta})",
     "pasi": [
         {"l": 1, "set": {"mica": {"t": "dict", "e": "Graph", "v": {}}},
-         "txt": "O rețea goală. În <code>networkx</code>, rețeaua ține minte pentru fiecare nod cu cine e legat."},
+         "txt": "O rețea goală. În <code>networkx</code>, rețeaua reține, pentru fiecare nod, nodurile cu care este legat."},
         {"l": 2, "set": {"mica": {"t": "dict", "e": "Graph", "v": {"A": {"B": 9, "C": 7}, "B": {"A": 9, "C": 8}, "C": {"A": 7, "B": 8, "D": 1}, "D": {"C": 1, "E": 9}, "E": {"D": 9}}}},
-         "txt": "Fiecare legătură e un triplet: două noduri și o pondere, ca la noi o pereche de regiuni și SCI-ul ei. Legătura merge în ambele sensuri."},
+         "txt": "Fiecare legătură este un triplet: două noduri și o pondere, analog unei perechi de regiuni și SCI-ului ei. Legătura este neorientată: merge în ambele sensuri."},
         {"l": 5, "set": {"legaturi": {"t": "dict", "v": {"A": 2, "B": 2, "C": 3, "D": 2, "E": 1}}}, "hl": {"var": "legaturi", "k": "C"},
-         "txt": "<code>degree()</code> numără legăturile. C are cele mai multe: trei."},
+         "txt": "<code>degree()</code> numără legăturile fiecărui nod (gradul). C are cele mai multe: trei."},
         {"l": 6, "set": {"forta": {"t": "dict", "v": {"A": 16, "B": 17, "C": 16, "D": 10, "E": 9}}}, "hl": {"var": "forta", "k": "C"},
-         "txt": "Cu <code>weight=</code>, adună ponderile: <b>forța</b>. C: 7 + 8 + 1 = 16, cât A, care are doar două legături. B, cu două legături tari, e cel mai puternic."},
+         "txt": "Cu <code>weight=</code>, se adună ponderile: rezultatul este <b>forța</b> nodului. C: 7 + 8 + 1 = 16, cât A, care are doar două legături. B, cu două legături puternice, are forța cea mai mare."},
         {"l": 7, "out": "   legaturi  forta\nA         2     16\nB         2     17\nC         3     16\nD         2     10\nE         1      9",
-         "txt": "În SCI, fiecare regiune e legată de toate celelalte, deci numărul de legături nu mai spune nimic. Rămâne forța. Iar o <b>comunitate</b> e un grup ca A, B, C: mai legați între ei decât cu restul. Pe asta o caută algoritmul de pe hartă."},
+         "txt": "În SCI, fiecare regiune este legată de toate celelalte, deci gradul nu mai diferențiază regiunile; relevantă rămâne forța. O <b>comunitate</b> este un grup de noduri ca A, B, C, mai puternic legate între ele decât cu restul rețelei. Algoritmul folosit pentru hartă identifică astfel de grupuri."},
     ],
 }
 
@@ -229,59 +229,61 @@ _EXPL = _json.loads((_pl.Path(__file__).resolve().parent.parent / "date" / "expl
 ROMANI = _EXPL["migratie"]["RO"]
 RAPORT = _EXPL["raportoare"]
 
-sl("s1", "Cursul", "Despre ce e ora de azi",
+sl("s1", "Cursul", "Planul lecției",
    "<h2>Analiza exploratorie</h2>"
-   "<p class=\"cheie\">Te uiți la date înainte să le crezi. Și înainte să le "
-   "modelezi.</p>"
-   + ix("agenda", "Ora de azi",
-        {"static": True, "titlu": "Ora de azi",
+   "<p class=\"cheie\">Datele se examinează înainte de a fi interpretate "
+   "și modelate.</p>"
+   + ix("agenda", "Planul lecției",
+        {"static": True, "titlu": "Planul lecției",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
-   + nota("Caietul de azi", "<code>05_explorare_si_ipoteze.ipynb</code> (distribuția, distanța, granița) și <code>06_retele_si_indicatori_regionali.ipynb</code> (rețeaua și comunitățile).", True),
+   + nota("Caietul lecției", "<code>05_explorare_si_ipoteze.ipynb</code> (distribuția, distanța, granița) și <code>06_retele_si_indicatori_regionali.ipynb</code> (rețeaua și comunitățile).", True),
    manual=
    "<h2>Analiza exploratorie</h2>"
-   "<p>Analiza exploratorie (EDA) e partea în care te uiți la date fără să "
-   "testezi încă nimic formal. Scopul e dublu: să vezi dacă datele sunt ce "
-   "crezi că sunt, și să vezi ce tipare merită apoi testate. Lucrăm pe trei "
-   "direcții: o variabilă, două variabile, și categorii.</p>"
-   f"<p>Toate graficele de mai jos sunt pe aceleași {N} perechi de țări: cele "
-   "pentru care avem și SCI-ul, și migrația în ambele direcții. E tabelul "
-   "făcut la cursurile 4 și 5.</p>"
-   + ix("agenda", "Ora de azi",
-        {"static": True, "titlu": "Ora de azi",
+   "<p>Analiza exploratorie a datelor (EDA) este etapa în care datele sunt "
+   "examinate înainte de orice testare formală. Are două scopuri: să "
+   "verificăm că datele corespund cu ceea ce presupunem despre ele și să "
+   "identificăm tiparele care merită testate ulterior. Lucrăm pe trei "
+   "direcții: o variabilă, două variabile și variabile categorice.</p>"
+   f"<p>Toate graficele de mai jos folosesc aceleași {N} perechi de țări, "
+   "cele pentru care avem atât SCI, cât și migrația în ambele direcții. Este "
+   "tabelul construit la cursurile 4 și 5.</p>"
+   + ix("agenda", "Planul lecției",
+        {"static": True, "titlu": "Planul lecției",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
-   + nota("Caietul de azi", "<code>05_explorare_si_ipoteze.ipynb</code> (distribuția, distanța, granița) și <code>06_retele_si_indicatori_regionali.ipynb</code> (rețeaua și comunitățile).", True))
+   + nota("Caietul lecției", "<code>05_explorare_si_ipoteze.ipynb</code> (distribuția, distanța, granița) și <code>06_retele_si_indicatori_regionali.ipynb</code> (rețeaua și comunitățile).", True))
 
 sl("s2", "Cursul", "Întrebările",
-   "<h2>Ce căutăm</h2>"
+   "<h2>Patru întrebări</h2>"
    + '<div class="reg">'
    + "".join(f'<div class="reg__c"><span class="reg__n">{i}</span><b>{t}</b><p>{d}</p></div>'
              for i, (t, d) in enumerate([
                  ("Legături × distanță", "perechile apropiate sunt mai legate?"),
                  ("Legături × migrație", "perechile cu mai mulți migranți sunt mai legate?"),
                  ("Legături × graniță", "vecinii sunt mai legați decât restul?"),
-                 ("Ce iese din tipar", "care perechi sunt mult peste sau sub ce ne-am aștepta?"),
+                 ("Abaterile de la tipar", "ce perechi sunt mult peste sau sub valoarea așteptată?"),
              ], 1))
    + "</div>"
    + nota("De unde vin",
-          "Din templul de la cursul 3: fiecare întrebare leagă doi piloni. EDA "
-          "nu le răspunde definitiv, doar arată dacă merită testate.", True)
+          "Din cadrul teoretic de la cursul 3 (templul): fiecare întrebare "
+          "leagă doi piloni. EDA nu oferă răspunsuri definitive; arată doar "
+          "ce merită testat.", True)
    + lecturi(["bailey2018", "bailey2020", "blondel2008"], "De unde vin ipotezele"),
    manual=
    "<h2>Întrebările, din cadru</h2>"
-   "<p>EDA fără întrebări devine o colecție de grafice. Întrebările de azi "
-   "vin din cadrul teoretic de la cursul 3, unde pilonii erau legăturile "
-   "(SCI), oamenii (migrația) și locul (distanța, granița).</p>"
+   "<p>Fără întrebări, EDA devine o simplă colecție de grafice. Întrebările "
+   "acestei lecții provin din cadrul teoretic de la cursul 3, ai cărui piloni "
+   "erau legăturile (SCI), oamenii (migrația) și locul (distanța, granița).</p>"
    "<ol>"
    "<li><em>Legături × loc:</em> perechile apropiate sunt mai legate?</li>"
    "<li><em>Legături × oameni:</em> perechile cu mai mulți migranți sunt mai legate?</li>"
    "<li><em>Legături × graniță:</em> vecinii sunt mai legați, la aceeași distanță?</li>"
-   "<li><em>Ce iese din tipar:</em> care perechi sunt mult peste sau sub ce ar "
-   "prezice distanța și migrația?</li>"
+   "<li><em>Abaterile de la tipar:</em> ce perechi sunt mult peste sau sub "
+   "valoarea prezisă de distanță și migrație?</li>"
    "</ol>"
    + nota("Ce nu face EDA",
-          "Nu dovedește nimic. Un tipar văzut într-un grafic e o ipoteză. La "
-          "cursul 7 o testăm cu un model, care ține cont de toate variabilele "
-          "deodată.")
+          "EDA nu dovedește nimic: un tipar observat într-un grafic rămâne o "
+          "ipoteză. La cursul 7 o testăm cu un model care ține cont simultan "
+          "de toate variabilele.")
    + lecturi(["bailey2018", "bailey2020", "blondel2008"], "De unde vin ipotezele"))
 
 
@@ -291,32 +293,35 @@ sl("s2", "Cursul", "Întrebările",
 
 HISTO = {
     "valori": [p["sci"] for p in P],
-    "txtLin": f"Aproape toate perechile stau în primele bare. Câteva, ca "
-              f"{TOP['t']} ({mii(TOP['sci'])}), trag axa spre dreapta.",
-    "txtLog": "Pe logaritm, distribuția se desface și devine aproape simetrică. "
-              "Diferențele de ordin de mărime devin distanțe egale.",
+    "txtLin": f"Aproape toate perechile se află în primele intervale. Câteva "
+              f"valori extreme, ca {TOP['t']} ({mii(TOP['sci'])}), întind axa "
+              f"spre dreapta.",
+    "txtLog": "Pe scara logaritmică, distribuția devine aproape simetrică: "
+              "fiecare ordin de mărime ocupă un interval egal pe axă.",
 }
 
 sl("s3", "O variabilă", "Coada lungă",
-   "<h2>Cum arată SCI-ul</h2>"
+   "<h2>Distribuția SCI</h2>"
    + ix("histo", f"SCI-ul celor {N} perechi", HISTO)
-   + nota("De ce logaritm",
-          "Când o variabilă se întinde pe mai multe ordine de mărime, "
-          "logaritmul compară proporții, nu diferențe: de zece ori mai mult "
-          "e mereu același pas.", True),
+   + nota("De ce logaritmul",
+          "Când o variabilă acoperă mai multe ordine de mărime, logaritmul "
+          "compară rapoarte, nu diferențe: o creștere de zece ori corespunde "
+          "mereu aceluiași pas.", True),
    manual=
    "<h2>Coada lungă</h2>"
-   "<p>Prima întrebare despre orice variabilă: cum e distribuită? Media și "
-   "abaterea standard spun ceva util doar dacă distribuția e cât de cât "
-   "simetrică. SCI-ul nu e: cele mai multe perechi au valori de câteva mii "
-   "sau zeci de mii, iar câteva au sute de mii.</p>"
+   "<p>Prima întrebare despre orice variabilă privește distribuția ei. Media "
+   "și abaterea standard sunt informative doar dacă distribuția este "
+   "aproximativ simetrică. Distribuția SCI nu este: cele mai multe perechi au "
+   "valori de ordinul miilor sau al zecilor de mii, iar câteva ajung la sute "
+   "de mii.</p>"
    + ix("histo", f"SCI-ul celor {N} perechi", HISTO)
-   + "<p>Asimetria (skew) măsoară cât de lungă e coada. Peste 1 e o asimetrie "
-     "puternică. Pe logaritm scade aproape de zero, de aceea modelul de la "
-     "cursul 7 folosește logaritmul SCI-ului, nu SCI-ul.</p>")
+   + "<p>Coeficientul de asimetrie (skewness) măsoară cât de lungă este coada "
+     "distribuției. O valoare peste 1 indică o asimetrie puternică. După "
+     "logaritmare, asimetria scade sub 0,5; de aceea modelul de la "
+     "cursul 7 folosește logaritmul SCI, nu valorile brute.</p>")
 
 sl("s4", "O variabilă", "Descrierea, în cod",
-   "<h2>Trei linii, un portret</h2>"
+   "<h2>Descrierea unei variabile</h2>"
    + ix("prezice", "Media și mediana", {
        "id": "c6-prezice-coada", "fisier": "05_explorare.ipynb · 1. O pereche obișnuită",
        "cod": "import pandas as pd\n\n"
@@ -325,17 +330,17 @@ sl("s4", "O variabilă", "Descrierea, în cod",
        "intrebare": "Ce afișează?",
        "variante": ["4.0 4.0", "22.8 4.0", "22.8 22.8", "4.0 22.8"],
        "corect": 1,
-       "indiciu": "Media adună tot și împarte la 5. Mediana e valoarea din mijloc, după sortare.",
-       "laBine": "O singură valoare uriașă trage media în sus; mediana nu se clintește.",
-       "explicatie": "Media e (2 + 3 + 4 + 5 + 100) / 5 = 22,8, mediana e 4. Când media e mult peste mediană, "
-                     "distribuția are coadă spre dreapta: exact ce are SCI-ul. De aceea raportăm mediana și "
-                     "lucrăm pe logaritm."})
-   + ix("pas", "Coada lungă, pe datele adevărate", PAS_COADA)
+       "indiciu": "Media este suma valorilor împărțită la 5. Mediana este valoarea din mijloc a șirului sortat.",
+       "laBine": "O singură valoare extremă ridică media; mediana rămâne neschimbată.",
+       "explicatie": "Media este (2 + 3 + 4 + 5 + 100) / 5 = 22,8, iar mediana este 4. Când media este mult peste "
+                     "mediană, distribuția are o coadă spre dreapta, cum este cazul SCI. De aceea raportăm mediana "
+                     "și lucrăm pe scara logaritmică."})
+   + ix("pas", "Coada lungă, pe datele reale", PAS_COADA)
    + ix("cod", "Descrie variabila", {
-       "id": "c6-cod-descrie", "indiciu": "Portretul complet al unei coloane numerice e o „descriere”: describe. Asimetria, în engleză „skewness”, e metoda skew. Logaritmul din numpy e np.log.",
+       "id": "c6-cod-descrie", "indiciu": "Statisticile descriptive ale unei coloane numerice se obțin cu metoda describe. Asimetria (în engleză, „skewness”) se calculează cu metoda skew. Logaritmul din numpy este np.log.",
        "iesire": "count       263.0\nmean      39432.6\n50%       15543.0\n...\n7.57\n0.49", "fisier": "eda/univariat.py",
-       "sarcina": "Descrie SCI-ul perechilor, măsoară asimetria, apoi "
-                  "compar-o cu cea a logaritmului.",
+       "sarcina": "Calculează statisticile descriptive ale SCI, măsoară "
+                  "asimetria și compar-o cu asimetria logaritmului.",
        "cod": "import numpy as np\nimport pandas as pd\n\n"
               "d = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n"
               "# media, mediana, quartilele, minimul, maximul\n"
@@ -349,39 +354,42 @@ sl("s4", "O variabilă", "Descrierea, în cod",
            "1": {"ok": ["describe"], "ajutor": "metoda"},
            "2": {"ok": ["skew"], "ajutor": "metoda"},
            "3": {"ok": ["log", "log10"], "ajutor": "funcția"}},
-       "laBine": "De la 7,6 la 0,5: logaritmul a făcut variabila aproape simetrică.",
-       "laRau": "Primele două sunt metode ale coloanei. A treia e funcția "
+       "laBine": "Asimetria scade de la 7,6 la 0,5: după logaritmare, variabila este aproape simetrică.",
+       "laRau": "Primele două sunt metode ale coloanei; a treia este funcția "
                 "numpy pentru logaritm.",
-       "explicatie": "Uită-te în <code>describe()</code> la medie și mediană. "
-                     "Media e mult peste mediană: semnul unei cozi spre "
-                     "dreapta, chiar înainte să calculezi asimetria."}),
+       "explicatie": "În rezultatul <code>describe()</code>, compară media cu "
+                     "mediana. O medie mult peste mediană indică o coadă spre "
+                     "dreapta, chiar înainte de calculul asimetriei."}),
    dupa=verif("c6-v1", 2,
-              "Media SCI-ului e de peste două ori mai mare decât mediana. Ce "
-              "îți spune asta?",
-              ["Că datele sunt greșite",
-               "Că jumătate din perechi au SCI zero",
-               "Că o coadă de valori foarte mari trage media în sus",
-               "Nimic, media și mediana sunt de obicei diferite"],
-              "Câteva perechi uriașe trag media în sus, mediana nu se mișcă. "
-              "Când diferența e mare, raportezi mediana sau lucrezi pe logaritm."))
+              "Media SCI este de peste două ori mai mare decât mediana. Ce "
+              "indică acest lucru?",
+              ["Datele sunt eronate",
+               "Jumătate din perechi au SCI zero",
+               "O coadă de valori foarte mari ridică media",
+               "Nimic: media și mediana diferă de obicei"],
+              "Câteva perechi cu valori foarte mari ridică media, în timp ce "
+              "mediana nu se modifică. Când diferența este mare, se raportează "
+              "mediana sau se lucrează pe scara logaritmică."))
 
-sl("s5", "O variabilă", "Top-uri",
-   "<h2>Primele zece, și capcana lor</h2>"
-   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia are cei mai mulți români din străinătate. Pe ce loc e printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "A șasea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI e împărțit la numărul de utilizatori, deci o țară mare cu o diasporă mare nu iese neapărat sus."}})
-   + nota("Un top depinde de ce numeri",
-          "După SCI, Moldova e prima. După numărul de români, Italia. Un top "
-          "spune ceva doar dacă știi ce măsoară.", True),
+sl("s5", "O variabilă", "Clasamente",
+   "<h2>Un clasament și limitele lui</h2>"
+   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia este țara cu cei mai mulți români stabiliți în străinătate. Pe ce loc se află printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "Pe locul al șaselea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI este normalizat la numărul de utilizatori, astfel că o țară mare, cu o diasporă numeroasă, nu ocupă neapărat un loc fruntaș."}})
+   + nota("Clasamentul depinde de măsură",
+          "După SCI, pe primul loc este Moldova; după numărul de români, "
+          "Italia. Un clasament se interpretează doar în raport cu ce "
+          "măsoară.", True),
    manual=
-   "<h2>Top-uri</h2>"
-   "<p>Un top e cel mai simplu grafic de explorare, și cel mai ușor de citit "
-   "greșit. Depinde de ce numeri: SCI-ul e o probabilitate relativă, deci "
-   "favorizează țările mici legate de România (Moldova). Numărul de "
-   "migranți favorizează țările mari în care au plecat mulți (Italia).</p>"
-   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia are cei mai mulți români din străinătate. Pe ce loc e printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "A șasea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI e împărțit la numărul de utilizatori, deci o țară mare cu o diasporă mare nu iese neapărat sus."}})
+   "<h2>Clasamente</h2>"
+   "<p>Clasamentul este cel mai simplu grafic exploratoriu și, totodată, cel "
+   "mai ușor de interpretat greșit. Rezultatul depinde de măsura aleasă: SCI "
+   "este o probabilitate relativă, deci favorizează țările mici puternic "
+   "legate de România (Moldova), în timp ce numărul de migranți favorizează "
+   "țările mari în care au emigrat mulți români (Italia).</p>"
+   + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia este țara cu cei mai mulți români stabiliți în străinătate. Pe ce loc se află printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "Pe locul al șaselea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI este normalizat la numărul de utilizatori, astfel că o țară mare, cu o diasporă numeroasă, nu ocupă neapărat un loc fruntaș."}})
    + nota("Exercițiu",
-          "Fă același top după numărul de români care trăiesc acolo și pune "
-          "cele două liste una lângă alta. Diferența dintre ele e ghicitoarea "
-          "de la cursul 1."))
+          "Construiește același clasament după numărul de români care trăiesc "
+          "în fiecare țară și compară cele două liste. Diferența dintre ele "
+          "este întrebarea semestrului, formulată la cursul 1."))
 
 
 # ===========================================================================
@@ -393,39 +401,41 @@ NOR = {
                 "x": {"dist": p["dist"], "migr": p["la_mie"]}} for p in P],
     "variabile": [
         {"k": "dist", "et": "distanța, km",
-         "text": "Cu cât mai departe, cu atât mai puțin legate. Punctele "
-                 "chihlimbar, vecinii, stau sus și la stânga."},
+         "text": "Cu cât distanța este mai mare, cu atât legătura este mai "
+                 "slabă. Punctele chihlimbar (vecinii) se află sus, în stânga."},
         {"k": "migr", "et": "migranți la mie",
-         "text": "Legătura cea mai strânsă dintre toate: punctele stau mai aproape de linie decât la distanță."},
+         "text": "Asocierea cea mai puternică: punctele sunt mai apropiate de dreaptă decât în cazul distanței."},
     ],
     "etY": "SCI (scară logaritmică)",
     "cauta": {"v": "dist",
-              "t": "perechea care stă cel mai sus peste linie, adică mult mai legată decât ar spune distanța.",
-              "dupa": "Aproape unul din șapte locuitori ai Luxemburgului e cetățean portughez. Comută acum pe "
-                      "„migranți la mie”: punctul se apropie de linie. Migrația explică o bună parte din ce distanța nu explica."},
+              "t": "perechea situată cel mai sus deasupra dreptei, adică mult mai legată decât ar prezice distanța.",
+              "dupa": "Aproape unul din șapte locuitori ai Luxemburgului este cetățean portughez. Selectează acum "
+                      "„migranți la mie”: punctul se apropie de dreaptă. Migrația explică o bună parte din ceea ce distanța nu explica."},
 }
 
 sl("s6", "Două variabile", "Norul de puncte",
-   "<h2>Fiecare punct e o pereche de țări</h2>"
+   "<h2>Fiecare punct este o pereche de țări</h2>"
    + ix("nor", "SCI față de distanță și față de migrație", NOR),
    manual=
    "<h2>Norul de puncte</h2>"
-   "<p>Când ai două variabile numerice, primul grafic e norul de puncte. Pe "
-   "verticală SCI-ul, pe orizontală pe rând distanța și migranții la mia de "
-   "locuitori ai celor două țări. Amândouă pe logaritm, din motivul de la "
-   "slide-ul cu coada lungă.</p>"
+   "<p>Pentru două variabile numerice, primul grafic este norul de puncte. Pe "
+   "verticală se află SCI, iar pe orizontală, pe rând, distanța și numărul de "
+   "migranți la mia de locuitori ai celor două țări. Ambele axe sunt pe scară "
+   "logaritmică, din motivele discutate la distribuția cu coadă lungă.</p>"
    + ix("nor", "SCI față de distanță și față de migrație", NOR)
-   + "<p>Treci cu mouse-ul peste punctele care ies din nor. Ele sunt cele mai "
-     "interesante: perechi mult mai legate sau mult mai puțin legate decât "
-     "vecinii lor din grafic. La cursul 7 le numim reziduuri.</p>")
+   + "<p>Treci cu mouse-ul peste punctele care se abat de la nor. Acestea sunt "
+     "cele mai informative: perechi mult mai legate sau mult mai puțin legate "
+     "decât cele cu valori apropiate pe axa orizontală. La cursul 7, aceste "
+     "abateri devin reziduuri.</p>")
 
 sl("s7", "Două variabile", "Corelațiile",
-   "<h2>Toate perechile de variabile, dintr-o privire</h2>"
+   "<h2>Matricea de corelații</h2>"
    + TAB_CORR
    + nota("Cum se citește",
-          f"Teal: cresc împreună. Cărămiziu: una crește, cealaltă scade. "
-          f"Distanța și granița merg împreună (r = {ro(r_('dist', 'gr'))}): "
-          "vecinii sunt aproape. De aceea nu le poți judeca separat.", True),
+          f"Teal: corelație pozitivă. Cărămiziu: corelație negativă. "
+          f"Distanța și granița sunt corelate (r = {ro(r_('dist', 'gr'))}), "
+          "deoarece vecinii sunt apropiați. De aceea efectele lor nu pot fi "
+          "evaluate separat.", True),
    dupa=ix("prezice", "Spearman, pe ranguri", {
        "id": "c6-prezice-rang", "fisier": "05_explorare.ipynb · 3. H1, distanța",
        "cod": "import pandas as pd\n\n"
@@ -435,32 +445,35 @@ sl("s7", "Două variabile", "Corelațiile",
        "intrebare": "Ce afișează?",
        "variante": ["1.0", "-1.0", "0.0", "-0.5"],
        "corect": 1,
-       "indiciu": "Spearman se uită doar la ordine. Când distanța crește pas cu pas, ce face SCI-ul, mereu?",
-       "laBine": "Ordine perfect inversă: -1.",
-       "explicatie": "Spearman înlocuiește valorile cu rangurile lor. Distanța urcă 1, 2, 3, 4, iar SCI-ul coboară "
-                     "4, 3, 2, 1: o relație perfect descrescătoare, deci -1, oricât de inegale ar fi pașii. "
-                     "Pe SCI și distanță e o alegere bună, pentru că nu cere o linie dreaptă."})
+       "indiciu": "Coeficientul Spearman ține cont doar de ordinea valorilor. Când distanța crește, cum variază SCI?",
+       "laBine": "Ordinea este perfect inversă: -1.",
+       "explicatie": "Coeficientul Spearman înlocuiește valorile cu rangurile lor. Rangurile distanței sunt 1, 2, 3, 4, "
+                     "iar cele ale SCI sunt 4, 3, 2, 1: o relație perfect descrescătoare, deci -1, indiferent cât de "
+                     "inegale sunt diferențele. Pentru SCI și distanță este o alegere potrivită, deoarece nu "
+                     "presupune o relație liniară."})
    + verif("c6-v2", 1,
-              f"Migrația și SCI-ul au r = {ro(r_('sci', 'migr'))}. Ce poți spune?",
-              ["Că migrația produce legăturile",
-               "Că cele două cresc împreună; de ce, nu știm încă",
-               "Că legăturile produc migrația",
-               "Că 70% din SCI se explică prin migrație"],
-              "Corelația spune că merg împreună, nu cine pe cine produce. Poate "
-              "migrația face legături, poate legăturile vechi atrag migrație, "
-              "poate amândouă vin din vecinătate. Modelul de la cursul 7 "
-              "separă o parte din asta."),
+              f"Corelația dintre migrație și SCI este r = {ro(r_('sci', 'migr'))}. Ce se poate concluziona?",
+              ["Migrația produce legăturile",
+               "Cele două variabile cresc împreună; cauza nu este încă stabilită",
+               "Legăturile produc migrația",
+               "70% din SCI se explică prin migrație"],
+              "Corelația arată că variabilele variază împreună, nu care o "
+              "determină pe cealaltă. Migrația poate crea legături, legăturile "
+              "vechi pot atrage migrație sau ambele pot proveni din proximitate. "
+              "Modelul de la cursul 7 separă o parte din aceste efecte."),
    manual=
    "<h2>Matricea de corelații</h2>"
-   "<p>Coeficientul lui Pearson, <em>r</em>, merge de la -1 la 1. Aproape de "
-   "1, două variabile cresc împreună; aproape de -1, una crește când "
-   "cealaltă scade; aproape de 0, nu au o relație liniară. Matricea le pune "
-   "pe toate perechile de variabile deodată.</p>"
+   "<p>Coeficientul de corelație Pearson, <em>r</em>, ia valori între -1 și "
+   "1. O valoare apropiată de 1 indică variabile care cresc împreună; una "
+   "apropiată de -1, variabile care evoluează în sens opus; una apropiată de "
+   "0, absența unei relații liniare. Matricea de corelații prezintă "
+   "coeficienții pentru toate perechile de variabile.</p>"
    + TAB_CORR
-   + "<p>Două lucruri de citit în ea. Primul: migrația e mai strâns legată de "
-     "SCI decât distanța. Al doilea: distanța și granița sunt legate între "
-     "ele, deci efectul uneia se amestecă în al celeilalte. Un model care le "
-     "pune pe amândouă deodată le poate separa; o corelație, nu.</p>"
+   + "<p>Matricea arată două lucruri. Primul: migrația este mai puternic "
+     "asociată cu SCI decât distanța. Al doilea: distanța și granița sunt "
+     "corelate între ele, deci efectul uneia se suprapune parțial peste al "
+     "celeilalte. Un model care le include pe amândouă le poate separa; o "
+     "corelație simplă, nu.</p>"
    + "<pre><code>cols = [\"log_sci\", \"log_distanta\", \"log_la_mie\", \"granita\"]\n"
      "d[cols].corr()</code></pre>")
 
@@ -474,23 +487,25 @@ sl("s8", "Categorii", "Din numere în categorii",
    + TAB_CT
    + nota("χ² și Cramér's V",
           f"χ² = {ro(CHI2, 1)}, iar Cramér's V = {ro(CRAMER)}: o asociere "
-          f"moderată. Niciun vecin nu e în treimea slabă.", True)
-   + ix("pas", "Distanța, tăiată în intervale", PAS_INTERVALE),
+          f"moderată. Nicio pereche de vecini nu se află în treimea slabă.", True)
+   + ix("pas", "Distanța, împărțită în intervale", PAS_INTERVALE),
    manual=
    "<h2>Din numere în categorii</h2>"
-   "<p>Uneori e mai clar să tai o variabilă numerică în categorii. Aici SCI-ul "
-   "e tăiat în trei treimi egale (slab, mediu, tare), iar granița e deja o "
-   "categorie: au sau nu au graniță comună.</p>"
+   "<p>Uneori este util ca o variabilă numerică să fie împărțită în "
+   "categorii. Aici SCI este împărțit în trei grupe cu efective egale (slab, "
+   "mediu, tare), iar granița este deja o variabilă categorică: perechile au "
+   "sau nu au graniță comună.</p>"
    + TAB_CT
-   + "<p>Testul χ² (hi-pătrat) spune dacă distribuția pe treimi diferă între "
-     "cele două grupuri mai mult decât din întâmplare. Cramér's V spune cât de "
-     "tare: 0 înseamnă nicio legătură, 0,1 slabă, 0,3 medie, peste 0,5 "
-     f"puternică. Aici V = {ro(CRAMER)}.</p>"
-   + ix("pas", "Distanța, tăiată în intervale", PAS_INTERVALE)
+   + "<p>Testul χ² (hi-pătrat) arată dacă distribuția pe treimi diferă între "
+     "cele două grupuri mai mult decât s-ar aștepta din întâmplare. Cramér's V "
+     "măsoară intensitatea asocierii: 0 înseamnă absența asocierii, 0,1 o "
+     "asociere slabă, 0,3 medie, peste 0,5 puternică. "
+     f"Aici V = {ro(CRAMER)}.</p>"
+   + ix("pas", "Distanța, împărțită în intervale", PAS_INTERVALE)
    + ix("cod", "Tabelul de contingență", {
-       "id": "c6-cod-ct", "indiciu": "Tabelul de contingență se face cu pd.crosstab; procentele pe rând cer normalize=\"index\".", "fisier": "eda/categorii.py",
-       "sarcina": "Taie SCI-ul în trei treimi, fă tabelul cu granița și "
-                  "testează asocierea.",
+       "id": "c6-cod-ct", "indiciu": "Grupele egale ca număr de perechi se obțin cu pd.qcut, tabelul de contingență cu pd.crosstab, iar testul χ² cu chi2_contingency.", "fisier": "eda/categorii.py",
+       "sarcina": "Împarte SCI în trei grupe egale, construiește tabelul de "
+                  "contingență cu granița și testează asocierea.",
        "cod": "from scipy.stats import chi2_contingency\n\n"
               "# trei grupuri egale ca numar de perechi\n"
               "d[\"treime\"] = pd.{{1}}(d[\"sci\"], 3, labels=[\"slab\", \"mediu\", \"tare\"])\n\n"
@@ -502,35 +517,37 @@ sl("s8", "Categorii", "Din numere în categorii",
            "1": {"ok": ["qcut"], "ajutor": "funcția"},
            "2": {"ok": ["crosstab"], "ajutor": "funcția"},
            "3": {"ok": ["chi2_contingency"], "ajutor": "funcția"}},
-       "laBine": f"χ² în jur de {ro(CHI2, 0)}, cu p foarte mic.",
-       "laRau": "<code>qcut</code> taie în grupuri egale; <code>crosstab</code> "
-                "numără combinațiile.",
-       "explicatie": "<code>qcut</code> taie după quantile, deci fiecare "
+       "laBine": f"χ² este aproximativ {ro(CHI2, 0)}, cu p foarte mic.",
+       "laRau": "<code>qcut</code> împarte în grupuri cu efective egale; "
+                "<code>crosstab</code> numără combinațiile de categorii.",
+       "explicatie": "<code>qcut</code> împarte după cuantile, deci fiecare "
                      "treime are același număr de perechi. <code>cut</code> "
-                     "ar tăia după valori, și treimea de sus ar avea doar "
-                     "câteva perechi."}))
+                     "ar împărți după valori, iar intervalul superior ar "
+                     "conține doar câteva perechi."}))
 
 sl("s9", "Categorii", "Grupuri comparate",
-   "<h2>Vecinii, față de restul</h2>"
+   "<h2>Vecinii față de celelalte perechi</h2>"
    + tabel(["", "Perechi", "SCI median"], [
        ["cu graniță comună", str(NG), mii(MED_G)],
        ["fără graniță", str(N - NG), mii(MED_N)],
    ])
    + f"<p class=\"cheie\">Vecinii au un SCI median de aproape "
      f"{round(MED_G / MED_N)} ori mai mare.</p>"
-   + nota("Kruskal–Wallis",
-          "Testul compară grupurile fără să presupună distribuții normale. "
-          "Cu SCI-ul, care are coada lungă, e alegerea potrivită.", True),
+   + nota("Kruskal-Wallis",
+          "Testul compară grupurile fără a presupune distribuții normale. "
+          "Pentru SCI, care are o distribuție cu coadă lungă, este alegerea "
+          "potrivită.", True),
    dupa=verif("c6-v3", 3,
-              f"Vecinii au SCI median de {round(MED_G / MED_N)} ori mai mare. "
-              "Înseamnă că granița produce legăturile?",
-              ["Da, diferența e prea mare ca să fie altfel",
-               "Da, testul e semnificativ",
-               "Nu, pentru că sunt doar 30 de perechi",
-               "Nu neapărat: vecinii sunt și aproape, și au adesea migrație între ei"],
-              "Granița vine la pachet cu distanța mică și cu migrația. Ca să "
-              "vezi cât contează granița singură, ții celelalte constante, "
-              "adică faci un model. Asta e cursul 7."))
+              f"Vecinii au un SCI median de {round(MED_G / MED_N)} ori mai mare. "
+              "Rezultă că granița comună produce legăturile?",
+              ["Da, diferența este prea mare pentru a avea altă explicație",
+               "Da, testul este semnificativ statistic",
+               "Nu, pentru că sunt doar 30 de perechi de vecini",
+               "Nu neapărat: vecinii sunt și apropiați geografic, și au adesea migrație între ei"],
+              "Granița comună este asociată cu distanța mică și cu migrația. "
+              "Pentru a estima efectul graniței separat, celelalte variabile "
+              "trebuie ținute constante, adică este nevoie de un model. "
+              "Acesta este subiectul cursului 7."))
 
 
 # ===========================================================================
@@ -542,14 +559,16 @@ HARTA_COM = {
     "masuri": ["com", "sci"],
     "povesti": [
         {"t": "România și Germania", "nivel": "regiuni", "masura": "com", "ales": "RO11",
-         "text": "Algoritmul pune toate regiunile României în același grup cu "
-                 "Germania, nu cu vecinii. Urma migrației de muncă."},
+         "text": "Algoritmul plasează toate regiunile României în aceeași "
+                 "comunitate cu Germania, nu cu țările vecine: o urmă a "
+                 "migrației de muncă."},
         {"t": "Polonia și Irlanda", "nivel": "regiuni", "masura": "com", "ales": "PL91",
-         "text": "Polonia, Irlanda, Islanda și Lituania: o singură comunitate, "
-                 "urma emigrației de după 2004."},
+         "text": "Polonia, Irlanda, Islanda și Lituania formează o singură "
+                 "comunitate, urmă a emigrației de după 2004."},
         {"t": "Luxemburg și Portugalia", "nivel": "regiuni", "masura": "com", "ales": "LU00",
-         "text": "Cea mai puternică pereche din tot setul. Aproape unul din "
-                 "șapte locuitori ai Luxemburgului e cetățean portughez."},
+         "text": "Perechea cu cea mai puternică legătură din întregul set. "
+                 "Aproape unul din șapte locuitori ai Luxemburgului este "
+                 "cetățean portughez."},
         {"t": "Fosta Iugoslavie", "nivel": "regiuni", "masura": "com", "ales": "SI04",
          "text": "Slovenia, Croația, Bosnia, Serbia, Muntenegru, plus Austria: "
                  "o graniță veche, încă vizibilă în legături."},
@@ -557,30 +576,32 @@ HARTA_COM = {
 }
 
 sl("s10", "Harta", "Comunitățile",
-   "<h2>Cine e legat de cine, fără să-i spunem noi</h2>"
+   "<h2>Comunități detectate doar din legături</h2>"
    + ix("pas", "O rețea de cinci noduri", PAS_RETEA)
    + ix("harta", "Comunitățile SCI, pe regiuni", HARTA_COM)
-   + nota("Cum s-au făcut",
-          "Algoritmul Louvain grupează regiunile mai legate între ele decât "
-          "cu restul. Culorile sunt doar etichete. Pe toate nivelurile, în "
-          '<a class="leg" href="../../explorator/">Exploratorul legăturilor sociale</a>.', True),
+   + nota("Metoda",
+          "Algoritmul Louvain grupează regiunile mai puternic legate între ele "
+          "decât cu restul. Culorile sunt doar etichete. Toate nivelurile sunt "
+          'disponibile în <a class="leg" href="../../explorator/">Exploratorul legăturilor sociale</a>.', True),
    manual=
    "<h2>Comunitățile</h2>"
-   "<p>Harta e felul de a explora date diadice pe care un tabel nu-l poate "
-   "înlocui. Aici fiecare regiune NUTS2 e colorată după comunitatea în care "
-   "o pune algoritmul Louvain, care caută grupuri de regiuni mai legate între "
-   "ele decât cu restul. Nu îi spunem nimic despre țări sau granițe; le "
-   "găsește singur.</p>"
+   "<p>Harta este un mod de explorare a datelor diadice pe care un tabel nu "
+   "îl poate înlocui. Fiecare regiune NUTS 2 este colorată după comunitatea "
+   "în care o plasează algoritmul Louvain, care identifică grupuri de regiuni "
+   "mai puternic legate între ele decât cu restul. Algoritmul nu primește "
+   "nicio informație despre țări sau granițe; grupurile rezultă exclusiv din "
+   "legături.</p>"
    + ix("pas", "O rețea de cinci noduri", PAS_RETEA)
    + ix("harta", "Comunitățile SCI, pe regiuni", HARTA_COM)
-   + "<p>Cele mai multe comunități urmează granițele de stat, ceea ce nu "
-     "surprinde. Interesante sunt excepțiile: România cu Germania, Polonia cu "
-     "Irlanda, Luxemburg cu Portugalia. Toate trei se explică prin migrație, "
-     "ceea ce e exact întrebarea proiectului.</p>"
+   + "<p>Cele mai multe comunități urmează granițele de stat, ceea ce era de "
+     "așteptat. Informative sunt excepțiile: România cu Germania, Polonia cu "
+     "Irlanda, Luxemburg cu Portugalia. Toate trei corespund unor fluxuri de migrație cunoscute, "
+     "adică exact tema întrebării de cercetare a proiectului.</p>"
    + nota("În caiet",
           "Comunitățile se calculează în caietul cursului 6, cu "
           "<code>networkx</code>, și se compară cu comunitățile din rețeaua "
-          "migrației. Harta de aici e făcută din rezultatul acelui caiet."))
+          "migrației. Harta de aici este construită din rezultatele acelui "
+          "caiet."))
 
 
 # ===========================================================================
@@ -588,38 +609,41 @@ sl("s10", "Harta", "Comunitățile",
 # ===========================================================================
 
 AXA = {
-    "bare": [{"t": "România–Italia", "v": 69327}, {"t": "România–Spania", "v": 54179}],
+    "bare": [{"t": "România-Italia", "v": 69327}, {"t": "România-Spania", "v": 54179}],
     "taie": 50000,
-    "txtZero": "Legăturile cu Italia și cu Spania sunt apropiate.",
-    "txtTaiat": "Aceleași cifre. Doar axa nu mai pornește de la zero.",
+    "txtZero": "Legăturile cu Italia și cu Spania au valori apropiate.",
+    "txtTaiat": "Aceleași valori; doar axa nu mai pornește de la zero.",
 }
 
-sl("s11", "Grafice care mint", "Axa tăiată",
+sl("s11", "Grafice înșelătoare", "Axa trunchiată",
    "<h2>Aceleași cifre, altă impresie</h2>"
    + ix("axa", "SCI-ul României cu Italia și cu Spania", AXA)
    + nota("Regula",
-          "La bare, axa pornește de la zero. La linii și la norii de puncte se "
-          "poate tăia, dar se vede clar că e tăiată.", True),
+          "La graficele cu bare, axa pornește de la zero. La linii și la norii "
+          "de puncte poate fi trunchiată, cu condiția ca trunchierea să fie "
+          "marcată clar.", True),
    dupa=verif("c6-v4", 0,
-              "Când e acceptabil să nu pornești axa de la zero?",
+              "Când este acceptabil ca axa să nu pornească de la zero?",
               ["La un grafic cu linii sau cu puncte, unde contează forma, nu lungimea",
                "La orice grafic, dacă diferențele sunt mici",
                "Niciodată",
-               "La barele care au valori mari"],
-              "La bare, lungimea e mesajul, deci axa tăiată o falsifică. La "
-              "linii și puncte, contează poziția și forma, iar o axă tăiată, "
-              "marcată, e normală."),
+               "La graficele cu bare care au valori mari"],
+              "La graficele cu bare, informația este transmisă de lungime, deci "
+              "o axă trunchiată o distorsionează. La linii și puncte contează "
+              "poziția și forma, iar o axă trunchiată, marcată ca atare, este "
+              "acceptabilă."),
    manual=
    "<h2>Grafice care induc în eroare</h2>"
-   "<p>Un grafic poate fi corect în fiecare cifră și totuși să mintă. Cel mai "
-   "des, prin axa care nu pornește de la zero: la bare, ochiul compară "
-   "lungimi, iar o axă tăiată schimbă raportul dintre ele.</p>"
+   "<p>Un grafic poate fi corect în fiecare valoare și totuși să inducă în "
+   "eroare. Cel mai frecvent, prin axa care nu pornește de la zero: la "
+   "graficele cu bare, cititorul compară lungimi, iar o axă trunchiată "
+   "modifică raportul dintre ele.</p>"
    + ix("axa", "SCI-ul României cu Italia și cu Spania", AXA)
-   + "<p>Alte feluri obișnuite: două axe verticale cu scări diferite, culori "
-     "care sugerează o ordine acolo unde nu e, hărți colorate după valori "
-     "absolute (țările mari ies mereu în față), și medii raportate fără "
-     "distribuție. Le găsiți pe larg în cartea lui Claus Wilke, la "
-     "„Legături”.</p>")
+   + "<p>Alte procedee frecvente: două axe verticale cu scări diferite, culori "
+     "care sugerează o ordine inexistentă, hărți colorate după valori absolute "
+     "(pe care țările mari ies mereu în evidență) și medii raportate fără "
+     "distribuție. Sunt tratate pe larg în cartea lui Claus Wilke, menționată "
+     "la „Legături”.</p>")
 
 
 # ===========================================================================
@@ -629,67 +653,69 @@ sl("s11", "Grafice care mint", "Axa tăiată",
 sl("s12", "Proiectul tău", "Explorarea voastră",
    "<h2>Trei grafice și o propoziție</h2>"
    + tabel(["Pasul", "Ce faceți"], [
-       ["1", "o distribuție: variabila voastră principală, liniar și pe logaritm"],
+       ["1", "o distribuție: variabila principală, pe scară liniară și logaritmică"],
        ["2", "o relație: norul de puncte între SCI și variabila voastră"],
-       ["3", "o hartă sau un top, cu ce iese din tipar"],
+       ["3", "o hartă sau un clasament, cu abaterile de la tipar"],
        ["4", "în <code>README.md</code>: primul tipar găsit, într-o propoziție"],
    ])
    + ix("dovada", "Dovada", {
        "id": "c6-dovada-eda",
-       "sarcina": "Rulează scriptul de explorare și lipește ce scrie.",
+       "sarcina": "Rulează scriptul de explorare și lipește rezultatul afișat.",
        "pasi": [
-           {"t": "Ai calculat asimetria, liniar și pe logaritm",
+           {"t": "Ai calculat asimetria, pe scară liniară și logaritmică",
             "cmd": "python eda/univariat.py",
             "gol": "lipește cele două valori",
             "cauta": r"\d[.,]\d+[\s\S]*\d[.,]\d+",
-            "daca_nu": "Caut două numere cu zecimale: asimetria înainte și "
-                       "după logaritm."},
+            "daca_nu": "Sunt necesare două numere cu zecimale: asimetria "
+                       "înainte și după logaritmare."},
            {"t": "Graficele sunt salvate în depozit",
             "cmd": "git ls-files figuri",
             "gol": "lipește lista",
             "cauta": r"\.(png|svg|html)",
-            "daca_nu": "Caut fișiere .png, .svg sau .html în figuri/. Salvează "
-                       "graficele cu plt.savefig și fă commit."}],
-       "explicatie": "Graficele de explorare nu sunt pentru raport, sunt "
-                     "pentru voi. Dar stau în depozit, ca să se vadă drumul."}),
+            "daca_nu": "Sunt necesare fișiere .png, .svg sau .html în figuri/. "
+                       "Salvează graficele cu plt.savefig și fă un commit."}],
+       "explicatie": "Graficele exploratorii nu sunt destinate raportului, ci "
+                     "analizei din echipă. Se păstrează totuși în depozit, "
+                     "pentru ca parcursul analizei să fie documentat."}),
    manual=
    "<h2>Explorarea voastră</h2>"
    "<p>Pasul de proiect al lecției: trei grafice și o propoziție. Graficele "
-   "sunt pentru voi, nu pentru raport; propoziția e prima ipoteză pe care o "
-   "veți testa la cursul 7.</p>"
+   "servesc analizei din echipă, nu raportului; propoziția formulează prima "
+   "ipoteză, care va fi testată la cursul 7.</p>"
    + tabel(["Pasul", "Ce faceți"], [
-       ["1", "o distribuție: variabila voastră principală, liniar și pe logaritm"],
+       ["1", "o distribuție: variabila principală, pe scară liniară și logaritmică"],
        ["2", "o relație: norul de puncte între SCI și variabila voastră"],
-       ["3", "o hartă sau un top, cu ce iese din tipar"],
+       ["3", "o hartă sau un clasament, cu abaterile de la tipar"],
        ["4", "în <code>README.md</code>: primul tipar găsit, într-o propoziție"],
    ]))
 
 sl("s13", "Proiectul tău", "Primul tipar",
-   "<h2>Ce ați văzut</h2>"
+   "<h2>Primul tipar observat</h2>"
    + ix("asteptari", "Primul vostru tipar", {
        "id": "c6-tipar", "tip": "tipar", "minim": 50,
-       "sarcina": "Scrie primul tipar pe care l-a găsit echipa și graficul "
-                  "în care se vede.",
-       "exemplu": "De exemplu: Luxemburg–Portugalia iese mult deasupra norului "
-                  "față de distanță, dar intră în nor față de migrație; deci "
-                  "legătura pare să vină din migrație.",
-       "multumesc": "O citesc înainte de cursul următor."}))
+       "sarcina": "Descrie primul tipar identificat de echipă și graficul "
+                  "în care apare.",
+       "exemplu": "De exemplu: Luxemburg-Portugalia se află mult deasupra "
+                  "norului în raport cu distanța, dar în interiorul norului "
+                  "în raport cu migrația; legătura pare, așadar, explicată "
+                  "de migrație.",
+       "multumesc": "Răspunsul va fi citit înainte de cursul următor."}))
 
-sl("s14", "Mai departe", "Până data viitoare",
+sl("s14", "Mai departe", "Pentru cursul următor",
    "<h2>Cursul 7: variabile derivate și model</h2>"
    "<ul>"
    "<li>variabile noi: migranți la mie, distanța pe logaritm, granița</li>"
-   "<li>un model care le pune pe toate deodată</li>"
+   "<li>un model care le include simultan</li>"
    "<li>reziduurile: perechile mai legate decât prezice modelul</li>"
    "</ul>"
    + nota("De făcut până atunci",
-          "Cele trei grafice în depozit și tiparul vostru în "
+          "Cele trei grafice în depozit și tiparul echipei în "
           "<code>README.md</code>.", True)
    + surse("Documentația analizei", [
-       ("pandas: cut", "https://pandas.pydata.org/docs/reference/api/pandas.cut.html", "tăierea unei variabile numerice în intervale"),
+       ("pandas: cut", "https://pandas.pydata.org/docs/reference/api/pandas.cut.html", "împărțirea unei variabile numerice în intervale"),
        ("pandas: corr", "https://pandas.pydata.org/docs/reference/api/pandas.Series.corr.html", "Pearson și Spearman, cu <code>method=</code>"),
        ("networkx: Louvain", "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html", "<code>louvain_communities</code>, <code>weight</code>, <code>resolution</code>, <code>seed</code>"),
-       ("scikit-learn: Adjusted Rand", "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html", "cât de asemănătoare sunt două împărțiri în grupuri"),
+       ("scikit-learn: Adjusted Rand", "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html", "gradul de asemănare dintre două partiții în grupuri"),
    ]))
 
 

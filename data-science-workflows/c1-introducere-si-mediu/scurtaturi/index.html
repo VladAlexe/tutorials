@@ -3,265 +3,120 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scurtăturile din Jupyter · Fluxuri de lucru</title>
-<meta name="description" content="Scurtăturile de tastatură pentru caietele Jupyter în VS Code și JupyterLab, pe Windows și macOS, verificate în documentațiile oficiale, cu un exercițiu interactiv.">
+<title>Comenzile rapide din Jupyter · Fluxuri de lucru</title>
+<meta name="description" content="Comenzile rapide de tastatură pentru caietele Jupyter în VS Code, pe Windows și macOS, verificate în documentațiile oficiale.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=69">
-<link rel="stylesheet" href="../../css/sistem.css?v=69">
-<script src="../../js/tema.js?v=69"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=73">
+<link rel="stylesheet" href="../../css/sistem.css?v=73">
+<script src="../../js/tema.js?v=73"></script>
 <style>
-  .sc{max-width:920px;margin:0 auto;padding:30px 28px 80px}
-  .sc__inapoi{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:14px;color:var(--text-2);
+  .sc{max-width:820px;margin:0 auto;padding:30px 28px 80px}
+  .sc__inapoi{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
     text-decoration:none;border:1px solid var(--linie-2);border-radius:999px;padding:5px 13px;margin-bottom:26px}
   .sc__inapoi:hover{color:var(--text);border-color:var(--text-3)}
-  .sc h2{font-size:20px;margin:46px 0 6px}
-  .sc h2 + .sc__sub{font-family:var(--sans);font-size:14.5px;color:var(--text-2);margin:0 0 16px;max-width:70ch;line-height:1.5}
-  .sc p{font-size:15.5px;line-height:1.6;max-width:70ch}
-  kbd{display:inline-block;font-family:var(--mono);font-size:12.5px;line-height:1;padding:4px 7px 5px;border:1px solid var(--linie-2);
+  .sc h2{font-size:var(--t5);margin:40px 0 8px}
+  .sc p{font-size:var(--t3);line-height:1.6;max-width:68ch}
+  kbd{display:inline-block;font-family:var(--mono);font-size:var(--t1);line-height:1;padding:4px 7px 5px;border:1px solid var(--linie-2);
     border-bottom-width:2px;border-radius:5px;background:var(--panza);color:var(--text);white-space:nowrap}
   .k{white-space:nowrap}
-  .k i{font-style:normal;color:var(--text-3);margin:0 3px;font-family:var(--sans);font-size:12px}
+  .k i{font-style:normal;color:var(--text-3);margin:0 3px;font-family:var(--sans);font-size:var(--t1)}
 
-  /* două moduri */
-  .md{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:6px}
-  .md__c{border-top:3px solid var(--c);padding-top:10px}
-  .md__c b{font-family:var(--sans);font-size:15.5px}
-  .md__c p{font-size:14.5px;margin:6px 0 10px;color:var(--text-2)}
-  .md__cel{display:flex;gap:10px;align-items:stretch;font-family:var(--mono);font-size:13px}
-  .md__cel span{flex:none;color:var(--text-3);padding-top:9px;font-size:11.5px}
-  .md__cel div{flex:1;border:1px solid var(--linie-2);border-left:4px solid var(--c);border-radius:6px;padding:9px 11px;background:var(--panza);color:var(--text)}
-  .md__cel--ed div{box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 35%,transparent)}
-  .md__cel--ed div::after{content:"";display:inline-block;width:1.5px;height:14px;background:var(--text);margin-left:2px;vertical-align:-2px;animation:cur 1s steps(1) infinite}
-  @keyframes cur{50%{opacity:0}}
-
-  /* cele cinci */
-  .cinci{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:4px}
-  .cinci div{border-top:3px solid var(--c);padding-top:10px}
-  .cinci .k{display:block;margin-bottom:8px}
-  .cinci p{font-family:var(--sans);font-size:13.5px;line-height:1.4;margin:0;color:var(--text-2)}
-
-  /* exercițiul */
-  .ex{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start;margin-top:4px}
-  .ex__pasi{list-style:none;margin:0;padding:0;counter-reset:none}
-  .ex__pasi li{position:relative;padding:7px 0 8px 28px;border-bottom:1px solid var(--linie);font-family:var(--sans);font-size:14px;line-height:1.4;color:var(--text-3)}
-  .ex__pasi li::before{content:"";position:absolute;left:0;top:9px;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--linie-2)}
-  .ex__pasi li.acum{color:var(--text)}
-  .ex__pasi li.acum::before{border-color:var(--accent)}
-  .ex__pasi li.gata{color:var(--text-2)}
-  .ex__pasi li.gata::before{background:var(--ok);border-color:var(--ok)}
-  .ex__pasi li.gata::after{content:"";position:absolute;left:5px;top:12px;width:4px;height:8px;border:solid var(--panza);border-width:0 2px 2px 0;transform:rotate(45deg)}
-  .ex__pasi .k{margin-left:4px}
-  .ex__caiet{outline:none;border:1px solid var(--linie-2);border-radius:10px;padding:12px 14px 14px;background:var(--fundal);min-height:240px}
-  .ex__caiet:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-slab)}
-  .ex__bara{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-family:var(--sans);font-size:12.5px;color:var(--text-3)}
-  .ex__mod{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;color:var(--panza);background:var(--accent)}
-  .ex__mod.ed{background:var(--ambra)}
-  .ex__ult{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--text-2)}
-  .cel{display:flex;gap:10px;margin:6px 0;align-items:flex-start}
-  .cel__n{flex:none;width:34px;text-align:right;font-family:var(--mono);font-size:11.5px;color:var(--text-3);padding-top:9px}
-  .cel__c{flex:1;min-width:0}
-  .cel__in{display:block;width:100%;resize:none;font-family:var(--mono);font-size:13.5px;line-height:1.5;padding:7px 10px;border:1px solid var(--linie);
-    border-left:4px solid transparent;border-radius:6px;background:var(--panza);color:var(--text);outline:none;min-height:36px;overflow:hidden}
-  .cel--md .cel__in{font-family:var(--sans)}
-  .cel__tip{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:2px 0 0 2px}
-  .cel.sel .cel__in{border-left-color:var(--accent)}
-  .cel.sel.ed .cel__in{border-left-color:var(--ambra);box-shadow:0 0 0 2px color-mix(in srgb,var(--ambra) 30%,transparent)}
-  .cel__out{font-family:var(--mono);font-size:13px;padding:4px 10px 2px;color:var(--text)}
-  .cel__out.err{color:var(--nu)}
-  .cel__md{font-family:var(--sans);font-size:17px;font-weight:600;padding:6px 10px;color:var(--text)}
-  .ex__start{font-family:var(--sans);font-size:13px;color:var(--text-3);margin:10px 0 0}
-  .ex__bravo{font-family:var(--sans);font-size:14px;color:var(--ok);margin:12px 0 0;display:none}
-  .ex__bravo.vazut{display:block}
-  .ex__btn{font-family:var(--sans);font-size:12.5px;padding:4px 11px;border:1px solid var(--linie-2);border-radius:999px;background:none;color:var(--text-2);cursor:pointer}
-
-  /* tabelele */
-  .tb{width:100%;border-collapse:collapse;font-family:var(--sans);margin:4px 0 6px;table-layout:fixed}
-  .tb th:first-child{width:46%}
-  .tb--dif th:first-child{width:32%} .tb--dif th:nth-child(2){width:33%}
-  .tb th{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-align:left;
+  .tb{width:100%;border-collapse:collapse;font-family:var(--sans);margin:6px 0 0}
+  .tb th{font-family:var(--sans);font-weight:500;font-size:var(--t1);text-align:left;
     padding:0 12px 8px 0;border-bottom:1px solid var(--linie-2);color:var(--text-3)}
-  .tb td{padding:9px 12px 9px 0;font-size:14px;border-bottom:1px solid var(--linie);vertical-align:top;line-height:1.45}
-  .tb tr.aprins td{background:var(--accent-slab)}
-  .tb small{display:block;color:var(--text-3);font-size:12.5px;margin-top:2px}
-  .grup{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);
-    margin:28px 0 6px;display:flex;align-items:center;gap:8px}
-  .grup::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--c)}
-  .nota-mac{border-left:3px solid var(--roza);padding:2px 0 2px 14px;margin:18px 0 0}
-  .nota-mac p{font-size:14.5px;margin:0;color:var(--text-2)}
+  .tb th:first-child{width:50%}
+  .tb td{padding:8px 12px 8px 0;font-size:var(--t2);border-bottom:1px solid var(--linie);vertical-align:top;line-height:1.45}
+  .tb small{display:block;color:var(--text-3);font-size:var(--t1);margin-top:2px}
+  .tb tr.g td{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
+    padding:22px 0 6px;border-bottom:1px solid var(--linie-2)}
   .tbw{overflow-x:auto}
 
-  .surse{list-style:none;padding:0;margin:8px 0 0}
-  .surse li{font-family:var(--sans);font-size:14px;line-height:1.5;padding:7px 0;border-bottom:1px solid var(--linie)}
-  .surse li span{display:block;color:var(--text-3);font-size:12.5px}
+  .src{list-style:none;padding:0;margin:6px 0 0}
+  .src li::before{content:none}
+  .src li{padding-left:0;font-family:var(--sans);font-size:var(--t2);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--linie)}
   .sc__jos{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px;padding-top:18px;border-top:1px solid var(--linie-2)}
-  .sc__jos a{font-family:var(--sans);font-size:14px;text-decoration:none;color:var(--text);border:1px solid var(--linie-2);border-radius:8px;padding:9px 14px}
+  .sc__jos a{font-family:var(--sans);font-size:var(--t2);text-decoration:none;color:var(--text);border:1px solid var(--linie-2);border-radius:8px;padding:9px 14px}
   .sc__jos a:hover{border-color:var(--accent);color:var(--accent-text)}
 
-  @media (max-width:760px){
+  @media (max-width:640px){
     .sc{padding:22px 16px 64px}
-    .md,.ex{grid-template-columns:1fr}
-    .cinci{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .tb{table-layout:auto}
+    .tb th:first-child{width:auto}
   }
 </style>
 </head>
 <body>
 
-<div id="antet" data-aici="Cursul 1 · Scurtăturile din Jupyter"></div>
+<div id="antet" data-aici="Cursul 1 · Comenzile rapide din Jupyter"></div>
 
 <main>
 <div class="sc">
   <a class="sc__inapoi" href="../" data-inapoi>← Înapoi</a>
 
   <p class="supratitlu">Cursul 1 · Resursă</p>
-  <h1>Scurtăturile din Jupyter</h1>
-  <p class="deck">Un caiet Jupyter se lucrează mai repede de la tastatură decât cu mouse-ul.
-  Mai jos sunt scurtăturile din VS Code, unde lucrăm la curs, pentru Windows și macOS, cu
-  diferențele din JupyterLab. Toate sunt verificate în documentațiile oficiale, listate la
-  final.</p>
+  <h1>Comenzile rapide din Jupyter</h1>
+  <p class="deck">Comenzile de tastatură pentru caietele Jupyter în VS Code, editorul folosit la curs, pe Windows și macOS.</p>
 
-  <!-- ================================================================= -->
-  <h2>Două moduri</h2>
-  <p class="sc__sub">Aceeași tastă face lucruri diferite, după mod. Totul pornește de aici.</p>
-  <div class="md">
-    <div class="md__c" style="--c:var(--accent)">
-      <b>Modul comandă</b>
-      <p>Celula e doar selectată. Tastele lucrează pe celule întregi: adaugă, șterge, mută,
-      schimbă tipul. Intri în el cu <kbd>Esc</kbd>.</p>
-      <div class="md__cel"><span>[1]</span><div>x = 21</div></div>
-    </div>
-    <div class="md__c" style="--c:var(--ambra)">
-      <b>Modul editare</b>
-      <p>Cursorul e în celulă. Tastele scriu text, ca în orice editor. Intri în el cu
-      <kbd>Enter</kbd> sau cu un clic în celulă.</p>
-      <div class="md__cel md__cel--ed"><span>[1]</span><div>x = 21</div></div>
-    </div>
-  </div>
+  <h2>Cum funcționează</h2>
+  <p>O celulă are două moduri. În <b>modul editare</b>, cursorul este în celulă și tastele scriu
+  text; intri în el cu <kbd>Enter</kbd> sau cu un clic în celulă. În <b>modul comandă</b>, celula
+  este doar selectată, iar tastele acționează asupra celulei întregi: o adaugă, o șterge, îi
+  schimbă tipul; intri în el cu <kbd>Esc</kbd>. De aceea, tastele cu o singură literă
+  (<kbd>A</kbd>, <kbd>B</kbd>, <kbd>M</kbd>, <kbd>D</kbd>) funcționează numai în modul comandă.</p>
+  <p>Pe macOS, celula se rulează cu <kbd>Control</kbd>, nu cu <kbd>Cmd</kbd>, iar <kbd>Alt</kbd>
+  înseamnă <kbd>Option</kbd>. Comenzile editorului (salvare, căutare, comentarea rândurilor) folosesc
+  <kbd>Cmd</kbd>.</p>
 
-  <!-- ================================================================= -->
-  <h2>Cele cinci de la prima oră</h2>
-  <p class="sc__sub">Cu ele se poate lucra un caiet întreg. Sunt aceleași în VS Code și în JupyterLab.</p>
-  <div class="cinci">
-    <div style="--c:var(--accent)"><span class="k"><kbd>Shift</kbd><i>+</i><kbd>Enter</kbd></span>
-      <p>rulează celula și trece la următoarea</p></div>
-    <div style="--c:var(--accent)"><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Enter</kbd></span>
-      <p>rulează celula și rămâne pe ea</p></div>
-    <div style="--c:var(--ambra)"><span class="k"><kbd>Esc</kbd><i>/</i><kbd>Enter</kbd></span>
-      <p>iese din celulă / intră în celulă</p></div>
-    <div style="--c:var(--roza)"><span class="k"><kbd>A</kbd><i>/</i><kbd>B</kbd></span>
-      <p>adaugă o celulă deasupra / dedesubt</p></div>
-    <div style="--c:var(--ardezie)"><span class="k"><kbd>D</kbd><i>,</i><kbd>D</kbd></span>
-      <p>șterge celula (de două ori D); <kbd>Z</kbd> o aduce înapoi</p></div>
-  </div>
-  <div class="nota-mac"><p><b>Pe macOS</b>, în VS Code, celula se rulează tot cu <kbd>Control</kbd><i>+</i><kbd>Enter</kbd>,
-  nu cu <kbd>Cmd</kbd>. <kbd>Alt</kbd> înseamnă tasta <kbd>Option</kbd>. Scurtăturile cu o singură literă
-  (<kbd>A</kbd>, <kbd>B</kbd>, <kbd>M</kbd>…) merg doar în modul comandă.</p></div>
-
-  <!-- ================================================================= -->
-  <h2>Exersează</h2>
-  <p class="sc__sub">Un caiet mic, care răspunde la aceleași taste ca VS Code. Fă un clic în caiet și urmează pașii, în ordine.</p>
-  <div class="ex">
-    <ol class="ex__pasi" id="pasi">
-      <li data-p="0">Rulează prima celulă și treci mai departe <span class="k"><kbd>Shift</kbd><i>+</i><kbd>Enter</kbd></span></li>
-      <li data-p="1">Rulează a doua celulă și rămâi pe ea <span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Enter</kbd></span></li>
-      <li data-p="2">Adaugă o celulă dedesubt <span class="k"><kbd>B</kbd></span></li>
-      <li data-p="3">Transform-o în Markdown <span class="k"><kbd>M</kbd></span></li>
-      <li data-p="4">Intră în ea, scrie un titlu, apoi rulează <span class="k"><kbd>Enter</kbd></span> … <span class="k"><kbd>Shift</kbd><i>+</i><kbd>Enter</kbd></span></li>
-      <li data-p="5">Mergi înapoi la celula Markdown și șterge-o <span class="k"><kbd>↑</kbd></span> <span class="k"><kbd>D</kbd><i>,</i><kbd>D</kbd></span></li>
-      <li data-p="6">Răzgândește-te: adu-o înapoi <span class="k"><kbd>Z</kbd></span></li>
-    </ol>
-    <div>
-      <div class="ex__caiet" id="caiet" tabindex="0" aria-label="Caiet de exersat: folosește tastatura">
-        <div class="ex__bara"><span class="ex__mod" id="mod">mod comandă</span><span>tasta apăsată:</span><span class="ex__ult" id="ult">·</span></div>
-        <div id="celule"></div>
-        <p class="ex__start" id="start">Fă un clic aici, apoi folosește tastatura.</p>
-      </div>
-      <p class="ex__bravo" id="bravo">Toți pașii sunt făcuți. Aceleași taste merg în caietul de la curs.</p>
-      <p style="margin-top:10px"><button class="ex__btn" type="button" id="din-nou">De la început</button></p>
-    </div>
-  </div>
-
-  <!-- ================================================================= -->
-  <h2>Toate scurtăturile, pe grupe</h2>
-  <p class="sc__sub">VS Code, cu extensia Jupyter (care instalează singură și extensia Jupyter Keymap, de unde vin tastele cu o literă).</p>
+  <h2>Lista comenzilor</h2>
   <div class="tbw">
-
-  <p class="grup" style="--c:var(--accent)">Rulare</p>
   <table class="tb"><thead><tr><th>Ce face</th><th>Windows</th><th>macOS</th></tr></thead><tbody>
+    <tr class="g"><td colspan="3">Rulare</td></tr>
     <tr><td>rulează celula și trece la următoarea</td><td><span class="k"><kbd>Shift</kbd><i>+</i><kbd>Enter</kbd></span></td><td><span class="k"><kbd>Shift</kbd><i>+</i><kbd>Enter</kbd></span></td></tr>
     <tr><td>rulează celula și rămâne pe ea</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Enter</kbd></span></td><td><span class="k"><kbd>Control</kbd><i>+</i><kbd>Enter</kbd></span></td></tr>
     <tr><td>rulează celula și adaugă una dedesubt</td><td><span class="k"><kbd>Alt</kbd><i>+</i><kbd>Enter</kbd></span></td><td><span class="k"><kbd>Option</kbd><i>+</i><kbd>Enter</kbd></span></td></tr>
-    <tr><td>rulează tot caietul, repornește, întrerupe<small>fără scurtătură implicită: butoanele Run All, Restart și Interrupt din bara de sus a caietului</small></td><td>butoane</td><td>butoane</td></tr>
-  </tbody></table>
+    <tr><td>rulează tot caietul, repornește sau întrerupe kernelul<small>fără comandă rapidă implicită</small></td><td colspan="2">butoanele <em>Run All</em>, <em>Restart</em>, <em>Interrupt</em>, din bara caietului</td></tr>
 
-  <p class="grup" style="--c:var(--ambra)">Moduri</p>
-  <table class="tb"><thead><tr><th>Ce face</th><th>Windows</th><th>macOS</th></tr></thead><tbody>
+    <tr class="g"><td colspan="3">Moduri</td></tr>
     <tr><td>intră în celulă (modul editare)</td><td><kbd>Enter</kbd></td><td><kbd>Enter</kbd></td></tr>
     <tr><td>iese din celulă (modul comandă)</td><td><kbd>Esc</kbd></td><td><kbd>Esc</kbd></td></tr>
-  </tbody></table>
 
-  <p class="grup" style="--c:var(--roza)">Celule, în modul comandă</p>
-  <table class="tb"><thead><tr><th>Ce face</th><th>Windows</th><th>macOS</th></tr></thead><tbody>
+    <tr class="g"><td colspan="3">Celule, în modul comandă</td></tr>
     <tr><td>adaugă o celulă deasupra / dedesubt</td><td><span class="k"><kbd>A</kbd><i>/</i><kbd>B</kbd></span></td><td><span class="k"><kbd>A</kbd><i>/</i><kbd>B</kbd></span></td></tr>
     <tr><td>șterge celula</td><td><span class="k"><kbd>D</kbd><i>,</i><kbd>D</kbd></span></td><td><span class="k"><kbd>D</kbd><i>,</i><kbd>D</kbd></span></td></tr>
-    <tr><td>anulează ultima schimbare (și o ștergere)</td><td><kbd>Z</kbd></td><td><kbd>Z</kbd></td></tr>
-    <tr><td>schimbă celula în Markdown / în cod</td><td><span class="k"><kbd>M</kbd><i>/</i><kbd>Y</kbd></span></td><td><span class="k"><kbd>M</kbd><i>/</i><kbd>Y</kbd></span></td></tr>
+    <tr><td>anulează ultima operație pe celule, inclusiv o ștergere</td><td><kbd>Z</kbd></td><td><kbd>Z</kbd></td></tr>
+    <tr><td>transformă celula în Markdown / în cod</td><td><span class="k"><kbd>M</kbd><i>/</i><kbd>Y</kbd></span></td><td><span class="k"><kbd>M</kbd><i>/</i><kbd>Y</kbd></span></td></tr>
     <tr><td>trece la celula de deasupra / de dedesubt</td><td><span class="k"><kbd>↑</kbd><i>/</i><kbd>↓</kbd></span><small>sau <kbd>K</kbd> / <kbd>J</kbd></small></td><td><span class="k"><kbd>↑</kbd><i>/</i><kbd>↓</kbd></span><small>sau <kbd>K</kbd> / <kbd>J</kbd></small></td></tr>
     <tr><td>mută celula în sus / în jos</td><td><span class="k"><kbd>Alt</kbd><i>+</i><kbd>↑</kbd><i>/</i><kbd>↓</kbd></span></td><td><span class="k"><kbd>Option</kbd><i>+</i><kbd>↑</kbd><i>/</i><kbd>↓</kbd></span></td></tr>
     <tr><td>copiază / taie / lipește celula</td><td><span class="k"><kbd>C</kbd><i>/</i><kbd>X</kbd><i>/</i><kbd>V</kbd></span></td><td><span class="k"><kbd>C</kbd><i>/</i><kbd>X</kbd><i>/</i><kbd>V</kbd></span></td></tr>
     <tr><td>ascunde / arată rezultatul celulei</td><td><kbd>O</kbd></td><td><kbd>O</kbd></td></tr>
-    <tr><td>numerele rândurilor: în celulă / în tot caietul</td><td><span class="k"><kbd>L</kbd><i>/</i><kbd>Shift</kbd><i>+</i><kbd>L</kbd></span></td><td><span class="k"><kbd>L</kbd><i>/</i><kbd>Shift</kbd><i>+</i><kbd>L</kbd></span></td></tr>
-  </tbody></table>
+    <tr><td>numerele rândurilor, în celulă / în tot caietul</td><td><span class="k"><kbd>L</kbd><i>/</i><kbd>Shift</kbd><i>+</i><kbd>L</kbd></span></td><td><span class="k"><kbd>L</kbd><i>/</i><kbd>Shift</kbd><i>+</i><kbd>L</kbd></span></td></tr>
 
-  <p class="grup" style="--c:var(--ceas)">În celulă, în modul editare</p>
-  <table class="tb"><thead><tr><th>Ce face</th><th>Windows</th><th>macOS</th></tr></thead><tbody>
-    <tr><td>sugestii de completare (nume de variabile, funcții)</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Space</kbd></span></td><td><span class="k"><kbd>Control</kbd><i>+</i><kbd>Space</kbd></span></td></tr>
+    <tr class="g"><td colspan="3">În celulă, în modul editare</td></tr>
+    <tr><td>sugestii de completare</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Space</kbd></span></td><td><span class="k"><kbd>Control</kbd><i>+</i><kbd>Space</kbd></span></td></tr>
     <tr><td>comentează / decomentează rândurile selectate</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>/</kbd></span></td><td><span class="k"><kbd>Cmd</kbd><i>+</i><kbd>/</kbd></span></td></tr>
     <tr><td>împarte celula în două, la cursor</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Shift</kbd><i>+</i><kbd>-</kbd></span></td><td><span class="k"><kbd>Control</kbd><i>+</i><kbd>Shift</kbd><i>+</i><kbd>-</kbd></span></td></tr>
     <tr><td>anulează ultima modificare de text</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Z</kbd></span></td><td><span class="k"><kbd>Cmd</kbd><i>+</i><kbd>Z</kbd></span></td></tr>
-  </tbody></table>
 
-  <p class="grup" style="--c:var(--ardezie)">În tot caietul</p>
-  <table class="tb"><thead><tr><th>Ce face</th><th>Windows</th><th>macOS</th></tr></thead><tbody>
+    <tr class="g"><td colspan="3">Caietul</td></tr>
     <tr><td>salvează</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>S</kbd></span></td><td><span class="k"><kbd>Cmd</kbd><i>+</i><kbd>S</kbd></span></td></tr>
     <tr><td>caută în caiet</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>F</kbd></span></td><td><span class="k"><kbd>Cmd</kbd><i>+</i><kbd>F</kbd></span></td></tr>
     <tr><td>paleta de comenzi: orice comandă, după nume</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Shift</kbd><i>+</i><kbd>P</kbd></span></td><td><span class="k"><kbd>Cmd</kbd><i>+</i><kbd>Shift</kbd><i>+</i><kbd>P</kbd></span></td></tr>
-    <tr><td>lista tuturor scurtăturilor, cu căutare</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>K</kbd> <kbd>Ctrl</kbd><i>+</i><kbd>S</kbd></span></td><td><span class="k"><kbd>Cmd</kbd><i>+</i><kbd>K</kbd> <kbd>Cmd</kbd><i>+</i><kbd>S</kbd></span></td></tr>
+    <tr><td>lista tuturor comenzilor rapide, cu căutare</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>K</kbd> <kbd>Ctrl</kbd><i>+</i><kbd>S</kbd></span></td><td><span class="k"><kbd>Cmd</kbd><i>+</i><kbd>K</kbd> <kbd>Cmd</kbd><i>+</i><kbd>S</kbd></span></td></tr>
   </tbody></table>
   </div>
 
-  <!-- ================================================================= -->
-  <h2>În JupyterLab și Jupyter Notebook</h2>
-  <p class="sc__sub">Modurile și cele cinci scurtături de bază sunt aceleași. Diferă câteva:</p>
-  <div class="tbw">
-  <table class="tb tb--dif"><thead><tr><th>Ce face</th><th>JupyterLab, Jupyter Notebook</th><th>Observație</th></tr></thead><tbody>
-    <tr><td>rulează celula și rămâne pe ea</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Enter</kbd></span><small>pe macOS și <kbd>Cmd</kbd><i>+</i><kbd>Enter</kbd></small></td><td>JupyterLab numește tasta <em>Accel</em>: <kbd>Cmd</kbd> pe macOS, <kbd>Ctrl</kbd> în rest</td></tr>
-    <tr><td>mută celula în sus / în jos</td><td><span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Shift</kbd><i>+</i><kbd>↑</kbd><i>/</i><kbd>↓</kbd></span></td><td>în VS Code: <kbd>Alt</kbd><i>+</i><kbd>↑</kbd><i>/</i><kbd>↓</kbd></td></tr>
-    <tr><td>unește celulele selectate</td><td><span class="k"><kbd>Shift</kbd><i>+</i><kbd>M</kbd></span></td><td>în VS Code, <em>Join Selected Cells</em>, din meniul celulei</td></tr>
-    <tr><td>completare / documentația obiectului</td><td><span class="k"><kbd>Tab</kbd><i>/</i><kbd>Shift</kbd><i>+</i><kbd>Tab</kbd></span></td><td>în VS Code, sugestiile apar și singure</td></tr>
-    <tr><td>întrerupe / repornește kernelul</td><td><span class="k"><kbd>I</kbd><i>,</i><kbd>I</kbd><i>/</i><kbd>0</kbd><i>,</i><kbd>0</kbd></span></td><td>în Jupyter Notebook; în VS Code, butoanele Interrupt și Restart</td></tr>
-    <tr><td>lista tuturor scurtăturilor</td><td><em>Help → Keyboard Shortcuts</em> (Notebook)<small><em>Settings → Advanced Settings Editor → Keyboard Shortcuts</em> (JupyterLab)</small></td><td></td></tr>
-  </tbody></table>
-  </div>
+  <h2>În JupyterLab</h2>
+  <p>Modurile și tastele de bază sunt aceleași. Câteva comenzi diferă: celula se mută cu
+  <span class="k"><kbd>Ctrl</kbd><i>+</i><kbd>Shift</kbd><i>+</i><kbd>↑</kbd><i>/</i><kbd>↓</kbd></span>,
+  celulele selectate se unesc cu <span class="k"><kbd>Shift</kbd><i>+</i><kbd>M</kbd></span>, iar
+  <kbd>Tab</kbd> completează codul. Pe macOS, <span class="k"><kbd>Cmd</kbd><i>+</i><kbd>Enter</kbd></span>
+  rulează celula. Lista completă este în <em>Settings → Advanced Settings Editor → Keyboard Shortcuts</em>.</p>
 
-  <!-- ================================================================= -->
   <h2>Surse</h2>
-  <ul class="surse">
-    <li><a class="leg" href="https://code.visualstudio.com/docs/datascience/jupyter-notebooks" target="_blank" rel="noopener">VS Code: Jupyter Notebooks in VS Code</a>
-      <span>modurile, rularea celulelor, A/B, dd, z, M/Y, L, Shift+L, Alt+săgeți, salvarea, căutarea</span></li>
-    <li><a class="leg" href="https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter-keymap" target="_blank" rel="noopener">Jupyter Keymap, extensia Microsoft pentru VS Code</a>
-      <span>tastele cu o singură literă; lista completă în <a class="leg" href="https://github.com/microsoft/vscode-jupyter-keymap/blob/main/package.json" target="_blank" rel="noopener">fișierul extensiei</a> (C, X, V, O, F, J, K, Ctrl+Shift+-)</span></li>
-    <li><a class="leg" href="https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter" target="_blank" rel="noopener">Extensia Jupyter pentru VS Code</a>
-      <span>instalează automat extensia Jupyter Keymap</span></li>
-    <li><a class="leg" href="https://code.visualstudio.com/docs/configure/keybindings" target="_blank" rel="noopener">VS Code: Keyboard shortcuts</a>
-      <span>editorul de scurtături (Ctrl+K Ctrl+S, Cmd+K Cmd+S pe macOS)</span></li>
-    <li><a class="leg" href="https://jupyterlab.readthedocs.io/en/stable/user/notebook.html" target="_blank" rel="noopener">JupyterLab: Notebooks</a> și
-      <a class="leg" href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank" rel="noopener">The JupyterLab Interface</a>
-      <span>modurile comandă și editare, Tab și Shift+Tab, tasta Accel, unde se schimbă scurtăturile</span></li>
-    <li><a class="leg" href="https://github.com/jupyterlab/jupyterlab/blob/main/packages/notebook-extension/schema/tracker.json" target="_blank" rel="noopener">JupyterLab: lista implicită a scurtăturilor</a>
-      <span>definiția din codul JupyterLab (mutarea celulelor, unirea, Accel+Enter)</span></li>
-    <li><a class="leg" href="https://jupyter-notebook.readthedocs.io/en/stable/notebook.html" target="_blank" rel="noopener">Jupyter Notebook: The Jupyter Notebook</a>
-      <span>Shift+Enter, I,I și 0,0, meniul Help → Keyboard Shortcuts</span></li>
+  <ul class="src">
+    <li><a class="leg" href="https://code.visualstudio.com/docs/datascience/jupyter-notebooks" target="_blank" rel="noopener">VS Code: Jupyter Notebooks in VS Code</a></li>
+    <li><a class="leg" href="https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter-keymap" target="_blank" rel="noopener">Jupyter Keymap, extensia pentru VS Code</a>, instalată automat de extensia Jupyter</li>
+    <li><a class="leg" href="https://code.visualstudio.com/docs/configure/keybindings" target="_blank" rel="noopener">VS Code: Keyboard shortcuts</a></li>
+    <li><a class="leg" href="https://jupyterlab.readthedocs.io/en/stable/user/notebook.html" target="_blank" rel="noopener">JupyterLab: Notebooks</a></li>
   </ul>
 
   <div class="sc__jos">
@@ -274,8 +129,8 @@
 </main>
 
 <div id="subsol"></div>
-<script type="module" src="../../js/antet.js?v=69"></script>
-<script type="module" src="../../js/subsol.js?v=69"></script>
+<script type="module" src="../../js/antet.js?v=73"></script>
+<script type="module" src="../../js/subsol.js?v=73"></script>
 <script>
 /* Înapoi: dacă ai venit dintr-o pagină a sitului (slide-uri, manual), te
    întorci exact acolo; altfel, la pagina cursului 1. */
@@ -287,119 +142,6 @@ document.querySelectorAll("[data-inapoi]").forEach(a => a.addEventListener("clic
     }
   } catch (_) {}
 }));
-
-/* Caietul de exersat: aceleași taste ca VS Code, cu modul comandă și modul
-   editare. Nu rulează Python: înțelege doar atribuiri simple și înmulțiri,
-   cât să se vadă diferența dintre ordinea corectă și un NameError. */
-(function(){
-  const caiet = document.getElementById("caiet"), celEl = document.getElementById("celule");
-  const modEl = document.getElementById("mod"), ultEl = document.getElementById("ult");
-  const pasi = [...document.querySelectorAll("#pasi li")];
-  let cel, sel, ed, nr, env, pas, dPrim, sters, mdCreat;
-
-  function initial(){
-    cel = [{ tip: "cod", src: "x = 21" }, { tip: "cod", src: "x * 2" }];
-    sel = 0; ed = false; nr = 0; env = {}; pas = 0; dPrim = 0; sters = null; mdCreat = -1;
-    deseneaza();
-  }
-  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
-  function ruleaza(i){
-    const c = cel[i];
-    if (c.tip === "md"){ c.randat = true; return; }
-    nr++; c.n = nr; c.out = ""; c.err = false;
-    const s = c.src.trim();
-    let m;
-    if ((m = s.match(/^([A-Za-z_]\w*)\s*=\s*(-?\d+(?:\.\d+)?)$/))){ env[m[1]] = +m[2]; }
-    else if ((m = s.match(/^([A-Za-z_]\w*)\s*\*\s*(-?\d+(?:\.\d+)?)$/))){
-      if (m[1] in env) c.out = String(env[m[1]] * +m[2]);
-      else { c.out = `NameError: name '${m[1]}' is not defined`; c.err = true; }
-    }
-    else if (/^[\d\s+\-*/().]+$/.test(s) && s){ try { c.out = String(Function(`"use strict";return (${s})`)()); } catch (_) {} }
-  }
-  function deseneaza(){
-    celEl.innerHTML = cel.map((c, i) => {
-      const md = c.tip === "md";
-      const corp = md && c.randat && !(ed && i === sel)
-        ? `<div class="cel__md">${esc(c.src.replace(/^#+\s*/, "")) || "&nbsp;"}</div>`
-        : `<textarea class="cel__in" rows="1" data-i="${i}" ${ed && i === sel ? "" : "readonly tabindex=\"-1\""}>${esc(c.src)}</textarea>`;
-      return `<div class="cel ${md ? "cel--md" : ""} ${i === sel ? "sel" : ""} ${i === sel && ed ? "ed" : ""}" data-i="${i}">
-        <span class="cel__n">${md ? "" : `[${c.n || " "}]`}</span>
-        <div class="cel__c">${corp}${c.out ? `<div class="cel__out ${c.err ? "err" : ""}">${esc(c.out)}</div>` : ""}
-          <div class="cel__tip">${md ? "markdown" : "cod"}</div></div></div>`;
-    }).join("");
-    modEl.textContent = ed ? "mod editare" : "mod comandă";
-    modEl.classList.toggle("ed", ed);
-    pasi.forEach((li, k) => { li.classList.toggle("gata", k < pas); li.classList.toggle("acum", k === pas); });
-    document.getElementById("bravo").classList.toggle("vazut", pas >= pasi.length);
-    const inalt = t => { t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; };
-    celEl.querySelectorAll("textarea").forEach(inalt);
-    if (ed){
-      const t = celEl.querySelector(`textarea[data-i="${sel}"]`);
-      if (t){ t.focus(); t.setSelectionRange(t.value.length, t.value.length);
-        t.addEventListener("input", () => { cel[sel].src = t.value; inalt(t); });
-        t.addEventListener("keydown", tasta); }
-    }
-  }
-  const avanseaza = (k, cond) => { if (pas === k && cond) pas++; };
-
-  function tasta(e){
-    const k = e.key, numeTasta = [e.ctrlKey && "Ctrl", e.altKey && (navigator.platform.startsWith("Mac") ? "Option" : "Alt"),
-      e.metaKey && "Cmd", e.shiftKey && k.length > 1 && "Shift"].filter(Boolean).concat(k === " " ? "Space" : k.length === 1 ? k.toUpperCase() : k).join(" + ");
-    if (["Control", "Shift", "Alt", "Meta"].includes(k)) return;
-    ultEl.textContent = numeTasta;
-    document.getElementById("start").style.display = "none";
-
-    if (k === "Enter" && (e.shiftKey || e.ctrlKey || e.altKey)){
-      e.preventDefault();
-      const i = sel; ruleaza(i);
-      if (e.shiftKey){
-        avanseaza(0, i === 0);
-        avanseaza(4, cel[i].tip === "md" && cel[i].src.trim() !== "" && i === mdCreat);
-        if (sel === cel.length - 1) cel.push({ tip: "cod", src: "" });
-        sel++;
-      } else if (e.altKey){ cel.splice(i + 1, 0, { tip: "cod", src: "" }); if (mdCreat > i) mdCreat++; sel = i + 1; }
-      else { avanseaza(1, i === 1 && cel[1].out === "42"); }
-      ed = false; deseneaza(); caiet.focus(); return;
-    }
-    if (ed){
-      if (k === "Escape"){ e.preventDefault(); ed = false; deseneaza(); caiet.focus(); }
-      return;                                     /* restul tastelor scriu text */
-    }
-    /* modul comandă */
-    const l = k.toLowerCase(), simpla = !e.ctrlKey && !e.metaKey && !e.altKey;
-    if (k === "Enter"){ e.preventDefault(); ed = true; if (cel[sel].tip === "md") cel[sel].randat = false; deseneaza(); return; }
-    if ((k === "ArrowUp" || (l === "k" && simpla)) && sel > 0){ e.preventDefault(); sel--; deseneaza(); return; }
-    if ((k === "ArrowDown" || (l === "j" && simpla)) && sel < cel.length - 1){ e.preventDefault(); sel++; deseneaza(); return; }
-    if (!simpla || e.shiftKey) return;
-    if (l === "a"){ cel.splice(sel, 0, { tip: "cod", src: "" }); if (mdCreat >= sel) mdCreat++; }
-    else if (l === "b"){ cel.splice(sel + 1, 0, { tip: "cod", src: "" }); if (mdCreat > sel) mdCreat++; sel++; avanseaza(2, true); }
-    else if (l === "m"){ cel[sel].tip = "md"; cel[sel].randat = false; cel[sel].out = ""; cel[sel].n = 0;
-      if (pas === 3){ mdCreat = sel; pas++; } }
-    else if (l === "y"){ cel[sel].tip = "cod"; }
-    else if (l === "d"){
-      const acum = Date.now();
-      if (acum - dPrim < 700 && cel.length > 1){
-        sters = { c: cel[sel], i: sel };
-        avanseaza(5, sel === mdCreat);
-        if (mdCreat > sel) mdCreat--;
-        cel.splice(sel, 1); sel = Math.min(sel, cel.length - 1); dPrim = 0;
-      } else { dPrim = acum; ultEl.textContent = "D … (încă un D)"; return; }
-    }
-    else if (l === "z" && sters){ cel.splice(sters.i, 0, sters.c); if (mdCreat >= sters.i) mdCreat++; sel = sters.i; sters = null; avanseaza(6, true); }
-    else return;
-    e.preventDefault(); deseneaza();
-  }
-
-  caiet.addEventListener("keydown", e => { if (e.target === caiet) tasta(e); });
-  celEl.addEventListener("click", e => {
-    const c = e.target.closest(".cel"); if (!c) return;
-    sel = +c.dataset.i; ed = !!e.target.closest(".cel__in, .cel__md");
-    if (ed && cel[sel].tip === "md") cel[sel].randat = false;
-    deseneaza(); if (!ed) caiet.focus();
-  });
-  document.getElementById("din-nou").addEventListener("click", () => { initial(); caiet.focus(); });
-  initial();
-})();
 </script>
 </body>
 </html>

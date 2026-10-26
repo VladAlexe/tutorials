@@ -16,30 +16,28 @@
   max-height:calc(100vh - var(--antet) - 40px);display:flex;flex-direction:column;
   gap:16px;min-height:0}
 .tut__cap{padding-bottom:13px;border-bottom:1px solid var(--linie)}
-.tut__et{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--text-3)}
-.tut__t{display:block;font-family:var(--sans);font-size:16px;font-weight:600;
+.tut__et{display:block;font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
+.tut__t{display:block;font-family:var(--sans);font-size:var(--t4);font-weight:600;
   margin-top:5px;letter-spacing:-.012em}
-.tut__st{display:block;font-family:var(--sans);font-size:13px;color:var(--text-3);
+.tut__st{display:block;font-family:var(--sans);font-size:var(--t2);color:var(--text-3);
   margin-top:2px;line-height:1.3}
 
 .tut__nav{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin;
   margin-right:-8px;padding-right:8px}
-.tut__g{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--text-3);padding:13px 0 5px}
+.tut__g{font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);padding:13px 0 5px}
 .tut__g:first-child{padding-top:0}
 .tut__nav a{display:flex;gap:9px;align-items:baseline;padding:4px 8px 4px 0;
-  text-decoration:none;font-family:var(--sans);font-size:13px;line-height:1.35;
+  text-decoration:none;font-family:var(--sans);font-size:var(--t2);line-height:1.35;
   color:var(--text-2);border-left:2px solid transparent;padding-left:9px;
   transition:.11s}
 .tut__nav a:hover{color:var(--text)}
 .tut__nav a.activ{color:var(--text);font-weight:500;border-left-color:var(--accent)}
-.tut__nav a .n{font-family:var(--mono);font-size:10px;color:var(--text-3);flex:none;
+.tut__nav a .n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);flex:none;
   font-variant-numeric:lining-nums tabular-nums}
 
 .tut__jos{flex:none;border-top:1px solid var(--linie);padding-top:11px;
   display:flex;flex-direction:column;gap:5px}
-.tut__jos a{font-family:var(--sans);font-size:12.5px;color:var(--text-3);
+.tut__jos a{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
   text-decoration:none;transition:.11s}
 .tut__jos a:hover{color:var(--accent-text)}
 
@@ -48,14 +46,13 @@
 .tut__corp{min-width:0;padding-bottom:70px}
 .tut__intro{padding-bottom:30px;margin-bottom:10px;border-bottom:1px solid var(--linie)}
 .tut__intro h1{font-size:clamp(28px,3.6vw,38px);margin-bottom:16px}
-.tut__intro .deck{margin-bottom:0;font-size:18px}
+.tut__intro .deck{margin-bottom:0;font-size:var(--t4)}
 
 .tut__s{padding:40px 0;border-bottom:1px solid var(--linie);scroll-margin-top:72px}
 .tut__s:last-child{border-bottom:0}
-.tut__nr{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--text-3);margin-bottom:11px}
-.tut__s h2{margin-top:0;font-size:24px}
-.tut__s h3{font-size:17.5px}
+.tut__nr{display:block;font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-bottom:11px}
+.tut__s h2{margin-top:0;font-size:var(--t6)}
+.tut__s h3{font-size:var(--t4)}
 
 /* la citit, blocurile interactive pot fi mai late decât coloana de text */
 .tut__s .ix{max-width:none}

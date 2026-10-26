@@ -7,21 +7,21 @@
    "nr": 1,
    "id": "s1",
    "grup": "Cursul",
-   "titlu": "Despre ce e ora de azi",
+   "titlu": "Planul lecției",
    "sarcini": []
   },
   {
    "nr": 2,
    "id": "s2",
    "grup": "Cursul",
-   "titlu": "Unde ai rămas",
+   "titlu": "Recapitulare",
    "sarcini": []
   },
   {
    "nr": 3,
    "id": "s3",
    "grup": "Ce face Git",
-   "titlu": "La ce e bun",
+   "titlu": "Funcțiile lui Git",
    "sarcini": []
   },
   {
@@ -54,7 +54,7 @@
    "nr": 7,
    "id": "s7",
    "grup": "Primii pași",
-   "titlu": "Cine ești",
+   "titlu": "Identitatea autorului",
    "sarcini": [
     {
      "id": "c3-cod-config",
@@ -82,7 +82,7 @@
    "nr": 9,
    "id": "s9",
    "grup": "Primii pași",
-   "titlu": "Ce nu urci niciodată",
+   "titlu": "Ce nu se versionează",
    "sarcini": [
     {
      "id": "c3-sort-gitignore",
@@ -92,11 +92,11 @@
      "id": "c3-v6",
      "fel": "verificare",
      "corect": 3,
-     "q": "Ai urcat din greșeală un fișier cu o parolă și ai făcut push. Ce faci?",
+     "q": "Ai inclus din greșeală într-un commit un fișier cu o parolă și ai făcut push. Ce faci?",
      "optiuni": [
       "Ștergi fișierul și faci alt commit",
       "Îl adaugi în .gitignore",
-      "Nu e nicio problemă, depozitul e privat",
+      "Nu este necesar nimic, depozitul este privat",
       "Schimbi parola imediat, apoi cureți istoricul"
      ]
     }
@@ -113,7 +113,7 @@
    "nr": 11,
    "id": "s11",
    "grup": "GitHub",
-   "titlu": "Legarea celor două",
+   "titlu": "Legarea depozitelor",
    "sarcini": [
     {
      "id": "c3-cod-remote",
@@ -125,7 +125,7 @@
    "nr": 12,
    "id": "s12",
    "grup": "GitHub",
-   "titlu": "Drumul complet",
+   "titlu": "Fluxul complet",
    "sarcini": []
   },
   {
@@ -163,7 +163,7 @@
    "nr": 16,
    "id": "s16",
    "grup": "În echipă",
-   "titlu": "Regulile voastre",
+   "titlu": "Regulile echipei",
    "sarcini": []
   },
   {
@@ -177,7 +177,7 @@
    "nr": 18,
    "id": "s18",
    "grup": "Cadrul teoretic",
-   "titlu": "Cum cauți literatura",
+   "titlu": "Căutarea literaturii",
    "sarcini": []
   },
   {
@@ -191,7 +191,7 @@
    "nr": 20,
    "id": "s20",
    "grup": "Cadrul teoretic",
-   "titlu": "Scrieți întrebarea voastră",
+   "titlu": "Întrebarea echipei",
    "sarcini": [
     {
      "id": "c3-intrebare",
@@ -221,8 +221,8 @@
   {
    "nr": 23,
    "id": "s22",
-   "grup": "Proiectul tău",
-   "titlu": "Fă-ți depozitul, acum",
+   "grup": "Proiectul echipei",
+   "titlu": "Depozitul echipei",
    "sarcini": [
     {
      "id": "c3-dovada-depozit",
@@ -234,7 +234,7 @@
    "nr": 24,
    "id": "s23",
    "grup": "Mai departe",
-   "titlu": "Până data viitoare",
+   "titlu": "Pentru cursul următor",
    "sarcini": []
   }
  ]

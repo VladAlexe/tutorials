@@ -18,11 +18,11 @@
    legături, mereu vizibile: nu te mai întrebi unde era raportul. */
 
 .predau-nav{display:flex;gap:2px;flex:1}
-.predau-nav a{font-family:var(--sans);font-size:13px;color:var(--text-2);
+.predau-nav a{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
   text-decoration:none;padding:5px 11px;border-radius:7px;transition:.13s}
 .predau-nav a:hover{background:var(--panza-2);color:var(--text)}
 .predau-nav a.on{color:var(--text);font-weight:600;background:var(--panza-2)}
-.pred-cine{font-family:var(--sans);font-size:13px;color:var(--text-2);
+.pred-cine{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
   margin-right:4px;white-space:nowrap}
 
 /* --- cadrul ------------------------------------------------------------- */
@@ -33,11 +33,10 @@
    pagina iese de 560px în loc de 1180. */
 .pd__cap{display:flex;align-items:flex-start;justify-content:space-between;
   gap:20px;flex-wrap:wrap;padding:30px 0 20px}
-.pd__et{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--text-3);margin:0 0 6px}
-.pd__t{font-family:var(--sans);font-size:27px;font-weight:600;
+.pd__et{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:0 0 6px}
+.pd__t{font-family:var(--sans);font-size:var(--t6);font-weight:600;
   letter-spacing:-.022em;margin:0;line-height:1.15}
-.pd__d{font-family:var(--sans);font-size:14px;color:var(--text-2);
+.pd__d{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
   margin:6px 0 0;max-width:62ch;line-height:1.5}
 
 /* --- banda de stare -----------------------------------------------------
@@ -47,7 +46,7 @@
 
 .st{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
   padding:11px 16px;border-radius:11px;margin:0 0 26px;
-  font-family:var(--sans);font-size:13.5px;
+  font-family:var(--sans);font-size:var(--t2);
   border:1px solid var(--linie);background:var(--panza)}
 .st--viu{border-color:color-mix(in srgb,var(--accent) 36%,var(--linie));
   background:var(--accent-slab)}
@@ -57,7 +56,7 @@
 .st__t{font-weight:600}
 .st__d{color:var(--text-2)}
 .st__sp{flex:1}
-.st__cod{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:.13em;
+.st__cod{font-family:var(--mono);font-size:var(--t4);font-weight:500;letter-spacing:.13em;
   padding:3px 11px;border-radius:7px;background:var(--panza);
   border:1px solid var(--linie-2);cursor:pointer}
 .st__cod:hover{border-color:var(--accent)}
@@ -70,10 +69,10 @@
   gap:1px;background:var(--linie);border:1px solid var(--linie);
   border-radius:11px;overflow:hidden;margin:0 0 26px}
 .cif__c{background:var(--panza);padding:15px 17px}
-.cif__n{font-family:var(--sans);font-size:25px;font-weight:600;
+.cif__n{font-family:var(--sans);font-size:var(--t6);font-weight:600;
   letter-spacing:-.02em;line-height:1.1}
-.cif__n small{font-size:14px;color:var(--text-3);font-weight:400;margin-left:2px}
-.cif__e{font-family:var(--sans);font-size:11.5px;color:var(--text-3);margin-top:3px}
+.cif__n small{font-size:var(--t2);color:var(--text-3);font-weight:400;margin-left:2px}
+.cif__e{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-top:3px}
 
 /* --- carduri și acțiuni -------------------------------------------------- */
 
@@ -81,11 +80,10 @@
   gap:16px;margin:0 0 26px}
 .card{border:1px solid var(--linie);border-radius:12px;background:var(--panza);
   padding:18px 20px}
-.card__et{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--text-3);margin:0 0 7px}
-.card__t{font-family:var(--sans);font-size:17px;font-weight:600;margin:0 0 4px;
+.card__et{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:0 0 7px}
+.card__t{font-family:var(--sans);font-size:var(--t4);font-weight:600;margin:0 0 4px;
   letter-spacing:-.014em}
-.card__d{font-family:var(--sans);font-size:13.5px;color:var(--text-2);
+.card__d{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
   margin:0 0 14px;line-height:1.5}
 .randb{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
 
@@ -98,30 +96,29 @@
   align-items:start}
 @media (max-width:860px){ .live{grid-template-columns:minmax(0,1fr)} }
 
-.live__q{font-family:var(--sans);font-size:17px;font-weight:600;
+.live__q{font-family:var(--sans);font-size:var(--t4);font-weight:600;
   margin:0 0 3px;letter-spacing:-.014em;line-height:1.3}
-.live__n{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--text-3);margin:0 0 14px}
+.live__n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:0 0 14px}
 
 /* inelul */
 .inel{display:block;margin:0 auto 14px}
-.inel__gol{font-family:var(--sans);font-size:13px;color:var(--text-3);
+.inel__gol{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);
   text-align:center;padding:30px 0}
-.num{font-family:var(--sans);font-size:30px;font-weight:600;letter-spacing:-.03em}
-.sub{font-family:var(--sans);font-size:10.5px;fill:var(--text-3)}
+.num{font-family:var(--sans);font-size:var(--t7);font-weight:600;letter-spacing:-.03em}
+.sub{font-family:var(--sans);font-size:var(--t1);fill:var(--text-3)}
 
 /* legenda cu numărătoarea, sub inel */
 .nr{list-style:none;padding:0;margin:0;max-width:none}
 .nr li::before{content:none}
 .nr li{display:flex;align-items:center;gap:9px;padding:6px 2px;
-  border-bottom:1px solid var(--linie);font-family:var(--sans);font-size:13px}
+  border-bottom:1px solid var(--linie);font-family:var(--sans);font-size:var(--t2)}
 .nr li:last-child{border-bottom:0}
-.nr b{margin-left:auto;font-family:var(--mono);font-size:13px;font-weight:500}
+.nr b{margin-left:auto;font-family:var(--sans);font-size:var(--t2);font-weight:500}
 .nr span{color:var(--text-2)}
 
 /* glifele celor patru stări */
 .g{display:inline-flex;align-items:center;justify-content:center;
-  width:17px;height:17px;border-radius:50%;font-size:10.5px;flex:none;
+  width:17px;height:17px;border-radius:50%;font-size:var(--t1);flex:none;
   font-family:var(--sans);line-height:1}
 .g--ok{background:var(--ok);color:var(--panza)}
 .g--nu{background:var(--nu);color:var(--panza)}
@@ -129,9 +126,8 @@
 .g--nim{border:1.5px dotted var(--linie-2);color:transparent}
 
 /* tabelul, cine ce a făcut */
-.tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13.5px}
-.tb th{text-align:left;font-family:var(--mono);font-size:9.5px;font-weight:500;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--text-3);
+.tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:var(--t2)}
+.tb th{text-align:left;font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);
   padding:0 10px 8px 0;border-bottom:1px solid var(--linie);white-space:nowrap}
 .tb th.cl{cursor:pointer}
 .tb th.cl:hover{color:var(--text)}
@@ -142,7 +138,7 @@
 .tb tr.plecat td{opacity:.55}
 .tb__nume{display:flex;align-items:center;gap:9px;min-width:0}
 .tb__nume span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tb__ales{font-family:var(--mono);font-size:12px;color:var(--text-2);
+.tb__ales{font-family:var(--mono);font-size:var(--t1);color:var(--text-2);
   max-width:34ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tb__ales em{font-style:italic;color:var(--text-3)}
 .tb__tot{display:flex;align-items:center;gap:8px;justify-content:flex-end;
@@ -150,14 +146,14 @@
 .bm{display:inline-block;width:54px;height:4px;border-radius:99px;
   background:var(--linie);overflow:hidden;flex:none}
 .bm i{display:block;height:100%;background:var(--accent);border-radius:99px}
-.rap{font-family:var(--mono);font-size:11.5px;color:var(--text-3)}
+.rap{font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
 
 /* rândul de atenționare, sub tabel */
 .blocaj{margin:16px 0 0;padding:11px 14px;border-radius:9px;
   border:1px solid color-mix(in srgb,var(--nu) 26%,var(--linie));
-  background:var(--nu-slab);font-family:var(--sans);font-size:13px}
-.blocaj b{display:block;font-size:13px;margin-bottom:2px}
-.blocaj span{color:var(--text-2);font-size:12.5px}
+  background:var(--nu-slab);font-family:var(--sans);font-size:var(--t2)}
+.blocaj b{display:block;font-size:var(--t2);margin-bottom:2px}
+.blocaj span{color:var(--text-2);font-size:var(--t1)}
 
 /* --- liste de ședințe ---------------------------------------------------- */
 
@@ -168,8 +164,8 @@
 .sed li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;
   align-items:center;padding:13px 0;border-bottom:1px solid var(--linie)}
 .sed li:last-child{border-bottom:0}
-.sed__t{font-family:var(--sans);font-size:15px;font-weight:600;margin:0}
-.sed__d{font-family:var(--sans);font-size:12.5px;color:var(--text-3);margin:2px 0 0}
+.sed__t{font-family:var(--sans);font-size:var(--t3);font-weight:600;margin:0}
+.sed__d{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:2px 0 0}
 .sed__a{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 
 /* --- stările goale ------------------------------------------------------
@@ -178,8 +174,8 @@
 
 .gol{border:1px dashed var(--linie-2);border-radius:11px;padding:26px 24px;
   text-align:center;font-family:var(--sans)}
-.gol__t{font-size:15px;font-weight:600;margin:0 0 4px}
-.gol__d{font-size:13.5px;color:var(--text-2);margin:0 0 14px;line-height:1.5}
+.gol__t{font-size:var(--t3);font-weight:600;margin:0 0 4px}
+.gol__d{font-size:var(--t2);color:var(--text-2);margin:0 0 14px;line-height:1.5}
 
 /* --- schelet, cât se încarcă --------------------------------------------
    Formele apar goale și apoi se umplu. O rotiță nu spune ce vine; un
@@ -195,11 +191,9 @@
 .proiect{position:fixed;inset:0;z-index:300;background:var(--fundal);
   display:flex;align-items:center;justify-content:center;padding:4vmin}
 .proiect__in{text-align:center;max-width:min(92vw,720px)}
-.proiect__et{font-family:var(--mono);font-size:clamp(12px,1.5vw,16px);
-  letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin:0 0 14px}
-.proiect__c{font-family:var(--mono);font-size:clamp(56px,13vw,150px);font-weight:500;
-  letter-spacing:.1em;margin:0;line-height:1}
-.proiect__u{font-family:var(--mono);font-size:clamp(14px,2.2vw,24px);
+.proiect__et{font-family:var(--sans);font-size:clamp(12px,1.5vw,16px);color:var(--text-3);margin:0 0 14px}
+.proiect__c{font-family:var(--sans);font-size:clamp(56px,13vw,150px);font-weight:500;margin:0;line-height:1}
+.proiect__u{font-family:var(--sans);font-size:clamp(14px,2.2vw,24px);
   color:var(--text-2);margin:10px 0 24px}
 .proiect__qr img{width:min(42vmin,300px);height:auto;margin:0 auto;
   border-radius:12px;background:#FFFFFF;padding:12px}
@@ -207,14 +201,14 @@
   color:var(--text-2);margin:22px auto 0;max-width:46ch;line-height:1.5}
 .proiect__x{position:absolute;top:18px;right:20px;width:40px;height:40px;
   border-radius:50%;border:1px solid var(--linie);background:var(--panza);
-  font-size:21px;color:var(--text-2);cursor:pointer}
+  font-size:var(--t5);color:var(--text-2);cursor:pointer}
 .proiect__x:hover{border-color:var(--linie-2);color:var(--text)}
 
 /* --- mesaj trecător ------------------------------------------------------ */
 
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
   z-index:400;background:var(--text);color:var(--fundal);font-family:var(--sans);
-  font-size:13.5px;padding:10px 17px;border-radius:9px;box-shadow:var(--umbra-2);
+  font-size:var(--t2);padding:10px 17px;border-radius:9px;box-shadow:var(--umbra-2);
   max-width:min(460px,90vw);text-align:center;line-height:1.4;
   opacity:0;transition:opacity .18s;pointer-events:none}
 .toast.vazut{opacity:1}

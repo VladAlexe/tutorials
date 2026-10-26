@@ -29,49 +29,49 @@ export const LECTII = [
   { nr:1, cheie:"c1-introducere-si-mediu",
     titlu:"Introducere și configurare",
     scurt:"Introducere",
-    rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.",
-    stare:"gata", sarcini:11,
+    rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul virtual de lucru, tipurile de date și formatul JSON.",
+    stare:"gata", sarcini:10,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/01_introducere_si_datele_proiectului.ipynb" },
 
   { nr:2, cheie:"c2-colectarea-prin-api",
     titlu:"Colectarea datelor prin API",
     scurt:"API",
-    rezumat:"Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns, și cum aduci primele date reale în proiect.",
+    rezumat:"Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns și cum se aduc primele date reale în proiect.",
     stare:"gata", sarcini:9,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" },
 
   { nr:3, cheie:"c3-versionare-git",
     titlu:"Versionare cu Git",
     scurt:"Git",
-    rezumat:"De ce versionăm, cum lucrează o echipă pe același proiect, și ce nu se urcă niciodată.",
+    rezumat:"De ce versionăm, cum lucrează o echipă pe același proiect și ce nu se încarcă niciodată în depozit.",
     stare:"gata", sarcini:12,
     notebook:null },
 
   { nr:4, cheie:"c4-curatarea-datelor",
     titlu:"Curățarea datelor",
     scurt:"Curățare",
-    rezumat:"Lipsuri, duplicate, unități care nu se potrivesc. Etapa cea mai lungă și cea care decide tot.",
+    rezumat:"Valori lipsă, duplicate, unități de măsură incompatibile. Etapa cea mai lungă a analizei, de care depind toate rezultatele.",
     stare:"gata", sarcini:12,
     notebook:null },
 
   { nr:5, cheie:"c5-agregare-si-baze-de-date",
     titlu:"Agregare și baze de date",
     scurt:"Agregare",
-    rezumat:"Îmbinarea surselor, unitatea de analiză, și de ce un tabel mare are nevoie de o bază de date.",
+    rezumat:"Îmbinarea surselor, unitatea de analiză și motivul pentru care un tabel mare are nevoie de o bază de date.",
     stare:"gata", sarcini:12,
     notebook:null },
 
   { nr:6, cheie:"c6-analiza-exploratorie",
     titlu:"Analiza exploratorie",
     scurt:"Explorare",
-    rezumat:"Privitul datelor înainte de a le modela: distribuții, relații, și grafice care induc în eroare.",
+    rezumat:"Examinarea datelor înainte de modelare: distribuții, relații și grafice care induc în eroare.",
     stare:"gata", sarcini:9,
     notebook:null },
 
   { nr:7, cheie:"c7-variabile-si-model",
     titlu:"Variabile derivate și model",
     scurt:"Model",
-    rezumat:"De la descriere la explicație: variabile construite de tine și un model pe care îl poți apăra.",
+    rezumat:"De la descriere la explicație: variabile derivate și un model ale cărui alegeri pot fi justificate.",
     stare:"gata", sarcini:9,
     notebook:null },
 
@@ -116,24 +116,24 @@ export const NOTARE = {
   componente: [
     { cheie:"teme", nume:"Teme", puncte:3,
       scurt:"trei teme, predate pe Teams",
-      d:"Trei teme de seminar, pe care le încarci în Teams. N-au legătură cu " +
-        "lecțiile de pe sit: le citesc și le notez eu." },
+      d:"Trei teme de seminar, încărcate în Teams. Nu au legătură cu " +
+        "lecțiile de pe sit și sunt citite și notate de profesor." },
 
     { cheie:"seminar", nume:"Activitate la seminar", puncte:2,
       scurt:"întrebările din lecții",
-      d:"Fiecare din cele 7 seminare valorează la fel. La fiecare întrebare ai " +
-        "două șanse: una la oră și una acasă, și contează doar primul răspuns " +
-        "din fiecare. Corect la oră = întreg, corect acasă = jumătate." },
+      d:"Fiecare dintre cele 7 seminare are aceeași pondere. Fiecare întrebare are " +
+        "două încercări notate, una la oră și una acasă, iar din fiecare contează doar " +
+        "primul răspuns. Corect la oră: punctaj întreg; corect acasă: jumătate." },
 
     { cheie:"proiect", nume:"Proiect", puncte:5,
       scurt:"depozitul de echipă și raportul final",
-      d:"Proiectul de echipă, cu tot cu depozitul pe GitHub: datele colectate, " +
-        "curățarea, analiza și raportul. Se notează drumul care se vede în " +
-        "depozit, nu spectaculozitatea rezultatului. Nota e pe om." },
+      d:"Proiectul de echipă, inclusiv depozitul de pe GitHub: datele colectate, " +
+        "curățarea, analiza și raportul. Se evaluează procesul documentat în " +
+        "depozit, nu spectaculozitatea rezultatului. Nota este individuală." },
 
     { cheie:"oficiu", nume:"Din oficiu", puncte:1,
-      scurt:"se primește",
-      d:"Un punct pe care îl ai de la început. Nu trebuie făcut nimic pentru el." }
+      scurt:"se acordă automat",
+      d:"Un punct acordat din oficiu, fără nicio condiție." }
   ]
 };
 

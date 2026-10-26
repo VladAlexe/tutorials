@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=69");
+    const m = await import("/data-science-workflows/js/colectare.js?v=73");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -61,7 +61,7 @@ V.flux = (gazda, d) => {
           ${esc(d.buton || "Trimite cererea")}</button>
         <span class="flx__stare"></span>
       </div>
-      <div class="flx__i"><h5>${esc(d.titlu || "Apasă pe o stație")}</h5>
+      <div class="flx__i"><h5>${esc(d.titlu || "Selectează o stație")}</h5>
         <p>${d.intro || ""}</p></div>
     </div>`;
 
@@ -88,14 +88,14 @@ V.flux = (gazda, d) => {
     sine.forEach(x => x.classList.remove("on", "atins"));
     legi.forEach(x => x.classList.remove("dus", "intors"));
     let i = 0, inapoi = false;
-    stare.textContent = d.dus || "cererea pleacă";
+    stare.textContent = d.dus || "cererea este trimisă";
     arata(0); sine[0].classList.add("atins");
 
     ceas = setInterval(() => {
       if (!inapoi){
         if (i >= S.length - 1){
           inapoi = true;
-          stare.textContent = d.intors || "răspunsul se întoarce";
+          stare.textContent = d.intors || "răspunsul revine";
           return;
         }
         legi[i].classList.add("dus");
@@ -103,7 +103,7 @@ V.flux = (gazda, d) => {
       } else {
         if (i <= 0){
           clearInterval(ceas);
-          stare.textContent = d.gata || "gata, ai răspunsul";
+          stare.textContent = d.gata || "răspunsul a fost primit";
           return;
         }
         i--; legi[i].classList.add("intors"); arata(i);
@@ -125,13 +125,13 @@ V.flux = (gazda, d) => {
 V.zone = (gazda, d) => {
   gazda.closest(".ix")?.classList.add("exc");
   const ZONE = [
-    { t: "Dosarul de lucru", d: "aici editezi" },
+    { t: "Dosarul de lucru", d: "fișierele editate" },
     { t: "Pregătire", d: "ce intră în commit" },
-    { t: "Istoric local", d: "commit-urile tale" },
-    { t: "GitHub", d: "copia de pe internet" },
+    { t: "Istoric local", d: "commit-urile locale" },
+    { t: "GitHub", d: "depozitul de la distanță" },
   ];
   const COM = [
-    { c: "git status", z: null, d: "nu mută nimic; spune unde ești" },
+    { c: "git status", z: null, d: "nu mută nimic; afișează starea" },
     { c: "git add", z: 1, d: "din dosar în pregătire" },
     { c: "git commit", z: 2, d: "din pregătire în istoricul local" },
     { c: "git push", z: 3, d: "din local pe GitHub" },
@@ -185,7 +185,7 @@ V.zone = (gazda, d) => {
     }
     const muta = F.filter(f => f.z === c.z - 1);
     if (!muta.length){
-      msg.textContent = `${c.c}: n-are ce muta. În „${ZONE[c.z - 1].t}” nu e nimic.`;
+      msg.textContent = `${c.c}: nimic de mutat. Zona „${ZONE[c.z - 1].t}” este goală.`;
       return;
     }
     muta.forEach(f => f.z = c.z);
@@ -193,9 +193,9 @@ V.zone = (gazda, d) => {
     deseneaza();
 
     if (F.every(f => f.z === 3)){
-      msg.textContent = "Toate au ajuns pe GitHub. Ăsta e drumul, de fiecare dată.";
+      msg.textContent = "Toate fișierele au ajuns pe GitHub. Acesta este traseul, la fiecare modificare.";
       await poarta(gazda, d.id, jurnal.join(" → "));
-      st.textContent = "Rezolvare înregistrată.";
+      st.textContent = "Exercițiul este rezolvat.";
       st.classList.add("vazut");
     }
   });
@@ -268,7 +268,7 @@ V.ramuri = (gazda, d) => {
           ? `<path d="${dd.slice(2)}" class="rm__l rm__l--r"/>` : `<path d="${dd}" class="rm__l"/>`).join("")}
         ${p.map(q => `<circle cx="${q.x}" cy="${q.y}" r="${R}" class="rm__n rm__n--${q.t}"/>`).join("")}
       </svg>`;
-    unde.textContent = peRamura ? "ești pe ramura curatare" : "ești pe main";
+    unde.textContent = peRamura ? "ramura activă: curatare" : "ramura activă: main";
   }
 
   gazda.addEventListener("click", async e => {
@@ -286,12 +286,12 @@ V.ramuri = (gazda, d) => {
     if (a === "main") peRamura = false;
     if (a === "merge"){
       if (!ram || peRamura){
-        unde.textContent = ram ? "întâi git switch main" : "n-ai ce îmbina: ramura e goală";
+        unde.textContent = ram ? "mai întâi: git switch main" : "nimic de îmbinat: ramura nu are commit-uri";
         return;
       }
       unit = 1; main++;
       await poarta(gazda, d.id, `main:${main} ramura:${ram}`);
-      st.textContent = "Ai dus o ramură până la capăt.";
+      st.textContent = "Ramura a fost creată, folosită și îmbinată în main.";
       st.classList.add("vazut");
     }
     deseneaza();
@@ -334,9 +334,9 @@ V.conflict = (gazda, d) => {
         <div class="ed__corp"><div class="ed__cod"><pre class="cf__cod"></pre></div></div>
       </div>
       <div class="cf__alege">
-        <button class="zn__cb" data-k="meu" type="button">păstrez ce am eu</button>
-        <button class="zn__cb" data-k="lor" type="button">păstrez ce vine</button>
-        <button class="zn__cb" data-k="ambele" type="button">le păstrez pe amândouă</button>
+        <button class="zn__cb" data-k="meu" type="button">păstrez versiunea mea</button>
+        <button class="zn__cb" data-k="lor" type="button">păstrez versiunea primită</button>
+        <button class="zn__cb" data-k="ambele" type="button">păstrez ambele versiuni</button>
       </div>
       <div class="ex__jos">
         <button class="btn btn--mic btn--tare" data-rol="verifica" type="button" disabled>
@@ -368,14 +368,14 @@ V.conflict = (gazda, d) => {
   btV.onclick = async () => {
     const bun = ales === (d.bun || "lor");
     out.innerHTML = bun
-      ? "<b>Așa e.</b> Marcajele au dispărut, fișierul rulează din nou."
-      : `<b>Merge, dar nu e ce trebuia.</b> ${d.deCe || ""}`;
+      ? "<b>Corect.</b> Marcajele au fost eliminate, iar fișierul rulează din nou."
+      : `<b>Funcționează, dar nu este varianta potrivită.</b> ${d.deCe || ""}`;
     ex.classList.add("vazut");
     ex.innerHTML = d.explicatie || "";
     btV.disabled = true;
     gazda.querySelectorAll("[data-k]").forEach(x => x.disabled = true);
     await poarta(gazda, d.id, ales);
-    st.textContent = "Rezolvare înregistrată.";
+    st.textContent = "Exercițiul este rezolvat.";
     st.classList.add("vazut");
   };
 
@@ -452,8 +452,8 @@ V.prag = (gazda, d) => {
       <div class="prg__intreb">
         <p>${d.intrebare || "Valorile marcate sunt greșeli de date?"}</p>
         <div class="cf__alege">
-          <button class="zn__cb" data-r="scot" type="button">Sunt greșeli, le scot</button>
-          <button class="zn__cb" data-r="pastrez" type="button">Nu sunt greșeli, le păstrez</button>
+          <button class="zn__cb" data-r="scot" type="button">Da, sunt erori: se elimină</button>
+          <button class="zn__cb" data-r="pastrez" type="button">Nu, sunt valori reale: se păstrează</button>
         </div>
         <p class="ex__raspuns"></p>
       </div>
@@ -474,7 +474,7 @@ V.prag = (gazda, d) => {
     banda.querySelectorAll(".prg__p").forEach(p =>
       p.classList.toggle("peste", +p.dataset.v > prag));
     cif.innerHTML = `prag <b>${Math.round(prag).toLocaleString("ro-RO")}</b> · ` +
-      `<b>${peste.length}</b> din ${X.length} sunt peste el`;
+      `<b>${peste.length}</b> din ${X.length} depășesc pragul`;
     lst.innerHTML = peste.length
       ? "marcate: " + peste.slice(-8).reverse().map(x => esc(x.t)).join(", ") +
         (peste.length > 8 ? ", …" : "")
@@ -493,11 +493,11 @@ V.prag = (gazda, d) => {
     gazda.querySelectorAll("[data-r]").forEach(x => { x.disabled = true;
       x.classList.toggle("on", x === b); });
     out.innerHTML = raspuns === "pastrez"
-      ? `<b>Da.</b> ${d.laBine || ""}`
+      ? `<b>Corect.</b> ${d.laBine || ""}`
       : `<b>Nu încă.</b> ${d.laRau || ""}`;
     out.classList.add("vazut");
     await poarta(gazda, d.id, `k=${k} raspuns=${raspuns}`);
-    st.textContent = "Rezolvare înregistrată.";
+    st.textContent = "Exercițiul este rezolvat.";
     st.classList.add("vazut");
   });
 
@@ -606,14 +606,14 @@ V.imbinare = (gazda, d) => {
         ${tabel(B.nume, colB, B.randuri)}
       </div>
       <p class="imb__leg">
-        <span class="imb__pct imb__pct--ab"></span>cheie în amândouă
-        <span class="imb__pct imb__pct--un"></span>cheie într-unul singur
+        <span class="imb__pct imb__pct--ab"></span>cheie în ambele tabele
+        <span class="imb__pct imb__pct--un"></span>cheie într-un singur tabel
       </p>
       <div class="imb__fel">
         ${FELURI.map(f => `<button class="imb__b" data-f="${f}" type="button">${
           f === "concat" ? "pd.concat" : `how=&quot;${NUME[f]}&quot;`}</button>`).join("")}
       </div>
-      <div class="imb__jos"><p class="imb__gol">Apasă pe un fel de îmbinare.</p></div>
+      <div class="imb__jos"><p class="imb__gol">Alege un tip de îmbinare.</p></div>
       <p class="imb__exp"></p>
       <p class="ex__stare"></p>
     </div>`;
@@ -636,7 +636,7 @@ V.imbinare = (gazda, d) => {
     vazute.add(fel);
     if (vazute.size >= FELURI.length){
       await poarta(gazda, d.id || "imbinare", [...vazute].join(","));
-      st.textContent = "Le-ai văzut pe toate. Înregistrat.";
+      st.textContent = "Toate tipurile de îmbinare au fost parcurse.";
       st.classList.add("vazut");
     } else {
       st.textContent = `${vazute.size} din ${FELURI.length} încercate.`;
@@ -712,7 +712,7 @@ V.coloane = (gazda, d) => {
       if (ok) bune++;
     });
     const tot = bune === C.length;
-    out.innerHTML = tot ? `<b>Tot corect.</b> ${d.laBine || ""}`
+    out.innerHTML = tot ? `<b>Corect.</b> ${d.laBine || ""}`
                         : `<b>${bune} din ${C.length}.</b> ${d.laRau || ""}`;
     btN.hidden = tot;
     if (!tot) return;
@@ -721,7 +721,7 @@ V.coloane = (gazda, d) => {
       <b>${esc(c.ok)}</b> ${c.de_ce || ""}</p>`).join("");
     de.classList.add("vazut");
     await poarta(gazda, d.id || "coloane", sel.map(s => s.value).join(","));
-    st.textContent = "Rezolvare înregistrată.";
+    st.textContent = "Exercițiul este rezolvat.";
     st.classList.add("vazut");
   };
 
@@ -748,8 +748,8 @@ V.desfa = (gazda, d) => {
   const EL = d.elemente || [];
   const COL = d.coloane || [];
   const PASI = [
-    d.p0 || "Tot răspunsul, așa cum vine.",
-    d.p1 || "Lista dinăuntru: asta devine tabel.",
+    d.p0 || "Răspunsul complet, în forma primită.",
+    d.p1 || "Lista interioară: aceasta devine tabel.",
     d.p2 || "Fiecare element al listei devine un rând.",
   ];
   let pas = 0;
@@ -768,7 +768,7 @@ V.desfa = (gazda, d) => {
             <thead><tr>${COL.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead>
             <tbody></tbody>
           </table>
-          <p class="dsf__gol">Încă nimic.</p>
+          <p class="dsf__gol">Niciun rând încă.</p>
         </div>
       </div>
       <div class="dsf__act">
@@ -810,9 +810,9 @@ V.desfa = (gazda, d) => {
     }
     gol.hidden = pas >= 2;
     stare.textContent = PASI[Math.min(pas, PASI.length - 1)];
-    bt.textContent = pas === 0 ? (d.buton || "Arată-mi lista")
-                   : pas === 1 ? "Fă tabelul"
-                   : "Încă o dată";
+    bt.textContent = pas === 0 ? (d.buton || "Evidențiază lista")
+                   : pas === 1 ? "Construiește tabelul"
+                   : "Reia";
   }
 
   bt.onclick = async () => {
@@ -864,7 +864,7 @@ V.drum = (gazda, d) => {
 
         <button class="drm__baza et--${esc(BAZA.et || "agregare")}" data-i="${esc(BAZA.n)}" type="button">
           <span class="drm__bt">${esc(BAZA.n)}</span>
-          <span class="drm__bd">nu e o etapă, e depozitul</span>
+          <span class="drm__bd">nu este o etapă, ci spațiul de stocare</span>
         </button>
 
         <div class="drm__rand drm__rand--jos">${JOS.map((x, i) => chev(x, i + 4, "b")).join("")}</div>
@@ -872,10 +872,10 @@ V.drum = (gazda, d) => {
       </div>
 
       <p class="drm__leg">
-        <span class="drm__lp"></span>drumul înainte
-        <span class="drm__lp drm__lp--p"></span>întoarcerile, la fel de normale
+        <span class="drm__lp"></span>fluxul principal
+        <span class="drm__lp drm__lp--p"></span>revenirile, parte firească a fluxului
       </p>
-      <div class="drm__i"><h5>${esc(d.titlu || "Apasă pe o etapă")}</h5>
+      <div class="drm__i"><h5>${esc(d.titlu || "Selectează o etapă")}</h5>
         <p>${d.intro || ""}</p></div>
     </div>`;
 
@@ -966,8 +966,8 @@ V.drum = (gazda, d) => {
       <p>${x.d || ""}</p>
       ${x.noi || x.lit || x.capcana ? `<div class="drm__blocuri">
         ${x.noi ? `<div><h6>În proiectul nostru</h6><p>${x.noi}</p></div>` : ""}
-        ${x.lit ? `<div><h6>Ce citești aici</h6><p>${x.lit}</p></div>` : ""}
-        ${x.capcana ? `<div class="drm__cap"><h6>Capcana</h6><p>${x.capcana}</p></div>` : ""}
+        ${x.lit ? `<div><h6>Literatura relevantă</h6><p>${x.lit}</p></div>` : ""}
+        ${x.capcana ? `<div class="drm__cap"><h6>Eroare frecventă</h6><p>${x.capcana}</p></div>` : ""}
       </div>` : ""}`;
   });
 };
@@ -1042,7 +1042,7 @@ V.anatomie = (gazda, d) => {
         ${L.map((l, i) => `<span class="ana__l" data-l="${i}">${
           esc(l) || "&nbsp;"}</span>`).join("")}
       </div>
-      <p class="ana__i">${d.intro || "Apasă pe o parte ca s-o vezi aprinsă."}</p>
+      <p class="ana__i">${d.intro || "Selectează o parte pentru a o evidenția în cod."}</p>
       <p class="ex__stare ana__st"></p>
     </div>`;
 
@@ -1084,7 +1084,7 @@ V.anatomie = (gazda, d) => {
     const st = gazda.querySelector(".ana__st");
     if (vazute.size >= CERUT && d.id){
       poarta(gazda, d.id, [...vazute].join(","));
-      st.textContent = "Le-ai văzut. Înregistrat.";
+      st.textContent = "Părțile cerute au fost parcurse.";
     } else if (d.id){
       st.textContent = `${vazute.size} din ${CERUT} părți deschise.`;
     }
@@ -1205,7 +1205,7 @@ V.directii = (gazda, d) => {
           <span class="dsf__et">${esc(d.etDr || "perechi: un rând pe pereche")}</span>
           <table class="dsf__tb dir__tb"><thead><tr><th>tara_1</th><th>tara_2</th><th class="c1">din_1_in_2</th><th class="c2">din_2_in_1</th><th class="c3">migranti</th></tr></thead>
           <tbody></tbody></table>
-          <p class="dsf__gol">Încă nimic.</p>
+          <p class="dsf__gol">Niciun rând încă.</p>
         </div>
       </div>
       <p class="cub__regula"></p>
@@ -1217,8 +1217,8 @@ V.directii = (gazda, d) => {
   const reg = gazda.querySelector(".cub__regula"), bt = gazda.querySelector('[data-rol="pas"]');
   const TEXT = [
     d.t0 || "Fiecare pereche apare de două ori, o dată pe direcție.",
-    d.t1 || "Cele două direcții stau acum pe același rând, ca la SCI.",
-    d.t2 || "Suma: unde lipsește o direcție, suma lipsește. Nu știm, deci nu punem zero.",
+    d.t1 || "Cele două direcții sunt acum pe același rând, ca la SCI.",
+    d.t2 || "Suma: unde lipsește o direcție, lipsește și suma. Valoarea nu este cunoscută, deci nu se înlocuiește cu zero.",
   ];
   function deseneaza(){
     gazda.querySelector(".dir").classList.toggle("aprins", pas >= 1);
@@ -1227,7 +1227,7 @@ V.directii = (gazda, d) => {
       <td class="nr c3">${pas < 2 ? "" : (r.ab == null || r.ba == null) ? f(null) : f(r.ab + r.ba)}</td></tr>`).join("");
     gol.hidden = pas >= 1;
     reg.innerHTML = TEXT[pas];
-    bt.textContent = pas === 0 ? "Pune-le pe un rând" : pas === 1 ? "Adună direcțiile" : "Încă o dată";
+    bt.textContent = pas === 0 ? "Pune direcțiile pe același rând" : pas === 1 ? "Adună direcțiile" : "Reia";
   }
   bt.onclick = () => { pas = (pas + 1) % 3; deseneaza(); };
   deseneaza();
@@ -1255,7 +1255,7 @@ V.histo = (gazda, d) => {
     <div class="hst">
       <div class="cmd__sc hst__sc">
         <button type="button" data-l="0">${esc(d.etLin || "scară liniară")}</button>
-        <button type="button" data-l="1">${esc(d.etLog || "logaritm")}</button>
+        <button type="button" data-l="1">${esc(d.etLog || "scară logaritmică")}</button>
       </div>
       <svg class="hst__svg" viewBox="0 0 600 220" role="img" aria-label="histogramă"></svg>
       <p class="cub__regula hst__txt"></p>
@@ -1305,9 +1305,9 @@ V.nor = (gazda, d) => {
         <div class="hs__balon nor__balon" hidden></div>
       </div>
       <div class="nor__leg"><span><i class="nor__p nor__p--g"></i>${esc(d.etG || "au graniță comună")}</span>
-        <span><i class="nor__p"></i>${esc(d.etN || "nu au")}</span></div>
+        <span><i class="nor__p"></i>${esc(d.etN || "fără graniță comună")}</span></div>
       <p class="cub__regula nor__txt"></p>
-      ${d.cauta ? `<p class="nor__cauta"><b>Găsește:</b> ${d.cauta.t} <span>Dă clic pe punct.</span></p>` : ""}
+      ${d.cauta ? `<p class="nor__cauta"><b>Găsește:</b> ${d.cauta.t} <span>Apasă pe punctul corespunzător.</span></p>` : ""}
     </div>`;
   const svg = gazda.querySelector("svg"), bal = gazda.querySelector(".nor__balon"), txt = gazda.querySelector(".nor__txt");
   const cauta = gazda.querySelector(".nor__cauta");
@@ -1346,7 +1346,7 @@ V.nor = (gazda, d) => {
       /* căutarea: cât de departe e punctul ales deasupra dreptei, față de toate */
       if (d.cauta) c.onclick = () => {
         if (VX[vx].k !== (d.cauta.v || VX[0].k)){
-          cauta.innerHTML = `<b>Găsește:</b> ${d.cauta.t} <span>Comută întâi pe „${esc((VX.find(x => x.k === (d.cauta.v || VX[0].k)) || VX[0]).et)}”.</span>`; return; }
+          cauta.innerHTML = `<b>Găsește:</b> ${d.cauta.t} <span>Selectează mai întâi „${esc((VX.find(x => x.k === (d.cauta.v || VX[0].k)) || VX[0]).et)}”.</span>`; return; }
         const rez = pts.map(q => q.yy - (a + b * q.xx));
         const i = +c.dataset.i, ord = rez.map((r, k) => [r, k]).sort((u, w) => w[0] - u[0]);
         const loc = ord.findIndex(([, k]) => k === i);
@@ -1354,9 +1354,9 @@ V.nor = (gazda, d) => {
         c.classList.add("nor__p--ales");
         if (loc === 0){ gasit = true;
           cauta.innerHTML = `<b>Găsit: ${esc(pts[i].t)}.</b> ${d.cauta.dupa || ""}`; cauta.classList.add("ok"); }
-        else if (!gasit) cauta.innerHTML = `<b>Găsește:</b> ${d.cauta.t} <span>${esc(pts[i].t)} e ${rez[i] < 0
-          ? "sub linie: mai puțin legată decât ar spune distanța"
-          : `a ${loc + 1}-a din ${pts.length}, cât de sus stă peste linie`}. Caută mai sus, mai departe de linie.</span>`;
+        else if (!gasit) cauta.innerHTML = `<b>Găsește:</b> ${d.cauta.t} <span>${esc(pts[i].t)} este ${rez[i] < 0
+          ? "sub dreaptă: mai puțin legată decât indică distanța"
+          : `a ${loc + 1}-a din ${pts.length} după înălțimea deasupra dreptei`}. Caută un punct mai sus, mai departe de dreaptă.</span>`;
       };
     });
     txt.innerHTML = `<b>r = ${r.toFixed(2).replace(".", ",")}</b>, pe ${n} perechi. ${v.text || ""}`;
@@ -1400,7 +1400,7 @@ V.axa = (gazda, d) => {
     const [a, b] = BR, raport = (h => h)((a.v - lo) / (b.v - lo));
     txt.innerHTML = taiat
       ? `Bara din stânga pare de <b>${raport.toFixed(1).replace(".", ",")} ori</b> mai înaltă. ${d.txtTaiat || ""}`
-      : `Bara din stânga e de <b>${(a.v / b.v).toFixed(2).replace(".", ",")} ori</b> mai înaltă: exact cât sunt valorile. ${d.txtZero || ""}`;
+      : `Bara din stânga este de <b>${(a.v / b.v).toFixed(2).replace(".", ",")} ori</b> mai înaltă, exact cât raportul valorilor. ${d.txtZero || ""}`;
   }
   gazda.querySelectorAll(".axa__sc button").forEach(b => b.onclick = () => { taiat = b.dataset.t === "1"; deseneaza(); });
   deseneaza();
@@ -1443,7 +1443,7 @@ V.modele = (gazda, d) => {
       const r = gazda.querySelector(`.mdl__rand[data-k="${v.k}"]`), c = m.coef[v.k];
       const b = r.querySelector(".mdl__b"), val = r.querySelector(".mdl__v");
       r.classList.toggle("absent", c == null);
-      if (c == null){ b.style.width = "0"; val.textContent = "nu intră"; return; }
+      if (c == null){ b.style.width = "0"; val.textContent = "nu este inclusă"; return; }
       const w = Math.min(1, Math.abs(c) / LIM) * 50;
       b.style.width = w + "%";
       b.style.left = c >= 0 ? "50%" : (50 - w) + "%";
@@ -1482,7 +1482,7 @@ V.gitdag = (gazda, d) => {
     <div class="gd">
       <div class="gd__term"><span class="gd__cine"></span><code class="gd__cmd"></code></div>
       <div class="gd__doua">
-        ${panou(d.etLocal || "💻 Laptopul tău", "gd__panou--l")}
+        ${panou(d.etLocal || "💻 Depozitul local", "gd__panou--l")}
         <div class="gd__sageti"><span class="gd__s gd__s--sus">push →</span><span class="gd__s gd__s--jos">← pull</span></div>
         ${panou(d.etRemote || "☁️ GitHub (origin)", "gd__panou--r")}
       </div>
@@ -1568,40 +1568,31 @@ V.gitdag = (gazda, d) => {
    =========================================================================== */
 
 V.sci = (gazda, d) => {
-  const NS = "http://www.w3.org/2000/svg";
-  const grila = (cx, cy, n, col, sp) => { const rows = Math.ceil(n / col), r = [];
-    for (let k = 0; k < n; k++){ const i = k % col, j = Math.floor(k / col);
-      r.push([cx + (i - (col - 1) / 2) * sp, cy + (j - (rows - 1) / 2) * sp]); } return r; };
+  /* Fiecare pătrat e o pereche posibilă de utilizatori, unul din fiecare loc;
+     pătratele colorate sunt prieteniile. SCI e partea colorată din grilă. */
   const CAZ = d.cazuri || [
-    { n: "Republica Moldova", u: 4, col: 2, f: [[0,0],[0,3],[1,1],[2,2],[4,0],[5,3]] },
-    { n: "Italia", u: 12, col: 4, f: [[0,1],[1,5],[2,3],[2,8],[3,10],[4,4],[4,11],[5,6],[1,9]] },
+    { n: "Republica Moldova", u: 4, f: [[0,0],[0,3],[1,1],[2,2],[4,0],[5,3]] },
+    { n: "Italia", u: 12, f: [[0,1],[1,5],[2,3],[2,8],[3,10],[4,4],[4,11],[5,6],[1,9]] },
   ];
   const A = 6, nf = x => x.toLocaleString("ro-RO", { maximumFractionDigits: 3 });
-  const panou = (c, k) => {
-    const a = grila(80, 110, A, 2, 34), b = grila(300, 110, c.u, c.col, c.col > 2 ? 28 : 34);
-    const pos = a.flatMap(p => b.map(q => `<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" class="sc__pos"/>`)).join("");
-    const pr = c.f.map(([i, j]) => `<line x1="${a[i][0]}" y1="${a[i][1]}" x2="${b[j][0]}" y2="${b[j][1]}" class="sc__pr"/>`).join("");
-    const pt = (arr, cls) => arr.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" class="${cls}"/>`).join("");
-    const posibile = A * c.u, v = c.f.length / posibile;
-    return `<figure class="sc__p">
-      <svg viewBox="0 0 380 220" aria-hidden="true"><g class="sc__gpos">${pos}</g>${pr}${pt(a, "sc__i")}${pt(b, "sc__j")}
-        <text x="80" y="208" text-anchor="middle" class="sc__et">Cluj · ${A}</text>
-        <text x="300" y="208" text-anchor="middle" class="sc__et">${esc(c.n)} · ${c.u}</text></svg>
-      <figcaption><span class="sc__calc"><b class="sc__f">${c.f.length}</b> prietenii / (${A} × ${c.u} = <b class="sc__u">${posibile}</b> posibile)</span>
-        <span class="sc__v">= ${nf(v)}</span></figcaption></figure>`;
+  const panou = c => {
+    const pr = new Set(c.f.map(([i, j]) => i + "-" + j));
+    const cel = [];
+    for (let i = 0; i < A; i++) for (let j = 0; j < c.u; j++) cel.push(`<i${pr.has(i + "-" + j) ? ' class="da"' : ""}></i>`);
+    const tot = A * c.u;
+    return `<figure class="sci2__p">
+      <figcaption class="sci2__t">Cluj <span>×</span> ${esc(c.n)}</figcaption>
+      <div class="sci2__g" style="--n:${c.u}">${cel.join("")}</div>
+      <p class="sci2__calc"><b>${c.f.length}</b> prietenii din <b>${tot}</b> perechi posibile</p>
+      <p class="sci2__v">${nf(c.f.length / tot)}</p>
+    </figure>`;
   };
-  gazda.innerHTML = `
-    <div class="sc">
-      <p class="sc__formula"><i>SCI</i> = <span class="sc__fr"><span class="sc__f">prieteniile dintre cele două locuri</span>
-        <span class="sc__u">utilizatori într-un loc × utilizatori în celălalt</span></span></p>
-      <div class="sc__duo">${CAZ.map(panou).join("")}</div>
-      <div class="sc__jos">
-        <label class="sc__comut"><input type="checkbox"> arată și toate perechile posibile</label>
-        <p class="sc__conc">${d.concluzie || ""}</p>
-      </div>
+  gazda.innerHTML = `<div class="sci2">
+      <p class="sci2__formula"><i>SCI</i><span>=</span><span class="sci2__fr"><span>prieteniile dintre cele două locuri</span><span>perechile posibile de utilizatori</span></span></p>
+      <p class="sci2__leg"><i></i>o pereche posibilă, un utilizator din fiecare loc <i class="da"></i>o prietenie</p>
+      <div class="sci2__duo">${CAZ.map(panou).join("")}</div>
+      ${d.concluzie ? `<p class="sci2__conc">${d.concluzie}</p>` : ""}
     </div>`;
-  const box = gazda.querySelector(".sc");
-  gazda.querySelector(".sc__comut input").addEventListener("change", e => box.classList.toggle("sc--pos", e.target.checked));
 };
 
 
@@ -1806,7 +1797,7 @@ function consolaJupyter(gazda, env, { start = 2, loc = "", laRulare = null, taie
       if (rez.tiparit !== null) html += `<pre class="jc__print">${esc(rez.tiparit)}</pre>`;
       if (rez.atrib) { /* atribuirea nu afișează nimic, ca în Jupyter */ }
       else if (rez.v === null && rez.tiparit === null)
-        html += `<div class="jc__nota">nimic afișat: Jupyter nu arată rezultatul când e None</div>`;
+        html += `<div class="jc__nota">nimic afișat: Jupyter nu afișează rezultatul atunci când este None</div>`;
       else if (!(rez.v === null && rez.tiparit !== null))
         { let o = PY.afis(rez.v);
           /* un răspuns întreg are mii de caractere; pe slide se arată începutul */
@@ -1832,54 +1823,46 @@ function consolaJupyter(gazda, env, { start = 2, loc = "", laRulare = null, taie
    type(variabila). Se înregistrează scorul și de câte ori au întrebat consola.
    =========================================================================== */
 V.consola = (gazda, d) => {
+  /* Un singur tabel: fiecare rând de cod, cu tipul scris lângă el. Consola
+     Python stă ascunsă, pentru cine vrea să întrebe direct. */
   if (d.id) gazda.closest(".ix")?.classList.add("exc");
-  const VARS = d.vars || [];
+  const VARS = d.vars || [], COD = d.cod || [];
   const SIN = { none: "nonetype" };
   const norm = x => { const k = x.trim().replace(/^<class '|'>$/g, "").toLowerCase(); return SIN[k] || k; };
   let verificat = false;
 
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="tcs">
-      <div class="tcs__celula">
-        <div class="tcs__cap"><span>${esc(d.fisier || "celulă")}</span><span class="jc__in">In [1]:</span></div>
-        <pre class="tcs__cod">${(d.cod || []).map(l => esc(l)).join("\n")}</pre>
-      </div>
-      <div class="tcs__grila">
-        ${VARS.map((x, k) => `<label class="tcs__r" data-k="${k}">
-          <code class="tcs__n">${esc(x.n)}</code>
-          <input class="tcs__t" autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}">
-          <span class="tcs__st" aria-hidden="true"></span>
-          <span class="tcs__e"></span>
-        </label>`).join("")}
-      </div>
-      <div class="tcs__act">
-        <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
-        <span class="tcs__scor"></span>
-      </div>
-      <div class="tcs__ajutor">
-        <p><b>Nu ești sigur?</b> Întreabă Python. Scrie <code>type(${esc(VARS[0]?.n || "x")})</code> și apasă Enter, ca într-o celulă din Jupyter.</p>
-        <div class="jc"></div>
-      </div>
-    </div>`;
+    <div class="tcs2">
+      ${VARS.map((x, k) => `<label class="tcs2__r" data-k="${k}">
+        <code class="tcs2__cod">${esc(COD[k] || x.n)}</code>
+        <span class="tcs2__in"><input autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}"><span class="tcs2__st" aria-hidden="true"></span></span>
+        <span class="tcs2__e"></span>
+      </label>`).join("")}
+    </div>
+    <div class="tcs2__act">
+      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
+      <span class="tcs2__scor"></span>
+    </div>
+    <details class="tcs2__aj"><summary>Verificare directă în Python, cu <code>type(${esc(VARS[0]?.n || "x")})</code></summary><div class="jc"></div></details>`;
 
   const cons = consolaJupyter(gazda.querySelector(".jc"), d.env || {}, { loc: `type(${VARS[0]?.n || "x"})` });
-  const randuri = [...gazda.querySelectorAll(".tcs__r")];
+  const randuri = [...gazda.querySelectorAll(".tcs2__r")];
 
   gazda.querySelector('[data-rol="verifica"]').onclick = async () => {
     let ok = 0, goale = 0;
     randuri.forEach((r, k) => {
-      const x = VARS[k], inp = r.querySelector(".tcs__t"), v = inp.value;
-      if (!v.trim()){ goale++; r.className = "tcs__r"; r.querySelector(".tcs__e").textContent = ""; return; }
+      const x = VARS[k], v = r.querySelector("input").value;
+      if (!v.trim()){ goale++; r.className = "tcs2__r"; r.querySelector(".tcs2__e").textContent = ""; r.querySelector(".tcs2__st").textContent = ""; return; }
       const bun = norm(v) === x.t.toLowerCase();
       if (bun) ok++;
-      r.className = "tcs__r " + (bun ? "ok" : "nu");
-      r.querySelector(".tcs__st").textContent = bun ? "✓" : "✗";
-      r.querySelector(".tcs__e").innerHTML = bun ? (x.e || "") : `Tipul e <code>${esc(x.t)}</code>. ${x.e || ""}`;
+      r.className = "tcs2__r " + (bun ? "ok" : "nu");
+      r.querySelector(".tcs2__st").textContent = bun ? "✓" : "✗";
+      r.querySelector(".tcs2__e").innerHTML = bun ? "" : `<code>${esc(x.t)}</code> ${x.e || ""}`;
     });
-    const sc = gazda.querySelector(".tcs__scor");
-    if (goale){ sc.textContent = `Mai ai ${goale} ${goale === 1 ? "rând gol" : "rânduri goale"}.`; return; }
-    sc.innerHTML = `<b>${ok} din ${VARS.length}</b>${ok === VARS.length ? " · toate corecte" : " · citește explicațiile de sub rândurile roșii"}`;
+    const sc = gazda.querySelector(".tcs2__scor");
+    if (goale){ sc.textContent = `Au rămas ${goale} ${goale === 1 ? "rând necompletat" : "rânduri necompletate"}.`; return; }
+    sc.innerHTML = `<b>${ok} din ${VARS.length}</b>${ok === VARS.length ? ", toate corecte" : ""}`;
     if (!verificat && d.id){
       verificat = true;
       await poarta(gazda, d.id, `${ok}/${VARS.length} consola:${cons.folosiri()}`);
@@ -1921,11 +1904,11 @@ V.acces = (gazda, d) => {
     if (t === "dict") { const n = Object.keys(v).length; return `${n} ${n === 1 ? "cheie" : "chei"}`; }
     if (t === "str") return `${v.length} caractere`;
     return ""; };
-  const NUME_T = { dict: "un dicționar", list: "o listă", tuple: "un tuplu", str: "un text (str)",
-    int: "un număr întreg", float: "un număr cu zecimale", bool: "o valoare logică", NoneType: "None, nicio valoare" };
-  const CE_FACI = { dict: "Ceri o <b>cheie</b>, între ghilimele: <code>[\"nume\"]</code>.",
-    list: "Ceri o <b>poziție</b>, numărată de la 0: <code>[0]</code>, <code>[1]</code>… sau de la coadă: <code>[-1]</code>.",
-    tuple: "Ceri o <b>poziție</b>, ca la listă." };
+  const NUME_T = { dict: "un dicționar", list: "o listă", tuple: "un tuplu", str: "un șir de caractere (str)",
+    int: "un număr întreg", float: "un număr cu zecimale", bool: "o valoare logică", NoneType: "None (lipsa unei valori)" };
+  const CE_FACI = { dict: "Pasul următor este o <b>cheie</b>, între ghilimele: <code>[\"nume\"]</code>.",
+    list: "Pasul următor este o <b>poziție</b>, numărată de la 0: <code>[0]</code>, <code>[1]</code>… sau de la sfârșit: <code>[-1]</code>.",
+    tuple: "Pasul următor este o <b>poziție</b>, ca la listă." };
   const scurt = (v, n = 34) => { const r = PY.repr(v); return r.length > n ? r.slice(0, n - 1) + "…" : r; };
   const jsonVal = v => { const t = PY.T(v);
     if (t === "NoneType") return "null"; if (t === "bool") return v ? "true" : "false";
@@ -1941,7 +1924,7 @@ V.acces = (gazda, d) => {
       <div class="acs__expr"><span class="acs__eet">expresia</span><code class="acs__ec"></code></div>
       <div class="acs__mana"></div>
       <div class="acs__out"></div>
-      ${d.consola !== false ? `<details class="acs__cons"${d.consolaDeschisa ? " open" : ""}><summary>Sau scrie tu expresia, în consolă</summary><div class="jc"></div></details>` : ""}
+      ${d.consola !== false ? `<details class="acs__cons"${d.consolaDeschisa ? " open" : ""}><summary>Sau scrie expresia direct în consolă</summary><div class="jc"></div></details>` : ""}
     </div>`;
 
   const $ = q => gazda.querySelector(q);
@@ -2002,7 +1985,7 @@ V.acces = (gazda, d) => {
           <span class="cob__prev">${esc(scurt(x, 40))}</span>
         </button>`; }).join("")}</div>`;
     } else {
-      corp = `<div class="cob__frunza"><span class="cob__tip">${t}</span><b>${esc(PY.repr(v))}</b><span>Ai ajuns la o valoare. Mai jos nu se mai poate coborî.</span></div>`;
+      corp = `<div class="cob__frunza"><span class="cob__tip">${t}</span><b>${esc(PY.repr(v))}</b><span>Aceasta este o valoare simplă; nu există niveluri inferioare.</span></div>`;
     }
     const sus = cale.pasi.length ? `<button class="cob__sus" type="button">↑ un nivel mai sus</button>` : "";
     scena.innerHTML = `<div class="cob__cadru" style="--niv:${cale.pasi.length}">
@@ -2031,12 +2014,12 @@ V.acces = (gazda, d) => {
     let er = null;
     for (const p of cale.pasi){ try { v = PY.indexeaza(v, p); lant.push({ acc: typeof p === "number" ? `[${p}]` : `["${p}"]`, v, p }); }
       catch (e){ er = e; break; } }
-    $(".acs__mana").innerHTML = `<span class="acs__met">ce ai în mână</span><div class="acs__lant">${lant.map((x, i) => {
+    $(".acs__mana").innerHTML = `<span class="acs__met">valoarea curentă</span><div class="acs__lant">${lant.map((x, i) => {
       const t = PY.T(x.v);
       return `${i ? `<span class="acs__sag">→</span>` : ""}<button class="acs__za" data-i="${i}" type="button">
         <code>${esc(x.acc)}</code><span class="acs__zt acs__zt--${t}">${t}</span><span class="acs__zm">${marime(x.v)}</span></button>`; }).join("")}</div>
       <p class="acs__sfat">${er ? "" : (() => { const t = PY.T(v);
-        return `Acum ai ${NUME_T[t] || t}. ${CE_FACI[t] || "Asta e o valoare: drumul s-a terminat aici."}`; })()}</p>`;
+        return `Valoarea curentă este ${NUME_T[t] || t}. ${CE_FACI[t] || "Este o valoare simplă: calea se oprește aici."}`; })()}</p>`;
     $(".acs__out").innerHTML = er
       ? `<pre class="jc__err"><b>${esc(er.tip)}</b>: ${esc(er.message)}</pre>`
       : `<span class="jc__out">Out:</span><code>${esc((t => t.length > 170 ? t.slice(0, 169) + " …" : t)(PY.afis(v)))}</code>`;
@@ -2129,8 +2112,8 @@ V.geom = (gazda, d) => {
         ${rand("WKT", g.wkt, true)}
         ${rand("Python", g.py, true)}
         ${rand("PostGIS", g.pg, true)}
-        ${rand("E validă dacă", g.valid)}
-        ${rand("La noi", g.la)}
+        ${rand("Este validă dacă", g.valid)}
+        ${rand("În proiect", g.la)}
       </div>`;
   }
   gazda.querySelector(".geo__grila").addEventListener("click", ev => {
@@ -2152,10 +2135,10 @@ V.masca = (gazda, d) => {
   const ki = C.indexOf(col);
   let pas = 0;
   const PASI = [
-    { cod: `d`, txt: `Tabelul întreg. Aici, ${R.length} rânduri din cele ${d.total || "?"}.` },
-    { cod: `d["${col}"]`, txt: `<code>d["${col}"]</code> alege o singură coloană: e o serie, cu o valoare pe fiecare rând.` },
-    { cod: `d["${col}"] == "${val}"`, txt: `<code>==</code> compară <b>fiecare rând</b> cu <code>"${val}"</code>. Rezultatul e tot o coloană, de <code>True</code> și <code>False</code>: o mască.` },
-    { cod: `d[d["${col}"] == "${val}"]`, txt: `Pusă între parantezele tabelului, masca păstrează doar rândurile <code>True</code>. Din tot fișierul rămân ${d.ramase || "?"} de rânduri.` },
+    { cod: `d`, txt: `Tabelul complet. Aici sunt afișate ${R.length} rânduri din cele ${d.total || "?"}.` },
+    { cod: `d["${col}"]`, txt: `<code>d["${col}"]</code> selectează o singură coloană: rezultatul este o serie, cu o valoare pe fiecare rând.` },
+    { cod: `d["${col}"] == "${val}"`, txt: `<code>==</code> compară <b>fiecare rând</b> cu <code>"${val}"</code>. Rezultatul este tot o coloană, cu valori <code>True</code> și <code>False</code>: o mască.` },
+    { cod: `d[d["${col}"] == "${val}"]`, txt: `Plasată între parantezele drepte ale tabelului, masca păstrează doar rândurile <code>True</code>. Din întregul fișier rămân ${d.ramase || "?"} de rânduri.` },
   ];
   gazda.innerHTML = `
     <div class="msk">
@@ -2193,13 +2176,15 @@ V.masca = (gazda, d) => {
    tu nu scrii acolo nimic. La clic pe fiecare dosar: ce pui în el, cine
    scrie acolo, și dacă urcă pe GitHub.
    =========================================================================== */
+const IC_DOS = '<svg viewBox="0 0 16 16" width="15" height="15"><path d="M1.5 4.2c0-.6.5-1.1 1.1-1.1h3.3l1.4 1.5h6.1c.6 0 1.1.5 1.1 1.1v6.6c0 .6-.5 1.1-1.1 1.1H2.6c-.6 0-1.1-.5-1.1-1.1z" fill="currentColor"/></svg>';
+const IC_FIS = '<svg viewBox="0 0 16 16" width="15" height="15"><path d="M3.5 1.5h6l3 3v10h-9z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
 V.folder = (gazda, d) => {
   const N = d.noduri || [];
   let ales = d.start ?? 0;
   gazda.innerHTML = `
     <div class="fld">
       <div class="fld__arb">${N.map((x, k) => `<button class="fld__n fld__n--${x.fel || "dir"}${x.interzis ? " fld__n--x" : ""}" data-k="${k}" style="--ind:${x.ind || 0}" type="button">
-        <span class="fld__ic" aria-hidden="true">${x.fel === "fis" ? "▤" : "▸"}</span><code>${esc(x.n)}</code>${x.scurt ? `<span class="fld__sc">${esc(x.scurt)}</span>` : ""}
+        <span class="fld__ic" aria-hidden="true">${x.fel === "fis" ? IC_FIS : IC_DOS}</span><code>${esc(x.n)}</code>${x.scurt ? `<span class="fld__sc">${esc(x.scurt)}</span>` : ""}
       </button>`).join("")}</div>
       <div class="fld__fisa" aria-live="polite"></div>
     </div>`;
@@ -2281,7 +2266,7 @@ V.dsw = (gazda, d) => {
     const x = E[k]; if (!x) return;
     gazda.querySelectorAll(".dsw__e").forEach(g => g.classList.toggle("on", g.dataset.k === k));
     info.innerHTML = `<p class="dsw__d"><b>${esc(x.n)}</b>${x.unde ? `<span class="dsw__u">${esc(x.unde)}</span>` : ""} ${x.d || ""}</p>
-      ${x.noi ? `<p class="dsw__noi">La noi: ${x.noi}</p>` : ""}`;
+      ${x.noi ? `<p class="dsw__noi">În proiect: ${x.noi}</p>` : ""}`;
   };
   gazda.querySelector("svg").addEventListener("click", ev => { const g = ev.target.closest(".dsw__e"); if (g) alege(g.dataset.k); });
   gazda.querySelector("svg").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " "){ const g = ev.target.closest(".dsw__e"); if (g){ ev.preventDefault(); alege(g.dataset.k); } } });
@@ -2370,8 +2355,8 @@ V.diadic = (gazda, d) => {
       e.classList.toggle("ea", i === a); e.classList.toggle("eb", i === b); });
     const A = J[a], B = J[b];
     info.innerHTML = a === b
-      ? `<b>${esc(A.nume)} cu ${esc(A.nume)}</b>: și perechea unui loc cu el însuși e un rând. Prieteniile din interiorul județului.`
-      : `<b>${esc(A.nume)} → ${esc(B.nume)}</b>: SCI-ul vine din matrice. Populația „de unde” se lipește din rândul ${esc(A.nume)}, cea „spre unde” din rândul ${esc(B.nume)}: <b>două îmbinări</b> cu același tabel. Căsuța cu contur punctat e perechea inversă: la SCI, aceeași valoare.`;
+      ? `<b>${esc(A.nume)} cu ${esc(A.nume)}</b>: și perechea unui loc cu el însuși este un rând, cu prieteniile din interiorul județului.`
+      : `<b>${esc(A.nume)} → ${esc(B.nume)}</b>: SCI-ul provine din matrice. Populația „de unde” este preluată din rândul ${esc(A.nume)}, cea „spre unde” din rândul ${esc(B.nume)}: <b>două îmbinări</b> cu același tabel. Căsuța cu contur punctat este perechea inversă, care la SCI are aceeași valoare.`;
   }
   gazda.querySelector(".dd__mat").addEventListener("click", ev => { const e = ev.target.closest("button[data-a]"); if (!e) return; a = +e.dataset.a; b = +e.dataset.b; arata(); });
   arata();
@@ -2570,7 +2555,7 @@ V.benzi = (gazda, d) => {
     det.innerHTML = `<h5><span class="bnz__an">${p.data || p.an}</span> ${esc(p.n)} <small>${esc(b.t)}</small></h5>
       <dl><div><dt>Ce problemă rezolva</dt><dd>${p.problema || ""}</dd></div>
       <div><dt>Cum funcționează</dt><dd>${p.cum || ""}</dd></div>
-      <div><dt>Unde îl întâlnești azi</dt><dd>${p.azi || ""}</dd></div></dl>`;
+      <div><dt>Unde se folosește azi</dt><dd>${p.azi || ""}</dd></div></dl>`;
   }
   gazda.addEventListener("click", e => {
     const p = e.target.closest(".bnz__p"); if (p) arata(+p.dataset.b, +p.dataset.p);
@@ -2703,7 +2688,7 @@ V.raspuns = (gazda, d) => {
         <div class="rsc__st"><b class="rsc__cod"></b><span class="rsc__nume"></span></div>
         <pre class="rsc__ant"></pre>
         <pre class="rsc__corp"></pre>
-        <dl class="rsc__ce"><div><dt>Ce înseamnă</dt><dd></dd></div><div><dt>Ce faci</dt><dd></dd></div></dl>
+        <dl class="rsc__ce"><div><dt>Ce înseamnă</dt><dd></dd></div><div><dt>Pasul următor</dt><dd></dd></div></dl>
       </div>
       <p class="rsc__nr"></p>
       <p class="ex__stare"></p>
@@ -2780,7 +2765,7 @@ V.jupyter = (gazda, d) => {
       if (atinse.every(x => x !== null) && d.id){
         await poarta(gazda, d.id, atinse.join(" | "));
         const st = gazda.querySelector(".ex__stare");
-        st.textContent = "Toate trei găsite."; st.classList.add("vazut");
+        st.textContent = "Toate cele trei ținte au fost găsite."; st.classList.add("vazut");
       }
     } });
 };
@@ -2818,7 +2803,7 @@ V.pagini = (gazda, d) => {
     $(".pgn__leg").innerHTML = Array.from({ length: pagini }, (_, k) => {
       const a = k * pp, b = Math.min(N, (k + 1) * pp) - 1;
       return `<button type="button" data-p="${k + 1}" class="${k + 1 === pg ? "on" : ""}" style="--c:var(--${CUL[k % CUL.length]})">
-        <i></i>pagina ${k + 1}<span>${ANI[a]}${a !== b ? ` la ${ANI[b]}` : ""} · ${b - a + 1} valori</span></button>`; }).join("");
+        <i></i>pagina ${k + 1}<span>${ANI[a]}${a !== b ? ` până la ${ANI[b]}` : ""} · ${b - a + 1} valori</span></button>`; }).join("");
   }
   $(".pgn__opt").addEventListener("click", e => { const b = e.target.closest("button"); if (b){ pp = +b.dataset.o; pg = 1; deseneaza(); } });
   $(".pgn__leg").addEventListener("click", e => { const b = e.target.closest("button"); if (b){ pg = +b.dataset.p; deseneaza(); } });
@@ -2874,5 +2859,188 @@ V.cub = (gazda, d) => {
   });
   arata(ri, ci);
 };
+
+
+
+/* ===========================================================================
+   CURSUL 1, versiunea simplă: patru componente noi
+
+   DOI NORI   SCI față de numărul de români și față de românii la mie, două
+              grafice de puncte, cu corelația și dreapta de regresie.
+   PERECHE    trei județe, un tabel cu un rând pe județ și unul cu un rând pe
+              pereche: ce înseamnă „diadic”, fără matrice.
+   VEDERI     două vederi pe același slide, cu un comutator.
+   CALE       drumul până la o valoare, nivel cu nivel: alegi o cheie sau o
+              poziție, iar expresia Python crește cu un pas.
+   =========================================================================== */
+
+V.doiNori = (gazda, d) => {
+  const R = d.randuri || [];
+  const P = d.paneluri || [];
+  const et = new Set(d.etichete || []);
+  const W = 380, H = 260, m = { l: 58, r: 14, t: 12, b: 44 };
+  const lg = Math.log10;
+  const fmt = v => v >= 1e6 ? (v / 1e6).toLocaleString("ro-RO") + " mil." : v.toLocaleString("ro-RO");
+  const yT = d.yTicks || [3000, 10000, 30000, 100000];
+  const yMin = lg(Math.min(yT[0], ...R.map(r => r.sci))) - 0.05, yMax = lg(Math.max(yT.at(-1), ...R.map(r => r.sci))) + 0.05;
+  const Y = v => m.t + (1 - (lg(v) - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+  const corel = (x, y) => { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n;
+    let sxy = 0, sxx = 0, syy = 0; x.forEach((a, i) => { sxy += (a - mx) * (y[i] - my); sxx += (a - mx) ** 2; syy += (y[i] - my) ** 2; });
+    return { r: sxy / Math.sqrt(sxx * syy), b: sxy / sxx, a: my - (sxy / sxx) * mx }; };
+  const panou = p => {
+    const xs = R.map(r => r[p.k]);
+    const xMin = lg(Math.min(p.ticks[0], ...xs)) - 0.1, xMax = lg(Math.max(p.ticks.at(-1), ...xs)) + 0.1;
+    const X = v => m.l + (lg(v) - xMin) / (xMax - xMin) * (W - m.l - m.r);
+    const c = corel(xs.map(lg), R.map(r => lg(r.sci)));
+    const lx = [xMin, xMax].map(v => 10 ** v), ly = lx.map(v => 10 ** (c.a + c.b * lg(v)));
+    return `<figure class="nr2__p">
+      <figcaption><span>${esc(p.t)}</span><b>r = ${c.r.toLocaleString("ro-RO", { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</b></figcaption>
+      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="SCI ${esc(p.t)}">
+        ${yT.map(v => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" class="nr2__g"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end" class="nr2__tk">${fmt(v)}</text>`).join("")}
+        ${p.ticks.map(v => `<text x="${X(v)}" y="${H - m.b + 18}" text-anchor="middle" class="nr2__tk">${fmt(v)}</text>`).join("")}
+        <text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle" class="nr2__ax">${esc(p.ax)}</text>
+        <line x1="${X(lx[0])}" y1="${Y(ly[0])}" x2="${X(lx[1])}" y2="${Y(ly[1])}" class="nr2__fit"/>
+        ${R.map(r => `<circle cx="${X(r[p.k])}" cy="${Y(r.sci)}" r="${et.has(r.cod) ? 5.5 : 4}" class="nr2__pt${et.has(r.cod) ? " ev" : ""}"><title>${esc(r.nume)}</title></circle>`).join("")}
+        ${R.filter(r => et.has(r.cod)).map(r => { const x = X(r[p.k]), st = x > W - 92 || (p.stanga || []).includes(r.cod);
+          return `<text x="${st ? x - 9 : x + 9}" y="${Y(r.sci) + 4}" text-anchor="${st ? "end" : "start"}" class="nr2__et">${esc(r.nume)}</text>`; }).join("")}
+      </svg></figure>`;
+  };
+  gazda.innerHTML = `<div class="nr2">
+      <p class="nr2__y">${esc(d.yEt || "SCI cu România")}</p>
+      <div class="nr2__duo">${P.map(panou).join("")}</div>
+      ${d.nota ? `<p class="nr2__n">${d.nota}</p>` : ""}
+    </div>`;
+};
+
+
+V.pereche = (gazda, d) => {
+  const J = d.judete || [], M = d.matrice || [], n = J.length;
+  const f = x => Math.round(x).toLocaleString("ro-RO");
+  let a = 0, b = 1;
+  gazda.innerHTML = `<div class="per">
+      <section><h4>Un rând = un județ</h4>
+        <table class="per__t per__m"><thead><tr><th>județ</th><th>populație</th></tr></thead>
+        <tbody>${J.map((x, i) => `<tr data-i="${i}"><td>${esc(x.nume)}</td><td>${f(x.pop)}</td></tr>`).join("")}</tbody></table>
+        <p class="per__n">${n} rânduri</p></section>
+      <div class="per__s" aria-hidden="true"><b>${n} × ${n}</b><span>→</span></div>
+      <section><h4>Un rând = o pereche</h4>
+        <table class="per__t per__p"><thead><tr><th>județul 1</th><th>județul 2</th><th>SCI, în mii</th></tr></thead>
+        <tbody>${J.flatMap((x, i) => J.map((y, j) => `<tr data-a="${i}" data-b="${j}"><td>${esc(x.nume)}</td><td>${esc(y.nume)}</td><td>${f(M[i][j] / 1000)}</td></tr>`)).join("")}</tbody></table>
+        <p class="per__n">${n * n} rânduri</p></section>
+    </div>
+    <p class="per__i" aria-live="polite"></p>`;
+  const info = gazda.querySelector(".per__i");
+  const arata = () => {
+    gazda.querySelectorAll(".per__p tr[data-a]").forEach(e => e.classList.toggle("on", +e.dataset.a === a && +e.dataset.b === b));
+    gazda.querySelectorAll(".per__m tr[data-i]").forEach(e => { const i = +e.dataset.i; e.classList.toggle("ea", i === a); e.classList.toggle("eb", i === b && a !== b); });
+    info.innerHTML = a === b
+      ? `<b>${esc(J[a].nume)} cu ${esc(J[a].nume)}</b>: și perechea unui loc cu el însuși este un rând, cu prieteniile din interiorul județului.`
+      : `<b>${esc(J[a].nume)} și ${esc(J[b].nume)}</b>: un singur rând, care descrie o relație. Populația fiecărui județ provine din tabelul din stânga.`;
+  };
+  const alege = ev => { const r = ev.target.closest("tr[data-a]"); if (!r) return; a = +r.dataset.a; b = +r.dataset.b; arata(); };
+  const tb = gazda.querySelector(".per__p");
+  tb.addEventListener("mouseover", alege); tb.addEventListener("click", alege);
+  arata();
+};
+
+
+V.vederi = (gazda, d) => {
+  const VD = d.vederi || [];
+  gazda.innerHTML = `<div class="vdr">
+      <div class="vdr__b" role="tablist">${VD.map((v, i) => `<button type="button" role="tab" data-i="${i}">${esc(v.t)}</button>`).join("")}</div>
+      ${VD.map((v, i) => `<div class="vdr__v" data-i="${i}" hidden>${v.text ? `<p class="vdr__t">${v.text}</p>` : ""}<div class="vdr__c"></div></div>`).join("")}
+    </div>`;
+  const facut = new Set();
+  const arata = i => {
+    gazda.querySelectorAll(".vdr__b button").forEach(b => { const on = +b.dataset.i === i; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+    gazda.querySelectorAll(".vdr__v").forEach(v => { v.hidden = +v.dataset.i !== i; });
+    if (!facut.has(i)){
+      facut.add(i);
+      const v = VD[i], fn = V[v.ix];
+      if (fn) fn(gazda.querySelector(`.vdr__v[data-i="${i}"] .vdr__c`), v.date || {});
+    }
+  };
+  gazda.querySelector(".vdr__b").addEventListener("click", e => { const b = e.target.closest("button"); if (b) arata(+b.dataset.i); });
+  arata(0);
+};
+
+
+V.cale = (gazda, d) => {
+  const ENV = d.env || {}, T = d.tinte || [];
+  const nume = Object.keys(ENV);
+  const start = nume.length === 1 ? [nume[0]] : [];
+  let drum = [...start], k = 0, blocat = false;
+  const eF = v => v && typeof v === "object" && !Array.isArray(v) && "__f" in v;
+  const tip = v => v === null ? "NoneType" : Array.isArray(v) ? "list" : eF(v) ? "float"
+    : typeof v === "object" ? "dict" : typeof v === "string" ? "str" : typeof v === "boolean" ? "bool"
+    : Number.isInteger(v) ? "int" : "float";
+  const py = v => v === null ? "None" : v === true ? "True" : v === false ? "False"
+    : typeof v === "string" ? `'${v}'` : typeof v === "number" ? String(v)
+    : eF(v) ? Number(v.__f).toFixed(1)
+    : Array.isArray(v) ? "[" + v.map(py).join(", ") + "]"
+    : "{" + Object.entries(v).map(([x, y]) => `'${x}': ${py(y)}`).join(", ") + "}";
+  const scurt = (s, n = 44) => s.length > n ? s.slice(0, n - 1) + "…" : s;
+  const valoare = () => { let v = ENV[drum[0]]; for (const p of drum.slice(1)) v = v[p]; return v; };
+  const pas = p => typeof p === "number" ? `[${p}]` : `["${p}"]`;
+  const expr = () => drum.length ? drum[0] + drum.slice(1).map(pas).join("") : "";
+  const norm = s => s.replace(/\s+/g, "").replace(/'/g, '"');
+  const marime = v => Array.isArray(v) ? `${v.length} elemente` : `${Object.keys(v).length} ${Object.keys(v).length === 1 ? "cheie" : "chei"}`;
+  const compus = v => v !== null && typeof v === "object" && !eF(v);
+
+  gazda.innerHTML = `<div class="cale">
+      <p class="cale__sarc"></p>
+      <div class="cale__expr"><code></code><span class="cale__tip"></span></div>
+      <p class="cale__regula"></p>
+      <div class="cale__nivel"></div>
+      <div class="cale__nav"><button type="button" data-rol="sus" class="btn btn--mic">Un nivel mai sus</button></div>
+    </div>`;
+  const $ = s => gazda.querySelector(s);
+
+  function deseneaza(mesaj){
+    const tinta = T[k];
+    $(".cale__sarc").innerHTML = tinta
+      ? `<span>Găsește</span> <b>${esc(tinta.t)}</b> <span class="cale__nr">${k + 1} din ${T.length}</span>`
+      : `<span class="cale__gata">Toate cele ${T.length} valori au fost găsite.</span> Explorarea poate continua liber.`;
+    const radacina = !drum.length;
+    const v = radacina ? null : valoare();
+    $(".cale__expr code").textContent = radacina ? "alege o variabilă" : expr();
+    $(".cale__expr code").classList.toggle("gol", radacina);
+    $(".cale__tip").textContent = radacina ? "" : tip(v) + (compus(v) ? ` · ${marime(v)}` : "");
+    $(".cale__regula").innerHTML = mesaj || (radacina ? "Variabilele din caiet. Alege una dintre ele."
+      : Array.isArray(v) ? "Valoarea curentă este o listă: alege o <b>poziție</b>, numerotată de la 0."
+      : compus(v) ? "Valoarea curentă este un dicționar: alege o <b>cheie</b>."
+      : "Aceasta este o valoare simplă.");
+    let h;
+    if (radacina){
+      h = `<div class="cale__rs">${nume.map(x => `<button type="button" class="cale__r" data-p="${esc(x)}"><code class="cale__k">${esc(x)}</code><span class="cale__v">${esc(scurt(py(ENV[x])))}</span><span class="cale__t">${tip(ENV[x])}</span></button>`).join("")}</div>`;
+    } else if (Array.isArray(v) && v.every(x => !compus(x)) && v.length <= 6){
+      h = `<div class="cale__lista">${v.map((x, i) => `<button type="button" class="cale__cel" data-p="${i}"><span class="cale__i">${i}</span><code>${esc(py(x))}</code></button>`).join("")}</div>`;
+    } else if (compus(v)){
+      const chei = Array.isArray(v) ? v.map((_, i) => i) : Object.keys(v);
+      h = `<div class="cale__rs">${chei.map(c => `<button type="button" class="cale__r" data-p="${esc(c)}"><code class="cale__k">${esc(pas(c))}</code><span class="cale__v">${esc(scurt(py(v[c])))}</span><span class="cale__t">${tip(v[c])}</span></button>`).join("")}</div>`;
+    } else {
+      h = `<div class="cale__val"><code>${esc(py(v))}</code></div>`;
+    }
+    $(".cale__nivel").innerHTML = h;
+    $('[data-rol="sus"]').disabled = drum.length <= start.length;
+  }
+
+  $(".cale__nivel").addEventListener("click", e => {
+    const b = e.target.closest("[data-p]"); if (!b || blocat) return;
+    const v = drum.length ? valoare() : null;
+    drum.push(drum.length && Array.isArray(v) ? +b.dataset.p : b.dataset.p);
+    const tinta = T[k];
+    if (tinta && norm(expr()) === norm(tinta.cale)){
+      blocat = true;
+      deseneaza(`<span class="cale__ok">✓ ${esc(tinta.t)}: <code>${esc(expr())}</code></span>`);
+      setTimeout(() => { k++; drum = [...start]; blocat = false; deseneaza(); }, 1600);
+      return;
+    }
+    deseneaza();
+  });
+  $('[data-rol="sus"]').addEventListener("click", () => { if (drum.length > start.length && !blocat){ drum.pop(); deseneaza(); } });
+  deseneaza();
+};
+
 
 export default V;

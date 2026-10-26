@@ -6,7 +6,7 @@
    =========================================================================== */
 
 import { createClient } from "./vendor/supabase-js-2.117.0.js";   /* găzduită aici: nicio cerere la un CDN străin */
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=69";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=73";
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -113,7 +113,7 @@ export async function profil({ proaspat = false } = {}) {
   /* Dacă autentificarea nu răspunde (rețea proastă, filă blocată), nu ținem
      pagina în loc la nesfârșit: după 8 secunde, eroare, pe care paginile o
      tratează ca „fără cont deocamdată”. */
-  const termen = ms => new Promise((_, r) => setTimeout(() => r(new Error("Autentificarea nu răspunde.")), ms));
+  const termen = ms => new Promise((_, r) => setTimeout(() => r(new Error("Serviciul de autentificare nu răspunde.")), ms));
   const { data: { session } } = await Promise.race([sb.auth.getSession(), termen(8000)]);
   if (!session) {
     profilCache = { autentificat: false };
@@ -147,15 +147,15 @@ export function laSchimbare(cb) {
 function traduEroare(m = "") {
   const t = m.toLowerCase();
   if (t.includes("rate limit") || t.includes("too many"))
-    return "Prea multe incercari. Mai asteapta un minut.";
+    return "Prea multe încercări. Încearcă din nou peste un minut.";
   if (t.includes("invalid") && t.includes("email"))
-    return "Adresa de e-mail nu pare valida.";
+    return "Adresa de e-mail nu este validă.";
   if (t.includes("failed to fetch") || t.includes("network"))
-    return "Nu pot ajunge la server. Verifica legatura la internet.";
+    return "Serverul nu poate fi contactat. Verifică conexiunea la internet.";
   if (t.includes("not found") && t.includes("function"))
-    return "Baza de date nu e configurata complet. Ruleaza fisierele din db/.";
+    return "Baza de date nu este configurată complet. Rulează fișierele din db/.";
   if (t.includes("anonymous") && t.includes("disabled"))
-    return "Intrarea ca invitat nu e pornita. In Supabase: Authentication, " +
+    return "Intrarea ca invitat nu este activată. În Supabase: Authentication, " +
            "Sign In / Providers, Anonymous sign-ins.";
   return m;
 }

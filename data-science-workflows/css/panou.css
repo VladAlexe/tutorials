@@ -16,25 +16,25 @@
 /* --- bara de sus --------------------------------------------------------- */
 
 .pn__sus{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-.pn__sel{display:flex;align-items:center;gap:8px;font-family:var(--mono);
-  font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3)}
+.pn__sel{display:flex;align-items:center;gap:8px;font-family:var(--sans);
+  font-size:var(--t1);color:var(--text-3)}
 .pn__sel select{border:1px solid var(--linie-2);background:var(--panza);
-  border-radius:8px;padding:7px 11px;font-family:var(--sans);font-size:13.5px;
+  border-radius:8px;padding:7px 11px;font-family:var(--sans);font-size:var(--t2);
   color:var(--text);text-transform:none;letter-spacing:0;max-width:330px}
-.pn__cand{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.pn__cand{font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
 .pn__dr{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
 
 /* --- blocuri ------------------------------------------------------------- */
 
 .bl{margin-bottom:18px}
-.bl h2{font-size:19px;margin:0 0 5px}
-.bl h3{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:-.01em;
+.bl h2{font-size:var(--t5);margin:0 0 5px}
+.bl h3{font-family:var(--sans);font-size:var(--t2);font-weight:600;letter-spacing:-.01em;
   margin:0 0 4px}
-.bl__d{font-family:var(--sans);font-size:12.5px;color:var(--text-3);line-height:1.5;
+.bl__d{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);line-height:1.5;
   margin:0 0 15px;max-width:72ch}
-.gol{font-family:var(--sans);font-size:13px;color:var(--text-3);padding:22px 0;
+.gol{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);padding:22px 0;
   margin:0;font-style:italic;max-width:none}
-.mic{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.mic{font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
 
 /* --- banda „acum" --------------------------------------------------------
    E singura parte care se mișcă singură, deci e și singura cu punct pulsant.
@@ -54,9 +54,9 @@
 }
 @media (prefers-reduced-motion: reduce){ .ora__pct{animation:none} }
 .ora__t{min-width:0;flex:1}
-.ora__t b{display:block;font-family:var(--sans);font-size:15px;font-weight:600;
+.ora__t b{display:block;font-family:var(--sans);font-size:var(--t3);font-weight:600;
   letter-spacing:-.01em}
-.ora__t span{display:block;font-family:var(--sans);font-size:12.5px;
+.ora__t span{display:block;font-family:var(--sans);font-size:var(--t1);
   color:var(--text-3);margin-top:2px;line-height:1.45}
 .ora__b{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .ora__stop{border-color:var(--nu);color:var(--nu)}
@@ -79,13 +79,13 @@
   width:100%;min-height:22px;justify-content:flex-start}
 .om{width:100%;max-width:88px;padding:3px 6px;border-radius:5px;
   background:var(--accent-slab);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
-  font-family:var(--sans);font-size:10.5px;font-weight:500;text-align:center;
+  font-family:var(--sans);font-size:var(--t1);font-weight:500;text-align:center;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--accent-text)}
 .om.lenes{background:var(--panza-2);border-color:var(--linie);color:var(--text-3)}
 .col__b{width:100%;height:4px;border-radius:2px;background:var(--linie)}
 .col.are .col__b{background:var(--accent)}
 .col--tu .col__b{background:var(--text);height:6px}
-.col__n{font-family:var(--mono);font-size:9.5px;color:var(--text-3);
+.col__n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
   font-variant-numeric:lining-nums}
 .col--tu .col__n{color:var(--text);font-weight:500}
 
@@ -94,7 +94,7 @@
 .pn__file{display:flex;gap:3px;border-bottom:1px solid var(--linie);margin-bottom:20px;
   overflow-x:auto;scrollbar-width:none}
 .pn__file::-webkit-scrollbar{display:none}
-.pn__f{padding:10px 14px;font-family:var(--sans);font-size:13.5px;font-weight:500;
+.pn__f{padding:10px 14px;font-family:var(--sans);font-size:var(--t2);font-weight:500;
   color:var(--text-3);background:none;border:0;border-bottom:2px solid transparent;
   cursor:pointer;white-space:nowrap;transition:color .12s}
 .pn__f:hover{color:var(--text-2)}
@@ -106,8 +106,8 @@
    continuare diferența.
    ------------------------------------------------------------------------- */
 
-.leg{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 13px;font-family:var(--mono);
-  font-size:9.5px;color:var(--text-3)}
+.leg{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 13px;font-family:var(--sans);
+  font-size:var(--t1);color:var(--text-3)}
 .leg__i{display:flex;align-items:center;gap:6px}
 
 .cel{display:inline-block;width:13px;height:13px;border-radius:4px;
@@ -119,7 +119,7 @@
 
 .grila__sul{overflow:auto;max-height:70vh;scrollbar-width:thin;
   border:1px solid var(--linie);border-radius:11px;background:var(--panza)}
-.grila{border-collapse:separate;border-spacing:0;font-family:var(--sans);font-size:12.5px}
+.grila{border-collapse:separate;border-spacing:0;font-family:var(--sans);font-size:var(--t1)}
 .grila th,.grila td{padding:5px 6px;text-align:center;white-space:nowrap}
 .grila thead th{position:sticky;top:0;z-index:2;background:var(--panza);
   border-bottom:1px solid var(--linie-2)}
@@ -128,11 +128,11 @@
   min-width:150px;border-right:1px solid var(--linie)}
 .grila thead .grila__cine{z-index:3}
 .grila__cine .mic{display:block;font-weight:400}
-.grila__v{font-family:var(--mono);font-size:9px;color:var(--text-3);
+.grila__v{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
   height:76px;vertical-align:bottom;padding-bottom:9px!important}
 .grila__v span{display:inline-block;writing-mode:vertical-rl;transform:rotate(180deg);
   max-height:64px;overflow:hidden}
-.grila__t{font-family:var(--mono);font-size:10.5px;color:var(--text-2);
+.grila__t{font-family:var(--sans);font-size:var(--t1);color:var(--text-2);
   padding-right:14px!important;font-variant-numeric:lining-nums}
 .grila tbody tr:hover td,.grila tbody tr:hover .grila__cine{background:var(--panza-2)}
 
@@ -141,17 +141,17 @@
 .dz{margin-bottom:18px}
 .dz:last-child{margin-bottom:0}
 .dz__cap{display:flex;align-items:baseline;gap:9px;margin-bottom:7px}
-.dz__id{font-family:var(--mono);font-size:10.5px;color:var(--text-2)}
-.dz__n{font-family:var(--mono);font-size:10.5px;color:var(--text-3);margin-left:auto}
+.dz__id{font-family:var(--mono);font-size:var(--t1);color:var(--text-2)}
+.dz__n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-left:auto}
 .dz__r{display:grid;grid-template-columns:20px minmax(0,1fr) 78px;gap:9px;
   align-items:center;margin-bottom:4px}
-.dz__v{font-family:var(--mono);font-size:10.5px;color:var(--text-3);text-align:center}
+.dz__v{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);text-align:center}
 .dz__p{height:12px;background:var(--panza-2);border-radius:3px;overflow:hidden;
   border:1px solid var(--linie)}
 .dz__p i{display:block;height:100%;background:var(--sci-3)}
 .dz__r.bun .dz__p i{background:var(--ok)}
 .dz__r.bun .dz__v{color:var(--ok);font-weight:500}
-.dz__e{font-family:var(--mono);font-size:10.5px;color:var(--text-2);text-align:right}
+.dz__e{font-family:var(--sans);font-size:var(--t1);color:var(--text-2);text-align:right}
 .dz__e b{font-weight:500;color:var(--text)}
 
 /* --- codul scris de ei --------------------------------------------------- */
@@ -160,38 +160,37 @@
 .cod__g:last-child{margin-bottom:0}
 .cod__gt{display:flex;align-items:baseline;gap:10px;margin-bottom:7px;
   padding-bottom:6px;border-bottom:1px solid var(--linie)}
-.cod__id{font-family:var(--mono);font-size:11px;color:var(--text-2);font-weight:500}
-.cod__n{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto}
+.cod__id{font-family:var(--mono);font-size:var(--t1);color:var(--text-2);font-weight:500}
+.cod__n{font-family:var(--mono);font-size:var(--t1);color:var(--text-3);margin-left:auto}
 .cod__r{display:grid;grid-template-columns:158px minmax(0,1fr) 34px;gap:11px;
   align-items:center;padding:6px 0;border-bottom:1px solid var(--linie)}
 .cod__r:last-child{border-bottom:0}
-.cod__cine{font-family:var(--sans);font-size:12.5px;font-weight:500;line-height:1.25;
+.cod__cine{font-family:var(--sans);font-size:var(--t1);font-weight:500;line-height:1.25;
   overflow:hidden}
-.cod__cine small{display:block;font-family:var(--mono);font-size:9.5px;
+.cod__cine small{display:block;font-family:var(--mono);font-size:var(--t1);
   color:var(--text-3);font-weight:400}
-.cod__t{font-family:var(--mono);font-size:11.5px;background:var(--panza-2);
+.cod__t{font-family:var(--mono);font-size:var(--t1);background:var(--panza-2);
   border:1px solid var(--linie);border-radius:6px;padding:5px 9px;overflow-x:auto;
   white-space:pre;min-width:0;scrollbar-width:thin}
 .cod__r.bun .cod__t{border-color:color-mix(in srgb,var(--ok) 40%,transparent);
   background:var(--ok-slab)}
 .cod__r.rau .cod__t{border-color:color-mix(in srgb,var(--nu) 34%,transparent);
   background:var(--nu-slab)}
-.cod__i{font-family:var(--mono);font-size:10.5px;color:var(--text-3);text-align:right}
+.cod__i{font-family:var(--mono);font-size:var(--t1);color:var(--text-3);text-align:right}
 
 /* --- tabelul de note ----------------------------------------------------- */
 
-.tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13px}
-.tb th{font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.1em;
-  text-transform:uppercase;text-align:left;padding:9px 12px 9px 14px;color:var(--text-3);
+.tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:var(--t2)}
+.tb th{font-family:var(--sans);font-weight:500;font-size:var(--t1);text-align:left;padding:9px 12px 9px 14px;color:var(--text-3);
   border-bottom:1px solid var(--linie-2);white-space:nowrap;position:sticky;top:0;
   background:var(--panza)}
-.tb th small{font-family:var(--mono);font-weight:400;letter-spacing:0;
+.tb th small{font-family:var(--sans);font-weight:400;letter-spacing:0;
   text-transform:none;color:var(--text-3)}
 .tb td{padding:9px 12px 9px 14px;border-bottom:1px solid var(--linie);
   vertical-align:middle;white-space:nowrap}
 .tb td.nume{font-weight:500;white-space:normal}
 .tb tr:hover td{background:var(--panza-2)}
-.tb td b{font-variant-numeric:lining-nums;font-size:14px}
+.tb td b{font-variant-numeric:lining-nums;font-size:var(--t2)}
 .tb .mic{display:inline-block;margin-left:5px}
 .tb td.nume .mic{display:block;margin:1px 0 0}
 
@@ -200,7 +199,7 @@
 .test{border:1px solid var(--linie);border-radius:11px;background:var(--panza);
   padding:16px 18px;max-width:72ch}
 .test__u{margin:0 0 12px;max-width:none}
-.test__u code{font-family:var(--mono);font-size:12px;word-break:break-all;
+.test__u code{font-family:var(--mono);font-size:var(--t1);word-break:break-all;
   background:var(--panza-2);border:1px solid var(--linie);border-radius:6px;
   padding:7px 10px;display:block}
 
@@ -212,30 +211,29 @@
 .qr__cutie{position:relative;background:var(--panza);border-radius:16px;
   padding:30px 34px 26px;text-align:center;box-shadow:var(--umbra-2);
   max-width:min(480px,92vw)}
-.qr__x{position:absolute;top:10px;right:14px;font-size:24px;line-height:1;
+.qr__x{position:absolute;top:10px;right:14px;font-size:var(--t6);line-height:1;
   color:var(--text-3);padding:4px 8px;border-radius:7px}
 .qr__x:hover{background:var(--panza-2);color:var(--text)}
-.qr__et{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--text-3);margin-bottom:16px}
+.qr__et{display:block;font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-bottom:16px}
 .qr__cod{display:grid;place-items:center;min-height:200px}
 /* codul trebuie citit și pe tema întunecată: fundal alb mereu */
 .qr__cod svg,.qr__cod img{width:min(300px,64vw);height:auto;display:block;
   background:#fff;padding:10px;border-radius:10px}
-.qr__fallback{font-family:var(--mono);font-size:16px;line-height:1.5;
+.qr__fallback{font-family:var(--sans);font-size:var(--t4);line-height:1.5;
   word-break:break-all;color:var(--text);margin:0;max-width:none}
-.qr__jeton{font-family:var(--mono);font-size:30px;font-weight:500;letter-spacing:.22em;
+.qr__jeton{font-family:var(--mono);font-size:var(--t7);font-weight:500;letter-spacing:.22em;
   color:var(--text);margin:18px 0 0;max-width:none;text-indent:.22em}
-.qr__url{font-family:var(--mono);font-size:12px;color:var(--text-2);margin:12px 0 0;
+.qr__url{font-family:var(--mono);font-size:var(--t1);color:var(--text-2);margin:12px 0 0;
   word-break:break-all;max-width:none}
 .qr__act{margin-top:14px}
-.qr__d{font-family:var(--sans);font-size:12.5px;color:var(--text-3);margin:14px 0 0;
+.qr__d{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:14px 0 0;
   line-height:1.45;max-width:38ch;margin-inline:auto}
 
 /* --- gol ----------------------------------------------------------------- */
 
 .gol-mare{text-align:center;padding:84px 20px;max-width:46ch;margin:0 auto}
-.gol-mare h1{font-size:28px;margin-bottom:14px}
-.gol-mare p{font-family:var(--sans);font-size:16px;color:var(--text-2);
+.gol-mare h1{font-size:var(--t6);margin-bottom:14px}
+.gol-mare p{font-family:var(--sans);font-size:var(--t4);color:var(--text-2);
   margin:0 auto 24px;max-width:none}
 .gol-mare__bt{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
 
@@ -259,16 +257,15 @@
 .biblio__cap{display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;
   padding:40px 0 26px}
 .biblio__cine{flex:1;min-width:280px}
-.biblio__et{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--accent-text);margin-bottom:9px}
+.biblio__et{display:block;font-family:var(--sans);font-size:var(--t1);color:var(--accent-text);margin-bottom:9px}
 .biblio__cap h1{font-size:clamp(26px,3.3vw,34px);margin:0 0 10px}
-.biblio__d{font-family:var(--sans);font-size:14.5px;color:var(--text-2);
+.biblio__d{font-family:var(--sans);font-size:var(--t3);color:var(--text-2);
   line-height:1.55;margin:0;max-width:58ch}
 .biblio__act{display:flex;gap:8px;flex-wrap:wrap;padding-top:6px}
-.biblio__n{font-family:var(--sans);font-size:13px;color:var(--text-3);line-height:1.55;
+.biblio__n{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);line-height:1.55;
   margin:30px 0 0;max-width:72ch;padding-top:22px;border-top:1px solid var(--linie)}
 .biblio__u{margin:10px 0 0;max-width:none}
-.biblio__u code{font-family:var(--mono);font-size:12.5px;background:var(--panza-2);
+.biblio__u code{font-family:var(--mono);font-size:var(--t1);background:var(--panza-2);
   border:1px solid var(--linie);border-radius:7px;padding:7px 11px;display:inline-block}
 
 /* --- banda „predai acum" ------------------------------------------------- */
@@ -282,11 +279,11 @@
   box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent);
   animation:pn-puls 2.2s ease-out infinite}
 .live__m{flex:1;min-width:0}
-.live__m b{display:block;font-family:var(--sans);font-size:14.5px;font-weight:600;
+.live__m b{display:block;font-family:var(--sans);font-size:var(--t3);font-weight:600;
   color:var(--text)}
-.live__m span{display:block;font-family:var(--sans);font-size:12.5px;color:var(--text-2);
+.live__m span{display:block;font-family:var(--sans);font-size:var(--t1);color:var(--text-2);
   margin-top:2px}
-.live__sg{font-size:19px;color:var(--ok);flex:none}
+.live__sg{font-size:var(--t5);color:var(--ok);flex:none}
 
 /* --- cardurile lecțiilor -------------------------------------------------- */
 
@@ -297,15 +294,14 @@
 .lc:hover{border-color:var(--linie-2)}
 .lc--schita{background:none;border-style:dashed}
 .lc--schita .lc__t,.lc--schita .lc__d{color:var(--text-3)}
-.lc__nr{font-family:var(--mono);font-size:15px;color:var(--text-3);text-align:center;
+.lc__nr{font-family:var(--sans);font-size:var(--t3);color:var(--text-3);text-align:center;
   font-variant-numeric:lining-nums}
 .lc__m{min-width:0}
-.lc__t{font-family:var(--serif);font-size:19px;letter-spacing:-.01em;margin:0 0 4px;
+.lc__t{font-family:var(--serif);font-size:var(--t5);letter-spacing:-.01em;margin:0 0 4px;
   line-height:1.25}
-.lc__d{font-family:var(--sans);font-size:13px;color:var(--text-3);line-height:1.5;
+.lc__d{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);line-height:1.5;
   margin:0;max-width:62ch}
-.lc__meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--text-3);margin:8px 0 0;max-width:none}
+.lc__meta{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:8px 0 0;max-width:none}
 .lc__act{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;
   align-items:center}
 
@@ -321,11 +317,10 @@
   padding:16px 18px;margin-bottom:11px}
 .sl-g__cap{display:flex;align-items:baseline;gap:11px;margin-bottom:13px;
   padding-bottom:9px;border-bottom:1px solid var(--linie)}
-.sl-g__nr{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--text-3)}
-.sl-g__t{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:-.01em;
+.sl-g__nr{font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
+.sl-g__t{font-family:var(--sans);font-size:var(--t2);font-weight:600;letter-spacing:-.01em;
   min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sl-g__l{font-family:var(--mono);font-size:10px;color:var(--accent-text);
+.sl-g__l{font-family:var(--sans);font-size:var(--t1);color:var(--accent-text);
   margin-left:auto;text-decoration:none;white-space:nowrap}
 .sl-g__l:hover{text-decoration:underline}
 
@@ -334,10 +329,10 @@
 .scr__g{margin-bottom:24px}
 .scr__gt{display:flex;align-items:baseline;gap:11px;margin-bottom:12px;
   padding-bottom:7px;border-bottom:1px solid var(--linie);
-  font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:-.01em}
+  font-family:var(--sans);font-size:var(--t2);font-weight:600;letter-spacing:-.01em}
 .scr__gt .mic{margin-left:auto}
 .scr__c{border-left:2px solid var(--accent);padding:2px 0 2px 15px;margin:0 0 13px}
-.scr__c blockquote{font-family:var(--serif);font-size:15.5px;line-height:1.5;
+.scr__c blockquote{font-family:var(--serif);font-size:var(--t3);line-height:1.5;
   margin:0 0 5px;max-width:var(--citit)}
-.scr__c figcaption{font-family:var(--sans);font-size:12px;font-weight:500;
+.scr__c figcaption{font-family:var(--sans);font-size:var(--t1);font-weight:500;
   color:var(--text-2);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}

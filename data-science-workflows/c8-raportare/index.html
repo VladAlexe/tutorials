@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 8. Raportare și proiect final · Fluxuri de lucru</title>
 <meta name="description" content="Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.">
-<link rel="stylesheet" href="../css/fonturi.css?v=69">
-<link rel="stylesheet" href="../css/sistem.css?v=69">
-<link rel="stylesheet" href="../css/intrare.css?v=69">
-<script src="../js/tema.js?v=69"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=73">
+<link rel="stylesheet" href="../css/sistem.css?v=73">
+<link rel="stylesheet" href="../css/intrare.css?v=73">
+<script src="../js/tema.js?v=73"></script>
 </head>
 <body>
 
@@ -21,7 +21,7 @@
     <span class="bl__aici">Lecția 8</span>
     <span class="bl__sp"></span>
     <span class="bl__fapte" id="fapte">
-      <span class="bl__b bl__b--stins">Lecția vine curând</span>
+      <span class="bl__b bl__b--stins">Lecție în pregătire</span>
       <a class="bl__b" href="tutorial/">Manualul</a>
       
       
@@ -36,8 +36,8 @@
     <p class="intr__tag">Lecția 8 din 8</p>
     <h1>Raportare și proiect final</h1>
     <p class="deck">Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.</p>
-    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce o facem la oră.
-    Până atunci poți citi ce urmează, mai jos.</p>
+    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
+    Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec">
@@ -46,12 +46,12 @@
       <a class="mat__c" href="lectie/#1">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span>
         <span class="mat__t">Lecția</span>
-        <span class="mat__d">Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.</span>
+        <span class="mat__d">Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.</span>
       </a>
       <a class="mat__c" href="tutorial/">
         <span class="mat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h8M8 11h6"/></svg></span>
         <span class="mat__t">Manualul</span>
-        <span class="mat__d">Tot materialul, pe larg, de citit în ritmul tău.</span>
+        <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
     </div>
   </section>
@@ -61,18 +61,17 @@
 verificările și caietul se adaugă înainte de ședința din semestru.</p>
 <ul class="obiective">
 <li>Structura unui raport reproductibil: întrebare, date, metodă, rezultat, limite</li>
-<li>Grafice și tabele pregătite pentru publicare, nu pentru ecranul tău</li>
-<li><code>README.md</code> ca raport: cum se rulează tot, de la zero</li>
-<li>Prezentarea proiectului și întrebările la care trebuie să poți răspunde</li>
+<li>Grafice și tabele pregătite pentru publicare, nu doar pentru ecran</li>
+<li><code>README.md</code> ca raport: cum se reproduce întreaga analiză, de la zero</li>
+<li>Prezentarea proiectului și întrebările la care echipa trebuie să poată răspunde</li>
 <li>Criteriile de evaluare, punct cu punct</li>
 </ul></div>
   </section>
   <section class="sec sec--proiect">
-    <p class="sec__et">Ce adaugi la proiect</p>
+    <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><p>Raportul final și prezentarea.</p>
 <p>Lucrăm pe aceleași date tot semestrul: <strong>Social Connectedness Index</strong>,
-cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca Mondială. Dacă vrei să te uiți
-peste surse din timp, sunt toate.</p></div>
+cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la Banca Mondială. Sursele pot fi consultate din timp.</p></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -95,7 +94,7 @@ peste surse din timp, sunt toate.</p></div>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=69"), import("../js/ora.js?v=69"), import("../js/curs.js?v=69")]);
+    import("../js/auth.js?v=73"), import("../js/ora.js?v=73"), import("../js/curs.js?v=73")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -103,7 +102,7 @@ try {
       b.removeAttribute("hidden");
       /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
       const viu = await O.deschisa("c8");
-      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora e pornită"; }
+      if (viu){ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora este în desfășurare"; }
       /* altfel butonul pornește ora direct: nu alegi nicio grupă, cine are
          codul intră, iar fiecare student e deja în grupa lui din listă */
     }
@@ -123,7 +122,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=69"></script>
-<script type="module" src="../js/subsol.js?v=69"></script>
+<script type="module" src="../js/antet.js?v=73"></script>
+<script type="module" src="../js/subsol.js?v=73"></script>
 </body>
 </html>

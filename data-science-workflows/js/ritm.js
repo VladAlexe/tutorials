@@ -34,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=69";
+import { RADACINA } from "./curs.js?v=73";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -44,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=69`);
-    O = await import(`${RADACINA}/js/ora.js?v=69`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=69`);
+    A = await import(`${RADACINA}/js/auth.js?v=73`);
+    O = await import(`${RADACINA}/js/ora.js?v=73`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=73`);
   } catch { return null; }
 
   let p = null;
@@ -130,10 +130,10 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       if (!S){ bara.hidden = true; bara.innerHTML = ""; return; }
       if (pasiv){
         bara.innerHTML = `<span class="ritm__pct"></span>
-          <span class="ritm__t">Ora e condusă din altă filă</span>
-          <span class="ritm__d">aici doar te uiți; slide-urile clasei nu se mută de aici</span>
+          <span class="ritm__t">Ora este condusă din altă filă</span>
+          <span class="ritm__d">această filă doar afișează; slide-urile clasei nu sunt controlate de aici</span>
           <span class="ritm__sp"></span>
-          <button class="ritm__b ritm__b--tare" type="button" data-rol="preia">Condu ora de aici</button>`;
+          <button class="ritm__b ritm__b--tare" type="button" data-rol="preia">Preia controlul orei</button>`;
         bara.querySelector('[data-rol="preia"]').onclick = () => {
           pasiv = false; iauVolanul(); O.pune(S.id, { slide: slideAcum() }); deseneaza(); numara();
         };
@@ -160,7 +160,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                 title="Codul mare, cu QR și linkul de intrare">${S.cod || "…"}</button>
         <span class="ritm__d"><b>${inClasa}</b> în clasă</span>
         ${sarcini.length ? `
-          <span class="ritm__stari" title="pe slide-ul de pe ecran: corect, greșit, gol, n-a trimis">
+          <span class="ritm__stari" title="pe slide-ul de pe ecran: corect, greșit, gol, netrimis">
             ${P.ceasHTML(secunde())}
             ${["trecut","trimis_gresit","trimis_gol","nefacut"].map(k =>
               `<span class="ritm__g ritm__g--${k}">${
@@ -172,7 +172,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
             data-rol="panou" title="Răspunsurile clasei, fără nume, pentru proiector">${
             sertarDeschis ? "Ascunde răspunsurile" : "Arată clasei"}</button>` : ""}
         <button class="ritm__b" type="button" data-rol="rezultate"
-           title="Cine ce a răspuns, cu nume: pe slide și pe toată ora. Doar pentru tine.">Rezultate</button>
+           title="Răspunsurile fiecărui student, cu nume: pentru slide-ul curent și pentru toată ora. Vizibile doar profesorului.">Rezultate</button>
         <button class="ritm__b ritm__b--stop" type="button" data-rol="stop">Încheie ora</button>`;
       lega();
       if (sertarDeschis) deseneazaSertar();
@@ -196,8 +196,8 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
       const r = await O.deschide(capitol, grupaCeruta, "live", total);
       if (!r?.ok){
         alert(r?.mesaj || (O.lipsesteBaza()
-          ? "Baza nu e pregătită: rulează db/14 și db/15 în Supabase."
-          : "N-am putut porni ora."));
+          ? "Baza de date nu este pregătită: rulează db/14 și db/15 în Supabase."
+          : "Ora nu a putut fi pornită."));
         return;
       }
       S = await O.deschisa(capitol);
@@ -308,8 +308,8 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
           <p class="cod-mare__c">${S.cod}</p>
           <p class="cod-mare__u">${scurta}</p>
           <div class="cod-mare__qr"></div>
-          <p class="cod-mare__d">Scanați codul cu telefonul, sau deschideți
-            adresa și tastați cele șase semne.</p>
+          <p class="cod-mare__d">Scanați codul cu telefonul sau deschideți
+            adresa și introduceți codul de șase caractere.</p>
           <button class="ritm__b cod-mare__copiaza" type="button" data-rol="link">Copiază linkul</button>
         </div>`;
       document.body.appendChild(d);
@@ -378,7 +378,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         if (!document.querySelector(".rz")) return;
         corp.innerHTML = P.randeaza({ slide: slideDe(nr), sarcini, randuri: rand, sortare: rzSort,
                                       secunde: secunde(), totalSarcini: harta?.sarcini || null, nume: true })
-          + (trimise.length ? `<h3 class="rz__h">${coduri.some(x => x.fel === "text") ? "Ce au scris" : "Ce au trimis"} pe slide-ul ăsta, în ora asta</h3>
+          + (trimise.length ? `<h3 class="rz__h">${coduri.some(x => x.fel === "text") ? "Ce au scris" : "Ce au trimis"} pe acest slide, în această oră</h3>
             <div class="rz__txt">${trimise.map(t => `<div class="rz__t ${t.trecut ? "bun" : ""}">
               <b>${escR(t.nume)} ${eticheta(t.sarcina)}</b><pre>${escR(t.cod || "")}</pre></div>`).join("")}</div>` : "");
         P.legaSortarea(corp, s => { rzSort = s; umpleRezultate(); });
@@ -400,13 +400,13 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
             <div><b>${r?.sarcini_atinse ?? "—"}<small>/${harta?.sarcini || "—"}</small></b><span>sarcini atinse</span></div>
             <div><b>${S.minute ?? "—"}</b><span>minute de oră</span></div>
           </div>
-          ${r?.impotmolire ? `<p class="rz__imp">Unde se împotmolesc: <b>${escR(r.impotmolire.sarcina)}</b>,
-            doar ${r.impotmolire.trecuti} din ${r.impotmolire.din} au trecut-o.</p>` : ""}
+          ${r?.impotmolire ? `<p class="rz__imp">Sarcina cu cele mai multe dificultăți: <b>${escR(r.impotmolire.sarcina)}</b>;
+            doar ${r.impotmolire.trecuti} din ${r.impotmolire.din} au rezolvat-o.</p>` : ""}
           <h3 class="rz__h">Fiecare student, pe toată ora</h3>
           ${oameni?.length ? `<table class="pv-tb"><thead><tr><th>Student</th><th>Trimise</th><th>Trecute</th><th>Goale</th></tr></thead>
             <tbody>${oameni.map(x => `<tr><td>${escR(x.nume)}</td><td>${x.trimise}</td><td>${x.trecute}</td><td>${x.goale ?? 0}</td></tr>`).join("")}</tbody></table>`
-            : `<p class="rz__gol">Încă n-a trimis nimeni nimic în ora asta.</p>`}
-          ${texte.length ? `<h3 class="rz__h">Ce au scris în ora asta</h3>
+            : `<p class="rz__gol">Niciun răspuns trimis încă în această oră.</p>`}
+          ${texte.length ? `<h3 class="rz__h">Texte trimise în această oră</h3>
             <div class="rz__txt">${texte.map(t => `<div class="rz__t"><b>${escR(t.nume)}</b><p>${escR(t.text)}</p></div>`).join("")}</div>` : ""}`;
       }
     }
@@ -488,7 +488,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=69`)
+    import(`${RADACINA}/js/colectare.js?v=73`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     const tocmaiS_aIncheiat = eraViu && !viu;
@@ -500,7 +500,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
         bara.hidden = false; bara.className = "ritm";
         bara.innerHTML = `<span class="ritm__pct"></span>
           <span class="ritm__t">Ora s-a încheiat</span>
-          <span class="ritm__d">lecția rămâne a ta: o poți parcurge oricând, în ritmul tău</span>`;
+          <span class="ritm__d">lecția rămâne disponibilă și poate fi parcursă oricând, individual</span>`;
         setTimeout(() => { if (!eraViu) bara.hidden = true; }, 12000);
       } else if (!bara.innerHTML.includes("s-a încheiat")) bara.hidden = true;
       return;
@@ -517,9 +517,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     bara.className = "ritm ritm--on";
     bara.innerHTML = `
       <span class="ritm__pct"></span>
-      <span class="ritm__t">Ești la oră</span>
+      <span class="ritm__t">Conectat la oră</span>
       ${areIntrebare ? `<span class="ritm__stari">${P.ceasHTML(secunde())}</span>` : ""}
-      <span class="ritm__d">slide-ul ${d.slide_nr}, ca pe ecranul din față</span>
+      <span class="ritm__d">slide-ul ${d.slide_nr}, sincronizat cu ecranul profesorului</span>
       <span class="ritm__sp"></span>
       ${manual ? `<a class="ritm__b" href="${manual}" target="_blank"
                      rel="noopener">Deschide manualul</a>` : ""}`;

@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=69";
+const V = "?v=73";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */
@@ -70,8 +70,8 @@ export async function monteaza(gazda, opt = {}){
         <button type="button" data-z="1.4" aria-label="Apropie">+</button>
         <button type="button" data-z="0.71" aria-label="Depărtează">−</button>
         <button type="button" data-z="0" aria-label="Toată harta">⟲</button>
-        <button type="button" data-rol="linii" class="on" aria-label="Arată legăturile ca linii" title="Linii spre cei mai legați parteneri">⌒</button>
-        <button type="button" data-rol="mare" aria-label="Deschide harta mare" title="Deschide mare (Esc închide)">⤢</button>
+        <button type="button" data-rol="linii" class="on" aria-label="Arată legăturile ca linii" title="Linii spre partenerii cu cele mai puternice legături">⌒</button>
+        <button type="button" data-rol="mare" aria-label="Deschide harta mare" title="Harta pe tot ecranul (Esc pentru închidere)">⤢</button>
       </div>
       <div class="hs__balon" hidden></div>
       <p class="hs__incarc">Se încarcă harta…</p>
@@ -85,7 +85,7 @@ export async function monteaza(gazda, opt = {}){
         <div class="hs__seg" data-rol="masura"></div>
       </div>
       ${povesti.length ? `<div class="hs__grup">
-        <span class="hs__et">Povești din date</span>
+        <span class="hs__et">Cazuri din date</span>
         <div class="hs__povesti">${povesti.map((p, i) => `<button type="button" data-i="${i}">${p.t}</button>`).join("")}</div>
         <p class="hs__poveste" hidden></p></div>` : ""}
       <label class="hs__cauta"><span class="hs__et">Caută un loc</span>
@@ -255,8 +255,8 @@ export async function monteaza(gazda, opt = {}){
     legenda();
     lista();
     $(".hs__note").textContent = (st.nivel === "tari"
-      ? "La migrație raportează doar 24 de țări; lipsesc, între altele, Polonia, Danemarca, Grecia, Croația, Cipru, Malta, Elveția, Regatul Unit și cele mai multe țări din afara UE. "
-      : "Regiunile ultraperiferice (Canare, Azore, Madeira, teritoriile franceze de peste mări) sunt în date, dar nu încap pe hartă. ")
+      ? "Pentru migrație raportează doar 24 de țări; lipsesc, între altele, Polonia, Danemarca, Grecia, Croația, Cipru, Malta, Elveția, Regatul Unit și cele mai multe țări din afara UE. "
+      : "Regiunile ultraperiferice (Canare, Azore, Madeira, teritoriile franceze de peste mări) sunt incluse în date, dar nu sunt afișate pe hartă. ")
       + B.surse;
   }
 
@@ -264,14 +264,14 @@ export async function monteaza(gazda, opt = {}){
     const scara = (et, trepte, praguri, fara) => `
       <div class="gf__leg"><div class="gf__scara">
         <span class="gf__scara-et">${et}</span>
-        <div class="gf__trepte">${trepte.map((c, k) => `<span data-k="${k}" style="background:${c}" title="Treci peste: doar locurile din treapta asta"></span>`).join("")}</div>
+        <div class="gf__trepte">${trepte.map((c, k) => `<span data-k="${k}" style="background:${c}" title="Treci cu mouse-ul pentru a evidenția doar locurile din această treaptă"></span>`).join("")}</div>
         <div class="gf__praguri">${praguri.map(p => `<span>${p}</span>`).join("")}<span></span></div>
       </div></div><div class="hs__fara"><i></i>${fara}</div>`;
     $('[data-rol="legenda"]').innerHTML =
       st.masura === "sci" ? scara("Probabilitatea de prietenie, față de mediana partenerilor", SECV, PRAG.sci.et, "fără date")
       : st.masura === "migr" ? scara("Cetățeni ai țării alese care trăiesc acolo", SECV, PRAG.migr.et, "țara nu raportează cetățeniile")
-      : st.masura === "model" ? scara("SCI observat, față de cât prezice modelul", DIVERG, PRAG.model.et, "perechea nu e în model (migrația lipsește)")
-      : `<div class="hs__fara">Fiecare culoare e un grup de regiuni mai legate între ele decât cu restul. Culorile sunt doar etichete.</div>`;
+      : st.masura === "model" ? scara("SCI observat, raportat la valoarea prezisă de model", DIVERG, PRAG.model.et, "perechea nu este în model (lipsesc datele de migrație)")
+      : `<div class="hs__fara">Fiecare culoare reprezintă un grup de regiuni mai legate între ele decât cu restul. Culorile sunt doar etichete.</div>`;
   }
 
   function lista(){
@@ -284,7 +284,7 @@ export async function monteaza(gazda, opt = {}){
 
     if (st.masura === "sci"){
       const R = rapoarte().map((r, j) => [r, j]).filter(([r]) => r !== null).sort((a, b) => b[0] - a[0]);
-      if (st.nivel === "tari"){ sep("Cei mai legați parteneri"); const mx = R[0]?.[0] || 1; R.slice(0, 8).forEach(([r, j]) => rnd(j, ori(r), r / mx)); }
+      if (st.nivel === "tari"){ sep("Partenerii cei mai legați"); const mx = R[0]?.[0] || 1; R.slice(0, 8).forEach(([r, j]) => rnd(j, ori(r), r / mx)); }
       else {
         sep("Cei mai legați, în aceeași țară");
         R.filter(([, j]) => L[j].tara === taraAles).slice(0, 3).forEach(([r, j]) => rnd(j, ori(r)));
@@ -292,13 +292,13 @@ export async function monteaza(gazda, opt = {}){
         R.filter(([, j]) => L[j].tara !== taraAles).slice(0, 5).forEach(([r, j]) => rnd(j, ori(r)));
       }
     } else if (st.masura === "migr"){
-      sep("Unde trăiesc cei mai mulți cetățeni ai ei");
+      sep("Țările cu cei mai mulți cetățeni ai țării alese");
       const R = L.map((l, j) => [migranti(l.cod), j]).filter(([v]) => v).sort((a, b) => b[0] - a[0]).slice(0, 8);
       const mx = R[0]?.[0] || 1; R.forEach(([v, j]) => rnd(j, fmt(v), v / mx));
-      if (!R.length) sep("nu avem date pentru această cetățenie");
+      if (!R.length) sep("nu există date pentru această cetățenie");
     } else if (st.masura === "model"){
       const R = L.map((l, j) => [rezidual(l.cod), j]).filter(([r]) => r !== null).sort((a, b) => b[0] - a[0]);
-      if (!R.length) sep("țara aleasă nu e în model");
+      if (!R.length) sep("țara aleasă nu este în model");
       else {
         sep("Mai legate decât prezice modelul"); R.slice(0, 4).forEach(([r, j]) => rnd(j, `${fmt(Math.exp(r), 2)}×`));
         sep("Mai puțin legate"); R.slice(-4).reverse().forEach(([r, j]) => rnd(j, `${fmt(Math.exp(r), 2)}×`));
@@ -373,7 +373,7 @@ export async function monteaza(gazda, opt = {}){
     if (l.cod === st.ales) val = "locul ales";
     else if (st.masura === "sci"){ const r = rapoarte()[i]; val = r === null ? "fără date" : `${fmt(r, r < 10 ? 1 : 0)}× mediana`; }
     else if (st.masura === "migr"){ const m = migranti(l.cod); val = !B.raportoare.includes(l.cod) ? "nu raportează" : m === undefined ? "fără date" : `${fmt(m)} cetățeni`; }
-    else if (st.masura === "model"){ const r = rezidual(l.cod); val = r === null ? "nu e în model" : `${fmt(Math.exp(r), 2)}× cât prezice modelul`; }
+    else if (st.masura === "model"){ const r = rezidual(l.cod); val = r === null ? "nu este în model" : `${fmt(Math.exp(r), 2)}× valoarea prezisă`; }
     else val = `comunitatea ${l.com}`;
     b.innerHTML = `<b>${l.nume}</b><span>${st.nivel === "tari" ? "" : numeTara(l.tara) + " · "}${val}</span>`;
     const z = b.parentNode.getBoundingClientRect();

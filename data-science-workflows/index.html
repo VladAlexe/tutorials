@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Curs de masterat: de la colectarea datelor prin API până la raportul final, pe date reale de conectivitate socială și migrație.">
-<link rel="stylesheet" href="css/fonturi.css?v=69">
-<link rel="stylesheet" href="css/sistem.css?v=69">
-<script src="js/tema.js?v=69"></script>
+<link rel="stylesheet" href="css/fonturi.css?v=73">
+<link rel="stylesheet" href="css/sistem.css?v=73">
+<script src="js/tema.js?v=73"></script>
 <style>
   /* Pagina cursului: o coloană, ca la Ingineria AI. Sus cursul, apoi linia
      lecțiilor, apoi lista lor, una sub alta. Toate lecțiile sunt egale: nu
@@ -17,14 +17,14 @@
   .erou h1{max-width:20ch;margin-bottom:14px}
   .erou .deck{max-width:60ch}
   .erou__meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;
-    font-family:var(--mono);font-size:12px;color:var(--text-3)}
+    font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
   .erou__meta b{font-weight:500;color:var(--text-2)}
 
   .sec{padding:34px 0 8px}
   .sec__et{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    font-family:var(--sans);font-size:var(--t1);
     color:var(--text-3);padding-bottom:10px;border-bottom:1px solid var(--linie);margin:0 0 18px;max-width:none}
-  .sec__et small{letter-spacing:0;text-transform:none;font-size:11.5px}
+  .sec__et small{letter-spacing:0;text-transform:none;font-size:var(--t1)}
 
   /* linia de metrou: la student, lecțiile nepredate sunt stinse */
   .flux--acasa{margin:6px 0 4px}
@@ -41,13 +41,13 @@
   .lr:first-child{border-top:0}
   .lr::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:.12s}
   a.lr:hover{background:var(--panza-2)}
-  a.lr:hover::before{background:var(--ambra)}
-  .lr__nr{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent-text)}
-  .lr__t{font-family:var(--sans);font-size:15.5px;font-weight:600;letter-spacing:-.01em;color:var(--text)}
-  .lr__d{font-family:var(--sans);font-size:13px;color:var(--text-2);margin-top:2px;line-height:1.45}
-  .lr__dr{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;color:var(--text-3)}
-  .lr__sag{font-size:16px;color:var(--text-3);transition:.12s}
-  a.lr:hover .lr__sag{color:var(--ambra);transform:translateX(2px)}
+  a.lr:hover::before{background:var(--accent)}
+  .lr__nr{font-family:var(--sans);font-size:var(--t2);font-weight:500;color:var(--text-3)}
+  .lr__t{font-family:var(--sans);font-size:var(--t3);font-weight:600;letter-spacing:-.01em;color:var(--text)}
+  .lr__d{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin-top:2px;line-height:1.45}
+  .lr__dr{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
+  .lr__sag{font-size:var(--t4);color:var(--text-3);transition:.12s}
+  a.lr:hover .lr__sag{color:var(--accent-text);transform:translateX(2px)}
   .lr.inchisa{cursor:default}
   .lr.inchisa .lr__nr,.lr.inchisa .lr__t{color:var(--text-3)}
   .lr.inchisa .lr__d{color:var(--text-3)}
@@ -56,14 +56,13 @@
 
   .doua{display:grid;grid-template-columns:1.4fr 1fr;gap:34px;align-items:start}
   @media(max-width:820px){.doua{grid-template-columns:1fr;gap:22px}}
-  .nota--roza{border-left-color:var(--roza);background:var(--roza-slab)}
-  .nota--roza .nota__et{color:var(--roza)}
+  .nota--roza .nota__et{color:var(--text)}
   .puncte{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
   .punct{border:1px solid var(--linie);border-radius:10px;padding:14px 16px;background:var(--panza)}
-  .punct b{display:block;font-family:var(--mono);font-size:20px;font-weight:500;color:var(--text)}
-  .punct span{display:block;font-family:var(--sans);font-size:14px;font-weight:600;margin-top:2px}
-  .punct p{font-size:13.5px;color:var(--text-2);margin:6px 0 0;max-width:none;line-height:1.5}
-  .punct:nth-child(1) b{color:var(--accent-text)} .punct:nth-child(2) b{color:var(--ambra)} .punct:nth-child(3) b{color:var(--roza)} .punct:nth-child(4) b{color:var(--text-3)}
+  .punct b{display:block;font-family:var(--sans);font-size:var(--t5);font-weight:500;color:var(--text)}
+  .punct span{display:block;font-family:var(--sans);font-size:var(--t2);font-weight:600;margin-top:2px}
+  .punct p{font-size:var(--t2);color:var(--text-2);margin:6px 0 0;max-width:none;line-height:1.5}
+  .punct b{color:var(--text)}
 </style>
 </head>
 <body>
@@ -76,9 +75,9 @@
     <section class="erou">
       <p class="supratitlu">Analiza Datelor Complexe · Sociologie · UBB · 2026</p>
       <h1>Fluxuri de lucru pentru știința datelor</h1>
-      <p class="deck">Un drum complet, de la întrebare la rezultat: colectezi date reale
-      prin API, le cureți, le pui într-o bază de date, le explorezi și construiești un
-      model pe care îl poți apăra. Pe date de conectivitate socială și migrație.</p>
+      <p class="deck">Un flux de lucru complet, de la întrebare la rezultat: colectarea datelor
+      reale prin API, curățarea lor, stocarea într-o bază de date, analiza exploratorie și un
+      model susținut argumentat. Pe date de conectivitate socială și migrație.</p>
       <div class="erou__meta">
         <span><b>8</b> lecții</span>
         <span><b>1</b> proiect de echipă</span>
@@ -100,28 +99,28 @@
       <p class="sec__et">Proiectul</p>
       <div class="doua">
         <div>
-          <p>Lucrați în echipe, pe aceleași date, cu întrebări diferite. Sursa principală
-          e <strong>Social Connectedness Index</strong>, produs de Data for Good at Meta:
-          pentru fiecare pereche de locuri, cât de probabilă e o prietenie pe Facebook între doi oameni de acolo,
-          față de alte perechi de locuri. A doua sursă e <strong>migrația</strong>, de la Eurostat:
-          câți cetățeni ai fiecărei țări trăiesc în fiecare altă țară.</p>
+          <p>Proiectul se realizează în echipe, pe aceleași date, cu întrebări de cercetare diferite.
+          Sursa principală este <strong>Social Connectedness Index</strong>, produs de Data for Good at Meta:
+          pentru fiecare pereche de locuri, probabilitatea relativă ca doi utilizatori din cele două locuri
+          să fie prieteni pe Facebook, comparativ cu alte perechi de locuri. A doua sursă este <strong>migrația</strong>, de la Eurostat:
+          numărul cetățenilor fiecărei țări care trăiesc în fiecare altă țară.</p>
           <p>Datele sunt <em>diadice</em>: un rând nu descrie un loc, ci o relație între
-          două locuri. Rezultatul final e un depozit pe GitHub în care se vede tot drumul,
+          două locuri. Rezultatul final este un depozit GitHub care documentează întregul parcurs,
           de la întrebare la concluzie.</p>
           <p>Literatura pe care se sprijină proiectul, de la datele SCI la teoria rețelelor
-          de migranți, e într-o singură pagină: <a class="leg" href="lecturi/">Literatura proiectului</a>.
+          de migranți, este reunită într-o singură pagină: <a class="leg" href="lecturi/">Literatura proiectului</a>.
           Harta legăturilor, pe țări, regiuni și județe: <a class="leg" href="explorator/">Exploratorul</a>.</p>
         </div>
         <div class="nota nota--roza">
           <div class="nota__et">Prima întrebare</div>
-          <p>Italia are cei mai mulți cetățeni români din Europa, 1,07 milioane. Dar
-          în SCI-ul României, Italia e abia pe locul șase. De ce?</p>
+          <p>Dintre țările europene, Italia are cei mai mulți cetățeni români: 1,07 milioane.
+          Totuși, în clasamentul SCI al României, Italia se află abia pe locul șase. Ce explică diferența?</p>
         </div>
       </div>
     </section>
 
     <section class="sec">
-      <p class="sec__et" id="nota-cap">Cum se pune nota</p>
+      <p class="sec__et" id="nota-cap">Cum se calculează nota</p>
       <div class="puncte" id="notare"></div>
     </section>
 
@@ -131,7 +130,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE } from "./js/curs.js?v=69";
+import { LECTII, NOTARE } from "./js/curs.js?v=73";
 
 /* Ce lecții sunt deschise. Profesorul și vizitatorul fără cont le au pe toate.
    Studentul are lecțiile predate grupei, plus orice lecție în care a lucrat deja.
@@ -148,7 +147,7 @@ deseneaza(new Set(memorat ? [...memorat, ...atinse] : toate), !!memorat);
 
 const peTermen = (pr, ms) => Promise.race([pr, new Promise((_, r) => setTimeout(() => r(new Error("timp")), ms))]);
 try {
-  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=69"), import("./js/ora.js?v=69")]);
+  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=73"), import("./js/ora.js?v=73")]);
   const p = await peTermen(profil(), 8000);
   if (p.autentificat && !p.profesorReal){
     const pred = await peTermen(O.predate(), 8000);
@@ -162,7 +161,7 @@ try {
     deseneaza(new Set(toate), false);
     if (p.profesorReal){
       const n = document.getElementById("nota-cap");
-      if (n) n.textContent = "Cum se pune nota, pentru ei";
+      if (n) n.textContent = "Cum se calculează nota studenților";
     }
   }
 } catch { /* fără cont, fără rețea sau prea încet: rămâne ce s-a desenat */ }
@@ -195,7 +194,7 @@ function deseneaza(deschise, student){
 document.getElementById("notare").innerHTML = NOTARE.componente.map(c => `
   <div class="punct"><b>${c.puncte}p</b><span>${c.nume}</span><p>${c.d}</p></div>`).join("");
 </script>
-<script type="module" src="js/antet.js?v=69"></script>
-<script type="module" src="js/subsol.js?v=69"></script>
+<script type="module" src="js/antet.js?v=73"></script>
+<script type="module" src="js/subsol.js?v=73"></script>
 </body>
 </html>

@@ -7,14 +7,14 @@
    "nr": 1,
    "id": "s1",
    "grup": "Cursul",
-   "titlu": "Despre ce e ora de azi",
+   "titlu": "Planul lecției",
    "sarcini": []
   },
   {
    "nr": 2,
    "id": "s2",
    "grup": "Cursul",
-   "titlu": "Unde ai rămas",
+   "titlu": "Unde am rămas",
    "sarcini": []
   },
   {
@@ -30,8 +30,8 @@
      "q": "Banca Mondială își mută datele pe alt server și schimbă baza de date, dar păstrează adresele și parametrii din documentație. Ce se întâmplă cu scriptul tău de colectare?",
      "optiuni": [
       "Trebuie rescris, pentru că baza de date e alta",
-      "Merge la fel: contractul nu s-a schimbat",
-      "Merge doar de pe calculatorul pe care a fost scris",
+      "Funcționează la fel: contractul nu s-a schimbat",
+      "Funcționează doar pe calculatorul pe care a fost scris",
       "Primește 404 la prima cerere"
      ]
     }
@@ -83,7 +83,7 @@
    "nr": 10,
    "id": "s10v",
    "grup": "Cum arată o cerere",
-   "titlu": "Metodele, la lucru",
+   "titlu": "Exercițiu: metodele HTTP",
    "sarcini": [
     {
      "id": "c2-sort-metode2",
@@ -102,7 +102,7 @@
    "nr": 12,
    "id": "s12",
    "grup": "Cum arată o cerere",
-   "titlu": "Adresa, bucată cu bucată",
+   "titlu": "Componentele adresei",
    "sarcini": [
     {
      "id": "c2-url",
@@ -138,7 +138,7 @@
    "nr": 14,
    "id": "s14",
    "grup": "De unde vin datele",
-   "titlu": "De unde se pot lua date",
+   "titlu": "Surse de date",
    "sarcini": []
   },
   {
@@ -159,7 +159,7 @@
    "nr": 17,
    "id": "s17",
    "grup": "requests",
-   "titlu": "Un răspuns, cercetat",
+   "titlu": "Exercițiu: inspectarea răspunsului",
    "sarcini": [
     {
      "id": "c2-cerere",
@@ -183,7 +183,7 @@
    "nr": 19,
    "id": "s19e",
    "grup": "Eurostat",
-   "titlu": "Eurostat: cum ceri",
+   "titlu": "Eurostat: structura cererii",
    "sarcini": []
   },
   {
@@ -209,7 +209,7 @@
    "nr": 22,
    "id": "s21",
    "grup": "Proiectul tău",
-   "titlu": "Colectează, acum",
+   "titlu": "Prima colectare",
    "sarcini": [
     {
      "id": "c2-dovada-colectare",
@@ -228,7 +228,7 @@
    "nr": 24,
    "id": "s22",
    "grup": "Mai departe",
-   "titlu": "Până data viitoare",
+   "titlu": "Pentru cursul următor",
    "sarcini": []
   }
  ]

@@ -23,8 +23,8 @@ import pathlib
 from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
 L = Lectie(4, "c4-curatarea-datelor", "Curățarea datelor",
-           "Git în practică, cele șase etape ale curățării, lipsurile, "
-           "duplicatele, valorile extreme, și dicționarul de date.")
+           "Git în practică, cele șase etape ale curățării, valorile lipsă, "
+           "duplicatele, valorile extreme și dicționarul de date.")
 sl = L.sl
 
 
@@ -52,12 +52,12 @@ SCI = valori_sci()
 # ===========================================================================
 
 AGENDA = [
-    ("Git, în practică", "azi", "Staging, commit, anulări, ramuri. Comenzile de care chiar ai nevoie."),
-    ("De ce curățăm", "azi", "Cât din timpul unui proiect se duce aici, și de ce."),
-    ("Cele șase etape", "azi", "De la profilare la validare finală, în ordine."),
-    ("Pe datele noastre", "azi", "Fiecare etapă, cu cod, pe migrația colectată la cursul 2."),
-    ("Două direcții, un rând", "azi", "Migrația pusă în forma SCI-ului: o pereche pe rând."),
-    ("Dicționarul de date", "azi", "Ce ați schimbat, scris astfel încât să se poată reface."),
+    ("Git, în practică", "azi", "Staging, commit, anulări, ramuri: comenzile de uz curent."),
+    ("De ce curățăm", "azi", "Ce parte din timpul unui proiect ocupă curățarea și de ce."),
+    ("Cele șase etape", "azi", "De la profilare la validarea finală, în ordine."),
+    ("Pe datele noastre", "azi", "Fiecare etapă, cu cod, pe datele de migrație colectate la cursul 2."),
+    ("Două direcții, un rând", "azi", "Migrația adusă la forma SCI-ului: o pereche pe rând."),
+    ("Dicționarul de date", "azi", "Modificările făcute, documentate astfel încât curățarea să poată fi refăcută."),
 ]
 
 # Pașii pentru lecția 4, din 04_curatarea_si_integrarea_datelor.ipynb.
@@ -66,7 +66,7 @@ AGENDA = [
 
 PAS_PROFIL = {
     "fisier": "04_curatarea.ipynb · 2. Calitatea",
-    "intro": "Înainte să schimbi ceva într-un tabel, te uiți la el. Indicatorii regionali din C3, la nivel NUTS 2.",
+    "intro": "Înainte de orice modificare, tabelul se inspectează. Indicatorii regionali din C3, la nivel NUTS 2.",
     "cod": "regional = pd.read_csv(DATE / \"c3\" / \"regional.csv\")\n"
            "regional = regional[regional[\"nivel\"] == 2]\n\n"
            "print(\"Duplicate:\", regional.duplicated([\"regiune\", \"indicator\"]).sum())\n"
@@ -78,24 +78,24 @@ PAS_PROFIL = {
             "rows": [["BE10", "populatie", 1264371], ["BE21", "populatie", 1932876], ["…", "…", "…"], ["RO11", "densitate", 74.7]],
             "nota": "format lung: un rând pe regiune și indicator"}}},
          "txt": "Tabelul salvat în C3. Un rând e identificat de două coloane împreună: <b>regiune + indicator</b>."},
-        {"l": 2, "txt": "Păstrăm doar nivelul NUTS 2 (regiunile de dezvoltare, la noi). La seminar lucrați pe NUTS 3, județele."},
+        {"l": 2, "txt": "Păstrăm doar nivelul NUTS 2 (în România, regiunile de dezvoltare). La seminar se lucrează la nivel NUTS 3, al județelor."},
         {"l": 4, "out": "Duplicate: 0",
-         "txt": "<code>duplicated</code> cu o listă de coloane caută aceeași <b>cheie</b> de două ori. Zero: fiecare regiune are fiecare indicator o singură dată."},
+         "txt": "<code>duplicated</code> cu o listă de coloane caută apariția repetată a aceleiași <b>chei</b>. Rezultatul 0 arată că fiecare regiune are fiecare indicator o singură dată."},
         {"l": 5, "out": "Valori negative: 0",
-         "txt": "Populația și densitatea nu pot fi negative. Comparația dă True sau False pe fiecare rând; <code>.sum()</code> numără True-urile."},
+         "txt": "Populația și densitatea nu pot fi negative. Comparația produce True sau False pe fiecare rând; <code>.sum()</code> numără valorile True."},
         {"l": 7, "out": "              count       mean      min        50%         max\n"
                         "densitate     284.0      337.0      3.5      113.2      7827.4\n"
                         "pib_locuitor  276.0    35810.9  11700.0    33550.0    107200.0\n"
                         "populatie     291.0  1920320.8      0.0  1484402.0  15655924.0",
-         "txt": "Un rezumat pe indicator (aici, cinci coloane din opt). Două lucruri sar în ochi: o densitate de 7.827 de locuitori pe km² și o <b>populație 0</b>."},
+         "txt": "Un rezumat pe indicator (aici, cinci coloane din opt). Două valori ies în evidență: o densitate de 7.827 de locuitori pe km² și o <b>populație 0</b>."},
         {"l": 9, "out": "  regiune               denumire  indicator  valoare\n  NO0B    Svalbard og Jan Mayen  populatie      0.0",
-         "txt": "Cine are populație 0? Svalbard, arhipelagul norvegian: Eurostat chiar raportează 0. Iar 7.827 e Bruxelles, un oraș-regiune. Nu sunt greșeli. De aceea nu ștergem automat: întâi căutăm în sursă."},
+         "txt": "Populația 0 aparține regiunii Svalbard, arhipelagul norvegian: Eurostat raportează efectiv 0. Valoarea 7.827 este Bruxelles, un oraș-regiune. Nu sunt erori. De aceea nu ștergem automat: întâi verificăm sursa."},
     ],
 }
 
 PAS_CODURI = {
     "fisier": "04_curatarea.ipynb · 7. Capcana codurilor",
-    "intro": "Două capcane care nu dau nicio eroare. Pierzi țări în tăcere, și afli abia când lipsesc din grafic.",
+    "intro": "Două capcane care nu produc nicio eroare: unele țări se pierd fără avertisment, iar lipsa lor devine vizibilă abia în rezultate.",
     "cod": "gresit = pd.read_csv(DATE / \"c3\" / \"migratie.csv\")\n"
            "migratie = pd.read_csv(DATE / \"c3\" / \"migratie.csv\",\n"
            "                       keep_default_na=False, na_values=[\"\"])\n\n"
@@ -106,20 +106,20 @@ PAS_CODURI = {
         {"l": 1, "set": {"gresit": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
             "rows": [["DE", "NaN", "…"], ["DE", "EL", 303375], ["ES", "UK", 272402], ["…", "…", "…"]],
             "nota": "Namibia (NA) a devenit NaN"}}},
-         "txt": "Citit fără grijă. Pandas are o listă de texte pe care le ia drept „lipsă”, iar <code>NA</code> e pe ea. Namibienii din Germania au rămas fără țară."},
+         "txt": "Citire cu parametrii impliciți. Pandas are o listă de șiruri pe care le interpretează ca valori lipsă, iar <code>NA</code> se află pe ea. Namibienii din Germania au rămas fără cod de țară."},
         {"l": 2, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
             "rows": [["DE", "NA", "…"], ["DE", "EL", 303375], ["ES", "UK", 272402], ["…", "…", "…"]],
             "nota": "NA e din nou Namibia"}}},
-         "txt": "<code>keep_default_na=False</code> oprește lista; <code>na_values=[\"\"]</code> spune că doar celula goală e lipsă. Același lucru l-ai făcut în C1 cu SCI."},
+         "txt": "<code>keep_default_na=False</code> dezactivează lista implicită; <code>na_values=[\"\"]</code> stabilește că doar celula goală este valoare lipsă. Aceeași setare a fost folosită în C1 pentru SCI."},
         {"l": 5, "set": {"coduri": {"t": "dict", "v": {"EL": "GR", "UK": "GB"}}},
-         "txt": "A doua capcană: Eurostat scrie Grecia <code>EL</code> și Regatul Unit <code>UK</code>. SCI scrie <code>GR</code> și <code>GB</code>. Un dicționar spune ce devine ce."},
+         "txt": "A doua capcană: Eurostat codifică Grecia <code>EL</code> și Regatul Unit <code>UK</code>, iar SCI folosește <code>GR</code> și <code>GB</code>. Un dicționar stabilește corespondența."},
         {"l": 6, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
             "rows": [["DE", "NA", "…"], ["DE", "GR", 303375], ["ES", "GB", 272402], ["…", "…", "…"]],
             "nota": "codurile, ca în SCI"}}},
          "hl": {"var": "coduri", "k": "EL"},
-         "txt": "<code>replace</code> primește, pentru fiecare coloană, dicționarul de schimbat. Cei 303.375 de greci din Germania nu se mai pierd la join."},
+         "txt": "<code>replace</code> primește, pentru fiecare coloană, dicționarul de înlocuiri. Cei 303.375 de greci din Germania nu se mai pierd la join."},
         {"l": 7, "out": "0",
-         "txt": "Verificarea de după: niciun EL sau UK n-a rămas. Dicționarul <code>coduri</code> e și documentația deciziei: peste trei luni, din el afli de ce Grecia e GR."},
+         "txt": "Verificarea ulterioară: nu a rămas niciun cod EL sau UK. Dicționarul <code>coduri</code> documentează și decizia: cine citește codul mai târziu vede de ce Grecia apare ca GR."},
     ],
 }
 
@@ -129,7 +129,7 @@ _LUNG = [["RO11", "densitate", 74.7], ["RO12", "densitate", 67.4],
 
 PAS_PIVOT = {
     "fisier": "04_curatarea.ipynb · 4. Tabelul regiunilor",
-    "intro": "Din lung în lat și înapoi, pe două regiuni: Nord-Vest (RO11, cu Clujul) și Centru (RO12).",
+    "intro": "Din format lung în format lat și înapoi, pe două regiuni: Nord-Vest (RO11, care include Clujul) și Centru (RO12).",
     "cod": "lung = regional[regional[\"regiune\"].isin([\"RO11\", \"RO12\"])]\n\n"
            "lat = lung.pivot(index=\"regiune\", columns=\"indicator\", values=\"valoare\")\n"
            "lat = lat.reset_index()\n\n"
@@ -148,35 +148,35 @@ PAS_PIVOT = {
          "txt": "<code>reset_index</code> scoate regiunea din index înapoi într-o coloană obișnuită, ca să poată fi folosită la <code>merge</code>."},
         {"l": 6, "set": {"inapoi": {"t": "DataFrame", "v": {"cols": ["regiune", "indicator", "valoare"], "rows": _LUNG,
             "nota": "din nou 6 rânduri"}}},
-         "txt": "<code>melt</code> e drumul invers: coloanele de indicatori se „topesc” într-o coloană de nume și una de valori. Pe asta o scrii tu, mai jos."},
+         "txt": "<code>melt</code> face operația inversă: coloanele de indicatori se „topesc” (de aici numele) într-o coloană de nume și una de valori. Această operație este exercițiul de mai jos."},
     ],
 }
 
 
-sl("s1", "Cursul", "Despre ce e ora de azi",
+sl("s1", "Cursul", "Planul lecției",
    "<h2>Curățarea datelor</h2>"
-   "<p class=\"cheie\">Etapa cea mai lungă, cea mai plictisitoare, și singura "
-   "care decide dacă restul are vreun sens.</p>"
-   + ix("agenda", "Ora de azi",
-        {"static": True, "titlu": "Ora de azi",
+   "<p class=\"cheie\">Etapa cea mai lungă a unui proiect și cea de care "
+   "depinde validitatea întregii analize.</p>"
+   + ix("agenda", "Planul lecției",
+        {"static": True, "titlu": "Planul lecției",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
-        "Prima jumătate e Git, a doua e curățarea.")
-   + nota("Caietul de azi", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 1–3 și 6–7: calitatea, acoperirea, codurile care mint.", True),
+        "Prima parte: Git. A doua parte: curățarea datelor.")
+   + nota("Caietul lecției", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 1-3 și 6-7: calitatea, acoperirea, codurile de țară.", True),
    manual=
    "<h2>Curățarea datelor</h2>"
-   "<p>Ora are două părți. Prima duce mai departe Git-ul de săptămâna trecută, "
-   "cu comenzile care apar abia când lucrezi serios: cum scoți un fișier din "
-   "pregătire, cum anulezi un commit, cum ștergi o ramură după ce ai îmbinat-o. "
-   "A doua e despre curățarea datelor, adică despre ce faci cu ce ai colectat "
-   "înainte să te uiți la rezultate.</p>"
-   + ix("agenda", "Ora de azi",
-        {"static": True, "titlu": "Ora de azi",
+   "<p>Lecția are două părți. Prima continuă introducerea în Git din lecția "
+   "precedentă cu operațiile necesare în lucrul curent: scoaterea unui fișier "
+   "din zona de pregătire, anularea unui commit, ștergerea unei ramuri după "
+   "îmbinare. A doua parte tratează curățarea datelor, adică prelucrarea "
+   "datelor colectate înainte de orice analiză a rezultatelor.</p>"
+   + ix("agenda", "Planul lecției",
+        {"static": True, "titlu": "Planul lecției",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
-   + nota("Caietul de azi", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 1–3 și 6–7: calitatea, acoperirea, codurile care mint.", True))
+   + nota("Caietul lecției", "<code>04_curatarea_si_integrarea_datelor.ipynb</code>, secțiunile 1-3 și 6-7: calitatea, acoperirea, codurile de țară.", True))
 
-sl("s2", "Cursul", "Cât timp ia",
-   "<h2>Cu ce își petrec timpul oamenii din meseria asta</h2>"
-   + ix("cote", "Un studiu din 2016",
+sl("s2", "Cursul", "Timpul curățării",
+   "<h2>Cum își împart timpul specialiștii în date</h2>"
+   + ix("cote", "Un sondaj din 2016",
         {"cote": [
             {"t": "Curățarea și organizarea datelor", "v": 60, "ac": True},
             {"t": "Colectarea datelor", "v": 19},
@@ -184,13 +184,13 @@ sl("s2", "Cursul", "Cât timp ia",
             {"t": "Altele", "v": 5},
             {"t": "Reglarea algoritmilor", "v": 4},
             {"t": "Pregătirea seturilor de antrenament", "v": 3}],
-         "sursa": "CrowdFlower, 2016 · ce au răspuns oameni care fac asta zilnic"},
-        "Șaizeci la sută. Nu analiza, nu modelele: curățarea."),
+         "sursa": "CrowdFlower, 2016 · răspunsurile unor specialiști în date"},
+        "60%: curățarea, nu analiza sau modelarea."),
    manual=
-   "<h2>Cât timp ia curățarea</h2>"
-   "<p>Cifra asta circulă de zece ani și e cam singura pe care toată lumea din "
-   "domeniu o recunoaște ca adevărată.</p>"
-   + ix("cote", "Un studiu din 2016",
+   "<h2>Cât timp ocupă curățarea</h2>"
+   "<p>Cifra circulă de zece ani și este una dintre cele mai citate estimări "
+   "din domeniu.</p>"
+   + ix("cote", "Un sondaj din 2016",
         {"cote": [
             {"t": "Curățarea și organizarea datelor", "v": 60, "ac": True},
             {"t": "Colectarea datelor", "v": 19},
@@ -199,9 +199,10 @@ sl("s2", "Cursul", "Cât timp ia",
             {"t": "Reglarea algoritmilor", "v": 4},
             {"t": "Pregătirea seturilor de antrenament", "v": 3}],
          "sursa": "CrowdFlower, 2016"})
-   + "<p>Patru cincimi din timp se duc pe adus și curățat date; o zecime pe "
-     "ceea ce lumea crede că e meseria. Nu e o anomalie a domeniului, e forma "
-     "lui.</p>")
+   + "<p>Patru cincimi din timp revin colectării și curățării datelor; "
+     "aproximativ o zecime, căutării tiparelor, activitatea asociată de obicei "
+     "cu această profesie. Nu este o anomalie a domeniului, ci o trăsătură "
+     "structurală a lui.</p>")
 
 
 # ===========================================================================
@@ -209,41 +210,41 @@ sl("s2", "Cursul", "Cât timp ia",
 # ===========================================================================
 
 sl("s3", "Git în practică", "Fluxul complet",
-   "<h2>Cele patru locuri și drumurile dintre ele</h2>"
-   + ix("flux", "Drumul unei schimbări",
-        {"titlu": "Apasă „Urmărește o schimbare”", "intai": {"q": "Colegul tău a urcat un commit pe GitHub azi-dimineață. Tu ai lucrat pe laptop, ai făcut commit și dai git push. Ce se întâmplă?", "variante": ["Merge: fiecare urcă ce are", "E refuzat: întâi aduci commit-ul lui cu git pull", "Commit-ul colegului se șterge"], "corect": 1, "dupa": "GitHub are un commit pe care laptopul tău nu-l are. Ca să nu-l piardă, refuză push-ul până îl aduci și tu: drumul întors, pull."},
-         "intro": "Dus: add, commit, push. Întors: fetch și merge, adică pull.",
+   "<h2>Cele patru zone și trecerile dintre ele</h2>"
+   + ix("flux", "Traseul unei modificări",
+        {"titlu": "Apasă „Urmărește o schimbare”", "intai": {"q": "Un coleg a trimis un commit pe GitHub în această dimineață. Între timp ai lucrat local, ai făcut un commit și rulezi git push. Ce se întâmplă?", "variante": ["Funcționează: fiecare trimite ce are", "Este refuzat: întâi aduci commit-ul colegului cu git pull", "Commit-ul colegului se șterge"], "corect": 1, "dupa": "Depozitul de pe GitHub conține un commit care lipsește din depozitul local. Ca acesta să nu se piardă, push-ul este refuzat până când commit-ul este adus local cu pull, adică pe drumul invers."},
+         "intro": "Spre GitHub: add, commit, push. Înapoi: fetch și merge, adică pull.",
          "buton": "Urmărește o schimbare",
          "dus": "add → commit → push",
          "intors": "pull: fetch, apoi merge",
-         "gata": "ce ai scris tu e la toată lumea, și ce au scris ei e la tine",
+         "gata": "modificările tale au ajuns la colaboratori, iar ale lor, în depozitul tău local",
          "statii": [
              {"n": "Dosarul de lucru", "et": "editezi", "ic": "📝", "c": "ceas",
-              "d": "Fișierele așa cum sunt acum pe disc. Git le vede schimbate, dar nu le urmărește încă."},
+              "d": "Fișierele în starea lor curentă de pe disc. Git le compară cu ultimul commit; modificările nu sunt încă pregătite pentru commit."},
              {"n": "Pregătire", "et": "git add", "ic": "📥", "c": "salvie",
-              "d": "Ce ai ales să intre în următorul commit. Poți alege trei fișiere din șapte."},
+              "d": "Modificările selectate pentru următorul commit. Se pot selecta, de exemplu, trei fișiere din șapte."},
              {"n": "Istoric local", "et": "git commit", "ic": "📦", "c": "accent",
-              "d": "Scris definitiv, pe laptopul tău. Până aici nu ai avut nevoie de internet."},
+              "d": "Înregistrat definitiv, pe calculatorul propriu. Până aici nu este necesară conexiunea la internet."},
              {"n": "GitHub", "et": "git push", "ic": "☁", "c": "text-2",
-              "d": "Copia de pe internet. Abia acum munca ta există în două locuri."}]}))
+              "d": "Copia de pe server. Abia acum lucrul există în două locuri."}]}))
 
 sl("s4", "Git în practică", "Staging și commit",
-   "<h2>Comenzile de zi cu zi</h2>"
+   "<h2>Comenzile de uz curent</h2>"
    + tabel(["Comanda", "Ce face"], [
-       ["~git status", "ce e schimbat și ce e în pregătire"],
-       ["~git pull", "aduce ce e nou; dă-l când <code>git status</code> e curat"],
-       ["~git add .", "adaugă tot în pregătire"],
+       ["~git status", "ce s-a modificat și ce este în pregătire"],
+       ["~git pull", "aduce modificările noi; se rulează când <code>git status</code> nu arată modificări"],
+       ["~git add .", "adaugă toate modificările în pregătire"],
        ["~git add nume", "adaugă un singur fișier"],
        ["~git reset -- nume", "scoate un fișier din pregătire; rămâne pe disc"],
-       ["~git rm --cached nume", "Git nu-l mai urmărește deloc, dar rămâne în proiect"],
-       ["~git commit -m \"mesaj\"", "scrie în istoric"],
-       ["~git log --oneline", "istoricul, pe scurt"],
-       ["~git show &lt;id&gt;", "exact ce s-a schimbat într-un commit"],
+       ["~git rm --cached nume", "Git nu mai urmărește fișierul, dar acesta rămâne în proiect"],
+       ["~git commit -m \"mesaj\"", "înregistrează în istoric"],
+       ["~git log --oneline", "istoricul, în formă scurtă"],
+       ["~git show &lt;id&gt;", "modificările exacte dintr-un commit"],
    ])
-   + ix("cod", "Scoate fișierul care n-avea ce căuta", {
-       "id": "c4-cod-staging", "indiciu": "Ce e în pregătire îți arată comanda pe care o dai cel mai des. Steagul care scoate doar din pregătire, nu și de pe disc, e --cached. Mesajul îl alegi tu.",
+   + ix("cod", "Scoate un fișier din pregătire", {
+       "id": "c4-cod-staging", "indiciu": "Conținutul zonei de pregătire îl arată comanda folosită cel mai des. Opțiunea care scoate fișierul doar din pregătire, nu și de pe disc, este --cached. Mesajul de commit îl alegi tu.",
        "iesire": "rm '.env'\n[dev 4f2a9c1] curatare initiala\n 2 files changed, 18 insertions(+)", "fisier": "terminal.sh",
-       "sarcina": "Ai dat <code>git add .</code> și a intrat și <code>.env</code>. "
+       "sarcina": "După <code>git add .</code>, în pregătire a intrat și <code>.env</code>. "
                   "Scoate-l înainte de commit.",
        "cod": "# vezi ce ai in pregatire\ngit {{1}}\n\n"
               "# scoate .env din pregatire, dar lasa-l pe disc\n"
@@ -254,86 +255,87 @@ sl("s4", "Git în practică", "Staging și commit",
               "git commit -m {{3}}",
        "goluri": {
            "1": {"ok": ["status"], "ajutor": "comanda"},
-           "2": {"ok": ["--cached"], "ajutor": "steagul"},
+           "2": {"ok": ["--cached"], "ajutor": "opțiunea"},
            "3": {"ok": ["\"curatare initiala\"", "'curatare initiala'",
                         "\"colectare\"", "\"primul commit\""],
                  "re": "^[\"'].{3,}[\"']$",
                  "ajutor": "un mesaj, în ghilimele"}},
-       "laBine": "<code>--cached</code> e cuvântul care contează: fără el, "
-                 "<code>git rm</code> șterge fișierul de pe disc.",
-       "laRau": "Steagul începe cu două liniuțe. Mesajul se scrie între ghilimele.",
+       "laBine": "Opțiunea esențială este <code>--cached</code>: fără ea, "
+                 "<code>git rm</code> șterge fișierul și de pe disc.",
+       "laRau": "Opțiunea începe cu două liniuțe. Mesajul se scrie între ghilimele.",
        "explicatie": "<code>git rm --cached</code> scoate fișierul din "
-                     "urmărire, dar îl lasă acolo unde e. E exact ce vrei "
-                     "pentru un fișier cu parole: să nu mai plece nicăieri, dar "
-                     "să rămână la tine, ca programul să meargă."}))
+                     "urmărire, dar îl lasă pe disc. Este comportamentul potrivit "
+                     "pentru un fișier cu parole: nu mai ajunge în depozit, dar "
+                     "rămâne local, astfel încât programul să funcționeze în continuare."}))
 
 sl("s5", "Git în practică", "Anulări",
-   "<h2>Când ai greșit</h2>"
-   "<p>Patru situații diferite, patru comenzi diferite. Confuzia dintre ele e "
-   "cea mai frecventă sursă de muncă pierdută.</p>"
-   + ix("prezice", "Repară fără să strici", {
+   "<h2>Anularea modificărilor</h2>"
+   "<p>Patru situații, patru comenzi diferite. Confuzia dintre ele este o "
+   "cauză frecventă de pierdere a lucrului.</p>"
+   + ix("prezice", "Anularea unui commit publicat", {
        "id": "c4-prezice-undo", "poarta": False, "fisier": "terminal.sh",
        "cod": "# commit-ul a3f9c21 a stricat tabelul curat,\n"
               "# iar colegii l-au tras deja la ei\n"
               "git ??? a3f9c21",
-       "intrebare": "Ce pui în loc de ???, ca să repari fără să strici istoricul colegilor?",
+       "intrebare": "Ce scrii în loc de ???, ca să corectezi eroarea fără să afectezi istoricul colegilor?",
        "variante": ["reset --hard", "revert", "restore", "checkout"],
        "corect": 1,
-       "indiciu": "Îți trebuie o comandă care lucrează pe commit-uri și adaugă ceva, nu șterge.",
-       "laBine": "revert anulează adăugând, nu ștergând.",
-       "explicatie": "<code>revert</code> face un commit nou care face pe dos; istoria rămâne, iar colegii trag doar un commit în plus. "
-                     "<code>reset --hard</code> rescrie istoria și strică depozitul celorlalți. "
-                     "<code>restore</code> lucrează pe fișiere (un fișier stricat, sau un <code>add</code> greșit cu <code>--staged</code>), "
-                     "iar <code>checkout</code> doar te plimbă prin istorie, ca să te uiți.",
+       "indiciu": "Este nevoie de o comandă care lucrează la nivel de commit și adaugă, nu șterge.",
+       "laBine": "revert anulează prin adăugarea unui commit, nu prin ștergere.",
+       "explicatie": "<code>revert</code> creează un commit nou care inversează modificările; istoricul rămâne intact, iar colegii primesc doar un commit în plus. "
+                     "<code>reset --hard</code> mută ramura înapoi și scoate commit-ul din istoricul local; dacă acesta fusese publicat, corectura cere un push forțat, care rescrie istoricul colegilor. "
+                     "<code>restore</code> lucrează la nivel de fișier (un fișier modificat greșit sau, cu <code>--staged</code>, un <code>add</code> greșit), "
+                     "iar <code>checkout</code> mută poziția curentă în istoric, pentru inspectare, fără să creeze un commit de corecție.",
        "iesire": "[main 7d10e4b] Revert \"curatare: tabel final\"\n 1 file changed"}),
    manual=
    "<h2>Anulări</h2>"
-   "<p>Git are faima că e greu tocmai pentru că are patru moduri de a „da "
-   "înapoi”, iar numele lor nu spun de la sine care ce face.</p>"
-   + ix("prezice", "Repară fără să strici", {
+   "<p>Git are reputația unui instrument dificil în mare parte pentru că "
+   "oferă patru moduri de a anula o modificare, iar numele lor nu indică "
+   "direct ce face fiecare.</p>"
+   + ix("prezice", "Anularea unui commit publicat", {
        "id": "c4-prezice-undo", "poarta": False, "fisier": "terminal.sh",
        "cod": "# commit-ul a3f9c21 a stricat tabelul curat,\n"
               "# iar colegii l-au tras deja la ei\n"
               "git ??? a3f9c21",
-       "intrebare": "Ce pui în loc de ???, ca să repari fără să strici istoricul colegilor?",
+       "intrebare": "Ce scrii în loc de ???, ca să corectezi eroarea fără să afectezi istoricul colegilor?",
        "variante": ["reset --hard", "revert", "restore", "checkout"],
        "corect": 1,
-       "indiciu": "Îți trebuie o comandă care lucrează pe commit-uri și adaugă ceva, nu șterge.",
-       "laBine": "revert anulează adăugând, nu ștergând.",
-       "explicatie": "<code>revert</code> face un commit nou care face pe dos; istoria rămâne, iar colegii trag doar un commit în plus. "
-                     "<code>reset --hard</code> rescrie istoria și strică depozitul celorlalți. "
-                     "<code>restore</code> lucrează pe fișiere (un fișier stricat, sau un <code>add</code> greșit cu <code>--staged</code>), "
-                     "iar <code>checkout</code> doar te plimbă prin istorie, ca să te uiți.",
+       "indiciu": "Este nevoie de o comandă care lucrează la nivel de commit și adaugă, nu șterge.",
+       "laBine": "revert anulează prin adăugarea unui commit, nu prin ștergere.",
+       "explicatie": "<code>revert</code> creează un commit nou care inversează modificările; istoricul rămâne intact, iar colegii primesc doar un commit în plus. "
+                     "<code>reset --hard</code> mută ramura înapoi și scoate commit-ul din istoricul local; dacă acesta fusese publicat, corectura cere un push forțat, care rescrie istoricul colegilor. "
+                     "<code>restore</code> lucrează la nivel de fișier (un fișier modificat greșit sau, cu <code>--staged</code>, un <code>add</code> greșit), "
+                     "iar <code>checkout</code> mută poziția curentă în istoric, pentru inspectare, fără să creeze un commit de corecție.",
        "iesire": "[main 7d10e4b] Revert \"curatare: tabel final\"\n 1 file changed"})
-   + nota("Regula simplă",
-          "Dacă greșeala e doar la tine, pe laptop, poți folosi orice. Dacă a "
-          "ajuns pe GitHub și altcineva a luat-o, singura variantă politicoasă "
-          "e <code>revert</code>."))
+   + nota("Regula generală",
+          "Dacă eroarea există doar în depozitul local, oricare dintre comenzi "
+          "este acceptabilă. Dacă a ajuns pe GitHub și a fost preluată de alții, "
+          "singura variantă sigură este <code>revert</code>."))
 
 sl("s6", "Git în practică", "Ramuri, în practică",
    "<h2>Ciclul complet al unei ramuri</h2>"
    + tabel(["Comanda", "Ce face"], [
        ["~git branch", "ramurile locale"],
        ["~git branch -r / -a", "ramurile de pe GitHub / toate"],
-       ["~git branch -vv", "fiecare ramură și pe cine urmărește (upstream)"],
-       ["~git switch -c nume", "creează și trece pe ea"],
-       ["~git switch nume", "trece pe una existentă"],
-       ["~git merge nume", "aduce ramura în cea pe care ești"],
-       ["~git branch -d nume", "o șterge, dacă a fost îmbinată"],
-       ["~git branch -D nume", "o șterge oricum; rar, și cu grijă"],
+       ["~git branch -vv", "fiecare ramură și ramura de la distanță pe care o urmărește (upstream)"],
+       ["~git switch -c nume", "creează o ramură și trece pe ea"],
+       ["~git switch nume", "trece pe o ramură existentă"],
+       ["~git merge nume", "îmbină ramura în ramura curentă"],
+       ["~git branch -d nume", "șterge ramura, dacă a fost îmbinată"],
+       ["~git branch -D nume", "șterge ramura necondiționat; rar și cu precauție"],
    ])
-   + nota("Dacă ți se deschide Vim și nu mai poți ieși",
-          "La <code>git merge</code> sau <code>git commit</code> fără "
-          "<code>-m</code>, Git deschide un editor. Dacă e Vim, ecranul pare "
-          "blocat. Nu e: apeși <kbd>Esc</kbd>, apoi scrii <code>:wq</code> și "
-          "<kbd>Enter</kbd>. Scrie și iese."))
+   + nota("Dacă Git deschide editorul Vim",
+          "La <code>git merge</code> sau la <code>git commit</code> fără "
+          "<code>-m</code>, Git deschide un editor de text pentru mesaj. Dacă "
+          "editorul implicit este Vim, terminalul pare blocat. Pentru a salva "
+          "și a ieși: <kbd>Esc</kbd>, apoi <code>:wq</code> și <kbd>Enter</kbd>."))
 
 sl("s7", "Git în practică", "Depozitul pe GitHub",
    "<h2>Recapitulare în două cazuri</h2>"
-   + tabel(["Ai deja depozit local", "Nu ai nimic"], [
-       ["faci un depozit gol pe GitHub", "faci depozitul pe GitHub"],
+   + tabel(["Există deja un depozit local", "Nu există niciun depozit"], [
+       ["creezi un depozit gol pe GitHub", "creezi depozitul pe GitHub"],
        ["<code>git remote add origin &lt;url&gt;</code>", "<code>git clone &lt;url&gt;</code>"],
-       ["<code>git push -u origin main</code>", "gata, e deja legat"],
+       ["<code>git push -u origin main</code>", "depozitul clonat este deja legat de GitHub"],
    ]))
 
 
@@ -344,75 +346,75 @@ sl("s7", "Git în practică", "Depozitul pe GitHub",
 ORD_CUR = {
  "id": "c4-ordine-curatare",
  "poarta": False,
- "sarcina": "Șase etape, amestecate. Pune-le în ordinea în care le faci. Dacă greșești, afli ce s-ar strica.",
+ "sarcina": "Șase etape, în ordine aleatorie. Ordonează-le în succesiunea în care se efectuează. La o ordine greșită, se afișează consecința.",
  "linii": [
-  "Profilare: te uiți, nu schimbi nimic",
+  "Profilare: inspectezi datele, fără să le modifici",
   "Integrare: aduci codurile la aceeași formă (EL devine GR)",
-  "Curățare de bază: scoți duplicatele",
-  "Lipsuri și anomalii: decizi ce faci cu ele",
+  "Curățare de bază: elimini duplicatele",
+  "Valori lipsă și anomalii: decizi cum le tratezi",
   "Transformări: pivot, rate, variabile noi",
-  "Validare: compari înainte și după, notezi deciziile"
+  "Validare: compari înainte și după, documentezi deciziile"
  ],
  "consecinte": {
-  "0": "Profilarea vine prima: fără ea decizi pe ghicite. Nu știi încă câte lipsuri ai, nici că NA e Namibia.",
-  "1": "Codurile se aliniază înainte de duplicate: cât timp Grecia e și EL, și GR, dublura nu se vede.",
-  "2": "Duplicatele ies înainte de lipsuri: altfel media cu care completezi e calculată pe rânduri numărate de două ori.",
-  "3": "Lipsurile se decid înainte de transformări: după un pivot, un gol devine goluri în mai multe coloane și nu mai știi de unde vin.",
-  "4": "Transformările vin după ce datele sunt curate: altfel calculezi rate pe valori pe care urmează să le schimbi.",
-  "5": "Validarea închide drumul: compară tabelul final cu cel de la început. Mai devreme, n-are ce compara."
+  "0": "Profilarea vine prima: fără ea, deciziile nu au o bază. Nu se știe încă câte valori lipsă există, nici că NA înseamnă Namibia.",
+  "1": "Codurile se aliniază înaintea eliminării duplicatelor: cât timp Grecia apare și ca EL, și ca GR, dublura nu este detectată.",
+  "2": "Duplicatele se elimină înaintea tratării valorilor lipsă: altfel media folosită la completare se calculează pe rânduri numărate de două ori.",
+  "3": "Valorile lipsă se tratează înainte de transformări: după un pivot, o singură lipsă se poate extinde în mai multe coloane, iar originea ei nu mai este evidentă.",
+  "4": "Transformările vin după curățare: altfel se calculează rate pe valori care urmează să fie modificate.",
+  "5": "Validarea încheie procesul: compară tabelul final cu cel inițial. Aplicată mai devreme, nu are încă un rezultat final de comparat."
  },
- "indiciu": "Întreabă-te la fiecare etapă: ce trebuie să știu deja ca s-o pot face?",
- "laBine": "Fiecare etapă se sprijină pe ce ai aflat la cea dinainte.",
- "explicatie": "Ordinea nu e o convenție: fiecare etapă presupune ce s-a aflat la cea dinainte. Sărită, profilarea face ca toate deciziile de mai târziu să fie luate pe ghicite."
+ "indiciu": "Pentru fiecare etapă: ce informații trebuie să existe deja pentru a o putea efectua?",
+ "laBine": "Fiecare etapă se sprijină pe rezultatele celei anterioare.",
+ "explicatie": "Ordinea nu este o convenție: fiecare etapă presupune rezultatele celei anterioare. Fără profilare, toate deciziile ulterioare sunt luate fără temei."
 }
 
 ETAPE_CUR = [
-    ("1. Profilare", "înțelegi ce ai",
-     "Verifici tipurile, distribuțiile, lipsurile, valorile suspecte. "
-     "Identifici erorile evidente și problemele de structură. Nu schimbi nimic încă."),
-    ("2. Integrare și standardizare", "aliniezi surse",
+    ("1. Profilare", "înțelegi datele",
+     "Verifici tipurile, distribuțiile, valorile lipsă și valorile suspecte. "
+     "Identifici erorile evidente și problemele de structură. Nu modifici încă nimic."),
+    ("2. Integrare și standardizare", "aliniezi sursele",
      "Aduci sursele diferite la aceeași formă: etichete, formate, unități, "
      "tipuri. Corectezi textul, codurile și convențiile."),
-    ("3. Curățare de bază", "scoți ce nu trebuie",
-     "Elimini ce e irelevant sau redundant, scoți duplicatele, repari erorile "
-     "structurale și categoriile incoerente."),
-    ("4. Lipsuri și anomalii", "decizi",
-     "Analizezi lipsurile și hotărăști ce faci cu ele. Te uiți la valorile "
+    ("3. Curățare de bază", "elimini redundanțele",
+     "Elimini ce este irelevant sau redundant, inclusiv duplicatele, și "
+     "corectezi erorile structurale și categoriile incoerente."),
+    ("4. Valori lipsă și anomalii", "decizi tratarea",
+     "Analizezi valorile lipsă și decizi cum le tratezi. Examinezi valorile "
      "extreme sau imposibile. Verifici regulile logice."),
     ("5. Transformări", "pregătești analiza",
-     "Reorganizezi structura (long sau wide), faci agregări și variabile noi, "
-     "aplici scalări, completezi cu informații externe."),
-    ("6. Validare și documentare", "închizi",
-     "Verifici cheile unice și coerența. Compari statisticile înainte și după. "
-     "Notezi transformările, versiunile, și dicționarul de date."),
+     "Reorganizezi structura (format lung sau lat), faci agregări și construiești "
+     "variabile noi, aplici scalări, adaugi informații externe."),
+    ("6. Validare și documentare", "închei",
+     "Verifici unicitatea cheilor și coerența. Compari statisticile dinainte și "
+     "de după. Documentezi transformările, versiunile și dicționarul de date."),
 ]
 
 sl("s8", "Curățarea", "Cele șase etape",
-   "<h2>De la date brute la date pe care te poți baza</h2>"
+   "<h2>De la date brute la date fiabile</h2>"
    + ix("ordine", "Harta curățării", ORD_CUR)
-   + "<p class=\"cheie\">Prima etapă nu schimbă nimic. Doar te uiți. E și cea "
-     "pe care o sare toată lumea.</p>",
+   + "<p class=\"cheie\">Prima etapă nu modifică nimic: doar inspectează "
+     "datele. Este și etapa omisă cel mai des.</p>",
    manual=
    "<h2>Cele șase etape</h2>"
-   "<p>Curățarea nu e o listă de trucuri, e un drum cu o ordine. Fiecare etapă "
-   "presupune ce s-a aflat la cea dinainte.</p>"
+   "<p>Curățarea nu este o colecție de procedee independente, ci un proces cu "
+   "o ordine stabilă. Fiecare etapă presupune rezultatele celei anterioare.</p>"
    + ix("etape", "Harta curățării",
-        {"titlu": "Șase etape, în ordine", "intro": "Apasă pe oricare.",
+        {"titlu": "Șase etape, în ordine", "intro": "Selectează o etapă pentru detalii.",
          "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in ETAPE_CUR]})
-   + ix("ordine", "Pune-le în ordine", ORD_CUR)
-   + nota("De ce se sare peste prima",
-          "Pentru că nu produce nimic. După o oră de profilare, fișierul arată "
-          "exact la fel. Dar fără ea, toate deciziile de mai târziu se iau pe "
-          "ghicite, iar unele nu se mai pot întoarce."))
+   + ix("ordine", "Ordonarea etapelor", ORD_CUR)
+   + nota("De ce este omisă profilarea",
+          "Pentru că nu produce un rezultat vizibil: după o oră de profilare, "
+          "fișierul este neschimbat. Fără ea însă, deciziile ulterioare se iau "
+          "fără temei, iar unele sunt ireversibile."))
 
 sl("s9", "Curățarea", "Profilarea",
-   "<h2>Prima etapă: te uiți</h2>"
-   + ix("pas", "Te uiți înainte să schimbi", PAS_PROFIL)
+   "<h2>Prima etapă: inspecția datelor</h2>"
+   + ix("pas", "Inspecția înaintea modificării", PAS_PROFIL)
    + ix("cod", "Profilează tabelul", {
-       "id": "c4-cod-profil", "indiciu": "Rezumatul pe coloane e „informații” (info). Statisticile numerice sunt o „descriere” (describe). Valorile distincte, cu frecvența lor, se numără cu value_counts.",
+       "id": "c4-cod-profil", "indiciu": "Rezumatul pe coloane înseamnă „informații” (info). Statisticile numerice sunt o „descriere” (describe). Valorile distincte, cu frecvența lor, se numără cu value_counts.",
        "iesire": "(5104, 3)\n          valoare\ncount     4292.0\nmean     18736.2\n...\nRO    37\nPL    37\nBG    36", "fisier": "profilare.py",
-       "sarcina": "Cinci întrebări pe care le pui oricărui tabel nou, înainte "
-                  "să schimbi ceva în el.",
+       "sarcina": "Cinci întrebări de pus oricărui tabel nou, înainte de "
+                  "orice modificare.",
        "cod": "import pandas as pd\n\n"
               "d = pd.read_csv(\"date/brute/migratie.csv\")\n\n"
               "# 1. cat de mare e\nprint(d.shape)\n\n"
@@ -428,41 +430,42 @@ sl("s9", "Curățarea", "Profilarea",
            "1": {"ok": ["info"], "ajutor": "metoda"},
            "2": {"ok": ["describe"], "ajutor": "metoda"},
            "3": {"ok": ["value_counts", "unique"], "ajutor": "metoda"}},
-       "laBine": "Cele cinci se dau în ordinea asta, pe orice tabel nou.",
+       "laBine": "Cele cinci verificări se fac în această ordine, pe orice tabel nou.",
        "laRau": "Toate trei sunt metode, deci se scriu fără ghilimele și cu paranteze.",
-       "explicatie": "<code>value_counts()</code> e cea mai bună pentru "
-                     "coloanele categoriale. La migrație îți arată o "
-                     "surpriză: Namibia lipsește, deși Eurostat o are. "
-                     "Pandas a citit codul ei, <code>NA</code>, ca valoare "
-                     "lipsă. O reparăm pe slide-ul următor."})
+       "explicatie": "<code>value_counts()</code> este metoda potrivită pentru "
+                     "coloanele categoriale. Pe datele de migrație scoate la "
+                     "iveală o problemă: Namibia lipsește, deși Eurostat o "
+                     "raportează. Pandas a citit codul ei, <code>NA</code>, ca "
+                     "valoare lipsă. Corecția apare pe slide-ul următor."})
    + verif("c4-v6", 3,
            "<code>info()</code> arată o coloană de prețuri ca "
            "<code>object</code>, nu ca număr. Ce înseamnă?",
-           ["Că fișierul e corupt",
-            "Că pandas nu suportă prețuri",
-            "Că valorile sunt prea mari",
-            "Că în coloană e cel puțin o valoare care nu e număr"],
-           "Că pandas a găsit ceva ce nu poate citi ca număr: o virgulă "
-           "zecimală, un spațiu, un „n/a” scris cu litere. O singură valoare "
-           "stricată din zece mii face toată coloana text."))
+           ["Fișierul este corupt",
+            "Pandas nu poate reprezenta prețuri",
+            "Valorile sunt prea mari",
+            "Coloana conține cel puțin o valoare nenumerică"],
+           "Pandas a găsit cel puțin o valoare pe care nu o poate interpreta ca "
+           "număr: o virgulă zecimală, un spațiu, o cratimă „-” pusă în locul unei valori lipsă. O "
+           "singură valoare nevalidă din zece mii este suficientă pentru ca "
+           "întreaga coloană să fie citită ca text."))
 
 
 # ===========================================================================
 #  10-12. Standardizare, duplicate, structuri
 # ===========================================================================
 
-sl("s10", "Curățarea", "Codurile care mint",
+sl("s10", "Curățarea", "Coduri incompatibile",
    "<h2>Aceeași țară, alt cod</h2>"
    + tabel(["Țara", "SCI", "Eurostat", "Ce se întâmplă"], [
-       ["Grecia", "~GR", "~EL", "join-ul o pierde, fără eroare"],
+       ["Grecia", "~GR", "~EL", "se pierde la join, fără eroare"],
        ["Regatul Unit", "~GB", "~UK", "la fel"],
        ["Namibia", "~NA", "~NA", "pandas o citește ca valoare lipsă"],
    ])
-   + ix("pas", "Două capcane tăcute", PAS_CODURI)
+   + ix("pas", "Două erori fără avertisment", PAS_CODURI)
    + ix("cod", "Repară codurile", {
-       "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină lipsă, oprești lista implicită de lipsuri: keep_default_na = valoarea logică „nu”. Codul britanic din SCI e GB. Metoda care schimbă valori după un dicționar e replace.",
+       "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină valoare lipsă, dezactivezi lista implicită de valori lipsă: keep_default_na primește valoarea logică „fals”. Codul Regatului Unit în SCI este GB. Metoda care înlocuiește valori pe baza unui dicționar este replace.",
        "iesire": "0", "fisier": "standardizare.py",
-       "sarcina": "Citește fișierul fără să piardă Namibia, apoi adu codurile "
+       "sarcina": "Citește fișierul fără a pierde Namibia, apoi adu codurile "
                   "Eurostat la cele din SCI.",
        "cod": "# NA e Namibia, nu o valoare lipsa: doar celula goala e lipsa\n"
               "d = pd.read_csv(\"date/brute/migratie.csv\",\n"
@@ -476,34 +479,34 @@ sl("s10", "Curățarea", "Codurile care mint",
            "1": {"ok": ["False"], "ajutor": "valoarea"},
            "2": {"ok": ["\"GB\"", "'GB'"], "ajutor": "codul"},
            "3": {"ok": ["replace"], "ajutor": "metoda"}},
-       "laBine": "Zero rânduri cu EL sau UK. Acum migrația și SCI-ul vorbesc "
-                 "aceeași limbă.",
-       "laRau": "Prima e o valoare logică. Codul e text, între ghilimele.",
-       "explicatie": "Dicționarul <code>coduri</code> e documentația deciziei "
-                     "tale. Peste trei luni, din el se află că ai hotărât că "
-                     "EL și GR sunt aceeași țară. Fără el, Grecia ar dispărea "
-                     "la primul join și nimeni n-ar ști de ce."}),
+       "laBine": "Nu mai există rânduri cu EL sau UK: migrația și SCI-ul "
+                 "folosesc acum aceleași coduri.",
+       "laRau": "Primul gol este o valoare logică. Codul este un șir de caractere, între ghilimele.",
+       "explicatie": "Dicționarul <code>coduri</code> documentează decizia: "
+                     "oricine citește codul mai târziu află din el că EL și GR "
+                     "au fost tratate ca aceeași țară. Fără el, Grecia ar "
+                     "dispărea la primul join, fără o explicație vizibilă."}),
    manual=
-   "<h2>Standardizarea: codurile care mint</h2>"
-   "<p>Când aduni două surse, aceeași țară poate avea coduri diferite. "
+   "<h2>Standardizarea codurilor</h2>"
+   "<p>Când se combină două surse, aceeași țară poate avea coduri diferite. "
    "Eurostat folosește <code>EL</code> pentru Grecia și <code>UK</code> "
    "pentru Regatul Unit; Meta folosește codurile ISO, <code>GR</code> și "
-   "<code>GB</code>. Pentru calculator sunt țări diferite, iar un join pe "
+   "<code>GB</code>. Pentru program sunt țări diferite, iar un join pe "
    "coduri le pierde fără niciun mesaj de eroare.</p>"
-   "<p>A doua capcană e mai perfidă: Namibia are codul <code>NA</code>, iar "
-   "pandas citește <code>NA</code> ca valoare lipsă. Rândurile Namibiei nu "
-   "dispar, dar codul lor devine gol, și orice filtru sau join pe țară le "
-   "pierde.</p>"
+   "<p>A doua capcană este mai greu de observat: Namibia are codul "
+   "<code>NA</code>, iar pandas citește <code>NA</code> ca valoare lipsă. "
+   "Rândurile Namibiei nu dispar, dar codul lor devine valoare lipsă, iar "
+   "orice filtru sau join pe țară le pierde.</p>"
    + tabel(["Țara", "SCI", "Eurostat", "Ce se întâmplă"], [
-       ["Grecia", "~GR", "~EL", "join-ul o pierde, fără eroare"],
+       ["Grecia", "~GR", "~EL", "se pierde la join, fără eroare"],
        ["Regatul Unit", "~GB", "~UK", "la fel"],
        ["Namibia", "~NA", "~NA", "pandas o citește ca valoare lipsă"],
    ])
-   + ix("pas", "Două capcane tăcute", PAS_CODURI)
+   + ix("pas", "Două erori fără avertisment", PAS_CODURI)
    + ix("cod", "Repară codurile", {
-       "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină lipsă, oprești lista implicită de lipsuri: keep_default_na = valoarea logică „nu”. Codul britanic din SCI e GB. Metoda care schimbă valori după un dicționar e replace.",
+       "id": "c4-cod-standard", "indiciu": "Ca NA (Namibia) să nu devină valoare lipsă, dezactivezi lista implicită de valori lipsă: keep_default_na primește valoarea logică „fals”. Codul Regatului Unit în SCI este GB. Metoda care înlocuiește valori pe baza unui dicționar este replace.",
        "iesire": "0", "fisier": "standardizare.py",
-       "sarcina": "Citește fără să piardă Namibia și aliniază codurile.",
+       "sarcina": "Citește fișierul fără a pierde Namibia și aliniază codurile.",
        "cod": "d = pd.read_csv(\"date/brute/migratie.csv\",\n"
               "                keep_default_na={{1}}, na_values=[\"\"])\n\n"
               "coduri = {\"EL\": \"GR\", \"UK\": {{2}}}\n"
@@ -513,21 +516,22 @@ sl("s10", "Curățarea", "Codurile care mint",
            "1": {"ok": ["False"], "ajutor": "valoarea"},
            "2": {"ok": ["\"GB\"", "'GB'"], "ajutor": "codul"},
            "3": {"ok": ["replace"], "ajutor": "metoda"}},
-       "laBine": "Acum migrația și SCI-ul vorbesc aceeași limbă.",
-       "laRau": "Prima e o valoare logică. Codul e text, între ghilimele.",
-       "explicatie": "Dicționarul <code>coduri</code> e documentația deciziei."})
+       "laBine": "Migrația și SCI-ul folosesc acum aceleași coduri.",
+       "laRau": "Primul gol este o valoare logică. Codul este un șir de caractere, între ghilimele.",
+       "explicatie": "Dicționarul <code>coduri</code> documentează decizia."})
    + nota("Aceeași regulă și pentru SCI",
-          "Fișierul <code>country.csv</code> are și el Namibia. Îl citești tot "
-          "cu <code>keep_default_na=False</code>, altfel pierzi perechile ei."))
+          "Fișierul <code>country.csv</code> conține și el Namibia. Se citește "
+          "tot cu <code>keep_default_na=False</code>; altfel, perechile "
+          "Namibiei se pierd."))
 
 sl("s11", "Curățarea", "Duplicatele",
    "<h2>Același rând, de două ori</h2>"
-   "<p>Vin din colectări reluate, din îmbinări greșite, din export de două "
-   "ori. Un duplicat nu se vede în medie, dar o schimbă.</p>"
+   "<p>Provin din colectări reluate, din îmbinări greșite sau din exporturi "
+   "repetate. Un duplicat nu este vizibil în medie, dar o modifică.</p>"
    + ix("cod", "Scoate duplicatele", {
-       "id": "c4-cod-duplicate", "indiciu": "Metoda care marchează rândurile repetate e duplicated. Păstrăm prima apariție: \"first\". Cheia e perechea de coloane citizen și geo, ca listă.",
+       "id": "c4-cod-duplicate", "indiciu": "Metoda care marchează rândurile repetate este duplicated. Păstrăm prima apariție: \"first\". Cheia este perechea de coloane citizen și geo, sub formă de listă.",
        "iesire": "584\n0", "fisier": "duplicate.py",
-       "sarcina": "Numără duplicatele, apoi scoate-le păstrând prima apariție.",
+       "sarcina": "Numără duplicatele, apoi elimină-le, păstrând prima apariție.",
        "cod": "# cate randuri sunt identice cu altul de mai sus\n"
               "print(d.{{1}}().sum())\n\n"
               "# le scoatem, pastrand prima aparitie\n"
@@ -542,47 +546,49 @@ sl("s11", "Curățarea", "Duplicatele",
                         "['citizen', 'geo']"],
                  "re": "^\\[\\s*[\"']citizen[\"']\\s*,\\s*[\"']geo[\"']\\s*\\]$",
                  "ajutor": "lista de coloane"}},
-       "laBine": "Al doilea caz e cel periculos: rânduri care diferă printr-o "
-                 "coloană neimportantă, dar care descriu aceeași observație.",
-       "laRau": "Prima e o metodă. A doua e text, între ghilimele. A treia e o "
-                "listă de nume de coloane.",
+       "laBine": "Al doilea caz este cel problematic: rânduri care diferă "
+                 "printr-o coloană secundară, dar descriu aceeași observație.",
+       "laRau": "Primul gol este o metodă. Al doilea este un șir de caractere, "
+                "între ghilimele. Al treilea este o listă de nume de coloane.",
        "explicatie": "<code>drop_duplicates()</code> fără <code>subset</code> "
-                     "compară tot rândul. La date diadice, cheia e perechea: "
+                     "compară tot rândul. La date diadice, cheia este perechea: "
                      "dacă aceeași pereche de locuri apare de două ori cu "
-                     "valori diferite, ai o problemă de colectare, nu de "
-                     "curățare, și merită întâi aflat de unde vine."}))
+                     "valori diferite, problema ține de colectare, nu de "
+                     "curățare, iar originea ei trebuie identificată înainte "
+                     "de orice eliminare."}))
 
 # ===========================================================================
 #  13-15. Lipsuri și valori extreme
 # ===========================================================================
 
-sl("s13", "Lipsuri", "Ce faci cu ce lipsește",
-   "<h2>Lipsurile nu sunt toate la fel</h2>"
-   "<p>Înainte de a alege o metodă, întrebarea e <em>de ce</em> lipsește.</p>"
-   + ix("sortare", "Ce faci în fiecare caz", {
+sl("s13", "Valori lipsă și extreme", "Tratarea valorilor lipsă",
+   "<h2>Valorile lipsă nu sunt toate de același tip</h2>"
+   "<p>Înainte de alegerea unei metode, întrebarea este <em>de ce</em> lipsesc valorile.</p>"
+   + ix("sortare", "Tratamentul potrivit fiecărui caz", {
        "id": "c4-sort-lipsuri", "poarta": False,
-       "sarcina": "Potrivește situația cu ce e rezonabil să faci.",
+       "sarcina": "Asociază fiecare situație cu tratamentul adecvat.",
        "elemente": [
            {"t": "3 rânduri din 30.000, la întâmplare", "cos": 0},
            {"t": "O coloană goală în proporție de 80%", "cos": 1},
            {"t": "Polonia nu raportează deloc migranții", "cos": 2},
            {"t": "Serie de timp, lipsește un an la mijloc", "cos": 3}],
        "cosuri": [
-           {"t": "Le scoți", "d": "sunt puține și nu par sistematice"},
-           {"t": "Scoți coloana", "d": "nu mai e informație, e zgomot"},
-           {"t": "Le păstrezi și scrii asta", "d": "lipsa însăși e o informație"},
-           {"t": "Completezi din vecini", "d": "interpolare sau ultima valoare"}],
-       "laBine": "Al treilea caz e cel important, și e la noi: Polonia, "
-                 "Danemarca, Grecia, Croația nu raportează. Lipsa are un tipar, "
-                 "deci o păstrezi ca lipsă și o scrii. Nu e zero polonezi în Germania.",
-       "explicatie": "Completarea cu media e cea mai populară și cea mai "
-                     "periculoasă metodă: reduce artificial variația și face "
-                     "rezultatele să pară mai sigure decât sunt. Dacă o "
-                     "folosești, o scrii în raport."}))
+           {"t": "Elimini rândurile", "d": "sunt puține și nu par sistematice"},
+           {"t": "Elimini coloana", "d": "conține prea puțină informație"},
+           {"t": "Le păstrezi și documentezi", "d": "lipsa însăși este informativă"},
+           {"t": "Completezi din valorile vecine", "d": "interpolare sau ultima valoare cunoscută"}],
+       "laBine": "Al treilea caz este cel relevant pentru datele noastre: "
+                 "Polonia, Danemarca, Grecia și Croația nu raportează. Lipsa are "
+                 "un tipar, deci se păstrează ca valoare lipsă și se documentează. "
+                 "Nu înseamnă zero străini în Polonia.",
+       "explicatie": "Completarea cu media este metoda cea mai răspândită și "
+                     "cea mai riscantă: reduce artificial variația și face "
+                     "rezultatele să pară mai precise decât sunt. Dacă este "
+                     "folosită, trebuie menționată în raport."}))
 
-sl("s14", "Lipsuri", "Lipsurile, în cod",
-   "<h2>Cum arată în pandas</h2>"
-   + ix("prezice", "Media și golurile", {
+sl("s14", "Valori lipsă și extreme", "Valorile lipsă, în cod",
+   "<h2>Valorile lipsă în pandas</h2>"
+   + ix("prezice", "Media și valorile lipsă", {
        "id": "c4-prezice-nan", "fisier": "04_curatarea.ipynb",
        "cod": "import pandas as pd\n\n"
               "s = pd.Series([10, None, 30])\n"
@@ -590,16 +596,16 @@ sl("s14", "Lipsuri", "Lipsurile, în cod",
        "intrebare": "Ce afișează?",
        "variante": ["13.33 0", "20.0 1", "NaN 1", "Eroare"],
        "corect": 1,
-       "indiciu": "pandas sare peste valorile lipsă când calculează media. Câte valori lipsesc?",
-       "laBine": "Media se face din ce există: (10 + 30) / 2.",
+       "indiciu": "pandas ignoră valorile lipsă la calculul mediei. Câte valori lipsesc?",
+       "laBine": "Media se calculează din valorile existente: (10 + 30) / 2.",
        "explicatie": "<code>None</code> devine <code>NaN</code>, iar <code>mean()</code> îl ignoră: "
-                     "media e din două valori, nu din trei. Comod, dar periculos: dacă lipsesc tocmai "
-                     "valorile mari sau mici, media se mută fără să-ți spună. De aceea numeri întâi "
-                     "lipsurile, cu <code>isna().sum()</code>."})
-   + ix("cod", "Tratează lipsurile", {
-       "id": "c4-cod-lipsuri", "indiciu": "Lipsurile se găsesc cu isna. Mediana e median. „Forward fill”, adică ia valoarea de dinainte, se scrie ffill.",
+                     "media este calculată din două valori, nu din trei. Comportamentul este comod, dar riscant: "
+                     "dacă lipsesc tocmai valorile mari sau cele mici, media se deplasează fără niciun avertisment. "
+                     "De aceea valorile lipsă se numără întâi, cu <code>isna().sum()</code>."})
+   + ix("cod", "Tratează valorile lipsă", {
+       "id": "c4-cod-lipsuri", "indiciu": "Valorile lipsă se identifică cu isna. Mediana este median. „Forward fill”, adică preluarea valorii anterioare, se scrie ffill.",
        "iesire": "5104 4292 0", "fisier": "lipsuri.py",
-       "sarcina": "Numără, apoi aplică trei strategii diferite, fiecare "
+       "sarcina": "Numără valorile lipsă, apoi aplică trei strategii, fiecare "
                   "potrivită altei situații.",
        "cod": "# cate lipsuri, pe coloana\nprint(d.{{1}}().sum())\n\n"
               "# cazul 1: putine si imprastiate, le scoatem\n"
@@ -614,61 +620,63 @@ sl("s14", "Lipsuri", "Lipsurile, în cod",
        "goluri": {
            "1": {"ok": ["isna", "isnull"], "ajutor": "metoda"},
            "2": {"ok": ["median"], "ajutor": "statistica"},
-           "3": {"ok": ["ffill", "fillna(method='ffill')"], "ajutor": "metoda"}},
-       "laBine": "Mediana, nu media: o singură valoare extremă mută media și "
-                 "n-atinge mediana.",
-       "laRau": "Prima și a treia sunt metode fără argumente. A doua e o "
-                "statistică, tot metodă.",
-       "explicatie": "<code>ffill</code> duce ultima valoare cunoscută mai "
-                     "departe. Are sens la serii de timp, unde anul lipsă "
-                     "seamănă cu cel dinainte, și n-are niciun sens la date "
-                     "fără ordine, unde „rândul dinainte” nu înseamnă nimic."}))
+           "3": {"ok": ["ffill"], "ajutor": "metoda"}},
+       "laBine": "Mediana, nu media: o singură valoare extremă deplasează "
+                 "media, dar nu afectează mediana.",
+       "laRau": "Primul și al treilea gol sunt metode fără argumente. Al doilea "
+                "este o statistică, calculată tot printr-o metodă.",
+       "explicatie": "<code>ffill</code> propagă ultima valoare cunoscută. "
+                     "Este justificat la serii de timp, unde anul lipsă "
+                     "seamănă cu cel anterior, și nejustificat la date fără "
+                     "ordine, unde „rândul anterior” nu are semnificație."}))
 
-sl("s15", "Lipsuri", "Valorile extreme",
-   "<h2>Unde tai?</h2>"
-   "<p>Regula obișnuită: tot ce trece de Q3 plus de 1,5 ori intervalul "
-   "intercuartilic. Mută pragul și vezi ce se întâmplă.</p>"
-   + ix("prag", "Pe datele voastre", {
+sl("s15", "Valori lipsă și extreme", "Valorile extreme",
+   "<h2>Unde fixăm pragul?</h2>"
+   "<p>Regula uzuală: se marchează tot ce depășește Q3 plus de 1,5 ori "
+   "intervalul intercuartilic. Mută pragul și observă efectul.</p>"
+   + ix("prag", "Pe datele SCI", {
        "id": "c4-prag",
        "sarcina": "Legătura socială a României cu fiecare dintre cele 177 de "
                   "țări din set. Mută pragul.",
        "valori": SCI,
        "intrebare": "Țările marcate sunt greșeli de date?",
-       "laBine": "Sunt Moldova, Austria, Germania, Ungaria: diaspora și "
-                 "vecinătatea. Nu sunt greșeli, sunt răspunsul. Dacă le tai ca "
-                 "„valori extreme”, arunci exact ce aveai de explicat.",
-       "laRau": "Uită-te ce țări sunt. Moldova, Austria, Germania, Ungaria: "
-                "diaspora și vecinătatea, adică fenomenul pe care îl studiem. "
-                "O valoare extremă statistic nu e automat o greșeală."})
-   + nota("Când o valoare extremă chiar e o greșeală",
-          "Când e imposibilă: o vârstă de 210 ani, un procent de 140, o dată "
-          "din 1900 într-un set despre 2020. Pentru astea nu-ți trebuie IQR, "
-          "îți trebuie o regulă logică scrisă de tine."),
+       "laBine": "În frunte: Republica Moldova, Austria, Germania, Ungaria, Irlanda, Italia, adică diaspora și "
+                 "vecinătatea. Nu sunt erori, ci chiar fenomenul studiat. "
+                 "Eliminate ca „valori extreme”, ar dispărea exact observațiile "
+                 "care trebuie explicate.",
+       "laRau": "În fruntea țărilor marcate sunt Republica Moldova, Austria, Germania și Ungaria: "
+                "diaspora și vecinătatea, adică fenomenul studiat. O valoare "
+                "extremă statistic nu este automat o eroare."})
+   + nota("Când o valoare extremă este o eroare",
+          "Atunci când este imposibilă: o vârstă de 210 ani, un procent de 140, "
+          "o dată din 1900 într-un set despre 2020. Pentru astfel de cazuri nu "
+          "este nevoie de IQR, ci de o regulă logică formulată explicit."),
    manual=
    "<h2>Valorile extreme</h2>"
-   "<p>Metoda clasică se numește regula intervalului intercuartilic: calculezi "
-   "primul și al treilea cuartil, iei diferența dintre ele, și marchezi tot ce "
-   "iese în afara lui Q3 plus de 1,5 ori diferența.</p>"
+   "<p>Metoda clasică este regula intervalului intercuartilic: se calculează "
+   "primul și al treilea cuartil, se ia diferența dintre ele și se marchează "
+   "tot ce depășește Q3 plus de 1,5 ori această diferență.</p>"
    "<pre><code>q1 = d[\"sci\"].quantile(0.25)\n"
    "q3 = d[\"sci\"].quantile(0.75)\niqr = q3 - q1\n"
    "prag = q3 + 1.5 * iqr\n"
    "extreme = d[d[\"sci\"] &gt; prag]</code></pre>"
-   "<p>Cifra 1,5 nu vine de nicăieri anume: e o convenție. Mută pragul mai jos "
-   "și ai mai multe „valori extreme”, mai sus și n-ai niciuna.</p>"
-   + ix("prag", "Pe datele voastre", {
+   "<p>Factorul 1,5 este o convenție, nu o constantă derivată teoretic. Cu un "
+   "prag mai jos apar mai multe „valori extreme”; cu unul suficient de sus, "
+   "niciuna.</p>"
+   + ix("prag", "Pe datele SCI", {
        "id": "c4-prag",
        "sarcina": "Legătura socială a României cu fiecare țară din set. Mută pragul.",
        "valori": SCI,
        "intrebare": "Țările marcate sunt greșeli de date?",
-       "laBine": "Sunt Moldova, Austria, Germania, Ungaria. Nu sunt greșeli, "
-                 "sunt răspunsul.",
-       "laRau": "Uită-te ce țări sunt: diaspora și vecinătatea, adică fenomenul "
-                "pe care îl studiem."})
-   + nota("Deosebirea care contează",
-          "O valoare <em>extremă</em> e departe de restul. O valoare "
-          "<em>greșită</em> e imposibilă. Prima se păstrează și se explică; a "
-          "doua se repară sau se scoate. Confuzia dintre ele e felul cel mai "
-          "elegant de a-ți șterge propria descoperire."))
+       "laBine": "În frunte: Republica Moldova, Austria, Germania, Ungaria. Nu sunt erori, "
+                 "ci chiar fenomenul studiat.",
+       "laRau": "Țările marcate reprezintă diaspora și vecinătatea, adică "
+                "fenomenul studiat."})
+   + nota("Distincția esențială",
+          "O valoare <em>extremă</em> este departe de restul distribuției. O "
+          "valoare <em>greșită</em> este imposibilă. Prima se păstrează și se "
+          "explică; a doua se corectează sau se elimină. Confuzia dintre ele "
+          "poate duce la eliminarea tocmai a rezultatului relevant."))
 
 
 # ===========================================================================
@@ -679,14 +687,14 @@ sl("s16", "Transformări", "Lung sau lat",
    "<h2>Aceleași date, două forme</h2>"
    + tabel(["Lat (wide)", "Lung (long)"], [
        ["o coloană pe an", "o coloană „an” și una „valoare”"],
-       ["bun de citit cu ochiul", "bun de calculat și de desenat"],
+       ["potrivit pentru citire directă", "potrivit pentru calcule și grafice"],
        ["<code>2020, 2021, 2022</code> ca nume de coloane", "anul devine o valoare"],
    ])
    + ix("pas", "Din lung în lat și înapoi", PAS_PIVOT)
    + ix("cod", "Treci din lat în lung", {
-       "id": "c4-cod-melt", "indiciu": "Din lat în lung: „topești” tabelul, melt. Înapoi, din lung în lat: îl „rotești”, pivot.",
+       "id": "c4-cod-melt", "indiciu": "Din lat în lung: tabelul se „topește”, cu melt. Înapoi, din lung în lat: tabelul se „rotește”, cu pivot.",
        "iesire": "   tara    an  valoare  pe_locuitor\n0    RO  2022   1044.0     0.000055\n1    IT  2022   5030.0     0.000085", "fisier": "forma.py",
-       "sarcina": "Transformă tabelul cu o coloană pe an într-unul cu o linie "
+       "sarcina": "Transformă tabelul cu o coloană pe an într-unul cu un rând "
                   "pe țară și an.",
        "cod": "# din lat in lung: anii devin valori intr-o coloana\n"
               "lung = d.{{1}}(id_vars=[\"tara\"], var_name=\"an\",\n"
@@ -699,13 +707,14 @@ sl("s16", "Transformări", "Lung sau lat",
        "goluri": {
            "1": {"ok": ["melt"], "ajutor": "metoda"},
            "2": {"ok": ["pivot"], "ajutor": "metoda"}},
-       "laBine": "Forma lungă e cea cu care lucrează aproape tot ce urmează: "
-                 "agregările, graficele, modelele.",
-       "laRau": "Amândouă sunt metode ale tabelului.",
-       "explicatie": "Un an nu e o proprietate a țării, e o observație despre "
-                     "ea. Când anul e nume de coloană, nu poți filtra după el, "
-                     "nu poți grupa după el, și orice an nou cere o coloană "
-                     "nouă. În forma lungă, anul e o valoare ca oricare alta."}))
+       "laBine": "Forma lungă este cea folosită în aproape toate etapele "
+                 "următoare: agregări, grafice, modele.",
+       "laRau": "Ambele sunt metode ale obiectului DataFrame.",
+       "explicatie": "Anul nu este o proprietate a țării, ci un atribut al "
+                     "observației. Când anul este nume de coloană, nu se poate "
+                     "filtra sau grupa după el, iar fiecare an nou cere o "
+                     "coloană nouă. În forma lungă, anul este o valoare ca "
+                     "oricare alta."}))
 
 DIRECTII = {
     "randuri": [
@@ -713,28 +722,30 @@ DIRECTII = {
         {"a": "RO", "b": "HU", "ab": 15740, "ba": 4879},
         {"a": "PL", "b": "DE", "ab": 741784, "ba": None},
     ],
-    "t0": "Migrația are sens: românii din Italia sunt un rând, italienii din "
-          "România sunt alt rând. SCI-ul are un singur rând pe pereche.",
-    "t1": "Cele două direcții stau acum pe același rând, ca la SCI. Germanii din "
-          "Polonia lipsesc: Polonia nu raportează.",
-    "t2": "Suma. La Polonia–Germania iese lipsă, nu 741.784: nu știm câți germani "
-          "sunt în Polonia, deci nu știm totalul.",
+    "t0": "Migrația are direcție: românii din Italia ocupă un rând, italienii "
+          "din România alt rând. SCI-ul are un singur rând pe pereche.",
+    "t1": "Cele două direcții se află acum pe același rând, ca în SCI. Germanii "
+          "din Polonia lipsesc: Polonia nu raportează.",
+    "t2": "Suma. Pentru perechea Polonia-Germania rezultatul este valoare lipsă, "
+          "nu 741.784: numărul germanilor din Polonia este necunoscut, deci și "
+          "totalul.",
 }
-DIRECTII["intai"] = {"q": "Polonezii din Germania: 741.784. Germanii din Polonia: Polonia nu raportează. Câți migranți sunt, în total, între cele două țări?", "variante": ["741.784", "741.784 plus o estimare", "Nu se poate spune"], "corect": 2, "dupa": "O direcție lipsește, deci lipsește și suma. Zero ar fi o afirmație falsă („nu e niciun german în Polonia”), iar o estimare ar fi o decizie de scris în jurnal, nu un calcul."}
+DIRECTII["intai"] = {"q": "Polonezii din Germania: 741.784. Germanii din Polonia: Polonia nu raportează. Câți migranți sunt, în total, între cele două țări?", "variante": ["741.784", "741.784 plus o estimare", "Nu se poate spune"], "corect": 2, "dupa": "O direcție lipsește, deci lipsește și suma. Zero ar fi o afirmație falsă („nu există niciun german în Polonia”), iar o estimare ar fi o decizie de documentat în jurnal, nu un calcul."}
 
 sl("s16b", "Transformări", "Două direcții, un rând",
    "<h2>Migrația în forma SCI-ului</h2>"
    + ix("directii", "Românii din Italia și italienii din România", DIRECTII)
-   + nota("Lipsă plus număr dă lipsă",
-          "E alegerea corectă: o pereche cu o direcție necunoscută nu are "
-          "un total cunoscut. Dacă puneai zero, Polonia–Germania ar fi părut "
-          "cunoscută, și greșită.", True),
+   + nota("Valoare lipsă plus număr dă valoare lipsă",
+          "Este comportamentul corect: o pereche cu o direcție necunoscută nu "
+          "are un total cunoscut. Cu zero în locul valorii lipsă, perechea "
+          "Polonia-Germania ar fi părut cunoscută, dar ar fi fost greșită.", True),
    manual=
    "<h2>Două direcții, un rând</h2>"
-   "<p>SCI-ul e simetric: o valoare pe pereche de țări. Migrația are sens: "
-   "un rând pentru românii din Italia, alt rând pentru italienii din "
-   "România. Ca să le punem în același tabel, aducem cele două direcții pe "
-   "același rând, cu două merge-uri: unul pentru fiecare direcție.</p>"
+   "<p>SCI-ul este simetric: o singură valoare pe pereche de țări. Migrația "
+   "are direcție: un rând pentru românii din Italia, alt rând pentru "
+   "italienii din România. Pentru a le reuni în același tabel, aducem cele "
+   "două direcții pe același rând prin două operații merge, câte una pentru "
+   "fiecare direcție.</p>"
    + ix("directii", "Românii din Italia și italienii din România", DIRECTII)
    + "<pre><code>din_1_in_2 = migratie.rename(columns={\"citizen\": \"tara_1\", "
      "\"geo\": \"tara_2\", \"persoane\": \"din_1_in_2\"})\n"
@@ -743,18 +754,19 @@ sl("s16b", "Transformări", "Două direcții, un rând",
      "tari = tari.merge(din_1_in_2, on=[\"tara_1\", \"tara_2\"], how=\"left\")\n"
      "tari = tari.merge(din_2_in_1, on=[\"tara_1\", \"tara_2\"], how=\"left\")\n"
      "tari[\"migranti\"] = tari[\"din_1_in_2\"] + tari[\"din_2_in_1\"]</code></pre>"
-   + "<p>Codul e în caietul cursului 4. Ce merită reținut: cu "
-     "<code>how=\"left\"</code> păstrăm toate perechile din SCI, iar cele fără "
-     "migrație rămân cu valoare lipsă. Suma a două coloane dă lipsă dacă "
-     "oricare lipsește, ceea ce e exact ce vrem.</p>")
+   + "<p>Codul complet se află în caietul cursului 4. De reținut: cu "
+     "<code>how=\"left\"</code> se păstrează toate perechile din SCI, iar cele "
+     "fără date de migrație rămân cu valoare lipsă. Suma a două coloane dă "
+     "valoare lipsă dacă oricare dintre ele lipsește, ceea ce este "
+     "comportamentul dorit.</p>")
 
 
 sl("s17", "Validare", "Înainte și după",
-   "<h2>Ultima etapă: dovedești că n-ai stricat nimic</h2>"
-   + ix("cod", "Verificările de la final", {
-       "id": "c4-cod-validare", "indiciu": "O cheie unică are zero duplicate. Un număr de oameni nu poate fi sub zero.",
+   "<h2>Ultima etapă: verificarea integrității datelor</h2>"
+   + ix("cod", "Verificările finale", {
+       "id": "c4-cod-validare", "indiciu": "O cheie unică are zero duplicate. Un număr de persoane nu poate fi negativ.",
        "iesire": "brut 5104, curat 4290, pierdute 814", "fisier": "validare.py",
-       "sarcina": "Patru verificări care se fac după curățare, de fiecare dată.",
+       "sarcina": "Patru verificări care se fac după fiecare curățare.",
        "cod": "# 1. cheia chiar e unica?\n"
               "assert d.duplicated(subset=[\"citizen\", \"geo\"]).sum() == {{1}}\n\n"
               "# 2. codurile tarilor n-au lipsuri (Namibia e inca acolo)\n"
@@ -767,101 +779,102 @@ sl("s17", "Validare", "Înainte și după",
        "goluri": {
            "1": {"ok": ["0"], "ajutor": "câte"},
            "2": {"ok": ["0"], "ajutor": "minimul"}},
-       "laBine": "<code>assert</code> oprește programul dacă nu e adevărat. E "
-                 "cel mai ieftin fel de a prinde o stricăciune la câteva "
-                 "secunde după ce ai făcut-o, nu peste trei săptămâni.",
-       "laRau": "O cheie unică înseamnă zero duplicate. Un număr de oameni nu "
-                "e negativ.",
-       "explicatie": "Ultima linie e cea pe care o citești cu atenție: dacă ai "
-                     "pierdut un sfert din rânduri și nu știi de ce, curățarea "
-                     "n-a fost o curățare, a fost o tăiere."}))
+       "laBine": "<code>assert</code> oprește programul dacă condiția este "
+                 "falsă. Este cel mai simplu mod de a detecta o eroare imediat "
+                 "după ce a fost introdusă, nu cu mult mai târziu.",
+       "laRau": "O cheie unică înseamnă zero duplicate. Un număr de persoane "
+                "nu poate fi negativ.",
+       "explicatie": "Ultima linie trebuie citită cu atenție: dacă s-a pierdut "
+                     "un sfert din rânduri fără o explicație, operația nu a "
+                     "fost o curățare, ci o eliminare nejustificată de date."}))
 
 sl("s18", "Validare", "Dicționarul de date",
-   "<h2>Ce scrii, ca să se poată reface</h2>"
-   "<p>Un fișier, lângă date, în care stă ce înseamnă fiecare coloană și ce "
-   "ați hotărât pe parcurs.</p>"
-   + tabel(["Ce scrii", "Exemplu"], [
+   "<h2>Documentația care permite reproducerea</h2>"
+   "<p>Un fișier, păstrat lângă date, care descrie semnificația fiecărei "
+   "coloane și deciziile luate pe parcurs.</p>"
+   + tabel(["Ce conține", "Exemplu"], [
        ["numele coloanei", "<code>scaled_sci</code>"],
-       ["ce înseamnă", "tăria legăturii dintre două locuri, scalată"],
-       ["unitatea sau scara", "index relativ, se compară între perechi"],
+       ["semnificația", "intensitatea legăturii dintre două locuri, scalată"],
+       ["unitatea sau scara", "indice relativ, comparabil între perechi"],
        ["sursa și versiunea", "Meta SCI, instantaneul din ianuarie 2026"],
-       ["ce ați schimbat", "„EL și UK aduse la GR și GB; NA păstrat ca Namibia”"],
+       ["modificările făcute", "„EL și UK aduse la GR și GB; NA păstrat ca Namibia”"],
    ])
-   + nota("Testul dicționarului bun",
-          "Un coleg care n-a fost la ședințele voastre trebuie să poată "
-          "reface curățarea citind doar fișierul ăsta și codul. Dacă îi "
-          "trebuie și o discuție cu voi, mai aveți de scris.", True))
+   + nota("Criteriul unui dicționar complet",
+          "Un coleg care nu a participat la discuțiile echipei trebuie să poată "
+          "reface curățarea doar pe baza acestui fișier și a codului. Dacă are "
+          "nevoie de explicații suplimentare, documentația este incompletă.", True))
 
 
 # ===========================================================================
 #  19-21. Proiectul
 # ===========================================================================
 
-sl("s19", "Proiectul tău", "Curăță-ți datele",
-   "<h2>Pe datele voastre, acum</h2>"
+sl("s19", "Proiectul tău", "Curățarea datelor proprii",
+   "<h2>Aplicare pe datele proiectului</h2>"
    + tabel(["Pasul", "Ce faci"], [
        ["1", "<code>curatare/curata.py</code>, care citește din <code>date/brute/</code>"],
        ["2", "profilare: shape, info, describe, isna"],
-       ["3", "duplicate, standardizare, lipsuri, valori extreme"],
-       ["4", "scrie rezultatul în <code>date/curat/</code>, nu peste brut"],
+       ["3", "duplicate, standardizare, valori lipsă, valori extreme"],
+       ["4", "scrii rezultatul în <code>date/curat/</code>, nu peste datele brute"],
        ["5", "cele patru verificări finale, cu <code>assert</code>"],
    ])
    + ix("dovada", "Dovada curățării", {
        "id": "c4-dovada-curatare",
-       "sarcina": "Rulează scriptul și lipește ce scrie.",
+       "sarcina": "Rulează comenzile și lipește rezultatul afișat.",
        "pasi": [
-           {"t": "Știi cu ce ai pornit și cu ce ai rămas",
+           {"t": "Numărul de rânduri, înainte și după curățare",
             "cmd": "python curatare/curata.py",
             "gol": "lipește linia cu brut, curat, pierdute",
             "cauta": r"\d+[\s\S]*\d+",
-            "daca_nu": "Caut două numere: câte rânduri aveai și câte ai rămas. "
-                       "Dacă scriptul nu le tipărește, adaugă linia de la slide-ul 17."},
-           {"t": "Fișierul curat există și e separat de cel brut",
+            "daca_nu": "Sunt necesare două numere: rândurile inițiale și rândurile rămase. "
+                       "Dacă scriptul nu le afișează, adaugă linia de la slide-ul 17."},
+           {"t": "Fișierul curat există și este separat de cel brut",
             "cmd": "python -c \"import pandas as pd; d=pd.read_csv('date/curat/date.csv'); print(d.shape)\"",
-            "gol": "lipește forma",
+            "gol": "lipește dimensiunile (shape)",
             "cauta": r"\(\s*\d+\s*,\s*\d+\s*\)",
-            "daca_nu": "Caut ceva de forma (rânduri, coloane). Dacă dă eroare "
-                       "de fișier negăsit, scriptul n-a scris în date/curat/."},
-           {"t": "Curățarea e în depozit",
+            "daca_nu": "Se așteaptă un rezultat de forma (rânduri, coloane). O eroare "
+                       "de fișier negăsit arată că scriptul nu a scris în date/curat/."},
+           {"t": "Curățarea este în depozit",
             "cmd": "git log --oneline -1",
             "gol": "lipește linia",
             "cauta": r"[0-9a-f]{7}",
-            "daca_nu": "Caut un hash de commit."}],
-       "explicatie": "Datele brute rămân neatinse, cele curate stau separat, "
-                     "iar drumul dintre ele e un script care se poate rula din "
-                     "nou. Asta e tot ce înseamnă o curățare reproductibilă."}))
+            "daca_nu": "Se așteaptă un hash de commit."}],
+       "explicatie": "Datele brute rămân nemodificate, cele curate sunt păstrate "
+                     "separat, iar trecerea de la unele la altele este un script "
+                     "care poate fi rulat din nou. Acestea sunt condițiile unei "
+                     "curățări reproductibile."}))
 
-sl("s20", "Proiectul tău", "Scrieți dicționarul",
-   "<h2>Ce ați hotărât</h2>"
-   "<p>Două-trei rânduri despre cea mai importantă decizie de curățare pe care "
-   "ați luat-o și de ce.</p>"
-   + ix("asteptari", "Decizia voastră de curățare", {
+sl("s20", "Proiectul tău", "Documentarea deciziilor",
+   "<h2>Deciziile de curățare</h2>"
+   "<p>Două sau trei rânduri despre cea mai importantă decizie de curățare "
+   "luată în proiect și despre motivul ei.</p>"
+   + ix("asteptari", "Decizia de curățare", {
        "id": "c4-decizie", "tip": "decizie", "minim": 60,
-       "sarcina": "Scrie o decizie de curățare pe care ați luat-o la datele "
-                  "voastre, și motivul. Nu „am curățat datele”: ce anume, și de ce așa.",
-       "exemplu": "De exemplu: am lăsat migrația lipsă pentru perechile cu "
-                  "Polonia, în loc să punem zero, pentru că Polonia nu raportează; "
-                  "le scoatem doar din model, nu din tabel.",
-       "multumesc": "O citesc înainte de cursul următor."}))
+       "sarcina": "Descrie o decizie de curățare luată pentru datele proiectului "
+                  "și motivul ei. Nu „am curățat datele”, ci ce anume s-a modificat și de ce.",
+       "exemplu": "De exemplu: am păstrat migrația ca valoare lipsă pentru perechile "
+                  "cu Polonia, în loc să punem zero, pentru că Polonia nu raportează; "
+                  "le excludem doar din model, nu din tabel.",
+       "multumesc": "Răspunsul va fi citit înainte de cursul următor."}))
 
-sl("s21", "Mai departe", "Până data viitoare",
+sl("s21", "Mai departe", "Pentru cursul următor",
    "<h2>Cursul 5: agregare și baze de date</h2>"
    "<ul>"
    "<li>îmbinarea surselor pe o cheie comună: SCI, migrație, distanță</li>"
    "<li>la date diadice, două îmbinări: una pentru fiecare capăt</li>"
-   "<li>unitatea de analiză: la ce nivel răspunzi la întrebare</li>"
-   "<li>de ce un tabel de 31.684 de rânduri vrea o bază de date</li>"
+   "<li>unitatea de analiză: nivelul la care se răspunde la întrebare</li>"
+   "<li>de ce un tabel de 31.684 de rânduri justifică o bază de date</li>"
    "</ul>"
-   + nota("De făcut până atunci",
-          "Scriptul de curățare, rulat și urcat, cu datele curate în "
-          "<code>date/curat/</code>. Plus dicționarul de date, fie și scurt, "
-          "în depozit.", True)
+   + nota("De pregătit pentru cursul următor",
+          "Scriptul de curățare, rulat și trimis în depozit, cu datele curate în "
+          "<code>date/curat/</code>. De asemenea, dicționarul de date, chiar și "
+          "într-o formă scurtă, în depozit.", True)
    + surse("Documentația curățării", [
        ("pandas: date lipsă", "https://pandas.pydata.org/docs/user_guide/missing_data.html", "NaN, <code>isna</code>, <code>dropna</code>, <code>fillna</code> și ce face fiecare"),
-       ("pandas: lung și lat", "https://pandas.pydata.org/docs/user_guide/reshaping.html", "<code>pivot</code>, <code>melt</code>, cu desene"),
+       ("pandas: lung și lat", "https://pandas.pydata.org/docs/user_guide/reshaping.html", "<code>pivot</code>, <code>melt</code>, cu diagrame"),
        ("pandas: duplicate", "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html", "<code>duplicated</code> și <code>subset</code>"),
-       ("pandas: read_csv", "https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html", "<code>keep_default_na</code> și <code>na_values</code>, capcana Namibiei"),
-       ("Eurostat: migr_pop1ctz", "https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table", "tabelul în browser, cu notele și semnele (flags) fiecărei valori"),
+       ("pandas: read_csv", "https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html", "<code>keep_default_na</code> și <code>na_values</code>, relevante pentru cazul Namibiei"),
+       ("Eurostat: migr_pop1ctz", "https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table", "tabelul online, cu notele și marcajele (flags) fiecărei valori"),
    ]))
 
 

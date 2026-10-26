@@ -21,7 +21,7 @@
    Nu are niciun buton care schimbă ora. Panoul doar se uită.
    =========================================================================== */
 
-import { STARI, ORDINEA } from "./ora.js?v=69";
+import { STARI, ORDINEA } from "./ora.js?v=73";
 
 /* --- stilul --------------------------------------------------------------- */
 
@@ -30,44 +30,42 @@ const CSS = `
 @media (max-width:820px){ .pv{grid-template-columns:minmax(0,1fr);gap:18px} }
 .pv__st{min-width:0}
 .pv__dr{min-width:0}
-.pv__n{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--text-3);margin:0 0 6px}
-.pv__q{font-family:var(--sans);font-size:16.5px;font-weight:600;letter-spacing:-.015em;
+.pv__n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:0 0 6px}
+.pv__q{font-family:var(--sans);font-size:var(--t4);font-weight:600;letter-spacing:-.015em;
   color:var(--text);margin:0 0 14px;line-height:1.35}
 
 .pv-inel{display:block;margin:0 auto 12px}
-.pv-inel .num{font-family:var(--sans);font-size:30px;font-weight:600;
+.pv-inel .num{font-family:var(--sans);font-size:var(--t7);font-weight:600;
   letter-spacing:-.02em}
-.pv-inel .sub{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;
-  fill:var(--text-3);text-transform:uppercase}
-.pv-gol{font-family:var(--sans);font-size:13px;color:var(--text-3);
+.pv-inel .sub{font-family:var(--sans);font-size:var(--t1);
+  fill:var(--text-3);}
+.pv-gol{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);
   text-align:center;padding:26px 10px;line-height:1.5}
 
-.pv-nr{list-style:none;padding:0;margin:0;max-width:none;font-family:var(--sans);font-size:13px}
+.pv-nr{list-style:none;padding:0;margin:0;max-width:none;font-family:var(--sans);font-size:var(--t2)}
 .pv-nr li{display:flex;align-items:center;gap:9px;padding:5px 2px;margin:0;
   border-bottom:1px solid var(--linie)}
 .pv-nr li::before{content:none}
 .pv-nr li:last-child{border-bottom:0}
 .pv-nr span{color:var(--text-2)}
-.pv-nr b{margin-left:auto;font-family:var(--mono);font-size:13px;font-weight:500;
+.pv-nr b{margin-left:auto;font-family:var(--sans);font-size:var(--t2);font-weight:500;
   color:var(--text);font-variant-numeric:tabular-nums}
 
 .pv-g{display:inline-flex;align-items:center;justify-content:center;
-  width:17px;height:17px;border-radius:50%;font-size:10px;line-height:1;flex:none}
+  width:17px;height:17px;border-radius:50%;font-size:var(--t1);line-height:1;flex:none}
 .pv-g--ok{background:var(--ok);color:var(--panza)}
 .pv-g--nu{background:var(--nu);color:var(--panza)}
 .pv-g--gol{border:1.5px solid var(--linie-2);color:var(--text-3)}
 .pv-g--nim{border:1.5px dotted var(--linie-2);color:transparent}
 
-.pv-tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13px}
-.pv-tb th{text-align:left;font-family:var(--mono);font-size:9.5px;font-weight:500;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--text-3);
+.pv-tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:var(--t2)}
+.pv-tb th{text-align:left;font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);
   padding:0 10px 7px 0;border-bottom:1px solid var(--linie)}
 .pv-tb td{padding:7px 10px 7px 0;border-bottom:1px solid var(--linie);
   color:var(--text);vertical-align:middle}
 .pv-tb tr:last-child td{border-bottom:0}
 .pv-tb tr.plecat td{opacity:.52}
-.pv-tb__ales{font-family:var(--mono);font-size:11.5px;color:var(--text-2);
+.pv-tb__ales{font-family:var(--sans);font-size:var(--t1);color:var(--text-2);
   max-width:30ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pv-tb__ales em{font-style:italic;color:var(--text-3)}
 .pv-tb__q{color:var(--text-3)}
@@ -75,30 +73,30 @@ const CSS = `
 .pv-bm{display:inline-block;width:50px;height:4px;border-radius:99px;
   background:var(--panza-2);overflow:hidden}
 .pv-bm i{display:block;height:100%;background:var(--accent);border-radius:99px}
-.pv-rap{font-family:var(--mono);font-size:10.5px;color:var(--text-3);
+.pv-rap{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
   font-variant-numeric:tabular-nums}
-.pv-sort{font-family:var(--mono);font-size:10.5px;color:var(--text-3);margin:10px 0 0}
+.pv-sort{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:10px 0 0}
 .pv-sort button{font:inherit;color:var(--text-3);background:none;border:0;
   cursor:pointer;padding:0 2px;text-decoration:underline dotted}
 .pv-sort button:hover,.pv-sort button.on{color:var(--text)}
 .pv-dist{display:flex;flex-direction:column;gap:8px;margin:0 0 20px}
 .pv-dist__r{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) 34px;gap:12px;align-items:center}
-.pv-dist__t{font-family:var(--sans);font-size:15px;color:var(--text)}
+.pv-dist__t{font-family:var(--sans);font-size:var(--t3);color:var(--text)}
 .pv-dist__b{height:14px;border-radius:99px;background:var(--panza-2);overflow:hidden}
 .pv-dist__b i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
 .pv-dist__r:nth-child(2) .pv-dist__b i{background:var(--ambra)}
 .pv-dist__r:nth-child(3) .pv-dist__b i{background:var(--roza)}
 .pv-dist__r:nth-child(4) .pv-dist__b i{background:var(--salvie)}
-.pv-dist__r b{font-family:var(--mono);font-size:16px;font-weight:500;text-align:right}
+.pv-dist__r b{font-family:var(--sans);font-size:var(--t4);font-weight:500;text-align:right}
 .tabla{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;max-height:46vh;overflow:auto;padding:2px}
-.tabla__b{font-family:var(--sans);font-size:16px;line-height:1.45;color:var(--text);padding:14px 16px;border-radius:10px;
+.tabla__b{font-family:var(--sans);font-size:var(--t4);line-height:1.45;color:var(--text);padding:14px 16px;border-radius:10px;
   border:1px solid var(--linie);background:var(--panza);box-shadow:var(--umbra)}
 .tabla__b--0{border-top:4px solid var(--accent)}
 .tabla__b--1{border-top:4px solid var(--ambra)}
 .tabla__b--2{border-top:4px solid var(--roza)}
 .tabla__b--3{border-top:4px solid var(--salvie)}
-.pv-mare{font-family:var(--sans);font-size:22px;color:var(--text-2);margin:6px 0 0}
-.pv-mare b{font-size:40px;color:var(--text);font-weight:600}
+.pv-mare{font-family:var(--sans);font-size:var(--t5);color:var(--text-2);margin:6px 0 0}
+.pv-mare b{font-size:var(--t8);color:var(--text);font-weight:600}
 .pv--anonim .pv-inel{margin-left:0}
 `;
 
@@ -131,7 +129,7 @@ export function ceasText(secunde){
 export function ceasHTML(secunde, prag = PRAG){
   const tarziu = secunde >= prag;
   return `<span class="ceas${tarziu ? " ceas--tarziu" : ""}"
-    title="de când e slide-ul pe ecran">${ceasText(secunde)}</span>`;
+    title="timpul de când slide-ul este pe ecran">${ceasText(secunde)}</span>`;
 }
 
 /* --- cifrele --------------------------------------------------------------- */
@@ -218,8 +216,8 @@ const RANG = { trimis_gol:0, trimis_gresit:1, nefacut:2, trecut:3 };
 
 function tabel(randuri, intrebari, sortare, totalSarcini){
   if (!randuri.length) return `
-    <div class="pv-gol">Încă n-a intrat nimeni.<br>
-      Arată codul pe proiector; cum intră primul, apare aici.</div>`;
+    <div class="pv-gol">Niciun student conectat încă.<br>
+      Afișează codul pe proiector; studenții apar aici pe măsură ce intră.</div>`;
 
   const r = [...randuri];
   if (sortare === "slide")    r.sort((a,b) => RANG[a.stare] - RANG[b.stare] ||
@@ -249,7 +247,7 @@ function tabel(randuri, intrebari, sortare, totalSarcini){
       </tr>`;
     }).join("")}</tbody></table>
     <p class="pv-sort">sortează după:
-      ${[["slide","slide"],["nume","nume"],["tot","cât a făcut"]].map(([k,t]) =>
+      ${[["slide","slide"],["nume","nume"],["tot","progres"]].map(([k,t]) =>
         `<button type="button" data-sort="${k}" class="${sortare===k?"on":""}">${t}</button>`
       ).join(" · ")}</p>`;
 }
@@ -287,7 +285,7 @@ export function randeaza({ slide, sarcini = [], randuri = [], sortare = "slide",
         <p class="pv__q">${slide?.titlu || ""}</p>
         ${texte.length ? `<div class="tabla">${texte.map((t, i) =>
           `<div class="tabla__b tabla__b--${i % 4}">${t}</div>`).join("")}</div>`
-          : `<p class="pv-mare">Încă n-a scris nimeni. Bilețelele apar aici pe măsură ce trimit.</p>`}
+          : `<p class="pv-mare">Niciun text trimis încă. Răspunsurile apar aici pe măsură ce sunt trimise.</p>`}
       </div></div>`;
   }
 
@@ -321,8 +319,8 @@ export function randeaza({ slide, sarcini = [], randuri = [], sortare = "slide",
       <p class="pv__q">${slide?.titlu || "—"}</p>
       ${sarcini.length
         ? inel(cate, trimis, total)
-        : `<div class="pv-gol">Slide-ul ăsta n-are nimic de trimis.<br>
-             Doar îl arăți și vorbești.</div>`}
+        : `<div class="pv-gol">Acest slide nu conține sarcini.<br>
+             Este doar pentru prezentare.</div>`}
     </div>
     <div class="pv__dr">
       ${intrebari.length === 1

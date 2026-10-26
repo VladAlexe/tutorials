@@ -47,21 +47,25 @@ def repo_fisier(cale):
 
 # ---------------------------------------------------------------- bucăți ---
 
-FEL = {"agenda": "Cuprins", "etape": "Explorator", "terminal": "Terminal", "tipuri": "Exercițiu",
-       "json": "Explorator", "arbore": "Explorator", "autoevaluare": "Evaluare",
-       "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale",
-       "cod": "Scrii cod", "prezice": "Ce afișează?", "pas": "Rulează pas cu pas", "ordine": "Exercițiu", "sortare": "Exercițiu",
-       "dovada": "Verificare la tine", "asteptari": "Scrii tu",
-       "url": "Disecție", "metode": "Potrivire", "cronologie": "Cronologie",
-       "flux": "Vezi cum circulă", "raspuns": "Trimite și vezi",
-       "zone": "Mută tu", "ramuri": "Desenează tu", "conflict": "Rezolvă tu",
-       "cote": "Cât din întreg", "prag": "Unde tai",
-       "imbinare": "Încearcă felurile", "tabel": "Tabel",
-       "coloane": "Declară tipul", "desfa": "Vezi cum se desface",
-       "drum": "Schema fluxului", "semestru": "Cronologia",
-       "anatomie": "Pe bucăți", "indice": "Ce măsoară", "sci": "Pas cu pas", "consola": "Întreabă Python", "acces": "Construiește drumul", "geom": "Explorator", "masca": "Pas cu pas", "folder": "Explorator",
-       "harta": "Harta, date reale", "cub": "Vezi cum se desface", "restaurant": "Vezi cum circulă", "criterii": "Explorator", "benzi": "Cronologie", "mesaj": "Pe bucăți", "verbe": "Vezi efectul", "jupyter": "Întreabă Python", "pagini": "Comută", "directii": "Vezi cum se desface", "histo": "Comută", "nor": "Explorează", "axa": "Comută", "modele": "Pas cu pas", "gitdag": "Pas cu pas"}
-fel_et = lambda f: FEL.get(f, "Interactiv")
+FEL = {
+    # puține feluri, cu nume de manual: eticheta spune ce fel de lucru urmează
+    "agenda": "Cuprins", "drum": "Diagramă", "flux": "Diagramă", "restaurant": "Diagramă",
+    "cronologie": "Cronologie", "benzi": "Cronologie", "semestru": "Cronologie",
+    "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale", "doiNori": "Date reale",
+    "harta": "Hartă, date reale",
+    "tabel": "Tabel", "anatomie": "Structură", "mesaj": "Structură",
+    "pas": "Pas cu pas", "sci": "Pas cu pas", "desfa": "Pas cu pas", "cub": "Pas cu pas",
+    "directii": "Pas cu pas", "masca": "Pas cu pas", "modele": "Pas cu pas", "gitdag": "Pas cu pas",
+    "raspuns": "Simulare", "imbinare": "Simulare", "verbe": "Simulare",
+    "pagini": "Comparație", "histo": "Comparație", "axa": "Comparație",
+    "terminal": "Terminal", "consola": "Consolă Python", "jupyter": "Consolă Python",
+    "cod": "Exercițiu de cod", "prezice": "Predicție", "autoevaluare": "Autoevaluare",
+    "dovada": "Verificare locală",
+    "tipuri": "Exercițiu", "ordine": "Exercițiu", "sortare": "Exercițiu", "metode": "Exercițiu",
+    "zone": "Exercițiu", "ramuri": "Exercițiu", "conflict": "Exercițiu", "prag": "Exercițiu",
+    "coloane": "Exercițiu", "asteptari": "Exercițiu", "acces": "Exercițiu", "cale": "Exercițiu",
+}
+fel_et = lambda f: FEL.get(f, "Explorare")
 
 
 def _text(h):
@@ -176,7 +180,7 @@ class Lectie:
 
     # --------------------------------------------------------------------
     def scrie_lectie(self):
-        b = [CAP.format(titlu=f"Cursul {self.nr} — Fluxuri de lucru pentru știința datelor",
+        b = [CAP.format(titlu=f"Cursul {self.nr} · Fluxuri de lucru pentru știința datelor",
                         desc=self.desc, v=V, stil="slide", corp=' class="corp--app"')]
         b.append(f'<div id="antet" data-aici="Cursul {self.nr} · {self.titlu}" '
                  f'data-crom="1"></div>\n')
@@ -209,9 +213,9 @@ class Lectie:
                     f'<span>{s["t"]}</span></a>' for s in lst)
             for g, lst in grupuri)
 
-        b = [CAP.format(titlu=f"Cursul {self.nr}, manual — Fluxuri de lucru pentru știința datelor",
-                        desc=f"Suportul de curs pentru cursul {self.nr}, explicat pe larg, "
-                             f"cu aceleași exerciții ca la clasă.",
+        b = [CAP.format(titlu=f"Cursul {self.nr}, manual · Fluxuri de lucru pentru știința datelor",
+                        desc=f"Manualul cursului {self.nr}: conținutul lecției, explicat pe larg, "
+                             f"cu aceleași exerciții ca la curs.",
                         v=V, stil="tutorial", corp="")]
         b.append(f'<div id="antet" data-aici="Cursul {self.nr} · Manual"></div>\n')
         b.append('<main><div class="pagina"><div class="tut">\n')
@@ -230,10 +234,9 @@ class Lectie:
         b.append(f'''<header class="tut__intro">
   <p class="supratitlu">Cursul {self.nr} · Manual</p>
   <h1>{self.titlu}</h1>
-  <p class="deck">Același drum ca la curs, explicat pe larg și cu aceleași
-  exerciții. Dacă le-ai făcut la clasă, apar deja rezolvate; dacă vrei să le
-  reiei, îți poți reseta progresul din
-  <a class="leg" href="../../cont/">contul tău</a>.</p>
+  <p class="deck">Conținutul lecției, explicat pe larg, cu aceleași exerciții.
+  Exercițiile pornesc de fiecare dată de la zero; răspunsurile date la curs și
+  acasă sunt înregistrate în <a class="leg" href="../../cont/">contul tău</a>.</p>
 </header>\n''')
         for i, s in enumerate(self.S, 1):
             # un slide care doar împarte în două ce are deja manualul nu mai apare aici

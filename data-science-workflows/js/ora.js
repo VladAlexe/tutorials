@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=69";
-import { RADACINA } from "./curs.js?v=69";
+import { sb } from "./auth.js?v=73";
+import { RADACINA } from "./curs.js?v=73";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -170,7 +170,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=69`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=73`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;
@@ -191,8 +191,8 @@ export function sarciniDe(h, nr) {
 export const STARI = {
   trecut:        { glif:"✓", nume:"corect",     clasa:"g--ok"  },
   trimis_gresit: { glif:"✕", nume:"greșit",     clasa:"g--nu"  },
-  trimis_gol:    { glif:"◉", nume:"trimis gol", clasa:"g--gol" },
-  nefacut:       { glif:"○", nume:"n-a trimis", clasa:"g--nim" }
+  trimis_gol:    { glif:"◉", nume:"trimis fără răspuns", clasa:"g--gol" },
+  nefacut:       { glif:"○", nume:"netrimis", clasa:"g--nim" }
 };
 
 export const ORDINEA = ["trecut", "trimis_gresit", "trimis_gol", "nefacut"];

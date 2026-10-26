@@ -24,7 +24,7 @@ from comun import Lectie, ix, verif, tabel, nota, surse, REPO, REPO_ORG, repo_fi
 
 L = Lectie(2, "c2-colectarea-prin-api", "Colectarea datelor prin API",
            "Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns "
-           "și cum aduci primele date reale în proiect.")
+           "și cum se aduc primele date reale în proiect.")
 sl = L.sl
 
 CAIET = "02_colectarea_datelor_prin_api.ipynb"
@@ -47,15 +47,15 @@ AGENDA = [
 CAIET_NOTA = (f'<a class="leg" href="{repo_fisier("curs/" + CAIET)}" target="_blank" rel="noopener">'
               f"<code>{CAIET}</code></a>, salvat în <code>dsw/curs/</code>, lângă caietul 01. "
               "Fișierele colectate ajung în <code>curs/data/c2</code>.")
-AGENDA_IX = {"static": True, "titlu": "Ora de azi",
+AGENDA_IX = {"static": True, "titlu": "Planul lecției",
              "etape": [{"nume": n, "unde": "azi", "text": d} for n, d in AGENDA]}
 
-sl("s1", "Cursul", "Despre ce e ora de azi",
+sl("s1", "Cursul", "Planul lecției",
    "<h2>Colectarea datelor prin API</h2>"
    "<p class=\"cheie\">Datele nu mai vin dintr-un fișier primit, ci dintr-o cerere "
    "scrisă, care se poate rula din nou.</p>"
-   + ix("agenda", "Ora de azi", AGENDA_IX)
-   + nota("Caietul de azi", CAIET_NOTA, True),
+   + ix("agenda", "Planul lecției", AGENDA_IX)
+   + nota("Caietul lecției", CAIET_NOTA, True),
    manual=
    "<h2>Colectarea datelor prin API</h2>"
    "<p>La cursul 1, datele au venit dintr-un fișier descărcat dinainte. Pentru o analiză "
@@ -68,31 +68,31 @@ sl("s1", "Cursul", "Despre ce e ora de azi",
    "același rezultat sau cu o diferență care se poate explica.</p>"
    "<p>Capitolul urmează ordinea de la curs. Codul complet e în caietul cursului; aici "
    "stau conceptele, motivele și capcanele.</p>"
-   + ix("agenda", "Ora de azi", AGENDA_IX)
-   + nota("Caietul de azi", CAIET_NOTA, True))
+   + ix("agenda", "Planul lecției", AGENDA_IX)
+   + nota("Caietul lecției", CAIET_NOTA, True))
 
-sl("s2", "Cursul", "Unde ai rămas",
-   "<h2>Unde ai rămas</h2>"
+sl("s2", "Cursul", "Unde am rămas",
+   "<h2>Unde am rămas</h2>"
    "<ul>"
    "<li><strong>Folderul <code>dsw</code></strong>, cu <code>.venv</code> și pachetele din "
    "<code>requirements.txt</code>, și caietul 01 rulat de sus până jos.</li>"
    "<li><strong>Echipa de cinci</strong>, formată.</li>"
-   "<li><strong>Contul GitHub</strong>, cu care intri pe site.</li>"
+   "<li><strong>Contul GitHub</strong>, folosit pentru autentificarea pe site.</li>"
    "</ul>"
-   "<p>Caietul de azi se descarcă singur, în <code>dsw/curs/</code>. <code>requests</code> e deja "
+   "<p>Caietul lecției se descarcă separat, în <code>dsw/curs/</code>. <code>requests</code> e deja "
    "în mediu, din <code>requirements.txt</code>.</p>",
    manual=
-   "<h2>Unde ai rămas</h2>"
+   "<h2>Unde am rămas</h2>"
    "<p>Lecția pornește de la ce s-a construit la cursul 1: folderul cursului, <code>dsw</code>, "
    "cu mediul virtual <code>.venv</code> și pachetele din <code>requirements.txt</code>, și caietul 01 "
    "rulat de sus până jos. Dacă lipsește ceva, "
    "pașii sunt în <a class=\"leg\" href=\"../../c1-introducere-si-mediu/tutorial/\">manualul "
-   "cursului 1</a>. Echipa de cinci e formată; la finalul orei își aduce depozitul, iar direcția "
+   "cursului 1</a>. Echipa de cinci e formată; la finalul orei își clonează depozitul, iar direcția "
    "proiectului se alege la cursul 3.</p>"
-   "<p>Caietul de azi se descarcă singur, nu odată cu toată arhiva: pe "
+   "<p>Caietul lecției se descarcă separat, nu odată cu toată arhiva: pe "
    f'<a class="leg" href="{repo_fisier("curs/" + CAIET)}" target="_blank" rel="noopener">pagina lui de pe GitHub</a> '
-   "apeși <em>Download raw file</em> și îl salvezi în <code>dsw/curs/</code>, lângă caietul 01. Arhiva "
-   "întreagă, despachetată din nou peste <code>dsw</code>, ți-ar putea înlocui caietele completate.</p>"
+   "se alege <em>Download raw file</em>, iar fișierul se salvează în <code>dsw/curs/</code>, lângă caietul 01. "
+   "Arhiva întreagă, despachetată din nou peste <code>dsw</code>, ar putea suprascrie caietele deja completate.</p>"
    "<p>Biblioteca de azi, <code>requests</code>, e deja în mediu: e în <code>requirements.txt</code>. "
    "Dacă lipsește, cu mediul activ:</p>"
    "<pre><code>pip install -r requirements.txt</code></pre>")
@@ -103,7 +103,7 @@ sl("s2", "Cursul", "Unde ai rămas",
 # ===========================================================================
 
 REST_COL = [
-    {"sus": "Masa", "dsus": "clientul comandă", "jos": "codul tău", "djos": "clientul", "c": "accent"},
+    {"sus": "Masa", "dsus": "clientul comandă", "jos": "scriptul", "djos": "clientul", "c": "accent"},
     {"sus": "Meniul", "dsus": "ce se poate cere", "jos": "documentația", "djos": "contractul API-ului", "c": "ceas"},
     {"sus": "Ospătarul", "dsus": "duce comanda", "jos": "API-ul", "djos": "singura intrare", "c": "ambra"},
     {"sus": "Bucătăria", "dsus": "pregătește felul", "jos": "serverul", "djos": "aplicația furnizorului", "c": "roza"},
@@ -114,7 +114,7 @@ REST_SC = [
     {"t": "Drumul unei comenzi", "pasi": [
         {"col": [0, 1], "la": 0, "bon": "o ciorbă, fără ardei", "cer": _CER,
          "sus": "Clientul citește meniul și scrie pe bon exact ce vrea, în forma din meniu.",
-         "jos": "Codul tău urmează documentația: adresa resursei și parametrii acceptați."},
+         "jos": "Scriptul urmează documentația: adresa resursei și parametrii acceptați."},
         {"col": [2], "la": 2, "bon": "o ciorbă, fără ardei", "cer": _CER,
          "sus": "Ospătarul duce bonul. Clientul nu intră în bucătărie.",
          "jos": "Cererea ajunge la API, singura intrare prin care se ajunge la datele furnizorului."},
@@ -136,8 +136,8 @@ REST_SC = [
         {"col": [0, 1, 2, 3, 4], "schimb": [3, 4], "la": 0, "intors": True, "bon": "ciorba, fără ardei",
          "cer": "200 OK · același JSON",
          "sus": "Aceeași comandă aduce același fel.",
-         "jos": "Aceeași cerere aduce același răspuns; scriptul tău nu se schimbă."}],
-     "concluzie": "Codul tău depinde de contract, nu de felul în care e construit serverul. "
+         "jos": "Aceeași cerere aduce același răspuns; scriptul rămâne neschimbat."}],
+     "concluzie": "Scriptul depinde de contract, nu de felul în care e construit serverul. "
                   "Asta e abstractizarea: documentația separă cererea de implementare."},
     {"t": "Meniul are o ediție", "pasi": [
         {"col": [1], "la": 0, "bon": "comandă după meniul vechi", "cer": "GET /v2/country/RO/…",
@@ -155,8 +155,8 @@ REST_SC = [
          "sus": "Fiecare bon e complet: masa, felul, cantitatea.",
          "jos": "Fiecare cerere conține adresa și toți parametrii, inclusiv pagina cerută."},
         {"col": [2], "la": 2, "bon": "masa 4: o ciorbă, fără ardei", "cer": "GET …SP.POP.TOTL?page=3&per_page=50",
-         "sus": "Ospătarul nu își amintește comenzile de adineauri.",
-         "jos": "Serverul nu păstrează nimic de la o cerere la alta: nu știe ce ai cerut înainte."},
+         "sus": "Ospătarul nu reține comenzile anterioare.",
+         "jos": "Serverul nu păstrează nicio informație de la o cerere la alta."},
         {"col": [2, 3], "la": 3, "bon": "masa 4: o ciorbă, fără ardei", "cer": "GET …SP.POP.TOTL?page=3&per_page=50",
          "sus": "Orice ospătar poate prelua bonul, pentru că pe bon scrie tot.",
          "jos": "Orice server din spatele API-ului poate răspunde, pentru că cererea are tot ce trebuie."},
@@ -172,8 +172,8 @@ V_CONTRACT = verif(
     "Banca Mondială își mută datele pe alt server și schimbă baza de date, dar păstrează "
     "adresele și parametrii din documentație. Ce se întâmplă cu scriptul tău de colectare?",
     ["Trebuie rescris, pentru că baza de date e alta",
-     "Merge la fel: contractul nu s-a schimbat",
-     "Merge doar de pe calculatorul pe care a fost scris",
+     "Funcționează la fel: contractul nu s-a schimbat",
+     "Funcționează doar pe calculatorul pe care a fost scris",
      "Primește 404 la prima cerere"],
     "Scriptul depinde de contract (adrese, parametri, formatul răspunsului), nu de felul în "
     "care e construit serverul. Documentația, nu infrastructura furnizorului, e ce trebuie "
@@ -181,19 +181,19 @@ V_CONTRACT = verif(
 
 sl("s3", "Ce este un API", "Analogia restaurantului",
    "<h2>Analogia restaurantului</h2>"
-   "<p class=\"cheie\">Un API e intermediarul dintre codul tău și datele altcuiva, "
+   "<p class=\"cheie\">Un API e intermediarul dintre codul clientului și datele furnizorului, "
    "cu un contract scris: ce se poate cere și în ce formă.</p>"
    + ix("restaurant", "Același drum, pe două straturi", RESTAURANT),
    dupa=V_CONTRACT,
    manual=
    "<h2>Ce este un API</h2>"
-   "<p>Analogia restaurantului fixează un lucru care altfel se învață greu: codul tău nu "
-   "vorbește cu baza de date a furnizorului. Vorbește cu un intermediar, care are acces "
-   "la ea în numele tău, în condiții scrise dinainte. Condițiile acestea sunt contractul "
+   "<p>Analogia restaurantului fixează un principiu esențial: codul clientului nu "
+   "comunică direct cu baza de date a furnizorului. Comunică cu un intermediar, care o "
+   "accesează în numele clientului, în condiții stabilite dinainte. Condițiile acestea sunt contractul "
    "API-ului, iar documentația e forma lui citibilă.</p>"
    + ix("restaurant", "Același drum, pe două straturi", RESTAURANT)
    + tabel(["La restaurant", "La un API"], [
-       ["masa, clientul", "codul tău"],
+       ["masa, clientul", "scriptul"],
        ["meniul", "documentația: ce resurse există, ce parametri primesc, ce formă are răspunsul"],
        ["bonul", "cererea: metoda, adresa, parametrii"],
        ["ospătarul", "API-ul, singura intrare spre date"],
@@ -205,7 +205,7 @@ sl("s3", "Ce este un API", "Analogia restaurantului",
    "API-uri publică o descriere citibilă de mașini, în formatul OpenAPI, din care se "
    "generează documentație și cod.</p>"
    "<p><strong>Abstractizarea.</strong> Clientul depinde de contract, nu de implementare. "
-   "Furnizorul își poate schimba serverele și baza de date fără ca scriptul tău să se "
+   "Furnizorul își poate schimba serverele și baza de date fără ca scriptul clientului să se "
    "schimbe.</p>"
    "<p><strong>Versionarea.</strong> Când contractul se schimbă, furnizorul publică o "
    "versiune nouă (la Banca Mondială, <code>/v2</code> din adresă), iar versiunea veche "
@@ -254,14 +254,14 @@ sl("s5", "Ce este un API", "De ce prin API",
    "<h2>De ce prin API</h2>" + MOTIVE,
    manual=
    "<h2>De ce colectăm prin API</h2>"
-   "<p>Întrebarea apare firesc: dacă fișierul se poate descărca dintr-un clic, de ce să "
-   "scrii cod ca să-l aduci? Motivele țin de știință, de inginerie și de calitatea "
+   "<p>Întrebarea apare firesc: dacă fișierul se poate descărca dintr-un clic, de ce ar fi "
+   "nevoie de cod pentru a-l obține? Motivele țin de știință, de inginerie și de calitatea "
    "datelor, iar fiecare are și un cost.</p>"
    + MOTIVE
    + "<h3>Știință</h3>"
    "<p>O analiză e credibilă în măsura în care drumul de la sursă la rezultat poate fi "
    "verificat. O cerere scrisă e documentația colectării: conține sursa, setul, filtrele "
-   "și, dacă o salvezi, momentul colectării. Principiile FAIR (<em>Findable, Accessible, "
+   "și, dacă este salvată, momentul colectării. Principiile FAIR (<em>Findable, Accessible, "
    "Interoperable, Reusable</em>) cer ca datele să poată fi accesate printr-un protocol "
    "standard, deschis (Wilkinson et al., 2016).</p>"
    "<h3>Inginerie</h3>"
@@ -276,7 +276,7 @@ sl("s5", "Ce este un API", "De ce prin API",
    "El-Osta, 2016). Un răspuns structurat păstrează și metadatele: unități, etichete, "
    "indicatori de stare, pe care un export manual îi poate pierde.</p>"
    "<h3>Ce costă</h3>"
-   "<p>Un API te face dependent de furnizor: versiunile se schimbă, serviciile au "
+   "<p>Un API creează o dependență de furnizor: versiunile se schimbă, serviciile au "
    "întreruperi, iar limitele de cereri și cheile de acces trebuie gestionate. Un fișier "
    "publicat, datat și versionat rămâne o alegere corectă: SCI-ul din cursul 1 vine de pe "
    "HDX tocmai ca un instantaneu de felul acesta.</p>"
@@ -317,7 +317,7 @@ CRITERII = {"ales": "REST", "coloane": [
         _t("SOAP", "Protocol de mesaje XML, cu reguli stricte.",
            "Fiecare mesaj e un plic XML; operațiile sunt descrise într-un fișier WSDL.",
            "Sisteme bancare, administrație, servicii instituționale mai vechi.",
-           "Îl întâlnești la integrarea cu sisteme instituționale."),
+           "Apare la integrarea cu sisteme instituționale."),
     ]},
     {"t": "După acces", "q": "cine are voie", "c": "ambra", "tipuri": [
         _t("public", "Deschis oricui, uneori cu o cheie gratuită.",
@@ -337,9 +337,9 @@ CRITERII = {"ales": "REST", "coloane": [
         _t("cerere și răspuns", "Clientul cere, serverul răspunde.",
            "Fiecare schimb pornește de la client; fără cerere nu vine nimic.",
            "O cerere GET la Banca Mondială.",
-           "Modelul colectării din curs: ceri atunci când ai nevoie.", True),
-        _t("webhooks", "Serverul te anunță când apare un eveniment.",
-           "Îi dai furnizorului o adresă a ta; la eveniment, el trimite acolo o cerere HTTP, de obicei POST.",
+           "Modelul colectării din curs: datele se cer atunci când sunt necesare.", True),
+        _t("webhooks", "Serverul anunță clientul când apare un eveniment.",
+           "Clientul îi comunică furnizorului o adresă proprie; la eveniment, furnizorul trimite acolo o cerere HTTP, de obicei POST.",
            "GitHub anunță un server la fiecare push într-un depozit.",
            "Declanșează o colectare când apar date noi, fără interogări repetate."),
         _t("WebSocket și fluxuri", "O legătură deschisă, prin care datele curg continuu.",
@@ -355,13 +355,13 @@ CRITERII = {"ales": "REST", "coloane": [
         _t("baze de date", "Baze de date expuse direct ca API.",
            "Fiecare tabel devine o resursă REST; o cerere HTTP devine o interogare.",
            "PostgREST și Supabase, peste PostgreSQL.",
-           "Citești și scrii într-o bază prin aceleași cereri HTTP."),
+           "Citirea și scrierea în bază se fac prin aceleași cereri HTTP."),
         _t("cloud", "Infrastructură controlată prin API.",
            "Stocarea și calculul se comandă prin cereri autentificate.",
            "Amazon S3, Azure Blob Storage.",
            "Seturile mari stau în stocare de obiecte și se citesc prin API."),
         _t("servicii AI", "Modele oferite ca serviciu.",
-           "Trimiți textul sau datele, primești rezultatul modelului; plata e de obicei pe volum.",
+           "Clientul trimite textul sau datele și primește rezultatul modelului; plata e de obicei pe volum.",
            "OpenAI, Anthropic, Hugging Face.",
            "Clasificare, extragere de informații, anotare, ca pas într-un flux de date."),
         _t("IoT", "Dispozitive care trimit măsurători.",
@@ -373,7 +373,7 @@ CRITERII = {"ales": "REST", "coloane": [
 
 sl("s6", "Tipuri de API", "Tipuri de API",
    "<h2>Tipuri de API</h2>"
-   "<p class=\"cheie\">Clasificările nu se contrazic: se taie după criterii diferite. "
+   "<p class=\"cheie\">Clasificările nu se contrazic: se fac după criterii diferite. "
    "Banca Mondială e, în același timp, REST, publică și de tip cerere și răspuns.</p>"
    + ix("criterii", "Patru criterii", CRITERII),
    manual=
@@ -444,7 +444,7 @@ BENZI = {"de": 1990, "pana": 2026, "ales": [1, 0],
     ]},
     {"t": "Date statistice", "c": "salvie", "puncte": [
         _p(2005, "SDMX", "Băncile centrale și institutele de statistică schimbau date în formate diferite.",
-           "Un model comun pentru serii statistice: dimensiuni, coduri, atribute. Recunoscut ca standard ISO în 2005.",
+           "Un model comun pentru serii statistice: dimensiuni, coduri, atribute. Specificație tehnică ISO din 2005 (ISO/TS 17369); versiunea 2.1 a devenit standard ISO 17369 în 2013.",
            "Eurostat, BCE, FMI, OCDE, ONU, Banca Mondială, BIS."),
         _p(2011, "SDMX 2.1", "Schimbul de date statistice trebuia să meargă prin servicii web obișnuite.",
            "Versiunea care include interogarea datelor prin adrese, în stil REST.",
@@ -454,7 +454,7 @@ BENZI = {"de": 1990, "pana": 2026, "ales": [1, 0],
            "API-ul SDMX 3.0 al Eurostat.", "sept. 2021"),
     ]},
     {"t": "Agenți AI", "c": "ardezie", "puncte": [
-        _p(2024, "MCP", "Fiecare aplicație AI își scria propriile conectori spre unelte și date.",
+        _p(2024, "MCP", "Fiecare aplicație AI își scria propriii conectori spre unelte și date.",
            "Model Context Protocol, anunțat de Anthropic: un protocol comun, peste JSON-RPC 2.0, prin care un model "
            "folosește unelte și surse de date.",
            "Adoptat de OpenAI în martie 2025; donat în decembrie 2025 către Agentic AI Foundation (Linux Foundation).",
@@ -468,7 +468,7 @@ BENZI = {"de": 1990, "pana": 2026, "ales": [1, 0],
 sl("s7", "Tipuri de API", "Trei decenii de API-uri",
    "<h2>Trei decenii de API-uri</h2>"
    "<p class=\"cheie\">Fiecare stil a apărut ca răspuns la costul celui dinainte; contractele "
-   "au făcut API-urile descriptibile de mașini, iar MCP și A2A duc ideea la agenți.</p>"
+   "au făcut API-urile descriptibile de mașini, iar MCP și A2A extind ideea la agenții AI.</p>"
    + ix("benzi", "Cinci familii, pe aceeași axă", BENZI),
    manual=
    "<h2>Trei decenii de API-uri</h2>"
@@ -485,7 +485,7 @@ sl("s7", "Tipuri de API", "Trei decenii de API-uri",
    + surse("Surse pentru cronologie", [
        ("Fielding (2000), teza despre REST", "https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm", "capitolul 5, stilul REST"),
        ("OpenAPI Specification", "https://en.wikipedia.org/wiki/OpenAPI_Specification", "Swagger 2010, OpenAPI Initiative 2015, versiunile 3.x"),
-       ("SDMX", "https://en.wikipedia.org/wiki/SDMX", "1.0 (ISO, 2005), 2.1 (2011), 3.0 (2021)"),
+       ("SDMX", "https://en.wikipedia.org/wiki/SDMX", "1.0 (ISO/TS, 2005), 2.1 (2011; ISO 17369:2013), 3.0 (2021)"),
        ("GraphQL", "https://en.wikipedia.org/wiki/GraphQL", "public în 2015, GraphQL Foundation în 2018"),
        ("gRPC", "https://en.wikipedia.org/wiki/GRPC", "făcut public în 2015, 1.0 în 2016"),
        ("Model Context Protocol", "https://en.wikipedia.org/wiki/Model_Context_Protocol", "anunțat în noiembrie 2024"),
@@ -516,7 +516,7 @@ STILURI = (
     '<span class="stl__l">forma răspunsului o decide</span>'
     '<span class="stl__v">serverul</span><span class="stl__v">clientul</span>'
     '<span class="stl__v">contractul</span><span class="stl__v">contractul</span>'
-    '<span class="stl__l">unde îl întâlnești</span>'
+    '<span class="stl__l">unde se întâlnește</span>'
     '<span class="stl__v">date publice, servicii web</span><span class="stl__v">aplicații web și mobile</span>'
     '<span class="stl__v">între serviciile unei platforme</span><span class="stl__v">bănci, administrație</span>'
     '</div></div>')
@@ -525,8 +525,8 @@ sl("s8", "Tipuri de API", "Aceeași întrebare, patru stiluri",
    "<h2>Aceeași întrebare, patru stiluri</h2>" + STILURI,
    manual=
    "<h2>Patru stiluri, față în față</h2>"
-   "<p>Cel mai simplu fel de a vedea diferența dintre stiluri e aceeași întrebare, scrisă "
-   "în fiecare. Doar exemplul REST e un API real, al Băncii Mondiale; celelalte trei "
+   "<p>Diferența dintre stiluri se vede cel mai clar pe aceeași întrebare, formulată "
+   "în fiecare stil. Doar exemplul REST e un API real, al Băncii Mondiale; celelalte trei "
    "arată forma pe care ar avea-o aceeași cerere.</p>"
    + STILURI
    + "<p>Diferența de fond e cine decide forma răspunsului. În REST o decide serverul, "
@@ -551,8 +551,8 @@ MESAJ = {
         {"t": "Host: api.worldbank.org", "p": "antet", "e": "Serverul căruia îi e adresată cererea."},
         {"t": "User-Agent: python-requests/2.34.2", "p": "antet",
          "e": "Programul care trimite cererea: aici biblioteca requests, cu versiunea ei."},
-        {"t": "Accept: */*", "p": "antet", "e": "Ce formate acceptă clientul în răspuns: aici, orice."},
-        {"t": "Accept-Encoding: gzip, deflate", "p": "antet", "e": "Răspunsul poate veni comprimat; requests îl decomprimă singur."},
+        {"t": "Accept: */*", "p": "antet", "e": "Ce formate acceptă clientul în răspuns: aici, orice format."},
+        {"t": "Accept-Encoding: gzip, deflate", "p": "antet", "e": "Răspunsul poate veni comprimat; requests îl decomprimă automat."},
         {"t": "", "p": "gol", "e": "Rândul gol încheie antetele. După el ar urma corpul cererii."},
         {"t": "(fără corp)", "p": "corp", "e": "O cerere GET nu are corp: tot ce cere stă în prima linie."},
     ],
@@ -616,11 +616,11 @@ VERBE = {
         {"m": "POST", "c": "ambra", "crud": "creează", "op": "adauga", "cale": "/echipe",
          "corp": '{"nume": "Echipa 8", "tema": "rețele"}', "nou": {"id": 8, "nume": "Echipa 8", "tema": "rețele"},
          "sigura": False, "idem": "nu",
-         "efect": "Creează o fișă nouă, iar serverul îi dă numărul. Repetată, creează încă una."},
+         "efect": "Creează o fișă nouă, iar serverul îi atribuie numărul. Repetată, creează încă una."},
         {"m": "PUT", "c": "roza", "crud": "înlocuiește", "op": "inlocuieste", "tinta": 7, "cale": "/echipe/7",
          "corp": '{"nume": "Echipa 7", "tema": "coridoare"}', "nou": {"nume": "Echipa 7", "tema": "coridoare"},
          "sigura": False, "idem": "da",
-         "efect": "Înlocuiește fișa 7 întreagă cu ce trimiți. Repetată, rezultatul e același."},
+         "efect": "Înlocuiește fișa 7 întreagă cu conținutul trimis. Repetată, rezultatul e același."},
         {"m": "PATCH", "c": "ceas", "crud": "modifică", "op": "modifica", "tinta": 7, "cale": "/echipe/7",
          "corp": '{"tema": "coridoare"}', "camp": "tema", "valoare": "coridoare",
          "sigura": False, "idem": "nu, în general",
@@ -642,15 +642,15 @@ SORTARE = {
        "cosuri": [{"t": "GET", "d": "citește"}, {"t": "POST", "d": "creează"},
                   {"t": "PUT", "d": "înlocuiește"}, {"t": "PATCH", "d": "modifică"},
                   {"t": "DELETE", "d": "șterge"}],
-       "laBine": "Colectarea folosește numai prima; celelalte apar când scrii într-un sistem.",
-       "laRau": "Diferența dintre PUT și PATCH: întreagă sau doar câmpurile trimise.",
-       "explicatie": "Situațiile de citire merg la GET. PUT trimite resursa întreagă, PATCH doar "
-                     "partea care se schimbă, POST creează o resursă nouă, DELETE o scoate."}
+       "laBine": "Colectarea folosește numai GET; celelalte metode apar la scrierea într-un sistem.",
+       "laRau": "Distincția de verificat: PUT trimite resursa întreagă, PATCH doar câmpurile modificate.",
+       "explicatie": "Situațiile de citire corespund lui GET. PUT trimite resursa întreagă, PATCH doar "
+                     "partea care se schimbă, POST creează o resursă nouă, DELETE o șterge."}
 
 sl("s10", "Cum arată o cerere", "Metodele HTTP",
    "<h2>Metodele HTTP</h2>"
-   "<p class=\"cheie\">Metoda spune ce vrei să se întâmple cu resursa. La colectare se "
-   "folosește GET: e sigură și idempotentă, deci o cerere căzută se poate relua.</p>"
+   "<p class=\"cheie\">Metoda indică operația cerută asupra resursei. La colectare se "
+   "folosește GET: e sigură și idempotentă, deci o cerere eșuată se poate relua.</p>"
    + ix("verbe", "Cinci metode, o colecție de exemplu", VERBE),
    manual=
    "<h2>Metodele HTTP</h2>"
@@ -670,17 +670,17 @@ sl("s10", "Cum arată o cerere", "Metodele HTTP",
         "fiecare metodă, cu proprietățile ei"),
    ]))
 
-sl("s10v", "Cum arată o cerere", "Metodele, la lucru",
-   "<h2>Metodele, la lucru</h2>"
+sl("s10v", "Cum arată o cerere", "Exercițiu: metodele HTTP",
+   "<h2>Exercițiu: metodele HTTP</h2>"
    + ix("sortare", "Ce metodă folosești", SORTARE),
    manual="")
 
 sl("s11", "Cum arată o cerere", "Endpoint-ul",
    "<h2>Ce este un endpoint</h2>"
-   "<p class=\"cheie\">Adresa la care ceri un anumit lucru. Fiecare endpoint "
-   "dă altceva.</p>"
+   "<p class=\"cheie\">Adresa la care se cere o anumită resursă. Fiecare endpoint "
+   "întoarce altceva.</p>"
    "<pre><code>https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL</code></pre>"
-   "<p>Un API nu are o singură adresă, are zeci. Documentația e lista lor.</p>")
+   "<p>Un API are de obicei zeci de adrese; documentația le enumeră.</p>")
 
 ADRESA = {
     "id": "c2-url",
@@ -696,7 +696,7 @@ ADRESA = {
          "kv": ["format=json", "date=2022:2024", "per_page=2", "page=1"]},
     ],
     "roluri": [
-        {"e": "protocol", "c": "ardezie", "d": "cum se vorbește; <code>https</code> e criptat"},
+        {"e": "protocol", "c": "ardezie", "d": "regulile de comunicare; <code>https</code> e criptat"},
         {"e": "host", "c": "roza", "d": "ce server răspunde"},
         {"e": "versiune", "c": "ceas", "d": "ediția contractului"},
         {"e": "resursa: țara", "c": "accent", "d": "prima resursă din cale"},
@@ -704,37 +704,37 @@ ADRESA = {
         {"e": "parametri", "c": "ambra", "d": "filtrele, după <code>?</code>, legate cu <code>&amp;</code>"},
     ],
     "dupa": '<div class="c2-idei" style="margin-top:0">'
-            "<p><b>Calea spune ce ceri</b> (țara, indicatorul); <b>parametrii spun cum</b> "
+            "<p><b>Calea indică ce se cere</b> (țara, indicatorul); <b>parametrii, cum se cere</b> "
             "(formatul, anii, pagina).</p>"
             "<p><b>Parametrii sunt dicționarul <code>params</code></b> din requests: biblioteca "
-            "îi lipește în adresă și codifică singură caracterele speciale.</p></div>"
+            "îi adaugă la adresă și codifică automat caracterele speciale.</p></div>"
             '<div class="c2-dict" style="margin-top:10px"><code>{"format": "json", "date": "2022:2024", '
             '"per_page": 2, "page": 1}</code><i>→</i>'
             "<code>?format=json&amp;date=2022%3A2024&amp;per_page=2&amp;page=1</code></div>",
 }
 
-sl("s12", "Cum arată o cerere", "Adresa, bucată cu bucată",
-   "<h2>Adresa, bucată cu bucată</h2>"
+sl("s12", "Cum arată o cerere", "Componentele adresei",
+   "<h2>Componentele adresei</h2>"
    + ix("url", "Adresa primei cereri din caietul 02", ADRESA),
    manual=
    "<h2>Structura unei adrese</h2>"
-   "<p>O adresă pare un șir de caractere, dar are o gramatică. Când o cerere nu merge, "
-   "greșeala e aproape întotdeauna într-una dintre bucăți, iar prima condiție ca s-o găsești "
-   "e să le poți numi.</p>"
+   "<p>O adresă pare un simplu șir de caractere, dar are o gramatică. Când o cerere eșuează, "
+   "eroarea se află aproape întotdeauna într-una dintre componente, iar pentru a o găsi, "
+   "componentele trebuie să poată fi numite.</p>"
    + ix("url", "Adresa primei cereri din caietul 02", ADRESA)
    + "<p>Calea identifică resursa, iar parametrii o filtrează. Un cod de indicator greșit "
      "în cale duce la o eroare sau la altă resursă; un an greșit în parametri duce la un "
-     "răspuns gol sau la un mesaj de eroare în corp. Mai există o bucată, fragmentul de "
-     "după <code>#</code>, care nu pleacă niciodată la server: rămâne în browser.</p>"
+     "răspuns gol sau la un mesaj de eroare în corp. Mai există o componentă, fragmentul de "
+     "după <code>#</code>, care nu se trimite niciodată la server: rămâne în browser.</p>"
    + "<p>Codificarea (<em>percent-encoding</em>) înlocuiește caracterele care au alt rol "
      "în adresă: „:” devine <code>%3A</code>, spațiul devine <code>%20</code> sau "
-     "<code>+</code>. Cu <code>params=</code>, requests face codificarea; o adresă lipită "
-     "cu mâna o lasă în seama ta.</p>"
+     "<code>+</code>. Cu <code>params=</code>, requests face codificarea; într-o adresă scrisă "
+     "manual, codificarea trebuie făcută explicit.</p>"
    + verif("c2-v7", 2,
            "Unde pui filtrele unei cereri, de exemplu anul sau formatul?",
            ["în protocol", "în host", "în parametri, după semnul întrebării",
             "în fragment, după diez"],
-           "În parametri. Fragmentul, de după <code>#</code>, nu pleacă spre server: "
+           "În parametri. Fragmentul, de după <code>#</code>, nu se trimite la server: "
            "rămâne în browser."))
 
 CLASE = [{"k": "1", "n": "informare", "c": "text-3"}, {"k": "2", "n": "reușită", "c": "accent"},
@@ -748,39 +748,39 @@ RASPUNS = {
          "antete": ["Content-Type: application/json;charset=utf-8"],
          "corp": "[{\"page\": 1, \"pages\": 2, \"total\": 65, …}, [ … 50 de valori … ]]",
          "ce": "Cererea a reușit; corpul e JSON, pe pagini.",
-         "faci": "Citești corpul. Un 200 poate avea și zero valori, deci verifici și câte au venit."},
+         "faci": "Se citește corpul. Un 200 poate avea și zero valori, deci se verifică și câte au venit."},
         {"et": "adresă greșită", "cod": 404, "nume": "Not Found",
          "url": "api.worldbank.org/v2/country/RO/indicatorr/SP.POP.TOTL?format=json",
          "antete": ["Content-Type: text/html"],
          "corp": "<html><head><title>404</title></head> …",
          "ce": "Calea nu există. Corpul nu mai e JSON, ci o pagină HTML.",
-         "faci": "Verifici calea în documentație. <code>.json()</code> ar eșua aici, pentru că corpul nu e JSON."},
+         "faci": "Se verifică adresa în documentație. <code>.json()</code> ar eșua aici, pentru că corpul nu este JSON."},
         {"et": "parametru invalid", "cod": 200, "nume": "OK, cu eroare în corp",
          "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=anul-trecut",
          "antete": ["Content-Type: application/json;charset=utf-8"],
          "corp": "[{\"message\": [{\"id\": \"120\", \"key\": \"Invalid value\", \"value\": \"The provided parameter value is not valid\"}]}]",
          "ce": "Banca Mondială răspunde 200 și la un parametru invalid; eroarea e în corp, sub <code>message</code>. "
                "Alte API-uri dau aici 400.",
-         "faci": "După cod, verifici structura: primul element trebuie să conțină <code>page</code>, nu <code>message</code>."},
+         "faci": "După cod, se verifică structura: primul element trebuie să conțină <code>page</code>, nu <code>message</code>."},
         {"et": "prea multe cereri", "cod": 429, "nume": "Too Many Requests",
          "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?page=97",
          "antete": ["Retry-After: 30"],
          "corp": "(corpul poate lipsi)",
-         "ce": "Limita de cereri a fost depășită.",
-         "faci": "Aștepți cât spune <code>Retry-After</code> și reiei cu pauze care cresc după fiecare refuz."},
+         "ce": "Limita de cereri a fost depășită. Exemplu ilustrativ: valorile din antet diferă de la un API la altul.",
+         "faci": "Se așteaptă cât indică <code>Retry-After</code>, apoi se reia, cu pauze care cresc după fiecare refuz."},
         {"et": "server indisponibil", "cod": 503, "nume": "Service Unavailable",
          "url": "api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json",
          "antete": ["Content-Type: text/html"],
          "corp": "Service temporarily unavailable",
          "ce": "Problema e la server, nu în cerere.",
-         "faci": "Reiei mai târziu; un script de colectare reîncearcă de câteva ori, cu pauze tot mai mari."},
+         "faci": "Cererea se reia mai târziu; un script de colectare reîncearcă de câteva ori, cu pauze tot mai mari."},
     ],
 }
 
 sl("s13", "Cum arată o cerere", "Răspunsul începe cu un cod",
    "<h2>Răspunsul începe cu un cod</h2>"
-   "<p class=\"cheie\">Clasa codului arată unde e problema: în cerere (4xx), la server (5xx) "
-   "sau nicăieri (2xx). Un 2xx nu garantează date; corpul se verifică separat.</p>"
+   "<p class=\"cheie\">Clasa codului arată unde e problema: în cerere (4xx) sau la server (5xx). "
+   "Un 2xx înseamnă reușită, dar nu garantează date; corpul se verifică separat.</p>"
    + ix("raspuns", "Cinci situații tipice ale aceleiași cereri", RASPUNS)
    + verif("c2-v8", 3,
            "Răspunsul are codul <code>429</code>. Ce înseamnă?",
@@ -797,16 +797,16 @@ sl("s13", "Cum arată o cerere", "Răspunsul începe cu un cod",
    "serverului. Codul se verifică înaintea corpului, pentru că la o eroare corpul poate fi "
    "o pagină HTML sau poate lipsi.</p>"
    + ix("raspuns", "Cinci situații tipice ale aceleiași cereri", RASPUNS)
-   + tabel(["Cod", "Ce înseamnă", "Ce faci"], [
-       ["~200", "cererea a reușit", "citești corpul și verifici câte valori au venit"],
-       ["~301 / 302", "resursa s-a mutat", "requests urmează singur redirecționarea"],
-       ["~400", "cererea e greșită", "verifici parametrii"],
+   + tabel(["Cod", "Ce înseamnă", "Ce se face"], [
+       ["~200", "cererea a reușit", "se citește corpul și se verifică numărul de valori primite"],
+       ["~301 / 302", "resursa s-a mutat", "requests urmează automat redirecționarea"],
+       ["~400", "cererea e greșită", "se verifică parametrii"],
        ["~401 / 403", "lipsește accesul", "cheie lipsă, greșită sau fără drepturi"],
-       ["~404", "resursa nu există", "verifici calea"],
-       ["~429", "prea multe cereri", "aștepți (<code>Retry-After</code>) și reiei mai rar"],
-       ["~500 / 503", "eroare la server", "reiei mai târziu"],
+       ["~404", "resursa nu există", "se verifică calea"],
+       ["~429", "prea multe cereri", "se așteaptă (<code>Retry-After</code>) și se reia mai rar"],
+       ["~500 / 503", "eroare la server", "se reia mai târziu"],
    ])
-   + "<p>La 429 și 503, un script de colectare reîncearcă singur, cu pauze care cresc "
+   + "<p>La 429 și 503, un script de colectare reîncearcă automat, cu pauze care cresc "
      "după fiecare refuz (de exemplu 1, 2, 4, 8 secunde). Strategia se numește "
      "<em>exponential backoff</em> și protejează atât colectarea, cât și serverul.</p>"
    + nota("Banca Mondială și codul 200",
@@ -849,34 +849,34 @@ SURSE_MATRICE = (
     "<span>Când nu există API. Structura paginii se poate schimba oricând, iar condițiile de "
     "utilizare pot interzice extragerea.</span></div>")
 
-sl("s14", "De unde vin datele", "De unde se pot lua date",
-   "<h2>De unde se pot lua date</h2>"
-   "<p class=\"cheie\">Două întrebări despre orice sursă: ce fel de date dă și în ce condiții. "
+sl("s14", "De unde vin datele", "Surse de date",
+   "<h2>Surse de date</h2>"
+   "<p class=\"cheie\">Două întrebări despre orice sursă: ce fel de date oferă și în ce condiții. "
    "Proiectul folosește statistici oficiale, deschise.</p>"
    + SURSE_MATRICE,
    manual=
    "<h2>Surse accesibile prin API</h2>"
    "<p>Aproape orice sursă de date importantă are azi un API. Pentru o analiză contează "
-   "două lucruri: ce fel de date dă sursa și în ce condiții se poate accesa. Condițiile se "
+   "două lucruri: ce fel de date oferă sursa și în ce condiții se poate accesa. Condițiile se "
    "schimbă în timp, așa că se verifică în documentația fiecărei surse, la data colectării.</p>"
    + SURSE_MATRICE
-   + "<p>Cheile de acces sunt personale. Nu se scriu în cod și nu urcă pe GitHub: se țin în "
+   + "<p>Cheile de acces sunt personale. Nu se scriu în cod și nu se publică pe GitHub: se păstrează în "
      "variabile de mediu sau într-un fișier exclus prin <code>.gitignore</code>. Extragerea "
-     "din pagini web (<em>web scraping</em>) e soluția pentru când nu există API, cu două "
+     "din pagini web (<em>web scraping</em>) e soluția pentru situațiile fără API, cu două "
      "riscuri: pagina se poate schimba fără avertisment, iar condițiile de utilizare pot "
      "interzice extragerea.</p>")
 
 SURSE_TABEL = tabel(["Sursa", "Cum vine", "Ce ne dă"], [
-    ["Social Connectedness Index", "fișier descărcat (HDX)", "legăturile dintre locuri; e deja la voi"],
+    ["Social Connectedness Index", "fișier descărcat (HDX)", "legăturile dintre locuri; disponibil de la cursul 1"],
     ["Banca Mondială", "~API REST public", "indicatori pe țară și an"],
     ["Eurostat", "~API REST public", "indicatori pe regiuni NUTS"],
     ["<strong>Eurostat, migrație</strong>", "~migr_pop1ctz", "câți cetățeni ai unei țări trăiesc în alta"],
 ])
-SURSE_DOC = surse("Documentația de care ai nevoie", [
+SURSE_DOC = surse("Documentația necesară", [
     ("Banca Mondială: structura unei cereri", "https://datahelpdesk.worldbank.org/knowledgebase/articles/898581",
      "țara, indicatorul, <code>format</code>, <code>date</code>, <code>per_page</code>, <code>page</code>"),
     ("Banca Mondială: despre API", "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api",
-     "ce date are, cum găsești codul unui indicator"),
+     "ce date conține, cum se găsește codul unui indicator"),
     ("Eurostat: primii pași cu API-ul", "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-getting-started",
      "adresa de bază, primul exemplu, filtrele"),
     ("Eurostat: ghidul detaliat", "https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-detailed-guidelines",
@@ -894,18 +894,18 @@ SURSE_DOC = surse("Documentația de care ai nevoie", [
 sl("s15", "De unde vin datele", "Sursele proiectului",
    "<h2>Sursele proiectului</h2>"
    '<div class="c2doi"><div>' + SURSE_TABEL
-   + "<p>Întâi Banca Mondială, pentru că răspunde simplu. Apoi Eurostat, cu indicatorii pe "
+   + "<p>Întâi Banca Mondială, care are un format de răspuns simplu. Apoi Eurostat, cu indicatorii pe "
      "regiuni și cu migrația.</p>"
-     "<p>Când o cerere nu merge, se deschide întâi documentația: acolo sunt parametrii și "
+     "<p>Când o cerere eșuează, se consultă întâi documentația: acolo sunt parametrii și "
      "sensul lor.</p></div>"
    + "<div>" + SURSE_DOC + "</div></div>",
    manual=
    "<h2>Sursele proiectului</h2>"
    + SURSE_TABEL
-   + "<p>Întâi Banca Mondială, pentru că răspunde simplu, cu o listă de înregistrări. Apoi "
+   + "<p>Întâi Banca Mondială, care are un format de răspuns simplu, o listă de înregistrări. Apoi "
      "Eurostat, cu indicatorii pe regiuni și cu migrația, într-un format diferit, JSON-stat.</p>"
    + SURSE_DOC
-   + "<p>Când o cerere nu merge, se deschide întâi documentația: acolo sunt scriși "
+   + "<p>Când o cerere eșuează, se consultă întâi documentația: acolo sunt descriși "
      "parametrii, valorile acceptate și sensul lor.</p>")
 
 
@@ -946,12 +946,12 @@ DOC_REQ = surse("Documentația requests", [
 
 sl("s16", "requests", "Aceeași cerere, în Python",
    "<h2>Aceeași cerere, în Python</h2>"
-   "<p class=\"cheie\">Ordinea e mereu aceeași: ceri, verifici codul, abia apoi citești datele.</p>"
+   "<p class=\"cheie\">Ordinea e mereu aceeași: cererea, verificarea codului, abia apoi citirea datelor.</p>"
    + HARTA_REQ
    + '<div class="c2doi" style="margin-top:14px"><div>'
-   + "<p style=\"font-size:14.5px\"><code>timeout=30</code>: fără el, o cerere la care serverul nu "
-     "răspunde blochează programul. Instalarea, o dată: "
-     "<code>.venv\\Scripts\\python -m pip install requests</code>.</p></div><div>"
+   + "<p><code>timeout=30</code>: fără el, o cerere la care serverul nu "
+     "răspunde blochează programul. <code>requests</code> este deja instalat în mediul cursului, "
+     "din <code>requirements.txt</code>.</p></div><div>"
    + DOC_REQ + "</div></div>",
    manual=
    "<h2>requests</h2>"
@@ -959,10 +959,11 @@ sl("s16", "requests", "Aceeași cerere, în Python",
    "parte a mesajului HTTP are în ea un corespondent direct.</p>"
    + HARTA_REQ
    + "<h3>Ordinea de lucru</h3>"
-   "<p>Ceri, verifici codul de stare, abia apoi citești corpul. Dacă cererea n-a reușit, "
+   "<p>Întâi se trimite cererea, apoi se verifică codul de stare și abia apoi se citește corpul. "
+   "Dacă cererea nu a reușit, "
    "corpul poate fi o pagină HTML, iar <code>.json()</code> eșuează cu o eroare care pare "
    "să nu aibă legătură cu cauza reală. <code>raspuns.raise_for_status()</code> transformă "
-   "orice cod 4xx sau 5xx într-o excepție, deci colectarea se oprește chiar la problemă.</p>"
+   "orice cod 4xx sau 5xx într-o excepție, deci colectarea se oprește exact acolo unde apare problema.</p>"
    + ix("pas", "Prima cerere din caiet, pas cu pas", {
        "fisier": f"{CAIET} · 3. Banca Mondială: prima cerere",
        "intro": "Prima cerere din caiet: populația României, de la Banca Mondială.",
@@ -988,7 +989,7 @@ sl("s16", "requests", "Aceeași cerere, în Python",
            {"l": 9, "set": {"meta": {"t": "dict", "v": {"page": 1, "pages": 2, "per_page": 2, "total": 3}}}, "hl": {"var": "date", "k": 0},
             "txt": "Poziția 0: paginarea."},
            {"l": 10, "set": {"valori": {"t": "list", "v": ["2024: 19051804", "2023: 19061062"]}}, "hl": {"var": "date", "k": 1},
-            "txt": "Poziția 1: valorile de pe pagina asta."},
+            "txt": "Poziția 1: valorile de pe pagina aceasta."},
        ]})
    + DOC_REQ)
 
@@ -1027,15 +1028,15 @@ JUPYTER = {
     ],
 }
 
-sl("s17", "requests", "Un răspuns, cercetat",
-   "<h2>Un răspuns, cercetat</h2>"
+sl("s17", "requests", "Exercițiu: inspectarea răspunsului",
+   "<h2>Exercițiu: inspectarea răspunsului</h2>"
    + ix("jupyter", "Trei lucruri de aflat din raspuns", JUPYTER,
         "Prima celulă e rulată. Scrie expresii în consolă și apasă Enter, ca în Jupyter."),
    manual=
-   "<h2>Exercițiu: un răspuns, cercetat</h2>"
-   "<p>Celula de mai jos e cea din caiet, deja rulată. Răspunsul stă în <code>raspuns</code>; "
-   "consola răspunde ca o celulă Jupyter. Sunt trei lucruri de aflat, toate din cod, nu "
-   "scrise de mână.</p>"
+   "<h2>Exercițiu: inspectarea răspunsului</h2>"
+   "<p>Celula de mai jos e cea din caiet, deja rulată. Răspunsul se află în <code>raspuns</code>; "
+   "consola funcționează ca o celulă Jupyter. Sunt trei valori de aflat, toate obținute prin cod, "
+   "nu transcrise manual.</p>"
    + ix("jupyter", "Trei lucruri de aflat din raspuns", JUPYTER)
    + "<p>Se poate lucra și cu o variabilă intermediară: <code>date = raspuns.json()</code>, "
      "apoi <code>date[0][\"total\"]</code>. Aceeași structură, o listă cu paginarea și cu "
@@ -1050,10 +1051,10 @@ PREZICE_PAGINI = {
        "intrebare": "Ce afișează?",
        "variante": ["180 180", "180 50", "50 180", "4 50"],
        "corect": 1,
-       "indiciu": "total numără toate valorile; len(valori) numără câte au venit pe pagina asta.",
-       "laBine": "Au venit 50 din 180: mai sunt trei pagini de cerut.",
+       "indiciu": "total numără toate valorile; len(valori) numără câte au venit pe pagina aceasta.",
+       "laBine": "Pe prima pagină au venit 50 din 180 de valori; mai sunt trei pagini de cerut.",
        "explicatie": "În total sunt 180 de valori, câte 50 pe pagină, pe 4 pagini; pe pagina 1 au "
-                     "venit 50. Fie ceri pagină după pagină până la <code>pages</code>, fie ceri "
+                     "venit 50. Se cer fie paginile pe rând, până la <code>pages</code>, fie "
                      "<code>per_page=1000</code> dintr-odată."}
 
 PAGINI = {"ani": list(range(2024, 1959, -1)), "optiuni": [10, 50, 1000], "implicit": 50}
@@ -1063,10 +1064,10 @@ sl("s18", "requests", "Paginarea",
    "<p class=\"cheie\">Un răspuns mare vine pe pagini. Primul element spune câte valori "
    "există și câte pagini sunt; restul e pagina cerută.</p>"
    + ix("pagini", "Populația României, 1960 la 2024: 65 de valori", PAGINI)
-   + '<div class="c2-idei"><p><b>Pagină cu pagină:</b> ceri <code>page=1, 2, …</code> până la '
-     "<code>pages</code>.</p><p><b>O singură pagină mare:</b> ceri <code>per_page=1000</code> și "
-     "verifici că <code>pages</code> e 1. Așa face caietul.</p></div>"
-   + ix("prezice", "Câte au venit", PREZICE_PAGINI),
+   + '<div class="c2-idei"><p><b>Pagină cu pagină:</b> se cer <code>page=1, 2, …</code> până la '
+     "<code>pages</code>.</p><p><b>O singură pagină mare:</b> se cere <code>per_page=1000</code> și "
+     "se verifică faptul că <code>pages</code> e 1. Așa procedează caietul.</p></div>"
+   + ix("prezice", "Câte valori au venit", PREZICE_PAGINI),
    manual=
    "<h2>Paginarea</h2>"
    "<p>Un API nu trimite un set mare dintr-o dată. Trimite o pagină și, separat, informația "
@@ -1078,7 +1079,7 @@ sl("s18", "requests", "Paginarea",
      "mare încât să încapă totul și verifică apoi că a venit o singură pagină; caietul "
      "folosește a doua. Banca Mondială întoarce valorile de la anul cel mai recent spre cel "
      "mai vechi.</p>"
-   + ix("prezice", "Câte au venit", PREZICE_PAGINI)
+   + ix("prezice", "Câte valori au venit", PREZICE_PAGINI)
    + ix("pas", "Unde e a treia valoare", {
        "fisier": f"{CAIET} · 4. Paginarea",
        "intro": "Trei ani ceruți, câte două valori pe pagină.",
@@ -1115,7 +1116,7 @@ sl("s18", "requests", "Paginarea",
    "<p>Lista de înregistrări devine tabel cu <code>pd.json_normalize</code>: dicționarele "
    "dinăuntru devin coloane cu punct în nume, de exemplu <code>country.id</code>. Tabelul se "
    "salvează în <code>data/c2</code> cu <code>index=False</code>, ca să nu se adauge o coloană "
-   "de numerotare fără sens. Calea pornește din folderul caietului, deci fișierul ajunge în "
+   "de numerotare inutilă. Calea pornește din folderul caietului, deci fișierul ajunge în "
    "<code>dsw/curs/data/c2/</code>.</p>"
    "<pre><code>tabel = pd.json_normalize(valori)[[\"country.id\", \"date\", \"value\"]]\n"
    "tabel.to_csv(\"data/c2/populatie_ro.csv\", index=False)</code></pre>"
@@ -1152,9 +1153,9 @@ EUROSTAT_CERERE = (
         for i, n, cod, a, st in DIMENSIUNI)
     + "</div>")
 
-sl("s19e", "Eurostat", "Eurostat: cum ceri",
-   "<h2>Eurostat: cum ceri</h2>"
-   "<p class=\"cheie\">La Banca Mondială, calea spune ce ceri. La Eurostat, calea spune setul, "
+sl("s19e", "Eurostat", "Eurostat: structura cererii",
+   "<h2>Eurostat: structura cererii</h2>"
+   "<p class=\"cheie\">La Banca Mondială, calea indică ce se cere. La Eurostat, calea indică setul, "
    "iar parametrii aleg felia: unele dimensiuni se fixează, celelalte rămân deschise.</p>"
    + EUROSTAT_CERERE
    + '<div class="c2-idei"><p><b>Ce rămâne deschis devine cubul:</b> aici cetățenia × țara de '
@@ -1196,9 +1197,9 @@ PREZICE_CUB = {
        "variante": ["4 59132", "2 48659", "3 741784", "5 73320"],
        "corect": 0,
        "indiciu": "citizen.index(\"PL\") e 1, geo.index(\"ES\") e tot 1. Câte valori are un rând de cetățenie?",
-       "laBine": "Asta face, pentru fiecare valoare, funcția jsonstat_in_tabel din caiet.",
+       "laBine": "Același calcul îl face, pentru fiecare valoare, funcția jsonstat_in_tabel din caiet.",
        "explicatie": "Fiecare cetățenie are 3 valori, câte una pentru fiecare țară. Polonia e a doua "
-                     "cetățenie (poziția 1), deci sare peste 1 × 3 = 3 valori; Spania e a doua țară "
+                     "cetățenie (poziția 1), deci se trece peste 1 × 3 = 3 valori; Spania e a doua țară "
                      "(poziția 1): 3 + 1 = 4. <code>value[4]</code> e 59.132."}
 
 sl("s20", "Eurostat", "Cubul JSON-stat",
@@ -1233,12 +1234,12 @@ sl("s20", "Eurostat", "Cubul JSON-stat",
    "<p>Setul <code>migr_pop1ctz</code> spune câți oameni cu o anumită cetățenie trăiesc într-o "
    "țară, la 1 ianuarie. Un rând e o pereche de țări, ca la SCI, dar cu direcție. Cetățenia "
    "e preferată țării nașterii (<code>migr_pop3ctb</code>) pentru că mai multe țări mari, "
-   "printre ele Germania, nu raportează nașterile pe țări. Are și ea o limită: cine a luat "
-   "cetățenia țării în care trăiește nu mai apare ca migrant.</p>"
+   "printre ele Germania, nu raportează nașterile pe țări. Și cetățenia are o limită: persoanele "
+   "care au dobândit cetățenia țării de reședință nu mai apar ca migranți.</p>"
    "<p>Doar o parte dintre țări raportează pe țări de cetățenie; o valoare lipsă nu "
    "înseamnă zero. Harta din <a class=\"leg\" href=\"../../c1-introducere-si-mediu/tutorial/#s5m\">cursul 1</a> "
    "folosește exact aceste date: 1.073.196 de cetățeni români în Italia, la 1 ianuarie 2024. "
-   "Este „ghicitoarea semestrului”: Italia, țara cu cei mai mulți cetățeni români, e abia a "
+   "Aceasta este întrebarea empirică a semestrului: Italia, țara cu cei mai mulți cetățeni români, e abia a "
    "șasea după indicele SCI.</p>"
    + ix("pas", "Câți români în Italia", {
        "fisier": f"{CAIET} · 8. Migrația: două țări pe un rând",
@@ -1262,9 +1263,9 @@ sl("s20", "Eurostat", "Cubul JSON-stat",
            {"l": 6, "out": "     geo citizen  valoare\n4812  IT      RO  1073196",
             "txt": "<code>&amp;</code> păstrează rândurile unde ambele sunt adevărate."},
        ]})
-   + nota("Codurile care încurcă",
+   + nota("Coduri care pot produce erori",
           "Eurostat scrie Grecia <code>EL</code>, nu <code>GR</code>. Iar <code>NA</code> e Namibia, pe "
-          "care pandas o citește ca valoare lipsă dacă nu i se spune altfel. Se reiau la curățare, la cursul 4."))
+          "care pandas o interpretează implicit ca valoare lipsă. Se reiau la curățare, la cursul 4."))
 
 
 sl("s20v", "Eurostat", "Poziția din cub",
@@ -1287,14 +1288,14 @@ DOVADA = {
          "cmd": "tabel = cere_bm(\"SP.POP.TOTL\", TARI)",
          "gol": "lipește linia cu numărul de pagini",
          "cauta": r"pagini:\s*1\b",
-         "daca_nu": "Caut „pagini: 1”. Mai multe pagini înseamnă că per_page e prea mic; o eroare "
+         "daca_nu": "Se așteaptă „pagini: 1”. Mai multe pagini înseamnă că per_page e prea mic; o eroare "
                     "înseamnă, de obicei, că celulele de deasupra nu au rulat."},
         {"t": "Tabelul s-a scris în data/c2, cu rânduri în el",
          "cmd": "len(pd.read_csv(\"data/c2/bm.csv\"))",
          "gol": "numărul de rânduri",
          "cauta": r"\b[1-9]\d{0,4}\b",
-         "daca_nu": "Caut un număr mai mare ca zero. FileNotFoundError înseamnă că celula care salvează "
-                    "nu a rulat sau că acest caiet nu stă în dsw/curs/."}],
+         "daca_nu": "Se așteaptă un număr mai mare decât zero. FileNotFoundError înseamnă că celula care salvează "
+                    "nu a rulat sau că acest caiet nu se află în dsw/curs/."}],
     "explicatie": "Cererile au reușit, iar datele sunt salvate în curs/data/c2, lângă celulele care le refac.",
 }
 PASI_COLECTARE = tabel(["Pasul", "Ce faci"], [
@@ -1304,19 +1305,19 @@ PASI_COLECTARE = tabel(["Pasul", "Ce faci"], [
     ["4", "salvezi tabelul în <code>data/c2/bm.csv</code>"],
 ])
 
-sl("s21", "Proiectul tău", "Colectează, acum",
+sl("s21", "Proiectul tău", "Prima colectare",
    "<h2>Prima colectare, în caiet</h2>"
    '<div class="c2doi"><div>'
-   "<p>Caietul cere, verifică, salvează. Rulează-l și lipește ce iese.</p>"
+   "<p>Caietul cere, verifică și salvează datele. Rulează-l și lipește rezultatul afișat.</p>"
    + PASI_COLECTARE + "</div><div>"
    + ix("dovada", "Dovada colectării", DOVADA) + "</div></div>",
    manual=
    "<h2>Prima colectare, în caiet</h2>"
    "<p>Colectarea se face în caietul 02, din <code>dsw/curs/</code>. Căile pornesc de acolo: "
-   "<code>data/c2/bm.csv</code> înseamnă <code>dsw/curs/data/c2/bm.csv</code>. Folderul îl face "
+   "<code>data/c2/bm.csv</code> înseamnă <code>dsw/curs/data/c2/bm.csv</code>. Folderul este creat de "
    "prima celulă a caietului, cu <code>Path(\"data/c2\").mkdir(exist_ok=True)</code>.</p>"
    + PASI_COLECTARE
-   + "<p>Mai jos, aceeași idee scrisă întreg, cu paginarea făcută pas cu pas: o funcție care "
+   + "<p>Mai jos, aceeași idee, scrisă complet, cu paginarea tratată pas cu pas: o funcție care "
    "cere pagină după pagină, până la ultima. Se poate rula într-o celulă nouă, la finalul "
    "caietului, și se adaptează la indicatorul echipei.</p>"
    + "<pre><code>import time\n"
@@ -1339,10 +1340,10 @@ sl("s21", "Proiectul tău", "Colectează, acum",
      "tabel = pd.json_normalize(randuri)\n"
      "tabel.to_csv(\"data/c2/populatie_ro.csv\", index=False)\n"
      "print(\"salvate\", len(tabel), \"rânduri\")</code></pre>"
-   + nota("Ce rămâne la tine și ce ajunge la echipă",
+   + nota("Ce rămâne local și ce ajunge în depozitul echipei",
           "Datele și caietele de la curs rămân în <code>curs/</code>. În depozitul echipei, "
-          "<code>proiect/</code>, ajunge ce face echipa. Acolo nu urcă fișierele mari și cheile de "
-          "acces: pentru datele de zeci de megabytes urcă codul care le aduce.")
+          "<code>proiect/</code>, ajunge munca echipei. Acolo nu se publică fișierele mari și cheile de "
+          "acces: pentru datele de zeci de megabytes se publică doar codul care le colectează.")
    + ix("dovada", "Dovada colectării", DOVADA))
 
 
@@ -1359,7 +1360,7 @@ PASI_ECHIPA = (
     "<li><b>Echipa de cinci primește un depozit</b> al ei, în organizația "
     f'<a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, '
     "pornit din același șablon pentru toate echipele.</li>"
-    "<li><b>Accepți invitația</b> de pe GitHub, care vine pe e-mail, ca să poți scrie în depozit.</li>"
+    "<li><b>Accepți invitația</b> de pe GitHub, primită pe e-mail, pentru dreptul de scriere în depozit.</li>"
     "<li><b>Copiezi adresa depozitului</b>: pe pagina lui, <em>Code → HTTPS</em>.</li>"
     "<li><b>În terminalul din VS Code</b>, în <code>dsw</code>:<br>"
     "<code>git clone &lt;adresa&gt; proiect</code>"
@@ -1372,44 +1373,44 @@ sl("s21e", "Proiectul tău", "Depozitul echipei",
    "<code>proiect/</code>; exercițiile de la curs rămân în <code>curs/</code>.</p>"
    '<div class="c2doi"><div>' + PASI_ECHIPA + "</div><div>"
    '<div class="venvp__fld">' + ARBORE_PROIECT + "</div>"
-   + nota("Git", "Trebuie să fie instalat: <code>git --version</code> răspunde cu un număr. La prima "
-          "clonare, Git îți poate cere să intri în contul GitHub, într-o fereastră din browser. Ce faci "
-          "apoi în <code>proiect/</code> vedem la cursul 3.")
+   + nota("Git", "Trebuie să fie instalat: <code>git --version</code> afișează un număr de versiune. La prima "
+          "clonare, Git poate cere autentificarea în contul GitHub, într-o fereastră din browser. Lucrul "
+          "în <code>proiect/</code> continuă la cursul 3.")
    + "</div></div>",
    manual=
    "<h2>Depozitul echipei, în dsw/proiect</h2>"
-   "<p>Până acum, tot ce ai făcut stă în <code>curs/</code>, pe calculatorul tău, fără Git. "
-   "Proiectul de semestru e altceva: îl lucrează cinci oameni, iar fiecare trebuie să vadă ce au "
-   "făcut ceilalți. De aceea fiecare echipă are un depozit al ei pe GitHub, în organizația "
+   "<p>Până acum, tot ce s-a lucrat se află în <code>curs/</code>, pe calculatorul personal, fără Git. "
+   "Proiectul de semestru funcționează diferit: la el lucrează cinci persoane, iar fiecare trebuie să "
+   "vadă ce au făcut ceilalți. De aceea fiecare echipă are un depozit al ei pe GitHub, în organizația "
    f'<a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, '
-   "pornit din același șablon pentru toate echipele, iar fiecare membru îl aduce pe calculatorul lui, "
+   "pornit din același șablon pentru toate echipele, iar fiecare membru îl clonează pe calculatorul propriu, "
    "în <code>dsw/proiect</code>.</p>"
    + PASI_ECHIPA
    + '<div class="venvp__fld" style="margin:14px 0">' + ARBORE_PROIECT + "</div>"
    + "<p><code>git clone</code> copiază depozitul cu tot cu istoricul lui, în folderul <code>.git/</code>, "
-   "și ține minte de unde l-a luat. Ultimul cuvânt din comandă e numele folderului: fără el, folderul "
-   "ar purta numele depozitului. Comanda se dă o singură dată, din <code>dsw</code>; dacă o dai din "
-   "alt folder, de exemplu din <code>curs/</code>, depozitul ajunge acolo, iar căile din caiete nu "
+   "și reține adresa de la care a fost copiat. Ultimul cuvânt din comandă e numele folderului: fără el, "
+   "folderul ar purta numele depozitului. Comanda se dă o singură dată, din <code>dsw</code>; dacă e dată "
+   "din alt folder, de exemplu din <code>curs/</code>, depozitul ajunge acolo, iar căile din caiete nu "
    "mai sunt cele din manual.</p>"
    + nota("Git",
           'Se instalează de pe <a class="leg" href="https://git-scm.com/downloads" target="_blank" '
-          'rel="noopener">git-scm.com</a>; verifici cu <code>git --version</code>. La prima clonare, Git '
-          "îți poate cere să intri în contul GitHub, într-o fereastră din browser. Commit, push și "
+          'rel="noopener">git-scm.com</a>; instalarea se verifică cu <code>git --version</code>. La prima '
+          "clonare, Git poate cere autentificarea în contul GitHub, într-o fereastră din browser. Commit, push și "
           "lucrul pe ramuri, în <code>proiect/</code>, sunt la cursul 3."))
 
 
-sl("s22", "Mai departe", "Până data viitoare",
+sl("s22", "Mai departe", "Pentru cursul următor",
    "<h2>Cursul 3: versionare și colaborare</h2>"
    "<ul>"
    "<li>Git în <code>proiect/</code>: istoricul și lucrul în echipă</li>"
    "<li>pregătirea și explorarea datelor colectate</li>"
    "<li>cadrul teoretic al proiectului</li>"
-   "<li>tema echipei și cine ce face</li>"
+   "<li>tema echipei și împărțirea sarcinilor</li>"
    "</ul>"
    + nota("De făcut până atunci",
           "Caietul 02 rulat, cu <code>bm.csv</code> și <code>migratie.csv</code> în "
-          "<code>curs/data/c2</code>. Depozitul echipei, clonat în <code>dsw/proiect</code>. Și fișa "
-          "echipei de la finalul caietului: direcția provizorie și indicatorul încercat.", True))
+          "<code>curs/data/c2</code>. Depozitul echipei, clonat în <code>dsw/proiect</code>. Fișa "
+          "echipei de la finalul caietului, completată: direcția provizorie și indicatorul încercat.", True))
 
 
 if __name__ == "__main__":

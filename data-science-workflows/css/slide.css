@@ -32,11 +32,10 @@
   display:flex;flex-direction:column;min-height:0;overflow:hidden}
 
 .sina__cap{flex:none;padding:13px 14px 9px;border-bottom:1px solid var(--crom-linie)}
-.sina__et{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:7px}
-.sina__t{font-family:var(--sans);font-size:14px;font-weight:600;line-height:1.3;
+.sina__et{font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);display:block;margin-bottom:7px}
+.sina__t{font-family:var(--sans);font-size:var(--t2);font-weight:600;line-height:1.3;
   letter-spacing:-.012em;display:block;color:var(--text)}
-.sina__sub{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-top:6px;
+.sina__sub{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-top:6px;
   display:flex;align-items:center;gap:7px}
 .sina__bara{flex:1;height:3px;border-radius:2px;background:var(--crom-2);
   overflow:hidden;min-width:0}
@@ -46,14 +45,14 @@
 .sina__lista{flex:1;overflow-y:auto;padding:6px 0 10px;scrollbar-width:thin}
 .sina__lista::-webkit-scrollbar{width:9px}
 .sina__lista::-webkit-scrollbar-thumb{background:var(--linie-2);border-radius:5px;
-  border:3px solid var(--crom)}
+  border:2px solid var(--crom)}
 
 .rnd{display:flex;align-items:center;gap:9px;width:100%;text-align:left;
   padding:5px 13px 5px 10px;border-left:2px solid transparent;
-  font-family:var(--sans);font-size:13px;line-height:1.35;color:var(--crom-text);
+  font-family:var(--sans);font-size:var(--t2);line-height:1.35;color:var(--crom-text);
   transition:background .1s,color .1s}
 .rnd:hover{background:var(--crom-2);color:var(--text)}
-.rnd__n{font-family:var(--mono);font-size:10.5px;color:var(--text-3);flex:none;
+.rnd__n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);flex:none;
   width:2ch;text-align:right;font-variant-numeric:lining-nums tabular-nums}
 .rnd__t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rnd__s{flex:none;width:13px;height:13px;display:grid;place-items:center;
@@ -68,14 +67,13 @@
 .rnd.blocat .rnd__t{opacity:.75}
 
 /* grup: un titlu de secțiune peste câteva slide-uri */
-.sina__grup{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--text-3);padding:14px 13px 5px 14px}
+.sina__grup{font-family:var(--sans);font-size:var(--t1);font-weight:500;color:var(--text-3);padding:14px 13px 5px 14px}
 .sina__grup:first-child{padding-top:8px}
 
 .sina__jos{flex:none;border-top:1px solid var(--crom-linie);padding:9px 11px;
   display:flex;flex-direction:column;gap:2px}
 .sina__leg{display:flex;align-items:center;gap:8px;padding:5px 3px;border-radius:5px;
-  font-family:var(--sans);font-size:12.5px;color:var(--crom-text);text-decoration:none;
+  font-family:var(--sans);font-size:var(--t1);color:var(--crom-text);text-decoration:none;
   transition:.1s}
 .sina__leg:hover{background:var(--crom-2);color:var(--text)}
 .sina__leg svg{width:13px;height:13px;flex:none;opacity:.8}
@@ -91,24 +89,23 @@
 @keyframes sldIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 .sld__cap{display:flex;align-items:center;gap:11px;margin-bottom:17px}
-.sld__nr{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;
+.sld__nr{font-family:var(--sans);font-size:var(--t1);font-weight:500;
   color:var(--text-3);font-variant-numeric:lining-nums tabular-nums}
 .sld__hr{flex:1;height:1px;background:var(--linie)}
-.sld h2{font-size:28px;margin:0 0 20px;letter-spacing:-.022em}
-.sld h3{font-size:18px;margin:30px 0 10px}
+.sld h2{font-size:var(--t6);margin:0 0 20px;letter-spacing:-.022em}
+.sld h3{font-size:var(--t4);margin:30px 0 10px}
 .sld > p, .sld > ul, .sld > ol{max-width:66ch}
 .sld > p:last-child{margin-bottom:0}
 
 /* o idee scoasa in afara coloanei, cand merita accentuata */
-.sld .cheie{font-family:var(--sans);font-size:19px;line-height:1.45;font-weight:500;
-  color:var(--text);border-left:2px solid var(--accent);padding-left:17px;
-  margin:0 0 24px;max-width:58ch}
+.sld .cheie{font-family:var(--sans);font-size:var(--t5);line-height:1.45;font-weight:450;
+  color:var(--text-2);margin:0 0 24px;max-width:58ch}
 
 /* --- bara de stare, jos -------------------------------------------------- */
 
 .stare{flex:none;height:var(--bara);background:var(--crom);
   border-top:1px solid var(--crom-linie);display:flex;align-items:center;
-  gap:0;padding:0 8px 0 4px;font-family:var(--mono);font-size:11px;color:var(--crom-text);
+  gap:0;padding:0 8px 0 4px;font-family:var(--sans);font-size:var(--t1);color:var(--crom-text);
   user-select:none}
 .stare__c{display:flex;align-items:center;gap:6px;padding:0 9px;height:100%;
   border-radius:0;white-space:nowrap}
@@ -132,9 +129,9 @@ button.stare__c:disabled{opacity:.4;cursor:not-allowed}
 .poarta__ic{flex:none;width:26px;height:26px;border-radius:7px;background:var(--panza);
   border:1px solid var(--linie);display:grid;place-items:center;color:var(--text-3)}
 .poarta__ic svg{width:14px;height:14px}
-.poarta__t{font-family:var(--sans);font-size:14px;font-weight:500;margin:0 0 3px;
+.poarta__t{font-family:var(--sans);font-size:var(--t2);font-weight:500;margin:0 0 3px;
   line-height:1.35}
-.poarta__d{font-family:var(--sans);font-size:13px;color:var(--text-2);margin:0;
+.poarta__d{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:0;
   line-height:1.45;max-width:none}
 .poarta.deschisa{border-style:solid;border-color:color-mix(in srgb,var(--ok) 40%,transparent);
   background:var(--ok-slab)}
@@ -148,14 +145,14 @@ button.stare__c:disabled{opacity:.4;cursor:not-allowed}
 .pasi__gol{flex:1}
 .pas{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:8px;
   border:1px solid var(--linie-2);background:var(--panza);font-family:var(--sans);
-  font-size:13.5px;font-weight:500;color:var(--text);transition:.13s}
+  font-size:var(--t2);font-weight:500;color:var(--text);transition:.13s}
 .pas:hover:not(:disabled){border-color:var(--text-3);box-shadow:var(--umbra)}
 .pas:disabled{opacity:.45;cursor:not-allowed}
 .pas--tare{background:var(--buton);color:var(--buton-text);border-color:var(--buton)}
 .pas--tare:hover:not(:disabled){opacity:.88}
 .pas--tare:disabled{background:var(--panza);color:var(--text-3);border-color:var(--linie)}
 .pas svg{width:14px;height:14px}
-.pas__nota{font-family:var(--sans);font-size:12.5px;color:var(--text-3);
+.pas__nota{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
   max-width:28ch;line-height:1.35}
 
 /* --- saritura la slide: paleta ------------------------------------------- */
@@ -170,28 +167,28 @@ button.stare__c:disabled{opacity:.4;cursor:not-allowed}
   border-bottom:1px solid var(--linie)}
 .plt__cauta svg{width:15px;height:15px;color:var(--text-3);flex:none}
 .plt__cauta input{flex:1;border:0;background:none;outline:none;font-family:var(--sans);
-  font-size:15px;color:var(--text)}
+  font-size:var(--t3);color:var(--text)}
 .plt__cauta input::placeholder{color:var(--text-3)}
 .plt__lista{max-height:46vh;overflow-y:auto;padding:6px}
 .plt__r{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
-  padding:8px 11px;border-radius:7px;font-family:var(--sans);font-size:14px;
+  padding:8px 11px;border-radius:7px;font-family:var(--sans);font-size:var(--t2);
   color:var(--text);transition:background .08s}
 .plt__r:hover,.plt__r.sel{background:var(--accent-slab)}
-.plt__r .n{font-family:var(--mono);font-size:11px;color:var(--text-3);width:2.5ch;
+.plt__r .n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);width:2.5ch;
   text-align:right;flex:none;font-variant-numeric:lining-nums tabular-nums}
 .plt__r .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.plt__r .g{font-family:var(--mono);font-size:10px;color:var(--text-3);flex:none}
+.plt__r .g{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);flex:none}
 .plt__jos{padding:8px 15px;border-top:1px solid var(--linie);background:var(--panza-2);
-  font-family:var(--mono);font-size:10.5px;color:var(--text-3);display:flex;gap:16px;
+  font-family:var(--sans);font-size:var(--t1);color:var(--text-3);display:flex;gap:16px;
   flex-wrap:wrap}
-kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px solid var(--linie-2);
+kbd{font-family:var(--mono);font-size:var(--t1);background:var(--panza);border:1px solid var(--linie-2);
   border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--text-2)}
 
 /* --- mesaj trecator ------------------------------------------------------ */
 
 .toast{position:fixed;left:50%;bottom:calc(var(--bara) + 18px);transform:translateX(-50%);
   z-index:210;background:var(--text);color:var(--fundal);font-family:var(--sans);
-  font-size:13.5px;padding:10px 17px;border-radius:9px;box-shadow:var(--umbra-2);
+  font-size:var(--t2);padding:10px 17px;border-radius:9px;box-shadow:var(--umbra-2);
   max-width:min(460px,90vw);text-align:center;line-height:1.4;
   opacity:0;transition:opacity .18s,transform .18s;pointer-events:none}
 .toast.vazut{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -209,13 +206,13 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
   .rnr__sina.deschisa{transform:none}
   .sina-btn{display:flex}
   .sld{padding:26px 20px 100px}
-  .sld h2{font-size:23px}
-  .sld .cheie{font-size:17.5px;padding-left:14px}
+  .sld h2{font-size:var(--t6)}
+  .sld .cheie{font-size:var(--t4)}
   .plt{padding-top:8vh}
 
   /* bara de stare, pe telefon: doar ce e de apăsat și poziția în lecție */
   .stare{padding:0 2px}
-  .stare__c{padding:0 10px;font-size:11.5px}
+  .stare__c{padding:0 10px;font-size:var(--t1)}
   .stare__c svg{width:15px;height:15px}
   .stare__ascuns-mic{display:none}
   #btn-plt span{display:none}
@@ -239,7 +236,7 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
           calc(9px + env(safe-area-inset-bottom,0px))
           max(14px,env(safe-area-inset-right,0px));
   border-top:1px solid var(--crom-linie);background:var(--crom);
-  font-family:var(--sans);font-size:12.5px;color:var(--text-2);
+  font-family:var(--sans);font-size:var(--t1);color:var(--text-2);
   min-height:46px;box-shadow:0 -2px 14px rgba(0,0,0,.05)}
 .ritm[hidden]{display:none}
 .ritm__sp{flex:1;min-width:0}
@@ -259,12 +256,12 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 
 /* codul: rămâne în bandă toată ora, pentru întârziați, și se apasă ca să
    revină mare pe proiector */
-.ritm__cod{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.17em;
+.ritm__cod{font-family:var(--mono);font-size:var(--t2);font-weight:500;letter-spacing:.17em;
   color:var(--text);background:var(--panza);border:1px solid var(--linie-2);
   border-radius:6px;padding:3px 9px;cursor:pointer;flex:none}
 .ritm__cod:hover{border-color:var(--accent);color:var(--accent-text)}
 
-.ritm__b{font:inherit;font-size:12px;padding:5px 11px;border-radius:7px;
+.ritm__b{font:inherit;font-size:var(--t1);padding:5px 11px;border-radius:7px;
   border:1px solid var(--linie-2);background:var(--panza);color:var(--text-2);
   cursor:pointer;white-space:nowrap;transition:.13s;flex:none;text-decoration:none}
 .ritm__b:hover{border-color:var(--accent);color:var(--accent-text)}
@@ -276,8 +273,8 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 
 /* rândul de stări: ceasul, apoi cele patru cifre cu glifele lor */
 .ritm__stari{display:flex;align-items:center;gap:12px;flex:none;flex-wrap:nowrap}
-.ritm__g{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);
-  font-size:11px;color:var(--text-3)}
+.ritm__g{display:inline-flex;align-items:center;gap:4px;font-family:var(--sans);
+  font-size:var(--t1);color:var(--text-3)}
 .ritm__g b{color:var(--text);font-weight:500;font-variant-numeric:tabular-nums}
 .ritm__g--trecut{color:var(--ok)}
 .ritm__g--trimis_gresit{color:var(--nu)}
@@ -285,8 +282,7 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 /* Ceasul numără în sus de când a apărut slide-ul. Chihlimbarul e un jeton
    separat, nu --nu: cărămiziul înseamnă „greșit" în tot situl, iar un ceas de
    aceeași culoare s-ar citi de la distanță ca un verdict. */
-.ceas{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;
-  letter-spacing:.04em;padding:2px 8px;border-radius:6px;flex:none;
+.ceas{font-family:var(--sans);font-size:var(--t1);font-variant-numeric:tabular-nums;padding:2px 8px;border-radius:6px;flex:none;
   color:var(--ok);background:var(--ok-slab);
   border:1px solid color-mix(in srgb,var(--ok) 34%,transparent);
   transition:color .4s,background .4s,border-color .4s}
@@ -309,7 +305,7 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 }
 
 @media(max-width:820px){
-  .ritm{font-size:12px;gap:9px;flex-wrap:wrap;min-height:0}
+  .ritm{font-size:var(--t1);gap:9px;flex-wrap:wrap;min-height:0}
   .ritm__d{flex-basis:100%;order:9}
   .sertar{max-height:52vh;bottom:70px}
   .are-sertar .rnr__scena{padding-bottom:calc(52vh + 86px)}
@@ -322,13 +318,12 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 
 .cod-mare{position:fixed;inset:0;z-index:400;background:var(--fundal);
   display:grid;place-items:center;padding:4vh 24px;overflow-y:auto}
-.cod-mare__x{position:absolute;top:14px;right:18px;font-size:30px;line-height:1;
+.cod-mare__x{position:absolute;top:14px;right:18px;font-size:var(--t7);line-height:1;
   color:var(--text-3);padding:4px 10px;border-radius:8px;background:none;border:0;
   cursor:pointer}
 .cod-mare__x:hover{background:var(--panza-2);color:var(--text)}
 .cod-mare__in{text-align:center;max-width:min(680px,92vw)}
-.cod-mare__et{font-family:var(--mono);font-size:11px;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--text-3);margin:0 0 10px;max-width:none}
+.cod-mare__et{font-family:var(--mono);font-size:var(--t1);color:var(--text-3);margin:0 0 10px;max-width:none}
 .cod-mare__c{font-family:var(--mono);font-weight:500;
   font-size:clamp(56px,13vw,132px);line-height:1;letter-spacing:.14em;
   color:var(--text);margin:0;text-indent:.14em;font-variant-numeric:lining-nums}
@@ -337,15 +332,15 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
 .cod-mare__qr{min-height:0;margin-top:22px}
 .cod-mare__qr img{width:min(260px,40vw);height:auto;display:inline-block;
   background:#fff;padding:12px;border-radius:12px}
-.cod-mare__d{font-family:var(--sans);font-size:13.5px;color:var(--text-3);
+.cod-mare__d{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);
   line-height:1.5;margin:20px auto 0;max-width:46ch}
 
 /* --- bara profesorului, cu codul la vedere -------------------------------- */
 
 .ritm__cod{display:flex;align-items:baseline;gap:7px;font-family:var(--mono);
-  font-size:16px;font-weight:500;letter-spacing:.1em;color:var(--text);
+  font-size:var(--t4);font-weight:500;letter-spacing:.1em;color:var(--text);
   background:none;border:0;padding:0 2px;cursor:pointer;border-radius:5px}
-.ritm__cod small{font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+.ritm__cod small{font-size:var(--t1);
   color:var(--text-3)}
 .ritm__cod:hover{color:var(--accent-text)}
 .ritm__d b{color:var(--text);font-weight:600}
@@ -368,12 +363,12 @@ kbd{font-family:var(--mono);font-size:10px;background:var(--panza);border:1px so
   border:1px solid var(--linie);border-radius:9px;padding:2px;
   backdrop-filter:blur(6px);opacity:.42;transition:opacity .18s}
 .nav-sus:hover,.nav-sus:focus-within{opacity:1}
-.nav-sus__b{font-family:var(--sans);font-size:16px;line-height:1;color:var(--text-2);
+.nav-sus__b{font-family:var(--sans);font-size:var(--t4);line-height:1;color:var(--text-2);
   background:none;border:0;border-radius:7px;padding:6px 10px;cursor:pointer}
 .nav-sus__b:hover{background:var(--panza-2);color:var(--text)}
 .nav-sus__b:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-.nav-sus__b--f{font-size:13px}
-.nav-sus__n{font-family:var(--mono);font-size:11px;color:var(--text-3);
+.nav-sus__b--f{font-size:var(--t2)}
+.nav-sus__n{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
   padding:0 5px;font-variant-numeric:tabular-nums;min-width:38px;text-align:center}
 
 /* Prezentare: rămâne slide-ul și banda orei. Pleacă antetul, cuprinsul, bara
@@ -385,7 +380,7 @@ body.prezint .flux--banda{display:none}
 body.prezint .rnr{grid-template-columns:minmax(0,1fr)}
 body.prezint .nav-sus{top:max(12px,env(safe-area-inset-top,0px))}
 body.prezint .sld{padding-top:52px;max-width:1040px}
-body.prezint .sld h2{font-size:34px}
+body.prezint .sld h2{font-size:var(--t7)}
 body.prezint .sld{font-size:1.06em}
 
 @media(max-width:700px){
@@ -396,7 +391,7 @@ body.prezint .sld{font-size:1.06em}
 /* bara orei: „Arată clasei” apăsat, și copierea din codul mare */
 .ritm__b--on{background:var(--ambra-slab);border-color:var(--ambra);color:var(--ambra)}
 .ritm__b--on:hover{border-color:var(--ambra);color:var(--ambra)}
-.cod-mare__copiaza{margin-top:18px;font-family:var(--sans);font-size:13px;padding:7px 14px}
+.cod-mare__copiaza{margin-top:18px;font-family:var(--sans);font-size:var(--t2);padding:7px 14px}
 
 /* --- rezultatele orei, peste lecție (doar profesorul) ---------------------- */
 .rz{position:fixed;inset:0;z-index:90;background:rgba(20,20,15,.42);display:grid;place-items:center;padding:24px}
@@ -405,32 +400,32 @@ body.prezint .sld{font-size:1.06em}
 .rz__cap{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:12px 16px;
   background:var(--fundal);border-bottom:1px solid var(--linie)}
 .rz__file{display:flex;gap:4px;flex:1}
-.rz__file button{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--text-2);background:none;
+.rz__file button{font-family:var(--sans);font-size:var(--t2);font-weight:500;color:var(--text-2);background:none;
   border:0;border-bottom:2px solid transparent;padding:6px 10px;cursor:pointer}
 .rz__file button.on{color:var(--text);border-bottom-color:var(--ambra)}
-.rz__x{font-size:18px;line-height:1;width:34px;height:34px;border-radius:50%;border:1px solid var(--linie-2);
+.rz__x{font-size:var(--t4);line-height:1;width:34px;height:34px;border-radius:50%;border:1px solid var(--linie-2);
   background:var(--panza);color:var(--text-2);cursor:pointer}
 .rz__x:hover{color:var(--text);border-color:var(--text-3)}
 .rz__corp{padding:20px 22px 26px}
-.rz__gol{font-family:var(--sans);font-size:14px;color:var(--text-3)}
-.rz__h{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+.rz__gol{font-family:var(--sans);font-size:var(--t2);color:var(--text-3)}
+.rz__h{font-family:var(--sans);font-size:var(--t1);font-weight:500;
   color:var(--text-3);margin:24px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--linie)}
 .rz__cif{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .rz__cif div{border:1px solid var(--linie);border-radius:10px;background:var(--panza);padding:12px 14px}
-.rz__cif b{display:block;font-family:var(--sans);font-size:26px;font-weight:600;color:var(--text)}
-.rz__cif b small{font-size:13px;color:var(--text-3);font-weight:500}
-.rz__cif span{font-family:var(--sans);font-size:12.5px;color:var(--text-2)}
+.rz__cif b{display:block;font-family:var(--sans);font-size:var(--t6);font-weight:600;color:var(--text)}
+.rz__cif b small{font-size:var(--t2);color:var(--text-3);font-weight:500}
+.rz__cif span{font-family:var(--sans);font-size:var(--t1);color:var(--text-2)}
 .rz__cif div:nth-child(1) b{color:var(--ambra)}
-.rz__imp{font-family:var(--sans);font-size:14px;color:var(--text-2);margin:14px 0 0;padding:10px 14px;
-  border-left:3px solid var(--roza);background:var(--roza-slab);border-radius:0 8px 8px 0}
+.rz__imp{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:14px 0 0;padding:10px 14px;
+  border-left:2px solid var(--roza);background:var(--roza-slab);border-radius:0 8px 8px 0}
 .rz__txt{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
 .rz__t{border:1px solid var(--linie);border-radius:10px;background:var(--panza);padding:10px 12px;min-width:0}
-.rz__t.bun{border-left:3px solid var(--ok)}
-.rz__t b{display:block;font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px}
-.rz__t p{font-family:var(--sans);font-size:14px;color:var(--text);margin:0;line-height:1.5}
-.rz__t pre{font-family:var(--mono);font-size:12px;margin:0;white-space:pre-wrap;word-break:break-word;
+.rz__t.bun{border-left:2px solid var(--ok)}
+.rz__t b{display:block;font-family:var(--sans);font-size:var(--t2);font-weight:600;margin-bottom:4px}
+.rz__t p{font-family:var(--sans);font-size:var(--t2);color:var(--text);margin:0;line-height:1.5}
+.rz__t pre{font-family:var(--mono);font-size:var(--t1);margin:0;white-space:pre-wrap;word-break:break-word;
   color:var(--text);max-height:180px;overflow:auto}
-.rz__t b small{font-weight:400;color:var(--text-3);font-family:var(--mono);font-size:10.5px;margin-left:4px}
+.rz__t b small{font-weight:400;color:var(--text-3);font-family:var(--sans);font-size:var(--t1);margin-left:4px}
 
 /* ===========================================================================
    SLIDE-URI MAI AERISITE
@@ -440,24 +435,24 @@ body.prezint .sld{font-size:1.06em}
    =========================================================================== */
 .sld .ix{background:none;border:0;border-radius:0;overflow:visible;margin:0 0 20px}
 .sld .ix__cap{padding:0 0 8px;background:none;border:0}
-.sld .ix__fel{font-size:9.5px;color:var(--text-3)}
-.sld .ix__t{font-size:13px;color:var(--text-2);font-weight:400}
+.sld .ix__fel{display:none}
+.sld .ix__t{font-size:var(--t2);color:var(--text-2);font-weight:400}
 .sld .ix__corp{padding:0}
 .sld .ix > .ix__corp + div,
 .sld .ix > .ix__corp:has(> :not(script)) + div{padding:0}
-.sld .ix__sarcina{font-size:14.5px;margin:0 0 10px}
+.sld .ix__sarcina{font-size:var(--t3);margin:0 0 10px}
 .sld .nota{background:none;border-left:2px solid var(--linie-2);padding:2px 0 2px 14px;margin:0 0 14px}
-.sld .nota p{font-size:15px;color:var(--text-2)}
+.sld .nota p{font-size:var(--t3);color:var(--text-2)}
 .sld .nota__et{margin-bottom:3px}
 .sld h2{margin-bottom:14px}
-.sld .cheie{font-size:18px;margin-bottom:18px}
+.sld .cheie{font-size:var(--t4);margin-bottom:18px}
 .sld > p{margin-bottom:14px}
 body.prezint .sld{padding-top:34px;padding-bottom:40px;max-width:1080px}
 body.prezint .sld__cap{margin-bottom:10px}
-body.prezint .sld h2{font-size:32px;margin-bottom:12px}
+body.prezint .sld h2{font-size:var(--t7);margin-bottom:12px}
 
 /* eticheta „date SCI”, pe slide-urile care arată SCI */
-.sld__sci{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+.sld__sci{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:var(--t1);
   color:var(--text-2);border:1px solid var(--linie-2);border-radius:20px;padding:2px 9px 2px 4px;white-space:nowrap}
 .sld__sci b{font-weight:600;color:var(--panza);background:var(--accent);border-radius:20px;padding:1px 6px;letter-spacing:.08em}
 
@@ -465,14 +460,14 @@ body.prezint .sld h2{font-size:32px;margin-bottom:12px}
 .sld .verif{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;max-width:none;
   background:none;border:0;border-top:1px solid var(--linie);border-radius:0;padding:14px 0 0;margin:18px 0 0}
 .sld .verif > :not(.verif__opt){grid-column:1 / -1}
-.sld .verif .verif__q{margin:0 0 4px;font-size:16px}
-.sld .verif .verif__opt{margin:0;font-family:var(--sans);font-size:14.5px;padding:9px 12px}
-.sld .verif .verif__ex{margin:4px 0 0;padding:10px 14px;font-size:14.5px}
+.sld .verif .verif__q{margin:0 0 4px;font-size:var(--t4)}
+.sld .verif .verif__opt{margin:0;font-family:var(--sans);font-size:var(--t3);padding:9px 12px}
+.sld .verif .verif__ex{margin:4px 0 0;padding:10px 14px;font-size:var(--t3)}
 body.prezint #s5m .hs--slide{height:min(52vh,470px)}
 
 /* poarta de sub exerciții, pe slide: o linie discretă, nu o cutie */
 .sld .poarta{background:none;border:0;border-top:1px dashed var(--linie-2);border-radius:0;padding:8px 0 0;margin:14px 0 0;gap:8px;align-items:center}
 .sld .poarta__ic{width:20px;height:20px;border:0;background:none}
-.sld .poarta__t{font-size:13px;margin:0}
+.sld .poarta__t{font-size:var(--t2);margin:0}
 .sld .poarta__d{display:none}
 .sld .poarta.deschisa{background:none}

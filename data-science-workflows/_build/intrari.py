@@ -28,9 +28,9 @@ D = json.loads(_T)
 ETICHETE = {
     "Despre lecția asta": ("despre", "Despre"),
     "Ce va conține": ("despre", "Despre"),
-    "La final vei putea": ("obiective", "La final vei putea"),
-    "De ce ai nevoie, înainte": ("nevoie", "De ce ai nevoie, înainte"),
-    "Ce adaugi la proiect": ("proiect", "Ce adaugi la proiect"),
+    "La final vei putea": ("obiective", "La finalul lecției vei putea"),
+    "De ce ai nevoie, înainte": ("nevoie", "Pregătire"),
+    "Ce adaugi la proiect": ("proiect", "Ce se adaugă la proiect"),
 }
 
 IC = {
@@ -45,7 +45,7 @@ IC = {
 def curata(h):
     h = re.sub(r"\n\s+", "\n", h)
     h = h.replace("cu atribute aduse prin API de la Eurostat și Banca Mondială",
-                  "cu migrația adusă prin API de la Eurostat și câțiva indicatori de la Banca Mondială")
+                  "cu migrația, obținută prin API de la Eurostat, și câțiva indicatori de la Banca Mondială")
     h = h.replace(' style="color:var(--text-2);font-size:16.5px"', "")
     return h
 
@@ -64,11 +64,11 @@ def pagina(cheie, x):
             sec.append("@@MATERIALE@@")
     corp = "".join(sec)
 
-    mat = [("lectie/#1", IC["lectie"], "Lecția", "Slide-urile, cu exercițiile din oră. Se pornește mereu de la primul.", False),
-           ("tutorial/", IC["manual"], "Manualul", "Tot materialul, pe larg, de citit în ritmul tău.", False)]
+    mat = [("lectie/#1", IC["lectie"], "Lecția", "Slide-urile lecției, cu exercițiile de la curs. Se deschid mereu de la primul slide.", False),
+           ("tutorial/", IC["manual"], "Manualul", "Materialul complet al lecției, pentru studiu individual.", False)]
     if x["caiet"]:
         mat.append((x["caiet"], IC["caiet"], "Caietul",
-                    x.get("caiet_d") or "Notebook-ul lecției, pe GitHub. Codul de la seminar.", True))
+                    x.get("caiet_d") or "Caietul Jupyter al lecției, pe GitHub, cu codul de la seminar.", True))
     for r in x["resurse"]:
         mat.append((r["href"], IC[r.get("ic", "alt")], r["t"], r["d"], r["href"].startswith("http")))
     materiale = f'''
@@ -101,7 +101,7 @@ def pagina(cheie, x):
     titlu = html.unescape(x["titlu"])
     are_lectie = (R / cheie / "lectie" / "index.html").exists()
     incepe = ('<a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>'
-              if are_lectie else '<span class="bl__b bl__b--stins">Lecția vine curând</span>')
+              if are_lectie else '<span class="bl__b bl__b--stins">Lecție în pregătire</span>')
     preda = ('<a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden '
              'title="Pornește ora pentru grupă și deschide lecția">Predă</a>' if are_lectie else "")
 
@@ -143,8 +143,8 @@ def pagina(cheie, x):
     <p class="intr__tag">Lecția {nr} din 8</p>
     <h1>{titlu}</h1>
     <p class="deck">{x["deck"]}</p>
-    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce o facem la oră.
-    Până atunci poți citi ce urmează, mai jos.</p>
+    <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
+    Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 {corp}
 
@@ -168,7 +168,7 @@ try {{
       b.removeAttribute("hidden");
       /* dacă ora lecției ăsteia e deja pornită, butonul te duce în ea */
       const viu = await O.deschisa("c{nr}");
-      if (viu){{ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora e pornită"; }}
+      if (viu){{ b.textContent = "● Înapoi la oră"; b.href = "lectie/#" + (viu.slide_nr || 1); b.title = "Ora este în desfășurare"; }}
       /* altfel butonul pornește ora direct: nu alegi nicio grupă, cine are
          codul intră, iar fiecare student e deja în grupa lui din listă */
     }}

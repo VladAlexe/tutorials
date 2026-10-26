@@ -7,7 +7,7 @@
    "nr": 1,
    "id": "s1",
    "grup": "Cursul",
-   "titlu": "Despre ce e ora de azi",
+   "titlu": "Planul lecției",
    "sarcini": []
   },
   {
@@ -20,12 +20,12 @@
      "id": "c5-v1",
      "fel": "verificare",
      "corect": 1,
-     "q": "Echipa voastră are 40.000 de rânduri și trei oameni care lucrează pe ele. Ce argument e cel mai bun pentru o bază de date?",
+     "q": "O echipă are un tabel de 40.000 de rânduri și trei membri care lucrează pe el. Care este cel mai bun argument pentru o bază de date?",
      "optiuni": [
-      "Că 40.000 de rânduri sunt prea multe pentru pandas",
-      "Că trei oameni au nevoie de o singură copie, nu de trei",
-      "Că bazele de date sunt mai rapide",
-      "Că așa se face în industrie"
+      "40.000 de rânduri sunt prea multe pentru pandas",
+      "Trei persoane au nevoie de o singură copie a datelor, nu de trei",
+      "Bazele de date sunt mai rapide",
+      "Este practica obișnuită în industrie"
      ]
     }
    ]
@@ -41,7 +41,7 @@
    "nr": 4,
    "id": "s4",
    "grup": "Unirea tabelelor",
-   "titlu": "Ce iese din fiecare fel",
+   "titlu": "Rezultatul fiecărui tip",
    "sarcini": [
     {
      "id": "c5-imbinare-feluri",
@@ -65,13 +65,13 @@
    "nr": 6,
    "id": "s6",
    "grup": "Unirea tabelelor",
-   "titlu": "Când rândurile se înmulțesc",
+   "titlu": "Rânduri multiplicate",
    "sarcini": [
     {
      "id": "c5-v4",
      "fel": "verificare",
      "corect": 2,
-     "q": "Vrei ca merge-ul să crape dacă o cheie apare de mai multe ori în dreapta. Ce adaugi?",
+     "q": "Vrei ca merge-ul să se oprească cu o eroare dacă o cheie apare de mai multe ori în dreapta. Ce parametru adaugi?",
      "optiuni": [
       "how=\"inner\"",
       "on=[\"cod\", \"an\"]",
@@ -127,7 +127,7 @@
    "nr": 11,
    "id": "s11",
    "grup": "Baze de date",
-   "titlu": "Ce e Neon",
+   "titlu": "Ce este Neon",
    "sarcini": []
   },
   {
@@ -153,7 +153,7 @@
    "nr": 14,
    "id": "s14",
    "grup": "Baze de date",
-   "titlu": "Scrii și citești",
+   "titlu": "Scriere și citire",
    "sarcini": [
     {
      "id": "c5-cod-tosql",
@@ -165,7 +165,7 @@
    "nr": 15,
    "id": "s15",
    "grup": "Baze de date",
-   "titlu": "SQL, cât vă trebuie",
+   "titlu": "SQL: noțiunile de bază",
    "sarcini": [
     {
      "id": "c5-cod-sql",
@@ -184,14 +184,14 @@
    "nr": 17,
    "id": "s17",
    "grup": "Baze de date",
-   "titlu": "Unde faci ce",
+   "titlu": "Bază sau pandas",
    "sarcini": []
   },
   {
    "nr": 18,
    "id": "s19",
    "grup": "Proiectul tău",
-   "titlu": "Fă tabelul final",
+   "titlu": "Tabelul final",
    "sarcini": [
     {
      "id": "c5-dovada-baza",
@@ -203,7 +203,7 @@
    "nr": 19,
    "id": "s20",
    "grup": "Proiectul tău",
-   "titlu": "Unitatea voastră",
+   "titlu": "Unitatea proiectului",
    "sarcini": [
     {
      "id": "c5-unitate",
@@ -215,7 +215,7 @@
    "nr": 20,
    "id": "s21",
    "grup": "Mai departe",
-   "titlu": "Până data viitoare",
+   "titlu": "Pentru cursul următor",
    "sarcini": []
   }
  ]

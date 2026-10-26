@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catalog · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=69">
-<link rel="stylesheet" href="../css/sistem.css?v=69">
-<link rel="stylesheet" href="../css/panou.css?v=69">
-<link rel="stylesheet" href="../css/predau.css?v=69">
-<script src="../js/tema.js?v=69"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=73">
+<link rel="stylesheet" href="../css/sistem.css?v=73">
+<link rel="stylesheet" href="../css/panou.css?v=73">
+<link rel="stylesheet" href="../css/predau.css?v=73">
+<script src="../js/tema.js?v=73"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -24,38 +24,36 @@
      ========================================================================== */
   .pd{max-width:1240px}
   .pp__cap{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:28px 0 16px}
-  .pp__et{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ambra);margin:0 0 6px}
-  .pp__t{font-family:var(--sans);font-size:27px;font-weight:600;letter-spacing:-.022em;margin:0}
+  .pp__et{font-family:var(--sans);font-size:var(--t1);color:var(--ambra);margin:0 0 6px}
+  .pp__t{font-family:var(--sans);font-size:var(--t6);font-weight:600;letter-spacing:-.022em;margin:0}
 
   .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:4px 0 20px}
   .kpi__c{border:1px solid var(--linie);border-radius:10px;background:var(--panza);padding:12px 15px}
-  .kpi__n{font-family:var(--sans);font-size:24px;font-weight:600;letter-spacing:-.02em;margin:0;color:var(--text)}
-  .kpi__n small{font-size:13px;color:var(--text-3);font-weight:500}
-  .kpi__e{font-family:var(--sans);font-size:12.5px;color:var(--text-2);margin:2px 0 0}
+  .kpi__n{font-family:var(--sans);font-size:var(--t6);font-weight:600;letter-spacing:-.02em;margin:0;color:var(--text)}
+  .kpi__n small{font-size:var(--t2);color:var(--text-3);font-weight:500}
+  .kpi__e{font-family:var(--sans);font-size:var(--t1);color:var(--text-2);margin:2px 0 0}
   .kpi__c:nth-child(1) .kpi__n{color:var(--accent-text)}
-  .kpi__c:nth-child(2) .kpi__n{color:var(--ambra)}
-  .kpi__c:nth-child(3) .kpi__n{color:var(--roza)}
 
   .file2{display:flex;gap:2px;border-bottom:1px solid var(--linie);margin:0 0 18px}
-  .file2 a{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--text-2);text-decoration:none;
+  .file2 a{font-family:var(--sans);font-size:var(--t2);font-weight:500;color:var(--text-2);text-decoration:none;
     padding:9px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}
   .file2 a:hover{color:var(--text)}
   .file2 a.on{color:var(--text);border-bottom-color:var(--ambra)}
   .vedere[hidden]{display:none}
 
   .unelte{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
-  .unelte input[type=search]{font-family:var(--sans);font-size:13.5px;padding:7px 11px;border-radius:8px;
+  .unelte input[type=search]{font-family:var(--sans);font-size:var(--t2);padding:7px 11px;border-radius:8px;
     border:1px solid var(--linie-2);background:var(--panza);color:var(--text);min-width:220px}
   .unelte .sp{flex:1}
-  .nota-mica{font-family:var(--sans);font-size:12.5px;color:var(--text-3);margin:10px 0 0;max-width:80ch}
+  .nota-mica{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:10px 0 0;max-width:80ch}
 
   /* catalogul */
   .cat__sul{overflow:auto;border:1px solid var(--linie);border-radius:10px;background:var(--panza);max-height:72vh}
-  .cat{border-collapse:separate;border-spacing:0;width:100%;font-family:var(--sans);font-size:13px}
-  .cat th{position:sticky;top:0;z-index:2;background:var(--panza);text-align:center;font-family:var(--mono);
-    font-weight:500;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);
+  .cat{border-collapse:separate;border-spacing:0;width:100%;font-family:var(--sans);font-size:var(--t2)}
+  .cat th{position:sticky;top:0;z-index:2;background:var(--panza);text-align:center;font-family:var(--sans);
+    font-weight:500;font-size:var(--t1);color:var(--text-3);
     padding:9px 6px;border-bottom:1px solid var(--linie);white-space:nowrap}
-  .cat th small{display:block;letter-spacing:0;text-transform:none;font-size:10px;color:var(--text-3)}
+  .cat th small{display:block;letter-spacing:0;text-transform:none;font-size:var(--t1);color:var(--text-3)}
   .cat th.cs,.cat td.cs{text-align:left;position:sticky;left:0;z-index:1;background:var(--panza);
     padding-left:14px;min-width:190px;border-right:1px solid var(--linie)}
   .cat th.cs{z-index:3}
@@ -71,17 +69,17 @@
   .pz{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--linie-2)}
   .pz--da{background:var(--accent);border-color:var(--accent)}
   .pz--nu{border-style:dashed;opacity:.8}
-  .pz--np{border:0;background:none;color:var(--text-3);width:auto;height:auto;font-size:11px}
-  .cat input.n{width:52px;font-family:var(--mono);font-size:12.5px;text-align:center;padding:4px 4px;
+  .pz--np{border:0;background:none;color:var(--text-3);width:auto;height:auto;font-size:var(--t1)}
+  .cat input.n{width:52px;font-family:var(--mono);font-size:var(--t1);text-align:center;padding:4px 4px;
     border:1px solid var(--linie);border-radius:6px;background:var(--fundal);color:var(--text)}
   .cat input.n:focus{outline:none;border-color:var(--ambra);box-shadow:0 0 0 2px var(--ambra-slab)}
   .cat input.n.salvat{border-color:var(--ok)}
   .cat input.n.rau{border-color:var(--nu)}
-  .cat .act{font-family:var(--mono);font-size:12.5px}
-  .cat .tot{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text)}
+  .cat .act{font-family:var(--sans);font-size:var(--t1)}
+  .cat .tot{font-family:var(--sans);font-size:var(--t2);font-weight:600;color:var(--text)}
   .cat .bara{display:inline-block;width:46px;height:4px;border-radius:9px;background:var(--panza-2);overflow:hidden;vertical-align:middle;margin-left:6px}
   .cat .bara i{display:block;height:100%;background:var(--ambra)}
-  .eticheta{display:inline-block;font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:9px;
+  .eticheta{display:inline-block;font-family:var(--sans);font-size:var(--t1);padding:1px 6px;border-radius:9px;
     border:1px solid var(--linie-2);color:var(--text-3);margin-left:6px;vertical-align:1px}
 
   /* lecțiile */
@@ -89,13 +87,13 @@
   .lec2__r{display:grid;grid-template-columns:44px minmax(0,1fr) 120px 170px auto;gap:12px;align-items:center;
     padding:12px 16px;border-top:1px solid var(--linie)}
   .lec2__r:first-child{border-top:0}
-  .lec2__nr{font-family:var(--mono);font-size:13px;color:var(--accent-text);font-weight:500}
-  .lec2__t{font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--text)}
-  .lec2__d{font-family:var(--sans);font-size:12.5px;color:var(--text-2)}
+  .lec2__nr{font-family:var(--sans);font-size:var(--t2);color:var(--accent-text);font-weight:500}
+  .lec2__t{font-family:var(--sans);font-size:var(--t3);font-weight:600;color:var(--text)}
+  .lec2__d{font-family:var(--sans);font-size:var(--t1);color:var(--text-2)}
   .lec2__r.nepredata .lec2__t,.lec2__r.nepredata .lec2__nr{color:var(--text-3)}
   .lec2__det{grid-column:1/-1;padding:16px 0 4px;border-top:1px dashed var(--linie-2);margin-top:6px}
   .lec2__det[hidden]{display:none}
-  .lec2__det h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);
+  .lec2__det h3{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
     margin:18px 0 10px;font-weight:500}
   .lec2__det h3:first-child{margin-top:0}
   @media(max-width:900px){.lec2__r{grid-template-columns:36px minmax(0,1fr) auto}.lec2__r .ascunde{display:none}}
@@ -104,34 +102,34 @@
   .sed__rap{grid-column:1/-1;width:100%;max-width:none;margin-top:14px;padding-top:16px;border-top:1px dashed var(--linie-2)}
   .sed__rap[hidden]{display:none}
   details.arh{margin-top:18px}
-  details.arh summary{cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--text-2);padding:6px 0}
+  details.arh summary{cursor:pointer;font-family:var(--sans);font-size:var(--t1);color:var(--text-2);padding:6px 0}
 
   .st--viu{border-color:color-mix(in srgb,var(--ambra) 40%,var(--linie));background:var(--ambra-slab);margin-bottom:14px}
   .st--viu .st__pct{background:var(--ambra);box-shadow:0 0 0 3px color-mix(in srgb,var(--ambra) 22%,transparent)}
-  .gol-s{font-family:var(--sans);font-size:13.5px;color:var(--text-3);padding:12px 0;margin:0}
+  .gol-s{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);padding:12px 0;margin:0}
 
   .grupe{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
-  .grupa{font-family:var(--sans);font-size:14px;font-weight:500;padding:7px 14px;border-radius:20px;cursor:pointer;
+  .grupa{font-family:var(--sans);font-size:var(--t2);font-weight:500;padding:7px 14px;border-radius:20px;cursor:pointer;
     border:1px solid var(--linie-2);background:var(--panza);color:var(--text-2)}
-  .grupa small{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-left:4px}
+  .grupa small{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-left:4px}
   .grupa:hover{color:var(--text);border-color:var(--text-3)}
   .grupa.on{background:var(--ambra);border-color:var(--ambra);color:#fff}
   .grupa.on small{color:rgba(255,255,255,.8)}
   .btn-sterge{color:var(--nu);border-color:color-mix(in srgb,var(--nu) 35%,var(--linie))}
 
-  .obs-b{all:unset;cursor:pointer;color:var(--text-3);font-size:14px;padding:2px 6px;border-radius:6px}
+  .obs-b{all:unset;cursor:pointer;color:var(--text-3);font-size:var(--t2);padding:2px 6px;border-radius:6px}
   .obs-b:hover{background:var(--panza-2);color:var(--text)}
   .obs-b.are{color:var(--ambra)}
   .fisa__in{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-  .fisa__in label{display:flex;flex-direction:column;gap:4px;font-family:var(--sans);font-size:12.5px;color:var(--text-2)}
-  .fisa__in label small{font-family:var(--mono);font-size:10px;color:var(--text-3)}
-  .fisa__in input.n{width:100%;font-family:var(--mono);font-size:14px;text-align:center;padding:7px;border:1px solid var(--linie-2);
+  .fisa__in label{display:flex;flex-direction:column;gap:4px;font-family:var(--sans);font-size:var(--t1);color:var(--text-2)}
+  .fisa__in label small{font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
+  .fisa__in input.n{width:100%;font-family:var(--mono);font-size:var(--t2);text-align:center;padding:7px;border:1px solid var(--linie-2);
     border-radius:8px;background:var(--panza);color:var(--text)}
   .fisa__in input.n.salvat{border-color:var(--ok)} .fisa__in input.n.rau{border-color:var(--nu)}
-  .fisa__obs{width:100%;font-family:var(--sans);font-size:14px;line-height:1.5;padding:10px 12px;border:1px solid var(--linie-2);
+  .fisa__obs{width:100%;font-family:var(--sans);font-size:var(--t2);line-height:1.5;padding:10px 12px;border:1px solid var(--linie-2);
     border-radius:9px;background:var(--panza);color:var(--text);resize:vertical}
   .fisa__obs:focus{outline:none;border-color:var(--ambra);box-shadow:0 0 0 2px var(--ambra-slab)}
-  .lec2__h{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin:18px 0 10px;font-weight:500}
+  .lec2__h{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:18px 0 10px;font-weight:500}
   .tabla2{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
 
   /* fișa studentului */
@@ -139,18 +137,18 @@
   .fisa{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:var(--fundal);z-index:81;
     border-left:1px solid var(--linie);overflow-y:auto;padding:22px 24px 40px;box-shadow:var(--umbra)}
   .fisa__x{position:absolute;top:14px;right:16px}
-  .fisa h2{font-family:var(--sans);font-size:22px;margin:0 0 4px}
-  .fisa__m{font-family:var(--mono);font-size:11.5px;color:var(--text-3);margin:0 0 6px}
-  .fisa__cont{font-family:var(--sans);font-size:13px;color:var(--text-2);margin:0 0 18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .fisa h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);
+  .fisa h2{font-family:var(--sans);font-size:var(--t5);margin:0 0 4px}
+  .fisa__m{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:0 0 6px}
+  .fisa__cont{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:0 0 18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .fisa h3{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);
     margin:22px 0 10px;font-weight:500;padding-bottom:8px;border-bottom:1px solid var(--linie)}
   .fisa__note{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   .fisa__n{border:1px solid var(--linie);border-radius:9px;background:var(--panza);padding:10px 12px}
-  .fisa__n b{display:block;font-family:var(--sans);font-size:20px;font-weight:600}
-  .fisa__n span{font-family:var(--sans);font-size:12px;color:var(--text-2)}
+  .fisa__n b{display:block;font-family:var(--sans);font-size:var(--t5);font-weight:600}
+  .fisa__n span{font-family:var(--sans);font-size:var(--t1);color:var(--text-2)}
   .fisa__l{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;
-    border-bottom:1px solid var(--linie);font-family:var(--sans);font-size:13.5px}
-  .fisa__l .mic{font-size:11px}
+    border-bottom:1px solid var(--linie);font-family:var(--sans);font-size:var(--t2)}
+  .fisa__l .mic{font-size:var(--t1)}
 </style>
 </head>
 <body>
@@ -196,11 +194,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=69"></script>
-<script type="module" src="../js/subsol.js?v=69"></script>
+<script type="module" src="../js/antet.js?v=73"></script>
+<script type="module" src="../js/subsol.js?v=73"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=69";
-import * as O from "../js/ora.js?v=69";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=73";
+import * as O from "../js/ora.js?v=73";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -211,8 +209,8 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=69"); }
-catch { el("cat").textContent = "Nu pot încărca autentificarea."; throw 0; }
+try { A = await import("../js/auth.js?v=73"); }
+catch { el("cat").textContent = "Autentificarea nu a putut fi încărcată."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
 const sb = A.sb;
@@ -279,7 +277,7 @@ function deseneazaGrupe(){
   el("grupe").innerHTML = GRUPE.length ? GRUPE.map(g => `
     <button type="button" class="grupa ${g.id === grupa ? "on" : ""}" data-g="${esc(g.id)}">
       ${esc(g.nume)} <small>${g.n}</small></button>`).join("")
-    : `<span class="gol-s">Nicio grupă încă: pune studenții în tabelul <code>studenti</code>, cu grupa lor.</span>`;
+    : `<span class="gol-s">Nu există încă nicio grupă: adaugă studenții în tabelul <code>studenti</code>, cu grupa fiecăruia.</span>`;
   el("grupe").querySelectorAll("[data-g]").forEach(b => b.onclick = () => {
     grupa = b.dataset.g;
     try { localStorage.setItem("dsw.panou.grupa", grupa); } catch {}
@@ -298,9 +296,9 @@ async function acum(){
   const vii = rand.filter(x => x.vazut_la && Date.now() - new Date(x.vazut_la) < 90000);
   const c = k => rand.filter(x => x.stare === k).length;
   el("acum").innerHTML = `<div class="st st--viu">
-    <span class="st__pct"></span><span class="st__t">Ora e pornită · C${l?.nr ?? ""}${S.grupa ? " · " + esc(S.grupa) : ""}</span>
+    <span class="st__pct"></span><span class="st__t">Oră în desfășurare · C${l?.nr ?? ""}${S.grupa ? " · " + esc(S.grupa) : ""}</span>
     <span class="st__d">codul <strong>${S.cod || "—"}</strong> · slide ${S.slide_nr || 1}${S.total_nr ? " din " + S.total_nr : ""}
-      · <b>${vii.length}</b> în clasă${sarcini.length ? ` · pe slide: ✓ ${c("trecut")} ✕ ${c("trimis_gresit")} ◉ ${c("trimis_gol")}` : ""}
+      · <b>${vii.length}</b> în sală${sarcini.length ? ` · pe slide: ✓ ${c("trecut")} ✕ ${c("trimis_gresit")} ◉ ${c("trimis_gol")}` : ""}
       · de ${S.minute} min</span>
     <span class="st__sp"></span>
     <a class="btn btn--tare" href="${RADACINA}/${l?.cheie || ""}/lectie/#${S.slide_nr || 1}">Înapoi la oră</a></div>`;
@@ -337,16 +335,16 @@ let sortare = "nume", filtru = "";
 
 function catalog(){
   if (vechi){
-    el("cat").innerHTML = `<div class="gol"><p class="gol__t">Catalogul nu e pregătit în bază</p>
+    el("cat").innerHTML = `<div class="gol"><p class="gol__t">Catalogul nu este configurat în baza de date</p>
       <p class="gol__d">Rulează o dată, în ordine, <code>db/18-catalog.sql</code> și <code>db/20-grupe-si-curatenie.sql</code>
       în Supabase (SQL Editor). ${esc(catRaw?.eroare || "")}</p></div>`;
     el("cat-leg").textContent = "";
     return;
   }
   if (!CAT.length){
-    el("cat").innerHTML = `<div class="gol"><p class="gol__t">${grupa === INV ? "Niciun invitat" : "Grupa e goală"}</p>
+    el("cat").innerHTML = `<div class="gol"><p class="gol__t">${grupa === INV ? "Niciun invitat" : "Grupa nu are studenți"}</p>
       <p class="gol__d">${grupa === INV ? "Invitații apar aici când intră la oră fără cont."
-        : "Pune studenții grupei în tabelul <code>studenti</code> (matricol, nume, grupa_id), din SQL."}</p></div>`;
+        : "Adaugă studenții grupei în tabelul <code>studenti</code> (matricol, nume, grupa_id), din SQL."}</p></div>`;
     el("cat-leg").textContent = "";
     return;
   }
@@ -389,9 +387,9 @@ function catalog(){
     </tr>`).join("")}</tbody></table></div>`;
 
   el("cat-leg").innerHTML = `<b>Activitatea</b>: fiecare seminar valorează ${nr2(PCT.seminar / NOTARE.activitate.seminare)} puncte.
-    La fiecare întrebare au două șanse, una la oră și una acasă; contează doar primul răspuns din fiecare.
-    Corect la oră = întreg, corect acasă = jumătate. <b>Temele și proiectul</b> le scrii tu în tabel; se salvează când ieși din căsuță.
-    Totalul include ${PCT.oficiu || 0} punct din oficiu. Bulină plină: prezent; contur: absent; punct: lecție nepredată.
+    Fiecare întrebare are două încercări punctate, una la oră și una acasă; se ia în considerare doar primul răspuns din fiecare.
+    Răspuns corect la oră: punctaj întreg; răspuns corect acasă: jumătate. <b>Notele la teme și proiect</b> se introduc direct în tabel și se salvează la ieșirea din câmp.
+    Totalul include ${PCT.oficiu || 0} punct din oficiu. Cerc plin: prezent; contur: absent; punct: lecție nepredată.
     Un clic pe nume deschide fișa studentului.`;
 
   el("cat").querySelectorAll("[data-sort]").forEach(th => th.onclick = () => { sortare = th.dataset.sort; catalog(); });
@@ -441,18 +439,18 @@ function fisa(matricol){
   if (!x) return;
   const n = nota(x), a = act(x);
   const f = document.createElement("div");
-  f.innerHTML = `<div class="fisa-fundal"></div><aside class="fisa" role="dialog" aria-label="Fișa lui ${esc(x.nume)}">
+  f.innerHTML = `<div class="fisa-fundal"></div><aside class="fisa" role="dialog" aria-label="Fișa studentului ${esc(x.nume)}">
     <button class="icon-btn fisa__x" type="button" aria-label="Închide">✕</button>
     <h2>${esc(x.nume)}</h2>
     <p class="fisa__m">${x.invitat ? "invitat" : esc(x.matricol)}${x.grupa ? " · " + esc(x.grupa) : ""}${x.invitat ? "" : x.are_cont ? " · are cont" : " · încă fără cont"}${
       x.ultima ? " · ultima activitate " + new Date(x.ultima).toLocaleDateString("ro-RO", { day:"numeric", month:"short" }) : ""}</p>
-    ${x.invitat ? "" : `<p class="fisa__cont" id="fisa-cont">${x.are_cont ? "Se caută contul GitHub legat…" : "Încă nu și-a ales numele din listă."}</p>`}
+    ${x.invitat ? "" : `<p class="fisa__cont" id="fisa-cont">${x.are_cont ? "Se caută contul GitHub asociat…" : "Încă nu și-a ales numele din listă."}</p>`}
     <div class="fisa__note">
       <div class="fisa__n"><b>${nr2(n.total)}</b><span>din ${NOTARE.total}, până acum</span></div>
       <div class="fisa__n"><b>${nr2(n.act)}</b><span>activitate, din ${PCT.seminar}</span></div>
       <div class="fisa__n"><b>${nr2(n.teme + n.proiect)}</b><span>teme și proiect, din ${PCT.teme + PCT.proiect}</span></div>
     </div>
-    <h3>Notele tale</h3>
+    <h3>Notele acordate</h3>
     <div class="fisa__in">
       ${[["tema1", "Tema 1", TEMA], ["tema2", "Tema 2", TEMA], ["tema3", "Tema 3", TEMA], ["proiect", "Proiect", PCT.proiect]].map(([k, t, max]) => `
         <label>${t}<small>/ ${nr2(max).replace(",00", "")}</small>
@@ -461,10 +459,10 @@ function fisa(matricol){
     </div>
     <h3>Observațiile tale</h3>
     ${areObs ? `<textarea class="fisa__obs" data-obs="${esc(x.matricol)}" rows="5"
-      placeholder="Ce ai observat la clasă, ce urmărești, cu ce are probleme. Doar tu vezi asta.">${esc(OBS.get(x.matricol) || "")}</textarea>
+      placeholder="Observații despre activitatea la curs, aspecte de urmărit, dificultăți. Vizibile doar pentru profesor.">${esc(OBS.get(x.matricol) || "")}</textarea>
       <p class="mic fisa__salv" aria-live="polite"></p>`
-      : `<p class="gol-s">Rulează <code>db/21-observatii.sql</code> ca să poți scrie observații.</p>`}
-    <h3>Seminar cu seminar</h3>
+      : `<p class="gol-s">Rulează <code>db/21-observatii.sql</code> pentru a activa observațiile.</p>`}
+    <h3>Pe seminare</h3>
     ${LECTII.map(l => {
       const c = "c" + l.nr, pe = a.pe[l.nr];
       const prez = !predate.has(c) ? "nepredată" : (x.prezente || []).includes(c) ? "prezent" : "absent";
@@ -472,7 +470,7 @@ function fisa(matricol){
         <span>${esc(l.titlu)}<br><span class="mic">${prez}${pe ? ` · ${pe.laOra} corecte la oră, ${pe.acasa} acasă, din ${pe.n}${pe.incercari ? ` · ${pe.incercari} încercări în total` : ""}` : ""}</span></span>
         <span class="mic">${pe ? nr2(pe.puncte) : ""}</span></div>`;
     }).join("")}
-    <h3>Ce a scris și ce cod a trimis</h3>
+    <h3>Texte scrise și cod trimis</h3>
     <div id="fisa-scris"><p class="gol-s">Se încarcă…</p></div>
   </aside>`;
   document.body.appendChild(f);
@@ -494,20 +492,20 @@ function fisa(matricol){
   const fc = f.querySelector("#fisa-cont");
   if (fc && x.are_cont){
     rpc("contul_studentului", { p_matricol: x.matricol }).then(c => {
-      if (!c){ fc.textContent = "Rulează db/22-intrare-sigura.sql ca să vezi contul legat."; return; }
+      if (!c){ fc.textContent = "Rulează db/22-intrare-sigura.sql pentru a vedea contul asociat."; return; }
       const zi = c.legat_la ? new Date(c.legat_la).toLocaleDateString("ro-RO", { day:"numeric", month:"short" }) : "";
-      fc.innerHTML = `Legat de ${c.github_login ? `<a class="leg" href="https://github.com/${encodeURIComponent(c.github_login)}" target="_blank" rel="noopener">@${esc(c.github_login)}</a>` : "un cont GitHub"}${zi ? " din " + zi : ""}. ${c.informare_la
+      fc.innerHTML = `Asociat cu ${c.github_login ? `<a class="leg" href="https://github.com/${encodeURIComponent(c.github_login)}" target="_blank" rel="noopener">@${esc(c.github_login)}</a>` : "un cont GitHub"}${zi ? " din " + zi : ""}. ${c.informare_la
           ? `Informarea GDPR confirmată pe ${new Date(c.informare_la).toLocaleDateString("ro-RO", { day:"numeric", month:"short", year:"numeric" })}.`
-          : "Informarea GDPR nu e confirmată încă."}
-        <button type="button" class="btn btn--mic" id="bt-dezleaga">Nu e el? Dezleagă</button>`;
+          : "Informarea GDPR nu este confirmată încă."}
+        <button type="button" class="btn btn--mic" id="bt-dezleaga">Asociere greșită? Anulează asocierea</button>`;
       const b = fc.querySelector("#bt-dezleaga");
       b.onclick = async () => {
-        if (b.dataset.sigur !== "1"){ b.dataset.sigur = "1"; b.textContent = "Sigur? Apasă din nou"; return; }
+        if (b.dataset.sigur !== "1"){ b.dataset.sigur = "1"; b.textContent = "Confirmă: apasă din nou"; return; }
         const r = await rpc("dezleaga_student", { p_matricol: x.matricol });
-        if (r?.ok){ fc.textContent = "Dezlegat. La următoarea oră își poate alege din nou numele."; x.are_cont = false; catalog(); kpi(); }
-        else fc.textContent = "Nu s-a putut: " + (r?.mesaj || "");
+        if (r?.ok){ fc.textContent = "Asocierea a fost anulată. La următoarea oră, studentul își poate alege din nou numele."; x.are_cont = false; catalog(); kpi(); }
+        else fc.textContent = "Operația nu a reușit: " + (r?.mesaj || "");
       };
-    }).catch(() => { fc.textContent = "Contul legat nu se poate citi acum."; });
+    }).catch(() => { fc.textContent = "Contul asociat nu poate fi citit acum."; });
   }
   const inchide = () => { history.replaceState(null, "", "#catalog"); arata(); };
   f.querySelector(".fisa__x").onclick = inchide;
@@ -523,7 +521,7 @@ function fisa(matricol){
         <figcaption><span class="mic">${esc(s.capitol || "")} · ${esc(s.tip)}</span></figcaption></figure>`).join(""))
       + (cod.map(c => `<div class="cod__r ${c.trecut ? "bun" : "rau"}"><span class="cod__cine">${esc(c.exercitiu_id)}</span>
           <code class="cod__t">${esc(c.cod || "")}</code><span class="cod__i">${c.incercari}×</span></div>`).join(""))
-      || `<p class="gol-s">Nimic încă.</p>`;
+      || `<p class="gol-s">Nicio înregistrare încă.</p>`;
   });
 }
 
@@ -558,9 +556,9 @@ async function detalii(nr, g){
   const c = "c" + nr, ore = ORE.filter(o => o.capitol === c);
   const aiGrupei = new Set(CAT.map(r => r.matricol));
   g.innerHTML = `<h3>Orele lecției</h3>
-    ${ore.length ? `<ul class="sed">${ore.map(rand).join("")}</ul>` : `<p class="gol-s">N-ai predat-o încă acestei grupe.</p>`}
-    <h3>Cine ce a rezolvat</h3><div class="d-sarcini"><p class="gol-s">Se încarcă…</p></div>
-    <h3>Ce au scris</h3><div class="d-scrise"><p class="gol-s">Se încarcă…</p></div>`;
+    ${ore.length ? `<ul class="sed">${ore.map(rand).join("")}</ul>` : `<p class="gol-s">Lecția nu a fost predată încă acestei grupe.</p>`}
+    <h3>Rezolvări pe studenți</h3><div class="d-sarcini"><p class="gol-s">Se încarcă…</p></div>
+    <h3>Texte scrise</h3><div class="d-scrise"><p class="gol-s">Se încarcă…</p></div>`;
   legaOre(g);
   const [sar, scr] = await Promise.all([
     sb.rpc("sumar_sarcini", { p_capitol: c }).then(r => (r.data || []).filter(x => aiGrupei.has(x.matricol))).catch(() => []),
@@ -568,17 +566,17 @@ async function detalii(nr, g){
   ]);
   g.querySelector(".d-sarcini").innerHTML = grila(sar);
   g.querySelector(".d-scrise").innerHTML = scr.length ? `<div class="tabla2">${scr.map(x => `<figure class="scr__c"><blockquote>${esc(x.text)}</blockquote>
-      <figcaption>${esc(x.nume)} <span class="mic">${new Date(x.creat_la).toLocaleDateString("ro-RO", { day:"numeric", month:"short" })}</span></figcaption></figure>`).join("")}</div>` : `<p class="gol-s">Nimic scris la lecția asta.</p>`;
+      <figcaption>${esc(x.nume)} <span class="mic">${new Date(x.creat_la).toLocaleDateString("ro-RO", { day:"numeric", month:"short" })}</span></figcaption></figure>`).join("")}</div>` : `<p class="gol-s">Niciun text scris la această lecție.</p>`;
 }
 
 function grila(d){
-  if (!d.length) return `<p class="gol-s">Nimeni din grupă n-a rezolvat nimic la lecția asta, încă.</p>`;
+  if (!d.length) return `<p class="gol-s">Niciun student din grupă nu a rezolvat încă sarcini la această lecție.</p>`;
   const lista = [...new Set(d.map(x => x.sarcina))].sort();
   const oameni = [...new Map(d.map(x => [x.matricol, x])).values()];
   const k = new Map(d.map(x => [x.matricol + "|" + x.sarcina, x]));
   const scurt = s => String(s).replace(/^c\d+-/, "").replace(/^cod-/, "").slice(0, 14);
   return `<div class="leg"><span class="leg__i"><i class="cel cel--live"></i> la oră</span>
-      <span class="leg__i"><i class="cel cel--singur"></i> acasă</span><span class="leg__i"><i class="cel"></i> nefăcut</span></div>
+      <span class="leg__i"><i class="cel cel--singur"></i> acasă</span><span class="leg__i"><i class="cel"></i> nerezolvat</span></div>
     <div class="grila__sul"><table class="grila">
     <thead><tr><th class="grila__cine">Student</th>${lista.map(s => `<th class="grila__v"><span>${esc(scurt(s))}</span></th>`).join("")}<th class="grila__t">la oră</th></tr></thead>
     <tbody>${oameni.map(st => `<tr><th class="grila__cine">${esc(st.nume)}</th>${lista.map(s => {
@@ -594,7 +592,7 @@ function grila(d){
 function ore(){
   const invit = grupa === INV && CAT.length;
   if (!ORE.length && !ARH.length){
-    el("ore-corp").innerHTML = `<div class="gol"><p class="gol__t">Încă nicio oră cu grupa asta</p>
+    el("ore-corp").innerHTML = `<div class="gol"><p class="gol__t">Nicio oră înregistrată cu această grupă</p>
       <p class="gol__d">Când apeși Predă pe pagina unei lecții, ora apare aici, cu raportul ei.</p></div>`
       + (invit ? stergeInvitatiHTML() : "");
     legaStergeri();
@@ -602,15 +600,15 @@ function ore(){
   }
   el("ore-corp").innerHTML = `
     ${ORE.length ? `<ul class="sed">${ORE.map(rand).join("")}</ul>` : `<p class="gol-s">Toate orele grupei sunt arhivate.</p>`}
-    ${ARH.length ? `<details class="arh"><summary>Arhivate (${ARH.length}): ies din catalog și din statistici; le poți șterge de tot</summary>
+    ${ARH.length ? `<details class="arh"><summary>Arhivate (${ARH.length}): excluse din catalog și din statistici; pot fi șterse definitiv</summary>
       <ul class="sed">${ARH.map(rand).join("")}</ul></details>` : ""}
     ${invit ? stergeInvitatiHTML() : ""}`;
   legaOre(el("ore-corp"));
   legaStergeri();
 }
 const stergeInvitatiHTML = () => `<div class="card" style="margin-top:24px">
-  <p class="card__et">curățenie</p><p class="card__t">Șterge toți invitații</p>
-  <p class="card__d">Conturile de invitat și tot ce au lucrat. Studenții din grupe nu sunt atinși.
+  <p class="card__et">întreținere</p><p class="card__t">Șterge toți invitații</p>
+  <p class="card__d">Conturile de invitat și toată activitatea lor. Studenții din grupe nu sunt afectați.
   <button class="btn btn--mic btn-sterge" type="button" data-sterge-inv style="margin-left:8px">Șterge invitații</button></p></div>`;
 
 function rand(s){
@@ -619,12 +617,12 @@ function rand(s){
     <div style="flex:1;min-width:0">
       <p class="sed__t">${esc(s.titlu)}${s.grupa && grupa === INV ? ` <span class="eticheta">${esc(s.grupa)}</span>` : ""}</p>
       <p class="sed__d">${dataLunga(s.deschisa_la)} · ${s.minute} min · ${s.prezenti} prezenți
-        ${s.inchisa_la ? "" : " · <strong>pornită</strong>"}${arh ? ` · se șterge singură în ${s.zile_ramase} zile` : ""}</p>
+        ${s.inchisa_la ? "" : " · <strong>în desfășurare</strong>"}${arh ? ` · se șterge automat în ${s.zile_ramase} zile` : ""}</p>
     </div>
     <div class="sed__a">
       <button class="btn btn--mic" type="button" data-rap="${s.id}">Raportul</button>
-      <button class="btn btn--mic" type="button" data-arh="${s.id}" data-inapoi="${arh ? 1 : 0}">${arh ? "Adu înapoi" : "Arhivează"}</button>
-      ${arh ? `<button class="btn btn--mic btn-sterge" type="button" data-sterge="${s.id}">Șterge de tot</button>` : ""}
+      <button class="btn btn--mic" type="button" data-arh="${s.id}" data-inapoi="${arh ? 1 : 0}">${arh ? "Restaurează" : "Arhivează"}</button>
+      ${arh ? `<button class="btn btn--mic btn-sterge" type="button" data-sterge="${s.id}">Șterge definitiv</button>` : ""}
     </div>
     <div class="sed__rap" data-rap-g="${s.id}" hidden></div>
   </li>`;
@@ -645,23 +643,23 @@ function legaOre(g){
    browserului: un clic greșit nu șterge nimic. */
 function legaStergeri(){
   document.querySelectorAll("[data-sterge]").forEach(b => b.onclick = async () => {
-    if (b.dataset.sigur !== "1"){ b.dataset.sigur = "1"; b.textContent = "Sigur? Încă un clic"; return; }
+    if (b.dataset.sigur !== "1"){ b.dataset.sigur = "1"; b.textContent = "Confirmă: încă un clic"; return; }
     b.disabled = true;
     const r = await rpc("sterge_sedinta", { p_id: b.dataset.sterge });
-    if (r?.ok) location.reload(); else { b.textContent = "N-a mers"; b.title = r?.eroare || r?.mesaj || ""; }
+    if (r?.ok) location.reload(); else { b.textContent = "Operația nu a reușit"; b.title = r?.eroare || r?.mesaj || ""; }
   });
   document.querySelectorAll("[data-sterge-inv]").forEach(b => b.onclick = async () => {
-    if (b.dataset.sigur !== "1"){ b.dataset.sigur = "1"; b.textContent = "Sigur? Încă un clic"; return; }
+    if (b.dataset.sigur !== "1"){ b.dataset.sigur = "1"; b.textContent = "Confirmă: încă un clic"; return; }
     b.disabled = true;
     const r = await rpc("sterge_invitati");
-    if (r?.ok) location.reload(); else { b.textContent = "N-a mers"; b.title = r?.eroare || r?.mesaj || ""; }
+    if (r?.ok) location.reload(); else { b.textContent = "Operația nu a reușit"; b.title = r?.eroare || r?.mesaj || ""; }
   });
 }
 
 async function raport(id, g){
   g.innerHTML = `<div class="sch sch--r"></div>`;
   const [r, randuri] = await Promise.all([O.raport(id), O.sumar(id)]);
-  if (!r?.ok){ g.innerHTML = `<p class="gol-s">Raportul nu se poate citi.</p>`; return; }
+  if (!r?.ok){ g.innerHTML = `<p class="gol-s">Raportul nu poate fi citit.</p>`; return; }
   g.dataset.gata = "1";
   const l = lectiaDe(r.capitol);
   /* ce au scris în ora asta: textele lecției, din fereastra orei, ale celor din oră */
@@ -673,20 +671,20 @@ async function raport(id, g){
   g.innerHTML = `
     <div class="cif">
       <div class="cif__c"><p class="cif__n">${r.prezenti}<small>/${r.inscrisi || "—"}</small></p><p class="cif__e">prezenți, din înscriși</p></div>
-      <div class="cif__c"><p class="cif__n">${r.sarcini_atinse}<small>/${l?.sarcini ?? "—"}</small></p><p class="cif__e">sarcini atinse</p></div>
-      <div class="cif__c"><p class="cif__n">${r.texte}</p><p class="cif__e">texte scrise de ei</p></div>
+      <div class="cif__c"><p class="cif__n">${r.sarcini_atinse}<small>/${l?.sarcini ?? "—"}</small></p><p class="cif__e">sarcini abordate</p></div>
+      <div class="cif__c"><p class="cif__n">${r.texte}</p><p class="cif__e">texte scrise de studenți</p></div>
     </div>
-    ${r.impotmolire ? `<div class="card" style="margin-bottom:16px"><p class="card__et">unde s-a împotmolit grupa</p>
-      <p class="card__t">${esc(r.impotmolire.sarcina)}</p><p class="card__d">Doar ${r.impotmolire.trecuti} din ${r.impotmolire.din} au trecut-o.</p></div>` : ""}
-    ${randuri?.length ? `<table class="tb"><thead><tr><th>Student</th><th>Prezent</th><th>Trimise</th><th>Trecute</th><th style="text-align:right">A intrat</th></tr></thead>
+    ${r.impotmolire ? `<div class="card" style="margin-bottom:16px"><p class="card__et">sarcina cu cea mai mică rată de reușită</p>
+      <p class="card__t">${esc(r.impotmolire.sarcina)}</p><p class="card__d">Doar ${r.impotmolire.trecuti} din ${r.impotmolire.din} au rezolvat-o corect.</p></div>` : ""}
+    ${randuri?.length ? `<table class="tb"><thead><tr><th>Student</th><th>Prezent</th><th>Trimise</th><th>Corecte</th><th style="text-align:right">Ora intrării</th></tr></thead>
       <tbody>${randuri.map(x => `<tr><td>${esc(x.nume)}</td>
         <td><button class="btn btn--mic" type="button" data-prez="${esc(x.matricol)}" data-val="${x.prezent ? 0 : 1}">
           <span class="g ${x.prezent ? "g--ok" : "g--nim"}">${x.prezent ? "✓" : "○"}</span> ${x.prezent ? "prezent" : "absent"}</button></td>
         <td class="rap">${x.trimise}</td><td class="rap">${x.trecute}</td>
         <td style="text-align:right" class="rap">${x.prima ? ora(x.prima) : "—"}</td></tr>`).join("")}</tbody></table>
-      <p class="rap" style="margin:10px 0 0">Prezent = a lucrat în oră. Se schimbă cu un clic.</p>`
-      : `<p class="gol-s">Nimeni n-a lucrat în ora asta.</p>`}
-    ${texte.length ? `<h3 class="lec2__h">Ce au scris în ora asta</h3><div class="tabla2">${texte.map(t =>
+      <p class="rap" style="margin:10px 0 0">Prezent: a lucrat în timpul orei. Starea se modifică printr-un clic.</p>`
+      : `<p class="gol-s">Nicio activitate înregistrată în această oră.</p>`}
+    ${texte.length ? `<h3 class="lec2__h">Texte scrise în această oră</h3><div class="tabla2">${texte.map(t =>
       `<figure class="scr__c"><blockquote>${esc(t.text)}</blockquote><figcaption>${esc(t.nume)}</figcaption></figure>`).join("")}</div>` : ""}`;
   g.querySelectorAll("[data-prez]").forEach(b => b.onclick = async () => {
     await O.punePrezenta(id, b.dataset.prez, b.dataset.val === "1"); g.dataset.gata = ""; raport(id, g);

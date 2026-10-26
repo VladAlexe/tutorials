@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contul meu — Fluxuri de lucru</title>
+<title>Contul meu · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=69">
-<link rel="stylesheet" href="../css/sistem.css?v=69">
-<link rel="stylesheet" href="../css/cont.css?v=69">
-<script src="../js/tema.js?v=69"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=73">
+<link rel="stylesheet" href="../css/sistem.css?v=73">
+<link rel="stylesheet" href="../css/cont.css?v=73">
+<script src="../js/tema.js?v=73"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=69";
+import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=73";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -33,11 +33,11 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, p;
 try {
-  A = await import("../js/auth.js?v=69");
-  CFG = await import("../js/supabase-config.js?v=69");
+  A = await import("../js/auth.js?v=73");
+  CFG = await import("../js/supabase-config.js?v=73");
 } catch (e) {
-  gazda.innerHTML = `<div class="nota"><div class="nota__et">Nu merge</div>
-    <p>Nu pot încărca autentificarea: ${esc(e.message)}</p></div>`;
+  gazda.innerHTML = `<div class="nota"><div class="nota__et">Eroare</div>
+    <p>Autentificarea nu a putut fi încărcată: ${esc(e.message)}</p></div>`;
   throw e;
 }
 
@@ -83,37 +83,37 @@ function intrare(){
   gazda.innerHTML = `
     <div class="lg">
       <h1>Intră în cont</h1>
-      <p class="lg__d">Ca să ți se salveze răspunsurile, ca să-ți văd progresul
-      și ca să apari în prezență.</p>
+      <p class="lg__d">Contul permite salvarea răspunsurilor, urmărirea progresului
+      și înregistrarea prezenței.</p>
 
       <div class="cutie">
         <button class="btn btn--tare" id="bt-github" type="button">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 20v-3.2M7 16.8c-2.6 0-3.4-1.7-3.4-3.4 0-1 .3-1.8.9-2.4-.3-.8-.3-2 .1-2.8 1 .1 2 .6 2.7 1.2.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c.7-.6 1.7-1.1 2.7-1.2.4.8.4 2 .1 2.8.6.6.9 1.4.9 2.4 0 1.7-.8 3.4-3.4 3.4"/></svg>
           Intră cu GitHub</button>
-        <p class="mic">Varianta pentru studenții de la curs. Ai oricum nevoie de
-        cont GitHub de la cursul 3, iar activitatea din depozit se leagă singură
-        de contul tău.</p>
+        <p class="mic">Varianta destinată studenților înscriși la curs. Contul GitHub
+        este oricum necesar de la cursul 3, iar activitatea din depozit se asociază
+        automat contului tău.</p>
 
 
 
         <div class="ori">sau</div>
         <label for="nume">Numele tău, pentru intrare ca invitat</label>
-        <input id="nume" type="text" autocomplete="name" maxlength="60" placeholder="Cum să-ți spun">
+        <input id="nume" type="text" autocomplete="name" maxlength="60" placeholder="Nume și prenume">
         <button class="btn" id="bt-invitat" type="button">Intră ca invitat</button>
-        <p class="mic">Fără cont și fără parolă, pentru cine vrea doar să încerce.
-        Progresul se salvează, dar nu se leagă de numele tău din lista grupei și nu se poate
-        transforma mai târziu într-un cont adevărat.</p>
+        <p class="mic">Fără cont și fără parolă, pentru vizitatori. Progresul se salvează,
+        dar nu se asociază cu numele din lista grupei și nu poate fi transformat ulterior
+        într-un cont de student.</p>
 
         <p class="mesaj" id="mesaj"></p>
       </div>
 
-      <p class="mic" style="text-align:center">Ce se salvează despre tine scrie în
-      <a class="leg" href="${RADACINA}/date-personale/">pagina despre protecția datelor (GDPR)</a>.</p>
+      <p class="mic" style="text-align:center">Datele înregistrate sunt descrise în
+      <a class="leg" href="${RADACINA}/date-personale/">politica de confidențialitate (GDPR)</a>.</p>
     </div>`;
 
   if (er) msg(er === "access_denied"
-    ? "Ai anulat intrarea cu GitHub. Mai încearcă o dată."
-    : "GitHub a răspuns cu o eroare: " + er, "rau");
+    ? "Autentificarea cu GitHub a fost anulată. Încearcă din nou."
+    : "GitHub a returnat o eroare: " + er, "rau");
 
   el("bt-github").onclick = async e => {
     e.target.disabled = true;
@@ -122,11 +122,11 @@ function intrare(){
   };
   el("bt-invitat").onclick = async e => {
     const nume = el("nume").value.trim();
-    if (nume.length < 2){ msg("Scrie un nume, ca să te recunosc în listă.", "rau"); return; }
+    if (nume.length < 2){ msg("Introdu un nume, pentru identificarea în listă.", "rau"); return; }
     e.target.disabled = true;
     try {
       const r = await A.intraCaInvitat(nume);
-      if (!r?.ok) throw new Error(r?.mesaj || "nu a mers");
+      if (!r?.ok) throw new Error(r?.mesaj || "Intrarea nu a reușit.");
       unde();
     } catch (x) { e.target.disabled = false; msg(x.message, "rau"); }
   };
@@ -171,7 +171,7 @@ async function deseneaza(){
   /* lecțiile pe care le vezi: cele predate grupei, plus cele în care ai lucrat */
   let lectii = LECTII;
   try {
-    const Ora = await import("../js/ora.js?v=69");
+    const Ora = await import("../js/ora.js?v=73");
     const pred = await Ora.predate();
     if (pred) lectii = LECTII.filter(l => pred.has("c" + l.nr) || a.pe[l.nr]?.incercari);
   } catch {}
@@ -195,31 +195,31 @@ async function deseneaza(){
   </header>
 
   ${invitat ? `<div class="nota" style="margin-bottom:26px"><div class="nota__et">Cont de invitat</div>
-    <p>Ce lucrezi se salvează, dar nu intră în catalog. Dacă ești student la curs, ieși și intră cu GitHub.</p></div>`
+    <p>Activitatea se salvează, dar nu intră în catalog. Studenții înscriși la curs trebuie să iasă din cont și să intre cu GitHub.</p></div>`
   : !p.matricol ? `<div class="nota" style="margin-bottom:26px"><div class="nota__et">Încă nu ești în lista grupei</div>
-    <p>La prima oră scanezi codul de pe ecran și îți alegi numele din listă. De atunci tot ce faci se leagă de tine.</p></div>` : ""}
+    <p>La prima oră scanezi codul de pe ecran și îți alegi numele din listă. Din acel moment, activitatea se asociază contului tău.</p></div>` : ""}
 
   <section class="cnt__s">
-    <h2>Nota ta, până acum</h2>
+    <h2>Punctajul acumulat</h2>
     <div class="tot"><b>${nr2(total)}</b><span>din ${NOTARE.total}</span>
       <i class="tot__b"><i style="width:${Math.min(100, total / NOTARE.total * 100)}%"></i></i></div>
     <div class="note">
-      ${rand("Activitate la seminar", a.total, PCT.seminar, "se calculează singură, din întrebările din lecții (vezi mai jos)")}
+      ${rand("Activitate la seminar", a.total, PCT.seminar, "calculată automat din întrebările din lecții (detalii mai jos)")}
       ${rand("Teme", teme.some(v => v != null) ? pTeme : null, PCT.teme,
         `trei teme, pe Teams, notate de profesor: ${teme.map((v, i) => `tema ${i + 1}: ${v == null ? "—" : nr2(v)}`).join(" · ")}`)}
       ${rand("Proiect", pProiect, PCT.proiect, pProiect == null ? "se notează la prezentarea finală" : "notat")}
-      ${rand("Din oficiu", PCT.oficiu, PCT.oficiu, "îl ai de la început")}
+      ${rand("Din oficiu", PCT.oficiu, PCT.oficiu, "acordat de la început")}
     </div>
   </section>
 
   <section class="cnt__s">
     <h2>Cum se calculează activitatea</h2>
     <ul class="reguli">
-      <li>Fiecare din cele ${NOTARE.activitate.seminare} seminare valorează la fel: <b>${nr2(a.valoareSeminar)}</b> puncte.</li>
-      <li>La fiecare întrebare ai <b>două șanse</b>: una la oră și una acasă. Contează doar <b>primul răspuns</b> din fiecare.</li>
-      <li>Corect la oră = <b>întreg</b>. Corect acasă = <b>jumătate</b>. Se ia cea mai bună dintre cele două.</li>
-      <li>Exercițiile cu cod (completezi, ordonezi, ghicești ce afișează) contează când le rezolvi, chiar și cu indicii.</li>
-      <li>Poți reface întrebările oricât, ca să exersezi; nota nu se mai schimbă.</li>
+      <li>Fiecare dintre cele ${NOTARE.activitate.seminare} seminare are aceeași pondere: <b>${nr2(a.valoareSeminar)}</b> puncte.</li>
+      <li>Fiecare întrebare are <b>două încercări punctate</b>: una la oră și una acasă. Se ia în considerare doar <b>primul răspuns</b> din fiecare.</li>
+      <li>Un răspuns corect la oră primește punctajul <b>întreg</b>, unul corect acasă primește <b>jumătate</b>. Se reține rezultatul mai bun.</li>
+      <li>Exercițiile cu cod (completare, ordonare, anticiparea rezultatului afișat) se punctează la rezolvare, inclusiv când au fost folosite indiciile.</li>
+      <li>Întrebările pot fi refăcute oricând, pentru exercițiu; punctajul nu se mai modifică.</li>
     </ul>
     <table class="tabel tabel--sem">
       <thead><tr><th>Seminar</th><th>Corecte la oră</th><th>Corecte acasă</th><th style="text-align:right">Puncte</th></tr></thead>
@@ -245,13 +245,13 @@ async function deseneaza(){
 
 try { await unde(); }
 catch (e) {
-  gazda.innerHTML = `<div class="lg"><h1>Nu pot încărca contul</h1>
+  gazda.innerHTML = `<div class="lg"><h1>Contul nu a putut fi încărcat</h1>
     <p class="lg__d">${esc(e.message || "Rețeaua nu răspunde.")}</p>
     <div class="cutie"><button class="btn btn--tare" type="button" onclick="location.reload()">Încearcă din nou</button></div></div>`;
 }
 A.laSchimbare(() => unde().catch(() => {}));
 </script>
-<script type="module" src="../js/antet.js?v=69"></script>
-<script type="module" src="../js/subsol.js?v=69"></script>
+<script type="module" src="../js/antet.js?v=73"></script>
+<script type="module" src="../js/subsol.js?v=73"></script>
 </body>
 </html>
