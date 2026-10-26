@@ -86,3 +86,18 @@ delete from public.studenti where matricol like '9%';
 
 Apoi incarci lista adevarata prin Table Editor → `studenti` → Insert →
 Import data from CSV. Fisierul completat **nu se pune in repo**.
+
+## Echipele de proiect (cursul 2)
+
+- [ ] **Rulează `23-echipe.sql`** în SQL Editor, după 22. La final afișează
+      patru tabele, toate cu 0 rânduri. Se poate rula din nou oricând.
+- [ ] **La curs**, pe slide-ul „Alegerea echipelor” din cursul 2, apeși
+      **Pornește alegerea echipelor**: se creează câte o echipă la fiecare 5
+      studenți din lista grupei. Studenții își aleg echipa de pe același slide
+      sau din contul lor. Pe proiector apar doar locurile ocupate, fără nume.
+- [ ] Când vrei, **Închide alegerea** (pe slide sau în Predau → Echipele).
+      De atunci, cine nu are echipă trimite o cerere, iar un membru al echipei
+      o acceptă. Dacă toate echipele sunt complete, studentul deschide una nouă.
+- [ ] În **Predau → Echipele** vezi membrii cu conturile GitHub, cererile, cine
+      nu are echipă, poți muta pe oricine și descarci lista (Export CSV) pentru
+      depozitele `echipa-1`, `echipa-2` … din organizația cursului.

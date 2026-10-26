@@ -129,18 +129,18 @@
    "nr": 12,
    "id": "s11",
    "grup": "Limite",
-   "titlu": "Ce putem concluziona",
+   "titlu": "Ce se poate concluziona",
    "sarcini": [
     {
      "id": "c7-v3",
      "fel": "verificare",
      "corect": 1,
-     "q": "Modelul arată o asociere puternică între migrație și SCI. De ce nu putem afirma că migrația produce legăturile?",
+     "q": "Modelul arată o asociere puternică între migrație și SCI. De ce nu se poate afirma că migrația produce legăturile?",
      "optiuni": [
       "Pentru că R² este sub 1",
       "Pentru că legăturile preexistente pot atrage la rândul lor migrație, iar datele provin dintr-un singur moment",
       "Pentru că eșantionul este mic",
-      "Pentru că am folosit logaritmi"
+      "Pentru că modelul folosește logaritmi"
      ]
     }
    ]
@@ -148,8 +148,8 @@
   {
    "nr": 13,
    "id": "s12",
-   "grup": "Proiectul tău",
-   "titlu": "Modelul vostru",
+   "grup": "Proiectul echipei",
+   "titlu": "Modelul echipei",
    "sarcini": [
     {
      "id": "c7-dovada-model",
@@ -160,7 +160,7 @@
   {
    "nr": 14,
    "id": "s13",
-   "grup": "Proiectul tău",
+   "grup": "Proiectul echipei",
    "titlu": "Un reziduu",
    "sarcini": [
     {

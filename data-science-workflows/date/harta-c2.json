@@ -1,6 +1,6 @@
 {
  "capitol": "c2",
- "total": 24,
+ "total": 25,
  "sarcini": 9,
  "slide": [
   {
@@ -14,7 +14,7 @@
    "nr": 2,
    "id": "s2",
    "grup": "Cursul",
-   "titlu": "Unde am rămas",
+   "titlu": "Punctul de plecare",
    "sarcini": []
   },
   {
@@ -27,7 +27,7 @@
      "id": "c2-v2b",
      "fel": "verificare",
      "corect": 1,
-     "q": "Banca Mondială își mută datele pe alt server și schimbă baza de date, dar păstrează adresele și parametrii din documentație. Ce se întâmplă cu scriptul tău de colectare?",
+     "q": "Banca Mondială își mută datele pe alt server și schimbă baza de date, dar păstrează adresele și parametrii din documentație. Ce se întâmplă cu scriptul de colectare?",
      "optiuni": [
       "Trebuie rescris, pentru că baza de date e alta",
       "Funcționează la fel: contractul nu s-a schimbat",
@@ -208,7 +208,7 @@
   {
    "nr": 22,
    "id": "s21",
-   "grup": "Proiectul tău",
+   "grup": "Proiectul echipei",
    "titlu": "Prima colectare",
    "sarcini": [
     {
@@ -219,13 +219,20 @@
   },
   {
    "nr": 23,
-   "id": "s21e",
-   "grup": "Proiectul tău",
-   "titlu": "Depozitul echipei",
+   "id": "s21t",
+   "grup": "Proiectul echipei",
+   "titlu": "Echipele",
    "sarcini": []
   },
   {
    "nr": 24,
+   "id": "s21e",
+   "grup": "Proiectul echipei",
+   "titlu": "Depozitul echipei",
+   "sarcini": []
+  },
+  {
+   "nr": 25,
    "id": "s22",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

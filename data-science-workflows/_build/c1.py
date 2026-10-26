@@ -44,7 +44,7 @@ sl = L.sl
 # --------------------------------------------------------------------------
 
 DATE_SCI = {
-    "nume": "d",
+    "nume": "df",
     "fisier": "data/country.csv",
     "randuri": 31684,
     "coloane": [
@@ -53,7 +53,7 @@ DATE_SCI = {
         {"nume": "friend_country", "tip": "str",
          "d": "codul celei de-a doua țări din pereche"},
         {"nume": "user_region", "tip": "str",
-         "d": "la nivel de țară, același cod ca user_country; în fișierele NUTS e codul regiunii"},
+         "d": "la nivel de țară, același cod ca user_country; în fișierele NUTS, codul regiunii"},
         {"nume": "friend_region", "tip": "str",
          "d": "la fel, pentru celălalt capăt al perechii"},
         {"nume": "scaled_sci", "tip": "int64",
@@ -79,88 +79,79 @@ DATE_SCI_SIMPLU = dict(DATE_SCI, simplu=True, capNota="")
 
 TEME = [
     (1, "Introducere și instalarea softurilor",
-     "Ce unelte folosim și de ce fiecare. Mediul de lucru, structura unui proiect."),
+     "Uneltele semestrului și rolul fiecăreia. Mediul de lucru și structura unui proiect."),
     (1, "Concepte-cheie pentru analiza datelor",
      "Tipuri de date în Python, în SQL și în fișiere spațiale. Tipuri de fișiere. Formatul JSON."),
     (2, "Colectarea datelor prin API",
-     "Ce e un API, cum se citește o documentație, cum se face o cerere din cod."),
+     "Ce este un API, cum se citește documentația lui și cum se trimite o cerere din cod."),
     (3, "Versionare și colaborare cu Git",
-     "Istoric, reveniri, ramuri, pull request. Cum lucrează o echipă pe același cod fără să își suprascrie munca."),
+     "Istoric, reveniri, ramuri, pull request. Lucrul în echipă pe același cod, fără suprascrierea muncii celorlalți."),
     (4, "Explorarea preliminară și curățarea",
      "Lipsuri, duplicate, tipuri greșite, coduri care nu se potrivesc între surse."),
     (5, "Baze de date",
-     "Tabele, chei, interogări SQL. De ce 1,8 milioane de perechi de regiuni se interoghează mai bine dintr-o bază de date decât dintr-un fișier."),
+     "Tabele, chei, interogări SQL. De ce 1,8 milioane de perechi de regiuni se interoghează mai eficient dintr-o bază de date decât dintr-un fișier."),
     (5, "Agregarea datelor din surse diverse",
      "Îmbinarea pe o cheie comună. La date diadice, două îmbinări: una pentru fiecare capăt al perechii."),
     (6, "Analiza exploratorie și vizualizare",
      "Distribuții, relații, valori extreme, hărți. Grafice care lămuresc și grafice care induc în eroare."),
     (7, "Feature engineering",
-     "Variabilele care răspund la întrebare nu se descarcă, se construiesc: rate, ponderi, distanțe, diferențe."),
+     "Variabilele care răspund la întrebare nu se descarcă, ci se construiesc: rate, ponderi, distanțe, diferențe."),
     (7, "Aplicarea modelelor statistice",
-     "Testarea formală a relației observate. Non-independența observațiilor, la date diadice."),
+     "Testarea formală a relației observate. Non-independența observațiilor în datele diadice."),
     (8, "Raportarea analizei și a rezultatelor",
      "Raport reproductibil, grafice pentru publicare, prezentarea proiectului."),
 ]
 
-# Fișa fiecărei ședințe: ce înveți, ce faci la laborator, ce adaugi la
-# proiect, cu ce unelte, și în ce etapă a fluxului de lucru ești. Etapele au
-# culorile lor, aceleași ca în schema fluxului de la slide-ul 4.
+# Fișa fiecărei ședințe: conceptele, laboratorul, caietul și uneltele.
+# Pe slide-ul 1, ședințele sunt stațiile unei hărți de metrou (V.semestru).
 SEDINTE = [
     {"c": 1, "scurt": "Introducere", "titlu": "Introducere și configurare", "etapa": "pregatire",
-     "invata": ["ce e un flux de lucru în știința datelor", "ce măsoară SCI și ce formă au datele diadice",
-                "tipurile de date în Python, SQL și fișiere spațiale", "cum se citește un JSON"],
+     "invata": ["fluxul de lucru al unui proiect de date", "SCI și datele diadice",
+                "tipuri de date și tipuri de fișiere", "JSON: liste și dicționare"],
      "caiet": "01_introducere_si_datele_proiectului.ipynb",
-     "lab": "Primul caiet rulat pe date reale: country.csv, România și partenerii ei.",
-     "proiect": "Folderul cursului, dsw, cu mediul de lucru configurat. Echipele se formează până la cursul 2.",
+     "lab": "Primul caiet, rulat pe date reale: country.csv și legăturile României. Mediul virtual, în folderul cursului.",
      "unelte": ["VS Code", "Python", "mediu virtual", "Jupyter", "pandas"]},
     {"c": 2, "scurt": "API", "titlu": "Colectarea datelor prin API", "etapa": "colectare",
-     "invata": ["ce e un API REST și cum se citește documentația", "cererea, parametrii, paginarea, codurile de stare",
-                "cum devine un răspuns JSON un tabel", "cubul JSON-stat de la Eurostat"],
+     "invata": ["API-urile REST și documentația lor", "cererea, parametrii, paginarea, codurile de stare",
+                "din răspunsul JSON, un tabel", "cubul JSON-stat de la Eurostat"],
      "caiet": "02_colectarea_datelor_prin_api.ipynb",
-     "lab": "De la prima cerere la indicatorii Băncii Mondiale și migrația de la Eurostat, salvate în curs/data/c2.",
-     "proiect": "Depozitul echipei, clonat în dsw/proiect, și primele date, aduse din cod.",
+     "lab": "De la prima cerere la indicatorii Băncii Mondiale și la migrația de la Eurostat, salvate în curs/data/c2. Echipele de proiect se formează la această ședință.",
      "unelte": ["requests", "API Banca Mondială", "API Eurostat", "JSON"]},
     {"c": 3, "scurt": "Git", "titlu": "Versionare și colaborare cu Git", "etapa": "colectare",
      "invata": ["cele trei zone ale Git și commit-ul", "GitHub, ramuri, pull request, conflicte",
-                "cum se caută literatura pe teorie și pe metodă", "cum se scrie o întrebare de cercetare"],
+                "căutarea literaturii pe teorie și pe metodă", "formularea întrebării de cercetare"],
      "caiet": "03_surse_diverse_si_preprocesare.ipynb",
-     "lab": "Nomenclatorul regiunilor, tabelul regional, migrația fără grupuri de țări; apoi Git.",
-     "proiect": "Direcția proiectului, întrebarea voastră și primele commit-uri în depozitul echipei.",
+     "lab": "Nomenclatorul regiunilor, tabelul regional și migrația fără grupuri de țări; apoi primele commit-uri în depozitul echipei.",
      "unelte": ["Git", "GitHub", "pandas"]},
     {"c": 4, "scurt": "Curățare", "titlu": "Curățarea datelor", "etapa": "curatare",
      "invata": ["cele șase etape ale curățării", "lipsuri, duplicate, valori extreme, coduri care nu se potrivesc între surse",
                 "formatul lung și formatul lat", "dicționarul de date"],
      "caiet": "04_curatarea_si_integrarea_datelor.ipynb",
-     "lab": "Calitatea și acoperirea datelor, capcanele codurilor de țară, secțiunile 1-3 și 6-7.",
-     "proiect": "Datele curățate, cu dicționarul lor, în depozit.",
+     "lab": "Calitatea și acoperirea datelor, capcanele codurilor de țară (secțiunile 1-3 și 6-7). Datele curățate intră în depozit, cu dicționarul lor.",
      "unelte": ["pandas", "Git"]},
     {"c": 5, "scurt": "Agregare și SQL", "titlu": "Agregare și baze de date", "etapa": "agregare",
      "invata": ["îmbinarea tabelelor și tipurile de join", "unitatea de analiză și agregarea",
                 "două îmbinări la date diadice", "SQL, la nivelul necesar proiectului"],
      "caiet": "04_curatarea_si_integrarea_datelor.ipynb",
-     "lab": "Tabelul lat al regiunilor, perechile și îmbinările, secțiunile 4-5 și 8.",
-     "proiect": "Tabelul final, la unitatea de analiză aleasă de echipă.",
+     "lab": "Tabelul lat al regiunilor, perechile și îmbinările (secțiunile 4-5 și 8), până la tabelul final al echipei.",
      "unelte": ["pandas", "SQL", "PostgreSQL"]},
     {"c": 6, "scurt": "Explorare", "titlu": "Analiza exploratorie", "etapa": "explorare",
      "invata": ["distribuții cu coadă lungă și clasamente", "norul de puncte și corelațiile",
                 "comunitățile din rețea, pe hartă", "graficele care induc în eroare"],
      "caiet": "05_explorare_si_ipoteze.ipynb · 06_retele_si_indicatori_regionali.ipynb",
      "lab": "Distribuția, distanța, granița; apoi rețeaua județelor și comunitățile ei.",
-     "proiect": "Explorarea echipei și primul tipar găsit în date.",
      "unelte": ["matplotlib", "geopandas", "networkx"]},
     {"c": 7, "scurt": "Model", "titlu": "Variabile derivate și model", "etapa": "model",
      "invata": ["construcția, transformarea și selecția variabilelor", "un model cu toate variabilele deodată",
                 "cum se citesc coeficienții", "reziduurile și limitele modelului"],
      "caiet": "07_variabile_derivate_si_model.ipynb",
      "lab": "Patru modele, fiecare cu o variabilă în plus: distanța, migranții, rata la mie, granița.",
-     "proiect": "Variabilele echipei și modelul care răspunde la întrebare.",
      "unelte": ["pandas", "statsmodels"]},
     {"c": 8, "scurt": "Raportare", "titlu": "Raportarea", "etapa": "raport",
      "invata": ["cum arată un raport reproductibil", "grafice pentru publicare",
                 "ce se poate afirma pe baza rezultatelor", "cum se prezintă un proiect"],
      "caiet": "08_raport_si_proiect_final.ipynb",
-     "lab": "Raportul final, pornit din depozitul echipei.",
-     "proiect": "Prezentarea echipelor. La final, rezultatele articolului de la care a pornit cursul.",
+     "lab": "Raportul final, construit din depozitul echipei, și prezentarea proiectelor.",
      "unelte": ["Jupyter", "GitHub", "Markdown"]},
 ]
 
@@ -171,10 +162,19 @@ ETAPE = {
     "raport": "Raportare și vizualizare",
 }
 
+# Liniile hărții: datele și codul trec prin toate ședințele; cercetarea
+# oprește unde se lucrează la întrebare (C1 întrebarea cursului, C3 literatura
+# și întrebarea echipei, C6 ipotezele, C7 modelul, C8 raportul); echipa pornește
+# la C2, când se formează, și merge până la prezentare.
+LINII = [
+    {"id": "cercetare", "nume": "Cercetarea", "c": "roza", "opriri": [1, 3, 6, 7, 8]},
+    {"id": "date", "nume": "Datele și codul", "c": "accent", "opriri": [1, 2, 3, 4, 5, 6, 7, 8]},
+    {"id": "echipa", "nume": "Echipa și Git", "c": "ardezie", "opriri": [2, 3, 4, 5, 6, 7, 8]},
+]
+
 CRONOLOGIE = {
-    "titlu": "Apasă pe o ședință",
-    "intro": "Unsprezece subiecte, opt ședințe. Fiecare ședință adaugă o piesă la proiectul echipei.",
     "sedinte": 8,
+    "linii": LINII,
     "teme": [{"c": c, "n": n, "d": d} for c, n, d in TEME],
     "fise": SEDINTE,
     "etape": ETAPE,
@@ -186,25 +186,25 @@ CRONOLOGIE = {
 
 PAS_TIPURI = {
     "fisier": "01_introducere.ipynb · 2. Variabile și tipuri",
-    "intro": "Aceleași tipuri ca în partea 2 a caietului. Rulează rând cu rând: în stânga, codul; în dreapta, valorile din memorie și ce se afișează.",
+    "intro": "Aceleași tipuri ca în partea 2 a caietului, rulate rând cu rând: în stânga, codul; în dreapta, valorile din memorie și ce se afișează.",
     "cod": "tara = \"RO\"\nnumar_tari = 178\nore_de_studiu = 8.5\neste_student = True\nocupatie = None\n\n"
            "print(type(tara))\nprint(type(numar_tari))\nprint(type(ore_de_studiu))\nprint(type(este_student))\nprint(type(ocupatie))",
     "pasi": [
         {"l": 1, "set": {"tara": {"t": "str", "v": "RO"}},
-         "txt": "<code>=</code> pune o valoare sub un nume. Ghilimelele fac din RO un <b>text</b> (<code>str</code>): un cod de țară e text, chiar dacă identifică ceva."},
+         "txt": "<code>=</code> pune o valoare sub un nume. Ghilimelele fac din RO un <b>text</b> (<code>str</code>): un cod de țară este text, chiar dacă identifică ceva."},
         {"l": 2, "set": {"numar_tari": {"t": "int", "v": 178}},
-         "txt": "Fără ghilimele, 178 e un <b>număr întreg</b> (<code>int</code>). Cu el se pot face calcule."},
+         "txt": "Fără ghilimele, 178 este un <b>număr întreg</b> (<code>int</code>). Cu el se pot face calcule."},
         {"l": 3, "set": {"ore_de_studiu": {"t": "float", "v": 8.5}},
          "txt": "Cu punct zecimal: <code>float</code>. În Python zecimalele se scriu cu punct, nu cu virgulă."},
         {"l": 4, "set": {"este_student": {"t": "bool", "v": True}},
          "txt": "<code>True</code> și <code>False</code>, cu majusculă: valori logice (<code>bool</code>). Orice comparație dă una dintre ele."},
         {"l": 5, "set": {"ocupatie": {"t": "NoneType", "v": None}},
-         "txt": "<code>None</code> înseamnă „lipsește”. Nu e zero și nu e text gol: e absența valorii."},
+         "txt": "<code>None</code> înseamnă „lipsește”. Nu este zero și nici text gol: este absența valorii."},
         {"l": 7, "out": "<class 'str'>",
-         "txt": "<code>type()</code> spune ce fel de valoare e sub un nume. Este primul lucru de verificat când rezultatul diferă de cel așteptat."},
-        {"l": 8, "out": "<class 'int'>", "txt": "178 e întreg."},
+         "txt": "<code>type()</code> arată ce fel de valoare se află sub un nume. Este primul lucru de verificat când rezultatul diferă de cel așteptat."},
+        {"l": 8, "out": "<class 'int'>", "txt": "178 este întreg."},
         {"l": 9, "out": "<class 'float'>", "txt": "8.5 are zecimale."},
-        {"l": 10, "out": "<class 'bool'>", "txt": "True e o valoare logică."},
+        {"l": 10, "out": "<class 'bool'>", "txt": "True este o valoare logică."},
         {"l": 11, "out": "<class 'NoneType'>",
          "txt": "Și lipsa are un tip. Acestea sunt cele cinci tipuri simple folosite la curs."},
     ],
@@ -212,15 +212,15 @@ PAS_TIPURI = {
 
 PAS_LISTE = {
     "fisier": "01_introducere.ipynb · liste și dicționare",
-    "intro": "Două feluri de a ține mai multe valori împreună. Urmărește în memorie cum arată fiecare.",
+    "intro": "Două structuri care păstrează mai multe valori împreună. Panoul de memorie arată forma fiecăreia.",
     "cod": "tari = [\"RO\", \"IT\", \"ES\"]\nprint(tari[0])  # prima pozitie are indicele 0\nprint(len(tari))\n\n"
            "persoana = {\"name\": \"Ana\", \"age\": 24, \"city\": \"Cluj-Napoca\"}\nprint(persoana.keys())\nprint(persoana[\"city\"])",
     "pasi": [
         {"l": 1, "set": {"tari": {"t": "list", "v": ["RO", "IT", "ES"]}},
          "txt": "Parantezele drepte fac o <b>listă</b>: valori puse în ordine. Fiecare are o <b>poziție</b>, scrisă deasupra căsuței."},
         {"l": 2, "out": "RO", "hl": {"var": "tari", "k": 0},
-         "txt": "<code>tari[0]</code> cere valoarea de pe poziția 0. Numărătoarea începe de la <b>0</b>, nu de la 1: prima țară e la 0."},
-        {"l": 3, "out": "3", "txt": "<code>len()</code> numără elementele: 3. Ultima poziție e deci 2."},
+         "txt": "<code>tari[0]</code> cere valoarea de pe poziția 0. Numărătoarea începe de la <b>0</b>, nu de la 1: prima țară se află pe poziția 0."},
+        {"l": 3, "out": "3", "txt": "<code>len()</code> numără elementele: 3. Ultima poziție este, deci, 2."},
         {"l": 5, "set": {"persoana": {"t": "dict", "v": {"name": "Ana", "age": 24, "city": "Cluj-Napoca"}}},
          "txt": "Acoladele fac un <b>dicționar</b>: perechi <b>cheie: valoare</b>. Aici nu contează ordinea, contează numele cheii."},
         {"l": 6, "out": "dict_keys(['name', 'age', 'city'])",
@@ -244,7 +244,7 @@ PERS = [
 
 PAS_JSON = {
     "fisier": "01_introducere.ipynb · 4. JSON",
-    "intro": "Fișierul persoane.json din caiet: trei persoane fictive. Coborâm pas cu pas până la o singură valoare.",
+    "intro": "Fișierul persoane.json din caiet: trei persoane fictive, parcurse pas cu pas până la o singură valoare.",
     "cod": "import json\nwith open(\"exemple_curs1/persoane.json\",\n"
            "          encoding=\"utf-8\") as fisier:\n"
            "    user_data = json.load(fisier)\n\nprint(user_data.keys())\n"
@@ -253,16 +253,16 @@ PAS_JSON = {
            "print(user_data[\"users\"][0][\"hobbies\"][1])",
     "pasi": [
         {"l": 4, "set": {"user_data": {"t": "dict", "v": {"users": PERS}}},
-         "txt": "<code>json.load</code> citește fișierul și îl transformă în dicționare și liste Python. Ce e afară e un dicționar cu o singură cheie."},
+         "txt": "<code>json.load</code> citește fișierul și îl transformă în dicționare și liste Python. Nivelul exterior este un dicționar cu o singură cheie."},
         {"l": 6, "out": "dict_keys(['users'])",
-         "txt": "Prima întrebare, mereu: ce chei are? Una singură, <code>users</code>."},
+         "txt": "Prima întrebare, întotdeauna: ce chei are? Una singură, <code>users</code>."},
         {"l": 7, "set": {"users": {"t": "list", "v": PERS}}, "hl": {"var": "user_data", "k": "users"},
-         "txt": "Intrăm pe cheia <code>users</code>. Valoarea ei e o <b>listă</b>: fiecare căsuță e o persoană."},
+         "txt": "Cheia <code>users</code> are ca valoare o <b>listă</b>: fiecare element este o persoană."},
         {"l": 8, "out": "3", "txt": "Trei persoane, pe pozițiile 0, 1 și 2."},
         {"l": 10, "set": {"prima_persoana": {"t": "dict", "v": PERS[0]}}, "hl": {"var": "users", "k": 0},
-         "txt": "<code>users[0]</code> e prima persoană. Ea însăși e un dicționar, cu nume, oraș, hobby-uri…"},
+         "txt": "<code>users[0]</code> este prima persoană, la rândul ei un dicționar, cu nume, oraș, hobby-uri…"},
         {"l": 11, "out": "Ana Popescu", "hl": {"var": "prima_persoana", "k": "name"},
-         "txt": "Cheia <code>name</code> dă numele. Am ajuns la o valoare."},
+         "txt": "Cheia <code>name</code> dă numele, o valoare simplă."},
         {"l": 12, "out": "drumeții", "hl": {"var": "prima_persoana", "k": "hobbies"},
          "txt": "Tot drumul, într-un rând, citit de la stânga la dreapta: lista <code>users</code> → poziția 0 → cheia <code>hobbies</code> → poziția 1. Al doilea hobby: drumeții."},
     ],
@@ -281,7 +281,7 @@ PAS_SCI = {
             "cols": ["user_country", "friend_country", "scaled_sci"],
             "rows": [["NI", "BS", 2066], ["…", "…", "…"]],
             "nota": "31.684 de rânduri: câte unul pentru fiecare pereche de țări"}}},
-         "txt": "<code>pd.read_csv</code> citește fișierul într-un <b>tabel</b> (DataFrame). <code>keep_default_na=False</code>: NA e Namibia, nu o valoare lipsă."},
+         "txt": "<code>pd.read_csv</code> citește fișierul într-un <b>tabel</b> (DataFrame). <code>keep_default_na=False</code>: NA este Namibia, nu o valoare lipsă."},
         {"l": 3, "out": "(31684, 5)",
          "txt": "<code>.shape</code> dă (rânduri, coloane). 31.684 = 178 × 178: fiecare țară cu fiecare, inclusiv cu ea însăși."},
         {"l": 5, "set": {"conditie_ro": {"t": "Series", "v": {
@@ -292,21 +292,21 @@ PAS_SCI = {
             "cols": ["user_country", "friend_country", "scaled_sci"],
             "rows": [["RO", "CI", 640], ["RO", "ES", 54179], ["RO", "MW", 205]],
             "nota": "178 de rânduri"}}},
-         "txt": "<code>sci[conditie_ro]</code> păstrează doar rândurile unde condiția e True: perechile care pleacă din România."},
+         "txt": "<code>sci[conditie_ro]</code> păstrează doar rândurile unde condiția este True: perechile care pleacă din România."},
         {"l": 7, "out": "178", "txt": "178 de rânduri: România cu fiecare țară, inclusiv perechea RO-RO."},
         {"l": 9, "set": {"ro_extern": {"t": "DataFrame", "v": {
             "cols": ["user_country", "friend_country", "scaled_sci"],
             "rows": [["RO", "CI", 640], ["RO", "ES", 54179], ["RO", "MW", 205]],
             "nota": "177 de rânduri, fără perechea RO-RO"}}},
-         "txt": "<code>!=</code> înseamnă „diferit de”. Scoatem perechea România-România: păstrăm doar partenerii externi."},
+         "txt": "<code>!=</code> înseamnă „diferit de”. Perechea România-România se elimină; rămân doar partenerii externi."},
         {"l": 10, "out": "177", "txt": "177 de parteneri externi."},
         {"l": 12, "set": {"top_ro": {"t": "DataFrame", "v": {
             "cols": ["friend_country", "scaled_sci"],
             "rows": [["MD", 173794], ["AT", 124693], ["DE", 91228]],
             "nota": "aceleași 177 de rânduri, în ordinea descrescătoare a indicelui"}}},
-         "txt": "<code>sort_values</code> ordonează după o coloană; <code>ascending=False</code> pune valorile mari primele."},
+         "txt": "<code>sort_values</code> ordonează după o coloană; <code>ascending=False</code> pune valorile mari la început."},
         {"l": 13, "out": "['MD', 'AT', 'DE', 'HU', 'IE', 'IT']",
-         "txt": "Primii șase parteneri. Italia, cu cei mai mulți români, este abia a șasea: întrebarea la care revenim pe tot parcursul semestrului."},
+         "txt": "Primii șase parteneri. Italia, cu cei mai mulți români, este abia a șasea: întrebarea urmărită pe tot parcursul semestrului."},
     ],
 }
 
@@ -319,47 +319,47 @@ PZ_INDEX = ix("prezice", "Liste și dicționare", {
        "intrebare": "Ce afișează?",
        "variante": ["RO Ana", "IT Cluj-Napoca", "RO Cluj-Napoca", "IT city"],
        "corect": 1,
-       "indiciu": "Într-o listă, numărătoarea începe de la 0. Într-un dicționar, între paranteze pui cheia și primești valoarea.",
+       "indiciu": "Într-o listă, numărătoarea începe de la 0. Într-un dicționar, cheia scrisă între paranteze dă valoarea.",
        "laBine": "Indice pentru liste, cheie pentru dicționare: cu aceste două operații se parcurge orice JSON.",
-       "explicatie": "<code>tari[1]</code> e al doilea element, pentru că primul e <code>tari[0]</code>. "
+       "explicatie": "<code>tari[1]</code> este al doilea element, pentru că primul este <code>tari[0]</code>. "
                      "<code>persoana[\"city\"]</code> dă valoarea cheii. Cu aceste două operații "
                      "se ajunge la orice valoare dintr-un răspuns JSON, oricât de adânc ar fi imbricată."})
 
 DIADIC_SLIDE = ix("cod", "Filtrare pe primul capăt al perechii", {
        "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI_SIMPLU,
-       "sarcina": "Păstrează doar perechile în care primul capăt e România.",
+       "sarcina": "Ce completează filtrul care păstrează doar perechile în care primul capăt este România?",
        "cod": "import pandas as pd\n\n"
-              "d = pd.read_csv(\"data/country.csv\", keep_default_na=False)\n"
-              "print(len(d))                  # 31684\n\n"
+              "df = pd.read_csv(\"data/country.csv\", keep_default_na=False)\n"
+              "print(len(df))                 # 31684\n\n"
               "# doar perechile care pleaca din Romania\n"
-              "ro = d[d[{{1}}] == {{2}}]\n"
+              "ro = df[df[{{1}}] == {{2}}]\n"
               "print(len(ro))                 # 178",
        "goluri": {
            "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
            "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
-       "indiciu": "Pe stânga lui <code>==</code> stă coloana (o alegi cu <code>d[\"...\"]</code>), "
+       "indiciu": "Pe stânga lui <code>==</code> stă coloana (selectată cu <code>df[\"...\"]</code>), "
                   "pe dreapta valoarea căutată. Amândouă sunt text, deci între ghilimele.",
        "iesire": "31684\n178",
        "laBine": "178 de rânduri: România cu fiecare țară din set, inclusiv cu ea însăși.",
        "laRau": "Numele coloanei și codul se scriu între ghilimele, ca text.",
-       "explicatie": "Fixezi un capăt al perechii și obții un tabel monadic: "
+       "explicatie": "Fixarea unui capăt al perechii dă un tabel monadic: "
                      "178 de rânduri, câte unul pentru fiecare țară parteneră. "
                      "Este operația de bază pentru a citi date diadice."})
 
 DIADIC_MANUAL = ix("cod", "Filtrare pe primul capăt al perechii", {
        "id": "c1-cod-diadic", "fisier": "diadic.py", "date": DATE_SCI,
-       "sarcina": "Păstrează doar perechile care pleacă din România.",
+       "sarcina": "Ce completează filtrul care păstrează doar perechile în care primul capăt este România?",
        "cod": "import pandas as pd\n\n"
-              "d = pd.read_csv(\"data/country.csv\", keep_default_na=False)\n"
-              "print(len(d))                  # 31684\n\n"
-              "ro = d[d[{{1}}] == {{2}}]\n"
+              "df = pd.read_csv(\"data/country.csv\", keep_default_na=False)\n"
+              "print(len(df))                 # 31684\n\n"
+              "ro = df[df[{{1}}] == {{2}}]\n"
               "print(len(ro))                 # 178",
        "goluri": {
            "1": {"ok": ["\"user_country\"", "'user_country'"], "ajutor": "coloana"},
            "2": {"ok": ["\"RO\"", "'RO'"], "ajutor": "codul"}},
        "laBine": "178 de rânduri: România cu fiecare țară, inclusiv cu ea însăși.",
        "laRau": "Numele coloanei se scrie între ghilimele.",
-       "explicatie": "Fixezi un capăt al perechii și obții un tabel monadic: un rând "
+       "explicatie": "Fixarea unui capăt al perechii dă un tabel monadic: un rând "
                      "pentru fiecare țară parteneră."})
 
 
@@ -372,7 +372,7 @@ sl("s1", "Cursul", "Despre curs",
    "<h2>Fluxuri de lucru pentru știința datelor</h2>"
    "<p class=\"cheie\">Un flux complet, de la întrebarea de cercetare la un "
    "rezultat verificabil.</p>"
-   + ix("semestru", "Opt ședințe", CRONOLOGIE),
+   + ix("semestru", "Harta semestrului", CRONOLOGIE),
    manual=
    "<h2>Fluxuri de lucru pentru știința datelor</h2>"
    "<p>Cursul urmărește drumul complet al unui proiect de analiză de date, de la "
@@ -385,11 +385,10 @@ sl("s1", "Cursul", "Despre curs",
    "depozit de cod pe GitHub, cu istoricul lui, nu ca fișier izolat. Pe site, ședințele "
    "sunt numerotate „cursul 1” până la „cursul 8”; fiecare are o parte de curs, cu lecția "
    "și manualul de pe site, și un laborator, cu caietul ei.</p>"
-   "<p>Pe tot parcursul semestrului lucrăm la aceeași întrebare, ca într-o cercetare "
-   "reală: cât de conectate sunt regiunile Europei prin prieteniile de pe Facebook și "
-   "în ce măsură aceste legături se explică prin migrația dintre ele. Analiza completă "
-   "a profesorului devine un articol; fiecare echipă dezvoltă, pe aceleași date, o "
-   "întrebare proprie.</p>"
+   "<p>Pe parcursul semestrului, cursul urmărește aceeași întrebare de cercetare, ca într-un "
+   "proiect real: cât de conectate sunt regiunile Europei prin prieteniile de pe Facebook și "
+   "în ce măsură aceste legături se explică prin migrația dintre ele. Fiecare echipă "
+   "dezvoltă, pe aceleași date, o întrebare proprie.</p>"
    + ix("semestru", "Subiectele semestrului", CRONOLOGIE)
    + nota("Caietul lecției",
           f'<a class="leg" href="{repo_fisier("curs/01_introducere_si_datele_proiectului.ipynb")}" '
@@ -411,8 +410,8 @@ sl("s1", "Cursul", "Despre curs",
    "și exerciții pe cont propriu. Fiecare pas urmează aceeași succesiune: citirea codului, "
    "anticiparea rezultatului, rularea și interpretarea.</p>"
    + nota("La finalul orei", "Folderul cursului, <code>dsw</code>, are mediul virtual "
-          "creat, iar caietul 01 rulează de sus până jos, pe date reale. Echipa se "
-          "formează până la cursul 2."))
+          "creat, iar caietul 01 rulează de sus până jos, pe date reale. Echipele se "
+          "formează la cursul 2, pe site."))
 
 
 sl("s2", "Cursul", "Punctul de pornire",
@@ -432,7 +431,7 @@ sl("s2", "Cursul", "Punctul de pornire",
    "<p>Cursul presupune experiență anterioară cu Python, dar experiența cu linia de "
    "comandă, Git, SQL și API-urile diferă de la un student la altul. Evaluarea de mai jos "
    "nu intră în notă. Ea stabilește punctul de pornire al grupei, pentru ca timpul de "
-   "curs să meargă acolo unde este nevoie de el.</p>"
+   "curs să fie alocat acolo unde este necesar.</p>"
    + ix("autoevaluare", "Nu se notează", {
        "id": "c1-autoevaluare",
        "teme": [
@@ -449,11 +448,11 @@ sl("s2", "Cursul", "Punctul de pornire",
    "colectarea datelor din surse publice, mai mult timp va fi alocat API-urilor; dacă mulți "
    "își scriu deja disertația, accentul cade pe formularea întrebării "
    "și pe raport.</p>"
-   + ix("asteptari", "Ce aștepți de la curs", {
+   + ix("asteptari", "Așteptările de la curs", {
        "id": "c1-asteptari",
        "sarcina": "Două-trei rânduri. Răspunsurile sunt citite înainte de cursul următor.",
-       "exemplu": "De exemplu: vreau să pot colecta singur date de pe un site și "
-                  "să le integrez într-un singur tabel."}))
+       "exemplu": "De exemplu: colectarea autonomă a datelor de pe un site și "
+                  "integrarea lor într-un singur tabel."}))
 
 
 # ===========================================================================
@@ -462,14 +461,14 @@ sl("s2", "Cursul", "Punctul de pornire",
 
 UNELTE = [
     # (grupa, nume cu link, la ce, când)
-    ("Pe calculatorul tău", [
+    ("Pe calculatorul personal", [
         ('<a class="leg" href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a>',
          "editorul: caiete și fișiere de cod, în același loc", "azi"),
         ('<a class="leg" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="noopener">extensiile Python și Jupyter</a>',
          "rulează caietele direct în VS Code; "
          '<a class="leg" href="../scurtaturi/">comenzile rapide din caiet</a>', "azi"),
         ('<a class="leg" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python 3.11+</a>',
-         "limbajul; pe Windows bifezi <em>Add Python to PATH</em>", "azi"),
+         "limbajul; pe Windows se bifează <em>Add Python to PATH</em>", "azi"),
         ('<a class="leg" href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">mediul virtual (venv)</a>',
          "pachetele proiectului, separate de restul calculatorului", "azi"),
         ('<a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a>',
@@ -490,7 +489,7 @@ UNELTE = [
     ]),
     ("În browser", [
         ('<a class="leg" href="https://github.com/" target="_blank" rel="noopener">GitHub</a>',
-         "contul cu care intri pe site și depozitul echipei", "înainte de curs"),
+         "contul de autentificare pe site și depozitul echipei", "înainte de curs"),
         ('<a class="leg" href="../../">site-ul cursului</a>',
          "lecțiile, exercițiile, manualul și Exploratorul", "azi"),
         ("Teams", "temele, încărcate ca fișiere", "de la tema 1"),
@@ -529,22 +528,22 @@ def unelte_slide():
 
 
 sl("s2b", "Cursul", "Așteptările",
-   "<h2>Ce aștepți de la curs</h2>"
+   "<h2>Așteptările de la curs</h2>"
    + ix("asteptari", "Așteptările", {
        "id": "c1-asteptari",
        "sarcina": "Două-trei rânduri. Răspunsurile sunt citite înainte de cursul "
                   "următor, iar cursul se ajustează în funcție de ele.",
-       "exemplu": "De exemplu: vreau să pot colecta singur date de pe un site și "
-                  "să le integrez într-un singur tabel."}),
+       "exemplu": "De exemplu: colectarea autonomă a datelor de pe un site și "
+                  "integrarea lor într-un singur tabel."}),
    manual="")
 
 sl("s3", "Softuri și conturi", "Uneltele semestrului",
    "<h2>Uneltele semestrului</h2>"
-   "<p class=\"cheie\">Toate gratuite. Azi instalezi doar coloana din stânga.</p>"
+   "<p class=\"cheie\">Toate gratuite. Astăzi se instalează doar coloana din stânga.</p>"
    + unelte_slide()
    + nota("Contul GitHub", "Creat înainte de curs, după pașii de pe "
-          '<a class="leg" href="../">pagina cursului</a>. Cu el intri pe site și, de la cursul 2, '
-          "în depozitul echipei.", True),
+          '<a class="leg" href="../">pagina cursului</a>. Servește la autentificarea pe site și, de la cursul 2, '
+          "la accesul în depozitul echipei.", True),
    manual=
    "<h2>Uneltele semestrului</h2>"
    "<p>Toate uneltele sunt gratuite; Teams se folosește prin contul instituțional. Astăzi "
@@ -564,10 +563,10 @@ sl("s3", "Softuri și conturi", "Uneltele semestrului",
    "toate cele cinci calculatoare. Când versiunile sunt fixate în <code>requirements.txt</code> "
    "(de exemplu <code>pandas==3.1.0</code>), mediul se poate reface identic și peste un an.</p>"
    + nota("Contul GitHub", "Se creează înainte de prima oră, după pașii de pe "
-          '<a class="leg" href="../">pagina cursului</a>. La prima oră intri cu el pe site și '
-          "îți alegi numele din lista grupei, o singură dată. De la cursul 2, același cont îți "
-          "dă acces la depozitul echipei.")
-   + nota("Ce se salvează despre tine",
+          '<a class="leg" href="../">pagina cursului</a>. La prima oră, contul servește la '
+          "autentificarea pe site, iar numele se alege o singură dată din lista grupei. De la "
+          "cursul 2, același cont dă acces la depozitul echipei.")
+   + nota("Ce date se salvează",
           "Răspunsurile la întrebări, exercițiile rezolvate și prezența la orele de curs. Detaliile sunt în "
           '<a class="leg" href="../../date-personale/">politica de confidențialitate</a>.'))
 
@@ -577,8 +576,8 @@ sl("s3", "Softuri și conturi", "Uneltele semestrului",
 # ===========================================================================
 
 DRUM = {
-    "titlu": "Apasă pe o etapă",
-    "intro": "Sus, etapele analizei datelor; jos, ingineria modelelor. Baza de date e "
+    "titlu": "Etapele, pe rând",
+    "intro": "Sus, etapele analizei datelor; jos, ingineria modelelor. Baza de date este "
              "figurată separat: nu este o etapă, ci locul la care revin toate celelalte.",
     "bandaSus": "Analiza datelor", "bandaJos": "Ingineria modelelor",
     "sus": [
@@ -604,7 +603,7 @@ DRUM = {
         {"n": "Curățarea datelor", "unde": "cursul 4", "et": "curatare",
          "d": "Tipuri greșite, valori lipsă, duplicate, coduri care nu se potrivesc între "
               "surse. Este etapa cea mai lungă și cea de care depinde validitatea rezultatului.",
-         "noi": "Grecia e EL la Eurostat și GR în SCI; Namibia (NA) devine valoare lipsă; "
+         "noi": "Grecia este EL la Eurostat și GR în SCI; Namibia (NA) devine valoare lipsă; "
                 "migrația vine cu grupuri de țări amestecate printre țări.",
          "lit": "Documentația surselor: ce înseamnă fiecare cod și fiecare lipsă.",
          "capcana": "Eliminarea rândurilor cu valori lipsă, care modifică eșantionul fără ca "
@@ -649,7 +648,7 @@ DRUM = {
                      "și unde nu.",
               "capcana": "Un grafic cu axa tăiată, care face o diferență mică să pară mare."},
     "baza": {"n": "Popularea și gestionarea bazei de date", "unde": "cursul 5", "et": "agregare",
-             "d": "Nu e o etapă în lanț, e depozitul la care se întorc mai multe etape. "
+             "d": "Nu este o etapă în lanț, ci depozitul la care revin mai multe etape. "
                   "Colectarea scrie datele brute, curățarea versiunea curată, agregarea "
                   "tabelul final.",
              "noi": "Tabelele echipei, în trei straturi: brut, curat, final.",
@@ -659,8 +658,8 @@ DRUM = {
 
 LITERATURA_FLUX = (
     "<div class=\"litf\">"
-    "<p class=\"litf__t\">Literatura nu e o etapă și nici un capitol scris la final. E un fir "
-    "care trece prin toată cercetarea, ca baza de date prin toate etapele.</p>"
+    "<p class=\"litf__t\">Literatura nu este o etapă și nici un capitol scris la final. Ea "
+    "însoțește toată cercetarea, așa cum baza de date însoțește toate etapele.</p>"
     "<ol class=\"litf__pasi\">"
     "<li><b>Înainte de întrebare</b><span>ce se știe deja și unde este lacuna. O întrebare bună "
     "pornește de la o lacună în literatură, nu de la date.</span></li>"
@@ -670,7 +669,7 @@ LITERATURA_FLUX = (
     "folosit, ce erori au evitat.</span></li>"
     "<li><b>Documentația</b><span>a datelor și a uneltelor, la fiecare pas de cod.</span></li>"
     "<li><b>După rezultate</b><span>rezultatele se raportează la literatură: ce confirmă, ce "
-    "contrazice, ce e nou. Adesea, ele trimit înapoi la lectură.</span></li>"
+    "contrazice, ce este nou. Adesea, ele trimit înapoi la lectură.</span></li>"
     "</ol>"
     "<p class=\"litf__l\">Pentru fiecare etapă, schema de mai sus indică lecturile relevante. Lista "
     "întreagă, pe teorie, metodă și date: <a class=\"leg\" href=\"../../lecturi/\">Literatura "
@@ -678,16 +677,30 @@ LITERATURA_FLUX = (
 )
 
 LIT2 = (
-    '<div class="lit2"><p class="lit2__t">Literatura nu e o etapă și nici un capitol scris la final: '
-    "e un fir care trece prin toată cercetarea.</p>"
+    '<div class="lit2"><p class="lit2__t">Literatura se folosește în fiecare etapă a cercetării, '
+    "nu doar la început.</p>"
     '<ol class="lit2__l">'
-    '<li><span class="lit2__n">01</span><b>Înainte de întrebare</b><span>Ce se știe deja și unde este lacuna.</span></li>'
-    '<li><span class="lit2__n">02</span><b>Teoria</b><span>De ce ar fi legate două locuri. De aici vin ipotezele.</span></li>'
-    '<li><span class="lit2__n">03</span><b>Metoda</b><span>Cum au măsurat alți autori și ce modele au folosit.</span></li>'
-    '<li><span class="lit2__n">04</span><b>Documentația</b><span>A datelor și a uneltelor, la fiecare pas de cod.</span></li>'
-    '<li><span class="lit2__n">05</span><b>După rezultate</b><span>Ce confirmă, ce contrazice, ce e nou.</span></li>'
+    '<li><span class="lit2__n">01</span><b>Starea cercetării</b>'
+    '<span>Ce s-a studiat deja, cu ce rezultate și ce rămâne neexplicat. De aici se formulează întrebarea.</span>'
+    '<em>Definirea problemei</em></li>'
+    '<li><span class="lit2__n">02</span><b>Cadrul teoretic</b>'
+    '<span>Mecanismele care explică fenomenul. Teoria definește conceptele, justifică '
+    'variabilele și conduce la ipoteze testabile.</span>'
+    '<em>Problema, variabilele</em></li>'
+    '<li><span class="lit2__n">03</span><b>Metodologia</b>'
+    '<span>Cum au fost măsurate conceptele în studiile anterioare: date, unități de analiză, '
+    'modele și limitele lor.</span>'
+    '<em>Colectarea, modelarea</em></li>'
+    '<li><span class="lit2__n">04</span><b>Documentația</b>'
+    '<span>Metodologia surselor de date și documentația uneltelor: ce măsoară fiecare '
+    'variabilă și cum se folosește corect fiecare funcție.</span>'
+    '<em>Toate etapele</em></li>'
+    '<li><span class="lit2__n">05</span><b>Discuția rezultatelor</b>'
+    '<span>Rezultatele se compară cu studiile anterioare: ce confirmă, ce contrazic '
+    'și ce contribuție nouă aduc.</span>'
+    '<em>Raportarea</em></li>'
     "</ol>"
-    '<p class="lit2__jos">Lista întreagă, pe teorie, metodă și date: '
+    '<p class="lit2__jos">Bibliografia proiectului, pe teorie, metodă și date: '
     '<a class="leg" href="../../lecturi/">Literatura proiectului</a>.</p></div>')
 
 
@@ -705,7 +718,7 @@ def _dsw():
 
 
 DSW = {"etape": _dsw(),
-       "intro": "Apasă pe o etapă. Săgețile pline marchează succesiunea etapelor; cele punctate, revenirile, care fac parte firească din proces."}
+       "intro": "Detaliile fiecărei etape apar la selectarea ei. Săgețile pline marchează succesiunea etapelor; cele punctate, revenirile, care fac parte firească din proces."}
 
 sl("s4", "Pașii unui proiect", "Data Science Workflow",
    "<h2>Pașii unui proiect de analiză de date</h2>"
@@ -769,7 +782,7 @@ DIRECTII = [
 
 INDICE = {
     "sarcina": "Aceleași 1.200 de legături, trei locuri partenere de mărimi "
-               "diferite. Apasă pe rând.",
+               "diferite, selectate pe rând.",
     "a": {"n": "Cluj", "u": 300},
     "b": [
         {"n": "Republica Moldova", "u": 600,
@@ -787,13 +800,14 @@ INDICE = {
 # fără „întâi ghicești”: formula se construiește întâi, nu se ghicește
 
 
-SCI_IX = {"concluzie": "Italia are mai multe prietenii cu Clujul, <b>9 față de 6</b>, dar indicele e mai mic: "
-                        "prieteniile se împart la mai multe perechi posibile. În <code>country.csv</code>: "
-                        "România și Republica Moldova, 173.794; România și Italia, 69.327."}
+SCI_IX = {"concluzie": "Italia are mai multe prietenii cu Clujul, <b>9 față de 6</b>, dar indicele este mai mic: "
+                        "prieteniile se împart la mai multe perechi posibile."
+                        "<small>În <code>country.csv</code>: România și Republica Moldova, 173.794; "
+                        "România și Italia, 69.327.</small>"}
 
 sl("s5", "Proiectul", "Ce măsoară SCI",
    "<h2>Social Connectedness Index</h2>"
-   "<p class=\"cheie\">Cât de probabilă e o prietenie pe Facebook între doi oameni, unul din fiecare loc.</p>"
+   "<p class=\"cheie\">Cât de probabilă este o prietenie pe Facebook între doi utilizatori, câte unul din fiecare loc.</p>"
    + ix("sci", "Aceleași calcule, două perechi de locuri", SCI_IX),
    sci=True,
    manual=
@@ -806,7 +820,7 @@ sl("s5", "Proiectul", "Ce măsoară SCI",
    "între 0 și 1 și nu se interpretează izolat, ci prin comparație între perechi.</p>"
    "<p>Definiția, în cuvinte: numărul de prietenii dintre utilizatorii celor două locuri, "
    "împărțit la produsul numerelor de <em>utilizatori Facebook</em> din fiecare loc. "
-   "Numitorul are două consecințe, la care revenim tot semestrul. Prima: un loc cu mulți "
+   "Numitorul are două consecințe, relevante pe tot parcursul semestrului. Prima: un loc cu mulți "
    "utilizatori are nevoie de mult mai multe prietenii pentru același indice, deci o "
    "comunitate mare de migranți într-o țară mare are o pondere mică. A doua: indicele "
    "descrie utilizatorii platformei, nu populația, iar acoperirea Facebook diferă de la o "
@@ -842,7 +856,7 @@ sl("s5", "Proiectul", "Ce măsoară SCI",
        ("Bailey et al. (2018), JEP", "https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259",
         "articolul care a introdus indicele: definiția, ce îl explică, primele rezultate"),
    ])
-   + nota("Instantaneul cu care lucrăm",
+   + nota("Instantaneul folosit la curs",
           "25 ianuarie 2026, 178 de țări, pe nomenclatorul NUTS 2024 și pe limitele administrative "
           "GADM 4.1 și geoBoundaries 6.0.0. Fiind un instantaneu, setul nu are dimensiune "
           "temporală și nu permite analize longitudinale. Harta pe județe, "
@@ -855,7 +869,7 @@ HARTA_JUDETE = {
     "niveluri": ["judete"], "nivel": "judete", "masura": "sci", "ales": "RO113",
     "povesti": [
         {"t": "Cluj", "nivel": "judete", "masura": "sci", "ales": "RO113",
-         "text": "În țară, Clujul e legat întâi de Sălaj și Bistrița-Năsăud. "
+         "text": "În țară, Clujul este legat întâi de Sălaj și Bistrița-Năsăud. "
                  "În afara ei, de Lleida și Huesca, în nord-estul Spaniei."},
         {"t": "Harghita", "nivel": "judete", "masura": "sci", "ales": "RO124",
          "text": "Cu Covasna, cea mai puternică legătură dintre două județe "
@@ -871,7 +885,7 @@ HARTA_JUDETE = {
                  "căpșunilor din sudul Spaniei: o urmă probabilă a migrației sezoniere pentru muncă."},
     ],
 }
-HARTA_JUDETE["intai"] = {"q": "Clujul este conectat în primul rând cu județele vecine. În afara României, unde se află partenerii lui cel mai puternic conectați?", "variante": ["În Ungaria, peste graniță", "În nord-estul Spaniei", "În nordul Italiei"], "corect": 1, "dupa": "Lleida și Huesca, în Catalonia și Aragon: de 31 și de 20 de ori peste mediana partenerilor Clujului. Liniile portocalii indică partenerii cel mai puternic conectați din alte țări. Deschide harta mare (⤢) și alege alt județ."}
+HARTA_JUDETE["intai"] = {"q": "Clujul este conectat în primul rând cu județele vecine. În afara României, unde se află partenerii lui cel mai puternic conectați?", "variante": ["În Ungaria, peste graniță", "În nord-estul Spaniei", "În nordul Italiei"], "corect": 1, "dupa": "Lleida și Huesca, în Catalonia și Aragon: de 31 și de 20 de ori peste mediana partenerilor Clujului. Liniile portocalii indică partenerii cel mai puternic conectați din alte țări. Harta mare (⤢) permite alegerea altui județ."}
 
 HARTA_TARI = {
     "niveluri": ["tari"], "nivel": "tari", "masura": "migr", "ales": "RO",
@@ -879,7 +893,7 @@ HARTA_TARI = {
     "povesti": [
         {"t": "Unde trăiesc românii", "nivel": "tari", "masura": "migr", "ales": "RO",
          "text": "Cetățeni români după țara în care locuiesc (Eurostat, 2024). "
-                 "Italia e prima, cu 1,07 milioane, apoi Germania și Spania."},
+                 "Italia este prima, cu 1,07 milioane, apoi Germania și Spania."},
         {"t": "Legăturile, după SCI", "nivel": "tari", "masura": "sci", "ales": "RO",
          "text": "Aceeași hartă, dar după SCI. Republica Moldova, Austria, Germania și "
                  "Ungaria trec în față. Italia coboară."},
@@ -926,10 +940,10 @@ sl("s5m", "Proiectul", "Oameni și legături",
    "<h2>Oameni și legături</h2>"
    "<p>A doua sursă a cursului este migrația: câți cetățeni ai fiecărei țări trăiesc în "
    "fiecare altă țară. Datele vin tot prin API, de la Eurostat (<code>migr_pop1ctz</code>), "
-   "și le aducem la cursul 2. Pe hartă, prima vizualizare arată unde trăiesc cetățenii români; "
+   "și se colectează la cursul 2. Pe hartă, prima vizualizare arată unde trăiesc cetățenii români; "
    "a doua arată cât de legată este România de fiecare țară, după SCI.</p>"
    + ix("harta", "Migrația (Eurostat) și SCI, pe aceeași hartă", HARTA_TARI)
-   + nota("Ce date de migrație avem",
+   + nota("Datele de migrație disponibile",
           "Stocul de cetățeni străini la 1 ianuarie 2024, pentru țările care raportează "
           "populația pe țări de cetățenie. Printre cele care nu raportează: Polonia, Danemarca, "
           "Grecia, Croația, Cipru, Malta, Elveția, Regatul Unit și cele mai multe țări din afara "
@@ -939,7 +953,7 @@ sl("s5m", "Proiectul", "Oameni și legături",
               "Pe ce loc este Italia printre partenerii României, după SCI?",
               ["primul", "al treilea", "al șaselea", "al doisprezecelea"],
               "Al șaselea, după Republica Moldova, Austria, Germania, Ungaria și Irlanda. "
-              "La migrație este prima. Diferența dintre cele două clasamente e "
+              "La migrație este prima. Diferența dintre cele două clasamente este "
               "chiar întrebarea proiectului."))
 
 
@@ -977,7 +991,7 @@ PANTA = {
                 {"k": "mie", "t": "români la 1.000 de locuitori", "scurt": "la mie", "fmt": "mie"},
                 {"k": "sci", "t": "SCI cu România", "scurt": "SCI"}],
     "randuri": _panta(), "evidentiate": ["IT", "AT", "HU", "FR"],
-    "intro": "Apasă pe o țară. Verde: urcă de la număr la SCI. Roșu: coboară.",
+    "intro": "Detaliile apar la selectarea unei țări. Verde: urcă de la număr la SCI. Roșu: coboară.",
 }
 
 def _nori():
@@ -995,22 +1009,64 @@ NORI = {
         {"k": "mie", "t": "față de românii la 1.000 de locuitori", "ax": "români la 1.000 de locuitori",
          "ticks": [0.1, 1, 10], "stanga": ["HU"]},
     ],
-    "nota": "Un punct e o țară care raportează cetățeniile (23 de țări); ambele axe sunt logaritmice. "
-            "Cu cât punctele sunt mai aproape de dreaptă, cu atât relația e mai strânsă: r e mai mare "
+    "nota": "Un punct este o țară care raportează cetățeniile (23 de țări); ambele axe sunt logaritmice. "
+            "Cu cât punctele sunt mai aproape de dreaptă, cu atât relația este mai strânsă: r este mai mare "
             "în graficul din dreapta. Ungaria se abate de la tipar: puțini români, legături puternice.",
 }
 
 
+def _doua_tari(a="FR", b="AT"):
+    """Două țări cu aproape același număr de români și proporții foarte diferite:
+    ideea slide-ului, pe un singur exemplu, înainte de cele 23 de țări."""
+    R = {r["cod"]: r for r in _nori()}
+    A, B = R[a], R[b]
+    def nr(x, z=0):
+        t = f"{x:,.{z}f}".replace(",", " ").replace(".", ",").replace(" ", ".")
+        return t
+    randuri = [
+        ("Români care trăiesc în țară", "nr", 0, "aproape același număr"),
+        ("Români la 1.000 de locuitori", "mie", 1, None),
+        ("SCI cu România", "sci", 0, None),
+    ]
+    h = '<div class="dt">'
+    h += (f'<div class="dt__leg"><span class="dt__a"><i></i>{A["nume"]}</span>'
+          f'<span class="dt__b"><i></i>{B["nume"]}</span></div>')
+    for et, k, z, nota_ in randuri:
+        va, vb = A[k], B[k]
+        m = max(va, vb)
+        r = vb / va
+        dif = nota_ or (f"de {nr(r, 1)} ori mai mult în {B['nume']}" if r > 1 else f"de {nr(1 / r, 1)} ori mai mult în {A['nume']}")
+        h += (f'<div class="dt__r"><div class="dt__et">{et}</div><div class="dt__bare">'
+              f'<span class="dt__a" style="--w:{va / m * 100:.1f}%"><i></i><b>{nr(va, z)}</b></span>'
+              f'<span class="dt__b" style="--w:{vb / m * 100:.1f}%"><i></i><b>{nr(vb, z)}</b></span>'
+              f'</div><div class="dt__dif{" dt__dif--egal" if nota_ else ""}">{dif}</div></div>')
+    h += "</div>"
+    return h
+
+
+DOUA_TARI = _doua_tari()
+
 sl("s5r", "Proiectul", "Migrația și SCI",
    "<h2>Legăturile urmează mai degrabă proporția decât numărul</h2>"
-   + ix("doiNori", "SCI și migrația, în 23 de țări", NORI),
+   "<p class=\"cheie\">Ce explică mai bine SCI cu România: câți români trăiesc într-o țară "
+   "sau ce parte din populația ei reprezintă?</p>"
+   + DOUA_TARI
+   + "<p class=\"dt__conc\">Același număr de români, legături de aproape șapte ori mai puternice. "
+   "Motivul este numitorul indicelui: prieteniile se împart la utilizatorii din fiecare loc. "
+   "În cele 23 de țări care raportează cetățeniile, corelația cu SCI este 0,78 pentru număr "
+   "și 0,87 pentru proporție; de aceea, modelul de la cursul 7 folosește proporția.</p>",
    sci=True,
    manual=
    "<h2>Legăturile urmează mai degrabă proporția decât numărul</h2>"
-   "<p>Două grafice cu aceleași 23 de țări. În stânga, SCI cu România față de numărul de "
-   "români care trăiesc în fiecare țară; în dreapta, față de numărul de români la 1.000 de "
-   "locuitori. Ambele axe sunt logaritmice, pentru că valorile acoperă câteva ordine de "
-   "mărime.</p>"
+   "<p>Întrebarea este ce explică mai bine SCI cu România: numărul de români care trăiesc "
+   "într-o țară sau proporția lor în populația acelei țări. Franța și Austria o lămuresc pe "
+   "un singur exemplu: au aproape același număr de români, dar proporția și indicele diferă "
+   "de aproximativ șapte ori.</p>"
+   + DOUA_TARI
+   + "<p>Aceeași comparație, pe toate cele 23 de țări care raportează cetățeniile. În stânga, "
+   "SCI cu România față de numărul de români; în dreapta, față de românii la 1.000 de locuitori. "
+   "Fiecare punct este o țară, iar ambele axe sunt logaritmice, pentru că valorile acoperă "
+   "câteva ordine de mărime.</p>"
    + ix("doiNori", "SCI și migrația, în 23 de țări", NORI)
    + "<p>Pe valorile logaritmate, în cele 23 de țări care raportează cetățeniile, corelația cu SCI "
    "este 0,78 pentru numărul de români și 0,87 pentru românii la mie. Aceeași relație revine "
@@ -1022,45 +1078,69 @@ sl("s5r", "Proiectul", "Migrația și SCI",
           "Populația țărilor: suma populațiilor regiunilor NUTS 3, Eurostat, 2024. SCI: <code>country.csv</code>."))
 
 
-ECHIPE = (
-    '<ol class="ech">'
-    "<li><span>cursurile 1 și 2</span><b>Formați echipa</b><p>Cinci membri. La cursul 2, echipa primește depozitul ei pe GitHub.</p></li>"
-    "<li><span>cursul 3</span><b>Alegeți direcția</b><p>Întrebarea voastră și cadrul teoretic.</p></li>"
-    "<li><span>cursurile 4-7</span><b>Construiți proiectul, treptat</b><p>Datele curate, tabelul final, explorarea, modelul: toate în depozit.</p></li>"
-    "<li><span>cursul 8</span><b>Prezentați</b><p>Raportul și procesul care a dus la el.</p></li>"
-    "</ol>"
-    '<div class="ech__reguli">'
-    "<p><b>Un depozit pe echipă.</b> Tot ce faceți stă pe GitHub, cu istoricul lui.</p>"
-    "<p><b>Fiecare are partea lui.</b> Din istoric se vede cine ce a făcut.</p>"
-    "<p><b>Nota este individuală.</b> Proiectul e al echipei, nota la proiect e a fiecăruia.</p>"
-    "</div>")
+def _istoric_echipa():
+    """Cinci membri care se unesc într-un singur depozit, iar istoricul lui, pe
+    ședințe: fiecare commit are culoarea autorului. Se vede, fără explicații, că
+    proiectul e comun și că din istoric se citește contribuția fiecăruia."""
+    M = [("A", "accent"), ("B", "ambra"), ("C", "roza"), ("D", "text"), ("E", "ceas")]
+    X = {2: 168, 3: 258, 4: 348, 5: 438, 6: 528, 7: 618, 8: 724}
+    ET = {2: ["echipa,", "depozitul"], 3: ["direcția,", "întrebarea"], 4: ["datele", "curățate"],
+          5: ["tabelul", "final"], 6: ["explorarea"], 7: ["modelul"], 8: ["raportul,", "prezentarea"]}
+    Y = 100
+    # commit-urile dintre ședințe: (ședința după care vin, autorii, în ordine)
+    COM = {2: "AC", 3: "BDE", 4: "ACD", 5: "BEA", 6: "CDB", 7: "EAC"}
+    svg = ['<svg class="ist" viewBox="0 0 800 196" role="img" aria-label="Cinci membri, depozitul echipei și istoricul lui pe ședințe">']
+    for i, (lit, c) in enumerate(M):
+        y = 36 + i * 32
+        svg.append(f'<path class="ist__ram" pathLength="1" d="M42,{y} C96,{y} 96,{Y} 150,{Y}" style="--mc:var(--{c})"/>')
+    svg.append(f'<path class="ist__lin" d="M150,{Y} L760,{Y}"/>')
+    svg.append(f'<text class="ist__repo" x="168" y="{Y - 22}">dsw-ubb-2026 / depozitul unei echipe</text>')
+    n = 0
+    for k, aut in COM.items():
+        x0, x1 = X[k], X[k + 1]
+        for j, a_ in enumerate(aut):
+            cx = x0 + (x1 - x0) * (j + 1) / (len(aut) + 1)
+            c = dict(M)[a_]
+            svg.append(f'<circle class="ist__c" cx="{cx:.0f}" cy="{Y}" r="6" style="--mc:var(--{c});--k:{n}"/>')
+            n += 1
+    for k, x in X.items():
+        svg.append(f'<rect class="ist__st{" ist__st--fin" if k == 8 else ""}" x="{x - 8}" y="{Y - 11}" width="16" height="22" rx="8"/>')
+        svg.append(f'<text class="ist__nr" x="{x}" y="{Y + 32}">C{k}</text>')
+        for q, t in enumerate(ET[k]):
+            svg.append(f'<text class="ist__et" x="{x}" y="{Y + 50 + q * 15}">{t}</text>')
+    for i, (lit, c) in enumerate(M):
+        y = 36 + i * 32
+        svg.append(f'<circle class="ist__m" cx="30" cy="{y}" r="13" style="--mc:var(--{c})"/>'
+                   f'<text class="ist__ml" x="30" y="{y + 4}">{lit}</text>')
+    svg.append("</svg>")
+    return "".join(svg)
 
-ECH2 = (
-    '<div class="ech2">'
-    "<div><b>Cinci membri</b><span>aceleași date, întrebarea voastră</span></div>"
-    '<div style="--c:var(--ambra)"><b>Un depozit</b><span>pe GitHub, cu istoricul fiecăruia</span></div>'
-    '<div style="--c:var(--salvie)"><b>Notă individuală</b><span>proiectul e comun, nota e a fiecăruia</span></div>'
-    "</div>"
-    '<ol class="ech2t">'
-    "<li><span>cursurile 1-2</span><b>Formați echipa</b></li>"
-    "<li><span>cursul 3</span><b>Alegeți direcția</b></li>"
-    "<li><span>cursurile 4-7</span><b>Construiți proiectul</b></li>"
-    "<li><span>cursul 8</span><b>Prezentați</b></li>"
-    "</ol>")
+
+ECH3 = (
+    '<div class="ech3">' + _istoric_echipa()
+    + '<div class="ech3__f">'
+    "<div><b>Cinci membri</b><span>Aceleași date pentru toată grupa; fiecare echipă își formulează propria întrebare.</span></div>"
+    "<div><b>Un depozit pe echipă</b><span>Organizația GitHub a cursului este comună; fiecare echipă își creează în ea depozitul propriu, iar istoricul lui arată contribuția fiecărui membru.</span></div>"
+    "<div><b>Nota individuală</b><span>Proiectul este comun; nota la proiect, 5 puncte, se acordă fiecărui membru.</span></div>"
+    "</div></div>")
 
 
 sl("s5b", "Proiectul", "Echipele",
-   "<h2>Echipe de cinci, un depozit comun</h2>"
-   + ECH2,
+   "<h2>Echipe de cinci, câte un depozit pe echipă</h2>"
+   + ECH3,
    manual=
-   "<h2>Echipe de cinci, un depozit comun</h2>"
-   "<p>Proiectul se face în echipe de cinci, pe aceleași date pentru toată grupa: SCI și "
-   "migrația. Echipele diferă prin întrebare. Echipa se formează până la cursul 2, când "
-   "primește depozitul ei pe GitHub; direcția proiectului se alege la cursul 3, după ce "
-   "datele și literatura au fost discutate. Studenții fără echipă sunt repartizați.</p>"
-   + ECHIPE
-   + tabel(["Cursul", "Ce adaugi în depozit"], [
-       ["~1, 2", "Echipa, depozitul ei, primele date"],
+   "<h2>Echipe de cinci, câte un depozit pe echipă</h2>"
+   "<p>Proiectul se realizează în echipe de cinci, pe aceleași date pentru toată grupa: SCI și "
+   "migrația. Echipele diferă prin întrebarea de cercetare. Echipele se formează la cursul 2, prin "
+   "alegere pe site; cine se alătură mai târziu trimite o cerere, pe care o acceptă un membru al "
+   "echipei. Odată formată, echipa își creează depozitul propriu în organizația GitHub a cursului, comună pentru toată grupa. Direcția "
+   "proiectului se alege la cursul 3, după discutarea datelor și a literaturii.</p>"
+   + ECH3
+   + "<p>Fiecare ședință adaugă o componentă în depozit. Istoricul commit-urilor păstrează autorul "
+   "fiecărei modificări, astfel încât contribuția fiecărui membru rămâne vizibilă până la "
+   "prezentarea finală.</p>"
+   + tabel(["Cursul", "Ce intră în depozit"], [
+       ["~2", "Echipa, depozitul ei, primele date"],
        ["~3", "Direcția, întrebarea, cadrul teoretic"],
        ["~4", "Seturile de date curățate și dicționarul de date"],
        ["~5", "Tabelul final, la unitatea de analiză aleasă"],
@@ -1074,7 +1154,7 @@ DIRECTII2 = [
     ("Migrația și legăturile", [
         ("Număr sau proporție?", "SCI urmărește numărul de români dintr-o țară sau ponderea lor în populația ei?", "SCI · migrație · populație"),
         ("Coridoare comparate", "România și Italia, Polonia și Germania, Bulgaria și Spania: aceeași regulă peste tot?", "SCI · migrație"),
-        ("Diaspora pe județe", "De ce e Clujul legat de Lleida, Suceava de Belgia, Doljul de Huelva?", "SCI județ-regiune"),
+        ("Diaspora pe județe", "De ce este Clujul legat de Lleida, Suceava de Belgia, Doljul de Huelva?", "SCI județ-regiune"),
     ]),
     ("Istorie și granițe", [
         ("Granițele vechi", "Se mai vede granița Imperiului Habsburgic în legăturile dintre județe?", "SCI județe · granițe istorice"),
@@ -1106,9 +1186,9 @@ def directii_html():
 
 
 sl("s5d", "Proiectul", "Direcții posibile",
-   "<h2>Douăsprezece întrebări de la care puteți porni</h2>"
+   "<h2>Douăsprezece întrebări de pornire</h2>"
    + directii_html()
-   + "<p class=\"dir2__jos\">Sunt sugestii, nu o listă închisă. Direcția o alegeți la cursul 3, după ce vedeți datele și literatura.</p>",
+   + "<p class=\"dir2__jos\">Sunt sugestii, nu o listă închisă. Direcția se alege la cursul 3, după discutarea datelor și a literaturii.</p>",
    manual=
    "<h2>Direcții posibile</h2>"
    "<p>Toate direcțiile pornesc din aceleași fișiere, SCI și migrația, la care se adaugă, "
@@ -1128,7 +1208,7 @@ NOTA = (
     '<div class="nt__c"><b>1</b><span>Din oficiu</span><p>Se acordă de la început.</p></div>'
     "</div>"
     '<p class="nt__tot"><b>11 puncte</b> în total. Fiecare întrebare are două ocazii de răspuns, una la oră și una acasă; '
-    "din fiecare contează primul răspuns, iar la notă intră rezultatul mai bun. Regulile complete sunt în contul tău.</p>")
+    "din fiecare contează primul răspuns, iar la notă intră rezultatul mai bun. Regulile complete sunt în contul personal.</p>")
 
 NOTA2 = (
     '<div class="nt2">'
@@ -1208,23 +1288,28 @@ DATE_PROIECT = [
 
 
 def date_proiect_html():
-    out = ['<div class="dp">']
+    """Un singur tabel, cu capul de coloană o dată și grupele ca rânduri de
+    titlu, abia colorate: culoarea spune forma datelor, nimic mai mult."""
+    out = ['<table class="tabel dp"><thead><tr><th>Setul de date</th><th>Fișier sau cod</th>'
+           '<th>Structura</th><th>Sursa</th></tr></thead>']
     for t, sub, k, rand in DATE_PROIECT:
-        out.append(f'<section class="dp__g dp__g--{k}"><h4><i></i>{t}<span>{sub}</span></h4><table>')
+        out.append(f'<tbody class="dp__g dp__g--{k}"><tr class="dp__cap"><th colspan="4">'
+                   f'<i></i>{t}<span>{sub}</span></th></tr>')
         for n, f, cat, sursa in rand:
-            out.append(f'<tr><td>{n}</td><td><code>{f}</code></td><td>{cat}</td><td>{sursa}</td></tr>')
-        out.append("</table></section>")
-    out.append("</div>")
+            cod = f"<code>{f}</code>" if "_" in f or f.endswith(".csv") or f.isupper() or "." in f else f
+            out.append(f"<tr><td>{n}</td><td>{cod}</td><td>{cat}</td><td>{sursa}</td></tr>")
+        out.append("</tbody>")
+    out.append("</table>")
     return "".join(out)
 
 
-sl("s6", "Datele proiectului", "Ce date folosim",
+sl("s6", "Datele proiectului", "Datele folosite",
    "<h2>Datele proiectului, după forma lor</h2>"
    + date_proiect_html(),
    manual=
    "<h2>Datele proiectului, după forma lor</h2>"
    "<p>Un proiect de date nu începe cu toate sursele adunate, ci cu un nucleu la care se "
-   "adaugă module, în funcție de întrebare. Nucleul nostru conține trei tipuri de date, iar "
+   "adaugă module, în funcție de întrebare. Nucleul proiectului conține trei tipuri de date, iar "
    "forma lor decide cum se combină: datele <strong>diadice</strong> descriu perechi de "
    "locuri, cele <strong>monadice</strong> descriu un singur loc, iar cele "
    "<strong>geografice</strong> descriu forma locului pe hartă.</p>"
@@ -1273,8 +1358,8 @@ def _harta_ro():
     m = 6
     vb = f"{min(xs) - m} {min(ys) - m} {max(xs) - min(xs) + 2 * m} {max(ys) - min(ys) + 2 * m}"
     return {"judete": out, "vb": vb, "a": "Cluj", "b": "București",
-            "intro": "Treci cu mouse-ul peste un județ. Linia de separare nu urmează Carpații: Brașovul "
-                     "e mai legat de București, iar Suceava și Botoșani, de Cluj."}
+            "intro": "Valoarea fiecărui județ apare la trecerea cursorului peste el. Linia de separare "
+                     "nu urmează Carpații: Brașovul este mai legat de București, iar Suceava și Botoșani, de Cluj."}
 
 
 HARTA_RO = _harta_ro()
@@ -1282,22 +1367,22 @@ HARTA_RO = _harta_ro()
 VEDERI_DIADIC = {"vederi": [
     {"t": "Perechi", "ix": "pereche", "date": DIADIC},
     {"t": "Hartă: Cluj sau București", "ix": "ro", "date": HARTA_RO,
-     "text": "Pentru fiecare județ, două rânduri din tabelul de perechi: cu Clujul și cu Bucureștiul. Care e mai mare?"},
+     "text": "Pentru fiecare județ, două rânduri din tabelul de perechi: cu Clujul și cu Bucureștiul. Care este mai mare?"},
 ]}
 
 sl("s8", "Datele proiectului", "Date diadice",
-   "<h2>Date diadice: un rând e o pereche</h2>"
+   "<h2>Date diadice: un rând este o pereche</h2>"
    + ix("vederi", "Trei județe, nouă perechi", VEDERI_DIADIC)
    + "<p class=\"dd__jos\">La 42 de județe, 1.764 de perechi; la cele 1.343 de regiuni ale Europei, "
    "1,8 milioane. De aici nevoia de cod și de bază de date.</p>",
    sci=True,
    manual=
    "<h2>Date diadice</h2>"
-   "<p>Particularitatea datelor noastre influențează toate etapele care urmează, de aceea "
-   "o fixăm de la început: un rând din fișierele SCI nu descrie un loc, ci relația dintre "
+   "<p>Particularitatea datelor proiectului influențează toate etapele care urmează, de aceea "
+   "este fixată de la început: un rând din fișierele SCI nu descrie un loc, ci relația dintre "
    "două locuri.</p>"
    + ix("vederi", "Trei județe, nouă perechi", VEDERI_DIADIC)
-   + "<h3>Trei consecințe, la care revenim tot semestrul</h3>"
+   + "<h3>Trei consecințe, relevante pe tot parcursul semestrului</h3>"
    "<ol><li><strong>Tabelul crește cu pătratul numărului de locuri.</strong> La cele 42 de "
    "unități NUTS 3 ale României (41 de județe și municipiul București) sunt 1.764 de perechi; la 1.343 de regiuni, 1,8 milioane. Un astfel de tabel nu "
    "se mai citește direct, ci se interoghează: de aici nevoia de cod și de bază de date.</li>"
@@ -1332,7 +1417,7 @@ sl("s8", "Datele proiectului", "Date diadice",
 RAMURI_PY = [
     {"nume": "Nimic", "tipuri": [
         {"n": "None", "cls": "NoneType", "imut": True,
-         "d": "Absența unei valori. Nu e zero și nu e text gol: marchează o valoare necunoscută.",
+         "d": "Absența unei valori. Nu este zero și nici text gol: marchează o valoare necunoscută.",
          "ex": "valoare = None\nprint(valoare is None)   # True",
          "la": "O măsurătoare care lipsește. În pandas devine NaN."}]},
     {"nume": "Numere", "sub": [
@@ -1351,7 +1436,7 @@ RAMURI_PY = [
              "ex": "rata = 3.7\nprint(0.1 + 0.2 == 0.3)  # False",
              "la": "Aproape toți indicatorii calculați."},
             {"n": "complex", "cls": "class complex", "imut": True,
-             "d": "Numere complexe. Există, dar nu le folosim la curs.",
+             "d": "Numere complexe. Există, dar nu sunt folosite la curs.",
              "ex": "z = 2 + 3j"}]}]},
     {"nume": "Secvențe", "sub": [
         {"nume": "nemodificabile", "tipuri": [
@@ -1375,7 +1460,7 @@ RAMURI_PY = [
              "d": "Ca bytes, dar modificabil. Rar în analiza de date."}]}]},
     {"nume": "Mulțimi", "tipuri": [
         {"n": "set", "cls": "class set",
-         "d": "Colecție neordonată, fără duplicate. Verificarea apartenenței e foarte rapidă.",
+         "d": "Colecție neordonată, fără duplicate. Verificarea apartenenței este foarte rapidă.",
          "ex": "coduri = {\"RO113\", \"RO116\"}\nprint(\"RO113\" in coduri)  # True",
          "la": "Codurile care apar într-o sursă dar nu în alta, la cursul 4."},
         {"n": "frozenset", "cls": "class frozenset", "imut": True,
@@ -1390,7 +1475,7 @@ RAMURI_PY = [
          "d": "Funcțiile sunt și ele valori: pot fi puse într-o listă sau transmise ca argument.",
          "ex": "def curata(x):\n    return x.strip()\n\nnume = [curata(n) for n in brute]"},
         {"n": "module", "cls": "class module",
-         "d": "Un modul importat e și el un obiect, cu tipul lui.",
+         "d": "Un modul importat este și el un obiect, cu tipul lui.",
          "ex": "import pandas as pd\nprint(type(pd))          # module"}]},
 ]
 
@@ -1400,7 +1485,7 @@ TIPURI_LISTA = [
         ("float", "număr real", "Numere cu zecimale, scrise cu punct, nu cu virgulă.", "8.5", "densitatea, PIB-ul pe locuitor, ratele"),
         ("str", "șir de caractere", "Text: orice stă între ghilimele, chiar dacă arată ca un număr.", "\"RO\"", "codurile de țară și de județ, numele"),
         ("bool", "valoare logică", "True sau False, cu majusculă. Rezultatul oricărei comparații.", "True", "filtrele, ca user_country == \"RO\""),
-        ("NoneType", "lipsa valorii", "None marchează o valoare necunoscută. Nu e zero și nu e text gol.", "None", "o valoare lipsă; în coloanele numerice din pandas, NaN"),
+        ("NoneType", "lipsa valorii", "None marchează o valoare necunoscută. Nu este zero și nici text gol.", "None", "o valoare lipsă; în coloanele numerice din pandas, NaN"),
     ]),
     ("Colecții", "var(--ambra)", [
         ("list", "listă", "Valori în ordine, accesate după poziție, numerotată de la 0. Se poate modifica.", "[\"RO\", \"IT\"]", "un tablou dintr-un JSON"),
@@ -1411,14 +1496,20 @@ TIPURI_LISTA = [
 ]
 
 def tipuri_slide():
-    """Pe slide: exemplul, tipul, numele în română. Atât."""
-    out = ['<div class="tp3">']
+    """Pe slide: două coloane simetrice, același cap de tabel, același număr de
+    rânduri. Colecțiile au în plus rândul care le leagă de JSON."""
+    SUB = {"Valori simple": "o singură valoare", "Colecții": "mai multe valori, împreună"}
+    K = {"Valori simple": "simplu", "Colecții": "colectie"}
+    out = ['<div class="tp4">']
     for grupa, _, rand in TIPURI_LISTA:
-        out.append(f"<section><h4>{grupa}</h4><ul>")
+        out.append(f'<section class="tp4__g tp4__g--{K[grupa]}"><h4><i></i>{grupa}<span>{SUB[grupa]}</span></h4>'
+                   '<table class="tabel"><thead><tr><th>Tipul</th><th>Exemplu</th><th>Ce este</th></tr></thead><tbody>')
         for n, ro, d, ex, la in rand:
-            out.append(f'<li><code class="tp3__ex">{ex.replace("<", "&lt;")}</code>'
-                       f'<span class="tp3__t">{n}</span><span class="tp3__ro">{ro}</span></li>')
-        out.append("</ul></section>")
+            out.append(f'<tr><td><code class="tp4__t">{n}</code></td><td><code>{ex.replace("<", "&lt;")}</code></td>'
+                       f"<td>{ro}</td></tr>")
+        if len(rand) < 5:
+            out.append('<tr class="tp4__nota"><td colspan="3">Colecțiile se pot imbrica, ca într-un JSON.</td></tr>')
+        out.append("</tbody></table></section>")
     out.append("</div>")
     return "".join(out)
 
@@ -1457,7 +1548,7 @@ def tipuri_lista_manual():
 
 TIPURI_CONSOLA = {
     "id": "c1-tipuri", "fisier": "01_introducere.ipynb · 2. Variabile și tipuri",
-    "sarcina": "Scrie tipul fiecărei variabile, cum îl numește Python.",
+    "sarcina": "Ce tip are fiecare variabilă, în denumirea folosită de Python?",
     "cod": ['tara = "RO"', "numar_tari = 178", "ore_de_studiu = 8.5", "este_student = True",
             "ocupatie = None", 'tari = ["RO", "IT", "ES"]', 'persoana = {"name": "Ana", "city": "Cluj-Napoca"}'],
     "env": {"tara": "RO", "numar_tari": 178, "ore_de_studiu": 8.5, "este_student": True,
@@ -1467,7 +1558,7 @@ TIPURI_CONSOLA = {
         {"n": "numar_tari", "t": "int", "e": "Fără ghilimele și fără zecimale: număr întreg."},
         {"n": "ore_de_studiu", "t": "float", "e": "Punctul zecimal îl face float."},
         {"n": "este_student", "t": "bool", "e": "True și False, cu majusculă: valori logice."},
-        {"n": "ocupatie", "t": "NoneType", "e": "None e lipsa valorii; tipul lui se numește NoneType."},
+        {"n": "ocupatie", "t": "NoneType", "e": "None este lipsa valorii; tipul lui se numește NoneType."},
         {"n": "tari", "t": "list", "e": "Paranteze drepte: listă."},
         {"n": "persoana", "t": "dict", "e": "Acolade cu perechi cheie-valoare: dicționar. Un set ar avea acolade fără două puncte."},
     ],
@@ -1492,7 +1583,7 @@ sl("s9o", "Tipuri de date", "Ce tipuri de date există",
    + "<h3>Toate tipurile</h3><p>Tabelul de mai sus conține tipurile folosite la curs. Python are și "
    "altele, mai rare în analiza datelor; arborele de mai jos le arată pe toate, grupate.</p>"
    + ix("arbore", "Arborele tipurilor",
-        {"titlu": "Apasă pe orice tip",
+        {"titlu": "Niciun tip selectat",
          "intro": "Pentru fiecare tip: definiția, un exemplu și locul în care apare în proiect.",
          "legenda": True, "radacina": "valoare", "ramuri": RAMURI_PY}))
 
@@ -1507,59 +1598,61 @@ sl("s9", "Tipuri de date", "Ce tip are fiecare valoare",
    "automat: <code>type(tara)</code> afișează <code>str</code>, fără <code>print</code>. "
    "Într-un fișier <code>.py</code> este nevoie de <code>print(type(tara))</code>, care afișează "
    "<code>&lt;class 'str'&gt;</code>. Răspunsul este același, în altă formă.</p>"
-   + ix("consola", "Scrie tipul, apoi verifică", TIPURI_CONSOLA)
+   + ix("consola", "Tipul fiecărei valori, verificat în Python", TIPURI_CONSOLA)
    + ix("pas", "Cinci valori, cinci tipuri", PAS_TIPURI))
 
 
 CAPCANE = (
-    '<div class="capc">'
-    '<div><code class="capc__e">"2024" &lt; "999"</code><code class="capc__r">True</code>'
-    "<p>Textele se compară literă cu literă, iar 2 vine înaintea lui 9.</p></div>"
-    '<div><code class="capc__e">float("3,7")</code><code class="capc__r">ValueError</code>'
-    "<p>Virgula zecimală din fișierele românești. Aici, cel puțin, apare o eroare explicită.</p></div>"
-    '<div><code class="capc__e">None   0   ""</code><code class="capc__r">trei lucruri</code>'
-    "<p>Lipsă, zero, text gol. Într-un tabel pot arăta la fel, într-o medie nu.</p></div>"
-    "</div>")
+    '<table class="tabel capc2"><thead><tr><th>Expresia</th><th>Rezultatul</th><th>Ce s-a întâmplat</th></tr></thead><tbody>'
+    '<tr><td><code>"2024" &lt; "999"</code></td><td><code>True</code></td>'
+    "<td>Textele se compară caracter cu caracter: „2” vine înaintea lui „9”.</td></tr>"
+    '<tr><td><code>int("010011")</code></td><td><code>10011</code></td>'
+    "<td>Codul poștal își pierde zeroul inițial; codurile rămân text.</td></tr>"
+    '<tr><td><code>pd.read_csv(...)</code></td><td><code>NA</code> devine <code>NaN</code></td>'
+    "<td>Codul Namibiei devine valoare lipsă, fără <code>keep_default_na=False</code>.</td></tr>"
+    "</tbody></table>")
 
 sl("s11", "Tipuri de date", "Capcanele de tip",
    "<h2>Greșelile care nu dau eroare</h2>"
+   "<p class=\"cheie\">Codul rulează, dar valoarea are alt tip decât cel presupus.</p>"
    + CAPCANE
    + ix("prezice", "Text plus text", {
        "id": "c1-prezice-tip", "fisier": "01_introducere.ipynb · 2. Variabile",
-       "sarcina": "Anticipează rezultatul fără să rulezi codul.",
+       "sarcina": "Ce afișează celula, înainte de rulare?",
        "cod": "varsta_text = \"24\"\nprint(varsta_text + \"1\")",
        "intrebare": "Ce afișează?",
        "variante": ["25", "241", "Eroare", "24 1"],
        "corect": 1,
        "indiciu": "Ghilimelele fac din 24 un text. Ce face <code>+</code> cu două texte?",
        "laBine": "Operatorul + concatenează textele, nu le adună.",
-       "explicatie": "Cu ghilimele, <code>\"24\"</code> e <code>str</code>, iar <code>+</code> "
+       "explicatie": "Cu ghilimele, <code>\"24\"</code> este <code>str</code>, iar <code>+</code> "
                      "între două texte le concatenează. La fel se întâmplă cu un an citit ca text dintr-un fișier."}),
    manual=
    "<h2>Greșelile care nu dau eroare</h2>"
    "<p>Erorile de tip care opresc execuția se corectează ușor: mesajul spune unde și de "
    "ce. Mai greu de observat sunt cele care nu opresc nimic: codul rulează, fișierul se "
    "scrie, iar rezultatul este greșit fără niciun semnal.</p>"
+   + CAPCANE
    + ix("prezice", "Text plus text", {
        "id": "c1-prezice-tip", "fisier": "01_introducere.ipynb · 2. Variabile",
-       "sarcina": "Aceeași celulă ca în caietul de azi. Anticipează rezultatul fără să rulezi codul.",
+       "sarcina": "Aceeași celulă ca în caietul de azi. Ce afișează celula, înainte de rulare?",
        "cod": "varsta_text = \"24\"\nprint(varsta_text + \"1\")",
        "intrebare": "Ce afișează?",
        "variante": ["25", "241", "Eroare", "24 1"],
        "corect": 1,
        "indiciu": "Ghilimelele fac din 24 un text. Ce face <code>+</code> cu două texte?",
        "laBine": "Operatorul + concatenează textele, nu le adună.",
-       "explicatie": "Cu ghilimele, <code>\"24\"</code> e <code>str</code>, iar <code>+</code> "
+       "explicatie": "Cu ghilimele, <code>\"24\"</code> este <code>str</code>, iar <code>+</code> "
                      "între două texte le concatenează. La fel se întâmplă cu un an citit ca text dintr-un "
                      "fișier. Mai jos, conversia corectă se face cu <code>int()</code>."})
-   + ix("cod", "Repară două conversii", {
+   + ix("cod", "Două conversii, în ambele sensuri", {
        "id": "c1-cod-tipuri", "fisier": "tipuri.py",
-       "sarcina": "Anul a fost citit ca text. Convertește-l în număr, pentru adunare, apoi înapoi în text, pentru a-l include într-o propoziție.",
+       "sarcina": "Anul a fost citit ca text. Ce funcții îl convertesc în număr, pentru adunare, apoi înapoi în text, pentru includerea într-o propoziție?",
        "cod": "an_text = \"2024\"\n\n"
-              "# din text in numar, ca sa poti aduna\n"
+              "# din text in numar, pentru adunare\n"
               "urmatorul = {{1}}(an_text) + 1\n"
               "print(urmatorul)                 # 2025\n\n"
-              "# din numar inapoi in text, ca sa-l lipesti\n"
+              "# din numar inapoi in text, pentru propozitie\n"
               "mesaj = \"Datele merg pana in \" + {{2}}(urmatorul)\n"
               "print(mesaj)",
        "goluri": {
@@ -1596,14 +1689,14 @@ OCTETI = (
     '<span class="oct__t"><b>8 octeți</b> · până la 9.223.372.036.854.775.807</span></div>'
     '<p class="oct__n">Fiecare valoare din coloană ocupă atâția octeți, pe fiecare rând. Se alege cel mai mic tip în '
     'care încape <b>cea mai mare valoare posibilă</b>, nu cea mai mare valoare observată. La cele 1,8 milioane de '
-    'rânduri din fișierul pe regiuni NUTS 3, diferența dintre INT și BIGINT e de 7,2 MB, doar pentru o coloană. '
+    'rânduri din fișierul pe regiuni NUTS 3, diferența dintre INT și BIGINT este de 7,2 MB, doar pentru o coloană. '
     'Detaliile: <a class="leg" href="https://www.postgresql.org/docs/current/datatype-numeric.html" '
     'target="_blank" rel="noopener">tipurile numerice în PostgreSQL</a>.</p></div>')
 
 
 sl("s11c", "Tipuri de date", "Conversiile",
    "<h2>Din text în număr, și înapoi</h2>"
-   + ix("cod", "Repară două conversii", {
+   + ix("cod", "Două conversii, în ambele sensuri", {
        "id": "c1-cod-tipuri", "fisier": "tipuri.py",
        "sarcina": "Din text în număr, pentru adunare; apoi înapoi în text, pentru concatenare.",
        "cod": "an_text = \"2024\"\n"
@@ -1618,14 +1711,14 @@ sl("s11c", "Tipuri de date", "Conversiile",
        "laBine": "int și str, în ambele sensuri: conversii folosite frecvent la curățarea datelor.",
        "laRau": "Fără ghilimele: aici se cer numele a două funcții.",
        "explicatie": "Fără conversii, <code>\"2024\" + 1</code> dă eroare, iar <code>\"Anul \" + 2025</code> la fel: "
-                     "Python nu concatenează text cu număr. Mai periculos e cazul fără eroare: "
+                     "Python nu concatenează text cu număr. Mai periculos este cazul fără eroare: "
                      "<code>\"2024\" + \"1\"</code> produce, fără niciun avertisment, <code>\"20241\"</code>."}),
    manual="")
 
 
 sl("s12", "Tipuri de date", "Tipuri în SQL",
    "<h2>În baza de date, tipul se declară</h2>"
-   "<p>Valorile care nu corespund tipului sunt respinse. Alege tipul după valori.</p>"
+   "<p>Valorile care nu corespund tipului sunt respinse. Tipul se alege după valori.</p>"
    + OCTETI
    + ix("coloane", "Tabelul SCI, la cursul 5", {
        "id": "c1-sql-coloane", "poarta": False,
@@ -1635,7 +1728,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
        "tipuri": ["CHAR(2)", "VARCHAR(50)", "TEXT", "INT", "BIGINT", "BOOLEAN"],
        "coloane": [
            {"nume": "user_country", "ok": "CHAR(2)",
-            "de_ce": "lungime fixă, exact două caractere; un cod mai lung e respins la inserare"},
+            "de_ce": "lungime fixă, exact două caractere; un cod mai lung este respins la inserare"},
            {"nume": "friend_country", "ok": "CHAR(2)",
             "de_ce": "același cod, aceeași regulă"},
            {"nume": "scaled_sci", "ok": "INT",
@@ -1643,7 +1736,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
        "cap": [["RO", "RO", 6252768], ["RO", "MD", 173794],
                ["RO", "AT", 124693], ["RO", "HU", 85021]],
        "laBine": "Aceasta este structura tabelului din baza de date de la cursul 5.",
-       "laRau": "Codurile au lungime fixă. Pentru indice, verifică valoarea "
+       "laRau": "Codurile au lungime fixă. Pentru indice, contează valoarea "
                 "maximă posibilă."}),
    manual=
    "<h2>Tipuri de date în SQL</h2>"
@@ -1667,7 +1760,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
    "<li><code>TEXT</code> nu are o limită declarată. În PostgreSQL nu este mai lent decât "
    "<code>VARCHAR</code>, de aceea este alegerea implicită pentru text liber.</li></ul>"
    "<p>Documentația PostgreSQL notează că <code>CHAR(n)</code> nu aduce un câștig de "
-   "performanță față de celelalte două; aici îl folosim pentru că exprimă explicit regula "
+   "performanță față de celelalte două; aici este folosit pentru că exprimă explicit regula "
    "„exact două caractere”. <code>VARCHAR(2)</code> ar fi o alegere la fel de corectă.</p>"
    + OCTETI
    + ix("coloane", "Tabelul SCI, la cursul 5", {
@@ -1686,7 +1779,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
        "cap": [["RO", "RO", 6252768], ["RO", "MD", 173794],
                ["RO", "AT", 124693], ["RO", "HU", 85021]],
        "laBine": "Aceasta este structura tabelului din baza de date de la cursul 5.",
-       "laRau": "Codurile au lungime fixă. Pentru indice, verifică valoarea maximă posibilă."})
+       "laRau": "Codurile au lungime fixă. Pentru indice, contează valoarea maximă posibilă."})
    + nota("Cheia primară",
           "<code>primary key (user_country, friend_country)</code> împiedică inserarea "
           "aceleiași perechi de două ori, greșeala tipică la reîncărcarea unui fișier."))
@@ -1695,7 +1788,7 @@ sl("s12", "Tipuri de date", "Tipuri în SQL",
 RAMURI_GEO = [
     {"nume": "De bază", "tipuri": [
         {"n": "Point", "cls": "geometry", "d": "Un punct: o pereche de coordonate.",
-         "ex": "POINT(23.59 46.77)", "la": "Centrul unui județ, de unde calculăm distanțe."},
+         "ex": "POINT(23.59 46.77)", "la": "Centrul unui județ, din care se calculează distanțele."},
         {"n": "Curve", "cls": "abstract", "d": "Categoria liniilor. Nu se folosește direct."},
         {"n": "Surface", "cls": "abstract", "d": "Categoria suprafețelor. Nu se folosește direct."}]},
     {"nume": "Linii", "tipuri": [
@@ -1721,13 +1814,13 @@ RAMURI_GEO = [
 GEOMETRII = [
     {"k": "point", "n": "Point", "et": "punct", "dim": 0,
      "def": "O poziție: o pereche de coordonate (x, y), opțional cu z (altitudine) și m (o măsură). "
-            "În standardul Simple Features (OGC, ISO 19125) e geometria de dimensiune 0.",
+            "În standardul Simple Features (OGC, ISO 19125) este geometria de dimensiune 0.",
      "wkt": "POINT (23.59 46.77)",
      "py": "shapely.Point(23.59, 46.77)\ngdf.geometry.x, gdf.geometry.y",
      "pg": "geometry(Point, 4326)\nST_X(geom), ST_Y(geom), ST_Distance(a, b)",
-     "valid": "Orice pereche de numere. Atenție la ordine: în WKT și GeoJSON e x, y, adică "
+     "valid": "Orice pereche de numere. Ordinea contează: în WKT și GeoJSON este x, y, adică "
               "longitudine, apoi latitudine, invers față de ordinea uzuală.",
-     "la": "Centroidul fiecărui județ (<code>harta.centroid</code>). Distanța dintre două județe e "
+     "la": "Centroidul fiecărui județ (<code>harta.centroid</code>). Distanța dintre două județe este "
            "distanța dintre centroizii lor, în metri, împărțită la 1.000."},
     {"k": "multipoint", "n": "MultiPoint", "et": "mai multe puncte", "dim": 0,
      "def": "O colecție de puncte, păstrată ca o singură geometrie, într-un singur rând.",
@@ -1735,13 +1828,13 @@ GEOMETRII = [
      "py": "shapely.MultiPoint([(23.59, 46.77), (26.10, 44.43)])",
      "pg": "ST_NumGeometries(geom), ST_GeometryN(geom, 1)",
      "valid": "Punctele se pot repeta. <code>ST_IsSimple</code> verifică dacă există puncte repetate.",
-     "la": "Nu o folosim. Ar fi, de exemplu, toate centrele universitare ale unei țări ca un singur obiect."},
+     "la": "Nu este folosită în proiect. Un exemplu ar fi toate centrele universitare ale unei țări, ca un singur obiect."},
     {"k": "linestring", "n": "LineString", "et": "linie", "dim": 1,
      "def": "O succesiune de cel puțin două puncte, unite prin segmente drepte. Geometria de dimensiune 1.",
      "wkt": "LINESTRING (23.59 46.77, 24.01 46.54, 26.10 44.43)",
      "py": "shapely.LineString([...]).length",
      "pg": "ST_Length(geom), ST_LineInterpolatePoint(geom, 0.5)",
-     "valid": "Cel puțin două puncte distincte. E <em>simplă</em> dacă nu se intersectează singură. "
+     "valid": "Cel puțin două puncte distincte. Este <em>simplă</em> dacă nu se intersectează singură. "
               "Închisă, cu primul punct egal cu ultimul, devine <code>LinearRing</code>: inelul unui poligon.",
      "la": "Liniile dintre un județ și partenerii lui, pe harta de la cursul 6."},
     {"k": "multilinestring", "n": "MultiLineString", "et": "mai multe linii", "dim": 1,
@@ -1757,7 +1850,7 @@ GEOMETRII = [
      "wkt": "POLYGON ((0 0, 6 0, 6 6, 0 6, 0 0),\n         (2 2, 4 2, 4 4, 2 4, 2 2))",
      "py": "shapely.Polygon(exterior, [gaura])\n.area, .centroid, .touches(alt), .is_valid",
      "pg": "ST_Area, ST_Centroid, ST_Touches, ST_Intersects, ST_IsValid, ST_MakeValid",
-     "valid": "Inelele sunt închise (primul punct e și ultimul) și au cel puțin 4 puncte; nu se "
+     "valid": "Inelele sunt închise (primul punct este și ultimul) și au cel puțin 4 puncte; nu se "
               "autointersectează; găurile stau înăuntru și ating exteriorul cel mult într-un punct. "
               "Geometriile invalide se corectează cu <code>make_valid</code>. GeoJSON (RFC 7946) recomandă inelul exterior în sens "
               "invers acelor de ceasornic.",
@@ -1776,7 +1869,7 @@ GEOMETRII = [
      "py": "shapely.GeometryCollection([...])",
      "pg": "ST_CollectionExtract(geom, 3)   # păstrează doar poligoanele",
      "valid": "Standardul o permite, dar o coloană de date are de obicei un singur fel de geometrie.",
-     "la": "Nu o folosim. Apare des ca rezultat al unei intersecții; în acest caz, se extrage tipul de geometrie necesar."},
+     "la": "Nu este folosită în proiect. Apare des ca rezultat al unei intersecții; în acest caz, se extrage tipul de geometrie necesar."},
 ]
 
 CRS = (
@@ -1795,7 +1888,7 @@ CRS = (
 
 sl("s13", "Tipuri de date", "Tipuri spațiale",
    "<h2>Tipuri de date spațiale</h2>"
-   "<p>Sunt necesare pentru a defini „vecin” și „distanță”. Apasă pe fiecare geometrie.</p>"
+   "<p>Sunt necesare pentru a defini „vecin” și „distanță”. Detaliile fiecărei geometrii apar la selectare.</p>"
    + ix("geom", "Geometriile din Simple Features", {"geometrii": GEOMETRII}),
    manual=
    "<h2>Tipuri de date spațiale</h2>"
@@ -1824,7 +1917,7 @@ sl("s13", "Tipuri de date", "Tipuri spațiale",
 sl("s14", "Tipuri de date", "Tipuri de fișiere",
    "<h2>Text sau binar</h2>"
    "<p class=\"cheie\">Un fișier text se citește direct; unul binar, doar cu programul lui.</p>"
-   + ix("sortare", "Clasifică extensiile: text sau binar", {
+   + ix("sortare", "Extensiile de fișier: text sau binar", {
        "id": "c1-cod-fisiere", "poarta": False,
        "sarcina": "Criteriul: poate Git să arate modificările din fișier, "
                   "rând cu rând?",
@@ -1851,7 +1944,7 @@ sl("s14", "Tipuri de date", "Tipuri de fișiere",
    "programul care îi cunoaște formatul. Distincția decide și ce poate arăta Git: într-un "
    "fișier text, modificările se văd rând cu rând; într-un fișier binar, Git vede doar că "
    "fișierul s-a schimbat.</p>"
-   + ix("sortare", "Clasifică extensiile: text sau binar", {
+   + ix("sortare", "Extensiile de fișier: text sau binar", {
        "id": "c1-cod-fisiere", "poarta": False,
        "sarcina": "Criteriul: poate Git să arate modificările din fișier, rând cu rând?",
        "cosuri": [{"t": "Text", "d": "lizibil, versionabil"},
@@ -1893,8 +1986,8 @@ sl("s14", "Tipuri de date", "Tipuri de fișiere",
    "print(log_content[0].strip())     # prima linie, fără \\n</code></pre>"
    + nota("Căile",
           "Calea <code>exemple_curs1/activitati.txt</code> pornește din folderul caietului, "
-          "<code>dsw/curs/</code>. Dacă apare <code>FileNotFoundError</code>, compară calea "
-          "scrisă cu folderul afișat de <code>Path.cwd()</code>. Regula căilor este explicată pe "
+          "<code>dsw/curs/</code>. Dacă apare <code>FileNotFoundError</code>, calea scrisă "
+          "se compară cu folderul afișat de <code>Path.cwd()</code>. Regula căilor este explicată pe "
           "larg la folderul cursului, la finalul manualului."))
 
 
@@ -1904,7 +1997,7 @@ sl("s14", "Tipuri de date", "Tipuri de fișiere",
 
 ANATOMIE = {
     "id": "c1-json-anatomie", "poarta": False, "cerute": 4,
-    "intro": "Alege o parte: este evidențiată în cod.",
+    "intro": "Partea selectată este evidențiată în cod.",
     "linii": [
         "{",
         "  \"paginare\": { \"pagina\": 1, \"total\": 2 },",
@@ -1922,23 +2015,23 @@ ANATOMIE = {
     ],
     "parti": [
         {"et": "Obiectul rădăcină", "py": "dict", "l": [0, 12],
-         "d": "Tot răspunsul, între acolade. Un <b>obiect</b> e o colecție de perechi nume/valoare. "
+         "d": "Tot răspunsul, între acolade. Un <b>obiect</b> este o colecție de perechi nume/valoare. "
               "În Python devine un <code>dict</code> cu două chei: <code>paginare</code> și <code>date</code>."},
         {"et": "Tablou", "py": "list", "l": [2, 11],
          "d": "Între paranteze drepte: o listă ordonată de valori, aici de obiecte. Din el se face "
-              "tabelul: fiecare element al tabloului devine un rând. Aici e unul singur; un răspuns "
+              "tabelul: fiecare element al tabloului devine un rând. Aici este unul singur; un răspuns "
               "real are câte un element pentru fiecare an sau țară."},
         {"et": "Element al tabloului", "py": "dict", "l": [3, 10],
          "d": "Un obiect din tablou: un rând al viitorului tabel. Numele lui devin coloane."},
         {"et": "Obiect imbricat", "py": "dict în dict", "l": [4, 4],
-         "d": "O valoare care e, la rândul ei, un obiect. În tabel, <code>json_normalize</code> îl "
+         "d": "O valoare care este, la rândul ei, un obiect. În tabel, <code>json_normalize</code> îl "
               "desface în două coloane: <code>tara.cod</code> și <code>tara.nume</code>."},
         {"et": "Pereche nume/valoare", "py": "cheie: valoare", "l": [6, 6],
-         "d": "Numele e mereu un șir între ghilimele, urmat de două puncte și de valoare. Aici numele "
-              "e <code>populatie</code>, iar valoarea e un <b>număr</b>, fără ghilimele, care devine <code>int</code>."},
+         "d": "Numele este întotdeauna un șir între ghilimele, urmat de două puncte și de valoare. Aici numele "
+              "este <code>populatie</code>, iar valoarea este un <b>număr</b>, fără ghilimele, care devine <code>int</code>."},
         {"et": "Șir de caractere", "py": "str", "l": [5, 5],
-         "d": "<code>\"2024\"</code> are ghilimele, deci e un <b>șir</b>, nu un număr. "
-              "<code>\"2024\" + 1</code> dă eroare, iar <code>\"2024\" &lt; \"999\"</code> e "
+         "d": "<code>\"2024\"</code> are ghilimele, deci este un <b>șir</b>, nu un număr. "
+              "<code>\"2024\" + 1</code> dă eroare, iar <code>\"2024\" &lt; \"999\"</code> este "
               "adevărat, fiindcă textul se compară caracter cu caracter."},
         {"et": "Tablou de numere", "py": "list", "l": [7, 7],
          "d": "Un tablou ca valoare. Într-un tabel plat nu încape ca atare: se desface în două coloane "
@@ -1947,7 +2040,7 @@ ANATOMIE = {
          "d": "Valorile logice se scriu cu literă mică în JSON și devin <code>True</code> și "
               "<code>False</code> în Python."},
         {"et": "null", "py": "None", "l": [9, 9],
-         "d": "Spune explicit că valoarea lipsește: aici nu există o notă. Nu e zero. În Python devine "
+         "d": "Spune explicit că valoarea lipsește: aici nu există o notă. Nu este zero. În Python devine "
               "<code>None</code>, în pandas <code>NaN</code>."},
     ],
 }
@@ -1959,10 +2052,10 @@ LISTE_ACCES = {
             "persoana": {"name": "Ana", "age": 24, "city": "Cluj-Napoca", "student": True}},
     "provocari": [
         {"t": "prima țară", "cale": "tari[0]", "indiciu": "Numărătoarea începe de la 0."},
-        {"t": "ultima țară, fără să numeri", "cale": "tari[-1]", "exact": True,
+        {"t": "ultima țară, fără numărarea elementelor", "cale": "tari[-1]", "exact": True,
          "indiciu": "Pozițiile negative se numără de la sfârșit: -1 este ultima."},
         {"t": "orașul Anei", "cale": "persoana[\"city\"]", "indiciu": "Într-un dicționar, accesul se face după cheie, scrisă între ghilimele."},
-        {"t": "dacă Ana e studentă", "cale": "persoana[\"student\"]"},
+        {"t": "dacă Ana este studentă", "cale": "persoana[\"student\"]"},
     ],
     "exemplu": "tari[1]",
 }
@@ -1972,21 +2065,38 @@ CALE_LISTE = {
             "persoana": {"name": "Ana", "age": 24, "city": "Cluj-Napoca", "student": True}},
     "tinte": [{"t": "prima țară", "cale": "tari[0]"},
               {"t": "orașul Anei", "cale": "persoana[\"city\"]"},
-              {"t": "dacă Ana e studentă", "cale": "persoana[\"student\"]"}],
+              {"t": "dacă Ana este studentă", "cale": "persoana[\"student\"]"}],
 }
 
 
+LD_VIZ = (
+    '<div class="ld">'
+    '<section><h4>Lista<span>valori în ordine</span></h4>'
+    '<code class="ld__def">tari = ["RO", "IT", "ES", "DE"]</code>'
+    '<div class="ld__lista">'
+    + "".join(f'<span class="{"on" if i == 0 else ""}"><i>{i}</i><b>"{t}"</b></span>' for i, t in enumerate(["RO", "IT", "ES", "DE"]))
+    + '</div><p class="ld__acc"><code>tari[0]</code><em>→</em><code>"RO"</code>'
+    "<span>Valoarea se alege după poziție, numerotată de la 0.</span></p></section>"
+    '<section><h4>Dicționarul<span>perechi cheie: valoare</span></h4>'
+    '<code class="ld__def">persoana = {"name": "Ana", "age": 24, "city": "Cluj-Napoca"}</code>'
+    '<div class="ld__dict">'
+    + "".join(f'<i class="{"on" if k == "city" else ""}">"{k}"</i><span class="{"on" if k == "city" else ""}"><b>{v}</b></span>'
+              for k, v in [("name", '"Ana"'), ("age", "24"), ("city", '"Cluj-Napoca"')])
+    + '</div><p class="ld__acc"><code>persoana["city"]</code><em>→</em><code>"Cluj-Napoca"</code>'
+    "<span>Valoarea se alege după cheie, scrisă între ghilimele.</span></p></section>"
+    "</div>")
+
 sl("s14l", "JSON", "Liste și dicționare",
    "<h2>Mai multe valori, împreună</h2>"
-   "<p class=\"cheie\">Listă: alegi o <b>poziție</b>. Dicționar: alegi o <b>cheie</b>.</p>"
-   + ix("cale", "Alege, nivel cu nivel", CALE_LISTE),
+   "<p class=\"cheie\">Lista se citește după <b>poziție</b>, dicționarul după <b>cheie</b>.</p>"
+   + LD_VIZ,
    manual=
    "<h2>Liste și dicționare</h2>"
    "<p>O listă păstrează valori în ordine; fiecare are o poziție, numerotată de la 0. Un "
    "dicționar păstrează perechi cheie-valoare; o valoare se accesează după numele cheii. "
    "Distincția dintre poziție și cheie este tot ce trebuie pentru a citi un JSON, oricât de "
    "adânc ar fi imbricat.</p>"
-   + ix("cale", "Alege, nivel cu nivel", CALE_LISTE)
+   + LD_VIZ
    + ix("pas", "Poziție și cheie, rând cu rând", PAS_LISTE)
    + PZ_INDEX)
 
@@ -2032,7 +2142,7 @@ sl("s15", "JSON", "Formatul JSON",
        "p2": "Fiecare element al listei a devenit un rând."})
    + nota("De aici vine json_normalize",
           "Operația de mai sus are o funcție dedicată în pandas, <code>pd.json_normalize</code>. "
-          "O folosim la cursul 2; aici contează să fie clar ce face."))
+          "Funcția este folosită la cursul 2; aici contează ce face."))
 
 
 def _pers_py(x):
@@ -2056,32 +2166,17 @@ PERS_ACCES = {
 
 CALE_PERS = {
     "env": {"user_data": {"users": [_pers_py(x) for x in PERS]}},
-    "tinte": [{"t": "al doilea hobby al Anei", "cale": "user_data[\"users\"][0][\"hobbies\"][1]"},
-              {"t": "orașul Elenei", "cale": "user_data[\"users\"][2][\"city\"]"},
-              {"t": "ocupația lui Mihai", "cale": "user_data[\"users\"][1][\"occupation\"]"}],
+    "prima": {
+        "t": "Prima privire: ce chei are dicționarul citit din fișier?",
+        "t2": "Drumul până la o valoare: o cheie, o poziție, apoi ambele",
+        "celula": "import json\nwith open(\"exemple_curs1/persoane.json\", encoding=\"utf-8\") as f:\n"
+                  "    user_data = json.load(f)",
+        "loc": "user_data.keys()"},
+    "tinte": [{"t": "lista persoanelor", "cale": "user_data[\"users\"]"},
+              {"t": "numele primei persoane", "cale": "user_data[\"users\"][0][\"name\"]"},
+              {"t": "al doilea hobby al Anei", "cale": "user_data[\"users\"][0][\"hobbies\"][1]"}],
 }
 
-
-sl("s15p", "JSON", "Drumul prin persoane.json",
-   "<h2>Coborâm până la o valoare</h2>"
-   "<p class=\"cheie\">La fiecare nivel: dicționar, alegi o cheie; listă, alegi o poziție.</p>"
-   + ix("cale", "Nivel cu nivel, până la o valoare", CALE_PERS),
-   manual=
-   "<h2>Drumul până la o valoare</h2>"
-   "<p>Exemplul din partea 4 a caietului: <code>persoane.json</code>, trei persoane fictive, "
-   "cu aceleași chei ca fișa personală din partea 2. Tiparul este același în orice răspuns de API: "
-   "la fiecare nivel se verifică tipul valorii curente, apoi se accesează o cheie (dicționar) sau o "
-   "poziție (listă). La citire, <code>true</code> devine <code>True</code>, iar <code>null</code> "
-   "devine <code>None</code>.</p>"
-   "<p>Fișierele de exemplu ale caietului sunt în ZIP-ul cursului, în "
-   "<code>dsw/curs/exemple_curs1/</code>, lângă caietul 01. Dacă lipsesc, se descarcă "
-   f'de pe GitHub: <a class="leg" href="{repo_fisier("curs/exemple_curs1/persoane.json")}" '
-   'target="_blank" rel="noopener">persoane.json</a> și '
-   f'<a class="leg" href="{repo_fisier("curs/exemple_curs1/activitati.txt")}" '
-   'target="_blank" rel="noopener">activitati.txt</a>, cu <em>Download raw file</em>, '
-   "în același folder.</p>"
-   + ix("cale", "Nivel cu nivel, până la o valoare", CALE_PERS)
-   + ix("pas", "Aceeași cale, în cod", PAS_JSON))
 
 WB_RASPUNS = [
     {"page": 1, "pages": 2, "per_page": 2, "total": 3},
@@ -2097,12 +2192,12 @@ WB_ACCES = {
     "env": {"raspuns": WB_RASPUNS},
     "provocari": [
         {"t": "câte pagini are răspunsul", "cale": "raspuns[0][\"pages\"]",
-         "indiciu": "Paginarea e primul element al listei: poziția 0."},
+         "indiciu": "Paginarea este primul element al listei: poziția 0."},
         {"t": "populația din 2024", "cale": "raspuns[1][0][\"value\"]",
-         "indiciu": "Datele sunt al doilea element, [1]. Prima înregistrare e [0]."},
+         "indiciu": "Datele sunt al doilea element, [1]. Prima înregistrare este [0]."},
         {"t": "anul celei de-a doua înregistrări", "cale": "raspuns[1][1][\"date\"]"},
         {"t": "numele țării", "cale": "raspuns[1][0][\"country\"][\"value\"]",
-         "indiciu": "country e un obiect imbricat: mai este nevoie de o cheie."},
+         "indiciu": "country este un obiect imbricat: mai este nevoie de o cheie."},
     ],
     "exemplu": "raspuns[1][0]",
 }
@@ -2115,16 +2210,44 @@ CALE_WB = {
 }
 
 
+sl("s15p", "JSON", "Drumul prin persoane.json",
+   "<h2>De la fișier la o valoare</h2>"
+   "<p class=\"cheie\">La fiecare nivel: dicționarul se citește după cheie, lista după poziție.</p>"
+   + ix("cale", "persoane.json, din caietul 01", CALE_PERS),
+   manual=
+   "<h2>Drumul până la o valoare</h2>"
+   "<p>Exemplul din partea 4 a caietului: <code>persoane.json</code>, trei persoane fictive, "
+   "cu aceleași chei ca fișa personală din partea 2. Tiparul este același în orice răspuns de API: "
+   "la fiecare nivel se verifică tipul valorii curente, apoi se accesează o cheie (dicționar) sau o "
+   "poziție (listă). La citire, <code>true</code> devine <code>True</code>, iar <code>null</code> "
+   "devine <code>None</code>.</p>"
+   "<p>Fișierele de exemplu ale caietului sunt în ZIP-ul cursului, în "
+   "<code>dsw/curs/exemple_curs1/</code>, lângă caietul 01. Dacă lipsesc, se descarcă "
+   f'de pe GitHub: <a class="leg" href="{repo_fisier("curs/exemple_curs1/persoane.json")}" '
+   'target="_blank" rel="noopener">persoane.json</a> și '
+   f'<a class="leg" href="{repo_fisier("curs/exemple_curs1/activitati.txt")}" '
+   'target="_blank" rel="noopener">activitati.txt</a>, cu <em>Download raw file</em>, '
+   "în același folder.</p>"
+   + ix("cale", "persoane.json, din caietul 01", CALE_PERS)
+   + ix("pas", "Aceeași cale, în cod", PAS_JSON)
+   + "<h3>Un răspuns real</h3>"
+   "<p>Un răspuns al API-ului Băncii Mondiale pentru populația României, simplificat la "
+   "câmpurile folosite aici. Rădăcina este o listă cu două elemente: paginarea pe poziția 0, "
+   "datele pe poziția 1. Fiecare înregistrare este un dicționar, iar unele valori, ca "
+   "<code>country</code>, sunt la rândul lor dicționare. Același drum se parcurge la cursul 2, "
+   "la fiecare răspuns de API.</p>"
+   + ix("cale", "Răspunsul Băncii Mondiale", CALE_WB))
+
 COD_JSON = {
     "id": "c1-cod-json", "fisier": "populatie.py",
-    "sarcina": "Scrie în cod calea până la populația din 2024, identificată mai sus.",
+    "sarcina": "Ce cale, scrisă în cod, duce la populația din 2024, identificată mai sus?",
     "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n"
            "date = raspuns[{{1}}]          # lista cu înregistrările\n"
            "populatie = date[0][{{2}}]     # numărul, din prima înregistrare\n"
            "print(populatie)              # 19051804",
     "goluri": {"1": {"ok": ["1"], "ajutor": "poziția"},
                "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}},
-    "indiciu": "Consultă structura de mai sus: datele sunt pe poziția 1, iar numărul se află la cheia "
+    "indiciu": "Conform structurii de mai sus, datele sunt pe poziția 1, iar numărul se află la cheia "
                "<code>\"value\"</code>.",
     "iesire": "19051804",
     "laBine": "Același tip de cale se scrie la cursul 2, la fiecare răspuns de API.",
@@ -2133,31 +2256,18 @@ COD_JSON = {
                   "<code>[\"value\"]</code> extrage numărul. Dacă valoarea lipsește, rezultatul este "
                   "<code>None</code>, nu zero."}
 
-sl("s16", "JSON", "Drumul până la valoare",
-   "<h2>Un răspuns real, desfăcut</h2>"
-   "<p class=\"cheie\">Aceeași cale, pe un răspuns real: populația României, de la Banca Mondială.</p>"
-   + ix("cale", "Răspunsul Băncii Mondiale", CALE_WB),
-   manual=
-   "<h2>Un răspuns real, desfăcut</h2>"
-   "<p>Un răspuns al API-ului Băncii Mondiale pentru populația României, simplificat la "
-   "câmpurile folosite aici. Rădăcina este o listă cu două elemente: paginarea pe poziția 0, "
-   "datele pe poziția 1. Fiecare înregistrare este un dicționar, iar unele valori, ca "
-   "<code>country</code>, sunt la rândul lor dicționare.</p>"
-   + ix("cale", "Răspunsul Băncii Mondiale", CALE_WB))
-
-
 MASCA = {
+    "df": "df",
+    "intrebare": "Ce se caută: perechile în care primul capăt este România, adică rândurile în care "
+                 "<code>user_country</code> este <code>\"RO\"</code>.",
     "coloane": ["user_country", "friend_country", "scaled_sci"],
     "coloana": "user_country", "valoare": "RO", "total": "31.684", "ramase": "178",
     "randuri": [["HU", "RO", "85021"], ["RO", "MD", "173794"], ["IT", "RO", "69327"],
-                ["RO", "IT", "69327"], ["DE", "AT", "132496"], ["MD", "RO", "173794"],
-                ["RO", "ES", "54179"], ["RO", "HU", "85021"]],
+                ["RO", "IT", "69327"], ["MD", "RO", "173794"], ["RO", "HU", "85021"]],
 }
 
 sl("s16s", "Primul contact cu SCI", "Un tabel real",
    "<h2>country.csv: filtrarea rândurilor</h2>"
-   "<p class=\"cheie\">O comparație pe o coloană dă True sau False pe fiecare rând. "
-   "Tabelul păstrează doar rândurile True.</p>"
    + ix("masca", "Cum lucrează un filtru, pas cu pas", MASCA),
    sci=True,
    manual=
@@ -2181,9 +2291,9 @@ sl("s16s", "Primul contact cu SCI", "Un tabel real",
    + "<h3>Întrebarea semestrului</h3>"
    "<p>În clasamentul partenerilor României după SCI, Italia este abia pe locul 6, după "
    "Republica Moldova, Austria, Germania, Ungaria și Irlanda, deși are cei mai mulți cetățeni români. "
-   "Explicația se construiește pas cu pas: aducem migrația la cursul 2, o pregătim și o curățăm "
-   "la cursurile 3 și 4, o unim cu SCI la cursul 5, o explorăm la cursul 6 și o modelăm la "
-   "cursul 7. Caietul cere, în acest punct, o explicație provizorie, verificată la final.</p>")
+   "Explicația se construiește pas cu pas: migrația se colectează la cursul 2, se pregătește și "
+   "se curăță la cursurile 3 și 4, se unește cu SCI la cursul 5, se explorează la cursul 6 și se "
+   "modelează la cursul 7. Caietul cere, în acest punct, o explicație provizorie, verificată la final.</p>")
 
 
 sl("s16x", "Primul contact cu SCI", "Exercițiu: perechile României",
@@ -2197,48 +2307,68 @@ sl("s16x", "Primul contact cu SCI", "Exercițiu: perechile României",
 # ===========================================================================
 
 FOLDER_VENV = (
-    '<span class="a">dsw/</span>                  <span class="c"># aici lucrezi</span>\n'
+    '<span class="a">dsw/</span>                  <span class="c"># folderul de lucru</span>\n'
     '├── <span class="x">.venv/</span>            <span class="c"># nu se modifică</span>\n'
     '├── README.md\n'
     '├── requirements.txt  <span class="c"># pachetele</span>\n'
-    '├── curs/             <span class="c"># caietele tale</span>\n'
+    '├── curs/             <span class="c"># caietele de curs</span>\n'
     '└── proiect/          <span class="c"># de la cursul 2</span>')
 
 PASI_VENV = (
     '<ol class="venvp__pasi">'
-    f'<li><b>Descarci <a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a></b>, îl dezarhivezi și '
-    f'redenumești folderul <code style="white-space:nowrap">{REPO_FOLDER}</code> în <code>dsw</code>.</li>'
-    "<li><b>Deschizi <code>dsw</code> în VS Code</b> (<em>File → Open Folder</em>) și pornești "
+    f'<li><b>Arhiva: <a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a></b>, descărcată și dezarhivată; '
+    f'folderul <code style="white-space:nowrap">{REPO_FOLDER}</code> se redenumește <code>dsw</code>.</li>'
+    "<li><b>Folderul <code>dsw</code>, în VS Code</b> (<em>File → Open Folder</em>), apoi "
     "<em>Terminal → New Terminal</em>. Terminalul pornește în <code>dsw</code>.</li>"
-    "<li><b>Creezi mediul</b>, o singură dată:<br><code>py -m venv .venv</code>"
+    "<li><b>Crearea mediului</b>, o singură dată:<br><code>py -m venv .venv</code>"
     '<span class="venvp__os">macOS: python3 -m venv .venv</span></li>'
-    "<li><b>Îl activezi și instalezi pachetele</b>:<br><code>.\\.venv\\Scripts\\Activate.ps1</code><br>"
+    "<li><b>Activarea și instalarea pachetelor</b>:<br><code>.\\.venv\\Scripts\\Activate.ps1</code><br>"
     "<code>pip install -r requirements.txt</code>"
     '<span class="venvp__os">macOS: source .venv/bin/activate</span></li>'
-    "<li><b>În caiet</b> alegi <em>Select Kernel → Python Environments → .venv</em>.</li>"
+    "<li><b>În caiet</b>: <em>Select Kernel → Python Environments → .venv</em>.</li>"
     "</ol>")
 
 VENV_BOX = '<div class="venvp"><div class="venvp__fld">' + FOLDER_VENV + "</div>" + PASI_VENV + "</div>"
 
-VENV2 = (
-    '<div class="venv2">'
-    "<div><h4>1. Folderul</h4>"
-    f'<p>Descarci <a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a>, îl dezarhivezi, îl redenumești '
-    "<code>dsw</code> și îl deschizi în VS Code.</p></div>"
-    '<div style="--c:var(--ambra)"><h4>2. Mediul</h4>'
-    "<p>În terminalul din VS Code, o singură dată:</p>"
-    "<pre><code>py -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npip install -r requirements.txt</code></pre>"
-    '<p class="venv2__os">macOS: <code>python3 -m venv .venv</code>, apoi <code>source .venv/bin/activate</code></p></div>'
-    '<div style="--c:var(--salvie)"><h4>3. Caietul</h4>'
-    "<p>În caiet alegi <em>Select Kernel → Python Environments → .venv</em>. De acum, codul "
-    "rulează cu pachetele cursului.</p></div>"
-    "</div>")
+# Pașii mediului, pe rânduri: ce se face și comanda, pe Windows și pe macOS.
+PASI_MEDIU = [
+    ("Folderul cursului",
+     f'<a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a>, dezarhivat și redenumit <code>dsw</code>, '
+     "se deschide în VS Code: <em>File → Open Folder</em>.", "", ""),
+    ("Terminalul", "<em>Terminal → New Terminal</em>; terminalul pornește în <code>dsw</code>.", "", ""),
+    ("Crearea mediului", "Se creează folderul <code>.venv</code>, cu un Python propriu.",
+     "py -m venv .venv", "python3 -m venv .venv"),
+    ("Activarea", "Linia din terminal începe apoi cu <code>(.venv)</code>.",
+     ".\\.venv\\Scripts\\Activate.ps1", "source .venv/bin/activate"),
+    ("Pachetele", "Se instalează pachetele din <code>requirements.txt</code>, în mediu.",
+     "pip install -r requirements.txt", "pip install -r requirements.txt"),
+    ("Kernelul caietului", "În caiet: <em>Select Kernel → Python Environments → .venv</em>.", "", ""),
+    ("Verificarea", "Prima celulă afișează <code>sys.executable</code>, o cale care conține <code>.venv</code>.", "", ""),
+]
+
+
+def mediu_html():
+    r = []
+    for i, (t, d, win, mac) in enumerate(PASI_MEDIU, 1):
+        if win or mac:
+            cmd = (f'<td><code>{win}</code></td><td><code>{mac}</code></td>' if win != mac
+                   else f'<td colspan="2"><code>{win}</code><span class="md__la">la fel pe ambele</span></td>')
+        else:
+            cmd = '<td colspan="2"></td>'
+        r.append(f'<tr><td class="md__n">{i}</td><td><b>{t}</b><span>{d}</span></td>{cmd}</tr>')
+    return ('<table class="tabel md"><thead><tr><th></th><th>Pasul</th><th>Windows (PowerShell)</th>'
+            '<th>macOS (Terminal)</th></tr></thead><tbody>' + "".join(r) + "</tbody></table>"
+            '<p class="md__nota">O singură dată, la început. Dacă PowerShell refuză activarea: '
+            "<code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, apoi din nou pasul 4.</p>")
+
+
+MEDIU = mediu_html()
 
 sl("s17", "Mediul de lucru", "Mediul virtual",
    "<h2>Mediul virtual, în folderul cursului</h2>"
    "<p class=\"cheie\">Python-ul și pachetele cursului, în <code>dsw/.venv</code>, separate de "
    "restul calculatorului.</p>"
-   + VENV2,
+   + MEDIU,
    manual=
    "<h2>Medii de lucru virtuale în Python</h2>"
    "<p>Fără un mediu virtual, Python instalează pachetele într-un loc comun pentru tot "
@@ -2256,6 +2386,7 @@ sl("s17", "Mediul de lucru", "Mediul virtual",
    "Python să ruleze în caiet. Arhiva se descarcă o singură dată. De la cursul 2 se descarcă doar "
    "caietul zilei, în <code>dsw/curs/</code>: arhiva întreagă, dezarhivată peste <code>dsw</code>, "
    "ar putea înlocui caietele deja completate.</p>"
+   + MEDIU
    + VENV_BOX
    + "<h3>Activarea</h3>"
    "<p>După activare, <code>pip</code> și <code>python</code> din terminal sunt cele din "
@@ -2272,7 +2403,7 @@ sl("s17", "Mediul de lucru", "Mediul virtual",
    + ix("terminal", "Terminal simulat, pentru exercițiu", None,
         "Terminalul simulat răspunde ca unul real, inclusiv la comenzi greșite.")
    + nota("De ce .venv nu este în arhivă",
-          "Este mare, este construit pentru calculatorul tău și se reface din două comenzi. În "
+          "Este mare, este construit pentru un anumit calculator și se reface din două comenzi. În "
           "arhivă se află doar lista pachetelor, <code>requirements.txt</code>, din care fiecare "
           "își construiește propriul <code>.venv</code>, cu aceleași pachete. La fel se procedează și în "
           "depozitul echipei.")
@@ -2297,9 +2428,9 @@ sl("s17", "Mediul de lucru", "Mediul virtual",
 
 sl("s17t", "Mediul de lucru", "Exercițiu în terminal",
    "<h2>Exercițiu: mediul virtual, în terminalul simulat</h2>"
-   + ix("terminal", "Terminalul pornește în folderul tău de utilizator", None,
-        "Intră în <code>dsw</code>, creează mediul, activează-l și instalează pachetele. "
-        "Comanda <code>ajutor</code> afișează comenzile necesare, în ordine."),
+   + ix("terminal", "Terminalul pornește în folderul utilizatorului", None,
+        "Secvența: intrarea în <code>dsw</code>, crearea mediului, activarea și instalarea pachetelor. "
+        "Comanda <code>help</code> afișează comenzile necesare, în ordine."),
    manual="")
 
 sl("s17o", "Mediul de lucru", "Ordinea comenzilor",
@@ -2307,8 +2438,8 @@ sl("s17o", "Mediul de lucru", "Ordinea comenzilor",
    manual="",
    dupa=ix("ordine", "Mediul virtual, de la zero", {
        "id": "c1-cod-venv",
-       "sarcina": "Pune comenzile în ordinea în care se dau, de la folderul tău de utilizator până la "
-                  "pachetele instalate.",
+       "sarcina": "În ce ordine se dau comenzile, de la folderul utilizatorului până la "
+                  "pachetele instalate?",
        "linii": ["cd dsw", "py -m venv .venv", ".\\.venv\\Scripts\\Activate.ps1",
                  "pip install -r requirements.txt", "pip list"],
        "indiciu": "Mediul se creează în dsw, deci primul pas este intrarea în acest folder. pip instalează "
@@ -2316,45 +2447,45 @@ sl("s17o", "Mediul de lucru", "Ordinea comenzilor",
        "iesire": "(.venv) PS C:\\Users\\student\\dsw> pip list\n"
                  "Package    Version\n---------- -------\nipykernel  …\npandas     …\nrequests   …",
        "laBine": "Aceasta este secvența care se execută o singură dată, la cursul 1.",
-       "laRau": "Verifică, pentru fiecare comandă, folderul curent și interpretorul Python care o execută.",
+       "laRau": "Pentru fiecare comandă contează folderul curent și interpretorul Python care o execută.",
        "explicatie": "Dacă <code>py -m venv .venv</code> vine înainte de <code>cd dsw</code>, mediul ajunge "
-                     "în folderul tău de utilizator, fără nicio eroare. <code>pip install</code> înainte de "
+                     "în folderul utilizatorului, fără nicio eroare. <code>pip install</code> înainte de "
                      "activare pune pachetele în Python-ul comun, iar <code>requirements.txt</code> se "
                      "găsește doar în <code>dsw</code>."}))
 
 
 NODURI_FOLDER = [
-    {"n": "dsw/", "ind": 0, "scurt": "aici lucrezi",
+    {"n": "dsw/", "ind": 0, "scurt": "folderul de lucru",
      "d": "Folderul cursului: arhiva de pe GitHub, dezarhivată și redenumită din "
-          f"<code>{REPO_FOLDER}</code>. Pe el îl deschizi în VS Code și în el pornește terminalul.",
-     "cine": "tu, o singură dată, la cursul 1",
-     "git": "nu ca folder: e copia ta a depozitului cursului, fără Git"},
+          f"<code>{REPO_FOLDER}</code>. Acesta se deschide în VS Code, iar terminalul pornește în el.",
+     "cine": "fiecare student, o singură dată, la cursul 1",
+     "git": "nu ca folder: este o copie personală a depozitului cursului, fără Git"},
     {"n": ".venv/", "ind": 1, "scurt": "nu se modifică", "interzis": True,
      "d": "Python-ul cursului și pachetele lui, făcute de <code>py -m venv .venv</code> și de "
           "<code>pip install -r requirements.txt</code>. Aici nu se deschide și nu se salvează nimic. "
           "Dacă se deteriorează, se șterge și se recreează cu aceleași comenzi.",
-     "cine": "Python și pip, niciodată tu", "ex": "Lib/, Scripts/, pyvenv.cfg",
+     "cine": "Python și pip, niciodată manual", "ex": "Lib/, Scripts/, pyvenv.cfg",
      "git": "nu: se reface din <code>requirements.txt</code>"},
     {"n": "README.md", "ind": 1, "fel": "fis",
-     "d": "Prima pagină a depozitului cursului: ce e în folder și cum pornești.",
+     "d": "Prima pagină a depozitului cursului: ce conține folderul și cum se începe lucrul.",
      "cine": "profesorul", "git": "da: GitHub o arată sub lista fișierelor"},
     {"n": "requirements.txt", "ind": 1, "fel": "fis",
      "d": "Lista pachetelor cursului: <code>pandas</code>, <code>requests</code>, <code>ipykernel</code>. "
-          "Din ea, fiecare își face un mediu cu aceleași pachete: <code>pip install -r requirements.txt</code>.",
-     "cine": "profesorul; tu doar o folosești", "git": "da, în depozitul cursului"},
-    {"n": "curs/", "ind": 1, "scurt": "caietele tale",
-     "d": "Caietele cursului, pe care le completezi la oră. La fiecare curs nou descarci doar caietul "
-          "zilei aici, lângă celelalte. Căile din caiete pornesc din <code>curs/</code>: "
+          "Din ea se construiește, pe fiecare calculator, un mediu cu aceleași pachete: <code>pip install -r requirements.txt</code>.",
+     "cine": "profesorul; studenții doar o folosesc", "git": "da, în depozitul cursului"},
+    {"n": "curs/", "ind": 1, "scurt": "caietele de curs",
+     "d": "Caietele cursului, completate la oră. La fiecare curs nou se descarcă aici doar caietul "
+          "zilei, lângă celelalte. Căile din caiete pornesc din <code>curs/</code>: "
           "<code>data/country.csv</code> înseamnă <code>curs/data/country.csv</code>.",
-     "cine": "tu", "ex": "<code>01_introducere_si_datele_proiectului.ipynb</code>",
-     "git": "caietele goale, în depozitul cursului; ce completezi tu rămâne la tine"},
+     "cine": "fiecare student", "ex": "<code>01_introducere_si_datele_proiectului.ipynb</code>",
+     "git": "caietele goale, în depozitul cursului; caietele completate rămân pe calculatorul personal"},
     {"n": "data/", "ind": 2,
      "d": "Datele brute, așa cum au fost descărcate: nu se modifică. Rezultatele curățării se salvează "
           "în fișiere noi, alături, nu peste cele brute. De la cursul 2, fiecare curs are folderul lui, ca "
           "<code>data/c2/</code>.",
      "cine": "arhiva cursului, apoi codul din caiete",
      "ex": "<code>country.csv</code> de pe HDX, apoi <code>c2/migratie.csv</code> de la Eurostat",
-     "git": "<code>country.csv</code> da; ce colectezi tu, nu"},
+     "git": "<code>country.csv</code> da; datele colectate local, nu"},
     {"n": "exemple_curs1/", "ind": 2,
      "d": "Două fișiere mici, fictive, pentru partea de JSON și de text din caietul 01.",
      "cine": "arhiva cursului", "ex": "<code>persoane.json</code>, <code>activitati.txt</code>",
@@ -2362,41 +2493,41 @@ NODURI_FOLDER = [
     {"n": "proiect/", "ind": 1, "scurt": "de la cursul 2",
      "d": "Depozitul echipei, adus de pe GitHub la cursul 2, cu o singură comandă dată în "
           "<code>dsw</code>: <code>git clone &lt;adresa depozitului echipei&gt; proiect</code>. "
-          "E singurul folder cu Git: munca echipei stă aici, exercițiile de la curs rămân în "
+          "Este singurul folder cu Git: munca echipei stă aici, exercițiile de la curs rămân în "
           "<code>curs/</code>.",
-     "cine": "echipa", "git": "da: e chiar depozitul echipei"},
+     "cine": "echipa", "git": "da: este chiar depozitul echipei"},
 ]
 
 SORTARE_FOLDER = {
     "id": "c1-folder",
-    "cosuri": [{"t": "curs/data/", "d": "datele cursului"}, {"t": "curs/", "d": "caietele tale"},
+    "cosuri": [{"t": "curs/data/", "d": "datele cursului"}, {"t": "curs/", "d": "caietele de curs"},
                {"t": "proiect/", "d": "munca echipei"}],
     "elemente": [{"t": "country.csv", "cos": 0}, {"t": "c2/migratie.csv", "cos": 0},
                  {"t": "01_introducere.ipynb", "cos": 1}, {"t": "02_colectarea.ipynb", "cos": 1},
                  {"t": "raport.ipynb, al echipei", "cos": 2}, {"t": "intrebarea.md, a echipei", "cos": 2}],
 }
 
-sl("s18", "Proiectul tău", "Folderul cursului, pe disc",
+sl("s18", "Proiectul echipei", "Folderul cursului, pe disc",
    "<h2>Folderul cursului, pe disc</h2>"
-   "<p class=\"cheie\">Un singur folder, cu un loc pentru fiecare tip de fișier. Apasă pe fiecare element.</p>"
+   "<p class=\"cheie\">Un singur folder, cu un loc pentru fiecare tip de fișier. Detaliile fiecărui element apar la selectare.</p>"
    + ix("folder", "Folderul cursului", {"noduri": NODURI_FOLDER}),
    manual=
    "<h2>Folderul cursului, pe disc</h2>"
    "<p>Un proiect de date nu este un caiet, ci un folder: datele, caietele, codul și mediul "
    "virtual, fiecare la locul lui. Structura de mai jos este cea din depozitul cursului și din "
-   "caiete. <code>curs/</code> este al tău, fără Git; <code>proiect/</code> este al echipei, cu "
-   "Git.</p>"
+   "caiete. <code>curs/</code> este folderul personal, fără Git; <code>proiect/</code> este al "
+   "echipei, cu Git.</p>"
    + ix("folder", "Folderul cursului", {"noduri": NODURI_FOLDER})
    + "<h3>Căile pornesc din folderul caietului</h3>"
    "<p>Căile relative pornesc din directorul de lucru al kernelului, care în VS Code este "
    "implicit folderul caietului, adică <code>curs/</code>; <code>Path.cwd()</code> îl afișează. <code>data/country.csv</code> "
-   "înseamnă: din <code>curs/</code>, intră în <code>data/</code>. <code>..</code> înseamnă: "
-   "urcă un nivel, deci <code>../proiect</code> înseamnă: din <code>curs/</code>, urcă în "
-   "<code>dsw/</code>, apoi intră în <code>proiect/</code>.</p>"
+   "înseamnă: din <code>curs/</code>, în <code>data/</code>. <code>..</code> înseamnă un nivel "
+   "mai sus, deci <code>../proiect</code> înseamnă: din <code>curs/</code>, un nivel mai sus, în "
+   "<code>dsw/</code>, apoi în <code>proiect/</code>.</p>"
    + ix("sortare", "Trei foldere, șase fișiere", dict(SORTARE_FOLDER, **{
-       "sarcina": "Alege un fișier, apoi folderul lui.",
+       "sarcina": "Pentru fiecare fișier, folderul potrivit.",
        "laBine": "Fiecare fișier este în folderul potrivit.",
-       "laRau": "Ce este al tău stă în curs/, ce este al echipei în proiect/."}))
+       "laRau": "Fișierele personale stau în curs/, cele ale echipei în proiect/."}))
    + nota("Datele",
           "Fișierul <code>country.csv</code> (0,6 MB) este deja în arhivă, în <code>curs/data/</code>. Vine de pe "
           '<a class="leg" href="https://data.humdata.org/dataset/social-connectedness-index" '
@@ -2405,31 +2536,52 @@ sl("s18", "Proiectul tău", "Folderul cursului, pe disc",
           'target="_blank" rel="noopener">depozitul cursului</a>. Fișierul nu se modifică niciodată.'))
 
 
-sl("s18s", "Proiectul tău", "Unde pui fiecare fișier",
-   "<h2>Unde pui fiecare fișier?</h2>"
+sl("s18s", "Proiectul echipei", "Locul fiecărui fișier",
+   "<h2>Unde se află fiecare fișier?</h2>"
    + ix("sortare", "Trei foldere, șase fișiere", dict(SORTARE_FOLDER, **{
-       "sarcina": "Alege un fișier, apoi folderul lui.",
+       "sarcina": "Pentru fiecare fișier, folderul potrivit.",
        "laBine": "Fiecare fișier este în folderul potrivit.",
        "laRau": "Caietele de la curs stau în curs/, datele lor în curs/data/, iar ce face echipa, în proiect/.",
-       "explicatie": "<code>curs/</code> e al tău, fără Git. <code>proiect/</code> e al echipei: ce pui "
-                     "acolo ajunge, după commit, în istoricul pe care îl vede toată echipa."})),
+       "explicatie": "<code>curs/</code> este folderul personal, fără Git. <code>proiect/</code> este al "
+                     "echipei: ce se adaugă acolo ajunge, după commit, în istoricul vizibil pentru toată echipa."})),
    manual="")
 
 
+def _drum_c2():
+    """Drumul datelor de la cursul 2, ca o linie de metrou: aceeași culoare ca
+    linia „Datele și codul” de pe harta semestrului."""
+    ST = [("cererea", "requests, URL, parametri"), ("API-ul", "Banca Mondială, Eurostat"),
+          ("răspunsul", "JSON"), ("tabelul", "pandas"), ("fișierul", "curs/data/c2")]
+    X0, DX, Y = 80, 165, 40
+    svg = [f'<svg class="dc2" viewBox="0 0 {2 * X0 + DX * (len(ST) - 1)} 104" role="img" '
+           'aria-label="Drumul datelor la cursul 2: cererea, API-ul, răspunsul JSON, tabelul, fișierul salvat">']
+    svg.append(f'<path class="dc2__l" d="M{X0},{Y} L{X0 + DX * (len(ST) - 1)},{Y}"/>')
+    for i, (t, d) in enumerate(ST):
+        x = X0 + DX * i
+        svg.append(f'<circle class="dc2__s" cx="{x}" cy="{Y}" r="9"/>'
+                   f'<text class="dc2__t" x="{x}" y="{Y + 32}">{t}</text>'
+                   f'<text class="dc2__d" x="{x}" y="{Y + 50}">{d}</text>')
+    svg.append("</svg>")
+    return "".join(svg)
+
+
 sl("s19", "Mai departe", "Pentru cursul următor",
-   "<h2>La cursul 2: datele vin prin API</h2>"
-   '<div class="fin2">'
-   '<div class="fin2__flux"><span>codul tău</span><i>→</i><span>cererea</span><i>→</i><span>API-ul</span>'
-   "<i>→</i><span>răspunsul JSON</span><i>→</i><span>tabelul</span><i>→</i><span>curs/data/c2</span></div>"
-   "<h3>Până atunci</h3>"
-   '<ul class="fin2__l">'
-   "<li>Folderul <code>dsw</code>, cu <code>.venv</code>, și caietul 01 rulat de sus până jos.</li>"
-   '<li>Echipa de cinci, formată, și <a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a> instalat.</li>'
-   '<li>Contul GitHub, cu care intri pe <a class="leg" href="../../cont/">site</a>.</li>'
-   "</ul>"
-   '<div class="fin2__a"><a href="../">Pagina cursului 1</a>'
-   f'<a href="{REPO_ZIP}">↓ Folderul cursului, ZIP</a>'
-   '<a href="../../c2-colectarea-prin-api/">Cursul 2 →</a></div>'
+   "<h2>La cursul 2: colectarea datelor prin API</h2>"
+   '<div class="fin3">' + _drum_c2()
+   + '<div class="fin3__g">'
+   "<section><h4>Ce urmează la cursul 2</h4><ul>"
+   "<li>Ce este un API și cum se citește documentația lui.</li>"
+   "<li>Cererea HTTP din Python, cu <code>requests</code>: parametri, paginare, coduri de stare.</li>"
+   "<li>Indicatorii Băncii Mondiale și migrația de la Eurostat, salvate în <code>curs/data/c2</code>.</li>"
+   "<li>Formarea echipelor de proiect, pe site.</li></ul></section>"
+   "<section><h4>Pregătirea pentru cursul 2</h4><ul>"
+   "<li>Folderul <code>dsw</code>, cu mediul <code>.venv</code>, și caietul 01 rulat de sus până jos.</li>"
+   '<li><a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a>, instalat.</li>'
+   "<li>Contul GitHub, creat pentru cursul 1, rămâne contul de pe site și primește la cursul 2 acces la depozitul echipei.</li></ul></section>"
+   "</div>"
+   '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 1</a>'
+   f'<a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a>'
+   '<a class="leg" href="../../c2-colectarea-prin-api/">Cursul 2</a></p>'
    "</div>")
 
 

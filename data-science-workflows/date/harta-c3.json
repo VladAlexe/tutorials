@@ -114,12 +114,12 @@
      "id": "c3-v6",
      "fel": "verificare",
      "corect": 3,
-     "q": "Ai inclus din greșeală într-un commit un fișier cu o parolă și ai făcut push. Ce faci?",
+     "q": "Un fișier cu o parolă a fost inclus din greșeală într-un commit și trimis cu push. Ce trebuie făcut?",
      "optiuni": [
-      "Ștergi fișierul și faci alt commit",
-      "Îl adaugi în .gitignore",
+      "Ștergerea fișierului și un commit nou",
+      "Adăugarea fișierului în .gitignore",
       "Nu este necesar nimic, depozitul este privat",
-      "Schimbi parola imediat, apoi cureți istoricul"
+      "Schimbarea imediată a parolei, apoi curățarea istoricului"
      ]
     }
    ]
@@ -220,7 +220,7 @@
    "nr": 24,
    "id": "s19",
    "grup": "Cadrul teoretic",
-   "titlu": "Cadrul nostru",
+   "titlu": "Cadrul proiectului",
    "sarcini": []
   },
   {

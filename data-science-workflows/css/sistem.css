@@ -399,12 +399,26 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
 
 /* --- tabel --------------------------------------------------------------- */
 
-.tabel{width:100%;border-collapse:collapse;font-size:var(--t3);margin:0 0 24px}
-.tabel th{font-family:var(--sans);font-weight:500;font-size:var(--t1);text-align:left;padding:9px 14px 9px 0;color:var(--text-3);
-  border-bottom:1px solid var(--linie-2)}
-.tabel td{padding:11px 14px 11px 0;border-bottom:1px solid var(--linie);vertical-align:top}
+/* Regula tabelelor, peste tot: ca într-o publicație (booktabs). O linie mai
+   groasă sus și jos, una subțire sub capul de coloană, separatoare abia
+   vizibile între rânduri, fără chenare verticale și fără fundaluri. Culoarea
+   apare doar unde grupează ceva (rândurile de grupă), foarte discret. */
+.tabel{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:var(--t3);margin:0 0 24px;
+  border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text)}
+.tabel th{font-family:var(--sans);font-weight:600;font-size:var(--t1);letter-spacing:.02em;text-align:left;
+  padding:9px 16px 8px 0;color:var(--text-3);border-bottom:1px solid var(--linie-2);vertical-align:bottom}
+.tabel td{padding:10px 16px 10px 0;border-bottom:1px solid var(--linie);vertical-align:top;line-height:1.5}
 .tabel tr:last-child td{border-bottom:0}
-.tabel td.mono{font-family:var(--mono);font-size:var(--t2)}
+.tabel td:first-child{color:var(--text);font-weight:500}
+.tabel td.mono{font-family:var(--mono);font-size:var(--t2);font-weight:400}
+.tabel td.num,.tabel th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tabel code{font-size:var(--t1);background:none;border:0;padding:0;color:var(--text-2)}
+/* rândul de grupă: o bandă abia colorată, cu un reper în culoarea grupei */
+.tabel .dp__cap th{padding:9px 12px 7px;border-bottom:1px solid var(--linie);font-size:var(--t2);letter-spacing:0;
+  color:var(--text);background:color-mix(in srgb,var(--g,var(--text)) 7%,transparent);vertical-align:middle}
+.tabel .dp__cap th i{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--g,var(--text-3));margin-right:9px}
+.tabel .dp__cap th span{font-weight:400;color:var(--text-3);margin-left:10px}
+.tabel tbody + tbody .dp__cap th{border-top:1px solid var(--linie-2)}
 
 /* --- etichete ------------------------------------------------------------ */
 
@@ -465,7 +479,7 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
 #zona-cont{display:flex;align-items:center}
 
 /* --- surse oficiale: documentația, cu ce găsești în ea ----------------------- */
-.surse{border:1px solid var(--linie);border-radius:10px;padding:12px 16px 6px;margin:18px 0;background:var(--panza)}
+.surse{border:0;border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text);border-radius:0;padding:10px 0 4px;margin:18px 0;background:none}
 .surse__et{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-bottom:6px}
 .surse ul{list-style:none;margin:0;padding:0}
 .surse li{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);gap:12px;padding:6px 0;border-top:1px solid var(--linie);font-family:var(--sans);font-size:var(--t2)}
@@ -479,7 +493,7 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
 .sld .surse li{padding-left:0;margin:0}
 
 /* --- lecturi: literatura, pe feluri, în ordinea din flux --------------------- */
-.lit{border:1px solid var(--linie);border-radius:10px;padding:12px 16px 8px;margin:18px 0;background:var(--panza)}
+.lit{border:0;border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text);border-radius:0;padding:10px 0 6px;margin:18px 0;background:none}
 .lit__et{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-bottom:8px}
 .lit__toata{font-family:var(--sans);font-size:var(--t1);letter-spacing:0;text-transform:none;color:var(--accent-text,var(--accent));text-decoration:none}
 .lit__toata:hover{text-decoration:underline}
@@ -498,3 +512,151 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
 .lit__a{color:var(--accent-text,var(--accent));text-decoration:none;font-weight:500}
 .lit__a:hover{text-decoration:underline} .lit__a::after{content:" ↗";font-size:.85em;color:var(--text-3)}
 @media(max-width:640px){.lit__g{grid-template-columns:1fr;gap:4px}}
+
+/* --- echipele de proiect (js/echipe.js) -----------------------------------
+   Fiecare echipă are culoarea ei din paletă (--ec, după numărul echipei) și o
+   păstrează peste tot: în cont, pe slide, la profesor. Cartonașul prinde
+   culoare pe măsură ce se umple (--tenta); echipa completă e plină de culoare.
+   Locurile sunt cercuri: goale, punctate; ocupate, cu inițialele. Numele stau
+   dedesubt, mic. Cine intră acum apare cu o mică animație. */
+.echp{font-family:var(--sans)}
+.echp__lead{font-size:var(--t3);color:var(--text-2);margin:0 0 16px;max-width:62ch}
+.echp__info{font-size:var(--t2);color:var(--text-3);margin:8px 0 0}
+.echp__gol{font-size:var(--t3);color:var(--text-2);margin:0}
+.echp__msg{font-size:var(--t2);color:var(--nu);margin:12px 0 0}
+.echp__gdpr{font-size:var(--t1);color:var(--text-3);margin:20px 0 0}
+.echp__et2{font-size:var(--t2);font-weight:600;color:var(--text-2);margin:18px 0 8px}
+.echp__ec{color:color-mix(in srgb,var(--ec) 78%,var(--text))}
+
+.echp__grila{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:12px;margin:0 0 14px}
+.echp__grila--mic{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.echp__grila--prof{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+
+/* cartonașul */
+.echp__c{--ec:var(--accent);--tenta:6%;
+  display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:0;
+  font:inherit;text-align:left;color:var(--text);
+  background:color-mix(in srgb,var(--ec) var(--tenta),var(--panza));
+  border:1px solid color-mix(in srgb,var(--ec) 28%,var(--linie));border-radius:14px;
+  padding:16px 14px 12px;position:relative;overflow:hidden;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background-color .3s ease}
+.echp__c::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--ec)}
+.echp__cap{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.echp__cap b{font-size:var(--t3);font-weight:600;color:color-mix(in srgb,var(--ec) 78%,var(--text))}
+.echp__cap small{font-size:var(--t1);font-weight:500;color:var(--text-3);font-variant-numeric:tabular-nums}
+.echp__loc{display:flex;flex-wrap:wrap;gap:6px}
+.echp__loc i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;
+  border:1.5px dashed color-mix(in srgb,var(--ec) 50%,transparent);
+  font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.02em;line-height:1}
+.echp__loc i.da{background:var(--ec);border:1.5px solid var(--ec);color:var(--panza)}
+.echp__nume{display:flex;flex-direction:column;gap:2px;min-width:0}
+.echp__nume > span{font-size:var(--t1);line-height:1.35;color:var(--text-2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.echp__nume em{font-style:normal;font-weight:600;color:color-mix(in srgb,var(--ec) 78%,var(--text))}
+.echp__et{margin-top:auto;font-size:var(--t1);font-weight:600;letter-spacing:.02em;
+  color:color-mix(in srgb,var(--ec) 78%,var(--text))}
+
+/* cartonașul pe care se poate apăsa */
+.echp__c.act{cursor:pointer}
+.echp__c.act .echp__et::after{content:"→";display:inline-block;margin-left:5px;transition:transform .18s ease}
+.echp__c.act:hover{transform:translateY(-2px);border-color:var(--ec);box-shadow:var(--umbra-2)}
+.echp__c.act:hover .echp__et::after{transform:translateX(3px)}
+.echp__c.act:hover .echp__loc i:not(.da):first-of-type,
+.echp__c.act:focus-visible .echp__loc i:not(.da):first-of-type{border-style:solid;border-color:var(--ec);
+  background:color-mix(in srgb,var(--ec) 18%,transparent)}
+.echp__c.act:focus-visible{outline:2px solid var(--ec);outline-offset:2px}
+.echp__c.act:active{transform:translateY(0)}
+
+/* echipa ta, sau cea căreia i-ai trimis cererea */
+.echp__c.a-mea{border-color:var(--ec);box-shadow:0 0 0 1px var(--ec)}
+
+/* echipa completă: plină de culoare */
+.echp__c.plina{background:var(--ec);border-color:var(--ec)}
+.echp__c.plina::before{content:none}
+.echp__c.plina .echp__cap b,.echp__c.plina .echp__et,.echp__c.plina .echp__nume em{color:var(--panza)}
+.echp__c.plina .echp__cap small{color:color-mix(in srgb,var(--panza) 75%,var(--ec))}
+.echp__c.plina .echp__nume > span{color:color-mix(in srgb,var(--panza) 88%,var(--ec))}
+.echp__c.plina .echp__loc i.da{background:var(--panza);border-color:var(--panza);color:var(--ec)}
+.echp__c.plina .echp__et{opacity:.8;font-weight:500}
+
+/* varianta mică: celelalte echipe, când ai deja una */
+.echp__c.mic{gap:8px;padding:12px 12px 10px;border-radius:12px}
+.echp__c.mic .echp__loc{gap:4px}
+.echp__c.mic .echp__loc i{width:16px;height:16px}
+
+/* echipa ta, mare, cu textul alături */
+.echp__a-mea{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:24px;align-items:start;margin:0 0 6px}
+.echp__a-mea > .echp__c{padding:18px 18px 16px;gap:12px}
+.echp__a-mea > .echp__c .echp__loc i{width:34px;height:34px;font-size:12px}
+.echp__a-mea > .echp__c .echp__nume > span{font-size:var(--t2)}
+.echp__lat .echp__lead{font-size:var(--t4);margin:4px 0 10px}
+.echp__lat .echp__lead b{font-weight:600}
+@media(max-width:640px){.echp__a-mea{grid-template-columns:1fr;gap:12px}}
+.echp__iesi{margin-top:2px}
+
+/* pe slide: numele se citesc din fundul sălii */
+.echp--slide .echp__grila{grid-template-columns:repeat(auto-fill,minmax(186px,1fr))}
+.echp--slide .echp__nume > span{font-size:var(--t2)}
+.echp--slide .echp__loc i{width:28px;height:28px;font-size:11px}
+.echp--slide .echp__c{padding:14px 13px 11px;gap:8px}
+.echp--slide .echp__nume{gap:0}
+.echp--slide .echp__nume > span{line-height:1.3}
+.echp--slide .echp__c:not(.act) .echp__et{display:none}
+
+/* cererile */
+.echp__cereri,.echp__fara{margin:0 0 18px}
+.echp__cerere{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid var(--linie);font-size:var(--t3)}
+.echp__cerere:last-of-type{border-bottom:0}
+.echp__cerere span{flex:1;min-width:200px}
+.echp__cererea{border-left:3px solid var(--ec);padding:2px 0 2px 14px;margin:0 0 16px}
+.echp__cererea .echp__lead{margin:0 0 8px}
+.echp__noua{display:flex;align-items:center;gap:12px;margin:6px 0 0;font-size:var(--t3);color:var(--text-2)}
+.echp__noua p{margin:0}
+
+/* bara de stare și banda grupei */
+.echp__bara{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin:0 0 14px}
+.echp__bara .sp{flex:1}
+.echp--slide .echp__bara{margin:6px 0 0}
+.echp__stare{display:inline-flex;align-items:center;gap:7px;font-size:var(--t2);font-weight:600;color:var(--text-2)}
+.echp__stare::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--linie-2)}
+.echp__stare.on{color:var(--accent-text)}
+.echp__stare.on::before{background:var(--accent);animation:echp-puls 2s ease-in-out infinite}
+.echp__banda{display:flex;gap:2px;height:6px;flex:1;min-width:120px;border-radius:3px;overflow:hidden}
+.echp--prof > .echp__banda{margin:0 0 18px}
+.echp__banda i{display:block;background:var(--ec);flex-basis:0;transition:flex-grow .5s ease}
+.echp__banda i.rest{background:var(--linie)}
+
+/* profesorul: lista membrilor, cu mutare */
+.echp__lista{list-style:none;margin:0;padding:0;max-width:none}
+.echp__lista li{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:5px 0;margin:0;
+  border-top:1px solid color-mix(in srgb,var(--ec,var(--text)) 14%,transparent);font-size:var(--t2)}
+.echp__lista li::before{content:none}
+.echp__lista li > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.echp__lista small{font-size:var(--t1);color:var(--text-3)}
+.echp__lista select{flex:none;font-size:var(--t1);padding:2px 4px;border:1px solid var(--linie-2);border-radius:6px;background:var(--panza);color:var(--text)}
+.echp__fara .echp__lista{columns:2 260px;column-gap:28px}
+.echp__fara .echp__lista li{break-inside:avoid}
+.echp__porneste{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.echp__porneste .echp__lead{flex-basis:100%;margin:0}
+.echp__porneste .echp__info,.echp__porneste .echp__msg{flex-basis:100%}
+.echp__porneste label{font-size:var(--t2);color:var(--text-2);display:flex;align-items:center;gap:6px}
+.echp__porneste input{width:64px;font-size:var(--t3);padding:5px 8px;border:1px solid var(--linie-2);border-radius:6px;background:var(--panza);color:var(--text)}
+
+/* mișcarea */
+@keyframes echp-loc{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
+@keyframes echp-unda{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ec) 55%,transparent)}100%{box-shadow:0 0 0 12px color-mix(in srgb,var(--ec) 0%,transparent)}}
+@keyframes echp-nume{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes echp-intra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes echp-puls{0%,100%{opacity:1}50%{opacity:.35}}
+.echp__loc i.nou{animation:echp-loc .5s cubic-bezier(.3,1.4,.5,1) both,echp-unda 1.1s .25s ease-out}
+.echp__nume > .nou{animation:echp-nume .5s .15s ease-out both}
+.intra > .echp__c,.echp__a-mea.intra > *{animation:echp-intra .45s ease-out both;animation-delay:calc(var(--i,0) * 45ms)}
+@media (prefers-reduced-motion:reduce){
+  .echp *,.echp *::before,.echp *::after{animation:none !important;transition:none !important}
+}
+.anunt-echipa{border-bottom:1px solid var(--linie);background:var(--panza);font-family:var(--sans);font-size:var(--t2);color:var(--text-2)}
+.anunt-echipa .pagina{padding-top:9px;padding-bottom:9px}
+.cont-chip--anunt{position:relative}
+.cont-chip--anunt::after{content:"";position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 2px var(--fundal)}
+.surse ul,.lit ul{max-width:none!important}

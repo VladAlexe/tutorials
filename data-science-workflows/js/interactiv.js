@@ -6,10 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=74";
-import EXERCITII from "./exercitii.js?v=74";
-import VIZUAL from "./vizual.js?v=74";
-import HARTA from "./harta-sci.js?v=74";
+import GRAFICE from "./grafice.js?v=77";
+import EXERCITII from "./exercitii.js?v=77";
+import VIZUAL from "./vizual.js?v=77";
+import HARTA from "./harta-sci.js?v=77";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA };
 
@@ -27,35 +27,18 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=74");
+    const m = await import("/data-science-workflows/js/colectare.js?v=77");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
 
 /* --- 1. Explorator de etape --------------------------------------------- */
 C.etape = (gazda, date) => {
-  /* static: e un cuprins (agenda orei), nu o interacțiune; se citește dintr-o privire */
-  if (date.static){
-    gazda.innerHTML = `<div class="etp-st" role="list">${date.etape.map((e, k) =>
-      `<div class="etp-st__r" role="listitem"><i>${String(k + 1).padStart(2, "0")}</i><b>${e.nume}</b><span>${e.text}</span></div>`).join("")}</div>`;
-    return;
-  }
-  gazda.innerHTML = `<div class="etp">
-    <div class="etp__b"></div>
-    <div class="etp__i"><h5>${date.titlu||"Alege o etapă"}</h5><p>${date.intro||""}</p></div>
-  </div>`;
-  const b = gazda.querySelector(".etp__b"), i = gazda.querySelector(".etp__i");
-  b.innerHTML = date.etape.map((e,k) =>
-    `<button class="etp__p ${e.depozit?"dep":""}" data-k="${k}" type="button">
-       <i>${e.depozit ? "▣" : String(k+1).padStart(2,"0")}</i>${e.nume}</button>`).join("");
-  b.addEventListener("click", ev => {
-    const p = ev.target.closest(".etp__p"); if (!p) return;
-    b.querySelectorAll(".etp__p").forEach(x => x.classList.remove("on"));
-    p.classList.add("on");
-    const e = date.etape[+p.dataset.k];
-    i.innerHTML = `<h5>${e.nume}</h5><p>${e.text}</p>` +
-                  (e.unde ? `<p class="unde">${e.unde}</p>` : "");
-  });
+  /* Pașii stau la vedere, pe rânduri: numărul, numele, ce se face și, unde
+     există, fișierul în care se face. Nimic ascuns sub un clic. */
+  gazda.innerHTML = `<div class="etp-st" role="list">${date.etape.map((e, k) =>
+    `<div class="etp-st__r" role="listitem"><i>${e.depozit ? "▣" : String(k + 1).padStart(2, "0")}</i><b>${e.nume}</b>`
+    + `<span>${e.text}${e.unde && !date.static ? `<code class="etp-st__u">${e.unde}</code>` : ""}</span></div>`).join("")}</div>`;
 };
 
 C.agenda = (gazda, date) => C.etape(gazda, { ...date, static: true });
@@ -104,7 +87,7 @@ C.url = (gazda, date) => {
     });
     gazda.querySelectorAll(".adr__r").forEach(r => r.classList.toggle("tinta", activ !== null));
     const rest = pus.filter(x => !x).length;
-    aj.textContent = activ !== null ? `Ce rol are placa ${activ + 1}? Alege din legendă.`
+    aj.textContent = activ !== null ? `Ce rol are placa ${activ + 1}? Rolul se alege din legendă.`
       : rest === 1 ? "Mai este o placă fără rol." : rest ? `Mai sunt ${rest} plăci fără rol.` : "";
   };
 
@@ -134,7 +117,7 @@ C.url = (gazda, date) => {
       document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
       const st = gazda.querySelector(".ex__stare");
       try {
-        const m = await import("/data-science-workflows/js/colectare.js?v=74");
+        const m = await import("/data-science-workflows/js/colectare.js?v=77");
         const salvat = await m.salveazaCod({ exercitiuId: date.id, cod: `${pus.join(" | ")} · greșite: ${gresite}`, trecut: true });
         st.textContent = salvat ? "Rezolvare înregistrată." : "Rezolvarea nu a fost înregistrată: nu ești autentificat.";
         st.classList.add("vazut");
@@ -173,7 +156,7 @@ C.terminal = (gazda) => {
     <div class="trm__sarcini">${SARCINI.map(([,e]) => `<span class="trm__chip">${e}</span>`).join("")}</div>
     <div class="trm__ecran"></div>
     <div class="trm__linie"><span class="trm__pr"></span>
-      <input autocomplete="off" spellcheck="false" aria-label="Comandă" placeholder="scrie o comandă (ajutor afișează lista comenzilor)"></div>`;
+      <input autocomplete="off" spellcheck="false" aria-label="Comandă" placeholder="o comandă (help afișează lista comenzilor)"></div>`;
   const ecran = gazda.querySelector(".trm__ecran"), prompt = gazda.querySelector(".trm__pr");
   const intrare = gazda.querySelector("input"), chipuri = [...gazda.querySelectorAll(".trm__chip")];
   const cale = (c = cwd) => c ? ACASA + "\\" + c : ACASA;
@@ -282,7 +265,7 @@ C.terminal = (gazda) => {
       "  pip install -r requirements.txt", "  dir",
       "Alte comenzi: cd .., pip list, deactivate, curata"]);
     else if (/^(curata|clear|cls)$/i.test(c)) linii = ["_"];
-    else scrie(c, [`!${esc(c.split(" ")[0])} : The term is not recognized. Scrie ajutor pentru lista comenzilor.`]);
+    else scrie(c, [`!${esc(c.split(" ")[0])} : The term is not recognized. Comanda help afișează lista comenzilor.`]);
     deseneaza();
   };
   intrare.addEventListener("keydown", e => { if (e.key === "Enter"){ ruleaza(intrare.value); intrare.value = ""; } });
@@ -561,7 +544,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumim.</b> Accentul cursului cade pe fluxul de lucru, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=74");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=77");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -738,7 +721,7 @@ C.asteptari = (gazda, date) => {
        să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
     poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=74");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=77");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}

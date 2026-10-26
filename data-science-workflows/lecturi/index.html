@@ -4,76 +4,127 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Literatura proiectului · Fluxuri de lucru</title>
-<meta name="description" content="Literatura pe care se sprijină proiectul cursului: datele SCI, teoria rețelelor și sistemelor migratorii, metodele folosite.">
-<link rel="stylesheet" href="../css/fonturi.css?v=74">
-<link rel="stylesheet" href="../css/sistem.css?v=74">
-<link rel="stylesheet" href="../css/slide.css?v=74">
-<link rel="stylesheet" href="../css/interactiv.css?v=74">
-<script src="../js/tema.js?v=74"></script>
+<meta name="description" content="Literatura pe care se sprijină proiectul cursului: datele SCI, teoria rețelelor și a sistemelor migratorii, metodele folosite.">
+<link rel="stylesheet" href="../css/fonturi.css?v=77">
+<link rel="stylesheet" href="../css/sistem.css?v=77">
+<script src="../js/tema.js?v=77"></script>
 <style>
-  .lp{max-width:74ch;margin:0 auto;padding:44px 28px 80px}
-  .lp h2{font-size:var(--t5);margin:40px 0 12px}
-  .lp h3{font-size:var(--t4);margin:26px 0 8px}
-  .lp__feluri{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
-  .lp__fel{border:1px solid var(--linie);border-radius:10px;padding:10px 14px;background:var(--panza)}
-  .lp__fel p{margin:4px 0 0;font-family:var(--sans);font-size:var(--t2);color:var(--text-2)}
-  .lp table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:var(--t3)}
-  .lp td{padding:9px 12px 9px 0;border-bottom:1px solid var(--linie);vertical-align:top}
-  .lp td.mono{font-family:var(--mono);color:var(--text-3)}
-  .lp__lista{list-style:none;padding:0;margin:0}
-  .lp__lista li{padding:10px 0;border-bottom:1px solid var(--linie)}
-  .lp__lista li::before{content:none !important}
-  .lp__ref{font-family:var(--serif);font-size:var(--t4);line-height:1.5;margin:0}
-  .lp__ref a{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);word-break:break-all}
-  .lp__ce{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:4px 0 0}
-  .lp ol.pasi{display:block !important;font-family:var(--sans);font-size:var(--t3);line-height:1.55;padding-left:1.5em;list-style:decimal;counter-reset:none}
-  .lp ol.pasi>li{display:list-item !important;padding:0 !important;margin:0 0 8px;max-width:none}
-  .lp ol.pasi>li::before{content:none !important;display:none !important}
-  @media(max-width:640px){.lp{padding:28px 16px 60px}.lp__feluri{grid-template-columns:1fr}}
+  .lp{max-width:780px;margin:0 auto;padding:36px 28px 90px}
+  .lp__inapoi{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:var(--t2);
+    color:var(--text-2);text-decoration:none;margin:0 0 30px;padding:5px 12px 5px 9px;border:1px solid var(--linie-2);
+    border-radius:999px;background:var(--panza)}
+  .lp__inapoi:hover{color:var(--text);border-color:var(--text-3)}
+  .lp h1{margin:0 0 14px}
+  .lp .deck{margin-bottom:44px}
+  .lp__sec{display:grid;grid-template-columns:150px minmax(0,1fr);gap:28px;padding:30px 0;border-top:1px solid var(--linie)}
+  .lp__sec > h2{font-family:var(--sans);font-size:var(--t2);font-weight:600;color:var(--text-3);margin:4px 0 0;line-height:1.4}
+  .lp__sec p,.lp__sec li,.lp__sec dd,.lp__sec td{font-family:var(--sans);font-size:var(--t3);line-height:1.6;color:var(--text-2)}
+  .lp__q{font-family:var(--titlu)!important;font-size:var(--t5)!important;line-height:1.45!important;color:var(--text)!important;margin:0 0 22px;max-width:none}
+  .lp__pils{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+  .lp__pil h3{font-family:var(--sans);font-size:var(--t3);font-weight:600;margin:0 0 4px}
+  .lp__pil p{font-size:var(--t2)!important;margin:0 0 6px}
+  .lp__pr a{font-size:var(--t2)}
+  .lp__regula{margin:22px 0 0!important;font-size:var(--t2)!important;padding-left:14px;border-left:2px solid var(--linie-2)}
+  .lp dl{display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px 18px;margin:0}
+  .lp dt{font-family:var(--sans);font-size:var(--t3);font-weight:600;color:var(--text)}
+  .lp dd{margin:0}
+  .lp__gr{font-family:var(--sans);font-size:var(--t3);font-weight:600;margin:0 0 10px}
+  .lp__gr:not(:first-child){margin-top:28px}
+  .lp__bib{list-style:none;margin:0;padding:0;max-width:none}
+  .lp__bib li{margin:0 0 18px;padding:0}
+  .lp__bib li::before{content:none!important}
+  .lp__ref{font-family:var(--serif)!important;font-size:var(--t4)!important;line-height:1.5!important;color:var(--text)!important;
+    margin:0;padding-left:2em;text-indent:-2em}
+  .lp__doi{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);text-decoration:none;word-break:break-all}
+  .lp__doi:hover{color:var(--text);text-decoration:underline}
+  .lp__rol{font-size:var(--t2)!important;margin:5px 0 0 2em;line-height:1.55!important}
+  .lp__lect{font-size:var(--t1)!important;color:var(--text-3)!important;margin:3px 0 0 2em;font-variant-numeric:tabular-nums}
+  .lp table{width:100%;border-collapse:collapse}
+  .lp th,.lp td{text-align:left;vertical-align:top;padding:9px 14px 9px 0;border-bottom:1px solid var(--linie);font-family:var(--sans)}
+  .lp th{font-size:var(--t2);font-weight:600;color:var(--text-3);width:40px}
+  .lp td{font-size:var(--t2)!important}
+  .lp td:nth-child(2){width:170px;color:var(--text)}
+  .lp tr:last-child th,.lp tr:last-child td{border-bottom:0}
+  .lp__pasi{margin:0;padding-left:1.4em;max-width:none;list-style:decimal!important;counter-reset:none}
+  .lp__pasi li{display:list-item!important;margin:0 0 8px;padding-left:4px!important}
+  .lp__pasi li::marker{color:var(--text-3);font-size:var(--t2)}
+  .lp__pasi li::before{content:none!important}
+  .lp__un{list-style:none;margin:14px 0 0;padding:0}
+  .lp__un li{margin:0 0 4px;font-size:var(--t2)!important}
+  .lp__un li::before{content:none!important}
+  .lit__a{color:var(--text);text-decoration:underline;text-decoration-color:var(--linie-2);text-underline-offset:3px}
+  .lit__a:hover{text-decoration-color:var(--text)}
+  @media(max-width:720px){.lp{padding:24px 16px 60px}.lp__sec{grid-template-columns:1fr;gap:12px}
+    .lp__pils{grid-template-columns:1fr}.lp dl{grid-template-columns:1fr;gap:2px}.lp dd{margin-bottom:8px}}
 </style>
 </head>
 <body>
 <div id="antet" data-aici="Literatura proiectului"></div>
 <main>
 <div class="lp">
+  <a class="lp__inapoi" href="../" id="inapoi">← Înapoi</a>
   <p class="supratitlu">Proiectul cursului</p>
   <h1>Literatura proiectului</h1>
-  <p class="deck">Selecția nu acoperă toată literatura despre SCI și migrație, ci doar lucrările folosite
-  în caiete și cele care susțin direct pașii proiectului. Fiecare lectură apare și în lecția în care este folosită.</p>
+  <p class="deck">Lucrările pe care se sprijină proiectul: sursa datelor, cadrul teoretic și metodologia.
+  Selecția nu acoperă întreaga literatură despre SCI și migrație, ci doar lucrările folosite în caiete
+  și în pașii proiectului.</p>
 
-  <h2>Patru tipuri de surse</h2>
-  <p>Într-un flux de lucru, literatura nu este un capitol scris la final, ci intră în momente precise:
-  teoria la definirea întrebării, metoda la analiză și modelare, documentația la fiecare pas tehnic,
-  iar descrierea datelor oriunde acestea sunt folosite.</p>
-  <div class="lp__feluri"><div class="lp__fel"><div class="lit__f lit__f--date">Datele</div><p>de unde provin datele și ce reprezintă.</p></div><div class="lp__fel"><div class="lit__f lit__f--teorie">Teoria</div><p>de ce ar fi legate două locuri: sursa ipotezelor.</p></div><div class="lp__fel"><div class="lit__f lit__f--metoda">Metoda</div><p>cum au analizat alții aceeași întrebare: sursa alegerilor metodologice.</p></div><div class="lp__fel"><div class="lit__f lit__f--documentatie">Documentația</div><p>cum se realizează tehnic fiecare pas.</p></div></div>
+  <section class="lp__sec">
+    <h2>Întrebarea de cercetare</h2>
+    <div>
+      <p class="lp__q">În ce măsură se explică legăturile sociale dintre locuri prin migrația dintre ele
+      și ce rămâne neexplicat după distanță și migrație?</p>
+      <div class="lp__pils"><div class="lp__pil"><h3>Legăturile</h3><p>Ce locuri sunt legate între ele și cât de puternic.</p><p class="lp__pr"><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a>; <a class="lit__a" href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">Johnston, Kuchler, Kulkarni și Stroebel (2026)</a></p></div><div class="lp__pil"><h3>Oamenii</h3><p>Rețelele de migranți și câmpurile de migrație: destinațiile celor care întrețin legăturile.</p><p class="lp__pr"><a class="lit__a" href="https://doi.org/10.1086/320817" target="_blank" rel="noopener">Palloni și colegii (2001)</a>; <a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a>; <a class="lit__a" href="https://doi.org/10.1177/0011392105052715" target="_blank" rel="noopener">Sandu (2005)</a>; <a class="lit__a" href="https://doi.org/10.1111/imig.70092" target="_blank" rel="noopener">Sandu (2025)</a></p></div><div class="lp__pil"><h3>Locul</h3><p>Factorii care explică legăturile independent de migrație: distanța, granița, limba, istoria.</p><p class="lp__pr"><a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a></p></div></div>
+      <p class="lp__regula">SCI nu este o măsură a migrației, iar un indice din 2026 nu poate explica o migrație
+      anterioară. Relația se formulează ca asociere, nu ca relație cauzală (de Haas, 2010).</p>
+    </div>
+  </section>
 
-  <h2>Cadrul proiectului</h2>
-  <p>Întrebarea: <b>în ce măsură legăturile dintre locuri se explică prin migrația dintre ele
-  și ce rămâne neexplicat după distanță și migrație?</b> Ea se sprijină pe trei piloni, fiecare cu literatura lui.</p>
-  <div class="pil" style="--n:3"><div class="pil__stalpi"><div class="pil__s"><div class="pil__n">Legăturile</div><div class="pil__d">Ce locuri sunt legate între ele și cât de puternic.</div><div class="pil__r"><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a>, <a class="lit__a" href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">Johnston, Kuchler, Kulkarni și Stroebel (2026)</a></div></div><div class="pil__s"><div class="pil__n">Oamenii</div><div class="pil__d">Rețelele de migranți și câmpurile de migrație: destinațiile celor care întrețin legăturile.</div><div class="pil__r"><a class="lit__a" href="https://doi.org/10.1086/320817" target="_blank" rel="noopener">Palloni și colegii (2001)</a>, <a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a>, <a class="lit__a" href="https://doi.org/10.1177/0011392105052715" target="_blank" rel="noopener">Sandu (2005)</a>, <a class="lit__a" href="https://doi.org/10.1111/imig.70092" target="_blank" rel="noopener">Sandu (2025)</a></div></div><div class="pil__s"><div class="pil__n">Locul</div><div class="pil__d">Factorii care explică legăturile independent de migrație: distanța, granița, limba, istoria.</div><div class="pil__r"><a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a></div></div></div>
-  <div class="pil__baza"><span>regula</span>SCI nu este o măsură a migrației, iar un SCI din 2026 nu poate
-  explica o migrație anterioară: formulăm o asociere („variază împreună”), nu o relație cauzală (de Haas, 2010).</div></div>
+  <section class="lp__sec">
+    <h2>Tipurile de surse</h2>
+    <dl><dt>Datele</dt><dd>Proveniența datelor și ce măsoară fiecare variabilă.</dd><dt>Teoria</dt><dd>Mecanismele care explică fenomenul, conceptele și ipotezele care decurg din ele.</dd><dt>Metoda</dt><dd>Cum au fost măsurate conceptele și ce modele au folosit studiile anterioare.</dd><dt>Documentația</dt><dd>Unelte pentru căutarea literaturii și gestionarea referințelor.</dd></dl>
+  </section>
 
-  <h2>Pe lecții</h2>
-  <table><tbody><tr><td class="mono">C1</td><td>Introducere</td><td><a class="lit__a" href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">Johnston, Kuchler, Kulkarni și Stroebel (2026)</a>, <a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a></td></tr><tr><td class="mono">C3</td><td>Git și cadrul teoretic</td><td><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a>, <a class="lit__a" href="https://doi.org/10.1086/320817" target="_blank" rel="noopener">Palloni și colegii (2001)</a>, <a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a>, <a class="lit__a" href="https://doi.org/10.1177/0011392105052715" target="_blank" rel="noopener">Sandu (2005)</a>, <a class="lit__a" href="https://doi.org/10.1111/imig.70092" target="_blank" rel="noopener">Sandu (2025)</a></td></tr><tr><td class="mono">C6</td><td>Analiza exploratorie</td><td><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a>, <a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a>, <a class="lit__a" href="https://doi.org/10.1088/1742-5468/2008/10/P10008" target="_blank" rel="noopener">Blondel și colegii (2008)</a></td></tr><tr><td class="mono">C7</td><td>Variabile și model</td><td><a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a>, <a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a>, <a class="lit__a" href="https://doi.org/10.1093/pan/mpv018" target="_blank" rel="noopener">Aronow, Samii și Assenova (2015)</a></td></tr><tr><td class="mono">C8</td><td>Raportul</td><td><a class="lit__a" href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">Johnston, Kuchler, Kulkarni și Stroebel (2026)</a></td></tr></tbody></table>
+  <section class="lp__sec">
+    <h2>Bibliografie</h2>
+    <div><h3 class="lp__gr">Sursa datelor</h3><ol class="lp__bib"><li id="johnston2026"><p class="lp__ref">Johnston, D., Kuchler, T., Kulkarni, M. și Stroebel, J. (2026). The Social Connectedness Index: A large-scale dataset of social ties across geographic locations. <i>Data in Brief</i>, 67, 112905. <a class="lp__doi" href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">doi.org/10.1016/j.dib.2026.112905</a></p><p class="lp__rol">Descrierea exactă a setului folosit: instantaneul din ianuarie 2026, 178 de țări, nivelurile geografice, populația inclusă (utilizatori activi, cu peste 20 de prieteni) și motivul pentru care valorile nu sunt comparabile între fișiere. Este referința care se citează pentru date.</p><p class="lp__lect">C1 · C8</p></li></ol><h3 class="lp__gr">Cadrul teoretic</h3><ol class="lp__bib"><li id="bailey2018"><p class="lp__ref">Bailey, M., Cao, R., Kuchler, T., Stroebel, J. și Wong, A. (2018). Social connectedness: Measurement, determinants, and effects. <i>Journal of Economic Perspectives</i>, 32(3), 259-280. <a class="lp__doi" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">doi.org/10.1257/jep.32.3.259</a></p><p class="lp__rol">Articolul care a introdus indicele: ce măsoară (o probabilitate relativă de prietenie), faptul că scade puternic cu distanța și că reflectă migrația, inclusiv pe cea veche.</p><p class="lp__lect">C1 · C3 · C6</p></li><li id="palloni2001"><p class="lp__ref">Palloni, A., Massey, D. S., Ceballos, M., Espinosa, K. și Spittel, M. (2001). Social capital and international migration: A test using information on family networks. <i>American Journal of Sociology</i>, 106(5), 1262-1298. <a class="lp__doi" href="https://doi.org/10.1086/320817" target="_blank" rel="noopener">doi.org/10.1086/320817</a></p><p class="lp__rol">Teoria rețelelor de migranți: legăturile cu cei plecați anterior reduc costurile și riscurile migrației pentru cei care urmează. De aici ideea că migrația și legăturile sociale sunt asociate.</p><p class="lp__lect">C3</p></li><li id="dehaas2010"><p class="lp__ref">de Haas, H. (2010). The internal dynamics of migration processes: A theoretical inquiry. <i>Journal of Ethnic and Migration Studies</i>, 36(10), 1587-1617. <a class="lp__doi" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">doi.org/10.1080/1369183X.2010.489361</a></p><p class="lp__rol">Migrația și legăturile se întrețin reciproc (mecanisme de feedback), dar nu nelimitat. De aici regula proiectului: relația dintre SCI și migrație acționează în ambele sensuri, deci nu se poate afirma care dintre ele o produce pe cealaltă.</p><p class="lp__lect">C3 · C7</p></li><li id="sandu2005"><p class="lp__ref">Sandu, D. (2005). Emerging transnational migration from Romanian villages. <i>Current Sociology</i>, 53(4), 555-582. <a class="lp__doi" href="https://doi.org/10.1177/0011392105052715" target="_blank" rel="noopener">doi.org/10.1177/0011392105052715</a></p><p class="lp__rol">Migrația românească nu este uniformă: localitățile se organizează în câmpuri de migrație, fiecare cu destinațiile lui (între altele Germania, Ungaria, Italia, Turcia, Spania). Oferă cadrul românesc al întrebării de cercetare.</p><p class="lp__lect">C3</p></li><li id="sandu2025"><p class="lp__ref">Sandu, D. (2025). A multi-level migration system between regions of origin and the European hexagon of attraction. <i>International Migration</i>, 63(5), e70092. <a class="lp__doi" href="https://doi.org/10.1111/imig.70092" target="_blank" rel="noopener">doi.org/10.1111/imig.70092</a></p><p class="lp__rol">Județele României și cele șase destinații mari (Italia, Spania, Germania, Regatul Unit, Franța, Austria), pe fluxuri 2011-2021. Reperul cu care se compară orice hartă a diasporei construită din SCI.</p><p class="lp__lect">C3</p></li></ol><h3 class="lp__gr">Metodologia</h3><ol class="lp__bib"><li id="bailey2020"><p class="lp__ref">Bailey, M., Johnston, D., Kuchler, T., Russel, D., State, B. și Stroebel, J. (2020). The determinants of social connectedness in Europe. În <i>Social Informatics (SocInfo 2020)</i>, LNCS 12467 (pp. 1-14). Springer. <a class="lp__doi" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">doi.org/10.1007/978-3-030-60975-7_1</a></p><p class="lp__rol">Aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.</p><p class="lp__lect">C6 · C7</p></li><li id="blondel2008"><p class="lp__ref">Blondel, V. D., Guillaume, J.-L., Lambiotte, R. și Lefebvre, E. (2008). Fast unfolding of communities in large networks. <i>Journal of Statistical Mechanics: Theory and Experiment</i>, 2008(10), P10008. <a class="lp__doi" href="https://doi.org/10.1088/1742-5468/2008/10/P10008" target="_blank" rel="noopener">doi.org/10.1088/1742-5468/2008/10/P10008</a></p><p class="lp__rol">Algoritmul Louvain, folosit pentru identificarea comunităților. Exemplul din articol, o rețea de telefonie din Belgia, regăsește granița lingvistică; aceeași logică se aplică rețelei regiunilor din proiect.</p><p class="lp__lect">C6</p></li><li id="aronow2015"><p class="lp__ref">Aronow, P. M., Samii, C. și Assenova, V. A. (2015). Cluster-robust variance estimation for dyadic data. <i>Political Analysis</i>, 23(4), 564-577. <a class="lp__doi" href="https://doi.org/10.1093/pan/mpv018" target="_blank" rel="noopener">doi.org/10.1093/pan/mpv018</a></p><p class="lp__rol">De ce perechile nu sunt observații independente (România-Italia și România-Spania au un capăt comun) și ce implică acest fapt pentru erorile standard. Limita principală a modelului din C7.</p><p class="lp__lect">C7</p></li></ol></div>
+  </section>
 
-  <h2>Referințele complete</h2>
-  <h3><span class="lit__f lit__f--date">Datele</span></h3><ul class="lp__lista"><li><p class="lp__ref">Johnston, D., Kuchler, T., Kulkarni, M. și Stroebel, J. (2026). The Social Connectedness Index: A large-scale dataset of social ties across geographic locations. <i>Data in Brief</i>, 67, 112905. <a href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">https://doi.org/10.1016/j.dib.2026.112905</a></p><p class="lp__ce"><b>Ce preluăm:</b> descrierea exactă a setului folosit: instantaneul din ianuarie 2026, 178 de țări, nivelurile geografice, populația inclusă (utilizatori activi, cu peste 20 de prieteni) și motivul pentru care valorile nu sunt comparabile între fișiere. Este referința care se citează pentru date.</p></li></ul><h3><span class="lit__f lit__f--teorie">Teoria</span></h3><ul class="lp__lista"><li><p class="lp__ref">Bailey, M., Cao, R., Kuchler, T., Stroebel, J. și Wong, A. (2018). Social connectedness: Measurement, determinants, and effects. <i>Journal of Economic Perspectives</i>, 32(3), 259-280. <a href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">https://doi.org/10.1257/jep.32.3.259</a></p><p class="lp__ce"><b>Ce preluăm:</b> articolul care a introdus indicele: ce măsoară (o probabilitate relativă de prietenie), faptul că scade puternic cu distanța și că reflectă migrația, inclusiv pe cea veche.</p></li><li><p class="lp__ref">Palloni, A., Massey, D. S., Ceballos, M., Espinosa, K. și Spittel, M. (2001). Social capital and international migration: A test using information on family networks. <i>American Journal of Sociology</i>, 106(5), 1262-1298. <a href="https://doi.org/10.1086/320817" target="_blank" rel="noopener">https://doi.org/10.1086/320817</a></p><p class="lp__ce"><b>Ce preluăm:</b> teoria rețelelor de migranți: legăturile cu cei plecați anterior reduc costurile și riscurile migrației pentru cei care urmează. De aici ideea că migrația și legăturile sociale sunt asociate.</p></li><li><p class="lp__ref">de Haas, H. (2010). The internal dynamics of migration processes: A theoretical inquiry. <i>Journal of Ethnic and Migration Studies</i>, 36(10), 1587-1617. <a href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">https://doi.org/10.1080/1369183X.2010.489361</a></p><p class="lp__ce"><b>Ce preluăm:</b> migrația și legăturile se întrețin reciproc (mecanisme de feedback), dar nu nelimitat. De aici regula proiectului: relația dintre SCI și migrație acționează în ambele sensuri, deci nu afirmăm care o produce pe cealaltă.</p></li><li><p class="lp__ref">Sandu, D. (2005). Emerging transnational migration from Romanian villages. <i>Current Sociology</i>, 53(4), 555-582. <a href="https://doi.org/10.1177/0011392105052715" target="_blank" rel="noopener">https://doi.org/10.1177/0011392105052715</a></p><p class="lp__ce"><b>Ce preluăm:</b> migrația românească nu este uniformă: localitățile se organizează în câmpuri de migrație, fiecare cu destinațiile lui (între altele Germania, Ungaria, Italia, Turcia, Spania). Oferă cadrul românesc al întrebării de cercetare.</p></li><li><p class="lp__ref">Sandu, D. (2025). A multi-level migration system between regions of origin and the European hexagon of attraction. <i>International Migration</i>, 63(5), e70092. <a href="https://doi.org/10.1111/imig.70092" target="_blank" rel="noopener">https://doi.org/10.1111/imig.70092</a></p><p class="lp__ce"><b>Ce preluăm:</b> județele României și cele șase destinații mari (Italia, Spania, Germania, Regatul Unit, Franța, Austria), pe fluxuri 2011-2021. Reperul cu care se compară orice hartă a diasporei construită din SCI.</p></li></ul><h3><span class="lit__f lit__f--metoda">Metoda</span></h3><ul class="lp__lista"><li><p class="lp__ref">Bailey, M., Johnston, D., Kuchler, T., Russel, D., State, B. și Stroebel, J. (2020). The determinants of social connectedness in Europe. În <i>Social Informatics (SocInfo 2020)</i>, LNCS 12467 (pp. 1-14). Springer. <a href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">https://doi.org/10.1007/978-3-030-60975-7_1</a></p><p class="lp__ce"><b>Ce preluăm:</b> aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.</p></li><li><p class="lp__ref">Blondel, V. D., Guillaume, J.-L., Lambiotte, R. și Lefebvre, E. (2008). Fast unfolding of communities in large networks. <i>Journal of Statistical Mechanics: Theory and Experiment</i>, 2008(10), P10008. <a href="https://doi.org/10.1088/1742-5468/2008/10/P10008" target="_blank" rel="noopener">https://doi.org/10.1088/1742-5468/2008/10/P10008</a></p><p class="lp__ce"><b>Ce preluăm:</b> algoritmul Louvain, folosit pentru identificarea comunităților. Exemplul din articol, o rețea de telefonie din Belgia, regăsește granița lingvistică: aceeași logică se aplică și în proiect.</p></li><li><p class="lp__ref">Aronow, P. M., Samii, C. și Assenova, V. A. (2015). Cluster-robust variance estimation for dyadic data. <i>Political Analysis</i>, 23(4), 564-577. <a href="https://doi.org/10.1093/pan/mpv018" target="_blank" rel="noopener">https://doi.org/10.1093/pan/mpv018</a></p><p class="lp__ce"><b>Ce preluăm:</b> de ce perechile nu sunt observații independente (România-Italia și România-Spania au un capăt comun) și ce implică acest fapt pentru erorile standard. Limita principală a modelului din C7.</p></li></ul>
+  <section class="lp__sec">
+    <h2>Lecturile, pe lecții</h2>
+    <table><tbody><tr><th scope="row">C1</th><td>Introducere</td><td><a class="lit__a" href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">Johnston, Kuchler, Kulkarni și Stroebel (2026)</a>; <a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a></td></tr><tr><th scope="row">C3</th><td>Git și cadrul teoretic</td><td><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a>; <a class="lit__a" href="https://doi.org/10.1086/320817" target="_blank" rel="noopener">Palloni și colegii (2001)</a>; <a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a>; <a class="lit__a" href="https://doi.org/10.1177/0011392105052715" target="_blank" rel="noopener">Sandu (2005)</a>; <a class="lit__a" href="https://doi.org/10.1111/imig.70092" target="_blank" rel="noopener">Sandu (2025)</a></td></tr><tr><th scope="row">C6</th><td>Analiza exploratorie</td><td><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a>; <a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a>; <a class="lit__a" href="https://doi.org/10.1088/1742-5468/2008/10/P10008" target="_blank" rel="noopener">Blondel și colegii (2008)</a></td></tr><tr><th scope="row">C7</th><td>Variabile și model</td><td><a class="lit__a" href="https://doi.org/10.1080/1369183X.2010.489361" target="_blank" rel="noopener">de Haas (2010)</a>; <a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a>; <a class="lit__a" href="https://doi.org/10.1093/pan/mpv018" target="_blank" rel="noopener">Aronow, Samii și Assenova (2015)</a></td></tr><tr><th scope="row">C8</th><td>Raportul</td><td><a class="lit__a" href="https://doi.org/10.1016/j.dib.2026.112905" target="_blank" rel="noopener">Johnston, Kuchler, Kulkarni și Stroebel (2026)</a></td></tr></tbody></table>
+  </section>
 
-  <h2>Cum se extinde căutarea</h2>
-  <ol class="pasi">
-    <li><b>Se pornește de la un articol-ancoră</b>, de exemplu Bailey și colegii (2018).</li>
-    <li><b>Căutarea înapoi:</b> din referințele lui se aleg lucrările relevante pentru întrebarea de cercetare.</li>
-    <li><b>Căutarea înainte:</b> funcția „Citat de” arată lucrările mai noi care îl citează.</li>
-    <li><b>Căutarea se face în engleză</b>, cu termenii din titluri: <i>social connectedness index</i>,
-    <i>migrant networks</i>, <i>migration systems</i>, plus țara sau coridorul studiat.</li>
-    <li><b>Se citesc întâi rezumatul și metoda</b>, apoi se decide dacă articolul merită citit integral.</li>
-    <li><b>Fiecare lucrare se notează pe un rând:</b> întrebarea, datele, metoda, rezultatul și ce se preia din ea.
-    Aceasta este matricea literaturii, din care se scrie secțiunea de cadru teoretic a raportului.</li>
-  </ol>
-  <p>Unelte: <a class="lit__a" href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>, <a class="lit__a" href="https://www.semanticscholar.org/" target="_blank" rel="noopener">Semantic Scholar</a>, <a class="lit__a" href="https://www.zotero.org/" target="_blank" rel="noopener">Zotero</a>.</p>
+  <section class="lp__sec">
+    <h2>Extinderea căutării</h2>
+    <div>
+      <ol class="lp__pasi">
+        <li>Căutarea pornește de la un articol-ancoră, de exemplu Bailey și colegii (2018).</li>
+        <li>Căutarea înapoi: din referințele articolului se rețin lucrările relevante pentru întrebarea de cercetare.</li>
+        <li>Căutarea înainte: funcția „Citat de” arată lucrările mai noi care citează articolul.</li>
+        <li>Căutarea se face în engleză, cu termenii din titluri: <i>social connectedness index</i>,
+        <i>migrant networks</i>, <i>migration systems</i>, la care se adaugă țara sau coridorul studiat.</li>
+        <li>Se citesc întâi rezumatul și secțiunea de metodă; lectura integrală urmează doar pentru lucrările relevante.</li>
+        <li>Fiecare lucrare se notează pe un rând: întrebarea, datele, metoda, rezultatul și elementul preluat în proiect.
+        Rândurile formează matricea literaturii, din care se scrie secțiunea de cadru teoretic a raportului.</li>
+      </ol>
+      <ul class="lp__un"><li><a class="leg" href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>: căutarea pornind de la un articol-ancoră: lucrările care l-au citat ulterior.</li><li><a class="leg" href="https://www.semanticscholar.org/" target="_blank" rel="noopener">Semantic Scholar</a>: referințele și citările unui articol, una lângă alta.</li><li><a class="leg" href="https://www.zotero.org/" target="_blank" rel="noopener">Zotero</a>: salvarea articolelor din browser și generarea bibliografiei formatate pentru raport.</li></ul>
+    </div>
+  </section>
 </div>
 </main>
-<script type="module" src="../js/antet.js?v=74"></script>
+<div id="subsol"></div>
+<script>
+  /* înapoi la pagina de unde s-a venit, dacă e din același sit; altfel, la curs */
+  (function(){
+    var a = document.getElementById("inapoi");
+    try {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1)
+        a.addEventListener("click", function(e){ e.preventDefault(); history.back(); });
+    } catch (e) {}
+  })();
+</script>
+<script type="module" src="../js/antet.js?v=77"></script>
+<script type="module" src="../js/subsol.js?v=77"></script>
 </body>
 </html>

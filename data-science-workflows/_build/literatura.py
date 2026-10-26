@@ -15,10 +15,10 @@ sistemele migratorii (2026), restrânse la ce intră în curs.
 """
 
 FEL = {
-    "date": ("Datele", "de unde provin datele și ce reprezintă"),
-    "teorie": ("Teoria", "de ce ar fi legate două locuri: sursa ipotezelor"),
-    "metoda": ("Metoda", "cum au analizat alții aceeași întrebare: sursa alegerilor metodologice"),
-    "documentatie": ("Documentația", "cum se realizează tehnic fiecare pas"),
+    "date": ("Datele", "proveniența datelor și ce măsoară fiecare variabilă"),
+    "teorie": ("Teoria", "mecanismele care explică fenomenul, conceptele și ipotezele care decurg din ele"),
+    "metoda": ("Metoda", "cum au fost măsurate conceptele și ce modele au folosit studiile anterioare"),
+    "documentatie": ("Documentația", "unelte pentru căutarea literaturii și gestionarea referințelor"),
 }
 
 # cheie: (fel, citare scurtă, referința completă, link, ce luăm de acolo, lecțiile)
@@ -51,7 +51,7 @@ REF = {
         "<i>Journal of Ethnic and Migration Studies</i>, 36(10), 1587-1617.",
         "https://doi.org/10.1080/1369183X.2010.489361",
         "migrația și legăturile se întrețin reciproc (mecanisme de feedback), dar nu nelimitat. De aici "
-        "regula proiectului: relația dintre SCI și migrație acționează în ambele sensuri, deci nu afirmăm care o produce pe cealaltă.", [3, 7]),
+        "regula proiectului: relația dintre SCI și migrație acționează în ambele sensuri, deci nu se poate afirma care dintre ele o produce pe cealaltă.", [3, 7]),
     "sandu2005": ("teorie", "Sandu (2005)",
         "Sandu, D. (2005). Emerging transnational migration from Romanian villages. "
         "<i>Current Sociology</i>, 53(4), 555-582.",
@@ -78,7 +78,7 @@ REF = {
         "communities in large networks. <i>Journal of Statistical Mechanics: Theory and Experiment</i>, 2008(10), P10008.",
         "https://doi.org/10.1088/1742-5468/2008/10/P10008",
         "algoritmul Louvain, folosit pentru identificarea comunităților. Exemplul din articol, o rețea de telefonie din Belgia, "
-        "regăsește granița lingvistică: aceeași logică se aplică și în proiect.", [6]),
+        "regăsește granița lingvistică; aceeași logică se aplică rețelei regiunilor din proiect.", [6]),
     "aronow2015": ("metoda", "Aronow, Samii și Assenova (2015)",
         "Aronow, P. M., Samii, C. și Assenova, V. A. (2015). Cluster-robust variance estimation for "
         "dyadic data. <i>Political Analysis</i>, 23(4), 564-577.",

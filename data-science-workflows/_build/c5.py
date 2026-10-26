@@ -108,7 +108,7 @@ AGENDA = [
 
 PAS_MERGE = {
     "fisier": "04_curatarea.ipynb · 5. Perechile de regiuni",
-    "intro": "Un rând este o pereche de regiuni. Fiecărui rând îi adăugăm populația <b>ambelor</b> regiuni din pereche, ceea ce cere două îmbinări, nu una.",
+    "intro": "Un rând este o pereche de regiuni. Fiecărui rând i se adaugă populația <b>ambelor</b> regiuni din pereche, ceea ce cere două îmbinări, nu una.",
     "cod": "perechi = sci[sci[\"regiune_1\"] < sci[\"regiune_2\"]]\n"
            "atribute = regiuni[[\"regiune\", \"populatie\"]]\n\n"
            "capat_1 = atribute.add_suffix(\"_1\")\n"
@@ -140,7 +140,7 @@ PAS_MERGE = {
 
 PAS_AGREG = {
     "fisier": "tabelul regiunilor din C4 · de la regiuni la țări",
-    "intro": "Tabelul are un rând pe regiune; vrem un rând pe țară. Unitatea de analiză se schimbă cu <code>groupby</code>.",
+    "intro": "Tabelul are un rând pe regiune; rezultatul trebuie să aibă un rând pe țară. Unitatea de analiză se schimbă cu <code>groupby</code>.",
     "cod": "regiuni = pd.read_csv(DATE / \"c4\" / \"regiuni_nuts2.csv\")\n\n"
            "pe_tara = regiuni.groupby(\"tara\")[\"populatie\"].agg([\"size\", \"sum\"])\n"
            "pe_tara.loc[[\"RO\", \"HU\", \"IT\", \"DE\"]]\n\n"
@@ -231,17 +231,17 @@ sl("s1", "Cursul", "Planul lecției",
 sl("s2", "Cursul", "De ce nu ajunge un fișier",
    "<h2>Momentul în care CSV-ul devine o problemă</h2>"
    "<p>Criteriul nu este dimensiunea datelor, ci numărul de persoane care lucrează cu ele.</p>"
-   + tabel(["Ce faci", "Cu fișiere", "Cu o bază de date"],
+   + tabel(["Situație", "Cu fișiere", "Cu o bază de date"],
            [["Două persoane modifică simultan",
              "~date_final_v2_ANA.csv", "o singură copie, în care scriu ambele"],
-            ["Vrei doar țările din UE, în 2022",
-             "citești tot și filtrezi în memorie", "~where ue and an = 2022"],
-            ["Verifici că nu ai duplicate",
-             "scrii cod de fiecare dată", "~primary key, baza refuză"],
+            ["Selecția țărilor din UE, în 2022",
+             "citirea întregului fișier și filtrarea în memorie", "~where ue and an = 2022"],
+            ["Verificarea absenței duplicatelor",
+             "cod scris de fiecare dată", "~primary key, baza refuză"],
             ["Zece tabele legate între ele",
              "zece fișiere și o convenție de nume", "~join, scris o dată"],
-            ["Ai greșit și vrei să revii",
-             "restaurezi dintr-un backup, dacă există", "o ramură sau un punct de restaurare"]])
+            ["Revenirea după o greșeală",
+             "restaurare dintr-un backup, dacă există", "o ramură sau un punct de restaurare"]])
    + nota("De reținut", "Un CSV este suficient până la prima colaborare. Pragul "
                         "nu este numărul de rânduri, ci numărul de persoane."),
    manual=
@@ -254,17 +254,17 @@ sl("s2", "Cursul", "De ce nu ajunge un fișier",
    "loc, reguli care trebuie impuse automat (o țară nu poate apărea de două "
    "ori în același an) și interogări care nu trebuie rescrise de fiecare "
    "dată în Python.</p>"
-   + tabel(["Ce faci", "Cu fișiere", "Cu o bază de date"],
+   + tabel(["Situație", "Cu fișiere", "Cu o bază de date"],
            [["Două persoane modifică simultan",
              "~date_final_v2_ANA.csv", "o singură copie, în care scriu ambele"],
-            ["Vrei doar țările din UE, în 2022",
-             "citești tot și filtrezi în memorie", "~where ue and an = 2022"],
-            ["Verifici că nu ai duplicate",
-             "scrii cod de fiecare dată", "~primary key, baza refuză"],
+            ["Selecția țărilor din UE, în 2022",
+             "citirea întregului fișier și filtrarea în memorie", "~where ue and an = 2022"],
+            ["Verificarea absenței duplicatelor",
+             "cod scris de fiecare dată", "~primary key, baza refuză"],
             ["Zece tabele legate între ele",
              "zece fișiere și o convenție de nume", "~join, scris o dată"],
-            ["Ai greșit și vrei să revii",
-             "restaurezi dintr-un backup, dacă există", "o ramură sau un punct de restaurare"]])
+            ["Revenirea după o greșeală",
+             "restaurare dintr-un backup, dacă există", "o ramură sau un punct de restaurare"]])
    + nota("De reținut", "Un CSV este suficient până la prima colaborare. Pragul "
                         "nu este numărul de rânduri, ci numărul de persoane."),
    dupa=verif("c5-v1", 1,
@@ -324,12 +324,12 @@ sl("s3", "Unirea tabelelor", "Două operații, nu una",
 sl("s4", "Unirea tabelelor", "Rezultatul fiecărui tip",
    "<h2>Câte rânduri rămân</h2>"
    "<p>Două tabele mici, cu aceeași cheie; fiecare are o valoare fără "
-   "corespondent în celălalt. Alege pe rând fiecare tip de îmbinare.</p>"
+   "corespondent în celălalt. Fiecare tip de îmbinare se selectează pe rând.</p>"
    + ix("imbinare", "Pe două tabele reale", {
        "id": "c5-imbinare-feluri", "intai": {"q": "În stânga: MD, AT, DE, HU. În dreapta: AT, DE, HU, IT. Câte rânduri dă un inner join?", "variante": ["4", "3", "5", "8"], "corect": 1, "dupa": "Inner join păstrează doar cheile prezente în ambele tabele: AT, DE, HU. Moldova și Italia sunt eliminate fără niciun mesaj de eroare."}, "cheie": "cod",
        "stanga": STANGA, "dreapta": DREAPTA, "numeRez": "rezultat",
-       "sarcina": "Încearcă toate cele cinci variante. Urmărește câte rânduri "
-                  "rezultă și unde apar celule goale.",
+       "sarcina": "Câte rânduri rezultă din fiecare dintre cele cinci variante "
+                  "și unde apar celule goale?",
        "explicatii": EXPLIC})
    + nota("De ce contează",
           "Cazul Moldovei nu este un artificiu didactic: pe datele cursului, "
@@ -342,12 +342,12 @@ sl("s4", "Unirea tabelelor", "Rezultatul fiecărui tip",
    "tabele mici, numărând rândurile rezultate.</p>"
    "<p>Tabelele de mai jos au trei chei comune (AT, DE, HU), una doar în "
    "stânga (MD: Moldova nu raportează migrația la Eurostat) și una doar în "
-   "dreapta (IT, pentru că în stânga am inclus doar patru parteneri ai "
+   "dreapta (IT, pentru că tabelul din stânga include doar patru parteneri ai "
    "României).</p>"
    + ix("imbinare", "Pe două tabele reale", {
        "id": "c5-imbinare-feluri", "intai": {"q": "În stânga: MD, AT, DE, HU. În dreapta: AT, DE, HU, IT. Câte rânduri dă un inner join?", "variante": ["4", "3", "5", "8"], "corect": 1, "dupa": "Inner join păstrează doar cheile prezente în ambele tabele: AT, DE, HU. Moldova și Italia sunt eliminate fără niciun mesaj de eroare."}, "cheie": "cod",
        "stanga": STANGA, "dreapta": DREAPTA, "numeRez": "rezultat",
-       "sarcina": "Încearcă toate cele cinci variante.",
+       "sarcina": "Câte rânduri rezultă din fiecare dintre cele cinci variante?",
        "explicatii": EXPLIC})
    + nota("De ce contează",
           "Diferența dintre <code>inner</code> și <code>left</code> poate "
@@ -363,10 +363,10 @@ sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
    "Cele două linii de verificare de la final sunt mai importante decât "
    "îmbinarea în sine.</p>"
    + ix("pas", "Două regiuni, două îmbinări", PAS_MERGE)
-   + ix("cod", "Adaugă populația la tabelul SCI", {
+   + ix("cod", "Adăugarea populației la tabelul SCI", {
        "id": "c5-cod-merge", "indiciu": "Coloana-cheie se indică prin parametrul on. Pentru a păstra toate rândurile din tabelul din stânga, tipul este \"left\". Valorile lipsă se identifică cu isna.",
        "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
-       "sarcina": "Păstrează toate țările din tabelul cu SCI.",
+       "sarcina": "Îmbinarea trebuie să păstreze toate țările din tabelul cu SCI.",
        "cod": "import pandas as pd\n\n"
               "sci = pd.read_csv(\"date/curat/sci.csv\")\n"
               "rom = pd.read_csv(\"date/curat/romani.csv\")\n\n"
@@ -383,16 +383,16 @@ sl("s5", "Unirea tabelelor", "Îmbinarea, în cod",
                      "<code>len(sci)</code>, tabelul din dreapta are chei duplicate."}))
 
 sl("s5b", "Unirea tabelelor", "Adăugarea populației",
-   "<h2>Adaugă populația la tabelul SCI</h2>"
-   + ix("cod", "Adaugă populația la tabelul SCI", {
+   "<h2>Adăugarea populației la tabelul SCI</h2>"
+   + ix("cod", "Adăugarea populației la tabelul SCI", {
        "id": "c5-cod-merge", "indiciu": "Coloana-cheie se indică prin parametrul on. Pentru a păstra toate rândurile din tabelul din stânga, tipul este \"left\". Valorile lipsă se identifică cu isna.",
        "iesire": "178 -> 178\n142", "fisier": "agregare/uneste.py",
-       "sarcina": "Păstrează toate țările din tabelul cu SCI, inclusiv cele "
+       "sarcina": "Îmbinarea trebuie să păstreze toate țările din tabelul cu SCI, inclusiv cele "
                   "fără date de migrație.",
        "cod": "import pandas as pd\n\n"
               "sci = pd.read_csv(\"date/curat/sci.csv\")\n"
               "rom = pd.read_csv(\"date/curat/romani.csv\")\n\n"
-              "# pastram tot ce e in sci, adaugam ce gasim in rom\n"
+              "# tot ce este in sci ramane; din rom se adauga ce se potriveste\n"
               "d = pd.merge(sci, rom, {{1}}=\"cod\", how={{2}})\n\n"
               "# verificare: numarul de randuri nu trebuie sa creasca\n"
               "print(len(sci), \"->\", len(d))\n\n"
@@ -417,12 +417,12 @@ sl("s5b", "Unirea tabelelor", "Adăugarea populației",
 sl("s6", "Unirea tabelelor", "Rânduri multiplicate",
    "<h2>O eroare fără mesaj de eroare</h2>"
    "<p>Același tabel <code>sci</code>, dar în dreapta populația este dată pe ani. "
-   "Patru rânduri în stânga, patru în dreapta. Alege <code>left</code>.</p>"
+   "Patru rânduri în stânga, patru în dreapta. Se selectează <code>left</code>.</p>"
    + ix("imbinare", "Cheie duplicată în dreapta", {
        "id": "c5-imbinare-explozie", "intai": {"q": "În stânga sunt 4 țări. În dreapta, Moldova apare de trei ori (trei ani). Câte rânduri dă un left join?", "variante": ["4", "6", "12"], "corect": 1, "dupa": "Rândul Moldovei din stânga se potrivește cu toate cele trei rânduri ale ei din dreapta: un rând devine trei. 4 − 1 + 3 = 6."}, "poarta": False, "cheie": "cod",
        "stanga": STANGA, "dreapta": DUBLE, "numeRez": "rezultat",
        "feluri": ["inner", "left"],
-       "sarcina": "Numără rândurile rezultate. Tabelul din stânga avea patru.",
+       "sarcina": "Câte rânduri rezultă? Tabelul din stânga avea patru.",
        "explicatii": {
            "inner": "<b>Patru rânduri, din două chei.</b> Se potrivesc doar "
                     "MD și DE, dar MD apare de trei ori, fiindcă în dreapta "
@@ -446,7 +446,7 @@ sl("s6", "Unirea tabelelor", "Rânduri multiplicate",
        "id": "c5-imbinare-explozie", "intai": {"q": "În stânga sunt 4 țări. În dreapta, Moldova apare de trei ori (trei ani). Câte rânduri dă un left join?", "variante": ["4", "6", "12"], "corect": 1, "dupa": "Rândul Moldovei din stânga se potrivește cu toate cele trei rânduri ale ei din dreapta: un rând devine trei. 4 − 1 + 3 = 6."}, "poarta": False, "cheie": "cod",
        "stanga": STANGA, "dreapta": DUBLE, "numeRez": "rezultat",
        "feluri": ["inner", "left"],
-       "sarcina": "Numără rândurile rezultate.",
+       "sarcina": "Câte rânduri rezultă?",
        "explicatii": {
            "inner": "<b>Patru rânduri, din două chei.</b> MD apare de trei ori.",
            "left": "<b>Șase rânduri din patru.</b> Tabelul a crescut fără "
@@ -464,8 +464,8 @@ sl("s6b", "Unirea tabelelor", "Prevenirea",
           "refacerea analizei."),
    manual="",
    dupa=verif("c5-v4", 2,
-              "Vrei ca merge-ul să se oprească cu o eroare dacă o cheie apare "
-              "de mai multe ori în dreapta. Ce parametru adaugi?",
+              "Ce parametru face ca merge-ul să se oprească cu o eroare dacă o "
+              "cheie apare de mai multe ori în dreapta?",
               ["how=\"inner\"",
                "on=[\"cod\", \"an\"]",
                "validate=\"one_to_one\"",
@@ -502,7 +502,7 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
    + ix("cod", "Armonizarea cheilor", {
        "id": "c5-cod-chei", "indiciu": "Prima îmbinare se face după o coloană cu același nume în ambele tabele, deci on. Cheile comune sunt intersecția a două mulțimi: operatorul &. Când coloanele-cheie au nume diferite, se folosesc left_on și right_on.",
        "iesire": "171 chei comune din 178", "fisier": "agregare/chei.py",
-       "sarcina": "Adu tabelul Băncii Mondiale la cheia SCI și verifică potrivirea.",
+       "sarcina": "Aducerea tabelului Băncii Mondiale la cheia SCI și verificarea potrivirii.",
        "cod": "harta = pd.read_csv(\"date/referinta/coduri.csv\")  # iso3, iso2\n"
               "bm = bm.merge(harta, {{1}}=\"iso3\", how=\"left\")\n\n"
               "comune = set(sci[\"cod\"]) {{2}} set(bm[\"iso2\"])\n"
@@ -512,7 +512,7 @@ sl("s7", "Unirea tabelelor", "Când cheile nu se potrivesc",
            "1": {"ok": ["on"], "ajutor": "parametrul"},
            "2": {"ok": ["&", "intersection"], "ajutor": "operatorul"},
            "3": {"ok": ["right_on"], "ajutor": "parametrul"}},
-       "laBine": "Numără cheile comune înainte de îmbinare.",
+       "laBine": "Cheile comune se numără înainte de îmbinare.",
        "laRau": "Intersecția a două mulțimi se scrie cu un singur caracter.",
        "explicatie": "Dacă din 178 de chei se potrivesc 12, problema ține de "
                      "coduri, nu de <code>merge</code>."}))
@@ -523,16 +523,16 @@ sl("s7b", "Unirea tabelelor", "Armonizarea cheilor",
        "id": "c5-cod-chei", "indiciu": "Prima îmbinare se face după o coloană cu același nume în ambele tabele, deci on. Cheile comune sunt intersecția a două mulțimi: operatorul &. Când coloanele-cheie au nume diferite, se folosesc left_on și right_on.",
        "iesire": "171 chei comune din 178", "fisier": "agregare/chei.py",
        "sarcina": "Banca Mondială folosește coduri de trei litere, SCI coduri "
-                  "de două litere. Adu tabelul Băncii Mondiale la cheia SCI "
-                  "și verifică potrivirea.",
+                  "de două litere. Tabelul Băncii Mondiale se aduce la cheia SCI, "
+                  "apoi se verifică potrivirea.",
        "cod": "# tabelul de traducere, adus o singura data\n"
               "harta = pd.read_csv(\"date/referinta/coduri.csv\")  # iso3, iso2\n\n"
-              "# aducem codul de 3 litere la cel de 2\n"
+              "# codul de 3 litere, adus la cel de 2\n"
               "bm = bm.merge(harta, {{1}}=\"iso3\", how=\"left\")\n\n"
-              "# INAINTE de a imbina: cate chei chiar se potrivesc?\n"
+              "# INAINTE de imbinare: cate chei se potrivesc\n"
               "comune = set(sci[\"cod\"]) {{2}} set(bm[\"iso2\"])\n"
               "print(len(comune), \"chei comune din\", len(set(sci[\"cod\"])))\n\n"
-              "# abia acum\n"
+              "# abia acum, imbinarea\n"
               "d = sci.merge(bm, left_on=\"cod\", {{3}}=\"iso2\", how=\"left\")",
        "goluri": {
            "1": {"ok": ["on"], "ajutor": "parametrul"},
@@ -556,8 +556,8 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
    "tabelul are deja o formă, adesea alta decât cea necesară.</p>"
    + ix("sortare", "Ce unitate cere fiecare întrebare", {
        "id": "c5-sort-unitate", "poarta": False,
-       "sarcina": "Asociază fiecare întrebare de cercetare cu unitatea de "
-                  "analiză corespunzătoare.",
+       "sarcina": "Ce unitate de analiză corespunde fiecărei întrebări de "
+                  "cercetare?",
        "elemente": [
            {"t": "În ce țări trăiesc cei mai mulți români?", "cos": 0},
            {"t": "Care județe au cele mai multe legături în afara țării?", "cos": 1},
@@ -577,7 +577,7 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
                      "<code>decizii.md</code>, ocupă o propoziție; nescrisă, "
                      "devine o sursă frecventă de confuzie în proiect."})
    + nota("Pentru proiect",
-          "Formulați într-o propoziție: „un rând în tabelul nostru final "
+          "Unitatea se formulează într-o propoziție: „un rând în tabelul final "
           "înseamnă ___”. Dacă membrii echipei dau răspunsuri diferite, aceasta "
           "este prima problemă de rezolvat, înaintea codului."),
    manual=
@@ -595,7 +595,7 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
    "diferite.</p>"
    + ix("sortare", "Ce unitate cere fiecare întrebare", {
        "id": "c5-sort-unitate", "poarta": False,
-       "sarcina": "Asociază fiecare întrebare cu unitatea de analiză.",
+       "sarcina": "Ce unitate de analiză corespunde fiecărei întrebări?",
        "elemente": [
            {"t": "În ce țări trăiesc cei mai mulți români?", "cos": 0},
            {"t": "Care județe au cele mai multe legături în afara țării?", "cos": 1},
@@ -607,7 +607,7 @@ sl("s8", "Unirea tabelelor", "Unitatea de analiză",
            {"t": "o pereche de țări", "d": "un rând = o legătură între țări"},
            {"t": "o pereche de regiuni", "d": "un rând = o legătură între regiuni"}],
        "laBine": "Datele SCI sunt diadice: unitatea naturală este perechea.",
-       "explicatie": "Unitatea de analiză decide ce chei folosești la "
+       "explicatie": "Unitatea de analiză decide ce chei se folosesc la "
                      "îmbinare și ce înseamnă o medie."}))
 
 
@@ -675,7 +675,7 @@ sl("s9c", "Unirea tabelelor", "Schimbarea unității",
               "          medie=(\"sci\", {{2}}),\n"
               "          parteneri=(\"tara_tinta\", \"nunique\"))\n"
               "     .{{3}}())\n\n"
-              "# acum un rand pe tara\n"
+              "# acum, un rand pe tara\n"
               "print(t.shape)",
        "goluri": {
            "1": {"ok": ["groupby"], "ajutor": "metoda"},
@@ -732,7 +732,7 @@ sl("s11", "Baze de date", "Ce este Neon",
        "titlu": "Selectează o componentă",
        "intro": "Patru componente prin care trece un <code>select</code>.",
        "statii": [
-           {"n": "Scriptul tău", "et": "pandas", "ic": "🐍", "c": "ceas",
+           {"n": "Scriptul Python", "et": "pandas", "ic": "🐍", "c": "ceas",
             "d": "<code>pd.read_sql(\"select ...\", con)</code>. Aici nu are "
                  "loc nicio prelucrare: interogarea este un șir de caractere "
                  "trimis mai departe."},
@@ -779,7 +779,7 @@ sl("s11", "Baze de date", "Ce este Neon",
        "titlu": "Selectează o componentă",
        "intro": "Patru componente prin care trece un <code>select</code>.",
        "statii": [
-           {"n": "Scriptul tău", "et": "pandas", "ic": "🐍", "c": "ceas",
+           {"n": "Scriptul Python", "et": "pandas", "ic": "🐍", "c": "ceas",
             "d": "O interogare SQL, trimisă mai departe ca șir de caractere."},
            {"n": "Conexiunea", "et": "psycopg", "ic": "🔌", "c": "salvie",
             "d": "Șirul de conectare se păstrează în <code>.env</code>, niciodată în cod."},
@@ -794,18 +794,18 @@ sl("s12", "Baze de date", "Postgres sau MySQL",
    "<h2>Două baze, două profiluri</h2>"
    + ix("prezice", "Alegerea bazei de date", {
        "id": "c5-prezice-baza", "poarta": False, "fisier": "baza/intrebari.sql",
-       "cod": "-- vreti contururile judetelor in baza\n"
-              "-- si o intrebare: ce regiuni se invecineaza cu Clujul?\n"
+       "cod": "-- contururile judetelor, in baza\n"
+              "-- intrebarea: ce regiuni se invecineaza cu Clujul?\n"
               "select b.nume\n"
               "from regiuni a join regiuni b\n"
               "  on st_touches(a.contur, b.contur)\n"
               "where a.cod = 'RO113';",
-       "intrebare": "Interogarea folosește o funcție spațială. Ce bază de date folosim la curs pentru astfel de interogări?",
+       "intrebare": "Interogarea folosește o funcție spațială. Ce bază de date se folosește la curs pentru astfel de interogări?",
        "variante": ["MySQL: este mai rapid la citiri", "PostgreSQL, cu extensia PostGIS", "Pe orice bază SQL", "Pe niciuna: se poate face doar în Python"],
        "corect": 1,
        "indiciu": "st_touches este o funcție geografică. Care dintre cele două baze de date are o extensie geografică consacrată?",
        "laBine": "Pentru date eterogene, hărți și analiză: Postgres.",
-       "explicatie": "<code>st_touches</code> este o funcție spațială standard; la curs o folosim din PostGIS, extensia geografică a lui Postgres. MySQL are și el funcții spațiale, dar mai puține. Niciuna dintre baze nu este "
+       "explicatie": "<code>st_touches</code> este o funcție spațială standard; la curs este folosită din PostGIS, extensia geografică a lui Postgres. MySQL are și el funcții spațiale, dar mai puține. Niciuna dintre baze nu este "
                      "„mai bună” în absolut: MySQL este simplu și foarte rapid la citiri, potrivit pentru aplicații web cu trafic mare. "
                      "Postgres are tipuri bogate (JSONB) și extensii (PostGIS, pgvector), potrivite pentru analiză. "
                      "Proiectul cursului se potrivește clar cu Postgres.",
@@ -836,18 +836,18 @@ sl("s12", "Baze de date", "Postgres sau MySQL",
              "simplu, stabil, foarte răspândit în web"]])
    + ix("prezice", "Alegerea bazei de date", {
        "id": "c5-prezice-baza", "poarta": False, "fisier": "baza/intrebari.sql",
-       "cod": "-- vreti contururile judetelor in baza\n"
-              "-- si o intrebare: ce regiuni se invecineaza cu Clujul?\n"
+       "cod": "-- contururile judetelor, in baza\n"
+              "-- intrebarea: ce regiuni se invecineaza cu Clujul?\n"
               "select b.nume\n"
               "from regiuni a join regiuni b\n"
               "  on st_touches(a.contur, b.contur)\n"
               "where a.cod = 'RO113';",
-       "intrebare": "Interogarea folosește o funcție spațială. Ce bază de date folosim la curs pentru astfel de interogări?",
+       "intrebare": "Interogarea folosește o funcție spațială. Ce bază de date se folosește la curs pentru astfel de interogări?",
        "variante": ["MySQL: este mai rapid la citiri", "PostgreSQL, cu extensia PostGIS", "Pe orice bază SQL", "Pe niciuna: se poate face doar în Python"],
        "corect": 1,
        "indiciu": "st_touches este o funcție geografică. Care dintre cele două baze de date are o extensie geografică consacrată?",
        "laBine": "Pentru date eterogene, hărți și analiză: Postgres.",
-       "explicatie": "<code>st_touches</code> este o funcție spațială standard; la curs o folosim din PostGIS, extensia geografică a lui Postgres. MySQL are și el funcții spațiale, dar mai puține. Niciuna dintre baze nu este "
+       "explicatie": "<code>st_touches</code> este o funcție spațială standard; la curs este folosită din PostGIS, extensia geografică a lui Postgres. MySQL are și el funcții spațiale, dar mai puține. Niciuna dintre baze nu este "
                      "„mai bună” în absolut: MySQL este simplu și foarte rapid la citiri, potrivit pentru aplicații web cu trafic mare. "
                      "Postgres are tipuri bogate (JSONB) și extensii (PostGIS, pgvector), potrivite pentru analiză. "
                      "Proiectul cursului se potrivește clar cu Postgres.",
@@ -866,14 +866,14 @@ sl("s13", "Baze de date", "Conectarea",
               "import pandas as pd\n"
               "from dotenv import load_dotenv\n"
               "from sqlalchemy import create_engine\n\n"
-              "# citeste .env si pune valorile in mediu\n"
+              "# citirea .env: valorile intra in mediu\n"
               "{{1}}()\n\n"
               "# postgresql+psycopg://user:parola@host/baza?sslmode=require\n"
               "url = os.{{2}}(\"DATABASE_URL\")\n"
               "if not url:\n"
               "    raise SystemExit(\"lipseste DATABASE_URL din .env\")\n\n"
               "motor = {{3}}(url)\n\n"
-              "# proba: daca merge linia asta, conexiunea e buna\n"
+              "# proba: daca aceasta linie ruleaza, conexiunea functioneaza\n"
               "print(pd.read_sql(\"select version()\", motor).iloc[0, 0])",
        "goluri": {
            "1": {"ok": ["load_dotenv"], "ajutor": "funcția"},
@@ -932,14 +932,14 @@ sl("s14", "Baze de date", "Scriere și citire",
    + ix("cod", "Încărcarea tabelului în Postgres", {
        "id": "c5-cod-tosql", "indiciu": "Dacă tabelul există deja, este înlocuit: \"replace\". Citirea din bază se face cu read_sql. Constrângerea care impune unicitatea cheii este primary key.",
        "iesire": "178 scrise, 178 gasite", "fisier": "baza/incarca.py",
-       "sarcina": "Scrie tabelul în bază, apoi citește-l înapoi pentru verificare.",
+       "sarcina": "Scrierea tabelului în bază, apoi citirea lui înapoi pentru verificare.",
        "cod": "d = pd.read_csv(\"date/curat/tabel_final.csv\")\n\n"
-              "# scrie tabelul; daca exista deja, il inlocuieste\n"
+              "# scrierea tabelului; daca exista deja, este inlocuit\n"
               "d.to_sql(\"sci_tari\", motor, if_exists={{1}}, index=False)\n\n"
-              "# citeste inapoi si compara\n"
+              "# citirea inapoi, pentru comparare\n"
               "verif = pd.{{2}}(\"select count(*) as n from sci_tari\", motor)\n"
               "print(len(d), \"scrise,\", verif[\"n\"][0], \"gasite\")\n\n"
-              "# o cheie primara, ca baza sa refuze duplicatele\n"
+              "# o cheie primara: baza refuza duplicatele\n"
               "with motor.begin() as c:\n"
               "    c.exec_driver_sql(\n"
               "        \"alter table sci_tari add {{3}} (cod)\")",
@@ -966,7 +966,7 @@ sl("s14", "Baze de date", "Scriere și citire",
    + ix("cod", "Încărcarea tabelului în Postgres", {
        "id": "c5-cod-tosql", "indiciu": "Dacă tabelul există deja, este înlocuit: \"replace\". Citirea din bază se face cu read_sql. Constrângerea care impune unicitatea cheii este primary key.",
        "iesire": "178 scrise, 178 gasite", "fisier": "baza/incarca.py",
-       "sarcina": "Scrie tabelul în bază, apoi citește-l înapoi pentru verificare.",
+       "sarcina": "Scrierea tabelului în bază, apoi citirea lui înapoi pentru verificare.",
        "cod": "d = pd.read_csv(\"date/curat/tabel_final.csv\")\n\n"
               "d.to_sql(\"sci_tari\", motor, if_exists={{1}}, index=False)\n\n"
               "verif = pd.{{2}}(\"select count(*) as n from sci_tari\", motor)\n"
@@ -980,7 +980,7 @@ sl("s14", "Baze de date", "Scriere și citire",
            "3": {"ok": ["primary key", "PRIMARY KEY"], "ajutor": "constrângerea"}},
        "laBine": "Cheia primară oferă o garanție pe care un CSV nu o are.",
        "laRau": "Primul gol se scrie între ghilimele.",
-       "explicatie": "<code>\"replace\"</code> cât timp construiești, "
+       "explicatie": "<code>\"replace\"</code> în faza de construcție, "
                      "<code>\"append\"</code> sau <code>\"fail\"</code> "
                      "într-o bază folosită și de alții."}))
 
@@ -1000,7 +1000,7 @@ sl("s15", "Baze de date", "SQL: noțiunile de bază",
             ["~d.sort_values('sci', ascending=False)", "~order by sci desc"],
             ["~d.head(10)", "~limit 10"]])
    + ix("pas", "Ordinea de execuție", PAS_SQL)
-   + ix("cod", "Scrie interogarea", {
+   + ix("cod", "Scrierea interogării", {
        "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori primele: ordine descrescătoare, desc.",
        "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  69327\n DE  |   776424 |  91228\n ES  |   620463 |  54179", "fisier": "baza/intrebari.sql",
        "sarcina": "Cele zece țări cu cei mai mulți cetățeni români, cu SCI-ul lor.",
@@ -1011,7 +1011,7 @@ sl("s15", "Baze de date", "SQL: noțiunile de bază",
               "order by m.persoane {{3}}\n"
               "limit 10;",
        "goluri": {
-           "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"},
+           "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "legarea tabelelor"},
            "2": {"ok": ["where", "WHERE"], "ajutor": "filtrarea"},
            "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}},
        "laBine": "<code>join ... on</code> este echivalentul lui <code>pd.merge</code>.",
@@ -1021,8 +1021,8 @@ sl("s15", "Baze de date", "SQL: noțiunile de bază",
                      "<code>limit</code>."}))
 
 sl("s15b", "Baze de date", "Scrierea interogării",
-   "<h2>Scrie interogarea</h2>"
-   + ix("cod", "Scrie interogarea", {
+   "<h2>Scrierea interogării</h2>"
+   + ix("cod", "Scrierea interogării", {
        "id": "c5-cod-sql", "indiciu": "Două tabele se leagă cu join. Rândurile se filtrează cu where. Cele mai mari valori primele: ordine descrescătoare, desc.",
        "iesire": " geo | persoane |   sci\n-----+----------+--------\n IT  |  1073196 |  69327\n DE  |   776424 |  91228\n ES  |   620463 |  54179", "fisier": "baza/intrebari.sql",
        "sarcina": "Cele zece țări cu cei mai mulți cetățeni români și SCI-ul "
@@ -1038,7 +1038,7 @@ sl("s15b", "Baze de date", "Scrierea interogării",
               "order by m.persoane {{3}}\n"
               "limit 10;",
        "goluri": {
-           "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "cum legi tabelele"},
+           "1": {"ok": ["join", "inner join", "JOIN"], "ajutor": "legarea tabelelor"},
            "2": {"ok": ["where", "WHERE"], "ajutor": "filtrarea"},
            "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}},
        "laBine": "<code>join ... on</code> este echivalentul lui "
@@ -1063,17 +1063,17 @@ sl("s16", "Baze de date", "Ramurile bazei",
    "<h2>Ramuri pentru date</h2>"
    "<p>Aceeași idee ca în Git, aplicată bazei de date în locul codului.</p>"
    + tabel(["Situație", "Fără ramură", "Cu ramură"],
-           [["Vrei să încerci o transformare mare",
-             "faci manual o copie a bazei", "o ramură, în câteva secunde"],
-            ["Vrei să testezi scriptul de încărcare",
-             "scrii peste datele validate", "scrii în ramură, apoi compari"],
+           [["Testarea unei transformări mari",
+             "copie manuală a bazei", "o ramură, în câteva secunde"],
+            ["Testarea scriptului de încărcare",
+             "scriere peste datele validate", "scriere în ramură, apoi comparare"],
             ["Doi colegi lucrează în paralel",
              "modifică aceleași tabele", "fiecare pe ramura proprie"],
-            ["Ai introdus o eroare în date",
-             "restaurezi din backup, dacă există", "ștergi ramura"]])
+            ["O eroare introdusă în date",
+             "restaurare din backup, dacă există", "ștergerea ramurii"]])
    + nota("Pentru proiect",
-          "Nu este obligatoriu, dar costă puțin: creați o ramură înainte de "
-          "încărcarea principală și ștergeți-o după verificare. Este cea mai "
+          "Pasul nu este obligatoriu, dar are un cost mic: o ramură se creează "
+          "înainte de încărcarea principală și se șterge după verificare. Este cea mai "
           "simplă protecție împotriva pierderii datelor."))
 
 
@@ -1133,98 +1133,102 @@ sl("s17", "Baze de date", "Bază sau pandas",
 #  19-21. Proiectul
 # ===========================================================================
 
-sl("s19", "Proiectul tău", "Tabelul final",
+sl("s19", "Proiectul echipei", "Tabelul final",
    "<h2>Un tabel, o unitate, o bază</h2>"
    + ix("etape", "Pașii până la cursul următor", {
-       "titlu": "Patru pași", "intro": "Selectează fiecare pas pentru detalii.",
+       "titlu": "Patru pași", "intro": "Detaliile apar la selectarea fiecărui pas.",
        "etape": [
-           {"nume": "Scrieți unitatea", "unde": "decizii.md",
-            "text": "O propoziție: „un rând în tabelul nostru final înseamnă "
+           {"nume": "Formularea unității", "unde": "decizii.md",
+            "text": "O propoziție: „un rând în tabelul final înseamnă "
                     "___”. Toată echipa trebuie să dea același răspuns."},
-           {"nume": "Îmbinați", "unde": "agregare/uneste.py",
+           {"nume": "Îmbinarea", "unde": "agregare/uneste.py",
             "text": "Un script care pornește de la fișierele curate și produce "
                     "un singur tabel, cu <code>how</code> scris explicit, cu "
                     "<code>validate</code> și cu numărul de rânduri tipărit "
                     "înainte și după îmbinare."},
-           {"nume": "Încărcați", "unde": "baza/incarca.py",
+           {"nume": "Încărcarea", "unde": "baza/incarca.py",
             "text": "Tabelul în Neon, cu o cheie primară. Șirul de conectare "
                     "în <code>.env</code>, iar <code>.env</code> în "
                     "<code>.gitignore</code>."},
-           {"nume": "Puneți o întrebare", "unde": "baza/intrebari.sql",
+           {"nume": "Interogarea", "unde": "baza/intrebari.sql",
             "text": "Un <code>select</code> scris de echipă, care răspunde la "
                     "un aspect al întrebării de cercetare. Nu trebuie să fie "
-                    "complex, dar trebuie să fie propriu."}]})
-   + ix("dovada", "Dovada", {
-       "id": "c5-dovada-baza",
-       "sarcina": "Rulează comenzile și lipește rezultatul afișat.",
-       "pasi": [
-           {"t": "Îmbinarea nu a multiplicat rândurile",
-            "cmd": "python agregare/uneste.py",
-            "gol": "lipește linia cu înainte -> după",
-            "cauta": r"\d+[\s\S]*\d+",
-            "daca_nu": "Sunt necesare două numere: rândurile dinainte și cele "
-                       "de după îmbinare. Dacă scriptul nu le tipărește, adaugă "
-                       "linia de verificare de la slide-ul 5."},
-           {"t": "Tabelul este în bază",
-            "cmd": "python -c \"import baza.conecteaza as b, pandas as pd; "
-                   "print(pd.read_sql('select count(*) from sci_tari', b.motor))\"",
-            "gol": "lipește numărul",
-            "cauta": r"\d+",
-            "daca_nu": "Este necesar numărul de rânduri din tabel. Dacă apare o "
-                       "eroare de conectare, verifică DATABASE_URL din .env."},
-           {"t": "Secretele nu sunt în depozit",
-            "cmd": "git check-ignore -v .env",
-            "gol": "lipește linia",
-            "cauta": r"gitignore",
-            "daca_nu": "Dacă nu se afișează nimic, <code>.env</code> nu este "
-                       "ignorat. Adaugă-l în <code>.gitignore</code> înainte de "
-                       "următorul commit."}],
-       "explicatie": "Ultimul pas este cel mai important dintre cele trei. "
-                     "Celelalte două se pot corecta oricând; o parolă ajunsă "
-                     "în istoricul depozitului, nu."}),
-   manual=
-   "<h2>Un tabel, o unitate, o bază</h2>"
+                    "complex, dar trebuie să fie propriu."}]}),
+   manual="<h2>Un tabel, o unitate, o bază</h2>"
    "<p>Etapa de proiect a acestei lecții are patru părți, iar a patra arată "
    "că baza de date a fost folosită efectiv, nu doar creată.</p>"
    + ix("etape", "Pașii", {
-       "titlu": "Patru pași", "intro": "Selectează fiecare pas pentru detalii.",
+       "titlu": "Patru pași", "intro": "Detaliile apar la selectarea fiecărui pas.",
        "etape": [
-           {"nume": "Scrieți unitatea", "unde": "decizii.md",
-            "text": "„Un rând în tabelul nostru final înseamnă ___”."},
-           {"nume": "Îmbinați", "unde": "agregare/uneste.py",
+           {"nume": "Formularea unității", "unde": "decizii.md",
+            "text": "„Un rând în tabelul final înseamnă ___”."},
+           {"nume": "Îmbinarea", "unde": "agregare/uneste.py",
             "text": "Un script de la fișierele curate la un singur tabel."},
-           {"nume": "Încărcați", "unde": "baza/incarca.py",
+           {"nume": "Încărcarea", "unde": "baza/incarca.py",
             "text": "Tabelul în Neon, cu cheie primară, cu secretele în .env."},
-           {"nume": "Puneți o întrebare", "unde": "baza/intrebari.sql",
+           {"nume": "Interogarea", "unde": "baza/intrebari.sql",
             "text": "Un select propriu, legat de întrebarea de cercetare."}]})
    + ix("dovada", "Dovada", {
        "id": "c5-dovada-baza",
-       "sarcina": "Rulează comenzile și lipește rezultatul afișat.",
+       "sarcina": "Comenzile se rulează, iar rezultatul afișat se lipește în câmpul corespunzător.",
        "pasi": [
            {"t": "Îmbinarea nu a multiplicat rândurile",
             "cmd": "python agregare/uneste.py",
-            "gol": "lipește linia cu înainte -> după",
+            "gol": "linia cu înainte -> după",
             "cauta": r"\d+[\s\S]*\d+",
             "daca_nu": "Sunt necesare două numere: înainte și după."},
            {"t": "Tabelul este în bază",
             "cmd": "python -c \"import baza.conecteaza as b, pandas as pd; "
                    "print(pd.read_sql('select count(*) from sci_tari', b.motor))\"",
-            "gol": "lipește numărul",
+            "gol": "numărul afișat",
             "cauta": r"\d+",
-            "daca_nu": "Verifică DATABASE_URL din .env."},
+            "daca_nu": "Trebuie verificată variabila DATABASE_URL din .env."},
            {"t": "Secretele nu sunt în depozit",
             "cmd": "git check-ignore -v .env",
-            "gol": "lipește linia",
+            "gol": "linia afișată",
             "cauta": r"gitignore",
             "daca_nu": "Dacă nu se afișează nimic, .env nu este ignorat."}],
        "explicatie": "Ultimul pas este cel mai important dintre cele trei."}))
 
+sl("s19d", "Proiectul echipei", "Dovada tabelului final",
+   "<h2>Dovada tabelului final</h2>"
+   "<p class=\"cheie\">Trei verificări, rulate local, cu rezultatul lipit în câmp.</p>"
+   + ix("dovada", "Dovada", {
+       "id": "c5-dovada-baza",
+       "sarcina": "Comenzile se rulează, iar rezultatul afișat se lipește în câmpul corespunzător.",
+       "pasi": [
+           {"t": "Îmbinarea nu a multiplicat rândurile",
+            "cmd": "python agregare/uneste.py",
+            "gol": "linia cu înainte -> după",
+            "cauta": r"\d+[\s\S]*\d+",
+            "daca_nu": "Sunt necesare două numere: rândurile dinainte și cele "
+                       "de după îmbinare. Dacă scriptul nu le tipărește, îi lipsește "
+                       "linia de verificare de la slide-ul 5."},
+           {"t": "Tabelul este în bază",
+            "cmd": "python -c \"import baza.conecteaza as b, pandas as pd; "
+                   "print(pd.read_sql('select count(*) from sci_tari', b.motor))\"",
+            "gol": "numărul afișat",
+            "cauta": r"\d+",
+            "daca_nu": "Este necesar numărul de rânduri din tabel. Dacă apare o "
+                       "eroare de conectare, trebuie verificată variabila DATABASE_URL din .env."},
+           {"t": "Secretele nu sunt în depozit",
+            "cmd": "git check-ignore -v .env",
+            "gol": "linia afișată",
+            "cauta": r"gitignore",
+            "daca_nu": "Dacă nu se afișează nimic, <code>.env</code> nu este "
+                       "ignorat și trebuie adăugat în <code>.gitignore</code> înainte de "
+                       "următorul commit."}],
+       "explicatie": "Ultimul pas este cel mai important dintre cele trei. "
+                     "Celelalte două se pot corecta oricând; o parolă ajunsă "
+                     "în istoricul depozitului, nu."}),
+   manual="")
 
-sl("s20", "Proiectul tău", "Unitatea proiectului",
+
+sl("s20", "Proiectul echipei", "Unitatea proiectului",
    "<h2>Formularea unității de analiză</h2>"
    + ix("asteptari", "Un rând în tabelul final", {
        "id": "c5-unitate", "tip": "unitate", "minim": 40,
-       "sarcina": "Completează: „Un rând în tabelul nostru final înseamnă "
+       "sarcina": "Propoziția de completat: „Un rând în tabelul final înseamnă "
                   "___, iar cheia care îl identifică este ___.”",
        "exemplu": "Exemplu: un rând înseamnă o pereche de țări, cu SCI, "
                   "migranții în ambele direcții și distanța, iar cheia este "
@@ -1238,27 +1242,22 @@ sl("s20", "Proiectul tău", "Unitatea proiectului",
    "situațiile în care membrii echipei lucrează cu tabele de forme diferite.</p>"
    + ix("asteptari", "Un rând în tabelul final", {
        "id": "c5-unitate", "tip": "unitate", "minim": 40,
-       "sarcina": "Completează: „Un rând în tabelul nostru final înseamnă "
+       "sarcina": "Propoziția de completat: „Un rând în tabelul final înseamnă "
                   "___, iar cheia care îl identifică este ___.”",
        "exemplu": "Exemplu: o pereche de țări, cu cheia (tara_1, tara_2).",
        "multumesc": "Răspunsul va fi citit înainte de cursul următor."}))
 
 
 sl("s21", "Mai departe", "Pentru cursul următor",
-   "<h2>Cursul 6: analiza exploratorie</h2>"
-   "<p>Cu tabelul final construit, lecția următoare îl examinează: statistici "
-   "descriptive, vizualizare exploratorie și ce arată un grafic, dar nu și un "
-   "rezumat numeric.</p>"
-   + tabel(["Ce aduceți", "Unde"],
+   "<h2>La cursul 6: analiza exploratorie</h2>"
+   "<p class=\"cheie\">Tabelul final se examinează: statistici descriptive, distribuții "
+   "și ce arată un grafic, dar nu și un rezumat numeric.</p>"
+   + tabel(["Pregătirea pentru cursul 6", "Unde"],
            [["Tabelul final, îmbinat", "~date/curat/tabel_final.csv"],
             ["Scriptul de îmbinare", "~agregare/uneste.py"],
             ["Tabelul încărcat în Neon", "o captură de ecran cu numărul de rânduri"],
             ["Unitatea de analiză, scrisă", "~decizii.md"],
             ["Un select propriu", "~baza/intrebari.sql"]])
-   + nota("Pentru recapitulare",
-          "Manualul lecției conține pe larg tot conținutul de azi, iar "
-          "exercițiile pot fi reluate oricând. Activitatea din manual este "
-          "vizibilă pentru profesor, dar nu este obligatorie și nu se notează.")
    + surse("Documentația agregării și a bazei", [
        ("pandas: merge, join, concat", "https://pandas.pydata.org/docs/user_guide/merging.html", "cele cinci tipuri de îmbinare și <code>validate</code>"),
        ("pandas: groupby", "https://pandas.pydata.org/docs/user_guide/groupby.html", "grupare, <code>agg</code>, mai multe funcții deodată"),
@@ -1270,7 +1269,7 @@ sl("s21", "Mai departe", "Pentru cursul următor",
    "<p>Cu tabelul final construit, lecția următoare tratează examinarea lui: "
    "statistici descriptive, distribuții și vizualizare exploratorie, adică "
    "graficele făcute pentru analiză, nu pentru raport.</p>"
-   + tabel(["Ce aduceți", "Unde"],
+   + tabel(["Ce se aduce", "Unde"],
            [["Tabelul final, îmbinat", "~date/curat/tabel_final.csv"],
             ["Scriptul de îmbinare", "~agregare/uneste.py"],
             ["Tabelul încărcat în Neon", "o captură de ecran cu numărul de rânduri"],

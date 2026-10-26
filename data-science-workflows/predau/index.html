@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catalog · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=74">
-<link rel="stylesheet" href="../css/sistem.css?v=74">
-<link rel="stylesheet" href="../css/panou.css?v=74">
-<link rel="stylesheet" href="../css/predau.css?v=74">
-<script src="../js/tema.js?v=74"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=77">
+<link rel="stylesheet" href="../css/sistem.css?v=77">
+<link rel="stylesheet" href="../css/panou.css?v=77">
+<link rel="stylesheet" href="../css/predau.css?v=77">
+<script src="../js/tema.js?v=77"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -171,6 +171,7 @@
     <a href="#catalog" data-v="catalog">Catalogul</a>
     <a href="#lectii" data-v="lectii">Lecțiile</a>
     <a href="#ore" data-v="ore">Orele</a>
+    <a href="#echipe" data-v="echipe">Echipele</a>
   </nav>
 
   <section class="vedere" data-v="catalog">
@@ -190,15 +191,19 @@
   <section class="vedere" data-v="ore" hidden>
     <div id="ore-corp"><div class="sch sch--r"></div></div>
   </section>
+
+  <section class="vedere" data-v="echipe" hidden>
+    <div id="echipe-corp"><div class="sch sch--r"></div></div>
+  </section>
 </main>
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=74"></script>
-<script type="module" src="../js/subsol.js?v=74"></script>
+<script type="module" src="../js/antet.js?v=77"></script>
+<script type="module" src="../js/subsol.js?v=77"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=74";
-import * as O from "../js/ora.js?v=74";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=77";
+import * as O from "../js/ora.js?v=77";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -209,7 +214,7 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=74"); }
+try { A = await import("../js/auth.js?v=77"); }
 catch { el("cat").textContent = "Autentificarea nu a putut fi încărcată."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
@@ -323,9 +328,10 @@ function kpi(){
 /* ------------------------------------------------------------------ file --- */
 function arata(){
   const [v, arg] = (location.hash.slice(1) || "catalog").split("=");
-  const vedere = ["catalog","lectii","ore"].includes(v) ? v : "catalog";
+  const vedere = ["catalog","lectii","ore","echipe"].includes(v) ? v : "catalog";
   document.querySelectorAll(".vedere").forEach(s => s.hidden = s.dataset.v !== vedere);
   document.querySelectorAll("#file a").forEach(a => a.classList.toggle("on", a.dataset.v === vedere));
+  if (vedere === "echipe") echipe();
   if (v === "student" && arg) fisa(decodeURIComponent(arg)); else inchideFisa();
 }
 addEventListener("hashchange", arata);
@@ -695,7 +701,21 @@ function data(t){ const x = new Date(t); return `${x.getDate()} ${LUNI[x.getMont
 function dataLunga(t){ const x = new Date(t); return `${ZILE[x.getDay()]}, ${x.getDate()} ${LUNI[x.getMonth()]}, ${ora(t)}`; }
 function ora(t){ const x = new Date(t); return `${String(x.getHours()).padStart(2, "0")}:${String(x.getMinutes()).padStart(2, "0")}`; }
 
-function totul(){ filtreaza(); deseneazaGrupe(); kpi(); catalog(); lectii(); ore(); }
+/* ============================================================== ECHIPELE === */
+/* db/23: alegerea echipelor pe grupă, cererile celor întârziați, mutări. */
+let opresteEchipe = null;
+async function echipe(){
+  const g = el("echipe-corp");
+  if (opresteEchipe){ opresteEchipe(); opresteEchipe = null; }
+  if (grupa === INV || !grupa){ g.innerHTML = `<p class="gol-s">Echipele se formează pe grupe de studenți, nu pentru invitați.</p>`; return; }
+  try {
+    const E = await import("../js/echipe.js?v=77");
+    g.innerHTML = "";
+    opresteEchipe = await E.echipeProfesor(g, { grupa, numeGrupa: GRUPE.find(x => x.id === grupa)?.nume || "" });
+  } catch (e) { g.textContent = "Echipele nu au putut fi încărcate: " + e.message; }
+}
+
+function totul(){ filtreaza(); deseneazaGrupe(); kpi(); catalog(); lectii(); ore(); if (!document.querySelector('.vedere[data-v="echipe"]').hidden) echipe(); }
 totul();
 
 /* venit de la „Raportul orei”, la încheierea unei ore: fila Orele, cu raportul deschis */

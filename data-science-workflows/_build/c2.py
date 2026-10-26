@@ -36,7 +36,7 @@ URL_BM = "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL"
 # ===========================================================================
 
 AGENDA = [
-    ("Ce este un API", "Un intermediar cu un contract; de ce colectăm prin API și ce costă."),
+    ("Ce este un API", "Un intermediar cu un contract; motivele colectării prin API și costurile ei."),
     ("Tipuri de API", "Criteriile de clasificare, trei decenii de istorie, patru stiluri."),
     ("Cum arată o cerere", "Mesajul HTTP: metoda, endpoint-ul, adresa cu parametrii, codul de stare."),
     ("De unde vin datele", "Surse accesibile prin API și sursele proiectului."),
@@ -66,34 +66,34 @@ sl("s1", "Cursul", "Planul lecției",
    "aplicațiilor) face drumul acesta explicit. Datele vin printr-o cerere scrisă, care "
    "conține sursa, setul și filtrele, și care se poate rula din nou, de altcineva, cu "
    "același rezultat sau cu o diferență care se poate explica.</p>"
-   "<p>Capitolul urmează ordinea de la curs. Codul complet e în caietul cursului; aici "
-   "stau conceptele, motivele și capcanele.</p>"
+   "<p>Capitolul urmează ordinea de la curs. Codul complet se află în caietul cursului; "
+   "capitolul de față prezintă conceptele, motivele și capcanele.</p>"
    + ix("agenda", "Planul lecției", AGENDA_IX)
    + nota("Caietul lecției", CAIET_NOTA, True))
 
-sl("s2", "Cursul", "Unde am rămas",
-   "<h2>Unde am rămas</h2>"
-   "<ul>"
-   "<li><strong>Folderul <code>dsw</code></strong>, cu <code>.venv</code> și pachetele din "
-   "<code>requirements.txt</code>, și caietul 01 rulat de sus până jos.</li>"
-   "<li><strong>Echipa de cinci</strong>, formată.</li>"
-   "<li><strong>Contul GitHub</strong>, folosit pentru autentificarea pe site.</li>"
-   "</ul>"
-   "<p>Caietul lecției se descarcă separat, în <code>dsw/curs/</code>. <code>requests</code> e deja "
-   "în mediu, din <code>requirements.txt</code>.</p>",
+sl("s2", "Cursul", "Punctul de plecare",
+   "<h2>Punctul de plecare</h2>"
+   "<p class=\"cheie\">Ce trebuie să existe înainte de prima cerere.</p>"
+   '<ul class="bif">'
+   "<li><b>Folderul <code>dsw</code></b><span>cu mediul <code>.venv</code> și pachetele din "
+   "<code>requirements.txt</code>; caietul 01 rulează de sus până jos.</span></li>"
+   "<li><b>Caietul 02</b><span>descărcat separat, în <code>dsw/curs/</code>, lângă caietul 01.</span></li>"
+   "<li><b>Git</b><span>instalat; la finalul orei se clonează depozitul echipei.</span></li>"
+   "<li><b>Contul GitHub</b><span>cel folosit pe site de la cursul 1.</span></li>"
+   "</ul>",
    manual=
-   "<h2>Unde am rămas</h2>"
+   "<h2>Punctul de plecare</h2>"
    "<p>Lecția pornește de la ce s-a construit la cursul 1: folderul cursului, <code>dsw</code>, "
    "cu mediul virtual <code>.venv</code> și pachetele din <code>requirements.txt</code>, și caietul 01 "
    "rulat de sus până jos. Dacă lipsește ceva, "
    "pașii sunt în <a class=\"leg\" href=\"../../c1-introducere-si-mediu/tutorial/\">manualul "
-   "cursului 1</a>. Echipa de cinci e formată; la finalul orei își clonează depozitul, iar direcția "
-   "proiectului se alege la cursul 3.</p>"
+   "cursului 1</a>. Echipele de cinci se formează în această lecție, pe site; la finalul orei, "
+   "fiecare echipă își clonează depozitul, iar direcția proiectului se alege la cursul 3.</p>"
    "<p>Caietul lecției se descarcă separat, nu odată cu toată arhiva: pe "
    f'<a class="leg" href="{repo_fisier("curs/" + CAIET)}" target="_blank" rel="noopener">pagina lui de pe GitHub</a> '
    "se alege <em>Download raw file</em>, iar fișierul se salvează în <code>dsw/curs/</code>, lângă caietul 01. "
    "Arhiva întreagă, despachetată din nou peste <code>dsw</code>, ar putea suprascrie caietele deja completate.</p>"
-   "<p>Biblioteca de azi, <code>requests</code>, e deja în mediu: e în <code>requirements.txt</code>. "
+   "<p>Biblioteca folosită în această lecție, <code>requests</code>, este deja în mediu, din <code>requirements.txt</code>. "
    "Dacă lipsește, cu mediul activ:</p>"
    "<pre><code>pip install -r requirements.txt</code></pre>")
 
@@ -170,7 +170,7 @@ RESTAURANT = {"coloane": REST_COL, "scenarii": REST_SC}
 V_CONTRACT = verif(
     "c2-v2b", 1,
     "Banca Mondială își mută datele pe alt server și schimbă baza de date, dar păstrează "
-    "adresele și parametrii din documentație. Ce se întâmplă cu scriptul tău de colectare?",
+    "adresele și parametrii din documentație. Ce se întâmplă cu scriptul de colectare?",
     ["Trebuie rescris, pentru că baza de date e alta",
      "Funcționează la fel: contractul nu s-a schimbat",
      "Funcționează doar pe calculatorul pe care a fost scris",
@@ -250,13 +250,35 @@ MOTIVE = (
     "limite de cereri, chei de acces, timpul de citit documentația. Un fișier publicat, datat și "
     "versionat, cum e SCI de pe HDX, rămâne o alegere corectă.</p></div>")
 
+MOTIVE_SLIDE = (
+    '<div class="mtv mtv--scurt">'
+    '<div class="mtv__f"><h4>Știință</h4><dl>'
+    "<div><dt>Proveniența</dt><dd>Cererea documentează sursa, setul și filtrele.</dd></div>"
+    "<div><dt>Reproductibilitatea</dt><dd>Același cod, același tabel.</dd></div>"
+    "<div><dt>Principiile FAIR</dt><dd>Acces printr-un protocol standard.</dd></div>"
+    "</dl></div>"
+    '<div class="mtv__f"><h4>Inginerie</h4><dl>'
+    "<div><dt>Scara</dt><dd>Mii de valori, într-o singură buclă.</dd></div>"
+    "<div><dt>Actualizarea</dt><dd>Aceeași cerere aduce versiunea curentă.</dd></div>"
+    "<div><dt>Filtrarea la sursă</dt><dd>Serverul trimite doar felia cerută.</dd></div>"
+    "</dl></div>"
+    '<div class="mtv__f"><h4>Calitatea datelor</h4><dl>'
+    "<div><dt>Integritatea</dt><dd>Fără copieri și conversii manuale.</dd></div>"
+    "<div><dt>Metadatele</dt><dd>Unitățile și indicatorii de stare vin cu valoarea.</dd></div>"
+    "<div><dt>Accesul legitim</dt><dd>Calea prevăzută de furnizor, cu limite scrise.</dd></div>"
+    "</dl></div></div>"
+    '<div class="mtv__cost"><b>Ce costă</b><p>Dependența de furnizor, limitele de cereri, cheile de acces. '
+    "Un fișier publicat și versionat, ca SCI de pe HDX, rămâne o alegere corectă.</p></div>")
+
 sl("s5", "Ce este un API", "De ce prin API",
-   "<h2>De ce prin API</h2>" + MOTIVE,
+   "<h2>De ce prin API</h2>"
+   "<p class=\"cheie\">Când un fișier se poate descărca dintr-un clic, colectarea prin cod trebuie justificată.</p>"
+   + MOTIVE_SLIDE,
    manual=
-   "<h2>De ce colectăm prin API</h2>"
-   "<p>Întrebarea apare firesc: dacă fișierul se poate descărca dintr-un clic, de ce ar fi "
-   "nevoie de cod pentru a-l obține? Motivele țin de știință, de inginerie și de calitatea "
-   "datelor, iar fiecare are și un cost.</p>"
+   "<h2>Motivele colectării prin API</h2>"
+   "<p>Când un fișier se poate descărca dintr-un clic, obținerea lui prin cod trebuie "
+   "justificată. Motivele țin de știință, de inginerie și de calitatea datelor, iar "
+   "fiecare are și un cost.</p>"
    + MOTIVE
    + "<h3>Știință</h3>"
    "<p>O analiză e credibilă în măsura în care drumul de la sursă la rezultat poate fi "
@@ -380,7 +402,7 @@ sl("s6", "Tipuri de API", "Tipuri de API",
    "<h2>Tipuri de API</h2>"
    "<p>Un API se descrie după mai multe criterii deodată: după stilul cererii, după cine "
    "are acces, după cine pornește schimbul și după domeniul datelor. Criteriile nu se "
-   "exclud, deci aceeași sursă apare în mai multe coloane. La curs folosim o singură "
+   "exclud, deci aceeași sursă apare în mai multe coloane. Cursul folosește o singură "
    "combinație: REST, public, cerere și răspuns, statistici oficiale.</p>"
    + ix("criterii", "Patru criterii", CRITERII)
    + surse("Documentații", [
@@ -479,7 +501,7 @@ sl("s7", "Tipuri de API", "Trei decenii de API-uri",
    "schimbat și el, de la HTTP/1.0 la HTTP/3, fără să schimbe înțelesul unei cereri.</p>"
    + ix("benzi", "Cinci familii, pe aceeași axă", BENZI)
    + "<p>REST e descris în 2000, în teza de doctorat a lui Roy Fielding, ca stil "
-     "arhitectural al webului. Banda statisticilor e cea care ne privește direct: Eurostat "
+     "arhitectural al webului. Banda statisticilor este direct relevantă pentru curs: Eurostat "
      "publică datele prin SDMX și prin JSON-stat, iar Banca Mondială e unul dintre "
      "sponsorii SDMX.</p>"
    + surse("Surse pentru cronologie", [
@@ -495,7 +517,7 @@ sl("s7", "Tipuri de API", "Trei decenii de API-uri",
 STILURI = (
     '<div class="stl-w"><div class="stl">'
     '<span></span>'
-    '<div class="stl__h noi" style="--c:var(--accent)"><b>REST</b><span>folosim</span></div>'
+    '<div class="stl__h noi" style="--c:var(--accent)"><b>REST</b><span>la curs</span></div>'
     '<div class="stl__h" style="--c:color-mix(in srgb,var(--accent) 55%,var(--panza))"><b>GraphQL</b></div>'
     '<div class="stl__h" style="--c:var(--roza)"><b>gRPC</b></div>'
     '<div class="stl__h" style="--c:color-mix(in srgb,var(--roza) 55%,var(--panza))"><b>SOAP</b></div>'
@@ -633,12 +655,12 @@ VERBE = {
 
 SORTARE = {
        "id": "c2-sort-metode2",
-       "sarcina": "Pune fiecare situație în dreptul metodei potrivite.",
-       "elemente": [{"t": "aduci populația județelor", "cos": 0},
-                    {"t": "adaugi o echipă nouă", "cos": 1},
-                    {"t": "înlocuiești toată fișa unui student", "cos": 2},
-                    {"t": "corectezi doar tema unei echipe", "cos": 3},
-                    {"t": "scoți o colectare greșită", "cos": 4}],
+       "sarcina": "Ce metodă corespunde fiecărei situații?",
+       "elemente": [{"t": "aducerea populației județelor", "cos": 0},
+                    {"t": "adăugarea unei echipe noi", "cos": 1},
+                    {"t": "înlocuirea întregii fișe a unui student", "cos": 2},
+                    {"t": "corectarea numai a temei unei echipe", "cos": 3},
+                    {"t": "eliminarea unei colectări greșite", "cos": 4}],
        "cosuri": [{"t": "GET", "d": "citește"}, {"t": "POST", "d": "creează"},
                   {"t": "PUT", "d": "înlocuiește"}, {"t": "PATCH", "d": "modifică"},
                   {"t": "DELETE", "d": "șterge"}],
@@ -664,7 +686,7 @@ sl("s10", "Cum arată o cerere", "Metodele HTTP",
      "efect ca o singură execuție. GET le are pe amândouă, deci o colectare întreruptă se "
      "poate relua fără riscuri. PUT și DELETE sunt idempotente, deși schimbă ceva; POST nu "
      "e: două cereri identice creează două resurse.</p>"
-   + ix("sortare", "Ce metodă folosești", SORTARE)
+   + ix("sortare", "Ce metodă se folosește", SORTARE)
    + surse("Documentație", [
        ("MDN: metodele HTTP", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
         "fiecare metodă, cu proprietățile ei"),
@@ -672,19 +694,27 @@ sl("s10", "Cum arată o cerere", "Metodele HTTP",
 
 sl("s10v", "Cum arată o cerere", "Exercițiu: metodele HTTP",
    "<h2>Exercițiu: metodele HTTP</h2>"
-   + ix("sortare", "Ce metodă folosești", SORTARE),
+   + ix("sortare", "Ce metodă se folosește", SORTARE),
    manual="")
+
+ENDPOINTURI = (
+    '<p class="ep__baza"><span>Adresa de bază</span><code>https://api.worldbank.org/v2</code></p>'
+    + tabel(["Endpoint-ul", "Ce întoarce"], [
+        ["~/country", "lista țărilor: cod, nume, regiune, nivel de venit"],
+        ["~/indicator", "lista indicatorilor: cod și denumire"],
+        ["~/country/RO/indicator/SP.POP.TOTL", "valorile unui indicator pentru o țară: populația României, pe ani"],
+    ])
+    + '<p class="ep__jos">Aceeași adresă de bază, trei resurse diferite. Documentația API-ului enumeră '
+    "toate endpoint-urile; proiectul folosește ultimul tip.</p>")
 
 sl("s11", "Cum arată o cerere", "Endpoint-ul",
    "<h2>Ce este un endpoint</h2>"
-   "<p class=\"cheie\">Adresa la care se cere o anumită resursă. Fiecare endpoint "
-   "întoarce altceva.</p>"
-   "<pre><code>https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL</code></pre>"
-   "<p>Un API are de obicei zeci de adrese; documentația le enumeră.</p>")
+   "<p class=\"cheie\">Adresa la care se cere o anumită resursă. Fiecare endpoint întoarce altceva.</p>"
+   + ENDPOINTURI)
 
 ADRESA = {
     "id": "c2-url",
-    "sarcina": "Alege o placă, apoi rolul ei din legendă. Prima e rezolvată, ca exemplu.",
+    "sarcina": "Ce rol din legendă are fiecare placă? Prima este rezolvată, ca exemplu.",
     "rezolvat": 0,
     "parti": [
         {"t": "https://", "e": "protocol"},
@@ -731,7 +761,7 @@ sl("s12", "Cum arată o cerere", "Componentele adresei",
      "<code>+</code>. Cu <code>params=</code>, requests face codificarea; într-o adresă scrisă "
      "manual, codificarea trebuie făcută explicit.</p>"
    + verif("c2-v7", 2,
-           "Unde pui filtrele unei cereri, de exemplu anul sau formatul?",
+           "Unde se pun filtrele unei cereri, de exemplu anul sau formatul?",
            ["în protocol", "în host", "în parametri, după semnul întrebării",
             "în fragment, după diez"],
            "În parametri. Fragmentul, de după <code>#</code>, nu se trimite la server: "
@@ -866,7 +896,7 @@ sl("s14", "De unde vin datele", "Surse de date",
      "riscuri: pagina se poate schimba fără avertisment, iar condițiile de utilizare pot "
      "interzice extragerea.</p>")
 
-SURSE_TABEL = tabel(["Sursa", "Cum vine", "Ce ne dă"], [
+SURSE_TABEL = tabel(["Sursa", "Cum vine", "Ce oferă"], [
     ["Social Connectedness Index", "fișier descărcat (HDX)", "legăturile dintre locuri; disponibil de la cursul 1"],
     ["Banca Mondială", "~API REST public", "indicatori pe țară și an"],
     ["Eurostat", "~API REST public", "indicatori pe regiuni NUTS"],
@@ -894,10 +924,7 @@ SURSE_DOC = surse("Documentația necesară", [
 sl("s15", "De unde vin datele", "Sursele proiectului",
    "<h2>Sursele proiectului</h2>"
    '<div class="c2doi"><div>' + SURSE_TABEL
-   + "<p>Întâi Banca Mondială, care are un format de răspuns simplu. Apoi Eurostat, cu indicatorii pe "
-     "regiuni și cu migrația.</p>"
-     "<p>Când o cerere eșuează, se consultă întâi documentația: acolo sunt parametrii și "
-     "sensul lor.</p></div>"
+   + '<p class="ep__jos">În caiet: întâi Banca Mondială, cu un răspuns simplu, apoi Eurostat.</p></div>'
    + "<div>" + SURSE_DOC + "</div></div>",
    manual=
    "<h2>Sursele proiectului</h2>"
@@ -1031,7 +1058,7 @@ JUPYTER = {
 sl("s17", "requests", "Exercițiu: inspectarea răspunsului",
    "<h2>Exercițiu: inspectarea răspunsului</h2>"
    + ix("jupyter", "Trei lucruri de aflat din raspuns", JUPYTER,
-        "Prima celulă e rulată. Scrie expresii în consolă și apasă Enter, ca în Jupyter."),
+        "Prima celulă este deja rulată. Expresiile se scriu în consolă și se execută cu Enter, ca în Jupyter."),
    manual=
    "<h2>Exercițiu: inspectarea răspunsului</h2>"
    "<p>Celula de mai jos e cea din caiet, deja rulată. Răspunsul se află în <code>raspuns</code>; "
@@ -1170,7 +1197,7 @@ sl("s19e", "Eurostat", "Eurostat: structura cererii",
    "din răspuns.</p>"
    + EUROSTAT_CERERE
    + "<p>Eurostat oferă mai multe API-uri: Statistics API, care răspunde în JSON-stat și "
-     "pe care îl folosim, și API-urile SDMX 2.1 și SDMX 3.0, pentru schimbul standardizat "
+     "pe care îl folosește cursul, și API-urile SDMX 2.1 și SDMX 3.0, pentru schimbul standardizat "
      "între instituții. Codul unui set și codurile dimensiunilor lui se găsesc în Data "
      "Browser, unde tabelul se poate vedea înainte de a fi cerut din cod.</p>"
    + "<p>Caietul pornește cu un exemplu mai mic: densitatea populației în județele Cluj "
@@ -1282,11 +1309,11 @@ sl("s20v", "Eurostat", "Poziția din cub",
 
 DOVADA = {
     "id": "c2-dovada-colectare",
-    "sarcina": "Rulează în caietul 02, după secțiunea 5, cele două celule de mai jos și lipește ce afișează.",
+    "sarcina": "Cele două celule de mai jos se rulează în caietul 02, după secțiunea 5, iar ce afișează se lipește aici.",
     "pasi": [
         {"t": "Indicatorul a venit pe o singură pagină",
          "cmd": "tabel = cere_bm(\"SP.POP.TOTL\", TARI)",
-         "gol": "lipește linia cu numărul de pagini",
+         "gol": "linia cu numărul de pagini",
          "cauta": r"pagini:\s*1\b",
          "daca_nu": "Se așteaptă „pagini: 1”. Mai multe pagini înseamnă că per_page e prea mic; o eroare "
                     "înseamnă, de obicei, că celulele de deasupra nu au rulat."},
@@ -1298,17 +1325,17 @@ DOVADA = {
                     "nu a rulat sau că acest caiet nu se află în dsw/curs/."}],
     "explicatie": "Cererile au reușit, iar datele sunt salvate în curs/data/c2, lângă celulele care le refac.",
 }
-PASI_COLECTARE = tabel(["Pasul", "Ce faci"], [
-    ["1", "deschizi caietul 02 din <code>dsw/curs/</code>, cu kernelul <code>.venv</code>"],
-    ["2", "rulezi secțiunile 1 la 5: prima cerere, paginarea, cei trei indicatori"],
-    ["3", "verifici că fiecare indicator a venit pe o singură pagină"],
-    ["4", "salvezi tabelul în <code>data/c2/bm.csv</code>"],
+PASI_COLECTARE = tabel(["Pasul", "Ce se face"], [
+    ["1", "se deschide caietul 02 din <code>dsw/curs/</code>, cu kernelul <code>.venv</code>"],
+    ["2", "se rulează secțiunile 1 la 5: prima cerere, paginarea, cei trei indicatori"],
+    ["3", "se verifică faptul că fiecare indicator a venit pe o singură pagină"],
+    ["4", "se salvează tabelul în <code>data/c2/bm.csv</code>"],
 ])
 
-sl("s21", "Proiectul tău", "Prima colectare",
+sl("s21", "Proiectul echipei", "Prima colectare",
    "<h2>Prima colectare, în caiet</h2>"
    '<div class="c2doi"><div>'
-   "<p>Caietul cere, verifică și salvează datele. Rulează-l și lipește rezultatul afișat.</p>"
+   "<p>Caietul cere, verifică și salvează datele. Rezultatul afișat după rulare se lipește alături.</p>"
    + PASI_COLECTARE + "</div><div>"
    + ix("dovada", "Dovada colectării", DOVADA) + "</div></div>",
    manual=
@@ -1350,26 +1377,49 @@ sl("s21", "Proiectul tău", "Prima colectare",
 ARBORE_PROIECT = (
     '<span class="a">dsw/</span>\n'
     '├── <span class="x">.venv/</span>\n'
-    '├── curs/            <span class="c"># al tău, fără Git</span>\n'
+    '├── curs/            <span class="c"># personal, fără Git</span>\n'
     '└── <span class="a">proiect/</span>         <span class="c"># al echipei, cu Git</span>\n'
     '    ├── .git/        <span class="c"># istoricul</span>\n'
     '    └── README.md')
 
+# Organizația GitHub e comună pentru toată grupa; fiecare echipă își face în ea
+# depozitul ei. Pașii, pe rânduri.
 PASI_ECHIPA = (
-    '<ol class="venvp__pasi">'
-    "<li><b>Echipa de cinci primește un depozit</b> al ei, în organizația "
-    f'<a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, '
-    "pornit din același șablon pentru toate echipele.</li>"
-    "<li><b>Accepți invitația</b> de pe GitHub, primită pe e-mail, pentru dreptul de scriere în depozit.</li>"
-    "<li><b>Copiezi adresa depozitului</b>: pe pagina lui, <em>Code → HTTPS</em>.</li>"
-    "<li><b>În terminalul din VS Code</b>, în <code>dsw</code>:<br>"
-    "<code>git clone &lt;adresa&gt; proiect</code>"
-    '<span class="venvp__os">ultimul cuvânt e numele folderului: proiect</span></li>'
-    "</ol>")
+    '<table class="tabel md pe"><tbody>'
+    '<tr><td class="md__n">1</td><td><b>Organizația</b><span>'
+    f'<a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a> este comună '
+    "pentru toată grupa; invitația în ea vine pe e-mail și se acceptă.</span></td></tr>"
+    '<tr><td class="md__n">2</td><td><b>Depozitul echipei</b><span>Un membru îl creează în organizație '
+    "(<em>New repository</em>) și îi adaugă pe ceilalți, cu drept de scriere. Fiecare echipă are depozitul ei.</span></td></tr>"
+    '<tr><td class="md__n">3</td><td><b>Adresa</b><span>Pe pagina depozitului: <em>Code → HTTPS</em>.</span></td></tr>'
+    '<tr><td class="md__n">4</td><td><b>Clonarea</b><span>În terminalul din VS Code, în <code>dsw</code>: '
+    "<code>git clone &lt;adresa&gt; proiect</code>; ultimul cuvânt este numele folderului.</span></td></tr>"
+    "</tbody></table>")
 
-sl("s21e", "Proiectul tău", "Depozitul echipei",
+sl("s21t", "Proiectul echipei", "Echipele",
+   "<h2>Alegerea echipelor</h2>"
+   "<p class=\"cheie\">Echipe de cel mult cinci membri. Alegerea rămâne deschisă până când profesorul o închide.</p>"
+   + ix("echipe", "Echipele grupei", {}),
+   manual=
+   "<h2>Echipele de proiect</h2>"
+   "<p>Proiectul se realizează în echipe de cel mult cinci membri. Echipa se alege pe slide-ul "
+   "de la curs sau din <a class=\"leg\" href=\"../../cont/#echipa\">contul personal</a>, unde rămâne "
+   "vizibilă tot semestrul.</p>"
+   "<ul>"
+   "<li>Cât timp alegerea este deschisă, fiecare student intră singur într-o echipă cu locuri libere "
+   "și se poate muta în alta.</li>"
+   "<li>După închiderea alegerii, un student fără echipă trimite o cerere unei echipe cu locuri "
+   "libere; oricare membru al echipei o acceptă sau o refuză.</li>"
+   "<li>Dacă toate echipele sunt complete, studentul fără echipă deschide o echipă nouă, iar "
+   "următorii pot cere să intre în ea.</li>"
+   "<li>Fiecare student vede numele colegilor doar din echipa lui. Despre celelalte echipe se vede "
+   "numai câte locuri sunt ocupate.</li>"
+   "</ul>"
+   + ix("echipe", "Echipele grupei", {}))
+
+sl("s21e", "Proiectul echipei", "Depozitul echipei",
    "<h2>Depozitul echipei, în dsw/proiect</h2>"
-   "<p class=\"cheie\">O singură comandă, o singură dată. Munca echipei stă în "
+   "<p class=\"cheie\">O organizație comună, câte un depozit pentru fiecare echipă. Munca echipei stă în "
    "<code>proiect/</code>; exercițiile de la curs rămân în <code>curs/</code>.</p>"
    '<div class="c2doi"><div>' + PASI_ECHIPA + "</div><div>"
    '<div class="venvp__fld">' + ARBORE_PROIECT + "</div>"
@@ -1381,10 +1431,10 @@ sl("s21e", "Proiectul tău", "Depozitul echipei",
    "<h2>Depozitul echipei, în dsw/proiect</h2>"
    "<p>Până acum, tot ce s-a lucrat se află în <code>curs/</code>, pe calculatorul personal, fără Git. "
    "Proiectul de semestru funcționează diferit: la el lucrează cinci persoane, iar fiecare trebuie să "
-   "vadă ce au făcut ceilalți. De aceea fiecare echipă are un depozit al ei pe GitHub, în organizația "
+   "vadă ce au făcut ceilalți. Organizația GitHub a cursului, "
    f'<a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, '
-   "pornit din același șablon pentru toate echipele, iar fiecare membru îl clonează pe calculatorul propriu, "
-   "în <code>dsw/proiect</code>.</p>"
+   "este comună pentru toată grupa; în ea, fiecare echipă își creează depozitul propriu, iar fiecare "
+   "membru îl clonează pe calculatorul personal, în <code>dsw/proiect</code>.</p>"
    + PASI_ECHIPA
    + '<div class="venvp__fld" style="margin:14px 0">' + ARBORE_PROIECT + "</div>"
    + "<p><code>git clone</code> copiază depozitul cu tot cu istoricul lui, în folderul <code>.git/</code>, "
@@ -1400,17 +1450,20 @@ sl("s21e", "Proiectul tău", "Depozitul echipei",
 
 
 sl("s22", "Mai departe", "Pentru cursul următor",
-   "<h2>Cursul 3: versionare și colaborare</h2>"
-   "<ul>"
-   "<li>Git în <code>proiect/</code>: istoricul și lucrul în echipă</li>"
-   "<li>pregătirea și explorarea datelor colectate</li>"
-   "<li>cadrul teoretic al proiectului</li>"
-   "<li>tema echipei și împărțirea sarcinilor</li>"
-   "</ul>"
-   + nota("De făcut până atunci",
-          "Caietul 02 rulat, cu <code>bm.csv</code> și <code>migratie.csv</code> în "
-          "<code>curs/data/c2</code>. Depozitul echipei, clonat în <code>dsw/proiect</code>. Fișa "
-          "echipei de la finalul caietului, completată: direcția provizorie și indicatorul încercat.", True))
+   "<h2>La cursul 3: versionare și colaborare</h2>"
+   '<div class="fin3"><div class="fin3__g">'
+   "<section><h4>Ce urmează la cursul 3</h4><ul>"
+   "<li>Git în <code>proiect/</code>: commit-ul, istoricul, lucrul în echipă.</li>"
+   "<li>Pregătirea și explorarea datelor colectate.</li>"
+   "<li>Cadrul teoretic al proiectului și căutarea literaturii.</li>"
+   "<li>Tema echipei și împărțirea sarcinilor.</li></ul></section>"
+   "<section><h4>Pregătirea pentru cursul 3</h4><ul>"
+   "<li>Caietul 02 rulat, cu <code>bm.csv</code> și <code>migratie.csv</code> în <code>curs/data/c2</code>.</li>"
+   "<li>Depozitul echipei, clonat în <code>dsw/proiect</code>.</li>"
+   "<li>Fișa echipei de la finalul caietului, completată: direcția provizorie și indicatorul încercat.</li></ul></section>"
+   "</div>"
+   '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 2</a>'
+   '<a class="leg" href="../../c3-versionare-git/">Cursul 3</a></p></div>')
 
 
 if __name__ == "__main__":

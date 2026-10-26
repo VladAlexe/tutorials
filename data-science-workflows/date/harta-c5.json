@@ -1,6 +1,6 @@
 {
  "capitol": "c5",
- "total": 26,
+ "total": 27,
  "sarcini": 12,
  "slide": [
   {
@@ -85,7 +85,7 @@
      "id": "c5-v4",
      "fel": "verificare",
      "corect": 2,
-     "q": "Vrei ca merge-ul să se oprească cu o eroare dacă o cheie apare de mai multe ori în dreapta. Ce parametru adaugi?",
+     "q": "Ce parametru face ca merge-ul să se oprească cu o eroare dacă o cheie apare de mai multe ori în dreapta?",
      "optiuni": [
       "how=\"inner\"",
       "on=[\"cod\", \"an\"]",
@@ -233,8 +233,15 @@
   {
    "nr": 24,
    "id": "s19",
-   "grup": "Proiectul tău",
+   "grup": "Proiectul echipei",
    "titlu": "Tabelul final",
+   "sarcini": []
+  },
+  {
+   "nr": 25,
+   "id": "s19d",
+   "grup": "Proiectul echipei",
+   "titlu": "Dovada tabelului final",
    "sarcini": [
     {
      "id": "c5-dovada-baza",
@@ -243,9 +250,9 @@
    ]
   },
   {
-   "nr": 25,
+   "nr": 26,
    "id": "s20",
-   "grup": "Proiectul tău",
+   "grup": "Proiectul echipei",
    "titlu": "Unitatea proiectului",
    "sarcini": [
     {
@@ -255,7 +262,7 @@
    ]
   },
   {
-   "nr": 26,
+   "nr": 27,
    "id": "s21",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

@@ -168,13 +168,13 @@ PAS_COADA = {
             "nota": "log10: 100 → 2, 1.000 → 3, 1.000.000 → 6"}}},
          "txt": "<code>np.log10</code> exprimă valorile în ordine de mărime: 34.160 devine 4,53, iar patru milioane devine 6,6. Diferențele foarte mari dintre valori se comprimă."},
         {"l": 6, "out": "count    44253.00\nmean         3.14\nstd          0.71\nmin          0.00\n25%          2.69\n50%          3.09\n75%          3.49\nmax          6.60",
-         "txt": "Pe scara logaritmică, media (3,14) și mediana (3,09) aproape coincid: distribuția este aproximativ simetrică. De aici înainte lucrăm pe scara logaritmică, ca în caiet."},
+         "txt": "Pe scara logaritmică, media (3,14) și mediana (3,09) aproape coincid: distribuția este aproximativ simetrică. De aici înainte, analiza folosește scara logaritmică, ca în caiet."},
     ],
 }
 
 PAS_INTERVALE = {
     "fisier": "05_explorare.ipynb · 3-4. H1 și H2",
-    "intro": "Un singur coeficient descrie puțin din relație. Împărțim distanța în intervale și calculăm mediana SCI în fiecare interval.",
+    "intro": "Un singur coeficient descrie puțin din relație. Distanța se împarte în intervale, iar mediana SCI se calculează pentru fiecare interval.",
     "cod": "print(perechi[\"distanta_km\"].corr(perechi[\"sci\"], method=\"spearman\"))\n\n"
            "praguri = [0, 100, 250, 500, 1000, 2000, 4000, np.inf]\n"
            "perechi[\"interval_km\"] = pd.cut(perechi[\"distanta_km\"], praguri)\n"
@@ -240,12 +240,12 @@ sl("s1", "Cursul", "Planul lecției",
    manual=
    "<h2>Analiza exploratorie</h2>"
    "<p>Analiza exploratorie a datelor (EDA) este etapa în care datele sunt "
-   "examinate înainte de orice testare formală. Are două scopuri: să "
-   "verificăm că datele corespund cu ceea ce presupunem despre ele și să "
-   "identificăm tiparele care merită testate ulterior. Lucrăm pe trei "
-   "direcții: o variabilă, două variabile și variabile categorice.</p>"
+   "examinate înainte de orice testare formală. Are două scopuri: "
+   "verificarea faptului că datele corespund presupunerilor făcute despre "
+   "ele și identificarea tiparelor care merită testate ulterior. Analiza "
+   "urmează trei direcții: o variabilă, două variabile și variabile categorice.</p>"
    f"<p>Toate graficele de mai jos folosesc aceleași {N} perechi de țări, "
-   "cele pentru care avem atât SCI, cât și migrația în ambele direcții. Este "
+   "cele pentru care sunt disponibile atât SCI, cât și migrația în ambele direcții. Este "
    "tabelul construit la cursurile 4 și 5.</p>"
    + ix("agenda", "Planul lecției",
         {"static": True, "titlu": "Planul lecției",
@@ -282,7 +282,7 @@ sl("s2", "Cursul", "Întrebările",
    "</ol>"
    + nota("Ce nu face EDA",
           "EDA nu dovedește nimic: un tipar observat într-un grafic rămâne o "
-          "ipoteză. La cursul 7 o testăm cu un model care ține cont simultan "
+          "ipoteză. La cursul 7, ipoteza se testează cu un model care ține cont simultan "
           "de toate variabilele.")
    + lecturi(["bailey2018", "bailey2020", "blondel2008"], "De unde vin ipotezele"))
 
@@ -333,8 +333,8 @@ sl("s4", "O variabilă", "Media și mediana",
        "indiciu": "Media este suma valorilor împărțită la 5. Mediana este valoarea din mijloc a șirului sortat.",
        "laBine": "O singură valoare extremă ridică media; mediana rămâne neschimbată.",
        "explicatie": "Media este (2 + 3 + 4 + 5 + 100) / 5 = 22,8, iar mediana este 4. Când media este mult peste "
-                     "mediană, distribuția are o coadă spre dreapta, cum este cazul SCI. De aceea raportăm mediana "
-                     "și lucrăm pe scara logaritmică."}),
+                     "mediană, distribuția are o coadă spre dreapta, cum este cazul SCI. De aceea se raportează "
+                     "mediana, iar analiza folosește scara logaritmică."}),
    manual="<h2>Descrierea unei variabile</h2>"
    + ix("prezice", "Media și mediana", {
        "id": "c6-prezice-coada", "fisier": "05_explorare.ipynb · 1. O pereche obișnuită",
@@ -347,14 +347,14 @@ sl("s4", "O variabilă", "Media și mediana",
        "indiciu": "Media este suma valorilor împărțită la 5. Mediana este valoarea din mijloc a șirului sortat.",
        "laBine": "O singură valoare extremă ridică media; mediana rămâne neschimbată.",
        "explicatie": "Media este (2 + 3 + 4 + 5 + 100) / 5 = 22,8, iar mediana este 4. Când media este mult peste "
-                     "mediană, distribuția are o coadă spre dreapta, cum este cazul SCI. De aceea raportăm mediana "
-                     "și lucrăm pe scara logaritmică."})
+                     "mediană, distribuția are o coadă spre dreapta, cum este cazul SCI. De aceea se raportează "
+                     "mediana, iar analiza folosește scara logaritmică."})
    + ix("pas", "Coada lungă, pe datele reale", PAS_COADA)
-   + ix("cod", "Descrie variabila", {
+   + ix("cod", "Descrierea variabilei", {
        "id": "c6-cod-descrie", "indiciu": "Statisticile descriptive ale unei coloane numerice se obțin cu metoda describe. Asimetria (în engleză, „skewness”) se calculează cu metoda skew. Logaritmul din numpy este np.log.",
        "iesire": "count       263.0\nmean      39432.6\n50%       15543.0\n...\n7.57\n0.49", "fisier": "eda/univariat.py",
-       "sarcina": "Calculează statisticile descriptive ale SCI, măsoară "
-                  "asimetria și compar-o cu asimetria logaritmului.",
+       "sarcina": "Statisticile descriptive ale SCI, asimetria variabilei "
+                  "și comparația cu asimetria logaritmului.",
        "cod": "import numpy as np\nimport pandas as pd\n\n"
               "d = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n"
               "# media, mediana, quartilele, minimul, maximul\n"
@@ -371,7 +371,7 @@ sl("s4", "O variabilă", "Media și mediana",
        "laBine": "Asimetria scade de la 7,6 la 0,5: după logaritmare, variabila este aproape simetrică.",
        "laRau": "Primele două sunt metode ale coloanei; a treia este funcția "
                 "numpy pentru logaritm.",
-       "explicatie": "În rezultatul <code>describe()</code>, compară media cu "
+       "explicatie": "În rezultatul <code>describe()</code>, media se compară cu "
                      "mediana. O medie mult peste mediană indică o coadă spre "
                      "dreapta, chiar înainte de calculul asimetriei."}))
 
@@ -392,11 +392,11 @@ sl("s4b", "O variabilă", "Coada lungă, în date",
 
 sl("s4c", "O variabilă", "Descrierea, în cod",
    "<h2>Descrierea unei variabile, în cod</h2>"
-   + ix("cod", "Descrie variabila", {
+   + ix("cod", "Descrierea variabilei", {
        "id": "c6-cod-descrie", "indiciu": "Statisticile descriptive ale unei coloane numerice se obțin cu metoda describe. Asimetria (în engleză, „skewness”) se calculează cu metoda skew. Logaritmul din numpy este np.log.",
        "iesire": "count       263.0\nmean      39432.6\n50%       15543.0\n...\n7.57\n0.49", "fisier": "eda/univariat.py",
-       "sarcina": "Calculează statisticile descriptive ale SCI, măsoară "
-                  "asimetria și compar-o cu asimetria logaritmului.",
+       "sarcina": "Statisticile descriptive ale SCI, asimetria variabilei "
+                  "și comparația cu asimetria logaritmului.",
        "cod": "import numpy as np\nimport pandas as pd\n\n"
               "d = pd.read_csv(\"date/curat/perechi_tari.csv\")\n\n"
               "# media, mediana, quartilele, minimul, maximul\n"
@@ -413,7 +413,7 @@ sl("s4c", "O variabilă", "Descrierea, în cod",
        "laBine": "Asimetria scade de la 7,6 la 0,5: după logaritmare, variabila este aproape simetrică.",
        "laRau": "Primele două sunt metode ale coloanei; a treia este funcția "
                 "numpy pentru logaritm.",
-       "explicatie": "În rezultatul <code>describe()</code>, compară media cu "
+       "explicatie": "În rezultatul <code>describe()</code>, media se compară cu "
                      "mediana. O medie mult peste mediană indică o coadă spre "
                      "dreapta, chiar înainte de calculul asimetriei."}),
    manual="")
@@ -430,8 +430,8 @@ sl("s5", "O variabilă", "Clasamente",
    "țările mari în care au emigrat mulți români (Italia).</p>"
    + ix("bare", "Partenerii României, după SCI", {"cate": 12, "romani": ROMANI, "raport": RAPORT, "intai": {"q": "Italia este țara cu cei mai mulți români stabiliți în străinătate. Pe ce loc se află printre partenerii României, după SCI?", "variante": ["Pe primul", "Pe al treilea", "Pe al șaselea"], "corect": 2, "dupa": "Pe locul al șaselea, după Moldova, Austria, Germania, Ungaria și Irlanda. SCI este normalizat la numărul de utilizatori, astfel că o țară mare, cu o diasporă numeroasă, nu ocupă neapărat un loc fruntaș."}})
    + nota("Exercițiu",
-          "Construiește același clasament după numărul de români care trăiesc "
-          "în fiecare țară și compară cele două liste. Diferența dintre ele "
+          "Construirea aceluiași clasament după numărul de români care trăiesc "
+          "în fiecare țară și compararea celor două liste. Diferența dintre ele "
           "este întrebarea semestrului, formulată la cursul 1."))
 
 
@@ -452,8 +452,8 @@ NOR = {
     "etY": "SCI (scară logaritmică)",
     "cauta": {"v": "dist",
               "t": "perechea situată cel mai sus deasupra dreptei, adică mult mai legată decât ar prezice distanța.",
-              "dupa": "Aproape unul din șapte locuitori ai Luxemburgului este cetățean portughez. Selectează acum "
-                      "„migranți la mie”: punctul se apropie de dreaptă. Migrația explică o bună parte din ceea ce distanța nu explica."},
+              "dupa": "Aproape unul din șapte locuitori ai Luxemburgului este cetățean portughez. La selectarea variabilei "
+                      "„migranți la mie”, punctul se apropie de dreaptă. Migrația explică o bună parte din ceea ce distanța nu explica."},
 }
 
 sl("s6", "Două variabile", "Norul de puncte",
@@ -466,8 +466,8 @@ sl("s6", "Două variabile", "Norul de puncte",
    "migranți la mia de locuitori ai celor două țări. Ambele axe sunt pe scară "
    "logaritmică, din motivele discutate la distribuția cu coadă lungă.</p>"
    + ix("nor", "SCI față de distanță și față de migrație", NOR)
-   + "<p>Treci cu mouse-ul peste punctele care se abat de la nor. Acestea sunt "
-     "cele mai informative: perechi mult mai legate sau mult mai puțin legate "
+   + "<p>Punctele care se abat de la nor, ale căror detalii apar la trecerea "
+     "cursorului, sunt cele mai informative: perechi mult mai legate sau mult mai puțin legate "
      "decât cele cu valori apropiate pe axa orizontală. La cursul 7, aceste "
      "abateri devin reziduuri.</p>")
 
@@ -550,8 +550,8 @@ sl("s8", "Categorii", "Din numere în categorii",
    + ix("pas", "Distanța, împărțită în intervale", PAS_INTERVALE)
    + ix("cod", "Tabelul de contingență", {
        "id": "c6-cod-ct", "indiciu": "Grupele egale ca număr de perechi se obțin cu pd.qcut, tabelul de contingență cu pd.crosstab, iar testul χ² cu chi2_contingency.", "fisier": "eda/categorii.py",
-       "sarcina": "Împarte SCI în trei grupe egale, construiește tabelul de "
-                  "contingență cu granița și testează asocierea.",
+       "sarcina": "Împărțirea SCI în trei grupe egale, tabelul de "
+                  "contingență cu granița și testul de asociere.",
        "cod": "from scipy.stats import chi2_contingency\n\n"
               "# trei grupuri egale ca numar de perechi\n"
               "d[\"treime\"] = pd.{{1}}(d[\"sci\"], 3, labels=[\"slab\", \"mediu\", \"tare\"])\n\n"
@@ -702,73 +702,79 @@ sl("s11b", "Grafice înșelătoare", "Axa și scara",
 #  13-14. Proiectul
 # ===========================================================================
 
-sl("s12", "Proiectul tău", "Explorarea voastră",
+sl("s12", "Proiectul echipei", "Explorarea echipei",
    "<h2>Trei grafice și o propoziție</h2>"
-   + tabel(["Pasul", "Ce faceți"], [
+   + tabel(["Pasul", "Ce se realizează"], [
        ["1", "o distribuție: variabila principală, pe scară liniară și logaritmică"],
-       ["2", "o relație: norul de puncte între SCI și variabila voastră"],
+       ["2", "o relație: norul de puncte între SCI și variabila proiectului"],
        ["3", "o hartă sau un clasament, cu abaterile de la tipar"],
        ["4", "în <code>README.md</code>: primul tipar găsit, într-o propoziție"],
    ])
    + ix("dovada", "Dovada", {
        "id": "c6-dovada-eda",
-       "sarcina": "Rulează scriptul de explorare și lipește rezultatul afișat.",
+       "sarcina": "Rezultatul afișat de scriptul de explorare, copiat din terminal.",
        "pasi": [
-           {"t": "Ai calculat asimetria, pe scară liniară și logaritmică",
+           {"t": "Asimetria este calculată pe scară liniară și logaritmică",
             "cmd": "python eda/univariat.py",
-            "gol": "lipește cele două valori",
+            "gol": "cele două valori",
             "cauta": r"\d[.,]\d+[\s\S]*\d[.,]\d+",
             "daca_nu": "Sunt necesare două numere cu zecimale: asimetria "
                        "înainte și după logaritmare."},
            {"t": "Graficele sunt salvate în depozit",
             "cmd": "git ls-files figuri",
-            "gol": "lipește lista",
+            "gol": "lista fișierelor",
             "cauta": r"\.(png|svg|html)",
             "daca_nu": "Sunt necesare fișiere .png, .svg sau .html în figuri/. "
-                       "Salvează graficele cu plt.savefig și fă un commit."}],
+                       "Graficele se salvează cu plt.savefig, apoi se face un commit."}],
        "explicatie": "Graficele exploratorii nu sunt destinate raportului, ci "
                      "analizei din echipă. Se păstrează totuși în depozit, "
                      "pentru ca parcursul analizei să fie documentat."}),
    manual=
-   "<h2>Explorarea voastră</h2>"
+   "<h2>Explorarea echipei</h2>"
    "<p>Pasul de proiect al lecției: trei grafice și o propoziție. Graficele "
    "servesc analizei din echipă, nu raportului; propoziția formulează prima "
    "ipoteză, care va fi testată la cursul 7.</p>"
-   + tabel(["Pasul", "Ce faceți"], [
+   + tabel(["Pasul", "Ce se realizează"], [
        ["1", "o distribuție: variabila principală, pe scară liniară și logaritmică"],
-       ["2", "o relație: norul de puncte între SCI și variabila voastră"],
+       ["2", "o relație: norul de puncte între SCI și variabila proiectului"],
        ["3", "o hartă sau un clasament, cu abaterile de la tipar"],
        ["4", "în <code>README.md</code>: primul tipar găsit, într-o propoziție"],
    ]))
 
-sl("s13", "Proiectul tău", "Primul tipar",
+sl("s13", "Proiectul echipei", "Primul tipar",
    "<h2>Primul tipar observat</h2>"
-   + ix("asteptari", "Primul vostru tipar", {
+   + ix("asteptari", "Primul tipar al echipei", {
        "id": "c6-tipar", "tip": "tipar", "minim": 50,
-       "sarcina": "Descrie primul tipar identificat de echipă și graficul "
-                  "în care apare.",
+       "sarcina": "Descrierea primului tipar identificat de echipă și a "
+                  "graficului în care apare.",
        "exemplu": "De exemplu: Luxemburg-Portugalia se află mult deasupra "
                   "norului în raport cu distanța, dar în interiorul norului "
                   "în raport cu migrația; legătura pare, așadar, explicată "
                   "de migrație.",
        "multumesc": "Răspunsul va fi citit înainte de cursul următor."}))
 
+SURSE_C6 = surse("Documentația analizei", [
+    ("pandas: cut", "https://pandas.pydata.org/docs/reference/api/pandas.cut.html", "împărțirea unei variabile numerice în intervale"),
+    ("pandas: corr", "https://pandas.pydata.org/docs/reference/api/pandas.Series.corr.html", "Pearson și Spearman, cu <code>method=</code>"),
+    ("networkx: Louvain", "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html", "<code>louvain_communities</code>, <code>weight</code>, <code>resolution</code>, <code>seed</code>"),
+    ("scikit-learn: Adjusted Rand", "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html", "gradul de asemănare dintre două partiții în grupuri"),
+])
+
+FIN_C6 = ('<div class="fin3"><div class="fin3__g">'
+   "<section><h4>Ce urmează la cursul 7</h4><ul>"
+   "<li>Variabile derivate: migranți la mie, distanța pe scară logaritmică, granița comună.</li>"
+   "<li>Un model care include simultan variabilele.</li>"
+   "<li>Reziduurile: perechile mai legate decât prezice modelul.</li></ul></section>"
+   "<section><h4>Pregătirea pentru cursul 7</h4><ul>"
+   "<li>Cele trei grafice ale echipei, în depozit.</li>"
+   "<li>Tiparul echipei, descris în <code>README.md</code>.</li></ul></section>"
+   "</div>"
+   '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 6</a>'
+   '<a class="leg" href="../../c7-variabile-si-model/">Cursul 7</a></p></div>')
+
 sl("s14", "Mai departe", "Pentru cursul următor",
-   "<h2>Cursul 7: variabile derivate și model</h2>"
-   "<ul>"
-   "<li>variabile noi: migranți la mie, distanța pe logaritm, granița</li>"
-   "<li>un model care le include simultan</li>"
-   "<li>reziduurile: perechile mai legate decât prezice modelul</li>"
-   "</ul>"
-   + nota("De făcut până atunci",
-          "Cele trei grafice în depozit și tiparul echipei în "
-          "<code>README.md</code>.", True)
-   + surse("Documentația analizei", [
-       ("pandas: cut", "https://pandas.pydata.org/docs/reference/api/pandas.cut.html", "împărțirea unei variabile numerice în intervale"),
-       ("pandas: corr", "https://pandas.pydata.org/docs/reference/api/pandas.Series.corr.html", "Pearson și Spearman, cu <code>method=</code>"),
-       ("networkx: Louvain", "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html", "<code>louvain_communities</code>, <code>weight</code>, <code>resolution</code>, <code>seed</code>"),
-       ("scikit-learn: Adjusted Rand", "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html", "gradul de asemănare dintre două partiții în grupuri"),
-   ]))
+   "<h2>La cursul 7: variabile derivate și model</h2>" + FIN_C6,
+   manual="<h2>La cursul 7: variabile derivate și model</h2>" + FIN_C6 + SURSE_C6)
 
 
 if __name__ == "__main__":

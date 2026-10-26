@@ -50,7 +50,7 @@ def repo_fisier(cale):
 FEL = {
     # puține feluri, cu nume de manual: eticheta spune ce fel de lucru urmează
     "agenda": "Cuprins", "drum": "Diagramă", "flux": "Diagramă", "restaurant": "Diagramă",
-    "cronologie": "Cronologie", "benzi": "Cronologie", "semestru": "Cronologie",
+    "cronologie": "Cronologie", "benzi": "Cronologie", "semestru": "Diagramă",
     "matrice": "Date reale", "bare": "Date reale", "diverg": "Date reale", "doiNori": "Date reale",
     "harta": "Hartă, date reale",
     "tabel": "Tabel", "anatomie": "Structură", "mesaj": "Structură",
@@ -235,8 +235,8 @@ class Lectie:
   <p class="supratitlu">Cursul {self.nr} · Manual</p>
   <h1>{self.titlu}</h1>
   <p class="deck">Conținutul lecției, explicat pe larg, cu aceleași exerciții.
-  Exercițiile pornesc de fiecare dată de la zero; răspunsurile date la curs și
-  acasă sunt înregistrate în <a class="leg" href="../../cont/">contul tău</a>.</p>
+  Exercițiile pornesc de la zero la fiecare deschidere a paginii; răspunsurile date
+  la curs și acasă se înregistrează în <a class="leg" href="../../cont/">contul personal</a>.</p>
 </header>\n''')
         for i, s in enumerate(self.S, 1):
             # un slide care doar împarte în două ce are deja manualul nu mai apare aici
