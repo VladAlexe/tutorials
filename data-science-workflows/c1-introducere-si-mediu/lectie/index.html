@@ -6,14 +6,14 @@
 <title>Cursul 1 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, tipurile de date, JSON și mediul de lucru.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=80">
-<link rel="stylesheet" href="../../css/sistem.css?v=80">
-<link rel="stylesheet" href="../../css/slide.css?v=80">
-<link rel="stylesheet" href="../../css/interactiv.css?v=80">
-<link rel="stylesheet" href="../../css/grafice.css?v=80">
-<link rel="stylesheet" href="../../css/exercitii.css?v=80">
-<link rel="stylesheet" href="../../css/explorator.css?v=80">
-<script src="../../js/tema.js?v=80"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=81">
+<link rel="stylesheet" href="../../css/sistem.css?v=81">
+<link rel="stylesheet" href="../../css/slide.css?v=81">
+<link rel="stylesheet" href="../../css/interactiv.css?v=81">
+<link rel="stylesheet" href="../../css/grafice.css?v=81">
+<link rel="stylesheet" href="../../css/exercitii.css?v=81">
+<link rel="stylesheet" href="../../css/explorator.css?v=81">
+<script src="../../js/tema.js?v=81"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 1 · Introducere și configurare" data-crom="1"></div>
@@ -209,20 +209,15 @@
 </section>
 
 <section class="sld" id="s15w" data-grup="JSON" data-t="Verificare: un răspuns real">
-<h2>Verificare: același drum, într-un răspuns real</h2><p class="cheie">Răspunsul API-ului Băncii Mondiale pentru populația României, simplificat la câmpurile folosite.</p><div class="wbv"><figure class="wbv__json"><figcaption>raspuns</figcaption><pre><code>[
-  {"page": 1, "pages": 2,
-   "per_page": 2, "total": 3},
+<h2>Verificare: același drum, într-un răspuns real</h2><p class="cheie">Banca Mondială trimite o listă cu două elemente: paginarea, apoi valorile.</p><div class="wbv"><figure class="wbv__json"><figcaption>raspuns, simplificat</figcaption><pre><code>[
+  {"page": 1, "pages": 2, "total": 3},
   [
-    {"country": {"id": "RO", "value": "Romania"},
-     "date": "2024",
-     "value": 19051804},
-    {"country": {"id": "RO", "value": "Romania"},
-     "date": "2023",
-     "value": 19061062}
+    {"date": "2024", "value": 19051804},
+    {"date": "2023", "value": 19061062}
   ]
-]</code></pre></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
+]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte un dicționar pe an</p></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Calea, în cod</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Ce cale, scrisă în cod, duce la populația din 2024 din răspunsul Băncii Mondiale?", "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\ndate = raspuns[{{1}}]        # înregistrările\npopulatie = date[0][{{2}}]   # numărul\nprint(populatie)            # 19051804", "goluri": {"1": {"ok": ["1"], "ajutor": "poziția"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "indiciu": "Datele sunt pe poziția 1 a listei-rădăcină, iar numărul se află la cheia <code>\"value\"</code>.", "iesire": "19051804", "laBine": "Același tip de cale se scrie la cursul 2, la fiecare răspuns de API.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> ocolește obiectul de paginare. <code>[\"value\"]</code> extrage numărul. Dacă valoarea lipsește, rezultatul este <code>None</code>, nu zero."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Ce poziție și ce cheie duc la populația din 2024?", "cod": "date = raspuns[{{1}}]       # valorile\npopulatie = date[0][{{2}}]  # anul 2024\nprint(populatie)", "goluri": {"1": {"ok": ["1"], "ajutor": "poziția"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "indiciu": "Lista-rădăcină are două elemente: paginarea pe poziția 0, valorile pe poziția 1. Numărul se află la cheia <code>\"value\"</code>.", "iesire": "19051804", "laBine": "Același tip de cale se scrie la cursul 2, la fiecare răspuns de API.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> ocolește obiectul de paginare. <code>[\"value\"]</code> extrage numărul. Dacă valoarea lipsește, rezultatul este <code>None</code>, nu zero."}</script></div>
 </div></div></div>
 
 </section>
@@ -244,7 +239,11 @@
 </section>
 
 <section class="sld" id="s17" data-grup="Mediul de lucru" data-t="Mediul virtual">
-<h2>Mediul virtual, în folderul cursului</h2><p class="cheie">Python-ul și pachetele cursului, în <code>dsw/.venv</code>, separate de restul calculatorului.</p><table class="tabel md"><thead><tr><th></th><th>Pasul</th><th>Windows (PowerShell)</th><th>macOS (Terminal)</th></tr></thead><tbody><tr><td class="md__n">1</td><td><b>Folderul cursului</b><span><a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">ZIP-ul cursului</a>, dezarhivat și redenumit <code>dsw</code>, se deschide în VS Code: <em>File → Open Folder</em>.</span></td><td colspan="2"></td></tr><tr><td class="md__n">2</td><td><b>Terminalul</b><span><em>Terminal → New Terminal</em>; terminalul pornește în <code>dsw</code>.</span></td><td colspan="2"></td></tr><tr><td class="md__n">3</td><td><b>Crearea mediului</b><span>Se creează folderul <code>.venv</code>, cu un Python propriu.</span></td><td><code>py -m venv .venv</code></td><td><code>python3 -m venv .venv</code></td></tr><tr><td class="md__n">4</td><td><b>Activarea</b><span>Linia din terminal începe apoi cu <code>(.venv)</code>.</span></td><td><code>.\.venv\Scripts\Activate.ps1</code></td><td><code>source .venv/bin/activate</code></td></tr><tr><td class="md__n">5</td><td><b>Pachetele</b><span>Se instalează pachetele din <code>requirements.txt</code>, în mediu.</span></td><td colspan="2"><code>pip install -r requirements.txt</code><span class="md__la">la fel pe ambele</span></td></tr><tr><td class="md__n">6</td><td><b>Kernelul caietului</b><span>În caiet: <em>Select Kernel → Python Environments → .venv</em>.</span></td><td colspan="2"></td></tr><tr><td class="md__n">7</td><td><b>Verificarea</b><span>Prima celulă afișează <code>sys.executable</code>, o cale care conține <code>.venv</code>.</span></td><td colspan="2"></td></tr></tbody></table><p class="md__nota">O singură dată, la început. Dacă PowerShell refuză activarea: <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, apoi din nou pasul 4.</p>
+<h2>Mediul virtual, în folderul cursului</h2><p class="cheie">Python-ul și pachetele cursului, în <code>dsw/.venv</code>, separate de restul calculatorului.</p><div class="md2"><section><span class="md2__n">1</span><div><h4>În VS Code</h4><p>Folderul <code>dsw</code> (<a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">ZIP-ul cursului</a>, dezarhivat și redenumit) se deschide cu File → Open Folder, apoi terminalul, cu Terminal → New Terminal.</p></div></section><section><span class="md2__n">2</span><div><h4>În terminal, o singură dată</h4><p>Crearea mediului, activarea lui și instalarea pachetelor:</p><div class="md2__os"><figure><figcaption>Windows, PowerShell</figcaption><pre><code>py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt</code></pre></figure><figure><figcaption>macOS, Terminal</figcaption><pre><code>python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt</code></pre></figure></div><p class="md2__mic">După activare, linia din terminal începe cu (.venv).</p></div></section><section><span class="md2__n">3</span><div><h4>În caiet</h4><p>Select Kernel → Python Environments → .venv. Prima celulă afișează <code>sys.executable</code>, o cale care trebuie să conțină .venv.</p></div></section></div><p class="md__nota">Dacă PowerShell refuză activarea: <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, apoi din nou activarea.</p>
 
 </section>
 
@@ -288,11 +287,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=80"></script>
+<script type="module" src="../../js/antet.js?v=81"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=80";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=80";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=80";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=81";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=81";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=81";
 pornesteIx();
 pornesteVerif("c1");
 pornesteSlide({ capitol:"c1", lectie:"c1-introducere-si-mediu" });

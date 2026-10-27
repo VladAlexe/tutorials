@@ -2585,3 +2585,27 @@ ul.bif code{font-size:var(--t2);background:none;padding:0;color:var(--text)}
 .sld .adr__r b,.sld .adr__r span{font-size:var(--t3)}
 .sld .tabel.pe td span{font-size:var(--t3)}
 #s21 .dov,#s21 .ix{max-width:760px}
+/* v81: verificarea pe JSON, fără bare de derulare: textul încape */
+.wbv{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)!important;gap:32px}
+.wbv__json pre{font-size:var(--t2);line-height:1.6;overflow:visible}
+.wbv__leg{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:10px 0 0;line-height:1.7;max-width:none}
+.wbv__leg span{display:inline-block;width:76px;color:var(--text-3)}
+/* barele de derulare din blocurile de cod: discrete, și în modul întunecat */
+pre,.sld pre,.jc__ist,.trm__ecran,[class*="cod"]{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--text-3) 60%,transparent) transparent}
+pre::-webkit-scrollbar,[class*="cod"]::-webkit-scrollbar{height:8px;width:8px;background:transparent}
+pre::-webkit-scrollbar-thumb,[class*="cod"]::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--text-3) 50%,transparent);border-radius:4px}
+pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:transparent}
+/* mediul virtual: trei locuri, în ordine */
+.md2{border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text)}
+.md2 section{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 14px;padding:14px 0;border-bottom:1px solid var(--linie)}
+.md2 section:last-child{border-bottom:0}
+.md2__n{font-family:var(--titlu);font-size:var(--t6);line-height:1;color:var(--accent)}
+.md2 h4{font-family:var(--sans);font-size:var(--t4);font-weight:600;margin:0 0 4px;color:var(--text)}
+.md2 p{font-family:var(--sans);font-size:var(--t3);line-height:1.55;color:var(--text-2);margin:0;max-width:none}
+.md2 p code{font-size:var(--t2);background:none;border:0;padding:0;color:var(--text)}
+.md2__os{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:10px 0 8px}
+.md2__os figure{margin:0}
+.md2__os figcaption{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);margin:0 0 5px}
+.md2__os pre{margin:0;font-size:var(--t2);line-height:1.65;padding:10px 14px;overflow:visible;white-space:pre}
+.md2__mic{font-size:var(--t2)!important;color:var(--text-3)!important}
+@media (max-width:760px){.md2__os{grid-template-columns:1fr}}

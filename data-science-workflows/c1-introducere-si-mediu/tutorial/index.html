@@ -6,14 +6,14 @@
 <title>Cursul 1, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 1: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=80">
-<link rel="stylesheet" href="../../css/sistem.css?v=80">
-<link rel="stylesheet" href="../../css/tutorial.css?v=80">
-<link rel="stylesheet" href="../../css/interactiv.css?v=80">
-<link rel="stylesheet" href="../../css/grafice.css?v=80">
-<link rel="stylesheet" href="../../css/exercitii.css?v=80">
-<link rel="stylesheet" href="../../css/explorator.css?v=80">
-<script src="../../js/tema.js?v=80"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=81">
+<link rel="stylesheet" href="../../css/sistem.css?v=81">
+<link rel="stylesheet" href="../../css/tutorial.css?v=81">
+<link rel="stylesheet" href="../../css/interactiv.css?v=81">
+<link rel="stylesheet" href="../../css/grafice.css?v=81">
+<link rel="stylesheet" href="../../css/exercitii.css?v=81">
+<link rel="stylesheet" href="../../css/explorator.css?v=81">
+<script src="../../js/tema.js?v=81"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 1 · Manual"></div>
@@ -258,9 +258,9 @@ print(log_content[0].strip())     # prima linie, fără \n</code></pre><div clas
 
 <section class="tut__s" id="s15w">
 <span class="tut__nr">27 · JSON</span>
-<h2>Verificare: același drum, în cod</h2><p>Drumul găsit mai sus, în răspunsul Băncii Mondiale, se scrie în cod exact ca la cursul 2: o poziție pentru lista de date, apoi o cheie pentru valoare.</p><div class="ix" data-ix="cod">
+<h2>Verificare: același drum, în cod</h2><p>Drumul găsit mai sus, în răspunsul Băncii Mondiale, se scrie în cod exact ca la cursul 2: o poziție pentru lista de valori, apoi o cheie pentru număr.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Calea, în cod</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Ce cale, scrisă în cod, duce la populația din 2024 din răspunsul Băncii Mondiale?", "cod": "raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\ndate = raspuns[{{1}}]        # înregistrările\npopulatie = date[0][{{2}}]   # numărul\nprint(populatie)            # 19051804", "goluri": {"1": {"ok": ["1"], "ajutor": "poziția"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "indiciu": "Datele sunt pe poziția 1 a listei-rădăcină, iar numărul se află la cheia <code>\"value\"</code>.", "iesire": "19051804", "laBine": "Același tip de cale se scrie la cursul 2, la fiecare răspuns de API.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> ocolește obiectul de paginare. <code>[\"value\"]</code> extrage numărul. Dacă valoarea lipsește, rezultatul este <code>None</code>, nu zero."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-cod-json", "fisier": "populatie.py", "sarcina": "Ce poziție și ce cheie duc la populația din 2024?", "cod": "date = raspuns[{{1}}]       # valorile\npopulatie = date[0][{{2}}]  # anul 2024\nprint(populatie)", "goluri": {"1": {"ok": ["1"], "ajutor": "poziția"}, "2": {"ok": ["\"value\"", "'value'"], "ajutor": "cheia"}}, "indiciu": "Lista-rădăcină are două elemente: paginarea pe poziția 0, valorile pe poziția 1. Numărul se află la cheia <code>\"value\"</code>.", "iesire": "19051804", "laBine": "Același tip de cale se scrie la cursul 2, la fiecare răspuns de API.", "laRau": "Numerotarea începe de la zero. Cheia se scrie între ghilimele.", "explicatie": "<code>raspuns[1]</code> ocolește obiectul de paginare. <code>[\"value\"]</code> extrage numărul. Dacă valoarea lipsește, rezultatul este <code>None</code>, nu zero."}</script></div>
 </div>
 
 </section>
@@ -282,7 +282,11 @@ print(log_content[0].strip())     # prima linie, fără \n</code></pre><div clas
 
 <section class="tut__s" id="s17">
 <span class="tut__nr">30 · Mediul de lucru</span>
-<h2>Medii de lucru virtuale în Python</h2><p>Fără un mediu virtual, Python instalează pachetele într-un loc comun pentru tot calculatorul. Dacă două proiecte au nevoie de versiuni diferite ale aceleiași biblioteci, instalarea pentru al doilea o poate înlocui pe cea a primului, fără niciun avertisment. Un mediu virtual este un folder al proiectului, cu propriul interpretor Python și propriile pachete, separate de restul sistemului.</p><p>Două reguli: mediul se află <strong>în folderul cursului</strong>, <code>dsw</code>, și <strong>nu se lucrează în el</strong>. Caietele și datele stau alături, în <code>curs/</code>, nu în interiorul lui <code>.venv</code>.</p><p>Folderul cursului vine dintr-o arhivă, <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">ZIP-ul cursului</a>, descărcată din <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">depozitul cursului</a> de pe GitHub, cu caietul 01, datele lui și <code>requirements.txt</code>, lista pachetelor: <code>pandas</code> pentru tabele, <code>requests</code> pentru cererile de la cursul 2 și <code>ipykernel</code>, ca Python să ruleze în caiet. Arhiva se descarcă o singură dată. De la cursul 2 se descarcă doar caietul zilei, în <code>dsw/curs/</code>: arhiva întreagă, dezarhivată peste <code>dsw</code>, ar putea înlocui caietele deja completate.</p><table class="tabel md"><thead><tr><th></th><th>Pasul</th><th>Windows (PowerShell)</th><th>macOS (Terminal)</th></tr></thead><tbody><tr><td class="md__n">1</td><td><b>Folderul cursului</b><span><a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">ZIP-ul cursului</a>, dezarhivat și redenumit <code>dsw</code>, se deschide în VS Code: <em>File → Open Folder</em>.</span></td><td colspan="2"></td></tr><tr><td class="md__n">2</td><td><b>Terminalul</b><span><em>Terminal → New Terminal</em>; terminalul pornește în <code>dsw</code>.</span></td><td colspan="2"></td></tr><tr><td class="md__n">3</td><td><b>Crearea mediului</b><span>Se creează folderul <code>.venv</code>, cu un Python propriu.</span></td><td><code>py -m venv .venv</code></td><td><code>python3 -m venv .venv</code></td></tr><tr><td class="md__n">4</td><td><b>Activarea</b><span>Linia din terminal începe apoi cu <code>(.venv)</code>.</span></td><td><code>.\.venv\Scripts\Activate.ps1</code></td><td><code>source .venv/bin/activate</code></td></tr><tr><td class="md__n">5</td><td><b>Pachetele</b><span>Se instalează pachetele din <code>requirements.txt</code>, în mediu.</span></td><td colspan="2"><code>pip install -r requirements.txt</code><span class="md__la">la fel pe ambele</span></td></tr><tr><td class="md__n">6</td><td><b>Kernelul caietului</b><span>În caiet: <em>Select Kernel → Python Environments → .venv</em>.</span></td><td colspan="2"></td></tr><tr><td class="md__n">7</td><td><b>Verificarea</b><span>Prima celulă afișează <code>sys.executable</code>, o cale care conține <code>.venv</code>.</span></td><td colspan="2"></td></tr></tbody></table><p class="md__nota">O singură dată, la început. Dacă PowerShell refuză activarea: <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, apoi din nou pasul 4.</p><div class="venvp"><div class="venvp__fld"><span class="a">dsw/</span>                  <span class="c"># folderul de lucru</span>
+<h2>Medii de lucru virtuale în Python</h2><p>Fără un mediu virtual, Python instalează pachetele într-un loc comun pentru tot calculatorul. Dacă două proiecte au nevoie de versiuni diferite ale aceleiași biblioteci, instalarea pentru al doilea o poate înlocui pe cea a primului, fără niciun avertisment. Un mediu virtual este un folder al proiectului, cu propriul interpretor Python și propriile pachete, separate de restul sistemului.</p><p>Două reguli: mediul se află <strong>în folderul cursului</strong>, <code>dsw</code>, și <strong>nu se lucrează în el</strong>. Caietele și datele stau alături, în <code>curs/</code>, nu în interiorul lui <code>.venv</code>.</p><p>Folderul cursului vine dintr-o arhivă, <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">ZIP-ul cursului</a>, descărcată din <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">depozitul cursului</a> de pe GitHub, cu caietul 01, datele lui și <code>requirements.txt</code>, lista pachetelor: <code>pandas</code> pentru tabele, <code>requests</code> pentru cererile de la cursul 2 și <code>ipykernel</code>, ca Python să ruleze în caiet. Arhiva se descarcă o singură dată. De la cursul 2 se descarcă doar caietul zilei, în <code>dsw/curs/</code>: arhiva întreagă, dezarhivată peste <code>dsw</code>, ar putea înlocui caietele deja completate.</p><div class="md2"><section><span class="md2__n">1</span><div><h4>În VS Code</h4><p>Folderul <code>dsw</code> (<a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">ZIP-ul cursului</a>, dezarhivat și redenumit) se deschide cu File → Open Folder, apoi terminalul, cu Terminal → New Terminal.</p></div></section><section><span class="md2__n">2</span><div><h4>În terminal, o singură dată</h4><p>Crearea mediului, activarea lui și instalarea pachetelor:</p><div class="md2__os"><figure><figcaption>Windows, PowerShell</figcaption><pre><code>py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt</code></pre></figure><figure><figcaption>macOS, Terminal</figcaption><pre><code>python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt</code></pre></figure></div><p class="md2__mic">După activare, linia din terminal începe cu (.venv).</p></div></section><section><span class="md2__n">3</span><div><h4>În caiet</h4><p>Select Kernel → Python Environments → .venv. Prima celulă afișează <code>sys.executable</code>, o cale care trebuie să conțină .venv.</p></div></section></div><p class="md__nota">Dacă PowerShell refuză activarea: <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, apoi din nou activarea.</p><div class="venvp"><div class="venvp__fld"><span class="a">dsw/</span>                  <span class="c"># folderul de lucru</span>
 ├── <span class="x">.venv/</span>            <span class="c"># nu se modifică</span>
 ├── README.md
 ├── requirements.txt  <span class="c"># pachetele</span>
@@ -325,11 +329,11 @@ print(sys.executable)   # calea trebuie să conțină .venv</code></pre><h3>Cum 
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=80"></script>
+<script type="module" src="../../js/antet.js?v=81"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=80";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=80";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=80";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=81";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=81";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=81";
 pornesteIx();
 pornesteVerif("c1");
 pornesteTut("c1");

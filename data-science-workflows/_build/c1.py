@@ -2263,37 +2263,33 @@ COD_JSON = {
                   "<code>[\"value\"]</code> extrage numărul. Dacă valoarea lipsește, rezultatul este "
                   "<code>None</code>, nu zero."}
 
-COD_JSON["sarcina"] = "Ce cale, scrisă în cod, duce la populația din 2024 din răspunsul Băncii Mondiale?"
-COD_JSON["cod"] = ("raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n"
-                   "date = raspuns[{{1}}]        # înregistrările\n"
-                   "populatie = date[0][{{2}}]   # numărul\n"
-                   "print(populatie)            # 19051804")
-COD_JSON["indiciu"] = ("Datele sunt pe poziția 1 a listei-rădăcină, iar numărul se află la cheia "
-                       "<code>\"value\"</code>.")
+COD_JSON["sarcina"] = "Ce poziție și ce cheie duc la populația din 2024?"
+COD_JSON["fisier"] = "populatie.py"
+COD_JSON["cod"] = ("date = raspuns[{{1}}]       # valorile\n"
+                   "populatie = date[0][{{2}}]  # anul 2024\n"
+                   "print(populatie)")
+COD_JSON["indiciu"] = ("Lista-rădăcină are două elemente: paginarea pe poziția 0, valorile pe poziția 1. "
+                       "Numărul se află la cheia <code>\"value\"</code>.")
 
 WB_TEXT = """[
-  {"page": 1, "pages": 2,
-   "per_page": 2, "total": 3},
+  {"page": 1, "pages": 2, "total": 3},
   [
-    {"country": {"id": "RO", "value": "Romania"},
-     "date": "2024",
-     "value": 19051804},
-    {"country": {"id": "RO", "value": "Romania"},
-     "date": "2023",
-     "value": 19061062}
+    {"date": "2024", "value": 19051804},
+    {"date": "2023", "value": 19061062}
   ]
 ]"""
 
 sl("s15w", "JSON", "Verificare: un răspuns real",
    "<h2>Verificare: același drum, într-un răspuns real</h2>"
-   "<p class=\"cheie\">Răspunsul API-ului Băncii Mondiale pentru populația României, simplificat la câmpurile folosite.</p>"
-   '<div class="wbv"><figure class="wbv__json"><figcaption>raspuns</figcaption><pre><code>'
-   + WB_TEXT.replace("<", "&lt;") + "</code></pre></figure>"
+   "<p class=\"cheie\">Banca Mondială trimite o listă cu două elemente: paginarea, apoi valorile.</p>"
+   '<div class="wbv"><figure class="wbv__json"><figcaption>raspuns, simplificat</figcaption><pre><code>'
+   + WB_TEXT + "</code></pre>"
+   '<p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte un dicționar pe an</p></figure>'
    + '<div class="wbv__ex">' + ix("cod", "Calea, în cod", COD_JSON) + "</div></div>",
    manual=
    "<h2>Verificare: același drum, în cod</h2>"
    "<p>Drumul găsit mai sus, în răspunsul Băncii Mondiale, se scrie în cod exact ca la cursul 2: "
-   "o poziție pentru lista de date, apoi o cheie pentru valoare.</p>"
+   "o poziție pentru lista de valori, apoi o cheie pentru număr.</p>"
    + ix("cod", "Calea, în cod", COD_JSON))
 
 
@@ -2389,18 +2385,26 @@ PASI_MEDIU = [
 
 
 def mediu_html():
-    r = []
-    for i, (t, d, win, mac) in enumerate(PASI_MEDIU, 1):
-        if win or mac:
-            cmd = (f'<td><code>{win}</code></td><td><code>{mac}</code></td>' if win != mac
-                   else f'<td colspan="2"><code>{win}</code><span class="md__la">la fel pe ambele</span></td>')
-        else:
-            cmd = '<td colspan="2"></td>'
-        r.append(f'<tr><td class="md__n">{i}</td><td><b>{t}</b><span>{d}</span></td>{cmd}</tr>')
-    return ('<table class="tabel md"><thead><tr><th></th><th>Pasul</th><th>Windows (PowerShell)</th>'
-            '<th>macOS (Terminal)</th></tr></thead><tbody>' + "".join(r) + "</tbody></table>"
-            '<p class="md__nota">O singură dată, la început. Dacă PowerShell refuză activarea: '
-            "<code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, apoi din nou pasul 4.</p>")
+    """Trei locuri, în ordinea în care se lucrează: VS Code, terminalul, caietul.
+    Comenzile stau doar în blocurile de cod, una sub alta, pe cele două sisteme."""
+    return (
+        '<div class="md2">'
+        '<section><span class="md2__n">1</span><div><h4>În VS Code</h4>'
+        f'<p>Folderul <code>dsw</code> (<a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a>, dezarhivat și redenumit) '
+        "se deschide cu File → Open Folder, apoi terminalul, cu Terminal → New Terminal.</p></div></section>"
+        '<section><span class="md2__n">2</span><div><h4>În terminal, o singură dată</h4>'
+        "<p>Crearea mediului, activarea lui și instalarea pachetelor:</p>"
+        '<div class="md2__os"><figure><figcaption>Windows, PowerShell</figcaption><pre><code>py -m venv .venv\n'
+        ".\\.venv\\Scripts\\Activate.ps1\npip install -r requirements.txt</code></pre></figure>"
+        "<figure><figcaption>macOS, Terminal</figcaption><pre><code>python3 -m venv .venv\n"
+        "source .venv/bin/activate\npip install -r requirements.txt</code></pre></figure></div>"
+        "<p class=\"md2__mic\">După activare, linia din terminal începe cu (.venv).</p></div></section>"
+        '<section><span class="md2__n">3</span><div><h4>În caiet</h4>'
+        "<p>Select Kernel → Python Environments → .venv. Prima celulă afișează <code>sys.executable</code>, "
+        "o cale care trebuie să conțină .venv.</p></div></section>"
+        "</div>"
+        '<p class="md__nota">Dacă PowerShell refuză activarea: <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned '
+        "-Scope CurrentUser</code>, apoi din nou activarea.</p>")
 
 
 MEDIU = mediu_html()
