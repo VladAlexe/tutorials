@@ -2605,7 +2605,6 @@ sl("s19", "Mai departe", "Pentru cursul următor",
    '<li><a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a>, instalat.</li>'
    "<li>Contul GitHub, același cu cel de pe site.</li></ul></section>"
    "</div>"
-   '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 1</a>'
-   '<a class="leg" href="../../c2-colectarea-prin-api/">Cursul 2</a></p></div>')
+   '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 1</a></p></div>')
 
 L.scrie_tot()
