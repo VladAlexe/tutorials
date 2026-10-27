@@ -12,17 +12,14 @@
    cu inițialele celor care intră, și numele lor dedesubt, mic.
 
    Ce vede fiecare:
-     - studentul fără echipă vede toate echipele, cu numele membrilor;
-     - după ce a intrat, vede numele doar în echipa lui; la celelalte, doar
-       locurile ocupate;
-     - pe proiector, cât timp alegerea e deschisă, apar toate numele; după
-       închidere, doar locurile;
+     - studentul vede toate echipele grupei, cu numele membrilor;
+     - pe proiector apar toate echipele, cu numele;
      - profesorul vede totul în pagina lui.
 
    Pagina se reîmprospătează singură la câteva secunde, cât e vizibilă.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=82";
+import { RADACINA } from "./curs.js?v=83";
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 const PAS = 3500;
@@ -33,7 +30,7 @@ const culoare = nr => `var(--${CULORI[(nr - 1) % CULORI.length]})`;
 const initiale = n => String(n || "?").trim().split(/\s+/).slice(0, 2).map(x => x[0] || "").join("").toUpperCase();
 
 let A = null;
-async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=82`); return A; }
+async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=83`); return A; }
 async function rpc(f, args){
   const { sb } = await auth();
   const r = await sb.rpc(f, args);
@@ -158,7 +155,7 @@ export async function echipeStudent(gazda, { slide = false } = {}){
     let h = "";
 
     if (d.echipa){
-      /* ai echipă: o vezi pe a ta, cu numele; la celelalte, doar locurile */
+      /* ai echipă: a ta sus, celelalte dedesubt, toate cu numele */
       const mea = d.echipa;
       const nou = noi(mea.membri.map(m => m.nume));
       const eu = mea.membri.find(m => m.eu)?.nume;
@@ -202,7 +199,7 @@ export async function echipeStudent(gazda, { slide = false } = {}){
       }
     }
     if (msg) h += `<p class="echp__msg">${esc(msg)}</p>`;
-    if (!slide) h += `<p class="echp__gdpr">Până la alegere vezi toate echipele. După ce intri într-o echipă, numele apar doar pentru echipa ta.</p>`;
+    if (!slide) h += `<p class="echp__gdpr">Echipele și numele membrilor sunt vizibile pentru studenții grupei. Numărul matricol și contul GitHub nu apar.</p>`;
     prima = false;
     if (!pune(gazda, h)) return;
 
@@ -319,12 +316,12 @@ export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
 }
 
 /* =================================================== PROFESORUL, PE SLIDE === */
-/* Pe proiector: cât timp alegerea e deschisă, cartonașele cu numele care
-   apar pe măsură ce intră studenții; după închidere, doar locurile ocupate. */
+/* Pe proiector: cartonașele echipelor, cu numele care apar pe măsură ce
+   intră studenții; plus pornirea, închiderea și redeschiderea alegerii. */
 
 export async function echipeSlideProfesor(gazda){
   gazda.classList.add("echp", "echp--slide");
-  const O = await import(`${RADACINA}/js/ora.js?v=82`);
+  const O = await import(`${RADACINA}/js/ora.js?v=83`);
   const S = await O.deschisa().catch(() => null);
   let grupa = S?.grupa_id || null;
   if (!grupa){
@@ -360,7 +357,7 @@ export async function echipeSlideProfesor(gazda){
     }
     const deschisa = d.stare === "deschisa";
     const E = d.echipe.map(e => ({ id: e.id, nr: e.nr, ocupate: e.membri.length,
-                                   membri: deschisa ? e.membri.map(x => x.nume) : null }));
+                                   membri: e.membri.map(x => x.nume) }));
     const nou = noi(E.flatMap(e => e.membri || []));
     const ocupate = E.reduce((s, e) => s + e.ocupate, 0);
     const h = `<div class="echp__grila${prima ? " intra" : ""}">${E.map(e => cartonas(e, d.limita, { noi: nou })).join("")}</div>

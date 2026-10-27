@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Echipele de proiect · Fluxuri de lucru</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../css/fonturi.css?v=83">
+<link rel="stylesheet" href="../css/sistem.css?v=83">
+<link rel="stylesheet" href="../css/cont.css?v=83">
+<script src="../js/tema.js?v=83"></script>
+<style>
+  /* O pagină doar pentru echipe: aceeași alegere ca pe slide-ul din cursul 2,
+     cu loc pentru lucru, fără restul contului. */
+  .ech-p{max-width:980px}
+  .ech-p__erou{padding:44px 0 18px}
+  .ech-p__erou h1{margin:0 0 10px}
+  .ech-p__erou p{font-family:var(--sans);font-size:var(--t4);color:var(--text-2);margin:0;max-width:62ch}
+  .ech-p__corp{border-top:1.5px solid var(--text);padding-top:20px;margin-top:10px}
+  .ech-p__nota{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);margin:28px 0 0;padding-top:12px;border-top:1px solid var(--linie)}
+</style>
+</head>
+<body>
+
+<div id="antet" data-aici="Echipele"></div>
+
+<main>
+<div class="pagina ech-p">
+  <header class="ech-p__erou">
+    <h1>Echipele de proiect</h1>
+    <p>Echipe de cel mult cinci membri, câte un depozit pentru fiecare echipă, în organizația comună a cursului.</p>
+  </header>
+  <div class="ech-p__corp" id="gazda"><p class="incarca">Se încarcă…</p></div>
+  <p class="ech-p__nota" id="nota"></p>
+</div>
+</main>
+
+<div id="subsol"></div>
+
+<script type="module">
+import { RADACINA } from "../js/curs.js?v=83";
+const gazda = document.getElementById("gazda");
+const nota = document.getElementById("nota");
+try {
+  const [A, E] = await Promise.all([import("../js/auth.js?v=83"), import("../js/echipe.js?v=83")]);
+  const p = await A.profil();
+  if (!p.autentificat){
+    gazda.innerHTML = `<p class="echp__gol">Echipele se văd după autentificare: <a class="leg" href="${RADACINA}/cont/">contul personal</a>.</p>`;
+  } else if (p.profesorReal){
+    await E.echipeSlideProfesor(gazda);
+    nota.innerHTML = `Mutările între echipe și exportul listei se fac din <a class="leg" href="${RADACINA}/predau/#echipe">Predau, la Echipele</a>.`;
+  } else {
+    await E.echipeStudent(gazda);
+  }
+} catch (e) {
+  gazda.innerHTML = `<p class="echp__gol">Echipele nu au putut fi încărcate. Pagina se poate reîncărca.</p>`;
+}
+</script>
+<script type="module" src="../js/antet.js?v=83"></script>
+<script type="module" src="../js/subsol.js?v=83"></script>
+</body>
+</html>

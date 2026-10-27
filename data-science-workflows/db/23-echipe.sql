@@ -16,10 +16,8 @@
 --      iar următorii pot cere să intre în ea.
 --
 -- Ce vede fiecare (GDPR):
---   - un student care NU are încă echipă vede toate echipele, cu numele
---     membrilor, ca să știe unde intră;
---   - după ce a intrat într-o echipă, vede numele doar în echipa lui; despre
---     celelalte vede numai câte locuri sunt ocupate;
+--   - fiecare student al grupei vede toate echipele grupei, cu numele
+--     membrilor (doar numele, fără matricol și fără cont GitHub);
 --   - membrii unei echipe văd numele celui care cere să intre la ei;
 --   - profesorul vede tot: membrii, conturile GitHub, cererile, cine nu are
 --     echipă.
@@ -145,18 +143,18 @@ begin
            where m.echipa_id = e.id), '[]'::jsonb))
         from public.echipe e where e.id = v_echipa),
 
-    -- toate echipele. Cine nu are încă echipă vede și numele membrilor, ca să
-    -- știe unde intră; cine are echipă vede la celelalte doar locurile ocupate.
+    -- toate echipele grupei, cu numele membrilor: echipele sunt publice în
+    -- interiorul grupei, ca fiecare să știe cine lucrează cu cine.
     'echipe', coalesce((
       select jsonb_agg(jsonb_build_object(
                'id', e.id, 'nr', e.nr,
                'ocupate', public.ech_ocupate(e.id),
                'plina', public.ech_ocupate(e.id) >= v_cfg.limita,
                'a_mea', e.id is not distinct from v_echipa,
-               'membri', case when v_echipa is null then coalesce((
+               'membri', coalesce((
                    select jsonb_agg(s.nume order by m.intrat_la)
                      from public.echipe_membri m join public.studenti s on s.matricol = m.matricol
-                    where m.echipa_id = e.id), '[]'::jsonb) end)
+                    where m.echipa_id = e.id), '[]'::jsonb))
              order by e.nr)
         from public.echipe e where e.grupa_id = v_eu.grupa_id), '[]'::jsonb),
 

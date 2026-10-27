@@ -1,7 +1,7 @@
 {
  "capitol": "c2",
  "total": 26,
- "sarcini": 9,
+ "sarcini": 8,
  "slide": [
   {
    "nr": 1,
@@ -22,20 +22,7 @@
    "id": "s3",
    "grup": "Ce este un API",
    "titlu": "Analogia restaurantului",
-   "sarcini": [
-    {
-     "id": "c2-v2b",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Banca Mondială mută datele pe alt server și schimbă baza de date, dar păstrează adresele și parametrii din documentație. Ce se întâmplă cu scriptul de colectare?",
-     "optiuni": [
-      "Trebuie rescris",
-      "Funcționează la fel",
-      "Funcționează doar pe calculatorul autorului",
-      "Primește eroarea 404"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 4,

@@ -37,7 +37,7 @@ export const LECTII = [
     titlu:"Colectarea datelor prin API",
     scurt:"API",
     rezumat:"Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns și cum se aduc primele date reale în proiect.",
-    stare:"gata", sarcini:9,
+    stare:"gata", sarcini:8,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/02_colectarea_datelor_prin_api.ipynb" },
 
   { nr:3, cheie:"c3-versionare-git",

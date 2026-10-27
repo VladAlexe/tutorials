@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 6. Analiza exploratorie · Fluxuri de lucru</title>
 <meta name="description" content="Examinarea datelor înainte de modelare: distribuții, relații, categorii, hărți și grafice care induc în eroare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=82">
-<link rel="stylesheet" href="../css/sistem.css?v=82">
-<link rel="stylesheet" href="../css/intrare.css?v=82">
-<script src="../js/tema.js?v=82"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=83">
+<link rel="stylesheet" href="../css/sistem.css?v=83">
+<link rel="stylesheet" href="../css/intrare.css?v=83">
+<script src="../js/tema.js?v=83"></script>
 </head>
 <body>
 
@@ -122,7 +122,7 @@ comunităților și un slide despre graficele care induc în eroare.</p>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=82"), import("../js/ora.js?v=82"), import("../js/curs.js?v=82")]);
+    import("../js/auth.js?v=83"), import("../js/ora.js?v=83"), import("../js/curs.js?v=83")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -150,7 +150,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=82"></script>
-<script type="module" src="../js/subsol.js?v=82"></script>
+<script type="module" src="../js/antet.js?v=83"></script>
+<script type="module" src="../js/subsol.js?v=83"></script>
 </body>
 </html>

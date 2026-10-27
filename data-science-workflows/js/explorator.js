@@ -1,7 +1,7 @@
 /* Pagina Exploratorului: harta legăturilor sociale pe tot ecranul.
    Toată logica stă în harta-sci.js, aceeași cu cea din slide-uri. */
 
-import { monteaza } from "./harta-sci.js?v=82";
+import { monteaza } from "./harta-sci.js?v=83";
 
 monteaza(document.getElementById("explorator"), {
   niveluri: ["judete", "regiuni", "tari"],

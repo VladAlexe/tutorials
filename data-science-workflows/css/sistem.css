@@ -660,3 +660,6 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
 .cont-chip--anunt::after{content:"";position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;
   background:var(--accent);box-shadow:0 0 0 2px var(--fundal)}
 .surse ul,.lit ul{max-width:none!important}
+/* v83: pe slide, cele cinci locuri încap pe un rând și la cinci echipe pe rând */
+.echp--slide .echp__loc{gap:4px;flex-wrap:nowrap}
+.echp--slide .echp__loc i{flex:0 0 auto}
