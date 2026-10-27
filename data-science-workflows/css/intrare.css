@@ -148,3 +148,8 @@
 /* când secțiunea începe cu un bloc cu linii, linia de sub etichetă ar dubla linia de sus a blocului */
 .sec:has(> .sec__corp > :first-child:is(ul.obiective,.gh,.tabel)) > .sec__et,
 .sec:has(> .sec__et + :is(.mat,.leg-lista)) > .sec__et{border-bottom:0;padding-bottom:0;margin-bottom:10px}
+/* v79: pașii, fără aldine la început; codul, mai discret */
+.gh__pasi li{color:var(--text-2)}
+.gh__pasi li code{font-size:var(--t2)}
+.gh__zip{padding:8px 14px;font-weight:500}
+.gh__os b{font-weight:400}

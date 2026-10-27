@@ -1,6 +1,6 @@
 {
  "capitol": "c2",
- "total": 25,
+ "total": 26,
  "sarcini": 9,
  "slide": [
   {
@@ -27,12 +27,12 @@
      "id": "c2-v2b",
      "fel": "verificare",
      "corect": 1,
-     "q": "Banca Mondială își mută datele pe alt server și schimbă baza de date, dar păstrează adresele și parametrii din documentație. Ce se întâmplă cu scriptul de colectare?",
+     "q": "Banca Mondială mută datele pe alt server și schimbă baza de date, dar păstrează adresele și parametrii din documentație. Ce se întâmplă cu scriptul de colectare?",
      "optiuni": [
-      "Trebuie rescris, pentru că baza de date e alta",
-      "Funcționează la fel: contractul nu s-a schimbat",
-      "Funcționează doar pe calculatorul pe care a fost scris",
-      "Primește 404 la prima cerere"
+      "Trebuie rescris",
+      "Funcționează la fel",
+      "Funcționează doar pe calculatorul autorului",
+      "Primește eroarea 404"
      ]
     }
    ]
@@ -172,6 +172,13 @@
    "id": "s18",
    "grup": "requests",
    "titlu": "Paginarea",
+   "sarcini": []
+  },
+  {
+   "nr": 19,
+   "id": "s18x",
+   "grup": "requests",
+   "titlu": "Exercițiu: paginarea",
    "sarcini": [
     {
      "id": "c2-prezice-pagini",
@@ -180,21 +187,21 @@
    ]
   },
   {
-   "nr": 19,
+   "nr": 20,
    "id": "s19e",
    "grup": "Eurostat",
    "titlu": "Eurostat: structura cererii",
    "sarcini": []
   },
   {
-   "nr": 20,
+   "nr": 21,
    "id": "s20",
    "grup": "Eurostat",
    "titlu": "Cubul JSON-stat",
    "sarcini": []
   },
   {
-   "nr": 21,
+   "nr": 22,
    "id": "s20v",
    "grup": "Eurostat",
    "titlu": "Poziția din cub",
@@ -206,7 +213,7 @@
    ]
   },
   {
-   "nr": 22,
+   "nr": 23,
    "id": "s21",
    "grup": "Proiectul echipei",
    "titlu": "Prima colectare",
@@ -218,21 +225,21 @@
    ]
   },
   {
-   "nr": 23,
+   "nr": 24,
    "id": "s21t",
    "grup": "Proiectul echipei",
    "titlu": "Echipele",
    "sarcini": []
   },
   {
-   "nr": 24,
+   "nr": 25,
    "id": "s21e",
    "grup": "Proiectul echipei",
    "titlu": "Depozitul echipei",
    "sarcini": []
   },
   {
-   "nr": 25,
+   "nr": 26,
    "id": "s22",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

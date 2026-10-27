@@ -471,3 +471,10 @@ body.prezint #s5m .hs--slide,body.prezint #s5h .hs--slide{height:min(52vh,470px)
 .sld .poarta__t{font-size:var(--t2);margin:0}
 .sld .poarta__d{display:none}
 .sld .poarta.deschisa{background:none}
+/* v80: variantele de răspuns, două pe rând, ca textele lungi să încapă pe un rând */
+.sld .verif{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+/* variantele au lățimea textului: cele scurte stau pe un rând, cele lungi se rup natural */
+.sld .verif{display:flex;flex-wrap:wrap;align-items:stretch}
+.sld .verif > :not(.verif__opt){flex:0 0 100%}
+.sld .verif .verif__opt{flex:0 1 auto;min-width:120px}
+.sld .verif .verif__opt,.sld .verif > button{width:auto!important;flex:0 1 auto!important;display:inline-block}

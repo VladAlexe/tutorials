@@ -161,6 +161,10 @@ def pagina():
         <li>Căutarea înainte: funcția „Citat de” arată lucrările mai noi care citează articolul.</li>
         <li>Căutarea se face în engleză, cu termenii din titluri: <i>social connectedness index</i>,
         <i>migrant networks</i>, <i>migration systems</i>, la care se adaugă țara sau coridorul studiat.</li>
+        <li>Aceeași căutare se repetă în cel puțin două surse: Web of Science sau Scopus, pentru revistele indexate,
+        și Google Scholar sau OpenAlex, care includ și cărți, rapoarte și preprinturi.</li>
+        <li>Asistenții bazați pe modele de limbaj, ca Elicit, grăbesc găsirea articolelor; ce afirmă despre un articol
+        se verifică în articolul original înainte de a intra în matrice.</li>
         <li>Se citesc întâi rezumatul și secțiunea de metodă; lectura integrală urmează doar pentru lucrările relevante.</li>
         <li>Fiecare lucrare se notează pe un rând: întrebarea, datele, metoda, rezultatul și elementul preluat în proiect.
         Rândurile formează matricea literaturii, din care se scrie secțiunea de cadru teoretic a raportului.</li>

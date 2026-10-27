@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 1. Introducere și configurare · Fluxuri de lucru</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, mediul de lucru virtual, tipurile de date și formatul JSON.">
-<link rel="stylesheet" href="../css/fonturi.css?v=78">
-<link rel="stylesheet" href="../css/sistem.css?v=78">
-<link rel="stylesheet" href="../css/intrare.css?v=78">
-<script src="../js/tema.js?v=78"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=80">
+<link rel="stylesheet" href="../css/sistem.css?v=80">
+<link rel="stylesheet" href="../css/intrare.css?v=80">
+<script src="../js/tema.js?v=80"></script>
 </head>
 <body>
 
@@ -45,19 +45,19 @@
     <div class="sec__corp"><div class="gh">
 <div class="gh__cap"><b>Contul GitHub</b><span>Contul este gratuit, se creează în câteva minute și este necesar pentru intrarea la oră.</span></div>
 <ol class="gh__pasi">
-<li><b>Crearea contului, pe <a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>.</b> Adresa de e-mail folosită ar trebui să rămână valabilă și după absolvire.</li>
-<li><b>Un nume de utilizator potrivit pentru un CV.</b> Numele rămâne asociat contului și apare în istoricul depozitului echipei.</li>
-<li><b>Confirmarea adresei de e-mail.</b> GitHub trimite un cod de confirmare; contul devine activ după confirmare.</li>
-<li><b>La prima oră</b> se scanează codul de pe ecran, se apasă <em>Intru cu GitHub</em> și se alege numele din lista grupei. Pasul se face o singură dată pe semestru.</li>
+<li>Contul se creează pe <a class="leg" href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>. Adresa de e-mail folosită ar trebui să rămână valabilă și după absolvire.</li>
+<li>Numele de utilizator ar trebui să fie potrivit pentru un CV. Numele rămâne asociat contului și apare în istoricul depozitului echipei.</li>
+<li>Adresa de e-mail se confirmă: GitHub trimite un cod de confirmare; contul devine activ după confirmare.</li>
+<li>La prima oră se scanează codul de pe ecran, se apasă „Intru cu GitHub” și se alege numele din lista grupei. Pasul se face o singură dată pe semestru.</li>
 </ol>
 <p class="gh__de-ce">Contul servește la autentificarea pe site, fără o parolă nouă. De la cursul 2 este folosit și pentru depozitul echipei, din organizația comună a cursului. Datele înregistrate sunt descrise în <a class="leg" href="../date-personale/">politica de confidențialitate</a>.</p>
 </div></div>
   </section>
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Prima oră are două părți. Prima stabilește ce se construiește: proiectul semestrului, datele folosite, echipele și succesiunea completă a pașilor unei analize de date, de la definirea problemei până la raportare. A doua configurează mediul de lucru, astfel încât de la cursul următor lucrul cu datele să poată începe direct.</p>
-<p>Între ele stau noțiunile pe care se sprijină restul cursului: tipurile de date în Python, în SQL și în fișierele spațiale; diferența dintre un fișier text și unul binar; formatul JSON, folosit de toate API-urile din curs.</p>
-<p>Lecția începe cu o întrebare formulată pe datele reale ale cursului, la care intuiția nu oferă un răspuns, și cu o evaluare scurtă a cunoștințelor inițiale. Evaluarea nu se notează; rolul ei este să stabilească punctul de plecare.</p></div>
+    <div class="sec__corp"><p>Prima oră prezintă cursul și pregătește lucrul pe date.</p>
+<p>Prima parte descrie proiectul semestrului: datele lui, adică legăturile sociale dintre locuri măsurate prin SCI și migrația, echipele și pașii unei analize de date, de la întrebare la raport.</p>
+<p>A doua parte tratează tipurile de date, formatul JSON și mediul de lucru: VS Code, Python și un mediu virtual, gata pentru cursul 2.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
@@ -108,24 +108,24 @@
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><p>Lecția poate fi parcursă fără programe instalate. Partea practică, din caiet, necesită două programe gratuite și folderul cursului:</p>
 <ol>
-<li><a class="leg" href="https://code.visualstudio.com/" rel="noopener" target="_blank">VS Code</a>, editorul folosit tot semestrul, cu extensiile <em>Python</em> și <em>Jupyter</em>.</li>
-<li><a class="leg" href="https://www.python.org/downloads/" rel="noopener" target="_blank">Python 3.11</a> sau mai nou. La instalarea pe Windows se bifează <em>Add Python to PATH</em>.</li>
+<li><a class="leg" href="https://code.visualstudio.com/" rel="noopener" target="_blank">VS Code</a>, editorul folosit tot semestrul, cu extensiile Python și Jupyter.</li>
+<li><a class="leg" href="https://www.python.org/downloads/" rel="noopener" target="_blank">Python 3.11</a> sau mai nou. La instalarea pe Windows se bifează „Add Python to PATH”.</li>
 </ol>
 <div class="gh gh--dsw" id="folderul-cursului">
-<div class="gh__cap"><b>Folderul cursului</b><span>Caietul 01, datele lui și lista pachetelor, într-o arhivă de pe GitHub. Se descarcă o singură dată.</span></div>
-<a class="gh__zip" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">↓ Descarcă arhiva ZIP a cursului</a>
+<div class="gh__cap"><b>Folderul cursului</b><span>O arhivă de pe GitHub, cu Caietul 01, datele lui și lista pachetelor. Se descarcă o singură dată.</span></div>
+<a class="gh__zip" href="https://github.com/dsw-ubb-2026/-DSW2026/archive/refs/heads/main.zip">Descarcă arhiva ZIP</a>
 <ol class="gh__pasi">
-<li><b>Extragerea arhivei</b> în locația dorită. Folderul obținut se numește <code>-DSW2026-main</code> și <b>se redenumește <code>dsw</code></b>.</li>
-<li><b>Deschiderea folderului <code>dsw</code> în VS Code</b> (<em>File → Open Folder</em>), apoi a terminalului: <em>Terminal → New Terminal</em>. Terminalul pornește în folderul <code>dsw</code>.</li>
-<li><b>Mediul virtual: crearea, activarea și instalarea pachetelor</b>, o singură dată:
+<li>Arhiva se dezarhivează, iar folderul obținut, <code>-DSW2026-main</code>, se redenumește <code>dsw</code>.</li>
+<li>Folderul se deschide în VS Code (File → Open Folder), apoi se deschide terminalul (Terminal → New Terminal).</li>
+<li>În terminal se creează mediul virtual, se activează și se instalează pachetele, o singură dată:
 <div class="gh__os"><div><b>Windows, PowerShell</b><pre><code>py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt</code></pre></div><div><b>macOS, Terminal</b><pre><code>python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt</code></pre></div></div></li>
-<li><b>În caiet</b> se alege <em>Select Kernel → Python Environments → .venv</em>. Caietul 01 se află în <code>curs/</code>.</li>
+<li>În caiet se alege mediul: Select Kernel → Python Environments → .venv.</li>
 </ol>
-<p class="gh__de-ce">Dacă PowerShell blochează activarea cu o eroare despre <em>execution policy</em>, se rulează o dată <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code> și se reia comanda. Arhiva se descarcă o singură dată: de la cursul 2 se descarcă doar caietul lecției, în <code>dsw/curs/</code>. Detalii în <a class="leg" href="tutorial/#s17">manual</a>.</p>
+<p class="gh__de-ce">Erorile frecvente la activare și soluțiile lor sunt în <a class="leg" href="tutorial/#s17">manual</a>. De la cursul 2 se descarcă doar caietul fiecărei lecții.</p>
 </div></div>
   </section>
   <section class="sec">
@@ -153,7 +153,7 @@ pip install -r requirements.txt</code></pre></div></div></li>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=78"), import("../js/ora.js?v=78"), import("../js/curs.js?v=78")]);
+    import("../js/auth.js?v=80"), import("../js/ora.js?v=80"), import("../js/curs.js?v=80")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -181,7 +181,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=78"></script>
-<script type="module" src="../js/subsol.js?v=78"></script>
+<script type="module" src="../js/antet.js?v=80"></script>
+<script type="module" src="../js/subsol.js?v=80"></script>
 </body>
 </html>

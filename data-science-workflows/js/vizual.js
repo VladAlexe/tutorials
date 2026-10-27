@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=78");
+    const m = await import("/data-science-workflows/js/colectare.js?v=80");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -1654,13 +1654,14 @@ V.sci = (gazda, d) => {
         <span class="sci2__axy">${A} utilizatori din Cluj →</span>
         <div class="sci2__g" style="--n:${c.u}">${cel.join("")}</div>
       </div>
-      <p class="sci2__calc"><b>${c.f.length}</b> prietenii din <b>${tot}</b> perechi posibile</p>
+      <p class="sci2__calc"><b>${c.f.length}</b> prietenii ÷ (<b>${A}</b> × <b>${c.u}</b> utilizatori)</p>
       <p class="sci2__v">${nf(c.f.length / tot)}</p>
     </figure>`;
   };
   gazda.innerHTML = `<div class="sci2">
-      <p class="sci2__formula"><i>SCI</i><span>=</span><span class="sci2__fr"><span>prieteniile dintre cele două locuri</span><span>perechile posibile de utilizatori</span></span></p>
-      <p class="sci2__leg"><i></i>o pereche posibilă de utilizatori <i class="da"></i>o prietenie</p>
+      <p class="sci2__formula"><i>SCI<sub>i,j</sub></i><span>=</span><span class="sci2__fr"><span>Prietenii<sub>i,j</sub></span><span>Utilizatori<sub>i</sub> × Utilizatori<sub>j</sub></span></span></p>
+      <p class="sci2__def"><b>i, j</b>: cele două locuri; <b>Prietenii</b>: prieteniile Facebook dintre utilizatorii din i și cei din j; <b>Utilizatori</b>: utilizatorii Facebook din fiecare loc.</p>
+      <p class="sci2__leg"><i></i>o pereche posibilă de utilizatori, unul din fiecare loc <i class="da"></i>o prietenie</p>
       <div class="sci2__duo">${CAZ.map(panou).join("")}</div>
       ${d.concluzie ? `<p class="sci2__conc">${d.concluzie}</p>` : ""}
     </div>`;
@@ -1894,41 +1895,48 @@ function consolaJupyter(gazda, env, { start = 2, loc = "", laRulare = null, taie
    type(variabila). Se înregistrează scorul și de câte ori au întrebat consola.
    =========================================================================== */
 V.consola = (gazda, d) => {
-  /* Un singur tabel: fiecare rând de cod, cu tipul scris lângă el. „Verifică”
-     întreabă chiar Python: pentru fiecare variabilă rulează type() și pune
-     răspunsul lui lângă răspunsul scris. */
+  /* În stânga, codul și tipul scris de student; în dreapta, o celulă Python,
+     mereu la vedere, în care se poate întreba direct: type(tara). „Verifică”
+     compară răspunsurile scrise cu tipurile reale. */
   if (d.id) gazda.closest(".ix")?.classList.add("exc");
   const VARS = d.vars || [], COD = d.cod || [];
   const SIN = { none: "nonetype" };
   const norm = x => { const k = x.trim().replace(/^<class '|'>$/g, "").toLowerCase(); return SIN[k] || k; };
   let verificat = false;
+  const primul = VARS[0]?.n || "x";
 
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="tcs2">
-      <div class="tcs2__cap"><span>Codul</span><span>Tipul</span><span>Python: <code>type()</code></span></div>
-      ${VARS.map((x, k) => `<label class="tcs2__r" data-k="${k}">
-        <code class="tcs2__cod">${esc(COD[k] || x.n)}</code>
-        <span class="tcs2__in"><input autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}"><span class="tcs2__st" aria-hidden="true"></span></span>
-        <span class="tcs2__py" aria-live="polite"></span>
-        <span class="tcs2__e"></span>
-      </label>`).join("")}
-    </div>
-    <div class="tcs2__act">
-      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică în Python</button>
-      <span class="tcs2__scor"></span>
+    <div class="tcs3">
+      <div class="tcs3__st">
+        <div class="tcs2">
+          <div class="tcs2__cap"><span>Codul</span><span>Tipul</span></div>
+          ${VARS.map((x, k) => `<label class="tcs2__r" data-k="${k}">
+            <code class="tcs2__cod">${esc(COD[k] || x.n)}</code>
+            <span class="tcs2__in"><input autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}"><span class="tcs2__st" aria-hidden="true"></span></span>
+            <span class="tcs2__e"></span>
+          </label>`).join("")}
+        </div>
+        <div class="tcs2__act">
+          <button class="btn btn--mic btn--tare" data-rol="verifica" type="button">Verifică</button>
+          <span class="tcs2__scor"></span>
+        </div>
+      </div>
+      <div class="tcs3__dr">
+        <p class="tcs3__et">Celulă Python, cu variabilele din tabel deja definite</p>
+        <div class="jc"></div>
+        <p class="tcs3__nota">De exemplu <code>type(${esc(primul)})</code>, apoi Enter.</p>
+      </div>
     </div>`;
 
   const env = JSON.parse(JSON.stringify(d.env || {}));
+  const cons = consolaJupyter(gazda.querySelector(".jc"), env, { start: 2, loc: `type(${primul})` });
   const randuri = [...gazda.querySelectorAll(".tcs2__r")];
-  const tipPython = n => { try { return PY.afis(PY.evalueaza(`type(${n})`, env).v); } catch { return "?"; } };
 
   gazda.querySelector('[data-rol="verifica"]').onclick = async () => {
     let ok = 0, goale = 0;
     randuri.forEach((r, k) => {
       const x = VARS[k], v = r.querySelector("input").value;
-      const py = r.querySelector(".tcs2__py");
-      py.innerHTML = `<code>type(${esc(x.n)})</code><b>${esc(tipPython(x.n))}</b>`;
       if (!v.trim()){ goale++; r.className = "tcs2__r gol"; r.querySelector(".tcs2__e").textContent = ""; r.querySelector(".tcs2__st").textContent = ""; return; }
       const bun = norm(v) === x.t.toLowerCase();
       if (bun) ok++;
@@ -1942,7 +1950,7 @@ V.consola = (gazda, d) => {
       : `<b>${ok} din ${VARS.length}</b>${ok === VARS.length ? ", toate corecte" : " corecte"}`;
     if (!verificat && d.id && !goale){
       verificat = true;
-      await poarta(gazda, d.id, `${ok}/${VARS.length}`);
+      await poarta(gazda, d.id, `${ok}/${VARS.length} consola:${cons.folosiri()}`);
     }
   };
 };
@@ -3006,6 +3014,7 @@ V.pereche = (gazda, d) => {
           <tbody>${J.map((x, i) => `<tr data-i="${i}"><td>${esc(x.nume)}</td><td class="num">${f(x.pop)}</td><td class="per__rol"></td></tr>`).join("")}</tbody></table>
           <p class="per__n">${n} rânduri</p></section>
         <p class="per__i" aria-live="polite"></p>
+        ${d.jos ? `<p class="per__jos">${d.jos}</p>` : ""}
       </div>
       <div class="per__s" aria-hidden="true"><b>${n} × ${n}</b><span>→</span></div>
       <section><h4>Un rând = o pereche</h4>
@@ -3154,7 +3163,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=78`), import(`${R}/js/auth.js?v=78`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=80`), import(`${R}/js/auth.js?v=80`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });

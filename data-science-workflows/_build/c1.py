@@ -802,8 +802,10 @@ INDICE = {
 
 SCI_IX = {"concluzie": "Italia are mai multe prietenii cu Clujul, <b>9 față de 6</b>, dar indicele este mai mic: "
                         "prieteniile se împart la mai multe perechi posibile."
-                        "<small>În <code>country.csv</code>: România și Republica Moldova, 173.794; "
-                        "România și Italia, 69.327.</small>"}
+                        "<small>În fișiere, valorile sunt rescalate între 1 și 1.000.000.000 (Johnston et al., 2026). "
+                        "În <code>country.csv</code>: România și Republica Moldova, 173.794; România și Italia, 69.327. "
+                        '<a class="leg" href="https://social-connectedness.org/explore" target="_blank" rel="noopener">'
+                        "Harta interactivă a indicelui ↗</a></small>"}
 
 sl("s5", "Proiectul", "Ce măsoară SCI",
    "<h2>Social Connectedness Index</h2>"
@@ -818,8 +820,12 @@ sl("s5", "Proiectul", "Ce măsoară SCI",
    "<em>relativ</em> la celelalte perechi. Valorile sunt scalate: în fișier, cea mai mare "
    "este exact 1.000.000.000, iar cea mai mică 1. SCI nu este, așadar, o probabilitate "
    "între 0 și 1 și nu se interpretează izolat, ci prin comparație între perechi.</p>"
-   "<p>Definiția, în cuvinte: numărul de prietenii dintre utilizatorii celor două locuri, "
-   "împărțit la produsul numerelor de <em>utilizatori Facebook</em> din fiecare loc. "
+   "<p>Definiția (Johnston et al., 2026): SCI<sub>i,j</sub> = Prietenii<sub>i,j</sub> / "
+   "(Utilizatori<sub>i</sub> × Utilizatori<sub>j</sub>), adică numărul de prietenii Facebook dintre "
+   "utilizatorii din locurile i și j, împărțit la produsul numerelor de <em>utilizatori Facebook</em> "
+   "din fiecare loc. Fiecare prietenie are aceeași pondere. Rezultatul se rescalează apoi, separat "
+   "pentru fiecare fișier, între 1 și 1.000.000.000; statisticile publicate sunt protejate prin "
+   "confidențialitate diferențială, adică printr-un zgomot statistic mic adăugat valorilor. "
    "Numitorul are două consecințe, relevante pe tot parcursul semestrului. Prima: un loc cu mulți "
    "utilizatori are nevoie de mult mai multe prietenii pentru același indice, deci o "
    "comunitate mare de migranți într-o țară mare are o pondere mică. A doua: indicele "
@@ -853,6 +859,10 @@ sl("s5", "Proiectul", "Ce măsoară SCI",
         "descrierea indicelui, pe scurt, de la producătorii lui"),
        ("HDX: fișierele SCI", "https://data.humdata.org/dataset/social-connectedness-index",
         "sursa fișierelor de date; nota metodologică este printre resurse"),
+       ("Johnston et al. (2026): nota metodologică", "https://pages.stern.nyu.edu/~jstroebe/PDF/JKKS_SCI.pdf",
+        "formula, utilizatorii incluși, scalarea și protecția datelor, pentru instantaneul din 2026"),
+       ("Harta interactivă a SCI", "https://social-connectedness.org/explore",
+        "legăturile oricărei țări sau regiuni, pe hartă"),
        ("Bailey et al. (2018), JEP", "https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259",
         "articolul care a introdus indicele: definiția, ce îl explică, primele rezultate"),
    ])
@@ -892,11 +902,11 @@ HARTA_TARI = {
     "masuri": ["migr", "sci"],
     "povesti": [
         {"t": "Unde trăiesc românii", "nivel": "tari", "masura": "migr", "ales": "RO",
-         "text": "Cetățeni români după țara în care locuiesc (Eurostat, 2024). "
-                 "Italia este prima, cu 1,07 milioane, apoi Germania și Spania."},
+         "text": "Prima hartă: cetățeni români după țara în care locuiesc, la 1 ianuarie 2024 "
+                 "(Eurostat, migr_pop1ctz). Italia este prima, cu 1.073.196, apoi Germania și Spania."},
         {"t": "Legăturile, după SCI", "nivel": "tari", "masura": "sci", "ales": "RO",
-         "text": "Aceeași hartă, dar după SCI. Republica Moldova, Austria, Germania și "
-                 "Ungaria trec în față. Italia coboară."},
+         "text": "A doua hartă: legăturile României, după SCI. Republica Moldova, Austria, "
+                 "Germania și Ungaria trec în față. Italia coboară pe locul șase."},
         {"t": "Polonia", "nivel": "tari", "masura": "migr", "ales": "PL",
          "text": "Cei mai mulți polonezi trăiesc în Germania. După măsura "
                  "Legături (SCI), pe primul loc trece Islanda, o țară mică în care "
@@ -934,15 +944,16 @@ sl("s5h", "Proiectul", "Harta, pe județe",
 
 sl("s5m", "Proiectul", "Oameni și legături",
    "<h2>Unde trăiesc românii și unde au legături</h2>"
-   + ix("harta", "Migrația (Eurostat) și SCI, pe aceeași hartă", HARTA_TARI),
+   + ix("harta", "Două hărți ale României: unde trăiesc românii (Eurostat) și legăturile ei (SCI)", HARTA_TARI),
    sci=True,
    manual=
    "<h2>Oameni și legături</h2>"
    "<p>A doua sursă a cursului este migrația: câți cetățeni ai fiecărei țări trăiesc în "
    "fiecare altă țară. Datele vin tot prin API, de la Eurostat (<code>migr_pop1ctz</code>), "
-   "și se colectează la cursul 2. Pe hartă, prima vizualizare arată unde trăiesc cetățenii români; "
-   "a doua arată cât de legată este România de fiecare țară, după SCI.</p>"
-   + ix("harta", "Migrația (Eurostat) și SCI, pe aceeași hartă", HARTA_TARI)
+   "și se colectează la cursul 2. Sunt două hărți diferite, comutate din butoanele de sus: "
+   "prima arată unde trăiesc cetățenii români, a doua cât de legată este România de fiecare "
+   "țară, după SCI.</p>"
+   + ix("harta", "Două hărți ale României: unde trăiesc românii (Eurostat) și legăturile ei (SCI)", HARTA_TARI)
    + nota("Datele de migrație disponibile",
           "Stocul de cetățeni străini la 1 ianuarie 2024, pentru țările care raportează "
           "populația pe țări de cetățenie. Printre cele care nu raportează: Polonia, Danemarca, "
@@ -1016,52 +1027,48 @@ NORI = {
 
 
 def _doua_tari(a="FR", b="AT"):
-    """Două țări cu aproape același număr de români și proporții foarte diferite:
-    ideea slide-ului, pe un singur exemplu, înainte de cele 23 de țări."""
+    """Două țări cu aproape același număr de români și populații foarte diferite.
+    Ca la slide-ul 7: un panou pe țară. Fiecare punct este un locuitor, punctul
+    colorat este un român; sub grilă, SCI-ul cu România."""
     R = {r["cod"]: r for r in _nori()}
-    A, B = R[a], R[b]
     def nr(x, z=0):
-        t = f"{x:,.{z}f}".replace(",", " ").replace(".", ",").replace(" ", ".")
-        return t
-    randuri = [
-        ("Români care trăiesc în țară", "nr", 0, "aproape același număr"),
-        ("Români la 1.000 de locuitori", "mie", 1, None),
-        ("SCI cu România", "sci", 0, None),
-    ]
-    h = '<div class="dt">'
-    h += (f'<div class="dt__leg"><span class="dt__a"><i></i>{A["nume"]}</span>'
-          f'<span class="dt__b"><i></i>{B["nume"]}</span></div>')
-    for et, k, z, nota_ in randuri:
-        va, vb = A[k], B[k]
-        m = max(va, vb)
-        r = vb / va
-        dif = nota_ or (f"de {nr(r, 1)} ori mai mult în {B['nume']}" if r > 1 else f"de {nr(1 / r, 1)} ori mai mult în {A['nume']}")
-        h += (f'<div class="dt__r"><div class="dt__et">{et}</div><div class="dt__bare">'
-              f'<span class="dt__a" style="--w:{va / m * 100:.1f}%"><i></i><b>{nr(va, z)}</b></span>'
-              f'<span class="dt__b" style="--w:{vb / m * 100:.1f}%"><i></i><b>{nr(vb, z)}</b></span>'
-              f'</div><div class="dt__dif{" dt__dif--egal" if nota_ else ""}">{dif}</div></div>')
-    h += "</div>"
-    return h
+        return f"{x:,.{z}f}".replace(",", " ").replace(".", ",").replace(" ", ".")
+    def panou(x):
+        la = round(1000 / x["mie"])
+        pop = POP_TARI[x["cod"]] / 1e6
+        pct = "".join('<i class="da"></i>' if k == 0 else "<i></i>" for k in range(la))
+        return (f'<figure class="dt2__p"><figcaption class="dt2__t">{x["nume"]}</figcaption>'
+                f'<p class="dt2__fapt"><b>{nr(x["nr"])}</b> de români, la {nr(pop, 1)} milioane de locuitori</p>'
+                f'<div class="dt2__g">{pct}</div>'
+                f'<p class="dt2__la">un român la <b>{la}</b> de locuitori</p>'
+                f'<p class="dt2__v"><span>SCI cu România</span>{nr(x["sci"])}</p></figure>')
+    return ('<div class="dt2"><p class="dt2__leg"><i></i>un locuitor <i class="da"></i>un român</p>'
+            f'<div class="dt2__duo">{panou(R[a])}{panou(R[b])}</div></div>')
 
 
 DOUA_TARI = _doua_tari()
 
 sl("s5r", "Proiectul", "Migrația și SCI",
-   "<h2>Legăturile urmează mai degrabă proporția decât numărul</h2>"
-   "<p class=\"cheie\">Ce explică mai bine SCI cu România: câți români trăiesc într-o țară "
-   "sau ce parte din populația ei reprezintă?</p>"
+   "<h2>SCI urmează proporția românilor, nu numărul lor</h2>"
+   "<p class=\"cheie\">Franța și Austria au aproape același număr de români. "
+   "De ce este SCI-ul cu Austria de aproape șapte ori mai mare?</p>"
    + DOUA_TARI
-   + "<p class=\"dt__conc\">Același număr de români, legături de aproape șapte ori mai puternice. "
-   "Motivul este numitorul indicelui: prieteniile se împart la utilizatorii din fiecare loc. "
-   "În cele 23 de țări care raportează cetățeniile, corelația cu SCI este 0,78 pentru număr "
-   "și 0,87 pentru proporție; de aceea, modelul de la cursul 7 folosește proporția.</p>",
+   + "<p class=\"dt2__conc\">În Austria, românii sunt o parte de șapte ori mai mare din populație. "
+   "În formula SCI, prieteniile se împart la utilizatorii din fiecare țară, "
+   "iar Austria are mult mai puțini.</p>",
    sci=True,
    manual=
-   "<h2>Legăturile urmează mai degrabă proporția decât numărul</h2>"
+   "<h2>SCI urmează proporția românilor, nu numărul lor</h2>"
    "<p>Întrebarea este ce explică mai bine SCI cu România: numărul de români care trăiesc "
    "într-o țară sau proporția lor în populația acelei țări. Franța și Austria o lămuresc pe "
-   "un singur exemplu: au aproape același număr de români, dar proporția și indicele diferă "
-   "de aproximativ șapte ori.</p>"
+   "un singur exemplu. Au aproape același număr de români (161.220 și 153.427), dar Franța are "
+   "68,7 milioane de locuitori, iar Austria 9,2 milioane: în Franța trăiește un român la 426 de "
+   "locuitori, în Austria unul la 60. SCI-ul cu România este de 6,9 ori mai mare în Austria, "
+   "aproape cât raportul proporțiilor (7,1).</p>"
+   "<p>Explicația vine din formula indicelui: prieteniile dintre cele două locuri se împart la "
+   "produsul numerelor de utilizatori. Dacă românii din Franța și cei din Austria au, împreună, "
+   "cam tot atâtea prietenii cu România, în Franța ele se împart la utilizatorii unei țări cu "
+   "de 7,5 ori mai mulți locuitori, deci indicele iese de câteva ori mai mic.</p>"
    + DOUA_TARI
    + "<p>Aceeași comparație, pe toate cele 23 de țări care raportează cetățeniile. În stânga, "
    "SCI cu România față de numărul de români; în dreapta, față de românii la 1.000 de locuitori. "
@@ -1083,8 +1090,9 @@ def _istoric_echipa():
     ședințe: fiecare commit are culoarea autorului. Se vede, fără explicații, că
     proiectul e comun și că din istoric se citește contribuția fiecăruia."""
     M = [("A", "accent"), ("B", "ambra"), ("C", "roza"), ("D", "text"), ("E", "ceas")]
-    X = {2: 168, 3: 258, 4: 348, 5: 438, 6: 528, 7: 618, 8: 724}
-    ET = {2: ["echipa,", "depozitul"], 3: ["direcția,", "întrebarea"], 4: ["datele", "curățate"],
+    # stațiile la distanțe egale; sub fiecare, ce adaugă echipa în depozit la acel curs
+    X = {k: 180 + (k - 2) * 95 for k in range(2, 9)}
+    ET = {2: ["echipa,", "datele"], 3: ["întrebarea", "de cercetare"], 4: ["datele", "curățate"],
           5: ["tabelul", "final"], 6: ["explorarea"], 7: ["modelul"], 8: ["raportul,", "prezentarea"]}
     Y = 100
     # commit-urile dintre ședințe: (ședința după care vin, autorii, în ordine)
@@ -1093,8 +1101,8 @@ def _istoric_echipa():
     for i, (lit, c) in enumerate(M):
         y = 36 + i * 32
         svg.append(f'<path class="ist__ram" pathLength="1" d="M42,{y} C96,{y} 96,{Y} 150,{Y}" style="--mc:var(--{c})"/>')
-    svg.append(f'<path class="ist__lin" d="M150,{Y} L760,{Y}"/>')
-    svg.append(f'<text class="ist__repo" x="168" y="{Y - 22}">dsw-ubb-2026 / depozitul unei echipe</text>')
+    svg.append(f'<path class="ist__lin" d="M150,{Y} L772,{Y}"/>')
+    svg.append(f'<text class="ist__repo" x="172" y="{Y - 22}">Depozitul echipei, în organizația dsw-ubb-2026: ce se adaugă la fiecare curs</text>')
     n = 0
     for k, aut in COM.items():
         x0, x1 = X[k], X[k + 1]
@@ -1372,9 +1380,9 @@ VEDERI_DIADIC = {"vederi": [
 
 sl("s8", "Datele proiectului", "Date diadice",
    "<h2>Date diadice: un rând este o pereche</h2>"
-   + ix("vederi", "Trei județe, nouă perechi", VEDERI_DIADIC)
-   + "<p class=\"dd__jos\">La 42 de județe, 1.764 de perechi; la cele 1.343 de regiuni ale Europei, "
-   "1,8 milioane. De aici nevoia de cod și de bază de date.</p>",
+   + ix("pereche", "Trei județe, nouă perechi", dict(DIADIC, jos=
+        "La 42 de județe, 1.764 de perechi; la cele 1.343 de regiuni ale Europei, "
+        "1,8 milioane. De aici nevoia de cod și de bază de date.")),
    sci=True,
    manual=
    "<h2>Date diadice</h2>"
@@ -1496,21 +1504,17 @@ TIPURI_LISTA = [
 ]
 
 def tipuri_slide():
-    """Pe slide: două coloane simetrice, același cap de tabel, același număr de
-    rânduri. Colecțiile au în plus rândul care le leagă de JSON."""
-    SUB = {"Valori simple": "o singură valoare", "Colecții": "mai multe valori, împreună"}
-    K = {"Valori simple": "simplu", "Colecții": "colectie"}
-    out = ['<div class="tp4">']
+    """Pe slide: un singur tabel, cu capul de coloană o dată și cele două grupe
+    ca rânduri de titlu. Mai aerisit decât două tabele alăturate."""
+    SUB = {"Valori simple": "o singură valoare", "Colecții": "mai multe valori, împreună; se pot imbrica, ca într-un JSON"}
+    out = ['<table class="tabel tp5"><thead><tr><th>Tipul</th><th>Exemplu</th><th>Ce este</th></tr></thead>']
     for grupa, _, rand in TIPURI_LISTA:
-        out.append(f'<section class="tp4__g tp4__g--{K[grupa]}"><h4><i></i>{grupa}<span>{SUB[grupa]}</span></h4>'
-                   '<table class="tabel"><thead><tr><th>Tipul</th><th>Exemplu</th><th>Ce este</th></tr></thead><tbody>')
+        out.append(f'<tbody><tr class="dp__cap"><th colspan="3">{grupa}<span>{SUB[grupa]}</span></th></tr>')
         for n, ro, d, ex, la in rand:
             out.append(f'<tr><td><code class="tp4__t">{n}</code></td><td><code>{ex.replace("<", "&lt;")}</code></td>'
                        f"<td>{ro}</td></tr>")
-        if len(rand) < 5:
-            out.append('<tr class="tp4__nota"><td colspan="3">Colecțiile se pot imbrica, ca într-un JSON.</td></tr>')
-        out.append("</tbody></table></section>")
-    out.append("</div>")
+        out.append("</tbody>")
+    out.append("</table>")
     return "".join(out)
 
 
@@ -2006,7 +2010,7 @@ ANATOMIE = {
         "      \"tara\": { \"cod\": \"RO\", \"nume\": \"România\" },",
         "      \"an\": \"2024\",",
         "      \"populatie\": 19051804,",
-        "      \"coordonate\": [45.94, 24.97],",
+        "      \"lat_lon\": [45.94, 24.97],",
         "      \"estimat\": false,",
         "      \"nota\": null",
         "    }",
@@ -2030,11 +2034,14 @@ ANATOMIE = {
          "d": "Numele este întotdeauna un șir între ghilimele, urmat de două puncte și de valoare. Aici numele "
               "este <code>populatie</code>, iar valoarea este un <b>număr</b>, fără ghilimele, care devine <code>int</code>."},
         {"et": "Șir de caractere", "py": "str", "l": [5, 5],
-         "d": "<code>\"2024\"</code> are ghilimele, deci este un <b>șir</b>, nu un număr. "
+         "d": "<code>\"2024\"</code> are ghilimele, deci este un <b>șir</b>, nu un număr. Este corect în JSON, "
+              "iar API-ul Băncii Mondiale chiar trimite anul așa (<code>\"date\": \"2024\"</code>). "
               "<code>\"2024\" + 1</code> dă eroare, iar <code>\"2024\" &lt; \"999\"</code> este "
               "adevărat, fiindcă textul se compară caracter cu caracter."},
         {"et": "Tablou de numere", "py": "list", "l": [7, 7],
-         "d": "Un tablou ca valoare. Într-un tabel plat nu încape ca atare: se desface în două coloane "
+         "d": "Un tablou ca valoare: două numere, latitudinea și longitudinea centrului țării, "
+              "între paranteze drepte și separate prin virgulă. Devine o listă de <code>float</code>. "
+              "Într-un tabel plat nu încape ca atare: se desface în două coloane "
               "sau rămâne listă într-o celulă, ceea ce complică pașii următori."},
         {"et": "true / false", "py": "bool", "l": [8, 8],
          "d": "Valorile logice se scriu cu literă mică în JSON și devin <code>True</code> și "
@@ -2107,7 +2114,7 @@ sl("s14p", "JSON", "Poziție sau cheie",
 
 sl("s15", "JSON", "Formatul JSON",
    "<h2>Două structuri, imbricate oricât de adânc</h2>"
-   "<p class=\"cheie\">Obiectul <code>{ }</code> devine <code>dict</code>. Tabloul <code>[ ]</code> devine <code>list</code>.</p>"
+   "<p class=\"cheie\">Obiectul (<i>object</i>) <code>{ }</code> devine <code>dict</code>. Tabloul (<i>array</i>) <code>[ ]</code> devine <code>list</code>.</p>"
    + ix("anatomie", "Un răspuns, simplificat, pe bucăți", ANATOMIE),
    manual=
    "<h2>Formatul JSON</h2>"
@@ -2255,6 +2262,40 @@ COD_JSON = {
     "explicatie": "<code>raspuns[1]</code> ocolește obiectul de paginare. "
                   "<code>[\"value\"]</code> extrage numărul. Dacă valoarea lipsește, rezultatul este "
                   "<code>None</code>, nu zero."}
+
+COD_JSON["sarcina"] = "Ce cale, scrisă în cod, duce la populația din 2024 din răspunsul Băncii Mondiale?"
+COD_JSON["cod"] = ("raspuns = requests.get(url, params={\"format\": \"json\"}).json()\n\n"
+                   "date = raspuns[{{1}}]        # înregistrările\n"
+                   "populatie = date[0][{{2}}]   # numărul\n"
+                   "print(populatie)            # 19051804")
+COD_JSON["indiciu"] = ("Datele sunt pe poziția 1 a listei-rădăcină, iar numărul se află la cheia "
+                       "<code>\"value\"</code>.")
+
+WB_TEXT = """[
+  {"page": 1, "pages": 2,
+   "per_page": 2, "total": 3},
+  [
+    {"country": {"id": "RO", "value": "Romania"},
+     "date": "2024",
+     "value": 19051804},
+    {"country": {"id": "RO", "value": "Romania"},
+     "date": "2023",
+     "value": 19061062}
+  ]
+]"""
+
+sl("s15w", "JSON", "Verificare: un răspuns real",
+   "<h2>Verificare: același drum, într-un răspuns real</h2>"
+   "<p class=\"cheie\">Răspunsul API-ului Băncii Mondiale pentru populația României, simplificat la câmpurile folosite.</p>"
+   '<div class="wbv"><figure class="wbv__json"><figcaption>raspuns</figcaption><pre><code>'
+   + WB_TEXT.replace("<", "&lt;") + "</code></pre></figure>"
+   + '<div class="wbv__ex">' + ix("cod", "Calea, în cod", COD_JSON) + "</div></div>",
+   manual=
+   "<h2>Verificare: același drum, în cod</h2>"
+   "<p>Drumul găsit mai sus, în răspunsul Băncii Mondiale, se scrie în cod exact ca la cursul 2: "
+   "o poziție pentru lista de date, apoi o cheie pentru valoare.</p>"
+   + ix("cod", "Calea, în cod", COD_JSON))
+
 
 MASCA = {
     "df": "df",
@@ -2547,42 +2588,20 @@ sl("s18s", "Proiectul echipei", "Locul fiecărui fișier",
    manual="")
 
 
-def _drum_c2():
-    """Drumul datelor de la cursul 2, ca o linie de metrou: aceeași culoare ca
-    linia „Datele și codul” de pe harta semestrului."""
-    ST = [("cererea", "requests, URL, parametri"), ("API-ul", "Banca Mondială, Eurostat"),
-          ("răspunsul", "JSON"), ("tabelul", "pandas"), ("fișierul", "curs/data/c2")]
-    X0, DX, Y = 80, 165, 40
-    svg = [f'<svg class="dc2" viewBox="0 0 {2 * X0 + DX * (len(ST) - 1)} 104" role="img" '
-           'aria-label="Drumul datelor la cursul 2: cererea, API-ul, răspunsul JSON, tabelul, fișierul salvat">']
-    svg.append(f'<path class="dc2__l" d="M{X0},{Y} L{X0 + DX * (len(ST) - 1)},{Y}"/>')
-    for i, (t, d) in enumerate(ST):
-        x = X0 + DX * i
-        svg.append(f'<circle class="dc2__s" cx="{x}" cy="{Y}" r="9"/>'
-                   f'<text class="dc2__t" x="{x}" y="{Y + 32}">{t}</text>'
-                   f'<text class="dc2__d" x="{x}" y="{Y + 50}">{d}</text>')
-    svg.append("</svg>")
-    return "".join(svg)
-
-
 sl("s19", "Mai departe", "Pentru cursul următor",
    "<h2>La cursul 2: colectarea datelor prin API</h2>"
-   '<div class="fin3">' + _drum_c2()
-   + '<div class="fin3__g">'
+   '<div class="fin3"><div class="fin3__g">'
    "<section><h4>Ce urmează la cursul 2</h4><ul>"
    "<li>Ce este un API și cum se citește documentația lui.</li>"
-   "<li>Cererea HTTP din Python, cu <code>requests</code>: parametri, paginare, coduri de stare.</li>"
-   "<li>Indicatorii Băncii Mondiale și migrația de la Eurostat, salvate în <code>curs/data/c2</code>.</li>"
+   "<li>Cererile HTTP din Python: parametri, paginare, coduri de stare.</li>"
+   "<li>Indicatorii Băncii Mondiale și migrația de la Eurostat.</li>"
    "<li>Formarea echipelor de proiect, pe site.</li></ul></section>"
    "<section><h4>Pregătirea pentru cursul 2</h4><ul>"
-   "<li>Folderul <code>dsw</code>, cu mediul <code>.venv</code>, și caietul 01 rulat de sus până jos.</li>"
+   "<li>Folderul dsw, cu mediul virtual, și caietul 01 rulat până la capăt.</li>"
    '<li><a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a>, instalat.</li>'
-   "<li>Contul GitHub, creat pentru cursul 1, rămâne contul de pe site și primește la cursul 2 acces la depozitul echipei.</li></ul></section>"
+   "<li>Contul GitHub, același cu cel de pe site.</li></ul></section>"
    "</div>"
    '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 1</a>'
-   f'<a class="leg" href="{REPO_ZIP}">ZIP-ul cursului</a>'
-   '<a class="leg" href="../../c2-colectarea-prin-api/">Cursul 2</a></p>'
-   "</div>")
-
+   '<a class="leg" href="../../c2-colectarea-prin-api/">Cursul 2</a></p></div>')
 
 L.scrie_tot()

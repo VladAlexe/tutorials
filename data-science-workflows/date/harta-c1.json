@@ -1,7 +1,7 @@
 {
  "capitol": "c1",
- "total": 34,
- "sarcini": 10,
+ "total": 35,
+ "sarcini": 11,
  "slide": [
   {
    "nr": 1,
@@ -230,13 +230,25 @@
   },
   {
    "nr": 27,
+   "id": "s15w",
+   "grup": "JSON",
+   "titlu": "Verificare: un răspuns real",
+   "sarcini": [
+    {
+     "id": "c1-cod-json",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 28,
    "id": "s16s",
    "grup": "Primul contact cu SCI",
    "titlu": "Un tabel real",
    "sarcini": []
   },
   {
-   "nr": 28,
+   "nr": 29,
    "id": "s16x",
    "grup": "Primul contact cu SCI",
    "titlu": "Exercițiu: perechile României",
@@ -248,21 +260,21 @@
    ]
   },
   {
-   "nr": 29,
+   "nr": 30,
    "id": "s17",
    "grup": "Mediul de lucru",
    "titlu": "Mediul virtual",
    "sarcini": []
   },
   {
-   "nr": 30,
+   "nr": 31,
    "id": "s17t",
    "grup": "Mediul de lucru",
    "titlu": "Exercițiu în terminal",
    "sarcini": []
   },
   {
-   "nr": 31,
+   "nr": 32,
    "id": "s17o",
    "grup": "Mediul de lucru",
    "titlu": "Ordinea comenzilor",
@@ -274,14 +286,14 @@
    ]
   },
   {
-   "nr": 32,
+   "nr": 33,
    "id": "s18",
    "grup": "Proiectul echipei",
    "titlu": "Folderul cursului, pe disc",
    "sarcini": []
   },
   {
-   "nr": 33,
+   "nr": 34,
    "id": "s18s",
    "grup": "Proiectul echipei",
    "titlu": "Locul fiecărui fișier",
@@ -293,7 +305,7 @@
    ]
   },
   {
-   "nr": 34,
+   "nr": 35,
    "id": "s19",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

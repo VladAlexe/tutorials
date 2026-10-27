@@ -3,13 +3,13 @@
 
    Se include o singura data pe pagina:
      <div id="antet" data-aici="Titlul paginii"></div>
-     <script type="module" src="/data-science-workflows/js/antet.js?v=78"></script>
+     <script type="module" src="/data-science-workflows/js/antet.js?v=80"></script>
 
    Daca pagina e o lectie, pune si data-lectie="c2-colectarea-prin-api" si
    antetul deseneaza sub el banda cu fluxul.
    =========================================================================== */
 
-import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=78";
+import { CURS, LECTII, RADACINA, dupaCheie } from "./curs.js?v=80";
 
 const SVG = {
   soare: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg>',
@@ -78,7 +78,7 @@ async function taieBanda(profesor){
   const g = document.querySelector(".flux__sina");
   if (!g || profesor) return;
   try {
-    const O = await import(`${RADACINA}/js/ora.js?v=78`);
+    const O = await import(`${RADACINA}/js/ora.js?v=80`);
     const p = await O.predate();
     if (!p) return;
     const atinsa = c => { try { return !!localStorage.getItem(`dsw.parcurs.${c}`); } catch { return false; } };
@@ -96,7 +96,7 @@ async function taieBanda(profesor){
    După 3 ore ora se închide singură, deci și butonul dispare. */
 async function oraPornita(profesor){
   try {
-    const O = await import(`${RADACINA}/js/ora.js?v=78`);
+    const O = await import(`${RADACINA}/js/ora.js?v=80`);
     const S = profesor ? await O.deschisa() : await O.oraDeschisa();
     document.getElementById("btn-ora")?.remove();
     if (!S || O.prea_veche(S)) return;
@@ -133,7 +133,7 @@ async function cont(predau, crom = false){
   const zona = document.getElementById("zona-cont");
   if (!zona) return;
   try {
-    const { profil } = await import(`${RADACINA}/js/auth.js?v=78`);
+    const { profil } = await import(`${RADACINA}/js/auth.js?v=80`);
     const p = await profil();
     if (p.autentificat) taieBanda(p.profesorReal);
     if (!p.autentificat) {
@@ -149,7 +149,7 @@ async function cont(predau, crom = false){
                 aria-label="Ieși din cont">${SVG.iesi}</button>`;
       oraPornita(true);
       document.getElementById("btn-iesi").onclick = async () => {
-        const { iesi } = await import(`${RADACINA}/js/auth.js?v=78`);
+        const { iesi } = await import(`${RADACINA}/js/auth.js?v=80`);
         await iesi(); location.href = `${RADACINA}/`;
       };
       return;
@@ -174,7 +174,7 @@ async function cont(predau, crom = false){
    Pe slide-uri nu apare rândul, doar un punct pe numele din antet. */
 async function anuntEchipa(zona, crom){
   try {
-    const { amEchipa } = await import(`${RADACINA}/js/echipe.js?v=78`);
+    const { amEchipa } = await import(`${RADACINA}/js/echipe.js?v=80`);
     const d = await amEchipa();
     if (!d || d.stare === "nepornita") return;
     const t = !d.are ? "Nu faci încă parte dintr-o echipă de proiect."

@@ -30,7 +30,7 @@ export const LECTII = [
     titlu:"Introducere și configurare",
     scurt:"Introducere",
     rezumat:"Proiectul, pașii unui proiect de analiză de date, mediul virtual de lucru, tipurile de date și formatul JSON.",
-    stare:"gata", sarcini:10,
+    stare:"gata", sarcini:11,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/01_introducere_si_datele_proiectului.ipynb" },
 
   { nr:2, cheie:"c2-colectarea-prin-api",

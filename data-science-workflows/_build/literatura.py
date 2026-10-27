@@ -87,12 +87,30 @@ REF = {
         "comun) și ce implică acest fapt pentru erorile standard. Limita principală a modelului din C7.", [7]),
 
     # --- căutarea literaturii -------------------------------------------------
+    "wos": ("documentatie", "Web of Science",
+        "Web of Science (Clarivate): bază bibliografică cu abonament, cu revistele indexate și citările lor.",
+        "https://www.webofscience.com/", "revistele indexate, cu filtre pe domeniu, an și tip de lucrare și cu "
+        "analiza citărilor. Pentru studenții UBB, accesul se face prin Biblioteca Centrală Universitară.", [3]),
+    "scopus": ("documentatie", "Scopus",
+        "Scopus (Elsevier): bază bibliografică cu abonament, cu rezumate și citări.",
+        "https://www.scopus.com/", "căutare în titluri, rezumate și cuvinte-cheie, cu exportul rezultatelor. "
+        "Accesul, tot prin Biblioteca Centrală Universitară.", [3]),
     "scholar": ("documentatie", "Google Scholar",
         "Google Scholar: căutare de articole, cu „Citat de” pentru lucrările mai noi.",
         "https://scholar.google.com/", "căutarea pornind de la un articol-ancoră: lucrările care l-au citat ulterior.", [3]),
     "semantic": ("documentatie", "Semantic Scholar",
         "Semantic Scholar: căutare de articole, cu referințe și citări navigabile.",
         "https://www.semanticscholar.org/", "referințele și citările unui articol, una lângă alta.", [3]),
+    "openalex": ("documentatie", "OpenAlex",
+        "OpenAlex: index deschis al literaturii științifice, gratuit, cu API.",
+        "https://openalex.org/", "căutare gratuită; API-ul permite colectarea metadatelor în Python, ca la cursul 2.", [3]),
+    "elicit": ("documentatie", "Elicit",
+        "Elicit: asistent de cercetare bazat pe modele de limbaj, pentru găsirea și rezumarea articolelor.",
+        "https://elicit.com/", "articole pentru o întrebare formulată în cuvinte și un tabel cu datele, metoda și "
+        "rezultatele lor. Fiecare afirmație se verifică în articolul original.", [3]),
+    "connected": ("documentatie", "Connected Papers",
+        "Connected Papers: graful lucrărilor înrudite cu un articol dat.",
+        "https://www.connectedpapers.com/", "lucrările apropiate de un articol-ancoră, după referințele și citările comune.", [3]),
     "zotero": ("documentatie", "Zotero",
         "Zotero: program gratuit pentru gestionarea referințelor și formatarea bibliografiei.",
         "https://www.zotero.org/", "salvarea articolelor din browser și generarea bibliografiei formatate pentru raport.", [3, 8]),

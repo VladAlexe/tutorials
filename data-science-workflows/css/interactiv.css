@@ -2411,3 +2411,177 @@ ul.bif code{font-size:var(--t2);background:none;padding:0;color:var(--text)}
 .reg__c{background:none!important;border:0!important;border-bottom:1px solid var(--linie)!important;border-radius:0!important;padding:12px 0 12px 38px!important}
 .reg__n{left:0!important;top:12px!important;width:auto!important;height:auto!important;background:none!important;border:0!important;
   font-size:var(--t2)!important;font-weight:500;color:var(--text-3)!important;display:block!important}
+/* v79: formula SCI, scrisă exact (Johnston et al., 2026) */
+.sci2__formula i sub,.sci2__fr sub{font-size:.62em;font-style:normal;font-family:var(--sans);vertical-align:-.35em;margin-left:1px}
+.sci2__fr span:first-child,.sci2__fr span:last-child{font-family:var(--sans)}
+.sci2__def{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);text-align:center;margin:0 auto 6px;max-width:none}
+.sci2__def b{font-weight:500;color:var(--text-2)}
+.sci2__conc small a{color:inherit}
+/* v79: Franța și Austria, ca panourile SCI de la slide-ul 7 */
+.dt2__leg{display:flex;justify-content:center;gap:18px;align-items:center;font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:0 0 12px;max-width:none}
+.dt2__leg i,.dt2__g i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--linie-2)}
+.dt2__leg i{margin-right:6px;vertical-align:0}
+.dt2__leg i.da,.dt2__g i.da{background:var(--roza)}
+.dt2__duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px;align-items:start}
+.dt2__p{margin:0;display:grid;grid-template-rows:auto auto 128px auto auto;justify-items:center;text-align:center}
+.dt2__t{font-family:var(--sans);font-size:var(--t4);font-weight:600;color:var(--text)}
+.dt2__fapt{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:2px 0 10px;max-width:none}
+.dt2__fapt b{color:var(--text);font-weight:600}
+.dt2__g{display:grid;grid-template-columns:repeat(36,7px);gap:3px;align-content:start;justify-content:center}
+.dt2__la{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:8px 0 0;max-width:none}
+.dt2__la b{color:var(--roza);font-weight:600}
+.dt2__v{font-family:var(--sans);font-size:var(--t7);font-weight:500;color:var(--text);margin:6px 0 0;line-height:1.1;max-width:none;font-variant-numeric:tabular-nums}
+.dt2__v span{display:block;font-size:var(--t1);font-weight:400;color:var(--text-3);margin-bottom:2px}
+.dt2__conc{font-family:var(--sans);font-size:var(--t3);line-height:1.55;color:var(--text-2);text-align:center;margin:16px auto 0;max-width:62ch}
+@media (max-width:700px){.dt2__duo{grid-template-columns:1fr;gap:24px}.dt2__g{grid-template-columns:repeat(30,7px)}.dt2__p{grid-template-rows:auto}}
+.ist__repo{font-family:var(--sans)!important;font-size:12px!important;fill:var(--text-3)}
+/* v79: slide-ul cu perechile, fără comutator; nota de jos intră sub tabelul mic */
+.per__jos{font-family:var(--sans);font-size:var(--t3);line-height:1.55;color:var(--text-2);margin:18px 0 0;max-width:42ch}
+.sld .per .tabel td,.sld .per .tabel th{padding-top:7px;padding-bottom:7px}
+/* v79: tipurile, într-un singur tabel cu două grupe */
+.tabel.tp5{max-width:760px;font-size:var(--t3)}
+.tabel.tp5 td{padding:7px 24px 7px 0}
+.tabel.tp5 td:first-child{width:22%;padding-left:12px}
+.tabel.tp5 td:nth-child(2){width:36%}
+.tabel.tp5 thead th:first-child{padding-left:12px}
+.tabel.tp5 td code{font-size:var(--t2);color:var(--text)}
+.tabel.tp5 .dp__cap th{text-align:left}
+/* v79: tabelul tipurilor și celula Python, mereu la vedere, alăturate */
+.tcs3{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:start}
+.tcs3 .tcs2__cap,.tcs3 .tcs2__r{grid-template-columns:minmax(0,1fr) 150px}
+.tcs3__et{font-family:var(--sans);font-size:var(--t1);font-weight:600;color:var(--text-3);margin:8px 0 8px;max-width:none}
+.tcs3 .jc{min-height:150px}
+.tcs3 .jc__ist,.sld .tcs3 .jc__ist{max-height:220px}
+.tcs3__nota{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:8px 0 0;max-width:none}
+.tcs3__nota code{font-size:var(--t1);background:none;border:0;padding:0;color:var(--text-2)}
+@media (max-width:820px){.tcs3{grid-template-columns:1fr;gap:18px}}
+/* v79: rezultatele lungi (help, keys) trebuie să se vadă întregi */
+.sld .trm__ecran{height:300px}
+.trm__ecran{min-height:260px}
+.cale__prima .jc__ist,.sld .cale__prima .jc__ist{max-height:150px}
+.sld .jc__ist{max-height:160px}
+/* v79: verificarea pe JSON: răspunsul în stânga, codul în dreapta */
+.wbv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:28px;align-items:start}
+.wbv__json{margin:0}
+.wbv__json figcaption{font-family:var(--sans);font-size:var(--t1);font-weight:600;color:var(--text-3);margin:0 0 6px}
+.wbv__json pre{margin:0;font-size:var(--t1);line-height:1.55;padding:12px 14px}
+.wbv__ex .ix{margin-top:0}
+@media (max-width:860px){.wbv{grid-template-columns:1fr}}
+/* v79: folderul cursului, aerisit și simetric: două coloane egale, aceleași linii sus și jos,
+   fără panou întunecat și fără iconițe; numele în mono, restul în textul obișnuit */
+.fld{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:0 40px!important;align-items:stretch!important}
+.fld__arb{background:none!important;border-radius:0!important;padding:4px 0!important;gap:0!important;
+  border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text)}
+.fld__n{color:var(--text)!important;border-radius:0!important;padding:7px 10px 7px calc(var(--ind) * 22px + 10px)!important;
+  border-bottom:1px solid var(--linie)!important;font-size:var(--t2)}
+.fld__n:last-child{border-bottom:0!important}
+.fld__n code{color:var(--text)!important;font-size:var(--t2)}
+.fld__n:hover{background:var(--panza-2)!important}
+.fld__n.on{background:color-mix(in srgb,var(--accent) 9%,transparent)!important;box-shadow:inset 2px 0 0 var(--accent)!important}
+.fld__ic{display:none!important}
+.fld__sc{color:var(--text-3)!important}
+.fld__fisa,.sld .fld__fisa{background:none!important;border:0!important;border-radius:0!important;
+  border-top:1.5px solid var(--text)!important;border-bottom:1.5px solid var(--text)!important;padding:12px 0!important}
+.fld__fisa h5{margin:0 0 8px}
+.fld__fisa h5 code,.sld .fld__fisa h5 code{font-size:var(--t4)!important;background:none;border:0;padding:0;color:var(--text)}
+.fld__fisa p,.sld .fld__fisa p{font-size:var(--t3)!important;color:var(--text-2);margin:0 0 12px}
+.fld__fisa p code,.fld__fisa dd code{font-size:var(--t2);background:none;border:0;padding:0;color:var(--text)}
+.fld__fisa dl{border-top:1px solid var(--linie);padding-top:10px;gap:8px 16px}
+@media (max-width:760px){.fld{grid-template-columns:1fr!important;gap:16px!important}}
+.sld .sci2__g{grid-template-columns:repeat(var(--n),15px);grid-auto-rows:15px;gap:3px}
+.sld .sci2__p{gap:6px}
+.sld .sci2__formula{margin:0 0 2px}
+.sld .sci2__leg{margin:0 0 8px}
+.sld .sci2__conc{margin-top:8px}
+.wbv{grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr)!important}
+.wbv__ex .ix,.wbv__ex .ix *{min-width:0}
+.sld .tcs3{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.sld .tcs3 .tcs2__r{padding:5px 0}
+.sld .tcs3 .tcs2__in input{padding:4px 10px}
+
+/* ==== v80: cursul 2, refăcut. Pe slide: literă de cel puțin 15px pentru conținut,
+   puține coloane, fără cartonașe; aceleași reguli ca la cursul 1. ==== */
+/* restaurantul */
+.rst2-w{margin:4px 0 0}
+.rst2{display:block;width:100%;height:auto;max-height:330px}
+.rst2__furn{fill:color-mix(in srgb,var(--text) 4%,transparent)}
+.rst2__zona{font-family:var(--sans);font-size:12px;fill:var(--text-3)}
+.rst2__rand{font-family:var(--sans);font-size:13px;font-weight:600;fill:var(--text-2)}
+.rst2__rand--api{fill:var(--accent-text)}
+.rst2__ic{fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rst2__ic--sus{stroke:var(--text-2)}
+.rst2__ic--jos{stroke:var(--accent)}
+.rst2__n{font-family:var(--sans);font-size:15px;font-weight:600;fill:var(--text);text-anchor:middle}
+.rst2__d{font-family:var(--sans);font-size:13px;fill:var(--text-3);text-anchor:middle}
+.rst2__dus,.rst2__intors{stroke:var(--text-3);stroke-width:1.4;fill:none}
+.rst2 marker path{fill:var(--text-3)}
+.rst2__s{font-family:var(--sans);font-size:12px;fill:var(--text-3)}
+.rst2__ex{display:flex;gap:14px;align-items:baseline;font-family:var(--sans);font-size:var(--t3);color:var(--text);margin:6px 0 0;max-width:none}
+.rst2__ex span{flex:none;width:72px;font-size:var(--t2);color:var(--text-3)}
+.rst2__ex code{font-size:var(--t2);background:none;border:0;padding:0;color:var(--accent-text)}
+/* trei motive */
+.mtv3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin:10px 0 0;
+  border-top:1.5px solid var(--text);padding-top:18px}
+.mtv3 span{display:block;font-family:var(--titlu);font-size:var(--t7);line-height:1;color:var(--accent);margin-bottom:10px}
+.mtv3 h4{font-family:var(--sans);font-size:var(--t4);font-weight:600;margin:0 0 6px;color:var(--text)}
+.mtv3 p{font-family:var(--sans);font-size:var(--t3);line-height:1.55;color:var(--text-2);margin:0;max-width:none}
+.mtv3__cost{font-family:var(--sans);font-size:var(--t3);color:var(--text-3);margin:26px 0 0;padding-top:12px;border-top:1px solid var(--linie);max-width:none}
+@media (max-width:760px){.mtv3{grid-template-columns:1fr;gap:18px}}
+/* criteriile, un tabel */
+.tabel.crt2{max-width:880px}
+.tabel.crt2 td{padding:12px 24px 12px 0}
+.tabel.crt2 td:first-child{width:26%}
+.tabel.crt2 td:nth-child(2){color:var(--text-2)}
+.tabel.crt2 td:last-child,.tabel.crt2 th:last-child{color:var(--accent-text);font-weight:500;white-space:nowrap}
+/* patru stiluri */
+.stl2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 36px;margin-top:6px}
+.stl2 section{border-top:1.5px solid var(--text);padding-top:10px}
+.stl2 h4{font-family:var(--sans);font-size:var(--t4);font-weight:600;margin:0 0 2px;color:var(--text)}
+.stl2 p{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);margin:0 0 10px;max-width:none}
+.stl2 pre{margin:0;padding:10px 12px;background:var(--panza-2)!important;border:0!important;border-radius:6px;overflow-x:auto}
+.stl2 pre code{font-size:var(--t2);color:var(--text)!important;background:none!important;white-space:pre}
+.stl2__nota{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);margin:16px 0 0;max-width:none}
+@media (max-width:760px){.stl2{grid-template-columns:1fr}}
+/* cronologia, pe slide: literă mai mare, rânduri mai înalte */
+.sld .bnz__b{height:58px}
+.sld .bnz__n{font-size:var(--t3)}
+.sld .bnz__p span{font-size:var(--t2)}
+.sld .bnz__ani i{font-size:var(--t2)}
+.sld .bnz__det h5{font-size:var(--t4)}
+.sld .bnz__det dt{font-size:var(--t2)}
+.sld .bnz__det dd{font-size:var(--t3);line-height:1.5}
+.sld .bnz__b,.sld .bnz__axa{grid-template-columns:200px minmax(0,1fr)}
+.rst2{max-height:300px}
+.rst2__ex{display:block;font-size:var(--t3);color:var(--text-2);margin-top:8px}
+.rst2__cer{font-family:var(--mono);font-size:13px;fill:var(--accent-text)}
+.rst2__rsp{font-family:var(--sans);font-size:13px;fill:var(--text-2)}
+.stl2 pre code *{color:var(--text)!important;background:none!important;font-weight:400!important}
+.sld .bnz__b{height:48px}
+.sld .bnz__det{min-height:0;margin-top:8px}
+/* tabelele noi de pe slide-urile C2: puține coloane, literă de 15px, rânduri aerisite */
+.tabel.mt2,.tabel.srs2,.tabel.rq2,.tabel.eu2{max-width:900px}
+.tabel.mt2 td,.tabel.srs2 td,.tabel.rq2 td,.tabel.eu2 td{padding:11px 24px 11px 0}
+.tabel.mt2 td:first-child{font-family:var(--mono);font-size:var(--t2);width:16%}
+.tabel.mt2 tr.on td,.tabel.srs2 tr.on td:first-child,.tabel.eu2 tr.on td:first-child{color:var(--accent-text)}
+.tabel.mt2 tr.on td{font-weight:600}
+.tabel.srs2 td:first-child{width:24%}
+.tabel.srs2 td:not(:first-child),.tabel.mt2 td:not(:first-child){color:var(--text-2)}
+.tabel.rq2 td:first-child{width:34%;color:var(--text-2)}
+.tabel.rq2 code,.tabel.eu2 code{font-size:var(--t2);color:var(--text)}
+.tabel.eu2 td:first-child{width:28%}
+.eu2__adr{margin:4px 0 14px;max-width:none}
+.eu2__adr code{font-size:var(--t2);background:none;border:0;padding:0;color:var(--text-2);word-break:break-all}
+.eu2__adr b{color:var(--accent-text);font-weight:600}
+.c2__jos{font-family:var(--sans);font-size:var(--t3);color:var(--text-3);margin:14px 0 0;max-width:62ch}
+.c2__jos code{font-size:var(--t2);background:none;border:0;padding:0;color:var(--text-2)}
+.c2doi--pe{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:start}
+/* listele și exercițiile de pe slide-uri: aceeași literă ca restul conținutului */
+.sld .etp-st b,.sld .etp-st span{font-size:var(--t3)}
+.sld ul.bif li{font-size:var(--t3)}
+#s10v .srt__e{font-family:var(--sans);font-size:var(--t2);padding:6px 12px}
+#s10v .srt__c{min-height:110px;border-radius:0;border:0;border-top:1.5px solid var(--text)}
+.sld .adr__roluri{gap:0 28px}
+.sld .adr__r{border:0!important;border-bottom:1px solid var(--linie)!important;border-radius:0!important;padding:8px 2px!important;background:none}
+.sld .adr__r b,.sld .adr__r span{font-size:var(--t3)}
+.sld .tabel.pe td span{font-size:var(--t3)}
+#s21 .dov,#s21 .ix{max-width:760px}
