@@ -2921,7 +2921,12 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .sld .adr4__b:last-child .adr4__u{border-radius:0 8px 0 0}
 .pp2__arb b{color:#EAF4EF;font-weight:700}
 
-.sld#s17 .wbv{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)!important;gap:32px;margin-top:6px}
-.sld#s17 .wbv__json pre{font-size:var(--t3);line-height:1.65;padding:16px 18px}
-.sld#s17 .wbv__leg{font-size:var(--t3)}
+/* una sub alta, ca fiecare să aibă toată lățimea: sus răspunsul, cu legenda
+   alături; jos, codul cu golurile */
+.sld#s17 .wbv{grid-template-columns:minmax(0,1fr)!important;gap:14px;margin-top:4px}
+.sld#s17 .wbv__json{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:28px;align-items:center}
+.sld#s17 .wbv__json figcaption{grid-column:1 / -1}
+.sld#s17 .wbv__json pre{font-size:var(--t2);line-height:1.5;padding:10px 16px;overflow-x:auto}
+.sld#s17 .wbv__leg{font-size:var(--t3);margin:0}
 .sld#s17 .wbv__leg span{width:84px}
+.sld#s17 .wbv__ex pre,.sld#s17 .wbv__ex code{white-space:pre}

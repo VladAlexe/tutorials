@@ -27,7 +27,7 @@ let curent = { capitol:null, slide:null, slide_nr:null, total_nr:null };
 async function conecteaza(){
   if (sb) return sb;
   try {
-    const m = await import("./auth.js?v=86");
+    const m = await import("./auth.js?v=87");
     const p = await m.profil();
     if (!p.autentificat) return null;
     sb = m.sb;
@@ -98,7 +98,7 @@ export async function jurnal(tip, detalii = {}){
       capitol: curent.capitol,
       slide: curent.slide,
       slide_nr: curent.slide_nr,
-      sedinta_id: await import("./colectare.js?v=86").then(m => m.sedintaAcum()).catch(() => null),
+      sedinta_id: await import("./colectare.js?v=87").then(m => m.sedintaAcum()).catch(() => null),
       detalii
     });
   } catch { /* jurnalul e util, nu indispensabil */ }

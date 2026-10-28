@@ -946,13 +946,9 @@ sl("s16", "requests", "Aceeași cerere, în Python",
 
 # Exercițiul: în stânga, ce a venit în răspuns; în dreapta, trei rânduri de cod,
 # fiecare cu un gol. Nimic de tastat liber: se completează golurile și se rulează.
-RASPUNS_TEXT = """[
-  {"page": 1, "pages": 2, "total": 3},
-  [
-    {"date": "2024", "value": 19051804},
-    {"date": "2023", "value": 19061062}
-  ]
-]"""
+RASPUNS_TEXT = """[{"page": 1, "pages": 2, "total": 3},
+ [{"date": "2024", "value": 19051804},
+  {"date": "2023", "value": 19061062}]]"""
 
 COD_RASPUNS = {
     "id": "c2-cod-raspuns", "fisier": CAIET,
@@ -982,7 +978,7 @@ INSPECT_HTML = (
 sl("s17", "requests", "Exercițiu: ce a venit în răspuns",
    "<h2>Exercițiu: ce a venit în răspuns</h2>"
    "<p class=\"cheie\">Cererea a rulat, iar răspunsul e în variabila <code>raspuns</code>. "
-   "Se completează cele trei goluri din dreapta, apoi Rulează.</p>"
+   "Se completează cele trei goluri de dedesubt, apoi Rulează.</p>"
    + INSPECT_HTML,
    manual=
    "<h2>Exercițiu: ce a venit în răspuns</h2>"

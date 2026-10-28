@@ -6,14 +6,14 @@
 <title>Cursul 2, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 2: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=86">
-<link rel="stylesheet" href="../../css/sistem.css?v=86">
-<link rel="stylesheet" href="../../css/tutorial.css?v=86">
-<link rel="stylesheet" href="../../css/interactiv.css?v=86">
-<link rel="stylesheet" href="../../css/grafice.css?v=86">
-<link rel="stylesheet" href="../../css/exercitii.css?v=86">
-<link rel="stylesheet" href="../../css/explorator.css?v=86">
-<script src="../../js/tema.js?v=86"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=87">
+<link rel="stylesheet" href="../../css/sistem.css?v=87">
+<link rel="stylesheet" href="../../css/tutorial.css?v=87">
+<link rel="stylesheet" href="../../css/interactiv.css?v=87">
+<link rel="stylesheet" href="../../css/grafice.css?v=87">
+<link rel="stylesheet" href="../../css/exercitii.css?v=87">
+<link rel="stylesheet" href="../../css/explorator.css?v=87">
+<script src="../../js/tema.js?v=87"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 2 · Manual"></div>
@@ -162,13 +162,9 @@
 
 <section class="tut__s" id="s17">
 <span class="tut__nr">15 · requests</span>
-<h2>Exercițiu: ce a venit în răspuns</h2><p>Cererea din caiet a rulat, iar răspunsul se află în variabila <code>raspuns</code>. În stânga e conținutul lui, simplificat; în dreapta, trei rânduri de cod care scot din el codul de stare, numărul de valori și populația din 2024.</p><div class="wbv"><figure class="wbv__json"><figcaption>Ce conține raspuns.json()</figcaption><pre><code>[
-  {"page": 1, "pages": 2, "total": 3},
-  [
-    {"date": "2024", "value": 19051804},
-    {"date": "2023", "value": 19061062}
-  ]
-]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte una pe an</p></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
+<h2>Exercițiu: ce a venit în răspuns</h2><p>Cererea din caiet a rulat, iar răspunsul se află în variabila <code>raspuns</code>. În stânga e conținutul lui, simplificat; în dreapta, trei rânduri de cod care scot din el codul de stare, numărul de valori și populația din 2024.</p><div class="wbv"><figure class="wbv__json"><figcaption>Ce conține raspuns.json()</figcaption><pre><code>[{"page": 1, "pages": 2, "total": 3},
+ [{"date": "2024", "value": 19051804},
+  {"date": "2023", "value": 19061062}]]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte una pe an</p></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Trei rânduri, trei goluri</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c2-cod-raspuns", "fisier": "02_colectarea_datelor_prin_api.ipynb", "sarcina": "<b>1</b> codul de stare · <b>2</b> câte valori există · <b>3</b> populația în 2024", "cod": "print(raspuns.{{1}})\nprint(raspuns.json()[0][{{2}}])\nprint(raspuns.json()[{{3}}][0][\"value\"])", "goluri": {"1": {"ok": ["status_code"], "ajutor": "atributul"}, "2": {"ok": ["\"total\"", "'total'"], "ajutor": "cheia"}, "3": {"ok": ["1"], "ajutor": "poziția"}}, "indiciu": "Codul de stare e atributul <code>status_code</code> (slide-ul de dinainte). În stânga: paginarea e pe poziția 0, cu cheia <code>\"total\"</code>; valorile sunt pe poziția 1.", "iesire": "200\n3\n19051804", "laBine": "Codul de stare, apoi corpul: aceeași ordine la orice cerere.", "laRau": "Cheia se scrie între ghilimele; pozițiile încep de la 0.", "explicatie": "<code>raspuns.status_code</code> e 200, deci cererea a reușit. <code>raspuns.json()</code> e o listă: pe poziția 0 paginarea, unde <code>\"total\"</code> spune câte valori există; pe poziția 1 valorile, de la anul cel mai recent."}</script></div>
 </div></div></div><p>Se poate lucra și cu o variabilă intermediară: <code>date = raspuns.json()</code>, apoi <code>date[0]["total"]</code>. Aceeași structură, o listă cu paginarea și cu valorile, apare la toți indicatorii Băncii Mondiale.</p>
@@ -269,11 +265,11 @@ print("salvate", len(tabel), "rânduri")</code></pre><div class="nota"><div clas
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=86"></script>
+<script type="module" src="../../js/antet.js?v=87"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=86";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=86";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=86";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=87";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=87";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=87";
 pornesteIx();
 pornesteVerif("c2");
 pornesteTut("c2");
