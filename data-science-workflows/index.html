@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Curs de masterat: de la colectarea datelor prin API până la raportul final, pe date reale de conectivitate socială și migrație.">
-<link rel="stylesheet" href="css/fonturi.css?v=87">
-<link rel="stylesheet" href="css/sistem.css?v=87">
-<script src="js/tema.js?v=87"></script>
+<link rel="stylesheet" href="css/fonturi.css?v=88">
+<link rel="stylesheet" href="css/sistem.css?v=88">
+<script src="js/tema.js?v=88"></script>
 <style>
   /* Pagina cursului: o coloană, ca la Ingineria AI. Sus cursul, apoi linia
      lecțiilor, apoi lista lor, una sub alta. Toate lecțiile sunt egale: nu
@@ -127,20 +127,19 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE } from "./js/curs.js?v=87";
+import { LECTII, NOTARE } from "./js/curs.js?v=88";
 
-/* Ce lecții sunt deschise. Profesorul și vizitatorul fără cont le au pe toate.
-   Studentul are lecțiile predate grupei, plus orice lecție în care a lucrat deja.
+/* Ce lecții sunt deschise. Profesorul le are pe toate. Studentul și
+   vizitatorul fără cont au doar lecțiile predate: cele pentru care a fost
+   pornită o oră, nearhivată.
 
    Pagina se desenează IMEDIAT, fără să aștepte rețeaua: cu ce știa browserul
-   data trecută, sau cu tot cursul dacă e prima vizită. Răspunsul bazei vine pe
-   urmă și doar rafinează. O listă goală pentru că autentificarea întârzie e
-   cel mai rău lucru pe care îl poate vedea un student. */
+   data trecută, sau doar cu prima lecție dacă e prima vizită. Răspunsul bazei
+   vine pe urmă și doar rafinează. */
 const toate = LECTII.map(l => l.nr);
-const atinse = LECTII.filter(l => { try { return !!localStorage.getItem(`dsw.parcurs.c${l.nr}`); } catch { return false; } }).map(l => l.nr);
 let memorat = null;
 try { memorat = JSON.parse(localStorage.getItem("dsw.deschise") || "null"); } catch {}
-deseneaza(new Set(memorat ? [...memorat, ...atinse] : toate), !!memorat);
+deseneaza(new Set(memorat || [1]), true);
 
 /* notarea nu depinde de cont: se desenează înainte de orice așteptare */
 document.getElementById("notare").innerHTML =
@@ -150,14 +149,14 @@ document.getElementById("notare").innerHTML =
 
 const peTermen = (pr, ms) => Promise.race([pr, new Promise((_, r) => setTimeout(() => r(new Error("timp")), ms))]);
 try {
-  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=87"), import("./js/ora.js?v=87")]);
+  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=88"), import("./js/ora.js?v=88")]);
   const p = await peTermen(profil(), 8000);
-  if (p.autentificat && !p.profesorReal){
+  if (!p.profesorReal){
     const pred = await peTermen(O.predate(), 8000);
     if (pred){
       const nr = LECTII.filter(l => pred.has("c" + l.nr)).map(l => l.nr);
       try { localStorage.setItem("dsw.deschise", JSON.stringify(nr)); } catch {}
-      deseneaza(new Set([...nr, ...atinse]), true);
+      deseneaza(new Set(nr), true);
     }
   } else {
     try { localStorage.removeItem("dsw.deschise"); } catch {}
@@ -195,7 +194,7 @@ function deseneaza(deschise, student){
 }
 
 </script>
-<script type="module" src="js/antet.js?v=87"></script>
-<script type="module" src="js/subsol.js?v=87"></script>
+<script type="module" src="js/antet.js?v=88"></script>
+<script type="module" src="js/subsol.js?v=88"></script>
 </body>
 </html>

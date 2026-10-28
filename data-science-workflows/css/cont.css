@@ -257,3 +257,4 @@
 .tabel--sem td{font-family:var(--sans)}
 .tabel--sem td.mono{font-family:var(--mono)}
 .lect__p{font-size:var(--t4);color:var(--text-3)}
+.cnt__s[hidden]{display:none}

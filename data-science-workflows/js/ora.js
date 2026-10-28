@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=87";
-import { RADACINA } from "./curs.js?v=87";
+import { sb } from "./auth.js?v=88";
+import { RADACINA } from "./curs.js?v=88";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -146,11 +146,47 @@ export const acum = capitol => cheama("ora_acum", { p_capitol:capitol });
 export async function predate() {
   try {
     /* doar orele adevărate: o oră de test o arhivezi din „Ședințele” și
-       lecția nu mai apare ca predată */
+       lecția nu mai apare ca predată. Întâi funcția din db/24, care merge și
+       fără cont; dacă nu a fost rulată, citirea directă, care cere cont. */
+    const f = await sb.rpc("lectii_predate");
+    if (!f.error) return new Set((f.data || []).map(r => r.capitol));
+    /* fără funcție și fără cont, tabelul nu se poate citi: nu se știe nimic */
+    const ses = await sb.auth?.getSession?.().catch(() => null);
+    if (sb.auth && !ses?.data?.session) return null;
     const { data, error } = await sb.from("sedinte").select("capitol").is("arhivata_la", null);
     if (error) return null;
     return new Set((data || []).map(r => r.capitol));
   } catch { return null; }
+}
+
+/** Slide-urile și manualul unei lecții nepredate: în locul lor, un rând care
+    spune când se deschid. Profesorul le vede oricând. Dacă nu se poate afla ce
+    s-a predat (fără rețea), pagina rămâne deschisă. */
+export async function inchideDacaNepredata(capitol){
+  try {
+    const { profil } = await import("./auth.js?v=88");
+    const p = await profil().catch(() => ({}));
+    if (p.profesorReal) return false;
+    const pred = await predate();
+    if (!pred || pred.has(capitol)) return false;
+    /* rămâne doar antetul; restul paginii (slide-urile, bara de jos, manualul)
+       se scoate */
+    [...document.body.children].forEach(c => {
+      if (c.tagName === "SCRIPT" || c.matches("header, #antet")) return;
+      c.remove();
+    });
+    document.body.classList.remove("prezint");
+    const m = document.createElement("main");
+    m.className = "lectie-inchisa";
+    m.innerHTML = `<div class="pagina" style="padding:64px 0 96px">
+      <h1>Lecția se deschide la oră</h1>
+      <p style="font-size:var(--t4);color:var(--text-2)">Slide-urile și manualul apar după ce lecția este predată grupei.</p>
+      <p><a class="leg" href="../">Pagina cursului</a> · <a class="leg" href="${RADACINA}/">Toate lecțiile</a></p>
+    </div>`;
+    const cap = document.querySelector("header, #antet");
+    if (cap) cap.after(m); else document.body.prepend(m);
+    return true;
+  } catch { return false; }
 }
 
 /** Lecțiile pe care are voie să le vadă cine se uită acum. Profesorul le vede
@@ -170,7 +206,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=87`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=88`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

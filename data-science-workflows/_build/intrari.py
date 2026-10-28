@@ -162,12 +162,10 @@ try {{
       /* altfel butonul pornește ora direct: nu alegi nicio grupă, cine are
          codul intră, iar fiecare student e deja în grupa lui din listă */
     }}
-  }} else if (p.autentificat){{
-    /* deschisă dacă a fost predată grupei sau dacă ai lucrat deja în ea */
-    let atinsa = false;
-    try {{ atinsa = !!localStorage.getItem("dsw.parcurs.c{nr}"); }} catch {{}}
-    const pred = atinsa ? null : await O.predate();
-    if (!atinsa && pred && !pred.has("c{nr}")){{
+  }} else {{
+    /* deschisă doar după ce a fost predată: o oră pornită, nearhivată */
+    const pred = await O.predate();
+    if (pred && !pred.has("c{nr}")){{
       document.getElementById("inchis").hidden = false;
       document.querySelectorAll('[data-rol="incepe"], .mat__c[href^="lectie"]').forEach(a => {{
         a.removeAttribute("href"); a.classList.add("bl__b--stins", "stins");
