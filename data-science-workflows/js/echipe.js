@@ -13,13 +13,13 @@
 
    Ce vede fiecare:
      - studentul vede toate echipele grupei, cu numele membrilor;
-     - pe proiector apar toate echipele, cu numele;
+     - pe proiector apar toate echipele, câte un pătrat cu numele întregi;
      - profesorul vede totul în pagina lui.
 
    Pagina se reîmprospătează singură la câteva secunde, cât e vizibilă.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=84";
+import { RADACINA } from "./curs.js?v=85";
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 const PAS = 3500;
@@ -30,7 +30,7 @@ const culoare = nr => `var(--${CULORI[(nr - 1) % CULORI.length]})`;
 const initiale = n => String(n || "?").trim().split(/\s+/).slice(0, 2).map(x => x[0] || "").join("").toUpperCase();
 
 let A = null;
-async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=84`); return A; }
+async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=85`); return A; }
 async function rpc(f, args){
   const { sb } = await auth();
   const r = await sb.rpc(f, args);
@@ -72,6 +72,7 @@ function cartonas(e, lim, o = {}){
   const n = membri ? membri.length : (e.ocupate || 0);
   const plina = n >= lim;
   const tenta = 4 + Math.round(14 * Math.min(n, lim) / lim);
+  if (o.sloturi) return patrat(e, lim, o, membri, n, plina, tenta);
   const locuri = Array.from({ length: Math.max(lim, n) }, (_, i) => {
     if (i >= n) return "<i></i>";
     const nume = membri && membri[i];
@@ -91,6 +92,29 @@ function cartonas(e, lim, o = {}){
       style="--ec:${culoare(e.nr)};--tenta:${tenta}%;--i:${e.nr - 1}" ${atr}>
     <span class="echp__cap"><b>Echipa ${e.nr}</b><small>${n}/${lim}</small></span>
     <span class="echp__loc">${locuri}</span>${nume}${et ? `<span class="echp__et">${et}</span>` : ""}
+  </${tag}>`;
+}
+
+/* pe slide: un pătrat pentru fiecare echipă, cu un rând pentru fiecare loc. Pe
+   rând stă numele întreg al celui care a intrat, ca să se citească din sală;
+   locurile goale rămân linii punctate. Înăuntru doar elemente inline, pentru
+   că pătratul poate fi buton. */
+function patrat(e, lim, o, membri, n, plina, tenta){
+  const randuri = Array.from({ length: Math.max(lim, n) }, (_, i) => {
+    const nume = membri && membri[i];
+    if (i >= n) return `<span class="echp__sl echp__sl--liber"><i>${i + 1}</i><span>loc liber</span></span>`;
+    return `<span class="echp__sl${nume && o.noi?.has(nume) ? " nou" : ""}"><i>${i + 1}</i><span title="${esc(nume || "")}">${nume ? esc(nume) : "ocupat"}${o.eu && o.eu === nume ? " <em>tu</em>" : ""}</span></span>`;
+  }).join("");
+  const buton = !!o.actiune && !plina;
+  const tag = buton ? "button" : "div";
+  const atr = buton
+    ? `type="button" data-act="${o.actiune}" data-id="${e.id}" aria-label="${esc(`${o.eticheta}: Echipa ${e.nr}, ${n} din ${lim} locuri ocupate`)}"`
+    : "";
+  const et = plina ? "Completă" : (o.eticheta || "");
+  return `<${tag} class="echp__c echp__c--sl${plina ? " plina" : ""}${o.a_mea ? " a-mea" : ""}${buton ? " act" : ""}"
+      style="--ec:${culoare(e.nr)};--tenta:${tenta}%;--i:${e.nr - 1}" ${atr}>
+    <span class="echp__cap"><b>Echipa ${e.nr}</b><small>${n}/${lim}</small></span>
+    <span class="echp__sls">${randuri}</span>${et && buton ? `<span class="echp__et">${et}</span>` : ""}
   </${tag}>`;
 }
 
@@ -190,8 +214,8 @@ export async function echipeStudent(gazda, { slide = false } = {}){
         if (d.refuzata) h += `<p class="echp__info">Cererea pentru Echipa ${d.refuzata.nr} a fost refuzată. Poți cere altei echipe.</p>`;
       }
       const act = d.cerere ? null : (deschisa ? "intra" : "cere");
-      h += `<div class="echp__grila${intra}">${E.map(e => cartonas(e, lim, {
-               actiune: act, noi: nou, a_mea: d.cerere && d.cerere.nr === e.nr,
+      h += `<div class="echp__grila${slide ? " echp__grila--sl" : ""}${intra}">${E.map(e => cartonas(e, lim, {
+               actiune: act, noi: nou, a_mea: d.cerere && d.cerere.nr === e.nr, sloturi: slide,
                eticheta: d.cerere ? (d.cerere.nr === e.nr ? "Cerere trimisă" : "") : deschisa ? "Intru aici" : "Cer să intru" })).join("")}</div>`;
       if (d.toate_pline && !d.cerere){
         h += `<div class="echp__noua"><p>Toate echipele sunt complete.</p>
@@ -321,7 +345,7 @@ export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
 
 export async function echipeSlideProfesor(gazda){
   gazda.classList.add("echp", "echp--slide");
-  const O = await import(`${RADACINA}/js/ora.js?v=84`);
+  const O = await import(`${RADACINA}/js/ora.js?v=85`);
   const S = await O.deschisa().catch(() => null);
   let grupa = S?.grupa_id || null;
   if (!grupa){
@@ -360,7 +384,7 @@ export async function echipeSlideProfesor(gazda){
                                    membri: e.membri.map(x => x.nume) }));
     const nou = noi(E.flatMap(e => e.membri || []));
     const ocupate = E.reduce((s, e) => s + e.ocupate, 0);
-    const h = `<div class="echp__grila${prima ? " intra" : ""}">${E.map(e => cartonas(e, d.limita, { noi: nou })).join("")}</div>
+    const h = `<div class="echp__grila echp__grila--sl${prima ? " intra" : ""}">${E.map(e => cartonas(e, d.limita, { noi: nou, sloturi: true })).join("")}</div>
       <div class="echp__bara">
         <span class="echp__stare ${deschisa ? "on" : ""}">${deschisa ? "Alegere deschisă" : "Alegere închisă"}</span>
         <span class="echp__info">${ocupate} din ${d.studenti} studenți au o echipă</span>

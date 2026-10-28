@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 3. Versionare și colaborare cu Git · Fluxuri de lucru</title>
 <meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără conflicte între modificări și cum se încadrează teoretic un proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=84">
-<link rel="stylesheet" href="../css/sistem.css?v=84">
-<link rel="stylesheet" href="../css/intrare.css?v=84">
-<script src="../js/tema.js?v=84"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=85">
+<link rel="stylesheet" href="../css/sistem.css?v=85">
+<link rel="stylesheet" href="../css/intrare.css?v=85">
+<script src="../js/tema.js?v=85"></script>
 </head>
 <body>
 
@@ -82,7 +82,7 @@
 <ol>
 <li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. Pe Windows include Git Bash, un terminal în care funcționează comenzile din lecție.</li>
 <li>Contul de <a class="leg" href="https://github.com/" rel="noopener" target="_blank">GitHub</a>, același cu care se face intrarea pe site.</li>
-<li>Depozitul echipei, clonat la cursul 2 în <code>dsw/proiect</code>, și datele colectate în <code>dsw/curs/data/c2</code>.</li>
+<li>Echipa, aleasă la cursul 2, și datele colectate în <code>dsw/curs/data/c2</code>. Depozitul echipei se creează și se clonează în <code>dsw/proiect</code> în această lecție.</li>
 </ol></div>
   </section>
   <section class="sec">
@@ -110,7 +110,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=84"), import("../js/ora.js?v=84"), import("../js/curs.js?v=84")]);
+    import("../js/auth.js?v=85"), import("../js/ora.js?v=85"), import("../js/curs.js?v=85")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -138,7 +138,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=84"></script>
-<script type="module" src="../js/subsol.js?v=84"></script>
+<script type="module" src="../js/antet.js?v=85"></script>
+<script type="module" src="../js/subsol.js?v=85"></script>
 </body>
 </html>

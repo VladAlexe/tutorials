@@ -11,7 +11,7 @@
 
    Paleta e calda: hartia bate in crema, griurile in masliniu. La tema deschisa,
    crema e retinuta: destul cat sa se vada ca hartia nu e alba, nu atat cat sa
-   bata la ochi. Fundalul e #F4F2EA, cardurile stau pe #FDFCF9 si se desprind
+   bata la ochi. Fundalul e #F9F8F4, cardurile stau pe #FDFCF9 si se desprind
    de el. Daca vreodata pare prea mult sau prea putin, se misca din aceste doua
    valori si din --linie, nicaieri altundeva.
 
@@ -37,7 +37,7 @@
 
 :root{
   /* tema deschisa */
-  --fundal:       #F4F2EA;
+  --fundal:       #F9F8F4;
   --panza:        #FDFCF9;
   --panza-2:      #EBE8DF;
   --text:         #22221A;
@@ -663,3 +663,23 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
 /* v83: pe slide, cele cinci locuri încap pe un rând și la cinci echipe pe rând */
 .echp--slide .echp__loc{gap:4px;flex-wrap:nowrap}
 .echp--slide .echp__loc i{flex:0 0 auto}
+
+/* v85: pe slide, fiecare echipă e un pătrat cu un rând pentru fiecare loc și
+   numele întreg pe rând, ca să se citească din sală */
+.echp .echp__grila.echp__grila--sl{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.echp__c--sl{gap:8px;padding:14px 16px 12px}
+.echp__sls{display:flex;flex-direction:column}
+.echp__sl{display:flex;align-items:baseline;gap:10px;padding:4px 0;min-width:0;line-height:1.35;
+  border-bottom:1px solid color-mix(in srgb,var(--ec) 22%,transparent)}
+.echp__sl:last-child{border-bottom:0}
+.echp__sl--liber{border-bottom-style:dashed}
+.echp__sl--liber:last-child{border-bottom:0}
+.echp__sl i{flex:none;width:12px;font-style:normal;font-size:var(--t1);color:color-mix(in srgb,var(--ec) 70%,var(--text-3))}
+.echp__sl > span{font-size:var(--t4);font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.echp__sl--liber > span{font-size:var(--t3);font-weight:400;color:var(--text-3)}
+.echp__sl em{font-style:normal;font-weight:600;margin-left:4px;color:color-mix(in srgb,var(--ec) 78%,var(--text))}
+.echp__sl.nou > span{animation:echp-nou 1.2s ease}
+@keyframes echp-nou{from{color:var(--ec)}}
+.echp__c--sl.plina .echp__sl > span{color:var(--panza)}
+.echp__c--sl.plina .echp__sl i{color:color-mix(in srgb,var(--panza) 70%,var(--ec))}
+.echp__c--sl.plina .echp__sl{border-bottom-color:color-mix(in srgb,var(--panza) 30%,transparent)}

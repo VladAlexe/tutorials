@@ -18,7 +18,7 @@ Rulare:  python _build/c3.py
 """
 
 from literatura import lecturi
-from comun import Lectie, ix, verif, tabel, nota
+from comun import Lectie, ix, verif, tabel, nota, REPO_ORG
 
 def templu(acoperis, stalpi, baza, et_sus="Întrebarea"):
     """Un cadru teoretic desenat ca templu: literatura e temelia, pilonii
@@ -219,7 +219,7 @@ sl("s2", "Cursul", "Recapitulare",
    '<ul class="bif">'
    "<li><b>Colectarea</b><span>cererile către Banca Mondială și Eurostat, în caietul 02.</span></li>"
    "<li><b>Datele</b><span><code>bm.csv</code> și <code>migratie.csv</code>, în <code>curs/data/c2</code>.</span></li>"
-   "<li><b>Depozitul echipei</b><span>clonat în <code>dsw/proiect</code>, încă fără commit-uri.</span></li>"
+   "<li><b>Echipa</b><span>aleasă pe site, la cursul 2; depozitul ei se creează în această lecție.</span></li>"
    "</ul>"
    '<p class="ep__jos">Deocamdată, toate există doar pe calculatorul local. Git le păstrează istoricul, '
    "iar GitHub le pune în comun pentru echipă.</p>")
@@ -381,6 +381,26 @@ sl("s6", "Primii pași", "Depozitul",
           "ștergerea dosarului <code>.git</code> creat acolo; fișierele nu sunt "
           "afectate. În PowerShell, din dosarul respectiv: "
           "<code>Remove-Item -Recurse -Force .git</code>."))
+
+# Depozitul echipei: pașii și folderul, mutați aici de la cursul 2; apar în
+# manualul slide-ului „Depozitul echipei”, de la finalul lecției.
+ARBORE_PROIECT = (
+    '<span class="a">dsw/</span>\n'
+    '├── <span class="x">.venv/</span>\n'
+    '├── curs/            <span class="c"># personal, fără Git</span>\n'
+    '└── <span class="a">proiect/</span>         <span class="c"># al echipei, cu Git</span>\n'
+    '    ├── .git/        <span class="c"># istoricul</span>\n'
+    '    └── README.md')
+
+PE4_HTML = (
+    '<ol class="pe4">'
+    f'<li><span>1</span><b>Organizația</b><p><a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, comună pentru grupă. Invitația vine pe e-mail.</p></li>'
+    "<li><span>2</span><b>Depozitul echipei</b><p>Un membru îl creează în organizație și îi adaugă pe ceilalți.</p></li>"
+    "<li><span>3</span><b>Adresa</b><p>Pe pagina depozitului: Code → HTTPS.</p></li>"
+    "<li><span>4</span><b>Clonarea</b><p>În terminal, în dsw: <code>git clone &lt;adresa&gt; proiect</code></p></li>"
+    "</ol>"
+    '<div class="pe4__arb"><pre><code>' + ARBORE_PROIECT + "</code></pre>"
+    '<p>Munca echipei stă în proiect/, cu Git; exercițiile de la curs rămân în curs/, fără Git.</p></div>')
 
 sl("s7", "Primii pași", "Identitatea autorului",
    "<h2>Credențiale</h2>"
@@ -1177,6 +1197,17 @@ sl("s22", "Proiectul echipei", "Depozitul echipei",
        ["5", "scripturile de colectare de la cursul 2 se încarcă pe dev"],
        ["6", "în <code>README.md</code>: întrebarea de cercetare și responsabilitățile"],
    ])
+   + "<h3>Primii doi pași, în detaliu</h3>"
+   + PE4_HTML
+   + "<p><code>git clone</code> copiază depozitul cu tot cu istoricul lui, în folderul <code>.git/</code>, "
+   "și reține adresa de la care a fost copiat. Ultimul cuvânt din comandă e numele folderului: fără el, "
+   "folderul ar purta numele depozitului. Comanda se dă o singură dată, din <code>dsw</code>; dacă e dată "
+   "din alt folder, de exemplu din <code>curs/</code>, depozitul ajunge acolo, iar căile din caiete nu "
+   "mai sunt cele din manual.</p>"
+   + nota("Git",
+          'Se instalează de pe <a class="leg" href="https://git-scm.com/downloads" target="_blank" '
+          'rel="noopener">git-scm.com</a>; instalarea se verifică cu <code>git --version</code>. La prima '
+          "clonare, Git poate cere autentificarea în contul GitHub, într-o fereastră din browser.")
    + ix("dovada", "Verificarea depozitului", {
        "id": "c3-dovada-depozit",
        "sarcina": "Comenzile se rulează local; rezultatul din terminal se lipește în câmpul lui.",

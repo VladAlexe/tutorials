@@ -13,7 +13,7 @@
    grafic are legendă cu praguri, și fiecare are o variantă de tabel.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=84";
+import { RADACINA } from "./curs.js?v=85";
 
 /* „de 5 ori”, dar „de 25 de ori”: în română, „de” apare de la 20 în sus */
 const deOri = n => { const r = Math.abs(n) % 100; return `${n.toLocaleString("ro-RO")} ${(r >= 20 || (r === 0 && n !== 0)) ? "de " : ""}ori`; };

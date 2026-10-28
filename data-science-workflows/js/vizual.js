@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=84");
+    const m = await import("/data-science-workflows/js/colectare.js?v=85");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -2901,6 +2901,39 @@ V.pagini = (gazda, d) => {
 };
 
 
+/* --- PAGINI2: aceleași 65 de valori, câte o cutie pentru fiecare pagină ---------
+   Fiecare pagină e o cutie cu valorile ei; per_page schimbă câte cutii ies.
+   Sub ele, dicționarul de paginare, cu cele două chei care contează.
+   ------------------------------------------------------------------------- */
+V.pagini2 = (gazda, d) => {
+  const ANI = d.ani || [], N = ANI.length, OPT = d.optiuni || [10, 50, 1000];
+  let pp = d.implicit || 50, pg = 1;
+  gazda.innerHTML = `
+    <div class="pgn2">
+      <div class="pgn2__sus"><span>per_page</span>
+        <div class="pgn2__opt">${OPT.map(o => `<button type="button" data-o="${o}">${o}</button>`).join("")}</div></div>
+      <div class="pgn2__pag"></div>
+      <p class="pgn2__meta"></p>
+    </div>`;
+  const $ = s => gazda.querySelector(s);
+  function deseneaza(){
+    const pagini = Math.max(1, Math.ceil(N / pp));
+    pg = Math.min(pg, pagini);
+    gazda.querySelectorAll(".pgn2__opt button").forEach(b => b.classList.toggle("on", +b.dataset.o === pp));
+    $(".pgn2__pag").innerHTML = Array.from({ length: pagini }, (_, k) => {
+      const a = k * pp, b = Math.min(N, (k + 1) * pp);
+      return `<button type="button" data-p="${k + 1}" class="${k + 1 === pg ? "on" : ""}">
+        <b>pagina ${k + 1}</b><span class="pgn2__v">${ANI.slice(a, b).map(an => `<i title="${an}"></i>`).join("")}</span>
+        <small>${b - a} valori · ${ANI[a]}${b - a > 1 ? `–${ANI[b - 1]}` : ""}</small></button>`; }).join("");
+    $(".pgn2__meta").innerHTML = `<code>{"page": ${pg}, "pages": <b>${pagini}</b>, "per_page": ${pp}, "total": <b>${N}</b>}</code>`
+      + `<span><b>pages</b> câte pagini sunt</span><span><b>total</b> câte valori există</span>`;
+  }
+  $(".pgn2__opt").addEventListener("click", e => { const b = e.target.closest("button"); if (b){ pp = +b.dataset.o; pg = 1; deseneaza(); } });
+  $(".pgn2__pag").addEventListener("click", e => { const b = e.target.closest("button"); if (b){ pg = +b.dataset.p; deseneaza(); } });
+  deseneaza();
+};
+
+
 /* --- CUB: un răspuns JSON-stat, desfăcut ----------------------------------------
    Grila e cubul cu două dimensiuni. JSON-stat scrie codurile o singură dată,
    cu poziția lor, iar valorile le pune pe un singur rând, în ordinea în care
@@ -3166,7 +3199,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=84`), import(`${R}/js/auth.js?v=84`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=85`), import(`${R}/js/auth.js?v=85`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });
@@ -3187,7 +3220,7 @@ V.rst2 = (gazda, d) => {
   const SC = d.scenarii || [];
   let s = 0, p = 0;
   gazda.innerHTML = `<div class="rst3">
-      <div class="rst3__file" role="tablist">${SC.map((x, i) => `<button type="button" data-s="${i}">${esc(x.t)}</button>`).join("")}</div>
+      <div class="rst3__file" role="tablist"${SC.length < 2 ? " hidden" : ""}>${SC.map((x, i) => `<button type="button" data-s="${i}">${esc(x.t)}</button>`).join("")}</div>
       ${d.svg || ""}
       <div class="rst3__txt">
         <p><span>La restaurant</span><b class="rst3__sus"></b></p>
@@ -3260,19 +3293,19 @@ function cubSimplu(gazda, d){
   const R = d.randuri, K = d.coloane, VAL = d.valori || [], n = K.coduri.length;
   const fmt = v => Number(v).toLocaleString("ro-RO");
   let [ri, ci] = d.ales || [0, 0];
-  gazda.innerHTML = `<div class="cb2">
+  gazda.innerHTML = `<div class="cb2${d.culori ? " cb2--culori" : ""}">
       <div class="cb2__sus">
         <table class="cb2__g"><thead><tr><th></th>${K.coduri.map((c, j) => `<th class="k" data-j="${j}">${c}<small>${esc(K.nume[j])}</small></th>`).join("")}</tr></thead>
-          <tbody>${R.coduri.map((c, i) => `<tr><th class="r" data-i="${i}">${c}<small>${esc(R.nume[i])}</small></th>
+          <tbody>${R.coduri.map((c, i) => `<tr class="r${i}"><th class="r" data-i="${i}">${c}<small>${esc(R.nume[i])}</small></th>
             ${K.coduri.map((_, j) => `<td><button type="button" data-i="${i}" data-j="${j}">${fmt(VAL[i * n + j])}</button></td>`).join("")}</tr>`).join("")}</tbody></table>
-        <div class="cb2__ind">
+        ${d.nota ? `<div class="cb2__nota">${d.nota}</div>` : `<div class="cb2__ind">
           <p><span class="r">${esc(R.id)}</span>${R.coduri.map((c, i) => `<i data-ri="${i}">${c} <b>${i}</b></i>`).join("")}</p>
           <p><span class="k">${esc(K.id)}</span>${K.coduri.map((c, j) => `<i data-kj="${j}">${c} <b>${j}</b></i>`).join("")}</p>
           <p class="cb2__calc"></p>
-        </div>
+        </div>`}
       </div>
-      <p class="cb2__et">"value", pe un singur rând</p>
-      <div class="cb2__val">${VAL.map((v, p) => `<span data-p="${p}"${p % n === 0 && p ? ' class="nou"' : ""}><i>${p}</i>${fmt(v)}</span>`).join("")}</div>
+      <p class="cb2__et">${esc(d.et || '"value", pe un singur rând')}</p>
+      <div class="cb2__val">${VAL.map((v, p) => `<span data-p="${p}" class="r${Math.floor(p / n)}${p % n === 0 && p ? " nou" : ""}"><i>${p}</i>${fmt(v)}</span>`).join("")}</div>
     </div>`;
   function arata(i, j){
     ri = i; ci = j; const p = i * n + j;
@@ -3282,7 +3315,8 @@ function cubSimplu(gazda, d){
     gazda.querySelectorAll("[data-ri]").forEach(t => t.classList.toggle("on", +t.dataset.ri === i));
     gazda.querySelectorAll("[data-kj]").forEach(t => t.classList.toggle("on", +t.dataset.kj === j));
     gazda.querySelectorAll(".cb2__val span").forEach(t => t.classList.toggle("on", +t.dataset.p === p));
-    gazda.querySelector(".cb2__calc").innerHTML = `poziția = <span class="r">${i}</span> × ${n} + <span class="k">${j}</span> = <b>${p}</b>`;
+    const calc = gazda.querySelector(".cb2__calc");
+    if (calc) calc.innerHTML = `poziția = <span class="r">${i}</span> × ${n} + <span class="k">${j}</span> = <b>${p}</b>`;
   }
   gazda.querySelector(".cb2__g").addEventListener("click", e => { const b = e.target.closest("td button"); if (b) arata(+b.dataset.i, +b.dataset.j); });
   arata(ri, ci);

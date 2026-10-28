@@ -1,7 +1,7 @@
 {
  "capitol": "c2",
- "total": 26,
- "sarcini": 8,
+ "total": 21,
+ "sarcini": 6,
  "slide": [
   {
    "nr": 1,
@@ -47,27 +47,34 @@
   },
   {
    "nr": 7,
-   "id": "s8",
-   "grup": "Tipuri de API",
-   "titlu": "Aceeași întrebare, patru stiluri",
+   "id": "s11",
+   "grup": "Cum arată o cerere",
+   "titlu": "Adresa unei cereri",
    "sarcini": []
   },
   {
    "nr": 8,
+   "id": "s8",
+   "grup": "Cum arată o cerere",
+   "titlu": "Aceeași întrebare, patru stiluri",
+   "sarcini": []
+  },
+  {
+   "nr": 9,
    "id": "s9",
    "grup": "Cum arată o cerere",
    "titlu": "O cerere și un răspuns",
    "sarcini": []
   },
   {
-   "nr": 9,
+   "nr": 10,
    "id": "s10",
    "grup": "Cum arată o cerere",
    "titlu": "Metodele HTTP",
    "sarcini": []
   },
   {
-   "nr": 10,
+   "nr": 11,
    "id": "s10v",
    "grup": "Cum arată o cerere",
    "titlu": "Exercițiu: metodele HTTP",
@@ -79,26 +86,7 @@
    ]
   },
   {
-   "nr": 11,
-   "id": "s11",
-   "grup": "Cum arată o cerere",
-   "titlu": "Endpoint-ul",
-   "sarcini": []
-  },
-  {
    "nr": 12,
-   "id": "s12",
-   "grup": "Cum arată o cerere",
-   "titlu": "Componentele adresei",
-   "sarcini": [
-    {
-     "id": "c2-url",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 13,
    "id": "s13",
    "grup": "Cum arată o cerere",
    "titlu": "Răspunsul începe cu un cod",
@@ -122,28 +110,21 @@
    ]
   },
   {
-   "nr": 14,
-   "id": "s14",
-   "grup": "De unde vin datele",
-   "titlu": "Surse de date",
-   "sarcini": []
-  },
-  {
-   "nr": 15,
+   "nr": 13,
    "id": "s15",
    "grup": "De unde vin datele",
    "titlu": "Sursele proiectului",
    "sarcini": []
   },
   {
-   "nr": 16,
+   "nr": 14,
    "id": "s16",
    "grup": "requests",
    "titlu": "Aceeași cerere, în Python",
    "sarcini": []
   },
   {
-   "nr": 17,
+   "nr": 15,
    "id": "s17",
    "grup": "requests",
    "titlu": "Exercițiu: inspectarea răspunsului",
@@ -155,14 +136,14 @@
    ]
   },
   {
-   "nr": 18,
+   "nr": 16,
    "id": "s18",
    "grup": "requests",
    "titlu": "Paginarea",
    "sarcini": []
   },
   {
-   "nr": 19,
+   "nr": 17,
    "id": "s18x",
    "grup": "requests",
    "titlu": "Exercițiu: paginarea",
@@ -174,59 +155,33 @@
    ]
   },
   {
-   "nr": 20,
-   "id": "s19e",
-   "grup": "Eurostat",
-   "titlu": "Eurostat: structura cererii",
-   "sarcini": []
-  },
-  {
-   "nr": 21,
+   "nr": 18,
    "id": "s20",
    "grup": "Eurostat",
-   "titlu": "Cubul JSON-stat",
+   "titlu": "Eurostat: un tabel pe un rând",
    "sarcini": []
   },
   {
-   "nr": 22,
-   "id": "s20v",
-   "grup": "Eurostat",
-   "titlu": "Poziția din cub",
-   "sarcini": [
-    {
-     "id": "c2-prezice-cub2",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 23,
+   "nr": 19,
    "id": "s21",
    "grup": "Proiectul echipei",
-   "titlu": "Prima colectare",
+   "titlu": "Exercițiu: alt indicator",
    "sarcini": [
     {
-     "id": "c2-dovada-colectare",
+     "id": "c2-cod-indicator",
      "fel": "cod"
     }
    ]
   },
   {
-   "nr": 24,
+   "nr": 20,
    "id": "s21t",
    "grup": "Proiectul echipei",
    "titlu": "Echipele",
    "sarcini": []
   },
   {
-   "nr": 25,
-   "id": "s21e",
-   "grup": "Proiectul echipei",
-   "titlu": "Depozitul echipei",
-   "sarcini": []
-  },
-  {
-   "nr": 26,
+   "nr": 21,
    "id": "s22",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

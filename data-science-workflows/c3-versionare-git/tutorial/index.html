@@ -6,14 +6,14 @@
 <title>Cursul 3, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 3: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=84">
-<link rel="stylesheet" href="../../css/sistem.css?v=84">
-<link rel="stylesheet" href="../../css/tutorial.css?v=84">
-<link rel="stylesheet" href="../../css/interactiv.css?v=84">
-<link rel="stylesheet" href="../../css/grafice.css?v=84">
-<link rel="stylesheet" href="../../css/exercitii.css?v=84">
-<link rel="stylesheet" href="../../css/explorator.css?v=84">
-<script src="../../js/tema.js?v=84"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=85">
+<link rel="stylesheet" href="../../css/sistem.css?v=85">
+<link rel="stylesheet" href="../../css/tutorial.css?v=85">
+<link rel="stylesheet" href="../../css/interactiv.css?v=85">
+<link rel="stylesheet" href="../../css/grafice.css?v=85">
+<link rel="stylesheet" href="../../css/exercitii.css?v=85">
+<link rel="stylesheet" href="../../css/explorator.css?v=85">
+<script src="../../js/tema.js?v=85"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 3 · Manual"></div>
@@ -49,7 +49,7 @@
 
 <section class="tut__s" id="s2">
 <span class="tut__nr">02 · Cursul</span>
-<h2>Punctul de plecare</h2><p class="cheie">După cursul 2 există codul și datele; lipsește istoricul lor comun.</p><ul class="bif"><li><b>Colectarea</b><span>cererile către Banca Mondială și Eurostat, în caietul 02.</span></li><li><b>Datele</b><span><code>bm.csv</code> și <code>migratie.csv</code>, în <code>curs/data/c2</code>.</span></li><li><b>Depozitul echipei</b><span>clonat în <code>dsw/proiect</code>, încă fără commit-uri.</span></li></ul><p class="ep__jos">Deocamdată, toate există doar pe calculatorul local. Git le păstrează istoricul, iar GitHub le pune în comun pentru echipă.</p>
+<h2>Punctul de plecare</h2><p class="cheie">După cursul 2 există codul și datele; lipsește istoricul lor comun.</p><ul class="bif"><li><b>Colectarea</b><span>cererile către Banca Mondială și Eurostat, în caietul 02.</span></li><li><b>Datele</b><span><code>bm.csv</code> și <code>migratie.csv</code>, în <code>curs/data/c2</code>.</span></li><li><b>Echipa</b><span>aleasă pe site, la cursul 2; depozitul ei se creează în această lecție.</span></li></ul><p class="ep__jos">Deocamdată, toate există doar pe calculatorul local. Git le păstrează istoricul, iar GitHub le pune în comun pentru echipă.</p>
 
 </section>
 
@@ -266,7 +266,12 @@ git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verifi
 
 <section class="tut__s" id="s22">
 <span class="tut__nr">30 · Proiectul echipei</span>
-<h2>Depozitul echipei</h2><table class="tabel"><thead><tr><th>Pasul</th><th>Acțiunea</th></tr></thead><tbody><tr><td>1</td><td>un membru creează depozitul echipei în organizația <code>dsw-ubb-2026</code> și îi adaugă pe ceilalți</td></tr><tr><td>2</td><td>fiecare membru îl clonează local</td></tr><tr><td>3</td><td><code>.gitignore</code> se scrie înainte de primul <code>add</code></td></tr><tr><td>4</td><td>un membru creează ramura <code>dev</code>; ceilalți o preiau cu <code>git fetch</code></td></tr><tr><td>5</td><td>scripturile de colectare de la cursul 2 se încarcă pe dev</td></tr><tr><td>6</td><td>în <code>README.md</code>: întrebarea de cercetare și responsabilitățile</td></tr></tbody></table><div class="ix" data-ix="dovada">
+<h2>Depozitul echipei</h2><table class="tabel"><thead><tr><th>Pasul</th><th>Acțiunea</th></tr></thead><tbody><tr><td>1</td><td>un membru creează depozitul echipei în organizația <code>dsw-ubb-2026</code> și îi adaugă pe ceilalți</td></tr><tr><td>2</td><td>fiecare membru îl clonează local</td></tr><tr><td>3</td><td><code>.gitignore</code> se scrie înainte de primul <code>add</code></td></tr><tr><td>4</td><td>un membru creează ramura <code>dev</code>; ceilalți o preiau cu <code>git fetch</code></td></tr><tr><td>5</td><td>scripturile de colectare de la cursul 2 se încarcă pe dev</td></tr><tr><td>6</td><td>în <code>README.md</code>: întrebarea de cercetare și responsabilitățile</td></tr></tbody></table><h3>Primii doi pași, în detaliu</h3><ol class="pe4"><li><span>1</span><b>Organizația</b><p><a class="leg" href="https://github.com/dsw-ubb-2026" target="_blank" rel="noopener">dsw-ubb-2026</a>, comună pentru grupă. Invitația vine pe e-mail.</p></li><li><span>2</span><b>Depozitul echipei</b><p>Un membru îl creează în organizație și îi adaugă pe ceilalți.</p></li><li><span>3</span><b>Adresa</b><p>Pe pagina depozitului: Code → HTTPS.</p></li><li><span>4</span><b>Clonarea</b><p>În terminal, în dsw: <code>git clone &lt;adresa&gt; proiect</code></p></li></ol><div class="pe4__arb"><pre><code><span class="a">dsw/</span>
+├── <span class="x">.venv/</span>
+├── curs/            <span class="c"># personal, fără Git</span>
+└── <span class="a">proiect/</span>         <span class="c"># al echipei, cu Git</span>
+    ├── .git/        <span class="c"># istoricul</span>
+    └── README.md</code></pre><p>Munca echipei stă în proiect/, cu Git; exercițiile de la curs rămân în curs/, fără Git.</p></div><p><code>git clone</code> copiază depozitul cu tot cu istoricul lui, în folderul <code>.git/</code>, și reține adresa de la care a fost copiat. Ultimul cuvânt din comandă e numele folderului: fără el, folderul ar purta numele depozitului. Comanda se dă o singură dată, din <code>dsw</code>; dacă e dată din alt folder, de exemplu din <code>curs/</code>, depozitul ajunge acolo, iar căile din caiete nu mai sunt cele din manual.</p><div class="nota"><div class="nota__et">Git</div><p>Se instalează de pe <a class="leg" href="https://git-scm.com/downloads" target="_blank" rel="noopener">git-scm.com</a>; instalarea se verifică cu <code>git --version</code>. La prima clonare, Git poate cere autentificarea în contul GitHub, într-o fereastră din browser.</p></div><div class="ix" data-ix="dovada">
   <div class="ix__cap"><span class="ix__fel">Verificare locală</span><span class="ix__t">Verificarea depozitului</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c3-dovada-depozit", "sarcina": "Comenzile se rulează local; rezultatul din terminal se lipește în câmpul lui.", "pasi": [{"t": "Depozitul este legat de GitHub", "cmd": "git remote -v", "gol": "prima linie afișată", "cauta": "github\\.com", "daca_nu": "Rezultatul nu conține o adresă GitHub: comanda git remote add origin nu a fost încă rulată."}, {"t": "Cel puțin două commit-uri", "cmd": "git log --oneline | head -3", "gol": "liniile afișate", "cauta": "[0-9a-f]{7}[\\s\\S]*[0-9a-f]{7}", "daca_nu": "Sunt necesare cel puțin două hash-uri de commit. Unul singur indică faptul că toată munca a fost încărcată într-un singur commit, la final."}, {"t": "Ramura dev există și pe GitHub", "cmd": "git branch -a", "gol": "lista afișată", "cauta": "remotes/origin/dev", "daca_nu": "Lipsește remotes/origin/dev. Un membru al echipei rulează git switch -c dev și git push -u origin dev; ceilalți rulează git fetch."}, {"t": "Secretele sunt excluse", "cmd": "git check-ignore -v .env venv", "gol": "rezultatul afișat", "cauta": "\\.gitignore", "daca_nu": "Rezultatul trebuie să conțină numele fișierului .gitignore. Dacă comanda nu afișează nimic, regulile nu se aplică."}], "explicatie": "Dacă toate cele patru verificări trec, munca echipei există în două locuri și se poate urmări cine ce a făcut. De aici înainte, fiecare curs adaugă o componentă în același depozit."}</script></div>
 </div>
@@ -282,11 +287,11 @@ git branch -u origin/main</code></pre><table class="tabel"><thead><tr><th>Verifi
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=84"></script>
+<script type="module" src="../../js/antet.js?v=85"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=84";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=84";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=84";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=85";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=85";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=85";
 pornesteIx();
 pornesteVerif("c3");
 pornesteTut("c3");

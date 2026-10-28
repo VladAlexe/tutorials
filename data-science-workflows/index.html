@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Curs de masterat: de la colectarea datelor prin API până la raportul final, pe date reale de conectivitate socială și migrație.">
-<link rel="stylesheet" href="css/fonturi.css?v=84">
-<link rel="stylesheet" href="css/sistem.css?v=84">
-<script src="js/tema.js?v=84"></script>
+<link rel="stylesheet" href="css/fonturi.css?v=85">
+<link rel="stylesheet" href="css/sistem.css?v=85">
+<script src="js/tema.js?v=85"></script>
 <style>
   /* Pagina cursului: o coloană, ca la Ingineria AI. Sus cursul, apoi linia
      lecțiilor, apoi lista lor, una sub alta. Toate lecțiile sunt egale: nu
@@ -127,7 +127,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE } from "./js/curs.js?v=84";
+import { LECTII, NOTARE } from "./js/curs.js?v=85";
 
 /* Ce lecții sunt deschise. Profesorul și vizitatorul fără cont le au pe toate.
    Studentul are lecțiile predate grupei, plus orice lecție în care a lucrat deja.
@@ -150,7 +150,7 @@ document.getElementById("notare").innerHTML =
 
 const peTermen = (pr, ms) => Promise.race([pr, new Promise((_, r) => setTimeout(() => r(new Error("timp")), ms))]);
 try {
-  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=84"), import("./js/ora.js?v=84")]);
+  const [{ profil }, O] = await Promise.all([import("./js/auth.js?v=85"), import("./js/ora.js?v=85")]);
   const p = await peTermen(profil(), 8000);
   if (p.autentificat && !p.profesorReal){
     const pred = await peTermen(O.predate(), 8000);
@@ -195,7 +195,7 @@ function deseneaza(deschise, student){
 }
 
 </script>
-<script type="module" src="js/antet.js?v=84"></script>
-<script type="module" src="js/subsol.js?v=84"></script>
+<script type="module" src="js/antet.js?v=85"></script>
+<script type="module" src="js/subsol.js?v=85"></script>
 </body>
 </html>
