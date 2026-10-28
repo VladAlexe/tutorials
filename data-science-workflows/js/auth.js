@@ -6,10 +6,41 @@
    =========================================================================== */
 
 import { createClient } from "./vendor/supabase-js-2.117.0.js";   /* găzduită aici: nicio cerere la un CDN străin */
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=83";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=84";
+
+/* --- sesiunea expirată ---------------------------------------------------
+   Jetonul de acces (JWT) expiră după o oră și biblioteca îl reînnoiește
+   singură. Dacă reînnoirea ratează (laptop adormit, ceasul calculatorului
+   dat greșit), baza de date răspunde „JWT expired” la fiecare cerere și
+   contul pare blocat. De aceea, la un astfel de răspuns: o reînnoire, apoi
+   aceeași cerere încă o dată. Dacă nici reînnoirea nu merge, sesiunea se
+   închide pe acest calculator, iar pagina cere din nou intrarea.
+   ------------------------------------------------------------------------- */
+
+const JWT_EXPIRAT = /jwt expired|PGRST303/i;
+
+async function fetchCuReinnoire(intrare, init = {}) {
+  const r = await fetch(intrare, init);
+  if (r.status !== 401) return r;
+  const adresa = String(intrare?.url ?? intrare);
+  if (!adresa.includes("/rest/v1/")) return r;          /* doar baza de date, nu autentificarea */
+  let corp = "";
+  try { corp = await r.clone().text(); } catch {}
+  if (!JWT_EXPIRAT.test(corp)) return r;
+  const { data, error } = await sb.auth.refreshSession().catch(e => ({ error: e }));
+  if (error || !data?.session) {
+    profilCache = null;
+    await sb.auth.signOut({ scope: "local" }).catch(() => {});
+    return r;
+  }
+  const antete = new Headers(init.headers);
+  antete.set("Authorization", `Bearer ${data.session.access_token}`);
+  return fetch(intrare, { ...init, headers: antete });
+}
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+  global: { fetch: fetchCuReinnoire }
 });
 
 /* --- diagnostic ----------------------------------------------------------
@@ -50,7 +81,10 @@ export async function intraCuGithub() {
 }
 
 export async function iesi() {
-  await sb.auth.signOut();
+  /* dacă serverul nu confirmă ieșirea (sesiune deja expirată), se închide
+     măcar sesiunea de pe acest calculator */
+  const { error } = await sb.auth.signOut().catch(e => ({ error: e }));
+  if (error) await sb.auth.signOut({ scope: "local" }).catch(() => {});
   profilCache = null;
 }
 
@@ -120,6 +154,12 @@ export async function profil({ proaspat = false } = {}) {
     return profilCache;
   }
   const { data, error } = await Promise.race([sb.rpc("profilul_meu"), termen(8000)]);
+  /* „JWT expired” ajunge aici doar dacă reînnoirea a eșuat și sesiunea s-a
+     închis: pagina arată din nou intrarea, nu o eroare fără ieșire */
+  if (error && JWT_EXPIRAT.test(`${error.code} ${error.message}`)) {
+    profilCache = { autentificat: false, expirat: true };
+    return profilCache;
+  }
   if (error) throw new Error(traduEroare(error.message));
 
   const p = { ...data, email: session.user.email };
@@ -150,6 +190,8 @@ function traduEroare(m = "") {
     return "Prea multe încercări. Încearcă din nou peste un minut.";
   if (t.includes("invalid") && t.includes("email"))
     return "Adresa de e-mail nu este validă.";
+  if (t.includes("jwt expired"))
+    return "Sesiunea a expirat. Ieși din cont și intră din nou.";
   if (t.includes("failed to fetch") || t.includes("network"))
     return "Serverul nu poate fi contactat. Verifică conexiunea la internet.";
   if (t.includes("not found") && t.includes("function"))

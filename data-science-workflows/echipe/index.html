@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Echipele de proiect · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=83">
-<link rel="stylesheet" href="../css/sistem.css?v=83">
-<link rel="stylesheet" href="../css/cont.css?v=83">
-<script src="../js/tema.js?v=83"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=84">
+<link rel="stylesheet" href="../css/sistem.css?v=84">
+<link rel="stylesheet" href="../css/cont.css?v=84">
+<script src="../js/tema.js?v=84"></script>
 <style>
   /* O pagină doar pentru echipe: aceeași alegere ca pe slide-ul din cursul 2,
      cu loc pentru lucru, fără restul contului. */
@@ -38,11 +38,11 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { RADACINA } from "../js/curs.js?v=83";
+import { RADACINA } from "../js/curs.js?v=84";
 const gazda = document.getElementById("gazda");
 const nota = document.getElementById("nota");
 try {
-  const [A, E] = await Promise.all([import("../js/auth.js?v=83"), import("../js/echipe.js?v=83")]);
+  const [A, E] = await Promise.all([import("../js/auth.js?v=84"), import("../js/echipe.js?v=84")]);
   const p = await A.profil();
   if (!p.autentificat){
     gazda.innerHTML = `<p class="echp__gol">Echipele se văd după autentificare: <a class="leg" href="${RADACINA}/cont/">contul personal</a>.</p>`;
@@ -56,7 +56,7 @@ try {
   gazda.innerHTML = `<p class="echp__gol">Echipele nu au putut fi încărcate. Pagina se poate reîncărca.</p>`;
 }
 </script>
-<script type="module" src="../js/antet.js?v=83"></script>
-<script type="module" src="../js/subsol.js?v=83"></script>
+<script type="module" src="../js/antet.js?v=84"></script>
+<script type="module" src="../js/subsol.js?v=84"></script>
 </body>
 </html>

@@ -19,7 +19,7 @@
    Pagina se reîmprospătează singură la câteva secunde, cât e vizibilă.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=83";
+import { RADACINA } from "./curs.js?v=84";
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 const PAS = 3500;
@@ -30,7 +30,7 @@ const culoare = nr => `var(--${CULORI[(nr - 1) % CULORI.length]})`;
 const initiale = n => String(n || "?").trim().split(/\s+/).slice(0, 2).map(x => x[0] || "").join("").toUpperCase();
 
 let A = null;
-async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=83`); return A; }
+async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=84`); return A; }
 async function rpc(f, args){
   const { sb } = await auth();
   const r = await sb.rpc(f, args);
@@ -321,7 +321,7 @@ export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
 
 export async function echipeSlideProfesor(gazda){
   gazda.classList.add("echp", "echp--slide");
-  const O = await import(`${RADACINA}/js/ora.js?v=83`);
+  const O = await import(`${RADACINA}/js/ora.js?v=84`);
   const S = await O.deschisa().catch(() => null);
   let grupa = S?.grupa_id || null;
   if (!grupa){

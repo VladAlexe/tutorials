@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 5. Agregare și baze de date · Fluxuri de lucru</title>
 <meta name="description" content="Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.">
-<link rel="stylesheet" href="../css/fonturi.css?v=83">
-<link rel="stylesheet" href="../css/sistem.css?v=83">
-<link rel="stylesheet" href="../css/intrare.css?v=83">
-<script src="../js/tema.js?v=83"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=84">
+<link rel="stylesheet" href="../css/sistem.css?v=84">
+<link rel="stylesheet" href="../css/intrare.css?v=84">
+<script src="../js/tema.js?v=84"></script>
 </head>
 <body>
 
@@ -123,7 +123,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=83"), import("../js/ora.js?v=83"), import("../js/curs.js?v=83")]);
+    import("../js/auth.js?v=84"), import("../js/ora.js?v=84"), import("../js/curs.js?v=84")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -151,7 +151,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=83"></script>
-<script type="module" src="../js/subsol.js?v=83"></script>
+<script type="module" src="../js/antet.js?v=84"></script>
+<script type="module" src="../js/subsol.js?v=84"></script>
 </body>
 </html>
