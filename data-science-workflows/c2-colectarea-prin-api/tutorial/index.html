@@ -6,14 +6,14 @@
 <title>Cursul 2, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 2: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=85">
-<link rel="stylesheet" href="../../css/sistem.css?v=85">
-<link rel="stylesheet" href="../../css/tutorial.css?v=85">
-<link rel="stylesheet" href="../../css/interactiv.css?v=85">
-<link rel="stylesheet" href="../../css/grafice.css?v=85">
-<link rel="stylesheet" href="../../css/exercitii.css?v=85">
-<link rel="stylesheet" href="../../css/explorator.css?v=85">
-<script src="../../js/tema.js?v=85"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=86">
+<link rel="stylesheet" href="../../css/sistem.css?v=86">
+<link rel="stylesheet" href="../../css/tutorial.css?v=86">
+<link rel="stylesheet" href="../../css/interactiv.css?v=86">
+<link rel="stylesheet" href="../../css/grafice.css?v=86">
+<link rel="stylesheet" href="../../css/exercitii.css?v=86">
+<link rel="stylesheet" href="../../css/explorator.css?v=86">
+<script src="../../js/tema.js?v=86"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 2 · Manual"></div>
@@ -22,7 +22,7 @@
   <div class="tut__cap"><span class="tut__et">Manual</span>
     <span class="tut__t">Cursul 2</span>
     <span class="tut__st">Colectarea datelor prin API</span></div>
-  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Planul lecției</span></a><a href="#s2"><span class="n">2</span><span>Punctul de plecare</span></a><div class="tut__g">Ce este un API</div><a href="#s3"><span class="n">3</span><span>Analogia restaurantului</span></a><a href="#s5"><span class="n">4</span><span>De ce prin API</span></a><div class="tut__g">Tipuri de API</div><a href="#s6"><span class="n">5</span><span>Tipuri de API</span></a><a href="#s7"><span class="n">6</span><span>Trei decenii de API-uri</span></a><div class="tut__g">Cum arată o cerere</div><a href="#s11"><span class="n">7</span><span>Adresa unei cereri</span></a><a href="#s8"><span class="n">8</span><span>Aceeași întrebare, patru stiluri</span></a><a href="#s9"><span class="n">9</span><span>O cerere și un răspuns</span></a><a href="#s10"><span class="n">10</span><span>Metodele HTTP</span></a><a href="#s13"><span class="n">12</span><span>Răspunsul începe cu un cod</span></a><div class="tut__g">De unde vin datele</div><a href="#s15"><span class="n">13</span><span>Sursele proiectului</span></a><div class="tut__g">requests</div><a href="#s16"><span class="n">14</span><span>Aceeași cerere, în Python</span></a><a href="#s17"><span class="n">15</span><span>Exercițiu: inspectarea răspunsului</span></a><a href="#s18"><span class="n">16</span><span>Paginarea</span></a><div class="tut__g">Eurostat</div><a href="#s20"><span class="n">18</span><span>Eurostat: un tabel pe un rând</span></a><div class="tut__g">Proiectul echipei</div><a href="#s21"><span class="n">19</span><span>Exercițiu: alt indicator</span></a><a href="#s21t"><span class="n">20</span><span>Echipele</span></a><div class="tut__g">Mai departe</div><a href="#s22"><span class="n">21</span><span>Pentru cursul următor</span></a></nav>
+  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Planul lecției</span></a><a href="#s2"><span class="n">2</span><span>Punctul de plecare</span></a><div class="tut__g">Ce este un API</div><a href="#s3"><span class="n">3</span><span>Analogia restaurantului</span></a><a href="#s5"><span class="n">4</span><span>De ce prin API</span></a><div class="tut__g">Tipuri de API</div><a href="#s6"><span class="n">5</span><span>Tipuri de API</span></a><a href="#s7"><span class="n">6</span><span>Trei decenii de API-uri</span></a><div class="tut__g">Cum arată o cerere</div><a href="#s11"><span class="n">7</span><span>Adresa unei cereri</span></a><a href="#s8"><span class="n">8</span><span>Aceeași întrebare, patru stiluri</span></a><a href="#s9"><span class="n">9</span><span>O cerere și un răspuns</span></a><a href="#s10"><span class="n">10</span><span>Metodele HTTP</span></a><a href="#s13"><span class="n">12</span><span>Răspunsul începe cu un cod</span></a><div class="tut__g">De unde vin datele</div><a href="#s15"><span class="n">13</span><span>Sursele proiectului</span></a><div class="tut__g">requests</div><a href="#s16"><span class="n">14</span><span>Aceeași cerere, în Python</span></a><a href="#s17"><span class="n">15</span><span>Exercițiu: ce a venit în răspuns</span></a><a href="#s18"><span class="n">16</span><span>Paginarea</span></a><div class="tut__g">Eurostat</div><a href="#s20"><span class="n">18</span><span>Eurostat: un tabel pe un rând</span></a><div class="tut__g">Proiectul echipei</div><a href="#s21"><span class="n">19</span><span>Exercițiu: alt indicator</span></a><a href="#s21t"><span class="n">20</span><span>Echipele</span></a><div class="tut__g">Mai departe</div><a href="#s22"><span class="n">21</span><span>Pentru cursul următor</span></a></nav>
   <div class="tut__jos">
     <a href="../lectie/">Slide-urile de la curs</a>
     <a href="../">Pagina cursului</a>
@@ -162,10 +162,16 @@
 
 <section class="tut__s" id="s17">
 <span class="tut__nr">15 · requests</span>
-<h2>Exercițiu: inspectarea răspunsului</h2><p>Celula de mai jos e cea din caiet, deja rulată. Răspunsul se află în <code>raspuns</code>; consola funcționează ca o celulă Jupyter. Sunt trei valori de aflat, toate obținute prin cod, nu transcrise manual.</p><div class="ix" data-ix="jupyter">
-  <div class="ix__cap"><span class="ix__fel">Consolă Python</span><span class="ix__t">Trei lucruri de aflat din răspuns</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cerere", "celula": "url = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\nparametri = {\"format\": \"json\", \"date\": \"2022:2024\", \"per_page\": 2}\nraspuns = requests.get(url, params=parametri, timeout=30)", "loc": "raspuns.status_code", "taie": 240, "structura": "<code>raspuns.json()</code> este o listă cu două elemente: <code>[0]</code> paginarea, <code>[1]</code> lista valorilor, de la anul cel mai recent.", "env": {"url": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL", "parametri": {"format": "json", "date": "2022:2024", "per_page": 2}, "raspuns": {"__py": "Response", "__cls": "requests.models.Response", "__repr": "<Response [200]>", "__attr": {"status_code": 200, "ok": true, "reason": "OK", "url": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=2022%3A2024&per_page=2", "headers": {"Content-Type": "application/json;charset=utf-8"}}, "__met": {"json": [{"page": 1, "pages": 2, "per_page": 2, "total": 3, "sourceid": "2", "lastupdated": "2026-10-08"}, [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2024", "value": 19051804, "unit": "", "obs_status": "", "decimal": 0}, {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2023", "value": 19061062, "unit": "", "obs_status": "", "decimal": 0}]]}}}, "tinte": [{"t": "Codul de stare al răspunsului", "v": 200, "ind": "Un atribut al lui <code>raspuns</code>, fără paranteze; numele lui începe cu <code>status</code>."}, {"t": "Câte valori există în total", "v": 3, "ind": "<code>raspuns.json()</code> e o listă; paginarea e primul element, la poziția 0, iar numărul stă la cheia <code>\"total\"</code>."}, {"t": "Populația României în 2024", "v": 19051804, "ind": "Valorile sunt al doilea element al listei; prima înregistrare e 2024, iar numărul stă la cheia <code>\"value\"</code>."}]}</script></div>
-</div><p>Se poate lucra și cu o variabilă intermediară: <code>date = raspuns.json()</code>, apoi <code>date[0]["total"]</code>. Aceeași structură, o listă cu paginarea și cu valorile, apare la toți indicatorii Băncii Mondiale.</p>
+<h2>Exercițiu: ce a venit în răspuns</h2><p>Cererea din caiet a rulat, iar răspunsul se află în variabila <code>raspuns</code>. În stânga e conținutul lui, simplificat; în dreapta, trei rânduri de cod care scot din el codul de stare, numărul de valori și populația din 2024.</p><div class="wbv"><figure class="wbv__json"><figcaption>Ce conține raspuns.json()</figcaption><pre><code>[
+  {"page": 1, "pages": 2, "total": 3},
+  [
+    {"date": "2024", "value": 19051804},
+    {"date": "2023", "value": 19061062}
+  ]
+]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte una pe an</p></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Trei rânduri, trei goluri</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-raspuns", "fisier": "02_colectarea_datelor_prin_api.ipynb", "sarcina": "<b>1</b> codul de stare · <b>2</b> câte valori există · <b>3</b> populația în 2024", "cod": "print(raspuns.{{1}})\nprint(raspuns.json()[0][{{2}}])\nprint(raspuns.json()[{{3}}][0][\"value\"])", "goluri": {"1": {"ok": ["status_code"], "ajutor": "atributul"}, "2": {"ok": ["\"total\"", "'total'"], "ajutor": "cheia"}, "3": {"ok": ["1"], "ajutor": "poziția"}}, "indiciu": "Codul de stare e atributul <code>status_code</code> (slide-ul de dinainte). În stânga: paginarea e pe poziția 0, cu cheia <code>\"total\"</code>; valorile sunt pe poziția 1.", "iesire": "200\n3\n19051804", "laBine": "Codul de stare, apoi corpul: aceeași ordine la orice cerere.", "laRau": "Cheia se scrie între ghilimele; pozițiile încep de la 0.", "explicatie": "<code>raspuns.status_code</code> e 200, deci cererea a reușit. <code>raspuns.json()</code> e o listă: pe poziția 0 paginarea, unde <code>\"total\"</code> spune câte valori există; pe poziția 1 valorile, de la anul cel mai recent."}</script></div>
+</div></div></div><p>Se poate lucra și cu o variabilă intermediară: <code>date = raspuns.json()</code>, apoi <code>date[0]["total"]</code>. Aceeași structură, o listă cu paginarea și cu valorile, apare la toți indicatorii Băncii Mondiale.</p>
 
 </section>
 
@@ -263,11 +269,11 @@ print("salvate", len(tabel), "rânduri")</code></pre><div class="nota"><div clas
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=85"></script>
+<script type="module" src="../../js/antet.js?v=86"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=85";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=85";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=85";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=86";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=86";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=86";
 pornesteIx();
 pornesteVerif("c2");
 pornesteTut("c2");

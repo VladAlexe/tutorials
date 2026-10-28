@@ -2861,16 +2861,8 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .rq3__r code{font-family:var(--mono);font-size:var(--t3);background:none;border:0;padding:0;color:var(--text);white-space:pre}
 .rq3__r code .c{color:var(--text-3)}
 
-/* exercițiul de inspectare: caietul în stânga, ce e de aflat în dreapta */
+/* exercițiul de inspectare: ce a venit în stânga, golurile în dreapta */
 .sld#s17 .ix__cap{display:none}
-.sld#s17 .jpy{display:grid!important;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:32px;align-items:start}
-.sld#s17 .jpy__caiet{grid-column:1;grid-row:1;min-width:0}
-.sld#s17 .jpy__tinte{grid-column:2;grid-row:1;display:flex!important;flex-direction:column;gap:0;margin:0;border-top:1.5px solid var(--text);padding-top:0}
-.sld#s17 .jpy__tinte::before{content:"De aflat, în celula 2";font-family:var(--sans);font-size:var(--t2);color:var(--text-3);padding:8px 0 2px}
-.sld#s17 .jpy__ti{padding:11px 0;border-bottom:1px solid var(--linie)}
-.sld#s17 .jpy__v:empty{display:none}
-.sld#s17 .ex__stare{grid-column:1 / -1}
-.sld#s17 .jpy__celula pre{font-size:var(--t2)}
 
 /* paginarea: câte o cutie pentru fiecare pagină */
 .pgn2__sus{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:var(--t2);color:var(--text-3)}
@@ -2921,8 +2913,6 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .pp2__l li::before{grid-column:1;position:static;margin:0}
 .pp2__l li > b,.pp2__l li > span{grid-column:2}
 .adr4__alte td code{font-size:var(--t2)}
-.sld#s17 .jpy__celula pre{font-size:var(--t1);white-space:pre}
-.sld#s17 .jpy__celula{overflow-x:auto}
 .eu3{margin-bottom:16px}
 .sld#s21 .ix__cap{display:none}
 .adr4__b .adr4__u{border-radius:8px 8px 0 0}
@@ -2930,3 +2920,8 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .sld .adr4__b:first-child .adr4__u{border-radius:8px 0 0 0}
 .sld .adr4__b:last-child .adr4__u{border-radius:0 8px 0 0}
 .pp2__arb b{color:#EAF4EF;font-weight:700}
+
+.sld#s17 .wbv{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)!important;gap:32px;margin-top:6px}
+.sld#s17 .wbv__json pre{font-size:var(--t3);line-height:1.65;padding:16px 18px}
+.sld#s17 .wbv__leg{font-size:var(--t3)}
+.sld#s17 .wbv__leg span{width:84px}

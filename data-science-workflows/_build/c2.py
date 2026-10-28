@@ -943,53 +943,53 @@ sl("s16", "requests", "Aceeași cerere, în Python",
        ]})
    + DOC_REQ)
 
-R_JSON = [
-    {"page": 1, "pages": 2, "per_page": 2, "total": 3, "sourceid": "2", "lastupdated": "2026-10-08"},
-    [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"},
-      "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU",
-      "date": "2024", "value": 19051804, "unit": "", "obs_status": "", "decimal": 0},
-     {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"},
-      "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU",
-      "date": "2023", "value": 19061062, "unit": "", "obs_status": "", "decimal": 0}],
-]
-JUPYTER = {
-    "id": "c2-cerere",
-    "celula": "url = \"" + URL_BM + "\"\n"
-              "parametri = {\"format\": \"json\", \"date\": \"2022:2024\", \"per_page\": 2}\n"
-              "raspuns = requests.get(url, params=parametri, timeout=30)",
-    "loc": "raspuns.status_code",
-    "taie": 240,
-    "structura": "<code>raspuns.json()</code> este o listă cu două elemente: "
-                 "<code>[0]</code> paginarea, <code>[1]</code> lista valorilor, de la anul cel mai recent.",
-    "env": {
-        "url": URL_BM,
-        "parametri": {"format": "json", "date": "2022:2024", "per_page": 2},
-        "raspuns": {"__py": "Response", "__cls": "requests.models.Response", "__repr": "<Response [200]>",
-                    "__attr": {"status_code": 200, "ok": True, "reason": "OK",
-                               "url": URL_BM + "?format=json&date=2022%3A2024&per_page=2",
-                               "headers": {"Content-Type": "application/json;charset=utf-8"}},
-                    "__met": {"json": R_JSON}},
-    },
-    "tinte": [
-        {"t": "Codul de stare al răspunsului", "v": 200,
-         "ind": "Un atribut al lui <code>raspuns</code>, fără paranteze; numele lui începe cu <code>status</code>."},
-        {"t": "Câte valori există în total", "v": 3,
-         "ind": "<code>raspuns.json()</code> e o listă; paginarea e primul element, la poziția 0, iar numărul stă la cheia <code>\"total\"</code>."},
-        {"t": "Populația României în 2024", "v": 19051804,
-         "ind": "Valorile sunt al doilea element al listei; prima înregistrare e 2024, iar numărul stă la cheia <code>\"value\"</code>."},
-    ],
+
+# Exercițiul: în stânga, ce a venit în răspuns; în dreapta, trei rânduri de cod,
+# fiecare cu un gol. Nimic de tastat liber: se completează golurile și se rulează.
+RASPUNS_TEXT = """[
+  {"page": 1, "pages": 2, "total": 3},
+  [
+    {"date": "2024", "value": 19051804},
+    {"date": "2023", "value": 19061062}
+  ]
+]"""
+
+COD_RASPUNS = {
+    "id": "c2-cod-raspuns", "fisier": CAIET,
+    "sarcina": "<b>1</b> codul de stare · <b>2</b> câte valori există · <b>3</b> populația în 2024",
+    "cod": "print(raspuns.{{1}})\n"
+           "print(raspuns.json()[0][{{2}}])\n"
+           "print(raspuns.json()[{{3}}][0][\"value\"])",
+    "goluri": {"1": {"ok": ["status_code"], "ajutor": "atributul"},
+               "2": {"ok": ["\"total\"", "'total'"], "ajutor": "cheia"},
+               "3": {"ok": ["1"], "ajutor": "poziția"}},
+    "indiciu": "Codul de stare e atributul <code>status_code</code> (slide-ul de dinainte). În stânga: "
+               "paginarea e pe poziția 0, cu cheia <code>\"total\"</code>; valorile sunt pe poziția 1.",
+    "iesire": "200\n3\n19051804",
+    "laBine": "Codul de stare, apoi corpul: aceeași ordine la orice cerere.",
+    "laRau": "Cheia se scrie între ghilimele; pozițiile încep de la 0.",
+    "explicatie": "<code>raspuns.status_code</code> e 200, deci cererea a reușit. <code>raspuns.json()</code> "
+                  "e o listă: pe poziția 0 paginarea, unde <code>\"total\"</code> spune câte valori există; "
+                  "pe poziția 1 valorile, de la anul cel mai recent.",
 }
 
-sl("s17", "requests", "Exercițiu: inspectarea răspunsului",
-   "<h2>Exercițiu: inspectarea răspunsului</h2>"
-   "<p class=\"cheie\">Celula 1 a adus deja răspunsul în variabila <code>raspuns</code>. Fiecare valoare cerută în dreapta se află scriind o expresie în celula 2, urmată de Enter.</p>"
-   + ix("jupyter", "Trei lucruri de aflat din răspuns", JUPYTER),
+INSPECT_HTML = (
+    '<div class="wbv"><figure class="wbv__json"><figcaption>Ce conține raspuns.json()</figcaption><pre><code>'
+    + RASPUNS_TEXT + "</code></pre>"
+    '<p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte una pe an</p></figure>'
+    + '<div class="wbv__ex">' + ix("cod", "Trei rânduri, trei goluri", COD_RASPUNS) + "</div></div>")
+
+sl("s17", "requests", "Exercițiu: ce a venit în răspuns",
+   "<h2>Exercițiu: ce a venit în răspuns</h2>"
+   "<p class=\"cheie\">Cererea a rulat, iar răspunsul e în variabila <code>raspuns</code>. "
+   "Se completează cele trei goluri din dreapta, apoi Rulează.</p>"
+   + INSPECT_HTML,
    manual=
-   "<h2>Exercițiu: inspectarea răspunsului</h2>"
-   "<p>Celula de mai jos e cea din caiet, deja rulată. Răspunsul se află în <code>raspuns</code>; "
-   "consola funcționează ca o celulă Jupyter. Sunt trei valori de aflat, toate obținute prin cod, "
-   "nu transcrise manual.</p>"
-   + ix("jupyter", "Trei lucruri de aflat din răspuns", JUPYTER)
+   "<h2>Exercițiu: ce a venit în răspuns</h2>"
+   "<p>Cererea din caiet a rulat, iar răspunsul se află în variabila <code>raspuns</code>. În stânga e "
+   "conținutul lui, simplificat; în dreapta, trei rânduri de cod care scot din el codul de stare, "
+   "numărul de valori și populația din 2024.</p>"
+   + INSPECT_HTML
    + "<p>Se poate lucra și cu o variabilă intermediară: <code>date = raspuns.json()</code>, "
      "apoi <code>date[0][\"total\"]</code>. Aceeași structură, o listă cu paginarea și cu "
      "valorile, apare la toți indicatorii Băncii Mondiale.</p>")

@@ -6,14 +6,14 @@
 <title>Cursul 2 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns și cum se aduc primele date reale în proiect.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=85">
-<link rel="stylesheet" href="../../css/sistem.css?v=85">
-<link rel="stylesheet" href="../../css/slide.css?v=85">
-<link rel="stylesheet" href="../../css/interactiv.css?v=85">
-<link rel="stylesheet" href="../../css/grafice.css?v=85">
-<link rel="stylesheet" href="../../css/exercitii.css?v=85">
-<link rel="stylesheet" href="../../css/explorator.css?v=85">
-<script src="../../js/tema.js?v=85"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=86">
+<link rel="stylesheet" href="../../css/sistem.css?v=86">
+<link rel="stylesheet" href="../../css/slide.css?v=86">
+<link rel="stylesheet" href="../../css/interactiv.css?v=86">
+<link rel="stylesheet" href="../../css/grafice.css?v=86">
+<link rel="stylesheet" href="../../css/exercitii.css?v=86">
+<link rel="stylesheet" href="../../css/explorator.css?v=86">
+<script src="../../js/tema.js?v=86"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -121,11 +121,17 @@
 
 </section>
 
-<section class="sld" id="s17" data-grup="requests" data-t="Exercițiu: inspectarea răspunsului">
-<h2>Exercițiu: inspectarea răspunsului</h2><p class="cheie">Celula 1 a adus deja răspunsul în variabila <code>raspuns</code>. Fiecare valoare cerută în dreapta se află scriind o expresie în celula 2, urmată de Enter.</p><div class="ix" data-ix="jupyter">
-  <div class="ix__cap"><span class="ix__fel">Consolă Python</span><span class="ix__t">Trei lucruri de aflat din răspuns</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cerere", "celula": "url = \"https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL\"\nparametri = {\"format\": \"json\", \"date\": \"2022:2024\", \"per_page\": 2}\nraspuns = requests.get(url, params=parametri, timeout=30)", "loc": "raspuns.status_code", "taie": 240, "structura": "<code>raspuns.json()</code> este o listă cu două elemente: <code>[0]</code> paginarea, <code>[1]</code> lista valorilor, de la anul cel mai recent.", "env": {"url": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL", "parametri": {"format": "json", "date": "2022:2024", "per_page": 2}, "raspuns": {"__py": "Response", "__cls": "requests.models.Response", "__repr": "<Response [200]>", "__attr": {"status_code": 200, "ok": true, "reason": "OK", "url": "https://api.worldbank.org/v2/country/RO/indicator/SP.POP.TOTL?format=json&date=2022%3A2024&per_page=2", "headers": {"Content-Type": "application/json;charset=utf-8"}}, "__met": {"json": [{"page": 1, "pages": 2, "per_page": 2, "total": 3, "sourceid": "2", "lastupdated": "2026-10-08"}, [{"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2024", "value": 19051804, "unit": "", "obs_status": "", "decimal": 0}, {"indicator": {"id": "SP.POP.TOTL", "value": "Population, total"}, "country": {"id": "RO", "value": "Romania"}, "countryiso3code": "ROU", "date": "2023", "value": 19061062, "unit": "", "obs_status": "", "decimal": 0}]]}}}, "tinte": [{"t": "Codul de stare al răspunsului", "v": 200, "ind": "Un atribut al lui <code>raspuns</code>, fără paranteze; numele lui începe cu <code>status</code>."}, {"t": "Câte valori există în total", "v": 3, "ind": "<code>raspuns.json()</code> e o listă; paginarea e primul element, la poziția 0, iar numărul stă la cheia <code>\"total\"</code>."}, {"t": "Populația României în 2024", "v": 19051804, "ind": "Valorile sunt al doilea element al listei; prima înregistrare e 2024, iar numărul stă la cheia <code>\"value\"</code>."}]}</script></div>
-</div>
+<section class="sld" id="s17" data-grup="requests" data-t="Exercițiu: ce a venit în răspuns">
+<h2>Exercițiu: ce a venit în răspuns</h2><p class="cheie">Cererea a rulat, iar răspunsul e în variabila <code>raspuns</code>. Se completează cele trei goluri din dreapta, apoi Rulează.</p><div class="wbv"><figure class="wbv__json"><figcaption>Ce conține raspuns.json()</figcaption><pre><code>[
+  {"page": 1, "pages": 2, "total": 3},
+  [
+    {"date": "2024", "value": 19051804},
+    {"date": "2023", "value": 19061062}
+  ]
+]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte una pe an</p></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Trei rânduri, trei goluri</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-raspuns", "fisier": "02_colectarea_datelor_prin_api.ipynb", "sarcina": "<b>1</b> codul de stare · <b>2</b> câte valori există · <b>3</b> populația în 2024", "cod": "print(raspuns.{{1}})\nprint(raspuns.json()[0][{{2}}])\nprint(raspuns.json()[{{3}}][0][\"value\"])", "goluri": {"1": {"ok": ["status_code"], "ajutor": "atributul"}, "2": {"ok": ["\"total\"", "'total'"], "ajutor": "cheia"}, "3": {"ok": ["1"], "ajutor": "poziția"}}, "indiciu": "Codul de stare e atributul <code>status_code</code> (slide-ul de dinainte). În stânga: paginarea e pe poziția 0, cu cheia <code>\"total\"</code>; valorile sunt pe poziția 1.", "iesire": "200\n3\n19051804", "laBine": "Codul de stare, apoi corpul: aceeași ordine la orice cerere.", "laRau": "Cheia se scrie între ghilimele; pozițiile încep de la 0.", "explicatie": "<code>raspuns.status_code</code> e 200, deci cererea a reușit. <code>raspuns.json()</code> e o listă: pe poziția 0 paginarea, unde <code>\"total\"</code> spune câte valori există; pe poziția 1 valorile, de la anul cel mai recent."}</script></div>
+</div></div></div>
 
 </section>
 
@@ -177,11 +183,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=85"></script>
+<script type="module" src="../../js/antet.js?v=86"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=85";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=85";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=85";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=86";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=86";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=86";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });
