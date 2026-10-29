@@ -137,7 +137,7 @@ def _ic(k, x, y, cls):
 def _restaurant_svg():
     """Restaurantul, ca o singură scenă: sala, la vedere, și bucătăria, în spatele
     unui perete cu o singură ușă. Sub fiecare personaj, în verde, perechea lui
-    de la un API. Bonul pleacă spre bucătărie, felul se întoarce, prin ospătar."""
+    de la un API. Bonul și felul se mută pas cu pas (V.rmt, în vizual.js)."""
     o = ['<svg class="rmt" viewBox="0 0 980 300" role="img" aria-label="Restaurantul și API-ul: clientul e scriptul, '
          'meniul e documentația, ospătarul e API-ul, bucătăria e serverul cu datele">',
          '<defs><marker id="rmt-s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">'
@@ -147,39 +147,58 @@ def _restaurant_svg():
          '<text class="rmt__zona" x="0" y="16">sala, la vedere</text>',
          '<text class="rmt__zona" x="736" y="16">bucătăria, nevăzută</text>',
          '<text class="rmt__usa" x="726" y="247">ușa</text>']
-    for k, x, n, api in [("client", 110, "Clientul", "= scriptul"),
-                         ("meniu", 262, "Meniul", "= documentația"),
-                         ("ospatar", 520, "Ospătarul", "= API-ul, singura intrare"),
-                         ("bucatarie", 848, "Bucătăria", "= serverul, cu datele")]:
+    for i, (k, x, n, api) in enumerate([("client", 110, "Clientul", "= scriptul"),
+                                        ("meniu", 262, "Meniul", "= documentația"),
+                                        ("ospatar", 520, "Ospătarul", "= API-ul, singura intrare"),
+                                        ("bucatarie", 848, "Bucătăria", "= serverul, cu datele")]):
         g = _ic(k, 0, 0, "rmt__ic").replace('transform="translate(-22,-22)"', f'transform="translate({x - 40},30) scale(1.8)"')
-        o.append(g + f'<text class="rmt__n" x="{x}" y="144">{n}</text><text class="rmt__a" x="{x}" y="167">{api}</text>')
-    o.append('<path class="rmt__dus" d="M110,222 H900" marker-end="url(#rmt-s)"/>')
-    o.append('<text class="rmt__s" x="128" y="213">comanda <tspan class="a">= cererea</tspan></text>')
-    o.append('<path class="rmt__dus" d="M900,268 H110" marker-end="url(#rmt-s)"/>')
-    o.append('<text class="rmt__s" x="128" y="259">felul <tspan class="a">= răspunsul</tspan></text>')
-    # bonul, pe drumul dus, și felul acoperit, pe drumul întors
-    o.append('<g class="rmt__bon" transform="translate(612,203)"><path d="M0 0h22v26l-3.7-3-3.6 3-3.7-3-3.7 3-3.6-3L0 26z"/>'
+        o.append(f'<g class="rmt__st" data-st="{i}">' + g
+                 + f'<text class="rmt__n" x="{x}" y="144">{n}</text><text class="rmt__a" x="{x}" y="167">{api}</text></g>')
+    o.append('<path class="rmt__dus" data-dir="dus" d="M110,222 H900" marker-end="url(#rmt-s)"/>')
+    o.append('<text class="rmt__s" x="290" y="213">comanda <tspan class="a">= cererea</tspan></text>')
+    o.append('<path class="rmt__dus" data-dir="intors" d="M900,268 H110" marker-end="url(#rmt-s)"/>')
+    o.append('<text class="rmt__s" x="290" y="259">felul <tspan class="a">= răspunsul</tspan></text>')
+    # bonul și felul acoperit: desenate în jurul lui (0, 0), mutate din V.rmt
+    o.append('<g class="rmt__bon"><path d="M0 0h22v26l-3.7-3-3.6 3-3.7-3-3.7 3-3.6-3L0 26z"/>'
              '<path d="M5 7h12M5 13h12M5 19h7"/></g>')
-    o.append('<g class="rmt__fel" transform="translate(604,252)"><path d="M3 15a13 13 0 0 1 26 0z"/><path d="M0 15h32M16 0v2"/></g>')
+    o.append('<g class="rmt__fel"><path d="M3 15a13 13 0 0 1 26 0z"/><path d="M0 15h32M16 0v2"/></g>')
     o.append("</svg>")
     return "".join(o)
 
 
-RESTAURANT_SCENA = '<figure class="rmt-w">' + _restaurant_svg() + "</figure>"
+# Povestea, pas cu pas: st = personajele aprinse (0 clientul, 1 meniul, 2 ospătarul,
+# 3 bucătăria); bon, fel = unde sunt pe drum (x); dir = săgeata aprinsă.
+RESTAURANT_IX = {"svg": _restaurant_svg(), "pasi": [
+    {"st": [0, 1], "bon": None, "fel": None, "dir": None,
+     "sus": "Clientul citește meniul: ce se poate comanda.",
+     "jos": "Scriptul citește documentația: ce date se pot cere și cum."},
+    {"st": [0, 2], "bon": 500, "fel": None, "dir": "dus",
+     "sus": "Clientul îi dă ospătarului comanda, pe un bon.",
+     "jos": "Scriptul trimite cererea la API."},
+    {"st": [2, 3], "bon": 820, "fel": None, "dir": "dus",
+     "sus": "Ospătarul duce bonul în bucătărie. Clientul nu intră acolo.",
+     "jos": "API-ul duce cererea la server. Scriptul nu ajunge direct la baza de date."},
+    {"st": [3], "bon": None, "fel": 820, "dir": None,
+     "sus": "Bucătăria pregătește exact felul de pe bon.",
+     "jos": "Serverul caută în baza de date exact ce s-a cerut."},
+    {"st": [3, 2, 0], "bon": None, "fel": 140, "dir": "intors",
+     "sus": "Felul ajunge la masă, pe același drum, prin ospătar.",
+     "jos": "Răspunsul ajunge la script: un cod de stare, apoi datele."},
+]}
 
 
 sl("s3", "Ce este un API", "Analogia restaurantului",
    "<h2>Un API funcționează ca un restaurant</h2>"
    "<p class=\"cheie\">Clientul nu intră în bucătărie: comandă din meniu, prin ospătar. "
    "La fel, scriptul cere datele prin API, după documentație.</p>"
-   + RESTAURANT_SCENA,
+   + ix("rmt", "Drumul unei comenzi", RESTAURANT_IX),
    manual=
    "<h2>Ce este un API</h2>"
    "<p>Analogia restaurantului fixează un principiu esențial: codul clientului nu "
    "comunică direct cu baza de date a furnizorului. Comunică cu un intermediar, API-ul, care o "
    "accesează în numele clientului, după reguli stabilite dinainte. Regulile acestea sunt contractul "
    "API-ului, iar documentația e forma lui citibilă.</p>"
-   + RESTAURANT_SCENA
+   + ix("rmt", "Drumul unei comenzi", RESTAURANT_IX)
    + tabel(["La restaurant", "La un API"], [
        ["masa, clientul", "scriptul"],
        ["meniul", "documentația: ce resurse există, ce parametri primesc, ce formă are răspunsul"],
@@ -207,7 +226,7 @@ sl("s3", "Ce este un API", "Analogia restaurantului",
    "documentația se citește înainte de prima cerere, nu după primul eșec.</p>")
 
 
-# În manual: trei coloane, câte trei motive, aliniate pe rânduri.
+# Trei coloane, câte trei motive, aliniate pe rânduri; costul, pe toată lățimea.
 _MOTIVE = [
     ("Știință", "accent", [("Proveniența", "sursa, filtrele și data, scrise în cerere"),
                            ("Reproductibilitatea", "același cod, același tabel"),
@@ -224,44 +243,18 @@ MOTIVE_SLIDE = (
     + "".join(f'<h4 style="--c:var(--{c})">{t}</h4>' for t, c, _ in _MOTIVE)
     + "".join(f'<p class="mtv5__i"><b>{it[k][0]}</b><span>{it[k][1]}</span></p>'
               for k in range(3) for _, _, it in _MOTIVE)
-    + "</div>")
-
-# Pe slide, deasupra motivelor: metafora restaurantului, continuată. Fișierul
-# descărcat lasă trei întrebări; cererea scrisă e bonul comenzii, care le răspunde,
-# rând cu rând, în aceeași culoare.
-BON_HTML = (
-    '<div class="bon"><div class="bon__sus">'
-    '<div class="bon__foaie"><p class="bon__cap"><b>Fișierul descărcat</b> · populatie.csv</p>'
-    '<p class="bon__date">RO,2024,19051804</p>'
-    '<ul class="bon__q"><li style="--c:var(--accent)">de unde?</li><li style="--c:var(--ambra)">ce anume?</li>'
-    '<li style="--c:var(--roza)">când?</li></ul></div>'
-    '<i class="bon__s" aria-hidden="true">→</i>'
-    '<div class="bon__b"><div class="bon__hartie"><p class="bon__cap"><b>Cererea scrisă</b> · bonul comenzii</p><dl>'
-    '<dt style="--c:var(--accent)">sursa</dt><dd>api.worldbank.org</dd>'
-    '<dt style="--c:var(--ambra)">cererea</dt><dd>SP.POP.TOTL · RO · 2022:2024</dd>'
-    '<dt style="--c:var(--roza)">data</dt><dd>29.10.2026</dd></dl></div></div>'
-    "</div></div>")
-
-BON_COST = ('<p class="bon__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. '
-            "Un fișier publicat și datat, ca SCI de pe HDX, rămâne o alegere bună.</p>")
+    + '<p class="mtv5__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. '
+      "Un fișier publicat și datat, ca SCI de pe HDX, rămâne o alegere bună.</p></div>")
 
 sl("s5", "Ce este un API", "De ce prin API",
    "<h2>De ce prin API</h2>"
-   "<p class=\"cheie\">Un fișier se descarcă dintr-un clic. De ce o cerere scrisă? Pentru că aduce "
-   "și drumul datelor, ca bonul unei comenzi.</p>"
-   + BON_HTML
-   + MOTIVE_SLIDE[:-len("</div>")]
-   + BON_COST.replace('class="bon__cost"', 'class="mtv5__cost"') + "</div>",
+   "<p class=\"cheie\">Un fișier se descarcă dintr-un clic. De ce o cerere scrisă?</p>"
+   + MOTIVE_SLIDE,
    manual=
    "<h2>Motivele colectării prin API</h2>"
    "<p>Când un fișier se poate descărca dintr-un clic, obținerea lui prin cod trebuie "
-   "justificată. Metafora restaurantului continuă: un fișier descărcat seamănă cu un fel adus "
-   "la pachet, bun, dar fără bon; nu se mai știe exact ce s-a comandat, de unde și când. "
-   "Cererea scrisă este bonul: conține sursa, setul, filtrele și data, iar cu ea comanda se "
-   "poate repeta oricând, la orice scară.</p>"
-   + BON_HTML
-   + "<p>Pe larg, motivele țin de știință, de inginerie și de calitatea datelor, iar "
-     "fiecare are și un cost.</p>"
+   "justificată. Motivele țin de știință, de inginerie și de calitatea datelor, iar "
+   "fiecare are și un cost.</p>"
    + MOTIVE_SLIDE
    + "<h3>Știință</h3>"
    "<p>O analiză e credibilă în măsura în care drumul de la sursă la rezultat poate fi "

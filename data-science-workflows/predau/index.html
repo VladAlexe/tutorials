@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catalog · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=95">
-<link rel="stylesheet" href="../css/sistem.css?v=95">
-<link rel="stylesheet" href="../css/panou.css?v=95">
-<link rel="stylesheet" href="../css/predau.css?v=95">
-<script src="../js/tema.js?v=95"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=96">
+<link rel="stylesheet" href="../css/sistem.css?v=96">
+<link rel="stylesheet" href="../css/panou.css?v=96">
+<link rel="stylesheet" href="../css/predau.css?v=96">
+<script src="../js/tema.js?v=96"></script>
 <style>
   /* ==========================================================================
      PANOUL PROFESORULUI
@@ -199,11 +199,11 @@
 
 <div id="subsol"></div>
 
-<script type="module" src="../js/antet.js?v=95"></script>
-<script type="module" src="../js/subsol.js?v=95"></script>
+<script type="module" src="../js/antet.js?v=96"></script>
+<script type="module" src="../js/subsol.js?v=96"></script>
 <script type="module">
-import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=95";
-import * as O from "../js/ora.js?v=95";
+import { RADACINA, LECTII, NOTARE, activitate } from "../js/curs.js?v=96";
+import * as O from "../js/ora.js?v=96";
 
 const el  = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -214,7 +214,7 @@ const lectiaDe = cap => LECTII.find(l => "c" + l.nr === cap);
 const INV = "__invitati";
 
 let A;
-try { A = await import("../js/auth.js?v=95"); }
+try { A = await import("../js/auth.js?v=96"); }
 catch { el("cat").textContent = "Autentificarea nu a putut fi încărcată."; throw 0; }
 const p = await A.profil().catch(() => ({}));
 if (!p.autentificat || !p.profesorReal){ location.replace(`${RADACINA}/cont/`); throw 0; }
@@ -709,7 +709,7 @@ async function echipe(){
   if (opresteEchipe){ opresteEchipe(); opresteEchipe = null; }
   if (grupa === INV || !grupa){ g.innerHTML = `<p class="gol-s">Echipele se formează pe grupe de studenți, nu pentru invitați.</p>`; return; }
   try {
-    const E = await import("../js/echipe.js?v=95");
+    const E = await import("../js/echipe.js?v=96");
     g.innerHTML = "";
     opresteEchipe = await E.echipeProfesor(g, { grupa, numeGrupa: GRUPE.find(x => x.id === grupa)?.nume || "" });
   } catch (e) { g.textContent = "Echipele nu au putut fi încărcate: " + e.message; }

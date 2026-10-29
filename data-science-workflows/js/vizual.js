@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=95");
+    const m = await import("/data-science-workflows/js/colectare.js?v=96");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -3199,7 +3199,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=95`), import(`${R}/js/auth.js?v=95`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=96`), import(`${R}/js/auth.js?v=96`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });
@@ -3250,6 +3250,55 @@ V.rst2 = (gazda, d) => {
   gazda.querySelector(".rst3__nav").addEventListener("click", e => { const b = e.target.closest("button"); if (b){ p = Math.max(0, Math.min(SC[s].pasi.length - 1, p + +b.dataset.p)); arata(); } });
   col.forEach((g, i) => g.addEventListener("click", () => {
     const k = SC[s].pasi.findIndex(x => x.col.includes(i)); if (k >= 0){ p = k; arata(); }
+  }));
+  arata();
+};
+
+
+/* ===========================================================================
+   RMT — restaurantul ca poveste, pas cu pas. Scena (SVG) vine din c2.py:
+   personajele sunt .rmt__st[data-st], săgețile .rmt__dus[data-dir], bonul
+   .rmt__bon și felul .rmt__fel. Fiecare pas: ce personaje se aprind (st),
+   unde e bonul (bon, x) sau felul (fel, x), ce săgeată (dir), și două rânduri
+   de text: la restaurant și la un API.
+   =========================================================================== */
+V.rmt = (gazda, d) => {
+  const P = d.pasi || [];
+  let p = 0;
+  gazda.innerHTML = `<div class="rmt-w">
+      ${d.svg || ""}
+      <div class="rst3__txt">
+        <p><span>La restaurant</span><b class="rmt__sus"></b></p>
+        <p><span>La un API</span><b class="rmt__jos"></b></p>
+      </div>
+      <div class="rst3__nav"><button type="button" data-p="-1" aria-label="Pasul anterior">‹</button>
+        <span class="rmt__nr"></span><button type="button" data-p="1" aria-label="Pasul următor">›</button></div>
+    </div>`;
+  const svg = gazda.querySelector("svg");
+  const st = [...gazda.querySelectorAll(".rmt__st")];
+  const bon = gazda.querySelector(".rmt__bon"), fel = gazda.querySelector(".rmt__fel");
+  const muta = (el, x, y) => { if (!el) return; el.style.opacity = x == null ? 0 : 1; if (x != null) el.style.transform = `translate(${x}px, ${y}px)`; };
+  // locul de pornire: bonul la masă, felul în bucătărie (ascunse până la pasul lor)
+  if (bon) bon.style.transform = "translate(130px, 203px)";
+  if (fel) fel.style.transform = "translate(820px, 250px)";
+  function arata(){
+    const ps = P[p];
+    svg.classList.add("focus");
+    st.forEach(g => g.classList.toggle("on", ps.st.includes(+g.dataset.st)));
+    svg.querySelectorAll(".rmt__dus").forEach(a => a.classList.toggle("on", a.dataset.dir === ps.dir));
+    muta(bon, ps.bon, 203);
+    muta(fel, ps.fel, 250);
+    gazda.querySelector(".rmt__sus").textContent = ps.sus;
+    gazda.querySelector(".rmt__jos").textContent = ps.jos;
+    gazda.querySelector(".rmt__nr").textContent = `pasul ${p + 1} din ${P.length}`;
+    gazda.querySelector('[data-p="-1"]').disabled = p === 0;
+    gazda.querySelector('[data-p="1"]').disabled = p === P.length - 1;
+  }
+  gazda.querySelector(".rst3__nav").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (b){ p = Math.max(0, Math.min(P.length - 1, p + +b.dataset.p)); arata(); }
+  });
+  st.forEach(g => g.addEventListener("click", () => {
+    const k = P.findIndex(x => x.st.includes(+g.dataset.st)); if (k >= 0){ p = k; arata(); }
   }));
   arata();
 };

@@ -2798,7 +2798,7 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 
 /* Restaurantul: o scenă. Sala la vedere, bucătăria în spatele unui perete cu o
    ușă; sub fiecare personaj, în verde, perechea lui de la un API */
-.rmt-w{margin:10px 0 18px}
+.rmt-w{margin:4px 0 0}
 .rmt{display:block;width:100%;height:auto;max-height:360px}
 .rmt__buc{fill:color-mix(in srgb,var(--text) 5%,transparent)}
 .rmt__zid{stroke:var(--text-2);stroke-width:3;fill:none}
@@ -2811,38 +2811,15 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .rmt marker path{fill:var(--text-2)}
 .rmt__s{font-family:var(--sans);font-size:15px;fill:var(--text)}
 .rmt__s .a{fill:var(--accent-text);font-weight:500}
-.rmt__bon{fill:var(--panza);stroke:var(--text-2);stroke-width:1.4;stroke-linejoin:round}
-.rmt__fel{fill:var(--panza);stroke:var(--text-2);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.rmt__bon{fill:var(--panza);stroke:var(--text);stroke-width:1.5;stroke-linejoin:round}
+.rmt__bon,.rmt__fel{opacity:0;transition:transform .8s ease,opacity .3s}
+.rmt__st{cursor:pointer;transition:opacity .3s}
+.rmt.focus .rmt__st:not(.on){opacity:.28}
+.rmt__dus{transition:stroke .3s,stroke-width .3s}
+.rmt__dus.on{stroke:var(--text);stroke-width:2.4}
+.rmt-w .rst3__txt{margin-top:4px}
+.rmt__fel{fill:var(--panza);stroke:var(--text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
-/* De ce prin API: deasupra motivelor, două foi. Fișierul are numerele și trei
-   întrebări; bonul comenzii le răspunde, rând cu rând, în aceeași culoare. */
-.bon{margin:2px 0 16px}
-.bon__sus{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1.2fr);gap:22px;align-items:stretch}
-.bon__s{font-style:normal;font-family:var(--sans);font-size:26px;color:var(--text-3);align-self:center}
-.bon__foaie,.bon__b{filter:drop-shadow(0 1px 0 var(--linie)) drop-shadow(0 5px 12px rgba(0,0,0,.07))}
-.bon__foaie{background:var(--panza);padding:10px 20px 12px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%)}
-.bon__b{display:flex}
-.bon__hartie{flex:1;background:var(--panza);padding:10px 22px 18px;
-  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/14px 100%;
-          mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/14px 100%}
-.bon__cap{margin:0 0 8px;padding-bottom:6px;border-bottom:1px dashed var(--linie);font-family:var(--sans);font-size:var(--t2);
-  color:var(--text-3);max-width:none}
-.bon__cap b{color:var(--text);font-weight:600}
-.bon__date{margin:0;font-family:var(--mono);font-size:var(--t3);line-height:1.6;color:var(--text-2);max-width:none}
-.bon__q{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.bon__q li{margin:0;font-family:var(--sans);font-size:var(--t3);font-weight:600;color:var(--c);padding:2px 12px;border-radius:14px;
-  background:color-mix(in srgb,var(--c) 12%,var(--panza))}
-.bon__q li::before{content:none;display:none}
-.bon__hartie dl{display:grid;grid-template-columns:auto 1fr;gap:4px 22px;margin:2px 0 0;font-family:var(--mono);font-size:var(--t3)}
-.bon__hartie dt{color:var(--c);font-weight:600}
-.bon__hartie dd{margin:0;color:var(--text)}
-.bon__cost{margin:20px 0 0;font-family:var(--sans);font-size:var(--t3);color:var(--text-2);max-width:none}
-.bon__cost b{color:var(--text);font-weight:600;margin-right:10px}
-@media(max-width:760px){.bon__sus{grid-template-columns:1fr}.bon__s{display:none}}
-.sld#s5 .mtv5{margin-top:0}
-.sld#s5 .mtv5 h4{padding:9px 0 5px}
-.sld#s5 .mtv5__i{padding:7px 0}
-.sld#s5 .mtv5__cost{margin-top:14px}
 
 /* cronologia, pe slide: etichete mai mici, fișa pe trei coloane egale */
 .sld#s7 .bnz__b{height:46px}
