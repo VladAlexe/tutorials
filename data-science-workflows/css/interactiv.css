@@ -2976,3 +2976,20 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .sld#s17 .wbv__leg span{width:84px}
 .sld#s17 .wbv__ex pre,.sld#s17 .wbv__ex code{white-space:pre}
 .sld#s18x .ix__cap{display:none}
+
+/* Eurostat, pas cu pas, pe slide: codul în stânga, memoria și ieșirea în dreapta */
+.sld#s20 .ix__cap{display:none}
+.sld#s20 .ps{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);align-items:start}
+.sld#s20 .ps__dr{grid-template-columns:minmax(0,1fr)}
+.sld#s20 .ps__mem{max-height:210px}
+.sld#s20 .ps__ed .ed__cod{font-size:var(--t2)}
+
+/* Exercițiul cu paginile: răspunsul primei cereri, cu legenda alături */
+.pgx{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:28px;align-items:center;margin:0 0 12px}
+.pgx figcaption{grid-column:1 / -1}
+.pgx figcaption code{font-size:.92em;background:none;border:0;padding:0}
+.pgx pre{font-size:var(--t2);line-height:1.5;padding:10px 16px;margin:0;overflow-x:auto}
+.pgx .wbv__leg{font-family:var(--sans);font-size:var(--t3);color:var(--text-2);margin:0;line-height:1.7;max-width:none}
+.pgx .wbv__leg span{display:inline-block;width:84px;color:var(--text-3)}
+.sld#s18x .ex__sarcina{display:none}
+@media(max-width:760px){.pgx{grid-template-columns:1fr}}

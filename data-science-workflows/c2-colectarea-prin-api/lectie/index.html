@@ -6,14 +6,14 @@
 <title>Cursul 2 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns și cum se aduc primele date reale în proiect.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=96">
-<link rel="stylesheet" href="../../css/sistem.css?v=96">
-<link rel="stylesheet" href="../../css/slide.css?v=96">
-<link rel="stylesheet" href="../../css/interactiv.css?v=96">
-<link rel="stylesheet" href="../../css/grafice.css?v=96">
-<link rel="stylesheet" href="../../css/exercitii.css?v=96">
-<link rel="stylesheet" href="../../css/explorator.css?v=96">
-<script src="../../js/tema.js?v=96"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=97">
+<link rel="stylesheet" href="../../css/sistem.css?v=97">
+<link rel="stylesheet" href="../../css/slide.css?v=97">
+<link rel="stylesheet" href="../../css/interactiv.css?v=97">
+<link rel="stylesheet" href="../../css/grafice.css?v=97">
+<link rel="stylesheet" href="../../css/exercitii.css?v=97">
+<link rel="stylesheet" href="../../css/explorator.css?v=97">
+<script src="../../js/tema.js?v=97"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -140,17 +140,19 @@
 </section>
 
 <section class="sld" id="s18x" data-grup="requests" data-t="Exercițiu: toate paginile">
-<h2>Exercițiu: toate paginile, cu o funcție</h2><p class="cheie">O cerere aduce o singură pagină. Funcția întreabă întâi câte pagini sunt, apoi le cere pe toate. Se completează cele trei goluri, apoi Rulează.</p><div class="ix" data-ix="cod">
+<h2>Exercițiu: toate paginile, cu o funcție</h2><p class="cheie">Prima cerere spune câte pagini sunt; bucla le cere pe toate.</p><figure class="wbv__json pgx"><figcaption>Ce trimite prima cerere (<code>.json()</code>), cu câte 20 pe pagină</figcaption><pre><code>[{"page": 1, "pages": 4, "per_page": 20, "total": 65},
+ [{"date": "2024", "value": 19051804}, …]]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile</p></figure><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Toate paginile, cu o funcție</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-pagini", "fisier": "02_colectarea_datelor_prin_api.ipynb · 4.3. O funcție care aduce toate paginile", "sarcina": "<b>1</b> partea cu paginarea · <b>2</b> câte pagini sunt · <b>3</b> partea cu valorile", "cod": "def cere_tot(url, parametri):\n    meta = requests.get(url, params=parametri).json()[{{1}}]       # câte pagini sunt\n    toate = []\n    for pagina in range(1, meta[{{2}}] + 1):                       # fiecare pagină\n        valori = requests.get(url, params={**parametri, \"page\": pagina}).json()[{{3}}]\n        toate = toate + valori\n        print(\"pagina\", pagina, \"din\", meta[\"pages\"], \"·\", len(toate), \"valori\")\n    return toate\n\nvalori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})", "goluri": {"1": {"ok": ["0"], "ajutor": "poziția"}, "2": {"ok": ["\"pages\"", "'pages'"], "ajutor": "cheia"}, "3": {"ok": ["1"], "ajutor": "poziția"}}, "indiciu": "Răspunsul Băncii Mondiale e o listă cu două părți: pe poziția 0 paginarea, unde cheia <code>\"pages\"</code> spune câte pagini sunt; pe poziția 1 valorile.", "iesire": "pagina 1 din 4 · 20 valori\npagina 2 din 4 · 40 valori\npagina 3 din 4 · 60 valori\npagina 4 din 4 · 65 valori", "laBine": "Prima cerere află că sunt 4 pagini (65 de valori, câte 20); bucla le cere pe toate patru și le adună.", "laRau": "Pozițiile încep de la 0; cheia se scrie între ghilimele.", "explicatie": "Prima cerere ia doar partea cu paginarea, <code>[0]</code>: de acolo, <code>meta[\"pages\"]</code> spune câte pagini sunt. Bucla trece prin paginile 1, 2, 3 și 4 și din fiecare ia partea cu valorile, <code>[1]</code>. La final, lista are toate cele 65 de valori."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-pagini", "fisier": "02_colectarea_datelor_prin_api.ipynb · 4.3. O funcție care aduce toate paginile", "sarcina": "<b>1</b> partea cu paginarea · <b>2</b> câte pagini sunt · <b>3</b> partea cu valorile", "cod": "def cere_tot(url, parametri):\n    meta = requests.get(url, params=parametri).json()[{{1}}]       # câte pagini sunt\n    toate = []\n    for pagina in range(1, meta[{{2}}] + 1):                       # fiecare pagină\n        valori = requests.get(url, params={**parametri, \"page\": pagina}).json()[{{3}}]\n        toate = toate + valori\n        print(\"pagina\", pagina, \"din\", meta[\"pages\"], \"·\", len(toate), \"valori\")\n    return toate\nvalori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})", "goluri": {"1": {"ok": ["0"], "ajutor": "poziția"}, "2": {"ok": ["\"pages\"", "'pages'"], "ajutor": "cheia"}, "3": {"ok": ["1"], "ajutor": "poziția"}}, "indiciu": "Răspunsul Băncii Mondiale e o listă cu două părți: pe poziția 0 paginarea, unde cheia <code>\"pages\"</code> spune câte pagini sunt; pe poziția 1 valorile.", "iesire": "pagina 1 din 4 · 20 valori\npagina 2 din 4 · 40 valori\npagina 3 din 4 · 60 valori\npagina 4 din 4 · 65 valori", "laBine": "Prima cerere află că sunt 4 pagini (65 de valori, câte 20); bucla le cere pe toate patru și le adună.", "laRau": "Pozițiile încep de la 0; cheia se scrie între ghilimele.", "explicatie": "Prima cerere ia doar partea cu paginarea, <code>[0]</code>: de acolo, <code>meta[\"pages\"]</code> spune câte pagini sunt. Bucla trece prin paginile 1, 2, 3 și 4 și din fiecare ia partea cu valorile, <code>[1]</code>. La final, lista are toate cele 65 de valori."}</script></div>
 </div>
 
 </section>
 
-<section class="sld" id="s20" data-grup="Eurostat" data-t="Eurostat: o funcție, un tabel">
-<h2>Eurostat: o funcție, un tabel</h2><p class="cheie">Cererea numește setul și filtrele, ca la Banca Mondială. Funcția <code>cere_eurostat</code> aduce direct tabelul.</p><div class="euf"><div class="euf__cod"><pre><code>cere_eurostat(<span class="d">"demo_r_d3dens"</span>,
-    {<span class="f">"geo": ["RO113", "RO111"]</span>,
-     <span class="f">"time": 2024</span>})</code></pre><dl class="euf__leg"><dt class="d">setul</dt><dd>densitatea populației</dd><dt class="f">filtrele</dt><dd>ce regiuni, ce an</dd></dl></div><i class="euf__s" aria-hidden="true">→</i><figure class="euf__t"><figcaption>tabelul</figcaption><table class="tabel"><thead><tr><th>geo</th><th>valoare</th></tr></thead><tbody><tr><td>RO111 · Bihor</td><td>74,2</td></tr><tr><td>RO113 · Cluj</td><td>104,8</td></tr></tbody></table></figure></div><p class="c2__jos"><code>geo</code> cere regiuni anume; <code>geoLevel</code>, un nivel întreg: <code>"nuts3"</code> aduce toate județele Europei.</p>
+<section class="sld" id="s20" data-grup="Eurostat" data-t="Eurostat: bilețelele de la garderobă">
+<h2>Eurostat: bilețelele de la garderobă</h2><p class="cheie">Răspunsul spune separat ce număr are fiecare regiune și ce valoare stă la fiecare număr. Potrivite, dau tabelul.</p><div class="ix" data-ix="pas">
+  <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">Cluj și Bihor, pas cu pas</span></div>
+  <div class="ix__corp"><script type="application/json">{"fisier": "02_colectarea_datelor_prin_api.ipynb · 6.3. Două regiuni", "intro": "Cluj și Bihor, în 2024. Rulează rând cu rând și urmărește bilețelele (numere) și cuierul (valori).", "cod": "parametri = {\"geo\": [\"RO113\", \"RO111\"], \"time\": 2024}\nurl = EUROSTAT + \"demo_r_d3dens\"\ndate = requests.get(url, params=parametri).json()\nnumere = date[\"dimension\"][\"geo\"][\"category\"][\"index\"]\nvalori = date[\"value\"]\n\ntabel = []\nfor regiune, numar in numere.items():\n    valoare = valori.get(str(numar))\n    tabel.append({\"geo\": regiune, \"valoare\": valoare})\npd.DataFrame(tabel)", "pasi": [{"l": 1, "set": {"parametri": {"t": "dict", "v": {"geo": ["RO113", "RO111"], "time": 2024}}}, "txt": "Filtrele: două regiuni, un an."}, {"l": 2, "set": {"url": {"t": "str", "v": "…/statistics/1.0/data/demo_r_d3dens"}}, "txt": "Adresa: serverul Eurostat plus codul setului, densitatea populației."}, {"l": 3, "set": {"date": {"t": "dict", "v": {"label": "Population density…", "dimension": {"freq": 1, "unit": 1, "geo": 1, "time": 1}, "value": {"0": 74.2, "1": 104.8}}}}, "txt": "Răspunsul: titlul setului, dimensiunile și, separat, valorile."}, {"l": 4, "set": {"numere": {"t": "dict", "v": {"RO111": 0, "RO113": 1}}}, "txt": "Bilețelele: ce număr are fiecare regiune. Bihor are 0, Cluj are 1."}, {"l": 5, "set": {"valori": {"t": "dict", "v": {"0": 74.2, "1": 104.8}}}, "txt": "Cuierul: ce valoare stă la fiecare număr. Numerele sunt scrise ca text."}, {"l": 7, "set": {"tabel": {"t": "list", "v": []}}, "txt": "Lista în care adunăm rândurile, goală la început."}, {"l": 8, "set": {"regiune": {"t": "str", "v": "RO111"}, "numar": {"t": "int", "v": 0}}, "txt": "Prima trecere prin buclă: Bihor, cu bilețelul 0."}, {"l": 9, "set": {"valoare": {"t": "float", "v": 74.2}}, "txt": "La numărul 0 stă 74,2. <code>str(numar)</code> face din 0 textul \"0\"."}, {"l": 10, "set": {"tabel": {"t": "list", "v": [{"geo": "RO111", "valoare": 74.2}]}}, "hl": {"var": "tabel", "k": 0}, "txt": "Rândul Bihorului intră în listă."}, {"l": 8, "set": {"regiune": {"t": "str", "v": "RO113"}, "numar": {"t": "int", "v": 1}}, "txt": "A doua trecere: Cluj, cu bilețelul 1."}, {"l": 9, "set": {"valoare": {"t": "float", "v": 104.8}}, "txt": "La numărul 1 stă 104,8."}, {"l": 10, "set": {"tabel": {"t": "list", "v": [{"geo": "RO111", "valoare": 74.2}, {"geo": "RO113", "valoare": 104.8}]}}, "hl": {"var": "tabel", "k": 1}, "txt": "Rândul Clujului intră în listă."}, {"l": 11, "out": "     geo  valoare\n0  RO111     74.2\n1  RO113    104.8", "txt": "Lista devine tabel, un rând pe regiune. Exact acești pași îi face funcția <code>cere_eurostat</code>."}]}</script></div>
+</div>
 
 </section>
 
@@ -178,11 +180,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=96"></script>
+<script type="module" src="../../js/antet.js?v=97"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=96";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=96";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=96";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=97";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=97";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=97";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });

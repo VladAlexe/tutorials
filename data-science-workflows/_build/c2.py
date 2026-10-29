@@ -1024,7 +1024,7 @@ COD_PAGINI = {
            "        valori = requests.get(url, params={**parametri, \"page\": pagina}).json()[{{3}}]\n"
            "        toate = toate + valori\n"
            "        print(\"pagina\", pagina, \"din\", meta[\"pages\"], \"·\", len(toate), \"valori\")\n"
-           "    return toate\n\n"
+           "    return toate\n"
            "valori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})",
     "goluri": {"1": {"ok": ["0"], "ajutor": "poziția"},
                "2": {"ok": ["\"pages\"", "'pages'"], "ajutor": "cheia"},
@@ -1100,10 +1100,18 @@ sl("s18", "requests", "Paginarea",
           "scrie fișiere noi, alături. Așa se poate reface oricând drumul de la sursă la tabelul final."))
 
 
+# Pe slide, deasupra exercițiului: ce trimite prima cerere, ca golurile să se
+# poată completa din ce se vede.
+RASP_PAGINI = (
+    '<figure class="wbv__json pgx"><figcaption>Ce trimite prima cerere (<code>.json()</code>), cu câte 20 pe pagină</figcaption>'
+    '<pre><code>[{"page": 1, "pages": 4, "per_page": 20, "total": 65},\n'
+    ' [{"date": "2024", "value": 19051804}, …]]</code></pre>'
+    '<p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile</p></figure>')
+
 sl("s18x", "requests", "Exercițiu: toate paginile",
    "<h2>Exercițiu: toate paginile, cu o funcție</h2>"
-   "<p class=\"cheie\">O cerere aduce o singură pagină. Funcția întreabă întâi câte pagini sunt, apoi le "
-   "cere pe toate. Se completează cele trei goluri, apoi Rulează.</p>"
+   "<p class=\"cheie\">Prima cerere spune câte pagini sunt; bucla le cere pe toate.</p>"
+   + RASP_PAGINI
    + ix("cod", "Toate paginile, cu o funcție", COD_PAGINI),
    manual="")
 
@@ -1130,22 +1138,6 @@ EU_FUNCTIE = (
     '<tr><td>RO113 · Cluj</td><td>104,8</td></tr>'
     "</tbody></table></figure></div>")
 
-# În manual: ce face funcția. Stânga, valorile cu numărul lor; mijloc, ce număr
-# are fiecare regiune; dreapta, tabelul. Aceeași culoare, același număr.
-EU_NUMERE = (
-    '<div class="eun">'
-    '<div class="eun__r">'
-    '<figure><figcaption><code>value</code><span>valorile, cu numărul lor</span></figcaption>'
-    '<pre><code>{<span class="n0">"0": 74.2</span>,\n <span class="n1">"1": 104.8</span>}</code></pre></figure>'
-    '<figure><figcaption><code>dimension → geo → index</code><span>ce număr are fiecare regiune</span></figcaption>'
-    '<pre><code>{<span class="n0">"RO111": 0</span>,\n <span class="n1">"RO113": 1</span>}</code></pre></figure>'
-    '<i class="eun__s" aria-hidden="true">→</i>'
-    '<figure><figcaption>tabelul<span>potrivite după număr</span></figcaption>'
-    '<table class="tabel eun__t"><thead><tr><th>geo</th><th>valoare</th></tr></thead><tbody>'
-    '<tr class="n0"><td>RO111 · Bihor</td><td>74,2</td></tr>'
-    '<tr class="n1"><td>RO113 · Cluj</td><td>104,8</td></tr>'
-    "</tbody></table></figure></div></div>")
-
 # În manual: migrația, cu ce fixează cererea și ce rămâne deschis.
 EU2_HTML = (
     '<p class="eu2__adr"><code>' + EUROSTAT_BAZA + '<b>migr_pop1ctz</b>?citizen=RO&amp;sex=T&amp;age=TOTAL&amp;unit=NR&amp;time=2024</code></p>'
@@ -1155,13 +1147,57 @@ EU2_HTML = (
     '<tr class="on"><td>Variază, un rând pe cod</td><td><code>geo</code> (țara de reședință)</td></tr>'
     "</tbody></table>")
 
-sl("s20", "Eurostat", "Eurostat: o funcție, un tabel",
-   "<h2>Eurostat: o funcție, un tabel</h2>"
-   "<p class=\"cheie\">Cererea numește setul și filtrele, ca la Banca Mondială. "
-   "Funcția <code>cere_eurostat</code> aduce direct tabelul.</p>"
-   + EU_FUNCTIE
-   + '<p class="c2__jos"><code>geo</code> cere regiuni anume; <code>geoLevel</code>, un nivel întreg: '
-     '<code>"nuts3"</code> aduce toate județele Europei.</p>',
+# Pe slide și în manual: pașii din caiet (6.3), rulați rând cu rând: cele două
+# dicționare, apoi bucla care pune lângă fiecare regiune valoarea de la numărul ei.
+PAS_EUROSTAT = {
+    "fisier": f"{CAIET} · 6.3. Două regiuni",
+    "intro": "Cluj și Bihor, în 2024. Rulează rând cu rând și urmărește bilețelele (numere) și cuierul (valori).",
+    "cod": "parametri = {\"geo\": [\"RO113\", \"RO111\"], \"time\": 2024}\n"
+           "url = EUROSTAT + \"demo_r_d3dens\"\n"
+           "date = requests.get(url, params=parametri).json()\n"
+           "numere = date[\"dimension\"][\"geo\"][\"category\"][\"index\"]\n"
+           "valori = date[\"value\"]\n\n"
+           "tabel = []\n"
+           "for regiune, numar in numere.items():\n"
+           "    valoare = valori.get(str(numar))\n"
+           "    tabel.append({\"geo\": regiune, \"valoare\": valoare})\n"
+           "pd.DataFrame(tabel)",
+    "pasi": [
+        {"l": 1, "set": {"parametri": {"t": "dict", "v": {"geo": ["RO113", "RO111"], "time": 2024}}},
+         "txt": "Filtrele: două regiuni, un an."},
+        {"l": 2, "set": {"url": {"t": "str", "v": "…/statistics/1.0/data/demo_r_d3dens"}},
+         "txt": "Adresa: serverul Eurostat plus codul setului, densitatea populației."},
+        {"l": 3, "set": {"date": {"t": "dict", "v": {"label": "Population density…", "dimension": {"freq": 1, "unit": 1, "geo": 1, "time": 1},
+                                                      "value": {"0": 74.2, "1": 104.8}}}},
+         "txt": "Răspunsul: titlul setului, dimensiunile și, separat, valorile."},
+        {"l": 4, "set": {"numere": {"t": "dict", "v": {"RO111": 0, "RO113": 1}}},
+         "txt": "Bilețelele: ce număr are fiecare regiune. Bihor are 0, Cluj are 1."},
+        {"l": 5, "set": {"valori": {"t": "dict", "v": {"0": 74.2, "1": 104.8}}},
+         "txt": "Cuierul: ce valoare stă la fiecare număr. Numerele sunt scrise ca text."},
+        {"l": 7, "set": {"tabel": {"t": "list", "v": []}},
+         "txt": "Lista în care adunăm rândurile, goală la început."},
+        {"l": 8, "set": {"regiune": {"t": "str", "v": "RO111"}, "numar": {"t": "int", "v": 0}},
+         "txt": "Prima trecere prin buclă: Bihor, cu bilețelul 0."},
+        {"l": 9, "set": {"valoare": {"t": "float", "v": 74.2}},
+         "txt": "La numărul 0 stă 74,2. <code>str(numar)</code> face din 0 textul \"0\"."},
+        {"l": 10, "set": {"tabel": {"t": "list", "v": [{"geo": "RO111", "valoare": 74.2}]}}, "hl": {"var": "tabel", "k": 0},
+         "txt": "Rândul Bihorului intră în listă."},
+        {"l": 8, "set": {"regiune": {"t": "str", "v": "RO113"}, "numar": {"t": "int", "v": 1}},
+         "txt": "A doua trecere: Cluj, cu bilețelul 1."},
+        {"l": 9, "set": {"valoare": {"t": "float", "v": 104.8}},
+         "txt": "La numărul 1 stă 104,8."},
+        {"l": 10, "set": {"tabel": {"t": "list", "v": [{"geo": "RO111", "valoare": 74.2}, {"geo": "RO113", "valoare": 104.8}]}},
+         "hl": {"var": "tabel", "k": 1},
+         "txt": "Rândul Clujului intră în listă."},
+        {"l": 11, "out": "     geo  valoare\n0  RO111     74.2\n1  RO113    104.8",
+         "txt": "Lista devine tabel, un rând pe regiune. Exact acești pași îi face funcția <code>cere_eurostat</code>."},
+    ]}
+
+sl("s20", "Eurostat", "Eurostat: bilețelele de la garderobă",
+   "<h2>Eurostat: bilețelele de la garderobă</h2>"
+   "<p class=\"cheie\">Răspunsul spune separat ce număr are fiecare regiune și ce valoare stă la fiecare "
+   "număr. Potrivite, dau tabelul.</p>"
+   + ix("pas", "Cluj și Bihor, pas cu pas", PAS_EUROSTAT),
    manual=
    "<h2>Eurostat: date pe regiuni</h2>"
    "<p>Eurostat publică indicatori pe regiuni NUTS: țări, regiuni mari (NUTS 2) și județe sau "
@@ -1170,20 +1206,22 @@ sl("s20", "Eurostat", "Eurostat: o funcție, un tabel",
    "(<code>unit</code>) și altele, după set. Codul unui set și filtrele lui se găsesc în "
    '<a class="leg" href="https://ec.europa.eu/eurostat/databrowser/" target="_blank" rel="noopener">Data Browser</a>, '
    "unde tabelul se poate vedea înainte de a fi cerut din cod.</p>"
-   + EU_FUNCTIE
-   + "<p>În caiet, funcția <code>cere_eurostat</code> face cererea și întoarce direct un tabel, un rând pe "
-     "regiune. Se folosește la fel ca <code>cere_bm</code>: primul argument este setul, al doilea sunt "
-     "filtrele. Regula ei: într-o cerere variază un singur lucru, regiunea; celelalte filtre au câte o "
-     "singură valoare, iar dacă lipsește unul, funcția spune care.</p>"
-   + "<h3>Ce face funcția</h3>"
    "<p>Răspunsul are alt format decât la Banca Mondială, care trimite înregistrări, fiecare cu țara și "
-   "anul ei. Eurostat trimite valorile numerotate și, separat, ce număr are fiecare regiune; funcția le "
-   "potrivește.</p>"
-   + EU_NUMERE
-   + "<p>Numerele urmează ordinea Eurostat, nu ordinea din cerere, deci se citesc din răspuns, nu se "
-     "presupun. Formatul se numește JSON-stat: codurile se scriu o singură dată, nu pe fiecare rând, așa că "
-     "răspunsul rămâne mic și când are zeci de mii de valori. O valoare care lipsește nu apare deloc în "
-     "<code>value</code>; în tabel devine <code>None</code>, nu zero.</p>"
+   "anul ei. Eurostat trimite două dicționare: ce număr are fiecare regiune, ca bilețelele de la o "
+   "garderobă, și ce valoare stă la fiecare număr. Potrivirea lor dă tabelul.</p>"
+   + ix("pas", "Cluj și Bihor, pas cu pas", PAS_EUROSTAT)
+   + "<p>Numerele urmează ordinea Eurostat, nu ordinea din cerere: Clujul a fost cerut primul, dar are "
+     "numărul 1. Formatul se numește JSON-stat: codurile se scriu o singură dată, nu pe fiecare rând, așa "
+     "că răspunsul rămâne mic și când are zeci de mii de valori. O valoare care lipsește nu apare deloc "
+     "în <code>value</code>; cu <code>.get</code>, în tabel devine <code>None</code>, nu zero.</p>"
+   + "<h3>Funcția din caiet</h3>"
+   "<p>În caiet, acești pași stau în funcția <code>cere_eurostat</code>, care se folosește la fel ca "
+   "<code>cere_bm</code>: primul argument este setul, al doilea sunt filtrele. Regula ei: într-o cerere "
+   "variază un singur lucru, regiunea; celelalte filtre au câte o singură valoare. Dacă vin mai multe "
+   "valori decât regiuni, a variat și altceva, de exemplu anul uitat, iar funcția se oprește.</p>"
+   + EU_FUNCTIE
+   + "<p><code>geo</code> cere regiuni anume; <code>geoLevel</code>, un nivel întreg: cu "
+     "<code>\"geoLevel\": \"nuts3\"</code> în loc de <code>geo</code>, vin toate județele Europei.</p>"
    + "<h3>Migrația, a doua sursă a proiectului</h3>"
    "<p>Setul <code>migr_pop1ctz</code> spune câți oameni cu o anumită cetățenie trăiesc într-o "
    "țară, la 1 ianuarie. Un rând e o pereche de țări, ca la SCI, dar cu direcție. Cetățenia "
