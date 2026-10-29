@@ -117,8 +117,7 @@ sl("s2", "Cursul", "Punctul de plecare",
 #  3-4. Ce este un API
 # ===========================================================================
 
-# Pe slide: un singur desen, patru perechi. Sus restaurantul, jos API-ul; în
-# dreapta, partea furnizorului, pe care clientul nu o vede. Un drum, în patru pași.
+# Pictogramele restaurantului și ale API-ului, din linii.
 def _ic(k, x, y, cls):
     """Pictograme simple, din linii; (x, y) este centrul."""
     g = f'<g class="rst2__ic {cls}" transform="translate({x - 22},{y - 22})">'
@@ -136,62 +135,51 @@ def _ic(k, x, y, cls):
 
 
 def _restaurant_svg():
-    X = [235, 435, 635, 850]
-    SUS = [("client", "Clientul", "comandă"), ("meniu", "Meniul", "ce se poate comanda"),
-           ("ospatar", "Ospătarul", "duce comanda"), ("bucatarie", "Bucătăria", "pregătește felul")]
-    JOS = [("script", "Scriptul", "codul care cere datele"), ("doc", "Documentația", "ce se poate cere"),
-           ("api", "API-ul", "singura intrare"), ("bd", "Serverul", "datele furnizorului")]
-    o = ['<svg class="rst2 rst2--4" viewBox="0 0 980 298" role="img" aria-label="Restaurantul și API-ul: clientul și scriptul, '
-         'meniul și documentația, ospătarul și API-ul, bucătăria și serverul">',
-         '<defs><marker id="rst2-s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
+    """Restaurantul, ca o singură scenă: sala, la vedere, și bucătăria, în spatele
+    unui perete cu o singură ușă. Sub fiecare personaj, în verde, perechea lui
+    de la un API. Bonul pleacă spre bucătărie, felul se întoarce, prin ospătar."""
+    o = ['<svg class="rmt" viewBox="0 0 980 300" role="img" aria-label="Restaurantul și API-ul: clientul e scriptul, '
+         'meniul e documentația, ospătarul e API-ul, bucătăria e serverul cu datele">',
+         '<defs><marker id="rmt-s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">'
          '<path d="M0,0 L10,5 L0,10 z"/></marker></defs>',
-         '<rect class="rst2__furn" x="745" y="0" width="235" height="298" rx="0"/>',
-         '<text class="rst2__zona" x="150" y="18">partea clientului</text>',
-         '<text class="rst2__zona" x="760" y="18">partea furnizorului, nevăzută</text>',
-         '<text class="rst2__rand" x="0" y="58">La restaurant</text>',
-         '<text class="rst2__rand rst2__rand--api" x="0" y="226">La un API</text>']
-    for c, ((k, n, dsc), (k2, n2, d2), x) in enumerate(zip(SUS, JOS, X)):
-        o.append(f'<g class="rst2__col" data-col="{c}" data-x="{x}">')
-        o.append(_ic(k, x, 54, "rst2__ic--sus"))
-        o.append(f'<text class="rst2__n" x="{x}" y="100">{n}</text><text class="rst2__d" x="{x}" y="117">{dsc}</text>')
-        o.append(_ic(k2, x, 222, "rst2__ic--jos"))
-        o.append(f'<text class="rst2__n" x="{x}" y="268">{n2}</text><text class="rst2__d" x="{x}" y="285">{d2}</text>')
-        o.append("</g>")
-    o.append('<path class="rst2__dus" d="M150,156 L955,156" marker-end="url(#rst2-s)"/>')
-    o.append('<text class="rst2__s" x="0" y="160">comanda, cererea</text>')
-    o.append('<path class="rst2__intors" d="M955,172 L150,172" marker-end="url(#rst2-s)"/>')
-    o.append('<text class="rst2__s" x="0" y="176">felul, răspunsul</text>')
-    o.append('<circle class="rst2__bon" cx="150" cy="156" r="7"/>')
+         '<rect class="rmt__buc" x="716" y="0" width="264" height="300"/>',
+         '<path class="rmt__zid" d="M716,0 V198 M716,286 V300 M706,198 H726 M706,286 H726"/>',
+         '<text class="rmt__zona" x="0" y="16">sala, la vedere</text>',
+         '<text class="rmt__zona" x="736" y="16">bucătăria, nevăzută</text>',
+         '<text class="rmt__usa" x="726" y="247">ușa</text>']
+    for k, x, n, api in [("client", 110, "Clientul", "= scriptul"),
+                         ("meniu", 262, "Meniul", "= documentația"),
+                         ("ospatar", 520, "Ospătarul", "= API-ul, singura intrare"),
+                         ("bucatarie", 848, "Bucătăria", "= serverul, cu datele")]:
+        g = _ic(k, 0, 0, "rmt__ic").replace('transform="translate(-22,-22)"', f'transform="translate({x - 40},30) scale(1.8)"')
+        o.append(g + f'<text class="rmt__n" x="{x}" y="144">{n}</text><text class="rmt__a" x="{x}" y="167">{api}</text>')
+    o.append('<path class="rmt__dus" d="M110,222 H900" marker-end="url(#rmt-s)"/>')
+    o.append('<text class="rmt__s" x="128" y="213">comanda <tspan class="a">= cererea</tspan></text>')
+    o.append('<path class="rmt__dus" d="M900,268 H110" marker-end="url(#rmt-s)"/>')
+    o.append('<text class="rmt__s" x="128" y="259">felul <tspan class="a">= răspunsul</tspan></text>')
+    # bonul, pe drumul dus, și felul acoperit, pe drumul întors
+    o.append('<g class="rmt__bon" transform="translate(612,203)"><path d="M0 0h22v26l-3.7-3-3.6 3-3.7-3-3.7 3-3.6-3L0 26z"/>'
+             '<path d="M5 7h12M5 13h12M5 19h7"/></g>')
+    o.append('<g class="rmt__fel" transform="translate(604,252)"><path d="M3 15a13 13 0 0 1 26 0z"/><path d="M0 15h32M16 0v2"/></g>')
     o.append("</svg>")
     return "".join(o)
 
 
-RESTAURANT_SCENARII = [
-    {"t": "Drumul unei comenzi", "pasi": [
-        {"col": [0, 1], "la": 1, "sus": "Clientul alege din meniu ce vrea.",
-         "jos": "Scriptul află din documentație ce date se pot cere și cum."},
-        {"col": [2], "la": 2, "sus": "Ospătarul duce comanda. Clientul nu intră în bucătărie.",
-         "jos": "Cererea ajunge la API. Scriptul nu ajunge direct la baza de date."},
-        {"col": [3], "la": 3, "sus": "Bucătăria pregătește felul cerut.",
-         "jos": "Serverul caută în baza de date exact ce s-a cerut."},
-        {"col": [0], "la": 0, "intors": True, "sus": "Felul ajunge la masă, pe același drum.",
-         "jos": "Răspunsul ajunge la script: un cod de stare, apoi datele."}]},
-]
-RESTAURANT_IX = {"svg": _restaurant_svg(), "scenarii": RESTAURANT_SCENARII}
+RESTAURANT_SCENA = '<figure class="rmt-w">' + _restaurant_svg() + "</figure>"
 
 
 sl("s3", "Ce este un API", "Analogia restaurantului",
    "<h2>Un API funcționează ca un restaurant</h2>"
    "<p class=\"cheie\">Clientul nu intră în bucătărie: comandă din meniu, prin ospătar. "
    "La fel, scriptul cere datele prin API, după documentație.</p>"
-   + ix("rst2", "Drumul unei comenzi", RESTAURANT_IX),
+   + RESTAURANT_SCENA,
    manual=
    "<h2>Ce este un API</h2>"
    "<p>Analogia restaurantului fixează un principiu esențial: codul clientului nu "
    "comunică direct cu baza de date a furnizorului. Comunică cu un intermediar, API-ul, care o "
    "accesează în numele clientului, după reguli stabilite dinainte. Regulile acestea sunt contractul "
    "API-ului, iar documentația e forma lui citibilă.</p>"
-   + ix("rst2", "Drumul unei comenzi", RESTAURANT_IX)
+   + RESTAURANT_SCENA
    + tabel(["La restaurant", "La un API"], [
        ["masa, clientul", "scriptul"],
        ["meniul", "documentația: ce resurse există, ce parametri primesc, ce formă are răspunsul"],
@@ -238,43 +226,32 @@ MOTIVE_SLIDE = (
               for k in range(3) for _, _, it in _MOTIVE)
     + "</div>")
 
-# Pe slide: metafora restaurantului, continuată. Fișierul descărcat lasă trei
-# întrebări; cererea scrisă e bonul comenzii, care le răspunde, rând cu rând, în
-# aceeași culoare. Dedesubt, ce se câștigă: trei lucruri, nu nouă.
-def _ic5(k):
-    d = {
-        "refa": '<path d="M38 19A15 15 0 0 0 11 15"/><path d="M10 7v8h8"/><path d="M10 29a15 15 0 0 0 27 4"/><path d="M38 41v-8h-8"/>',
-        "scara": '<rect x="6" y="18" width="22" height="24" rx="2"/><path d="M13 12h21v24"/><path d="M20 6h22v24"/>',
-        "zi": '<rect x="6" y="9" width="36" height="33" rx="3"/><path d="M6 18h36M15 5v8M33 5v8"/>'
-              '<path d="M31 31a7 7 0 1 1-2.2-5.1"/><path d="M30 22v4.5h-4.5"/>',
-    }[k]
-    return f'<svg class="bon__ic" viewBox="0 0 48 48" aria-hidden="true">{d}</svg>'
-
+# Pe slide, deasupra motivelor: metafora restaurantului, continuată. Fișierul
+# descărcat lasă trei întrebări; cererea scrisă e bonul comenzii, care le răspunde,
+# rând cu rând, în aceeași culoare.
 BON_HTML = (
     '<div class="bon"><div class="bon__sus">'
-    '<figure class="bon__f"><div class="bon__foaie"><p class="bon__cap">populatie.csv</p>'
-    '<p class="bon__date">tara,an,valoare<br>RO,2024,19051804<br>RO,2023,19061062</p>'
+    '<div class="bon__foaie"><p class="bon__cap"><b>Fișierul descărcat</b> · populatie.csv</p>'
+    '<p class="bon__date">RO,2024,19051804</p>'
     '<ul class="bon__q"><li style="--c:var(--accent)">de unde?</li><li style="--c:var(--ambra)">ce anume?</li>'
     '<li style="--c:var(--roza)">când?</li></ul></div>'
-    '<figcaption><b>Fișierul descărcat</b><span>datele, fără drumul până la ele</span></figcaption></figure>'
-    '<figure class="bon__b"><div class="bon__hartie"><p class="bon__cap">Bonul comenzii</p><dl>'
+    '<i class="bon__s" aria-hidden="true">→</i>'
+    '<div class="bon__b"><div class="bon__hartie"><p class="bon__cap"><b>Cererea scrisă</b> · bonul comenzii</p><dl>'
     '<dt style="--c:var(--accent)">sursa</dt><dd>api.worldbank.org</dd>'
     '<dt style="--c:var(--ambra)">cererea</dt><dd>SP.POP.TOTL · RO · 2022:2024</dd>'
-    '<dt style="--c:var(--roza)">data</dt><dd>29.10.2026</dd></dl></div>'
-    '<figcaption><b>Cererea scrisă</b><span>răspunde la cele trei întrebări, rând cu rând</span></figcaption></figure>'
-    '</div><div class="bon__jos">'
-    + "".join(f'<p>{_ic5(k)}<span><b>{t}</b>{s}</span></p>' for k, t, s in [
-        ("refa", "Reproductibilitatea", "aceeași cerere, același tabel"),
-        ("scara", "Scara", "37 de țări, într-o singură buclă"),
-        ("zi", "Actualizarea", "mâine, aceeași cerere, date noi")])
-    + '</div><p class="bon__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. '
-      "Un fișier publicat și datat, ca SCI de pe HDX, rămâne o alegere bună.</p></div>")
+    '<dt style="--c:var(--roza)">data</dt><dd>29.10.2026</dd></dl></div></div>'
+    "</div></div>")
+
+BON_COST = ('<p class="bon__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. '
+            "Un fișier publicat și datat, ca SCI de pe HDX, rămâne o alegere bună.</p>")
 
 sl("s5", "Ce este un API", "De ce prin API",
    "<h2>De ce prin API</h2>"
-   "<p class=\"cheie\">Un fișier aduce doar datele. Cererea scrisă aduce și drumul lor, ca bonul "
-   "unei comenzi: de unde, ce anume, când.</p>"
-   + BON_HTML,
+   "<p class=\"cheie\">Un fișier se descarcă dintr-un clic. De ce o cerere scrisă? Pentru că aduce "
+   "și drumul datelor, ca bonul unei comenzi.</p>"
+   + BON_HTML
+   + MOTIVE_SLIDE[:-len("</div>")]
+   + BON_COST.replace('class="bon__cost"', 'class="mtv5__cost"') + "</div>",
    manual=
    "<h2>Motivele colectării prin API</h2>"
    "<p>Când un fișier se poate descărca dintr-un clic, obținerea lui prin cod trebuie "
@@ -1042,29 +1019,31 @@ PREZICE_PAGINI = {
        "explicatie": "În total sunt 180 de valori, câte 50 pe pagină, pe 4 pagini; pe pagina 1 au "
                      "venit 50. Restul vin doar dacă se cer paginile 2, 3 și 4."}
 
-# Funcția din caiet (4.4), fără rândul care afișează progresul
-COD_CERE_TOT = ("def cere_tot(url, parametri):\n"
-                "    toate = []\n"
-                "    pagina = 1\n"
-                "    while True:\n"
-                "        meta, valori = requests.get(url, params={**parametri, \"page\": pagina}).json()\n"
-                "        toate = toate + (valori or [])    # adună pagina la celelalte\n"
-                "        if pagina >= meta[\"pages\"]:        # a fost ultima: gata\n"
-                "            return toate\n"
-                "        pagina = pagina + 1                # altfel, următoarea")
-
-PREZICE_CERERI = {
-       "id": "c2-prezice-cereri", "fisier": f"{CAIET} · 4.3. O funcție care aduce toate paginile",
-       "cod": COD_CERE_TOT + "\n\n"
-              "valori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})",
-       "intrebare": "Câte cereri trimite funcția?",
-       "variante": ["1", "3", "4", "65"],
-       "corect": 2,
-       "indiciu": "pages = total ÷ per_page, rotunjit în sus; funcția cere fiecare pagină o singură dată.",
-       "laBine": "Patru pagini: 20 + 20 + 20 + 5 = 65. Cu per_page 1000, ar fi fost o singură cerere.",
-       "explicatie": "65 ÷ 20 = 3,25, rotunjit în sus 4. Bucla cere paginile 1, 2, 3 și 4, apoi se "
-                     "oprește, pentru că pagina 4 este ultima. Funcția nu se schimbă când datele cresc: "
-                     "cere câte pagini sunt."}
+# Exercițiul: funcția din caiet (4.3), cu trei goluri. Prima cerere ia partea cu
+# paginarea, [0]; bucla cere fiecare pagină și ia partea cu valorile, [1].
+COD_PAGINI = {
+    "id": "c2-cod-pagini", "fisier": f"{CAIET} · 4.3. O funcție care aduce toate paginile",
+    "sarcina": "<b>1</b> partea cu paginarea · <b>2</b> câte pagini sunt · <b>3</b> partea cu valorile",
+    "cod": "def cere_tot(url, parametri):\n"
+           "    meta = requests.get(url, params=parametri).json()[{{1}}]       # câte pagini sunt\n"
+           "    toate = []\n"
+           "    for pagina in range(1, meta[{{2}}] + 1):                       # fiecare pagină\n"
+           "        valori = requests.get(url, params={**parametri, \"page\": pagina}).json()[{{3}}]\n"
+           "        toate = toate + valori\n"
+           "        print(\"pagina\", pagina, \"din\", meta[\"pages\"], \"·\", len(toate), \"valori\")\n"
+           "    return toate\n\n"
+           "valori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})",
+    "goluri": {"1": {"ok": ["0"], "ajutor": "poziția"},
+               "2": {"ok": ["\"pages\"", "'pages'"], "ajutor": "cheia"},
+               "3": {"ok": ["1"], "ajutor": "poziția"}},
+    "indiciu": "Răspunsul Băncii Mondiale e o listă cu două părți: pe poziția 0 paginarea, unde cheia "
+               "<code>\"pages\"</code> spune câte pagini sunt; pe poziția 1 valorile.",
+    "iesire": "pagina 1 din 4 · 20 valori\npagina 2 din 4 · 40 valori\npagina 3 din 4 · 60 valori\npagina 4 din 4 · 65 valori",
+    "laBine": "Prima cerere află că sunt 4 pagini (65 de valori, câte 20); bucla le cere pe toate patru și le adună.",
+    "laRau": "Pozițiile încep de la 0; cheia se scrie între ghilimele.",
+    "explicatie": "Prima cerere ia doar partea cu paginarea, <code>[0]</code>: de acolo, <code>meta[\"pages\"]</code> "
+                  "spune câte pagini sunt. Bucla trece prin paginile 1, 2, 3 și 4 și din fiecare ia partea cu "
+                  "valorile, <code>[1]</code>. La final, lista are toate cele 65 de valori."}
 
 PAGINI = {"ani": list(range(2024, 1959, -1)), "optiuni": [10, 50, 1000], "implicit": 50}
 
@@ -1108,10 +1087,10 @@ sl("s18", "requests", "Paginarea",
    "<p><strong>Pagini mari.</strong> Cu <code>per_page=1000</code>, cei 65 de ani vin într-o singură "
    "pagină. Calea e scurtă, dar „destul de mare” depinde de cerere: pentru cele 37 de țări ale "
    "proiectului și 65 de ani sunt 2.405 valori, deci tot 3 pagini.</p>"
-   "<p><strong>O funcție care cere toate paginile.</strong> Ea face, pe rând, ce s-ar face de mână: "
-   "cere pagina 1, adaugă valorile la o listă, se oprește dacă pagina era ultima și altfel cere "
-   "pagina următoare. Funcția nu se schimbă când datele cresc: cere câte pagini sunt.</p>"
-   + ix("prezice", "Câte cereri", PREZICE_CERERI)
+   "<p><strong>O funcție care cere toate paginile.</strong> Ea face ce s-ar face de mână: o primă "
+   "cerere află câte pagini sunt, apoi o buclă le cere pe toate, de la 1 la ultima, și adună valorile. "
+   "Funcția nu se schimbă când datele cresc: cere câte pagini sunt.</p>"
+   + ix("cod", "Toate paginile, cu o funcție", COD_PAGINI)
    + "<p>În caiet, <code>cere_bm</code> le folosește pe amândouă: cere pagini mari, ca să fie cât mai "
      "puține cereri, iar <code>cere_tot</code> le aduce pe toate. Banca Mondială întoarce valorile de la "
      "anul cel mai recent spre cel mai vechi.</p>"
@@ -1130,9 +1109,9 @@ sl("s18", "requests", "Paginarea",
 
 sl("s18x", "requests", "Exercițiu: toate paginile",
    "<h2>Exercițiu: toate paginile, cu o funcție</h2>"
-   "<p class=\"cheie\">Funcția cere pagină după pagină, până la ultima. Populația României, 1960 la 2024, "
-   "are 65 de valori; aici se cer câte 20 pe pagină.</p>"
-   + ix("prezice", "Câte cereri", PREZICE_CERERI),
+   "<p class=\"cheie\">O cerere aduce o singură pagină. Funcția întreabă întâi câte pagini sunt, apoi le "
+   "cere pe toate. Se completează cele trei goluri, apoi Rulează.</p>"
+   + ix("cod", "Toate paginile, cu o funcție", COD_PAGINI),
    manual="")
 
 
@@ -1147,10 +1126,10 @@ EUROSTAT_BAZA = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/
 EU_FUNCTIE = (
     '<div class="euf"><div class="euf__cod">'
     '<pre><code>cere_eurostat(<span class="d">"demo_r_d3dens"</span>,\n'
-    '              {<span class="f">"geo": ["RO113", "RO111"]</span>,\n'
-    '               <span class="f">"unit": "PER_KM2"</span>, <span class="f">"time": 2024</span>})</code></pre>'
+    '    {<span class="f">"geo": ["RO113", "RO111"]</span>,\n'
+    '     <span class="f">"time": 2024</span>})</code></pre>'
     '<dl class="euf__leg"><dt class="d">setul</dt><dd>densitatea populației</dd>'
-    '<dt class="f">filtrele</dt><dd>ce regiuni, ce unitate, ce an</dd></dl></div>'
+    '<dt class="f">filtrele</dt><dd>ce regiuni, ce an</dd></dl></div>'
     '<i class="euf__s" aria-hidden="true">→</i>'
     '<figure class="euf__t"><figcaption>tabelul</figcaption>'
     '<table class="tabel"><thead><tr><th>geo</th><th>valoare</th></tr></thead><tbody>'
@@ -1176,11 +1155,11 @@ EU_NUMERE = (
 
 # În manual: migrația, cu ce fixează cererea și ce rămâne deschis.
 EU2_HTML = (
-    '<p class="eu2__adr"><code>' + EUROSTAT_BAZA + '<b>migr_pop1ctz</b>?sex=T&amp;age=TOTAL&amp;unit=NR&amp;time=2024</code></p>'
+    '<p class="eu2__adr"><code>' + EUROSTAT_BAZA + '<b>migr_pop1ctz</b>?citizen=RO&amp;sex=T&amp;age=TOTAL&amp;unit=NR&amp;time=2024</code></p>'
     '<table class="tabel eu2"><tbody>'
-    "<tr><td>Fixate, câte o valoare</td><td><code>freq=A</code> · <code>sex=T</code> · <code>age=TOTAL</code> · "
+    "<tr><td>Fixate, câte o valoare</td><td><code>citizen=RO</code> · <code>sex=T</code> · <code>age=TOTAL</code> · "
     "<code>unit=NR</code> · <code>time=2024</code></td></tr>"
-    '<tr class="on"><td>Deschise, toate valorile</td><td><code>citizen</code> (cetățenia) · <code>geo</code> (țara de reședință)</td></tr>'
+    '<tr class="on"><td>Variază, un rând pe cod</td><td><code>geo</code> (țara de reședință)</td></tr>'
     "</tbody></table>")
 
 sl("s20", "Eurostat", "Eurostat: o funcție, un tabel",
@@ -1199,9 +1178,10 @@ sl("s20", "Eurostat", "Eurostat: o funcție, un tabel",
    '<a class="leg" href="https://ec.europa.eu/eurostat/databrowser/" target="_blank" rel="noopener">Data Browser</a>, '
    "unde tabelul se poate vedea înainte de a fi cerut din cod.</p>"
    + EU_FUNCTIE
-   + "<p>În caiet, funcția <code>cere_eurostat</code> face cererea și întoarce direct un tabel, câte o "
-     "valoare pe rând. Se folosește la fel ca <code>cere_bm</code>: primul argument este setul, al doilea "
-     "sunt filtrele.</p>"
+   + "<p>În caiet, funcția <code>cere_eurostat</code> face cererea și întoarce direct un tabel, un rând pe "
+     "regiune. Se folosește la fel ca <code>cere_bm</code>: primul argument este setul, al doilea sunt "
+     "filtrele. Regula ei: într-o cerere variază un singur lucru, regiunea; celelalte filtre au câte o "
+     "singură valoare, iar dacă lipsește unul, funcția spune care.</p>"
    + "<h3>Ce face funcția</h3>"
    "<p>Răspunsul are alt format decât la Banca Mondială, care trimite înregistrări, fiecare cu țara și "
    "anul ei. Eurostat trimite valorile numerotate și, separat, ce număr are fiecare regiune; funcția le "
@@ -1217,8 +1197,9 @@ sl("s20", "Eurostat", "Eurostat: o funcție, un tabel",
    "e preferată țării nașterii (<code>migr_pop3ctb</code>) pentru că mai multe țări mari, "
    "printre ele Germania, nu raportează nașterile pe țări. Și cetățenia are o limită: persoanele "
    "care au dobândit cetățenia țării de reședință nu mai apar ca migranți.</p>"
-   "<p>Cererea fixează sexul, vârsta, unitatea și anul. Țara de reședință și cetățenia rămân "
-   "deschise, deci vin toate perechile.</p>"
+   "<p>Pentru o întrebare ca „unde trăiesc cetățenii români” se fixează și cetățenia; variază doar țara "
+   "de reședință. Tabelul cu toate perechile, pentru proiect, se cere în caiet țară cu țară: pentru "
+   "fiecare țară de reședință, toate cetățeniile, iar tabelele se lipesc la final.</p>"
    + EU2_HTML
    + "<p>Doar o parte dintre țări raportează pe țări de cetățenie; o valoare lipsă nu "
    "înseamnă zero. Harta din <a class=\"leg\" href=\"../../c1-introducere-si-mediu/tutorial/#s5m\">cursul 1</a> "
@@ -1227,21 +1208,18 @@ sl("s20", "Eurostat", "Eurostat: o funcție, un tabel",
    "șasea după indicele SCI.</p>"
    + ix("pas", "Unde trăiesc cetățenii români", {
        "fisier": f"{CAIET} · 8. Migrația: două țări pe un rând",
-       "intro": "Migrația: câți oameni cu o cetățenie trăiesc în fiecare țară.",
-       "cod": "migratie = cere_eurostat(\"migr_pop1ctz\", {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024})\n\n"
-              "romani = migratie[migratie[\"citizen\"] == \"RO\"]\n"
+       "intro": "Migrația: unde trăiesc cetățenii români.",
+       "cod": "filtre = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\n\n"
+              "romani = cere_eurostat(\"migr_pop1ctz\", {**filtre, \"citizen\": \"RO\"})\n"
               "romani.sort_values(\"valoare\", ascending=False).head(6)",
        "pasi": [
-           {"l": 1, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
-                                                               "rows": [["DE", "BG", 371128], ["ES", "RO", 620463], ["IT", "RO", 1073196], ["…", "…", "…"]],
-                                                               "nota": "un rând pe pereche cetățenie, țară"}}},
-            "txt": "<code>cere_eurostat</code> face cererea și dă tabelul: toată populația, în număr de persoane, în 2024."},
-           {"l": 3, "set": {"romani": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
-                                                             "rows": [["BE", "RO", 127539], ["BG", "RO", 1595], ["CZ", "RO", 15208], ["…", "…", "…"]],
-                                                             "nota": "un rând pe țară"}}},
-            "txt": "Doar rândurile cu cetățenia română: câte unul pentru fiecare țară."},
-           {"l": 4, "out": "geo citizen   valoare\n RO      RO  18780989\n IT      RO   1073196\n DE      RO    776424\n"
-                           " ES      RO    620463\n FR      RO    161220\n AT      RO    153427",
+           {"l": 1, "set": {"filtre": {"t": "dict", "v": {"sex": "T", "age": "TOTAL", "unit": "NR", "time": 2024}}},
+            "txt": "Filtrele comune: toată populația, în număr de persoane, în 2024."},
+           {"l": 3, "set": {"romani": {"t": "DataFrame", "v": {"cols": ["geo", "valoare"],
+                                                             "rows": [["EU27_2020", "None"], ["BE", 127539], ["BG", 1595], ["…", "…"]],
+                                                             "nota": "un rând pe țară de reședință"}}},
+            "txt": "Cetățenia fixată la RO; variază doar țara. <code>None</code>: Eurostat nu are valoarea."},
+           {"l": 4, "out": "geo    valoare\n RO  18780989\n IT   1073196\n DE    776424\n ES    620463\n FR    161220\n AT    153427",
             "txt": "Ordonate descrescător. Primul rând e chiar România, cu românii din țară; urmează Italia, Germania și Spania."},
        ]})
    + nota("Coduri care pot produce erori",
@@ -1303,7 +1281,9 @@ sl("s21", "Proiectul echipei", "Exercițiu: alt indicator",
    + "<pre><code>def cere_bm(indicator, tari, ani=\"2022:2024\"):\n"
      "    url = \"https://api.worldbank.org/v2/country/\" + \";\".join(tari) + \"/indicator/\" + indicator\n"
      "    valori = cere_tot(url, {\"format\": \"json\", \"date\": ani, \"per_page\": 1000})\n"
-     "    return pd.json_normalize(valori)\n\n"
+     "    tabel = pd.json_normalize(valori)[[\"country.id\", \"date\", \"value\"]]\n"
+     "    tabel.columns = [\"tara\", \"an\", \"valoare\"]\n"
+     "    return tabel\n\n"
      "urban = cere_bm(\"SP.URB.TOTL.IN.ZS\", [\"RO\"], ani=\"2000:2023\")\n"
      "urban.to_csv(\"data/c2/urban_ro.csv\", index=False)</code></pre>"
    + nota("Fișierele mari și cheile de acces",

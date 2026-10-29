@@ -6,7 +6,7 @@
    =========================================================================== */
 
 import { createClient } from "./vendor/supabase-js-2.117.0.js";   /* găzduită aici: nicio cerere la un CDN străin */
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=92";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=95";
 
 /* --- sesiunea expirată ---------------------------------------------------
    Jetonul de acces (JWT) expiră după o oră și biblioteca îl reînnoiește

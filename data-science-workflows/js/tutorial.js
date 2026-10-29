@@ -20,11 +20,11 @@ export function porneste(capitol){
 
   /* Tot ce se face aici e marcat ca venit din manual, nu din oră. Manualul
      se reia de câte ori vrea omul și n-are nimic obligatoriu, dar se vede. */
-  import("/data-science-workflows/js/colectare.js?v=92")
+  import("/data-science-workflows/js/colectare.js?v=95")
     .then(m => { m.setContext("manual"); m.marcheazaSectiune(`${capitol}/manual`); })
     .catch(() => {});
 
   /* manualul unei lecții nepredate nu se arată studenților */
-  import("/data-science-workflows/js/ora.js?v=92")
+  import("/data-science-workflows/js/ora.js?v=95")
     .then(O => O.inchideDacaNepredata(capitol)).catch(() => {});
 }
