@@ -101,3 +101,13 @@ Import data from CSV. Fisierul completat **nu se pune in repo**.
 - [ ] În **Predau → Echipele** vezi membrii cu conturile GitHub, cererile, cine
       nu are echipă, poți muta pe oricine și descarci lista (Export CSV) pentru
       depozitele `echipa-1`, `echipa-2` … din organizația cursului.
+
+## Numele din listă, la prima intrare cu GitHub
+
+- [ ] **Rulează `25-alegere-nume.sql`** în SQL Editor, după 24. Se poate rula
+      din nou oricând.
+- [ ] De atunci, oricine intră prima dată cu GitHub (din antet, de acasă sau
+      cu codul orei) bifează informarea GDPR, își caută numele după primele
+      trei litere și îl alege, o singură dată. Nu mai ține de oră.
+- [ ] Cine nu-și găsește numele poate intra ca invitat la oră; după ce îl
+      adaugi în listă, îi muți activitatea cu scriptul de mutare a invitaților.

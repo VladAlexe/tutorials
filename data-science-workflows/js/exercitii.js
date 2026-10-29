@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod } from "./colectare.js?v=97";
+import { salveazaCod, deCeNu } from "./colectare.js?v=100";
 
 const E = {};
 
@@ -116,7 +116,7 @@ function legaIndiciu(gazda, nivele){
 }
 function stareSalvare(salvat, gazda){
   if (gazda.closest(".ix")?.classList.contains("liber")) return "Exercițiu facultativ: nu se notează.";
-  return salvat ? "Rezolvare înregistrată." : "Rezolvarea nu a fost înregistrată: nu ești autentificat.";
+  return salvat ? "Rezolvare înregistrată." : `Rezolvarea nu a fost înregistrată: ${deCeNu()}.`;
 }
 function sarbatoare(gazda){
   const ix = gazda.closest(".ix") || gazda;
@@ -766,7 +766,7 @@ E.dovada = (gazda, d) => {
       const salvat = await salveazaCod({ exercitiuId:id, trecut:true,
         cod:[...gazda.querySelectorAll(".dov__in")].map(x => x.value).join(" ⏎ ") });
       st.textContent = salvat ? "Rezolvare înregistrată. Apare în panoul profesorului."
-                              : "Rezolvarea nu a fost înregistrată: nu ești autentificat.";
+                              : `Rezolvarea nu a fost înregistrată: ${deCeNu()}.`;
       st.classList.add("vazut");
     }
   };

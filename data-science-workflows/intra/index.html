@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Intră la oră · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=97">
-<link rel="stylesheet" href="../css/sistem.css?v=97">
-<script src="../js/tema.js?v=97"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=100">
+<link rel="stylesheet" href="../css/sistem.css?v=100">
+<script src="../js/tema.js?v=100"></script>
 <style>
   /* Un ecran de telefon, ținut în mână, într-o sală. Un singur lucru de făcut
      pe pas, scris mare, cu ținte de atins cu degetul mare. */
@@ -56,6 +56,7 @@
   .nume small{margin-left:auto;font-family:var(--sans);font-size:var(--t1);
     color:var(--text-3);}
   .cauta{margin-bottom:10px}
+  .lista:empty{display:none}
 
   .mesaj{font-family:var(--sans);font-size:var(--t2);line-height:1.5;padding:12px 15px;
     border-radius:9px;margin-top:14px;display:none}
@@ -68,8 +69,8 @@
   @keyframes puls{0%,100%{opacity:.5}50%{opacity:.85}}
   .inf{margin:0 0 12px;padding-left:18px;font-size:var(--t2);line-height:1.55}
   .inf li{margin-bottom:6px}
-  .bifa{display:flex;gap:10px;align-items:flex-start;margin:14px 0 12px;font-size:var(--t2);line-height:1.45;cursor:pointer}
-  .bifa input{margin-top:3px;width:16px;height:16px;flex:none}
+  .cutie .bifa{display:flex;gap:10px;align-items:flex-start;margin:14px 0 12px;font-size:var(--t2);font-weight:400;line-height:1.45;cursor:pointer;color:var(--text)}
+  .cutie .bifa input{margin-top:3px;width:16px;height:16px;flex:none}
 </style>
 </head>
 <body>
@@ -99,8 +100,10 @@
                 nimeni nu o alege greșit.
      2. contul  GitHub, dacă are; invitat, dacă nu. Butonul de GitHub nu cere
                 nimic de scris, iar numele de utilizator vine verificat.
-     3. cine    lista grupei, un tap. Fără matricol de tastat. A doua oară
-                pasul ăsta nu mai există: te știe.
+     3. cine    numele, căutat după primele litere, și un tap. Fără matricol
+                de tastat. A doua oară pasul ăsta nu mai există: te știe.
+                Pasul nu ține de oră (js/alege-nume.js, db/25): același apare
+                la prima intrare cu GitHub, oriunde pe sit.
 
    Matricolul nu iese din server niciodată: lista vine cu o cheie aleatoare
    pentru fiecare nume, iar înapoi se trimite cheia. Alegerea cere GitHub.
@@ -125,10 +128,11 @@ function cap(et, titlu, sub){
   el("sub").textContent = sub;
 }
 
-let A, O;
+let A, O, N;
 try {
-  A = await import("../js/auth.js?v=97");
-  O = await import("../js/ora.js?v=97");
+  A = await import("../js/auth.js?v=100");
+  O = await import("../js/ora.js?v=100");
+  N = await import("../js/alege-nume.js?v=100");
 } catch (e) {
   cap("", "Intră la curs", "Autentificarea nu a putut fi încărcată: " + e.message);
   throw e;
@@ -213,41 +217,15 @@ async function dupaCod(){
 
 function continua(s){
   /* Deja conectat și legat de un nume (student sau invitat)? Nu mai întreb
-     nimic: „Bine ai venit, Mihai” și intră. Lista apare doar prima dată. */
+     nimic: „Bine ai venit, Mihai” și intră. Numele se alege doar prima dată. */
   if (s.cunoscut || p.matricol) pasRevenit({ ...s, nume: s.nume || p.nume });
-  else pasLista(s);
+  else pasAlege(s);
 }
 
-/* --- informarea GDPR ------------------------------------------------------
-   Nu e consimțământ (temeiul e interesul legitim), ci dovada că studentul a
-   primit informarea. Se cere o dată pe cont, și din nou când se schimbă
-   versiunea politicii (O.INFORMARE). */
+/* --- informarea GDPR (textul stă în js/alege-nume.js, o singură dată) ---- */
 
 function pasInformare(dupa){
-  cap("protecția datelor", "Înainte de prima oră",
-      "Situl înregistrează activitatea la curs. Citește politica de confidențialitate și confirmă luarea la cunoștință.");
-  el("pas").innerHTML = `
-    <div class="cutie">
-      <ul class="inf">
-        <li>Operator: Vlad Alexe, titularul cursului.</li>
-        <li>Se prelucrează numele, contul GitHub, răspunsurile, prezența și notele, pentru organizarea și evaluarea cursului.</li>
-        <li>Datele tale sunt accesibile doar ție și titularului. Datele se șterg cel târziu la 31 martie 2027.</li>
-        <li>Ai dreptul de acces, rectificare, ștergere, restricționare, portabilitate și opoziție.</li>
-      </ul>
-      <p class="mic"><a href="${RAD}/date-personale/" target="_blank" rel="noopener">Citește politica de confidențialitate completă ↗</a></p>
-      <label class="bifa"><input type="checkbox" id="inf-ok">
-        <span>Am citit și am luat la cunoștință Politica de confidențialitate (versiunea ${O.INFORMARE}).</span></label>
-      <button class="btn btn--tare" id="bt-inf" type="button" disabled>Confirm și intru</button>
-      <p class="mic">Confirmarea nu este un consimțământ. Se păstrează data și versiunea, ca dovadă a informării.</p>
-    </div>`;
-  el("inf-ok").onchange = e => { el("bt-inf").disabled = !e.target.checked; };
-  el("bt-inf").onclick = async () => {
-    const b = el("bt-inf"); b.disabled = true; b.textContent = "Se salvează…";
-    const r = await O.confirmaInformarea();
-    if (!r?.ok){ b.disabled = false; b.textContent = "Confirm și intru";
-                 mesaj(r?.mesaj || "Nu s-a putut salva confirmarea.", "rau"); return; }
-    dupa();
-  };
+  N.informare({ gazda: el("pas"), cap: (t, d) => cap("", t, d), mesaj, dupa });
 }
 
 /* --- pasul 2: contul ----------------------------------------------------- */
@@ -275,7 +253,10 @@ function pasCont(){
     </div>`;
 
   el("bt-gh").onclick = async () => {
+    /* adresa cu codul, ca pagina contului să ne întoarcă aici după GitHub;
+       și în localStorage, pentru telefoanele care revin într-o filă nouă */
     try { sessionStorage.setItem("dsw.intra", location.href); } catch {}
+    try { localStorage.setItem("dsw.intra", JSON.stringify({ u: location.href, t: Date.now() })); } catch {}
     try { await A.intraCuGithub(); } catch (e) { mesaj(e.message, "rau"); }
   };
   el("bt-inv").onclick = async () => {
@@ -291,81 +272,51 @@ function pasCont(){
   };
 }
 
-/* --- pasul 3: lista grupei ------------------------------------------------
-   Nu un formular. Numele oamenilor din grupa aia, și un tap. Un formular cu
-   nume, matricol și grupă ar fi douăzeci și una de ocazii de a scrie greșit,
-   plus cel puțin doi care aleg grupa cealaltă. */
+/* --- pasul 3: numele ------------------------------------------------------
+   Nu un formular. Câteva litere din nume și un tap. Un formular cu nume,
+   matricol și grupă ar fi douăzeci și una de ocazii de a scrie greșit, plus
+   cel puțin doi care aleg grupa cealaltă. Căutarea și alegerea stau în
+   js/alege-nume.js, ca să fie aceleași și în pagina contului. */
 
-async function pasLista(s){
-  cap(s.titlu || "la oră", "Alege-ți numele",
-      "Selectează-ți numele din listă. Pasul se face o singură dată pe semestru: din acel moment, numele este asociat contului tău GitHub.");
-
-  const oameni = await O.listaGrupei(cod) || [];
-  /* Lista goală poate însemna două lucruri: grupa n-are studenți încărcați,
-     sau funcția lipsește. În ambele cazuri intrarea cu numele merge, dar
-     merită spus care din ele e. */
-  if (!oameni.length){ pasFaraLista(s, false, O.lipsesteBaza()); return; }
-
-  el("pas").innerHTML = `
-    <div class="cutie">
-      ${oameni.length > 9 ? `<input class="cauta" id="cauta" type="search"
-         placeholder="Caută numele" autocomplete="off">` : ""}
-      <div class="lista" id="lista">
-        ${oameni.map(o => `
-          <button class="nume" type="button" data-k="${o.cheie}" ${o.luat ? "disabled" : ""}>
-            ${o.nume}${o.luat ? "<small>deja ales</small>" : ""}</button>`).join("")}
-      </div>
-      <button class="btn btn--tare" id="bt-sunt" type="button" disabled>Confirm selecția</button>
-      <p class="mic"><a href="#" id="bt-nu">Numele meu nu apare în listă</a></p>
-    </div>`;
-
-  let ales = null;
-  el("lista").addEventListener("click", e => {
-    const b = e.target.closest(".nume"); if (!b || b.disabled) return;
-    el("lista").querySelectorAll(".nume").forEach(x => x.classList.remove("on"));
-    b.classList.add("on"); ales = b.dataset.k;
-    el("bt-sunt").disabled = false;
+function pasAlege(s){
+  N.alegeNumele({
+    gazda: el("pas"),
+    cap: (t, d) => cap(s.titlu || "la oră", t, d),
+    mesaj,
+    dupa: nume => gata(nume, s),
+    faraNume: () => pasFaraLista(s)
   });
-
-  el("cauta")?.addEventListener("input", e => {
-    const q = e.target.value.trim().toLowerCase();
-    el("lista").querySelectorAll(".nume").forEach(b =>
-      b.hidden = !!q && !b.textContent.toLowerCase().includes(q));
-  });
-
-  el("bt-sunt").onclick = async () => {
-    if (!ales) return;
-    const b = el("bt-sunt"); b.disabled = true; b.textContent = "Se conectează…";
-    const r = await O.intra(cod, ales);
-    if (!r?.ok){ b.disabled = false; b.textContent = "Confirm selecția";
-                 mesaj(r?.mesaj || "Intrarea nu a reușit.", "rau"); return; }
-    gata(r.nume, s);
-  };
-
-  el("bt-nu").onclick = e => { e.preventDefault(); pasFaraLista(s, true); };
 }
 
-/* Venit mai târziu, transferat, sau pur și simplu lipsă din listă. Nu intră
-   direct în date: rămâne invitat, cu numele lui, iar profesorul îl leagă. */
-function pasFaraLista(s, dinLista, faraBaza){
-  cap(s.titlu || "la oră", "Introdu-ți numele",
-      dinLista   ? "Intri ca invitat, iar profesorul te adaugă în listă după oră."
-    : faraBaza   ? "Lista grupei nu poate fi citită încă. Intri cu numele tău."
-                 : "Lista grupei nu este pregătită încă. Intri cu numele tău.");
+/* Venit mai târziu, transferat, sau pur și simplu lipsă din listă. Contul
+   GitHub nu are încă un nume, deci nu salvează nimic. Ca ora să nu se piardă,
+   poate intra ca invitat, cu numele lui; profesorul îl adaugă în listă și îi
+   mută activitatea pe numele adevărat. */
+function pasFaraLista(s){
+  cap(s.titlu || "la oră", "Numele nu apare în listă",
+      "Spune-i profesorului. Până ești adăugat, intră ca invitat pentru această oră, ca activitatea să se salveze.");
   el("pas").innerHTML = `
     <div class="cutie">
       <label for="nume2">Numele tău</label>
       <input id="nume2" type="text" autocomplete="name" maxlength="60"
              placeholder="Nume și prenume">
-      <button class="btn btn--tare" id="bt-ok" type="button">Intru la oră</button>
-      <p class="mic">Activitatea din această oră se salvează și este vizibilă pentru profesor.
-        Se asociază contului tău după ce profesorul te adaugă în listă.</p>
+      <button class="btn btn--tare" id="bt-ok" type="button">Intru ca invitat</button>
+      <p class="mic">Activitatea se salvează și apare la profesor cu mențiunea „invitat”. După ce numele
+        tău este adăugat în listă, intri din nou cu GitHub și îl alegi.</p>
+      <p class="mic"><a href="#" id="bt-iar">Caută din nou numele</a></p>
     </div>`;
   el("nume2").focus();
-  el("bt-ok").onclick = () => {
-    const nume = el("nume2").value.trim();
+  el("bt-iar").onclick = e => { e.preventDefault(); mesaj(""); pasAlege(s); };
+  el("bt-ok").onclick = async () => {
+    const b = el("bt-ok"), nume = el("nume2").value.trim();
     if (nume.length < 3){ mesaj("Introdu numele complet, pentru identificare.", "rau"); return; }
-    gata(nume, s);
+    b.disabled = true; b.textContent = "Se conectează…";
+    try {
+      await A.iesi();                                 /* contul GitHub fără nume iese */
+      const r = await A.intraCaInvitat(nume);
+      if (!r?.ok) throw new Error(r?.mesaj || "Intrarea nu a reușit.");
+      location.reload();
+    } catch (e) { b.disabled = false; b.textContent = "Intru ca invitat"; mesaj(e.message, "rau"); }
   };
 }
 

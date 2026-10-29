@@ -6,7 +6,7 @@
    =========================================================================== */
 
 import { createClient } from "./vendor/supabase-js-2.117.0.js";   /* găzduită aici: nicio cerere la un CDN străin */
-import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=97";
+import { SUPABASE_URL, SUPABASE_ANON, ADRESA_RETUR } from "./supabase-config.js?v=100";
 
 /* --- sesiunea expirată ---------------------------------------------------
    Jetonul de acces (JWT) expiră după o oră și biblioteca îl reînnoiește
@@ -162,7 +162,8 @@ export async function profil({ proaspat = false } = {}) {
   }
   if (error) throw new Error(traduEroare(error.message));
 
-  const p = { ...data, email: session.user.email };
+  /* anonim = invitat; un cont GitHub fără nume legat are anonim false și matricol null */
+  const p = { ...data, email: session.user.email, anonim: !!session.user.is_anonymous };
   p.profesorReal = !!p.profesor;
   if (p.profesorReal && modVizualizare() === "student") p.profesor = false;
 

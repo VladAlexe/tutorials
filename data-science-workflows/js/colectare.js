@@ -40,10 +40,15 @@ export function sedintaAcum(){ return sedinta; }
 
 async function autentificare(){
   if (modul !== null) return modul;
-  try { modul = await import("./auth.js?v=97"); }
+  try { modul = await import("./auth.js?v=100"); }
   catch { modul = false; }
   return modul;
 }
+
+/* De ce nu s-a salvat: un student care e autentificat, dar nu și-a ales
+   numele din listă, trebuie să afle asta, nu „nu ești autentificat”. */
+let motiv = "nu ești autentificat";
+export function deCeNu(){ return motiv; }
 
 async function pregatit(){
   if (gata !== null) return gata;
@@ -52,6 +57,9 @@ async function pregatit(){
   try {
     const p = await a.profil();
     gata = !!(p.autentificat && p.matricol);
+    if (p.autentificat && !p.matricol)
+      motiv = p.profesorReal ? "contul de profesor nu salvează rezolvări"
+            : "contul nu are încă un nume din listă (Contul meu, sus în dreapta)";
   } catch { gata = false; }
   return gata;
 }

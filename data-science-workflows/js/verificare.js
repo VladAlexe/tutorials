@@ -27,7 +27,7 @@
    de care se folosește rulatorul de slide-uri ca să deschidă poarta.
    =========================================================================== */
 
-import { salveazaRaspuns, aMaiRaspuns } from "./colectare.js?v=97";
+import { salveazaRaspuns, aMaiRaspuns, deCeNu } from "./colectare.js?v=100";
 
 const CSS = `
 .verif{background:var(--panza);border:1px solid var(--linie);border-radius:11px;
@@ -104,7 +104,7 @@ export function porneste(capitol){
         intrebareId:id, capitol, raspuns:ales, corect:(ales === corect)
       });
       stare.textContent = ok ? "Răspuns înregistrat."
-                             : "Răspunsul nu a fost înregistrat: nu ești autentificat.";
+                             : `Răspunsul nu a fost înregistrat: ${deCeNu()}.`;
       stare.classList.add("vazut");
     }));
 

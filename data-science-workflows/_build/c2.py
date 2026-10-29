@@ -835,6 +835,8 @@ SURSE_DOC = surse("Documentația necesară", [
      "adresa de bază, primul exemplu, filtrele"),
     ("Eurostat: ghidul detaliat", "https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-detailed-guidelines",
      "toți parametrii și formatele"),
+    ("Eurostat: cuprinsul bazei de date", "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-detailed-guidelines/catalogue-api/toc",
+     "lista completă a seturilor, cu codul și anii pentru care există date"),
     ("Eurostat: setul migr_pop1ctz", "https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table",
      "dimensiunile, în browser"),
     ("JSON-stat: formatul", "https://json-stat.org/format/",
@@ -1023,7 +1025,7 @@ COD_PAGINI = {
            "    for pagina in range(1, meta[{{2}}] + 1):                       # fiecare pagină\n"
            "        valori = requests.get(url, params={**parametri, \"page\": pagina}).json()[{{3}}]\n"
            "        toate = toate + valori\n"
-           "        print(\"pagina\", pagina, \"din\", meta[\"pages\"], \"·\", len(toate), \"valori\")\n"
+           "        print(\"pagina\", pagina, \"din\", meta[\"pages\"])\n"
            "    return toate\n"
            "valori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})",
     "goluri": {"1": {"ok": ["0"], "ajutor": "poziția"},
@@ -1031,7 +1033,7 @@ COD_PAGINI = {
                "3": {"ok": ["1"], "ajutor": "poziția"}},
     "indiciu": "Răspunsul Băncii Mondiale e o listă cu două părți: pe poziția 0 paginarea, unde cheia "
                "<code>\"pages\"</code> spune câte pagini sunt; pe poziția 1 valorile.",
-    "iesire": "pagina 1 din 4 · 20 valori\npagina 2 din 4 · 40 valori\npagina 3 din 4 · 60 valori\npagina 4 din 4 · 65 valori",
+    "iesire": "pagina 1 din 4\npagina 2 din 4\npagina 3 din 4\npagina 4 din 4",
     "laBine": "Prima cerere află că sunt 4 pagini (65 de valori, câte 20); bucla le cere pe toate patru și le adună.",
     "laRau": "Pozițiile încep de la 0; cheia se scrie între ghilimele.",
     "explicatie": "Prima cerere ia doar partea cu paginarea, <code>[0]</code>: de acolo, <code>meta[\"pages\"]</code> "
@@ -1205,7 +1207,10 @@ sl("s20", "Eurostat", "Eurostat: bilețelele de la garderobă",
    "(<code>geo</code>) sau un nivel întreg (<code>geoLevel</code>), anul (<code>time</code>), unitatea "
    "(<code>unit</code>) și altele, după set. Codul unui set și filtrele lui se găsesc în "
    '<a class="leg" href="https://ec.europa.eu/eurostat/databrowser/" target="_blank" rel="noopener">Data Browser</a>, '
-   "unde tabelul se poate vedea înainte de a fi cerut din cod.</p>"
+   "unde tabelul se poate vedea înainte de a fi cerut din cod. Lista completă a seturilor este "
+   '<a class="leg" href="https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-detailed-guidelines/catalogue-api/toc" '
+   'target="_blank" rel="noopener">cuprinsul bazei de date</a>, un fișier text cu un set pe rând; în caiet, la 6.1, '
+   "se citește cu <code>pd.read_csv</code> și <code>sep=\"\\t\"</code> și se caută după un cuvânt din titlu.</p>"
    "<p>Răspunsul are alt format decât la Banca Mondială, care trimite înregistrări, fiecare cu țara și "
    "anul ei. Eurostat trimite două dicționare: ce număr are fiecare regiune, ca bilețelele de la o "
    "garderobă, și ce valoare stă la fiecare număr. Potrivirea lor dă tabelul.</p>"
@@ -1238,7 +1243,7 @@ sl("s20", "Eurostat", "Eurostat: bilețelele de la garderobă",
    "Aceasta este întrebarea empirică a semestrului: Italia, țara cu cei mai mulți cetățeni români, e abia a "
    "șasea după indicele SCI.</p>"
    + ix("pas", "Unde trăiesc cetățenii români", {
-       "fisier": f"{CAIET} · 8. Migrația: două țări pe un rând",
+       "fisier": f"{CAIET} · 8.1. Unde trăiesc cetățenii români",
        "intro": "Migrația: unde trăiesc cetățenii români.",
        "cod": "filtre = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\n\n"
               "romani = cere_eurostat(\"migr_pop1ctz\", {**filtre, \"citizen\": \"RO\"})\n"
@@ -1265,7 +1270,7 @@ sl("s20", "Eurostat", "Eurostat: bilețelele de la garderobă",
 # Exercițiul pregătește alegerea echipei: aceeași cerere, alt indicator și alți
 # ani. Restul cererii rămâne neschimbat.
 COD_INDICATOR = {
-    "id": "c2-cod-indicator", "fisier": f"{CAIET} · 9. Echipele: ce date încercați",
+    "id": "c2-cod-indicator", "fisier": CAIET,
     "sarcina": "Aceeași cerere, pentru ponderea populației urbane din România, cod "
                "<code>SP.URB.TOTL.IN.ZS</code>, în anii 2000 la 2023. Ce se completează?",
     "cod": "url = \"https://api.worldbank.org/v2/country/RO/indicator/{{1}}\"\n"
@@ -1317,6 +1322,10 @@ sl("s21", "Proiectul echipei", "Exercițiu: alt indicator",
      "    return tabel\n\n"
      "urban = cere_bm(\"SP.URB.TOTL.IN.ZS\", [\"RO\"], ani=\"2000:2023\")\n"
      "urban.to_csv(\"data/c2/urban_ro.csv\", index=False)</code></pre>"
+   + "<p>La secțiunea 9 a caietului, echipele încearcă un indicator Eurostat, dintr-un tabel cu patru "
+     "direcții: migrație, demografie, educație, piața muncii, fiecare cu setul, filtrele și sursa. "
+     "Cererea are aceeași formă ca la Banca Mondială: setul și filtrele, cu <code>cere_eurostat</code>, "
+     "întâi pentru un județ (<code>geo</code>), apoi pentru tot nivelul (<code>geoLevel</code>).</p>"
    + nota("Fișierele mari și cheile de acces",
           "Datele de la curs rămân în <code>curs/data/c2</code>, pe calculatorul personal. Fișierele de zeci de "
           "megabytes și cheile de acces nu se trimit nimănui: se păstrează codul care le colectează, "

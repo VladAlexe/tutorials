@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=97";
-import { RADACINA } from "./curs.js?v=97";
+import { sb } from "./auth.js?v=100";
+import { RADACINA } from "./curs.js?v=100";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -126,6 +126,9 @@ export const informareConfirmata = () =>
 export const confirmaInformarea = () =>
   cheama("confirma_informarea", { p_versiune:INFORMARE });
 export const listaGrupei = cod => cheama("lista_grupei", { p_cod:cod });
+/* Numele din listă, la prima intrare cu GitHub, fără legătură cu ora (db/25) */
+export const cautaNumele = text  => cheama("cauta_numele", { p_text:text });
+export const alegeNumele = cheie => cheama("alege_numele", { p_cheie:cheie });
 export const intra       = (cod, cheie) =>
   cheama("intra_in_sedinta", { p_cod:cod, p_cheie:cheie });
 
@@ -164,7 +167,7 @@ export async function predate() {
     s-a predat (fără rețea), pagina rămâne deschisă. */
 export async function inchideDacaNepredata(capitol){
   try {
-    const { profil } = await import("./auth.js?v=97");
+    const { profil } = await import("./auth.js?v=100");
     const p = await profil().catch(() => ({}));
     if (p.profesorReal) return false;
     const pred = await predate();
@@ -206,7 +209,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=97`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=100`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;
