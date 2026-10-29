@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 2. Colectarea datelor prin API · Fluxuri de lucru</title>
 <meta name="description" content="Ce este un API, adresa și mesajul HTTP, codurile de stare, requests, tabelele Eurostat și primele date reale.">
-<link rel="stylesheet" href="../css/fonturi.css?v=88">
-<link rel="stylesheet" href="../css/sistem.css?v=88">
-<link rel="stylesheet" href="../css/intrare.css?v=88">
-<script src="../js/tema.js?v=88"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=92">
+<link rel="stylesheet" href="../css/sistem.css?v=92">
+<link rel="stylesheet" href="../css/intrare.css?v=92">
+<script src="../js/tema.js?v=92"></script>
 </head>
 <body>
 
@@ -57,7 +57,7 @@
 <li>Componentele unei adrese (adresa de bază, endpoint-ul, parametrii) și legătura dintre parametri și dicționarul <code>params</code> din requests.</li>
 <li>Clasa unui cod de stare și verificarea corpului după cod.</li>
 <li>O cerere cu <code>requests</code>: citirea răspunsului și gestionarea paginării.</li>
-<li>Transformarea unui răspuns JSON-stat de la Eurostat într-un tabel.</li>
+<li>Citirea unui răspuns Eurostat: valorile numerotate, potrivite cu regiunile, devin un tabel.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -116,7 +116,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=88"), import("../js/ora.js?v=88"), import("../js/curs.js?v=88")]);
+    import("../js/auth.js?v=92"), import("../js/ora.js?v=92"), import("../js/curs.js?v=92")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -142,7 +142,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=88"></script>
-<script type="module" src="../js/subsol.js?v=88"></script>
+<script type="module" src="../js/antet.js?v=92"></script>
+<script type="module" src="../js/subsol.js?v=92"></script>
 </body>
 </html>

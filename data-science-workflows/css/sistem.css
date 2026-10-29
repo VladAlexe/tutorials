@@ -683,3 +683,6 @@ a.card:hover{border-color:var(--linie-2);box-shadow:var(--umbra);transform:trans
 .echp__c--sl.plina .echp__sl > span{color:var(--panza)}
 .echp__c--sl.plina .echp__sl i{color:color-mix(in srgb,var(--panza) 70%,var(--ec))}
 .echp__c--sl.plina .echp__sl{border-bottom-color:color-mix(in srgb,var(--panza) 30%,transparent)}
+
+/* v89: în cod, >= rămâne >= (fără ligaturi), ca începătorii să vadă ce se tastează */
+code,pre,kbd,samp,code *,pre *,.ed__cod,.ed__cod *,.jc,.jc *,.trm,.trm *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}

@@ -6,14 +6,14 @@
 <title>Cursul 2 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Ce este un API, cum arată o cerere HTTP, cum se citește un răspuns și cum se aduc primele date reale în proiect.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=88">
-<link rel="stylesheet" href="../../css/sistem.css?v=88">
-<link rel="stylesheet" href="../../css/slide.css?v=88">
-<link rel="stylesheet" href="../../css/interactiv.css?v=88">
-<link rel="stylesheet" href="../../css/grafice.css?v=88">
-<link rel="stylesheet" href="../../css/exercitii.css?v=88">
-<link rel="stylesheet" href="../../css/explorator.css?v=88">
-<script src="../../js/tema.js?v=88"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=92">
+<link rel="stylesheet" href="../../css/sistem.css?v=92">
+<link rel="stylesheet" href="../../css/slide.css?v=92">
+<link rel="stylesheet" href="../../css/interactiv.css?v=92">
+<link rel="stylesheet" href="../../css/grafice.css?v=92">
+<link rel="stylesheet" href="../../css/exercitii.css?v=92">
+<link rel="stylesheet" href="../../css/explorator.css?v=92">
+<script src="../../js/tema.js?v=92"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 2 · Colectarea datelor prin API" data-crom="1"></div>
@@ -23,7 +23,7 @@
 <section class="sld" id="s1" data-grup="Cursul" data-t="Planul lecției">
 <h2>Colectarea datelor prin API</h2><p class="cheie">Datele nu mai vin dintr-un fișier primit, ci dintr-o cerere scrisă, care se poate rula din nou.</p><div class="ix" data-ix="agenda">
   <div class="ix__cap"><span class="ix__fel">Cuprins</span><span class="ix__t">Planul lecției</span></div>
-  <div class="ix__corp"><script type="application/json">{"static": true, "titlu": "Planul lecției", "etape": [{"nume": "Ce este un API", "unde": "azi", "text": "Cum cere un program date de la altul; de ce se colectează așa."}, {"nume": "Tipuri de API", "unde": "azi", "text": "Cinci familii și trei decenii de istorie."}, {"nume": "Cum arată o cerere", "unde": "azi", "text": "Adresa, mesajul HTTP, metoda și codul de stare."}, {"nume": "De unde vin datele", "unde": "azi", "text": "Sursele proiectului și documentația lor."}, {"nume": "requests", "unde": "azi", "text": "Aceeași cerere în Python; paginarea."}, {"nume": "Eurostat", "unde": "azi", "text": "Un tabel cu mai multe dimensiuni, trimis pe un singur rând."}, {"nume": "Prima colectare și echipele", "unde": "azi", "text": "Cererea adaptată la alt indicator; echipele de proiect."}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"static": true, "titlu": "Planul lecției", "etape": [{"nume": "Ce este un API", "unde": "azi", "text": "Cum cere un program date de la altul; de ce se colectează așa."}, {"nume": "Tipuri de API", "unde": "azi", "text": "Cinci familii și trei decenii de istorie."}, {"nume": "Cum arată o cerere", "unde": "azi", "text": "Adresa, mesajul HTTP, metoda și codul de stare."}, {"nume": "De unde vin datele", "unde": "azi", "text": "Sursele proiectului și documentația lor."}, {"nume": "requests", "unde": "azi", "text": "Aceeași cerere în Python; paginarea."}, {"nume": "Eurostat", "unde": "azi", "text": "Indicatori pe regiuni; o funcție aduce direct tabelul."}, {"nume": "Prima colectare și echipele", "unde": "azi", "text": "Cererea adaptată la alt indicator; echipele de proiect."}]}</script></div>
 </div><p class="c2__jos">Caietul lecției: <code>02_colectarea_datelor_prin_api.ipynb</code>, în dsw/curs/, lângă caietul 01.</p>
 
 </section>
@@ -48,7 +48,7 @@
 </section>
 
 <section class="sld" id="s5" data-grup="Ce este un API" data-t="De ce prin API">
-<h2>De ce prin API</h2><p class="cheie">Un fișier se descarcă dintr-un clic. De ce o cerere scrisă?</p><div class="mtv5"><h4 style="--c:var(--accent)">Știință</h4><h4 style="--c:var(--ambra)">Inginerie</h4><h4 style="--c:var(--roza)">Calitatea datelor</h4><p class="mtv5__i"><b>Proveniența</b><span>sursa, filtrele și data, scrise în cerere</span></p><p class="mtv5__i"><b>Scara</b><span>mii de valori, într-o singură buclă</span></p><p class="mtv5__i"><b>Integritatea</b><span>fără copieri și conversii manuale</span></p><p class="mtv5__i"><b>Reproductibilitatea</b><span>același cod, același tabel</span></p><p class="mtv5__i"><b>Actualizarea</b><span>aceeași cerere, versiunea curentă</span></p><p class="mtv5__i"><b>Metadatele</b><span>unitățile și stările vin cu valoarea</span></p><p class="mtv5__i"><b>Principiile FAIR</b><span>acces printr-un protocol standard</span></p><p class="mtv5__i"><b>Filtrarea la sursă</b><span>vine doar felia cerută</span></p><p class="mtv5__i"><b>Accesul legitim</b><span>calea prevăzută de furnizor</span></p><p class="mtv5__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. Un fișier publicat și datat, ca SCI de pe HDX, rămâne o alegere bună.</p></div>
+<h2>De ce prin API</h2><p class="cheie">Un fișier aduce doar datele. Cererea scrisă aduce și drumul lor, ca bonul unei comenzi: de unde, ce anume, când.</p><div class="bon"><div class="bon__sus"><figure class="bon__f"><div class="bon__foaie"><p class="bon__cap">populatie.csv</p><p class="bon__date">tara,an,valoare<br>RO,2024,19051804<br>RO,2023,19061062</p><ul class="bon__q"><li style="--c:var(--accent)">de unde?</li><li style="--c:var(--ambra)">ce anume?</li><li style="--c:var(--roza)">când?</li></ul></div><figcaption><b>Fișierul descărcat</b><span>datele, fără drumul până la ele</span></figcaption></figure><figure class="bon__b"><div class="bon__hartie"><p class="bon__cap">Bonul comenzii</p><dl><dt style="--c:var(--accent)">sursa</dt><dd>api.worldbank.org</dd><dt style="--c:var(--ambra)">cererea</dt><dd>SP.POP.TOTL · RO · 2022:2024</dd><dt style="--c:var(--roza)">data</dt><dd>29.10.2026</dd></dl></div><figcaption><b>Cererea scrisă</b><span>răspunde la cele trei întrebări, rând cu rând</span></figcaption></figure></div><div class="bon__jos"><p><svg class="bon__ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M38 19A15 15 0 0 0 11 15"/><path d="M10 7v8h8"/><path d="M10 29a15 15 0 0 0 27 4"/><path d="M38 41v-8h-8"/></svg><span><b>Reproductibilitatea</b>aceeași cerere, același tabel</span></p><p><svg class="bon__ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="18" width="22" height="24" rx="2"/><path d="M13 12h21v24"/><path d="M20 6h22v24"/></svg><span><b>Scara</b>37 de țări, într-o singură buclă</span></p><p><svg class="bon__ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="33" rx="3"/><path d="M6 18h36M15 5v8M33 5v8"/><path d="M31 31a7 7 0 1 1-2.2-5.1"/><path d="M30 22v4.5h-4.5"/></svg><span><b>Actualizarea</b>mâine, aceeași cerere, date noi</span></p></div><p class="bon__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. Un fișier publicat și datat, ca SCI de pe HDX, rămâne o alegere bună.</p></div>
 
 </section>
 
@@ -117,14 +117,14 @@
 </section>
 
 <section class="sld" id="s16" data-grup="requests" data-t="Aceeași cerere, în Python">
-<h2>Aceeași cerere, în Python</h2><p class="cheie">Fiecare parte a mesajului HTTP are un nume în requests. Ordinea: cererea, codul de stare, abia apoi corpul.</p><div class="rq3"><div class="rq3__cap"><span>În mesajul HTTP</span><i></i><span>În Python, cu requests</span></div><div class="rq3__r p0"><span>cererea</span><i>→</i><code>raspuns = requests.get(url, params=parametri, timeout=30)</code></div><div class="rq3__r p1"><span>codul de stare</span><i>→</i><code>raspuns.status_code<span class="c">  # 200</span></code></div><div class="rq3__r p2"><span>antetele</span><i>→</i><code>raspuns.headers<span class="c">  # Content-Type: application/json</span></code></div><div class="rq3__r p4"><span>corpul</span><i>→</i><code>raspuns.json()<span class="c">  # liste și dicționare</span></code></div></div><p class="c2__jos">Fără <code>timeout</code>, o cerere la care serverul nu răspunde blochează programul.</p>
+<h2>Aceeași cerere, în Python</h2><p class="cheie">Fiecare parte a mesajului HTTP are un nume în requests. Ordinea: cererea, codul de stare, abia apoi corpul.</p><div class="rq3"><div class="rq3__cap"><span>În mesajul HTTP</span><i></i><span>În Python, cu requests</span></div><div class="rq3__r p0"><span>cererea</span><i>→</i><code>raspuns = requests.get(url, params=parametri)</code></div><div class="rq3__r p1"><span>codul de stare</span><i>→</i><code>raspuns.status_code<span class="c">  # 200</span></code></div><div class="rq3__r p2"><span>antetele</span><i>→</i><code>raspuns.headers<span class="c">  # Content-Type: application/json</span></code></div><div class="rq3__r p4"><span>corpul</span><i>→</i><code>raspuns.json()<span class="c">  # liste și dicționare</span></code></div></div>
 
 </section>
 
 <section class="sld" id="s17" data-grup="requests" data-t="Exercițiu: ce a venit în răspuns">
-<h2>Exercițiu: ce a venit în răspuns</h2><p class="cheie">Cererea a rulat, iar răspunsul e în variabila <code>raspuns</code>. Se completează cele trei goluri de dedesubt, apoi Rulează.</p><div class="wbv"><figure class="wbv__json"><figcaption>Ce conține raspuns.json()</figcaption><pre><code>[{"page": 1, "pages": 2, "total": 3},
+<h2>Exercițiu: ce a venit în răspuns</h2><p class="cheie">Cererea a rulat, iar răspunsul e în variabila <code>raspuns</code>. Se completează cele trei goluri de dedesubt, apoi Rulează.</p><div class="wbv"><figure class="wbv__json"><figcaption>Ce conține raspuns.json()</figcaption><pre><code>[{"page": 1, "pages": 1, "total": 3},
  [{"date": "2024", "value": 19051804},
-  {"date": "2023", "value": 19061062}]]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte una pe an</p></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
+  {"date": "2023", "value": 19061062}, …]]</code></pre><p class="wbv__leg"><span>poziția 0</span>paginarea<br><span>poziția 1</span>valorile, câte una pe an</p></figure><div class="wbv__ex"><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Trei rânduri, trei goluri</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c2-cod-raspuns", "fisier": "02_colectarea_datelor_prin_api.ipynb", "sarcina": "<b>1</b> codul de stare · <b>2</b> câte valori există · <b>3</b> populația în 2024", "cod": "print(raspuns.{{1}})\nprint(raspuns.json()[0][{{2}}])\nprint(raspuns.json()[{{3}}][0][\"value\"])", "goluri": {"1": {"ok": ["status_code"], "ajutor": "atributul"}, "2": {"ok": ["\"total\"", "'total'"], "ajutor": "cheia"}, "3": {"ok": ["1"], "ajutor": "poziția"}}, "indiciu": "Codul de stare e atributul <code>status_code</code> (slide-ul de dinainte). În stânga: paginarea e pe poziția 0, cu cheia <code>\"total\"</code>; valorile sunt pe poziția 1.", "iesire": "200\n3\n19051804", "laBine": "Codul de stare, apoi corpul: aceeași ordine la orice cerere.", "laRau": "Cheia se scrie între ghilimele; pozițiile încep de la 0.", "explicatie": "<code>raspuns.status_code</code> e 200, deci cererea a reușit. <code>raspuns.json()</code> e o listă: pe poziția 0 paginarea, unde <code>\"total\"</code> spune câte valori există; pe poziția 1 valorile, de la anul cel mai recent."}</script></div>
 </div></div></div>
@@ -132,33 +132,32 @@
 </section>
 
 <section class="sld" id="s18" data-grup="requests" data-t="Paginarea">
-<h2>Paginarea</h2><p class="cheie">Un API nu trimite un set mare dintr-o dată: îl împarte în pagini, ca fiecare răspuns să rămână mic și rapid.</p><div class="ix" data-ix="pagini2">
+<h2>Paginarea</h2><p class="cheie">Implicit, Banca Mondială trimite doar 50 de valori. Pentru 65 de ani, ultimii 15 stau pe pagina 2 și vin doar dacă sunt ceruți.</p><div class="ix" data-ix="pagini2">
   <div class="ix__cap"><span class="ix__fel">Explorare</span><span class="ix__t">Populația României, 1960 la 2024: 65 de valori</span></div>
   <div class="ix__corp"><script type="application/json">{"ani": [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960], "optiuni": [10, 50, 1000], "implicit": 50}</script></div>
-</div><p class="c2__jos">Scriptul citește <code>pages</code> din prima pagină și le cere pe celelalte, pe rând; sau cere <code>per_page=1000</code>, ca totul să vină pe o singură pagină.</p>
+</div><p class="c2__jos"><code>pages</code> = <code>total</code> ÷ <code>per_page</code>, rotunjit în sus. Dacă e 1, a venit tot; dacă e mai mare, restul paginilor trebuie cerute.</p>
 
 </section>
 
-<section class="sld" id="s18x" data-grup="requests" data-t="Exercițiu: paginarea">
-<h2>Exercițiu: câte valori au venit</h2><p class="cheie">Prima pagină a unui răspuns cu 180 de valori, câte 50 pe pagină.</p><div class="ix" data-ix="prezice">
-  <div class="ix__cap"><span class="ix__fel">Predicție</span><span class="ix__t">Câte valori au venit</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-prezice-pagini", "fisier": "02_colectarea_datelor_prin_api.ipynb · 4. Paginarea", "cod": "date = raspuns.json()\nmeta, valori = date[0], date[1]\n\n# meta = {\"page\": 1, \"pages\": 4, \"per_page\": 50, \"total\": 180}\nprint(meta[\"total\"], len(valori))", "intrebare": "Ce afișează?", "variante": ["180 180", "180 50", "50 180", "4 50"], "corect": 1, "indiciu": "total numără toate valorile; len(valori) numără câte au venit pe pagina aceasta.", "laBine": "Pe prima pagină au venit 50 din 180 de valori; mai sunt trei pagini de cerut.", "explicatie": "În total sunt 180 de valori, câte 50 pe pagină, pe 4 pagini; pe pagina 1 au venit 50. Se cer fie paginile pe rând, până la <code>pages</code>, fie <code>per_page=1000</code> dintr-odată."}</script></div>
+<section class="sld" id="s18x" data-grup="requests" data-t="Exercițiu: toate paginile">
+<h2>Exercițiu: toate paginile, cu o funcție</h2><p class="cheie">Funcția cere pagină după pagină, până la ultima. Populația României, 1960 la 2024, are 65 de valori; aici se cer câte 20 pe pagină.</p><div class="ix" data-ix="prezice">
+  <div class="ix__cap"><span class="ix__fel">Predicție</span><span class="ix__t">Câte cereri</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-prezice-cereri", "fisier": "02_colectarea_datelor_prin_api.ipynb · 4.3. O funcție care aduce toate paginile", "cod": "def cere_tot(url, parametri):\n    toate = []\n    pagina = 1\n    while True:\n        meta, valori = requests.get(url, params={**parametri, \"page\": pagina}).json()\n        toate = toate + (valori or [])    # adună pagina la celelalte\n        if pagina >= meta[\"pages\"]:        # a fost ultima: gata\n            return toate\n        pagina = pagina + 1                # altfel, următoarea\n\nvalori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})", "intrebare": "Câte cereri trimite funcția?", "variante": ["1", "3", "4", "65"], "corect": 2, "indiciu": "pages = total ÷ per_page, rotunjit în sus; funcția cere fiecare pagină o singură dată.", "laBine": "Patru pagini: 20 + 20 + 20 + 5 = 65. Cu per_page 1000, ar fi fost o singură cerere.", "explicatie": "65 ÷ 20 = 3,25, rotunjit în sus 4. Bucla cere paginile 1, 2, 3 și 4, apoi se oprește, pentru că pagina 4 este ultima. Funcția nu se schimbă când datele cresc: cere câte pagini sunt."}</script></div>
 </div>
 
 </section>
 
-<section class="sld" id="s20" data-grup="Eurostat" data-t="Eurostat: un tabel pe un rând">
-<h2>Eurostat: un tabel trimis pe un rând</h2><p class="cheie">Cererea fixează unele dimensiuni; cele rămase deschise formează un tabel, pe care Eurostat îl trimite pe un singur rând.</p><div class="eu3"><p class="eu3__cer"><code>…/data/<b>migr_pop1ctz</b>?<span class="f">sex=T&amp;age=TOTAL&amp;unit=NR&amp;time=2024</span></code></p><p class="eu3__leg"><span class="f">fixate</span>sexul, vârsta, unitatea, anul<span class="d">deschise</span>cetățenia și țara de reședință: ele formează tabelul</p></div><div class="ix" data-ix="cub">
-  <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">Migrația, 2024: două cetățenii, trei țări</span></div>
-  <div class="ix__corp"><script type="application/json">{"randuri": {"id": "citizen", "coduri": ["BG", "RO"], "nume": ["Bulgaria", "România"]}, "coloane": {"id": "geo", "coduri": ["DE", "ES", "IT"], "nume": ["Germania", "Spania", "Italia"]}, "valori": [371128, 112834, 48659, 776424, 620463, 1073196], "ales": [1, 2], "simplu": true, "culori": true, "et": "Răspunsul, în value: rândul BG, apoi rândul RO", "nota": "<p>Eurostat nu trimite tabelul pe rânduri. Pune valorile una după alta: întâi tot rândul BG, apoi tot rândul RO.</p><p>Un clic pe o celulă arată unde ajunge.</p>"}</script></div>
-</div>
+<section class="sld" id="s20" data-grup="Eurostat" data-t="Eurostat: o funcție, un tabel">
+<h2>Eurostat: o funcție, un tabel</h2><p class="cheie">Cererea numește setul și filtrele, ca la Banca Mondială. Funcția <code>cere_eurostat</code> aduce direct tabelul.</p><div class="euf"><div class="euf__cod"><pre><code>cere_eurostat(<span class="d">"demo_r_d3dens"</span>,
+              {<span class="f">"geo": ["RO113", "RO111"]</span>,
+               <span class="f">"unit": "PER_KM2"</span>, <span class="f">"time": 2024</span>})</code></pre><dl class="euf__leg"><dt class="d">setul</dt><dd>densitatea populației</dd><dt class="f">filtrele</dt><dd>ce regiuni, ce unitate, ce an</dd></dl></div><i class="euf__s" aria-hidden="true">→</i><figure class="euf__t"><figcaption>tabelul</figcaption><table class="tabel"><thead><tr><th>geo</th><th>valoare</th></tr></thead><tbody><tr><td>RO111 · Bihor</td><td>74,2</td></tr><tr><td>RO113 · Cluj</td><td>104,8</td></tr></tbody></table></figure></div><p class="c2__jos"><code>geo</code> cere regiuni anume; <code>geoLevel</code>, un nivel întreg: <code>"nuts3"</code> aduce toate județele Europei.</p>
 
 </section>
 
 <section class="sld" id="s21" data-grup="Proiectul echipei" data-t="Exercițiu: alt indicator">
 <h2>Exercițiu: aceeași cerere, alt indicator</h2><p class="cheie">Pentru proiect, cererea rămâne aceeași; se schimbă doar indicatorul, în cale, și anii, în parametri.</p><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Ponderea populației urbane</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-indicator", "fisier": "02_colectarea_datelor_prin_api.ipynb · 9. Echipele: ce date încercați", "sarcina": "Aceeași cerere, pentru ponderea populației urbane din România, cod <code>SP.URB.TOTL.IN.ZS</code>, în anii 2000 la 2023. Ce se completează?", "cod": "url = \"https://api.worldbank.org/v2/country/RO/indicator/{{1}}\"\nparametri = {\"format\": \"json\", \"date\": {{2}}, \"per_page\": 100}\n\nraspuns = requests.get(url, params=parametri, timeout=30)\nmeta, valori = raspuns.json()\nprint(meta[\"pages\"], len(valori))", "goluri": {"1": {"ok": ["SP.URB.TOTL.IN.ZS"], "ajutor": "codul indicatorului"}, "2": {"ok": ["\"2000:2023\"", "'2000:2023'"], "ajutor": "anii, ca text"}}, "indiciu": "Indicatorul stă în cale, după <code>/indicator/</code>. Anii se scriu ca text, între ghilimele, cu două puncte între primul și ultimul an.", "iesire": "1 24", "laBine": "O pagină, 24 de valori: câte una pentru fiecare an. Pentru proiect, echipa schimbă la fel indicatorul și anii.", "laRau": "Codul indicatorului se scrie exact, cu puncte; anii, ca text: \"2000:2023\".", "explicatie": "Calea alege resursa, deci indicatorul se schimbă în <code>url</code>; parametrii filtrează, deci anii se schimbă în <code>date</code>. Cu <code>per_page</code> 100, cei 24 de ani încap pe o singură pagină."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c2-cod-indicator", "fisier": "02_colectarea_datelor_prin_api.ipynb · 9. Echipele: ce date încercați", "sarcina": "Aceeași cerere, pentru ponderea populației urbane din România, cod <code>SP.URB.TOTL.IN.ZS</code>, în anii 2000 la 2023. Ce se completează?", "cod": "url = \"https://api.worldbank.org/v2/country/RO/indicator/{{1}}\"\nparametri = {\"format\": \"json\", \"date\": {{2}}, \"per_page\": 100}\n\nraspuns = requests.get(url, params=parametri)\nmeta, valori = raspuns.json()\nprint(meta[\"pages\"], len(valori))", "goluri": {"1": {"ok": ["SP.URB.TOTL.IN.ZS"], "ajutor": "codul indicatorului"}, "2": {"ok": ["\"2000:2023\"", "'2000:2023'"], "ajutor": "anii, ca text"}}, "indiciu": "Indicatorul stă în cale, după <code>/indicator/</code>. Anii se scriu ca text, între ghilimele, cu două puncte între primul și ultimul an.", "iesire": "1 24", "laBine": "O pagină, 24 de valori: câte una pentru fiecare an. Pentru proiect, echipa schimbă la fel indicatorul și anii.", "laRau": "Codul indicatorului se scrie exact, cu puncte; anii, ca text: \"2000:2023\".", "explicatie": "Calea alege resursa, deci indicatorul se schimbă în <code>url</code>; parametrii filtrează, deci anii se schimbă în <code>date</code>. Cu <code>per_page</code> 100, cei 24 de ani încap pe o singură pagină."}</script></div>
 </div>
 
 </section>
@@ -179,11 +178,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=88"></script>
+<script type="module" src="../../js/antet.js?v=92"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=88";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=88";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=88";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=92";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=92";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=92";
 pornesteIx();
 pornesteVerif("c2");
 pornesteSlide({ capitol:"c2", lectie:"c2-colectarea-prin-api" });

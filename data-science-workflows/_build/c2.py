@@ -5,7 +5,8 @@ Lecția 2: Colectarea datelor prin API.
 Povestea lecției, aceeași pe slide-uri și în manual: de ce datele trebuie
 aduse reproductibil, ce este un API (un contract), peisajul (tipuri, istorie,
 stiluri), protocolul HTTP piesă cu piesă, de unde vin datele, aceeași cerere
-în Python, un al doilea format (cubul Eurostat) și prima colectare în proiect.
+în Python, un al doilea API (Eurostat, cu valorile numerotate) și prima
+colectare în proiect.
 
 Rolurile:
   - slide-urile predau conceptul, vizual, și verifică după ce l-au predat;
@@ -41,7 +42,7 @@ AGENDA = [
     ("Cum arată o cerere", "Adresa, mesajul HTTP, metoda și codul de stare."),
     ("De unde vin datele", "Sursele proiectului și documentația lor."),
     ("requests", "Aceeași cerere în Python; paginarea."),
-    ("Eurostat", "Un tabel cu mai multe dimensiuni, trimis pe un singur rând."),
+    ("Eurostat", "Indicatori pe regiuni; o funcție aduce direct tabelul."),
     ("Prima colectare și echipele", "Cererea adaptată la alt indicator; echipele de proiect."),
 ]
 CAIET_NOTA = (f'<a class="leg" href="{repo_fisier("curs/" + CAIET)}" target="_blank" rel="noopener">'
@@ -218,7 +219,7 @@ sl("s3", "Ce este un API", "Analogia restaurantului",
    "documentația se citește înainte de prima cerere, nu după primul eșec.</p>")
 
 
-# Trei coloane, câte trei motive, aliniate pe rânduri; costul, pe toată lățimea.
+# În manual: trei coloane, câte trei motive, aliniate pe rânduri.
 _MOTIVE = [
     ("Știință", "accent", [("Proveniența", "sursa, filtrele și data, scrise în cerere"),
                            ("Reproductibilitatea", "același cod, același tabel"),
@@ -235,18 +236,55 @@ MOTIVE_SLIDE = (
     + "".join(f'<h4 style="--c:var(--{c})">{t}</h4>' for t, c, _ in _MOTIVE)
     + "".join(f'<p class="mtv5__i"><b>{it[k][0]}</b><span>{it[k][1]}</span></p>'
               for k in range(3) for _, _, it in _MOTIVE)
-    + '<p class="mtv5__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. '
+    + "</div>")
+
+# Pe slide: metafora restaurantului, continuată. Fișierul descărcat lasă trei
+# întrebări; cererea scrisă e bonul comenzii, care le răspunde, rând cu rând, în
+# aceeași culoare. Dedesubt, ce se câștigă: trei lucruri, nu nouă.
+def _ic5(k):
+    d = {
+        "refa": '<path d="M38 19A15 15 0 0 0 11 15"/><path d="M10 7v8h8"/><path d="M10 29a15 15 0 0 0 27 4"/><path d="M38 41v-8h-8"/>',
+        "scara": '<rect x="6" y="18" width="22" height="24" rx="2"/><path d="M13 12h21v24"/><path d="M20 6h22v24"/>',
+        "zi": '<rect x="6" y="9" width="36" height="33" rx="3"/><path d="M6 18h36M15 5v8M33 5v8"/>'
+              '<path d="M31 31a7 7 0 1 1-2.2-5.1"/><path d="M30 22v4.5h-4.5"/>',
+    }[k]
+    return f'<svg class="bon__ic" viewBox="0 0 48 48" aria-hidden="true">{d}</svg>'
+
+BON_HTML = (
+    '<div class="bon"><div class="bon__sus">'
+    '<figure class="bon__f"><div class="bon__foaie"><p class="bon__cap">populatie.csv</p>'
+    '<p class="bon__date">tara,an,valoare<br>RO,2024,19051804<br>RO,2023,19061062</p>'
+    '<ul class="bon__q"><li style="--c:var(--accent)">de unde?</li><li style="--c:var(--ambra)">ce anume?</li>'
+    '<li style="--c:var(--roza)">când?</li></ul></div>'
+    '<figcaption><b>Fișierul descărcat</b><span>datele, fără drumul până la ele</span></figcaption></figure>'
+    '<figure class="bon__b"><div class="bon__hartie"><p class="bon__cap">Bonul comenzii</p><dl>'
+    '<dt style="--c:var(--accent)">sursa</dt><dd>api.worldbank.org</dd>'
+    '<dt style="--c:var(--ambra)">cererea</dt><dd>SP.POP.TOTL · RO · 2022:2024</dd>'
+    '<dt style="--c:var(--roza)">data</dt><dd>29.10.2026</dd></dl></div>'
+    '<figcaption><b>Cererea scrisă</b><span>răspunde la cele trei întrebări, rând cu rând</span></figcaption></figure>'
+    '</div><div class="bon__jos">'
+    + "".join(f'<p>{_ic5(k)}<span><b>{t}</b>{s}</span></p>' for k, t, s in [
+        ("refa", "Reproductibilitatea", "aceeași cerere, același tabel"),
+        ("scara", "Scara", "37 de țări, într-o singură buclă"),
+        ("zi", "Actualizarea", "mâine, aceeași cerere, date noi")])
+    + '</div><p class="bon__cost"><b>Ce costă</b>dependența de furnizor, limitele de cereri, cheile de acces. '
       "Un fișier publicat și datat, ca SCI de pe HDX, rămâne o alegere bună.</p></div>")
 
 sl("s5", "Ce este un API", "De ce prin API",
    "<h2>De ce prin API</h2>"
-   "<p class=\"cheie\">Un fișier se descarcă dintr-un clic. De ce o cerere scrisă?</p>"
-   + MOTIVE_SLIDE,
+   "<p class=\"cheie\">Un fișier aduce doar datele. Cererea scrisă aduce și drumul lor, ca bonul "
+   "unei comenzi: de unde, ce anume, când.</p>"
+   + BON_HTML,
    manual=
    "<h2>Motivele colectării prin API</h2>"
    "<p>Când un fișier se poate descărca dintr-un clic, obținerea lui prin cod trebuie "
-   "justificată. Motivele țin de știință, de inginerie și de calitatea datelor, iar "
-   "fiecare are și un cost.</p>"
+   "justificată. Metafora restaurantului continuă: un fișier descărcat seamănă cu un fel adus "
+   "la pachet, bun, dar fără bon; nu se mai știe exact ce s-a comandat, de unde și când. "
+   "Cererea scrisă este bonul: conține sursa, setul, filtrele și data, iar cu ea comanda se "
+   "poate repeta oricând, la orice scară.</p>"
+   + BON_HTML
+   + "<p>Pe larg, motivele țin de știință, de inginerie și de calitatea datelor, iar "
+     "fiecare are și un cost.</p>"
    + MOTIVE_SLIDE
    + "<h3>Știință</h3>"
    "<p>O analiză e credibilă în măsura în care drumul de la sursă la rezultat poate fi "
@@ -491,8 +529,8 @@ ADRESA = {
         {"t": "/v2", "e": "versiune"},
         {"t": "/country/RO", "e": "resursa: țara"},
         {"t": "/indicator/SP.POP.TOTL", "e": "resursa: indicatorul"},
-        {"t": "?format=json&date=2022:2024&per_page=2&page=1", "e": "parametri",
-         "kv": ["format=json", "date=2022:2024", "per_page=2", "page=1"]},
+        {"t": "?format=json&date=2022:2024", "e": "parametri",
+         "kv": ["format=json", "date=2022:2024"]},
     ],
     "roluri": [
         {"e": "protocol", "c": "ardezie", "d": "regulile de comunicare; <code>https</code> e criptat"},
@@ -504,12 +542,11 @@ ADRESA = {
     ],
     "dupa": '<div class="c2-idei" style="margin-top:0">'
             "<p><b>Calea indică ce se cere</b> (țara, indicatorul); <b>parametrii, cum se cere</b> "
-            "(formatul, anii, pagina).</p>"
+            "(formatul, anii).</p>"
             "<p><b>Parametrii sunt dicționarul <code>params</code></b> din requests: biblioteca "
             "îi adaugă la adresă și codifică automat caracterele speciale.</p></div>"
-            '<div class="c2-dict" style="margin-top:10px"><code>{"format": "json", "date": "2022:2024", '
-            '"per_page": 2, "page": 1}</code><i>→</i>'
-            "<code>?format=json&amp;date=2022%3A2024&amp;per_page=2&amp;page=1</code></div>",
+            '<div class="c2-dict" style="margin-top:10px"><code>{"format": "json", "date": "2022:2024"}</code><i>→</i>'
+            "<code>?format=json&amp;date=2022%3A2024</code></div>",
 }
 
 sl("s11", "Cum arată o cerere", "Adresa unei cereri",
@@ -831,7 +868,7 @@ SURSE_DOC = surse("Documentația necesară", [
     ("Eurostat: setul migr_pop1ctz", "https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table",
      "dimensiunile, în browser"),
     ("JSON-stat: formatul", "https://json-stat.org/format/",
-     "<code>id</code>, <code>size</code>, <code>dimension</code>, <code>value</code>"),
+     "formatul răspunsurilor Eurostat, pentru detalii"),
     ("requests: ghidul rapid", "https://requests.readthedocs.io/en/latest/user/quickstart/",
      "<code>get</code>, <code>params</code>, <code>status_code</code>, <code>json()</code>"),
     ("MDN: codurile de stare HTTP", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
@@ -877,7 +914,7 @@ DOC_REQ = surse("Documentația requests", [
 
 REQ_TABEL = (
     '<table class="tabel rq2"><thead><tr><th>În mesajul HTTP</th><th>În Python, cu requests</th></tr></thead><tbody>'
-    "<tr><td>cererea: metoda, adresa, parametrii</td><td><code>raspuns = requests.get(url, params=parametri, timeout=30)</code></td></tr>"
+    "<tr><td>cererea: metoda, adresa, parametrii</td><td><code>raspuns = requests.get(url, params=parametri)</code></td></tr>"
     "<tr><td>codul de stare</td><td><code>raspuns.status_code</code></td></tr>"
     "<tr><td>antetele</td><td><code>raspuns.headers</code></td></tr>"
     "<tr><td>corpul, în JSON</td><td><code>raspuns.json()</code></td></tr>"
@@ -892,7 +929,7 @@ def _rq(cls, parte, cod, rez=""):
 
 REQ_SLIDE = (
     '<div class="rq3"><div class="rq3__cap"><span>În mesajul HTTP</span><i></i><span>În Python, cu requests</span></div>'
-    + _rq("p0", "cererea", "raspuns = requests.get(url, params=parametri, timeout=30)")
+    + _rq("p0", "cererea", "raspuns = requests.get(url, params=parametri)")
     + _rq("p1", "codul de stare", "raspuns.status_code", "200")
     + _rq("p2", "antetele", "raspuns.headers", "Content-Type: application/json")
     + _rq("p4", "corpul", "raspuns.json()", "liste și dicționare")
@@ -901,8 +938,7 @@ REQ_SLIDE = (
 sl("s16", "requests", "Aceeași cerere, în Python",
    "<h2>Aceeași cerere, în Python</h2>"
    "<p class=\"cheie\">Fiecare parte a mesajului HTTP are un nume în requests. Ordinea: cererea, codul de stare, abia apoi corpul.</p>"
-   + REQ_SLIDE
-   + '<p class="c2__jos">Fără <code>timeout</code>, o cerere la care serverul nu răspunde blochează programul.</p>',
+   + REQ_SLIDE,
    manual=
    "<h2>requests</h2>"
    "<p><code>requests</code> e biblioteca standard de facto pentru HTTP în Python. Fiecare "
@@ -913,12 +949,14 @@ sl("s16", "requests", "Aceeași cerere, în Python",
    "Dacă cererea nu a reușit, "
    "corpul poate fi o pagină HTML, iar <code>.json()</code> eșuează cu o eroare care pare "
    "să nu aibă legătură cu cauza reală. <code>raspuns.raise_for_status()</code> transformă "
-   "orice cod 4xx sau 5xx într-o excepție, deci colectarea se oprește exact acolo unde apare problema.</p>"
+   "orice cod 4xx sau 5xx într-o excepție, deci colectarea se oprește exact acolo unde apare problema. "
+   "La colectările lungi, <code>timeout=30</code> în <code>requests.get</code> oprește după 30 de secunde "
+   "o cerere la care serverul nu mai răspunde; altfel, programul ar aștepta la nesfârșit.</p>"
    + ix("pas", "Prima cerere din caiet, pas cu pas", {
        "fisier": f"{CAIET} · 3. Banca Mondială: prima cerere",
        "intro": "Prima cerere din caiet: populația României, de la Banca Mondială.",
        "cod": "url = \"" + URL_BM + "\"\n"
-              "parametri = {\"format\": \"json\", \"date\": \"2022:2024\", \"per_page\": 2, \"page\": 1}\n\n"
+              "parametri = {\"format\": \"json\", \"date\": \"2022:2024\"}\n\n"
               "raspuns = requests.get(url, params=parametri)\n"
               "print(raspuns.url)\n"
               "print(raspuns.status_code)\n\n"
@@ -927,28 +965,28 @@ sl("s16", "requests", "Aceeași cerere, în Python",
        "pasi": [
            {"l": 1, "set": {"url": {"t": "str", "v": URL_BM}},
             "txt": "Adresa: serverul, țara (RO) și indicatorul (populația totală)."},
-           {"l": 2, "set": {"parametri": {"t": "dict", "v": {"format": "json", "date": "2022:2024", "per_page": 2, "page": 1}}},
-            "txt": "Filtrele stau într-un dicționar. Doar 2 valori pe pagină, ca să se vadă paginarea."},
+           {"l": 2, "set": {"parametri": {"t": "dict", "v": {"format": "json", "date": "2022:2024"}}},
+            "txt": "Filtrele stau într-un dicționar: formatul și anii."},
            {"l": 4, "set": {"raspuns": {"t": "Response", "v": "<Response [200]>"}},
             "txt": "<code>requests.get</code> trimite cererea; cu <code>params=</code>, biblioteca construiește adresa."},
-           {"l": 5, "out": URL_BM + "?format=json&date=2022%3A2024&per_page=2&page=1",
+           {"l": 5, "out": URL_BM + "?format=json&date=2022%3A2024",
             "txt": "Adresa construită: „:” a devenit <code>%3A</code>."},
            {"l": 6, "out": "200", "txt": "Codul de stare, verificat înaintea corpului."},
-           {"l": 8, "set": {"date": {"t": "list", "v": [{"page": 1, "pages": 2, "per_page": 2, "total": 3}, ["…", "…"]]}},
+           {"l": 8, "set": {"date": {"t": "list", "v": [{"page": 1, "pages": 1, "per_page": 50, "total": 3}, ["…", "…", "…"]]}},
             "txt": "<code>.json()</code> transformă corpul în liste și dicționare."},
-           {"l": 9, "set": {"meta": {"t": "dict", "v": {"page": 1, "pages": 2, "per_page": 2, "total": 3}}}, "hl": {"var": "date", "k": 0},
-            "txt": "Poziția 0: paginarea."},
-           {"l": 10, "set": {"valori": {"t": "list", "v": ["2024: 19051804", "2023: 19061062"]}}, "hl": {"var": "date", "k": 1},
-            "txt": "Poziția 1: valorile de pe pagina aceasta."},
+           {"l": 9, "set": {"meta": {"t": "dict", "v": {"page": 1, "pages": 1, "per_page": 50, "total": 3}}}, "hl": {"var": "date", "k": 0},
+            "txt": "Poziția 0: câte valori sunt (3) și pe câte pagini (1): a venit tot."},
+           {"l": 10, "set": {"valori": {"t": "list", "v": ["2024: 19051804", "2023: 19061062", "2022: …"]}}, "hl": {"var": "date", "k": 1},
+            "txt": "Poziția 1: valorile, de la anul cel mai recent."},
        ]})
    + DOC_REQ)
 
 
 # Exercițiul: în stânga, ce a venit în răspuns; în dreapta, trei rânduri de cod,
 # fiecare cu un gol. Nimic de tastat liber: se completează golurile și se rulează.
-RASPUNS_TEXT = """[{"page": 1, "pages": 2, "total": 3},
+RASPUNS_TEXT = """[{"page": 1, "pages": 1, "total": 3},
  [{"date": "2024", "value": 19051804},
-  {"date": "2023", "value": 19061062}]]"""
+  {"date": "2023", "value": 19061062}, …]]"""
 
 COD_RASPUNS = {
     "id": "c2-cod-raspuns", "fisier": CAIET,
@@ -1002,62 +1040,81 @@ PREZICE_PAGINI = {
        "indiciu": "total numără toate valorile; len(valori) numără câte au venit pe pagina aceasta.",
        "laBine": "Pe prima pagină au venit 50 din 180 de valori; mai sunt trei pagini de cerut.",
        "explicatie": "În total sunt 180 de valori, câte 50 pe pagină, pe 4 pagini; pe pagina 1 au "
-                     "venit 50. Se cer fie paginile pe rând, până la <code>pages</code>, fie "
-                     "<code>per_page=1000</code> dintr-odată."}
+                     "venit 50. Restul vin doar dacă se cer paginile 2, 3 și 4."}
+
+# Funcția din caiet (4.4), fără rândul care afișează progresul
+COD_CERE_TOT = ("def cere_tot(url, parametri):\n"
+                "    toate = []\n"
+                "    pagina = 1\n"
+                "    while True:\n"
+                "        meta, valori = requests.get(url, params={**parametri, \"page\": pagina}).json()\n"
+                "        toate = toate + (valori or [])    # adună pagina la celelalte\n"
+                "        if pagina >= meta[\"pages\"]:        # a fost ultima: gata\n"
+                "            return toate\n"
+                "        pagina = pagina + 1                # altfel, următoarea")
+
+PREZICE_CERERI = {
+       "id": "c2-prezice-cereri", "fisier": f"{CAIET} · 4.3. O funcție care aduce toate paginile",
+       "cod": COD_CERE_TOT + "\n\n"
+              "valori = cere_tot(url, {\"format\": \"json\", \"date\": \"1960:2024\", \"per_page\": 20})",
+       "intrebare": "Câte cereri trimite funcția?",
+       "variante": ["1", "3", "4", "65"],
+       "corect": 2,
+       "indiciu": "pages = total ÷ per_page, rotunjit în sus; funcția cere fiecare pagină o singură dată.",
+       "laBine": "Patru pagini: 20 + 20 + 20 + 5 = 65. Cu per_page 1000, ar fi fost o singură cerere.",
+       "explicatie": "65 ÷ 20 = 3,25, rotunjit în sus 4. Bucla cere paginile 1, 2, 3 și 4, apoi se "
+                     "oprește, pentru că pagina 4 este ultima. Funcția nu se schimbă când datele cresc: "
+                     "cere câte pagini sunt."}
 
 PAGINI = {"ani": list(range(2024, 1959, -1)), "optiuni": [10, 50, 1000], "implicit": 50}
 
+CHEI_PAGINARE = tabel(["Cheia", "Ce spune"], [
+    ["~total", "câte valori există în total"],
+    ["~per_page", "câte valori încap pe o pagină"],
+    ["~pages", "câte pagini sunt: <code>total ÷ per_page</code>, rotunjit în sus"],
+    ["~page", "ce pagină a venit acum"],
+])
+
 sl("s18", "requests", "Paginarea",
    "<h2>Paginarea</h2>"
-   "<p class=\"cheie\">Un API nu trimite un set mare dintr-o dată: îl împarte în pagini, ca fiecare "
-   "răspuns să rămână mic și rapid.</p>"
+   "<p class=\"cheie\">Implicit, Banca Mondială trimite doar 50 de valori. Pentru 65 de ani, ultimii 15 "
+   "stau pe pagina 2 și vin doar dacă sunt ceruți.</p>"
    + ix("pagini2", "Populația României, 1960 la 2024: 65 de valori", PAGINI)
-   + '<p class="c2__jos">Scriptul citește <code>pages</code> din prima pagină și le cere pe celelalte, pe rând; '
-   "sau cere <code>per_page=1000</code>, ca totul să vină pe o singură pagină.</p>",
+   + '<p class="c2__jos"><code>pages</code> = <code>total</code> ÷ <code>per_page</code>, rotunjit în sus. '
+   "Dacă e 1, a venit tot; dacă e mai mare, restul paginilor trebuie cerute.</p>",
    manual=
    "<h2>Paginarea</h2>"
-   "<p>Un API nu trimite un set mare dintr-o dată. Trimite o pagină și, separat, informația "
-   "de paginare: pagina curentă, numărul de pagini, câte valori pe pagină și câte în total. "
-   "La Banca Mondială, informația aceasta e primul element al listei din răspuns.</p>"
+   "<p>Un API nu trimite un set mare dintr-o dată. Îl împarte în pagini, ca fiecare răspuns să rămână "
+   "mic și rapid. La Banca Mondială, o pagină are implicit 50 de valori. Problema este că serverul nu "
+   "anunță că a trimis doar o parte: codul este tot 200 și nu apare nicio eroare. Singurul semn este "
+   "primul element al răspunsului, cel cu paginarea.</p>"
+   + CHEI_PAGINARE
+   + "<p>Dacă <code>pages</code> este 1, a venit tot. Dacă este mai mare, a venit doar prima pagină, "
+     "iar celelalte trebuie cerute.</p>"
    + ix("pagini2", "Populația României, 1960 la 2024: 65 de valori", PAGINI)
-   + "<p>Sunt două strategii. Prima cere pagină după pagină, până la ultima; e singura "
-     "posibilă când API-ul limitează <code>per_page</code>. A doua cere o pagină destul de "
-     "mare încât să încapă totul și verifică apoi că a venit o singură pagină; caietul "
-     "folosește a doua. Banca Mondială întoarce valorile de la anul cel mai recent spre cel "
-     "mai vechi.</p>"
+   + "<h3>Ce vine fără per_page</h3>"
+   "<p>Populația României pentru 1960 la 2024 are 65 de valori. Cererea fără <code>per_page</code> "
+   "primește 50, de la 2024 la 1975; anii 1960 la 1974 stau pe pagina 2. Pagina a doua se cere cu "
+   "aceeași cerere și un singur parametru în plus, <code>page</code>:</p>"
+   "<pre><code>parametri = {\"format\": \"json\", \"date\": \"1960:2024\"}\n"
+   "meta, valori = requests.get(url, params=parametri).json()\n"
+   "print(meta[\"total\"], meta[\"pages\"], len(valori))     # 65 2 50\n\n"
+   "meta2, valori2 = requests.get(url, params={**parametri, \"page\": 2}).json()\n"
+   "print(len(valori2))                                  # 15</code></pre>"
+   "<p><code>{**parametri, \"page\": 2}</code> este o copie a dicționarului, cu <code>page</code> "
+   "adăugat; dicționarul inițial rămâne neschimbat.</p>"
    + ix("prezice", "Câte valori au venit", PREZICE_PAGINI)
-   + ix("pas", "Unde e a treia valoare", {
-       "fisier": f"{CAIET} · 4. Paginarea",
-       "intro": "Trei ani ceruți, câte două valori pe pagină.",
-       "cod": "print(\"Pagina\", meta[\"page\"], \"din\", meta[\"pages\"], \"· valori în total:\", meta[\"total\"])\n\n"
-              "parametri[\"page\"] = 2\n"
-              "pagina2 = requests.get(url, params=parametri).json()\n"
-              "pagina2[1]",
-       "pasi": [
-           {"l": 1, "out": "Pagina 1 din 2 · valori în total: 3",
-            "txt": "Pagina 1 din 2; în total 3 valori, dintre care au venit 2."},
-           {"l": 3, "set": {"parametri": {"t": "dict", "v": {"format": "json", "date": "2022:2024", "per_page": 2, "page": 2}}},
-            "hl": {"var": "parametri", "k": "page"}, "txt": "Se schimbă o singură cheie: <code>page</code>."},
-           {"l": 4, "set": {"pagina2": {"t": "list", "v": [{"page": 2, "pages": 2, "per_page": 2, "total": 3}, ["2022: 19048502"]]}},
-            "txt": "Aceeași cerere, pagina 2."},
-           {"l": 5, "out": "[{…, 'date': '2022', 'value': 19048502, …}]", "hl": {"var": "pagina2", "k": 1},
-            "txt": "A treia valoare: 2022."},
-       ]})
-   + "<h3>Scriptul complet, cu buclă</h3>"
-   "<pre><code>import time\n"
-   "import pandas as pd\n"
-   "import requests\n\n"
-   "def aduce(url, parametri):\n"
-   "    pagina, toate = 1, []\n"
-   "    while True:\n"
-   "        r = requests.get(url, params={**parametri, \"page\": pagina}, timeout=30)\n"
-   "        r.raise_for_status()\n"
-   "        meta, valori = r.json()\n"
-   "        toate.extend(valori or [])\n"
-   "        if pagina >= meta[\"pages\"]:\n"
-   "            return toate\n"
-   "        pagina += 1\n"
-   "        time.sleep(0.5)</code></pre>"
+   + "<h3>Două căi spre tot răspunsul</h3>"
+   "<p><strong>Pagini mari.</strong> Cu <code>per_page=1000</code>, cei 65 de ani vin într-o singură "
+   "pagină. Calea e scurtă, dar „destul de mare” depinde de cerere: pentru cele 37 de țări ale "
+   "proiectului și 65 de ani sunt 2.405 valori, deci tot 3 pagini.</p>"
+   "<p><strong>O funcție care cere toate paginile.</strong> Ea face, pe rând, ce s-ar face de mână: "
+   "cere pagina 1, adaugă valorile la o listă, se oprește dacă pagina era ultima și altfel cere "
+   "pagina următoare. Funcția nu se schimbă când datele cresc: cere câte pagini sunt.</p>"
+   + ix("prezice", "Câte cereri", PREZICE_CERERI)
+   + "<p>În caiet, <code>cere_bm</code> le folosește pe amândouă: cere pagini mari, ca să fie cât mai "
+     "puține cereri, iar <code>cere_tot</code> le aduce pe toate. Banca Mondială întoarce valorile de la "
+     "anul cel mai recent spre cel mai vechi.</p>"
    "<h3>Din JSON în tabel</h3>"
    "<p>Lista de înregistrări devine tabel cu <code>pd.json_normalize</code>: dicționarele "
    "dinăuntru devin coloane cu punct în nume, de exemplu <code>country.id</code>. Tabelul se "
@@ -1071,10 +1128,11 @@ sl("s18", "requests", "Paginarea",
           "scrie fișiere noi, alături. Așa se poate reface oricând drumul de la sursă la tabelul final."))
 
 
-sl("s18x", "requests", "Exercițiu: paginarea",
-   "<h2>Exercițiu: câte valori au venit</h2>"
-   "<p class=\"cheie\">Prima pagină a unui răspuns cu 180 de valori, câte 50 pe pagină.</p>"
-   + ix("prezice", "Câte valori au venit", PREZICE_PAGINI),
+sl("s18x", "requests", "Exercițiu: toate paginile",
+   "<h2>Exercițiu: toate paginile, cu o funcție</h2>"
+   "<p class=\"cheie\">Funcția cere pagină după pagină, până la ultima. Populația României, 1960 la 2024, "
+   "are 65 de valori; aici se cer câte 20 pe pagină.</p>"
+   + ix("prezice", "Câte cereri", PREZICE_CERERI),
    manual="")
 
 
@@ -1084,6 +1142,39 @@ sl("s18x", "requests", "Exercițiu: paginarea",
 
 EUROSTAT_BAZA = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
 
+# Pe slide: cererea din caiet, cu setul și filtrele colorate, și tabelul care
+# vine din ea. Cum se desface răspunsul rămâne în manual.
+EU_FUNCTIE = (
+    '<div class="euf"><div class="euf__cod">'
+    '<pre><code>cere_eurostat(<span class="d">"demo_r_d3dens"</span>,\n'
+    '              {<span class="f">"geo": ["RO113", "RO111"]</span>,\n'
+    '               <span class="f">"unit": "PER_KM2"</span>, <span class="f">"time": 2024</span>})</code></pre>'
+    '<dl class="euf__leg"><dt class="d">setul</dt><dd>densitatea populației</dd>'
+    '<dt class="f">filtrele</dt><dd>ce regiuni, ce unitate, ce an</dd></dl></div>'
+    '<i class="euf__s" aria-hidden="true">→</i>'
+    '<figure class="euf__t"><figcaption>tabelul</figcaption>'
+    '<table class="tabel"><thead><tr><th>geo</th><th>valoare</th></tr></thead><tbody>'
+    '<tr><td>RO111 · Bihor</td><td>74,2</td></tr>'
+    '<tr><td>RO113 · Cluj</td><td>104,8</td></tr>'
+    "</tbody></table></figure></div>")
+
+# În manual: ce face funcția. Stânga, valorile cu numărul lor; mijloc, ce număr
+# are fiecare regiune; dreapta, tabelul. Aceeași culoare, același număr.
+EU_NUMERE = (
+    '<div class="eun">'
+    '<div class="eun__r">'
+    '<figure><figcaption><code>value</code><span>valorile, cu numărul lor</span></figcaption>'
+    '<pre><code>{<span class="n0">"0": 74.2</span>,\n <span class="n1">"1": 104.8</span>}</code></pre></figure>'
+    '<figure><figcaption><code>dimension → geo → index</code><span>ce număr are fiecare regiune</span></figcaption>'
+    '<pre><code>{<span class="n0">"RO111": 0</span>,\n <span class="n1">"RO113": 1</span>}</code></pre></figure>'
+    '<i class="eun__s" aria-hidden="true">→</i>'
+    '<figure><figcaption>tabelul<span>potrivite după număr</span></figcaption>'
+    '<table class="tabel eun__t"><thead><tr><th>geo</th><th>valoare</th></tr></thead><tbody>'
+    '<tr class="n0"><td>RO111 · Bihor</td><td>74,2</td></tr>'
+    '<tr class="n1"><td>RO113 · Cluj</td><td>104,8</td></tr>'
+    "</tbody></table></figure></div></div>")
+
+# În manual: migrația, cu ce fixează cererea și ce rămâne deschis.
 EU2_HTML = (
     '<p class="eu2__adr"><code>' + EUROSTAT_BAZA + '<b>migr_pop1ctz</b>?sex=T&amp;age=TOTAL&amp;unit=NR&amp;time=2024</code></p>'
     '<table class="tabel eu2"><tbody>'
@@ -1092,121 +1183,66 @@ EU2_HTML = (
     '<tr class="on"><td>Deschise, toate valorile</td><td><code>citizen</code> (cetățenia) · <code>geo</code> (țara de reședință)</td></tr>'
     "</tbody></table>")
 
-# Pe slide: cererea, cu ce e fixat și ce rămâne deschis; apoi tabelul mic și
-# același tabel pe un rând, cum îl trimite Eurostat.
-EU3_HTML = (
-    '<div class="eu3"><p class="eu3__cer"><code>…/data/<b>migr_pop1ctz</b>?'
-    '<span class="f">sex=T&amp;age=TOTAL&amp;unit=NR&amp;time=2024</span></code></p>'
-    '<p class="eu3__leg"><span class="f">fixate</span>sexul, vârsta, unitatea, anul'
-    '<span class="d">deschise</span>cetățenia și țara de reședință: ele formează tabelul</p></div>')
-
-CUB = {
-    "randuri": {"id": "citizen", "coduri": ["BG", "PL", "RO"], "nume": ["Bulgaria", "Polonia", "România"]},
-    "coloane": {"id": "geo", "coduri": ["DE", "ES", "IT"], "nume": ["Germania", "Spania", "Italia"]},
-    "valori": [371128, 112834, 48659, 741784, 59132, 73320, 776424, 620463, 1073196],
-    "ales": [2, 2],
-}
-
-CUB2 = {
-    "randuri": {"id": "citizen", "coduri": ["BG", "RO"], "nume": ["Bulgaria", "România"]},
-    "coloane": {"id": "geo", "coduri": ["DE", "ES", "IT"], "nume": ["Germania", "Spania", "Italia"]},
-    "valori": [371128, 112834, 48659, 776424, 620463, 1073196],
-    "ales": [1, 2], "simplu": True, "culori": True,
-    "et": "Răspunsul, în value: rândul BG, apoi rândul RO",
-    "nota": "<p>Eurostat nu trimite tabelul pe rânduri. Pune valorile una după alta: întâi tot "
-            "rândul BG, apoi tot rândul RO.</p><p>Un clic pe o celulă arată unde ajunge.</p>",
-}
-
-PREZICE_CUB = {
-       "id": "c2-prezice-cub2", "fisier": f"{CAIET} · 6.1. Cum citim JSON-stat",
-       "cod": "citizen = [\"BG\", \"PL\", \"RO\"]\n"
-              "geo     = [\"DE\", \"ES\", \"IT\"]\n"
-              "value   = [371128, 112834, 48659, 741784, 59132, 73320, 776424, 620463, 1073196]\n\n"
-              "i = citizen.index(\"PL\") * 3 + geo.index(\"ES\")\n"
-              "print(i, value[i])",
-       "intrebare": "Ce afișează?",
-       "variante": ["4 59132", "2 48659", "3 741784", "5 73320"],
-       "corect": 0,
-       "indiciu": "citizen.index(\"PL\") e 1, geo.index(\"ES\") e tot 1. Câte valori are un rând de cetățenie?",
-       "laBine": "Același calcul îl face, pentru fiecare valoare, funcția jsonstat_in_tabel din caiet.",
-       "explicatie": "Fiecare cetățenie are 3 valori, câte una pentru fiecare țară. Polonia e a doua "
-                     "cetățenie (poziția 1), deci se trece peste 1 × 3 = 3 valori; Spania e a doua țară "
-                     "(poziția 1): 3 + 1 = 4. <code>value[4]</code> e 59.132."}
-
-sl("s20", "Eurostat", "Eurostat: un tabel pe un rând",
-   "<h2>Eurostat: un tabel trimis pe un rând</h2>"
-   "<p class=\"cheie\">Cererea fixează unele dimensiuni; cele rămase deschise formează un tabel, "
-   "pe care Eurostat îl trimite pe un singur rând.</p>"
-   + EU3_HTML
-   + ix("cub", "Migrația, 2024: două cetățenii, trei țări", CUB2),
+sl("s20", "Eurostat", "Eurostat: o funcție, un tabel",
+   "<h2>Eurostat: o funcție, un tabel</h2>"
+   "<p class=\"cheie\">Cererea numește setul și filtrele, ca la Banca Mondială. "
+   "Funcția <code>cere_eurostat</code> aduce direct tabelul.</p>"
+   + EU_FUNCTIE
+   + '<p class="c2__jos"><code>geo</code> cere regiuni anume; <code>geoLevel</code>, un nivel întreg: '
+     '<code>"nuts3"</code> aduce toate județele Europei.</p>',
    manual=
-   "<h2>Eurostat: cererea pe dimensiuni</h2>"
-   "<p>Un set Eurostat e un tabel cu mai multe dimensiuni: frecvența, regiunea, anul, "
-   "sexul, vârsta, unitatea și altele, după set. O cerere fixează unele dimensiuni la o "
-   "singură valoare și le lasă deschise pe celelalte. Ce rămâne deschis formează tabelul "
-   "din răspuns.</p>"
-   + EU2_HTML
-   + "<p>Eurostat oferă mai multe API-uri: Statistics API, care răspunde în JSON-stat și "
-     "pe care îl folosește cursul, și API-urile SDMX 2.1 și SDMX 3.0, pentru schimbul standardizat "
-     "între instituții. Codul unui set și codurile dimensiunilor lui se găsesc în "
-     '<a class="leg" href="https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table" '
-     'target="_blank" rel="noopener">Data Browser</a>, unde tabelul se poate vedea înainte de a fi cerut din cod.</p>'
-   + "<p>Caietul pornește cu un exemplu mai mic: densitatea populației în județele Cluj "
-     "(<code>RO113</code>) și Bihor (<code>RO111</code>), din setul <code>demo_r_d3dens</code>. "
-     "Exemplul arată un detaliu important: răspunsul nu păstrează ordinea cerută. Bihorul "
-     "vine pe poziția 0, deși a fost cerut al doilea, deci pozițiile se citesc din "
-     "<code>index</code>, nu se presupun.</p>"
-   + "<h3>JSON-stat: tabelul pe un rând</h3>"
-   "<p>Banca Mondială trimite o listă de înregistrări, din care tabelul se face direct. "
-   "Eurostat trimite JSON-stat, un format pentru tabele cu multe dimensiuni, numit adesea "
-   "„cub”. În loc să repete codurile pe fiecare rând, le scrie o singură dată, cu poziția lor, "
-   "iar valorile le pune pe un singur rând, în ordinea în care ultima dimensiune se schimbă "
-   "cel mai repede.</p>"
-   + ix("cub", "Migrația, 2024: trei cetățenii, trei țări", dict(CUB, simplu=True))
-   + tabel(["Cheie", "Ce conține"], [
-       ["~id", "numele dimensiunilor, în ordine"],
-       ["~size", "câte coduri are fiecare dimensiune"],
-       ["~dimension", "codurile fiecărei dimensiuni și poziția lor (<code>index</code>)"],
-       ["~value", "valorile, după poziție; ce lipsește nu apare deloc"],
-       ["~status", "indicatorii de stare ai valorilor, unde există"],
-   ])
-   + "<p>Cu două dimensiuni, poziția e <code>i_citizen × 3 + i_geo</code>. Cu șapte "
-     "dimensiuni regula e aceeași, doar mai lungă, de aceea e scrisă o dată, în funcția "
-     "<code>jsonstat_in_tabel</code> din caiet, iar <code>cere_eurostat</code> face cererea "
-     "și desfacerea împreună.</p>"
-   + ix("prezice", "Poziția din tabel", PREZICE_CUB)
+   "<h2>Eurostat: date pe regiuni</h2>"
+   "<p>Eurostat publică indicatori pe regiuni NUTS: țări, regiuni mari (NUTS 2) și județe sau "
+   "echivalentele lor (NUTS 3). O cerere numește setul și filtrele: o regiune "
+   "(<code>geo</code>) sau un nivel întreg (<code>geoLevel</code>), anul (<code>time</code>), unitatea "
+   "(<code>unit</code>) și altele, după set. Codul unui set și filtrele lui se găsesc în "
+   '<a class="leg" href="https://ec.europa.eu/eurostat/databrowser/" target="_blank" rel="noopener">Data Browser</a>, '
+   "unde tabelul se poate vedea înainte de a fi cerut din cod.</p>"
+   + EU_FUNCTIE
+   + "<p>În caiet, funcția <code>cere_eurostat</code> face cererea și întoarce direct un tabel, câte o "
+     "valoare pe rând. Se folosește la fel ca <code>cere_bm</code>: primul argument este setul, al doilea "
+     "sunt filtrele.</p>"
+   + "<h3>Ce face funcția</h3>"
+   "<p>Răspunsul are alt format decât la Banca Mondială, care trimite înregistrări, fiecare cu țara și "
+   "anul ei. Eurostat trimite valorile numerotate și, separat, ce număr are fiecare regiune; funcția le "
+   "potrivește.</p>"
+   + EU_NUMERE
+   + "<p>Numerele urmează ordinea Eurostat, nu ordinea din cerere, deci se citesc din răspuns, nu se "
+     "presupun. Formatul se numește JSON-stat: codurile se scriu o singură dată, nu pe fiecare rând, așa că "
+     "răspunsul rămâne mic și când are zeci de mii de valori. O valoare care lipsește nu apare deloc în "
+     "<code>value</code>; în tabel devine <code>None</code>, nu zero.</p>"
    + "<h3>Migrația, a doua sursă a proiectului</h3>"
    "<p>Setul <code>migr_pop1ctz</code> spune câți oameni cu o anumită cetățenie trăiesc într-o "
    "țară, la 1 ianuarie. Un rând e o pereche de țări, ca la SCI, dar cu direcție. Cetățenia "
    "e preferată țării nașterii (<code>migr_pop3ctb</code>) pentru că mai multe țări mari, "
    "printre ele Germania, nu raportează nașterile pe țări. Și cetățenia are o limită: persoanele "
    "care au dobândit cetățenia țării de reședință nu mai apar ca migranți.</p>"
-   "<p>Doar o parte dintre țări raportează pe țări de cetățenie; o valoare lipsă nu "
+   "<p>Cererea fixează sexul, vârsta, unitatea și anul. Țara de reședință și cetățenia rămân "
+   "deschise, deci vin toate perechile.</p>"
+   + EU2_HTML
+   + "<p>Doar o parte dintre țări raportează pe țări de cetățenie; o valoare lipsă nu "
    "înseamnă zero. Harta din <a class=\"leg\" href=\"../../c1-introducere-si-mediu/tutorial/#s5m\">cursul 1</a> "
    "folosește exact aceste date: 1.073.196 de cetățeni români în Italia, la 1 ianuarie 2024. "
    "Aceasta este întrebarea empirică a semestrului: Italia, țara cu cei mai mulți cetățeni români, e abia a "
    "șasea după indicele SCI.</p>"
-   + ix("pas", "Câți români în Italia", {
+   + ix("pas", "Unde trăiesc cetățenii români", {
        "fisier": f"{CAIET} · 8. Migrația: două țări pe un rând",
        "intro": "Migrația: câți oameni cu o cetățenie trăiesc în fiecare țară.",
-       "cod": "parametri = {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024}\n"
-              "migratie = cere_eurostat(\"migr_pop1ctz\", parametri)\n\n"
-              "in_italia = migratie[\"geo\"] == \"IT\"\n"
-              "romani = migratie[\"citizen\"] == \"RO\"\n"
-              "migratie[in_italia & romani]",
+       "cod": "migratie = cere_eurostat(\"migr_pop1ctz\", {\"sex\": \"T\", \"age\": \"TOTAL\", \"unit\": \"NR\", \"time\": 2024})\n\n"
+              "romani = migratie[migratie[\"citizen\"] == \"RO\"]\n"
+              "romani.sort_values(\"valoare\", ascending=False).head(6)",
        "pasi": [
-           {"l": 1, "set": {"parametri": {"t": "dict", "v": {"sex": "T", "age": "TOTAL", "unit": "NR", "time": 2024}}},
-            "txt": "Dimensiunile fixate: toată populația, în număr de persoane, în 2024."},
-           {"l": 2, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
+           {"l": 1, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
                                                                "rows": [["DE", "BG", 371128], ["ES", "RO", 620463], ["IT", "RO", 1073196], ["…", "…", "…"]],
                                                                "nota": "un rând pe pereche cetățenie, țară"}}},
-            "txt": "<code>cere_eurostat</code> face cererea și desface cubul în tabel."},
-           {"l": 4, "set": {"in_italia": {"t": "Series", "v": {"rows": [["0", "False"], ["1", "False"], ["2", "True"], ["…", "…"]]}}},
-            "txt": "Prima condiție: trăiesc în Italia."},
-           {"l": 5, "set": {"romani": {"t": "Series", "v": {"rows": [["0", "False"], ["1", "True"], ["2", "True"], ["…", "…"]]}}},
-            "txt": "A doua condiție: au cetățenie română."},
-           {"l": 6, "out": "     geo citizen  valoare\n4812  IT      RO  1073196",
-            "txt": "<code>&amp;</code> păstrează rândurile unde ambele sunt adevărate."},
+            "txt": "<code>cere_eurostat</code> face cererea și dă tabelul: toată populația, în număr de persoane, în 2024."},
+           {"l": 3, "set": {"romani": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
+                                                             "rows": [["BE", "RO", 127539], ["BG", "RO", 1595], ["CZ", "RO", 15208], ["…", "…", "…"]],
+                                                             "nota": "un rând pe țară"}}},
+            "txt": "Doar rândurile cu cetățenia română: câte unul pentru fiecare țară."},
+           {"l": 4, "out": "geo citizen   valoare\n RO      RO  18780989\n IT      RO   1073196\n DE      RO    776424\n"
+                           " ES      RO    620463\n FR      RO    161220\n AT      RO    153427",
+            "txt": "Ordonate descrescător. Primul rând e chiar România, cu românii din țară; urmează Italia, Germania și Spania."},
        ]})
    + nota("Coduri care pot produce erori",
           "Eurostat scrie Grecia <code>EL</code>, nu <code>GR</code>. Iar <code>NA</code> e Namibia, pe "
@@ -1225,7 +1261,7 @@ COD_INDICATOR = {
                "<code>SP.URB.TOTL.IN.ZS</code>, în anii 2000 la 2023. Ce se completează?",
     "cod": "url = \"https://api.worldbank.org/v2/country/RO/indicator/{{1}}\"\n"
            "parametri = {\"format\": \"json\", \"date\": {{2}}, \"per_page\": 100}\n\n"
-           "raspuns = requests.get(url, params=parametri, timeout=30)\n"
+           "raspuns = requests.get(url, params=parametri)\n"
            "meta, valori = raspuns.json()\n"
            "print(meta[\"pages\"], len(valori))",
     "goluri": {"1": {"ok": ["SP.URB.TOTL.IN.ZS"], "ajutor": "codul indicatorului"},
@@ -1243,7 +1279,7 @@ COD_INDICATOR = {
 PASI_COLECTARE = tabel(["Pasul", "Ce se face"], [
     ["1", "se deschide caietul 02 din <code>dsw/curs/</code>, cu kernelul <code>.venv</code>"],
     ["2", "se rulează secțiunile 1 la 5: prima cerere, paginarea, cei trei indicatori"],
-    ["3", "se verifică faptul că fiecare indicator a venit pe o singură pagină"],
+    ["3", "se verifică faptul că au venit toate valorile: ultimul rând afișat este „pagina N din N”"],
     ["4", "se salvează tabelul în <code>data/c2/bm.csv</code>"],
 ])
 
@@ -1261,29 +1297,15 @@ sl("s21", "Proiectul echipei", "Exercițiu: alt indicator",
    + "<p>Pentru proiect, echipa caută un indicator potrivit întrebării ei și îl cere la fel. "
      "Cererea nu se rescrie: se schimbă indicatorul, în cale, și anii, în parametri.</p>"
    + ix("cod", "Ponderea populației urbane", COD_INDICATOR)
-   + "<p>Mai jos, aceeași idee, scrisă complet, cu paginarea tratată pas cu pas: o funcție care "
-   "cere pagină după pagină, până la ultima. Se poate rula într-o celulă nouă, la finalul "
-   "caietului, și se adaptează la indicatorul echipei.</p>"
-   + "<pre><code>import time\n"
-     "import pandas as pd\n"
-     "import requests\n\n"
-     "URL = \"" + URL_BM + "\"\n\n"
-     "def aduce(url, parametri):\n"
-     "    pagina, toate = 1, []\n"
-     "    while True:\n"
-     "        r = requests.get(url, params={**parametri, \"page\": pagina}, timeout=30)\n"
-     "        print(\"pagina\", pagina, \"cod\", r.status_code)\n"
-     "        r.raise_for_status()\n"
-     "        meta, valori = r.json()\n"
-     "        toate.extend(valori or [])\n"
-     "        if pagina >= meta[\"pages\"]:\n"
-     "            return toate\n"
-     "        pagina += 1\n"
-     "        time.sleep(0.5)\n\n"
-     "randuri = aduce(URL, {\"format\": \"json\", \"date\": \"2000:2023\", \"per_page\": 100})\n"
-     "tabel = pd.json_normalize(randuri)\n"
-     "tabel.to_csv(\"data/c2/populatie_ro.csv\", index=False)\n"
-     "print(\"salvate\", len(tabel), \"rânduri\")</code></pre>"
+   + "<p>În caiet, cererea pentru proiect este o funcție, <code>cere_bm</code>, care primește "
+     "indicatorul și țările și folosește <code>cere_tot</code>, deci aduce toate paginile. Pentru indicatorul "
+     "echipei se schimbă doar codul și, la nevoie, anii:</p>"
+   + "<pre><code>def cere_bm(indicator, tari, ani=\"2022:2024\"):\n"
+     "    url = \"https://api.worldbank.org/v2/country/\" + \";\".join(tari) + \"/indicator/\" + indicator\n"
+     "    valori = cere_tot(url, {\"format\": \"json\", \"date\": ani, \"per_page\": 1000})\n"
+     "    return pd.json_normalize(valori)\n\n"
+     "urban = cere_bm(\"SP.URB.TOTL.IN.ZS\", [\"RO\"], ani=\"2000:2023\")\n"
+     "urban.to_csv(\"data/c2/urban_ro.csv\", index=False)</code></pre>"
    + nota("Fișierele mari și cheile de acces",
           "Datele de la curs rămân în <code>curs/data/c2</code>, pe calculatorul personal. Fișierele de zeci de "
           "megabytes și cheile de acces nu se trimit nimănui: se păstrează codul care le colectează, "
