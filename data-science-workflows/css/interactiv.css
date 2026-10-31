@@ -2993,3 +2993,29 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .pgx .wbv__leg span{display:inline-block;width:84px;color:var(--text-3)}
 .sld#s18x .ex__sarcina{display:none}
 @media(max-width:760px){.pgx{grid-template-columns:1fr}}
+
+/* Cursul 3 la 1366×768, cu tot cu butoanele de jos. Doar în lecția 3: același
+   id de slide există și în celelalte lecții. */
+/* titlul mic de deasupra exercițiului repetă titlul slide-ului */
+.rnr[data-capitol="c3"] .sld:is(#s7,#s8,#s9,#s14b,#s21n,#s21b,#s22b) .ix__cap{display:none}
+/* Pașii de cod. Ieșirea se adună de la un pas la altul, deci memoria și
+   ieșirea au înălțime fixă, cu derulare; altfel slide-ul crește la fiecare pas. */
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21n,#s21b) .ps__ed{line-height:1.5}
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21n,#s21b) .ps__mem{max-height:150px}
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21n,#s21b) .ps__out{max-height:150px;overflow:auto}
+/* primul commit și migrația: codul pe toată lățimea, dedesubt explicația cu
+   butoanele în stânga, memoria și ieșirea în dreapta */
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21b) .ix > div:has(> .ps){display:grid;column-gap:12px;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);grid-template-rows:auto auto 1fr;
+  grid-template-areas:"ed ed" "txt dr" "nav dr"}
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21b) .ps{display:contents}
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21b) .ps__ed{grid-area:ed;margin-bottom:10px}
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21b) .ps__dr{grid-area:dr;align-self:start}
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21b) .ps__txt{grid-area:txt;margin:0}
+.rnr[data-capitol="c3"] .sld:is(#s8,#s21b) .ps__nav{grid-area:nav;align-self:start}
+/* tabelul regional are 15 rânduri: acolo codul stă în stânga, panourile în dreapta */
+.rnr[data-capitol="c3"] .sld#s21n .ps{grid-template-columns:minmax(0,2.5fr) minmax(0,1fr);align-items:start}
+.rnr[data-capitol="c3"] .sld#s21n .ps__dr{grid-template-columns:minmax(0,1fr)}
+/* verificarea depozitului: cele patru verificări, câte două pe rând */
+.rnr[data-capitol="c3"] .sld#s22b .dov{grid-template-columns:repeat(2,minmax(0,1fr))}
+.rnr[data-capitol="c3"] .sld#s9 .srt__c{min-height:84px}

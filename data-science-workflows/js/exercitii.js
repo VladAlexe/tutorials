@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod, deCeNu } from "./colectare.js?v=100";
+import { salveazaCod, deCeNu } from "./colectare.js?v=101";
 
 const E = {};
 
@@ -580,7 +580,13 @@ E.pas = (gazda, d) => {
         <span class="ps-v__t ${TIP_CLS[sp.t] || ""}">${esc(sp.e || sp.t)}</span>
         <span class="ps-v__v">${valoareHTML(sp, p.hl?.var === n ? p.hl.k : undefined)}</span>
       </div>`).join("") : `<p class="ps__gol">${i < 0 ? "Memoria este goală. Apasă ▶ pentru a rula primul rând." : "Acest rând nu a creat nicio variabilă."}</p>`;
-    $(".ps__out").textContent = out.join("\n");
+    /* când ieșirea are înălțime limitată (cu derulare), se vede începutul
+       ultimei ieșiri, nu sfârșitul ei */
+    const o = $(".ps__out");
+    o.textContent = out.slice(0, -1).join("\n");
+    const sus = out.length > 1 ? o.scrollHeight : 0;
+    o.textContent = out.join("\n");
+    o.scrollTop = sus;
     $(".ps__txt").innerHTML = i < 0 ? (d.intro || "Rulează rând cu rând și urmărește ce apare în memorie și la ieșire.")
                                     : `<b>Rândul ${p.l}.</b> ${p.txt || ""}`;
     gazda.querySelectorAll(".ps__puncte i").forEach(e => e.classList.toggle("on", +e.dataset.k <= i));

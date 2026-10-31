@@ -184,7 +184,9 @@ class Lectie:
                         desc=self.desc, v=V, stil="slide", corp=' class="corp--app"')]
         b.append(f'<div id="antet" data-aici="Cursul {self.nr} · {self.titlu}" '
                  f'data-crom="1"></div>\n')
-        b.append('<div class="rnr">\n<main class="rnr__scena" tabindex="-1">\n')
+        # data-capitol: ca o regulă de așezare pentru un slide să nu atingă slide-ul
+        # cu același id din altă lecție (s8 există în aproape toate)
+        b.append(f'<div class="rnr" data-capitol="{self.capitol}">\n<main class="rnr__scena" tabindex="-1">\n')
         for s in self.S:
             sci = ' data-sci="1"' if s.get("sci") else ""
             b.append(f'\n<section class="sld" id="{s["id"]}" data-grup="{s["grup"]}" '
