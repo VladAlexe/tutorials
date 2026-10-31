@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=103");
+    const m = await import("/data-science-workflows/js/colectare.js?v=105");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -198,103 +198,6 @@ V.zone = (gazda, d) => {
       st.textContent = "Exercițiul este rezolvat.";
       st.classList.add("vazut");
     }
-  });
-
-  deseneaza();
-};
-
-
-/* ===========================================================================
-   5. RAMURI — graful care crește sub ochii tăi
-
-   O ramură e greu de explicat în cuvinte și evidentă într-un desen. Aici se
-   desenează pe măsură ce apeși.
-   =========================================================================== */
-
-V.ramuri = (gazda, d) => {
-  gazda.closest(".ix")?.classList.add("exc");
-  let main = 2, ram = 0, peRamura = false, unit = 0, nodRam = null;
-  /* main: câte commit-uri pe main; ram: câte pe ramură; unit: s-a îmbinat */
-
-  gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="rm">
-      <div class="rm__desen"></div>
-      <div class="rm__com">
-        <button class="zn__cb" data-a="commit" type="button">commit</button>
-        <button class="zn__cb" data-a="ramura" type="button">git switch -c curatare</button>
-        <button class="zn__cb" data-a="main" type="button">git switch main</button>
-        <button class="zn__cb" data-a="merge" type="button">git merge curatare</button>
-        <button class="zn__cb zn__cb--rau" data-a="reset" type="button">de la capăt</button>
-      </div>
-      <p class="rm__unde"></p>
-      <p class="ex__stare"></p>
-    </div>`;
-
-  const desen = gazda.querySelector(".rm__desen");
-  const unde  = gazda.querySelector(".rm__unde");
-  const st    = gazda.querySelector(".ex__stare");
-
-  function deseneaza(){
-    const PAS = 54, R = 9, SUS = 34, JOS = 84;
-    const n = main + (ram ? ram : 0) + (unit ? 1 : 0);
-    const lat = Math.max(420, (main + ram + 2) * PAS);
-    let p = [], linii = [];
-
-    for (let i = 0; i < main; i++) p.push({ x: (i + 1) * PAS, y: JOS, t: "main" });
-    for (let i = 1; i < main; i++)
-      linii.push(`M${i * PAS} ${JOS} H${(i + 1) * PAS}`);
-
-    const bif = nodRam === null ? null : nodRam;
-    for (let i = 0; i < ram; i++){
-      const x = (bif + i + 1) * PAS;
-      p.push({ x, y: SUS, t: "ramura" });
-      if (i === 0) linii.push(`R M${bif * PAS} ${JOS} C${bif * PAS + 22} ${JOS} ${x - 22} ${SUS} ${x} ${SUS}`);
-      else linii.push(`R M${x - PAS} ${SUS} H${x}`);
-    }
-    if (unit){
-      const x = (main) * PAS;
-      p.push({ x, y: JOS, t: "unit" });
-      linii.push(`M${(main - 1) * PAS} ${JOS} H${x}`);
-      linii.push(`R M${(bif + ram) * PAS} ${SUS} C${(bif + ram) * PAS + 22} ${SUS} ${x - 22} ${JOS} ${x} ${JOS}`);
-    }
-
-    desen.innerHTML = `
-      <svg viewBox="0 0 ${lat} 120" width="100%" height="120" role="img"
-           aria-label="graful ramurilor">
-        <text x="6" y="${JOS + 4}" class="rm__et">main</text>
-        ${ram ? `<text x="6" y="${SUS + 4}" class="rm__et rm__et--r">curatare</text>` : ""}
-        ${linii.map(dd => dd[0] === "R"
-          ? `<path d="${dd.slice(2)}" class="rm__l rm__l--r"/>` : `<path d="${dd}" class="rm__l"/>`).join("")}
-        ${p.map(q => `<circle cx="${q.x}" cy="${q.y}" r="${R}" class="rm__n rm__n--${q.t}"/>`).join("")}
-      </svg>`;
-    unde.textContent = peRamura ? "ramura activă: curatare" : "ramura activă: main";
-  }
-
-  gazda.addEventListener("click", async e => {
-    const b = e.target.closest("[data-a]");
-    if (!b) return;
-    const a = b.dataset.a;
-    if (a === "reset"){ main = 2; ram = 0; peRamura = false; unit = 0; nodRam = null; deseneaza(); return; }
-    if (a === "commit"){
-      if (peRamura) ram++; else main++;
-    }
-    if (a === "ramura"){
-      if (unit){ return; }
-      peRamura = true; if (nodRam === null) nodRam = main;
-    }
-    if (a === "main") peRamura = false;
-    if (a === "merge"){
-      if (!ram || peRamura){
-        unde.textContent = ram ? "mai întâi: git switch main" : "nimic de îmbinat: ramura nu are commit-uri";
-        return;
-      }
-      unit = 1; main++;
-      await poarta(gazda, d.id, `main:${main} ramura:${ram}`);
-      st.textContent = "Ramura a fost creată, folosită și îmbinată în main.";
-      st.classList.add("vazut");
-    }
-    deseneaza();
   });
 
   deseneaza();
@@ -1527,98 +1430,399 @@ V.modele = (gazda, d) => {
 };
 
 /* ===========================================================================
-   23. GITDAG — laptopul tău și GitHub, pas cu pas
-   Două depozite, unul lângă altul. Commit-urile sunt buline, colorate după
-   cine le-a făcut; ramurile sunt etichete lipite de un commit; HEAD arată pe
-   ce ramură ești. Fiecare pas e o comandă din fluxul de lucru al echipei
-   (main + dev). Se vede ce se mută și ce nu: commit-urile rămân pe loc,
-   etichetele avansează, iar push și pull copiază buline dintr-o parte în alta.
-   =========================================================================== */
-V.gitdag = (gazda, d) => {
-  const C = d.commituri || {};          // id -> {x, r (rând), autor, mesaj, parinti: []}
-  const A = d.autori || {};             // autor -> {et, c}
-  const P = d.pasi || [];               // [{cmd, cine, txt, rau, L: {commits, et: {ram: id}, head}, R: {...}}]
-  let i = 0;
-  const panou = (titlu, cls) => `
-    <div class="gd__panou ${cls}">
-      <div class="gd__titlu">${titlu}</div>
-      <svg viewBox="0 0 330 200" role="img" aria-label="${esc(titlu)}"></svg>
-    </div>`;
-  gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="gd">
-      <div class="gd__term"><span class="gd__cine"></span><code class="gd__cmd"></code></div>
-      <div class="gd__doua">
-        ${panou(d.etLocal || "💻 Depozitul local", "gd__panou--l")}
-        <div class="gd__sageti"><span class="gd__s gd__s--sus">push →</span><span class="gd__s gd__s--jos">← pull</span></div>
-        ${panou(d.etRemote || "☁️ GitHub (origin)", "gd__panou--r")}
-      </div>
-      <div class="gd__leg">${Object.entries(A).map(([k, a]) => `<span><i style="background:var(--${a.c})"></i>${esc(a.et)}</span>`).join("")}</div>
-      <div class="cmd__jos">
-        <div class="cmd__txt gd__txt"></div>
-        <div class="cmd__nav">
-          <div class="cmd__puncte">${P.map((_, k) => `<i data-p="${k}"></i>`).join("")}</div>
-          <button class="btn btn--mic" data-rol="inapoi" type="button">Înapoi</button>
-          <button class="btn btn--mic btn--tare" data-rol="inainte" type="button">Pasul următor</button>
-        </div>
-      </div>
-    </div>`;
-  const $ = q => gazda.querySelector(q);
-  const X = x => 40 + x * 78, Y = r => 64 + r * 50;
-  let vazute = { L: new Set(), R: new Set() };
+   23. GIT, ARĂTAT — comenzile ca bandă de pași
 
-  function deseneaza(svg, st, latura, prefix){
-    const are = new Set(st.commits);
-    const linii = [], buline = [], etichete = [];
-    st.commits.forEach(id => {
+   Primul commit, ramurile și lucrul în echipă au aceeași mecanică: un șir de
+   comenzi, iar fiecare comandă mută ceva pe desen. Comanda următoare e
+   aprinsă; cele deja rulate rămân bifate și se pot apăsa, ca să revii la
+   ele. Desenul e o funcție de k, câte comenzi s-au rulat, deci înainte și
+   înapoi desenează la fel.
+   =========================================================================== */
+
+const LINISTE = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const SVG_FIS = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5h5.2L12.5 4.8V14.5h-8.5z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9 1.7V5h3.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+const SVG_DIR = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 3.5h4.3l1.5 1.6h7.2v8.4h-13z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+const SVG_PC  = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="3" width="11" height="7.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 13h14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+const SVG_NOR = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.6 12.5a3 3 0 0 1-.3-6 4 4 0 0 1 7.6-.9 3.2 3.2 0 0 1 .3 6.9z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+
+/* Mișcarea: ce exista înainte alunecă din locul vechi în cel nou; o copie
+   (data-din) pleacă din locul originalului; ce e nou apare. Doar pentru
+   HTML: în SVG, pixelii de pe ecran nu sunt unitățile desenului. */
+function flip(cont, schimba, anim = true){
+  const vechi = new Map();
+  if (anim) cont.querySelectorAll("[data-k]").forEach(e => vechi.set(e.dataset.k, e.getBoundingClientRect()));
+  schimba();
+  if (!anim || LINISTE()) return;
+  cont.querySelectorAll("[data-k]").forEach(e => {
+    const b = e.getBoundingClientRect();
+    const eraAici = vechi.has(e.dataset.k);
+    const a = eraAici ? vechi.get(e.dataset.k) : (e.dataset.din && vechi.get(e.dataset.din));
+    if (a){
+      const dx = a.left - b.left, dy = a.top - b.top;
+      if (Math.abs(dx) + Math.abs(dy) < 1) return;
+      e.animate([{ transform:`translate(${dx}px,${dy}px)`, opacity: eraAici ? 1 : .4 },
+                 { transform:"none", opacity:1 }],
+                { duration:560, easing:"cubic-bezier(.3,.9,.35,1)" });
+    } else {
+      e.animate([{ transform:"scale(.7)", opacity:0 }, { transform:"none", opacity:1 }],
+                { duration:380, easing:"cubic-bezier(.3,1.4,.6,1)" });
+    }
+  });
+}
+
+/* Banda de comenzi. `pasi`: [{cmd, full?, cine?, cc?, rau?, t?, txt}].
+   `deseneaza(k, anim)` pune desenul în starea de după k comenzi. */
+function banda(gazda, pasi, deseneaza, { start = "", laFinal } = {}){
+  const n = pasi.length;
+  const $c = gazda.querySelector(".bg__cmd");
+  const $t = gazda.querySelector(".bg__txt");
+  let k = 0, terminat = false;
+  $c.innerHTML = pasi.map((p, i) => `<button type="button" class="bg__c${p.rau ? " bg__c--rau" : ""}" data-i="${i}">${
+      p.cine ? `<i class="bg__cine" style="--pc:var(--${p.cc || "accent"})" title="${esc(p.cine)}">${esc(p.cine[0])}</i>` : ""}<code>${esc(p.cmd)}</code></button>`).join("")
+    + `<span class="bg__nav"><button type="button" class="bg__n" data-rol="inapoi" title="pasul anterior" aria-label="pasul anterior">←</button>`
+    + `<button type="button" class="bg__n" data-rol="reset" title="de la capăt" aria-label="de la capăt">↺</button></span>`;
+  const arata = (anim = true) => {
+    $c.querySelectorAll(".bg__c").forEach((b, i) => {
+      b.classList.toggle("facut", i < k);
+      b.classList.toggle("bg__c--acum", i === k);
+      b.disabled = i > k;
+    });
+    $c.querySelector('[data-rol="inapoi"]').disabled = k === 0;
+    $c.querySelector('[data-rol="reset"]').disabled = k === 0;
+    const p = pasi[k - 1];
+    $t.innerHTML = k === 0 ? `<p>${start}</p>`
+      : `<code class="bg__full${p.rau ? " rau" : ""}${p.edit ? " edit" : ""}"><span>${p.edit ? "✎" : p.cine ? esc(p.cine) + " $" : "$"}</span>${esc(p.full || p.cmd)}</code>`
+      + `<p>${p.t ? `<b>${p.t}.</b> ` : ""}${p.txt || ""}</p>`;
+    deseneaza(k, anim);
+    if (k === n && !terminat){ terminat = true; laFinal?.(); }
+  };
+  $c.addEventListener("click", e => {
+    const r = e.target.closest("[data-rol]");
+    if (r){ if (r.disabled) return; k = r.dataset.rol === "reset" ? 0 : Math.max(0, k - 1); arata(); return; }
+    const b = e.target.closest(".bg__c");
+    if (!b || b.disabled) return;
+    k = +b.dataset.i + 1; arata();
+  });
+  arata(false);
+}
+
+
+/* --- Primul commit ---------------------------------------------------------
+   Patru zone, ca la slide-ul cu zonele, dar cu fișierele reale ale echipei.
+   git add nu mută fișierul: pune în pregătire o copie, așa cum e în acel
+   moment; originalul rămâne în dosar. commit face din copii o fotografie în
+   istoric, iar push o copiază pe GitHub. */
+
+V.commit = (gazda, d) => {
+  const Z = d.zone, F = d.fisiere, S = d.stari, CM = d.commituri;
+  const ET = { nou:"nou", modificat:"modificat", ignorat:"ignorat", pregatit:"în pregătire", salvat:"salvat" };
+  gazda.innerHTML = `
+    <div class="bg">
+      <div class="bg__cmd"></div>
+      <div class="cz">${Z.map((z, i) => `
+        <div class="cz__z" data-z="${i}">
+          <span class="cz__t">${i === 0 ? SVG_PC : i === 3 ? SVG_NOR : ""}${esc(z.t)}</span>
+          <span class="cz__d">${esc(z.d)}</span>
+          <div class="cz__in"></div>
+        </div>`).join("")}</div>
+      <div class="bg__txt"></div>
+    </div>`;
+  const cos = [...gazda.querySelectorAll(".cz__in")];
+  const fis = (k, st, cheie = k, din = "") => {
+    const f = F[k];
+    return `<span class="cz__f${st ? " cz__f--" + st : ""}" data-k="${cheie}"${din ? ` data-din="${din}"` : ""}>`
+      + `${f.tip === "d" ? SVG_DIR : SVG_FIS}<code>${esc(f.t)}</code>`
+      + `${f.m && st !== "ignorat" ? `<small>${esc(f.m)}</small>` : ""}`
+      + `${st && ET[st] ? `<em>${ET[st]}</em>` : ""}</span>`;
+  };
+  const com = (id, loc, din = "") => {
+    const c = CM[id];
+    return `<span class="cz__c${c.vechi ? " vechi" : ""}" data-k="${loc}:${id}"${din ? ` data-din="${din}"` : ""}>`
+      + `<span class="cz__ch"><i></i><code>${esc(c.h)}</code><small>${esc(c.x)}</small></span><b>${esc(c.m)}</b></span>`;
+  };
+  const deseneaza = (k, anim) => flip(gazda.querySelector(".cz"), () => {
+    const s = S[k];
+    cos[0].innerHTML = Object.entries(s.dosar).map(([cheie, st]) => fis(cheie, st)).join("");
+    cos[1].innerHTML = (s.preg || []).map(cheie => fis(cheie, "", "p:" + cheie, cheie)).join("")
+      || `<span class="cz__gol">gol</span>`;
+    cos[2].innerHTML = (s.ist || []).map(id => com(id, "i")).join("");
+    cos[3].innerHTML = (s.gh || []).map(id => com(id, "g", "i:" + id)).join("");
+    gazda.querySelectorAll(".cz__z").forEach((z, i) => z.classList.toggle("activ", (s.activ || []).includes(i)));
+  }, anim);
+  banda(gazda, d.pasi, deseneaza, { start: d.start });
+};
+
+
+/* --- Ramurile --------------------------------------------------------------
+   Graful, cu commit-uri care au nume, nu buline. Lângă el, ce conține
+   fișierul din dosar: la git switch se schimbă și fișierul, iar munca de pe
+   ramură nu se pierde, doar nu se vede pe main până la merge. Studentul
+   apasă el comenzile, în ordine; la merge, poarta e trecută. */
+
+V.ramuri = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const C = d.commituri, S = d.stari, L = d.linii;
+  const W = 960, H = 168, Y = { m: 122, r: 40 }, CW = 160, CH = 40;
+  const X = col => 104 + col * 172;
+  gazda.innerHTML = `
+    <div class="bg">
+      <div class="bg__cmd"></div>
+      <div class="rg"><svg class="rg__svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="graful ramurilor"></svg></div>
+      <div class="rg__jos">
+        <div class="bg__txt"></div>
+        <div class="rg__dos"><span class="rg__dt">${SVG_FIS}<code>${esc(d.fisier)}</code><small>în dosar, acum</small></span><ul></ul></div>
+      </div>
+      <p class="ex__stare"></p>
+    </div>`;
+  const svg = gazda.querySelector(".rg__svg");
+  const ul = gazda.querySelector(".rg__dos ul");
+  let vazute = new Set();
+
+  const margine = (id, parte) => {
+    const c = C[id], x = X(c.x), y = Y[c.lane];
+    return parte === "dr" ? [x + CW, y] : [x, y];
+  };
+  function deseneaza(k, anim){
+    const s = S[k], are = new Set(s.com);
+    const muchii = [], noduri = [];
+    s.com.forEach(id => {
       const c = C[id];
       (c.parinti || []).filter(p => are.has(p)).forEach(p => {
-        const a = C[p], x1 = X(a.x), y1 = Y(a.r), x2 = X(c.x), y2 = Y(c.r);
-        linii.push(y1 === y2 ? `M${x1} ${y1} H${x2}`
-          : `M${x1} ${y1} C${x1 + 30} ${y1} ${x2 - 30} ${y2} ${x2} ${y2}`);
+        const [x1, y1] = margine(p, "dr"), [x2, y2] = margine(id, "st");
+        const dd = y1 === y2 ? `M${x1} ${y1} H${x2}` : `M${x1} ${y1} C${x1 + 40} ${y1} ${x2 - 40} ${y2} ${x2} ${y2}`;
+        const nou = anim && !vazute.has(id);
+        muchii.push(`<path d="${dd}" pathLength="1" class="rg__m rg__m--${C[id].lane}${nou ? " nou" : ""}"/>`);
       });
-      const nou = !vazute[latura].has(id);
-      buline.push(`<circle cx="${X(c.x)}" cy="${Y(c.r)}" r="${c.merge ? 10 : 9}" class="gd__c${nou ? " nou" : ""}${c.merge ? " merge" : ""}"
-        style="--cc:var(--${(A[c.autor] || {}).c || "accent"})"><title>${esc(c.mesaj || id)}</title></circle>`);
+      const nou = anim && !vazute.has(id);
+      const x = X(c.x), y = Y[c.lane] - CH / 2;
+      noduri.push(`<g class="rg__c rg__c--${c.lane}${c.merge ? " merge" : ""}${nou ? " nou" : ""}">
+        <rect x="${x}" y="${y}" width="${CW}" height="${CH}" rx="9"/>
+        <circle cx="${x + 14}" cy="${y + CH / 2}" r="4.5"/>
+        <text x="${x + 25}" y="${y + CH / 2 + 4.2}">${esc(c.m)}</text></g>`);
     });
-    /* etichetele: mai multe pe același commit se stivuiesc deasupra */
-    const peCommit = {};
-    Object.entries(st.et || {}).forEach(([ram, id]) => { (peCommit[id] = peCommit[id] || []).push(ram); });
-    Object.entries(peCommit).forEach(([id, rams]) => {
-      const c = C[id];
-      rams.forEach((ram, k) => {
-        const head = st.head === ram, txt = prefix + ram, w = (txt.length + (head ? 7 : 0)) * 7.1 + 14;
-        const x = X(c.x) - w / 2, y = Y(c.r) - 34 - k * 22;
-        etichete.push(`<g class="gd__et gd__et--${ram}${head ? " head" : ""}">
-          <rect x="${x}" y="${y}" width="${w}" height="18" rx="9"/>
-          <text x="${x + 7}" y="${y + 12.5}">${head ? "HEAD → " : ""}${txt}</text></g>`);
-      });
-    });
-    svg.innerHTML = `${linii.map(l => `<path d="${l}" class="gd__l"/>`).join("")}${buline.join("")}${etichete.join("")}`;
-    st.commits.forEach(id => vazute[latura].add(id));
-  }
+    /* ramura nouă, fără commit-uri încă: un ciot punctat */
+    if (s.ram && !s.com.some(id => C[id].lane === "r")){
+      const [x1, y1] = margine(s.din, "dr");
+      noduri.unshift(`<path d="M${x1} ${y1} C${x1 + 40} ${y1} ${X(2) - 40} ${Y.r} ${X(2)} ${Y.r}" class="rg__ciot"/>`);
+    }
+    const eticheta = (lane, t) => `<g class="rg__e rg__e--${lane}${s.aici === lane ? " aici" : ""}">
+        <rect x="4" y="${Y[lane] - 13}" width="${t.length * 7.4 + 22}" height="26" rx="13"/>
+        <text x="15" y="${Y[lane] + 4.5}">${esc(t)}</text></g>`;
+    svg.innerHTML = muchii.join("") + noduri.join("")
+      + eticheta("m", "main") + (s.ram ? eticheta("r", d.ramura) : "");
+    s.com.forEach(id => vazute.add(id));
+    vazute = new Set([...vazute].filter(id => are.has(id)));
 
-  function arata(){
-    const p = P[i];
-    $(".gd__cine").textContent = p.cine || "tu $";
-    $(".gd__cine").classList.toggle("alt", !!p.cine && p.cine !== "tu $");
-    $(".gd__cmd").textContent = p.cmd;
-    $(".gd__term").classList.toggle("rau", !!p.rau);
-    $(".gd__s--sus").classList.toggle("on", !!p.sus);
-    $(".gd__s--jos").classList.toggle("on", !!p.jos);
-    deseneaza($(".gd__panou--l svg"), p.L, "L", "");
-    deseneaza($(".gd__panou--r svg"), p.R, "R", "origin/");
-    $(".gd__txt").innerHTML = `<b>${i + 1}. ${p.t || ""}</b><p>${p.txt || ""}</p>`;
-    gazda.querySelectorAll(".cmd__puncte i").forEach(e => e.classList.toggle("on", +e.dataset.p <= i));
-    $('[data-rol="inapoi"]').disabled = i === 0;
-    $('[data-rol="inainte"]').textContent = i === P.length - 1 ? "De la capăt" : "Pasul următor";
+    const vede = new Set(s.vede);
+    ul.innerHTML = L.map(l => `<li class="${vede.has(l.c) ? "da" : "nu"}"><i>${vede.has(l.c) ? "✓" : "○"}</i>${esc(l.t)}</li>`).join("");
   }
-  $('[data-rol="inainte"]').onclick = () => {
-    if (i === P.length - 1){ i = 0; vazute = { L: new Set(), R: new Set() }; } else i++;
-    arata();
+  banda(gazda, d.pasi, deseneaza, {
+    start: d.start,
+    laFinal: async () => {
+      await poarta(gazda, d.id, d.pasi.map(p => p.cmd).join(" → "));
+      const st = gazda.querySelector(".ex__stare");
+      st.textContent = "Ramura a fost creată, folosită și îmbinată în main.";
+      st.classList.add("vazut");
+    }
+  });
+};
+
+
+/* --- Lucrul în echipă ------------------------------------------------------
+   Trei coloane: doi colegi și GitHub, la mijloc. Fiecare coloană e git log
+   pe dev, cu cel mai nou commit sus, colorat după autor. push și pull
+   copiază commit-uri dintr-o coloană în alta; un push refuzat se vede. */
+
+V.sincron = (gazda, d) => {
+  const P = d.coloane, CM = d.commituri, A = d.autori, S = d.stari;
+  const coloana = (c, i) => `
+    <div class="sy__col${c.gh ? " sy__col--gh" : ""}" data-col="${c.k}">
+      <div class="sy__cap">${c.gh ? SVG_NOR : SVG_PC}<b>${esc(c.t)}</b><span>${esc(c.d)}</span></div>
+      <div class="sy__in"></div>
+      <p class="sy__rau"></p>
+    </div>`;
+  const sageti = g => `
+    <div class="sy__s" data-g="${g}">
+      <span class="sy__a" data-a="${g === 1 ? "push" : "pull"}">${g === 1 ? "push →" : "pull →"}</span>
+      <span class="sy__a" data-a="${g === 1 ? "pull" : "push"}">${g === 1 ? "← pull" : "← push"}</span>
+    </div>`;
+  gazda.innerHTML = `
+    <div class="bg">
+      <div class="bg__cmd"></div>
+      <div class="sy">${coloana(P[0])}${sageti(1)}${coloana(P[1])}${sageti(2)}${coloana(P[2])}</div>
+      <div class="sy__leg">${Object.entries(A).map(([k, a]) => `<span><i style="background:var(--${a.c})"></i>${esc(a.et)}</span>`).join("")}</div>
+      <div class="bg__txt"></div>
+    </div>`;
+  const sy = gazda.querySelector(".sy");
+  const card = (col, id, din) => {
+    const c = CM[id], a = A[c.a] || {};
+    return `<span class="sy__c${c.merge ? " merge" : ""}" data-k="${col}:${id}"${din ? ` data-din="${din}:${id}"` : ""} style="--cc:var(--${a.c || "text-3"})">`
+      + `<i></i><b>${esc(c.m)}</b><small>${esc(a.cine || "")}</small></span>`;
   };
-  $('[data-rol="inapoi"]').onclick = () => { i = Math.max(0, i - 1); arata(); };
+  const deseneaza = (k, anim) => flip(sy, () => {
+    const s = S[k];
+    P.forEach(c => {
+      const col = sy.querySelector(`[data-col="${c.k}"]`);
+      col.querySelector(".sy__in").innerHTML = (s[c.k] || []).map(id => card(c.k, id, (s.din || {})[c.k])).join("");
+      col.classList.toggle("respins", s.rau === c.k);
+      col.querySelector(".sy__rau").textContent = s.rau === c.k ? d.respins : "";
+    });
+    sy.querySelectorAll(".sy__a").forEach(a => a.classList.remove("on", "rau"));
+    Object.entries(s.sag || {}).forEach(([g, v]) => {
+      const [ce, rau] = v.split(":");
+      sy.querySelector(`.sy__s[data-g="${g}"] [data-a="${ce}"]`)?.classList.add("on", ...(rau ? ["rau"] : []));
+    });
+  }, anim);
+  banda(gazda, d.pasi, deseneaza, { start: d.start });
+};
+
+
+/* ===========================================================================
+   24. CADRUL — ce explică legătura dintre două locuri
+
+   Modelul conceptual al proiectului, construit factor cu factor, cum îl
+   estimează și modelul din C7. Fiecare factor are o ipoteză, un mecanism,
+   variabila care îl măsoară și un exemplu din datele cursului. Dedesubt,
+   cât explică factorii măsurați între țări (R² din C7) și cât rămâne: acolo
+   stau istoria, locurile și întrebările echipelor.
+   =========================================================================== */
+
+V.cadru = (gazda, d) => {
+  const F = d.factori, R = d.rest, B = d.bara;
+  const n = F.length + 1;
+  const W = 560, H = 250, BX = 352, BY = 70, BW = 200, BH = 100;
+  const yF = i => 10 + i * 58;
+  const capete = [94, 110, 128, 144];
+  const uid = Math.random().toString(36).slice(2, 8);
+  let k = 0;
+
+  const factor = (f, i) => {
+    const y = yF(i), ye = capete[i], ym = (y + 22 + ye) / 2;
+    return `<g class="cd__f cd--${f.k}" data-i="${i + 1}" tabindex="0" role="button" aria-label="${esc(f.t)}">
+      <path class="cd__s" data-m="cd-${uid}-${f.k}" d="M182 ${y + 22} C262 ${y + 22} 270 ${ye} ${BX - 8} ${ye}"/>
+      <circle class="cd__semn" cx="268" cy="${ym}" r="10"/><text class="cd__semnt" x="268" y="${ym + 4.5}">${f.semn}</text>
+      <rect class="cd__b" x="2" y="${y}" width="180" height="44" rx="10"/>
+      <circle class="cd__nr" cx="24" cy="${y + 22}" r="11"/><text class="cd__nrt" x="24" y="${y + 26}">${i + 1}</text>
+      <text class="cd__t" x="44" y="${y + 27}">${esc(f.t)}</text></g>`;
+  };
+  const sageti = F.map(f => `<marker id="cd-${uid}-${f.k}" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10z" class="cd__v cd--${f.k}"/></marker>`).join("");
+
+  gazda.innerHTML = `
+    <div class="cd">
+      <div class="cd__st">
+        <svg class="cd__svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Modelul conceptual al proiectului">
+          <defs>${sageti}</defs>
+          ${F.map(factor).join("")}
+          <g class="cd__rez">
+            <rect x="${BX}" y="${BY}" width="${BW}" height="${BH}" rx="14"/>
+            <text class="cd__rt" x="${BX + BW / 2}" y="${BY + 26}">${esc(d.rezultat.t)}</text>
+            <line x1="${BX + 46}" y1="${BY + 62}" x2="${BX + BW - 46}" y2="${BY + 62}"/>
+            <circle cx="${BX + 46}" cy="${BY + 62}" r="15"/><circle cx="${BX + BW - 46}" cy="${BY + 62}" r="15"/>
+            <text class="cd__loc" x="${BX + 46}" y="${BY + 67}">A</text><text class="cd__loc" x="${BX + BW - 46}" y="${BY + 67}">B</text>
+            <text class="cd__sci" x="${BX + BW / 2}" y="${BY + 54}">${esc(d.rezultat.d)}</text>
+          </g>
+          <g class="cd__f cd__f--rest cd--rest" data-i="${n}" tabindex="0" role="button" aria-label="${esc(R.t)}">
+            <path class="cd__s" d="M${BX + BW / 2} ${BY + BH} V${BY + BH + 22}"/>
+            <rect class="cd__b" x="${BX + 20}" y="${BY + BH + 22}" width="${BW - 40}" height="44" rx="10"/>
+            <circle class="cd__nr" cx="${BX + 42}" cy="${BY + BH + 44}" r="11"/><text class="cd__nrt" x="${BX + 42}" y="${BY + BH + 48}">${n}</text>
+            <text class="cd__t" x="${BX + 60}" y="${BY + BH + 49}">${esc(R.t)}</text>
+          </g>
+        </svg>
+        <div class="cd__bara">
+          <div class="cd__bt">${B.titlu}</div>
+          <div class="cd__bb">${B.seg.map(s => `<span class="cd__sg cd--${s.k}" style="flex:${s.v}" data-k="${s.k}"><b>${esc(s.et)}</b></span>`).join("")}</div>
+          <p class="cd__bn"></p>
+        </div>
+        <div class="cd__nav">
+          <button class="bg__n" data-rol="inapoi" type="button">← Înapoi</button>
+          <span class="cd__pct">${Array.from({ length: n }, (_, i) => `<i data-p="${i + 1}"></i>`).join("")}</span>
+          <button class="bg__n bg__n--tare" data-rol="inainte" type="button">Următorul factor →</button>
+        </div>
+      </div>
+      <div class="cd__card" aria-live="polite"></div>
+    </div>`;
+
+  const $card = gazda.querySelector(".cd__card");
+  const chips = a => (a || []).map(([v, s]) => `<span class="cd__chip"><b>${esc(v)}</b>${s ? `<i>${esc(s)}</i>` : ""}</span>`).join("");
+  function arata(){
+    gazda.querySelectorAll(".cd__f").forEach(g => {
+      const i = +g.dataset.i;
+      g.classList.toggle("on", i <= k);
+      g.classList.toggle("acum", i === k);
+      const s = g.querySelector(".cd__s[data-m]");
+      if (s){ if (i <= k) s.setAttribute("marker-end", `url(#${s.dataset.m})`); else s.removeAttribute("marker-end"); }
+    });
+    gazda.querySelector(".cd__rez").classList.toggle("on", k > 0);
+    gazda.querySelectorAll(".cd__pct i").forEach(p => p.classList.toggle("on", +p.dataset.p <= k));
+    gazda.querySelector('[data-rol="inapoi"]').disabled = k === 0;
+    gazda.querySelector('[data-rol="inainte"]').textContent = k === n ? "De la capăt" : k === n - 1 ? "Ce rămâne →" : "Următorul factor →";
+    gazda.querySelectorAll(".cd__sg").forEach(s => {
+      const i = B.seg.findIndex(x => x.k === s.dataset.k);
+      const seg = B.seg[i];
+      s.classList.toggle("on", seg.de ? k >= seg.de : false);
+      s.classList.toggle("acum", seg.k === "rest" ? k === n : seg.de === k);
+    });
+    gazda.querySelector(".cd__bn").textContent = (B.note || [])[k] || "";
+    const f = k === 0 ? null : k === n ? R : F[k - 1];
+    $card.className = `cd__card${f ? " cd--" + (f.k || "rest") : ""}`;
+    $card.innerHTML = !f
+      ? `<span class="cd__et">Întrebarea proiectului</span><p class="cd__ip">${d.intrebare}</p><p class="cd__dece">${d.start}</p>`
+      : `<span class="cd__et">${k === n ? "" : `${k}. `}${esc(f.t)}${f.semn ? `<i class="cd__sm">${f.semn}</i>` : ""}</span>
+         <p class="cd__ip">${f.ip}</p>
+         ${f.dece ? `<p class="cd__dece">${f.dece}</p>` : ""}
+         ${f.date ? `<div class="cd__rand"><span>În date</span><div>${chips(f.date)}</div></div>` : ""}
+         ${f.ex ? `<div class="cd__rand"><span>Exemplu</span><p>${f.ex}</p></div>` : ""}
+         ${f.lit ? `<p class="cd__lit">${f.lit}</p>` : ""}`;
+  }
+  gazda.addEventListener("click", e => {
+    const r = e.target.closest("[data-rol]");
+    if (r && !r.disabled){
+      k = r.dataset.rol === "inapoi" ? Math.max(0, k - 1) : (k === n ? 0 : k + 1);
+      arata(); return;
+    }
+    const g = e.target.closest(".cd__f");
+    if (g){ k = +g.dataset.i; arata(); }
+  });
+  gazda.addEventListener("keydown", e => {
+    const g = e.target.closest(".cd__f");
+    if (g && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); k = +g.dataset.i; arata(); }
+  });
   arata();
+};
+
+
+/* ===========================================================================
+   25. TABELELE — ce date are proiectul acum
+
+   Cele patru tabele din data/c3, fiecare cu ce reprezintă un rând și două
+   rânduri adevărate. Coloanele care leagă tabelele se aprind împreună: la
+   cursul 4, după ele se unesc.
+   =========================================================================== */
+
+V.tabele = (gazda, d) => {
+  const fmt = v => typeof v === "number" ? v.toLocaleString("ro-RO") : esc(v);
+  gazda.innerHTML = `<div class="tb4">${d.tabele.map(t => `
+    <div class="tb4__t" style="--tc:var(--${t.c || "text-3"})">
+      <div class="tb4__cap"><code>${esc(t.f)}</code><span class="tb4__tag">${esc(t.tag)}</span>
+        <span class="tb4__n">${t.n.toLocaleString("ro-RO")} rânduri</span></div>
+      <table><thead><tr>${t.col.map(c => `<th${t.leg?.[c] ? ` data-leg="${t.leg[c]}" tabindex="0"` : ""}>${esc(c)}</th>`).join("")}</tr></thead>
+        <tbody>${t.rows.map(r => `<tr>${r.map((v, j) => `<td class="${typeof v === "number" ? "nr" : ""}"${t.leg?.[t.col[j]] ? ` data-leg="${t.leg[t.col[j]]}"` : ""}>${fmt(v)}</td>`).join("")}</tr>`).join("")}</tbody></table>
+      <p class="tb4__r"><b>Un rând:</b> ${t.rand}</p>
+      ${t.nota ? `<p class="tb4__nota">${t.nota}</p>` : ""}
+    </div>`).join("")}</div>
+    ${d.leg ? `<p class="tb4__leg">${d.leg}</p>` : ""}`;
+  const aprinde = leg => gazda.querySelectorAll("[data-leg]").forEach(e => e.classList.toggle("on", !!leg && e.dataset.leg === leg));
+  let fix = null;
+  gazda.addEventListener("mouseover", e => { const c = e.target.closest("[data-leg]"); if (!fix) aprinde(c?.dataset.leg); });
+  gazda.addEventListener("mouseleave", () => { if (!fix) aprinde(null); });
+  gazda.addEventListener("click", e => {
+    const c = e.target.closest("th[data-leg]");
+    fix = c && fix !== c.dataset.leg ? c.dataset.leg : null;
+    aprinde(fix || c?.dataset.leg);
+  });
+  gazda.addEventListener("focusin", e => { const c = e.target.closest("th[data-leg]"); if (c) aprinde(c.dataset.leg); });
 };
 
 
@@ -3199,7 +3403,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=103`), import(`${R}/js/auth.js?v=103`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=105`), import(`${R}/js/auth.js?v=105`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });

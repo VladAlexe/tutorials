@@ -161,11 +161,11 @@
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile și pull request-ul.</p>\n<p>A doua formulează întrebarea de cercetare a proiectului, pornind de la proiectul cursului: cum se ajunge de la literatură la trei piloni (legăturile, oamenii, locul), de la piloni la surse de date și de la surse la întrebări care pot fi infirmate.</p>\n<p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p>"
+        "html": "<p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, primul commit al echipei, citirea lui <code>git status</code>, legătura cu GitHub, ramurile și regula după care lucrează o echipă: pull înainte de push.</p>\n<p>A doua construiește cadrul proiectului: legătura dintre două locuri, măsurată prin SCI, și factorii care o pot explica (distanța, migrația, istoria comună, locurile), fiecare cu ipoteza, variabila și sursa lui. Din ce rămâne neexplicat pornește întrebarea echipei. Lecția se încheie cu cele patru tabele pregătite în caietul 03.</p>\n<p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Diferența dintre Git și GitHub și motivul pentru care un commit local nu este o copie de siguranță a muncii.</li>\n<li>Fiecare comandă, explicată prin zonele între care mută fișierele.</li>\n<li>Inițializarea unui depozit, setarea identității și commit-uri cu mesaje informative.</li>\n<li>Un <code>.gitignore</code> scris înainte de primul <code>add</code> și motivul pentru care ordinea contează.</li>\n<li>Legarea depozitului local de unul de pe GitHub sau clonarea unuia existent.</li>\n<li>Lucrul pe ramuri, deschiderea unui pull request și rezolvarea unui conflict de îmbinare.</li>\n<li>Structura unui cadru teoretic: concept, sursă de date, rol în argument.</li>\n<li>O întrebare de cercetare care poate fi infirmată cu datele disponibile.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Diferența dintre Git și GitHub și motivul pentru care un commit local nu este o copie de siguranță a muncii.</li>\n<li>Fiecare comandă, explicată prin zonele între care mută fișierele.</li>\n<li>Citirea ieșirii lui <code>git status</code> înainte de commit.</li>\n<li>Un <code>.gitignore</code> scris înainte de primul <code>add</code> și motivul pentru care ordinea contează.</li>\n<li>Legarea depozitului local de unul de pe GitHub sau clonarea unuia existent.</li>\n<li>Lucrul pe ramuri, regula pull înainte de push și rezolvarea unui conflict de îmbinare.</li>\n<li>Structura unui cadru teoretic: factor, ipoteză, variabilă, sursă.</li>\n<li>O întrebare de cercetare care poate fi infirmată cu datele disponibile.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
@@ -173,6 +173,11 @@
       }
     ],
     "resurse": [
+      {
+        "href": "git/",
+        "t": "Lucrul cu Git",
+        "d": "Fișa cu toate comenzile de la curs: configurarea, clonarea, .gitignore, ramura dev, lucrul zilnic și îmbinarea în main."
+      },
       {
         "href": "@REPO@",
         "t": "Depozitul cursului",
@@ -206,14 +211,14 @@
         "g": "generator"
       },
       {
-        "href": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
-        "t": "Worldwide Governance Indicators",
-        "g": "WGI"
+        "href": "https://gisco-services.ec.europa.eu/distribution/v2/nuts/nuts-2024-files.html",
+        "t": "GISCO: NUTS 2024",
+        "g": "nomenclator"
       },
       {
-        "href": "https://databank.worldbank.org/source/world-development-indicators",
-        "t": "World Development Indicators",
-        "g": "WDI"
+        "href": "https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table",
+        "t": "Eurostat migr_pop1ctz",
+        "g": "migrația"
       }
     ]
   },

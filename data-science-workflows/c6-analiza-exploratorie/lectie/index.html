@@ -6,18 +6,18 @@
 <title>Cursul 6 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Examinarea datelor înainte de modelare: distribuții, relații, categorii, hărți și grafice care induc în eroare.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=103">
-<link rel="stylesheet" href="../../css/sistem.css?v=103">
-<link rel="stylesheet" href="../../css/slide.css?v=103">
-<link rel="stylesheet" href="../../css/interactiv.css?v=103">
-<link rel="stylesheet" href="../../css/grafice.css?v=103">
-<link rel="stylesheet" href="../../css/exercitii.css?v=103">
-<link rel="stylesheet" href="../../css/explorator.css?v=103">
-<script src="../../js/tema.js?v=103"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=105">
+<link rel="stylesheet" href="../../css/sistem.css?v=105">
+<link rel="stylesheet" href="../../css/slide.css?v=105">
+<link rel="stylesheet" href="../../css/interactiv.css?v=105">
+<link rel="stylesheet" href="../../css/grafice.css?v=105">
+<link rel="stylesheet" href="../../css/exercitii.css?v=105">
+<link rel="stylesheet" href="../../css/explorator.css?v=105">
+<script src="../../js/tema.js?v=105"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 6 · Analiza exploratorie" data-crom="1"></div>
-<div class="rnr">
+<div class="rnr" data-capitol="c6">
 <main class="rnr__scena" tabindex="-1">
 
 <section class="sld" id="s1" data-grup="Cursul" data-t="Planul lecției">
@@ -29,7 +29,7 @@
 </section>
 
 <section class="sld" id="s2" data-grup="Cursul" data-t="Întrebările">
-<h2>Patru întrebări</h2><div class="reg"><div class="reg__c"><span class="reg__n">1</span><b>Legături × distanță</b><p>perechile apropiate sunt mai legate?</p></div><div class="reg__c"><span class="reg__n">2</span><b>Legături × migrație</b><p>perechile cu mai mulți migranți sunt mai legate?</p></div><div class="reg__c"><span class="reg__n">3</span><b>Legături × graniță</b><p>vecinii sunt mai legați decât restul?</p></div><div class="reg__c"><span class="reg__n">4</span><b>Abaterile de la tipar</b><p>ce perechi sunt mult peste sau sub valoarea așteptată?</p></div></div><div class="nota nota--sobru"><div class="nota__et">De unde vin</div><p>Din cadrul teoretic de la cursul 3 (templul): fiecare întrebare leagă doi piloni. EDA nu oferă răspunsuri definitive; arată doar ce merită testat.</p></div><div class="lit"><div class="lit__et">De unde vin ipotezele<a class="lit__toata" href="../../lecturi/">toată literatura proiectului</a></div><div class="lit__g"><div class="lit__f lit__f--teorie">Teoria<small>mecanismele care explică fenomenul, conceptele și ipotezele care decurg din ele</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a><span>articolul care a introdus indicele: ce măsoară (o probabilitate relativă de prietenie), faptul că scade puternic cu distanța și că reflectă migrația, inclusiv pe cea veche.</span></li></ul></div><div class="lit__g"><div class="lit__f lit__f--metoda">Metoda<small>cum au fost măsurate conceptele și ce modele au folosit studiile anterioare</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a><span>aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.</span></li><li><a class="lit__a" href="https://doi.org/10.1088/1742-5468/2008/10/P10008" target="_blank" rel="noopener">Blondel și colegii (2008)</a><span>algoritmul Louvain, folosit pentru identificarea comunităților. Exemplul din articol, o rețea de telefonie din Belgia, regăsește granița lingvistică; aceeași logică se aplică rețelei regiunilor din proiect.</span></li></ul></div></div>
+<h2>Patru întrebări</h2><div class="reg"><div class="reg__c"><span class="reg__n">1</span><b>Legături × distanță</b><p>perechile apropiate sunt mai legate?</p></div><div class="reg__c"><span class="reg__n">2</span><b>Legături × migrație</b><p>perechile cu mai mulți migranți sunt mai legate?</p></div><div class="reg__c"><span class="reg__n">3</span><b>Legături × graniță</b><p>vecinii sunt mai legați decât restul?</p></div><div class="reg__c"><span class="reg__n">4</span><b>Abaterile de la tipar</b><p>ce perechi sunt mult peste sau sub valoarea așteptată?</p></div></div><div class="nota nota--sobru"><div class="nota__et">De unde vin</div><p>Din cadrul teoretic de la cursul 3: fiecare întrebare pune legătura (SCI) față de un factor. EDA nu oferă răspunsuri definitive; arată doar ce merită testat.</p></div><div class="lit"><div class="lit__et">De unde vin ipotezele<a class="lit__toata" href="../../lecturi/">toată literatura proiectului</a></div><div class="lit__g"><div class="lit__f lit__f--teorie">Teoria<small>mecanismele care explică fenomenul, conceptele și ipotezele care decurg din ele</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1257/jep.32.3.259" target="_blank" rel="noopener">Bailey și colegii (2018)</a><span>articolul care a introdus indicele: ce măsoară (o probabilitate relativă de prietenie), faptul că scade puternic cu distanța și că reflectă migrația, inclusiv pe cea veche.</span></li></ul></div><div class="lit__g"><div class="lit__f lit__f--metoda">Metoda<small>cum au fost măsurate conceptele și ce modele au folosit studiile anterioare</small></div><ul><li><a class="lit__a" href="https://doi.org/10.1007/978-3-030-60975-7_1" target="_blank" rel="noopener">Bailey și colegii (2020)</a><span>aceeași întrebare, pe regiunile Europei: log SCI explicat prin log distanță, graniță, limbă, istorie. Precedentul pentru ipotezele din C6 și pentru modelul din C7; folosește și Oltenia ca exemplu.</span></li><li><a class="lit__a" href="https://doi.org/10.1088/1742-5468/2008/10/P10008" target="_blank" rel="noopener">Blondel și colegii (2008)</a><span>algoritmul Louvain, folosit pentru identificarea comunităților. Exemplul din articol, o rețea de telefonie din Belgia, regăsește granița lingvistică; aceeași logică se aplică rețelei regiunilor din proiect.</span></li></ul></div></div>
 
 </section>
 
@@ -188,11 +188,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=103"></script>
+<script type="module" src="../../js/antet.js?v=105"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=103";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=103";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=103";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=105";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=105";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=105";
 pornesteIx();
 pornesteVerif("c6");
 pornesteSlide({ capitol:"c6", lectie:"c6-analiza-exploratorie" });

@@ -1,7 +1,7 @@
 {
  "capitol": "c3",
- "total": 22,
- "sarcini": 9,
+ "total": 19,
+ "sarcini": 8,
  "slide": [
   {
    "nr": 1,
@@ -38,37 +38,25 @@
   },
   {
    "nr": 5,
-   "id": "s7",
-   "grup": "Primii pași",
-   "titlu": "Identitatea autorului",
-   "sarcini": [
-    {
-     "id": "c3-cod-config",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 6,
    "id": "s8",
    "grup": "Primii pași",
    "titlu": "Primul commit",
    "sarcini": []
   },
   {
-   "nr": 7,
+   "nr": 6,
    "id": "s8b",
    "grup": "Primii pași",
    "titlu": "Ce afișează git status",
    "sarcini": [
     {
-     "id": "c3-prezice-status",
+     "id": "c3-status",
      "fel": "cod"
     }
    ]
   },
   {
-   "nr": 8,
+   "nr": 7,
    "id": "s9",
    "grup": "Primii pași",
    "titlu": "Ce nu se versionează",
@@ -92,14 +80,14 @@
    ]
   },
   {
-   "nr": 9,
+   "nr": 8,
    "id": "s11",
    "grup": "GitHub",
    "titlu": "Legarea depozitelor",
    "sarcini": []
   },
   {
-   "nr": 10,
+   "nr": 9,
    "id": "s14",
    "grup": "În echipă",
    "titlu": "Ramuri",
@@ -111,14 +99,14 @@
    ]
   },
   {
-   "nr": 11,
+   "nr": 10,
    "id": "s14b",
    "grup": "În echipă",
    "titlu": "Fluxul echipei",
    "sarcini": []
   },
   {
-   "nr": 12,
+   "nr": 11,
    "id": "s15",
    "grup": "În echipă",
    "titlu": "Conflictele",
@@ -130,35 +118,28 @@
    ]
   },
   {
-   "nr": 13,
+   "nr": 12,
    "id": "s16",
    "grup": "În echipă",
    "titlu": "Regulile echipei",
    "sarcini": []
   },
   {
-   "nr": 14,
+   "nr": 13,
    "id": "s17",
    "grup": "Cadrul teoretic",
    "titlu": "De ce un cadru",
    "sarcini": []
   },
   {
-   "nr": 15,
-   "id": "s18",
-   "grup": "Cadrul teoretic",
-   "titlu": "Căutarea literaturii",
-   "sarcini": []
-  },
-  {
-   "nr": 16,
+   "nr": 14,
    "id": "s19",
    "grup": "Cadrul teoretic",
    "titlu": "Cadrul proiectului",
    "sarcini": []
   },
   {
-   "nr": 17,
+   "nr": 15,
    "id": "s20",
    "grup": "Cadrul teoretic",
    "titlu": "Întrebarea echipei",
@@ -170,28 +151,21 @@
    ]
   },
   {
-   "nr": 18,
-   "id": "s21n",
+   "nr": 16,
+   "id": "s21d",
    "grup": "Datele",
-   "titlu": "Regiunile, într-un tabel",
+   "titlu": "Datele proiectului",
    "sarcini": []
   },
   {
-   "nr": 19,
-   "id": "s21b",
-   "grup": "Datele",
-   "titlu": "Țări și grupuri de țări",
-   "sarcini": []
-  },
-  {
-   "nr": 20,
+   "nr": 17,
    "id": "s22",
    "grup": "Proiectul echipei",
    "titlu": "Depozitul echipei",
    "sarcini": []
   },
   {
-   "nr": 21,
+   "nr": 18,
    "id": "s22b",
    "grup": "Proiectul echipei",
    "titlu": "Verificarea depozitului",
@@ -203,7 +177,7 @@
    ]
   },
   {
-   "nr": 22,
+   "nr": 19,
    "id": "s23",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

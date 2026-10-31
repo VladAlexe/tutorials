@@ -44,7 +44,7 @@ export const LECTII = [
     titlu:"Versionare cu Git",
     scurt:"Git",
     rezumat:"Rolul versionării, lucrul unei echipe pe același depozit și ce nu se încarcă niciodată în depozit.",
-    stare:"gata", sarcini:9,
+    stare:"gata", sarcini:8,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb" },
 
   { nr:4, cheie:"c4-curatarea-datelor",

@@ -27,7 +27,7 @@
    de care se folosește rulatorul de slide-uri ca să deschidă poarta.
    =========================================================================== */
 
-import { salveazaRaspuns, aMaiRaspuns, deCeNu } from "./colectare.js?v=103";
+import { salveazaRaspuns, aMaiRaspuns, deCeNu } from "./colectare.js?v=105";
 
 const CSS = `
 .verif{background:var(--panza);border:1px solid var(--linie);border-radius:11px;

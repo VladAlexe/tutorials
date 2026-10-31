@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucrul cu Git · Fluxuri de lucru</title>
+<meta name="description" content="Comenzile Git folosite la curs și în proiectul echipei: configurarea, clonarea, .gitignore, ramura dev, lucrul zilnic, îmbinarea în main.">
+<meta name="robots" content="index,nofollow">
+<link rel="stylesheet" href="../../css/fonturi.css?v=105">
+<link rel="stylesheet" href="../../css/sistem.css?v=105">
+<script src="../../js/tema.js?v=105"></script>
+<style>
+  .gf{max-width:820px;margin:0 auto;padding:30px 28px 80px}
+  .gf__inapoi{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
+    text-decoration:none;border:1px solid var(--linie-2);border-radius:999px;padding:5px 13px;margin-bottom:26px}
+  .gf__inapoi:hover{color:var(--text);border-color:var(--text-3)}
+  .gf h2{font-size:var(--t5);margin:44px 0 8px;scroll-margin-top:70px}
+  .gf h3{font-family:var(--sans);font-size:var(--t3);font-weight:600;margin:22px 0 4px}
+  .gf p{font-size:var(--t3);line-height:1.6;max-width:68ch}
+  .gf p code,.gf li code{font-size:.9em}
+
+  .gf__cup{display:flex;flex-wrap:wrap;gap:6px 8px;margin:18px 0 0;padding:0;list-style:none}
+  .gf__cup li{margin:0;padding:0}
+  .gf__cup li::before{content:none}
+  .gf__cup a{display:inline-block;font-family:var(--sans);font-size:var(--t2);color:var(--text-2);text-decoration:none;
+    border:1px solid var(--linie);border-radius:999px;padding:4px 11px}
+  .gf__cup a:hover{color:var(--accent-text);border-color:var(--accent)}
+
+  .tb{width:100%;border-collapse:collapse;font-family:var(--sans);margin:6px 0 0}
+  .tb td{padding:7px 12px 7px 0;font-size:var(--t2);border-bottom:1px solid var(--linie);vertical-align:top;line-height:1.45}
+  .tb tr:first-child td{border-top:1px solid var(--linie-2)}
+  .tb tr:last-child td{border-bottom-color:var(--linie-2)}
+  .tb td:first-child{width:52%}
+  .tb code{font-family:var(--mono);font-size:12.5px;background:none;border:0;padding:0;color:var(--text);
+    white-space:pre-wrap;word-break:break-word;cursor:copy}
+  .tb code:hover{color:var(--accent-text)}
+  .tb code.copiat::after{content:"  copiat";font-family:var(--sans);font-size:11px;color:var(--accent-text)}
+  .tb td:last-child{color:var(--text-2)}
+  .tbw{overflow-x:auto}
+  .tbw + p{margin-top:14px}
+
+  .gf pre{font-size:12.5px;line-height:1.55;margin:8px 0 0}
+  .gf ol.reg{margin:8px 0 0;padding-left:22px}
+  .gf ol.reg li{font-size:var(--t3);line-height:1.55;margin:0 0 6px}
+  .gf .nota{margin-top:14px}
+
+  .src{list-style:none;padding:0;margin:6px 0 0}
+  .src li::before{content:none}
+  .src li{padding-left:0;font-family:var(--sans);font-size:var(--t2);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--linie)}
+  .gf__jos{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px;padding-top:18px;border-top:1px solid var(--linie-2)}
+  .gf__jos a{font-family:var(--sans);font-size:var(--t2);text-decoration:none;color:var(--text);border:1px solid var(--linie-2);border-radius:8px;padding:9px 14px}
+  .gf__jos a:hover{border-color:var(--accent);color:var(--accent-text)}
+
+  @media (max-width:640px){
+    .gf{padding:22px 16px 64px}
+    .tb td:first-child{width:auto}
+  }
+</style>
+</head>
+<body>
+
+<div id="antet" data-aici="Cursul 3 · Lucrul cu Git"></div>
+
+<main>
+<div class="gf">
+  <a class="gf__inapoi" href="../" data-inapoi>← Înapoi</a>
+
+  <p class="supratitlu">Cursul 3 · Resursă</p>
+  <h1>Lucrul cu Git</h1>
+  <p class="deck">Comenzile folosite la curs și în proiectul echipei, în ordinea în care se folosesc. Se rulează
+  în terminal (PowerShell sau Git Bash), în dosarul proiectului. Un clic pe o comandă o copiază.</p>
+
+  <ul class="gf__cup">
+    <li><a href="#configurare">Configurarea</a></li>
+    <li><a href="#clone">git clone</a></li>
+    <li><a href="#init">git init</a></li>
+    <li><a href="#gitignore">.gitignore</a></li>
+    <li><a href="#baza">Comenzile de bază</a></li>
+    <li><a href="#ramuri">Ramurile</a></li>
+    <li><a href="#dev">Ramura dev</a></li>
+    <li><a href="#zilnic">Lucrul zilnic</a></li>
+    <li><a href="#merge">dev în main</a></li>
+    <li><a href="#reguli">Regulile echipei</a></li>
+    <li><a href="#istoric">Istoricul</a></li>
+  </ul>
+
+  <h2 id="configurare">Configurarea, o singură dată pe calculator</h2>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git --version</code></td><td>verifică dacă Git este instalat</td></tr>
+    <tr><td><code>git config --global user.name "Nume Prenume"</code></td><td>numele care apare în istoricul commit-urilor</td></tr>
+    <tr><td><code>git config --global user.email "adresa@exemplu.com"</code></td><td>adresa contului de GitHub; cu altă adresă, commit-urile nu apar pe cont</td></tr>
+    <tr><td><code>git config --global user.name</code></td><td>verificarea numelui</td></tr>
+    <tr><td><code>git config --global user.email</code></td><td>verificarea adresei</td></tr>
+  </tbody></table></div>
+  <div class="nota nota--sobru"><div class="nota__et">git init în dosarul greșit</div>
+  <p>Se șterge doar depozitul local, din PowerShell, în dosarul respectiv: <code>Remove-Item -Recurse -Force .git</code>.
+  Fișierele rămân neatinse.</p></div>
+
+  <h2 id="clone">Depozitul echipei: git clone</h2>
+  <p>Varianta folosită la curs și în proiecte: depozitul există deja pe GitHub, în organizația
+  <code>dsw-ubb-2026</code>. Comenzile se dau din dosarul <code>dsw</code>.</p>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git clone https://github.com/dsw-ubb-2026/&lt;depozitul-echipei&gt;.git proiect</code></td><td>copiază depozitul, cu tot istoricul, în dosarul <code>proiect</code></td></tr>
+    <tr><td><code>cd proiect</code></td><td>intră în depozit</td></tr>
+    <tr><td><code>git status</code></td><td>ce vede Git</td></tr>
+    <tr><td><code>git branch -vv</code></td><td>arată că <code>main</code> urmărește <code>origin/main</code></td></tr>
+  </tbody></table></div>
+
+  <h2 id="init">Fără depozit pe GitHub: git init</h2>
+  <p>Doar dacă depozitul nu există încă pe GitHub. Depozitul de pe GitHub se creează gol, fără README.</p>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git init</code></td><td>creează depozitul local, gol</td></tr>
+    <tr><td><code>git add .</code></td><td>adaugă fișierele existente</td></tr>
+    <tr><td><code>git commit -m "first commit"</code></td><td>primul commit</td></tr>
+    <tr><td><code>git branch -m master main</code></td><td>ramura principală se numește <code>main</code></td></tr>
+    <tr><td><code>git remote add origin &lt;adresa&gt;</code></td><td>leagă depozitul local de cel de pe GitHub</td></tr>
+    <tr><td><code>git push -u origin main</code></td><td>trimite <code>main</code> pe GitHub și reține legătura</td></tr>
+  </tbody></table></div>
+  <h3>Caz special: depozitul de pe GitHub există deja și are conținut</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git init</code></td><td>depozitul local</td></tr>
+    <tr><td><code>git branch -m master main</code></td><td>ramura principală se numește <code>main</code></td></tr>
+    <tr><td><code>git remote add origin &lt;adresa&gt;</code></td><td>legătura cu GitHub</td></tr>
+    <tr><td><code>git pull origin main --allow-unrelated-histories</code></td><td>unește cele două istorii, o singură dată</td></tr>
+    <tr><td><code>git branch -u origin/main</code></td><td>leagă <code>main</code> local de <code>origin/main</code></td></tr>
+  </tbody></table></div>
+
+  <h2 id="gitignore">.gitignore</h2>
+  <p>Un fișier text în rădăcina proiectului, cu ce nu intră în Git: mediul virtual, secretele, datele (se refac
+  rulând caietele) și fișierele uneltelor. Se scrie înainte de primul <code>git add</code>.</p>
+<pre><code>.venv/
+venv/
+.env
+data/
+*.csv
+*.parquet
+*.xlsx
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.vscode/
+.DS_Store
+Thumbs.db</code></pre>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git add .gitignore</code></td><td>și el este un fișier al proiectului</td></tr>
+    <tr><td><code>git commit -m "add gitignore"</code></td><td></td></tr>
+    <tr><td><code>git push</code></td><td></td></tr>
+    <tr><td><code>git status</code></td><td>fișierele ignorate nu mai apar</td></tr>
+  </tbody></table></div>
+  <h3>Un fișier adăugat din greșeală</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git reset -- "Nume fisier cu spatii.ipynb"</code></td><td>îl scoate din pregătire; fișierul rămâne pe disc</td></tr>
+    <tr><td><code>git rm --cached nume_fisier</code></td><td>Git nu îl mai urmărește, dar fișierul rămâne în proiect</td></tr>
+  </tbody></table></div>
+
+  <h2 id="baza">Comenzile de bază</h2>
+  <h3>Tot ce s-a schimbat, fără ce este în .gitignore</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git add .</code></td><td>toate fișierele noi și modificate intră în pregătire</td></tr>
+    <tr><td><code>git commit -m "mesaj scurt, clar"</code></td><td>commit-ul, cu un mesaj care spune ce s-a schimbat</td></tr>
+    <tr><td><code>git push</code></td><td>trimite commit-ul pe GitHub</td></tr>
+  </tbody></table></div>
+  <h3>Un singur fișier</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git add nume_fisier</code></td><td>doar acest fișier intră în pregătire</td></tr>
+    <tr><td><code>git commit -m "mesaj"</code></td><td></td></tr>
+    <tr><td><code>git push</code></td><td></td></tr>
+  </tbody></table></div>
+  <h3>Modificările colegilor</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git pull</code></td><td>aduce de pe GitHub modificările ramurii curente; se folosește când <code>git status</code> este curat, altfel apar îmbinări și commit-uri suplimentare</td></tr>
+  </tbody></table></div>
+
+  <h2 id="ramuri">Ramurile</h2>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git branch</code></td><td>ramurile locale; cea curentă este marcată</td></tr>
+    <tr><td><code>git branch -r</code></td><td>ramurile de pe GitHub (<code>origin/…</code>)</td></tr>
+    <tr><td><code>git branch -a</code></td><td>toate ramurile, locale și de pe GitHub</td></tr>
+    <tr><td><code>git branch -v</code></td><td>fiecare ramură, cu ultimul commit</td></tr>
+    <tr><td><code>git branch -vv</code></td><td>fiecare ramură, cu upstream-ul ei (de exemplu <code>[origin/main]</code>)</td></tr>
+  </tbody></table></div>
+  <p>Upstream este legătura dintre ramura locală și cea de pe GitHub, folosită de <code>git pull</code> și <code>git push</code>.</p>
+
+  <h2 id="dev">Ramura dev</h2>
+  <h3>O creează un singur membru, o singură dată</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git switch -c dev</code></td><td>creează <code>dev</code> pornind din <code>main</code> și trece pe ea</td></tr>
+    <tr><td><code>git push -u origin dev</code></td><td>creează <code>dev</code> pe GitHub și reține legătura</td></tr>
+  </tbody></table></div>
+  <h3>Restul echipei</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git fetch</code></td><td>aduce informațiile noi despre ramurile de pe GitHub</td></tr>
+    <tr><td><code>git switch dev</code></td><td>trece pe <code>dev</code></td></tr>
+    <tr><td><code>git branch -a</code></td><td>verificarea: apare și <code>remotes/origin/dev</code></td></tr>
+  </tbody></table></div>
+
+  <h2 id="zilnic">Lucrul zilnic pe dev</h2>
+  <h3>La începutul lucrului</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git switch dev</code></td><td></td></tr>
+    <tr><td><code>git pull</code></td><td>ultima versiune a ramurii <code>dev</code></td></tr>
+  </tbody></table></div>
+  <p>Lucrul se face, pe cât posibil, în fișiere separate, de exemplu <code>analiza_vlad.ipynb</code> și
+  <code>analiza_maria.ipynb</code>.</p>
+  <h3>La salvarea muncii</h3>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git status</code></td><td>ce s-a schimbat</td></tr>
+    <tr><td><code>git add .</code></td><td></td></tr>
+    <tr><td><code>git commit -m "ce s-a făcut"</code></td><td></td></tr>
+    <tr><td><code>git pull</code></td><td>în caz că un coleg a trimis ceva între timp</td></tr>
+    <tr><td><code>git push</code></td><td></td></tr>
+  </tbody></table></div>
+  <h3>Conflict la git pull</h3>
+  <p>Se rezolvă local, în fișier (se păstrează varianta corectă și se șterg marcajele), apoi:</p>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git add .</code></td><td></td></tr>
+    <tr><td><code>git commit -m "rezolvat conflict"</code></td><td></td></tr>
+    <tr><td><code>git push</code></td><td></td></tr>
+  </tbody></table></div>
+
+  <h2 id="merge">dev în main</h2>
+  <p>Nu doar la finalul proiectului și nici după fiecare commit, ci după fiecare sarcină importantă încheiată:
+  curățarea datelor, setul de vizualizări, modelul final.</p>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git switch main</code></td><td></td></tr>
+    <tr><td><code>git pull</code></td><td><code>main</code> local, la zi cu <code>origin/main</code></td></tr>
+    <tr><td><code>git merge dev</code></td><td>aduce în <code>main</code> commit-urile din <code>dev</code></td></tr>
+    <tr><td><code>git push</code></td><td>trimite <code>main</code> pe GitHub</td></tr>
+  </tbody></table></div>
+  <p><code>git merge dev</code> ia toate commit-urile care există în <code>dev</code>, dar nu și în <code>main</code>,
+  și le aplică peste <code>main</code>. După îmbinare, <code>main</code> conține tot ce s-a făcut și s-a verificat în
+  <code>dev</code>.</p>
+
+  <h2 id="reguli">Regulile echipei</h2>
+  <p>Mai ales cu caiete Jupyter, care nu se îmbină ușor:</p>
+  <ol class="reg">
+    <li>Toată echipa lucrează pe <code>dev</code>, nu pe <code>main</code>.</li>
+    <li>Fiecare lucrează, pe cât posibil, în fișiere separate (caiete diferite).</li>
+    <li><code>git pull</code> la începutul lucrului și înainte de fiecare <code>push</code>.</li>
+    <li><code>dev</code> intră în <code>main</code> doar când sarcina este curată: verificată, fără fișiere de test.</li>
+    <li><code>main</code> rămâne o versiune stabilă, schimbată doar prin îmbinări deliberate din <code>dev</code>.</li>
+  </ol>
+
+  <h2 id="istoric">Verificarea și istoricul</h2>
+  <div class="tbw"><table class="tb"><tbody>
+    <tr><td><code>git status</code></td><td>fișierele modificate și ce este în pregătire</td></tr>
+    <tr><td><code>git branch</code></td><td>ramura curentă</td></tr>
+    <tr><td><code>git branch -r</code></td><td>ramurile de pe GitHub</td></tr>
+    <tr><td><code>git branch -a</code></td><td>toate ramurile</td></tr>
+    <tr><td><code>git log</code></td><td>istoricul commit-urilor; se iese cu tasta <code>q</code></td></tr>
+    <tr><td><code>git log --oneline --graph --decorate --all</code></td><td>istoricul pe scurt, cu ramurile desenate</td></tr>
+  </tbody></table></div>
+
+  <h2>Surse</h2>
+  <ul class="src">
+    <li><a class="leg" href="https://git-scm.com/book/ro/v2" target="_blank" rel="noopener">Pro Git</a>, cartea oficială, gratuită, cu traducere în română</li>
+    <li><a class="leg" href="https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository" target="_blank" rel="noopener">Pro Git: înregistrarea schimbărilor</a>, zonele și <code>git status</code></li>
+    <li><a class="leg" href="https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging" target="_blank" rel="noopener">Pro Git: ramuri și îmbinări</a></li>
+    <li><a class="leg" href="https://docs.github.com/en/get-started" target="_blank" rel="noopener">GitHub Docs: primii pași</a></li>
+  </ul>
+
+  <div class="gf__jos">
+    <a href="../" data-inapoi>← Înapoi</a>
+    <a href="../">Pagina cursului 3</a>
+    <a href="../lectie/#1">Slide-urile cursului 3</a>
+    <a href="../tutorial/">Manualul cursului 3</a>
+  </div>
+</div>
+</main>
+
+<div id="subsol"></div>
+<script type="module" src="../../js/antet.js?v=105"></script>
+<script type="module" src="../../js/subsol.js?v=105"></script>
+<script>
+/* Înapoi: dacă ai venit dintr-o pagină a sitului (slide-uri, manual), te
+   întorci exact acolo; altfel, la pagina cursului 3. */
+document.querySelectorAll("[data-inapoi]").forEach(a => a.addEventListener("click", e => {
+  try {
+    const r = document.referrer ? new URL(document.referrer) : null;
+    if (r && r.origin === location.origin && r.pathname !== location.pathname && history.length > 1){
+      e.preventDefault(); history.back();
+    }
+  } catch (_) {}
+}));
+/* Un clic pe o comandă o copiază: în terminal se lipește exact ce scrie aici. */
+document.querySelectorAll(".tb code").forEach(c => c.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(c.textContent);
+    c.classList.add("copiat"); setTimeout(() => c.classList.remove("copiat"), 1200);
+  } catch (_) {}
+}));
+</script>
+</body>
+</html>

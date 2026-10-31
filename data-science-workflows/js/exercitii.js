@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod, deCeNu } from "./colectare.js?v=103";
+import { salveazaCod, deCeNu } from "./colectare.js?v=105";
 
 const E = {};
 
@@ -708,6 +708,90 @@ E.sortare = (gazda, d) => {
 };
 
 /* ==========================================================================
+   Citirea lui git status
+   Ieșirea adevărată, cu culorile din terminal. Se aleg rândurile care intră
+   în commit-ul următor; după verificare, lângă fiecare grup apare zona din
+   care face parte. Se învață exact ce se face zilnic: se citește git status
+   înainte de commit.
+     { id, sarcina, antet:[rânduri], grupuri:[{t, zona, cls, fisiere:[{t, ok}]}], explicatie, indiciu }
+   ========================================================================== */
+
+E.status = (gazda, d) => {
+  const id = d.id || "status";
+  gazda.closest(".ix")?.classList.add("exc");
+  let nr = 0;
+  const grupuri = d.grupuri.map(g => `
+      <div class="gs__g gs__g--${g.cls}">
+        <div class="gs__gt"><span>${esc(g.t)}</span><em class="gs__z">${g.zona}</em></div>
+        ${g.fisiere.map(f => `<button type="button" class="gs__f" data-i="${nr++}" data-ok="${f.ok ? 1 : 0}">`
+          + `<i class="gs__bif"></i><span>${esc(f.t)}</span></button>`).join("")}
+      </div>`).join("");
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
+    <div class="gs">
+      <div class="gs__bara"><span class="ed__pct"><i></i><i></i><i></i></span><span>terminal</span></div>
+      <div class="gs__corp">
+        <div class="gs__l gs__l--cmd"><b>$</b> git status</div>
+        ${(d.antet || []).map(l => `<div class="gs__l">${esc(l)}</div>`).join("")}
+        ${grupuri}
+      </div>
+    </div>
+    ${cadruJos("Verifică")}`;
+
+  const btV = gazda.querySelector('[data-rol="verifica"]');
+  const btN = gazda.querySelector('[data-rol="din-nou"]');
+  const out = gazda.querySelector(".ex__raspuns");
+  const ex  = gazda.querySelector(".ex__ex");
+  const st  = gazda.querySelector(".ex__stare");
+  const fis = [...gazda.querySelectorAll(".gs__f")];
+  legaIndiciu(gazda, [d.indiciu, d.indiciu2]);
+
+  fis.forEach(b => b.onclick = () => {
+    if (gazda.closest(".ix")?.classList.contains("gata") || btV.disabled) return;
+    b.classList.toggle("ales");
+    gazda.querySelectorAll(".gs__f").forEach(x => x.classList.remove("bun", "rau", "lipsa"));
+    out.textContent = "";
+  });
+
+  btV.onclick = async () => {
+    const alese = fis.filter(b => b.classList.contains("ales"));
+    if (!alese.length){ out.innerHTML = "<b>Niciun rând ales.</b> Se aleg rândurile care intră în commit."; return; }
+    let bune = 0, total = 0, gresite = 0;
+    fis.forEach(b => {
+      const ok = b.dataset.ok === "1", ales = b.classList.contains("ales");
+      if (ok) total++;
+      if (ok && ales) bune++;
+      if (!ok && ales) gresite++;
+      b.classList.toggle("bun", ok && ales);
+      b.classList.toggle("rau", !ok && ales);
+      b.classList.toggle("lipsa", ok && !ales);
+    });
+    const tot = bune === total && !gresite;
+    if (!tot){
+      out.innerHTML = gresite
+        ? `<b>Nu încă.</b> ${d.laRau || "Un rând ales nu intră în commit."}`
+        : `<b>Aproape.</b> Mai este un rând care intră în commit.`;
+      btN.hidden = false;
+      return;
+    }
+    btV.disabled = true; btN.hidden = true;
+    gazda.querySelector(".gs").classList.add("rezolvat");
+    out.innerHTML = `<b>Corect.</b> ${d.laBine || ""}`;
+    ex.classList.add("vazut"); ex.innerHTML = d.explicatie || "";
+    sarbatoare(gazda);
+    gata(gazda, id);
+    const salvat = await salveazaCod({ exercitiuId:id, trecut:true,
+      cod: alese.map(b => b.textContent.trim()).join(" | ") });
+    st.textContent = stareSalvare(salvat, gazda);
+    st.classList.add("vazut");
+  };
+  btN.onclick = () => {
+    fis.forEach(b => b.classList.remove("bun", "rau", "lipsa", "ales"));
+    out.textContent = ""; btN.hidden = true;
+  };
+};
+
+/* ==========================================================================
    4. Dovada: ai făcut-o cu adevărat?
    Fiecare rând cere o comandă rulată la tine și textul pe care ea îl scoate.
    Nu se poate completa din cap: ieșirea depinde de starea calculatorului tău.
@@ -720,12 +804,12 @@ E.dovada = (gazda, d) => {
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ex__sarcina">${d.sarcina}</p>` : ""}
     <div class="dov">${d.pasi.map((p, i) => `
-      <div class="dov__r" data-i="${i}">
+      <div class="dov__r${p.unde ? " dov__r--web" : ""}" data-i="${i}">
         <div class="dov__sus"><span class="dov__n">${i + 1}</span>
           <span class="dov__t">${p.t}</span>
           <span class="dov__s" data-s="${i}"></span></div>
-        <div class="dov__cmd"><code>${esc(p.cmd)}</code>
-          <button class="dov__copie" data-c="${i}" type="button">copiază</button></div>
+        ${p.unde ? `<div class="dov__unde">${p.unde}</div>` : `<div class="dov__cmd"><code>${esc(p.cmd)}</code>
+          <button class="dov__copie" data-c="${i}" type="button">copiază</button></div>`}
         <input class="dov__in" data-i="${i}" spellcheck="false" autocomplete="off"
           placeholder="${esc(p.gol || "lipește aici ieșirea din terminal")}">
         <p class="dov__aj" data-a="${i}"></p>

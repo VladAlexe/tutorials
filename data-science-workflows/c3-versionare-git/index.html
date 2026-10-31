@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 3. Versionare și colaborare cu Git · Fluxuri de lucru</title>
 <meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără conflicte între modificări și cum se încadrează teoretic un proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=103">
-<link rel="stylesheet" href="../css/sistem.css?v=103">
-<link rel="stylesheet" href="../css/intrare.css?v=103">
-<script src="../js/tema.js?v=103"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=105">
+<link rel="stylesheet" href="../css/sistem.css?v=105">
+<link rel="stylesheet" href="../css/intrare.css?v=105">
+<script src="../js/tema.js?v=105"></script>
 </head>
 <body>
 
@@ -42,8 +42,8 @@
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, depozitul local, legătura cu GitHub, ramurile și pull request-ul.</p>
-<p>A doua formulează întrebarea de cercetare a proiectului, pornind de la proiectul cursului: cum se ajunge de la literatură la trei piloni (legăturile, oamenii, locul), de la piloni la surse de date și de la surse la întrebări care pot fi infirmate.</p>
+    <div class="sec__corp"><p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, primul commit al echipei, citirea lui <code>git status</code>, legătura cu GitHub, ramurile și regula după care lucrează o echipă: pull înainte de push.</p>
+<p>A doua construiește cadrul proiectului: legătura dintre două locuri, măsurată prin SCI, și factorii care o pot explica (distanța, migrația, istoria comună, locurile), fiecare cu ipoteza, variabila și sursa lui. Din ce rămâne neexplicat pornește întrebarea echipei. Lecția se încheie cu cele patru tabele pregătite în caietul 03.</p>
 <p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p></div>
   </section>
   <section class="sec sec--obiective">
@@ -51,11 +51,11 @@
     <div class="sec__corp"><ul class="obiective">
 <li>Diferența dintre Git și GitHub și motivul pentru care un commit local nu este o copie de siguranță a muncii.</li>
 <li>Fiecare comandă, explicată prin zonele între care mută fișierele.</li>
-<li>Inițializarea unui depozit, setarea identității și commit-uri cu mesaje informative.</li>
+<li>Citirea ieșirii lui <code>git status</code> înainte de commit.</li>
 <li>Un <code>.gitignore</code> scris înainte de primul <code>add</code> și motivul pentru care ordinea contează.</li>
 <li>Legarea depozitului local de unul de pe GitHub sau clonarea unuia existent.</li>
-<li>Lucrul pe ramuri, deschiderea unui pull request și rezolvarea unui conflict de îmbinare.</li>
-<li>Structura unui cadru teoretic: concept, sursă de date, rol în argument.</li>
+<li>Lucrul pe ramuri, regula pull înainte de push și rezolvarea unui conflict de îmbinare.</li>
+<li>Structura unui cadru teoretic: factor, ipoteză, variabilă, sursă.</li>
 <li>O întrebare de cercetare care poate fi infirmată cu datele disponibile.</li>
 </ul></div>
   </section>
@@ -73,6 +73,10 @@
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb" target="_blank" rel="noopener">
         <span class="mat__t">Caietul ↗</span>
         <span class="mat__d">Caietul 03, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/, lângă caietele 01 și 02.</span>
+      </a>
+      <a class="mat__c" href="git/">
+        <span class="mat__t">Lucrul cu Git</span>
+        <span class="mat__d">Fișa cu toate comenzile de la curs: configurarea, clonarea, .gitignore, ramura dev, lucrul zilnic și îmbinarea în main.</span>
       </a>
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
         <span class="mat__t">Depozitul cursului ↗</span>
@@ -97,8 +101,8 @@
       <a href="https://docs.github.com/en/get-started" target="_blank" rel="noopener"><span>GitHub Docs</span><small>docs</small></a>
       <a href="https://docs.github.com/en/pull-requests" target="_blank" rel="noopener"><span>Pull requests</span><small>GitHub</small></a>
       <a href="https://www.toptal.com/developers/gitignore" target="_blank" rel="noopener"><span>gitignore.io</span><small>generator</small></a>
-      <a href="https://www.worldbank.org/en/publication/worldwide-governance-indicators" target="_blank" rel="noopener"><span>Worldwide Governance Indicators</span><small>WGI</small></a>
-      <a href="https://databank.worldbank.org/source/world-development-indicators" target="_blank" rel="noopener"><span>World Development Indicators</span><small>WDI</small></a>
+      <a href="https://gisco-services.ec.europa.eu/distribution/v2/nuts/nuts-2024-files.html" target="_blank" rel="noopener"><span>GISCO: NUTS 2024</span><small>nomenclator</small></a>
+      <a href="https://ec.europa.eu/eurostat/databrowser/view/migr_pop1ctz/default/table" target="_blank" rel="noopener"><span>Eurostat migr_pop1ctz</span><small>migrația</small></a>
     </div>
   </section>
 
@@ -114,7 +118,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=103"), import("../js/ora.js?v=103"), import("../js/curs.js?v=103")]);
+    import("../js/auth.js?v=105"), import("../js/ora.js?v=105"), import("../js/curs.js?v=105")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -140,7 +144,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=103"></script>
-<script type="module" src="../js/subsol.js?v=103"></script>
+<script type="module" src="../js/antet.js?v=105"></script>
+<script type="module" src="../js/subsol.js?v=105"></script>
 </body>
 </html>

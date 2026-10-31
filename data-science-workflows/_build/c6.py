@@ -264,15 +264,16 @@ sl("s2", "Cursul", "Întrebările",
              ], 1))
    + "</div>"
    + nota("De unde vin",
-          "Din cadrul teoretic de la cursul 3 (templul): fiecare întrebare "
-          "leagă doi piloni. EDA nu oferă răspunsuri definitive; arată doar "
+          "Din cadrul teoretic de la cursul 3: fiecare întrebare pune legătura "
+          "(SCI) față de un factor. EDA nu oferă răspunsuri definitive; arată doar "
           "ce merită testat.", True)
    + lecturi(["bailey2018", "bailey2020", "blondel2008"], "De unde vin ipotezele"),
    manual=
    "<h2>Întrebările, din cadru</h2>"
    "<p>Fără întrebări, EDA devine o simplă colecție de grafice. Întrebările "
-   "acestei lecții provin din cadrul teoretic de la cursul 3, ai cărui piloni "
-   "erau legăturile (SCI), oamenii (migrația) și locul (distanța, granița).</p>"
+   "acestei lecții provin din cadrul teoretic de la cursul 3: legătura dintre "
+   "două locuri (SCI) și factorii care o pot explica, distanța, migrația, "
+   "istoria comună și locurile.</p>"
    "<ol>"
    "<li><em>Legături × loc:</em> perechile apropiate sunt mai legate?</li>"
    "<li><em>Legături × oameni:</em> perechile cu mai mulți migranți sunt mai legate?</li>"

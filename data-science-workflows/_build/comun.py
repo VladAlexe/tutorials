@@ -56,13 +56,14 @@ FEL = {
     "tabel": "Tabel", "anatomie": "Structură", "mesaj": "Structură",
     "pas": "Pas cu pas", "sci": "Pas cu pas", "desfa": "Pas cu pas", "cub": "Pas cu pas",
     "directii": "Pas cu pas", "masca": "Pas cu pas", "modele": "Pas cu pas", "gitdag": "Pas cu pas",
+    "commit": "Pas cu pas", "sincron": "Pas cu pas", "cadru": "Diagramă", "tabele": "Date reale",
     "raspuns": "Simulare", "imbinare": "Simulare", "verbe": "Simulare",
     "pagini": "Comparație", "histo": "Comparație", "axa": "Comparație",
     "terminal": "Terminal", "consola": "Consolă Python", "jupyter": "Consolă Python",
     "cod": "Exercițiu de cod", "prezice": "Predicție", "autoevaluare": "Autoevaluare",
     "dovada": "Verificare locală",
     "tipuri": "Exercițiu", "ordine": "Exercițiu", "sortare": "Exercițiu", "metode": "Exercițiu",
-    "zone": "Exercițiu", "ramuri": "Exercițiu", "conflict": "Exercițiu", "prag": "Exercițiu",
+    "zone": "Exercițiu", "ramuri": "Exercițiu", "status": "Exercițiu", "conflict": "Exercițiu", "prag": "Exercițiu",
     "coloane": "Exercițiu", "asteptari": "Exercițiu", "acces": "Exercițiu", "cale": "Exercițiu",
 }
 fel_et = lambda f: FEL.get(f, "Explorare")
@@ -262,7 +263,7 @@ class Lectie:
     FEL_SARCINA = {"cod": "cod", "prezice": "cod", "ordine": "cod", "sortare": "cod",
                    "dovada": "cod", "tipuri": "cod", "autoevaluare": "cod",
                    "asteptari": "text", "url": "cod", "metode": "cod",
-                   "raspuns": "cod", "zone": "cod", "ramuri": "cod",
+                   "raspuns": "cod", "zone": "cod", "ramuri": "cod", "status": "cod",
                    "conflict": "cod", "prag": "cod", "imbinare": "cod",
                    "coloane": "cod", "desfa": "cod", "anatomie": "cod", "consola": "cod",
                    "jupyter": "cod"}
