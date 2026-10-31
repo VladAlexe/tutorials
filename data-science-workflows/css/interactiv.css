@@ -3001,6 +3001,7 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 /* Pașii de cod. Ieșirea se adună de la un pas la altul, deci memoria și
    ieșirea au înălțime fixă, cu derulare; altfel slide-ul crește la fiecare pas. */
 .rnr[data-capitol="c3"] .sld:is(#s8,#s21n,#s21b) .ps__ed{line-height:1.5}
+.rnr[data-capitol="c3"] .sld#s21b .ps__ed{line-height:1.42}
 .rnr[data-capitol="c3"] .sld:is(#s8,#s21n,#s21b) .ps__mem{max-height:150px}
 .rnr[data-capitol="c3"] .sld:is(#s8,#s21n,#s21b) .ps__out{max-height:150px;overflow:auto}
 /* primul commit și migrația: codul pe toată lățimea, dedesubt explicația cu

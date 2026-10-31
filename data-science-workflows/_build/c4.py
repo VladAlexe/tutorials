@@ -61,43 +61,48 @@ AGENDA = [
 ]
 
 # Pașii pentru lecția 4, din 04_curatarea_si_integrarea_datelor.ipynb.
-# Cifrele regionale: data/analiza_c4/referinta_c2_20261013/nuts2/regional_lung.csv (Eurostat, 2024).
+# Cifrele regionale: rularea caietului 04 pe data/c3/regional.csv (31 octombrie 2026).
 # Migrația: Eurostat migr_pop1ctz, 2024.
 
 PAS_PROFIL = {
     "fisier": "04_curatarea.ipynb · 2. Calitatea",
     "intro": "Înainte de orice modificare, tabelul se inspectează. Indicatorii regionali din C3, la nivel NUTS 2.",
-    "cod": "regional = pd.read_csv(DATE / \"c3\" / \"regional.csv\")\n"
+    "cod": "regional = pd.read_csv(\"data/c3/regional.csv\")\n"
            "regional = regional[regional[\"nivel\"] == 2]\n\n"
            "print(\"Duplicate:\", regional.duplicated([\"regiune\", \"indicator\"]).sum())\n"
            "print(\"Valori negative:\", (regional[\"valoare\"] < 0).sum())\n\n"
            "regional.groupby(\"indicator\")[\"valoare\"].describe().round(1)\n\n"
-           "regional.nsmallest(1, \"valoare\")",
+           "populatie = regional[regional[\"indicator\"] == \"populatie\"]\n"
+           "populatie.nsmallest(3, \"valoare\")",
     "pasi": [
         {"l": 1, "set": {"regional": {"t": "DataFrame", "v": {"cols": ["regiune", "indicator", "valoare"],
             "rows": [["BE10", "populatie", 1264371], ["BE21", "populatie", 1932876], ["…", "…", "…"], ["RO11", "densitate", 74.7]],
             "nota": "format lung: un rând pe regiune și indicator"}}},
          "txt": "Tabelul salvat în C3. Un rând este identificat de două coloane împreună: <b>regiune + indicator</b>."},
-        {"l": 2, "txt": "Se păstrează doar nivelul NUTS 2 (în România, regiunile de dezvoltare). La seminar se lucrează la nivel NUTS 3, al județelor."},
+        {"l": 2, "txt": "Se păstrează doar nivelul NUTS 2 (în România, regiunile de dezvoltare): nivelul la care există SCI pe regiuni. Județele (NUTS 3) rămân pentru proiectele echipelor."},
         {"l": 4, "out": "Duplicate: 0",
          "txt": "<code>duplicated</code> cu o listă de coloane caută apariția repetată a aceleiași <b>chei</b>. Rezultatul 0 arată că fiecare regiune are fiecare indicator o singură dată."},
         {"l": 5, "out": "Valori negative: 0",
          "txt": "Populația și densitatea nu pot fi negative. Comparația produce True sau False pe fiecare rând; <code>.sum()</code> numără valorile True."},
         {"l": 7, "out": "              count       mean      min        50%         max\n"
-                        "densitate     284.0      337.0      3.5      113.2      7827.4\n"
+                        "densitate     285.0      336.7      3.5      113.9      7827.4\n"
                         "pib_locuitor  276.0    35810.9  11700.0    33550.0    107200.0\n"
-                        "populatie     291.0  1920320.8      0.0  1484402.0  15655924.0",
+                        "populatie     292.0  1913881.4      0.0  1483574.0  15655924.0",
          "txt": "Un rezumat pe indicator (aici, cinci coloane din opt). Două valori ies în evidență: o densitate de 7.827 de locuitori pe km² și o <b>populație 0</b>."},
-        {"l": 9, "out": "  regiune               denumire  indicator  valoare\n  NO0B    Svalbard og Jan Mayen  populatie      0.0",
-         "txt": "Populația 0 aparține regiunii Svalbard, arhipelagul norvegian: Eurostat raportează efectiv 0. Valoarea 7.827 este Bruxelles, un oraș-regiune. Nu sunt erori. De aceea, valorile neobișnuite nu se șterg automat: mai întâi se verifică sursa."},
+        {"l": 9, "set": {"populatie": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator", "nivel"],
+            "rows": [["BE10", 1264371, "populatie", 2], ["BE21", 1932876, "populatie", 2], ["…", "…", "…", "…"]],
+            "nota": "doar populația"}}},
+         "txt": "Pentru populația 0, se păstrează doar rândurile cu indicatorul populație."},
+        {"l": 10, "out": "regiune  valoare\nNO0B         0.0\nFI20     30541.0\nLI00     40015.0",
+         "txt": "<code>NO0B</code> este Svalbard, arhipelagul norvegian: Eurostat raportează efectiv 0. Valoarea 7.827 este Bruxelles, un oraș-regiune. Nu sunt erori. De aceea, valorile neobișnuite nu se șterg automat: mai întâi se verifică sursa."},
     ],
 }
 
 PAS_CODURI = {
-    "fisier": "04_curatarea.ipynb · 7. Capcana codurilor",
+    "fisier": "04_curatarea.ipynb · 6. Migrația: coduri",
     "intro": "Două capcane care nu produc nicio eroare: unele țări se pierd fără avertisment, iar lipsa lor devine vizibilă abia în rezultate.",
-    "cod": "gresit = pd.read_csv(DATE / \"c3\" / \"migratie.csv\")\n"
-           "migratie = pd.read_csv(DATE / \"c3\" / \"migratie.csv\",\n"
+    "cod": "gresit = pd.read_csv(\"data/c3/migratie.csv\")\n"
+           "migratie = pd.read_csv(\"data/c3/migratie.csv\",\n"
            "                       keep_default_na=False, na_values=[\"\"])\n\n"
            "coduri = {\"EL\": \"GR\", \"UK\": \"GB\"}\n"
            "migratie = migratie.replace({\"tara_rezidenta\": coduri, \"cetatenie\": coduri})\n"

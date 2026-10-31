@@ -53,7 +53,7 @@ AGENDA = [
 ]
 
 # Pașii pentru lecția 3: Git (caietul 03, secțiunea 6) și migrația (caietul 03, secțiunea 5).
-# Cifrele migrației: Eurostat migr_pop1ctz, 2024 (aceleași ca în date/explorator.json).
+# Cifrele migrației: Eurostat migr_pop1ctz, 2024, din rularea caietului (31 octombrie 2026).
 
 _NB3 = "notebooks/03_surse_diverse_si_preprocesare.ipynb"
 _MSG = "Pregatim tabelele regionale si migratia"
@@ -103,89 +103,90 @@ PAS_GIT = {
 PAS_TARI = {
     "fisier": "03_surse_diverse.ipynb · 5. Migrația: țări și grupuri de țări",
     "intro": "Prima decizie de curățare din caietul 03. Eurostat raportează în aceeași coloană țări și grupuri de țări, care trebuie separate.",
-    "cod": "migratie = pd.read_csv(DATE / \"c2\" / \"migratie.csv\",\n"
+    "cod": "migratie = pd.read_csv(\"data/c2/migratie.csv\",\n"
            "                       keep_default_na=False, na_values=[\"\"])\n"
            "migratie[\"citizen\"].unique()\n\n"
-           "este_tara = (migratie[\"citizen\"].str.len() == 2) & (migratie[\"geo\"].str.len() == 2)\n"
-           "migratie = migratie[este_tara]\n\n"
+           "cetatenie_tara = migratie[\"citizen\"].str.len() == 2\n"
+           "rezidenta_tara = migratie[\"geo\"].str.len() == 2\n"
+           "migratie = migratie[cetatenie_tara & rezidenta_tara]\n\n"
            "migratie = migratie[migratie[\"citizen\"] != migratie[\"geo\"]]\n"
            "migratie = migratie[[\"geo\", \"citizen\", \"valoare\"]]\n"
            "migratie.columns = [\"tara_rezidenta\", \"cetatenie\", \"persoane\"]\n\n"
            "romani = migratie[migratie[\"cetatenie\"] == \"RO\"]\n"
            "romani.sort_values(\"persoane\", ascending=False).head(10)",
     "pasi": [
-        {"l": 1, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
-            "rows": [["IT", "RO", 1073196], ["IT", "TOTAL", "…"], ["IT", "IT", "…"], ["DE", "EU27_2020_FOR", "…"], ["…", "…", "…"]],
+        {"l": 1, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["citizen", "valoare", "geo"],
+            "rows": [["RO", 1073196, "IT"], ["TOTAL", "…", "IT"], ["IT", "…", "IT"], ["EU27_2020_FOR", "…", "DE"], ["…", "…", "…"]],
             "nota": "țări și grupuri de țări, amestecate"}}},
          "txt": "<code>keep_default_na=False</code>: <code>NA</code> este codul Namibiei, nu o valoare lipsă. Doar celulele goale sunt tratate ca valori lipsă."},
         {"l": 3, "out": "array([..., 'RO', 'RS', 'RU', ..., 'EU27_2020_FOR', 'FOR', 'NAT', 'TOTAL'], dtype=object)",
-         "txt": "<code>unique()</code> afișează valorile distincte. Printre țări apar și grupuri: străinii din UE, toți străinii, cetățenii proprii, totalul. Dacă nu sunt eliminate, migranții din Italia sunt numărați de mai multe ori."},
-        {"l": 5, "set": {"este_tara": {"t": "Series", "v": {"rows": [["0", "True"], ["1", "False"], ["2", "True"], ["3", "False"], ["…", "…"]],
-            "nota": "True unde ambele coduri au două litere"}}},
-         "txt": "Codurile de țară au exact două litere. <code>.str.len()</code> măsoară lungimea șirului de caractere; <code>&</code> impune ca <b>ambele</b> coloane să conțină coduri de țară."},
-        {"l": 6, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
-            "rows": [["IT", "RO", 1073196], ["IT", "IT", "…"], ["…", "…", "…"]], "nota": "doar țări"}}},
-         "txt": "Grupurile au fost eliminate. Rămân însă rândurile în care cetățenia coincide cu țara de rezidență, de exemplu italienii din Italia."},
-        {"l": 8, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["geo", "citizen", "valoare"],
-            "rows": [["IT", "RO", 1073196], ["…", "…", "…"]], "nota": "fără cetățenii propriei țări"}}},
-         "txt": "<code>!=</code> păstrează rândurile în care cetățenia diferă de țara de rezidență. Cetățenii români care locuiesc în România nu sunt migranți."},
-        {"l": 10, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
-            "rows": [["IT", "RO", 1073196], ["DE", "RO", 776424], ["IT", "AL", 416229], ["…", "…", "…"]],
+         "txt": "<code>unique()</code> afișează valorile distincte. Printre țări apar și grupuri: străinii din UE, toți străinii, cetățenii proprii, totalul. Dacă nu sunt eliminate, aceiași oameni sunt numărați de mai multe ori."},
+        {"l": 5, "set": {"cetatenie_tara": {"t": "Series", "v": {"rows": [["0", "True"], ["1", "False"], ["2", "True"], ["3", "False"], ["…", "…"]],
+            "nota": "True unde cetățenia are două litere"}}},
+         "txt": "Codurile de țară au exact două litere. <code>.str.len()</code> măsoară lungimea textului, iar comparația dă True sau False pe fiecare rând."},
+        {"l": 6, "set": {"rezidenta_tara": {"t": "Series", "v": {"rows": [["0", "True"], ["1", "True"], ["2", "True"], ["3", "True"], ["…", "…"]],
+            "nota": "True unde țara de rezidență are două litere"}}},
+         "txt": "Aceeași verificare pentru țara de rezidență: în <code>geo</code> apare și <code>EU27_2020</code>, totalul Uniunii."},
+        {"l": 7, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["citizen", "valoare", "geo"],
+            "rows": [["RO", 1073196, "IT"], ["IT", "…", "IT"], ["…", "…", "…"]], "nota": "doar țări"}}},
+         "txt": "<code>&</code> cere ca <b>ambele</b> condiții să fie adevărate. Grupurile au fost eliminate; rămân însă rândurile în care cetățenia coincide cu țara, de exemplu italienii din Italia."},
+        {"l": 9, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["citizen", "valoare", "geo"],
+            "rows": [["RO", 1073196, "IT"], ["…", "…", "…"]], "nota": "fără cetățenii propriei țări"}}},
+         "txt": "<code>!=</code> păstrează rândurile în care cetățenia diferă de țara de rezidență. Românii din România nu sunt migranți."},
+        {"l": 11, "set": {"migratie": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
+            "rows": [["IT", "RO", 1073196], ["DE", "RO", 776424], ["DE", "IT", 571379], ["…", "…", "…"]],
             "nota": "un rând = câte persoane cu o cetățenie trăiesc într-o țară"}}},
-         "txt": "Trei coloane, cu nume descriptive. Peste o lună, <code>tara_rezidenta</code> rămâne inteligibil; <code>geo</code> nu."},
-        {"l": 12, "set": {"romani": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
+         "txt": "Trei coloane, în ordinea dorită, cu nume care spun ce conțin. Peste o lună, <code>tara_rezidenta</code> rămâne inteligibil; <code>geo</code> nu."},
+        {"l": 13, "set": {"romani": {"t": "DataFrame", "v": {"cols": ["tara_rezidenta", "cetatenie", "persoane"],
             "rows": [["IT", "RO", 1073196], ["DE", "RO", 776424], ["ES", "RO", 620463], ["…", "…", "…"]], "nota": "românii, după țara în care trăiesc"}}},
          "txt": "Filtrul din C1, aplicat pe tabelul curățat."},
-        {"l": 13, "out": "tara_rezidenta  persoane\nIT              1073196\nDE               776424\nES               620463\nFR               161220\nAT               153427\nBE               127539\nNL                52265\nIE                48220\nSE                21442\nPT                19692",
+        {"l": 14, "out": "tara_rezidenta  persoane\nIT              1073196\nDE               776424\nES               620463\nFR               161220\nAT               153427\nBE               127539\nNL                52265\nIE                48220\nSE                21442\nPT                19692",
          "txt": "Italia, Germania, Spania. În C1, după SCI, Italia era abia pe locul șase. Acum sunt disponibile ambele surse ale comparației: conectivitatea socială și migrația."},
     ],
 }
 
 
-# Caietul 03, secțiunile 2-4: nomenclatorul NUTS și tabelul regional.
-# Cifrele: data/surse_c3/NUTS_AT_2024.csv și data/intermediare_c3/referinta_c2_20261013.
+# Caietul 03, secțiunea 3: șase fișiere din C2, un singur tabel.
+# Cifrele: rularea caietului pe fișierele din data/c2 (31 octombrie 2026).
 
 PAS_NUTS = {
-    "fisier": "03_surse_diverse.ipynb · 2-3. NUTS și tabelul regional",
-    "intro": "Din C2 provin șase fișiere: trei indicatori pe două niveluri. Codurile regiunilor (RO113) nu sunt informative fără nomenclator. Mai întâi li se atribuie denumiri, apoi toate fișierele se reunesc într-un singur tabel.",
-    "cod": "nuts = pd.read_csv(DATE / \"surse_c3\" / \"NUTS_AT_2024.csv\")\n"
-           "nuts = nuts[[\"NUTS_ID\", \"CNTR_CODE\", \"NAME_LATN\"]]\n"
-           "nuts.columns = [\"regiune\", \"tara\", \"denumire\"]\n"
-           "nuts[nuts[\"tara\"] == \"RO\"].head(6)\n\n"
-           "tabele = []\n"
-           "for indicator in [\"populatie\", \"densitate\", \"pib_locuitor\"]:\n"
-           "    for nivel in [2, 3]:\n"
-           "        fisier = DATE / \"c2\" / f\"{indicator}_nuts{nivel}.csv\"\n"
-           "        tabel = pd.read_csv(fisier)[[\"geo\", \"valoare\"]]\n"
-           "        tabel[\"indicator\"] = indicator\n"
-           "        tabel[\"nivel\"] = nivel\n"
-           "        tabele.append(tabel)\n"
-           "regional = pd.concat(tabele).rename(columns={\"geo\": \"regiune\"})\n"
+    "fisier": "03_surse_diverse.ipynb · 3. Indicatorii într-un singur tabel",
+    "intro": "Din C2 provin șase fișiere: trei indicatori pe două niveluri, fiecare cu un rând pe regiune. O funcție mică citește un fișier și notează de unde vine; apoi toate șase se pun unul sub altul.",
+    "cod": "def citeste(indicator, nivel):\n"
+           "    tabel = pd.read_csv(f\"data/c2/{indicator}_nuts{nivel}.csv\")\n"
+           "    tabel[\"indicator\"] = indicator\n"
+           "    tabel[\"nivel\"] = nivel\n"
+           "    tabel = tabel.rename(columns={\"geo\": \"regiune\"})\n"
+           "    return tabel\n\n"
+           "tabele = [citeste(\"populatie\", 2), citeste(\"populatie\", 3),\n"
+           "          citeste(\"densitate\", 2), citeste(\"densitate\", 3),\n"
+           "          citeste(\"pib_locuitor\", 2), citeste(\"pib_locuitor\", 3)]\n"
+           "regional = pd.concat(tabele)\n"
+           "regional[regional[\"regiune\"] == \"RO113\"]\n\n"
            "regional.groupby([\"nivel\", \"indicator\"])[\"valoare\"].agg([\"size\", \"count\"])",
     "pasi": [
-        {"l": 3, "set": {"nuts": {"t": "DataFrame", "v": {"cols": ["regiune", "tara", "denumire"],
-            "rows": [["CZ06", "CZ", "Jihovýchod"], ["CZ063", "CZ", "Kraj Vysočina"], ["…", "…", "…"]],
-            "nota": "1.971 de coduri, toate nivelurile, de la Eurostat GISCO"}}},
-         "txt": "Nomenclatorul este o a doua sursă, folosită doar pentru a traduce codurile în denumiri. Se păstrează trei coloane, redenumite în română."},
-        {"l": 4, "out": "  regiune tara           denumire\n  RO      RO            România\n  RO1     RO  Macroregiunea Unu\n  RO11    RO          Nord-Vest\n  RO111   RO              Bihor\n  RO112   RO    Bistriţa-Năsăud\n  RO113   RO               Cluj",
-         "txt": "Lungimea codului indică nivelul: 2 caractere țara, 3 macroregiunea, 4 regiunea NUTS 2, 5 județul NUTS 3. RO113 este Cluj, în Nord-Vest (RO11)."},
-        {"l": 6, "set": {"tabele": {"t": "list", "v": []}},
-         "txt": "O listă goală, în care se colectează tabelele. Concatenarea are loc abia la final."},
-        {"l": 10, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["geo", "valoare"],
-            "rows": [["BE10", 1264371], ["BE21", 1932876], ["…", "…"]], "nota": "populația, NUTS 2: prima trecere prin buclă"}}},
-         "txt": "Două bucle imbricate: 3 indicatori × 2 niveluri = 6 fișiere. Din fiecare se păstrează doar coloanele care variază: regiunea și valoarea."},
-        {"l": 12, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["geo", "valoare", "indicator", "nivel"],
+        {"l": 1,
+         "txt": "<code>def</code> definește funcția: pașii pentru un singur fișier. Deocamdată nu se citește nimic; pașii rulează la fiecare apel."},
+        {"l": 2, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["geo", "valoare"],
+            "rows": [["BE10", 1264371], ["BE21", 1932876], ["…", "…"]], "nota": "primul apel: populația, NUTS 2"}}},
+         "txt": "La primul apel, <code>indicator</code> este <code>\"populatie\"</code> și <code>nivel</code> este 2, deci adresa devine <code>data/c2/populatie_nuts2.csv</code>. Fișierul are două coloane: regiunea și valoarea."},
+        {"l": 4, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["geo", "valoare", "indicator", "nivel"],
             "rows": [["BE10", 1264371, "populatie", 2], ["BE21", 1932876, "populatie", 2], ["…", "…", "…", "…"]]}}},
-         "txt": "Două coloane noi indică proveniența fiecărui rând. Fără ele, după concatenare nu se mai poate distinge populația de densitate."},
-        {"l": 13, "set": {"tabele": {"t": "list", "v": ["populatie · 2", "populatie · 3", "densitate · 2", "densitate · 3", "pib_locuitor · 2", "pib_locuitor · 3"]}},
-         "txt": "După cele șase treceri, lista are șase tabele (aici, doar numele lor)."},
-        {"l": 14, "set": {"regional": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator", "nivel"],
+         "txt": "Două coloane noi spun de unde vine fiecare rând. Fără ele, după lipire nu s-ar mai putea deosebi populația de densitate."},
+        {"l": 5, "set": {"tabel": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator", "nivel"],
+            "rows": [["BE10", 1264371, "populatie", 2], ["…", "…", "…", "…"]]}}},
+         "txt": "<code>geo</code> devine <code>regiune</code>, același nume ca în nomenclatorul NUTS, ca în C4 tabelele să se poată uni."},
+        {"l": 8, "set": {"tabele": {"t": "list", "v": ["populatie · 2", "populatie · 3", "densitate · 2", "densitate · 3", "pib_locuitor · 2", "pib_locuitor · 3"]}},
+         "sterge": ["tabel"],
+         "txt": "Șase apeluri, șase tabele, într-o listă (aici, doar numele lor). <code>tabel</code> a existat doar în interiorul funcției."},
+        {"l": 11, "set": {"regional": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator", "nivel"],
             "rows": [["BE10", 1264371, "populatie", 2], ["…", "…", "…", "…"], ["RO113", 104.8, "densitate", 3], ["…", "…", "…", "…"]],
             "nota": "un singur tabel lung, din șase fișiere"}}},
-         "sterge": ["tabel"],
-         "txt": "<code>pd.concat</code> așază tabelele unul sub altul (adaugă rânduri). <code>rename</code> redenumește <code>geo</code> în <code>regiune</code>, ca în nomenclator."},
-        {"l": 15, "out": "                    size  count\nnivel indicator\n2     densitate      340    285\n      pib_locuitor   309    276\n      populatie      359    292\n3     densitate     1580   1279\n      pib_locuitor  1343    524\n      populatie     1621   1326",
-         "txt": "<code>size</code> numără rândurile, <code>count</code> doar valorile prezente. Diferența reprezintă valorile lipsă. PIB-ul pe județ are valori doar pentru 524 din 1.343 de rânduri: tratarea lor se decide în C4."},
+         "txt": "<code>pd.concat</code> așază tabelele unul sub altul, ca la Banca Mondială în C2."},
+        {"l": 12, "out": "regiune   valoare     indicator\nRO113   693507.0     populatie\nRO113      104.8     densitate\nRO113    44800.0  pib_locuitor",
+         "txt": "Clujul apare de trei ori, câte un rând pe indicator: tabelul este în format <b>lung</b>. În C4 devine lat, cu un rând pe regiune."},
+        {"l": 14, "out": "                    size  count\nnivel indicator\n2     densitate      340    285\n      pib_locuitor   309    276\n      populatie      350    292\n3     densitate     1580   1279\n      pib_locuitor  1343    524\n      populatie     1621   1326",
+         "txt": "<code>size</code> numără rândurile, <code>count</code> doar valorile prezente. Diferența reprezintă valorile lipsă: PIB-ul pe județ are valori doar pentru 524 din 1.343 de rânduri. Tratarea lor se decide în C4."},
     ],
 }
 
@@ -984,13 +985,14 @@ sl("s20", "Cadrul teoretic", "Întrebarea echipei",
 
 sl("s21n", "Datele", "Regiunile, într-un tabel",
    "<h2>Șase fișiere, un tabel</h2>"
-   + ix("pas", "Nomenclatorul și tabelul regional", PAS_NUTS),
+   + ix("pas", "Indicatorii într-un singur tabel", PAS_NUTS),
    manual=
    "<h2>Regiunile, într-un tabel</h2>"
    "<p>Fiecare fișier din C2 are câte un rând pe regiune, cu un cod NUTS. Denumirile "
-   "regiunilor provin din nomenclatorul Eurostat GISCO, iar lungimea codului indică "
-   "nivelul: 2 caractere țara, 4 regiunea, 5 județul.</p>"
-   + ix("pas", "Nomenclatorul și tabelul regional", PAS_NUTS)
+   "regiunilor provin din nomenclatorul Eurostat GISCO, pe care caietul îl descarcă cu "
+   "<code>requests</code>; lungimea codului indică nivelul: 2 caractere țara, 4 regiunea, "
+   "5 județul. Indicatorii se pun apoi într-un singur tabel.</p>"
+   + ix("pas", "Indicatorii într-un singur tabel", PAS_NUTS)
    + nota("De ce format lung, nu lat",
           "Un rând pentru fiecare combinație de regiune, indicator și nivel. Astfel, un "
           "indicator nou se adaugă fără coloane noi, iar valorile lipsă se numără direct. "
@@ -998,7 +1000,8 @@ sl("s21n", "Datele", "Regiunile, într-un tabel",
    + "<p>Același pas se aplică și datelor SCI: coloanele cu nume în engleză sunt "
      "redenumite după semnificația lor în proiect (<code>user_region</code> devine "
      "<code>regiune_1</code>, <code>scaled_sci</code> devine <code>sci</code>). "
-     "Tabelele au 88.804 rânduri la NUTS 2 și 1.803.649 la NUTS 3.</p>")
+     "La NUTS 2, tabelul are 298 × 298 = 88.804 rânduri: fiecare regiune cu fiecare, "
+     "inclusiv cu ea însăși, iar fiecare pereche apare în ambele ordini.</p>")
 
 sl("s21b", "Datele", "Țări și grupuri de țări",
    "<h2>Țări și grupuri de țări</h2>"

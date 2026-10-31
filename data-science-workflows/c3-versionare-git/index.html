@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 3. Versionare și colaborare cu Git · Fluxuri de lucru</title>
 <meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără conflicte între modificări și cum se încadrează teoretic un proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=101">
-<link rel="stylesheet" href="../css/sistem.css?v=101">
-<link rel="stylesheet" href="../css/intrare.css?v=101">
-<script src="../js/tema.js?v=101"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=103">
+<link rel="stylesheet" href="../css/sistem.css?v=103">
+<link rel="stylesheet" href="../css/intrare.css?v=103">
+<script src="../js/tema.js?v=103"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <span class="bl__fapte" id="fapte">
       <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
       <a class="bl__b" href="tutorial/">Manualul</a>
-      
+      <a class="bl__b" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
       <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
     </span>
   </div>
@@ -70,6 +70,10 @@
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb" target="_blank" rel="noopener">
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Caietul 03, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/, lângă caietele 01 și 02.</span>
+      </a>
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
         <span class="mat__t">Depozitul cursului ↗</span>
         <span class="mat__d">Caietele și datele cursului, pe GitHub.</span>
@@ -110,7 +114,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=101"), import("../js/ora.js?v=101"), import("../js/curs.js?v=101")]);
+    import("../js/auth.js?v=103"), import("../js/ora.js?v=103"), import("../js/curs.js?v=103")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -136,7 +140,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=101"></script>
-<script type="module" src="../js/subsol.js?v=101"></script>
+<script type="module" src="../js/antet.js?v=103"></script>
+<script type="module" src="../js/subsol.js?v=103"></script>
 </body>
 </html>
