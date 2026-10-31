@@ -19,7 +19,7 @@
    Pagina se reîmprospătează singură la câteva secunde, cât e vizibilă.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=103";
+import { RADACINA } from "./curs.js?v=105";
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 const PAS = 3500;
@@ -30,7 +30,7 @@ const culoare = nr => `var(--${CULORI[(nr - 1) % CULORI.length]})`;
 const initiale = n => String(n || "?").trim().split(/\s+/).slice(0, 2).map(x => x[0] || "").join("").toUpperCase();
 
 let A = null;
-async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=103`); return A; }
+async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=105`); return A; }
 async function rpc(f, args){
   const { sb } = await auth();
   const r = await sb.rpc(f, args);
@@ -247,8 +247,41 @@ export async function echipeStudent(gazda, { slide = false } = {}){
 export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
   gazda.classList.add("echp", "echp--prof");
   if (!grupa){ pune(gazda, `<p class="echp__gol">Alege mai întâi o grupă.</p>`); return () => {}; }
-  let ocupat = false, msg = "", d = null;
+  let ocupat = false, msg = "", d = null, ghRap = null;
   const noi = memorie();
+
+  /* butonul „Sincronizează GitHub”: repo-urile echipelor (db/26-sincronizare-github.md) */
+  async function sincronizeaza(){
+    if (ocupat) return;
+    ocupat = true; ghRap = { lucru: true }; await deseneaza();
+    try {
+      const { sb } = await auth();
+      const { data, error } = await sb.functions.invoke("sincronizeaza-github", { body: { grupa } });
+      if (error) throw error;
+      ghRap = data;
+    } catch (e){
+      ghRap = { ok: false, mesaj: /failed to send|not found|404/i.test(e.message || "")
+        ? "Funcția sincronizeaza-github nu e instalată în Supabase: vezi db/26-sincronizare-github.md."
+        : (e.message || "Sincronizarea nu a reușit.") };
+    } finally { ocupat = false; await deseneaza(); }
+  }
+
+  function raportGh(r){
+    if (!r) return "";
+    if (r.lucru) return `<p class="echp__msg">Se sincronizează cu GitHub...</p>`;
+    if (!r.ok) return `<p class="echp__msg">${esc(r.mesaj)}</p>`;
+    if (!r.echipe.length) return `<p class="echp__msg">Nicio echipă cu membri.</p>`;
+    const rand = e => {
+      const p = [];
+      if (e.creat) p.push("repo creat");
+      if (e.invitati.length) p.push(`invitați: ${e.invitati.map(esc).join(", ")}`);
+      if (e.scosi.length) p.push(`scoși: ${e.scosi.map(esc).join(", ")}`);
+      if (e.fara_cont.length) p.push(`fără cont GitHub: ${e.fara_cont.map(esc).join(", ")}`);
+      if (e.eroare) p.push(`eroare: ${esc(e.eroare)}`);
+      return `<li><span><b>${esc(e.repo)}</b> · ${p.length ? p.join(" · ") : "la zi"}</span></li>`;
+    };
+    return `<div class="echp__fara"><p class="echp__et2">GitHub</p><ul class="echp__lista">${r.echipe.map(rand).join("")}</ul></div>`;
+  }
 
   async function actiune(f, args){
     if (ocupat) return;
@@ -293,9 +326,11 @@ export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
         <button class="btn btn--mic" type="button" id="echp-st">${deschisa ? "Închide alegerea" : "Redeschide alegerea"}</button>
         <button class="btn btn--mic" type="button" id="echp-add">Adaugă o echipă</button>
         <button class="btn btn--mic" type="button" id="echp-csv">Export CSV</button>
+        <button class="btn btn--mic" type="button" id="echp-gh">Sincronizează GitHub</button>
       </div>
       ${banda(d.echipe, d.studenti)}
       ${msg ? `<p class="echp__msg">${esc(msg)}</p>` : ""}
+      ${raportGh(ghRap)}
       ${d.cereri.length ? `<div class="echp__cereri"><p class="echp__et2">Cereri în așteptare</p>
         ${d.cereri.map(c => `<div class="echp__cerere" style="--ec:${culoare(c.nr)}"><span><b>${esc(c.nume)}</b> cere să intre în
           <b class="echp__ec">Echipa ${c.nr}</b>.</span>
@@ -318,6 +353,7 @@ export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
     gazda.querySelector("#echp-st").onclick = () => actiune("echipe_stare", { p_grupa: grupa, p_stare: d.stare === "deschisa" ? "inchisa" : "deschisa" });
     gazda.querySelector("#echp-add").onclick = () => actiune("echipe_adauga", { p_grupa: grupa });
     gazda.querySelector("#echp-csv").onclick = () => csv(d);
+    gazda.querySelector("#echp-gh").onclick = sincronizeaza;
     gazda.querySelectorAll("[data-r]").forEach(b => b.onclick = () =>
       actiune("raspunde_cererii", { p_cerere: +b.dataset.r, p_accept: b.dataset.a === "1" }));
     gazda.querySelectorAll("select[data-m]").forEach(s => s.onchange = () =>
@@ -345,7 +381,7 @@ export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
 
 export async function echipeSlideProfesor(gazda){
   gazda.classList.add("echp", "echp--slide");
-  const O = await import(`${RADACINA}/js/ora.js?v=103`);
+  const O = await import(`${RADACINA}/js/ora.js?v=105`);
   const S = await O.deschisa().catch(() => null);
   let grupa = S?.grupa_id || null;
   if (!grupa){
