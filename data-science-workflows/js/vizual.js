@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=107");
+    const m = await import("/data-science-workflows/js/colectare.js?v=108");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -116,78 +116,73 @@ V.flux = (gazda, d) => {
 
 
 /* ===========================================================================
-   6. CONFLICT — îl rezolvi cu mâna, cum se face și în viață
+   6. CONFLICT — doi colegi, același rând
 
-   Marcajele acelea cu paranteze unghiulare sperie prima dată. Aici le vezi,
-   alegi, și vezi ce rămâne în fișier.
+   Povestea în trei rânduri (rândul de la început, ce a schimbat fiecare),
+   apoi fișierul așa cum îl lasă git pull: ambele variante, între marcaje.
+   Alegerea o face omul; varianta bună păstrează adesea ce a vrut fiecare.
+   În cod, [[...]] marchează partea schimbată.
    =========================================================================== */
+
+const marcat = s => esc(s).replace(/\[\[(.+?)\]\]/g, "<mark>$1</mark>");
 
 V.conflict = (gazda, d) => {
   gazda.closest(".ix")?.classList.add("exc");
   let ales = null;
-
+  const VAR = d.variante;
   const randuri = () => {
     if (ales === null){
-      return `<span class="cf__m">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>\n` +
-             `<span class="cf__a">${esc(d.alMeu)}</span>\n` +
-             `<span class="cf__m">=======</span>\n` +
-             `<span class="cf__b">${esc(d.alLor)}</span>\n` +
-             `<span class="cf__m">&gt;&gt;&gt;&gt;&gt;&gt;&gt; ${esc(d.ramura || "curatare")}</span>`;
+      return `<span class="cf__m">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<em>${esc(d.eticheta?.[0] || "")}</em></span>`
+        + `<span class="cf__a">${marcat(d.alMeu)}</span>`
+        + `<span class="cf__m">=======</span>`
+        + `<span class="cf__b">${marcat(d.alLor)}</span>`
+        + `<span class="cf__m">&gt;&gt;&gt;&gt;&gt;&gt;&gt; ${esc(d.ramura || "dev")}<em>${esc(d.eticheta?.[1] || "")}</em></span>`;
     }
-    if (ales === "meu")  return `<span class="cf__a">${esc(d.alMeu)}</span>`;
-    if (ales === "lor")  return `<span class="cf__b">${esc(d.alLor)}</span>`;
-    return `<span class="cf__a">${esc(d.alMeu)}</span>\n<span class="cf__b">${esc(d.alLor)}</span>`;
+    const v = VAR.find(x => x.k === ales);
+    return `<span class="cf__r">${marcat(v.cod)}</span>`;
   };
-
   gazda.innerHTML = `
     ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="cf">
-      <div class="ed">
-        <div class="ed__bara"><span class="ed__pct"><i></i><i></i><i></i></span>
-          <span class="ed__nume">${esc(d.fisier || "analiza.py")}</span></div>
-        <div class="ed__corp"><div class="ed__cod"><pre class="cf__cod"></pre></div></div>
-      </div>
-      <div class="cf__alege">
-        <button class="zn__cb" data-k="meu" type="button">păstrez versiunea mea</button>
-        <button class="zn__cb" data-k="lor" type="button">păstrez versiunea primită</button>
-        <button class="zn__cb" data-k="ambele" type="button">păstrez ambele versiuni</button>
-      </div>
-      <div class="ex__jos">
-        <button class="btn btn--mic btn--tare" data-rol="verifica" type="button" disabled>
-          git add și commit</button>
-        <span class="ex__raspuns"></span>
-      </div>
-      <p class="ex__ex"></p>
-      <p class="ex__stare"></p>
-    </div>`;
+    <ol class="cfl">${d.poveste.map(p => `<li style="--pc:var(--${p.c || "text-3"})">`
+      + `<span class="cfl__cine">${p.cine ? `<i>${esc(p.cine[0])}</i>` : "<i></i>"}${esc(p.t)}</span>`
+      + `<code>${marcat(p.cod)}</code></li>`).join("")}</ol>
+    <div class="ed cfl__ed">
+      <div class="ed__bara"><span class="ed__pct"><i></i><i></i><i></i></span>
+        <span class="ed__nume">${esc(d.fisier || "src/tabele.py")}</span><span class="cfl__msg">${esc(d.mesaj || "")}</span></div>
+      <div class="ed__corp"><div class="ed__cod"><pre class="cf__cod"></pre></div></div>
+    </div>
+    <div class="cf__alege">${VAR.map(v => `<button class="zn__cb" data-k="${v.k}" type="button">${esc(v.t)}</button>`).join("")}</div>
+    <div class="ex__jos">
+      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button" disabled>git add, apoi git commit</button>
+      <span class="ex__raspuns"></span>
+    </div>
+    <p class="ex__ex"></p>
+    <p class="ex__stare"></p>`;
 
   const cod = gazda.querySelector(".cf__cod");
   const btV = gazda.querySelector('[data-rol="verifica"]');
   const out = gazda.querySelector(".ex__raspuns");
   const ex  = gazda.querySelector(".ex__ex");
   const st  = gazda.querySelector(".ex__stare");
-
   const scrie = () => { cod.innerHTML = randuri(); };
 
-  gazda.addEventListener("click", e => {
+  gazda.querySelector(".cf__alege").addEventListener("click", e => {
     const b = e.target.closest("[data-k]");
-    if (!b) return;
+    if (!b || b.disabled) return;
     ales = b.dataset.k;
-    gazda.querySelectorAll("[data-k]").forEach(x => x.classList.toggle("on", x === b));
+    gazda.querySelectorAll(".cf__alege [data-k]").forEach(x => x.classList.toggle("on", x === b));
     btV.disabled = false;
     out.textContent = "";
     scrie();
   });
 
   btV.onclick = async () => {
-    const bun = ales === (d.bun || "lor");
-    out.innerHTML = bun
-      ? "<b>Corect.</b> Marcajele au fost eliminate, iar fișierul rulează din nou."
-      : `<b>Funcționează, dar nu este varianta potrivită.</b> ${d.deCe || ""}`;
+    const v = VAR.find(x => x.k === ales);
+    out.innerHTML = ales === d.bun ? `<b>Corect.</b> ${v.deCe || ""}` : `<b>Rulează, dar se pierde ceva.</b> ${v.deCe || ""}`;
     ex.classList.add("vazut");
     ex.innerHTML = d.explicatie || "";
     btV.disabled = true;
-    gazda.querySelectorAll("[data-k]").forEach(x => x.disabled = true);
+    gazda.querySelectorAll(".cf__alege [data-k]").forEach(x => x.disabled = true);
     await poarta(gazda, d.id, ales);
     st.textContent = "Exercițiul este rezolvat.";
     st.classList.add("vazut");
@@ -1599,74 +1594,50 @@ V.zone = (gazda, d) => {
 };
 
 
-/* --- Primul commit al echipei, ghidat --------------------------------------
-   Aceleași zone, cu fișierele reale ale echipei. git add nu mută fișierul:
-   pune în pregătire o copie, așa cum e în acel moment; originalul rămâne în
-   dosar. commit face din copii o fotografie în istoric, iar push o copiază pe
-   GitHub. Fiecare pas are ieșirea lui în terminal. */
-
-V.commit = (gazda, d) => {
-  const S = d.stari, CM = d.commituri, F = d.fisiere;
-  gazda.innerHTML = `<div class="bg"><div class="bg__cmd"></div><div class="gzx"></div><div class="bg__txt"></div></div>`;
-  const Z = zoneGit(gazda.querySelector(".gzx"), { ramura: d.ramura || "main" });
-  const deseneaza = (k, anim) => {
-    const s = S[k];
-    Z.pune({
-      dosar: Object.entries(s.dosar).map(([k2, st2]) => ({ k: k2, ...F[k2], st: st2 })),
-      preg: (s.preg || []).map(k2 => ({ k: k2, ...F[k2] })),
-      ist: (s.ist || []).map(id => ({ id, ...CM[id] })),
-      gh: (s.gh || []).map(id => ({ id, ...CM[id] })),
-      activ: s.activ, punte: s.punte, notaDosar: d.notaDosar,
-    }, anim);
-    const p = d.pasi[k - 1];
-    Z.term(p ? (p.edit ? "" : (p.full || p.cmd)) : "", p ? p.out : [["g", d.inceput || ""]], { rau: p?.rau });
-  };
-  banda(gazda, d.pasi, deseneaza, { start: d.start, cuTerminal: true });
-};
-
-
 /* --- Depozitul echipei, pe calculator --------------------------------------
-   Repo-ul echipei există deja pe GitHub, făcut din șablon; membrii au primit
-   invitația. Pașii fiecărui membru, o singură dată: acceptă invitația, ia
-   adresa, clonează în dsw/proiect, intră în dosar și verifică. */
+   Stânga, repo-ul echipei așa cum arată pe GitHub: dosarele, fiecare cu
+   ultimul commit. Până la acceptarea invitației, repo-ul privat nu se vede.
+   Dreapta, dosarul dsw de pe calculator, ca în caietul 03: git clone pune în
+   el dosarul proiect/, cu aceleași dosare. */
 
 V.clona = (gazda, d) => {
   const S = d.stari, R = d.repo;
   gazda.innerHTML = `
     <div class="bg">
       <div class="bg__cmd"></div>
-      <div class="cl">
-        <div class="cl__p cl__p--gh">
-          <div class="gz__cap"><span class="gz__ic">${SVG_NOR}</span><span class="gz__ct"><b>GitHub</b><small>${esc(R.org)}</small></span></div>
-          <div class="cl__repo">
-            <div class="cl__rt">${SVG_LACAT}<b>${esc(R.nume)}</b><small>privat, din ${esc(R.sablon)}</small></div>
-            <ul class="cl__f">${R.fisiere.map(f => `<li>${f.endsWith("/") ? SVG_DIR : SVG_FIS}<code>${esc(f)}</code></li>`).join("")}</ul>
-            <div class="cl__adr"><span>Code → HTTPS</span><code>${esc(R.adresa)}</code></div>
+      <div class="rp">
+        <section class="rp__p rp__p--gh">
+          <header class="rp__bar">${SVG_NOR}<span class="rp__nume">${esc(R.org)} / <b>${esc(R.nume)}</b></span>
+            <em>Private</em><span class="rp__code">Code ▾</span></header>
+          <div class="rp__adr"><small>Code → HTTPS</small><code>${esc(R.adresa)}</code></div>
+          <div class="rp__corp">
+            <div class="rp__ult"><i></i><b>${esc(R.commit)}</b><small>1 commit</small></div>
+            <ul class="rp__l">${R.fisiere.map(f => `<li>${f.endsWith("/") ? SVG_DIR : SVG_FIS}`
+              + `<code>${esc(f.replace(/\/$/, ""))}</code><span>${esc(R.commit)}</span></li>`).join("")}</ul>
+            <div class="rp__inv">${SVG_LACAT}<span>Invitație în așteptare</span><b>Accept invitation</b></div>
           </div>
-          <div class="cl__mem"><span>Membrii</span><div class="cl__av"></div></div>
-        </div>
-        <div class="cl__s"><span>git clone</span><i></i></div>
-        <div class="cl__p cl__p--pc">
-          <div class="gz__cap"><span class="gz__ic">${SVG_PC}</span><span class="gz__ct"><b>Calculatorul</b><small>dosarul dsw</small></span></div>
-          <ul class="cl__arb"></ul>
-        </div>
+        </section>
+        <div class="rp__s"><code>git clone</code><i></i></div>
+        <section class="rp__p rp__p--pc">
+          <header class="rp__bar">${SVG_PC}<span class="rp__nume">Calculatorul</span></header>
+          <ul class="rp__arb"></ul>
+        </section>
       </div>
-      <div class="cl__t"></div>
+      <div class="rp__t"></div>
       <div class="bg__txt"></div>
     </div>`;
-  const term = terminalGit(gazda.querySelector(".cl__t"));
-  const av = gazda.querySelector(".cl__av"), arb = gazda.querySelector(".cl__arb");
+  const term = terminalGit(gazda.querySelector(".rp__t"));
+  const arb = gazda.querySelector(".rp__arb"), gh = gazda.querySelector(".rp__p--gh");
   const deseneaza = (k, anim) => {
     const s = S[k];
-    av.innerHTML = R.membri.map((m, i) => `<span class="cl__m${(s.acces || []).includes(i) ? " da" : ""}" title="${esc(m)}">`
-      + `<i>${esc(m[0])}</i><small>${(s.acces || []).includes(i) ? "acces" : "invitat"}</small></span>`).join("");
-    gazda.querySelector(".cl__adr").classList.toggle("on", !!s.adresa);
-    gazda.querySelector(".cl__s").classList.toggle("on", !!s.clona);
-    gazda.querySelector(".cl__p--gh").classList.toggle("activ", !!s.ghActiv);
-    gazda.querySelector(".cl__p--pc").classList.toggle("activ", !!s.pcActiv);
+    gh.classList.toggle("ascuns", !s.acces);
+    gh.classList.toggle("adr", !!s.adresa);
+    gh.classList.toggle("activ", !!s.ghActiv);
+    gazda.querySelector(".rp__p--pc").classList.toggle("activ", !!s.pcActiv);
+    gazda.querySelector(".rp__s").classList.toggle("on", !!s.clona);
     flip(arb, () => {
       arb.innerHTML = s.arbore.map(([niv, t, nota, cls]) =>
-        `<li class="cl__n${cls ? " " + cls : ""}" data-k="${esc(t)}" style="--niv:${niv}">${t.endsWith("/") ? SVG_DIR : SVG_FIS}`
+        `<li class="rp__n${cls ? " " + cls : ""}" data-k="${esc(t)}" style="--niv:${niv}">${t.endsWith("/") ? SVG_DIR : SVG_FIS}`
         + `<code>${esc(t)}</code>${nota ? `<small>${esc(nota)}</small>` : ""}</li>`).join("");
     }, anim);
     const p = d.pasi[k - 1];
@@ -1676,64 +1647,111 @@ V.clona = (gazda, d) => {
 };
 
 
-/* --- Ramurile: main și dev -------------------------------------------------
-   Graful proiectului, cu commit-uri care au nume, nu buline. main e versiunea
-   stabilă, dev e ramura de lucru a echipei. Lângă etichete se vede dacă
-   ramura există și pe GitHub; lângă graf, ce conține dosarul după fiecare
-   comandă: la git switch se schimbă și fișierele. Studentul apasă comenzile,
-   în ordine; la final, poarta e trecută. */
+/* --- Primul commit al echipei ----------------------------------------------
+   Sus, drumul schimbării prin cele patru locuri: punctul plin arată unde se
+   află deja noua versiune. Dedesubt, fișierul însuși (rândurile schimbate,
+   marcate) și istoricul, exact ca în git log --oneline: HEAD -> main este
+   commit-ul de pe calculator, origin/main până unde a ajuns GitHub. */
 
-V.ramuri = (gazda, d) => {
-  gazda.closest(".ix")?.classList.add("exc");
-  const C = d.commituri, S = d.stari, L = d.linii, A = d.autori || {};
-  const W = 960, H = 176, Y = { m: 128, r: 44 }, CW = 158, CH = 42;
-  const X = col => 128 + col * 166;
+const LOC_GIT = [["Dosar", "ambra"], ["Pregătire", "roza"], ["Istoric local", "accent"], ["GitHub", "text-2"]];
+const etGit = t => t.split(", ").map(x =>
+  `<b class="${/^HEAD/.test(x) ? "lg__h" : /^origin\//.test(x) ? "lg__o" : "lg__r"}">${esc(x)}</b>`).join(", ");
+
+V.commit = (gazda, d) => {
+  const S = d.stari, CM = d.commituri;
   gazda.innerHTML = `
     <div class="bg">
       <div class="bg__cmd"></div>
-      <div class="rg"><svg class="rg__svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="graful ramurilor main și dev"></svg></div>
-      <div class="rg__jos">
+      <div class="pk__drum">${LOC_GIT.map(([t, c], i) => `${i ? `<span class="pk__p" data-p="${i}"><code>${PUNTI[i - 1]}</code><i></i></span>` : ""}`
+        + `<span class="pk__z" data-z="${i}" style="--zc:var(--${c})"><i></i>${t}</span>`).join("")}</div>
+      <div class="pk">
+        <figure class="pk__f"><figcaption>${SVG_FIS}<code>${esc(d.fisier)}</code><em></em></figcaption><pre></pre></figure>
+        <figure class="pk__log"><figcaption><code>git log --oneline</code></figcaption><ol></ol></figure>
+      </div>
+      <div class="pk__t"></div>
+      <div class="bg__txt"></div>
+    </div>`;
+  const term = terminalGit(gazda.querySelector(".pk__t"), { ramura: d.ramura || "main" });
+  const pre = gazda.querySelector(".pk__f pre"), em = gazda.querySelector(".pk__f em");
+  const log = gazda.querySelector(".pk__log ol");
+  const ET = { modificat: "modificat", pregatit: "în pregătire", salvat: "salvat" };
+  let ultim = null;
+  const deseneaza = (k, anim) => {
+    const s = S[k];
+    pre.innerHTML = (s.nou ? d.dupa : d.inainte).map(l => l.startsWith("+")
+      ? `<span class="pk__nou">${esc(l.slice(1))}</span>` : `<span>${esc(l)}</span>`).join("");
+    em.textContent = ET[s.st] || "";
+    em.className = s.st ? "pk__st pk__st--" + s.st : "";
+    const sus = s.log[0]?.[0];
+    log.innerHTML = s.log.map(([id, et], i) => `<li class="${i === 0 && anim && sus !== ultim ? "nou" : ""}">`
+      + `<code>${esc(CM[id].h)}</code>${et ? ` <span class="lg__e">(${etGit(et)})</span>` : ""} <span>${esc(CM[id].m)}</span></li>`).join("");
+    ultim = sus;
+    gazda.querySelectorAll(".pk__z").forEach(z => {
+      const i = +z.dataset.z;
+      z.classList.toggle("are", (s.loc || []).includes(i));
+      z.classList.toggle("acum", s.acum === i);
+    });
+    gazda.querySelectorAll(".pk__p").forEach(p => {
+      p.classList.remove("on");
+      if (+p.dataset.p === s.punte){ void p.offsetWidth; p.classList.add("on"); }
+    });
+    const p = d.pasi[k - 1];
+    term(p ? (p.edit ? "" : (p.full || p.cmd)) : "", p ? p.out : [["g", d.inceput || ""]], { rau: p?.rau });
+  };
+  banda(gazda, d.pasi, deseneaza, { start: d.start, cuTerminal: true });
+};
+
+
+/* --- Ramurile: main și dev -------------------------------------------------
+   Două linii, ca în git log --graph: main jos, dev sus. Commit-urile sunt
+   puncte cu nume. Eticheta plină din stânga e ramura pe care se află
+   dosarul (HEAD). Lângă graf, ce conține dosarul acum: git switch schimbă
+   fișierele, git merge le aduce în main. La final, poarta e trecută. */
+
+V.ramuri = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const C = d.commituri, S = d.stari, L = d.linii;
+  const W = 960, H = 150, Y = { m: 104, r: 40 }, X = col => 160 + col * 180;
+  gazda.innerHTML = `
+    <div class="bg">
+      <div class="bg__cmd"></div>
+      <div class="rb"><svg class="rb__svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="ramurile main și dev"></svg></div>
+      <div class="rb__jos">
         <div class="bg__txt"></div>
-        <div class="rg__dos"><span class="rg__dt">${SVG_DIR}<code>${esc(d.dosar || "proiect/")}</code><small>în dosar, acum</small></span><ul></ul></div>
+        <div class="rb__dos"><span class="rb__dt">${SVG_DIR}<code>${esc(d.dosar || "proiect/")}</code><small>în dosar, acum</small></span><ul></ul></div>
       </div>
       <p class="ex__stare"></p>
     </div>`;
-  const svg = gazda.querySelector(".rg__svg");
-  const ul = gazda.querySelector(".rg__dos ul");
+  const svg = gazda.querySelector(".rb__svg"), ul = gazda.querySelector(".rb__dos ul");
   let vazute = new Set();
-  const margine = (id, parte) => {
-    const c = C[id], x = X(c.x), y = Y[c.lane];
-    return parte === "dr" ? [x + CW, y] : [x, y];
-  };
   function deseneaza(k, anim){
     const s = S[k], are = new Set(s.com);
-    const muchii = [], noduri = [];
+    const nou = id => anim && !vazute.has(id) ? " nou" : "";
+    let linii = "", puncte = "";
     s.com.forEach(id => {
-      const c = C[id];
+      const c = C[id], x = X(c.x), y = Y[c.lane];
       (c.parinti || []).filter(p => are.has(p)).forEach(p => {
-        const [x1, y1] = margine(p, "dr"), [x2, y2] = margine(id, "st");
-        const dd = y1 === y2 ? `M${x1} ${y1} H${x2}` : `M${x1} ${y1} C${x1 + 44} ${y1} ${x2 - 44} ${y2} ${x2} ${y2}`;
-        muchii.push(`<path d="${dd}" pathLength="1" class="rg__m rg__m--${c.lane}${anim && !vazute.has(id) ? " nou" : ""}"/>`);
+        const x1 = X(C[p].x), y1 = Y[C[p].lane];
+        const dd = y1 === y ? `M${x1} ${y1}H${x}` : `M${x1} ${y1}C${x1 + 90} ${y1} ${x - 90} ${y} ${x} ${y}`;
+        const r = c.lane === "r" || C[p].lane === "r";
+        linii += `<path d="${dd}" pathLength="1" class="rb__m${r ? " rb__m--r" : ""}${nou(id)}"/>`;
       });
-      const x = X(c.x), y = Y[c.lane] - CH / 2, a = A[c.a];
-      noduri.push(`<g class="rg__c rg__c--${c.lane}${c.merge ? " merge" : ""}${anim && !vazute.has(id) ? " nou" : ""}">
-        <rect x="${x}" y="${y}" width="${CW}" height="${CH}" rx="10"/>
-        ${a ? `<circle class="rg__a" cx="${x + 15}" cy="${y + CH / 2}" r="8" style="fill:var(--${a.c})"/><text class="rg__at" x="${x + 15}" y="${y + CH / 2 + 3.6}">${esc(a.t[0])}</text>`
-            : `<circle cx="${x + 15}" cy="${y + CH / 2}" r="4.5"/>`}
-        <text x="${x + 29}" y="${y + CH / 2 + 4.2}">${esc(c.m)}</text></g>`);
+      const sus = c.lane === "r";
+      puncte += `<g class="rb__c rb__c--${c.lane}${c.merge ? " merge" : ""}${nou(id)}">`
+        + `${c.merge ? `<circle class="rb__inel" cx="${x}" cy="${y}" r="12"/>` : ""}<circle cx="${x}" cy="${y}" r="8"/>`
+        + `<text x="${x}" y="${sus ? y - 18 : y + 28}">${esc(c.m)}</text></g>`;
     });
+    // dev abia creat: pornește din commit-ul curent, încă fără commit-uri proprii
     if (s.ram && !s.com.some(id => C[id].lane === "r")){
-      const [x1, y1] = margine(s.din, "dr");
-      noduri.unshift(`<path d="M${x1} ${y1} C${x1 + 44} ${y1} ${X(2) - 44} ${Y.r} ${X(2)} ${Y.r}" class="rg__ciot"/>`);
+      const x1 = X(C[s.din].x);
+      linii += `<path d="M${x1} ${Y.m}C${x1 + 70} ${Y.m} ${x1 + 70} ${Y.r} ${x1 + 150} ${Y.r}" class="rb__ciot"/>`;
     }
-    const eticheta = (lane, t, peGh) => `<g class="rg__e rg__e--${lane}${s.aici === lane ? " aici" : ""}">
-        <rect x="4" y="${Y[lane] - 14}" width="${t.length * 8 + 24}" height="28" rx="14"/>
-        <text x="16" y="${Y[lane] + 5}">${esc(t)}</text>
-        ${peGh ? `<text class="rg__gh" x="6" y="${Y[lane] + 31}">${typeof peGh === "string" ? esc(peGh) : "☁ și pe GitHub"}</text>` : ""}</g>`;
-    svg.innerHTML = muchii.join("") + noduri.join("")
-      + eticheta("m", "main", s.gh?.m) + (s.ram ? eticheta("r", d.ramura || "dev", s.gh?.r) : "");
-    s.com.forEach(id => vazute.add(id));
-    vazute = new Set([...vazute].filter(id => are.has(id)));
+    const eticheta = (lane, t) => `<g class="rb__e rb__e--${lane}${s.aici === lane ? " aici" : ""}">
+        <rect x="4" y="${Y[lane] - 14}" width="${t.length * 8.4 + 26}" height="28" rx="14"/>
+        <text x="17" y="${Y[lane] + 5}">${esc(t)}</text>
+        ${s.aici === lane ? `<text class="rb__head" x="${t.length * 8.4 + 38}" y="${Y[lane] + 4}">← HEAD</text>` : ""}</g>`;
+    svg.innerHTML = linii + puncte + eticheta("m", "main") + (s.ram ? eticheta("r", d.ramura || "dev") : "");
+    vazute = new Set(s.com);
     const vede = new Set(s.vede);
     ul.innerHTML = L.map(l => `<li class="${vede.has(l.c) ? "da" : "nu"}"><i>${vede.has(l.c) ? "✓" : "○"}</i><code>${esc(l.t)}</code></li>`).join("");
   }
@@ -1742,61 +1760,62 @@ V.ramuri = (gazda, d) => {
     laFinal: async () => {
       await poarta(gazda, d.id, d.pasi.map(p => p.cmd).join(" → "));
       const st = gazda.querySelector(".ex__stare");
-      st.textContent = "Ciclul complet: dev creat și urcat, lucrul pe dev, dev îmbinat în main.";
+      st.textContent = d.gata || "Ciclul complet: dev creat, lucrul pe dev, dev îmbinat în main.";
       st.classList.add("vazut");
     }
   });
 };
 
 
-/* --- Lucrul în echipă pe dev ------------------------------------------------
-   Trei coloane: doi colegi și GitHub, la mijloc. Fiecare coloană e git log
-   pe dev, cu cel mai nou commit sus, colorat după autor. push și pull
-   copiază commit-uri dintr-o coloană în alta. La push-ul refuzat, în coloana
-   celui care împinge apare locul gol al commit-ului care îi lipsește. */
+/* --- Pull, apoi push --------------------------------------------------------
+   Trei coloane, fiecare cu commit-urile ei pe dev, cel mai nou sus: doi
+   colegi și GitHub, la mijloc. Între coloane apare doar săgeata comenzii
+   de acum, cu sensul ei. La push-ul refuzat, în coloana celui care împinge
+   apare locul commit-ului care îi lipsește. */
 
 V.sincron = (gazda, d) => {
   const P = d.coloane, CM = d.commituri, A = d.autori, S = d.stari;
-  const coloana = c => `
-    <div class="sy__col${c.gh ? " sy__col--gh" : ""}" data-col="${c.k}">
-      <div class="sy__cap">${c.gh ? SVG_NOR : SVG_PC}<b>${esc(c.t)}</b><span>${esc(c.d)}</span></div>
-      <div class="sy__in"></div>
-      <p class="sy__rau"></p>
-    </div>`;
-  const sageti = g => `
-    <div class="sy__s" data-g="${g}">
-      <span class="sy__a" data-a="${g === 1 ? "push" : "pull"}">${g === 1 ? "push →" : "pull →"}</span>
-      <span class="sy__a" data-a="${g === 1 ? "pull" : "push"}">${g === 1 ? "← pull" : "← push"}</span>
+  const col = c => `
+    <div class="sn__col${c.gh ? " sn__col--gh" : ""}" data-col="${c.k}">
+      <div class="sn__cap">${c.gh ? SVG_NOR : SVG_PC}<b>${esc(c.t)}</b><span>${esc(c.d)}</span></div>
+      <div class="sn__in"></div>
+      <p class="sn__rau"></p>
     </div>`;
   gazda.innerHTML = `
     <div class="bg">
       <div class="bg__cmd"></div>
-      <div class="sy">${coloana(P[0])}${sageti(1)}${coloana(P[1])}${sageti(2)}${coloana(P[2])}</div>
-      <div class="sy__leg">${Object.entries(A).map(([k, a]) => `<span><i style="background:var(--${a.c})"></i>${esc(a.et)}</span>`).join("")}</div>
+      <div class="sn">${col(P[0])}<div class="sn__s" data-g="1"></div>${col(P[1])}<div class="sn__s" data-g="2"></div>${col(P[2])}</div>
       <div class="bg__txt"></div>
     </div>`;
-  const sy = gazda.querySelector(".sy");
-  const card = (col, id, din) => {
-    const c = CM[id], a = A[c.a] || {};
-    return `<span class="sy__c${c.merge ? " merge" : ""}" data-k="${col}:${id}"${din ? ` data-din="${din}:${id}"` : ""} style="--cc:var(--${a.c || "text-3"})">`
-      + `<i></i><b>${esc(c.m)}</b><small>${esc(a.cine || "")}</small></span>`;
+  const sn = gazda.querySelector(".sn");
+  const card = (c, id, din) => {
+    const m = CM[id], a = A[m.a] || {};
+    return `<span class="sn__c${m.merge ? " merge" : ""}${a.cine ? "" : " baza"}" data-k="${c}:${id}"`
+      + `${din ? ` data-din="${din}:${id}"` : ""} style="--cc:var(--${a.c || "text-3"})">`
+      + `${a.cine ? `<i>${esc(a.cine[0])}</i>` : `<i></i>`}<b>${esc(m.m)}</b></span>`;
   };
-  const lipsa = id => `<span class="sy__c sy__c--lipsa" data-k="lipsa:${id}"><b>${esc(CM[id].m)}</b><small>lipsește aici</small></span>`;
-  const deseneaza = (k, anim) => flip(sy, () => {
+  const lipsa = id => `<span class="sn__c sn__c--lipsa" data-k="lipsa:${id}"><i>?</i><b>${esc(CM[id].m)}</b><small>lipsește</small></span>`;
+  const deseneaza = (k, anim) => {
     const s = S[k];
-    P.forEach(c => {
-      const col = sy.querySelector(`[data-col="${c.k}"]`);
-      col.querySelector(".sy__in").innerHTML = (s.lipsa && s.lipsa.col === c.k ? lipsa(s.lipsa.id) : "")
-        + (s[c.k] || []).map(id => card(c.k, id, (s.din || {})[c.k])).join("");
-      col.classList.toggle("respins", s.rau === c.k);
-      col.querySelector(".sy__rau").textContent = s.rau === c.k ? d.respins : "";
-    });
-    sy.querySelectorAll(".sy__a").forEach(a => a.classList.remove("on", "rau"));
+    flip(sn, () => {
+      P.forEach(c => {
+        const el = sn.querySelector(`[data-col="${c.k}"]`);
+        el.querySelector(".sn__in").innerHTML = (s.lipsa && s.lipsa.col === c.k ? lipsa(s.lipsa.id) : "")
+          + (s[c.k] || []).map(id => card(c.k, id, (s.din || {})[c.k])).join("");
+        el.classList.toggle("respins", s.rau === c.k);
+        el.classList.toggle("lazi", !!s.lazi);
+        el.querySelector(".sn__rau").textContent = s.rau === c.k ? d.respins : "";
+      });
+    }, anim);
+    sn.querySelectorAll(".sn__s").forEach(g => { g.className = "sn__s"; g.innerHTML = ""; });
     Object.entries(s.sag || {}).forEach(([g, v]) => {
-      const [ce, rau] = v.split(":");
-      sy.querySelector(`.sy__s[data-g="${g}"] [data-a="${ce}"]`)?.classList.add("on", ...(rau ? ["rau"] : []));
+      const [ce, sens, rau] = v.split(":");
+      const el = sn.querySelector(`.sn__s[data-g="${g}"]`);
+      el.classList.add("on", sens === "st" ? "st" : "dr");
+      if (rau) el.classList.add("rau");
+      el.innerHTML = `<code>${esc(ce)}${rau ? " ✕" : ""}</code><i></i>`;
     });
-  }, anim);
+  };
   banda(gazda, d.pasi, deseneaza, { start: d.start });
 };
 
@@ -3526,7 +3545,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=107`), import(`${R}/js/auth.js?v=107`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=108`), import(`${R}/js/auth.js?v=108`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });
