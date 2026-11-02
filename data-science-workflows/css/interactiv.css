@@ -3430,3 +3430,220 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 
 /* „->” rămâne „->” (ca în terminal), nu săgeată din ligaturile fonturilor */
 .bg__txt code,.bg__txt b,.gz__term,.cfl code,.cfl__ed{font-variant-ligatures:none;font-feature-settings:"calt" 0}
+
+/* ===========================================================================
+   Cursurile 5 și 6 (v109): baza de date și explorarea, câte o idee pe slide
+   =========================================================================== */
+
+/* comutatorul dintre două vederi (scară liniară/log, număr/rată, medie) */
+.cmd__sc{display:inline-flex;gap:2px;padding:3px;margin:0 0 10px;border:1px solid var(--linie-2);border-radius:999px;
+  background:var(--panza);font-family:var(--sans)}
+.cmd__sc button{font:inherit;font-size:var(--t2);border:0;background:none;color:var(--text-2);padding:5px 14px;
+  border-radius:999px;cursor:pointer;transition:.18s}
+.cmd__sc button:hover{color:var(--text)}
+.cmd__sc button.on{background:var(--buton);color:var(--buton-text)}
+/* graficele din lecții: o mărime care încape pe slide */
+.hst,.nor,.axa,.tr6{max-width:700px}
+.cub__regula{font-family:var(--sans);font-size:var(--t3);line-height:1.5;color:var(--text-2);margin:8px 0 0;max-width:none}
+.cub__regula b{color:var(--text)}
+
+/* de ce o bază: cinci copii sau un singur loc */
+.cp5{display:grid;grid-template-columns:1fr 1fr;gap:18px;font-family:var(--sans)}
+.cp5__p{border:1px solid var(--linie);border-radius:12px;background:var(--panza);padding:12px 14px}
+.cp5__p h4{margin:0 0 10px;font-size:var(--t2);font-weight:600;color:var(--text)}
+.cp5__p h4 span{font-weight:400;color:var(--text-3);margin-left:6px}
+.cp5__l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.cp5__l li{display:flex;align-items:center;gap:9px;margin:0;padding:0;font-size:var(--t2);color:var(--text-2)}
+.cp5__l li::before{content:none}
+.cp5__l .ic{width:16px;height:16px;color:var(--text-3)}
+.cp5__l code{font-family:var(--mono);font-size:12px;background:none;border:0;padding:0;color:var(--text)}
+.cp5__l li.rau code{color:var(--nu)}
+.cp5__baza{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.cp5__cil{width:84px;height:96px;display:grid;place-items:center;text-align:center;font-size:11.5px;font-weight:600;color:var(--accent-text);
+  background:var(--accent-slab);border:1.5px solid var(--accent);border-radius:42px / 14px}
+.cp5__cil small{display:block;font-weight:400;color:var(--text-3)}
+.cp5 .cp5__nota{grid-column:1 / -1;margin:2px 0 0;font-size:var(--t1);color:var(--text-3)}
+
+/* adresa bazei, desfăcută în părți */
+.adr5{font-family:var(--mono);font-size:15px;display:flex;flex-wrap:wrap;gap:0;margin:6px 0 4px;line-height:1}
+.adr5 span{display:flex;flex-direction:column;gap:7px;padding:9px 6px 0;border-top:3px solid var(--pc,var(--linie-2))}
+.adr5 b{font-weight:500;color:var(--text);white-space:pre}
+.adr5 small{font-family:var(--sans);font-size:11.5px;color:var(--text-3);white-space:nowrap}
+.adr5 span.secret{background:var(--nu-slab);border-top-color:var(--nu)}
+.adr5 span.secret b,.adr5 span.secret small{color:var(--nu)}
+.adr5__jos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.adr5__f{border:1px solid var(--linie);border-radius:10px;background:var(--panza);overflow:hidden}
+.adr5__f div{display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--linie);font-family:var(--sans);
+  font-size:var(--t1);color:var(--text-3)}
+.adr5__f div code{font-family:var(--mono);font-size:12px;color:var(--text);background:none;border:0;padding:0}
+.adr5__f pre{margin:0;padding:8px 10px;font-family:var(--mono);font-size:12px;line-height:1.6;background:none;border:0;color:var(--text);
+  white-space:pre-wrap;word-break:break-all}
+.adr5__f pre .c{color:var(--text-3)} .adr5__f pre .ok{color:var(--accent-text);font-weight:600}
+
+/* din data/processed, în bază */
+.tb5{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:0;align-items:center;font-family:var(--sans)}
+.tb5__col{display:grid;gap:8px}
+.tb5__col h4{margin:0 0 2px;font-size:var(--t1);font-weight:600;color:var(--text-3)}
+.tb5__i{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--linie);border-radius:10px;background:var(--panza)}
+.tb5__i .ic{width:16px;height:16px;color:var(--text-3)}
+.tb5__i code{font-family:var(--mono);font-size:12.5px;background:none;border:0;padding:0;color:var(--text)}
+.tb5__i small{margin-left:auto;font-size:var(--t1);color:var(--text-3);white-space:nowrap}
+.tb5__col--b .tb5__i{border-color:color-mix(in srgb,var(--accent) 40%,var(--linie));background:color-mix(in srgb,var(--accent-slab) 50%,var(--panza))}
+.tb5__s{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:18px}
+.tb5__s code{font-family:var(--mono);font-size:12px;color:var(--buton-text);background:var(--buton);border-radius:999px;padding:2px 9px;border:0}
+.tb5__s i{position:relative;width:64px;height:2px;background:var(--accent)}
+.tb5__s i::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid var(--accent);border-right:0}
+
+/* o interogare, pas cu pas */
+.sq{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;align-items:start}
+.sq__q{margin:0;padding:12px 14px;border-radius:10px;background:var(--ed-fundal);font-family:var(--mono);font-size:13.5px;
+  line-height:1.9;color:var(--ed-com);white-space:pre;font-variant-ligatures:none}
+.sq__q span{display:block;padding:0 6px;border-radius:5px;transition:.2s}
+.sq__q span.facut{color:var(--ed-text)}
+.sq__q span.acum{color:var(--fundal);background:var(--ed-cheie);font-weight:600}
+.sq__n{font-family:var(--sans);font-size:var(--t2);color:var(--text-2);margin:0 0 6px}
+.sq__n b{color:var(--text)}
+.sq__tab{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;
+  border-top:1.5px solid var(--text);border-bottom:1.5px solid var(--text)}
+.sq__tab th{font-family:var(--mono);font-weight:600;font-size:12px;text-align:left;color:var(--text-2);padding:6px 10px;border-bottom:1px solid var(--linie-2);transition:opacity .25s}
+.sq__tab td{padding:4px 10px;border-bottom:1px solid var(--linie);color:var(--text);transition:opacity .25s}
+.sq__tab tr:last-child td{border-bottom:0}
+.sq__tab td.nr,.sq__tab th.nr{text-align:right;font-variant-numeric:tabular-nums}
+.sq__tab .stins{opacity:.18}
+
+/* group by: punctele se strâng în grupuri */
+.gp{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:18px;align-items:center}
+.gp__camp{position:relative;height:200px}
+.gp__p{position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--gc);opacity:.75;
+  transition:transform .7s cubic-bezier(.3,.9,.35,1)}
+.gp__p[data-g="1"]{background:color-mix(in srgb,var(--text-3) 70%,var(--panza))}
+.gp__rez{display:grid;gap:8px;opacity:.2;transition:opacity .4s}
+.gp.rezumat .gp__rez{opacity:1}
+.gp__r{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 12px;border:1px solid var(--linie);
+  border-left:4px solid var(--gc);border-radius:10px;background:var(--panza);font-family:var(--sans)}
+.gp__r[data-g="1"]{border-left-color:var(--text-3)}
+.gp__r b{grid-column:1 / -1;font-size:var(--t2);font-weight:600}
+.gp__r span{font-size:var(--t1);color:var(--text-3)}
+.gp__r em{font-style:normal;font-weight:700;font-size:var(--t3);color:var(--text)}
+.gp__raport{margin:2px 0 0;font-family:var(--sans);font-size:var(--t2);color:var(--text);font-weight:600}
+
+/* SQL și pandas, unul lângă altul */
+.pd5{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pd5 figure{margin:0;border-radius:10px;overflow:hidden;background:var(--ed-fundal)}
+.pd5 figcaption{padding:6px 12px;font-family:var(--sans);font-size:var(--t1);color:var(--ed-com);border-bottom:1px solid rgba(255,255,255,.08)}
+.pd5 pre{margin:0;padding:10px 12px;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--ed-text);white-space:pre;
+  font-variant-ligatures:none;overflow-x:auto}
+.pd5 .k1{color:#E8A34F;font-weight:600} .pd5 .k2{color:#5FB8AC;font-weight:600} .pd5 .k3{color:#C9A0DC;font-weight:600}
+.pd5__cand{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;font-family:var(--sans);font-size:var(--t2);color:var(--text-2)}
+.pd5__cand p{margin:0;padding:9px 12px;border:1px solid var(--linie);border-radius:10px;background:var(--panza);max-width:none}
+.pd5__cand b{color:var(--text)}
+
+/* media regiunilor sau a locuitorilor */
+.mm2{max-width:720px;font-family:var(--sans)}
+.mm2__desen{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px}
+.mm2__y{writing-mode:vertical-rl;transform:rotate(180deg);font-size:var(--t1);color:var(--text-3);text-align:center}
+.mm2__arie{position:relative;display:flex;align-items:flex-end;gap:4px;height:230px;border-bottom:1.5px solid var(--text);padding-bottom:0}
+.mm2__r{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;min-width:0}
+.mm2__b{height:var(--h);background:color-mix(in srgb,var(--accent) 30%,var(--panza));border:1.5px solid var(--accent);border-bottom:0;
+  border-radius:6px 6px 0 0}
+.mm2__v{position:absolute;bottom:calc(var(--h) + 6px);left:0;right:0;text-align:center;font-weight:600;font-size:var(--t2);color:var(--text)}
+.mm2__t{position:absolute;top:calc(100% + 6px);left:0;right:0;text-align:center;font-size:var(--t1);color:var(--text-3);line-height:1.35}
+.mm2__t b{display:block;color:var(--text);font-weight:600}
+.mm2__linie{position:absolute;left:-4px;right:-4px;bottom:var(--y);border-top:2px dashed var(--ambra);transition:bottom .5s cubic-bezier(.3,.9,.35,1)}
+.mm2__linie span{position:absolute;right:0;top:-24px;font-size:var(--t2);font-weight:700;color:var(--ambra);background:var(--fundal);padding:0 4px}
+.mm2__linie.p{border-top-color:var(--roza)} .mm2__linie.p span{color:var(--roza)}
+.mm2__txt{margin-top:50px}
+
+/* bare pe intervale */
+.tr6__desen{position:relative}
+.tr6 svg{width:100%;height:auto;display:block}
+.tr6__b{transform-box:fill-box;transform-origin:bottom;animation:tr6-urca .6s cubic-bezier(.3,.9,.35,1) both;
+  animation-delay:calc(var(--i) * 70ms);cursor:pointer}
+.tr6__b:hover{filter:brightness(1.1)}
+@keyframes tr6-urca{from{transform:scaleY(0)}}
+@media (prefers-reduced-motion: reduce){.tr6__b{animation:none}}
+.tr6__x{font-weight:700;fill:var(--text)}
+.tr6__leg{display:flex;gap:16px;font-family:var(--sans);font-size:var(--t1);color:var(--text-2);margin:0 0 4px}
+.tr6__leg span{display:flex;align-items:center;gap:6px}
+.tr6__leg i{width:11px;height:11px;border-radius:3px}
+
+/* economia: diferența absolută */
+.h3x{display:grid;grid-template-columns:auto auto auto;gap:18px;align-items:end;justify-content:start;font-family:var(--sans)}
+.h3x__r{display:flex;flex-direction:column;align-items:center;gap:6px;width:130px}
+.h3x__b{width:64px;background:color-mix(in srgb,var(--accent) 30%,var(--panza));border:1.5px solid var(--accent);border-bottom:0;border-radius:6px 6px 0 0}
+.h3x__r b{font-size:var(--t2)} .h3x__r small{font-size:var(--t1);color:var(--text-3);text-align:center}
+.h3x__d{display:flex;flex-direction:column;gap:4px;padding:10px 14px;border:1.5px dashed var(--ambra);border-radius:10px;align-self:center}
+.h3x__d code{font-family:var(--mono);font-size:13px;background:none;border:0;padding:0;color:var(--text)}
+.h3x__d b{font-size:var(--t5);color:var(--ambra)}
+
+/* partenerii României: două bare pe rând */
+.db2{display:grid;gap:5px;font-family:var(--sans);max-width:820px}
+.db2__cap,.db2__r{display:grid;grid-template-columns:110px minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:center}
+.db2__cap b{font-size:var(--t1);font-weight:600;color:var(--text-3)}
+.db2__t{font-size:var(--t2);color:var(--text)}
+.db2__b{position:relative;display:flex;align-items:center;gap:8px;height:22px}
+.db2__b i{display:block;height:100%;border-radius:4px;background:color-mix(in srgb,var(--accent) 55%,var(--panza))}
+.db2__b--r i{background:color-mix(in srgb,var(--ambra) 55%,var(--panza))}
+.db2__b em{font-style:normal;font-size:var(--t1);color:var(--text-2);white-space:nowrap}
+.db2__r.ev .db2__t{font-weight:700}
+.db2__r.ev{background:var(--crom-2,transparent);border-radius:6px}
+
+/* o rețea mică */
+.rt5{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:center}
+.rt5 svg{width:100%;height:auto;display:block}
+.rt5__m{stroke:color-mix(in srgb,var(--text-3) 45%,transparent);stroke-linecap:round;transition:.2s}
+.rt5__m.on{stroke:var(--accent)}
+.rt5__v{font-family:var(--sans);font-size:11px;fill:var(--text-3);text-anchor:middle;opacity:0;transition:.2s}
+.rt5__v.on{opacity:1;fill:var(--text);font-weight:600}
+.rt5__n{cursor:pointer}
+.rt5__n circle{fill:var(--panza);stroke:var(--text-2);stroke-width:2;transition:.2s}
+.rt5__n.on circle{fill:var(--accent);stroke:var(--accent)}
+.rt5__n text{font-family:var(--mono);font-size:12px;font-weight:600;fill:var(--text);text-anchor:middle}
+.rt5__n.on text:not(.rt5__nume){fill:var(--fundal)}
+.rt5__n .rt5__nume{font-family:var(--sans);font-size:12px;font-weight:400;fill:var(--text-2)}
+.rt5__info{font-family:var(--sans);font-size:var(--t3);line-height:1.5;color:var(--text-2)}
+.rt5__info b{color:var(--text)}
+
+/* echipa: o bază pentru toată echipa */
+.ec5{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:ec}
+.ec5 li{margin:0;padding:12px 14px;border:1px solid var(--linie);border-radius:12px;background:var(--panza);font-family:var(--sans);
+  font-size:var(--t2);line-height:1.45;color:var(--text-2)}
+.ec5 li::before{counter-increment:ec;content:counter(ec);display:grid;place-items:center;width:24px;height:24px;border-radius:50%;
+  background:var(--accent);color:var(--fundal);font-weight:700;font-size:12px;margin-bottom:8px}
+.ec5 b{display:block;color:var(--text);margin-bottom:3px}
+.ec5 code{font-family:var(--mono);font-size:12px}
+
+@media (max-width:760px){
+  .cp5,.pd5,.pd5__cand,.sq,.gp,.rt5,.adr5__jos{grid-template-columns:1fr}
+  .ec5{grid-template-columns:1fr 1fr}
+  .tb5{grid-template-columns:1fr}
+}
+/* cursurile 5 și 6: titlul mic de deasupra desenului repetă titlul slide-ului */
+.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .ix__cap{display:none}
+/* verificarea, compactă: comanda în stânga, rezultatul în dreapta */
+.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__r{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
+  gap:7px 12px;align-items:center;padding:10px 12px}
+.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__sus{grid-column:1 / -1;margin:0}
+.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__aj{grid-column:1 / -1}
+.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__aj:empty{display:none}
+.gp__camp{height:112px}
+.mm2__arie{height:165px}
+.mm2__txt{margin-top:46px}
+.gp__rez{gap:6px}
+.gp__r{padding:7px 12px}
+.tb5{margin:0 0 14px}
+.pd5 pre,.sld .pd5 pre{background:transparent;border:0;border-radius:0;color:var(--ed-text);box-shadow:none;margin:0}
+.pd5__rez .tabel{font-size:var(--t2);margin:12px 0 0}
+.pd5__rez .tabel td{padding:5px 16px 5px 0}
+.pd5__rez .tabel th{padding:6px 16px 5px 0}
+.pd5__rez .tabel td:nth-child(n+2),.pd5__rez .tabel th:nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}
+.pd5__rez .tabel td:first-child{font-family:var(--mono);font-size:12.5px}
+.pd5__rez .tabel{max-width:540px}
+.tr6{max-width:600px}
+.db2__b{height:20px}
+/* barele pe intervale: textul alături de grafic, nu dedesubt */
+.tr6{max-width:none;display:grid;grid-template-columns:minmax(0,600px) minmax(0,1fr);column-gap:26px}
+.tr6__leg,.tr6__desen{grid-column:1}
+.tr6__txt{grid-column:2;grid-row:1 / span 2;align-self:center;margin:0}
+@media (max-width:760px){.tr6{grid-template-columns:1fr}.tr6__txt{grid-column:1;grid-row:auto}}
+.mm2__desen{margin-top:24px}

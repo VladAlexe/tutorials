@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 6. Analiza exploratorie · Fluxuri de lucru</title>
-<meta name="description" content="Examinarea datelor înainte de modelare: distribuții, relații, categorii, hărți și grafice care induc în eroare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=108">
-<link rel="stylesheet" href="../css/sistem.css?v=108">
-<link rel="stylesheet" href="../css/intrare.css?v=108">
-<script src="../js/tema.js?v=108"></script>
+<meta name="description" content="Patru ipoteze verificate exploratoriu pe datele proiectului: distanța, granița, economia și oamenii care circulă; apoi aceleași perechi, privite ca rețea.">
+<link rel="stylesheet" href="../css/fonturi.css?v=109">
+<link rel="stylesheet" href="../css/sistem.css?v=109">
+<link rel="stylesheet" href="../css/intrare.css?v=109">
+<script src="../js/tema.js?v=109"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <span class="bl__fapte" id="fapte">
       <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
       <a class="bl__b" href="tutorial/">Manualul</a>
-      
+      <a class="bl__b" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/06_analiza_exploratorie.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
       <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
     </span>
   </div>
@@ -35,31 +35,25 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 6 din 8</p>
     <h1>Analiza exploratorie</h1>
-    <p class="deck">Examinarea datelor înainte de a trage concluzii și înainte de a le modela.</p>
+    <p class="deck">Datele sunt curate și în bază. Lecția pornește de la ipoteze, scrie ce ar trebui să se vadă și abia apoi se uită la date.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Punctul de plecare este un tabel cu perechi de țări: SCI, migranți în ambele direcții, distanță, graniță. Înainte de orice model, tabelul trebuie examinat. Analiza exploratorie are două scopuri: să verifice că datele corespund așteptărilor și să identifice tiparele care merită testate ulterior.</p>
-<p>Lecția urmează trei direcții, ca în planul cursului: o variabilă (distribuții,
-asimetrie, logaritm, top-uri), două variabile (norul de puncte, corelațiile)
-și categorii (tabelul de contingență, χ², grupuri comparate). La final, harta
-comunităților și un slide despre graficele care induc în eroare.</p>
-<p>Toate graficele folosesc datele reale ale cursului: cele 263 de perechi de țări pentru care există atât SCI, cât și date de migrație.</p></div>
+    <div class="sec__corp"><p>Analiza exploratorie caută tipare și explicații care merită verificate. Lecția pornește de la patru ipoteze din literatură (distanța, granița, asemănarea economică, oamenii care circulă), scrie pentru fiecare ce ar trebui să se vadă și abia apoi se uită la date: 44.253 de perechi de regiuni și 263 de perechi de țări.</p>
+<p>Instrumentele sunt puține și simple: distribuția pe scara logaritmică, mediana, coeficientul Spearman, mediane pe intervale de distanță. A doua parte privește aceleași perechi împreună, ca rețea: forța unei regiuni, partenerii ei din alte țări și comunitățile găsite de algoritmul Louvain.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Recunoașterea unei distribuții cu coadă lungă și motivul transformării logaritmice.</li>
-<li>Descrierea unei variabile cu <code>describe()</code> și <code>skew()</code> și interpretarea diferenței dintre medie și mediană.</li>
-<li>Interpretarea unui clasament: ce măsoară și de ce ordonarea după SCI diferă de cea după numărul de migranți.</li>
-<li>Construirea și interpretarea unui nor de puncte, cu perechile care se abat de la tipar.</li>
-<li>Citirea unei matrice de corelații și motivul pentru care corelația nu implică o relație cauzală.</li>
-<li>Împărțirea unei variabile în categorii, tabelul de contingență și testarea lui cu χ² și Cramér's V.</li>
-<li>Compararea grupurilor atunci când distribuția nu este normală.</li>
-<li>Citirea hărții comunităților și recunoașterea unei axe trunchiate.</li>
+<li>Ipoteze scrise înainte de date, cu felul în care se verifică fiecare.</li>
+<li>Recunoașterea unei distribuții cu coadă lungă, mediana în locul mediei și scara logaritmică.</li>
+<li>Coeficientul Spearman și ce nu spune o corelație.</li>
+<li>Comparația la aceeași distanță, ca granița să nu se amestece cu distanța.</li>
+<li>O rată în locul unui număr, când variabila de explicat este relativă.</li>
+<li>Rețeaua: nod, legătură, forță, parteneri, comunități.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -72,6 +66,10 @@ comunităților și un slide despre graficele care induc în eroare.</p>
       <a class="mat__c" href="tutorial/">
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/06_analiza_exploratorie.ipynb" target="_blank" rel="noopener">
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Caietul 06, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza de pe Neon.</span>
       </a>
       <a class="mat__c" href="../explorator/">
         <span class="mat__t">Exploratorul legăturilor sociale</span>
@@ -86,26 +84,23 @@ comunităților și un slide despre graficele care induc în eroare.</p>
   <section class="sec sec--nevoie">
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><ol>
-<li>Tabelul de perechi de la cursul 5, cu SCI și migrație.</li>
-<li>Pachetele de grafice și teste: <code>pip install matplotlib seaborn scipy</code>.</li>
-<li>Pentru hărți în caiet: <code>pip install geopandas folium mapclassify networkx</code>.</li>
+<li>Baza de pe Neon din C5, cu cele trei tabele, și adresa în <code>dsw/.env</code>.</li>
+<li>Pachetele din <code>requirements.txt</code>, printre ele <code>geopandas</code>, <code>networkx</code> și <code>scipy</code>.</li>
 </ol></div>
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Distribuția variabilei principale, pe scară liniară și pe scară logaritmică.</li>
-<li>Un nor de puncte între SCI și variabila principală.</li>
-<li>O hartă sau un clasament, cu observațiile care ies din tipar.</li>
-<li>În <code>README.md</code>: primul tipar identificat, într-o propoziție.</li>
+<li>Fișa echipei: ce arată H1-H4 pentru coridor, cu câte perechi.</li>
+<li>Partenerii externi ai unei regiuni din coridor.</li>
+<li>O explicație alternativă și o limită, scrise în <code>README.md</code>.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
     <div class="leg-lista">
-      <a href="https://clauswilke.com/dataviz/" target="_blank" rel="noopener"><span>Fundamentals of Data Visualization</span><small>carte</small></a>
-      <a href="https://seaborn.pydata.org/tutorial.html" target="_blank" rel="noopener"><span>seaborn</span><small>docs</small></a>
-      <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html" target="_blank" rel="noopener"><span>chi2_contingency</span><small>SciPy</small></a>
+      <a href="https://pandas.pydata.org/docs/reference/api/pandas.cut.html" target="_blank" rel="noopener"><span>pd.cut</span><small>pandas</small></a>
+      <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.corr.html" target="_blank" rel="noopener"><span>Spearman</span><small>pandas</small></a>
       <a href="https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html" target="_blank" rel="noopener"><span>Comunitățile Louvain</span><small>networkx</small></a>
     </div>
   </section>
@@ -122,7 +117,7 @@ comunităților și un slide despre graficele care induc în eroare.</p>
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=108"), import("../js/ora.js?v=108"), import("../js/curs.js?v=108")]);
+    import("../js/auth.js?v=109"), import("../js/ora.js?v=109"), import("../js/curs.js?v=109")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -148,7 +143,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=108"></script>
-<script type="module" src="../js/subsol.js?v=108"></script>
+<script type="module" src="../js/antet.js?v=109"></script>
+<script type="module" src="../js/subsol.js?v=109"></script>
 </body>
 </html>

@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 5. Agregare și baze de date · Fluxuri de lucru</title>
-<meta name="description" content="Unirea tabelelor în pandas, tipurile de join și capcanele lor, unitatea de analiză, și mutarea datelor într-o bază Postgres pe Neon.">
-<link rel="stylesheet" href="../css/fonturi.css?v=108">
-<link rel="stylesheet" href="../css/sistem.css?v=108">
-<link rel="stylesheet" href="../css/intrare.css?v=108">
-<script src="../js/tema.js?v=108"></script>
+<meta name="description" content="Baza de date a echipei pe Neon, adresa ei în .env, primele interogări SQL și agregarea: de la multe rânduri la un rezumat pe grup, în SQL și în pandas.">
+<link rel="stylesheet" href="../css/fonturi.css?v=109">
+<link rel="stylesheet" href="../css/sistem.css?v=109">
+<link rel="stylesheet" href="../css/intrare.css?v=109">
+<script src="../js/tema.js?v=109"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <span class="bl__fapte" id="fapte">
       <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
       <a class="bl__b" href="tutorial/">Manualul</a>
-      
+      <a class="bl__b" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/05_agregare_si_baze_de_date.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
       <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
     </span>
   </div>
@@ -35,30 +35,25 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 5 din 8</p>
     <h1>Agregare și baze de date</h1>
-    <p class="deck">Tabelele curățate se unesc într-unul singur, care trece apoi dintr-un folder într-o bază de date ce poate fi interogată.</p>
+    <p class="deck">Tabelele curate din C4 ajung într-un singur loc, comun pentru toată echipa, și se rezumă: de la multe rânduri la puține.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Până acum fiecare sursă a fost păstrată în fișierul ei: SCI într-unul, indicatorii Băncii Mondiale în altul, datele de la Eurostat în al treilea. Separarea funcționează cât timp sursele sunt analizate pe rând. Pentru o afirmație de forma „țările cu legătură socială puternică au și X” este nevoie de un singur tabel.</p>
-<p>Unirea tabelelor pare o operație tehnică, dar este o decizie de cercetare: ce se păstrează când o sursă nu conține o țară prezentă în cealaltă. Fiecare tip de join oferă un alt răspuns la această întrebare, iar răspunsul determină câte rânduri rămân în analiză. Prima parte a orei tratează aceste decizii, inclusiv două probleme care nu generează niciun mesaj de eroare: chei care nu se potrivesc și rânduri multiplicate fără avertisment.</p>
-<p>A doua parte mută rezultatul dintr-un fișier CSV într-o bază Postgres pe Neon. Motivul nu este noutatea tehnologiei: atunci când mai multe persoane lucrează pe aceleași date, fișierul partajat devine o sursă de probleme.</p></div>
+    <div class="sec__corp"><p>Până acum datele au stat în fișiere CSV, câte o copie pe fiecare calculator. Lecția le mută într-o bază de date PostgreSQL, găzduită de Neon: un singur loc, la care se conectează toată echipa, interogat cu SQL. Motivul nu este volumul datelor, ci colaborarea: cinci copii ale aceluiași tabel ajung repede cinci tabele diferite.</p>
+<p>A doua parte tratează agregarea: trecerea de la multe rânduri la puține, un rezumat pe grup. Se face în SQL, cu <code>group by</code>, și în pandas, cu <code>groupby</code>, pentru că este aceeași idee. Un singur exemplu leagă lecția de cea următoare: perechile de regiuni din aceeași țară au un SCI mediu de 43 de ori mai mare decât celelalte.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Decizia, înainte de cod, dacă rezultatul trebuie să aibă mai multe rânduri sau mai multe coloane, deci dacă operația este <code>concat</code> sau <code>merge</code>.</li>
-<li>Alegerea între <code>inner</code>, <code>left</code>, <code>right</code> și <code>outer</code>, în funcție de rândurile care trebuie păstrate.</li>
-<li>Recunoașterea unui join care a multiplicat rândurile și prevenirea lui cu <code>validate</code>.</li>
-<li>Numărarea cheilor comune înainte de îmbinare, pentru a evita un tabel rezultat gol.</li>
-<li>Răspunsul, într-o propoziție, la întrebarea „ce reprezintă un rând în tabelul final”.</li>
-<li>Agregarea de la o unitate la alta, cu alegerea dintre sumă, medie și număr de parteneri tratată ca decizie teoretică, nu tehnică.</li>
-<li>Motivul pentru care o echipă de cinci persoane are nevoie de o bază de date și de ce volumul datelor nu este criteriul decisiv.</li>
-<li>Conectarea la Neon din Python fără ca parola să apară în cod.</li>
-<li>Scrierea tabelului în bază, cu o cheie primară, și citirea lui înapoi.</li>
-<li>Un <code>select</code> cu <code>join</code>, <code>where</code> și <code>order by</code> și situațiile în care interogarea SQL este preferabilă prelucrării în pandas.</li>
+<li>Motivul pentru care o echipă are nevoie de o bază de date și de ce volumul datelor nu este criteriul.</li>
+<li>Conectarea la Neon din Python, cu adresa citită din <code>.env</code>, fără ca parola să apară în cod sau pe GitHub.</li>
+<li>Încărcarea tabelelor cu <code>to_sql</code> și citirea rezultatelor cu <code>read_sql</code>.</li>
+<li>O interogare cu <code>select</code>, <code>from</code>, <code>where</code>, <code>order by</code> și <code>limit</code>, citită în ordinea în care o execută baza.</li>
+<li>Agregarea cu <code>group by</code> și cu <code>groupby</code>, și alegerea dintre SQL și pandas.</li>
+<li>Diferența dintre media regiunilor și media țării.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -72,6 +67,10 @@
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/05_agregare_si_baze_de_date.ipynb" target="_blank" rel="noopener">
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Caietul 05, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/, lângă caietele 01-04.</span>
+      </a>
       <a class="mat__c" href="../c4-curatarea-datelor/">
         <span class="mat__t">Lecția 4: curățarea</span>
         <span class="mat__d">Fișierele de la care pornește lecția</span>
@@ -80,34 +79,28 @@
   </section>
   <section class="sec sec--nevoie">
     <p class="sec__et">Pregătire</p>
-    <div class="sec__corp"><p>Prima parte se poate parcurge cu ce este deja instalat. A doua necesită un cont gratuit:</p>
-<ol>
-<li>Fișierele curățate la cursul 4, în <code>date/curat/</code>, pe care se face îmbinarea.</li>
-<li>Un cont pe <a class="leg" href="https://neon.com/" rel="noopener" target="_blank">Neon</a> și un proiect nou. Planul gratuit este suficient.</li>
-<li>Trei pachete: <code>pip install sqlalchemy psycopg[binary] python-dotenv</code>.</li>
-<li>Un fișier <code>.env</code> în rădăcina depozitului echipei, cu <code>.env</code> trecut în <code>.gitignore</code> <em>înainte</em> de primul <code>add</code>.</li>
-</ol>
-<p>Dacă contul nu este creat până la curs, partea de pandas poate fi urmărită oricum, iar baza de date poate fi configurată ulterior.</p></div>
+    <div class="sec__corp"><ol>
+<li>Cele trei tabele din C4, în <code>dsw/curs/data/processed</code>: <code>regiuni_nuts2.csv</code>, <code>perechi_regiuni.csv</code>, <code>perechi_tari.csv</code>.</li>
+<li>Un cont pe <a class="leg" href="https://neon.tech/" rel="noopener" target="_blank">Neon</a>, făcut cu contul GitHub. Planul gratuit este suficient.</li>
+<li>Pachetele din <code>requirements.txt</code>: <code>pip install -r requirements.txt</code> (printre ele <code>sqlalchemy</code>, <code>psycopg</code>, <code>python-dotenv</code>).</li>
+<li>Fișierul <code>dsw/.env</code>, copiat din <code>.env.exemplu</code>, cu adresa bazei.</li>
+</ol></div>
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li><code>agregare/uneste.py</code>: de la fișierele curățate la un singur tabel, cu <code>how</code> scris explicit și cu numărul de rânduri afișat înainte și după îmbinare.</li>
-<li><code>baza/incarca.py</code>: încărcarea tabelului în Neon, cu o cheie primară.</li>
-<li><code>baza/intrebari.sql</code>: o interogare <code>select</code> proprie, legată de întrebarea de cercetare.</li>
-<li>În <code>decizii.md</code>: unitatea de analiză, într-o propoziție.</li>
+<li>Baza echipei pe Neon, cu tabelele proiectului, încărcate de caietul de curățare și integrare.</li>
+<li>Adresa bazei în <code>dsw/.env</code> la fiecare membru, dată pe Teams, nu pe GitHub.</li>
+<li>O interogare cu <code>group by</code> despre coridorul echipei.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
     <div class="leg-lista">
-      <a href="https://pandas.pydata.org/docs/user_guide/merging.html" target="_blank" rel="noopener"><span>merge, join, concat</span><small>pandas</small></a>
-      <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html" target="_blank" rel="noopener"><span>groupby</span><small>pandas</small></a>
-      <a href="https://neon.com/docs/introduction" target="_blank" rel="noopener"><span>Ce e Neon</span><small>docs</small></a>
-      <a href="https://neon.com/docs/introduction/branching" target="_blank" rel="noopener"><span>Ramuri de bază de date</span><small>Neon</small></a>
-      <a href="https://www.postgresql.org/docs/current/tutorial.html" target="_blank" rel="noopener"><span>Tutorialul PostgreSQL</span><small>docs</small></a>
-      <a href="https://docs.sqlalchemy.org/en/20/core/engines.html" target="_blank" rel="noopener"><span>create_engine</span><small>SQLAlchemy</small></a>
-      <a href="https://www.iso.org/iso-3166-country-codes.html" target="_blank" rel="noopener"><span>Codurile de țară ISO 3166</span><small>ISO</small></a>
+      <a href="https://neon.tech/docs/guides/python" target="_blank" rel="noopener"><span>Neon și Python</span><small>docs</small></a>
+      <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html" target="_blank" rel="noopener"><span>read_sql</span><small>pandas</small></a>
+      <a href="https://pandas.pydata.org/docs/user_guide/groupby.html" target="_blank" rel="noopener"><span>groupby</span><small>pandas</small></a>
+      <a href="https://www.postgresql.org/docs/current/sql-select.html" target="_blank" rel="noopener"><span>select</span><small>PostgreSQL</small></a>
     </div>
   </section>
 
@@ -123,7 +116,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=108"), import("../js/ora.js?v=108"), import("../js/curs.js?v=108")]);
+    import("../js/auth.js?v=109"), import("../js/ora.js?v=109"), import("../js/curs.js?v=109")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -149,7 +142,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=108"></script>
-<script type="module" src="../js/subsol.js?v=108"></script>
+<script type="module" src="../js/antet.js?v=109"></script>
+<script type="module" src="../js/subsol.js?v=109"></script>
 </body>
 </html>

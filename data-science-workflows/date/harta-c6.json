@@ -1,7 +1,7 @@
 {
  "capitol": "c6",
- "total": 19,
- "sarcini": 9,
+ "total": 16,
+ "sarcini": 7,
  "slide": [
   {
    "nr": 1,
@@ -13,22 +13,22 @@
   {
    "nr": 2,
    "id": "s2",
-   "grup": "Cursul",
-   "titlu": "Întrebările",
+   "grup": "Ipotezele",
+   "titlu": "Patru ipoteze",
    "sarcini": []
   },
   {
    "nr": 3,
    "id": "s3",
-   "grup": "O variabilă",
+   "grup": "O pereche obișnuită",
    "titlu": "Coada lungă",
    "sarcini": []
   },
   {
    "nr": 4,
    "id": "s4",
-   "grup": "O variabilă",
-   "titlu": "Media și mediana",
+   "grup": "O pereche obișnuită",
+   "titlu": "Media sau mediana",
    "sarcini": [
     {
      "id": "c6-prezice-coada",
@@ -38,176 +38,138 @@
   },
   {
    "nr": 5,
-   "id": "s4b",
-   "grup": "O variabilă",
-   "titlu": "Coada lungă, în date",
+   "id": "s5",
+   "grup": "Distanța și granița",
+   "titlu": "H1: distanța",
    "sarcini": [
     {
-     "id": "c6-v1",
+     "id": "c6-v2",
      "fel": "verificare",
-     "corect": 2,
-     "q": "Media SCI este de peste două ori mai mare decât mediana. Ce indică acest lucru?",
+     "corect": 1,
+     "q": "Corelația Spearman dintre distanță și SCI este −0,46. Ce se poate spune?",
      "optiuni": [
-      "Datele sunt eronate",
-      "Jumătate din perechi au SCI zero",
-      "O coadă de valori foarte mari ridică media",
-      "Nimic: media și mediana diferă de obicei"
+      "Distanța reduce legăturile cu 46%",
+      "Perechile mai îndepărtate tind să fie mai puțin legate",
+      "46% din SCI vine din distanță",
+      "Relația este liniară"
      ]
     }
    ]
   },
   {
    "nr": 6,
-   "id": "s4c",
-   "grup": "O variabilă",
-   "titlu": "Descrierea, în cod",
+   "id": "s6",
+   "grup": "Distanța și granița",
+   "titlu": "Spearman",
    "sarcini": [
     {
-     "id": "c6-cod-descrie",
+     "id": "c6-prezice-rang",
      "fel": "cod"
     }
    ]
   },
   {
    "nr": 7,
-   "id": "s5",
-   "grup": "O variabilă",
-   "titlu": "Clasamente",
-   "sarcini": []
+   "id": "s7",
+   "grup": "Distanța și granița",
+   "titlu": "H2: granița",
+   "sarcini": [
+    {
+     "id": "c6-v3",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "De ce se compară aceeași țară cu țări diferite pe intervale de distanță, nu pe toate perechile deodată?",
+     "optiuni": [
+      "Ca să fie mai puține perechi",
+      "Perechile interne sunt și mai apropiate",
+      "SCI nu are sens peste 2.000 km",
+      "Așa cere pd.cut"
+     ]
+    }
+   ]
   },
   {
    "nr": 8,
-   "id": "s6",
-   "grup": "Două variabile",
-   "titlu": "Norul de puncte",
+   "id": "s8",
+   "grup": "Economia și oamenii",
+   "titlu": "H3: economia",
    "sarcini": []
   },
   {
    "nr": 9,
-   "id": "s7",
-   "grup": "Două variabile",
-   "titlu": "Corelațiile",
+   "id": "s9",
+   "grup": "Economia și oamenii",
+   "titlu": "H4: migrația",
    "sarcini": []
   },
   {
    "nr": 10,
-   "id": "s7b",
-   "grup": "Două variabile",
-   "titlu": "Spearman",
+   "id": "s10",
+   "grup": "Economia și oamenii",
+   "titlu": "Ghicitoarea din C1",
    "sarcini": [
     {
-     "id": "c6-prezice-rang",
-     "fel": "cod"
-    },
-    {
-     "id": "c6-v2",
+     "id": "c6-v-ro",
      "fel": "verificare",
      "corect": 1,
-     "q": "Corelația dintre migrație și SCI este r = 0,70. Ce se poate concluziona?",
+     "q": "Ungaria are un SCI mare cu România, dar puțini migranți la mie. Care explicație este cea mai plauzibilă?",
      "optiuni": [
-      "Migrația produce legăturile",
-      "Cele două variabile cresc împreună; cauza nu este încă stabilită",
-      "Legăturile produc migrația",
-      "70% din SCI se explică prin migrație"
+      "O eroare în date",
+      "Minoritatea maghiară: legături vechi, fără migrație",
+      "Turismul",
+      "Distanța"
      ]
     }
    ]
   },
   {
    "nr": 11,
-   "id": "s8",
-   "grup": "Categorii",
-   "titlu": "Din numere în categorii",
+   "id": "s11",
+   "grup": "Rețeaua",
+   "titlu": "Nod, legătură, forță",
    "sarcini": []
   },
   {
    "nr": 12,
-   "id": "s9",
-   "grup": "Categorii",
-   "titlu": "Grupuri comparate",
-   "sarcini": [
-    {
-     "id": "c6-v3",
-     "fel": "verificare",
-     "corect": 3,
-     "q": "Vecinii au un SCI median de 5 ori mai mare. Rezultă că granița comună produce legăturile?",
-     "optiuni": [
-      "Da, diferența este prea mare pentru a avea altă explicație",
-      "Da, testul este semnificativ statistic",
-      "Nu, pentru că sunt doar 30 de perechi de vecini",
-      "Nu neapărat: vecinii sunt și apropiați geografic, și au adesea migrație între ei"
-     ]
-    }
-   ]
+   "id": "s12",
+   "grup": "Rețeaua",
+   "titlu": "Partenerii unei regiuni",
+   "sarcini": []
   },
   {
    "nr": 13,
-   "id": "s10",
-   "grup": "Harta",
+   "id": "s13",
+   "grup": "Rețeaua",
    "titlu": "Comunitățile",
    "sarcini": []
   },
   {
    "nr": 14,
-   "id": "s10b",
-   "grup": "Harta",
-   "titlu": "Comunitățile SCI",
-   "sarcini": []
-  },
-  {
-   "nr": 15,
-   "id": "s11",
-   "grup": "Grafice înșelătoare",
-   "titlu": "Axa trunchiată",
-   "sarcini": []
-  },
-  {
-   "nr": 16,
-   "id": "s11b",
-   "grup": "Grafice înșelătoare",
-   "titlu": "Axa și scara",
+   "id": "s14",
+   "grup": "Echipa",
+   "titlu": "Verificarea",
    "sarcini": [
     {
-     "id": "c6-v4",
-     "fel": "verificare",
-     "corect": 0,
-     "q": "Când este acceptabil ca axa să nu pornească de la zero?",
-     "optiuni": [
-      "La un grafic cu linii sau cu puncte, unde contează forma, nu lungimea",
-      "La orice grafic, dacă diferențele sunt mici",
-      "Niciodată",
-      "La graficele cu bare care au valori mari"
-     ]
-    }
-   ]
-  },
-  {
-   "nr": 17,
-   "id": "s12",
-   "grup": "Proiectul echipei",
-   "titlu": "Explorarea echipei",
-   "sarcini": [
-    {
-     "id": "c6-dovada-eda",
+     "id": "c6-dovada",
      "fel": "cod"
     }
    ]
   },
   {
-   "nr": 18,
-   "id": "s13",
-   "grup": "Proiectul echipei",
-   "titlu": "Primul tipar",
+   "nr": 15,
+   "id": "s15",
+   "grup": "Echipa",
+   "titlu": "Fișa echipei",
    "sarcini": [
     {
-     "id": "c6-tipar",
+     "id": "c6-fisa",
      "fel": "text"
     }
    ]
   },
   {
-   "nr": 19,
-   "id": "s14",
+   "nr": 16,
+   "id": "s16",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",
    "sarcini": []

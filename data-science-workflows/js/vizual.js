@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=108");
+    const m = await import("/data-science-workflows/js/colectare.js?v=109");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -1143,7 +1143,7 @@ V.histo = (gazda, d) => {
     v.forEach(x => nr[Math.min(NB - 1, Math.floor((x - lo) / w))]++);
     const max = Math.max(...nr), L = 40, R = 580, T = 28, B = 180, bw = (R - L) / NB;
     const ticks = log
-      ? [3, 4, 5, 6].filter(t => t >= lo - .01 && t <= hi + .01).map(t => [t, (10 ** t).toLocaleString("ro-RO")])
+      ? [0, 1, 2, 3, 4, 5, 6, 7].filter(t => t >= lo - .01 && t <= hi + .01).map(t => [t, (10 ** t).toLocaleString("ro-RO")])
       : [0, .25, .5, .75, 1].map(f => [lo + f * (hi - lo), fmt(lo + f * (hi - lo))]);
     const xp = x => L + (x - lo) / (hi - lo) * (R - L);
     svg.innerHTML = `
@@ -1235,7 +1235,9 @@ V.nor = (gazda, d) => {
           : `a ${loc + 1}-a din ${pts.length} după înălțimea deasupra dreptei`}. Caută un punct mai sus, mai departe de dreaptă.</span>`;
       };
     });
-    txt.innerHTML = `<b>r = ${r.toFixed(2).replace(".", ",")}</b>, pe ${n} perechi. ${v.text || ""}`;
+    txt.innerHTML = v.rho != null
+      ? `<b>ρ Spearman = ${v.rho.toFixed(2).replace(".", ",")}</b>, pe ${n} perechi. ${v.text || ""}`
+      : `<b>r = ${r.toFixed(2).replace(".", ",")}</b>, pe ${n} perechi. ${v.text || ""}`;
   }
   gazda.querySelectorAll(".nor__sc button").forEach(b => b.onclick = () => { vx = +b.dataset.v; deseneaza(); });
   deseneaza();
@@ -1386,7 +1388,7 @@ function flip(cont, schimba, anim = true){
 /* Banda de comenzi. `pasi`: [{cmd, full?, cine?, cc?, rau?, edit?, t?, txt}].
    `deseneaza(k, anim)` pune desenul în starea de după k comenzi.
    `cuTerminal`: comanda întreagă apare în terminalul desenului, nu deasupra textului. */
-function banda(gazda, pasi, deseneaza, { start = "", laFinal, cuTerminal = false } = {}){
+function banda(gazda, pasi, deseneaza, { start = "", laFinal, cuTerminal = false, prefix = "$" } = {}){
   const n = pasi.length;
   const $c = gazda.querySelector(".bg__cmd");
   const $t = gazda.querySelector(".bg__txt");
@@ -1405,7 +1407,7 @@ function banda(gazda, pasi, deseneaza, { start = "", laFinal, cuTerminal = false
     $c.querySelector('[data-rol="reset"]').disabled = k === 0;
     const p = pasi[k - 1];
     $t.innerHTML = k === 0 ? `<p>${start}</p>`
-      : (cuTerminal ? "" : `<code class="bg__full${p.rau ? " rau" : ""}${p.edit ? " edit" : ""}"><span>${p.edit ? "✎" : p.cine ? esc(p.cine) + " $" : "$"}</span>${esc(p.full || p.cmd)}</code>`)
+      : (cuTerminal ? "" : `<code class="bg__full${p.rau ? " rau" : ""}${p.edit ? " edit" : ""}"><span>${p.edit ? "✎" : p.cine ? esc(p.cine) + " $" : prefix}</span>${esc(p.full || p.cmd)}</code>`)
       + `<p>${p.t ? `<b>${p.t}.</b> ` : ""}${p.txt || ""}</p>`;
     deseneaza(k, anim);
     if (k === n && !terminat){ terminat = true; laFinal?.(); }
@@ -3545,7 +3547,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=108`), import(`${R}/js/auth.js?v=108`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=109`), import(`${R}/js/auth.js?v=109`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });
@@ -3553,6 +3555,246 @@ V.echipe = async (gazda) => {
     gazda.innerHTML = `<p class="echp__gol">Alegerea echipelor nu este disponibilă acum.</p>`;
   }
 };
+
+
+/* ===========================================================================
+   26. BAZA ȘI EXPLORAREA (cursurile 5 și 6)
+
+   Câte un desen pentru o singură idee, pe datele rulate în caiete:
+   interogarea care micșorează tabelul pas cu pas, group by care strânge
+   44.253 de perechi în două rânduri, media regiunilor față de media
+   locuitorilor, SCI median pe intervale de distanță, rețeaua mică și
+   partenerii României.
+   =========================================================================== */
+
+const nrRo = (v, z = 0) => v == null ? "–" : Number(v).toLocaleString("ro-RO", { maximumFractionDigits: z, minimumFractionDigits: z });
+
+/* --- O interogare, pas cu pas ------------------------------------------------
+   Pașii merg în ordinea în care îi execută baza (from, where, select, order
+   by, limit), nu în ordinea în care se scriu. Clauza de acum se aprinde în
+   interogare, iar tabelul de dedesubt pierde rânduri, coloane sau își
+   schimbă ordinea. Pe slide se văd zece rânduri din tabel; numărul de sus
+   spune câte sunt în tot tabelul. */
+
+V.sqlpas = (gazda, d) => {
+  const C = d.coloane, R = d.randuri, S = d.stari;
+  gazda.innerHTML = `
+    <div class="bg">
+      <div class="bg__cmd"></div>
+      <div class="sq">
+        <pre class="sq__q">${d.interogare.map((l, i) => `<span data-c="${esc(l.c)}">${esc(l.t)}</span>`).join("")}</pre>
+        <div class="sq__t">
+          <div class="sq__n"></div>
+          <table class="sq__tab"><thead><tr>${C.map((c, j) => `<th data-j="${j}" class="${typeof R[0][j] === "number" ? "nr" : ""}">${esc(c)}</th>`).join("")}</tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+      <div class="bg__txt"></div>
+    </div>`;
+  const tb = gazda.querySelector(".sq__tab tbody"), n = gazda.querySelector(".sq__n");
+  const deseneaza = (k, anim) => {
+    const s = S[k];
+    gazda.querySelectorAll(".sq__q span").forEach(sp => {
+      sp.classList.toggle("facut", s.facut.includes(sp.dataset.c));
+      sp.classList.toggle("acum", sp.dataset.c === s.acum);
+    });
+    gazda.querySelectorAll(".sq__tab th").forEach(th => th.classList.toggle("stins", !s.col.includes(+th.dataset.j)));
+    flip(tb, () => {
+      tb.innerHTML = s.rand.map(r => `<tr data-k="r${r}">${R[r].map((v, j) =>
+        `<td class="${typeof v === "number" || v === null ? "nr" : ""}${s.col.includes(j) ? "" : " stins"}">${typeof v === "number" ? nrRo(v) : v === null ? "null" : esc(v)}</td>`).join("")}</tr>`).join("");
+    }, anim);
+    n.innerHTML = s.n;
+  };
+  banda(gazda, d.pasi, deseneaza, { start: d.start, prefix: "SQL" });
+};
+
+
+/* --- group by: multe rânduri, puține grupuri ---------------------------------
+   Punctele sunt perechile (unul pentru 120 de perechi reale). La group by
+   se strâng în două grămezi, după tip; la count și avg, fiecare grămadă
+   devine un singur rând de rezultat. */
+
+V.grupare = (gazda, d) => {
+  const G = d.grupuri, N = d.puncte || 368;
+  const tot = G.reduce((s, g) => s + g.n, 0);
+  const cate = G.map(g => Math.max(1, Math.round(N * g.n / tot)));
+  const pct = [];
+  cate.forEach((c, gi) => { for (let i = 0; i < c; i++) pct.push(gi); });
+  // amestecate, dar la fel la fiecare desenare
+  let sem = 7; const rnd = () => (sem = (sem * 16807) % 2147483647) / 2147483647;
+  const ord = pct.map((g, i) => [rnd(), i]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
+  gazda.innerHTML = `
+    <div class="bg">
+      <div class="bg__cmd"></div>
+      <div class="gp"><div class="gp__camp"></div>
+        <div class="gp__rez">${G.map((g, gi) => `<div class="gp__r" data-g="${gi}" style="--gc:var(--${g.c})">
+          <b>${esc(g.t)}</b><span>${nrRo(g.n)} perechi</span><span>SCI mediu <em>${nrRo(g.m)}</em></span></div>`).join("")}
+          <p class="gp__raport">${esc(d.raport || "")}</p></div>
+      </div>
+      <div class="bg__txt"></div>
+    </div>`;
+  const camp = gazda.querySelector(".gp__camp");
+  camp.innerHTML = pct.map((g, i) => `<i class="gp__p" data-g="${g}" style="--gc:var(--${G[g].c})"></i>`).join("");
+  const P = [...camp.children];
+  const pune = (k) => {
+    const W = camp.clientWidth || 600, pas = 11;
+    if (k === 0){
+      const col = Math.floor(W / pas);
+      ord.forEach((i, poz) => { const p = P[i]; p.style.transform = `translate(${(poz % col) * pas}px,${Math.floor(poz / col) * pas}px)`; });
+    } else {
+      const lat = [W * 0.03, W * 0.24], loc = [0, 0];
+      const coloane = [5, Math.floor(W * 0.74 / pas)];
+      P.forEach((p, i) => {
+        const g = pct[i], c = coloane[g] || 20, poz = loc[g]++;
+        p.style.transform = `translate(${lat[g] + (poz % c) * pas}px,${Math.floor(poz / c) * pas}px)`;
+      });
+    }
+    gazda.querySelector(".gp").classList.toggle("grupat", k >= 1);
+    gazda.querySelector(".gp").classList.toggle("rezumat", k >= 2);
+  };
+  banda(gazda, d.pasi, (k) => pune(k), { start: d.start, prefix: "SQL" });
+  new ResizeObserver(() => pune(gazda.querySelector(".gp").classList.contains("rezumat") ? 2 : gazda.querySelector(".gp").classList.contains("grupat") ? 1 : 0)).observe(camp);
+};
+
+
+/* --- Media regiunilor sau media locuitorilor ---------------------------------
+   Două regiuni ale aceleiași țări, ca dreptunghiuri: lățimea e populația,
+   înălțimea e PIB-ul pe locuitor. Media simplă a celor două valori și media
+   pe locuitori (aria, împărțită la toți oamenii) dau numere diferite. */
+
+V.medii = (gazda, d) => {
+  const R = d.regiuni, tot = R.reduce((s, r) => s + r.pop, 0), max = Math.max(...R.map(r => r.v)) * 1.12;
+  gazda.innerHTML = `
+    <div class="mm2">
+      <div class="cmd__sc mm2__sc">
+        <button type="button" data-m="s">media celor două regiuni</button>
+        <button type="button" data-m="p">media locuitorilor</button>
+      </div>
+      <div class="mm2__desen">
+        <div class="mm2__y">${esc(d.axa)}</div>
+        <div class="mm2__arie">${R.map(r => `<div class="mm2__r" style="flex:${r.pop};--h:${(r.v / max * 100).toFixed(1)}%">
+            <span class="mm2__v">${nrRo(r.v)}</span><div class="mm2__b"></div>
+            <span class="mm2__t"><b>${esc(r.t)}</b>${nrRo(Math.round(r.pop / 1000))} mii de locuitori</span></div>`).join("")}
+          <div class="mm2__linie" style="--y:0%"><span></span></div>
+        </div>
+      </div>
+      <p class="cub__regula mm2__txt"></p>
+    </div>`;
+  const lin = gazda.querySelector(".mm2__linie"), txt = gazda.querySelector(".mm2__txt");
+  const arata = m => {
+    gazda.querySelectorAll(".mm2__sc button").forEach(b => b.classList.toggle("on", b.dataset.m === m));
+    const v = m === "s" ? d.simpla : d.ponderata;
+    lin.style.setProperty("--y", (v / max * 100).toFixed(1) + "%");
+    lin.querySelector("span").textContent = nrRo(v);
+    lin.classList.toggle("p", m === "p");
+    txt.innerHTML = m === "s" ? d.txtSimpla : d.txtPonderata;
+  };
+  gazda.querySelectorAll(".mm2__sc button").forEach(b => b.onclick = () => arata(b.dataset.m));
+  arata("s");
+};
+
+
+/* --- Bare pe intervale (H1, H2) ----------------------------------------------
+   O serie: SCI median pe intervale de distanță. Două serii: aceeași țară și
+   țări diferite, una lângă alta, cu raportul deasupra. Axa verticală e
+   logaritmică; la trecerea mouse-ului apar mediana și numărul de perechi. */
+
+V.trepte = (gazda, d) => {
+  const S = d.serii, I = d.intervale, nS = S.length;
+  const W = 640, H = 260, L = 64, R = 628, T = 22, B = 214;
+  const toate = S.flatMap(s => s.med), lo = Math.floor(Math.log10(Math.min(...toate))), hi = Math.ceil(Math.log10(Math.max(...toate)));
+  const Y = v => B - (Math.log10(v) - lo) / (hi - lo) * (B - T);
+  const gw = (R - L) / I.length, bw = Math.min(46, gw * 0.7 / nS);
+  gazda.innerHTML = `
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="tr6">
+      ${nS > 1 ? `<div class="tr6__leg">${S.map(s => `<span><i style="background:var(--${s.c})"></i>${esc(s.t)}</span>`).join("")}</div>` : ""}
+      <div class="tr6__desen"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(d.titlu || "bare")}"></svg>
+        <div class="hs__balon tr6__balon" hidden></div></div>
+      <p class="cub__regula tr6__txt">${d.text || ""}</p>
+    </div>`;
+  const svg = gazda.querySelector("svg"), bal = gazda.querySelector(".tr6__balon");
+  let g = "";
+  for (let e = lo; e <= hi; e++) g += `<line x1="${L}" x2="${R}" y1="${Y(10 ** e)}" y2="${Y(10 ** e)}" class="nor__grila"/>`
+    + `<text x="${L - 8}" y="${Y(10 ** e) + 4}" class="hst__et nor__ety">${nrRo(10 ** e)}</text>`;
+  I.forEach((t, k) => {
+    const x0 = L + k * gw + (gw - nS * bw - (nS - 1) * 4) / 2;
+    S.forEach((s, j) => {
+      const x = x0 + j * (bw + 4), y = Y(s.med[k]);
+      g += `<rect class="tr6__b" x="${x}" y="${y}" width="${bw}" height="${B - y}" rx="3" style="fill:var(--${s.c});--i:${k}" data-k="${k}" data-j="${j}"/>`;
+    });
+    if (nS > 1 && d.raport) {
+      const r = S[0].med[k] / S[1].med[k], ym = Math.min(...S.map(s => Y(s.med[k])));
+      g += `<text x="${L + k * gw + gw / 2}" y="${ym - 7}" class="hst__et tr6__x">×${nrRo(r, r < 10 ? 1 : 0)}</text>`;
+    }
+    g += `<text x="${L + k * gw + gw / 2}" y="${B + 18}" class="hst__et">${esc(t)}</text>`;
+  });
+  g += `<text x="${R}" y="${B + 38}" class="hst__et nor__titlu-x">${esc(d.axaX || "")}</text>`
+     + `<text x="${L}" y="${T - 8}" class="hst__et nor__titlu-y">${esc(d.axaY || "")}</text>`;
+  svg.innerHTML = g;
+  svg.querySelectorAll(".tr6__b").forEach(b => {
+    b.onmouseenter = () => {
+      const k = +b.dataset.k, s = S[+b.dataset.j];
+      bal.innerHTML = `<b>${esc(I[k])} km${nS > 1 ? ", " + esc(s.t) : ""}</b><span>mediana ${nrRo(s.med[k])} · ${nrRo(s.n[k])} perechi</span>`;
+      bal.hidden = false; const rc = svg.getBoundingClientRect(), z = rc.width / W;
+      bal.style.left = Math.min(rc.width - 210, +b.getAttribute("x") * z + 8) + "px";
+      bal.style.top = Math.max(0, +b.getAttribute("y") * z - 46) + "px";
+    };
+    b.onmouseleave = () => { bal.hidden = true; };
+  });
+};
+
+
+/* --- Partenerii României: SCI și migranții la mie, unul lângă altul ----------
+   Fiecare rând e o țară; bara din stânga e SCI-ul cu România, cea din dreapta
+   migranții la 1.000 de locuitori ai celor două țări. Rândurile marcate sunt
+   cele de care vorbește textul. */
+
+V.dublu = (gazda, d) => {
+  const R = d.randuri, mS = Math.max(...R.map(r => r.sci)), mR = Math.max(...R.map(r => r.rata));
+  gazda.innerHTML = `
+    <div class="db2">
+      <div class="db2__cap"><span></span><b>SCI cu România</b><b>migranți la 1.000 de locuitori</b></div>
+      ${R.map(r => `<div class="db2__r${r.ev ? " ev" : ""}" title="${esc(r.nota || "")}">
+        <span class="db2__t">${esc(r.t)}</span>
+        <span class="db2__b db2__b--s"><i style="width:${(r.sci / mS * 100).toFixed(1)}%"></i><em>${nrRo(r.sci)}</em></span>
+        <span class="db2__b db2__b--r"><i style="width:${(r.rata / mR * 100).toFixed(1)}%"></i><em>${nrRo(r.rata, 1)}</em></span>
+      </div>`).join("")}
+    </div>`;
+};
+
+
+/* --- O rețea mică ---------------------------------------------------------------
+   Cinci regiuni, toate legate între ele; grosimea legăturii crește cu SCI-ul.
+   Un clic pe un nod îi aprinde legăturile și îi scrie forța: suma lor. */
+
+V.retea = (gazda, d) => {
+  const N = d.noduri, M = d.muchii, W = 620, H = 300;
+  const poz = Object.fromEntries(N.map(n => [n.k, [n.x, n.y]]));
+  const lmin = Math.log10(Math.min(...M.map(m => m[2]))), lmax = Math.log10(Math.max(...M.map(m => m[2])));
+  const gros = v => 1.2 + 9 * (Math.log10(v) - lmin) / (lmax - lmin);
+  gazda.innerHTML = `
+    <div class="rt5">
+      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="o rețea de cinci regiuni"></svg>
+      <div class="rt5__info"><p class="rt5__t">${d.start || ""}</p></div>
+    </div>`;
+  const svg = gazda.querySelector("svg"), info = gazda.querySelector(".rt5__t");
+  svg.innerHTML = M.map((m, i) => {
+    const [x1, y1] = poz[m[0]], [x2, y2] = poz[m[1]];
+    return `<line class="rt5__m" data-a="${m[0]}" data-b="${m[1]}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke-width:${gros(m[2]).toFixed(1)}"/>`
+      + `<text class="rt5__v" data-a="${m[0]}" data-b="${m[1]}" x="${(x1 + x2) / 2}" y="${(y1 + y2) / 2 - 5}">${nrRo(m[2])}</text>`;
+  }).join("") + N.map(n => `<g class="rt5__n" data-k="${n.k}" tabindex="0"><circle cx="${n.x}" cy="${n.y}" r="24"/>`
+    + `<text x="${n.x}" y="${n.y + 4}">${esc(n.k)}</text><text class="rt5__nume" x="${n.x}" y="${n.y + (n.y > H / 2 ? 42 : -32)}">${esc(n.t)}</text></g>`).join("");
+  const alege = k => {
+    svg.querySelectorAll(".rt5__n").forEach(g => g.classList.toggle("on", g.dataset.k === k));
+    svg.querySelectorAll(".rt5__m, .rt5__v").forEach(e => e.classList.toggle("on", e.dataset.a === k || e.dataset.b === k));
+    const ale = M.filter(m => m[0] === k || m[1] === k), f = ale.reduce((s, m) => s + m[2], 0);
+    const n = N.find(x => x.k === k);
+    info.innerHTML = `<b>${esc(n.t)}</b> (${esc(k)}): ${ale.length} legături, forța <b>${nrRo(f)}</b> = `
+      + ale.map(m => nrRo(m[2])).join(" + ") + `. ${d.dupa || ""}`;
+  };
+  svg.querySelectorAll(".rt5__n").forEach(g => { g.onclick = () => alege(g.dataset.k); g.onkeydown = e => { if (e.key === "Enter") alege(g.dataset.k); }; });
+};
+
 
 export default V;
 

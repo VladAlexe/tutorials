@@ -1,0 +1,229 @@
+{
+ "sursa": "Tabelele din caietele 04-06 (rularea din 2 noiembrie 2026): regiuni_nuts2, perechi_regiuni, perechi_tari; contururile GISCO NUTS 2024.",
+ "tabele": {
+  "regiuni": 298,
+  "perechi_regiuni": 44253,
+  "perechi_tari": 276
+ },
+ "sql": {
+  "coloane": [
+   "tara_1",
+   "tara_2",
+   "sci",
+   "migranti",
+   "pasageri"
+  ],
+  "randuri": [
+   [
+    "AT",
+    "RO",
+    124693,
+    155892,
+    697207
+   ],
+   [
+    "BG",
+    "SE",
+    9279,
+    8406,
+    39307
+   ],
+   [
+    "DE",
+    "FR",
+    11102,
+    212524,
+    6532923
+   ],
+   [
+    "DE",
+    "RO",
+    91228,
+    784561,
+    2878684
+   ],
+   [
+    "ES",
+    "RO",
+    54179,
+    622780,
+    2086830
+   ],
+   [
+    "ES",
+    "SK",
+    4656,
+    null,
+    80471
+   ],
+   [
+    "FR",
+    "IT",
+    13996,
+    287458,
+    13679401
+   ],
+   [
+    "HU",
+    "RO",
+    85021,
+    20619,
+    274903
+   ],
+   [
+    "IE",
+    "RO",
+    73377,
+    48886,
+    358339
+   ],
+   [
+    "IT",
+    "RO",
+    69327,
+    1088052,
+    4713739
+   ]
+  ],
+  "total": 276,
+  "ro": 19,
+  "top": [
+   [
+    "AT",
+    124693,
+    155892
+   ],
+   [
+    "DE",
+    91228,
+    784561
+   ],
+   [
+    "HU",
+    85021,
+    20619
+   ],
+   [
+    "IE",
+    73377,
+    48886
+   ],
+   [
+    "IT",
+    69327,
+    1088052
+   ]
+  ]
+ },
+ "ro_pib": [
+  [
+   "RO32",
+   "Bucureşti-Ilfov",
+   75000
+  ],
+  [
+   "RO42",
+   "Vest",
+   31300
+  ],
+  [
+   "RO12",
+   "Centru",
+   28400
+  ],
+  [
+   "RO11",
+   "Nord-Vest",
+   28300
+  ],
+  [
+   "RO41",
+   "Sud-Vest Oltenia",
+   24000
+  ],
+  [
+   "RO22",
+   "Sud-Est",
+   23600
+  ],
+  [
+   "RO31",
+   "Sud-Muntenia",
+   21800
+  ],
+  [
+   "RO21",
+   "Nord-Est",
+   19300
+  ]
+ ],
+ "pe_tara": {
+  "tari": 37,
+  "top": [
+   [
+    "TR",
+    26,
+    85372377
+   ],
+   [
+    "DE",
+    38,
+    83456045
+   ],
+   [
+    "FR",
+    27,
+    68669303
+   ],
+   [
+    "IT",
+    21,
+    58971230
+   ],
+   [
+    "ES",
+    19,
+    48619695
+   ]
+  ],
+  "o_regiune": [
+   "LV",
+   "MK",
+   "EE",
+   "CY",
+   "LU",
+   "ME",
+   "MT",
+   "IS",
+   "XK"
+  ]
+ },
+ "tip": {
+  "aceeasi tara": {
+   "n": 2385,
+   "m": 134977
+  },
+  "tari diferite": {
+   "n": 41868,
+   "m": 3149
+  }
+ },
+ "lt": {
+  "regiuni": [
+   [
+    "LT01",
+    "Sostinės regionas",
+    868251,
+    53000
+   ],
+   [
+    "LT02",
+    "Vidurio ir vakarų Lietuvos regionas",
+    2017640,
+    27100
+   ]
+  ],
+  "simpla": 40050,
+  "ponderata": 34892
+ }
+}
