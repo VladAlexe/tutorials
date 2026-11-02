@@ -2997,9 +2997,11 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 /* Cursul 3 la 1366×768, cu tot cu butoanele de jos. Doar în lecția 3: același
    id de slide există și în celelalte lecții. */
 /* titlul mic de deasupra desenului repetă titlul slide-ului */
-.rnr[data-capitol="c3"] .sld:is(#s8,#s8b,#s9,#s14,#s14b,#s19,#s21d,#s22b) .ix__cap{display:none}
+.rnr[data-capitol="c3"] .sld:is(#s4,#s6c,#s8,#s8b,#s9,#s14,#s14b,#s19,#s21d,#s22b) .ix__cap{display:none}
 /* verificarea depozitului: cele patru verificări, câte două pe rând */
 .rnr[data-capitol="c3"] .sld#s22b .dov{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* pe slide, doar ultimul indiciu: cel pentru câmpul încă nerezolvat */
+.rnr[data-capitol="c3"] .sld#s22b .ex__ind p:not(:last-child){display:none}
 .rnr[data-capitol="c3"] .sld#s9 .srt__c{min-height:84px}
 
 /* ===========================================================================
@@ -3239,3 +3241,145 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .tb4__nota{margin:3px 0 0;font-size:var(--t1);color:var(--text-3);line-height:1.45;max-width:none}
 .tb4__leg{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:9px 0 0;max-width:none}
 @media (max-width:760px){.tb4{grid-template-columns:1fr}.tb4__t{overflow-x:auto}}
+
+/* ===========================================================================
+   Git, arătat (cursul 3, v107): zonele cu săgețile comenzilor, terminalul,
+   depozitul echipei clonat, ramurile main și dev
+   =========================================================================== */
+.gz{display:grid;grid-template-columns:minmax(0,1.3fr) 66px minmax(0,1fr) 66px minmax(0,1fr) 66px minmax(0,1fr);
+  align-items:stretch;font-family:var(--sans)}
+.gz__z{--zc:var(--text-2);--zs:var(--panza-2);border:1px solid color-mix(in srgb,var(--zc) 28%,var(--linie));
+  border-radius:14px;background:color-mix(in srgb,var(--zc) 5%,var(--panza));padding:11px 11px 12px;min-height:212px;
+  transition:box-shadow .25s,background .25s}
+.gz__z[data-z="0"]{--zc:var(--ambra);--zs:var(--ambra-slab)}
+.gz__z[data-z="1"]{--zc:var(--roza);--zs:var(--roza-slab)}
+.gz__z[data-z="2"]{--zc:var(--accent);--zs:var(--accent-slab)}
+.gz__z[data-z="3"]{--zc:var(--ardezie);--zs:var(--ardezie-slab)}
+.gz__z.activ{background:color-mix(in srgb,var(--zc) 10%,var(--panza));box-shadow:0 0 0 3px color-mix(in srgb,var(--zc) 26%,transparent)}
+.gz__cap{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.gz__ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:var(--zs,var(--panza-2));color:var(--zc,var(--text-2))}
+.gz__ic .ic{width:17px;height:17px}
+.gz__ct{display:flex;flex-direction:column;min-width:0}
+.gz__ct b{font-size:var(--t2);font-weight:600;color:var(--text);line-height:1.25}
+.gz__ct small{font-size:11.5px;color:var(--text-3);line-height:1.3}
+.gz__in{display:flex;flex-direction:column;gap:6px}
+.gz__f{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:8px;background:var(--panza);
+  border:1px solid var(--linie-2);min-width:0;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.gz__f .ic{width:14px;height:14px;flex:none;color:var(--text-3)}
+.gz__f code{font-family:var(--mono);font-size:12px;background:none;border:0;padding:0;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.gz__f em{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.gz__f--nou em,.gz__f--modificat em{background:var(--ambra-slab);color:var(--ambra)}
+.gz__f--pregatit em{background:var(--roza-slab);color:var(--roza)}
+.gz__f--salvat em{background:var(--accent-slab);color:var(--accent-text)}
+.gz__f--ignorat{opacity:.6;border-style:dashed;background:none}
+.gz__f--ignorat code{text-decoration:line-through;text-decoration-color:var(--text-3)}
+.gz__f--ignorat em{background:var(--panza-2);color:var(--text-3)}
+.gz__z[data-z="1"] .gz__f{background:var(--zs);border-color:color-mix(in srgb,var(--zc) 40%,transparent)}
+.gz__gol{font-size:var(--t1);color:var(--text-3);font-style:italic;padding:2px}
+.gz__nota{font-size:11.5px;color:var(--text-3);line-height:1.4;margin-top:2px}
+.gz__nota code{font-size:11px}
+.gz__c{display:flex;flex-direction:column;gap:3px;padding:8px 10px;border-radius:10px;background:var(--panza);
+  border:1px solid color-mix(in srgb,var(--zc) 55%,var(--linie));box-shadow:var(--umbra)}
+.gz__c.vechi{opacity:.6;box-shadow:none;border-color:var(--linie)}
+.gz__ch{display:flex;align-items:center;gap:6px;min-width:0}
+.gz__ch i{width:9px;height:9px;border-radius:50%;background:var(--zc);flex:none}
+.gz__ch code{font-family:var(--mono);font-size:11px;color:var(--text-3);background:none;border:0;padding:0}
+.gz__ch small{margin-left:auto;font-size:10.5px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.gz__c b{font-size:12px;font-weight:600;line-height:1.35;color:var(--text)}
+/* săgețile dintre zone poartă numele comenzii */
+.gz__p{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.gz__p span{font-family:var(--mono);font-size:10.5px;color:var(--text-3);background:var(--fundal);border:1px solid var(--linie);
+  border-radius:999px;padding:2px 7px;white-space:nowrap;transition:.25s;position:relative;z-index:1}
+.gz__p i{position:relative;width:46px;height:2px;background:var(--linie-2);border-radius:2px;transition:.25s}
+.gz__p i::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid var(--linie-2);
+  border-right:0;transition:.25s}
+.gz__p.on span{background:var(--buton);border-color:var(--buton);color:var(--buton-text)}
+.gz__p.on i{background:var(--accent)}
+.gz__p.on i::after{border-left-color:var(--accent)}
+.gz__p.on i::before{content:"";position:absolute;top:-3px;left:0;width:8px;height:8px;border-radius:50%;background:var(--accent);
+  animation:gz-pachet .7s ease-in-out 2}
+@keyframes gz-pachet{from{left:0;opacity:1}to{left:38px;opacity:.2}}
+@media (prefers-reduced-motion: reduce){.gz__p.on i::before{animation:none;display:none}}
+/* terminalul, ca în Git Bash */
+.gz__term{margin-top:12px;background:var(--ed-fundal);color:var(--ed-text);border-radius:10px;padding:9px 14px 10px;
+  font-family:var(--mono);font-size:12.5px;line-height:1.5;min-height:86px;box-shadow:inset 3px 0 0 transparent}
+.gz__term.rau{box-shadow:inset 3px 0 0 var(--nu)}
+.gz__pr{white-space:pre-wrap;word-break:break-word}
+.gz__dir{color:#C9A0DC}
+.gz__ram{color:#5FB8AC}
+.gz__dol{color:var(--ed-nr);margin:0 8px 0 6px}
+.gz__cmd{color:var(--ed-text)}
+.gz__out{margin-top:3px}
+.gz__l{white-space:pre-wrap;word-break:break-word;color:#CFCCC0}
+.gz__l--ok{color:#86D69A}
+.gz__l--nu{color:#F2806F}
+.gz__l--g{color:#8C8A7E;font-family:var(--sans);font-size:12.5px}
+/* butoanele exercițiului cu zonele */
+.gz__com{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:12px}
+.gz__b{font:inherit;padding:7px 13px;border-radius:999px;border:1px solid var(--linie-2);background:var(--panza);
+  color:var(--text);cursor:pointer;transition:.15s}
+.gz__b code{font-family:var(--mono);font-size:var(--t2);background:none;border:0;padding:0;color:inherit}
+.gz__b:hover{border-color:var(--accent);color:var(--accent-text);background:var(--accent-slab)}
+.gz__reset{margin-left:auto}
+/* banda: pasul care nu e o comandă (o editare în VS Code, un clic pe GitHub) */
+.bg__c--edit code{font-family:var(--sans)}
+
+/* depozitul echipei, clonat */
+.cl{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);align-items:stretch;font-family:var(--sans)}
+.cl__p{--zc:var(--ardezie);--zs:var(--ardezie-slab);border:1px solid color-mix(in srgb,var(--zc) 28%,var(--linie));
+  border-radius:14px;background:color-mix(in srgb,var(--zc) 5%,var(--panza));padding:11px 12px 12px;transition:box-shadow .25s}
+.cl__p--pc{--zc:var(--ambra);--zs:var(--ambra-slab)}
+.cl__p.activ{box-shadow:0 0 0 3px color-mix(in srgb,var(--zc) 26%,transparent)}
+.cl__repo{background:var(--panza);border:1px solid var(--linie);border-radius:10px;padding:8px 10px}
+.cl__rt{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.cl__rt .ic{width:13px;height:13px;color:var(--text-3)}
+.cl__rt b{font-family:var(--mono);font-size:var(--t2)}
+.cl__rt small{margin-left:auto;font-size:11px;color:var(--text-3)}
+.cl__f{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:4px 12px}
+.cl__f li{display:flex;align-items:center;gap:4px;margin:0;padding:0}
+.cl__f li::before{content:none}
+.cl__f .ic{width:12px;height:12px;color:var(--text-3)}
+.cl__f code{font-family:var(--mono);font-size:11.5px;background:none;border:0;padding:0}
+.cl__adr{display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--linie);padding-top:6px;transition:.25s;border-radius:6px}
+.cl__adr span{font-size:11px;color:var(--text-3)}
+.cl__adr code{font-family:var(--mono);font-size:11.5px;background:none;border:0;padding:0;word-break:break-all}
+.cl__adr.on{background:var(--accent-slab);box-shadow:0 0 0 4px var(--accent-slab)}
+.cl__adr.on code{color:var(--accent-text)}
+.cl__mem{display:flex;align-items:center;gap:10px;margin-top:9px}
+.cl__mem > span{font-size:11.5px;color:var(--text-3)}
+.cl__av{display:flex;gap:8px}
+.cl__m{display:flex;flex-direction:column;align-items:center;gap:2px}
+.cl__m i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:700;
+  background:var(--panza);border:1.5px dashed var(--linie-2);color:var(--text-3);transition:.25s}
+.cl__m small{font-size:10px;color:var(--text-3)}
+.cl__m.da i{background:var(--accent);border:1.5px solid var(--accent);color:var(--fundal)}
+.cl__m.da small{color:var(--accent-text);font-weight:600}
+.cl__s{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.cl__s span{font-family:var(--mono);font-size:11px;color:var(--text-3);background:var(--fundal);border:1px solid var(--linie);
+  border-radius:999px;padding:2px 8px;transition:.25s}
+.cl__s i{position:relative;width:70px;height:2px;background:var(--linie-2);transition:.25s}
+.cl__s i::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid var(--linie-2);border-right:0}
+.cl__s.on span{background:var(--buton);border-color:var(--buton);color:var(--buton-text)}
+.cl__s.on i{background:var(--accent)} .cl__s.on i::after{border-left-color:var(--accent)}
+.cl__arb{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:12px}
+.cl__n{display:flex;align-items:center;gap:6px;margin:0;padding:1px 0 1px calc(var(--niv) * 18px);line-height:1.3}
+.cl__n::before{content:none}
+.cl__n .ic{width:13px;height:13px;color:var(--text-3);flex:none}
+.cl__n code{font-family:var(--mono);font-size:12px;background:none;border:0;padding:0;color:var(--text)}
+.cl__n small{font-family:var(--sans);font-size:11px;color:var(--text-3);margin-left:4px}
+.cl__n.nou code{color:var(--ambra);font-weight:600}
+.cl__n.stins{opacity:.55}
+.cl__t .gz__term{min-height:70px}
+@media (max-width:760px){.cl{grid-template-columns:1fr}.cl__s{flex-direction:row;padding:8px 0}.gz{grid-template-columns:1fr}.gz__p{flex-direction:row;padding:4px 0}}
+
+/* ramurile: autorul pe commit, ramura și pe GitHub */
+.rg__a{stroke:none}
+.rg__at{font-family:var(--sans);font-size:9.5px;font-weight:700;fill:var(--fundal);text-anchor:middle}
+.rg__gh{font-family:var(--sans);font-size:10.5px;fill:var(--ardezie);font-weight:600}
+.rg__dos li code{font-family:var(--mono);font-size:12px;background:none;border:0;padding:0;color:inherit}
+/* lucrul în echipă: commit-ul care lipsește */
+.sy__c--lipsa{border:1.5px dashed var(--nu);border-left:4px dashed var(--nu);background:var(--nu-slab);color:var(--nu)}
+.sy__c--lipsa b{color:var(--nu)}
+.sy__c--lipsa small{color:var(--nu);font-weight:600}

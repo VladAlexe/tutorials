@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 3. Versionare și colaborare cu Git · Fluxuri de lucru</title>
-<meta name="description" content="Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără conflicte între modificări și cum se încadrează teoretic un proiect.">
-<link rel="stylesheet" href="../css/fonturi.css?v=106">
-<link rel="stylesheet" href="../css/sistem.css?v=106">
-<link rel="stylesheet" href="../css/intrare.css?v=106">
-<script src="../js/tema.js?v=106"></script>
+<meta name="description" content="Ce face Git, cum ajunge depozitul echipei pe calculator, cum lucrează o echipă pe main și dev fără să-și piardă munca și cum se încadrează teoretic un proiect.">
+<link rel="stylesheet" href="../css/fonturi.css?v=107">
+<link rel="stylesheet" href="../css/sistem.css?v=107">
+<link rel="stylesheet" href="../css/intrare.css?v=107">
+<script src="../js/tema.js?v=107"></script>
 </head>
 <body>
 
@@ -42,8 +42,8 @@
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, primul commit al echipei, citirea lui <code>git status</code>, legătura cu GitHub, ramurile și regula după care lucrează o echipă: pull înainte de push.</p>
-<p>A doua construiește cadrul proiectului: legătura dintre două locuri, măsurată prin SCI, și factorii care o pot explica (distanța, migrația, istoria comună, locurile), fiecare cu ipoteza, variabila și sursa lui. Din ce rămâne neexplicat pornește întrebarea echipei. Lecția se încheie cu cele patru tabele pregătite în caietul 03.</p>
+    <div class="sec__corp"><p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, apoi depozitul echipei, de la GitHub pe calculator: clonarea, ce nu intră în depozit, primul commit pe main, ramura dev pe care lucrează toată echipa, regula pull înainte de push, conflictele și verificarea.</p>
+<p>A doua construiește cadrul proiectului: legătura dintre două locuri, măsurată prin SCI, și factorii care o pot explica (distanța, migrația, istoria comună, locurile), fiecare cu ipoteza, variabila și sursa lui. Din ce rămâne neexplicat pornește întrebarea echipei. Lecția se încheie cu tabelele pregătite în caietul 03.</p>
 <p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p></div>
   </section>
   <section class="sec sec--obiective">
@@ -51,10 +51,10 @@
     <div class="sec__corp"><ul class="obiective">
 <li>Diferența dintre Git și GitHub și motivul pentru care un commit local nu este o copie de siguranță a muncii.</li>
 <li>Fiecare comandă, explicată prin zonele între care mută fișierele.</li>
-<li>Citirea ieșirii lui <code>git status</code> înainte de commit.</li>
-<li>Un <code>.gitignore</code> scris înainte de primul <code>add</code> și motivul pentru care ordinea contează.</li>
-<li>Legarea depozitului local de unul de pe GitHub sau clonarea unuia existent.</li>
-<li>Lucrul pe ramuri, regula pull înainte de push și rezolvarea unui conflict de îmbinare.</li>
+<li>Depozitul echipei, clonat de pe GitHub, și rolul fiecărui dosar din șablon.</li>
+<li>Ce intră în depozit (caiete, cod, date mici) și ce rămâne în afara lui, prin <code>.gitignore</code>: secretele, mediul virtual, fișierele uriașe.</li>
+<li>Primul commit al echipei, pe main, și fluxul de după: dev pentru lucrul zilnic, pull înainte de push, rezolvarea unui conflict.</li>
+<li>Citirea ieșirii lui <code>git status</code> și verificarea depozitului, local și pe GitHub.</li>
 <li>Structura unui cadru teoretic: factor, ipoteză, variabilă, sursă.</li>
 <li>O întrebare de cercetare care poate fi infirmată cu datele disponibile.</li>
 </ul></div>
@@ -76,7 +76,7 @@
       </a>
       <a class="mat__c" href="git/">
         <span class="mat__t">Lucrul cu Git</span>
-        <span class="mat__d">Fișa cu toate comenzile de la curs: configurarea, clonarea, .gitignore, ramura dev, lucrul zilnic și îmbinarea în main.</span>
+        <span class="mat__d">Fișa cu toate comenzile de la curs: configurarea, clonarea, .gitignore, primul commit, ramura dev, lucrul zilnic și îmbinarea în main.</span>
       </a>
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026" target="_blank" rel="noopener">
         <span class="mat__t">Depozitul cursului ↗</span>
@@ -90,7 +90,7 @@
 <ol>
 <li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a>, instalat. Pe Windows include Git Bash, un terminal în care funcționează comenzile din lecție.</li>
 <li>Contul de <a class="leg" href="https://github.com/" rel="noopener" target="_blank">GitHub</a>, același cu care se face intrarea pe site.</li>
-<li>Echipa, aleasă la cursul 2, și datele colectate în <code>dsw/curs/data/c2</code>. Depozitul echipei se creează și se clonează în <code>dsw/proiect</code> în această lecție.</li>
+<li>Echipa, aleasă pe site, și datele colectate în <code>dsw/curs/data/c2</code>. Repo-ul echipei, <code>echipa-N</code>, există deja pe GitHub; invitația vine doar dacă numele de pe site este legat de contul GitHub (Contul meu → „Caută-mi numele”). Clonarea în <code>dsw/proiect</code> se face în această lecție.</li>
 </ol></div>
   </section>
   <section class="sec">
@@ -118,7 +118,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=106"), import("../js/ora.js?v=106"), import("../js/curs.js?v=106")]);
+    import("../js/auth.js?v=107"), import("../js/ora.js?v=107"), import("../js/curs.js?v=107")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -144,7 +144,7 @@ try {
   }
 } catch { /* fără cont sau fără rețea, pagina rămâne cum e */ }
 </script>
-<script type="module" src="../js/antet.js?v=106"></script>
-<script type="module" src="../js/subsol.js?v=106"></script>
+<script type="module" src="../js/antet.js?v=107"></script>
+<script type="module" src="../js/subsol.js?v=107"></script>
 </body>
 </html>

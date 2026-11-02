@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod, deCeNu } from "./colectare.js?v=106";
+import { salveazaCod, deCeNu } from "./colectare.js?v=107";
 
 const E = {};
 
@@ -864,4 +864,10 @@ E.dovada = (gazda, d) => {
     gazda.querySelectorAll(".dov__in").forEach(x => x.classList.remove("bun","rau"));
     out.textContent = ""; btN.hidden = true;
   };
+  // Indiciul privește primul câmp încă nerezolvat: unde se dă comanda și ce se copiază.
+  legaIndiciu(gazda, () => {
+    const i = d.pasi.findIndex((p, k) => !gazda.querySelector(`.dov__in[data-i="${k}"]`).classList.contains("bun"));
+    const p = d.pasi[i < 0 ? 0 : i];
+    return [d.indiciu, p.ind ? `<b>${(i < 0 ? 0 : i) + 1}. ${p.t}:</b> ${p.ind}` : null, p.ind2];
+  });
 };

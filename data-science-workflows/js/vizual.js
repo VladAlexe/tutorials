@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=106");
+    const m = await import("/data-science-workflows/js/colectare.js?v=107");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -112,95 +112,6 @@ V.flux = (gazda, d) => {
   };
 
   arata(0);
-};
-
-
-/* ===========================================================================
-   4. ZONE — cele trei zone ale lui Git
-
-   Modelul mental fără de care comenzile lui Git se învață pe de rost. Aici nu
-   se citește, se mută: apeși comanda și vezi unde ajung fișierele.
-   =========================================================================== */
-
-V.zone = (gazda, d) => {
-  gazda.closest(".ix")?.classList.add("exc");
-  const ZONE = [
-    { t: "Dosarul de lucru", d: "fișierele editate" },
-    { t: "Pregătire", d: "ce intră în commit" },
-    { t: "Istoric local", d: "commit-urile locale" },
-    { t: "GitHub", d: "depozitul de la distanță" },
-  ];
-  const COM = [
-    { c: "git status", z: null, d: "nu mută nimic; afișează starea" },
-    { c: "git add", z: 1, d: "din dosar în pregătire" },
-    { c: "git commit", z: 2, d: "din pregătire în istoricul local" },
-    { c: "git push", z: 3, d: "din local pe GitHub" },
-  ];
-  const F = (d.fisiere || ["colectare.py", "README.md"]).map(t => ({ t, z: 0 }));
-  let jurnal = [];
-
-  gazda.innerHTML = `
-    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
-    <div class="zn">
-      <div class="zn__zone">${ZONE.map((z, i) => `
-        <div class="zn__z" data-z="${i}">
-          <span class="zn__zt">${esc(z.t)}</span>
-          <span class="zn__zd">${esc(z.d)}</span>
-          <div class="zn__in"></div>
-        </div>`).join("")}</div>
-      <div class="zn__com">${COM.map((c, i) =>
-        `<button class="zn__cb" data-c="${i}" type="button">${esc(c.c)}</button>`).join("")}
-        <button class="zn__cb zn__cb--rau" data-rol="reset" type="button">de la capăt</button>
-      </div>
-      <p class="zn__msg"></p>
-      <p class="ex__stare"></p>
-    </div>`;
-
-  const cosuri = [...gazda.querySelectorAll(".zn__in")];
-  const msg = gazda.querySelector(".zn__msg");
-  const st  = gazda.querySelector(".ex__stare");
-
-  const deseneaza = () => {
-    cosuri.forEach((c, i) => {
-      c.innerHTML = F.filter(f => f.z === i)
-        .map(f => `<span class="zn__f">${esc(f.t)}</span>`).join("");
-    });
-    gazda.querySelectorAll(".zn__z").forEach((z, i) =>
-      z.classList.toggle("plin", F.some(f => f.z === i)));
-  };
-
-  gazda.addEventListener("click", async e => {
-    if (e.target.closest('[data-rol="reset"]')){
-      F.forEach(f => f.z = 0); jurnal = []; msg.textContent = ""; deseneaza(); return;
-    }
-    const b = e.target.closest(".zn__cb");
-    if (!b || b.dataset.c === undefined) return;
-    const c = COM[+b.dataset.c];
-    jurnal.push(c.c);
-
-    if (c.z === null){
-      const pe = ZONE.map((z, i) => `${F.filter(f => f.z === i).length} în „${z.t}”`).join(", ");
-      msg.textContent = `${c.c}: ${pe}. Nu s-a mutat nimic.`;
-      return;
-    }
-    const muta = F.filter(f => f.z === c.z - 1);
-    if (!muta.length){
-      msg.textContent = `${c.c}: nimic de mutat. Zona „${ZONE[c.z - 1].t}” este goală.`;
-      return;
-    }
-    muta.forEach(f => f.z = c.z);
-    msg.textContent = `${c.c}: ${muta.length} ${muta.length === 1 ? "fișier" : "fișiere"} → ${ZONE[c.z].t}.`;
-    deseneaza();
-
-    if (F.every(f => f.z === 3)){
-      msg.textContent = "Toate fișierele au ajuns pe GitHub. Acesta este traseul, la fiecare modificare.";
-      await poarta(gazda, d.id, jurnal.join(" → "));
-      st.textContent = "Exercițiul este rezolvat.";
-      st.classList.add("vazut");
-    }
-  });
-
-  deseneaza();
 };
 
 
@@ -1430,21 +1341,27 @@ V.modele = (gazda, d) => {
 };
 
 /* ===========================================================================
-   23. GIT, ARĂTAT — comenzile ca bandă de pași
+   23. GIT, ARĂTAT — zonele, depozitul echipei, ramurile, lucrul în echipă
 
-   Primul commit, ramurile și lucrul în echipă au aceeași mecanică: un șir de
-   comenzi, iar fiecare comandă mută ceva pe desen. Comanda următoare e
-   aprinsă; cele deja rulate rămân bifate și se pot apăsa, ca să revii la
-   ele. Desenul e o funcție de k, câte comenzi s-au rulat, deci înainte și
-   înapoi desenează la fel.
+   Toate desenele de Git din cursul 3 vorbesc aceeași limbă: patru zone
+   (dosarul, pregătirea, istoricul, GitHub), unite de săgeți care poartă
+   numele comenzii care trece dintr-una în alta, și un terminal care arată
+   exact ce răspunde Git. Comenzile sunt fie butoane (exercițiul cu zonele),
+   fie o bandă de pași: comanda următoare e aprinsă, cele rulate rămân bifate
+   și se pot apăsa, ca să revii la ele. Desenul e o funcție de k, câte comenzi
+   s-au rulat, deci înainte și înapoi desenează la fel.
    =========================================================================== */
 
 const LINISTE = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const SVG_FIS = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5h5.2L12.5 4.8V14.5h-8.5z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9 1.7V5h3.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
-const SVG_DIR = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 3.5h4.3l1.5 1.6h7.2v8.4h-13z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
-const SVG_PC  = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="3" width="11" height="7.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 13h14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
-const SVG_NOR = '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.6 12.5a3 3 0 0 1-.3-6 4 4 0 0 1 7.6-.9 3.2 3.2 0 0 1 .3 6.9z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+const IC = (d, extra = "") => `<svg class="ic" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">${d}${extra}</svg>`;
+const SVG_FIS  = IC('<path d="M4 1.5h5.2L12.5 4.8V14.5h-8.5z"/><path d="M9 1.7V5h3.3"/>');
+const SVG_DIR  = IC('<path d="M1.5 3.5h4.3l1.5 1.6h7.2v8.4h-13z"/>');
+const SVG_PC   = IC('<rect x="2.5" y="3" width="11" height="7.5" rx="1"/><path d="M1 13h14"/>');
+const SVG_NOR  = IC('<path d="M4.6 12.5a3 3 0 0 1-.3-6 4 4 0 0 1 7.6-.9 3.2 3.2 0 0 1 .3 6.9z"/>');
+const SVG_TAVA = IC('<path d="M1.8 9.2 3.6 3.5h8.8l1.8 5.7v3.8H1.8z"/><path d="M1.8 9.2h3.6l.9 1.6h3.4l.9-1.6h3.6"/>');
+const SVG_CEAS = IC('<circle cx="8" cy="8.4" r="5.6"/><path d="M8 5.3v3.3l2.2 1.4"/><path d="M2.6 3.2 1.4 4.6M13.4 3.2l1.2 1.4"/>');
+const SVG_LACAT = IC('<rect x="3.5" y="7" width="9" height="6.5" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/>');
 
 /* Mișcarea: ce exista înainte alunecă din locul vechi în cel nou; o copie
    (data-din) pleacă din locul originalului; ce e nou apare. Doar pentru
@@ -1463,7 +1380,7 @@ function flip(cont, schimba, anim = true){
       if (Math.abs(dx) + Math.abs(dy) < 1) return;
       e.animate([{ transform:`translate(${dx}px,${dy}px)`, opacity: eraAici ? 1 : .4 },
                  { transform:"none", opacity:1 }],
-                { duration:560, easing:"cubic-bezier(.3,.9,.35,1)" });
+                { duration:600, easing:"cubic-bezier(.3,.9,.35,1)" });
     } else {
       e.animate([{ transform:"scale(.7)", opacity:0 }, { transform:"none", opacity:1 }],
                 { duration:380, easing:"cubic-bezier(.3,1.4,.6,1)" });
@@ -1471,14 +1388,15 @@ function flip(cont, schimba, anim = true){
   });
 }
 
-/* Banda de comenzi. `pasi`: [{cmd, full?, cine?, cc?, rau?, t?, txt}].
-   `deseneaza(k, anim)` pune desenul în starea de după k comenzi. */
-function banda(gazda, pasi, deseneaza, { start = "", laFinal } = {}){
+/* Banda de comenzi. `pasi`: [{cmd, full?, cine?, cc?, rau?, edit?, t?, txt}].
+   `deseneaza(k, anim)` pune desenul în starea de după k comenzi.
+   `cuTerminal`: comanda întreagă apare în terminalul desenului, nu deasupra textului. */
+function banda(gazda, pasi, deseneaza, { start = "", laFinal, cuTerminal = false } = {}){
   const n = pasi.length;
   const $c = gazda.querySelector(".bg__cmd");
   const $t = gazda.querySelector(".bg__txt");
   let k = 0, terminat = false;
-  $c.innerHTML = pasi.map((p, i) => `<button type="button" class="bg__c${p.rau ? " bg__c--rau" : ""}" data-i="${i}">${
+  $c.innerHTML = pasi.map((p, i) => `<button type="button" class="bg__c${p.rau ? " bg__c--rau" : ""}${p.edit ? " bg__c--edit" : ""}" data-i="${i}">${
       p.cine ? `<i class="bg__cine" style="--pc:var(--${p.cc || "accent"})" title="${esc(p.cine)}">${esc(p.cine[0])}</i>` : ""}<code>${esc(p.cmd)}</code></button>`).join("")
     + `<span class="bg__nav"><button type="button" class="bg__n" data-rol="inapoi" title="pasul anterior" aria-label="pasul anterior">←</button>`
     + `<button type="button" class="bg__n" data-rol="reset" title="de la capăt" aria-label="de la capăt">↺</button></span>`;
@@ -1492,7 +1410,7 @@ function banda(gazda, pasi, deseneaza, { start = "", laFinal } = {}){
     $c.querySelector('[data-rol="reset"]').disabled = k === 0;
     const p = pasi[k - 1];
     $t.innerHTML = k === 0 ? `<p>${start}</p>`
-      : `<code class="bg__full${p.rau ? " rau" : ""}${p.edit ? " edit" : ""}"><span>${p.edit ? "✎" : p.cine ? esc(p.cine) + " $" : "$"}</span>${esc(p.full || p.cmd)}</code>`
+      : (cuTerminal ? "" : `<code class="bg__full${p.rau ? " rau" : ""}${p.edit ? " edit" : ""}"><span>${p.edit ? "✎" : p.cine ? esc(p.cine) + " $" : "$"}</span>${esc(p.full || p.cmd)}</code>`)
       + `<p>${p.t ? `<b>${p.t}.</b> ` : ""}${p.txt || ""}</p>`;
     deseneaza(k, anim);
     if (k === n && !terminat){ terminat = true; laFinal?.(); }
@@ -1507,78 +1425,282 @@ function banda(gazda, pasi, deseneaza, { start = "", laFinal } = {}){
   arata(false);
 }
 
+/* --- terminalul ------------------------------------------------------------
+   Ca în Git Bash: dosarul, ramura între paranteze, comanda, apoi ce răspunde
+   Git. Rândurile vin ca [clasă, text]: "ok" verde, "nu" roșu, "g" gri (o
+   explicație, nu ieșirea lui Git). */
+function terminalGit(cont, { dir = "~/dsw/proiect", ramura = "main" } = {}){
+  cont.insertAdjacentHTML("beforeend", `<div class="gz__term">
+      <div class="gz__pr"><span class="gz__dir"></span><span class="gz__ram"></span><span class="gz__dol">$</span><span class="gz__cmd"></span></div>
+      <div class="gz__out"></div></div>`);
+  const t = cont.querySelector(".gz__term:last-child");
+  const pune = (cmd, linii = [], o = {}) => {
+    const d = o.dir ?? dir, r = o.ramura === undefined ? ramura : o.ramura;
+    t.querySelector(".gz__dir").textContent = d;
+    t.querySelector(".gz__ram").textContent = r ? ` (${r})` : "";
+    t.querySelector(".gz__cmd").textContent = cmd || "";
+    t.classList.toggle("rau", !!o.rau);
+    t.querySelector(".gz__out").innerHTML = (linii || []).map(([c, s]) =>
+      `<div class="gz__l${c ? " gz__l--" + c : ""}">${esc(s) || "&nbsp;"}</div>`).join("");
+  };
+  pune("");
+  return pune;
+}
 
-/* --- Primul commit ---------------------------------------------------------
-   Patru zone, ca la slide-ul cu zonele, dar cu fișierele reale ale echipei.
-   git add nu mută fișierul: pune în pregătire o copie, așa cum e în acel
-   moment; originalul rămâne în dosar. commit face din copii o fotografie în
-   istoric, iar push o copiază pe GitHub. */
+/* --- cele patru zone ------------------------------------------------------- */
+const ZONE_GIT = [
+  { t: "Dosarul proiectului", d: "fișierele, pe calculator", ic: SVG_PC },
+  { t: "Pregătire", d: "ce intră în commit", ic: SVG_TAVA },
+  { t: "Istoric local", d: "commit-urile salvate", ic: SVG_CEAS },
+  { t: "GitHub", d: "copia echipei", ic: SVG_NOR },
+];
+const PUNTI = ["git add", "git commit", "git push"];
+const ET_FIS = { nou:"nou", modificat:"modificat", ignorat:"ignorat", pregatit:"în pregătire", salvat:"salvat" };
 
-V.commit = (gazda, d) => {
-  const Z = d.zone, F = d.fisiere, S = d.stari, CM = d.commituri;
-  const ET = { nou:"nou", modificat:"modificat", ignorat:"ignorat", pregatit:"în pregătire", salvat:"salvat" };
+function zoneGit(cont, o = {}){
+  cont.insertAdjacentHTML("beforeend", `<div class="gz">${ZONE_GIT.map((z, i) => `${i
+      ? `<div class="gz__p" data-p="${i}"><span>${PUNTI[i - 1]}</span><i></i></div>` : ""}
+      <div class="gz__z" data-z="${i}">
+        <div class="gz__cap"><span class="gz__ic">${z.ic}</span><span class="gz__ct"><b>${esc(z.t)}</b><small>${esc(z.d)}</small></span></div>
+        <div class="gz__in"></div>
+      </div>`).join("")}</div>`);
+  const gz = cont.querySelector(".gz");
+  const cos = [...gz.querySelectorAll(".gz__in")];
+  const term = terminalGit(cont, o);
+  const fis = (f, st, cheie, din = "") =>
+    `<span class="gz__f${st ? " gz__f--" + st : ""}" data-k="${cheie}"${din ? ` data-din="${din}"` : ""}>`
+    + `${f.tip === "d" ? SVG_DIR : SVG_FIS}<code>${esc(f.t)}</code>`
+    + `${st && ET_FIS[st] ? `<em>${ET_FIS[st]}</em>` : ""}</span>`;
+  const com = (c, loc, din = "") =>
+    `<span class="gz__c${c.vechi ? " vechi" : ""}" data-k="${loc}:${c.id}"${din ? ` data-din="${din}"` : ""}>`
+    + `<span class="gz__ch"><i></i><code>${esc(c.h)}</code><small>${esc(c.x || "")}</small></span><b>${esc(c.m)}</b></span>`;
+  const gol = t => `<span class="gz__gol">${t}</span>`;
+  return {
+    term,
+    pune(s, anim = true){
+      flip(gz, () => {
+        cos[0].innerHTML = (s.dosar || []).map(f => fis(f, f.st, f.k)).join("")
+          + (s.notaDosar ? `<span class="gz__nota">${s.notaDosar}</span>` : "");
+        cos[1].innerHTML = (s.preg || []).map(f => fis(f, "", "p:" + f.k, f.k)).join("") || gol("gol");
+        cos[2].innerHTML = (s.ist || []).map(c => com(c, "i")).join("") || gol("niciun commit");
+        cos[3].innerHTML = (s.gh || []).map(c => com(c, "g", "i:" + c.id)).join("") || gol("nimic încă");
+      }, anim);
+      gz.querySelectorAll(".gz__z").forEach((z, i) => z.classList.toggle("activ", (s.activ || []).includes(i)));
+      gz.querySelectorAll(".gz__p").forEach(p => {
+        const on = +p.dataset.p === s.punte;
+        p.classList.remove("on");
+        if (on){ void p.offsetWidth; p.classList.add("on"); }
+      });
+    }
+  };
+}
+
+
+/* --- Cele trei zone: exercițiul -------------------------------------------
+   Studentul apasă comenzile, iar Git răspunde ca în terminal: git status
+   descrie starea, git add pune o copie în pregătire, git commit face din ea
+   un commit, git push îl copiază pe GitHub. Comenzile date în ordinea greșită
+   primesc răspunsul adevărat al lui Git („nothing added to commit…”). Poarta
+   se trece când ambele fișiere sunt pe GitHub. */
+
+V.zone = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const F = (d.fisiere || ["colectare.py", "README.md"]).map((t, i) => ({ k: "f" + i, t }));
+  const MESAJ = d.mesaje || {};
+  const HASH = ["a1b2c3d", "4f2a9c1", "7e3b8d0", "c9d4e21", "5b6a7f2"];
   gazda.innerHTML = `
-    <div class="bg">
-      <div class="bg__cmd"></div>
-      <div class="cz">${Z.map((z, i) => `
-        <div class="cz__z" data-z="${i}">
-          <span class="cz__t">${i === 0 ? SVG_PC : i === 3 ? SVG_NOR : ""}${esc(z.t)}</span>
-          <span class="cz__d">${esc(z.d)}</span>
-          <div class="cz__in"></div>
-        </div>`).join("")}</div>
-      <div class="bg__txt"></div>
-    </div>`;
-  const cos = [...gazda.querySelectorAll(".cz__in")];
-  const fis = (k, st, cheie = k, din = "") => {
-    const f = F[k];
-    return `<span class="cz__f${st ? " cz__f--" + st : ""}" data-k="${cheie}"${din ? ` data-din="${din}"` : ""}>`
-      + `${f.tip === "d" ? SVG_DIR : SVG_FIS}<code>${esc(f.t)}</code>`
-      + `${f.m && st !== "ignorat" ? `<small>${esc(f.m)}</small>` : ""}`
-      + `${st && ET[st] ? `<em>${ET[st]}</em>` : ""}</span>`;
-  };
-  const com = (id, loc, din = "") => {
-    const c = CM[id];
-    return `<span class="cz__c${c.vechi ? " vechi" : ""}" data-k="${loc}:${id}"${din ? ` data-din="${din}"` : ""}>`
-      + `<span class="cz__ch"><i></i><code>${esc(c.h)}</code><small>${esc(c.x)}</small></span><b>${esc(c.m)}</b></span>`;
-  };
-  const deseneaza = (k, anim) => flip(gazda.querySelector(".cz"), () => {
-    const s = S[k];
-    cos[0].innerHTML = Object.entries(s.dosar).map(([cheie, st]) => fis(cheie, st)).join("");
-    cos[1].innerHTML = (s.preg || []).map(cheie => fis(cheie, "", "p:" + cheie, cheie)).join("")
-      || `<span class="cz__gol">gol</span>`;
-    cos[2].innerHTML = (s.ist || []).map(id => com(id, "i")).join("");
-    cos[3].innerHTML = (s.gh || []).map(id => com(id, "g", "i:" + id)).join("");
-    gazda.querySelectorAll(".cz__z").forEach((z, i) => z.classList.toggle("activ", (s.activ || []).includes(i)));
-  }, anim);
-  banda(gazda, d.pasi, deseneaza, { start: d.start });
+    ${d.sarcina ? `<p class="ix__sarcina">${d.sarcina}</p>` : ""}
+    <div class="gzx"></div>
+    <div class="gz__com">
+      <button class="gz__b" data-c="status" type="button"><code>git status</code></button>
+      ${F.map(f => `<button class="gz__b" data-c="add" data-f="${f.k}" type="button"><code>git add ${esc(f.t)}</code></button>`).join("")}
+      <button class="gz__b" data-c="commit" type="button"><code>git commit</code></button>
+      <button class="gz__b" data-c="push" type="button"><code>git push</code></button>
+      <button class="bg__n gz__reset" data-c="reset" type="button" title="de la capăt" aria-label="de la capăt">↺</button>
+    </div>
+    <p class="ex__stare"></p>`;
+  const Z = zoneGit(gazda.querySelector(".gzx"), { ramura: "main" });
+  const st = gazda.querySelector(".ex__stare");
+  let fs, ist, gh, gata = false;
+
+  const stare = (punte = 0, activ = []) => ({
+    dosar: F.map(f => ({ ...f, st: fs[f.k] })),
+    preg: F.filter(f => fs[f.k] === "pregatit"),
+    ist: [...ist].reverse(), gh: [...gh].reverse(), punte, activ });
+  const deseneaza = (anim, punte, activ) => Z.pune(stare(punte, activ), anim);
+
+  function status(){
+    const L = [["", "On branch main"]];
+    const inainte = ist.length - gh.length;
+    if (inainte > 0) L.push(["", `Your branch is ahead of 'origin/main' by ${inainte} commit${inainte > 1 ? "s" : ""}.`]);
+    const pr = F.filter(f => fs[f.k] === "pregatit"), noi = F.filter(f => fs[f.k] === "nou");
+    if (pr.length){ L.push(["", "Changes to be committed:"]); pr.forEach(f => L.push(["ok", `        new file:   ${f.t}`])); }
+    if (noi.length){ L.push(["", "Untracked files:"]); noi.forEach(f => L.push(["nu", `        ${f.t}`])); }
+    if (!pr.length && !noi.length) L.push(["", "nothing to commit, working tree clean"]);
+    return L;
+  }
+  function reset(){
+    fs = Object.fromEntries(F.map(f => [f.k, "nou"])); ist = []; gh = [];
+    deseneaza(false, 0, [0]);
+    Z.term("", [["g", "Două fișiere noi, pe care Git nu le urmărește încă. Comenzile de dedesubt se dau ca în terminal."]]);
+  }
+
+  gazda.querySelector(".gz__com").addEventListener("click", async e => {
+    const b = e.target.closest("[data-c]");
+    if (!b) return;
+    const c = b.dataset.c;
+    if (c === "reset"){ reset(); return; }
+    if (c === "status"){ Z.term("git status", status()); deseneaza(false, 0, [0, 1]); return; }
+    if (c === "add"){
+      const f = F.find(x => x.k === b.dataset.f);
+      if (fs[f.k] !== "nou"){ Z.term(`git add ${f.t}`, [["g", "Nicio schimbare: fișierul nu are nimic nou de pus în pregătire."]]); return; }
+      fs[f.k] = "pregatit";
+      deseneaza(true, 1, [1]);
+      Z.term(`git add ${f.t}`, [["g", "git add nu afișează nimic. O copie a fișierului, așa cum este acum, stă în pregătire."]]);
+      return;
+    }
+    if (c === "commit"){
+      const pr = F.filter(f => fs[f.k] === "pregatit");
+      if (!pr.length){
+        Z.term("git commit -m \"...\"", F.some(f => fs[f.k] === "nou")
+          ? [["", "nothing added to commit but untracked files present (use \"git add\" to track)"]]
+          : [["", "nothing to commit, working tree clean"]], { rau: true });
+        return;
+      }
+      const cheie = pr.map(f => f.t).join(" + ");
+      const m = MESAJ[cheie] || (pr.length > 1 ? "colectare si README" : `adaug ${pr[0].t}`);
+      const h = HASH[ist.length % HASH.length];
+      ist.push({ id: "c" + ist.length, h, m, x: `${pr.length} fișier${pr.length > 1 ? "e" : ""}`, f: pr.map(f => f.k) });
+      pr.forEach(f => fs[f.k] = "salvat");
+      deseneaza(true, 2, [2]);
+      Z.term(`git commit -m "${m}"`, [["", `[main${ist.length === 1 ? " (root-commit)" : ""} ${h}] ${m}`],
+        ["", ` ${pr.length} file${pr.length > 1 ? "s" : ""} changed`]]);
+      return;
+    }
+    if (c === "push"){
+      if (ist.length === gh.length){
+        Z.term("git push", [["", ist.length ? "Everything up-to-date" : "error: src refspec main does not match any"]], { rau: !ist.length });
+        return;
+      }
+      const de = gh.length ? gh[gh.length - 1].h : null;
+      gh = [...ist];
+      deseneaza(true, 3, [3]);
+      Z.term("git push", [["", "To https://github.com/dsw-ubb-2026/echipa-4.git"],
+        ["", de ? `   ${de}..${ist[ist.length - 1].h}  main -> main` : " * [new branch]      main -> main"]]);
+      if (!gata && F.every(f => fs[f.k] === "salvat")){
+        gata = true;
+        await poarta(gazda, d.id, "status, add, commit, push");
+        st.textContent = "Ambele fișiere sunt pe GitHub: dosar, pregătire, istoric, GitHub.";
+        st.classList.add("vazut");
+      }
+    }
+  });
+  reset();
 };
 
 
-/* --- Ramurile --------------------------------------------------------------
-   Graful, cu commit-uri care au nume, nu buline. Lângă el, ce conține
-   fișierul din dosar: la git switch se schimbă și fișierul, iar munca de pe
-   ramură nu se pierde, doar nu se vede pe main până la merge. Studentul
-   apasă el comenzile, în ordine; la merge, poarta e trecută. */
+/* --- Primul commit al echipei, ghidat --------------------------------------
+   Aceleași zone, cu fișierele reale ale echipei. git add nu mută fișierul:
+   pune în pregătire o copie, așa cum e în acel moment; originalul rămâne în
+   dosar. commit face din copii o fotografie în istoric, iar push o copiază pe
+   GitHub. Fiecare pas are ieșirea lui în terminal. */
 
-V.ramuri = (gazda, d) => {
-  gazda.closest(".ix")?.classList.add("exc");
-  const C = d.commituri, S = d.stari, L = d.linii;
-  const W = 960, H = 168, Y = { m: 122, r: 40 }, CW = 160, CH = 40;
-  const X = col => 104 + col * 172;
+V.commit = (gazda, d) => {
+  const S = d.stari, CM = d.commituri, F = d.fisiere;
+  gazda.innerHTML = `<div class="bg"><div class="bg__cmd"></div><div class="gzx"></div><div class="bg__txt"></div></div>`;
+  const Z = zoneGit(gazda.querySelector(".gzx"), { ramura: d.ramura || "main" });
+  const deseneaza = (k, anim) => {
+    const s = S[k];
+    Z.pune({
+      dosar: Object.entries(s.dosar).map(([k2, st2]) => ({ k: k2, ...F[k2], st: st2 })),
+      preg: (s.preg || []).map(k2 => ({ k: k2, ...F[k2] })),
+      ist: (s.ist || []).map(id => ({ id, ...CM[id] })),
+      gh: (s.gh || []).map(id => ({ id, ...CM[id] })),
+      activ: s.activ, punte: s.punte, notaDosar: d.notaDosar,
+    }, anim);
+    const p = d.pasi[k - 1];
+    Z.term(p ? (p.edit ? "" : (p.full || p.cmd)) : "", p ? p.out : [["g", d.inceput || ""]], { rau: p?.rau });
+  };
+  banda(gazda, d.pasi, deseneaza, { start: d.start, cuTerminal: true });
+};
+
+
+/* --- Depozitul echipei, pe calculator --------------------------------------
+   Repo-ul echipei există deja pe GitHub, făcut din șablon; membrii au primit
+   invitația. Pașii fiecărui membru, o singură dată: acceptă invitația, ia
+   adresa, clonează în dsw/proiect, intră în dosar și verifică. */
+
+V.clona = (gazda, d) => {
+  const S = d.stari, R = d.repo;
   gazda.innerHTML = `
     <div class="bg">
       <div class="bg__cmd"></div>
-      <div class="rg"><svg class="rg__svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="graful ramurilor"></svg></div>
+      <div class="cl">
+        <div class="cl__p cl__p--gh">
+          <div class="gz__cap"><span class="gz__ic">${SVG_NOR}</span><span class="gz__ct"><b>GitHub</b><small>${esc(R.org)}</small></span></div>
+          <div class="cl__repo">
+            <div class="cl__rt">${SVG_LACAT}<b>${esc(R.nume)}</b><small>privat, din ${esc(R.sablon)}</small></div>
+            <ul class="cl__f">${R.fisiere.map(f => `<li>${f.endsWith("/") ? SVG_DIR : SVG_FIS}<code>${esc(f)}</code></li>`).join("")}</ul>
+            <div class="cl__adr"><span>Code → HTTPS</span><code>${esc(R.adresa)}</code></div>
+          </div>
+          <div class="cl__mem"><span>Membrii</span><div class="cl__av"></div></div>
+        </div>
+        <div class="cl__s"><span>git clone</span><i></i></div>
+        <div class="cl__p cl__p--pc">
+          <div class="gz__cap"><span class="gz__ic">${SVG_PC}</span><span class="gz__ct"><b>Calculatorul</b><small>dosarul dsw</small></span></div>
+          <ul class="cl__arb"></ul>
+        </div>
+      </div>
+      <div class="cl__t"></div>
+      <div class="bg__txt"></div>
+    </div>`;
+  const term = terminalGit(gazda.querySelector(".cl__t"));
+  const av = gazda.querySelector(".cl__av"), arb = gazda.querySelector(".cl__arb");
+  const deseneaza = (k, anim) => {
+    const s = S[k];
+    av.innerHTML = R.membri.map((m, i) => `<span class="cl__m${(s.acces || []).includes(i) ? " da" : ""}" title="${esc(m)}">`
+      + `<i>${esc(m[0])}</i><small>${(s.acces || []).includes(i) ? "acces" : "invitat"}</small></span>`).join("");
+    gazda.querySelector(".cl__adr").classList.toggle("on", !!s.adresa);
+    gazda.querySelector(".cl__s").classList.toggle("on", !!s.clona);
+    gazda.querySelector(".cl__p--gh").classList.toggle("activ", !!s.ghActiv);
+    gazda.querySelector(".cl__p--pc").classList.toggle("activ", !!s.pcActiv);
+    flip(arb, () => {
+      arb.innerHTML = s.arbore.map(([niv, t, nota, cls]) =>
+        `<li class="cl__n${cls ? " " + cls : ""}" data-k="${esc(t)}" style="--niv:${niv}">${t.endsWith("/") ? SVG_DIR : SVG_FIS}`
+        + `<code>${esc(t)}</code>${nota ? `<small>${esc(nota)}</small>` : ""}</li>`).join("");
+    }, anim);
+    const p = d.pasi[k - 1];
+    term(p && !p.edit ? (p.full || p.cmd) : "", p ? p.out : [["g", d.inceput || ""]], { dir: s.dir, ramura: s.ramura || "" });
+  };
+  banda(gazda, d.pasi, deseneaza, { start: d.start, cuTerminal: true });
+};
+
+
+/* --- Ramurile: main și dev -------------------------------------------------
+   Graful proiectului, cu commit-uri care au nume, nu buline. main e versiunea
+   stabilă, dev e ramura de lucru a echipei. Lângă etichete se vede dacă
+   ramura există și pe GitHub; lângă graf, ce conține dosarul după fiecare
+   comandă: la git switch se schimbă și fișierele. Studentul apasă comenzile,
+   în ordine; la final, poarta e trecută. */
+
+V.ramuri = (gazda, d) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const C = d.commituri, S = d.stari, L = d.linii, A = d.autori || {};
+  const W = 960, H = 176, Y = { m: 128, r: 44 }, CW = 158, CH = 42;
+  const X = col => 128 + col * 166;
+  gazda.innerHTML = `
+    <div class="bg">
+      <div class="bg__cmd"></div>
+      <div class="rg"><svg class="rg__svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="graful ramurilor main și dev"></svg></div>
       <div class="rg__jos">
         <div class="bg__txt"></div>
-        <div class="rg__dos"><span class="rg__dt">${SVG_FIS}<code>${esc(d.fisier)}</code><small>în dosar, acum</small></span><ul></ul></div>
+        <div class="rg__dos"><span class="rg__dt">${SVG_DIR}<code>${esc(d.dosar || "proiect/")}</code><small>în dosar, acum</small></span><ul></ul></div>
       </div>
       <p class="ex__stare"></p>
     </div>`;
   const svg = gazda.querySelector(".rg__svg");
   const ul = gazda.querySelector(".rg__dos ul");
   let vazute = new Set();
-
   const margine = (id, parte) => {
     const c = C[id], x = X(c.x), y = Y[c.lane];
     return parte === "dr" ? [x + CW, y] : [x, y];
@@ -1590,53 +1712,52 @@ V.ramuri = (gazda, d) => {
       const c = C[id];
       (c.parinti || []).filter(p => are.has(p)).forEach(p => {
         const [x1, y1] = margine(p, "dr"), [x2, y2] = margine(id, "st");
-        const dd = y1 === y2 ? `M${x1} ${y1} H${x2}` : `M${x1} ${y1} C${x1 + 40} ${y1} ${x2 - 40} ${y2} ${x2} ${y2}`;
-        const nou = anim && !vazute.has(id);
-        muchii.push(`<path d="${dd}" pathLength="1" class="rg__m rg__m--${C[id].lane}${nou ? " nou" : ""}"/>`);
+        const dd = y1 === y2 ? `M${x1} ${y1} H${x2}` : `M${x1} ${y1} C${x1 + 44} ${y1} ${x2 - 44} ${y2} ${x2} ${y2}`;
+        muchii.push(`<path d="${dd}" pathLength="1" class="rg__m rg__m--${c.lane}${anim && !vazute.has(id) ? " nou" : ""}"/>`);
       });
-      const nou = anim && !vazute.has(id);
-      const x = X(c.x), y = Y[c.lane] - CH / 2;
-      noduri.push(`<g class="rg__c rg__c--${c.lane}${c.merge ? " merge" : ""}${nou ? " nou" : ""}">
-        <rect x="${x}" y="${y}" width="${CW}" height="${CH}" rx="9"/>
-        <circle cx="${x + 14}" cy="${y + CH / 2}" r="4.5"/>
-        <text x="${x + 25}" y="${y + CH / 2 + 4.2}">${esc(c.m)}</text></g>`);
+      const x = X(c.x), y = Y[c.lane] - CH / 2, a = A[c.a];
+      noduri.push(`<g class="rg__c rg__c--${c.lane}${c.merge ? " merge" : ""}${anim && !vazute.has(id) ? " nou" : ""}">
+        <rect x="${x}" y="${y}" width="${CW}" height="${CH}" rx="10"/>
+        ${a ? `<circle class="rg__a" cx="${x + 15}" cy="${y + CH / 2}" r="8" style="fill:var(--${a.c})"/><text class="rg__at" x="${x + 15}" y="${y + CH / 2 + 3.6}">${esc(a.t[0])}</text>`
+            : `<circle cx="${x + 15}" cy="${y + CH / 2}" r="4.5"/>`}
+        <text x="${x + 29}" y="${y + CH / 2 + 4.2}">${esc(c.m)}</text></g>`);
     });
-    /* ramura nouă, fără commit-uri încă: un ciot punctat */
     if (s.ram && !s.com.some(id => C[id].lane === "r")){
       const [x1, y1] = margine(s.din, "dr");
-      noduri.unshift(`<path d="M${x1} ${y1} C${x1 + 40} ${y1} ${X(2) - 40} ${Y.r} ${X(2)} ${Y.r}" class="rg__ciot"/>`);
+      noduri.unshift(`<path d="M${x1} ${y1} C${x1 + 44} ${y1} ${X(2) - 44} ${Y.r} ${X(2)} ${Y.r}" class="rg__ciot"/>`);
     }
-    const eticheta = (lane, t) => `<g class="rg__e rg__e--${lane}${s.aici === lane ? " aici" : ""}">
-        <rect x="4" y="${Y[lane] - 13}" width="${t.length * 7.4 + 22}" height="26" rx="13"/>
-        <text x="15" y="${Y[lane] + 4.5}">${esc(t)}</text></g>`;
+    const eticheta = (lane, t, peGh) => `<g class="rg__e rg__e--${lane}${s.aici === lane ? " aici" : ""}">
+        <rect x="4" y="${Y[lane] - 14}" width="${t.length * 8 + 24}" height="28" rx="14"/>
+        <text x="16" y="${Y[lane] + 5}">${esc(t)}</text>
+        ${peGh ? `<text class="rg__gh" x="6" y="${Y[lane] + 31}">${typeof peGh === "string" ? esc(peGh) : "☁ și pe GitHub"}</text>` : ""}</g>`;
     svg.innerHTML = muchii.join("") + noduri.join("")
-      + eticheta("m", "main") + (s.ram ? eticheta("r", d.ramura) : "");
+      + eticheta("m", "main", s.gh?.m) + (s.ram ? eticheta("r", d.ramura || "dev", s.gh?.r) : "");
     s.com.forEach(id => vazute.add(id));
     vazute = new Set([...vazute].filter(id => are.has(id)));
-
     const vede = new Set(s.vede);
-    ul.innerHTML = L.map(l => `<li class="${vede.has(l.c) ? "da" : "nu"}"><i>${vede.has(l.c) ? "✓" : "○"}</i>${esc(l.t)}</li>`).join("");
+    ul.innerHTML = L.map(l => `<li class="${vede.has(l.c) ? "da" : "nu"}"><i>${vede.has(l.c) ? "✓" : "○"}</i><code>${esc(l.t)}</code></li>`).join("");
   }
   banda(gazda, d.pasi, deseneaza, {
     start: d.start,
     laFinal: async () => {
       await poarta(gazda, d.id, d.pasi.map(p => p.cmd).join(" → "));
       const st = gazda.querySelector(".ex__stare");
-      st.textContent = "Ramura a fost creată, folosită și îmbinată în main.";
+      st.textContent = "Ciclul complet: dev creat și urcat, lucrul pe dev, dev îmbinat în main.";
       st.classList.add("vazut");
     }
   });
 };
 
 
-/* --- Lucrul în echipă ------------------------------------------------------
+/* --- Lucrul în echipă pe dev ------------------------------------------------
    Trei coloane: doi colegi și GitHub, la mijloc. Fiecare coloană e git log
    pe dev, cu cel mai nou commit sus, colorat după autor. push și pull
-   copiază commit-uri dintr-o coloană în alta; un push refuzat se vede. */
+   copiază commit-uri dintr-o coloană în alta. La push-ul refuzat, în coloana
+   celui care împinge apare locul gol al commit-ului care îi lipsește. */
 
 V.sincron = (gazda, d) => {
   const P = d.coloane, CM = d.commituri, A = d.autori, S = d.stari;
-  const coloana = (c, i) => `
+  const coloana = c => `
     <div class="sy__col${c.gh ? " sy__col--gh" : ""}" data-col="${c.k}">
       <div class="sy__cap">${c.gh ? SVG_NOR : SVG_PC}<b>${esc(c.t)}</b><span>${esc(c.d)}</span></div>
       <div class="sy__in"></div>
@@ -1660,11 +1781,13 @@ V.sincron = (gazda, d) => {
     return `<span class="sy__c${c.merge ? " merge" : ""}" data-k="${col}:${id}"${din ? ` data-din="${din}:${id}"` : ""} style="--cc:var(--${a.c || "text-3"})">`
       + `<i></i><b>${esc(c.m)}</b><small>${esc(a.cine || "")}</small></span>`;
   };
+  const lipsa = id => `<span class="sy__c sy__c--lipsa" data-k="lipsa:${id}"><b>${esc(CM[id].m)}</b><small>lipsește aici</small></span>`;
   const deseneaza = (k, anim) => flip(sy, () => {
     const s = S[k];
     P.forEach(c => {
       const col = sy.querySelector(`[data-col="${c.k}"]`);
-      col.querySelector(".sy__in").innerHTML = (s[c.k] || []).map(id => card(c.k, id, (s.din || {})[c.k])).join("");
+      col.querySelector(".sy__in").innerHTML = (s.lipsa && s.lipsa.col === c.k ? lipsa(s.lipsa.id) : "")
+        + (s[c.k] || []).map(id => card(c.k, id, (s.din || {})[c.k])).join("");
       col.classList.toggle("respins", s.rau === c.k);
       col.querySelector(".sy__rau").textContent = s.rau === c.k ? d.respins : "";
     });
@@ -3403,7 +3526,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=106`), import(`${R}/js/auth.js?v=106`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=107`), import(`${R}/js/auth.js?v=107`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });

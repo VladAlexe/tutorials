@@ -2,9 +2,10 @@
 """
 Lecția 3: Versionare și colaborare cu Git.
 
-Urmează prezentarea Curs_3.pptx: ce face Git, repository-uri, credențiale,
-GitHub, legarea depozitului local de cel de pe GitHub, și încadrarea teoretică
-a proiectului, pe datele SCI și ale migrației.
+Ordinea: întâi Git (ce face, cele trei zone), apoi depozitul echipei, așa cum
+îl găsesc studenții (echipa-N pe GitHub, creat din șablon): clonarea,
+.gitignore, primul commit pe main, ramura dev, pull înainte de push,
+conflictele, verificarea. La final, cadrul teoretic și datele proiectului.
 
 Ce am adăugat peste prezentare, și de ce:
   - cele trei zone (lucru, pregătire, istoric), pentru că fără ele comenzile
@@ -33,193 +34,284 @@ sl = L.sl
 # ===========================================================================
 
 AGENDA = [
-    ("Ce face Git", "azi", "Istoricul, revenirea la versiuni anterioare și cele trei zone."),
-    ("Primul commit", "azi", "git status, .gitignore, add, commit, push."),
-    ("GitHub", "azi", "Legarea depozitului local de depozitul echipei."),
-    ("Lucrul în echipă", "azi", "Ramuri, pull înainte de push, conflicte."),
-    ("Cadrul proiectului", "azi", "Ce explică legăturile dintre locuri și întrebarea echipei."),
-    ("Datele proiectului", "azi", "Cele patru tabele pregătite în caietul 03."),
+    ("Ce face Git", "azi", "Istoricul, Git și GitHub, cele trei zone."),
+    ("Depozitul echipei", "azi", "Clonarea din șablon, .gitignore, primul commit."),
+    ("Lucrul în echipă", "azi", "main și dev, pull înainte de push, conflictele."),
+    ("Verificarea", "azi", "git status și depozitul, local și pe GitHub."),
+    ("Cadrul proiectului", "azi", "Ce explică legăturile dintre locuri; întrebarea echipei."),
+    ("Datele proiectului", "azi", "Tabelele pregătite în caietul 03, gata de unit la cursul 4."),
 ]
 
 # Pașii pentru lecția 3: Git (caietul 03, secțiunea 6) și migrația (caietul 03, secțiunea 5).
 # Cifrele migrației: Eurostat migr_pop1ctz, 2024, din rularea caietului (31 octombrie 2026).
 
-_NB3 = "notebooks/03_surse_diverse_si_preprocesare.ipynb"
 FISA = '<a class="leg" href="../git/">Lucrul cu Git</a>'   # pagina cu toate comenzile
 _MSG = "Pregatim tabelele regionale si migratia"
 
 # --------------------------------------------------------------------------
-# Primul commit, desenat: patru zone, fișierele reale ale echipei, o comandă
-# pe pas. git add pune în pregătire o copie; originalul rămâne în dosar.
-# data/ are aproximativ 3 MB după caietele 02 și 03 (măsurat pe rularea din
-# 31 octombrie 2026); nu se versionează pentru că se reface din caiete.
+# Cele trei zone, exercițiul: două fișiere noi, comenzile ca butoane, iar
+# terminalul răspunde ca Git (inclusiv la ordinea greșită).
 # --------------------------------------------------------------------------
 
-_SALVAT = {"nb": "salvat", "rd": "salvat", "gi": "salvat", "dt": "ignorat"}
-COMMIT = {
-    "zone": [{"t": "Dosarul proiectului", "d": "proiect/, pe calculator"},
-             {"t": "Pregătire", "d": "ce intră în commit"},
-             {"t": "Istoric local", "d": "commit-urile salvate"},
-             {"t": "GitHub", "d": "depozitul echipei"}],
-    "fisiere": {"nb": {"t": "notebooks/03_….ipynb"}, "rd": {"t": "README.md"},
-                "gi": {"t": ".gitignore"}, "dt": {"t": "data/", "tip": "d", "m": "3 MB"}},
-    "commituri": {"c0": {"h": "9f8e7d6", "m": "Initial commit", "x": "de la clonare", "vechi": True},
-                  "c1": {"h": "a1b2c3d", "m": _MSG, "x": "3 fișiere"}},
-    "start": "Caietul 03 a fost copiat în <code>proiect/notebooks/</code> și rulat, iar în "
-             "<code>README.md</code> s-a completat fișa echipei. Comenzile de sus se apasă pe rând.",
+ZONE = {
+    "id": "c3-zone",
+    "sarcina": "Cele două fișiere trebuie să ajungă pe GitHub. Comenzile se dau ca în terminal, iar dedesubt "
+               "apare ce răspunde Git; <code>git status</code> arată oricând unde se află fiecare fișier.",
+    "fisiere": ["colectare.py", "README.md"],
+    "mesaje": {"colectare.py": "colectarea migratiei", "README.md": "README",
+               "colectare.py + README.md": "colectarea si README"},
+}
+
+# --------------------------------------------------------------------------
+# Depozitul echipei, pe calculator. Repo-urile echipa-N sunt create din
+# șablonul proiect-template de butonul „Sincronizează GitHub” din Predau
+# (db/26); membrii cu numele legat de un cont GitHub primesc invitația.
+# Structura: cea din caietul 03, secțiunea 7 (aceeași pentru toate echipele).
+# --------------------------------------------------------------------------
+
+_ARB0 = [[0, "dsw/", "", ""], [1, ".venv/", "mediul virtual", ""], [1, "curs/", "caietele cursului, fără Git", ""]]
+_PROIECT = [[1, "proiect/", "depozitul echipei, cu Git"], [2, ".git/", "istoricul"],
+            [2, "data/raw/", "datele originale"], [2, "data/processed/", "tabelele produse de caiete"],
+            [2, "notebooks/", "câte un caiet pe pas"], [2, "src/", "cod comun, .py"],
+            [2, "figures/", "figurile"], [2, "docs/", "raportul"], [2, "README.md", "descrierea proiectului"]]
+_ARB_NOU = _ARB0 + [r + ["nou"] for r in _PROIECT]
+_ARB_GATA = _ARB0 + [r + [""] for r in _PROIECT]
+
+CLONA = {
+    "repo": {"org": "dsw-ubb-2026", "nume": "echipa-4", "sablon": "proiect-template",
+             "fisiere": ["data/", "notebooks/", "src/", "figures/", "docs/", "README.md"],
+             "adresa": "https://github.com/dsw-ubb-2026/echipa-4.git",
+             "membri": ["Andrei", "Maria", "Ioana", "Radu", "Elena"]},
+    "inceput": "Terminalul este deschis în dosarul dsw, cel cu .venv/ și curs/.",
+    "start": "Repo-ul echipei există deja pe GitHub, făcut din șablonul cursului, iar membrii au primit "
+             "invitația. Pașii de sus îi face fiecare membru, o singură dată.",
     "stari": [
-        {"dosar": {"nb": "", "rd": "", "dt": ""}, "ist": ["c0"], "gh": ["c0"]},
-        {"dosar": {"nb": "nou", "rd": "modificat", "dt": "nou"}, "ist": ["c0"], "gh": ["c0"], "activ": [0]},
-        {"dosar": {"nb": "nou", "rd": "modificat", "gi": "nou", "dt": "ignorat"}, "ist": ["c0"], "gh": ["c0"], "activ": [0]},
-        {"dosar": {"nb": "pregatit", "rd": "pregatit", "gi": "pregatit", "dt": "ignorat"},
-         "preg": ["nb", "rd", "gi"], "ist": ["c0"], "gh": ["c0"], "activ": [1]},
-        {"dosar": _SALVAT, "ist": ["c1", "c0"], "gh": ["c0"], "activ": [2]},
-        {"dosar": _SALVAT, "ist": ["c1", "c0"], "gh": ["c1", "c0"], "activ": [3]},
+        {"arbore": _ARB0, "dir": "~/dsw", "ghActiv": True},
+        {"acces": [0], "arbore": _ARB0, "dir": "~/dsw", "ghActiv": True},
+        {"acces": [0], "adresa": True, "arbore": _ARB0, "dir": "~/dsw", "ghActiv": True},
+        {"acces": [0], "adresa": True, "clona": True, "arbore": _ARB_NOU, "dir": "~/dsw", "pcActiv": True},
+        {"acces": [0], "arbore": _ARB_GATA, "dir": "~/dsw", "pcActiv": True},
+        {"acces": [0], "arbore": _ARB_GATA, "dir": "~/dsw/proiect", "ramura": "main", "pcActiv": True},
     ],
     "pasi": [
-        {"cmd": "git status", "t": "Ce vede Git",
-         "txt": "Două elemente noi, pe care Git nu le urmărește încă, și <code>README.md</code>, modificat. "
-                "<code>git status</code> nu schimbă nimic: doar arată."},
-        {"cmd": ".gitignore", "edit": True, "full": "data/        un rând nou în .gitignore, scris în VS Code",
-         "t": "Ce nu intră",
-         "txt": "<code>data/</code> se reface oricând rulând caietele, deci nu se versionează. "
-                "Trecut în <code>.gitignore</code>, nu mai apare în <code>git status</code>."},
-        {"cmd": "git add", "full": f"git add {_NB3} README.md .gitignore", "t": "Ce intră în commit",
-         "txt": "<code>git add</code> pune în pregătire o copie a fișierelor numite, așa cum sunt acum. "
-                "Originalele rămân în dosar."},
-        {"cmd": "git commit", "full": f"git commit -m \"{_MSG}\"", "t": "Fotografia",
-         "txt": "Copiile din pregătire devin un commit: fotografia celor trei fișiere, cu autorul, data "
-                "și mesajul. La ea se poate reveni oricând."},
-        {"cmd": "git push", "t": "Pe GitHub",
-         "txt": "Până aici, totul exista doar pe calculatorul local. <code>git push</code> copiază "
-                "commit-ul pe GitHub, unde îl văd colegii."},
+        {"cmd": "invitația", "edit": True, "t": "Accesul",
+         "txt": "Invitația vine pe e-mailul contului GitHub și se acceptă o dată. Vine doar dacă numele de pe "
+                "site este legat de contul GitHub; expiră după 7 zile.",
+         "out": [["g", "github.com/dsw-ubb-2026/echipa-4/invitations  →  Accept invitation"]]},
+        {"cmd": "adresa", "edit": True, "t": "Adresa",
+         "txt": "Pe pagina repo-ului: butonul verde <b>Code</b>, fila <b>HTTPS</b>, apoi copierea adresei.",
+         "out": [["g", "https://github.com/dsw-ubb-2026/echipa-4.git"]]},
+        {"cmd": "git clone", "full": "git clone https://github.com/dsw-ubb-2026/echipa-4.git proiect", "t": "Clonarea",
+         "txt": "Din dosarul <code>dsw</code>. Git copiază repo-ul, cu tot istoricul, în dosarul <code>proiect</code> "
+                "și ține minte de unde l-a luat (<code>origin</code>). Ultimul cuvânt al comenzii este numele dosarului.",
+         "out": [["", "Cloning into 'proiect'..."], ["", "remote: Enumerating objects: 7, done."],
+                 ["", "Receiving objects: 100% (7/7), done."]]},
+        {"cmd": "cd proiect", "t": "În depozit",
+         "txt": "Comenzile Git de azi se dau de aici, din <code>proiect</code>. Promptul arată acum dosarul și "
+                "ramura curentă: main.",
+         "out": [["", "~/dsw/proiect (main) $"]]},
+        {"cmd": "git status", "t": "Verificarea",
+         "txt": "Pe main, la zi cu GitHub, nimic schimbat. Depozitul echipei este pe calculator, legat de GitHub.",
+         "out": [["", "On branch main"], ["", "Your branch is up to date with 'origin/main'."],
+                 ["", "nothing to commit, working tree clean"]]},
     ],
 }
 
 # --------------------------------------------------------------------------
-# git status, citit: ieșirea adevărată, în engleză, cu culorile terminalului.
+# Primul commit al echipei, pe main, ca în caietul 03 (7.3): un membru
+# completează README.md (titlul, întrebarea, unitatea de analiză, sursele);
+# altul urcă la fel src/date_api.py. git add pune în pregătire o copie;
+# originalul rămâne în dosar.
+# --------------------------------------------------------------------------
+
+_MSG1 = "Tema si intrebarea provizorie"
+COMMIT = {
+    "ramura": "main",
+    "fisiere": {"rd": {"t": "README.md"}},
+    "notaDosar": "neschimbate: <code>data/</code>, <code>notebooks/</code>, <code>src/</code>, <code>figures/</code>, <code>docs/</code>",
+    "commituri": {"c0": {"h": "9f8e7d6", "m": "Initial commit", "x": "din șablon", "vechi": True},
+                  "c1": {"h": "a1b2c3d", "m": _MSG1, "x": "1 fișier"}},
+    "inceput": "Depozitul tocmai a fost clonat: dosarul, istoricul și GitHub au același commit, cel din șablon.",
+    "start": "Primul commit îl face un singur membru, pe main: completează <code>README.md</code>. "
+             "Comenzile de sus se apasă pe rând.",
+    "stari": [
+        {"dosar": {"rd": ""}, "ist": ["c0"], "gh": ["c0"]},
+        {"dosar": {"rd": "modificat"}, "ist": ["c0"], "gh": ["c0"], "activ": [0]},
+        {"dosar": {"rd": "modificat"}, "ist": ["c0"], "gh": ["c0"], "activ": [3]},
+        {"dosar": {"rd": "modificat"}, "ist": ["c0"], "gh": ["c0"], "activ": [0]},
+        {"dosar": {"rd": "pregatit"}, "preg": ["rd"], "ist": ["c0"], "gh": ["c0"], "activ": [1], "punte": 1},
+        {"dosar": {"rd": "salvat"}, "ist": ["c1", "c0"], "gh": ["c0"], "activ": [2], "punte": 2},
+        {"dosar": {"rd": "salvat"}, "ist": ["c1", "c0"], "gh": ["c1", "c0"], "activ": [3], "punte": 3},
+    ],
+    "pasi": [
+        {"cmd": "README.md", "edit": True, "t": "În VS Code",
+         "txt": "În <code>README.md</code>, provizoriu: titlul, întrebarea de cercetare, unitatea de analiză și "
+                "tabelul surselor de date.",
+         "out": [["g", "README.md: titlul, întrebarea, unitatea de analiză, sursele"]]},
+        {"cmd": "git pull", "t": "Întâi pull",
+         "txt": "Înainte de orice commit: ce au trimis colegii. Aici, nimic nou.",
+         "out": [["", "Already up to date."]]},
+        {"cmd": "git status", "t": "Ce vede Git",
+         "txt": "Un fișier modificat, încă neadăugat. În terminal apare cu roșu.",
+         "out": [["", "On branch main"], ["", "Your branch is up to date with 'origin/main'."],
+                 ["", "Changes not staged for commit:"], ["nu", "        modified:   README.md"]]},
+        {"cmd": "git add", "full": "git add README.md", "t": "Ce intră în commit",
+         "txt": "<code>git add</code> pune în pregătire o copie a fișierului, așa cum este acum. Originalul rămâne în dosar.",
+         "out": [["g", "git add nu afișează nimic: copia stă în pregătire."]]},
+        {"cmd": "git commit", "full": f"git commit -m \"{_MSG1}\"", "t": "Fotografia",
+         "txt": "Copia devine un commit: fotografia fișierului, cu autorul, data și mesajul. Deocamdată există "
+                "doar pe calculator.",
+         "out": [["", f"[main a1b2c3d] {_MSG1}"], ["", " 1 file changed, 14 insertions(+), 3 deletions(-)"]]},
+        {"cmd": "git push", "t": "Pe GitHub",
+         "txt": "Commit-ul ajunge pe GitHub, pe main. Alt membru urcă la fel <code>src/date_api.py</code>; "
+                "ceilalți le iau pe amândouă cu <code>git pull</code>.",
+         "out": [["", "To https://github.com/dsw-ubb-2026/echipa-4.git"], ["", "   9f8e7d6..a1b2c3d  main -> main"]]},
+    ],
+}
+
+# --------------------------------------------------------------------------
+# git status, citit: ieșirea adevărată, în engleză, cu culorile terminalului,
+# pe dev, cu fișierele din structura șablonului (notebooks/, src/).
 # --------------------------------------------------------------------------
 
 STATUS = {
     "id": "c3-status",
-    "sarcina": "A doua zi, înainte de commit. Ce intră în commit dacă se rulează acum "
-               "<code>git commit</code>? Rândurile se aleg cu un clic.",
-    "antet": ["On branch dev", "Your branch is up to date with 'origin/dev'."],
+    "sarcina": "Înainte de commit. Ce intră în commit dacă se rulează acum <code>git commit</code>? "
+               "Rândurile se aleg cu un clic.",
+    "antet": ["On branch main", "Your branch is up to date with 'origin/main'."],
     "grupuri": [
         {"t": "Changes to be committed:", "cls": "pr", "zona": "pregătire: intră în commit",
-         "fisiere": [{"t": f"modified:   {_NB3}", "ok": True},
-                     {"t": "new file:   code/harta.py", "ok": True}]},
+         "fisiere": [{"t": "modified:   README.md", "ok": True},
+                     {"t": "new file:   src/date_api.py", "ok": True}]},
         {"t": "Changes not staged for commit:", "cls": "ds", "zona": "dosar: modificat, nu intră",
-         "fisiere": [{"t": "modified:   README.md", "ok": False}]},
+         "fisiere": [{"t": "modified:   notebooks/01_collection.ipynb", "ok": False}]},
         {"t": "Untracked files:", "cls": "ds", "zona": "dosar: nou, neurmărit",
-         "fisiere": [{"t": "grafic_test.png", "ok": False}]},
+         "fisiere": [{"t": "figures/test.png", "ok": False}]},
     ],
     "indiciu": "Git împarte ieșirea în trei grupuri. Doar unul are legătură cu <code>git add</code>.",
     "indiciu2": "În terminal, grupul care intră în commit este scris cu verde.",
     "laRau": "Intră doar ce a trecut prin <code>git add</code>.",
     "laBine": "Intră doar grupul „Changes to be committed”.",
     "explicatie": "Celelalte două nu au trecut prin <code>git add</code>. Pentru a intra și ele: "
-                  "<code>git add README.md grafic_test.png</code>, apoi din nou <code>git status</code>.",
+                  "<code>git add notebooks/01_collection.ipynb figures/test.png</code>, apoi din nou <code>git status</code>.",
 }
 
 # --------------------------------------------------------------------------
-# Ramurile: commit-uri cu nume, și ce conține fișierul din dosar la fiecare
-# pas. La git switch main, curățarea dispare din fișier și revine la merge.
+# Ramurile, cum lucrează echipa: main stabil, dev pentru lucrul de zi cu zi.
+# Un membru creează dev și îl urcă; ceilalți trec pe el; la o sarcină
+# încheiată, dev intră în main. Lângă graf: ce conține dosarul.
 # --------------------------------------------------------------------------
 
+_AUT = {"an": {"t": "Andrei", "c": "ambra"}, "ma": {"t": "Maria", "c": "accent"}}
+_C5 = ["c0", "c1", "a1", "m1"]
 RAMURI = {
-    "id": "c3-ramuri",
-    "ramura": "curatare",
-    "fisier": "notebooks/03_….ipynb",
+    "id": "c3-ramuri", "ramura": "dev", "dosar": "proiect/",
+    "autori": _AUT,
     "commituri": {
-        "m1": {"x": 0, "lane": "m", "m": "structura"},
-        "m2": {"x": 1, "lane": "m", "m": "colectare migrație", "parinti": ["m1"]},
-        "r1": {"x": 2, "lane": "r", "m": "scoate grupurile", "parinti": ["m2"]},
-        "r2": {"x": 3, "lane": "r", "m": "redenumește coloane", "parinti": ["r1"]},
-        "mm": {"x": 4, "lane": "m", "m": "merge curatare", "merge": True, "parinti": ["m2", "r2"]},
+        "c0": {"x": 0, "lane": "m", "m": "din șablon"},
+        "c1": {"x": 1, "lane": "m", "m": "tema și întrebarea", "parinti": ["c0"]},
+        "a1": {"x": 2, "lane": "r", "m": "colectarea", "a": "an", "parinti": ["c1"]},
+        "m1": {"x": 3, "lane": "r", "m": "preprocesarea", "a": "ma", "parinti": ["a1"]},
+        "mg": {"x": 4, "lane": "m", "m": "merge dev", "merge": True, "parinti": ["c1", "m1"]},
     },
-    "linii": [{"c": "m2", "t": "migrația, colectată"},
-              {"c": "r1", "t": "fără grupurile de țări"},
-              {"c": "r2", "t": "coloane cu nume clare"}],
+    "linii": [{"c": "c1", "t": "README.md"}, {"c": "a1", "t": "notebooks/01_collection.ipynb"},
+              {"c": "m1", "t": "notebooks/02_preprocessing.ipynb"}],
+    "start": "main conține commit-ul din șablon și primul commit al echipei, README-ul. main este versiunea "
+             "stabilă, cea care se predă; lucrul de zi cu zi se face pe o a doua ramură, dev.",
     "stari": [
-        {"com": ["m1", "m2"], "ram": False, "aici": "m", "vede": ["m2"]},
-        {"com": ["m1", "m2"], "ram": True, "din": "m2", "aici": "r", "vede": ["m2"]},
-        {"com": ["m1", "m2", "r1"], "ram": True, "aici": "r", "vede": ["m2", "r1"]},
-        {"com": ["m1", "m2", "r1", "r2"], "ram": True, "aici": "r", "vede": ["m2", "r1", "r2"]},
-        {"com": ["m1", "m2", "r1", "r2"], "ram": True, "aici": "m", "vede": ["m2"]},
-        {"com": ["m1", "m2", "r1", "r2", "mm"], "ram": True, "aici": "m", "vede": ["m2", "r1", "r2"]},
+        {"com": ["c0", "c1"], "ram": False, "aici": "m", "gh": {"m": True}, "vede": ["c1"]},
+        {"com": ["c0", "c1"], "ram": True, "din": "c1", "aici": "r", "gh": {"m": True}, "vede": ["c1"]},
+        {"com": ["c0", "c1"], "ram": True, "din": "c1", "aici": "r", "gh": {"m": True, "r": True}, "vede": ["c1"]},
+        {"com": ["c0", "c1"], "ram": True, "din": "c1", "aici": "r", "gh": {"m": True, "r": True}, "vede": ["c1"]},
+        {"com": ["c0", "c1", "a1"], "ram": True, "aici": "r", "gh": {"m": True, "r": True}, "vede": ["c1", "a1"]},
+        {"com": _C5, "ram": True, "aici": "r", "gh": {"m": True, "r": True}, "vede": ["c1", "a1", "m1"]},
+        {"com": _C5, "ram": True, "aici": "m", "gh": {"m": True, "r": True}, "vede": ["c1"]},
+        {"com": _C5 + ["mg"], "ram": True, "aici": "m", "gh": {"m": "☁ pe GitHub, încă fără merge", "r": True},
+         "vede": ["c1", "a1", "m1"]},
+        {"com": _C5 + ["mg"], "ram": True, "aici": "m", "gh": {"m": True, "r": True}, "vede": ["c1", "a1", "m1"]},
     ],
-    "start": "Pe <code>main</code> sunt două commit-uri, iar caietul funcționează. Curățarea migrației se face "
-             "pe o ramură separată, ca <code>main</code> să rămână în orice moment o versiune care merge.",
     "pasi": [
-        {"cmd": "git switch -c curatare", "t": "Ramura nouă",
-         "txt": "Pornește din ultimul commit. Nu se copiază nimic: apare doar o linie nouă de lucru, "
-                "iar lucrul continuă pe ea."},
-        {"cmd": "git commit", "full": "git commit -m \"scoate grupurile de tari\"", "t": "Pe ramură",
-         "txt": "Commit-ul intră doar pe <code>curatare</code>. Pe <code>main</code> nu se schimbă nimic."},
-        {"cmd": "git commit", "full": "git commit -m \"redenumeste coloanele\"", "t": "Încă un commit",
-         "txt": "Pe ramură se lucrează cât este nevoie, cu oricâte commit-uri."},
-        {"cmd": "git switch main", "t": "Înapoi pe main",
-         "txt": "Fișierul din dosar revine la versiunea de pe <code>main</code>: curățarea nu se mai vede. "
-                "Nu s-a pierdut, așteaptă pe ramură."},
-        {"cmd": "git merge curatare", "t": "Îmbinarea",
-         "txt": "Curățarea intră în <code>main</code>. Abia acum o primesc toți cei care lucrează pe "
-                "<code>main</code>."},
+        {"cine": "Andrei", "cc": "ambra", "cmd": "switch -c dev", "full": "git switch -c dev", "t": "Ramura de lucru",
+         "txt": "Un singur membru creează dev, o singură dată, pornind din main. Nu se copiază nimic: apare o linie "
+                "nouă de lucru, iar Andrei trece pe ea."},
+        {"cine": "Andrei", "cc": "ambra", "cmd": "push -u origin dev", "full": "git push -u origin dev",
+         "t": "dev, pe GitHub",
+         "txt": "Ramura ajunge pe GitHub, ca să o vadă și colegii. <code>-u</code> leagă dev de origin/dev: de acum, "
+                "<code>git push</code> și <code>git pull</code> știu unde merg."},
+        {"cine": "Maria", "cc": "accent", "cmd": "switch dev", "full": "git fetch ; git switch dev",
+         "t": "Toată echipa pe dev",
+         "txt": "Ceilalți aduc noutățile de pe GitHub (<code>git fetch</code>) și trec pe dev. De aici înainte, "
+                "toată echipa lucrează pe dev, iar main nu se atinge."},
+        {"cine": "Andrei", "cc": "ambra", "cmd": "commit", "full": "git commit -m \"colectarea\"",
+         "t": "Lucrul pe dev",
+         "txt": "Fiecare lucrează în caietul pasului lui. Andrei, colectarea: <code>notebooks/01_collection.ipynb</code>. "
+                "main rămâne neschimbat."},
+        {"cine": "Maria", "cc": "accent", "cmd": "commit", "full": "git commit -m \"preprocesarea\"",
+         "t": "Și Maria",
+         "txt": "Maria, preprocesarea: <code>notebooks/02_preprocessing.ipynb</code>. Cum ajung cele două "
+                "commit-uri de pe un laptop pe altul, cu pull și push: slide-ul următor."},
+        {"cine": "Andrei", "cc": "ambra", "cmd": "switch main", "full": "git switch main", "t": "Sarcina e gata",
+         "txt": "Colectarea și preprocesarea sunt gata, deci intră în main. Întâi trecerea pe main: din dosar "
+                "dispar cele două caiete, pentru că pe main nu sunt încă. Nu s-au pierdut, sunt pe dev."},
+        {"cine": "Andrei", "cc": "ambra", "cmd": "merge dev", "full": "git merge dev", "t": "Îmbinarea",
+         "txt": "main primește tot ce s-a lucrat pe dev, iar caietele apar din nou în dosar. Deocamdată, doar pe calculator."},
+        {"cine": "Andrei", "cc": "ambra", "cmd": "push", "full": "git push", "t": "main, pe GitHub",
+         "txt": "main de pe GitHub are acum caietele: versiunea stabilă, cea care se predă. Lucrul continuă pe dev."},
     ],
 }
 
 # --------------------------------------------------------------------------
 # Lucrul în echipă pe dev: doi colegi și GitHub. Fiecare coloană e git log,
-# cu cel mai nou commit sus. Pull înainte de push, pe un caz care se
-# întâmplă în prima săptămână: push refuzat.
+# cu cel mai nou commit sus. Push refuzat: în coloana lui Andrei apare locul
+# commit-ului care îi lipsește.
 # --------------------------------------------------------------------------
 
-_B = ["c2", "c1"]
+_B = ["c1", "c0"]
 _DUPA = ["mg", "m1", "a1"] + _B
 SINCRON = {
     "coloane": [{"k": "an", "t": "Andrei", "d": "dev, pe laptop"},
                 {"k": "gh", "t": "GitHub", "d": "origin/dev", "gh": True},
                 {"k": "ma", "t": "Maria", "d": "dev, pe laptop"}],
-    "autori": {"baza": {"et": "commit-urile de la început", "c": "text-3"},
+    "autori": {"baza": {"et": "commit-urile de pe main", "c": "text-3"},
                "an": {"et": "Andrei", "c": "ambra", "cine": "Andrei"},
                "ma": {"et": "Maria", "c": "accent", "cine": "Maria"}},
-    "commituri": {"c1": {"m": "structura proiectului", "a": "baza"},
-                  "c2": {"m": "colectare migrație", "a": "baza"},
-                  "a1": {"m": "curățare migrație", "a": "an"},
-                  "m1": {"m": "hartă pe județe", "a": "ma"},
+    "commituri": {"c0": {"m": "din șablon", "a": "baza"},
+                  "c1": {"m": "tema și întrebarea", "a": "baza"},
+                  "a1": {"m": "colectarea", "a": "an"},
+                  "m1": {"m": "preprocesarea", "a": "ma"},
                   "mg": {"m": "îmbinare", "a": "an", "merge": True}},
     "respins": "push respins: aici există un commit care lipsește la Andrei",
-    "start": "Andrei, Maria și GitHub au același <code>dev</code>: fiecare și-a clonat depozitul. "
-             "Fiecare coloană arată commit-urile, cel mai nou sus.",
+    "start": "Andrei, Maria și GitHub au același dev. Fiecare coloană arată commit-urile, cel mai nou sus.",
     "stari": [
         {"an": _B, "gh": _B, "ma": _B},
         {"an": ["a1"] + _B, "gh": _B, "ma": _B},
         {"an": ["a1"] + _B, "gh": _B, "ma": ["m1"] + _B},
         {"an": ["a1"] + _B, "gh": ["m1"] + _B, "ma": ["m1"] + _B, "din": {"gh": "ma"}, "sag": {"2": "push"}},
-        {"an": ["a1"] + _B, "gh": ["m1"] + _B, "ma": ["m1"] + _B, "rau": "gh", "sag": {"1": "push:rau"}},
+        {"an": ["a1"] + _B, "gh": ["m1"] + _B, "ma": ["m1"] + _B, "rau": "gh", "lipsa": {"col": "an", "id": "m1"},
+         "sag": {"1": "push:rau"}},
         {"an": _DUPA, "gh": ["m1"] + _B, "ma": ["m1"] + _B, "din": {"an": "gh"}, "sag": {"1": "pull"}},
         {"an": _DUPA, "gh": _DUPA, "ma": ["m1"] + _B, "din": {"gh": "an"}, "sag": {"1": "push"}},
         {"an": _DUPA, "gh": _DUPA, "ma": _DUPA, "din": {"ma": "gh"}, "sag": {"2": "pull"}},
     ],
     "pasi": [
-        {"cine": "Andrei", "cc": "ambra", "cmd": "commit", "full": "git commit -m \"curatare migratie\"",
-         "t": "Local", "txt": "Commit-ul lui Andrei există doar pe laptopul lui."},
-        {"cine": "Maria", "cc": "accent", "cmd": "commit", "full": "git commit -m \"harta pe judete\"",
-         "t": "În paralel", "txt": "Maria lucrează la altceva și salvează și ea un commit."},
-        {"cine": "Maria", "cc": "accent", "cmd": "push", "full": "git push", "t": "Maria trimite",
+        {"cine": "Andrei", "cc": "ambra", "cmd": "commit", "full": "git commit -m \"colectarea\"",
+         "t": "Local", "txt": "Andrei salvează caietul colectării. Commit-ul există doar pe laptopul lui."},
+        {"cine": "Maria", "cc": "accent", "cmd": "commit", "full": "git commit -m \"preprocesarea\"",
+         "t": "În același timp", "txt": "Maria salvează caietul preprocesării, pe laptopul ei."},
+        {"cine": "Maria", "cc": "accent", "cmd": "push", "full": "git push", "t": "Maria trimite prima",
          "txt": "Commit-ul Mariei ajunge pe GitHub."},
         {"cine": "Andrei", "cc": "ambra", "cmd": "push", "rau": True,
          "full": "git push      ! [rejected]  dev -> dev (fetch first)", "t": "Refuzat",
-         "txt": "GitHub are un commit pe care Andrei nu îl are. Git refuză push-ul, ca să nu se piardă "
-                "munca Mariei."},
+         "txt": "GitHub are un commit pe care Andrei nu îl are: locul lui gol, în coloana lui Andrei. Git refuză "
+                "push-ul, ca să nu se piardă munca Mariei."},
         {"cine": "Andrei", "cc": "ambra", "cmd": "pull", "full": "git pull", "t": "Întâi pull",
-         "txt": "Commit-ul Mariei ajunge la Andrei și se unește cu al lui într-un commit de îmbinare. "
-                "Dacă amândoi au schimbat aceleași rânduri, aici apare un conflict."},
+         "txt": "Andrei aduce commit-ul Mariei, iar Git le unește într-un commit de îmbinare. Caietele sunt fișiere "
+                "diferite, deci nu apare niciun conflict."},
         {"cine": "Andrei", "cc": "ambra", "cmd": "push", "full": "git push", "t": "Apoi push",
-         "txt": "Acum push-ul trece: GitHub are ambele commit-uri."},
+         "txt": "Acum push-ul trece: GitHub are ambele caiete."},
         {"cine": "Maria", "cc": "accent", "cmd": "pull", "full": "git pull", "t": "La zi",
-         "txt": "Maria aduce ce îi lipsea. Toți trei au din nou același <code>dev</code>. Regula: "
-                "<b>pull înainte de lucru și înainte de push</b>."},
+         "txt": "Maria aduce ce îi lipsea. Toți trei au același dev. Regula: <b>pull înainte de lucru și "
+                "înainte de push</b>."},
     ],
 }
 
@@ -329,34 +421,43 @@ TABELE = {
 
 DOVADA = {
     "id": "c3-dovada-depozit",
-    "sarcina": "Trei comenzi în terminal, în <code>proiect/</code>, și o adresă de pe GitHub. Rezultatul "
-               "fiecăreia se lipește în câmpul ei.",
+    "sarcina": "După primul commit (caietul 03, secțiunea 7.3): trei comenzi în terminal, în <code>proiect/</code>, "
+               "și o adresă de pe GitHub. Rezultatul fiecăreia se lipește în câmpul ei.",
+    "indiciu": "Terminalul trebuie să fie în dosarul <code>proiect</code>: promptul se termină cu "
+               "<code>proiect</code>, iar Git Bash arată și ramura, <code>(main)</code>. Altfel: <code>cd proiect</code>.",
     "pasi": [
-        {"t": "Pe dev, la zi cu GitHub", "cmd": "git status", "gol": "primele două rânduri",
-         "cauta": r"\bdev\b[\s\S]*origin/dev",
-         "daca_nu": "Rezultatul trebuie să conțină dev și origin/dev. Pe altă ramură: git switch dev. "
-                    "Fără origin/dev, ramura nu este încă pe GitHub: git push -u origin dev."},
+        {"t": "La zi cu GitHub", "cmd": "git status", "gol": "primele două rânduri",
+         "cauta": r"branch\s*(main|dev)[\s\S]*origin/(main|dev)",
+         "ind": "Se copiază primele două rânduri: <code>On branch main</code> și "
+                "<code>Your branch is up to date with 'origin/main'.</code>",
+         "daca_nu": "Rezultatul trebuie să conțină ramura și perechea ei de pe GitHub, de exemplu main și "
+                    "origin/main. Fără origin/, dosarul nu este clonat din repo-ul echipei."},
         {"t": "Commit-ul a ajuns pe GitHub", "cmd": "git log --oneline -3", "gol": "liniile afișate",
-         "cauta": r"^(?:[^\n]*git log[^\n]*\n)?\s*[0-9a-f]{7,}[^\n]*origin/dev",
-         "daca_nu": "Pe rândul ultimului commit trebuie să apară origin/dev. Dacă lipsește, commit-ul este "
+         "cauta": r"^(?:[^\n]*git log[^\n]*\n)?\s*[0-9a-f]{7,}[^\n]*origin/(main|dev)",
+         "ind": "Se copiază rândul de sus: codul scurt al commit-ului, apoi "
+                "<code>(HEAD -&gt; main, origin/main)</code> și mesajul.",
+         "daca_nu": "Pe rândul ultimului commit trebuie să apară origin/main. Dacă lipsește, commit-ul este "
                     "doar local: git pull, apoi git push."},
-        {"t": "Datele nu sunt în depozit", "cmd": "git ls-files", "gol": "lista afișată",
-         "cauta": r"^(?![\s\S]*\.csv)[\s\S]*\.ipynb",
-         "daca_nu": "Lista arată ce urmărește Git: trebuie să conțină caietul și niciun .csv. Pentru un "
-                    ".csv urmărit: git rm --cached cu numele lui, apoi data/ în .gitignore."},
+        {"t": "Depozitul echipei", "cmd": "git remote -v", "gol": "cele două rânduri cu origin",
+         "cauta": r"github\.com[/:]dsw-ubb-2026/echipa-\d+",
+         "ind": "Două rânduri care încep cu <code>origin</code>, cu adresa repo-ului echipei: "
+                "<code>https://github.com/dsw-ubb-2026/echipa-N.git</code>.",
+         "daca_nu": "Adresa trebuie să fie a repo-ului echipei din dsw-ubb-2026. Altă adresă: dosarul nu este "
+                    "clona repo-ului echipei; clonarea se reface din dsw."},
         {"t": "Commit-ul, pe GitHub",
          "unde": "Pagina depozitului <b>›</b> Commits <b>›</b> commit-ul propriu <b>›</b> adresa din bara browserului",
          "gol": "https://github.com/dsw-ubb-2026/…/commit/…",
          "cauta": r"github\.com/dsw-ubb-2026/[^/\s]+/commit/[0-9a-f]{7,40}",
+         "ind": "Pe pagina repo-ului, deasupra listei de fișiere: <b>Commits</b> (iconița cu ceas). Clic pe "
+                "mesajul commit-ului propriu; adresa se termină cu <code>/commit/</code> și un cod lung.",
          "daca_nu": "Adresa trebuie să fie a unui commit din organizația dsw-ubb-2026."},
     ],
-    "explicatie": "Munca echipei există acum în două locuri, local și pe GitHub, pe <code>dev</code>. Pe pagina "
-                  "commit-ului se văd autorul, fișierele schimbate și rândurile modificate. Dacă lângă commit "
-                  "apare un nume fără cont de GitHub, adresa de email din Git nu este cea a contului: "
+    "explicatie": "Munca există acum în două locuri, local și pe GitHub. Pe pagina commit-ului se văd autorul, "
+                  "fișierele schimbate și rândurile modificate. Dacă lângă commit apare un nume fără cont de "
+                  "GitHub, adresa de email din Git nu este cea a contului: "
                   "<code>git config --global user.email \"adresa contului\"</code>; commit-urile următoare "
                   "apar apoi pe cont.",
 }
-
 
 PAS_TARI = {
     "fisier": "03_surse_diverse.ipynb · 5. Migrația: țări și grupuri de țări",
@@ -449,37 +550,6 @@ PAS_NUTS = {
 }
 
 
-sl("s1", "Cursul", "Planul lecției",
-   "<h2>Versionare și colaborare cu Git</h2>"
-   "<p class=\"cheie\">Datele colectate la cursul anterior intră acum, "
-   "împreună cu codul de colectare, sub controlul versiunilor.</p>"
-   + ix("agenda", "Planul lecției",
-        {"static": True, "titlu": "Planul lecției",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
-        "Detaliile apar la selectarea unei etape.")
-   + nota("Caietul lecției", "<code>03_surse_diverse_si_preprocesare.ipynb</code>. Secțiunile 1-5 tratează datele (nomenclatorul, tabelul regional, migrația curățată de grupuri), iar secțiunea 6, Git.", True),
-   manual=
-   "<h2>Versionare și colaborare cu Git</h2>"
-   "<p>Lecția de azi are două părți, aparent fără legătură. Prima "
-   "tratează Git, adică mecanismul prin care un proiect își păstrează propria "
-   "istorie. A doua este dedicată formulării întrebării de cercetare a proiectului.</p>"
-   "<p>Legătura dintre ele: un proiect de analiză nu este o colecție de "
-   "fișiere, ci un parcurs. Git documentează parcursul, iar cadrul teoretic "
-   "îi stabilește direcția. Fără primul, rezultatul nu poate fi reconstituit; "
-   "fără al doilea, nu poate fi justificat.</p>"
-   "<h3>Punctul de plecare</h3>"
-   '<ul class="bif">'
-   "<li><b>Colectarea</b><span>cererile către Banca Mondială și Eurostat, în caietul 02.</span></li>"
-   "<li><b>Datele</b><span><code>bm.csv</code> și <code>migratie.csv</code>, în <code>curs/data/c2</code>.</span></li>"
-   "<li><b>Echipa</b><span>aleasă pe site, la cursul 2; depozitul ei se creează în această lecție.</span></li>"
-   "</ul>"
-   "<p>Deocamdată, toate există doar pe calculatorul local. Git le păstrează istoricul, "
-   "iar GitHub le pune în comun pentru echipă.</p>"
-   + ix("agenda", "Planul lecției",
-        {"static": True, "titlu": "Planul lecției",
-         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
-   + nota("Caietul lecției", "<code>03_surse_diverse_si_preprocesare.ipynb</code>. Secțiunile 1-5 tratează datele (nomenclatorul, tabelul regional, migrația curățată de grupuri), iar secțiunea 6, Git.", True))
-
 # ===========================================================================
 #  3-5. Ce face Git
 # ===========================================================================
@@ -503,66 +573,6 @@ FUNCTII = ('<ol class="fn6">' + "".join(
     f'<li><span class="fn6__n">{i:02d}</span><div><b>{n}</b><em>{u}</em><p>{d}</p></div></li>'
     for i, (n, u, d) in enumerate(CE_FACE, 1)) + "</ol>")
 
-sl("s3", "Ce face Git", "Funcțiile lui Git",
-   "<h2>Ce face Git</h2>"
-   "<p class=\"cheie\">Git rulează pe calculatorul local. GitHub este doar "
-   "platforma pe care se sincronizează proiectele.</p>"
-   + FUNCTII,
-   manual=
-   "<h2>Ce face Git</h2>"
-   "<p>Un sistem de versionare rezolvă o problemă frecventă: fișiere numite "
-   "<code>analiza_final_v2_FINAL_bun.py</code>, fără nicio evidență a "
-   "diferențelor față de <code>v1</code>.</p>"
-   + FUNCTII
-   + nota("O distincție esențială",
-          "Git și GitHub nu sunt același lucru. Git este programul instalat "
-          "local, care păstrează istoria. GitHub este o platformă care "
-          "găzduiește copii ale acestei istorii. Git poate fi folosit fără "
-          "GitHub; invers, nu."))
-
-sl("s4", "Ce face Git", "Cele trei zone",
-   "<h2>Unde se află fișierele</h2>"
-   "<p>Comenzile Git devin coerente odată ce se observă că fiecare mută "
-   "fișiere între trei zone.</p>"
-   + ix("zone", "Fișierele prin cele trei zone",
-        {"id": "c3-zone",
-         "sarcina": "Dosarul conține două fișiere. În ce ordine se selectează "
-                    "comenzile pentru a le trimite pe GitHub? <code>git status</code> "
-                    "nu mută nimic, dar arată starea curentă.",
-         "fisiere": ["colectare.py", "README.md"]}),
-   manual="<h2>Cele trei zone</h2>"
-   "<p>Acesta este modelul conceptual care dă sens comenzilor Git. Fără el, "
-   "comenzile rămân o listă de proceduri memorate, fără o logică comună.</p>"
-   + ix("zone", "Fișierele prin cele trei zone",
-        {"id": "c3-zone",
-         "sarcina": "În ce ordine se selectează comenzile pentru a trimite cele două fișiere pe GitHub?",
-         "fisiere": ["colectare.py", "README.md"]})
-   + tabel(["Zona", "Ce conține", "Cum ajunge mai departe"], [
-       ["Dosarul de lucru", "fișierele în curs de editare", "~git add"],
-       ["Zona de pregătire", "modificările alese pentru următorul commit", "~git commit"],
-       ["Istoricul local", "commit-urile, pe calculatorul local", "~git push"],
-       ["GitHub", "copia de pe server", "~git pull, înapoi"],
-   ])
-   + "<p>Zona de pregătire poate părea un pas redundant. Rolul ei este de a "
-     "permite un commit care include doar trei din cele șapte fișiere "
-     "modificate, atunci când numai cele trei țin de aceeași schimbare.</p>"
-   + ix("prezice", "Instantaneul de la git add", {
-       "id": "c3-prezice-add", "poarta": False, "fisier": "terminal.sh",
-       "cod": "# analiza.py a fost modificat\n"
-              "git add analiza.py\n\n"
-              "# inca un rand schimbat in analiza.py, apoi:\n"
-              "git commit -m \"analiza pe migratie\"",
-       "intrebare": "Ce intră în commit?",
-       "variante": ["Ambele schimbări", "Doar prima, cea de dinainte de add",
-                    "Nimic: fișierul s-a schimbat după add", "Doar a doua"],
-       "corect": 1,
-       "indiciu": "git add salvează conținutul fișierului din momentul rulării comenzii; nu urmărește fișierul în continuare.",
-       "laBine": "git add salvează un instantaneu al fișierului, nu urmărește modificările ulterioare.",
-       "explicatie": "Zona de pregătire păstrează fișierul în starea de la momentul <code>add</code>. A doua schimbare rămâne doar în dosarul de lucru, "
-                     "iar <code>git status</code> afișează fișierul de două ori: o dată în pregătire, o dată ca modificat. "
-                     "Pentru a include și a doua schimbare, se rulează din nou <code>git add</code>. Acesta este și avantajul zonei de pregătire: "
-                     "controlul exact asupra conținutului unui commit.",
-       "iesire": "[main 4f2a9c1] analiza pe migratie\n 1 file changed"}))
 
 GIT_GITHUB = ('<div class="doi2">'
    '<div><b>Git</b><span>program instalat pe calculator</span>'
@@ -577,64 +587,34 @@ EVALUARE = nota("Evaluarea proiectului",
                 "Proiectul se evaluează pe baza depozitului: întregul parcurs, nu doar "
                 "rezultatul final. Un singur commit în ziua predării nu documentează acest parcurs.")
 
-sl("s5", "Ce face Git", "Git sau GitHub",
-   "<h2>Git sau GitHub</h2>"
-   "<p class=\"cheie\">Două unelte diferite: una ține istoricul, cealaltă îl pune în comun.</p>"
-   + GIT_GITHUB + EVALUARE,
-   manual=
-   "<h2>Git sau GitHub</h2>"
-   "<p>Două unelte diferite: una ține istoricul, cealaltă îl pune în comun.</p>"
-   + GIT_GITHUB
-   + nota("Evaluarea proiectului",
-          "Proiectul se evaluează pe baza depozitului: nu doar rezultatul "
-          "final, ci întregul parcurs (ce s-a încercat, ce s-a abandonat, cine "
-          "a contribuit). Un depozit cu un singur commit în ziua predării nu "
-          "documentează acest parcurs.")
-   + "<h3>Depozitul (repository)</h3>"
-   "<p>Un depozit (repository, pe scurt repo) este un dosar obișnuit în care "
-   "Git a creat un subdosar ascuns, <code>.git</code>. Acolo se păstrează "
-   "întreaga istorie.</p>"
-   + tabel(["Local", "Remote"], [
-       ["pe calculatorul local", "pe GitHub"],
-       ["locul de lucru", "locul de sincronizare al echipei"],
-       ["se creează cu <code>git init</code>", "se creează din interfața GitHub"],
-   ])
-   + "<pre><code><span class=\"c\"># deschizi terminalul in dosarul proiectului</span>\n"
-     "cd C:\\PROIECTE\\dsw-echipa-3\n\n"
-     "<span class=\"c\"># porneste urmarirea</span>\ngit init\n\n"
-     "<span class=\"c\"># prima intrebare, mereu: unde sunt?</span>\n"
-     "git status</code></pre>"
-   + nota("O eroare frecventă",
-          "Rulat din greșeală în dosarul personal (home), <code>git init</code> "
-          "pune sub urmărire întregul conținut al acestuia. Remedierea constă în "
-          "ștergerea dosarului <code>.git</code> creat acolo; fișierele nu sunt "
-          "afectate. În PowerShell, din dosarul respectiv: "
-          "<code>Remove-Item -Recurse -Force .git</code>."))
-
 
 # ===========================================================================
-#  6-9. Primii pași
+#  Depozitul echipei
 # ===========================================================================
 
-# Depozitul echipei: pașii și folderul, mutați aici de la cursul 2; apar în
-# manualul slide-ului „Depozitul echipei”, de la finalul lecției.
+# Depozitul echipei: pașii și dosarul, în manualul slide-ului „Depozitul echipei”.
 ARBORE_PROIECT = (
     '<span class="a">dsw/</span>\n'
     '├── <span class="x">.venv/</span>\n'
-    '├── curs/            <span class="c"># personal, fără Git</span>\n'
-    '└── <span class="a">proiect/</span>         <span class="c"># al echipei, cu Git</span>\n'
-    '    ├── .git/        <span class="c"># istoricul</span>\n'
-    '    └── README.md')
+    '├── curs/                 <span class="c"># caietele cursului și src/date_api.py, fără Git</span>\n'
+    '└── <span class="a">proiect/</span>              <span class="c"># depozitul echipei, cu Git</span>\n'
+    '    ├── data/raw/         <span class="c"># datele originale, neschimbate</span>\n'
+    '    ├── data/processed/   <span class="c"># tabelele produse de caiete</span>\n'
+    '    ├── notebooks/        <span class="c"># câte un caiet pe pas</span>\n'
+    '    ├── src/              <span class="c"># cod comun, în fișiere .py</span>\n'
+    '    ├── figures/          <span class="c"># figurile pentru raport</span>\n'
+    '    ├── docs/             <span class="c"># raportul</span>\n'
+    '    └── README.md         <span class="c"># descrierea proiectului</span>')
 
 PE4_HTML = (
     '<ol class="pe4">'
-    f'<li><span>1</span><b>Organizația</b><p><a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, comună pentru grupă. Invitația vine pe e-mail.</p></li>'
-    "<li><span>2</span><b>Depozitul echipei</b><p>Un membru îl creează în organizație și îi adaugă pe ceilalți.</p></li>"
-    "<li><span>3</span><b>Adresa</b><p>Pe pagina depozitului: Code → HTTPS.</p></li>"
+    f'<li><span>1</span><b>Organizația</b><p><a class="leg" href="https://github.com/{REPO_ORG}" target="_blank" rel="noopener">{REPO_ORG}</a>, comună pentru grupă.</p></li>'
+    "<li><span>2</span><b>Invitația</b><p>Pentru <code>echipa-N</code>, pe e-mailul contului GitHub sau la <code>github.com/dsw-ubb-2026/echipa-N/invitations</code>.</p></li>"
+    "<li><span>3</span><b>Adresa</b><p>Pe pagina repo-ului: Code → HTTPS.</p></li>"
     "<li><span>4</span><b>Clonarea</b><p>În terminal, în dsw: <code>git clone &lt;adresa&gt; proiect</code></p></li>"
     "</ol>"
     '<div class="pe4__arb"><pre><code>' + ARBORE_PROIECT + "</code></pre>"
-    '<p>Munca echipei stă în proiect/, cu Git; exercițiile de la curs rămân în curs/, fără Git.</p></div>')
+    '<p>Munca echipei stă în proiect/, cu Git; caietele și datele de la curs rămân în curs/, fără Git.</p></div>')
 
 CONFIG = {
     "id": "c3-cod-config", "poarta": False, "fisier": "terminal.sh",
@@ -660,228 +640,12 @@ CONFIG = {
     "explicatie": "<code>--global</code> scrie în configurarea utilizatorului, deci setarea este valabilă pentru "
                   "toate proiectele. Fără această opțiune, setarea se aplică doar depozitului curent."}
 
-sl("s8", "Primii pași", "Primul commit",
-   "<h2>De la dosar la GitHub</h2>"
-   + ix("commit", "Primul commit al echipei", COMMIT),
-   manual="<h2>Primul commit</h2>"
-   "<p>Pasul de Git din caietul 03, secțiunea 6, rulat în depozitul echipei, pe ramura <code>dev</code>. "
-   "Fiecare comandă mută ceva între cele patru zone de la slide-ul anterior. Desenul pornește după "
-   "clonare: istoricul local și GitHub au deja primul commit, creat odată cu depozitul.</p>"
-   + ix("commit", "Primul commit al echipei", COMMIT)
-   + "<p>În practică, ciclul obișnuit de lucru este același la fiecare pas al proiectului:</p>"
-   "<pre><code><span class=\"c\"># unde sunt, ce s-a schimbat?</span>\ngit status\n\n"
-   "<span class=\"c\"># ce intra in acest commit</span>\n"
-   f"git add {_NB3}\n\n"
-   "<span class=\"c\"># il scriu in istoric, cu un mesaj care spune ceva</span>\n"
-   f"git commit -m \"{_MSG}\"\n\n"
-   "<span class=\"c\"># il trimit colegilor</span>\ngit push</code></pre>"
-   + nota("Frecvența commit-urilor",
-          "Un commit nu este o livrare, ci un punct de revenire. Regula "
-          "practică: câte un commit pentru fiecare unitate de lucru încheiată "
-          "care poate fi descrisă printr-un mesaj scurt.")
-   + "<h3>Înainte de primul commit: identitatea autorului</h3>"
-   "<p>Fiecare commit conține un nume și o adresă de email. Git nu verifică datele: folosește exact "
-   "valorile configurate, o singură dată pe calculator. Cu o adresă diferită de cea a contului de GitHub, "
-   "commit-urile apar pe GitHub fără legătură cu vreun cont; verificarea se face la finalul lecției, pe "
-   "pagina commit-ului.</p>"
-   + ix("cod", "Configurarea identității", CONFIG)
-   + ix("ordine", "Ordinea pașilor", {
-       "id": "c3-ordine-commit", "poarta": False, "indiciu": "Întâi dosarul devine depozit. Urmează verificarea a ceea ce vede Git, adăugarea fișierului în zona de pregătire, o nouă verificare și abia apoi înregistrarea în istoric.",
-       "iesire": "a1b2c3d (HEAD -> main) colectare migratie, Eurostat migr_pop1ctz",
-       "sarcina": "Ordinea unui prim commit, de la dosar gol la istoric.",
-       "linii": [
-           "git init",
-           "git status                      # ce vede Git",
-           "git add code/migratie.py",
-           "git status                      # acum e in pregatire",
-           "git commit -m \"colectare migratie, Eurostat migr_pop1ctz\"",
-           "git log --oneline               # a ramas scris"],
-       "explicatie": "<code>git status</code> este comanda folosită cel mai des."}))
 
-sl("s8b", "Primii pași", "Ce afișează git status",
-   "<h2>Citirea lui git status</h2>"
-   + ix("status", "Ce intră în commit", STATUS),
-   manual="<h2>Citirea lui git status</h2>"
-   "<p><code>git status</code> este comanda folosită cel mai des: se rulează înainte de fiecare "
-   "<code>add</code> și înainte de fiecare <code>commit</code>. Ieșirea are trei grupuri, fiecare "
-   "corespunzând unei zone: ce intră în commit (verde), ce s-a modificat, dar nu a trecut prin "
-   "<code>git add</code>, și fișierele noi, pe care Git nu le urmărește încă (roșu). În terminalul "
-   "real, fiecare grup are dedesubt și o indicație între paranteze, de exemplu "
-   "<code>(use \"git add &lt;file&gt;...\" to update what will be committed)</code>.</p>"
-   + ix("status", "Ce intră în commit", STATUS)
-   + tabel(["În git status", "Zona", "Intră în commit?"], [
-       ["Changes to be committed", "pregătire", "da"],
-       ["Changes not staged for commit", "dosar, fișier urmărit și modificat", "nu, până la <code>git add</code>"],
-       ["Untracked files", "dosar, fișier nou", "nu, până la <code>git add</code>"],
-   ])
-   + "<p>Varianta scurtă, <code>git status --short</code>, pune aceleași informații pe două coloane: "
-     "prima pentru pregătire, a doua pentru dosar. <code>M </code> înseamnă modificat și pregătit, "
-     "<code> M</code> modificat, dar nepregătit, iar <code>??</code> fișier neurmărit.</p>")
-
-sl("s9", "Primii pași", "Ce nu se versionează",
-   "<h2>.gitignore</h2>"
-   "<p class=\"cheie\">Depozitul se tratează ca public: o parolă urcată o dată rămâne în istoric.</p>"
-   + ix("sortare", "Ce intră în depozit", {
-       "id": "c3-sort-gitignore",
-       "sarcina": "În ce categorie intră fiecare element?",
-       "elemente": [
-           {"t": "colectare.py", "cos": 0}, {"t": ".env cu parole", "cos": 1},
-           {"t": "README.md", "cos": 0}, {"t": "venv/", "cos": 1},
-           {"t": "date/brute/mic.csv", "cos": 0}, {"t": "date/brute/20GB.csv", "cos": 1},
-           {"t": ".gitignore", "cos": 0}, {"t": "cheia de API", "cos": 1}],
-       "cosuri": [{"t": "În depozit", "d": "cod, documentație, date mici"},
-                  {"t": "Niciodată", "d": "secrete, mediul virtual, fișiere foarte mari"}],
-       "laBine": "Fișierul <code>.gitignore</code> intră în depozit: este o "
-                 "regulă comună a echipei, nu o preferință personală.",
-       "explicatie": "Mediul virtual nu se versionează: se reface din "
-                     "<code>requirements.txt</code> cu o singură comandă și ocupă "
-                     "sute de megabytes. Datele mari nu se versionează pentru că Git "
-                     "păstrează fiecare versiune: fiecare modificare a unui fișier de "
-                     "mai mulți gigabytes adaugă încă o copie în istoric."})
-   + verif("c3-v6", 3,
-           "Un fișier cu o parolă a fost inclus din greșeală într-un commit și trimis cu push. Ce trebuie făcut?",
-           ["Ștergerea fișierului și un commit nou",
-            "Adăugarea fișierului în .gitignore",
-            "Nu este necesar nimic, depozitul este privat",
-            "Schimbarea imediată a parolei, apoi curățarea istoricului"],
-           "Prima măsură este schimbarea parolei. Celelalte variante lasă parola "
-           "în istoric, de unde poate fi extrasă imediat de oricine știe unde să "
-           "caute. Curățarea istoricului urmează și este mai dificilă: cere rescrierea istoricului, iar copiile deja descărcate rămân."),
-   manual=
-   "<h2>.gitignore</h2>"
-   "<p>Un fișier text, aflat în rădăcina proiectului, care enumeră ce nu trebuie urmărit:</p>"
-   "<pre><code><span class=\"c\"># mediul virtual si secretele</span>\n"
-   "venv/\n.env\n\n"
-   "<span class=\"c\"># datele: se aduc cu scriptul de colectare</span>\n"
-   "data/\n*.csv\n*.parquet\n*.xlsx\n\n"
-   "<span class=\"c\"># gunoiul uneltelor</span>\n"
-   ".ipynb_checkpoints/\n__pycache__/\n*.pyc\n.vscode/\n.DS_Store\nThumbs.db</code></pre>"
-   + "<p>După ce este scris, se adaugă în depozit ca orice alt fișier: "
-     "<code>git add .gitignore</code>, <code>git commit -m \"add gitignore\"</code>, "
-     "<code>git push</code>.</p>"
-   + tabel(["Un fișier adăugat din greșeală trebuie…", "Comanda"], [
-       ["doar scos din zona de pregătire (rămâne pe disc)", "~git reset -- \"nume fisier.ipynb\""],
-       ["scos complet de sub urmărirea Git, dar păstrat în proiect", "~git rm --cached nume_fisier"],
-   ])
-   + ix("sortare", "Ce intră în depozit", {
-       "id": "c3-sort-gitignore",
-       "sarcina": "În ce categorie intră fiecare element?",
-       "elemente": [
-           {"t": "colectare.py", "cos": 0}, {"t": ".env cu parole", "cos": 1},
-           {"t": "README.md", "cos": 0}, {"t": "venv/", "cos": 1},
-           {"t": "date/brute/mic.csv", "cos": 0}, {"t": "date/brute/20GB.csv", "cos": 1},
-           {"t": ".gitignore", "cos": 0}, {"t": "cheia de API", "cos": 1}],
-       "cosuri": [{"t": "În depozit", "d": "cod, documentație, date mici"},
-                  {"t": "Niciodată", "d": "secrete, mediul virtual, fișiere foarte mari"}],
-       "laBine": "<code>.gitignore</code> intră în depozit: este o regulă comună a echipei.",
-       "explicatie": "Git păstrează fiecare versiune a fiecărui fișier."}))
-
-
-# ===========================================================================
-#  10-13. GitHub
-# ===========================================================================
-
-sl("s11", "GitHub", "Legarea depozitelor",
-   "<h2>Două feluri de a începe</h2>"
-   + tabel(["Varianta 1: <code>git init</code>", "Varianta 2: <code>git clone</code>"], [
-       ["nu există încă depozit pe GitHub", "depozitul echipei există deja pe GitHub"],
-       ["<code>git init</code>, <code>add</code>, <code>commit</code>", "<code>git clone &lt;adresa&gt; proiect</code>"],
-       ["<code>git branch -m master main</code>", "<code>cd proiect</code>"],
-       ["<code>git remote add origin &lt;adresa&gt;</code>", "<code>git branch -vv</code>: main urmărește origin/main"],
-       ["<code>git push -u origin main</code>", "legătura există deja"],
-   ])
-   + nota("La curs: varianta 2",
-          "Un membru al echipei creează depozitul pe GitHub, iar ceilalți îl "
-          "clonează. Clonarea aduce fișierele și întreaga istorie și configurează "
-          f"automat <code>origin</code>. Toate comenzile: fișa {FISA}.", True),
-   manual="<h2>Două feluri de a începe</h2>"
-   f"<p>Ca în fișa {FISA}, există două variante, în funcție "
-   "de existența depozitului pe GitHub.</p>"
-   "<h3>Varianta 1: <code>git init</code></h3>"
-   "<p>Se folosește doar dacă depozitul nu există încă pe GitHub.</p>"
-   "<pre><code>git init                          <span class=\"c\"># depozit local, gol</span>\n"
-   "git add .                         <span class=\"c\"># fisierele existente</span>\n"
-   "git commit -m \"first commit\"\n"
-   "git branch -m master main         <span class=\"c\"># ramura principala devine main</span>\n"
-   "git remote add origin &lt;GitHub_URL&gt;\n"
-   "git push -u origin main</code></pre>"
-   "<h3>Varianta 2: <code>git clone</code>, cea de la curs</h3>"
-   "<p>Se folosește când depozitul echipei există deja pe GitHub.</p>"
-   "<pre><code>git clone https://github.com/dsw-ubb-2026/depozitul-echipei.git proiect\n"
-   "cd proiect\n"
-   "git status\n"
-   "git branch -vv            <span class=\"c\"># main urmareste origin/main</span></code></pre>"
-   "<h3>Caz special</h3>"
-   "<p>Depozitul local a fost creat cu <code>git init</code>, dar depozitul de "
-   "pe GitHub există deja și are conținut (de exemplu, un README). Cele două "
-   "istorii nu au un punct comun, deci se unesc o singură dată:</p>"
-   "<pre><code>git remote add origin &lt;GitHub_URL&gt;\n"
-   "git pull origin main --allow-unrelated-histories\n"
-   "git branch -u origin/main</code></pre>"
-   + tabel(["Verificare", "Ce afișează"], [
-       ["~git branch", "ramurile locale"],
-       ["~git branch -r", "ramurile de pe GitHub (origin/...)"],
-       ["~git branch -a", "toate ramurile"],
-       ["~git branch -vv", "fiecare ramură și pe cine urmărește (upstream)"],
-       ["~git remote -v", "adresa lui origin"],
-   ])
-   + ix("cod", "Legarea de GitHub", {
-       "id": "c3-cod-remote", "poarta": False, "indiciu": "Comanda care gestionează depozitele la distanță se numește „remote”. "
-                  "La primul push, -u memorează legătura; ramura principală este main.",
-       "iesire": "origin  https://github.com/echipa/proiect.git (fetch)\norigin  https://github.com/echipa/proiect.git (push)\nbranch 'main' set up to track 'origin/main'.", "fisier": "terminal.sh",
-       "sarcina": "Varianta 1: ce lipsește din comenzi?",
-       "cod": "git branch -m master main\n"
-              "git {{1}} add origin https://github.com/echipa/proiect.git\n"
-              "git push {{2}} origin {{3}}",
-       "goluri": {
-           "1": {"ok": ["remote"], "ajutor": "comanda"},
-           "2": {"ok": ["-u", "--set-upstream"], "ajutor": "opțiunea"},
-           "3": {"ok": ["main"], "ajutor": "ramura"}},
-       "laBine": "După primul push cu <code>-u</code>, este suficient <code>git push</code>.",
-       "laRau": "Ramura este „main”.",
-       "explicatie": "<code>-u</code> leagă ramura locală de cea de pe GitHub."})
-   + ix("ordine", "De la dosar gol la depozit de echipă", {
-       "id": "c3-ordine-github", "poarta": False,
-       "sarcina": "Varianta 1, de la un dosar cu fișiere la un depozit pe GitHub.",
-       "linii": [
-           "git init",
-           "se scrie .gitignore, ca secretele sa nu intre in primul commit",
-           "git add .",
-           "git commit -m \"structura proiectului si colectarea\"",
-           "git branch -m master main",
-           "se creeaza pe GitHub un depozit gol, fara README",
-           "git remote add origin <adresa>",
-           "git push -u origin main"],
-       "explicatie": "<code>.gitignore</code> se scrie înainte de primul "
-                     "<code>git add .</code>, nu după. Depozitul de pe "
-                     "GitHub se creează gol: un README creat acolo este un commit "
-                     "care nu există local, iar primul push este refuzat."}))
 
 # ===========================================================================
 #  14-16. În echipă
 # ===========================================================================
 
-sl("s14", "În echipă", "Ramuri",
-   "<h2>Ramuri: o linie de lucru paralelă</h2>"
-   + ix("ramuri", "Ramura de curățare", RAMURI),
-   manual=
-   "<h2>Ramuri</h2>"
-   "<p>O ramură este o linie de lucru paralelă. Modificările de pe ea nu "
-   "afectează <code>main</code>, care rămâne funcțional și gata de predare "
-   "în orice moment. Comenzile se apasă în ordine; lângă graf, lista arată ce "
-   "conține fișierul din dosar după fiecare comandă.</p>"
-   + ix("ramuri", "Ramura de curățare", RAMURI)
-   + tabel(["Comanda", "Ce face"], [
-       ["~git branch", "listează ramurile și o marchează pe cea curentă"],
-       ["~git switch -c curatare", "creează o ramură nouă și trece pe ea"],
-       ["~git switch main", "revine pe main; fișierele din dosar devin cele de pe main"],
-       ["~git merge curatare", "integrează în main modificările de pe ramură"],
-       ["~git log --oneline --graph --decorate --all", "același graf, desenat în terminal"],
-   ])
-   + nota("De ce nu se lucrează direct pe main",
-          "Pentru că orice modificare neterminată ar afecta întreaga echipă. "
-          "Cu ramuri, main rămâne permanent o versiune funcțională, iar lucrul "
-          "în desfășurare este izolat până la finalizare."))
 
 FLUX_DEV = [
     ["o dată, un membru al echipei", "~git switch -c dev", "~git push -u origin dev"],
@@ -890,93 +654,6 @@ FLUX_DEV = [
     ["la fiecare commit", "~git add . ; git commit -m \"...\"", "~git pull ; git push"],
     ["după o sarcină importantă", "~git switch main ; git pull", "~git merge dev ; git push"],
 ]
-
-sl("s14b", "În echipă", "Fluxul echipei",
-   "<h2>Pull, apoi push</h2>"
-   + ix("sincron", "Doi colegi și GitHub, pe dev", SINCRON),
-   manual=
-   "<h2>Fluxul echipei: main și dev</h2>"
-   f"<p>Fluxul din fișa {FISA} folosește două ramuri. <code>main</code> "
-   "este versiunea funcțională, cea care se predă. <code>dev</code> este ramura "
-   "pe care lucrează zilnic întreaga echipă. Desenul arată ce se întâmplă pe "
-   "<code>dev</code> când doi colegi lucrează în același timp: fiecare coloană este "
-   "istoricul unui depozit, cu cel mai nou commit sus.</p>"
-   + ix("sincron", "Doi colegi și GitHub, pe dev", SINCRON)
-   + "<p>Conținutul din <code>dev</code> se integrează în <code>main</code> după fiecare sarcină "
-     "importantă încheiată (curățarea datelor, setul de vizualizări, modelul): nu la fiecare commit, "
-     "dar nici doar la final. Integrarea este îmbinarea de la slide-ul anterior: "
-     "<code>git switch main</code>, <code>git merge dev</code>, <code>git push</code>.</p>"
-   + tabel(["Cine, când", "Comanda", "Apoi"], FLUX_DEV)
-   + nota("Fișiere separate",
-          "Pe cât posibil, fiecare membru lucrează în fișiere separate (de exemplu "
-          "<code>analiza_vlad.ipynb</code>, <code>analiza_maria.ipynb</code>). "
-          "Conflictele apar doar când două persoane modifică aceleași rânduri.")
-   + nota("Ce face <code>git merge dev</code>",
-          "Integrează în main toate commit-urile care există în dev, dar nu și "
-          "în main. Dacă main nu a primit commit-uri noi între timp, eticheta "
-          "main doar avansează (fast-forward)."))
-
-
-sl("s15", "În echipă", "Conflictele",
-   "<h2>Când două persoane modifică aceleași rânduri</h2>"
-   + "<p>La <code>git pull</code>, Git nu poate alege între variante: le inserează "
-     "pe amândouă în fișier, iar alegerea se face manual. După rezolvare: "
-     "<code>git add .</code>, <code>git commit -m \"rezolvat conflict\"</code>, "
-     "<code>git push</code>.</p>"
-   + ix("conflict", "Rezolvarea conflictului", {
-       "id": "c3-conflict", "fisier": "analiza.py", "ramura": "curatare",
-       "sarcina": "O colegă a redenumit fișierul de date, iar codul local folosește "
-                  "încă numele vechi. Care variantă trebuie să rămână în fișier?",
-       "alMeu": 'd = pd.read_csv("date/brute/pop.csv")',
-       "alLor": 'd = pd.read_csv("date/brute/populatie_ro.csv")',
-       "bun": "lor",
-       "deCe": "Fișierul cu numele vechi nu mai există: colega l-a redenumit "
-               "și a trimis modificarea pe GitHub. Varianta locală ar produce o eroare la prima rulare.",
-       "explicatie": "Indiferent de alegere, marcajele dispar și fișierul redevine "
-                     "cod valid. Git nu verifică dacă alegerea este corectă; această "
-                     "verificare revine persoanei care rezolvă conflictul, de aceea un "
-                     "conflict se rezolvă citind codul, nu alegând la întâmplare."}),
-   manual=
-   "<h2>Conflictele</h2>"
-   "<p>Un conflict apare la <code>git pull</code> (sau la <code>git merge</code>) "
-   "când două persoane au modificat aceleași rânduri. După rezolvare: "
-   "<code>git add .</code>, <code>git commit -m \"rezolvat conflict\"</code>, "
-   "<code>git push</code>.</p>"
-   + nota("Pull request",
-          "Pe GitHub, integrarea lui dev în main se poate face și printr-un pull "
-          "request: se solicită îmbinarea, iar un coleg o revizuiește înainte. "
-          "Pentru proiectul echipei este suficient <code>git merge dev</code> din "
-          "terminal; pull request-ul este un pas suplimentar, util când echipa "
-          "dorește o revizuire prealabilă a codului.")
-   + "<h3>Conflictele nu sunt erori</h3>"
-   + "<p>Prin conflict, Git semnalează că nu poate decide automat între două "
-     "modificări. În fișier, varianta locală apare deasupra, iar cea preluată, "
-     "dedesubt.</p>"
-   + ix("conflict", "Rezolvarea conflictului", {
-       "id": "c3-conflict", "fisier": "analiza.py", "ramura": "curatare",
-       "sarcina": "O colegă a redenumit fișierul de date, iar codul local folosește "
-                  "încă numele vechi. Care variantă trebuie să rămână în fișier?",
-       "alMeu": 'd = pd.read_csv("date/brute/pop.csv")',
-       "alLor": 'd = pd.read_csv("date/brute/populatie_ro.csv")',
-       "bun": "lor",
-       "deCe": "Fișierul cu numele vechi nu mai există.",
-       "explicatie": "Git nu verifică dacă alegerea este corectă; verificarea revine persoanei care rezolvă conflictul."}))
-
-sl("s16", "În echipă", "Regulile echipei",
-   "<h2>Cinci reguli pentru acest semestru</h2>"
-   + '<table class="tabel md reg2"><tbody>'
-   + "".join(f'<tr><td class="md__n">{i}</td><td><b>{t}</b></td><td>{d}</td></tr>'
-             for i, (t, d) in enumerate([
-                 ("Lucrul se face pe dev", "<code>main</code> rămâne stabil și primește doar sarcini încheiate"),
-                 ("Fiecare în fișierele lui", "caietele nu se îmbină ușor: două persoane în același caiet înseamnă conflict"),
-                 ("<code>git pull</code> întâi", "la începutul lucrului și înainte de fiecare push"),
-                 ("Mesaje descriptive", "ce s-a schimbat, nu „update”"),
-                 ("Fără secrete, fără fișiere mari", "parolele și datele rămân în afara depozitului"),
-             ], 1))
-   + "</tbody></table>"
-   + nota("Toate comenzile, pe o pagină",
-          f"Fișa {FISA}: configurarea, clonarea, <code>.gitignore</code>, ramura dev, lucrul zilnic "
-          "și îmbinarea în main. În <code>README.md</code> se notează cine răspunde de fiecare etapă.", True))
 
 
 # ===========================================================================
@@ -1005,6 +682,482 @@ TIPURI_LIT = tabel(["Tipul", "La ce răspunde", "Când intră în flux", "În pr
     ["<strong>Documentația</strong>", "cum se folosește corect fiecare sursă și unealtă", "la fiecare pas de cod", "API-ul Eurostat, pandas, networkx"],
     ["<strong>Datele</strong>", "proveniența datelor și ce măsoară fiecare variabilă", "oriunde sunt folosite", "articolul care descrie SCI 2026"],
 ])
+
+
+FACTORI_TAB = tabel(["Factorul", "Ipoteza", "Variabila", "Sursa"], [
+    ["Distanța", "mai departe, legătură mai slabă", "distanța în km, granița comună", "GISCO; construite în C7"],
+    ["Migrația", "mai mulți migranți la mie, legătură mai puternică", "migranți la 1.000 de locuitori", "Eurostat <code>migr_pop1ctz</code>; C2-C4"],
+    ["Istoria comună", "minoritățile și granițele vechi păstrează legături", "limba, minoritățile, granițele vechi", "surse noi, alese de echipă"],
+    ["Locurile", "orașele mari și bogate au legături mai întinse", "populația, densitatea, PIB pe locuitor", "Eurostat; C2-C3"],
+])
+
+
+# ===========================================================================
+#  Datele și proiectul
+# ===========================================================================
+
+EXPLORARE = {
+    "id": "c3-cod-explorare", "poarta": False,
+    "indiciu": "Dimensiunea tabelului este un atribut (fără paranteze), numit „formă” în engleză. Rezumatul pe coloane este metoda „informații”. Valorile lipsă se însumează cu metoda „sumă”.",
+    "iesire": "(12915, 8)\n<class 'pandas.core.frame.DataFrame'>\nRangeIndex: 12915 entries, 0 to 12914\n...\n"
+              "citizen      45\n...\nvaloare    7564", "fisier": "explorare.py",
+    "sarcina": "Ce lipsește din primele patru operații aplicate unui tabel nou?",
+    "cod": "import pandas as pd\n\n"
+           "migratie = pd.read_csv(\"data/c2/migratie.csv\")\n\n"
+           "# cate randuri si cate coloane\nprint(migratie.{{1}})\n\n"
+           "# ce coloane, ce tipuri, cate valori lipsesc\nmigratie.{{2}}()\n\n"
+           "# cum arata primele randuri\nprint(migratie.head())\n\n"
+           "# cate valori lipsesc, pe coloana\nprint(migratie.isna().{{3}}())",
+    "goluri": {
+        "1": {"ok": ["shape"], "ajutor": "atributul"},
+        "2": {"ok": ["info"], "ajutor": "metoda"},
+        "3": {"ok": ["sum"], "ajutor": "metoda"}},
+    "laBine": "<code>citizen</code> are 45 de valori lipsă: este codul Namibiei, <code>NA</code>, citit ca "
+              "valoare lipsă. De aceea caietul citește fișierul cu <code>keep_default_na=False</code>.",
+    "laRau": "Prima este un atribut, deci se scrie fără paranteze. Celelalte sunt metode.",
+    "explicatie": "<code>info()</code> este cea mai informativă: afișează simultan "
+                  "numărul de rânduri, tipurile coloanelor și numărul de valori "
+                  "nenule din fiecare. O coloană care ar trebui să fie "
+                  "numerică, dar apare ca <code>object</code>, semnalează o "
+                  "problemă încă de la început."}
+
+
+# ===========================================================================
+#  Slide-urile, în ordinea lecției: Git, depozitul echipei, lucrul în echipă,
+#  verificarea, cadrul teoretic, datele.
+# ===========================================================================
+
+sl("s1", "Cursul", "Planul lecției",
+   "<h2>Versionare și colaborare cu Git</h2>"
+   "<p class=\"cheie\">Datele colectate la cursul anterior intră acum, "
+   "împreună cu codul de colectare, sub controlul versiunilor.</p>"
+   + ix("agenda", "Planul lecției",
+        {"static": True, "titlu": "Planul lecției",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]},
+        "Detaliile apar la selectarea unei etape.")
+   + nota("Caietul lecției", "<code>03_surse_diverse_si_preprocesare.ipynb</code>. Secțiunile 1-6 pregătesc datele (funcțiile în <code>src/date_api.py</code>, nomenclatorul, indicatorii, SCI, migrația și zborurile), iar secțiunea 7, depozitul echipei.", True),
+   manual=
+   "<h2>Versionare și colaborare cu Git</h2>"
+   "<p>Lecția de azi are două părți, aparent fără legătură. Prima "
+   "tratează Git, adică mecanismul prin care un proiect își păstrează propria "
+   "istorie. A doua este dedicată formulării întrebării de cercetare a proiectului.</p>"
+   "<p>Legătura dintre ele: un proiect de analiză nu este o colecție de "
+   "fișiere, ci un parcurs. Git documentează parcursul, iar cadrul teoretic "
+   "îi stabilește direcția. Fără primul, rezultatul nu poate fi reconstituit; "
+   "fără al doilea, nu poate fi justificat.</p>"
+   "<h3>Punctul de plecare</h3>"
+   '<ul class="bif">'
+   "<li><b>Colectarea</b><span>cererile către Banca Mondială și Eurostat, în caietul 02.</span></li>"
+   "<li><b>Datele</b><span><code>bm.csv</code> și <code>migratie.csv</code>, în <code>curs/data/c2</code>.</span></li>"
+   "<li><b>Echipa</b><span>aleasă pe site; repo-ul ei, <code>echipa-N</code>, există deja pe GitHub, creat din șablonul cursului.</span></li>"
+   "</ul>"
+   "<p>Deocamdată, toate există doar pe calculatorul local. Git le păstrează istoricul, "
+   "iar GitHub le pune în comun pentru echipă.</p>"
+   + ix("agenda", "Planul lecției",
+        {"static": True, "titlu": "Planul lecției",
+         "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
+   + nota("Caietul lecției", "<code>03_surse_diverse_si_preprocesare.ipynb</code>. Secțiunile 1-6 pregătesc datele (funcțiile în <code>src/date_api.py</code>, nomenclatorul, indicatorii, SCI, migrația și zborurile), iar secțiunea 7, depozitul echipei.", True))
+
+sl("s3", "Ce face Git", "De ce Git",
+   "<h2>Ce face Git</h2>"
+   "<p class=\"cheie\">Git rulează pe calculatorul local. GitHub este doar "
+   "platforma pe care se sincronizează proiectele.</p>"
+   + FUNCTII,
+   manual=
+   "<h2>Ce face Git</h2>"
+   "<p>Un sistem de versionare rezolvă o problemă frecventă: fișiere numite "
+   "<code>analiza_final_v2_FINAL_bun.py</code>, fără nicio evidență a "
+   "diferențelor față de <code>v1</code>.</p>"
+   + FUNCTII
+   + nota("O distincție esențială",
+          "Git și GitHub nu sunt același lucru. Git este programul instalat "
+          "local, care păstrează istoria. GitHub este o platformă care "
+          "găzduiește copii ale acestei istorii. Git poate fi folosit fără "
+          "GitHub; invers, nu."))
+
+sl("s5", "Ce face Git", "Git și GitHub",
+   "<h2>Git și GitHub</h2>"
+   "<p class=\"cheie\">Două unelte diferite: una ține istoricul, cealaltă îl pune în comun.</p>"
+   + GIT_GITHUB + EVALUARE,
+   manual=
+   "<h2>Git și GitHub</h2>"
+   "<p>Două unelte diferite: una ține istoricul, cealaltă îl pune în comun.</p>"
+   + GIT_GITHUB
+   + nota("Evaluarea proiectului",
+          "Proiectul se evaluează pe baza depozitului: nu doar rezultatul "
+          "final, ci întregul parcurs (ce s-a încercat, ce s-a abandonat, cine "
+          "a contribuit). Un depozit cu un singur commit în ziua predării nu "
+          "documentează acest parcurs.")
+   + "<h3>Depozitul (repository)</h3>"
+   "<p>Un depozit (repository, pe scurt repo) este un dosar obișnuit în care "
+   "Git a creat un subdosar ascuns, <code>.git</code>. Acolo se păstrează "
+   "întreaga istorie.</p>"
+   + tabel(["Local", "Remote"], [
+       ["pe calculatorul local", "pe GitHub"],
+       ["locul de lucru", "locul de sincronizare al echipei"],
+       ["se copiază de pe GitHub cu <code>git clone</code>", "la curs, creat din șablonul cursului"],
+   ])
+   + "<p>La curs, repo-ul de pe GitHub există deja pentru fiecare echipă; copia locală se face "
+     "la pasul următor, cu <code>git clone</code>.</p>")
+
+sl("s4", "Ce face Git", "Cele trei zone",
+   "<h2>Cele trei zone, și GitHub</h2>"
+   + ix("zone", "Fișierele prin cele trei zone", ZONE),
+   manual="<h2>Cele trei zone</h2>"
+   "<p>Acesta este modelul conceptual care dă sens comenzilor Git. Fără el, "
+   "comenzile rămân o listă de proceduri memorate, fără o logică comună.</p>"
+   + "<p>Fiecare comandă mută ceva dintr-o zonă în următoarea, iar săgeata dintre zone poartă numele "
+     "comenzii. Terminalul de sub desen răspunde ca Git, inclusiv când o comandă vine prea devreme: "
+     "<code>git commit</code> fără nimic în pregătire primește „nothing added to commit”.</p>"
+   + ix("zone", "Fișierele prin cele trei zone", ZONE)
+   + tabel(["Zona", "Ce conține", "Cum ajunge mai departe"], [
+       ["Dosarul de lucru", "fișierele în curs de editare", "~git add"],
+       ["Zona de pregătire", "modificările alese pentru următorul commit", "~git commit"],
+       ["Istoricul local", "commit-urile, pe calculatorul local", "~git push"],
+       ["GitHub", "copia de pe server", "~git pull, înapoi"],
+   ])
+   + "<p>Zona de pregătire poate părea un pas redundant. Rolul ei este de a "
+     "permite un commit care include doar trei din cele șapte fișiere "
+     "modificate, atunci când numai cele trei țin de aceeași schimbare.</p>"
+   + ix("prezice", "Instantaneul de la git add", {
+       "id": "c3-prezice-add", "poarta": False, "fisier": "terminal.sh",
+       "cod": "# analiza.py a fost modificat\n"
+              "git add analiza.py\n\n"
+              "# inca un rand schimbat in analiza.py, apoi:\n"
+              "git commit -m \"analiza pe migratie\"",
+       "intrebare": "Ce intră în commit?",
+       "variante": ["Ambele schimbări", "Doar prima, cea de dinainte de add",
+                    "Nimic: fișierul s-a schimbat după add", "Doar a doua"],
+       "corect": 1,
+       "indiciu": "git add salvează conținutul fișierului din momentul rulării comenzii; nu urmărește fișierul în continuare.",
+       "laBine": "git add salvează un instantaneu al fișierului, nu urmărește modificările ulterioare.",
+       "explicatie": "Zona de pregătire păstrează fișierul în starea de la momentul <code>add</code>. A doua schimbare rămâne doar în dosarul de lucru, "
+                     "iar <code>git status</code> afișează fișierul de două ori: o dată în pregătire, o dată ca modificat. "
+                     "Pentru a include și a doua schimbare, se rulează din nou <code>git add</code>. Acesta este și avantajul zonei de pregătire: "
+                     "controlul exact asupra conținutului unui commit.",
+       "iesire": "[main 4f2a9c1] analiza pe migratie\n 1 file changed"}))
+
+sl("s6c", "Depozitul echipei", "Depozitul echipei",
+   "<h2>Depozitul echipei, pe calculator</h2>"
+   + ix("clona", "De pe GitHub, pe calculator", CLONA),
+   manual=
+   "<h2>Depozitul echipei</h2>"
+   "<p>Fiecare echipă are deja pe GitHub un repo, <code>echipa-N</code>, în organizația "
+   f"<code>{REPO_ORG}</code>, creat din șablonul cursului. Nu se creează nimic de la zero: fiecare "
+   "membru acceptă invitația și copiază repo-ul pe calculator o singură dată, cu <code>git clone</code>.</p>"
+   + PE4_HTML
+   + ix("clona", "De pe GitHub, pe calculator", CLONA)
+   + "<p><code>git clone</code> copiază repo-ul cu tot istoricul, în dosarul <code>.git/</code>, și reține "
+     "adresa de la care l-a copiat, sub numele <code>origin</code>. Ultimul cuvânt al comenzii este numele "
+     "dosarului: fără el, dosarul ar purta numele repo-ului. Comanda se dă din <code>dsw</code>; dată din "
+     "alt dosar, de exemplu din <code>curs/</code>, repo-ul ajunge acolo, iar căile din caiete nu mai "
+     "corespund.</p>"
+   + "<h3>Ce conține șablonul</h3>"
+   + tabel(["În repo", "Ce este", "Cine îl schimbă"], [
+       ["<code>data/raw/</code>", "datele aduse de la sursă, exact cum au venit", "caietul de colectare"],
+       ["<code>data/processed/</code>", "tabelele produse de caiete", "caietele următoare"],
+       ["<code>notebooks/</code>", "câte un caiet pe pas: <code>01_collection.ipynb</code>, <code>02_preprocessing.ipynb</code>", "membrul care are pasul"],
+       ["<code>src/</code>", "codul comun, în fișiere <code>.py</code>: <code>date_api.py</code>, copiat din <code>curs/src/</code>", "oricine, cu grijă"],
+       ["<code>figures/</code>", "figurile pentru raport", "caietele de explorare"],
+       ["<code>docs/</code>", "raportul", "toată echipa, la final"],
+       ["<code>README.md</code>", "descrierea proiectului: titlul, întrebarea, unitatea de analiză, sursele", "un membru, la primul commit"],
+   ])
+   + "<p>Datele de la curs rămân în <code>curs/data</code>; datele proiectului stau în "
+     "<code>proiect/data</code> și se urcă pe GitHub. Fișierele de peste 50 MB nu se urcă: caietul care le "
+     "folosește spune de unde se descarcă.</p>"
+   + nota("Dacă invitația nu a venit",
+          "Invitațiile se văd și la <code>https://github.com/dsw-ubb-2026/echipa-N/invitations</code>. "
+          "Pleacă doar către membrii care și-au legat numele de pe site de contul GitHub "
+          "(Contul meu → „Caută-mi numele”). După legare, invitația se trimite la următoarea "
+          "sincronizare făcută de profesor. O invitație expiră după 7 zile și se cere din nou.", True)
+   + nota("Git",
+          'Se instalează de pe <a class="leg" href="https://git-scm.com/downloads" target="_blank" '
+          'rel="noopener">git-scm.com</a>; instalarea se verifică cu <code>git --version</code>. La prima '
+          "clonare, Git poate cere autentificarea în contul GitHub, într-o fereastră din browser.")
+   + tabel(["Verificare", "Ce afișează"], [
+       ["~git remote -v", "adresa lui origin, repo-ul de pe GitHub"],
+       ["~git branch -vv", "ramura locală și pe cine urmărește: main urmărește origin/main"],
+       ["~git branch -a", "toate ramurile, locale și de pe GitHub (origin/...)"],
+   ])
+   + "<h3>Pentru un proiect nou, fără repo pe GitHub</h3>"
+   "<p>Drumul invers, de la un dosar local la GitHub, este cel din fișa "
+   f"{FISA}: depozitul se creează local, apoi se leagă de un repo gol de pe GitHub.</p>"
+   "<pre><code>git init                          <span class=\"c\"># depozit local, gol</span>\n"
+   "git add .                         <span class=\"c\"># după ce .gitignore este scris</span>\n"
+   "git commit -m \"first commit\"\n"
+   "git branch -m master main         <span class=\"c\"># ramura principala devine main</span>\n"
+   "git remote add origin &lt;GitHub_URL&gt;\n"
+   "git push -u origin main</code></pre>"
+   "<p>Dacă repo-ul de pe GitHub are deja conținut (de exemplu, un README), cele două istorii nu au un "
+   "punct comun și se unesc o singură dată: <code>git pull origin main --allow-unrelated-histories</code>, "
+   "apoi <code>git branch -u origin/main</code>.</p>"
+   + nota("O eroare frecventă",
+          "Rulat din greșeală în dosarul personal (home), <code>git init</code> pune sub urmărire întregul "
+          "lui conținut. Remedierea: ștergerea dosarului <code>.git</code> creat acolo; fișierele nu sunt "
+          "afectate. În PowerShell, din dosarul respectiv: <code>Remove-Item -Recurse -Force .git</code>.")
+   + ix("cod", "Legarea de GitHub", {
+       "id": "c3-cod-remote", "poarta": False, "indiciu": "Comanda care gestionează depozitele la distanță se numește „remote”. "
+                  "La primul push, -u memorează legătura; ramura principală este main.",
+       "iesire": "origin  https://github.com/echipa/proiect.git (fetch)\norigin  https://github.com/echipa/proiect.git (push)\nbranch 'main' set up to track 'origin/main'.", "fisier": "terminal.sh",
+       "sarcina": "Un proiect nou, legat de un repo gol de pe GitHub: ce lipsește din comenzi?",
+       "cod": "git branch -m master main\n"
+              "git {{1}} add origin https://github.com/echipa/proiect.git\n"
+              "git push {{2}} origin {{3}}",
+       "goluri": {
+           "1": {"ok": ["remote"], "ajutor": "comanda"},
+           "2": {"ok": ["-u", "--set-upstream"], "ajutor": "opțiunea"},
+           "3": {"ok": ["main"], "ajutor": "ramura"}},
+       "laBine": "După primul push cu <code>-u</code>, este suficient <code>git push</code>.",
+       "laRau": "Ramura este „main”.",
+       "explicatie": "<code>-u</code> leagă ramura locală de cea de pe GitHub."}))
+
+sl("s9", "Depozitul echipei", "Ce intră în depozit",
+   "<h2>.gitignore</h2>"
+   "<p class=\"cheie\">Depozitul se tratează ca public: o parolă urcată o dată rămâne în istoric.</p>"
+   + ix("sortare", "Ce intră în depozit", {
+       "id": "c3-sort-gitignore",
+       "sarcina": "În ce categorie intră fiecare element?",
+       "elemente": [
+           {"t": "01_collection.ipynb", "cos": 0}, {"t": ".env cu parole", "cos": 1},
+           {"t": "README.md", "cos": 0}, {"t": ".venv/", "cos": 1},
+           {"t": "un CSV de 1 MB", "cos": 0}, {"t": "un CSV de 2 GB", "cos": 1},
+           {"t": "date_api.py", "cos": 0}, {"t": "cheia de API", "cos": 1}],
+       "cosuri": [{"t": "În depozit", "d": "caiete, cod, documentație, date mici"},
+                  {"t": "Niciodată", "d": "secrete, mediul virtual, fișiere uriașe"}],
+       "laBine": "Datele mici intră în depozit: oricine din echipă poate reface analiza din ele.",
+       "explicatie": "Mediul virtual se reface din <code>requirements.txt</code> și ocupă sute de megabytes. "
+                     "Datele proiectului se urcă, în <code>data/raw</code> și <code>data/processed</code>; "
+                     "GitHub avertizează de la 50 MB și refuză fișierele de peste 100 MB. Pentru acestea, "
+                     "caietul spune de unde se descarcă."})
+   + verif("c3-v6", 3,
+           "Un fișier cu o parolă a fost inclus din greșeală într-un commit și trimis cu push. Ce trebuie făcut?",
+           ["Ștergerea fișierului și un commit nou",
+            "Adăugarea fișierului în .gitignore",
+            "Nu este necesar nimic, depozitul este privat",
+            "Schimbarea imediată a parolei, apoi curățarea istoricului"],
+           "Prima măsură este schimbarea parolei. Celelalte variante lasă parola "
+           "în istoric, de unde poate fi extrasă imediat de oricine știe unde să "
+           "caute. Curățarea istoricului urmează și este mai dificilă: cere rescrierea istoricului, iar copiile deja descărcate rămân."),
+   manual=
+   "<h2>.gitignore</h2>"
+   "<p>Un fișier text, aflat în rădăcina proiectului, care enumeră ce nu trebuie urmărit. Datele mici ale "
+   "proiectului intră în depozit (<code>data/raw</code>, <code>data/processed</code>), ca analiza să poată fi "
+   "refăcută; în <code>.gitignore</code> rămân mediul virtual, secretele, gunoiul uneltelor și fișierele uriașe, "
+   "trecute pe nume:</p>"
+   "<pre><code><span class=\"c\"># mediul virtual și gunoiul uneltelor</span>\n"
+   ".venv/\n__pycache__/\n.ipynb_checkpoints/\n\n"
+   "<span class=\"c\"># secretele</span>\n.env\n\n"
+   "<span class=\"c\"># fișierele de peste 50 MB, câte unul; caietul spune de unde se descarcă</span>\n"
+   "data/raw/sci_nuts3.csv</code></pre>"
+   + "<p>Alte rânduri utile, după nevoie: <code>.vscode/</code>, <code>.DS_Store</code>, <code>Thumbs.db</code>. "
+     "Fișierul <code>.gitignore</code> intră în depozit ca orice alt fișier.</p>"
+   + tabel(["Un fișier adăugat din greșeală trebuie…", "Comanda"], [
+       ["doar scos din zona de pregătire (rămâne pe disc)", "~git reset -- \"nume fisier.ipynb\""],
+       ["scos complet de sub urmărirea Git, dar păstrat în proiect", "~git rm --cached nume_fisier"],
+   ])
+   + ix("sortare", "Ce intră în depozit", {
+       "id": "c3-sort-gitignore",
+       "sarcina": "În ce categorie intră fiecare element?",
+       "elemente": [
+           {"t": "01_collection.ipynb", "cos": 0}, {"t": ".env cu parole", "cos": 1},
+           {"t": "README.md", "cos": 0}, {"t": ".venv/", "cos": 1},
+           {"t": "un CSV de 1 MB", "cos": 0}, {"t": "un CSV de 2 GB", "cos": 1},
+           {"t": "date_api.py", "cos": 0}, {"t": "cheia de API", "cos": 1}],
+       "cosuri": [{"t": "În depozit", "d": "caiete, cod, documentație, date mici"},
+                  {"t": "Niciodată", "d": "secrete, mediul virtual, fișiere uriașe"}],
+       "laBine": "Datele mici intră în depozit: oricine din echipă poate reface analiza din ele.",
+       "explicatie": "GitHub avertizează de la 50 MB și refuză fișierele de peste 100 MB."}))
+
+sl("s8", "Depozitul echipei", "Primul commit",
+   "<h2>Primul commit al echipei</h2>"
+   + ix("commit", "Primul commit al echipei", COMMIT),
+   manual="<h2>Primul commit</h2>"
+   "<p>Primul commit al echipei, ca în caietul 03 (secțiunea 7.3), pe main: un membru completează, "
+   "provizoriu, <code>README.md</code> (titlul, întrebarea de cercetare, unitatea de analiză, tabelul "
+   "surselor), iar altul adaugă <code>src/date_api.py</code>. Fiecare urcă ce a făcut, cu "
+   "<code>git pull</code> înainte. Istoricul local și GitHub au deja commit-ul din șablon.</p>"
+   + ix("commit", "Primul commit al echipei", COMMIT)
+   + "<p>Același ciclu se repetă la fiecare pas al proiectului, din caietul pasului "
+     "(pe dev, de la slide-ul următor):</p>"
+   "<pre><code><span class=\"c\"># unde sunt, ce s-a schimbat?</span>\ngit status\n\n"
+   "<span class=\"c\"># ce intra in acest commit</span>\n"
+   "git add notebooks/01_collection.ipynb\n\n"
+   "<span class=\"c\"># il scriu in istoric, cu un mesaj care spune ceva</span>\n"
+   f"git commit -m \"{_MSG}\"\n\n"
+   "<span class=\"c\"># intai ce au trimis colegii, apoi trimit si eu</span>\ngit pull\ngit push</code></pre>"
+   + nota("Frecvența commit-urilor",
+          "Un commit nu este o livrare, ci un punct de revenire. Regula "
+          "practică: câte un commit pentru fiecare unitate de lucru încheiată "
+          "care poate fi descrisă printr-un mesaj scurt.")
+   + "<h3>Înainte de primul commit: identitatea autorului</h3>"
+   "<p>Fiecare commit conține un nume și o adresă de email. Git nu verifică datele: folosește exact "
+   "valorile configurate, o singură dată pe calculator. Cu o adresă diferită de cea a contului de GitHub, "
+   "commit-urile apar pe GitHub fără legătură cu vreun cont; verificarea se face la finalul lecției, pe "
+   "pagina commit-ului.</p>"
+   + ix("cod", "Configurarea identității", CONFIG)
+   + ix("ordine", "Ordinea pașilor", {
+       "id": "c3-ordine-commit", "poarta": False,
+       "indiciu": "Întâi intrarea în depozit. Urmează verificarea a ceea ce vede Git, adăugarea în zona de "
+                  "pregătire, o nouă verificare, commit-ul și trimiterea pe GitHub.",
+       "iesire": f"a1b2c3d (HEAD -> main, origin/main) {_MSG1}\n9f8e7d6 Initial commit",
+       "sarcina": "Ordinea primului commit al echipei, de la repo-ul clonat la GitHub.",
+       "linii": [
+           "cd proiect",
+           "git pull                        # intai ce au trimis colegii",
+           "git status                      # ce vede Git",
+           "git add README.md",
+           f"git commit -m \"{_MSG1}\"",
+           "git push",
+           "git log --oneline               # commit-ul, local si pe GitHub"],
+       "explicatie": "<code>git status</code> este comanda folosită cel mai des: înainte de "
+                     "<code>add</code> și înainte de <code>commit</code>."}))
+
+sl("s14", "În echipă", "Ramurile",
+   "<h2>main și dev</h2>"
+   + ix("ramuri", "main și dev", RAMURI),
+   manual=
+   "<h2>Ramurile: main și dev</h2>"
+   "<p>O ramură este o linie de lucru paralelă. Echipa folosește două: <code>main</code>, versiunea "
+   "stabilă, cea care se predă, și <code>dev</code>, pe care se lucrează zilnic. Ce se face pe dev nu "
+   "afectează main până la îmbinare. Comenzile de sus se apasă în ordine; lângă graf, dosarul arată ce "
+   "fișiere există pe ramura curentă.</p>"
+   + ix("ramuri", "main și dev", RAMURI)
+   + tabel(["Cine, când", "Comanda", "Ce face"], [
+       ["un membru, o dată", "~git switch -c dev", "creează dev din main și trece pe ea"],
+       ["același membru", "~git push -u origin dev", "urcă dev pe GitHub și o leagă de origin/dev"],
+       ["ceilalți, o dată", "~git fetch ; git switch dev", "aduc dev de pe GitHub și trec pe ea"],
+       ["oricine", "~git branch", "listează ramurile; cea curentă are *"],
+       ["la o sarcină încheiată", "~git switch main ; git pull", "trece pe main, la zi cu GitHub"],
+       ["", "~git merge dev ; git push", "main primește tot ce s-a lucrat pe dev"],
+       ["oricând", "~git log --oneline --graph --all", "același graf, desenat în terminal"],
+   ])
+   + nota("De ce nu se lucrează direct pe main",
+          "Pentru că orice modificare neterminată ar afecta întreaga echipă. Cu dev, main rămâne "
+          "permanent o versiune care rulează, iar lucrul în desfășurare stă separat până la final."))
+
+sl("s14b", "În echipă", "Pull, apoi push",
+   "<h2>Pull, apoi push</h2>"
+   + ix("sincron", "Doi colegi și GitHub, pe dev", SINCRON),
+   manual=
+   "<h2>Pull, apoi push</h2>"
+   "<p>Pe dev lucrează toată echipa, deci GitHub primește commit-uri de la mai mulți membri. Desenul "
+   "arată ce se întâmplă când doi colegi lucrează în același timp: fiecare coloană este istoricul unui "
+   "depozit, cu cel mai nou commit sus. Push-ul celui care a rămas în urmă este refuzat până aduce, cu "
+   "<code>git pull</code>, ce îi lipsește.</p>"
+   + ix("sincron", "Doi colegi și GitHub, pe dev", SINCRON)
+   + "<p>Conținutul din <code>dev</code> se integrează în <code>main</code> după fiecare sarcină "
+     "importantă încheiată (curățarea datelor, setul de vizualizări, modelul): nu la fiecare commit, "
+     "dar nici doar la final. Integrarea este îmbinarea de la slide-ul despre ramuri: "
+     "<code>git switch main</code>, <code>git merge dev</code>, <code>git push</code>.</p>"
+   + f"<p>Tot fluxul, pe un singur tabel (și în fișa {FISA}):</p>"
+   + tabel(["Cine, când", "Comanda", "Apoi"], FLUX_DEV)
+   + nota("Fișiere separate",
+          "Fiecare membru lucrează în caietul pasului lui (<code>notebooks/01_collection.ipynb</code>, "
+          "<code>notebooks/02_preprocessing.ipynb</code>); codul comun stă în <code>src/</code>. "
+          "Conflictele apar doar când două persoane modifică aceleași rânduri.")
+   + nota("Ce face <code>git merge dev</code>",
+          "Integrează în main toate commit-urile care există în dev, dar nu și "
+          "în main. Dacă main nu a primit commit-uri noi între timp, eticheta "
+          "main doar avansează (fast-forward)."))
+
+sl("s15", "În echipă", "Conflictele",
+   "<h2>Când două persoane modifică aceleași rânduri</h2>"
+   + "<p>La <code>git pull</code>, Git nu poate alege între variante: le inserează "
+     "pe amândouă în fișier, iar alegerea se face manual. După rezolvare: "
+     "<code>git add .</code>, <code>git commit -m \"rezolvat conflict\"</code>, "
+     "<code>git push</code>.</p>"
+   + ix("conflict", "Rezolvarea conflictului", {
+       "id": "c3-conflict", "fisier": "src/tabele.py", "ramura": "dev",
+       "sarcina": "O colegă a schimbat caietul de preprocesare, iar tabelul are acum alt nume. Codul "
+                  "local îl citește încă după numele vechi. Care variantă rămâne?",
+       "alMeu": 'regional = pd.read_csv("data/processed/indicatori.csv")',
+       "alLor": 'regional = pd.read_csv("data/processed/regional.csv")',
+       "bun": "lor",
+       "deCe": "Fișierul cu numele vechi nu mai este scris de caiet: colega l-a redenumit "
+               "și a trimis modificarea pe dev. Varianta locală ar produce o eroare la prima rulare.",
+       "explicatie": "Indiferent de alegere, marcajele dispar și fișierul redevine "
+                     "cod valid. Git nu verifică dacă alegerea este corectă; această "
+                     "verificare revine persoanei care rezolvă conflictul, de aceea un "
+                     "conflict se rezolvă citind codul, nu alegând la întâmplare."}),
+   manual=
+   "<h2>Conflictele</h2>"
+   "<p>Un conflict apare la <code>git pull</code> (sau la <code>git merge</code>) "
+   "când două persoane au modificat aceleași rânduri. După rezolvare: "
+   "<code>git add .</code>, <code>git commit -m \"rezolvat conflict\"</code>, "
+   "<code>git push</code>.</p>"
+   + nota("Pull request",
+          "Pe GitHub, integrarea lui dev în main se poate face și printr-un pull "
+          "request: se solicită îmbinarea, iar un coleg o revizuiește înainte. "
+          "Pentru proiectul echipei este suficient <code>git merge dev</code> din "
+          "terminal; pull request-ul este un pas suplimentar, util când echipa "
+          "dorește o revizuire prealabilă a codului.")
+   + "<h3>Conflictele nu sunt erori</h3>"
+   + "<p>Prin conflict, Git semnalează că nu poate decide automat între două "
+     "modificări. În fișier, varianta locală apare deasupra, iar cea preluată, "
+     "dedesubt.</p>"
+   + ix("conflict", "Rezolvarea conflictului", {
+       "id": "c3-conflict", "fisier": "src/tabele.py", "ramura": "dev",
+       "sarcina": "O colegă a schimbat caietul de preprocesare, iar tabelul are acum alt nume. Codul "
+                  "local îl citește încă după numele vechi. Care variantă rămâne?",
+       "alMeu": 'regional = pd.read_csv("data/processed/indicatori.csv")',
+       "alLor": 'regional = pd.read_csv("data/processed/regional.csv")',
+       "bun": "lor",
+       "deCe": "Fișierul cu numele vechi nu mai există.",
+       "explicatie": "Git nu verifică dacă alegerea este corectă; verificarea revine persoanei care rezolvă conflictul."}))
+
+sl("s16", "În echipă", "Regulile echipei",
+   "<h2>Cinci reguli pentru acest semestru</h2>"
+   + '<table class="tabel md reg2"><tbody>'
+   + "".join(f'<tr><td class="md__n">{i}</td><td><b>{t}</b></td><td>{d}</td></tr>'
+             for i, (t, d) in enumerate([
+                 ("Fiecare în fișierul lui", "un caiet pe pas, cu un autor; două persoane în același caiet înseamnă conflict"),
+                 ("<code>git pull</code> întâi", "la începutul lucrului și înainte de fiecare push"),
+                 ("main rămâne stabil", "lucrul zilnic, pe dev; în main intră doar pași încheiați"),
+                 ("Mesaje descriptive", "ce s-a schimbat, nu „update”"),
+                 ("Fără secrete, fără fișiere uriașe", "parolele nu intră deloc; peste 50 MB, doar adresa de unde se descarcă"),
+             ], 1))
+   + "</tbody></table>"
+   + nota("Toate comenzile, pe o pagină",
+          f"Fișa {FISA}: configurarea, clonarea, <code>.gitignore</code>, ramura dev, lucrul zilnic "
+          "și îmbinarea în main. În <code>README.md</code> se notează cine răspunde de fiecare etapă.", True))
+
+sl("s8b", "Verificarea", "Citirea lui git status",
+   "<h2>Citirea lui git status</h2>"
+   + ix("status", "Ce intră în commit", STATUS),
+   manual="<h2>Citirea lui git status</h2>"
+   "<p><code>git status</code> este comanda folosită cel mai des: se rulează înainte de fiecare "
+   "<code>add</code> și înainte de fiecare <code>commit</code>. Ieșirea are trei grupuri, fiecare "
+   "corespunzând unei zone: ce intră în commit (verde), ce s-a modificat, dar nu a trecut prin "
+   "<code>git add</code>, și fișierele noi, pe care Git nu le urmărește încă (roșu). În terminalul "
+   "real, fiecare grup are dedesubt și o indicație între paranteze, de exemplu "
+   "<code>(use \"git add &lt;file&gt;...\" to update what will be committed)</code>.</p>"
+   + ix("status", "Ce intră în commit", STATUS)
+   + tabel(["În git status", "Zona", "Intră în commit?"], [
+       ["Changes to be committed", "pregătire", "da"],
+       ["Changes not staged for commit", "dosar, fișier urmărit și modificat", "nu, până la <code>git add</code>"],
+       ["Untracked files", "dosar, fișier nou", "nu, până la <code>git add</code>"],
+   ])
+   + "<p>Varianta scurtă, <code>git status --short</code>, pune aceleași informații pe două coloane: "
+     "prima pentru pregătire, a doua pentru dosar. <code>M </code> înseamnă modificat și pregătit, "
+     "<code> M</code> modificat, dar nepregătit, iar <code>??</code> fișier neurmărit.</p>")
+
+sl("s22b", "Verificarea", "Verificarea depozitului",
+   "<h2>Verificarea depozitului</h2>"
+   + ix("dovada", "Verificarea depozitului", DOVADA),
+   manual=
+   "<h2>Verificarea depozitului</h2>"
+   "<p>Ultimul pas de Git al lecției, făcut de fiecare membru după primul commit (caietul 03, "
+   "secțiunea 7.3). Verificarea arată, cu ieșirea comenzilor de pe propriul calculator, că munca există în "
+   "două locuri: local și pe GitHub. Butonul <b>Indiciu</b> arată unde se găsește fiecare rezultat.</p>"
+   + ix("dovada", "Verificarea depozitului", DOVADA)
+   + tabel(["Dacă", "Cauza", "Ce se face"], [
+       ["<code>fatal: not a git repository</code>", "terminalul nu este în <code>proiect</code>", "~cd proiect"],
+       ["<code>Your branch is ahead of 'origin/main'</code>", "commit-ul este doar local", "~git push"],
+       ["push refuzat: <code>fetch first</code>", "pe GitHub sunt commit-uri ale colegilor", "~git pull, apoi git push"],
+       ["<code>git remote -v</code> nu arată nimic", "dosarul nu este clonat din repo-ul echipei", "~git clone, din dsw"],
+       ["un fișier de peste 50 MB, refuzat la push", "fișierul a intrat în commit", "~git rm --cached cu numele lui"],
+       ["commit-ul apare pe GitHub fără cont", "adresa din Git nu este cea a contului", "~git config --global user.email \"adresa contului\""],
+   ]))
 
 sl("s17", "Cadrul teoretic", "De ce un cadru",
    "<h2>Încadrarea teoretică</h2>"
@@ -1038,13 +1191,6 @@ sl("s17", "Cadrul teoretic", "De ce un cadru",
        ["Sandu (2025)", "cum se leagă județele de destinațiile emigrației", "fluxuri NUTS3 × 6 țări, 2011-2021", "regresii, analiză factorială", "reperul de comparație pentru harta diasporei din SCI"],
    ])
    + lecturi(["scholar", "semantic", "zotero"], "Unelte"))
-
-FACTORI_TAB = tabel(["Factorul", "Ipoteza", "Variabila", "Sursa"], [
-    ["Distanța", "mai departe, legătură mai slabă", "distanța în km, granița comună", "GISCO; construite în C7"],
-    ["Migrația", "mai mulți migranți la mie, legătură mai puternică", "migranți la 1.000 de locuitori", "Eurostat <code>migr_pop1ctz</code>; C2-C4"],
-    ["Istoria comună", "minoritățile și granițele vechi păstrează legături", "limba, minoritățile, granițele vechi", "surse noi, alese de echipă"],
-    ["Locurile", "orașele mari și bogate au legături mai întinse", "populația, densitatea, PIB pe locuitor", "Eurostat; C2-C3"],
-])
 
 sl("s19", "Cadrul teoretic", "Cadrul proiectului",
    "<h2>Ce explică legăturile dintre locuri</h2>"
@@ -1091,36 +1237,6 @@ sl("s20", "Cadrul teoretic", "Întrebarea echipei",
                   "logică decât migrația?",
        "multumesc": "Răspunsul a fost înregistrat. Feedbackul va fi transmis înainte de cursul următor."}))
 
-
-# ===========================================================================
-#  Datele și proiectul
-# ===========================================================================
-
-EXPLORARE = {
-    "id": "c3-cod-explorare", "poarta": False,
-    "indiciu": "Dimensiunea tabelului este un atribut (fără paranteze), numit „formă” în engleză. Rezumatul pe coloane este metoda „informații”. Valorile lipsă se însumează cu metoda „sumă”.",
-    "iesire": "(12915, 8)\n<class 'pandas.core.frame.DataFrame'>\nRangeIndex: 12915 entries, 0 to 12914\n...\n"
-              "citizen      45\n...\nvaloare    7564", "fisier": "explorare.py",
-    "sarcina": "Ce lipsește din primele patru operații aplicate unui tabel nou?",
-    "cod": "import pandas as pd\n\n"
-           "migratie = pd.read_csv(\"data/c2/migratie.csv\")\n\n"
-           "# cate randuri si cate coloane\nprint(migratie.{{1}})\n\n"
-           "# ce coloane, ce tipuri, cate valori lipsesc\nmigratie.{{2}}()\n\n"
-           "# cum arata primele randuri\nprint(migratie.head())\n\n"
-           "# cate valori lipsesc, pe coloana\nprint(migratie.isna().{{3}}())",
-    "goluri": {
-        "1": {"ok": ["shape"], "ajutor": "atributul"},
-        "2": {"ok": ["info"], "ajutor": "metoda"},
-        "3": {"ok": ["sum"], "ajutor": "metoda"}},
-    "laBine": "<code>citizen</code> are 45 de valori lipsă: este codul Namibiei, <code>NA</code>, citit ca "
-              "valoare lipsă. De aceea caietul citește fișierul cu <code>keep_default_na=False</code>.",
-    "laRau": "Prima este un atribut, deci se scrie fără paranteze. Celelalte sunt metode.",
-    "explicatie": "<code>info()</code> este cea mai informativă: afișează simultan "
-                  "numărul de rânduri, tipurile coloanelor și numărul de valori "
-                  "nenule din fiecare. O coloană care ar trebui să fie "
-                  "numerică, dar apare ca <code>object</code>, semnalează o "
-                  "problemă încă de la început."}
-
 sl("s21d", "Datele", "Datele proiectului",
    "<h2>Ce date are proiectul acum</h2>"
    "<p class=\"cheie\">Patru tabele în <code>data/c3</code>, pregătite în caietul 03. "
@@ -1164,57 +1280,17 @@ sl("s21d", "Datele", "Datele proiectului",
           "Analiza propriu-zisă începe la cursul 6; acum se verifică doar că "
           "datele pot fi analizate."))
 
-
-sl("s22", "Proiectul echipei", "Depozitul echipei",
-   "<h2>Depozitul echipei</h2>"
-   + tabel(["Pasul", "Acțiunea"], [
-       ["1", "un membru creează depozitul echipei în organizația <code>dsw-ubb-2026</code> și îi adaugă pe ceilalți"],
-       ["2", "fiecare membru îl clonează local"],
-       ["3", "<code>.gitignore</code> se scrie înainte de primul <code>add</code>"],
-       ["4", "un membru creează ramura <code>dev</code>; ceilalți o preiau cu <code>git fetch</code>"],
-       ["5", "scripturile de colectare de la cursul 2 se încarcă pe dev"],
-       ["6", "în <code>README.md</code>: întrebarea de cercetare și responsabilitățile"],
-   ]),
-   manual=
-   "<h2>Depozitul echipei</h2>"
-   + tabel(["Pasul", "Acțiunea"], [
-       ["1", "un membru creează depozitul echipei în organizația <code>dsw-ubb-2026</code> și îi adaugă pe ceilalți"],
-       ["2", "fiecare membru îl clonează local"],
-       ["3", "<code>.gitignore</code> se scrie înainte de primul <code>add</code>"],
-       ["4", "un membru creează ramura <code>dev</code>; ceilalți o preiau cu <code>git fetch</code>"],
-       ["5", "scripturile de colectare de la cursul 2 se încarcă pe dev"],
-       ["6", "în <code>README.md</code>: întrebarea de cercetare și responsabilitățile"],
-   ])
-   + "<h3>Primii doi pași, în detaliu</h3>"
-   + PE4_HTML
-   + "<p><code>git clone</code> copiază depozitul cu tot cu istoricul lui, în folderul <code>.git/</code>, "
-   "și reține adresa de la care a fost copiat. Ultimul cuvânt din comandă e numele folderului: fără el, "
-   "folderul ar purta numele depozitului. Comanda se dă o singură dată, din <code>dsw</code>; dacă e dată "
-   "din alt folder, de exemplu din <code>curs/</code>, depozitul ajunge acolo, iar căile din caiete nu "
-   "mai sunt cele din manual.</p>"
-   + nota("Git",
-          'Se instalează de pe <a class="leg" href="https://git-scm.com/downloads" target="_blank" '
-          'rel="noopener">git-scm.com</a>; instalarea se verifică cu <code>git --version</code>. La prima '
-          "clonare, Git poate cere autentificarea în contul GitHub, într-o fereastră din browser.")
-   + ix("dovada", "Verificarea depozitului", DOVADA))
-
-sl("s22b", "Proiectul echipei", "Verificarea depozitului",
-   "<h2>Verificarea depozitului</h2>"
-   + ix("dovada", "Verificarea depozitului", DOVADA),
-   manual="")
-
 sl("s23", "Mai departe", "Pentru cursul următor",
    "<h2>La cursul 4: curățarea datelor</h2>"
    '<div class="fin3"><div class="fin3__g">'
    "<section><h4>Ce urmează la cursul 4</h4><ul>"
-   "<li>Versionarea și colaborarea, aplicate pe depozitul echipei.</li>"
    "<li>Curățarea datelor: valori lipsă, duplicate, coduri ambigue (EL, NA).</li>"
-   "<li>SCI și migrația, reunite în același tabel.</li>"
-   "<li>Explorarea inițială, aprofundată.</li></ul></section>"
+   "<li>SCI, migrația, zborurile și indicatorii, reunite în același tabel.</li>"
+   "<li>Ramura dev, pe care lucrează toată echipa.</li></ul></section>"
    "<section><h4>Pregătirea pentru cursul 4</h4><ul>"
-   "<li>Depozitul echipei, cu scriptul de colectare.</li>"
-   "<li><code>README.md</code> completat: întrebarea de cercetare și responsabilitățile fiecărui membru.</li>"
-   "<li>Cel puțin un commit de la fiecare membru, ca dovadă că toți au acces la depozit.</li></ul></section>"
+   "<li>Depozitul echipei pe calculatorul fiecărui membru, cu primul commit pe GitHub.</li>"
+   "<li><code>README.md</code>: tema, întrebarea provizorie, unitatea de analiză, sursele și rolul fiecăruia.</li>"
+   "<li>Tema 1, pe Teams: tema proiectului, datele și rolul ales, cu propriile cuvinte.</li></ul></section>"
    "</div>"
    '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 3</a>'
    '<a class="leg" href="../../c4-curatarea-datelor/">Cursul 4</a></p></div>')

@@ -155,28 +155,28 @@
     "nr": 3,
     "titlu": "Versionare și colaborare cu Git",
     "deck": "La lecția anterioară au fost colectate date. Această lecție asigură că datele și codul care le-a colectat nu se pierd: Git, GitHub, lucrul în echipă și întrebarea de cercetare a proiectului.",
-    "descriere": "Ce face Git, cum se leagă depozitul local de GitHub, cum lucrează o echipă fără conflicte între modificări și cum se încadrează teoretic un proiect.",
+    "descriere": "Ce face Git, cum ajunge depozitul echipei pe calculator, cum lucrează o echipă pe main și dev fără să-și piardă munca și cum se încadrează teoretic un proiect.",
     "caiet": "@REPO@/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb",
     "caiet_d": "Caietul 03, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/, lângă caietele 01 și 02.",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, primul commit al echipei, citirea lui <code>git status</code>, legătura cu GitHub, ramurile și regula după care lucrează o echipă: pull înainte de push.</p>\n<p>A doua construiește cadrul proiectului: legătura dintre două locuri, măsurată prin SCI, și factorii care o pot explica (distanța, migrația, istoria comună, locurile), fiecare cu ipoteza, variabila și sursa lui. Din ce rămâne neexplicat pornește întrebarea echipei. Lecția se încheie cu cele patru tabele pregătite în caietul 03.</p>\n<p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p>"
+        "html": "<p>Ora are două părți, aparent fără legătură. Prima tratează Git, adică modul în care un proiect își păstrează istoricul: cele trei zone între care se mută fișierele, apoi depozitul echipei, de la GitHub pe calculator: clonarea, ce nu intră în depozit, primul commit pe main, ramura dev pe care lucrează toată echipa, regula pull înainte de push, conflictele și verificarea.</p>\n<p>A doua construiește cadrul proiectului: legătura dintre două locuri, măsurată prin SCI, și factorii care o pot explica (distanța, migrația, istoria comună, locurile), fiecare cu ipoteza, variabila și sursa lui. Din ce rămâne neexplicat pornește întrebarea echipei. Lecția se încheie cu tabelele pregătite în caietul 03.</p>\n<p>Legătura dintre ele: un proiect de analiză nu este o colecție de fișiere, ci un parcurs. Git păstrează parcursul, iar cadrul teoretic îi stabilește direcția. Fără primul, drumul până la rezultat nu poate fi reconstituit; fără al doilea, punctul de plecare nu poate fi justificat.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Diferența dintre Git și GitHub și motivul pentru care un commit local nu este o copie de siguranță a muncii.</li>\n<li>Fiecare comandă, explicată prin zonele între care mută fișierele.</li>\n<li>Citirea ieșirii lui <code>git status</code> înainte de commit.</li>\n<li>Un <code>.gitignore</code> scris înainte de primul <code>add</code> și motivul pentru care ordinea contează.</li>\n<li>Legarea depozitului local de unul de pe GitHub sau clonarea unuia existent.</li>\n<li>Lucrul pe ramuri, regula pull înainte de push și rezolvarea unui conflict de îmbinare.</li>\n<li>Structura unui cadru teoretic: factor, ipoteză, variabilă, sursă.</li>\n<li>O întrebare de cercetare care poate fi infirmată cu datele disponibile.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Diferența dintre Git și GitHub și motivul pentru care un commit local nu este o copie de siguranță a muncii.</li>\n<li>Fiecare comandă, explicată prin zonele între care mută fișierele.</li>\n<li>Depozitul echipei, clonat de pe GitHub, și rolul fiecărui dosar din șablon.</li>\n<li>Ce intră în depozit (caiete, cod, date mici) și ce rămâne în afara lui, prin <code>.gitignore</code>: secretele, mediul virtual, fișierele uriașe.</li>\n<li>Primul commit al echipei, pe main, și fluxul de după: dev pentru lucrul zilnic, pull înainte de push, rezolvarea unui conflict.</li>\n<li>Citirea ieșirii lui <code>git status</code> și verificarea depozitului, local și pe GitHub.</li>\n<li>Structura unui cadru teoretic: factor, ipoteză, variabilă, sursă.</li>\n<li>O întrebare de cercetare care poate fi infirmată cu datele disponibile.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
-        "html": "<p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursul 2:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a>, instalat. Pe Windows include Git Bash, un terminal în care funcționează comenzile din lecție.</li>\n<li>Contul de <a class=\"leg\" href=\"https://github.com/\" rel=\"noopener\" target=\"_blank\">GitHub</a>, același cu care se face intrarea pe site.</li>\n<li>Echipa, aleasă la cursul 2, și datele colectate în <code>dsw/curs/data/c2</code>. Depozitul echipei se creează și se clonează în <code>dsw/proiect</code> în această lecție.</li>\n</ol>"
+        "html": "<p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursul 2:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a>, instalat. Pe Windows include Git Bash, un terminal în care funcționează comenzile din lecție.</li>\n<li>Contul de <a class=\"leg\" href=\"https://github.com/\" rel=\"noopener\" target=\"_blank\">GitHub</a>, același cu care se face intrarea pe site.</li>\n<li>Echipa, aleasă pe site, și datele colectate în <code>dsw/curs/data/c2</code>. Repo-ul echipei, <code>echipa-N</code>, există deja pe GitHub; invitația vine doar dacă numele de pe site este legat de contul GitHub (Contul meu → „Caută-mi numele”). Clonarea în <code>dsw/proiect</code> se face în această lecție.</li>\n</ol>"
       }
     ],
     "resurse": [
       {
         "href": "git/",
         "t": "Lucrul cu Git",
-        "d": "Fișa cu toate comenzile de la curs: configurarea, clonarea, .gitignore, ramura dev, lucrul zilnic și îmbinarea în main."
+        "d": "Fișa cu toate comenzile de la curs: configurarea, clonarea, .gitignore, primul commit, ramura dev, lucrul zilnic și îmbinarea în main."
       },
       {
         "href": "@REPO@",

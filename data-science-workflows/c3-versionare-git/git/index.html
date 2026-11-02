@@ -6,9 +6,9 @@
 <title>Lucrul cu Git · Fluxuri de lucru</title>
 <meta name="description" content="Comenzile Git folosite la curs și în proiectul echipei: configurarea, clonarea, .gitignore, ramura dev, lucrul zilnic, îmbinarea în main.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=106">
-<link rel="stylesheet" href="../../css/sistem.css?v=106">
-<script src="../../js/tema.js?v=106"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=107">
+<link rel="stylesheet" href="../../css/sistem.css?v=107">
+<script src="../../js/tema.js?v=107"></script>
 <style>
   .gf{max-width:820px;margin:0 auto;padding:30px 28px 80px}
   .gf__inapoi{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
@@ -40,6 +40,7 @@
   .tbw + p{margin-top:14px}
 
   .gf pre{font-size:12.5px;line-height:1.55;margin:8px 0 0}
+  .gf pre .c{color:var(--text-3);font-style:italic}
   .gf ol.reg{margin:8px 0 0;padding-left:22px}
   .gf ol.reg li{font-size:var(--t3);line-height:1.55;margin:0 0 6px}
   .gf .nota{margin-top:14px}
@@ -97,10 +98,12 @@
   Fișierele rămân neatinse.</p></div>
 
   <h2 id="clone">Depozitul echipei: git clone</h2>
-  <p>Varianta folosită la curs și în proiecte: depozitul există deja pe GitHub, în organizația
-  <code>dsw-ubb-2026</code>. Comenzile se dau din dosarul <code>dsw</code>.</p>
+  <p>Varianta folosită la curs și în proiecte: repo-ul echipei, <code>echipa-N</code>, există deja pe GitHub, în
+  organizația <code>dsw-ubb-2026</code>, creat din șablonul cursului. Întâi se acceptă invitația primită pe e-mail
+  (vine doar dacă numele de pe site este legat de contul GitHub și expiră după 7 zile); adresa repo-ului este pe
+  pagina lui, la Code → HTTPS. Comenzile se dau din dosarul <code>dsw</code>.</p>
   <div class="tbw"><table class="tb"><tbody>
-    <tr><td><code>git clone https://github.com/dsw-ubb-2026/&lt;depozitul-echipei&gt;.git proiect</code></td><td>copiază depozitul, cu tot istoricul, în dosarul <code>proiect</code></td></tr>
+    <tr><td><code>git clone https://github.com/dsw-ubb-2026/echipa-N.git proiect</code></td><td>copiază depozitul, cu tot istoricul, în dosarul <code>proiect</code></td></tr>
     <tr><td><code>cd proiect</code></td><td>intră în depozit</td></tr>
     <tr><td><code>git status</code></td><td>ce vede Git</td></tr>
     <tr><td><code>git branch -vv</code></td><td>arată că <code>main</code> urmărește <code>origin/main</code></td></tr>
@@ -126,21 +129,25 @@
   </tbody></table></div>
 
   <h2 id="gitignore">.gitignore</h2>
-  <p>Un fișier text în rădăcina proiectului, cu ce nu intră în Git: mediul virtual, secretele, datele (se refac
-  rulând caietele) și fișierele uneltelor. Se scrie înainte de primul <code>git add</code>.</p>
-<pre><code>.venv/
+  <p>Un fișier text în rădăcina proiectului, cu ce nu intră în Git: mediul virtual, secretele și fișierele uneltelor.
+  Se scrie înainte de primul <code>git add</code>. Datele mici ale proiectului intră în depozit, în
+  <code>data/raw</code> și <code>data/processed</code>; fișierele de peste 50 MB nu (GitHub le refuză de la 100 MB)
+  și se trec pe nume, iar caietul care le folosește spune de unde se descarcă.</p>
+<pre><code><span class="c"># mediul virtual și secretele</span>
+.venv/
 venv/
 .env
-data/
-*.csv
-*.parquet
-*.xlsx
+
+<span class="c"># gunoiul uneltelor</span>
 .ipynb_checkpoints/
 __pycache__/
 *.pyc
 .vscode/
 .DS_Store
-Thumbs.db</code></pre>
+Thumbs.db
+
+<span class="c"># fișierele de peste 50 MB, câte unul</span>
+data/raw/sci_nuts3.csv</code></pre>
   <div class="tbw"><table class="tb"><tbody>
     <tr><td><code>git add .gitignore</code></td><td>și el este un fișier al proiectului</td></tr>
     <tr><td><code>git commit -m "add gitignore"</code></td><td></td></tr>
@@ -269,8 +276,8 @@ Thumbs.db</code></pre>
 </main>
 
 <div id="subsol"></div>
-<script type="module" src="../../js/antet.js?v=106"></script>
-<script type="module" src="../../js/subsol.js?v=106"></script>
+<script type="module" src="../../js/antet.js?v=107"></script>
+<script type="module" src="../../js/subsol.js?v=107"></script>
 <script>
 /* Înapoi: dacă ai venit dintr-o pagină a sitului (slide-uri, manual), te
    întorci exact acolo; altfel, la pagina cursului 3. */
