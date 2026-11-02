@@ -19,7 +19,7 @@
    Pagina se reîmprospătează singură la câteva secunde, cât e vizibilă.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=105";
+import { RADACINA } from "./curs.js?v=106";
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 const PAS = 3500;
@@ -30,7 +30,7 @@ const culoare = nr => `var(--${CULORI[(nr - 1) % CULORI.length]})`;
 const initiale = n => String(n || "?").trim().split(/\s+/).slice(0, 2).map(x => x[0] || "").join("").toUpperCase();
 
 let A = null;
-async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=105`); return A; }
+async function auth(){ if (!A) A = await import(`${RADACINA}/js/auth.js?v=106`); return A; }
 async function rpc(f, args){
   const { sb } = await auth();
   const r = await sb.rpc(f, args);
@@ -162,7 +162,7 @@ export async function echipeStudent(gazda, { slide = false } = {}){
     if (!d.ok){
       const t = {
         fara_cont: `Echipa se alege din <a class="leg" href="${RADACINA}/cont/">cont</a>, după autentificarea cu GitHub.`,
-        fara_nume: "Echipa se alege după ce contul este asociat numelui tău din lista grupei, la prima oră.",
+        fara_nume: `Echipa se alege după ce contul este asociat numelui tău din listă: în <a class="leg" href="${RADACINA}/cont/">Contul meu</a>, „Caută-mi numele”. Nu este nevoie de codul orei.`,
         fara_grupa: "Numele tău nu este încă asociat unei grupe. Scrie profesorului."
       }[d.motiv] || "Alegerea echipei nu este disponibilă pentru acest cont.";
       pune(gazda, `<p class="echp__gol">${t}</p>`);
@@ -381,7 +381,7 @@ export async function echipeProfesor(gazda, { grupa, numeGrupa = "" } = {}){
 
 export async function echipeSlideProfesor(gazda){
   gazda.classList.add("echp", "echp--slide");
-  const O = await import(`${RADACINA}/js/ora.js?v=105`);
+  const O = await import(`${RADACINA}/js/ora.js?v=106`);
   const S = await O.deschisa().catch(() => null);
   let grupa = S?.grupa_id || null;
   if (!grupa){
