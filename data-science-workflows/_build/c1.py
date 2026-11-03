@@ -115,7 +115,7 @@ SEDINTE = [
      "invata": ["API-urile REST și documentația lor", "cererea, parametrii, paginarea, codurile de stare",
                 "din răspunsul JSON, un tabel", "cubul JSON-stat de la Eurostat"],
      "caiet": "02_colectarea_datelor_prin_api.ipynb",
-     "lab": "De la prima cerere la indicatorii Băncii Mondiale și la migrația de la Eurostat, salvate în curs/data/c2. Echipele de proiect se formează la această ședință.",
+     "lab": "De la prima cerere la indicatorii Băncii Mondiale și la migrația de la Eurostat, salvate în curs/data/raw. Echipele de proiect se formează la această ședință.",
      "unelte": ["requests", "API Banca Mondială", "API Eurostat", "JSON"]},
     {"c": 3, "scurt": "Git", "titlu": "Versionare și colaborare cu Git", "etapa": "colectare",
      "invata": ["cele trei zone ale Git și commit-ul", "GitHub, ramuri, pull request, conflicte",
@@ -2526,10 +2526,10 @@ NODURI_FOLDER = [
      "git": "caietele goale, în depozitul cursului; caietele completate rămân pe calculatorul personal"},
     {"n": "data/", "ind": 2,
      "d": "Datele brute, așa cum au fost descărcate: nu se modifică. Rezultatele curățării se salvează "
-          "în fișiere noi, alături, nu peste cele brute. De la cursul 2, fiecare curs are folderul lui, ca "
-          "<code>data/c2/</code>.",
+          "în fișiere noi, alături, nu peste cele brute. De la cursul 2, datele aduse de la sursă stau în "
+          "<code>data/raw/</code>, iar de la cursul 3 tabelele curate stau în <code>data/processed/</code>.",
      "cine": "arhiva cursului, apoi codul din caiete",
-     "ex": "<code>country.csv</code> de pe HDX, apoi <code>c2/migratie.csv</code> de la Eurostat",
+     "ex": "<code>country.csv</code> de pe HDX, apoi <code>raw/migratie.csv</code> de la Eurostat",
      "git": "<code>country.csv</code> da; datele colectate local, nu"},
     {"n": "exemple_curs1/", "ind": 2,
      "d": "Două fișiere mici, fictive, pentru partea de JSON și de text din caietul 01.",
@@ -2547,7 +2547,7 @@ SORTARE_FOLDER = {
     "id": "c1-folder",
     "cosuri": [{"t": "curs/data/", "d": "datele cursului"}, {"t": "curs/", "d": "caietele de curs"},
                {"t": "proiect/", "d": "munca echipei"}],
-    "elemente": [{"t": "country.csv", "cos": 0}, {"t": "c2/migratie.csv", "cos": 0},
+    "elemente": [{"t": "country.csv", "cos": 0}, {"t": "raw/migratie.csv", "cos": 0},
                  {"t": "01_introducere.ipynb", "cos": 1}, {"t": "02_colectarea.ipynb", "cos": 1},
                  {"t": "raport.ipynb, al echipei", "cos": 2}, {"t": "intrebarea.md, a echipei", "cos": 2}],
 }

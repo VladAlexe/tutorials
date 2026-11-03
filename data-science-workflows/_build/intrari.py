@@ -56,21 +56,33 @@ def pagina(cheie, x):
     # materialele: rânduri simple, titlu și o propoziție; fără iconițe, fără cartonașe
     mat = []
     if are_lectie:
-        mat += [("lectie/#1", "Lecția", "Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.", False),
-                ("tutorial/", "Manualul", "Materialul complet al lecției, pentru studiu individual.", False)]
+        mat += [("lectie/#1", "Lecția", "Slide-urile lecției, cu exercițiile de la curs. Se deschid de la primul slide.", False, ""),
+                ("tutorial/", "Manualul", "Materialul complet al lecției, pentru studiu individual.", False, "")]
+    # descărcarea directă: fișierul brut de pe GitHub, salvat de browser cu numele lui
+    # (scriptul de la final); fără JavaScript, linkul deschide fișierul brut
+    raw = nume_caiet = ""
+    if x["caiet"] and "/blob/main/" in x["caiet"]:
+        raw = (x["caiet"].replace("https://github.com/", "https://raw.githubusercontent.com/")
+               .replace("/blob/main/", "/main/"))
+        nume_caiet = x["caiet"].rsplit("/", 1)[-1]
+    descarca = (f' data-descarca="{nume_caiet}" data-pagina="{x["caiet"]}"' if raw else "")
+    if raw:
+        mat.append((raw, "Descarcă caietul",
+                    f"Un clic: <code>{nume_caiet}</code> se salvează în Descărcări, de unde se mută în "
+                    "<code>dsw/curs/</code>. Este varianta de acum de pe GitHub.", False, descarca))
     if x["caiet"]:
         mat.append((x["caiet"], "Caietul",
-                    x.get("caiet_d") or "Caietul Jupyter al lecției, pe GitHub, cu codul de la seminar.", True))
+                    x.get("caiet_d") or "Caietul Jupyter al lecției, pe GitHub, cu codul de la seminar.", True, ""))
     for r in x["resurse"]:
-        mat.append((r["href"], r["t"], r["d"], r["href"].startswith("http")))
+        mat.append((r["href"], r["t"], r["d"], r["href"].startswith("http"), ""))
     materiale = f'''
   <section class="sec">
     <p class="sec__et">Materiale</p>
     <div class="mat">{"".join(f"""
-      <a class="mat__c" href="{h}"{' target="_blank" rel="noopener"' if ext else ""}>
+      <a class="mat__c" href="{h}"{' target="_blank" rel="noopener"' if ext else ""}{at}>
         <span class="mat__t">{t}{" ↗" if ext else ""}</span>
         <span class="mat__d">{d}</span>
-      </a>""" for h, t, d, ext in mat)}
+      </a>""" for h, t, d, ext, at in mat)}
     </div>
   </section>''' if mat else ""
     if "@@MATERIALE@@" in corp:
@@ -87,8 +99,9 @@ def pagina(cheie, x):
     </div>
   </section>'''
 
-    caiet_btn = (f'<a class="bl__b" href="{x["caiet"]}" target="_blank" rel="noopener">Caietul ↗</a>'
-                 if x["caiet"] else "")
+    caiet_btn = ((f'<a class="bl__b" href="{raw}"{descarca}>Descarcă caietul</a>' if raw else "")
+                 + (f'<a class="bl__b" href="{x["caiet"]}" target="_blank" rel="noopener">Caietul ↗</a>'
+                    if x["caiet"] else ""))
     titlu = html.unescape(x["titlu"])
     incepe = ('<a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>'
               if are_lectie else '<span class="bl__b bl__b--stins">Lecție în pregătire</span>')
@@ -175,6 +188,23 @@ try {{
     }}
   }}
 }} catch {{ /* fără cont sau fără rețea, pagina rămâne cum e */ }}
+</script>
+<script>
+/* „Descarcă caietul”: browserul nu descarcă direct un fișier de pe alt site,
+   deci îl aducem noi și îl salvăm cu numele lui. Dacă nu merge, se deschide
+   pagina caietului pe GitHub, cu butonul Download raw file. */
+document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("click", async e => {{
+  e.preventDefault();
+  try {{
+    const r = await fetch(a.href, {{ cache: "no-store" }});
+    if (!r.ok) throw new Error(r.status);
+    const u = URL.createObjectURL(await r.blob());
+    const l = document.createElement("a");
+    l.href = u; l.download = a.dataset.descarca;
+    document.body.append(l); l.click(); l.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 2000);
+  }} catch {{ window.open(a.dataset.pagina, "_blank", "noopener"); }}
+}}));
 </script>
 <script type="module" src="../js/antet.js?v={V}"></script>
 <script type="module" src="../js/subsol.js?v={V}"></script>

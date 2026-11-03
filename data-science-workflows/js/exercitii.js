@@ -15,7 +15,7 @@
    panou ca activitate.
    =========================================================================== */
 
-import { salveazaCod, deCeNu } from "./colectare.js?v=109";
+import { salveazaCod, deCeNu } from "./colectare.js?v=113";
 
 const E = {};
 
@@ -855,7 +855,7 @@ E.dovada = (gazda, d) => {
       gata(gazda, id);
       const salvat = await salveazaCod({ exercitiuId:id, trecut:true,
         cod:[...gazda.querySelectorAll(".dov__in")].map(x => x.value).join(" ⏎ ") });
-      st.textContent = salvat ? "Rezolvare înregistrată. Apare în panoul profesorului."
+      st.textContent = salvat ? "Rezolvarea a fost înregistrată."
                               : `Rezolvarea nu a fost înregistrată: ${deCeNu()}.`;
       st.classList.add("vazut");
     }

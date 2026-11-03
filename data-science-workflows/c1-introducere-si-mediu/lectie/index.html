@@ -6,14 +6,14 @@
 <title>Cursul 1 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Proiectul, pașii unui proiect de analiză de date, tipurile de date, JSON și mediul de lucru.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=109">
-<link rel="stylesheet" href="../../css/sistem.css?v=109">
-<link rel="stylesheet" href="../../css/slide.css?v=109">
-<link rel="stylesheet" href="../../css/interactiv.css?v=109">
-<link rel="stylesheet" href="../../css/grafice.css?v=109">
-<link rel="stylesheet" href="../../css/exercitii.css?v=109">
-<link rel="stylesheet" href="../../css/explorator.css?v=109">
-<script src="../../js/tema.js?v=109"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=113">
+<link rel="stylesheet" href="../../css/sistem.css?v=113">
+<link rel="stylesheet" href="../../css/slide.css?v=113">
+<link rel="stylesheet" href="../../css/interactiv.css?v=113">
+<link rel="stylesheet" href="../../css/grafice.css?v=113">
+<link rel="stylesheet" href="../../css/exercitii.css?v=113">
+<link rel="stylesheet" href="../../css/explorator.css?v=113">
+<script src="../../js/tema.js?v=113"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 1 · Introducere și configurare" data-crom="1"></div>
@@ -266,7 +266,7 @@ pip install -r requirements.txt</code></pre></figure></div><p class="md2__mic">D
 <section class="sld" id="s18" data-grup="Proiectul echipei" data-t="Folderul cursului, pe disc">
 <h2>Folderul cursului, pe disc</h2><p class="cheie">Un singur folder, cu un loc pentru fiecare tip de fișier. Detaliile fiecărui element apar la selectare.</p><div class="ix" data-ix="folder">
   <div class="ix__cap"><span class="ix__fel">Explorare</span><span class="ix__t">Folderul cursului</span></div>
-  <div class="ix__corp"><script type="application/json">{"noduri": [{"n": "dsw/", "ind": 0, "scurt": "folderul de lucru", "d": "Folderul cursului: arhiva de pe GitHub, dezarhivată și redenumită din <code>-DSW2026-main</code>. Acesta se deschide în VS Code, iar terminalul pornește în el.", "cine": "fiecare student, o singură dată, la cursul 1", "git": "nu ca folder: este o copie personală a depozitului cursului, fără Git"}, {"n": ".venv/", "ind": 1, "scurt": "nu se modifică", "interzis": true, "d": "Python-ul cursului și pachetele lui, făcute de <code>py -m venv .venv</code> și de <code>pip install -r requirements.txt</code>. Aici nu se deschide și nu se salvează nimic. Dacă se deteriorează, se șterge și se recreează cu aceleași comenzi.", "cine": "Python și pip, niciodată manual", "ex": "Lib/, Scripts/, pyvenv.cfg", "git": "nu: se reface din <code>requirements.txt</code>"}, {"n": "README.md", "ind": 1, "fel": "fis", "d": "Prima pagină a depozitului cursului: ce conține folderul și cum se începe lucrul.", "cine": "profesorul", "git": "da: GitHub o arată sub lista fișierelor"}, {"n": "requirements.txt", "ind": 1, "fel": "fis", "d": "Lista pachetelor cursului: <code>pandas</code>, <code>requests</code>, <code>ipykernel</code>. Din ea se construiește, pe fiecare calculator, un mediu cu aceleași pachete: <code>pip install -r requirements.txt</code>.", "cine": "profesorul; studenții doar o folosesc", "git": "da, în depozitul cursului"}, {"n": "curs/", "ind": 1, "scurt": "caietele de curs", "d": "Caietele cursului, completate la oră. La fiecare curs nou se descarcă aici doar caietul zilei, lângă celelalte. Căile din caiete pornesc din <code>curs/</code>: <code>data/country.csv</code> înseamnă <code>curs/data/country.csv</code>.", "cine": "fiecare student", "ex": "<code>01_introducere_si_datele_proiectului.ipynb</code>", "git": "caietele goale, în depozitul cursului; caietele completate rămân pe calculatorul personal"}, {"n": "data/", "ind": 2, "d": "Datele brute, așa cum au fost descărcate: nu se modifică. Rezultatele curățării se salvează în fișiere noi, alături, nu peste cele brute. De la cursul 2, datele aduse de la sursă stau în <code>data/raw/</code>, iar de la cursul 3 tabelele curate stau în <code>data/processed/</code>.", "cine": "arhiva cursului, apoi codul din caiete", "ex": "<code>country.csv</code> de pe HDX, apoi <code>c2/migratie.csv</code> de la Eurostat", "git": "<code>country.csv</code> da; datele colectate local, nu"}, {"n": "exemple_curs1/", "ind": 2, "d": "Două fișiere mici, fictive, pentru partea de JSON și de text din caietul 01.", "cine": "arhiva cursului", "ex": "<code>persoane.json</code>, <code>activitati.txt</code>", "git": "da, în depozitul cursului"}, {"n": "proiect/", "ind": 1, "scurt": "de la cursul 2", "d": "Depozitul echipei, adus de pe GitHub la cursul 2, cu o singură comandă dată în <code>dsw</code>: <code>git clone &lt;adresa depozitului echipei&gt; proiect</code>. Este singurul folder cu Git: munca echipei stă aici, exercițiile de la curs rămân în <code>curs/</code>.", "cine": "echipa", "git": "da: este chiar depozitul echipei"}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"noduri": [{"n": "dsw/", "ind": 0, "scurt": "folderul de lucru", "d": "Folderul cursului: arhiva de pe GitHub, dezarhivată și redenumită din <code>-DSW2026-main</code>. Acesta se deschide în VS Code, iar terminalul pornește în el.", "cine": "fiecare student, o singură dată, la cursul 1", "git": "nu ca folder: este o copie personală a depozitului cursului, fără Git"}, {"n": ".venv/", "ind": 1, "scurt": "nu se modifică", "interzis": true, "d": "Python-ul cursului și pachetele lui, făcute de <code>py -m venv .venv</code> și de <code>pip install -r requirements.txt</code>. Aici nu se deschide și nu se salvează nimic. Dacă se deteriorează, se șterge și se recreează cu aceleași comenzi.", "cine": "Python și pip, niciodată manual", "ex": "Lib/, Scripts/, pyvenv.cfg", "git": "nu: se reface din <code>requirements.txt</code>"}, {"n": "README.md", "ind": 1, "fel": "fis", "d": "Prima pagină a depozitului cursului: ce conține folderul și cum se începe lucrul.", "cine": "profesorul", "git": "da: GitHub o arată sub lista fișierelor"}, {"n": "requirements.txt", "ind": 1, "fel": "fis", "d": "Lista pachetelor cursului: <code>pandas</code>, <code>requests</code>, <code>ipykernel</code>. Din ea se construiește, pe fiecare calculator, un mediu cu aceleași pachete: <code>pip install -r requirements.txt</code>.", "cine": "profesorul; studenții doar o folosesc", "git": "da, în depozitul cursului"}, {"n": "curs/", "ind": 1, "scurt": "caietele de curs", "d": "Caietele cursului, completate la oră. La fiecare curs nou se descarcă aici doar caietul zilei, lângă celelalte. Căile din caiete pornesc din <code>curs/</code>: <code>data/country.csv</code> înseamnă <code>curs/data/country.csv</code>.", "cine": "fiecare student", "ex": "<code>01_introducere_si_datele_proiectului.ipynb</code>", "git": "caietele goale, în depozitul cursului; caietele completate rămân pe calculatorul personal"}, {"n": "data/", "ind": 2, "d": "Datele brute, așa cum au fost descărcate: nu se modifică. Rezultatele curățării se salvează în fișiere noi, alături, nu peste cele brute. De la cursul 2, datele aduse de la sursă stau în <code>data/raw/</code>, iar de la cursul 3 tabelele curate stau în <code>data/processed/</code>.", "cine": "arhiva cursului, apoi codul din caiete", "ex": "<code>country.csv</code> de pe HDX, apoi <code>raw/migratie.csv</code> de la Eurostat", "git": "<code>country.csv</code> da; datele colectate local, nu"}, {"n": "exemple_curs1/", "ind": 2, "d": "Două fișiere mici, fictive, pentru partea de JSON și de text din caietul 01.", "cine": "arhiva cursului", "ex": "<code>persoane.json</code>, <code>activitati.txt</code>", "git": "da, în depozitul cursului"}, {"n": "proiect/", "ind": 1, "scurt": "de la cursul 2", "d": "Depozitul echipei, adus de pe GitHub la cursul 2, cu o singură comandă dată în <code>dsw</code>: <code>git clone &lt;adresa depozitului echipei&gt; proiect</code>. Este singurul folder cu Git: munca echipei stă aici, exercițiile de la curs rămân în <code>curs/</code>.", "cine": "echipa", "git": "da: este chiar depozitul echipei"}]}</script></div>
 </div>
 
 </section>
@@ -274,7 +274,7 @@ pip install -r requirements.txt</code></pre></figure></div><p class="md2__mic">D
 <section class="sld" id="s18s" data-grup="Proiectul echipei" data-t="Locul fiecărui fișier">
 <h2>Unde se află fiecare fișier?</h2><div class="ix" data-ix="sortare">
   <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Trei foldere, șase fișiere</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c1-folder", "cosuri": [{"t": "curs/data/", "d": "datele cursului"}, {"t": "curs/", "d": "caietele de curs"}, {"t": "proiect/", "d": "munca echipei"}], "elemente": [{"t": "country.csv", "cos": 0}, {"t": "c2/migratie.csv", "cos": 0}, {"t": "01_introducere.ipynb", "cos": 1}, {"t": "02_colectarea.ipynb", "cos": 1}, {"t": "raport.ipynb, al echipei", "cos": 2}, {"t": "intrebarea.md, a echipei", "cos": 2}], "sarcina": "Pentru fiecare fișier, folderul potrivit.", "laBine": "Fiecare fișier este în folderul potrivit.", "laRau": "Caietele de la curs stau în curs/, datele lor în curs/data/, iar ce face echipa, în proiect/.", "explicatie": "<code>curs/</code> este folderul personal, fără Git. <code>proiect/</code> este al echipei: ce se adaugă acolo ajunge, după commit, în istoricul vizibil pentru toată echipa."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c1-folder", "cosuri": [{"t": "curs/data/", "d": "datele cursului"}, {"t": "curs/", "d": "caietele de curs"}, {"t": "proiect/", "d": "munca echipei"}], "elemente": [{"t": "country.csv", "cos": 0}, {"t": "raw/migratie.csv", "cos": 0}, {"t": "01_introducere.ipynb", "cos": 1}, {"t": "02_colectarea.ipynb", "cos": 1}, {"t": "raport.ipynb, al echipei", "cos": 2}, {"t": "intrebarea.md, a echipei", "cos": 2}], "sarcina": "Pentru fiecare fișier, folderul potrivit.", "laBine": "Fiecare fișier este în folderul potrivit.", "laRau": "Caietele de la curs stau în curs/, datele lor în curs/data/, iar ce face echipa, în proiect/.", "explicatie": "<code>curs/</code> este folderul personal, fără Git. <code>proiect/</code> este al echipei: ce se adaugă acolo ajunge, după commit, în istoricul vizibil pentru toată echipa."}</script></div>
 </div>
 
 </section>
@@ -287,11 +287,11 @@ pip install -r requirements.txt</code></pre></figure></div><p class="md2__mic">D
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=109"></script>
+<script type="module" src="../../js/antet.js?v=113"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=109";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=109";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=109";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=113";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=113";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=113";
 pornesteIx();
 pornesteVerif("c1");
 pornesteSlide({ capitol:"c1", lectie:"c1-introducere-si-mediu" });

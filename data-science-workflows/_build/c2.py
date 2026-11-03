@@ -47,7 +47,7 @@ AGENDA = [
 ]
 CAIET_NOTA = (f'<a class="leg" href="{repo_fisier("curs/" + CAIET)}" target="_blank" rel="noopener">'
               f"<code>{CAIET}</code></a>, salvat în <code>dsw/curs/</code>, lângă caietul 01. "
-              "Fișierele colectate ajung în <code>curs/data/c2</code>.")
+              "Fișierele colectate ajung în <code>curs/data/raw</code>.")
 AGENDA_IX = {"static": True, "titlu": "Planul lecției",
              "etape": [{"nume": n, "unde": "azi", "text": d} for n, d in AGENDA]}
 
@@ -82,7 +82,7 @@ START_HTML = (
     '└── <span class="a">curs/</span>\n'
     '    ├── 01_introducere_si_datele_proiectului.ipynb\n'
     '    ├── <b>02_colectarea_datelor_prin_api.ipynb</b>\n'
-    '    └── data/c2/     <span class="c"># aici ajung datele de azi</span></code></pre>'
+    '    └── data/raw/     <span class="c"># aici ajung datele de azi</span></code></pre>'
     '<ol class="pp2__l">'
     "<li><b>Caietul 02</b><span>descărcat de pe GitHub, cu Download raw file, în <code>dsw/curs/</code>.</span></li>"
     "<li><b>Kernelul .venv</b><span>în VS Code: Select Kernel → Python Environments → .venv.</span></li>"
@@ -1092,11 +1092,11 @@ sl("s18", "requests", "Paginarea",
    "<h3>Din JSON în tabel</h3>"
    "<p>Lista de înregistrări devine tabel cu <code>pd.json_normalize</code>: dicționarele "
    "dinăuntru devin coloane cu punct în nume, de exemplu <code>country.id</code>. Tabelul se "
-   "salvează în <code>data/c2</code> cu <code>index=False</code>, ca să nu se adauge o coloană "
+   "salvează în <code>data/raw</code> cu <code>index=False</code>, ca să nu se adauge o coloană "
    "de numerotare inutilă. Calea pornește din folderul caietului, deci fișierul ajunge în "
-   "<code>dsw/curs/data/c2/</code>.</p>"
+   "<code>dsw/curs/data/raw/</code>.</p>"
    "<pre><code>tabel = pd.json_normalize(valori)[[\"country.id\", \"date\", \"value\"]]\n"
-   "tabel.to_csv(\"data/c2/populatie_ro.csv\", index=False)</code></pre>"
+   "tabel.to_csv(\"data/raw/populatie_ro.csv\", index=False)</code></pre>"
    + nota("Fișierul brut nu se modifică",
           "Ce vine de la API se salvează o dată și nu se mai editează. Curățarea, la cursul 4, "
           "scrie fișiere noi, alături. Așa se poate reface oricând drumul de la sursă la tabelul final."))
@@ -1294,7 +1294,7 @@ PASI_COLECTARE = tabel(["Pasul", "Ce se face"], [
     ["1", "se deschide caietul 02 din <code>dsw/curs/</code>, cu kernelul <code>.venv</code>"],
     ["2", "se rulează secțiunile 1 la 5: prima cerere, paginarea, cei trei indicatori"],
     ["3", "se verifică faptul că au venit toate valorile: ultimul rând afișat este „pagina N din N”"],
-    ["4", "se salvează tabelul în <code>data/c2/bm.csv</code>"],
+    ["4", "se salvează tabelul în <code>data/raw/bm.csv</code>"],
 ])
 
 sl("s21", "Proiectul echipei", "Exercițiu: alt indicator",
@@ -1305,8 +1305,8 @@ sl("s21", "Proiectul echipei", "Exercițiu: alt indicator",
    manual=
    "<h2>Prima colectare, în caiet</h2>"
    "<p>Colectarea se face în caietul 02, din <code>dsw/curs/</code>. Căile pornesc de acolo: "
-   "<code>data/c2/bm.csv</code> înseamnă <code>dsw/curs/data/c2/bm.csv</code>. Folderul este creat de "
-   "prima celulă a caietului, cu <code>Path(\"data/c2\").mkdir(exist_ok=True)</code>.</p>"
+   "<code>data/raw/bm.csv</code> înseamnă <code>dsw/curs/data/raw/bm.csv</code>. Folderul este creat de "
+   "prima celulă a caietului, cu <code>Path(\"data/raw\").mkdir(exist_ok=True)</code>.</p>"
    + PASI_COLECTARE
    + "<p>Pentru proiect, echipa caută un indicator potrivit întrebării ei și îl cere la fel. "
      "Cererea nu se rescrie: se schimbă indicatorul, în cale, și anii, în parametri.</p>"
@@ -1321,13 +1321,13 @@ sl("s21", "Proiectul echipei", "Exercițiu: alt indicator",
      "    tabel.columns = [\"tara\", \"an\", \"valoare\"]\n"
      "    return tabel\n\n"
      "urban = cere_bm(\"SP.URB.TOTL.IN.ZS\", [\"RO\"], ani=\"2000:2023\")\n"
-     "urban.to_csv(\"data/c2/urban_ro.csv\", index=False)</code></pre>"
+     "urban.to_csv(\"data/raw/urban_ro.csv\", index=False)</code></pre>"
    + "<p>La secțiunea 9 a caietului, echipele încearcă un indicator Eurostat, dintr-un tabel cu patru "
      "direcții: migrație, demografie, educație, piața muncii, fiecare cu setul, filtrele și sursa. "
      "Cererea are aceeași formă ca la Banca Mondială: setul și filtrele, cu <code>cere_eurostat</code>, "
      "întâi pentru un județ (<code>geo</code>), apoi pentru tot nivelul (<code>geoLevel</code>).</p>"
    + nota("Fișierele mari și cheile de acces",
-          "Datele de la curs rămân în <code>curs/data/c2</code>, pe calculatorul personal. Fișierele de zeci de "
+          "Datele de la curs rămân în <code>curs/data/raw</code>, pe calculatorul personal. Fișierele de zeci de "
           "megabytes și cheile de acces nu se trimit nimănui: se păstrează codul care le colectează, "
           "iar datele se refac din el."))
 
@@ -1368,7 +1368,7 @@ sl("s22", "Mai departe", "Pentru cursul următor",
    "<p>Lucrul în echipă, pe același depozit</p>"
    "<p>Tema echipei</p></section>"
    "<section><h4>Pregătirea</h4>"
-   "<p>Caietul 02 rulat, cu datele în <code>curs/data/c2</code></p>"
+   "<p>Caietul 02 rulat, cu datele în <code>curs/data/raw</code></p>"
    "<p>Git instalat: <code>git --version</code></p>"
    "<p>Fișa echipei, de la finalul caietului</p></section>"
    "</div>"

@@ -1,6 +1,6 @@
 {
  "capitol": "c3",
- "total": 18,
+ "total": 19,
  "sarcini": 8,
  "slide": [
   {
@@ -114,6 +114,13 @@
   },
   {
    "nr": 12,
+   "id": "s16b",
+   "grup": "În echipă",
+   "titlu": "Pașii de azi",
+   "sarcini": []
+  },
+  {
+   "nr": 13,
    "id": "s8b",
    "grup": "Verificarea",
    "titlu": "Citirea lui git status",
@@ -125,7 +132,7 @@
    ]
   },
   {
-   "nr": 13,
+   "nr": 14,
    "id": "s22b",
    "grup": "Verificarea",
    "titlu": "Verificarea depozitului",
@@ -137,21 +144,21 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 15,
    "id": "s17",
    "grup": "Cadrul teoretic",
    "titlu": "De ce un cadru",
    "sarcini": []
   },
   {
-   "nr": 15,
+   "nr": 16,
    "id": "s19",
    "grup": "Cadrul teoretic",
    "titlu": "Cadrul proiectului",
    "sarcini": []
   },
   {
-   "nr": 16,
+   "nr": 17,
    "id": "s20",
    "grup": "Cadrul teoretic",
    "titlu": "Întrebarea echipei",
@@ -163,14 +170,14 @@
    ]
   },
   {
-   "nr": 17,
+   "nr": 18,
    "id": "s21d",
    "grup": "Datele",
    "titlu": "Datele proiectului",
    "sarcini": []
   },
   {
-   "nr": 18,
+   "nr": 19,
    "id": "s23",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

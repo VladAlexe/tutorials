@@ -103,7 +103,7 @@
       },
       {
         "t": "Pregătire",
-        "html": "<p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită mediul de la cursul 1 și caietul lecției:</p>\n<ol>\n<li>Folderul <code>dsw</code> de la cursul 1, cu mediul <code>.venv</code>. <code>requests</code> este deja instalat, din <code>requirements.txt</code>.</li>\n<li>Caietul <a class=\"leg\" href=\"@REPO@/blob/main/curs/02_colectarea_datelor_prin_api.ipynb\" rel=\"noopener\" target=\"_blank\"><code>02_colectarea_datelor_prin_api.ipynb</code></a>: pe pagina lui de pe GitHub se apasă <em>Download raw file</em>, iar fișierul se salvează în <code>dsw/curs/</code>, lângă caietul 01. Arhiva întreagă nu se descarcă din nou peste <code>dsw</code>, deoarece poate suprascrie caietele completate.</li>\n<li>Kernelul <code>.venv</code>, ales în VS Code: Select Kernel → Python Environments → <code>.venv</code>. Dacă lista nu oferă nicio sursă, VS Code propune în aceeași fereastră extensiile Python și Jupyter.</li>\n</ol>\n<p>Datele lecției nu se descarcă manual: sunt obținute prin API și se salvează în <code>dsw/curs/data/c2/</code>. Nu este necesară o cheie de acces, deoarece API-urile folosite sunt publice. Pentru ca răspunsurile să fie salvate și incluse în progresul grupei, autentificarea se face cu GitHub.</p>"
+        "html": "<p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită mediul de la cursul 1 și caietul lecției:</p>\n<ol>\n<li>Folderul <code>dsw</code> de la cursul 1, cu mediul <code>.venv</code>. <code>requests</code> este deja instalat, din <code>requirements.txt</code>.</li>\n<li>Caietul <a class=\"leg\" href=\"@REPO@/blob/main/curs/02_colectarea_datelor_prin_api.ipynb\" rel=\"noopener\" target=\"_blank\"><code>02_colectarea_datelor_prin_api.ipynb</code></a>: pe pagina lui de pe GitHub se apasă <em>Download raw file</em>, iar fișierul se salvează în <code>dsw/curs/</code>, lângă caietul 01. Arhiva întreagă nu se descarcă din nou peste <code>dsw</code>, deoarece poate suprascrie caietele completate.</li>\n<li>Kernelul <code>.venv</code>, ales în VS Code: Select Kernel → Python Environments → <code>.venv</code>. Dacă lista nu oferă nicio sursă, VS Code propune în aceeași fereastră extensiile Python și Jupyter.</li>\n</ol>\n<p>Datele lecției nu se descarcă manual: sunt obținute prin API și se salvează în <code>dsw/curs/data/raw/</code>. Nu este necesară o cheie de acces, deoarece API-urile folosite sunt publice. Pentru ca răspunsurile să fie salvate și incluse în progresul grupei, autentificarea se face cu GitHub.</p>"
       }
     ],
     "resurse": [
@@ -157,7 +157,7 @@
     "deck": "La lecția anterioară au fost colectate date. Această lecție asigură că datele și codul care le-a colectat nu se pierd: Git, GitHub, lucrul în echipă și întrebarea de cercetare a proiectului.",
     "descriere": "Ce face Git, cum ajunge depozitul echipei pe calculator, cum lucrează o echipă pe main și dev fără să-și piardă munca și cum se încadrează teoretic un proiect.",
     "caiet": "@REPO@/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb",
-    "caiet_d": "Caietul 03, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/, lângă caietele 01 și 02.",
+    "caiet_d": "Caietul 03, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Prima lui celulă aduce singură src/date_api.py.",
     "sectiuni": [
       {
         "t": "Despre lecție",
@@ -169,7 +169,7 @@
       },
       {
         "t": "Pregătire",
-        "html": "<p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursul 2:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a>, instalat. Pe Windows include Git Bash, un terminal în care funcționează comenzile din lecție.</li>\n<li>Contul de <a class=\"leg\" href=\"https://github.com/\" rel=\"noopener\" target=\"_blank\">GitHub</a>, același cu care se face intrarea pe site.</li>\n<li>Echipa, aleasă pe site, și datele colectate în <code>dsw/curs/data/c2</code>. Repo-ul echipei, <code>echipa-N</code>, există deja pe GitHub; invitația vine doar dacă numele de pe site este legat de contul GitHub (Contul meu → „Caută-mi numele”). Clonarea în <code>dsw/proiect</code> se face în această lecție.</li>\n</ol>"
+        "html": "<p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursul 2:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a>, instalat. Pe Windows include Git Bash, un terminal în care funcționează comenzile din lecție.</li>\n<li>Contul de <a class=\"leg\" href=\"https://github.com/\" rel=\"noopener\" target=\"_blank\">GitHub</a>, același cu care se face intrarea pe site.</li>\n<li>Echipa, aleasă pe site. Datele colectate în C2 sunt și în depozitul cursului, iar caietul 03 le citește de acolo, ca toată lumea să lucreze pe aceleași date. Repo-ul echipei, <code>echipa-N</code>, există deja pe GitHub; invitația vine doar dacă numele de pe site este legat de contul GitHub (Contul meu → „Caută-mi numele”). Clonarea în <code>dsw/proiect</code> se face în această lecție.</li>\n</ol>"
       }
     ],
     "resurse": [
@@ -177,6 +177,11 @@
         "href": "git/",
         "t": "Lucrul cu Git",
         "d": "Fișa cu toate comenzile de la curs: configurarea, clonarea, .gitignore, primul commit, ramura dev, lucrul zilnic și îmbinarea în main."
+      },
+      {
+        "href": "catalog/",
+        "t": "Catalogul datelor",
+        "d": "Seturile de date pentru proiect, aduse prin API: perechi de țări, regiuni NUTS2 și țări, cu codurile și filtrele lor."
       },
       {
         "href": "@REPO@",

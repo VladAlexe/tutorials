@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalogul datelor · Fluxuri de lucru</title>
+<meta name="description" content="Seturile de date pentru proiect, aduse prin API: perechi de țări, regiuni NUTS2 și țări, cu codurile și filtrele lor.">
+<meta name="robots" content="index,nofollow">
+<link rel="stylesheet" href="../../css/fonturi.css?v=113">
+<link rel="stylesheet" href="../../css/sistem.css?v=113">
+<script src="../../js/tema.js?v=113"></script>
+<style>
+  .gf{max-width:820px;margin:0 auto;padding:30px 28px 80px}
+  .gf__inapoi{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:var(--t2);color:var(--text-2);
+    text-decoration:none;border:1px solid var(--linie-2);border-radius:999px;padding:5px 13px;margin-bottom:26px}
+  .gf__inapoi:hover{color:var(--text);border-color:var(--text-3)}
+  .gf h2{font-size:var(--t5);margin:44px 0 8px;scroll-margin-top:70px}
+  .gf h3{font-family:var(--sans);font-size:var(--t3);font-weight:600;margin:22px 0 4px}
+  .gf p{font-size:var(--t3);line-height:1.6;max-width:68ch}
+  .gf p code,.gf li code{font-size:.9em}
+
+  .gf__cup{display:flex;flex-wrap:wrap;gap:6px 8px;margin:18px 0 0;padding:0;list-style:none}
+  .gf__cup li{margin:0;padding:0}
+  .gf__cup li::before{content:none}
+  .gf__cup a{display:inline-block;font-family:var(--sans);font-size:var(--t2);color:var(--text-2);text-decoration:none;
+    border:1px solid var(--linie);border-radius:999px;padding:4px 11px}
+  .gf__cup a:hover{color:var(--accent-text);border-color:var(--accent)}
+
+  .tb{width:100%;border-collapse:collapse;font-family:var(--sans);margin:6px 0 0}
+  .tb td{padding:7px 12px 7px 0;font-size:var(--t2);border-bottom:1px solid var(--linie);vertical-align:top;line-height:1.45}
+  .tb tr:first-child td{border-top:1px solid var(--linie-2)}
+  .tb tr:last-child td{border-bottom-color:var(--linie-2)}
+  .tb td:first-child{width:52%}
+  .tb code{font-family:var(--mono);font-size:12.5px;background:none;border:0;padding:0;color:var(--text);
+    white-space:pre-wrap;word-break:break-word;cursor:copy}
+  .tb code:hover{color:var(--accent-text)}
+  .tb code.copiat::after{content:"  copiat";font-family:var(--sans);font-size:11px;color:var(--accent-text)}
+  .tb td:last-child{color:var(--text-2)}
+  .tbw{overflow-x:auto}
+  .tbw + p{margin-top:14px}
+
+  .gf pre{font-size:12.5px;line-height:1.55;margin:8px 0 0}
+  .gf pre .c{color:var(--text-3);font-style:italic}
+  .gf ol.reg{margin:8px 0 0;padding-left:22px}
+  .gf ol.reg li{font-size:var(--t3);line-height:1.55;margin:0 0 6px}
+  .gf .nota{margin-top:14px}
+
+  .src{list-style:none;padding:0;margin:6px 0 0}
+  .src li::before{content:none}
+  .src li{padding-left:0;font-family:var(--sans);font-size:var(--t2);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--linie)}
+  .gf__jos{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px;padding-top:18px;border-top:1px solid var(--linie-2)}
+  .gf__jos a{font-family:var(--sans);font-size:var(--t2);text-decoration:none;color:var(--text);border:1px solid var(--linie-2);border-radius:8px;padding:9px 14px}
+  .gf__jos a:hover{border-color:var(--accent);color:var(--accent-text)}
+
+  @media (max-width:640px){
+    .gf{padding:22px 16px 64px}
+    .tb td:first-child{width:auto}
+  }
+
+  .tb--cat th{font-family:var(--sans);font-size:var(--t1);font-weight:600;text-align:left;color:var(--text-3);
+    text-transform:uppercase;letter-spacing:.04em;padding:6px 12px 6px 0;border-bottom:1px solid var(--linie-2)}
+  .tb--cat td:first-child{width:auto}
+  .tb--cat code{cursor:text;white-space:normal}
+  .tb--cat code:hover{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div id="antet" data-aici="Cursul 3 · Catalogul datelor"></div>
+
+<main>
+<div class="gf">
+  <a class="gf__inapoi" href="../" data-inapoi>← Înapoi</a>
+  <p class="supratitlu">Cursul 3 · Resursă</p>
+  <h1>Catalogul datelor</h1>
+  <p class="deck">Date pe care le puteți aduce prin API pentru proiect, grupate după ce măsoară. Toate seturile Eurostat de mai jos răspund în format JSON-stat, deci merg cu funcțiile din <code>src/date_api.py</code> (<code>cere_eurostat</code>, <code>cere_perechi</code>); cele de la Banca Mondială merg cu <code>cere_bm</code>. Filtrele din tabel au fost verificate prin API (noiembrie 2026). Codurile pentru alte valori ale unui filtru (alt an, altă grupă de vârstă) se găsesc în <a class="leg" href="https://ec.europa.eu/eurostat/databrowser/" target="_blank" rel="noopener">Eurostat Data Browser</a>, căutând codul setului.</p>
+  <p>Aceeași listă stă în depozitul cursului, ca <a class="leg" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/data/CATALOG.md" target="_blank" rel="noopener">curs/data/CATALOG.md</a>; pagina de față se refă din ea.</p>
+  <ul class="gf__cup"><li><a href="#de-ce-aceste-date">De ce aceste date</a></li><li><a href="#perechi-de-tari">Perechi de țări</a></li><li><a href="#regiuni-nuts2">Regiuni NUTS2</a></li><li><a href="#tari">Țări</a></li><li><a href="#ce-nu-vine-prin-api">Ce nu vine prin API</a></li><li><a href="#coduri-de-verificat-la-lipire">Coduri de verificat la lipire</a></li></ul>
+
+  <h2 id="de-ce-aceste-date">De ce aceste date</h2>
+  <p>Literatura despre Social Connectedness Index arată că legăturile dintre două locuri depind de distanță, de granițe, de limbă și istorie comună, de oamenii care s-au mutat dintr-un loc în altul, de schimburile dintre ele și de cât de asemănătoare sunt cele două locuri (vârstă, educație, venit). În plus, SCI vine din Facebook, deci contează și cât folosesc oamenii rețelele sociale.</p>
+  <ul class="src"><li>Bailey, Cao, Kuchler, Stroebel și Wong (2018), <em>Social Connectedness: Measurement, Determinants, and Effects</em>, Journal of Economic Perspectives.</li><li>Bailey, Johnston, Kuchler, Russel, State și Stroebel (2020), <em>The Determinants of Social Connectedness in Europe</em>, SocInfo.</li><li>Bailey, Gupta, Hillenbrand, Kuchler, Richmond și Stroebel (2021), <em>International Trade and Social Connectedness</em>, Journal of International Economics.</li></ul>
+  <h2 id="perechi-de-tari">1. Perechi de țări</h2>
+  <p>Un rând = o pereche de țări, ca în SCI pe țări. Atenție la sens: „din A în B” nu este același lucru cu „din B în A”.</p>
+  <div class="tbw"><table class="tb tb--cat"><thead><tr><th>Ce măsoară</th><th>Set</th><th>Filtre</th><th>Exemplu: RO și IT</th></tr></thead><tbody><tr><td>Migranți (stoc), după cetățenie</td><td><code>migr_pop1ctz</code></td><td><code>sex=T, age=TOTAL, unit=NR</code> (alte grupe de vârstă la <code>age</code>)</td><td>cetățeni români în Italia</td></tr><tr><td>Imigranți pe an (flux), după cetățenie</td><td><code>migr_imm1ctz</code></td><td><code>sex=T, age=TOTAL, agedef=COMPLET, unit=NR</code></td><td>români sosiți în Italia: 46.439 (2015), 23.148 (2024)</td></tr><tr><td>Pasageri aerieni între țări</td><td><code>avia_paocc</code></td><td><code>unit=PAS, tra_meas=PAS_CRD, schedule=TOTAL, freq=A</code>; <code>geo</code> = țara care raportează, <code>partner</code> = cealaltă</td><td>RO-IT: 4.717.400 pasageri (2024)</td></tr><tr><td>Turiști: nopți de cazare, după țara turistului</td><td><code>tour_occ_ninraw</code></td><td><code>unit=NR, nace_r2=I551-I553</code>; <code>geo</code> = țara gazdă, <code>c_resid</code> = țara turistului</td><td>nopțile românilor în Italia: 4.075.029 (2024)</td></tr><tr><td>Comerț: exporturi și importuri</td><td><code>DS-045409</code> (Comext, altă adresă, vezi mai jos)</td><td><code>freq=A, product=TOTAL, flow=2</code> (export; <code>1</code> = import), <code>indicators=VALUE_IN_EUROS</code>; <code>reporter</code>, <code>partner</code></td><td>exporturile României în Italia: 8,85 miliarde euro (2024)</td></tr></tbody></table></div>
+  <p><b>Comerțul</b> vine din baza Comext, cu altă adresă decât restul Eurostat, dar în același format:</p>
+  <pre><code>from src.date_api import cere_eurostat, COMEXT
+
+parametri = {"freq": "A", "reporter": "RO", "product": "TOTAL", "flow": "2",
+             "indicators": "VALUE_IN_EUROS", "time": 2024}
+comert = cere_eurostat("DS-045409", parametri, pe="partner", adresa=COMEXT)   <span class="c"># din src.date_api</span></code></pre>
+  <h2 id="regiuni-nuts2">2. Regiuni NUTS2</h2>
+  <p>Un rând = o regiune. Se lipesc de SCI pe regiuni (<code>nuts2_2024.csv</code>), pe codul regiunii. Pentru o pereche de regiuni se poate construi o variabilă de asemănare, de exemplu diferența de vârstă medie dintre ele.</p>
+  <div class="tbw"><table class="tb tb--cat"><thead><tr><th>Ce măsoară</th><th>Set</th><th>Filtre</th></tr></thead><tbody><tr><td>Populația</td><td><code>demo_r_pjangrp3</code></td><td><code>sex=T, age=TOTAL, unit=NR</code> (din cursul 2)</td></tr><tr><td>Densitatea</td><td><code>demo_r_d3dens</code></td><td><code>unit=PER_KM2</code> (din cursul 2)</td></tr><tr><td>PIB pe locuitor</td><td><code>nama_10r_3gdp</code></td><td><code>unit=PPS_EU27_2020_HAB</code> (din cursul 2)</td></tr><tr><td>Vârsta medie</td><td><code>demo_r_pjanind2</code></td><td><code>indic_de=MEDAGEPOP, unit=YR</code></td></tr><tr><td>Studii superioare, 25-64 ani (%)</td><td><code>edat_lfse_04</code></td><td><code>isced11=ED5-8, age=Y25-64, sex=T, unit=PC</code></td></tr><tr><td>Rata șomajului (%)</td><td><code>lfst_r_lfu3rt</code></td><td><code>isced11=TOTAL, age=Y15-74, sex=T, unit=PC</code></td></tr><tr><td>Folosesc rețelele sociale (% din persoane)</td><td><code>isoc_r_iuse_i</code></td><td><code>indic_is=I_IUSNET, unit=PC_IND</code></td></tr></tbody></table></div>
+  <p>Toate se cer pe tot nivelul cu <code>geoLevel=nuts2</code>, ca în cursul 2.</p>
+  <h2 id="tari">3. Țări</h2>
+  <p>Un rând = o țară. Se lipesc de perechile de țări de două ori, o dată pentru fiecare capăt.</p>
+  <div class="tbw"><table class="tb tb--cat"><thead><tr><th>Ce măsoară</th><th>Sursă</th><th>Cod</th></tr></thead><tbody><tr><td>Folosesc rețelele sociale (% din persoane)</td><td>Eurostat <code>isoc_ci_ac_i</code></td><td><code>indic_is=I_IUSNET, ind_type=IND_TOTAL, unit=PC_IND</code></td></tr><tr><td>Populația</td><td>Banca Mondială</td><td><code>SP.POP.TOTL</code></td></tr><tr><td>PIB pe locuitor (USD curenți)</td><td>Banca Mondială</td><td><code>NY.GDP.PCAP.CD</code></td></tr><tr><td>Utilizatori de internet (%)</td><td>Banca Mondială</td><td><code>IT.NET.USER.ZS</code></td></tr><tr><td>Remitențe primite (USD curenți)</td><td>Banca Mondială</td><td><code>BX.TRF.PWKR.CD.DT</code></td></tr><tr><td>Comerț (% din PIB)</td><td>Banca Mondială</td><td><code>NE.TRD.GNFS.ZS</code></td></tr><tr><td>Migranți internaționali (% din populație)</td><td>Banca Mondială</td><td><code>SM.POP.TOTL.ZS</code></td></tr></tbody></table></div>
+  <p><code>cere_bm</code> aduce câte un indicator pe cerere: o cerere cu mai mulți indicatori deodată este refuzată de API.</p>
+  <h2 id="ce-nu-vine-prin-api">4. Ce nu vine prin API</h2>
+  <ul class="src"><li><b>Limba comună, granița comună, legăturile istorice dintre țări</b>: baza GeoDist a <a class="leg" href="https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=6" target="_blank" rel="noopener">CEPII</a>, un fișier de descărcat. Se pune în <code>data/raw/</code> al proiectului.</li><li><b>SCI pe județe (NUTS3)</b>: peste 40 MB, de pe <a class="leg" href="https://data.humdata.org/dataset/social-connectedness-index" target="_blank" rel="noopener">HDX</a>; nu se urcă pe GitHub.</li></ul>
+  <h2 id="coduri-de-verificat-la-lipire">Coduri de verificat la lipire</h2>
+  <p>Eurostat scrie Grecia <code>EL</code> și Regatul Unit <code>UK</code>; SCI și Banca Mondială scriu <code>GR</code> și <code>GB</code>. Valorile lipsă înseamnă că sursa nu are date, nu zero.</p>
+
+  <div class="gf__jos">
+    <a href="../" data-inapoi>← Înapoi</a>
+    <a href="../">Pagina cursului 3</a>
+    <a href="../lectie/#1">Slide-urile cursului 3</a>
+    <a href="../tutorial/">Manualul cursului 3</a>
+    <a href="../git/">Lucrul cu Git</a>
+  </div>
+</div>
+</main>
+
+<div id="subsol"></div>
+<script type="module" src="../../js/antet.js?v=113"></script>
+<script type="module" src="../../js/subsol.js?v=113"></script>
+<script>
+/* Înapoi: dacă ai venit dintr-o pagină a sitului (slide-uri, manual), te
+   întorci exact acolo; altfel, la pagina cursului 3. */
+document.querySelectorAll("[data-inapoi]").forEach(a => a.addEventListener("click", e => {
+  try {
+    const r = document.referrer ? new URL(document.referrer) : null;
+    if (r && r.origin === location.origin && r.pathname !== location.pathname && history.length > 1){
+      e.preventDefault(); history.back();
+    }
+  } catch (_) {}
+}));
+</script>
+</body>
+</html>
