@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=113");
+    const m = await import("/data-science-workflows/js/colectare.js?v=114");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -151,20 +151,30 @@ V.conflict = (gazda, d) => {
         <span class="ed__nume">${esc(d.fisier || "src/tabele.py")}</span><span class="cfl__msg">${esc(d.mesaj || "")}</span></div>
       <div class="ed__corp"><div class="ed__cod"><pre class="cf__cod"></pre></div></div>
     </div>
+    ${d.cerinta ? `<p class="cf__cer">${d.cerinta}</p>` : ""}
     <div class="cf__alege">${VAR.map(v => `<button class="zn__cb" data-k="${v.k}" type="button">${esc(v.t)}</button>`).join("")}</div>
     <div class="ex__jos">
-      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button" disabled>git add, apoi git commit</button>
+      <button class="btn btn--mic btn--tare" data-rol="verifica" type="button" disabled>Trimite</button>
+      <button class="btn btn--mic btn--ind" data-rol="indiciu" type="button">Indiciu</button>
+      <button class="btn btn--mic" data-rol="din-nou" type="button" hidden>Încearcă din nou</button>
       <span class="ex__raspuns"></span>
     </div>
+    <div class="ex__ind"></div>
     <p class="ex__ex"></p>
     <p class="ex__stare"></p>`;
 
   const cod = gazda.querySelector(".cf__cod");
   const btV = gazda.querySelector('[data-rol="verifica"]');
+  const btI = gazda.querySelector('[data-rol="indiciu"]');
+  const btN = gazda.querySelector('[data-rol="din-nou"]');
+  const ind = gazda.querySelector(".ex__ind");
   const out = gazda.querySelector(".ex__raspuns");
   const ex  = gazda.querySelector(".ex__ex");
   const st  = gazda.querySelector(".ex__stare");
   const scrie = () => { cod.innerHTML = randuri(); };
+  /* ca la celelalte exerciții: Indiciu, Verifică, iar la un răspuns greșit, Încearcă din nou */
+  btI.hidden = !d.indiciu;
+  btI.onclick = () => { ind.innerHTML = `<p>💡 ${d.indiciu}</p>`; ind.classList.add("vazut"); };
 
   gazda.querySelector(".cf__alege").addEventListener("click", e => {
     const b = e.target.closest("[data-k]");
@@ -178,14 +188,24 @@ V.conflict = (gazda, d) => {
 
   btV.onclick = async () => {
     const v = VAR.find(x => x.k === ales);
-    out.innerHTML = ales === d.bun ? `<b>Corect.</b> ${v.deCe || ""}` : `<b>Rulează, dar se pierde ceva.</b> ${v.deCe || ""}`;
-    ex.classList.add("vazut");
-    ex.innerHTML = d.explicatie || "";
     btV.disabled = true;
     gazda.querySelectorAll(".cf__alege [data-k]").forEach(x => x.disabled = true);
+    if (ales !== d.bun){
+      out.innerHTML = `<b>Nu încă.</b> ${v.deCe || ""}`;
+      btN.hidden = false;
+      return;
+    }
+    out.innerHTML = `<b>Corect.</b> ${v.deCe || ""}`;
+    ex.classList.add("vazut");
+    ex.innerHTML = d.explicatie || "";
+    btI.hidden = true;
+    ind.classList.remove("vazut");
     await poarta(gazda, d.id, ales);
-    st.textContent = "Exercițiul este rezolvat.";
-    st.classList.add("vazut");
+  };
+  btN.onclick = () => {
+    ales = null; btN.hidden = true; out.textContent = "";
+    gazda.querySelectorAll(".cf__alege [data-k]").forEach(x => { x.disabled = false; x.classList.remove("on"); });
+    scrie();
   };
 
   scrie();
@@ -3547,7 +3567,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=113`), import(`${R}/js/auth.js?v=113`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=114`), import(`${R}/js/auth.js?v=114`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });

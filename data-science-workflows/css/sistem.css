@@ -737,3 +737,6 @@ code,pre,kbd,samp,code *,pre *,.ed__cod,.ed__cod *,.jc,.jc *,.trm,.trm *{font-va
   .pz__p{grid-template-columns:23px minmax(0,1fr);gap:6px 10px}
   .pz__cmd,.pz__alt{grid-column:2}
 }
+
+/* Conflictul (cursul 3): cerința, deasupra variantelor */
+.cf__cer{font-family:var(--sans);font-size:var(--t3);color:var(--text);margin:10px 0 6px}
