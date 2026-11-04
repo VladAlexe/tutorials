@@ -710,8 +710,8 @@ CURATARE = info("c3-curatare", "Cum se curăță istoricul",
 _CINE = {"fiecare": "c-tot", "un membru": "c-unu", "alt membru": "c-doi", "ceilalți": "c-rest"}
 _PASI = [
     ("fiecare", "", "Acceptă invitația pe GitHub", "@github.com/dsw-ubb-2026/echipa-N/invitations"),
-    ("fiecare", "o dată pe calculator", "Configurează identitatea în Git",
-     'git config --global user.name "Prenume Nume"\ngit config --global user.email "adresa-de-pe-github"'),
+    ("fiecare", "o dată pe calculator", "Instalează Git, repornește VS Code, configurează identitatea",
+     '# Git: git-scm.com/downloads\ngit --version\ngit config --global user.name "Prenume Nume"\ngit config --global user.email "adresa-de-pe-github"'),
     ("fiecare", "în dsw", "Clonează depozitul echipei",
      "git clone https://github.com/dsw-ubb-2026/echipa-N.git proiect\ncd proiect"),
     ("un membru", "", "Completează README.md și îl publică",
