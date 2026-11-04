@@ -1,6 +1,6 @@
 {
  "capitol": "c4",
- "total": 17,
+ "total": 18,
  "sarcini": 12,
  "slide": [
   {
@@ -32,6 +32,13 @@
   },
   {
    "nr": 3,
+   "id": "s3a",
+   "grup": "Profilarea",
+   "titlu": "Prima privire",
+   "sarcini": []
+  },
+  {
+   "nr": 4,
    "id": "s3",
    "grup": "Profilarea",
    "titlu": "Ce conține tabelul",
@@ -43,7 +50,7 @@
    ]
   },
   {
-   "nr": 4,
+   "nr": 5,
    "id": "s4",
    "grup": "Profilarea",
    "titlu": "Tipurile",
@@ -63,7 +70,7 @@
    ]
   },
   {
-   "nr": 5,
+   "nr": 6,
    "id": "s5",
    "grup": "Curățarea",
    "titlu": "Duplicatele",
@@ -75,7 +82,7 @@
    ]
   },
   {
-   "nr": 6,
+   "nr": 7,
    "id": "s6",
    "grup": "Curățarea",
    "titlu": "Valorile imposibile",
@@ -95,7 +102,7 @@
    ]
   },
   {
-   "nr": 7,
+   "nr": 8,
    "id": "s7",
    "grup": "Lipsurile",
    "titlu": "Ce înseamnă „lipsă”",
@@ -107,7 +114,7 @@
    ]
   },
   {
-   "nr": 8,
+   "nr": 9,
    "id": "s8",
    "grup": "Lipsurile",
    "titlu": "Cât și unde lipsește",
@@ -119,7 +126,7 @@
    ]
   },
   {
-   "nr": 9,
+   "nr": 10,
    "id": "s9",
    "grup": "Curățarea",
    "titlu": "Codurile",
@@ -131,14 +138,14 @@
    ]
   },
   {
-   "nr": 10,
+   "nr": 11,
    "id": "s10",
    "grup": "Integrarea",
    "titlu": "Din lung în lat",
    "sarcini": []
   },
   {
-   "nr": 11,
+   "nr": 12,
    "id": "s11",
    "grup": "Integrarea",
    "titlu": "Unirea, cu verificare",
@@ -150,14 +157,14 @@
    ]
   },
   {
-   "nr": 12,
+   "nr": 13,
    "id": "s12",
    "grup": "Integrarea",
    "titlu": "Perechile de țări",
    "sarcini": []
   },
   {
-   "nr": 13,
+   "nr": 14,
    "id": "s13",
    "grup": "Validarea",
    "titlu": "Validarea finală",
@@ -169,14 +176,14 @@
    ]
   },
   {
-   "nr": 14,
+   "nr": 15,
    "id": "s14",
    "grup": "Validarea",
    "titlu": "Jurnalul deciziilor",
    "sarcini": []
   },
   {
-   "nr": 15,
+   "nr": 16,
    "id": "s15",
    "grup": "Proiectul echipei",
    "titlu": "Curățarea datelor proprii",
@@ -188,7 +195,7 @@
    ]
   },
   {
-   "nr": 16,
+   "nr": 17,
    "id": "s15b",
    "grup": "Proiectul echipei",
    "titlu": "Dovada curățării",
@@ -200,7 +207,7 @@
    ]
   },
   {
-   "nr": 17,
+   "nr": 18,
    "id": "s16",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

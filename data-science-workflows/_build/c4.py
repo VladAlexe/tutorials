@@ -11,8 +11,9 @@ s-a făcut la C3 și stă în fișa „Lucrul cu Git”.
 Ce am lăsat deliberat în afară:
   - valorile extreme cu prag IQR: țin de explorare (C6), unde lucrăm cu
     distribuțiile; aici rămân valorile imposibile sau neobișnuite;
-  - completarea lipsurilor (fillna, ffill): la datele noastre decizia este să
-    nu completăm, iar lecția explică de ce.
+  - completarea lipsurilor ca procedură (ffill, interpolare): la datele
+    noastre decizia este să nu completăm; fillna și dropna apar doar ca
+    demonstrație a ceea ce s-ar pierde.
 
 Rulare:  python _build/c4.py
 """
@@ -27,6 +28,11 @@ sl = L.sl
 CAIET = "<code>04_curatarea_si_integrarea_datelor.ipynb</code>"
 FISA = '<a class="leg" href="../../c3-versionare-git/git/">Lucrul cu Git</a>'
 ET_VERIF = '<p class="ex-et">Verificare</p>'   # pe slide, deasupra exercițiului
+
+
+def metode(randuri):
+    """Metodele folosite în exercițiu, explicate înaintea lui: ce face fiecare și cum se scrie."""
+    return tabel(["Metoda", "Ce face"], [r[:2] for r in randuri])
 
 
 # ===========================================================================
@@ -140,6 +146,12 @@ PAS_PROFIL = {
     ],
 }
 
+M_PROFIL = metode([
+    ["~info()", "rezumatul tabelului: rânduri, coloane, tipuri, câte valori are fiecare coloană", "<code>indicatori.info()</code>"],
+    ["~value_counts()", "de câte ori apare fiecare valoare dintr-o coloană", "<code>indicatori[\"indicator\"].value_counts()</code>"],
+    ["~str.len()", "lungimea fiecărui text dintr-o coloană", "<code>indicatori[\"regiune\"].str.len()</code>"],
+])
+
 COD_PROFIL = {
     "id": "c4-cod-profil", "fisier": "04_curatarea.ipynb",
     "sarcina": "Trei întrebări de pus oricărui tabel nou, înainte de orice modificare.",
@@ -162,8 +174,42 @@ COD_PROFIL = {
                   "coloane categoriale, iar <code>str.len()</code> verifică forma codurilor. Împreună răspund la "
                   "prima întrebare a curățării: ce conține tabelul."}
 
+M_PRIVIRE = tabel(["Metoda", "Ce arată", "La noi"], [
+    ["~shape", "(rânduri, coloane); atribut, fără paranteze", "~(2281, 3)"],
+    ["~columns", "numele coloanelor", "~regiune, valoare, indicator"],
+    ["~head(), tail()", "primele, ultimele 5 rânduri (sau câte cerem)", "<code>BE10</code> … <code>RS22</code>"],
+    ["~describe()", "minim, medie, cuartile, maxim pe coloanele numerice", "o populație minimă de 0"],
+    ["~nunique()", "câte valori distincte are fiecare coloană", "385 de regiuni, 7 indicatori"],
+    ["~unique()", "care sunt valorile distincte", "numele celor 7 indicatori"],
+    ["~value_counts(normalize=True)", "proporții în loc de număr de rânduri", "varsta_medie 0,155"],
+])
+
+COD_PRIVIRE = ("<pre><code>indicatori.shape                  <span class=\"c\"># (2281, 3)</span>\n"
+               "indicatori.head()                 <span class=\"c\"># primele 5 rânduri</span>\n"
+               "indicatori.nunique()              <span class=\"c\"># regiune 385, valoare 1282, indicator 7</span>\n"
+               "nume.describe(include=\"object\")  <span class=\"c\"># 1.971 coduri distincte, dar doar 1.879 nume</span></code></pre>")
+
+sl("s3a", "Profilarea", "Prima privire",
+   "<h2>Prima privire asupra unui tabel</h2>"
+   + M_PRIVIRE + COD_PRIVIRE,
+   manual=
+   "<h2>Prima privire asupra unui tabel</h2>"
+   "<p>Primele întrebări puse unui tabel nou sunt descriptive: cât de mare este, ce coloane are, cum arată primele "
+   "și ultimele rânduri și câte valori distincte are fiecare coloană. Metodele de mai jos nu modifică tabelul; ele "
+   "se pot rula oricând, de oricâte ori, și sunt primul lucru de făcut după fiecare citire sau unire.</p>"
+   + M_PRIVIRE + COD_PRIVIRE
+   + "<p><code>describe()</code> lucrează implicit pe coloanele numerice. Cu <code>include=\"object\"</code> descrie "
+     "coloanele text: câte valori sunt, câte sunt distincte, care apare cel mai des. Pe nomenclatorul "
+     "<code>nume</code>, codurile sunt toate diferite (1.971), dar numele nu: „Kýpros” apare de 4 ori, o dată pe "
+     "fiecare nivel, de la țară până la NUTS 3. De aceea tabelele se unesc după coduri, niciodată după nume.</p>"
+   + nota("Atribut sau metodă",
+          "<code>shape</code> și <code>columns</code> sunt atribute: proprietăți ale tabelului, scrise fără paranteze. "
+          "<code>head()</code>, <code>describe()</code> sunt metode: operații, scrise cu paranteze, care pot primi "
+          "argumente (<code>head(10)</code>).", True))
+
 sl("s3", "Profilarea", "Ce conține tabelul",
    "<h2>Profilarea: ce conține tabelul</h2>"
+   + M_PROFIL
    + ET_VERIF + ix("cod", "Profilarea tabelului", COD_PROFIL),
    manual=
    "<h2>Profilarea: ce conține tabelul</h2>"
@@ -171,6 +217,7 @@ sl("s3", "Profilarea", "Ce conține tabelul",
    "valori are fiecare coloană și ce valori distincte apar în coloanele categoriale. Deciziile din etapele următoare "
    "se sprijină pe aceste răspunsuri.</p>"
    + ix("pas", "Profilarea indicatorilor regionali", PAS_PROFIL)
+   + M_PROFIL
    + ix("cod", "Profilarea tabelului", COD_PROFIL)
    + tabel(["Metoda", "Ce arată"], [
        ["~df.info()", "dimensiunea, tipul fiecărei coloane, câte valori are fiecare"],
@@ -209,12 +256,22 @@ sl("s4", "Profilarea", "Tipurile",
    "indisponibilă, pandas citește toată coloana ca text, iar calculele nu mai funcționează. "
    "<code>pd.to_numeric</code> cu <code>errors=\"coerce\"</code> transformă textul în numere, iar ce nu poate fi "
    "număr devine valoare lipsă:</p>"
-   + TO_NUM + V_TIP)
+   + TO_NUM
+   + "<p>Când toate valorile se pot converti, <code>astype</code> schimbă tipul direct. Dacă o singură valoare nu se "
+     "poate converti, <code>astype</code> dă eroare; de aceea funcționează și ca verificare.</p>"
+     "<pre><code>pd.Series([\"2022\", \"2023\", \"2024\"]).astype(int)   <span class=\"c\"># 2022, 2023, 2024, ca numere întregi</span></code></pre>"
+   + V_TIP)
 
 
 # ===========================================================================
 #  5. Duplicatele
 # ===========================================================================
+
+M_DUP = metode([
+    ["~duplicated(coloane)", "<code>True</code> pentru fiecare rând care repetă o cheie deja întâlnită", "<code>indicatori.duplicated([\"regiune\", \"indicator\"])</code>"],
+    ["~sum()", "pe <code>True</code>/<code>False</code>: câte valori <code>True</code> sunt", "<code>....sum()</code> dă numărul de rânduri repetate"],
+    ["~drop_duplicates()", "păstrează doar prima apariție a fiecărei valori", "<code>sci[\"regiune_1\"].drop_duplicates()</code>"],
+])
 
 COD_DUP = {
     "id": "c4-cod-duplicate", "fisier": "04_curatarea.ipynb",
@@ -237,12 +294,9 @@ COD_DUP = {
 
 sl("s5", "Curățarea", "Duplicatele",
    "<h2>Duplicatele: cheie repetată sau conținut dublat</h2>"
-   + tabel(["regiune_1", "regiune_2", "sci", ""], [
-       ["~RO11", "~ITC4", "9.760", "Nord-Vest, Lombardia"],
-       ["~ITC4", "~RO11", "9.760", "aceeași legătură, în ordine inversă"],
-   ])
-   + "<p>În SCI nicio cheie nu se repetă, dar fiecare legătură apare de două ori. <code>duplicated</code> nu o vede: "
-     "este o dublură de conținut, rezolvată la integrare.</p>"
+   "<p>Cheia: coloanele care identifică un rând. În SCI nu se repetă, dar RO11-ITC4 și ITC4-RO11 sunt aceeași "
+   "legătură: o dublură de conținut, rezolvată la integrare.</p>"
+   + M_DUP
    + ET_VERIF + ix("cod", "Duplicatele", COD_DUP),
    manual=
    "<h2>Duplicatele: cheie repetată sau conținut dublat</h2>"
@@ -257,6 +311,7 @@ sl("s5", "Curățarea", "Duplicatele",
        ["~RO11", "~ITC4", "9.760", "Nord-Vest, Lombardia"],
        ["~ITC4", "~RO11", "9.760", "aceeași legătură, în ordine inversă"],
    ])
+   + M_DUP
    + ix("cod", "Duplicatele", COD_DUP))
 
 
@@ -279,6 +334,7 @@ sl("s6", "Curățarea", "Valorile imposibile",
    + tabel(["Verificarea", "În caiet", "Rezultatul"], [
        ["rezumatul pe indicator", "~groupby(\"indicator\")[\"valoare\"].describe()", "o populație minimă de 0"],
        ["cele mai mici valori", "~populatie.nsmallest(3, \"valoare\")", "<code>NO0B</code>, Svalbard"],
+       ["cele mai mari valori", "~populatie.sort_values(\"valoare\", ascending=False).head(3)", "Istanbul, Île-de-France, Lombardia"],
        ["procentele", "~(procente[\"valoare\"] &gt; 100).sum()", "0 valori peste 100"],
    ])
    + V_SVALBARD,
@@ -291,6 +347,7 @@ sl("s6", "Curățarea", "Valorile imposibile",
    + tabel(["Verificarea", "În caiet", "Rezultatul"], [
        ["rezumatul pe indicator", "~groupby(\"indicator\")[\"valoare\"].describe()", "o populație minimă de 0"],
        ["cele mai mici valori", "~populatie.nsmallest(3, \"valoare\")", "<code>NO0B</code>, Svalbard"],
+       ["cele mai mari valori", "~populatie.sort_values(\"valoare\", ascending=False).head(3)", "Istanbul, Île-de-France, Lombardia"],
        ["procentele", "~(procente[\"valoare\"] &gt; 100).sum()", "0 valori peste 100"],
    ])
    + V_SVALBARD
@@ -366,6 +423,12 @@ sl("s7", "Lipsurile", "Ce înseamnă „lipsă”",
    "<pre><code>zboruri[\"pasageri\"].isna().value_counts(dropna=False)   <span class=\"c\"># False 1087, True 418</span></code></pre>")
 
 
+M_LIPS = metode([
+    ["~isna()", "<code>True</code> în fiecare celulă în care lipsește o valoare", "<code>regiuni.isna()</code>"],
+    ["~sum()", "numără valorile <code>True</code>, pe fiecare coloană", "<code>regiuni.isna().sum()</code>: câte lipsesc"],
+    ["~mean()", "media valorilor <code>True</code> (1) și <code>False</code> (0), adică proporția", "<code>regiuni.isna().mean()</code>: ce proporție lipsește"],
+])
+
 COD_LIPSURI = {
     "id": "c4-cod-lipsuri", "fisier": "04_curatarea.ipynb",
     "sarcina": "Câte valori lipsesc pe fiecare coloană a tabelului regiunilor și ce procent reprezintă.",
@@ -403,19 +466,27 @@ SORT_LIPSURI = {
 
 sl("s8", "Lipsurile", "Cât și unde lipsește",
    "<h2>Cât lipsește și unde</h2>"
-   + ET_VERIF + ix("cod", "Lipsurile pe coloane", COD_LIPSURI)
-   + nota("Decizia noastră",
-          "Păstrăm toate cele 298 de regiuni, fără să completăm valorile lipsă. Lipsurile sunt concentrate în câteva "
-          "țări; o eliminare ar scoate din analiză tocmai acele țări.", True),
+   + M_LIPS
+   + ET_VERIF + ix("cod", "Lipsurile pe coloane", COD_LIPSURI),
    manual=
    "<h2>Cât lipsește și unde</h2>"
    "<p>După ce știm ce înseamnă „lipsă”, măsurăm cât lipsește și unde. Două măsuri sunt suficiente: numărul valorilor "
    "lipsă pe coloană și proporția lor. A doua permite compararea coloanelor între ele.</p>"
+   + M_LIPS
    + ix("cod", "Lipsurile pe coloane", COD_LIPSURI)
    + "<p>Întrebarea decisivă este însă <em>de ce</em> lipsesc valorile. Dacă lipsurile sunt puține și fără tipar, "
      "rândurile pot fi eliminate fără consecințe. Dacă au un tipar (anumite țări nu raportează un indicator), "
      "eliminarea lor schimbă compoziția datelor, iar completarea lor inventează valori. În acest caz, lipsa se "
      "păstrează și se documentează.</p>"
+   + "<p>Consecințele celor două variante se pot măsura direct. <code>dropna()</code> elimină fiecare rând cu cel puțin "
+     "o valoare lipsă; <code>fillna(valoare)</code> pune o valoare în locul fiecărei lipse.</p>"
+     "<pre><code>complete = regiuni.dropna()                          <span class=\"c\"># 161 din 298 regiuni, 24 din 37 țări</span>\n\n"
+     "pib = regiuni[\"pib_locuitor\"]\n"
+     "completat = pib.fillna(pib.median())                 <span class=\"c\"># 22 de regiuni primesc mediana</span>\n"
+     "pib.std(), completat.std()                           <span class=\"c\"># 14503, 13968</span></code></pre>"
+     "<p>Eliminarea ar scoate aproape jumătate dintre regiuni și 13 țări întregi. Completarea cu mediana reduce "
+     "abaterea standard: datele par mai omogene decât sunt, pentru că 22 de regiuni primesc aceeași valoare, "
+     "inventată.</p>"
    + ix("sortare", "Tratamentul potrivit fiecărui caz", SORT_LIPSURI)
    + nota("Decizia noastră",
           "Păstrăm toate cele 298 de regiuni, fără să completăm valorile lipsă, și alegem pentru fiecare analiză doar "
@@ -426,6 +497,12 @@ sl("s8", "Lipsurile", "Cât și unde lipsește",
 # ===========================================================================
 #  9. Codurile
 # ===========================================================================
+
+M_COD = metode([
+    ["~keep_default_na=False", "la citire: textele ca <code>NA</code> rămân text, nu devin lipsă", "Namibia rămâne <code>NA</code>"],
+    ["~na_values=[\"\"]", "la citire: doar celula goală e valoare lipsă", "lipsurile reale rămân lipsă"],
+    ["~replace(dicționar)", "înlocuiește valorile după un dicționar <code>{vechi: nou}</code>", "<code>migratie.replace({\"cetatenie\": {\"EL\": \"GR\"}})</code>"],
+])
 
 COD_STANDARD = {
     "id": "c4-cod-standard", "fisier": "04_curatarea.ipynb",
@@ -457,8 +534,8 @@ CODURI_TAB = tabel(["Țara", "SCI", "Eurostat", "Fără corecție"], [
 
 sl("s9", "Curățarea", "Codurile",
    "<h2>Aceeași țară, alt cod</h2>"
-   "<p class=\"cheie\">Eurostat scrie Grecia <code>EL</code> și Regatul Unit <code>UK</code>; SCI, <code>GR</code> și "
-   "<code>GB</code>. Necorectate, se pierd la unire, fără eroare.</p>"
+   "<p>Eurostat scrie Grecia <code>EL</code> și Regatul Unit <code>UK</code>; SCI, <code>GR</code> și <code>GB</code>.</p>"
+   + M_COD
    + ET_VERIF + ix("cod", "Alinierea codurilor", COD_STANDARD),
    manual=
    "<h2>Aceeași țară, alt cod</h2>"
@@ -467,7 +544,13 @@ sl("s9", "Curățarea", "Codurile",
    "Pentru program sunt țări diferite, iar o unire pe coduri le pierde fără niciun mesaj de eroare. Corecția se face "
    "înainte de unire, cu un dicționar explicit.</p>"
    + CODURI_TAB
+   + M_COD
    + ix("cod", "Alinierea codurilor", COD_STANDARD)
+   + "<p>Codurile noastre vin de la API-uri și sunt consecvente. În datele introduse de mână (chestionare, "
+     "registre), aceeași categorie apare des în mai multe forme: cu spații, cu litere mici. Metodele din grupul "
+     "<code>.str</code> le aduc la aceeași formă înainte de numărare sau de unire:</p>"
+     "<pre><code>scrise = pd.Series([\" RO\", \"ro\", \"Ro \"])     <span class=\"c\"># 3 valori distincte</span>\n"
+     "scrise.str.strip().str.upper()                <span class=\"c\"># RO, RO, RO</span></code></pre>"
    + nota("Aceeași regulă pentru SCI pe țări",
           "<code>country.csv</code> conține și el Namibia; se citește tot cu <code>keep_default_na=False</code>.", True))
 
@@ -600,6 +683,12 @@ sl("s12", "Integrarea", "Perechile de țări",
 #  13. Validarea finală
 # ===========================================================================
 
+M_VAL = metode([
+    ["~duplicated(cheie).sum()", "câte rânduri repetă cheia: trebuie 0", "<code>regiuni.duplicated(\"regiune\").sum()</code>"],
+    ["~isna().sum()", "câte valori lipsesc într-o coloană: la SCI trebuie 0", "<code>perechi[\"sci\"].isna().sum()</code>"],
+    ["~len(tabel)", "câte rânduri are tabelul", "<code>len(perechi)</code>: 44.253"],
+])
+
 COD_VALIDARE = {
     "id": "c4-cod-validare", "fisier": "04_curatarea.ipynb",
     "sarcina": "Validarea finală a celor trei tabele de analiză, înainte de salvare.",
@@ -625,8 +714,8 @@ COD_VALIDARE = {
 
 sl("s13", "Validarea", "Validarea finală",
    "<h2>Validarea finală</h2>"
-   "<p class=\"cheie\">Înainte de salvare, o singură celulă verifică regulile fiecărui tabel: cheie unică, variabila "
-   "de explicat completă, numărul de rânduri așteptat.</p>"
+   "<p>Înainte de salvare, o singură celulă verifică regulile fiecărui tabel.</p>"
+   + M_VAL
    + ET_VERIF + ix("cod", "Verificările finale", COD_VALIDARE),
    manual=
    "<h2>Validarea finală</h2>"
@@ -634,6 +723,7 @@ sl("s13", "Validarea", "Validarea finală",
    "regiuni, perechea de țări), care trebuie să fie unică, și o variabilă de explicat, SCI, care trebuie să fie "
    "completă. Numărul de rânduri trebuie să fie cel calculat: 298 de regiuni, 44.253 de perechi de regiuni, 276 de "
    "perechi de țări.</p>"
+   + M_VAL
    + ix("cod", "Verificările finale", COD_VALIDARE)
    + "<p>Celula se păstrează în caiet și se rulează la fiecare refacere a curățării. Rolul ei nu este să găsească "
      "erori o singură dată, ci să semnaleze imediat când o modificare ulterioară schimbă datele.</p>")
@@ -748,6 +838,10 @@ sl("s16", "Mai departe", "Pentru cursul următor",
    "<li>Un cont pe Neon, pentru baza de date.</li></ul></section>"
    "</div></div>"
    + surse("Documentația curățării", [
+       ("pandas: 10 minutes to pandas", "https://pandas.pydata.org/docs/user_guide/10min.html",
+        "prima privire asupra unui tabel: <code>head</code>, <code>describe</code>, <code>sort_values</code>"),
+       ("pandas: describe", "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html",
+        "rezumatul numeric și, cu <code>include=\"object\"</code>, al coloanelor text"),
        ("pandas: date lipsă", "https://pandas.pydata.org/docs/user_guide/missing_data.html",
         "ce înseamnă <code>NaN</code>, cum se propagă și cum se tratează"),
        ("pandas: read_csv", "https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html",

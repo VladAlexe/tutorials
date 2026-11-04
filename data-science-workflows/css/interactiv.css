@@ -3652,3 +3652,7 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .rnr[data-capitol="c4"] .sld .ix__cap{display:none}
 .rnr[data-capitol="c4"] .sld#s15b .dov{grid-template-columns:repeat(2,minmax(0,1fr))}
 .rnr[data-capitol="c4"] .sld#s15b .ex__ind p:not(:last-child){display:none}
+/* Cursul 4: metodele explicate înaintea exercițiului; tabelul și exercițiul încap
+   pe un ecran de 1366×768, cu sarcina scrisă deja în comentariile codului */
+.rnr[data-capitol="c4"] .sld .tabel td,.rnr[data-capitol="c4"] .sld .tabel th{padding-top:5px;padding-bottom:5px}
+.rnr[data-capitol="c4"] .sld:is(#s3,#s5,#s8,#s9,#s13) .ex__sarcina{display:none}
