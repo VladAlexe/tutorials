@@ -3647,3 +3647,8 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .tr6__txt{grid-column:2;grid-row:1 / span 2;align-self:center;margin:0}
 @media (max-width:760px){.tr6{grid-template-columns:1fr}.tr6__txt{grid-column:1;grid-row:auto}}
 .mm2__desen{margin-top:24px}
+/* Cursul 4: titlul mic de deasupra exercițiilor repetă titlul slide-ului; pe
+   slide rămâne eticheta „Verificare” (ca la C3) */
+.rnr[data-capitol="c4"] .sld .ix__cap{display:none}
+.rnr[data-capitol="c4"] .sld#s15b .dov{grid-template-columns:repeat(2,minmax(0,1fr))}
+.rnr[data-capitol="c4"] .sld#s15b .ex__ind p:not(:last-child){display:none}

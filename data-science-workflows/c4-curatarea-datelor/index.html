@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lecția 4. Curățarea datelor · Fluxuri de lucru</title>
-<meta name="description" content="Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.">
-<link rel="stylesheet" href="../css/fonturi.css?v=114">
-<link rel="stylesheet" href="../css/sistem.css?v=114">
-<link rel="stylesheet" href="../css/intrare.css?v=114">
-<script src="../js/tema.js?v=114"></script>
+<title>Lecția 4. Curățarea și integrarea datelor · Fluxuri de lucru</title>
+<meta name="description" content="Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea cu pivot și merge, validarea finală și jurnalul deciziilor, pe datele cursului.">
+<link rel="stylesheet" href="../css/fonturi.css?v=115">
+<link rel="stylesheet" href="../css/sistem.css?v=115">
+<link rel="stylesheet" href="../css/intrare.css?v=115">
+<script src="../js/tema.js?v=115"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <span class="bl__fapte" id="fapte">
       <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
       <a class="bl__b" href="tutorial/">Manualul</a>
-      
+      <a class="bl__b" href="https://raw.githubusercontent.com/dsw-ubb-2026/-DSW2026/main/curs/04_curatarea_si_integrarea_datelor.ipynb" data-descarca="04_curatarea_si_integrarea_datelor.ipynb" data-pagina="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/04_curatarea_si_integrarea_datelor.ipynb">Descarcă caietul</a><a class="bl__b" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/04_curatarea_si_integrarea_datelor.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
       <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
     </span>
   </div>
@@ -34,32 +34,29 @@
 
   <header class="intr__erou">
     <p class="intr__tag">Lecția 4 din 8</p>
-    <h1>Curățarea datelor</h1>
-    <p class="deck">Prima parte: Git în practică, adică ce se mută între zone, ce se salvează și cum se anulează o modificare. A doua: curățarea datelor, etapa care ocupă 60% din timpul unui proiect de date și de care depinde validitatea rezultatelor.</p>
+    <h1>Curățarea și integrarea datelor</h1>
+    <p class="deck">Tabelele pregătite în C3 sunt verificate înainte de folosire: ce conțin, dacă au tipurile corecte, dubluri, valori imposibile, lipsuri și coduri incompatibile. Apoi sunt unite în trei tabele de analiză, validate și documentate.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>La lecția anterioară a fost prezentat rolul lui Git. Această lecție îl folosește: fișiere mutate între zone, commit-uri cu mesaje informative, modificări anulate în patru moduri diferite fără pierderi de lucru și o ramură care poate fi ștearsă fără consecințe. Partea aceasta ocupă puțin spațiu pe slide-uri și mult timp în terminal.</p>
-<p>A doua parte tratează etapa de după obținerea datelor. Un <a class="leg" href="https://visit.figure-eight.com/data-science-report" rel="noopener" target="_blank">sondaj CrowdFlower</a> printre specialiștii care lucrează zilnic cu date arată că aproape 60% din timpul lor este dedicat curățării și organizării datelor. Aceasta nu este o deficiență a profesiei, ci o parte centrală a ei: datele reale conțin aceeași categorie scrisă în mai multe feluri, rânduri duplicate, valori lipsă care nu înseamnă zero și valori care par eronate, dar sunt corecte.</p>
-<p>Cele șase etape se parcurg pe rând, pe datele cursului. Pentru fiecare decizie (ce se șterge, ce se completează, ce se elimină), întrebarea relevantă nu este „ce face comanda”, ci „ce informație se pierde când este rulată”.</p></div>
+    <div class="sec__corp"><p>Preprocesarea din C3 a adus sursele la aceeași formă. Curățarea pune o întrebare diferită: dacă valorile din această formă sunt corecte, complete și comparabile între surse. Lecția parcurge etapele în ordinea lor, pe tabelele cursului: profilarea, tipurile, duplicatele, valorile imposibile sau neobișnuite, lipsurile și codurile de țară.</p>
+<p>A doua parte este integrarea: indicatorii trec din formatul lung în cel lat, apoi sunt uniți cu perechile de regiuni din SCI, iar migrația, cu cele două direcții ale ei, este adusă în forma perechilor de țări. La unire se pot pierde sau multiplica rânduri fără nicio eroare, de aceea fiecare <code>merge</code> este urmat de o verificare a numărului de rânduri.</p>
+<p>Lecția se încheie cu validarea finală a celor trei tabele de analiză și cu jurnalul deciziilor. Fiecare decizie de curățare (ce se păstrează, ce se elimină, ce se înlocuiește) se scrie împreună cu motivul ei, astfel încât curățarea să poată fi verificată și refăcută.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Drumul unui fișier de la editor până pe GitHub, cu zona în care se află în fiecare moment.</li>
-<li>Mesaje de commit care rămân informative pentru cine le citește peste câteva luni.</li>
-<li>Alegerea între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code>, în funcție de ce trebuie anulat.</li>
-<li>Ieșirea din editorul Vim, deschis de Git pentru mesajele de commit.</li>
-<li>Profilarea unui set de date în cinci comenzi și identificarea, din profil, a problemelor care trebuie rezolvate.</li>
-<li>Standardizarea categoriilor scrise inconsecvent, cu verificarea că nu au fost comasate două categorii distincte.</li>
-<li>Diferența dintre un duplicat real și o pereche inversată, care, la datele diadice, are alt statut.</li>
-<li>Alegerea între ștergere, completare și păstrare pentru valorile lipsă, cu ce introduce fiecare variantă.</li>
-<li>Un prag pentru valori extreme și decizia dacă valorile de peste prag sunt erori sau observații reale.</li>
-<li>Trecerea unui tabel din formă lată în formă lungă și invers, cu forma potrivită pentru fiecare operație.</li>
-<li>Un dicționar de date și un fișier de decizii pe care un coleg le poate înțelege fără explicații suplimentare.</li>
+<li>Profilarea unui tabel cu <code>info</code>, <code>value_counts</code> și <code>describe</code>, înaintea oricărei decizii.</li>
+<li>Verificarea tipurilor și conversia unei coloane numerice citite ca text.</li>
+<li>Diferența dintre o cheie repetată și o dublură de conținut, cu <code>duplicated</code> și <code>drop_duplicates</code>.</li>
+<li>Distincția dintre o valoare imposibilă, care se corectează, și una neobișnuită, care se verifică în sursă.</li>
+<li>Ce înseamnă „lipsă” pentru pandas, cum se măsoară lipsurile și de ce, la datele noastre, nu se completează.</li>
+<li>Alinierea codurilor de țară între surse (EL/GR, UK/GB) și citirea corectă a codului Namibiei.</li>
+<li>Trecerea din formatul lung în cel lat cu <code>pivot</code> și unirea tabelelor cu <code>merge</code>, cu verificarea rândurilor.</li>
+<li>Validarea finală a tabelelor de analiză și documentarea deciziilor într-un jurnal.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -73,6 +70,14 @@
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
+      <a class="mat__c" href="https://raw.githubusercontent.com/dsw-ubb-2026/-DSW2026/main/curs/04_curatarea_si_integrarea_datelor.ipynb" data-descarca="04_curatarea_si_integrarea_datelor.ipynb" data-pagina="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/04_curatarea_si_integrarea_datelor.ipynb">
+        <span class="mat__t">Descarcă caietul</span>
+        <span class="mat__d">Un clic: <code>04_curatarea_si_integrarea_datelor.ipynb</code> se salvează în Descărcări, de unde se mută în <code>dsw/curs/</code>. Este varianta de acum de pe GitHub.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/04_curatarea_si_integrarea_datelor.ipynb" target="_blank" rel="noopener">
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Caietul 04, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Tabelele din C3 se citesc din depozitul cursului.</span>
+      </a>
       <a class="mat__c" href="../c3-versionare-git/">
         <span class="mat__t">Lecția 3: Git</span>
         <span class="mat__d">Conceptele din spatele comenzilor folosite aici</span>
@@ -81,22 +86,16 @@
   </section>
   <section class="sec sec--nevoie">
     <p class="sec__et">Pregătire</p>
-    <div class="sec__corp"><p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursurile 2 și 3:</p>
+    <div class="sec__corp"><p>Partea practică presupune:</p>
 <ol>
-<li><a class="leg" href="https://git-scm.com/downloads" rel="noopener" target="_blank">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>
-<li>Depozitul echipei, clonat la cursul 2 din organizația comună a cursului.</li>
-<li>Datele colectate la cursul 2, în <code>date/brute/</code> din depozitul echipei.</li>
-<li><code>pandas</code> în mediul de lucru. Verificarea: <code>python -c "import pandas; print(pandas.__version__)"</code>.</li>
-</ol>
-<p>Dacă datele de la cursul 2 s-au pierdut, scriptul de colectare le poate obține din nou. Din acest motiv, în depozit se păstrează scriptul, nu doar fișierele.</p></div>
+<li>Caietul 04, descărcat în <code>dsw/curs/</code>. Tabelele produse în C3 se citesc din depozitul cursului.</li>
+<li>Depozitul echipei, clonat la cursul 3, cu ramura <code>dev</code>.</li>
+<li>Datele proiectului echipei, în <code>proiect/data/raw</code>, pentru exercițiul echipei.</li>
+</ol></div>
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
-    <div class="sec__corp"><p>Seturile de date curățate, în <code>date/curat/</code>, și două fișiere text destinate cititorilor umani:</p>
-<ul class="obiective">
-<li><code>date/curat/dicționar.md</code>: pentru fiecare coloană, ce reprezintă, în ce unitate este exprimată, de unde provine și ce înseamnă o valoare lipsă.</li>
-<li><code>decizii.md</code>: pentru fiecare operație de curățare, ce s-a schimbat, câte rânduri au fost afectate și de ce s-a ales această variantă.</li>
-</ul></div>
+    <div class="sec__corp"><p>Caietul de curățare al echipei, <code>notebooks/03_cleaning.ipynb</code>, pe ramura <code>dev</code>, cu celula de validare finală, tabelele curate în <code>data/processed</code> și deciziile de curățare în <code>README.md</code>.</p></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -124,7 +123,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=114"), import("../js/ora.js?v=114"), import("../js/curs.js?v=114")]);
+    import("../js/auth.js?v=115"), import("../js/ora.js?v=115"), import("../js/curs.js?v=115")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -167,7 +166,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=114"></script>
-<script type="module" src="../js/subsol.js?v=114"></script>
+<script type="module" src="../js/antet.js?v=115"></script>
+<script type="module" src="../js/subsol.js?v=115"></script>
 </body>
 </html>

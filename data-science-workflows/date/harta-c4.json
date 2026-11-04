@@ -1,101 +1,40 @@
 {
  "capitol": "c4",
- "total": 27,
+ "total": 17,
  "sarcini": 12,
  "slide": [
   {
    "nr": 1,
    "id": "s1",
-   "grup": "Cursul",
-   "titlu": "Planul lecției",
-   "sarcini": []
-  },
-  {
-   "nr": 2,
-   "id": "s2",
-   "grup": "Cursul",
-   "titlu": "Timpul curățării",
-   "sarcini": []
-  },
-  {
-   "nr": 3,
-   "id": "s3",
-   "grup": "Git în practică",
-   "titlu": "Fluxul complet",
-   "sarcini": []
-  },
-  {
-   "nr": 4,
-   "id": "s4",
-   "grup": "Git în practică",
-   "titlu": "Staging și commit",
-   "sarcini": []
-  },
-  {
-   "nr": 5,
-   "id": "s4b",
-   "grup": "Git în practică",
-   "titlu": "Scoaterea din pregătire",
+   "grup": "Recapitulare",
+   "titlu": "Git, pe scurt",
    "sarcini": [
     {
-     "id": "c4-cod-staging",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 6,
-   "id": "s5",
-   "grup": "Git în practică",
-   "titlu": "Anulări",
-   "sarcini": []
-  },
-  {
-   "nr": 7,
-   "id": "s6",
-   "grup": "Git în practică",
-   "titlu": "Ramuri, în practică",
-   "sarcini": []
-  },
-  {
-   "nr": 8,
-   "id": "s7",
-   "grup": "Git în practică",
-   "titlu": "Depozitul pe GitHub",
-   "sarcini": []
-  },
-  {
-   "nr": 9,
-   "id": "s8",
-   "grup": "Curățarea",
-   "titlu": "Cele șase etape",
-   "sarcini": []
-  },
-  {
-   "nr": 10,
-   "id": "s9",
-   "grup": "Curățarea",
-   "titlu": "Profilarea",
-   "sarcini": [
-    {
-     "id": "c4-v6",
+     "id": "c4-v1",
      "fel": "verificare",
-     "corect": 3,
-     "q": "info() arată o coloană de prețuri ca object, nu ca număr. Ce înseamnă?",
+     "corect": 1,
+     "q": "Ai modificat din greșeală caietul echipei și încă nu ai dat git add. Cum revii la versiunea din ultimul commit?",
      "optiuni": [
-      "Fișierul este corupt",
-      "Pandas nu poate reprezenta prețuri",
-      "Valorile sunt prea mari",
-      "Coloana conține cel puțin o valoare nenumerică"
+      "git restore --staged caiet.ipynb",
+      "git restore caiet.ipynb",
+      "git revert caiet.ipynb",
+      "git rm caiet.ipynb"
      ]
     }
    ]
   },
   {
-   "nr": 11,
-   "id": "s9b",
-   "grup": "Curățarea",
-   "titlu": "Profilarea tabelului",
+   "nr": 2,
+   "id": "s2",
+   "grup": "Cursul",
+   "titlu": "Planul lecției",
+   "sarcini": []
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Profilarea",
+   "titlu": "Ce conține tabelul",
    "sarcini": [
     {
      "id": "c4-cod-profil",
@@ -104,27 +43,28 @@
    ]
   },
   {
-   "nr": 12,
-   "id": "s10",
-   "grup": "Curățarea",
-   "titlu": "Coduri incompatibile",
-   "sarcini": []
-  },
-  {
-   "nr": 13,
-   "id": "s10b",
-   "grup": "Curățarea",
-   "titlu": "Repararea codurilor",
+   "nr": 4,
+   "id": "s4",
+   "grup": "Profilarea",
+   "titlu": "Tipurile",
    "sarcini": [
     {
-     "id": "c4-cod-standard",
-     "fel": "cod"
+     "id": "c4-v6",
+     "fel": "verificare",
+     "corect": 3,
+     "q": "info() arată o coloană de valori ca object, nu ca număr. Ce înseamnă?",
+     "optiuni": [
+      "Fișierul este corupt",
+      "Pandas nu poate reprezenta valorile",
+      "Valorile sunt prea mari",
+      "Coloana conține cel puțin o valoare nenumerică"
+     ]
     }
    ]
   },
   {
-   "nr": 14,
-   "id": "s11",
+   "nr": 5,
+   "id": "s5",
    "grup": "Curățarea",
    "titlu": "Duplicatele",
    "sarcini": [
@@ -135,17 +75,30 @@
    ]
   },
   {
-   "nr": 15,
-   "id": "s13",
-   "grup": "Valori lipsă și extreme",
-   "titlu": "Tratarea valorilor lipsă",
-   "sarcini": []
+   "nr": 6,
+   "id": "s6",
+   "grup": "Curățarea",
+   "titlu": "Valorile imposibile",
+   "sarcini": [
+    {
+     "id": "c4-v7",
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Populația minimă din tabel este 0, la regiunea NO0B. Ce se face cu acest rând?",
+     "optiuni": [
+      "Se șterge: o regiune nu poate avea 0 locuitori",
+      "Se înlocuiește cu media populației",
+      "Se verifică în sursă înainte de orice decizie",
+      "Se transformă în valoare lipsă"
+     ]
+    }
+   ]
   },
   {
-   "nr": 16,
-   "id": "s14",
-   "grup": "Valori lipsă și extreme",
-   "titlu": "Valorile lipsă, în cod",
+   "nr": 7,
+   "id": "s7",
+   "grup": "Lipsurile",
+   "titlu": "Ce înseamnă „lipsă”",
    "sarcini": [
     {
      "id": "c4-prezice-nan",
@@ -154,10 +107,10 @@
    ]
   },
   {
-   "nr": 17,
-   "id": "s14b",
-   "grup": "Valori lipsă și extreme",
-   "titlu": "Tratarea valorilor lipsă",
+   "nr": 8,
+   "id": "s8",
+   "grup": "Lipsurile",
+   "titlu": "Cât și unde lipsește",
    "sarcini": [
     {
      "id": "c4-cod-lipsuri",
@@ -166,48 +119,48 @@
    ]
   },
   {
-   "nr": 18,
-   "id": "s15",
-   "grup": "Valori lipsă și extreme",
-   "titlu": "Valorile extreme",
+   "nr": 9,
+   "id": "s9",
+   "grup": "Curățarea",
+   "titlu": "Codurile",
    "sarcini": [
     {
-     "id": "c4-prag",
+     "id": "c4-cod-standard",
      "fel": "cod"
     }
    ]
   },
   {
-   "nr": 19,
-   "id": "s16",
-   "grup": "Transformări",
-   "titlu": "Lung sau lat",
+   "nr": 10,
+   "id": "s10",
+   "grup": "Integrarea",
+   "titlu": "Din lung în lat",
    "sarcini": []
   },
   {
-   "nr": 20,
-   "id": "s16m",
-   "grup": "Transformări",
-   "titlu": "Din lat în lung",
+   "nr": 11,
+   "id": "s11",
+   "grup": "Integrarea",
+   "titlu": "Unirea, cu verificare",
    "sarcini": [
     {
-     "id": "c4-cod-melt",
+     "id": "c4-prezice-merge",
      "fel": "cod"
     }
    ]
   },
   {
-   "nr": 21,
-   "id": "s16b",
-   "grup": "Transformări",
-   "titlu": "Două direcții, un rând",
+   "nr": 12,
+   "id": "s12",
+   "grup": "Integrarea",
+   "titlu": "Perechile de țări",
    "sarcini": []
   },
   {
-   "nr": 22,
-   "id": "s17",
-   "grup": "Validare",
-   "titlu": "Înainte și după",
+   "nr": 13,
+   "id": "s13",
+   "grup": "Validarea",
+   "titlu": "Validarea finală",
    "sarcini": [
     {
      "id": "c4-cod-validare",
@@ -216,22 +169,27 @@
    ]
   },
   {
-   "nr": 23,
-   "id": "s18",
-   "grup": "Validare",
-   "titlu": "Dicționarul de date",
+   "nr": 14,
+   "id": "s14",
+   "grup": "Validarea",
+   "titlu": "Jurnalul deciziilor",
    "sarcini": []
   },
   {
-   "nr": 24,
-   "id": "s19",
+   "nr": 15,
+   "id": "s15",
    "grup": "Proiectul echipei",
    "titlu": "Curățarea datelor proprii",
-   "sarcini": []
+   "sarcini": [
+    {
+     "id": "c4-decizie",
+     "fel": "text"
+    }
+   ]
   },
   {
-   "nr": 25,
-   "id": "s19b",
+   "nr": 16,
+   "id": "s15b",
    "grup": "Proiectul echipei",
    "titlu": "Dovada curățării",
    "sarcini": [
@@ -242,20 +200,8 @@
    ]
   },
   {
-   "nr": 26,
-   "id": "s20",
-   "grup": "Proiectul echipei",
-   "titlu": "Documentarea deciziilor",
-   "sarcini": [
-    {
-     "id": "c4-decizie",
-     "fel": "text"
-    }
-   ]
-  },
-  {
-   "nr": 27,
-   "id": "s21",
+   "nr": 17,
+   "id": "s16",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",
    "sarcini": []

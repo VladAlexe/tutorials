@@ -229,26 +229,26 @@
   },
   "c4-curatarea-datelor": {
     "nr": 4,
-    "titlu": "Curățarea datelor",
-    "deck": "Prima parte: Git în practică, adică ce se mută între zone, ce se salvează și cum se anulează o modificare. A doua: curățarea datelor, etapa care ocupă 60% din timpul unui proiect de date și de care depinde validitatea rezultatelor.",
-    "descriere": "Git în practică: staging, commit, anulări, ramuri. Apoi curățarea datelor: profilare, standardizare, duplicate, lipsuri, valori extreme, formă lungă și lată, validare.",
-    "caiet": null,
+    "titlu": "Curățarea și integrarea datelor",
+    "deck": "Tabelele pregătite în C3 sunt verificate înainte de folosire: ce conțin, dacă au tipurile corecte, dubluri, valori imposibile, lipsuri și coduri incompatibile. Apoi sunt unite în trei tabele de analiză, validate și documentate.",
+    "descriere": "Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea cu pivot și merge, validarea finală și jurnalul deciziilor, pe datele cursului.",
+    "caiet": "@REPO@/blob/main/curs/04_curatarea_si_integrarea_datelor.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>La lecția anterioară a fost prezentat rolul lui Git. Această lecție îl folosește: fișiere mutate între zone, commit-uri cu mesaje informative, modificări anulate în patru moduri diferite fără pierderi de lucru și o ramură care poate fi ștearsă fără consecințe. Partea aceasta ocupă puțin spațiu pe slide-uri și mult timp în terminal.</p>\n<p>A doua parte tratează etapa de după obținerea datelor. Un <a class=\"leg\" href=\"https://visit.figure-eight.com/data-science-report\" rel=\"noopener\" target=\"_blank\">sondaj CrowdFlower</a> printre specialiștii care lucrează zilnic cu date arată că aproape 60% din timpul lor este dedicat curățării și organizării datelor. Aceasta nu este o deficiență a profesiei, ci o parte centrală a ei: datele reale conțin aceeași categorie scrisă în mai multe feluri, rânduri duplicate, valori lipsă care nu înseamnă zero și valori care par eronate, dar sunt corecte.</p>\n<p>Cele șase etape se parcurg pe rând, pe datele cursului. Pentru fiecare decizie (ce se șterge, ce se completează, ce se elimină), întrebarea relevantă nu este „ce face comanda”, ci „ce informație se pierde când este rulată”.</p>"
+        "html": "<p>Preprocesarea din C3 a adus sursele la aceeași formă. Curățarea pune o întrebare diferită: dacă valorile din această formă sunt corecte, complete și comparabile între surse. Lecția parcurge etapele în ordinea lor, pe tabelele cursului: profilarea, tipurile, duplicatele, valorile imposibile sau neobișnuite, lipsurile și codurile de țară.</p>\n<p>A doua parte este integrarea: indicatorii trec din formatul lung în cel lat, apoi sunt uniți cu perechile de regiuni din SCI, iar migrația, cu cele două direcții ale ei, este adusă în forma perechilor de țări. La unire se pot pierde sau multiplica rânduri fără nicio eroare, de aceea fiecare <code>merge</code> este urmat de o verificare a numărului de rânduri.</p>\n<p>Lecția se încheie cu validarea finală a celor trei tabele de analiză și cu jurnalul deciziilor. Fiecare decizie de curățare (ce se păstrează, ce se elimină, ce se înlocuiește) se scrie împreună cu motivul ei, astfel încât curățarea să poată fi verificată și refăcută.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Drumul unui fișier de la editor până pe GitHub, cu zona în care se află în fiecare moment.</li>\n<li>Mesaje de commit care rămân informative pentru cine le citește peste câteva luni.</li>\n<li>Alegerea între <code>restore</code>, <code>restore --staged</code>, <code>revert</code> și <code>reset</code>, în funcție de ce trebuie anulat.</li>\n<li>Ieșirea din editorul Vim, deschis de Git pentru mesajele de commit.</li>\n<li>Profilarea unui set de date în cinci comenzi și identificarea, din profil, a problemelor care trebuie rezolvate.</li>\n<li>Standardizarea categoriilor scrise inconsecvent, cu verificarea că nu au fost comasate două categorii distincte.</li>\n<li>Diferența dintre un duplicat real și o pereche inversată, care, la datele diadice, are alt statut.</li>\n<li>Alegerea între ștergere, completare și păstrare pentru valorile lipsă, cu ce introduce fiecare variantă.</li>\n<li>Un prag pentru valori extreme și decizia dacă valorile de peste prag sunt erori sau observații reale.</li>\n<li>Trecerea unui tabel din formă lată în formă lungă și invers, cu forma potrivită pentru fiecare operație.</li>\n<li>Un dicționar de date și un fișier de decizii pe care un coleg le poate înțelege fără explicații suplimentare.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Profilarea unui tabel cu <code>info</code>, <code>value_counts</code> și <code>describe</code>, înaintea oricărei decizii.</li>\n<li>Verificarea tipurilor și conversia unei coloane numerice citite ca text.</li>\n<li>Diferența dintre o cheie repetată și o dublură de conținut, cu <code>duplicated</code> și <code>drop_duplicates</code>.</li>\n<li>Distincția dintre o valoare imposibilă, care se corectează, și una neobișnuită, care se verifică în sursă.</li>\n<li>Ce înseamnă „lipsă” pentru pandas, cum se măsoară lipsurile și de ce, la datele noastre, nu se completează.</li>\n<li>Alinierea codurilor de țară între surse (EL/GR, UK/GB) și citirea corectă a codului Namibiei.</li>\n<li>Trecerea din formatul lung în cel lat cu <code>pivot</code> și unirea tabelelor cu <code>merge</code>, cu verificarea rândurilor.</li>\n<li>Validarea finală a tabelelor de analiză și documentarea deciziilor într-un jurnal.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
-        "html": "<p>Lecția poate fi urmărită fără programe instalate. Partea practică necesită ce a fost pregătit la cursurile 2 și 3:</p>\n<ol>\n<li><a class=\"leg\" href=\"https://git-scm.com/downloads\" rel=\"noopener\" target=\"_blank\">Git</a> instalat și identitatea setată (<code>user.name</code>, <code>user.email</code>).</li>\n<li>Depozitul echipei, clonat la cursul 2 din organizația comună a cursului.</li>\n<li>Datele colectate la cursul 2, în <code>date/brute/</code> din depozitul echipei.</li>\n<li><code>pandas</code> în mediul de lucru. Verificarea: <code>python -c \"import pandas; print(pandas.__version__)\"</code>.</li>\n</ol>\n<p>Dacă datele de la cursul 2 s-au pierdut, scriptul de colectare le poate obține din nou. Din acest motiv, în depozit se păstrează scriptul, nu doar fișierele.</p>"
+        "html": "<p>Partea practică presupune:</p>\n<ol>\n<li>Caietul 04, descărcat în <code>dsw/curs/</code>. Tabelele produse în C3 se citesc din depozitul cursului.</li>\n<li>Depozitul echipei, clonat la cursul 3, cu ramura <code>dev</code>.</li>\n<li>Datele proiectului echipei, în <code>proiect/data/raw</code>, pentru exercițiul echipei.</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",
-        "html": "<p>Seturile de date curățate, în <code>date/curat/</code>, și două fișiere text destinate cititorilor umani:</p>\n<ul class=\"obiective\">\n<li><code>date/curat/dicționar.md</code>: pentru fiecare coloană, ce reprezintă, în ce unitate este exprimată, de unde provine și ce înseamnă o valoare lipsă.</li>\n<li><code>decizii.md</code>: pentru fiecare operație de curățare, ce s-a schimbat, câte rânduri au fost afectate și de ce s-a ales această variantă.</li>\n</ul>"
+        "html": "<p>Caietul de curățare al echipei, <code>notebooks/03_cleaning.ipynb</code>, pe ramura <code>dev</code>, cu celula de validare finală, tabelele curate în <code>data/processed</code> și deciziile de curățare în <code>README.md</code>.</p>"
       }
     ],
     "resurse": [
@@ -299,7 +299,8 @@
         "t": "Nomenclatorul NUTS",
         "g": "Eurostat"
       }
-    ]
+    ],
+    "caiet_d": "Caietul 04, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Tabelele din C3 se citesc din depozitul cursului."
   },
   "c5-agregare-si-baze-de-date": {
     "nr": 5,

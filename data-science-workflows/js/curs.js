@@ -48,9 +48,9 @@ export const LECTII = [
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb" },
 
   { nr:4, cheie:"c4-curatarea-datelor",
-    titlu:"Curățarea datelor",
+    titlu:"Curățarea și integrarea datelor",
     scurt:"Curățare",
-    rezumat:"Valori lipsă, duplicate, unități de măsură incompatibile. Etapa cea mai lungă a analizei, de care depind toate rezultatele.",
+    rezumat:"Profilarea, duplicatele, lipsurile și codurile incompatibile, apoi unirea tabelelor și validarea finală, pe datele cursului.",
     stare:"gata", sarcini:12,
     notebook:null },
 
