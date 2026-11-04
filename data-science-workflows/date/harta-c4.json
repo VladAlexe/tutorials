@@ -1,7 +1,7 @@
 {
  "capitol": "c4",
- "total": 18,
- "sarcini": 12,
+ "total": 17,
+ "sarcini": 11,
  "slide": [
   {
    "nr": 1,
@@ -186,7 +186,7 @@
    "nr": 16,
    "id": "s15",
    "grup": "Proiectul echipei",
-   "titlu": "Curățarea datelor proprii",
+   "titlu": "Datele proiectului",
    "sarcini": [
     {
      "id": "c4-decizie",
@@ -196,18 +196,6 @@
   },
   {
    "nr": 17,
-   "id": "s15b",
-   "grup": "Proiectul echipei",
-   "titlu": "Dovada curățării",
-   "sarcini": [
-    {
-     "id": "c4-dovada-curatare",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 18,
    "id": "s16",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

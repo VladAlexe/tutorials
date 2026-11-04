@@ -763,62 +763,36 @@ sl("s14", "Validarea", "Jurnalul deciziilor",
 #  15. Proiectul echipei
 # ===========================================================================
 
-DOVADA = {
-    "id": "c4-dovada-curatare",
-    "sarcina": "În depozitul echipei, după ce caietul de curățare a fost urcat pe <code>dev</code>: rezultatul fiecărei "
-               "comenzi se lipește în câmpul ei.",
-    "pasi": [
-        {"t": "Validarea finală", "cmd": "celula de validare din caietul echipei",
-         "gol": "rezultatul celulei",
-         "cauta": r"\d+[\s\S]*\d+",
-         "daca_nu": "Se așteaptă cifrele celulei de validare: chei repetate, lipsuri, numărul de rânduri."},
-        {"t": "Pe ramura dev", "cmd": "git branch",
-         "gol": "ramura marcată cu *",
-         "cauta": r"\*\s*dev",
-         "daca_nu": "Ramura curentă trebuie să fie dev: git switch dev."},
-        {"t": "Caietul este în depozit", "cmd": "git log --oneline -1",
-         "gol": "linia afișată",
-         "cauta": r"[0-9a-f]{7}",
-         "daca_nu": "Se așteaptă codul unui commit. Dacă nu există, caietul nu a fost încă salvat cu git commit."}],
-    "explicatie": "Datele brute rămân neschimbate în <code>data/raw</code>, cele curate stau în "
-                  "<code>data/processed</code>, iar trecerea de la unele la altele este un caiet care poate fi rulat "
-                  "din nou. Acestea sunt condițiile unei curățări reproductibile."}
-
 DECIZIE = {
     "id": "c4-decizie", "tip": "decizie", "minim": 60,
-    "sarcina": "Cea mai importantă decizie de curățare luată pentru datele proiectului și motivul ei: ce anume s-a "
-               "modificat și de ce, nu o formulare generală.",
-    "exemplu": "De exemplu: migrația a fost păstrată ca valoare lipsă pentru perechile cu Polonia, în loc de zero, "
-               "deoarece Polonia nu raportează; aceste perechi sunt excluse doar din model, nu din tabel.",
+    "sarcina": "Una sau două probleme de curățare care ar putea apărea în datele proiectului vostru, cum le-ați "
+               "verifica și ce ați decide dacă apar.",
+    "exemplu": "De exemplu: codurile NUTS se pot schimba între ani; le verificăm cu value_counts() înainte de unire.",
     "multumesc": "Răspunsul va fi citit înainte de cursul următor."}
 
-PASI_ECHIPA = tabel(["Pasul", "Ce se face"], [
-    ["1", "caietul de curățare, <code>notebooks/03_cleaning.ipynb</code>, citește din <code>data/raw</code> sau <code>data/processed</code>"],
-    ["2", "aceleași verificări ca la curs: profilare, tipuri, duplicate, valori imposibile, lipsuri, coduri"],
-    ["3", "tabelele curate se scriu în <code>data/processed</code>, niciodată peste datele brute"],
-    ["4", "celula de validare finală și deciziile, în <code>README.md</code>"],
-    ["5", "pe <code>dev</code>: <code>git pull</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code>"],
+PROBLEME_ECHIPA = tabel(["Etapa", "Întrebarea pentru datele proprii"], [
+    ["Profilarea", "ce unitate de analiză au tabelele și ce coloane sunt necesare?"],
+    ["Tipurile", "există valori numerice citite ca text (simboluri, virgule zecimale)?"],
+    ["Duplicatele", "ce coloane formează cheia unui rând și se poate repeta ea?"],
+    ["Valorile imposibile", "ce reguli logice trebuie să respecte valorile (procente, populații, ani)?"],
+    ["Lipsurile", "ce lipsește, unde, și au lipsurile un tipar?"],
+    ["Codurile", "folosesc sursele aceleași coduri pentru aceleași țări sau regiuni?"],
 ])
 
-sl("s15", "Proiectul echipei", "Curățarea datelor proprii",
-   "<h2>Curățarea datelor proiectului</h2>"
-   + PASI_ECHIPA
+sl("s15", "Proiectul echipei", "Datele proiectului",
+   "<h2>Ce ar putea apărea în datele proiectului</h2>"
+   "<p class=\"cheie\">Curățarea datelor proprii vine mai târziu. Acum, fiecare echipă anticipează problemele.</p>"
+   + PROBLEME_ECHIPA
    + ET_VERIF
-   + "<p>Cea mai importantă decizie de curățare luată pentru datele proiectului și motivul ei, în două sau trei rânduri.</p>"
-   + ix("asteptari", "Decizia de curățare", DECIZIE),
+   + "<p>Una sau două probleme care ar putea apărea în datele echipei și cum le-ați verifica.</p>"
+   + ix("asteptari", "Problemele anticipate", DECIZIE),
    manual=
-   "<h2>Curățarea datelor proiectului</h2>"
-   "<p>Fiecare echipă aplică aceleași verificări pe datele proprii, într-un caiet separat, responsabilul pasului de "
-   "curățare coordonând lucrul. Caietul are aceeași structură ca cel de la curs și se încheie cu celula de validare "
-   "și cu jurnalul deciziilor.</p>"
-   + PASI_ECHIPA
-   + ix("asteptari", "Decizia de curățare", DECIZIE)
-   + ix("dovada", "Dovada curățării", DOVADA))
-
-sl("s15b", "Proiectul echipei", "Dovada curățării",
-   "<h2>Dovada curățării</h2>"
-   + ET_VERIF + ix("dovada", "Dovada curățării", DOVADA),
-   manual="")
+   "<h2>Ce ar putea apărea în datele proiectului</h2>"
+   "<p>Verificările de la curs se vor aplica și pe datele echipei, într-un caiet separat. Înainte de a scrie cod, "
+   "este util ca echipa să anticipeze problemele: întrebările de mai jos, puse pe sursele proprii, arată unde "
+   "trebuie să fie atentă curățarea. Răspunsurile nu trebuie să fie definitive; ele se verifică pe date ulterior.</p>"
+   + PROBLEME_ECHIPA
+   + ix("asteptari", "Problemele anticipate", DECIZIE))
 
 
 # ===========================================================================
@@ -833,8 +807,7 @@ sl("s16", "Mai departe", "Pentru cursul următor",
    "<li>Interogări SQL: selecție, filtrare, grupare.</li>"
    "<li>Agregarea, în SQL și în pandas.</li></ul></section>"
    "<section><h4>Pregătirea pentru cursul 5</h4><ul>"
-   "<li>Caietul de curățare al echipei, pe <code>dev</code>, cu celula de validare.</li>"
-   "<li>Deciziile de curățare, în <code>README.md</code>.</li>"
+   "<li>Problemele anticipate pentru datele echipei, notate în <code>README.md</code>.</li>"
    "<li>Un cont pe Neon, pentru baza de date.</li></ul></section>"
    "</div></div>"
    + surse("Documentația curățării", [

@@ -34,7 +34,7 @@
    lecția merge exact ca înainte.
    =========================================================================== */
 
-import { RADACINA } from "./curs.js?v=116";
+import { RADACINA } from "./curs.js?v=119";
 
 const PAS_STUDENT   = 3000;   /* cât de des întreabă studentul unde ești */
 const PAS_PROFESOR  = 8000;   /* cât de des numără profesorul sala */
@@ -44,9 +44,9 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
                                  manual, laStare }){
   let A, O, P;
   try {
-    A = await import(`${RADACINA}/js/auth.js?v=116`);
-    O = await import(`${RADACINA}/js/ora.js?v=116`);
-    P = await import(`${RADACINA}/js/panou-live.js?v=116`);
+    A = await import(`${RADACINA}/js/auth.js?v=119`);
+    O = await import(`${RADACINA}/js/ora.js?v=119`);
+    P = await import(`${RADACINA}/js/panou-live.js?v=119`);
   } catch { return null; }
 
   let p = null;
@@ -488,7 +488,7 @@ export async function porneste({ capitol, total, esteProfesor, mergiLa, unde,
     const viu = !!d.viu;
 
     /* tot ce se salvează de acum poartă id-ul ședinței, sau niciunul */
-    import(`${RADACINA}/js/colectare.js?v=116`)
+    import(`${RADACINA}/js/colectare.js?v=119`)
       .then(m => m.setSedinta(viu ? d.sedinta : null)).catch(() => {});
 
     const tocmaiS_aIncheiat = eraViu && !viu;

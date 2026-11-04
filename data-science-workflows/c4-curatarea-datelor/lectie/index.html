@@ -6,14 +6,14 @@
 <title>Cursul 4 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea tabelelor și validarea finală, pe datele cursului.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=116">
-<link rel="stylesheet" href="../../css/sistem.css?v=116">
-<link rel="stylesheet" href="../../css/slide.css?v=116">
-<link rel="stylesheet" href="../../css/interactiv.css?v=116">
-<link rel="stylesheet" href="../../css/grafice.css?v=116">
-<link rel="stylesheet" href="../../css/exercitii.css?v=116">
-<link rel="stylesheet" href="../../css/explorator.css?v=116">
-<script src="../../js/tema.js?v=116"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=119">
+<link rel="stylesheet" href="../../css/sistem.css?v=119">
+<link rel="stylesheet" href="../../css/slide.css?v=119">
+<link rel="stylesheet" href="../../css/interactiv.css?v=119">
+<link rel="stylesheet" href="../../css/grafice.css?v=119">
+<link rel="stylesheet" href="../../css/exercitii.css?v=119">
+<link rel="stylesheet" href="../../css/explorator.css?v=119">
+<script src="../../js/tema.js?v=119"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 4 · Curățarea și integrarea datelor" data-crom="1"></div>
@@ -147,35 +147,27 @@ pd.to_numeric(exemplu, errors="coerce")      <span class="c"># 12.5, NaN, 7.0</s
 
 </section>
 
-<section class="sld" id="s15" data-grup="Proiectul echipei" data-t="Curățarea datelor proprii">
-<h2>Curățarea datelor proiectului</h2><table class="tabel"><thead><tr><th>Pasul</th><th>Ce se face</th></tr></thead><tbody><tr><td>1</td><td>caietul de curățare, <code>notebooks/03_cleaning.ipynb</code>, citește din <code>data/raw</code> sau <code>data/processed</code></td></tr><tr><td>2</td><td>aceleași verificări ca la curs: profilare, tipuri, duplicate, valori imposibile, lipsuri, coduri</td></tr><tr><td>3</td><td>tabelele curate se scriu în <code>data/processed</code>, niciodată peste datele brute</td></tr><tr><td>4</td><td>celula de validare finală și deciziile, în <code>README.md</code></td></tr><tr><td>5</td><td>pe <code>dev</code>: <code>git pull</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code></td></tr></tbody></table><p class="ex-et">Verificare</p><p>Cea mai importantă decizie de curățare luată pentru datele proiectului și motivul ei, în două sau trei rânduri.</p><div class="ix" data-ix="asteptari">
-  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Decizia de curățare</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c4-decizie", "tip": "decizie", "minim": 60, "sarcina": "Cea mai importantă decizie de curățare luată pentru datele proiectului și motivul ei: ce anume s-a modificat și de ce, nu o formulare generală.", "exemplu": "De exemplu: migrația a fost păstrată ca valoare lipsă pentru perechile cu Polonia, în loc de zero, deoarece Polonia nu raportează; aceste perechi sunt excluse doar din model, nu din tabel.", "multumesc": "Răspunsul va fi citit înainte de cursul următor."}</script></div>
-</div>
-
-</section>
-
-<section class="sld" id="s15b" data-grup="Proiectul echipei" data-t="Dovada curățării">
-<h2>Dovada curățării</h2><p class="ex-et">Verificare</p><div class="ix" data-ix="dovada">
-  <div class="ix__cap"><span class="ix__fel">Verificare locală</span><span class="ix__t">Dovada curățării</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c4-dovada-curatare", "sarcina": "În depozitul echipei, după ce caietul de curățare a fost urcat pe <code>dev</code>: rezultatul fiecărei comenzi se lipește în câmpul ei.", "pasi": [{"t": "Validarea finală", "cmd": "celula de validare din caietul echipei", "gol": "rezultatul celulei", "cauta": "\\d+[\\s\\S]*\\d+", "daca_nu": "Se așteaptă cifrele celulei de validare: chei repetate, lipsuri, numărul de rânduri."}, {"t": "Pe ramura dev", "cmd": "git branch", "gol": "ramura marcată cu *", "cauta": "\\*\\s*dev", "daca_nu": "Ramura curentă trebuie să fie dev: git switch dev."}, {"t": "Caietul este în depozit", "cmd": "git log --oneline -1", "gol": "linia afișată", "cauta": "[0-9a-f]{7}", "daca_nu": "Se așteaptă codul unui commit. Dacă nu există, caietul nu a fost încă salvat cu git commit."}], "explicatie": "Datele brute rămân neschimbate în <code>data/raw</code>, cele curate stau în <code>data/processed</code>, iar trecerea de la unele la altele este un caiet care poate fi rulat din nou. Acestea sunt condițiile unei curățări reproductibile."}</script></div>
+<section class="sld" id="s15" data-grup="Proiectul echipei" data-t="Datele proiectului">
+<h2>Ce ar putea apărea în datele proiectului</h2><p class="cheie">Curățarea datelor proprii vine mai târziu. Acum, fiecare echipă anticipează problemele.</p><table class="tabel"><thead><tr><th>Etapa</th><th>Întrebarea pentru datele proprii</th></tr></thead><tbody><tr><td>Profilarea</td><td>ce unitate de analiză au tabelele și ce coloane sunt necesare?</td></tr><tr><td>Tipurile</td><td>există valori numerice citite ca text (simboluri, virgule zecimale)?</td></tr><tr><td>Duplicatele</td><td>ce coloane formează cheia unui rând și se poate repeta ea?</td></tr><tr><td>Valorile imposibile</td><td>ce reguli logice trebuie să respecte valorile (procente, populații, ani)?</td></tr><tr><td>Lipsurile</td><td>ce lipsește, unde, și au lipsurile un tipar?</td></tr><tr><td>Codurile</td><td>folosesc sursele aceleași coduri pentru aceleași țări sau regiuni?</td></tr></tbody></table><p class="ex-et">Verificare</p><p>Una sau două probleme care ar putea apărea în datele echipei și cum le-ați verifica.</p><div class="ix" data-ix="asteptari">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Problemele anticipate</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-decizie", "tip": "decizie", "minim": 60, "sarcina": "Una sau două probleme de curățare care ar putea apărea în datele proiectului vostru, cum le-ați verifica și ce ați decide dacă apar.", "exemplu": "De exemplu: codurile NUTS se pot schimba între ani; le verificăm cu value_counts() înainte de unire.", "multumesc": "Răspunsul va fi citit înainte de cursul următor."}</script></div>
 </div>
 
 </section>
 
 <section class="sld" id="s16" data-grup="Mai departe" data-t="Pentru cursul următor">
-<h2>La cursul 5: agregare și baze de date</h2><div class="fin3"><div class="fin3__g"><section><h4>Ce urmează la cursul 5</h4><ul><li>Cele trei tabele de analiză, încărcate într-o bază de date PostgreSQL.</li><li>Interogări SQL: selecție, filtrare, grupare.</li><li>Agregarea, în SQL și în pandas.</li></ul></section><section><h4>Pregătirea pentru cursul 5</h4><ul><li>Caietul de curățare al echipei, pe <code>dev</code>, cu celula de validare.</li><li>Deciziile de curățare, în <code>README.md</code>.</li><li>Un cont pe Neon, pentru baza de date.</li></ul></section></div></div><div class="surse"><div class="surse__et">Documentația curățării</div><ul><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/10min.html" target="_blank" rel="noopener">pandas: 10 minutes to pandas</a><span>prima privire asupra unui tabel: <code>head</code>, <code>describe</code>, <code>sort_values</code></span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html" target="_blank" rel="noopener">pandas: describe</a><span>rezumatul numeric și, cu <code>include="object"</code>, al coloanelor text</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener">pandas: date lipsă</a><span>ce înseamnă <code>NaN</code>, cum se propagă și cum se tratează</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html" target="_blank" rel="noopener">pandas: read_csv</a><span><code>keep_default_na</code> și <code>na_values</code>, pentru cazul Namibiei</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html" target="_blank" rel="noopener">pandas: duplicate</a><span><code>duplicated</code> și <code>subset</code></span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/reshaping.html" target="_blank" rel="noopener">pandas: lung și lat</a><span><code>pivot</code>, cu diagrame</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/merging.html" target="_blank" rel="noopener">pandas: merge</a><span>unirea tabelelor și tipurile de unire</span></li><li><a class="surse__a" href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Country_codes" target="_blank" rel="noopener">Eurostat: codurile țărilor</a><span>de ce Grecia este EL și Regatul Unit este UK</span></li><li><a class="surse__a" href="https://www.kaggle.com/learn/data-cleaning" target="_blank" rel="noopener">Kaggle: Data Cleaning</a><span>un curs scurt: valori lipsă, codificarea caracterelor, înregistrări inconsecvente</span></li></ul></div>
+<h2>La cursul 5: agregare și baze de date</h2><div class="fin3"><div class="fin3__g"><section><h4>Ce urmează la cursul 5</h4><ul><li>Cele trei tabele de analiză, încărcate într-o bază de date PostgreSQL.</li><li>Interogări SQL: selecție, filtrare, grupare.</li><li>Agregarea, în SQL și în pandas.</li></ul></section><section><h4>Pregătirea pentru cursul 5</h4><ul><li>Problemele anticipate pentru datele echipei, notate în <code>README.md</code>.</li><li>Un cont pe Neon, pentru baza de date.</li></ul></section></div></div><div class="surse"><div class="surse__et">Documentația curățării</div><ul><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/10min.html" target="_blank" rel="noopener">pandas: 10 minutes to pandas</a><span>prima privire asupra unui tabel: <code>head</code>, <code>describe</code>, <code>sort_values</code></span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html" target="_blank" rel="noopener">pandas: describe</a><span>rezumatul numeric și, cu <code>include="object"</code>, al coloanelor text</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener">pandas: date lipsă</a><span>ce înseamnă <code>NaN</code>, cum se propagă și cum se tratează</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html" target="_blank" rel="noopener">pandas: read_csv</a><span><code>keep_default_na</code> și <code>na_values</code>, pentru cazul Namibiei</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html" target="_blank" rel="noopener">pandas: duplicate</a><span><code>duplicated</code> și <code>subset</code></span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/reshaping.html" target="_blank" rel="noopener">pandas: lung și lat</a><span><code>pivot</code>, cu diagrame</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/merging.html" target="_blank" rel="noopener">pandas: merge</a><span>unirea tabelelor și tipurile de unire</span></li><li><a class="surse__a" href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Country_codes" target="_blank" rel="noopener">Eurostat: codurile țărilor</a><span>de ce Grecia este EL și Regatul Unit este UK</span></li><li><a class="surse__a" href="https://www.kaggle.com/learn/data-cleaning" target="_blank" rel="noopener">Kaggle: Data Cleaning</a><span>un curs scurt: valori lipsă, codificarea caracterelor, înregistrări inconsecvente</span></li></ul></div>
 
 </section>
 
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=116"></script>
+<script type="module" src="../../js/antet.js?v=119"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=116";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=116";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=116";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=119";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=119";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=119";
 pornesteIx();
 pornesteVerif("c4");
 pornesteSlide({ capitol:"c4", lectie:"c4-curatarea-datelor" });
