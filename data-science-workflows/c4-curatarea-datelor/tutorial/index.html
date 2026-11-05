@@ -6,14 +6,14 @@
 <title>Cursul 4, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 4: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=139">
-<link rel="stylesheet" href="../../css/sistem.css?v=139">
-<link rel="stylesheet" href="../../css/tutorial.css?v=139">
-<link rel="stylesheet" href="../../css/interactiv.css?v=139">
-<link rel="stylesheet" href="../../css/grafice.css?v=139">
-<link rel="stylesheet" href="../../css/exercitii.css?v=139">
-<link rel="stylesheet" href="../../css/explorator.css?v=139">
-<script src="../../js/tema.js?v=139"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=140">
+<link rel="stylesheet" href="../../css/sistem.css?v=140">
+<link rel="stylesheet" href="../../css/tutorial.css?v=140">
+<link rel="stylesheet" href="../../css/interactiv.css?v=140">
+<link rel="stylesheet" href="../../css/grafice.css?v=140">
+<link rel="stylesheet" href="../../css/exercitii.css?v=140">
+<link rel="stylesheet" href="../../css/explorator.css?v=140">
+<script src="../../js/tema.js?v=140"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 4 · Manual"></div>
@@ -22,7 +22,7 @@
   <div class="tut__cap"><span class="tut__et">Manual</span>
     <span class="tut__t">Cursul 4</span>
     <span class="tut__st">Curățarea și integrarea datelor</span></div>
-  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s0"><span class="n">1</span><span>Unde suntem</span></a><div class="tut__g">Recapitulare</div><a href="#s1"><span class="n">2</span><span>Git, pe scurt</span></a><a href="#s1b"><span class="n">3</span><span>Unde lucrăm</span></a><a href="#s1c"><span class="n">4</span><span>Unde sunt?</span></a><div class="tut__g">Cursul</div><a href="#s2"><span class="n">5</span><span>Planul lecției</span></a><div class="tut__g">Profilarea</div><a href="#s3a"><span class="n">6</span><span>Prima privire</span></a><a href="#s3"><span class="n">7</span><span>Ce conține tabelul</span></a><a href="#s3b"><span class="n">8</span><span>O funcție proprie</span></a><a href="#s4"><span class="n">9</span><span>Tipurile</span></a><div class="tut__g">Curățarea</div><a href="#s5"><span class="n">10</span><span>Duplicatele</span></a><a href="#s6"><span class="n">11</span><span>Valorile imposibile</span></a><div class="tut__g">Lipsurile</div><a href="#s8"><span class="n">12</span><span>Valorile lipsă</span></a><div class="tut__g">Curățarea</div><a href="#s9"><span class="n">13</span><span>Codurile</span></a><div class="tut__g">Integrarea</div><a href="#s10"><span class="n">14</span><span>Din lung în lat</span></a><a href="#s11"><span class="n">15</span><span>Unirea, cu verificare</span></a><div class="tut__g">Validarea</div><a href="#s13"><span class="n">16</span><span>Validarea finală</span></a><a href="#s14"><span class="n">17</span><span>Jurnalul deciziilor</span></a><div class="tut__g">Mai departe</div><a href="#s16"><span class="n">18</span><span>Pentru cursul următor</span></a></nav>
+  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s0"><span class="n">1</span><span>Unde suntem</span></a><div class="tut__g">Recapitulare</div><a href="#s1"><span class="n">2</span><span>Git, pe scurt</span></a><a href="#s1b"><span class="n">3</span><span>Unde lucrăm</span></a><a href="#s1c"><span class="n">4</span><span>Unde sunt?</span></a><div class="tut__g">Cursul</div><a href="#s2"><span class="n">5</span><span>Planul lecției</span></a><div class="tut__g">Profilarea</div><a href="#s3a"><span class="n">6</span><span>Prima privire</span></a><a href="#s3"><span class="n">7</span><span>Ce conține tabelul</span></a><a href="#s3b"><span class="n">8</span><span>O funcție proprie</span></a><a href="#s4"><span class="n">9</span><span>Tipurile</span></a><div class="tut__g">Curățarea</div><a href="#s5"><span class="n">10</span><span>Duplicatele</span></a><a href="#s6"><span class="n">11</span><span>Valorile imposibile</span></a><div class="tut__g">Lipsurile</div><a href="#s8"><span class="n">12</span><span>Valorile lipsă</span></a><div class="tut__g">Curățarea</div><a href="#s9"><span class="n">13</span><span>Codurile</span></a><div class="tut__g">Integrarea</div><a href="#s10"><span class="n">14</span><span>Din lung în lat</span></a><div class="tut__g">Validarea</div><a href="#s13"><span class="n">15</span><span>Validarea finală</span></a><a href="#s14"><span class="n">16</span><span>Jurnalul deciziilor</span></a><div class="tut__g">Mai departe</div><a href="#s16"><span class="n">17</span><span>Pentru cursul următor</span></a></nav>
   <div class="tut__jos">
     <a href="../lectie/">Slide-urile de la curs</a>
     <a href="../">Pagina cursului</a>
@@ -192,20 +192,8 @@ scrise.str.strip().str.upper()                <span class="c"># RO, RO, RO</span
 
 </section>
 
-<section class="tut__s" id="s11">
-<span class="tut__nr">15 · Integrarea</span>
-<h2>Unirea a două tabele: merge</h2><p><code>merge</code> lipește coloanele unui tabel de altul, potrivind rândurile după o coloană comună (aici, <code>regiune</code>). Unirea poate pierde sau multiplica rânduri fără nicio eroare, de aceea după fiecare <code>merge</code> se numără rândurile.</p><pre><code>regiuni = pd.DataFrame({"regiune": ["RO11", "RO12", "CH01"]})
-pib = pd.DataFrame({"regiune": ["RO11", "RO12"], "pib": [28300, 28400]})
-
-rez = regiuni.merge(pib, on="regiune", how="left")</code></pre><div class="ix" data-ix="consola">
-  <div class="ix__cap"><span class="ix__fel">Consolă Python</span><span class="ix__t">Întrebări despre rezultatul unirii</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c4-cons-merge", "cod": ["Câte regiuni are tabelul pib?", "Ce PIB are CH01 în rez?", "Câte rânduri are rez?"], "vars": [{"n": "pib", "t": "2", "e": "<code>pib.head()</code>: doar RO11 și RO12."}, {"n": "CH01", "t": ["nan", "lipsă", "lipsa"], "e": "<code>rez.head()</code>: CH01 nu are potrivire în <code>pib</code>, deci primește <code>NaN</code>."}, {"n": "rez", "t": "3", "e": "<code>how=\"left\"</code> păstrează toate cele 3 regiuni din stânga."}], "env": {"regiuni": {"__py": "DataFrame", "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01"}}, "__attr": {"shape": {"__t": [3, 1]}}}, "pib": {"__py": "DataFrame", "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400"}}, "__attr": {"shape": {"__t": [2, 2]}}}, "rez": {"__py": "DataFrame", "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN"}}, "__attr": {"shape": {"__t": [3, 2]}}}}, "capSt": "Întrebarea", "capDr": "Răspunsul", "raspuns": "răspunsul", "etCelula": "Consolă Python: regiuni, pib și rez sunt deja definite", "nota": "Tabelele se pot inspecta cu <code>pib.head()</code>, <code>rez.head()</code> sau <code>rez.shape</code>, urmate de Enter.", "loc": "pib.head()", "taie": 400}</script></div>
-</div><p>Cu <code>how="left"</code>, toate regiunile rămân: 3 înainte, 3 după, iar <code>CH01</code> are PIB lipsă. Fără el (unirea implicită, <code>inner</code>), <code>CH01</code> ar dispărea, fără niciun mesaj. De aceea rândurile se numără după fiecare <code>merge</code>.</p><table class="tabel"><thead><tr><th>Rezultatul unui merge</th><th>Ce înseamnă</th></tr></thead><tbody><tr><td>același număr de rânduri</td><td>fiecare rând a găsit cel mult o potrivire: corect</td></tr><tr><td>mai multe rânduri</td><td>cheia se repetă în tabelul din dreapta: rânduri multiplicate</td></tr><tr><td>mai puține rânduri</td><td>s-a folosit altă unire decât <code>how="left"</code>: rânduri pierdute</td></tr></tbody></table><p>În caiet, lista celor 298 de regiuni din SCI primește astfel numele și indicatorii: 298 înainte, 298 după. În C5, aceeași unire se repetă pentru perechile de regiuni și de țări.</p>
-
-</section>
-
 <section class="tut__s" id="s13">
-<span class="tut__nr">16 · Validarea</span>
+<span class="tut__nr">15 · Validarea</span>
 <h2>Validarea finală</h2><p>Validarea compară tabelul final cu regulile lui: cheia e unică, coloanele de care depinde analiza sunt complete, iar numărul de rânduri e cel calculat, 298 de regiuni. În C5, aceeași verificare se face pe perechile de regiuni și de țări.</p><table class="tabel"><thead><tr><th>Regula</th><th>Verificarea</th><th>Trebuie</th></tr></thead><tbody><tr><td>nicio regiune de două ori</td><td class="mono">regiuni.duplicated("regiune").sum()</td><td>0</td></tr><tr><td>fiecare regiune are o țară</td><td class="mono">regiuni["tara"].isna().sum()</td><td>0</td></tr><tr><td>numărul de regiuni</td><td class="mono">len(regiuni)</td><td>298</td></tr></tbody></table><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Verificările finale</span></div>
   <div class="ix__corp"><script type="application/json">{"id": "c4-cod-validare", "fisier": "04_curatarea.ipynb", "sarcina": "Trei verificări pe tabelul regiunilor, înainte de salvare.", "cod": "# 1. cate regiuni apar de doua ori? (trebuie 0)\n#    metoda care gaseste randurile repetate\nprint(regiuni.{{1}}(\"regiune\").sum())\n\n# 2. cate regiuni nu au tara? (trebuie 0)\n#    metoda care gaseste valorile lipsa\nprint(regiuni[\"tara\"].{{2}}().sum())\n\n# 3. cate regiuni sunt? (trebuie 298), gata scris\nprint(len(regiuni))", "goluri": {"1": {"ok": ["duplicated"], "ajutor": "metoda"}, "2": {"ok": ["isna", "isnull"], "ajutor": "metoda"}}, "iesire": "0\n0\n298", "indiciu": "Rândurile repetate se găsesc cu duplicated, ca la duplicate. Lipsurile se găsesc cu isna.", "laBine": "Toate trei cifrele sunt cele așteptate: tabelul se poate salva.", "laRau": "Ambele goluri sunt metode, ca la secțiunile despre duplicate și lipsuri.", "explicatie": "Validarea nu aduce nimic nou: refolosește metodele lecției. Dacă o cifră diferă de cea așteptată, un pas anterior a schimbat datele, iar tabelul nu se salvează până nu se află de ce."}</script></div>
@@ -214,13 +202,13 @@ rez = regiuni.merge(pib, on="regiune", how="left")</code></pre><div class="ix" d
 </section>
 
 <section class="tut__s" id="s14">
-<span class="tut__nr">17 · Validarea</span>
+<span class="tut__nr">16 · Validarea</span>
 <h2>Jurnalul deciziilor</h2><p>Curățarea nu este o succesiune de operații tehnice, ci o succesiune de decizii: ce se păstrează, ce se elimină, ce se înlocuiește. Fiecare decizie schimbă datele pe care se sprijină analiza, deci trebuie scrisă, împreună cu motivul ei. În proiect, jurnalul stă în <code>README.md</code>.</p><table class="tabel"><thead><tr><th>Tema</th><th>Decizia</th><th>De ce</th></tr></thead><tbody><tr><td>populația 0 la Svalbard</td><td>păstrată</td><td>raportată așa de sursă</td></tr><tr><td>codul <code>NA</code> (Namibia)</td><td>citit ca text</td><td>altfel 44 de rânduri devin lipsă</td></tr><tr><td>regiuni fără date</td><td>păstrate, fără completare</td><td>lipsurile nu sunt întâmplătoare</td></tr><tr><td>codurile EL și UK</td><td>aliniate la GR și GB</td><td>altfel se pierd țări la unire</td></tr><tr><td>perechi A-B și B-A</td><td>de rezolvat în C5</td><td>aceeași valoare, de două ori</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">Criteriul unui jurnal complet</div><p>Un coleg care nu a participat la discuțiile echipei trebuie să poată reface curățarea doar pe baza caietului și a jurnalului. Dacă are nevoie de explicații suplimentare, documentația este incompletă.</p></div>
 
 </section>
 
 <section class="tut__s" id="s16">
-<span class="tut__nr">18 · Mai departe</span>
+<span class="tut__nr">17 · Mai departe</span>
 <h2>La cursul 5: integrare, baze de date și agregare</h2><div class="fin3"><div class="fin3__g"><section><h4>Ce urmează la cursul 5</h4><ul><li>Integrarea tuturor surselor: perechile de regiuni și perechile de țări.</li><li>Tabelele ca entități, cu chei, într-o bază de date PostgreSQL.</li><li>Unirea și agregarea, în SQL și în pandas.</li></ul></section><section><h4>Pregătirea pentru cursul 5</h4><ul><li>Contul pe GitHub și depozitul echipei clonat în <code>dsw/proiect</code>.</li><li>Un cont pe Neon, pentru baza de date.</li></ul></section></div></div><div class="surse"><div class="surse__et">Documentația curățării</div><ul><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/10min.html" target="_blank" rel="noopener">pandas: 10 minutes to pandas</a><span>prima privire asupra unui tabel: <code>head</code>, <code>describe</code>, <code>sort_values</code></span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html" target="_blank" rel="noopener">pandas: describe</a><span>rezumatul numeric și, cu <code>include="object"</code>, al coloanelor text</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener">pandas: date lipsă</a><span>ce înseamnă <code>NaN</code>, cum se propagă și cum se tratează</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html" target="_blank" rel="noopener">pandas: read_csv</a><span><code>keep_default_na</code> și <code>na_values</code>, pentru cazul Namibiei</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html" target="_blank" rel="noopener">pandas: duplicate</a><span><code>duplicated</code> și <code>subset</code></span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/reshaping.html" target="_blank" rel="noopener">pandas: lung și lat</a><span><code>pivot</code>, cu diagrame</span></li><li><a class="surse__a" href="https://pandas.pydata.org/docs/user_guide/merging.html" target="_blank" rel="noopener">pandas: merge</a><span>unirea tabelelor și tipurile de unire</span></li><li><a class="surse__a" href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Country_codes" target="_blank" rel="noopener">Eurostat: codurile țărilor</a><span>de ce Grecia este EL și Regatul Unit este UK</span></li><li><a class="surse__a" href="https://www.kaggle.com/learn/data-cleaning" target="_blank" rel="noopener">Kaggle: Data Cleaning</a><span>un curs scurt: valori lipsă, codificarea caracterelor, înregistrări inconsecvente</span></li></ul></div>
 
 </section>
@@ -228,11 +216,11 @@ rez = regiuni.merge(pib, on="regiune", how="left")</code></pre><div class="ix" d
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=139"></script>
+<script type="module" src="../../js/antet.js?v=140"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=139";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=139";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=139";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=140";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=140";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=140";
 pornesteIx();
 pornesteVerif("c4");
 pornesteTut("c4");

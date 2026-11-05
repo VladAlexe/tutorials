@@ -13,8 +13,8 @@
    doar nu se vede nimic, ceea ce e adevărul.
    =========================================================================== */
 
-import { sb } from "./auth.js?v=139";
-import { RADACINA } from "./curs.js?v=139";
+import { sb } from "./auth.js?v=140";
+import { RADACINA } from "./curs.js?v=140";
 
 /* Ultima eroare de la bază, ca paginile să poată spune ADEVĂRUL.
 
@@ -167,7 +167,7 @@ export async function predate() {
     s-a predat (fără rețea), pagina rămâne deschisă. */
 export async function inchideDacaNepredata(capitol){
   try {
-    const { profil } = await import("./auth.js?v=139");
+    const { profil } = await import("./auth.js?v=140");
     const p = await profil().catch(() => ({}));
     if (p.profesorReal) return false;
     const pred = await predate();
@@ -209,7 +209,7 @@ const harti = new Map();
 export async function harta(capitol) {
   if (harti.has(capitol)) return harti.get(capitol);
   try {
-    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=139`);
+    const r = await fetch(`${RADACINA}/date/harta-${capitol}.json?v=140`);
     const h = r.ok ? await r.json() : null;
     harti.set(capitol, h);
     return h;

@@ -1,7 +1,7 @@
 {
  "capitol": "c4",
- "total": 18,
- "sarcini": 10,
+ "total": 17,
+ "sarcini": 9,
  "slide": [
   {
    "nr": 1,
@@ -167,18 +167,6 @@
   },
   {
    "nr": 15,
-   "id": "s11",
-   "grup": "Integrarea",
-   "titlu": "Unirea, cu verificare",
-   "sarcini": [
-    {
-     "id": "c4-cons-merge",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
-   "nr": 16,
    "id": "s13",
    "grup": "Validarea",
    "titlu": "Validarea finală",
@@ -190,14 +178,14 @@
    ]
   },
   {
-   "nr": 17,
+   "nr": 16,
    "id": "s14",
    "grup": "Validarea",
    "titlu": "Jurnalul deciziilor",
    "sarcini": []
   },
   {
-   "nr": 18,
+   "nr": 17,
    "id": "s16",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",
