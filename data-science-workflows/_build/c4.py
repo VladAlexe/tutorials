@@ -94,8 +94,8 @@ ETAPE = tabel(["Etapa", "Întrebarea", "În caiet"], [
     ["Valorile imposibile", "există procente peste 100, valori neobișnuite?", "5. <code>describe</code>, <code>nsmallest</code>"],
     ["Lipsurile", "ce înseamnă „lipsă”, câte lipsesc și unde?", "6. <code>isna</code>, <code>count</code>"],
     ["Codurile", "aceeași țară are același cod peste tot?", "7. <code>replace</code>"],
-    ["Transformarea și integrarea", "cum ajungem la tabelul de analiză?", "8-11. <code>pivot</code>, <code>merge</code>"],
-    ["Validarea", "tabelul final respectă regulile lui?", "12. o celulă de verificări"],
+    ["Primul tabel de analiză", "cum ajungem la un rând pe regiune?", "8. <code>pivot</code>, <code>merge</code>"],
+    ["Validarea", "tabelul final respectă regulile lui?", "9. o celulă de verificări"],
 ])
 
 # ===========================================================================
@@ -308,6 +308,30 @@ sl("s3", "Profilarea", "Ce conține tabelul",
        ["~df.describe()", "minimul, media, cuartilele și maximul coloanelor numerice"],
    ]))
 
+
+COD_APPLY = ("<pre><code>def nivel_din_cod(cod):\n"
+             "    return len(cod) - 2              <span class=\"c\"># RO -&gt; 0, RO1 -&gt; 1, RO11 -&gt; 2, RO113 -&gt; 3</span>\n\n"
+             "nume[\"nivel_calculat\"] = nume[\"regiune\"].apply(nivel_din_cod)   <span class=\"c\"># pe fiecare cod</span>\n"
+             "(nume[\"nivel_calculat\"] != nume[\"nivel\"]).sum()                  <span class=\"c\"># 0: se potrivesc toate</span></code></pre>")
+
+sl("s3b", "Profilarea", "O funcție proprie",
+   "<h2>O funcție proprie, cu <code>apply</code></h2>"
+   "<p class=\"cheie\">Nivelul NUTS se poate citi din cod: lungimea codului minus 2. Scriem regula ca funcție, iar "
+   "<code>apply</code> o aplică pe fiecare valoare din coloană.</p>"
+   + COD_APPLY
+   + tabel(["", "Când"], [
+       ["~apply(funcție)", "regula e prea complicată pentru o singură metodă: <code>if</code>, mai mulți pași"],
+       ["o metodă directă", "există deja: aici, <code>nume[\"regiune\"].str.len() - 2</code> dă același rezultat, mai simplu"],
+   ]),
+   manual=
+   "<h2>O funcție proprie, cu <code>apply</code></h2>"
+   "<p>Uneori regula de verificare nu există ca metodă gata făcută. Atunci o scriem ca funcție, cu <code>def</code>, "
+   "și o aplicăm pe fiecare valoare a unei coloane cu <code>apply</code>. Exemplul verifică dacă coloana "
+   "<code>nivel</code> din nomenclator e consecventă cu lungimea codurilor.</p>"
+   + COD_APPLY
+   + "<p>Rezultatul e 0: coloana e consecventă, deci ne putem baza pe ea. Când există o metodă directă, ea e mai "
+     "simplă și mai rapidă decât <code>apply</code>; aici, <code>nume[\"regiune\"].str.len() - 2</code> dă același "
+     "rezultat. Mai târziu, aceeași funcție se poate scrie pe un singur rând, cu <code>lambda</code>.</p>")
 
 # ===========================================================================
 #  4. Tipurile
@@ -662,35 +686,35 @@ sl("s10", "Integrarea", "Din lung în lat",
 
 MERGE_JUP = {
  "id": "c4-jup-merge",
- "celula": "perechi = pd.DataFrame({\"regiune_1\": [\"RO11\", \"CH01\", \"CH01\"],\n                        \"regiune_2\": [\"RO12\", \"RO11\", \"RO12\"]})\npib = pd.DataFrame({\"regiune_1\": [\"RO11\", \"RO12\"],\n                    \"pib_1\":     [28300, 28400]})\n\nrez = perechi.merge(pib, on=\"regiune_1\", how=\"left\")",
+ "celula": "regiuni = pd.DataFrame({\"regiune\": [\"RO11\", \"RO12\", \"CH01\"]})\npib = pd.DataFrame({\"regiune\": [\"RO11\", \"RO12\"],\n                    \"pib\":     [28300, 28400]})\n\nrez = regiuni.merge(pib, on=\"regiune\", how=\"left\")",
  "loc": "pib.head()",
  "taie": 400,
  "env": {
-  "perechi": {
+  "regiuni": {
    "__py": "DataFrame",
-   "__repr": "  regiune_1 regiune_2\n0      RO11      RO12\n1      CH01      RO11\n2      CH01      RO12",
+   "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01",
    "__met": {
     "head": {
      "__py": "DataFrame",
-     "__repr": "  regiune_1 regiune_2\n0      RO11      RO12\n1      CH01      RO11\n2      CH01      RO12"
+     "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01"
     }
    },
    "__attr": {
     "shape": {
      "__t": [
       3,
-      2
+      1
      ]
     }
    }
   },
   "pib": {
    "__py": "DataFrame",
-   "__repr": "  regiune_1  pib_1\n0      RO11  28300\n1      RO12  28400",
+   "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400",
    "__met": {
     "head": {
      "__py": "DataFrame",
-     "__repr": "  regiune_1  pib_1\n0      RO11  28300\n1      RO12  28400"
+     "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400"
     }
    },
    "__attr": {
@@ -704,18 +728,18 @@ MERGE_JUP = {
   },
   "rez": {
    "__py": "DataFrame",
-   "__repr": "  regiune_1 regiune_2    pib_1\n0      RO11      RO12  28300.0\n1      CH01      RO11      NaN\n2      CH01      RO12      NaN",
+   "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN",
    "__met": {
     "head": {
      "__py": "DataFrame",
-     "__repr": "  regiune_1 regiune_2    pib_1\n0      RO11      RO12  28300.0\n1      CH01      RO11      NaN\n2      CH01      RO12      NaN"
+     "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN"
     }
    },
    "__attr": {
     "shape": {
      "__t": [
       3,
-      3
+      2
      ]
     }
    }
@@ -727,7 +751,7 @@ MERGE_JUP = {
    "ind": "Scrie <code>pib.head()</code> și apasă Enter.",
    "v": {
     "__py": "DataFrame",
-    "__repr": "  regiune_1  pib_1\n0      RO11  28300\n1      RO12  28400"
+    "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400"
    },
    "arata": "RO11, RO12"
   },
@@ -736,7 +760,7 @@ MERGE_JUP = {
    "ind": "Scrie <code>rez.head()</code>.",
    "v": {
     "__py": "DataFrame",
-    "__repr": "  regiune_1 regiune_2    pib_1\n0      RO11      RO12  28300.0\n1      CH01      RO11      NaN\n2      CH01      RO12      NaN"
+    "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN"
    },
    "arata": "NaN: nu are PIB"
   },
@@ -746,19 +770,19 @@ MERGE_JUP = {
    "v": {
     "__t": [
      3,
-     3
+     2
     ]
    },
-   "arata": "3 rânduri, 3 coloane"
+   "arata": "3 rânduri, 2 coloane"
   }
  ],
- "gata": "Toate trei găsite: niciun rând pierdut, iar CH01 are PIB lipsă."
+ "gata": "Toate trei găsite: nicio regiune pierdută, iar CH01 are PIB lipsă."
 }
 
 sl("s11", "Integrarea", "Unirea, cu verificare",
    "<h2>Unirea a două tabele: merge</h2>"
-   "<p class=\"cheie\"><code>merge</code> lipește coloana <code>pib_1</code> la fiecare pereche, după "
-   "<code>regiune_1</code>. <code>pib</code> nu are <code>CH01</code>: ce se întâmplă cu perechile lui?</p>"
+   "<p class=\"cheie\"><code>merge</code> lipește coloana <code>pib</code> la fiecare regiune, după coloana comună "
+   "<code>regiune</code>. <code>pib</code> nu are <code>CH01</code>: ce se întâmplă cu ea?</p>"
    + ET_VERIF + ix("jupyter", "Uită-te în tabele", MERGE_JUP),
    manual=
    "<h2>Unirea a două tabele: merge</h2>"
@@ -766,53 +790,16 @@ sl("s11", "Integrarea", "Unirea, cu verificare",
    "<code>regiune_1</code>). Unirea poate pierde sau multiplica rânduri fără nicio eroare, de aceea după fiecare "
    "<code>merge</code> se numără rândurile.</p>"
    + ix("jupyter", "Uită-te în tabele", MERGE_JUP)
-   + "<p>Cu <code>how=\"left\"</code>, toate rândurile din <code>perechi</code> rămân: 3 înainte, 3 după, iar "
-     "perechile cu <code>CH01</code> au PIB lipsă. Fără el (unirea implicită, <code>inner</code>), ar rămâne doar "
-     "perechea <code>RO11</code>-<code>RO12</code>, fără niciun mesaj. De aceea numărăm rândurile după fiecare "
+   + "<p>Cu <code>how=\"left\"</code>, toate regiunile rămân: 3 înainte, 3 după, iar <code>CH01</code> are PIB "
+     "lipsă. Fără el (unirea implicită, <code>inner</code>), <code>CH01</code> ar dispărea, fără niciun mesaj. De aceea numărăm rândurile după fiecare "
      "<code>merge</code>.</p>"
    + tabel(["Rezultatul unui merge", "Ce înseamnă"], [
        ["același număr de rânduri", "fiecare rând a găsit cel mult o potrivire: corect"],
        ["mai multe rânduri", "cheia se repetă în tabelul din dreapta: rânduri multiplicate"],
        ["mai puține rânduri", "s-a folosit altă unire decât <code>how=\"left\"</code>: rânduri pierdute"],
    ])
-   + "<p>În caiet, perechile de regiuni primesc astfel indicatorii ambelor capete: o dată cu sufixul <code>_1</code>, "
-     "pentru <code>regiune_1</code>, și o dată cu <code>_2</code>, pentru <code>regiune_2</code>. Înainte și după: "
-     "44.253 de perechi.</p>")
-
-
-# ===========================================================================
-#  12. Perechile de țări
-# ===========================================================================
-
-MIG_LUNG = tabel(["tara_rezidenta", "cetatenie", "persoane"], [
-    ["~IT", "~RO", "1.073.196"],
-    ["~RO", "~IT", "14.856"],
-])
-MIG_LAT = tabel(["tara_1", "tara_2", "din_1_in_2", "din_2_in_1"], [
-    ["~IT", "~RO", "14.856 <span class=\"c\">italieni în România</span>", "1.073.196 <span class=\"c\">români în Italia</span>"],
-])
-
-sl("s12", "Integrarea", "Perechile de țări",
-   "<h2>Migrația: două sensuri, un singur rând</h2>"
-   "<p class=\"cheie\">SCI are o valoare pe pereche. Migrația are două, câte una pentru fiecare sens.</p>"
-   "<p><b>Cum vine de la Eurostat:</b> câte un rând pentru fiecare sens.</p>"
-   + MIG_LUNG
-   + "<p><b>Cum o vrem:</b> un rând pe pereche, ca SCI, cu cele două sensuri în două coloane.</p>"
-   + MIG_LAT
-   + nota("Un sens lipsă", "Polonia nu raportează germanii care trăiesc în Polonia. Suma celor două sensuri rămâne "
-          "atunci lipsă, nu 0: un total cu o parte necunoscută e necunoscut.", True),
-   manual=
-   "<h2>Migrația: două sensuri, un singur rând</h2>"
-   "<p>SCI este simetric: o singură valoare pe pereche de țări. Migrația are direcție: românii din Italia și italienii "
-   "din România sunt două numere diferite. Eurostat le dă pe rânduri separate:</p>"
-   + MIG_LUNG
-   + "<p>Pentru a le aduce în forma SCI, cele două sensuri se lipesc pe același rând, prin două <code>merge</code>, "
-     "câte unul pentru fiecare sens:</p>"
-   + MIG_LAT
-   + "<p>Apoi se adună: <code>migranti = din_1_in_2 + din_2_in_1</code>. Dacă un sens lipsește, suma rămâne lipsă. "
-     "Este comportamentul corect: o pereche cu o direcție necunoscută nu are un total cunoscut.</p>"
-     "<p>Înainte de unire se verifică acoperirea: nu toate țările raportează migranții pe cetățenii. Caietul păstrează "
-     "doar țările care raportează cel puțin 20 de cetățenii: 24 de țări, deci 276 de perechi.</p>")
+   + "<p>În caiet, lista celor 298 de regiuni din SCI primește astfel numele și indicatorii: 298 înainte, 298 după. "
+     "În C5, aceeași unire se repetă pentru perechile de regiuni și de țări.</p>")
 
 
 # ===========================================================================
@@ -820,26 +807,26 @@ sl("s12", "Integrarea", "Perechile de țări",
 # ===========================================================================
 
 M_VAL = tabel(["Regula", "Verificarea", "Trebuie"], [
-    ["nicio pereche de două ori", "~perechi.duplicated([\"regiune_1\", \"regiune_2\"]).sum()", "0"],
-    ["SCI complet", "~perechi[\"sci\"].isna().sum()", "0"],
-    ["numărul de perechi", "~len(perechi)", "44253"],
+    ["nicio regiune de două ori", "~regiuni.duplicated(\"regiune\").sum()", "0"],
+    ["fiecare regiune are o țară", "~regiuni[\"tara\"].isna().sum()", "0"],
+    ["numărul de regiuni", "~len(regiuni)", "298"],
 ])
 
 COD_VALIDARE = {
     "id": "c4-cod-validare", "fisier": "04_curatarea.ipynb",
-    "sarcina": "Trei verificări pe tabelul perechilor, înainte de salvare.",
-    "cod": "# 1. cate perechi apar de doua ori? (trebuie 0)\n"
+    "sarcina": "Trei verificări pe tabelul regiunilor, înainte de salvare.",
+    "cod": "# 1. cate regiuni apar de doua ori? (trebuie 0)\n"
            "#    metoda care gaseste randurile repetate\n"
-           "print(perechi.{{1}}([\"regiune_1\", \"regiune_2\"]).sum())\n\n"
-           "# 2. cate perechi nu au SCI? (trebuie 0)\n"
+           "print(regiuni.{{1}}(\"regiune\").sum())\n\n"
+           "# 2. cate regiuni nu au tara? (trebuie 0)\n"
            "#    metoda care gaseste valorile lipsa\n"
-           "print(perechi[\"sci\"].{{2}}().sum())\n\n"
-           "# 3. cate perechi sunt? (trebuie 44253), gata scris\n"
-           "print(len(perechi))",
+           "print(regiuni[\"tara\"].{{2}}().sum())\n\n"
+           "# 3. cate regiuni sunt? (trebuie 298), gata scris\n"
+           "print(len(regiuni))",
     "goluri": {
         "1": {"ok": ["duplicated"], "ajutor": "metoda"},
         "2": {"ok": ["isna", "isnull"], "ajutor": "metoda"}},
-    "iesire": "0\n0\n44253",
+    "iesire": "0\n0\n298",
     "indiciu": "Rândurile repetate se găsesc cu duplicated, ca la duplicate. Lipsurile se găsesc cu isna.",
     "laBine": "Toate trei cifrele sunt cele așteptate: tabelul se poate salva.",
     "laRau": "Ambele goluri sunt metode, ca la secțiunile despre duplicate și lipsuri.",
@@ -848,14 +835,14 @@ COD_VALIDARE = {
 
 sl("s13", "Validarea", "Validarea finală",
    "<h2>Validarea finală</h2>"
-   "<p class=\"cheie\">Înainte de salvare, verificăm că tabelul perechilor respectă trei reguli: nicio pereche de două "
-   "ori, SCI complet, 44.253 de perechi. Cu metodele de azi.</p>"
+   "<p class=\"cheie\">Înainte de salvare, verificăm că tabelul regiunilor respectă trei reguli: nicio regiune de două "
+   "ori, fiecare regiune cu țara ei, 298 de regiuni. Cu metodele de azi.</p>"
    + ET_VERIF + ix("cod", "Verificările finale", COD_VALIDARE),
    manual=
    "<h2>Validarea finală</h2>"
-   "<p>Validarea compară tabelele finale cu regulile lor: cheia e unică, variabila de explicat (SCI) e completă, iar "
-   "numărul de rânduri e cel calculat. În caiet, aceeași celulă verifică toate trei tabelele: 298 de regiuni, "
-   "44.253 de perechi de regiuni, 276 de perechi de țări.</p>"
+   "<p>Validarea compară tabelul final cu regulile lui: cheia e unică, coloanele de care depinde analiza sunt "
+   "complete, iar numărul de rânduri e cel calculat, 298 de regiuni. În C5, aceeași verificare se face pe perechile "
+   "de regiuni și de țări.</p>"
    + M_VAL
    + ix("cod", "Verificările finale", COD_VALIDARE)
    + "<p>Celula se păstrează în caiet și se rulează la fiecare refacere a curățării. Rolul ei nu este să găsească "
@@ -870,10 +857,8 @@ JURNAL = tabel(["Tema", "Decizia", "De ce"], [
     ["populația 0 la Svalbard", "păstrată", "raportată așa de sursă"],
     ["codul <code>NA</code> (Namibia)", "citit ca text", "altfel 44 de rânduri devin lipsă"],
     ["regiuni fără date", "păstrate, fără completare", "lipsurile nu sunt întâmplătoare"],
-    ["perechi A-B și B-A", "o singură apariție", "aceeași valoare, de două ori"],
     ["codurile EL și UK", "aliniate la GR și GB", "altfel se pierd țări la unire"],
-    ["țări care nu raportează migrația", "scoase din perechile de țări", "migrația lor este necunoscută"],
-    ["zboruri raportate de ambele țări", "valoarea raportată de țara 1", "o singură valoare pe pereche"],
+    ["perechi A-B și B-A", "de rezolvat în C5", "aceeași valoare, de două ori"],
 ])
 
 sl("s14", "Validarea", "Jurnalul deciziilor",
@@ -897,12 +882,12 @@ sl("s14", "Validarea", "Jurnalul deciziilor",
 # ===========================================================================
 
 sl("s16", "Mai departe", "Pentru cursul următor",
-   "<h2>La cursul 5: agregare și baze de date</h2>"
+   "<h2>La cursul 5: integrare, baze de date și agregare</h2>"
    '<div class="fin3"><div class="fin3__g">'
    "<section><h4>Ce urmează la cursul 5</h4><ul>"
-   "<li>Cele trei tabele de analiză, încărcate într-o bază de date PostgreSQL.</li>"
-   "<li>Interogări SQL: selecție, filtrare, grupare.</li>"
-   "<li>Agregarea, în SQL și în pandas.</li></ul></section>"
+   "<li>Integrarea tuturor surselor: perechile de regiuni și perechile de țări.</li>"
+   "<li>Tabelele ca entități, cu chei, într-o bază de date PostgreSQL.</li>"
+   "<li>Unirea și agregarea, în SQL și în pandas.</li></ul></section>"
    "<section><h4>Pregătirea pentru cursul 5</h4><ul>"
    "<li>Contul pe GitHub și depozitul echipei clonat în <code>dsw/proiect</code>.</li>"
    "<li>Un cont pe Neon, pentru baza de date.</li></ul></section>"

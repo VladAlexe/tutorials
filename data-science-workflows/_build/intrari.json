@@ -230,17 +230,17 @@
   "c4-curatarea-datelor": {
     "nr": 4,
     "titlu": "Curățarea și integrarea datelor",
-    "deck": "Tabelele pregătite în C3 sunt verificate înainte de folosire: ce conțin, dacă au tipurile corecte, dubluri, valori imposibile, lipsuri și coduri incompatibile. Apoi sunt unite în trei tabele de analiză, validate și documentate.",
-    "descriere": "Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea cu pivot și merge, validarea finală și jurnalul deciziilor, pe datele cursului.",
+    "deck": "Tabelele pregătite în C3 sunt verificate înainte de folosire: ce conțin, dacă au tipurile corecte, dubluri, valori imposibile, lipsuri și coduri incompatibile. Apoi devin primul tabel de analiză, al regiunilor, validat și documentat.",
+    "descriere": "Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi tabelul regiunilor cu pivot și merge, validarea și jurnalul deciziilor, pe datele cursului.",
     "caiet": "@REPO@/blob/main/curs/04_curatarea_si_integrarea_datelor.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Preprocesarea din C3 a adus sursele la aceeași formă. Curățarea pune o întrebare diferită: dacă valorile din această formă sunt corecte, complete și comparabile între surse. Lecția parcurge etapele în ordinea lor, pe tabelele cursului: profilarea, tipurile, duplicatele, valorile imposibile sau neobișnuite, lipsurile și codurile de țară.</p>\n<p>A doua parte este integrarea: indicatorii trec din formatul lung în cel lat, apoi sunt uniți cu perechile de regiuni din SCI, iar migrația, cu cele două direcții ale ei, este adusă în forma perechilor de țări. La unire se pot pierde sau multiplica rânduri fără nicio eroare, de aceea fiecare <code>merge</code> este urmat de o verificare a numărului de rânduri.</p>\n<p>Lecția se încheie cu validarea finală a celor trei tabele de analiză și cu jurnalul deciziilor. Fiecare decizie de curățare (ce se păstrează, ce se elimină, ce se înlocuiește) se scrie împreună cu motivul ei, astfel încât curățarea să poată fi verificată și refăcută.</p>"
+        "html": "<p>Preprocesarea din C3 a adus sursele la aceeași formă. Curățarea pune o întrebare diferită: dacă valorile din această formă sunt corecte, complete și comparabile între surse. Lecția parcurge etapele în ordinea lor, pe tabelele cursului: profilarea, tipurile, duplicatele, valorile imposibile sau neobișnuite, lipsurile și codurile de țară.</p>\n<p>A doua parte construiește primul tabel de analiză, al regiunilor: indicatorii trec din formatul lung în cel lat, apoi sunt uniți cu lista regiunilor din SCI. La unire se pot pierde sau multiplica rânduri fără nicio eroare, de aceea fiecare <code>merge</code> este urmat de o verificare a numărului de rânduri. Integrarea tuturor surselor, în perechi de regiuni și de țări, continuă în C5.</p>\n<p>Lecția se încheie cu validarea tabelului regiunilor și cu jurnalul deciziilor. Fiecare decizie de curățare (ce se păstrează, ce se elimină, ce se înlocuiește) se scrie împreună cu motivul ei, astfel încât curățarea să poată fi verificată și refăcută.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Profilarea unui tabel cu <code>info</code>, <code>value_counts</code> și <code>describe</code>, înaintea oricărei decizii.</li>\n<li>Verificarea tipurilor și conversia unei coloane numerice citite ca text.</li>\n<li>Diferența dintre o cheie repetată și o dublură de conținut, cu <code>duplicated</code> și <code>drop_duplicates</code>.</li>\n<li>Distincția dintre o valoare imposibilă, care se corectează, și una neobișnuită, care se verifică în sursă.</li>\n<li>Ce înseamnă „lipsă” pentru pandas, cum se măsoară lipsurile și de ce, la datele noastre, nu se completează.</li>\n<li>Alinierea codurilor de țară între surse (EL/GR, UK/GB) și citirea corectă a codului Namibiei.</li>\n<li>Trecerea din formatul lung în cel lat cu <code>pivot</code> și unirea tabelelor cu <code>merge</code>, cu verificarea rândurilor.</li>\n<li>Validarea finală a tabelelor de analiză și documentarea deciziilor într-un jurnal.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Profilarea unui tabel cu <code>info</code>, <code>value_counts</code> și <code>describe</code>, înaintea oricărei decizii.</li>\n<li>Verificarea tipurilor și conversia unei coloane numerice citite ca text.</li>\n<li>Diferența dintre o cheie repetată și o dublură de conținut, cu <code>duplicated</code> și <code>drop_duplicates</code>.</li>\n<li>Distincția dintre o valoare imposibilă, care se corectează, și una neobișnuită, care se verifică în sursă.</li>\n<li>Ce înseamnă „lipsă” pentru pandas, cum se măsoară lipsurile și de ce, la datele noastre, nu se completează.</li>\n<li>Alinierea codurilor de țară între surse (EL/GR, UK/GB) și citirea corectă a codului Namibiei.</li>\n<li>O regulă proprie, scrisă ca funcție și aplicată pe o coloană cu <code>apply</code>.</li>\n<li>Trecerea din formatul lung în cel lat cu <code>pivot</code> și o primă unire cu <code>merge</code>, cu verificarea rândurilor.</li>\n<li>Validarea tabelului regiunilor și documentarea deciziilor într-un jurnal.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
@@ -305,8 +305,8 @@
   "c5-agregare-si-baze-de-date": {
     "nr": 5,
     "titlu": "Agregare și baze de date",
-    "deck": "Tabelele curate din C4 ajung într-un singur loc, comun pentru toată echipa, și se rezumă: de la multe rânduri la puține.",
-    "descriere": "Baza de date a echipei pe Neon, adresa ei în .env, primele interogări SQL și agregarea: de la multe rânduri la un rezumat pe grup, în SQL și în pandas.",
+    "deck": "Sursele curățate în C4 sunt unite în perechi de regiuni și de țări, ajung într-o bază de date comună echipei și se rezumă: de la multe rânduri la puține, în SQL și în Python.",
+    "descriere": "Integrarea surselor în perechi de regiuni și de țări, tabelele ca entități cu chei într-o bază de date pe Neon, unirea și agregarea, în SQL și în pandas.",
     "caiet": "@REPO@/blob/main/curs/05_agregare_si_baze_de_date.ipynb",
     "sectiuni": [
       {

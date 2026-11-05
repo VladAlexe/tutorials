@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 4. Curățarea și integrarea datelor · Fluxuri de lucru</title>
-<meta name="description" content="Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea cu pivot și merge, validarea finală și jurnalul deciziilor, pe datele cursului.">
-<link rel="stylesheet" href="../css/fonturi.css?v=133">
-<link rel="stylesheet" href="../css/sistem.css?v=133">
-<link rel="stylesheet" href="../css/intrare.css?v=133">
-<script src="../js/tema.js?v=133"></script>
+<meta name="description" content="Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi tabelul regiunilor cu pivot și merge, validarea și jurnalul deciziilor, pe datele cursului.">
+<link rel="stylesheet" href="../css/fonturi.css?v=134">
+<link rel="stylesheet" href="../css/sistem.css?v=134">
+<link rel="stylesheet" href="../css/intrare.css?v=134">
+<script src="../js/tema.js?v=134"></script>
 </head>
 <body>
 
@@ -35,7 +35,7 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 4 din 8</p>
     <h1>Curățarea și integrarea datelor</h1>
-    <p class="deck">Tabelele pregătite în C3 sunt verificate înainte de folosire: ce conțin, dacă au tipurile corecte, dubluri, valori imposibile, lipsuri și coduri incompatibile. Apoi sunt unite în trei tabele de analiză, validate și documentate.</p>
+    <p class="deck">Tabelele pregătite în C3 sunt verificate înainte de folosire: ce conțin, dacă au tipurile corecte, dubluri, valori imposibile, lipsuri și coduri incompatibile. Apoi devin primul tabel de analiză, al regiunilor, validat și documentat.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
@@ -43,8 +43,8 @@
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>Preprocesarea din C3 a adus sursele la aceeași formă. Curățarea pune o întrebare diferită: dacă valorile din această formă sunt corecte, complete și comparabile între surse. Lecția parcurge etapele în ordinea lor, pe tabelele cursului: profilarea, tipurile, duplicatele, valorile imposibile sau neobișnuite, lipsurile și codurile de țară.</p>
-<p>A doua parte este integrarea: indicatorii trec din formatul lung în cel lat, apoi sunt uniți cu perechile de regiuni din SCI, iar migrația, cu cele două direcții ale ei, este adusă în forma perechilor de țări. La unire se pot pierde sau multiplica rânduri fără nicio eroare, de aceea fiecare <code>merge</code> este urmat de o verificare a numărului de rânduri.</p>
-<p>Lecția se încheie cu validarea finală a celor trei tabele de analiză și cu jurnalul deciziilor. Fiecare decizie de curățare (ce se păstrează, ce se elimină, ce se înlocuiește) se scrie împreună cu motivul ei, astfel încât curățarea să poată fi verificată și refăcută.</p></div>
+<p>A doua parte construiește primul tabel de analiză, al regiunilor: indicatorii trec din formatul lung în cel lat, apoi sunt uniți cu lista regiunilor din SCI. La unire se pot pierde sau multiplica rânduri fără nicio eroare, de aceea fiecare <code>merge</code> este urmat de o verificare a numărului de rânduri. Integrarea tuturor surselor, în perechi de regiuni și de țări, continuă în C5.</p>
+<p>Lecția se încheie cu validarea tabelului regiunilor și cu jurnalul deciziilor. Fiecare decizie de curățare (ce se păstrează, ce se elimină, ce se înlocuiește) se scrie împreună cu motivul ei, astfel încât curățarea să poată fi verificată și refăcută.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
@@ -55,8 +55,9 @@
 <li>Distincția dintre o valoare imposibilă, care se corectează, și una neobișnuită, care se verifică în sursă.</li>
 <li>Ce înseamnă „lipsă” pentru pandas, cum se măsoară lipsurile și de ce, la datele noastre, nu se completează.</li>
 <li>Alinierea codurilor de țară între surse (EL/GR, UK/GB) și citirea corectă a codului Namibiei.</li>
-<li>Trecerea din formatul lung în cel lat cu <code>pivot</code> și unirea tabelelor cu <code>merge</code>, cu verificarea rândurilor.</li>
-<li>Validarea finală a tabelelor de analiză și documentarea deciziilor într-un jurnal.</li>
+<li>O regulă proprie, scrisă ca funcție și aplicată pe o coloană cu <code>apply</code>.</li>
+<li>Trecerea din formatul lung în cel lat cu <code>pivot</code> și o primă unire cu <code>merge</code>, cu verificarea rândurilor.</li>
+<li>Validarea tabelului regiunilor și documentarea deciziilor într-un jurnal.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -122,7 +123,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=133"), import("../js/ora.js?v=133"), import("../js/curs.js?v=133")]);
+    import("../js/auth.js?v=134"), import("../js/ora.js?v=134"), import("../js/curs.js?v=134")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -165,7 +166,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=133"></script>
-<script type="module" src="../js/subsol.js?v=133"></script>
+<script type="module" src="../js/antet.js?v=134"></script>
+<script type="module" src="../js/subsol.js?v=134"></script>
 </body>
 </html>

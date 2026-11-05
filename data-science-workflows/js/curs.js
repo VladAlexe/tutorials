@@ -50,14 +50,14 @@ export const LECTII = [
   { nr:4, cheie:"c4-curatarea-datelor",
     titlu:"Curățarea și integrarea datelor",
     scurt:"Curățare",
-    rezumat:"Profilarea, duplicatele, lipsurile și codurile incompatibile, apoi unirea tabelelor și validarea finală, pe datele cursului.",
+    rezumat:"Profilarea, duplicatele, lipsurile și codurile incompatibile, apoi tabelul regiunilor și validarea lui, pe datele cursului.",
     stare:"gata", sarcini:10,
     notebook:null },
 
   { nr:5, cheie:"c5-agregare-si-baze-de-date",
     titlu:"Agregare și baze de date",
     scurt:"Agregare",
-    rezumat:"Baza de date a echipei pe Neon, primele interogări SQL și agregarea: de la multe rânduri la un rezumat pe grup.",
+    rezumat:"Integrarea surselor în perechi, baza de date a echipei pe Neon, unirea și agregarea, în SQL și în pandas.",
     stare:"gata", sarcini:8,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/05_agregare_si_baze_de_date.ipynb" },
 
