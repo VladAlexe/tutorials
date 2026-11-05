@@ -128,13 +128,23 @@ VERIF_LOC = tabel(["Înainte de orice comandă git", ""], [
 TERM_FARA_GIT = ('<pre><code><span class="c">(.venv)</span> PS C:\\Users\\ana\\dsw&gt; git status\n'
                  'fatal: not a git repository (or any of the parent directories): .git</code></pre>')
 
-V_LOC = verif("c4-v-loc", 1,
-    "Ana a deschis terminalul și a primit mesajul de mai sus. Ce face?",
-    ["git init", "cd proiect", "cd curs", "git clone, încă o dată"],
-    "Terminalul este în <code>dsw/</code>, iar depozitul echipei este <code>dsw/proiect</code>. "
-    "<code>cd proiect</code> intră în el, după care <code>git status</code> funcționează. <code>git init</code> ar crea "
-    "un al doilea depozit, gol, în <code>dsw/</code>; <code>curs/</code> nu are Git; o nouă clonă nu e necesară, "
-    "pentru că depozitul există deja.")
+COD_CD = {
+    "id": "c4-cod-cd", "fisier": "terminal",
+    "sarcina": "Ana a deschis terminalul în dsw și a primit mesajul de mai jos.",
+    "cod": "(.venv) PS C:\\Users\\ana\\dsw> git status\n"
+           "fatal: not a git repository (or any of the parent directories): .git\n\n"
+           "# ce scrie Ana, ca git status sa mearga?\n"
+           "(.venv) PS C:\\Users\\ana\\dsw> {{1}}\n"
+           "(.venv) PS C:\\Users\\ana\\dsw\\proiect> git status",
+    "goluri": {
+        "1": {"ok": ["cd proiect"], "re": r"^cd (\.[\\/])?proiect[\\/]?$", "ajutor": "comanda"}},
+    "iesire": "On branch dev\nYour branch is up to date with 'origin/dev'.",
+    "indiciu": "Depozitul echipei este dosarul proiect, aflat chiar în dsw. Comanda care intră într-un dosar este cd.",
+    "laBine": "Terminalul este acum în depozitul echipei, iar git status funcționează.",
+    "laRau": "Se scrie comanda cd, un spațiu, apoi numele dosarului. git init ar crea un al doilea depozit, gol.",
+    "explicatie": "Terminalul era în <code>dsw/</code>, iar depozitul este <code>dsw/proiect</code>. <code>cd proiect</code> "
+                  "intră în el. <code>git init</code> ar crea un depozit nou, gol, în <code>dsw/</code>, iar o nouă "
+                  "clonă nu e necesară: depozitul există deja."}
 
 sl("s1b", "Recapitulare", "Unde lucrăm",
    "<h2>Două dosare, două roluri</h2>"
@@ -163,12 +173,12 @@ sl("s1c", "Recapitulare", "Unde sunt?",
    "<p class=\"cheie\"><code>not a git repository</code> înseamnă că terminalul nu este în <code>proiect/</code>. "
    "Comenzile <code>git</code> merg doar acolo.</p>"
    + VERIF_LOC
-   + TERM_FARA_GIT + V_LOC,
+   + ET_VERIF + ix("cod", "Intră în depozit", COD_CD),
    manual=
    "<h2>Terminalul spune: nu e un depozit Git</h2>"
    "<p>Cea mai frecventă eroare după clonare: comanda <code>git</code> se dă din alt dosar decât depozitul. Mesajul "
    "<code>not a git repository</code> nu înseamnă că depozitul s-a pierdut, ci doar că terminalul nu este în el.</p>"
-   + VERIF_LOC + TERM_FARA_GIT + V_LOC)
+   + VERIF_LOC + ix("cod", "Intră în depozit", COD_CD))
 
 sl("s2", "Cursul", "Planul lecției",
    "<h2>Curățarea și integrarea datelor</h2>"
@@ -410,7 +420,7 @@ V_SVALBARD = verif("c4-v7", 2,
 sl("s6", "Curățarea", "Valorile imposibile",
    "<h2>Valorile imposibile sau neobișnuite</h2>"
    + tabel(["Verificarea", "În caiet", "Rezultatul"], [
-       ["rezumatul pe indicator", "~groupby(\"indicator\")[\"valoare\"].describe()", "o populație minimă de 0"],
+       ["rezumatul populației", "~populatie[\"valoare\"].describe()", "un minim de 0"],
        ["cele mai mici valori", "~populatie.nsmallest(3, \"valoare\")", "<code>NO0B</code>, Svalbard"],
        ["cele mai mari valori", "~populatie.sort_values(\"valoare\", ascending=False).head(3)", "Istanbul, Île-de-France, Lombardia"],
        ["procentele", "~(procente[\"valoare\"] &gt; 100).sum()", "0 valori peste 100"],
@@ -423,7 +433,7 @@ sl("s6", "Curățarea", "Valorile imposibile",
    "este doar departe de celelalte. Ea se verifică în sursă și, de cele mai multe ori, se păstrează: poate fi chiar "
    "fenomenul studiat.</p>"
    + tabel(["Verificarea", "În caiet", "Rezultatul"], [
-       ["rezumatul pe indicator", "~groupby(\"indicator\")[\"valoare\"].describe()", "o populație minimă de 0"],
+       ["rezumatul populației", "~populatie[\"valoare\"].describe()", "un minim de 0"],
        ["cele mai mici valori", "~populatie.nsmallest(3, \"valoare\")", "<code>NO0B</code>, Svalbard"],
        ["cele mai mari valori", "~populatie.sort_values(\"valoare\", ascending=False).head(3)", "Istanbul, Île-de-France, Lombardia"],
        ["procentele", "~(procente[\"valoare\"] &gt; 100).sum()", "0 valori peste 100"],
@@ -439,7 +449,7 @@ sl("s6", "Curățarea", "Valorile imposibile",
 # ===========================================================================
 
 PAS_NA = {
-    "fisier": "04_curatarea_si_integrarea_datelor.ipynb · 6.1. Ce înseamnă „lipsă”",
+    "fisier": "04_curatarea_si_integrarea_datelor.ipynb · 6. Lipsurile",
     "intro": "La citire, pandas transformă automat în valoare lipsă câteva texte: celula goală, dar și NA, N/A, null. La noi, NA este codul Namibiei.",
     "cod": "gresit = pd.read_csv(DATE_C3 + \"migratie.csv\")\n"
            "migratie = pd.read_csv(DATE_C3 + \"migratie.csv\",\n"
@@ -600,31 +610,36 @@ sl("s9", "Curățarea", "Codurile",
 # ===========================================================================
 
 _LUNG = [["RO11", 74.7, "densitate"], ["RO12", 67.4, "densitate"],
-         ["RO11", 28300.0, "pib_locuitor"], ["RO12", 28400.0, "pib_locuitor"]]
+         ["RO11", 4.5, "somaj"], ["RO12", 4.3, "somaj"]]
 
 PAS_PIVOT = {
     "fisier": "04_curatarea_si_integrarea_datelor.ipynb · 8. Din lung în lat",
-    "intro": "Două regiuni, Nord-Vest (RO11) și Centru (RO12), și doi indicatori.",
-    "cod": "lung\n\n"
+    "intro": "Două regiuni, Nord-Vest (RO11) și Centru (RO12), și doi indicatori: densitatea și șomajul.",
+    "cod": "print(lung)\n"
            "lat = lung.pivot(index=\"regiune\", columns=\"indicator\", values=\"valoare\")\n"
+           "print(lat)                  # fara reset_index\n"
            "lat = lat.reset_index()\n"
-           "len(lung), len(lat)",
+           "print(lat)                  # cu reset_index",
     "pasi": [
         {"l": 1, "set": {"lung": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator"], "rows": _LUNG,
             "nota": "lung: un rând pe regiune și indicator"}}},
+         "out": "  regiune  valoare  indicator\n0    RO11     74.7  densitate\n1    RO12     67.4  densitate\n"
+                "2    RO11      4.5      somaj\n3    RO12      4.3      somaj",
          "txt": "Forma <b>lungă</b>: 4 rânduri. Fiecare regiune apare o dată pentru fiecare indicator."},
-        {"l": 3, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["densitate", "pib_locuitor"],
-            "index": ["RO11", "RO12"], "rows": [[74.7, 28300.0], [67.4, 28400.0]],
+        {"l": 2, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["densitate", "somaj"],
+            "index": ["RO11", "RO12"], "rows": [[74.7, 4.5], [67.4, 4.3]],
             "nota": "regiunea a ajuns în index"}}},
          "txt": "<code>pivot</code>: <code>index</code> spune ce devine rând (regiunea), <code>columns</code> ce devine "
                 "coloană (indicatorul), <code>values</code> ce se pune în celule (valoarea)."},
-        {"l": 4, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["regiune", "densitate", "pib_locuitor"],
-            "rows": [["RO11", 74.7, 28300.0], ["RO12", 67.4, 28400.0]], "nota": "un rând pe regiune"}}},
-         "txt": "<code>reset_index</code> readuce regiunea într-o coloană obișnuită, ca să poată fi folosită la "
-                "<code>merge</code>."},
-        {"l": 5, "out": "(4, 2)",
-         "txt": "Din 4 rânduri, 2: unul pe regiune, cu o coloană pentru fiecare indicator. Aceleași valori, altă "
-                "așezare."},
+        {"l": 3, "out": "indicator  densitate  somaj\nregiune\nRO11            74.7    4.5\nRO12            67.4    4.3",
+         "txt": "<b>Fără</b> <code>reset_index</code>: regiunea stă în <b>index</b>, în stânga, nu într-o coloană. "
+                "Se vede după rândul <code>regiune</code>, mutat sub antet. <code>lat[\"regiune\"]</code> ar da eroare."},
+        {"l": 4, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["regiune", "densitate", "somaj"],
+            "rows": [["RO11", 74.7, 4.5], ["RO12", 67.4, 4.3]], "nota": "un rând pe regiune"}}},
+         "txt": "<code>reset_index</code> mută regiunea din index într-o coloană obișnuită, iar indexul devine 0, 1."},
+        {"l": 5, "out": "indicator regiune  densitate  somaj\n0            RO11       74.7    4.5\n1            RO12       67.4    4.3",
+         "txt": "<b>Cu</b> <code>reset_index</code>: <code>regiune</code> e o coloană ca oricare alta, deci poate fi folosită "
+                "la <code>merge</code>. Din 4 rânduri, 2: unul pe regiune."},
     ],
 }
 
@@ -645,36 +660,116 @@ sl("s10", "Integrarea", "Din lung în lat",
 #  11. Unirea, cu verificare
 # ===========================================================================
 
-P_MERGE = {
-    "id": "c4-prezice-merge", "fisier": "exemplu.ipynb",
-    "cod": "perechi = pd.DataFrame({\"regiune_1\": [\"RO11\", \"CH01\", \"CH01\"],\n"
-           "                        \"regiune_2\": [\"RO12\", \"RO11\", \"RO12\"]})\n"
-           "pib = pd.DataFrame({\"regiune_1\": [\"RO11\", \"RO12\"],\n"
-           "                    \"pib_1\":     [28300, 28400]})\n\n"
-           "rez = perechi.merge(pib, on=\"regiune_1\", how=\"left\")\n"
-           "print(len(rez))",
-    "intrebare": "<code>pib</code> nu are <code>CH01</code>. Câte rânduri are <code>rez</code>?",
-    "variante": ["1: perechile cu CH01 dispar", "3: perechile cu CH01 rămân, cu PIB lipsă", "3: CH01 primește PIB 0", "5: rândurile se adună"],
-    "corect": 1,
-    "indiciu": "how=\"left\" păstrează toate rândurile tabelului din stânga, perechi.",
-    "laBine": "Trei rânduri: perechea RO11-RO12 a primit PIB-ul, iar cele două perechi cu CH01, fără potrivire, au NaN.",
-    "explicatie": "<code>merge</code> caută fiecare <code>regiune_1</code> din <code>perechi</code> în <code>pib</code> "
-                  "și îi lipește coloana <code>pib_1</code>. Cu <code>how=\"left\"</code>, rândurile fără potrivire "
-                  "rămân, cu valoare lipsă. Fără el (unirea implicită), perechile cu CH01 ar dispărea fără niciun mesaj. De aceea "
-                  "numărăm rândurile după fiecare <code>merge</code>: 3 înainte, 3 după.",
-    "iesire": "3"}
+MERGE_JUP = {
+ "id": "c4-jup-merge",
+ "celula": "perechi = pd.DataFrame({\"regiune_1\": [\"RO11\", \"CH01\", \"CH01\"],\n                        \"regiune_2\": [\"RO12\", \"RO11\", \"RO12\"]})\npib = pd.DataFrame({\"regiune_1\": [\"RO11\", \"RO12\"],\n                    \"pib_1\":     [28300, 28400]})\n\nrez = perechi.merge(pib, on=\"regiune_1\", how=\"left\")",
+ "loc": "pib.head()",
+ "taie": 400,
+ "env": {
+  "perechi": {
+   "__py": "DataFrame",
+   "__repr": "  regiune_1 regiune_2\n0      RO11      RO12\n1      CH01      RO11\n2      CH01      RO12",
+   "__met": {
+    "head": {
+     "__py": "DataFrame",
+     "__repr": "  regiune_1 regiune_2\n0      RO11      RO12\n1      CH01      RO11\n2      CH01      RO12"
+    }
+   },
+   "__attr": {
+    "shape": {
+     "__t": [
+      3,
+      2
+     ]
+    }
+   }
+  },
+  "pib": {
+   "__py": "DataFrame",
+   "__repr": "  regiune_1  pib_1\n0      RO11  28300\n1      RO12  28400",
+   "__met": {
+    "head": {
+     "__py": "DataFrame",
+     "__repr": "  regiune_1  pib_1\n0      RO11  28300\n1      RO12  28400"
+    }
+   },
+   "__attr": {
+    "shape": {
+     "__t": [
+      2,
+      2
+     ]
+    }
+   }
+  },
+  "rez": {
+   "__py": "DataFrame",
+   "__repr": "  regiune_1 regiune_2    pib_1\n0      RO11      RO12  28300.0\n1      CH01      RO11      NaN\n2      CH01      RO12      NaN",
+   "__met": {
+    "head": {
+     "__py": "DataFrame",
+     "__repr": "  regiune_1 regiune_2    pib_1\n0      RO11      RO12  28300.0\n1      CH01      RO11      NaN\n2      CH01      RO12      NaN"
+    }
+   },
+   "__attr": {
+    "shape": {
+     "__t": [
+      3,
+      3
+     ]
+    }
+   }
+  }
+ },
+ "tinte": [
+  {
+   "t": "Ce regiuni are tabelul <code>pib</code>?",
+   "ind": "Scrie <code>pib.head()</code> și apasă Enter.",
+   "v": {
+    "__py": "DataFrame",
+    "__repr": "  regiune_1  pib_1\n0      RO11  28300\n1      RO12  28400"
+   },
+   "arata": "RO11, RO12"
+  },
+  {
+   "t": "Ce a primit <code>CH01</code> în <code>rez</code>?",
+   "ind": "Scrie <code>rez.head()</code>.",
+   "v": {
+    "__py": "DataFrame",
+    "__repr": "  regiune_1 regiune_2    pib_1\n0      RO11      RO12  28300.0\n1      CH01      RO11      NaN\n2      CH01      RO12      NaN"
+   },
+   "arata": "NaN: nu are PIB"
+  },
+  {
+   "t": "Câte rânduri și coloane are <code>rez</code>?",
+   "ind": "Scrie <code>rez.shape</code>.",
+   "v": {
+    "__t": [
+     3,
+     3
+    ]
+   },
+   "arata": "3 rânduri, 3 coloane"
+  }
+ ],
+ "gata": "Toate trei găsite: niciun rând pierdut, iar CH01 are PIB lipsă."
+}
 
 sl("s11", "Integrarea", "Unirea, cu verificare",
    "<h2>Unirea a două tabele: merge</h2>"
-   "<p class=\"cheie\"><code>merge</code> lipește coloanele unui tabel de altul, după o coloană comună. "
-   "Cu <code>how=\"left\"</code> nu se pierde niciun rând din stânga.</p>"
-   + ET_VERIF + ix("prezice", "Câte rânduri după merge?", P_MERGE),
+   "<p class=\"cheie\"><code>merge</code> lipește coloana <code>pib_1</code> la fiecare pereche, după "
+   "<code>regiune_1</code>. <code>pib</code> nu are <code>CH01</code>: ce se întâmplă cu perechile lui?</p>"
+   + ET_VERIF + ix("jupyter", "Uită-te în tabele", MERGE_JUP),
    manual=
    "<h2>Unirea a două tabele: merge</h2>"
    "<p><code>merge</code> lipește coloanele unui tabel de altul, potrivind rândurile după o coloană comună (aici, "
    "<code>regiune_1</code>). Unirea poate pierde sau multiplica rânduri fără nicio eroare, de aceea după fiecare "
    "<code>merge</code> se numără rândurile.</p>"
-   + ix("prezice", "Câte rânduri după merge?", P_MERGE)
+   + ix("jupyter", "Uită-te în tabele", MERGE_JUP)
+   + "<p>Cu <code>how=\"left\"</code>, toate rândurile din <code>perechi</code> rămân: 3 înainte, 3 după, iar "
+     "perechile cu <code>CH01</code> au PIB lipsă. Fără el (unirea implicită, <code>inner</code>), ar rămâne doar "
+     "perechea <code>RO11</code>-<code>RO12</code>, fără niciun mesaj. De aceea numărăm rândurile după fiecare "
+     "<code>merge</code>.</p>"
    + tabel(["Rezultatul unui merge", "Ce înseamnă"], [
        ["același număr de rânduri", "fiecare rând a găsit cel mult o potrivire: corect"],
        ["mai multe rânduri", "cheia se repetă în tabelul din dreapta: rânduri multiplicate"],
@@ -733,9 +828,14 @@ M_VAL = tabel(["Regula", "Verificarea", "Trebuie"], [
 COD_VALIDARE = {
     "id": "c4-cod-validare", "fisier": "04_curatarea.ipynb",
     "sarcina": "Trei verificări pe tabelul perechilor, înainte de salvare.",
-    "cod": "print(perechi.{{1}}([\"regiune_1\", \"regiune_2\"]).sum())   # trebuie 0\n"
-           "print(perechi[\"sci\"].{{2}}().sum())                        # trebuie 0\n"
-           "print(len(perechi))                                       # trebuie 44253",
+    "cod": "# 1. cate perechi apar de doua ori? (trebuie 0)\n"
+           "#    metoda care gaseste randurile repetate\n"
+           "print(perechi.{{1}}([\"regiune_1\", \"regiune_2\"]).sum())\n\n"
+           "# 2. cate perechi nu au SCI? (trebuie 0)\n"
+           "#    metoda care gaseste valorile lipsa\n"
+           "print(perechi[\"sci\"].{{2}}().sum())\n\n"
+           "# 3. cate perechi sunt? (trebuie 44253), gata scris\n"
+           "print(len(perechi))",
     "goluri": {
         "1": {"ok": ["duplicated"], "ajutor": "metoda"},
         "2": {"ok": ["isna", "isnull"], "ajutor": "metoda"}},
@@ -748,8 +848,8 @@ COD_VALIDARE = {
 
 sl("s13", "Validarea", "Validarea finală",
    "<h2>Validarea finală</h2>"
-   "<p class=\"cheie\">Înainte de salvare, verificăm că tabelul respectă regulile lui. Cu metodele de azi.</p>"
-   + M_VAL
+   "<p class=\"cheie\">Înainte de salvare, verificăm că tabelul perechilor respectă trei reguli: nicio pereche de două "
+   "ori, SCI complet, 44.253 de perechi. Cu metodele de azi.</p>"
    + ET_VERIF + ix("cod", "Verificările finale", COD_VALIDARE),
    manual=
    "<h2>Validarea finală</h2>"

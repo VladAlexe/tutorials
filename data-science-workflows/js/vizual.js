@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=128");
+    const m = await import("/data-science-workflows/js/colectare.js?v=133");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -3217,13 +3217,13 @@ V.jupyter = (gazda, d) => {
           atinse[k] = src;
           const li = gazda.querySelector(`.jpy__ti[data-k="${k}"]`);
           li.classList.add("ok"); li.querySelector(".jpy__e").textContent = src;
-          li.querySelector(".jpy__v").textContent = typeof t.v === "number" ? t.v.toLocaleString("ro-RO") : String(t.v);
+          li.querySelector(".jpy__v").textContent = t.arata != null ? t.arata : typeof t.v === "number" ? t.v.toLocaleString("ro-RO") : String(t.v);
         }
       });
       if (atinse.every(x => x !== null) && d.id){
         await poarta(gazda, d.id, atinse.join(" | "));
         const st = gazda.querySelector(".ex__stare");
-        st.textContent = "Toate cele trei ținte au fost găsite."; st.classList.add("vazut");
+        st.textContent = d.gata || "Toate cele trei ținte au fost găsite."; st.classList.add("vazut");
       }
     } });
 };
@@ -3567,7 +3567,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=128`), import(`${R}/js/auth.js?v=128`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=133`), import(`${R}/js/auth.js?v=133`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });

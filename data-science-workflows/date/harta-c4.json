@@ -37,16 +37,8 @@
    "titlu": "Unde sunt?",
    "sarcini": [
     {
-     "id": "c4-v-loc",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Ana a deschis terminalul și a primit mesajul de mai sus. Ce face?",
-     "optiuni": [
-      "git init",
-      "cd proiect",
-      "cd curs",
-      "git clone, încă o dată"
-     ]
+     "id": "c4-cod-cd",
+     "fel": "cod"
     }
    ]
   },
@@ -166,7 +158,7 @@
    "titlu": "Unirea, cu verificare",
    "sarcini": [
     {
-     "id": "c4-prezice-merge",
+     "id": "c4-jup-merge",
      "fel": "cod"
     }
    ]
