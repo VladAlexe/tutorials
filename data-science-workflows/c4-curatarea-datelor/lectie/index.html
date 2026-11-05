@@ -6,19 +6,24 @@
 <title>Cursul 4 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea tabelelor și validarea finală, pe datele cursului.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=134">
-<link rel="stylesheet" href="../../css/sistem.css?v=134">
-<link rel="stylesheet" href="../../css/slide.css?v=134">
-<link rel="stylesheet" href="../../css/interactiv.css?v=134">
-<link rel="stylesheet" href="../../css/grafice.css?v=134">
-<link rel="stylesheet" href="../../css/exercitii.css?v=134">
-<link rel="stylesheet" href="../../css/explorator.css?v=134">
-<script src="../../js/tema.js?v=134"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=137">
+<link rel="stylesheet" href="../../css/sistem.css?v=137">
+<link rel="stylesheet" href="../../css/slide.css?v=137">
+<link rel="stylesheet" href="../../css/interactiv.css?v=137">
+<link rel="stylesheet" href="../../css/grafice.css?v=137">
+<link rel="stylesheet" href="../../css/exercitii.css?v=137">
+<link rel="stylesheet" href="../../css/explorator.css?v=137">
+<script src="../../js/tema.js?v=137"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 4 · Curățarea și integrarea datelor" data-crom="1"></div>
 <div class="rnr" data-capitol="c4">
 <main class="rnr__scena" tabindex="-1">
+
+<section class="sld" id="s0" data-grup="Cursul" data-t="Unde suntem">
+<h2>Unde suntem în curs</h2><p class="cheie">Fiecare curs face un pas din fluxul unei analize de date, pe aceleași date și în același proiect. Azi: pasul 4.</p><table class="tabel"><thead><tr><th></th><th>Ce facem</th><th>Ce rămâne</th></tr></thead><tbody><tr><td>C1</td><td>proiectul, mediul de lucru, tipurile de date și JSON</td><td><code>dsw/</code>, cu <code>.venv</code></td></tr><tr><td>C2</td><td>colectarea datelor prin API: Eurostat, Banca Mondială</td><td><code>data/raw</code></td></tr><tr><td>C3</td><td>surse diverse, preprocesare, Git și depozitul echipei</td><td><code>data/processed</code>, <code>proiect/</code></td></tr><tr><td><b>C4</b></td><td><b>azi: curățarea datelor și tabelul regiunilor</b></td><td><b><code>regiuni_nuts2.csv</code></b></td></tr><tr><td>C5</td><td>integrare, baze de date și agregare, în SQL și în Python</td><td>perechile, în baza de date</td></tr><tr><td>C6</td><td>analiza exploratorie: ipoteze, grafice, rețele</td><td>primele rezultate</td></tr><tr><td>C7</td><td>variabile derivate și model</td><td>modelul SCI</td></tr><tr><td>C8</td><td>raportul și prezentarea proiectului</td><td>raportul echipei</td></tr></tbody></table>
+
+</section>
 
 <section class="sld" id="s1" data-grup="Recapitulare" data-t="Git, pe scurt">
 <h2>Git, pe scurt: lucrul zilnic pe dev</h2><p class="cheie">Din C3: <code>pull</code> la început, <code>commit</code> și <code>push</code> după fiecare pas. Nou azi: cum se anulează o greșeală.</p><table class="tabel"><thead><tr><th>Când</th><th>Comenzile</th></tr></thead><tbody><tr><td>la începutul lucrului</td><td class="mono">git switch dev ; git pull</td></tr><tr><td>după un pas încheiat</td><td class="mono">git add fisier ; git commit -m "mesaj" ; git pull ; git push</td></tr><tr><td>o greșeală înainte de commit</td><td class="mono">git restore fisier ; git restore --staged fisier</td></tr><tr><td>un commit greșit, deja publicat</td><td class="mono">git revert &lt;cod&gt;</td></tr></tbody></table><div class="verif" data-id="c4-v1" data-corect="1">
@@ -136,15 +141,18 @@ pd.to_numeric(exemplu, errors="coerce")      <span class="c"># 12.5, NaN, 7.0</s
 <section class="sld" id="s10" data-grup="Integrarea" data-t="Din lung în lat">
 <h2>Din lung în lat: un rând pe regiune</h2><div class="ix" data-ix="pas">
   <div class="ix__cap"><span class="ix__fel">Pas cu pas</span><span class="ix__t">Din lung în lat</span></div>
-  <div class="ix__corp"><script type="application/json">{"fisier": "04_curatarea_si_integrarea_datelor.ipynb · 8. Din lung în lat", "intro": "Două regiuni, Nord-Vest (RO11) și Centru (RO12), și doi indicatori: densitatea și șomajul.", "cod": "print(lung)\nlat = lung.pivot(index=\"regiune\", columns=\"indicator\", values=\"valoare\")\nprint(lat)                  # fara reset_index\nlat = lat.reset_index()\nprint(lat)                  # cu reset_index", "pasi": [{"l": 1, "set": {"lung": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator"], "rows": [["RO11", 74.7, "densitate"], ["RO12", 67.4, "densitate"], ["RO11", 4.5, "somaj"], ["RO12", 4.3, "somaj"]], "nota": "lung: un rând pe regiune și indicator"}}}, "out": "  regiune  valoare  indicator\n0    RO11     74.7  densitate\n1    RO12     67.4  densitate\n2    RO11      4.5      somaj\n3    RO12      4.3      somaj", "txt": "Forma <b>lungă</b>: 4 rânduri. Fiecare regiune apare o dată pentru fiecare indicator."}, {"l": 2, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["densitate", "somaj"], "index": ["RO11", "RO12"], "rows": [[74.7, 4.5], [67.4, 4.3]], "nota": "regiunea a ajuns în index"}}}, "txt": "<code>pivot</code>: <code>index</code> spune ce devine rând (regiunea), <code>columns</code> ce devine coloană (indicatorul), <code>values</code> ce se pune în celule (valoarea)."}, {"l": 3, "out": "indicator  densitate  somaj\nregiune\nRO11            74.7    4.5\nRO12            67.4    4.3", "txt": "<b>Fără</b> <code>reset_index</code>: regiunea stă în <b>index</b>, în stânga, nu într-o coloană. Se vede după rândul <code>regiune</code>, mutat sub antet. <code>lat[\"regiune\"]</code> ar da eroare."}, {"l": 4, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["regiune", "densitate", "somaj"], "rows": [["RO11", 74.7, 4.5], ["RO12", 67.4, 4.3]], "nota": "un rând pe regiune"}}}, "txt": "<code>reset_index</code> mută regiunea din index într-o coloană obișnuită, iar indexul devine 0, 1."}, {"l": 5, "out": "indicator regiune  densitate  somaj\n0            RO11       74.7    4.5\n1            RO12       67.4    4.3", "txt": "<b>Cu</b> <code>reset_index</code>: <code>regiune</code> e o coloană ca oricare alta, deci poate fi folosită la <code>merge</code>. Din 4 rânduri, 2: unul pe regiune."}]}</script></div>
+  <div class="ix__corp"><script type="application/json">{"fisier": "04_curatarea_si_integrarea_datelor.ipynb · 8. Din lung în lat", "intro": "Tabelul lung, în memorie: două regiuni, Nord-Vest (RO11) și Centru (RO12), și doi indicatori, densitatea și șomajul.", "cod": "lat = lung.pivot(index=\"regiune\", columns=\"indicator\", values=\"valoare\")\nlat.columns.name = None        # scoatem eticheta \"indicator\" de deasupra coloanelor\nprint(lat)                     # fara reset_index\nlat = lat.reset_index()\nprint(lat)                     # cu reset_index", "pasi": [{"l": 1, "set": {"lung": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator"], "rows": [["RO11", 74.7, "densitate"], ["RO12", 67.4, "densitate"], ["RO11", 4.5, "somaj"], ["RO12", 4.3, "somaj"]], "nota": "lung: un rând pe regiune și indicator"}}, "lat": {"t": "DataFrame", "v": {"cols": ["densitate", "somaj"], "index": ["RO11", "RO12"], "rows": [[74.7, 4.5], [67.4, 4.3]], "nota": "regiunea a ajuns în index"}}}, "txt": "<code>pivot</code>: <code>index</code> spune ce devine rând (regiunea), <code>columns</code> ce devine coloană (indicatorul), <code>values</code> ce se pune în celule (valoarea). Din 4 rânduri, 2."}, {"l": 2, "txt": "Doar pentru afișare: pandas scrie numele coloanei originale, <code>indicator</code>, deasupra noilor coloane. Îl scoatem, ca tabelul să fie mai ușor de citit."}, {"l": 3, "out": "         densitate  somaj\nregiune                  \nRO11          74.7    4.5\nRO12          67.4    4.3", "txt": "<b>Fără</b> <code>reset_index</code>: regiunea stă în <b>index</b>, în stânga, nu într-o coloană. De aceea <code>regiune</code> apare pe un rând separat, sub antet, iar <code>lat[\"regiune\"]</code> ar da eroare."}, {"l": 4, "set": {"lat": {"t": "DataFrame", "v": {"cols": ["regiune", "densitate", "somaj"], "rows": [["RO11", 74.7, 4.5], ["RO12", 67.4, 4.3]], "nota": "un rând pe regiune"}}}, "txt": "<code>reset_index</code> mută regiunea din index într-o coloană obișnuită; indexul devine 0, 1."}, {"l": 5, "out": "\n  regiune  densitate  somaj\n0    RO11       74.7    4.5\n1    RO12       67.4    4.3", "txt": "<b>Cu</b> <code>reset_index</code>: <code>regiune</code> e o coloană ca oricare alta, în același rând cu antetul celorlalte, deci poate fi folosită la <code>merge</code>."}]}</script></div>
 </div>
 
 </section>
 
 <section class="sld" id="s11" data-grup="Integrarea" data-t="Unirea, cu verificare">
-<h2>Unirea a două tabele: merge</h2><p class="cheie"><code>merge</code> lipește coloana <code>pib</code> la fiecare regiune, după coloana comună <code>regiune</code>. <code>pib</code> nu are <code>CH01</code>: ce se întâmplă cu ea?</p><p class="ex-et">Verificare</p><div class="ix" data-ix="jupyter">
-  <div class="ix__cap"><span class="ix__fel">Consolă Python</span><span class="ix__t">Uită-te în tabele</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c4-jup-merge", "celula": "regiuni = pd.DataFrame({\"regiune\": [\"RO11\", \"RO12\", \"CH01\"]})\npib = pd.DataFrame({\"regiune\": [\"RO11\", \"RO12\"],\n                    \"pib\":     [28300, 28400]})\n\nrez = regiuni.merge(pib, on=\"regiune\", how=\"left\")", "loc": "pib.head()", "taie": 400, "env": {"regiuni": {"__py": "DataFrame", "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01"}}, "__attr": {"shape": {"__t": [3, 1]}}}, "pib": {"__py": "DataFrame", "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400"}}, "__attr": {"shape": {"__t": [2, 2]}}}, "rez": {"__py": "DataFrame", "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN"}}, "__attr": {"shape": {"__t": [3, 2]}}}}, "tinte": [{"t": "Ce regiuni are tabelul <code>pib</code>?", "ind": "Scrie <code>pib.head()</code> și apasă Enter.", "v": {"__py": "DataFrame", "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400"}, "arata": "RO11, RO12"}, {"t": "Ce a primit <code>CH01</code> în <code>rez</code>?", "ind": "Scrie <code>rez.head()</code>.", "v": {"__py": "DataFrame", "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN"}, "arata": "NaN: nu are PIB"}, {"t": "Câte rânduri și coloane are <code>rez</code>?", "ind": "Scrie <code>rez.shape</code>.", "v": {"__t": [3, 2]}, "arata": "3 rânduri, 2 coloane"}], "gata": "Toate trei găsite: nicio regiune pierdută, iar CH01 are PIB lipsă."}</script></div>
+<h2>Unirea a două tabele: merge</h2><p class="cheie"><code>merge</code> lipește coloana <code>pib</code> la fiecare regiune, după coloana comună <code>regiune</code>. <code>pib</code> nu are <code>CH01</code>: ce se întâmplă cu ea?</p><pre><code>regiuni = pd.DataFrame({"regiune": ["RO11", "RO12", "CH01"]})
+pib = pd.DataFrame({"regiune": ["RO11", "RO12"], "pib": [28300, 28400]})
+
+rez = regiuni.merge(pib, on="regiune", how="left")</code></pre><p class="ex-et">Verificare</p><div class="ix" data-ix="consola">
+  <div class="ix__cap"><span class="ix__fel">Consolă Python</span><span class="ix__t">Răspunde, după ce te uiți în tabele</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cons-merge", "cod": ["Câte regiuni are tabelul pib?", "Ce PIB are CH01 în rez?", "Câte rânduri are rez?"], "vars": [{"n": "pib", "t": "2", "e": "<code>pib.head()</code>: doar RO11 și RO12."}, {"n": "CH01", "t": ["nan", "lipsă", "lipsa"], "e": "<code>rez.head()</code>: CH01 nu are potrivire în <code>pib</code>, deci primește <code>NaN</code>."}, {"n": "rez", "t": "3", "e": "<code>how=\"left\"</code> păstrează toate cele 3 regiuni din stânga."}], "env": {"regiuni": {"__py": "DataFrame", "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune\n0    RO11\n1    RO12\n2    CH01"}}, "__attr": {"shape": {"__t": [3, 1]}}}, "pib": {"__py": "DataFrame", "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune    pib\n0    RO11  28300\n1    RO12  28400"}}, "__attr": {"shape": {"__t": [2, 2]}}}, "rez": {"__py": "DataFrame", "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN", "__met": {"head": {"__py": "DataFrame", "__repr": "  regiune      pib\n0    RO11  28300.0\n1    RO12  28400.0\n2    CH01      NaN"}}, "__attr": {"shape": {"__t": [3, 2]}}}}, "capSt": "Întrebarea", "capDr": "Răspunsul tău", "raspuns": "răspunsul", "etCelula": "Consolă Python: regiuni, pib și rez sunt deja definite", "nota": "Uită-te în tabele: <code>pib.head()</code>, <code>rez.head()</code>, <code>rez.shape</code>, apoi Enter.", "loc": "pib.head()", "taie": 400}</script></div>
 </div>
 
 </section>
@@ -170,11 +178,11 @@ pd.to_numeric(exemplu, errors="coerce")      <span class="c"># 12.5, NaN, 7.0</s
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=134"></script>
+<script type="module" src="../../js/antet.js?v=137"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=134";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=134";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=134";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=137";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=137";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=137";
 pornesteIx();
 pornesteVerif("c4");
 pornesteSlide({ capitol:"c4", lectie:"c4-curatarea-datelor" });

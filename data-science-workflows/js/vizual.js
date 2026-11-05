@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=134");
+    const m = await import("/data-science-workflows/js/colectare.js?v=137");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -2278,10 +2278,10 @@ V.consola = (gazda, d) => {
     <div class="tcs3">
       <div class="tcs3__st">
         <div class="tcs2">
-          <div class="tcs2__cap"><span>Codul</span><span>Tipul</span></div>
+          <div class="tcs2__cap"><span>${d.capSt || "Codul"}</span><span>${d.capDr || "Tipul"}</span></div>
           ${VARS.map((x, k) => `<label class="tcs2__r" data-k="${k}">
             <code class="tcs2__cod">${esc(COD[k] || x.n)}</code>
-            <span class="tcs2__in"><input autocomplete="off" spellcheck="false" placeholder="tipul" aria-label="tipul lui ${esc(x.n)}"><span class="tcs2__st" aria-hidden="true"></span></span>
+            <span class="tcs2__in"><input autocomplete="off" spellcheck="false" placeholder="${esc(d.raspuns || "tipul")}" aria-label="răspunsul pentru ${esc(x.n)}"><span class="tcs2__st" aria-hidden="true"></span></span>
             <span class="tcs2__e"></span>
           </label>`).join("")}
         </div>
@@ -2291,14 +2291,14 @@ V.consola = (gazda, d) => {
         </div>
       </div>
       <div class="tcs3__dr">
-        <p class="tcs3__et">Celulă Python, cu variabilele din tabel deja definite</p>
+        <p class="tcs3__et">${d.etCelula || "Celulă Python, cu variabilele din tabel deja definite"}</p>
         <div class="jc"></div>
-        <p class="tcs3__nota">De exemplu <code>type(${esc(primul)})</code>, apoi Enter.</p>
+        <p class="tcs3__nota">${d.nota || `De exemplu <code>type(${esc(primul)})</code>, apoi Enter.`}</p>
       </div>
     </div>`;
 
   const env = JSON.parse(JSON.stringify(d.env || {}));
-  const cons = consolaJupyter(gazda.querySelector(".jc"), env, { start: 2, loc: `type(${primul})` });
+  const cons = consolaJupyter(gazda.querySelector(".jc"), env, { start: 2, loc: d.loc || `type(${primul})`, taie: d.taie || 0 });
   const randuri = [...gazda.querySelectorAll(".tcs2__r")];
 
   gazda.querySelector('[data-rol="verifica"]').onclick = async () => {
@@ -2306,7 +2306,7 @@ V.consola = (gazda, d) => {
     randuri.forEach((r, k) => {
       const x = VARS[k], v = r.querySelector("input").value;
       if (!v.trim()){ goale++; r.className = "tcs2__r gol"; r.querySelector(".tcs2__e").textContent = ""; r.querySelector(".tcs2__st").textContent = ""; return; }
-      const bun = norm(v) === x.t.toLowerCase();
+      const bun = (Array.isArray(x.t) ? x.t : [x.t]).some(a => norm(v) === String(a).toLowerCase());
       if (bun) ok++;
       r.className = "tcs2__r " + (bun ? "ok" : "nu");
       r.querySelector(".tcs2__st").textContent = bun ? "✓" : "✗";
@@ -3567,7 +3567,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=134`), import(`${R}/js/auth.js?v=134`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=137`), import(`${R}/js/auth.js?v=137`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });
