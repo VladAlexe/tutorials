@@ -39,7 +39,7 @@ def metode(randuri):
 #  0. Unde suntem în curs
 # ===========================================================================
 
-CURSUL = tabel(["", "Ce facem", "Ce rămâne"], [
+CURSUL = tabel(["", "Conținutul", "Rezultatul"], [
     ["C1", "proiectul, mediul de lucru, tipurile de date și JSON", "<code>dsw/</code>, cu <code>.venv</code>"],
     ["C2", "colectarea datelor prin API: Eurostat, Banca Mondială", "<code>data/raw</code>"],
     ["C3", "surse diverse, preprocesare, Git și depozitul echipei", "<code>data/processed</code>, <code>proiect/</code>"],
@@ -84,8 +84,8 @@ FLUX_ZI = tabel(["Când", "Comenzile", "Ce fac"], [
 ])
 
 V_RESTORE = verif("c4-v1", 1,
-    "Ai modificat din greșeală caietul echipei și încă nu ai dat <code>git add</code>. "
-    "Cum revii la versiunea din ultimul commit?",
+    "Caietul echipei a fost modificat din greșeală, iar <code>git add</code> nu a fost încă rulat. "
+    "Ce comandă readuce versiunea din ultimul commit?",
     ["git restore --staged caiet.ipynb", "git restore caiet.ipynb",
      "git revert caiet.ipynb", "git rm caiet.ipynb"],
     "<code>git restore</code> aduce fișierul la starea din ultimul commit. Varianta cu "
@@ -148,9 +148,9 @@ UNDE = tabel(["Ce lucrăm", "Unde", "Git"], [
 ])
 
 VERIF_LOC = tabel(["Înainte de orice comandă git", ""], [
-    ["unde sunt?", "~pwd"],
-    ["ești în dsw: intri în proiect", "~cd proiect"],
-    ["ești în dsw/curs: urci un nivel, apoi intri în proiect", "~cd ../proiect"],
+    ["dosarul curent", "~pwd"],
+    ["din dsw: intrarea în proiect", "~cd proiect"],
+    ["din dsw/curs: un nivel mai sus, apoi în proiect", "~cd ../proiect"],
 ])
 
 TERM_FARA_GIT = ('<pre><code><span class="c">(.venv)</span> PS C:\\Users\\ana\\dsw&gt; git status\n'
@@ -210,15 +210,15 @@ sl("s1c", "Recapitulare", "Unde sunt?",
 
 sl("s2", "Cursul", "Planul lecției",
    "<h2>Curățarea și integrarea datelor</h2>"
-   "<p class=\"cheie\">În C3, sursele au primit aceeași formă. Azi verificăm dacă valorile sunt corecte, complete "
-   "și comparabile, apoi unim tabelele.</p>"
+   "<p class=\"cheie\">În C3, sursele au primit aceeași formă. Azi se verifică dacă valorile sunt corecte, complete "
+   "și comparabile, apoi se construiește primul tabel de analiză, al regiunilor.</p>"
    + ETAPE
    + nota("Caietul lecției", f"{CAIET}. Tabelele din C3 se citesc din depozitul cursului, ca toți să lucreze pe aceleași date.", True),
    manual=
    "<h2>Curățarea și integrarea datelor</h2>"
    "<p>Preprocesarea (C3) a adus sursele la o structură comună: coloanele necesare, denumiri consecvente, unitatea "
    "de analiză corectă. Curățarea pune o întrebare diferită: dacă valorile din această structură sunt corecte, "
-   "complete și comparabile între surse. Integrarea unește apoi tabelele într-un tabel de analiză.</p>"
+   "complete și comparabile între surse. La final, sursele curățate dau primul tabel de analiză, cel al regiunilor; integrarea tuturor surselor, în perechi de regiuni și de țări, urmează în C5.</p>"
    "<p>Etapele urmează o ordine stabilă, pentru că fiecare presupune rezultatele celei anterioare: profilarea "
    "precede orice decizie, codurile se aliniază înainte de unire, iar validarea încheie procesul. Tabelul leagă "
    "fiecare etapă de secțiunea caietului în care este aplicată.</p>"
@@ -284,7 +284,7 @@ COD_PROFIL = {
                   "coloane categoriale, iar <code>str.len()</code> verifică forma codurilor. Împreună răspund la "
                   "prima întrebare a curățării: ce conține tabelul."}
 
-M_PRIVIRE = tabel(["Metoda", "Ce arată", "La noi"], [
+M_PRIVIRE = tabel(["Metoda", "Ce arată", "Pe datele cursului"], [
     ["~shape", "(rânduri, coloane); atribut, fără paranteze", "~(2281, 3)"],
     ["~columns", "numele coloanelor", "~regiune, valoare, indicator"],
     ["~head(), tail()", "primele, ultimele 5 rânduri (sau câte cerem)", "<code>BE10</code> … <code>RS22</code>"],
@@ -353,11 +353,11 @@ sl("s3b", "Profilarea", "O funcție proprie",
    ]),
    manual=
    "<h2>O funcție proprie, cu <code>apply</code></h2>"
-   "<p>Uneori regula de verificare nu există ca metodă gata făcută. Atunci o scriem ca funcție, cu <code>def</code>, "
-   "și o aplicăm pe fiecare valoare a unei coloane cu <code>apply</code>. Exemplul verifică dacă coloana "
+   "<p>Uneori regula de verificare nu există ca metodă gata făcută. Atunci regula se scrie ca funcție, cu <code>def</code>, "
+   "și se aplică pe fiecare valoare a unei coloane cu <code>apply</code>. Exemplul verifică dacă coloana "
    "<code>nivel</code> din nomenclator e consecventă cu lungimea codurilor.</p>"
    + COD_APPLY
-   + "<p>Rezultatul e 0: coloana e consecventă, deci ne putem baza pe ea. Când există o metodă directă, ea e mai "
+   + "<p>Rezultatul e 0: coloana e consecventă cu codurile și poate fi folosită în analiză. Când există o metodă directă, ea e mai "
      "simplă și mai rapidă decât <code>apply</code>; aici, <code>nume[\"regiune\"].str.len() - 2</code> dă același "
      "rezultat. Mai târziu, aceeași funcție se poate scrie pe un singur rând, cu <code>lambda</code>.</p>")
 
@@ -378,7 +378,7 @@ TO_NUM = ("<pre><code>exemplu = pd.Series([\"12.5\", \":\", \"7\"])     <span cl
 
 sl("s4", "Profilarea", "Tipurile",
    "<h2>Tipurile: numerele sunt numere?</h2>"
-   "<p class=\"cheie\">La noi, <code>valoare</code> este <code>float64</code>, iar codurile sunt <code>object</code> "
+   "<p class=\"cheie\">În tabelul indicatorilor, <code>valoare</code> este <code>float64</code>, iar codurile sunt <code>object</code> "
    "(text). Un singur text printre numere schimbă tipul întregii coloane.</p>"
    + TO_NUM + V_TIP,
    manual=
@@ -451,8 +451,8 @@ sl("s5", "Curățarea", "Duplicatele",
        ["~RO11", "~ITC4", "9.760", "Nord-Vest, Lombardia"],
        ["~ITC4", "~RO11", "9.760", "aceeași legătură, în ordine inversă"],
    ])
-   + "<p>SCI nu are direcție, deci cele două rânduri sunt aceeași legătură. Dublura se rezolvă la integrare, "
-     "păstrând o singură ordine a fiecărei perechi (secțiunea 9 din caiet).</p>")
+   + "<p>SCI nu are direcție, deci cele două rânduri sunt aceeași legătură. Dublura se rezolvă în C5, "
+     "la integrarea perechilor, prin păstrarea unei singure ordini a fiecărei perechi.</p>")
 
 
 # ===========================================================================
@@ -502,7 +502,7 @@ sl("s6", "Curățarea", "Valorile imposibile",
 
 PAS_NA = {
     "fisier": "04_curatarea_si_integrarea_datelor.ipynb · 6. Lipsurile",
-    "intro": "La citire, pandas transformă automat în valoare lipsă câteva texte: celula goală, dar și NA, N/A, null. La noi, NA este codul Namibiei.",
+    "intro": "La citire, pandas transformă automat în valoare lipsă câteva texte: celula goală, dar și NA, N/A, null. În datele cursului, NA este codul Namibiei.",
     "cod": "gresit = pd.read_csv(DATE_C3 + \"migratie.csv\")\n"
            "migratie = pd.read_csv(DATE_C3 + \"migratie.csv\",\n"
            "                       keep_default_na=False, na_values=[\"\"])\n\n"
@@ -558,7 +558,7 @@ SORT_LIPSURI = {
         {"t": "Eliminarea coloanei", "d": "prea puțină informație"},
         {"t": "Păstrarea și documentarea", "d": "lipsa are un tipar"},
         {"t": "Completarea din valorile vecine", "d": "interpolare, ultima valoare cunoscută"}],
-    "laBine": "Al treilea caz este cel al datelor noastre: lipsa are un tipar, deci se păstrează și se documentează.",
+    "laBine": "Al treilea caz este cel al datelor cursului: lipsa are un tipar, deci se păstrează și se documentează.",
     "explicatie": "Completarea cu media este metoda cea mai răspândită și cea mai riscantă: reduce artificial variația "
                   "și face rezultatele să pară mai precise decât sunt."}
 
@@ -569,14 +569,14 @@ NA_TAB = tabel(["Citirea", "Codul NA", "Rânduri pierdute"], [
 
 sl("s8", "Lipsurile", "Valorile lipsă",
    "<h2>Valorile lipsă</h2>"
-   "<p class=\"cheie\">O valoare lipsă (<code>NaN</code>) nu înseamnă zero: sursa nu are date. Întâi le numărăm, apoi "
-   "decidem ce facem cu ele.</p>"
+   "<p class=\"cheie\">O valoare lipsă (<code>NaN</code>) nu înseamnă zero: sursa nu are date. Întâi se numără, apoi "
+   "se decide tratamentul lor.</p>"
    + M_LIPS
    + ET_VERIF + ix("cod", "Câte valori lipsesc", COD_LIPSURI),
    manual=
    "<h2>Valorile lipsă</h2>"
    "<p>În pandas, o valoare lipsă se scrie <code>NaN</code>. Ea nu înseamnă zero: înseamnă că sursa nu are date pentru "
-   "acea celulă. Primul pas este să le numărăm, pe fiecare coloană.</p>"
+   "acea celulă. Primul pas este numărarea lor, pe fiecare coloană.</p>"
    + M_LIPS
    + ix("cod", "Câte valori lipsesc", COD_LIPSURI)
    + "<p>Pe tabelul regiunilor, <code>regiuni.isna().sum()</code> dă numărul de lipsuri pe fiecare coloană, iar "
@@ -588,7 +588,7 @@ sl("s8", "Lipsurile", "Valorile lipsă",
      "migrație, <code>NA</code> este codul Namibiei, deci citirea implicită ar pierde 44 de rânduri fără niciun mesaj.</p>"
    + NA_TAB
    + ix("pas", "Namibia și valorile lipsă", PAS_NA)
-   + "<h3>Ce facem cu lipsurile</h3>"
+   + "<h3>Tratamentul lipsurilor</h3>"
      "<p>Dacă lipsurile sunt puține și fără tipar, rândurile pot fi eliminate fără consecințe. Dacă au un tipar "
      "(anumite țări nu raportează un indicator), eliminarea lor schimbă compoziția datelor, iar completarea lor "
      "inventează valori. În acest caz, lipsa se păstrează și se documentează.</p>"
@@ -600,9 +600,11 @@ sl("s8", "Lipsurile", "Valorile lipsă",
      "abaterea standard: datele par mai omogene decât sunt, pentru că 22 de regiuni primesc aceeași valoare, "
      "inventată.</p>"
    + ix("sortare", "Tratamentul potrivit fiecărui caz", SORT_LIPSURI)
-   + nota("Decizia noastră",
-          "Păstrăm toate cele 298 de regiuni, fără să completăm valorile lipsă, și alegem pentru fiecare analiză doar "
-          "coloanele de care are nevoie.", True))
+   + nota("Decizia adoptată",
+          "Toate cele 298 de regiuni se păstrează, fără completarea valorilor lipsă. Lipsurile se tratează abia la "
+          "analiză și doar pentru coloanele folosite: <code>regiuni.dropna(subset=[\"pib_locuitor\", \"somaj\"])</code> "
+          "păstrează 272 de regiuni, față de 161 cu <code>dropna()</code> pe toate coloanele. Tabelul salvat rămâne "
+          "întreg.", True))
 
 
 # ===========================================================================
@@ -668,7 +670,7 @@ PAS_PIVOT = {
     "fisier": "04_curatarea_si_integrarea_datelor.ipynb · 8. Din lung în lat",
     "intro": "Tabelul lung, în memorie: două regiuni, Nord-Vest (RO11) și Centru (RO12), și doi indicatori, densitatea și șomajul.",
     "cod": "lat = lung.pivot(index=\"regiune\", columns=\"indicator\", values=\"valoare\")\n"
-           "lat.columns.name = None        # scoatem eticheta \"indicator\" de deasupra coloanelor\n"
+           "lat.columns.name = None        # fara eticheta \"indicator\" deasupra coloanelor\n"
            "print(lat)                     # fara reset_index\n"
            "lat = lat.reset_index()\n"
            "print(lat)                     # cu reset_index",
@@ -680,7 +682,7 @@ PAS_PIVOT = {
          "txt": "<code>pivot</code>: <code>index</code> spune ce devine rând (regiunea), <code>columns</code> ce devine "
                 "coloană (indicatorul), <code>values</code> ce se pune în celule (valoarea). Din 4 rânduri, 2."},
         {"l": 2, "txt": "Doar pentru afișare: pandas scrie numele coloanei originale, <code>indicator</code>, deasupra "
-                        "noilor coloane. Îl scoatem, ca tabelul să fie mai ușor de citit."},
+                        "noilor coloane. Se scoate, pentru ca tabelul să fie mai ușor de citit."},
         {"l": 3, "out": "         densitate  somaj\nregiune                  \nRO11          74.7    4.5\nRO12          67.4    4.3",
          "txt": "<b>Fără</b> <code>reset_index</code>: regiunea stă în <b>index</b>, în stânga, nu într-o coloană. De aceea "
                 "<code>regiune</code> apare pe un rând separat, sub antet, iar <code>lat[\"regiune\"]</code> ar da eroare."},
@@ -795,10 +797,10 @@ MERGE_CONS = {
   }
  },
  "capSt": "Întrebarea",
- "capDr": "Răspunsul tău",
+ "capDr": "Răspunsul",
  "raspuns": "răspunsul",
  "etCelula": "Consolă Python: regiuni, pib și rez sunt deja definite",
- "nota": "Uită-te în tabele: <code>pib.head()</code>, <code>rez.head()</code>, <code>rez.shape</code>, apoi Enter.",
+ "nota": "Tabelele se pot inspecta cu <code>pib.head()</code>, <code>rez.head()</code> sau <code>rez.shape</code>, urmate de Enter.",
  "loc": "pib.head()",
  "taie": 400
 }
@@ -810,16 +812,16 @@ sl("s11", "Integrarea", "Unirea, cu verificare",
    "<p class=\"cheie\"><code>merge</code> lipește coloana <code>pib</code> la fiecare regiune, după coloana comună "
    "<code>regiune</code>. <code>pib</code> nu are <code>CH01</code>: ce se întâmplă cu ea?</p>"
    + MERGE_DEF
-   + ET_VERIF + ix("consola", "Răspunde, după ce te uiți în tabele", MERGE_CONS),
+   + ET_VERIF + ix("consola", "Întrebări despre rezultatul unirii", MERGE_CONS),
    manual=
    "<h2>Unirea a două tabele: merge</h2>"
    "<p><code>merge</code> lipește coloanele unui tabel de altul, potrivind rândurile după o coloană comună (aici, "
-   "<code>regiune_1</code>). Unirea poate pierde sau multiplica rânduri fără nicio eroare, de aceea după fiecare "
+   "<code>regiune</code>). Unirea poate pierde sau multiplica rânduri fără nicio eroare, de aceea după fiecare "
    "<code>merge</code> se numără rândurile.</p>"
    + MERGE_DEF
-   + ix("consola", "Răspunde, după ce te uiți în tabele", MERGE_CONS)
+   + ix("consola", "Întrebări despre rezultatul unirii", MERGE_CONS)
    + "<p>Cu <code>how=\"left\"</code>, toate regiunile rămân: 3 înainte, 3 după, iar <code>CH01</code> are PIB "
-     "lipsă. Fără el (unirea implicită, <code>inner</code>), <code>CH01</code> ar dispărea, fără niciun mesaj. De aceea numărăm rândurile după fiecare "
+     "lipsă. Fără el (unirea implicită, <code>inner</code>), <code>CH01</code> ar dispărea, fără niciun mesaj. De aceea rândurile se numără după fiecare "
      "<code>merge</code>.</p>"
    + tabel(["Rezultatul unui merge", "Ce înseamnă"], [
        ["același număr de rânduri", "fiecare rând a găsit cel mult o potrivire: corect"],
@@ -863,7 +865,7 @@ COD_VALIDARE = {
 
 sl("s13", "Validarea", "Validarea finală",
    "<h2>Validarea finală</h2>"
-   "<p class=\"cheie\">Înainte de salvare, verificăm că tabelul regiunilor respectă trei reguli: nicio regiune de două "
+   "<p class=\"cheie\">Înainte de salvare, se verifică dacă tabelul regiunilor respectă trei reguli: nicio regiune de două "
    "ori, fiecare regiune cu țara ei, 298 de regiuni. Cu metodele de azi.</p>"
    + ET_VERIF + ix("cod", "Verificările finale", COD_VALIDARE),
    manual=

@@ -20,7 +20,7 @@
      "id": "c4-v1",
      "fel": "verificare",
      "corect": 1,
-     "q": "Ai modificat din greșeală caietul echipei și încă nu ai dat git add. Cum revii la versiunea din ultimul commit?",
+     "q": "Caietul echipei a fost modificat din greșeală, iar git add nu a fost încă rulat. Ce comandă readuce versiunea din ultimul commit?",
      "optiuni": [
       "git restore --staged caiet.ipynb",
       "git restore caiet.ipynb",
