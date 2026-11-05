@@ -98,6 +98,55 @@ ETAPE = tabel(["Etapa", "Întrebarea", "În caiet"], [
     ["Validarea", "tabelul final respectă regulile lui?", "12. o celulă de verificări"],
 ])
 
+# ===========================================================================
+#  2. Unde lucrăm: curs/ și proiect/
+# ===========================================================================
+
+ARBORE_DSW = (
+    '<span class="a">dsw/</span>\n'
+    '├── <span class="x">.venv/</span>                  <span class="c"># mediul Python, comun</span>\n'
+    '├── <span class="a">curs/</span>                   <span class="c"># LA CURS: caietele lecțiilor, fără Git</span>\n'
+    '│   ├── 04_curatarea_si_integrarea_datelor.ipynb\n'
+    '│   ├── data/\n'
+    '│   └── src/date_api.py\n'
+    '└── <span class="a">proiect/</span>                <span class="c"># LA PROIECT: depozitul echipei, cu Git</span>\n'
+    '    ├── notebooks/          <span class="c"># caietele echipei</span>\n'
+    '    ├── data/raw/, data/processed/\n'
+    '    └── README.md')
+
+UNDE = tabel(["Ce lucrăm", "Unde", "Git"], [
+    ["caietul lecției de azi", "~dsw/curs", "nu: aici nu se dă nicio comandă <code>git</code>"],
+    ["caietele și datele echipei", "~dsw/proiect", "da: <code>git pull</code>, <code>add</code>, <code>commit</code>, <code>push</code>"],
+])
+
+VERIF_LOC = tabel(["Înainte de orice comandă git", ""], [
+    ["unde sunt?", "~pwd"],
+    ["ești în dsw: intri în proiect", "~cd proiect"],
+    ["ești în dsw/curs: urci un nivel, apoi intri în proiect", "~cd ../proiect"],
+])
+
+sl("s1b", "Recapitulare", "Unde lucrăm",
+   "<h2>Două dosare, două roluri</h2>"
+   '<pre><code>' + ARBORE_DSW + '</code></pre>'
+   + UNDE + VERIF_LOC,
+   manual=
+   "<h2>Două dosare, două roluri</h2>"
+   "<p>Dosarul de lucru <code>dsw/</code> are două părți cu roluri diferite. <code>curs/</code> conține caietele "
+   "lecțiilor: se descarcă de pe site, se lucrează în timpul orei și nu sunt urmărite de Git. "
+   "<code>proiect/</code> este depozitul echipei, clonat la cursul 3: aici stau caietele și datele proiectului, iar "
+   "toate comenzile <code>git</code> se dau doar aici. Mediul <code>.venv/</code> este comun ambelor.</p>"
+   '<pre><code>' + ARBORE_DSW + '</code></pre>'
+   + UNDE
+   + "<p>Terminalul din VS Code pornește în dosarul deschis în VS Code, nu neapărat în <code>proiect/</code>. De aceea, "
+     "înainte de orice comandă <code>git</code>, se verifică locul cu <code>pwd</code> și, dacă e nevoie, se intră în "
+     "depozit cu <code>cd</code>:</p>"
+   + VERIF_LOC
+   + nota("Mesajul „not a git repository”",
+          "<code>fatal: not a git repository</code> înseamnă că terminalul nu este în <code>proiect/</code>, de obicei în "
+          "<code>curs/</code> sau direct în <code>dsw/</code>. Soluția nu este <code>git init</code>, care ar crea un al "
+          "doilea depozit, ci <code>cd</code> în <code>proiect/</code>.", True))
+
+
 sl("s2", "Cursul", "Planul lecției",
    "<h2>Curățarea și integrarea datelor</h2>"
    "<p class=\"cheie\">În C3, sursele au primit aceeași formă. Azi verificăm dacă valorile sunt corecte, complete "

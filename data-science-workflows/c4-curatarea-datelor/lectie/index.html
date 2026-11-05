@@ -6,14 +6,14 @@
 <title>Cursul 4 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea tabelelor și validarea finală, pe datele cursului.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=119">
-<link rel="stylesheet" href="../../css/sistem.css?v=119">
-<link rel="stylesheet" href="../../css/slide.css?v=119">
-<link rel="stylesheet" href="../../css/interactiv.css?v=119">
-<link rel="stylesheet" href="../../css/grafice.css?v=119">
-<link rel="stylesheet" href="../../css/exercitii.css?v=119">
-<link rel="stylesheet" href="../../css/explorator.css?v=119">
-<script src="../../js/tema.js?v=119"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=121">
+<link rel="stylesheet" href="../../css/sistem.css?v=121">
+<link rel="stylesheet" href="../../css/slide.css?v=121">
+<link rel="stylesheet" href="../../css/interactiv.css?v=121">
+<link rel="stylesheet" href="../../css/grafice.css?v=121">
+<link rel="stylesheet" href="../../css/exercitii.css?v=121">
+<link rel="stylesheet" href="../../css/explorator.css?v=121">
+<script src="../../js/tema.js?v=121"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 4 · Curățarea și integrarea datelor" data-crom="1"></div>
@@ -29,6 +29,20 @@
     <button>git rm caiet.ipynb</button>
     <p class="verif__ex"><code>git restore</code> aduce fișierul la starea din ultimul commit. Varianta cu <code>--staged</code> doar îl scoate din pregătire, <code>revert</code> lucrează cu commit-uri, nu cu fișiere, iar <code>git rm</code> l-ar scoate din depozit.</p>
   </div>
+
+</section>
+
+<section class="sld" id="s1b" data-grup="Recapitulare" data-t="Unde lucrăm">
+<h2>Două dosare, două roluri</h2><pre><code><span class="a">dsw/</span>
+├── <span class="x">.venv/</span>                  <span class="c"># mediul Python, comun</span>
+├── <span class="a">curs/</span>                   <span class="c"># LA CURS: caietele lecțiilor, fără Git</span>
+│   ├── 04_curatarea_si_integrarea_datelor.ipynb
+│   ├── data/
+│   └── src/date_api.py
+└── <span class="a">proiect/</span>                <span class="c"># LA PROIECT: depozitul echipei, cu Git</span>
+    ├── notebooks/          <span class="c"># caietele echipei</span>
+    ├── data/raw/, data/processed/
+    └── README.md</code></pre><table class="tabel"><thead><tr><th>Ce lucrăm</th><th>Unde</th><th>Git</th></tr></thead><tbody><tr><td>caietul lecției de azi</td><td class="mono">dsw/curs</td><td>nu: aici nu se dă nicio comandă <code>git</code></td></tr><tr><td>caietele și datele echipei</td><td class="mono">dsw/proiect</td><td>da: <code>git pull</code>, <code>add</code>, <code>commit</code>, <code>push</code></td></tr></tbody></table><table class="tabel"><thead><tr><th>Înainte de orice comandă git</th><th></th></tr></thead><tbody><tr><td>unde sunt?</td><td class="mono">pwd</td></tr><tr><td>ești în dsw: intri în proiect</td><td class="mono">cd proiect</td></tr><tr><td>ești în dsw/curs: urci un nivel, apoi intri în proiect</td><td class="mono">cd ../proiect</td></tr></tbody></table>
 
 </section>
 
@@ -163,11 +177,11 @@ pd.to_numeric(exemplu, errors="coerce")      <span class="c"># 12.5, NaN, 7.0</s
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=119"></script>
+<script type="module" src="../../js/antet.js?v=121"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=119";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=119";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=119";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=121";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=121";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=121";
 pornesteIx();
 pornesteVerif("c4");
 pornesteSlide({ capitol:"c4", lectie:"c4-curatarea-datelor" });
