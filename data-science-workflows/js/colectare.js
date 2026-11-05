@@ -40,7 +40,7 @@ export function sedintaAcum(){ return sedinta; }
 
 async function autentificare(){
   if (modul !== null) return modul;
-  try { modul = await import("./auth.js?v=121"); }
+  try { modul = await import("./auth.js?v=128"); }
   catch { modul = false; }
   return modul;
 }

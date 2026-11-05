@@ -1,7 +1,7 @@
 {
  "capitol": "c4",
- "total": 18,
- "sarcini": 11,
+ "total": 17,
+ "sarcini": 10,
  "slide": [
   {
    "nr": 1,
@@ -32,20 +32,40 @@
   },
   {
    "nr": 3,
+   "id": "s1c",
+   "grup": "Recapitulare",
+   "titlu": "Unde sunt?",
+   "sarcini": [
+    {
+     "id": "c4-v-loc",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Ana a deschis terminalul și a primit mesajul de mai sus. Ce face?",
+     "optiuni": [
+      "git init",
+      "cd proiect",
+      "cd curs",
+      "git clone, încă o dată"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 4,
    "id": "s2",
    "grup": "Cursul",
    "titlu": "Planul lecției",
    "sarcini": []
   },
   {
-   "nr": 4,
+   "nr": 5,
    "id": "s3a",
    "grup": "Profilarea",
    "titlu": "Prima privire",
    "sarcini": []
   },
   {
-   "nr": 5,
+   "nr": 6,
    "id": "s3",
    "grup": "Profilarea",
    "titlu": "Ce conține tabelul",
@@ -57,7 +77,7 @@
    ]
   },
   {
-   "nr": 6,
+   "nr": 7,
    "id": "s4",
    "grup": "Profilarea",
    "titlu": "Tipurile",
@@ -77,7 +97,7 @@
    ]
   },
   {
-   "nr": 7,
+   "nr": 8,
    "id": "s5",
    "grup": "Curățarea",
    "titlu": "Duplicatele",
@@ -89,7 +109,7 @@
    ]
   },
   {
-   "nr": 8,
+   "nr": 9,
    "id": "s6",
    "grup": "Curățarea",
    "titlu": "Valorile imposibile",
@@ -109,22 +129,10 @@
    ]
   },
   {
-   "nr": 9,
-   "id": "s7",
-   "grup": "Lipsurile",
-   "titlu": "Ce înseamnă „lipsă”",
-   "sarcini": [
-    {
-     "id": "c4-prezice-nan",
-     "fel": "cod"
-    }
-   ]
-  },
-  {
    "nr": 10,
    "id": "s8",
    "grup": "Lipsurile",
-   "titlu": "Cât și unde lipsește",
+   "titlu": "Valorile lipsă",
    "sarcini": [
     {
      "id": "c4-cod-lipsuri",
@@ -191,18 +199,6 @@
   },
   {
    "nr": 17,
-   "id": "s15",
-   "grup": "Proiectul echipei",
-   "titlu": "Datele proiectului",
-   "sarcini": [
-    {
-     "id": "c4-decizie",
-     "fel": "text"
-    }
-   ]
-  },
-  {
-   "nr": 18,
    "id": "s16",
    "grup": "Mai departe",
    "titlu": "Pentru cursul următor",

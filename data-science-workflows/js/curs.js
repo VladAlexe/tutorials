@@ -51,7 +51,7 @@ export const LECTII = [
     titlu:"Curățarea și integrarea datelor",
     scurt:"Curățare",
     rezumat:"Profilarea, duplicatele, lipsurile și codurile incompatibile, apoi unirea tabelelor și validarea finală, pe datele cursului.",
-    stare:"gata", sarcini:11,
+    stare:"gata", sarcini:10,
     notebook:null },
 
   { nr:5, cheie:"c5-agregare-si-baze-de-date",

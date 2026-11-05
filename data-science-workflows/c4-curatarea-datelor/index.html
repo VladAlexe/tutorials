@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 4. Curățarea și integrarea datelor · Fluxuri de lucru</title>
 <meta name="description" content="Profilarea, tipurile, duplicatele, valorile imposibile, lipsurile și codurile, apoi integrarea cu pivot și merge, validarea finală și jurnalul deciziilor, pe datele cursului.">
-<link rel="stylesheet" href="../css/fonturi.css?v=121">
-<link rel="stylesheet" href="../css/sistem.css?v=121">
-<link rel="stylesheet" href="../css/intrare.css?v=121">
-<script src="../js/tema.js?v=121"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=128">
+<link rel="stylesheet" href="../css/sistem.css?v=128">
+<link rel="stylesheet" href="../css/intrare.css?v=128">
+<script src="../js/tema.js?v=128"></script>
 </head>
 <body>
 
@@ -94,7 +94,7 @@
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
-    <div class="sec__corp"><p>O listă scurtă a problemelor de curățare care ar putea apărea în datele echipei, notată în <code>README.md</code>. Curățarea propriu-zisă a datelor proiectului se face ulterior, cu aceleași verificări ca la curs.</p></div>
+    <div class="sec__corp"><p>Nimic nou în această săptămână. Curățarea datelor proiectului se face ulterior, cu aceleași verificări ca la curs.</p></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
@@ -122,7 +122,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=121"), import("../js/ora.js?v=121"), import("../js/curs.js?v=121")]);
+    import("../js/auth.js?v=128"), import("../js/ora.js?v=128"), import("../js/curs.js?v=128")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -165,7 +165,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=121"></script>
-<script type="module" src="../js/subsol.js?v=121"></script>
+<script type="module" src="../js/antet.js?v=128"></script>
+<script type="module" src="../js/subsol.js?v=128"></script>
 </body>
 </html>
