@@ -84,6 +84,9 @@
 .hs__panou .gf__scara{max-width:none;min-width:0;flex:1 1 auto}
 .hs__fara{display:flex;align-items:center;gap:6px;font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin-top:6px}
 .hs__fara i{display:inline-block;flex:none;width:12px;height:9px;border-radius:2px;background:var(--crom-2);border:1px solid var(--linie-2)}
+.hs__chips{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px;font-family:var(--sans);font-size:var(--t1);color:var(--text-2)}
+.hs__chips span{display:inline-flex;align-items:center;gap:5px}
+.hs__chips i{display:inline-block;width:14px;height:10px;border-radius:2px;border:1px solid var(--linie-2)}
 
 .hs__lista{list-style:none;margin:0;padding:0;max-width:none;display:flex;flex-direction:column}
 .hs__lista li{display:grid;grid-template-columns:20px 1fr auto;gap:8px;align-items:baseline;padding:6px 4px;

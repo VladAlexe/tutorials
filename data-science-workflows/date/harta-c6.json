@@ -1,7 +1,7 @@
 {
  "capitol": "c6",
  "total": 16,
- "sarcini": 7,
+ "sarcini": 5,
  "slide": [
   {
    "nr": 1,
@@ -13,45 +13,42 @@
   {
    "nr": 2,
    "id": "s2",
-   "grup": "Ipotezele",
-   "titlu": "Patru ipoteze",
+   "grup": "Analiza exploratorie",
+   "titlu": "Un ciclu, nu o listă",
    "sarcini": []
   },
   {
    "nr": 3,
    "id": "s3",
-   "grup": "O pereche obișnuită",
-   "titlu": "Coada lungă",
+   "grup": "Analiza exploratorie",
+   "titlu": "Cinci întrebări",
    "sarcini": []
   },
   {
    "nr": 4,
    "id": "s4",
-   "grup": "O pereche obișnuită",
-   "titlu": "Media sau mediana",
-   "sarcini": [
-    {
-     "id": "c6-prezice-coada",
-     "fel": "cod"
-    }
-   ]
+   "grup": "1. Ce conțin datele",
+   "titlu": "Verificări înainte de grafice",
+   "sarcini": []
   },
   {
    "nr": 5,
-   "id": "s6",
-   "grup": "Distanța și granița",
-   "titlu": "Spearman",
-   "sarcini": [
-    {
-     "id": "c6-prezice-rang",
-     "fel": "cod"
-    }
-   ]
+   "id": "s5",
+   "grup": "1. Ce conțin datele",
+   "titlu": "Ce lipsește și unde",
+   "sarcini": []
   },
   {
    "nr": 6,
-   "id": "s5",
-   "grup": "Distanța și granița",
+   "id": "s6",
+   "grup": "2. Valoarea obișnuită",
+   "titlu": "Coada lungă",
+   "sarcini": []
+  },
+  {
+   "nr": 7,
+   "id": "s7",
+   "grup": "3. Ce variază împreună",
    "titlu": "H1: distanța",
    "sarcini": [
     {
@@ -69,9 +66,9 @@
    ]
   },
   {
-   "nr": 7,
-   "id": "s7",
-   "grup": "Distanța și granița",
+   "nr": 8,
+   "id": "s8",
+   "grup": "3. Ce variază împreună",
    "titlu": "H2: granița",
    "sarcini": [
     {
@@ -89,23 +86,30 @@
    ]
   },
   {
-   "nr": 8,
-   "id": "s8",
-   "grup": "Economia și oamenii",
-   "titlu": "H3: economia",
-   "sarcini": []
-  },
-  {
    "nr": 9,
    "id": "s9",
-   "grup": "Economia și oamenii",
-   "titlu": "H4: migrația",
+   "grup": "3. Ce variază împreună",
+   "titlu": "H3: economia",
    "sarcini": []
   },
   {
    "nr": 10,
    "id": "s10",
-   "grup": "Economia și oamenii",
+   "grup": "3. Ce variază împreună",
+   "titlu": "H4: migrația",
+   "sarcini": []
+  },
+  {
+   "nr": 11,
+   "id": "s11",
+   "grup": "4. Ce iese din tipar",
+   "titlu": "Harta abaterilor",
+   "sarcini": []
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "4. Ce iese din tipar",
    "titlu": "Ghicitoarea din C1",
    "sarcini": [
     {
@@ -123,23 +127,9 @@
    ]
   },
   {
-   "nr": 11,
-   "id": "s11",
-   "grup": "Rețeaua",
-   "titlu": "Nod, legătură, forță",
-   "sarcini": []
-  },
-  {
-   "nr": 12,
-   "id": "s12",
-   "grup": "Rețeaua",
-   "titlu": "Partenerii unei regiuni",
-   "sarcini": []
-  },
-  {
    "nr": 13,
    "id": "s13",
-   "grup": "Rețeaua",
+   "grup": "5. Ce grupuri apar",
    "titlu": "Comunitățile",
    "sarcini": []
   },
@@ -159,7 +149,7 @@
    "nr": 15,
    "id": "s15",
    "grup": "Echipa",
-   "titlu": "Fișa echipei",
+   "titlu": "Fișa EDA a echipei",
    "sarcini": [
     {
      "id": "c6-fisa",
@@ -171,7 +161,7 @@
    "nr": 16,
    "id": "s16",
    "grup": "Mai departe",
-   "titlu": "Pentru cursul următor",
+   "titlu": "Deciziile pentru model",
    "sarcini": []
   }
  ]

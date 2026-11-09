@@ -64,8 +64,8 @@ export const LECTII = [
   { nr:6, cheie:"c6-analiza-exploratorie",
     titlu:"Analiza exploratorie",
     scurt:"Explorare",
-    rezumat:"Patru ipoteze verificate exploratoriu: distanța, granița, economia și migrația; apoi aceleași perechi, ca rețea.",
-    stare:"gata", sarcini:7,
+    rezumat:"Cinci întrebări ale analizei exploratorii pe datele SCI: ce conțin datele, valoarea obișnuită, ce variază împreună, ce iese din tipar, ce grupuri apar.",
+    stare:"gata", sarcini:5,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/06_analiza_exploratorie.ipynb" },
 
   { nr:7, cheie:"c7-variabile-si-model",

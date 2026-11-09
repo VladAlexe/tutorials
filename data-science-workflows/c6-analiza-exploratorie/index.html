@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 6. Analiza exploratorie · Fluxuri de lucru</title>
-<meta name="description" content="Patru ipoteze verificate exploratoriu pe datele proiectului: distanța, granița, economia și oamenii care circulă; apoi aceleași perechi, privite ca rețea.">
-<link rel="stylesheet" href="../css/fonturi.css?v=142">
-<link rel="stylesheet" href="../css/sistem.css?v=142">
-<link rel="stylesheet" href="../css/intrare.css?v=142">
-<script src="../js/tema.js?v=142"></script>
+<meta name="description" content="Cinci întrebări ale analizei exploratorii, puse datelor SCI: ce conțin datele, cum arată o valoare obișnuită, ce variază împreună, ce iese din tipar și ce grupuri apar.">
+<link rel="stylesheet" href="../css/fonturi.css?v=143">
+<link rel="stylesheet" href="../css/sistem.css?v=143">
+<link rel="stylesheet" href="../css/intrare.css?v=143">
+<script src="../js/tema.js?v=143"></script>
 </head>
 <body>
 
@@ -35,25 +35,25 @@
   <header class="intr__erou">
     <p class="intr__tag">Lecția 6 din 8</p>
     <h1>Analiza exploratorie</h1>
-    <p class="deck">Datele sunt curate și în bază. Lecția pornește de la ipoteze, scrie ce ar trebui să se vadă și abia apoi se uită la date.</p>
+    <p class="deck">Datele sunt curate și în bază. Înainte de model, analiza exploratorie răspunde la cinci întrebări și se încheie cu decizii.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Analiza exploratorie caută tipare și explicații care merită verificate. Lecția pornește de la patru ipoteze din literatură (distanța, granița, asemănarea economică, oamenii care circulă), scrie pentru fiecare ce ar trebui să se vadă și abia apoi se uită la date: 44.253 de perechi de regiuni și 263 de perechi de țări.</p>
-<p>Instrumentele sunt puține și simple: distribuția pe scara logaritmică, mediana, coeficientul Spearman, mediane pe intervale de distanță. A doua parte privește aceleași perechi împreună, ca rețea: forța unei regiuni, partenerii ei din alte țări și comunitățile găsite de algoritmul Louvain.</p></div>
+    <div class="sec__corp"><p>Analiza exploratorie caută ce merită verificat: o întrebare, un grafic care îi răspunde, apoi întrebarea nouă pe care o ridică răspunsul. Lecția o organizează în cinci întrebări valabile pe orice date și le pune pe cele 44.253 de perechi de regiuni: ce conțin datele (numărul de rânduri, o sursă externă, extremele, lipsurile), cum arată o valoare obișnuită, ce variază împreună (patru ipoteze din literatură), ce iese din tipar și ce grupuri apar.</p>
+<p>Rezultatul nu este o colecție de grafice, ci decizii pentru modelul din C7: scara, variabilele, ce se exclude și ce excepții se urmăresc.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Ipoteze scrise înainte de date, cu felul în care se verifică fiecare.</li>
-<li>Recunoașterea unei distribuții cu coadă lungă, mediana în locul mediei și scara logaritmică.</li>
-<li>Coeficientul Spearman și ce nu spune o corelație.</li>
-<li>Comparația la aceeași distanță, ca granița să nu se amestece cu distanța.</li>
-<li>O rată în locul unui număr, când variabila de explicat este relativă.</li>
-<li>Rețeaua: nod, legătură, forță, parteneri, comunități.</li>
+<li>Analiza exploratorie ca ciclu: întrebare, grafic, întrebare nouă.</li>
+<li>Verificări înainte de grafice: numărul de rânduri, o sursă externă, extremele, lipsurile pe grupuri.</li>
+<li>Distribuția cu coadă lungă, mediana și scara logaritmică.</li>
+<li>Comparații în grupuri comparabile: granița la aceeași distanță, rata în locul numărului.</li>
+<li>Cazurile care ies din tipar: SCI raportat la mediana distanței.</li>
+<li>Grupurile: comunitățile rețelei și excepțiile lor.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -95,9 +95,8 @@
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Fișa echipei: ce arată H1-H4 pentru coridor, cu câte perechi.</li>
-<li>Partenerii externi ai unei regiuni din coridor.</li>
-<li>O explicație alternativă și o limită, scrise în <code>README.md</code>.</li>
+<li>Fișa EDA a echipei: cele cinci întrebări, pe datele proiectului, fiecare cu un număr și cu numărul de cazuri.</li>
+<li>Deciziile pentru model, scrise în <code>README.md</code>.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -121,7 +120,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=142"), import("../js/ora.js?v=142"), import("../js/curs.js?v=142")]);
+    import("../js/auth.js?v=143"), import("../js/ora.js?v=143"), import("../js/curs.js?v=143")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -164,7 +163,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=142"></script>
-<script type="module" src="../js/subsol.js?v=142"></script>
+<script type="module" src="../js/antet.js?v=143"></script>
+<script type="module" src="../js/subsol.js?v=143"></script>
 </body>
 </html>

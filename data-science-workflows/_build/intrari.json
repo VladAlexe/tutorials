@@ -360,17 +360,17 @@
   "c6-analiza-exploratorie": {
     "nr": 6,
     "titlu": "Analiza exploratorie",
-    "deck": "Datele sunt curate și în bază. Lecția pornește de la ipoteze, scrie ce ar trebui să se vadă și abia apoi se uită la date.",
-    "descriere": "Patru ipoteze verificate exploratoriu pe datele proiectului: distanța, granița, economia și oamenii care circulă; apoi aceleași perechi, privite ca rețea.",
+    "deck": "Datele sunt curate și în bază. Înainte de model, analiza exploratorie răspunde la cinci întrebări și se încheie cu decizii.",
+    "descriere": "Cinci întrebări ale analizei exploratorii, puse datelor SCI: ce conțin datele, cum arată o valoare obișnuită, ce variază împreună, ce iese din tipar și ce grupuri apar.",
     "caiet": "@REPO@/blob/main/curs/06_analiza_exploratorie.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Analiza exploratorie caută tipare și explicații care merită verificate. Lecția pornește de la patru ipoteze din literatură (distanța, granița, asemănarea economică, oamenii care circulă), scrie pentru fiecare ce ar trebui să se vadă și abia apoi se uită la date: 44.253 de perechi de regiuni și 263 de perechi de țări.</p>\n<p>Instrumentele sunt puține și simple: distribuția pe scara logaritmică, mediana, coeficientul Spearman, mediane pe intervale de distanță. A doua parte privește aceleași perechi împreună, ca rețea: forța unei regiuni, partenerii ei din alte țări și comunitățile găsite de algoritmul Louvain.</p>"
+        "html": "<p>Analiza exploratorie caută ce merită verificat: o întrebare, un grafic care îi răspunde, apoi întrebarea nouă pe care o ridică răspunsul. Lecția o organizează în cinci întrebări valabile pe orice date și le pune pe cele 44.253 de perechi de regiuni: ce conțin datele (numărul de rânduri, o sursă externă, extremele, lipsurile), cum arată o valoare obișnuită, ce variază împreună (patru ipoteze din literatură), ce iese din tipar și ce grupuri apar.</p>\n<p>Rezultatul nu este o colecție de grafice, ci decizii pentru modelul din C7: scara, variabilele, ce se exclude și ce excepții se urmăresc.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Ipoteze scrise înainte de date, cu felul în care se verifică fiecare.</li>\n<li>Recunoașterea unei distribuții cu coadă lungă, mediana în locul mediei și scara logaritmică.</li>\n<li>Coeficientul Spearman și ce nu spune o corelație.</li>\n<li>Comparația la aceeași distanță, ca granița să nu se amestece cu distanța.</li>\n<li>O rată în locul unui număr, când variabila de explicat este relativă.</li>\n<li>Rețeaua: nod, legătură, forță, parteneri, comunități.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Analiza exploratorie ca ciclu: întrebare, grafic, întrebare nouă.</li>\n<li>Verificări înainte de grafice: numărul de rânduri, o sursă externă, extremele, lipsurile pe grupuri.</li>\n<li>Distribuția cu coadă lungă, mediana și scara logaritmică.</li>\n<li>Comparații în grupuri comparabile: granița la aceeași distanță, rata în locul numărului.</li>\n<li>Cazurile care ies din tipar: SCI raportat la mediana distanței.</li>\n<li>Grupurile: comunitățile rețelei și excepțiile lor.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
@@ -378,7 +378,7 @@
       },
       {
         "t": "Ce se adaugă la proiect",
-        "html": "<ul class=\"obiective\">\n<li>Fișa echipei: ce arată H1-H4 pentru coridor, cu câte perechi.</li>\n<li>Partenerii externi ai unei regiuni din coridor.</li>\n<li>O explicație alternativă și o limită, scrise în <code>README.md</code>.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Fișa EDA a echipei: cele cinci întrebări, pe datele proiectului, fiecare cu un număr și cu numărul de cazuri.</li>\n<li>Deciziile pentru model, scrise în <code>README.md</code>.</li>\n</ul>"
       }
     ],
     "resurse": [

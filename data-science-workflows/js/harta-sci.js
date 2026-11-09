@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=142";
+const V = "?v=143";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */
@@ -26,7 +26,7 @@ const COMUNITATI = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98d
 const NIVELURI = { judete: "Județe", regiuni: "Regiuni", tari: "Țări" };
 const MASURI = {
   judete: [["sci", "Legături"]],
-  regiuni: [["sci", "Legături"], ["com", "Comunități"]],
+  regiuni: [["sci", "Legături"], ["dist", "Față de distanță"], ["com", "Comunități"], ["lips", "Date lipsă"]],
   tari: [["sci", "Legături"], ["migr", "Migranți"], ["model", "Față de model"]],
 };
 /* paleta e în explorator.css: nouă trepte pentru mărime, șapte divergente */
@@ -37,7 +37,16 @@ const PRAG = {
   migr:  { v: [500, 2000, 5000, 20000, 50000, 100000, 300000, 700000],
            et: ["", "2 mii", "", "20 mii", "", "100 mii", "", "700 mii"] },
   model: { v: [0.4, 0.6, 0.85, 1.18, 1.67, 2.5], et: ["0,4×", "0,6×", "0,85×", "1,2×", "1,7×", "2,5×"] },
+  dist:  { v: [0.25, 0.5, 0.8, 1.25, 2, 4], et: ["¼×", "½×", "0,8×", "1,25×", "2×", "4×"] },
+  lips:  { v: [1, 2, 6], et: ["", "1", "2-3", "6-7"] },
 };
+/* SCI median al perechilor de regiuni, pe intervale de distanță (caietul 06, H1) */
+const DIST = { v: [100, 250, 500, 1000, 2000], med: [242323, 31358, 3471, 1593, 1092, 544] };
+const LIPS = ["var(--hs-2)", "var(--hsd-3)", "var(--hsd-2)", "var(--hsd-1)"];
+const VAR = { densitate: "densitatea", pib_locuitor: "PIB pe locuitor", populatie: "populația",
+  retele_sociale: "rețele sociale", somaj: "șomajul", studii_superioare: "studii superioare", varsta_medie: "vârsta medie" };
+/* măsuri doar pentru lecții, nu pentru Explorator */
+const LECTIE = new Set(["lips"]);
 const FARA = "var(--crom-2)";
 
 const fmt = (x, z = 0) => x.toLocaleString("ro-RO", { maximumFractionDigits: z, minimumFractionDigits: z });
@@ -58,7 +67,7 @@ export async function monteaza(gazda, opt = {}){
   const niveluri = opt.niveluri || ["judete", "regiuni", "tari"];
   const povesti = opt.povesti || [];
   /* o lecție poate arăta doar măsurile pe care le-a predat deja */
-  const masuri = n => MASURI[n].filter(([m]) => !opt.masuri || opt.masuri.includes(m));
+  const masuri = n => MASURI[n].filter(([m]) => opt.masuri ? opt.masuri.includes(m) : !LECTIE.has(m));
   let st = { nivel: opt.nivel || niveluri[0], masura: opt.masura || "sci", ales: opt.ales || "RO113", poveste: null };
 
   gazda.classList.add("hs");
@@ -136,6 +145,15 @@ export async function monteaza(gazda, opt = {}){
     const med = v[Math.floor(v.length / 2)];
     return rand.map((x, j) => (j === i || !x) ? null : x / med);
   }
+  /* SCI raportat la mediana perechilor aflate la aceeași distanță */
+  function abateri(){
+    const i = locuri().findIndex(l => l.cod === st.ales), c0 = centre[i];
+    return rand.map((x, j) => {
+      if (j === i || !x || !c0 || !centre[j]) return null;
+      const km = Math.hypot(centre[j][0] - c0[0], centre[j][1] - c0[1]);
+      return x / DIST.med[treapta(km, DIST.v)];
+    });
+  }
   const rezidual = (cod) => { const k = [st.ales, cod].sort().join("-"); return k in B.model ? B.model[k] : null; };
   const migranti = (cod) => {
     if (!B.raportoare.includes(cod)) return undefined;
@@ -181,6 +199,8 @@ export async function monteaza(gazda, opt = {}){
     const L = locuri();
     if (st.masura === "com") return L.map(l => COMUNITATI[l.com % COMUNITATI.length]);
     if (st.masura === "sci") return rapoarte().map(r => r === null ? FARA : SECV[treapta(r, PRAG.sci.v)]);
+    if (st.masura === "dist") return abateri().map(r => r === null ? FARA : DIVERG[treapta(r, PRAG.dist.v)]);
+    if (st.masura === "lips") return L.map(l => LIPS[treapta((l.lips || []).length, PRAG.lips.v)]);
     if (st.masura === "migr") return L.map(l => { const m = migranti(l.cod);
       return m === undefined ? FARA : SECV[treapta(m, PRAG.migr.v)]; });
     return L.map(l => { const r = rezidual(l.cod); return r === null ? FARA : DIVERG[treapta(Math.exp(r), PRAG.model.v)]; });
@@ -191,7 +211,7 @@ export async function monteaza(gazda, opt = {}){
     const L = locuri(), c = culori();
     for (const p of svg.querySelectorAll(".zona")){
       const i = +p.dataset.i, e = L[i].cod === st.ales;
-      p.style.fill = e && st.masura !== "com" ? "var(--panza)" : c[i];
+      p.style.fill = e && st.masura !== "com" && st.masura !== "lips" ? "var(--panza)" : c[i];
       p.classList.toggle("ales", e);
       if (e) svg.insertBefore(p, svg.querySelector(".arce"));
     }
@@ -205,7 +225,7 @@ export async function monteaza(gazda, opt = {}){
   function arce(){
     const g = svg.querySelector(".arce"); if (!g) return;
     g.innerHTML = "";
-    if (!linii || st.masura === "com") return;
+    if (!linii || st.masura === "com" || st.masura === "lips") return;
     const L = locuri(), i0 = L.findIndex(l => l.cod === st.ales), c0 = centre[i0];
     if (!c0) return;
     let top;
@@ -215,6 +235,8 @@ export async function monteaza(gazda, opt = {}){
     if (st.masura === "sci") top = rapoarte().map((r, j) => [r, j])
       .filter(([r, j]) => r !== null && centre[j] && (st.nivel === "tari" || L[j].tara !== taraAles))
       .sort((a, b) => b[0] - a[0]).slice(0, 8);
+    else if (st.masura === "dist") top = abateri().map((r, j) => [r, j])
+      .filter(([r, j]) => r !== null && L[j].tara !== taraAles).sort((a, b) => b[0] - a[0]).slice(0, 8);
     else if (st.masura === "migr") top = L.map((l, j) => [migranti(l.cod), j]).filter(([v, j]) => v && centre[j]).sort((a, b) => b[0] - a[0]).slice(0, 8);
     else top = L.map((l, j) => [rezidual(l.cod), j]).filter(([r, j]) => r !== null && centre[j]).sort((a, b) => b[0] - a[0]).slice(0, 6);
     if (!top.length) return;
@@ -270,6 +292,9 @@ export async function monteaza(gazda, opt = {}){
     $('[data-rol="legenda"]').innerHTML =
       st.masura === "sci" ? scara("Probabilitatea de prietenie, față de mediana partenerilor", SECV, PRAG.sci.et, "fără date")
       : st.masura === "migr" ? scara("Cetățeni ai țării alese care trăiesc acolo", SECV, PRAG.migr.et, "țara nu raportează cetățeniile")
+      : st.masura === "dist" ? scara("SCI, raportat la mediana perechilor aflate la aceeași distanță", DIVERG.slice(0, 7), PRAG.dist.et, "fără date sau în afara hărții")
+      : st.masura === "lips" ? `<div class="gf__leg"><span class="gf__scara-et">Variabile lipsă, din cele 7 ale regiunii</span>
+          <div class="hs__chips">${["niciuna", "una", "2-3", "6-7"].map((t, k) => `<span><i data-k="${k}" style="background:${LIPS[k]}"></i>${t}</span>`).join("")}</div></div>`
       : st.masura === "model" ? scara("SCI observat, raportat la valoarea prezisă de model", DIVERG, PRAG.model.et, "perechea nu este în model (lipsesc datele de migrație)")
       : `<div class="hs__fara">Fiecare culoare reprezintă un grup de regiuni mai legate între ele decât cu restul. Culorile sunt doar etichete.</div>`;
   }
@@ -291,6 +316,19 @@ export async function monteaza(gazda, opt = {}){
         sep("Cei mai legați, din alte țări");
         R.filter(([, j]) => L[j].tara !== taraAles).slice(0, 5).forEach(([r, j]) => rnd(j, ori(r)));
       }
+    } else if (st.masura === "dist"){
+      const R = abateri().map((r, j) => [r, j]).filter(([r, j]) => r !== null && L[j].tara !== taraAles).sort((a, b) => b[0] - a[0]);
+      sep("Peste așteptare, din alte țări"); R.slice(0, 5).forEach(([r, j]) => rnd(j, ori(r)));
+      sep("Sub așteptare, din alte țări"); R.slice(-3).reverse().forEach(([r, j]) => rnd(j, `${fmt(r, 2)}×`));
+    } else if (st.masura === "lips"){
+      const pe = {};
+      for (const l of L) for (const v of (l.lips || [])){ const k = l.tara + "|" + v; pe[k] = (pe[k] || 0) + 1; }
+      const n = {}; for (const l of L) n[l.tara] = (n[l.tara] || 0) + 1;
+      const ales = loc(st.ales);
+      sep(ales.lips && ales.lips.length ? `Lipsesc la ${ales.nume}: ${ales.lips.map(v => VAR[v]).join(", ")}` : `La ${ales.nume} nu lipsește nimic`);
+      sep("Lipsurile, pe țări");
+      Object.entries(pe).sort((a, b) => b[1] - a[1]).slice(0, 7).forEach(([k, c]) => { const [t, v] = k.split("|");
+        h.push(`<li data-cod="${L.find(l => l.tara === t).cod}"><span class="nr">${++nr}</span><span>${numeTara(t)}: ${VAR[v]}</span><span class="val">${c} din ${n[t]}</span></li>`); });
     } else if (st.masura === "migr"){
       sep("Țările cu cei mai mulți cetățeni ai țării alese");
       const R = L.map((l, j) => [migranti(l.cod), j]).filter(([v]) => v).sort((a, b) => b[0] - a[0]).slice(0, 8);
@@ -318,7 +356,7 @@ export async function monteaza(gazda, opt = {}){
   /* treapta de sub mouse, în legendă: aprinde doar locurile din ea */
   gazda.addEventListener("pointerover", (e) => {
     const t = e.target.closest(".gf__trepte span[data-k]"); if (!t) return;
-    const c = culori(), cul = (st.masura === "model" ? DIVERG : SECV)[+t.dataset.k];
+    const c = culori(), cul = (st.masura === "model" || st.masura === "dist" ? DIVERG : st.masura === "lips" ? LIPS : SECV)[+t.dataset.k];
     for (const p of svg.querySelectorAll(".zona")) p.classList.toggle("stins", c[+p.dataset.i] !== cul);
   });
   gazda.addEventListener("pointerout", (e) => {
@@ -373,6 +411,8 @@ export async function monteaza(gazda, opt = {}){
     if (l.cod === st.ales) val = "locul ales";
     else if (st.masura === "sci"){ const r = rapoarte()[i]; val = r === null ? "fără date" : `${fmt(r, r < 10 ? 1 : 0)}× mediana`; }
     else if (st.masura === "migr"){ const m = migranti(l.cod); val = !B.raportoare.includes(l.cod) ? "nu raportează" : m === undefined ? "fără date" : `${fmt(m)} cetățeni`; }
+    else if (st.masura === "dist"){ const r = abateri()[i]; val = r === null ? "fără date" : `${fmt(r, 2)}× mediana la aceeași distanță`; }
+    else if (st.masura === "lips") val = l.lips && l.lips.length ? "lipsesc: " + l.lips.map(v => VAR[v]).join(", ") : "toate cele 7 variabile";
     else if (st.masura === "model"){ const r = rezidual(l.cod); val = r === null ? "nu este în model" : `${fmt(Math.exp(r), 2)}× valoarea prezisă`; }
     else val = `comunitatea ${l.com}`;
     b.innerHTML = `<b>${l.nume}</b><span>${st.nivel === "tari" ? "" : numeTara(l.tara) + " · "}${val}</span>`;
