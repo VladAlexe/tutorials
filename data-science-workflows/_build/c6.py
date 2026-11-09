@@ -51,7 +51,7 @@ sl("s1", "Cursul", "Planul lecției",
    "<p class=\"cheie\">Ce tipare se văd în date și ce explicații merită verificate: întâi așteptarea, "
    "apoi graficul.</p>"
    + PLAN
-   + nota("Caietul lecției", f"<code>{_NB6}</code>. Datele vin din baza de pe Neon, cu <code>pd.read_sql</code>.", True),
+   + nota("Caietul lecției", f"<code>{_NB6}</code>. Datele vin din baza din C5, <code>data/dsw.db</code>, cu <code>pd.read_sql</code>.", True),
    manual=
    "<h2>Analiza exploratorie</h2>"
    "<p>Datele sunt curate (C4) și în baza de date (C5). Lecția pornește de la ipoteze din literatură, scrie ce "

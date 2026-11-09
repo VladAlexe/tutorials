@@ -306,24 +306,24 @@
     "nr": 5,
     "titlu": "Agregare și baze de date",
     "deck": "Sursele curățate în C4 sunt unite în perechi de regiuni și de țări, ajung într-o bază de date comună echipei și se rezumă: de la multe rânduri la puține, în SQL și în Python.",
-    "descriere": "Integrarea surselor în perechi de regiuni și de țări, tabelele ca entități cu chei într-o bază de date pe Neon, unirea și agregarea, în SQL și în pandas.",
+    "descriere": "Baza de date SQLite a cursului, legată de pandas prin SQLAlchemy; unde mai poate sta o bază (server, cloud); unirea tabelelor și agregarea, în SQL și în pandas.",
     "caiet": "@REPO@/blob/main/curs/05_agregare_si_baze_de_date.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Până acum datele au stat în fișiere CSV, câte o copie pe fiecare calculator. Lecția le mută într-o bază de date PostgreSQL, găzduită de Neon: un singur loc, la care se conectează toată echipa, interogat cu SQL. Motivul nu este volumul datelor, ci colaborarea: cinci copii ale aceluiași tabel ajung repede cinci tabele diferite.</p>\n<p>A doua parte tratează agregarea: trecerea de la multe rânduri la puține, un rezumat pe grup. Se face în SQL, cu <code>group by</code>, și în pandas, cu <code>groupby</code>, pentru că este aceeași idee. Un singur exemplu leagă lecția de cea următoare: perechile de regiuni din aceeași țară au un SCI mediu de 43 de ori mai mare decât celelalte.</p>"
+        "html": "<p>Până acum datele au stat în fișiere CSV, câte o copie pe fiecare calculator. Lecția le mută într-o bază de date: un singur loc, interogat cu SQL. Baza cursului este SQLite, un singur fișier, fără server, cont sau parolă; aceleași interogări merg și pe o bază cu server, de exemplu PostgreSQL în cloud, pe Neon. Motivul nu este volumul datelor, ci ordinea: cinci copii ale aceluiași tabel ajung repede cinci tabele diferite.</p>\n<p>Tabelele se unesc apoi în perechi de regiuni și de țări (<code>join</code> în SQL, <code>merge</code> în pandas) și se rezumă: de la multe rânduri la puține, un rezumat pe grup (<code>group by</code> și <code>groupby</code>). Un singur exemplu leagă lecția de cea următoare: perechile de regiuni din aceeași țară au un SCI mediu de 43 de ori mai mare decât celelalte.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Motivul pentru care o echipă are nevoie de o bază de date și de ce volumul datelor nu este criteriul.</li>\n<li>Conectarea la Neon din Python, cu adresa citită din <code>.env</code>, fără ca parola să apară în cod sau pe GitHub.</li>\n<li>Încărcarea tabelelor cu <code>to_sql</code> și citirea rezultatelor cu <code>read_sql</code>.</li>\n<li>O interogare cu <code>select</code>, <code>from</code>, <code>where</code>, <code>order by</code> și <code>limit</code>, citită în ordinea în care o execută baza.</li>\n<li>Agregarea cu <code>group by</code> și cu <code>groupby</code>, și alegerea dintre SQL și pandas.</li>\n<li>Diferența dintre media regiunilor și media țării.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Motivul pentru care datele unui proiect stau într-o bază de date și de ce volumul datelor nu este criteriul.</li>\n<li>Unde poate sta o bază: într-un fișier (SQLite), pe un server (PostgreSQL, MySQL) sau în cloud (Neon).</li>\n<li>Conectarea cu SQLAlchemy, încărcarea tabelelor cu <code>to_sql</code> și citirea rezultatelor cu <code>read_sql</code>.</li>\n<li>O interogare cu <code>select</code>, <code>from</code>, <code>where</code>, <code>order by</code> și <code>limit</code>, citită în ordinea în care o execută baza.</li>\n<li>Tipurile de unire (inner, left, outer) și regula numărării rândurilor după fiecare unire.</li>\n<li>Agregarea cu <code>group by</code> și cu <code>groupby</code>, și diferența dintre media regiunilor și media țării.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
-        "html": "<ol>\n<li>Cele trei tabele din C4, în <code>dsw/curs/data/processed</code>: <code>regiuni_nuts2.csv</code>, <code>perechi_regiuni.csv</code>, <code>perechi_tari.csv</code>.</li>\n<li>Un cont pe <a class=\"leg\" href=\"https://neon.tech/\" rel=\"noopener\" target=\"_blank\">Neon</a>, făcut cu contul GitHub. Planul gratuit este suficient.</li>\n<li>Pachetele din <code>requirements.txt</code>: <code>pip install -r requirements.txt</code> (printre ele <code>sqlalchemy</code>, <code>psycopg</code>, <code>python-dotenv</code>).</li>\n<li>Fișierul <code>dsw/.env</code>, copiat din <code>.env.exemplu</code>, cu adresa bazei.</li>\n</ol>"
+        "html": "<ol>\n<li>Tabelele din C3 și C4; caietul le citește direct din depozitul cursului.</li>\n<li>Pachetul <code>sqlalchemy</code>, din <code>requirements.txt</code>. SQLite face parte din Python: nu se instalează nimic în plus.</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",
-        "html": "<ul class=\"obiective\">\n<li>Baza echipei pe Neon, cu tabelele proiectului, încărcate de caietul de curățare și integrare.</li>\n<li>Adresa bazei în <code>dsw/.env</code> la fiecare membru, dată pe Teams, nu pe GitHub.</li>\n<li>O interogare cu <code>group by</code> despre coridorul echipei.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Baza echipei, <code>data/processed/proiect.db</code>, scrisă de caietul 03 cu <code>to_sql</code>.</li>\n<li>Caietele 04 și 05 citesc din ea cu <code>pd.read_sql</code>; doar caietul 03 scrie în bază.</li>\n</ul>"
       }
     ],
     "resurse": [
@@ -335,8 +335,8 @@
     ],
     "legaturi": [
       {
-        "href": "https://neon.tech/docs/guides/python",
-        "t": "Neon și Python",
+        "href": "https://sqlite.org/whentouse.html",
+        "t": "Când se folosește SQLite",
         "g": "docs"
       },
       {
@@ -374,7 +374,7 @@
       },
       {
         "t": "Pregătire",
-        "html": "<ol>\n<li>Baza de pe Neon din C5, cu cele trei tabele, și adresa în <code>dsw/.env</code>.</li>\n<li>Pachetele din <code>requirements.txt</code>, printre ele <code>geopandas</code>, <code>networkx</code> și <code>scipy</code>.</li>\n</ol>"
+        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>, cu tabelele lecției.</li>\n<li>Pachetele din <code>requirements.txt</code>, printre ele <code>geopandas</code>, <code>networkx</code> și <code>scipy</code>.</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",
@@ -410,7 +410,7 @@
         "g": "networkx"
       }
     ],
-    "caiet_d": "Caietul 06, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza de pe Neon."
+    "caiet_d": "Caietul 06, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza din C5, curs/data/dsw.db."
   },
   "c7-variabile-si-model": {
     "nr": 7,

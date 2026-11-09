@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Lecția 5: Agregare și baze de date.
+Lecția 5: Integrare, baze de date și agregare.
 
-Urmează caietul 05_agregare_si_baze_de_date (2 noiembrie 2026): baza
-PostgreSQL pe Neon, adresa ei în .env, cele trei tabele din C4 încărcate cu
-to_sql, primele interogări (select, where, order by), agregarea cu group by,
-aceeași agregare în pandas și baza echipei. Unirea tabelelor a trecut la C4,
-unde o face acum caietul 04.
+Urmează caietul 05_agregare_si_baze_de_date (9 noiembrie 2026): baza de date
+SQLite a cursului (un fișier, data/dsw.db), legată de pandas prin SQLAlchemy;
+cele patru tabele din C3 și C4 încărcate cu to_sql; primele interogări;
+integrarea (join în SQL, merge în pandas); agregarea (group by, groupby);
+perechile de țări; baza echipei (data/processed/proiect.db).
 
-Toate numerele vin din date/c5-baza.json, scos din tabelele produse de
-caietele 04 și 05 (regiuni_nuts2, perechi_regiuni, perechi_tari).
+Partea despre bazele de date urmează prezentarea cursului 5 din 2025: unirea
+tabelelor, Neon, PostgreSQL și MySQL. Neon apare ca variantă din cloud, nu
+se folosește la seminar.
+
+Numerele vin din date/c5-baza.json (tabelele produse de caietele 04 și 05)
+și din rularea caietului 05 pe SQLite (9 noiembrie 2026).
 
 Rulare:  python _build/c5.py
 """
@@ -19,48 +23,57 @@ import json
 from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
 L = Lectie(5, "c5-agregare-si-baze-de-date", "Agregare și baze de date",
-           "Baza de date a echipei pe Neon, adresa ei în .env, primele interogări SQL "
-           "și agregarea: de la multe rânduri la un rezumat pe grup, în SQL și în pandas.")
+           "Baza de date SQLite a cursului, legată de pandas prin SQLAlchemy; unde mai poate sta o bază "
+           "(server, cloud, Neon); unirea tabelelor și agregarea, în SQL și în pandas.")
 sl = L.sl
 
 D = json.loads((RAD / "date" / "c5-baza.json").read_text(encoding="utf-8"))
 T = D["tabele"]
 nr = lambda v: f"{v:,}".replace(",", ".")
 _NB5 = "05_agregare_si_baze_de_date.ipynb"
+ET_VERIF = '<p class="ex-et">Verificare</p>'
 
 
 # ===========================================================================
-#  1. Planul
+#  0. Unde suntem în curs
 # ===========================================================================
+
+CURSUL = tabel(["", "Conținutul", "Rezultatul"], [
+    ["C1", "proiectul, mediul de lucru, tipurile de date și JSON", "<code>dsw/</code>, cu <code>.venv</code>"],
+    ["C2", "colectarea datelor prin API: Eurostat, Banca Mondială", "<code>data/raw</code>"],
+    ["C3", "surse diverse, preprocesare, Git și depozitul echipei", "<code>data/processed</code>, <code>proiect/</code>"],
+    ["C4", "curățarea datelor și tabelul regiunilor", "<code>regiuni_nuts2.csv</code>"],
+    ["<b>C5</b>", "<b>azi: integrare, baze de date și agregare, în SQL și în Python</b>", "<b>perechile, în <code>dsw.db</code></b>"],
+    ["C6", "analiza exploratorie: ipoteze, grafice, rețele", "primele rezultate"],
+    ["C7", "variabile derivate și model", "modelul SCI"],
+    ["C8", "raportul și prezentarea proiectului", "raportul echipei"],
+])
 
 AGENDA = [
-    ("Baza de date", "azi", "Neon, adresa în .env, cele trei tabele din C4."),
+    ("Baza de date", "azi", "Un singur loc pentru date: fișier, server sau cloud. Baza cursului, SQLite."),
     ("SQL", "azi", "O interogare se citește ca o propoziție: select, from, where, order by."),
-    ("Agregarea", "azi", "group by, aceeași idee în pandas, capcana mediilor."),
-    ("Echipa", "azi", "O singură bază pentru tot proiectul."),
+    ("Integrarea", "azi", "Tipurile de join; join în SQL, merge în pandas; numărarea rândurilor."),
+    ("Agregarea", "azi", "group by și groupby, capcana mediilor, perechile de țări."),
 ]
 PLAN = ix("agenda", "Planul lecției", {"static": True, "titlu": "Planul lecției",
           "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
 
-sl("s1", "Cursul", "Planul lecției",
-   "<h2>Agregare și baze de date</h2>"
-   "<p class=\"cheie\">Tabelele curate din C4 ajung într-un singur loc, comun pentru toată echipa, "
-   "și se rezumă: de la multe rânduri la puține.</p>"
-   + PLAN
-   + nota("Caietul lecției", f"<code>{_NB5}</code>. Interogările din caiet rulează pe baza fiecăruia, pe Neon.", True),
+sl("s0", "Cursul", "Unde suntem",
+   "<h2>Unde suntem în curs</h2>"
+   "<p class=\"cheie\">Tabelele curate din C3 și C4 ajung într-o bază de date, se unesc în perechi și se rezumă. "
+   "Azi: pasul 5.</p>"
+   + CURSUL,
    manual=
-   "<h2>Agregare și baze de date</h2>"
-   "<p>Până acum datele au stat în fișiere CSV, câte o copie pe fiecare calculator. Lecția le mută într-o "
-   "bază de date PostgreSQL, găzduită de Neon: un singur loc, la care se conectează toată echipa, "
-   "interogat cu SQL, limbajul comun al bazelor de date.</p>"
-   "<p>A doua idee a lecției este agregarea: trecerea de la multe rânduri la puține, un rezumat pe grup "
-   "(o medie pe țară, un total pe regiune). Se face în SQL și în pandas, pentru că este aceeași idee.</p>"
-   + PLAN
+   "<h2>Unde suntem în curs</h2>"
+   "<p>Datele colectate în C2 au fost aduse la aceeași formă în C3 și verificate în C4. Lecția le mută într-o bază "
+   "de date, le unește în perechi de regiuni și de țări și le rezumă: de la multe rânduri la puține. Aceeași "
+   "succesiune o urmează și proiectul fiecărei echipe.</p>"
+   + CURSUL + PLAN
    + nota("Caietul lecției", f"<code>{_NB5}</code>, în <code>dsw/curs/</code>, lângă caietele 01-04.", True))
 
 
 # ===========================================================================
-#  2-5. Baza de date
+#  1-3. Baza de date
 # ===========================================================================
 
 def _ic_fis():
@@ -80,7 +93,7 @@ COPII = (
         ("Elena", "perechi_tari_FINAL2.csv", "rau")])
     + "</ul></div>"
     '<div class="cp5__p"><h4>Cu o bază de date<span>un singur loc, pentru toți</span></h4>'
-    '<div class="cp5__baza"><div class="cp5__cil">PostgreSQL<small>pe Neon</small></div><ul class="cp5__l">'
+    '<div class="cp5__baza"><div class="cp5__cil">dsw.db<small>o bază de date</small></div><ul class="cp5__l">'
     + "".join(f'<li>{_ic_pc()}{n}<code>pd.read_sql(...)</code></li>' for n in ["Andrei", "Maria", "Ioana", "Radu", "Elena"])
     + "</ul></div></div>"
     '<p class="cp5__nota">Cinci copii ale aceluiași tabel ajung, în câteva săptămâni, cinci tabele diferite. '
@@ -95,18 +108,54 @@ V1 = verif("c5-v1", 1,
            "Pandas lucrează ușor cu sute de mii de rânduri. Problema sunt cinci copii ale aceluiași fișier, "
            "modificate de cinci persoane.")
 
-sl("s2", "Baza de date", "De ce o bază",
+
+sl("s1", "Baza de date", "De ce o bază",
    "<h2>Cinci copii sau un singur loc</h2>"
    + COPII,
    manual=
    "<h2>Cinci copii sau un singur loc</h2>"
    "<p>Întrebarea „de la câte rânduri este nevoie de o bază de date” este formulată greșit: dimensiunea "
    "este rareori motivul. Pandas lucrează fără dificultate cu milioane de rânduri, iar datele proiectului "
-   "sunt mult sub acest volum. Motivul real este colaborarea: mai multe persoane care lucrează pe aceleași "
-   "date au nevoie de o singură versiune a lor.</p>"
+   "sunt mult sub acest volum. Motivul real este ordinea: toate tabelele într-un singur loc, cu o singură "
+   "versiune, din care citește oricine lucrează pe date.</p>"
    + COPII,
    dupa=V1)
 
+
+def _carte(cls, et, titlu, sub, adr, puncte):
+    li = "".join(f"<li>{p}</li>" for p in puncte)
+    return (f'<div class="loc5__c {cls}"><span class="loc5__et">{et}</span><h4>{titlu}</h4>'
+            f'<p class="loc5__sub">{sub}</p><code class="loc5__adr">{adr}</code><ul>{li}</ul></div>')
+
+LOCURI = (
+    '<div class="loc5">'
+    + _carte("loc5__c--azi", "la seminar", "Într-un fișier", "SQLite",
+             "sqlite:///data/dsw.db",
+             ["fără server, cont sau parolă", "un singur fișier, ușor de mutat", "un singur scriitor odată"])
+    + _carte("", "în instituții", "Pe un server", "PostgreSQL, MySQL",
+             "postgresql://utilizator:parola@server/baza",
+             ["mulți utilizatori deodată", "acces cu utilizator și parolă", "cineva întreține serverul"])
+    + _carte("", "găzduit", "În cloud", "Neon, Supabase, Azure SQL",
+             "postgresql://...@ep-....neon.tech/neondb",
+             ["același PostgreSQL, întreținut de firmă", "pornește la cerere, se oprește singur",
+              "plan gratuit pentru proiecte mici"])
+    + "</div>"
+    '<p class="loc5__motto">„SQLite nu concurează cu serverele de baze de date. SQLite concurează cu '
+    "<code>fopen()</code>.”<small>sqlite.org, „Appropriate Uses For SQLite”</small></p>")
+
+FOLOSITE = [("PostgreSQL", 55.6), ("MySQL", 40.5), ("SQLite", 37.5), ("SQL Server", 30.1),
+            ("Redis", 28.0), ("MongoDB", 24.0)]
+SONDAJ = ('<div class="sv5"><div class="sv5__t">Bazele de date folosite în ultimul an, Stack Overflow 2025 '
+          '(26.083 de respondenți)</div>'
+          + "".join(f'<div class="sv5__r"><span>{n}</span><i style="--w:{v/60*100:.1f}%"></i>'
+                    f'<b>{str(v).replace(".", ",")}%</b></div>' for n, v in FOLOSITE)
+          + "</div>")
+
+PG_MYSQL = tabel(["", "PostgreSQL", "MySQL"], [
+    ["Tipuri de date", "JSONB, GIS (PostGIS), tablouri, tipuri proprii", "tipuri clasice, JSON simplu"],
+    ["Performanță", "scrieri concurente și interogări analitice", "citiri rapide, aplicații web"],
+    ["Folosire", "analiză, date eterogene, date geografice", "site-uri mari, comerț online"],
+])
 
 FLUX = {
     "id": "c5-flux-neon",
@@ -130,89 +179,95 @@ FLUX = {
         {"n": "Datele", "et": "permanente", "ic": "🗄️", "c": "text-2",
          "d": "Tabelele propriu-zise, separate de calcul. Rămân pe server și când calculul este oprit."}]}
 
-sl("s3", "Baza de date", "Neon",
-   "<h2>PostgreSQL, găzduit de Neon</h2>"
-   "<p class=\"cheie\">O bază PostgreSQL obișnuită, pe un server din cloud: nimic de instalat, nimic de ținut pornit.</p>"
-   + ix("flux", "Drumul unei interogări", FLUX),
+
+sl("s2", "Baza de date", "Unde stă o bază",
+   "<h2>Unde stă o bază de date</h2>"
+   + LOCURI,
    manual=
-   "<h2>PostgreSQL, găzduit de Neon</h2>"
-   "<p>Neon oferă PostgreSQL standard, găzduit în cloud. Contul se face cu GitHub, iar planul gratuit "
-   "ajunge pentru proiectul cursului.</p>"
-   + tabel(["Pasul", "Unde"], [
-       ["autentificarea cu contul GitHub", "neon.tech"],
-       ["un proiect nou: numele <code>dsw</code>, regiunea Frankfurt", "New Project"],
-       ["adresa de conectare (connection string)", "Connect"],
-   ])
-   + ix("flux", "Drumul unei interogări", FLUX))
+   "<h2>Unde stă o bază de date</h2>"
+   "<p>O bază de date relațională ține datele în tabele, interogate cu SQL. Aceleași tabele și aceleași "
+   "interogări pot sta în trei locuri, care diferă prin cine are acces și cine întreține baza.</p>"
+   + LOCURI
+   + "<p><b>SQLite</b> este o bază într-un singur fișier, inclusă în Python. Nu are server: programul citește și "
+     "scrie direct fișierul. Este potrivită pentru analiză, pentru învățare și ca format de fișier pentru date; "
+     "nu este potrivită când mulți utilizatori scriu în același timp, prin rețea.</p>"
+     "<p><b>PostgreSQL</b> și <b>MySQL</b> sunt baze cu server: un program care rulează permanent și la care se "
+     "conectează mai mulți utilizatori, fiecare cu contul și drepturile lui. Sunt cele mai folosite baze de date, "
+     "alături de SQLite.</p>"
+   + SONDAJ
+   + "<p>Diferențele dintre cele două, pe scurt:</p>"
+   + PG_MYSQL
+   + "<p><b>Neon</b> oferă PostgreSQL găzduit în cloud: contul se face cu GitHub, iar baza primește o adresă de "
+     "conectare. Componenta care execută interogările pornește la prima cerere și se oprește după câteva minute "
+     "fără activitate; datele rămân. Supabase și Azure SQL oferă servicii asemănătoare.</p>"
+   + ix("flux", "Drumul unei interogări în cloud", FLUX))
 
 
-ADRESA = (
+ADRESE = (
     '<div class="adr5">'
+    + "".join(f'<span style="--pc:var(--{col})"><b>{t}</b><small>{e}</small></span>' for t, e, col in [
+        ("sqlite://", "felul bazei", "accent"), ("/data/dsw.db", "fișierul, față de caiet", "ambra")])
+    + '</div><div class="adr5">'
     + "".join(f'<span class="{c}" style="--pc:var(--{col})"><b>{t}</b><small>{e}</small></span>' for t, e, c, col in [
-        ("postgresql://", "felul bazei", "", "accent"),
-        ("utilizator", "utilizatorul", "", "ardezie"),
-        (":parola", "parola: secretul", "secret", "nu"),
-        ("@ep-....neon.tech", "serverul", "", "ambra"),
-        ("/neondb", "baza", "", "roza"),
-        ("?sslmode=require", "canal criptat", "", "text-3")])
+        ("postgresql://", "felul bazei", "", "accent"), ("utilizator", "utilizatorul", "", "ardezie"),
+        (":parola", "parola: secretul", "secret", "nu"), ("@ep-....neon.tech", "serverul", "", "ambra"),
+        ("/neondb", "baza", "", "roza")])
     + "</div>")
 
 CONECTARE = {
     "id": "c5-cod-conectare",
-    "indiciu": "Funcția care citește .env, funcția din os care citește o variabilă (get + env) și funcția care face conexiunea.",
+    "indiciu": "Funcția care face conexiunea se importă din sqlalchemy. Felul bazei este numele ei, scris mic. "
+               "Citirea unei interogări în pandas: read + sql.",
     "iesire": "   conexiunea\n0           1", "fisier": "curs/05_agregare_si_baze_de_date.ipynb",
-    "sarcina": "Ce lipsește ca adresa să fie citită din <code>.env</code>, nu scrisă în caiet?",
-    "cod": "import os\n"
-           "import pandas as pd\n"
-           "from dotenv import load_dotenv\n"
-           "from sqlalchemy import create_engine\n"
-           "{{1}}()                                        # citește .env\n"
-           "engine = {{3}}(os.{{2}}(\"DATABASE_URL\"))   # conexiunea\n"
-           "pd.read_sql(\"select 1 as conexiunea\", engine)",
+    "sarcina": "Ce lipsește ca un caiet din <code>curs/</code> să se conecteze la baza <code>data/dsw.db</code>?",
+    "cod": "import pandas as pd\n"
+           "from sqlalchemy import {{1}}\n\n"
+           "engine = create_engine(\"{{2}}:///data/dsw.db\")   # baza: un fișier\n"
+           "pd.{{3}}(\"select 1 as conexiunea\", engine)",
     "goluri": {
-        "1": {"ok": ["load_dotenv"], "ajutor": "funcția"},
-        "2": {"ok": ["getenv", "environ.get"], "ajutor": "funcția"},
-        "3": {"ok": ["create_engine"], "ajutor": "funcția"}},
-    "laBine": "Adresa nu apare nicăieri în caiet, deci nici pe GitHub.",
-    "laRau": "Toate trei sunt importate în primele rânduri.",
-    "explicatie": "<code>load_dotenv()</code> caută <code>.env</code> în dosarul caietului și în cele de deasupra, "
-                  "deci îl găsește și din <code>curs/</code>, și din <code>proiect/notebooks/</code>."}
+        "1": {"ok": ["create_engine"], "ajutor": "funcția"},
+        "2": {"ok": ["sqlite"], "ajutor": "felul bazei"},
+        "3": {"ok": ["read_sql", "read_sql_query"], "ajutor": "funcția"}},
+    "laBine": "Fișierul nu există încă: SQLite îl creează la prima scriere.",
+    "laRau": "Adresa începe cu felul bazei: sqlite, scris mic.",
+    "explicatie": "Pentru o bază PostgreSQL, de exemplu pe Neon, se schimbă doar textul adresei. Adresa aceea conține "
+                  "parola, deci stă într-un fișier <code>.env</code>, nu în caiet și nu pe GitHub."}
 
-sl("s4", "Baza de date", "Adresa, în .env",
-   "<h2>Adresa bazei stă în .env</h2>"
-   + ADRESA
-   + "<p>Stă în <code>dsw/.env</code>: <code>DATABASE_URL=postgresql://...</code>. <code>.gitignore</code> conține "
-     "<code>.env</code>, deci parola nu ajunge pe GitHub.</p>"
+sl("s3", "Baza de date", "O adresă, orice bază",
+   "<h2>O adresă, orice bază</h2>"
+   "<p class=\"cheie\">SQLAlchemy leagă pandas de bază printr-o adresă. Se schimbă adresa, codul rămâne același.</p>"
+   + ADRESE
    + ix("cod", "Conectarea", CONECTARE),
    manual=
-   "<h2>Adresa bazei stă în .env</h2>"
-   "<p>Neon dă o adresă de forma de mai jos. Ea conține tot ce trebuie pentru acces, inclusiv parola, în clar. "
-   "De aceea nu se scrie niciodată în caiet și nu ajunge pe GitHub.</p>"
-   + ADRESA
-   + '<div class="adr5__jos">'
-     '<div class="adr5__f"><div><code>dsw/.env</code>, doar pe calculator</div><pre>DATABASE_URL=postgresql://...</pre></div>'
-     '<div class="adr5__f"><div><code>.gitignore</code>, în depozit</div><pre><span class="c"># secretele</span>\n.env</pre></div>'
-     '<div class="adr5__f"><div><code>.env.exemplu</code>, în depozit</div><pre>DATABASE_URL=postgresql://utilizator:parola@...</pre></div>'
-     "</div>"
-   + "<p>În <code>dsw/</code> există <code>.env.exemplu</code>: copia lui se numește <code>.env</code>, iar adresa de "
-     "exemplu se înlocuiește cu cea de pe Neon. Pachetele noi (<code>sqlalchemy</code>, <code>psycopg</code>, "
-     "<code>python-dotenv</code>) sunt în <code>requirements.txt</code>: <code>pip install -r requirements.txt</code>.</p>"
-   + ix("cod", "Conectarea", CONECTARE)
-   + nota("Dacă apare o eroare",
-          "Fișierul se numește exact <code>.env</code> (nu <code>.env.txt</code>), stă în <code>dsw/</code>, iar adresa "
-          "este copiată întreagă. O parolă ajunsă într-un commit se schimbă din Neon: ștergerea din fișier nu o "
-          "scoate din istoric."))
+   "<h2>O adresă, orice bază</h2>"
+   "<p><code>create_engine</code>, din SQLAlchemy, primește adresa bazei și întoarce o conexiune, numită de obicei "
+   "<code>engine</code>. Pandas o folosește în ambele sensuri: <code>to_sql</code> scrie un tabel în bază, "
+   "<code>read_sql</code> aduce rezultatul unei interogări ca tabel pandas.</p>"
+   "<p>Pentru SQLite, adresa este calea fișierului, față de dosarul caietului: <code>sqlite:///data/dsw.db</code> "
+   "înseamnă fișierul <code>dsw.db</code> din <code>curs/data/</code>. Pentru o bază pe un server, adresa conține "
+   "utilizatorul, parola și serverul:</p>"
+   + ADRESE
+   + "<p>O adresă cu parolă nu se scrie niciodată în caiet: se pune într-un fișier <code>.env</code>, exclus din Git "
+     "prin <code>.gitignore</code>, și se citește cu <code>python-dotenv</code>. Baza SQLite a cursului nu are parolă, "
+     "deci acest pas nu este necesar.</p>"
+   + ix("cod", "Conectarea", CONECTARE))
 
+
+def _ic_tab():
+    return ('<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
+            '<rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6.5h12M6.5 6.5V13"/></svg>')
 
 TABELE_BAZA = (
     '<div class="tb5">'
-    '<div class="tb5__col"><h4>în <code>data/processed</code>, din C4</h4>'
+    '<div class="tb5__col"><h4>în <code>data/processed</code>, din C3 și C4</h4>'
     + "".join(f'<div class="tb5__i">{_ic_fis()}<code>{f}</code><small>{nr(n)} rânduri</small></div>' for f, n in [
-        ("regiuni_nuts2.csv", T["regiuni"]), ("perechi_regiuni.csv", T["perechi_regiuni"]), ("perechi_tari.csv", T["perechi_tari"])])
+        ("regiuni_nuts2.csv", 298), ("sci_regiuni.csv", 88804), ("migratie_curata.csv", 9900), ("zboruri_curate.csv", 1505)])
     + '</div><div class="tb5__s"><code>to_sql</code><i></i></div>'
-    '<div class="tb5__col tb5__col--b"><h4>în baza de pe Neon</h4>'
-    + "".join(f'<div class="tb5__i"><code>{t}</code><small>un rând = {u}</small></div>' for t, u in [
-        ("regiuni", "o regiune"), ("perechi_regiuni", "o pereche de regiuni"), ("perechi_tari", "o pereche de țări")])
+    '<div class="tb5__col tb5__col--b"><h4>în <code>data/dsw.db</code>: entitatea și cheia</h4>'
+    + "".join(f'<div class="tb5__i">{_ic_tab()}<code>{t}</code><small>{u}</small></div>' for t, u in [
+        ("regiuni", "o regiune · <code>regiune</code>"), ("sci", "o pereche de regiuni · <code>regiune_1, regiune_2</code>"),
+        ("migratie", "o cetățenie într-o țară · <code>tara_rezidenta, cetatenie</code>"),
+        ("zboruri", "o pereche de țări · <code>tara_1, tara_2</code>")])
     + "</div></div>")
 
 TOSQL = {
@@ -220,7 +275,7 @@ TOSQL = {
     "indiciu": "Dacă tabelul există deja, este înlocuit: „replace”, între ghilimele. Citirea din bază se face cu read_sql.",
     "iesire": "     n\n0  298", "fisier": "curs/05_agregare_si_baze_de_date.ipynb",
     "sarcina": "Ce lipsește ca celula să poată fi rulată de mai multe ori, iar verificarea să citească din bază?",
-    "cod": "regiuni = pd.read_csv(\"data/processed/regiuni_nuts2.csv\")\n"
+    "cod": "regiuni = pd.read_csv(DATE + \"regiuni_nuts2.csv\")\n"
            "regiuni.to_sql(\"regiuni\", engine, if_exists={{1}}, index=False)\n\n"
            "pd.{{2}}(\"select count(*) as n from regiuni\", engine)",
     "goluri": {
@@ -229,27 +284,28 @@ TOSQL = {
     "laBine": "298 de rânduri au plecat, 298 sunt în bază.",
     "laRau": "Primul gol este un text, între ghilimele.",
     "explicatie": "<code>\"replace\"</code> șterge tabelul și îl scrie din nou, deci celula se poate rula oricând. "
-                  "Pentru tabelul mare, <code>method=\"multi\", chunksize=1000</code> trimite rândurile în pachete de "
-                  "câte 1.000, nu unul câte unul."}
+                  "<code>index=False</code> nu scrie indexul pandas ca o coloană în plus."}
 
-sl("s5", "Baza de date", "Tabelele, în bază",
-   "<h2>Cele trei tabele din C4, în bază</h2>"
+sl("s4", "Baza de date", "Tabelele, în bază",
+   "<h2>Patru tabele, patru entități</h2>"
    + TABELE_BAZA
    + ix("cod", "Încărcarea", TOSQL),
    manual=
-   "<h2>Cele trei tabele din C4, în bază</h2>"
-   "<p><code>to_sql</code> trimite un tabel pandas în baza de date, <code>read_sql</code> aduce înapoi rezultatul "
-   "unei interogări. Fișierele din <code>data/processed</code> rămân sursa; baza este copia comună, din care se "
-   "citește de acum înainte.</p>"
+   "<h2>Patru tabele, patru entități</h2>"
+   "<p>O bază relațională ține fiecare lucru despre care există date, o <b>entitate</b>, într-un tabel separat. "
+   "Fiecare tabel are o <b>cheie</b>: coloanele care identifică un rând, ca în C4. Tabelele se leagă prin coloane "
+   "comune: <code>regiune_1</code> din <code>sci</code> arată spre <code>regiune</code> din <code>regiuni</code>.</p>"
    + TABELE_BAZA
+   + "<p>Tabelele se citesc din depozitul cursului, ca toți să aibă aceleași date, și se încarcă cu <code>to_sql</code>. "
+     "Fișierele din <code>data/processed</code> rămân sursa; baza este locul din care se citește de acum înainte.</p>"
    + ix("cod", "Încărcarea", TOSQL)
-   + "<p>Baza își ține singură evidența tabelelor, într-un catalog care se interoghează ca orice tabel: "
-     "<code>select table_name from information_schema.tables where table_schema = 'public'</code>. "
-     "Pe neon.tech, la <b>Tables</b>, tabelele se văd și în browser.</p>")
+   + "<p>Baza își ține singură evidența tabelelor, într-un catalog care se interoghează ca orice tabel. În SQLite: "
+     "<code>select name from sqlite_master where type = 'table'</code>; în PostgreSQL, catalogul se numește "
+     "<code>information_schema.tables</code>.</p>")
 
 
 # ===========================================================================
-#  6-7. SQL
+#  5-6. SQL
 # ===========================================================================
 
 Q = D["sql"]
@@ -304,19 +360,20 @@ SQL_TAB = tabel(["Cuvântul", "Ce face", "În pandas"], [
     ["~limit", "câte rânduri", "~head()"],
 ])
 
-sl("s6", "SQL", "O interogare",
+
+sl("s5", "SQL", "O interogare",
    "<h2>O interogare se citește ca o propoziție</h2>"
    + ix("sqlpas", "O interogare, pas cu pas", SQLPAS),
    manual=
    "<h2>O interogare se citește ca o propoziție</h2>"
    "<p>„Din tabelul perechilor de țări, rândurile cu România, coloanele țară, SCI și migranți, de la SCI-ul "
-   "cel mai mare, primele cinci.” Fiecare bucată a propoziției este un cuvânt SQL.</p>"
+   "cel mai mare, primele cinci.” Fiecare bucată a propoziției este un cuvânt SQL. Tabelul perechilor de țări "
+   "se construiește la sfârșitul lecției; aici el servește doar ca exemplu.</p>"
    + ix("sqlpas", "O interogare, pas cu pas", SQLPAS)
    + SQL_TAB
    + "<p>În Python, interogarea este un text trimis cu <code>pd.read_sql(\"...\", engine)</code>; interogările "
      "lungi se scriu între trei ghilimele, pe mai multe rânduri. Valorile lipsă se numesc în SQL "
-     "<code>null</code>; la <code>order by ... desc</code>, PostgreSQL le pune primele, iar <code>nulls last</code> "
-     "le mută la final.</p>")
+     "<code>null</code>; <code>nulls last</code> le pune la final, oricare ar fi baza de date.</p>")
 
 
 RO_PIB = "\n".join(f"{c:<7}{n:<18}{v:>8}" for c, n, v in D["ro_pib"])
@@ -339,7 +396,8 @@ EX_SQL = {
     "laRau": "În SQL, textul se scrie între apostrofuri: <code>'RO'</code>.",
     "explicatie": "Aceeași interogare în pandas: <code>regiuni[regiuni[\"tara\"] == \"RO\"].sort_values(\"pib_locuitor\", ascending=False)</code>."}
 
-sl("s7", "SQL", "Interogarea, scrisă",
+
+sl("s6", "SQL", "Interogarea, scrisă",
    "<h2>Regiunile României, după PIB</h2>"
    + ix("cod", "Prima interogare", EX_SQL),
    manual=
@@ -349,7 +407,117 @@ sl("s7", "SQL", "Interogarea, scrisă",
 
 
 # ===========================================================================
-#  8-10. Agregarea
+#  7-8. Integrarea
+# ===========================================================================
+
+def _mini(titlu, cap, randuri, cls=""):
+    th = "".join(f"<th>{c}</th>" for c in cap)
+    tr = "".join("<tr" + (' class="lipsa"' if r[-1] == "null" else "") + ">"
+                 + "".join(f"<td>{v}</td>" for v in r) + "</tr>" for r in randuri)
+    return f'<div class="jn5__t {cls}"><div class="jn5__n">{titlu}</div><table><tr>{th}</tr>{tr}</table></div>'
+
+_P = [["RO11", "5"], ["RO32", "7"], ["CH02", "3"]]
+_R = [["RO11", "28.300"], ["RO32", "75.000"], ["HU11", "40.300"]]
+JOIN = (
+    '<div class="jn5">'
+    '<div class="jn5__sus">'
+    + _mini("perechi", ["regiune", "sci"], _P)
+    + _mini("regiuni", ["regiune", "pib"], _R)
+    + "</div>"
+    '<div class="jn5__jos">'
+    + _mini("inner join · 2 rânduri", ["regiune", "sci", "pib"], [["RO11", "5", "28.300"], ["RO32", "7", "75.000"]], "jn5__t--r")
+    + _mini("left join · 3 rânduri", ["regiune", "sci", "pib"],
+            [["RO11", "5", "28.300"], ["RO32", "7", "75.000"], ["CH02", "3", "null"]], "jn5__t--r")
+    + _mini("outer join · 4 rânduri", ["regiune", "sci", "pib"],
+            [["RO11", "5", "28.300"], ["RO32", "7", "75.000"], ["CH02", "3", "null"], ["HU11", "null", "40.300"]], "jn5__t--r")
+    + "</div></div>")
+
+UNIRI = tabel(["Unirea", "Ce face", "pandas", "SQL"], [
+    ["una sub alta", "tabele cu aceleași coloane, rândurile se adună (C3)", "~pd.concat([a, b])", "~union all"],
+    ["după o cheie", "tabele diferite, cu o coloană comună; se adaugă coloane (C4)", "~a.merge(b, on=\"regiune\")", "~join ... on ..."],
+    ["inner", "doar rândurile găsite în ambele tabele", "~how=\"inner\"", "~inner join"],
+    ["left", "toate rândurile din stânga; lipsă unde nu se găsește", "~how=\"left\"", "~left join"],
+    ["outer", "toate rândurile din ambele tabele", "~how=\"outer\"", "~full outer join"],
+])
+
+V_JOIN = verif("c5-v-join", 1,
+               "Tabelul <code>sci</code> are 44.253 de perechi, iar fiecare regiune apare o singură dată în "
+               "<code>regiuni</code>. Câte rânduri dă <code>sci left join regiuni</code>?",
+               ["Mai puțin de 44.253, dacă unele regiuni lipsesc", "Exact 44.253",
+                "Mai mult de 44.253", "298, câte regiuni sunt"],
+               "<code>left join</code> păstrează toate rândurile din stânga, iar cheia din dreapta este unică, deci "
+               "fiecare pereche găsește cel mult un rând. Dacă cheia din dreapta s-ar repeta, rândurile s-ar înmulți.")
+
+sl("s7", "Integrarea", "Tipurile de join",
+   "<h2>Cum se unesc două tabele</h2>"
+   + JOIN,
+   manual=
+   "<h2>Cum se unesc două tabele</h2>"
+   "<p>Două tabele se unesc în două feluri. <code>concat</code> le pune unul sub altul, când au aceleași coloane: "
+   "s-a folosit în C3. <code>merge</code> le alătură după o cheie comună, adăugând coloane: s-a folosit în C4. "
+   "La unirea după cheie, tipul unirii hotărăște ce se întâmplă cu rândurile care nu își găsesc perechea.</p>"
+   + JOIN + UNIRI
+   + "<p>În exemplu, <code>CH02</code> nu are PIB în tabelul regiunilor, iar <code>HU11</code> nu apare în perechi. "
+     "<code>inner</code> le pierde pe amândouă, <code>left</code> o păstrează pe prima cu PIB lipsă, "
+     "<code>outer</code> le păstrează pe amândouă.</p>",
+   dupa=V_JOIN)
+
+
+JOIN_SQL = {
+    "id": "c5-cod-join",
+    "indiciu": "Unirea care păstrează toate perechile este cea din stânga. După tabel urmează condiția unirii, cu on. "
+               "Numărarea rândurilor: count(*).",
+    "iesire": "   perechi\n0    44253", "fisier": "curs/05_agregare_si_baze_de_date.ipynb",
+    "sarcina": "Lipește PIB-ul ambelor capete fiecărei perechi și numără rândurile rezultate.",
+    "cod": "pd.read_sql(\"\"\"\n"
+           "    select {{3}} as perechi\n"
+           "    from sci p\n"
+           "    {{1}} regiuni r1 {{2}} p.regiune_1 = r1.regiune\n"
+           "    left join regiuni r2 on p.regiune_2 = r2.regiune\n"
+           "    where p.regiune_1 < p.regiune_2\n"
+           "\"\"\", engine)",
+    "goluri": {
+        "1": {"ok": ["left join", "LEFT JOIN"], "ajutor": "unirea"},
+        "2": {"ok": ["on", "ON"], "ajutor": "condiția"},
+        "3": {"ok": ["count(*)", "COUNT(*)"], "ajutor": "numărarea"}},
+    "laBine": "Tot 44.253: niciun rând pierdut, niciunul înmulțit.",
+    "laRau": "Unirea păstrează toate perechile din stânga, iar condiția ei începe cu on.",
+    "explicatie": "Tabelul <code>regiuni</code> apare de două ori, cu două nume scurte: <code>r1</code> pentru capătul 1 "
+                  "și <code>r2</code> pentru capătul 2. <code>where p.regiune_1 &lt; p.regiune_2</code> păstrează o "
+                  "singură ordine a fiecărei perechi."}
+
+JM = (
+    '<div class="pd5">'
+    '<figure><figcaption>SQL, în bază</figcaption><pre>'
+    'select p.*, r1.pib_locuitor as pib_1\n'
+    'from sci p\n'
+    '<span class="k1">left join</span> regiuni r1\n'
+    '  <span class="k2">on</span> p.regiune_1 = r1.regiune</pre></figure>'
+    '<figure><figcaption>pandas, în caiet</figcaption><pre>'
+    'perechi.<span class="k1">merge</span>(\n'
+    '    atribute.add_suffix("_1"),\n'
+    '    <span class="k2">on</span>="regiune_1", <span class="k1">how="left"</span>)</pre></figure>'
+    "</div>")
+
+sl("s8", "Integrarea", "join și merge",
+   "<h2>join în SQL, merge în pandas</h2>"
+   "<p class=\"cheie\">Aceeași unire, în două limbaje. Regula din C4 rămâne: după fiecare unire, numărăm rândurile.</p>"
+   + ix("cod", "Unirea, numărată", JOIN_SQL),
+   manual=
+   "<h2>join în SQL, merge în pandas</h2>"
+   "<p><code>left join regiuni r1 on p.regiune_1 = r1.regiune</code> caută, pentru fiecare pereche, rândul din "
+   "<code>regiuni</code> cu același cod. Este exact ce face <code>merge</code> în pandas, cu <code>how=\"left\"</code>. "
+   "Culorile arată ce corespunde.</p>"
+   + JM
+   + ix("cod", "Unirea, numărată", JOIN_SQL)
+   + "<p>În caiet, aceeași unire se face și în pandas, cu toți cei șapte indicatori, iar tabelul rezultat, "
+     "<code>perechi_regiuni</code>, se scrie în bază. SQL lasă baza să facă munca și aduce doar ce se cere, ceea ce "
+     "contează când tabelele sunt mari sau stau pe un server; pandas este mai comod când urmează alți pași în Python. "
+     "În proiect, tabelele finale se fac o singură dată, într-un singur caiet; celelalte caiete doar le citesc.</p>")
+
+
+# ===========================================================================
+#  9-12. Agregarea
 # ===========================================================================
 
 TIP = D["tip"]
@@ -382,7 +550,8 @@ V_GRUP = verif("c5-v-grup", 1,
                "Perechile din aceeași țară sunt, în medie, mai apropiate, deci rezultatul amestecă granița cu distanța. "
                "La cursul 6, cele două se despart: comparația se face la aceeași distanță.")
 
-sl("s8", "Agregarea", "group by",
+
+sl("s9", "Agregarea", "group by",
    "<h2>De la 44.253 de rânduri la două</h2>"
    + ix("grupare", "group by, pas cu pas", GRUPARE),
    manual=
@@ -428,7 +597,7 @@ UNDE = {
            "# B\n"
            "m = pd.read_sql(\"select tara_1, avg(sci) from perechi_regiuni \"\n"
            "                \"group by tara_1\", engine)",
-    "intrebare": "Ambele variante dau aceeași medie pe țară. Câte rânduri se transferă prin rețea în fiecare caz?",
+    "intrebare": "Ambele variante dau aceeași medie pe țară. Câte rânduri ajung din bază în pandas în fiecare caz?",
     "variante": ["A: 44.253 · B: 44.253", "A: 44.253 · B: câte unul pe țară",
                  "A: câte unul pe țară · B: câte unul pe țară", "A: un rând · B: un rând"],
     "corect": 1,
@@ -437,7 +606,8 @@ UNDE = {
     "explicatie": "A aduce tot tabelul în memorie și abia apoi grupează. În B, baza grupează și trimite câte un rând pe țară.",
     "iesire": "A: 44.253 de rânduri aduse\nB: 37 de rânduri aduse"}
 
-sl("s9", "Agregarea", "Aceeași idee în pandas",
+
+sl("s10", "Agregarea", "Aceeași idee în pandas",
    "<h2>group by în SQL, groupby în pandas</h2>"
    + PANDAS + f'<div class="pd5__rez">{REZ_TARA}</div>',
    manual=
@@ -448,7 +618,7 @@ sl("s9", "Agregarea", "Aceeași idee în pandas",
    + "<p>Unele țări au o singură regiune NUTS2 (" + ", ".join(PT["o_regiune"]) + "): în comparațiile dintre regiuni, "
      "o astfel de regiune este de fapt o țară întreagă. <code>sum</code> ignoră valorile lipsă, dar o țară la care "
      "lipsesc toate valorile rămâne fără total.</p>"
-   + ix("prezice", "Ce se transferă prin rețea", UNDE))
+   + ix("prezice", "Ce se transferă de la bază", UNDE))
 
 
 LT = D["lt"]
@@ -468,7 +638,8 @@ V_MEDII = verif("c5-v-medii", 1,
                  "Care este capitala", "Nimic în plus"],
                 "Fiecare regiune cântărește cât populația ei. Înainte de orice agregare: ce reprezintă un rând?")
 
-sl("s10", "Agregarea", "Media pe țară",
+
+sl("s11", "Agregarea", "Media pe țară",
    "<h2>Media regiunilor nu este media țării</h2>"
    + ix("medii", "Lituania, două regiuni", MEDII),
    manual=
@@ -481,44 +652,54 @@ sl("s10", "Agregarea", "Media pe țară",
    dupa=V_MEDII)
 
 
-# ===========================================================================
-#  11-13. Echipa
-# ===========================================================================
+_IT = next(r for r in D["sql"]["randuri"] if r[0] == "IT" and r[1] == "RO")
+MIGR = (
+    '<div class="mg5">'
+    '<div class="mg5__t">Italia</div>'
+    '<div class="mg5__s">'
+    '<div class="mg5__a mg5__a--d"><b>1.073.196</b><span>români în Italia</span><i></i></div>'
+    '<div class="mg5__a mg5__a--s"><i></i><b>14.856</b><span>italieni în România</span></div>'
+    "</div>"
+    '<div class="mg5__t">România</div>'
+    "</div>"
+    '<div class="mg5__rez">'
+    f"<span><small>migranți, ambele sensuri</small><b>{nr(_IT[3])}</b></span>"
+    f"<span><small>SCI</small><b>{nr(_IT[2])}</b></span>"
+    f"<span><small>pasageri pe an</small><b>{nr(_IT[4])}</b></span>"
+    "</div>")
 
-ECHIPA = (
-    '<ol class="ec5">'
-    "<li><b>O bază pentru echipă</b>Un membru creează un proiect Neon pentru proiect, ca la pasul de la curs.</li>"
-    "<li><b>Adresa, pe Teams</b>Adresa se dă colegilor pe Teams, nu pe GitHub: conține parola.</li>"
-    "<li><b>În <code>dsw/.env</code></b>Fiecare pune adresa echipei în <code>.env</code>; "
-    "<code>git status</code> nu trebuie să arate <code>.env</code>.</li>"
-    "<li><b>Cine scrie, cine citește</b>Caietul de curățare și integrare încarcă tabelele cu <code>to_sql</code>; "
-    "celelalte citesc cu <code>pd.read_sql</code>.</li>"
-    "</ol>")
-
-sl("s11", "Echipa", "Baza proiectului",
-   "<h2>O singură bază pentru proiect</h2>"
-   "<p class=\"cheie\">Toată echipa lucrează pe aceleași date: cele din baza ei.</p>"
-   + ECHIPA,
+sl("s12", "Agregarea", "Perechile de țări",
+   "<h2>Migrația are direcție</h2>"
+   "<p class=\"cheie\">O pereche de țări primește migrația în ambele sensuri: o unire pentru fiecare sens, apoi suma.</p>"
+   + MIGR,
    manual=
-   "<h2>O singură bază pentru proiect</h2>"
-   "<p>Baza de la curs este a fiecăruia. Pentru proiect, echipa folosește una singură, ca toți să lucreze pe "
-   "aceleași date.</p>"
-   + ECHIPA
-   + nota("În depozit", "<code>.gitignore</code> din depozitul echipei conține <code>.env</code>. Verificarea: "
-                        "<code>git status</code> nu trebuie să arate fișierul în listă."))
+   "<h2>Migrația are direcție</h2>"
+   "<p>Al treilea tabel de analiză are câte un rând pe pereche de țări: SCI, migrația și zborurile. Migrația are "
+   "direcție: românii din Italia nu sunt același lucru cu italienii din România. Tabelul migrației se unește de "
+   "două ori, câte o dată pentru fiecare sens, cu coloanele redenumite ca să se potrivească cu cheile perechii; "
+   "apoi cele două sensuri se adună. Dacă un sens lipsește, suma rămâne lipsă.</p>"
+   + MIGR
+   + "<p>Înainte de unire, încă o agregare: nu toate țările raportează la Eurostat migranții pe fiecare cetățenie. "
+     "Se numără, pentru fiecare țară de rezidență, câte cetățenii au o valoare (<code>count</code> numără doar "
+     "valorile prezente), iar perechile se păstrează doar pentru țările care raportează cel puțin 20. Rămân "
+     f"{T['perechi_tari']} de perechi de țări.</p>")
 
+
+# ===========================================================================
+#  13-14. Verificarea și echipa
+# ===========================================================================
 
 DOVADA = {
     "id": "c5-dovada-baza",
-    "sarcina": "Trei interogări din caiet, rulate pe baza proprie. Ieșirea fiecăreia se lipește în câmpul ei.",
-    "indiciu": "Celulele se rulează în caietul 05, după conectare (secțiunea 1) și după încărcarea tabelelor (secțiunea 2).",
+    "sarcina": "Trei interogări din caiet, rulate pe baza proprie, <code>data/dsw.db</code>. Ieșirea fiecăreia se lipește în câmpul ei.",
+    "indiciu": "Celulele se rulează la finalul caietului 05, după ce toate tabelele sunt în bază.",
     "pasi": [
         {"t": "Tabelele din bază",
-         "cmd": "pd.read_sql(\"select table_name from information_schema.tables where table_schema = 'public'\", engine)",
+         "cmd": "pd.read_sql(\"select name from sqlite_master where type = 'table'\", engine)",
          "gol": "lista afișată",
          "cauta": r"^(?=[\s\S]*perechi_regiuni)(?=[\s\S]*perechi_tari)(?=[\s\S]*\bregiuni\b)",
-         "ind": "Trei rânduri, în orice ordine: <code>regiuni</code>, <code>perechi_regiuni</code>, <code>perechi_tari</code>.",
-         "daca_nu": "Lipsește un tabel: celula cu to_sql din secțiunea 2 trebuie rulată din nou."},
+         "ind": "Printre tabele, în orice ordine: <code>regiuni</code>, <code>perechi_regiuni</code>, <code>perechi_tari</code>.",
+         "daca_nu": "Lipsește un tabel: celulele cu to_sql din caiet trebuie rulate din nou."},
         {"t": "Un rând pe țară",
          "cmd": "pd.read_sql(\"select tara, count(*) as regiuni from regiuni group by tara\", engine).shape",
          "gol": "(rânduri, coloane)",
@@ -531,13 +712,14 @@ DOVADA = {
          "gol": "tabelul afișat",
          "cauta": r"aceeasi tara\s+2385",
          "ind": "Două rânduri; cel cu <code>aceeasi tara</code> are 2385 de perechi.",
-         "daca_nu": "Rândul aceeasi tara trebuie să aibă 2385 de perechi. Altfel, tabelul perechi_regiuni nu este cel din C4."},
+         "daca_nu": "Rândul aceeasi tara trebuie să aibă 2385 de perechi. Altfel, tabelul perechi_regiuni nu este cel din caiet."},
     ],
     "explicatie": "Cele trei tabele sunt în bază, iar agregarea dă aceleași rezultate ca în caiet. La cursul 6, "
                   "caietul citește direct de aici, cu <code>pd.read_sql</code>.",
 }
 
-sl("s12", "Echipa", "Verificarea bazei",
+
+sl("s13", "Echipa", "Verificarea bazei",
    "<h2>Verificarea bazei</h2>"
    + ix("dovada", "Verificarea bazei", DOVADA),
    manual=
@@ -547,38 +729,43 @@ sl("s12", "Echipa", "Verificarea bazei",
    + ix("dovada", "Verificarea bazei", DOVADA))
 
 
-sl("s13", "Echipa", "Interogarea echipei",
-   "<h2>O întrebare despre coridor, cu group by</h2>"
-   + ix("asteptari", "Interogarea echipei", {
-       "id": "c5-interogare", "tip": "interogare", "minim": 60,
-       "sarcina": "Interogarea echipei despre coridorul ei, cu <code>group by</code>, și ce arată rezultatul.",
-       "exemplu": "De exemplu: perechile de regiuni dintre Italia și România (<code>tara_1 in ('IT', 'RO')</code>, "
-                  "<code>tara_1 &lt;&gt; tara_2</code>), grupate după cele două țări: câte perechi și SCI-ul lor mediu.",
-       "multumesc": "Interogarea a fost înregistrată. Feedbackul vine înainte de cursul următor."}))
+ECHIPA = (
+    '<ol class="ec5">'
+    "<li><b>Un fișier în depozit</b>Baza echipei este <code>data/processed/proiect.db</code>.</li>"
+    "<li><b>Un singur caiet scrie</b>Caietul 03 creează baza și încarcă tabelele finale cu <code>to_sql</code>.</li>"
+    "<li><b>Ceilalți citesc</b>Caietele 04 și 05 citesc cu <code>pd.read_sql</code>, după <code>git pull</code>.</li>"
+    "<li><b>Adresa, din notebooks/</b><code>../data/processed/proiect.db</code>, un nivel mai sus.</li>"
+    "</ol>")
 
-
-sl("s14", "Mai departe", "Pentru cursul următor",
-   "<h2>La cursul 6: analiza exploratorie</h2>"
-   '<div class="fin3"><div class="fin3__g">'
-   "<section><h4>Ce urmează la cursul 6</h4><ul>"
+sl("s14", "Mai departe", "Baza echipei, cursul 6",
+   "<h2>Baza echipei și cursul 6</h2>"
+   + ECHIPA
+   + '<div class="fin3"><div class="fin3__g">'
+   "<section><h4>La cursul 6</h4><ul>"
    "<li>Patru ipoteze din literatură: distanța, granița, economia, migrația.</li>"
-   "<li>Cum arată o pereche obișnuită: distribuția SCI și scara logaritmică.</li>"
+   "<li>Distribuția SCI și scara logaritmică.</li>"
    "<li>Aceleași perechi, privite ca rețea.</li></ul></section>"
-   "<section><h4>Pregătirea pentru cursul 6</h4><ul>"
-   "<li>Baza echipei pe Neon, cu cele trei tabele.</li>"
-   "<li>Adresa în <code>dsw/.env</code> la fiecare membru, nu pe GitHub.</li>"
-   "<li>Interogarea echipei despre coridor, cu <code>group by</code>.</li></ul></section>"
-   "</div>"
-   '<p class="fin3__a"><a class="leg" href="../">Pagina cursului 5</a></p></div>',
+   "<section><h4>Pregătirea</h4><ul>"
+   "<li>Caietul 05 rulat: <code>curs/data/dsw.db</code> cu tabelele lecției.</li>"
+   "<li>Baza echipei, scrisă de caietul 03, pe GitHub.</li></ul></section>"
+   "</div></div>",
    manual=
-   "<h2>Cursul 6: analiza exploratorie</h2>"
-   "<p>Cu tabelele în bază, lecția următoare le examinează: ce tipare apar și ce explicații merită verificate, "
-   "pornind de la ipoteze din literatură.</p>"
+   "<h2>Baza echipei și cursul 6</h2>"
+   "<p>Baza de la seminar este a fiecăruia, pe calculatorul lui. Pentru proiect, echipa folosește una singură, ca "
+   "toți să lucreze pe aceleași date: un fișier SQLite din depozit.</p>"
+   + ECHIPA
+   + nota("Un singur scriitor", "Git nu poate uni două versiuni diferite ale aceluiași fișier de bază de date. "
+                                "De aceea baza o scrie un singur caiet; celelalte doar o citesc.")
+   + "<p>Cu tabelele în bază, lecția următoare le examinează: ce tipare apar și ce explicații merită verificate, "
+     "pornind de la ipoteze din literatură.</p>"
    + surse("Documentația", [
-       ("Neon: conectarea din Python", "https://neon.tech/docs/guides/python", "adresa, SQLAlchemy, psycopg"),
+       ("SQLite: când se folosește", "https://sqlite.org/whentouse.html", "baza într-un fișier, față de bazele cu server"),
+       ("SQLAlchemy: create_engine", "https://docs.sqlalchemy.org/en/21/core/engines.html", "adresele bazelor de date"),
        ("pandas: read_sql și to_sql", "https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html", "citirea și scrierea tabelelor"),
-       ("PostgreSQL: select", "https://www.postgresql.org/docs/current/sql-select.html", "<code>where</code>, <code>group by</code>, <code>order by</code>"),
+       ("pandas: merge", "https://pandas.pydata.org/docs/user_guide/merging.html", "<code>concat</code>, <code>merge</code>, tipurile de unire"),
        ("pandas: groupby", "https://pandas.pydata.org/docs/user_guide/groupby.html", "gruparea și <code>agg</code>"),
+       ("CS50 SQL", "https://cs50.harvard.edu/sql/", "curs deschis: interogări, legături, agregare, pe SQLite"),
+       ("Neon: conectarea cu SQLAlchemy", "https://neon.com/docs/guides/sqlalchemy", "PostgreSQL în cloud"),
    ]))
 
 

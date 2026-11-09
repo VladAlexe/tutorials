@@ -6,6 +6,7 @@
 //   1. creează repo-ul privat echipa-N în organizație, din șablon, dacă lipsește;
 //   2. trimite invitație (drept de scriere) fiecărui membru cu cont GitHub legat;
 //   3. scoate accesul celor care nu mai sunt în echipă (colaboratori și invitații).
+//   Invitațiile expirate (după 7 zile) se șterg și se trimit din nou.
 // Se poate apăsa oricând: ce e deja făcut nu se refaci.
 //
 // Siguranță:
@@ -64,7 +65,7 @@ Deno.serve(async (req) => {
     for (const e of d.echipe) {
       if (!e.membri.length) continue;
       const repo = `echipa-${e.nr}`;
-      const r = { repo, creat: false, invitati: [] as string[], scosi: [] as string[], fara_cont: [] as string[], eroare: "" };
+      const r = { repo, creat: false, invitati: [] as string[], reinvitati: [] as string[], scosi: [] as string[], fara_cont: [] as string[], eroare: "" };
       rezultat.push(r);
 
       // 1. repo-ul, din șablon, dacă nu există
@@ -84,7 +85,15 @@ Deno.serve(async (req) => {
 
       // cine are acces acum: colaboratori direcți și invitații în așteptare
       const colab = await (await gh(`/repos/${ORG}/${repo}/collaborators?affiliation=direct&per_page=100`)).json();
-      const invit = await (await gh(`/repos/${ORG}/${repo}/invitations?per_page=100`)).json();
+      let invit = await (await gh(`/repos/${ORG}/${repo}/invitations?per_page=100`)).json();
+
+      // invitațiile expirate (GitHub le anulează după 7 zile) se șterg, ca membrul să primească una nouă
+      if (Array.isArray(invit)) {
+        for (const i of invit.filter((i: any) => i.expired)) {
+          if ((await gh(`/repos/${ORG}/${repo}/invitations/${i.id}`, "DELETE")).ok && i.invitee?.login) r.reinvitati.push(i.invitee.login);
+        }
+        invit = invit.filter((i: any) => !i.expired);
+      }
       const auAcces = new Set<string>([
         ...(Array.isArray(colab) ? colab.map((c: any) => c.login.toLowerCase()) : []),
         ...(Array.isArray(invit) ? invit.map((i: any) => i.invitee?.login?.toLowerCase()).filter(Boolean) : []),

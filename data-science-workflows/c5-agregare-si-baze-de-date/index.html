@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 5. Agregare și baze de date · Fluxuri de lucru</title>
-<meta name="description" content="Integrarea surselor în perechi de regiuni și de țări, tabelele ca entități cu chei într-o bază de date pe Neon, unirea și agregarea, în SQL și în pandas.">
+<meta name="description" content="Baza de date SQLite a cursului, legată de pandas prin SQLAlchemy; unde mai poate sta o bază (server, cloud); unirea tabelelor și agregarea, în SQL și în pandas.">
 <link rel="stylesheet" href="../css/fonturi.css?v=140">
 <link rel="stylesheet" href="../css/sistem.css?v=140">
 <link rel="stylesheet" href="../css/intrare.css?v=140">
@@ -42,18 +42,18 @@
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Până acum datele au stat în fișiere CSV, câte o copie pe fiecare calculator. Lecția le mută într-o bază de date PostgreSQL, găzduită de Neon: un singur loc, la care se conectează toată echipa, interogat cu SQL. Motivul nu este volumul datelor, ci colaborarea: cinci copii ale aceluiași tabel ajung repede cinci tabele diferite.</p>
-<p>A doua parte tratează agregarea: trecerea de la multe rânduri la puține, un rezumat pe grup. Se face în SQL, cu <code>group by</code>, și în pandas, cu <code>groupby</code>, pentru că este aceeași idee. Un singur exemplu leagă lecția de cea următoare: perechile de regiuni din aceeași țară au un SCI mediu de 43 de ori mai mare decât celelalte.</p></div>
+    <div class="sec__corp"><p>Până acum datele au stat în fișiere CSV, câte o copie pe fiecare calculator. Lecția le mută într-o bază de date: un singur loc, interogat cu SQL. Baza cursului este SQLite, un singur fișier, fără server, cont sau parolă; aceleași interogări merg și pe o bază cu server, de exemplu PostgreSQL în cloud, pe Neon. Motivul nu este volumul datelor, ci ordinea: cinci copii ale aceluiași tabel ajung repede cinci tabele diferite.</p>
+<p>Tabelele se unesc apoi în perechi de regiuni și de țări (<code>join</code> în SQL, <code>merge</code> în pandas) și se rezumă: de la multe rânduri la puține, un rezumat pe grup (<code>group by</code> și <code>groupby</code>). Un singur exemplu leagă lecția de cea următoare: perechile de regiuni din aceeași țară au un SCI mediu de 43 de ori mai mare decât celelalte.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Motivul pentru care o echipă are nevoie de o bază de date și de ce volumul datelor nu este criteriul.</li>
-<li>Conectarea la Neon din Python, cu adresa citită din <code>.env</code>, fără ca parola să apară în cod sau pe GitHub.</li>
-<li>Încărcarea tabelelor cu <code>to_sql</code> și citirea rezultatelor cu <code>read_sql</code>.</li>
+<li>Motivul pentru care datele unui proiect stau într-o bază de date și de ce volumul datelor nu este criteriul.</li>
+<li>Unde poate sta o bază: într-un fișier (SQLite), pe un server (PostgreSQL, MySQL) sau în cloud (Neon).</li>
+<li>Conectarea cu SQLAlchemy, încărcarea tabelelor cu <code>to_sql</code> și citirea rezultatelor cu <code>read_sql</code>.</li>
 <li>O interogare cu <code>select</code>, <code>from</code>, <code>where</code>, <code>order by</code> și <code>limit</code>, citită în ordinea în care o execută baza.</li>
-<li>Agregarea cu <code>group by</code> și cu <code>groupby</code>, și alegerea dintre SQL și pandas.</li>
-<li>Diferența dintre media regiunilor și media țării.</li>
+<li>Tipurile de unire (inner, left, outer) și regula numărării rândurilor după fiecare unire.</li>
+<li>Agregarea cu <code>group by</code> și cu <code>groupby</code>, și diferența dintre media regiunilor și media țării.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -84,24 +84,21 @@
   <section class="sec sec--nevoie">
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><ol>
-<li>Cele trei tabele din C4, în <code>dsw/curs/data/processed</code>: <code>regiuni_nuts2.csv</code>, <code>perechi_regiuni.csv</code>, <code>perechi_tari.csv</code>.</li>
-<li>Un cont pe <a class="leg" href="https://neon.tech/" rel="noopener" target="_blank">Neon</a>, făcut cu contul GitHub. Planul gratuit este suficient.</li>
-<li>Pachetele din <code>requirements.txt</code>: <code>pip install -r requirements.txt</code> (printre ele <code>sqlalchemy</code>, <code>psycopg</code>, <code>python-dotenv</code>).</li>
-<li>Fișierul <code>dsw/.env</code>, copiat din <code>.env.exemplu</code>, cu adresa bazei.</li>
+<li>Tabelele din C3 și C4; caietul le citește direct din depozitul cursului.</li>
+<li>Pachetul <code>sqlalchemy</code>, din <code>requirements.txt</code>. SQLite face parte din Python: nu se instalează nimic în plus.</li>
 </ol></div>
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Baza echipei pe Neon, cu tabelele proiectului, încărcate de caietul de curățare și integrare.</li>
-<li>Adresa bazei în <code>dsw/.env</code> la fiecare membru, dată pe Teams, nu pe GitHub.</li>
-<li>O interogare cu <code>group by</code> despre coridorul echipei.</li>
+<li>Baza echipei, <code>data/processed/proiect.db</code>, scrisă de caietul 03 cu <code>to_sql</code>.</li>
+<li>Caietele 04 și 05 citesc din ea cu <code>pd.read_sql</code>; doar caietul 03 scrie în bază.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
     <div class="leg-lista">
-      <a href="https://neon.tech/docs/guides/python" target="_blank" rel="noopener"><span>Neon și Python</span><small>docs</small></a>
+      <a href="https://sqlite.org/whentouse.html" target="_blank" rel="noopener"><span>Când se folosește SQLite</span><small>docs</small></a>
       <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html" target="_blank" rel="noopener"><span>read_sql</span><small>pandas</small></a>
       <a href="https://pandas.pydata.org/docs/user_guide/groupby.html" target="_blank" rel="noopener"><span>groupby</span><small>pandas</small></a>
       <a href="https://www.postgresql.org/docs/current/sql-select.html" target="_blank" rel="noopener"><span>select</span><small>PostgreSQL</small></a>

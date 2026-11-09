@@ -796,7 +796,7 @@ sl("s16", "Mai departe", "Pentru cursul următor",
    "<li>Unirea și agregarea, în SQL și în pandas.</li></ul></section>"
    "<section><h4>Pregătirea pentru cursul 5</h4><ul>"
    "<li>Contul pe GitHub și depozitul echipei clonat în <code>dsw/proiect</code>.</li>"
-   "<li>Un cont pe Neon, pentru baza de date.</li></ul></section>"
+   "<li>Caietul 05, descărcat în <code>dsw/curs/</code>.</li></ul></section>"
    "</div></div>"
    + surse("Documentația curățării", [
        ("pandas: 10 minutes to pandas", "https://pandas.pydata.org/docs/user_guide/10min.html",

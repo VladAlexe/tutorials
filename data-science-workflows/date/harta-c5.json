@@ -1,18 +1,18 @@
 {
  "capitol": "c5",
- "total": 14,
- "sarcini": 8,
+ "total": 15,
+ "sarcini": 9,
  "slide": [
   {
    "nr": 1,
-   "id": "s1",
+   "id": "s0",
    "grup": "Cursul",
-   "titlu": "Planul lecției",
+   "titlu": "Unde suntem",
    "sarcini": []
   },
   {
    "nr": 2,
-   "id": "s2",
+   "id": "s1",
    "grup": "Baza de date",
    "titlu": "De ce o bază",
    "sarcini": [
@@ -32,16 +32,16 @@
   },
   {
    "nr": 3,
-   "id": "s3",
+   "id": "s2",
    "grup": "Baza de date",
-   "titlu": "Neon",
+   "titlu": "Unde stă o bază",
    "sarcini": []
   },
   {
    "nr": 4,
-   "id": "s4",
+   "id": "s3",
    "grup": "Baza de date",
-   "titlu": "Adresa, în .env",
+   "titlu": "O adresă, orice bază",
    "sarcini": [
     {
      "id": "c5-cod-conectare",
@@ -51,7 +51,7 @@
   },
   {
    "nr": 5,
-   "id": "s5",
+   "id": "s4",
    "grup": "Baza de date",
    "titlu": "Tabelele, în bază",
    "sarcini": [
@@ -63,14 +63,14 @@
   },
   {
    "nr": 6,
-   "id": "s6",
+   "id": "s5",
    "grup": "SQL",
    "titlu": "O interogare",
    "sarcini": []
   },
   {
    "nr": 7,
-   "id": "s7",
+   "id": "s6",
    "grup": "SQL",
    "titlu": "Interogarea, scrisă",
    "sarcini": [
@@ -82,7 +82,39 @@
   },
   {
    "nr": 8,
+   "id": "s7",
+   "grup": "Integrarea",
+   "titlu": "Tipurile de join",
+   "sarcini": [
+    {
+     "id": "c5-v-join",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Tabelul sci are 44.253 de perechi, iar fiecare regiune apare o singură dată în regiuni. Câte rânduri dă sci left join regiuni?",
+     "optiuni": [
+      "Mai puțin de 44.253, dacă unele regiuni lipsesc",
+      "Exact 44.253",
+      "Mai mult de 44.253",
+      "298, câte regiuni sunt"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 9,
    "id": "s8",
+   "grup": "Integrarea",
+   "titlu": "join și merge",
+   "sarcini": [
+    {
+     "id": "c5-cod-join",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 10,
+   "id": "s9",
    "grup": "Agregarea",
    "titlu": "group by",
    "sarcini": [
@@ -101,15 +133,15 @@
    ]
   },
   {
-   "nr": 9,
-   "id": "s9",
+   "nr": 11,
+   "id": "s10",
    "grup": "Agregarea",
    "titlu": "Aceeași idee în pandas",
    "sarcini": []
   },
   {
-   "nr": 10,
-   "id": "s10",
+   "nr": 12,
+   "id": "s11",
    "grup": "Agregarea",
    "titlu": "Media pe țară",
    "sarcini": [
@@ -128,15 +160,15 @@
    ]
   },
   {
-   "nr": 11,
-   "id": "s11",
-   "grup": "Echipa",
-   "titlu": "Baza proiectului",
+   "nr": 13,
+   "id": "s12",
+   "grup": "Agregarea",
+   "titlu": "Perechile de țări",
    "sarcini": []
   },
   {
-   "nr": 12,
-   "id": "s12",
+   "nr": 14,
+   "id": "s13",
    "grup": "Echipa",
    "titlu": "Verificarea bazei",
    "sarcini": [
@@ -147,22 +179,10 @@
    ]
   },
   {
-   "nr": 13,
-   "id": "s13",
-   "grup": "Echipa",
-   "titlu": "Interogarea echipei",
-   "sarcini": [
-    {
-     "id": "c5-interogare",
-     "fel": "text"
-    }
-   ]
-  },
-  {
-   "nr": 14,
+   "nr": 15,
    "id": "s14",
    "grup": "Mai departe",
-   "titlu": "Pentru cursul următor",
+   "titlu": "Baza echipei, cursul 6",
    "sarcini": []
   }
  ]

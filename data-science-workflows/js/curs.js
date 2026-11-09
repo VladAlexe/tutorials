@@ -57,8 +57,8 @@ export const LECTII = [
   { nr:5, cheie:"c5-agregare-si-baze-de-date",
     titlu:"Agregare și baze de date",
     scurt:"Agregare",
-    rezumat:"Integrarea surselor în perechi, baza de date a echipei pe Neon, unirea și agregarea, în SQL și în pandas.",
-    stare:"gata", sarcini:8,
+    rezumat:"Baza de date a cursului (SQLite), unde mai poate sta o bază, unirea tabelelor și agregarea, în SQL și în pandas.",
+    stare:"gata", sarcini:9,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/05_agregare_si_baze_de_date.ipynb" },
 
   { nr:6, cheie:"c6-analiza-exploratorie",
