@@ -58,7 +58,7 @@ export const LECTII = [
     titlu:"Agregare și baze de date",
     scurt:"Agregare",
     rezumat:"Baza de date a cursului (SQLite), unde mai poate sta o bază, unirea tabelelor și agregarea, în SQL și în pandas.",
-    stare:"gata", sarcini:9,
+    stare:"gata", sarcini:4,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/05_agregare_si_baze_de_date.ipynb" },
 
   { nr:6, cheie:"c6-analiza-exploratorie",

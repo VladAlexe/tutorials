@@ -84,30 +84,28 @@ def _ic_pc():
     return ('<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
             '<rect x="2.5" y="3" width="11" height="7.5" rx="1"/><path d="M1 13h14"/></svg>')
 
+def _ic_om():
+    return ('<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
+            '<circle cx="8" cy="5.5" r="2.6"/><path d="M3 14c.6-2.8 2.6-4.3 5-4.3s4.4 1.5 5 4.3"/></svg>')
+
+_FIS = [("perechi_tari.csv", ""), ("perechi_tari_v2.csv", ""), ("perechi_tari_final.csv", ""),
+        ("perechi_tari (1).csv", "rau"), ("perechi_tari_FINAL2.csv", "rau")]
 COPII = (
-    '<div class="cp5">'
-    '<div class="cp5__p"><h4>Cu fișiere<span>câte o copie pe fiecare calculator</span></h4><ul class="cp5__l">'
-    + "".join(f'<li class="{c}">{_ic_pc()}{n}<code>{f}</code></li>' for n, f, c in [
-        ("Andrei", "perechi_tari.csv", ""), ("Maria", "perechi_tari_v2.csv", ""),
-        ("Ioana", "perechi_tari_final.csv", ""), ("Radu", "perechi_tari (1).csv", "rau"),
-        ("Elena", "perechi_tari_FINAL2.csv", "rau")])
-    + "</ul></div>"
-    '<div class="cp5__p"><h4>Cu o bază de date<span>un singur loc, pentru toți</span></h4>'
-    '<div class="cp5__baza"><div class="cp5__cil">dsw.db<small>o bază de date</small></div><ul class="cp5__l">'
-    + "".join(f'<li>{_ic_pc()}{n}<code>pd.read_sql(...)</code></li>' for n in ["Andrei", "Maria", "Ioana", "Radu", "Elena"])
-    + "</ul></div></div>"
-    '<p class="cp5__nota">Cinci copii ale aceluiași tabel ajung, în câteva săptămâni, cinci tabele diferite. '
-    "O bază are o singură versiune, iar fiecare citește din ea.</p></div>")
-
-V1 = verif("c5-v1", 1,
-           "O echipă de cinci are un tabel de 44.253 de rânduri. Care este cel mai bun argument pentru o bază de date?",
-           ["44.253 de rânduri sunt prea multe pentru pandas",
-            "Cinci persoane au nevoie de o singură copie a datelor, nu de cinci",
-            "Bazele de date sunt mai rapide",
-            "Este practica obișnuită în industrie"],
-           "Pandas lucrează ușor cu sute de mii de rânduri. Problema sunt cinci copii ale aceluiași fișier, "
-           "modificate de cinci persoane.")
-
+    '<div class="cc5">'
+    '<div class="cc5__p">'
+    '<h4>Cinci fișiere</h4>'
+    '<div class="cc5__fis">'
+    + "".join(f'<span class="cc5__f {c}" style="--r:{(i - 2) * 2.5}deg">{_ic_fis()}<code>{n}</code></span>'
+              for i, (n, c) in enumerate(_FIS))
+    + '</div><p class="cc5__jos cc5__jos--rau">Care este versiunea bună?</p></div>'
+    '<div class="cc5__sag" aria-hidden="true"></div>'
+    '<div class="cc5__p cc5__p--b">'
+    '<h4>O bază de date</h4>'
+    '<div class="cc5__baza">'
+    '<div class="cc5__oameni">' + "".join(f'<span>{_ic_om()}</span>' for _ in range(5)) + '</div>'
+    '<div class="cc5__cil"><b>dsw.db</b></div>'
+    '</div><p class="cc5__jos">Toți citesc același tabel.</p></div>'
+    "</div>")
 
 sl("s1", "Baza de date", "De ce o bază",
    "<h2>Cinci copii sau un singur loc</h2>"
@@ -116,10 +114,9 @@ sl("s1", "Baza de date", "De ce o bază",
    "<h2>Cinci copii sau un singur loc</h2>"
    "<p>Întrebarea „de la câte rânduri este nevoie de o bază de date” este formulată greșit: dimensiunea "
    "este rareori motivul. Pandas lucrează fără dificultate cu milioane de rânduri, iar datele proiectului "
-   "sunt mult sub acest volum. Motivul real este ordinea: toate tabelele într-un singur loc, cu o singură "
-   "versiune, din care citește oricine lucrează pe date.</p>"
-   + COPII,
-   dupa=V1)
+   "sunt mult sub acest volum. Motivul real este ordinea: cinci copii ale aceluiași tabel ajung, în câteva "
+   "săptămâni, cinci tabele diferite. O bază are o singură versiune, din care citește oricine lucrează pe date.</p>"
+   + COPII)
 
 
 def _carte(cls, et, titlu, sub, adr, puncte):
@@ -214,30 +211,30 @@ ADRESE = (
         ("/neondb", "baza", "", "roza")])
     + "</div>")
 
-CONECTARE = {
-    "id": "c5-cod-conectare",
-    "indiciu": "Funcția care face conexiunea se importă din sqlalchemy. Felul bazei este numele ei, scris mic. "
-               "Citirea unei interogări în pandas: read + sql.",
-    "iesire": "   conexiunea\n0           1", "fisier": "curs/05_agregare_si_baze_de_date.ipynb",
-    "sarcina": "Ce lipsește ca un caiet din <code>curs/</code> să se conecteze la baza <code>data/dsw.db</code>?",
-    "cod": "import pandas as pd\n"
-           "from sqlalchemy import {{1}}\n\n"
-           "engine = create_engine(\"{{2}}:///data/dsw.db\")   # baza: un fișier\n"
-           "pd.{{3}}(\"select 1 as conexiunea\", engine)",
-    "goluri": {
-        "1": {"ok": ["create_engine"], "ajutor": "funcția"},
-        "2": {"ok": ["sqlite"], "ajutor": "felul bazei"},
-        "3": {"ok": ["read_sql", "read_sql_query"], "ajutor": "funcția"}},
-    "laBine": "Fișierul nu există încă: SQLite îl creează la prima scriere.",
-    "laRau": "Adresa începe cu felul bazei: sqlite, scris mic.",
-    "explicatie": "Pentru o bază PostgreSQL, de exemplu pe Neon, se schimbă doar textul adresei. Adresa aceea conține "
-                  "parola, deci stă într-un fișier <code>.env</code>, nu în caiet și nu pe GitHub."}
+def cod_explicat(linii, note):
+    """Cod scurt cu numere pe rânduri și explicațiile alături; nu este exercițiu."""
+    cod = "\n".join(linii)
+    li = "".join(f'<li><span class="ce5__n">{i}</span><span>{t}</span></li>' for i, t in enumerate(note, 1))
+    return f'<div class="ce5"><pre class="ce5__cod"><code>{cod}</code></pre><ol class="ce5__note">{li}</ol></div>'
+
+def _n(i):
+    return f'<span class="ce5__n">{i}</span>'
+
+COD_CONECTARE = cod_explicat(
+    ['import pandas as pd',
+     f'from sqlalchemy import create_engine              {_n(1)}',
+     '',
+     f'engine = create_engine("sqlite:///data/dsw.db")   {_n(2)}',
+     f'pd.read_sql("select 1 as conexiunea", engine)     {_n(3)}'],
+    ["SQLAlchemy face legătura dintre pandas și orice bază de date.",
+     "Adresa bazei: aici, un fișier din <code>curs/data/</code>, creat la prima scriere.",
+     "O interogare de probă: dacă răspunsul este 1, legătura funcționează."])
 
 sl("s3", "Baza de date", "O adresă, orice bază",
    "<h2>O adresă, orice bază</h2>"
    "<p class=\"cheie\">SQLAlchemy leagă pandas de bază printr-o adresă. Se schimbă adresa, codul rămâne același.</p>"
    + ADRESE
-   + ix("cod", "Conectarea", CONECTARE),
+   + COD_CONECTARE,
    manual=
    "<h2>O adresă, orice bază</h2>"
    "<p><code>create_engine</code>, din SQLAlchemy, primește adresa bazei și întoarce o conexiune, numită de obicei "
@@ -247,10 +244,10 @@ sl("s3", "Baza de date", "O adresă, orice bază",
    "înseamnă fișierul <code>dsw.db</code> din <code>curs/data/</code>. Pentru o bază pe un server, adresa conține "
    "utilizatorul, parola și serverul:</p>"
    + ADRESE
+   + COD_CONECTARE
    + "<p>O adresă cu parolă nu se scrie niciodată în caiet: se pune într-un fișier <code>.env</code>, exclus din Git "
      "prin <code>.gitignore</code>, și se citește cu <code>python-dotenv</code>. Baza SQLite a cursului nu are parolă, "
-     "deci acest pas nu este necesar.</p>"
-   + ix("cod", "Conectarea", CONECTARE))
+     "deci acest pas nu este necesar.</p>")
 
 
 def _ic_tab():
@@ -270,26 +267,18 @@ TABELE_BAZA = (
         ("zboruri", "o pereche de țări · <code>tara_1, tara_2</code>")])
     + "</div></div>")
 
-TOSQL = {
-    "id": "c5-cod-tosql",
-    "indiciu": "Dacă tabelul există deja, este înlocuit: „replace”, între ghilimele. Citirea din bază se face cu read_sql.",
-    "iesire": "     n\n0  298", "fisier": "curs/05_agregare_si_baze_de_date.ipynb",
-    "sarcina": "Ce lipsește ca celula să poată fi rulată de mai multe ori, iar verificarea să citească din bază?",
-    "cod": "regiuni = pd.read_csv(DATE + \"regiuni_nuts2.csv\")\n"
-           "regiuni.to_sql(\"regiuni\", engine, if_exists={{1}}, index=False)\n\n"
-           "pd.{{2}}(\"select count(*) as n from regiuni\", engine)",
-    "goluri": {
-        "1": {"ok": ["\"replace\"", "'replace'"], "ajutor": "dacă tabelul există"},
-        "2": {"ok": ["read_sql", "read_sql_query"], "ajutor": "funcția"}},
-    "laBine": "298 de rânduri au plecat, 298 sunt în bază.",
-    "laRau": "Primul gol este un text, între ghilimele.",
-    "explicatie": "<code>\"replace\"</code> șterge tabelul și îl scrie din nou, deci celula se poate rula oricând. "
-                  "<code>index=False</code> nu scrie indexul pandas ca o coloană în plus."}
+COD_TOSQL = cod_explicat(
+    ['regiuni = pd.read_csv(DATE + "regiuni_nuts2.csv")',
+     f'regiuni.to_sql("regiuni", engine, if_exists="replace", index=False)   {_n(1)}',
+     f'pd.read_sql("select count(*) as n from regiuni", engine)            {_n(2)}'],
+    ["Scrie tabelul în bază, cu numele <code>regiuni</code>; <code>\"replace\"</code> îl înlocuiește dacă există, "
+     "deci celula se poate rula din nou.",
+     "Verificarea: 298 de rânduri au plecat, 298 sunt în bază."])
 
 sl("s4", "Baza de date", "Tabelele, în bază",
    "<h2>Patru tabele, patru entități</h2>"
    + TABELE_BAZA
-   + ix("cod", "Încărcarea", TOSQL),
+   + COD_TOSQL,
    manual=
    "<h2>Patru tabele, patru entități</h2>"
    "<p>O bază relațională ține fiecare lucru despre care există date, o <b>entitate</b>, într-un tabel separat. "
@@ -297,16 +286,14 @@ sl("s4", "Baza de date", "Tabelele, în bază",
    "comune: <code>regiune_1</code> din <code>sci</code> arată spre <code>regiune</code> din <code>regiuni</code>.</p>"
    + TABELE_BAZA
    + "<p>Tabelele se citesc din depozitul cursului, ca toți să aibă aceleași date, și se încarcă cu <code>to_sql</code>. "
-     "Fișierele din <code>data/processed</code> rămân sursa; baza este locul din care se citește de acum înainte.</p>"
-   + ix("cod", "Încărcarea", TOSQL)
+     "Fișierele din <code>data/processed</code> rămân sursa; baza este locul din care se citește de acum înainte. "
+     "<code>index=False</code> nu scrie indexul pandas ca o coloană în plus.</p>"
+   + COD_TOSQL
    + "<p>Baza își ține singură evidența tabelelor, într-un catalog care se interoghează ca orice tabel. În SQLite: "
      "<code>select name from sqlite_master where type = 'table'</code>; în PostgreSQL, catalogul se numește "
      "<code>information_schema.tables</code>.</p>")
 
 
-# ===========================================================================
-#  5-6. SQL
-# ===========================================================================
 
 Q = D["sql"]
 _RO = [i for i, r in enumerate(Q["randuri"]) if r[1] == "RO"]
@@ -397,40 +384,74 @@ EX_SQL = {
     "explicatie": "Aceeași interogare în pandas: <code>regiuni[regiuni[\"tara\"] == \"RO\"].sort_values(\"pib_locuitor\", ascending=False)</code>."}
 
 
+REGIUNI_MOSTRA = (
+    '<div class="ms5"><div class="ms5__n">tabelul <code>regiuni</code>, primele rânduri din 298</div>'
+    + tabel(["regiune", "tara", "denumire", "pib_locuitor", "populatie", "…"], [
+        ["~RO22", "~RO", "Sud-Est", "23.600", "2.345.172", "…"],
+        ["~RO42", "~RO", "Vest", "31.300", "1.672.978", "…"],
+        ["~HU11", "~HU", "Budapest", "67.200", "1.686.222", "…"],
+    ])
+    + "</div>")
+
 sl("s6", "SQL", "Interogarea, scrisă",
    "<h2>Regiunile României, după PIB</h2>"
+   + REGIUNI_MOSTRA
    + ix("cod", "Prima interogare", EX_SQL),
    manual=
    "<h2>Regiunile României, după PIB</h2>"
+   + REGIUNI_MOSTRA
    + ix("cod", "Prima interogare", EX_SQL)
    + SQL_TAB)
 
 
-# ===========================================================================
-#  7-8. Integrarea
-# ===========================================================================
 
-def _mini(titlu, cap, randuri, cls=""):
+# Exemplul de unire: date reale, alese mici. Stânga: perechile regiunii Nord-Vest (RO11) cu trei regiuni;
+# dreapta: trei regiuni ale României, cu PIB-ul pe locuitor. HU11 nu este în dreapta, RO42 nu este în stânga.
+_ST = [("RO12", "308.881"), ("RO32", "154.045"), ("HU11", "34.160")]
+_DR = [("RO12", "28.400"), ("RO32", "75.000"), ("RO42", "31.300")]
+_MOD = [
+    ("inner", "inner join", "Doar regiunile găsite în ambele tabele.", ["RO12", "RO32"]),
+    ("left", "left join", "Toate rândurile din stânga; unde dreapta nu are pereche, rămâne o valoare lipsă.",
+     ["RO12", "RO32", "HU11"]),
+    ("outer", "outer join", "Toate rândurile din ambele tabele, cu valori lipsă de ambele părți.",
+     ["RO12", "RO32", "HU11", "RO42"]),
+]
+
+
+def _jx_tab(titlu, sub, cap, randuri):
     th = "".join(f"<th>{c}</th>" for c in cap)
-    tr = "".join("<tr" + (' class="lipsa"' if r[-1] == "null" else "") + ">"
-                 + "".join(f"<td>{v}</td>" for v in r) + "</tr>" for r in randuri)
-    return f'<div class="jn5__t {cls}"><div class="jn5__n">{titlu}</div><table><tr>{th}</tr>{tr}</table></div>'
+    tr = "".join(f'<tr class="{cls}">' + "".join(f"<td>{v}</td>" for v in r) + "</tr>" for cls, r in randuri)
+    return (f'<div class="jx5__t"><div class="jx5__n">{titlu}<small>{sub}</small></div>'
+            f"<table><tr>{th}</tr>{tr}</table></div>")
 
-_P = [["RO11", "5"], ["RO32", "7"], ["CH02", "3"]]
-_R = [["RO11", "28.300"], ["RO32", "75.000"], ["HU11", "40.300"]]
-JOIN = (
-    '<div class="jn5">'
-    '<div class="jn5__sus">'
-    + _mini("perechi", ["regiune", "sci"], _P)
-    + _mini("regiuni", ["regiune", "pib"], _R)
-    + "</div>"
-    '<div class="jn5__jos">'
-    + _mini("inner join · 2 rânduri", ["regiune", "sci", "pib"], [["RO11", "5", "28.300"], ["RO32", "7", "75.000"]], "jn5__t--r")
-    + _mini("left join · 3 rânduri", ["regiune", "sci", "pib"],
-            [["RO11", "5", "28.300"], ["RO32", "7", "75.000"], ["CH02", "3", "null"]], "jn5__t--r")
-    + _mini("outer join · 4 rânduri", ["regiune", "sci", "pib"],
-            [["RO11", "5", "28.300"], ["RO32", "7", "75.000"], ["CH02", "3", "null"], ["HU11", "null", "40.300"]], "jn5__t--r")
-    + "</div></div>")
+
+def _cls(k):
+    return {"RO12": "jx5--da", "RO32": "jx5--da", "HU11": "jx5--st", "RO42": "jx5--dr"}[k]
+
+
+def join_vizual(suf):
+    st = dict(_ST)
+    dr = dict(_DR)
+    sus = ('<div class="jx5__sus">'
+           + _jx_tab("stânga: <code>perechi</code>", "perechile regiunii Nord-Vest", ["regiune_2", "sci"],
+                     [(_cls(k), [k, v]) for k, v in _ST])
+           + '<div class="jx5__on"><code>on regiune_2 = regiune</code></div>'
+           + _jx_tab("dreapta: <code>regiuni</code>", "regiuni din România", ["regiune", "pib"],
+                     [(_cls(k), [k, v]) for k, v in _DR])
+           + "</div>")
+    radio = "".join(f'<input type="radio" name="jx5-{suf}" id="jx5-{suf}-{m}" class="jx5__r jx5__r--{m}"'
+                    f'{" checked" if m == "inner" else ""}>' for m, *_ in _MOD)
+    tab = '<div class="jx5__tab">' + "".join(
+        f'<label for="jx5-{suf}-{m}" class="jx5__b jx5__b--{m}">{et}<small>{len(k)} rânduri</small></label>'
+        for m, et, _, k in _MOD) + "</div>"
+    rez = ""
+    for m, et, txt, chei in _MOD:
+        rows = [(_cls(k), [k, st.get(k, "null"), dr.get(k, "null")]) for k in chei]
+        rez += (f'<div class="jx5__rez jx5__rez--{m}">'
+                + _jx_tab(f"<code>{et}</code>", f"{len(chei)} rânduri", ["regiune", "sci", "pib"], rows)
+                + f'<p class="jx5__txt">{txt}</p></div>')
+    return f'<div class="jx5">{radio}{sus}{tab}<div class="jx5__jos">{rez}</div></div>'
+
 
 UNIRI = tabel(["Unirea", "Ce face", "pandas", "SQL"], [
     ["una sub alta", "tabele cu aceleași coloane, rândurile se adună (C3)", "~pd.concat([a, b])", "~union all"],
@@ -450,41 +471,19 @@ V_JOIN = verif("c5-v-join", 1,
 
 sl("s7", "Integrarea", "Tipurile de join",
    "<h2>Cum se unesc două tabele</h2>"
-   + JOIN,
+   + join_vizual("s"),
    manual=
    "<h2>Cum se unesc două tabele</h2>"
    "<p>Două tabele se unesc în două feluri. <code>concat</code> le pune unul sub altul, când au aceleași coloane: "
    "s-a folosit în C3. <code>merge</code> le alătură după o cheie comună, adăugând coloane: s-a folosit în C4. "
    "La unirea după cheie, tipul unirii hotărăște ce se întâmplă cu rândurile care nu își găsesc perechea.</p>"
-   + JOIN + UNIRI
-   + "<p>În exemplu, <code>CH02</code> nu are PIB în tabelul regiunilor, iar <code>HU11</code> nu apare în perechi. "
-     "<code>inner</code> le pierde pe amândouă, <code>left</code> o păstrează pe prima cu PIB lipsă, "
-     "<code>outer</code> le păstrează pe amândouă.</p>",
+   "<p>În exemplu, cu date reale, stânga are trei perechi ale regiunii Nord-Vest, iar dreapta trei regiuni ale "
+   "României. <code>HU11</code> (Budapesta) nu este în dreapta, iar <code>RO42</code> (Vest) nu este în stânga. "
+   "Butoanele schimbă tipul unirii.</p>"
+   + join_vizual("m") + UNIRI,
    dupa=V_JOIN)
 
 
-JOIN_SQL = {
-    "id": "c5-cod-join",
-    "indiciu": "Unirea care păstrează toate perechile este cea din stânga. După tabel urmează condiția unirii, cu on. "
-               "Numărarea rândurilor: count(*).",
-    "iesire": "   perechi\n0    44253", "fisier": "curs/05_agregare_si_baze_de_date.ipynb",
-    "sarcina": "Lipește PIB-ul ambelor capete fiecărei perechi și numără rândurile rezultate.",
-    "cod": "pd.read_sql(\"\"\"\n"
-           "    select {{3}} as perechi\n"
-           "    from sci p\n"
-           "    {{1}} regiuni r1 {{2}} p.regiune_1 = r1.regiune\n"
-           "    left join regiuni r2 on p.regiune_2 = r2.regiune\n"
-           "    where p.regiune_1 < p.regiune_2\n"
-           "\"\"\", engine)",
-    "goluri": {
-        "1": {"ok": ["left join", "LEFT JOIN"], "ajutor": "unirea"},
-        "2": {"ok": ["on", "ON"], "ajutor": "condiția"},
-        "3": {"ok": ["count(*)", "COUNT(*)"], "ajutor": "numărarea"}},
-    "laBine": "Tot 44.253: niciun rând pierdut, niciunul înmulțit.",
-    "laRau": "Unirea păstrează toate perechile din stânga, iar condiția ei începe cu on.",
-    "explicatie": "Tabelul <code>regiuni</code> apare de două ori, cu două nume scurte: <code>r1</code> pentru capătul 1 "
-                  "și <code>r2</code> pentru capătul 2. <code>where p.regiune_1 &lt; p.regiune_2</code> păstrează o "
-                  "singură ordine a fiecărei perechi."}
 
 JM = (
     '<div class="pd5">'
@@ -499,26 +498,27 @@ JM = (
     '    <span class="k2">on</span>="regiune_1", <span class="k1">how="left"</span>)</pre></figure>'
     "</div>")
 
+NUMARARE = ('<div class="nr5"><span><small>perechi, înainte</small><b>44.253</b></span>'
+            '<i aria-hidden="true">→</i><span><small>rânduri, după unire</small><b>44.253</b></span>'
+            '<p>Niciun rând pierdut, niciunul înmulțit.</p></div>')
+
 sl("s8", "Integrarea", "join și merge",
    "<h2>join în SQL, merge în pandas</h2>"
    "<p class=\"cheie\">Aceeași unire, în două limbaje. Regula din C4 rămâne: după fiecare unire, numărăm rândurile.</p>"
-   + ix("cod", "Unirea, numărată", JOIN_SQL),
+   + JM + NUMARARE,
    manual=
    "<h2>join în SQL, merge în pandas</h2>"
    "<p><code>left join regiuni r1 on p.regiune_1 = r1.regiune</code> caută, pentru fiecare pereche, rândul din "
    "<code>regiuni</code> cu același cod. Este exact ce face <code>merge</code> în pandas, cu <code>how=\"left\"</code>. "
-   "Culorile arată ce corespunde.</p>"
-   + JM
-   + ix("cod", "Unirea, numărată", JOIN_SQL)
+   "Culorile arată ce corespunde. Tabelul <code>regiuni</code> se unește de două ori, câte o dată pentru fiecare capăt "
+   "al perechii, cu două nume scurte: <code>r1</code> și <code>r2</code>.</p>"
+   + JM + NUMARARE
    + "<p>În caiet, aceeași unire se face și în pandas, cu toți cei șapte indicatori, iar tabelul rezultat, "
      "<code>perechi_regiuni</code>, se scrie în bază. SQL lasă baza să facă munca și aduce doar ce se cere, ceea ce "
      "contează când tabelele sunt mari sau stau pe un server; pandas este mai comod când urmează alți pași în Python. "
      "În proiect, tabelele finale se fac o singură dată, într-un singur caiet; celelalte caiete doar le citesc.</p>")
 
 
-# ===========================================================================
-#  9-12. Agregarea
-# ===========================================================================
 
 TIP = D["tip"]
 _RAP = TIP["aceeasi tara"]["m"] / TIP["tari diferite"]["m"]
@@ -541,30 +541,6 @@ GRUPARE = {
                 "de rânduri, două: asta este agregarea."},
     ],
 }
-
-V_GRUP = verif("c5-v-grup", 1,
-               f"SCI-ul mediu este de {_RAP:.0f} de ori mai mare în aceeași țară. Ce altceva diferă între cele două "
-               "grupuri, în afară de graniță?",
-               ["Numărul de țări", "Distanța: în aceeași țară, perechile sunt mai apropiate",
-                "Anul datelor", "Nimic, doar granița"],
-               "Perechile din aceeași țară sunt, în medie, mai apropiate, deci rezultatul amestecă granița cu distanța. "
-               "La cursul 6, cele două se despart: comparația se face la aceeași distanță.")
-
-
-sl("s9", "Agregarea", "group by",
-   "<h2>De la 44.253 de rânduri la două</h2>"
-   + ix("grupare", "group by, pas cu pas", GRUPARE),
-   manual=
-   "<h2>De la 44.253 de rânduri la două</h2>"
-   "<p><code>group by</code> împarte rândurile în grupuri și calculează câte un rezultat pe grup: "
-   "<code>count(*)</code> (câte rânduri), <code>avg</code> (media), <code>sum</code> (totalul), <code>min</code>, "
-   "<code>max</code>. Orice coloană din <code>select</code> care nu este calculată trebuie să apară în "
-   "<code>group by</code>.</p>"
-   + ix("grupare", "group by, pas cu pas", GRUPARE)
-   + "<pre><code>select case when tara_1 = tara_2 then 'aceeasi tara' else 'tari diferite' end as tip,\n"
-     "       count(*) as perechi,\n       avg(sci) as sci_mediu\nfrom perechi_regiuni\ngroup by tip</code></pre>",
-   dupa=V_GRUP)
-
 
 PT = D["pe_tara"]
 PANDAS = (
@@ -607,20 +583,6 @@ UNDE = {
     "iesire": "A: 44.253 de rânduri aduse\nB: 37 de rânduri aduse"}
 
 
-sl("s10", "Agregarea", "Aceeași idee în pandas",
-   "<h2>group by în SQL, groupby în pandas</h2>"
-   + PANDAS + f'<div class="pd5__rez">{REZ_TARA}</div>',
-   manual=
-   "<h2>group by în SQL, groupby în pandas</h2>"
-   "<p>Același rezumat, scris în ambele limbaje: câte regiuni NUTS2 are fiecare țară și câți locuitori au împreună. "
-   "Culorile arată ce corespunde.</p>"
-   + PANDAS + f'<div class="pd5__rez">{REZ_TARA}</div>' + CAND
-   + "<p>Unele țări au o singură regiune NUTS2 (" + ", ".join(PT["o_regiune"]) + "): în comparațiile dintre regiuni, "
-     "o astfel de regiune este de fapt o țară întreagă. <code>sum</code> ignoră valorile lipsă, dar o țară la care "
-     "lipsesc toate valorile rămâne fără total.</p>"
-   + ix("prezice", "Ce se transferă de la bază", UNDE))
-
-
 LT = D["lt"]
 MEDII = {
     "axa": "PIB pe locuitor (PPS)",
@@ -632,62 +594,128 @@ MEDII = {
     "txtPonderata": f"Fiecare locuitor contează o dată: <b>{nr(LT['ponderata'])}</b>. Aceasta este media țării, "
                     "mai aproape de regiunea cu mai mulți oameni.",
 }
-V_MEDII = verif("c5-v-medii", 1,
-                "Vârsta medie a unei țări, calculată din vârstele medii ale regiunilor ei: ce mai trebuie știut?",
-                ["Câte regiuni are țara", "Câți locuitori are fiecare regiune",
-                 "Care este capitala", "Nimic în plus"],
-                "Fiecare regiune cântărește cât populația ei. Înainte de orice agregare: ce reprezintă un rând?")
+# Exemplul pentru group by: șase regiuni reale, din România și Ungaria, cu populația.
+_GR = [("RO11", "RO", 2539784), ("HU11", "HU", 1686222), ("RO12", "RO", 2288061),
+       ("HU12", "HU", 1333257), ("RO21", "RO", 3226814), ("HU21", "HU", 1057303)]
 
 
-sl("s11", "Agregarea", "Media pe țară",
-   "<h2>Media regiunilor nu este media țării</h2>"
-   + ix("medii", "Lituania, două regiuni", MEDII),
+def _gb_tab(cap, randuri, cls=""):
+    th = "".join(f"<th>{c}</th>" for c in cap)
+    tr = "".join(f'<tr class="gb5--{t.lower()}">' + "".join(f"<td>{v}</td>" for v in r) + "</tr>" for t, r in randuri)
+    return f'<table class="gb5__tb {cls}"><tr>{th}</tr>{tr}</table>'
+
+
+def _grupuri():
+    out = ""
+    for t in ("RO", "HU"):
+        rs = [(t, [r, nr(p)]) for r, tt, p in _GR if tt == t]
+        out += f'<div class="gb5__g gb5__g--{t.lower()}"><span class="gb5__gt">{t}</span>' + _gb_tab(["regiune", "populatie"], rs) + "</div>"
+    return out
+
+
+_SUM = {t: (sum(1 for _, tt, _ in _GR if tt == t), sum(p for _, tt, p in _GR if tt == t)) for t in ("RO", "HU")}
+GRUP_VIZ = (
+    '<div class="gb5">'
+    '<div class="gb5__c"><h4><span>1</span>tabelul</h4>'
+    + _gb_tab(["regiune", "tara", "populatie"], [(t, [r, t, nr(p)]) for r, t, p in _GR])
+    + '</div><div class="gb5__s" aria-hidden="true"></div>'
+    '<div class="gb5__c"><h4><span>2</span>împarte după <code>tara</code></h4>' + _grupuri()
+    + '</div><div class="gb5__s" aria-hidden="true"></div>'
+    '<div class="gb5__c"><h4><span>3</span>un rând pe grup</h4>'
+    + _gb_tab(["tara", "regiuni", "locuitori"], [(t, [t, str(_SUM[t][0]), nr(_SUM[t][1])]) for t in ("RO", "HU")],
+              "gb5__tb--rez")
+    + '<p class="gb5__f"><code>count(*)</code> numără rândurile grupului, <code>sum(populatie)</code> le adună.</p></div>'
+    "</div>")
+GRUP_COD = (
+    '<div class="gb5__cod">'
+    '<figure><figcaption>SQL</figcaption><pre>select tara, count(*) as regiuni, sum(populatie) as locuitori\n'
+    'from regiuni\n<span class="k1">group by tara</span></pre></figure>'
+    '<figure><figcaption>pandas</figcaption><pre>regiuni.<span class="k1">groupby("tara")</span>.agg(\n'
+    '    regiuni=("regiune", "count"), locuitori=("populatie", "sum"))</pre></figure>'
+    "</div>")
+
+V_GRUP = verif("c5-v-grup", 1,
+               "Tabelul <code>regiuni</code> are 298 de rânduri, din 37 de țări. Câte rânduri are rezultatul cu "
+               "<code>group by tara</code>?",
+               ["298", "37", "1", "Depinde de populație"],
+               "Un rând pe grup: câte țări, atâtea rânduri. <code>count(*)</code> spune apoi câte regiuni are fiecare țară.")
+
+sl("s9", "Agregarea", "group by",
+   "<h2>group by: împarte, calculează, adună</h2>"
+   "<p class=\"cheie\"><code>select tara, count(*), sum(populatie) from regiuni group by tara</code></p>"
+   + GRUP_VIZ,
    manual=
-   "<h2>Media regiunilor nu este media țării</h2>"
-   "<p>Lituania are două regiuni NUTS2: Vilnius și împrejurimile, cu PIB-ul pe locuitor mare, și restul "
-   "țării, cu mai mulți oameni. Lățimea fiecărui dreptunghi este populația, înălțimea este PIB-ul pe locuitor.</p>"
+   "<h2>group by: împarte, calculează, adună</h2>"
+   "<p><code>group by</code> face trei pași: împarte rândurile în grupuri după o coloană, calculează câte un rezultat "
+   "pe fiecare grup și pune rezultatele într-un tabel nou, cu un rând pe grup. Funcțiile de calcul sunt "
+   "<code>count(*)</code> (câte rânduri), <code>sum</code> (totalul), <code>avg</code> (media), <code>min</code>, "
+   "<code>max</code>. Orice coloană din <code>select</code> care nu este calculată trebuie să apară în "
+   "<code>group by</code>. În pandas, aceiași pași îi face <code>groupby</code> urmat de <code>agg</code>.</p>"
+   + GRUP_VIZ
+   + "<p>Pe tot tabelul, rezultatul are câte un rând pentru fiecare dintre cele 37 de țări:</p>"
+   + PANDAS + f'<div class="pd5__rez">{REZ_TARA}</div>' + CAND
+   + "<p>Unele țări au o singură regiune NUTS2 (" + ", ".join(PT["o_regiune"]) + "): în comparațiile dintre regiuni, "
+     "o astfel de regiune este de fapt o țară întreagă.</p>"
+   + "<h3>Aceeași țară sau țări diferite</h3>"
+     "<p>Gruparea se poate face și după o coloană calculată. Cu <code>case when</code>, perechile de regiuni se împart "
+     "în două grupuri: din aceeași țară și din țări diferite.</p>"
+   + ix("grupare", "group by, pas cu pas", GRUPARE)
+   + "<h3>Atenție la medii</h3>"
+     "<p>Media unei variabile pe regiunile unei țări nu este valoarea țării, pentru că regiunile au populații diferite: "
+     "o regiune mică cântărește cât una mare. Când se agregă, întrebarea de pus întâi este ce reprezintă un rând.</p>"
    + ix("medii", "Lituania, două regiuni", MEDII)
-   + "<p>Media unei variabile pe țară nu este media țării, pentru că regiunile au populații diferite. Când se "
-     "agregă, întrebarea de pus întâi este ce reprezintă un rând: aici, o regiune, nu un om.</p>",
-   dupa=V_MEDII)
+   + ix("prezice", "Ce se transferă de la bază", UNDE),
+   dupa=V_GRUP)
+
 
 
 _IT = next(r for r in D["sql"]["randuri"] if r[0] == "IT" and r[1] == "RO")
 MIGR = (
-    '<div class="mg5">'
-    '<div class="mg5__t">Italia</div>'
-    '<div class="mg5__s">'
-    '<div class="mg5__a mg5__a--d"><b>1.073.196</b><span>români în Italia</span><i></i></div>'
-    '<div class="mg5__a mg5__a--s"><i></i><b>14.856</b><span>italieni în România</span></div>'
-    "</div>"
-    '<div class="mg5__t">România</div>'
-    "</div>"
-    '<div class="mg5__rez">'
-    f"<span><small>migranți, ambele sensuri</small><b>{nr(_IT[3])}</b></span>"
-    f"<span><small>SCI</small><b>{nr(_IT[2])}</b></span>"
-    f"<span><small>pasageri pe an</small><b>{nr(_IT[4])}</b></span>"
+    '<div class="mi5">'
+    '<div class="mi5__c"><h4><code>migratie</code>: un rând = o cetățenie într-o țară</h4>'
+    + tabel(["tara_rezidenta", "cetatenie", "persoane"], [
+        ['<span class="mi5__a mono">RO</span>', '<span class="mi5__a mono">IT</span>', '<span class="mi5__a">14.856</span>'],
+        ['<span class="mi5__b mono">IT</span>', '<span class="mi5__b mono">RO</span>', '<span class="mi5__b">1.073.196</span>'],
+    ])
+    + '<p class="mi5__x"><span class="mi5__a">italieni în România</span> · '
+      '<span class="mi5__b">români în Italia</span></p></div>'
+    '<div class="mi5__s" aria-hidden="true"><span>două uniri</span></div>'
+    '<div class="mi5__c"><h4><code>perechi_tari</code>: un rând = o pereche</h4>'
+    + tabel(["tara_1", "tara_2", "din_1_in_2", "din_2_in_1", "migranti"], [
+        ["~IT", "~RO", '<span class="mi5__a">14.856</span>', '<span class="mi5__b">1.073.196</span>',
+         f"<b>{nr(_IT[3])}</b>"],
+    ])
+    + '<ol class="mi5__pasi">'
+      '<li><span class="mi5__a">unirea 1</span>: <code>cetatenie</code> = <code>tara_1</code>, '
+      '<code>tara_rezidenta</code> = <code>tara_2</code></li>'
+      '<li><span class="mi5__b">unirea 2</span>: <code>cetatenie</code> = <code>tara_2</code>, '
+      '<code>tara_rezidenta</code> = <code>tara_1</code></li>'
+      '<li><b>suma</b>: <code>migranti = din_1_in_2 + din_2_in_1</code>; dacă un sens lipsește, suma rămâne lipsă</li>'
+      "</ol></div>"
     "</div>")
 
-sl("s12", "Agregarea", "Perechile de țări",
+sl("s10", "Agregarea", "Perechile de țări",
    "<h2>Migrația are direcție</h2>"
-   "<p class=\"cheie\">O pereche de țări primește migrația în ambele sensuri: o unire pentru fiecare sens, apoi suma.</p>"
+   "<p class=\"cheie\">Un rând din <code>migratie</code> are un sens. O pereche de țări are două: tabelul se unește de două ori.</p>"
    + MIGR,
    manual=
    "<h2>Migrația are direcție</h2>"
-   "<p>Al treilea tabel de analiză are câte un rând pe pereche de țări: SCI, migrația și zborurile. Migrația are "
-   "direcție: românii din Italia nu sunt același lucru cu italienii din România. Tabelul migrației se unește de "
-   "două ori, câte o dată pentru fiecare sens, cu coloanele redenumite ca să se potrivească cu cheile perechii; "
-   "apoi cele două sensuri se adună. Dacă un sens lipsește, suma rămâne lipsă.</p>"
+   "<p>Al treilea tabel de analiză are câte un rând pe pereche de țări: SCI, migrația și zborurile. În tabelul "
+   "<code>migratie</code>, un rând spune câți cetățeni ai unei țări trăiesc în altă țară, deci are un sens: "
+   "italienii din România nu sunt același lucru cu românii din Italia. Perechea Italia-România are însă un singur "
+   "rând, cu ambele sensuri.</p>"
+   "<p>De aceea, tabelul migrației se unește de două ori. La prima unire, cetățenia se potrivește cu prima țară a "
+   "perechii și țara de rezidență cu a doua; la a doua unire, invers. Coloanele se redenumesc înainte de fiecare "
+   "unire, ca să se potrivească cu cheile perechii. La final, cele două sensuri se adună.</p>"
    + MIGR
-   + "<p>Înainte de unire, încă o agregare: nu toate țările raportează la Eurostat migranții pe fiecare cetățenie. "
+   + f"<p>Pentru Italia și România, cele două sensuri diferă de peste 70 de ori. SCI-ul perechii este {nr(_IT[2])}, "
+     f"iar zborurile dintre ele au transportat {nr(_IT[4])} de pasageri într-un an.</p>"
+     "<p>Înainte de unire, încă o agregare: nu toate țările raportează la Eurostat migranții pe fiecare cetățenie. "
      "Se numără, pentru fiecare țară de rezidență, câte cetățenii au o valoare (<code>count</code> numără doar "
      "valorile prezente), iar perechile se păstrează doar pentru țările care raportează cel puțin 20. Rămân "
      f"{T['perechi_tari']} de perechi de țări.</p>")
 
 
-# ===========================================================================
-#  13-14. Verificarea și echipa
-# ===========================================================================
 
 DOVADA = {
     "id": "c5-dovada-baza",
@@ -719,7 +747,7 @@ DOVADA = {
 }
 
 
-sl("s13", "Echipa", "Verificarea bazei",
+sl("s11", "Echipa", "Verificarea bazei",
    "<h2>Verificarea bazei</h2>"
    + ix("dovada", "Verificarea bazei", DOVADA),
    manual=
@@ -729,33 +757,38 @@ sl("s13", "Echipa", "Verificarea bazei",
    + ix("dovada", "Verificarea bazei", DOVADA))
 
 
-ECHIPA = (
-    '<ol class="ec5">'
-    "<li><b>Un fișier în depozit</b>Baza echipei este <code>data/processed/proiect.db</code>.</li>"
-    "<li><b>Un singur caiet scrie</b>Caietul 03 creează baza și încarcă tabelele finale cu <code>to_sql</code>.</li>"
-    "<li><b>Ceilalți citesc</b>Caietele 04 și 05 citesc cu <code>pd.read_sql</code>, după <code>git pull</code>.</li>"
-    "<li><b>Adresa, din notebooks/</b><code>../data/processed/proiect.db</code>, un nivel mai sus.</li>"
-    "</ol>")
 
-sl("s14", "Mai departe", "Baza echipei, cursul 6",
-   "<h2>Baza echipei și cursul 6</h2>"
-   + ECHIPA
-   + '<div class="fin3"><div class="fin3__g">'
-   "<section><h4>La cursul 6</h4><ul>"
-   "<li>Patru ipoteze din literatură: distanța, granița, economia, migrația.</li>"
-   "<li>Distribuția SCI și scara logaritmică.</li>"
-   "<li>Aceleași perechi, privite ca rețea.</li></ul></section>"
-   "<section><h4>Pregătirea</h4><ul>"
-   "<li>Caietul 05 rulat: <code>curs/data/dsw.db</code> cu tabelele lecției.</li>"
-   "<li>Baza echipei, scrisă de caietul 03, pe GitHub.</li></ul></section>"
-   "</div></div>",
+def _caiet(n, nume, rol, cls=""):
+    return (f'<div class="eb5__k {cls}"><code>{n}_{nume}.ipynb</code><small>{rol}</small></div>')
+
+ECHIPA = (
+    '<div class="eb5">'
+    '<div class="eb5__col">'
+    + _caiet("01", "collection", "colectarea") + _caiet("02", "preprocessing", "preprocesarea")
+    + _caiet("03", "cleaning_integration", "curățarea și integrarea", "eb5__k--scrie")
+    + '</div>'
+    '<div class="eb5__sag eb5__sag--scrie"><code>to_sql</code><span>scrie</span></div>'
+    '<div class="eb5__db"><div class="eb5__cil"><b>proiect.db</b></div><small>data/processed/</small></div>'
+    '<div class="eb5__sag eb5__sag--citeste"><code>read_sql</code><span>citesc</span></div>'
+    '<div class="eb5__col">'
+    + _caiet("04", "exploration", "explorarea", "eb5__k--citeste") + _caiet("05", "model", "modelul", "eb5__k--citeste")
+    + "</div></div>"
+    '<div class="eb5__jos">'
+    '<span><b>Pe GitHub</b>Fișierul se urcă împreună cu caietul 03; colegii îl primesc cu <code>git pull</code>.</span>'
+    '<span><b>Un singur scriitor</b>Git nu poate uni două versiuni ale aceluiași fișier de bază de date.</span>'
+    '<span><b>La cursul 6</b>Explorarea: ipoteze din literatură, grafice, rețele.</span>'
+    "</div>")
+
+sl("s12", "Mai departe", "Baza echipei, cursul 6",
+   "<h2>Baza echipei</h2>"
+   + ECHIPA,
    manual=
-   "<h2>Baza echipei și cursul 6</h2>"
+   "<h2>Baza echipei</h2>"
    "<p>Baza de la seminar este a fiecăruia, pe calculatorul lui. Pentru proiect, echipa folosește una singură, ca "
-   "toți să lucreze pe aceleași date: un fișier SQLite din depozit.</p>"
+   "toți să lucreze pe aceleași date: un fișier SQLite din depozit, <code>data/processed/proiect.db</code>. Caietul "
+   "03 o creează și încarcă tabelele finale; caietele 04 și 05 doar citesc din ea. Caietele stau în "
+   "<code>notebooks/</code>, deci adresa urcă un nivel: <code>sqlite:///../data/processed/proiect.db</code>.</p>"
    + ECHIPA
-   + nota("Un singur scriitor", "Git nu poate uni două versiuni diferite ale aceluiași fișier de bază de date. "
-                                "De aceea baza o scrie un singur caiet; celelalte doar o citesc.")
    + "<p>Cu tabelele în bază, lecția următoare le examinează: ce tipare apar și ce explicații merită verificate, "
      "pornind de la ipoteze din literatură.</p>"
    + surse("Documentația", [

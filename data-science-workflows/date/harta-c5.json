@@ -1,7 +1,7 @@
 {
  "capitol": "c5",
- "total": 15,
- "sarcini": 9,
+ "total": 13,
+ "sarcini": 4,
  "slide": [
   {
    "nr": 1,
@@ -15,20 +15,7 @@
    "id": "s1",
    "grup": "Baza de date",
    "titlu": "De ce o bază",
-   "sarcini": [
-    {
-     "id": "c5-v1",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "O echipă de cinci are un tabel de 44.253 de rânduri. Care este cel mai bun argument pentru o bază de date?",
-     "optiuni": [
-      "44.253 de rânduri sunt prea multe pentru pandas",
-      "Cinci persoane au nevoie de o singură copie a datelor, nu de cinci",
-      "Bazele de date sunt mai rapide",
-      "Este practica obișnuită în industrie"
-     ]
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 3,
@@ -42,24 +29,14 @@
    "id": "s3",
    "grup": "Baza de date",
    "titlu": "O adresă, orice bază",
-   "sarcini": [
-    {
-     "id": "c5-cod-conectare",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 5,
    "id": "s4",
    "grup": "Baza de date",
    "titlu": "Tabelele, în bază",
-   "sarcini": [
-    {
-     "id": "c5-cod-tosql",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 6,
@@ -105,12 +82,7 @@
    "id": "s8",
    "grup": "Integrarea",
    "titlu": "join și merge",
-   "sarcini": [
-    {
-     "id": "c5-cod-join",
-     "fel": "cod"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 10,
@@ -122,12 +94,12 @@
      "id": "c5-v-grup",
      "fel": "verificare",
      "corect": 1,
-     "q": "SCI-ul mediu este de 43 de ori mai mare în aceeași țară. Ce altceva diferă între cele două grupuri, în afară de graniță?",
+     "q": "Tabelul regiuni are 298 de rânduri, din 37 de țări. Câte rânduri are rezultatul cu group by tara?",
      "optiuni": [
-      "Numărul de țări",
-      "Distanța: în aceeași țară, perechile sunt mai apropiate",
-      "Anul datelor",
-      "Nimic, doar granița"
+      "298",
+      "37",
+      "1",
+      "Depinde de populație"
      ]
     }
    ]
@@ -136,39 +108,12 @@
    "nr": 11,
    "id": "s10",
    "grup": "Agregarea",
-   "titlu": "Aceeași idee în pandas",
+   "titlu": "Perechile de țări",
    "sarcini": []
   },
   {
    "nr": 12,
    "id": "s11",
-   "grup": "Agregarea",
-   "titlu": "Media pe țară",
-   "sarcini": [
-    {
-     "id": "c5-v-medii",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Vârsta medie a unei țări, calculată din vârstele medii ale regiunilor ei: ce mai trebuie știut?",
-     "optiuni": [
-      "Câte regiuni are țara",
-      "Câți locuitori are fiecare regiune",
-      "Care este capitala",
-      "Nimic în plus"
-     ]
-    }
-   ]
-  },
-  {
-   "nr": 13,
-   "id": "s12",
-   "grup": "Agregarea",
-   "titlu": "Perechile de țări",
-   "sarcini": []
-  },
-  {
-   "nr": 14,
-   "id": "s13",
    "grup": "Echipa",
    "titlu": "Verificarea bazei",
    "sarcini": [
@@ -179,8 +124,8 @@
    ]
   },
   {
-   "nr": 15,
-   "id": "s14",
+   "nr": 13,
+   "id": "s12",
    "grup": "Mai departe",
    "titlu": "Baza echipei, cursul 6",
    "sarcini": []
