@@ -46,18 +46,27 @@ AGENDA = [
 PLAN = ix("agenda", "Planul lecției", {"static": True, "titlu": "Planul lecției",
           "etape": [{"nume": n, "unde": u, "text": d} for n, u, d in AGENDA]})
 
-sl("s1", "Cursul", "Planul lecției",
-   "<h2>Analiza exploratorie</h2>"
-   "<p class=\"cheie\">Ce tipare se văd în date și ce explicații merită verificate: întâi așteptarea, "
-   "apoi graficul.</p>"
-   + PLAN
-   + nota("Caietul lecției", f"<code>{_NB6}</code>. Datele vin din baza din C5, <code>data/dsw.db</code>, cu <code>pd.read_sql</code>.", True),
+CURSUL = tabel(["", "Conținutul", "Rezultatul"], [
+    ["C1", "proiectul, mediul de lucru, tipurile de date și JSON", "<code>dsw/</code>, cu <code>.venv</code>"],
+    ["C2", "colectarea datelor prin API: Eurostat, Banca Mondială", "<code>data/raw</code>"],
+    ["C3", "surse diverse, preprocesare, Git și depozitul echipei", "<code>data/processed</code>, <code>proiect/</code>"],
+    ["C4", "curățarea datelor și tabelul regiunilor", "<code>regiuni_nuts2.csv</code>"],
+    ["C5", "integrare, baze de date și agregare", "perechile, în <code>dsw.db</code>"],
+    ["<b>C6</b>", "<b>azi: analiza exploratorie, ipoteze și rețele</b>", "<b>primele rezultate</b>"],
+    ["C7", "variabile derivate și model", "modelul SCI"],
+    ["C8", "raportul și prezentarea proiectului", "raportul echipei"],
+])
+
+sl("s1", "Cursul", "Unde suntem",
+   "<h2>Unde suntem în curs</h2>"
+   "<p class=\"cheie\">Perechile sunt în baza de date. Azi: ce tipare se văd și ce explicații merită verificate.</p>"
+   + CURSUL,
    manual=
    "<h2>Analiza exploratorie</h2>"
    "<p>Datele sunt curate (C4) și în baza de date (C5). Lecția pornește de la ipoteze din literatură, scrie ce "
    "ar trebui să se vadă dacă sunt adevărate și abia apoi se uită la date. În a doua parte, aceleași perechi "
    "sunt privite împreună, ca rețea.</p>"
-   + PLAN
+   + CURSUL + PLAN
    + nota("Caietul lecției", f"<code>{_NB6}</code>, în <code>dsw/curs/</code>. Pachete noi: <code>geopandas</code>, "
                              "<code>networkx</code>, <code>scipy</code>, toate în <code>requirements.txt</code>.", True))
 
@@ -165,6 +174,19 @@ TREPTE_H1 = {
             f"cele aflate la peste 2.000 km, mediana scade de aproximativ {round(_SC, -1):.0f} de ori.",
 }
 
+sl("s6", "Distanța și granița", "Spearman",
+   "<h2>Spearman: ordinea, nu valorile</h2>"
+   "<p class=\"cheie\">Spearman compară ordinea valorilor, între -1 și 1. Dacă una crește mereu când cealaltă scade, "
+   "rezultatul este -1, oricât de inegale ar fi diferențele.</p>"
+   + ix("prezice", "Spearman, pe ranguri", RANG),
+   manual=
+   "<h2>Spearman: ordinea, nu valorile</h2>"
+   "<p>Coeficientul Spearman compară ordinea valorilor și este între -1 și 1: negativ înseamnă că, atunci când una "
+   "crește, cealaltă tinde să scadă. Nu presupune o relație în linie dreaptă și nu este tras de câteva valori "
+   "uriașe, deci se potrivește pentru SCI.</p>"
+   + ix("prezice", "Spearman, pe ranguri", RANG))
+
+
 sl("s5", "Distanța și granița", "H1: distanța",
    "<h2>H1: legăturile scad cu distanța</h2>"
    + ix("trepte", "SCI median, pe intervale de distanță", TREPTE_H1),
@@ -178,17 +200,6 @@ sl("s5", "Distanța și granița", "H1: distanța",
      "perechi[\"interval_km\"] = pd.cut(perechi[\"distanta_km\"], praguri)\n"
      "perechi.groupby(\"interval_km\", observed=True)[\"sci\"].agg([\"size\", \"median\"])</code></pre>",
    dupa=V2)
-
-
-sl("s6", "Distanța și granița", "Spearman",
-   "<h2>Spearman: ordinea, nu valorile</h2>"
-   + ix("prezice", "Spearman, pe ranguri", RANG),
-   manual=
-   "<h2>Spearman: ordinea, nu valorile</h2>"
-   "<p>Coeficientul Spearman compară ordinea valorilor și este între -1 și 1: negativ înseamnă că, atunci când una "
-   "crește, cealaltă tinde să scadă. Nu presupune o relație în linie dreaptă și nu este tras de câteva valori "
-   "uriașe, deci se potrivește pentru SCI.</p>"
-   + ix("prezice", "Spearman, pe ranguri", RANG))
 
 
 _I = H2["intervale"].index("250-500")
@@ -253,8 +264,9 @@ sl("s8", "Economia și oamenii", "H3: economia",
    + f"<p>Pe cele {nr(H3['n'])} de perechi cu PIB la ambele capete, din {nr(D['n'])}: <b>ρ = {ro(H3['rho'])}</b>. "
      "Bailey și colegii (2020) găsesc tot că decalajele mai mari pot merge cu legături mai puternice; migrația este "
      "o explicație posibilă, ceea ce duce la H4.</p>"
-   + "<pre><code>economice = perechi.dropna(subset=[\"pib_locuitor_1\", \"pib_locuitor_2\"]).copy()\n"
-     "economice[\"decalaj_pib\"] = (economice[\"pib_locuitor_1\"] - economice[\"pib_locuitor_2\"]).abs()</code></pre>")
+   + "<pre><code>economice = perechi.dropna(subset=[\"pib_locuitor_1\", \"pib_locuitor_2\"])\n"
+     "decalaj = (economice[\"pib_locuitor_1\"] - economice[\"pib_locuitor_2\"]).abs()\n"
+     "decalaj.corr(economice[\"sci\"], method=\"spearman\")</code></pre>")
 
 
 NOR = {
@@ -403,8 +415,8 @@ DOVADA = {
          "ind": "Un singur număr, negativ, în jur de -0,46.",
          "daca_nu": "Corelația trebuie să fie în jur de -0.46. Distanța se calculează din centrele regiunilor (secțiunea 3.1)."},
         {"t": "H3: perechile cu PIB",
-         "cmd": "print(len(economice), \"perechi cu PIB, din\", len(perechi))",
-         "gol": "rândul afișat",
+         "cmd": "len(economice), len(perechi)",
+         "gol": "perechea de numere afișată",
          "cauta": r"37950\D+44253",
          "ind": "Două numere: perechile cu PIB la ambele capete și toate perechile.",
          "daca_nu": "Trebuie să iasă 37950 din 44253. Altfel, tabelul perechilor nu este cel din C4."},

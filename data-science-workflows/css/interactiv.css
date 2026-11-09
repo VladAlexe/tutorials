@@ -3801,3 +3801,7 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .eb5r__jos code{font-size:.95em}
 @media(max-width:760px){.cp5r,.lc5,.nr5r,.gb5,.mi5,.eb5r,.eb5r__jos,.jx5__sus,.jx5__rez{grid-template-columns:1fr}
   .cp5r > div + div,.lc5 > div + div,.nr5r div + div,.eb5r > div + div{border-left:0;padding-left:0;border-top:1px solid var(--linie)}}
+.rnr[data-capitol="c6"] .sld .dov__r{grid-template-columns:1fr}
+.rnr[data-capitol="c6"] .sld .dov__cmd code{white-space:pre-wrap;overflow:visible;text-overflow:clip;word-break:break-word}
+.rnr[data-capitol="c6"] .sld .dov__r{padding:7px 12px;gap:5px}
+.rnr[data-capitol="c6"] .sld#s14 .ex__sarcina{display:none}

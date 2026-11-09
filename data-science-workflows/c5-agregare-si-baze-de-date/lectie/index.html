@@ -6,14 +6,14 @@
 <title>Cursul 5 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Baza de date SQLite a cursului, legată de pandas prin SQLAlchemy; unde mai poate sta o bază (server, cloud, Neon); unirea tabelelor și agregarea, în SQL și în pandas.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=141">
-<link rel="stylesheet" href="../../css/sistem.css?v=141">
-<link rel="stylesheet" href="../../css/slide.css?v=141">
-<link rel="stylesheet" href="../../css/interactiv.css?v=141">
-<link rel="stylesheet" href="../../css/grafice.css?v=141">
-<link rel="stylesheet" href="../../css/exercitii.css?v=141">
-<link rel="stylesheet" href="../../css/explorator.css?v=141">
-<script src="../../js/tema.js?v=141"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=142">
+<link rel="stylesheet" href="../../css/sistem.css?v=142">
+<link rel="stylesheet" href="../../css/slide.css?v=142">
+<link rel="stylesheet" href="../../css/interactiv.css?v=142">
+<link rel="stylesheet" href="../../css/grafice.css?v=142">
+<link rel="stylesheet" href="../../css/exercitii.css?v=142">
+<link rel="stylesheet" href="../../css/explorator.css?v=142">
+<script src="../../js/tema.js?v=142"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 5 · Agregare și baze de date" data-crom="1"></div>
@@ -56,7 +56,7 @@
 <section class="sld" id="s6" data-grup="SQL" data-t="Interogarea, scrisă">
 <h2>Regiunile României, după PIB</h2><div class="ms5"><div class="ms5__n">tabelul <code>regiuni</code>, primele rânduri din 298</div><table class="tabel"><thead><tr><th>regiune</th><th>tara</th><th>denumire</th><th>pib_locuitor</th><th>populatie</th><th>…</th></tr></thead><tbody><tr><td class="mono">RO22</td><td class="mono">RO</td><td>Sud-Est</td><td>23.600</td><td>2.345.172</td><td>…</td></tr><tr><td class="mono">RO42</td><td class="mono">RO</td><td>Vest</td><td>31.300</td><td>1.672.978</td><td>…</td></tr><tr><td class="mono">HU11</td><td class="mono">HU</td><td>Budapest</td><td>67.200</td><td>1.686.222</td><td>…</td></tr></tbody></table></div><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Prima interogare</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-cod-sql", "indiciu": "Tabelul este cel al regiunilor. Codul țării este text, deci între apostrofuri. De la mare la mic: descending, pe scurt.", "iesire": "regiune denumire          pib_locuitor\nRO32   Bucureşti-Ilfov      75000\nRO42   Vest                 31300\nRO12   Centru               28400\nRO11   Nord-Vest            28300\nRO41   Sud-Vest Oltenia     24000\nRO22   Sud-Est              23600\nRO31   Sud-Muntenia         21800\nRO21   Nord-Est             19300", "fisier": "curs/05_agregare_si_baze_de_date.ipynb", "sarcina": "Regiunile României, cu denumirea și PIB-ul pe locuitor, de la cel mai mare PIB la cel mai mic.", "cod": "pd.read_sql(\"\"\"\n    select regiune, denumire, pib_locuitor\n    from {{1}}\n    where tara = {{2}}\n    order by pib_locuitor {{3}} nulls last\n\"\"\", engine)", "goluri": {"1": {"ok": ["regiuni"], "ajutor": "tabelul"}, "2": {"ok": ["'RO'"], "ajutor": "țara, ca text"}, "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}}, "laBine": "București-Ilfov are un PIB pe locuitor de două ori și jumătate mai mare decât a doua regiune.", "laRau": "În SQL, textul se scrie între apostrofuri: <code>'RO'</code>.", "explicatie": "Aceeași interogare în pandas: <code>regiuni[regiuni[\"tara\"] == \"RO\"].sort_values(\"pib_locuitor\", ascending=False)</code>."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-cod-sql", "indiciu": "Tabelul este cel al regiunilor. Codul țării este text, deci între apostrofuri. De la mare la mic: descending, pe scurt.", "iesire": "regiune denumire          pib_locuitor\nRO32   Bucureşti-Ilfov      75000\nRO42   Vest                 31300\nRO12   Centru               28400\nRO11   Nord-Vest            28300\nRO41   Sud-Vest Oltenia     24000\nRO22   Sud-Est              23600\nRO31   Sud-Muntenia         21800\nRO21   Nord-Est             19300", "fisier": "curs/05_agregare_si_baze_de_date.ipynb", "sarcina": "Regiunile României, cu denumirea și PIB-ul pe locuitor, de la cel mai mare PIB la cel mai mic.", "cod": "pd.read_sql(\"\"\"\n    select regiune, denumire, pib_locuitor\n    from {{1}}\n    where tara = {{2}}\n    order by pib_locuitor {{3}}\n\"\"\", engine)", "goluri": {"1": {"ok": ["regiuni"], "ajutor": "tabelul"}, "2": {"ok": ["'RO'"], "ajutor": "țara, ca text"}, "3": {"ok": ["desc", "DESC"], "ajutor": "ordinea"}}, "laBine": "București-Ilfov are un PIB pe locuitor de două ori și jumătate mai mare decât a doua regiune.", "laRau": "În SQL, textul se scrie între apostrofuri: <code>'RO'</code>.", "explicatie": "Aceeași interogare în pandas: <code>regiuni[regiuni[\"tara\"] == \"RO\"].sort_values(\"pib_locuitor\", ascending=False)</code>."}</script></div>
 </div>
 
 </section>
@@ -74,10 +74,10 @@
 </section>
 
 <section class="sld" id="s8" data-grup="Integrarea" data-t="join și merge">
-<h2>join în SQL, merge în pandas</h2><p class="cheie">Aceeași unire, în două limbaje. Regula din C4 rămâne: după fiecare unire, numărăm rândurile.</p><div class="pd5"><figure><figcaption>SQL, în bază</figcaption><pre>select p.*, r1.pib_locuitor as pib_1
+<h2>join în SQL, merge în pandas</h2><p class="cheie">Aceeași unire, în două limbaje. Regula din C4 rămâne: după fiecare unire, numărăm rândurile.</p><div class="pd5"><figure><figcaption>SQL, în bază</figcaption><pre>select p.regiune_1, p.regiune_2, p.sci, r.pib_locuitor
 from sci p
-<span class="k1">left join</span> regiuni r1
-  <span class="k2">on</span> p.regiune_1 = r1.regiune</pre></figure><figure><figcaption>pandas, în caiet</figcaption><pre>perechi.<span class="k1">merge</span>(
+<span class="k1">left join</span> regiuni r
+  <span class="k2">on</span> p.regiune_1 = r.regiune</pre></figure><figure><figcaption>pandas, în caiet</figcaption><pre>perechi.<span class="k1">merge</span>(
     atribute.add_suffix("_1"),
     <span class="k2">on</span>="regiune_1", <span class="k1">how="left"</span>)</pre></figure></div><div class="nr5r"><div><b>44.253</b><span>perechi, înainte de unire</span></div><div><b>44.253</b><span>rânduri, după unire</span></div><div><b>0</b><span>rânduri pierdute sau înmulțite</span></div></div>
 
@@ -116,11 +116,11 @@ from sci p
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=141"></script>
+<script type="module" src="../../js/antet.js?v=142"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=141";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=141";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=141";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=142";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=142";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=142";
 pornesteIx();
 pornesteVerif("c5");
 pornesteSlide({ capitol:"c5", lectie:"c5-agregare-si-baze-de-date" });

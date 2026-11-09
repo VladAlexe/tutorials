@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=141";
+const V = "?v=142";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */

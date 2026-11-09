@@ -7,7 +7,7 @@
    "nr": 1,
    "id": "s1",
    "grup": "Cursul",
-   "titlu": "Planul lecției",
+   "titlu": "Unde suntem",
    "sarcini": []
   },
   {
@@ -38,6 +38,18 @@
   },
   {
    "nr": 5,
+   "id": "s6",
+   "grup": "Distanța și granița",
+   "titlu": "Spearman",
+   "sarcini": [
+    {
+     "id": "c6-prezice-rang",
+     "fel": "cod"
+    }
+   ]
+  },
+  {
+   "nr": 6,
    "id": "s5",
    "grup": "Distanța și granița",
    "titlu": "H1: distanța",
@@ -53,18 +65,6 @@
       "46% din SCI vine din distanță",
       "Relația este liniară"
      ]
-    }
-   ]
-  },
-  {
-   "nr": 6,
-   "id": "s6",
-   "grup": "Distanța și granița",
-   "titlu": "Spearman",
-   "sarcini": [
-    {
-     "id": "c6-prezice-rang",
-     "fel": "cod"
     }
    ]
   },

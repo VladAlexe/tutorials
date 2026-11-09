@@ -330,8 +330,7 @@ sl("s5", "SQL", "O interogare",
    + ix("sqlpas", "O interogare, pas cu pas", SQLPAS)
    + SQL_TAB
    + "<p>În Python, interogarea este un text trimis cu <code>pd.read_sql(\"...\", engine)</code>; interogările "
-     "lungi se scriu între trei ghilimele, pe mai multe rânduri. Valorile lipsă se numesc în SQL "
-     "<code>null</code>; <code>nulls last</code> le pune la final, oricare ar fi baza de date.</p>")
+     "lungi se scriu între trei ghilimele, pe mai multe rânduri.</p>")
 
 
 RO_PIB = "\n".join(f"{c:<7}{n:<18}{v:>8}" for c, n, v in D["ro_pib"])
@@ -344,7 +343,7 @@ EX_SQL = {
            "    select regiune, denumire, pib_locuitor\n"
            "    from {{1}}\n"
            "    where tara = {{2}}\n"
-           "    order by pib_locuitor {{3}} nulls last\n"
+           "    order by pib_locuitor {{3}}\n"
            "\"\"\", engine)",
     "goluri": {
         "1": {"ok": ["regiuni"], "ajutor": "tabelul"},
@@ -459,10 +458,10 @@ sl("s7", "Integrarea", "Tipurile de join",
 JM = (
     '<div class="pd5">'
     '<figure><figcaption>SQL, în bază</figcaption><pre>'
-    'select p.*, r1.pib_locuitor as pib_1\n'
+    'select p.regiune_1, p.regiune_2, p.sci, r.pib_locuitor\n'
     'from sci p\n'
-    '<span class="k1">left join</span> regiuni r1\n'
-    '  <span class="k2">on</span> p.regiune_1 = r1.regiune</pre></figure>'
+    '<span class="k1">left join</span> regiuni r\n'
+    '  <span class="k2">on</span> p.regiune_1 = r.regiune</pre></figure>'
     '<figure><figcaption>pandas, în caiet</figcaption><pre>'
     'perechi.<span class="k1">merge</span>(\n'
     '    atribute.add_suffix("_1"),\n'
@@ -479,10 +478,10 @@ sl("s8", "Integrarea", "join și merge",
    + JM + NUMARARE,
    manual=
    "<h2>join în SQL, merge în pandas</h2>"
-   "<p><code>left join regiuni r1 on p.regiune_1 = r1.regiune</code> caută, pentru fiecare pereche, rândul din "
+   "<p><code>left join regiuni r on p.regiune_1 = r.regiune</code> caută, pentru fiecare pereche, rândul din "
    "<code>regiuni</code> cu același cod. Este exact ce face <code>merge</code> în pandas, cu <code>how=\"left\"</code>. "
-   "Culorile arată ce corespunde. Tabelul <code>regiuni</code> se unește de două ori, câte o dată pentru fiecare capăt "
-   "al perechii, cu două nume scurte: <code>r1</code> și <code>r2</code>.</p>"
+   "Culorile arată ce corespunde. <code>p</code> și <code>r</code> sunt nume scurte pentru cele două tabele; în pandas, "
+   "<code>add_suffix(\"_1\")</code> face din <code>regiune</code> coloana <code>regiune_1</code>, după care se unește.</p>"
    + JM + NUMARARE
    + "<p>În caiet, aceeași unire se face și în pandas, cu toți cei șapte indicatori, iar tabelul rezultat, "
      "<code>perechi_regiuni</code>, se scrie în bază. SQL lasă baza să facă munca și aduce doar ce se cere, ceea ce "
@@ -524,10 +523,9 @@ PANDAS = (
     '<span class="k1">group by tara</span>\n'
     'order by locuitori desc</pre></figure>'
     '<figure><figcaption>pandas, în caiet</figcaption><pre>'
-    'regiuni.<span class="k1">groupby("tara")</span>.agg(\n'
-    '    regiuni=("regiune", <span class="k2">"count"</span>),\n'
-    '    locuitori=("populatie", <span class="k3">"sum"</span>),\n'
-    ').sort_values("locuitori", ascending=False)</pre></figure>'
+    'regiuni.<span class="k1">groupby("tara")</span>["populatie"]\n'
+    '       .agg([<span class="k2">"count"</span>, <span class="k3">"sum"</span>])\n'
+    '       .sort_values("sum", ascending=False)</pre></figure>'
     "</div>")
 REZ_TARA = tabel(["tara", "regiuni", "locuitori"],
                  [[t, str(n), nr(l)] for t, n, l in PT["top"]] + [["…", "", f"{PT['tari']} de țări în tot"]])
@@ -601,8 +599,7 @@ GRUP_COD = (
     '<div class="gb5__cod">'
     '<figure><figcaption>SQL</figcaption><pre>select tara, count(*) as regiuni, sum(populatie) as locuitori\n'
     'from regiuni\n<span class="k1">group by tara</span></pre></figure>'
-    '<figure><figcaption>pandas</figcaption><pre>regiuni.<span class="k1">groupby("tara")</span>.agg(\n'
-    '    regiuni=("regiune", "count"), locuitori=("populatie", "sum"))</pre></figure>'
+    '<figure><figcaption>pandas</figcaption><pre>regiuni.<span class="k1">groupby("tara")</span>["populatie"].agg(["count", "sum"])</pre></figure>'
     "</div>")
 
 V_GRUP = verif("c5-v-grup", 1,
