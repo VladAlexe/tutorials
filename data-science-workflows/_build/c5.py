@@ -77,34 +77,24 @@ sl("s0", "Cursul", "Unde suntem",
 # ===========================================================================
 
 def _ic_fis():
-    return ('<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" '
+    return ('<svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" '
             'stroke-linejoin="round"><path d="M4 1.5h5.2L12.5 4.8V14.5h-8.5z"/><path d="M9 1.7V5h3.3"/></svg>')
 
 def _ic_pc():
-    return ('<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
+    return ('<svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
             '<rect x="2.5" y="3" width="11" height="7.5" rx="1"/><path d="M1 13h14"/></svg>')
 
-def _ic_om():
-    return ('<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
-            '<circle cx="8" cy="5.5" r="2.6"/><path d="M3 14c.6-2.8 2.6-4.3 5-4.3s4.4 1.5 5 4.3"/></svg>')
-
-_FIS = [("perechi_tari.csv", ""), ("perechi_tari_v2.csv", ""), ("perechi_tari_final.csv", ""),
-        ("perechi_tari (1).csv", "rau"), ("perechi_tari_FINAL2.csv", "rau")]
+_FIS = [("Andrei", "perechi_tari.csv", ""), ("Maria", "perechi_tari_v2.csv", ""),
+        ("Ioana", "perechi_tari_final.csv", ""), ("Radu", "perechi_tari (1).csv", "rau"),
+        ("Elena", "perechi_tari_FINAL2.csv", "rau")]
 COPII = (
-    '<div class="cc5">'
-    '<div class="cc5__p">'
-    '<h4>Cinci fișiere</h4>'
-    '<div class="cc5__fis">'
-    + "".join(f'<span class="cc5__f {c}" style="--r:{(i - 2) * 2.5}deg">{_ic_fis()}<code>{n}</code></span>'
-              for i, (n, c) in enumerate(_FIS))
-    + '</div><p class="cc5__jos cc5__jos--rau">Care este versiunea bună?</p></div>'
-    '<div class="cc5__sag" aria-hidden="true"></div>'
-    '<div class="cc5__p cc5__p--b">'
-    '<h4>O bază de date</h4>'
-    '<div class="cc5__baza">'
-    '<div class="cc5__oameni">' + "".join(f'<span>{_ic_om()}</span>' for _ in range(5)) + '</div>'
-    '<div class="cc5__cil"><b>dsw.db</b></div>'
-    '</div><p class="cc5__jos">Toți citesc același tabel.</p></div>'
+    '<div class="cp5r">'
+    '<div><b>5</b><span>copii ale aceluiași tabel</span>'
+    '<ul>' + "".join(f'<li><em>{o}</em><code class="{c}">{f}</code></li>' for o, f, c in _FIS) + '</ul>'
+    '<p>Fiecare lucrează pe altă versiune; după câteva săptămâni, rezultatele nu se mai potrivesc.</p></div>'
+    '<div><b>1</b><span>tabel, într-o bază de date</span>'
+    '<ul>' + "".join(f'<li><em>{o}</em><code>pd.read_sql(..., engine)</code></li>' for o, _, _ in _FIS) + '</ul>'
+    '<p>O singură versiune: toți citesc același tabel, din același loc.</p></div>'
     "</div>")
 
 sl("s1", "Baza de date", "De ce o bază",
@@ -119,25 +109,22 @@ sl("s1", "Baza de date", "De ce o bază",
    + COPII)
 
 
-def _carte(cls, et, titlu, sub, adr, puncte):
+def _loc(et, titlu, sub, adr, puncte, cls=""):
     li = "".join(f"<li>{p}</li>" for p in puncte)
-    return (f'<div class="loc5__c {cls}"><span class="loc5__et">{et}</span><h4>{titlu}</h4>'
-            f'<p class="loc5__sub">{sub}</p><code class="loc5__adr">{adr}</code><ul>{li}</ul></div>')
+    return (f'<div class="{cls}"><small>{et}</small><b>{titlu}</b><span>{sub}</span>'
+            f'<code>{adr}</code><ul>{li}</ul></div>')
 
 LOCURI = (
-    '<div class="loc5">'
-    + _carte("loc5__c--azi", "la seminar", "Într-un fișier", "SQLite",
-             "sqlite:///data/dsw.db",
-             ["fără server, cont sau parolă", "un singur fișier, ușor de mutat", "un singur scriitor odată"])
-    + _carte("", "în instituții", "Pe un server", "PostgreSQL, MySQL",
-             "postgresql://utilizator:parola@server/baza",
-             ["mulți utilizatori deodată", "acces cu utilizator și parolă", "cineva întreține serverul"])
-    + _carte("", "găzduit", "În cloud", "Neon, Supabase, Azure SQL",
-             "postgresql://...@ep-....neon.tech/neondb",
-             ["același PostgreSQL, întreținut de firmă", "pornește la cerere, se oprește singur",
-              "plan gratuit pentru proiecte mici"])
+    '<div class="lc5">'
+    + _loc("la seminar", "Într-un fișier", "SQLite", "sqlite:///data/dsw.db",
+           ["fără server, cont sau parolă", "un singur fișier, ușor de mutat", "un singur scriitor odată"], "azi")
+    + _loc("în instituții", "Pe un server", "PostgreSQL, MySQL", "postgresql://utilizator:parola@server/baza",
+           ["mulți utilizatori deodată", "acces cu utilizator și parolă", "cineva întreține serverul"])
+    + _loc("găzduit", "În cloud", "Neon, Supabase, Azure SQL", "postgresql://...@ep-....neon.tech/neondb",
+           ["același PostgreSQL, întreținut de firmă", "pornește la cerere, se oprește singur",
+            "plan gratuit pentru proiecte mici"])
     + "</div>"
-    '<p class="loc5__motto">„SQLite nu concurează cu serverele de baze de date. SQLite concurează cu '
+    '<p class="lc5__motto">„SQLite nu concurează cu serverele de baze de date. SQLite concurează cu '
     "<code>fopen()</code>.”<small>sqlite.org, „Appropriate Uses For SQLite”</small></p>")
 
 FOLOSITE = [("PostgreSQL", 55.6), ("MySQL", 40.5), ("SQLite", 37.5), ("SQL Server", 30.1),
@@ -211,24 +198,15 @@ ADRESE = (
         ("/neondb", "baza", "", "roza")])
     + "</div>")
 
-def cod_explicat(linii, note):
-    """Cod scurt cu numere pe rânduri și explicațiile alături; nu este exercițiu."""
-    cod = "\n".join(linii)
-    li = "".join(f'<li><span class="ce5__n">{i}</span><span>{t}</span></li>' for i, t in enumerate(note, 1))
-    return f'<div class="ce5"><pre class="ce5__cod"><code>{cod}</code></pre><ol class="ce5__note">{li}</ol></div>'
+def cod_explicat(randuri):
+    """Codul, rând cu rând, cu ce face fiecare rând; nu este exercițiu."""
+    return ('<div class="ce5r">' + tabel(["Rândul din caiet", "Ce face"], [[f"~{c}", t] for c, t in randuri]) + "</div>")
 
-def _n(i):
-    return f'<span class="ce5__n">{i}</span>'
-
-COD_CONECTARE = cod_explicat(
-    ['import pandas as pd',
-     f'from sqlalchemy import create_engine              {_n(1)}',
-     '',
-     f'engine = create_engine("sqlite:///data/dsw.db")   {_n(2)}',
-     f'pd.read_sql("select 1 as conexiunea", engine)     {_n(3)}'],
-    ["SQLAlchemy face legătura dintre pandas și orice bază de date.",
-     "Adresa bazei: aici, un fișier din <code>curs/data/</code>, creat la prima scriere.",
-     "O interogare de probă: dacă răspunsul este 1, legătura funcționează."])
+COD_CONECTARE = cod_explicat([
+    ('from sqlalchemy import create_engine', "SQLAlchemy face legătura dintre pandas și orice bază de date."),
+    ('engine = create_engine("sqlite:///data/dsw.db")', "Adresa bazei: aici, un fișier din <code>curs/data/</code>, creat la prima scriere."),
+    ('pd.read_sql("select 1 as conexiunea", engine)', "O interogare de probă: răspunsul 1 arată că legătura funcționează."),
+])
 
 sl("s3", "Baza de date", "O adresă, orice bază",
    "<h2>O adresă, orice bază</h2>"
@@ -251,29 +229,22 @@ sl("s3", "Baza de date", "O adresă, orice bază",
 
 
 def _ic_tab():
-    return ('<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
+    return ('<svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">'
             '<rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6.5h12M6.5 6.5V13"/></svg>')
 
-TABELE_BAZA = (
-    '<div class="tb5">'
-    '<div class="tb5__col"><h4>în <code>data/processed</code>, din C3 și C4</h4>'
-    + "".join(f'<div class="tb5__i">{_ic_fis()}<code>{f}</code><small>{nr(n)} rânduri</small></div>' for f, n in [
-        ("regiuni_nuts2.csv", 298), ("sci_regiuni.csv", 88804), ("migratie_curata.csv", 9900), ("zboruri_curate.csv", 1505)])
-    + '</div><div class="tb5__s"><code>to_sql</code><i></i></div>'
-    '<div class="tb5__col tb5__col--b"><h4>în <code>data/dsw.db</code>: entitatea și cheia</h4>'
-    + "".join(f'<div class="tb5__i">{_ic_tab()}<code>{t}</code><small>{u}</small></div>' for t, u in [
-        ("regiuni", "o regiune · <code>regiune</code>"), ("sci", "o pereche de regiuni · <code>regiune_1, regiune_2</code>"),
-        ("migratie", "o cetățenie într-o țară · <code>tara_rezidenta, cetatenie</code>"),
-        ("zboruri", "o pereche de țări · <code>tara_1, tara_2</code>")])
-    + "</div></div>")
+TABELE_BAZA = tabel(["Fișierul din <code>data/processed</code>", "Rânduri", "Tabelul în bază", "Un rând este", "Cheia"], [
+    ["~regiuni_nuts2.csv", "298", "~regiuni", "o regiune", "~regiune"],
+    ["~sci_regiuni.csv", "88.804", "~sci", "o pereche de regiuni", "~regiune_1, regiune_2"],
+    ["~migratie_curata.csv", "9.900", "~migratie", "o cetățenie într-o țară", "~tara_rezidenta, cetatenie"],
+    ["~zboruri_curate.csv", "1.505", "~zboruri", "o pereche de țări", "~tara_1, tara_2"],
+])
 
-COD_TOSQL = cod_explicat(
-    ['regiuni = pd.read_csv(DATE + "regiuni_nuts2.csv")',
-     f'regiuni.to_sql("regiuni", engine, if_exists="replace", index=False)   {_n(1)}',
-     f'pd.read_sql("select count(*) as n from regiuni", engine)            {_n(2)}'],
-    ["Scrie tabelul în bază, cu numele <code>regiuni</code>; <code>\"replace\"</code> îl înlocuiește dacă există, "
-     "deci celula se poate rula din nou.",
-     "Verificarea: 298 de rânduri au plecat, 298 sunt în bază."])
+COD_TOSQL = cod_explicat([
+    ('regiuni = pd.read_csv(DATE + "regiuni_nuts2.csv")', "Citește tabelul din C4, din depozitul cursului."),
+    ('regiuni.to_sql("regiuni", engine, if_exists="replace", index=False)',
+     "Îl scrie în bază, cu numele <code>regiuni</code>; dacă există deja, îl înlocuiește."),
+    ('pd.read_sql("select count(*) as n from regiuni", engine)', "Verificarea: 298 de rânduri au plecat, 298 sunt în bază."),
+])
 
 sl("s4", "Baza de date", "Tabelele, în bază",
    "<h2>Patru tabele, patru entități</h2>"
@@ -498,9 +469,9 @@ JM = (
     '    <span class="k2">on</span>="regiune_1", <span class="k1">how="left"</span>)</pre></figure>'
     "</div>")
 
-NUMARARE = ('<div class="nr5"><span><small>perechi, înainte</small><b>44.253</b></span>'
-            '<i aria-hidden="true">→</i><span><small>rânduri, după unire</small><b>44.253</b></span>'
-            '<p>Niciun rând pierdut, niciunul înmulțit.</p></div>')
+NUMARARE = ('<div class="nr5r"><div><b>44.253</b><span>perechi, înainte de unire</span></div>'
+            '<div><b>44.253</b><span>rânduri, după unire</span></div>'
+            '<div><b>0</b><span>rânduri pierdute sau înmulțite</span></div></div>')
 
 sl("s8", "Integrarea", "join și merge",
    "<h2>join în SQL, merge în pandas</h2>"
@@ -758,25 +729,19 @@ sl("s11", "Echipa", "Verificarea bazei",
 
 
 
-def _caiet(n, nume, rol, cls=""):
-    return (f'<div class="eb5__k {cls}"><code>{n}_{nume}.ipynb</code><small>{rol}</small></div>')
-
 ECHIPA = (
-    '<div class="eb5">'
-    '<div class="eb5__col">'
-    + _caiet("01", "collection", "colectarea") + _caiet("02", "preprocessing", "preprocesarea")
-    + _caiet("03", "cleaning_integration", "curățarea și integrarea", "eb5__k--scrie")
-    + '</div>'
-    '<div class="eb5__sag eb5__sag--scrie"><code>to_sql</code><span>scrie</span></div>'
-    '<div class="eb5__db"><div class="eb5__cil"><b>proiect.db</b></div><small>data/processed/</small></div>'
-    '<div class="eb5__sag eb5__sag--citeste"><code>read_sql</code><span>citesc</span></div>'
-    '<div class="eb5__col">'
-    + _caiet("04", "exploration", "explorarea", "eb5__k--citeste") + _caiet("05", "model", "modelul", "eb5__k--citeste")
-    + "</div></div>"
-    '<div class="eb5__jos">'
-    '<span><b>Pe GitHub</b>Fișierul se urcă împreună cu caietul 03; colegii îl primesc cu <code>git pull</code>.</span>'
-    '<span><b>Un singur scriitor</b>Git nu poate uni două versiuni ale aceluiași fișier de bază de date.</span>'
-    '<span><b>La cursul 6</b>Explorarea: ipoteze din literatură, grafice, rețele.</span>'
+    '<div class="eb5r">'
+    '<div><small>scrie, cu <code>to_sql</code></small>'
+    '<ul><li class="da"><code>03_cleaning_integration.ipynb</code><span>curățarea și integrarea</span></li></ul></div>'
+    '<div class="eb5r__db"><small>baza echipei</small><b>proiect.db</b><code>data/processed/</code></div>'
+    '<div><small>citesc, cu <code>read_sql</code></small>'
+    '<ul><li><code>04_exploration.ipynb</code><span>explorarea</span></li>'
+    '<li><code>05_model.ipynb</code><span>modelul</span></li></ul></div>'
+    "</div>"
+    '<div class="nt2 eb5r__jos">'
+    '<div><span>Pe GitHub</span><p>Fișierul se urcă împreună cu caietul 03; colegii îl primesc cu <code>git pull</code>.</p></div>'
+    '<div><span>Un singur scriitor</span><p>Git nu poate uni două versiuni ale aceluiași fișier de bază de date.</p></div>'
+    '<div><span>La cursul 6</span><p>Explorarea: ipoteze din literatură, grafice, rețele.</p></div>'
     "</div>")
 
 sl("s12", "Mai departe", "Baza echipei, cursul 6",
