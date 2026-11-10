@@ -6,14 +6,14 @@
 <title>Cursul 4, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 4: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=146">
-<link rel="stylesheet" href="../../css/sistem.css?v=146">
-<link rel="stylesheet" href="../../css/tutorial.css?v=146">
-<link rel="stylesheet" href="../../css/interactiv.css?v=146">
-<link rel="stylesheet" href="../../css/grafice.css?v=146">
-<link rel="stylesheet" href="../../css/exercitii.css?v=146">
-<link rel="stylesheet" href="../../css/explorator.css?v=146">
-<script src="../../js/tema.js?v=146"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=147">
+<link rel="stylesheet" href="../../css/sistem.css?v=147">
+<link rel="stylesheet" href="../../css/tutorial.css?v=147">
+<link rel="stylesheet" href="../../css/interactiv.css?v=147">
+<link rel="stylesheet" href="../../css/grafice.css?v=147">
+<link rel="stylesheet" href="../../css/exercitii.css?v=147">
+<link rel="stylesheet" href="../../css/explorator.css?v=147">
+<script src="../../js/tema.js?v=147"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 4 · Manual"></div>
@@ -103,7 +103,7 @@ nume.describe(include="object")  <span class="c"># 1.971 coduri distincte, dar d
   <div class="ix__corp"><script type="application/json">{"fisier": "04_curatarea_si_integrarea_datelor.ipynb · 2. Profilarea", "intro": "Înaintea oricărei decizii, tabelul se descrie: dimensiunea, tipurile, valorile prezente și valorile distincte.", "cod": "indicatori = pd.read_csv(DATE_C3 + \"indicatori.csv\")\n\nindicatori.info()\n\nindicatori[\"indicator\"].value_counts()\n\nindicatori[\"regiune\"].str.len().value_counts()", "pasi": [{"l": 1, "set": {"indicatori": {"t": "DataFrame", "v": {"cols": ["regiune", "valoare", "indicator"], "rows": [["BE10", 1264371.0, "populatie"], ["BE21", 1932876.0, "populatie"], ["…", "…", "…"]], "nota": "format lung: un rând pe regiune și indicator"}}}, "txt": "Tabelul salvat în C3, citit din depozitul cursului. Un rând este identificat de <b>regiune + indicator</b>."}, {"l": 3, "out": "RangeIndex: 2281 entries, 0 to 2280\n #   Column     Non-Null Count  Dtype\n 0   regiune    2281 non-null   object\n 1   valoare    1893 non-null   float64\n 2   indicator  2281 non-null   object", "txt": "<code>info()</code>: 2.281 de rânduri, dar doar 1.893 de valori în <code>valoare</code>. Diferența, 388, sunt valori lipsă."}, {"l": 5, "out": "varsta_medie         354\nstudii_superioare    351\nsomaj                351\npopulatie            350\ndensitate            340\npib_locuitor         309\nretele_sociale       226", "txt": "<code>value_counts()</code> numără fiecare valoare distinctă. Indicatorii acoperă între 226 și 354 de regiuni: lipsurile nu sunt distribuite uniform."}, {"l": 7, "out": "4    2281", "txt": "Lungimea codului indică nivelul (C3). Toate codurile au 4 caractere, deci tabelul conține doar regiuni NUTS 2."}]}</script></div>
 </div><table class="tabel"><thead><tr><th>Metoda</th><th>Ce face</th></tr></thead><tbody><tr><td class="mono">info()</td><td>rezumatul tabelului: rânduri, coloane, tipuri, câte valori are fiecare coloană</td></tr><tr><td class="mono">value_counts()</td><td>de câte ori apare fiecare valoare dintr-o coloană</td></tr><tr><td class="mono">str.len()</td><td>lungimea fiecărui text dintr-o coloană</td></tr></tbody></table><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Profilarea tabelului</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-profil", "fisier": "04_curatarea.ipynb", "sarcina": "Trei întrebări de pus oricărui tabel nou, înainte de orice modificare.", "cod": "# 1. ce coloane, ce tipuri, cate valori are fiecare\nindicatori.{{1}}()\n\n# 2. de cate ori apare fiecare indicator\nindicatori[\"indicator\"].{{2}}()\n\n# 3. ce lungime au codurile regiunilor\nindicatori[\"regiune\"].str.{{3}}().value_counts()", "goluri": {"1": {"ok": ["info"], "ajutor": "metoda"}, "2": {"ok": ["value_counts"], "ajutor": "metoda"}, "3": {"ok": ["len"], "ajutor": "metoda"}}, "iesire": "RangeIndex: 2281 entries\n...\nvarsta_medie    354\n...\n4    2281", "indiciu": "Rezumatul pe coloane înseamnă „informații”. Numărarea valorilor distincte este value_counts. Lungimea unui text se obține cu metoda len, din grupul .str.", "laBine": "Cele trei rezultate descriu tabelul fără să-l modifice.", "laRau": "Toate trei sunt metode: se scriu fără ghilimele.", "explicatie": "<code>info()</code> arată lipsurile pe coloane, <code>value_counts()</code> arată distribuția unei coloane categoriale, iar <code>str.len()</code> verifică forma codurilor. Împreună răspund la prima întrebare a curățării: ce conține tabelul."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-profil", "fisier": "04_curatarea_si_integrarea_datelor.ipynb", "sarcina": "Trei întrebări de pus oricărui tabel nou, înainte de orice modificare.", "cod": "# 1. ce coloane, ce tipuri, cate valori are fiecare\nindicatori.{{1}}()\n\n# 2. de cate ori apare fiecare indicator\nindicatori[\"indicator\"].{{2}}()\n\n# 3. ce lungime au codurile regiunilor\nindicatori[\"regiune\"].str.{{3}}().value_counts()", "goluri": {"1": {"ok": ["info"], "ajutor": "metoda"}, "2": {"ok": ["value_counts"], "ajutor": "metoda"}, "3": {"ok": ["len"], "ajutor": "metoda"}}, "iesire": "RangeIndex: 2281 entries\n...\nvarsta_medie    354\n...\n4    2281", "indiciu": "Rezumatul pe coloane înseamnă „informații”. Numărarea valorilor distincte este value_counts. Lungimea unui text se obține cu metoda len, din grupul .str.", "laBine": "Cele trei rezultate descriu tabelul fără să-l modifice.", "laRau": "Toate trei sunt metode: se scriu fără ghilimele.", "explicatie": "<code>info()</code> arată lipsurile pe coloane, <code>value_counts()</code> arată distribuția unei coloane categoriale, iar <code>str.len()</code> verifică forma codurilor. Împreună răspund la prima întrebare a curățării: ce conține tabelul."}</script></div>
 </div><table class="tabel"><thead><tr><th>Metoda</th><th>Ce arată</th></tr></thead><tbody><tr><td class="mono">df.info()</td><td>dimensiunea, tipul fiecărei coloane, câte valori are fiecare</td></tr><tr><td class="mono">df["col"].value_counts()</td><td>valorile distincte ale unei coloane și frecvența lor</td></tr><tr><td class="mono">df["col"].str.len().value_counts()</td><td>lungimile textelor: o verificare rapidă a codurilor</td></tr><tr><td class="mono">df.describe()</td><td>minimul, media, cuartilele și maximul coloanelor numerice</td></tr></tbody></table>
 
 </section>
@@ -196,7 +196,7 @@ scrise.str.strip().str.upper()                <span class="c"># RO, RO, RO</span
 <span class="tut__nr">15 · Validarea</span>
 <h2>Validarea finală</h2><p>Validarea compară tabelul final cu regulile lui: cheia e unică, coloanele de care depinde analiza sunt complete, iar numărul de rânduri e cel calculat, 298 de regiuni. În C5, aceeași verificare se face pe perechile de regiuni și de țări.</p><table class="tabel"><thead><tr><th>Regula</th><th>Verificarea</th><th>Trebuie</th></tr></thead><tbody><tr><td>nicio regiune de două ori</td><td class="mono">regiuni.duplicated("regiune").sum()</td><td>0</td></tr><tr><td>fiecare regiune are o țară</td><td class="mono">regiuni["tara"].isna().sum()</td><td>0</td></tr><tr><td>numărul de regiuni</td><td class="mono">len(regiuni)</td><td>298</td></tr></tbody></table><div class="ix" data-ix="cod">
   <div class="ix__cap"><span class="ix__fel">Exercițiu de cod</span><span class="ix__t">Verificările finale</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-validare", "fisier": "04_curatarea.ipynb", "sarcina": "Trei verificări pe tabelul regiunilor, înainte de salvare.", "cod": "# 1. cate regiuni apar de doua ori? (trebuie 0)\n#    metoda care gaseste randurile repetate\nprint(regiuni.{{1}}(\"regiune\").sum())\n\n# 2. cate regiuni nu au tara? (trebuie 0)\n#    metoda care gaseste valorile lipsa\nprint(regiuni[\"tara\"].{{2}}().sum())\n\n# 3. cate regiuni sunt? (trebuie 298), gata scris\nprint(len(regiuni))", "goluri": {"1": {"ok": ["duplicated"], "ajutor": "metoda"}, "2": {"ok": ["isna", "isnull"], "ajutor": "metoda"}}, "iesire": "0\n0\n298", "indiciu": "Rândurile repetate se găsesc cu duplicated, ca la duplicate. Lipsurile se găsesc cu isna.", "laBine": "Toate trei cifrele sunt cele așteptate: tabelul se poate salva.", "laRau": "Ambele goluri sunt metode, ca la secțiunile despre duplicate și lipsuri.", "explicatie": "Validarea nu aduce nimic nou: refolosește metodele lecției. Dacă o cifră diferă de cea așteptată, un pas anterior a schimbat datele, iar tabelul nu se salvează până nu se află de ce."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c4-cod-validare", "fisier": "04_curatarea_si_integrarea_datelor.ipynb", "sarcina": "Trei verificări pe tabelul regiunilor, înainte de salvare.", "cod": "# 1. cate regiuni apar de doua ori? (trebuie 0)\n#    metoda care gaseste randurile repetate\nprint(regiuni.{{1}}(\"regiune\").sum())\n\n# 2. cate regiuni nu au tara? (trebuie 0)\n#    metoda care gaseste valorile lipsa\nprint(regiuni[\"tara\"].{{2}}().sum())\n\n# 3. cate regiuni sunt? (trebuie 298), gata scris\nprint(len(regiuni))", "goluri": {"1": {"ok": ["duplicated"], "ajutor": "metoda"}, "2": {"ok": ["isna", "isnull"], "ajutor": "metoda"}}, "iesire": "0\n0\n298", "indiciu": "Rândurile repetate se găsesc cu duplicated, ca la duplicate. Lipsurile se găsesc cu isna.", "laBine": "Toate trei cifrele sunt cele așteptate: tabelul se poate salva.", "laRau": "Ambele goluri sunt metode, ca la secțiunile despre duplicate și lipsuri.", "explicatie": "Validarea nu aduce nimic nou: refolosește metodele lecției. Dacă o cifră diferă de cea așteptată, un pas anterior a schimbat datele, iar tabelul nu se salvează până nu se află de ce."}</script></div>
 </div><p>Celula se păstrează în caiet și se rulează la fiecare refacere a curățării. Rolul ei nu este să găsească erori o singură dată, ci să semnaleze imediat când o modificare ulterioară schimbă datele.</p>
 
 </section>
@@ -216,11 +216,11 @@ scrise.str.strip().str.upper()                <span class="c"># RO, RO, RO</span
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=146"></script>
+<script type="module" src="../../js/antet.js?v=147"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=146";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=146";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=146";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=147";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=147";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=147";
 pornesteIx();
 pornesteVerif("c4");
 pornesteTut("c4");

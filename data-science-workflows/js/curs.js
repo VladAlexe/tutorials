@@ -52,7 +52,7 @@ export const LECTII = [
     scurt:"Curățare",
     rezumat:"Profilarea, duplicatele, lipsurile și codurile incompatibile, apoi tabelul regiunilor și validarea lui, pe datele cursului.",
     stare:"gata", sarcini:9,
-    notebook:null },
+    notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/04_curatarea_si_integrarea_datelor.ipynb" },
 
   { nr:5, cheie:"c5-agregare-si-baze-de-date",
     titlu:"Agregare și baze de date",

@@ -6,14 +6,14 @@
 <title>Cursul 5 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Baza de date SQLite a cursului, legată de pandas prin SQLAlchemy; unde mai poate sta o bază (server, cloud, Neon); unirea tabelelor și agregarea, în SQL și în pandas.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=146">
-<link rel="stylesheet" href="../../css/sistem.css?v=146">
-<link rel="stylesheet" href="../../css/slide.css?v=146">
-<link rel="stylesheet" href="../../css/interactiv.css?v=146">
-<link rel="stylesheet" href="../../css/grafice.css?v=146">
-<link rel="stylesheet" href="../../css/exercitii.css?v=146">
-<link rel="stylesheet" href="../../css/explorator.css?v=146">
-<script src="../../js/tema.js?v=146"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=147">
+<link rel="stylesheet" href="../../css/sistem.css?v=147">
+<link rel="stylesheet" href="../../css/slide.css?v=147">
+<link rel="stylesheet" href="../../css/interactiv.css?v=147">
+<link rel="stylesheet" href="../../css/grafice.css?v=147">
+<link rel="stylesheet" href="../../css/exercitii.css?v=147">
+<link rel="stylesheet" href="../../css/explorator.css?v=147">
+<script src="../../js/tema.js?v=147"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 5 · Agregare și baze de date" data-crom="1"></div>
@@ -82,7 +82,7 @@
 <section class="sld" id="s7" data-grup="Integrarea" data-t="Tipurile de join">
 <h2>Cum se unesc două tabele</h2><div class="jx5"><input type="radio" name="jx5-s" id="jx5-s-inner" class="jx5__r jx5__r--inner" checked><input type="radio" name="jx5-s" id="jx5-s-left" class="jx5__r jx5__r--left"><input type="radio" name="jx5-s" id="jx5-s-outer" class="jx5__r jx5__r--outer"><div class="jx5__sus"><div class="jx5__t"><div class="jx5__n">stânga: <code>perechi</code><small>perechile regiunii Nord-Vest</small></div><table><tr><th>regiune_2</th><th>sci</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td></tr><tr class="jx5--st"><td>HU11</td><td>34.160</td></tr></table></div><div class="jx5__on"><code>on regiune_2 = regiune</code></div><div class="jx5__t"><div class="jx5__n">dreapta: <code>regiuni</code><small>regiuni din România</small></div><table><tr><th>regiune</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>75.000</td></tr><tr class="jx5--dr"><td>RO42</td><td>31.300</td></tr></table></div></div><div class="jx5__tab"><label for="jx5-s-inner" class="jx5__b jx5__b--inner">inner join<small>2 rânduri</small></label><label for="jx5-s-left" class="jx5__b jx5__b--left">left join<small>3 rânduri</small></label><label for="jx5-s-outer" class="jx5__b jx5__b--outer">outer join<small>4 rânduri</small></label></div><div class="jx5__jos"><div class="jx5__rez jx5__rez--inner"><div class="jx5__t"><div class="jx5__n"><code>inner join</code><small>2 rânduri</small></div><table><tr><th>regiune</th><th>sci</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td><td>75.000</td></tr></table></div><p class="jx5__txt">Doar regiunile găsite în ambele tabele.</p></div><div class="jx5__rez jx5__rez--left"><div class="jx5__t"><div class="jx5__n"><code>left join</code><small>3 rânduri</small></div><table><tr><th>regiune</th><th>sci</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td><td>75.000</td></tr><tr class="jx5--st"><td>HU11</td><td>34.160</td><td>null</td></tr></table></div><p class="jx5__txt">Toate rândurile din stânga; unde dreapta nu are pereche, rămâne o valoare lipsă.</p></div><div class="jx5__rez jx5__rez--outer"><div class="jx5__t"><div class="jx5__n"><code>outer join</code><small>4 rânduri</small></div><table><tr><th>regiune</th><th>sci</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td><td>75.000</td></tr><tr class="jx5--st"><td>HU11</td><td>34.160</td><td>null</td></tr><tr class="jx5--dr"><td>RO42</td><td>null</td><td>31.300</td></tr></table></div><p class="jx5__txt">Toate rândurile din ambele tabele, cu valori lipsă de ambele părți.</p></div></div></div>
 <div class="verif" data-id="c5-v-join" data-corect="1">
-    <p class="verif__q">Tabelul <code>sci</code> are 44.253 de perechi, iar fiecare regiune apare o singură dată în <code>regiuni</code>. Câte rânduri dă <code>sci left join regiuni</code>?</p>
+    <p class="verif__q">Perechile din <code>sci</code>, într-o singură ordine, sunt 44.253, iar fiecare regiune apare o singură dată în <code>regiuni</code>. Câte rânduri dă <code>sci left join regiuni</code>?</p>
     <button>Mai puțin de 44.253, dacă unele regiuni lipsesc</button>
     <button>Exact 44.253</button>
     <button>Mai mult de 44.253</button>
@@ -95,7 +95,8 @@
 <h2>join în SQL, merge în pandas</h2><p class="cheie">Aceeași unire, în două limbaje. Regula din C4 rămâne: după fiecare unire, numărăm rândurile.</p><div class="pd5"><figure><figcaption>SQL, în bază</figcaption><pre>select p.regiune_1, p.regiune_2, p.sci, r.pib_locuitor
 from sci p
 <span class="k1">left join</span> regiuni r
-  <span class="k2">on</span> p.regiune_1 = r.regiune</pre></figure><figure><figcaption>pandas, în caiet</figcaption><pre>perechi.<span class="k1">merge</span>(
+  <span class="k2">on</span> p.regiune_1 = r.regiune
+where p.regiune_1 &lt; p.regiune_2</pre></figure><figure><figcaption>pandas, în caiet</figcaption><pre>perechi.<span class="k1">merge</span>(
     atribute.add_suffix("_1"),
     <span class="k2">on</span>="regiune_1", <span class="k1">how="left"</span>)</pre></figure></div><div class="nr5r"><div><b>44.253</b><span>perechi, înainte de unire</span></div><div><b>44.253</b><span>rânduri, după unire</span></div><div><b>0</b><span>rânduri pierdute sau înmulțite</span></div></div>
 
@@ -150,11 +151,11 @@ vreme.to_csv(<span class="s">&quot;vreme_cluj.csv&quot;</span>, index=<span clas
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=146"></script>
+<script type="module" src="../../js/antet.js?v=147"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=146";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=146";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=146";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=147";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=147";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=147";
 pornesteIx();
 pornesteVerif("c5");
 pornesteSlide({ capitol:"c5", lectie:"c5-agregare-si-baze-de-date" });

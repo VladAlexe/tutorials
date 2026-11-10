@@ -6,14 +6,14 @@
 <title>Cursul 5, manual · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Manualul cursului 5: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=146">
-<link rel="stylesheet" href="../../css/sistem.css?v=146">
-<link rel="stylesheet" href="../../css/tutorial.css?v=146">
-<link rel="stylesheet" href="../../css/interactiv.css?v=146">
-<link rel="stylesheet" href="../../css/grafice.css?v=146">
-<link rel="stylesheet" href="../../css/exercitii.css?v=146">
-<link rel="stylesheet" href="../../css/explorator.css?v=146">
-<script src="../../js/tema.js?v=146"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=147">
+<link rel="stylesheet" href="../../css/sistem.css?v=147">
+<link rel="stylesheet" href="../../css/tutorial.css?v=147">
+<link rel="stylesheet" href="../../css/interactiv.css?v=147">
+<link rel="stylesheet" href="../../css/grafice.css?v=147">
+<link rel="stylesheet" href="../../css/exercitii.css?v=147">
+<link rel="stylesheet" href="../../css/explorator.css?v=147">
+<script src="../../js/tema.js?v=147"></script>
 </head>
 <body>
 <div id="antet" data-aici="Cursul 5 · Manual"></div>
@@ -117,7 +117,7 @@
 <span class="tut__nr">11 · Integrarea</span>
 <h2>Cum se unesc două tabele</h2><p>Două tabele se unesc în două feluri. <code>concat</code> le pune unul sub altul, când au aceleași coloane: s-a folosit în C3. <code>merge</code> le alătură după o cheie comună, adăugând coloane: s-a folosit în C4. La unirea după cheie, tipul unirii hotărăște ce se întâmplă cu rândurile care nu își găsesc perechea.</p><p>În exemplu, cu date reale, stânga are trei perechi ale regiunii Nord-Vest, iar dreapta trei regiuni ale României. <code>HU11</code> (Budapesta) nu este în dreapta, iar <code>RO42</code> (Vest) nu este în stânga. Butoanele schimbă tipul unirii.</p><div class="jx5"><input type="radio" name="jx5-m" id="jx5-m-inner" class="jx5__r jx5__r--inner" checked><input type="radio" name="jx5-m" id="jx5-m-left" class="jx5__r jx5__r--left"><input type="radio" name="jx5-m" id="jx5-m-outer" class="jx5__r jx5__r--outer"><div class="jx5__sus"><div class="jx5__t"><div class="jx5__n">stânga: <code>perechi</code><small>perechile regiunii Nord-Vest</small></div><table><tr><th>regiune_2</th><th>sci</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td></tr><tr class="jx5--st"><td>HU11</td><td>34.160</td></tr></table></div><div class="jx5__on"><code>on regiune_2 = regiune</code></div><div class="jx5__t"><div class="jx5__n">dreapta: <code>regiuni</code><small>regiuni din România</small></div><table><tr><th>regiune</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>75.000</td></tr><tr class="jx5--dr"><td>RO42</td><td>31.300</td></tr></table></div></div><div class="jx5__tab"><label for="jx5-m-inner" class="jx5__b jx5__b--inner">inner join<small>2 rânduri</small></label><label for="jx5-m-left" class="jx5__b jx5__b--left">left join<small>3 rânduri</small></label><label for="jx5-m-outer" class="jx5__b jx5__b--outer">outer join<small>4 rânduri</small></label></div><div class="jx5__jos"><div class="jx5__rez jx5__rez--inner"><div class="jx5__t"><div class="jx5__n"><code>inner join</code><small>2 rânduri</small></div><table><tr><th>regiune</th><th>sci</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td><td>75.000</td></tr></table></div><p class="jx5__txt">Doar regiunile găsite în ambele tabele.</p></div><div class="jx5__rez jx5__rez--left"><div class="jx5__t"><div class="jx5__n"><code>left join</code><small>3 rânduri</small></div><table><tr><th>regiune</th><th>sci</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td><td>75.000</td></tr><tr class="jx5--st"><td>HU11</td><td>34.160</td><td>null</td></tr></table></div><p class="jx5__txt">Toate rândurile din stânga; unde dreapta nu are pereche, rămâne o valoare lipsă.</p></div><div class="jx5__rez jx5__rez--outer"><div class="jx5__t"><div class="jx5__n"><code>outer join</code><small>4 rânduri</small></div><table><tr><th>regiune</th><th>sci</th><th>pib</th></tr><tr class="jx5--da"><td>RO12</td><td>308.881</td><td>28.400</td></tr><tr class="jx5--da"><td>RO32</td><td>154.045</td><td>75.000</td></tr><tr class="jx5--st"><td>HU11</td><td>34.160</td><td>null</td></tr><tr class="jx5--dr"><td>RO42</td><td>null</td><td>31.300</td></tr></table></div><p class="jx5__txt">Toate rândurile din ambele tabele, cu valori lipsă de ambele părți.</p></div></div></div><table class="tabel"><thead><tr><th>Unirea</th><th>Ce face</th><th>pandas</th><th>SQL</th></tr></thead><tbody><tr><td>una sub alta</td><td>tabele cu aceleași coloane, rândurile se adună (C3)</td><td class="mono">pd.concat([a, b])</td><td class="mono">union all</td></tr><tr><td>după o cheie</td><td>tabele diferite, cu o coloană comună; se adaugă coloane (C4)</td><td class="mono">a.merge(b, on="regiune")</td><td class="mono">join ... on ...</td></tr><tr><td>inner</td><td>doar rândurile găsite în ambele tabele</td><td class="mono">how="inner"</td><td class="mono">inner join</td></tr><tr><td>left</td><td>toate rândurile din stânga; lipsă unde nu se găsește</td><td class="mono">how="left"</td><td class="mono">left join</td></tr><tr><td>outer</td><td>toate rândurile din ambele tabele</td><td class="mono">how="outer"</td><td class="mono">full outer join</td></tr></tbody></table>
 <div class="verif" data-id="c5-v-join" data-corect="1">
-    <p class="verif__q">Tabelul <code>sci</code> are 44.253 de perechi, iar fiecare regiune apare o singură dată în <code>regiuni</code>. Câte rânduri dă <code>sci left join regiuni</code>?</p>
+    <p class="verif__q">Perechile din <code>sci</code>, într-o singură ordine, sunt 44.253, iar fiecare regiune apare o singură dată în <code>regiuni</code>. Câte rânduri dă <code>sci left join regiuni</code>?</p>
     <button>Mai puțin de 44.253, dacă unele regiuni lipsesc</button>
     <button>Exact 44.253</button>
     <button>Mai mult de 44.253</button>
@@ -131,7 +131,8 @@
 <h2>join în SQL, merge în pandas</h2><p><code>left join regiuni r on p.regiune_1 = r.regiune</code> caută, pentru fiecare pereche, rândul din <code>regiuni</code> cu același cod. Este exact ce face <code>merge</code> în pandas, cu <code>how="left"</code>. Culorile arată ce corespunde. <code>p</code> și <code>r</code> sunt nume scurte pentru cele două tabele; în pandas, <code>add_suffix("_1")</code> face din <code>regiune</code> coloana <code>regiune_1</code>, după care se unește.</p><div class="pd5"><figure><figcaption>SQL, în bază</figcaption><pre>select p.regiune_1, p.regiune_2, p.sci, r.pib_locuitor
 from sci p
 <span class="k1">left join</span> regiuni r
-  <span class="k2">on</span> p.regiune_1 = r.regiune</pre></figure><figure><figcaption>pandas, în caiet</figcaption><pre>perechi.<span class="k1">merge</span>(
+  <span class="k2">on</span> p.regiune_1 = r.regiune
+where p.regiune_1 &lt; p.regiune_2</pre></figure><figure><figcaption>pandas, în caiet</figcaption><pre>perechi.<span class="k1">merge</span>(
     atribute.add_suffix("_1"),
     <span class="k2">on</span>="regiune_1", <span class="k1">how="left"</span>)</pre></figure></div><div class="nr5r"><div><b>44.253</b><span>perechi, înainte de unire</span></div><div><b>44.253</b><span>rânduri, după unire</span></div><div><b>0</b><span>rânduri pierdute sau înmulțite</span></div></div><p>În caiet, aceeași unire se face și în pandas, cu toți cei șapte indicatori, iar tabelul rezultat, <code>perechi_regiuni</code>, se scrie în bază. SQL lasă baza să facă munca și aduce doar ce se cere, ceea ce contează când tabelele sunt mari sau stau pe un server; pandas este mai comod când urmează alți pași în Python. În proiect, tabelele finale se fac o singură dată, într-un singur caiet; celelalte caiete doar le citesc.</p>
 
@@ -146,7 +147,7 @@ from regiuni
 <span class="k1">group by tara</span>
 order by locuitori desc</pre></figure><figure><figcaption>pandas, în caiet</figcaption><pre>regiuni.<span class="k1">groupby("tara")</span>["populatie"]
        .agg([<span class="k2">"count"</span>, <span class="k3">"sum"</span>])
-       .sort_values("sum", ascending=False)</pre></figure></div><div class="pd5__rez"><table class="tabel"><thead><tr><th>tara</th><th>regiuni</th><th>locuitori</th></tr></thead><tbody><tr><td>TR</td><td>26</td><td>85.372.377</td></tr><tr><td>DE</td><td>38</td><td>83.456.045</td></tr><tr><td>FR</td><td>27</td><td>68.669.303</td></tr><tr><td>IT</td><td>21</td><td>58.971.230</td></tr><tr><td>ES</td><td>19</td><td>48.619.695</td></tr><tr><td>…</td><td></td><td>37 de țări în tot</td></tr></tbody></table></div><div class="pd5__cand"><p><b>SQL:</b> baza face munca și trimite doar rezultatul. Contează când tabelul este mare sau stă pe un server.</p><p><b>pandas:</b> mai comod pentru pașii de după, graficele și modelele. În practică: SQL ca să alegi și să rezumi, pandas ca să analizezi.</p></div><p>Unele țări au o singură regiune NUTS2 (LV, MK, EE, CY, LU, ME, MT, IS, XK): în comparațiile dintre regiuni, o astfel de regiune este de fapt o țară întreagă.</p><h3>Aceeași țară sau țări diferite</h3><p>Gruparea se poate face și după o coloană calculată. Cu <code>case when</code>, perechile de regiuni se împart în două grupuri: din aceeași țară și din țări diferite.</p><div class="ix" data-ix="grupare">
+       .sort_values("sum", ascending=False)</pre></figure></div><div class="pd5__rez"><table class="tabel"><thead><tr><th>tara</th><th>regiuni</th><th>locuitori</th></tr></thead><tbody><tr><td>TR</td><td>26</td><td>85.372.377</td></tr><tr><td>DE</td><td>38</td><td>83.456.045</td></tr><tr><td>FR</td><td>27</td><td>68.669.303</td></tr><tr><td>IT</td><td>21</td><td>58.971.230</td></tr><tr><td>ES</td><td>19</td><td>48.619.695</td></tr><tr><td>…</td><td></td><td>37 de țări în tot</td></tr></tbody></table></div><div class="pd5__cand"><p><b>SQL:</b> baza face munca și trimite doar rezultatul. Contează când tabelul este mare sau stă pe un server.</p><p><b>pandas:</b> mai comod pentru pașii de după, graficele și modelele. În practică: SQL pentru selecție și rezumare, pandas pentru analiză.</p></div><p>Unele țări au o singură regiune NUTS2 (LV, MK, EE, CY, LU, ME, MT, IS, XK): în comparațiile dintre regiuni, o astfel de regiune este de fapt o țară întreagă.</p><h3>Aceeași țară sau țări diferite</h3><p>Gruparea se poate face și după o coloană calculată. Cu <code>case when</code>, perechile de regiuni se împart în două grupuri: din aceeași țară și din țări diferite.</p><div class="ix" data-ix="grupare">
   <div class="ix__cap"><span class="ix__fel">Explorare</span><span class="ix__t">group by, pas cu pas</span></div>
   <div class="ix__corp"><script type="application/json">{"grupuri": [{"t": "aceeași țară", "n": 2385, "m": 134977, "c": "accent"}, {"t": "țări diferite", "n": 41868, "m": 3149, "c": "text-3"}], "puncte": 368, "raport": "În aceeași țară, SCI-ul mediu este de 43 de ori mai mare.", "start": "Tabelul <code>perechi_regiuni</code>: 44.253 de rânduri, câte unul pe pereche.", "pasi": [{"cmd": "from perechi_regiuni", "t": "Rândurile", "txt": "Fiecare punct ține locul a 120 de perechi de regiuni. Cele două regiuni din aceeași țară sunt colorate."}, {"cmd": "group by tip", "full": "group by case when tara_1 = tara_2 then 'aceeasi tara' else 'tari diferite' end", "t": "Grupurile", "txt": "<code>case when ... then ... else ... end</code> dă fiecărei perechi un tip, ca un „dacă”; <code>group by</code> le strânge după tip."}, {"cmd": "count(*), avg(sci)", "full": "select tip, count(*) as perechi, avg(sci) as sci_mediu", "t": "Un rând pe grup", "txt": "Fiecare grup devine un singur rând: câte perechi are și SCI-ul lor mediu. Din 44.253 de rânduri, două: asta este agregarea."}]}</script></div>
 </div><h3>Atenție la medii</h3><p>Media unei variabile pe regiunile unei țări nu este valoarea țării, pentru că regiunile au populații diferite: o regiune mică cântărește cât una mare. Când se agregă, întrebarea de pus întâi este ce reprezintă un rând.</p><div class="ix" data-ix="medii">
@@ -207,11 +208,11 @@ vreme.to_csv(<span class="s">&quot;vreme_cluj.csv&quot;</span>, index=<span clas
 </div></div></main>
 <div id="subsol"></div>
 
-<script type="module" src="../../js/antet.js?v=146"></script>
+<script type="module" src="../../js/antet.js?v=147"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=146";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=146";
-import { porneste as pornesteTut } from "../../js/tutorial.js?v=146";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=147";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=147";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=147";
 pornesteIx();
 pornesteVerif("c5");
 pornesteTut("c5");

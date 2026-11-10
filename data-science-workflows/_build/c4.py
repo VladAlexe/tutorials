@@ -263,7 +263,7 @@ M_PROFIL = metode([
 ])
 
 COD_PROFIL = {
-    "id": "c4-cod-profil", "fisier": "04_curatarea.ipynb",
+    "id": "c4-cod-profil", "fisier": "04_curatarea_si_integrarea_datelor.ipynb",
     "sarcina": "Trei întrebări de pus oricărui tabel nou, înainte de orice modificare.",
     "cod": "# 1. ce coloane, ce tipuri, cate valori are fiecare\n"
            "indicatori.{{1}}()\n\n"
@@ -719,7 +719,7 @@ M_VAL = tabel(["Regula", "Verificarea", "Trebuie"], [
 ])
 
 COD_VALIDARE = {
-    "id": "c4-cod-validare", "fisier": "04_curatarea.ipynb",
+    "id": "c4-cod-validare", "fisier": "04_curatarea_si_integrarea_datelor.ipynb",
     "sarcina": "Trei verificări pe tabelul regiunilor, înainte de salvare.",
     "cod": "# 1. cate regiuni apar de doua ori? (trebuie 0)\n"
            "#    metoda care gaseste randurile repetate\n"

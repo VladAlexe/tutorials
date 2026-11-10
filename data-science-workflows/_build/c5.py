@@ -514,7 +514,7 @@ UNIRI = tabel(["Unirea", "Ce face", "pandas", "SQL"], [
 ])
 
 V_JOIN = verif("c5-v-join", 1,
-               "Tabelul <code>sci</code> are 44.253 de perechi, iar fiecare regiune apare o singură dată în "
+               "Perechile din <code>sci</code>, într-o singură ordine, sunt 44.253, iar fiecare regiune apare o singură dată în "
                "<code>regiuni</code>. Câte rânduri dă <code>sci left join regiuni</code>?",
                ["Mai puțin de 44.253, dacă unele regiuni lipsesc", "Exact 44.253",
                 "Mai mult de 44.253", "298, câte regiuni sunt"],
@@ -543,7 +543,8 @@ JM = (
     'select p.regiune_1, p.regiune_2, p.sci, r.pib_locuitor\n'
     'from sci p\n'
     '<span class="k1">left join</span> regiuni r\n'
-    '  <span class="k2">on</span> p.regiune_1 = r.regiune</pre></figure>'
+    '  <span class="k2">on</span> p.regiune_1 = r.regiune\n'
+    'where p.regiune_1 &lt; p.regiune_2</pre></figure>'
     '<figure><figcaption>pandas, în caiet</figcaption><pre>'
     'perechi.<span class="k1">merge</span>(\n'
     '    atribute.add_suffix("_1"),\n'
@@ -613,8 +614,8 @@ REZ_TARA = tabel(["tara", "regiuni", "locuitori"],
                  [[t, str(n), nr(l)] for t, n, l in PT["top"]] + [["…", "", f"{PT['tari']} de țări în tot"]])
 CAND = ('<div class="pd5__cand">'
         "<p><b>SQL:</b> baza face munca și trimite doar rezultatul. Contează când tabelul este mare sau stă pe un server.</p>"
-        "<p><b>pandas:</b> mai comod pentru pașii de după, graficele și modelele. În practică: SQL ca să alegi și să "
-        "rezumi, pandas ca să analizezi.</p></div>")
+        "<p><b>pandas:</b> mai comod pentru pașii de după, graficele și modelele. În practică: SQL pentru selecție și "
+        "rezumare, pandas pentru analiză.</p></div>")
 
 UNDE = {
     "id": "c5-prezice-unde", "poarta": False, "fisier": "unde.py",
