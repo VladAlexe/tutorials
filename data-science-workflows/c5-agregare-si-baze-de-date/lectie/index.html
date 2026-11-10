@@ -6,14 +6,14 @@
 <title>Cursul 5 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Baza de date SQLite a cursului, legată de pandas prin SQLAlchemy; unde mai poate sta o bază (server, cloud, Neon); unirea tabelelor și agregarea, în SQL și în pandas.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=145">
-<link rel="stylesheet" href="../../css/sistem.css?v=145">
-<link rel="stylesheet" href="../../css/slide.css?v=145">
-<link rel="stylesheet" href="../../css/interactiv.css?v=145">
-<link rel="stylesheet" href="../../css/grafice.css?v=145">
-<link rel="stylesheet" href="../../css/exercitii.css?v=145">
-<link rel="stylesheet" href="../../css/explorator.css?v=145">
-<script src="../../js/tema.js?v=145"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=146">
+<link rel="stylesheet" href="../../css/sistem.css?v=146">
+<link rel="stylesheet" href="../../css/slide.css?v=146">
+<link rel="stylesheet" href="../../css/interactiv.css?v=146">
+<link rel="stylesheet" href="../../css/grafice.css?v=146">
+<link rel="stylesheet" href="../../css/exercitii.css?v=146">
+<link rel="stylesheet" href="../../css/explorator.css?v=146">
+<script src="../../js/tema.js?v=146"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 5 · Agregare și baze de date" data-crom="1"></div>
@@ -26,15 +26,20 @@
 </section>
 
 <section class="sld" id="p1" data-grup="Proiectul" data-t="Proiectul echipei">
-<h2>Proiectul echipei: unde a ajuns echipa</h2><div class="pr6"><div><b>O întrebare proprie</b><span>pe tema aleasă la C3, parcursă pe tot fluxul de lucru</span></div><div><b>Datele le alege echipa</b><span>fiecare sursă documentată și adusă în depozit prin caiete</span></div><div><b>Predarea, pe <code>main</code></b><span>caietele din <code>notebooks/</code> și <code>src/</code>; depozit curat; nota, individuală, din commit-uri și prezentare</span></div></div><div class="ix" data-ix="pasechipa">
-  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pasul echipei</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c5-pas-echipa", "echipe": 7, "pasi": [{"nume": "Colectarea", "caiet": "01_collection", "gata": "datele în data/raw/, sursele în README"}, {"nume": "Preprocesarea", "caiet": "02_preprocessing", "gata": "câte un tabel pe sursă, cu cheia lui"}, {"nume": "Curățarea", "caiet": "03_cleaning_integration", "gata": "verificările, unirea, proiect.db"}, {"nume": "Explorarea", "caiet": "04_exploration", "gata": "figurile și ipotezele, în figures/"}, {"nume": "Modelul", "caiet": "05_model", "gata": "regresia, reziduurile, raportul"}]}</script></div>
-</div>
+<h2>Proiectul echipei: un flux, cinci pași</h2><div class="pr6"><div><b>O întrebare proprie</b><span>pe tema aleasă la C3, parcursă pe tot fluxul de lucru</span></div><div><b>Datele le alege echipa</b><span>fiecare sursă documentată și adusă în depozit prin caiete</span></div><div><b>Predarea, pe <code>main</code></b><span>caietele din <code>notebooks/</code> și <code>src/</code>; depozit curat; nota, individuală, din commit-uri și prezentare</span></div></div><div class="q6"><div><i>1</i><b>Colectarea</b><span>datele în data/raw/, sursele în README</span><code>01_collection.ipynb</code></div><div><i>2</i><b>Preprocesarea</b><span>câte un tabel pe sursă, cu cheia lui</span><code>02_preprocessing.ipynb</code></div><div><i>3</i><b>Curățarea</b><span>verificările, unirea, proiect.db</span><code>03_cleaning_integration.ipynb</code></div><div><i>4</i><b>Explorarea</b><span>figurile și ipotezele, în figures/</span><code>04_exploration.ipynb</code></div><div><i>5</i><b>Modelul</b><span>regresia, reziduurile, raportul</span><code>05_model.ipynb</code></div></div>
 
 </section>
 
 <section class="sld" id="p2" data-grup="Proiectul" data-t="Ce studiază echipele">
 <h2>Ce studiază echipele</h2><div class="te6"><div style="--ec:var(--accent)"><small>Echipa 1</small><b>Reduc granițele legăturile sociale?</b><p>Regiuni din aceeași țară față de regiuni din țări diferite, la aceeași distanță; accent pe granița Franța, Germania, Elveția.</p><em>Unitatea: perechi de regiuni</em><ul><li>SCI pe regiuni</li><li>contururile GISCO</li><li>populația, densitatea</li></ul></div><div style="--ec:var(--roza)"><small>Echipa 3</small><b>Au țările cu mai multă migrație legături mai puternice?</b><p>Migrația în ambele sensuri, comparată cu SCI; apoi cu populația și diferența de PIB a celor două țări.</p><em>Unitatea: perechi de țări</em><ul><li>SCI pe țări</li><li>migrația pe cetățenii</li><li>Banca Mondială</li></ul></div><div style="--ec:var(--ardezie)"><small>Echipa 4</small><b>Cum diferă legăturile internaționale ale județelor?</b><p>Profilul legăturilor fiecărui județ cu țările Europei și asocierea lui cu populația, densitatea și PIB-ul.</p><em>Unitatea: județ și țară</em><ul><li>SCI județ-țară</li><li>Eurostat NUTS 3</li><li>contururile GISCO</li></ul></div><div style="--ec:var(--ceas)"><small>Echipa 5</small><b>Șomajul, migrația și legăturile de pe Facebook</b><p>Se leagă rata șomajului și ponderea rezidenților cu altă cetățenie de legăturile dintre țările UE?</p><em>Unitatea: țări din UE</em><ul><li>SCI pe țări</li><li>populația pe cetățenii</li><li>rata șomajului</li></ul></div><div style="--ec:var(--text)"><small>Echipa 6</small><b>Duce șomajul tinerilor la migrație?</b><p>Șomajul la 15-24 de ani și imigrația pe cetățenii în țările europene, an de an, cu PIB-ul, NEET și nivelul prețurilor.</p><em>Unitatea: țară și an</em><ul><li>șomajul tinerilor</li><li>imigrația</li><li>PIB, NEET, prețuri</li></ul></div><div style="--ec:var(--accent)"><small>Echipa 7</small><b>România și Italia: legături, dezvoltare, vot</b><p>SCI între județe și regiunile Italiei, după dezvoltarea locală, votul din 2024 și structura muncii din Italia.</p><em>Unitatea: județ și regiune italiană</em><ul><li>SCI</li><li>LHDI 2018</li><li>AEP 2024</li><li>ISTAT, ocuparea</li></ul></div></div>
+
+</section>
+
+<section class="sld" id="p3" data-grup="Proiectul" data-t="Unde a ajuns echipa">
+<h2>Unde a ajuns echipa</h2><div class="ix" data-ix="pasechipa">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pasul echipei</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-pas-echipa", "echipe": 7, "pasi": [{"nume": "Colectarea", "caiet": "01_collection", "gata": "datele în data/raw/, sursele în README"}, {"nume": "Preprocesarea", "caiet": "02_preprocessing", "gata": "câte un tabel pe sursă, cu cheia lui"}, {"nume": "Curățarea", "caiet": "03_cleaning_integration", "gata": "verificările, unirea, proiect.db"}, {"nume": "Explorarea", "caiet": "04_exploration", "gata": "figurile și ipotezele, în figures/"}, {"nume": "Modelul", "caiet": "05_model", "gata": "regresia, reziduurile, raportul"}]}</script></div>
+</div>
 
 </section>
 
@@ -121,6 +126,22 @@ from sci p
 
 </section>
 
+<section class="sld" id="t2" data-grup="Mai departe" data-t="Tema 2">
+<h2>Tema 2: date dintr-un API</h2><div class="t25"><div><ol class="t25__pasi"><li><i>1</i><b>Un API, la alegere</b><span>din orice domeniu</span></li><li><i>2</i><b>Cererea, într-un caiet</b><span><code>tema2_nume.ipynb</code>, cu <code>requests</code> sau cu biblioteca API-ului</span></li><li><i>3</i><b>Un DataFrame</b><span>coloanele utile, cu nume clare</span></li><li><i>4</i><b>Un CSV</b><span><code>to_csv(..., index=False)</code>, recitit cu <code>read_csv</code></span></li></ol><ul class="t25__leg"><li><a class="leg" href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">Public APIs</a><span>lista mare, pe categorii; <code>Auth: No</code> înseamnă fără cheie</span></li><li><a class="leg" href="https://rapidapi.com/collection/list-of-free-apis" target="_blank" rel="noopener">RapidAPI: Free APIs</a><span>API-uri gratuite, unele cu cont</span></li><li><a class="leg" href="https://pypi.org/project/yfinance/" target="_blank" rel="noopener">Yahoo Finance</a><span>prețurile acțiunilor, prin biblioteca <code>yfinance</code></span></li><li><a class="leg" href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">Open-Meteo</a><span>vremea, fără cheie: exemplul alăturat</span></li></ul></div><div><pre><code><span class="k">import</span> requests
+<span class="k">import</span> pandas <span class="k">as</span> pd
+
+url = <span class="s">&quot;https://api.open-meteo.com/v1/forecast&quot;</span>
+parametri = {<span class="s">&quot;latitude&quot;</span>: <span class="n">46.77</span>, <span class="s">&quot;longitude&quot;</span>: <span class="n">23.60</span>,  <span class="c"># Cluj</span>
+             <span class="s">&quot;hourly&quot;</span>: <span class="s">&quot;temperature_2m&quot;</span>}
+r = requests.get(url, params=parametri)
+r.status_code                          <span class="c"># 200: a reușit</span>
+
+date = r.json()                        <span class="c"># un dicționar</span>
+vreme = pd.DataFrame(date[<span class="s">&quot;hourly&quot;</span>])   <span class="c"># un rând = o oră</span>
+vreme.to_csv(<span class="s">&quot;vreme_cluj.csv&quot;</span>, index=<span class="k">False</span>)</code></pre></div></div>
+
+</section>
+
 <section class="sld" id="s12" data-grup="Mai departe" data-t="Baza echipei, cursul 6">
 <h2>Baza echipei</h2><div class="eb5r"><div><small>scrie, cu <code>to_sql</code></small><ul><li class="da"><code>03_cleaning_integration.ipynb</code><span>curățarea și integrarea</span></li></ul></div><div class="eb5r__db"><small>baza echipei</small><b>proiect.db</b><code>data/processed/</code></div><div><small>citesc, cu <code>read_sql</code></small><ul><li><code>04_exploration.ipynb</code><span>explorarea</span></li><li><code>05_model.ipynb</code><span>modelul</span></li></ul></div></div><div class="nt2 eb5r__jos"><div><span>Pe GitHub</span><p>Fișierul se urcă împreună cu caietul 03; colegii îl primesc cu <code>git pull</code>.</p></div><div><span>Un singur scriitor</span><p>Git nu poate uni două versiuni ale aceluiași fișier de bază de date.</p></div><div><span>La cursul 6</span><p>Explorarea: ipoteze din literatură, grafice, rețele.</p></div></div>
 
@@ -129,11 +150,11 @@ from sci p
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=145"></script>
+<script type="module" src="../../js/antet.js?v=146"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=145";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=145";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=145";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=146";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=146";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=146";
 pornesteIx();
 pornesteVerif("c5");
 pornesteSlide({ capitol:"c5", lectie:"c5-agregare-si-baze-de-date" });

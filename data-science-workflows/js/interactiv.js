@@ -6,10 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=145";
-import EXERCITII from "./exercitii.js?v=145";
-import VIZUAL from "./vizual.js?v=145";
-import HARTA from "./harta-sci.js?v=145";
+import GRAFICE from "./grafice.js?v=146";
+import EXERCITII from "./exercitii.js?v=146";
+import VIZUAL from "./vizual.js?v=146";
+import HARTA from "./harta-sci.js?v=146";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA };
 
@@ -27,7 +27,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=145");
+    const m = await import("/data-science-workflows/js/colectare.js?v=146");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -117,7 +117,7 @@ C.url = (gazda, date) => {
       document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
       const st = gazda.querySelector(".ex__stare");
       try {
-        const m = await import("/data-science-workflows/js/colectare.js?v=145");
+        const m = await import("/data-science-workflows/js/colectare.js?v=146");
         const salvat = await m.salveazaCod({ exercitiuId: date.id, cod: `${pus.join(" | ")} · greșite: ${gresite}`, trecut: true });
         st.textContent = salvat ? "Rezolvare înregistrată." : `Rezolvarea nu a fost înregistrată: ${m.deCeNu()}.`;
         st.classList.add("vazut");
@@ -544,7 +544,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumim.</b> Accentul cursului cade pe fluxul de lucru, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=145");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=146");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -721,7 +721,7 @@ C.asteptari = (gazda, date) => {
        să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
     poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=145");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=146");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}
@@ -730,61 +730,68 @@ C.asteptari = (gazda, date) => {
 
 
 /* --- Pasul echipei: unde a ajuns proiectul --------------------------------
-   Cei cinci pași ai proiectului, ca stații pe o linie. Studentul apasă pe
-   ultimul pas încheiat de echipa lui; linia se umple până acolo. Echipa vine
-   din cont, când există; altfel se alege din rândul de numere. Răspunsul
-   ajunge la poartă (rezultatele orei) și în jurnal, ca text scurt.
+   Echipele ca jetoane colorate, pașii ca cinci coloane cu o bară deasupra.
+   Studentul alege echipa (sau o primește din cont) și ultimul pas încheiat;
+   barele se umplu până acolo, în culoarea echipei. Răspunsul ajunge la
+   poartă (rezultatele orei) și în jurnal, ca text scurt.
    ------------------------------------------------------------------------ */
 C.pasechipa = (gazda, date) => {
   gazda.closest(".ix")?.classList.add("exc");
   const P = date.pasi, N = date.echipe || 7;
   const CUL = ["accent", "ambra", "roza", "ardezie", "ceas", "text"];
   const cul = nr => `var(--${CUL[(nr - 1) % CUL.length]})`;
-  let echipa = null, pas = -1, fixa = false;
+  const fis = f => f.replace(/_/g, "_<wbr>");
+  let echipa = null, pas = -1, fixa = false, trimis = false;
 
   gazda.innerHTML = `
-    <div class="pe6__echipe"><span>Echipa</span>${Array.from({ length: N }, (_, k) =>
-      `<button type="button" data-e="${k + 1}">${k + 1}</button>`).join("")}</div>
-    <ol class="pe6">${P.map((p, k) => `<li><button type="button" data-p="${k}">
-      <i>${String(k + 1).padStart(2, "0")}</i><b>${p.nume}</b><code>${p.caiet}</code><span>${p.gata}</span></button></li>`).join("")}</ol>
-    <div class="pe6__jos"><p class="pe6__st">Ultimul pas încheiat de echipă, pe <code>dev</code>.</p>
-      <button class="btn btn--mic btn--tare" data-rol="trimite" type="button" disabled>Trimite</button></div>`;
+    <div class="pe7__echipe" role="group" aria-label="Echipa">${Array.from({ length: N }, (_, k) =>
+      `<button type="button" data-e="${k + 1}" style="--c:${cul(k + 1)}"><small>Echipa</small>${k + 1}</button>`).join("")}</div>
+    <div class="pe7" role="group" aria-label="Ultimul pas încheiat">${P.map((p, k) => `<button type="button" data-p="${k}">
+      <i>${String(k + 1).padStart(2, "0")}</i><b>${p.nume}</b><code>${fis(p.caiet)}</code><span>${p.gata}</span></button>`).join("")}</div>
+    <div class="pe7__jos">
+      <p class="pe7__st"><span class="pe7__mare">?</span><span class="pe7__txt">Echipa și ultimul pas încheiat, pe <code>dev</code>.</span></p>
+      <button class="btn btn--tare" data-rol="trimite" type="button" disabled>Trimite</button></div>`;
 
   const $ = s => gazda.querySelector(s), $$ = s => gazda.querySelectorAll(s);
-  const bt = $('[data-rol="trimite"]'), st = $(".pe6__st");
+  const bt = $('[data-rol="trimite"]'), mare = $(".pe7__mare"), txt = $(".pe7__txt");
 
   function arata(){
-    gazda.style.setProperty("--ec", echipa ? cul(echipa) : "var(--accent)");
-    $$(".pe6__echipe button").forEach(b => b.classList.toggle("ales", +b.dataset.e === echipa));
-    $$(".pe6 li").forEach((li, k) => { li.classList.toggle("facut", k <= pas); li.classList.toggle("ales", k === pas); });
-    bt.disabled = !(echipa && pas >= 0) || gazda.closest(".ix")?.classList.contains("gata");
-    if (echipa && pas >= 0) st.innerHTML = `<b>Echipa ${echipa}</b>: pasul ${pas + 1} încheiat${pas < P.length - 1 ? `; urmează ${P[pas + 1].nume.toLowerCase()}` : ""}.`;
+    gazda.style.setProperty("--ec", echipa ? cul(echipa) : "var(--text-3)");
+    $$(".pe7__echipe button").forEach(b => b.classList.toggle("ales", +b.dataset.e === echipa));
+    $$(".pe7 button").forEach((b, k) => { b.classList.toggle("facut", k <= pas); b.classList.toggle("ales", k === pas); });
+    bt.disabled = trimis || !(echipa && pas >= 0);
+    if (trimis) return;
+    mare.textContent = pas >= 0 ? `${pas + 1}/${P.length}` : "?";
+    if (echipa && pas >= 0)
+      txt.innerHTML = `<b>Echipa ${echipa}</b>: încheiat pasul ${pas + 1}, ${P[pas].nume.toLowerCase()}. ${pas < P.length - 1 ? `Urmează ${P[pas + 1].nume.toLowerCase()}.` : "Proiectul este gata de predare."}`;
+    else txt.innerHTML = echipa ? `<b>Echipa ${echipa}</b>: care e ultimul pas încheiat?` : "Echipa și ultimul pas încheiat, pe <code>dev</code>.";
   }
 
   gazda.addEventListener("click", e => {
+    if (trimis) return;
     const be = e.target.closest("[data-e]"), bp = e.target.closest("[data-p]");
     if (be && !fixa){ echipa = +be.dataset.e; arata(); }
     if (bp){ pas = +bp.dataset.p; arata(); }
   });
 
   bt.onclick = async () => {
-    bt.disabled = true;
-    const txt = `Echipa ${echipa}: pasul ${pas + 1}, ${P[pas].nume}`;
-    st.innerHTML = `<b>Înregistrat.</b> ${txt}.`;
-    poarta(gazda, date.id, txt);
+    const t = `Echipa ${echipa}: pasul ${pas + 1}, ${P[pas].nume}`;
+    trimis = true; arata(); gazda.classList.add("pe7--trimis");
+    txt.innerHTML = `<b>Înregistrat.</b> ${t}.`;
+    poarta(gazda, date.id, t);
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=145");
-      await s.jurnal("pas_echipa", { echipa, pas: pas + 1, text: txt });
+      const s = await import("/data-science-workflows/js/sesiune.js?v=146");
+      await s.jurnal("pas_echipa", { echipa, pas: pas + 1, text: t });
     } catch {}
   };
 
   /* echipa din cont, dacă studentul e autentificat și are echipă */
   (async () => {
     try {
-      const { sb } = await import("/data-science-workflows/js/auth.js?v=145");
+      const { sb } = await import("/data-science-workflows/js/auth.js?v=146");
       const r = await sb.rpc("echipele_mele");
       const nr = r?.data?.echipa?.nr;
-      if (nr){ echipa = nr; fixa = true; gazda.classList.add("pe6--fixa"); arata(); }
+      if (nr && !trimis){ echipa = nr; fixa = true; gazda.classList.add("pe7--fixa"); arata(); }
     } catch {}
   })();
   arata();

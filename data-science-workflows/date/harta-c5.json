@@ -1,6 +1,6 @@
 {
  "capitol": "c5",
- "total": 15,
+ "total": 17,
  "sarcini": 5,
  "slide": [
   {
@@ -15,12 +15,7 @@
    "id": "p1",
    "grup": "Proiectul",
    "titlu": "Proiectul echipei",
-   "sarcini": [
-    {
-     "id": "c5-pas-echipa",
-     "fel": "text"
-    }
-   ]
+   "sarcini": []
   },
   {
    "nr": 3,
@@ -31,41 +26,53 @@
   },
   {
    "nr": 4,
+   "id": "p3",
+   "grup": "Proiectul",
+   "titlu": "Unde a ajuns echipa",
+   "sarcini": [
+    {
+     "id": "c5-pas-echipa",
+     "fel": "text"
+    }
+   ]
+  },
+  {
+   "nr": 5,
    "id": "s1",
    "grup": "Baza de date",
    "titlu": "De ce o bază",
    "sarcini": []
   },
   {
-   "nr": 5,
+   "nr": 6,
    "id": "s2",
    "grup": "Baza de date",
    "titlu": "Unde stă o bază",
    "sarcini": []
   },
   {
-   "nr": 6,
+   "nr": 7,
    "id": "s3",
    "grup": "Baza de date",
    "titlu": "O adresă, orice bază",
    "sarcini": []
   },
   {
-   "nr": 7,
+   "nr": 8,
    "id": "s4",
    "grup": "Baza de date",
    "titlu": "Tabelele, în bază",
    "sarcini": []
   },
   {
-   "nr": 8,
+   "nr": 9,
    "id": "s5",
    "grup": "SQL",
    "titlu": "O interogare",
    "sarcini": []
   },
   {
-   "nr": 9,
+   "nr": 10,
    "id": "s6",
    "grup": "SQL",
    "titlu": "Interogarea, scrisă",
@@ -77,7 +84,7 @@
    ]
   },
   {
-   "nr": 10,
+   "nr": 11,
    "id": "s7",
    "grup": "Integrarea",
    "titlu": "Tipurile de join",
@@ -97,14 +104,14 @@
    ]
   },
   {
-   "nr": 11,
+   "nr": 12,
    "id": "s8",
    "grup": "Integrarea",
    "titlu": "join și merge",
    "sarcini": []
   },
   {
-   "nr": 12,
+   "nr": 13,
    "id": "s9",
    "grup": "Agregarea",
    "titlu": "group by",
@@ -124,14 +131,14 @@
    ]
   },
   {
-   "nr": 13,
+   "nr": 14,
    "id": "s10",
    "grup": "Agregarea",
    "titlu": "Perechile de țări",
    "sarcini": []
   },
   {
-   "nr": 14,
+   "nr": 15,
    "id": "s11",
    "grup": "Echipa",
    "titlu": "Verificarea bazei",
@@ -143,7 +150,14 @@
    ]
   },
   {
-   "nr": 15,
+   "nr": 16,
+   "id": "t2",
+   "grup": "Mai departe",
+   "titlu": "Tema 2",
+   "sarcini": []
+  },
+  {
+   "nr": 17,
    "id": "s12",
    "grup": "Mai departe",
    "titlu": "Baza echipei, cursul 6",

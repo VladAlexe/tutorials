@@ -3866,32 +3866,6 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .pr6 b{display:block;font-size:var(--t3);font-weight:600;color:var(--text)}
 .pr6 span{display:block;margin-top:4px;font-size:var(--t2);color:var(--text-2);line-height:1.4}
 .pr6 code{font-size:12px}
-.pe6__echipe{display:flex;align-items:center;gap:6px;margin:0 0 10px;font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
-.pe6__echipe span{margin-right:4px}
-.pe6__echipe button{width:30px;height:30px;border:1px solid var(--linie-2);border-radius:50%;background:none;color:var(--text-2);font:600 var(--t2) var(--sans);cursor:pointer}
-.pe6__echipe button:hover{border-color:var(--ec)}
-.pe6__echipe button.ales{background:var(--ec);border-color:var(--ec);color:var(--panza)}
-.pe6--fixa .pe6__echipe button:not(.ales){opacity:.3;cursor:default}
-.pe6{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:relative;font-family:var(--sans)}
-.pe6 li{position:relative;padding-top:22px}
-.pe6 li::before{content:"";position:absolute;top:8px;left:0;right:0;height:3px;background:var(--linie-2)}
-.pe6 li:first-child::before{left:9px}
-.pe6 li:last-child::before{right:auto;width:9px}
-.pe6 li.facut::before{background:var(--ec)}
-.pe6 li::after{content:"";position:absolute;top:1px;left:0;width:17px;height:17px;border-radius:50%;background:var(--panza);border:3px solid var(--linie-2);box-sizing:border-box}
-.pe6 li.facut::after{background:var(--ec);border-color:var(--ec)}
-.pe6 li.ales::after{box-shadow:0 0 0 5px color-mix(in srgb,var(--ec) 25%,transparent)}
-.pe6 button{display:block;width:100%;text-align:left;background:none;border:0;padding:6px 14px 6px 0;cursor:pointer;color:inherit;font:inherit}
-.pe6 i{display:block;font-style:normal;font-size:var(--t4,var(--t3));font-weight:600;line-height:1;color:var(--text-3)}
-.pe6 li.facut i{color:var(--ec)}
-.pe6 b{display:block;margin-top:6px;font-size:var(--t3);font-weight:600;color:var(--text)}
-.pe6 code{display:block;margin-top:2px;font-family:var(--mono);font-size:11.5px;color:var(--text-3);background:none;padding:0}
-.pe6 span{display:block;margin-top:6px;font-size:var(--t1);color:var(--text-2);line-height:1.4}
-.pe6 button:hover b{color:var(--ec)}
-.pe6__jos{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid var(--linie)}
-.pe6__st{margin:0;font-family:var(--sans);font-size:var(--t2);color:var(--text-2);max-width:none}
-.pe6__st b{color:var(--ec)}
-
 .te6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:26px;font-family:var(--sans)}
 .te6 > div{padding:12px 0 14px;border-top:3px solid var(--ec);margin-top:4px}
 .te6 small{display:block;font-size:var(--t1);font-weight:600;color:var(--ec);letter-spacing:.02em}
@@ -3902,13 +3876,53 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .te6 li{font-size:var(--t1);color:var(--text-2);margin:0}
 .te6 li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ec);margin-right:5px;vertical-align:1px}
 @media (max-width:760px){
-  .pr6,.te6,.pe6{grid-template-columns:1fr}
+  .pr6,.te6{grid-template-columns:1fr}
   .pr6 div + div{padding-left:0;border-left:0;border-top:1px solid var(--linie)}
-  .pe6 li{padding:0 0 0 28px}
-  .pe6 li::before{top:0;bottom:0;left:7px;right:auto;width:3px;height:auto}
-  .pe6 li:first-child::before{left:7px;top:9px}.pe6 li:last-child::before{width:3px;height:9px}
-  .pe6 li::after{top:8px}
 }
-.pe6 li,.sld .pe6 li{padding-left:0;margin:0;list-style:none}
-.pe6 li::marker{content:none}
-.pe6 code,.sld .pe6 code{background:none;border:0;padding:0;overflow-wrap:anywhere}
+
+/* pasul echipei, v2: jetoane colorate, cinci coloane cu bară */
+.pe7__echipe{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.pe7__echipe button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 12px 9px;border:1px solid var(--linie-2);border-top:4px solid var(--c);border-radius:0;background:none;color:var(--c);font:600 var(--t5,var(--t4))/1 var(--sans);cursor:pointer;transition:background .15s}
+.pe7__echipe small{font:500 var(--t1) var(--sans);color:var(--text-3)}
+.pe7__echipe button:hover{background:color-mix(in srgb,var(--c) 8%,transparent)}
+.pe7__echipe button.ales{background:var(--c);border-color:var(--c);color:var(--panza)}
+.pe7__echipe button.ales small{color:var(--panza);opacity:.8}
+.pe7--fixa .pe7__echipe button:not(.ales){opacity:.25;cursor:default}
+.pe7{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.pe7 button{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;text-align:left;padding:14px 12px 0 0;border:0;border-top:8px solid var(--linie);background:none;color:inherit;font-family:var(--sans);cursor:pointer;transition:border-color .2s}
+.pe7 button:hover{border-top-color:var(--linie-2)}
+.pe7 button.facut{border-top-color:var(--ec)}
+.pe7 i{display:block;font-style:normal;font-size:var(--t6,var(--t5));font-weight:600;line-height:1;color:var(--text-3)}
+.pe7 button.facut i{color:var(--ec)}
+.pe7 b{display:block;margin-top:8px;font-size:var(--t3);font-weight:600;color:var(--text)}
+.pe7 code,.sld .pe7 code{display:block;margin-top:3px;font-family:var(--mono);font-size:11.5px;color:var(--text-3);background:none;border:0;padding:0}
+.pe7 span{display:block;margin-top:8px;font-size:var(--t1);color:var(--text-2);line-height:1.4}
+.pe7 button.ales b{color:var(--ec)}
+.pe7__jos{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;padding-top:14px;border-top:1px solid var(--linie-2)}
+.pe7__st{display:flex;align-items:baseline;gap:16px;margin:0;font-family:var(--sans);max-width:none}
+.pe7__mare{font-size:var(--t6,var(--t5));font-weight:600;line-height:1;color:var(--ec);min-width:2.2em}
+.pe7__txt{font-size:var(--t3);color:var(--text-2)}
+.pe7__txt b{color:var(--ec)}
+.pe7--trimis .pe7__echipe button,.pe7--trimis .pe7 button{cursor:default}
+.rnr[data-capitol="c5"] .sld#p3 .poarta{display:none}
+@media (max-width:760px){
+  .pe7__echipe{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .pe7{grid-template-columns:1fr}
+  .pe7 button{display:grid;grid-template-columns:44px 1fr;column-gap:10px}
+  .pe7 i{grid-row:span 3}
+}
+/* tema 2 (C5): pașii și legăturile, lângă exemplu */
+.t25{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:30px;align-items:start;font-family:var(--sans)}
+.t25__pasi{list-style:none;margin:0;padding:0;counter-reset:t25;border-top:1px solid var(--linie-2)}
+.t25__pasi li,.sld .t25__pasi li{display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:10px;padding:7px 0;margin:0;border-bottom:1px solid var(--linie)}
+.t25 li::before,.sld .t25 li::before{content:none;display:none}
+.t25__pasi i{grid-row:span 2;font-style:normal;font-size:var(--t4,var(--t3));font-weight:600;line-height:1.1;color:var(--accent-text)}
+.t25__pasi b{font-size:var(--t3);font-weight:600;color:var(--text)}
+.t25__pasi span{font-size:var(--t2);color:var(--text-2)}
+.t25__leg{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.t25__leg li,.sld .t25__leg li{display:flex;flex-direction:column;padding:5px 0;margin:0}
+.t25__leg a{font-size:var(--t3);font-weight:600;width:fit-content}
+.t25__leg a::after{content:" ↗";color:var(--text-3);font-weight:400}
+.t25__leg span{font-size:var(--t1);color:var(--text-3)}
+.sld .t25 pre{margin:0;font-size:12.5px;line-height:1.65}
+@media (max-width:760px){.t25{grid-template-columns:1fr}}

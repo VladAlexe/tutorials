@@ -19,6 +19,7 @@ Rulare:  python _build/c5.py
 """
 
 import json
+import re
 
 from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
@@ -94,20 +95,20 @@ PASI = {
         {"nume": "Modelul", "caiet": "05_model", "gata": "regresia, reziduurile, raportul"},
     ]}
 
+PASI_TXT = "".join(
+    f'<div><i>{k}</i><b>{p["nume"]}</b><span>{p["gata"]}</span><code>{p["caiet"]}.ipynb</code></div>'
+    for k, p in enumerate(PASI["pasi"], 1))
+
 sl("p1", "Proiectul", "Proiectul echipei",
-   "<h2>Proiectul echipei: unde a ajuns echipa</h2>"
-   + PROIECT
-   + ix("pasechipa", "Pasul echipei", PASI),
+   "<h2>Proiectul echipei: un flux, cinci pași</h2>"
+   + PROIECT + f'<div class="q6">{PASI_TXT}</div>',
    manual=
    "<h2>Proiectul echipei</h2>"
    "<p>Fiecare echipă răspunde la o întrebare de cercetare proprie și parcurge întregul flux de lucru, câte un caiet pe "
    "pas. Datele le alege echipa; se poate folosi o parte din datele și din modelul cursului. Predarea se face pe ramura "
    "<code>main</code> a depozitului <code>dsw-ubb-2026/echipa-N</code>: caietele și, dacă există, fișierele din "
    "<code>src/</code> pe care le folosesc. Proiectul valorează 5 puncte, iar nota este individuală.</p>"
-   + PROIECT
-   + "<p>Pe linia de mai jos se marchează ultimul pas încheiat de echipă, pe ramura <code>dev</code>.</p>"
-   + ix("pasechipa", "Pasul echipei", PASI))
-
+   + PROIECT + f'<div class="q6">{PASI_TXT}</div>')
 
 TEME = [
     (1, "Reduc granițele legăturile sociale?",
@@ -142,6 +143,15 @@ sl("p2", "Proiectul", "Ce studiază echipele",
    "<p>Temele, după tema 1 a fiecărei echipe: întrebarea, unitatea de analiză și sursele de date. Întrebarea finală "
    "se scrie în <code>README.md</code>.</p>" + ECHIPE_TEME)
 
+
+sl("p3", "Proiectul", "Unde a ajuns echipa",
+   "<h2>Unde a ajuns echipa</h2>"
+   + ix("pasechipa", "Pasul echipei", PASI),
+   manual=
+   "<h2>Unde a ajuns echipa</h2>"
+   "<p>Ultimul pas încheiat de echipă, pe ramura <code>dev</code>: caietul pasului rulează de la cap la coadă și "
+   "produce ce așteaptă pasul următor.</p>"
+   + ix("pasechipa", "Pasul echipei", PASI))
 
 
 # ===========================================================================
@@ -797,6 +807,64 @@ sl("s11", "Echipa", "Verificarea bazei",
    + ix("dovada", "Verificarea bazei", DOVADA))
 
 
+
+
+def py(cod):
+    """Colorează un fragment Python simplu: cuvinte cheie, șiruri, numere, comentarii."""
+    import html, keyword
+    out = []
+    for linie in cod.split("\n"):
+        text, com = (linie.split("#", 1) + [None])[:2] if "#" in linie and '"#' not in linie else (linie, None)
+        h = html.escape(text)
+        h = re.sub(r'(&quot;.*?&quot;)', r'<span class="s">\1</span>', h)
+        h = re.sub(r'(?<![\w">])(\d+\.?\d*)(?![\w<])', r'<span class="n">\1</span>', h)
+        h = re.sub(r'\b(' + "|".join(keyword.kwlist) + r')\b(?![^<]*</span>)', r'<span class="k">\1</span>', h)
+        if com is not None:
+            h += f'<span class="c">#{html.escape(com)}</span>'
+        out.append(h)
+    return "<pre><code>" + "\n".join(out) + "</code></pre>"
+
+
+T2_COD = py(
+    'import requests\n'
+    'import pandas as pd\n'
+    '\n'
+    'url = "https://api.open-meteo.com/v1/forecast"\n'
+    'parametri = {"latitude": 46.77, "longitude": 23.60,  # Cluj\n'
+    '             "hourly": "temperature_2m"}\n'
+    'r = requests.get(url, params=parametri)\n'
+    'r.status_code                          # 200: a reușit\n'
+    '\n'
+    'date = r.json()                        # un dicționar\n'
+    'vreme = pd.DataFrame(date["hourly"])   # un rând = o oră\n'
+    'vreme.to_csv("vreme_cluj.csv", index=False)')
+T2_LEG = [
+    ("Public APIs", "https://github.com/public-apis/public-apis", "lista mare, pe categorii; <code>Auth: No</code> înseamnă fără cheie"),
+    ("RapidAPI: Free APIs", "https://rapidapi.com/collection/list-of-free-apis", "API-uri gratuite, unele cu cont"),
+    ("Yahoo Finance", "https://pypi.org/project/yfinance/", "prețurile acțiunilor, prin biblioteca <code>yfinance</code>"),
+    ("Open-Meteo", "https://open-meteo.com/en/docs", "vremea, fără cheie: exemplul alăturat"),
+]
+TEMA2 = (
+    '<div class="t25">'
+    '<div><ol class="t25__pasi">'
+    '<li><i>1</i><b>Un API, la alegere</b><span>din orice domeniu</span></li>'
+    '<li><i>2</i><b>Cererea, într-un caiet</b><span><code>tema2_nume.ipynb</code>, cu <code>requests</code> sau cu biblioteca API-ului</span></li>'
+    '<li><i>3</i><b>Un DataFrame</b><span>coloanele utile, cu nume clare</span></li>'
+    '<li><i>4</i><b>Un CSV</b><span><code>to_csv(..., index=False)</code>, recitit cu <code>read_csv</code></span></li>'
+    '</ol>'
+    '<ul class="t25__leg">' + "".join(
+        f'<li><a class="leg" href="{u}" target="_blank" rel="noopener">{n}</a><span>{d}</span></li>' for n, u, d in T2_LEG)
+    + '</ul></div>'
+    f'<div>{T2_COD}</div>'
+    '</div>')
+
+sl("t2", "Mai departe", "Tema 2",
+   "<h2>Tema 2: date dintr-un API</h2>" + TEMA2,
+   manual=
+   "<h2>Tema 2: date dintr-un API</h2>"
+   "<p>Tema este individuală și separată de proiect: un API ales liber, cererea într-un caiet, răspunsul transformat "
+   "în DataFrame și salvat ca CSV. Se predau caietul și fișierul CSV; caietul rulează cu Restart și Run All. "
+   "Exemplul folosește Open-Meteo; tema se face pe alt API.</p>" + TEMA2)
 
 ECHIPA = (
     '<div class="eb5r">'
