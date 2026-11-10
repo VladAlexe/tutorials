@@ -532,6 +532,7 @@ sl("s15", "Echipa", "Fișa EDA a echipei",
    + ix("asteptari", "Primul EDA al echipei", FORM))
 
 
+
 DECIZII = [
     ("SCI are o coadă lungă", "scara logaritmică și mediana"),
     ("Svalbard: populația 0, extreme în ambele sensuri", "se exclude"),

@@ -64,7 +64,7 @@ FEL = {
     "dovada": "Verificare locală",
     "tipuri": "Exercițiu", "ordine": "Exercițiu", "sortare": "Exercițiu", "metode": "Exercițiu",
     "zone": "Exercițiu", "ramuri": "Exercițiu", "status": "Exercițiu", "conflict": "Exercițiu", "prag": "Exercițiu",
-    "coloane": "Exercițiu", "asteptari": "Exercițiu", "acces": "Exercițiu", "cale": "Exercițiu",
+    "coloane": "Exercițiu", "asteptari": "Exercițiu", "pasechipa": "Exercițiu", "acces": "Exercițiu", "cale": "Exercițiu",
 }
 fel_et = lambda f: FEL.get(f, "Explorare")
 
@@ -266,7 +266,7 @@ class Lectie:
                    "raspuns": "cod", "zone": "cod", "ramuri": "cod", "status": "cod",
                    "conflict": "cod", "prag": "cod", "imbinare": "cod",
                    "coloane": "cod", "desfa": "cod", "anatomie": "cod", "consola": "cod",
-                   "jupyter": "cod"}
+                   "jupyter": "cod", "pasechipa": "text"}
 
     def scrie_harta(self):
         """Ce sarcini stau pe fiecare slide.

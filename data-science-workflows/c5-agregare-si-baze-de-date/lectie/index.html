@@ -6,14 +6,14 @@
 <title>Cursul 5 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Baza de date SQLite a cursului, legată de pandas prin SQLAlchemy; unde mai poate sta o bază (server, cloud, Neon); unirea tabelelor și agregarea, în SQL și în pandas.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=143">
-<link rel="stylesheet" href="../../css/sistem.css?v=143">
-<link rel="stylesheet" href="../../css/slide.css?v=143">
-<link rel="stylesheet" href="../../css/interactiv.css?v=143">
-<link rel="stylesheet" href="../../css/grafice.css?v=143">
-<link rel="stylesheet" href="../../css/exercitii.css?v=143">
-<link rel="stylesheet" href="../../css/explorator.css?v=143">
-<script src="../../js/tema.js?v=143"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=145">
+<link rel="stylesheet" href="../../css/sistem.css?v=145">
+<link rel="stylesheet" href="../../css/slide.css?v=145">
+<link rel="stylesheet" href="../../css/interactiv.css?v=145">
+<link rel="stylesheet" href="../../css/grafice.css?v=145">
+<link rel="stylesheet" href="../../css/exercitii.css?v=145">
+<link rel="stylesheet" href="../../css/explorator.css?v=145">
+<script src="../../js/tema.js?v=145"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 5 · Agregare și baze de date" data-crom="1"></div>
@@ -22,6 +22,19 @@
 
 <section class="sld" id="s0" data-grup="Cursul" data-t="Unde suntem">
 <h2>Unde suntem în curs</h2><p class="cheie">Tabelele curate din C3 și C4 ajung într-o bază de date, se unesc în perechi și se rezumă. Azi: pasul 5.</p><table class="tabel"><thead><tr><th></th><th>Conținutul</th><th>Rezultatul</th></tr></thead><tbody><tr><td>C1</td><td>proiectul, mediul de lucru, tipurile de date și JSON</td><td><code>dsw/</code>, cu <code>.venv</code></td></tr><tr><td>C2</td><td>colectarea datelor prin API: Eurostat, Banca Mondială</td><td><code>data/raw</code></td></tr><tr><td>C3</td><td>surse diverse, preprocesare, Git și depozitul echipei</td><td><code>data/processed</code>, <code>proiect/</code></td></tr><tr><td>C4</td><td>curățarea datelor și tabelul regiunilor</td><td><code>regiuni_nuts2.csv</code></td></tr><tr><td><b>C5</b></td><td><b>azi: integrare, baze de date și agregare, în SQL și în Python</b></td><td><b>perechile, în <code>dsw.db</code></b></td></tr><tr><td>C6</td><td>analiza exploratorie: ipoteze, grafice, rețele</td><td>primele rezultate</td></tr><tr><td>C7</td><td>variabile derivate și model</td><td>modelul SCI</td></tr><tr><td>C8</td><td>raportul și prezentarea proiectului</td><td>raportul echipei</td></tr></tbody></table>
+
+</section>
+
+<section class="sld" id="p1" data-grup="Proiectul" data-t="Proiectul echipei">
+<h2>Proiectul echipei: unde a ajuns echipa</h2><div class="pr6"><div><b>O întrebare proprie</b><span>pe tema aleasă la C3, parcursă pe tot fluxul de lucru</span></div><div><b>Datele le alege echipa</b><span>fiecare sursă documentată și adusă în depozit prin caiete</span></div><div><b>Predarea, pe <code>main</code></b><span>caietele din <code>notebooks/</code> și <code>src/</code>; depozit curat; nota, individuală, din commit-uri și prezentare</span></div></div><div class="ix" data-ix="pasechipa">
+  <div class="ix__cap"><span class="ix__fel">Exercițiu</span><span class="ix__t">Pasul echipei</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c5-pas-echipa", "echipe": 7, "pasi": [{"nume": "Colectarea", "caiet": "01_collection", "gata": "datele în data/raw/, sursele în README"}, {"nume": "Preprocesarea", "caiet": "02_preprocessing", "gata": "câte un tabel pe sursă, cu cheia lui"}, {"nume": "Curățarea", "caiet": "03_cleaning_integration", "gata": "verificările, unirea, proiect.db"}, {"nume": "Explorarea", "caiet": "04_exploration", "gata": "figurile și ipotezele, în figures/"}, {"nume": "Modelul", "caiet": "05_model", "gata": "regresia, reziduurile, raportul"}]}</script></div>
+</div>
+
+</section>
+
+<section class="sld" id="p2" data-grup="Proiectul" data-t="Ce studiază echipele">
+<h2>Ce studiază echipele</h2><div class="te6"><div style="--ec:var(--accent)"><small>Echipa 1</small><b>Reduc granițele legăturile sociale?</b><p>Regiuni din aceeași țară față de regiuni din țări diferite, la aceeași distanță; accent pe granița Franța, Germania, Elveția.</p><em>Unitatea: perechi de regiuni</em><ul><li>SCI pe regiuni</li><li>contururile GISCO</li><li>populația, densitatea</li></ul></div><div style="--ec:var(--roza)"><small>Echipa 3</small><b>Au țările cu mai multă migrație legături mai puternice?</b><p>Migrația în ambele sensuri, comparată cu SCI; apoi cu populația și diferența de PIB a celor două țări.</p><em>Unitatea: perechi de țări</em><ul><li>SCI pe țări</li><li>migrația pe cetățenii</li><li>Banca Mondială</li></ul></div><div style="--ec:var(--ardezie)"><small>Echipa 4</small><b>Cum diferă legăturile internaționale ale județelor?</b><p>Profilul legăturilor fiecărui județ cu țările Europei și asocierea lui cu populația, densitatea și PIB-ul.</p><em>Unitatea: județ și țară</em><ul><li>SCI județ-țară</li><li>Eurostat NUTS 3</li><li>contururile GISCO</li></ul></div><div style="--ec:var(--ceas)"><small>Echipa 5</small><b>Șomajul, migrația și legăturile de pe Facebook</b><p>Se leagă rata șomajului și ponderea rezidenților cu altă cetățenie de legăturile dintre țările UE?</p><em>Unitatea: țări din UE</em><ul><li>SCI pe țări</li><li>populația pe cetățenii</li><li>rata șomajului</li></ul></div><div style="--ec:var(--text)"><small>Echipa 6</small><b>Duce șomajul tinerilor la migrație?</b><p>Șomajul la 15-24 de ani și imigrația pe cetățenii în țările europene, an de an, cu PIB-ul, NEET și nivelul prețurilor.</p><em>Unitatea: țară și an</em><ul><li>șomajul tinerilor</li><li>imigrația</li><li>PIB, NEET, prețuri</li></ul></div><div style="--ec:var(--accent)"><small>Echipa 7</small><b>România și Italia: legături, dezvoltare, vot</b><p>SCI între județe și regiunile Italiei, după dezvoltarea locală, votul din 2024 și structura muncii din Italia.</p><em>Unitatea: județ și regiune italiană</em><ul><li>SCI</li><li>LHDI 2018</li><li>AEP 2024</li><li>ISTAT, ocuparea</li></ul></div></div>
 
 </section>
 
@@ -116,11 +129,11 @@ from sci p
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=143"></script>
+<script type="module" src="../../js/antet.js?v=145"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=143";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=143";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=143";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=145";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=145";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=145";
 pornesteIx();
 pornesteVerif("c5");
 pornesteSlide({ capitol:"c5", lectie:"c5-agregare-si-baze-de-date" });

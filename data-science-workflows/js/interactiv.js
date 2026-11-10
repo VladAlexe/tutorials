@@ -6,10 +6,10 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=143";
-import EXERCITII from "./exercitii.js?v=143";
-import VIZUAL from "./vizual.js?v=143";
-import HARTA from "./harta-sci.js?v=143";
+import GRAFICE from "./grafice.js?v=145";
+import EXERCITII from "./exercitii.js?v=145";
+import VIZUAL from "./vizual.js?v=145";
+import HARTA from "./harta-sci.js?v=145";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA };
 
@@ -27,7 +27,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=143");
+    const m = await import("/data-science-workflows/js/colectare.js?v=145");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -117,7 +117,7 @@ C.url = (gazda, date) => {
       document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
       const st = gazda.querySelector(".ex__stare");
       try {
-        const m = await import("/data-science-workflows/js/colectare.js?v=143");
+        const m = await import("/data-science-workflows/js/colectare.js?v=145");
         const salvat = await m.salveazaCod({ exercitiuId: date.id, cod: `${pus.join(" | ")} · greșite: ${gresite}`, trecut: true });
         st.textContent = salvat ? "Rezolvare înregistrată." : `Rezolvarea nu a fost înregistrată: ${m.deCeNu()}.`;
         st.classList.add("vazut");
@@ -544,7 +544,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumim.</b> Accentul cursului cade pe fluxul de lucru, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=143");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=145");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -721,9 +721,71 @@ C.asteptari = (gazda, date) => {
        să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
     poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=143");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=145");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}
   };
+};
+
+
+/* --- Pasul echipei: unde a ajuns proiectul --------------------------------
+   Cei cinci pași ai proiectului, ca stații pe o linie. Studentul apasă pe
+   ultimul pas încheiat de echipa lui; linia se umple până acolo. Echipa vine
+   din cont, când există; altfel se alege din rândul de numere. Răspunsul
+   ajunge la poartă (rezultatele orei) și în jurnal, ca text scurt.
+   ------------------------------------------------------------------------ */
+C.pasechipa = (gazda, date) => {
+  gazda.closest(".ix")?.classList.add("exc");
+  const P = date.pasi, N = date.echipe || 7;
+  const CUL = ["accent", "ambra", "roza", "ardezie", "ceas", "text"];
+  const cul = nr => `var(--${CUL[(nr - 1) % CUL.length]})`;
+  let echipa = null, pas = -1, fixa = false;
+
+  gazda.innerHTML = `
+    <div class="pe6__echipe"><span>Echipa</span>${Array.from({ length: N }, (_, k) =>
+      `<button type="button" data-e="${k + 1}">${k + 1}</button>`).join("")}</div>
+    <ol class="pe6">${P.map((p, k) => `<li><button type="button" data-p="${k}">
+      <i>${String(k + 1).padStart(2, "0")}</i><b>${p.nume}</b><code>${p.caiet}</code><span>${p.gata}</span></button></li>`).join("")}</ol>
+    <div class="pe6__jos"><p class="pe6__st">Ultimul pas încheiat de echipă, pe <code>dev</code>.</p>
+      <button class="btn btn--mic btn--tare" data-rol="trimite" type="button" disabled>Trimite</button></div>`;
+
+  const $ = s => gazda.querySelector(s), $$ = s => gazda.querySelectorAll(s);
+  const bt = $('[data-rol="trimite"]'), st = $(".pe6__st");
+
+  function arata(){
+    gazda.style.setProperty("--ec", echipa ? cul(echipa) : "var(--accent)");
+    $$(".pe6__echipe button").forEach(b => b.classList.toggle("ales", +b.dataset.e === echipa));
+    $$(".pe6 li").forEach((li, k) => { li.classList.toggle("facut", k <= pas); li.classList.toggle("ales", k === pas); });
+    bt.disabled = !(echipa && pas >= 0) || gazda.closest(".ix")?.classList.contains("gata");
+    if (echipa && pas >= 0) st.innerHTML = `<b>Echipa ${echipa}</b>: pasul ${pas + 1} încheiat${pas < P.length - 1 ? `; urmează ${P[pas + 1].nume.toLowerCase()}` : ""}.`;
+  }
+
+  gazda.addEventListener("click", e => {
+    const be = e.target.closest("[data-e]"), bp = e.target.closest("[data-p]");
+    if (be && !fixa){ echipa = +be.dataset.e; arata(); }
+    if (bp){ pas = +bp.dataset.p; arata(); }
+  });
+
+  bt.onclick = async () => {
+    bt.disabled = true;
+    const txt = `Echipa ${echipa}: pasul ${pas + 1}, ${P[pas].nume}`;
+    st.innerHTML = `<b>Înregistrat.</b> ${txt}.`;
+    poarta(gazda, date.id, txt);
+    try {
+      const s = await import("/data-science-workflows/js/sesiune.js?v=145");
+      await s.jurnal("pas_echipa", { echipa, pas: pas + 1, text: txt });
+    } catch {}
+  };
+
+  /* echipa din cont, dacă studentul e autentificat și are echipă */
+  (async () => {
+    try {
+      const { sb } = await import("/data-science-workflows/js/auth.js?v=145");
+      const r = await sb.rpc("echipele_mele");
+      const nr = r?.data?.echipa?.nr;
+      if (nr){ echipa = nr; fixa = true; gazda.classList.add("pe6--fixa"); arata(); }
+    } catch {}
+  })();
+  arata();
 };

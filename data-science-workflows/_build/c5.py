@@ -73,6 +73,78 @@ sl("s0", "Cursul", "Unde suntem",
 
 
 # ===========================================================================
+#  Proiectul echipei: ce se cere, unde a ajuns fiecare echipă, ce studiază
+#  (cerința din 9 noiembrie 2026 și temele 1 predate de studenți)
+# ===========================================================================
+
+PROIECT = (
+    '<div class="pr6">'
+    '<div><b>O întrebare proprie</b><span>pe tema aleasă la C3, parcursă pe tot fluxul de lucru</span></div>'
+    '<div><b>Datele le alege echipa</b><span>fiecare sursă documentată și adusă în depozit prin caiete</span></div>'
+    '<div><b>Predarea, pe <code>main</code></b><span>caietele din <code>notebooks/</code> și <code>src/</code>; depozit curat; '
+    'nota, individuală, din commit-uri și prezentare</span></div>'
+    '</div>')
+PASI = {
+    "id": "c5-pas-echipa", "echipe": 7,
+    "pasi": [
+        {"nume": "Colectarea", "caiet": "01_collection", "gata": "datele în data/raw/, sursele în README"},
+        {"nume": "Preprocesarea", "caiet": "02_preprocessing", "gata": "câte un tabel pe sursă, cu cheia lui"},
+        {"nume": "Curățarea", "caiet": "03_cleaning_integration", "gata": "verificările, unirea, proiect.db"},
+        {"nume": "Explorarea", "caiet": "04_exploration", "gata": "figurile și ipotezele, în figures/"},
+        {"nume": "Modelul", "caiet": "05_model", "gata": "regresia, reziduurile, raportul"},
+    ]}
+
+sl("p1", "Proiectul", "Proiectul echipei",
+   "<h2>Proiectul echipei: unde a ajuns echipa</h2>"
+   + PROIECT
+   + ix("pasechipa", "Pasul echipei", PASI),
+   manual=
+   "<h2>Proiectul echipei</h2>"
+   "<p>Fiecare echipă răspunde la o întrebare de cercetare proprie și parcurge întregul flux de lucru, câte un caiet pe "
+   "pas. Datele le alege echipa; se poate folosi o parte din datele și din modelul cursului. Predarea se face pe ramura "
+   "<code>main</code> a depozitului <code>dsw-ubb-2026/echipa-N</code>: caietele și, dacă există, fișierele din "
+   "<code>src/</code> pe care le folosesc. Proiectul valorează 5 puncte, iar nota este individuală.</p>"
+   + PROIECT
+   + "<p>Pe linia de mai jos se marchează ultimul pas încheiat de echipă, pe ramura <code>dev</code>.</p>"
+   + ix("pasechipa", "Pasul echipei", PASI))
+
+
+TEME = [
+    (1, "Reduc granițele legăturile sociale?",
+     "Regiuni din aceeași țară față de regiuni din țări diferite, la aceeași distanță; accent pe granița "
+     "Franța, Germania, Elveția.", "perechi de regiuni", ["SCI pe regiuni", "contururile GISCO", "populația, densitatea"]),
+    (3, "Au țările cu mai multă migrație legături mai puternice?",
+     "Migrația în ambele sensuri, comparată cu SCI; apoi cu populația și diferența de PIB a celor două țări.",
+     "perechi de țări", ["SCI pe țări", "migrația pe cetățenii", "Banca Mondială"]),
+    (4, "Cum diferă legăturile internaționale ale județelor?",
+     "Profilul legăturilor fiecărui județ cu țările Europei și asocierea lui cu populația, densitatea și PIB-ul.",
+     "județ și țară", ["SCI județ-țară", "Eurostat NUTS 3", "contururile GISCO"]),
+    (5, "Șomajul, migrația și legăturile de pe Facebook",
+     "Se leagă rata șomajului și ponderea rezidenților cu altă cetățenie de legăturile dintre țările UE?",
+     "țări din UE", ["SCI pe țări", "populația pe cetățenii", "rata șomajului"]),
+    (6, "Duce șomajul tinerilor la migrație?",
+     "Șomajul la 15-24 de ani și imigrația pe cetățenii în țările europene, an de an, cu PIB-ul, NEET și "
+     "nivelul prețurilor.", "țară și an", ["șomajul tinerilor", "imigrația", "PIB, NEET, prețuri"]),
+    (7, "România și Italia: legături, dezvoltare, vot",
+     "SCI între județe și regiunile Italiei, după dezvoltarea locală, votul din 2024 și structura muncii din Italia.",
+     "județ și regiune italiană", ["SCI", "LHDI 2018", "AEP 2024", "ISTAT, ocuparea"]),
+]
+_CUL = ["accent", "ambra", "roza", "ardezie", "ceas", "text"]
+ECHIPE_TEME = ('<div class="te6">' + "".join(
+    f'<div style="--ec:var(--{_CUL[(n - 1) % 6]})"><small>Echipa {n}</small><b>{t}</b><p>{d}</p>'
+    f'<em>Unitatea: {u}</em><ul>{"".join(f"<li>{x}</li>" for x in date)}</ul></div>'
+    for n, t, d, u, date in TEME) + "</div>")
+
+sl("p2", "Proiectul", "Ce studiază echipele",
+   "<h2>Ce studiază echipele</h2>" + ECHIPE_TEME,
+   manual=
+   "<h2>Ce studiază echipele</h2>"
+   "<p>Temele, după tema 1 a fiecărei echipe: întrebarea, unitatea de analiză și sursele de date. Întrebarea finală "
+   "se scrie în <code>README.md</code>.</p>" + ECHIPE_TEME)
+
+
+
+# ===========================================================================
 #  1-3. Baza de date
 # ===========================================================================
 
