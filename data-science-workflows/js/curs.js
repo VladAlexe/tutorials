@@ -44,7 +44,7 @@ export const LECTII = [
     titlu:"Versionare cu Git",
     scurt:"Git",
     rezumat:"Rolul versionării, lucrul unei echipe pe același depozit și ce nu se încarcă niciodată în depozit.",
-    stare:"gata", sarcini:8,
+    stare:"gata", sarcini:7,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/03_surse_diverse_si_preprocesare.ipynb" },
 
   { nr:4, cheie:"c4-curatarea-datelor",
@@ -62,10 +62,10 @@ export const LECTII = [
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/05_agregare_si_baze_de_date.ipynb" },
 
   { nr:6, cheie:"c6-analiza-exploratorie",
-    titlu:"Analiza exploratorie și vizualizarea",
+    titlu:"Analiza exploratorie",
     scurt:"Explorare",
-    rezumat:"Graficul potrivit tipului de date, pe datele SCI: o variabilă, două variabile numerice sau categorice, mai multe variabile, hărți și rețele.",
-    stare:"gata", sarcini:6,
+    rezumat:"Fluxul analizei exploratorii, concept cu concept și interactiv: profilul datelor, o variabilă, relațiile, tipar și reziduu, verificarea; apoi pe datele SCI.",
+    stare:"gata", sarcini:8,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/06_analiza_exploratorie.ipynb" },
 
   { nr:7, cheie:"c7-variabile-si-model",

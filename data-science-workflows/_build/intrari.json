@@ -359,26 +359,26 @@
   },
   "c6-analiza-exploratorie": {
     "nr": 6,
-    "titlu": "Analiza exploratorie și vizualizarea",
-    "deck": "Datele sunt curate și în bază. Înainte de model, analiza exploratorie le privește prin grafice, alese după tipul datelor, și se încheie cu decizii.",
-    "descriere": "Analiza exploratorie și graficul potrivit tipului de date: o variabilă, două variabile numerice sau categorice, mai multe variabile, hărți și rețele, pe datele SCI.",
+    "titlu": "Analiza exploratorie",
+    "deck": "Înainte de model, datele se privesc: ce conțin, cum variază, ce variază împreună, ce iese din tipar. Fiecare concept, interactiv, apoi pe datele noastre.",
+    "descriere": "Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, două și mai multe variabile, tipar și reziduu, verificarea.",
     "caiet": "@REPO@/blob/main/curs/06_analiza_exploratorie.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Analiza exploratorie caută ce merită verificat: o întrebare, un grafic care îi răspunde, apoi întrebarea nouă pe care o ridică răspunsul. Graficul potrivit depinde de tipul datelor, iar lecția urmează această ordine: o variabilă numerică, o variabilă categorică și lipsurile, două variabile numerice, categoric × numeric, categoric × categoric, mai multe variabile, hărți și rețele. Exemplele sunt patru ipoteze din literatură, pe cele 44.253 de perechi de regiuni; graficele din caiet folosesc seaborn.</p>\n<p>Rezultatul nu este o colecție de grafice, ci decizii pentru modelul din C7: scara, variabilele, ce se exclude și ce excepții se urmăresc.</p>"
+        "html": "<p>Analiza exploratorie înseamnă să înțelegi datele înainte de a le modela. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, tipurile de variabile, lipsurile, numerele mici), o variabilă (centrul, împrăștierea, rezistența, distribuția, reexprimarea), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; graficul înaintea coeficientului; lineup), trei sau mai multe variabile (confuzia, nivelul de analiză), tipar și reziduu, verificarea.</p>\n<p>Fiecare concept are un grafic interactiv pe date generale și o aplicație scurtă pe datele SCI. Rezultatul: deciziile pentru modelul din C7 și fișa EDA a echipei.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Analiza exploratorie ca ciclu: întrebare, grafic, întrebare nouă; verificările de dinainte de grafice.</li>\n<li>Graficul ales după tipul datelor: histogramă și boxplot, bare, densitate 2D, matricea de corelație, boxplot pe grupuri, tabel de contingență.</li>\n<li>A treia variabilă ca culoare sau ca fațete; variabila de confuzie.</li>\n<li>Hărți coroplete cu scară secvențială sau divergentă; rețele și comunități.</li>\n<li>Principiile unui grafic bun: o idee pe grafic, scara logaritmică, culoarea după date.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; numerele mici; rezistența, reexprimarea.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Graficul ca comparație cu ce te aștepți (lineup); variabila de confuzie; nivelul de analiză (eroarea ecologică).</li>\n<li>Tipar și reziduu; grădina potecilor care se bifurcă și verificarea pe alte date.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
-        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>, cu tabelele lecției.</li>\n<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code>, alături de <code>geopandas</code> și <code>networkx</code>.</li>\n</ol>"
+        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>\n<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code> și <code>scipy</code>.</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",
-        "html": "<ul class=\"obiective\">\n<li>Fișa EDA a echipei: verificări, o variabilă, două variabile, grupuri, hartă sau rețea, fiecare grafic cu o întrebare și o interpretare.</li>\n<li>Deciziile pentru model, scrise în <code>README.md</code>.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Fișa EDA a echipei, pe etapele fluxului: profilul, o variabilă, relațiile, tipar și reziduu, verificarea.</li>\n<li>Deciziile pentru model, scrise în <code>README.md</code>.</li>\n</ul>"
       }
     ],
     "resurse": [

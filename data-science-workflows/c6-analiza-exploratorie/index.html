@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lecția 6. Analiza exploratorie și vizualizarea · Fluxuri de lucru</title>
-<meta name="description" content="Analiza exploratorie și graficul potrivit tipului de date: o variabilă, două variabile numerice sau categorice, mai multe variabile, hărți și rețele, pe datele SCI.">
-<link rel="stylesheet" href="../css/fonturi.css?v=151">
-<link rel="stylesheet" href="../css/sistem.css?v=151">
-<link rel="stylesheet" href="../css/intrare.css?v=151">
-<script src="../js/tema.js?v=151"></script>
+<title>Lecția 6. Analiza exploratorie · Fluxuri de lucru</title>
+<meta name="description" content="Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, două și mai multe variabile, tipar și reziduu, verificarea.">
+<link rel="stylesheet" href="../css/fonturi.css?v=154">
+<link rel="stylesheet" href="../css/sistem.css?v=154">
+<link rel="stylesheet" href="../css/intrare.css?v=154">
+<script src="../js/tema.js?v=154"></script>
 </head>
 <body>
 
@@ -34,25 +34,25 @@
 
   <header class="intr__erou">
     <p class="intr__tag">Lecția 6 din 8</p>
-    <h1>Analiza exploratorie și vizualizarea</h1>
-    <p class="deck">Datele sunt curate și în bază. Înainte de model, analiza exploratorie le privește prin grafice, alese după tipul datelor, și se încheie cu decizii.</p>
+    <h1>Analiza exploratorie</h1>
+    <p class="deck">Înainte de model, datele se privesc: ce conțin, cum variază, ce variază împreună, ce iese din tipar. Fiecare concept, interactiv, apoi pe datele noastre.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Analiza exploratorie caută ce merită verificat: o întrebare, un grafic care îi răspunde, apoi întrebarea nouă pe care o ridică răspunsul. Graficul potrivit depinde de tipul datelor, iar lecția urmează această ordine: o variabilă numerică, o variabilă categorică și lipsurile, două variabile numerice, categoric × numeric, categoric × categoric, mai multe variabile, hărți și rețele. Exemplele sunt patru ipoteze din literatură, pe cele 44.253 de perechi de regiuni; graficele din caiet folosesc seaborn.</p>
-<p>Rezultatul nu este o colecție de grafice, ci decizii pentru modelul din C7: scara, variabilele, ce se exclude și ce excepții se urmăresc.</p></div>
+    <div class="sec__corp"><p>Analiza exploratorie înseamnă să înțelegi datele înainte de a le modela. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, tipurile de variabile, lipsurile, numerele mici), o variabilă (centrul, împrăștierea, rezistența, distribuția, reexprimarea), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; graficul înaintea coeficientului; lineup), trei sau mai multe variabile (confuzia, nivelul de analiză), tipar și reziduu, verificarea.</p>
+<p>Fiecare concept are un grafic interactiv pe date generale și o aplicație scurtă pe datele SCI. Rezultatul: deciziile pentru modelul din C7 și fișa EDA a echipei.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Analiza exploratorie ca ciclu: întrebare, grafic, întrebare nouă; verificările de dinainte de grafice.</li>
-<li>Graficul ales după tipul datelor: histogramă și boxplot, bare, densitate 2D, matricea de corelație, boxplot pe grupuri, tabel de contingență.</li>
-<li>A treia variabilă ca culoare sau ca fațete; variabila de confuzie.</li>
-<li>Hărți coroplete cu scară secvențială sau divergentă; rețele și comunități.</li>
-<li>Principiile unui grafic bun: o idee pe grafic, scara logaritmică, culoarea după date.</li>
+<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>
+<li>Lipsurile și mecanismele lor; numerele mici; rezistența, reexprimarea.</li>
+<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>
+<li>Graficul ca comparație cu ce te aștepți (lineup); variabila de confuzie; nivelul de analiză (eroarea ecologică).</li>
+<li>Tipar și reziduu; grădina potecilor care se bifurcă și verificarea pe alte date.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -87,14 +87,14 @@
   <section class="sec sec--nevoie">
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><ol>
-<li>Baza din C5, <code>curs/data/dsw.db</code>, cu tabelele lecției.</li>
-<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code>, alături de <code>geopandas</code> și <code>networkx</code>.</li>
+<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>
+<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code> și <code>scipy</code>.</li>
 </ol></div>
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Fișa EDA a echipei: verificări, o variabilă, două variabile, grupuri, hartă sau rețea, fiecare grafic cu o întrebare și o interpretare.</li>
+<li>Fișa EDA a echipei, pe etapele fluxului: profilul, o variabilă, relațiile, tipar și reziduu, verificarea.</li>
 <li>Deciziile pentru model, scrise în <code>README.md</code>.</li>
 </ul></div>
   </section>
@@ -119,7 +119,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=151"), import("../js/ora.js?v=151"), import("../js/curs.js?v=151")]);
+    import("../js/auth.js?v=154"), import("../js/ora.js?v=154"), import("../js/curs.js?v=154")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -162,7 +162,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=151"></script>
-<script type="module" src="../js/subsol.js?v=151"></script>
+<script type="module" src="../js/antet.js?v=154"></script>
+<script type="module" src="../js/subsol.js?v=154"></script>
 </body>
 </html>
