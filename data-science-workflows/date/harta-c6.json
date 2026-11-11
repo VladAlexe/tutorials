@@ -1,7 +1,7 @@
 {
  "capitol": "c6",
- "total": 16,
- "sarcini": 5,
+ "total": 21,
+ "sarcini": 7,
  "slide": [
   {
    "nr": 1,
@@ -14,140 +14,196 @@
    "nr": 2,
    "id": "s2",
    "grup": "Analiza exploratorie",
-   "titlu": "Un ciclu, nu o listă",
+   "titlu": "Scopul și fluxul",
    "sarcini": []
   },
   {
    "nr": 3,
    "id": "s3",
-   "grup": "Analiza exploratorie",
-   "titlu": "Cinci întrebări",
+   "grup": "Profilul datelor",
+   "titlu": "Unitatea de analiză",
    "sarcini": []
   },
   {
    "nr": 4,
    "id": "s4",
-   "grup": "1. Ce conțin datele",
-   "titlu": "Verificări înainte de grafice",
-   "sarcini": []
+   "grup": "Profilul datelor",
+   "titlu": "Valorile lipsă",
+   "sarcini": [
+    {
+     "id": "c6-v-lips",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Rețelele sociale lipsesc în toate regiunile Germaniei și Franței. Ce descrie o medie calculată fără ele?",
+     "optiuni": [
+      "Media tuturor regiunilor",
+      "Media regiunilor cu date, fără DE și FR",
+      "O medie invalidă",
+      "Media Germaniei și a Franței"
+     ]
+    }
+   ]
   },
   {
    "nr": 5,
    "id": "s5",
-   "grup": "1. Ce conțin datele",
-   "titlu": "Ce lipsește și unde",
+   "grup": "Profilul datelor",
+   "titlu": "Valorile extreme",
    "sarcini": []
   },
   {
    "nr": 6,
    "id": "s6",
-   "grup": "2. Valoarea obișnuită",
-   "titlu": "Coada lungă",
-   "sarcini": []
+   "grup": "O variabilă numerică",
+   "titlu": "Locația și variabilitatea",
+   "sarcini": [
+    {
+     "id": "c6-v-rez",
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Se adaugă cele 8 perechi cu cele mai mari valori SCI la 60 de perechi obișnuite. Ce statistică rămâne aproape neschimbată?",
+     "optiuni": [
+      "Media",
+      "Abaterea standard",
+      "Mediana",
+      "Toate se schimbă în aceeași măsură"
+     ]
+    }
+   ]
   },
   {
    "nr": 7,
    "id": "s7",
-   "grup": "3. Ce variază împreună",
-   "titlu": "H1: distanța",
-   "sarcini": [
-    {
-     "id": "c6-v2",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Corelația Spearman dintre distanță și SCI este −0,46. Ce se poate spune?",
-     "optiuni": [
-      "Distanța reduce legăturile cu 46%",
-      "Perechile mai îndepărtate tind să fie mai puțin legate",
-      "46% din SCI vine din distanță",
-      "Relația este liniară"
-     ]
-    }
-   ]
+   "grup": "O variabilă numerică",
+   "titlu": "Distribuția",
+   "sarcini": []
   },
   {
    "nr": 8,
    "id": "s8",
-   "grup": "3. Ce variază împreună",
-   "titlu": "H2: granița",
-   "sarcini": [
-    {
-     "id": "c6-v3",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "De ce se compară aceeași țară cu țări diferite pe intervale de distanță, nu pe toate perechile deodată?",
-     "optiuni": [
-      "Ca să fie mai puține perechi",
-      "Perechile interne sunt și mai apropiate",
-      "SCI nu are sens peste 2.000 km",
-      "Așa cere pd.cut"
-     ]
-    }
-   ]
+   "grup": "O variabilă numerică",
+   "titlu": "Reexprimarea",
+   "sarcini": []
   },
   {
    "nr": 9,
    "id": "s9",
-   "grup": "3. Ce variază împreună",
-   "titlu": "H3: economia",
+   "grup": "Variabile categorice",
+   "titlu": "Tabelul de contingență",
    "sarcini": []
   },
   {
    "nr": 10,
    "id": "s10",
-   "grup": "3. Ce variază împreună",
-   "titlu": "H4: migrația",
-   "sarcini": []
-  },
-  {
-   "nr": 11,
-   "id": "s11",
-   "grup": "4. Ce iese din tipar",
-   "titlu": "Harta abaterilor",
-   "sarcini": []
-  },
-  {
-   "nr": 12,
-   "id": "s12",
-   "grup": "4. Ce iese din tipar",
-   "titlu": "Ghicitoarea din C1",
+   "grup": "Două variabile numerice",
+   "titlu": "Corelația",
    "sarcini": [
     {
-     "id": "c6-v-ro",
+     "id": "c6-v-cor",
      "fel": "verificare",
-     "corect": 1,
-     "q": "Ungaria are un SCI mare cu România, dar puțini migranți la mie. Care explicație este cea mai plauzibilă?",
+     "corect": 3,
+     "q": "Pe valorile brute, coeficientul Pearson dintre distanță și SCI este −0,12. Ce se poate afirma?",
      "optiuni": [
-      "O eroare în date",
-      "Minoritatea maghiară: legături vechi, fără migrație",
-      "Turismul",
-      "Distanța"
+      "Relația este slabă",
+      "Nu există relație",
+      "Distanța nu influențează SCI",
+      "Pearson e sensibil la extreme; pe log sau cu Spearman, relația e clară"
      ]
     }
    ]
   },
   {
+   "nr": 11,
+   "id": "s11",
+   "grup": "Două variabile numerice",
+   "titlu": "Suprapunerea punctelor",
+   "sarcini": []
+  },
+  {
+   "nr": 12,
+   "id": "s12",
+   "grup": "Două variabile numerice",
+   "titlu": "Lineup",
+   "sarcini": []
+  },
+  {
    "nr": 13,
    "id": "s13",
-   "grup": "5. Ce grupuri apar",
-   "titlu": "Comunitățile",
+   "grup": "Trei sau mai multe variabile",
+   "titlu": "Grupuri și confuzie",
    "sarcini": []
   },
   {
    "nr": 14,
    "id": "s14",
-   "grup": "Echipa",
-   "titlu": "Verificarea",
+   "grup": "Trei sau mai multe variabile",
+   "titlu": "Nivelul de analiză",
    "sarcini": [
     {
-     "id": "c6-dovada",
-     "fel": "cod"
+     "id": "c6-v-niv",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Între țări, populația și deschiderea au ρ = −0,42; în interiorul țărilor, 0,53. Ce afirmație este corectă?",
+     "optiuni": [
+      "Regiunile mari sunt mai închise",
+      "În aceeași țară, regiunile mari sunt mai deschise",
+      "Nu există asociere",
+      "Corelația totală este suficientă"
+     ]
     }
    ]
   },
   {
    "nr": 15,
    "id": "s15",
+   "grup": "Trei sau mai multe variabile",
+   "titlu": "Multe variabile",
+   "sarcini": []
+  },
+  {
+   "nr": 16,
+   "id": "s16",
+   "grup": "Tipar și reziduu",
+   "titlu": "Tipar și reziduu",
+   "sarcini": []
+  },
+  {
+   "nr": 17,
+   "id": "s17",
+   "grup": "Verificarea",
+   "titlu": "Comparațiile multiple",
+   "sarcini": [
+    {
+     "id": "c6-v-pot",
+     "fel": "verificare",
+     "corect": 1,
+     "q": "Dintre 40 de variabile aleatoare, una are ρ = 0,15 cu deschiderea regiunilor. Cum se interpretează?",
+     "optiuni": [
+      "Variabila explică deschiderea",
+      "Maximul așteptat a 40 de corelații întâmplătoare",
+      "Eșantionul e prea mic",
+      "Trebuie Pearson"
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 18,
+   "id": "s18",
+   "grup": "Încheierea",
+   "titlu": "Tipurile de grafice",
+   "sarcini": []
+  },
+  {
+   "nr": 19,
+   "id": "s19",
+   "grup": "Pe datele noastre",
+   "titlu": "Fluxul pe SCI",
+   "sarcini": []
+  },
+  {
+   "nr": 20,
+   "id": "s20",
    "grup": "Echipa",
    "titlu": "Fișa EDA a echipei",
    "sarcini": [
@@ -158,11 +214,16 @@
    ]
   },
   {
-   "nr": 16,
-   "id": "s16",
-   "grup": "Mai departe",
-   "titlu": "Deciziile pentru model",
-   "sarcini": []
+   "nr": 21,
+   "id": "s21",
+   "grup": "Echipa",
+   "titlu": "Verificarea în caiet",
+   "sarcini": [
+    {
+     "id": "c6-dovada",
+     "fel": "cod"
+    }
+   ]
   }
  ]
 }

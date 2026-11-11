@@ -366,11 +366,11 @@
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Analiza exploratorie înseamnă să înțelegi datele înainte de a le modela. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, tipurile de variabile, lipsurile, numerele mici), o variabilă (centrul, împrăștierea, rezistența, distribuția, reexprimarea), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; graficul înaintea coeficientului; lineup), trei sau mai multe variabile (confuzia, nivelul de analiză), tipar și reziduu, verificarea.</p>\n<p>Fiecare concept are un grafic interactiv pe date generale și o aplicație scurtă pe datele SCI. Rezultatul: deciziile pentru modelul din C7 și fișa EDA a echipei.</p>"
+        "html": "<p>Analiza exploratorie înseamnă să înțelegi datele înainte de a le modela. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, tipurile de variabile, lipsurile, extremele), o variabilă (centrul, împrăștierea, rezistența, distribuția, reexprimarea), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; graficul înaintea coeficientului; lineup), trei sau mai multe variabile (confuzia, nivelul de analiză), tipar și reziduu, verificarea.</p>\n<p>Fiecare concept are o definiție, un grafic interactiv pe datele cursului (perechile de regiuni cu SCI și tabelul regiunilor) și pașii corespunzători din caiet. Rezultatul: deciziile pentru modelul din C7 și fișa EDA a echipei.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; numerele mici; rezistența, reexprimarea.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Graficul ca comparație cu ce te aștepți (lineup); variabila de confuzie; nivelul de analiză (eroarea ecologică).</li>\n<li>Tipar și reziduu; grădina potecilor care se bifurcă și verificarea pe alte date.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; extremele; rezistența, reexprimarea.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Graficul ca comparație cu ce te aștepți (lineup); variabila de confuzie; nivelul de analiză (eroarea ecologică).</li>\n<li>Tipar și reziduu; grădina potecilor care se bifurcă și verificarea pe alte date.</li>\n</ul>"
       },
       {
         "t": "Pregătire",

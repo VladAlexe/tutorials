@@ -4116,3 +4116,33 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .rnr[data-capitol="c6"] .q6--sci > div{grid-template-columns:36px 170px minmax(0,1fr)}
 .ed-lu .ed-svg{max-height:110px}
 .ed-tx.ed-tx--mic{font-size:10px}
+.ed-gol{fill:var(--ambra)}.ed-plin{fill:color-mix(in srgb,var(--accent) 22%,var(--panza))}
+.ed-sep{stroke:var(--panza);stroke-width:.8}
+.ed-lv{cursor:pointer}.ed-lv.on{fill:var(--text);font-weight:700}
+.ed-cutie2{fill:color-mix(in srgb,var(--ambra) 25%,var(--panza));stroke:var(--ambra)}
+.ed-arie2{fill:var(--ambra);stroke:var(--ambra)}
+.ed-ex table{border-collapse:collapse;width:100%;font-size:var(--t2);font-family:var(--sans)}
+.ed-ex th{font-weight:500;color:var(--text-3);text-align:left;padding:4px 8px;border-bottom:1px solid var(--linie)}
+.ed-ex td{padding:4px 8px;border-bottom:1px solid var(--linie);color:var(--text-2)}
+.ed-ex tr.ed-r-sus td{background:color-mix(in srgb,var(--ambra) 14%,transparent);color:var(--text)}
+.def6{margin:0 0 10px;font-family:var(--sans);font-size:var(--t3);line-height:1.45;color:var(--text-2);max-width:none}
+.def6 b{color:var(--text)}
+.sld p.def6{max-width:none;margin:0 0 8px;font-size:var(--t2);line-height:1.4}
+.rnr[data-capitol="c6"] .sld:has(.verif) .eda .ed-svg{max-height:132px}
+.rnr[data-capitol="c6"] .sld .eda .ed-lu .ed-svg{max-height:104px}
+.rnr[data-capitol="c6"] .sld:has(.verif) .noi6{padding:5px 12px}
+.rnr[data-capitol="c6"] .sld .ed-ct td,.rnr[data-capitol="c6"] .sld .ed-ct th{padding-top:5px;padding-bottom:5px}
+.ed-tip th button.ok::after{content:" ✓";color:var(--accent)}
+.ed-cursor{stroke:var(--ambra);stroke-width:1.5;stroke-dasharray:3 3;pointer-events:none}
+.ed-trage{cursor:grab;touch-action:none}.ed-trage.on{fill:var(--ambra);r:6px;cursor:grabbing}
+.eda svg:has(.ed-trage){touch-action:none}
+.ed-ct td[data-i]{cursor:pointer}.ed-ct td.on{outline:2px solid var(--ambra);outline-offset:-2px}
+.ed-leg{cursor:pointer}.ed-leg.on text{font-weight:700}
+.ed-h1,.ed-h2{display:contents}
+.rnr[data-capitol="c6"] .sld:has(.verif) .eda .ed-not{display:none}
+.rnr[data-capitol="c6"] .sld:has(.verif) .eda .ed-svg{max-height:150px}
+.rnr[data-capitol="c6"] .sld .eda .ed-svg[viewBox="0 0 900 330"]{max-height:250px}
+.rnr[data-capitol="c6"] .sld .ed-ct td,.rnr[data-capitol="c6"] .sld .ed-ct th{padding-top:3px;padding-bottom:3px}
+.rnr[data-capitol="c6"] .sld .ed-ct .ed-svg{max-height:210px}
+.rnr[data-capitol="c6"] .sld .ed-ex td,.rnr[data-capitol="c6"] .sld .ed-ex th{padding-top:3px;padding-bottom:3px}
+.ed-b.on:hover{background:var(--accent);color:var(--panza)}
