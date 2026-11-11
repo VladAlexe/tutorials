@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=147");
+    const m = await import("/data-science-workflows/js/colectare.js?v=149");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -3567,7 +3567,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=147`), import(`${R}/js/auth.js?v=147`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=149`), import(`${R}/js/auth.js?v=149`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });
@@ -3713,10 +3713,11 @@ V.medii = (gazda, d) => {
 };
 
 
-/* --- Bare pe intervale (H1, H2) ----------------------------------------------
-   O serie: SCI median pe intervale de distanță. Două serii: aceeași țară și
-   țări diferite, una lângă alta, cu raportul deasupra. Axa verticală e
-   logaritmică; la trecerea mouse-ului apar mediana și numărul de perechi. */
+/* --- Mediane pe intervale (H1, H2, migrația) ---------------------------------
+   Fiecare serie: SCI median pe intervale de distanță, ca puncte unite printr-o
+   linie (pointplot în seaborn). Pe o axă logaritmică nu există zero, deci nu se
+   folosesc bare. Cu două serii, raportul lor stă deasupra. La trecerea
+   mouse-ului apar mediana și numărul de perechi. */
 
 V.trepte = (gazda, d) => {
   const S = d.serii, I = d.intervale, nS = S.length;
@@ -3736,12 +3737,14 @@ V.trepte = (gazda, d) => {
   let g = "";
   for (let e = lo; e <= hi; e++) g += `<line x1="${L}" x2="${R}" y1="${Y(10 ** e)}" y2="${Y(10 ** e)}" class="nor__grila"/>`
     + `<text x="${L - 8}" y="${Y(10 ** e) + 4}" class="hst__et nor__ety">${nrRo(10 ** e)}</text>`;
-  I.forEach((t, k) => {
-    const x0 = L + k * gw + (gw - nS * bw - (nS - 1) * 4) / 2;
-    S.forEach((s, j) => {
-      const x = x0 + j * (bw + 4), y = Y(s.med[k]);
-      g += `<rect class="tr6__b" x="${x}" y="${y}" width="${bw}" height="${B - y}" rx="3" style="fill:var(--${s.c});--i:${k}" data-k="${k}" data-j="${j}"/>`;
+  const X = k => L + k * gw + gw / 2;
+  S.forEach((s, j) => {
+    g += `<polyline class="tr6__l" points="${I.map((_, k) => `${X(k)},${Y(s.med[k])}`).join(" ")}" style="stroke:var(--${s.c})"/>`;
+    I.forEach((_, k) => {
+      g += `<circle class="tr6__b" cx="${X(k)}" cy="${Y(s.med[k])}" r="6.5" style="fill:var(--${s.c});--i:${k}" data-k="${k}" data-j="${j}"/>`;
     });
+  });
+  I.forEach((t, k) => {
     if (nS > 1 && d.raport) {
       const r = S[0].med[k] / S[1].med[k], ym = Math.min(...S.map(s => Y(s.med[k])));
       g += `<text x="${L + k * gw + gw / 2}" y="${ym - 7}" class="hst__et tr6__x">×${nrRo(r, r < 10 ? 1 : 0)}</text>`;
@@ -3756,8 +3759,8 @@ V.trepte = (gazda, d) => {
       const k = +b.dataset.k, s = S[+b.dataset.j];
       bal.innerHTML = `<b>${esc(I[k])} km${nS > 1 ? ", " + esc(s.t) : ""}</b><span>mediana ${nrRo(s.med[k])} · ${nrRo(s.n[k])} perechi</span>`;
       bal.hidden = false; const rc = svg.getBoundingClientRect(), z = rc.width / W;
-      bal.style.left = Math.min(rc.width - 210, +b.getAttribute("x") * z + 8) + "px";
-      bal.style.top = Math.max(0, +b.getAttribute("y") * z - 46) + "px";
+      bal.style.left = Math.min(rc.width - 210, +b.getAttribute("cx") * z + 10) + "px";
+      bal.style.top = Math.max(0, +b.getAttribute("cy") * z - 52) + "px";
     };
     b.onmouseleave = () => { bal.hidden = true; };
   });

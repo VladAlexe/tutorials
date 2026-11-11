@@ -62,10 +62,10 @@ export const LECTII = [
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/05_agregare_si_baze_de_date.ipynb" },
 
   { nr:6, cheie:"c6-analiza-exploratorie",
-    titlu:"Analiza exploratorie",
+    titlu:"Analiza exploratorie și vizualizarea",
     scurt:"Explorare",
-    rezumat:"Cinci întrebări ale analizei exploratorii pe datele SCI: ce conțin datele, valoarea obișnuită, ce variază împreună, ce iese din tipar, ce grupuri apar.",
-    stare:"gata", sarcini:5,
+    rezumat:"Graficul potrivit tipului de date, pe datele SCI: o variabilă, două variabile numerice sau categorice, mai multe variabile, hărți și rețele.",
+    stare:"gata", sarcini:6,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/06_analiza_exploratorie.ipynb" },
 
   { nr:7, cheie:"c7-variabile-si-model",

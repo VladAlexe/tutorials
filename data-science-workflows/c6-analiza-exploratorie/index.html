@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lecția 6. Analiza exploratorie · Fluxuri de lucru</title>
-<meta name="description" content="Cinci întrebări ale analizei exploratorii, puse datelor SCI: ce conțin datele, cum arată o valoare obișnuită, ce variază împreună, ce iese din tipar și ce grupuri apar.">
-<link rel="stylesheet" href="../css/fonturi.css?v=147">
-<link rel="stylesheet" href="../css/sistem.css?v=147">
-<link rel="stylesheet" href="../css/intrare.css?v=147">
-<script src="../js/tema.js?v=147"></script>
+<title>Lecția 6. Analiza exploratorie și vizualizarea · Fluxuri de lucru</title>
+<meta name="description" content="Analiza exploratorie și graficul potrivit tipului de date: o variabilă, două variabile numerice sau categorice, mai multe variabile, hărți și rețele, pe datele SCI.">
+<link rel="stylesheet" href="../css/fonturi.css?v=149">
+<link rel="stylesheet" href="../css/sistem.css?v=149">
+<link rel="stylesheet" href="../css/intrare.css?v=149">
+<script src="../js/tema.js?v=149"></script>
 </head>
 <body>
 
@@ -34,26 +34,25 @@
 
   <header class="intr__erou">
     <p class="intr__tag">Lecția 6 din 8</p>
-    <h1>Analiza exploratorie</h1>
-    <p class="deck">Datele sunt curate și în bază. Înainte de model, analiza exploratorie răspunde la cinci întrebări și se încheie cu decizii.</p>
+    <h1>Analiza exploratorie și vizualizarea</h1>
+    <p class="deck">Datele sunt curate și în bază. Înainte de model, analiza exploratorie le privește prin grafice, alese după tipul datelor, și se încheie cu decizii.</p>
     <p class="intr__inchis" id="inchis" hidden>Lecția se deschide după ce este predată la curs.
     Până atunci, descrierea de mai jos rămâne disponibilă.</p>
   </header>
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>Analiza exploratorie caută ce merită verificat: o întrebare, un grafic care îi răspunde, apoi întrebarea nouă pe care o ridică răspunsul. Lecția o organizează în cinci întrebări valabile pe orice date și le pune pe cele 44.253 de perechi de regiuni: ce conțin datele (numărul de rânduri, o sursă externă, extremele, lipsurile), cum arată o valoare obișnuită, ce variază împreună (patru ipoteze din literatură), ce iese din tipar și ce grupuri apar.</p>
+    <div class="sec__corp"><p>Analiza exploratorie caută ce merită verificat: o întrebare, un grafic care îi răspunde, apoi întrebarea nouă pe care o ridică răspunsul. Graficul potrivit depinde de tipul datelor, iar lecția urmează această ordine: o variabilă numerică, o variabilă categorică și lipsurile, două variabile numerice, categoric × numeric, categoric × categoric, mai multe variabile, hărți și rețele. Exemplele sunt patru ipoteze din literatură, pe cele 44.253 de perechi de regiuni; graficele din caiet folosesc seaborn.</p>
 <p>Rezultatul nu este o colecție de grafice, ci decizii pentru modelul din C7: scara, variabilele, ce se exclude și ce excepții se urmăresc.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Analiza exploratorie ca ciclu: întrebare, grafic, întrebare nouă.</li>
-<li>Verificări înainte de grafice: numărul de rânduri, o sursă externă, extremele, lipsurile pe grupuri.</li>
-<li>Distribuția cu coadă lungă, mediana și scara logaritmică.</li>
-<li>Comparații în grupuri comparabile: granița la aceeași distanță, rata în locul numărului.</li>
-<li>Cazurile care ies din tipar: SCI raportat la mediana distanței.</li>
-<li>Grupurile: comunitățile rețelei și excepțiile lor.</li>
+<li>Analiza exploratorie ca ciclu: întrebare, grafic, întrebare nouă; verificările de dinainte de grafice.</li>
+<li>Graficul ales după tipul datelor: histogramă și boxplot, bare, densitate 2D, matricea de corelație, boxplot pe grupuri, tabel de contingență.</li>
+<li>A treia variabilă ca culoare sau ca fațete; variabila de confuzie.</li>
+<li>Hărți coroplete cu scară secvențială sau divergentă; rețele și comunități.</li>
+<li>Principiile unui grafic bun: o idee pe grafic, scara logaritmică, culoarea după date.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -89,13 +88,13 @@
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><ol>
 <li>Baza din C5, <code>curs/data/dsw.db</code>, cu tabelele lecției.</li>
-<li>Pachetele din <code>requirements.txt</code>, printre ele <code>geopandas</code>, <code>networkx</code> și <code>scipy</code>.</li>
+<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code>, alături de <code>geopandas</code> și <code>networkx</code>.</li>
 </ol></div>
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Fișa EDA a echipei: cele cinci întrebări, pe datele proiectului, fiecare cu un număr și cu numărul de cazuri.</li>
+<li>Fișa EDA a echipei: verificări, o variabilă, două variabile, grupuri, hartă sau rețea, fiecare grafic cu o întrebare și o interpretare.</li>
 <li>Deciziile pentru model, scrise în <code>README.md</code>.</li>
 </ul></div>
   </section>
@@ -120,7 +119,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=147"), import("../js/ora.js?v=147"), import("../js/curs.js?v=147")]);
+    import("../js/auth.js?v=149"), import("../js/ora.js?v=149"), import("../js/curs.js?v=149")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -163,7 +162,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=147"></script>
-<script type="module" src="../js/subsol.js?v=147"></script>
+<script type="module" src="../js/antet.js?v=149"></script>
+<script type="module" src="../js/subsol.js?v=149"></script>
 </body>
 </html>

@@ -3557,10 +3557,11 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 /* bare pe intervale */
 .tr6__desen{position:relative}
 .tr6 svg{width:100%;height:auto;display:block}
-.tr6__b{transform-box:fill-box;transform-origin:bottom;animation:tr6-urca .6s cubic-bezier(.3,.9,.35,1) both;
+.tr6__l{fill:none;stroke-width:2.5;stroke-linejoin:round}
+.tr6__b{transform-box:fill-box;transform-origin:center;animation:tr6-urca .6s cubic-bezier(.3,.9,.35,1) both;stroke:var(--panza);stroke-width:2;
   animation-delay:calc(var(--i) * 70ms);cursor:pointer}
 .tr6__b:hover{filter:brightness(1.1)}
-@keyframes tr6-urca{from{transform:scaleY(0)}}
+@keyframes tr6-urca{from{transform:scale(0)}}
 @media (prefers-reduced-motion: reduce){.tr6__b{animation:none}}
 .tr6__x{font-weight:700;fill:var(--text)}
 .tr6__leg{display:flex;gap:16px;font-family:var(--sans);font-size:var(--t1);color:var(--text-2);margin:0 0 4px}
@@ -3858,6 +3859,31 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 }
 .rnr[data-capitol="c6"] .sld#s14 .dov__r{padding:7px 12px;gap:5px}
 .rnr[data-capitol="c6"] .sld#s10 .nor__desen svg{max-height:360px;width:auto;max-width:100%;display:block}
+
+/* ---- C6: tipurile de date, matricea de corelație, tabelul de contingență ---- */
+.q6--tip > div{grid-template-columns:30px minmax(0,1fr) minmax(0,1.6fr) minmax(0,1.1fr);padding:8px 0}
+.q6--tip i{font-size:var(--t4,var(--t3))}
+.cm6w,.ct6w{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:center}
+.cm6{display:grid;grid-template-columns:auto repeat(var(--n),64px);gap:3px;font-family:var(--sans)}
+.cm6 > b{font-size:12px;font-weight:500;color:var(--text-2);text-align:center;align-self:end;line-height:1.2;padding-bottom:4px}
+.cm6 > b.cm6__r{text-align:right;align-self:center;padding:0 8px 0 0}
+.cm6 i{font-style:normal;height:52px;display:grid;place-items:center;border-radius:4px;font-size:var(--t2);font-variant-numeric:tabular-nums;color:var(--text)}
+.cm6 i.t1{background:var(--hsd-1);color:var(--panza)}.cm6 i.t2{background:var(--hsd-2);color:#fff}.cm6 i.t3{background:var(--hsd-3)}
+.cm6 i.t4{background:var(--hsd-4)}.cm6 i.t5{background:var(--hsd-5)}.cm6 i.t6{background:var(--hsd-6);color:#fff}.cm6 i.t7{background:var(--hsd-7);color:var(--panza)}
+.ct6{display:grid;grid-template-columns:auto 150px 150px;gap:3px;font-family:var(--sans)}
+.ct6 > b{font-size:var(--t2);font-weight:600;color:var(--text-2);text-align:center;padding-bottom:4px}
+.ct6 > b.ct6__r{text-align:right;font-weight:500;align-self:center;padding:0 10px 0 0}
+.ct6 i{font-style:normal;height:36px;display:flex;align-items:baseline;justify-content:center;gap:8px;padding-top:7px;border-radius:4px;
+  font-size:var(--t3);font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);
+  background:color-mix(in srgb,var(--accent) calc(var(--p) * 85%),var(--panza))}
+.ct6 i small{font-size:11px;font-weight:400;color:var(--text-2)}
+.ct6 i.tare,.ct6 i.tare small{color:var(--panza)}
+@media (max-width:760px){
+  .cm6w,.ct6w{grid-template-columns:1fr}
+  .cm6{grid-template-columns:auto repeat(var(--n),minmax(0,1fr))}
+  .cm6 > b{font-size:10px}
+  .ct6{grid-template-columns:auto 1fr 1fr}
+}
 
 /* ---- Proiectul echipei: pașii și temele (C6) ---- */
 .pr6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--linie-2);border-bottom:1px solid var(--linie-2);font-family:var(--sans);margin-bottom:14px}
