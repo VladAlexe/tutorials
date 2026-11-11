@@ -360,17 +360,17 @@
   "c6-analiza-exploratorie": {
     "nr": 6,
     "titlu": "Analiza exploratorie",
-    "deck": "Înainte de model, datele se privesc: ce conțin, cum variază, ce variază împreună, ce iese din tipar. Fiecare concept, interactiv, apoi pe datele noastre.",
+    "deck": "Înainte de model, datele se examinează: ce conțin, cum variază, ce variază împreună, ce iese din tipar. Fiecare concept, cu un grafic interactiv pe datele SCI.",
     "descriere": "Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, două și mai multe variabile, tipar și reziduu, verificarea.",
     "caiet": "@REPO@/blob/main/curs/06_analiza_exploratorie.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Analiza exploratorie înseamnă să înțelegi datele înainte de a le modela. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, tipurile de variabile, lipsurile, extremele), o variabilă (centrul, împrăștierea, rezistența, distribuția, reexprimarea), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; graficul înaintea coeficientului; lineup), trei sau mai multe variabile (confuzia, nivelul de analiză), tipar și reziduu, verificarea.</p>\n<p>Fiecare concept are o definiție, un grafic interactiv pe datele cursului (perechile de regiuni cu SCI și tabelul regiunilor) și pașii corespunzători din caiet. Rezultatul: deciziile pentru modelul din C7 și fișa EDA a echipei.</p>"
+        "html": "<p>Analiza exploratorie este examinarea datelor înainte de modelare. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, lipsurile, extremele), o variabilă (media și mediana, distribuția, transformarea logaritmică), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; prea multe puncte; lineup), trei sau mai multe variabile (factorul de confuzie, matricea de corelație), tipar și reziduu, verificarea.</p>\n<p>Fiecare concept are o definiție, un grafic interactiv pe datele cursului (perechile de regiuni cu SCI și tabelul regiunilor) și pașii corespunzători din caiet. Rezultatul: deciziile pentru modelul din C7.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; extremele; rezistența, reexprimarea.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Graficul ca comparație cu ce te aștepți (lineup); variabila de confuzie; nivelul de analiză (eroarea ecologică).</li>\n<li>Tipar și reziduu; grădina potecilor care se bifurcă și verificarea pe alte date.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; valorile extreme; media și mediana; transformarea logaritmică.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Tipar real sau întâmplare (lineup); factorul de confuzie și stratificarea; matricea de corelație.</li>\n<li>Tipar și reziduu; comparațiile multiple și verificarea pe alte date.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
@@ -378,7 +378,7 @@
       },
       {
         "t": "Ce se adaugă la proiect",
-        "html": "<ul class=\"obiective\">\n<li>Fișa EDA a echipei, pe etapele fluxului: profilul, o variabilă, relațiile, tipar și reziduu, verificarea.</li>\n<li>Deciziile pentru model, scrise în <code>README.md</code>.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Deciziile pentru model, scrise în <code>README.md</code>.</li>\n</ul>"
       }
     ],
     "resurse": [

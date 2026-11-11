@@ -4146,3 +4146,9 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .rnr[data-capitol="c6"] .sld .ed-ct .ed-svg{max-height:210px}
 .rnr[data-capitol="c6"] .sld .ed-ex td,.rnr[data-capitol="c6"] .sld .ed-ex th{padding-top:3px;padding-bottom:3px}
 .ed-b.on:hover{background:var(--accent);color:var(--panza)}
+/* glosar: termenul se deschide într-o casetă scurtă (hover, focus sau atingere) */
+.gl{position:relative;border-bottom:1.5px dotted var(--accent);cursor:help;outline:none}
+.gl__def{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:30;width:min(340px,80vw);padding:10px 12px;border:1px solid var(--linie);border-radius:8px;
+  background:var(--panza);box-shadow:0 6px 20px rgba(0,0,0,.14);font-family:var(--sans);font-size:13.5px;font-weight:400;line-height:1.45;color:var(--text);text-align:left;white-space:normal}
+.gl__def b{font-weight:700}.gl__def i{color:var(--text-2)}
+.gl:hover .gl__def,.gl:focus .gl__def,.gl:focus-within .gl__def{display:block}

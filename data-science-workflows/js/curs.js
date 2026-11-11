@@ -64,8 +64,8 @@ export const LECTII = [
   { nr:6, cheie:"c6-analiza-exploratorie",
     titlu:"Analiza exploratorie",
     scurt:"Explorare",
-    rezumat:"Fluxul analizei exploratorii, concept cu concept și interactiv: profilul datelor, o variabilă, relațiile, tipar și reziduu, verificarea; apoi pe datele SCI.",
-    stare:"gata", sarcini:8,
+    rezumat:"Fluxul analizei exploratorii, concept cu concept, cu grafice interactive pe datele SCI: profilul datelor, o variabilă, relațiile, tipar și reziduu, verificarea.",
+    stare:"gata", sarcini:5,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/06_analiza_exploratorie.ipynb" },
 
   { nr:7, cheie:"c7-variabile-si-model",

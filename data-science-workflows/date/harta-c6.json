@@ -1,7 +1,7 @@
 {
  "capitol": "c6",
- "total": 21,
- "sarcini": 7,
+ "total": 19,
+ "sarcini": 5,
  "slide": [
   {
    "nr": 1,
@@ -55,18 +55,18 @@
    "nr": 6,
    "id": "s6",
    "grup": "O variabilă numerică",
-   "titlu": "Locația și variabilitatea",
+   "titlu": "Media și mediana",
    "sarcini": [
     {
      "id": "c6-v-rez",
      "fel": "verificare",
      "corect": 2,
-     "q": "Se adaugă cele 8 perechi cu cele mai mari valori SCI la 60 de perechi obișnuite. Ce statistică rămâne aproape neschimbată?",
+     "q": "Se adaugă cele 8 perechi cu cele mai mari valori SCI la 60 de perechi obișnuite. Ce rămâne aproape neschimbat?",
      "optiuni": [
       "Media",
       "Abaterea standard",
       "Mediana",
-      "Toate se schimbă în aceeași măsură"
+      "Toate se schimbă la fel"
      ]
     }
    ]
@@ -82,7 +82,7 @@
    "nr": 8,
    "id": "s8",
    "grup": "O variabilă numerică",
-   "titlu": "Reexprimarea",
+   "titlu": "Transformarea logaritmică",
    "sarcini": []
   },
   {
@@ -102,7 +102,7 @@
      "id": "c6-v-cor",
      "fel": "verificare",
      "corect": 3,
-     "q": "Pe valorile brute, coeficientul Pearson dintre distanță și SCI este −0,12. Ce se poate afirma?",
+     "q": "Pe valorile brute, corelația Pearson dintre distanță și SCI este −0,12. Ce se poate afirma?",
      "optiuni": [
       "Relația este slabă",
       "Nu există relație",
@@ -116,7 +116,7 @@
    "nr": 11,
    "id": "s11",
    "grup": "Două variabile numerice",
-   "titlu": "Suprapunerea punctelor",
+   "titlu": "Prea multe puncte",
    "sarcini": []
   },
   {
@@ -130,57 +130,37 @@
    "nr": 13,
    "id": "s13",
    "grup": "Trei sau mai multe variabile",
-   "titlu": "Grupuri și confuzie",
+   "titlu": "Grupuri și factorul de confuzie",
    "sarcini": []
   },
   {
    "nr": 14,
    "id": "s14",
    "grup": "Trei sau mai multe variabile",
-   "titlu": "Nivelul de analiză",
-   "sarcini": [
-    {
-     "id": "c6-v-niv",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Între țări, populația și deschiderea au ρ = −0,42; în interiorul țărilor, 0,53. Ce afirmație este corectă?",
-     "optiuni": [
-      "Regiunile mari sunt mai închise",
-      "În aceeași țară, regiunile mari sunt mai deschise",
-      "Nu există asociere",
-      "Corelația totală este suficientă"
-     ]
-    }
-   ]
-  },
-  {
-   "nr": 15,
-   "id": "s15",
-   "grup": "Trei sau mai multe variabile",
    "titlu": "Multe variabile",
    "sarcini": []
   },
   {
-   "nr": 16,
-   "id": "s16",
+   "nr": 15,
+   "id": "s15",
    "grup": "Tipar și reziduu",
    "titlu": "Tipar și reziduu",
    "sarcini": []
   },
   {
-   "nr": 17,
-   "id": "s17",
+   "nr": 16,
+   "id": "s16",
    "grup": "Verificarea",
-   "titlu": "Comparațiile multiple",
+   "titlu": "Multe încercări",
    "sarcini": [
     {
      "id": "c6-v-pot",
      "fel": "verificare",
      "corect": 1,
-     "q": "Dintre 40 de variabile aleatoare, una are ρ = 0,15 cu deschiderea regiunilor. Cum se interpretează?",
+     "q": "Dintre 40 de variabile formate din numere aleatoare, două trec pragul de 5%. Ce înseamnă?",
      "optiuni": [
-      "Variabila explică deschiderea",
-      "Maximul așteptat a 40 de corelații întâmplătoare",
+      "Cele două explică deschiderea",
+      "Nimic: din 40 de încercări, cam 2 trec pragul din întâmplare",
       "Eșantionul e prea mic",
       "Trebuie Pearson"
      ]
@@ -188,34 +168,22 @@
    ]
   },
   {
-   "nr": 18,
-   "id": "s18",
+   "nr": 17,
+   "id": "s17",
    "grup": "Încheierea",
    "titlu": "Tipurile de grafice",
    "sarcini": []
   },
   {
-   "nr": 19,
-   "id": "s19",
+   "nr": 18,
+   "id": "s18",
    "grup": "Pe datele noastre",
    "titlu": "Fluxul pe SCI",
    "sarcini": []
   },
   {
-   "nr": 20,
-   "id": "s20",
-   "grup": "Echipa",
-   "titlu": "Fișa EDA a echipei",
-   "sarcini": [
-    {
-     "id": "c6-fisa",
-     "fel": "text"
-    }
-   ]
-  },
-  {
-   "nr": 21,
-   "id": "s21",
+   "nr": 19,
+   "id": "s19",
    "grup": "Echipa",
    "titlu": "Verificarea în caiet",
    "sarcini": [
