@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 7. Variabile derivate și model · Fluxuri de lucru</title>
-<meta name="description" content="Ingineria variabilelor (construcție, transformare, scalare, selecție), apoi un model care include simultan distanța, migrația și granița, cu interpretarea coeficienților și a reziduurilor.">
-<link rel="stylesheet" href="../css/fonturi.css?v=167">
-<link rel="stylesheet" href="../css/sistem.css?v=167">
-<link rel="stylesheet" href="../css/intrare.css?v=167">
-<script src="../js/tema.js?v=167"></script>
+<meta name="description" content="Ingineria variabilelor (construcție, transformare, scalare, grupare, selecție), apoi un model care include simultan distanța, migrația și granița, cu rezultatul complet, interpretarea coeficienților și reziduurile.">
+<link rel="stylesheet" href="../css/fonturi.css?v=168">
+<link rel="stylesheet" href="../css/sistem.css?v=168">
+<link rel="stylesheet" href="../css/intrare.css?v=168">
+<script src="../js/tema.js?v=168"></script>
 </head>
 <body>
 
@@ -43,7 +43,7 @@
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>Analiza exploratorie (C6) a găsit trei tipare: SCI scade cu distanța, este mai mare peste o graniță comună și crește cu migrația. Tiparele se suprapun: țările vecine sunt și apropiate, și au mai mulți migranți între ele. Un model le include simultan și estimează ce rămâne din fiecare.</p>
-<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, selecția (corelațiile predictorilor, VIF). A doua parte este modelul: patru modele pe aceleași perechi de țări, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p></div>
+<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, extragerea prin gruparea regiunilor (k-means), selecția (corelațiile predictorilor, VIF). A doua parte este modelul: patru modele pe aceleași perechi de țări, rezultatul complet al modelului, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
@@ -51,10 +51,11 @@
 <li>Construcția unei variabile derivate: o rată, o distanță agregată, o variabilă binară.</li>
 <li>Decizia privind variabilele care se logaritmează și cele care nu.</li>
 <li>Diferența dintre scalare, care nu schimbă forma distribuției, și transformare, care o schimbă.</li>
+<li>Gruparea regiunilor cu k-means: rolul scorului z și alegerea numărului de grupe.</li>
 <li>Verificarea redundanței predictorilor: corelațiile și VIF.</li>
 <li>Modelul liniar cu <code>statsmodels</code>: tipar plus reziduu, cele mai mici pătrate, R².</li>
-<li>Motivul pentru care un coeficient se schimbă când intră o variabilă nouă.</li>
-<li>Citirea coeficienților pe logaritmi ca elasticități; intervalul de încredere.</li>
+<li>Citirea completă a lui <code>summary()</code>: R² ajustat, testul F, AIC, erorile standard, valorile p, diagnosticul reziduurilor.</li>
+<li>Citirea coeficienților pe logaritmi ca elasticități; intervalul de încredere; interpretarea scrisă ca într-un raport.</li>
 <li>Reziduurile ca surse de întrebări; ce poate și ce nu poate susține un model observațional.</li>
 </ul></div>
   </section>
@@ -123,7 +124,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=167"), import("../js/ora.js?v=167"), import("../js/curs.js?v=167")]);
+    import("../js/auth.js?v=168"), import("../js/ora.js?v=168"), import("../js/curs.js?v=168")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -166,7 +167,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=167"></script>
-<script type="module" src="../js/subsol.js?v=167"></script>
+<script type="module" src="../js/antet.js?v=168"></script>
+<script type="module" src="../js/subsol.js?v=168"></script>
 </body>
 </html>

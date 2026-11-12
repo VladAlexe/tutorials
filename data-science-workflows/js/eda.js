@@ -809,4 +809,59 @@ E.edElasticitate = (gazda, d) => {
   deseneaza();
 };
 
+/* k-means pe două variabile ale regiunilor: cu sau fără scorul z, k ales. */
+E.edKmeans = (gazda, d) => {
+  const R = (d.reg || []).map(r => ({ cod: r[0], tara: r[1], nume: r[2], x: r[3], y: r[4] }));
+  let k = 4, mod = "z";
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", [["brut", "valorile inițiale"], ["z", "scorul z"]], mod)}${glisor("k", "grupe, k", 2, 6, 1, k)}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const ik = el.querySelector('input[data-n="k"]');
+  const zs = a => { const m = medie(a), s = abatere(a); return a.map(v => (v - m) / s); };
+  const kmeans = (P, k) => { let best = null; const r = rng(7);
+    for (let t = 0; t < 12; t++){
+      let C = [P[Math.floor(r() * P.length)]];
+      while (C.length < k){ const D = P.map(p => Math.min(...C.map(c => (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2))), S = D.reduce((a, b) => a + b, 0);
+        let u = r() * S, i = 0; while (u > D[i] && i < D.length - 1){ u -= D[i]; i++; } C.push(P[i]); }
+      let L = [];
+      for (let it = 0; it < 100; it++){
+        L = P.map(p => { let b = 0, bd = 1e99; C.forEach((c, j) => { const dd = (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2; if (dd < bd){ bd = dd; b = j; } }); return b; });
+        const C2 = C.map((c, j) => { const M = P.filter((_, i) => L[i] === j); return M.length ? [medie(M.map(m => m[0])), medie(M.map(m => m[1]))] : c; });
+        const gata = C2.every((c, j) => c[0] === C[j][0] && c[1] === C[j][1]); C = C2; if (gata) break; }
+      const inn = P.reduce((s, p, i) => s + (p[0] - C[L[i]][0]) ** 2 + (p[1] - C[L[i]][1]) ** 2, 0);
+      if (!best || inn < best.inn) best = { inn, L, C }; }
+    return best; };
+  const W = 900, H = 228, x0 = 62, x1 = W - 16, y0 = 20, y1 = H - 40;
+  const deseneaza = () => {
+    const X = R.map(r => r.x), Y = R.map(r => r.y);
+    const P = mod === "z" ? (() => { const a = zs(X), b = zs(Y); return a.map((v, i) => [v, b[i]]); })() : X.map((v, i) => [v, Y[i]]);
+    const { L } = kmeans(P, k);
+    const sx = sc(0, Math.max(...X) * 1.02, x0, x1), sy = sc(0, Math.max(...Y) * 1.05, y1, y0);
+    let s = axe({ x0, x1, y0, y1, sx, sy, dx: [0, Math.max(...X) * 1.02], dy: [0, Math.max(...Y) * 1.05], ex: "PIB pe locuitor (euro)", ey: "studii superioare (%)", fx: u => nr(u), fy: u => f(u, 0) });
+    R.forEach((r, i) => s += `<circle cx="${sx(r.x)}" cy="${sy(r.y)}" r="3.4" style="fill:var(--cat-${L[i] + 1});fill-opacity:.85"><title>${r.nume} (${r.tara})</title></circle>`);
+    el.querySelector(".ed-g").innerHTML = svg(W, H, s);
+    scrieCod(el, mod === "z"
+      ? `z = (reg[indicatori] - reg[indicatori].mean()) / reg[indicatori].std()\ngrupare = KMeans(n_clusters=${k}, n_init=10, random_state=1).fit(z)\nreg["grupa"] = grupare.labels_`
+      : `grupare = KMeans(n_clusters=${k}, n_init=10, random_state=1).fit(reg[indicatori])   # fără scorul z\nreg["grupa"] = grupare.labels_`);
+    const G = [...Array(k).keys()].map(j => { const ix = L.map((l, i) => l === j ? i : -1).filter(i => i >= 0);
+      return [`${j + 1}`, `${ix.length} reg. · ${nr(mediana(ix.map(i => X[i])))} € · ${f(mediana(ix.map(i => Y[i])), 0)}%`, ""]; });
+    el.querySelector(".ed-o").innerHTML = cifre(G).replace(/<span class="">/g, (m => { let j = 0; return () => `<span class="ed-k" style="--kc:var(--cat-${++j})">`; })())
+      + panou(mod === "z" ? "Cu scorul z, ambii indicatori cântăresc la fel: grupele se formează pe diagonală." : "Fără scorul z, PIB-ul (zeci de mii) domină distanța: grupele sunt felii verticale, după PIB.");
+    ik.nextElementSibling.textContent = k;
+  };
+  leaga(el, "m", c => { mod = c; deseneaza(); });
+  ik.addEventListener("input", () => { k = +ik.value; deseneaza(); });
+  deseneaza();
+};
+
+/* Ieșirea lui summary(), cu explicația fiecărui câmp la clic. */
+E.edSumar = (gazda, d) => {
+  const X = d.expl || {};
+  const linii = (d.linii || []).map(l => l.map(([t, k]) => k ? `<span class="ed-sm__k" data-k="${k}" tabindex="0">${t}</span>` : t).join("")).join("\n");
+  const el = bloc(gazda, `<div class="ed-sm"><pre class="ed-sm__p">${linii}</pre><div class="ed-sm__x"></div></div>`);
+  const arata = k => { const [t, v, x] = X[k];
+    el.querySelectorAll(".ed-sm__k").forEach(s => s.classList.toggle("on", s.dataset.k === k));
+    el.querySelector(".ed-sm__x").innerHTML = `<b>${t}</b><span class="ed-sm__v">${v}</span><p>${x}</p>`; };
+  el.querySelectorAll(".ed-sm__k").forEach(s => { s.addEventListener("click", () => arata(s.dataset.k)); s.addEventListener("keydown", e => { if (e.key === "Enter") arata(s.dataset.k); }); });
+  arata(d.prim || Object.keys(X)[0]);
+};
+
 export default E;

@@ -31,6 +31,7 @@ ro = lambda v, z=2: f"{v:.{z}f}".replace(".", ",").replace("-", "−")
 pct = lambda v: f"{abs(v - 1) * 100:.0f}%"
 _NB7 = "07_variabile_derivate_si_model.ipynb"
 _T = {"tari": M["tari"]}
+_REG = {"reg": json.loads((RAD / "date" / "c7-model.json").read_text(encoding="utf-8"))["regiuni"]}
 
 # Glosarul lecției: termenul, echivalentul englezesc, o definiție scurtă.
 G = {
@@ -50,6 +51,10 @@ G = {
     "r2": ("R²", "coefficient of determination", "partea din variația variabilei dependente explicată de model, între 0 și 1."),
     "reziduu": ("reziduul", "residual", "valoarea observată minus valoarea prezisă de model."),
     "elast": ("elasticitatea", "elasticity", "pe logaritmi, coeficientul spune cu cât la sută se schimbă y când x crește cu 1%; dacă x se dublează, y se înmulțește cu 2 la puterea coeficientului."),
+    "cluster": ("gruparea", "cluster analysis, clustering", "împarte observațiile în grupe, astfel încât observațiile din aceeași grupă să fie cât mai asemănătoare pe toți indicatorii."),
+    "kmeans": ("k-means", "k-means", "fiecare observație merge la cel mai apropiat dintre k centre; fiecare centru se mută în media grupei lui; pașii se repetă până nu se mai schimbă nimic."),
+    "inertia": ("inerția", "inertia, within-cluster sum of squares", "suma pătratelor distanțelor de la fiecare observație la centrul grupei ei; scade când k crește."),
+    "r2a": ("R² ajustat", "adjusted R-squared", "R² penalizat pentru numărul de predictori; crește doar dacă un predictor nou aduce mai mult decât ar aduce întâmplarea."),
     "ic": ("intervalul de încredere", "confidence interval", "valorile plauzibile ale unui coeficient; dacă intervalul de 95% nu conține 0, coeficientul se deosebește de întâmplare."),
 }
 
@@ -121,7 +126,7 @@ FLUX7 = (
     '<div><small>1 · construcția</small><b>variabile noi din cele existente</b></div>'
     '<div><small>2 · transformarea</small><b>forma distribuției: logaritmul</b></div>'
     '<div><small>3 · scalarea</small><b>aceeași scară: scorul z</b></div>'
-    '<div><small>4 · extragerea</small><b>mai mulți indicatori într-unul</b></div>'
+    '<div><small>4 · extragerea</small><b>mai mulți indicatori: un scor sau o grupă</b></div>'
     '<div class="nou"><small>5 · selecția</small><b>setul final, fără redundanță</b></div>'
     '</div>'
     '<p class="ed6__inapoi">dacă modelul arată o problemă, se revine la o etapă anterioară</p>')
@@ -149,8 +154,8 @@ sl("s2", "Variabilele", "Cinci etape",
    "citită.</p>"
    + FLUX7
    + "<p>Nu toate etapele apar în fiecare proiect. Pe datele SCI, construcția și transformarea sunt esențiale; "
-     "scalarea servește la compararea coeficienților; selecția verifică redundanța; extragerea nu este necesară, "
-     "pentru că fiecare concept are o singură variabilă. Deciziile din analiza exploratorie trec direct în model:</p>"
+     "scalarea servește la compararea coeficienților; extragerea, prin gruparea regiunilor, produce o variabilă nouă, "
+     "tipul de regiune; selecția verifică redundanța. Deciziile din analiza exploratorie trec direct în model:</p>"
    + DECIZII
    + glosar("fe", "derivata"))
 
@@ -237,7 +242,7 @@ sl("s5", "Variabilele", "Scalarea",
           f"{ro(M['m4z']['z_log_distanta'])}: migrația contează de aproape patru ori mai mult."),
    dupa=V_Z,
    manual=
-   "<h2>Scalarea și extragerea</h2>"
+   "<h2>Scalarea</h2>"
    "<p>Scalarea aduce variabilele pe aceeași scară numerică. Scorul z, z = (x − media) / abaterea standard, este cea "
    "mai folosită: media devine 0, abaterea standard 1. Este o transformare liniară, deci nu schimbă forma "
    "distribuției și nici ordinea valorilor. Alte variante sunt scalarea min-max (între 0 și 1) și scalarea robustă "
@@ -250,17 +255,56 @@ sl("s5", "Variabilele", "Scalarea",
        ["log distanța", ro(B4["log_distanta"]), ro(M["m4z"]["z_log_distanta"])],
        ["log migranți la mie", ro(B4["log_la_mie"]), ro(M["m4z"]["z_log_la_mie"])],
        ["granița (0/1, nescalată)", ro(B4["granita"]), ro(M["m4z"]["granita"])]])
-   + f"<p><b>Extragerea</b> rezumă mai mulți indicatori ai aceluiași concept într-un singur scor, de obicei prin "
-     f"{gl('pca')}: de exemplu, PIB-ul, studiile și șomajul într-un scor al dezvoltării. Pe datele SCI fiecare concept "
-     "are o singură variabilă, deci extragerea nu este necesară. Înainte de PCA, variabilele se scalează "
-     "obligatoriu.</p>"
    + V_Z
-   + glosar("z", "pca")
-   + caiet("3", [
+   + glosar("z")
+   + caiet("3.1", [
        "Funcția <code>scor_z(x)</code>: <code>(x - x.mean()) / x.std()</code>.",
        "Coloanele <code>z_log_sci</code>, <code>z_log_distanta</code>, <code>z_log_la_mie</code>; "
        "<code>describe()</code> arată media 0 și abaterea standard 1."],
        "<code>skew()</code> înainte și după scorul z: se schimbă asimetria?"))
+
+
+_GRUPE = tabel(["Tipul de regiune", "Regiuni", "PIB/loc.", "Studii sup. (%)", "Șomaj (%)", "Vârsta medie", "Densitate", "Exemple"], [
+    ["metropolitane", "36", "60.100", "50,0", "4,7", "41,4", "740", "capitalele: Praga, Bratislava, Budapesta, Varșovia, București-Ilfov, Madrid"],
+    ["dezvoltate", "119", "38.300", "34,6", "3,7", "45,1", "139", "Germania, Austria, nordul Italiei, Polonia vestică"],
+    ["periferice, îmbătrânite", "90", "27.350", "27,9", "7,7", "45,8", "65", "Grecia, sudul Spaniei și al Italiei, România fără București, Bulgaria"],
+    ["tinere, cu șomaj ridicat", "21", "20.500", "22,8", "10,3", "34,2", "140", "Turcia, teritoriile franceze de peste mări, Ceuta"]])
+
+sl("s6", "Variabilele", "Extragerea",
+   "<h2>Extragerea: gruparea regiunilor</h2>"
+   + concept(f"{gl('cluster', 'Gruparea')} rezumă mai mulți indicatori într-o categorie: tipul de regiune. "
+             f"{gl('kmeans')} pune fiecare regiune la cel mai apropiat centru. Distanța se calculează pe toți indicatorii "
+             "deodată, deci scorul z este obligatoriu.")
+   + ix("edKmeans", "Regiunile după PIB și studii, în k grupe", _REG)
+   + vede("Pe cinci indicatori, patru tipuri de regiuni. București-Ilfov intră cu metropolele, restul României cu periferiile."),
+   manual=
+   "<h2>Extragerea: gruparea regiunilor</h2>"
+   "<p>Extragerea rezumă mai mulți indicatori într-o singură variabilă. "
+   f"{gl('pca')} dă un scor numeric (de exemplu, un scor al dezvoltării din PIB, studii și șomaj); gruparea dă o "
+   "categorie: regiunile asemănătoare pe toți indicatorii ajung în aceeași grupă. Rezultatul este o variabilă "
+   "derivată nouă, tipul de regiune, utilă unui proiect pe regiuni.</p>"
+   "<p>Algoritmul k-means alege k centre, pune fiecare regiune la cel mai apropiat centru, mută fiecare centru în "
+   "media regiunilor lui și repetă până nu se mai schimbă nimic. Pornirea este aleatoare, deci se repornește de mai "
+   "multe ori (<code>n_init</code>), iar <code>random_state</code> face rezultatul reproductibil. Distanța folosește "
+   "toți indicatorii deodată: fără scorul z, indicatorul cu valorile cele mai mari (PIB-ul, în euro) decide singur "
+   "grupele. În graficul de mai jos, pe doi indicatori, butonul „valorile inițiale” arată efectul.</p>"
+   + ix("edKmeans", "Regiunile după PIB și studii, în k grupe", _REG)
+   + "<p>Numărul de grupe este o decizie. "
+     f"{gl('inertia', 'Inerția')} (suma distanțelor la pătrat până la centrul grupei) scade mereu când k crește; se "
+     "caută punctul după care scade mult mai încet, cotul. Pe datele cursului cotul nu este foarte clar; k = 4 dă "
+     "grupe care se pot descrie. În caiet, gruparea se face pe cinci indicatori (PIB, studii, șomaj, vârsta medie, "
+     "log densitatea), pe cele 266 de regiuni care îi au pe toți:</p>"
+   + _GRUPE
+   + "<p>Numerele grupelor sunt doar etichete și pot ieși în altă ordine; grupele se numesc după profil. Ca la "
+     "comunitățile din C6, gruparea arată <i>că</i> regiunile se aseamănă, nu <i>de ce</i>: capitalele ies împreună, "
+     "deși algoritmul nu știe nimic despre țări sau hartă.</p>"
+   + glosar("cluster", "kmeans", "inertia", "pca")
+   + caiet("3.2", [
+       "<code>reg</code>: regiunile cu toți cei cinci indicatori; densitatea pe logaritm; scorul z.",
+       "Inerția pentru k de la 1 la 8, într-un grafic (cotul).",
+       "<code>KMeans(n_clusters=4, n_init=10, random_state=1)</code>; profilul grupelor cu "
+       "<code>groupby(\"grupa\").median()</code>; harta grupelor."],
+       "Aceeași grupare fără scorul z: ce indicator decide grupele? Apoi <code>n_clusters=3</code> și <code>6</code>."))
 
 
 VIF = M.get("vif") or {"log_distanta": 1.7, "log_la_mie": 1.15, "granita": 1.72}
@@ -270,7 +314,7 @@ TAB_SEL = tabel(["Predictorul", "Corelația cu distanța", "Corelația cu rata",
     ["log migranți la mie", ro(COR[1][0]), "1", ro(VIF["log_la_mie"])],
     ["granița", ro(COR[2][0]), ro(COR[2][1]), ro(VIF["granita"])]])
 
-sl("s6", "Variabilele", "Selecția",
+sl("s7", "Variabilele", "Selecția",
    "<h2>Selecția: predictori fără redundanță</h2>"
    + concept(f"Doi predictori care spun aproape același lucru nu se pot separa în model ({gl('multicol')}). "
              f"{gl('vif', 'VIF')} măsoară cât de bine e explicat un predictor de ceilalți: sub 5, acceptabil; "
@@ -306,7 +350,7 @@ REZ1 = {"perechi": _PT, "dy": [3, 6.6], "rm": 1.2, "a0": 6, "b0": -0.4, "r2": Tr
         "et": ["țări nevecine", "țări vecine (portocaliu)"],
         "cod": 'm1 = smf.ols("log_sci ~ log_distanta", data=date).fit()\nm1.params        # nivelul și panta\ndate["reziduu"] = m1.resid'}
 
-sl("s7", "Modelul", "Tipar și reziduu",
+sl("s8", "Modelul", "Tipar și reziduu",
    "<h2>Modelul: tipar plus reziduu</h2>"
    + concept(f"{gl('model', 'Modelul liniar')} scrie fiecare valoare ca tipar plus {gl('reziduu', 'reziduu')}: log SCI = nivel + "
              f"pantă × log distanța + reziduu. {gl('mcmp', 'Cele mai mici pătrate')} aleg dreapta cu suma pătratelor "
@@ -357,7 +401,7 @@ MODELE = {
     ],
 }
 
-sl("s8", "Modelul", "Patru modele",
+sl("s9", "Modelul", "Patru modele",
    "<h2>Patru modele, câte o variabilă în plus</h2>"
    + concept(f"Fiecare {gl('coef', 'coeficient')} arată efectul unui {gl('predictor', 'predictor')} cu ceilalți ținuți constanți. "
              "Când intră un predictor nou, coeficienții celorlalți se schimbă: o parte din efectul lor era al "
@@ -389,6 +433,120 @@ sl("s8", "Modelul", "Patru modele",
        "<code>m4z</code>: același model pe scorurile z, pentru compararea coeficienților."]))
 
 
+
+# Ieșirea lui m4.summary(), cu câmpurile care se explică la clic
+SU = M["sumar"]
+_C = SU["coef"]
+e3 = lambda v: f"{v:.2e}" if v < 1e-3 else f"{v:.3f}"
+
+
+def _r(nume, k):
+    c = _C[nume]
+    return [[f"{nume:<15}", None], [f"{c['b']:8.4f}", "coef"], [f"{c['se']:11.3f}", "se"], [f"{c['t']:11.3f}", "t"],
+            [f"{c['p']:11.3f}", "p_" + k], [f"{c['lo']:12.3f}", "ic_" + k], [f"{c['hi']:12.3f}", "ic_" + k]]
+
+
+def _d(st, dr):
+    """Un rând cu două câmpuri: (eticheta, valoarea, cheia) la stânga și la dreapta, ca în statsmodels."""
+    o = []
+    if st:
+        et, v, k = st
+        o += [[et, k], [v.rjust(36 - len(et)), k]]
+    else:
+        o += [[" " * 36, None]]
+    o += [["   ", None]]
+    if dr:
+        et, v, k = dr
+        o += [[et, k], [v.rjust(41 - len(et)), k]]
+    return o
+
+
+_L = [
+    [["OLS Regression Results".center(80), None]],
+    [["=" * 80, None]],
+    _d(("Dep. Variable:", "log_sci", None), ("R-squared:", f"{SU['r2']:.3f}", "r2")),
+    _d(("Model:", "OLS", None), ("Adj. R-squared:", f"{SU['r2a']:.3f}", "r2a")),
+    _d(("Method:", "Least Squares", None), ("F-statistic:", f"{SU['F']:.2f}", "F")),
+    _d(("No. Observations:", f"{SU['n']}", "n"), ("Prob (F-statistic):", f"{SU['pF']:.2e}", "F")),
+    _d(("Df Residuals:", f"{SU['df_resid']}", "df"), ("Log-Likelihood:", f"{SU['ll']:.3f}", "aic")),
+    _d(("Df Model:", f"{SU['df_model']}", "df"), ("AIC:", f"{SU['aic']:.1f}", "aic")),
+    _d(None, ("BIC:", f"{SU['bic']:.1f}", "aic")),
+    [["=" * 80, None]],
+    [[" " * 15, None], ["coef".rjust(8), "coef"], ["std err".rjust(11), "se"], ["t".rjust(11), "t"],
+     ["P>|t|".rjust(11), "p_dist"], ["[0.025".rjust(12), "ic_gr"], ["0.975]".rjust(12), "ic_gr"]],
+    [["-" * 80, None]],
+    _r("Intercept", "int"), _r("log_distanta", "dist"), _r("log_la_mie", "rata"), _r("granita", "gr"),
+    [["=" * 80, None]],
+    _d(("Omnibus:", f"{SU['omnibus']:.3f}", "norm"), ("Durbin-Watson:", f"{SU['dw']:.3f}", "dw")),
+    _d(("Prob(Omnibus):", f"{SU['p_omnibus']:.3f}", "norm"), ("Jarque-Bera (JB):", f"{SU['jb']:.3f}", "norm")),
+    _d(("Skew:", f"{SU['skew']:.3f}", "skew"), ("Prob(JB):", f"{SU['p_jb']:.2e}", "norm")),
+    _d(("Kurtosis:", f"{SU['kurt']:.3f}", "skew"), ("Cond. No.", f"{SU['cond']:.1f}", "cond")),
+    [["=" * 80, None]],
+]
+_X = {
+    "r2": ("R² (R-squared)", f"{ro(SU['r2'], 3)}", "Partea din variația lui log SCI explicată de model: 53%. Restul de 47% este în reziduuri."),
+    "r2a": ("R² ajustat (Adj. R-squared)", f"{ro(SU['r2a'], 3)}", "R² penalizat pentru numărul de predictori. R² crește la orice predictor adăugat, chiar fără legătură; R² ajustat crește doar dacă predictorul aduce mai mult decât întâmplarea. Se folosește la compararea modelelor cu număr diferit de predictori."),
+    "F": ("Testul F", f"F = {ro(SU['F'], 1)}; p = {SU['pF']:.1e}".replace(".", ","), "Testează ipoteza că niciun predictor nu contează (toți coeficienții sunt 0). Valoarea p este practic 0: modelul, în ansamblu, explică ceva."),
+    "n": ("Numărul de observații", f"{SU['n']}", "Perechile de țări cu toate variabilele: eșantionul comun al celor patru modele."),
+    "df": ("Gradele de libertate", f"model {SU['df_model']}, reziduuri {SU['df_resid']}", "Model: numărul de predictori (3). Reziduuri: observațiile minus parametrii estimați (263 − 4 = 259, cu constanta). Intră în calculul erorilor standard și al valorilor p."),
+    "aic": ("Log-Likelihood, AIC, BIC", f"AIC {ro(SU['aic'], 1)}, BIC {ro(SU['bic'], 1)}", "Compară modele estimate pe aceleași date: valoarea mai mică e mai bună. Spre deosebire de R², penalizează fiecare predictor în plus (BIC mai tare decât AIC)."),
+    "coef": ("Coeficientul (coef)", f"log_la_mie: {ro(_C['log_la_mie']['b'], 3)}", "Estimarea efectului fiecărui predictor, cu ceilalți ținuți constanți. Pe logaritmi, o elasticitate (slide-ul următor)."),
+    "se": ("Eroarea standard (std err)", f"log_la_mie: {ro(_C['log_la_mie']['se'], 3)}", "Cât de precisă este estimarea: cât ar varia coeficientul de la un eșantion la altul. Mai mică înseamnă mai precisă."),
+    "t": ("Statistica t", f"log_la_mie: {ro(_C['log_la_mie']['t'], 1)}", "Coeficientul împărțit la eroarea lui standard: de câte ori e mai mare estimarea decât incertitudinea ei. Regula practică: peste 2 în valoare absolută, p sub 0,05."),
+    "p_int": ("Valoarea p, constanta", e3(_C["Intercept"]["p"]), "Constanta este log SCI prezis la 1 km și o rată de 1 la mie: o extrapolare, fără sens direct. Valoarea ei p nu se interpretează."),
+    "p_dist": ("Valoarea p, distanța", f"{_C['log_distanta']['p']:.3f}".replace(".", ","), "Proporția estimărilor la fel de mari care ar apărea dacă distanța nu ar conta (ca la amestecarea din C6). Sub 0,05: distanța contează, la aceeași migrație și graniță."),
+    "p_rata": ("Valoarea p, rata migranților", "practic 0", "t = 13,7: rata migranților este predictorul cel mai puternic și cel mai precis."),
+    "p_gr": ("Valoarea p, granița", f"{_C['granita']['p']:.3f}".replace(".", ","), "Peste 0,05: efectul graniței nu se deosebește de întâmplare, odată ce distanța și migrația sunt în model."),
+    "ic_int": ("Intervalul de 95%, constanta", f"{ro(_C['Intercept']['lo'])} … {ro(_C['Intercept']['hi'])}", "Valorile plauzibile ale constantei."),
+    "ic_dist": ("Intervalul de 95%, distanța", f"{ro(_C['log_distanta']['lo'])} … {ro(_C['log_distanta']['hi'])}", "Nu conține 0: efectul distanței este negativ, între −0,51 și −0,10."),
+    "ic_rata": ("Intervalul de 95%, rata", f"{ro(_C['log_la_mie']['lo'])} … {ro(_C['log_la_mie']['hi'])}", "Îngust și departe de 0: estimarea cea mai sigură a modelului."),
+    "ic_gr": ("Intervalul de 95%, granița", f"{ro(_C['granita']['lo'])} … {ro(_C['granita']['hi'])}", "Conține 0: efectul graniței poate fi la fel de bine nul. Aceeași concluzie ca valoarea p de 0,21."),
+    "norm": ("Normalitatea reziduurilor: Omnibus, Jarque-Bera", f"p = {SU['p_omnibus']:.0e}; p = {SU['p_jb']:.0e}".replace(".", ","), "Testează dacă reziduurile au distribuție normală. Ambele p sunt sub 0,001: reziduurile nu sunt perfect normale. Cu 263 de perechi, abaterea moderată nu schimbă mult coeficienții, dar se spune în raport."),
+    "skew": ("Asimetria și aplatizarea reziduurilor", f"skew {ro(SU['skew'])}, kurtosis {ro(SU['kurt'])}", "Asimetria 0,65: coadă spre dreapta, câteva perechi mult peste model (Islanda). Aplatizarea 3,57, puțin peste 3, valoarea distribuției normale."),
+    "dw": ("Durbin-Watson", f"{ro(SU['dw'])}", "Aproape de 2: fără autocorelație între rândurile vecine. Contează mai ales la serii de timp; aici ordinea rândurilor este arbitrară."),
+    "cond": ("Numărul de condiționare (Cond. No.)", f"{ro(SU['cond'], 1)}", "Valorile mari (statsmodels avertizează peste 1.000) semnalează multicoliniaritate sau scări foarte diferite. Aici e mic, ca VIF-urile."),
+}
+SUMAR = {"linii": _L, "expl": _X, "prim": "r2"}
+
+sl("s10", "Modelul", "Rezultatul complet",
+   "<h2>Rezultatul complet al modelului</h2>"
+   + concept(f"Trei blocuri: modelul în ansamblu ({gl('r2a', 'R² ajustat')}, testul F, AIC), coeficienții (eroarea "
+             "standard, t, valoarea p, intervalul) și diagnosticul reziduurilor. Un clic pe un câmp îl explică.")
+   + ix("edSumar", "m4.summary(), pe datele cursului", SUMAR)
+   + vede("Modelul explică 53%; rata migranților (t = 13,7) și distanța (p = 0,004) contează; granița nu (p = 0,21). "
+          "Reziduurile nu sunt perfect normale."),
+   manual=
+   "<h2>Rezultatul complet al modelului</h2>"
+   "<p><code>m4.summary()</code> dă tot rezultatul modelului, în trei blocuri. Sus, modelul în ansamblu: numărul de "
+   "observații, R² și R² ajustat, testul F, criteriile de comparație AIC și BIC. La mijloc, coeficienții, fiecare cu "
+   "eroarea standard, statistica t, valoarea p și intervalul de încredere de 95%. Jos, diagnosticul reziduurilor: "
+   "normalitatea (Omnibus, Jarque-Bera, asimetria, aplatizarea), autocorelația (Durbin-Watson) și numărul de "
+   "condiționare. Un clic pe fiecare câmp îl explică, cu valoarea lui pe datele cursului.</p>"
+   + ix("edSumar", "m4.summary(), pe datele cursului", SUMAR)
+   + tabel(["", "coef", "std err", "t", "P>|t|", "interval 95%", "Citirea"], [
+       ["Intercept", ro(_C["Intercept"]["b"]), ro(_C["Intercept"]["se"]), ro(_C["Intercept"]["t"], 1), "0,000",
+        f"{ro(_C['Intercept']['lo'])} … {ro(_C['Intercept']['hi'])}", "extrapolare, fără sens direct"],
+       ["log_distanta", ro(_C["log_distanta"]["b"]), ro(_C["log_distanta"]["se"]), ro(_C["log_distanta"]["t"], 1),
+        ro(_C["log_distanta"]["p"], 3), f"{ro(_C['log_distanta']['lo'])} … {ro(_C['log_distanta']['hi'])}", "semnificativ"],
+       ["log_la_mie", ro(_C["log_la_mie"]["b"]), ro(_C["log_la_mie"]["se"]), ro(_C["log_la_mie"]["t"], 1), "0,000",
+        f"{ro(_C['log_la_mie']['lo'])} … {ro(_C['log_la_mie']['hi'])}", "cel mai puternic și cel mai precis"],
+       ["granita", ro(_C["granita"]["b"]), ro(_C["granita"]["se"]), ro(_C["granita"]["t"], 1), ro(_C["granita"]["p"], 3),
+        f"{ro(_C['granita']['lo'])} … {ro(_C['granita']['hi'])}", "nesemnificativ"]])
+   + "<p>Interpretarea, ca într-un raport: pe 263 de perechi de țări europene, un model liniar cu distanța, rata "
+     "migranților și granița comună explică 53% din variația lui log SCI (R² ajustat 0,52). Migrația este predictorul "
+     "cel mai puternic: la aceeași distanță și graniță, o rată a migranților de două ori mai mare merge cu un SCI cu "
+     "aproximativ 36% mai mare (coeficient 0,44, interval de 95% între 0,38 și 0,51). Distanța rămâne semnificativă, "
+     "dar mult mai slabă decât părea singură: coeficientul ei scade de la −0,76 în M1 la −0,30 în M4. Granița comună "
+     "nu adaugă un efect clar odată ce distanța și migrația sunt în model (p = 0,21). Rezultatele sunt asocieri între "
+     "perechi de țări, nu efecte cauzale; reziduurile nu sunt perfect normale, iar erorile standard sunt subestimate, "
+     "pentru că aceeași țară apare în multe perechi.</p>"
+   + glosar("r2a")
+   + caiet("6.1 și 6.3", [
+       "<code>m4.summary()</code>: cele trei blocuri, cu explicațiile din caiet.",
+       "Interpretarea, ca într-un raport: un paragraf care spune mărimea efectelor, incertitudinea și limitele."],
+       "<code>m3.summary()</code>: cum se schimbă R² ajustat și AIC față de M4?"))
+
+
 V_EL = verif("c7-v-el", 2,
              f"În M4, coeficientul ratei migranților este {ro(B4['log_la_mie'])}. Ce înseamnă?",
              [f"SCI crește cu {ro(B4['log_la_mie'])} la fiecare migrant în plus",
@@ -398,7 +556,7 @@ V_EL = verif("c7-v-el", 2,
              "Ambele părți sunt pe logaritm, deci coeficientul este o elasticitate: se citește în rapoarte, nu în "
              "unități. Este o asociere, la aceeași distanță și graniță, nu un efect cauzal.")
 
-sl("s9", "Modelul", "Interpretarea coeficienților",
+sl("s11", "Modelul", "Interpretarea coeficienților",
    "<h2>Ce înseamnă coeficienții</h2>"
    + concept(f"Pe logaritmi, coeficientul este o {gl('elast', 'elasticitate')}: dacă predictorul se dublează, SCI se înmulțește cu 2 "
              "la puterea coeficientului. Pentru granița (0 sau 1), cu 10 la puterea coeficientului. Glisoarele schimbă "
@@ -429,7 +587,7 @@ sl("s9", "Modelul", "Interpretarea coeficienților",
      "(C6). Corecția uzuală sunt erorile standard grupate pe țară.</p>"
    + V_EL
    + glosar("elast", "ic")
-   + caiet("6", [
+   + caiet("6.2", [
        "<code>2 ** b[\"log_distanta\"]</code> și <code>2 ** b[\"log_la_mie\"]</code>: efectul unei dublări; "
        "<code>10 ** b[\"granita\"]</code>: efectul graniței.",
        "<code>m4.conf_int()</code>: intervalele de încredere de 95%."]))
@@ -462,7 +620,7 @@ V_CONC = verif("c7-v-conc", 1,
                "Relația poate funcționa în ambele sensuri: oamenii migrează unde au deja cunoscuți. Cu o singură "
                "măsurare, direcțiile nu se pot separa. Modelul arată asocieri, la aceeași distanță și graniță.")
 
-sl("s10", "Reziduurile", "Peste și sub model",
+sl("s12", "Reziduurile", "Peste și sub model",
    "<h2>Reziduurile: unde greșește modelul</h2>"
    + concept("Reziduul este SCI-ul observat față de cel prezis de M4. Peste 1×: perechea e mai legată decât prezic "
              "distanța, migrația și granița; sub 1×, mai puțin. Clic pe o țară o alege.")
@@ -491,7 +649,7 @@ sl("s10", "Reziduurile", "Peste și sub model",
        "Aceeași hartă pentru Turcia (<code>\"TR\"</code>) și Islanda (<code>\"IS\"</code>)."))
 
 
-sl("s11", "Reziduurile", "Ce se poate concluziona",
+sl("s13", "Reziduurile", "Ce se poate concluziona",
    "<h2>Ce se poate concluziona</h2>"
    + tabel(["Se poate afirma", "Nu se poate afirma"], [
        ["perechile cu o rată mai mare de migrație sunt mai legate, la aceeași distanță și graniță",
@@ -514,7 +672,7 @@ _N = M["n"]
 DOVADA = {
     "id": "c7-dovada",
     "sarcina": "Trei rezultate din caiet, rulate pe datele proprii. Ieșirea fiecăruia se lipește în câmpul lui.",
-    "indiciu": "Celulele sunt în caietul 07: secțiunile 2, 5.2 și 6.",
+    "indiciu": "Celulele sunt în caietul 07: secțiunile 2, 5.2 și 6.2.",
     "pasi": [
         {"t": "Perechile modelului",
          "cmd": "len(date)",
@@ -546,7 +704,7 @@ SURSE_C7 = surse("Documentația modelului", [
     ("Gelman, Hill și Vehtari: Regression and Other Stories, cap. 12", "https://avehtari.github.io/ROS-Examples/", "logaritmi, scalare și interpretarea coeficienților"),
 ])
 
-sl("s12", "Verificarea", "Verificarea în caiet",
+sl("s14", "Verificarea", "Verificarea în caiet",
    "<h2>Verificarea modelului</h2>"
    + ix("dovada", "Verificarea modelului", DOVADA),
    manual=

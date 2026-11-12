@@ -1,6 +1,6 @@
 {
  "capitol": "c7",
- "total": 12,
+ "total": 14,
  "sarcini": 4,
  "slide": [
   {
@@ -55,26 +55,40 @@
    "nr": 6,
    "id": "s6",
    "grup": "Variabilele",
-   "titlu": "Selecția",
+   "titlu": "Extragerea",
    "sarcini": []
   },
   {
    "nr": 7,
    "id": "s7",
-   "grup": "Modelul",
-   "titlu": "Tipar și reziduu",
+   "grup": "Variabilele",
+   "titlu": "Selecția",
    "sarcini": []
   },
   {
    "nr": 8,
    "id": "s8",
    "grup": "Modelul",
-   "titlu": "Patru modele",
+   "titlu": "Tipar și reziduu",
    "sarcini": []
   },
   {
    "nr": 9,
    "id": "s9",
+   "grup": "Modelul",
+   "titlu": "Patru modele",
+   "sarcini": []
+  },
+  {
+   "nr": 10,
+   "id": "s10",
+   "grup": "Modelul",
+   "titlu": "Rezultatul complet",
+   "sarcini": []
+  },
+  {
+   "nr": 11,
+   "id": "s11",
    "grup": "Modelul",
    "titlu": "Interpretarea coeficienților",
    "sarcini": [
@@ -93,15 +107,15 @@
    ]
   },
   {
-   "nr": 10,
-   "id": "s10",
+   "nr": 12,
+   "id": "s12",
    "grup": "Reziduurile",
    "titlu": "Peste și sub model",
    "sarcini": []
   },
   {
-   "nr": 11,
-   "id": "s11",
+   "nr": 13,
+   "id": "s13",
    "grup": "Reziduurile",
    "titlu": "Ce se poate concluziona",
    "sarcini": [
@@ -120,8 +134,8 @@
    ]
   },
   {
-   "nr": 12,
-   "id": "s12",
+   "nr": 14,
+   "id": "s14",
    "grup": "Verificarea",
    "titlu": "Verificarea în caiet",
    "sarcini": [
