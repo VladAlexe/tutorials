@@ -4174,3 +4174,11 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .ed-am table{width:auto}
 .rnr[data-capitol="c6"] .sld .ed-lu .ed-svg{max-height:84px}
 .rnr[data-capitol="c6"] .sld .eda:has(.ed-lu) .ed-not{display:none}
+.ed-ct td.numitor{outline:2px dashed var(--accent);outline-offset:-2px}
+.ed-ct td.tot{background:transparent;color:var(--text-2);font-weight:500}
+.ed-leg2{margin:4px 0 0;font-size:12.5px;line-height:1.4;color:var(--text-2)}
+.ed-calc{margin:3px 0;font-size:13.5px;color:var(--text-2)}
+.ed-calc.on{color:var(--text)}
+.ed-calc b{color:var(--text)}
+.sld p.ed-calc,.ed-calc{max-width:none}
+.rnr[data-capitol="c6"] .sld .ed-ct .ed-svg{max-height:200px}

@@ -365,45 +365,63 @@ E.edReexprimare = (gazda, d) => {
 
 
 /* =========================================================================
-   7. Tabelul de contingență: distanța × aceeași țară; citirea unei celule
+   7. Tabelul de contingență: distanța × aceeași țară; calculul procentelor arătat
    ========================================================================= */
 E.edContingenta = (gazda, d) => {
   const T = d.sci;
-  let mod = "n", gr = "grup", cel = [1, 0];
-  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", [["n", "numere"], ["r", "% pe rând"], ["c", "% pe coloană"]], mod)}${butoane("g", [["grup", "bare grupate"], ["stiv", "bare stivuite 100%"], ["moz", "mozaic"]], gr)}</div>
-    <div class="ed-ct"><div class="ed-ct__t"></div><div class="ed-g"></div></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  let mod = "n", gr = "hm", cel = [0, 0];
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", [["n", "numere"], ["r", "% pe rând"], ["c", "% pe coloană"]], mod)}${butoane("g", [["hm", "matrice colorată"], ["stiv", "bare stivuite 100%"], ["grup", "bare grupate"], ["moz", "mozaic"]], gr)}</div>
+    <div class="ed-ct"><div class="ed-ct__t"></div><div><div class="ed-g"></div><p class="ed-leg2"></p></div></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
   const CUL = ["var(--sci-2)", "var(--sci-5)"];
   const deseneaza = () => {
-    scrieCod(el, `pd.crosstab(perechi["interval_km"], perechi["aceeasi_tara"]${{ n: "", r: ', normalize="index"', c: ', normalize="columns"' }[mod]})\n`
-      + { grup: `sns.countplot(perechi, x="interval_km", hue="aceeasi_tara")`,
-          stiv: `pd.crosstab(perechi["interval_km"], perechi["aceeasi_tara"], normalize="index").plot(kind="bar", stacked=True)`,
-          moz: `from statsmodels.graphics.mosaicplot import mosaic\nmosaic(perechi, ["interval_km", "aceeasi_tara"])` }[gr]);
     const R = T.v.map(x => x.reduce((a, b) => a + b, 0)), Cc = T.c.map((_, j) => T.v.reduce((a, x) => a + x[j], 0)), N = R.reduce((a, b) => a + b, 0);
     const val = (i, j) => mod === "n" ? T.v[i][j] : mod === "r" ? T.v[i][j] / R[i] : T.v[i][j] / Cc[j];
+    const fv = u => mod === "n" ? nr(u) : f(100 * u, u < .1 ? 1 : 0) + "%";
     const mx = Math.max(...T.v.flatMap((x, i) => x.map((_, j) => val(i, j))));
-    el.querySelector(".ed-ct__t").innerHTML = `<table><thead><tr><th>${T.er}</th>${T.c.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>`
+    const [ci, cj] = cel;
+    /* celulele care intră la numitor: rândul (pe rând) sau coloana (pe coloană) */
+    const inNumitor = (i, j) => (mod === "r" && i === ci) || (mod === "c" && j === cj);
+    el.querySelector(".ed-ct__t").innerHTML = `<table><thead><tr><th>${T.er}</th>${T.c.map(c => `<th>${c}</th>`).join("")}${mod === "n" ? "<th>total</th>" : ""}</tr></thead><tbody>`
       + T.r.map((rr, i) => `<tr><th>${rr}</th>${T.c.map((_, j) => { const u = val(i, j);
-        return `<td data-i="${i}" data-j="${j}" class="${cel[0] === i && cel[1] === j ? "on" : ""}" style="--p:${(u / mx).toFixed(3)}">${mod === "n" ? nr(u) : f(100 * u, u < .1 ? 1 : 0) + "%"}</td>`; }).join("")}</tr>`).join("")
-      + (mod === "n" ? `<tr><th>total</th>${Cc.map(c => `<td>${nr(c)}</td>`).join("")}</tr>` : "") + "</tbody></table>";
-    const W = 420, H = 250, x0 = 56, x1 = W - 8, y0 = 10, y1 = H - 46; let s = "";
-    if (gr === "grup"){
+        return `<td data-i="${i}" data-j="${j}" class="${ci === i && cj === j ? "on" : ""}${inNumitor(i, j) ? " numitor" : ""}" style="--p:${(u / mx).toFixed(3)}">${fv(u)}</td>`; }).join("")}`
+        + (mod === "n" ? `<td class="tot">${nr(R[i])}</td>` : "") + `</tr>`).join("")
+      + (mod === "n" ? `<tr><th>total</th>${Cc.map(c => `<td class="tot">${nr(c)}</td>`).join("")}<td class="tot">${nr(N)}</td></tr>` : "") + "</tbody></table>";
+    const W = 420, H = 250, x0 = 56, x1 = W - 8, y0 = 10, y1 = H - 46; let s = "", leg = "";
+    if (gr === "hm"){
+      const cw = (x1 - x0) / T.c.length, rh = (y1 - y0) / T.r.length;
+      T.r.forEach((rr, i) => { s += `<text class="ed-tx ed-tx--mic" x="${x0 - 6}" y="${y0 + i * rh + rh / 2 + 4}" text-anchor="end">${rr}</text>`;
+        T.c.forEach((_, j) => { const u = val(i, j);
+          s += `<rect x="${x0 + j * cw + 1}" y="${y0 + i * rh + 1}" width="${cw - 2}" height="${rh - 2}" style="fill:var(--accent);opacity:${(.08 + .92 * u / mx).toFixed(2)}"/>`
+            + `<text class="ed-tx" x="${x0 + j * cw + cw / 2}" y="${y0 + i * rh + rh / 2 + 4}" text-anchor="middle"${u / mx > .55 ? ' style="fill:#fff"' : ""}>${fv(u)}</text>`; }); });
+      T.c.forEach((c, j) => s += `<text class="ed-tx ed-tx--mic" x="${x0 + j * cw + cw / 2}" y="${y1 + 16}" text-anchor="middle">${c}</text>`);
+      leg = "Același tabel, cu culoarea după valoare: cu cât e mai închisă, cu atât valoarea e mai mare.";
+    } else if (gr === "grup"){
       const sy = sc(0, mod === "n" ? mx : 1, y1, y0), bw = (x1 - x0) / T.r.length;
       T.r.forEach((rr, i) => { T.c.forEach((_, j) => { const p = val(i, j), w = (bw - 12) / T.c.length;
         s += `<rect x="${x0 + i * bw + 6 + j * w}" y="${sy(p)}" width="${Math.max(0, w - 2)}" height="${y1 - sy(p)}" style="fill:${CUL[j]}"/>`; });
         s += `<text class="ed-tx ed-tx--mic" x="${x0 + i * bw + bw / 2}" y="${y1 + 16}" text-anchor="middle">${rr}</text>`; });
       s += `<text class="ed-tx" x="${x0 - 4}" y="${y0 + 8}" text-anchor="end">${mod === "n" ? nr(mx) : "100%"}</text><text class="ed-tx" x="${x0 - 4}" y="${y1}" text-anchor="end">0</text>`;
+      leg = mod === "n" ? "Două bare pe interval, înălțimea = numărul de perechi. Perechile din țări diferite sunt de 18 ori mai multe, deci barele „aceeași țară” abia se văd: de aceea se trece la procente."
+        : "Două bare pe interval, înălțimea = procentul din tabel.";
     } else {
       let xa = x0; T.r.forEach((rr, i) => { const w = gr === "moz" ? (x1 - x0) * R[i] / N : (x1 - x0) / T.r.length; let ya = y1;
         T.c.forEach((_, j) => { const h = (y1 - y0) * T.v[i][j] / R[i]; s += `<rect x="${xa + 1}" y="${ya - h}" width="${Math.max(0, w - 2)}" height="${h}" style="fill:${CUL[j]}"/>`; ya -= h; });
         s += `<text class="ed-tx ed-tx--mic" x="${xa + w / 2}" y="${y1 + 16}" text-anchor="middle">${w > 30 ? rr : ""}</text>`; xa += w; });
+      leg = gr === "stiv" ? "O bară pe interval de distanță, înaltă cât 100% din perechile lui; partea de jos, mai deschisă = procentul perechilor din aceeași țară (procentele pe rând)."
+        : "Ca barele stivuite, dar lățimea fiecărei bare = câte perechi are intervalul. Intervalele scurte au puține perechi, deci barele lor sunt înguste.";
     }
-    s += T.c.map((c, j) => `<g transform="translate(${x0 + j * 130},${H - 6})"><rect y="-10" width="10" height="10" style="fill:${CUL[j]}"/><text class="ed-tx" x="14" y="-1">${c}</text></g>`).join("");
+    if (gr !== "hm") s += T.c.map((c, j) => `<g transform="translate(${x0 + j * 130},${H - 6})"><rect y="-10" width="10" height="10" style="fill:${CUL[j]}"/><text class="ed-tx" x="14" y="-1">${c}</text></g>`).join("");
     el.querySelector(".ed-g").innerHTML = svg(W, H, s);
-    const [i, j] = cel, pr = T.v[i][j] / R[i], pc = T.v[i][j] / Cc[j];
-    el.querySelector(".ed-o").innerHTML = cifre([["celula", `${T.r[i]} km × ${T.c[j]}: ${nr(T.v[i][j])} perechi`],
-      ["pe rând", `${f(100 * pr, 1)}% din perechile aflate la ${T.r[i]} km sunt „${T.c[j]}”`, mod === "r" ? "ed-c-m1" : ""],
-      ["pe coloană", `${f(100 * pc, 1)}% din perechile „${T.c[j]}” sunt la ${T.r[i]} km`, mod === "c" ? "ed-c-m1" : ""]])
-      + panou("Clic pe o celulă: aceeași celulă, citită pe rând și pe coloană, răspunde la două întrebări diferite.");
+    el.querySelector(".ed-leg2").textContent = leg;
+    const norm = { n: "", r: ', normalize="index"', c: ', normalize="columns"' }[mod];
+    scrieCod(el, { hm: `tabel = pd.crosstab(perechi["interval_km"], perechi["aceeasi_tara"]${norm})\nsns.heatmap(tabel, annot=True)`,
+      grup: `pd.crosstab(perechi["interval_km"], perechi["aceeasi_tara"]${norm})\nsns.countplot(perechi, x="interval_km", hue="aceeasi_tara")`,
+      stiv: `tabel = pd.crosstab(perechi["interval_km"], perechi["aceeasi_tara"], normalize="index")\ntabel.plot(kind="bar", stacked=True)`,
+      moz: `from statsmodels.graphics.mosaicplot import mosaic\nmosaic(perechi, ["interval_km", "aceeasi_tara"])` }[gr]);
+    const v = T.v[ci][cj], rr = T.r[ci], cc = T.c[cj];
+    el.querySelector(".ed-o").innerHTML =
+        `<p class="ed-calc${mod === "r" ? " on" : ""}"><b>pe rând</b> ${nr(v)} ÷ ${nr(R[ci])} = <b>${f(100 * v / R[ci], 1)}%</b> · dintre cele ${nr(R[ci])} de perechi aflate la ${rr} km, ${nr(v)} sunt „${cc}”</p>`
+      + `<p class="ed-calc${mod === "c" ? " on" : ""}"><b>pe coloană</b> ${nr(v)} ÷ ${nr(Cc[cj])} = <b>${f(100 * v / Cc[cj], 1)}%</b> · dintre cele ${nr(Cc[cj])} de perechi „${cc}”, ${nr(v)} sunt la ${rr} km</p>`;
     el.querySelectorAll("td[data-i]").forEach(t => t.addEventListener("click", () => { cel = [+t.dataset.i, +t.dataset.j]; deseneaza(); }));
   };
   leaga(el, "m", k => { mod = k; deseneaza(); });
@@ -510,93 +528,94 @@ E.edMulte = (gazda, d) => {
 
 
 /* =========================================================================
-   10. Tipar sau întâmplare: protocolul lineup, cu amestecarea arătată pe un tabel mic
+   10. Tipar real sau întâmplare: amestecarea (testul de permutare)
    ========================================================================= */
 E.edLineup = (gazda, d) => {
   const R = REG(d).filter(r => r.populatie > 0);
   const RUNDE = [
-    { t: "PIB/loc. și studiile", x: "pib_locuitor", y: "studii_superioare", ex: "relație puternică: graficul real se deosebește clar de amestecări." },
-    { t: "vârsta medie și studiile", x: "varsta_medie", y: "studii_superioare", ex: "relație slabă: graficul real se deosebește, dar greu; mai mulți observatori ar greși." },
-    { t: "PIB/loc. și vârsta medie", x: "pib_locuitor", y: "varsta_medie", ex: "practic nicio relație: graficul real arată ca o amestecare. O alegere corectă aici este noroc (1 din 8)." }];
-  const EX = ["RO11", "DE21", "ES30", "PL91", "SE11"];
-  let k = 0, samanta = 1 + Math.floor(Math.random() * 1000), real = 0, ales = -1, ok = 0, tot = 0, am = 0;   // altă așezare la fiecare deschidere
-  const el = bloc(gazda, `<div class="ed-ctl">${butoane("r", RUNDE.map((q, i) => [String(i), `runda ${i + 1}: ${q.t}`]), "0")}</div>
-    <div class="ed-lu2"><div class="ed-ex ed-am"></div><div class="ed-g ed-lu"></div></div><div class="ed-o"></div>`);
-  const amestec = (a, s) => { const r = rng(s), b = [...a]; for (let i = b.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
-  const tabelMic = () => {
-    const q = RUNDE[k], L = EX.map(c => R.find(r => r.cod === c)).filter(r => r && r[q.x] != null && r[q.y] != null);
-    const ys = am ? amestec(L.map(r => r[q.y]), am + 11) : L.map(r => r[q.y]), fm = v => v > 1000 ? nr(v) : f(v, 1);
-    el.querySelector(".ed-am").innerHTML = `<table><thead><tr><th>regiunea</th>${L.map(r => `<th>${r.cod}</th>`).join("")}</tr></thead><tbody>
-      <tr><td>${ET[q.x]}</td>${L.map(r => `<td>${fm(r[q.x])}</td>`).join("")}</tr>
-      <tr class="${am ? "ed-r-sus" : ""}"><td>${ET[q.y]}${am ? ", amestecat" : ""}</td>${ys.map(v => `<td>${fm(v)}</td>`).join("")}</tr></tbody></table>
-      <button class="ed-b">${am ? "altă amestecare" : "amestecă coloana a doua"}</button>${am ? `<button class="ed-b ed-b2">valorile reale</button>` : ""}`;
-    el.querySelector(".ed-am .ed-b").addEventListener("click", () => { am++; tabelMic(); });
-    el.querySelector(".ed-am .ed-b2")?.addEventListener("click", () => { am = 0; tabelMic(); });
-  };
+    { t: "PIB/loc. și studiile", x: "pib_locuitor", y: "studii_superioare" },
+    { t: "vârsta medie și studiile", x: "varsta_medie", y: "studii_superioare" },
+    { t: "PIB/loc. și vârsta medie", x: "pib_locuitor", y: "varsta_medie" }];
+  let k = 0, A = [], arat = null, samanta = 1 + Math.floor(Math.random() * 1000);
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("r", RUNDE.map((q, i) => [String(i), q.t]), "0")}
+    <button class="ed-b ed-1">amestecă o dată</button><button class="ed-b ed-200">amestecă de 200 de ori</button><button class="ed-b ed-0">de la zero</button></div>
+    <div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const W = 900, H = 230;
+  const amesteca = a => { const r = rng(samanta++), b = [...a]; for (let i = b.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+  const date = () => { const q = RUNDE[k], P = R.filter(r => r[q.x] != null && r[q.y] != null); return [q, P.map(r => r[q.x]), P.map(r => r[q.y])]; };
   const deseneaza = () => {
-    const q = RUNDE[k], P = R.filter(r => r[q.x] != null && r[q.y] != null), xs = P.map(r => r[q.x]), y = P.map(r => r[q.y]);
-    const rr = rng(samanta * 7 + k); real = Math.floor(rr() * 8); ales = -1;
-    const sx = sc(Math.min(...xs), Math.max(...xs), 8, 172), sy = sc(Math.min(...y), Math.max(...y), 112, 8);
-    let html = "";
-    for (let g = 0; g < 8; g++){
-      const yy = g === real ? y : amestec(y, samanta * 100 + g * 7 + k);
-      html += `<button class="ed-lu__p" data-g="${g}">${svg(180, 120, `<rect class="ed-cadru" x="1" y="1" width="178" height="118"/>`
-        + xs.map((u, i) => `<circle class="ed-p ed-mic" cx="${sx(u)}" cy="${sy(yy[i])}" r="1.8"/>`).join(""))}<i>${g + 1}</i></button>`;
-    }
-    el.querySelector(".ed-g").innerHTML = html;
-    el.querySelector(".ed-o").innerHTML = cifre([["identificări corecte", `${ok} din ${tot}`]])
-      + panou(`Fiecare punct este o regiune: ${ET[q.x]} pe orizontală, ${ET[q.y]} pe verticală. Un singur grafic are datele reale; în celelalte șapte, a doua coloană a fost amestecată. Care este graficul real?`);
-    el.querySelectorAll(".ed-lu__p").forEach(b => b.addEventListener("click", () => {
-      if (ales >= 0) return; ales = +b.dataset.g; tot++; if (ales === real) ok++;
-      el.querySelectorAll(".ed-lu__p").forEach((x, i) => x.classList.add(i === real ? "real" : i === ales ? "gresit" : "stins"));
-      el.querySelector(".ed-o").innerHTML = cifre([["", ales === real ? "Corect." : `Graficul real era ${real + 1}.`, ales === real ? "ed-c-adev" : "ed-c-sus"],
-        ["ρ Spearman", f(spearman(xs, y))], ["identificări corecte", `${ok} din ${tot}`]]) + panou(`Runda ${k + 1}: ${q.ex}`);
-    }));
-    tabelMic();
+    const [q, xs, ys] = date(), real = spearman(xs, ys), yy = arat || ys;
+    scrieCod(el, `reala = regiuni["${q.x}"].corr(regiuni["${q.y}"], method="spearman")\n`
+      + `amestecat = pd.Series(rng.permutation(regiuni["${q.y}"].values), index=regiuni.index)   # aceleași valori, alte regiuni\n`
+      + `regiuni["${q.x}"].corr(amestecat, method="spearman")       # corelația după amestecare`);
+    /* stânga: punctele, reale sau amestecate */
+    const a0 = 50, a1 = 360, b0 = 24, b1 = H - 34;
+    const sx = sc(Math.min(...xs), Math.max(...xs), a0, a1), sy = sc(Math.min(...ys), Math.max(...ys), b1, b0);
+    let s = axe({ x0: a0, x1: a1, y0: b0, y1: b1, sx, sy, dx: [Math.min(...xs), Math.max(...xs)], dy: [Math.min(...ys), Math.max(...ys)], nx: 4, ny: 4,
+      fx: u => u > 1000 ? nr(u) : f(u, 0), fy: u => f(u, 0), ex: ET[q.x], ey: ET[q.y] });
+    xs.forEach((u, i) => s += `<circle class="${arat ? "ed-sus" : "ed-p"} ed-mic" cx="${sx(u)}" cy="${sy(yy[i])}" r="2.2"/>`);
+    s += `<text class="ed-tx ed-gros" x="${a1}" y="12" text-anchor="end">${arat ? `amestecat: ρ = ${f(spearman(xs, yy))}` : `datele reale: ρ = ${f(real)}`}</text>`;
+    /* dreapta: corelațiile din amestecări, față de cea reală */
+    const c0 = 430, c1 = W - 16, sh = sc(-.7, .7, c0, c1), B = 28, n = histograma(A, B, -.7, .7), mx = Math.max(4, ...n), syh = sc(0, mx * 1.1, b1, b0), w = (c1 - c0) / B;
+    s += axe({ x0: c0, x1: c1, y0: b0, y1: b1, sx: sh, sy: syh, dx: [-.7, .7], nx: 7, fx: u => f(u, 1), ex: "ρ: corelația datelor amestecate (bare) și a celor reale (linia)", ey: "câte amestecări" });
+    n.forEach((c, i) => { if (c) s += `<rect class="ed-bar2" x="${c0 + i * w + .5}" y="${syh(c)}" width="${w - 1}" height="${b1 - syh(c)}"/>`; });
+    s += `<g class="ed-m1"><line x1="${sh(real)}" x2="${sh(real)}" y1="${b0}" y2="${b1}"/><text x="${sh(real) + (real > .4 ? -6 : 6)}" y="${b0 + 10}" text-anchor="${real > .4 ? "end" : "start"}">reală: ${f(real)}</text></g>`;
+    el.querySelector(".ed-g").innerHTML = svg(W, H, s);
+    const K = A.filter(a => Math.abs(a) >= Math.abs(real)).length;
+    el.querySelector(".ed-o").innerHTML = !A.length
+      ? panou("Stânga: datele reale, câte un punct pe regiune. „Amestecă o dată” mută valorile de pe axa verticală la întâmplare între regiuni: valorile rămân aceleași, legătura dispare. Corelația fiecărei amestecări se adaugă în dreapta.")
+      : cifre([["amestecări", nr(A.length)], [`cu |ρ| cel puțin ${f(Math.abs(real))}`, `${K} din ${A.length}`, K / A.length < .05 ? "ed-c-adev" : "ed-c-sus"],
+          ["", A.length < 50 ? "mai multe amestecări, pentru o concluzie" : K / A.length < .05
+            ? "corelația reală nu apare din întâmplare: relația este reală"
+            : "corelații la fel de mari apar des și din întâmplare: relația poate fi doar întâmplare"]]);
   };
-  leaga(el, "r", v => { k = +v; samanta++; am = 0; deseneaza(); });
+  el.querySelector(".ed-1").addEventListener("click", () => { const [, xs, ys] = date(); arat = amesteca(ys); A.push(spearman(xs, arat)); deseneaza(); });
+  el.querySelector(".ed-200").addEventListener("click", () => { const [, xs, ys] = date(); const rx = ranguri(xs);
+    for (let i = 0; i < 200; i++){ arat = amesteca(ys); A.push(pearson(rx, ranguri(arat))); } deseneaza(); });
+  el.querySelector(".ed-0").addEventListener("click", () => { A = []; arat = null; deseneaza(); });
+  leaga(el, "r", v => { k = +v; A = []; arat = null; deseneaza(); });
   deseneaza();
 };
 
 
 /* =========================================================================
-   11. Granița, la aceeași distanță: distanța ca factor de confuzie
+   11. Granița, la aceeași distanță: o comparație corectă
    ========================================================================= */
 E.edGrupuri = (gazda, d) => {
-  const LIM = [0, 2, 2.398, 2.699, 3, 3.301, 9], ETI = ["0-100", "100-250", "250-500", "500-1000", "1000-2000", "2000+"];
   const P = d.perechi || [];
-  let mod = "tot", v = "box";
-  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", [["tot", "1. toate distanțele la un loc"], ["int", "2. pe intervale de distanță"]], mod)}${butoane("v", [["box", "boxplot"], ["pct", "puncte"]], v)}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
-  const W = 900, H = 220, x0 = 64, x1 = W - 10, y0 = 14, y1 = H - 46;
+  const D = [null, 50, 100, 200, 300, 500, 800, 1200];
+  const el = bloc(gazda, `<div class="ed-ctl">${glisor("d", "compară perechile aflate la", 0, D.length - 1, 1, 0)}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const inp = el.querySelector("input");
+  const med = (a) => a.length ? 10 ** mediana(a) : null;
+  const toateRap = med(P.filter(p => p[2]).map(p => p[1])) / med(P.filter(p => !p[2]).map(p => p[1]));
+  const W = 900, H = 240, a0 = 56, a1 = 560, b0 = 14, b1 = H - 36;
   const deseneaza = () => {
-    const fara = mod === "tot";
-    scrieCod(el, fara ? `sns.boxplot(perechi, x="aceeasi_tara", y="sci", log_scale=True)\nperechi.groupby("aceeasi_tara")["sci"].median()`
-      : `sns.boxplot(perechi, x="interval_km", y="sci", hue="aceeasi_tara", log_scale=True)\nperechi.groupby(["interval_km", "aceeasi_tara"], observed=True)["sci"].median().unstack()`);
-    const IN = fara ? [[0, 9]] : ETI.map((_, i) => [LIM[i], LIM[i + 1]]), ET2 = fara ? ["toate perechile"] : ETI.map(e => e + " km"), bw = (x1 - x0) / IN.length;
-    const sy = sc(0, 6.6, y1, y0);
-    let s = axe({ x0, x1, y0, y1, sx: x => x, sy, dy: [0, 6.6], fy: u => nr(10 ** u), ey: "SCI (scară logaritmică)" });
-    const med = {}, n = {};
-    IN.forEach(([a0, a1], i) => {
-      s += `<text class="ed-tx" x="${x0 + bw * i + bw / 2}" y="${y1 + 16}" text-anchor="middle">${ET2[i]}</text>`;
-      [[0, -1], [1, 1]].forEach(([gr, sg]) => { const a = P.filter(p => p[0] >= a0 && p[0] < a1 && p[2] === gr).map(p => p[1]);
-        if (!a.length) return; const w = Math.min(bw / 3, 110), c = x0 + bw * i + bw / 2 + sg * (w / 2 + 4), rr = rng(i * 2 + gr + 3);
-        med[`${i}-${gr}`] = mediana(a); n[`${i}-${gr}`] = a.length;
-        s += `<text class="ed-tx ed-tx--mic" x="${c}" y="${y1 + 30}" text-anchor="middle">n = ${nr(a.length)}</text>`;
-        if (v === "pct") a.slice(0, 500).forEach(u => s += `<circle class="${gr ? "ed-sus" : "ed-p"} ed-mic" cx="${c + (rr() - .5) * w}" cy="${sy(u)}" r="2"/>`);
-        else { const o = sortat(a), q1 = cuantila(o, .25, true), q2 = cuantila(o, .5, true), q3 = cuantila(o, .75, true), iq = q3 - q1,
-            lw = o.find(u => u >= q1 - 1.5 * iq), uw = [...o].reverse().find(u => u <= q3 + 1.5 * iq);
-          s += `<line class="ed-mus" x1="${c}" x2="${c}" y1="${sy(lw)}" y2="${sy(uw)}"/><rect class="ed-cutie${gr ? " ed-cutie2" : ""}" x="${c - w / 2}" y="${sy(q3)}" width="${w}" height="${sy(q1) - sy(q3)}"/><line class="ed-med" x1="${c - w / 2}" x2="${c + w / 2}" y1="${sy(q2)}" y2="${sy(q2)}"/>`; } });
-    });
-    s += `<g transform="translate(${x1 - 230},${y0 + 4})"><rect y="-9" width="10" height="10" class="ed-cutie"/><text class="ed-tx" x="14" y="0">țări diferite</text><rect x="110" y="-9" width="10" height="10" class="ed-cutie ed-cutie2"/><text class="ed-tx" x="124" y="0">aceeași țară</text></g>`;
+    const c = D[+inp.value], lo = c ? Math.log10(c / 1.3) : -1, hi = c ? Math.log10(c * 1.3) : 9;
+    inp.nextElementSibling.textContent = c ? `aproximativ ${nr(c)} km (${nr(Math.round(c / 1.3))}-${nr(Math.round(c * 1.3))})` : "toate distanțele";
+    const In = P.filter(p => p[0] >= lo && p[0] < hi), da = In.filter(p => p[2]).map(p => p[1]), nu = In.filter(p => !p[2]).map(p => p[1]);
+    scrieCod(el, c ? `la_fel = perechi[perechi["distanta_km"].between(${Math.round(c / 1.3)}, ${Math.round(c * 1.3)})]     # doar perechile aflate la ~${c} km\nla_fel.groupby("aceeasi_tara")["sci"].median()`
+      : `perechi.groupby("aceeasi_tara")["sci"].median()          # toate perechile, la orice distanță`);
+    /* stânga: toate perechile; banda arată ce se compară */
+    const sx = sc(1, 4, a0, a1), sy = sc(0, 6.6, b1, b0);
+    let s = axe({ x0: a0, x1: a1, y0: b0, y1: b1, sx, sy, dx: [1, 4], dy: [0, 6.6], fx: u => nr(10 ** u), fy: u => nr(10 ** u), ex: "distanța, km", ey: "SCI" });
+    if (c) s += `<rect x="${sx(lo)}" y="${b0}" width="${sx(hi) - sx(lo)}" height="${b1 - b0}" style="fill:var(--ambra);opacity:.12"/>`;
+    P.slice(0, 4000).forEach(p => { const inb = !c || (p[0] >= lo && p[0] < hi);
+      s += `<circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="${p[2] ? 2.4 : 1.6}" class="${p[2] ? "ed-sus" : "ed-p"}" style="opacity:${inb ? (p[2] ? .9 : .35) : .07}"/>`; });
+    s += `<g transform="translate(${a1 - 190},${b0 + 6})"><circle r="4" class="ed-sus"/><text class="ed-tx" x="8" y="4">aceeași țară</text><circle cx="100" r="4" class="ed-p"/><text class="ed-tx" x="108" y="4">țări diferite</text></g>`;
+    /* dreapta: mediana fiecărui grup și raportul */
+    const md = med(da), mn = med(nu), x0 = 620, x1 = W - 20, M = Math.max(md || 0, mn || 0) || 1, bx = sc(0, M, x0, x1);
+    s += `<text class="ed-tx ed-gros" x="${x0}" y="${b0 + 10}">mediana SCI ${c ? `la ~${nr(c)} km` : "pe toate perechile"}</text>`;
+    [["aceeași țară", md, da.length, "ed-bar2"], ["țări diferite", mn, nu.length, "ed-bar"]].forEach(([e, v, n, cl], i) => { const y = b0 + 34 + i * 60;
+      s += `<text class="ed-tx" x="${x0}" y="${y}">${e} (${nr(n)} perechi)</text>`
+        + (v && n >= 5 ? `<rect class="${cl}" x="${x0}" y="${y + 6}" width="${Math.max(2, bx(v) - x0)}" height="22"/><text class="ed-tx ed-gros" x="${Math.min(x1 - 4, bx(v) + 6)}" y="${y + 22}" text-anchor="${bx(v) > x1 - 60 ? "end" : "start"}"${bx(v) > x1 - 60 ? ' style="fill:#fff"' : ""}>${nr(v)}</text>` : `<text class="ed-tx" x="${x0}" y="${y + 22}">prea puține perechi</text>`); });
+    const rap = md && mn && da.length >= 5 && nu.length >= 5 ? md / mn : null;
+    s += `<text class="ed-tx ed-gros" x="${x0}" y="${b0 + 172}" style="font-size:18px">${rap ? `de ${f(rap, 0)} ori mai mare` : ""}</text>`;
     el.querySelector(".ed-g").innerHTML = svg(W, H, s);
-    const rap = IN.map((_, i) => med[`${i}-1`] != null && med[`${i}-0`] != null ? 10 ** (med[`${i}-1`] - med[`${i}-0`]) : null);
-    el.querySelector(".ed-o").innerHTML = cifre(fara ? [["aceeași țară față de țări diferite (raportul medianelor)", `de ${f(rap[0], 0)} ori`, "ed-c-sus"]]
-        : [["raportul medianelor, pe intervale", rap.map((x, i) => x ? `${ETI[i]}: ${f(x, 0)}×` : "").filter(x => x).join("  ·  "), "ed-c-sus"]])
-      + panou(fara ? "Comparația amestecă două efecte: perechile din aceeași țară sunt și mult mai apropiate. Pasul 2 compară doar perechi aflate la aceeași distanță."
-        : "Fiecare comparație se face între perechi aflate la aproximativ aceeași distanță; diferența care rămâne nu mai vine din distanță.");
+    el.querySelector(".ed-o").innerHTML = cifre([["toate perechile", `aceeași țară: de ${f(toateRap, 0)} ori mai mare`], ...(c && rap ? [[`doar la ~${nr(c)} km`, `de ${f(rap, 0)} ori mai mare`, "ed-c-sus"]] : [])])
+      + panou(c ? "Comparăm doar perechi aflate la aproximativ aceeași distanță (banda colorată). Diferența care rămâne nu mai poate veni din distanță."
+        : "Punctele portocalii (aceeași țară) stau aproape toate în stânga, la distanțe mici, unde SCI e mare oricum. Glisorul alege o distanță: se compară doar perechile aflate acolo.");
   };
-  leaga(el, "m", k => { mod = k; deseneaza(); });
-  leaga(el, "v", k => { v = k; deseneaza(); });
+  inp.addEventListener("input", deseneaza);
   deseneaza();
 };
 

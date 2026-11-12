@@ -155,6 +155,8 @@ G = {
     "reziduu": ("reziduul", "residual", "diferența dintre valoarea observată și valoarea prezisă de model (de dreaptă)."),
     "mcmp": ("metoda celor mai mici pătrate", "least squares", "alege dreapta pentru care suma pătratelor reziduurilor este cea mai mică."),
     "prag": ("pragul de semnificație de 5%", "significance level", "o corelație care depășește pragul ar apărea din întâmplare, fără o relație reală, în cel mult 5% din cazuri."),
+    "permtest": ("testul de permutare", "permutation test", "se amestecă datele de multe ori; dacă relația reală e mai puternică decât aproape toate relațiile din amestecări, nu e întâmplătoare."),
+    "pval": ("valoarea p", "p-value", "proporția amestecărilor (sau a eșantioanelor ipotetice) cu un rezultat cel puțin la fel de mare ca cel real; sub 0,05, rezultatul se consideră real."),
     "multiple": ("comparațiile multiple", "multiple comparisons", "testarea multor variabile sau ipoteze; cu cât sunt mai multe, cu atât mai multe rezultate par importante doar din întâmplare."),
 }
 
@@ -441,8 +443,9 @@ _P100 = _K["da"][0] / (_K["da"][0] + _K["nu"][0])
 
 sl("s9", "Variabile categorice", "Tabelul de contingență",
    "<h2>Două variabile categorice: tabelul de contingență</h2>"
-   + concept(f"{gl('conting', 'Tabelul de contingență')} numără cazurile pentru fiecare combinație. Procentele "
-             "<b>pe rând</b> și <b>pe coloană</b> răspund la întrebări diferite; un clic pe o celulă le arată pe amândouă.")
+   + concept(f"{gl('conting', 'Tabelul de contingență')} numără perechile pentru fiecare combinație de distanță și "
+             "țară. Un procent <b>pe rând</b> împarte celula la totalul rândului, unul <b>pe coloană</b> la totalul "
+             "coloanei. Un clic pe o celulă arată ambele calcule.")
    + ix("edContingenta", "Distanța și apartenența la aceeași țară", {"sci": CONT_SCI})
    + vede(f"Sub 100 km, {_P100:.0%} din perechi sunt în aceeași țară; peste 1.000 km, sub 1%: distanța și granița "
           "merg împreună."),
@@ -452,8 +455,15 @@ sl("s9", "Variabile categorice", "Tabelul de contingență",
    "tabel de contingență. Procentele pe rând răspund la întrebarea „dintre perechile aflate la 100-250 km, ce proporție "
    "este în aceeași țară?”; procentele pe coloană, la întrebarea inversă: „dintre perechile din aceeași țară, ce proporție "
    "se află la 100-250 km?”. Cele două proporții pot fi foarte diferite; confuzia lor este o eroare frecventă.</p>"
-   "<p>Barele stivuite 100% arată procentele pe rând. <b>Mozaicul</b> adaugă, prin lățimea coloanelor, numărul de cazuri "
-   "din fiecare interval: intervalele cu puține perechi devin înguste.</p>"
+   "<p>Exemplul calculului, pe celula „0-100 km și aceeași țară”, cu 168 de perechi. Pe rând: 168 ÷ 223 (toate perechile "
+   "aflate la 0-100 km) = 75,3%, adică trei sferturi din perechile foarte apropiate sunt în aceeași țară. Pe coloană: "
+   "168 ÷ 2.379 (toate perechile din aceeași țară) = 7,1%, adică doar 7% din perechile din aceeași țară sunt la sub "
+   "100 km. Aceeași celulă, două întrebări, două răspunsuri foarte diferite.</p>"
+   + tabel(["Graficul", "Ce arată", "Când se folosește"], [
+       ["matricea colorată (<code>sns.heatmap</code>)", "tabelul însuși, cu culoarea după valoare", "tabele mari, unde cifrele nu se pot citi toate"],
+       ["barele stivuite 100%", "procentele pe rând: o bară pe interval, împărțită între cele două grupuri", "comparația proporțiilor între intervale de mărimi diferite"],
+       ["barele grupate (<code>countplot</code>)", "numerele absolute, două bare pe interval", "când grupurile au mărimi apropiate; aici, grupul mic abia se vede"],
+       ["mozaicul", "procentele pe rând, iar lățimea barei = câte perechi are intervalul", "proporțiile și mărimea grupurilor, deodată"]])
    + ix("edContingenta", "Distanța și apartenența la aceeași țară", {"sci": CONT_SCI})
    + "<h3>Codul, pe scurt</h3>"
    + cod("tabel = pd.crosstab(perechi[\"interval_km\"], perechi[\"aceeasi_tara\"])                       # numere\n"
@@ -564,42 +574,42 @@ _R = _H2["da"]["med"][_I] / _H2["nu"]["med"][_I]
 
 sl("s12", "Trei sau mai multe variabile", "Granița și distanța",
    "<h2>Contează granița sau doar distanța?</h2>"
-   + concept(f"Perechile din aceeași țară au SCI mult mai mare. Dar ele sunt și mai apropiate (slide-ul 9), iar "
-             f"apropierea crește singură SCI-ul. Distanța este un {gl('confuzie')}: amestecă efectul ei cu al graniței. "
-             f"Soluția este {gl('strat')}: se compară doar perechi aflate la aceeași distanță.")
+   + concept("Perechile din aceeași țară au SCI mult mai mare. Dar ele sunt aproape toate apropiate, iar apropierea "
+             "crește singură SCI-ul. Ca să vedem efectul graniței, comparăm doar perechi aflate <b>la aceeași distanță</b>. "
+             f"Distanța este aici un {gl('confuzie')}.")
    + ix("edGrupuri", "SCI în aceeași țară și în țări diferite", {"perechi": _PER})
-   + vede("Toate perechile la un loc: în aceeași țară, SCI de aproximativ 50 de ori mai mare. La aceeași distanță, de "
-          "11 până la 26 de ori, sub 1.000 km, unde se află 91% din perechile din aceeași țară. Granița contează și "
-          "separat de distanță; în C7 intră amândouă în model."),
+   + vede("Pe toate perechile: aceeași țară, SCI de aproximativ 47 de ori mai mare. La aceeași distanță, mult mai puțin: "
+          "de 7 ori la ~100 km, de 15 ori la ~300 km. Granița contează, dar comparația directă îi exagera efectul."),
    manual=
    "<h2>Contează granița sau doar distanța?</h2>"
-   "<p>Una dintre întrebările cercetării despre SCI este dacă granițele naționale contează: sunt regiunile din aceeași "
-   "țară mai legate decât ar sugera distanța dintre ele? Comparația directă dă un răspuns spectaculos: mediana SCI a "
-   "perechilor din aceeași țară este de aproximativ 50 de ori mai mare decât a celor din țări diferite.</p>"
-   "<p>Comparația amestecă însă două efecte. Perechile din aceeași țară sunt aproape toate apropiate: 91% se află la "
-   "sub 1.000 km (slide-ul 9), în timp ce majoritatea perechilor din țări diferite sunt la peste 1.000 km. Iar distanța "
-   "scade singură SCI-ul. O parte din cele 50 de ori vine deci din distanță, nu din graniță. O asemenea a treia "
-   "variabilă, legată și de grupare (aceeași țară sau nu), și de rezultat (SCI), se numește <b>factor de confuzie</b> "
-   "(engl. <i>confounder</i>). Exemplul clasic din epidemiologie: consumul de cafea pare legat de bolile de inimă "
-   "pentru că fumătorii beau mai multă cafea; fumatul este factorul de confuzie.</p>"
-   "<p><b>Stratificarea</b> separă efectele: comparația se face în interiorul fiecărui interval de distanță, unde "
-   "distanța este aproximativ aceeași pentru ambele grupuri. Diferența care rămâne nu mai poate veni din distanță. Pe "
-   "datele noastre, la aceeași distanță, perechile din aceeași țară au SCI de 11 până la 26 de ori mai mare sub "
-   "1.000 km: mai puțin decât 50, dar mult peste 1. Granița contează și separat de distanță. Stratificarea controlează "
-   "doar distanța: limba, istoria comună și instituțiile rămân amestecate cu efectul graniței.</p>"
-   "<p>Consecința pentru C7: distanța și apartenența la aceeași țară intră amândouă în model, ca variabile separate. "
-   "Modelul face ce face stratificarea, dar pentru mai multe variabile deodată.</p>"
+   "<p>Întrebarea: sunt regiunile din aceeași țară mai legate pe Facebook decât cele din țări diferite? Comparația "
+   "directă, pe toate perechile, spune că da, de aproximativ 47 de ori (mediana SCI).</p>"
+   "<p>Comparația este însă nedreaptă. Graficul din stânga arată de ce: punctele portocalii (aceeași țară) stau aproape "
+   "toate în partea stângă, la distanțe mici, iar acolo SCI este mare pentru orice pereche, din aceeași țară sau nu. "
+   "Comparăm, de fapt, perechi apropiate cu perechi îndepărtate. O parte din diferență vine din distanță, nu din graniță.</p>"
+   "<p>Soluția este o comparație între lucruri comparabile: doar perechi aflate la aproximativ aceeași distanță. "
+   "Glisorul alege o distanță, banda colorată arată perechile comparate, iar în dreapta apar cele două mediane. La "
+   "~100 km, perechile din aceeași țară sunt de 7 ori mai legate; la ~300 km, de 15 ori. Mult mai puțin decât 47, dar "
+   "mult peste 1: granița contează și separat de distanță.</p>"
+   "<p>O a treia variabilă care încurcă astfel o comparație (aici distanța, legată și de graniță, și de SCI) se "
+   "numește <b>factor de confuzie</b> (engl. <i>confounder</i>). Exemplul clasic: cafeaua pare legată de bolile de "
+   "inimă pentru că fumătorii beau mai multă cafea; fumatul este factorul de confuzie. Comparația la aceeași distanță "
+   "se numește <b>stratificare</b>. Ea ține constantă doar distanța: limba, istoria comună și instituțiile rămân "
+   "amestecate cu efectul graniței.</p>"
    + ix("edGrupuri", "SCI în aceeași țară și în țări diferite", {"perechi": _PER})
-   + tabel(["Distanța, km", "0-100", "100-250", "250-500", "500-1000", "1000-2000", "2000+"],
-           [["SCI, aceeași țară / țări diferite (raportul medianelor)", "11×", "15×", "15×", "26×", "65×", "61×"],
-            ["perechi din aceeași țară", "168", "653", "897", "458", "89", "114"]])
-   + "<p>Peste 1.000 km, rapoartele sunt mari, dar se bazează pe puține perechi din aceeași țară (mai ales Franța cu "
-     "teritoriile ei de peste mări, Spania cu Insulele Canare, Portugalia cu Azore și Madeira).</p>"
+   + tabel(["Distanța", "toate", "~100 km", "~200 km", "~300 km", "~500 km", "~800 km"],
+           [["aceeași țară / țări diferite (raportul medianelor)", "47×", "7×", "12×", "15×", "20×", "28×"]])
+   + "<p>Calculat pe un eșantion de 10.000 de perechi. Peste 1.000 km, perechile din aceeași țară sunt foarte puține "
+     "(teritoriile de peste mări ale Franței, Insulele Canare, Azore), deci rapoartele de acolo nu sunt de încredere.</p>"
+   "<p>Consecința pentru C7: distanța și granița intră amândouă în model. Modelul face automat ce am făcut aici de "
+   "mână: compară la aceeași distanță.</p>"
    + glosar("confuzie", "strat")
    + caiet("5.1", [
-       "Boxplotul SCI după <code>aceeasi_tara</code>, pe toate perechile, și raportul medianelor.",
-       "Boxplotul pe intervale de distanță, cu <code>hue=\"aceeasi_tara\"</code>, apoi tabelul medianelor și raportul lor pe intervale."],
-       "Bara cu media (<code>sns.barplot(perechi, x=\"interval_km\", y=\"sci\")</code>) în locul boxplotului: ce ascunde?"))
+       "Mediana SCI pe toate perechile, după <code>aceeasi_tara</code>, și raportul celor două.",
+       "Aceeași comparație doar pentru perechile aflate la 250-400 km "
+       "(<code>perechi[perechi[\"distanta_km\"].between(250, 400)]</code>).",
+       "Tabelul medianelor pe toate intervalele de distanță."],
+       "Aceeași comparație la 80-130 km și la 600-1.000 km."))
 
 
 sl("s13", "Trei sau mai multe variabile", "Multe variabile",
@@ -640,41 +650,43 @@ sl("s13", "Trei sau mai multe variabile", "Multe variabile",
 # ===========================================================================
 
 sl("s14", "Verificarea", "Tipar sau întâmplare",
-   "<h2>Tipar real sau întâmplare?</h2>"
-   + concept(f"Pe orice grafic ochiul găsește un tipar. Testul: valorile unei coloane se amestecă între regiuni "
-             f"({gl('perm', 'permutare')}), ceea ce distruge orice relație. Graficul real se ascunde printre 7 grafice "
-             f"amestecate ({gl('lineup', 'protocolul lineup')}). Dacă se recunoaște, tiparul este real.")
-   + ix("edLineup", "Graficul real, printre grafice amestecate", _REGN)
-   + vede("Runda 1 se recunoaște ușor, runda 2 greu, runda 3 deloc: acolo relația nu există, iar o alegere corectă "
-          "este noroc (1 din 8)."),
+   "<h2>Relație reală sau întâmplare?</h2>"
+   + concept("Amestecăm la întâmplare valorile unei coloane între regiuni: valorile rămân, legătura dispare. Corelațiile "
+             "datelor amestecate arată cât de mare poate ieși o corelație <b>doar din întâmplare</b>. Dacă cea reală e "
+             f"mult mai mare decât toate, relația e reală ({gl('permtest')}).")
+   + ix("edLineup", "Corelația reală față de corelațiile datelor amestecate", _REG)
+   + vede("PIB și studii (ρ = 0,61): nicio amestecare nu ajunge aproape, deci relația e reală. Vârsta și studiile "
+          "(−0,23): tot reală, deși slabă. PIB și vârsta (−0,02): amestecările dau des corelații mai mari, deci poate "
+          "fi doar întâmplare."),
    manual=
-   "<h2>Tipar real sau întâmplare?</h2>"
-   "<p>Percepția vizuală găsește tipare și în date fără nicio relație: un nor de puncte aleatoare are aproape mereu o "
-   "zonă care pare înclinată. Înainte de a pune o relație în model, întrebarea este dacă ea se deosebește de ce ar "
-   "produce întâmplarea.</p>"
-   "<p><b>Permutarea</b> produce exact „ce ar produce întâmplarea”. Se iau valorile unei coloane (de exemplu, studiile "
-   "superioare) și se mută la întâmplare între regiuni: fiecare valoare rămâne în date, dar nu mai aparține regiunii ei. "
-   "Distribuția fiecărei variabile rămâne identică, dar orice legătură dintre ele dispare. Tabelul mic din componentă "
-   "arată amestecarea pe cinci regiuni.</p>"
-   "<p><b>Protocolul lineup</b> (Buja și colegii, 2009) ascunde graficul real printre 7 grafice amestecate. Dacă relația "
-   "nu există, graficul real este doar încă o amestecare, iar probabilitatea de a-l nimeri este 1 din 8. Dacă este "
-   "recunoscut, tiparul nu este doar întâmplare. Cu 20 de grafice, probabilitatea scade la 1 din 20, adică pragul "
-   "obișnuit de 5% al testelor statistice: lineup-ul este un test statistic făcut cu ochii.</p>"
-   + ix("edLineup", "Graficul real, printre grafice amestecate", _REGN)
-   + tabel(["Runda", "Variabilele", "ρ Spearman", "Ce se întâmplă"], [
-       ["1", "PIB pe locuitor și studiile superioare", "0,61", "graficul real se recunoaște ușor"],
-       ["2", "vârsta medie și studiile superioare", "−0,23", "se recunoaște greu"],
-       ["3", "PIB pe locuitor și vârsta medie", "−0,02", "nu se poate recunoaște: o alegere corectă este noroc"]])
+   "<h2>Relație reală sau întâmplare?</h2>"
+   "<p>Orice corelație calculată pe date reale iese diferită de zero, chiar dacă variabilele nu au nicio legătură: "
+   "întâmplarea produce mereu mici corelații. Întrebarea este dacă o corelație este mai mare decât ar produce "
+   "întâmplarea.</p>"
+   "<p>Răspunsul se poate obține direct, prin <b>amestecare</b> (permutare). Se iau valorile unei coloane, de exemplu "
+   "studiile superioare, și se mută la întâmplare între regiuni, ca un pachet de cărți. Fiecare valoare rămâne în date, "
+   "dar nu mai aparține regiunii ei, deci orice legătură cu PIB-ul dispare. Corelația datelor amestecate este o "
+   "corelație „din întâmplare”. Repetată de 200 de ori, amestecarea arată cât de mari pot ieși corelațiile doar din "
+   "întâmplare.</p>"
+   "<p>Comparația este simplă. Dacă corelația reală iese mult în afara corelațiilor din amestecări, relația nu este "
+   "întâmplătoare. Dacă multe amestecări dau corelații la fel de mari, relația poate fi doar întâmplare. Proporția "
+   "amestecărilor cu o corelație cel puțin la fel de mare ca cea reală este <b>valoarea p</b>; sub 5% (1 din 20), "
+   "relația se consideră reală. Procedeul se numește <b>test de permutare</b>.</p>"
+   + ix("edLineup", "Corelația reală față de corelațiile datelor amestecate", _REG)
+   + tabel(["Variabilele", "ρ real", "Corelațiile din amestecări", "Concluzia"], [
+       ["PIB pe locuitor și studiile superioare", "0,61", "aproximativ între −0,15 și 0,15", "reală"],
+       ["vârsta medie și studiile superioare", "−0,23", "aproximativ între −0,15 și 0,15", "reală, deși slabă"],
+       ["PIB pe locuitor și vârsta medie", "−0,02", "aproximativ între −0,15 și 0,15", "poate fi întâmplare"]])
    + "<p>Aceeași logică explică problema <b>comparațiilor multiple</b>. Dacă se încearcă multe variabile, unele vor "
-     "părea legate de rezultat doar din întâmplare: la pragul de 5%, una din 20. Echipele vor încerca în C7 mai mulți "
-     "predictori pentru SCI; ce se găsește explorând se verifică pe alte date (alt an, NUTS 3, altă sursă) înainte de "
-     "a fi tratat ca rezultat.</p>"
-   + glosar("perm", "lineup", "multiple")
+     "trece pragul de 5% doar din întâmplare: una din 20. Echipele vor încerca în C7 mai mulți predictori pentru SCI; "
+     "ce se găsește explorând se verifică pe alte date (alt an, NUTS 3) înainte de a fi tratat ca rezultat.</p>"
+   + glosar("perm", "permtest", "pval", "multiple")
    + caiet("6", [
-       "Funcția <code>lineup(x, y)</code> desenează 8 grafice și întoarce poziția graficului real; răspunsul se afișează "
-       "în celula următoare, după alegere.",
-       "Cele trei runde, în ordine; alegerea se notează înainte de a afișa răspunsul."],
-       "<code>lineup(regiuni[\"densitate\"], regiuni[\"somaj\"])</code>. Graficul real se poate recunoaște?"))
+       "Tabelul mic: cinci regiuni, cu studiile amestecate între ele.",
+       "Funcția <code>amesteca(x, y)</code>: corelația reală, apoi 200 de corelații ale datelor amestecate, într-o histogramă, "
+       "cu cea reală marcată.",
+       "Cele trei perechi de variabile, pe rând; pentru fiecare, câte amestecări ajung la corelația reală."],
+       "<code>amesteca(regiuni[\"densitate\"], regiuni[\"somaj\"])</code>: relație reală sau întâmplare?"))
 
 
 # ===========================================================================
