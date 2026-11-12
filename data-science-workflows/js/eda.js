@@ -705,7 +705,7 @@ E.edTipGrafice = (gazda) => {
     dist: ["Distribuții", "cum se repartizează o variabilă numerică", [["histogramă", "histplot"], ["densitate", "kdeplot"], ["ECDF", "ecdfplot"], ["boxplot", "boxplot"], ["violin", "violinplot"], ["puncte cu zgomot", "stripplot"]]],
     prop: ["Proporții", "părți dintr-un întreg", [["bare stivuite 100%", "crosstab(normalize=)"], ["bare alăturate", "barplot(hue=)"], ["mozaic", "statsmodels mosaic"], ["plăcintă (doar 2-3 părți)", "plt.pie"]]],
     rel: ["Relații x-y", "două sau mai multe variabile numerice", [["dispersie (scatter)", "scatterplot"], ["histogramă 2D, hexbin", "histplot(x=, y=)"], ["tendință netezită", "regplot(lowess=True)"], ["matricea de grafice", "pairplot"], ["matricea de corelație", "heatmap(df.corr())"], ["linie în timp", "lineplot"]]],
-    geo: ["Date spațiale", "valori pe teritorii", [["hartă coropletă", "geopandas plot(column=)"], ["simboluri proporționale", "plot(markersize=)"], ["cartogramă", "pachete dedicate"]]],
+    geo: ["Date spațiale", "valori pe teritorii", [["hartă coropletă", "geopandas plot(column=)"], ["hartă pe categorii (comunități)", "plot(column=, categorical=True)"], ["linii între locuri (legături)", "ax.plot([x1, x2], [y1, y2])"], ["simboluri proporționale", "plot(markersize=)"]]],
     inc: ["Incertitudine", "cât de sigură e o estimare", [["bare de eroare", "pointplot(errorbar=)"], ["benzi de încredere", "lineplot(errorbar=)"], ["eșantioane bootstrap", "errorbar=('ci', 95)"]]] };
   let k = "dist";
   const el = bloc(gazda, butoane("t", Object.entries(T).map(([c, v]) => [c, v[0]]), k) + `<div class="ed-tg"></div>`);

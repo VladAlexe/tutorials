@@ -4128,6 +4128,8 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .def6{margin:0 0 10px;font-family:var(--sans);font-size:var(--t3);line-height:1.45;color:var(--text-2);max-width:none}
 .def6 b{color:var(--text)}
 .sld p.def6{max-width:none;margin:0 0 8px;font-size:var(--t2);line-height:1.4}
+/* C6: harta într-un slide cu concept și concluzie, fără scroll la 1366×768 */
+.sld .def6 ~ .ix .hs--slide{height:min(52vh, 440px)}
 .rnr[data-capitol="c6"] .sld:has(.verif) .eda .ed-svg{max-height:132px}
 .rnr[data-capitol="c6"] .sld .eda .ed-lu .ed-svg{max-height:104px}
 .rnr[data-capitol="c6"] .sld:has(.verif) .noi6{padding:5px 12px}

@@ -4,7 +4,7 @@ Lecția 6: Analiza exploratorie.
 
 Un curs despre analiza exploratorie, în ordinea fluxului ei: ce este, profilul
 datelor, o variabilă numerică, variabilele categorice, două variabile numerice,
-trei sau mai multe variabile, tipar și reziduu, verificarea, tipurile de grafice.
+granița și distanța, partenerii pe hartă, rețeaua și comunitățile, verificarea, tipurile de grafice.
 Fiecare concept are o definiție, un grafic interactiv pe datele SCI (js/eda.js)
 și rezultatul pe aceste date; manualul adaugă detaliile și pașii din caietul 06.
 
@@ -21,7 +21,7 @@ from comun import Lectie, ix, verif, tabel, nota, surse, RAD
 
 L = Lectie(6, "c6-analiza-exploratorie", "Analiza exploratorie",
            "Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, "
-           "două și mai multe variabile, tipar și reziduu, verificarea. Fiecare concept, interactiv, pe datele SCI.")
+           "relațiile, harta partenerilor și comunitățile rețelei, verificarea. Fiecare concept, interactiv, pe datele SCI.")
 sl = L.sl
 
 D = json.loads((RAD / "date" / "c6-ipoteze.json").read_text(encoding="utf-8"))
@@ -75,7 +75,7 @@ FLUX = (
     '<div class="ed6 ed6--4">'
     '<div><small>1 · profilul datelor</small><b>conținutul, calitatea, lipsurile, extremele</b></div>'
     '<div><small>2 · o variabilă</small><b>locația, variabilitatea, forma</b></div>'
-    '<div><small>3 · relațiile</small><b>asocieri, grupuri, multe variabile</b></div>'
+    '<div><small>3 · relațiile</small><b>asocieri, granița, hartă și rețea</b></div>'
     '<div class="nou"><small>4 · verificarea</small><b>tipar real sau întâmplare</b></div>'
     '</div>'
     '<p class="ed6__inapoi">fiecare rezultat generează întrebări noi și reia ciclul</p>')
@@ -144,19 +144,18 @@ G = {
     "kendall": ("corelația Kendall", "Kendall's tau", "se iau toate perechile de observații; τ este proporția celor ordonate la fel pe ambele variabile minus proporția celor ordonate invers."),
     "monoton": ("asociere monotonă", "monotonic association", "când una dintre variabile crește, cealaltă crește (sau scade) mereu, nu neapărat după o dreaptă."),
     "supra": ("suprapunerea punctelor", "overplotting", "situația în care punctele unui grafic se acoperă unele pe altele și nu se mai vede unde sunt cele mai multe."),
-    "h2d": ("histograma bidimensională", "2D histogram, hexbin", "planul este împărțit în căsuțe, iar fiecare căsuță este colorată după numărul de puncte din ea."),
     "perm": ("permutarea", "permutation", "amestecarea aleatoare a valorilor unei coloane între rânduri; distruge relația cu alte coloane, dar păstrează valorile."),
     "lineup": ("protocolul lineup", "lineup protocol, visual inference", "graficul real este ascuns între grafice cu datele permutate; dacă poate fi recunoscut, tiparul nu este doar întâmplător."),
     "confuzie": ("factorul de confuzie", "confounder", "o a treia variabilă legată atât de grupare, cât și de rezultat, care poate crea sau ascunde o relație. Aici: distanța, pentru efectul graniței."),
     "strat": ("stratificarea", "stratification", "comparația făcută separat în grupuri în care factorul de confuzie este aproximativ constant (aici, intervale de distanță)."),
-    "matrcor": ("matricea de corelație", "correlation matrix", "tabelul coeficienților de corelație pentru fiecare pereche de variabile."),
-    "pairplot": ("matricea de grafice", "scatterplot matrix, pair plot", "câte un grafic de dispersie pentru fiecare pereche de variabile, cu distribuțiile pe diagonală."),
-    "multicol": ("multicoliniaritatea", "multicollinearity", "situația în care predictorii unui model sunt puternic corelați între ei, astfel încât efectul fiecăruia se estimează greu."),
     "reziduu": ("reziduul", "residual", "diferența dintre valoarea observată și valoarea prezisă de model (de dreaptă)."),
     "mcmp": ("metoda celor mai mici pătrate", "least squares", "alege dreapta pentru care suma pătratelor reziduurilor este cea mai mică."),
     "prag": ("pragul de semnificație de 5%", "significance level", "o corelație care depășește pragul ar apărea din întâmplare, fără o relație reală, în cel mult 5% din cazuri."),
     "permtest": ("testul de permutare", "permutation test", "se amestecă datele de multe ori; dacă relația reală e mai puternică decât aproape toate relațiile din amestecări, nu e întâmplătoare."),
     "pval": ("valoarea p", "p-value", "proporția amestecărilor (sau a eșantioanelor ipotetice) cu un rezultat cel puțin la fel de mare ca cel real; sub 0,05, rezultatul se consideră real."),
+    "retea": ("rețeaua", "network", "noduri (aici, regiuni) legate prin legături (aici, perechi), fiecare cu o greutate (aici, SCI)."),
+    "comunitate": ("comunitatea", "community", "un grup de noduri mai legate între ele decât cu restul rețelei."),
+    "louvain": ("algoritmul Louvain", "Louvain method", "caută comunitățile mutând nodurile dintre grupuri cât timp grupurile devin mai închise (modularitate mai mare); folosește doar greutățile legăturilor."),
     "multiple": ("comparațiile multiple", "multiple comparisons", "testarea multor variabile sau ipoteze; cu cât sunt mai multe, cu atât mai multe rezultate par importante doar din întâmplare."),
 }
 
@@ -528,42 +527,6 @@ sl("s10", "Două variabile numerice", "Corelația",
    dupa=V_COR)
 
 
-sl("s11", "Două variabile numerice", "Prea multe puncte",
-   "<h2>Prea multe puncte: cum se vede relația?</h2>"
-   + concept(f"La zeci de mii de puncte apare {gl('supra')}: nu se mai vede unde sunt cele mai multe. Soluțiile: "
-             f"transparența, {gl('h2d')} și medianele pe intervale.")
-   + ix("edMulte", "Distanța și SCI, pe 10.000 de perechi", {"perechi": _PER})
-   + vede("Medianele pe intervale arată forma relației: SCI scade repede până la câteva sute de kilometri, apoi mai "
-          "încet; pe log-log, scăderea este aproape o dreaptă."),
-   manual=
-   "<h2>Prea multe puncte: cum se vede relația?</h2>"
-   "<p>Cvartetul lui Anscombe (1973) a arătat că seturi de date cu aceeași medie, aceeași varianță și aceeași corelație "
-   "pot avea grafice complet diferite: graficul vine înaintea coeficientului. La volume mari apare o altă problemă: "
-   "punctele se acoperă, iar o zonă cu mii de observații arată la fel ca una cu zece.</p>"
-   + tabel(["Metoda", "Se reglează", "Potrivită pentru"], [
-       ["transparența", "opacitatea punctelor", "până la câteva mii de puncte"],
-       ["histograma bidimensională", "mărimea căsuțelor", "zeci de mii de puncte"],
-       ["medianele pe intervale", "lățimea intervalelor", "forma relației și împrăștierea ei"]])
-   + "<p>Cu cât sunt mai multe puncte, cu atât opacitatea trebuie să fie mai mică. Căsuțele prea mici arată zgomot, "
-     "cele prea mari ascund forma. Numerele de deasupra medianelor arată câte perechi are fiecare interval.</p>"
-   + ix("edMulte", "Distanța și SCI, pe 10.000 de perechi", {"perechi": _PER})
-   + "<h3>Codul, pe scurt</h3>"
-   + cod("import matplotlib.pyplot as plt\n\n"
-         "# transparența: alpha între 0 (invizibil) și 1 (opac)\n"
-         "sns.scatterplot(perechi, x=\"distanta_km\", y=\"sci\", alpha=0.05)\n"
-         "plt.xscale(\"log\"); plt.yscale(\"log\")\n\n"
-         "# histograma bidimensională: bins = numărul căsuțelor pe fiecare axă\n"
-         "sns.histplot(perechi, x=\"distanta_km\", y=\"sci\", log_scale=True, bins=45)\n\n"
-         "# medianele și cuartilele pe intervale de distanță\n"
-         "perechi.groupby(\"interval_km\", observed=True)[\"sci\"].quantile([0.25, 0.5, 0.75]).unstack()")
-   + glosar("supra", "h2d")
-   + caiet("4.2", [
-       "<code>sns.histplot</code> cu <code>x</code>, <code>y</code> și <code>log_scale=True</code>: histograma "
-       "bidimensională a tuturor perechilor.",
-       "<code>groupby(\"interval_km\")</code> cu mediana SCI: forma relației, ca tabel."],
-       "<code>sns.scatterplot</code> pe toate perechile, cu <code>alpha=0.02</code>, apoi <code>0.2</code>. Care arată densitatea?"))
-
-
 # ===========================================================================
 #  F. Trei sau mai multe variabile
 # ===========================================================================
@@ -572,7 +535,7 @@ _H2 = D["h2"]
 _I = _H2["intervale"].index("250-500")
 _R = _H2["da"]["med"][_I] / _H2["nu"]["med"][_I]
 
-sl("s12", "Trei sau mai multe variabile", "Granița și distanța",
+sl("s11", "Trei sau mai multe variabile", "Granița și distanța",
    "<h2>Contează granița sau doar distanța?</h2>"
    + concept("Perechile din aceeași țară au SCI mult mai mare. Dar ele sunt aproape toate apropiate, iar apropierea "
              "crește singură SCI-ul. Ca să vedem efectul graniței, comparăm doar perechi aflate <b>la aceeași distanță</b>. "
@@ -604,7 +567,7 @@ sl("s12", "Trei sau mai multe variabile", "Granița și distanța",
    "<p>Consecința pentru C7: distanța și granița intră amândouă în model. Modelul face automat ce am făcut aici de "
    "mână: compară la aceeași distanță.</p>"
    + glosar("confuzie", "strat")
-   + caiet("5.1", [
+   + caiet("5", [
        "Mediana SCI pe toate perechile, după <code>aceeasi_tara</code>, și raportul celor două.",
        "Aceeași comparație doar pentru perechile aflate la 250-400 km "
        "(<code>perechi[perechi[\"distanta_km\"].between(250, 400)]</code>).",
@@ -612,41 +575,117 @@ sl("s12", "Trei sau mai multe variabile", "Granița și distanța",
        "Aceeași comparație la 80-130 km și la 600-1.000 km."))
 
 
-sl("s13", "Trei sau mai multe variabile", "Multe variabile",
-   "<h2>Multe variabile deodată</h2>"
-   + concept(f"{gl('pairplot', 'Matricea de grafice')} arată fiecare pereche de variabile; {gl('matrcor', 'matricea de corelație')} "
-             f"rezumă fiecare pereche printr-un număr. Variabilele puternic corelate între ele produc "
-             f"{gl('multicol')} într-un model.")
-   + ix("edMultivar", "Indicatorii regiunilor", _REG)
-   + vede("PIB-ul merge cu studiile (ρ = 0,61) și cu densitatea (0,52), invers cu șomajul (−0,45). Într-un model, "
-          "efectele lor se separă greu."),
+# ===========================================================================
+#  G. Pe hartă și ca rețea
+# ===========================================================================
+
+HARTA_PARTENERI = {
+    "niveluri": ["regiuni"], "nivel": "regiuni", "masura": "dist", "ales": "RO11", "masuri": ["dist", "sci"],
+    "povesti": [
+        {"t": "Nord-Vest (România)", "nivel": "regiuni", "masura": "dist", "ales": "RO11",
+         "text": "Peste așteptare: regiuni din Spania (La Rioja, Castilla-La Mancha, Aragón), Irlanda, Bruxelles și "
+                 "Austria, de 20 până la 60 de ori mai legate decât sugerează distanța. Sunt țările migrației românești."},
+        {"t": "Luxemburg", "nivel": "regiuni", "masura": "dist", "ales": "LU00",
+         "text": "Toate regiunile Portugaliei, de 70 până la 180 de ori peste așteptare: portughezii sunt cea mai mare "
+                 "comunitate străină din Luxemburg."},
+        {"t": "Norte (Portugalia)", "nivel": "regiuni", "masura": "dist", "ales": "PT11",
+         "text": "Luxemburg, Elveția și Corsica: destinațiile emigrației portugheze, de 30 până la 125 de ori peste așteptare."},
+    ]}
+
+HARTA_COM = {
+    "niveluri": ["regiuni"], "nivel": "regiuni", "masura": "com", "ales": "RO11", "masuri": ["com", "sci"],
+    "povesti": [
+        {"t": "România și Germania", "nivel": "regiuni", "masura": "com", "ales": "RO11",
+         "text": "Cele opt regiuni ale României sunt în aceeași comunitate cu Germania: migrația spre Germania și "
+                 "legăturile istorice (sașii, șvabii) trec peste distanță."},
+        {"t": "Austria și fosta Iugoslavie", "nivel": "regiuni", "masura": "com", "ales": "AT13",
+         "text": "Austria formează o comunitate cu Slovenia, Croația, Serbia, Bosnia și Herțegovina și Muntenegru: "
+                 "migrația din fosta Iugoslavie spre Austria."},
+        {"t": "Polonia, Irlanda, Lituania", "nivel": "regiuni", "masura": "com", "ales": "PL91",
+         "text": "Polonia împreună cu Irlanda, Lituania și Islanda: după 2004, polonezii au devenit cea mai mare "
+                 "comunitate străină din Irlanda și din Islanda."},
+        {"t": "Portugalia și Luxemburg", "nivel": "regiuni", "masura": "com", "ales": "LU00",
+         "text": "Luxemburg intră în comunitatea Portugaliei, nu a vecinilor lui: aceeași poveste ca pe harta partenerilor."},
+        {"t": "Cehia și Slovacia", "nivel": "regiuni", "masura": "com", "ales": "CZ01",
+         "text": "O singură comunitate, ca fosta Cehoslovacie, despărțită în 1993."},
+    ]}
+
+sl("s12", "Pe hartă și ca rețea", "Partenerii unei regiuni",
+   "<h2>Cu cine e legată o regiune, peste așteptare?</h2>"
+   + concept("SCI-ul fiecărei perechi, împărțit la mediana perechilor aflate <b>la aceeași distanță</b>: 1× este cât "
+             "sugerează distanța, 20× de 20 de ori mai mult. Clic pe hartă alege regiunea.")
+   + ix("harta", "Partenerii unei regiuni, față de distanță", HARTA_PARTENERI)
+   + vede("Nord-Vest e legată peste așteptare de Spania, Irlanda și Austria: coridoarele migrației, nu vecinii."),
    manual=
-   "<h2>Multe variabile deodată</h2>"
-   "<p>O a treia variabilă se adaugă unui grafic prin <b>culoare</b> (<code>hue=</code>) sau prin <b>fațete</b>: același "
-   "grafic repetat pe grupuri, cu aceleași axe (<code>col=</code>). Pentru mai multe variabile numerice deodată se "
-   "folosesc matricea de grafice (<code>pairplot</code>) și matricea de corelație (<code>heatmap</code>), desenată cu o "
-   "scară de culori centrată pe 0 și limitată la −1 și 1.</p>"
-   "<p>Variabilele puternic corelate între ele spun aproape același lucru. Într-un model de regresie, efectul fiecăreia "
-   "se estimează imprecis (multicoliniaritate); de aceea matricea de corelație a predictorilor se examinează înaintea "
-   "modelului din C7. Butoanele comută între Spearman și Pearson și între densitatea brută și cea logaritmată: cu "
-   "Pearson, transformarea densității schimbă coeficienții; cu Spearman, nu.</p>"
-   + ix("edMultivar", "Indicatorii regiunilor", _REG)
-   + "<h3>Codul, pe scurt</h3>"
-   + cod("cols = [\"pib_locuitor\", \"studii_superioare\", \"somaj\", \"varsta_medie\", \"densitate\"]\n\n"
-         "sns.pairplot(regiuni[cols])                                   # matricea de grafice\n\n"
-         "corelatii = regiuni[cols].corr(method=\"spearman\")             # matricea de corelație\n"
-         "sns.heatmap(corelatii, annot=True, cmap=\"RdBu_r\", vmin=-1, vmax=1)   # scară centrată pe 0")
-   + glosar("pairplot", "matrcor", "multicol")
-   + caiet("5.2", [
-       "<code>sns.pairplot</code> pe cinci indicatori: perechile cu relație vizibilă și variabilele asimetrice.",
-       "<code>sns.heatmap</code> cu matricea Spearman.",
-       "<code>len(economice), len(perechi)</code>: perechile cu PIB la ambele capete, rezultat folosit în verificarea finală "
-       "(37.950 din 44.253)."],
-       "Matricea cu <code>method=\"pearson\"</code>, apoi cu densitatea logaritmată. Care coeficienți se schimbă?"))
+   "<h2>Cu cine e legată o regiune, peste așteptare?</h2>"
+   "<p>SCI scade puternic cu distanța: regiunile vecine sunt aproape întotdeauna cele mai legate. Harta brută a "
+   "legăturilor unei regiuni arată deci mai ales vecinii. Ca să se vadă ce iese din tipar, fiecare pereche se compară "
+   "cu perechile aflate la aceeași distanță: SCI-ul ei se împarte la mediana SCI a tuturor perechilor din intervalul "
+   "ei de distanță. Rezultatul se citește ca un raport: 1× înseamnă exact cât sugerează distanța, 2× de două ori mai "
+   "mult, ½× jumătate. Este o primă formă a reziduului din modelul din C7.</p>"
+   "<p>Pe hartă se alege o regiune (clic pe ea sau căutare); celelalte se colorează după raportul lor cu ea. Măsura "
+   "„Legături” arată, pentru comparație, SCI-ul brut, unde domină vecinii. Butoanele din „Cazuri din date” duc la trei "
+   "exemple.</p>"
+   + ix("harta", "Partenerii unei regiuni, față de distanță", HARTA_PARTENERI)
+   + tabel(["Regiunea", "Partenerii peste așteptare", "De câte ori"], [
+       ["Nord-Vest (RO11)", "La Rioja, Castilla-La Mancha, Aragón (ES), Eastern and Midland (IE), Bruxelles, Steiermark (AT)", "20-62×"],
+       ["Luxemburg (LU00)", "toate regiunile Portugaliei", "70-177×"],
+       ["Norte (PT11)", "Luxemburg, regiunile Elveției, Corsica", "30-125×"]])
+   + "<p>Partenerii peste așteptare nu sunt vecinii, ci destinațiile migrației. De aici decizia pentru C7: migrația "
+     "intră în model, ca rată.</p>"
+   + "<p>Ghicitoarea din C1 se rezolvă la fel. Italia are cei mai mulți migranți români (peste un milion) și cea mai "
+     "mare rată, dar este abia a cincea după SCI: Austria, Germania, Ungaria și Irlanda sunt mai legate de România. "
+     "Ungaria are puțini migranți români, dar o minoritate maghiară numeroasă în România. Migrația explică mult din "
+     "SCI, dar nu tot.</p>"
+   + caiet("6", [
+       "<code>fata_de_distanta</code>: SCI-ul fiecărei perechi împărțit la mediana intervalului ei de distanță "
+       "(<code>transform(\"median\")</code>).",
+       "Pentru <code>REGIUNE = \"RO11\"</code>, cei 10 parteneri din alte țări cu raportul cel mai mare, apoi harta cu "
+       "linii de la regiune la fiecare partener.",
+       "Ghicitoarea din C1: perechile României cu SCI-ul, migranții și rata lor."],
+       "Aceeași hartă pentru <code>\"LU00\"</code>, <code>\"PL91\"</code> sau regiunea echipei."))
+
+
+sl("s13", "Pe hartă și ca rețea", "Comunitățile",
+   "<h2>În ce grupuri se împarte Europa?</h2>"
+   + concept(f"Perechile formează o {gl('retea', 'rețea')}: fiecare regiune e un nod, fiecare pereche o legătură, cu SCI "
+             f"ca greutate. Algoritmul {gl('louvain', 'Louvain')} caută {gl('comunitate', 'comunități')}: grupuri de "
+             "regiuni mai legate între ele decât cu restul. Nu știe nimic despre țări sau hartă.")
+   + ix("harta", "Comunitățile rețelei SCI", HARTA_COM)
+   + vede("16 comunități, cele mai multe pe granițe. Unele le trec: România cu Germania, Austria cu fosta Iugoslavie."),
+   manual=
+   "<h2>În ce grupuri se împarte Europa?</h2>"
+   "<p>Tabelul perechilor se poate citi ca o <b>rețea</b>: fiecare regiune este un <b>nod</b>, fiecare pereche o "
+   "<b>legătură</b>, iar SCI-ul este <b>greutatea</b> ei. Cele 298 de regiuni și 44.253 de perechi formează o rețea "
+   "completă, în care orice regiune e legată de oricare alta, dar cu greutăți foarte diferite.</p>"
+   "<p>O <b>comunitate</b> este un grup de noduri mai legate între ele decât cu restul rețelei. Algoritmul "
+   "<b>Louvain</b> (Blondel și colegii, 2008) le caută mutând nodurile dintr-un grup în altul cât timp grupurile devin "
+   "mai „închise” (măsura se numește modularitate). Algoritmul folosește doar greutățile legăturilor: nu știe ce țară "
+   "are fiecare regiune și nici unde se află. Dacă totuși comunitățile urmează granițele, înseamnă că granițele sunt în "
+   "date.</p>"
+   + ix("harta", "Comunitățile rețelei SCI", HARTA_COM)
+   + tabel(["Comunitatea", "Regiunile", "Explicația probabilă"], [
+       ["România și Germania", "8 regiuni RO, 38 DE", "migrația spre Germania; sașii și șvabii"],
+       ["Austria și fosta Iugoslavie", "AT, SI, HR, RS, BA, ME", "migrația din fosta Iugoslavie spre Austria"],
+       ["Polonia, Irlanda, Lituania, Islanda", "17 PL, 3 IE, 2 LT, 1 IS", "migrația poloneză după 2004"],
+       ["Portugalia și Luxemburg", "9 PT, 1 LU", "migrația portugheză"],
+       ["Italia, Elveția, Malta", "21 IT, 7 CH, 1 MT", "limba italiană; vecinătatea"],
+       ["Cehia și Slovacia", "8 CZ, 4 SK", "fosta Cehoslovacie"],
+       ["Grecia, Cipru, Albania", "13 GR, 1 CY, 3 AL", "limba greacă; migrația albaneză"]])
+   + "<p>Culorile sunt etichete, nu valori: comunitatea 3 nu este „mai mult” decât comunitatea 2. Gruparea arată "
+     "<i>că</i> unele regiuni sunt legate peste granițe, dar nu <i>de ce</i>: explicațiile din tabel sunt ipoteze, de "
+     "verificat cu alte date (migrația, limba).</p>"
+   + glosar("retea", "comunitate", "louvain")
+   + caiet("7", [
+       "<code>nx.from_pandas_edgelist</code>: rețeaua, cu regiunile ca noduri și SCI ca greutate.",
+       "<code>nx.community.louvain_communities(G, weight=\"sci\", seed=1)</code>: comunitățile, apoi numărul fiecărei "
+       "regiuni pus în tabelul hărții.",
+       "Harta comunităților, colorată pe categorii."],
+       "<code>resolution=0.5</code>, apoi <code>2</code>, în <code>louvain_communities</code>: câte comunități ies?"))
 
 
 # ===========================================================================
-#  G. Verificarea
+#  H. Verificarea
 # ===========================================================================
 
 sl("s14", "Verificarea", "Tipar sau întâmplare",
@@ -681,7 +720,7 @@ sl("s14", "Verificarea", "Tipar sau întâmplare",
      "trece pragul de 5% doar din întâmplare: una din 20. Echipele vor încerca în C7 mai mulți predictori pentru SCI; "
      "ce se găsește explorând se verifică pe alte date (alt an, NUTS 3) înainte de a fi tratat ca rezultat.</p>"
    + glosar("perm", "permtest", "pval", "multiple")
-   + caiet("6", [
+   + caiet("8", [
        "Tabelul mic: cinci regiuni, cu studiile amestecate între ele.",
        "Funcția <code>amesteca(x, y)</code>: corelația reală, apoi 200 de corelații ale datelor amestecate, într-o histogramă, "
        "cu cea reală marcată.",
@@ -713,7 +752,7 @@ PE_SCI = [
     ("Profilul", "un rând = o pereche; Svalbard la ambele capete (numitor mic); lipsurile pe țări întregi"),
     ("O variabilă", "asimetrie puternică: media de 8 ori mai mare decât mediana; scara log10 și mediana"),
     ("Relațiile", f"distanța: Spearman {ro(S['spearman'])}; granița contează și la aceeași distanță; "
-                  "indicatorii economici, puternic corelați între ei"),
+                  "comunitățile urmează granițele, cu excepția coridoarelor migrației"),
     ("Verificarea", "relațiile puternice se deosebesc de întâmplare; cele slabe rămân de verificat în C7"),
 ]
 DECIZII = [
@@ -739,7 +778,7 @@ sl("s16", "Pe datele noastre", "Fluxul pe SCI",
 DOVADA = {
     "id": "c6-dovada",
     "sarcina": "Trei rezultate din caiet, rulate pe datele proprii. Ieșirea fiecăruia se lipește în câmpul lui.",
-    "indiciu": "Celulele sunt în caietul 06: secțiunile 4.1, 5.2 și 2.3.",
+    "indiciu": "Celulele sunt în caietul 06: secțiunile 4.1, 4.2 și 2.3.",
     "pasi": [
         {"t": "Distanța și SCI",
          "cmd": "perechi[\"distanta_km\"].corr(perechi[\"sci\"], method=\"spearman\")",

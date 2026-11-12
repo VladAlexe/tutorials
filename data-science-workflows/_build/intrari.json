@@ -361,20 +361,20 @@
     "nr": 6,
     "titlu": "Analiza exploratorie",
     "deck": "Înainte de model, datele se examinează: ce conțin, cum variază, ce variază împreună, ce e real și ce e întâmplare. Fiecare concept, cu un grafic interactiv pe datele SCI.",
-    "descriere": "Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, două și mai multe variabile, verificarea.",
+    "descriere": "Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, relațiile, harta partenerilor și comunitățile rețelei, verificarea.",
     "caiet": "@REPO@/blob/main/curs/06_analiza_exploratorie.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Analiza exploratorie este examinarea datelor înainte de modelare. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, lipsurile, extremele), o variabilă (media și mediana, distribuția, transformarea logaritmică), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; prea multe puncte), trei sau mai multe variabile (granița și distanța: factorul de confuzie; matricea de corelație), verificarea (tipar real sau întâmplare).</p>\n<p>Fiecare concept are o definiție, un grafic interactiv pe datele cursului (perechile de regiuni cu SCI și tabelul regiunilor) și pașii corespunzători din caiet. Rezultatul: deciziile pentru modelul din C7.</p>"
+        "html": "<p>Analiza exploratorie este examinarea datelor înainte de modelare. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, lipsurile, extremele), o variabilă (media și mediana, distribuția, transformarea logaritmică), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall), granița și distanța (factorul de confuzie), harta partenerilor peste așteptare, rețeaua regiunilor și comunitățile ei (Louvain), verificarea (tipar real sau întâmplare).</p>\n<p>Fiecare concept are o definiție, un grafic interactiv pe datele cursului (perechile de regiuni cu SCI și tabelul regiunilor) și pașii corespunzători din caiet. Rezultatul: deciziile pentru modelul din C7.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; valorile extreme; media și mediana; transformarea logaritmică.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Factorul de confuzie și stratificarea; matricea de corelație.</li>\n<li>Tipar real sau întâmplare: permutarea și protocolul lineup; comparațiile multiple.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; valorile extreme; media și mediana; transformarea logaritmică.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Factorul de confuzie și stratificarea: granița și distanța.</li>\n<li>Ce iese din tipar, pe hartă: SCI față de distanță și partenerii peste așteptare ai unei regiuni.</li>\n<li>Perechile ca rețea: comunitățile Louvain și ce arată ele despre granițe și migrație.</li>\n<li>Tipar real sau întâmplare: testul de permutare; comparațiile multiple.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
-        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>\n<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code> și <code>scipy</code>.</li>\n</ol>"
+        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>\n<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code>, <code>scipy</code> și <code>networkx</code>.</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",

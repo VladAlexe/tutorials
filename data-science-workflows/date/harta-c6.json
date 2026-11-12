@@ -1,7 +1,7 @@
 {
  "capitol": "c6",
- "total": 19,
- "sarcini": 5,
+ "total": 17,
+ "sarcini": 4,
  "slide": [
   {
    "nr": 1,
@@ -34,12 +34,12 @@
      "id": "c6-v-lips",
      "fel": "verificare",
      "corect": 1,
-     "q": "Rețelele sociale lipsesc în toate regiunile Germaniei și Franței. Ce descrie o medie calculată fără ele?",
+     "q": "PIB-ul pe locuitor lipsește în toate regiunile Elveției și Norvegiei. Ce descrie o mediană calculată fără ele?",
      "optiuni": [
-      "Media tuturor regiunilor",
-      "Media regiunilor cu date, fără DE și FR",
-      "O medie invalidă",
-      "Media Germaniei și a Franței"
+      "Mediana tuturor regiunilor",
+      "Mediana regiunilor cu date, fără CH și NO",
+      "O mediană invalidă",
+      "Mediana Elveției și a Norvegiei"
      ]
     }
    ]
@@ -115,75 +115,48 @@
   {
    "nr": 11,
    "id": "s11",
-   "grup": "Două variabile numerice",
-   "titlu": "Prea multe puncte",
+   "grup": "Trei sau mai multe variabile",
+   "titlu": "Granița și distanța",
    "sarcini": []
   },
   {
    "nr": 12,
    "id": "s12",
-   "grup": "Două variabile numerice",
-   "titlu": "Lineup",
+   "grup": "Pe hartă și ca rețea",
+   "titlu": "Partenerii unei regiuni",
    "sarcini": []
   },
   {
    "nr": 13,
    "id": "s13",
-   "grup": "Trei sau mai multe variabile",
-   "titlu": "Grupuri și factorul de confuzie",
+   "grup": "Pe hartă și ca rețea",
+   "titlu": "Comunitățile",
    "sarcini": []
   },
   {
    "nr": 14,
    "id": "s14",
-   "grup": "Trei sau mai multe variabile",
-   "titlu": "Multe variabile",
+   "grup": "Verificarea",
+   "titlu": "Tipar sau întâmplare",
    "sarcini": []
   },
   {
    "nr": 15,
    "id": "s15",
-   "grup": "Tipar și reziduu",
-   "titlu": "Tipar și reziduu",
-   "sarcini": []
-  },
-  {
-   "nr": 16,
-   "id": "s16",
-   "grup": "Verificarea",
-   "titlu": "Multe încercări",
-   "sarcini": [
-    {
-     "id": "c6-v-pot",
-     "fel": "verificare",
-     "corect": 1,
-     "q": "Dintre 40 de variabile formate din numere aleatoare, două trec pragul de 5%. Ce înseamnă?",
-     "optiuni": [
-      "Cele două explică deschiderea",
-      "Nimic: din 40 de încercări, cam 2 trec pragul din întâmplare",
-      "Eșantionul e prea mic",
-      "Trebuie Pearson"
-     ]
-    }
-   ]
-  },
-  {
-   "nr": 17,
-   "id": "s17",
    "grup": "Încheierea",
    "titlu": "Tipurile de grafice",
    "sarcini": []
   },
   {
-   "nr": 18,
-   "id": "s18",
+   "nr": 16,
+   "id": "s16",
    "grup": "Pe datele noastre",
    "titlu": "Fluxul pe SCI",
    "sarcini": []
   },
   {
-   "nr": 19,
-   "id": "s19",
+   "nr": 17,
+   "id": "s17",
    "grup": "Echipa",
    "titlu": "Verificarea în caiet",
    "sarcini": [
