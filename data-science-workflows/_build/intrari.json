@@ -416,36 +416,36 @@
     "nr": 7,
     "titlu": "Variabile derivate și model",
     "deck": "Analiza exploratorie a arătat tipare. Această lecție le introduce în același model, pentru a vedea ce rămâne din efectul fiecăruia.",
-    "descriere": "Construirea variabilelor, un model care le pune pe toate deodată, și reziduurile lui.",
-    "caiet": null,
+    "descriere": "Ingineria variabilelor (construcție, transformare, scalare, selecție), apoi un model care include simultan distanța, migrația și granița, cu interpretarea coeficienților și a reziduurilor.",
+    "caiet": "@REPO@/blob/main/curs/07_variabile_derivate_si_model.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>La cursul 6, datele au arătat că SCI scade cu distanța, crește cu migrația și este mai mare între țările vecine. Țările vecine sunt însă și apropiate geografic și au adesea migrație între ele, deci cele trei tipare se suprapun. Un model le estimează simultan.</p>\n<p>Prima parte tratează ingineria variabilelor, ca în planul cursului: construcție, transformare, extragere, scalare, selecție. A doua parte este dedicată modelului: patru modele pe același eșantion, interpretarea coeficienților pe logaritmi și reziduurile, pe hartă.</p>"
+        "html": "<p>Analiza exploratorie (C6) a găsit trei tipare: SCI scade cu distanța, este mai mare peste o graniță comună și crește cu migrația. Tiparele se suprapun: țările vecine sunt și apropiate, și au mai mulți migranți între ele. Un model le include simultan și estimează ce rămâne din fiecare.</p>\n<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, selecția (corelațiile predictorilor, VIF). A doua parte este modelul: patru modele pe aceleași perechi de țări, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Construirea unei variabile noi, cu decizia din spatele ei scrisă.</li>\n<li>Decizia privind variabilele care se transformă logaritmic și cele care nu.</li>\n<li>Diferența dintre scalare, care nu schimbă forma distribuției, și transformare, care o schimbă.</li>\n<li>Verificarea cu VIF că variabilele nu sunt redundante.</li>\n<li>Un model cu <code>statsmodels</code> și citirea coeficienților ca elasticități.</li>\n<li>Motivul pentru care un coeficient se schimbă când se adaugă o variabilă.</li>\n<li>Reziduurile, interpretate ca surse de întrebări noi, nu ca erori.</li>\n<li>Ce poate și ce nu poate susține un model observațional.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Construcția unei variabile derivate: o rată, o distanță agregată, o variabilă binară.</li>\n<li>Decizia privind variabilele care se logaritmează și cele care nu.</li>\n<li>Diferența dintre scalare, care nu schimbă forma distribuției, și transformare, care o schimbă.</li>\n<li>Verificarea redundanței predictorilor: corelațiile și VIF.</li>\n<li>Modelul liniar cu <code>statsmodels</code>: tipar plus reziduu, cele mai mici pătrate, R².</li>\n<li>Motivul pentru care un coeficient se schimbă când intră o variabilă nouă.</li>\n<li>Citirea coeficienților pe logaritmi ca elasticități; intervalul de încredere.</li>\n<li>Reziduurile ca surse de întrebări; ce poate și ce nu poate susține un model observațional.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
-        "html": "<ol>\n<li>Tabelul de perechi de la cursul 5 și graficele de la cursul 6.</li>\n<li>Pachetele pentru model: <code>pip install statsmodels scikit-learn</code>.</li>\n<li>Pentru distanță și graniță în caiet: <code>pip install geopandas</code>.</li>\n</ol>"
+        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>\n<li>Pachetele din <code>requirements.txt</code>: <code>statsmodels</code> și <code>geopandas</code> sunt deja în listă (<code>pip install -r requirements.txt</code>).</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",
-        "html": "<ul class=\"obiective\">\n<li><code>model/variabile.py</code>: variabilele construite, cu deciziile în <code>decizii.md</code>.</li>\n<li><code>model/model.py</code>: modelele, pas cu pas, pe același eșantion.</li>\n<li><code>date/curat/reziduuri.csv</code>: reziduurile, pentru raport.</li>\n<li>În <code>README.md</code>: ce susțin rezultatele și ce nu.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li><code>notebooks/05_model.ipynb</code>: variabilele construite și modelul, pe datele echipei, pe același eșantion pentru toate modelele.</li>\n<li>În <code>README.md</code>: deciziile de construcție și transformare, ce susține modelul și ce nu.</li>\n</ul>"
       }
     ],
     "resurse": [
       {
         "href": "../explorator/",
         "t": "Exploratorul legăturilor sociale",
-        "d": "Harta pe județe, regiuni și țări"
+        "d": "Harta pe județe, regiuni și țări, cu reziduurile modelului"
       },
       {
         "href": "../c6-analiza-exploratorie/",
-        "t": "Lecția 6: explorarea",
-        "d": "Tiparele testate în această lecție"
+        "t": "Lecția 6: analiza exploratorie",
+        "d": "Deciziile care devin variabile"
       }
     ],
     "legaturi": [
@@ -455,21 +455,22 @@
         "g": "statsmodels"
       },
       {
-        "href": "https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html",
-        "t": "VIF",
+        "href": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html",
+        "t": "Rezultatele modelului",
         "g": "statsmodels"
       },
       {
-        "href": "https://scikit-learn.org/stable/modules/preprocessing.html",
-        "t": "Scalare",
-        "g": "scikit-learn"
+        "href": "https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html",
+        "t": "dissolve",
+        "g": "geopandas"
       },
       {
         "href": "https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259",
         "t": "Bailey și colegii, 2018",
         "g": "articol"
       }
-    ]
+    ],
+    "caiet_d": "Caietul 07, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza din C5, curs/data/dsw.db."
   },
   "c8-raportare": {
     "nr": 8,

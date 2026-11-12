@@ -3620,13 +3620,13 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
   .tb5{grid-template-columns:1fr}
 }
 /* cursurile 5 și 6: titlul mic de deasupra desenului repetă titlul slide-ului */
-.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .ix__cap{display:none}
+.rnr:is([data-capitol="c5"],[data-capitol="c6"],[data-capitol="c7"]) .sld .ix__cap{display:none}
 /* verificarea, compactă: comanda în stânga, rezultatul în dreapta */
-.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__r{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
+.rnr:is([data-capitol="c5"],[data-capitol="c6"],[data-capitol="c7"]) .sld .dov__r{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
   gap:7px 12px;align-items:center;padding:10px 12px}
-.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__sus{grid-column:1 / -1;margin:0}
-.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__aj{grid-column:1 / -1}
-.rnr:is([data-capitol="c5"],[data-capitol="c6"]) .sld .dov__aj:empty{display:none}
+.rnr:is([data-capitol="c5"],[data-capitol="c6"],[data-capitol="c7"]) .sld .dov__sus{grid-column:1 / -1;margin:0}
+.rnr:is([data-capitol="c5"],[data-capitol="c6"],[data-capitol="c7"]) .sld .dov__aj{grid-column:1 / -1}
+.rnr:is([data-capitol="c5"],[data-capitol="c6"],[data-capitol="c7"]) .sld .dov__aj:empty{display:none}
 .gp__camp{height:112px}
 .mm2__arie{height:165px}
 .mm2__txt{margin-top:46px}
@@ -4158,9 +4158,9 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .ed-cod{margin:8px 0 0;padding:7px 11px;background:var(--panza-2);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;
   font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--text);white-space:pre-wrap;overflow-x:auto}
 .ed-cod:empty{display:none}
-.rnr[data-capitol="c6"] .sld:has(.verif) .eda .ed-cod{display:none}
-.rnr[data-capitol="c6"] .sld .eda:has(.ed-cod:not(:empty)) .ed-not{display:none}
-.rnr[data-capitol="c6"] .sld .ed-cod{font-size:12px;padding:5px 10px;margin-top:6px}
+.rnr[data-capitol="c6"] .sld:has(.verif) .eda .ed-cod,.rnr[data-capitol="c7"] .sld:has(.verif) .eda .ed-cod{display:none}
+.rnr[data-capitol="c6"] .sld .eda:has(.ed-cod:not(:empty)) .ed-not,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cod:not(:empty)) .ed-not{display:none}
+.rnr[data-capitol="c6"] .sld .ed-cod,.rnr[data-capitol="c7"] .sld .ed-cod{font-size:12px;padding:5px 10px;margin-top:6px}
 .rnr[data-capitol="c6"] .sld .eda .ed-svg[viewBox="0 0 900 330"]{max-height:225px}
 .rnr[data-capitol="c6"] .sld .ed-ct .ed-svg{max-height:210px}
 .rnr[data-capitol="c6"] .sld .eda svg.ed-pp{max-height:245px}
@@ -4173,6 +4173,9 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .rnr[data-capitol="c6"] .sld .ed-lu .ed-svg{max-height:92px}
 .ed6--4{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (max-width:760px){.ed6--4{grid-template-columns:1fr 1fr}}
+.ed6--5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.ed6--5 > div{padding-right:22px}
+@media (max-width:760px){.ed6--5{grid-template-columns:1fr}}
 .ed-am table{width:auto}
 .rnr[data-capitol="c6"] .sld .ed-lu .ed-svg{max-height:84px}
 .rnr[data-capitol="c6"] .sld .eda:has(.ed-lu) .ed-not{display:none}
@@ -4184,3 +4187,21 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .ed-calc b{color:var(--text)}
 .sld p.ed-calc,.ed-calc{max-width:none}
 .rnr[data-capitol="c6"] .sld .ed-ct .ed-svg{max-height:200px}
+
+/* C7: același stil compact ca la C6 */
+.rnr[data-capitol="c7"] .sld .dov__cmd code{white-space:pre-wrap;overflow:visible;text-overflow:clip;word-break:break-word}
+.rnr[data-capitol="c7"] .sld .dov__r{padding:7px 12px;gap:5px}
+.rnr[data-capitol="c7"] .sld .verif .verif__q{font-size:var(--t3);margin:0}
+.rnr[data-capitol="c7"] .sld .verif .verif__opt,.rnr[data-capitol="c7"] .sld .verif > button{font-size:var(--t2);padding:6px 11px}
+.rnr[data-capitol="c7"] .sld .verif .verif__et{display:none}
+.rnr[data-capitol="c7"] .sld .verif{padding-top:10px;gap:6px}
+.rnr[data-capitol="c7"] .sld:has(.verif) .noi6{margin-top:4px;padding:5px 12px}
+.rnr[data-capitol="c7"] .sld:has(.verif) .eda .ed-not{display:none}
+.rnr[data-capitol="c7"] .sld:has(.verif) .eda .ed-svg{max-height:150px}
+.rnr[data-capitol="c7"] .sld .eda .ed-svg{max-height:250px}
+.rnr[data-capitol="c7"] .sld .eda .ed-svg[viewBox="0 0 900 330"]{max-height:225px}
+.rnr[data-capitol="c7"] .sld .tabel td,.rnr[data-capitol="c7"] .sld .tabel th{padding-top:6px;padding-bottom:6px}
+.rnr[data-capitol="c7"] .sld .mdl__rand{padding:3px 0}
+.rnr[data-capitol="c7"] .sld .mdl__rand.absent .mdl__v{font-size:11px;line-height:1.2}
+.rnr[data-capitol="c7"] .sld .mdl__r2{padding-top:8px;margin-top:4px}
+.rnr[data-capitol="c7"] .sld .mdl__f{padding-top:5px;padding-bottom:5px}

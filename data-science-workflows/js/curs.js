@@ -71,9 +71,9 @@ export const LECTII = [
   { nr:7, cheie:"c7-variabile-si-model",
     titlu:"Variabile derivate și model",
     scurt:"Model",
-    rezumat:"De la descriere la explicație: variabile derivate și un model ale cărui alegeri pot fi justificate.",
-    stare:"gata", sarcini:9,
-    notebook:null },
+    rezumat:"Ingineria variabilelor și un model pe datele SCI: rata migranților, logaritmul, scorul z, VIF, patru modele, elasticități și reziduuri.",
+    stare:"gata", sarcini:4,
+    notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb" },
 
   { nr:8, cheie:"c8-raportare",
     titlu:"Raportare și proiect final",

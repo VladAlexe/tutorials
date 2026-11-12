@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 7. Variabile derivate și model · Fluxuri de lucru</title>
-<meta name="description" content="Construirea variabilelor, un model care le pune pe toate deodată, și reziduurile lui.">
-<link rel="stylesheet" href="../css/fonturi.css?v=166">
-<link rel="stylesheet" href="../css/sistem.css?v=166">
-<link rel="stylesheet" href="../css/intrare.css?v=166">
-<script src="../js/tema.js?v=166"></script>
+<meta name="description" content="Ingineria variabilelor (construcție, transformare, scalare, selecție), apoi un model care include simultan distanța, migrația și granița, cu interpretarea coeficienților și a reziduurilor.">
+<link rel="stylesheet" href="../css/fonturi.css?v=167">
+<link rel="stylesheet" href="../css/sistem.css?v=167">
+<link rel="stylesheet" href="../css/intrare.css?v=167">
+<script src="../js/tema.js?v=167"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <span class="bl__fapte" id="fapte">
       <a class="bl__b bl__b--tare" href="lectie/#1" data-rol="incepe">Începe lecția</a>
       <a class="bl__b" href="tutorial/">Manualul</a>
-      
+      <a class="bl__b" href="https://raw.githubusercontent.com/dsw-ubb-2026/-DSW2026/main/curs/07_variabile_derivate_si_model.ipynb" data-descarca="07_variabile_derivate_si_model.ipynb" data-pagina="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb">Descarcă caietul</a><a class="bl__b" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb" target="_blank" rel="noopener">Caietul ↗</a>
       <a class="bl__b bl__b--preda" href="lectie/?preda=1#1" data-rol="preda" hidden title="Pornește ora pentru grupă și deschide lecția">Predă</a>
     </span>
   </div>
@@ -42,20 +42,20 @@
 
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
-    <div class="sec__corp"><p>La cursul 6, datele au arătat că SCI scade cu distanța, crește cu migrația și este mai mare între țările vecine. Țările vecine sunt însă și apropiate geografic și au adesea migrație între ele, deci cele trei tipare se suprapun. Un model le estimează simultan.</p>
-<p>Prima parte tratează ingineria variabilelor, ca în planul cursului: construcție, transformare, extragere, scalare, selecție. A doua parte este dedicată modelului: patru modele pe același eșantion, interpretarea coeficienților pe logaritmi și reziduurile, pe hartă.</p></div>
+    <div class="sec__corp"><p>Analiza exploratorie (C6) a găsit trei tipare: SCI scade cu distanța, este mai mare peste o graniță comună și crește cu migrația. Tiparele se suprapun: țările vecine sunt și apropiate, și au mai mulți migranți între ele. Un model le include simultan și estimează ce rămâne din fiecare.</p>
+<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, selecția (corelațiile predictorilor, VIF). A doua parte este modelul: patru modele pe aceleași perechi de țări, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
     <div class="sec__corp"><ul class="obiective">
-<li>Construirea unei variabile noi, cu decizia din spatele ei scrisă.</li>
-<li>Decizia privind variabilele care se transformă logaritmic și cele care nu.</li>
+<li>Construcția unei variabile derivate: o rată, o distanță agregată, o variabilă binară.</li>
+<li>Decizia privind variabilele care se logaritmează și cele care nu.</li>
 <li>Diferența dintre scalare, care nu schimbă forma distribuției, și transformare, care o schimbă.</li>
-<li>Verificarea cu VIF că variabilele nu sunt redundante.</li>
-<li>Un model cu <code>statsmodels</code> și citirea coeficienților ca elasticități.</li>
-<li>Motivul pentru care un coeficient se schimbă când se adaugă o variabilă.</li>
-<li>Reziduurile, interpretate ca surse de întrebări noi, nu ca erori.</li>
-<li>Ce poate și ce nu poate susține un model observațional.</li>
+<li>Verificarea redundanței predictorilor: corelațiile și VIF.</li>
+<li>Modelul liniar cu <code>statsmodels</code>: tipar plus reziduu, cele mai mici pătrate, R².</li>
+<li>Motivul pentru care un coeficient se schimbă când intră o variabilă nouă.</li>
+<li>Citirea coeficienților pe logaritmi ca elasticități; intervalul de încredere.</li>
+<li>Reziduurile ca surse de întrebări; ce poate și ce nu poate susține un model observațional.</li>
 </ul></div>
   </section>
   <section class="sec">
@@ -69,39 +69,44 @@
         <span class="mat__t">Manualul</span>
         <span class="mat__d">Materialul complet al lecției, pentru studiu individual.</span>
       </a>
+      <a class="mat__c" href="https://raw.githubusercontent.com/dsw-ubb-2026/-DSW2026/main/curs/07_variabile_derivate_si_model.ipynb" data-descarca="07_variabile_derivate_si_model.ipynb" data-pagina="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb">
+        <span class="mat__t">Descarcă caietul</span>
+        <span class="mat__d">Un clic: <code>07_variabile_derivate_si_model.ipynb</code> se salvează în Descărcări, de unde se mută în <code>dsw/curs/</code>. Este varianta de acum de pe GitHub.</span>
+      </a>
+      <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb" target="_blank" rel="noopener">
+        <span class="mat__t">Caietul ↗</span>
+        <span class="mat__d">Caietul 07, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza din C5, curs/data/dsw.db.</span>
+      </a>
       <a class="mat__c" href="../explorator/">
         <span class="mat__t">Exploratorul legăturilor sociale</span>
-        <span class="mat__d">Harta pe județe, regiuni și țări</span>
+        <span class="mat__d">Harta pe județe, regiuni și țări, cu reziduurile modelului</span>
       </a>
       <a class="mat__c" href="../c6-analiza-exploratorie/">
-        <span class="mat__t">Lecția 6: explorarea</span>
-        <span class="mat__d">Tiparele testate în această lecție</span>
+        <span class="mat__t">Lecția 6: analiza exploratorie</span>
+        <span class="mat__d">Deciziile care devin variabile</span>
       </a>
     </div>
   </section>
   <section class="sec sec--nevoie">
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><ol>
-<li>Tabelul de perechi de la cursul 5 și graficele de la cursul 6.</li>
-<li>Pachetele pentru model: <code>pip install statsmodels scikit-learn</code>.</li>
-<li>Pentru distanță și graniță în caiet: <code>pip install geopandas</code>.</li>
+<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>
+<li>Pachetele din <code>requirements.txt</code>: <code>statsmodels</code> și <code>geopandas</code> sunt deja în listă (<code>pip install -r requirements.txt</code>).</li>
 </ol></div>
   </section>
   <section class="sec sec--proiect">
     <p class="sec__et">Ce se adaugă la proiect</p>
     <div class="sec__corp"><ul class="obiective">
-<li><code>model/variabile.py</code>: variabilele construite, cu deciziile în <code>decizii.md</code>.</li>
-<li><code>model/model.py</code>: modelele, pas cu pas, pe același eșantion.</li>
-<li><code>date/curat/reziduuri.csv</code>: reziduurile, pentru raport.</li>
-<li>În <code>README.md</code>: ce susțin rezultatele și ce nu.</li>
+<li><code>notebooks/05_model.ipynb</code>: variabilele construite și modelul, pe datele echipei, pe același eșantion pentru toate modelele.</li>
+<li>În <code>README.md</code>: deciziile de construcție și transformare, ce susține modelul și ce nu.</li>
 </ul></div>
   </section>
   <section class="sec">
     <p class="sec__et">Legături</p>
     <div class="leg-lista">
       <a href="https://www.statsmodels.org/stable/example_formulas.html" target="_blank" rel="noopener"><span>Modele cu formule</span><small>statsmodels</small></a>
-      <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html" target="_blank" rel="noopener"><span>VIF</span><small>statsmodels</small></a>
-      <a href="https://scikit-learn.org/stable/modules/preprocessing.html" target="_blank" rel="noopener"><span>Scalare</span><small>scikit-learn</small></a>
+      <a href="https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html" target="_blank" rel="noopener"><span>Rezultatele modelului</span><small>statsmodels</small></a>
+      <a href="https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html" target="_blank" rel="noopener"><span>dissolve</span><small>geopandas</small></a>
       <a href="https://www.aeaweb.org/articles?id=10.1257/jep.32.3.259" target="_blank" rel="noopener"><span>Bailey și colegii, 2018</span><small>articol</small></a>
     </div>
   </section>
@@ -118,7 +123,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=166"), import("../js/ora.js?v=166"), import("../js/curs.js?v=166")]);
+    import("../js/auth.js?v=167"), import("../js/ora.js?v=167"), import("../js/curs.js?v=167")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -161,7 +166,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=166"></script>
-<script type="module" src="../js/subsol.js?v=166"></script>
+<script type="module" src="../js/antet.js?v=167"></script>
+<script type="module" src="../js/subsol.js?v=167"></script>
 </body>
 </html>

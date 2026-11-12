@@ -666,15 +666,16 @@ E.edReziduu = (gazda, d) => {
   const P = (d.perechi || []).slice(0, 1500);
   const [A0, B0] = mcmmp(P.map(p => p[0]), P.map(p => p[1]));
   const SSmin = P.reduce((t, p) => t + (p[1] - A0 - B0 * p[0]) ** 2, 0);
-  let a = 6, b = -1, seg = false;
+  let a = d.a0 ?? 6, b = d.b0 ?? -1, seg = false;
+  const DY = d.dy || [0, 6.6], ET2 = d.et || ["țări diferite", "aceeași țară (portocaliu)"];
   const el = bloc(gazda, `<div class="ed-ctl">${glisor("b", "panta", -3, 1, .02, b)}${glisor("a", "nivelul", 2, 10, .05, a)}<button class="ed-b ed-mp">cele mai mici pătrate</button><button class="ed-b ed-sg">reziduurile, ca segmente</button></div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
   const [ib, ia] = ["b", "a"].map(n => el.querySelector(`input[data-n="${n}"]`));
   const W = 900, x0 = 56, x1 = W - 16;
   const deseneaza = () => {
-    const xs = P.map(p => p[0]), lo = Math.min(...xs), hi = Math.max(...xs), sx = sc(lo, hi, x0, x1), sy = sc(0, 6.6, 168, 14);
-    scrieCod(el, `x, y = np.log10(perechi["distanta_km"]), np.log10(perechi["sci"])\npanta, nivel = np.polyfit(x, y, 1)              # cele mai mici pătrate\nperechi["reziduu"] = y - (nivel + panta * x)`);
-    const res = P.map(p => p[1] - (a + b * p[0])), rm = 3, sr = sc(-rm, rm, 290, 206);
-    let s = axe({ x0, x1, y0: 14, y1: 168, sx, sy, dx: [lo, hi], dy: [0, 6.6], fx: u => nr(10 ** u), fy: u => f(u, 0), ey: "SCI (log10)" });
+    const xs = P.map(p => p[0]), lo = Math.min(...xs), hi = Math.max(...xs), sx = sc(lo, hi, x0, x1), sy = sc(DY[0], DY[1], 168, 14);
+    scrieCod(el, d.cod || `x, y = np.log10(perechi["distanta_km"]), np.log10(perechi["sci"])\npanta, nivel = np.polyfit(x, y, 1)              # cele mai mici pătrate\nperechi["reziduu"] = y - (nivel + panta * x)`);
+    const res = P.map(p => p[1] - (a + b * p[0])), rm = d.rm || 3, sr = sc(-rm, rm, 290, 206);
+    let s = axe({ x0, x1, y0: 14, y1: 168, sx, sy, dx: [lo, hi], dy: DY, fx: u => nr(10 ** u), fy: u => f(u, 0), ey: "SCI (log10)" });
     if (seg) P.slice(0, 200).forEach(p => s += `<line class="ed-l-obs" x1="${sx(p[0])}" x2="${sx(p[0])}" y1="${sy(p[1])}" y2="${sy(a + b * p[0])}"/>`);
     P.forEach(p => s += `<circle class="${p[2] ? "ed-sus" : "ed-p"} ed-mic" cx="${sx(p[0])}" cy="${sy(p[1])}" r="2"/>`);
     s += `<line class="ed-l-tot" x1="${sx(lo)}" x2="${sx(hi)}" y1="${sy(a + b * lo)}" y2="${sy(a + b * hi)}"/>`;
@@ -684,7 +685,7 @@ E.edReziduu = (gazda, d) => {
     el.querySelector(".ed-g").innerHTML = svg(W, 330, s);
     const r0 = res.filter((_, i) => !P[i][2]), r1 = res.filter((_, i) => P[i][2]), ss = res.reduce((t, e) => t + e * e, 0);
     el.querySelector(".ed-o").innerHTML = cifre([["suma pătratelor reziduurilor", f(ss, 0)], ["față de minimul posibil", `+${f(100 * (ss / SSmin - 1), 1)}%`, ss / SSmin < 1.005 ? "ed-c-adev" : ""],
-      ["reziduul median, țări diferite", f(mediana(r0), 2)], ["reziduul median, aceeași țară (portocaliu)", f(mediana(r1), 2), "ed-c-sus"]])
+      ["reziduul median, " + ET2[0], f(mediana(r0), 2)], ["reziduul median, " + ET2[1], f(mediana(r1), 2), "ed-c-sus"], ...(d.r2 ? [["R²", f(1 - ss / P.reduce((t, p, _, A) => t + (p[1] - medie(A.map(q => q[1]))) ** 2, 0), 2), "ed-c-m1"]] : [])])
       + panou("Panta și nivelul se ajustează până când suma pătratelor nu mai scade; rezultatul se compară apoi cu metoda celor mai mici pătrate.");
     ib.nextElementSibling.textContent = f(b, 2); ia.nextElementSibling.textContent = f(a, 2);
   };
@@ -712,6 +713,99 @@ E.edTipGrafice = (gazda) => {
   const deseneaza = () => { const [n, d, L] = T[k];
     el.querySelector(".ed-tg").innerHTML = `<p class="ed-not">${n}: ${d}</p><div class="ed-tg__l">${L.map(([g, c]) => `<div><b>${g}</b><code>${c}</code></div>`).join("")}</div>`; };
   leaga(el, "t", v => { k = v; deseneaza(); });
+  deseneaza();
+};
+
+/* =========================================================================
+   C7. Variabile derivate și model: componentele lecției 7
+   Datele: d.tari = [tara_1, tara_2, sci, migranti, la_mie, distanta_km, granita, reziduu]
+   ========================================================================= */
+const TARI = d => (d.tari || []).map(r => ({ p: r[0] + "–" + r[1], sci: r[2], migr: r[3], rata: r[4], dist: r[5], gr: r[6], rez: r[7] }));
+const L10 = Math.log10;
+
+/* Un nor de puncte cu dreapta celor mai mici pătrate; x și y aleși prin butoane. */
+E.edModelVar = (gazda, d) => {
+  const T = TARI(d), mod = d.mod || "constr";
+  const V = mod === "constr"
+    ? { migr: { t: "numărul de migranți", x: r => L10(r.migr), y: r => L10(r.sci), ex: "migranți (scară log)", ey: "SCI (scară log)", lx: true, ly: true,
+                cod: `m = smf.ols("log_sci ~ log_migranti", data=date).fit()\nm.rsquared` },
+        rata: { t: "migranți la 1.000 de locuitori", x: r => L10(r.rata), y: r => L10(r.sci), ex: "migranți la mie (scară log)", ey: "SCI (scară log)", lx: true, ly: true,
+                cod: `date["la_mie"] = 1000 * date["migranti"] / (date["tara_1"].map(pop) + date["tara_2"].map(pop))\nm = smf.ols("log_sci ~ log_la_mie", data=date).fit()\nm.rsquared` } }
+    : { brut: { t: "valorile brute", x: r => r.dist, y: r => r.sci, ex: "distanța, km", ey: "SCI", lx: false, ly: false,
+                cod: `sns.regplot(date, x="distanta_km", y="sci")\ndate["sci"].skew()` },
+        log: { t: "logaritmul ambelor", x: r => L10(r.dist), y: r => L10(r.sci), ex: "distanța, km (scară log)", ey: "SCI (scară log)", lx: true, ly: true,
+                cod: `date["log_sci"] = np.log10(date["sci"])\ndate["log_distanta"] = np.log10(date["distanta_km"])\nsns.regplot(date, x="log_distanta", y="log_sci")` } };
+  let k = Object.keys(V)[0];
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("v", Object.entries(V).map(([c, v]) => [c, v.t]), k)}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const W = 900, H = 250, x0 = 62, x1 = W - 16, y0 = 20, y1 = H - 40;
+  const deseneaza = () => {
+    const v = V[k], x = T.map(v.x), y = T.map(v.y);
+    const lo = Math.min(...x), hi = Math.max(...x), ylo = Math.min(...y), yhi = Math.max(...y);
+    const sx = sc(lo, hi, x0, x1), sy = sc(ylo, yhi, y1, y0), [a, b] = mcmmp(x, y), r = pearson(x, y);
+    const fx = v.lx ? u => nr(10 ** u) : u => nr(u), fy = v.ly ? u => nr(10 ** u) : u => nr(u);
+    let s = axe({ x0, x1, y0, y1, sx, sy, dx: [lo, hi], dy: [ylo, yhi], ex: v.ex, ey: v.ey, fx, fy });
+    T.forEach((t, i) => s += `<circle class="${t.p.includes("RO") ? "ed-sus" : "ed-p"}" cx="${sx(x[i])}" cy="${sy(y[i])}" r="3.4"><title>${t.p}</title></circle>`);
+    s += `<line class="ed-l-tot" x1="${sx(lo)}" x2="${sx(hi)}" y1="${sy(a + b * lo)}" y2="${sy(a + b * hi)}"/>`;
+    el.querySelector(".ed-g").innerHTML = svg(W, H, s);
+    scrieCod(el, v.cod);
+    el.querySelector(".ed-o").innerHTML = cifre([["Pearson r", f(r), "ed-c-m1"], ["R² = r²", f(r * r), "ed-c-adev"], ["asimetria lui y", f(asimetrie(y))], ["perechi de țări", nr(x.length)]])
+      + panou("Portocaliu: perechile cu România. Trecerea cu mouse-ul peste un punct arată perechea.");
+  };
+  leaga(el, "v", c => { k = c; deseneaza(); });
+  deseneaza();
+};
+
+/* Scorul z: trei variabile pe scări diferite, apoi pe aceeași scară. */
+E.edScalare = (gazda, d) => {
+  const T = TARI(d);
+  const V = [["log SCI", T.map(r => L10(r.sci))], ["log distanța", T.map(r => L10(r.dist))], ["log migranți la mie", T.map(r => L10(r.rata))]];
+  const z = a => { const m = medie(a), s = abatere(a); return a.map(x => (x - m) / s); };
+  let mod = "brut";
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", [["brut", "valorile (log)"], ["z", "scorul z"]], mod)}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const W = 900, x0 = 170, x1 = W - 20, rand = 62, H = 30 + rand * V.length + 30;
+  const deseneaza = () => {
+    const D = V.map(([n, a]) => [n, mod === "z" ? z(a) : a]), tot = D.flatMap(v => v[1]);
+    const lo = Math.min(...tot), hi = Math.max(...tot), sx = sc(lo, hi, x0, x1);
+    let s = axe({ x0, x1, y0: 10, y1: 20 + rand * V.length, sx, sy: v => v, dx: [lo, hi], ex: mod === "z" ? "abateri standard față de medie" : "valoarea, pe scara log10", fx: u => f(u, 1) });
+    D.forEach(([n, a], j) => { const Y = 22 + rand * j + rand / 2, m = medie(a), sd = abatere(a);
+      s += `<text class="ed-tx" x="${x0 - 12}" y="${Y + 4}" text-anchor="end">${n}</text>`;
+      s += `<rect class="ed-cutie2" x="${sx(m - sd)}" y="${Y - 14}" width="${sx(m + sd) - sx(m - sd)}" height="28"/>`;
+      a.forEach((x, i) => s += `<circle class="ed-p ed-mic" cx="${sx(x)}" cy="${Y + ((i * 37) % 21) - 10}" r="2.2"/>`);
+      s += `<line class="ed-l-tot" x1="${sx(m)}" x2="${sx(m)}" y1="${Y - 18}" y2="${Y + 18}"/>`; });
+    el.querySelector(".ed-g").innerHTML = svg(W, H, s);
+    scrieCod(el, mod === "z" ? `def scor_z(x):\n    return (x - x.mean()) / x.std()\n\ndate["z_log_distanta"] = scor_z(date["log_distanta"])` : `date[["log_sci", "log_distanta", "log_la_mie"]].describe()`);
+    el.querySelector(".ed-o").innerHTML = cifre(D.map(([n, a], j) => [n, `medie ${f(medie(a), 2)} · a.s. ${f(abatere(a), 2)} · asim. ${f(asimetrie(V[j][1]), 2)}`]))
+      + panou("Linia: media; banda: o abatere standard în jurul ei. Scorul z mută și întinde fiecare variabilă, dar forma (asimetria) rămâne aceeași.");
+  };
+  leaga(el, "m", c => { mod = c; deseneaza(); });
+  deseneaza();
+};
+
+/* Elasticitățile modelului M4: cu cât se schimbă SCI-ul prezis. */
+E.edElasticitate = (gazda, d) => {
+  const b = d.coef, F = [0.25, 0.5, 1, 2, 4];
+  let fd = 2, fr = 2, gr = 0;
+  const el = bloc(gazda, `<div class="ed-ctl">${glisor("d", "distanța ×", 0, 4, 1, 3)}${glisor("r", "rata migranților ×", 0, 4, 1, 3)}<button class="ed-b ed-gr">graniță comună</button></div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const [id, ir] = ["d", "r"].map(n => el.querySelector(`input[data-n="${n}"]`));
+  const W = 900, H = 186, x0 = 270, x1 = W - 120, rand = 40;
+  const fmt = v => (v >= 1 ? "+" : "−") + f(Math.abs(v - 1) * 100, 0) + "%";
+  const deseneaza = () => {
+    const md = fd ** b.log_distanta, mr = fr ** b.log_la_mie, mg = 10 ** (b.granita * gr), tot = md * mr * mg;
+    const R = [[`distanța × ${f(fd, fd < 1 ? 2 : 0)}  (coef. ${f(b.log_distanta, 2)})`, md], [`rata migranților × ${f(fr, fr < 1 ? 2 : 0)}  (coef. ${f(b.log_la_mie, 2)})`, mr], [`granița: ${gr ? "comună" : "nu"}  (coef. ${f(b.granita, 2)})`, mg], ["împreună", tot]];
+    const lim = Math.max(2, ...R.map(r => Math.max(r[1], 1 / r[1]))), sx = sc(-Math.log(lim), Math.log(lim), x0, x1);
+    let s = `<line class="ed-l-adev" x1="${sx(0)}" x2="${sx(0)}" y1="8" y2="${H - 24}"/><text class="ed-tx" x="${sx(0)}" y="${H - 8}" text-anchor="middle">SCI neschimbat (× 1)</text>`;
+    R.forEach(([n, v], j) => { const Y = 12 + rand * j, a = sx(0), c = sx(Math.log(v));
+      s += `<text class="ed-tx" x="${x0 - 12}" y="${Y + 20}" text-anchor="end">${n}</text>`;
+      s += `<rect class="${v >= 1 ? "ed-bar" : "ed-bar2"}" x="${Math.min(a, c)}" y="${Y + 6}" width="${Math.max(1, Math.abs(c - a))}" height="${j === 3 ? 24 : 20}"/>`;
+      s += `<text class="ed-tx" x="${Math.max(a, c) + 8}" y="${Y + 21}">SCI × ${f(v, 2)} (${fmt(v)})</text>`; });
+    el.querySelector(".ed-g").innerHTML = svg(W, H, s);
+    scrieCod(el, `b = m4.params\n${f(fd, 2).replace(",", ".")} ** b["log_distanta"]     # ${f(md, 2)}\n${f(fr, 2).replace(",", ".")} ** b["log_la_mie"]       # ${f(mr, 2)}\n10 ** b["granita"]              # ${f(10 ** b.granita, 2)}`);
+    el.querySelector(".ed-o").innerHTML = panou("Pe logaritmi, efectele se înmulțesc: distanța de două ori mai mare și rata de două ori mai mare dau împreună produsul celor două.");
+    id.nextElementSibling.textContent = "× " + f(fd, fd < 1 ? 2 : 0); ir.nextElementSibling.textContent = "× " + f(fr, fr < 1 ? 2 : 0);
+  };
+  id.addEventListener("input", () => { fd = F[+id.value]; deseneaza(); });
+  ir.addEventListener("input", () => { fr = F[+ir.value]; deseneaza(); });
+  el.querySelector(".ed-gr").addEventListener("click", e => { gr = 1 - gr; e.target.classList.toggle("on", !!gr); deseneaza(); });
   deseneaza();
 };
 
