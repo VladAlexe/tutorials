@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 2. Colectarea datelor prin API · Fluxuri de lucru</title>
 <meta name="description" content="Ce este un API, adresa și mesajul HTTP, codurile de stare, requests, tabelele Eurostat și primele date reale.">
-<link rel="stylesheet" href="../css/fonturi.css?v=165">
-<link rel="stylesheet" href="../css/sistem.css?v=165">
-<link rel="stylesheet" href="../css/intrare.css?v=165">
-<script src="../js/tema.js?v=165"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=166">
+<link rel="stylesheet" href="../css/sistem.css?v=166">
+<link rel="stylesheet" href="../css/intrare.css?v=166">
+<script src="../js/tema.js?v=166"></script>
 </head>
 <body>
 
@@ -120,7 +120,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=165"), import("../js/ora.js?v=165"), import("../js/curs.js?v=165")]);
+    import("../js/auth.js?v=166"), import("../js/ora.js?v=166"), import("../js/curs.js?v=166")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -163,7 +163,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=165"></script>
-<script type="module" src="../js/subsol.js?v=165"></script>
+<script type="module" src="../js/antet.js?v=166"></script>
+<script type="module" src="../js/subsol.js?v=166"></script>
 </body>
 </html>

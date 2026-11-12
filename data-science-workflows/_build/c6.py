@@ -138,6 +138,8 @@ G = {
     "log": ("transformarea logaritmică", "log transformation", "fiecare valoare x este înlocuită cu log10 x: 10 devine 1, 1.000 devine 3, 1.000.000 devine 6. Ordinea se păstrează, iar diferențele mari se comprimă."),
     "scara": ("scara transformărilor lui Tukey", "Tukey's ladder of powers", "transformările x, √x, log x, −1/x, ordonate de la slabe la puternice; Tukey numea transformarea re-expression."),
     "conting": ("tabelul de contingență", "contingency table, crosstab", "tabelul care numără cazurile pentru fiecare combinație a categoriilor a două variabile."),
+    "cramer": ("V al lui Cramér", "Cramér's V", "intensitatea legăturii dintre două variabile categorice, de la 0 (nicio legătură) la 1 (legătură perfectă); peste 0,5, puternică."),
+    "chi2": ("testul χ² (hi-pătrat)", "chi-squared test", "compară tabelul de contingență cu cel așteptat dacă variabilele n-ar fi legate; dă valoarea p a legăturii."),
     "pearson": ("corelația Pearson", "Pearson correlation coefficient", "măsoară cât de bine se așază punctele pe o dreaptă; între −1 și 1."),
     "rang": ("rangul", "rank", "poziția unei valori după ordonare: cea mai mică are rangul 1, următoarea 2 etc."),
     "spearman": ("corelația Spearman", "Spearman's rank correlation", "corelația Pearson calculată pe ranguri: măsoară dacă cele două variabile cresc împreună, chiar și pe o curbă."),
@@ -446,8 +448,8 @@ sl("s9", "Variabile categorice", "Tabelul de contingență",
              "țară. Un procent <b>pe rând</b> împarte celula la totalul rândului, unul <b>pe coloană</b> la totalul "
              "coloanei. Un clic pe o celulă arată ambele calcule.")
    + ix("edContingenta", "Distanța și apartenența la aceeași țară", {"sci": CONT_SCI})
-   + vede(f"Sub 100 km, {_P100:.0%} din perechi sunt în aceeași țară; peste 1.000 km, sub 1%: distanța și granița "
-          "merg împreună."),
+   + vede(f"Sub 100 km, {_P100:.0%} din perechi sunt în aceeași țară; peste 1.000 km, sub 1%. "
+          f"{gl('cramer', 'V Cramér')} = 0,48: legătură puternică."),
    manual=
    "<h2>Două variabile categorice: tabelul de contingență</h2>"
    "<p>O variabilă categorică se rezumă prin frecvențe și proporții. Două variabile categorice se rezumă printr-un "
@@ -471,13 +473,28 @@ sl("s9", "Variabile categorice", "Tabelul de contingență",
          "pe_rand.plot(kind=\"bar\", stacked=True)                            # bare stivuite 100%\n\n"
          "from statsmodels.graphics.mosaicplot import mosaic\n"
          "mosaic(perechi, [\"interval_km\", \"aceeasi_tara\"])                  # mozaicul")
+   + "<h3>Cât de puternică este legătura: V al lui Cramér</h3>"
+     "<p>Tabelul arată legătura; un singur număr o măsoară. Pentru două variabile categorice, <b>testul χ²</b> "
+     "(hi-pătrat) compară tabelul real cu cel care ar ieși dacă variabilele n-ar fi legate și dă valoarea p: dacă "
+     "legătura se deosebește de întâmplare. <b>V al lui Cramér</b> spune cât de puternică este: 0 înseamnă nicio "
+     "legătură, 1 o legătură perfectă. Pentru un tabel 2 × 2 se folosește φ (phi), care este același lucru.</p>"
+   + tabel(["V Cramér", "Intensitatea (Cohen, 1988)"], [
+       ["sub 0,1", "neglijabilă"], ["0,1-0,3", "slabă"], ["0,3-0,5", "moderată"], ["peste 0,5", "puternică"]])
+   + cod("from scipy import stats\n"
+         "from scipy.stats.contingency import association\n\n"
+         "stats.chi2_contingency(tabel).pvalue          # p: practic 0\n"
+         "association(tabel, method=\"cramer\")         # V = 0,48")
+   + "<p>Pe tabelul perechilor, p este practic 0, iar V = 0,48: o legătură puternică, la limita dintre moderată și "
+     "puternică. Pragurile sunt convenții, nu reguli. Același rol îl au ρ și r pentru două variabile numerice "
+     "(secțiunea următoare).</p>"
    + "<p>Legătura puternică dintre distanță și apartenența la aceeași țară are o consecință: o comparație a SCI între "
      "perechile din aceeași țară și cele din țări diferite, făcută pe toate perechile, amestecă efectul graniței cu cel "
      "al distanței. Separarea lor se face în secțiunea 5.</p>"
-   + glosar("conting")
+   + glosar("conting", "chi2", "cramer")
    + caiet("3", [
        "<code>pd.crosstab</code> cu numere, apoi cu <code>normalize=\"index\"</code> (procente pe rând).",
-       "O propoziție în cuvinte pentru un rând al tabelului procentual."],
+       "O propoziție în cuvinte pentru un rând al tabelului procentual.",
+       "Testul χ² și V al lui Cramér: dacă legătura se deosebește de întâmplare și cât de puternică este."],
        "<code>normalize=\"columns\"</code>: aceeași celulă, citită pe coloană, și propoziția corespunzătoare."))
 
 
@@ -721,11 +738,12 @@ sl("s14", "Verificarea", "Tipar sau întâmplare",
      "ce se găsește explorând se verifică pe alte date (alt an, NUTS 3) înainte de a fi tratat ca rezultat.</p>"
    + glosar("perm", "permtest", "pval", "multiple")
    + caiet("8", [
-       "Tabelul mic: cinci regiuni, cu studiile amestecate între ele.",
-       "Funcția <code>amesteca(x, y)</code>: corelația reală, apoi 200 de corelații ale datelor amestecate, într-o histogramă, "
-       "cu cea reală marcată.",
-       "Cele trei perechi de variabile, pe rând; pentru fiecare, câte amestecări ajung la corelația reală."],
-       "<code>amesteca(regiuni[\"densitate\"], regiuni[\"somaj\"])</code>: relație reală sau întâmplare?"))
+       "<code>stats.spearmanr(x, y, nan_policy=\"omit\")</code>: intensitatea (ρ) și valoarea p, într-un singur apel. "
+       "Formula dă direct ce arată amestecarea de pe slide.",
+       "Cele trei perechi de variabile, pe rând: PIB și studii (ρ = 0,61, p practic 0), vârsta și studiile (ρ = −0,23, "
+       "p &lt; 0,001), PIB și vârsta (ρ = −0,02, p ≈ 0,74)."],
+       "<code>stats.spearmanr(regiuni[\"densitate\"], regiuni[\"somaj\"], nan_policy=\"omit\")</code>: cât de "
+       "puternică este relația și se deosebește de întâmplare?"))
 
 
 # ===========================================================================
