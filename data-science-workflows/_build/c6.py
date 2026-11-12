@@ -72,12 +72,11 @@ sl("s1", "Cursul", "Unde suntem",
 
 
 FLUX = (
-    '<div class="ed6 ed6--5">'
+    '<div class="ed6 ed6--4">'
     '<div><small>1 · profilul datelor</small><b>conținutul, calitatea, lipsurile, extremele</b></div>'
     '<div><small>2 · o variabilă</small><b>locația, variabilitatea, forma</b></div>'
     '<div><small>3 · relațiile</small><b>asocieri, grupuri, multe variabile</b></div>'
-    '<div><small>4 · tipar și reziduu</small><b>ce rămâne după tiparul dominant</b></div>'
-    '<div class="nou"><small>5 · verificarea</small><b>tipar sau zgomot; replicarea</b></div>'
+    '<div class="nou"><small>4 · verificarea</small><b>tipar real sau întâmplare</b></div>'
     '</div>'
     '<p class="ed6__inapoi">fiecare rezultat generează întrebări noi și reia ciclul</p>')
 
@@ -96,9 +95,9 @@ sl("s2", "Analiza exploratorie", "Scopul și fluxul",
    "<p>Studiile despre cum lucrează analiștii (Wongsuphasawat, Liu și Heer, 2019) găsesc aceeași ordine: întâi "
    "<b>profilul datelor</b> (ce conțin, calitatea, lipsurile, extremele), făcut de toți și întotdeauna; abia apoi "
    "<b>descoperirea</b> (relații, ipoteze). Velleman și Hoaglin (1981) dau ordinea clasică a tehnicilor: o variabilă, "
-   "apoi comparația grupurilor, apoi relația x-y, apoi tiparul și reziduurile lui; și patru ingrediente: graficele, "
-   "reziduurile, reexprimarea, rezistența. Gelman (2004) adaugă că orice grafic exploratoriu este o comparație cu "
-   "un model de referință; de aici, ultima etapă: verificarea.</p>"
+   "apoi comparația grupurilor, apoi relația x-y, apoi tiparul și reziduurile lui. Tiparul și reziduurile se fac în C7, "
+   "cu modelul. Gelman (2004) adaugă că orice grafic exploratoriu este o comparație cu ce ar produce întâmplarea; de "
+   "aici, ultima etapă a lecției: verificarea.</p>"
    + FLUX
    + nota("Întrebarea ascuțită", "Peng (2019): analiza exploratorie ascute întrebarea. O întrebare vagă („ce "
           "legături au regiunile?”) devine una precisă („la aceeași distanță, granița mai contează?”), iar o întrebare "
@@ -112,6 +111,7 @@ sl("s2", "Analiza exploratorie", "Scopul și fluxul",
 E2 = json.loads((RAD / "date" / "c6-eda2.json").read_text(encoding="utf-8"))
 _REG = {"regiuni": [r[:2] + [""] + r[3:] for r in E2["regiuni"]], "var_reg": E2["var_reg"]}
 _PER = E2["perechi"]
+_REGN = {"regiuni": E2["regiuni"], "var_reg": E2["var_reg"]}      # cu denumirile regiunilor
 _EXT = {k: E2[k] for k in ["sus", "jos", "sus2", "jos2", "medie_sci", "mediana_sci"]}
 
 
@@ -225,11 +225,12 @@ sl("s3", "Profilul datelor", "Unitatea de analiză",
 
 
 V_LIPS = verif("c6-v-lips", 1,
-               "Rețelele sociale lipsesc în toate regiunile Germaniei și Franței. Ce descrie o medie calculată fără ele?",
-               ["Media tuturor regiunilor", "Media regiunilor cu date, fără DE și FR",
-                "O medie invalidă", "Media Germaniei și a Franței"],
-               "Lipsa depinde de țară (de sursa datelor), nu de întâmplare. Media rămâne corectă pentru regiunile cu "
-               "date, dar nu descrie Germania și Franța; rezultatul se raportează cu numărul de regiuni pe care a fost calculat.")
+               "PIB-ul pe locuitor lipsește în toate regiunile Elveției și Norvegiei. Ce descrie o mediană calculată fără ele?",
+               ["Mediana tuturor regiunilor", "Mediana regiunilor cu date, fără CH și NO",
+                "O mediană invalidă", "Mediana Elveției și a Norvegiei"],
+               "Lipsa depinde de țară (de sursa datelor), nu de întâmplare. Mediana rămâne corectă pentru regiunile cu "
+               "date, dar nu descrie Elveția și Norvegia, două țări bogate; rezultatul se raportează cu numărul de "
+               "regiuni pe care a fost calculat.")
 
 sl("s4", "Profilul datelor", "Valorile lipsă",
    "<h2>Unde lipsesc date și de ce?</h2>"
@@ -237,8 +238,8 @@ sl("s4", "Profilul datelor", "Valorile lipsă",
              f"(aici, țara) sau {gl('mnar', 'în funcție de valoarea însăși')}. De motiv depinde ce descrie un rezultat "
              "calculat pe datele rămase.")
    + ix("edLipsuri", "Valorile lipsă din tabelul regiunilor", _REG)
-   + vede("Ordonate după țară, lipsurile formează blocuri: rețelele sociale lipsesc în DE, FR și TR, PIB-ul în CH și "
-          "NO. Lipsa depinde de țară, adică de sursa datelor."),
+   + vede("Ordonate după țară, PIB-ul lipsește în blocuri: toată Elveția, toată Norvegia, Islanda și Balcanii de Vest. "
+          "Șomajul lipsește doar în regiuni izolate. Lipsa PIB-ului depinde de țară, adică de sursa datelor."),
    manual=
    "<h2>Unde lipsesc date și de ce?</h2>"
    "<p>Numărul valorilor lipsă spune puțin; contează unde se află și de ce. Rubin (1976) distinge trei mecanisme:</p>"
@@ -254,13 +255,15 @@ sl("s4", "Profilul datelor", "Valorile lipsă",
    "depinde de țările pierdute; la eliminarea preferențială a valorilor mari, mediana scade constant, iar datele rămase "
    "nu arată că lipsește ceva.</p>"
    + ix("edLipsuri", "Valorile lipsă din tabelul regiunilor", _REG)
-   + "<p>Consecința: o comparație care folosește PIB-ul pierde Elveția și Norvegia, două țări bogate; una care folosește "
-     "rețelele sociale pierde Germania, Franța și Turcia. Fiecare rezultat se raportează cu numărul de regiuni sau de "
-     "perechi pe care a fost calculat.</p>"
+   + "<p>Două tipare se văd pe hartă. PIB-ul lipsește pe țări întregi (Elveția, Norvegia, Islanda, Albania, Bosnia și "
+     "Herțegovina, Kosovo): lipsa depinde de țară. Șomajul lipsește în câteva regiuni izolate (una în Germania, una în "
+     "Polonia, una în Finlanda), mai aproape de o lipsă întâmplătoare. Consecința pentru PIB: o comparație care îl "
+     "folosește pierde două țări bogate, iar mediana europeană iese ușor subestimată. Fiecare rezultat se raportează cu "
+     "numărul de regiuni sau de perechi pe care a fost calculat.</p>"
    + glosar("mcar", "mar", "mnar")
    + caiet("1.2", [
        "<code>regiuni.isna().sum()</code>: numărul valorilor lipsă pe coloane.",
-       "<code>value_counts()</code> pe țara regiunilor cu valori lipsă, pentru rețelele sociale și pentru PIB.",
+       "<code>value_counts()</code> pe țara regiunilor fără PIB: lipsesc țări întregi.",
        "Pentru fiecare variabilă afectată se notează mecanismul probabil."],
        "Pentru <code>somaj</code>: se compară numărul regiunilor cu valori lipsă din fiecare țară cu numărul total de "
        "regiuni al țării (<code>regiuni[\"tara\"].value_counts()</code>). Lipsesc țări întregi sau regiuni izolate?"),
@@ -351,20 +354,33 @@ sl("s7", "O variabilă numerică", "Distribuția",
           "o coadă spre stânga (regiunile tinere din Turcia), pe care boxplotul nu o arată."),
    manual=
    "<h2>Cum arată distribuția unei variabile?</h2>"
-   + tabel(["Graficul", "Arată", "Depinde de"], [
-       ["histograma", "câte valori cad în fiecare interval", "numărul și începutul intervalelor"],
-       ["densitatea (KDE)", "o curbă netedă a formei", "gradul de netezire"],
-       ["ECDF", "proporția valorilor ≤ x; mediana se citește la 0,5", "nimic"],
-       ["boxplotul", "mediana, jumătatea din mijloc, valorile extreme", "regula mustăților (1,5 × IQR)"],
-       ["violinul cu puncte", "forma și fiecare observație", "gradul de netezire"]])
+   + tabel(["Graficul", "Arată", "Depinde de", "Se folosește când"], [
+       ["histograma", "câte valori cad în fiecare interval", "numărul și începutul intervalelor", "prima privire asupra formei unei variabile"],
+       ["densitatea (KDE)", "o curbă netedă a formei", "gradul de netezire", "se suprapun câteva grupuri pe același grafic"],
+       ["ECDF", "proporția valorilor ≤ x; mediana se citește la 0,5", "nimic", "contează proporții și praguri („ce parte din perechi are SCI sub 1.000?”) sau se compară grupuri fără alegeri arbitrare"],
+       ["boxplotul", "mediana, jumătatea din mijloc, valorile extreme", "regula mustăților (1,5 × IQR)", "se compară multe grupuri deodată"],
+       ["violinul cu puncte", "forma și fiecare observație", "gradul de netezire", "se compară puține grupuri și forma contează"]])
    + "<p>Aceleași date pot părea diferite după numărul barelor histogramei și locul unde încep (McNamara și Lunzer). "
      "De aceea forma se verifică cu mai multe setări sau pe ECDF. Pe ECDF, pointerul afișează proporția valorilor de sub "
      "prag: la 0,5 se citește mediana, la 0,25 și 0,75 cuartilele. Boxplotul este util pentru comparația multor grupuri, "
      "dar ascunde forma; violinul cu puncte o păstrează.</p>"
    + ix("edDistributie", "Distribuția unei variabile", _DIS)
+   + "<h3>Codul, pe scurt</h3><p>Sub graficul interactiv apare codul vederii alese. Toate variantele, la un loc:</p>"
+   + cod("import seaborn as sns\n\n"
+         "# histograma: bins = numărul barelor; log_scale=True pune axa x pe scară logaritmică\n"
+         "sns.histplot(perechi, x=\"sci\", log_scale=True, bins=20)\n\n"
+         "# densitatea: bw_adjust mai mic = curbă mai puțin netezită\n"
+         "sns.kdeplot(perechi, x=\"sci\", log_scale=True, bw_adjust=0.5)\n\n"
+         "# ECDF: pentru fiecare valoare x, proporția perechilor cu SCI ≤ x\n"
+         "sns.ecdfplot(perechi, x=\"sci\", log_scale=True)\n"
+         "(perechi[\"sci\"] &lt;= 1000).mean()          # aceeași idee, ca număr: proporția sub 1.000\n\n"
+         "# boxplotul și violinul, pentru vârsta medie a regiunilor\n"
+         "sns.boxplot(regiuni, x=\"varsta_medie\")\n"
+         "sns.violinplot(regiuni, x=\"varsta_medie\", inner=\"point\")   # inner=\"point\": și observațiile")
    + glosar("distributie", "hist", "kde", "ecdf", "box")
    + caiet("2.2", [
-       "Celula cu patru grafice ale SCI pe scara logaritmică: histograma cu 8 și cu 40 de bare, ECDF, boxplotul.",
+       "Câte o celulă pentru fiecare grafic al SCI pe scara logaritmică: histograma și ECDF; apoi proporția perechilor "
+       "cu SCI sub 1.000, calculată direct.",
        "Celula cu boxplotul și violinul vârstei medii; regiunile din coada stângă: "
        "<code>regiuni.nsmallest(10, \"varsta_medie\")</code>."],
        "Histograma SCI cu <code>bins=8</code>, <code>20</code>, <code>80</code>. Care ascunde forma și care adaugă zgomot?"))
@@ -394,6 +410,12 @@ sl("s8", "O variabilă numerică", "Transformarea logaritmică",
    "variabilelor</b>. Transformarea are trei efecte utile: face distribuțiile simetrice, face împrăștierea comparabilă "
    "între grupuri și îndreaptă relațiile curbe.</p>"
    + ix("edReexprimare", "Valorile inițiale, rădăcina pătrată, logaritmul", _REX)
+   + "<h3>Codul, pe scurt</h3>"
+   + cod("import numpy as np\n\n"
+         "perechi[\"sci\"].skew()                     # asimetria valorilor inițiale\n"
+         "np.sqrt(perechi[\"sci\"]).skew()            # după rădăcina pătrată\n"
+         "np.log10(perechi[\"sci\"]).skew()           # după logaritm\n\n"
+         "sns.histplot(perechi, x=\"sci\", log_scale=True)   # histograma direct pe axa logaritmică")
    + tabel(["Asimetria", "x", "√x", "log x"], [["SCI", "18,9", "6,3", "0,65"], ["PIB pe locuitor", "1,35", "0,63", "0,00"],
                                                ["populația", "3,32", "1,20", "−0,58"], ["densitatea", "5,74", "3,29", "0,37"]])
    + "<p>Vârsta medie are asimetrie negativă (coada spre stânga) și nu se transformă logaritmic. Aceeași logică se "
@@ -401,10 +423,11 @@ sl("s8", "O variabilă numerică", "Transformarea logaritmică",
      "locuitori devine comparabil cu SCI.</p>"
    + glosar("asim", "log", "scara")
    + caiet("2.3", [
-       "Funcția <code>scara()</code> calculează asimetria pentru x, √x, log x și −1/x; tabelul se citește pe coloane.",
+       "Asimetria SCI pentru x, √x și log x, apoi histograma lui log10(SCI).",
        "Corelația Spearman dintre SCI și numărul de migranți, apoi dintre SCI și rata la mie. Rezultatul cu rata intră în "
        "verificarea de la finalul lecției."],
-       "<code>scara(perechi[\"distanta_km\"])</code>: ce transformare este suficientă pentru distanță?"))
+       "Aceleași trei asimetrii pentru <code>perechi[\"distanta_km\"]</code> și <code>regiuni[\"densitate\"]</code>: ce "
+       "transformare este suficientă?"))
 
 
 # ===========================================================================
@@ -432,6 +455,13 @@ sl("s9", "Variabile categorice", "Tabelul de contingență",
    "<p>Barele stivuite 100% arată procentele pe rând. <b>Mozaicul</b> adaugă, prin lățimea coloanelor, numărul de cazuri "
    "din fiecare interval: intervalele cu puține perechi devin înguste.</p>"
    + ix("edContingenta", "Distanța și apartenența la aceeași țară", {"sci": CONT_SCI})
+   + "<h3>Codul, pe scurt</h3>"
+   + cod("tabel = pd.crosstab(perechi[\"interval_km\"], perechi[\"aceeasi_tara\"])                       # numere\n"
+         "pe_rand = pd.crosstab(perechi[\"interval_km\"], perechi[\"aceeasi_tara\"], normalize=\"index\")   # % pe rând\n\n"
+         "sns.countplot(perechi, x=\"interval_km\", hue=\"aceeasi_tara\")      # bare grupate\n"
+         "pe_rand.plot(kind=\"bar\", stacked=True)                            # bare stivuite 100%\n\n"
+         "from statsmodels.graphics.mosaicplot import mosaic\n"
+         "mosaic(perechi, [\"interval_km\", \"aceeasi_tara\"])                  # mozaicul")
    + "<p>Legătura puternică dintre distanță și apartenența la aceeași țară are o consecință: o comparație a SCI între "
      "perechile din aceeași țară și cele din țări diferite, făcută pe toate perechile, amestecă efectul graniței cu cel "
      "al distanței. Separarea lor se face în secțiunea 5.</p>"
@@ -456,9 +486,10 @@ V_COR = verif("c6-v-cor", 3,
 
 sl("s10", "Două variabile numerice", "Corelația",
    "<h2>Trei coeficienți de corelație</h2>"
-   + concept(f"{gl('pearson', 'Pearson')}: cât de bine se așază punctele pe o dreaptă. {gl('spearman', 'Spearman')}: "
-             f"același calcul, pe {gl('rang', 'ranguri')}, deci măsoară dacă variabilele cresc împreună. "
-             f"{gl('kendall', 'Kendall')}: cât de des două observații sunt ordonate la fel pe ambele variabile.")
+   + concept(f"Trei întrebări diferite despre aceleași puncte. {gl('pearson', 'Pearson')}: stau pe o dreaptă? "
+             f"{gl('spearman', 'Spearman')}: când una crește, crește și cealaltă, chiar pe o curbă? (calculat pe "
+             f"{gl('rang', 'ranguri')}). {gl('kendall', 'Kendall')}: luând două regiuni la întâmplare, cea cu PIB mai mare "
+             "are și mai mulți absolvenți?")
    + ix("edCorelatie", "Trei coeficienți; punctele se pot trage cu mouse-ul", _COR)
    + vede(f"Distanța și SCI: Pearson {ro(S['pearson_brut'])} pe valorile brute și {ro(S['pearson_log'])} pe log-log; "
           f"Spearman {ro(S['spearman'])} și Kendall {ro(S['kendall'])} pe ambele scări."),
@@ -506,38 +537,21 @@ sl("s11", "Două variabile numerice", "Prea multe puncte",
    + "<p>Cu cât sunt mai multe puncte, cu atât opacitatea trebuie să fie mai mică. Căsuțele prea mici arată zgomot, "
      "cele prea mari ascund forma. Numerele de deasupra medianelor arată câte perechi are fiecare interval.</p>"
    + ix("edMulte", "Distanța și SCI, pe 10.000 de perechi", {"perechi": _PER})
+   + "<h3>Codul, pe scurt</h3>"
+   + cod("import matplotlib.pyplot as plt\n\n"
+         "# transparența: alpha între 0 (invizibil) și 1 (opac)\n"
+         "sns.scatterplot(perechi, x=\"distanta_km\", y=\"sci\", alpha=0.05)\n"
+         "plt.xscale(\"log\"); plt.yscale(\"log\")\n\n"
+         "# histograma bidimensională: bins = numărul căsuțelor pe fiecare axă\n"
+         "sns.histplot(perechi, x=\"distanta_km\", y=\"sci\", log_scale=True, bins=45)\n\n"
+         "# medianele și cuartilele pe intervale de distanță\n"
+         "perechi.groupby(\"interval_km\", observed=True)[\"sci\"].quantile([0.25, 0.5, 0.75]).unstack()")
    + glosar("supra", "h2d")
    + caiet("4.2", [
        "<code>sns.histplot</code> cu <code>x</code>, <code>y</code> și <code>log_scale=True</code>: histograma "
        "bidimensională a tuturor perechilor.",
        "<code>groupby(\"interval_km\")</code> cu mediana SCI: forma relației, ca tabel."],
        "<code>sns.scatterplot</code> pe toate perechile, cu <code>alpha=0.02</code>, apoi <code>0.2</code>. Care arată densitatea?"))
-
-
-sl("s12", "Două variabile numerice", "Lineup",
-   "<h2>Tipar real sau întâmplare?</h2>"
-   + concept(f"Percepția vizuală găsește tipare și în date fără nicio relație. {gl('lineup', 'Protocolul lineup')} ascunde graficul "
-             f"real printre grafice în care valorile au fost amestecate ({gl('perm', 'permutate')}) între regiuni. Dacă "
-             "graficul real se recunoaște, tiparul nu este întâmplător.")
-   + ix("edLineup", "Graficul real, printre grafice permutate", _REG)
-   + vede("PIB-ul și studiile: graficul real se recunoaște imediat. Deschiderea și longitudinea: se recunoaște, mai "
-          "greu. Deschiderea și populația: nu se deosebește de permutări."),
-   manual=
-   "<h2>Tipar real sau întâmplare?</h2>"
-   "<p>Percepția vizuală găsește tipare și în date aleatoare. <b>Protocolul lineup</b> (Buja și colegii, 2009) verifică "
-   "un grafic prin comparație: valorile unei variabile se amestecă aleator între rânduri, ceea ce distruge orice relație, "
-   "dar păstrează valorile. Graficul real se ascunde printre 7 grafice amestecate. Dacă relația nu există, probabilitatea "
-   "de a nimeri graficul real este 1 din 8; cu 20 de grafice, 1 din 20, adică pragul obișnuit de 5%.</p>"
-   "<p>Fiecare punct este o regiune, desenată după ranguri, ca să nu conteze asimetria variabilelor. <b>Deschiderea</b> "
-   "unei regiuni spre străinătate este definită în caiet ca mediana SCI-ului ei cu regiunile din alte țări, fiecare "
-   "valoare raportată la mediana tuturor perechilor aflate la aceeași distanță; o valoare de 2 înseamnă legături de două "
-   "ori mai puternice decât ar sugera distanța.</p>"
-   + ix("edLineup", "Graficul real, printre grafice permutate", _REG)
-   + glosar("perm", "lineup")
-   + caiet("4.3", [
-       "Funcția <code>lineup(x, y)</code> desenează 8 grafice; răspunsul se afișează în celula următoare.",
-       "Lineup pentru PIB și studii, apoi pentru longitudine și deschidere; alegerea se notează înainte de a afișa răspunsul."],
-       "<code>lineup(cu_desc[\"populatie\"], cu_desc[\"deschidere\"])</code>. Graficul real se poate recunoaște?"))
 
 
 # ===========================================================================
@@ -548,38 +562,47 @@ _H2 = D["h2"]
 _I = _H2["intervale"].index("250-500")
 _R = _H2["da"]["med"][_I] / _H2["nu"]["med"][_I]
 
-sl("s13", "Trei sau mai multe variabile", "Grupuri și factorul de confuzie",
-   "<h2>Granița contează sau doar distanța?</h2>"
-   + concept(f"Perechile din aceeași țară sunt și mai apropiate, iar apropierea crește SCI-ul. Distanța este un "
-             f"{gl('confuzie')} pentru efectul graniței. Soluția este {gl('strat')}: comparația se face separat, pe "
-             "intervale de distanță.")
-   + ix("edGrupuri", "SCI pe intervale de distanță", {"perechi": _PER[:4000]})
-   + vede(f"La aceeași distanță, perechile din aceeași țară au mediana SCI de {_R:.0f} ori mai mare (250-500 km). "
-          "Fără intervale, comparația ar atribui graniței și efectul distanței."),
+sl("s12", "Trei sau mai multe variabile", "Granița și distanța",
+   "<h2>Contează granița sau doar distanța?</h2>"
+   + concept(f"Perechile din aceeași țară au SCI mult mai mare. Dar ele sunt și mai apropiate (slide-ul 9), iar "
+             f"apropierea crește singură SCI-ul. Distanța este un {gl('confuzie')}: amestecă efectul ei cu al graniței. "
+             f"Soluția este {gl('strat')}: se compară doar perechi aflate la aceeași distanță.")
+   + ix("edGrupuri", "SCI în aceeași țară și în țări diferite", {"perechi": _PER})
+   + vede("Toate perechile la un loc: în aceeași țară, SCI de aproximativ 50 de ori mai mare. La aceeași distanță, de "
+          "11 până la 26 de ori, sub 1.000 km, unde se află 91% din perechile din aceeași țară. Granița contează și "
+          "separat de distanță; în C7 intră amândouă în model."),
    manual=
-   "<h2>Granița contează sau doar distanța?</h2>"
-   "<p>O variabilă numerică se compară între grupuri prin distribuții, nu doar prin medii. Bara cu media ascunde "
-   "distribuția; pentru SCI, media pe axa obișnuită este dominată de câteva perechi foarte legate. Boxploturile, "
-   "violinele și punctele pe scara logaritmică arată mediana, împrăștierea și forma fiecărui grup, iar numărul de cazuri "
-   "de sub fiecare grup arată pe ce se bazează comparația.</p>"
-   "<p>Un <b>factor de confuzie</b> (engl. <i>confounder</i>) este o a treia variabilă legată atât de gruparea "
-   "studiată, cât și de rezultat. Exemplul clasic din epidemiologie: consumul de cafea pare legat de bolile de inimă, "
-   "pentru că fumătorii beau mai multă cafea. Aici, perechile din aceeași țară sunt aproape toate apropiate (secțiunea 3), "
-   "iar apropierea crește SCI-ul; o comparație pe toate perechile ar atribui graniței și efectul distanței. "
-   "<b>Stratificarea</b> compară grupurile separat, în intervale în care distanța este aproximativ aceeași. Alte "
-   "diferențe legate de graniță (limba, istoria, instituțiile) rămân însă amestecate cu efectul ei.</p>"
-   "<p>Butonul „separat” adaugă apartenența la aceeași țară, prin culoare; butonul „fără intervale” reunește toate "
-   "distanțele. Raportul medianelor din panou se compară între cele două situații.</p>"
-   + ix("edGrupuri", "SCI pe intervale de distanță", {"perechi": _PER[:4000]})
+   "<h2>Contează granița sau doar distanța?</h2>"
+   "<p>Una dintre întrebările cercetării despre SCI este dacă granițele naționale contează: sunt regiunile din aceeași "
+   "țară mai legate decât ar sugera distanța dintre ele? Comparația directă dă un răspuns spectaculos: mediana SCI a "
+   "perechilor din aceeași țară este de aproximativ 50 de ori mai mare decât a celor din țări diferite.</p>"
+   "<p>Comparația amestecă însă două efecte. Perechile din aceeași țară sunt aproape toate apropiate: 91% se află la "
+   "sub 1.000 km (slide-ul 9), în timp ce majoritatea perechilor din țări diferite sunt la peste 1.000 km. Iar distanța "
+   "scade singură SCI-ul. O parte din cele 50 de ori vine deci din distanță, nu din graniță. O asemenea a treia "
+   "variabilă, legată și de grupare (aceeași țară sau nu), și de rezultat (SCI), se numește <b>factor de confuzie</b> "
+   "(engl. <i>confounder</i>). Exemplul clasic din epidemiologie: consumul de cafea pare legat de bolile de inimă "
+   "pentru că fumătorii beau mai multă cafea; fumatul este factorul de confuzie.</p>"
+   "<p><b>Stratificarea</b> separă efectele: comparația se face în interiorul fiecărui interval de distanță, unde "
+   "distanța este aproximativ aceeași pentru ambele grupuri. Diferența care rămâne nu mai poate veni din distanță. Pe "
+   "datele noastre, la aceeași distanță, perechile din aceeași țară au SCI de 11 până la 26 de ori mai mare sub "
+   "1.000 km: mai puțin decât 50, dar mult peste 1. Granița contează și separat de distanță. Stratificarea controlează "
+   "doar distanța: limba, istoria comună și instituțiile rămân amestecate cu efectul graniței.</p>"
+   "<p>Consecința pentru C7: distanța și apartenența la aceeași țară intră amândouă în model, ca variabile separate. "
+   "Modelul face ce face stratificarea, dar pentru mai multe variabile deodată.</p>"
+   + ix("edGrupuri", "SCI în aceeași țară și în țări diferite", {"perechi": _PER})
+   + tabel(["Distanța, km", "0-100", "100-250", "250-500", "500-1000", "1000-2000", "2000+"],
+           [["SCI, aceeași țară / țări diferite (raportul medianelor)", "11×", "15×", "15×", "26×", "65×", "61×"],
+            ["perechi din aceeași țară", "168", "653", "897", "458", "89", "114"]])
+   + "<p>Peste 1.000 km, rapoartele sunt mari, dar se bazează pe puține perechi din aceeași țară (mai ales Franța cu "
+     "teritoriile ei de peste mări, Spania cu Insulele Canare, Portugalia cu Azore și Madeira).</p>"
    + glosar("confuzie", "strat")
    + caiet("5.1", [
-       "Bara cu media pe intervale, lângă boxplotul pe scara log, separat după <code>aceeasi_tara</code>.",
-       "Tabelul <code>h2</code>: medianele și raportul lor pe intervale."],
-       "Raportul medianelor pe toate perechile, fără intervale "
-       "(<code>perechi.groupby(\"aceeasi_tara\")[\"sci\"].median()</code>). De ce este mai mare?"))
+       "Boxplotul SCI după <code>aceeasi_tara</code>, pe toate perechile, și raportul medianelor.",
+       "Boxplotul pe intervale de distanță, cu <code>hue=\"aceeasi_tara\"</code>, apoi tabelul medianelor și raportul lor pe intervale."],
+       "Bara cu media (<code>sns.barplot(perechi, x=\"interval_km\", y=\"sci\")</code>) în locul boxplotului: ce ascunde?"))
 
 
-sl("s14", "Trei sau mai multe variabile", "Multe variabile",
+sl("s13", "Trei sau mai multe variabile", "Multe variabile",
    "<h2>Multe variabile deodată</h2>"
    + concept(f"{gl('pairplot', 'Matricea de grafice')} arată fiecare pereche de variabile; {gl('matrcor', 'matricea de corelație')} "
              f"rezumă fiecare pereche printr-un număr. Variabilele puternic corelate între ele produc "
@@ -598,6 +621,11 @@ sl("s14", "Trei sau mai multe variabile", "Multe variabile",
    "modelului din C7. Butoanele comută între Spearman și Pearson și între densitatea brută și cea logaritmată: cu "
    "Pearson, transformarea densității schimbă coeficienții; cu Spearman, nu.</p>"
    + ix("edMultivar", "Indicatorii regiunilor", _REG)
+   + "<h3>Codul, pe scurt</h3>"
+   + cod("cols = [\"pib_locuitor\", \"studii_superioare\", \"somaj\", \"varsta_medie\", \"densitate\"]\n\n"
+         "sns.pairplot(regiuni[cols])                                   # matricea de grafice\n\n"
+         "corelatii = regiuni[cols].corr(method=\"spearman\")             # matricea de corelație\n"
+         "sns.heatmap(corelatii, annot=True, cmap=\"RdBu_r\", vmin=-1, vmax=1)   # scară centrată pe 0")
    + glosar("pairplot", "matrcor", "multicol")
    + caiet("5.2", [
        "<code>sns.pairplot</code> pe cinci indicatori: perechile cu relație vizibilă și variabilele asimetrice.",
@@ -608,85 +636,52 @@ sl("s14", "Trei sau mai multe variabile", "Multe variabile",
 
 
 # ===========================================================================
-#  G. Tipar și reziduu
+#  G. Verificarea
 # ===========================================================================
 
-sl("s15", "Tipar și reziduu", "Tipar și reziduu",
-   "<h2>Ce rămâne după distanță?</h2>"
-   + concept(f"Distanța explică cea mai mare parte din SCI. Se trage dreapta prin {gl('mcmp')}; {gl('reziduu')} este "
-             "distanța fiecărui punct față de dreaptă. În reziduuri apar relațiile mai fine, ascunse de distanță.")
-   + ix("edReziduu", "SCI față de distanță", {"perechi": _PER[:1500]})
-   + vede("Perechile din aceeași țară (portocaliu) au reziduul median aproape +1 pe scara log10: legături de "
-          "aproximativ 10 ori mai puternice decât prezice distanța."),
+sl("s14", "Verificarea", "Tipar sau întâmplare",
+   "<h2>Tipar real sau întâmplare?</h2>"
+   + concept(f"Pe orice grafic ochiul găsește un tipar. Testul: valorile unei coloane se amestecă între regiuni "
+             f"({gl('perm', 'permutare')}), ceea ce distruge orice relație. Graficul real se ascunde printre 7 grafice "
+             f"amestecate ({gl('lineup', 'protocolul lineup')}). Dacă se recunoaște, tiparul este real.")
+   + ix("edLineup", "Graficul real, printre grafice amestecate", _REGN)
+   + vede("Runda 1 se recunoaște ușor, runda 2 greu, runda 3 deloc: acolo relația nu există, iar o alegere corectă "
+          "este noroc (1 din 8)."),
    manual=
-   "<h2>Ce rămâne după distanță?</h2>"
-   "<p>Tukey descrie datele ca sumă dintre un tipar și un rest: <i>date = tipar + reziduu</i>. După ce tiparul principal "
-   "este găsit, el se scoate cu un model simplu, iar relațiile mai fine se caută în reziduuri. Exemplul din <i>R for Data "
-   "Science</i>: diamantele de calitate slabă par mai scumpe, până când se ține seama de mărimea lor. Un grafic al "
-   "reziduurilor fără structură înseamnă că tiparul a prins tot; o curbă sau grupuri în reziduuri arată ce lipsește.</p>"
-   "<p><b>Metoda celor mai mici pătrate</b> alege dreapta pentru care suma pătratelor reziduurilor este minimă. În "
-   "componenta de mai jos, panta și nivelul se ajustează de mână; panoul arată suma pătratelor și cât de departe este de "
-   "minim. Butonul „reziduurile, ca segmente” desenează distanța verticală dintre puncte și dreaptă, adică exact mărimea "
-   "minimizată.</p>"
-   + ix("edReziduu", "SCI față de distanță", {"perechi": _PER[:1500]})
-   + "<p>Reziduurile unei singure regiuni, pe hartă, arată cu ce regiuni este mai legată decât ar prezice distanța: "
-     "pentru Nord-Vest, Spania și Irlanda, unde migrația este mare. Modelul din C7 extinde aceeași logică la mai mulți "
-     "predictori.</p>"
-   + glosar("reziduu", "mcmp")
+   "<h2>Tipar real sau întâmplare?</h2>"
+   "<p>Percepția vizuală găsește tipare și în date fără nicio relație: un nor de puncte aleatoare are aproape mereu o "
+   "zonă care pare înclinată. Înainte de a pune o relație în model, întrebarea este dacă ea se deosebește de ce ar "
+   "produce întâmplarea.</p>"
+   "<p><b>Permutarea</b> produce exact „ce ar produce întâmplarea”. Se iau valorile unei coloane (de exemplu, studiile "
+   "superioare) și se mută la întâmplare între regiuni: fiecare valoare rămâne în date, dar nu mai aparține regiunii ei. "
+   "Distribuția fiecărei variabile rămâne identică, dar orice legătură dintre ele dispare. Tabelul mic din componentă "
+   "arată amestecarea pe cinci regiuni.</p>"
+   "<p><b>Protocolul lineup</b> (Buja și colegii, 2009) ascunde graficul real printre 7 grafice amestecate. Dacă relația "
+   "nu există, graficul real este doar încă o amestecare, iar probabilitatea de a-l nimeri este 1 din 8. Dacă este "
+   "recunoscut, tiparul nu este doar întâmplare. Cu 20 de grafice, probabilitatea scade la 1 din 20, adică pragul "
+   "obișnuit de 5% al testelor statistice: lineup-ul este un test statistic făcut cu ochii.</p>"
+   + ix("edLineup", "Graficul real, printre grafice amestecate", _REGN)
+   + tabel(["Runda", "Variabilele", "ρ Spearman", "Ce se întâmplă"], [
+       ["1", "PIB pe locuitor și studiile superioare", "0,61", "graficul real se recunoaște ușor"],
+       ["2", "vârsta medie și studiile superioare", "−0,23", "se recunoaște greu"],
+       ["3", "PIB pe locuitor și vârsta medie", "−0,02", "nu se poate recunoaște: o alegere corectă este noroc"]])
+   + "<p>Aceeași logică explică problema <b>comparațiilor multiple</b>. Dacă se încearcă multe variabile, unele vor "
+     "părea legate de rezultat doar din întâmplare: la pragul de 5%, una din 20. Echipele vor încerca în C7 mai mulți "
+     "predictori pentru SCI; ce se găsește explorând se verifică pe alte date (alt an, NUTS 3, altă sursă) înainte de "
+     "a fi tratat ca rezultat.</p>"
+   + glosar("perm", "lineup", "multiple")
    + caiet("6", [
-       "<code>np.polyfit</code> pe log10 al distanței și al SCI: panta și nivelul dreptei.",
-       "Reziduul fiecărei perechi și mediana lui după <code>aceeasi_tara</code>.",
-       "Graficul în două panouri: dreapta peste date și reziduurile față de distanță.",
-       "Harta reziduurilor pentru <code>REGIUNE = \"RO11\"</code>: roșu, legături mai puternice decât prezice distanța; "
-       "albastru, mai slabe."],
-       "Harta pentru altă regiune, de exemplu <code>\"LU00\"</code> sau regiunea echipei. Ce regiuni ies în evidență?"))
-
-
-# ===========================================================================
-#  H. Verificarea
-# ===========================================================================
-
-V_POT = verif("c6-v-pot", 1,
-              "Dintre 40 de variabile formate din numere aleatoare, două trec pragul de 5%. Ce înseamnă?",
-              ["Cele două explică deschiderea", "Nimic: din 40 de încercări, cam 2 trec pragul din întâmplare",
-               "Eșantionul e prea mic", "Trebuie Pearson"],
-              "La pragul de 5%, din 40 de variabile fără nicio legătură reală, în medie 2 par legate de rezultat. Ce se "
-              "găsește explorând se verifică pe alte date.")
-
-sl("s16", "Verificarea", "Multe încercări",
-   "<h2>Multe încercări, rezultate întâmplătoare</h2>"
-   + concept(f"Variabilele din grafic sunt numere aleatoare, fără nicio legătură cu deschiderea regiunilor. Totuși, la "
-             f"{gl('prag')}, cam 1 din 20 trece pragul. Cu cât se încearcă mai multe variabile, cu atât apar mai multe "
-             f"rezultate false: problema {gl('multiple', 'comparațiilor multiple')}.")
-   + ix("edPoteci", "Indicatorii reali și cele mai mari 6 corelații ale variabilelor aleatoare", _REG)
-   + vede("PIB-ul, studiile și densitatea depășesc clar orice variabilă aleatoare; vârsta medie (0,11) nu. "
-          "Constatările din această lecție rămân ipoteze, de verificat în C7 și pe alte date."),
-   manual=
-   "<h2>Multe încercări, rezultate întâmplătoare</h2>"
-   "<p>O analiză exploratorie încearcă multe variabile, subgrupuri și transformări. Fiecare încercare are o șansă mică "
-   "de a produce un rezultat aparent doar din întâmplare; la pragul obișnuit de 5%, una din 20. Cu 40 de încercări, "
-   "probabilitatea ca cel puțin una să treacă pragul fără nicio relație reală este 1 − 0,95<sup>40</sup> ≈ 87%. Gelman "
-   "și Loken numesc situația <i>garden of forking paths</i>, „grădina potecilor care se bifurcă”: fiecare alegere a "
-   "analistului este o potecă, iar dintre multe poteci, cea mai interesantă pare mai importantă decât este.</p>"
-   "<p>În componenta de mai jos, glisorul adaugă variabile formate din numere aleatoare. Graficul arată corelația "
-   "fiecăreia cu deschiderea regiunilor, lângă indicatorii reali; linia punctată este pragul de 5% (|ρ| ≈ 0,11 la 290 de "
-   "regiuni). Variabilele aleatoare care trec pragul sunt rezultate false.</p>"
-   + ix("edPoteci", "Indicatorii reali și cele mai mari 6 corelații ale variabilelor aleatoare", _REG)
-   + "<p>Hullman și Gelman (2021) recomandă ca ce se găsește explorând să fie verificat pe date păstrate deoparte: alt "
-     "an, alt nivel de agregare (de exemplu NUTS 3), altă sursă.</p>"
-   + glosar("prag", "multiple")
-   + caiet("7", [
-       "Celula generează 40 de variabile aleatoare și calculează corelația fiecăreia cu deschiderea, lângă indicatorii reali.",
-       "Cea mai mare corelație întâmplătoare, comparată cu corelațiile indicatorilor reali."],
-       "Celula rulată de mai multe ori cu <code>rng = np.random.default_rng()</code> și cu 100 de variabile în loc de 40."),
-   dupa=V_POT)
+       "Funcția <code>lineup(x, y)</code> desenează 8 grafice și întoarce poziția graficului real; răspunsul se afișează "
+       "în celula următoare, după alegere.",
+       "Cele trei runde, în ordine; alegerea se notează înainte de a afișa răspunsul."],
+       "<code>lineup(regiuni[\"densitate\"], regiuni[\"somaj\"])</code>. Graficul real se poate recunoaște?"))
 
 
 # ===========================================================================
 #  I. Încheierea
 # ===========================================================================
 
-sl("s17", "Încheierea", "Tipurile de grafice",
+sl("s15", "Încheierea", "Tipurile de grafice",
    "<h2>Ce grafic, pentru ce date</h2>"
    + ix("edTipGrafice", "Tipurile de grafice, după Wilke", {})
    + "<p class=\"cub__regula\">Un grafic de raport: o idee, formulată în titlu; scara spusă pe axă; culoarea după date "
@@ -705,10 +700,9 @@ sl("s17", "Încheierea", "Tipurile de grafice",
 PE_SCI = [
     ("Profilul", "un rând = o pereche; Svalbard la ambele capete (numitor mic); lipsurile pe țări întregi"),
     ("O variabilă", "asimetrie puternică: media de 8 ori mai mare decât mediana; scara log10 și mediana"),
-    ("Relațiile", f"distanța: Spearman {ro(S['spearman'])}; granița, comparată la aceeași distanță; indicatorii "
-                  "economici, puternic corelați între ei"),
-    ("Tipar și reziduu", "după distanță rămân granița și coridoarele migrației"),
-    ("Verificarea", "constatările rămân ipoteze, de verificat în C7 și pe alte date"),
+    ("Relațiile", f"distanța: Spearman {ro(S['spearman'])}; granița contează și la aceeași distanță; "
+                  "indicatorii economici, puternic corelați între ei"),
+    ("Verificarea", "relațiile puternice se deosebesc de întâmplare; cele slabe rămân de verificat în C7"),
 ]
 DECIZII = [
     ("SCI: asimetrie pozitivă", "scara logaritmică și mediana"),
@@ -716,13 +710,12 @@ DECIZII = [
     ("lipsurile pe țări", "pe câte perechi, spus la fiecare rezultat"),
     ("distanța și granița, legate", "două variabile separate în model"),
     ("migrația contează ca rată", "rata la mie, nu numărul"),
-    ("excepțiile: Spania, Irlanda, Moldova", "de urmărit în reziduurile modelului"),
 ]
 PE_SCI_HTML = ('<div class="q6 q6--h q6--sci">' + "".join(f'<div><i>{k}</i><b>{a}</b><span>{b}</span></div>'
                                                           for k, (a, b) in enumerate(PE_SCI, 1)) + "</div>")
 FIN_C6 = ('<div class="dc6">' + "".join(f'<div><span>{a}</span><b>{b}</b></div>' for a, b in DECIZII) + "</div>")
 
-sl("s18", "Pe datele noastre", "Fluxul pe SCI",
+sl("s16", "Pe datele noastre", "Fluxul pe SCI",
    "<h2>Fluxul, pe datele noastre, și deciziile pentru C7</h2>"
    + PE_SCI_HTML + FIN_C6,
    manual=
@@ -734,7 +727,7 @@ sl("s18", "Pe datele noastre", "Fluxul pe SCI",
 DOVADA = {
     "id": "c6-dovada",
     "sarcina": "Trei rezultate din caiet, rulate pe datele proprii. Ieșirea fiecăruia se lipește în câmpul lui.",
-    "indiciu": "Celulele se rulează în partea „Pe datele noastre” a caietului 06.",
+    "indiciu": "Celulele sunt în caietul 06: secțiunile 4.1, 5.2 și 2.3.",
     "pasi": [
         {"t": "Distanța și SCI",
          "cmd": "perechi[\"distanta_km\"].corr(perechi[\"sci\"], method=\"spearman\")",
@@ -774,7 +767,7 @@ SURSE_C6 = surse("Documentația analizei", [
     ("seaborn: Overview of plotting functions", "https://seaborn.pydata.org/tutorial/function_overview.html", "funcțiile pentru distribuții, relații, categorii"),
 ])
 
-sl("s19", "Echipa", "Verificarea în caiet",
+sl("s17", "Echipa", "Verificarea în caiet",
    "<h2>Verificarea analizei</h2>"
    + ix("dovada", "Verificarea analizei", DOVADA),
    manual=
@@ -787,3 +780,4 @@ sl("s19", "Echipa", "Verificarea în caiet",
 
 if __name__ == "__main__":
     L.scrie_tot()
+

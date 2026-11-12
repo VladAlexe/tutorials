@@ -360,17 +360,17 @@
   "c6-analiza-exploratorie": {
     "nr": 6,
     "titlu": "Analiza exploratorie",
-    "deck": "Înainte de model, datele se examinează: ce conțin, cum variază, ce variază împreună, ce iese din tipar. Fiecare concept, cu un grafic interactiv pe datele SCI.",
-    "descriere": "Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, două și mai multe variabile, tipar și reziduu, verificarea.",
+    "deck": "Înainte de model, datele se examinează: ce conțin, cum variază, ce variază împreună, ce e real și ce e întâmplare. Fiecare concept, cu un grafic interactiv pe datele SCI.",
+    "descriere": "Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, două și mai multe variabile, verificarea.",
     "caiet": "@REPO@/blob/main/curs/06_analiza_exploratorie.ipynb",
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Analiza exploratorie este examinarea datelor înainte de modelare. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, lipsurile, extremele), o variabilă (media și mediana, distribuția, transformarea logaritmică), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; prea multe puncte; lineup), trei sau mai multe variabile (factorul de confuzie, matricea de corelație), tipar și reziduu, verificarea.</p>\n<p>Fiecare concept are o definiție, un grafic interactiv pe datele cursului (perechile de regiuni cu SCI și tabelul regiunilor) și pașii corespunzători din caiet. Rezultatul: deciziile pentru modelul din C7.</p>"
+        "html": "<p>Analiza exploratorie este examinarea datelor înainte de modelare. Lecția urmează fluxul ei: profilul datelor (unitatea de analiză, lipsurile, extremele), o variabilă (media și mediana, distribuția, transformarea logaritmică), variabilele categorice, două variabile numerice (Pearson, Spearman, Kendall; prea multe puncte), trei sau mai multe variabile (granița și distanța: factorul de confuzie; matricea de corelație), verificarea (tipar real sau întâmplare).</p>\n<p>Fiecare concept are o definiție, un grafic interactiv pe datele cursului (perechile de regiuni cu SCI și tabelul regiunilor) și pașii corespunzători din caiet. Rezultatul: deciziile pentru modelul din C7.</p>"
       },
       {
         "t": "Obiective",
-        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; valorile extreme; media și mediana; transformarea logaritmică.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Tipar real sau întâmplare (lineup); factorul de confuzie și stratificarea; matricea de corelație.</li>\n<li>Tipar și reziduu; comparațiile multiple și verificarea pe alte date.</li>\n</ul>"
+        "html": "<ul class=\"obiective\">\n<li>Scopul și fluxul analizei exploratorii: profilul datelor, apoi descoperirea; acuzarea, nu condamnarea.</li>\n<li>Lipsurile și mecanismele lor; valorile extreme; media și mediana; transformarea logaritmică.</li>\n<li>Distribuția în cinci grafice; tabelul de contingență; Pearson, Spearman, Kendall.</li>\n<li>Factorul de confuzie și stratificarea; matricea de corelație.</li>\n<li>Tipar real sau întâmplare: permutarea și protocolul lineup; comparațiile multiple.</li>\n</ul>"
       },
       {
         "t": "Pregătire",
