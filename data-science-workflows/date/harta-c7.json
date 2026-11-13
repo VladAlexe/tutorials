@@ -1,6 +1,6 @@
 {
  "capitol": "c7",
- "total": 14,
+ "total": 15,
  "sarcini": 3,
  "slide": [
   {
@@ -53,41 +53,34 @@
   },
   {
    "nr": 6,
-   "id": "s6",
-   "grup": "Variabilele",
-   "titlu": "Extragerea",
-   "sarcini": []
-  },
-  {
-   "nr": 7,
    "id": "s7",
    "grup": "Variabilele",
    "titlu": "Selecția",
    "sarcini": []
   },
   {
-   "nr": 8,
+   "nr": 7,
    "id": "s8",
    "grup": "Modelul",
    "titlu": "Tipar și reziduu",
    "sarcini": []
   },
   {
-   "nr": 9,
+   "nr": 8,
    "id": "s9",
    "grup": "Modelul",
    "titlu": "Trei variabile",
    "sarcini": []
   },
   {
-   "nr": 10,
+   "nr": 9,
    "id": "s10",
    "grup": "Modelul",
    "titlu": "Rezultatul complet",
    "sarcini": []
   },
   {
-   "nr": 11,
+   "nr": 10,
    "id": "s11",
    "grup": "Modelul",
    "titlu": "Interpretarea coeficienților",
@@ -107,23 +100,37 @@
    ]
   },
   {
-   "nr": 12,
+   "nr": 11,
    "id": "s12",
    "grup": "Reziduurile",
    "titlu": "Peste și sub model",
    "sarcini": []
   },
   {
-   "nr": 13,
+   "nr": 12,
    "id": "s13",
    "grup": "Modelul final",
    "titlu": "Efectele de țară",
    "sarcini": []
   },
   {
+   "nr": 13,
+   "id": "s6",
+   "grup": "Gruparea",
+   "titlu": "Tipurile de regiuni",
+   "sarcini": []
+  },
+  {
    "nr": 14,
+   "id": "s15",
+   "grup": "Rețeaua",
+   "titlu": "Comunitățile după model",
+   "sarcini": []
+  },
+  {
+   "nr": 15,
    "id": "s14",
-   "grup": "Modelul final",
+   "grup": "Concluzia",
    "titlu": "Ce se poate concluziona",
    "sarcini": [
     {

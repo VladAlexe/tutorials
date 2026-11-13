@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=176";
+const V = "?v=179";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */
@@ -26,7 +26,7 @@ const COMUNITATI = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98d
 const NIVELURI = { judete: "Județe", regiuni: "Regiuni", tari: "Țări" };
 const MASURI = {
   judete: [["sci", "Legături"]],
-  regiuni: [["sci", "Legături"], ["dist", "Față de distanță"], ["com", "Comunități"], ["lips", "Date lipsă"]],
+  regiuni: [["sci", "Legături"], ["dist", "Față de distanță"], ["com", "Comunități"], ["c7", "Comunități după model"], ["lips", "Date lipsă"]],
   tari: [["sci", "Legături"], ["migr", "Migranți"], ["model", "Față de model"]],
 };
 /* paleta e în explorator.css: nouă trepte pentru mărime, șapte divergente */
@@ -46,7 +46,11 @@ const LIPS = ["var(--hs-2)", "var(--hsd-3)", "var(--hsd-2)", "var(--hsd-1)"];
 const VAR = { densitate: "densitatea", pib_locuitor: "PIB pe locuitor", populatie: "populația",
   retele_sociale: "rețele sociale", somaj: "șomajul", studii_superioare: "studii superioare", varsta_medie: "vârsta medie" };
 /* măsuri doar pentru lecții, nu pentru Explorator */
-const LECTIE = new Set(["lips"]);
+const LECTIE = new Set(["lips", "c7"]);
+/* comunitățile din lecția 7, pe rețeaua „peste model”: cinci blocuri, cu nume */
+const C7 = ["#4e79a7", "#e15759", "#f28e2b", "#59a14f", "#b07aa1"];
+const C7_NUME = ["vestul francofon", "blocul latin", "sud-estul și diaspora turcă", "spațiul dunărean", "nordul și centrul-estul"];
+const CATEG = new Set(["com", "c7", "lips"]);
 const FARA = "var(--crom-2)";
 
 const fmt = (x, z = 0) => x.toLocaleString("ro-RO", { maximumFractionDigits: z, minimumFractionDigits: z });
@@ -198,6 +202,7 @@ export async function monteaza(gazda, opt = {}){
   function culori(){
     const L = locuri();
     if (st.masura === "com") return L.map(l => COMUNITATI[l.com % COMUNITATI.length]);
+    if (st.masura === "c7") return L.map(l => l.c7 == null ? FARA : C7[l.c7]);
     if (st.masura === "sci") return rapoarte().map(r => r === null ? FARA : SECV[treapta(r, PRAG.sci.v)]);
     if (st.masura === "dist") return abateri().map(r => r === null ? FARA : DIVERG[treapta(r, PRAG.dist.v)]);
     if (st.masura === "lips") return L.map(l => LIPS[treapta((l.lips || []).length, PRAG.lips.v)]);
@@ -211,7 +216,7 @@ export async function monteaza(gazda, opt = {}){
     const L = locuri(), c = culori();
     for (const p of svg.querySelectorAll(".zona")){
       const i = +p.dataset.i, e = L[i].cod === st.ales;
-      p.style.fill = e && st.masura !== "com" && st.masura !== "lips" ? "var(--panza)" : c[i];
+      p.style.fill = e && !CATEG.has(st.masura) ? "var(--panza)" : c[i];
       p.classList.toggle("ales", e);
       if (e) svg.insertBefore(p, svg.querySelector(".arce"));
     }
@@ -225,7 +230,7 @@ export async function monteaza(gazda, opt = {}){
   function arce(){
     const g = svg.querySelector(".arce"); if (!g) return;
     g.innerHTML = "";
-    if (!linii || st.masura === "com" || st.masura === "lips") return;
+    if (!linii || CATEG.has(st.masura)) return;
     const L = locuri(), i0 = L.findIndex(l => l.cod === st.ales), c0 = centre[i0];
     if (!c0) return;
     let top;
@@ -296,6 +301,8 @@ export async function monteaza(gazda, opt = {}){
       : st.masura === "lips" ? `<div class="gf__leg"><span class="gf__scara-et">Variabile lipsă, din cele 7 ale regiunii</span>
           <div class="hs__chips">${["niciuna", "una", "2-3", "6-7"].map((t, k) => `<span><i data-k="${k}" style="background:${LIPS[k]}"></i>${t}</span>`).join("")}</div></div>`
       : st.masura === "model" ? scara("SCI observat, raportat la valoarea prezisă de model", DIVERG, PRAG.model.et, "perechea nu este în model (lipsesc datele de migrație)")
+      : st.masura === "c7" ? `<div class="gf__leg"><span class="gf__scara-et">Regiuni mai legate între ele decât prezic distanța și granițele</span>
+          <div class="hs__chips">${C7_NUME.map((t, k) => `<span><i style="background:${C7[k]}"></i>${t}</span>`).join("")}</div></div>`
       : `<div class="hs__fara">Fiecare culoare reprezintă un grup de regiuni mai legate între ele decât cu restul. Culorile sunt doar etichete.</div>`;
   }
 
@@ -342,9 +349,10 @@ export async function monteaza(gazda, opt = {}){
         sep("Mai puțin legate"); R.slice(-4).reverse().forEach(([r, j]) => rnd(j, `${fmt(Math.exp(r), 2)}×`));
       }
     } else {
-      sep("În aceeași comunitate");
-      const com = loc(st.ales).com, numar = {};
-      for (const l of L) if (l.com === com) numar[l.tara] = (numar[l.tara] || 0) + 1;
+      const cheie = st.masura === "c7" ? "c7" : "com";
+      const com = loc(st.ales)[cheie], numar = {};
+      sep(cheie === "c7" && com != null ? `În aceeași comunitate: ${C7_NUME[com]}` : "În aceeași comunitate");
+      for (const l of L) if (l[cheie] === com) numar[l.tara] = (numar[l.tara] || 0) + 1;
       Object.entries(numar).sort((a, b) => b[1] - a[1]).forEach(([t, n]) =>
         h.push(`<li data-cod="${L.find(l => l.tara === t).cod}"><span class="nr">${++nr}</span><span>${numeTara(t)}</span><span class="val">${n} ${n === 1 ? "regiune" : "regiuni"}</span></li>`));
     }
@@ -414,6 +422,7 @@ export async function monteaza(gazda, opt = {}){
     else if (st.masura === "dist"){ const r = abateri()[i]; val = r === null ? "fără date" : `${fmt(r, 2)}× mediana la aceeași distanță`; }
     else if (st.masura === "lips") val = l.lips && l.lips.length ? "lipsesc: " + l.lips.map(v => VAR[v]).join(", ") : "toate cele 7 variabile";
     else if (st.masura === "model"){ const r = rezidual(l.cod); val = r === null ? "nu este în model" : `${fmt(Math.exp(r), 2)}× valoarea prezisă`; }
+    else if (st.masura === "c7") val = l.c7 == null ? "nu este în rețea" : C7_NUME[l.c7];
     else val = `comunitatea ${l.com}`;
     b.innerHTML = `<b>${l.nume}</b><span>${st.nivel === "tari" ? "" : numeTara(l.tara) + " · "}${val}</span>`;
     const z = b.parentNode.getBoundingClientRect();

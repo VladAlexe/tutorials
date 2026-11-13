@@ -4215,3 +4215,5 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .ed-sm__v{display:block;margin:4px 0 6px;font-family:var(--mono);font-size:var(--t2);color:var(--accent-text)}
 .ed-sm__x p{margin:0;color:var(--text-2)}
 @media (max-width:760px){.ed-sm{grid-template-columns:1fr}}
+/* C7: o pereche aleasă, descrisă în cuvinte sub grafic */
+.ed-rand{font-size:var(--t1);color:var(--text-2);margin:2px 0 6px}

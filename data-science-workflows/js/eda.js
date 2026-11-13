@@ -759,9 +759,11 @@ E.edModelVar = (gazda, d) => {
 E.edScalare = (gazda, d) => {
   const T = TARI(d);
   const V = [["log SCI", T.map(r => L10(r.sci))], ["log distanța", T.map(r => L10(r.dist))], ["log migranți la mie", T.map(r => L10(r.rata))]];
+  const Z = V.map(([, a]) => { const m = medie(a), s = abatere(a); return a.map(x => (x - m) / s); });
   const z = a => { const m = medie(a), s = abatere(a); return a.map(x => (x - m) / s); };
-  let mod = "brut";
-  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", [["brut", "valorile (log)"], ["z", "scorul z"]], mod)}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const ALESE = (d.alese || []).filter(p => T.some(t => t.p === p));
+  let mod = d.mod0 || "brut", ales = ALESE[0] || null;
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", [["brut", "valorile (log)"], ["z", "scorul z"]], mod)}${ALESE.length ? butoane("p", ALESE.map(p => [p, p]), ales) : ""}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
   const W = 900, x0 = 170, x1 = W - 20, rand = 62, H = 30 + rand * V.length + 30;
   const deseneaza = () => {
     const D = V.map(([n, a]) => [n, mod === "z" ? z(a) : a]), tot = D.flatMap(v => v[1]);
@@ -771,13 +773,65 @@ E.edScalare = (gazda, d) => {
       s += `<text class="ed-tx" x="${x0 - 12}" y="${Y + 4}" text-anchor="end">${n}</text>`;
       s += `<rect class="ed-cutie2" x="${sx(m - sd)}" y="${Y - 14}" width="${sx(m + sd) - sx(m - sd)}" height="28"/>`;
       a.forEach((x, i) => s += `<circle class="ed-p ed-mic" cx="${sx(x)}" cy="${Y + ((i * 37) % 21) - 10}" r="2.2"/>`);
-      s += `<line class="ed-l-tot" x1="${sx(m)}" x2="${sx(m)}" y1="${Y - 18}" y2="${Y + 18}"/>`; });
+      s += `<line class="ed-l-tot" x1="${sx(m)}" x2="${sx(m)}" y1="${Y - 18}" y2="${Y + 18}"/>`;
+      const i = T.findIndex(t => t.p === ales);
+      if (i >= 0){ const X = sx(a[i]), zz = Z[j][i];
+        s += `<circle class="ed-pf" cx="${X}" cy="${Y}" r="7"/>`;
+        s += `<text class="ed-gros" x="${X}" y="${Y - 22}" text-anchor="middle">${mod === "z" ? "z = " + (zz >= 0 ? "+" : "") + f(zz, 1) : f(a[i], 2)}</text>`; } });
     el.querySelector(".ed-g").innerHTML = svg(W, H, s);
     scrieCod(el, mod === "z" ? `def scor_z(x):\n    return (x - x.mean()) / x.std()\n\ndate["z_log_distanta"] = scor_z(date["log_distanta"])` : `date[["log_sci", "log_distanta", "log_la_mie"]].describe()`);
-    el.querySelector(".ed-o").innerHTML = cifre(D.map(([n, a], j) => [n, `medie ${f(medie(a), 2)} · a.s. ${f(abatere(a), 2)} · asim. ${f(asimetrie(V[j][1]), 2)}`]))
-      + panou("Linia: media; banda: o abatere standard în jurul ei. Scorul z mută și întinde fiecare variabilă, dar forma (asimetria) rămâne aceeași.");
+    const i = T.findIndex(t => t.p === ales), t = T[i];
+    const semn = zz => (zz >= 0 ? "+" : "") + f(zz, 1);
+    const cuvant = zz => Math.abs(zz) < 0.5 ? "obișnuită" : Math.abs(zz) < 1.5 ? (zz > 0 ? "peste medie" : "sub medie") : (zz > 0 ? "neobișnuit de mare" : "neobișnuit de mică");
+    const pereche = i < 0 ? "" : `<p class="ed-rand"><b>${ales}</b>: ${nr(t.dist)} km, ${f(t.rata, 1)} migranți la mie. `
+      + `Distanța are z = ${semn(Z[1][i])}: ${cuvant(Z[1][i])}. Rata migranților are z = ${semn(Z[2][i])}: ${cuvant(Z[2][i])}. `
+      + `Pe scara inițială, kilometrii și migranții la mie nu se pot compara; în abateri standard, da.</p>`;
+    el.querySelector(".ed-o").innerHTML = pereche + cifre(D.map(([n, a], j) => [n, `medie ${f(medie(a), 2)} · a.s. ${f(abatere(a), 2)} · asim. ${f(asimetrie(V[j][1]), 2)}`]))
+      + panou("Linia: media; banda: o abatere standard în jurul ei; cercul: perechea aleasă. Scorul z mută și întinde fiecare variabilă, dar forma (asimetria) rămâne aceeași.");
   };
   leaga(el, "m", c => { mod = c; deseneaza(); });
+  leaga(el, "p", c => { ales = c; deseneaza(); });
+  deseneaza();
+};
+
+/* Cum construiește modelul predicția pentru o pereche: constanta, apoi
+   contribuția fiecărui predictor, apoi comparația cu SCI-ul observat. */
+E.edPredictie = (gazda, d) => {
+  const T = TARI(d), M = d.modele, ALESE = (d.alese || []).filter(p => T.some(t => t.p === p));
+  let ales = ALESE[0], mk = M.length - 1;
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("p", ALESE.map(p => [p, p]), ales)}${butoane("m", M.map((m, k) => [String(k), m.nume]), String(mk))}</div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const W = 900, x0 = 330, x1 = W - 30, rand = 34, lo = 3, hi = 7;
+  const sx = sc(lo, hi, x0, x1);
+  const deseneaza = () => {
+    const t = T.find(x => x.p === ales), b = M[mk].coef;
+    const pasi = [["constanta", null, b.Intercept, "pornirea dreptei"]];
+    pasi.push(["distanța", `${nr(t.dist)} km`, b.log_distanta * L10(t.dist), `${f(b.log_distanta, 2)} × log ${nr(t.dist)}`]);
+    if (b.log_la_mie != null) pasi.push(["rata migranților", `${f(t.rata, 1)} la mie`, b.log_la_mie * L10(t.rata), `${f(b.log_la_mie, 2)} × log ${f(t.rata, 1)}`]);
+    if (b.granita != null) pasi.push(["granița", t.gr ? "vecine" : "nevecine", b.granita * t.gr, `${f(b.granita, 2)} × ${t.gr}`]);
+    let s = "", cum = lo, y = 6;
+    repere(lo, hi, 4).forEach(v => s += `<line class="ed-grila" x1="${sx(v)}" x2="${sx(v)}" y1="0" y2="${rand * (pasi.length + 2) + 4}" stroke="var(--linie)"/><text class="ed-tx ed-tx--mic" x="${sx(v)}" y="${rand * (pasi.length + 2) + 18}" text-anchor="middle">SCI ${nr(10 ** v)}</text>`);
+    pasi.forEach(([n, val, c, cal], j) => {
+      const a = j === 0 ? lo : cum, z = j === 0 ? c : cum + c;
+      s += `<text class="ed-tx" x="${x0 - 12}" y="${y + 21}" text-anchor="end"><tspan class="ed-gros">${n}</tspan>${val ? "  " + val : ""}</text>`;
+      s += `<rect class="${j === 0 ? "ed-cutie" : c >= 0 ? "ed-bar" : "ed-bar2"}" x="${sx(Math.min(a, z))}" y="${y + 6}" width="${Math.max(2, Math.abs(sx(z) - sx(a)))}" height="22"/>`;
+      s += `<text class="ed-tx ed-tx--mic" x="${sx(Math.max(a, z)) + 6}" y="${y + 21}">${j === 0 ? f(c, 2) : (c >= 0 ? "+" : "") + f(c, 2) + "  (" + cal + ")"}</text>`;
+      cum = z; y += rand; });
+    const obs = L10(t.sci), rez = obs - cum;
+    s += `<text class="ed-tx" x="${x0 - 12}" y="${y + 21}" text-anchor="end"><tspan class="ed-gros">prezis</tspan>  SCI ${nr(10 ** cum)}</text>`;
+    s += `<line class="ed-l-tot" x1="${sx(cum)}" x2="${sx(cum)}" y1="${y + 2}" y2="${y + 32}"/>`;
+    y += rand;
+    s += `<text class="ed-tx" x="${x0 - 12}" y="${y + 21}" text-anchor="end"><tspan class="ed-gros">observat</tspan>  SCI ${nr(t.sci)}</text>`;
+    s += `<line class="ed-l-adev" x1="${sx(cum)}" x2="${sx(obs)}" y1="${y + 17}" y2="${y + 17}"/><circle class="ed-pf" cx="${sx(obs)}" cy="${y + 17}" r="7"/>`;
+    s += `<text class="ed-gros" x="${Math.max(sx(cum), sx(obs)) + 14}" y="${y + 22}">reziduu: × ${f(10 ** rez, 2)}</text>`;
+    el.querySelector(".ed-g").innerHTML = svg(W, rand * (pasi.length + 2) + 24, s);
+    scrieCod(el, `rand = date[date["pereche"] == "${ales.replace("–", "-")}"]
+${M[mk].var}.predict(rand)       # log SCI prezis: ${f(cum, 2)}
+np.log10(rand["sci"])     # observat: ${f(obs, 2)}`);
+    el.querySelector(".ed-o").innerHTML = panou(`Modelul nu știe nimic despre ${ales}: vede doar ${pasi.length - 1 === 1 ? "distanța" : "distanța, rata migranților și granița"}. `
+      + `Predicția este suma barelor, pe scara log SCI. Perechea este ${10 ** rez >= 1 ? "de " + f(10 ** rez, 1) + " ori mai legată" : "de " + f(1 / 10 ** rez, 1) + " ori mai puțin legată"} decât prezice modelul: acesta este reziduul.`);
+  };
+  leaga(el, "p", c => { ales = c; deseneaza(); });
+  leaga(el, "m", c => { mk = +c; deseneaza(); });
   deseneaza();
 };
 

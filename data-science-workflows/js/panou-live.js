@@ -21,7 +21,7 @@
    Nu are niciun buton care schimbă ora. Panoul doar se uită.
    =========================================================================== */
 
-import { STARI, ORDINEA } from "./ora.js?v=176";
+import { STARI, ORDINEA } from "./ora.js?v=179";
 
 /* --- stilul --------------------------------------------------------------- */
 

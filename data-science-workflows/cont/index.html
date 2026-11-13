@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contul meu · Fluxuri de lucru</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="../css/fonturi.css?v=176">
-<link rel="stylesheet" href="../css/sistem.css?v=176">
-<link rel="stylesheet" href="../css/cont.css?v=176">
-<script src="../js/tema.js?v=176"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=179">
+<link rel="stylesheet" href="../css/sistem.css?v=179">
+<link rel="stylesheet" href="../css/cont.css?v=179">
+<script src="../js/tema.js?v=179"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 <div id="subsol"></div>
 
 <script type="module">
-import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=176";
+import { LECTII, NOTARE, RADACINA, activitate, rezolvariDin } from "../js/curs.js?v=179";
 
 const el = id => document.getElementById(id);
 const gazda = el("pagina");
@@ -33,9 +33,9 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 let A, CFG, N, p;
 try {
-  A = await import("../js/auth.js?v=176");
-  CFG = await import("../js/supabase-config.js?v=176");
-  N = await import("../js/alege-nume.js?v=176");
+  A = await import("../js/auth.js?v=179");
+  CFG = await import("../js/supabase-config.js?v=179");
+  N = await import("../js/alege-nume.js?v=179");
 } catch (e) {
   gazda.innerHTML = `<div class="nota"><div class="nota__et">Eroare</div>
     <p>Autentificarea nu a putut fi încărcată: ${esc(e.message)}</p></div>`;
@@ -213,7 +213,7 @@ async function deseneaza(){
   /* lecțiile pe care le vezi: cele predate grupei, plus cele în care ai lucrat */
   let lectii = LECTII;
   try {
-    const Ora = await import("../js/ora.js?v=176");
+    const Ora = await import("../js/ora.js?v=179");
     const pred = await Ora.predate();
     if (pred) lectii = LECTII.filter(l => pred.has("c" + l.nr) || a.pe[l.nr]?.incercari);
   } catch {}
@@ -296,7 +296,7 @@ async function deseneaza(){
   /* echipa: alegerea, cererile și colegii (db/23); fără tabel, un mesaj */
   if (el("echipa-gazda")){
     try {
-      const E = await import("../js/echipe.js?v=176");
+      const E = await import("../js/echipe.js?v=179");
       /* fără echipă: îndemnul stă sus, primul lucru din pagină, pentru cine nu a
          fost la ora în care s-au ales echipele */
       /* secțiunea apare doar după ce profesorul a pornit alegerea echipelor */
@@ -334,7 +334,7 @@ catch (e) {
    ce a scris studentul în căutare */
 A.laSchimbare(() => { if (!inAlegere) unde().catch(() => {}); });
 </script>
-<script type="module" src="../js/antet.js?v=176"></script>
-<script type="module" src="../js/subsol.js?v=176"></script>
+<script type="module" src="../js/antet.js?v=179"></script>
+<script type="module" src="../js/subsol.js?v=179"></script>
 </body>
 </html>
