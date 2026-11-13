@@ -4265,3 +4265,96 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .rnr[data-capitol="c7"] .sld .eda:has(.ed-op) .ed-cod,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) .ed-cod{white-space:pre;overflow-x:auto;font-size:11px}
 .rnr[data-capitol="c7"] .sld .eda:has(.ed-op) .ed-cf,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) .ed-cf{flex-direction:column;align-items:flex-start;gap:2px}
 .rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) > .ed-cm__leg{flex-direction:column;gap:2px;font-size:12.5px;margin:4px 0}
+/* C7, scalarea: legenda semnelor și tabelul mediilor */
+.ed-leg{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:var(--t1);color:var(--text-2);margin:2px 0 4px}
+.ed-leg span{display:inline-flex;align-items:center;gap:6px}
+.ed-leg i{display:inline-block;flex:none}
+.ed-leg__p{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.75}
+.ed-leg__m{width:2.5px;height:16px;background:var(--text)}
+.ed-leg__b{width:22px;height:12px;background:color-mix(in srgb,var(--ambra) 25%,var(--panza));border:1px solid var(--ambra)}
+.ed-leg__a{width:12px;height:12px;border-radius:50%;border:2.5px solid var(--ambra);background:var(--panza)}
+.ed-tab{border-collapse:collapse;font-size:var(--t1);margin:4px 0;font-variant-numeric:tabular-nums}
+.ed-tab th,.ed-tab td{padding:2px 14px 2px 0;text-align:right}
+.ed-tab thead th{font-weight:500;color:var(--text-3);border-bottom:1px solid var(--linie)}
+.ed-tab tbody th{text-align:left;font-weight:500;color:var(--text-2)}
+.ed-tab td{font-weight:600;color:var(--text)}
+.ed-o2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 22px;align-items:start}
+.ed-o2 .ed-rand{margin:4px 0 0}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-leg) .ed-svg{max-height:165px}
+@media (max-width:760px){.ed-o2{grid-template-columns:1fr}}
+/* C7, predicția: liniile prezis / observat și cele trei cifre */
+.ed-l-obs{stroke:var(--ambra);stroke-width:2.5;stroke-dasharray:6 4}
+.ed-t-obs{fill:var(--ambra)}
+.ed-rez3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:8px 0 2px}
+.ed-rez3 div{display:flex;flex-direction:column;gap:1px;border-top:2px solid var(--text);padding-top:6px}
+.ed-rez3 div.obs{border-top:2px dashed var(--ambra)}
+.ed-rez3 div.rez{border-top-color:var(--accent)}
+.ed-rez3 i{font-style:normal;font-size:var(--t1);color:var(--text-3)}
+.ed-rez3 b{font-size:var(--t5);font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+.ed-rez3 .obs b{color:var(--ambra)}
+.ed-rez3 .rez b{color:var(--accent-text)}
+.ed-rez3 small{font-size:var(--t1);color:var(--text-2)}
+/* C7, ce rămâne după model: harta și rețeaua */
+.ed-rh__t{stroke:var(--panza);stroke-width:4;transition:fill .35s}
+.ed-rh__t.in{cursor:pointer}
+.ed-rh__t.in:hover{stroke:var(--text);stroke-width:6}
+.ed-rh__t.ales{stroke:var(--text);stroke-width:9}
+.ed-rh__et{font-family:var(--sans);font-weight:700;fill:var(--text);pointer-events:none}
+.ed-rh__r{display:inline-flex;align-items:center;gap:10px}
+.ed-rh__r.ascuns{display:none}
+.ed-rh__leg{display:flex;flex-direction:column;gap:4px;font-size:var(--t1);color:var(--text-2);margin:4px 0}
+.ed-rh__sc{display:flex;flex-wrap:wrap;gap:2px 10px}
+.ed-rh__sc span{display:inline-flex;align-items:center;gap:4px}
+.ed-rh__sc i{width:14px;height:10px;display:inline-block}
+.eda .ed-rh__svg{max-height:440px}
+/* C7, QAP ca simulare */
+.ed-qs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+.ed-qs__b{display:inline-flex;gap:6px;flex-wrap:wrap}
+.ed-qs__t{font-size:var(--t2);margin:2px 0 6px;color:var(--text-2)}
+.ed-qs__t b{color:var(--ambra)}
+.ed-qs__harta{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-bottom:8px}
+.ed-qs__harta span{display:flex;flex-direction:column;align-items:center;border:1px solid var(--linie);border-radius:4px;padding:2px 0;font-family:var(--mono);font-size:11px;line-height:1.3}
+.ed-qs__harta b{color:var(--text-3);font-weight:500}
+.ed-qs__harta i{font-style:normal;font-weight:700;color:var(--accent-text)}
+.ed-qs__harta span.intoarce i{animation:edIntoarce .5s ease-out}
+@keyframes edIntoarce{0%{transform:rotateX(90deg);opacity:0}100%{transform:rotateX(0);opacity:1}}
+.ed-qs__ex .ed-tab td,.ed-qs__ex .ed-tab th{font-size:11.5px;padding-right:10px}
+.ed-qs__ex .ed-tab td:nth-child(3){color:var(--accent-text)}
+.ed-qs__ult{fill:var(--ambra);stroke:var(--panza)}
+.ed-qs__fir{stroke:var(--ambra);stroke-width:1.5;stroke-dasharray:3 3}
+.eda .ed-qs .ed-svg{max-height:270px}
+@media (max-width:760px){.ed-qs{grid-template-columns:1fr}}
+/* C7, comunitățile pe hartă */
+.ed-ch{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:18px;align-items:start}
+.ed-ch__svg path{stroke:var(--panza);stroke-width:2.5;cursor:pointer;transition:fill .35s,opacity .2s}
+.ed-ch__svg path:hover{stroke:var(--text);stroke-width:5}
+.ed-ch__svg path.stins{opacity:.18}
+.ed-ch__svg path.ales{stroke:var(--text);stroke-width:7}
+.eda .ed-ch__svg{max-height:430px}
+.ed-ch__lista{display:flex;flex-direction:column;gap:2px}
+.ed-ch__lista > div{display:flex;gap:9px;align-items:flex-start;padding:5px 6px;border-radius:6px;cursor:pointer;border-top:1px solid var(--linie)}
+.ed-ch__lista > div.on,.ed-ch__lista > div:hover{background:var(--panza-2)}
+.ed-ch__lista i{flex:none;width:13px;height:13px;border-radius:3px;margin-top:3px}
+.ed-ch__lista b{font-size:var(--t2);color:var(--text)}
+.ed-ch__lista small{font-size:var(--t1);color:var(--text-3);margin-left:4px}
+.ed-ch__lista span{display:block;font-size:var(--t1);color:var(--text-2)}
+.ed-ch__lista em{display:block;font-style:normal;font-size:var(--t1);color:var(--text-3)}
+.ed-ch__lista.c6{display:grid;grid-template-columns:1fr 1fr;gap:0 8px}
+.ed-ch__lista.c6 > div{padding:2px 4px}
+.ed-ch__info{min-height:2.6em}
+@media (max-width:760px){.ed-ch{grid-template-columns:1fr}}
+/* pe slide: harta reziduurilor cu informațiile la dreapta */
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh){display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);column-gap:22px;row-gap:6px;align-items:start;grid-template-rows:auto auto auto auto 1fr}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh) > .ed-ctl{grid-column:1 / -1}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh) > .ed-g{grid-column:1;grid-row:2 / span 4}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh) > :not(.ed-ctl):not(.ed-g){grid-column:2}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh) > .ed-o{grid-row:2}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh) .ed-svg{max-height:400px}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh) .ed-cf{flex-direction:column;gap:2px}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rh) .ed-cod{font-size:11px;white-space:pre;overflow-x:auto}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-qs) .ed-svg{max-height:250px}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-ch) .ed-svg{max-height:400px}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-ch) .ed-cod{display:none}
+.ed-rh__svg,.ed-ch__svg{overflow:hidden}
+.ed-ch__lista > div{padding:4px 6px}
+.ed-ch__info{font-size:var(--t1);min-height:3.6em}

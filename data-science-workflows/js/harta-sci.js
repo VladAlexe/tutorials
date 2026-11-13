@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=183";
+const V = "?v=185";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */
@@ -50,10 +50,10 @@ const LECTIE = new Set(["lips", "c7", "tip", "model3", "model4"]);
 /* categorii cu nume, din lecția 7: comunitățile după model și tipurile de regiuni (k-means) */
 const CAT7 = {
   c7:  { et: "Regiuni mai legate între ele decât prezic distanța și granițele",
-         culori: ["#4e79a7", "#e15759", "#f28e2b", "#59a14f", "#b07aa1"],
+         culori: ["var(--ardezie)", "var(--ambra)", "var(--roza)", "var(--accent)", "var(--ceas)"],
          nume: ["vestul francofon", "blocul latin", "sud-estul și diaspora turcă", "spațiul dunărean", "nordul și centrul-estul"] },
   tip: { et: "Tipul de regiune, din cinci indicatori (k-means, k = 4)",
-         culori: ["#7b3294", "#008837", "#e66101", "#5e9fd1"],
+         culori: ["var(--accent)", "var(--ardezie)", "var(--ambra)", "var(--roza)"],
          nume: ["metropolitane", "dezvoltate", "periferice, îmbătrânite", "tinere, cu șomaj ridicat"] },
 };
 const C7 = CAT7.c7.culori, C7_NUME = CAT7.c7.nume;
