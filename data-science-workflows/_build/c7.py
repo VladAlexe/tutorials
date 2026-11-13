@@ -258,7 +258,7 @@ sl("s5", "Variabilele", "Scalarea",
        ["granița (0/1, nescalată)", ro(B4["granita"]), ro(M["m4z"]["granita"])]])
    + V_Z
    + glosar("z")
-   + caiet("3", [
+   + caiet("2.2", [
        "Funcția <code>scor_z(x)</code>: <code>(x - x.mean()) / x.std()</code>.",
        "Coloanele <code>z_log_sci</code>, <code>z_log_distanta</code>, <code>z_log_la_mie</code>; "
        "<code>describe()</code> arată media 0 și abaterea standard 1."],
@@ -300,7 +300,7 @@ sl("s6", "Variabilele", "Extragerea",
      "comunitățile din C6, gruparea arată <i>că</i> regiunile se aseamănă, nu <i>de ce</i>: capitalele ies împreună, "
      "deși algoritmul nu știe nimic despre țări sau hartă.</p>"
    + glosar("cluster", "kmeans", "inertia", "pca")
-   + caiet("4", [
+   + caiet("8", [
        "<code>reg</code>: regiunile cu toți cei cinci indicatori; densitatea pe logaritm; scorul z.",
        "Inerția pentru k de la 1 la 8, într-un grafic (cotul).",
        "<code>KMeans(n_clusters=4, n_init=10, random_state=1)</code>; profilul grupelor cu "
@@ -336,7 +336,7 @@ sl("s7", "Variabilele", "Selecția",
      "migranți și rata lor): ele măsoară același concept. De aceea modelul folosește rata, nu și "
      "numărul; un exercițiu din caiet le compară.</p>"
    + glosar("multicol", "vif")
-   + caiet("5", [
+   + caiet("3", [
        "<code>date[predictori].corr()</code>: corelațiile dintre cei trei predictori.",
        "O buclă: pentru fiecare predictor, <code>smf.ols</code> pe ceilalți, apoi <code>1 / (1 - r2)</code>."]))
 
@@ -349,31 +349,34 @@ _PT = [[round(__import__("math").log10(r[5]), 4), round(__import__("math").log10
 _M1 = MOD["m1"]["coef"]
 REZ1 = {"perechi": _PT, "dy": [3, 6.6], "rm": 1.2, "a0": 6, "b0": -0.4, "r2": True,
         "et": ["țări nevecine", "țări vecine (portocaliu)"],
-        "cod": 'm1 = smf.ols("log_sci ~ log_distanta", data=date).fit()\nm1.params        # nivelul și panta\ndate["reziduu"] = m1.resid'}
+        "cod": 'm1 = smf.ols("log_sci ~ log_distanta", data=date).fit()\nm1.params        # constanta (Intercept) și panta\ndate["reziduu"] = m1.resid'}
 
 sl("s8", "Modelul", "Tipar și reziduu",
    "<h2>Modelul: tipar plus reziduu</h2>"
-   + concept(f"{gl('model', 'Modelul liniar')} scrie fiecare valoare ca tipar plus {gl('reziduu', 'reziduu')}: log SCI = nivel + "
-             f"pantă × log distanța + reziduu. {gl('mcmp', 'Cele mai mici pătrate')} aleg dreapta cu suma pătratelor "
-             "reziduurilor minimă. Glisoarele mută dreapta.")
+   + concept(f"{gl('model', 'Modelul liniar')} scrie fiecare valoare ca tipar plus {gl('reziduu', 'reziduu')}: log SCI = constantă + "
+             f"pantă × log distanța + reziduu. Constanta (<i>intercept</i>) fixează înălțimea dreptei; panta, "
+             f"înclinarea ei. {gl('mcmp', 'Cele mai mici pătrate')} aleg dreapta cu suma pătratelor reziduurilor minimă.")
    + ix("edReziduu", "Distanța și SCI, pe perechi de țări", REZ1)
    + vede(f"Doar cu distanța: panta {ro(_M1['log_distanta'])} și {gl('r2', 'R²')} = {ro(MOD['m1']['r2'])}. Distanța "
           "explică doar o șesime din variația SCI între țări."),
    manual=
    "<h2>Modelul: tipar plus reziduu</h2>"
    "<p>Un model liniar descrie variabila dependentă ca tipar plus reziduu. Cu un singur predictor, tiparul este o "
-   "dreaptă: log SCI = nivel + pantă × log distanța. Reziduul este ce rămâne: diferența dintre valoarea observată și "
-   "dreaptă. Metoda celor mai mici pătrate alege nivelul și panta pentru care suma pătratelor reziduurilor este cea "
-   "mai mică; în graficul de mai jos, ele se pot căuta și de mână, cu glisoarele.</p>"
+   "dreaptă: log SCI = constantă + pantă × log distanța. <b>Constanta</b> (engl. <i>intercept</i>, în statsmodels "
+   "<code>Intercept</code>) este log SCI prezis când log distanța este 0, adică la 1 km: o distanță care nu există "
+   "între țări, deci constanta doar fixează înălțimea dreptei și nu se interpretează. <b>Panta</b> spune cu cât se "
+   "schimbă log SCI când distanța se înmulțește cu 10. Reziduul este ce rămâne: diferența dintre valoarea observată "
+   "și dreaptă. Metoda celor mai mici pătrate alege constanta și panta pentru care suma pătratelor reziduurilor este "
+   "cea mai mică; în graficul de mai jos, ele se pot căuta și de mână, cu glisoarele.</p>"
    + ix("edReziduu", "Distanța și SCI, pe perechi de țări", REZ1)
    + "<p>R² compară suma pătratelor reziduurilor cu variația totală a lui log SCI: R² = 1 − (suma pătratelor "
      f"reziduurilor) / (suma pătratelor abaterilor de la medie). Cu distanța singură, R² = {ro(MOD['m1']['r2'])}. Este "
      "aceeași idee ca raportul „față de distanță” din C6: ce iese din tipar, acum față de o dreaptă.</p>"
    + glosar("model", "reziduu", "mcmp", "r2")
-   + caiet("6.1", [
+   + caiet("4.1", [
        "<code>smf.ols(\"log_sci ~ log_distanta\", data=date).fit()</code>: formula are variabila dependentă la stânga "
        "lui <code>~</code> și predictorii la dreapta.",
-       "<code>m1.params</code> (nivelul și panta) și <code>m1.rsquared</code>."]))
+       "<code>m1.params</code> (constanta și panta) și <code>m1.rsquared</code>."]))
 
 
 def _mod(k, nume, formula, text):
@@ -429,7 +432,7 @@ sl("s9", "Modelul", "Trei variabile",
      "migranți în locul ratei, R² este 0,26, nu 0,53 (exercițiul din caiet).</p>"
    + lecturi(["bailey2020", "aronow2015", "dehaas2010"], "Modelul, în literatură")
    + glosar("coef", "predictor")
-   + caiet("6.2 și 6.3", [
+   + caiet("4.2 și 4.3", [
        "<code>m2</code> cu <code>smf.ols</code>; tabelul <code>modele</code>, cu M1, M2 și R² pe ultimul rând.",
        "Exercițiul: același model cu numărul de migranți în locul ratei.",
        "<code>m2z</code>: același model pe scorurile z, pentru compararea coeficienților."]))
@@ -543,7 +546,7 @@ sl("s10", "Modelul", "Rezultatul complet",
      "perechi de țări, nu efecte cauzale; reziduurile nu sunt perfect normale, iar erorile standard sunt subestimate, "
      "pentru că aceeași țară apare în multe perechi.</p>"
    + glosar("r2a")
-   + caiet("7.1 și 7.3", [
+   + caiet("5.1 și 5.3", [
        "<code>m2.summary()</code>: cele trei blocuri, cu explicațiile din caiet.",
        "Interpretarea, ca într-un raport: un paragraf care spune mărimea efectelor, incertitudinea și limitele."],
        "<code>m_numar.summary()</code>: modelul cu numărul de migranți; cum se schimbă R² ajustat și AIC?"))
@@ -589,7 +592,7 @@ sl("s11", "Modelul", "Interpretarea coeficienților",
      "(C6). Corecția uzuală sunt erorile standard grupate pe țară.</p>"
    + V_EL
    + glosar("elast", "ic")
-   + caiet("7.2", [
+   + caiet("5.2", [
        "<code>2 ** b[\"log_distanta\"]</code> și <code>2 ** b[\"log_la_mie\"]</code>: efectul unei dublări; "
        "<code>10 ** b[\"granita\"]</code>: efectul graniței.",
        "<code>m2.conf_int()</code>: intervalele de încredere de 95%."]))
@@ -644,14 +647,17 @@ sl("s12", "Reziduurile", "Peste și sub model",
        ["la aceeași distanță și migrație, efectul graniței nu se distinge clar", "granițele nu contează"],
        ["rezultatele descriu perechi de țări", "rezultatele descriu persoane"]])
    + V_CONC
-   + caiet("8 și 9", [
+   + caiet("6 și 9", [
        "<code>m2.fittedvalues</code> și <code>m2.resid</code>; graficul observat față de prezis, cu linia de 45°.",
        "Perechile cele mai mult sub și peste model; partenerii României, cu <code>10 ** reziduu</code>.",
-       "Harta reziduurilor României, pe contururile țărilor.",
-       "O analiză de rețea mică (secțiunea 9): rețeaua vecinilor și rețeaua perechilor mult peste model, desenate pe "
-       "hartă, cu gradul fiecărei țări. Perechile peste model se adună în jurul Islandei (21 de legături) și al "
-       "Luxemburgului (19)."],
-       "Partenerii Turciei, de la cel mai mult sub model la cel mai mult peste; rețeaua perechilor sub model."))
+       "Harta reziduurilor României, pe contururile țărilor; reziduul mediu pe țară: țările mari sub model, cele "
+       "mici peste.",
+       "Rețeaua regiunilor „peste model” (secțiunea 9): comunitățile Louvain după ce distanța și granițele sunt "
+       "scoase, cu rezoluția aleasă prin stabilitate (ARI). Ies cinci blocuri peste granițe; România se împarte "
+       "între blocul italo-spaniol și spațiul dunărean.",
+       "Regresia QAP pe rețeaua țărilor (9.6): semnificația prin permutarea țărilor; în M2 rezistă doar migrația, "
+       "ca la erorile grupate."],
+       "Partenerii Turciei, de la cel mai mult sub model la cel mai mult peste; comunitățile la rezoluția 1,25."))
 
 
 TAB_M3 = tabel(["", "M2: coef.", "M2: t grupat", "M3: coef.", "M3: t grupat"], [
@@ -670,8 +676,8 @@ sl("s13", "Modelul final", "Efectele de țară",
           "dublă +49%, granița +40%. VIF rămâne sub 5."),
    manual=
    "<h2>Un model mai bun: efectele de țară</h2>"
-   "<p>Rețeaua perechilor peste model (caietul, secțiunea 9) a arătat că reziduurile mari nu sunt răspândite la "
-   "întâmplare: se adună în jurul Islandei, al Luxemburgului și al Turciei. Lipsește deci din model un factor de "
+   "<p>Reziduul mediu pe țară (caietul, secțiunea 6) a arătat că reziduurile mari nu sunt răspândite la "
+   "întâmplare: țările mari (Turcia, Franța, Spania, Italia) sunt sub model, cele mici (Islanda, Luxemburgul) peste. Lipsește deci din model un factor de "
    "nivelul țării: cât de mult se folosește Facebook, cât de mică e țara, cât de izolată e lingvistic. Efectele fixe "
    "rezolvă asta fără să măsoare acești factori: fiecare țară primește o variabilă 0/1, egală cu 1 dacă țara apare în "
    "pereche (una rămâne referința). Coeficienții se citesc atunci în interiorul țării: pentru aceeași țară, partenerii "
@@ -683,11 +689,19 @@ sl("s13", "Modelul final", "Efectele de țară",
      "țara 1 și pe țara 2 (<code>cov_type=\"cluster\"</code>) țin cont că perechile cu o țară comună seamănă între ele. "
      "Cu ele, în M2 distanța și granița nu se mai deosebesc de întâmplare; în M3 toate trei trec pragul. Concluzia lui M2 "
      "despre distanță depindea de presupunerea, greșită, că perechile sunt independente.</p>"
-   + caiet("10", [
+   + caiet("7", [
        "Variabilele de țară, cu o buclă; <code>m3</code> cu formula lui M2 plus efectele.",
        "VIF-ul celor trei variabile, cu efectele de țară; erorile grupate (<code>cov_type=\"cluster\"</code>) pentru M2 și M3."],
        "Limba oficială comună, ca variabilă 0/1: are sens teoretic, dar se suprapune cu granița."))
 
+
+SURSE_C7 = surse("Documentația modelului", [
+    ("statsmodels: Fitting models using R-style formulas", "https://www.statsmodels.org/stable/example_formulas.html", "smf.ols, formula, params, rsquared"),
+    ("statsmodels: OLS results", "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html", "conf_int, resid, fittedvalues"),
+    ("geopandas: dissolve și sjoin", "https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html", "contururile țărilor din regiuni; vecinii"),
+    ("Kuhn și Johnson: Feature Engineering and Selection", "https://bookdown.org/max/FES/", "construcția, transformarea și selecția variabilelor"),
+    ("Gelman, Hill și Vehtari: Regression and Other Stories, cap. 12", "https://avehtari.github.io/ROS-Examples/", "logaritmi, scalare și interpretarea coeficienților"),
+])
 
 sl("s14", "Modelul final", "Ce se poate concluziona",
    "<h2>Ce se poate concluziona</h2>"
@@ -701,58 +715,8 @@ sl("s14", "Modelul final", "Ce se poate concluziona",
           "Reziduurile s-au adunat în jurul câtorva țări; efectele de țară au corectat modelul, iar erorile grupate "
           "au arătat ce rezistă. Diagnosticul a schimbat modelul.", True),
    dupa=V_CONC,
-   manual="")
-
-
-# ===========================================================================
-#  E. Verificarea
-# ===========================================================================
-
-_N = M["n"]
-DOVADA = {
-    "id": "c7-dovada",
-    "sarcina": "Trei rezultate din caiet, rulate pe datele proprii. Ieșirea fiecăruia se lipește în câmpul lui.",
-    "indiciu": "Celulele sunt în caietul 07: secțiunile 2, 6.2 și 7.2.",
-    "pasi": [
-        {"t": "Perechile modelului",
-         "cmd": "len(date)",
-         "gol": "numărul afișat",
-         "cauta": rf"\b{_N}\b",
-         "ind": f"Un singur număr: perechile de țări cu toate variabilele, {_N}.",
-         "daca_nu": f"Trebuie să iasă {_N}. Perechile fără migrație se scot înainte (dropna pe migranti)."},
-        {"t": "R² al modelului M2",
-         "cmd": "m2.rsquared",
-         "gol": "numărul afișat",
-         "cauta": r"0[.,]5[0-6]\d*",
-         "ind": f"Un număr între 0 și 1, în jur de {ro(MOD['m4']['r2'])}.",
-         "daca_nu": "R² trebuie să fie în jur de 0.53. Variabilele intră pe logaritm, iar rata se calculează la mie."},
-        {"t": "Rata dublă",
-         "cmd": "2 ** m2.params[\"log_la_mie\"]",
-         "gol": "numărul afișat",
-         "cauta": r"1[.,]3\d*",
-         "ind": f"Un număr puțin peste 1, în jur de {ro(2 ** B4['log_la_mie'])}.",
-         "daca_nu": "Trebuie să iasă în jur de 1.36. Coeficientul se ia din M2, cu distanța și granița în model."},
-    ],
-    "explicatie": "Rezultatele sunt cele din caiet.",
-}
-
-SURSE_C7 = surse("Documentația modelului", [
-    ("statsmodels: Fitting models using R-style formulas", "https://www.statsmodels.org/stable/example_formulas.html", "smf.ols, formula, params, rsquared"),
-    ("statsmodels: OLS results", "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html", "conf_int, resid, fittedvalues"),
-    ("geopandas: dissolve și sjoin", "https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html", "contururile țărilor din regiuni; vecinii"),
-    ("Kuhn și Johnson: Feature Engineering and Selection", "https://bookdown.org/max/FES/", "construcția, transformarea și selecția variabilelor"),
-    ("Gelman, Hill și Vehtari: Regression and Other Stories, cap. 12", "https://avehtari.github.io/ROS-Examples/", "logaritmi, scalare și interpretarea coeficienților"),
-])
-
-sl("s15", "Verificarea", "Verificarea în caiet",
-   "<h2>Verificarea modelului</h2>"
-   + ix("dovada", "Verificarea modelului", DOVADA),
    manual=
-   "<h2>Verificarea modelului</h2>"
-   "<p>Trei rezultate din caiet, pe datele proprii: numărul de perechi din model, R² al modelului M2 și efectul unei "
-   "rate a migranților de două ori mai mari. Ele verifică cele trei părți ale lecției: eșantionul, modelul și "
-   "interpretarea.</p>"
-   + ix("dovada", "Verificarea modelului", DOVADA)
+   "<h2>Ce se poate concluziona</h2>"
    + SURSE_C7)
 
 

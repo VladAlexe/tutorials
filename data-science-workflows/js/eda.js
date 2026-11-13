@@ -668,7 +668,7 @@ E.edReziduu = (gazda, d) => {
   const SSmin = P.reduce((t, p) => t + (p[1] - A0 - B0 * p[0]) ** 2, 0);
   let a = d.a0 ?? 6, b = d.b0 ?? -1, seg = false;
   const DY = d.dy || [0, 6.6], ET2 = d.et || ["țări diferite", "aceeași țară (portocaliu)"];
-  const el = bloc(gazda, `<div class="ed-ctl">${glisor("b", "panta", -3, 1, .02, b)}${glisor("a", "nivelul", 2, 10, .05, a)}<button class="ed-b ed-mp">cele mai mici pătrate</button><button class="ed-b ed-sg">reziduurile, ca segmente</button></div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const el = bloc(gazda, `<div class="ed-ctl">${glisor("b", "panta", -3, 1, .02, b)}${glisor("a", "constanta (intercept)", 2, 10, .05, a)}<button class="ed-b ed-mp">cele mai mici pătrate</button><button class="ed-b ed-sg">reziduurile, ca segmente</button></div><div class="ed-g"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
   const [ib, ia] = ["b", "a"].map(n => el.querySelector(`input[data-n="${n}"]`));
   const W = 900, x0 = 56, x1 = W - 16;
   const deseneaza = () => {
@@ -686,7 +686,7 @@ E.edReziduu = (gazda, d) => {
     const r0 = res.filter((_, i) => !P[i][2]), r1 = res.filter((_, i) => P[i][2]), ss = res.reduce((t, e) => t + e * e, 0);
     el.querySelector(".ed-o").innerHTML = cifre([["suma pătratelor reziduurilor", f(ss, 0)], ["față de minimul posibil", `+${f(100 * (ss / SSmin - 1), 1)}%`, ss / SSmin < 1.005 ? "ed-c-adev" : ""],
       ["reziduul median, " + ET2[0], f(mediana(r0), 2)], ["reziduul median, " + ET2[1], f(mediana(r1), 2), "ed-c-sus"], ...(d.r2 ? [["R²", f(1 - ss / P.reduce((t, p, _, A) => t + (p[1] - medie(A.map(q => q[1]))) ** 2, 0), 2), "ed-c-m1"]] : [])])
-      + panou("Panta și nivelul se ajustează până când suma pătratelor nu mai scade; rezultatul se compară apoi cu metoda celor mai mici pătrate.");
+      + panou("Panta și constanta se ajustează până când suma pătratelor nu mai scade; rezultatul se compară apoi cu metoda celor mai mici pătrate.");
     ib.nextElementSibling.textContent = f(b, 2); ia.nextElementSibling.textContent = f(a, 2);
   };
   ib.addEventListener("input", () => { b = +ib.value; deseneaza(); });
