@@ -135,7 +135,7 @@ DECIZII = tabel(["Din C6", "În model"], [
     ["SCI: asimetrie pozitivă", "log SCI"],
     ["Svalbard: numitor foarte mic", "exclus"],
     ["distanța și granița, legate", "două variabile separate: log distanța și granița"],
-    ["migrația contează ca rată", "log rata migranților la mie, nu numărul"],
+    ["migrația contează ca rată", "log rata migranților la mie; în M4, cu efectele de țară, numărul de migranți"],
     ["partenerii și comunitățile urmează migrația", "reziduurile arată ce rămâne după migrație"],
 ])
 
@@ -227,13 +227,13 @@ sl("s4", "Variabilele", "Transformarea",
 
 
 V_Z = verif("c7-v-z", 1,
-            "Scorul z se aplică ratei migranților (pe log). Ce se schimbă?",
-            ["Forma distribuției: devine normală",
-             "Doar unitatea: media devine 0, abaterea standard 1; forma rămâne",
-             "Valorile extreme dispar",
+            "Scorul z se aplică ratei migranților. Ce se schimbă?",
+            ["Forma distribuției",
+             "Media și abaterea standard: devin 0 și 1",
              "Ordinea perechilor"],
-            "Scorul z scade media și împarte la abaterea standard: o transformare liniară. Forma și ordinea rămân "
-            "aceleași; pentru a schimba forma e nevoie de o transformare neliniară, ca logaritmul.")
+            "Scorul z doar mută și întinde axa. Forma și ordinea rămân; forma o schimbă logaritmul.",
+            indiciu="z = (valoarea − media) / abaterea standard: se scade un număr și se împarte la un număr. "
+                    "Ce poate schimba o asemenea operație?")
 
 _Z = {**_T, "alese": ["IT–RO", "HU–RO", "DE–TR", "IS–NO"]}
 
@@ -488,6 +488,48 @@ _X = {
 }
 SUMAR = {"linii": _L, "expl": _X, "prim": "r2"}
 
+V_EL = verif("c7-v-el", 1,
+             f"În M2, coeficientul ratei migranților este {ro(B4['log_la_mie'])}. Ce înseamnă?",
+             [f"La fiecare migrant în plus, SCI crește cu {ro(B4['log_la_mie'])}",
+              "O rată cu 10% mai mare merge cu un SCI cu aproximativ 4% mai mare",
+              "Migrația produce un SCI mai mare"],
+             "Ambele variabile sunt pe logaritm, deci coeficientul se citește în procente. Este o asociere, nu o cauză.",
+             indiciu="SCI și rata sunt amândouă pe logaritm. Pe logaritmi, schimbările se citesc în procente, nu în unități.")
+
+MANUAL_EL = (
+   "<h2>Interpretarea coeficienților</h2>"
+   "<p>Când variabila dependentă și predictorul sunt amândouă pe logaritm, coeficientul este o elasticitate: arată "
+   "cu cât la sută se schimbă SCI la o schimbare de 1% a predictorului. Cu rata migranților (0,44): o rată cu 1% "
+   "mai mare merge cu un SCI cu aproximativ 0,44% mai mare; o rată cu 10% mai mare, cu un SCI cu aproximativ 4% mai "
+   "mare, la aceeași distanță și graniță. Pentru schimbări mari, citirea exactă este "
+   "multiplicativă: dacă predictorul se înmulțește cu k, SCI se înmulțește cu k la puterea coeficientului. Pentru o "
+   "variabilă binară (granița), SCI se înmulțește cu 10 la puterea coeficientului (cu log10).</p>"
+   + ix("edElasticitate", "SCI prezis de M2, când se schimbă predictorii", {"coef": B4})
+   + tabel(["Predictorul", "Coeficientul", "Intervalul de 95%", "Citirea"], [
+       ["log distanța", ro(B4["log_distanta"]), f"{ro(CI['log_distanta'][0])} … {ro(CI['log_distanta'][1])}",
+        f"distanța dublă: SCI × {ro(2 ** B4['log_distanta'])} ({pct(2 ** B4['log_distanta'])} mai puțin)"],
+       ["log migranți la mie", ro(B4["log_la_mie"]), f"{ro(CI['log_la_mie'][0])} … {ro(CI['log_la_mie'][1])}",
+        f"rata dublă: SCI × {ro(2 ** B4['log_la_mie'])} ({pct(2 ** B4['log_la_mie'])} mai mult)"],
+       ["granița", ro(B4["granita"]), f"{ro(CI['granita'][0])} … {ro(CI['granita'][1])}",
+        f"țări vecine: SCI × {ro(10 ** B4['granita'])}; intervalul conține 0"]])
+   + "<p><b>Care predictor contează mai mult?</b> Coeficienții de mai sus nu se compară direct: un pas de 1 pe "
+     "logaritm înseamnă o înmulțire cu 10, iar între perechile de țări distanța variază de obicei de 1,9 ori, rata "
+     "migranților de 5 ori. Pe scoruri z (slide-ul cu scalarea), pasul devine o diferență tipică între perechi:</p>"
+   + tabel(["Predictorul", "Coeficientul în M2", "Coeficientul pe scoruri z"], [
+       ["log distanța", ro(B4["log_distanta"]), ro(M["m4z"]["z_log_distanta"])],
+       ["log migranți la mie", ro(B4["log_la_mie"]), ro(M["m4z"]["z_log_la_mie"])],
+       ["granița (0/1, nescalată)", ro(B4["granita"]), ro(M["m4z"]["granita"])]])
+   + "<p>La o diferență tipică, migrația contează de aproape patru ori mai mult decât distanța. Granița rămâne 0/1: "
+     "o variabilă binară nu se scalează.</p>"
+   + "<p>Intervalul de încredere arată valorile plauzibile ale coeficientului. Intervalele distanței și ale migrației "
+     "nu conțin 0: aceste asocieri se deosebesc de întâmplare (aceeași idee ca valoarea p din C6). Intervalul graniței "
+     "conține 0: pe aceste perechi de țări, la aceeași distanță și migrație, efectul graniței nu se distinge clar. "
+     "Intervalele sunt, în plus, prea înguste: aceeași țară apare în multe perechi, deci perechile nu sunt independente "
+     "(C6). Corecția uzuală sunt erorile standard grupate pe țară.</p>"
+   + V_EL
+   + glosar("elast", "ic"))
+
+
 sl("s10", "Modelul", "Rezultatul complet",
    "<h2>Rezultatul complet al modelului</h2>"
    + concept(f"Trei blocuri: modelul în ansamblu ({gl('r2a', 'R² ajustat')}, testul F, AIC), coeficienții (eroarea "
@@ -520,66 +562,16 @@ sl("s10", "Modelul", "Rezultatul complet",
      "nu adaugă un efect clar odată ce distanța și migrația sunt în model (p = 0,21). Rezultatele sunt asocieri între "
      "perechi de țări, nu efecte cauzale; reziduurile nu sunt perfect normale, iar erorile standard sunt subestimate, "
      "pentru că aceeași țară apare în multe perechi.</p>"
+   + "<p><b>Codul.</b></p>"
+   + cod('formula_m2 = "log_sci ~ log_distanta + log_la_mie + granita"   # variabila explicată ~ predictorii\n'
+         'm2 = smf.ols(formula_m2, data=date).fit()    # ols: cele mai mici pătrate; fit: estimarea\n'
+         'm2.summary()                                 # tot rezultatul, în trei blocuri')
+   + MANUAL_EL
    + glosar("r2a")
-   + caiet("5.1 și 5.3", [
+   + caiet("5.1 și 5.2", [
        "<code>m2.summary()</code>: cele trei blocuri, cu explicațiile din caiet.",
        "Interpretarea, ca într-un raport: un paragraf care spune mărimea efectelor, incertitudinea și limitele."],
        "<code>m_numar.summary()</code>: modelul cu numărul de migranți; cum se schimbă R² ajustat și AIC?"))
-
-
-V_EL = verif("c7-v-el", 2,
-             f"În M2, coeficientul ratei migranților este {ro(B4['log_la_mie'])}. Ce înseamnă?",
-             [f"SCI crește cu {ro(B4['log_la_mie'])} la fiecare migrant în plus",
-              f"SCI crește cu {round(B4['log_la_mie'] * 100)}% la fiecare migrant la mie în plus",
-              f"Rata dublă: SCI × 2<sup>{ro(B4['log_la_mie'])}</sup> = {ro(2 ** B4['log_la_mie'])}, la aceeași distanță și graniță",
-              f"Migrația produce un SCI cu {round(B4['log_la_mie'] * 100)}% mai mare"],
-             "Ambele părți sunt pe logaritm, deci coeficientul este o elasticitate: se citește în rapoarte, nu în "
-             "unități. Este o asociere, la aceeași distanță și graniță, nu un efect cauzal.")
-
-sl("s11", "Modelul", "Interpretarea coeficienților",
-   "<h2>Ce înseamnă coeficienții</h2>"
-   + concept(f"Pe logaritmi, coeficientul este o {gl('elast', 'elasticitate')}: dacă predictorul se dublează, SCI se înmulțește cu 2 "
-             "la puterea coeficientului. Pentru granița (0 sau 1), cu 10 la puterea coeficientului. Glisoarele schimbă "
-             "predictorii.")
-   + ix("edElasticitate", "SCI prezis de M2, când se schimbă predictorii", {"coef": B4})
-   + vede(f"Distanța dublă: SCI −{pct(2 ** B4['log_distanta'])}. Rata dublă: "
-          f"+{pct(2 ** B4['log_la_mie'])}. Granița: +{pct(10 ** B4['granita'])}, dar "
-          f"{gl('ic', 'intervalul')} ei ({ro(CI['granita'][0])} … {ro(CI['granita'][1])}) conține 0."),
-   dupa=V_EL,
-   manual=
-   "<h2>Interpretarea coeficienților</h2>"
-   "<p>Când variabila dependentă și predictorul sunt amândouă pe logaritm, coeficientul este o elasticitate: arată "
-   "cu cât la sută se schimbă SCI la o schimbare de 1% a predictorului. Pentru schimbări mari, citirea exactă este "
-   "multiplicativă: dacă predictorul se înmulțește cu k, SCI se înmulțește cu k la puterea coeficientului. Pentru o "
-   "variabilă binară (granița), SCI se înmulțește cu 10 la puterea coeficientului (cu log10).</p>"
-   + ix("edElasticitate", "SCI prezis de M2, când se schimbă predictorii", {"coef": B4})
-   + tabel(["Predictorul", "Coeficientul", "Intervalul de 95%", "Citirea"], [
-       ["log distanța", ro(B4["log_distanta"]), f"{ro(CI['log_distanta'][0])} … {ro(CI['log_distanta'][1])}",
-        f"distanța dublă: SCI × {ro(2 ** B4['log_distanta'])} ({pct(2 ** B4['log_distanta'])} mai puțin)"],
-       ["log migranți la mie", ro(B4["log_la_mie"]), f"{ro(CI['log_la_mie'][0])} … {ro(CI['log_la_mie'][1])}",
-        f"rata dublă: SCI × {ro(2 ** B4['log_la_mie'])} ({pct(2 ** B4['log_la_mie'])} mai mult)"],
-       ["granița", ro(B4["granita"]), f"{ro(CI['granita'][0])} … {ro(CI['granita'][1])}",
-        f"țări vecine: SCI × {ro(10 ** B4['granita'])}; intervalul conține 0"]])
-   + "<p><b>Care predictor contează mai mult?</b> Coeficienții de mai sus nu se compară direct: un pas de 1 pe "
-     "logaritm înseamnă o înmulțire cu 10, iar între perechile de țări distanța variază de obicei de 1,9 ori, rata "
-     "migranților de 5 ori. Pe scoruri z (slide-ul cu scalarea), pasul devine o diferență tipică între perechi:</p>"
-   + tabel(["Predictorul", "Coeficientul în M2", "Coeficientul pe scoruri z"], [
-       ["log distanța", ro(B4["log_distanta"]), ro(M["m4z"]["z_log_distanta"])],
-       ["log migranți la mie", ro(B4["log_la_mie"]), ro(M["m4z"]["z_log_la_mie"])],
-       ["granița (0/1, nescalată)", ro(B4["granita"]), ro(M["m4z"]["granita"])]])
-   + "<p>La o diferență tipică, migrația contează de aproape patru ori mai mult decât distanța. Granița rămâne 0/1: "
-     "o variabilă binară nu se scalează.</p>"
-   + "<p>Intervalul de încredere arată valorile plauzibile ale coeficientului. Intervalele distanței și ale migrației "
-     "nu conțin 0: aceste asocieri se deosebesc de întâmplare (aceeași idee ca valoarea p din C6). Intervalul graniței "
-     "conține 0: pe aceste perechi de țări, la aceeași distanță și migrație, efectul graniței nu se distinge clar. "
-     "Intervalele sunt, în plus, prea înguste: aceeași țară apare în multe perechi, deci perechile nu sunt independente "
-     "(C6). Corecția uzuală sunt erorile standard grupate pe țară.</p>"
-   + V_EL
-   + glosar("elast", "ic")
-   + caiet("5.2", [
-       "<code>2 ** b[\"log_distanta\"]</code> și <code>2 ** b[\"log_la_mie\"]</code>: efectul unei dublări; "
-       "<code>10 ** b[\"granita\"]</code>: efectul graniței.",
-       "<code>m2.conf_int()</code>: intervalele de încredere de 95%."]))
 
 
 # ===========================================================================
@@ -600,14 +592,12 @@ HARTA_MODEL = {
     ]}
 
 V_CONC = verif("c7-v-conc", 1,
-               "Modelul arată o asociere puternică între migrație și SCI. De ce nu se poate afirma că migrația produce "
-               "legăturile?",
+               "Perechile cu mai mulți migranți sunt mai legate. De ce nu putem spune că migrația produce legăturile?",
                ["Pentru că R² este sub 1",
-                "Pentru că legăturile existente pot atrage și ele migrație, iar SCI e măsurat într-un singur moment",
-                "Pentru că eșantionul are doar 263 de perechi",
-                "Pentru că modelul folosește logaritmi"],
-               "Relația poate funcționa în ambele sensuri: oamenii migrează unde au deja cunoscuți. Cu o singură "
-               "măsurare, direcțiile nu se pot separa. Modelul arată asocieri, la aceeași distanță și graniță.")
+                "Pentru că legăturile pot atrage și ele migrație: oamenii pleacă unde au deja cunoscuți",
+                "Pentru că avem doar 263 de perechi"],
+               "Relația poate merge în ambele sensuri, iar SCI e măsurat o singură dată: direcțiile nu se pot separa.",
+               indiciu="Gândiți-vă la ordinea lucrurilor: întâi pleacă oamenii și apoi apar prieteniile, sau invers?")
 
 sl("s12", "Reziduurile", "Peste și sub model",
    "<h2>Reziduurile: unde greșește modelul</h2>"
@@ -621,6 +611,11 @@ sl("s12", "Reziduurile", "Peste și sub model",
    "ori este perechea mai legată (sau mai puțin legată) decât prezice modelul. Pe hartă, după alegerea unei țări, "
    "fiecare partener se colorează după raportul lui.</p>"
    + ix("harta", "SCI față de model, pe țări", HARTA_MODEL)
+   + "<p><b>Codul.</b></p>"
+   + cod('date["prezis"] = m2.fittedvalues           # log SCI prezis de M2, pentru fiecare pereche\n'
+         'date["reziduu"] = m2.resid                 # observat - prezis, pe logaritm\n'
+         'cu_ro = date[date["pereche"].str.contains("RO")].copy()       # perechile cu România\n'
+         'cu_ro["de_cate_ori"] = 10 ** cu_ro["reziduu"]                 # observat / prezis')
    + "<p>Reziduurile mari nu sunt erori de calcul. Ele arată factori pe care modelul nu îi include: o minoritate "
      "(Ungaria și România), o limbă comună, o particularitate a măsurării (Islanda și Luxemburgul, țări mici). Pentru "
      "proiect, ele sunt partea cea mai informativă: fiecare reziduu mare este o întrebare de cercetare.</p>"
@@ -632,7 +627,8 @@ sl("s12", "Reziduurile", "Peste și sub model",
        ["rezultatele descriu perechi de țări", "rezultatele descriu persoane"]])
    + V_CONC
    + caiet("6", [
-       "<code>m2.fittedvalues</code> și <code>m2.resid</code>; graficul observat față de prezis, cu linia de 45°.",
+       "<code>m2.fittedvalues</code> și <code>m2.resid</code>; graficul observat față de prezis, cu linia de 45°: "
+       "distanța pe verticală până la linie este reziduul.",
        "Perechile cele mai mult sub și peste model; partenerii României, cu <code>10 ** reziduu</code>.",
        "Harta reziduurilor României, pe contururile țărilor; reziduul mediu pe țară: țările mari sub model, cele "
        "mici peste."],
@@ -645,33 +641,157 @@ TAB_M3 = tabel(["", "M2: coef.", "M2: t grupat", "M3: coef.", "M3: t grupat"], [
     ["granița", "0,11", "1,0", "0,15", "2,9"],
     ["R²", "0,53", "", "0,92", ""]])
 
-sl("s13", "Modelul final", "Efectele de țară",
+HARTA_M3 = {
+    "niveluri": ["tari"], "nivel": "tari", "masura": "model3", "ales": "RO", "masuri": ["model", "model3"],
+    "povesti": [
+        {"t": "România", "nivel": "tari", "masura": "model3", "ales": "RO",
+         "text": "Cu M3, Islanda și Luxemburgul nu mai ies peste model, iar Italia ajunge exact cât prezice modelul "
+                 "(×1,0). Rămân peste model Ungaria (×2,9, minoritatea maghiară) și Irlanda (×2,1)."},
+        {"t": "Islanda", "nivel": "tari", "masura": "model3", "ales": "IS",
+         "text": "În M2, Islanda era peste model cu aproape toți partenerii: un efect de mărime. Cu efectele de "
+                 "țară, el dispare; rămân legăturile cu țările nordice."},
+        {"t": "Cehia", "nivel": "tari", "masura": "model3", "ales": "CZ",
+         "text": "Cehia și Slovacia: de 2,8 ori peste M3. Fostul stat comun nu este în model."},
+        {"t": "Turcia", "nivel": "tari", "masura": "model3", "ales": "TR",
+         "text": "În M2, Turcia era sub model cu aproape toți. Cu efectele de țară, diferențele dintre partenerii ei "
+                 "devin mici."},
+    ]}
+
+sl("s13", "Modele mai bune", "Efectele de țară",
    "<h2>Un model mai bun: efectele de țară</h2>"
-   + concept("Reziduurile se adunau în jurul câtorva țări: lipsea ceva de nivelul țării (folosirea Facebook, "
-             "mărimea, limba). <b>Efectele fixe</b> dau fiecărei țări o variabilă 0/1 și absorb tot ce e constant la "
-             "nivelul ei. <b>Erorile grupate</b> țin cont că perechile aceleiași țări nu sunt independente.")
-   + TAB_M3
-   + vede("Cu erorile grupate, în M2 doar migrația rezistă. În M3 contează toate trei: distanța dublă −19%, rata "
-          "dublă +49%, granița +40%. VIF rămâne sub 5."),
+   + concept("Unele țări sunt legate puternic de aproape oricine (Islanda, Luxemburgul: țări mici), altele slab "
+             "(Turcia). M2 nu știe asta și greșește la fel pentru toți partenerii lor. <b>Efectele de țară</b> dau "
+             "fiecărei țări nivelul ei de pornire; apoi modelul (M3) compară partenerii aceleiași țări între ei. "
+             "Butoanele comută între M2 și M3.")
+   + ix("harta", "SCI față de model: M2 și M3, pe țări", HARTA_M3)
+   + vede("Cu M3, efectul de mărime dispare. Rămân legăturile cu o explicație proprie: Ungaria-România ×2,9, "
+          "Cehia-Slovacia ×2,8, Luxemburg-Portugalia ×4,5."),
    manual=
    "<h2>Un model mai bun: efectele de țară</h2>"
-   "<p>Reziduul mediu pe țară (caietul, secțiunea 6) a arătat că reziduurile mari nu sunt răspândite la "
-   "întâmplare: țările mari (Turcia, Franța, Spania, Italia) sunt sub model, cele mici (Islanda, Luxemburgul) peste. Lipsește deci din model un factor de "
-   "nivelul țării: cât de mult se folosește Facebook, cât de mică e țara, cât de izolată e lingvistic. Efectele fixe "
-   "rezolvă asta fără să măsoare acești factori: fiecare țară primește o variabilă 0/1, egală cu 1 dacă țara apare în "
-   "pereche (una rămâne referința). Coeficienții se citesc atunci în interiorul țării: pentru aceeași țară, partenerii "
-   "mai apropiați și cu mai mulți migranți sunt mai legați?</p>"
+   "<p><b>Ideea, cu o analogie.</b> Doi profesori notează aceeași clasă: unul dă note mari tuturor, altul note "
+   "mici. Ca să afli cine învață mai bine, compari elevii <i>aceluiași</i> profesor, nu notele de la profesori "
+   "diferiți. Aici „profesorii” sunt țările: Islanda are SCI mare cu aproape oricine (o țară mică, deci un numitor "
+   "mic), Turcia mic. Efectele de țară dau fiecărei țări nivelul ei, iar coeficienții se citesc apoi în interiorul "
+   "țării: pentru România, de exemplu, se compară partenerii României între ei.</p>"
+   "<p>Reziduul mediu pe țară (caietul, secțiunea 6) a arătat exact asta: țările mari (Turcia, Franța, Spania, "
+   "Italia) sunt sub M2, cele mici (Islanda, Luxemburgul) peste. Efectele fixe rezolvă problema fără să măsoare "
+   "cauzele (folosirea Facebook, mărimea, limba): fiecare țară primește o variabilă 0/1, egală cu 1 dacă apare în "
+   "pereche; una rămâne referința.</p>"
+   "<p><b>Codul.</b></p>"
+   + cod('for t in tarile[1:]:                                   # fiecare țară, în afară de referință\n'
+         '    date["fe_" + t] = date["pereche"].str.contains(t).astype(int)   # 1 dacă țara e în pereche\n'
+         'm3 = smf.ols(formula_m2 + efecte, data=date).fit()      # formula lui M2, plus variabilele de țară\n'
+         'm3g = smf.ols(formula_m3, data=date).fit(cov_type="cluster", cov_kwds={"groups": grupe})   # erorile grupate')
+   + ix("harta", "SCI față de model: M2 și M3, pe țări", HARTA_M3)
    + TAB_M3
    + "<p>R² urcă la 0,92, dar creșterea vine mai ales din variabilele de țară; ce contează sunt cei trei coeficienți. "
      "Două verificări însoțesc modelul. <b>VIF</b>, calculat pentru cele trei variabile cu efectele de țară printre "
      "ceilalți predictori, crește (distanța la aproximativ 3,8) dar rămâne sub 5. <b>Erorile standard grupate</b> pe "
      "țara 1 și pe țara 2 (<code>cov_type=\"cluster\"</code>) țin cont că perechile cu o țară comună seamănă între ele. "
-     "Cu ele, în M2 distanța și granița nu se mai deosebesc de întâmplare; în M3 toate trei trec pragul. Concluzia lui M2 "
-     "despre distanță depindea de presupunerea, greșită, că perechile sunt independente.</p>"
+     "Cu ele, în M2 distanța și granița nu se mai deosebesc de întâmplare; în M3 toate trei trec pragul.</p>"
+   + "<p>Harta după M3 arată ce rămâne: reziduurile nu mai urmează mărimea țărilor, ci legături particulare, fiecare "
+     "cu o explicație de verificat (o minoritate, un fost stat comun, o comunitate de migranți).</p>"
    + caiet("7", [
        "Variabilele de țară, cu o buclă; <code>m3</code> cu formula lui M2 plus efectele.",
-       "VIF-ul celor trei variabile, cu efectele de țară; erorile grupate (<code>cov_type=\"cluster\"</code>) pentru M2 și M3."],
-       "Limba oficială comună, ca variabilă 0/1: are sens teoretic, dar se suprapune cu granița."))
+       "VIF-ul celor trei variabile, cu efectele de țară; erorile grupate (<code>cov_type=\"cluster\"</code>) pentru M2 și M3.",
+       "Harta partenerilor României, după M2 și după M3."]))
+
+
+# ===========================================================================
+#  M4: reziduurile cele mai mici
+# ===========================================================================
+
+OP = {"op": M["op"]}
+
+TAB_M4 = tabel(["Variabila", "Coeficientul", "t grupat", "VIF", "De ce"], [
+    ["log distanța", "−0,22", "−3,7", "4,0", "distanța rămâne o barieră"],
+    ["log număr de migranți", "0,63", "25,3", "3,8", "câți oameni fac legătura; mărimea țărilor e deja în efectele de țară"],
+    ["granița", "0,14", "3,6", "2,2", "vecinătatea"],
+    ["fost stat comun", "0,27", "4,0", "1,4", "Cehoslovacia, URSS: rude, colegi, limbă apropiată"]])
+
+TAB_REZ_M = tabel(["", "R²", "greșește de obicei", "perechi prezise sub ×1,5"], [
+    ["M2", "0,53", "× 2,21", "41%"],
+    ["M3", "0,92", "× 1,38", "79%"],
+    ["<b>M4</b>", "<b>0,94</b>", "<b>× 1,33</b>", "<b>87%</b>"]])
+
+sl("s16", "Modele mai bune", "Reziduuri mici",
+   "<h2>M4: reziduurile cele mai mici</h2>"
+   + concept("Două schimbări cu motiv teoretic: <b>numărul</b> de migranți în locul ratei (mărimea țărilor e deja "
+             "în efectele de țară) și <b>fostul stat comun</b> (Cehia-Slovacia, țările baltice). Fiecare punct e o "
+             "pereche: cu cât e mai aproape de diagonală, cu atât reziduul e mai mic.")
+   + ix("edObsPrez", "SCI observat față de prezis: M2, M3, M4", OP),
+   manual=
+   "<h2>M4: reziduurile cele mai mici</h2>"
+   "<p>Reziduurile lui M3 sugerează două schimbări. Fiecare are o justificare teoretică, stabilită înainte de a "
+   "vedea efectul asupra reziduurilor.</p>"
+   "<p><b>Numărul de migranți în locul ratei.</b> În M2, rata era mult mai bună decât numărul (R² 0,53 față de "
+   "0,26), pentru că numărul depinde de mărimea țărilor. În M3, mărimea fiecărei țări este deja în efectele de țară. "
+   "Rămâne ce măsoară numărul: câți oameni fac legătura între cele două țări. Construcția potrivită a unei variabile "
+   "depinde deci de model.</p>"
+   "<p><b>Fostul stat comun.</b> Cehia-Slovacia este de 2,8 ori peste M3. Cehoslovacia s-a despărțit în 1993; "
+   "Estonia, Letonia și Lituania au făcut parte din URSS până în 1991. Rudele, colegii și limba înțeleasă reciproc "
+   "nu dispar odată cu statul. Variabila este 0/1, ca granița.</p>"
+   + TAB_M4
+   + "<p>Toate patru au semnul așteptat, |t| peste 3 cu erorile grupate și VIF sub 5. <b>Cât de mici sunt "
+     "reziduurile?</b> Abaterea standard a reziduurilor este pe logaritm; 10 la puterea ei spune de câte ori greșește "
+     "de obicei modelul, în plus sau în minus.</p>"
+   + TAB_REZ_M
+   + ix("edObsPrez", "SCI observat față de prezis: M2, M3, M4", OP)
+   + "<p>Cea mai mare parte a câștigului vine din efectele de țară (M3); M4 îl rafinează. Rămân departe "
+     "Luxemburg-Portugalia (×3,3) și Ungaria-România (×3,1). O variabilă „minoritate” pentru Ungaria-România ar "
+     "micșora reziduul, dar ar fi aleasă după ce s-a văzut reziduul: ar învăța datele pe de rost. O variabilă intră "
+     "în model pentru un motiv teoretic stabilit dinainte. Limba oficială comună are un astfel de motiv, dar adăugată "
+     "la M4 are coeficientul aproape 0 (t ≈ 1): perechile cu limbă comună sunt vecine și cu mulți migranți, iar "
+     "granița și migrația au preluat deja efectul.</p>"
+   + "<p><b>Codul.</b></p>"
+   + cod('fost_stat = ["CZ-SK", "EE-LT", "EE-LV", "LT-LV"]                 # Cehoslovacia; țările baltice\n'
+         'date["stat_comun"] = date["pereche"].isin(fost_stat).astype(int)   # 1 pentru aceste perechi\n'
+         'formula_m4 = "log_sci ~ log_distanta + log_migranti + granita + stat_comun" + efecte\n'
+         'm4 = smf.ols(formula_m4, data=date).fit(cov_type="cluster", cov_kwds=grupuri)\n'
+         '10 ** m4.resid.std()                       # de câte ori greșește de obicei: 1,33')
+   + caiet("7.6", [
+       "<code>stat_comun</code> cu <code>isin</code>; M4 cu erorile grupate; VIF cu efectele de țară.",
+       "R² și „greșește de obicei de ×” pentru M2, M3, M4; graficul observat față de prezis, M2 și M4.",
+       "Perechile cele mai departe de M4; harta partenerilor României după M4."],
+       "Limba oficială comună adăugată la M4: coeficientul și t-ul ei."))
+
+HARTA_M4 = {
+    "niveluri": ["tari"], "nivel": "tari", "masura": "model4", "ales": "RO", "masuri": ["model", "model3", "model4"],
+    "povesti": [
+        {"t": "România", "nivel": "tari", "masura": "model4", "ales": "RO",
+         "text": "După M4, aproape toți partenerii sunt între ×0,7 și ×1,4. Rămân peste model Ungaria (×3,1, "
+                 "minoritatea maghiară), Irlanda și Germania (×1,8)."},
+        {"t": "Cehia", "nivel": "tari", "masura": "model4", "ales": "CZ",
+         "text": "Cehia-Slovacia scade de la ×2,8 (M3) la ×1,35: fostul stat comun explică legătura. Rămâne "
+                 "Cehia-Estonia (×2,1)."},
+        {"t": "Portugalia", "nivel": "tari", "masura": "model4", "ales": "PT",
+         "text": "Luxemburg-Portugalia rămâne cea mai mare abatere (×3,3): migrația portugheză în Luxemburg este "
+                 "foarte mare raportat la o țară mică."},
+        {"t": "Turcia", "nivel": "tari", "masura": "model4", "ales": "TR",
+         "text": "În M2, Turcia era mult sub model cu aproape toți partenerii. După M4, diferențele sunt mici: "
+                 "sub model rămân Ungaria (×0,55) și Cehia."},
+    ]}
+
+sl("s17", "Modele mai bune", "Harta după M4",
+   "<h2>Ce rămâne după M4</h2>"
+   + concept("Aceeași hartă a reziduurilor, pentru cele trei modele: butoanele comută între M2, M3 și M4. Clic pe "
+             "o țară o alege; culoarea partenerului arată de câte ori e perechea peste sau sub model.")
+   + ix("harta", "SCI față de model: M2, M3 și M4, pe țări", HARTA_M4)
+   + vede("De la M2 la M4, harta se stinge: reziduurile mari dispar. Rămân câteva legături cu o explicație proprie: "
+          "Ungaria-România, Luxemburg-Portugalia."),
+   manual=
+   "<h2>Ce rămâne după M4</h2>"
+   "<p>Pe hartă, după alegerea unei țări, fiecare partener se colorează după reziduul perechii: verde, peste "
+   "model; cărămiziu, sub. Comparând cele trei modele pentru aceeași țară se vede ce a preluat fiecare: M3, efectul de "
+   "mărime (Islanda, Luxemburgul); M4, fostul stat comun (Cehia-Slovacia).</p>"
+   + ix("harta", "SCI față de model: M2, M3 și M4, pe țări", HARTA_M4)
+   + "<p><b>Codul.</b> Ca în secțiunea 7.5 a caietului, cu reziduurile lui M4:</p>"
+   + cod('cu_ro["reziduu_m4"] = m4.resid                       # reziduul fiecărei perechi cu România\n'
+         'reziduu_m4_ro = cu_ro.set_index("partener")["reziduu_m4"]\n'
+         'contur["reziduu_m4"] = contur["tara"].map(reziduu_m4_ro)   # pe conturul fiecărui partener\n'
+         'contur.plot(column="reziduu_m4", cmap="RdBu", vmin=-0.5, vmax=0.5, legend=True)')
+   + "<p>Un reziduu mic nu înseamnă că modelul a găsit cauza: înseamnă doar că perechea se comportă ca perechile "
+     "asemănătoare ei. Reziduurile mari rămase sunt întrebări de cercetare pentru proiect.</p>")
 
 
 _GRUPE = tabel(["Tipul de regiune", "Regiuni", "PIB/loc.", "Studii sup. (%)", "Șomaj (%)", "Vârsta medie", "Densitate", "Exemple"], [
@@ -680,13 +800,24 @@ _GRUPE = tabel(["Tipul de regiune", "Regiuni", "PIB/loc.", "Studii sup. (%)", "�
     ["periferice, îmbătrânite", "90", "27.350", "27,9", "7,7", "45,8", "65", "Grecia, sudul Spaniei și al Italiei, România fără București, Bulgaria"],
     ["tinere, cu șomaj ridicat", "21", "20.500", "22,8", "10,3", "34,2", "140", "Turcia, teritoriile franceze de peste mări, Ceuta"]])
 
+HARTA_TIP = {
+    "niveluri": ["regiuni"], "nivel": "regiuni", "masura": "tip", "ales": "RO32", "masuri": ["tip"],
+    "povesti": [
+        {"t": "România", "nivel": "regiuni", "masura": "tip", "ales": "RO32",
+         "text": "București-Ilfov intră cu metropolele; celelalte șapte regiuni ale României, cu periferiile îmbătrânite."},
+        {"t": "Metropolele", "nivel": "regiuni", "masura": "tip", "ales": "CZ01",
+         "text": "Praga, Bratislava, Budapesta, Varșovia, Madrid: capitalele ies împreună, deși algoritmul nu știe nimic "
+                 "despre hartă."},
+    ]}
+
 sl("s6", "Gruparea", "Tipurile de regiuni",
    "<h2>Extragerea: gruparea regiunilor</h2>"
    + concept(f"{gl('cluster', 'Gruparea')} rezumă mai mulți indicatori într-o categorie: tipul de regiune. "
              f"{gl('kmeans')} pune fiecare regiune la cel mai apropiat centru. Distanța se calculează pe toți indicatorii "
              "deodată, deci scorul z este obligatoriu.")
-   + ix("edKmeans", "Regiunile după PIB și studii, în k grupe", _REG)
-   + vede("Pe cinci indicatori, patru tipuri de regiuni. București-Ilfov intră cu metropolele, restul României cu periferiile."),
+   + ix("harta", "Cele patru tipuri de regiuni (k-means)", HARTA_TIP)
+   + vede("Metropolele (capitalele, inclusiv București-Ilfov), regiunile dezvoltate (Germania, Austria, nordul Italiei), "
+          "periferiile îmbătrânite (sudul Europei, România fără București) și regiunile tinere cu șomaj ridicat (Turcia)."),
    manual=
    "<h2>Extragerea: gruparea regiunilor</h2>"
    "<p>Extragerea rezumă mai mulți indicatori într-o singură variabilă. "
@@ -705,6 +836,12 @@ sl("s6", "Gruparea", "Tipurile de regiuni",
      "grupe care se pot descrie. În caiet, gruparea se face pe cinci indicatori (PIB, studii, șomaj, vârsta medie, "
      "log densitatea), pe cele 266 de regiuni care îi au pe toți:</p>"
    + _GRUPE
+   + ix("harta", "Cele patru tipuri de regiuni (k-means)", HARTA_TIP)
+   + "<p><b>Codul.</b></p>"
+   + cod('z = scor_z(reg[indicatori])                       # cei cinci indicatori, pe aceeași scară\n'
+         'kmeans = KMeans(n_clusters=4, n_init=10, random_state=1)   # 4 grupe; 10 porniri; rezultat reproductibil\n'
+         'reg["grupa"] = kmeans.fit(z).labels_                # grupa fiecărei regiuni\n'
+         'reg.groupby("grupa")[initiali].median()           # profilul grupelor, pe scara inițială')
    + "<p>Numerele grupelor sunt doar etichete și pot ieși în altă ordine; grupele se numesc după profil. Ca la "
      "comunitățile din C6, gruparea arată <i>că</i> regiunile se aseamănă, nu <i>de ce</i>: capitalele ies împreună, "
      "deși algoritmul nu știe nimic despre țări sau hartă.</p>"
@@ -740,25 +877,159 @@ TAB_REZ = tabel(["Rezoluția", "Comunități", "Stabilitatea (ARI între rulări
     ["1,25", "8", "0,89", "0,30"],
     ["1,5", "13", "0,90", "0,32"]])
 
-sl("s15", "Rețeaua", "Comunitățile după model",
-   "<h2>Rețeaua: legăturile dincolo de model</h2>"
-   + concept("Fiecare legătură dintre două regiuni primește o greutate: de câte ori e perechea mai legată decât "
-             "prezic distanța și granița. Louvain caută grupurile de regiuni legate între ele peste așteptări; "
-             "<b>ARI</b> compară două împărțiri (1 = identice, 0 = la întâmplare).")
-   + ix("harta", "Comunitățile rețelei „peste model”, pe regiuni", HARTA_C7)
-   + vede("Cinci blocuri care trec peste granițe (ARI cu țara 0,25, față de 0,76 pe SCI brut) și urmează migrația, "
-          "limba și istoria. Cu tipurile de regiuni din k-means, ARI este aproape 0."),
+# Rețeaua țărilor după M3: noduri pe hartă (mediana centrelor regiunilor fiecărei țări),
+# contururile țărilor ca fundal (simplificate), perechile cu reziduul lui M3 (log10).
+def _pct(d):
+    """Punctele unui contur SVG „M x,y x,y ... Z”, ca listă de inele."""
+    inele = []
+    for bucata in d.replace("Z", "").split("M"):
+        pt = [tuple(map(float, q.split(","))) for q in bucata.split() if "," in q]
+        if len(pt) >= 3:
+            inele.append(pt)
+    return inele
+
+
+def _retea():
+    import statistics
+    ex = json.loads((RAD / "date" / "explorator.json").read_text(encoding="utf-8"))
+    tari_m = sorted({t for p_ in M["rez_m3"] for t in p_.split("-")})
+    centre = {}
+    for r in ex["regiuni"]:
+        inele = _pct(r["d"])
+        if not inele:
+            continue
+        pt = max(inele, key=len)
+        centre.setdefault(r["tara"], []).append((sum(x for x, _ in pt) / len(pt), sum(y for _, y in pt) / len(pt)))
+    noduri = [{"c": t, "x": round(statistics.median(x for x, _ in centre[t])), "y": round(statistics.median(y for _, y in centre[t]))}
+              for t in tari_m if t in centre]
+    xs = [n["x"] for n in noduri]; ys = [n["y"] for n in noduri]
+    x0, x1, y0, y1 = min(xs) - 120, max(xs) + 120, min(ys) - 100, max(ys) + 100
+    contur = []
+    for t in ex["tari"]:
+        if t["cod"] in ("RU", "UA", "BY"):
+            continue
+        for inel in _pct(t["d"]):
+            pt = inel[::3]
+            if len(pt) >= 4:
+                contur.append("M" + " ".join(f"{x:.0f},{y:.0f}" for x, y in pt) + "Z")
+    perechi = [[a, b, v] for k, v in M["rez_m3"].items() for a, b in [k.split("-")]]
+    return {"noduri": noduri, "perechi": perechi, "contur": contur, "cutie": [x0, y0, x1 - x0, y1 - y0]}
+
+
+RETEA = _retea()
+
+TAB_QAP = tabel(["Variabila", "Coeficientul în M2", "p, erori obișnuite", "p, QAP (rețea)"], [
+    ["log distanța", "−0,30", "0,004", "0,21"],
+    ["log migranți la mie", "0,44", "&lt; 0,001", "&lt; 0,001"],
+    ["granița", "0,11", "0,21", "0,45"]])
+
+sl("s15", "Rețeaua", "Rețeaua după model",
+   "<h2>Rețeaua: legăturile pe care modelul nu le explică</h2>"
+   + concept("Fiecare țară e un nod. Două țări se leagă dacă perechea lor e mult mai legată decât prezice M3 (de cel "
+             "puțin 1,5 ori, pragul se schimbă din glisor). Ce rămâne după distanță, migrație, graniță și efectele de "
+             "țară formează o rețea: legături particulare, fiecare cu o poveste.")
+   + ix("edRetea", "Perechile de țări mult peste (sau sub) M3", RETEA)
+   + vede("Cehia-Slovacia și țările baltice (fostul stat comun, preluat apoi de M4), Ungaria-România, "
+          "Luxemburg-Portugalia. Sub model: Germania-Franța, Germania-Țările de Jos."),
    manual=
-   "<h2>Rețeaua: comunitățile dincolo de model</h2>"
-   "<p>În C6, comunitățile Louvain pe SCI urmau, în mare, țările: regiunile aceleiași țări și cele apropiate sunt "
-   "oricum mai legate. Pentru a vedea ce rămâne, caietul estimează întâi un model de bază pe cele 44 de mii de "
-   "perechi de regiuni (log SCI din log distanță și „aceeași țară”, R² 0,45) și dă fiecărei legături greutatea "
-   "10<sup>reziduu</sup>: de câte ori e perechea mai legată decât prezice modelul. Louvain are nevoie de greutăți "
-   "pozitive, de aceea nu se folosește reziduul direct.</p>"
-   "<p><b>Alegerea parametrului.</b> Rezoluția schimbă numărul de comunități, iar algoritmul pornește aleator (seed). "
-   "O rezoluție bună dă comunități stabile: ARI între prima rulare și alte patru, cu alt seed, aproape de 1.</p>"
+   "<h2>Rețeaua: legăturile pe care modelul nu le explică</h2>"
+   "<p>Rețeaua pornește de la reziduurile lui M3. O pereche de țări devine o legătură dacă SCI-ul ei observat e de "
+   "cel puțin 1,5 ori mai mare decât prezice M3 (sau, cu butonul „mai puțin legate”, de 1,5 ori mai mic). Grosimea "
+   "liniei crește cu reziduul; mărimea nodului, cu numărul de legături. Cu mouse-ul pe o țară, partenerii ei.</p>"
+   + ix("edRetea", "Perechile de țări mult peste (sau sub) M3", RETEA)
+   + "<p>Rețeaua folosește M3, nu M4: în ea se vede de unde a venit variabila „fost stat comun” (Cehia-Slovacia, "
+     "țările baltice între ele). Celelalte legături rămân ipoteze de verificat: o minoritate, o comunitate de "
+     "migranți, o limbă.</p>"
+   + "<p><b>Codul.</b></p>"
+   + cod('date["reziduu_m3"] = m3.resid                           # reziduul fiecărei perechi în M3\n'
+         'legate = date[10 ** date["reziduu_m3"] >= 1.5]          # perechile de cel puțin 1,5 ori peste M3\n'
+         'R = nx.from_pandas_edgelist(legate, "tara_1", "tara_2")   # rețeaua: o legătură pe pereche\n'
+         'dict(R.degree())                                         # câte legături are fiecare țară')
+   + caiet("9.1", ["Rețeaua țărilor după M3: perechile mult peste model, desenate pe hartă."]))
+
+
+QAP = {"qap": M["qap"], "tari": sorted({t for p_ in M["rez_m3"] for t in p_.split("-")})}
+
+sl("s18", "Rețeaua", "Un model de rețea",
+   "<h2>Un model de rețea: regresia QAP</h2>"
+   + concept("În rețea, perechile aceleiași țări nu sunt independente. QAP amestecă de 1.000 de ori numele țărilor: "
+             "rețeaua rămâne aceeași, legătura dintre SCI și predictori se rupe. Coeficientul real se compară cu cei "
+             "1.000 de coeficienți amestecați.")
+   + ix("edQAP", "Coeficienții lui M2, față de 1.000 de amestecări ale țărilor", QAP),
+   manual=
+   "<h2>Un model de rețea: regresia QAP</h2>"
+   "<p>Perechile de țări formează o rețea: 24 de noduri, câte o legătură între fiecare două țări. Modelele liniare "
+   "tratează perechile ca rânduri independente ale unui tabel; în rețea, perechile aceleiași țări seamănă între ele. "
+   "<b>Regresia QAP</b> (engl. <i>quadratic assignment procedure</i>, Krackhardt, 1988) este modelul clasic de rețea "
+   "pentru astfel de date: aceeași formulă ca M2, dar semnificația se calculează prin permutarea nodurilor.</p>"
+   "<p>Ideea, ca la amestecarea din C6: se amestecă etichetele țărilor (Austria devine, de exemplu, Portugalia), iar "
+   "fiecare pereche primește SCI-ul perechii amestecate. Structura rețelei rămâne aceeași (fiecare țară își păstrează "
+   "toate legăturile, doar sub alt nume), dar legătura dintre SCI și predictori se rupe. Valoarea p este proporția "
+   "amestecărilor în care coeficientul iese, în valoare absolută, cel puțin cât cel real.</p>"
+   + ix("edQAP", "Coeficienții lui M2, față de 1.000 de amestecări ale țărilor", QAP)
+   + TAB_QAP
+   + "<p>Rezistă doar migrația. Este aceeași concluzie ca la erorile grupate pentru M2, obținută pe altă cale: când "
+     "se ține cont că perechile aceleiași țări seamănă între ele, fără efectele de țară rezistă doar migrația.</p>"
+   + "<p><b>Codul.</b></p>"
+   + cod('for i in range(1000):\n'
+         '    noile_nume = generator.permutation(tarile)          # țările, în altă ordine\n'
+         '    amestec = dict(zip(tarile, noile_nume))             # fiecare țară primește numele alteia\n'
+         '    ...                                                 # SCI-ul perechii amestecate, apoi M2\n'
+         '    coeficienti_amestecati.append(model.params)\n'
+         'amestecati = pd.DataFrame(coeficienti_amestecati)\n'
+         '(amestecati["log_la_mie"].abs() >= abs(m2.params["log_la_mie"])).mean()   # p QAP')
+   + caiet("9.2", ["SCI-ul fiecărei perechi, căutat după cele două coduri; 1.000 de amestecări ale țărilor.",
+                   "Valoarea p QAP pentru fiecare predictor."]))
+
+
+_RR = M["retea_reg"]
+COMUNITATI = {"retea": {"noduri": _RR["noduri"], "brut": _RR["brut"], "model": _RR["model"]},
+              "stat": _RR["stat"], "brut_stat": _RR["brut_stat"],
+              "nume": ["vestul francofon", "blocul latin", "sud-estul și diaspora turcă", "spațiul dunărean",
+                       "nordul și centrul-estul"],
+              "culori": ["#4e79a7", "#e15759", "#f28e2b", "#59a14f", "#b07aa1"]}
+
+sl("s19", "Rețeaua", "Comunitățile",
+   "<h2>Comunitățile regiunilor: înainte și după model</h2>"
+   + concept("Rețeaua celor 297 de regiuni, cu două greutăți: SCI (ca în C6) și de câte ori e perechea peste un model "
+             "de bază (distanța și „aceeași țară”). Louvain caută grupurile legate între ele; rezoluția se alege prin "
+             "stabilitate.")
+   + ix("edComunitati", "Comunitățile Louvain pe rețeaua regiunilor", COMUNITATI),
+   manual=
+   "<h2>Comunitățile regiunilor: înainte și după model</h2>"
+   "<p>Aceeași idee ca la țări, pe cele 44 de mii de perechi de regiuni. Un model de bază (log SCI din log distanță "
+   "și „aceeași țară”, R² 0,45) dă fiecărei legături greutatea 10<sup>reziduu</sup>: de câte ori este perechea mai "
+   "legată decât prezice modelul. Louvain caută apoi grupurile de regiuni legate între ele peste așteptări.</p>"
+   "<p><b>Desenul.</b> Cu 44 de mii de legături, rețeaua completă ar fi o pată. Se desenează un schelet: arborele "
+   "care leagă toate regiunile prin legăturile cele mai puternice, plus cele patru legături cele mai puternice ale "
+   "fiecărei regiuni. Așezarea (<code>spring_layout</code>) trage regiunile legate una spre alta. Pe SCI, rețeaua "
+   "se strânge în ciorchini care sunt țările; după model, ciorchinii se amestecă.</p>"
+   + ix("edComunitati", "Comunitățile Louvain pe rețeaua regiunilor", COMUNITATI)
+   + "<p><b>Rezoluția.</b> Sub 1, comunitățile sunt mai puține și mai mari; peste 1, mai multe și mai mici. O "
+     "rezoluție bună dă comunități stabile: aproape aceleași la fiecare rulare. Stabilitatea se măsoară cu ARI între "
+     "prima rulare și alte patru, cu alt seed (ARI compară două împărțiri: 1 = identice, 0 = la întâmplare).</p>"
    + TAB_REZ
-   + "<p>La rezoluția 1, comunitățile sunt cinci și cele mai stabile:</p>"
+   + "<p><b>Codul.</b></p>"
+   + cod('m_regiuni = smf.ols("log_sci ~ log_distanta + aceeasi_tara", data=perechi).fit()\n'
+         'perechi["peste_model"] = 10 ** m_regiuni.resid          # observat / prezis\n'
+         'G_peste = nx.from_pandas_edgelist(perechi, "regiune_1", "regiune_2", edge_attr="peste_model")\n'
+         'comunitati = louvain(G_peste, "peste_model", rezolutie=1)\n'
+         'S = schelet(G_peste, "peste_model")                       # pentru desen\n'
+         'nx.draw(S, nx.spring_layout(S, seed=1), node_color=[comunitati[r] for r in S.nodes])')
+   + caiet("9.3-9.5", [
+       "Modelul de bază pe regiuni; greutatea „peste model”; cele două rețele.",
+       "Rezoluția aleasă prin stabilitate (ARI între rulări) și ARI cu țara.",
+       "Cele cinci comunități pe hartă și ca rețea (schelet, <code>spring_layout</code>)."]))
+
+sl("s20", "Rețeaua", "Harta comunităților",
+   "<h2>Cinci comunități peste granițe</h2>"
+   + concept("Aceleași comunități, pe hartă. Fiecare regiune are culoarea comunității ei; butonul „Comunități” "
+             "arată, pentru comparație, comunitățile din C6, pe SCI brut.")
+   + ix("harta", "Comunitățile rețelei „peste model”, pe regiuni", HARTA_C7)
+   + vede("România se împarte: Vestul și Centrul cu spațiul dunărean (Ungaria, Austria, sudul Germaniei), celelalte "
+          "regiuni cu blocul latin (Italia, Spania)."),
+   manual=
+   "<h2>Cinci comunități peste granițe</h2>"
    + ix("harta", "Comunitățile rețelei „peste model”, pe regiuni", HARTA_C7)
    + tabel(["Comunitatea", "Regiunile principale", "Explicația plauzibilă"], [
        ["vestul francofon", "Franța, Portugalia, Valonia, Luxemburg, Elveția romandă", "limba franceză; migrația portugheză"],
@@ -767,16 +1038,13 @@ sl("s15", "Rețeaua", "Comunitățile după model",
        ["spațiul dunărean", "sudul și estul Germaniei, Austria, Ungaria, fosta Iugoslavie, Vestul și Centrul României",
         "istoria comună, minoritățile germane și maghiare"],
        ["nordul și centrul-estul", "Polonia, Cehia, Slovacia, țările nordice și baltice", "migrația poloneză și baltică"]])
-   + "<p>Explicațiile sunt ipoteze: comunitățile arată <i>că</i> regiunile sunt mai legate decât prezice modelul, nu "
-     "<i>de ce</i>. Comparate cu tipurile de regiuni din k-means, comunitățile au ARI aproape 0: regiunile nu se "
-     "leagă după cât sunt de bogate sau de dense. Un model de rețea pe țări, regresia QAP, ajunge pentru M2 la "
-     "aceeași concluzie ca erorile grupate: fără efectele de țară, rezistă doar migrația.</p>"
-   + caiet("9", [
-       "Modelul de bază pe perechile de regiuni; greutatea <code>peste_model = 10 ** m_regiuni.resid</code>.",
-       "Funcția <code>louvain</code>; ARI cu țara, pe SCI și pe „peste model”.",
-       "Rezoluția aleasă prin stabilitate: 25 de rulări, un tabel; harta și compoziția celor cinci comunități.",
-       "ARI dintre tipurile de regiuni și comunități; regresia QAP pe rețeaua țărilor."],
-       "Comunitățile la rezoluția 1,25: ce bloc se desparte primul?"))
+   + "<p>Comparate cu tipurile de regiuni din k-means, comunitățile au ARI aproape 0: regiunile nu se leagă după cât "
+     "sunt de bogate sau de dense, ci după migrație, limbă și istorie. Explicațiile sunt ipoteze: rețeaua arată "
+     "<i>că</i> perechile sunt mai legate decât prezice modelul, nu <i>de ce</i>.</p>"
+   + "<p><b>Codul.</b></p>"
+   + cod('harta["comunitate"] = harta["regiune"].map(comunitati)   # comunitatea fiecărei regiuni\n'
+         'harta.plot(column="comunitate", categorical=True, cmap="Set2", legend=True)\n'
+         'adjusted_rand_score(reg["grupa"], comunitati[reg.index])   # față de k-means: aproape 0'))
 
 SURSE_C7 = surse("Documentația modelului", [
     ("statsmodels: Fitting models using R-style formulas", "https://www.statsmodels.org/stable/example_formulas.html", "smf.ols, formula, params, rsquared"),
@@ -788,19 +1056,32 @@ SURSE_C7 = surse("Documentația modelului", [
 
 sl("s14", "Concluzia", "Ce se poate concluziona",
    "<h2>Ce se poate concluziona</h2>"
+   "<p class=\"cheie\">Modelele compară perechi de țări (SCI, migrația și distanța sunt între țări); comunitățile "
+   "compară perechi de regiuni. Niciunul nu descrie persoane.</p>"
    + tabel(["Se poate afirma", "Nu se poate afirma"], [
-       ["în interiorul aceleiași țări, partenerii cu o rată mai mare de migrație sunt mai legați (M3)",
+       ["perechile de țări cu mai mulți migranți între ele sunt mai legate, la aceeași distanță și graniță",
         "migrația produce legăturile"],
-       ["distanța, migrația și granița contează, cu erorile grupate", "efectul e același pentru fiecare țară"],
-       ["fiecare variabilă are semnul așteptat de teorie", "legăturile sunt explicate"],
-       ["dincolo de model, regiunile se grupează peste granițe", "grupurile sunt produse de migrație"],
-       ["rezultatele descriu perechi de țări", "rezultatele descriu persoane"]])
-   + nota("De la M2 la M3",
-          "Reziduurile s-au adunat în jurul câtorva țări; efectele de țară au corectat modelul, iar erorile grupate "
-          "au arătat ce rezistă. Diagnosticul a schimbat modelul.", True),
+       ["comparând partenerii aceleiași țări (M4), contează distanța, numărul de migranți, granița și fostul stat comun",
+        "modelul explică toate legăturile: rămân Ungaria-România, Luxemburg-Portugalia"],
+       ["pe regiuni, cinci comunități trec granițele, după migrație, limbă și istorie",
+        "explicațiile comunităților sunt demonstrate"]]),
    dupa=V_CONC,
    manual=
    "<h2>Ce se poate concluziona</h2>"
+   "<p>Modelele compară perechi de țări: SCI-ul țărilor (calculat în C5 din regiuni), migrația și distanța sunt "
+   "toate între țări. Comunitățile compară perechi de regiuni. Niciun rezultat nu descrie persoane.</p>"
+   + tabel(["Se poate afirma", "Nu se poate afirma"], [
+       ["perechile de țări cu mai mulți migranți între ele sunt mai legate, la aceeași distanță și graniță",
+        "migrația produce legăturile"],
+       ["comparând partenerii aceleiași țări (M4), contează distanța, numărul de migranți, granița și fostul stat comun",
+        "efectul e același pentru fiecare țară"],
+       ["unele perechi rămân mult peste model: Ungaria-România, Luxemburg-Portugalia",
+        "modelul explică toate legăturile"],
+       ["pe regiuni, cinci comunități trec granițele, după migrație, limbă și istorie",
+        "explicațiile comunităților sunt demonstrate"]])
+   + nota("De la M2 la M4",
+          "Reziduurile lui M2 s-au adunat pe țări: efectele de țară le-au corectat (M3). Rețeaua reziduurilor lui M3 "
+          "a arătat fostul stat comun (M4). Modelul final greșește de obicei de 1,33 ori, față de 2,2 ori în M2.", True)
    + SURSE_C7)
 
 

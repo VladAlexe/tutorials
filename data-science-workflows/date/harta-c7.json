@@ -1,7 +1,7 @@
 {
  "capitol": "c7",
- "total": 15,
- "sarcini": 3,
+ "total": 19,
+ "sarcini": 2,
  "slide": [
   {
    "nr": 1,
@@ -41,11 +41,10 @@
      "id": "c7-v-z",
      "fel": "verificare",
      "corect": 1,
-     "q": "Scorul z se aplică ratei migranților (pe log). Ce se schimbă?",
+     "q": "Scorul z se aplică ratei migranților. Ce se schimbă?",
      "optiuni": [
-      "Forma distribuției: devine normală",
-      "Doar unitatea: media devine 0, abaterea standard 1; forma rămâne",
-      "Valorile extreme dispar",
+      "Forma distribuției",
+      "Media și abaterea standard: devin 0 și 1",
       "Ordinea perechilor"
      ]
     }
@@ -81,54 +80,69 @@
   },
   {
    "nr": 10,
-   "id": "s11",
-   "grup": "Modelul",
-   "titlu": "Interpretarea coeficienților",
-   "sarcini": [
-    {
-     "id": "c7-v-el",
-     "fel": "verificare",
-     "corect": 2,
-     "q": "În M2, coeficientul ratei migranților este 0,44. Ce înseamnă?",
-     "optiuni": [
-      "SCI crește cu 0,44 la fiecare migrant în plus",
-      "SCI crește cu 44% la fiecare migrant la mie în plus",
-      "Rata dublă: SCI × 20,44 = 1,36, la aceeași distanță și graniță",
-      "Migrația produce un SCI cu 44% mai mare"
-     ]
-    }
-   ]
-  },
-  {
-   "nr": 11,
    "id": "s12",
    "grup": "Reziduurile",
    "titlu": "Peste și sub model",
    "sarcini": []
   },
   {
-   "nr": 12,
+   "nr": 11,
    "id": "s13",
-   "grup": "Modelul final",
+   "grup": "Modele mai bune",
    "titlu": "Efectele de țară",
    "sarcini": []
   },
   {
+   "nr": 12,
+   "id": "s16",
+   "grup": "Modele mai bune",
+   "titlu": "Reziduuri mici",
+   "sarcini": []
+  },
+  {
    "nr": 13,
+   "id": "s17",
+   "grup": "Modele mai bune",
+   "titlu": "Harta după M4",
+   "sarcini": []
+  },
+  {
+   "nr": 14,
    "id": "s6",
    "grup": "Gruparea",
    "titlu": "Tipurile de regiuni",
    "sarcini": []
   },
   {
-   "nr": 14,
+   "nr": 15,
    "id": "s15",
    "grup": "Rețeaua",
-   "titlu": "Comunitățile după model",
+   "titlu": "Rețeaua după model",
    "sarcini": []
   },
   {
-   "nr": 15,
+   "nr": 16,
+   "id": "s18",
+   "grup": "Rețeaua",
+   "titlu": "Un model de rețea",
+   "sarcini": []
+  },
+  {
+   "nr": 17,
+   "id": "s19",
+   "grup": "Rețeaua",
+   "titlu": "Comunitățile",
+   "sarcini": []
+  },
+  {
+   "nr": 18,
+   "id": "s20",
+   "grup": "Rețeaua",
+   "titlu": "Harta comunităților",
+   "sarcini": []
+  },
+  {
+   "nr": 19,
    "id": "s14",
    "grup": "Concluzia",
    "titlu": "Ce se poate concluziona",
@@ -137,12 +151,11 @@
      "id": "c7-v-conc",
      "fel": "verificare",
      "corect": 1,
-     "q": "Modelul arată o asociere puternică între migrație și SCI. De ce nu se poate afirma că migrația produce legăturile?",
+     "q": "Perechile cu mai mulți migranți sunt mai legate. De ce nu putem spune că migrația produce legăturile?",
      "optiuni": [
       "Pentru că R² este sub 1",
-      "Pentru că legăturile existente pot atrage și ele migrație, iar SCI e măsurat într-un singur moment",
-      "Pentru că eșantionul are doar 263 de perechi",
-      "Pentru că modelul folosește logaritmi"
+      "Pentru că legăturile pot atrage și ele migrație: oamenii pleacă unde au deja cunoscuți",
+      "Pentru că avem doar 263 de perechi"
      ]
     }
    ]

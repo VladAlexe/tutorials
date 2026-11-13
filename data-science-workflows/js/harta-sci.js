@@ -15,7 +15,7 @@
    =========================================================================== */
 
 const DATE = "/data-science-workflows/date/";
-const V = "?v=179";
+const V = "?v=183";
 const NS = "http://www.w3.org/2000/svg";
 
 /* Categorii, nu trepte: aceleași culori ca harta comunităților din C6. */
@@ -26,8 +26,8 @@ const COMUNITATI = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98d
 const NIVELURI = { judete: "Județe", regiuni: "Regiuni", tari: "Țări" };
 const MASURI = {
   judete: [["sci", "Legături"]],
-  regiuni: [["sci", "Legături"], ["dist", "Față de distanță"], ["com", "Comunități"], ["c7", "Comunități după model"], ["lips", "Date lipsă"]],
-  tari: [["sci", "Legături"], ["migr", "Migranți"], ["model", "Față de model"]],
+  regiuni: [["sci", "Legături"], ["dist", "Față de distanță"], ["com", "Comunități"], ["c7", "Comunități după model"], ["tip", "Tipuri de regiuni"], ["lips", "Date lipsă"]],
+  tari: [["sci", "Legături"], ["migr", "Migranți"], ["model", "Față de M2"], ["model3", "Față de M3"], ["model4", "Față de M4"]],
 };
 /* paleta e în explorator.css: nouă trepte pentru mărime, șapte divergente */
 const SECV = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(k => `var(--hs-${k})`);
@@ -46,11 +46,19 @@ const LIPS = ["var(--hs-2)", "var(--hsd-3)", "var(--hsd-2)", "var(--hsd-1)"];
 const VAR = { densitate: "densitatea", pib_locuitor: "PIB pe locuitor", populatie: "populația",
   retele_sociale: "rețele sociale", somaj: "șomajul", studii_superioare: "studii superioare", varsta_medie: "vârsta medie" };
 /* măsuri doar pentru lecții, nu pentru Explorator */
-const LECTIE = new Set(["lips", "c7"]);
-/* comunitățile din lecția 7, pe rețeaua „peste model”: cinci blocuri, cu nume */
-const C7 = ["#4e79a7", "#e15759", "#f28e2b", "#59a14f", "#b07aa1"];
-const C7_NUME = ["vestul francofon", "blocul latin", "sud-estul și diaspora turcă", "spațiul dunărean", "nordul și centrul-estul"];
-const CATEG = new Set(["com", "c7", "lips"]);
+const LECTIE = new Set(["lips", "c7", "tip", "model3", "model4"]);
+/* categorii cu nume, din lecția 7: comunitățile după model și tipurile de regiuni (k-means) */
+const CAT7 = {
+  c7:  { et: "Regiuni mai legate între ele decât prezic distanța și granițele",
+         culori: ["#4e79a7", "#e15759", "#f28e2b", "#59a14f", "#b07aa1"],
+         nume: ["vestul francofon", "blocul latin", "sud-estul și diaspora turcă", "spațiul dunărean", "nordul și centrul-estul"] },
+  tip: { et: "Tipul de regiune, din cinci indicatori (k-means, k = 4)",
+         culori: ["#7b3294", "#008837", "#e66101", "#5e9fd1"],
+         nume: ["metropolitane", "dezvoltate", "periferice, îmbătrânite", "tinere, cu șomaj ridicat"] },
+};
+const C7 = CAT7.c7.culori, C7_NUME = CAT7.c7.nume;
+const CATEG = new Set(["com", "c7", "tip", "lips"]);
+const MODEL = new Set(["model", "model3", "model4"]);
 const FARA = "var(--crom-2)";
 
 const fmt = (x, z = 0) => x.toLocaleString("ro-RO", { maximumFractionDigits: z, minimumFractionDigits: z });
@@ -158,7 +166,7 @@ export async function monteaza(gazda, opt = {}){
       return x / DIST.med[treapta(km, DIST.v)];
     });
   }
-  const rezidual = (cod) => { const k = [st.ales, cod].sort().join("-"); return k in B.model ? B.model[k] : null; };
+  const rezidual = (cod) => { const T = st.masura === "model" ? B.model : (B[st.masura] || {}), k = [st.ales, cod].sort().join("-"); return k in T ? T[k] : null; };
   const migranti = (cod) => {
     if (!B.raportoare.includes(cod)) return undefined;
     return (B.migratie[st.ales] || {})[cod];
@@ -202,7 +210,7 @@ export async function monteaza(gazda, opt = {}){
   function culori(){
     const L = locuri();
     if (st.masura === "com") return L.map(l => COMUNITATI[l.com % COMUNITATI.length]);
-    if (st.masura === "c7") return L.map(l => l.c7 == null ? FARA : C7[l.c7]);
+    if (CAT7[st.masura]) return L.map(l => l[st.masura] == null ? FARA : CAT7[st.masura].culori[l[st.masura]]);
     if (st.masura === "sci") return rapoarte().map(r => r === null ? FARA : SECV[treapta(r, PRAG.sci.v)]);
     if (st.masura === "dist") return abateri().map(r => r === null ? FARA : DIVERG[treapta(r, PRAG.dist.v)]);
     if (st.masura === "lips") return L.map(l => LIPS[treapta((l.lips || []).length, PRAG.lips.v)]);
@@ -300,9 +308,9 @@ export async function monteaza(gazda, opt = {}){
       : st.masura === "dist" ? scara("SCI, raportat la mediana perechilor aflate la aceeași distanță", DIVERG.slice(0, 7), PRAG.dist.et, "fără date sau în afara hărții")
       : st.masura === "lips" ? `<div class="gf__leg"><span class="gf__scara-et">Variabile lipsă, din cele 7 ale regiunii</span>
           <div class="hs__chips">${["niciuna", "una", "2-3", "6-7"].map((t, k) => `<span><i data-k="${k}" style="background:${LIPS[k]}"></i>${t}</span>`).join("")}</div></div>`
-      : st.masura === "model" ? scara("SCI observat, raportat la valoarea prezisă de model", DIVERG, PRAG.model.et, "perechea nu este în model (lipsesc datele de migrație)")
-      : st.masura === "c7" ? `<div class="gf__leg"><span class="gf__scara-et">Regiuni mai legate între ele decât prezic distanța și granițele</span>
-          <div class="hs__chips">${C7_NUME.map((t, k) => `<span><i style="background:${C7[k]}"></i>${t}</span>`).join("")}</div></div>`
+      : MODEL.has(st.masura) ? scara("SCI observat, raportat la valoarea prezisă de model", DIVERG, PRAG.model.et, "perechea nu este în model (lipsesc datele de migrație)")
+      : CAT7[st.masura] ? `<div class="gf__leg"><span class="gf__scara-et">${CAT7[st.masura].et}</span>
+          <div class="hs__chips">${CAT7[st.masura].nume.map((t, k) => `<span><i style="background:${CAT7[st.masura].culori[k]}"></i>${t}</span>`).join("")}</div></div>`
       : `<div class="hs__fara">Fiecare culoare reprezintă un grup de regiuni mai legate între ele decât cu restul. Culorile sunt doar etichete.</div>`;
   }
 
@@ -341,7 +349,7 @@ export async function monteaza(gazda, opt = {}){
       const R = L.map((l, j) => [migranti(l.cod), j]).filter(([v]) => v).sort((a, b) => b[0] - a[0]).slice(0, 8);
       const mx = R[0]?.[0] || 1; R.forEach(([v, j]) => rnd(j, fmt(v), v / mx));
       if (!R.length) sep("nu există date pentru această cetățenie");
-    } else if (st.masura === "model"){
+    } else if (MODEL.has(st.masura)){
       const R = L.map((l, j) => [rezidual(l.cod), j]).filter(([r]) => r !== null).sort((a, b) => b[0] - a[0]);
       if (!R.length) sep("țara aleasă nu este în model");
       else {
@@ -349,9 +357,9 @@ export async function monteaza(gazda, opt = {}){
         sep("Mai puțin legate"); R.slice(-4).reverse().forEach(([r, j]) => rnd(j, `${fmt(Math.exp(r), 2)}×`));
       }
     } else {
-      const cheie = st.masura === "c7" ? "c7" : "com";
+      const cheie = CAT7[st.masura] ? st.masura : "com";
       const com = loc(st.ales)[cheie], numar = {};
-      sep(cheie === "c7" && com != null ? `În aceeași comunitate: ${C7_NUME[com]}` : "În aceeași comunitate");
+      sep(CAT7[cheie] && com != null ? `${cheie === "tip" ? "Același tip" : "În aceeași comunitate"}: ${CAT7[cheie].nume[com]}` : "În aceeași comunitate");
       for (const l of L) if (l[cheie] === com) numar[l.tara] = (numar[l.tara] || 0) + 1;
       Object.entries(numar).sort((a, b) => b[1] - a[1]).forEach(([t, n]) =>
         h.push(`<li data-cod="${L.find(l => l.tara === t).cod}"><span class="nr">${++nr}</span><span>${numeTara(t)}</span><span class="val">${n} ${n === 1 ? "regiune" : "regiuni"}</span></li>`));
@@ -364,7 +372,7 @@ export async function monteaza(gazda, opt = {}){
   /* treapta de sub mouse, în legendă: aprinde doar locurile din ea */
   gazda.addEventListener("pointerover", (e) => {
     const t = e.target.closest(".gf__trepte span[data-k]"); if (!t) return;
-    const c = culori(), cul = (st.masura === "model" || st.masura === "dist" ? DIVERG : st.masura === "lips" ? LIPS : SECV)[+t.dataset.k];
+    const c = culori(), cul = (MODEL.has(st.masura) || st.masura === "dist" ? DIVERG : st.masura === "lips" ? LIPS : SECV)[+t.dataset.k];
     for (const p of svg.querySelectorAll(".zona")) p.classList.toggle("stins", c[+p.dataset.i] !== cul);
   });
   gazda.addEventListener("pointerout", (e) => {
@@ -421,8 +429,8 @@ export async function monteaza(gazda, opt = {}){
     else if (st.masura === "migr"){ const m = migranti(l.cod); val = !B.raportoare.includes(l.cod) ? "nu raportează" : m === undefined ? "fără date" : `${fmt(m)} cetățeni`; }
     else if (st.masura === "dist"){ const r = abateri()[i]; val = r === null ? "fără date" : `${fmt(r, 2)}× mediana la aceeași distanță`; }
     else if (st.masura === "lips") val = l.lips && l.lips.length ? "lipsesc: " + l.lips.map(v => VAR[v]).join(", ") : "toate cele 7 variabile";
-    else if (st.masura === "model"){ const r = rezidual(l.cod); val = r === null ? "nu este în model" : `${fmt(Math.exp(r), 2)}× valoarea prezisă`; }
-    else if (st.masura === "c7") val = l.c7 == null ? "nu este în rețea" : C7_NUME[l.c7];
+    else if (MODEL.has(st.masura)){ const r = rezidual(l.cod); val = r === null ? "nu este în model" : `${fmt(Math.exp(r), 2)}× valoarea prezisă`; }
+    else if (CAT7[st.masura]) val = l[st.masura] == null ? "fără date" : CAT7[st.masura].nume[l[st.masura]];
     else val = `comunitatea ${l.com}`;
     b.innerHTML = `<b>${l.nume}</b><span>${st.nivel === "tari" ? "" : numeTara(l.tara) + " · "}${val}</span>`;
     const z = b.parentNode.getBoundingClientRect();

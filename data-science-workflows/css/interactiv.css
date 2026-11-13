@@ -4217,3 +4217,51 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 @media (max-width:760px){.ed-sm{grid-template-columns:1fr}}
 /* C7: o pereche aleasă, descrisă în cuvinte sub grafic */
 .ed-rand{font-size:var(--t1);color:var(--text-2);margin:2px 0 6px}
+/* C7: rețeaua țărilor după model, pe hartă */
+.eda .ed-rt__svg{max-height:420px}
+.ed-rt__harta path{fill:var(--crom-2);stroke:var(--panza);stroke-width:3}
+.ed-rt__l{fill:none;stroke-linecap:round;opacity:.7;transition:opacity .15s}
+.ed-rt__l.peste{stroke:var(--accent)}
+.ed-rt__l.sub{stroke:var(--ambra)}
+.ed-rt__n{cursor:pointer}
+.ed-rt__n circle{fill:var(--panza);stroke:var(--text)}
+.ed-rt__n text{font-family:var(--sans);font-weight:600;fill:var(--text);pointer-events:none}
+.ed-rt__l.stins,.ed-rt__n.stins{opacity:.12}
+/* C7: observat față de prezis, QAP, comunitățile pe rețea */
+.eda .ed-op svg{max-height:400px}
+.ed-op__banda{fill:color-mix(in srgb,var(--accent) 12%,transparent)}
+.ed-op__diag{stroke:var(--text-2);stroke-width:1.5;stroke-dasharray:5 4}
+.ed-op__p circle{fill:var(--text-3);fill-opacity:.55;transition:transform .8s cubic-bezier(.4,0,.2,1),fill .4s}
+.ed-op__p circle.peste{fill:var(--accent);fill-opacity:.85}
+.ed-op__p circle.sub{fill:var(--ambra);fill-opacity:.85}
+.ed-op__et{font-family:var(--sans);font-size:13px;font-weight:600;fill:var(--text);paint-order:stroke;stroke:var(--panza);stroke-width:3px;opacity:0}
+.ed-op__e.apare .ed-op__et,.ed-cm__e.apare text{animation:edApare .4s .6s forwards}
+.ed-cm__m.apare{animation:edApare2 .5s .5s both}
+@keyframes edApare{to{opacity:1}}
+@keyframes edApare2{from{opacity:0}to{opacity:1}}
+.ed-qap__opus{stroke-dasharray:4 4;opacity:.5}
+.ed-cm__svg{max-height:430px}
+.ed-cm__m line{stroke:var(--text-3);stroke-opacity:.28;stroke-width:1.2}
+.ed-cm__n circle{stroke:var(--panza);stroke-width:1.5;transition:transform .9s cubic-bezier(.4,0,.2,1),fill .4s,opacity .2s;cursor:pointer}
+.ed-cm__n circle.ro{stroke:var(--text);stroke-width:3}
+.ed-cm__n circle.stins{opacity:.12}
+.ed-cm__e text{font-family:var(--sans);font-size:30px;font-weight:600;fill:var(--text);paint-order:stroke;stroke:var(--panza);stroke-width:5px;opacity:0;pointer-events:none}
+.ed-cm__z{display:inline-flex;align-items:center;gap:8px;font-size:var(--t1);color:var(--text-2)}
+.ed-cm__z.stins{opacity:.45}
+.ed-cm__leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:var(--t1);color:var(--text-2);margin:4px 0}
+.ed-cm__leg span[data-c]{cursor:pointer}
+.ed-cm__leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+/* pe slide: graficul în stânga, cifrele, explicația și codul în dreapta */
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op),.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm){display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);column-gap:24px;align-items:start;grid-auto-flow:row dense}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) > .ed-ctl,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) > .ed-ctl{grid-column:1 / -1}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) > .ed-g,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) > .ed-g{grid-column:1;grid-row:2 / span 4;align-self:start}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op),.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm){row-gap:6px;grid-template-rows:auto auto auto auto 1fr}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) > :not(.ed-ctl):not(.ed-g),.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) > :not(.ed-ctl):not(.ed-g){grid-column:2}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) > .ed-o,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) > .ed-o{grid-row:2}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) > .ed-cod{grid-row:3}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) .ed-svg{max-height:350px}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) .ed-svg{max-height:360px}
+.rnr[data-capitol="c7"] .sld .eda.eda:has(.ed-op) .ed-not{display:block;margin:8px 0 0;font-size:var(--t1)}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) .ed-cod,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) .ed-cod{white-space:pre;overflow-x:auto;font-size:11px}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-op) .ed-cf,.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) .ed-cf{flex-direction:column;align-items:flex-start;gap:2px}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-cm) > .ed-cm__leg{flex-direction:column;gap:2px;font-size:12.5px;margin:4px 0}

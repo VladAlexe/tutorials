@@ -71,8 +71,8 @@ export const LECTII = [
   { nr:7, cheie:"c7-variabile-si-model",
     titlu:"Variabile derivate și model",
     scurt:"Model",
-    rezumat:"Ingineria variabilelor și un model pe datele SCI: rata migranților, logaritmul, scorul z, VIF, trei modele cu efecte de țară, elasticități și reziduuri.",
-    stare:"gata", sarcini:3,
+    rezumat:"Ingineria variabilelor și un model pe datele SCI: rata migranților, logaritmul, scorul z, VIF, trei modele cu efecte de țară, reziduuri, tipuri de regiuni și comunități.",
+    stare:"gata", sarcini:2,
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb" },
 
   { nr:8, cheie:"c8-raportare",

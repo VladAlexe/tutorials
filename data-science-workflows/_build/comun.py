@@ -95,10 +95,13 @@ def ix(fel, titlu, date=None, sarcina=None, corp=""):
             f'  <div class="ix__corp">{s}{corp}{j}</div>\n</div>')
 
 
-def verif(id_, corect, q, optiuni, ex):
+def verif(id_, corect, q, optiuni, ex, indiciu=None):
+    """O întrebare cu variante; `indiciu`, opțional, se deschide la cerere, înainte de răspuns."""
     o = "\n    ".join(f"<button>{x}</button>" for x in optiuni)
+    ind = (f'<details class="verif__ind"><summary>Indiciu</summary><p>{indiciu}</p></details>\n    '
+           if indiciu else "")
     return (f'<div class="verif" data-id="{id_}" data-corect="{corect}">\n'
-            f'    <p class="verif__q">{q}</p>\n    {o}\n'
+            f'    <p class="verif__q">{q}</p>\n    {ind}{o}\n'
             f'    <p class="verif__ex">{ex}</p>\n  </div>')
 
 

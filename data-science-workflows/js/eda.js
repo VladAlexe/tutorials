@@ -835,6 +835,41 @@ np.log10(rand["sci"])     # observat: ${f(obs, 2)}`);
   deseneaza();
 };
 
+/* Rețeaua țărilor după model: o legătură între două țări dacă perechea e mult
+   peste (sau sub) ce prezice M3. Nodurile stau pe hartă; trecerea cu mouse-ul
+   peste o țară îi arată partenerii. */
+E.edRetea = (gazda, d) => {
+  const N = d.noduri, P = d.perechi, PR = [1.5, 2, 3];
+  let sens = "peste", ip = 0, focus = null;
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("s", [["peste", "mai legate decât prezice M3"], ["sub", "mai puțin legate"]], sens)}${glisor("p", "pragul", 0, 2, 1, 0)}</div><div class="ed-g ed-rt"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const ipr = el.querySelector('input[data-n="p"]');
+  const [vx, vy, vw, vh] = d.cutie, poz = Object.fromEntries(N.map(n => [n.c, n])), u = vw / 100;
+  const deseneaza = () => {
+    const prag = PR[ip], E2 = P.filter(([a, b, r]) => sens === "peste" ? 10 ** r >= prag : 10 ** r <= 1 / prag);
+    const grad = {}; E2.forEach(([a, b]) => { grad[a] = (grad[a] || 0) + 1; grad[b] = (grad[b] || 0) + 1; });
+    let s = `<g class="ed-rt__harta">${d.contur.map(p => `<path d="${p}"/>`).join("")}</g>`;
+    E2.forEach(([a, b, r]) => { const A = poz[a], B = poz[b]; if (!A || !B) return;
+      const mx = (A.x + B.x) / 2 - (B.y - A.y) * 0.15, my = (A.y + B.y) / 2 + (B.x - A.x) * 0.15;
+      const on = !focus || focus === a || focus === b;
+      s += `<path class="ed-rt__l ${sens} ${on ? "" : "stins"}" d="M${A.x},${A.y} Q${mx},${my} ${B.x},${B.y}" style="stroke-width:${(u * (0.3 + Math.abs(r) * 1.4)).toFixed(1)}"><title>${a}–${b}: × ${f(10 ** r, 2)}</title></path>`; });
+    N.forEach(n => { const g = grad[n.c] || 0, on = !focus || focus === n.c || E2.some(([a, b]) => (a === focus && b === n.c) || (b === focus && a === n.c));
+      s += `<g class="ed-rt__n ${on ? "" : "stins"}" data-c="${n.c}"><circle cx="${n.x}" cy="${n.y}" r="${(u * (1.5 + g * 0.35)).toFixed(1)}" style="stroke-width:${(u * 0.18).toFixed(1)}"/><text x="${n.x}" y="${n.y + u * 0.6}" text-anchor="middle" style="font-size:${(u * 1.6).toFixed(1)}px">${n.c}</text></g>`; });
+    el.querySelector(".ed-g").innerHTML = `<svg class="ed-svg ed-rt__svg" viewBox="${vx} ${vy} ${vw} ${vh}" preserveAspectRatio="xMidYMid meet">${s}</svg>`;
+    el.querySelectorAll(".ed-rt__n").forEach(g => { g.addEventListener("pointerenter", () => { focus = g.dataset.c; deseneaza(); });
+      g.addEventListener("pointerleave", () => { focus = null; deseneaza(); }); });
+    ipr.nextElementSibling.textContent = `× ${f(prag, 1)}`;
+    const top = [...E2].sort((x, y) => sens === "peste" ? y[2] - x[2] : x[2] - y[2]).slice(0, 5)
+      .map(([a, b, r]) => `${a}–${b} (× ${f(10 ** r, 2)})`).join(", ");
+    const inF = focus ? E2.filter(([a, b]) => a === focus || b === focus).map(([a, b, r]) => `${a === focus ? b : a} × ${f(10 ** r, 2)}`).join(", ") : "";
+    el.querySelector(".ed-o").innerHTML = cifre([["legături", nr(E2.length)], ["țări cu cel puțin o legătură", nr(Object.keys(grad).length)]])
+      + panou(focus ? `<b>${focus}</b>: ${inF || "nicio legătură la acest prag"}.` : `Cele mai ${sens === "peste" ? "puternice" : "slabe"}: ${top}. Cu mouse-ul pe o țară, partenerii ei.`);
+    scrieCod(el, `date["reziduu_m3"] = m3.resid\n${sens === "peste" ? `legate = date[10 ** date["reziduu_m3"] >= ${String(prag)}]` : `legate = date[10 ** date["reziduu_m3"] <= 1 / ${String(prag)}]`}   # perechile ${sens} model\nR = nx.from_pandas_edgelist(legate, "tara_1", "tara_2")\ndict(R.degree())                      # câte legături are fiecare țară`);
+  };
+  leaga(el, "s", c => { sens = c; focus = null; deseneaza(); });
+  ipr.addEventListener("input", () => { ip = +ipr.value; deseneaza(); });
+  deseneaza();
+};
+
 /* Elasticitățile modelului M4: cu cât se schimbă SCI-ul prezis. */
 E.edElasticitate = (gazda, d) => {
   const b = d.coef, F = [0.25, 0.5, 1, 2, 4];
@@ -916,6 +951,133 @@ E.edSumar = (gazda, d) => {
     el.querySelector(".ed-sm__x").innerHTML = `<b>${t}</b><span class="ed-sm__v">${v}</span><p>${x}</p>`; };
   el.querySelectorAll(".ed-sm__k").forEach(s => { s.addEventListener("click", () => arata(s.dataset.k)); s.addEventListener("keydown", e => { if (e.key === "Enter") arata(s.dataset.k); }); });
   arata(d.prim || Object.keys(X)[0]);
+};
+
+/* Observat față de prezis, pentru M2, M3 și M4. Banda arată perechile prezise
+   cu o eroare sub ×1,5; la schimbarea modelului, punctele se mută spre diagonală. */
+E.edObsPrez = (gazda, d) => {
+  const P = d.op, MOD = [["M2", 2], ["M3", 3], ["M4", 4]], B = Math.log10(1.5);
+  let mk = d.start || 0;
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("m", MOD.map(([n], k) => [String(k), n]), String(mk))}</div><div class="ed-g ed-op"></div><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const W = 540, H = 440, x0 = 50, x1 = W - 14, y0 = 24, y1 = H - 44, lo = 2.8, hi = 6.2;
+  const sx = sc(lo, hi, x0, x1), sy = sc(lo, hi, y1, y0), id = "op" + Math.random().toString(36).slice(2, 8);
+  const ban = [[lo - 1, lo - 1 + B], [hi + 1, hi + 1 + B], [hi + 1, hi + 1 - B], [lo - 1, lo - 1 - B]].map(([a, b]) => `${sx(a)},${sy(b)}`).join(" ");
+  let s = `<defs><clipPath id="${id}"><rect x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}"/></clipPath></defs>`;
+  s += axe({ x0, x1, y0, y1, sx, sy, dx: [lo, hi], dy: [lo, hi], fx: v => f(v, 1), fy: v => f(v, 1), ex: "log SCI prezis de model", ey: "log SCI observat" });
+  s += `<g clip-path="url(#${id})"><polygon class="ed-op__banda" points="${ban}"/><line class="ed-op__diag" x1="${sx(lo)}" y1="${sy(lo)}" x2="${sx(hi)}" y2="${sy(hi)}"/></g>`;
+  s += `<text class="ed-tx ed-tx--mic" x="${sx(hi) - 4}" y="${sy(hi) + 34}" text-anchor="end">banda ×1,5</text>`;
+  s += `<g class="ed-op__p">${P.map(p => `<circle r="4.2"><title></title></circle>`).join("")}</g><g class="ed-op__e"></g>`;
+  el.querySelector(".ed-g").innerHTML = svg(W, H, s);
+  const C = [...el.querySelectorAll(".ed-op__p circle")], ET = el.querySelector(".ed-op__e");
+  const stat = k => { const o = P.map(p => p[1]), r = P.map(p => p[1] - p[k]), mo = medie(o);
+    const ss = r.reduce((a, x) => a + x * x, 0), st = o.reduce((a, x) => a + (x - mo) ** 2, 0);
+    return { r2: 1 - ss / st, ori: 10 ** abatere(r), banda: r.filter(x => Math.abs(x) < B).length / r.length, r }; };
+  const S = MOD.map(([, k]) => stat(k));
+  const TEXT = [
+    "Distanța, rata migranților și granița. Norul de puncte e larg: multe perechi stau departe de diagonală.",
+    "Plus efectele de țară: fiecare țară primește nivelul ei. Norul se strânge pe diagonală.",
+    "Numărul de migranți în locul ratei și fostul stat comun. Aproape toate perechile intră în bandă; rămân departe câteva legături cu o poveste proprie."];
+  const COD = [
+    `formula_m2 = ("log_sci ~ log_distanta"\n              " + log_la_mie + granita")\nm2 = smf.ols(formula_m2, data=date).fit()\n\n# prezis (orizontal), observat (vertical)\nplt.scatter(m2.fittedvalues, date["log_sci"])\n10 ** m2.resid.std()     # × ${f(S[0].ori, 2)}`,
+    `# formula lui M2, plus variabilele de țară\nm3 = smf.ols(formula_m2 + efecte,\n             data=date).fit()\n\nplt.scatter(m3.fittedvalues, date["log_sci"])\n10 ** m3.resid.std()     # × ${f(S[1].ori, 2)}`,
+    `formula_m4 = ("log_sci ~ log_distanta"\n              " + log_migranti + granita"\n              " + stat_comun" + efecte)\nm4 = smf.ols(formula_m4, data=date).fit()\n\nplt.scatter(m4.fittedvalues, date["log_sci"])\n10 ** m4.resid.std()     # × ${f(S[2].ori, 2)}`];
+  const deseneaza = () => {
+    const k = MOD[mk][1], st = S[mk];
+    C.forEach((c, i) => { const p = P[i], r = p[1] - p[k];
+      c.style.transform = `translate(${sx(p[k]).toFixed(1)}px,${sy(p[1]).toFixed(1)}px)`;
+      c.setAttribute("class", Math.abs(r) < B ? "" : r > 0 ? "peste" : "sub");
+      c.firstChild.textContent = `${p[0]}: observat ${f(p[1], 2)}, prezis ${f(p[k], 2)}, × ${f(10 ** r, 2)}`; });
+    const ord = P.map((p, i) => [i, p[1] - p[k]]).sort((a, b) => b[1] - a[1]), alese = [...ord.slice(0, 3), ...ord.slice(-2)];
+    let ultim = { 1: -99, 0: -99 };
+    ET.innerHTML = alese.map(([i, r]) => [i, r, sy(P[i][1])]).sort((a, b) => a[2] - b[2]).map(([i, r, Y]) => { const p = P[i], X = sx(p[k]), sus = r > 0 ? 1 : 0;
+      if (Y - ultim[sus] < 20) Y = ultim[sus] + 20; ultim[sus] = Y;
+      return `<text class="ed-op__et" x="${sus ? X - 9 : X + 9}" y="${Y + 4}" text-anchor="${sus ? "end" : "start"}">${p[0]} ×${f(10 ** r, 1)}</text>`; }).join("");
+    ET.classList.remove("apare"); void ET.getBBox; requestAnimationFrame(() => ET.classList.add("apare"));
+    el.querySelector(".ed-o").innerHTML = cifre([["R²", f(st.r2, 2)], ["greșește de obicei", "× " + f(st.ori, 2)], ["perechi în bandă", f(100 * st.banda, 0) + "%"]])
+      + panou(TEXT[mk]);
+    scrieCod(el, COD[mk]);
+  };
+  leaga(el, "m", c => { mk = +c; deseneaza(); });
+  deseneaza();
+};
+
+/* Regresia QAP: coeficientul real față de 1.000 de coeficienți obținuți
+   amestecând numele țărilor. */
+E.edQAP = (gazda, d) => {
+  const Q = d.qap, V = [["log_distanta", "distanța"], ["log_la_mie", "rata migranților"], ["granita", "granița"]], T = d.tari;
+  let v = "log_la_mie", nr_am = 1;
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("v", V, v)}<button class="ed-b" data-a="1">o amestecare</button></div><div class="ed-g"></div><p class="ed-rand ed-qap__am"></p><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const W = 620, H = 260, x0 = 30, x1 = W - 20, y0 = 30, y1 = H - 44;
+  const amesteca = () => { const r = rng(nr_am++), a = [...T]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    const m = Object.fromEntries(T.map((t, i) => [t, a[i]])), ex = ["AT", "RO", "IT", "DE"].filter(t => T.includes(t));
+    el.querySelector(".ed-qap__am").innerHTML = `O amestecare: ${ex.map(t => `${t} → <b>${m[t]}</b>`).join(", ")}, … Perechea AT–RO primește SCI-ul perechii <b>${[m.AT, m.RO].sort().join("–")}</b>; distanța, migrația și granița rămân ale perechii AT–RO.`; };
+  const deseneaza = () => {
+    const q = Q[v], n = q.h.length, w = (q.hi - q.lo) / n, sx = sc(q.lo, q.hi, x0, x1), mx = Math.max(...q.h), sy = sc(0, mx, y1, y0), R = Math.abs(q.real);
+    let s = axe({ x0, x1, y0, y1, sx, sy, dx: [q.lo, q.hi], fx: v => f(v, 1), ex: "coeficientul în cele 1.000 de amestecări" });
+    q.h.forEach((c, i) => { const a = q.lo + i * w, mij = a + w / 2;
+      s += `<rect class="${Math.abs(mij) >= R ? "ed-bar2" : "ed-plin"}" x="${sx(a) + 0.5}" y="${sy(c)}" width="${Math.max(1, sx(a + w) - sx(a) - 1)}" height="${y1 - sy(c)}"/>`; });
+    s += `<line class="ed-l-tot" x1="${sx(q.real)}" x2="${sx(q.real)}" y1="${y0 - 14}" y2="${y1}"/><text class="ed-gros" x="${sx(q.real) + (q.real > 0 ? -6 : 6)}" y="${y0 - 18}" text-anchor="${q.real > 0 ? "end" : "start"}">M2: ${f(q.real, 2)}</text>`;
+    s += `<line class="ed-l-tot ed-qap__opus" x1="${sx(-q.real)}" x2="${sx(-q.real)}" y1="${y0}" y2="${y1}"/>`;
+    el.querySelector(".ed-g").innerHTML = svg(W, H, s);
+    const k = Math.round(q.p * 1000), trece = q.p < 0.05;
+    el.querySelector(".ed-o").innerHTML = cifre([["coeficientul real", f(q.real, 2)], ["amestecări cel puțin la fel de departe de 0", nr(k) + " din 1.000"], ["p QAP", q.p < 0.001 ? "< 0,001" : f(q.p, 2)]])
+      + panou(trece ? `Nicio amestecare nu dă un coeficient atât de mare: asocierea cu ${V.find(x => x[0] === v)[1]} nu ține de structura rețelei.`
+        : `În ${f(100 * q.p, 0)}% dintre amestecări coeficientul iese cel puțin la fel de departe de 0 (barele portocalii): în rețea, efectul ${v === "granita" ? "graniței" : "distanței"} nu se deosebește de întâmplare.`);
+    scrieCod(el, `real = abs(m2.params["${v}"])                   # coeficientul din M2: ${f(R, 2)}\namestecat = amestecati["${v}"].abs()           # cei 1.000 de coeficienți amestecați\n(amestecat >= real).mean()                     # p QAP: ${q.p < 0.001 ? "0,0" : f(q.p, 3)}`);
+  };
+  leaga(el, "v", c => { v = c; deseneaza(); });
+  el.querySelector('[data-a="1"]').addEventListener("click", amesteca);
+  amesteca(); deseneaza();
+};
+
+/* Comunitățile Louvain pe rețeaua regiunilor: pe SCI (C6) și peste model, cu
+   rezoluția aleasă. Scheletul desenat: arborele legăturilor celor mai puternice,
+   plus cele 4 legături cele mai puternice ale fiecărei regiuni. */
+E.edComunitati = (gazda, d) => {
+  const R = d.retea, N = R.noduri, NUME = d.nume || [], PAL = [...(d.culori || []), "#76b7b2", "#edc948", "#ff9da7", "#9c755f", "#bab0ac", "#86bcb6", "#d37295", "#a0cbe8", "#8cd17d", "#f1ce63", "#499894"];
+  let mod = "model", rez = "1", focus = null;
+  const ETR = { RO42: ["Vest", 16, 10, "start"], RO12: ["Centru", -16, -10, "end"], RO32: ["București", 16, 10, "start"] };
+  const el = bloc(gazda, `<div class="ed-ctl">${butoane("r", [["brut", "rețeaua pe SCI (C6)"], ["model", "rețeaua peste model"]], mod)}<span class="ed-cm__z"><span>rezoluția</span>${butoane("z", [["0.75", "0,75"], ["1", "1"], ["1.25", "1,25"], ["1.5", "1,5"]], rez)}</span></div><div class="ed-g ed-cm"></div><div class="ed-cm__leg"></div><p class="ed-rand ed-cm__info">Mouse-ul pe o regiune: numele și comunitatea ei.</p><pre class="ed-cod"></pre><div class="ed-o"></div>`);
+  const pad = 30, VW = 1000 + 2 * pad, VH = 880 + 2 * pad;
+  let s = `<g class="ed-cm__m"></g><g class="ed-cm__n">${N.map(n => `<circle r="${n[2] === "RO" ? 11 : 7.5}" class="${n[2] === "RO" ? "ro" : ""}"><title>${n[1]} (${n[2]})</title></circle>`).join("")}</g><g class="ed-cm__e"></g>`;
+  el.querySelector(".ed-g").innerHTML = `<svg class="ed-svg ed-cm__svg" viewBox="${-pad} ${-pad} ${VW} ${VH}" preserveAspectRatio="xMidYMid meet">${s}</svg>`;
+  const C = [...el.querySelectorAll(".ed-cm__n circle")], G = el.querySelector(".ed-cm__m"), ET = el.querySelector(".ed-cm__e");
+  const com = () => mod === "brut" ? R.brut.c : R.model.c[rez];
+  const deseneaza = () => {
+    const L = R[mod], c = com(), dx = (1000 - L.w) / 2, dy = (880 - L.h) / 2;
+    G.innerHTML = L.m.map(([a, b]) => `<line x1="${L.p[a][0] + dx}" y1="${L.p[a][1] + dy}" x2="${L.p[b][0] + dx}" y2="${L.p[b][1] + dy}"/>`).join("");
+    G.classList.remove("apare"); requestAnimationFrame(() => G.classList.add("apare"));
+    C.forEach((el2, i) => { el2.style.transform = `translate(${L.p[i][0] + dx}px,${L.p[i][1] + dy}px)`; el2.style.fill = PAL[c[i] % PAL.length];
+      el2.classList.toggle("stins", focus !== null && c[i] !== focus); el2.dataset.c = c[i]; el2.dataset.i = i; });
+    // etichetele: regiunile României
+    ET.innerHTML = N.map((n, i) => { const e = mod === "brut" ? (n[0] === "RO32" ? ["România", 16, 10, "start"] : null) : ETR[n[0]]; return e ? `<text x="${L.p[i][0] + dx + e[1]}" y="${L.p[i][1] + dy + e[2]}" text-anchor="${e[3]}">${e[0]}</text>` : ""; }).join("");
+    ET.classList.remove("apare"); requestAnimationFrame(() => ET.classList.add("apare"));
+    el.querySelector(".ed-cm__z").classList.toggle("stins", mod === "brut");
+    const k = new Set(c).size, st = mod === "brut" ? null : d.stat[rez];
+    el.querySelector(".ed-cm__leg").innerHTML = mod === "model" && rez === "1"
+      ? NUME.map((t, j) => `<span data-c="${j}"><i style="background:${PAL[j]}"></i>${t}</span>`).join("")
+      : `<span class="ed-cm__nr">${mod === "brut" ? "Culorile: cele " + k + " comunități pe SCI, aproape fiecare o țară." : "Culorile: cele " + k + " comunități la rezoluția " + rez.replace(".", ",") + "; o comunitate apropiată de una de la rezoluția 1 îi păstrează culoarea."}</span>`;
+    el.querySelectorAll(".ed-cm__leg span[data-c]").forEach(sp => { sp.addEventListener("pointerenter", () => { focus = +sp.dataset.c; stinge(); }); sp.addEventListener("pointerleave", () => { focus = null; stinge(); }); });
+    el.querySelector(".ed-o").innerHTML = cifre(mod === "brut"
+      ? [["comunități", nr(d.brut_stat[0])], ["ARI cu țara", f(d.brut_stat[1], 2)]]
+      : [["comunități", nr(st[0])], ["stabilitatea (ARI între rulări)", f(st[1], 2)], ["ARI cu țara", f(st[2], 2)]])
+      + panou(mod === "brut" ? "Pe SCI, legăturile din interiorul țării sunt de zeci de ori mai puternice: rețeaua se strânge în ciorchini, aproape fiecare o țară (ARI cu țara 0,76)."
+        : rez === "1" ? "Cinci comunități, cea mai stabilă împărțire. Regiunile României se despart: Vestul și Centrul merg cu spațiul dunărean, celelalte cu blocul latin (Italia, Spania)."
+        : +rez < 1 ? "Rezoluție mică: comunități puține și mari. Stabilitatea scade față de rezoluția 1."
+        : "Rezoluție mare: comunitățile se sparg și se apropie din nou de țări (ARI cu țara crește), iar stabilitatea scade.");
+    scrieCod(el, mod === "brut"
+      ? `# greutatea legăturii: SCI, ca în C6\nG_sci = nx.from_pandas_edgelist(\n    perechi, "regiune_1", "regiune_2",\n    edge_attr="sci")\ncomunitati_sci = louvain(G_sci, "sci")\nadjusted_rand_score(tara_regiunii,\n                    comunitati_sci)`
+      : `# de câte ori peste modelul de bază\nperechi["peste_model"] = 10 ** m_regiuni.resid\nG_peste = nx.from_pandas_edgelist(\n    perechi, "regiune_1", "regiune_2",\n    edge_attr="peste_model")\ncomunitati = louvain(G_peste, "peste_model",\n                     rezolutie=${rez})`);
+  };
+  const numeCom = j => mod === "model" && rez === "1" && NUME[j] ? NUME[j] : `comunitatea ${j + 1}`;
+  const INFO = el.querySelector(".ed-cm__info");
+  const stinge = () => C.forEach(x => x.classList.toggle("stins", focus !== null && +x.dataset.c !== focus));
+  C.forEach(x => { x.addEventListener("pointerenter", () => { focus = +x.dataset.c; stinge(); const n = N[+x.dataset.i];
+      INFO.innerHTML = `<b>${n[1]}</b> (${n[2]}) · ${numeCom(focus)}`; });
+    x.addEventListener("pointerleave", () => { focus = null; stinge(); }); });
+  leaga(el, "r", c => { mod = c; focus = null; deseneaza(); });
+  leaga(el, "z", c => { rez = c; if (mod === "brut"){ mod = "model"; el.querySelectorAll('.ed-bt[data-n="r"] button').forEach(b => b.classList.toggle("on", b.dataset.k === "model")); } focus = null; deseneaza(); });
+  deseneaza();
 };
 
 export default E;
