@@ -190,8 +190,8 @@ sl("s3", "Variabilele", "Construcția",
    + glosar("rata", "binara")
    + caiet("1", [
        "<code>la_mie</code>: migranții împărțiți la populația celor două țări, din <code>raw/bm.csv</code>, din depozitul cursului.",
-       "<code>cheie</code>: codurile țărilor în ordine alfabetică, ca „AT, RO” și „RO, AT” să fie aceeași pereche; "
-       "apoi distanța ca mediană a distanțelor dintre regiuni (<code>groupby(\"cheie\")</code>).",
+       "Distanța dintre țări: mediana distanțelor dintre regiunile lor, cu <code>groupby</code> pe cele două țări și "
+       "<code>merge</code> în <code>tari</code>; fiecare distanță se scrie în ambele ordini (AT-RO și RO-AT).",
        "<code>granita</code>, pas cu pas, fiecare cu harta lui: țările lipite din regiuni (<code>dissolve</code>), "
        "România lărgită cu 10 km (<code>buffer(10_000)</code>), România și vecinii ei (<code>sjoin</code>)."],
        "<code>tari[\"granita\"].sum()</code>: câte perechi de țări vecine?"))
@@ -236,22 +236,40 @@ V_Z = verif("c7-v-z", 1,
 
 sl("s5", "Variabilele", "Scalarea",
    "<h2>Scalarea: aceeași scară pentru toate</h2>"
-   + concept(f"Predictorii au unități diferite, deci coeficienții lor nu se pot compara direct. {gl('z', 'Scorul z')} "
-             "aduce fiecare variabilă la media 0 și abaterea standard 1: se schimbă unitatea, nu forma.")
+   + concept("Coeficienții lui M2 spun ce se întâmplă când predictorul se înmulțește cu 10. Dar între perechile de "
+             "țări, distanța variază de obicei de 1,9 ori, iar rata migranților de 5 ori: pașii nu sunt comparabili. "
+             f"{gl('z', 'Scorul z')}, z = (valoarea − media) / abaterea standard, măsoară fiecare valoare în "
+             "abateri standard față de medie: pasul devine același, o diferență tipică.")
    + ix("edScalare", "Trei variabile, înainte și după scorul z", _T)
-   + vede(f"În modelul pe scoruri z, rata migranților are coeficientul {ro(M['m4z']['z_log_la_mie'])}, distanța "
-          f"{ro(M['m4z']['z_log_distanta'])}: migrația contează de aproape patru ori mai mult."),
+   + vede(f"IT-RO: rata migranților z = +2,4 (printre cele mai mari), distanța z = −0,2 (aproape de medie). Pe "
+          f"scoruri z, migrația are coeficientul {ro(M['m4z']['z_log_la_mie'])}, distanța "
+          f"{ro(M['m4z']['z_log_distanta'])}: la o diferență tipică, migrația contează de aproape patru ori mai mult. "
+          "Forma nu se schimbă: asimetria e aceeași înainte și după."),
    dupa=V_Z,
    manual=
    "<h2>Scalarea</h2>"
-   "<p>Scalarea aduce variabilele pe aceeași scară numerică. Scorul z, z = (x − media) / abaterea standard, este cea "
-   "mai folosită: media devine 0, abaterea standard 1. Este o transformare liniară, deci nu schimbă forma "
-   "distribuției și nici ordinea valorilor. Alte variante sunt scalarea min-max (între 0 și 1) și scalarea robustă "
+   "<p><b>Problema.</b> În M2, coeficientul distanței este −0,30, iar al ratei migranților 0,44. Pe logaritm, "
+   "ambii spun ce se întâmplă cu log SCI când predictorul crește cu 1, adică atunci când distanța sau rata se "
+   "înmulțește cu 10. Pasul acesta nu are însă aceeași greutate pentru cele două variabile. Între perechile de "
+   "țări, log distanța are abaterea standard 0,27: două perechi diferă de obicei la distanță de aproximativ 1,9 "
+   "ori, iar o distanță de 10 ori mai mare aproape nu apare. Log rata are abaterea standard 0,71: ratele diferă "
+   "de obicei de 5 ori. Comparați direct, coeficienții compară un pas rar la distanță cu un pas obișnuit la "
+   "migrație.</p>"
+   "<p><b>Soluția: scorul z.</b> z = (valoarea − media) / abaterea standard spune cu câte abateri standard este o "
+   "pereche peste (z pozitiv) sau sub (z negativ) perechea medie. Perechea Italia-România are rata migranților de "
+   "13,9 la mie, deci z = +2,4: printre cele mai mari din Europa. Distanța ei, 1.100 km, are z = −0,2: aproape de "
+   "medie. După scorul z, fiecare variabilă are media 0 și abaterea standard 1, iar „un pas” înseamnă la toate "
+   "același lucru: o diferență tipică între perechi.</p>"
+   "<p><b>Ce nu se schimbă.</b> Scorul z scade o constantă și împarte la o constantă: este o transformare liniară. "
+   "Forma distribuției (asimetria, valorile extreme) și ordinea perechilor rămân aceleași; graficul de mai jos "
+   "arată aceeași asimetrie înainte și după. Pentru a schimba forma e nevoie de o transformare neliniară, ca "
+   "logaritmul din slide-ul anterior. Alte variante de scalare sunt min-max (între 0 și 1) și scalarea robustă "
    "(cu mediana și IQR, pentru date cu valori extreme).</p>"
    + ix("edScalare", "Trei variabile, înainte și după scorul z", _T)
-   + "<p>Într-un model, scalarea are un rol precis: cu toate variabilele în scor z, fiecare coeficient spune cu câte "
-     "abateri standard se schimbă log SCI când predictorul crește cu o abatere standard. Coeficienții devin "
-     "comparabili:</p>"
+   + "<p><b>În model.</b> Cu toate variabilele în scor z, fiecare coeficient spune cu câte abateri standard se "
+     "schimbă log SCI când predictorul crește cu o abatere standard, adică la o diferență tipică. Coeficienții devin "
+     "comparabili: migrația 0,62, distanța −0,16, deci migrația contează de aproape patru ori mai mult. Granița "
+     "rămâne 0/1 (nu se scalează o variabilă binară): coeficientul ei compară perechile vecine cu cele nevecine.</p>"
    + tabel(["Predictorul", "Coeficientul în M2", "Coeficientul pe scoruri z"], [
        ["log distanța", ro(B4["log_distanta"]), ro(M["m4z"]["z_log_distanta"])],
        ["log migranți la mie", ro(B4["log_la_mie"]), ro(M["m4z"]["z_log_la_mie"])],
