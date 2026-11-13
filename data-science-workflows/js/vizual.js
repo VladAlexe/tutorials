@@ -26,7 +26,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=168");
+    const m = await import("/data-science-workflows/js/colectare.js?v=173");
     await m.salveazaCod({ exercitiuId: id, cod: String(ce).slice(0, 400), trecut: true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -1305,7 +1305,7 @@ V.axa = (gazda, d) => {
 };
 
 /* ===========================================================================
-   22. MODELE — patru modele, pas cu pas
+   22. MODELE — modelele, pas cu pas
    Fiecare model adaugă o variabilă. Coeficienții stau ca bare în jurul lui
    zero, fiecare variabilă cu culoarea ei, iar R² crește dedesubt. Se vede
    lucrul care contează: când intră migrația, coeficientul distanței se
@@ -3567,7 +3567,7 @@ V.cale = (gazda, d) => {
 V.echipe = async (gazda) => {
   const R = "/data-science-workflows";
   try {
-    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=168`), import(`${R}/js/auth.js?v=168`)]);
+    const [E, A] = await Promise.all([import(`${R}/js/echipe.js?v=173`), import(`${R}/js/auth.js?v=173`)]);
     const p = await A.profil().catch(() => ({}));
     if (p.profesorReal) await E.echipeSlideProfesor(gazda);
     else await E.echipeStudent(gazda, { slide: true });

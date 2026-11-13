@@ -374,7 +374,7 @@
       },
       {
         "t": "Pregătire",
-        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>\n<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code>, <code>scipy</code> și <code>networkx</code>.</li>\n</ol>"
+        "html": "<ol>\n<li>Conexiune la internet: caietul descarcă baza de date <code>dsw.db</code> din depozitul cursului (GitHub) și citește tabelele cu SQL, ca în C5; contururile regiunilor vin de la GISCO.</li>\n<li>Pachetele din <code>requirements.txt</code>, actualizat: <code>pip install -r requirements.txt</code> aduce <code>seaborn</code>, <code>scipy</code> și <code>networkx</code>.</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",
@@ -410,7 +410,7 @@
         "g": "networkx"
       }
     ],
-    "caiet_d": "Caietul 06, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza din C5, curs/data/dsw.db."
+    "caiet_d": "Caietul 06, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza de date dsw.db, descărcată de caiet din depozitul cursului."
   },
   "c7-variabile-si-model": {
     "nr": 7,
@@ -421,7 +421,7 @@
     "sectiuni": [
       {
         "t": "Despre lecție",
-        "html": "<p>Analiza exploratorie (C6) a găsit trei tipare: SCI scade cu distanța, este mai mare peste o graniță comună și crește cu migrația. Tiparele se suprapun: țările vecine sunt și apropiate, și au mai mulți migranți între ele. Un model le include simultan și estimează ce rămâne din fiecare.</p>\n<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, extragerea prin gruparea regiunilor (k-means), selecția (corelațiile predictorilor, VIF). A doua parte este modelul: patru modele pe aceleași perechi de țări, rezultatul complet al modelului, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p>"
+        "html": "<p>Analiza exploratorie (C6) a găsit trei tipare: SCI scade cu distanța, este mai mare peste o graniță comună și crește cu migrația. Tiparele se suprapun: țările vecine sunt și apropiate, și au mai mulți migranți între ele. Un model le include simultan și estimează ce rămâne din fiecare.</p>\n<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, extragerea prin gruparea regiunilor (k-means), selecția (corelațiile predictorilor, VIF). A doua parte este modelul: trei modele pe aceleași perechi de țări, ultimul cu efecte de țară, rezultatul complet al modelului, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p>"
       },
       {
         "t": "Obiective",
@@ -429,7 +429,7 @@
       },
       {
         "t": "Pregătire",
-        "html": "<ol>\n<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>\n<li>Pachetele din <code>requirements.txt</code>: <code>statsmodels</code> și <code>geopandas</code> sunt deja în listă (<code>pip install -r requirements.txt</code>).</li>\n</ol>"
+        "html": "<ol>\n<li>Conexiune la internet: caietul descarcă baza de date <code>dsw.db</code> din depozitul cursului (GitHub) și citește tabelele cu SQL, ca în C5; contururile regiunilor vin de la GISCO.</li>\n<li>Pachetele din <code>requirements.txt</code>: <code>statsmodels</code> și <code>geopandas</code> sunt deja în listă (<code>pip install -r requirements.txt</code>).</li>\n</ol>"
       },
       {
         "t": "Ce se adaugă la proiect",
@@ -470,7 +470,7 @@
         "g": "articol"
       }
     ],
-    "caiet_d": "Caietul 07, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza din C5, curs/data/dsw.db."
+    "caiet_d": "Caietul 07, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza de date dsw.db, descărcată de caiet din depozitul cursului."
   },
   "c8-raportare": {
     "nr": 8,

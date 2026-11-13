@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lecția 7. Variabile derivate și model · Fluxuri de lucru</title>
 <meta name="description" content="Ingineria variabilelor (construcție, transformare, scalare, grupare, selecție), apoi un model care include simultan distanța, migrația și granița, cu rezultatul complet, interpretarea coeficienților și reziduurile.">
-<link rel="stylesheet" href="../css/fonturi.css?v=168">
-<link rel="stylesheet" href="../css/sistem.css?v=168">
-<link rel="stylesheet" href="../css/intrare.css?v=168">
-<script src="../js/tema.js?v=168"></script>
+<link rel="stylesheet" href="../css/fonturi.css?v=173">
+<link rel="stylesheet" href="../css/sistem.css?v=173">
+<link rel="stylesheet" href="../css/intrare.css?v=173">
+<script src="../js/tema.js?v=173"></script>
 </head>
 <body>
 
@@ -43,7 +43,7 @@
   <section class="sec sec--alt">
     <p class="sec__et">Despre lecție</p>
     <div class="sec__corp"><p>Analiza exploratorie (C6) a găsit trei tipare: SCI scade cu distanța, este mai mare peste o graniță comună și crește cu migrația. Tiparele se suprapun: țările vecine sunt și apropiate, și au mai mulți migranți între ele. Un model le include simultan și estimează ce rămâne din fiecare.</p>
-<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, extragerea prin gruparea regiunilor (k-means), selecția (corelațiile predictorilor, VIF). A doua parte este modelul: patru modele pe aceleași perechi de țări, rezultatul complet al modelului, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p></div>
+<p>Prima parte tratează ingineria variabilelor: construcția (rata migranților, distanța dintre țări, granița comună), transformarea logaritmică, scalarea cu scorul z, extragerea prin gruparea regiunilor (k-means), selecția (corelațiile predictorilor, VIF). A doua parte este modelul: trei modele pe aceleași perechi de țări, ultimul cu efecte de țară, rezultatul complet al modelului, interpretarea coeficienților ca elasticități, intervalele de încredere și reziduurile, pe hartă.</p></div>
   </section>
   <section class="sec sec--obiective">
     <p class="sec__et">Obiectivele lecției</p>
@@ -76,7 +76,7 @@
       </a>
       <a class="mat__c" href="https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb" target="_blank" rel="noopener">
         <span class="mat__t">Caietul ↗</span>
-        <span class="mat__d">Caietul 07, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza din C5, curs/data/dsw.db.</span>
+        <span class="mat__d">Caietul 07, pe GitHub. Se descarcă cu Download raw file și se salvează în dsw/curs/. Datele vin din baza de date dsw.db, descărcată de caiet din depozitul cursului.</span>
       </a>
       <a class="mat__c" href="../explorator/">
         <span class="mat__t">Exploratorul legăturilor sociale</span>
@@ -91,7 +91,7 @@
   <section class="sec sec--nevoie">
     <p class="sec__et">Pregătire</p>
     <div class="sec__corp"><ol>
-<li>Baza din C5, <code>curs/data/dsw.db</code>.</li>
+<li>Conexiune la internet: caietul descarcă baza de date <code>dsw.db</code> din depozitul cursului (GitHub) și citește tabelele cu SQL, ca în C5; contururile regiunilor vin de la GISCO.</li>
 <li>Pachetele din <code>requirements.txt</code>: <code>statsmodels</code> și <code>geopandas</code> sunt deja în listă (<code>pip install -r requirements.txt</code>).</li>
 </ol></div>
   </section>
@@ -124,7 +124,7 @@
    predată încă, vede pagina, dar fără intrare în lecție. */
 try {
   const [{ profil }, O, { LECTII }] = await Promise.all([
-    import("../js/auth.js?v=168"), import("../js/ora.js?v=168"), import("../js/curs.js?v=168")]);
+    import("../js/auth.js?v=173"), import("../js/ora.js?v=173"), import("../js/curs.js?v=173")]);
   const p = await profil();
   if (p.profesor){
     const b = document.querySelector('[data-rol="preda"]');
@@ -167,7 +167,7 @@ document.querySelectorAll("[data-descarca]").forEach(a => a.addEventListener("cl
   } catch { window.open(a.dataset.pagina, "_blank", "noopener"); }
 }));
 </script>
-<script type="module" src="../js/antet.js?v=168"></script>
-<script type="module" src="../js/subsol.js?v=168"></script>
+<script type="module" src="../js/antet.js?v=173"></script>
+<script type="module" src="../js/subsol.js?v=173"></script>
 </body>
 </html>

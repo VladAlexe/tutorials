@@ -6,14 +6,14 @@
 <title>Cursul 6 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Analiza exploratorie, în ordinea fluxului ei: profilul datelor, o variabilă, variabile categorice, relațiile, harta partenerilor și comunitățile rețelei, verificarea. Fiecare concept, interactiv, pe datele SCI.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=168">
-<link rel="stylesheet" href="../../css/sistem.css?v=168">
-<link rel="stylesheet" href="../../css/slide.css?v=168">
-<link rel="stylesheet" href="../../css/interactiv.css?v=168">
-<link rel="stylesheet" href="../../css/grafice.css?v=168">
-<link rel="stylesheet" href="../../css/exercitii.css?v=168">
-<link rel="stylesheet" href="../../css/explorator.css?v=168">
-<script src="../../js/tema.js?v=168"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=173">
+<link rel="stylesheet" href="../../css/sistem.css?v=173">
+<link rel="stylesheet" href="../../css/slide.css?v=173">
+<link rel="stylesheet" href="../../css/interactiv.css?v=173">
+<link rel="stylesheet" href="../../css/grafice.css?v=173">
+<link rel="stylesheet" href="../../css/exercitii.css?v=173">
+<link rel="stylesheet" href="../../css/explorator.css?v=173">
+<script src="../../js/tema.js?v=173"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 6 · Analiza exploratorie" data-crom="1"></div>
@@ -163,7 +163,7 @@
 <section class="sld" id="s17" data-grup="Echipa" data-t="Verificarea în caiet">
 <h2>Verificarea analizei</h2><div class="ix" data-ix="dovada">
   <div class="ix__cap"><span class="ix__fel">Verificare locală</span><span class="ix__t">Verificarea analizei</span></div>
-  <div class="ix__corp"><script type="application/json">{"id": "c6-dovada", "sarcina": "Trei rezultate din caiet, rulate pe datele proprii. Ieșirea fiecăruia se lipește în câmpul lui.", "indiciu": "Celulele sunt în caietul 06: secțiunile 4.1, 4.2 și 2.3.", "pasi": [{"t": "Distanța și SCI", "cmd": "perechi[\"distanta_km\"].corr(perechi[\"sci\"], method=\"spearman\")", "gol": "numărul afișat", "cauta": "-0[.,]46\\d", "ind": "Un singur număr, negativ, în jur de -0,46.", "daca_nu": "Corelația trebuie să fie în jur de -0.46. Distanța se calculează din centrele regiunilor."}, {"t": "Perechile cu PIB", "cmd": "len(economice), len(perechi)", "gol": "perechea de numere afișată", "cauta": "37950\\D+44253", "ind": "Două numere: perechile cu PIB la ambele capete și toate perechile.", "daca_nu": "Trebuie să iasă 37950 din 44253. Altfel, tabelul perechilor nu este cel din C4."}, {"t": "Migranții la mie", "cmd": "cu_migratie[\"la_mie\"].corr(cu_migratie[\"sci\"], method=\"spearman\")", "gol": "numărul afișat", "cauta": "0[.,]67\\d", "ind": "Un număr pozitiv, în jur de 0,68.", "daca_nu": "Corelația cu rata trebuie să fie în jur de 0.68. Populația vine din data/raw/bm.csv, anul 2024."}], "explicatie": "Rezultatele sunt cele din caiet."}</script></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c6-dovada", "sarcina": "Trei rezultate din caiet, rulate pe datele proprii. Ieșirea fiecăruia se lipește în câmpul lui.", "indiciu": "Celulele sunt în caietul 06: secțiunile 4.1, 4.2 și 2.3.", "pasi": [{"t": "Distanța și SCI", "cmd": "perechi[\"distanta_km\"].corr(perechi[\"sci\"], method=\"spearman\")", "gol": "numărul afișat", "cauta": "-0[.,]46\\d", "ind": "Un singur număr, negativ, în jur de -0,46.", "daca_nu": "Corelația trebuie să fie în jur de -0.46. Distanța se calculează din centrele regiunilor."}, {"t": "Perechile cu PIB", "cmd": "len(economice), len(perechi)", "gol": "perechea de numere afișată", "cauta": "37950\\D+44253", "ind": "Două numere: perechile cu PIB la ambele capete și toate perechile.", "daca_nu": "Trebuie să iasă 37950 din 44253. Altfel, tabelul perechilor nu este cel din C4."}, {"t": "Migranții la mie", "cmd": "cu_migratie[\"la_mie\"].corr(cu_migratie[\"sci\"], method=\"spearman\")", "gol": "numărul afișat", "cauta": "0[.,]67\\d", "ind": "Un număr pozitiv, în jur de 0,68.", "daca_nu": "Corelația cu rata trebuie să fie în jur de 0.68. Populația vine din raw/bm.csv, din depozitul cursului, anul 2024."}], "explicatie": "Rezultatele sunt cele din caiet."}</script></div>
 </div>
 
 </section>
@@ -171,11 +171,11 @@
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=168"></script>
+<script type="module" src="../../js/antet.js?v=173"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=168";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=168";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=168";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=173";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=173";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=173";
 pornesteIx();
 pornesteVerif("c6");
 pornesteSlide({ capitol:"c6", lectie:"c6-analiza-exploratorie" });

@@ -217,9 +217,9 @@ sl("s3", "Profilul datelor", "Unitatea de analiză",
    + ix("edTipuri", "Tabelul perechilor", _TIP)
    + glosar("unitate")
    + caiet("0 și 1.1", [
-       "Celula de pregătire citește <code>regiuni</code>, <code>perechi</code> și <code>tari</code> din <code>data/dsw.db</code>, "
+       "Celula de pregătire citește <code>regiuni</code>, <code>perechi</code> și <code>tari</code> din baza de date <code>dsw.db</code>, descărcată din depozitul cursului (GitHub), "
        "apoi calculează <code>distanta_km</code> din centrele regiunilor, <code>interval_km</code> cu <code>pd.cut</code> și "
-       "<code>aceeasi_tara</code>. Tot aici se construiește <code>deschidere</code>, folosită mai târziu.",
+       "<code>aceeasi_tara</code>.",
        "<code>perechi.head()</code> și <code>perechi.dtypes</code>: tipul fiecărei coloane.",
        f"<code>len(perechi), 298 * 297 // 2</code>: cele două numere trebuie să fie egale ({nr(D['n'])}).",
        "Suma populației regiunilor din România, comparată cu o sursă externă (aproximativ 19 milioane): un control al "
@@ -815,7 +815,7 @@ DOVADA = {
          "gol": "numărul afișat",
          "cauta": r"0[.,]67\d",
          "ind": "Un număr pozitiv, în jur de 0,68.",
-         "daca_nu": "Corelația cu rata trebuie să fie în jur de 0.68. Populația vine din data/raw/bm.csv, anul 2024."},
+         "daca_nu": "Corelația cu rata trebuie să fie în jur de 0.68. Populația vine din raw/bm.csv, din depozitul cursului, anul 2024."},
     ],
     "explicatie": "Rezultatele sunt cele din caiet.",
 }

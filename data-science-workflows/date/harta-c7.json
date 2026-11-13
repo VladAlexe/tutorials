@@ -1,6 +1,6 @@
 {
  "capitol": "c7",
- "total": 14,
+ "total": 15,
  "sarcini": 4,
  "slide": [
   {
@@ -76,7 +76,7 @@
    "nr": 9,
    "id": "s9",
    "grup": "Modelul",
-   "titlu": "Patru modele",
+   "titlu": "Trei variabile",
    "sarcini": []
   },
   {
@@ -96,7 +96,7 @@
      "id": "c7-v-el",
      "fel": "verificare",
      "corect": 2,
-     "q": "În M4, coeficientul ratei migranților este 0,44. Ce înseamnă?",
+     "q": "În M2, coeficientul ratei migranților este 0,44. Ce înseamnă?",
      "optiuni": [
       "SCI crește cu 0,44 la fiecare migrant în plus",
       "SCI crește cu 44% la fiecare migrant la mie în plus",
@@ -116,7 +116,14 @@
   {
    "nr": 13,
    "id": "s13",
-   "grup": "Reziduurile",
+   "grup": "Modelul final",
+   "titlu": "Efectele de țară",
+   "sarcini": []
+  },
+  {
+   "nr": 14,
+   "id": "s14",
+   "grup": "Modelul final",
    "titlu": "Ce se poate concluziona",
    "sarcini": [
     {
@@ -134,8 +141,8 @@
    ]
   },
   {
-   "nr": 14,
-   "id": "s14",
+   "nr": 15,
+   "id": "s15",
    "grup": "Verificarea",
    "titlu": "Verificarea în caiet",
    "sarcini": [
