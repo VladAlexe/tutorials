@@ -40,6 +40,7 @@ G = {
     "rata": ("rata", "rate", "un număr raportat la mărimea populației; face comparabile țările mari și mici."),
     "binara": ("variabila binară", "dummy variable", "o variabilă cu două valori, 0 și 1: aici, 1 pentru țările vecine."),
     "log": ("logaritmul", "log transformation", "log10 x: 10 devine 1, 1.000 devine 3. Comprimă valorile mari și transformă relațiile multiplicative în relații liniare."),
+    "as": ("abaterea standard", "standard deviation", "cât de departe stau, de obicei, valorile de medie: mare, valorile sunt foarte diferite între ele; mică, seamănă."),
     "z": ("scorul z", "z-score, standardization", "(x − media) / abaterea standard: media devine 0, abaterea standard 1; forma distribuției rămâne aceeași."),
     "pca": ("analiza componentelor principale", "principal component analysis, PCA", "rezumă mai mulți indicatori corelați într-unul sau câteva scoruri care păstrează cât mai mult din variația lor."),
     "multicol": ("multicoliniaritatea", "multicollinearity", "predictorii sunt puternic corelați între ei, astfel încât efectul fiecăruia se separă greu."),
@@ -89,6 +90,12 @@ def cod(t):
     return f"<pre><code>{t}</code></pre>"
 
 
+def info(*perechi):
+    """Casete care se deschid la clic: (eticheta, conținutul)."""
+    return ('<div class="info7-r">' + "".join(f'<details class="info7"><summary>{t}</summary><div>{x}</div></details>'
+                                             for t, x in perechi) + "</div>")
+
+
 # ===========================================================================
 #  A. Cursul
 # ===========================================================================
@@ -106,8 +113,9 @@ CURSUL = tabel(["", "Conținutul", "Rezultatul"], [
 
 sl("s1", "Cursul", "Unde suntem",
    "<h2>Unde suntem în curs</h2>"
-   "<p class=\"cheie\">Analiza exploratorie a găsit tipare: distanța, granița, migrația. Modelul le pune împreună "
-   "și estimează ce rămâne din fiecare.</p>"
+   "<p class=\"cheie\">Analiza exploratorie (C6) a găsit trei tipare: SCI scade cu distanța, e mai mare între țări "
+   "vecine și crește cu migrația. Azi: un model care le pune împreună și arată cât contează fiecare când celelalte "
+   "rămân la fel.</p>"
    + CURSUL,
    manual=
    "<h2>Variabile derivate și model</h2>"
@@ -170,8 +178,9 @@ sl("s3", "Variabilele", "Construcția",
              f"1.000, devine <b>rata migranților la mie</b> (o {gl('rata', 'rată')}): câți migranți între cele două "
              "țări revin la 1.000 de locuitori ai lor. Butoanele schimbă variabila de pe axa orizontală.")
    + ix("edModelVar", "SCI și migrația, pe perechi de țări", {**_T, "mod": "constr"})
-   + vede(f"Singur, numărul de migranți explică {ro(M['r2_simplu']['migranti'])} din variația lui log SCI; rata migranților la mie, "
-          f"{ro(M['r2_simplu']['la_mie'])}. Aceeași informație, construită altfel, explică de trei ori mai mult."),
+   + vede(f"Singur, numărul de migranți explică {round(100 * M['r2_simplu']['migranti'])}% din diferențele de SCI dintre "
+          f"perechi; rata migranților la mie, {round(100 * M['r2_simplu']['la_mie'])}%. Aceeași informație, construită "
+          "altfel, explică de trei ori mai mult."),
    manual=
    "<h2>Construcția</h2>"
    "<p>Construcția produce variabile noi din cele existente. Modelul se face pe perechi de țări, pentru că migrația "
@@ -201,11 +210,16 @@ sl("s3", "Variabilele", "Construcția",
 
 sl("s4", "Variabilele", "Transformarea",
    "<h2>Transformarea: logaritmul</h2>"
-   + concept(f"SCI și distanța au coadă lungă. {gl('log', 'Logaritmul')} le aduce aproape de simetrie și face "
-             "relația aproape o dreaptă, ce poate fi descrisă de un model liniar. Granița (0 sau 1) nu se logaritmează.")
+   + concept("SCI și distanța au câteva valori foarte mari (o „coadă lungă” spre dreapta). Logaritmul în baza 10 "
+             "le comprimă: 10 devine 1, 100 devine 2, 1.000 devine 3. Distribuția devine aproape simetrică, iar relația "
+             "dintre SCI și distanță devine aproape o dreaptă, pe care un model liniar o poate descrie. Granița (0 sau 1) "
+             "nu se logaritmează.")
    + ix("edModelVar", "SCI și distanța, pe perechi de țări", {**_T, "mod": "transf"})
-   + vede("Pe valorile brute, câteva perechi foarte legate trag dreapta; pe logaritmi, norul are formă de dreaptă, "
-          "iar asimetria lui SCI scade de la 7,6 la 0,5."),
+   + vede("Pe valorile brute, câteva perechi foarte legate trag dreapta după ele; pe logaritmi, norul de puncte are "
+          "formă de dreaptă.")
+   + info(("Ce e asimetria?", "Un număr care spune cât de dezechilibrată e distribuția: 0 = simetrică; un număr mare, "
+           "pozitiv = câteva valori foarte mari în dreapta. Pentru SCI, asimetria scade de la 7,6 (valorile brute) la 0,5 "
+           "(după logaritm).")),
    manual=
    "<h2>Transformarea</h2>"
    "<p>Transformarea schimbă forma distribuției. Pe datele SCI, trei variabile au coadă lungă spre dreapta: SCI "
@@ -242,7 +256,7 @@ _Z = {**_T, "alese": ["IT–RO", "HU–RO", "DE–TR", "IS–NO"]}
 sl("s5", "Variabilele", "Scalarea",
    "<h2>Scalarea: aceeași scară pentru toate</h2>"
    + concept("Sunt 1.100 km mult sau puțin? Dar 13,9 migranți la mie? Kilometrii și migranții la mie nu se pot "
-             f"compara direct. {gl('z', 'Scorul z')}, z = (valoarea − media) / abaterea standard, spune cu câte abateri "
+             f"compara direct. {gl('z', 'Scorul z')}, z = (valoarea − media) / {gl('as')}, spune cu câte abateri "
              "standard e o pereche peste (z &gt; 0) sau sub (z &lt; 0) medie: aceeași unitate pentru toate.")
    + ix("edScalare", "O pereche, pe trei variabile: valorile, apoi scorul z", _Z),
    dupa=V_Z,
@@ -283,12 +297,15 @@ TAB_SEL = tabel(["Predictorul", "Corelația cu log distanța", "Corelația cu lo
 
 sl("s7", "Variabilele", "Selecția",
    "<h2>Selecția: predictori fără redundanță</h2>"
-   + concept(f"Doi predictori care spun aproape același lucru nu se pot separa în model ({gl('multicol')}). "
-             f"{gl('vif', 'VIF')} măsoară cât de bine e explicat un predictor de ceilalți: sub 5, acceptabil; "
-             "peste 10, unul se scoate.")
+   + concept("Variabilele care explică SCI-ul se numesc <b>predictori</b>. Dacă doi predictori spun aproape același "
+             "lucru (de exemplu, numărul de migranți și rata lor), modelul nu poate separa efectul fiecăruia. "
+             f"{gl('vif', 'VIF')} arată cât de mult se suprapune un predictor cu ceilalți: 1 = deloc; sub 5, "
+             "acceptabil; peste 10, unul dintre ei se scoate.")
    + TAB_SEL
-   + vede(f"Distanța și granița sunt legate (r = {ro(COR[0][2])}: vecinii sunt apropiați), dar toate VIF-urile sunt "
-          "sub 2. Toți trei predictorii rămân."),
+   + vede("Distanța și granița sunt legate (vecinii sunt apropiați: corelația −0,63), dar toate VIF-urile sunt sub 2. "
+          "Toți trei predictorii rămân.")
+   + info(("Ce e corelația?", "Un număr între −1 și 1 care arată cât de strâns merg împreună două variabile: 1 = cresc "
+           "împreună perfect, −1 = una crește când cealaltă scade, 0 = nicio legătură liniară.")),
    manual=
    "<h2>Selecția</h2>"
    "<p>Selecția păstrează un set restrâns de predictori, fiecare pentru un concept distinct. Criteriile sunt două: "
@@ -313,18 +330,19 @@ sl("s7", "Variabilele", "Selecția",
 
 _PT = [[round(__import__("math").log10(r[5]), 4), round(__import__("math").log10(r[2]), 4), r[6]] for r in M["tari"]]
 _M1 = MOD["m1"]["coef"]
-REZ1 = {"perechi": _PT, "dy": [3, 6.6], "rm": 1.2, "a0": 6, "b0": -0.4, "r2": True,
+REZ1 = {"perechi": _PT, "dy": [3, 6.6], "rm": 1.2, "a0": 6, "b0": -0.4, "r2": True, "simplu": True,
         "et": ["țări nevecine", "țări vecine (portocaliu)"],
         "cod": 'm1 = smf.ols("log_sci ~ log_distanta", data=date).fit()\nm1.params        # constanta (Intercept) și panta\ndate["reziduu"] = m1.resid'}
 
 sl("s8", "Modelul", "Tipar și reziduu",
    "<h2>Modelul: tipar plus reziduu</h2>"
-   + concept(f"{gl('model', 'Modelul liniar')} scrie fiecare valoare ca tipar plus {gl('reziduu', 'reziduu')}: log SCI = constantă + "
-             f"pantă × log distanța + reziduu. Constanta (<i>intercept</i>) fixează înălțimea dreptei; panta, "
-             f"înclinarea ei. {gl('mcmp', 'Cele mai mici pătrate')} aleg dreapta cu suma pătratelor reziduurilor minimă.")
+   + concept("Un <b>model liniar</b> trage o dreaptă prin norul de puncte. Punctul de pe dreaptă e <b>predicția</b>; "
+             "distanța pe verticală până la punctul real e <b>reziduul</b>, ce modelul nu explică. Dreapta are o "
+             "<b>constantă</b> (înălțimea) și o <b>pantă</b> (înclinarea); se alege dreapta cu reziduurile cele mai mici.")
    + ix("edReziduu", "Distanța și SCI, pe perechi de țări", REZ1)
-   + vede(f"Doar cu distanța: panta {ro(_M1['log_distanta'])} și {gl('r2', 'R²')} = {ro(MOD['m1']['r2'])}. Distanța "
-          "explică doar o șesime din variația SCI între țări."),
+   + vede(f"Doar cu distanța: panta este {ro(_M1['log_distanta'])}, deci o distanță de 10 ori mai mare merge cu un SCI de "
+          f"aproape 6 ori mai mic. {gl('r2', 'R²')} = {ro(MOD['m1']['r2'])}: distanța explică doar 16% din diferențele "
+          "de SCI dintre perechi."),
    manual=
    "<h2>Modelul: tipar plus reziduu</h2>"
    "<p>Un model liniar descrie variabila dependentă ca tipar plus reziduu. Cu un singur predictor, tiparul este o "
@@ -352,24 +370,33 @@ def _mod(k, nume, formula, text):
                      "rata": c.get("log_la_mie"), "gr": c.get("granita")}}
 
 
-TAB_MODELE = tabel(["", "Ce conține", "Codul (statsmodels)", "R²", "greșește de obicei"], [
-    ["<b>M1</b>", "distanța", '<code>smf.ols("log_sci ~ log_distanta", data=date)</code>', "0,16", "× 2,88"],
-    ["<b>M2</b>", "distanța, rata migranților la mie, granița",
-     '<code>smf.ols("log_sci ~ log_distanta + log_la_mie + granita", data=date)</code>', "0,53", "× 2,21"],
-    ["<b>M3</b>", "M2 plus efectele de țară (nivelul fiecărei țări)",
-     '<code>smf.ols(formula_m2 + efecte, data=date)</code>', "0,92", "× 1,38"],
-    ["<b>M4</b>", "numărul de migranți în locul ratei, plus fostul stat comun și familia lingvistică",
-     '<code>smf.ols("log_sci ~ log_distanta + log_migranti + granita + stat_comun + familie_limba" + efecte, data=date)</code>',
-     "0,94", "× 1,32"]])
+TAB_MODELE = tabel(["", "Ce folosește modelul pentru a prezice SCI-ul unei perechi", "Ce adaugă", "R²", "greșește de obicei"], [
+    ["<b>M1</b>", "distanța", "punctul de plecare", "0,16", "× 2,88"],
+    ["<b>M2</b>", "distanța, rata migranților la mie, granița", "migrația și vecinătatea", "0,53", "× 2,21"],
+    ["<b>M3</b>", "ca M2, plus câte o variabilă 0/1 pentru fiecare țară", "cât de legată e, în general, fiecare țară",
+     "0,92", "× 1,38"],
+    ["<b>M4</b>", "distanța, numărul de migranți, granița, fostul stat comun, familia lingvistică, plus variabilele de țară",
+     "istoria și limba comune", "0,94", "× 1,32"]])
+
+COD_MODELE = cod('import statsmodels.formula.api as smf          # modelele liniare, scrise ca formule\n'
+                 'm1 = smf.ols("log_sci ~ log_distanta", data=date).fit()\n'
+                 'm2 = smf.ols("log_sci ~ log_distanta + log_la_mie + granita", data=date).fit()\n'
+                 'm3 = smf.ols(formula_m2 + efecte, data=date).fit()   # efecte: variabilele de țară\n'
+                 'm4 = smf.ols(formula_m4, data=date).fit()             # formula completă, în caiet\n'
+                 'm2.rsquared                                          # R²')
 
 sl("s21", "Modelul", "Patru modele",
    "<h2>Patru modele, pas cu pas</h2>"
-   + concept("Același model liniar, cu tot mai multe variabile. Fiecare pas are un motiv teoretic și se verifică pe "
-             "reziduuri: ce rămâne neexplicat după un model sugerează variabila următoare. „Greșește de obicei” = de "
-             "câte ori diferă, de obicei, SCI-ul observat de cel prezis.")
+   + concept("Lecția construiește patru modele, unul după altul, pe aceleași 263 de perechi de țări. Toate prezic log "
+             "SCI; diferă doar ce informații primesc. Fiecare pas pornește de la ce a greșit modelul anterior.")
    + TAB_MODELE
-   + vede("De la M1 la M4, eroarea obișnuită scade de la × 2,88 la × 1,32. Saltul cel mare vine din efectele de "
-          "țară (M3)."),
+   + vede("De la M1 la M4, eroarea obișnuită scade de la × 2,88 la × 1,32. Saltul cel mare vine din variabilele de "
+          "țară (M3).")
+   + info(("Ce e R²?", "Partea din diferențele de SCI dintre perechi pe care modelul o explică, între 0 și 1. "
+           "0,53 = 53%."),
+          ("Ce înseamnă „greșește de obicei”?", "De câte ori diferă, de obicei, SCI-ul observat de cel prezis, în plus "
+           "sau în minus. × 2,21 = de obicei, SCI-ul real e de 2,21 ori mai mare sau mai mic decât predicția."),
+          ("Cum se scrie în Python?", COD_MODELE)),
    manual=
    "<h2>Patru modele, pas cu pas</h2>"
    "<p>Lecția construiește patru modele pe aceleași 263 de perechi de țări. Toate sunt regresii liniare (metoda celor "
@@ -406,12 +433,12 @@ PRED = {**_T, "alese": ["IT–RO", "HU–RO", "DE–RO", "DE–TR", "IS–NO"],
 
 sl("s9", "Modelul", "Trei variabile",
    "<h2>Trei variabile, fiecare cu o explicație</h2>"
-   + concept(f"Fiecare {gl('predictor', 'predictor')} are un motiv teoretic: distanța (contactul costă), migrația "
-             "(cei plecați păstrează legăturile), granița (contact zilnic). Predicția unei perechi este o sumă: "
-             f"constanta plus, pentru fiecare predictor, {gl('coef', 'coeficientul')} înmulțit cu valoarea perechii.")
+   + concept("Fiecare predictor are un motiv: distanța (contactul costă), migrația (cei plecați păstrează legăturile), "
+             "granița (contactul zilnic). Modelul prezice SCI-ul unei perechi ca o sumă: constanta, plus, pentru fiecare "
+             f"predictor, un {gl('coef', 'coeficient')} înmulțit cu valoarea perechii. Barele arată fiecare termen al sumei.")
    + ix("edPredictie", "Cum prezice modelul SCI-ul unei perechi", PRED)
-   + vede("Constanta, plus câte o bară pentru fiecare predictor, dă SCI-ul prezis. IT-RO: M2 prezice mai mult decât "
-          "se observă (×0,70); HU-RO e de 1,9 ori peste model: minoritatea maghiară nu e în model."),
+   + vede("IT-RO: M2 prezice mai mult decât se observă (× 0,70); HU-RO e de 1,9 ori peste model: minoritatea maghiară "
+          "nu e în model."),
    manual=
    "<h2>Trei variabile, două modele</h2>"
    "<p>Fiecare predictor are un motiv teoretic și o direcție așteptată, stabilite înainte de estimare:</p>"
@@ -559,11 +586,12 @@ MANUAL_EL = (
 
 sl("s10", "Modelul", "Rezultatul complet",
    "<h2>Rezultatul complet al modelului</h2>"
-   + concept(f"Trei blocuri: modelul în ansamblu ({gl('r2a', 'R² ajustat')}, testul F, AIC), coeficienții (eroarea "
-             "standard, t, valoarea p, intervalul) și diagnosticul reziduurilor. Un clic pe un câmp îl explică.")
+   + concept("Așa arată în Python rezultatul complet al lui M2. Nu toate câmpurile contează la fel. Cele importante: "
+             "<b>R²</b> (cât explică modelul), <b>coef</b> (cu cât schimbă fiecare predictor log SCI) și <b>P&gt;|t|</b>, "
+             "valoarea p (sub 0,05: efectul se deosebește de întâmplare). Un clic pe un câmp îl explică.")
    + ix("edSumar", "m2.summary(), pe datele cursului", SUMAR)
-   + vede("Modelul explică 53%; rata migranților la mie (t = 13,7) și distanța (p = 0,004) contează; granița nu (p = 0,21). "
-          "Reziduurile nu sunt perfect normale."),
+   + vede("Modelul explică 53% din diferențele de SCI. Migrația (p practic 0) și distanța (p = 0,004) au efecte "
+          "clare; granița nu (p = 0,21, peste 0,05)."),
    manual=
    "<h2>Rezultatul complet al modelului</h2>"
    "<p><code>m2.summary()</code> dă tot rezultatul modelului, în trei blocuri. Sus, modelul în ansamblu: numărul de "
@@ -628,8 +656,9 @@ V_CONC = verif("c7-v-conc", 1,
 
 sl("s12", "Reziduurile", "Peste și sub model",
    "<h2>Reziduurile: unde greșește modelul</h2>"
-   + concept("Reziduul este SCI-ul observat față de cel prezis de M2. Peste 1×: perechea e mai legată decât prezic "
-             "distanța, migrația și granița; sub 1×, mai puțin. Clic pe o țară o alege.")
+   + concept("Pentru fiecare pereche, SCI-ul observat împărțit la cel prezis de M2: peste 1×, perechea e mai legată "
+             "decât prezic distanța, migrația și granița; sub 1×, mai puțin. Acesta e reziduul, citit ca raport. Clic pe o "
+             "țară o alege; partenerii ei se colorează.")
    + ix("harta", "SCI față de model, pe țări", HARTA_MODEL)
    + vede("Italia, cu cei mai mulți migranți români, este sub model (0,7×); Ungaria peste (1,9×): ce lipsește din model."),
    manual=
@@ -684,15 +713,27 @@ HARTA_M3 = {
                  "devin mici."},
     ]}
 
+
+def _rez_tara():
+    ex = json.loads((RAD / "date" / "explorator.json").read_text(encoding="utf-8"))
+    nume = {t["cod"]: t["nume"] for t in ex["tari"]}
+    acc = {}
+    for p_, o, p2, p3, p4 in M["op"]:
+        for t in p_.split("-"):
+            acc.setdefault(t, []).append((o - p2, o - p3))
+    return {"tari": [{"c": t, "n": nume.get(t, t), "r": [round(sum(a for a, _ in v) / len(v), 3), round(sum(b for _, b in v) / len(v), 3)]}
+                     for t, v in sorted(acc.items())]}
+
+
+REZ_TARA = _rez_tara()
+
 sl("s13", "Modele mai bune", "Efectele de țară",
    "<h2>Un model mai bun: efectele de țară</h2>"
    + concept("Unele țări sunt legate puternic de aproape oricine (Islanda, Luxemburgul: țări mici), altele slab "
-             "(Turcia). M2 nu știe asta și greșește la fel pentru toți partenerii lor. <b>Efectele de țară</b> dau "
-             "fiecărei țări nivelul ei de pornire; apoi modelul (M3) compară partenerii aceleiași țări între ei. "
-             "Butoanele comută între M2 și M3.")
-   + ix("harta", "SCI față de model: M2 și M3, pe țări", HARTA_M3)
-   + vede("Cu M3, efectul de mărime dispare. Rămân legăturile cu o explicație proprie: Ungaria-România ×2,9, "
-          "Cehia-Slovacia ×2,8, Luxemburg-Portugalia ×4,5."),
+             "(Turcia). M2 nu știe asta și greșește la fel cu toți partenerii lor. <b>Efectele de țară</b>: câte o "
+             "variabilă 0/1 pentru fiecare țară, care îi dă nivelul ei de pornire. Fiecare bară: de câte ori sunt, în "
+             "medie, perechile unei țări peste sau sub model.")
+   + ix("edRezTara", "Reziduul mediu pe țară: M2 și M3", REZ_TARA),
    manual=
    "<h2>Un model mai bun: efectele de țară</h2>"
    "<p><b>Ideea, cu o analogie.</b> Doi profesori notează aceeași clasă: unul dă note mari tuturor, altul note "
@@ -709,6 +750,7 @@ sl("s13", "Modele mai bune", "Efectele de țară",
          '    date["fe_" + t] = date["pereche"].str.contains(t).astype(int)   # 1 dacă țara e în pereche\n'
          'm3 = smf.ols(formula_m2 + efecte, data=date).fit()      # formula lui M2, plus variabilele de țară\n'
          'm3g = smf.ols(formula_m3, data=date).fit(cov_type="cluster", cov_kwds={"groups": grupe})   # erorile grupate')
+   + ix("edRezTara", "Reziduul mediu pe țară: M2 și M3", REZ_TARA)
    + ix("harta", "SCI față de model: M2 și M3, pe țări", HARTA_M3)
    + TAB_M3
    + "<p>R² urcă la 0,92, dar creșterea vine mai ales din variabilele de țară; ce contează sunt cei trei coeficienți. "
@@ -753,9 +795,10 @@ TAB_TESTATE = tabel(["Variabila verificată", "Rezultatul", "Concluzia"], [
 
 sl("s16", "Modele mai bune", "Reziduuri mici",
    "<h2>M4: reziduurile cele mai mici</h2>"
-   + concept("Trei schimbări cu motiv teoretic: <b>numărul</b> de migranți în locul ratei migranților la mie "
-             "(mărimea țărilor e deja în efectele de țară), <b>fostul stat comun</b> și <b>familia lingvistică</b>. "
-             "Fiecare punct e o pereche: cu cât e mai aproape de diagonală, cu atât reziduul e mai mic.")
+   + concept("M4 aduce trei schimbări: <b>numărul</b> de migranți în locul ratei (mărimea țărilor e deja în "
+             "variabilele de țară), <b>fostul stat comun</b> (Cehoslovacia, URSS) și <b>familia lingvistică</b>. "
+             "Fiecare punct e o pereche; pe diagonală, predicția e perfectă. Cu cât punctele stau mai aproape de ea, cu "
+             "atât modelul greșește mai puțin.")
    + ix("edObsPrez", "SCI observat față de prezis: M2, M3, M4", OP),
    manual=
    "<h2>M4: reziduurile cele mai mici</h2>"
@@ -896,13 +939,18 @@ HARTA_TIP = {
 
 sl("s6", "Gruparea", "Tipurile de regiuni",
    "<h2>Extragerea: gruparea regiunilor</h2>"
-   + concept(f"{gl('cluster', 'Gruparea')} rezumă cinci indicatori ai fiecărei regiuni într-o categorie, tipul de "
-             "regiune: <b>PIB pe locuitor, studiile superioare (%), șomajul (%), vârsta medie și densitatea</b> (pe "
-             f"logaritm), toți în scor z. {gl('kmeans')} (k = 4) pune fiecare dintre cele 266 de regiuni cu date "
-             "complete la cel mai apropiat centru.")
+   + concept("<b>Gruparea</b> pune regiunile asemănătoare în aceeași grupă, după cinci indicatori deodată: PIB pe "
+             "locuitor, studiile superioare (%), șomajul (%), vârsta medie și densitatea (pe logaritm). Algoritmul "
+             "<b>k-means</b> caută 4 grupe pentru cele 266 de regiuni cu date complete. Rezultatul e o variabilă nouă: "
+             "tipul de regiune.")
    + ix("harta", "Cele patru tipuri de regiuni (k-means)", HARTA_TIP)
-   + vede("Metropolele (capitalele, inclusiv București-Ilfov), regiunile dezvoltate (Germania, Austria, nordul Italiei), "
-          "periferiile îmbătrânite (sudul Europei, România fără București) și regiunile tinere cu șomaj ridicat (Turcia)."),
+   + vede("Metropolele (capitalele, cu București-Ilfov), regiunile dezvoltate (Germania, Austria), periferiile "
+          "îmbătrânite (sudul Europei, restul României) și regiunile tinere, cu șomaj ridicat (Turcia).")
+   + info(("Cum lucrează k-means?", "1. Alege 4 centre la întâmplare. 2. Fiecare regiune merge la centrul cel mai "
+           "apropiat, pe toți cei cinci indicatori. 3. Fiecare centru se mută în mijlocul regiunilor lui. Pașii 2-3 se "
+           "repetă până nu se mai schimbă nimic."),
+          ("De ce scorul z?", "Distanța dintre regiuni se calculează pe toți indicatorii deodată. Fără scorul z, PIB-ul "
+           "(zeci de mii de euro) ar cântări mult mai mult decât șomajul (câteva procente) și ar decide singur grupele.")),
    manual=
    "<h2>Extragerea: gruparea regiunilor</h2>"
    "<p>Extragerea rezumă mai mulți indicatori într-o singură variabilă. "
@@ -973,9 +1021,10 @@ QAP = {"qap": M["qapsim"]}
 
 sl("s18", "Rețeaua", "Un model de rețea",
    "<h2>Un model de rețea: regresia QAP</h2>"
-   + concept("O amestecare dă fiecărei țări numele alteia. Fiecare pereche își păstrează distanța, migrația și "
-             "granița, dar primește SCI-ul perechii cu numele noi; M2 se reestimează. Dacă aproape nicio amestecare nu "
-             "dă un coeficient cât cel real, asocierea nu vine din structura rețelei.")
+   + concept("Problema: perechile aceleiași țări seamănă între ele (Germania apare în 23 de perechi), deci nu sunt "
+             "observații independente. Testul QAP verifică dacă un coeficient rezistă: amestecă numele țărilor, "
+             "reestimează M2 și repetă de 1.000 de ori. Dacă aproape nicio amestecare nu dă un coeficient cât cel de pe "
+             "datele adevărate, asocierea e reală.")
    + ix("edQAP", "Coeficienții lui M2, față de 1.000 de amestecări ale țărilor", QAP),
    manual=
    "<h2>Un model de rețea: regresia QAP</h2>"
@@ -1012,10 +1061,17 @@ COMUNITATI = {"retea": {"noduri": _RR["noduri"], "brut": _RR["brut"], "model": _
 
 sl("s19", "Rețeaua", "Comunitățile",
    "<h2>Comunitățile regiunilor: înainte și după model</h2>"
-   + concept("Rețeaua celor 297 de regiuni, cu două greutăți: SCI (ca în C6) și de câte ori e perechea peste un model "
-             "de bază (distanța și „aceeași țară”). Louvain caută grupurile legate între ele; rezoluția se alege prin "
-             "stabilitate.")
-   + ix("edComunitati", "Comunitățile Louvain pe rețeaua regiunilor", COMUNITATI),
+   + concept("Căutăm grupuri de regiuni legate între ele mai mult decât cu restul: <b>comunități</b>. Fiecare "
+             "regiune e un punct; legătura dintre două regiuni are o greutate. Algoritmul <b>Louvain</b> găsește "
+             "grupurile. Primul buton schimbă greutatea, al doilea mărimea grupurilor.")
+   + ix("edComunitati", "Comunitățile Louvain pe rețeaua regiunilor", COMUNITATI)
+   + info(("Ce e greutatea „peste model”?", "Un model simplu prezice SCI-ul fiecărei perechi de regiuni din distanță "
+           "și din faptul că sunt sau nu în aceeași țară. Greutatea e SCI-ul observat împărțit la cel prezis: 3 = de trei "
+           "ori mai legată decât ne-am aștepta. Așa dispare efectul țării și rămân legăturile neașteptate."),
+          ("Ce e rezoluția?", "Un parametru al lui Louvain: mică, grupuri puține și mari; mare, grupuri multe și mici. Se "
+           "alege valoarea la care rezultatul e stabil: aproape aceleași grupuri la fiecare rulare (rezoluția 1)."),
+          ("Ce e ARI?", "Un număr care compară două împărțiri ale acelorași regiuni: 1 = identice, 0 = nu seamănă mai "
+           "mult decât la întâmplare. Aici compară rulări repetate (stabilitatea) și comunitățile cu țările.")),
    manual=
    "<h2>Comunitățile regiunilor: înainte și după model</h2>"
    "<p>Aceeași idee ca la țări, pe cele 44 de mii de perechi de regiuni. Un model de bază (log SCI din log distanță "
@@ -1081,9 +1137,9 @@ COMH = _com_harta()
 
 sl("s20", "Rețeaua", "Harta comunităților",
    "<h2>Cinci comunități peste granițe</h2>"
-   + concept("Fiecare regiune are culoarea comunității ei: un grup de regiuni legate între ele mai mult decât "
-             "prezic distanța și granițele. În dreapta, ce cuprinde fiecare comunitate și explicația plauzibilă. "
-             "Butonul „pe SCI (C6)” arată comparația: acolo comunitățile sunt, aproape, țările.")
+   + concept("Comunitățile de pe slide-ul anterior, pe hartă. Cu greutatea „de câte ori peste model”, fiecare "
+             "culoare e un grup de regiuni legate între ele mai mult decât prezic distanța și granițele: grupurile "
+             "trec peste granițe. Cu greutatea SCI, ca în C6, grupurile sunt, aproape, țările.")
    + ix("edComHarta", "Comunitățile pe regiuni: după model și pe SCI", {**COMH, "ales0": True}),
    manual=
    "<h2>Cinci comunități peste granițe</h2>"

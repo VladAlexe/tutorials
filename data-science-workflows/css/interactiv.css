@@ -4358,3 +4358,24 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .ed-rh__svg,.ed-ch__svg{overflow:hidden}
 .ed-ch__lista > div{padding:4px 6px}
 .ed-ch__info{font-size:var(--t1);min-height:3.6em}
+/* C7, reziduul mediu pe țară */
+.ed-rzt__b{transition:x .7s cubic-bezier(.4,0,.2,1),width .7s cubic-bezier(.4,0,.2,1)}
+.ed-rzt__b.peste{fill:var(--accent);fill-opacity:.8}
+.ed-rzt__b.sub{fill:var(--ambra);fill-opacity:.8}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rzt){display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:24px;row-gap:6px;align-items:start;grid-template-rows:auto auto auto 1fr}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rzt) > .ed-ctl{grid-column:1 / -1}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rzt) > .ed-g{grid-column:1;grid-row:2 / span 3}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rzt) > .ed-o{grid-column:2;grid-row:2}
+.rnr[data-capitol="c7"] .sld .eda:has(.ed-rzt) > .ed-cod{grid-column:2;grid-row:3;font-size:11px}
+.rnr[data-capitol="c7"] .sld .eda.eda:has(.ed-rzt) .ed-not{display:block}
+.rnr[data-capitol="c7"] .sld .eda .ed-rzt .ed-svg{max-height:400px}
+/* C7: casetele care se deschid la clic */
+.info7-r{display:flex;flex-wrap:wrap;gap:4px 18px;margin:6px 0 2px}
+.info7{font-family:var(--sans);font-size:var(--t2);color:var(--text-2)}
+.info7 summary{cursor:pointer;color:var(--accent-text);font-weight:500;list-style:none;display:inline-flex;align-items:center;gap:6px}
+.info7 summary::-webkit-details-marker{display:none}
+.info7 summary::before{content:"i";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;font-size:10px;font-weight:700;font-style:italic}
+.info7[open]{flex-basis:100%}
+.info7[open] summary{color:var(--text)}
+.info7 > div{margin:6px 0 2px;padding:9px 12px;background:var(--panza-2);border-radius:8px;line-height:1.5}
+.info7 > div pre{margin:4px 0 0}
