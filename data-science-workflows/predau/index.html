@@ -106,6 +106,34 @@
 
   .st--viu{border-color:color-mix(in srgb,var(--ambra) 40%,var(--linie));background:var(--ambra-slab);margin-bottom:14px}
   .st--viu .st__pct{background:var(--ambra);box-shadow:0 0 0 3px color-mix(in srgb,var(--ambra) 22%,transparent)}
+  /* proiectele */
+  .pr{border:1px solid var(--linie);border-radius:10px;background:var(--panza);padding:14px 16px;margin:0 0 16px}
+  .pr__cap{display:flex;align-items:center;gap:10px;margin:0 0 8px}
+  .pr__cap h3{margin:0;font-size:var(--t5)}
+  .pr__cap .sp{flex:1}
+  .pr__st{font-family:var(--sans);font-size:var(--t1);color:var(--text-3)}
+  .pr__st.dif{color:var(--ambra)}
+  .pr__sul{overflow-x:auto}
+  .pr__t{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:var(--t2)}
+  .pr__t th{font-weight:500;font-size:var(--t1);color:var(--text-3);padding:6px 6px;border-bottom:1px solid var(--linie);text-align:center;white-space:nowrap;cursor:help}
+  .pr__t th small{display:block;font-size:var(--t1);color:var(--text-3);font-weight:400}
+  .pr__t td{padding:6px 4px;border-bottom:1px solid var(--linie);text-align:center;white-space:nowrap}
+  .pr__t tr:last-child td{border-bottom:0}
+  .pr__t .cs{text-align:left;min-width:170px}
+  .pr__t .cs .mic{display:block;font-size:var(--t1);color:var(--text-3)}
+  .pr__ech td{background:var(--panza-2)}
+  .pr__ech .cs{font-weight:600}
+  .pr__v{color:var(--text-2)}
+  .pr__tot{font-weight:700;font-size:var(--t3)}
+  .pr__cat{color:var(--text-2)}
+  .pc{display:inline-flex;border:1px solid var(--linie-2);border-radius:7px;overflow:hidden}
+  .pc button{font-family:var(--sans);font-size:var(--t1);padding:5px 4px;border:0;border-right:1px solid var(--linie);background:transparent;color:var(--text-2);cursor:pointer;min-width:27px}
+  .pc button:last-child{border-right:0}
+  .pc button:hover{background:var(--panza-2)}
+  .pc button.on{background:var(--accent);color:#fff;font-weight:600}
+  .pc.rau{border-color:var(--nu)}
+  .pr__obs{width:100%;box-sizing:border-box;margin:10px 0 0;font-family:var(--sans);font-size:var(--t2);padding:8px 10px;border:1px solid var(--linie-2);border-radius:8px;background:var(--panza);color:var(--text);resize:vertical}
+  .pr__salv{font-family:var(--sans);font-size:var(--t1);color:var(--text-3);margin:4px 0 0;min-height:1em}
   .gol-s{font-family:var(--sans);font-size:var(--t2);color:var(--text-3);padding:12px 0;margin:0}
 
   .grupe{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
@@ -172,6 +200,7 @@
     <a href="#lectii" data-v="lectii">Lecțiile</a>
     <a href="#ore" data-v="ore">Orele</a>
     <a href="#echipe" data-v="echipe">Echipele</a>
+    <a href="#proiecte" data-v="proiecte">Proiectele</a>
   </nav>
 
   <section class="vedere" data-v="catalog">
@@ -194,6 +223,10 @@
 
   <section class="vedere" data-v="echipe" hidden>
     <div id="echipe-corp"><div class="sch sch--r"></div></div>
+  </section>
+
+  <section class="vedere" data-v="proiecte" hidden>
+    <div id="proiecte-corp"><div class="sch sch--r"></div></div>
   </section>
 </main>
 
@@ -328,10 +361,11 @@ function kpi(){
 /* ------------------------------------------------------------------ file --- */
 function arata(){
   const [v, arg] = (location.hash.slice(1) || "catalog").split("=");
-  const vedere = ["catalog","lectii","ore","echipe"].includes(v) ? v : "catalog";
+  const vedere = ["catalog","lectii","ore","echipe","proiecte"].includes(v) ? v : "catalog";
   document.querySelectorAll(".vedere").forEach(s => s.hidden = s.dataset.v !== vedere);
   document.querySelectorAll("#file a").forEach(a => a.classList.toggle("on", a.dataset.v === vedere));
   if (vedere === "echipe") echipe();
+  if (vedere === "proiecte") proiecte();
   if (v === "student" && arg) fisa(decodeURIComponent(arg)); else inchideFisa();
 }
 addEventListener("hashchange", arata);
@@ -716,7 +750,106 @@ async function echipe(){
   } catch (e) { g.textContent = "Echipele nu au putut fi încărcate: " + e.message; }
 }
 
-function totul(){ filtreaza(); deseneazaGrupe(); kpi(); catalog(); lectii(); ore(); if (!document.querySelector('.vedere[data-v="echipe"]').hidden) echipe(); }
+/* ============================================================ PROIECTELE === */
+/* db/32: notarea proiectului pe criterii, în timpul prezentării. Punctajele se
+   salvează pe loc, ca ciornă; nota din catalog („proiect”, db/18) se schimbă
+   doar la „Actualizează nota”. */
+const CRIT_ECH = [["analiza", "Analiza", "întrebarea, explorarea și modelul răspund la ea; interpretarea și limitele"],
+                  ["depozit", "Depozitul", "structura, caietele rulează în ordine, README-ul"]];
+const CRIT_IND = [["prezentare", "Prezentarea", "își prezintă clar pasul și răspunde la întrebări"],
+                  ["pas", "Pasul lui", "caietul de care răspunde rulează, e curat și explicat"],
+                  ["contributie", "Contribuția", "commit-urile lui în depozit"]];
+const PASI = [0, 0.25, 0.5, 0.75, 1];
+const n1 = p => String(p).replace(".", ",");
+let PR = null;
+
+async function proiecte(){
+  const g = el("proiecte-corp");
+  if (grupa === INV || !grupa){ g.innerHTML = `<p class="gol-s">Proiectele sunt pe echipele grupelor de studenți, nu pentru invitați.</p>`; return; }
+  const [ech, ev] = await Promise.all([rpc("echipe_toate", { p_grupa: grupa }), rpc("proiect_evaluare", { p_grupa: grupa })]);
+  if (ech?.eroare || ech?.ok === false){ g.innerHTML = `<p class="gol-s">Echipele nu au putut fi încărcate: ${esc(ech?.eroare || ech?.mesaj)}</p>`; return; }
+  if (ev?.eroare || ev?.ok === false){
+    g.innerHTML = `<div class="gol"><p class="gol__t">Evaluarea proiectului nu este configurată</p>
+      <p class="gol__d">Rulează o dată <code>db/32-proiect-evaluare.sql</code> în Supabase (SQL Editor). ${esc(ev?.eroare || ev?.mesaj || "")}</p></div>`;
+    return;
+  }
+  PR = { echipe: (ech.echipe || []).filter(e => e.membri.length), criterii: ev.criterii || {}, obs: ev.obs || {} };
+  deseneazaProiecte();
+}
+
+const crit = (m, k) => PR.criterii[m]?.[k];
+const areCriterii = m => Object.keys(PR.criterii[m] || {}).length > 0;
+const totalProiect = m => [...CRIT_ECH, ...CRIT_IND].reduce((s, [k]) => s + (+crit(m, k) || 0), 0);
+const notaCatalog = m => CAT_TOT.find(x => x.matricol === m)?.note?.proiect;
+
+function butoaneCrit(M, k){
+  const v = crit(M[0], k);
+  return `<span class="pc" data-k="${k}" data-m="${esc(M.join(","))}">` +
+    PASI.map(p => `<button type="button" class="${v != null && +v === p ? "on" : ""}" data-p="${p}">${n1(p)}</button>`).join("") + `</span>`;
+}
+
+function deseneazaProiecte(){
+  const g = el("proiecte-corp");
+  if (!PR.echipe.length){ g.innerHTML = `<p class="gol-s">Grupa nu are încă echipe.</p>`; return; }
+  g.innerHTML = `<p class="nota-mica pr__leg">Punctajele se salvează pe loc, ca ciornă. Nota la proiect din catalog se schimbă
+      abia la „Actualizează nota”. Criteriile echipei se dau o dată și se aplică tuturor membrilor. Un clic pe punctajul ales îl șterge.</p>` +
+    PR.echipe.map(e => {
+      const M = e.membri.map(m => m.matricol);
+      const laZi = M.every(m => { const c = notaCatalog(m); return areCriterii(m) ? c != null && Math.abs(+c - totalProiect(m)) < 1e-9 : c == null; });
+      return `<article class="pr">
+        <header class="pr__cap"><h3>Echipa ${e.nr}</h3><span class="sp"></span>
+          <span class="pr__st ${laZi ? "" : "dif"}">${laZi ? "nota din catalog e la zi" : "ciorna diferă de nota din catalog"}</span>
+          <button class="btn btn--mic ${laZi ? "" : "btn--tare"}" type="button" data-act="${e.id}">Actualizează nota</button></header>
+        <div class="pr__sul"><table class="pr__t"><thead><tr><th class="cs"></th>
+          ${CRIT_ECH.map(([, t, d]) => `<th title="${esc(d)}">${t}<small>echipa</small></th>`).join("")}
+          ${CRIT_IND.map(([, t, d]) => `<th title="${esc(d)}">${t}<small>fiecare</small></th>`).join("")}
+          <th>Total<small>/ 5</small></th><th>În catalog</th></tr></thead><tbody>
+          <tr class="pr__ech"><td class="cs">Toată echipa</td>
+            ${CRIT_ECH.map(([k]) => `<td>${butoaneCrit(M, k)}</td>`).join("")}${CRIT_IND.map(() => `<td></td>`).join("")}<td></td><td></td></tr>
+          ${e.membri.map(m => `<tr><td class="cs">${esc(m.nume)}${m.github ? `<a class="mic" href="https://github.com/${esc(m.github)}" target="_blank" rel="noopener">@${esc(m.github)}</a>` : ""}</td>
+            ${CRIT_ECH.map(([k]) => `<td class="pr__v">${crit(m.matricol, k) != null ? n1(+crit(m.matricol, k)) : "—"}</td>`).join("")}
+            ${CRIT_IND.map(([k]) => `<td>${butoaneCrit([m.matricol], k)}</td>`).join("")}
+            <td class="pr__tot">${areCriterii(m.matricol) ? nr2(totalProiect(m.matricol)) : "—"}</td>
+            <td class="pr__cat">${notaCatalog(m.matricol) != null ? nr2(+notaCatalog(m.matricol)) : "—"}</td></tr>`).join("")}
+        </tbody></table></div>
+        <textarea class="pr__obs" data-e="${e.id}" rows="2" placeholder="Observații despre echipă și prezentare">${esc(PR.obs[e.id] || "")}</textarea>
+        <p class="pr__salv" data-salv="${e.id}"></p>
+      </article>`;
+    }).join("");
+
+  g.querySelectorAll(".pc button").forEach(b => b.onclick = async () => {
+    const sp = b.parentElement, M = sp.dataset.m.split(","), k = sp.dataset.k;
+    const v = b.classList.contains("on") ? null : +b.dataset.p;
+    const r = await sb.rpc("pune_criteriu", { p_matricole: M, p_criteriu: k, p_puncte: v }).then(x => x, e => ({ error: e }));
+    if (r.error || r.data?.ok === false){ sp.classList.add("rau"); sp.title = r.error?.message || r.data?.mesaj || "Nu s-a salvat"; return; }
+    M.forEach(m => { PR.criterii[m] = { ...(PR.criterii[m] || {}) }; if (v === null) delete PR.criterii[m][k]; else PR.criterii[m][k] = v; });
+    deseneazaProiecte();
+  });
+
+  g.querySelectorAll("[data-act]").forEach(b => b.onclick = async () => {
+    const e = PR.echipe.find(x => String(x.id) === b.dataset.act), out = g.querySelector(`[data-salv="${b.dataset.act}"]`);
+    b.disabled = true;
+    for (const m of e.membri){
+      const v = areCriterii(m.matricol) ? Math.round(totalProiect(m.matricol) * 100) / 100 : null;
+      const r = await sb.rpc("pune_nota", { p_matricol: m.matricol, p_cheie: "proiect", p_puncte: v }).then(x => x, er => ({ error: er }));
+      if (r.error || r.data?.ok === false){ out.textContent = `Nu s-a salvat nota pentru ${m.nume}: ${r.error?.message || r.data?.mesaj || ""}`; b.disabled = false; return; }
+      const x = CAT_TOT.find(y => y.matricol === m.matricol);
+      if (x){ x.note = { ...(x.note || {}) }; if (v === null) delete x.note.proiect; else x.note.proiect = v; }
+    }
+    deseneazaProiecte(); catalog(); kpi();
+  });
+
+  g.querySelectorAll(".pr__obs").forEach(ta => ta.onchange = async () => {
+    const out = g.querySelector(`[data-salv="${ta.dataset.e}"]`);
+    const r = await sb.rpc("pune_obs_proiect", { p_echipa: +ta.dataset.e, p_text: ta.value }).then(x => x, er => ({ error: er }));
+    if (r.error || r.data?.ok === false){ out.textContent = "Observațiile nu s-au salvat: " + (r.error?.message || r.data?.mesaj || ""); return; }
+    PR.obs[ta.dataset.e] = ta.value; out.textContent = "Observațiile s-au salvat.";
+  });
+}
+
+function totul(){ filtreaza(); deseneazaGrupe(); kpi(); catalog(); lectii(); ore();
+  if (!document.querySelector('.vedere[data-v="echipe"]').hidden) echipe();
+  if (!document.querySelector('.vedere[data-v="proiecte"]').hidden) proiecte(); }
 totul();
 
 /* venit de la „Raportul orei”, la încheierea unei ore: fila Orele, cu raportul deschis */
