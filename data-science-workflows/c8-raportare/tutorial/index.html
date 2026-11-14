@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursul 8, manual · Fluxuri de lucru pentru știința datelor</title>
+<meta name="description" content="Manualul cursului 8: conținutul lecției, explicat pe larg, cu aceleași exerciții ca la curs.">
+<meta name="robots" content="index,nofollow">
+<link rel="stylesheet" href="../../css/fonturi.css?v=188">
+<link rel="stylesheet" href="../../css/sistem.css?v=188">
+<link rel="stylesheet" href="../../css/tutorial.css?v=188">
+<link rel="stylesheet" href="../../css/interactiv.css?v=188">
+<link rel="stylesheet" href="../../css/grafice.css?v=188">
+<link rel="stylesheet" href="../../css/exercitii.css?v=188">
+<link rel="stylesheet" href="../../css/explorator.css?v=188">
+<script src="../../js/tema.js?v=188"></script>
+</head>
+<body>
+<div id="antet" data-aici="Cursul 8 · Manual"></div>
+<main><div class="pagina"><div class="tut">
+<aside class="tut__stanga">
+  <div class="tut__cap"><span class="tut__et">Manual</span>
+    <span class="tut__t">Cursul 8</span>
+    <span class="tut__st">Raportul, README-ul și prezentarea</span></div>
+  <nav class="tut__nav"><div class="tut__g">Cursul</div><a href="#s1"><span class="n">1</span><span>Unde suntem</span></a><div class="tut__g">README</div><a href="#s2"><span class="n">2</span><span>README-ul ca un CV</span></a><div class="tut__g">Raportul</div><a href="#s3"><span class="n">3</span><span>Raportul, în docs/</span></a><div class="tut__g">Prezentarea</div><a href="#s4"><span class="n">4</span><span>Prezentarea la C9</span></a></nav>
+  <div class="tut__jos">
+    <a href="../lectie/">Slide-urile de la curs</a>
+    <a href="../">Pagina cursului</a>
+    <a href="../../cont/">Contul meu</a>
+  </div>
+</aside>
+<article class="tut__corp">
+<header class="tut__intro">
+  <p class="supratitlu">Cursul 8 · Manual</p>
+  <h1>Raportul, README-ul și prezentarea</h1>
+  <p class="deck">Conținutul lecției, explicat pe larg, cu aceleași exerciții.
+  Exercițiile pornesc de la zero la fiecare deschidere a paginii; răspunsurile date
+  la curs și acasă se înregistrează în <a class="leg" href="../../cont/">contul personal</a>.</p>
+</header>
+
+<section class="tut__s" id="s1">
+<span class="tut__nr">01 · Cursul</span>
+<h2>Raportul, README-ul și prezentarea</h2><p>Un proiect de analiză este folosit de alții abia când îl pot înțelege fără autorii lui. Proiectul echipei are de aceea trei documente, fiecare pentru alt cititor:</p><table class="tabel"><thead><tr><th>Documentul</th><th>Cititorul</th><th>Ce caută</th></tr></thead><tbody><tr><td><code>README.md</code></td><td>un vizitator din afară: un posibil colaborator sau angajator</td><td>într-un minut: întrebarea, rezultatul, seriozitatea muncii</td></tr><tr><td><code>docs/report.pdf</code></td><td>cine vrea dovezile</td><td>datele, metoda, figurile, rezultatele, limitele, contribuțiile</td></tr><tr><td>prezentarea, la C9</td><td>grupa și profesorul</td><td>drumul de la date la rezultat, spus de toți membrii echipei</td></tr></tbody></table><p>Raportul este documentul complet; README-ul îl rezumă, iar prezentarea îl parcurge. După cele patru slide-uri, ora este pentru lucrul în echipă: raportul, README-ul și planul prezentării.</p><table class="tabel"><thead><tr><th></th><th>Conținutul</th><th>Rezultatul</th></tr></thead><tbody><tr><td>C1</td><td>proiectul, mediul de lucru, tipurile de date și JSON</td><td><code>dsw/</code>, cu <code>.venv</code></td></tr><tr><td>C2</td><td>colectarea datelor prin API: Eurostat, Banca Mondială</td><td><code>data/raw</code></td></tr><tr><td>C3</td><td>surse diverse, preprocesare, Git și depozitul echipei</td><td><code>data/processed</code>, <code>proiect/</code></td></tr><tr><td>C4</td><td>curățarea datelor și tabelul regiunilor</td><td><code>regiuni_nuts2.csv</code></td></tr><tr><td>C5</td><td>integrare, baze de date și agregare</td><td>perechile, în <code>dsw.db</code></td></tr><tr><td>C6</td><td>analiza exploratorie</td><td>deciziile pentru model</td></tr><tr><td>C7</td><td>variabile derivate și model</td><td>modelul SCI și reziduurile lui</td></tr><tr><td><b>C8</b></td><td><b>azi: raportul, README-ul și planul prezentării</b></td><td><b><code>README.md</code>, <code>docs/report.pdf</code></b></td></tr><tr><td>C9</td><td>prezentarea proiectelor</td><td>nota proiectului</td></tr></tbody></table>
+
+</section>
+
+<section class="tut__s" id="s2">
+<span class="tut__nr">02 · README</span>
+<h2>README-ul, un CV al proiectului</h2><p>README-ul este prima pagină a depozitului pe GitHub. Cititorul lui nu este grupa, ci cineva din afară: un cercetător care caută date asemănătoare, un posibil colaborator, un angajator care se uită la profilul GitHub. Ca la un CV, primul ecran decide dacă citește mai departe. De aceea README-ul începe cu rezultatul, nu cu istoria proiectului.</p><div class="rm8"><div class="pd5"><figure><figcaption>README.md, schița</figcaption><pre><span class="k1"># Migration and social ties in Europe</span>
+Country pairs with twice as many migrants between
+them are about 56% more connected on Facebook,
+at the same distance and border.
+
+![Observed and predicted SCI](figures/model.png)
+
+<span class="k1">## Question</span>      <span class="k3">why it matters, in two sentences</span>
+<span class="k1">## Data</span>          <span class="k3">sources, unit, period, links</span>
+<span class="k1">## Approach</span>      <span class="k3">steps 01 to 05, one line each</span>
+<span class="k1">## Results</span>       <span class="k3">two or three findings, with numbers</span>
+<span class="k1">## Limitations</span>   <span class="k3">what the data cannot show</span>
+<span class="k1">## Reproduce</span>     <span class="k3">setup and run order</span>
+<span class="k1">## Repository</span>    <span class="k3">the folders, as a tree</span>
+
+Full report: <span class="k2">docs/report.pdf</span></pre></figure></div><ol><li><b>Titlul și rezultatul</b>, în primele rânduri, cu un număr: primul ecran spune ce s-a găsit, nu ce s-a făcut.</li><li><b>Figura principală</b>, chiar sub rezultat.</li><li><b>Secțiunile scurte</b>: întrebarea, datele, metoda, rezultatele, limitele.</li><li><b>Cum se rulează</b>, pentru cine vrea să reproducă analiza.</li><li><b>Legătura spre raport</b>, unde stau detaliile.</li></ol><p class="def6">În engleză, ca un CV al proiectului: fără „proiect pentru cursul…”, fără lista membrilor și a rolurilor.</p></div><table class="tabel"><thead><tr><th>Secțiunea</th><th>Ce conține</th></tr></thead><tbody><tr><td>titlul și rezultatul</td><td>o frază cu rezultatul principal, cu un număr și cu condițiile lui</td></tr><tr><td>figura principală</td><td>cea care rezumă rezultatul; restul figurilor stau în raport</td></tr><tr><td>Question</td><td>întrebarea și de ce contează, în două fraze</td></tr><tr><td>Data</td><td>sursele, cu legături; unitatea de analiză; perioada</td></tr><tr><td>Approach</td><td>pașii 01-05, câte un rând fiecare, cu caietul lui</td></tr><tr><td>Results</td><td>două-trei constatări, cu cifre</td></tr><tr><td>Limitations</td><td>ce nu pot arăta datele și metoda</td></tr><tr><td>Reproduce</td><td>mediul (<code>requirements.txt</code>) și ordinea în care rulează caietele</td></tr><tr><td>Repository</td><td>structura depozitului, ca arbore</td></tr></tbody></table><div class="nota nota--sobru"><div class="nota__et">Fără membri și roluri</div><p>README-ul descrie proiectul, nu echipa. Cine ce a făcut apare în raport, în secțiunea Contributions, și în istoricul commit-urilor.</p></div>
+<div class="verif" data-id="c8-v-readme" data-corect="2">
+    <p class="verif__q">Care început de README îl face pe un cercetător din afară să citească mai departe?</p>
+    <button><i>This repository contains the project for the Data Science Workflows course, UBB, 2026.</i></button>
+    <button><i>Python 3.12 · pandas · statsmodels · SQLite · Jupyter</i></button>
+    <button><i>Country pairs with twice as many migrants between them are about 56% more connected on Facebook, at the same distance and border.</i></button>
+    <button><i>We first collected the data, then cleaned it, explored it and finally built a model.</i></button>
+    <p class="verif__ex">Primul rând spune rezultatul, cu un număr și cu condițiile lui. Cursul, uneltele și pașii nu spun nimic despre ce s-a găsit; ele vin mai jos, în secțiunile README-ului.</p>
+  </div>
+</section>
+
+<section class="tut__s" id="s3">
+<span class="tut__nr">03 · Raportul</span>
+<h2>Raportul: tot proiectul, într-un PDF</h2><p>Raportul este documentul complet al proiectului. Conține tot ce s-a făcut și tot ce a ieșit: datele și deciziile luate asupra lor, figurile, modelul, rezultatele și limitele lor, plus contribuția fiecărui membru. README-ul îl rezumă pentru un vizitator, iar prezentarea de la C9 îl parcurge.</p><table class="tabel"><thead><tr><th>Secțiunea</th><th>Ce conține</th></tr></thead><tbody><tr><td>1. Introduction</td><td>întrebarea, de ce contează, câteva lucrări din literatură</td></tr><tr><td>2. Data</td><td>sursele, colectarea, preprocesarea, curățarea; tabelele finale; deciziile, cu motivul lor</td></tr><tr><td>3. Exploration</td><td>figurile principale și ipotezele pe care le-au produs</td></tr><tr><td>4. Model</td><td>modelul, rezultatele, interpretarea</td></tr><tr><td>5. Conclusions and limitations</td><td>răspunsul la întrebare, ce nu se poate concluziona, ce ar urma</td></tr><tr><td>6. Contributions</td><td>fiecare membru: ce a făcut, caietele, partea scrisă din raport</td></tr><tr><td>Appendix</td><td>jurnalul deciziilor; cum se rulează analiza</td></tr></tbody></table><p>Fiecare figură și fiecare tabel are o legendă care spune ce arată; fiecare decizie are motivul ei. Lungimea potrivită este de 8-12 pagini, cu figuri. Raportul îl scrie toată echipa, dar fiecare parte are un autor, trecut în secțiunea Contributions.</p><div class="nota nota--sobru"><div class="nota__et">PDF-ul pe GitHub</div><p>GitHub afișează PDF-urile direct în browser, deci raportul se citește din depozit, fără descărcare. Fiind un fișier binar, Git nu arată ce s-a schimbat între versiuni: PDF-ul se exportă o dată, la final. Sursa (Markdown, Word sau alt format) poate sta lângă el, în <code>docs/</code>.</p></div>
+
+</section>
+
+<section class="tut__s" id="s4">
+<span class="tut__nr">04 · Prezentarea</span>
+<h2>Prezentarea, la C9: 20 de minute, toți membrii</h2><p>Prezentarea parcurge raportul. Începe cu README-ul, pentru imaginea de ansamblu, apoi fiecare membru prezintă o contribuție a lui, în segmente egale, în ordinea pașilor proiectului: întâi datele, apoi rezultatele. Modelul, concluziile și limitele le poate prezenta oricine din echipă.</p><div class="pr8"><div style="--ec:var(--accent)"><small>2 min</small><b>Proiectul</b><span>din README</span></div><div style="--ec:var(--ambra)"><small>15 min</small><b>Contribuțiile, din raport</b><span>câte un segment de 3 minute pentru fiecare membru, în ordinea pașilor</span><div class="pr8__m"><i>membrul 1</i><i>membrul 2</i><i>membrul 3</i><i>membrul 4</i><i>membrul 5</i></div></div><div style="--ec:var(--ardezie)"><small>3 min</small><b>Întrebări</b><span>oricui din echipă</span></div></div><p>Fiecare segment are aceeași formă:</p><div class="ed6 ed6--3"><div><small>1 · afirmația</small><b>o frază: ce a făcut sau ce a găsit</b></div><div><small>2 · dovada</small><b>figura sau tabelul din raport</b></div><div class="nou"><small>3 · cum s-a făcut</small><b>o celulă din caietul lui, deja rulată</b></div></div><p>Prezentarea se face din documentele proiectului, fără slide-uri separate: README-ul pe GitHub, raportul PDF și caietele, deja rulate. Rularea completă pe un kernel nou se verifică la evaluare, nu în fața grupei. La o echipă cu alt număr de membri, timpul se împarte la fel: cu patru membri, aproape 4 minute fiecare; cu șase, 2,5 minute. La întrebări, oricare membru trebuie să poată răspunde și despre alte părți decât a lui.</p><p>Planul prezentării se face azi, în echipă, și intră în secțiunea Contributions a raportului:</p><table class="tabel"><thead><tr><th>Membrul</th><th>Afirmația segmentului</th><th>Figura sau tabelul din raport</th><th>Celula din caiet</th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table><div class="surse"><div class="surse__et">Pentru README și raport</div><ul><li><a class="surse__a" href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes" target="_blank" rel="noopener">GitHub Docs: About READMEs</a><span>unde se afișează README-ul și ce poate conține</span></li><li><a class="surse__a" href="https://www.makeareadme.com/" target="_blank" rel="noopener">Make a README</a><span>secțiunile unui README bun, cu exemple</span></li><li><a class="surse__a" href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">Wilson și colegii (2017): Good Enough Practices in Scientific Computing</a><span>organizarea unui proiect de date și documentarea lui</span></li><li><a class="surse__a" href="https://book.the-turing-way.org/" target="_blank" rel="noopener">The Turing Way</a><span>cercetarea reproductibilă, de la date la raport</span></li></ul></div>
+
+</section>
+</article>
+</div></div></main>
+<div id="subsol"></div>
+
+<script type="module" src="../../js/antet.js?v=188"></script>
+<script type="module">
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=188";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=188";
+import { porneste as pornesteTut } from "../../js/tutorial.js?v=188";
+pornesteIx();
+pornesteVerif("c8");
+pornesteTut("c8");
+</script>
+</body>
+</html>

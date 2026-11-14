@@ -76,10 +76,10 @@ export const LECTII = [
     notebook:"https://github.com/dsw-ubb-2026/-DSW2026/blob/main/curs/07_variabile_derivate_si_model.ipynb" },
 
   { nr:8, cheie:"c8-raportare",
-    titlu:"Raportare și proiect final",
+    titlu:"Raportul, README-ul și prezentarea",
     scurt:"Raport",
-    rezumat:"Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.",
-    stare:"schita", sarcini:null,
+    rezumat:"Cele trei documente ale proiectului: README-ul pentru un vizitator din afară, raportul complet în docs/ și prezentarea de la cursul 9.",
+    stare:"gata", sarcini:1,
     notebook:null }
 ];
 

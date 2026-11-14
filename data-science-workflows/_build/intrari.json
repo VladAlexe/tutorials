@@ -474,22 +474,36 @@
   },
   "c8-raportare": {
     "nr": 8,
-    "titlu": "Raportare și proiect final",
-    "deck": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.",
-    "descriere": "Rezultatul devine util abia când altcineva îl poate citi, reproduce și critica.",
+    "titlu": "Raportul, README-ul și prezentarea",
+    "deck": "Analiza este gata. Lecția stabilește cele trei documente prin care altcineva o înțelege: README-ul, raportul și prezentarea.",
+    "descriere": "Cele trei documente ale proiectului: README-ul pentru un vizitator din afară, raportul complet în docs/ și prezentarea de la cursul 9.",
     "caiet": null,
     "sectiuni": [
       {
-        "t": "Ce va conține",
-        "html": "<p>Planul lecției. Conținutul interactiv, verificările și caietul se adaugă înainte de ședința din semestru.</p>\n<ul class=\"obiective\">\n<li>Structura unui raport reproductibil: întrebare, date, metodă, rezultat, limite</li>\n<li>Grafice și tabele pregătite pentru publicare, nu doar pentru ecran</li>\n<li><code>README.md</code> ca raport: cum se reproduce întreaga analiză, de la zero</li>\n<li>Prezentarea proiectului și întrebările la care echipa trebuie să poată răspunde</li>\n<li>Criteriile de evaluare, punct cu punct</li>\n</ul>"
+        "t": "Despre lecție",
+        "html": "<p>Lecția are patru slide-uri și o verificare. Restul orei este lucru în echipă, la raport, README și planul prezentării.</p>\n<p>Cele trei documente au cititori diferiți. README-ul, în engleză, se adresează unui vizitator din afară, un posibil colaborator sau angajator, și începe cu rezultatul. Raportul, în <code>docs/report.pdf</code>, este documentul complet: datele, deciziile, figurile, modelul, rezultatele, limitele și contribuția fiecărui membru. Prezentarea, la cursul 9, parcurge raportul în 20 de minute, cu un segment pentru fiecare membru.</p>"
+      },
+      {
+        "t": "Obiective",
+        "html": "<ul class=\"obiective\">\n<li>Un README care descrie proiectul ca un CV: rezultatul în primele rânduri, figura principală, secțiuni scurte.</li>\n<li>Structura raportului: introducere, date, explorare, model, concluzii și limite, contribuții.</li>\n<li>Planul prezentării de la cursul 9: cine prezintă ce afirmație, cu ce figură și ce celulă din caiet.</li>\n</ul>"
       },
       {
         "t": "Ce se adaugă la proiect",
-        "html": "<p>Raportul final și prezentarea.</p>"
+        "html": "<p>Pe <code>main</code>: <code>README.md</code> complet și <code>docs/report.pdf</code>. Planul prezentării intră în secțiunea Contributions a raportului. Prezentarea are loc la cursul 9.</p>"
       }
     ],
     "resurse": [],
     "legaturi": [
+      {
+        "href": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
+        "t": "About READMEs",
+        "g": "GitHub"
+      },
+      {
+        "href": "https://www.makeareadme.com/",
+        "t": "Make a README",
+        "g": "ghid"
+      },
       {
         "href": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510",
         "t": "Good Enough Practices",
@@ -499,11 +513,6 @@
         "href": "https://book.the-turing-way.org/",
         "t": "The Turing Way",
         "g": "carte"
-      },
-      {
-        "href": "https://quarto.org/docs/guide/",
-        "t": "Quarto",
-        "g": "docs"
       }
     ]
   }

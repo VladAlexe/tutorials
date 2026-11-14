@@ -1,0 +1,48 @@
+{
+ "capitol": "c8",
+ "total": 4,
+ "sarcini": 1,
+ "slide": [
+  {
+   "nr": 1,
+   "id": "s1",
+   "grup": "Cursul",
+   "titlu": "Unde suntem",
+   "sarcini": []
+  },
+  {
+   "nr": 2,
+   "id": "s2",
+   "grup": "README",
+   "titlu": "README-ul ca un CV",
+   "sarcini": [
+    {
+     "id": "c8-v-readme",
+     "fel": "verificare",
+     "corect": 2,
+     "q": "Care început de README îl face pe un cercetător din afară să citească mai departe?",
+     "optiuni": [
+      "This repository contains the project for the Data Science Workflows course, UBB, 2026.",
+      "Python 3.12 · pandas · statsmodels · SQLite · Jupyter",
+      "Country pairs with twice as many migrants between them are about 56% more connected on Facebook, at the same distance and border.",
+      "We first collected the data, then cleaned it, explored it and finally built a model."
+     ]
+    }
+   ]
+  },
+  {
+   "nr": 3,
+   "id": "s3",
+   "grup": "Raportul",
+   "titlu": "Raportul, în docs/",
+   "sarcini": []
+  },
+  {
+   "nr": 4,
+   "id": "s4",
+   "grup": "Prezentarea",
+   "titlu": "Prezentarea la C9",
+   "sarcini": []
+  }
+ ]
+}

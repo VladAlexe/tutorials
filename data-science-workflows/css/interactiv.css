@@ -4379,3 +4379,19 @@ pre::-webkit-scrollbar-track,[class*="cod"]::-webkit-scrollbar-track{background:
 .info7[open] summary{color:var(--text)}
 .info7 > div{margin:6px 0 2px;padding:9px 12px;background:var(--panza-2);border-radius:8px;line-height:1.5}
 .info7 > div pre{margin:4px 0 0}
+
+/* C8: README-ul și prezentarea */
+.rm8{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:start}
+.rm8 > .pd5{grid-template-columns:1fr}
+.rm8 ol{margin:0;padding-left:1.3em;font-family:var(--sans);font-size:var(--t3);line-height:1.45;color:var(--text-2)}
+.rm8 ol li{margin:0 0 7px}
+.rm8 ol b{color:var(--text);font-weight:600}
+.pr8{display:grid;grid-template-columns:2fr 15fr 3fr;gap:6px;font-family:var(--sans);margin:4px 0 14px}
+.pr8 > div{border-top:6px solid var(--ec);padding:8px 6px 0 0;min-width:0}
+.pr8 small{display:block;font-size:var(--t1);color:var(--text-3)}
+.pr8 b{display:block;margin-top:3px;font-size:var(--t3);font-weight:600;line-height:1.25;color:var(--text)}
+.pr8 span{display:block;margin-top:3px;font-size:var(--t2);line-height:1.35;color:var(--text-2)}
+.pr8__m{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin-top:8px}
+.pr8__m i{font-style:normal;font-size:var(--t1);color:var(--text-2);background:var(--ambra-slab);border-radius:6px;padding:4px 6px;text-align:center}
+.ed6--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){.rm8,.pr8{grid-template-columns:1fr}.pr8__m{grid-template-columns:1fr 1fr}}
