@@ -414,7 +414,8 @@ async function salveaza(i){
   if (v !== null && (!Number.isFinite(v) || v < 0 || v > max + 1e-9)){
     i.classList.add("rau"); i.title = `Între 0 și ${nr2(max)}`; return;
   }
-  const r = await sb.rpc("pune_nota", { p_matricol: i.dataset.m, p_cheie: i.dataset.k, p_puncte: v }).catch(e => ({ error: e }));
+  // sb.rpc întoarce un obiect care are doar .then (nu și .catch): fără .then, cererea nici nu pleacă
+  const r = await sb.rpc("pune_nota", { p_matricol: i.dataset.m, p_cheie: i.dataset.k, p_puncte: v }).then(x => x, e => ({ error: e }));
   if (r.error || r.data?.ok === false){ i.classList.add("rau"); i.title = r.error?.message || r.data?.mesaj || "Nu s-a salvat"; return; }
   const x = CAT_TOT.find(y => y.matricol === i.dataset.m);
   x.note = { ...(x.note || {}) };
