@@ -6,11 +6,11 @@
    Datele componentei vin din <script type="application/json"> pus inauntru.
    =========================================================================== */
 
-import GRAFICE from "./grafice.js?v=189";
-import EXERCITII from "./exercitii.js?v=189";
-import VIZUAL from "./vizual.js?v=189";
-import HARTA from "./harta-sci.js?v=189";
-import EDA from "./eda.js?v=189";
+import GRAFICE from "./grafice.js?v=190";
+import EXERCITII from "./exercitii.js?v=190";
+import VIZUAL from "./vizual.js?v=190";
+import HARTA from "./harta-sci.js?v=190";
+import EDA from "./eda.js?v=190";
 
 const C = { ...GRAFICE, ...EXERCITII, ...VIZUAL, ...HARTA, ...EDA };
 
@@ -28,7 +28,7 @@ async function poarta(gazda, id, ce = ""){
   }
   document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id } }));
   try {
-    const m = await import("/data-science-workflows/js/colectare.js?v=189");
+    const m = await import("/data-science-workflows/js/colectare.js?v=190");
     await m.salveazaCod({ exercitiuId:id, cod:String(ce).slice(0, 800), trecut:true });
   } catch { /* fără cont, poarta se deschide oricum */ }
 }
@@ -118,7 +118,7 @@ C.url = (gazda, date) => {
       document.dispatchEvent(new CustomEvent("poarta:gata", { detail:{ id:date.id } }));
       const st = gazda.querySelector(".ex__stare");
       try {
-        const m = await import("/data-science-workflows/js/colectare.js?v=189");
+        const m = await import("/data-science-workflows/js/colectare.js?v=190");
         const salvat = await m.salveazaCod({ exercitiuId: date.id, cod: `${pus.join(" | ")} · greșite: ${gresite}`, trecut: true });
         st.textContent = salvat ? "Rezolvare înregistrată." : `Rezolvarea nu a fost înregistrată: ${m.deCeNu()}.`;
         st.classList.add("vazut");
@@ -545,7 +545,7 @@ C.autoevaluare = (gazda, date) => {
         : "<b>Mulțumim.</b> Accentul cursului cade pe fluxul de lucru, nu pe sintaxă.";
     poarta(gazda, date.id, ales.join(","));
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=189");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=190");
       await s.jurnal("autoevaluare", Object.fromEntries(T.map((t, i) => [t.cheie, ales[i]])));
     } catch {}
   };
@@ -722,7 +722,7 @@ C.asteptari = (gazda, date) => {
        să-l vadă în rezultatele orei și pe tablă, nu doar cuvântul „scris” */
     poarta(gazda, date.id, t.value.trim());
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=189");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=190");
       /* `tip` ajunge în jurnal și decide în ce sumar apare textul la profesor */
       await s.jurnal(date.tip || "asteptari", { text: t.value.trim().slice(0, 600) });
     } catch {}
@@ -808,7 +808,7 @@ C.feedback = (gazda, date) => {
     for (const q of Q) r[q.cheie] = typeof val[q.cheie] === "string" ? val[q.cheie].trim() : (val[q.cheie] ?? null);
     let mesaj = "Răspunsurile nu au fost trimise: feedback-ul se trimite din cont.";
     try {
-      const a = await import("/data-science-workflows/js/auth.js?v=189");
+      const a = await import("/data-science-workflows/js/auth.js?v=190");
       const { data, error } = await a.sb.rpc("feedback_trimite", { p_capitol: date.capitol, p_raspunsuri: r });
       if (!error && data?.ok) mesaj = data.deja ? "Feedback-ul fusese deja trimis." : "Răspunsurile au fost trimise, anonim.";
       else if (data?.mesaj) mesaj = `Răspunsurile nu au fost trimise: ${data.mesaj}`;
@@ -870,7 +870,7 @@ C.pasechipa = (gazda, date) => {
     txt.innerHTML = `<b>Înregistrat.</b> ${t}.`;
     poarta(gazda, date.id, t);
     try {
-      const s = await import("/data-science-workflows/js/sesiune.js?v=189");
+      const s = await import("/data-science-workflows/js/sesiune.js?v=190");
       await s.jurnal("pas_echipa", { echipa, pas: pas + 1, text: t });
     } catch {}
   };
@@ -878,7 +878,7 @@ C.pasechipa = (gazda, date) => {
   /* echipa din cont, dacă studentul e autentificat și are echipă */
   (async () => {
     try {
-      const { sb } = await import("/data-science-workflows/js/auth.js?v=189");
+      const { sb } = await import("/data-science-workflows/js/auth.js?v=190");
       const r = await sb.rpc("echipele_mele");
       const nr = r?.data?.echipa?.nr;
       if (nr && !trimis){ echipa = nr; fixa = true; gazda.classList.add("pe7--fixa"); arata(); }

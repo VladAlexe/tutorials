@@ -12,8 +12,8 @@
 -- Punctajul vine, ca la celelalte sarcini, din rulari_cod (c8-feedback), unde
 -- ajunge doar cuvântul „trimis”.
 --
--- Ordinea: A (tabelele și funcția), apoi B (verificarea).
--- C are interogările pentru rezultate, de rulat după oră.
+-- Ordinea: A (tabelele și cele două funcții), apoi B (verificarea).
+-- Rezultatele se văd în Predau → Feedback; C are aceleași rezultate în SQL.
 -- ===========================================================================
 
 -- A. Tabelele și funcția prin care se trimite
@@ -61,11 +61,30 @@ revoke all on function public.feedback_trimite(text, jsonb) from public, anon;
 grant execute on function public.feedback_trimite(text, jsonb) to authenticated;
 
 
+-- Citirea, pentru Predau → Feedback: doar profesorul; răspunsurile vin în
+-- ordine aleatoare, fără ziua, ca să nu se poată pune lângă ora cuiva.
+create or replace function public.feedback_rezultate(p_capitol text)
+returns jsonb
+language plpgsql security definer stable set search_path = public as $$
+begin
+  if not public.sunt_profesor() then
+    return jsonb_build_object('ok', false, 'mesaj', 'Numai profesorul poate vedea rezultatele.');
+  end if;
+  return jsonb_build_object(
+    'ok', true,
+    'completat', (select count(*) from public.feedback_trimis where capitol = p_capitol),
+    'raspunsuri', coalesce((select jsonb_agg(raspunsuri order by random())
+                              from public.feedback_curs where capitol = p_capitol), '[]'::jsonb));
+end $$;
+
+revoke all on function public.feedback_rezultate(text) from public, anon;
+grant execute on function public.feedback_rezultate(text) to authenticated;
+
 -- B. Verificarea: două tabele, o funcție, RLS pornit
 select c.relname as tabelul, c.relrowsecurity as rls
   from pg_class c join pg_namespace n on n.oid = c.relnamespace
  where n.nspname = 'public' and c.relname in ('feedback_trimis', 'feedback_curs');
-select proname from pg_proc where proname = 'feedback_trimite';
+select proname from pg_proc where proname in ('feedback_trimite', 'feedback_rezultate');
 
 
 -- C. Rezultatele (după oră)
