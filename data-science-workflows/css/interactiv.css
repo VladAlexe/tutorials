@@ -153,6 +153,23 @@
 }
 .arb__la{font-family:var(--mono);font-size:var(--t1);color:var(--accent-text);margin:0}
 
+/* --- feedback pentru curs ----------------------------------------------- */
+.aev--5 .aev__cap,.aev--5 .aev__r{grid-template-columns:minmax(0,1fr) repeat(5,44px)}
+.fdb__g{font-family:var(--sans);font-size:var(--t1);font-weight:600;color:var(--text-3);
+  text-transform:uppercase;letter-spacing:.06em;margin:9px 0 1px}
+.fdb__q{font-family:var(--sans);font-size:var(--t2);font-weight:500;margin:12px 0 6px}
+.fdb__ops{display:flex;flex-wrap:wrap;gap:5px}
+.fdb__pas > .ex__jos{margin-top:14px}
+.fdb__op{font-family:var(--sans);font-size:var(--t1);padding:4px 10px;border-radius:6px;
+  border:1px solid var(--linie-2);background:var(--fundal);color:var(--text);transition:.12s}
+.fdb__op:hover:not(:disabled){border-color:var(--accent);background:var(--accent-slab)}
+.fdb__op.on{background:var(--accent);border-color:var(--accent);color:var(--fundal)}
+.fdb__t{border:1px solid var(--linie);border-radius:8px;padding:8px 10px;min-height:0;
+  font-size:var(--t2);background:var(--panza)}
+@media(max-width:620px){
+  .aev--5 .aev__cap,.aev--5 .aev__r{grid-template-columns:minmax(0,1fr) repeat(5,32px)}
+}
+
 /* --- așteptări ----------------------------------------------------------- */
 .ast{border:1px solid var(--linie);border-radius:10px;background:var(--panza);
   padding:12px 14px}

@@ -61,7 +61,7 @@ FEL = {
     "pagini": "Comparație", "histo": "Comparație", "axa": "Comparație",
     "terminal": "Terminal", "consola": "Consolă Python", "jupyter": "Consolă Python",
     "cod": "Exercițiu de cod", "prezice": "Predicție", "autoevaluare": "Autoevaluare",
-    "dovada": "Verificare locală",
+    "dovada": "Verificare locală", "feedback": "Feedback",
     "tipuri": "Exercițiu", "ordine": "Exercițiu", "sortare": "Exercițiu", "metode": "Exercițiu",
     "zone": "Exercițiu", "ramuri": "Exercițiu", "status": "Exercițiu", "conflict": "Exercițiu", "prag": "Exercițiu",
     "coloane": "Exercițiu", "asteptari": "Exercițiu", "pasechipa": "Exercițiu", "acces": "Exercițiu", "cale": "Exercițiu",
@@ -269,7 +269,7 @@ class Lectie:
                    "raspuns": "cod", "zone": "cod", "ramuri": "cod", "status": "cod",
                    "conflict": "cod", "prag": "cod", "imbinare": "cod",
                    "coloane": "cod", "desfa": "cod", "anatomie": "cod", "consola": "cod",
-                   "jupyter": "cod", "pasechipa": "text"}
+                   "jupyter": "cod", "pasechipa": "text", "feedback": "text"}
 
     def scrie_harta(self):
         """Ce sarcini stau pe fiecare slide.

@@ -2,14 +2,15 @@
 """
 Lecția 8: Raportul, README-ul și prezentarea.
 
-Patru slide-uri și o singură verificare. Lecția spune ce intră în fiecare
-dintre cele trei documente ale proiectului; restul orei este lucru în echipă.
+Cinci slide-uri. Lecția spune ce intră în fiecare dintre cele trei documente
+ale proiectului; sarcina ei este feedback-ul pentru curs (anonim, db/34);
+restul orei este lucru în echipă.
 Prezentarea proiectelor are loc la cursul 9, fără slide-uri.
 
 Rulare:  python _build/c8.py
 """
 
-from comun import Lectie, verif, tabel, nota, surse
+from comun import Lectie, ix, tabel, nota, surse
 
 L = Lectie(8, "c8-raportare", "Raportul, README-ul și prezentarea",
            "Cele trei documente ale proiectului: README-ul pentru un vizitator din afară, raportul complet în "
@@ -37,7 +38,7 @@ CURSUL = tabel(["", "Conținutul", "Rezultatul"], [
 sl("s1", "Cursul", "Unde suntem",
    "<h2>Unde suntem în curs</h2>"
    "<p class=\"cheie\">Analiza este gata. Azi: cele trei documente prin care altcineva o înțelege, README-ul, "
-   "raportul și prezentarea. Restul orei: lucru în echipă.</p>"
+   "raportul și prezentarea. La final, feedback-ul pentru curs; restul orei, lucru în echipă.</p>"
    + CURSUL,
    manual=
    "<h2>Raportul, README-ul și prezentarea</h2>"
@@ -65,57 +66,53 @@ README = (
     'at the same distance and border.\n\n'
     '![Observed and predicted SCI](figures/model.png)\n\n'
     '<span class="k1">## Question</span>      <span class="k3">why it matters, in two sentences</span>\n'
-    '<span class="k1">## Data</span>          <span class="k3">sources, unit, period, links</span>\n'
-    '<span class="k1">## Approach</span>      <span class="k3">steps 01 to 05, one line each</span>\n'
-    '<span class="k1">## Results</span>       <span class="k3">two or three findings, with numbers</span>\n'
+    '<span class="k1">## Data</span>          <span class="k3">sources, access, terms of use</span>\n'
+    '<span class="k1">## Methods</span>       <span class="k3">notebooks 01 to 05, one line each</span>\n'
+    '<span class="k1">## Results</span>       <span class="k3">findings, each with its notebook</span>\n'
     '<span class="k1">## Limitations</span>   <span class="k3">what the data cannot show</span>\n'
-    '<span class="k1">## Reproduce</span>     <span class="k3">setup and run order</span>\n'
-    '<span class="k1">## Repository</span>    <span class="k3">the folders, as a tree</span>\n\n'
+    '<span class="k1">## Reproduce</span>     <span class="k3">setup, run order, run time</span>\n'
+    '<span class="k1">## Repository</span>    <span class="k3">the folders, as a tree</span>\n'
+    '<span class="k1">## License</span>       <span class="k3">code MIT, data per source</span>\n\n'
     'Full report: <span class="k2">docs/report.pdf</span></pre></figure></div>')
 
 ZONE = ('<ol>'
-        '<li><b>Titlul și rezultatul</b>, în primele rânduri, cu un număr: primul ecran spune ce s-a găsit, '
-        'nu ce s-a făcut.</li>'
+        '<li><b>Titlul și rezultatul</b>, cu un număr: primul ecran spune ce s-a găsit, nu ce s-a făcut.</li>'
         '<li><b>Figura principală</b>, chiar sub rezultat.</li>'
-        '<li><b>Secțiunile scurte</b>: întrebarea, datele, metoda, rezultatele, limitele.</li>'
-        '<li><b>Cum se rulează</b>, pentru cine vrea să reproducă analiza.</li>'
-        '<li><b>Legătura spre raport</b>, unde stau detaliile.</li>'
+        '<li><b>Datele</b>: de unde vin, cum se obțin și în ce condiții se pot folosi.</li>'
+        '<li><b>Reproducerea</b>: versiunea Python, instalarea, ordinea caietelor, timpul de rulare; '
+        'fiecare rezultat, cu caietul care îl produce.</li>'
+        '<li><b>Licența</b> și legătura spre raport.</li>'
         '</ol>'
         '<p class="def6">În engleză, ca un CV al proiectului: fără „proiect pentru cursul…”, fără lista '
         'membrilor și a rolurilor.</p>')
 
-V_README = verif(
-    "c8-v-readme", 2,
-    "Care început de README îl face pe un cercetător din afară să citească mai departe?",
-    ["<i>This repository contains the project for the Data Science Workflows course, UBB, 2026.</i>",
-     "<i>Python 3.12 · pandas · statsmodels · SQLite · Jupyter</i>",
-     "<i>Country pairs with twice as many migrants between them are about 56% more connected on Facebook, at the "
-     "same distance and border.</i>",
-     "<i>We first collected the data, then cleaned it, explored it and finally built a model.</i>"],
-    "Primul rând spune rezultatul, cu un număr și cu condițiile lui. Cursul, uneltele și pașii nu spun nimic "
-    "despre ce s-a găsit; ele vin mai jos, în secțiunile README-ului.")
-
 sl("s2", "README", "README-ul ca un CV",
    "<h2>README-ul, un CV al proiectului</h2>"
    '<div class="rm8">' + README + ZONE + "</div>",
-   dupa=V_README,
    manual=
    "<h2>README-ul, un CV al proiectului</h2>"
    "<p>README-ul este prima pagină a depozitului pe GitHub. Cititorul lui nu este grupa, ci cineva din afară: un "
    "cercetător care caută date asemănătoare, un posibil colaborator, un angajator care se uită la profilul GitHub. "
    "Ca la un CV, primul ecran decide dacă citește mai departe. De aceea README-ul începe cu rezultatul, nu cu "
-   "istoria proiectului.</p>"
+   "istoria proiectului. Al doilea cititor este cel care vrea să refacă analiza: pentru el, README-ul spune de unde "
+   "se iau datele, ce trebuie instalat, în ce ordine rulează caietele și ce rezultat produce fiecare.</p>"
    '<div class="rm8">' + README + ZONE + "</div>"
    + tabel(["Secțiunea", "Ce conține"], [
        ["titlul și rezultatul", "o frază cu rezultatul principal, cu un număr și cu condițiile lui"],
        ["figura principală", "cea care rezumă rezultatul; restul figurilor stau în raport"],
        ["Question", "întrebarea și de ce contează, în două fraze"],
-       ["Data", "sursele, cu legături; unitatea de analiză; perioada"],
-       ["Approach", "pașii 01-05, câte un rând fiecare, cu caietul lui"],
-       ["Results", "două-trei constatări, cu cifre"],
+       ["Data", "sursele, cu legături; unitatea de analiză; perioada; condițiile de folosire ale fiecărei surse "
+                "și cum se obțin datele care nu stau în depozit"],
+       ["Methods", "pașii 01-05, câte un rând fiecare, cu caietul lui"],
+       ["Results", "două-trei constatări, cu cifre; lângă fiecare, caietul și figura din care vine"],
        ["Limitations", "ce nu pot arăta datele și metoda"],
-       ["Reproduce", "mediul (<code>requirements.txt</code>) și ordinea în care rulează caietele"],
-       ["Repository", "structura depozitului, ca arbore"]])
+       ["Reproduce", "versiunea Python, mediul (<code>requirements.txt</code>), comenzile de instalare, ordinea "
+                     "caietelor și timpul de rulare"],
+       ["Repository", "structura depozitului, ca arbore"],
+       ["License", "licența codului, în fișierul <code>LICENSE</code> (de exemplu MIT); datele rămân sub "
+                   "condițiile surselor lor"]])
+   + "<p>Testul unui README bun: cineva care vede depozitul pentru prima dată reface analiza doar din el, "
+     "într-un dosar gol, pe alt calculator.</p>"
    + nota("Fără membri și roluri",
           "README-ul descrie proiectul, nu echipa. Cine ce a făcut apare în raport, în secțiunea Contributions, "
           "și în istoricul commit-urilor.", True))
@@ -182,6 +179,8 @@ SURSE_C8 = surse("Pentru README și raport", [
     ("GitHub Docs: About READMEs", "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
      "unde se afișează README-ul și ce poate conține"),
     ("Make a README", "https://www.makeareadme.com/", "secțiunile unui README bun, cu exemple"),
+    ("ZBW Open Economics (2026): The README File", "https://openeconomics.zbw.eu/en/2026/07/the-readme-file-practical-tips-for-documenting-your-replication-package/",
+     "README-ul unui pachet de replicare: datele, cerințele, ordinea rulării, licența"),
     ("Wilson și colegii (2017): Good Enough Practices in Scientific Computing", "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510",
      "organizarea unui proiect de date și documentarea lui"),
     ("The Turing Way", "https://book.the-turing-way.org/", "cercetarea reproductibilă, de la date la raport"),
@@ -207,6 +206,59 @@ sl("s4", "Prezentarea", "Prezentarea la C9",
    + "<p>Planul prezentării se face azi, în echipă, și intră în secțiunea Contributions a raportului:</p>"
    + PLAN
    + SURSE_C8)
+
+
+# ===========================================================================
+#  5. Feedback pentru curs
+# ===========================================================================
+
+GR_A, GR_B, GR_C = "Cum s-a predat", "Ce pot face singur acum", "Proiectul"
+
+FEEDBACK = {
+    "id": "c8-feedback",
+    "capitol": "c8",
+    "scala": ["1 deloc", "2", "3", "4", "5 întru totul"],
+    "intrebari": [
+        {"pas": 1, "fel": "scala", "cheie": "a1_slide", "grup": GR_A,
+         "t": "Slide-urile interactive (graficele, harta, exercițiile de pe slide) m-au ajutat să înțeleg conceptele."},
+        {"pas": 1, "fel": "scala", "cheie": "a2_manual", "grup": GR_A, "t": "Manualul lecției mi-a fost util după oră."},
+        {"pas": 1, "fel": "scala", "cheie": "a3_caiete", "grup": GR_A,
+         "t": "În caietele de seminar am scris eu cod, nu doar am rulat celule gata făcute."},
+        {"pas": 1, "fel": "scala", "cheie": "a4_date", "grup": GR_A,
+         "t": "Lucrul pe aceleași date în toate lecțiile (SCI și migrația) m-a ajutat să văd cum se leagă pașii analizei."},
+        {"pas": 1, "fel": "scala", "cheie": "c1_echipa", "grup": GR_C,
+         "t": "Împărțirea proiectului pe pași, cu un responsabil pentru fiecare caiet, a funcționat în echipa mea."},
+        {"pas": 2, "fel": "scala", "cheie": "b1_api", "grup": GR_B,
+         "t": "Pot colecta date printr-un API (Eurostat, Banca Mondială)."},
+        {"pas": 2, "fel": "scala", "cheie": "b2_curatare", "grup": GR_B,
+         "t": "Pot curăța și uni tabele, în pandas și în SQL."},
+        {"pas": 2, "fel": "scala", "cheie": "b3_model", "grup": GR_B,
+         "t": "Pot interpreta un model de regresie: coeficienții ca elasticități, reziduurile."},
+        {"pas": 2, "fel": "scala", "cheie": "b4_git", "grup": GR_B,
+         "t": "Pot lucra cu Git și GitHub într-o echipă: ramura dev, pull, push, conflictele."},
+        {"pas": 2, "fel": "alege", "cheie": "ritm", "t": "Ritmul cursului a fost:",
+         "ops": ["prea încet", "potrivit", "prea repede"]},
+        {"pas": 2, "fel": "alege", "cheie": "lectia", "t": "Care lecție ar fi avut nevoie de mai mult timp?",
+         "ops": ["C1 Introducere", "C2 API", "C3 Git", "C4 Curățare", "C5 Agregare", "C6 Explorare", "C7 Model",
+                 "niciuna"]},
+        {"pas": 3, "fel": "text", "cheie": "in_plus", "t": "Ce ar fi trebuit să conțină în plus acest curs?",
+         "exemplu": "O temă, o unealtă, un tip de date sau un exercițiu care a lipsit."},
+        {"pas": 3, "fel": "text", "cheie": "greu", "optional": True,
+         "t": "Ce a fost cel mai greu de urmat și ce ar fi ajutat acolo? (opțional)",
+         "exemplu": "Lecția sau pasul, și ce ar fi făcut diferența: un exemplu, mai mult timp, alt exercițiu."},
+    ],
+}
+
+sl("s5", "Feedback", "Feedback pentru curs",
+   "<h2>Feedback pentru curs</h2>"
+   + ix("feedback", "Anonim: contul primește doar punctajul pentru completare", FEEDBACK),
+   manual=
+   "<h2>Feedback pentru curs</h2>"
+   "<p>Ultima sarcină a cursului este o evaluare a lui: nouă afirmații pe o scală de la 1 la 5, ritmul, lecția "
+   "care ar fi avut nevoie de mai mult timp și două întrebări deschise. Răspunsurile sunt anonime: se salvează "
+   "fără cont și fără oră, separat de evidența celor care au completat. Contul primește doar punctajul pentru "
+   "completare, ca la orice altă sarcină a lecției.</p>"
+   + ix("feedback", "Anonim: contul primește doar punctajul pentru completare", FEEDBACK))
 
 
 if __name__ == "__main__":

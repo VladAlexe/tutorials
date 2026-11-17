@@ -6,14 +6,14 @@
 <title>Cursul 8 · Fluxuri de lucru pentru știința datelor</title>
 <meta name="description" content="Cele trei documente ale proiectului: README-ul pentru un vizitator din afară, raportul complet în docs/ și prezentarea de la cursul 9.">
 <meta name="robots" content="index,nofollow">
-<link rel="stylesheet" href="../../css/fonturi.css?v=188">
-<link rel="stylesheet" href="../../css/sistem.css?v=188">
-<link rel="stylesheet" href="../../css/slide.css?v=188">
-<link rel="stylesheet" href="../../css/interactiv.css?v=188">
-<link rel="stylesheet" href="../../css/grafice.css?v=188">
-<link rel="stylesheet" href="../../css/exercitii.css?v=188">
-<link rel="stylesheet" href="../../css/explorator.css?v=188">
-<script src="../../js/tema.js?v=188"></script>
+<link rel="stylesheet" href="../../css/fonturi.css?v=189">
+<link rel="stylesheet" href="../../css/sistem.css?v=189">
+<link rel="stylesheet" href="../../css/slide.css?v=189">
+<link rel="stylesheet" href="../../css/interactiv.css?v=189">
+<link rel="stylesheet" href="../../css/grafice.css?v=189">
+<link rel="stylesheet" href="../../css/exercitii.css?v=189">
+<link rel="stylesheet" href="../../css/explorator.css?v=189">
+<script src="../../js/tema.js?v=189"></script>
 </head>
 <body class="corp--app">
 <div id="antet" data-aici="Cursul 8 · Raportul, README-ul și prezentarea" data-crom="1"></div>
@@ -21,7 +21,7 @@
 <main class="rnr__scena" tabindex="-1">
 
 <section class="sld" id="s1" data-grup="Cursul" data-t="Unde suntem">
-<h2>Unde suntem în curs</h2><p class="cheie">Analiza este gata. Azi: cele trei documente prin care altcineva o înțelege, README-ul, raportul și prezentarea. Restul orei: lucru în echipă.</p><table class="tabel"><thead><tr><th></th><th>Conținutul</th><th>Rezultatul</th></tr></thead><tbody><tr><td>C1</td><td>proiectul, mediul de lucru, tipurile de date și JSON</td><td><code>dsw/</code>, cu <code>.venv</code></td></tr><tr><td>C2</td><td>colectarea datelor prin API: Eurostat, Banca Mondială</td><td><code>data/raw</code></td></tr><tr><td>C3</td><td>surse diverse, preprocesare, Git și depozitul echipei</td><td><code>data/processed</code>, <code>proiect/</code></td></tr><tr><td>C4</td><td>curățarea datelor și tabelul regiunilor</td><td><code>regiuni_nuts2.csv</code></td></tr><tr><td>C5</td><td>integrare, baze de date și agregare</td><td>perechile, în <code>dsw.db</code></td></tr><tr><td>C6</td><td>analiza exploratorie</td><td>deciziile pentru model</td></tr><tr><td>C7</td><td>variabile derivate și model</td><td>modelul SCI și reziduurile lui</td></tr><tr><td><b>C8</b></td><td><b>azi: raportul, README-ul și planul prezentării</b></td><td><b><code>README.md</code>, <code>docs/report.pdf</code></b></td></tr><tr><td>C9</td><td>prezentarea proiectelor</td><td>nota proiectului</td></tr></tbody></table>
+<h2>Unde suntem în curs</h2><p class="cheie">Analiza este gata. Azi: cele trei documente prin care altcineva o înțelege, README-ul, raportul și prezentarea. La final, feedback-ul pentru curs; restul orei, lucru în echipă.</p><table class="tabel"><thead><tr><th></th><th>Conținutul</th><th>Rezultatul</th></tr></thead><tbody><tr><td>C1</td><td>proiectul, mediul de lucru, tipurile de date și JSON</td><td><code>dsw/</code>, cu <code>.venv</code></td></tr><tr><td>C2</td><td>colectarea datelor prin API: Eurostat, Banca Mondială</td><td><code>data/raw</code></td></tr><tr><td>C3</td><td>surse diverse, preprocesare, Git și depozitul echipei</td><td><code>data/processed</code>, <code>proiect/</code></td></tr><tr><td>C4</td><td>curățarea datelor și tabelul regiunilor</td><td><code>regiuni_nuts2.csv</code></td></tr><tr><td>C5</td><td>integrare, baze de date și agregare</td><td>perechile, în <code>dsw.db</code></td></tr><tr><td>C6</td><td>analiza exploratorie</td><td>deciziile pentru model</td></tr><tr><td>C7</td><td>variabile derivate și model</td><td>modelul SCI și reziduurile lui</td></tr><tr><td><b>C8</b></td><td><b>azi: raportul, README-ul și planul prezentării</b></td><td><b><code>README.md</code>, <code>docs/report.pdf</code></b></td></tr><tr><td>C9</td><td>prezentarea proiectelor</td><td>nota proiectului</td></tr></tbody></table>
 
 </section>
 
@@ -34,22 +34,16 @@ at the same distance and border.
 ![Observed and predicted SCI](figures/model.png)
 
 <span class="k1">## Question</span>      <span class="k3">why it matters, in two sentences</span>
-<span class="k1">## Data</span>          <span class="k3">sources, unit, period, links</span>
-<span class="k1">## Approach</span>      <span class="k3">steps 01 to 05, one line each</span>
-<span class="k1">## Results</span>       <span class="k3">two or three findings, with numbers</span>
+<span class="k1">## Data</span>          <span class="k3">sources, access, terms of use</span>
+<span class="k1">## Methods</span>       <span class="k3">notebooks 01 to 05, one line each</span>
+<span class="k1">## Results</span>       <span class="k3">findings, each with its notebook</span>
 <span class="k1">## Limitations</span>   <span class="k3">what the data cannot show</span>
-<span class="k1">## Reproduce</span>     <span class="k3">setup and run order</span>
+<span class="k1">## Reproduce</span>     <span class="k3">setup, run order, run time</span>
 <span class="k1">## Repository</span>    <span class="k3">the folders, as a tree</span>
+<span class="k1">## License</span>       <span class="k3">code MIT, data per source</span>
 
-Full report: <span class="k2">docs/report.pdf</span></pre></figure></div><ol><li><b>Titlul și rezultatul</b>, în primele rânduri, cu un număr: primul ecran spune ce s-a găsit, nu ce s-a făcut.</li><li><b>Figura principală</b>, chiar sub rezultat.</li><li><b>Secțiunile scurte</b>: întrebarea, datele, metoda, rezultatele, limitele.</li><li><b>Cum se rulează</b>, pentru cine vrea să reproducă analiza.</li><li><b>Legătura spre raport</b>, unde stau detaliile.</li></ol><p class="def6">În engleză, ca un CV al proiectului: fără „proiect pentru cursul…”, fără lista membrilor și a rolurilor.</p></div>
-<div class="verif" data-id="c8-v-readme" data-corect="2">
-    <p class="verif__q">Care început de README îl face pe un cercetător din afară să citească mai departe?</p>
-    <button><i>This repository contains the project for the Data Science Workflows course, UBB, 2026.</i></button>
-    <button><i>Python 3.12 · pandas · statsmodels · SQLite · Jupyter</i></button>
-    <button><i>Country pairs with twice as many migrants between them are about 56% more connected on Facebook, at the same distance and border.</i></button>
-    <button><i>We first collected the data, then cleaned it, explored it and finally built a model.</i></button>
-    <p class="verif__ex">Primul rând spune rezultatul, cu un număr și cu condițiile lui. Cursul, uneltele și pașii nu spun nimic despre ce s-a găsit; ele vin mai jos, în secțiunile README-ului.</p>
-  </div>
+Full report: <span class="k2">docs/report.pdf</span></pre></figure></div><ol><li><b>Titlul și rezultatul</b>, cu un număr: primul ecran spune ce s-a găsit, nu ce s-a făcut.</li><li><b>Figura principală</b>, chiar sub rezultat.</li><li><b>Datele</b>: de unde vin, cum se obțin și în ce condiții se pot folosi.</li><li><b>Reproducerea</b>: versiunea Python, instalarea, ordinea caietelor, timpul de rulare; fiecare rezultat, cu caietul care îl produce.</li><li><b>Licența</b> și legătura spre raport.</li></ol><p class="def6">În engleză, ca un CV al proiectului: fără „proiect pentru cursul…”, fără lista membrilor și a rolurilor.</p></div>
+
 </section>
 
 <section class="sld" id="s3" data-grup="Raportul" data-t="Raportul, în docs/">
@@ -62,14 +56,22 @@ Full report: <span class="k2">docs/report.pdf</span></pre></figure></div><ol><li
 
 </section>
 
+<section class="sld" id="s5" data-grup="Feedback" data-t="Feedback pentru curs">
+<h2>Feedback pentru curs</h2><div class="ix" data-ix="feedback">
+  <div class="ix__cap"><span class="ix__fel">Feedback</span><span class="ix__t">Anonim: contul primește doar punctajul pentru completare</span></div>
+  <div class="ix__corp"><script type="application/json">{"id": "c8-feedback", "capitol": "c8", "scala": ["1 deloc", "2", "3", "4", "5 întru totul"], "intrebari": [{"pas": 1, "fel": "scala", "cheie": "a1_slide", "grup": "Cum s-a predat", "t": "Slide-urile interactive (graficele, harta, exercițiile de pe slide) m-au ajutat să înțeleg conceptele."}, {"pas": 1, "fel": "scala", "cheie": "a2_manual", "grup": "Cum s-a predat", "t": "Manualul lecției mi-a fost util după oră."}, {"pas": 1, "fel": "scala", "cheie": "a3_caiete", "grup": "Cum s-a predat", "t": "În caietele de seminar am scris eu cod, nu doar am rulat celule gata făcute."}, {"pas": 1, "fel": "scala", "cheie": "a4_date", "grup": "Cum s-a predat", "t": "Lucrul pe aceleași date în toate lecțiile (SCI și migrația) m-a ajutat să văd cum se leagă pașii analizei."}, {"pas": 1, "fel": "scala", "cheie": "c1_echipa", "grup": "Proiectul", "t": "Împărțirea proiectului pe pași, cu un responsabil pentru fiecare caiet, a funcționat în echipa mea."}, {"pas": 2, "fel": "scala", "cheie": "b1_api", "grup": "Ce pot face singur acum", "t": "Pot colecta date printr-un API (Eurostat, Banca Mondială)."}, {"pas": 2, "fel": "scala", "cheie": "b2_curatare", "grup": "Ce pot face singur acum", "t": "Pot curăța și uni tabele, în pandas și în SQL."}, {"pas": 2, "fel": "scala", "cheie": "b3_model", "grup": "Ce pot face singur acum", "t": "Pot interpreta un model de regresie: coeficienții ca elasticități, reziduurile."}, {"pas": 2, "fel": "scala", "cheie": "b4_git", "grup": "Ce pot face singur acum", "t": "Pot lucra cu Git și GitHub într-o echipă: ramura dev, pull, push, conflictele."}, {"pas": 2, "fel": "alege", "cheie": "ritm", "t": "Ritmul cursului a fost:", "ops": ["prea încet", "potrivit", "prea repede"]}, {"pas": 2, "fel": "alege", "cheie": "lectia", "t": "Care lecție ar fi avut nevoie de mai mult timp?", "ops": ["C1 Introducere", "C2 API", "C3 Git", "C4 Curățare", "C5 Agregare", "C6 Explorare", "C7 Model", "niciuna"]}, {"pas": 3, "fel": "text", "cheie": "in_plus", "t": "Ce ar fi trebuit să conțină în plus acest curs?", "exemplu": "O temă, o unealtă, un tip de date sau un exercițiu care a lipsit."}, {"pas": 3, "fel": "text", "cheie": "greu", "optional": true, "t": "Ce a fost cel mai greu de urmat și ce ar fi ajutat acolo? (opțional)", "exemplu": "Lecția sau pasul, și ce ar fi făcut diferența: un exemplu, mai mult timp, alt exercițiu."}]}</script></div>
+</div>
+
+</section>
+
 </main>
 </div>
 
-<script type="module" src="../../js/antet.js?v=188"></script>
+<script type="module" src="../../js/antet.js?v=189"></script>
 <script type="module">
-import { porneste as pornesteIx } from "../../js/interactiv.js?v=188";
-import { porneste as pornesteVerif } from "../../js/verificare.js?v=188";
-import { porneste as pornesteSlide } from "../../js/slide.js?v=188";
+import { porneste as pornesteIx } from "../../js/interactiv.js?v=189";
+import { porneste as pornesteVerif } from "../../js/verificare.js?v=189";
+import { porneste as pornesteSlide } from "../../js/slide.js?v=189";
 pornesteIx();
 pornesteVerif("c8");
 pornesteSlide({ capitol:"c8", lectie:"c8-raportare" });
